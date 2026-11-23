@@ -4,7 +4,7 @@ use core::{ffi::c_void, mem::MaybeUninit};
 
 pub use crate::util::{inner_u32, inner_u64};
 
-extern "C" {
+unsafe extern "C" {
     fn esp_fill_random(buf: *mut c_void, len: usize) -> u32;
 }
 

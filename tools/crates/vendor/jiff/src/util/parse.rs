@@ -1,6 +1,8 @@
+use jcore::bounds::Bounds;
+
 use crate::{
-    error::{err, Error},
-    util::escape::{Byte, Bytes},
+    Error,
+    error::util::{ParseFractionError, ParseIntError},
 };
 
 /// Parses an `i64` number from the beginning to the end of the given slice of
@@ -13,40 +15,41 @@ use crate::{
 /// integers, and because a higher level routine might want to parse the sign
 /// and then apply it to the result of this routine.)
 #[cfg_attr(feature = "perf-inline", inline(always))]
-pub(crate) fn i64(bytes: &[u8]) -> Result<i64, Error> {
+pub(crate) fn i64(bytes: &[u8]) -> Result<i64, ParseIntError> {
     if bytes.is_empty() {
-        return Err(err!("invalid number, no digits found"));
+        return Err(ParseIntError::NoDigitsFound);
     }
     let mut n: i64 = 0;
     for &byte in bytes {
-        let digit = match byte.checked_sub(b'0') {
-            None => {
-                return Err(err!(
-                    "invalid digit, expected 0-9 but got {}",
-                    Byte(byte),
-                ));
-            }
-            Some(digit) if digit > 9 => {
-                return Err(err!(
-                    "invalid digit, expected 0-9 but got {}",
-                    Byte(byte),
-                ))
-            }
-            Some(digit) => {
-                debug_assert!((0..=9).contains(&digit));
-                i64::from(digit)
-            }
-        };
-        n = n.checked_mul(10).and_then(|n| n.checked_add(digit)).ok_or_else(
-            || {
-                err!(
-                    "number '{}' too big to parse into 64-bit integer",
-                    Bytes(bytes),
-                )
-            },
-        )?;
+        if !(b'0' <= byte && byte <= b'9') {
+            return Err(ParseIntError::InvalidDigit(byte));
+        }
+        let digit = i64::from(byte - b'0');
+        n = n
+            .checked_mul(10)
+            .and_then(|n| n.checked_add(digit))
+            .ok_or(ParseIntError::TooBig)?;
     }
     Ok(n)
+}
+
+/// Like `self::i64`, but also does a boundary check for the given type.
+///
+/// # Errors
+///
+/// If the given slice is not a valid integer (i.e., overflow or contains
+/// anything other than `[0-9]`) or is not in the bounds for the given `Bounds`
+/// implementation, then an error is returned.
+///
+/// Note that the error can either be a parsing error or it can be a
+/// boundary error.
+#[cfg_attr(feature = "perf-inline", inline(always))]
+pub(crate) fn bi64<B>(bytes: &[u8]) -> Result<B::Primitive, Error>
+where
+    B: Bounds,
+    Error: From<B::Error>,
+{
+    Ok(B::check(self::i64(bytes)?)?)
 }
 
 /// Parsed an optional `u64` that is a prefix of `bytes`.
@@ -65,7 +68,9 @@ pub(crate) fn i64(bytes: &[u8]) -> Result<i64, Error> {
 ///
 /// When the parsed integer cannot fit into a `u64`.
 #[cfg_attr(feature = "perf-inline", inline(always))]
-pub(crate) fn u64_prefix(bytes: &[u8]) -> Result<(Option<u64>, &[u8]), Error> {
+pub(crate) fn u64_prefix(
+    bytes: &[u8],
+) -> Result<(Option<u64>, &[u8]), ParseIntError> {
     // Discovered via `u64::MAX.to_string().len()`.
     const MAX_U64_DIGITS: usize = 20;
 
@@ -79,15 +84,10 @@ pub(crate) fn u64_prefix(bytes: &[u8]) -> Result<(Option<u64>, &[u8]), Error> {
         digit_count += 1;
         // OK because we confirmed `byte` is an ASCII digit.
         let digit = u64::from(byte - b'0');
-        n = n.checked_mul(10).and_then(|n| n.checked_add(digit)).ok_or_else(
-            #[inline(never)]
-            || {
-                err!(
-                    "number `{}` too big to parse into 64-bit integer",
-                    Bytes(&bytes[..digit_count]),
-                )
-            },
-        )?;
+        n = n
+            .checked_mul(10)
+            .and_then(|n| n.checked_add(digit))
+            .ok_or(ParseIntError::TooBig)?;
     }
     if digit_count == 0 {
         return Ok((None, bytes));
@@ -105,54 +105,33 @@ pub(crate) fn u64_prefix(bytes: &[u8]) -> Result<(Option<u64>, &[u8]), Error> {
 ///
 /// If any byte in the given slice is not `[0-9]`, then this returns an error.
 /// Notably, this routine does not permit parsing a negative integer.
-pub(crate) fn fraction(bytes: &[u8]) -> Result<u32, Error> {
-    const MAX_PRECISION: usize = 9;
-
+pub(crate) fn fraction(bytes: &[u8]) -> Result<u32, ParseFractionError> {
     if bytes.is_empty() {
-        return Err(err!("invalid fraction, no digits found"));
-    } else if bytes.len() > MAX_PRECISION {
-        return Err(err!(
-            "invalid fraction, too many digits \
-             (at most {MAX_PRECISION} are allowed"
-        ));
+        return Err(ParseFractionError::NoDigitsFound);
+    } else if bytes.len() > ParseFractionError::MAX_PRECISION {
+        return Err(ParseFractionError::TooManyDigits);
     }
     let mut n: u32 = 0;
     for &byte in bytes {
         let digit = match byte.checked_sub(b'0') {
             None => {
-                return Err(err!(
-                    "invalid fractional digit, expected 0-9 but got {}",
-                    Byte(byte),
-                ));
+                return Err(ParseFractionError::InvalidDigit(byte));
             }
             Some(digit) if digit > 9 => {
-                return Err(err!(
-                    "invalid fractional digit, expected 0-9 but got {}",
-                    Byte(byte),
-                ))
+                return Err(ParseFractionError::InvalidDigit(byte));
             }
             Some(digit) => {
                 debug_assert!((0..=9).contains(&digit));
                 u32::from(digit)
             }
         };
-        n = n.checked_mul(10).and_then(|n| n.checked_add(digit)).ok_or_else(
-            || {
-                err!(
-                    "fractional '{}' too big to parse into 64-bit integer",
-                    Bytes(bytes),
-                )
-            },
-        )?;
+        n = n
+            .checked_mul(10)
+            .and_then(|n| n.checked_add(digit))
+            .ok_or_else(|| ParseFractionError::TooBig)?;
     }
-    for _ in bytes.len()..MAX_PRECISION {
-        n = n.checked_mul(10).ok_or_else(|| {
-            err!(
-                "fractional '{}' too big to parse into 64-bit integer \
-                 (too much precision supported)",
-                Bytes(bytes)
-            )
-        })?;
+    for _ in bytes.len()..ParseFractionError::MAX_PRECISION {
+        n = n.checked_mul(10).ok_or_else(|| ParseFractionError::TooBig)?;
     }
     Ok(n)
 }
@@ -161,46 +140,17 @@ pub(crate) fn fraction(bytes: &[u8]) -> Result<u32, Error> {
 ///
 /// This is effectively `OsStr::to_str`, but with a slightly better error
 /// message.
-#[cfg(feature = "tzdb-zoneinfo")]
-pub(crate) fn os_str_utf8<'o, O>(os_str: &'o O) -> Result<&'o str, Error>
+#[cfg(any(feature = "tz-system", feature = "tzdb-zoneinfo"))]
+pub(crate) fn os_str_utf8<'o, O>(
+    os_str: &'o O,
+) -> Result<&'o str, crate::error::util::OsStrUtf8Error>
 where
     O: ?Sized + AsRef<std::ffi::OsStr>,
 {
     let os_str = os_str.as_ref();
     os_str
         .to_str()
-        .ok_or_else(|| err!("environment value {os_str:?} is not valid UTF-8"))
-}
-
-/// Parses an `OsStr` into a `&str` when `&[u8]` isn't easily available.
-///
-/// The main difference between this and `OsStr::to_str` is that this will
-/// be a zero-cost conversion on Unix platforms to `&[u8]`. On Windows, this
-/// will do UTF-8 validation and return an error if it's invalid UTF-8.
-#[cfg(feature = "tz-system")]
-pub(crate) fn os_str_bytes<'o, O>(os_str: &'o O) -> Result<&'o [u8], Error>
-where
-    O: ?Sized + AsRef<std::ffi::OsStr>,
-{
-    let os_str = os_str.as_ref();
-    #[cfg(unix)]
-    {
-        use std::os::unix::ffi::OsStrExt;
-        Ok(os_str.as_bytes())
-    }
-    #[cfg(not(unix))]
-    {
-        let string = os_str.to_str().ok_or_else(|| {
-            err!("environment value {os_str:?} is not valid UTF-8")
-        })?;
-        // It is suspect that we're doing UTF-8 validation and then throwing
-        // away the fact that we did UTF-8 validation. So this could lead
-        // to an extra UTF-8 check if the caller ultimately needs UTF-8. If
-        // that's important, we can add a new API that returns a `&str`. But it
-        // probably won't matter because an `OsStr` in this crate is usually
-        // just an environment variable.
-        Ok(string.as_bytes())
-    }
+        .ok_or_else(|| crate::error::util::OsStrUtf8Error::from(os_str))
 }
 
 /// Splits the given input into two slices at the given position.
@@ -209,11 +159,7 @@ where
 /// returns `None`.
 #[cfg_attr(feature = "perf-inline", inline(always))]
 pub(crate) fn split(input: &[u8], at: usize) -> Option<(&[u8], &[u8])> {
-    if at > input.len() {
-        None
-    } else {
-        Some(input.split_at(at))
-    }
+    if at > input.len() { None } else { Some(input.split_at(at)) }
 }
 
 /// Returns a function that converts two slices to an offset.

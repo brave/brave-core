@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.60"
 name = "crossbeam-utils"
-version = "0.8.21"
+version = "0.8.23"
 build = "build.rs"
 autolib = false
 autobins = false
@@ -37,6 +37,11 @@ categories = [
 ]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/crossbeam-rs/crossbeam"
+
+[features]
+default = ["std"]
+nightly = []
+std = []
 
 [lib]
 name = "crossbeam_utils"
@@ -75,10 +80,8 @@ path = "benches/atomic_cell.rs"
 [dev-dependencies.rand]
 version = "0.8"
 
-[features]
-default = ["std"]
-nightly = []
-std = []
+[dev-dependencies.rustversion]
+version = "1"
 
 [target."cfg(crossbeam_loom)".dependencies.loom]
 version = "0.7.1"

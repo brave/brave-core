@@ -23,38 +23,47 @@ s! {
         pub st_uid: crate::uid_t,
         pub st_gid: crate::gid_t,
         pub st_rdev: crate::dev_t,
-        __st_rdev_padding: c_short,
+        __st_rdev_padding: Padding<c_short>,
         pub st_size: off_t,
         pub st_blksize: crate::blksize_t,
         pub st_blocks: crate::blkcnt_t,
+
+        #[cfg(musl32_time64)]
+        __st_atim32: Padding<__c_anonymous_timespec32>,
+        #[cfg(musl32_time64)]
+        __st_mtim32: Padding<__c_anonymous_timespec32>,
+        #[cfg(musl32_time64)]
+        __st_ctim32: Padding<__c_anonymous_timespec32>,
+
+        #[cfg(musl_v1_2)]
+        __unused: Padding<[c_long; 2]>,
+
         pub st_atime: crate::time_t,
+        #[cfg(all(musl32_time64, target_endian = "big"))]
+        __pad0: Padding<u32>,
         pub st_atime_nsec: c_long,
+        #[cfg(all(musl32_time64, target_endian = "little"))]
+        __pad0: Padding<u32>,
         pub st_mtime: crate::time_t,
+        #[cfg(all(musl32_time64, target_endian = "big"))]
+        __pad1: Padding<u32>,
         pub st_mtime_nsec: c_long,
+        #[cfg(all(musl32_time64, target_endian = "little"))]
+        __pad1: Padding<u32>,
         pub st_ctime: crate::time_t,
+        #[cfg(all(musl32_time64, target_endian = "big"))]
+        __pad2: Padding<u32>,
         pub st_ctime_nsec: c_long,
+        #[cfg(all(musl32_time64, target_endian = "little"))]
+        __pad2: Padding<u32>,
+
+        #[cfg(not(musl_v1_2))]
         __unused: Padding<[c_long; 2]>,
     }
 
-    pub struct stat64 {
-        pub st_dev: crate::dev_t,
-        pub st_ino: crate::ino_t,
-        pub st_mode: crate::mode_t,
-        pub st_nlink: crate::nlink_t,
-        pub st_uid: crate::uid_t,
-        pub st_gid: crate::gid_t,
-        pub st_rdev: crate::dev_t,
-        __st_rdev_padding: c_short,
-        pub st_size: off_t,
-        pub st_blksize: crate::blksize_t,
-        pub st_blocks: crate::blkcnt_t,
-        pub st_atime: crate::time_t,
-        pub st_atime_nsec: c_long,
-        pub st_mtime: crate::time_t,
-        pub st_mtime_nsec: c_long,
-        pub st_ctime: crate::time_t,
-        pub st_ctime_nsec: c_long,
-        __unused: Padding<[c_long; 2]>,
+    struct __c_anonymous_timespec32 {
+        __tv_sec: c_long,
+        __tv_nsec: c_long,
     }
 
     pub struct stack_t {
@@ -64,9 +73,9 @@ s! {
     }
 
     pub struct ipc_perm {
-        #[cfg(musl_v1_2_3)]
+        #[cfg(musl_v1_2)]
         pub __key: crate::key_t,
-        #[cfg(not(musl_v1_2_3))]
+        #[cfg(not(musl_v1_2))]
         #[deprecated(
             since = "0.2.173",
             note = "This field is incorrectly named and will be changed
@@ -86,29 +95,83 @@ s! {
 
     pub struct shmid_ds {
         pub shm_perm: crate::ipc_perm,
+
+        #[cfg(musl32_time64)]
+        __shm_atime_hi: Padding<c_ulong>,
+        #[cfg(musl32_time64)]
+        __shm_atime_lo: Padding<c_ulong>,
+        #[cfg(musl32_time64)]
+        __shm_dtime_hi: Padding<c_ulong>,
+        #[cfg(musl32_time64)]
+        __shm_dtime_lo: Padding<c_ulong>,
+        #[cfg(musl32_time64)]
+        __shm_ctime_hi: Padding<c_ulong>,
+        #[cfg(musl32_time64)]
+        __shm_ctime_lo: Padding<c_ulong>,
+
+        #[cfg(not(musl32_time64))]
         __unused1: Padding<c_int>,
+        #[cfg(not(musl32_time64))]
         pub shm_atime: crate::time_t,
+        #[cfg(not(musl32_time64))]
         __unused2: Padding<c_int>,
+        #[cfg(not(musl32_time64))]
         pub shm_dtime: crate::time_t,
+        #[cfg(not(musl32_time64))]
         __unused3: Padding<c_int>,
+        #[cfg(not(musl32_time64))]
         pub shm_ctime: crate::time_t,
+        #[cfg(not(musl32_time64))]
         __unused4: Padding<c_int>,
+
+        #[cfg(musl32_time64)]
+        __pad1: Padding<c_ulong>,
+
         pub shm_segsz: size_t,
         pub shm_cpid: crate::pid_t,
         pub shm_lpid: crate::pid_t,
         pub shm_nattch: c_ulong,
+        #[cfg(not(musl32_time64))]
         __pad1: Padding<c_ulong>,
         __pad2: Padding<c_ulong>,
+
+        #[cfg(musl32_time64)]
+        pub shm_atime: crate::time_t,
+        #[cfg(musl32_time64)]
+        pub shm_dtime: crate::time_t,
+        #[cfg(musl32_time64)]
+        pub shm_ctime: crate::time_t,
     }
 
     pub struct msqid_ds {
         pub msg_perm: crate::ipc_perm,
+
+        #[cfg(musl32_time64)]
+        __msg_stime_hi: Padding<c_ulong>,
+        #[cfg(musl32_time64)]
+        __msg_stime_lo: Padding<c_ulong>,
+        #[cfg(musl32_time64)]
+        __msg_rtime_hi: Padding<c_ulong>,
+        #[cfg(musl32_time64)]
+        __msg_rtime_lo: Padding<c_ulong>,
+        #[cfg(musl32_time64)]
+        __msg_ctime_hi: Padding<c_ulong>,
+        #[cfg(musl32_time64)]
+        __msg_ctime_lo: Padding<c_ulong>,
+
+        #[cfg(not(musl32_time64))]
         __unused1: Padding<c_int>,
+        #[cfg(not(musl32_time64))]
         pub msg_stime: crate::time_t,
+        #[cfg(not(musl32_time64))]
         __unused2: Padding<c_int>,
+        #[cfg(not(musl32_time64))]
         pub msg_rtime: crate::time_t,
+        #[cfg(not(musl32_time64))]
         __unused3: Padding<c_int>,
+        #[cfg(not(musl32_time64))]
         pub msg_ctime: crate::time_t,
+
         pub __msg_cbytes: c_ulong,
         pub msg_qnum: crate::msgqnum_t,
         pub msg_qbytes: crate::msglen_t,
@@ -116,6 +179,13 @@ s! {
         pub msg_lrpid: crate::pid_t,
         __pad1: Padding<c_ulong>,
         __pad2: Padding<c_ulong>,
+
+        #[cfg(musl32_time64)]
+        pub msg_stime: crate::time_t,
+        #[cfg(musl32_time64)]
+        pub msg_rtime: crate::time_t,
+        #[cfg(musl32_time64)]
+        pub msg_ctime: crate::time_t,
     }
 }
 
@@ -484,12 +554,10 @@ pub const SYS_modify_ldt: c_long = 123;
 pub const SYS_adjtimex: c_long = 124;
 pub const SYS_mprotect: c_long = 125;
 pub const SYS_sigprocmask: c_long = 126;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_create_module: c_long = 127;
+// 127 was SYS_create_module
 pub const SYS_init_module: c_long = 128;
 pub const SYS_delete_module: c_long = 129;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_get_kernel_syms: c_long = 130;
+// 130 was SYS_get_kernel_syms
 pub const SYS_quotactl: c_long = 131;
 pub const SYS_getpgid: c_long = 132;
 pub const SYS_fchdir: c_long = 133;
@@ -525,8 +593,7 @@ pub const SYS_nanosleep: c_long = 162;
 pub const SYS_mremap: c_long = 163;
 pub const SYS_setresuid: c_long = 164;
 pub const SYS_getresuid: c_long = 165;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_query_module: c_long = 166;
+// 166 was SYS_query_module
 pub const SYS_poll: c_long = 167;
 pub const SYS_nfsservctl: c_long = 168;
 pub const SYS_setresgid: c_long = 169;

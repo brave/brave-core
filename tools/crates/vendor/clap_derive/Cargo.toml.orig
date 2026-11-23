@@ -1,6 +1,6 @@
 [package]
 name = "clap_derive"
-version = "4.5.49"
+version = "4.6.9"
 description = "Parse command line argument by defining a struct, derive crate."
 categories = ["command-line-interface", "development-tools::procedural-macro-helpers"]
 keywords = [
@@ -30,12 +30,12 @@ proc-macro = true
 bench = false
 
 [dependencies]
-syn = { version = "2.0.8", features = ["full"] }
-quote = "1.0.9"
-proc-macro2 = "1.0.69"
+syn = { version = "3.0.10", features = ["full"] }
+quote = "1.0.47"
+proc-macro2 = "1.0.107"
 heck = "0.5.0"
-pulldown-cmark = { version = "0.13.0", default-features = false, optional = true}
-anstyle = {version ="1.0.10", optional = true}
+pulldown-cmark = { version = "0.13.6", default-features = false, optional = true}
+anstyle = {version ="1.0.14", optional = true}
 
 [features]
 default = []

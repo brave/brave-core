@@ -34,6 +34,6 @@ impl FromStr for Keyword {
     /// Create a new keyword
     fn from_str(keyword: &str) -> Result<Self, Error> {
         // TODO: validate keywords according to Cargo-like rules
-        Ok(Keyword(keyword.into()))
+        Ok(Self(keyword.into()))
     }
 }

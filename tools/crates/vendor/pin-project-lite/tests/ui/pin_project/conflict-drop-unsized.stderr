@@ -1,0 +1,31 @@
+error[E0119]: conflicting implementations of trait `_::MustNotImplDrop` for type `TraitObject`
+  --> tests/ui/pin_project/conflict-drop-unsized.rs:5:1
+   |
+ 5 | / pin_project! { //~ ERROR E0119
+ 6 | |     struct TraitObject {
+ 7 | |         #[pin]
+ 8 | |         inner: dyn std::fmt::Debug,
+ 9 | |     }
+10 | | }
+   | | ^
+   | | |
+   | |_first implementation here
+   |   conflicting implementation for `TraitObject`
+   |
+   = note: this error originates in the macro `$crate::__pin_project_make_drop_impl` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0119]: conflicting implementations of trait `_::MustNotImplDrop` for type `Slice`
+  --> tests/ui/pin_project/conflict-drop-unsized.rs:16:1
+   |
+16 | / pin_project! { //~ ERROR E0119
+17 | |     struct Slice {
+18 | |         #[pin]
+19 | |         inner: [u8],
+20 | |     }
+21 | | }
+   | | ^
+   | | |
+   | |_first implementation here
+   |   conflicting implementation for `Slice`
+   |
+   = note: this error originates in the macro `$crate::__pin_project_make_drop_impl` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)

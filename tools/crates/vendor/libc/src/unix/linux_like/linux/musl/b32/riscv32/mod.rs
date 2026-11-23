@@ -1,10 +1,7 @@
 //! RISC-V-specific definitions for 32-bit linux-like values
 
+use crate::off_t;
 use crate::prelude::*;
-use crate::{
-    off64_t,
-    off_t,
-};
 
 pub type wchar_t = c_int;
 
@@ -17,40 +14,30 @@ s! {
         pub st_uid: crate::uid_t,
         pub st_gid: crate::gid_t,
         pub st_rdev: crate::dev_t,
-        pub __pad1: crate::dev_t,
+        __st_rdev_padding: Padding<crate::dev_t>,
         pub st_size: off_t,
         pub st_blksize: crate::blksize_t,
-        pub __pad2: c_int,
+        __st_blksize_padding: Padding<c_int>,
         pub st_blocks: crate::blkcnt_t,
         pub st_atime: crate::time_t,
+        #[cfg(all(musl32_time64, target_endian = "big"))]
+        __pad0: Padding<u32>,
         pub st_atime_nsec: c_long,
+        #[cfg(all(musl32_time64, target_endian = "little"))]
+        __pad0: Padding<u32>,
         pub st_mtime: crate::time_t,
+        #[cfg(all(musl32_time64, target_endian = "big"))]
+        __pad1: Padding<u32>,
         pub st_mtime_nsec: c_long,
+        #[cfg(all(musl32_time64, target_endian = "little"))]
+        __pad1: Padding<u32>,
         pub st_ctime: crate::time_t,
+        #[cfg(all(musl32_time64, target_endian = "big"))]
+        __pad2: Padding<u32>,
         pub st_ctime_nsec: c_long,
+        #[cfg(all(musl32_time64, target_endian = "little"))]
+        __pad2: Padding<u32>,
         __unused: Padding<[c_int; 2usize]>,
-    }
-
-    pub struct stat64 {
-        pub st_dev: crate::dev_t,
-        pub st_ino: crate::ino64_t,
-        pub st_mode: crate::mode_t,
-        pub st_nlink: crate::nlink_t,
-        pub st_uid: crate::uid_t,
-        pub st_gid: crate::gid_t,
-        pub st_rdev: crate::dev_t,
-        pub __pad1: crate::dev_t,
-        pub st_size: off64_t,
-        pub st_blksize: crate::blksize_t,
-        pub __pad2: c_int,
-        pub st_blocks: crate::blkcnt64_t,
-        pub st_atime: crate::time_t,
-        pub st_atime_nsec: c_long,
-        pub st_mtime: crate::time_t,
-        pub st_mtime_nsec: c_long,
-        pub st_ctime: crate::time_t,
-        pub st_ctime_nsec: c_long,
-        __unused: Padding<[c_int; 2]>,
     }
 
     pub struct stack_t {

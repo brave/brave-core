@@ -10,7 +10,7 @@ impl Signature {
     /// Parse a signature from a Git commit
     pub fn from_bytes(bytes: &[u8]) -> Result<Self, Error> {
         // TODO: actually verify the signature is well-structured
-        Ok(Signature(bytes.into()))
+        Ok(Self(bytes.into()))
     }
 }
 

@@ -1,6 +1,68 @@
 #[cfg(feature = "std")]
 use object::{Object, ObjectSection as _};
 
+// Test that entry points are correctly extracted from both LC_MAIN and LC_UNIXTHREAD.
+#[cfg(feature = "std")]
+#[test]
+fn test_macho_entry_point() {
+    let macho_testfiles = std::path::Path::new("testfiles/macho");
+
+    // go-x86_64 uses LC_UNIXTHREAD (legacy thread command with register state)
+    let path = macho_testfiles.join("go-x86_64");
+    let file = std::fs::File::open(&path).unwrap();
+    let reader = object::read::ReadCache::new(file);
+    let object = object::read::File::parse(&reader).unwrap();
+    assert_eq!(
+        object.entry(),
+        0x10637e0,
+        "go-x86_64: entry point from LC_UNIXTHREAD"
+    );
+
+    // base-x86_64 uses LC_MAIN (modern entry point command)
+    let path = macho_testfiles.join("base-x86_64");
+    let file = std::fs::File::open(&path).unwrap();
+    let reader = object::read::ReadCache::new(file);
+    let object = object::read::File::parse(&reader).unwrap();
+    assert_eq!(
+        object.entry(),
+        0x3f60, // entryoff from LC_MAIN
+        "base-x86_64: entry point from LC_MAIN"
+    );
+
+    // go-aarch64 uses LC_MAIN (not LC_UNIXTHREAD like go-x86_64)
+    let path = macho_testfiles.join("go-aarch64");
+    let file = std::fs::File::open(&path).unwrap();
+    let reader = object::read::ReadCache::new(file);
+    let object = object::read::File::parse(&reader).unwrap();
+    assert_eq!(
+        object.entry(),
+        0x64450, // entryoff from LC_MAIN
+        "go-aarch64: entry point from LC_MAIN"
+    );
+
+    // static-aarch64 uses LC_UNIXTHREAD (static binary with thread command)
+    let path = macho_testfiles.join("static-aarch64");
+    let file = std::fs::File::open(&path).unwrap();
+    let reader = object::read::ReadCache::new(file);
+    let object = object::read::File::parse(&reader).unwrap();
+    assert_eq!(
+        object.entry(),
+        0x1000002f0, // pc from LC_UNIXTHREAD
+        "static-aarch64: entry point from LC_UNIXTHREAD"
+    );
+
+    // static-x86 uses LC_UNIXTHREAD (32-bit static binary)
+    let path = macho_testfiles.join("static-x86");
+    let file = std::fs::File::open(&path).unwrap();
+    let reader = object::read::ReadCache::new(file);
+    let object = object::read::File::parse(&reader).unwrap();
+    assert_eq!(
+        object.entry(),
+        0x1ff0, // eip from LC_UNIXTHREAD
+        "static-x86: entry point from LC_UNIXTHREAD"
+    );
+}
+
 // Test that we can read compressed sections in Mach-O files as produced
 // by the Go compiler.
 #[cfg(feature = "std")]
@@ -46,4 +108,38 @@ fn test_go_macho() {
             }
         }
     }
+}
+
+#[cfg(feature = "std")]
+#[test]
+fn test_macho_load_command_offset() {
+    use object::LittleEndian;
+    use object::read::macho::MachOFile64;
+
+    let path = std::path::Path::new("testfiles/macho").join("base-x86_64");
+    let data = std::fs::read(&path).unwrap();
+    let object = MachOFile64::<LittleEndian>::parse(&*data).unwrap();
+
+    let mut commands = object.macho_load_commands().unwrap();
+
+    let command = commands.next().unwrap().unwrap();
+    let offset = command.offset();
+    let cmdsize = command.cmdsize();
+    assert_eq!(offset, 32);
+    assert_eq!(
+        &data[offset as usize..][..cmdsize as usize],
+        command.raw_data()
+    );
+
+    let command = commands.last().unwrap().unwrap();
+    let offset = command.offset();
+    let cmdsize = command.cmdsize();
+    assert_eq!(
+        offset,
+        (32 + object.macho_header().sizeofcmds.get(LittleEndian) - cmdsize) as u64
+    );
+    assert_eq!(
+        &data[offset as usize..][..cmdsize as usize],
+        command.raw_data()
+    );
 }

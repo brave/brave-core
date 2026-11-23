@@ -1,12 +1,16 @@
+#[cfg(not(target_os = "emscripten"))]
+use std::io;
 #[cfg(target_os = "android")]
 use std::os::android::net::SocketAddrExt;
 #[cfg(target_os = "linux")]
 use std::os::linux::net::SocketAddrExt;
 use std::os::unix::ffi::OsStrExt;
+#[cfg(not(target_os = "emscripten"))]
 use std::os::unix::io::FromRawFd;
 use std::os::unix::net::SocketAddr;
-use std::{io, mem, ptr};
+use std::{mem, ptr};
 
+#[cfg(not(target_os = "emscripten"))]
 pub(crate) mod datagram;
 pub(crate) mod listener;
 pub(crate) mod stream;
@@ -81,6 +85,7 @@ fn unix_addr(address: &SocketAddr) -> (libc::sockaddr_un, libc::socklen_t) {
     (sockaddr, addrlen as _)
 }
 
+#[cfg(not(target_os = "emscripten"))]
 fn pair<T>(flags: libc::c_int) -> io::Result<(T, T)>
 where
     T: FromRawFd,
@@ -96,6 +101,7 @@ where
         target_os = "watchos",
         target_os = "espidf",
         target_os = "vita",
+        target_os = "horizon",
     )))]
     let flags = flags | libc::SOCK_NONBLOCK | libc::SOCK_CLOEXEC;
 
@@ -120,6 +126,7 @@ where
         target_os = "watchos",
         target_os = "espidf",
         target_os = "vita",
+        target_os = "horizon"
     ))]
     {
         syscall!(fcntl(fds[0], libc::F_SETFL, libc::O_NONBLOCK))?;

@@ -1,6 +1,6 @@
 use bstr::BString;
 
-use crate::{driver, eol, Driver, Pipeline};
+use crate::{Driver, Pipeline, driver, eol};
 
 /// Define how to perform CRLF round-trip checking when converting to git.
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq)]
@@ -27,8 +27,6 @@ pub struct Options {
     pub crlf_roundtrip_check: CrlfRoundTripCheck,
     /// All worktree encodings for round-trip checks should be performed.
     pub encodings_with_roundtrip_check: Vec<&'static encoding_rs::Encoding>,
-    /// The object hash to use when applying the `ident` filter.
-    pub object_hash: gix_hash::Kind,
 }
 
 /// Context that typically doesn't change throughout the lifetime of a pipeline, for use with `process` filters.
@@ -55,11 +53,12 @@ impl Pipeline {
     /// Create a new pipeline with configured `drivers` (which should be considered safe to invoke), which are passed `context`.
     /// `eol_config` serves as fallback to understand how to convert line endings if no line-ending attributes are present.
     /// `crlf_roundtrip_check` corresponds to the git-configuration of `core.safecrlf`.
-    /// `object_hash` is relevant for the `ident` filter.
-    pub fn new(context: gix_command::Context, options: Options) -> Self {
+    /// `object_hash` must match the repository's object format and is used to expand `$Id$` for the `ident` filter.
+    pub fn new(context: gix_command::Context, object_hash: gix_hash::Kind, options: Options) -> Self {
         let mut attrs = gix_attributes::search::Outcome::default();
         attrs.initialize_with_selection(&Default::default(), ATTRS);
         Pipeline {
+            object_hash,
             attrs,
             context: Context::default(),
             processes: driver::State::new(context),
@@ -73,12 +72,6 @@ impl Pipeline {
     /// This can be used to control how these are terminated via [driver::State::shutdown()].
     pub fn into_driver_state(self) -> driver::State {
         self.processes
-    }
-}
-
-impl Default for Pipeline {
-    fn default() -> Self {
-        Pipeline::new(Default::default(), Default::default())
     }
 }
 

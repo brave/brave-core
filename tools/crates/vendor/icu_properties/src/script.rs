@@ -2,7 +2,7 @@
 // called LICENSE at the top level of the ICU4X source tree
 // (online at: https://github.com/unicode-org/icu4x/blob/main/LICENSE ).
 
-//! Data and APIs for supporting Script_Extensions property
+//! Data and APIs for supporting `Script_Extensions` property
 //! values in an efficient structure.
 
 use crate::props::Script;
@@ -13,8 +13,12 @@ use core::iter::FromIterator;
 use core::ops::RangeInclusive;
 #[cfg(feature = "alloc")]
 use icu_collections::codepointinvlist::CodePointInversionList;
+use icu_collections::codepointtrie::TrieValue;
 use icu_provider::prelude::*;
-use zerovec::{ule::AsULE, ZeroSlice};
+use zerovec::{ZeroSlice, ule::AsULE};
+
+#[cfg(feature = "harfbuzz_traits")]
+pub use crate::harfbuzz::{HarfbuzzScriptData, HarfbuzzScriptDataBorrowed};
 
 /// The number of bits at the low-end of a `ScriptWithExt` value used for
 /// storing the `Script` value (or `extensions` index).
@@ -45,7 +49,19 @@ pub struct ScriptWithExt(pub u16);
 #[allow(non_upper_case_globals)]
 #[doc(hidden)] // `ScriptWithExt` not intended as public-facing but for `ScriptWithExtensionsProperty` constructor
 impl ScriptWithExt {
-    pub const Unknown: ScriptWithExt = ScriptWithExt(0);
+    pub const Unknown: ScriptWithExt = Self::single(Script::Unknown);
+
+    pub const fn single(script: Script) -> Self {
+        Self(script.0 & SCRIPT_X_SCRIPT_VAL)
+    }
+
+    pub const fn new(script: Script, extensions: u16) -> Self {
+        match script {
+            Script::Common => Self(1 << SCRIPT_VAL_LENGTH | extensions & SCRIPT_X_SCRIPT_VAL),
+            Script::Inherited => Self(2 << SCRIPT_VAL_LENGTH | extensions & SCRIPT_X_SCRIPT_VAL),
+            _script => Self(3 << SCRIPT_VAL_LENGTH | extensions & SCRIPT_X_SCRIPT_VAL),
+        }
+    }
 }
 
 impl AsULE for ScriptWithExt {
@@ -64,7 +80,7 @@ impl AsULE for ScriptWithExt {
 
 #[doc(hidden)] // `ScriptWithExt` not intended as public-facing but for `ScriptWithExtensionsProperty` constructor
 impl ScriptWithExt {
-    /// Returns whether the [`ScriptWithExt`] value has Script_Extensions and
+    /// Returns whether the [`ScriptWithExt`] value has `Script_Extensions` and
     /// also indicates a Script value of [`Script::Common`].
     ///
     /// # Examples
@@ -88,7 +104,7 @@ impl ScriptWithExt {
         self.0 >> SCRIPT_VAL_LENGTH == 1
     }
 
-    /// Returns whether the [`ScriptWithExt`] value has Script_Extensions and
+    /// Returns whether the [`ScriptWithExt`] value has `Script_Extensions` and
     /// also indicates a Script value of [`Script::Inherited`].
     ///
     /// # Examples
@@ -112,7 +128,7 @@ impl ScriptWithExt {
         self.0 >> SCRIPT_VAL_LENGTH == 2
     }
 
-    /// Returns whether the [`ScriptWithExt`] value has Script_Extensions and
+    /// Returns whether the [`ScriptWithExt`] value has `Script_Extensions` and
     /// also indicates that the Script value is neither [`Script::Common`] nor
     /// [`Script::Inherited`].
     ///
@@ -137,7 +153,7 @@ impl ScriptWithExt {
         self.0 >> SCRIPT_VAL_LENGTH == 3
     }
 
-    /// Returns whether the [`ScriptWithExt`] value has Script_Extensions.
+    /// Returns whether the [`ScriptWithExt`] value has `Script_Extensions`.
     ///
     /// # Examples
     ///
@@ -191,12 +207,13 @@ impl<'a> ScriptExtensionsSet<'a> {
     /// use icu::properties::script::ScriptWithExtensions;
     /// let swe = ScriptWithExtensions::new();
     ///
-    /// assert!(swe
-    ///     .get_script_extensions_val('\u{11303}') // GRANTHA SIGN VISARGA
-    ///     .contains(&Script::Grantha));
+    /// assert!(
+    ///     swe.get_script_extensions_val('\u{11303}') // GRANTHA SIGN VISARGA
+    ///         .contains(&Script::Grantha)
+    /// );
     /// ```
     pub fn contains(&self, x: &Script) -> bool {
-        ZeroSlice::binary_search(self.values, x).is_ok()
+        ZeroSlice::binary_search_by(self.values, |y| y.to_u32().cmp(&x.to_u32())).is_ok()
     }
 
     /// Gets an iterator over the elements.
@@ -215,7 +232,7 @@ impl<'a> ScriptExtensionsSet<'a> {
     ///     [Script::Tamil, Script::Grantha]
     /// );
     /// ```
-    pub fn iter(&self) -> impl DoubleEndedIterator<Item = Script> + 'a {
+    pub fn iter(&self) -> impl DoubleEndedIterator<Item = Script> + 'a + use<'a> {
         ZeroSlice::iter(self.values)
     }
 
@@ -231,7 +248,7 @@ impl<'a> ScriptExtensionsSet<'a> {
     }
 }
 
-/// A struct that represents the data for the Script and Script_Extensions properties.
+/// A struct that represents the data for the Script and `Script_Extensions` properties.
 ///
 /// ✨ *Enabled with the `compiled_data` Cargo feature.*
 ///
@@ -446,14 +463,14 @@ impl<'a> ScriptWithExtensionsBorrowed<'a> {
     }
     /// Return the `Script_Extensions` property value for this code point.
     ///
-    /// If `code_point` has Script_Extensions, then return the Script codes in
-    /// the Script_Extensions. In this case, the Script property value
-    /// (normally Common or Inherited) is not included in the [`ScriptExtensionsSet`].
+    /// If `code_point` has `Script_Extensions`, then return the Script codes in
+    /// the `Script_Extensions`. In this case, the [`Script`] property value
+    /// (normally `Common` or `Inherited`) is not included in the [`ScriptExtensionsSet`].
     ///
-    /// If c does not have Script_Extensions, then the one Script code is put
+    /// If `c` does not have `Script_Extensions`, then the one [`Script`] code is put
     /// into the [`ScriptExtensionsSet`] and also returned.
     ///
-    /// If c is not a valid code point, then return an empty [`ScriptExtensionsSet`].
+    /// If `c` is not a valid code point, then return an empty [`ScriptExtensionsSet`].
     ///
     /// # Examples
     ///
@@ -504,13 +521,13 @@ impl<'a> ScriptWithExtensionsBorrowed<'a> {
         }
     }
 
-    /// Returns whether `script` is contained in the Script_Extensions
-    /// property value if the code_point has Script_Extensions, otherwise
-    /// if the code point does not have Script_Extensions then returns
+    /// Returns whether `script` is contained in the `Script_Extensions`
+    /// property value if the `code_point` has `Script_Extensions`, otherwise
+    /// if the code point does not have `Script_Extensions` then returns
     /// whether the Script property value matches.
     ///
     /// Some characters are commonly used in multiple scripts. For more information,
-    /// see UAX #24: <http://www.unicode.org/reports/tr24/>.
+    /// see UAX #24: <https://www.unicode.org/reports/tr24/>.
     ///
     /// # Examples
     ///
@@ -673,7 +690,7 @@ impl ScriptWithExtensionsBorrowed<'static> {
     #[cfg(feature = "compiled_data")]
     pub fn new() -> Self {
         Self {
-            data: crate::provider::Baked::SINGLETON_PROPERTY_SCRIPT_WITH_EXTENSIONS_V1,
+            data: Baked::SINGLETON_PROPERTY_SCRIPT_WITH_EXTENSIONS_V1,
         }
     }
 
@@ -692,7 +709,7 @@ impl ScriptWithExtensionsBorrowed<'static> {
 mod tests {
     use super::*;
     #[test]
-    /// Regression test for https://github.com/unicode-org/icu4x/issues/6041
+    /// Regression test for <https://github.com/unicode-org/icu4x/issues/6041>
     fn test_scx_regression_6041() {
         let scripts = ScriptWithExtensions::new()
             .get_script_extensions_val('\u{2bc}')
@@ -710,5 +727,11 @@ mod tests {
                 Script::Toto
             ]
         );
+    }
+
+    #[test]
+    fn test_high_discriminant() {
+        let swe = ScriptWithExtensions::new();
+        assert!(!swe.has_script32(0x0640, Script(0xAFFE)));
     }
 }

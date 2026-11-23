@@ -33,10 +33,12 @@ pub enum ExternalKind {
     Global,
     /// The external kind is a tag.
     Tag,
+    /// The external kind is a function with the exact type.
+    FuncExact,
 }
 
 /// Represents an export in a WebAssembly module.
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub struct Export<'a> {
     /// The name of the exported item.
     pub name: &'a str,
@@ -50,7 +52,15 @@ impl<'a> FromReader<'a> for Export<'a> {
     fn from_reader(reader: &mut BinaryReader<'a>) -> Result<Self> {
         Ok(Export {
             name: reader.read_string()?,
-            kind: reader.read()?,
+            kind: match reader.read()? {
+                ExternalKind::FuncExact => {
+                    bail!(
+                        reader.original_position(),
+                        "Exact type is not allowed in the exports",
+                    );
+                }
+                x => x,
+            },
             index: reader.read_var_u32()?,
         })
     }

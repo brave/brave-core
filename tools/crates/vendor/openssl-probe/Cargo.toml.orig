@@ -1,12 +1,13 @@
 [package]
 name = "openssl-probe"
-version = "0.1.6"
+version = "0.2.2"
 authors = ["Alex Crichton <alex@alexcrichton.com>"]
-license = "MIT/Apache-2.0"
-repository = "https://github.com/alexcrichton/openssl-probe"
-homepage = "https://github.com/alexcrichton/openssl-probe"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/rustls/openssl-probe"
+homepage = "https://github.com/rustls/openssl-probe"
 description = """
-Tool for helping to find SSL certificate locations on the system for OpenSSL
+A library for helping to find system-wide trust anchor ("root") certificate
+locations based on paths typically used by `openssl`.
 """
 readme = "README.md"
 edition = '2021'

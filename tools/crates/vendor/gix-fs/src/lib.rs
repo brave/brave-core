@@ -1,5 +1,71 @@
 //! A crate with file-system specific utilities.
-#![deny(rust_2018_idioms, missing_docs)]
+//!
+//! File-opening helpers such as [`open_read_only_no_follow()`] and Unicode-aware [`read_dir()`]
+//! are available without enabling any features. The read helper returns [`FileOrSymlink`] so callers
+//! can choose whether to skip or reject symlinks without platform-specific handling.
+//!
+//! ## Examples
+//!
+//! ```
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! use std::path::{Path, PathBuf};
+//!
+//! use gix_fs::{
+//!     stack::{Delegate, ToNormalPathComponents},
+//!     Stack,
+//! };
+//!
+//! let components = "src/lib.rs"
+//!     .to_normal_path_components()
+//!     .collect::<Result<Vec<_>, _>>()?;
+//! assert_eq!(
+//!     components
+//!         .into_iter()
+//!         .map(|component| component.to_string_lossy().into_owned())
+//!         .collect::<Vec<_>>(),
+//!     vec!["src", "lib.rs"]
+//! );
+//!
+//! #[derive(Default)]
+//! struct Recorder {
+//!     directories: Vec<PathBuf>,
+//!     paths: Vec<PathBuf>,
+//! }
+//!
+//! impl Delegate for Recorder {
+//!     fn push_directory(&mut self, stack: &Stack) -> std::io::Result<()> {
+//!         self.directories.push(stack.current_relative().to_path_buf());
+//!         Ok(())
+//!     }
+//!
+//!     fn push(&mut self, _is_last_component: bool, stack: &Stack) -> std::io::Result<()> {
+//!         self.paths.push(stack.current_relative().to_path_buf());
+//!         Ok(())
+//!     }
+//!
+//!     fn pop_directory(&mut self) {}
+//! }
+//!
+//! # let dir = tempfile::tempdir()?;
+//! let capabilities = gix_fs::Capabilities::probe_dir(dir.path());
+//! let mut stack = Stack::new(dir.path().to_path_buf());
+//! let mut recorder = Recorder::default();
+//! stack.make_relative_path_current("src/lib.rs", &mut recorder)?;
+//!
+//! assert_eq!(stack.current_relative(), Path::new("src/lib.rs"));
+//! assert_eq!(recorder.directories[0], Path::new(""));
+//! assert_eq!(recorder.paths, vec![PathBuf::from("src"), PathBuf::from("src/lib.rs")]);
+//! assert_eq!(gix_fs::current_dir(capabilities.precompose_unicode)?, std::env::current_dir()?);
+//! # Ok(()) }
+//! ```
+//!
+//! ## Feature Flags
+#![cfg_attr(
+    all(doc, feature = "document-features"),
+    doc = ::document_features::document_features!()
+)]
+#![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
+#![deny(missing_docs)]
 #![forbid(unsafe_code)]
 
 use std::path::PathBuf;
@@ -32,15 +98,26 @@ pub struct Capabilities {
 }
 mod capabilities;
 
+mod file;
+pub use file::{FileOrSymlink, clear_readonly_attribute, open_options_no_follow, open_read_only_no_follow};
+
 mod snapshot;
 pub use snapshot::{FileSnapshot, SharedFileSnapshot, SharedFileSnapshotMut};
 
 ///
 pub mod symlink;
 
-///
+mod precompose;
+
+/// Directory entries with optional Unicode precomposition.
 pub mod read_dir;
 pub use read_dir::function::read_dir;
+
+/// Recursive directory traversal with optional Unicode precomposition and Git-style sorting.
+#[cfg(feature = "walkdir")]
+pub mod walkdir;
+#[cfg(feature = "walkdir")]
+pub use walkdir::{WalkDir, walkdir_new, walkdir_sorted_new};
 
 ///
 pub mod dir;
@@ -61,6 +138,93 @@ pub fn current_dir(precompose_unicode: bool) -> std::io::Result<PathBuf> {
     })
 }
 
+/// Adjust `permissions` according to Git's shared-repository permission policy.
+///
+/// `permissions` should normally be the permissions of a newly created entry, read back after the operating system has
+/// applied the process umask. Apply this function before the file is made visible at its final path. Existing permission
+/// bits not governed by the policy are preserved.
+/// Read-only files stay read-only, and executable files gain execute bits wherever the policy grants read access.
+/// Directory permissions must retain the file-type bits returned by metadata: directories gain search permissions
+/// alongside read permissions, and setgid where the platform needs it to inherit the parent directory's group.
+///
+/// `shared_repository_permissions` uses Git's compact signed encoding and usually comes from parsing the effective
+/// `core.sharedRepository` configuration value:
+///
+/// - `0` leaves the permissions produced by the umask unchanged. An absent key, `umask`, boolean `false`, and legacy
+///   value `0` produce this.
+/// - A positive mode is ORed into the post-umask mode. A bare key, `group`, boolean `true`, and legacy value `1` usually
+///   produce `0o660`; `all`, `world`, `everybody`, and legacy value `2` usually produce `0o664`.
+/// - A negative mode replaces the low nine Unix permission bits with its absolute value. Git-compatible parsers use this
+///   for explicit octal configuration such as `0640`, represented here as `-0o640`, so it can remove bits allowed by the
+///   umask instead of merely adding bits.
+///
+/// Callers must pass the parsed encoding, not an explicit octal configuration value directly. On non-Unix platforms the
+/// shared-repository mode has no portable representation in [`std::fs::Permissions`], so this function returns
+/// `permissions` unchanged.
+pub fn adjust_shared_repository_permissions(
+    permissions: std::fs::Permissions,
+    shared_repository_permissions: i32,
+) -> std::fs::Permissions {
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        if shared_repository_permissions == 0 {
+            return permissions;
+        }
+        let mut permissions = permissions;
+        let mode = permissions.mode();
+        // Follow Git's calc_shared_perm() in path.c.
+        let mut tweak = shared_repository_permissions.unsigned_abs();
+        if mode & 0o200 == 0 {
+            tweak &= !0o222;
+        }
+        if mode & 0o100 != 0 {
+            tweak |= (tweak & 0o444) >> 2;
+        }
+        let mut adjusted = if shared_repository_permissions < 0 {
+            (mode & !0o777) | tweak
+        } else {
+            mode | tweak
+        };
+        // Directory handling follows Git's adjust_shared_perm() in path.c.
+        if mode & 0o170000 == 0o040000 {
+            adjusted |= (adjusted & 0o444) >> 2;
+            // Git's DIR_HAS_BSD_GROUP_SEMANTICS defaults exclude Darwin.
+            if !cfg!(any(target_os = "freebsd", target_os = "openbsd")) && adjusted & 0o060 != 0 {
+                adjusted |= 0o2000;
+            }
+        }
+        permissions.set_mode(adjusted);
+        permissions
+    }
+    #[cfg(not(unix))]
+    {
+        let _ = shared_repository_permissions;
+        permissions
+    }
+}
+
+/// Apply the parsed Git sharing policy to an existing entry at `path`, following symbolic links.
+///
+/// See [`adjust_shared_repository_permissions()`] for the policy encoding and directory handling.
+/// No metadata is read or written for the default policy (`0`) or on non-Unix platforms.
+pub fn set_shared_repository_permissions(
+    path: &std::path::Path,
+    shared_repository_permissions: i32,
+) -> std::io::Result<()> {
+    #[cfg(unix)]
+    if shared_repository_permissions != 0 {
+        let current = std::fs::metadata(path)?.permissions();
+        let adjusted = adjust_shared_repository_permissions(current.clone(), shared_repository_permissions);
+        if current != adjusted {
+            std::fs::set_permissions(path, adjusted)?;
+        }
+    }
+    #[cfg(not(unix))]
+    let _ = (path, shared_repository_permissions);
+    Ok(())
+}
+
 /// A stack of path components with the delegation of side-effects as the currently set path changes, component by component.
 #[derive(Clone)]
 pub struct Stack {
@@ -72,7 +236,7 @@ pub struct Stack {
     current_relative: PathBuf,
     /// The amount of path components of 'current' beyond the roots components.
     valid_components: usize,
-    /// If set, we assume the `current` element is a directory to affect calls to `(push|pop)_directory()`.
+    /// Whether `current` has active delegate directory state, rather than being a terminal entry.
     current_is_directory: bool,
 }
 
@@ -87,11 +251,9 @@ pub fn is_executable(metadata: &std::fs::Metadata) -> bool {
 pub mod io_err {
     use std::io::ErrorKind;
 
-    /// Return `true` if `err` indicates that the entry doesn't exist on disk. `raw` is used as well
-    /// for additional checks while the variants are outside the MSRV.
-    pub fn is_not_found(err: ErrorKind, raw_err: Option<i32>) -> bool {
-        // TODO: use variant once MSRV is 1.83
-        err == ErrorKind::NotFound || raw_err == Some(20)
+    /// Return `true` if `err` indicates that the entry doesn't exist on disk.
+    pub fn is_not_found(err: ErrorKind, _raw_err: Option<i32>) -> bool {
+        err == ErrorKind::NotFound || err == ErrorKind::NotADirectory
     }
 }
 

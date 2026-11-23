@@ -1,7 +1,7 @@
 //! Attack Complexity (AC)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -26,7 +26,7 @@ use core::{fmt, str::FromStr};
 /// > The evasion or satisfaction of authentication mechanisms or requisites is
 /// > included in the Privileges Required assessment and is *not* considered
 /// > here as a factor of relevance for Attack Complexity.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum AttackComplexity {
     /// High (H)
     ///
@@ -52,13 +52,8 @@ pub enum AttackComplexity {
     /// > vulnerability. The attack requires no target-specific circumvention to
     /// > exploit the vulnerability. An attacker can expect repeatable success
     /// > against the vulnerable system.
+    #[default]
     Low,
-}
-
-impl Default for AttackComplexity {
-    fn default() -> Self {
-        Self::Low
-    }
 }
 
 impl Metric for AttackComplexity {
@@ -66,8 +61,8 @@ impl Metric for AttackComplexity {
 
     fn as_str(self) -> &'static str {
         match self {
-            AttackComplexity::High => "H",
-            AttackComplexity::Low => "L",
+            Self::High => "H",
+            Self::Low => "L",
         }
     }
 }
@@ -81,10 +76,10 @@ impl fmt::Display for AttackComplexity {
 impl FromStr for AttackComplexity {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "H" => Ok(AttackComplexity::High),
-            "L" => Ok(AttackComplexity::Low),
+            "H" => Ok(Self::High),
+            "L" => Ok(Self::Low),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),
@@ -109,25 +104,20 @@ pub(crate) mod merge {
     /// Result of the merging of the base and modified metrics.
     ///
     /// Used in scoring.
-    #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+    #[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
     pub(crate) enum MergedAttackComplexity {
         High,
+        #[default]
         Low,
-    }
-
-    impl Default for MergedAttackComplexity {
-        fn default() -> Self {
-            Self::Low
-        }
     }
 
     impl FromStr for MergedAttackComplexity {
         type Err = Error;
 
-        fn from_str(s: &str) -> Result<Self> {
+        fn from_str(s: &str) -> Result<Self, Error> {
             match s {
-                "H" => Ok(MergedAttackComplexity::High),
-                "L" => Ok(MergedAttackComplexity::Low),
+                "H" => Ok(Self::High),
+                "L" => Ok(Self::Low),
                 _ => Err(Error::InvalidMetricV4 {
                     metric_type: MetricType::AC,
                     value: s.to_owned(),

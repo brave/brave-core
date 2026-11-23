@@ -52,9 +52,9 @@ s! {
     pub struct sockaddr_storage {
         pub ss_len: u8,
         pub ss_family: crate::sa_family_t,
-        pub __ss_pad1: [u8; 2],
-        pub __ss_align: i64,
-        pub __ss_pad2: [u8; 116],
+        __ss_pad1: Padding<[u8; 2]>,
+        __ss_align: i64,
+        __ss_pad2: Padding<[u8; 116]>,
     }
 
     pub struct sched_param {
@@ -164,8 +164,6 @@ pub const EAI_MEMORY: c_int = -10;
 pub const EAI_SYSTEM: c_int = -11;
 pub const EAI_OVERFLOW: c_int = -12;
 
-pub const _SC_PAGESIZE: c_int = 8;
-pub const _SC_GETPW_R_SIZE_MAX: c_int = 51;
 pub const PTHREAD_STACK_MIN: size_t = 32 * 1024;
 
 pub const IP_HDRINCL: c_int = 2;

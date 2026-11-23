@@ -10,11 +10,8 @@
 //! - [Custom stream types][crate::_topic::stream]
 
 use core::hash::BuildHasher;
-use core::num::NonZeroUsize;
-
-use crate::ascii::Caseless as AsciiCaseless;
-use crate::error::Needed;
 use core::iter::{Cloned, Enumerate};
+use core::num::NonZeroUsize;
 use core::slice::Iter;
 use core::str::from_utf8;
 use core::str::CharIndices;
@@ -73,13 +70,6 @@ pub trait SliceLen {
     /// Calculates the input length, as indicated by its name,
     /// and the name of the trait itself
     fn slice_len(&self) -> usize;
-}
-
-impl<S: SliceLen> SliceLen for AsciiCaseless<S> {
-    #[inline(always)]
-    fn slice_len(&self) -> usize {
-        self.0.slice_len()
-    }
 }
 
 impl<T> SliceLen for &[T] {
@@ -256,14 +246,49 @@ pub trait Stream: Offset<<Self as Stream>::Checkpoint> + core::fmt::Debug {
     /// May panic if an invalid [`Self::Checkpoint`] is provided
     fn reset(&mut self, checkpoint: &Self::Checkpoint);
 
-    /// Deprecated for callers as of 0.7.10, instead call [`Stream::trace`]
-    #[deprecated(since = "0.7.10", note = "Replaced with `Stream::trace`")]
-    fn raw(&self) -> &dyn core::fmt::Debug;
-
     /// Write out a single-line summary of the current parse location
-    fn trace(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        #![allow(deprecated)]
-        write!(f, "{:#?}", self.raw())
+    fn trace(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result;
+}
+
+/// Contains information on needed data if a parser returned `Incomplete`
+///
+/// <div class="warning">
+///
+/// **Note:** This is only possible for `Stream` that are [partial][`crate::stream::StreamIsPartial`],
+/// like [`Partial`].
+///
+/// </div>
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub enum Needed {
+    /// Needs more data, but we do not know how much
+    Unknown,
+    /// Contains a lower bound on the buffer offset needed to finish parsing
+    ///
+    /// For byte/`&str` streams, this translates to bytes
+    Size(NonZeroUsize),
+}
+
+impl Needed {
+    /// Creates `Needed` instance, returns `Needed::Unknown` if the argument is zero
+    pub fn new(s: usize) -> Self {
+        match NonZeroUsize::new(s) {
+            Some(sz) => Self::Size(sz),
+            None => Self::Unknown,
+        }
+    }
+
+    /// Indicates if we know how many bytes we need
+    pub fn is_known(&self) -> bool {
+        *self != Self::Unknown
+    }
+
+    /// Maps a `Needed` to `Needed` by applying a function to a contained `Size` value.
+    #[inline]
+    pub fn map<F: Fn(NonZeroUsize) -> usize>(self, f: F) -> Self {
+        match self {
+            Self::Unknown => Self::Unknown,
+            Self::Size(n) => Self::new(f(n)),
+        }
     }
 }
 
@@ -357,11 +382,6 @@ where
     #[inline(always)]
     fn reset(&mut self, checkpoint: &Self::Checkpoint) {
         *self = checkpoint.inner;
-    }
-
-    #[inline(always)]
-    fn raw(&self) -> &dyn core::fmt::Debug {
-        self
     }
 
     fn trace(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
@@ -470,166 +490,8 @@ impl<'i> Stream for &'i str {
         *self = checkpoint.inner;
     }
 
-    #[inline(always)]
-    fn raw(&self) -> &dyn core::fmt::Debug {
-        self
-    }
-}
-
-impl<I> Stream for (I, usize)
-where
-    I: Stream<Token = u8> + Clone,
-{
-    type Token = bool;
-    type Slice = (I::Slice, usize, usize);
-
-    type IterOffsets = BitOffsets<I>;
-
-    type Checkpoint = Checkpoint<(I::Checkpoint, usize), Self>;
-
-    #[inline(always)]
-    fn iter_offsets(&self) -> Self::IterOffsets {
-        BitOffsets {
-            i: self.clone(),
-            o: 0,
-        }
-    }
-    #[inline(always)]
-    fn eof_offset(&self) -> usize {
-        let offset = self.0.eof_offset() * 8;
-        if offset == 0 {
-            0
-        } else {
-            offset - self.1
-        }
-    }
-
-    #[inline(always)]
-    fn next_token(&mut self) -> Option<Self::Token> {
-        next_bit(self)
-    }
-
-    #[inline(always)]
-    fn peek_token(&self) -> Option<Self::Token> {
-        peek_bit(self)
-    }
-
-    #[inline(always)]
-    fn offset_for<P>(&self, predicate: P) -> Option<usize>
-    where
-        P: Fn(Self::Token) -> bool,
-    {
-        self.iter_offsets()
-            .find_map(|(o, b)| predicate(b).then_some(o))
-    }
-    #[inline(always)]
-    fn offset_at(&self, tokens: usize) -> Result<usize, Needed> {
-        if let Some(needed) = tokens
-            .checked_sub(self.eof_offset())
-            .and_then(NonZeroUsize::new)
-        {
-            Err(Needed::Size(needed))
-        } else {
-            Ok(tokens)
-        }
-    }
-    #[inline(always)]
-    fn next_slice(&mut self, offset: usize) -> Self::Slice {
-        let byte_offset = (offset + self.1) / 8;
-        let end_offset = (offset + self.1) % 8;
-        let s = self.0.next_slice(byte_offset);
-        let start_offset = self.1;
-        self.1 = end_offset;
-        (s, start_offset, end_offset)
-    }
-    #[inline(always)]
-    fn peek_slice(&self, offset: usize) -> Self::Slice {
-        let byte_offset = (offset + self.1) / 8;
-        let end_offset = (offset + self.1) % 8;
-        let s = self.0.peek_slice(byte_offset);
-        let start_offset = self.1;
-        (s, start_offset, end_offset)
-    }
-
-    #[inline(always)]
-    fn checkpoint(&self) -> Self::Checkpoint {
-        Checkpoint::<_, Self>::new((self.0.checkpoint(), self.1))
-    }
-    #[inline(always)]
-    fn reset(&mut self, checkpoint: &Self::Checkpoint) {
-        self.0.reset(&checkpoint.inner.0);
-        self.1 = checkpoint.inner.1;
-    }
-
-    #[inline(always)]
-    fn raw(&self) -> &dyn core::fmt::Debug {
-        &self.0
-    }
-}
-
-/// Iterator for [bit][crate::binary::bits] stream (`(I, usize)`)
-pub struct BitOffsets<I> {
-    i: (I, usize),
-    o: usize,
-}
-
-impl<I> Iterator for BitOffsets<I>
-where
-    I: Stream<Token = u8> + Clone,
-{
-    type Item = (usize, bool);
-    fn next(&mut self) -> Option<Self::Item> {
-        let b = next_bit(&mut self.i)?;
-        let o = self.o;
-
-        self.o += 1;
-
-        Some((o, b))
-    }
-}
-
-fn next_bit<I>(i: &mut (I, usize)) -> Option<bool>
-where
-    I: Stream<Token = u8> + Clone,
-{
-    if i.eof_offset() == 0 {
-        return None;
-    }
-    let offset = i.1;
-
-    let mut next_i = i.0.clone();
-    let byte = next_i.next_token()?;
-    let bit = (byte >> offset) & 0x1 == 0x1;
-
-    let next_offset = offset + 1;
-    if next_offset == 8 {
-        i.0 = next_i;
-        i.1 = 0;
-        Some(bit)
-    } else {
-        i.1 = next_offset;
-        Some(bit)
-    }
-}
-
-fn peek_bit<I>(i: &(I, usize)) -> Option<bool>
-where
-    I: Stream<Token = u8> + Clone,
-{
-    if i.eof_offset() == 0 {
-        return None;
-    }
-    let offset = i.1;
-
-    let mut next_i = i.0.clone();
-    let byte = next_i.next_token()?;
-    let bit = (byte >> offset) & 0x1 == 0x1;
-
-    let next_offset = offset + 1;
-    if next_offset == 8 {
-        Some(bit)
-    } else {
-        Some(bit)
+    fn trace(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "{self:#?}")
     }
 }
 
@@ -707,30 +569,6 @@ impl<E> Recover<E> for &str {
     }
 }
 
-#[cfg(feature = "unstable-recover")]
-#[cfg(feature = "std")]
-impl<I, E> Recover<E> for (I, usize)
-where
-    I: Recover<E>,
-    I: Stream<Token = u8> + Clone,
-{
-    #[inline(always)]
-    fn record_err(
-        &mut self,
-        _token_start: &Self::Checkpoint,
-        _err_start: &Self::Checkpoint,
-        err: E,
-    ) -> Result<(), E> {
-        Err(err)
-    }
-
-    /// Report whether the [`Stream`] can save off errors for recovery
-    #[inline(always)]
-    fn is_recovery_supported() -> bool {
-        false
-    }
-}
-
 /// Marks the input as being the complete buffer or a partial buffer for streaming input
 ///
 /// See [`Partial`] for marking a presumed complete buffer type as a streaming buffer.
@@ -787,33 +625,6 @@ impl StreamIsPartial for &str {
     }
 }
 
-impl<I> StreamIsPartial for (I, usize)
-where
-    I: StreamIsPartial,
-{
-    type PartialState = I::PartialState;
-
-    #[inline]
-    fn complete(&mut self) -> Self::PartialState {
-        self.0.complete()
-    }
-
-    #[inline]
-    fn restore_partial(&mut self, state: Self::PartialState) {
-        self.0.restore_partial(state);
-    }
-
-    #[inline(always)]
-    fn is_partial_supported() -> bool {
-        I::is_partial_supported()
-    }
-
-    #[inline(always)]
-    fn is_partial(&self) -> bool {
-        self.0.is_partial()
-    }
-}
-
 /// Useful functions to calculate the offset between slices and show a hexdump of a slice
 pub trait Offset<Start = Self> {
     /// Offset between the first byte of `start` and the first byte of `self`a
@@ -861,26 +672,6 @@ impl Offset for &str {
 impl<'a> Offset<<&'a str as Stream>::Checkpoint> for &'a str {
     #[inline(always)]
     fn offset_from(&self, other: &<&'a str as Stream>::Checkpoint) -> usize {
-        self.checkpoint().offset_from(other)
-    }
-}
-
-impl<I> Offset for (I, usize)
-where
-    I: Offset,
-{
-    #[inline(always)]
-    fn offset_from(&self, start: &Self) -> usize {
-        self.0.offset_from(&start.0) * 8 + self.1 - start.1
-    }
-}
-
-impl<I> Offset<<(I, usize) as Stream>::Checkpoint> for (I, usize)
-where
-    I: Stream<Token = u8> + Clone,
-{
-    #[inline(always)]
-    fn offset_from(&self, other: &<(I, usize) as Stream>::Checkpoint) -> usize {
         self.checkpoint().offset_from(other)
     }
 }
@@ -962,34 +753,10 @@ impl<'b> Compare<&'b [u8]> for &[u8] {
     }
 }
 
-impl<'b> Compare<AsciiCaseless<&'b [u8]>> for &[u8] {
-    #[inline]
-    fn compare(&self, t: AsciiCaseless<&'b [u8]>) -> CompareResult {
-        if t.0
-            .iter()
-            .zip(*self)
-            .any(|(a, b)| !a.eq_ignore_ascii_case(b))
-        {
-            CompareResult::Error
-        } else if self.len() < t.slice_len() {
-            CompareResult::Incomplete
-        } else {
-            CompareResult::Ok(t.slice_len())
-        }
-    }
-}
-
 impl<const LEN: usize> Compare<[u8; LEN]> for &[u8] {
     #[inline(always)]
     fn compare(&self, t: [u8; LEN]) -> CompareResult {
         self.compare(&t[..])
-    }
-}
-
-impl<const LEN: usize> Compare<AsciiCaseless<[u8; LEN]>> for &[u8] {
-    #[inline(always)]
-    fn compare(&self, t: AsciiCaseless<[u8; LEN]>) -> CompareResult {
-        self.compare(AsciiCaseless(&t.0[..]))
     }
 }
 
@@ -1000,24 +767,10 @@ impl<'b, const LEN: usize> Compare<&'b [u8; LEN]> for &[u8] {
     }
 }
 
-impl<'b, const LEN: usize> Compare<AsciiCaseless<&'b [u8; LEN]>> for &[u8] {
-    #[inline(always)]
-    fn compare(&self, t: AsciiCaseless<&'b [u8; LEN]>) -> CompareResult {
-        self.compare(AsciiCaseless(&t.0[..]))
-    }
-}
-
 impl<'b> Compare<&'b str> for &[u8] {
     #[inline(always)]
     fn compare(&self, t: &'b str) -> CompareResult {
         self.compare(t.as_bytes())
-    }
-}
-
-impl<'b> Compare<AsciiCaseless<&'b str>> for &[u8] {
-    #[inline(always)]
-    fn compare(&self, t: AsciiCaseless<&'b str>) -> CompareResult {
-        self.compare(AsciiCaseless(t.0.as_bytes()))
     }
 }
 
@@ -1032,28 +785,10 @@ impl Compare<u8> for &[u8] {
     }
 }
 
-impl Compare<AsciiCaseless<u8>> for &[u8] {
-    #[inline]
-    fn compare(&self, t: AsciiCaseless<u8>) -> CompareResult {
-        match self.first() {
-            Some(c) if t.0.eq_ignore_ascii_case(c) => CompareResult::Ok(t.slice_len()),
-            Some(_) => CompareResult::Error,
-            None => CompareResult::Incomplete,
-        }
-    }
-}
-
 impl Compare<char> for &[u8] {
     #[inline(always)]
     fn compare(&self, t: char) -> CompareResult {
         self.compare(t.encode_utf8(&mut [0; 4]).as_bytes())
-    }
-}
-
-impl Compare<AsciiCaseless<char>> for &[u8] {
-    #[inline(always)]
-    fn compare(&self, t: AsciiCaseless<char>) -> CompareResult {
-        self.compare(AsciiCaseless(t.0.encode_utf8(&mut [0; 4]).as_bytes()))
     }
 }
 
@@ -1064,23 +799,9 @@ impl<'b> Compare<&'b str> for &str {
     }
 }
 
-impl<'b> Compare<AsciiCaseless<&'b str>> for &str {
-    #[inline(always)]
-    fn compare(&self, t: AsciiCaseless<&'b str>) -> CompareResult {
-        self.as_bytes().compare(t.as_bytes())
-    }
-}
-
 impl Compare<char> for &str {
     #[inline(always)]
     fn compare(&self, t: char) -> CompareResult {
-        self.as_bytes().compare(t)
-    }
-}
-
-impl Compare<AsciiCaseless<char>> for &str {
-    #[inline(always)]
-    fn compare(&self, t: AsciiCaseless<char>) -> CompareResult {
         self.as_bytes().compare(t)
     }
 }
@@ -1331,12 +1052,12 @@ impl UpdateSlice for &str {
 
 /// Ensure checkpoint details are kept private
 pub struct Checkpoint<T, S> {
-    inner: T,
+    pub(crate) inner: T,
     stream: core::marker::PhantomData<S>,
 }
 
 impl<T, S> Checkpoint<T, S> {
-    fn new(inner: T) -> Self {
+    pub(crate) fn new(inner: T) -> Self {
         Self {
             inner,
             stream: Default::default(),
@@ -1386,7 +1107,8 @@ impl<T: core::fmt::Debug, S> core::fmt::Debug for Checkpoint<T, S> {
 }
 
 /// Abstracts something which can extend an `Extend`.
-/// Used to build modified input slices in `escaped_transform`
+///
+/// Used to build modified input slices in [`escaped`][crate::ascii::escaped].
 pub trait Accumulate<T>: Sized {
     /// Create a new `Extend` of the correct type
     fn initial(capacity: Option<usize>) -> Self;
@@ -1417,8 +1139,8 @@ impl<T> Accumulate<T> for Vec<T> {
     #[inline(always)]
     fn initial(capacity: Option<usize>) -> Self {
         match capacity {
-            Some(capacity) => Vec::with_capacity(clamp_capacity::<T>(capacity)),
-            None => Vec::new(),
+            Some(capacity) => Self::with_capacity(clamp_capacity::<T>(capacity)),
+            None => Self::new(),
         }
     }
     #[inline(always)]
@@ -1432,8 +1154,8 @@ impl<'i, T: Clone> Accumulate<&'i [T]> for Vec<T> {
     #[inline(always)]
     fn initial(capacity: Option<usize>) -> Self {
         match capacity {
-            Some(capacity) => Vec::with_capacity(clamp_capacity::<T>(capacity)),
-            None => Vec::new(),
+            Some(capacity) => Self::with_capacity(clamp_capacity::<T>(capacity)),
+            None => Self::new(),
         }
     }
     #[inline(always)]
@@ -1447,8 +1169,8 @@ impl Accumulate<char> for String {
     #[inline(always)]
     fn initial(capacity: Option<usize>) -> Self {
         match capacity {
-            Some(capacity) => String::with_capacity(clamp_capacity::<char>(capacity)),
-            None => String::new(),
+            Some(capacity) => Self::with_capacity(clamp_capacity::<char>(capacity)),
+            None => Self::new(),
         }
     }
     #[inline(always)]
@@ -1462,8 +1184,8 @@ impl<'i> Accumulate<&'i str> for String {
     #[inline(always)]
     fn initial(capacity: Option<usize>) -> Self {
         match capacity {
-            Some(capacity) => String::with_capacity(clamp_capacity::<char>(capacity)),
-            None => String::new(),
+            Some(capacity) => Self::with_capacity(clamp_capacity::<char>(capacity)),
+            None => Self::new(),
         }
     }
     #[inline(always)]
@@ -1477,8 +1199,8 @@ impl<'i> Accumulate<Cow<'i, str>> for String {
     #[inline(always)]
     fn initial(capacity: Option<usize>) -> Self {
         match capacity {
-            Some(capacity) => String::with_capacity(clamp_capacity::<char>(capacity)),
-            None => String::new(),
+            Some(capacity) => Self::with_capacity(clamp_capacity::<char>(capacity)),
+            None => Self::new(),
         }
     }
     #[inline(always)]
@@ -1488,17 +1210,73 @@ impl<'i> Accumulate<Cow<'i, str>> for String {
 }
 
 #[cfg(feature = "alloc")]
-impl Accumulate<String> for String {
+impl Accumulate<Self> for String {
     #[inline(always)]
     fn initial(capacity: Option<usize>) -> Self {
         match capacity {
-            Some(capacity) => String::with_capacity(clamp_capacity::<char>(capacity)),
-            None => String::new(),
+            Some(capacity) => Self::with_capacity(clamp_capacity::<char>(capacity)),
+            None => Self::new(),
         }
     }
     #[inline(always)]
-    fn accumulate(&mut self, acc: String) {
+    fn accumulate(&mut self, acc: Self) {
         self.push_str(&acc);
+    }
+}
+
+#[cfg(feature = "alloc")]
+impl Accumulate<char> for Cow<'_, str> {
+    #[inline(always)]
+    fn initial(_capacity: Option<usize>) -> Self {
+        Cow::Borrowed("")
+    }
+    #[inline(always)]
+    fn accumulate(&mut self, acc: char) {
+        self.to_mut().accumulate(acc);
+    }
+}
+
+#[cfg(feature = "alloc")]
+impl<'i> Accumulate<&'i str> for Cow<'i, str> {
+    #[inline(always)]
+    fn initial(_capacity: Option<usize>) -> Self {
+        Cow::Borrowed("")
+    }
+    #[inline(always)]
+    fn accumulate(&mut self, acc: &'i str) {
+        if self.as_ref().is_empty() {
+            *self = Cow::Borrowed(acc);
+        } else {
+            self.to_mut().accumulate(acc);
+        }
+    }
+}
+
+#[cfg(feature = "alloc")]
+impl<'i> Accumulate<Self> for Cow<'i, str> {
+    #[inline(always)]
+    fn initial(_capacity: Option<usize>) -> Self {
+        Cow::Borrowed("")
+    }
+    #[inline(always)]
+    fn accumulate(&mut self, acc: Self) {
+        if self.as_ref().is_empty() {
+            *self = acc;
+        } else {
+            self.to_mut().accumulate(acc);
+        }
+    }
+}
+
+#[cfg(feature = "alloc")]
+impl Accumulate<String> for Cow<'_, str> {
+    #[inline(always)]
+    fn initial(_capacity: Option<usize>) -> Self {
+        Cow::Borrowed("")
+    }
+    #[inline(always)]
+    fn accumulate(&mut self, acc: String) {
+        self.to_mut().accumulate(acc);
     }
 }
 
@@ -1509,7 +1287,7 @@ where
 {
     #[inline(always)]
     fn initial(_capacity: Option<usize>) -> Self {
-        BTreeMap::new()
+        Self::new()
     }
     #[inline(always)]
     fn accumulate(&mut self, (key, value): (K, V)) {
@@ -1527,10 +1305,8 @@ where
     fn initial(capacity: Option<usize>) -> Self {
         let h = S::default();
         match capacity {
-            Some(capacity) => {
-                HashMap::with_capacity_and_hasher(clamp_capacity::<(K, V)>(capacity), h)
-            }
-            None => HashMap::with_hasher(h),
+            Some(capacity) => Self::with_capacity_and_hasher(clamp_capacity::<(K, V)>(capacity), h),
+            None => Self::with_hasher(h),
         }
     }
     #[inline(always)]
@@ -1546,7 +1322,7 @@ where
 {
     #[inline(always)]
     fn initial(_capacity: Option<usize>) -> Self {
-        BTreeSet::new()
+        Self::new()
     }
     #[inline(always)]
     fn accumulate(&mut self, key: K) {
@@ -1564,8 +1340,8 @@ where
     fn initial(capacity: Option<usize>) -> Self {
         let h = S::default();
         match capacity {
-            Some(capacity) => HashSet::with_capacity_and_hasher(clamp_capacity::<K>(capacity), h),
-            None => HashSet::with_hasher(h),
+            Some(capacity) => Self::with_capacity_and_hasher(clamp_capacity::<K>(capacity), h),
+            None => Self::with_hasher(h),
         }
     }
     #[inline(always)]
@@ -1579,8 +1355,8 @@ impl<'i, T: Clone> Accumulate<&'i [T]> for VecDeque<T> {
     #[inline(always)]
     fn initial(capacity: Option<usize>) -> Self {
         match capacity {
-            Some(capacity) => VecDeque::with_capacity(clamp_capacity::<T>(capacity)),
-            None => VecDeque::new(),
+            Some(capacity) => Self::with_capacity(clamp_capacity::<T>(capacity)),
+            None => Self::new(),
         }
     }
     #[inline(always)]
@@ -1671,14 +1447,7 @@ pub trait AsChar {
     /// ```
     fn as_char(self) -> char;
 
-    /// Tests that self is an alphabetic character
-    ///
-    /// <div class="warning">
-    ///
-    /// **Warning:** for `&str` it matches alphabetic
-    /// characters outside of the 52 ASCII letters
-    ///
-    /// </div>
+    /// Tests that self is an ASCII alphabetic character
     fn is_alpha(self) -> bool;
 
     /// Tests that self is an alphabetic character
@@ -1867,6 +1636,7 @@ impl AsChar for &char {
 ///
 /// For example, you could implement `hex_digit0` as:
 /// ```
+/// # #[cfg(feature = "parser")] {
 /// # use winnow::prelude::*;
 /// # use winnow::{error::ErrMode, error::ContextError};
 /// # use winnow::token::take_while;
@@ -1877,22 +1647,23 @@ impl AsChar for &char {
 /// assert_eq!(hex_digit1.parse_peek("21cZ"), Ok(("Z", "21c")));
 /// assert!(hex_digit1.parse_peek("H2").is_err());
 /// assert!(hex_digit1.parse_peek("").is_err());
+/// # }
 /// ```
 pub trait ContainsToken<T> {
     /// Returns true if self contains the token
     fn contains_token(&self, token: T) -> bool;
 }
 
-impl ContainsToken<u8> for u8 {
+impl ContainsToken<Self> for u8 {
     #[inline(always)]
-    fn contains_token(&self, token: u8) -> bool {
+    fn contains_token(&self, token: Self) -> bool {
         *self == token
     }
 }
 
-impl ContainsToken<&u8> for u8 {
+impl ContainsToken<&Self> for u8 {
     #[inline(always)]
-    fn contains_token(&self, token: &u8) -> bool {
+    fn contains_token(&self, token: &Self) -> bool {
         self.contains_token(*token)
     }
 }
@@ -2030,20 +1801,20 @@ impl<T> ContainsToken<T> for () {
 }
 
 macro_rules! impl_contains_token_for_tuple {
-  ($($haystack:ident),+) => (
-    #[allow(non_snake_case)]
-    impl<T, $($haystack),+> ContainsToken<T> for ($($haystack),+,)
-    where
-    T: Clone,
-      $($haystack: ContainsToken<T>),+
-    {
-    #[inline]
-      fn contains_token(&self, token: T) -> bool {
-        let ($(ref $haystack),+,) = *self;
-        $($haystack.contains_token(token.clone()) || )+ false
-      }
-    }
-  )
+    ($($haystack:ident),+) => (
+        #[allow(non_snake_case)]
+        impl<T, $($haystack),+> ContainsToken<T> for ($($haystack),+,)
+        where
+            T: Clone,
+            $($haystack: ContainsToken<T>),+
+        {
+            #[inline]
+            fn contains_token(&self, token: T) -> bool {
+                let ($(ref $haystack),+,) = *self;
+                $($haystack.contains_token(token.clone()) || )+ false
+            }
+        }
+    )
 }
 
 macro_rules! impl_contains_token_for_tuples {
@@ -2059,9 +1830,7 @@ macro_rules! impl_contains_token_for_tuples {
     }
 }
 
-impl_contains_token_for_tuples!(
-    F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12, F13, F14, F15, F16, F17, F18, F19, F20, F21
-);
+impl_contains_token_for_tuples!(F1, F2, F3, F4, F5, F6, F7, F8, F9, F10);
 
 #[cfg(feature = "simd")]
 #[inline(always)]

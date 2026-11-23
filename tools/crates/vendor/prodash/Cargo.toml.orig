@@ -1,14 +1,14 @@
 [package]
 name = "prodash"
-version = "30.0.1"
+version = "31.0.1"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 description = "A dashboard for visualizing progress of asynchronous and possibly blocking tasks"
-edition = "2021"
+edition = "2024"
 include = ["src/**/*", "README.md", "LICENSE.md", "CHANGELOG.md"]
 license = "MIT"
 repository = "https://github.com/GitoxideLabs/prodash"
 readme = "README.md"
-rust-version = "1.74"
+rust-version = "1.85"
 
 [lib]
 doctest = true
@@ -53,54 +53,52 @@ render-tui = ["tui",
     "jiff"]
 render-line = ["crosstermion/color", "jiff", "unicode-width"]
 render-line-crossterm = ["crosstermion/crossterm"]
-render-line-autoconfigure = ["is-terminal"]
+render-line-autoconfigure = []
 
 local-time = ["jiff"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
-dashmap = { version = "6.0.1", optional = true, default-features = false }
+dashmap = { version = "6.2.1", optional = true, default-features = false }
 parking_lot = { version = "0.12.1", optional = true, default-features = false }
 
 # with-logging
-log = { version = "0.4.8", optional = true }
+log = { version = "0.4.30", optional = true }
 
 # render-tui
-tui = { package = "ratatui", version = "0.26.0", optional = true, default-features = false }
-tui-react = { version = "0.23.0", optional = true }
-futures-core = { version = "0.3.4", optional = true, default-features = false }
+tui = { package = "ratatui", version = "0.30.0", optional = true, default-features = false }
+tui-react = { version = "0.24.0", optional = true }
+futures-core = { version = "0.3.32", optional = true, default-features = false }
 futures-lite = { version = "2.1.0", optional = true }
-unicode-segmentation = { version = "1.6.0", optional = true }
-unicode-width = { version = "0.1.7", optional = true }
-crosstermion = { version = "0.14.0", optional = true, default-features = false }
+unicode-segmentation = { version = "1.13.2", optional = true }
+unicode-width = { version = "0.2.2", optional = true }
+crosstermion = { version = "0.16.0", optional = true, default-features = false }
 async-io = { version = "2.2.1", optional = true }
 
 # localtime support for render-tui and duration formatting
-jiff = { version = "0.2.4", optional = true }
+jiff = { version = "0.2.27", optional = true }
 
 # line renderer
-ctrlc = { version = "3.1.4", optional = true, default-features = false, features = ['termination'] }
-signal-hook = { version = "0.3.9", optional = true, default-features = false }
-is-terminal = { version = "0.4.9", optional = true }
+ctrlc = { version = "3.5.2", optional = true, default-features = false, features = ['termination'] }
+signal-hook = { version = "0.4.4", optional = true, default-features = false }
 
 # units
 bytesize = { version = "2.0.1", optional = true }
-human_format = { version = "1.0.3", optional = true }
+human_format = { version = "1.2.1", optional = true }
 
 [package.metadata.docs.rs]
 all-features = true
 
 [dev-dependencies]
-rand = "0.8.1"
-env_logger = { version = "0.11.0", default-features = false, features = ["humantime"] }
-criterion = { version = "0.5.1", default-features = false }
-futures-util = { version = "0.3.4", default-features = false }
-argh = "0.1.3"
-futures = "0.3.5"
-is-terminal = "0.4.9"
+rand = "0.10.1"
+env_logger = { version = "0.11.10", default-features = false, features = ["humantime"] }
+criterion = { version = "0.8.2", default-features = false }
+futures-util = { version = "0.3.32", default-features = false }
+argh = "0.1.19"
+futures = "0.3.32"
 blocking = "1.0.0"
-once_cell = "1.4.0"
-async-executor = "1.1.0"
+once_cell = "1.21.4"
+async-executor = "1.14.0"
 async-io = "2.2.1"
 
 [[bench]]

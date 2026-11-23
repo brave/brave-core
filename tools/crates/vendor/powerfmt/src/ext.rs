@@ -16,6 +16,7 @@ pub trait FormatterExt: sealed::Sealed {
 }
 
 impl FormatterExt for Formatter<'_> {
+    #[inline]
     fn pad_with_width(&mut self, args_width: usize, args: Arguments<'_>) -> Result {
         let Some(final_width) = self.width() else {
             // The caller has not requested a width. Write the arguments as-is.

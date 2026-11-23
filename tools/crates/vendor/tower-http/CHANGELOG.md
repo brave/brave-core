@@ -7,6 +7,142 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # Unreleased
 
+# 0.6.11
+
+## Added
+
+- `set-header`: add `SetMultipleResponseHeadersLayer` and
+  `SetMultipleResponseHeader` for setting multiple response headers at once.
+  Supports `overriding`, `appending`, and `if_not_present` modes. Header
+  values can be fixed or computed dynamically via closures ([#672])
+
+  ```rust
+  use http::{Response, header::{self, HeaderValue}};
+  use http_body::Body as _;
+  use tower_http::set_header::response::SetMultipleResponseHeadersLayer;
+
+  let layer = SetMultipleResponseHeadersLayer::overriding(vec![
+      (header::X_FRAME_OPTIONS, HeaderValue::from_static("DENY")).into(),
+      (header::CONTENT_LENGTH, |res: &Response<MyBody>| {
+          res.body().size_hint().exact()
+              .map(|size| HeaderValue::from_str(&size.to_string()).unwrap())
+      }).into(),
+  ]);
+  ```
+- `set-header`: add `SetMultipleRequestHeadersLayer` and
+  `SetMultipleRequestHeaders` for setting multiple request headers at once,
+  mirroring the response-side API ([#677])
+- `classify`: add `From<i32>` and `From<NonZeroI32>` impls for `GrpcCode`.
+  Unrecognized status codes map to `GrpcCode::Unknown` ([#506])
+
+## Changed
+
+- `compression`: compress `application/grpc-web` responses. Previously all
+  `application/grpc*` content types were excluded from compression; now only
+  `application/grpc` (non-web) is excluded ([#408])
+
+## Fixed
+
+- `fs`: fix `ServeDir` returning 500 instead of 405 for non-GET/HEAD requests
+  when `call_fallback_on_method_not_allowed` is enabled but no fallback service
+  is configured ([#587])
+- `fs`: remove duplicate `cfg` attribute on `is_reserved_dos_name` ([#675])
+
+[#408]: https://github.com/tower-rs/tower-http/pull/408
+[#506]: https://github.com/tower-rs/tower-http/pull/506
+[#587]: https://github.com/tower-rs/tower-http/pull/587
+[#672]: https://github.com/tower-rs/tower-http/pull/672
+[#675]: https://github.com/tower-rs/tower-http/pull/675
+[#677]: https://github.com/tower-rs/tower-http/pull/677
+
+# 0.6.10
+
+## Added
+
+- `follow-redirect`: expose `Attempt::method()` and `Attempt::previous_method()`
+  so redirect policies can react to method changes across redirects (e.g.
+  POST to GET on 301/303) ([#559])
+
+## Fixed
+
+- Restore `tokio` and `async-compression` as no-op features. These will be
+  removed next breaking release ([#667])
+
+[#559]: https://github.com/tower-rs/tower-http/pull/559
+[#667]: https://github.com/tower-rs/tower-http/pull/667
+
+# 0.6.9
+
+## Added:
+
+- `on-early-drop`: middleware that detects when a response future or response
+  body is dropped before completion ([#636])
+
+  Two events get hooks: the response future being dropped before
+  the inner service produces a response, and the response body being
+  dropped before reaching end-of-stream.
+
+  Install custom callbacks with `OnEarlyDropLayer::builder()`:
+
+  ```rust
+  use http::Request;
+  use tower_http::on_early_drop::{OnBodyDropFn, OnEarlyDropLayer};
+
+  let layer = OnEarlyDropLayer::builder()
+      .on_future_drop(|req: &Request<()>| {
+          let uri = req.uri().clone();
+          move || eprintln!("future dropped for {}", uri)
+      })
+      .on_body_drop(OnBodyDropFn::new(|req: &Request<()>| {
+          let uri = req.uri().clone();
+          move |parts: &http::response::Parts| {
+              let status = parts.status;
+              move || eprintln!("body dropped for {} status {}", uri, status)
+          }
+      }));
+  ```
+
+  Or route both events through a `trace::OnFailure` hook with
+  `EarlyDropsAsFailures`. Place this layer inside a `TraceLayer` so the
+  emitted events inherit the request span:
+
+  ```rust
+  use tower::ServiceBuilder;
+  use tower_http::on_early_drop::{OnEarlyDropLayer, EarlyDropsAsFailures};
+  use tower_http::trace::{DefaultOnFailure, TraceLayer};
+
+  let stack = ServiceBuilder::new()
+      .layer(TraceLayer::new_for_http())
+      .layer(OnEarlyDropLayer::new(
+          EarlyDropsAsFailures::new(DefaultOnFailure::default()),
+      ));
+  ```
+- `fs`: make `AsyncReadBody::with_capacity` public ([#415])
+
+## Changed:
+
+- The implicit `async-compression` feature is removed ([#642])
+- The implicit `tokio` feature is removed ([#628])
+- `fs`: no longer auto-enables the `tracing` crate feature; enable `tracing`
+  explicitly to restore error logging on `ServeDir` IO failures ([#614])
+
+## Fixed
+
+- `trace`: restore failure classification at end-of-stream ([#483])
+- `follow-redirect`: support unicode URLs (swaps `iri-string` dep for
+  `url`) ([#646])
+- `fs`: reject reserved Windows DOS device names (`CON`, `COM1`, etc.) in
+  `ServeDir` ([#663])
+
+[#415]: https://github.com/tower-rs/tower-http/pull/415
+[#483]: https://github.com/tower-rs/tower-http/pull/483
+[#614]: https://github.com/tower-rs/tower-http/pull/614
+[#628]: https://github.com/tower-rs/tower-http/pull/628
+[#636]: https://github.com/tower-rs/tower-http/pull/636
+[#642]: https://github.com/tower-rs/tower-http/pull/642
+[#646]: https://github.com/tower-rs/tower-http/pull/646
+[#663]: https://github.com/tower-rs/tower-http/pull/663
+
 # 0.6.8
 
 ## Fixed

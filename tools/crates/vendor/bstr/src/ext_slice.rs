@@ -126,7 +126,7 @@ pub trait ByteSlice: private::Sealed {
 
     /// Return this byte slice as a `&BStr`.
     ///
-    /// Use `&BStr` is useful because of its `fmt::Debug` representation
+    /// `&BStr` is useful because of its `fmt::Debug` representation
     /// and various other trait implementations (such as `PartialEq` and
     /// `PartialOrd`). In particular, the `Debug` implementation for `BStr`
     /// shows its bytes as a normal string. For invalid UTF-8, hex escape
@@ -148,7 +148,7 @@ pub trait ByteSlice: private::Sealed {
 
     /// Return this byte slice as a `&mut BStr`.
     ///
-    /// Use `&mut BStr` is useful because of its `fmt::Debug` representation
+    /// `&mut BStr` is useful because of its `fmt::Debug` representation
     /// and various other trait implementations (such as `PartialEq` and
     /// `PartialOrd`). In particular, the `Debug` implementation for `BStr`
     /// shows its bytes as a normal string. For invalid UTF-8, hex escape
@@ -1102,6 +1102,7 @@ pub trait ByteSlice: private::Sealed {
     /// assert_eq!(0, B("  \n\t\u{2003}\n  \t").fields().count());
     /// ```
     #[cfg(feature = "unicode")]
+    #[doc(alias = "split_whitespace")]
     #[inline]
     fn fields(&self) -> Fields<'_> {
         Fields::new(self.as_bytes())
@@ -1542,6 +1543,7 @@ pub trait ByteSlice: private::Sealed {
     /// assert_eq!(s, "ZfZoZoZ".as_bytes());
     /// ```
     #[cfg(feature = "alloc")]
+    #[must_use]
     #[inline]
     fn replace<N: AsRef<[u8]>, R: AsRef<[u8]>>(
         &self,
@@ -1588,6 +1590,7 @@ pub trait ByteSlice: private::Sealed {
     /// assert_eq!(s, "ZfZoo".as_bytes());
     /// ```
     #[cfg(feature = "alloc")]
+    #[must_use]
     #[inline]
     fn replacen<N: AsRef<[u8]>, R: AsRef<[u8]>>(
         &self,
@@ -3079,7 +3082,7 @@ pub trait ByteSlice: private::Sealed {
 /// The purpose of this type is to permit callers to construct a substring
 /// searcher that can be used to search haystacks without the overhead of
 /// constructing the searcher in the first place. This is a somewhat niche
-/// concern when it's necessary to re-use the same needle to search multiple
+/// concern when it's necessary to reuse the same needle to search multiple
 /// different haystacks with as little overhead as possible. In general, using
 /// [`ByteSlice::find`](trait.ByteSlice.html#method.find)
 /// or
@@ -3366,6 +3369,7 @@ impl<'a> iter::FusedIterator for Bytes<'a> {}
 ///
 /// `'a` is the lifetime of the byte string being split.
 #[cfg(feature = "unicode")]
+#[doc(alias = "SplitWhitespace")]
 #[derive(Clone, Debug)]
 pub struct Fields<'a> {
     it: FieldsWith<'a, fn(char) -> bool>,

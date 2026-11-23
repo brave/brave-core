@@ -1,15 +1,16 @@
 use std::{
     cell::Cell,
-    io::{self, Write as _},
     process::{Child, Command},
 };
 
 use crate::{
+    cell_modify, cell_push,
     parallel::{
         async_executor::{block_on, YieldOnce},
         job_token,
+        reactor::{ChildRegistration, Reactor, Registration},
     },
-    spawn, CargoOutput, Error, ErrorKind, StderrForwarder,
+    spawn, CargoOutput, CommandLine, Error, ErrorKind, StderrForwarder,
 };
 
 struct KillOnDrop(Child, StderrForwarder);
@@ -22,45 +23,35 @@ impl Drop for KillOnDrop {
     }
 }
 
-fn cell_update<T, F>(cell: &Cell<T>, f: F)
-where
-    T: Default,
-    F: FnOnce(T) -> T,
-{
-    let old = cell.take();
-    let new = f(old);
-    cell.set(new);
-}
-
 fn try_wait_on_child(
     cmd: &Command,
     child: &mut Child,
-    mut stdout: impl io::Write,
     stderr_forwarder: &mut StderrForwarder,
+    cargo_output: &CargoOutput,
 ) -> Result<Option<()>, Error> {
-    stderr_forwarder.forward_available();
+    stderr_forwarder.forward_available(cmd);
 
     match child.try_wait() {
         Ok(Some(status)) => {
-            stderr_forwarder.forward_all();
+            stderr_forwarder.forward_all(cmd);
 
-            let _ = writeln!(stdout, "{}", status);
+            cargo_output.print_debug(&status);
 
             if status.success() {
                 Ok(Some(()))
             } else {
-                Err(Error::new(
-                    ErrorKind::ToolExecError,
-                    format!("command did not execute successfully (status code {status}): {cmd:?}"),
-                ))
+                Err(cargo_output.command_failed(cmd, status))
             }
         }
         Ok(None) => Ok(None),
         Err(e) => {
-            stderr_forwarder.forward_all();
+            stderr_forwarder.forward_all(cmd);
             Err(Error::new(
                 ErrorKind::ToolExecError,
-                format!("failed to wait on spawned child process `{cmd:?}`: {e}"),
+                format!(
+                    "failed to wait on spawned child process `{}`: {e}",
+                    CommandLine(cmd)
+                ),
             ))
         }
     }
@@ -70,9 +61,6 @@ pub(crate) fn run_commands_in_parallel(
     cargo_output: &CargoOutput,
     cmds: &mut dyn Iterator<Item = Result<Command, Error>>,
 ) -> Result<(), Error> {
-    // Limit our parallelism globally with a jobserver.
-    let mut tokens = job_token::ActiveJobTokenServer::new();
-
     // When compiling objects in parallel we do a few dirty tricks to speed
     // things up:
     //
@@ -92,14 +80,22 @@ pub(crate) fn run_commands_in_parallel(
     // acquire the appropriate tokens, Once all objects have been compiled
     // we wait on all the processes and propagate the results of compilation.
 
-    let pendings = Cell::new(Vec::<(Command, KillOnDrop, job_token::JobToken)>::new());
+    let reactor = Reactor::default();
+
+    // The registrations come before the child, so that they are dropped
+    // first, while what they refer to is still open.
+    let pendings = Cell::new(Vec::<(
+        Command,
+        Option<Registration<'_>>, // stderr_registration
+        ChildRegistration<'_>,
+        KillOnDrop,
+        job_token::JobToken,
+    )>::new());
     let is_disconnected = Cell::new(false);
     let has_made_progress = Cell::new(false);
 
     let wait_future = async {
         let mut error = None;
-        // Buffer the stdout
-        let mut stdout = io::BufWriter::with_capacity(128, io::stdout());
 
         loop {
             // If the other end of the pipe is already disconnected, then we're not gonna get any new jobs,
@@ -109,26 +105,34 @@ pub(crate) fn run_commands_in_parallel(
             // by not releasing the tokens before that last file is done we would effectively block other processes from
             // starting sooner - even though we only need one token for that last file, not N others that were acquired.
 
-            let mut pendings_is_empty = false;
-
-            cell_update(&pendings, |mut pendings| {
+            let pendings_is_empty = cell_modify(&pendings, |pendings| {
                 // Try waiting on them.
-                pendings.retain_mut(|(cmd, child, _token)| {
-                    match try_wait_on_child(cmd, &mut child.0, &mut stdout, &mut child.1) {
+                pendings.retain_mut(|(cmd, stderr_registration, _, child, _token)| {
+                    match try_wait_on_child(cmd, &mut child.0, &mut child.1, cargo_output) {
                         Ok(Some(())) => {
                             // Task done, remove the entry
                             has_made_progress.set(true);
                             false
                         }
-                        Ok(None) => true, // Task still not finished, keep the entry
+                        Ok(None) => {
+                            // Task still not finished, keep the entry. Once
+                            // its stderr is closed there is nothing more to
+                            // wait for on it, and keeping it registered
+                            // would wake every wait at once.
+                            if child.1.stderr().is_none() {
+                                *stderr_registration = None;
+                            }
+                            true
+                        }
                         Err(err) => {
                             // Task fail, remove the entry.
                             // Since we can only return one error, log the error to make
-                            // sure users always see all the compilation failures.
+                            // sure users always see all the compilation failures. The
+                            // logger already got each failed command as `CommandFailed`.
                             has_made_progress.set(true);
 
                             if cargo_output.warnings {
-                                let _ = writeln!(stdout, "cargo:warning={}", err);
+                                println!("cargo:warning={err}");
                             }
                             error = Some(err);
 
@@ -136,8 +140,7 @@ pub(crate) fn run_commands_in_parallel(
                         }
                     }
                 });
-                pendings_is_empty = pendings.is_empty();
-                pendings
+                pendings.is_empty()
             });
 
             if pendings_is_empty && is_disconnected.get() {
@@ -152,17 +155,29 @@ pub(crate) fn run_commands_in_parallel(
         }
     };
     let spawn_future = async {
+        // Limit our parallelism globally with a jobserver.
+        let mut tokens = job_token::ActiveJobTokenServer::new();
+
         for res in cmds {
             let mut cmd = res?;
-            let token = tokens.acquire().await?;
-            let mut child = spawn(&mut cmd, cargo_output)?;
-            let mut stderr_forwarder = StderrForwarder::new(&mut child);
-            stderr_forwarder.set_non_blocking()?;
+            let token = tokens.acquire(&reactor).await?;
 
-            cell_update(&pendings, |mut pendings| {
-                pendings.push((cmd, KillOnDrop(child, stderr_forwarder), token));
-                pendings
-            });
+            let mut child = spawn(&mut cmd, cargo_output)?;
+            let stderr_forwarder = StderrForwarder::new(&mut child, cargo_output);
+            let mut child = KillOnDrop(child, stderr_forwarder);
+
+            child.1.set_non_blocking()?;
+            let stderr_registration = child
+                .1
+                .stderr()
+                .map(|stderr| reactor.register_stderr(stderr))
+                .transpose()?;
+            let child_registration = reactor.register_child(&child.0)?;
+
+            cell_push(
+                &pendings,
+                (cmd, stderr_registration, child_registration, child, token),
+            );
 
             has_made_progress.set(true);
         }
@@ -171,5 +186,5 @@ pub(crate) fn run_commands_in_parallel(
         Ok::<_, Error>(())
     };
 
-    block_on(wait_future, spawn_future, &has_made_progress)
+    block_on(wait_future, spawn_future, &has_made_progress, &reactor)
 }

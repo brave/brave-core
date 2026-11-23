@@ -5,7 +5,7 @@ use crate::common::{Encoding, Register};
 use crate::constants::{self, DwOp};
 use crate::leb128::write::{sleb128_size, uleb128_size};
 use crate::write::{
-    Address, DebugInfoReference, Error, Reference, Result, UnitEntryId, UnitOffsets, Writer,
+    Address, DebugInfoFixup, DebugInfoRef, Error, Result, UnitEntryId, UnitOffsets, Writer,
 };
 
 /// The bytecode for a DWARF expression or location description.
@@ -28,6 +28,14 @@ impl Expression {
     pub fn raw(bytecode: Vec<u8>) -> Self {
         Expression {
             operations: vec![Operation::Raw(bytecode)],
+        }
+    }
+
+    /// If the expression consists only of raw bytecode, then return that bytecode.
+    pub fn as_raw(&self) -> Option<&[u8]> {
+        match &self.operations[..] {
+            [Operation::Raw(bytecode)] => Some(bytecode),
+            _ => None,
         }
     }
 
@@ -181,8 +189,13 @@ impl Expression {
     }
 
     /// Add a `DW_OP_call_ref` operation to the expression.
-    pub fn op_call_ref(&mut self, entry: Reference) {
+    pub fn op_call_ref(&mut self, entry: DebugInfoRef) {
         self.operations.push(Operation::CallRef(entry));
+    }
+
+    /// Add a `DW_OP_variable_value` operation to the expression.
+    pub fn op_variable_value(&mut self, entry: DebugInfoRef) {
+        self.operations.push(Operation::VariableValue(entry));
     }
 
     /// Add a `DW_OP_convert` or `DW_OP_GNU_convert` operation to the expression.
@@ -217,7 +230,7 @@ impl Expression {
     }
 
     /// Add a `DW_OP_implicit_pointer` or `DW_OP_GNU_implicit_pointer` operation to the expression.
-    pub fn op_implicit_pointer(&mut self, entry: Reference, byte_offset: i64) {
+    pub fn op_implicit_pointer(&mut self, entry: DebugInfoRef, byte_offset: i64) {
         self.operations
             .push(Operation::ImplicitPointer { entry, byte_offset });
     }
@@ -270,7 +283,7 @@ impl Expression {
     pub(crate) fn write<W: Writer>(
         &self,
         w: &mut W,
-        mut refs: Option<&mut Vec<DebugInfoReference>>,
+        mut refs: Option<&mut Vec<DebugInfoFixup>>,
         encoding: Encoding,
         unit_offsets: Option<&UnitOffsets>,
     ) -> Result<()> {
@@ -425,7 +438,11 @@ enum Operation {
     /// which may be in another compilation unit or shared object.
     ///
     /// Represents `DW_OP_call_ref`.
-    CallRef(Reference),
+    CallRef(DebugInfoRef),
+    /// Compute the value of a variable and push it on the stack.
+    ///
+    /// Represents `DW_OP_GNU_variable_value`.
+    VariableValue(DebugInfoRef),
     /// Pop the top stack entry, convert it to a different type, and push it on the stack.
     ///
     /// Represents `DW_OP_convert`.
@@ -460,7 +477,7 @@ enum Operation {
     /// Represents `DW_OP_implicit_pointer`.
     ImplicitPointer {
         /// The DIE of the value that this is an implicit pointer into.
-        entry: Reference,
+        entry: DebugInfoRef,
         /// The byte offset into the value that the implicit pointer points to.
         byte_offset: i64,
     },
@@ -550,6 +567,7 @@ impl Operation {
             Operation::Branch(_) => 2,
             Operation::Call(_) => 4,
             Operation::CallRef(_) => encoding.format.word_size() as usize,
+            Operation::VariableValue(_) => encoding.format.word_size() as usize,
             Operation::Convert(base) => match base {
                 Some(base) => base_size(base)?,
                 None => 1,
@@ -593,7 +611,7 @@ impl Operation {
     pub(crate) fn write<W: Writer>(
         &self,
         w: &mut W,
-        refs: Option<&mut Vec<DebugInfoReference>>,
+        refs: Option<&mut Vec<DebugInfoFixup>>,
         encoding: Encoding,
         unit_offsets: Option<&UnitOffsets>,
         offsets: &[usize],
@@ -715,10 +733,27 @@ impl Operation {
                 w.write_u8(constants::DW_OP_call_ref.0)?;
                 let size = encoding.format.word_size();
                 match entry {
-                    Reference::Symbol(symbol) => w.write_reference(symbol, size)?,
-                    Reference::Entry(unit, entry) => {
+                    DebugInfoRef::Symbol(symbol) => w.write_reference(symbol, size)?,
+                    DebugInfoRef::Entry(unit, entry) => {
                         let refs = refs.ok_or(Error::InvalidReference)?;
-                        refs.push(DebugInfoReference {
+                        refs.push(DebugInfoFixup {
+                            offset: w.len(),
+                            unit,
+                            entry,
+                            size,
+                        });
+                        w.write_udata(0, size)?;
+                    }
+                }
+            }
+            Operation::VariableValue(entry) => {
+                w.write_u8(constants::DW_OP_GNU_variable_value.0)?;
+                let size = encoding.format.word_size();
+                match entry {
+                    DebugInfoRef::Symbol(symbol) => w.write_reference(symbol, size)?,
+                    DebugInfoRef::Entry(unit, entry) => {
+                        let refs = refs.ok_or(Error::InvalidReference)?;
+                        refs.push(DebugInfoFixup {
                             offset: w.len(),
                             unit,
                             entry,
@@ -785,12 +820,12 @@ impl Operation {
                     encoding.format.word_size()
                 };
                 match entry {
-                    Reference::Symbol(symbol) => {
+                    DebugInfoRef::Symbol(symbol) => {
                         w.write_reference(symbol, size)?;
                     }
-                    Reference::Entry(unit, entry) => {
+                    DebugInfoRef::Entry(unit, entry) => {
                         let refs = refs.ok_or(Error::InvalidReference)?;
-                        refs.push(DebugInfoReference {
+                        refs.push(DebugInfoFixup {
                             offset: w.len(),
                             unit,
                             entry,
@@ -837,38 +872,18 @@ impl Operation {
 #[cfg(feature = "read")]
 pub(crate) mod convert {
     use super::*;
-    use crate::common::UnitSectionOffset;
     use crate::read::{self, Reader};
-    use crate::write::{ConvertError, ConvertResult, UnitId};
-    use std::collections::HashMap;
+    use crate::write::{ConvertDebugInfoRef, ConvertError, ConvertResult};
 
     impl Expression {
         /// Create an expression from the input expression.
-        pub fn from<R: Reader<Offset = usize>>(
+        pub(crate) fn from<R: Reader<Offset = usize>>(
             from_expression: read::Expression<R>,
             encoding: Encoding,
-            dwarf: Option<&read::Dwarf<R>>,
-            unit: Option<&read::Unit<R>>,
-            entry_ids: Option<&HashMap<UnitSectionOffset, (UnitId, UnitEntryId)>>,
+            unit: Option<read::UnitRef<'_, R>>,
             convert_address: &dyn Fn(u64) -> Option<Address>,
+            refs: &dyn ConvertDebugInfoRef,
         ) -> ConvertResult<Expression> {
-            let convert_unit_offset = |offset: read::UnitOffset| -> ConvertResult<_> {
-                let entry_ids = entry_ids.ok_or(ConvertError::UnsupportedOperation)?;
-                let unit = unit.ok_or(ConvertError::UnsupportedOperation)?;
-                let id = entry_ids
-                    .get(&offset.to_unit_section_offset(unit))
-                    .ok_or(ConvertError::InvalidUnitRef)?;
-                Ok(id.1)
-            };
-            let convert_debug_info_offset = |offset| -> ConvertResult<_> {
-                // TODO: support relocations
-                let entry_ids = entry_ids.ok_or(ConvertError::UnsupportedOperation)?;
-                let id = entry_ids
-                    .get(&UnitSectionOffset::DebugInfoOffset(offset))
-                    .ok_or(ConvertError::InvalidDebugInfoRef)?;
-                Ok(Reference::Entry(id.0, id.1))
-            };
-
             // Calculate offsets for use in branch/skip operations.
             let mut offsets = Vec::new();
             let mut offset = 0;
@@ -889,7 +904,7 @@ pub(crate) mod convert {
                         space,
                     } => {
                         if base_type.0 != 0 {
-                            let base = convert_unit_offset(base_type)?;
+                            let base = refs.convert_unit_ref(base_type)?;
                             Operation::DerefType { space, size, base }
                         } else if size != encoding.address_size {
                             Operation::DerefSize { space, size }
@@ -951,7 +966,7 @@ pub(crate) mod convert {
                         base_type,
                     } => {
                         if base_type.0 != 0 {
-                            Operation::RegisterType(register, convert_unit_offset(base_type)?)
+                            Operation::RegisterType(register, refs.convert_unit_ref(base_type)?)
                         } else {
                             Operation::RegisterOffset(register, offset)
                         }
@@ -963,12 +978,15 @@ pub(crate) mod convert {
                     }
                     read::Operation::Call { offset } => match offset {
                         read::DieReference::UnitRef(offset) => {
-                            Operation::Call(convert_unit_offset(offset)?)
+                            Operation::Call(refs.convert_unit_ref(offset)?)
                         }
                         read::DieReference::DebugInfoRef(offset) => {
-                            Operation::CallRef(convert_debug_info_offset(offset)?)
+                            Operation::CallRef(refs.convert_debug_info_ref(offset)?)
                         }
                     },
+                    read::Operation::VariableValue { offset } => {
+                        Operation::VariableValue(refs.convert_debug_info_ref(offset)?)
+                    }
                     read::Operation::TLS => Operation::Simple(constants::DW_OP_form_tls_address),
                     read::Operation::CallFrameCFA => {
                         Operation::Simple(constants::DW_OP_call_frame_cfa)
@@ -991,22 +1009,21 @@ pub(crate) mod convert {
                     }
                     read::Operation::StackValue => Operation::Simple(constants::DW_OP_stack_value),
                     read::Operation::ImplicitPointer { value, byte_offset } => {
-                        let entry = convert_debug_info_offset(value)?;
+                        let entry = refs.convert_debug_info_ref(value)?;
                         Operation::ImplicitPointer { entry, byte_offset }
                     }
                     read::Operation::EntryValue { expression } => {
                         let expression = Expression::from(
                             read::Expression(expression),
                             encoding,
-                            dwarf,
                             unit,
-                            entry_ids,
                             convert_address,
+                            refs,
                         )?;
                         Operation::EntryValue(expression)
                     }
                     read::Operation::ParameterRef { offset } => {
-                        let entry = convert_unit_offset(offset)?;
+                        let entry = refs.convert_unit_ref(offset)?;
                         Operation::ParameterRef(entry)
                     }
                     read::Operation::Address { address } => {
@@ -1015,27 +1032,25 @@ pub(crate) mod convert {
                         Operation::Address(address)
                     }
                     read::Operation::AddressIndex { index } => {
-                        let dwarf = dwarf.ok_or(ConvertError::UnsupportedOperation)?;
                         let unit = unit.ok_or(ConvertError::UnsupportedOperation)?;
-                        let val = dwarf.address(unit, index)?;
+                        let val = unit.address(index)?;
                         let address = convert_address(val).ok_or(ConvertError::InvalidAddress)?;
                         Operation::Address(address)
                     }
                     read::Operation::ConstantIndex { index } => {
-                        let dwarf = dwarf.ok_or(ConvertError::UnsupportedOperation)?;
                         let unit = unit.ok_or(ConvertError::UnsupportedOperation)?;
-                        let val = dwarf.address(unit, index)?;
+                        let val = unit.address(index)?;
                         Operation::UnsignedConstant(val)
                     }
                     read::Operation::TypedLiteral { base_type, value } => {
-                        let entry = convert_unit_offset(base_type)?;
+                        let entry = refs.convert_unit_ref(base_type)?;
                         Operation::ConstantType(entry, value.to_slice()?.into_owned().into())
                     }
                     read::Operation::Convert { base_type } => {
                         if base_type.0 == 0 {
                             Operation::Convert(None)
                         } else {
-                            let entry = convert_unit_offset(base_type)?;
+                            let entry = refs.convert_unit_ref(base_type)?;
                             Operation::Convert(Some(entry))
                         }
                     }
@@ -1043,9 +1058,12 @@ pub(crate) mod convert {
                         if base_type.0 == 0 {
                             Operation::Reinterpret(None)
                         } else {
-                            let entry = convert_unit_offset(base_type)?;
+                            let entry = refs.convert_unit_ref(base_type)?;
                             Operation::Reinterpret(Some(entry))
                         }
+                    }
+                    read::Operation::Uninitialized => {
+                        Operation::Simple(constants::DW_OP_GNU_uninit)
                     }
                     read::Operation::WasmLocal { index } => Operation::WasmLocal(index),
                     read::Operation::WasmGlobal { index } => Operation::WasmGlobal(index),
@@ -1062,11 +1080,10 @@ pub(crate) mod convert {
 #[cfg(feature = "read")]
 mod tests {
     use super::*;
+    use crate::LittleEndian;
     use crate::common::{DebugInfoOffset, Format};
     use crate::read;
     use crate::write::{AttributeValue, Dwarf, EndianVec, LineProgram, Sections, Unit};
-    use crate::LittleEndian;
-    use std::collections::HashMap;
 
     #[test]
     #[allow(clippy::type_complexity)]
@@ -1086,7 +1103,7 @@ mod tests {
 
                     // Create an entry that can be referenced by the expression.
                     let entry_id = unit.add(unit.root(), constants::DW_TAG_base_type);
-                    let reference = Reference::Entry(unit_id, entry_id);
+                    let reference = DebugInfoRef::Entry(unit_id, entry_id);
 
                     // The offsets for the above entry when reading back the expression.
                     struct ReadState {
@@ -1376,6 +1393,13 @@ mod tests {
                             },
                         ),
                         (
+                            &|x| x.op_variable_value(reference),
+                            Operation::VariableValue(reference),
+                            &|x| read::Operation::VariableValue {
+                                offset: x.debug_info_offset,
+                            },
+                        ),
+                        (
                             &|x| x.op(constants::DW_OP_form_tls_address),
                             Operation::Simple(constants::DW_OP_form_tls_address),
                             &|_| read::Operation::TLS,
@@ -1484,6 +1508,11 @@ mod tests {
                             },
                         ),
                         (
+                            &|x| x.op(constants::DW_OP_GNU_uninit),
+                            Operation::Simple(constants::DW_OP_GNU_uninit),
+                            &|_| read::Operation::Uninitialized,
+                        ),
+                        (
                             &|x| x.op_wasm_local(1000),
                             Operation::WasmLocal(1000),
                             &|_| read::Operation::WasmLocal { index: 1000 },
@@ -1532,11 +1561,11 @@ mod tests {
                     let read_unit_header = read_units.next().unwrap().unwrap();
                     let read_unit = read_dwarf.unit(read_unit_header).unwrap();
                     let mut read_entries = read_unit.entries();
-                    let (_, read_entry) = read_entries.next_dfs().unwrap().unwrap();
+                    let read_entry = read_entries.next_dfs().unwrap().unwrap();
                     assert_eq!(read_entry.tag(), constants::DW_TAG_compile_unit);
 
                     // Determine the offset of the entry that can be referenced by the expression.
-                    let (_, read_entry) = read_entries.next_dfs().unwrap().unwrap();
+                    let read_entry = read_entries.next_dfs().unwrap().unwrap();
                     assert_eq!(read_entry.tag(), constants::DW_TAG_base_type);
                     let read_state = ReadState {
                         debug_info_offset: read_entry
@@ -1547,12 +1576,9 @@ mod tests {
                     };
 
                     // Get the expression.
-                    let (_, read_entry) = read_entries.next_dfs().unwrap().unwrap();
+                    let read_entry = read_entries.next_dfs().unwrap().unwrap();
                     assert_eq!(read_entry.tag(), constants::DW_TAG_subprogram);
-                    let read_attr = read_entry
-                        .attr_value(constants::DW_AT_location)
-                        .unwrap()
-                        .unwrap();
+                    let read_attr = read_entry.attr_value(constants::DW_AT_location).unwrap();
                     let read_expression = read_attr.exprloc_value().unwrap();
                     let mut read_operations = read_expression.operations(encoding);
                     for (_, _, operation) in operations {
@@ -1574,20 +1600,40 @@ mod tests {
                     assert_eq!(read_operations.next(), Ok(Some(read::Operation::Nop)));
                     assert_eq!(read_operations.next(), Ok(None));
 
-                    let mut entry_ids = HashMap::new();
-                    entry_ids.insert(read_state.debug_info_offset.into(), (unit_id, entry_id));
-                    let convert_expression = Expression::from(
-                        read_expression,
-                        encoding,
-                        Some(&read_dwarf),
-                        Some(&read_unit),
-                        Some(&entry_ids),
-                        &|address| Some(Address::Constant(address)),
-                    )
-                    .unwrap();
+                    let convert_dwarf =
+                        Dwarf::from(&read_dwarf, &|address| Some(Address::Constant(address)))
+                            .unwrap();
+                    let (convert_unit_id, convert_unit) =
+                        convert_dwarf.units.iter().next().unwrap();
+                    let convert_root = convert_unit.get(convert_unit.root());
+                    let mut convert_entries = convert_root.children();
+                    let convert_entry_id = convert_entries.next().unwrap();
+                    let convert_subprogram = convert_unit.get(*convert_entries.next().unwrap());
+                    let convert_attr = convert_subprogram.get(constants::DW_AT_location).unwrap();
+                    let AttributeValue::Exprloc(convert_expression) = convert_attr else {
+                        panic!("unexpected {:?}", convert_attr);
+                    };
                     let mut convert_operations = convert_expression.operations.iter();
                     for (_, operation, _) in operations {
-                        assert_eq!(convert_operations.next(), Some(operation));
+                        let mut operation = operation.clone();
+                        match &mut operation {
+                            Operation::ConstantType(entry, _)
+                            | Operation::RegisterType(_, entry)
+                            | Operation::DerefType { base: entry, .. }
+                            | Operation::Call(entry)
+                            | Operation::Convert(Some(entry))
+                            | Operation::Reinterpret(Some(entry))
+                            | Operation::ParameterRef(entry) => {
+                                *entry = *convert_entry_id;
+                            }
+                            Operation::CallRef(entry)
+                            | Operation::VariableValue(entry)
+                            | Operation::ImplicitPointer { entry, .. } => {
+                                *entry = DebugInfoRef::Entry(convert_unit_id, *convert_entry_id);
+                            }
+                            _ => {}
+                        }
+                        assert_eq!(convert_operations.next(), Some(&operation));
                     }
                     assert_eq!(
                         convert_operations.next(),
@@ -1635,14 +1681,11 @@ mod tests {
                     let read_unit_header = read_units.next().unwrap().unwrap();
                     let read_unit = read_dwarf.unit(read_unit_header).unwrap();
                     let mut read_entries = read_unit.entries();
-                    let (_, read_entry) = read_entries.next_dfs().unwrap().unwrap();
+                    let read_entry = read_entries.next_dfs().unwrap().unwrap();
                     assert_eq!(read_entry.tag(), constants::DW_TAG_compile_unit);
-                    let (_, read_entry) = read_entries.next_dfs().unwrap().unwrap();
+                    let read_entry = read_entries.next_dfs().unwrap().unwrap();
                     assert_eq!(read_entry.tag(), constants::DW_TAG_subprogram);
-                    let read_attr = read_entry
-                        .attr_value(constants::DW_AT_location)
-                        .unwrap()
-                        .unwrap();
+                    let read_attr = read_entry.attr_value(constants::DW_AT_location).unwrap();
                     let read_expression = read_attr.exprloc_value().unwrap();
                     let mut read_operations = read_expression.operations(encoding);
                     assert_eq!(
@@ -1746,7 +1789,7 @@ mod tests {
 
         // Create an expression containing the reference.
         let mut expression = Expression::new();
-        expression.op_call_ref(Reference::Entry(unit_id, entry_id));
+        expression.op_call_ref(DebugInfoRef::Entry(unit_id, entry_id));
 
         // Create an entry containing the expression.
         let subprogram_id = unit.add(unit.root(), constants::DW_TAG_subprogram);
@@ -1758,5 +1801,14 @@ mod tests {
         // Writing the DWARF should fail.
         let mut sections = Sections::new(EndianVec::new(LittleEndian));
         assert_eq!(dwarf.write(&mut sections), Err(Error::InvalidReference));
+    }
+
+    #[test]
+    fn test_expression_as_raw() {
+        assert_eq!(Expression::new().as_raw(), None);
+        assert_eq!(Expression::raw(b"1234".into()).as_raw(), Some(&b"1234"[..]));
+        let mut expression = Expression::raw(b"1234".into());
+        expression.op_constu(1);
+        assert_eq!(expression.as_raw(), None);
     }
 }

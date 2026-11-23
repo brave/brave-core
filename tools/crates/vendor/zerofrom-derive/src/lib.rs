@@ -2,9 +2,8 @@
 // called LICENSE at the top level of the ICU4X source tree
 // (online at: https://github.com/unicode-org/icu4x/blob/main/LICENSE ).
 
-//! Custom derives for `ZeroFrom` from the `zerofrom` crate.
-
 // https://github.com/unicode-org/icu4x/blob/main/documents/process/boilerplate.md#library-annotations
+// #![cfg_attr(not(any(test, doc)), no_std)]
 #![cfg_attr(
     not(test),
     deny(
@@ -12,14 +11,12 @@
         clippy::unwrap_used,
         clippy::expect_used,
         clippy::panic,
-        clippy::exhaustive_structs,
-        clippy::exhaustive_enums,
-        clippy::trivially_copy_pass_by_ref,
-        missing_debug_implementations,
     )
 )]
+#![warn(missing_docs)]
 
-use core::mem;
+//! Custom derives for `ZeroFrom` from the `zerofrom` crate.
+
 use proc_macro::TokenStream;
 use proc_macro2::{Span, TokenStream as TokenStream2};
 use quote::quote;
@@ -28,8 +25,8 @@ use syn::fold::{self, Fold};
 use syn::punctuated::Punctuated;
 use syn::spanned::Spanned;
 use syn::{
-    parse_macro_input, parse_quote, DeriveInput, Ident, Lifetime, MetaList, Token,
-    TraitBoundModifier, Type, TypeParamBound, TypePath, WherePredicate,
+    parse_macro_input, parse_quote, DeriveInput, Ident, Lifetime, MetaList, Token, Type,
+    TypeParamBound, TypePath, WherePredicate,
 };
 use synstructure::Structure;
 mod visitor;
@@ -41,7 +38,7 @@ mod visitor;
 /// for types with a lifetime parameter.
 ///
 /// Apply the `#[zerofrom(clone)]` attribute to a field if it doesn't implement
-/// Copy or ZeroFrom; this data will be cloned when the struct is zero_from'ed.
+/// [`Copy`] or [`ZeroFrom`]; this data will be cloned when the struct is zero-from'ed.
 ///
 /// Apply the `#[zerofrom(maybe_borrow(T, U, V))]` attribute to the struct to indicate
 /// that certain type parameters may themselves contain borrows (by default
@@ -94,7 +91,6 @@ fn zf_derive_impl(input: &DeriveInput) -> TokenStream2 {
         .map(|ty| {
             // Strip out param defaults, we don't need them in the impl
             let mut ty = ty.clone();
-            ty.eq_token = None;
             ty.default = None;
             ty
         })
@@ -131,11 +127,10 @@ fn zf_derive_impl(input: &DeriveInput) -> TokenStream2 {
                 // Remove `?Sized`` bound because we need a param to be Sized in order to take a ZeroFrom of it.
                 // This only applies to fields marked as `may_borrow`.
                 let mut bounds = core::mem::take(&mut param.bounds);
-                while let Some(bound_pair) = bounds.pop() {
-                    let bound = bound_pair.into_value();
+                while let Some(bound) = bounds.pop() {
                     if let TypeParamBound::Trait(ref trait_bound) = bound {
                         if trait_bound.path.get_ident().map(|ident| ident == "Sized") == Some(true)
-                            && matches!(trait_bound.modifier, TraitBoundModifier::Maybe(_))
+                            && trait_bound.maybe.is_some()
                         {
                             continue;
                         }
@@ -245,7 +240,7 @@ fn zf_derive_impl(input: &DeriveInput) -> TokenStream2 {
             for typaram_c in &mut typarams_c {
                 if let Some(Some(replacement)) = generics_env.get(typaram_c) {
                     // we use mem::replace here so we can be really clear about the C vs the T type
-                    let typaram_t = mem::replace(typaram_c, replacement.clone());
+                    let typaram_t = core::mem::replace(typaram_c, replacement.clone());
                     zf_bounds
                         .push(parse_quote!(#typaram_c: zerofrom::ZeroFrom<'zf_inner, #typaram_t>));
                     tybounds.push(parse_quote!(#typaram_c));

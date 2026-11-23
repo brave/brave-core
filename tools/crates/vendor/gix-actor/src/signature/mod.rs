@@ -1,21 +1,30 @@
 mod _ref {
     use bstr::ByteSlice;
-    use winnow::{error::StrContext, prelude::*};
 
-    use crate::{signature::decode, IdentityRef, Signature, SignatureRef};
+    use gix_error::{Result, ResultExt};
+
+    use crate::{IdentityRef, Signature, SignatureRef, signature::decode};
 
     /// Lifecycle
     impl<'a> SignatureRef<'a> {
         /// Deserialize a signature from the given `data`.
-        pub fn from_bytes<E>(mut data: &'a [u8]) -> Result<SignatureRef<'a>, winnow::error::ErrMode<E>>
-        where
-            E: winnow::error::ParserError<&'a [u8]> + winnow::error::AddContext<&'a [u8], StrContext>,
-        {
-            decode.parse_next(&mut data)
+        ///
+        /// Typical input is `Name <name@example.com> 1700000000 +0000`.
+        pub fn from_bytes(mut data: &'a [u8]) -> Result<SignatureRef<'a>> {
+            Self::from_bytes_consuming(&mut data)
+        }
+
+        /// Deserialize a signature from the given `data` and advance it past the signature.
+        ///
+        /// Typical input is `Name <name@example.com> 1700000000 +0000`; on
+        /// success, `data` points to the bytes immediately after the parsed
+        /// signature.
+        pub fn from_bytes_consuming(data: &mut &'a [u8]) -> Result<SignatureRef<'a>> {
+            decode(data)
         }
 
         /// Try to parse the timestamp and create an owned instance from this shared one.
-        pub fn to_owned(&self) -> Result<Signature, gix_date::parse::Error> {
+        pub fn to_owned(&self) -> Result<Signature> {
             Ok(Signature {
                 name: self.name.to_owned(),
                 email: self.email.to_owned(),
@@ -58,8 +67,8 @@ mod _ref {
 
         /// Parse the `time` field for access to the passed time since unix epoch, and the time offset.
         /// The format is expected to be [raw](gix_date::parse_header()).
-        pub fn time(&self) -> Result<gix_date::Time, gix_date::parse::Error> {
-            self.time.parse()
+        pub fn time(&self) -> Result<gix_date::Time> {
+            self.time.parse::<gix_date::Time>().or_error()
         }
     }
 }
@@ -97,26 +106,16 @@ mod convert {
 pub(crate) mod write {
     use bstr::{BStr, ByteSlice};
     use gix_date::parse::TimeBuf;
+    use gix_error::{Result, bail};
 
     use crate::{Signature, SignatureRef};
-
-    /// The Error produced by [`Signature::write_to()`].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub(crate) enum Error {
-        #[error(r"Signature name or email must not contain '<', '>' or \n")]
-        IllegalCharacter,
-    }
-
-    impl From<Error> for std::io::Error {
-        fn from(err: Error) -> Self {
-            std::io::Error::other(err)
-        }
-    }
 
     /// Output
     impl Signature {
         /// Serialize this instance to `out` in the git serialization format for actors.
+        /// Invalid signature field bytes are retained as `input` in the I/O error.
+        /// After [wrapping](gix_error::Error::from_error()), inspect them with
+        /// [metadata](gix_error::Error::metadata()).
         pub fn write_to(&self, out: &mut dyn std::io::Write) -> std::io::Result<()> {
             let mut buf = TimeBuf::default();
             self.to_ref(&mut buf).write_to(out)
@@ -129,13 +128,16 @@ pub(crate) mod write {
 
     impl SignatureRef<'_> {
         /// Serialize this instance to `out` in the git serialization format for actors.
+        /// Invalid signature field bytes are retained as `input` in the I/O error.
+        /// After [wrapping](gix_error::Error::from_error()), inspect them with
+        /// [metadata](gix_error::Error::metadata()).
         pub fn write_to(&self, out: &mut dyn std::io::Write) -> std::io::Result<()> {
-            out.write_all(validated_token(self.name)?)?;
+            out.write_all(validated_token(self.name).map_err(std::io::Error::other)?)?;
             out.write_all(b" ")?;
             out.write_all(b"<")?;
-            out.write_all(validated_token(self.email)?)?;
+            out.write_all(validated_token(self.email).map_err(std::io::Error::other)?)?;
             out.write_all(b"> ")?;
-            out.write_all(validated_token(self.time.into())?)
+            out.write_all(validated_token(self.time.into()).map_err(std::io::Error::other)?)
         }
         /// Computes the number of bytes necessary to serialize this signature
         pub fn size(&self) -> usize {
@@ -143,9 +145,9 @@ pub(crate) mod write {
         }
     }
 
-    pub(crate) fn validated_token(name: &BStr) -> Result<&BStr, Error> {
+    pub(crate) fn validated_token(name: &BStr) -> Result<&BStr> {
         if name.find_byteset(b"<>\n").is_some() {
-            return Err(Error::IllegalCharacter);
+            bail!(gix_error::validation("Signature name or email must not contain '<', '>' or \\n").with_input(name));
         }
         Ok(name)
     }

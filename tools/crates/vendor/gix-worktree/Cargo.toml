@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-worktree"
-version = "0.43.1"
+version = "0.59.0"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,19 +29,27 @@ description = "A crate of the gitoxide project for shared worktree related types
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [package.metadata.docs.rs]
 features = [
+    "sha1",
     "document-features",
     "serde",
 ]
 
 [features]
+add = ["dep:gix-validate"]
 attributes = [
     "dep:gix-attributes",
     "dep:gix-validate",
 ]
 default = ["attributes"]
+remove = [
+    "dep:dua-core",
+    "dep:gix-trace",
+    "gix-utils/progress",
+]
 serde = [
     "dep:serde",
     "bstr/serde",
@@ -51,6 +59,8 @@ serde = [
     "gix-attributes?/serde",
     "gix-ignore/serde",
 ]
+sha1 = ["gix-hash/sha1"]
+sha256 = ["gix-hash/sha256"]
 
 [lib]
 name = "gix_worktree"
@@ -65,36 +75,48 @@ default-features = false
 version = "0.2.0"
 optional = true
 
-[dependencies.gix-attributes]
-version = "^0.28.1"
+[dependencies.dua-core]
+version = "4.1.0"
 optional = true
 
-[dependencies.gix-features]
-version = "^0.44.1"
+[dependencies.gix-attributes]
+version = "^0.37.1"
+optional = true
+
+[dependencies.gix-error]
+version = "^0.5.2"
 
 [dependencies.gix-fs]
-version = "^0.17.0"
+version = "^0.24.1"
 
 [dependencies.gix-glob]
-version = "^0.22.1"
+version = "^0.29.1"
 
 [dependencies.gix-hash]
-version = "^0.20.1"
+version = "^0.28.1"
 
 [dependencies.gix-ignore]
-version = "^0.17.1"
+version = "^0.24.0"
 
 [dependencies.gix-index]
-version = "^0.42.1"
+version = "^0.58.0"
 
 [dependencies.gix-object]
-version = "^0.51.1"
+version = "^0.66.1"
 
 [dependencies.gix-path]
-version = "^0.10.21"
+version = "^0.14.1"
+
+[dependencies.gix-trace]
+version = "^0.3.1"
+optional = true
+
+[dependencies.gix-utils]
+version = "^0.5.1"
+optional = true
 
 [dependencies.gix-validate]
-version = "^0.10.1"
+version = "^0.13.1"
 optional = true
 
 [dependencies.serde]
@@ -103,7 +125,14 @@ features = ["derive"]
 optional = true
 default-features = false
 
+[dev-dependencies.criterion]
+version = "0.8.2"
+
+[dev-dependencies.insta]
+version = "1.46.3"
+
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -122,7 +151,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

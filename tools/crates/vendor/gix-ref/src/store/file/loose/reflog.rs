@@ -1,8 +1,14 @@
-use std::{io::Read, path::PathBuf};
+use gix_error::Result;
+use gix_error::{Message, ResultExt, message};
+
+use std::{
+    io::Read,
+    path::{Path, PathBuf},
+};
 
 use crate::{
-    store_impl::{file, file::log},
     FullNameRef,
+    store_impl::{file, file::log},
 };
 
 impl file::Store {
@@ -11,36 +17,52 @@ impl file::Store {
     /// Please note that this method shouldn't be used to check if a log exists before trying to read it, but instead
     /// is meant to be the fastest possible way to determine if a log exists or not.
     /// If the caller needs to know if it's readable, try to read the log instead with a reverse or forward iterator.
-    pub fn reflog_exists<'a, Name, E>(&self, name: Name) -> Result<bool, E>
+    pub fn reflog_exists<'a, Name, E>(&self, name: Name) -> Result<bool>
     where
         Name: TryInto<&'a FullNameRef, Error = E>,
-        crate::name::Error: From<E>,
+        std::result::Result<&'a FullNameRef, E>: ResultExt<Success = &'a FullNameRef>,
     {
-        Ok(self.reflog_path(name.try_into()?).is_file())
+        let name = name
+            .try_into()
+            .or_raise(|| message("The reflog name or path is not a valid ref name"))?;
+        Ok(self.reflog_path(name)?.is_file())
     }
 
     /// Return a reflog reverse iterator for the given fully qualified `name`, reading chunks from the back into the fixed buffer `buf`.
     ///
     /// The iterator will traverse log entries from most recent to oldest, reading the underlying file in chunks from the back.
     /// Return `Ok(None)` if no reflog exists.
+    ///
+    /// Read failures include [metadata](gix_error::Error::metadata()) `path` (native path), the resolved reflog path.
     pub fn reflog_iter_rev<'a, 'b, Name, E>(
         &self,
         name: Name,
         buf: &'b mut [u8],
-    ) -> Result<Option<log::iter::Reverse<'b, std::fs::File>>, Error>
+    ) -> Result<Option<log::iter::Reverse<'b, std::fs::File>>>
     where
         Name: TryInto<&'a FullNameRef, Error = E>,
-        crate::name::Error: From<E>,
+        std::result::Result<&'a FullNameRef, E>: ResultExt<Success = &'a FullNameRef>,
     {
-        let name: &FullNameRef = name.try_into().map_err(|err| Error::RefnameValidation(err.into()))?;
-        let path = self.reflog_path(name);
+        let name = name
+            .try_into()
+            .or_raise(|| message("The reflog name or path is not a valid ref name"))?;
+        let path = self.reflog_path(name)?;
+        self.reflog_iter_rev_inner(&path, buf)
+            .or_raise(|| read_reflog_error(path))
+    }
+
+    pub(crate) fn reflog_iter_rev_inner<'b>(
+        &self,
+        path: &Path,
+        buf: &'b mut [u8],
+    ) -> std::io::Result<Option<log::iter::Reverse<'b, std::fs::File>>> {
         if path.is_dir() {
             return Ok(None);
         }
-        match std::fs::File::open(&path) {
+        match std::fs::File::open(path) {
             Ok(file) => Ok(Some(log::iter::reverse(file, buf)?)),
             Err(err) if err.kind() == std::io::ErrorKind::NotFound => Ok(None),
-            Err(err) => Err(err.into()),
+            Err(err) => Err(err),
         }
     }
 
@@ -48,39 +70,57 @@ impl file::Store {
     ///
     /// The iterator will traverse log entries from oldest to newest.
     /// Return `Ok(None)` if no reflog exists.
+    ///
+    /// Read failures include [metadata](gix_error::Error::metadata()) `path` (native path), the resolved reflog path.
     pub fn reflog_iter<'a, 'b, Name, E>(
         &self,
         name: Name,
         buf: &'b mut Vec<u8>,
-    ) -> Result<Option<log::iter::Forward<'b>>, Error>
+    ) -> Result<Option<log::iter::Forward<'b>>>
     where
         Name: TryInto<&'a FullNameRef, Error = E>,
-        crate::name::Error: From<E>,
+        std::result::Result<&'a FullNameRef, E>: ResultExt<Success = &'a FullNameRef>,
     {
-        let name: &FullNameRef = name.try_into().map_err(|err| Error::RefnameValidation(err.into()))?;
-        let path = self.reflog_path(name);
-        match std::fs::File::open(&path) {
+        let name = name
+            .try_into()
+            .or_raise(|| message("The reflog name or path is not a valid ref name"))?;
+        let path = self.reflog_path(name)?;
+        self.reflog_iter_inner(&path, buf).or_raise(|| read_reflog_error(path))
+    }
+
+    pub(crate) fn reflog_iter_inner<'b>(
+        &self,
+        path: &Path,
+        buf: &'b mut Vec<u8>,
+    ) -> std::io::Result<Option<log::iter::Forward<'b>>> {
+        match std::fs::File::open(path) {
             Ok(mut file) => {
                 buf.clear();
                 if let Err(err) = file.read_to_end(buf) {
-                    return if path.is_dir() { Ok(None) } else { Err(err.into()) };
+                    return if path.is_dir() { Ok(None) } else { Err(err) };
                 }
                 Ok(Some(log::iter::forward(buf)))
             }
             Err(err) if err.kind() == std::io::ErrorKind::NotFound => Ok(None),
             #[cfg(windows)]
             Err(err) if err.kind() == std::io::ErrorKind::PermissionDenied => Ok(None),
-            Err(err) => Err(err.into()),
+            Err(err) => Err(err),
         }
     }
 }
 
 impl file::Store {
     /// Implements the logic required to transform a fully qualified refname into its log name
-    pub(crate) fn reflog_path(&self, name: &FullNameRef) -> PathBuf {
-        let (base, rela_path) = self.reflog_base_and_relative_path(name);
-        base.join(rela_path)
+    pub(crate) fn reflog_path(&self, name: &FullNameRef) -> Result<PathBuf> {
+        let (base, rela_path) = self.reflog_base_and_relative_path(name)?;
+        Ok(base.join(rela_path))
     }
+}
+
+/// The raised error's [metadata](gix_error::Error::metadata()) `path` (native path) identifies the resolved reflog path
+/// that could not be read.
+fn read_reflog_error(path: PathBuf) -> Message {
+    Message::new("Could not read reflog").with("path", path)
 }
 
 ///
@@ -91,13 +131,16 @@ pub mod create_or_update {
         path::{Path, PathBuf},
     };
 
-    use gix_hash::{oid, ObjectId};
+    use gix_error::{ErrorExt, Message, OptionExt, Result, ResultExt};
+    use gix_hash::{ObjectId, oid};
     use gix_object::bstr::BStr;
 
     use crate::store_impl::{file, file::WriteReflog};
 
     impl file::Store {
-        #[allow(clippy::too_many_arguments)]
+        /// Append a reflog entry. Filesystem failures include [metadata](gix_error::Error::metadata()) `path` (native
+        /// path), the affected file or directory.
+        /// A missing identity is reported as [`MissingCommitter`] only when a log entry must actually be written.
         pub(crate) fn reflog_create_or_append(
             &self,
             name: &FullNameRef,
@@ -106,8 +149,8 @@ pub mod create_or_update {
             committer: Option<gix_actor::SignatureRef<'_>>,
             message: &BStr,
             mut force_create_reflog: bool,
-        ) -> Result<(), Error> {
-            let (reflog_base, full_name) = self.reflog_base_and_relative_path(name);
+        ) -> Result {
+            let (reflog_base, full_name) = self.reflog_base_and_relative_path(name)?;
             match self.write_reflog {
                 WriteReflog::Normal | WriteReflog::Always => {
                     if self.write_reflog == WriteReflog::Always {
@@ -119,12 +162,8 @@ pub mod create_or_update {
 
                     if force_create_reflog || self.should_autocreate_reflog(&full_name) {
                         let parent_dir = log_path.parent().expect("always with parent directory");
-                        gix_tempfile::create_dir::all(parent_dir, Default::default()).map_err(|err| {
-                            Error::CreateLeadingDirectories {
-                                source: err,
-                                reflog_directory: parent_dir.to_owned(),
-                            }
-                        })?;
+                        gix_tempfile::create_dir::all(parent_dir, Default::default(), 0)
+                            .or_raise(|| Message::new("Could not create reflog directory").with("path", parent_dir))?;
                         options.create(true);
                     }
 
@@ -137,33 +176,28 @@ pub mod create_or_update {
                                 gix_tempfile::remove_dir::empty_depth_first(log_path.clone())
                                     .and_then(|_| options.open(&log_path))
                                     .map(Some)
-                                    .map_err(|_| Error::Append {
-                                        source: err,
-                                        reflog_path: self.reflog_path(name),
-                                    })?
+                                    .or_raise(|| open_reflog_for_appending_error(log_path.as_path()))?
                             } else {
-                                return Err(Error::Append {
-                                    source: err,
-                                    reflog_path: log_path,
-                                });
+                                return Err(err.and_raise(open_reflog_for_appending_error(log_path)));
                             }
                         }
                     };
 
                     if let Some(mut file) = file_for_appending {
-                        let committer = committer.ok_or(Error::MissingCommitter)?;
+                        let committer = committer.ok_or_raise(|| MissingCommitter)?;
                         write!(file, "{} {} ", previous_oid.unwrap_or_else(|| new.kind().null()), new)
-                            .and_then(|_| committer.write_to(&mut file))
+                            .and_then(|_| committer.trim().write_to(&mut file))
                             .and_then(|_| {
                                 if !message.is_empty() {
-                                    writeln!(file, "\t{message}")
+                                    file.write_all(b"\t")?;
+                                    file.write_all(message)?;
+                                    file.write_all(b"\n")
                                 } else {
                                     writeln!(file)
                                 }
                             })
-                            .map_err(|err| Error::Append {
-                                source: err,
-                                reflog_path: self.reflog_path(name),
+                            .or_raise(|| {
+                                Message::new("Could not append reflog entry").with("path", log_path.as_path())
                             })?;
                     }
                     Ok(())
@@ -184,61 +218,45 @@ pub mod create_or_update {
         pub(in crate::store_impl::file) fn reflog_base_and_relative_path<'a>(
             &self,
             name: &'a FullNameRef,
-        ) -> (PathBuf, Cow<'a, Path>) {
+        ) -> Result<(PathBuf, Cow<'a, Path>)> {
             let is_reflog = true;
-            let (base, name) = self.to_base_dir_and_relative_name(name, is_reflog);
-            (
+            let (base, name) = self.to_base_dir_and_relative_name(name, is_reflog)?;
+            Ok((
                 base.join("logs"),
                 match &self.namespace {
                     None => gix_path::to_native_path_on_windows(name.as_bstr()),
                     Some(namespace) => gix_path::to_native_path_on_windows(
                         namespace.to_owned().into_namespaced_name(name).into_inner(),
                     ),
-                },
-            )
+                }?,
+            ))
+        }
+    }
+
+    /// The raised error's [metadata](gix_error::Error::metadata()) `path` (native path) identifies the reflog that could
+    /// not be opened for appending.
+    fn open_reflog_for_appending_error(path: impl Into<PathBuf>) -> Message {
+        Message::new("Could not open reflog for appending").with("path", path.into())
+    }
+
+    /// A reflog entry requires a committer identity which wasn't provided.
+    #[derive(Debug)]
+    pub struct MissingCommitter;
+
+    impl std::fmt::Display for MissingCommitter {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            f.write_str("reflog messages need a committer which isn't set")
+        }
+    }
+
+    impl std::error::Error for MissingCommitter {
+        fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+            Some(const { &gix_error::ClassificationMarker::VALIDATION })
         }
     }
 
     #[cfg(test)]
     mod tests;
 
-    mod error {
-        use std::path::PathBuf;
-
-        /// The error returned when creating or appending to a reflog
-        #[derive(Debug, thiserror::Error)]
-        #[allow(missing_docs)]
-        pub enum Error {
-            #[error("Could create one or more directories in {reflog_directory:?} to contain reflog file")]
-            CreateLeadingDirectories {
-                source: std::io::Error,
-                reflog_directory: PathBuf,
-            },
-            #[error("Could not open reflog file at {reflog_path:?} for appending")]
-            Append {
-                source: std::io::Error,
-                reflog_path: PathBuf,
-            },
-            #[error("reflog message must not contain newlines")]
-            MessageWithNewlines,
-            #[error("reflog messages need a committer which isn't set")]
-            MissingCommitter,
-        }
-    }
-    pub use error::Error;
-
     use crate::FullNameRef;
 }
-
-mod error {
-    /// The error returned by [`crate::file::Store::reflog_iter()`].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("The reflog name or path is not a valid ref name")]
-        RefnameValidation(#[from] crate::name::Error),
-        #[error("The reflog file could not read")]
-        Io(#[from] std::io::Error),
-    }
-}
-pub use error::Error;

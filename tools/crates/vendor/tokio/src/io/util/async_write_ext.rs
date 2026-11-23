@@ -103,9 +103,9 @@ cfg_io_util! {
         ///
         /// # Cancel safety
         ///
-        /// This method is cancellation safe in the sense that if it is used as
-        /// the event in a [`tokio::select!`](crate::select) statement and some
-        /// other branch completes first, then it is guaranteed that no data was
+        /// This method is cancel safe. If it is used as a branch in
+        /// [`tokio::select!`](crate::select) and another branch completes
+        /// first, then it is guaranteed that no data was
         /// written to this `AsyncWrite`.
         ///
         /// # Examples
@@ -146,9 +146,9 @@ cfg_io_util! {
         ///
         /// # Cancel safety
         ///
-        /// This method is cancellation safe in the sense that if it is used as
-        /// the event in a [`tokio::select!`](crate::select) statement and some
-        /// other branch completes first, then it is guaranteed that no data was
+        /// This method is cancel safe. If it is used as a branch in
+        /// [`tokio::select!`](crate::select) and another branch completes
+        /// first, then it is guaranteed that no data was
         /// written to this `AsyncWrite`.
         ///
         /// # Examples
@@ -223,9 +223,9 @@ cfg_io_util! {
         ///
         /// # Cancel safety
         ///
-        /// This method is cancellation safe in the sense that if it is used as
-        /// the event in a [`tokio::select!`](crate::select) statement and some
-        /// other branch completes first, then it is guaranteed that no data was
+        /// This method is cancel safe. If it is used as a branch in
+        /// [`tokio::select!`](crate::select) and another branch completes
+        /// first, then it is guaranteed that no data was
         /// written to this `AsyncWrite`.
         ///
         /// # Examples
@@ -286,16 +286,17 @@ cfg_io_util! {
         ///
         /// This method will continuously call [`write`] until
         /// [`buf.has_remaining()`](bytes::Buf::has_remaining) returns false. This method will not
-        /// return until the entire buffer has been successfully written or an error occurs. The
-        /// first error generated will be returned.
+        /// return until the entire buffer has been successfully written or an error occurs.
+        /// Errors of kind [`ErrorKind::Interrupted`] are ignored and the write is retried. The first
+        /// other error generated will be returned.
         ///
         /// The buffer is advanced after each chunk is successfully written. After failure,
         /// `src.chunk()` will return the chunk that failed to write.
         ///
         /// # Cancel safety
         ///
-        /// If `write_all_buf` is used as the event in a
-        /// [`tokio::select!`](crate::select) statement and some other branch
+        /// If `write_all_buf` is used as a branch in
+        /// [`tokio::select!`](crate::select) and another branch
         /// completes first, then the data in the provided buffer may have been
         /// partially written. However, it is guaranteed that the provided
         /// buffer has been [advanced] by the amount of bytes that have been
@@ -331,6 +332,7 @@ cfg_io_util! {
         /// ```
         ///
         /// [`write`]: AsyncWriteExt::write
+        /// [`ErrorKind::Interrupted`]: std::io::ErrorKind::Interrupted
         fn write_all_buf<'a, B>(&'a mut self, src: &'a mut B) -> WriteAllBuf<'a, Self, B>
         where
             Self: Sized + Unpin,
@@ -349,20 +351,22 @@ cfg_io_util! {
         ///
         /// This method will continuously call [`write`] until there is no more data
         /// to be written. This method will not return until the entire buffer
-        /// has been successfully written or such an error occurs. The first
-        /// error generated from this method will be returned.
+        /// has been successfully written or such an error occurs. Errors of kind
+        /// [`ErrorKind::Interrupted`] are ignored and the write is retried. The first
+        /// other error generated from this method will be returned.
         ///
         /// # Cancel safety
         ///
-        /// This method is not cancellation safe. If it is used as the event
-        /// in a [`tokio::select!`](crate::select) statement and some other
-        /// branch completes first, then the provided buffer may have been
+        /// This method is not cancel safe. If it is used as a branch in
+        /// [`tokio::select!`](crate::select) and another branch completes
+        /// first, then the provided buffer may have been
         /// partially written, but future calls to `write_all` will start over
         /// from the beginning of the buffer.
         ///
         /// # Errors
         ///
-        /// This function will return the first error that [`write`] returns.
+        /// This function will ignore errors of kind [`ErrorKind::Interrupted`] and
+        /// will otherwise return the first error that [`write`] returns.
         ///
         /// # Examples
         ///
@@ -384,6 +388,7 @@ cfg_io_util! {
         /// ```
         ///
         /// [`write`]: AsyncWriteExt::write
+        /// [`ErrorKind::Interrupted`]: std::io::ErrorKind::Interrupted
         fn write_all<'a>(&'a mut self, src: &'a [u8]) -> WriteAll<'a, Self>
         where
             Self: Unpin,
@@ -1253,9 +1258,9 @@ cfg_io_util! {
         ///
         /// This method is cancel safe.
         ///
-        /// If `flush` is used as the event in a [`tokio::select!`](crate::select)
-        /// statement and some other branch completes first, then the data in the
-        /// buffered data in this `AsyncWrite` may have been partially flushed.
+        /// If `flush` is used as a branch in [`tokio::select!`](crate::select)
+        /// and another branch completes first, then the buffered data in this
+        /// `AsyncWrite` may have been partially flushed.
         /// However, it is guaranteed that the buffer is advanced by the amount of
         /// bytes that have been partially flushed.
         ///
@@ -1294,8 +1299,8 @@ cfg_io_util! {
         /// async fn shutdown(&mut self) -> io::Result<()>;
         /// ```
         ///
-        /// Similar to [`flush`], all intermediately buffered is written to the
-        /// underlying stream. Once the operation completes, the caller should
+        /// Similar to [`flush`], all intermediately buffered content is written to
+        /// the underlying stream. Once the operation completes, the caller should
         /// no longer attempt to write to the stream. For example, the
         /// `TcpStream` implementation will issue a `shutdown(Write)` sys call.
         ///

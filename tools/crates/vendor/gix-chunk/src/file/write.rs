@@ -1,4 +1,4 @@
-use crate::file::{index::Entry, Index};
+use crate::file::{Index, index::Entry};
 
 mod write_chunk {
     use std::collections::VecDeque;
@@ -55,12 +55,9 @@ mod write_chunk {
         pub fn next_chunk(&mut self) -> Option<crate::Id> {
             if let Some(entry) = self.next_chunk.take() {
                 assert_eq!(
-                    entry.offset.end,
-                    self.written_bytes as u64,
+                    entry.offset.end, self.written_bytes as u64,
                     "BUG: expected to write {} bytes, but only wrote {} for chunk {:?}",
-                    entry.offset.end,
-                    self.written_bytes,
-                    std::str::from_utf8(&entry.kind)
+                    entry.offset.end, self.written_bytes, entry.kind
                 );
             }
             self.written_bytes = 0;
@@ -86,8 +83,7 @@ impl Index {
         assert!(self.will_write, "BUG: create the index with `for_writing()`");
         assert!(
             !self.chunks.iter().any(|e| e.kind == chunk),
-            "BUG: must not add chunk of same kind twice: {:?}",
-            std::str::from_utf8(&chunk)
+            "BUG: must not add chunk of same kind twice: {chunk:?}"
         );
         self.chunks.push(Entry {
             kind: chunk,

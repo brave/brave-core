@@ -1,0 +1,41 @@
+lints.workspace = true
+
+[package]
+name = "gix-note"
+version = "0.3.1"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+license = "MIT OR Apache-2.0"
+description = "A crate of the gitoxide project dealing with git notes"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+edition = "2024"
+rust-version = "1.88"
+include = ["/src/**/*", "/LICENSE-*"]
+
+[lib]
+doctest = false
+
+[[bench]]
+name = "read-write"
+harness = false
+path = "./benches/read_write.rs"
+
+[package.metadata.docs.rs]
+features = ["sha1"]
+
+[features]
+## Enable support for the SHA-1 hash by forwarding it to dependencies.
+sha1 = ["gix-hash/sha1", "gix-object/sha1"]
+## Enable support for the SHA-256 hash by forwarding it to dependencies.
+sha256 = ["gix-hash/sha256", "gix-object/sha256"]
+
+[dependencies]
+gix-error = { version = "^0.5.2", path = "../gix-error" }
+gix-hash = { version = "^0.28.1", path = "../gix-hash" }
+gix-object = { version = "^0.66.1", path = "../gix-object" }
+
+[dev-dependencies]
+insta = "1.46.3"
+criterion = "0.8.2"
+gix-note = { path = ".", features = ["sha1", "sha256"] }
+gix-odb = { path = "../gix-odb" }
+gix-testtools = { path = "../tests/tools" }

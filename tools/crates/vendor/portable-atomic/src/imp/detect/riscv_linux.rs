@@ -6,7 +6,7 @@ Run-time CPU feature detection on RISC-V Linux/Android by using riscv_hwprobe.
 On RISC-V, detection using auxv only supports single-letter extensions.
 So, we use riscv_hwprobe that supports multi-letter extensions.
 
-Refs: https://github.com/torvalds/linux/blob/v6.16/Documentation/arch/riscv/hwprobe.rst
+Refs: https://github.com/torvalds/linux/blob/v6.19/Documentation/arch/riscv/hwprobe.rst
 */
 
 include!("common.rs");
@@ -19,7 +19,7 @@ mod ffi {
     pub(crate) use crate::utils::ffi::{c_long, c_size_t, c_uint, c_ulong};
 
     sys_struct!({
-        // https://github.com/torvalds/linux/blob/v6.16/arch/riscv/include/uapi/asm/hwprobe.h
+        // https://github.com/torvalds/linux/blob/v6.19/arch/riscv/include/uapi/asm/hwprobe.h
         pub(crate) struct riscv_hwprobe {
             pub(crate) key: i64,
             pub(crate) value: u64,
@@ -29,7 +29,7 @@ mod ffi {
     sys_const!({
         pub(crate) const __NR_riscv_hwprobe: c_long = 258;
 
-        // https://github.com/torvalds/linux/blob/v6.16/arch/riscv/include/uapi/asm/hwprobe.h
+        // https://github.com/torvalds/linux/blob/v6.19/arch/riscv/include/uapi/asm/hwprobe.h
         // Linux 6.4+
         // https://github.com/torvalds/linux/commit/00e76e2c6a2bd3976d44d4a1fdd0b7a3c2566607
         pub(crate) const RISCV_HWPROBE_KEY_BASE_BEHAVIOR: i64 = 3;
@@ -48,55 +48,61 @@ mod ffi {
         pub(crate) const RISCV_HWPROBE_EXT_ZALASR: u64 = 1 << 59;
     });
 
-    #[cfg(not(all(
-        target_os = "linux",
-        any(target_arch = "riscv32", all(target_arch = "riscv64", target_pointer_width = "64")),
-    )))]
-    sys_fn!({
-        extern "C" {
-            // https://man7.org/linux/man-pages/man2/syscall.2.html
-            pub(crate) fn syscall(number: c_long, ...) -> c_long;
+    cfg_sel!({
+        // Use asm-based syscall on Linux for compatibility with non-libc targets if possible.
+        // Do not use this on Android. See comments on syscall_helper module in src/utils.rs for details.
+        #[cfg(all(
+            target_os = "linux",
+            any(
+                target_arch = "riscv32",
+                all(target_arch = "riscv64", target_pointer_width = "64"),
+            ),
+            not(portable_atomic_no_asm_syscall),
+        ))]
+        {
+            use crate::utils::{RegISize, RegSize};
+
+            #[inline]
+            pub(crate) unsafe fn syscall5(
+                number: c_long,
+                arg1: *mut riscv_hwprobe,
+                arg2: c_size_t,
+                arg3: c_size_t,
+                arg4: *mut c_ulong,
+                arg5: c_uint,
+            ) -> c_long {
+                #[allow(clippy::cast_possible_truncation)]
+                let number = number as RegISize;
+                let arg1 = ptr_reg!(arg1);
+                let arg2 = arg2 as RegSize;
+                let arg3 = arg3 as RegSize;
+                let arg4 = ptr_reg!(arg4);
+                let arg5 = arg5 as RegSize;
+                let r: RegISize;
+                // SAFETY: the caller must uphold the safety contract.
+                // we've extended the syscall number and arguments to the register size.
+                unsafe {
+                    asm_syscall!(number, r, arg1, arg2, arg3, arg4, arg5);
+                }
+                #[allow(clippy::cast_possible_truncation)]
+                {
+                    r as c_long
+                }
+            }
+        }
+        #[cfg(else)]
+        {
+            sys_fn!({
+                extern "C" {
+                    // https://man7.org/linux/man-pages/man2/syscall.2.html
+                    pub(crate) fn syscall(number: c_long, ...) -> c_long;
+                }
+            });
+            pub(crate) use self::syscall as syscall5;
         }
     });
-    // Use asm-based syscall for compatibility with non-libc targets if possible.
-    #[cfg(all(
-        target_os = "linux", // https://github.com/bytecodealliance/rustix/issues/1095
-        any(target_arch = "riscv32", all(target_arch = "riscv64", target_pointer_width = "64")),
-    ))]
-    #[inline]
-    pub(crate) unsafe fn syscall(
-        number: c_long,
-        a0: *mut riscv_hwprobe,
-        a1: c_size_t,
-        a2: c_size_t,
-        a3: *mut c_ulong,
-        a4: c_uint,
-    ) -> c_long {
-        #[cfg(not(portable_atomic_no_asm))]
-        use core::arch::asm;
-        // arguments must be extended to 64-bit if RV64
-        let a4 = a4 as usize;
-        let r;
-        // SAFETY: the caller must uphold the safety contract.
-        // Refs:
-        // - https://github.com/bminor/musl/blob/v1.2.5/arch/riscv32/syscall_arch.h
-        // - https://github.com/bminor/musl/blob/v1.2.5/arch/riscv64/syscall_arch.h
-        unsafe {
-            asm!(
-                "ecall",
-                in("a7") number,
-                inout("a0") a0 => r,
-                in("a1") a1,
-                in("a2") a2,
-                in("a3") a3,
-                in("a4") a4,
-                options(nostack, preserves_flags)
-            );
-        }
-        r
-    }
 
-    // https://github.com/torvalds/linux/blob/v6.16/Documentation/arch/riscv/hwprobe.rst
+    // https://github.com/torvalds/linux/blob/v6.19/Documentation/arch/riscv/hwprobe.rst
     pub(crate) unsafe fn __riscv_hwprobe(
         pairs: *mut riscv_hwprobe,
         pair_count: c_size_t,
@@ -105,7 +111,7 @@ mod ffi {
         flags: c_uint,
     ) -> c_long {
         // SAFETY: the caller must uphold the safety contract.
-        unsafe { syscall(__NR_riscv_hwprobe, pairs, pair_count, cpu_set_size, cpus, flags) }
+        unsafe { syscall5(__NR_riscv_hwprobe, pairs, pair_count, cpu_set_size, cpus, flags) }
     }
 }
 
@@ -119,7 +125,8 @@ fn riscv_hwprobe(out: &mut [ffi::riscv_hwprobe]) -> bool {
 }
 
 #[cold]
-fn _detect(info: &mut CpuInfo) {
+#[must_use]
+fn _detect(mut info: CpuInfo) -> CpuInfo {
     let mut out = [
         ffi::riscv_hwprobe { key: ffi::RISCV_HWPROBE_KEY_BASE_BEHAVIOR, value: 0 },
         ffi::riscv_hwprobe { key: ffi::RISCV_HWPROBE_KEY_IMA_EXT_0, value: 0 },
@@ -143,6 +150,7 @@ fn _detect(info: &mut CpuInfo) {
         #[cfg(test)]
         check!(zalasr, RISCV_HWPROBE_EXT_ZALASR);
     }
+    info
 }
 
 #[allow(

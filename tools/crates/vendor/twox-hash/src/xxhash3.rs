@@ -61,6 +61,22 @@ pub const DEFAULT_SECRET_RAW: DefaultSecret = [
 // Safety: The default secret is long enough
 pub const DEFAULT_SECRET: &Secret = unsafe { Secret::new_unchecked(&DEFAULT_SECRET_RAW) };
 
+// This is a bit of magic... Without the `black_box`, the compiler can
+// and has constant-folded the `DEFAULT_SECRET` and then manifests it
+// as a bunch of immediate loads. Those immediate loads appear to make
+// some functions 1.5x the size (e.g. 800 to 1200 bytes).
+//
+// However, while I'm writing this comment, that no longer happens,
+// but the `black_box` *still* makes the code faster! I can't explain
+// why the current state is faster, but the code now clearly beats the
+// C performance.
+macro_rules! opaque_default_secret {
+    () => {
+        hint::black_box(DEFAULT_SECRET)
+    };
+}
+pub(crate) use opaque_default_secret;
+
 /// # Correctness
 ///
 /// This function assumes that the incoming buffer has been populated
@@ -128,25 +144,30 @@ pub fn impl_17_to_128_bytes_iter(
     mut f: impl FnMut(&[u8; 16], &[u8; 16], &[[u8; 16]; 2]),
 ) {
     let secret = secret.words_for_17_to_128();
-    let (secret, _) = secret.bp_as_chunks::<2>();
+    let (secret, _) = secret.bp_as_chunks();
     let (fwd, _) = input.bp_as_chunks();
-    let (_, bwd) = input.bp_as_rchunks();
 
-    let q = bwd.len();
+    // The `n`th 16-byte chunk of `input`, counting backwards from the
+    // end.
+    //
+    // Using `slice::as_rchunks` yields the same chunks, but the
+    // generated assembly on x86_64 is worse. This form appears to
+    // allow the compiler to reuse some registers.
+    let bwd_chunk = |n: usize| input[input.len() - 16 * (n + 1)..].first_chunk().unwrap();
 
     if input.len() > 32 {
         if input.len() > 64 {
             if input.len() > 96 {
-                f(&fwd[3], &bwd[q - 4], &secret[3]);
+                f(&fwd[3], bwd_chunk(3), &secret[3]);
             }
 
-            f(&fwd[2], &bwd[q - 3], &secret[2]);
+            f(&fwd[2], bwd_chunk(2), &secret[2]);
         }
 
-        f(&fwd[1], &bwd[q - 2], &secret[1]);
+        f(&fwd[1], bwd_chunk(1), &secret[1]);
     }
 
-    f(&fwd[0], &bwd[q - 1], &secret[0]);
+    f(&fwd[0], bwd_chunk(0), &secret[0]);
 }
 
 #[inline]
@@ -166,15 +187,15 @@ pub fn mix_step(data: &[u8; 16], secret: &[u8; 16], seed: u64) -> u64 {
 
 #[inline]
 pub fn to_u64s(bytes: &[u8; 16]) -> [u64; 2] {
-    let (pair, _) = bytes.bp_as_chunks::<8>();
+    let (pair, _) = bytes.bp_as_chunks();
     [pair[0], pair[1]].map(u64::from_le_bytes)
 }
 
 #[inline]
 #[cfg(feature = "xxhash3_128")]
 pub fn pairs_of_u64_bytes(bytes: &[u8]) -> &[[[u8; 16]; 2]] {
-    let (u64_bytes, _) = bytes.bp_as_chunks::<16>();
-    let (pairs, _) = u64_bytes.bp_as_chunks::<2>();
+    let (u64_bytes, _) = bytes.bp_as_chunks();
+    let (pairs, _) = u64_bytes.bp_as_chunks();
     pairs
 }
 
@@ -204,7 +225,7 @@ pub fn stripes_with_tail(block: &[u8]) -> (&[[u8; 64]], &[u8]) {
     }
 }
 
-/// THis exists just to easily map the XXH3 algorithm to Rust as the
+/// This exists just to easily map the XXH3 algorithm to Rust as the
 /// algorithm describes 128-bit results as a pair of high and low u64
 /// values.
 #[derive(Copy, Clone)]
@@ -296,8 +317,6 @@ pub trait SliceBackport<T> {
     fn bp_as_chunks<const N: usize>(&self) -> (&[[T; N]], &[T]);
 
     fn bp_as_chunks_mut<const N: usize>(&mut self) -> (&mut [[T; N]], &mut [T]);
-
-    fn bp_as_rchunks<const N: usize>(&self) -> (&[T], &[[T; N]]);
 }
 
 impl<T> SliceBackport<T> for [T] {
@@ -326,19 +345,6 @@ impl<T> SliceBackport<T> for [T] {
         let head = unsafe { slice::from_raw_parts_mut(head.as_mut_ptr().cast(), len) };
         (head, tail)
     }
-
-    fn bp_as_rchunks<const N: usize>(&self) -> (&[T], &[[T; N]]) {
-        assert_ne!(N, 0);
-        let len = self.len() / N;
-        // Safety: `(len / N) * N` has to be less than or equal to `len`
-        let (head, tail) = unsafe { self.split_at_unchecked(self.len() - len * N) };
-        // Safety: (1) `tail` points to valid data, (2) the alignment
-        // of an array and the individual type are the same, (3) the
-        // valid elements are less-than-or-equal to the original
-        // slice.
-        let tail = unsafe { slice::from_raw_parts(tail.as_ptr().cast(), len) };
-        (head, tail)
-    }
 }
 
 #[cfg(test)]
@@ -362,7 +368,7 @@ pub mod test {
 
     #[test]
     fn default_secret_is_valid() {
-        assert!(DEFAULT_SECRET.is_valid())
+        assert!(DEFAULT_SECRET.is_valid());
     }
 
     #[test]
@@ -392,34 +398,5 @@ pub mod test {
         let (a, b) = x.bp_as_chunks::<6>();
         assert_eq!(a, &[] as &[[i32; 6]]);
         assert_eq!(b, &[1, 2, 3, 4, 5]);
-    }
-
-    #[test]
-    fn backported_as_rchunks() {
-        let x = [1, 2, 3, 4, 5];
-
-        let (a, b) = x.bp_as_rchunks::<1>();
-        assert_eq!(a, &[] as &[i32]);
-        assert_eq!(b, &[[1], [2], [3], [4], [5]]);
-
-        let (a, b) = x.bp_as_rchunks::<2>();
-        assert_eq!(a, &[1]);
-        assert_eq!(b, &[[2, 3], [4, 5]]);
-
-        let (a, b) = x.bp_as_rchunks::<3>();
-        assert_eq!(a, &[1, 2]);
-        assert_eq!(b, &[[3, 4, 5]]);
-
-        let (a, b) = x.bp_as_rchunks::<4>();
-        assert_eq!(a, &[1]);
-        assert_eq!(b, &[[2, 3, 4, 5]]);
-
-        let (a, b) = x.bp_as_rchunks::<5>();
-        assert_eq!(a, &[] as &[i32]);
-        assert_eq!(b, &[[1, 2, 3, 4, 5]]);
-
-        let (a, b) = x.bp_as_rchunks::<6>();
-        assert_eq!(a, &[1, 2, 3, 4, 5]);
-        assert_eq!(b, &[] as &[[i32; 6]]);
     }
 }

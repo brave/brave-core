@@ -1,4 +1,4 @@
-#![doc(html_root_url = "https://docs.rs/ipnet/2.11.0")]
+#![doc(html_root_url = "https://docs.rs/ipnet/2.12.2")]
 //! Types for IPv4 and IPv6 network addresses.
 //!
 //! This module provides types and useful methods for working with IPv4
@@ -7,7 +7,7 @@
 //! [`IpAddr`], [`Ipv4Addr`], and [`Ipv6Addr`] types already provided in
 //! Rust's standard library and align to their design to stay
 //! consistent.
-//! 
+//!
 //! The module also provides the [`IpSubnets`], [`Ipv4Subnets`], and
 //! [`Ipv6Subnets`] types for iterating over the subnets contained in
 //! an IP address range. The [`IpAddrRange`], [`Ipv4AddrRange`], and
@@ -57,26 +57,71 @@
 //! [`IpBitAnd`]: trait.IpBitAnd.html
 //! [`IpBitOr`]: trait.IpBitOr.html
 //!
-//! # Serde support
+//! # Features
 //!
-//! This library comes with support for [serde](https://serde.rs) but
-//! it's not enabled by default. Use the `serde` [feature] to enable.
-//! 
-//! ```toml
-//! [dependencies]
-//! ipnet = { version = "2", features = ["serde"] }
-//! ```
+//! These flags can be used to extend functionality using third-party
+//! dependencies or optional libraries. See the [features] reference
+//! for more information.
+//!
+//! [features]: https://doc.rust-lang.org/cargo/reference/features.html#the-features-section
+//!
+//! ## "std"
+//!
+//! Enabled by default. Disabling this feature will mandate the use of the
+//! [core] and [alloc] crates where applicable instead of [std].
+//!
+//! [core]: https://doc.rust-lang.org/core/
+//! [alloc]: https://doc.rust-lang.org/alloc/
+//! [std]: https://doc.rust-lang.org/std/
+//!
+//! ## "serde"
+//!
+//! Uses [`serde`] to implement the `Serialize` and
+//! `Deserialize` traits.
 //!
 //! For human readable formats (e.g. JSON) the `IpNet`, `Ipv4Net`, and
 //! `Ipv6Net` types will serialize to their `Display` strings.
-//! 
+//!
 //! For compact binary formats (e.g. Bincode) the `Ipv4Net` and
 //! `Ipv6Net` types will serialize to a string of 5 and 17 bytes that
-//! consist of the network address octects followed by the prefix
+//! consist of the network address octets followed by the prefix
 //! length. The `IpNet` type will serialize to an Enum with the V4 or V6
 //! variant index prepending the above string of 5 or 17 bytes.
 //!
-//! [feature]: https://doc.rust-lang.org/cargo/reference/manifest.html#the-features-section
+//! [`serde`]: https://serde.rs
+//!
+//! ## "heapless" [^1]
+//!
+//! Uses [`heapless`] to optimize serialization performance by avoiding
+//! dynamic allocations.
+//!
+//! [`heapless`]: https://docs.rs/heapless/latest/heapless/
+//!
+//! ## "schemars08"
+//!
+//! Uses [`schemars@0.8.*`] to implement the `JsonSchema` trait.
+//!
+//! [`schemars@0.8.*`]: https://docs.rs/schemars/0.8/schemars/
+//!
+//! ## "schemars1"
+//!
+//! Uses [`schemars@1.*`] to implement the `JsonSchema` trait.
+//!
+//! [`schemars@1.*`]: https://docs.rs/schemars/1/schemars/
+//!
+//! ## Legacy features
+//!
+//! The following features are set to be removed in the next major
+//! release. Use the provided analogs instead.
+//!
+//! | Name         | Analog                   | Reason for removal                                              |
+//! | ------------ | ------------------------ | --------------------------------------------------------------- |
+//! | `json` [^1]  | `schemars08` and `serde` | Unconventional naming.                                          |
+//! | `ser_as_str` | `heapless` [^1]          | Doesn't enable the `serde` feature but does nothing on its own. |
+//! | `schemars`   | `schemars08`             | Replaced by `schemars08`.                                       |
+//!
+//! [^1]: Enabling these features will also enable the `serde` feature.
+//!
 
 #![no_std]
 
@@ -86,21 +131,28 @@ extern crate std;
 #[cfg_attr(test, macro_use)]
 extern crate alloc;
 
+#[cfg(feature = "schemars08")]
+extern crate schemars08;
+#[cfg(feature = "schemars1")]
+extern crate schemars1;
 #[cfg(feature = "serde")]
 extern crate serde;
-#[cfg(feature = "schemars")]
-extern crate schemars;
 
-pub use self::ipext::{IpAdd, IpSub, IpBitAnd, IpBitOr, IpAddrRange, Ipv4AddrRange, Ipv6AddrRange};
-pub use self::ipnet::{IpNet, Ipv4Net, Ipv6Net, PrefixLenError, IpSubnets, Ipv4Subnets, Ipv6Subnets};
-pub use self::parser::AddrParseError;
+pub use self::ipext::{IpAdd, IpAddrRange, IpBitAnd, IpBitOr, IpSub, Ipv4AddrRange, Ipv6AddrRange};
+pub use self::ipnet::{
+    IpNet, IpSubnets, Ipv4Net, Ipv4Subnets, Ipv6Net, Ipv6Subnets, PrefixLenError,
+};
 pub use self::mask::{ip_mask_to_prefix, ipv4_mask_to_prefix, ipv6_mask_to_prefix};
+pub use self::parser::AddrParseError;
 
 mod ipext;
 mod ipnet;
-mod parser;
 mod mask;
+mod parser;
+
+#[cfg(feature = "schemars08")]
+mod ipnet_schemars_08;
+#[cfg(feature = "schemars1")]
+mod ipnet_schemars_1;
 #[cfg(feature = "serde")]
 mod ipnet_serde;
-#[cfg(feature = "schemars")]
-mod ipnet_schemars;

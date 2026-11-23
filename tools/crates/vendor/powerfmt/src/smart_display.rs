@@ -186,7 +186,7 @@ macro_rules! __not_public_at_root__padded_width_of {
     };
     (@options_inner [alternate($e:expr) $($remaining:tt)*] [$($expansion:tt)*]) => {
         $crate::smart_display::padded_width_of!(@options_inner [$($remaining)*] [
-            $($expansion)*.with_width($e)
+            $($expansion)*.with_alternate($e)
         ])
     };
     (@options_inner [sign_aware_zero_pad($e:expr) $($remaining:tt)*] [$($expansion:tt)*]) => {
@@ -464,6 +464,7 @@ impl FormatterOptions {
 }
 
 impl From<&Formatter<'_>> for FormatterOptions {
+    #[inline]
     fn from(value: &Formatter<'_>) -> Self {
         *Self::default()
             .with_fill(value.fill())
@@ -511,6 +512,7 @@ where
     T: SmartDisplay,
     T::Metadata: Debug,
 {
+    #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         f.debug_struct("Metadata")
             .field("unpadded_width", &self.unpadded_width)
@@ -524,6 +526,7 @@ where
     T: SmartDisplay,
     T::Metadata: Clone,
 {
+    #[inline]
     fn clone(&self) -> Self {
         Self {
             unpadded_width: self.unpadded_width,
@@ -546,6 +549,7 @@ where
 {
     /// Creates a new `Metadata` with the given width and metadata. While the width _should_ be
     /// exact, this is not a requirement for soundness.
+    #[inline]
     pub const fn new(unpadded_width: usize, _value: &T, metadata: T::Metadata) -> Self {
         Self {
             unpadded_width,
@@ -556,6 +560,7 @@ where
 
     /// Reuse the metadata for another type. This is useful when implementing [`SmartDisplay`] for a
     /// type that wraps another type. Both type's metadata type must be the same.
+    #[inline]
     pub fn reuse<'b, U>(self) -> Metadata<'b, U>
     where
         'a: 'b,
@@ -569,11 +574,13 @@ where
     }
 
     /// Obtain the width of the value before padding.
+    #[inline]
     pub const fn unpadded_width(&self) -> usize {
         self.unpadded_width
     }
 
     /// Obtain the width of the value after padding.
+    #[inline]
     pub fn padded_width(&self, f: FormatterOptions) -> usize {
         match f.width() {
             Some(requested_width) => cmp::max(self.unpadded_width(), requested_width),
@@ -584,6 +591,7 @@ where
 
 impl Metadata<'_, Infallible> {
     /// Obtain the width of the value before padding, given the formatter options.
+    #[inline]
     pub fn unpadded_width_of<T>(value: T, f: FormatterOptions) -> usize
     where
         T: SmartDisplay,
@@ -592,6 +600,7 @@ impl Metadata<'_, Infallible> {
     }
 
     /// Obtain the width of the value after padding, given the formatter options.
+    #[inline]
     pub fn padded_width_of<T>(value: T, f: FormatterOptions) -> usize
     where
         T: SmartDisplay,
@@ -607,6 +616,7 @@ where
 {
     type Target = T::Metadata;
 
+    #[inline]
     fn deref(&self) -> &T::Metadata {
         &self.metadata
     }
@@ -626,7 +636,7 @@ where
 /// recommended to implement only `fmt_with_metadata`. `fmt` should be implemented if and only if
 /// the type does not require any of the calculated metadata. In that situation, `fmt_with_metadata`
 /// should be omitted.
-#[cfg_attr(__powerfmt_docs, rustc_must_implement_one_of(fmt, fmt_with_metadata))]
+#[cfg_attr(docsrs, rustc_must_implement_one_of(fmt, fmt_with_metadata))]
 pub trait SmartDisplay: Display {
     /// User-provided metadata type.
     type Metadata;
@@ -679,6 +689,7 @@ pub trait SmartDisplay: Display {
     /// formatter.
     ///
     /// If the metadata is not needed, you should implement the `fmt` method instead.
+    #[inline]
     fn fmt_with_metadata(&self, f: &mut Formatter<'_>, _metadata: Metadata<'_, Self>) -> Result {
         SmartDisplay::fmt(self, f)
     }
@@ -688,6 +699,7 @@ pub trait SmartDisplay: Display {
     /// The default implementation of this method calls `fmt_with_metadata` with the result of
     /// `metadata`. Generally speaking, this method should not be implemented. You should implement
     /// the `fmt_with_metadata` method instead.
+    #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         let metadata = self.metadata(f.into());
         self.fmt_with_metadata(f, metadata)

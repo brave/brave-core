@@ -70,6 +70,41 @@ impl GrpcCode {
     }
 }
 
+/// Converts an `i32` gRPC status code into a [`GrpcCode`].
+///
+/// Unrecognized codes (outside 0-16) map to [`GrpcCode::Unknown`].
+impl From<i32> for GrpcCode {
+    fn from(value: i32) -> Self {
+        match value {
+            0 => GrpcCode::Ok,
+            1 => GrpcCode::Cancelled,
+            2 => GrpcCode::Unknown,
+            3 => GrpcCode::InvalidArgument,
+            4 => GrpcCode::DeadlineExceeded,
+            5 => GrpcCode::NotFound,
+            6 => GrpcCode::AlreadyExists,
+            7 => GrpcCode::PermissionDenied,
+            8 => GrpcCode::ResourceExhausted,
+            9 => GrpcCode::FailedPrecondition,
+            10 => GrpcCode::Aborted,
+            11 => GrpcCode::OutOfRange,
+            12 => GrpcCode::Unimplemented,
+            13 => GrpcCode::Internal,
+            14 => GrpcCode::Unavailable,
+            15 => GrpcCode::DataLoss,
+            16 => GrpcCode::Unauthenticated,
+
+            _ => GrpcCode::Unknown,
+        }
+    }
+}
+
+impl From<NonZeroI32> for GrpcCode {
+    fn from(value: NonZeroI32) -> Self {
+        GrpcCode::from(value.get())
+    }
+}
+
 bitflags! {
     #[derive(Debug, Clone, Copy)]
     pub(crate) struct GrpcCodeBitmask: u32 {
@@ -353,5 +388,30 @@ mod tests {
         status: "16",
         success_flags: GrpcCodeBitmask::OK | GrpcCodeBitmask::INVALID_ARGUMENT,
         expected: ParsedGrpcStatus::NonSuccess(NonZeroI32::new(16).unwrap()),
+    }
+
+    #[test]
+    fn grpc_code_from_i32_known_codes() {
+        assert!(matches!(GrpcCode::from(0), GrpcCode::Ok));
+        assert!(matches!(GrpcCode::from(1), GrpcCode::Cancelled));
+        assert!(matches!(GrpcCode::from(4), GrpcCode::DeadlineExceeded));
+        assert!(matches!(GrpcCode::from(13), GrpcCode::Internal));
+        assert!(matches!(GrpcCode::from(16), GrpcCode::Unauthenticated));
+    }
+
+    #[test]
+    fn grpc_code_from_i32_unknown_codes() {
+        assert!(matches!(GrpcCode::from(17), GrpcCode::Unknown));
+        assert!(matches!(GrpcCode::from(-1), GrpcCode::Unknown));
+        assert!(matches!(GrpcCode::from(9999), GrpcCode::Unknown));
+    }
+
+    #[test]
+    fn grpc_code_from_non_zero_i32() {
+        let code = NonZeroI32::new(7).unwrap();
+        assert!(matches!(GrpcCode::from(code), GrpcCode::PermissionDenied));
+
+        let code = NonZeroI32::new(99).unwrap();
+        assert!(matches!(GrpcCode::from(code), GrpcCode::Unknown));
     }
 }

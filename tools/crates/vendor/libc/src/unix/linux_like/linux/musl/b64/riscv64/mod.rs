@@ -1,17 +1,12 @@
 //! RISC-V-specific definitions for 64-bit linux-like values
 
+use crate::off_t;
 use crate::prelude::*;
-use crate::{
-    off64_t,
-    off_t,
-};
 
 pub type wchar_t = c_int;
 
 pub type nlink_t = c_uint;
 pub type blksize_t = c_int;
-pub type __u64 = c_ulonglong;
-pub type __s64 = c_longlong;
 
 s! {
     pub struct stat {
@@ -22,10 +17,10 @@ s! {
         pub st_uid: crate::uid_t,
         pub st_gid: crate::gid_t,
         pub st_rdev: crate::dev_t,
-        pub __pad1: crate::dev_t,
+        __pad1: Padding<crate::dev_t>,
         pub st_size: off_t,
         pub st_blksize: crate::blksize_t,
-        pub __pad2: c_int,
+        __pad2: Padding<c_int>,
         pub st_blocks: crate::blkcnt_t,
         pub st_atime: crate::time_t,
         pub st_atime_nsec: c_long,
@@ -36,40 +31,16 @@ s! {
         __unused: Padding<[c_int; 2usize]>,
     }
 
-    pub struct stat64 {
-        pub st_dev: crate::dev_t,
-        pub st_ino: crate::ino64_t,
-        pub st_mode: crate::mode_t,
-        pub st_nlink: crate::nlink_t,
-        pub st_uid: crate::uid_t,
-        pub st_gid: crate::gid_t,
-        pub st_rdev: crate::dev_t,
-        pub __pad1: crate::dev_t,
-        pub st_size: off64_t,
-        pub st_blksize: crate::blksize_t,
-        pub __pad2: c_int,
-        pub st_blocks: crate::blkcnt_t,
-        pub st_atime: crate::time_t,
-        pub st_atime_nsec: c_long,
-        pub st_mtime: crate::time_t,
-        pub st_mtime_nsec: c_long,
-        pub st_ctime: crate::time_t,
-        pub st_ctime_nsec: c_long,
-        __unused: Padding<[c_int; 2]>,
-    }
-
     pub struct ipc_perm {
         pub __key: crate::key_t,
         pub uid: crate::uid_t,
         pub gid: crate::gid_t,
         pub cuid: crate::uid_t,
         pub cgid: crate::gid_t,
-        pub mode: c_ushort,
-        __pad1: Padding<c_ushort>,
-        pub __seq: c_ushort,
-        __pad2: Padding<c_ushort>,
-        __unused1: Padding<c_ulong>,
-        __unused2: Padding<c_ulong>,
+        pub mode: crate::mode_t,
+        pub __ipc_perm_seq: c_int,
+        __pad1: Padding<c_long>,
+        __pad2: Padding<c_long>,
     }
 
     #[repr(align(8))]
@@ -90,7 +61,7 @@ s! {
 
 s_no_extra_traits! {
     pub struct ucontext_t {
-        pub __uc_flags: c_ulong,
+        pub uc_flags: c_ulong,
         pub uc_link: *mut ucontext_t,
         pub uc_stack: crate::stack_t,
         pub uc_sigmask: crate::sigset_t,
@@ -123,7 +94,7 @@ s_no_extra_traits! {
     pub struct __riscv_mc_q_ext_state {
         pub __f: [c_ulonglong; 64],
         pub __fcsr: c_uint,
-        pub __glibc_reserved: [c_uint; 3],
+        __reserved: Padding<[c_uint; 3]>,
     }
 }
 
@@ -426,6 +397,7 @@ pub const SYS_mount_setattr: c_long = 442;
 pub const SYS_landlock_create_ruleset: c_long = 444;
 pub const SYS_landlock_add_rule: c_long = 445;
 pub const SYS_landlock_restrict_self: c_long = 446;
+pub const SYS_futex_waitv: c_long = 449;
 
 pub const O_APPEND: c_int = 1024;
 pub const O_DIRECT: c_int = 0x4000;
@@ -661,12 +633,3 @@ pub const TOSTOP: crate::tcflag_t = 0x00000100;
 pub const FLUSHO: crate::tcflag_t = 0x00001000;
 
 pub const NGREG: usize = 32;
-pub const REG_PC: usize = 0;
-pub const REG_RA: usize = 1;
-pub const REG_SP: usize = 2;
-pub const REG_TP: usize = 4;
-pub const REG_S0: usize = 8;
-pub const REG_S1: usize = 9;
-pub const REG_A0: usize = 10;
-pub const REG_S2: usize = 18;
-pub const REG_NARGS: usize = 8;

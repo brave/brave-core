@@ -52,7 +52,7 @@ Ok(
 proptest! {
   #[test]
   #[cfg_attr(miri, ignore)]  // See https://github.com/AltSysrq/proptest/issues/253
-  fn complete_take_while_m_n_bounds(m in 0..20usize, n in 0..20usize, valid in 0..20usize, invalid in 0..20usize) {
+  fn complete_take_while_m_n_bounds(m in 0..20_usize, n in 0..20_usize, valid in 0..20_usize, invalid in 0..20_usize) {
       let input = format!("{:a<valid$}{:b<invalid$}", "", "", valid=valid, invalid=invalid);
       let mut model_input = input.as_str();
       let expected = model_complete_take_while_m_n(m, n, valid, &mut model_input);

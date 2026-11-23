@@ -81,4 +81,5 @@ impl_for_int! {
     u16 => u16_unsuffixed
     i32 => i32_unsuffixed
     u32 => u32_unsuffixed
+    i64 => i64_unsuffixed
 }

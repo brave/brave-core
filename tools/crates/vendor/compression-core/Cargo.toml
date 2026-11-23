@@ -12,7 +12,7 @@
 [package]
 edition = "2018"
 name = "compression-core"
-version = "0.4.31"
+version = "0.4.34"
 authors = [
     "Wim Looman <wim@nemo157.com>",
     "Allen Bui <fairingrey@gmail.com>",
@@ -27,6 +27,12 @@ description = """
 Abstractions for compression algorithms.
 """
 readme = "README.md"
+keywords = [
+    "compression",
+    "codec",
+    "buffer",
+    "async-compression",
+]
 categories = [
     "compression",
     "asynchronous",
@@ -44,9 +50,15 @@ path = "src/lib.rs"
 
 [dependencies]
 
-[lints.rust]
-rust_2018_idioms = "deny"
-
 [lints.rust.missing_debug_implementations]
 level = "deny"
 priority = -1
+
+[lints.rust.rust_2018_idioms]
+level = "deny"
+priority = -1
+
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = ["cfg(async_compression_unstable)"]

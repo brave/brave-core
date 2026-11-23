@@ -6,6 +6,8 @@ use crate::{
 
 pub type fflags_t = u32;
 
+pub type Elf32_Lword = u64;
+
 pub type vm_prot_t = u_char;
 pub type kvaddr_t = u64;
 pub type segsz_t = isize;
@@ -256,14 +258,14 @@ s! {
         pub aio_offset: off_t,
         pub aio_buf: *mut c_void,
         pub aio_nbytes: size_t,
-        __unused1: [c_int; 2],
-        __unused2: *mut c_void,
+        __unused1: Padding<[c_int; 2]>,
+        __unused2: Padding<*mut c_void>,
         pub aio_lio_opcode: c_int,
         pub aio_reqprio: c_int,
         // unused 3 through 5 are the __aiocb_private structure
-        __unused3: c_long,
-        __unused4: c_long,
-        __unused5: *mut c_void,
+        __unused3: Padding<c_long>,
+        __unused4: Padding<c_long>,
+        __unused5: Padding<*mut c_void>,
         pub aio_sigevent: sigevent,
     }
 
@@ -276,6 +278,24 @@ s! {
         pub ip6s: c_uint,
         pub ip4: *mut crate::in_addr,
         pub ip6: *mut crate::in6_addr,
+    }
+
+    // netinet/in.h: RFC 3678 multicast group membership requests
+    pub struct ip_mreq_source {
+        pub imr_multiaddr: crate::in_addr,
+        pub imr_sourceaddr: crate::in_addr,
+        pub imr_interface: crate::in_addr,
+    }
+
+    pub struct group_req {
+        pub gr_interface: u32,
+        pub gr_group: crate::sockaddr_storage,
+    }
+
+    pub struct group_source_req {
+        pub gsr_interface: u32,
+        pub gsr_group: crate::sockaddr_storage,
+        pub gsr_source: crate::sockaddr_storage,
     }
 
     pub struct statvfs {
@@ -417,22 +437,22 @@ s! {
         m_ceilings: [u32; 2],
         m_rb_link: crate::uintptr_t,
         #[cfg(target_pointer_width = "32")]
-        m_pad: u32,
-        m_spare: [u32; 2],
+        m_pad: Padding<u32>,
+        m_spare: Padding<[u32; 2]>,
     }
 
     pub struct ucond {
         c_has_waiters: u32,
         c_flags: u32,
         c_clockid: u32,
-        c_spare: [u32; 1],
+        c_spare: Padding<[u32; 1]>,
     }
 
     pub struct uuid {
         pub time_low: u32,
         pub time_mid: u16,
         pub time_hi_and_version: u16,
-        pub clock_seq_hi_and_reserved: u8,
+        clock_seq_hi_and_reserved: Padding<u8>,
         pub clock_seq_low: u8,
         pub node: [u8; _UUID_NODE_LEN],
     }
@@ -485,9 +505,9 @@ s! {
         #[cfg(not(freebsd11))]
         pub kve_vn_rdev: u64,
         #[cfg(not(freebsd11))]
-        _kve_is_spare: [c_int; 8],
+        _kve_is_spare: Padding<[c_int; 8]>,
         #[cfg(freebsd11)]
-        _kve_is_spare: [c_int; 12],
+        _kve_is_spare: Padding<[c_int; 12]>,
         pub kve_path: [[c_char; 32]; 32],
     }
 
@@ -559,8 +579,8 @@ s! {
         pub ksw_used: u_int,
         pub ksw_total: u_int,
         pub ksw_flags: c_int,
-        pub ksw_reserved1: u_int,
-        pub ksw_reserved2: u_int,
+        ksw_reserved1: Padding<u_int>,
+        ksw_reserved2: Padding<u_int>,
     }
 
     pub struct nlist {
@@ -829,7 +849,9 @@ s! {
         pub offset: u8,
         /// read length
         pub len: u8,
+        // "page" on FreeBSD 16
         pub spare0: u8,
+        // "bank" plus "spare" on FreeBSD 16
         pub spare1: u32,
         /// read buffer
         pub data: [u8; 8],
@@ -1645,16 +1667,16 @@ s! {
         _priv: [u8; 304], // FIXME(freebsd): this is really a giant union
         pub kf_status: u16,
         _kf_pad1: Padding<u16>,
-        _kf_ispare0: c_int,
+        _kf_ispare0: Padding<c_int>,
         pub kf_cap_rights: crate::cap_rights_t,
-        _kf_cap_spare: u64,
+        _kf_cap_spare: Padding<u64>,
         pub kf_path: [c_char; crate::PATH_MAX as usize],
     }
 }
 
 s_no_extra_traits! {
     pub union __c_anonymous_cr_pid {
-        __cr_unused: *mut c_void,
+        __cr_unused: Padding<*mut c_void>,
         pub cr_pid: crate::pid_t,
     }
 
@@ -1713,21 +1735,21 @@ s_no_extra_traits! {
         pub uc_link: *mut crate::ucontext_t,
         pub uc_stack: crate::stack_t,
         pub uc_flags: c_int,
-        __spare__: [c_int; 4],
+        __spare__: Padding<[c_int; 4]>,
     }
 
     #[repr(align(8))]
     pub struct xinpgen {
         pub xig_len: ksize_t,
         pub xig_count: u32,
-        _xig_spare32: u32,
+        _xig_spare32: Padding<u32>,
         pub xig_gen: inp_gen_t,
         pub xig_sogen: so_gen_t,
-        _xig_spare64: [u64; 4],
+        _xig_spare64: Padding<[u64; 4]>,
     }
 
     pub struct in_addr_4in6 {
-        _ia46_pad32: [u32; 3],
+        _ia46_pad32: Padding<[u32; 3]>,
         pub ia46_addr4: crate::in_addr,
     }
 
@@ -1755,8 +1777,8 @@ s_no_extra_traits! {
         // Note: this field is called `gen` in upstream FreeBSD, but `gen` is
         // reserved keyword in Rust since the 2024 Edition, hence `gennum`.
         pub gennum: u64,
-        _rsrv1: [u64; 8],
-        _rsrv2: [u32; 8],
+        _rsrv1: Padding<[u64; 8]>,
+        _rsrv2: Padding<[u32; 8]>,
         pub iv: [u8; 32],
         pub cipher_algorithm: i32,
         pub auth_algorithm: i32,
@@ -2157,6 +2179,47 @@ pub const POSIX_FADV_WILLNEED: c_int = 3;
 pub const POSIX_FADV_DONTNEED: c_int = 4;
 pub const POSIX_FADV_NOREUSE: c_int = 5;
 
+pub const REG_BASIC: c_int = 0o0000;
+pub const REG_EXTENDED: c_int = 0o0001;
+pub const REG_ICASE: c_int = 0o0002;
+pub const REG_NOSUB: c_int = 0o0004;
+pub const REG_NEWLINE: c_int = 0o0010;
+pub const REG_NOSPEC: c_int = 0o0020;
+pub const REG_PEND: c_int = 0o0040;
+pub const REG_DUMP: c_int = 0o0200;
+
+pub const REG_NOMATCH: c_int = 1;
+pub const REG_BADPAT: c_int = 2;
+pub const REG_ECOLLATE: c_int = 3;
+pub const REG_ECTYPE: c_int = 4;
+pub const REG_EESCAPE: c_int = 5;
+pub const REG_ESUBREG: c_int = 6;
+pub const REG_EBRACK: c_int = 7;
+pub const REG_EPAREN: c_int = 8;
+pub const REG_EBRACE: c_int = 9;
+pub const REG_BADBR: c_int = 10;
+pub const REG_ERANGE: c_int = 11;
+pub const REG_ESPACE: c_int = 12;
+pub const REG_BADRPT: c_int = 13;
+pub const REG_EMPTY: c_int = 14;
+pub const REG_ASSERT: c_int = 15;
+pub const REG_INVARG: c_int = 16;
+pub const REG_ILLSEQ: c_int = 17;
+pub const REG_ATOI: c_int = 255;
+pub const REG_ITOA: c_int = 0o0400;
+
+pub const REG_NOTBOL: c_int = 0o00001;
+pub const REG_NOTEOL: c_int = 0o00002;
+pub const REG_STARTEND: c_int = 0o00004;
+pub const REG_TRACE: c_int = 0o00400;
+pub const REG_LARGE: c_int = 0o01000;
+pub const REG_BACKR: c_int = 0o02000;
+
+// For getrandom()
+pub const GRND_NONBLOCK: c_uint = 0x1;
+pub const GRND_RANDOM: c_uint = 0x2;
+pub const GRND_INSECURE: c_uint = 0x4;
+
 pub const POLLINIGNEOF: c_short = 0x2000;
 pub const POLLRDHUP: c_short = 0x4000;
 
@@ -2217,6 +2280,8 @@ pub const NOTE_EXIT: u32 = 0x80000000;
 pub const NOTE_FORK: u32 = 0x40000000;
 pub const NOTE_EXEC: u32 = 0x20000000;
 pub const NOTE_PDATAMASK: u32 = 0x000fffff;
+#[deprecated(since = "1.0.0", note = "Not stable across OS versions")]
+#[doc(hidden)]
 pub const NOTE_PCTRLMASK: u32 = 0xf0000000;
 pub const NOTE_TRACK: u32 = 0x00000001;
 pub const NOTE_TRACKERR: u32 = 0x00000002;
@@ -2229,12 +2294,8 @@ pub const NOTE_ABSTIME: u32 = 0x00000010;
 
 pub const MADV_PROTECT: c_int = 10;
 
-#[doc(hidden)]
-#[deprecated(
-    since = "0.2.72",
-    note = "CTL_UNSPEC is deprecated. Use CTL_SYSCTL instead"
-)]
-pub const CTL_UNSPEC: c_int = 0;
+pub const INHERIT_ZERO: c_int = 3;
+
 pub const CTL_SYSCTL: c_int = 0;
 pub const CTL_KERN: c_int = 1;
 pub const CTL_VM: c_int = 2;
@@ -2267,7 +2328,7 @@ pub const CTLTYPE_S16: c_int = 0xd;
 pub const CTLTYPE_S32: c_int = 0xe;
 pub const CTLTYPE_U32: c_int = 0xf;
 
-pub const CTLFLAG_RD: c_int = 0x80000000;
+pub const CTLFLAG_RD: c_int = u32_cast_int(0x80000000);
 pub const CTLFLAG_WR: c_int = 0x40000000;
 pub const CTLFLAG_RW: c_int = CTLFLAG_RD | CTLFLAG_WR;
 pub const CTLFLAG_DORMANT: c_int = 0x20000000;
@@ -2398,14 +2459,39 @@ pub const HW_MACHINE_ARCH: c_int = 11;
 pub const HW_REALMEM: c_int = 12;
 
 pub const USER_CS_PATH: c_int = 1;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_BC_BASE_MAX: c_int = 2;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_BC_DIM_MAX: c_int = 3;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_BC_SCALE_MAX: c_int = 4;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_BC_STRING_MAX: c_int = 5;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_COLL_WEIGHTS_MAX: c_int = 6;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_EXPR_NEST_MAX: c_int = 7;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_LINE_MAX: c_int = 8;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_RE_DUP_MAX: c_int = 9;
+
 pub const USER_POSIX2_VERSION: c_int = 10;
 pub const USER_POSIX2_C_BIND: c_int = 11;
 pub const USER_POSIX2_C_DEV: c_int = 12;
@@ -2515,13 +2601,16 @@ pub const SO_PROTOTYPE: c_int = SO_PROTOCOL;
 pub const SO_TS_CLOCK: c_int = 0x1017;
 pub const SO_DOMAIN: c_int = 0x1019;
 pub const SO_SPLICE: c_int = 0x1023;
-pub const SO_VENDOR: c_int = 0x80000000;
+pub const SO_VENDOR: c_int = u32_cast_int(0x80000000);
 
 pub const SO_TS_REALTIME_MICRO: c_int = 0;
 pub const SO_TS_BINTIME: c_int = 1;
 pub const SO_TS_REALTIME: c_int = 2;
 pub const SO_TS_MONOTONIC: c_int = 3;
 pub const SO_TS_DEFAULT: c_int = SO_TS_REALTIME_MICRO;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const SO_TS_CLOCK_MAX: c_int = SO_TS_MONOTONIC;
 
 pub const LOCAL_CREDS: c_int = 2;
@@ -2608,6 +2697,11 @@ pub const PROC_NO_NEW_PRIVS_CTL: c_int = 19;
 pub const PROC_NO_NEW_PRIVS_STATUS: c_int = 20;
 pub const PROC_WXMAP_CTL: c_int = 21;
 pub const PROC_WXMAP_STATUS: c_int = 22;
+pub const PROC_LOGSIGEXIT_CTL: c_int = 23;
+pub const PROC_LOGSIGEXIT_STATUS: c_int = 24;
+pub const PROC_LOGSIGEXIT_CTL_NOFORCE: c_int = 1;
+pub const PROC_LOGSIGEXIT_CTL_FORCE_ENABLE: c_int = 2;
+pub const PROC_LOGSIGEXIT_CTL_FORCE_DISABLE: c_int = 3;
 pub const PROC_PROCCTL_MD_MIN: c_int = 0x10000000;
 
 pub const PPROT_SET: c_int = 1;
@@ -2625,12 +2719,12 @@ pub const PROC_TRAPCAP_CTL_DISABLE: c_int = 2;
 pub const PROC_ASLR_FORCE_ENABLE: c_int = 1;
 pub const PROC_ASLR_FORCE_DISABLE: c_int = 2;
 pub const PROC_ASLR_NOFORCE: c_int = 3;
-pub const PROC_ASLR_ACTIVE: c_int = 0x80000000;
+pub const PROC_ASLR_ACTIVE: c_int = u32_cast_int(0x80000000);
 
 pub const PROC_PROTMAX_FORCE_ENABLE: c_int = 1;
 pub const PROC_PROTMAX_FORCE_DISABLE: c_int = 2;
 pub const PROC_PROTMAX_NOFORCE: c_int = 3;
-pub const PROC_PROTMAX_ACTIVE: c_int = 0x80000000;
+pub const PROC_PROTMAX_ACTIVE: c_int = u32_cast_int(0x80000000);
 
 pub const PROC_STACKGAP_ENABLE: c_int = 0x0001;
 pub const PROC_STACKGAP_DISABLE: c_int = 0x0002;
@@ -2642,7 +2736,7 @@ pub const PROC_NO_NEW_PRIVS_DISABLE: c_int = 2;
 
 pub const PROC_WX_MAPPINGS_PERMIT: c_int = 0x0001;
 pub const PROC_WX_MAPPINGS_DISALLOW_EXEC: c_int = 0x0002;
-pub const PROC_WXORX_ENFORCE: c_int = 0x80000000;
+pub const PROC_WXORX_ENFORCE: c_int = u32_cast_int(0x80000000);
 
 pub const AF_SLOW: c_int = 33;
 pub const AF_SCLUSTER: c_int = 34;
@@ -2669,13 +2763,6 @@ pub const IFF_POINTOPOINT: c_int = 0x10;
 pub const IFF_KNOWSEPOCH: c_int = 0x20;
 /// (d) resources allocated
 pub const IFF_RUNNING: c_int = 0x40;
-#[doc(hidden)]
-#[deprecated(
-    since = "0.2.54",
-    note = "IFF_DRV_RUNNING is deprecated. Use the portable IFF_RUNNING instead"
-)]
-/// (d) resources allocate
-pub const IFF_DRV_RUNNING: c_int = 0x40;
 /// (n) no address resolution protocol
 pub const IFF_NOARP: c_int = 0x80;
 /// (n) receive all packets
@@ -2684,10 +2771,6 @@ pub const IFF_PROMISC: c_int = 0x100;
 pub const IFF_ALLMULTI: c_int = 0x200;
 /// (d) tx hardware queue is full
 pub const IFF_OACTIVE: c_int = 0x400;
-#[doc(hidden)]
-#[deprecated(since = "0.2.54", note = "Use the portable `IFF_OACTIVE` instead")]
-/// (d) tx hardware queue is full
-pub const IFF_DRV_OACTIVE: c_int = 0x400;
 /// (i) can't hear own transmissions
 pub const IFF_SIMPLEX: c_int = 0x800;
 /// per link layer defined bit
@@ -2786,7 +2869,7 @@ pub const IFCAP_VXLAN_HWCSUM: c_int = 0x20000000;
 /// can do IFCAP_TSO on VXLANs
 pub const IFCAP_VXLAN_HWTSO: c_int = 0x40000000;
 /// can do TLS with rate limiting
-pub const IFCAP_TXTLS_RTLMT: c_int = 0x80000000;
+pub const IFCAP_TXTLS_RTLMT: c_int = u32_cast_int(0x80000000);
 
 pub const IFCAP_HWCSUM_IPV6: c_int = IFCAP_RXCSUM_IPV6 | IFCAP_TXCSUM_IPV6;
 pub const IFCAP_HWCSUM: c_int = IFCAP_RXCSUM | IFCAP_TXCSUM;
@@ -2802,6 +2885,8 @@ pub const IFNET_SLOWHZ: c_int = 1;
 pub const IFAN_ARRIVAL: c_int = 0;
 pub const IFAN_DEPARTURE: c_int = 1;
 
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const IFSTATMAX: c_int = 800;
 
 pub const RSS_FUNC_NONE: c_int = 0;
@@ -2823,51 +2908,6 @@ pub const IFNET_PCP_NONE: c_int = 0xff;
 pub const IFDR_MSG_SIZE: c_int = 64;
 pub const IFDR_REASON_MSG: c_int = 1;
 pub const IFDR_REASON_VENDOR: c_int = 2;
-
-// sys/net/if_mib.h
-
-/// non-interface-specific
-pub const IFMIB_SYSTEM: c_int = 1;
-/// per-interface data table
-pub const IFMIB_IFDATA: c_int = 2;
-
-/// generic stats for all kinds of ifaces
-pub const IFDATA_GENERAL: c_int = 1;
-/// specific to the type of interface
-pub const IFDATA_LINKSPECIFIC: c_int = 2;
-/// driver name and unit
-pub const IFDATA_DRIVERNAME: c_int = 3;
-
-/// number of interfaces configured
-pub const IFMIB_IFCOUNT: c_int = 1;
-
-/// functions not specific to a type of iface
-pub const NETLINK_GENERIC: c_int = 0;
-
-pub const DOT3COMPLIANCE_STATS: c_int = 1;
-pub const DOT3COMPLIANCE_COLLS: c_int = 2;
-
-pub const dot3ChipSetAMD7990: c_int = 1;
-pub const dot3ChipSetAMD79900: c_int = 2;
-pub const dot3ChipSetAMD79C940: c_int = 3;
-
-pub const dot3ChipSetIntel82586: c_int = 1;
-pub const dot3ChipSetIntel82596: c_int = 2;
-pub const dot3ChipSetIntel82557: c_int = 3;
-
-pub const dot3ChipSetNational8390: c_int = 1;
-pub const dot3ChipSetNationalSonic: c_int = 2;
-
-pub const dot3ChipSetFujitsu86950: c_int = 1;
-
-pub const dot3ChipSetDigitalDC21040: c_int = 1;
-pub const dot3ChipSetDigitalDC21140: c_int = 2;
-pub const dot3ChipSetDigitalDC21041: c_int = 3;
-pub const dot3ChipSetDigitalDC21140A: c_int = 4;
-pub const dot3ChipSetDigitalDC21142: c_int = 5;
-
-pub const dot3ChipSetWesternDigital83C690: c_int = 1;
-pub const dot3ChipSetWesternDigital83C790: c_int = 2;
 
 // sys/netinet/in.h
 // Protocols (RFC 1700)
@@ -2935,12 +2975,6 @@ pub const IPPROTO_BLT: c_int = 30;
 pub const IPPROTO_NSP: c_int = 31;
 /// Merit Internodal
 pub const IPPROTO_INP: c_int = 32;
-#[doc(hidden)]
-#[deprecated(
-    since = "0.2.72",
-    note = "IPPROTO_SEP is deprecated. Use IPPROTO_DCCP instead"
-)]
-pub const IPPROTO_SEP: c_int = 33;
 /// Datagram Congestion Control Protocol
 pub const IPPROTO_DCCP: c_int = 33;
 /// Third Party Connect
@@ -3114,6 +3148,14 @@ pub const IPPROTO_DIVERT: c_int = 258;
 /// SeND pseudo-protocol
 pub const IPPROTO_SEND: c_int = 259;
 
+// RFC 3678 protocol-independent multicast
+pub const MCAST_JOIN_GROUP: c_int = 80;
+pub const MCAST_LEAVE_GROUP: c_int = 81;
+pub const MCAST_JOIN_SOURCE_GROUP: c_int = 82;
+pub const MCAST_LEAVE_SOURCE_GROUP: c_int = 83;
+pub const MCAST_BLOCK_SOURCE: c_int = 84;
+pub const MCAST_UNBLOCK_SOURCE: c_int = 85;
+
 // sys/netinet/TCP.h
 pub const TCP_MD5SIG: c_int = 16;
 pub const TCP_INFO: c_int = 32;
@@ -3141,6 +3183,9 @@ pub const TCP_PCAP_IN: c_int = 4096;
 pub const TCP_FUNCTION_BLK: c_int = 8192;
 pub const TCP_FUNCTION_ALIAS: c_int = 8193;
 pub const TCP_FASTOPEN_PSK_LEN: c_int = 16;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const TCP_FUNCTION_NAME_LEN_MAX: c_int = 32;
 
 pub const TCP_REUSPORT_LB_NUMA: c_int = 1026;
@@ -3195,6 +3240,10 @@ pub const IP_RECVORIGDSTADDR: c_int = IP_ORIGDSTADDR;
 
 pub const IP_DONTFRAG: c_int = 67;
 pub const IP_RECVTOS: c_int = 68;
+pub const IP_ADD_SOURCE_MEMBERSHIP: c_int = 70;
+pub const IP_DROP_SOURCE_MEMBERSHIP: c_int = 71;
+pub const IP_BLOCK_SOURCE: c_int = 72;
+pub const IP_UNBLOCK_SOURCE: c_int = 73;
 
 pub const IPV6_BINDANY: c_int = 64;
 pub const IPV6_ORIGDSTADDR: c_int = 72;
@@ -3303,6 +3352,10 @@ pub const AT_SYMLINK_FOLLOW: c_int = 0x400;
 pub const AT_REMOVEDIR: c_int = 0x800;
 pub const AT_RESOLVE_BENEATH: c_int = 0x2000;
 pub const AT_EMPTY_PATH: c_int = 0x4000;
+pub const AT_RENAME_NOREPLACE: c_int = 0x0001;
+pub const AT_RENAME_EXCHANGE: c_int = 0x0002;
+pub const RENAME_NOREPLACE: c_uint = AT_RENAME_NOREPLACE as c_uint;
+pub const RENAME_EXCHANGE: c_uint = AT_RENAME_EXCHANGE as c_uint;
 
 pub const AT_NULL: c_int = 0;
 pub const AT_IGNORE: c_int = 1;
@@ -3345,7 +3398,6 @@ pub const _UUID_NODE_LEN: usize = 6;
 // Flags which can be passed to pdfork(2)
 pub const PD_DAEMON: c_int = 0x00000001;
 pub const PD_CLOEXEC: c_int = 0x00000002;
-pub const PD_ALLOWED_AT_FORK: c_int = PD_DAEMON | PD_CLOEXEC;
 
 // Values for struct rtprio (type_ field)
 pub const RTP_PRIO_REALTIME: c_ushort = 2;
@@ -3398,7 +3450,7 @@ pub const RFTHREAD: c_int = 8192;
 pub const RFSIGSHARE: c_int = 16384;
 pub const RFLINUXTHPN: c_int = 65536;
 pub const RFTSIGZMB: c_int = 524288;
-pub const RFSPAWN: c_int = 2147483648;
+pub const RFSPAWN: c_int = u32_cast_int(2147483648);
 
 // For eventfd
 pub const EFD_SEMAPHORE: c_int = 0x1;
@@ -3527,71 +3579,111 @@ pub const KKST_STATE_SWAPPED: c_int = 1;
 pub const KKST_STATE_RUNNING: c_int = 2;
 
 // Constants about priority.
+
 pub const PRI_MIN: c_int = 0;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PRI_MAX: c_int = 255;
+
 pub const PRI_MIN_ITHD: c_int = PRI_MIN;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
-#[allow(deprecated)]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PRI_MAX_ITHD: c_int = PRI_MIN_REALTIME - 1;
+
 pub const PI_REALTIME: c_int = PRI_MIN_ITHD + 0;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PI_AV: c_int = PRI_MIN_ITHD + 4;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PI_NET: c_int = PRI_MIN_ITHD + 8;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PI_DISK: c_int = PRI_MIN_ITHD + 12;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PI_TTY: c_int = PRI_MIN_ITHD + 16;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PI_DULL: c_int = PRI_MIN_ITHD + 20;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PI_SOFT: c_int = PRI_MIN_ITHD + 24;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PRI_MIN_REALTIME: c_int = 48;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
-#[allow(deprecated)]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PRI_MAX_REALTIME: c_int = PRI_MIN_KERN - 1;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PRI_MIN_KERN: c_int = 80;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
-#[allow(deprecated)]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PRI_MAX_KERN: c_int = PRI_MIN_TIMESHARE - 1;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
-#[allow(deprecated)]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PSWP: c_int = PRI_MIN_KERN + 0;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
-#[allow(deprecated)]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PVM: c_int = PRI_MIN_KERN + 4;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
-#[allow(deprecated)]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PINOD: c_int = PRI_MIN_KERN + 8;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
-#[allow(deprecated)]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PRIBIO: c_int = PRI_MIN_KERN + 12;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
-#[allow(deprecated)]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PVFS: c_int = PRI_MIN_KERN + 16;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
-#[allow(deprecated)]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PZERO: c_int = PRI_MIN_KERN + 20;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
-#[allow(deprecated)]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PSOCK: c_int = PRI_MIN_KERN + 24;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
-#[allow(deprecated)]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PWAIT: c_int = PRI_MIN_KERN + 28;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
-#[allow(deprecated)]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PLOCK: c_int = PRI_MIN_KERN + 32;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
-#[allow(deprecated)]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PPAUSE: c_int = PRI_MIN_KERN + 36;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PRI_MIN_TIMESHARE: c_int = 120;
+
 pub const PRI_MAX_TIMESHARE: c_int = PRI_MIN_IDLE - 1;
-#[deprecated(since = "0.2.133", note = "Not stable across OS versions")]
-#[allow(deprecated)]
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PUSER: c_int = PRI_MIN_TIMESHARE;
+
 pub const PRI_MIN_IDLE: c_int = 224;
 pub const PRI_MAX_IDLE: c_int = PRI_MAX;
 
@@ -3607,6 +3699,7 @@ cfg_if! {
         pub const ARG_MAX: c_int = 2 * 256 * 1024;
     }
 }
+
 pub const CHILD_MAX: c_int = 40;
 /// max command name remembered
 pub const MAXCOMLEN: usize = 19;
@@ -3630,10 +3723,16 @@ pub const MAXHOSTNAMELEN: c_int = 256;
 pub const MAX_CANON: c_int = 255;
 /// max bytes in terminal input
 pub const MAX_INPUT: c_int = 255;
-/// max bytes in a file name
+/// Max bytes in a file name.
+///
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const NAME_MAX: c_int = 255;
 pub const MAXSYMLINKS: c_int = 32;
-/// max supplemental group id's
+/// Max supplemental group IDs.
+///
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const NGROUPS_MAX: c_int = 1023;
 /// max open files per process
 pub const OPEN_MAX: c_int = 64;
@@ -3647,23 +3746,58 @@ pub const _POSIX_PIPE_BUF: c_int = 512;
 pub const _POSIX_SSIZE_MAX: c_int = 32767;
 pub const _POSIX_STREAM_MAX: c_int = 8;
 
-/// max ibase/obase values in bc(1)
+/// Max ibase/obase values in bc(1).
+///
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const BC_BASE_MAX: c_int = 99;
-/// max array elements in bc(1)
+
+/// Max array elements in bc(1).
+///
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const BC_DIM_MAX: c_int = 2048;
-/// max scale value in bc(1)
+
+/// Max scale value in bc(1).
+///
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const BC_SCALE_MAX: c_int = 99;
-/// max const string length in bc(1)
+
+/// Max const string length in bc(1).
+///
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const BC_STRING_MAX: c_int = 1000;
-/// max character class name size
+
+/// Max character class name size.
+///
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const CHARCLASS_NAME_MAX: c_int = 14;
-/// max weights for order keyword
+
+/// Max weights for order keyword.
+///
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const COLL_WEIGHTS_MAX: c_int = 10;
-/// max expressions nested in expr(1)
+
+/// Max expressions nested in expr(1).
+///
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const EXPR_NEST_MAX: c_int = 32;
-/// max bytes in an input line
+
+/// Max bytes in an input line.
+///
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const LINE_MAX: c_int = 2048;
-/// max RE's in interval notation
+
+/// Max RE's in interval notation.
+///
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const RE_DUP_MAX: c_int = 255;
 
 pub const _POSIX2_BC_BASE_MAX: c_int = 99;
@@ -3800,7 +3934,7 @@ pub const P_STATCHILD: c_int = 0x08000000;
 pub const P_INMEM: c_int = 0x10000000;
 pub const P_SWAPPINGOUT: c_int = 0x20000000;
 pub const P_SWAPPINGIN: c_int = 0x40000000;
-pub const P_PPTRACE: c_int = 0x80000000;
+pub const P_PPTRACE: c_int = u32_cast_int(0x80000000);
 pub const P_STOPPED: c_int = P_STOPPED_SIG | P_STOPPED_SINGLE | P_STOPPED_TRACE;
 
 pub const P2_INHERIT_PROTECTED: c_int = 0x00000001;
@@ -3824,11 +3958,11 @@ pub const SZOMB: c_char = 5;
 pub const SWAIT: c_char = 6;
 pub const SLOCK: c_char = 7;
 
-pub const P_MAGIC: c_int = 0xbeefface;
+pub const P_MAGIC: c_int = u32_cast_int(0xbeefface);
 
 pub const TDP_SIGFASTBLOCK: c_int = 0x00000100;
 pub const TDP_UIOHELD: c_int = 0x10000000;
-pub const TDP_SIGFASTPENDING: c_int = 0x80000000;
+pub const TDP_SIGFASTPENDING: c_int = u32_cast_int(0x80000000);
 pub const TDP2_COMPAT32RB: c_int = 0x00000002;
 pub const P2_PROTMAX_ENABLE: c_int = 0x00000200;
 pub const P2_PROTMAX_DISABLE: c_int = 0x00000400;
@@ -4071,6 +4205,8 @@ pub const RTF_FIXEDMTU: c_int = 0x80000;
 
 pub const RTM_VERSION: c_int = 5;
 
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const RTAX_MAX: c_int = 8;
 
 // sys/signal.h
@@ -4118,7 +4254,11 @@ pub const SCTP_PR_SCTP_TTL: c_int = 0x0001;
 pub const SCTP_PR_SCTP_PRIO: c_int = 0x0002;
 pub const SCTP_PR_SCTP_BUF: c_int = SCTP_PR_SCTP_PRIO;
 pub const SCTP_PR_SCTP_RTX: c_int = 0x0003;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const SCTP_PR_SCTP_MAX: c_int = SCTP_PR_SCTP_RTX;
+
 pub const SCTP_PR_SCTP_ALL: c_int = 0x000f;
 
 pub const SCTP_INIT: c_int = 0x0001;
@@ -4200,6 +4340,9 @@ pub const SCTP_ASSOC_SUPPORTS_ASCONF: c_int = 0x03;
 pub const SCTP_ASSOC_SUPPORTS_MULTIBUF: c_int = 0x04;
 pub const SCTP_ASSOC_SUPPORTS_RE_CONFIG: c_int = 0x05;
 pub const SCTP_ASSOC_SUPPORTS_INTERLEAVING: c_int = 0x06;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const SCTP_ASSOC_SUPPORTS_MAX: c_int = 0x06;
 
 pub const SCTP_ADDR_AVAILABLE: c_int = 0x0001;
@@ -4269,6 +4412,8 @@ pub const KCMP_FILES: c_int = 102;
 pub const KCMP_SIGHAND: c_int = 103;
 pub const KCMP_VM: c_int = 104;
 
+pub const SOL_LOCAL: c_int = 0;
+
 pub const fn MAP_ALIGNED(a: c_int) -> c_int {
     a << 24
 }
@@ -4277,115 +4422,113 @@ const fn _ALIGN(p: usize) -> usize {
     (p + _ALIGNBYTES) & !_ALIGNBYTES
 }
 
+// include/paths.h
+pub const _PATH_DEFPATH: *const c_char =
+    cstr(b"/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin\0");
+pub const _PATH_BSHELL: *const c_char = cstr(b"/bin/sh\0");
+
 f! {
-    pub fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
+    pub unsafe fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
         (cmsg as *mut c_uchar).add(_ALIGN(size_of::<cmsghdr>()))
     }
 
-    pub const fn CMSG_LEN(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_LEN(length: c_uint) -> c_uint {
         _ALIGN(size_of::<cmsghdr>()) as c_uint + length
     }
 
-    pub fn CMSG_NXTHDR(mhdr: *const crate::msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
+    pub unsafe fn CMSG_NXTHDR(mhdr: *const crate::msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
         if cmsg.is_null() {
             return crate::CMSG_FIRSTHDR(mhdr);
         }
         let next = cmsg as usize + _ALIGN((*cmsg).cmsg_len as usize) + _ALIGN(size_of::<cmsghdr>());
         let max = (*mhdr).msg_control as usize + (*mhdr).msg_controllen as usize;
         if next > max {
-            core::ptr::null_mut::<cmsghdr>()
+            ptr::null_mut()
         } else {
             (cmsg as usize + _ALIGN((*cmsg).cmsg_len as usize)) as *mut cmsghdr
         }
     }
 
-    pub const fn CMSG_SPACE(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_SPACE(length: c_uint) -> c_uint {
         (_ALIGN(size_of::<cmsghdr>()) + _ALIGN(length as usize)) as c_uint
     }
 
-    pub fn MALLOCX_ALIGN(lg: c_uint) -> c_int {
+    pub unsafe fn MALLOCX_ALIGN(lg: c_uint) -> c_int {
         ffsl(lg as c_long - 1)
     }
 
-    pub const fn MALLOCX_TCACHE(tc: c_int) -> c_int {
+    pub const unsafe fn MALLOCX_TCACHE(tc: c_int) -> c_int {
         (tc + 2) << 8 as c_int
     }
 
-    pub const fn MALLOCX_ARENA(a: c_int) -> c_int {
+    pub const unsafe fn MALLOCX_ARENA(a: c_int) -> c_int {
         (a + 1) << 20 as c_int
     }
 
-    pub fn SOCKCREDSIZE(ngrps: usize) -> usize {
+    pub unsafe fn SOCKCREDSIZE(ngrps: usize) -> usize {
         let ngrps = if ngrps > 0 { ngrps - 1 } else { 0 };
         size_of::<sockcred>() + size_of::<crate::gid_t>() * ngrps
     }
 
-    pub fn uname(buf: *mut crate::utsname) -> c_int {
-        __xuname(256, buf as *mut c_void)
+    pub unsafe fn uname(buf: *mut crate::utsname) -> c_int {
+        __xuname(256, buf.cast())
     }
 
-    pub fn CPU_ZERO(cpuset: &mut cpuset_t) -> () {
-        for slot in cpuset.__bits.iter_mut() {
-            *slot = 0;
-        }
+    pub unsafe fn CPU_ZERO(cpuset: &mut cpuset_t) -> () {
+        cpuset.__bits.fill(0);
     }
 
-    pub fn CPU_FILL(cpuset: &mut cpuset_t) -> () {
-        for slot in cpuset.__bits.iter_mut() {
-            *slot = !0;
-        }
+    pub unsafe fn CPU_FILL(cpuset: &mut cpuset_t) -> () {
+        cpuset.__bits.fill(!0);
     }
 
-    pub fn CPU_SET(cpu: usize, cpuset: &mut cpuset_t) -> () {
-        let bitset_bits = 8 * size_of::<c_long>();
+    pub unsafe fn CPU_SET(cpu: usize, cpuset: &mut cpuset_t) -> () {
+        let bitset_bits = 8 * size_of_val(&cpuset.__bits[0]);
         let (idx, offset) = (cpu / bitset_bits, cpu % bitset_bits);
         cpuset.__bits[idx] |= 1 << offset;
     }
 
-    pub fn CPU_CLR(cpu: usize, cpuset: &mut cpuset_t) -> () {
-        let bitset_bits = 8 * size_of::<c_long>();
+    pub unsafe fn CPU_CLR(cpu: usize, cpuset: &mut cpuset_t) -> () {
+        let bitset_bits = 8 * size_of_val(&cpuset.__bits[0]);
         let (idx, offset) = (cpu / bitset_bits, cpu % bitset_bits);
         cpuset.__bits[idx] &= !(1 << offset);
     }
 
-    pub fn CPU_ISSET(cpu: usize, cpuset: &cpuset_t) -> bool {
-        let bitset_bits = 8 * size_of::<c_long>();
+    pub unsafe fn CPU_ISSET(cpu: usize, cpuset: &cpuset_t) -> bool {
+        let bitset_bits = 8 * size_of_val(&cpuset.__bits[0]);
         let (idx, offset) = (cpu / bitset_bits, cpu % bitset_bits);
         0 != cpuset.__bits[idx] & (1 << offset)
     }
 
-    pub fn CPU_COUNT(cpuset: &cpuset_t) -> c_int {
+    pub unsafe fn CPU_COUNT(cpuset: &cpuset_t) -> c_int {
         let mut s: u32 = 0;
         let cpuset_size = size_of::<cpuset_t>();
-        let bitset_size = size_of::<c_long>();
-
-        for i in cpuset.__bits[..(cpuset_size / bitset_size)].iter() {
+        let bitset_size = size_of_val(&cpuset.__bits[0]);
+        for i in &cpuset.__bits[..(cpuset_size / bitset_size)] {
             s += i.count_ones();
         }
         s as c_int
     }
 
-    pub fn SOCKCRED2SIZE(ngrps: usize) -> usize {
+    pub unsafe fn SOCKCRED2SIZE(ngrps: usize) -> usize {
         let ngrps = if ngrps > 0 { ngrps - 1 } else { 0 };
         size_of::<sockcred2>() + size_of::<crate::gid_t>() * ngrps
     }
 
-    pub fn PROT_MAX(x: c_int) -> c_int {
+    pub unsafe fn PROT_MAX(x: c_int) -> c_int {
         x << 16
     }
 
-    pub fn PROT_MAX_EXTRACT(x: c_int) -> c_int {
+    pub unsafe fn PROT_MAX_EXTRACT(x: c_int) -> c_int {
         (x >> 16) & (crate::PROT_READ | crate::PROT_WRITE | crate::PROT_EXEC)
     }
-}
 
-safe_f! {
-    pub const fn WIFSIGNALED(status: c_int) -> bool {
+    pub const safe fn WIFSIGNALED(status: c_int) -> bool {
         (status & 0o177) != 0o177 && (status & 0o177) != 0 && status != 0x13
     }
 
-    pub const fn INVALID_SINFO_FLAG(x: c_int) -> bool {
-        (x) & 0xfffffff0
+    pub const safe fn INVALID_SINFO_FLAG(x: c_int) -> bool {
+        (x) & u32_cast_int(0xfffffff0)
             & !(SCTP_EOF
                 | SCTP_ABORT
                 | SCTP_UNORDERED
@@ -4396,32 +4539,40 @@ safe_f! {
             != 0
     }
 
-    pub const fn PR_SCTP_POLICY(x: c_int) -> c_int {
+    pub const safe fn PR_SCTP_POLICY(x: c_int) -> c_int {
         x & 0x0f
     }
 
-    pub const fn PR_SCTP_ENABLED(x: c_int) -> bool {
+    pub const safe fn PR_SCTP_ENABLED(x: c_int) -> bool {
         PR_SCTP_POLICY(x) != SCTP_PR_SCTP_NONE && PR_SCTP_POLICY(x) != SCTP_PR_SCTP_ALL
     }
 
-    pub const fn PR_SCTP_TTL_ENABLED(x: c_int) -> bool {
+    pub const safe fn PR_SCTP_TTL_ENABLED(x: c_int) -> bool {
         PR_SCTP_POLICY(x) == SCTP_PR_SCTP_TTL
     }
 
-    pub const fn PR_SCTP_BUF_ENABLED(x: c_int) -> bool {
+    pub const safe fn PR_SCTP_BUF_ENABLED(x: c_int) -> bool {
         PR_SCTP_POLICY(x) == SCTP_PR_SCTP_BUF
     }
 
-    pub const fn PR_SCTP_RTX_ENABLED(x: c_int) -> bool {
+    pub const safe fn PR_SCTP_RTX_ENABLED(x: c_int) -> bool {
         PR_SCTP_POLICY(x) == SCTP_PR_SCTP_RTX
     }
 
-    pub const fn PR_SCTP_INVALID_POLICY(x: c_int) -> bool {
+    pub const safe fn PR_SCTP_INVALID_POLICY(x: c_int) -> bool {
         PR_SCTP_POLICY(x) > SCTP_PR_SCTP_MAX
     }
 
-    pub const fn PR_SCTP_VALID_POLICY(x: c_int) -> bool {
+    pub const safe fn PR_SCTP_VALID_POLICY(x: c_int) -> bool {
         PR_SCTP_POLICY(x) <= SCTP_PR_SCTP_MAX
+    }
+
+    pub const safe fn PPROT_OP(o: c_int) -> c_int {
+        o & 0xf
+    }
+
+    pub const safe fn PPROT_FLAGS(o: c_int) -> c_int {
+        o & !0xf
     }
 }
 
@@ -4643,6 +4794,12 @@ extern "C" {
     pub fn pthread_spin_lock(lock: *mut pthread_spinlock_t) -> c_int;
     pub fn pthread_spin_trylock(lock: *mut pthread_spinlock_t) -> c_int;
     pub fn pthread_spin_unlock(lock: *mut pthread_spinlock_t) -> c_int;
+
+    pub fn pthread_timedjoin_np(
+        thread: crate::pthread_t,
+        retval: *mut *mut c_void,
+        abstime: *const crate::timespec,
+    ) -> c_int;
 
     #[cfg_attr(all(target_os = "freebsd", freebsd11), link_name = "statfs@FBSD_1.0")]
     pub fn statfs(path: *const c_char, buf: *mut statfs) -> c_int;
@@ -4889,11 +5046,20 @@ extern "C" {
         idx1: c_ulong,
         idx2: c_ulong,
     ) -> c_int;
+    pub fn renameat2(
+        olddirfd: c_int,
+        oldpath: *const c_char,
+        newdirfd: c_int,
+        newpath: *const c_char,
+        flags: c_uint,
+    ) -> c_int;
     pub fn dlvsym(
         handle: *mut c_void,
         symbol: *const c_char,
         version: *const c_char,
     ) -> *mut c_void;
+
+    pub fn lchmod(path: *const c_char, mode: crate::mode_t) -> c_int;
 }
 
 #[link(name = "memstat")]

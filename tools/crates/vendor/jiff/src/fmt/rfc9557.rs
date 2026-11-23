@@ -95,13 +95,13 @@ including by returning an error if it isn't supported.
 //   UTCOffsetMinutePrecision
 
 use crate::{
-    error::{err, Error},
+    error::{Error, fmt::rfc9557::Error as E},
     fmt::{
+        Parsed,
         offset::{self, ParsedOffset},
         temporal::{TimeZoneAnnotation, TimeZoneAnnotationKind},
-        Parsed,
     },
-    util::{escape, parse},
+    util::parse,
 };
 
 /// The result of parsing RFC 9557 annotations.
@@ -112,11 +112,6 @@ use crate::{
 /// only validated at a syntax level.
 #[derive(Debug)]
 pub(crate) struct ParsedAnnotations<'i> {
-    /// The original input that all of the annotations were parsed from.
-    ///
-    /// N.B. This is currently unused, but potentially useful, so we leave it.
-    #[allow(dead_code)]
-    input: escape::Bytes<'i>,
     /// An optional time zone annotation that was extracted from the input.
     time_zone: Option<ParsedTimeZone<'i>>,
     // While we parse/validate them, we don't support any other annotations
@@ -127,7 +122,7 @@ pub(crate) struct ParsedAnnotations<'i> {
 impl<'i> ParsedAnnotations<'i> {
     /// Return an empty parsed annotations.
     pub(crate) fn none() -> ParsedAnnotations<'static> {
-        ParsedAnnotations { input: escape::Bytes(&[]), time_zone: None }
+        ParsedAnnotations { time_zone: None }
     }
 
     /// Turns this parsed time zone into a structured time zone annotation,
@@ -140,6 +135,15 @@ impl<'i> ParsedAnnotations<'i> {
     ) -> Result<Option<TimeZoneAnnotation<'i>>, Error> {
         let Some(ref parsed) = self.time_zone else { return Ok(None) };
         Ok(Some(parsed.to_time_zone_annotation()?))
+    }
+}
+
+impl<'i> core::fmt::Display for ParsedAnnotations<'i> {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        if let Some(ref tz) = self.time_zone {
+            core::fmt::Display::fmt(tz, f)?;
+        }
+        Ok(())
     }
 }
 
@@ -187,6 +191,29 @@ impl<'i> ParsedTimeZone<'i> {
     }
 }
 
+impl<'i> core::fmt::Display for ParsedTimeZone<'i> {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        match *self {
+            ParsedTimeZone::Named { critical, name } => {
+                f.write_str("[")?;
+                if critical {
+                    f.write_str("!")?;
+                }
+                f.write_str(name)?;
+                f.write_str("]")
+            }
+            ParsedTimeZone::Offset { critical, ref offset } => {
+                f.write_str("[")?;
+                if critical {
+                    f.write_str("!")?;
+                }
+                core::fmt::Display::fmt(offset, f)?;
+                f.write_str("]")
+            }
+        }
+    }
+}
+
 /// A parser for RFC 9557 annotations.
 #[derive(Debug)]
 pub(crate) struct Parser {
@@ -212,8 +239,6 @@ impl Parser {
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, ParsedAnnotations<'i>>, Error> {
-        let mkslice = parse::slicer(input);
-
         let Parsed { value: time_zone, mut input } =
             self.parse_time_zone_annotation(input)?;
         loop {
@@ -229,10 +254,7 @@ impl Parser {
             input = unconsumed;
         }
 
-        let value = ParsedAnnotations {
-            input: escape::Bytes(mkslice(input)),
-            time_zone,
-        };
+        let value = ParsedAnnotations { time_zone };
         Ok(Parsed { value, input })
     }
 
@@ -241,14 +263,18 @@ impl Parser {
         mut input: &'i [u8],
     ) -> Result<Parsed<'i, Option<ParsedTimeZone<'i>>>, Error> {
         let unconsumed = input;
-        if input.is_empty() || input[0] != b'[' {
+        let Some((&first, tail)) = input.split_first() else {
+            return Ok(Parsed { value: None, input: unconsumed });
+        };
+        if first != b'[' {
             return Ok(Parsed { value: None, input: unconsumed });
         }
-        input = &input[1..];
+        input = tail;
 
-        let critical = input.starts_with(b"!");
-        if critical {
-            input = &input[1..];
+        let mut critical = false;
+        if let Some(tail) = input.strip_prefix(b"!") {
+            critical = true;
+            input = tail;
         }
 
         // If we're starting with a `+` or `-`, then we know we MUST have a
@@ -284,8 +310,8 @@ impl Parser {
             // a generic key/value annotation.
             return Ok(Parsed { value: None, input: unconsumed });
         }
-        while input.starts_with(b"/") {
-            input = &input[1..];
+        while let Some(tail) = input.strip_prefix(b"/") {
+            input = tail;
             let Parsed { input: unconsumed, .. } =
                 self.parse_tz_annotation_iana_name(input)?;
             input = unconsumed;
@@ -306,17 +332,21 @@ impl Parser {
         &self,
         mut input: &'i [u8],
     ) -> Result<Parsed<'i, bool>, Error> {
-        if input.is_empty() || input[0] != b'[' {
+        let Some((&first, tail)) = input.split_first() else {
+            return Ok(Parsed { value: false, input });
+        };
+        if first != b'[' {
             return Ok(Parsed { value: false, input });
         }
-        input = &input[1..];
+        input = tail;
 
-        let critical = input.starts_with(b"!");
-        if critical {
-            input = &input[1..];
+        let mut critical = false;
+        if let Some(tail) = input.strip_prefix(b"!") {
+            critical = true;
+            input = tail;
         }
 
-        let Parsed { value: key, input } = self.parse_annotation_key(input)?;
+        let Parsed { input, .. } = self.parse_annotation_key(input)?;
         let Parsed { input, .. } = self.parse_annotation_separator(input)?;
         let Parsed { input, .. } = self.parse_annotation_values(input)?;
         let Parsed { input, .. } = self.parse_annotation_close(input)?;
@@ -326,11 +356,7 @@ impl Parser {
         // critical flag isn't set, we're "permissive" and just validate that
         // the syntax is correct (as we've already done at this point).
         if critical {
-            return Err(err!(
-                "found unsupported RFC 9557 annotation with key {key:?} \
-                 with the critical flag ('!') set",
-                key = escape::Bytes(key),
-            ));
+            return Err(Error::from(E::UnsupportedAnnotationCritical));
         }
 
         Ok(Parsed { value: true, input })
@@ -381,8 +407,8 @@ impl Parser {
         input: &'i [u8],
     ) -> Result<Parsed<'i, ()>, Error> {
         let Parsed { mut input, .. } = self.parse_annotation_value(input)?;
-        while input.starts_with(b"-") {
-            input = &input[1..];
+        while let Some(tail) = input.strip_prefix(b"-") {
+            input = tail;
             let Parsed { input: unconsumed, .. } =
                 self.parse_annotation_value(input)?;
             input = unconsumed;
@@ -413,173 +439,137 @@ impl Parser {
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, ()>, Error> {
-        if input.is_empty() {
-            return Err(err!(
-                "expected the start of an RFC 9557 annotation or IANA \
-                 time zone component name, but found end of input instead",
-            ));
+        let Some((&first, tail)) = input.split_first() else {
+            return Err(Error::from(E::EndOfInputAnnotation));
+        };
+        if !matches!(first, b'_' | b'.' | b'A'..=b'Z' | b'a'..=b'z') {
+            return Err(Error::from(E::UnexpectedByteAnnotation {
+                byte: first,
+            }));
         }
-        if !matches!(input[0], b'_' | b'.' | b'A'..=b'Z' | b'a'..=b'z') {
-            return Err(err!(
-                "expected ASCII alphabetic byte (or underscore or period) \
-                 at the start of an RFC 9557 annotation or time zone \
-                 component name, but found {:?} instead",
-                escape::Byte(input[0]),
-            ));
-        }
-        Ok(Parsed { value: (), input: &input[1..] })
+        Ok(Parsed { value: (), input: tail })
     }
 
     fn parse_tz_annotation_char<'i>(
         &self,
         input: &'i [u8],
     ) -> Parsed<'i, bool> {
-        let is_tz_annotation_char = |byte| {
-            matches!(
-                byte,
-                b'_' | b'.' | b'+' | b'-' | b'0'..=b'9' | b'A'..=b'Z' | b'a'..=b'z',
-            )
+        let Some((&first, tail)) = input.split_first() else {
+            return Parsed { value: false, input };
         };
-        if input.is_empty() || !is_tz_annotation_char(input[0]) {
+
+        if !matches!(
+            first,
+            b'_' | b'.' | b'+' | b'-' | b'0'..=b'9' | b'A'..=b'Z' | b'a'..=b'z',
+        ) {
             return Parsed { value: false, input };
         }
-        Parsed { value: true, input: &input[1..] }
+        Parsed { value: true, input: tail }
     }
 
     fn parse_annotation_key_leading_char<'i>(
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, ()>, Error> {
-        if input.is_empty() {
-            return Err(err!(
-                "expected the start of an RFC 9557 annotation key, \
-                 but found end of input instead",
-            ));
+        let Some((&first, tail)) = input.split_first() else {
+            return Err(Error::from(E::EndOfInputAnnotationKey));
+        };
+        if !matches!(first, b'_' | b'a'..=b'z') {
+            return Err(Error::from(E::UnexpectedByteAnnotationKey {
+                byte: first,
+            }));
         }
-        if !matches!(input[0], b'_' | b'a'..=b'z') {
-            return Err(err!(
-                "expected lowercase alphabetic byte (or underscore) \
-                 at the start of an RFC 9557 annotation key, \
-                 but found {:?} instead",
-                escape::Byte(input[0]),
-            ));
-        }
-        Ok(Parsed { value: (), input: &input[1..] })
+        Ok(Parsed { value: (), input: tail })
     }
 
     fn parse_annotation_key_char<'i>(
         &self,
         input: &'i [u8],
     ) -> Parsed<'i, bool> {
-        let is_annotation_key_char =
-            |byte| matches!(byte, b'_' | b'-' | b'0'..=b'9' | b'a'..=b'z');
-        if input.is_empty() || !is_annotation_key_char(input[0]) {
+        let Some((&first, tail)) = input.split_first() else {
+            return Parsed { value: false, input };
+        };
+        if !matches!(first, b'_' | b'-' | b'0'..=b'9' | b'a'..=b'z') {
             return Parsed { value: false, input };
         }
-        Parsed { value: true, input: &input[1..] }
+        Parsed { value: true, input: tail }
     }
 
     fn parse_annotation_value_leading_char<'i>(
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, ()>, Error> {
-        if input.is_empty() {
-            return Err(err!(
-                "expected the start of an RFC 9557 annotation value, \
-                 but found end of input instead",
-            ));
+        let Some((&first, tail)) = input.split_first() else {
+            return Err(Error::from(E::EndOfInputAnnotationValue));
+        };
+        if !matches!(first, b'0'..=b'9' | b'A'..=b'Z' | b'a'..=b'z') {
+            return Err(Error::from(E::UnexpectedByteAnnotationValue {
+                byte: first,
+            }));
         }
-        if !matches!(input[0], b'0'..=b'9' | b'A'..=b'Z' | b'a'..=b'z') {
-            return Err(err!(
-                "expected alphanumeric ASCII byte \
-                 at the start of an RFC 9557 annotation value, \
-                 but found {:?} instead",
-                escape::Byte(input[0]),
-            ));
-        }
-        Ok(Parsed { value: (), input: &input[1..] })
+        Ok(Parsed { value: (), input: tail })
     }
 
     fn parse_annotation_value_char<'i>(
         &self,
         input: &'i [u8],
     ) -> Parsed<'i, bool> {
-        let is_annotation_value_char =
-            |byte| matches!(byte, b'0'..=b'9' | b'A'..=b'Z' | b'a'..=b'z');
-        if input.is_empty() || !is_annotation_value_char(input[0]) {
+        let Some((&first, tail)) = input.split_first() else {
+            return Parsed { value: false, input };
+        };
+        if !matches!(first, b'0'..=b'9' | b'A'..=b'Z' | b'a'..=b'z') {
             return Parsed { value: false, input };
         }
-        Parsed { value: true, input: &input[1..] }
+        Parsed { value: true, input: tail }
     }
 
     fn parse_annotation_separator<'i>(
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, ()>, Error> {
-        if input.is_empty() {
-            return Err(err!(
-                "expected an '=' after parsing an RFC 9557 annotation key, \
-                 but found end of input instead",
-            ));
-        }
-        if input[0] != b'=' {
+        let Some((&first, tail)) = input.split_first() else {
+            return Err(Error::from(E::EndOfInputAnnotationSeparator));
+        };
+        if first != b'=' {
             // If we see a /, then it's likely the user was trying to insert a
             // time zone annotation in the wrong place.
-            return Err(if input[0] == b'/' {
-                err!(
-                    "expected an '=' after parsing an RFC 9557 annotation \
-                     key, but found / instead (time zone annotations must \
-                     come first)",
-                )
+            return Err(Error::from(if first == b'/' {
+                E::UnexpectedSlashAnnotationSeparator
             } else {
-                err!(
-                    "expected an '=' after parsing an RFC 9557 annotation \
-                     key, but found {:?} instead",
-                    escape::Byte(input[0]),
-                )
-            });
+                E::UnexpectedByteAnnotationSeparator { byte: first }
+            }));
         }
-        Ok(Parsed { value: (), input: &input[1..] })
+        Ok(Parsed { value: (), input: tail })
     }
 
     fn parse_annotation_close<'i>(
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, ()>, Error> {
-        if input.is_empty() {
-            return Err(err!(
-                "expected an ']' after parsing an RFC 9557 annotation key \
-                 and value, but found end of input instead",
-            ));
+        let Some((&first, tail)) = input.split_first() else {
+            return Err(Error::from(E::EndOfInputAnnotationClose));
+        };
+        if first != b']' {
+            return Err(Error::from(E::UnexpectedByteAnnotationClose {
+                byte: first,
+            }));
         }
-        if input[0] != b']' {
-            return Err(err!(
-                "expected an ']' after parsing an RFC 9557 annotation key \
-                 and value, but found {:?} instead",
-                escape::Byte(input[0]),
-            ));
-        }
-        Ok(Parsed { value: (), input: &input[1..] })
+        Ok(Parsed { value: (), input: tail })
     }
 
     fn parse_tz_annotation_close<'i>(
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, ()>, Error> {
-        if input.is_empty() {
-            return Err(err!(
-                "expected an ']' after parsing an RFC 9557 time zone \
-                 annotation, but found end of input instead",
-            ));
+        let Some((&first, tail)) = input.split_first() else {
+            return Err(Error::from(E::EndOfInputTzAnnotationClose));
+        };
+        if first != b']' {
+            return Err(Error::from(E::UnexpectedByteTzAnnotationClose {
+                byte: first,
+            }));
         }
-        if input[0] != b']' {
-            return Err(err!(
-                "expected an ']' after parsing an RFC 9557 time zone \
-                 annotation, but found {:?} instead",
-                escape::Byte(input[0]),
-            ));
-        }
-        Ok(Parsed { value: (), input: &input[1..] })
+        Ok(Parsed { value: (), input: tail })
     }
 }
 
@@ -665,24 +655,22 @@ mod tests {
     fn ok_empty() {
         let p = |input| Parser::new().parse(input).unwrap();
 
-        insta::assert_debug_snapshot!(p(b""), @r###"
+        insta::assert_debug_snapshot!(p(b""), @r#"
         Parsed {
             value: ParsedAnnotations {
-                input: "",
                 time_zone: None,
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"blah"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"blah"), @r#"
         Parsed {
             value: ParsedAnnotations {
-                input: "",
                 time_zone: None,
             },
             input: "blah",
         }
-        "###);
+        "#);
     }
 
     #[test]
@@ -691,39 +679,36 @@ mod tests {
 
         insta::assert_debug_snapshot!(
             p(b"[u-ca=chinese]"),
-            @r###"
+            @r#"
         Parsed {
             value: ParsedAnnotations {
-                input: "[u-ca=chinese]",
                 time_zone: None,
             },
             input: "",
         }
-        "###,
+        "#,
         );
         insta::assert_debug_snapshot!(
             p(b"[u-ca=chinese-japanese]"),
-            @r###"
+            @r#"
         Parsed {
             value: ParsedAnnotations {
-                input: "[u-ca=chinese-japanese]",
                 time_zone: None,
             },
             input: "",
         }
-        "###,
+        "#,
         );
         insta::assert_debug_snapshot!(
             p(b"[u-ca=chinese-japanese-russian]"),
-            @r###"
+            @r#"
         Parsed {
             value: ParsedAnnotations {
-                input: "[u-ca=chinese-japanese-russian]",
                 time_zone: None,
             },
             input: "",
         }
-        "###,
+        "#,
         );
     }
 
@@ -731,10 +716,9 @@ mod tests {
     fn ok_iana() {
         let p = |input| Parser::new().parse(input).unwrap();
 
-        insta::assert_debug_snapshot!(p(b"[America/New_York]"), @r###"
+        insta::assert_debug_snapshot!(p(b"[America/New_York]"), @r#"
         Parsed {
             value: ParsedAnnotations {
-                input: "[America/New_York]",
                 time_zone: Some(
                     Named {
                         critical: false,
@@ -744,11 +728,10 @@ mod tests {
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"[!America/New_York]"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"[!America/New_York]"), @r#"
         Parsed {
             value: ParsedAnnotations {
-                input: "[!America/New_York]",
                 time_zone: Some(
                     Named {
                         critical: true,
@@ -758,11 +741,10 @@ mod tests {
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"[UTC]"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"[UTC]"), @r#"
         Parsed {
             value: ParsedAnnotations {
-                input: "[UTC]",
                 time_zone: Some(
                     Named {
                         critical: false,
@@ -772,11 +754,10 @@ mod tests {
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"[.._foo_../.0+-]"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"[.._foo_../.0+-]"), @r#"
         Parsed {
             value: ParsedAnnotations {
-                input: "[.._foo_../.0+-]",
                 time_zone: Some(
                     Named {
                         critical: false,
@@ -786,17 +767,16 @@ mod tests {
             },
             input: "",
         }
-        "###);
+        "#);
     }
 
     #[test]
     fn ok_offset() {
         let p = |input| Parser::new().parse(input).unwrap();
 
-        insta::assert_debug_snapshot!(p(b"[-00]"), @r###"
+        insta::assert_debug_snapshot!(p(b"[-00]"), @r#"
         Parsed {
             value: ParsedAnnotations {
-                input: "[-00]",
                 time_zone: Some(
                     Offset {
                         critical: false,
@@ -810,11 +790,10 @@ mod tests {
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"[+00]"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"[+00]"), @r#"
         Parsed {
             value: ParsedAnnotations {
-                input: "[+00]",
                 time_zone: Some(
                     Offset {
                         critical: false,
@@ -828,11 +807,10 @@ mod tests {
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"[-05]"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"[-05]"), @r#"
         Parsed {
             value: ParsedAnnotations {
-                input: "[-05]",
                 time_zone: Some(
                     Offset {
                         critical: false,
@@ -846,11 +824,10 @@ mod tests {
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"[!+05:12]"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"[!+05:12]"), @r#"
         Parsed {
             value: ParsedAnnotations {
-                input: "[!+05:12]",
                 time_zone: Some(
                     Offset {
                         critical: true,
@@ -864,7 +841,7 @@ mod tests {
             },
             input: "",
         }
-        "###);
+        "#);
     }
 
     #[test]
@@ -873,10 +850,9 @@ mod tests {
 
         insta::assert_debug_snapshot!(
             p(b"[America/New_York][u-ca=chinese-japanese-russian]"),
-            @r###"
+            @r#"
         Parsed {
             value: ParsedAnnotations {
-                input: "[America/New_York][u-ca=chinese-japanese-russian]",
                 time_zone: Some(
                     Named {
                         critical: false,
@@ -886,7 +862,7 @@ mod tests {
             },
             input: "",
         }
-        "###,
+        "#,
         );
     }
 
@@ -894,11 +870,11 @@ mod tests {
     fn err_iana() {
         insta::assert_snapshot!(
             Parser::new().parse(b"[0/Foo]").unwrap_err(),
-            @r###"expected ASCII alphabetic byte (or underscore or period) at the start of an RFC 9557 annotation or time zone component name, but found "0" instead"###,
+            @"expected ASCII alphabetic byte (or underscore or period) at the start of an RFC 9557 annotation or time zone component name, but found `0` instead",
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[Foo/0Bar]").unwrap_err(),
-            @r###"expected ASCII alphabetic byte (or underscore or period) at the start of an RFC 9557 annotation or time zone component name, but found "0" instead"###,
+            @"expected ASCII alphabetic byte (or underscore or period) at the start of an RFC 9557 annotation or time zone component name, but found `0` instead",
         );
     }
 
@@ -906,23 +882,23 @@ mod tests {
     fn err_offset() {
         insta::assert_snapshot!(
             Parser::new().parse(b"[+").unwrap_err(),
-            @r###"failed to parse hours in UTC numeric offset "+": expected two digit hour after sign, but found end of input"###,
+            @"failed to parse hours in UTC numeric offset: expected two digit hour after sign, but found end of input",
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[+26]").unwrap_err(),
-            @r###"failed to parse hours in UTC numeric offset "+26]": offset hours are not valid: parameter 'hours' with value 26 is not in the required range of 0..=25"###,
+            @"failed to parse hours in UTC numeric offset: failed to parse hours (requires a two digit integer): parameter 'time zone offset hours' is not in the required range of -25..=25",
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[-26]").unwrap_err(),
-            @r###"failed to parse hours in UTC numeric offset "-26]": offset hours are not valid: parameter 'hours' with value 26 is not in the required range of 0..=25"###,
+            @"failed to parse hours in UTC numeric offset: failed to parse hours (requires a two digit integer): parameter 'time zone offset hours' is not in the required range of -25..=25",
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[+05:12:34]").unwrap_err(),
-            @r###"subminute precision for UTC numeric offset "+05:12:34]" is not enabled in this context (must provide only integral minutes)"###,
+            @"subminute precision for UTC numeric offset is not enabled in this context (must provide only integral minutes)",
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[+05:12:34.123456789]").unwrap_err(),
-            @r###"subminute precision for UTC numeric offset "+05:12:34.123456789]" is not enabled in this context (must provide only integral minutes)"###,
+            @"subminute precision for UTC numeric offset is not enabled in this context (must provide only integral minutes)",
         );
     }
 
@@ -930,7 +906,7 @@ mod tests {
     fn err_critical_unsupported() {
         insta::assert_snapshot!(
             Parser::new().parse(b"[!u-ca=chinese]").unwrap_err(),
-            @r###"found unsupported RFC 9557 annotation with key "u-ca" with the critical flag ('!') set"###,
+            @"found unsupported RFC 9557 annotation with the critical flag (`!`) set",
         );
     }
 
@@ -942,7 +918,7 @@ mod tests {
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[&").unwrap_err(),
-            @r###"expected ASCII alphabetic byte (or underscore or period) at the start of an RFC 9557 annotation or time zone component name, but found "&" instead"###,
+            @"expected ASCII alphabetic byte (or underscore or period) at the start of an RFC 9557 annotation or time zone component name, but found `&` instead",
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[Foo][").unwrap_err(),
@@ -950,7 +926,7 @@ mod tests {
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[Foo][&").unwrap_err(),
-            @r###"expected lowercase alphabetic byte (or underscore) at the start of an RFC 9557 annotation key, but found "&" instead"###,
+            @"expected lowercase alphabetic byte (or underscore) at the start of an RFC 9557 annotation key, but found `&` instead",
         );
     }
 
@@ -958,27 +934,27 @@ mod tests {
     fn err_separator() {
         insta::assert_snapshot!(
             Parser::new().parse(b"[abc").unwrap_err(),
-            @"expected an ']' after parsing an RFC 9557 time zone annotation, but found end of input instead",
+            @"expected an `]` after parsing an RFC 9557 time zone annotation, but found end of input instead",
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[_abc").unwrap_err(),
-            @"expected an ']' after parsing an RFC 9557 time zone annotation, but found end of input instead",
+            @"expected an `]` after parsing an RFC 9557 time zone annotation, but found end of input instead",
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[abc^").unwrap_err(),
-            @r###"expected an ']' after parsing an RFC 9557 time zone annotation, but found "^" instead"###,
+            @"expected an `]` after parsing an RFC 9557 time zone annotation, but found `^` instead",
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[Foo][abc").unwrap_err(),
-            @"expected an '=' after parsing an RFC 9557 annotation key, but found end of input instead",
+            @"expected an `=` after parsing an RFC 9557 annotation key, but found end of input instead",
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[Foo][_abc").unwrap_err(),
-            @"expected an '=' after parsing an RFC 9557 annotation key, but found end of input instead",
+            @"expected an `=` after parsing an RFC 9557 annotation key, but found end of input instead",
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[Foo][abc^").unwrap_err(),
-            @r###"expected an '=' after parsing an RFC 9557 annotation key, but found "^" instead"###,
+            @"expected an `=` after parsing an RFC 9557 annotation key, but found `^` instead",
         );
     }
 
@@ -994,11 +970,11 @@ mod tests {
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[abc=^").unwrap_err(),
-            @r###"expected alphanumeric ASCII byte at the start of an RFC 9557 annotation value, but found "^" instead"###,
+            @"expected alphanumeric ASCII byte at the start of an RFC 9557 annotation value, but found `^` instead",
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[abc=]").unwrap_err(),
-            @r###"expected alphanumeric ASCII byte at the start of an RFC 9557 annotation value, but found "]" instead"###,
+            @"expected alphanumeric ASCII byte at the start of an RFC 9557 annotation value, but found `]` instead",
         );
     }
 
@@ -1006,11 +982,11 @@ mod tests {
     fn err_close() {
         insta::assert_snapshot!(
             Parser::new().parse(b"[abc=123").unwrap_err(),
-            @"expected an ']' after parsing an RFC 9557 annotation key and value, but found end of input instead",
+            @"expected an `]` after parsing an RFC 9557 annotation key and value, but found end of input instead",
         );
         insta::assert_snapshot!(
             Parser::new().parse(b"[abc=123*").unwrap_err(),
-            @r###"expected an ']' after parsing an RFC 9557 annotation key and value, but found "*" instead"###,
+            @"expected an `]` after parsing an RFC 9557 annotation key and value, but found `*` instead",
         );
     }
 
@@ -1046,7 +1022,7 @@ mod tests {
         let p = |input| Parser::new().parse(input).unwrap_err();
         insta::assert_snapshot!(
             p(b"[america/new_york][america/new_york]"),
-            @"expected an '=' after parsing an RFC 9557 annotation key, but found / instead (time zone annotations must come first)",
+            @"expected an `=` after parsing an RFC 9557 annotation key, but found `/` instead (time zone annotations must come first)",
         );
     }
 }

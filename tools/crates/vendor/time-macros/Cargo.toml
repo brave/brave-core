@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.81.0"
+edition = "2024"
+rust-version = "1.88.0"
 name = "time-macros"
-version = "0.2.24"
+version = "0.2.32"
 authors = [
     "Jacob Pratt <open-source@jhpratt.dev>",
     "Time contributors",
@@ -40,6 +40,8 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/time-rs/time"
 
 [package.metadata.docs.rs]
+all-features = true
+targets = ["x86_64-unknown-linux-gnu"]
 rustdoc-args = ["--generate-link-to-definition"]
 
 [features]
@@ -54,10 +56,10 @@ path = "src/lib.rs"
 proc-macro = true
 
 [dependencies.num-conv]
-version = "0.1.0"
+version = "0.2.2"
 
 [dependencies.time-core]
-version = "=0.1.6"
+version = "=0.1.9"
 
 [lints.clippy]
 alloc-instead-of-core = "deny"
@@ -69,6 +71,7 @@ get-unwrap = "warn"
 manual-let-else = "warn"
 missing-docs-in-private-items = "warn"
 missing-enforced-import-renames = "warn"
+missing-panics-doc = "warn"
 obfuscated-if-else = "warn"
 print-stdout = "warn"
 semicolon-outside-block = "warn"

@@ -1,6 +1,6 @@
 [package]
 name = "arc-swap"
-version = "1.8.0"
+version = "1.9.5"
 authors = ["Michal 'vorner' Vaner <vorner@vorner.cz>"]
 description = "Atomically swappable Arc"
 documentation = "https://docs.rs/arc-swap"
@@ -18,7 +18,11 @@ maintenance = { status = "actively-developed" }
 # ArcSwapWeak (for std::sycn::Weak) support
 weak = []
 # Some strategies used for testing few internal cornercases. *DO NOT USE* (no stability guarantees and their performance is likely very bad).
-internal-test-strategies = []
+internal-test-strategies = ["rwlock-strategy"]
+# Makes `std::sync::RwLock<()>` usable as an explicit, opt-in strategy
+# (`ArcSwapAny<Arc<T>, RwLock<()>>`). Does NOT change `DefaultStrategy`, so
+# enabling it anywhere in a dependency graph cannot affect other dependents.
+rwlock-strategy = []
 # Possibly some strategies we are experimenting with. Currently empty. No stability guarantees are included about them.
 experimental-strategies = []
 # Use the nightly "thread_local" feature, to allow no_std builds. No stability

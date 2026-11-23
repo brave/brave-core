@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
+## [0.7.2] - 2026-10-02
+### Changed
+- [PR#23](https://github.com/EmbarkStudios/toml-span/pull/23) (merged as [PR#24](https://github.com/EmbarkStudios/toml-span/pull/24)) added a recursion limit when parsing to avoid stack overflows.
+
+## [0.7.1] - 2026-03-06
+### Added
+- [PR#21](https://github.com/EmbarkStudios/toml-span/pull/21) set the MSRV to 1.70.0.
+
+## [0.7.0] - 2026-02-06
+### Added
+- [PR#20](https://github.com/EmbarkStudios/toml-span/pull/20) added support for version 1.1 of the TOML spec. Thanks [@wolfv](https://github.com/wolfv)!
+
 ## [0.6.0] - 2025-10-23
 ### Changed
 - [PR#18](https://github.com/EmbarkStudios/toml-span/pull/18) updated `codespan-reporting` to 0.13.
@@ -61,7 +73,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial implementation
 
 <!-- next-url -->
-[Unreleased]: https://github.com/EmbarkStudios/toml-span/compare/0.6.0...HEAD
+[Unreleased]: https://github.com/EmbarkStudios/toml-span/compare/0.7.2...HEAD
+[0.7.2]: https://github.com/EmbarkStudios/toml-span/compare/0.7.1...0.7.2
+[0.7.1]: https://github.com/EmbarkStudios/toml-span/compare/0.7.0...0.7.1
+[0.7.0]: https://github.com/EmbarkStudios/toml-span/compare/0.6.0...0.7.0
 [0.6.0]: https://github.com/EmbarkStudios/toml-span/compare/0.5.2...0.6.0
 [0.5.2]: https://github.com/EmbarkStudios/toml-span/compare/0.5.1...0.5.2
 [0.5.1]: https://github.com/EmbarkStudios/toml-span/compare/0.5.0...0.5.1

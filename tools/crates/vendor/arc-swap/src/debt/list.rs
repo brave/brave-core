@@ -263,22 +263,24 @@ impl LocalNode {
 
     /// Creates a new debt.
     ///
-    /// This stores the debt of the given pointer (untyped, casted into an usize) and returns a
-    /// reference to that slot, or gives up with `None` if all the slots are currently full.
+    /// This stores the debt of the given pointer (encoded by `Debt::encode`) and returns
+    /// a reference to that slot, or gives up with `None` if all the slots are currently full.
+    ///
+    /// The debt is unconfirmed, taken on the storage at address `storage_addr`.
     #[inline]
-    pub(crate) fn new_fast(&self, ptr: usize) -> Option<&'static Debt> {
+    pub(crate) fn new_fast(&self, ptr: usize, storage_addr: usize) -> Option<&'static Debt> {
         let node = &self.node.get().expect("LocalNode::with ensures it is set");
         debug_assert_eq!(node.in_use.load(Relaxed), NODE_USED);
-        node.fast.get_debt(ptr, &self.fast)
+        node.fast.get_debt(ptr, storage_addr, &self.fast)
     }
 
-    /// Initializes a helping slot transaction.
+    /// Initializes a helping slot transaction on the storage at address `storage_addr`.
     ///
     /// Returns the generation (with tag).
-    pub(crate) fn new_helping(&self, ptr: usize) -> usize {
+    pub(crate) fn new_helping(&self, storage_addr: usize) -> usize {
         let node = &self.node.get().expect("LocalNode::with ensures it is set");
         debug_assert_eq!(node.in_use.load(Relaxed), NODE_USED);
-        let (gen, discard) = node.helping.get_debt(ptr, &self.helping);
+        let (gen, discard) = node.helping.get_debt(storage_addr, &self.helping);
         if discard {
             // Too many generations happened, make sure the writers give the poor node a break for
             // a while so they don't observe the generation wrapping around.
@@ -355,7 +357,7 @@ mod tests {
         fn is_empty(&self) -> bool {
             self.fast_slots()
                 .chain(core::iter::once(self.helping_slot()))
-                .all(|d| d.0.load(Relaxed) == Debt::NONE)
+                .all(|d| d.ptr.load(Relaxed) == Debt::NONE)
         }
 
         fn get_thread() -> &'static Self {

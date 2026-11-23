@@ -4,6 +4,7 @@ use std::mem;
 use std::ops::Deref;
 
 // Internal
+use crate::INTERNAL_ERROR_MSG;
 use crate::builder::{Arg, ArgPredicate, Command};
 use crate::parser::Identifier;
 use crate::parser::PendingArg;
@@ -11,7 +12,6 @@ use crate::parser::{ArgMatches, MatchedArg, SubCommand, ValueSource};
 use crate::util::AnyValue;
 use crate::util::FlatMap;
 use crate::util::Id;
-use crate::INTERNAL_ERROR_MSG;
 
 #[derive(Debug, Default)]
 pub(crate) struct ArgMatcher {
@@ -21,7 +21,7 @@ pub(crate) struct ArgMatcher {
 
 impl ArgMatcher {
     pub(crate) fn new(_cmd: &Command) -> Self {
-        ArgMatcher {
+        Self {
             matches: ArgMatches {
                 #[cfg(debug_assertions)]
                 valid_args: {
@@ -77,7 +77,7 @@ impl ArgMatcher {
             }
         }
         if let Some(ref mut sc) = self.matches.subcommand {
-            let mut am = ArgMatcher {
+            let mut am = Self {
                 matches: mem::take(&mut sc.matches),
                 pending: None,
             };

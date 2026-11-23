@@ -49,7 +49,7 @@ pub struct EpollEvent {
 }
 
 impl EpollEvent {
-    pub fn new(events: EpollFlags, data: u64) -> Self {
+    pub const fn new(events: EpollFlags, data: u64) -> Self {
         EpollEvent {
             event: libc::epoll_event {
                 events: events.bits() as u32,
@@ -63,10 +63,10 @@ impl EpollEvent {
     }
 
     pub fn events(&self) -> EpollFlags {
-        EpollFlags::from_bits(self.event.events as c_int).unwrap()
+        EpollFlags::from_bits_retain(self.event.events as c_int)
     }
 
-    pub fn data(&self) -> u64 {
+    pub const fn data(&self) -> u64 {
         self.event.u64
     }
 }

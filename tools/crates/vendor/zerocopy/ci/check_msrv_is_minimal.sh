@@ -9,6 +9,7 @@
 # those terms.
 
 set -eo pipefail
+cd "$(dirname "$0")/.."
 
 read -r -d '' PYTHON_SCRIPT <<'EOF' || true
 import sys

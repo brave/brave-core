@@ -22,7 +22,7 @@ use crate::crl::RevocationOptions;
 use crate::error::Error;
 use crate::subject_name::{verify_dns_names, verify_ip_address_names};
 use crate::verify_cert::{self, ExtendedKeyUsageValidator, VerifiedPath};
-use crate::{cert, signed_data};
+use crate::{cert, sct, signed_data};
 
 /// An end-entity certificate.
 ///
@@ -116,6 +116,7 @@ impl EndEntityCert<'_> {
             trust_anchors,
             intermediate_certs,
             revocation,
+            distrusted_spkis: verify_cert::DISTRUSTED_SPKIS,
         }
         .build_chain(self, time, verify_path)
     }
@@ -166,6 +167,19 @@ impl EndEntityCert<'_> {
             untrusted::Input::from(msg),
             untrusted::Input::from(signature),
         )
+    }
+
+    /// Returns the CT logs that contributed to the SCTs included in the certificate.
+    ///
+    /// Note this method does not verify the SCTs themselves.
+    ///
+    /// If the certificate does not contain an SCT extension, this method returns an empty
+    /// iterator.
+    pub fn sct_log_timestamps<'a>(
+        &'a self,
+    ) -> Result<impl Iterator<Item = Result<sct::LogIdAndTimestamp, sct::Error>> + 'a, sct::Error>
+    {
+        Ok(sct::SctParser::new(self.scts)?.map(|sct| sct.map(|sct| sct.log_id_and_timestamp())))
     }
 }
 

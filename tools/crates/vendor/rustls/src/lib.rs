@@ -378,6 +378,7 @@
 // is used to avoid needing `rustversion` to be compiled twice during
 // cross-compiling.
 #![cfg_attr(read_buf, feature(read_buf))]
+#![cfg_attr(read_buf, feature(core_io))]
 #![cfg_attr(read_buf, feature(core_io_borrowed_buf))]
 #![cfg_attr(bench, feature(test))]
 #![no_std]
@@ -594,7 +595,7 @@ pub mod client {
     pub use builder::WantsClientCert;
     pub use client_conn::{
         ClientConfig, ClientConnectionData, ClientSessionStore, EarlyDataError, ResolvesClientCert,
-        Resumption, Tls12Resumption, UnbufferedClientConnection,
+        Resumption, TicketRequest, Tls12Resumption, UnbufferedClientConnection,
     };
     #[cfg(feature = "std")]
     pub use client_conn::{ClientConnection, WriteEarlyData};

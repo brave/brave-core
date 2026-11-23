@@ -10,16 +10,16 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-lock"
-version = "19.0.0"
+version = "26.0.1"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
-    "README.md",
+    "/src/**/*",
+    "/LICENSE-*",
+    "/README.md",
 ]
 autolib = false
 autobins = false
@@ -30,28 +30,37 @@ description = "A git-style lock-file implementation"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [lib]
 name = "gix_lock"
 path = "src/lib.rs"
 test = true
-doctest = false
+doctest = true
+
+[dependencies.gix-error]
+version = "^0.5.2"
+
+[dependencies.gix-fs]
+version = "^0.24.1"
 
 [dependencies.gix-tempfile]
-version = "^19.0.0"
+version = "^26.0.0"
 default-features = false
 
 [dependencies.gix-utils]
-version = "^0.3.1"
+version = "^0.5.1"
 default-features = false
 
-[dependencies.thiserror]
-version = "2.0.17"
+[dev-dependencies.insta]
+version = "1.46.3"
+features = ["filters"]
 
 [dev-dependencies.tempfile]
-version = "3.23.0"
+version = "3.26.0"
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -70,7 +79,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

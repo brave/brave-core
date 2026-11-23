@@ -1,8 +1,8 @@
 use std::fs::File;
+use std::io;
 use std::mem::ManuallyDrop;
 use std::os::unix::io::{FromRawFd, RawFd};
 use std::sync::atomic::{AtomicUsize, Ordering};
-use std::{io, ptr};
 
 #[cfg(any(
     all(target_os = "linux", not(target_arch = "mips")),
@@ -64,13 +64,19 @@ const MAP_NORESERVE: libc::c_int = 0;
 
 #[cfg(any(
     target_os = "android",
-    all(target_os = "linux", not(target_env = "musl"))
+    all(
+        target_os = "linux",
+        not(any(target_env = "musl", target_env = "ohos"))
+    )
 ))]
 use libc::{mmap64 as mmap, off64_t as off_t};
 
 #[cfg(not(any(
     target_os = "android",
-    all(target_os = "linux", not(target_env = "musl"))
+    all(
+        target_os = "linux",
+        not(any(target_env = "musl", target_env = "ohos"))
+    )
 )))]
 use libc::{mmap, off_t};
 
@@ -95,21 +101,25 @@ impl MmapInner {
 
         let (map_len, map_offset) = Self::adjust_mmap_params(len, alignment as usize)?;
 
-        unsafe {
-            let ptr = mmap(
-                ptr::null_mut(),
+        // SAFETY: creating a new memory map with a nullptr as address hint is always sound:
+        // it does not modify any existing mapping or memory contents.
+        let ptr = unsafe {
+            mmap(
+                std::ptr::null_mut(),
                 map_len as libc::size_t,
                 prot,
                 flags,
                 file,
                 aligned_offset as off_t,
-            );
+            )
+        };
 
-            if ptr == libc::MAP_FAILED {
-                Err(io::Error::last_os_error())
-            } else {
-                Ok(Self::from_raw_parts(ptr, len, map_offset))
-            }
+        if ptr == libc::MAP_FAILED {
+            Err(io::Error::last_os_error())
+        } else {
+            // SAFETY: The ptr and len have been checked,
+            // and the offset has been calculated as required.
+            Ok(unsafe { Self::from_raw_parts(ptr, len, map_offset) })
         }
     }
 
@@ -211,7 +221,11 @@ impl MmapInner {
         if len == 0 {
             (self.ptr, 1, 0)
         } else {
-            (unsafe { self.ptr.offset(-(offset as isize)) }, len, offset)
+            let offset = self.ptr as usize % page_size();
+            // SAFETY: MmapInner guarantees that rounding `self.ptr` down to a page boundary gives the real address of the memory map.
+            // This means that it points into the same allocation as `self.ptr`.
+            let ptr = unsafe { self.ptr.sub(offset) };
+            (ptr, len, offset)
         }
     }
 
@@ -229,7 +243,7 @@ impl MmapInner {
         debug_assert!(offset < page_size(), "offset larger than page size");
 
         Self {
-            ptr: ptr.add(offset),
+            ptr: unsafe { ptr.add(offset) },
             len,
         }
     }
@@ -240,6 +254,7 @@ impl MmapInner {
         offset: u64,
         populate: bool,
         no_reserve: bool,
+        _probe_handle: bool,
     ) -> io::Result<MmapInner> {
         let populate = if populate { MAP_POPULATE } else { 0 };
         let no_reserve = if no_reserve { MAP_NORESERVE } else { 0 };
@@ -258,6 +273,7 @@ impl MmapInner {
         offset: u64,
         populate: bool,
         no_reserve: bool,
+        _probe_handle: bool,
     ) -> io::Result<MmapInner> {
         let populate = if populate { MAP_POPULATE } else { 0 };
         let no_reserve = if no_reserve { MAP_NORESERVE } else { 0 };
@@ -276,6 +292,7 @@ impl MmapInner {
         offset: u64,
         populate: bool,
         no_reserve: bool,
+        _probe_handle: bool,
     ) -> io::Result<MmapInner> {
         let populate = if populate { MAP_POPULATE } else { 0 };
         let no_reserve = if no_reserve { MAP_NORESERVE } else { 0 };
@@ -294,6 +311,7 @@ impl MmapInner {
         offset: u64,
         populate: bool,
         no_reserve: bool,
+        _probe_handle: bool,
     ) -> io::Result<MmapInner> {
         let populate = if populate { MAP_POPULATE } else { 0 };
         let no_reserve = if no_reserve { MAP_NORESERVE } else { 0 };
@@ -312,6 +330,7 @@ impl MmapInner {
         offset: u64,
         populate: bool,
         no_reserve: bool,
+        _probe_handle: bool,
     ) -> io::Result<MmapInner> {
         let populate = if populate { MAP_POPULATE } else { 0 };
         let no_reserve = if no_reserve { MAP_NORESERVE } else { 0 };
@@ -355,10 +374,14 @@ impl MmapInner {
     }
 
     pub fn flush(&self, offset: usize, len: usize) -> io::Result<()> {
+        if offset > self.len || len > self.len - offset {
+            return Err(io::ErrorKind::InvalidInput.into());
+        }
         let alignment = (self.ptr as usize + offset) % page_size();
         let offset = offset as isize - alignment as isize;
         let len = len + alignment;
         let result =
+            // SAFETY: We've checked that offset and len fall within the mapped region.
             unsafe { libc::msync(self.ptr.offset(offset), len as libc::size_t, libc::MS_SYNC) };
         if result == 0 {
             Ok(())
@@ -368,10 +391,14 @@ impl MmapInner {
     }
 
     pub fn flush_async(&self, offset: usize, len: usize) -> io::Result<()> {
+        if offset > self.len || len > self.len - offset {
+            return Err(io::ErrorKind::InvalidInput.into());
+        }
         let alignment = (self.ptr as usize + offset) % page_size();
         let offset = offset as isize - alignment as isize;
         let len = len + alignment;
         let result =
+            // SAFETY: We've checked that offset and len fall within the mapped region.
             unsafe { libc::msync(self.ptr.offset(offset), len as libc::size_t, libc::MS_ASYNC) };
         if result == 0 {
             Ok(())
@@ -381,16 +408,17 @@ impl MmapInner {
     }
 
     fn mprotect(&mut self, prot: libc::c_int) -> io::Result<()> {
-        unsafe {
-            let alignment = self.ptr as usize % page_size();
-            let ptr = self.ptr.offset(-(alignment as isize));
-            let len = self.len + alignment;
-            let len = len.max(1);
-            if libc::mprotect(ptr, len, prot) == 0 {
-                Ok(())
-            } else {
-                Err(io::Error::last_os_error())
-            }
+        let alignment = self.ptr as usize % page_size();
+        // SAFETY: rounding self.ptr down to the previous page boundary gives the pointer of the actual memory map.
+        let ptr = unsafe { self.ptr.sub(alignment) };
+        let len = self.len + alignment;
+        let len = len.max(1);
+
+        // SAFETY: the contract of MmapInner guarantees ptr and len are valid.
+        if unsafe { libc::mprotect(ptr, len, prot) } == 0 {
+            Ok(())
+        } else {
+            Err(io::Error::last_os_error())
         }
     }
 
@@ -421,16 +449,34 @@ impl MmapInner {
         self.len
     }
 
-    pub fn advise(&self, advice: libc::c_int, offset: usize, len: usize) -> io::Result<()> {
+    /// Perform an `madvise()`.
+    ///
+    /// # Safety
+    ///
+    /// Some `advise` values can be unsound depending on the situation.
+    /// It is up to the caller to only perform sound madvise() calls on the memory range.
+    pub unsafe fn advise(&self, advice: libc::c_int, offset: usize, len: usize) -> io::Result<()> {
+        if offset > self.len || len > self.len {
+            return Err(std::io::ErrorKind::InvalidInput.into());
+        }
         let alignment = (self.ptr as usize + offset) % page_size();
         let offset = offset as isize - alignment as isize;
         let len = len + alignment;
-        unsafe {
-            if libc::madvise(self.ptr.offset(offset), len, advice) != 0 {
-                Err(io::Error::last_os_error())
-            } else {
-                Ok(())
-            }
+
+        // SAFETY: We've checked that offset is within the mapped region.
+        let ptr = unsafe { self.ptr.offset(offset) };
+
+        // The AIX signature of 'madvise()' differs from the POSIX
+        // specification, which expects 'void *' as the type of the
+        // 'addr' argument, whereas AIX uses 'caddr_t' (i.e., 'char *').
+        #[cfg(target_os = "aix")]
+        let ptr = self.ptr.offset(offset).cast();
+
+        // SAFETY: ptr and len are valid. The burden of giving a safe `advice` value is on the caller.
+        if unsafe { libc::madvise(ptr, len, advice) } != 0 {
+            Err(io::Error::last_os_error())
+        } else {
+            Ok(())
         }
     }
 
@@ -439,16 +485,19 @@ impl MmapInner {
         let (old_ptr, old_len, offset) = self.as_mmap_params();
         let (map_len, offset) = Self::adjust_mmap_params(new_len, offset)?;
 
-        unsafe {
-            let new_ptr = libc::mremap(old_ptr, old_len, map_len, options.into_flags());
+        // SAFETY: we hold a mutable reference to self, so we can adjust the location and size of the mapping.
+        let new_ptr = unsafe { libc::mremap(old_ptr, old_len, map_len, options.into_flags()) };
 
-            if new_ptr == libc::MAP_FAILED {
-                Err(io::Error::last_os_error())
-            } else {
-                // We explicitly don't drop self since the pointer within is no longer valid.
-                ptr::write(self, Self::from_raw_parts(new_ptr, new_len, offset));
-                Ok(())
-            }
+        if new_ptr == libc::MAP_FAILED {
+            Err(io::Error::last_os_error())
+        } else {
+            // SAFETY: The pointer and length passed to `from_raw_parts` have just been obtained from a real map, so they must be valid.
+            let new_map = unsafe { Self::from_raw_parts(new_ptr, new_len, offset) };
+            // We explicitly don't drop self since the pointer within is no longer valid.
+            // Instead, swap the new map into `self` and forget the old one.
+            let old_map = std::mem::replace(self, new_map);
+            std::mem::forget(old_map);
+            Ok(())
         }
     }
 
@@ -470,6 +519,128 @@ impl MmapInner {
                 Ok(())
             }
         }
+    }
+
+    #[cfg(not(any(target_os = "linux", target_os = "android", target_os = "freebsd")))]
+    #[allow(clippy::unnecessary_wraps)]
+    pub fn check_safe_to_map(
+        _fd: RawFd,
+        _offset: u64,
+        _len: usize,
+    ) -> Result<(), crate::MapIfSafeError> {
+        Err(crate::MapIfSafeError::new_not_supported())
+    }
+
+    /// Check if a requisted region of a file is safe to map.
+    #[cfg(any(target_os = "linux", target_os = "android", target_os = "freebsd"))]
+    pub fn check_safe_to_map(
+        fd: RawFd,
+        offset: u64,
+        len: usize,
+    ) -> Result<(), crate::MapIfSafeError> {
+        // First check if the FD itself is safe.
+        Self::check_fd_safe_to_map(fd)?;
+
+        // Now check if the mapping request including offset and length is safe.
+        let file_size = file_len(fd).map_err(|e| {
+            crate::MapIfSafeError::new_not_safe(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                format!("fd is not safe to map: failed to determine file size: {e}"),
+            ))
+        })?;
+
+        let end = offset.checked_add(len as u64).ok_or_else(|| {
+            crate::MapIfSafeError::new_map_failed(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "mapping region overflows u64",
+            ))
+        })?;
+        if end > file_size {
+            return Err(crate::MapIfSafeError::new_not_safe(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                format!("map request is not safe: offset + length ({end}) exceeds the size of the file ({file_size})"),
+            )));
+        }
+
+        Ok(())
+    }
+
+    /// Check if a file descriptor is safe to map.
+    ///
+    /// This only checks the file, not the whole map request.
+    /// A request to map more than the file contents must still be rejected.
+    #[cfg(any(target_os = "linux", target_os = "android", target_os = "freebsd"))]
+    fn check_fd_safe_to_map(fd: RawFd) -> Result<(), crate::MapIfSafeError> {
+        // Check for properly sealed memfd on Linux, Android and FreeBSD.
+        if let Some(seals) = Self::get_memfd_seals(fd) {
+            return Self::check_memfd_seals(seals);
+        }
+
+        // On FreeBSD we have not more checks.
+        #[cfg(target_os = "freebsd")]
+        return Err(crate::MapIfSafeError::new_not_safe(io::Error::new(
+            io::ErrorKind::InvalidInput,
+            "fd is not safe to map: it is not a memfd",
+        )));
+
+        // Also check for fs-verity on Linux and Android.
+        #[cfg(any(target_os = "linux", target_os = "android"))]
+        if Self::has_fs_verity(fd) {
+            Ok(())
+        } else {
+            Err(crate::MapIfSafeError::new_not_safe(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "fd is not safe to map: it is not a memfd and it has no fs-verity",
+            )))
+        }
+    }
+
+    /// Get the seals of a memfd.
+    #[cfg(any(target_os = "linux", target_os = "android", target_os = "freebsd"))]
+    fn get_memfd_seals(fd: RawFd) -> Option<libc::c_int> {
+        // SAFETY: F_GET_SEALS has no side effects, and just returns an error on invalid FDs.
+        let seals = unsafe { libc::fcntl(fd, libc::F_GET_SEALS) };
+        if seals >= 0 {
+            Some(seals)
+        } else {
+            None
+        }
+    }
+
+    /// Check if the seals of a memfd to see if the FD is immutable (and safe to map).
+    #[cfg(any(target_os = "linux", target_os = "android", target_os = "freebsd"))]
+    fn check_memfd_seals(seals: libc::c_int) -> Result<(), crate::MapIfSafeError> {
+        let required = libc::F_SEAL_SHRINK | libc::F_SEAL_WRITE;
+        let overlap = seals & required;
+        if overlap == required {
+            Ok(())
+        } else {
+            let error = match overlap {
+                libc::F_SEAL_SHRINK => "fd is not safe to map: missing seals F_SEAL_WRITE",
+                libc::F_SEAL_WRITE => "fd is not safe to map: missing seals F_SEAL_SHRINK",
+                _ => "fd is not safe to map: missing seals F_SEAL_SHRINK and F_SEAL_WRITE",
+            };
+            Err(crate::MapIfSafeError::new_not_safe(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                error,
+            )))
+        }
+    }
+
+    #[cfg(any(target_os = "linux", target_os = "android"))]
+    /// Check if a file has vs-verity enabled.
+    fn has_fs_verity(fd: RawFd) -> bool {
+        #[repr(C)]
+        struct FsVerityDigest {
+            digest_algorithm: u16,
+            digest_size: u16,
+        }
+        const FS_IOC_MEASURE_VERITY: libc::c_ulong = 0xC004_6686;
+
+        let mut digest = std::mem::MaybeUninit::<FsVerityDigest>::zeroed();
+        #[allow(clippy::cast_possible_wrap)]
+        let ret = unsafe { libc::ioctl(fd, FS_IOC_MEASURE_VERITY as _, digest.as_mut_ptr()) };
+        ret == 0 || io::Error::last_os_error().raw_os_error() == Some(libc::EOVERFLOW)
     }
 }
 

@@ -1,5 +1,7 @@
 //! This module contains functionality for compression.
 
+use ::core::convert::From;
+
 use crate::alloc::vec;
 use crate::alloc::vec::Vec;
 
@@ -15,6 +17,7 @@ use self::core::*;
 /// of checks for matches in the hash chains and whether to use lazy or greedy parsing.
 #[repr(i32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 pub enum CompressionLevel {
     /// Don't do any compression, only output uncompressed blocks.
     NoCompression = 0,
@@ -28,6 +31,28 @@ pub enum CompressionLevel {
     DefaultLevel = 6,
     /// Use the default compression level.
     DefaultCompression = -1,
+}
+
+impl From<CompressionLevel> for i8 {
+    fn from(level: CompressionLevel) -> i8 {
+        level as i8
+    }
+}
+
+impl From<CompressionLevel> for i32 {
+    fn from(level: CompressionLevel) -> i32 {
+        level as i32
+    }
+}
+
+impl From<CompressionLevel> for u8 {
+    fn from(level: CompressionLevel) -> u8 {
+        if (level as i32) < 0 {
+            6
+        } else {
+            level as u8
+        }
+    }
 }
 
 // Missing safe rust analogue (this and mem-to-mem are quite similar)

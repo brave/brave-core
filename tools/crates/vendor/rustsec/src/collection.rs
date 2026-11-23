@@ -20,14 +20,14 @@ pub enum Collection {
 impl Collection {
     /// Get all collections as a slice
     pub fn all() -> &'static [Self] {
-        &[Collection::Crates, Collection::Rust]
+        &[Self::Crates, Self::Rust]
     }
 
     /// Get a `str` representing the kind of package
     pub fn as_str(&self) -> &str {
         match self {
-            Collection::Crates => "crates",
-            Collection::Rust => "rust",
+            Self::Crates => "crates",
+            Self::Rust => "rust",
         }
     }
 }
@@ -43,8 +43,8 @@ impl FromStr for Collection {
 
     fn from_str(s: &str) -> Result<Self, Error> {
         Ok(match s {
-            "crates" => Collection::Crates,
-            "rust" => Collection::Rust,
+            "crates" => Self::Crates,
+            "rust" => Self::Rust,
             other => fail!(ErrorKind::Parse, "invalid package type: {}", other),
         })
     }

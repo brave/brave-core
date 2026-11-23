@@ -2,22 +2,106 @@ lints.workspace = true
 
 [package]
 name = "gix-utils"
-version = "0.3.1"
+version = "0.5.3"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
-description = "A crate with `gitoxide` utilities that don't need feature toggles"
+description = "Utilities shared by the gitoxide crates"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-rust-version = "1.82"
-include = ["src/**/*", "LICENSE-*"]
+edition = "2024"
+rust-version = "1.88"
+include = ["/src/**/*", "/LICENSE-*"]
 
 [lib]
 doctest = true
 
+[[bench]]
+name = "precompose"
+harness = false
+
 [features]
+## Byte-string conversion utilities.
 bstr = ["dep:bstr"]
+## Progress traits, types, and I/O wrappers backed by `prodash`.
+progress = ["dep:prodash"]
+## Compatibility workaround for Cargo's workspace feature selection, not a progress API feature.
+## cargo-auditable replays rustc's enabled feature names into workspace-wide `cargo metadata`.
+## The root package's implicit `prodash` feature then matches this optional dependency even though
+## `dep:prodash` suppresses its implicit feature, so Cargo rejects the request for `gix-utils/prodash`.
+## Cargo's feature reporting/selection limitations: https://github.com/rust-lang/cargo/issues/12336
+### cargo-auditable's metadata-based reconstruction: https://github.com/rust-secure-code/cargo-auditable/issues/124
+## Reproduce without this alias, from the workspace root (confirmed with Cargo 1.99.0):
+##   cargo metadata --locked --format-version 1 --no-default-features --features prodash > /dev/null
+## To reassess removal after an upstream fix, delete the alias and run `just check-auditable`.
+## CI checks the actual auditable build, not the alias, so a tooling fix can make it unnecessary.
+prodash = ["dep:prodash"]
+## Human-readable numbers in progress units.
+progress-unit-human-numbers = ["prodash?/unit-human"]
+## Human-readable byte sizes and progress units.
+progress-unit-bytes = ["dep:bytesize", "prodash?/unit-bytes"]
+## I/O and iterator wrappers that preserve typed cancellation errors.
+interrupt = ["dep:gix-error"]
+## A bounded in-memory byte pipe.
+io-pipe = ["dep:bytes"]
+## Count cache hits, misses, and insertions and print diagnostics on drop.
+cache-efficiency-debug = []
 
 [dependencies]
-fastrand = "2.0.0"
+gix-error = { version = "^0.5.3", path = "../gix-error", optional = true }
+prodash = { version = "31.0.1", optional = true }
+bytesize = { version = "2.3.1", optional = true }
+bytes = { version = "1.11.1", optional = true }
+document-features = { version = "0.2.0", optional = true }
+
+# We seed our own thread-local `Rng` (see `src/rng.rs`), so `fastrand`'s global generator and its
+# `std` default feature aren't needed.
+fastrand = { version = "2.4.1", default-features = false }
 bstr = { version = "1.12.0", default-features = false, features = ["std"], optional = true }
 unicode-normalization = { version = "0.1.19", default-features = false }
+
+# Used by `rng` to obtain a high-entropy, process-distinct seed. Excluded on
+# `wasm32-unknown-unknown`, which has no entropy backend by default; there `rng` falls back to a
+# best-effort seed (see `src/rng.rs`).
+[target.'cfg(not(all(target_arch = "wasm32", target_os = "unknown")))'.dependencies]
+getrandom = "0.4"
+
+[dev-dependencies]
+gix-testtools = { path = "../tests/tools", default-features = false, features = ["sha1"] }
+insta = "1.46.3"
+gix-utils = { path = ".", features = ["bstr" ]}
+criterion = "0.8.2"
+
+[[test]]
+name = "pipe"
+path = "tests/pipe.rs"
+required-features = ["io-pipe"]
+
+[package.metadata.docs.rs]
+all-features = true
+features = ["document-features"]
+
+[package.metadata.qa]
+checks = [
+    { args = ["--all-features"] },
+    { args = ["--features", "progress,progress-unit-bytes"] },
+    { args = ["--features", "progress,progress-unit-human-numbers"] },
+]
+tests = [
+    { args = ["--all-features"] },
+]
+
+[package.metadata.qa.each-feature]
+# There is no default feature; check independent additions without multiplying combinations.
+args = ["--no-default-features"]
+exclude = ["prodash", "document-features", "progress-unit-bytes", "progress-unit-human-numbers"]
+
+[package.metadata.qa.wasm]
+targets = ["wasm32-unknown-unknown", "wasm32-wasip1", "wasm32-wasip2"]
+checks = [
+    { args = ["--no-default-features", "--features", "progress,progress-unit-bytes"] },
+    { args = ["--no-default-features", "--features", "progress,progress-unit-human-numbers"] },
+]
+
+[package.metadata.qa.wasm.each-feature]
+args = ["--no-default-features"]
+# Keep platform coverage for the established independent features and explicit progress-unit pairs.
+exclude = ["bstr", "prodash", "document-features", "progress-unit-bytes", "progress-unit-human-numbers"]

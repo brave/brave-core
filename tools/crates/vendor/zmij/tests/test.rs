@@ -14,6 +14,9 @@ mod dtoa_test {
     #[test]
     fn normal() {
         assert_eq!(dtoa(6.62607015e-34), "6.62607015e-34");
+
+        // Exact half-ulp tie when rounding to nearest integer.
+        assert_eq!(dtoa(5.444310685350916e+14), "544431068535091.6");
     }
 
     #[test]
@@ -23,6 +26,27 @@ mod dtoa_test {
         assert_eq!(dtoa(1.2e-322), "1.2e-322");
         assert_eq!(dtoa(1.24e-322), "1.24e-322");
         assert_eq!(dtoa(1.234e-320), "1.234e-320");
+        assert_eq!(dtoa(2.2250738585072004e-308), "2.2250738585072004e-308");
+    }
+
+    #[test]
+    fn all_irregular() {
+        for exp in 1..0x3ff {
+            let bits = exp << 52;
+            let value = f64::from_bits(bits);
+
+            assert_eq!(dtoa(value), ryu::Buffer::new().format(value));
+        }
+    }
+
+    #[test]
+    fn all_exponents() {
+        for exp in 0..=0x3ff {
+            let bits = (exp << 52) | 1;
+            let value = f64::from_bits(bits);
+
+            assert_eq!(dtoa(value), ryu::Buffer::new().format(value));
+        }
     }
 
     #[test]
@@ -39,12 +63,10 @@ mod dtoa_test {
     #[test]
     fn inf() {
         assert_eq!(dtoa(f64::INFINITY), "inf");
-        assert_eq!(dtoa(f64::NEG_INFINITY), "-inf");
     }
 
     #[test]
     fn nan() {
-        assert_eq!(dtoa(f64::NAN.copysign(1.0)), "NaN");
         assert_eq!(dtoa(f64::NAN.copysign(-1.0)), "NaN");
     }
 
@@ -67,12 +89,29 @@ mod dtoa_test {
     }
 
     #[test]
-    fn all_exponents() {
-        for exp in f64::MIN_EXP..f64::MAX_EXP {
-            let expected = f64::exp2(f64::from(exp));
-            let actual = dtoa(expected).parse::<f64>().unwrap();
-            assert_eq!(actual, expected);
-        }
+    fn boundary_cases() {
+        assert_eq!(dtoa(1.3588129002659584e-245), "1.3588129002659584e-245");
+        assert_eq!(dtoa(2.9802322387695312e-08), "2.9802322387695312e-8");
+        assert_eq!(dtoa(5.960464477539063e-08), "5.960464477539063e-8");
+        assert_eq!(dtoa(1.3076622631878654e+65), "1.3076622631878654e+65");
+        assert_eq!(dtoa(9.03725590277404e+159), "9.03725590277404e+159");
+        assert_eq!(dtoa(9.03725590277404e+160), "9.03725590277404e+160");
+        assert_eq!(dtoa(9.03725590277404e+161), "9.03725590277404e+161");
+        assert_eq!(dtoa(9.03725590277404e+162), "9.03725590277404e+162");
+        assert_eq!(dtoa(5.960464477539062e-07), "5.960464477539062e-7");
+    }
+
+    #[test]
+    fn fixed_with_zeros() {
+        assert_eq!(dtoa(43210.0), "43210.0");
+        assert_eq!(dtoa(43210.1), "43210.1");
+        assert_eq!(dtoa(10000.0), "10000.0");
+        assert_eq!(dtoa(-5942736479622170.0), "-5942736479622170.0");
+    }
+
+    #[test]
+    fn no_buffer() {
+        assert_eq!(dtoa(6.62607015e-34), "6.62607015e-34");
     }
 }
 
@@ -80,12 +119,26 @@ mod ftoa_test {
     use super::ftoa;
 
     #[test]
+    fn fixed_with_zeros() {
+        assert_eq!(ftoa(43210.0), "43210.0");
+        assert_eq!(ftoa(43210.1), "43210.1");
+        assert_eq!(ftoa(10000.0), "10000.0");
+    }
+
+    #[test]
     fn normal() {
         assert_eq!(ftoa(6.62607e-34), "6.62607e-34");
+        assert_eq!(ftoa(1.342178e+08), "134217800.0");
+        assert_eq!(ftoa(1.3421781e+08), "134217810.0");
     }
 
     #[test]
     fn subnormal() {
         assert_eq!(ftoa(0.0f32.next_up()), "1e-45");
+    }
+
+    #[test]
+    fn no_buffer() {
+        assert_eq!(ftoa(6.62607e-34), "6.62607e-34");
     }
 }

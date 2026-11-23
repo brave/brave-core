@@ -1,10 +1,11 @@
 //! Rust target environments
 
-use crate::error::Error;
 use core::{fmt, str::FromStr};
 
 #[cfg(feature = "serde")]
 use serde::{de, de::Error as DeError, ser, Deserialize, Serialize};
+
+use crate::error::Error;
 
 /// `target_env`: target environment that disambiguates the target platform by ABI / libc.
 ///
@@ -44,9 +45,6 @@ pub enum Env {
     /// `nto71_iosock`
     Nto71Iosock,
 
-    /// `nto80`
-    Nto80,
-
     /// `ohos`
     OhOS,
 
@@ -79,26 +77,25 @@ impl Env {
     /// String representing this `Env` which matches `#[cfg(target_env)]`
     pub fn as_str(self) -> &'static str {
         match self {
-            Env::None => "",
-            Env::Gnu => "gnu",
-            Env::Macabi => "macabi",
-            Env::Mlibc => "mlibc",
-            Env::Msvc => "msvc",
-            Env::Musl => "musl",
-            Env::Newlib => "newlib",
-            Env::Nto70 => "nto70",
-            Env::Nto71 => "nto71",
-            Env::Nto71Iosock => "nto71_iosock",
-            Env::Nto80 => "nto80",
-            Env::OhOS => "ohos",
-            Env::P1 => "p1",
-            Env::P2 => "p2",
-            Env::P3 => "p3",
-            Env::Relibc => "relibc",
-            Env::Sgx => "sgx",
-            Env::Sim => "sim",
-            Env::UClibc => "uclibc",
-            Env::V5 => "v5",
+            Self::None => "",
+            Self::Gnu => "gnu",
+            Self::Macabi => "macabi",
+            Self::Mlibc => "mlibc",
+            Self::Msvc => "msvc",
+            Self::Musl => "musl",
+            Self::Newlib => "newlib",
+            Self::Nto70 => "nto70",
+            Self::Nto71 => "nto71",
+            Self::Nto71Iosock => "nto71_iosock",
+            Self::OhOS => "ohos",
+            Self::P1 => "p1",
+            Self::P2 => "p2",
+            Self::P3 => "p3",
+            Self::Relibc => "relibc",
+            Self::Sgx => "sgx",
+            Self::Sim => "sim",
+            Self::UClibc => "uclibc",
+            Self::V5 => "v5",
         }
     }
 }
@@ -109,26 +106,25 @@ impl FromStr for Env {
     /// Create a new `Env` from the given string
     fn from_str(name: &str) -> Result<Self, Self::Err> {
         let result = match name {
-            "" => Env::None,
-            "gnu" => Env::Gnu,
-            "macabi" => Env::Macabi,
-            "mlibc" => Env::Mlibc,
-            "msvc" => Env::Msvc,
-            "musl" => Env::Musl,
-            "newlib" => Env::Newlib,
-            "nto70" => Env::Nto70,
-            "nto71" => Env::Nto71,
-            "nto71_iosock" => Env::Nto71Iosock,
-            "nto80" => Env::Nto80,
-            "ohos" => Env::OhOS,
-            "p1" => Env::P1,
-            "p2" => Env::P2,
-            "p3" => Env::P3,
-            "relibc" => Env::Relibc,
-            "sgx" => Env::Sgx,
-            "sim" => Env::Sim,
-            "uclibc" => Env::UClibc,
-            "v5" => Env::V5,
+            "" => Self::None,
+            "gnu" => Self::Gnu,
+            "macabi" => Self::Macabi,
+            "mlibc" => Self::Mlibc,
+            "msvc" => Self::Msvc,
+            "musl" => Self::Musl,
+            "newlib" => Self::Newlib,
+            "nto70" => Self::Nto70,
+            "nto71" => Self::Nto71,
+            "nto71_iosock" => Self::Nto71Iosock,
+            "ohos" => Self::OhOS,
+            "p1" => Self::P1,
+            "p2" => Self::P2,
+            "p3" => Self::P3,
+            "relibc" => Self::Relibc,
+            "sgx" => Self::Sgx,
+            "sim" => Self::Sim,
+            "uclibc" => Self::UClibc,
+            "v5" => Self::V5,
             _ => return Err(Error),
         };
 

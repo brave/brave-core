@@ -2,37 +2,35 @@ lints.workspace = true
 
 [package]
 name = "gix-date"
-version = "0.10.7"
+version = "0.18.1"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate of the gitoxide project parsing dates the way git does"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-include = ["src/**/*", "LICENSE-*"]
-rust-version = "1.82"
+edition = "2024"
+include = ["/src/**/*", "/LICENSE-*"]
+rust-version = "1.88"
 
 [lib]
-doctest = false
+doctest = true
 
 [features]
 ## Data structures implement `serde::Serialize` and `serde::Deserialize`.
 serde = ["dep:serde", "bstr/serde"]
 
 [dependencies]
+gix-error = { version = "^0.5.2", path = "../gix-error" }
 bstr = { version = "1.12.0", default-features = false, features = ["std"] }
 serde = { version = "1.0.114", optional = true, default-features = false, features = ["derive"] }
-itoa = "1.0.1"
-jiff = "0.2.15"
-thiserror = "2.0.17"
-# TODO: used for quick and easy `TimeBacking: std::io::Write` implementation, but could make that `Copy`
-#       and remove this dep with custom impl
-smallvec = { version = "1.15.1", features = ["write"] }
+itoa = "1.0.17"
+jiff = "0.2.25"
 
 document-features = { version = "0.2.0", optional = true }
 
 [dev-dependencies]
+insta = "1.46.3"
 gix-hash = { path = "../gix-hash" }
-gix-testtools = { path = "../tests/tools" }
+gix-testtools = { path = "../tests/tools", default-features = false, features = ["sha1"] }
 pretty_assertions = "1.4.1"
 
 [package.metadata.docs.rs]

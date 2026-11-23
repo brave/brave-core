@@ -8,17 +8,18 @@ use tui::{
 use tui_react::fill_background;
 
 use crate::{
+    Throughput,
     progress::{self, Key, Step, Task, Value},
     render::tui::{
+        InterruptDrawInfo,
         draw::State,
         utils::{
-            block_width, draw_text_nowrap_fn, draw_text_with_ellipsis_nowrap, rect, sanitize_offset,
-            GraphemeCountWriter, VERTICAL_LINE,
+            GraphemeCountWriter, VERTICAL_LINE, block_width, draw_text_nowrap_fn, draw_text_with_ellipsis_nowrap, rect,
+            sanitize_offset,
         },
-        InterruptDrawInfo,
     },
     time::format_now_datetime_seconds,
-    unit, Throughput,
+    unit,
 };
 
 const MIN_TREE_WIDTH: u16 = 20;
@@ -254,11 +255,7 @@ pub fn draw_progress(
                     }
                 });
                 let style_fn = move |_t: &str, x: u16, _y: u16| {
-                    if x < bound.right() {
-                        style
-                    } else {
-                        Style::default()
-                    }
+                    if x < bound.right() { style } else { Style::default() }
                 };
                 draw_text_nowrap_fn(progress_rect, buf, progress_text, style_fn);
             }
@@ -343,7 +340,7 @@ fn draw_progress_bar_fn(
     let color = style(fraction);
     for y in fractional_progress_rect.top()..fractional_progress_rect.bottom() {
         for x in fractional_progress_rect.left()..fractional_progress_rect.right() {
-            let cell = buf.get_mut(x, y);
+            let cell = &mut buf[(x, y)];
             cell.set_fg(color);
             cell.set_symbol(tui::symbols::block::FULL);
         }
@@ -364,7 +361,7 @@ fn draw_progress_bar_fn(
         let index = ((((bound.width as f32 * fraction) - fractional_progress_rect.width as f32) * 8f32).round()
             as usize)
             % BLOCK_SECTIONS.len();
-        let cell = buf.get_mut(fractional_progress_rect.right(), bound.y);
+        let cell = &mut buf[(fractional_progress_rect.right(), bound.y)];
         cell.set_symbol(BLOCK_SECTIONS[index]);
         cell.set_fg(color);
         fractional_progress_rect.width += 1;

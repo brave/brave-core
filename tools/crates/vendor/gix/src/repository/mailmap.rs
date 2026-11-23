@@ -1,7 +1,8 @@
-use crate::{config::tree::Mailmap, Id};
+use crate::error::{ErrorExt, message};
+use crate::{Error, Id, Result, bstr::ByteSlice, config::tree::Mailmap};
+use gix_fs::FileOrSymlink;
 
 impl crate::Repository {
-    // TODO: tests
     /// Similar to [`open_mailmap_into()`][crate::Repository::open_mailmap_into()], but ignores all errors and returns at worst
     /// an empty mailmap, e.g. if there is no mailmap or if there were errors loading them.
     ///
@@ -13,22 +14,22 @@ impl crate::Repository {
         out
     }
 
-    // TODO: tests
     /// Try to merge mailmaps from the following locations into `target`:
     ///
-    /// - read the `.mailmap` file without following symlinks from the working tree, if present
+    /// - read the `.mailmap` file without following symlinks from the working tree, if present;
+    ///   symlinks are reported as errors without reading their targets
     /// - OR read `HEAD:.mailmap` if this repository is bare (i.e. has no working tree), if the `mailmap.blob` is not set.
     /// - read the mailmap as configured in `mailmap.blob`, if set.
     /// - read the file as configured by `mailmap.file`, following symlinks, if set.
     ///
     /// Only the first error will be reported, and as many source mailmaps will be merged into `target` as possible.
     /// Parsing errors will be ignored.
-    pub fn open_mailmap_into(&self, target: &mut gix_mailmap::Snapshot) -> Result<(), crate::mailmap::load::Error> {
-        let mut err = None::<crate::mailmap::load::Error>;
+    pub fn open_mailmap_into(&self, target: &mut gix_mailmap::Snapshot) -> Result<()> {
+        let mut err = None::<Error>;
         let mut buf = Vec::new();
         let mut blob_id = self.config.resolved.string(Mailmap::BLOB).and_then(|spec| {
-            self.rev_parse_single(spec.as_ref())
-                .map_err(|e| err.get_or_insert(e.into()))
+            self.rev_parse_single(spec.as_bstr())
+                .map_err(|e| err.get_or_insert(e.and_raise(message("The configured mailmap.blob could not be parsed"))))
                 .map(Id::detach)
                 .ok()
         });
@@ -42,40 +43,59 @@ impl crate::Repository {
                     })
                 });
             }
-            Some(root) => {
-                if let Ok(mut file) = gix_features::fs::open_options_no_follow()
-                    .read(true)
-                    .open(root.join(".mailmap"))
-                    .map_err(|e| {
-                        if e.kind() != std::io::ErrorKind::NotFound {
-                            err.get_or_insert(e.into());
-                        }
-                    })
-                {
+            Some(root) => match gix_fs::open_read_only_no_follow(&root.join(".mailmap")) {
+                Ok(FileOrSymlink::File(mut file)) => {
                     buf.clear();
                     std::io::copy(&mut file, &mut buf)
-                        .map_err(|e| err.get_or_insert(e.into()))
+                        .map_err(|e| {
+                            err.get_or_insert(e.and_raise(message("The worktree .mailmap file could not be read")))
+                        })
                         .ok();
                     target.merge(gix_mailmap::parse_ignore_errors(&buf));
                 }
-            }
+                Ok(FileOrSymlink::Symlink) => {
+                    err.get_or_insert(message("The worktree .mailmap file is a symlink").raise());
+                }
+                Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
+                Err(e) => {
+                    err.get_or_insert(e.and_raise(message("The worktree .mailmap file could not be read")));
+                }
+            },
         }
 
-        if let Some(blob) = blob_id.and_then(|id| self.find_object(id).map_err(|e| err.get_or_insert(e.into())).ok()) {
+        if let Some(blob) = blob_id.and_then(|id| {
+            self.find_object(id)
+                .map_err(|e| {
+                    err.get_or_insert(e.and_raise(message("Could not find object configured in `mailmap.blob`")))
+                })
+                .ok()
+        }) {
             target.merge(gix_mailmap::parse_ignore_errors(&blob.data));
         }
 
         let configured_path = self
             .config_snapshot()
-            .trusted_path(&Mailmap::FILE)
-            .and_then(|res| res.map_err(|e| err.get_or_insert(e.into())).ok());
+            .trusted_path(Mailmap::FILE)
+            .map_err(|e| err.get_or_insert(Error::from_error(e)))
+            .ok()
+            .flatten();
 
-        if let Some(mut file) =
-            configured_path.and_then(|path| std::fs::File::open(path).map_err(|e| err.get_or_insert(e.into())).ok())
-        {
+        if let Some(mut file) = configured_path.and_then(|path| {
+            std::fs::File::open(path)
+                .map_err(|e| {
+                    err.get_or_insert(
+                        e.and_raise(message("The mailmap file declared in `mailmap.file` could not be read")),
+                    )
+                })
+                .ok()
+        }) {
             buf.clear();
             std::io::copy(&mut file, &mut buf)
-                .map_err(|e| err.get_or_insert(e.into()))
+                .map_err(|e| {
+                    err.get_or_insert(
+                        e.and_raise(message("The mailmap file declared in `mailmap.file` could not be read")),
+                    )
+                })
                 .ok();
             target.merge(gix_mailmap::parse_ignore_errors(&buf));
         }

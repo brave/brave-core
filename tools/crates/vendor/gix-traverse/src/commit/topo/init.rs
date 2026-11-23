@@ -1,10 +1,13 @@
-use gix_hash::{oid, ObjectId};
-use gix_revwalk::{graph::IdMap, PriorityQueue};
+use gix_error::Result;
+use std::collections::HashSet;
+
+use gix_error::OptionExt;
+use gix_hash::{ObjectId, oid};
+use gix_revwalk::{PriorityQueue, graph::IdMap};
 
 use crate::commit::{
-    find,
-    topo::{iter::gen_and_commit_time, Error, Sorting, WalkFlags},
-    Info, Parents, Topo,
+    Info, Parents, Topo, find,
+    topo::{Sorting, WalkFlags, iter::gen_and_commit_time},
 };
 
 /// Builder for [`Topo`].
@@ -15,6 +18,7 @@ pub struct Builder<Find, Predicate> {
     sorting: Sorting,
     parents: Parents,
     tips: Vec<ObjectId>,
+    tips_seen: HashSet<ObjectId>,
     ends: Vec<ObjectId>,
 }
 
@@ -42,6 +46,7 @@ where
             sorting: Default::default(),
             parents: Default::default(),
             tips: Default::default(),
+            tips_seen: Default::default(),
             ends: Default::default(),
             predicate: |_| true,
         }
@@ -61,6 +66,7 @@ where
             sorting: self.sorting,
             parents: self.parents,
             tips: self.tips,
+            tips_seen: self.tips_seen,
             ends: self.ends,
             predicate,
         }
@@ -76,7 +82,11 @@ where
     ///
     /// The behavior is similar to specifying additional `ends` in `git rev-list --topo-order ^ends tips`.
     pub fn with_tips(mut self, tips: impl IntoIterator<Item = impl Into<ObjectId>>) -> Self {
-        self.tips.extend(tips.into_iter().map(Into::into));
+        for tip in tips.into_iter().map(Into::into) {
+            if self.tips_seen.insert(tip) {
+                self.tips.push(tip);
+            }
+        }
         self
     }
 
@@ -110,7 +120,7 @@ where
     /// Build a new [`Topo`] instance.
     ///
     /// Note that merely building an instance is currently expensive.
-    pub fn build(self) -> Result<Topo<Find, Predicate>, Error> {
+    pub fn build(self) -> Result<Topo<Find, Predicate>> {
         let mut w = Topo {
             commit_graph: self.commit_graph,
             find: self.find,
@@ -139,24 +149,24 @@ where
         {
             *w.indegrees.entry(*id).or_default() = 1;
             let commit = find(w.commit_graph.as_ref(), &w.find, id, &mut w.buf)?;
-            let (gen, time) = gen_and_commit_time(commit)?;
+            let (generation, time) = gen_and_commit_time(commit)?;
 
-            if gen < w.min_gen {
-                w.min_gen = gen;
+            if generation < w.min_gen {
+                w.min_gen = generation;
             }
 
             w.states.insert(*id, flags);
-            w.explore_queue.insert((gen, time), *id);
-            w.indegree_queue.insert((gen, time), *id);
+            w.explore_queue.insert((generation, time), *id);
+            w.indegree_queue.insert((generation, time), *id);
         }
 
         // NOTE: Parents of the ends must also be marked uninteresting for some
         // reason. See handle_commit()
         for id in &self.ends {
             let parents = w.collect_all_parents(id)?;
-            for (id, _) in parents {
+            for parent in parents {
                 w.states
-                    .entry(id)
+                    .entry(parent.commit_id)
                     .and_modify(|s| *s |= WalkFlags::Uninteresting)
                     .or_insert(WalkFlags::Uninteresting | WalkFlags::Seen);
             }
@@ -168,21 +178,29 @@ where
         // the tips, but then in simplify_commit() Git is told to ignore it. For
         // now the tests pass.
         for id in self.tips.iter() {
-            let i = w.indegrees.get(id).ok_or(Error::MissingIndegreeUnexpected)?;
+            let i = w
+                .indegrees
+                .get(id)
+                .ok_or_raise(|| gix_error::corruption("Indegree information is missing"))?;
 
             if *i != 1 {
                 continue;
             }
 
             let commit = find(w.commit_graph.as_ref(), &w.find, id, &mut w.buf)?;
-            let (_, time) = gen_and_commit_time(commit)?;
-            let parent_ids = w.collect_all_parents(id)?.into_iter().map(|e| e.0).collect();
+            let (generation, time) = gen_and_commit_time(commit)?;
+            let parent_ids = w
+                .collect_all_parents(id)?
+                .into_iter()
+                .map(|parent| parent.commit_id)
+                .collect();
 
             w.topo_queue.push(
                 time,
                 Info {
                     id: *id,
                     parent_ids,
+                    generation: (generation != gix_commitgraph::GENERATION_NUMBER_INFINITY).then_some(generation),
                     commit_time: Some(time),
                 },
             );

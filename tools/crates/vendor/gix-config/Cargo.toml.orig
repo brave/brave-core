@@ -2,33 +2,36 @@ lints.workspace = true
 
 [package]
 name = "gix-config"
-version = "0.47.1"
+version = "0.62.2"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 description = "A git-config file parser and editor from the gitoxide project"
 license = "MIT OR Apache-2.0"
 authors = ["Edward Shen <code@eddie.sh>"]
-edition = "2021"
+edition = "2024"
 keywords = ["git-config", "git", "config", "gitoxide"]
 categories = ["config", "parser-implementations"]
-include = ["src/**/*", "LICENSE-*", "README.md"]
-rust-version = "1.82"
-autotests = false
+include = ["/src/**/*", "/LICENSE-*", "/README.md"]
+rust-version = "1.88"
 
 [features]
+## Enable support for the SHA-1 hash by forwarding the feature to dependencies.
+sha1 = ["gix-ref/sha1"]
+## Enable support for the SHA-256 hash by forwarding the feature to dependencies.
+sha256 = ["gix-ref/sha256"]
 ## Data structures implement `serde::Serialize` and `serde::Deserialize`.
 serde = ["dep:serde", "bstr/serde", "gix-sec/serde", "gix-ref/serde", "gix-glob/serde", "gix-config-value/serde"]
 
 [dependencies]
-gix-features = { version = "^0.44.1", path = "../gix-features" }
-gix-config-value = { version = "^0.15.3", path = "../gix-config-value" }
-gix-path = { version = "^0.10.21", path = "../gix-path" }
-gix-sec = { version = "^0.12.2", path = "../gix-sec" }
-gix-ref = { version = "^0.54.1", path = "../gix-ref" }
-gix-glob = { version = "^0.22.1", path = "../gix-glob" }
+gix-trace = { version = "^0.3.1", path = "../gix-trace" }
+gix-parallel = { version = "^0.50.1", path = "../gix-parallel" }
+gix-config-value = { version = "^0.21.1", path = "../gix-config-value" }
+gix-error = { version = "^0.5.2", path = "../gix-error", features = ["bstr"] }
+gix-path = { version = "^0.14.1", path = "../gix-path" }
+gix-sec = { version = "^0.16.1", path = "../gix-sec" }
+gix-ref = { version = "^0.69.1", path = "../gix-ref" }
+gix-glob = { version = "^0.29.1", path = "../gix-glob" }
+gix-utils = { version = "^0.5.2", path = "../gix-utils", features = ["bstr"] }
 
-winnow = { version = "0.7.12", features = ["simd"] }
-memchr = "2"
-thiserror = "2.0.17"
 unicode-bom = { version = "2.0.3" }
 bstr = { version = "1.12.0", default-features = false, features = ["std"] }
 serde = { version = "1.0.114", optional = true, default-features = false, features = ["derive"] }
@@ -37,13 +40,30 @@ smallvec = "1.15.1"
 document-features = { version = "0.2.0", optional = true }
 
 [dev-dependencies]
-criterion = "0.7.0"
+criterion = "0.8.2"
+gix-config = { path = ".", features = ["sha1"] }
+gix-testtools = { path = "../tests/tools", default-features = false, features = ["sha1"] }
+serial_test = { version = "3.4.0", default-features = false }
+bytesize = "2.3.1"
+cap = { version = "0.1.2", features = ["stats"] }
+insta = "1.46.3"
 
 [[bench]]
 name = "large_config_file"
 harness = false
 path = "./benches/large_config_file.rs"
 
+[[bench]]
+name = "lookup"
+harness = false
+path = "./benches/lookup.rs"
+
 [package.metadata.docs.rs]
 all-features = true
-features = ["document-features"]
+features = ["sha1", "document-features"]
+
+[package.metadata.cargo-machete]
+ignored = [
+    # Public optional `serde` feature is retained for downstream feature compatibility.
+    "serde",
+]

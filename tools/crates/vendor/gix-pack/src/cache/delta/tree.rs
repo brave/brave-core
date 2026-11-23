@@ -1,5 +1,12 @@
-use super::{traverse, Error};
-use crate::exact_vec;
+use std::collections::BTreeMap;
+
+use gix_error::{Message, OptionExt, ResourceExhaustionKind, Result, ResultExt, bail};
+
+use super::Tree;
+
+/// Maps each referenced base object ID to indices in `Tree::child_items` of ref-deltas waiting for it.
+pub(super) type RefDeltaChildren = BTreeMap<gix_hash::ObjectId, Vec<u32>>;
+
 /// An item stored within the [`Tree`] whose data is stored in a pack file, identified by
 /// the offset of its first (`offset`) and last (`next_offset`) bytes.
 ///
@@ -17,7 +24,7 @@ pub struct Item<T> {
     /// Limited to u32 as that's the maximum amount of objects in a pack.
     // SAFETY INVARIANT:
     //    - only one Item in a tree may have any given child index. `future_child_offsets`
-    //      should also not contain any indices found in `children`.\
+    //      and `ref_child_indices` should also not contain any indices found in `children`.
     //    - These indices should be in bounds for tree.child_items
     children: Vec<u32>,
 }
@@ -25,47 +32,50 @@ pub struct Item<T> {
 impl<T> Item<T> {
     /// Get the children
     // (we don't want to expose mutable access)
-    pub fn children(&self) -> &[u32] {
+    pub(super) fn children(&self) -> &[u32] {
         &self.children
+    }
+
+    pub(super) fn extend_children(&mut self, children: impl IntoIterator<Item = u32>) {
+        self.children.extend(children);
     }
 }
 
 /// Identify what kind of node we have last seen
-enum NodeKind {
+pub(super) enum NodeKind {
     Root,
     Child,
 }
 
-/// A tree that allows one-time iteration over all nodes and their children, consuming it in the process,
-/// while being shareable among threads without a lock.
-/// It does this by making the guarantee that iteration only happens once.
-pub struct Tree<T> {
-    /// The root nodes, i.e. base objects
-    // SAFETY invariant: see Item.children
-    root_items: Vec<Item<T>>,
-    /// The child nodes, i.e. those that rely a base object, like ref and ofs delta objects
-    // SAFETY invariant: see Item.children
-    child_items: Vec<Item<T>>,
-    /// The last encountered node was either a root or a child.
-    last_seen: Option<NodeKind>,
-    /// Future child offsets, associating their offset into the pack with their index in the items array.
-    /// (parent_offset, child_index)
-    // SAFETY invariant:
-    //    - None of these child indices should already have parents
-    //      i.e. future_child_offsets[i].1 should never be also found
-    //      in Item.children. Indices should be found here at most once.
-    //    - These indices should be in bounds for tree.child_items.
-    future_child_offsets: Vec<(crate::data::Offset, usize)>,
+fn allocation_error(kind: ResourceExhaustionKind) -> Message {
+    gix_error::resource_exhaustion(kind, "The pack delta tree is too large to fit in memory")
 }
 
 impl<T> Tree<T> {
     /// Instantiate a empty tree capable of storing `num_objects` amounts of items.
-    pub fn with_capacity(num_objects: usize) -> Result<Self, Error> {
+    pub(crate) fn with_capacity(num_objects: usize, alloc_limit_bytes: Option<usize>) -> Result<Self> {
+        let capacity = num_objects / 2;
+        let allocation_bytes = capacity
+            .checked_mul(std::mem::size_of::<Item<T>>())
+            .ok_or_raise(|| allocation_error(ResourceExhaustionKind::AllocationFailure))?;
+        if alloc_limit_bytes.is_some_and(|limit| allocation_bytes > limit) {
+            bail!(allocation_error(ResourceExhaustionKind::AllocationLimit));
+        }
+
+        let mut root_items = Vec::new();
+        root_items
+            .try_reserve_exact(capacity)
+            .or_raise(|| allocation_error(ResourceExhaustionKind::AllocationFailure))?;
+        let mut child_items = Vec::new();
+        child_items
+            .try_reserve_exact(capacity)
+            .or_raise(|| allocation_error(ResourceExhaustionKind::AllocationFailure))?;
         Ok(Tree {
-            root_items: exact_vec(num_objects / 2),
-            child_items: exact_vec(num_objects / 2),
+            root_items,
+            child_items,
             last_seen: None,
             future_child_offsets: Vec::new(),
+            ref_child_indices: BTreeMap::new(),
         })
     }
 
@@ -76,14 +86,11 @@ impl<T> Tree<T> {
     /// Returns self's root and child items.
     ///
     /// You can rely on them following the same `children` invariants as they did in the tree
-    pub(super) fn take_root_and_child(self) -> (Vec<Item<T>>, Vec<Item<T>>) {
-        (self.root_items, self.child_items)
+    pub(super) fn take_root_child_and_refs(self) -> (Vec<Item<T>>, Vec<Item<T>>, RefDeltaChildren) {
+        (self.root_items, self.child_items, self.ref_child_indices)
     }
 
-    pub(super) fn assert_is_incrementing_and_update_next_offset(
-        &mut self,
-        offset: crate::data::Offset,
-    ) -> Result<(), Error> {
+    pub(super) fn assert_is_incrementing_and_update_next_offset(&mut self, offset: crate::data::Offset) -> Result {
         let items = match &self.last_seen {
             Some(NodeKind::Root) => &mut self.root_items,
             Some(NodeKind::Child) => &mut self.child_items,
@@ -91,10 +98,10 @@ impl<T> Tree<T> {
         };
         let item = &mut items.last_mut().expect("last seen won't lie");
         if offset <= item.offset {
-            return Err(Error::InvariantIncreasingPackOffset {
-                last_pack_offset: item.offset,
-                pack_offset: offset,
-            });
+            bail!(gix_error::corruption(format!(
+                "Pack offsets must only increment. The previous pack offset was {}, the current one is {offset}",
+                item.offset
+            )));
         }
         item.next_offset = offset;
         Ok(())
@@ -103,7 +110,7 @@ impl<T> Tree<T> {
     pub(super) fn set_pack_entries_end_and_resolve_ref_offsets(
         &mut self,
         pack_entries_end: crate::data::Offset,
-    ) -> Result<(), traverse::Error> {
+    ) -> Result {
         if !self.future_child_offsets.is_empty() {
             for (parent_offset, child_index) in self.future_child_offsets.drain(..) {
                 // SAFETY invariants upheld:
@@ -117,21 +124,19 @@ impl<T> Tree<T> {
                 } else if let Ok(i) = self.root_items.binary_search_by_key(&parent_offset, |i| i.offset) {
                     self.root_items[i].children.push(child_index as u32);
                 } else {
-                    return Err(traverse::Error::OutOfPackRefDelta {
-                        base_pack_offset: parent_offset,
-                    });
+                    bail!(
+                        "The base at {parent_offset} was referred to by a ref-delta, but it was never added to the tree as if the pack was still thin.".corrupted()
+                    );
                 }
             }
         }
 
         self.assert_is_incrementing_and_update_next_offset(pack_entries_end)
-            .expect("BUG: pack now is smaller than all previously seen entries");
-        Ok(())
     }
 
     /// Add a new root node, one that only has children but is not a child itself, at the given pack `offset` and associate
     /// custom `data` with it.
-    pub fn add_root(&mut self, offset: crate::data::Offset, data: T) -> Result<(), Error> {
+    pub(crate) fn add_root(&mut self, offset: crate::data::Offset, data: T) -> Result {
         self.assert_is_incrementing_and_update_next_offset(offset)?;
         self.last_seen = NodeKind::Root.into();
         self.root_items.push(Item {
@@ -145,12 +150,13 @@ impl<T> Tree<T> {
     }
 
     /// Add a child of the item at `base_offset` which itself resides at pack `offset` and associate custom `data` with it.
-    pub fn add_child(
+    /// If the base has not been added yet, defer attachment until the tree is finalized before traversal.
+    pub(crate) fn add_child(
         &mut self,
         base_offset: crate::data::Offset,
         offset: crate::data::Offset,
         data: T,
-    ) -> Result<(), Error> {
+    ) -> Result {
         self.assert_is_incrementing_and_update_next_offset(offset)?;
 
         let next_child_index = self.child_items.len();
@@ -185,12 +191,109 @@ impl<T> Tree<T> {
         });
         Ok(())
     }
+
+    /// Add a child whose base is identified by object id and may occur anywhere in the pack.
+    /// During traversal, each fully resolved object is hashed and any children waiting for its ID are attached to it.
+    #[cfg(feature = "streaming-input")]
+    pub(crate) fn add_child_by_id(
+        &mut self,
+        base_id: gix_hash::ObjectId,
+        offset: crate::data::Offset,
+        data: T,
+    ) -> Result {
+        self.assert_is_incrementing_and_update_next_offset(offset)?;
+
+        let child_index = self.child_items.len() as u32;
+        self.ref_child_indices.entry(base_id).or_default().push(child_index);
+        self.last_seen = NodeKind::Child.into();
+        self.child_items.push(Item {
+            offset,
+            next_offset: 0,
+            data,
+            children: Default::default(),
+        });
+        Ok(())
+    }
 }
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn unresolved_ref_delta_parent_is_corruption() -> gix_testtools::TestResult {
+        let mut tree = super::Tree::with_capacity(1, None)?;
+        tree.add_child(24, 12, ())?;
+        let err = tree
+            .set_pack_entries_end_and_resolve_ref_offsets(32)
+            .expect_err("the referenced parent offset is absent from the completed pack");
+        assert!(
+            err.is_corrupted(),
+            "the pack's delta references are internally inconsistent"
+        );
+
+        assert_eq!(
+            err.to_string(),
+            "The base at 24 was referred to by a ref-delta, but it was never added to the tree as if the pack was still thin.",
+            "classification preserves the diagnostic"
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn forward_ref_delta_parent_is_allowed() -> gix_testtools::TestResult {
+        let mut tree = super::Tree::with_capacity(2, None)?;
+        tree.add_child(24, 12, ())?;
+        tree.add_root(24, ())?;
+        tree.set_pack_entries_end_and_resolve_ref_offsets(32)?;
+        assert_eq!(
+            tree.root_items[0].children(),
+            &[0],
+            "a later parent resolves the forward reference"
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn pack_end_must_follow_the_last_entry() -> gix_testtools::TestResult {
+        let mut tree = super::Tree::with_capacity(1, None)?;
+        tree.add_root(12, ())?;
+        let err = tree
+            .set_pack_entries_end_and_resolve_ref_offsets(12)
+            .expect_err("an entry at or past the pack end is corrupt input");
+        assert!(err.is_corrupted(), "invalid end offsets must return a corruption error");
+        Ok(())
+    }
+
+    #[test]
+    fn allocation_failure_is_reported() {
+        let err = super::Tree::<()>::with_capacity(usize::MAX, None)
+            .err()
+            .expect("an impossible attacker-controlled capacity must return an allocation error");
+        insta::assert_debug_snapshot!(err, "allocation failure is reported", @"The pack delta tree is too large to fit in memory");
+        assert_eq!(
+            err.classify().find_map(|classification| match classification.class() {
+                gix_error::Class::ResourceExhaustion(kind) => Some(kind),
+                _ => None,
+            }),
+            Some(gix_error::ResourceExhaustionKind::AllocationFailure)
+        );
+
+        let err = super::Tree::<()>::with_capacity(2, Some(0))
+            .err()
+            .expect("the configured allocation limit must apply to delta-tree storage");
+        insta::assert_debug_snapshot!(err, "allocation failure is reported", @"The pack delta tree is too large to fit in memory");
+        assert_eq!(
+            err.classify().find_map(|classification| match classification.class() {
+                gix_error::Class::ResourceExhaustion(kind) => Some(kind),
+                _ => None,
+            }),
+            Some(gix_error::ResourceExhaustionKind::AllocationLimit)
+        );
+    }
+
     mod from_offsets_in_pack {
         use std::sync::atomic::AtomicBool;
+
+        use gix_error::{ErrorExt, TestResult, message};
 
         use crate as pack;
 
@@ -203,23 +306,228 @@ mod tests {
         use gix_testtools::fixture_path;
 
         #[test]
-        fn v1() -> Result<(), Box<dyn std::error::Error>> {
-            tree(INDEX_V1, PACK_FOR_INDEX_V1)
+        fn v1() -> gix_testtools::TestResult {
+            Ok(tree(INDEX_V1, PACK_FOR_INDEX_V1)?)
         }
 
         #[test]
-        fn v2() -> Result<(), Box<dyn std::error::Error>> {
-            tree(SMALL_PACK_INDEX, SMALL_PACK)
+        fn v2() -> gix_testtools::TestResult {
+            Ok(tree(SMALL_PACK_INDEX, SMALL_PACK)?)
         }
 
-        fn tree(index_path: &str, pack_path: &str) -> Result<(), Box<dyn std::error::Error>> {
+        #[test]
+        fn invalid_ofs_delta_base_distance_is_reported() -> gix_testtools::TestResult {
+            let first_entry_offset = pack::data::header::SIZE as pack::data::Offset;
+            let pack_file = gix_testtools::tempfile::NamedTempFile::new()?;
+            let mut pack_data = pack::data::header::encode(pack::data::Version::V2, 1).to_vec();
+            pack::data::entry::Header::OfsDelta {
+                base_distance: first_entry_offset + 1,
+            }
+            .write_to(0, &mut pack_data)?;
+            std::fs::write(pack_file.path(), pack_data)?;
+
+            let result = crate::cache::delta::Tree::from_offsets_in_pack(
+                pack_file.path(),
+                std::iter::once(()),
+                &|_| first_entry_offset,
+                &|_| Ok(None),
+                &mut gix_utils::progress::Discard,
+                &AtomicBool::new(false),
+                gix_hash::Kind::Sha1,
+            );
+
+            assert!(result.is_err(), "an out-of-bounds delta base is corrupt pack data");
+            Ok(())
+        }
+
+        #[test]
+        fn duplicate_and_overlapping_offsets_are_rejected() -> gix_testtools::TestResult {
+            let first = pack::data::header::SIZE as pack::data::Offset;
+            let pack_file = gix_testtools::tempfile::NamedTempFile::new()?;
+            let mut data = pack::data::header::encode(pack::data::Version::V2, 2).to_vec();
+            // A two-byte header lets the second indexed offset overlap its predecessor.
+            pack::data::entry::Header::Blob.write_to(16, &mut data)?;
+            std::fs::write(pack_file.path(), data)?;
+            for second in [first, first + 1] {
+                let err = crate::cache::delta::Tree::from_offsets_in_pack(
+                    pack_file.path(),
+                    [first, second].into_iter(),
+                    &|offset| *offset,
+                    &|_| Ok(None),
+                    &mut gix_utils::progress::Discard,
+                    &AtomicBool::new(false),
+                    gix_hash::Kind::Sha1,
+                )
+                .err()
+                .expect("index offsets cannot duplicate or overlap pack entry headers");
+                assert!(
+                    err.is_corrupted(),
+                    "invalid index offsets must return a corruption error"
+                );
+            }
+            Ok(())
+        }
+
+        #[test]
+        fn ref_delta_resolver_error_is_propagated_unchanged() -> TestResult {
+            let (pack_file, offsets) = ref_delta_pack()?;
+            let callback_error = std::io::Error::new(
+                std::io::ErrorKind::PermissionDenied,
+                message("base index is inaccessible").with("path", "base-index"),
+            )
+            .and_raise(message("could not resolve in-pack base").with("operation", "base lookup"));
+            let original_sources: Vec<_> = callback_error
+                .iter_errors_with_locations()
+                .map(|source| (source.error().to_string(), source.location()))
+                .collect();
+            let original_classes: Vec<_> = callback_error
+                .classify()
+                .map(|classification| classification.class())
+                .collect();
+            let callback_error = std::cell::RefCell::new(Some(callback_error));
+            let err = crate::cache::delta::Tree::from_offsets_in_pack(
+                pack_file.path(),
+                offsets.into_iter(),
+                &|offset| *offset,
+                &|base_id| {
+                    assert_eq!(
+                        base_id,
+                        gix_hash::Kind::Sha1.null().as_ref(),
+                        "the resolver receives the ref-delta's base ID"
+                    );
+                    Err(callback_error
+                        .borrow_mut()
+                        .take()
+                        .expect("the failing resolver is called only once"))
+                },
+                &mut gix_utils::progress::Discard,
+                &AtomicBool::new(false),
+                gix_hash::Kind::Sha1,
+            )
+            .err()
+            .expect("a resolver error must abort tree construction");
+
+            assert_eq!(
+                err.iter_errors_with_locations()
+                    .map(|source| (source.error().to_string(), source.location()))
+                    .collect::<Vec<_>>(),
+                original_sources,
+                "the resolver's sources and locations survive without added tree context"
+            );
+            assert_eq!(
+                err.classify()
+                    .map(|classification| classification.class())
+                    .collect::<Vec<_>>(),
+                original_classes,
+                "tree construction preserves all resolver error classifications"
+            );
+            assert_eq!(
+                err.downcast_any_ref::<std::io::Error>()
+                    .expect("the resolver's concrete I/O error remains available")
+                    .kind(),
+                std::io::ErrorKind::PermissionDenied,
+                "the native failure remains available for recovery"
+            );
+            assert!(!err.is_not_found(), "a resolver failure is not a missing base");
+            Ok(())
+        }
+
+        #[test]
+        fn ref_delta_resolver_none_is_a_missing_base() -> TestResult {
+            let (pack_file, offsets) = ref_delta_pack()?;
+            let resolutions = std::cell::Cell::new(0);
+            let err = crate::cache::delta::Tree::from_offsets_in_pack(
+                pack_file.path(),
+                offsets.into_iter(),
+                &|offset| *offset,
+                &|_| {
+                    resolutions.set(resolutions.get() + 1);
+                    Ok(None)
+                },
+                &mut gix_utils::progress::Discard,
+                &AtomicBool::new(false),
+                gix_hash::Kind::Sha1,
+            )
+            .err()
+            .expect("Ok(None) means the ref-delta base is absent from the pack");
+
+            assert_eq!(resolutions.get(), 1, "a missing base is looked up only once");
+            assert!(
+                err.is_not_found(),
+                "an absent base retains its not-found classification"
+            );
+            assert_eq!(
+                err.to_string(),
+                format!(
+                    "Base object {} was not found in this pack; offset-based tree construction requires in-pack bases",
+                    gix_hash::Kind::Sha1.null()
+                ),
+                "a missing base identifies the ID and the offset-based constructor's in-pack requirement"
+            );
+            Ok(())
+        }
+
+        #[test]
+        fn ref_delta_resolver_some_attaches_child_to_base() -> TestResult {
+            let (pack_file, offsets) = ref_delta_pack()?;
+            let resolutions = std::cell::Cell::new(0);
+            let tree = crate::cache::delta::Tree::from_offsets_in_pack(
+                pack_file.path(),
+                offsets.into_iter(),
+                &|offset| *offset,
+                &|base_id| {
+                    resolutions.set(resolutions.get() + 1);
+                    assert_eq!(
+                        base_id,
+                        gix_hash::Kind::Sha1.null().as_ref(),
+                        "the resolver receives the ref-delta's base ID"
+                    );
+                    Ok(Some(offsets[0]))
+                },
+                &mut gix_utils::progress::Discard,
+                &AtomicBool::new(false),
+                gix_hash::Kind::Sha1,
+            )?;
+
+            assert_eq!(resolutions.get(), 1, "only the ref-delta requires a base lookup");
+            assert_eq!(tree.root_items.len(), 1, "the blob remains the sole root");
+            assert_eq!(tree.child_items.len(), 1, "the ref-delta becomes the sole child");
+            assert_eq!(tree.root_items[0].offset, offsets[0], "the base keeps its pack offset");
+            assert_eq!(
+                tree.root_items[0].children(),
+                &[0],
+                "the resolved base owns the ref-delta child"
+            );
+            assert_eq!(
+                tree.child_items[0].data, offsets[1],
+                "the child retains its caller-provided data"
+            );
+            Ok(())
+        }
+
+        fn ref_delta_pack() -> TestResult<(gix_testtools::tempfile::NamedTempFile, [pack::data::Offset; 2])> {
+            let pack_file = gix_testtools::tempfile::NamedTempFile::new()?;
+            let mut pack_data = pack::data::header::encode(pack::data::Version::V2, 2).to_vec();
+            // Tree construction only reads entry headers, so compressed payloads and a trailer are unnecessary.
+            let base_offset = pack_data.len() as pack::data::Offset;
+            pack::data::entry::Header::Blob.write_to(0, &mut pack_data)?;
+            let delta_offset = pack_data.len() as pack::data::Offset;
+            pack::data::entry::Header::RefDelta {
+                base_id: gix_hash::Kind::Sha1.null(),
+            }
+            .write_to(0, &mut pack_data)?;
+            std::fs::write(pack_file.path(), pack_data)?;
+            Ok((pack_file, [base_offset, delta_offset]))
+        }
+
+        fn tree(index_path: &str, pack_path: &str) -> gix_testtools::Result {
             let idx = pack::index::File::at(fixture_path(index_path), gix_hash::Kind::Sha1)?;
             crate::cache::delta::Tree::from_offsets_in_pack(
                 &fixture_path(pack_path),
                 idx.sorted_offsets().into_iter(),
                 &|ofs| *ofs,
-                &|id| idx.lookup(id).map(|index| idx.pack_offset_at_index(index)),
-                &mut gix_features::progress::Discard,
+                &|id| Ok(idx.lookup(id).map(|index| idx.pack_offset_at_index(index))),
+                &mut gix_utils::progress::Discard,
                 &AtomicBool::new(false),
                 gix_hash::Kind::Sha1,
             )?;
@@ -255,7 +563,9 @@ mod tests {
             }
 
             let actual = std::mem::size_of::<[Item<EntryWithDefault>; 7_500_000]>();
-            let expected = 840_000_000;
+            let sha1 = 840_000_000;
+            let sha256_extra = 120_000_000;
+            let expected = sha1 + sha256_extra;
             assert!(
                 size_ok(actual, expected),
                 "we don't want these to grow unnoticed: {actual} <~ {expected}"

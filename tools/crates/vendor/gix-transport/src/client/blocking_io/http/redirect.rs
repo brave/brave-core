@@ -1,20 +1,82 @@
-/// The error provided when redirection went beyond what we deem acceptable.
-#[derive(Debug, thiserror::Error)]
-#[error("Redirect url {redirect_url:?} could not be reconciled with original url {expected_url} as they don't share the same suffix")]
-pub struct Error {
-    redirect_url: String,
-    expected_url: String,
+use gix_error::{OptionExt, Result, bail, message};
+
+#[derive(Default, Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum Action {
+    Follow,
+    RejectConfiguredHeaders,
+    #[default]
+    Stop,
 }
 
-pub(crate) fn base_url(redirect_url: &str, base_url: &str, url: String) -> Result<String, Error> {
+impl Action {
+    pub(crate) fn from_request(may_follow_redirects: bool, has_configured_request_headers: bool) -> Self {
+        match (may_follow_redirects, has_configured_request_headers) {
+            (true, false) => Action::Follow,
+            (true, true) => Action::RejectConfiguredHeaders,
+            (false, _) => Action::Stop,
+        }
+    }
+}
+
+fn parse_two_urls(a: &str, b: &str) -> Option<(gix_url::Url, gix_url::Url)> {
+    let a = gix_url::parse(a).ok()?;
+    let b = gix_url::parse(b).ok()?;
+    Some((a, b))
+}
+
+pub(crate) fn scheme_is_safe(redirect_url: &str, original_url: &str) -> bool {
+    let Some((redirect_url, original_url)) = parse_two_urls(redirect_url, original_url) else {
+        return false;
+    };
+
+    if !matches!(redirect_url.scheme, gix_url::Scheme::Http | gix_url::Scheme::Https) {
+        return false;
+    }
+
+    if redirect_url.scheme == original_url.scheme {
+        return true;
+    }
+
+    original_url.scheme == gix_url::Scheme::Http && redirect_url.scheme == gix_url::Scheme::Https
+}
+
+pub(crate) fn can_reuse_identity(redirect_url: &str, original_url: &str) -> bool {
+    let Some((redirect_url, original_url)) = parse_two_urls(redirect_url, original_url) else {
+        return false;
+    };
+
+    if redirect_url.host != original_url.host {
+        return false;
+    }
+
+    if redirect_url.scheme == original_url.scheme {
+        return redirect_url.port_or_default() == original_url.port_or_default();
+    }
+
+    if original_url.scheme == gix_url::Scheme::Http && redirect_url.scheme == gix_url::Scheme::Https {
+        let original_port = original_url.port_or_default();
+        let redirect_port = redirect_url.port_or_default();
+        return original_port == redirect_port || matches!((original_port, redirect_port), (Some(80), Some(443)));
+    }
+
+    false
+}
+
+pub(crate) fn base_url(redirect_url: &str, base_url: &str, url: String) -> Result<String> {
     let tail = url
         .strip_prefix(base_url)
         .expect("BUG: caller assures `base_url` is subset of `url`");
+    if !scheme_is_safe(redirect_url, base_url) {
+        bail!(
+            "Redirect url {redirect_url:?} could not be reconciled with original url {url} as the scheme is insecure or they don't share the same suffix"
+        );
+    }
     redirect_url
         .strip_suffix(tail)
-        .ok_or_else(|| Error {
-            redirect_url: redirect_url.into(),
-            expected_url: url,
+        .ok_or_raise(|| {
+            message!(
+                "Redirect url {redirect_url:?} could not be reconciled with original url {url} as the scheme is insecure or they don't share the same suffix"
+            )
         })
         .map(ToOwned::to_owned)
 }
@@ -37,6 +99,32 @@ mod tests {
     fn base_url_complete() {
         assert_eq!(
             base_url(
+                "https://original/b/info/refs?hi",
+                "https://original/a",
+                "https://original/a/info/refs?hi".into()
+            )
+            .unwrap(),
+            "https://original/b"
+        );
+    }
+
+    #[test]
+    fn base_url_allows_same_host_scheme_upgrade() {
+        assert_eq!(
+            base_url(
+                "https://original/b/info/refs?hi",
+                "http://original/a",
+                "http://original/a/info/refs?hi".into()
+            )
+            .unwrap(),
+            "https://original/b"
+        );
+    }
+
+    #[test]
+    fn base_url_allows_cross_authority_redirects_if_the_tail_matches() {
+        assert_eq!(
+            base_url(
                 "https://redirected.org/b/info/refs?hi",
                 "https://original/a",
                 "https://original/a/info/refs?hi".into()
@@ -44,6 +132,84 @@ mod tests {
             .unwrap(),
             "https://redirected.org/b"
         );
+    }
+
+    #[test]
+    fn base_url_rejects_authority_changes() {
+        assert!(
+            base_url(
+                "http://original/b/info/refs?hi",
+                "https://original/a",
+                "https://original/a/info/refs?hi".into()
+            )
+            .is_err(),
+            "downgrading from https to http must be rejected"
+        );
+    }
+
+    #[test]
+    fn rejected_redirects_remain_unclassified() {
+        for redirect in [
+            "http://original/b/info/refs?hi",
+            "ftp://original/b/info/refs?hi",
+            "https://original/b/other",
+        ] {
+            let original = "https://original/a/info/refs?hi";
+            let err = base_url(redirect, "https://original/a", original.into())
+                .expect_err("the redirect downgrades the scheme, uses another protocol, or changes the suffix");
+            assert!(
+                err.classify().next().is_none(),
+                "rejecting a redirect by policy does not make it corrupt or invalid caller input"
+            );
+            assert_eq!(
+                err.to_string(),
+                format!(
+                    "Redirect url {redirect:?} could not be reconciled with original url {original} as the scheme is insecure or they don't share the same suffix"
+                ),
+                "the redirect diagnostic remains unchanged"
+            );
+        }
+    }
+
+    #[test]
+    fn can_reuse_identity_complete() {
+        assert!(
+            can_reuse_identity("https://original/b", "https://original/a"),
+            "keeping the same https authority must be allowed"
+        );
+        assert!(
+            can_reuse_identity("https://original/b", "http://original/a"),
+            "upgrading from http to https on the same host must be allowed"
+        );
+        assert!(
+            can_reuse_identity("https://original:8080/b", "http://original:8080/a"),
+            "upgrading from http to https on the same host and port must be allowed"
+        );
+        assert!(
+            !can_reuse_identity("http://original/b", "https://original/a"),
+            "downgrading from https to http must be rejected"
+        );
+        assert!(
+            !can_reuse_identity("https://redirected.org/b", "https://original/a"),
+            "changing the host must be rejected"
+        );
+        assert!(
+            !can_reuse_identity("https://original:444/b", "https://original/a"),
+            "changing the port on https must be rejected"
+        );
+        assert!(
+            !can_reuse_identity("https://original:444/b", "http://original/a"),
+            "upgrading the scheme does not allow changing the port"
+        );
+        for delimiter in ['?', '#'] {
+            assert!(
+                !can_reuse_identity(
+                    &format!("https://redirected.org{delimiter}@original/b"),
+                    "https://original/a"
+                ),
+                "an authority terminated by {delimiter} must not reuse another host's identity"
+            );
+        }
     }
 
     #[test]

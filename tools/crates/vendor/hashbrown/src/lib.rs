@@ -9,44 +9,21 @@
 //! [here]: https://github.com/abseil/abseil-cpp/blob/master/absl/container/internal/raw_hash_set.h
 //! [CppCon talk]: https://www.youtube.com/watch?v=ncHmEUmJZf4
 
-#![no_std]
+#![cfg_attr(not(doc), no_std)]
 #![cfg_attr(
     feature = "nightly",
     feature(
-        test,
         core_intrinsics,
         dropck_eyepatch,
         min_specialization,
         trivial_clone,
         extend_one,
-        allocator_api,
-        slice_ptr_get,
-        maybe_uninit_array_assume_init,
         strict_provenance_lints
     )
 )]
+#![cfg_attr(feature = "nightly", warn(implicit_provenance_casts))]
 #![cfg_attr(feature = "rustc-dep-of-std", feature(rustc_attrs))]
-#![allow(
-    clippy::doc_markdown,
-    clippy::module_name_repetitions,
-    clippy::must_use_candidate,
-    clippy::option_if_let_else,
-    clippy::redundant_else,
-    clippy::manual_map,
-    clippy::missing_safety_doc,
-    clippy::missing_errors_doc
-)]
-#![warn(missing_docs)]
-#![warn(rust_2018_idioms)]
-#![cfg_attr(feature = "nightly", warn(fuzzy_provenance_casts))]
-#![cfg_attr(
-    feature = "nightly",
-    allow(clippy::incompatible_msrv, internal_features)
-)]
-#![cfg_attr(
-    all(feature = "nightly", target_arch = "loongarch64"),
-    feature(stdarch_loongarch)
-)]
+#![cfg_attr(feature = "nightly", expect(internal_features))]
 #![cfg_attr(
     all(feature = "nightly", feature = "default-hasher"),
     feature(hasher_prefixfree_extras)
@@ -58,7 +35,7 @@ extern crate std;
 
 #[cfg_attr(test, macro_use)]
 #[cfg_attr(feature = "rustc-dep-of-std", allow(unused_extern_crates))]
-extern crate alloc;
+extern crate alloc as stdalloc;
 
 #[doc = include_str!("../README.md")]
 #[cfg(doctest)]
@@ -67,6 +44,7 @@ pub struct ReadmeDoctests;
 #[macro_use]
 mod macros;
 
+mod alloc;
 mod control;
 mod hasher;
 mod raw;
@@ -98,7 +76,7 @@ pub mod hash_map {
     /// You will rarely need to interact with it directly unless you have need
     /// to name one of the iterator types.
     ///
-    /// [rayon]: https://docs.rs/rayon/1.0/rayon
+    /// [rayon]: ::rayon
     pub mod rayon {
         pub use crate::external_trait_impls::rayon::map::*;
     }
@@ -112,7 +90,7 @@ pub mod hash_set {
     /// You will rarely need to interact with it directly unless you have need
     /// to name one of the iterator types.
     ///
-    /// [rayon]: https://docs.rs/rayon/1.0/rayon
+    /// [rayon]: ::rayon
     pub mod rayon {
         pub use crate::external_trait_impls::rayon::set::*;
     }
@@ -126,7 +104,7 @@ pub mod hash_table {
     /// You will rarely need to interact with it directly unless you have need
     /// to name one of the iterator types.
     ///
-    /// [rayon]: https://docs.rs/rayon/1.0/rayon
+    /// [rayon]: ::rayon
     pub mod rayon {
         pub use crate::external_trait_impls::rayon::table::*;
     }
@@ -185,6 +163,22 @@ pub enum TryReserveError {
     /// The memory allocator returned an error
     AllocError {
         /// The layout of the allocation request that failed.
-        layout: alloc::alloc::Layout,
+        layout: core::alloc::Layout,
     },
 }
+
+// matches stdalloc::collections::TryReserveError
+impl core::fmt::Display for TryReserveError {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        f.write_str("memory allocation failed")?;
+        let reason = match self {
+            TryReserveError::CapacityOverflow => {
+                " because the computed capacity exceeded the collection's maximum"
+            }
+            TryReserveError::AllocError { .. } => " because the memory allocator returned an error",
+        };
+        f.write_str(reason)
+    }
+}
+
+impl core::error::Error for TryReserveError {}

@@ -1,8 +1,8 @@
 #![cfg(all(feature = "read", feature = "write"))]
 
 use object::read::{Object, ObjectSection};
-use object::{read, write};
 use object::{Architecture, BinaryFormat, Endianness, SectionFlags, SectionKind};
+use object::{read, write};
 
 #[test]
 fn coff_x86_64_section_flags() {
@@ -37,9 +37,10 @@ fn elf_x86_64_section_flags() {
         write::Object::new(BinaryFormat::Elf, Architecture::X86_64, Endianness::Little);
 
     let section = object.add_section(Vec::new(), b".text".to_vec(), SectionKind::Text);
-    object.section_mut(section).flags = SectionFlags::Elf {
-        sh_flags: object::elf::SHF_WRITE.into(),
+    let SectionFlags::Elf { sh_flags, .. } = object.section_flags_mut(section) else {
+        unreachable!();
     };
+    *sh_flags = object::elf::SHF_WRITE;
 
     let bytes = object.write().unwrap();
 
@@ -53,7 +54,8 @@ fn elf_x86_64_section_flags() {
     assert_eq!(
         section.flags(),
         SectionFlags::Elf {
-            sh_flags: object::elf::SHF_WRITE.into(),
+            sh_type: object::elf::SHT_PROGBITS,
+            sh_flags: object::elf::SHF_WRITE,
         }
     );
 }
@@ -66,9 +68,12 @@ fn macho_x86_64_section_flags() {
         Endianness::Little,
     );
 
+    let flags = object::macho::S_REGULAR | object::macho::S_ATTR_SELF_MODIFYING_CODE;
+
     let section = object.add_section(Vec::new(), b".text".to_vec(), SectionKind::Text);
     object.section_mut(section).flags = SectionFlags::MachO {
-        flags: object::macho::S_ATTR_SELF_MODIFYING_CODE,
+        flags,
+        reserved2: 2,
     };
 
     let bytes = object.write().unwrap();
@@ -83,7 +88,8 @@ fn macho_x86_64_section_flags() {
     assert_eq!(
         section.flags(),
         SectionFlags::MachO {
-            flags: object::macho::S_ATTR_SELF_MODIFYING_CODE,
+            flags,
+            reserved2: 2
         }
     );
 }

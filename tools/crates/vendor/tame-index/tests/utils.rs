@@ -79,3 +79,31 @@ pub fn fake_krate(name: &str, num_versions: u8) -> IndexKrate {
 
     IndexKrate { versions }
 }
+
+#[cfg(feature = "sparse")]
+pub fn tls_config() -> rustls::ClientConfig {
+    let rcs: rustls::RootCertStore = webpki_roots::TLS_SERVER_ROOTS.iter().cloned().collect();
+    rustls::ClientConfig::builder_with_provider(std::sync::Arc::new(
+        rustls::crypto::ring::default_provider(),
+    ))
+    .with_protocol_versions(rustls::DEFAULT_VERSIONS)
+    .unwrap()
+    .with_root_certificates(rcs)
+    .with_no_client_auth()
+}
+
+#[cfg(feature = "sparse")]
+pub fn blocking_client() -> reqwest::blocking::Client {
+    reqwest::blocking::Client::builder()
+        .tls_backend_preconfigured(tls_config())
+        .build()
+        .unwrap()
+}
+
+#[cfg(feature = "sparse")]
+pub fn async_client() -> reqwest::Client {
+    reqwest::Client::builder()
+        .tls_backend_preconfigured(tls_config())
+        .build()
+        .unwrap()
+}

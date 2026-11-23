@@ -13,8 +13,9 @@
 edition = "2018"
 rust-version = "1.36"
 name = "futures-core"
-version = "0.3.31"
+version = "0.3.34"
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -34,6 +35,13 @@ rustdoc-args = [
     "docsrs",
 ]
 
+[features]
+alloc = []
+cfg-target-has-atomic = []
+default = ["std"]
+std = ["alloc"]
+unstable = []
+
 [lib]
 name = "futures_core"
 path = "src/lib.rs"
@@ -45,13 +53,6 @@ optional = true
 default-features = false
 
 [dev-dependencies]
-
-[features]
-alloc = []
-cfg-target-has-atomic = []
-default = ["std"]
-std = ["alloc"]
-unstable = []
 
 [lints.rust]
 missing_debug_implementations = "warn"

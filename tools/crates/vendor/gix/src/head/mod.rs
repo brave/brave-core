@@ -4,8 +4,8 @@ use gix_hash::ObjectId;
 use gix_ref::FullNameRef;
 
 use crate::{
-    ext::{ObjectIdExt, ReferenceExt},
     Head,
+    ext::{ObjectIdExt, ReferenceExt},
 };
 
 /// Represents the kind of `HEAD` reference.
@@ -46,6 +46,18 @@ impl<'repo> Head<'repo> {
     }
 
     /// Returns the full reference name of this head if it is not detached, or `None` otherwise.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    /// # mod doctest { include!(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/doctest.rs")); }
+    /// # let repo = doctest::open_repo(doctest::basic_repo_dir()?)?;
+    /// let head = repo.head()?;
+    ///
+    /// assert_eq!(head.referent_name().expect("branch head"), "refs/heads/main");
+    /// # Ok(()) }
+    /// ```
     pub fn referent_name(&self) -> Option<&FullNameRef> {
         Some(match &self.kind {
             Kind::Symbolic(r) => r.name.as_ref(),
@@ -66,8 +78,19 @@ impl<'repo> Head<'repo> {
         matches!(self.kind, Kind::Unborn(_))
     }
 
-    // TODO: tests
     /// Returns the id the head points to, which isn't possible on unborn heads.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    /// # mod doctest { include!(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/doctest.rs")); }
+    /// # let repo = doctest::open_repo(doctest::basic_repo_dir()?)?;
+    /// let head = repo.head()?;
+    ///
+    /// assert_eq!(head.id().expect("born"), repo.head_id()?);
+    /// # Ok(()) }
+    /// ```
     pub fn id(&self) -> Option<crate::Id<'repo>> {
         match &self.kind {
             Kind::Symbolic(r) => r.target.try_id().map(|oid| oid.to_owned().attach(self.repo)),
@@ -79,6 +102,18 @@ impl<'repo> Head<'repo> {
     }
 
     /// Try to transform this instance into the symbolic reference that it points to, or return `None` if head is detached or unborn.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    /// # mod doctest { include!(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/doctest.rs")); }
+    /// # let repo = doctest::open_repo(doctest::basic_repo_dir()?)?;
+    /// let branch = repo.head()?.try_into_referent().expect("symbolic head");
+    ///
+    /// assert_eq!(branch, "refs/heads/main");
+    /// # Ok(()) }
+    /// ```
     pub fn try_into_referent(self) -> Option<crate::Reference<'repo>> {
         match self.kind {
             Kind::Symbolic(r) => r.attach(self.repo).into(),
@@ -89,7 +124,7 @@ impl<'repo> Head<'repo> {
 
 mod remote {
     use super::Head;
-    use crate::{remote, Remote};
+    use crate::{Remote, Result, remote};
 
     /// Remote
     impl<'repo> Head<'repo> {
@@ -104,10 +139,7 @@ mod remote {
         /// handle detached heads, i.e. obtain a remote even in case of detached heads,
         /// or call [`Repository::find_fetch_remote(…)`](crate::Repository::find_fetch_remote()) for the highest-level way of finding
         /// the right remote, just like `git fetch` does.
-        pub fn into_remote(
-            self,
-            direction: remote::Direction,
-        ) -> Option<Result<Remote<'repo>, remote::find::existing::Error>> {
+        pub fn into_remote(self, direction: remote::Direction) -> Option<Result<Remote<'repo>>> {
             let repo = self.repo;
             self.try_into_referent()?
                 .remote(direction)

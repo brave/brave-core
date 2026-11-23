@@ -501,7 +501,7 @@ fn test_dontfrag_opts() {
 }
 
 #[test]
-#[cfg(any(linux_android, apple_targets))]
+#[cfg(any(all(linux_android, not(target_env = "uclibc")), apple_targets))]
 // Disable the test under emulation because it fails in Cirrus-CI.  Lack
 // of QEMU support is suspected.
 #[cfg_attr(qemu, ignore)]
@@ -696,7 +696,7 @@ fn test_ts_clock_monotonic() {
 }
 
 #[test]
-#[cfg(linux_android)]
+#[cfg(all(linux_android, not(target_env = "uclibc")))]
 // Disable the test under emulation because it fails with ENOPROTOOPT in CI
 // on cross target. Lack of QEMU support is suspected.
 #[cfg_attr(qemu, ignore)]
@@ -951,7 +951,7 @@ fn test_ktls() {
 }
 
 #[test]
-#[cfg(apple_targets)]
+#[cfg(target_os = "macos")]
 fn test_utun_ifname() {
     skip_if_not_root!("test_utun_ifname");
 

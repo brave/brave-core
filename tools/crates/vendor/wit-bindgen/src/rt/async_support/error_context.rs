@@ -1,8 +1,8 @@
 //! Raw bindings to `error-context` in the canonical ABI.
 
-use std::fmt::{self, Debug, Display};
-use std::ptr;
-use std::string::String;
+use alloc::string::String;
+use core::fmt::{self, Debug, Display};
+use core::ptr;
 
 /// Represents the Component Model `error-context` type.
 #[derive(PartialEq, Eq)]
@@ -56,14 +56,11 @@ impl Display for ErrorContext {
     }
 }
 
-impl std::error::Error for ErrorContext {}
+impl core::error::Error for ErrorContext {}
 
 impl Drop for ErrorContext {
     fn drop(&mut self) {
-        #[cfg(target_arch = "wasm32")]
-        unsafe {
-            drop(self.handle)
-        }
+        unsafe { drop(self.handle) }
     }
 }
 
@@ -73,22 +70,14 @@ struct RetPtr {
     len: usize,
 }
 
-#[cfg(not(target_arch = "wasm32"))]
-unsafe fn new(_: *const u8, _: usize) -> u32 {
-    unreachable!()
-}
-#[cfg(not(target_arch = "wasm32"))]
-fn debug_message(_: u32, _: &mut RetPtr) {
-    unreachable!()
-}
-
-#[cfg(target_arch = "wasm32")]
-#[link(wasm_import_module = "$root")]
-extern "C" {
-    #[link_name = "[error-context-new-utf8]"]
-    fn new(_: *const u8, _: usize) -> u32;
-    #[link_name = "[error-context-drop]"]
-    fn drop(_: u32);
-    #[link_name = "[error-context-debug-message-utf8]"]
-    fn debug_message(_: u32, _: &mut RetPtr);
+extern_wasm! {
+    #[link(wasm_import_module = "$root")]
+    unsafe extern "C" {
+        #[link_name = "[error-context-new-utf8]"]
+        fn new(_: *const u8, _: usize) -> u32;
+        #[link_name = "[error-context-drop]"]
+        fn drop(_: u32);
+        #[link_name = "[error-context-debug-message-utf8]"]
+        fn debug_message(_: u32, _: &mut RetPtr);
+    }
 }

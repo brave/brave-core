@@ -7,7 +7,7 @@ use alloc::string::String;
 #[cfg(any(feature = "alloc", test))]
 use core::str;
 
-/// The output mechanism for ChunkedEncoder's encoded bytes.
+/// The output mechanism for `ChunkedEncoder`'s encoded bytes.
 pub trait Sink {
     type Error;
 
@@ -37,7 +37,7 @@ impl<'e, E: Engine + ?Sized> ChunkedEncoder<'e, E> {
                 // Only need to consider if padding is needed on a partial chunk since full chunk
                 // is a multiple of 3, which therefore won't be padded.
                 // Pad output to multiple of four bytes if required by config.
-                len += add_padding(len, &mut buf[len..]);
+                len += add_padding(len, self.engine.padding(), &mut buf[len..]);
             }
             sink.write_encoded_bytes(&buf[..len])?;
         }
@@ -54,7 +54,7 @@ pub(crate) struct StringSink<'a> {
 
 #[cfg(any(feature = "alloc", test))]
 impl<'a> StringSink<'a> {
-    pub(crate) fn new(s: &mut String) -> StringSink {
+    pub(crate) fn new(s: &mut String) -> StringSink<'_> {
         StringSink { string: s }
     }
 }
@@ -72,16 +72,13 @@ impl<'a> Sink for StringSink<'a> {
 
 #[cfg(test)]
 pub mod tests {
-    use rand::{
-        distributions::{Distribution, Uniform},
-        Rng, SeedableRng,
-    };
-
     use crate::{
         alphabet::STANDARD,
         engine::general_purpose::{GeneralPurpose, GeneralPurposeConfig, PAD},
         tests::random_engine,
     };
+    use rand::distr::{Distribution, Uniform};
+    use rand::{rngs, RngExt};
 
     use super::*;
 
@@ -120,8 +117,8 @@ pub mod tests {
     pub fn chunked_encode_matches_normal_encode_random<S: SinkTestHelper>(sink_test_helper: &S) {
         let mut input_buf: Vec<u8> = Vec::new();
         let mut output_buf = String::new();
-        let mut rng = rand::rngs::SmallRng::from_entropy();
-        let input_len_range = Uniform::new(1, 10_000);
+        let mut rng = rand::make_rng::<rngs::SmallRng>();
+        let input_len_range = Uniform::new(1, 10_000).unwrap();
 
         for _ in 0..20_000 {
             input_buf.clear();
@@ -129,7 +126,7 @@ pub mod tests {
 
             let buf_len = input_len_range.sample(&mut rng);
             for _ in 0..buf_len {
-                input_buf.push(rng.gen());
+                input_buf.push(rng.random());
             }
 
             let engine = random_engine(&mut rng);

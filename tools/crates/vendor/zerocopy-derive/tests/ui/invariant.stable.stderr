@@ -1,0 +1,84 @@
+error: invariants are only supported on named fields
+  --> $DIR/invariant.rs:16:26
+   |
+16 |     #[zerocopy(invariant(true))]
+   |                          ^^^^
+
+error: invariants are only supported on named fields
+  --> $DIR/invariant.rs:26:30
+   |
+26 |         #[zerocopy(invariant(true))]
+   |                              ^^^^
+
+error: invariants are only supported on named fields
+  --> $DIR/invariant.rs:36:26
+   |
+36 |     #[zerocopy(invariant(true))]
+   |                          ^^^^
+
+error: expected `invariant(...)`
+  --> $DIR/invariant.rs:44:16
+   |
+44 |     #[zerocopy(invariant)]
+   |                ^^^^^^^^^
+
+error: unexpected end of input, expected an expression
+  --> $DIR/invariant.rs:52:26
+   |
+52 |     #[zerocopy(invariant())]
+   |                          ^
+
+error: unexpected token
+  --> $DIR/invariant.rs:60:30
+   |
+60 |     #[zerocopy(invariant(true, false))]
+   |                              ^
+
+error: expected `invariant(...)`
+  --> $DIR/invariant.rs:68:16
+   |
+68 |     #[zerocopy(invaraint(true))]
+   |                ^^^^^^^^^^^^^^^
+
+error: cannot derive `FromZeros` for a type with invariants
+  --> $DIR/invariant.rs:84:26
+   |
+84 |     #[zerocopy(invariant(**a.unaligned_as_ref() > 0))]
+   |                          ^
+
+error: cannot derive `FromBytes` for a type with invariants
+  --> $DIR/invariant.rs:92:26
+   |
+92 |     #[zerocopy(invariant(**a.unaligned_as_ref() > 0))]
+   |                          ^
+
+error: invariants are only supported on named fields
+   --> $DIR/invariant.rs:102:26
+    |
+102 |     #[zerocopy(invariant(true))]
+    |                          ^^^^
+
+error: expected `invariant(...)`
+   --> $DIR/invariant.rs:110:16
+    |
+110 |     #[zerocopy(invariant[true])]
+    |                ^^^^^^^^^^^^^^^
+
+error: expected `invariant(...)`
+   --> $DIR/invariant.rs:118:16
+    |
+118 |     #[zerocopy(invariant{true})]
+    |                ^^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+  --> $DIR/invariant.rs:76:26
+   |
+73 | #[derive(TryFromBytes)]
+   |          ------------ expected `bool` because of return type
+...
+76 |     #[zerocopy(invariant(0u8))]
+   |                          ^^^ expected `bool`, found `u8`
+
+error: aborting due to 13 previous errors
+
+For more information about this error, try `rustc --explain E0308`.

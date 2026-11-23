@@ -1,6 +1,7 @@
 [package]
 name = "num_threads"
-version = "0.1.7"
+version = "0.1.8"
+edition = "2018"
 authors = ["Jacob Pratt <open-source@jhpratt.dev>"]
 repository = "https://github.com/jhpratt/num_threads"
 categories = ["api-bindings", "hardware-support", "os"]
@@ -15,7 +16,7 @@ targets = ["x86_64-unknown-linux-gnu"]
 [dependencies]
 
 [target.'cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))'.dependencies]
-libc = "0.2.107"
+libc = "0.2.127"
 
 [[test]]
 name = "tests"

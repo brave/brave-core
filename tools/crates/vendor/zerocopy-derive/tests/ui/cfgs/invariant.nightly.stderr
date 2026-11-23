@@ -1,0 +1,58 @@
+error: `invariant` is experimental; pass '--cfg zerocopy_unstable_ptr' to enable
+  --> $DIR/invariant.rs:13:10
+   |
+13 | #[derive(TryFromBytes)]
+   |          ^^^^^^^^^^^^
+   |
+   = note: this error originates in the derive macro `TryFromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: `invariant` is experimental; pass '--cfg zerocopy_unstable_ptr' to enable
+  --> $DIR/invariant.rs:21:10
+   |
+21 | #[derive(TryFromBytes)]
+   |          ^^^^^^^^^^^^
+   |
+   = note: this error originates in the derive macro `TryFromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: `on_error` is experimental; pass '--cfg zerocopy_unstable_linux' to enable
+  --> $DIR/invariant.rs:33:10
+   |
+33 | #[derive(FromBytes)]
+   |          ^^^^^^^^^
+   |
+   = note: this error originates in the derive macro `FromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: `invariant` is experimental; pass '--cfg zerocopy_unstable_ptr' to enable
+  --> $DIR/invariant.rs:33:10
+   |
+33 | #[derive(FromBytes)]
+   |          ^^^^^^^^^
+   |
+   = note: this error originates in the derive macro `FromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: `invariant` is experimental; pass '--cfg zerocopy_unstable_ptr' to enable
+  --> $DIR/invariant.rs:42:10
+   |
+42 | #[derive(TryFromBytes)]
+   |          ^^^^^^^^^^^^
+   |
+   = note: this error originates in the derive macro `TryFromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: `on_error` is experimental; pass '--cfg zerocopy_unstable_linux' to enable
+  --> $DIR/invariant.rs:50:10
+   |
+50 | #[derive(TryFromBytes)]
+   |          ^^^^^^^^^^^^
+   |
+   = note: this error originates in the derive macro `TryFromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: `invariant` is experimental; pass '--cfg zerocopy_unstable_ptr' to enable
+  --> $DIR/invariant.rs:50:10
+   |
+50 | #[derive(TryFromBytes)]
+   |          ^^^^^^^^^^^^
+   |
+   = note: this error originates in the derive macro `TryFromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: aborting due to 7 previous errors
+

@@ -8,10 +8,10 @@
 
 //! `IteratorRandom`
 
-use super::coin_flipper::CoinFlipper;
 #[allow(unused)]
 use super::IndexedRandom;
-use crate::Rng;
+use super::coin_flipper::CoinFlipper;
+use crate::{Rng, RngExt};
 #[cfg(feature = "alloc")]
 use alloc::vec::Vec;
 
@@ -199,8 +199,8 @@ pub trait IteratorRandom: Iterator + Sized {
     /// case this equals the number of elements available.
     ///
     /// Complexity is `O(n)` where `n` is the length of the iterator.
-    /// For slices, prefer [`IndexedRandom::choose_multiple`].
-    fn choose_multiple_fill<R>(mut self, rng: &mut R, buf: &mut [Self::Item]) -> usize
+    /// For slices, prefer [`IndexedRandom::sample`].
+    fn sample_fill<R>(mut self, rng: &mut R, buf: &mut [Self::Item]) -> usize
     where
         R: Rng + ?Sized,
     {
@@ -228,7 +228,7 @@ pub trait IteratorRandom: Iterator + Sized {
 
     /// Uniformly sample `amount` distinct elements into a [`Vec`]
     ///
-    /// This is equivalent to `choose_multiple_fill` except for the result type.
+    /// This is equivalent to `sample_fill` except for the result type.
     ///
     /// Although the elements are selected randomly, the order of elements in
     /// the buffer is neither stable nor fully random. If random ordering is
@@ -239,14 +239,13 @@ pub trait IteratorRandom: Iterator + Sized {
     /// elements available.
     ///
     /// Complexity is `O(n)` where `n` is the length of the iterator.
-    /// For slices, prefer [`IndexedRandom::choose_multiple`].
+    /// For slices, prefer [`IndexedRandom::sample`].
     #[cfg(feature = "alloc")]
-    fn choose_multiple<R>(mut self, rng: &mut R, amount: usize) -> Vec<Self::Item>
+    fn sample<R>(mut self, rng: &mut R, amount: usize) -> Vec<Self::Item>
     where
         R: Rng + ?Sized,
     {
-        let mut reservoir = Vec::with_capacity(amount);
-        reservoir.extend(self.by_ref().take(amount));
+        let mut reservoir = Vec::from_iter(self.by_ref().take(amount));
 
         // Continue unless the iterator was exhausted
         //
@@ -259,12 +258,27 @@ pub trait IteratorRandom: Iterator + Sized {
                     *slot = elem;
                 }
             }
-        } else {
-            // Don't hang onto extra memory. There is a corner case where
-            // `amount` was much less than `self.len()`.
-            reservoir.shrink_to_fit();
         }
         reservoir
+    }
+
+    /// Deprecated: use [`Self::sample_fill`] instead
+    #[deprecated(since = "0.10.0", note = "Renamed to `sample_fill`")]
+    fn choose_multiple_fill<R>(self, rng: &mut R, buf: &mut [Self::Item]) -> usize
+    where
+        R: Rng + ?Sized,
+    {
+        self.sample_fill(rng, buf)
+    }
+
+    /// Deprecated: use [`Self::sample`] instead
+    #[cfg(feature = "alloc")]
+    #[deprecated(since = "0.10.0", note = "Renamed to `sample`")]
+    fn choose_multiple<R>(self, rng: &mut R, amount: usize) -> Vec<Self::Item>
+    where
+        R: Rng + ?Sized,
+    {
+        self.sample(rng, amount)
     }
 }
 
@@ -542,17 +556,19 @@ mod test {
 
         let mut r = crate::test::rng(401);
         let vals = (min_val..max_val).collect::<Vec<i32>>();
-        let small_sample = vals.iter().choose_multiple(&mut r, 5);
-        let large_sample = vals.iter().choose_multiple(&mut r, vals.len() + 5);
+        let small_sample = vals.iter().sample(&mut r, 5);
+        let large_sample = vals.iter().sample(&mut r, vals.len() + 5);
 
         assert_eq!(small_sample.len(), 5);
         assert_eq!(large_sample.len(), vals.len());
         // no randomization happens when amount >= len
         assert_eq!(large_sample, vals.iter().collect::<Vec<_>>());
 
-        assert!(small_sample
-            .iter()
-            .all(|e| { **e >= min_val && **e <= max_val }));
+        assert!(
+            small_sample
+                .iter()
+                .all(|e| { **e >= min_val && **e <= max_val })
+        );
     }
 
     #[test]
@@ -648,20 +664,17 @@ mod test {
     }
 
     #[test]
-    fn value_stability_choose_multiple() {
+    fn value_stability_sample() {
         fn do_test<I: Clone + Iterator<Item = u32>>(iter: I, v: &[u32]) {
             let mut rng = crate::test::rng(412);
             let mut buf = [0u32; 8];
-            assert_eq!(
-                iter.clone().choose_multiple_fill(&mut rng, &mut buf),
-                v.len()
-            );
+            assert_eq!(iter.clone().sample_fill(&mut rng, &mut buf), v.len());
             assert_eq!(&buf[0..v.len()], v);
 
             #[cfg(feature = "alloc")]
             {
                 let mut rng = crate::test::rng(412);
-                assert_eq!(iter.choose_multiple(&mut rng, v.len()), v);
+                assert_eq!(iter.sample(&mut rng, v.len()), v);
             }
         }
 

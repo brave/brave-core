@@ -28,12 +28,15 @@
 mod tcp;
 pub use self::tcp::{TcpListener, TcpStream};
 
-#[cfg(not(target_os = "wasi"))]
+#[cfg(not(all(target_os = "wasi", target_env = "p1")))]
 mod udp;
-#[cfg(not(target_os = "wasi"))]
+#[cfg(not(all(target_os = "wasi", target_env = "p1")))]
 pub use self::udp::UdpSocket;
 
 #[cfg(unix)]
 mod uds;
 #[cfg(unix)]
-pub use self::uds::{UnixDatagram, UnixListener, UnixStream};
+pub use self::uds::{UnixListener, UnixStream};
+// Emscripten's node-backed AF_UNIX is stream-only (no datagram primitive).
+#[cfg(all(unix, not(target_os = "emscripten")))]
+pub use self::uds::UnixDatagram;

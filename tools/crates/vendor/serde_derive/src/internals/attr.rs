@@ -1185,13 +1185,11 @@ impl Field {
             }
         }
 
-        // Is skip_deserializing, initialize the field to Default::default() unless a
+        // If skip_deserializing, initialize the field to Default::default() unless a
         // different default is specified by `#[serde(default = "...")]` on
         // ourselves or our container (e.g. the struct we are in).
-        if let Default::None = *container_default {
-            if skip_deserializing.0.value.is_some() {
-                default.set_if_none(Default::Default);
-            }
+        if container_default.is_none() && skip_deserializing.0.value.is_some() {
+            default.set_if_none(Default::Default);
         }
 
         let mut borrowed_lifetimes = borrowed_lifetimes.get().unwrap_or_default();
@@ -1459,9 +1457,8 @@ fn parse_lit_into_path(
     attr_name: Symbol,
     meta: &ParseNestedMeta,
 ) -> syn::Result<Option<syn::Path>> {
-    let string = match get_lit_str(cx, attr_name, meta)? {
-        Some(string) => string,
-        None => return Ok(None),
+    let Some(string) = get_lit_str(cx, attr_name, meta)? else {
+        return Ok(None);
     };
 
     Ok(match string.parse() {
@@ -1481,9 +1478,8 @@ fn parse_lit_into_expr_path(
     attr_name: Symbol,
     meta: &ParseNestedMeta,
 ) -> syn::Result<Option<syn::ExprPath>> {
-    let string = match get_lit_str(cx, attr_name, meta)? {
-        Some(string) => string,
-        None => return Ok(None),
+    let Some(string) = get_lit_str(cx, attr_name, meta)? else {
+        return Ok(None);
     };
 
     Ok(match string.parse() {
@@ -1504,9 +1500,8 @@ fn parse_lit_into_where(
     meta_item_name: Symbol,
     meta: &ParseNestedMeta,
 ) -> syn::Result<Vec<syn::WherePredicate>> {
-    let string = match get_lit_str2(cx, attr_name, meta_item_name, meta)? {
-        Some(string) => string,
-        None => return Ok(Vec::new()),
+    let Some(string) = get_lit_str2(cx, attr_name, meta_item_name, meta)? else {
+        return Ok(Vec::new());
     };
 
     Ok(
@@ -1525,9 +1520,8 @@ fn parse_lit_into_ty(
     attr_name: Symbol,
     meta: &ParseNestedMeta,
 ) -> syn::Result<Option<syn::Type>> {
-    let string = match get_lit_str(cx, attr_name, meta)? {
-        Some(string) => string,
-        None => return Ok(None),
+    let Some(string) = get_lit_str(cx, attr_name, meta)? else {
+        return Ok(None);
     };
 
     Ok(match string.parse() {
@@ -1548,9 +1542,8 @@ fn parse_lit_into_lifetimes(
     cx: &Ctxt,
     meta: &ParseNestedMeta,
 ) -> syn::Result<BTreeSet<syn::Lifetime>> {
-    let string = match get_lit_str(cx, BORROW, meta)? {
-        Some(string) => string,
-        None => return Ok(BTreeSet::new()),
+    let Some(string) = get_lit_str(cx, BORROW, meta)? else {
+        return Ok(BTreeSet::new());
     };
 
     if let Ok(lifetimes) = string.parse_with(|input: ParseStream| {
@@ -1620,11 +1613,8 @@ fn is_cow(ty: &syn::Type, elem: fn(&syn::Type) -> bool) -> bool {
             return false;
         }
     };
-    let seg = match path.segments.last() {
-        Some(seg) => seg,
-        None => {
-            return false;
-        }
+    let Some(seg) = path.segments.last() else {
+        return false;
     };
     let args = match &seg.arguments {
         syn::PathArguments::AngleBracketed(bracketed) => &bracketed.args,
@@ -1647,11 +1637,8 @@ fn is_option(ty: &syn::Type, elem: fn(&syn::Type) -> bool) -> bool {
             return false;
         }
     };
-    let seg = match path.segments.last() {
-        Some(seg) => seg,
-        None => {
-            return false;
-        }
+    let Some(seg) = path.segments.last() else {
+        return false;
     };
     let args = match &seg.arguments {
         syn::PathArguments::AngleBracketed(bracketed) => &bracketed.args,
@@ -1798,7 +1785,7 @@ fn collect_lifetimes(ty: &syn::Type, out: &mut BTreeSet<syn::Lifetime>) {
         syn::Type::Macro(ty) => {
             collect_lifetimes_from_tokens(ty.mac.tokens.clone(), out);
         }
-        syn::Type::BareFn(_)
+        syn::Type::FnPtr(_)
         | syn::Type::Never(_)
         | syn::Type::TraitObject(_)
         | syn::Type::ImplTrait(_)

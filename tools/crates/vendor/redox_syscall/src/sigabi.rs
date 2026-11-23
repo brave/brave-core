@@ -41,6 +41,8 @@ pub struct Sigcontrol {
 
     pub saved_ip: NonatomicUsize,          // rip/eip/pc
     pub saved_archdep_reg: NonatomicUsize, // rflags(x64)/eflags(x86)/x0(aarch64)/t0(riscv64)
+    pub saved_excp_code: NonatomicUsize,   // code(x64/x86)/esr(aarch64)/scause(riscv64)
+    pub saved_excp_addr: NonatomicUsize,   // cr2(x64/x86)/far(aarch64)/stval(riscv64)
 }
 #[derive(Clone, Copy, Debug)]
 pub struct SenderInfo {
@@ -80,7 +82,7 @@ impl Sigcontrol {
         let new_a1 = new_allowset & 0xffff_ffff_0000_0000;
 
         let prev_w0 = self.word[0].fetch_add(new_a0.wrapping_sub(old_a0), Ordering::Relaxed);
-        let prev_w1 = self.word[0].fetch_add(new_a1.wrapping_sub(old_a1), Ordering::Relaxed);
+        let prev_w1 = self.word[1].fetch_add(new_a1.wrapping_sub(old_a1), Ordering::Relaxed);
         //core::sync::atomic::fence(Ordering::Acquire);
         let up0 = prev_w0 & (prev_w0 >> 32);
         let up1 = prev_w1 & (prev_w1 >> 32);
@@ -133,14 +135,23 @@ impl NonatomicUsize {
 pub fn sig_bit(sig: usize) -> u64 {
     1 << (sig - 1)
 }
+
+// TODO: Move to redox_rt?
 impl SigProcControl {
-    // TODO: Move to redox_rt?
-    pub fn signal_will_ign(&self, sig: usize, is_parent_sigchld: bool) -> bool {
+    /// Checks if `sig` should be ignored based on the current action flags.
+    ///
+    /// * `sig` - The signal to check (e.g. `SIGCHLD`).
+    ///
+    /// * `stop_or_continue` - Whether the signal is generated because a child
+    ///   process stopped (`SIGSTOP`, `SIGTSTP`) or continued (`SIGCONT`). If
+    ///   `true` and `sig` is `SIGCHLD`, the signal shall not be delivered if the
+    ///   `SA_NOCLDSTOP` flag is set for `SIGCHLD`.
+    pub fn signal_will_ign(&self, sig: usize, stop_or_continue: bool) -> bool {
         let flags = self.actions[sig - 1].first.load(Ordering::Relaxed);
         let will_ign = flags & (1 << 63) != 0;
         let sig_specific = flags & (1 << 62) != 0; // SA_NOCLDSTOP if sig == SIGCHLD
 
-        will_ign || (sig == SIGCHLD && is_parent_sigchld && sig_specific)
+        will_ign || (sig == SIGCHLD && stop_or_continue && sig_specific)
     }
     // TODO: Move to redox_rt?
     pub fn signal_will_stop(&self, sig: usize) -> bool {

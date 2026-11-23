@@ -1,7 +1,7 @@
 mod errors;
 pub use errors::*;
 
-mod messages;
+pub(super) mod messages;
 use messages::*;
 
 use std::net::{IpAddr, SocketAddr, ToSocketAddrs};
@@ -65,7 +65,7 @@ impl<C> SocksV5<C> {
     ///
     /// Username and Password must be maximum of 255 characters each.
     /// 0 length strings are allowed despite RFC prohibiting it. This is done for
-    /// compatablity with server implementations that use empty credentials
+    /// compatibility with server implementations that use empty credentials
     /// to allow returning error codes during IP authentication.
     pub fn with_auth(mut self, user: String, pass: String) -> Self {
         self.config.proxy_auth = Some((user, pass));
@@ -261,7 +261,11 @@ where
 
         let fut = async move {
             let port = dst.port().map(|p| p.as_u16()).unwrap_or(443);
-            let host = dst.host().ok_or(SocksError::MissingHost)?.to_string();
+            let host_from_uri = dst.host().ok_or(SocksError::MissingHost)?;
+
+            // Note: host() returns the host part of the URI which could be a square bracketed IPv6
+            // address. We need to remove any brackets to make it a valid IP address.
+            let host = crate::client::strip_ipv6_brackets(host_from_uri).to_string();
 
             let conn = connecting.await.map_err(SocksError::Inner)?;
             config.execute(conn, host, port).await

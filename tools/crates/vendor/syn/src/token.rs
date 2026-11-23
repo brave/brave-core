@@ -100,6 +100,13 @@ use crate::lifetime::Lifetime;
 #[cfg(feature = "parsing")]
 use crate::parse::{Parse, ParseStream};
 use crate::span::IntoSpans;
+#[cfg(feature = "extra-traits")]
+use core::cmp;
+#[cfg(feature = "extra-traits")]
+use core::fmt::{self, Debug};
+#[cfg(feature = "extra-traits")]
+use core::hash::{Hash, Hasher};
+use core::ops::{Deref, DerefMut};
 use proc_macro2::extra::DelimSpan;
 use proc_macro2::Span;
 #[cfg(feature = "printing")]
@@ -110,13 +117,6 @@ use proc_macro2::{Delimiter, Ident};
 use proc_macro2::{Literal, Punct, TokenTree};
 #[cfg(feature = "printing")]
 use quote::{ToTokens, TokenStreamExt as _};
-#[cfg(feature = "extra-traits")]
-use std::cmp;
-#[cfg(feature = "extra-traits")]
-use std::fmt::{self, Debug};
-#[cfg(feature = "extra-traits")]
-use std::hash::{Hash, Hasher};
-use std::ops::{Deref, DerefMut};
 
 /// Marker trait for types that represent single tokens.
 ///
@@ -143,7 +143,12 @@ pub(crate) mod private {
     /// Support writing `token.span` rather than `token.spans[0]` on tokens that
     /// hold a single span.
     #[repr(transparent)]
-    #[allow(unknown_lints, repr_transparent_non_zst_fields)] // False positive: https://github.com/rust-lang/rust/issues/115922
+    #[allow(
+        unknown_lints,
+        renamed_and_removed_lints,
+        // False positive: https://github.com/rust-lang/rust/issues/115922
+        repr_transparent_non_zst_fields,
+    )]
     pub struct WithSpan {
         pub span: Span,
     }
@@ -219,7 +224,7 @@ macro_rules! define_keywords {
                 }
             }
 
-            impl std::default::Default for $name {
+            impl core::default::Default for $name {
                 fn default() -> Self {
                     $name {
                         span: Span::call_site(),
@@ -243,7 +248,7 @@ macro_rules! define_keywords {
             #[cfg_attr(docsrs, doc(cfg(feature = "extra-traits")))]
             impl Debug for $name {
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                    f.write_str(stringify!($name))
+                    format_token(f, $token)
                 }
             }
 
@@ -286,7 +291,7 @@ macro_rules! define_keywords {
             #[cfg(feature = "parsing")]
             impl Token for $name {
                 fn peek(cursor: Cursor) -> bool {
-                    parsing::peek_keyword(cursor, $token)
+                    cursor.peek_keyword($token)
                 }
 
                 fn display() -> &'static str {
@@ -324,7 +329,12 @@ macro_rules! define_punctuation_structs {
     ($($token:literal pub struct $name:ident/$len:tt #[doc = $usage:literal])*) => {
         $(
             #[cfg_attr(not(doc), repr(transparent))]
-            #[allow(unknown_lints, repr_transparent_non_zst_fields)] // False positive: https://github.com/rust-lang/rust/issues/115922
+            #[allow(
+                unknown_lints,
+                renamed_and_removed_lints,
+                // False positive: https://github.com/rust-lang/rust/issues/115922
+                repr_transparent_non_zst_fields,
+            )]
             #[doc = concat!('`', $token, '`')]
             ///
             /// Usage:
@@ -346,7 +356,7 @@ macro_rules! define_punctuation_structs {
                 }
             }
 
-            impl std::default::Default for $name {
+            impl core::default::Default for $name {
                 fn default() -> Self {
                     $name {
                         spans: [Span::call_site(); $len],
@@ -370,7 +380,7 @@ macro_rules! define_punctuation_structs {
             #[cfg_attr(docsrs, doc(cfg(feature = "extra-traits")))]
             impl Debug for $name {
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                    f.write_str(stringify!($name))
+                    format_token(f, $token)
                 }
             }
 
@@ -425,7 +435,7 @@ macro_rules! define_punctuation {
             #[cfg(feature = "parsing")]
             impl Token for $name {
                 fn peek(cursor: Cursor) -> bool {
-                    parsing::peek_punct(cursor, $token)
+                    cursor.peek_punct($token)
                 }
 
                 fn display() -> &'static str {
@@ -455,7 +465,7 @@ macro_rules! define_delimiters {
                 }
             }
 
-            impl std::default::Default for $name {
+            impl core::default::Default for $name {
                 fn default() -> Self {
                     $name(Span::call_site())
                 }
@@ -583,7 +593,7 @@ pub fn Group<S: IntoSpans<Span>>(span: S) -> Group {
     }
 }
 
-impl std::default::Default for Group {
+impl core::default::Default for Group {
     fn default() -> Self {
         Group {
             span: Span::call_site(),
@@ -726,6 +736,7 @@ define_keywords! {
     "raw"         pub struct Raw
     "ref"         pub struct Ref
     "return"      pub struct Return
+    "safe"        pub struct Safe
     "Self"        pub struct SelfType
     "self"        pub struct SelfValue
     "static"      pub struct Static
@@ -905,6 +916,7 @@ macro_rules! Token {
     [raw]         => { $crate::token::Raw };
     [ref]         => { $crate::token::Ref };
     [return]      => { $crate::token::Return };
+    [safe]        => { $crate::token::Safe };
     [Self]        => { $crate::token::SelfType };
     [self]        => { $crate::token::SelfValue };
     [static]      => { $crate::token::Static };
@@ -971,6 +983,11 @@ macro_rules! Token {
     [_]           => { $crate::token::Underscore };
 }
 
+#[cfg(feature = "extra-traits")]
+fn format_token(formatter: &mut fmt::Formatter, repr: &str) -> fmt::Result {
+    write!(formatter, "Token![{}]", repr)
+}
+
 // Not public API.
 #[doc(hidden)]
 #[cfg(feature = "parsing")]
@@ -978,6 +995,7 @@ pub(crate) mod parsing {
     use crate::buffer::Cursor;
     use crate::error::{Error, Result};
     use crate::parse::ParseStream;
+    use alloc::format;
     use proc_macro2::{Spacing, Span};
 
     pub(crate) fn keyword(input: ParseStream, token: &str) -> Result<Span> {
@@ -989,14 +1007,6 @@ pub(crate) mod parsing {
             }
             Err(cursor.error(format!("expected `{}`", token)))
         })
-    }
-
-    pub(crate) fn peek_keyword(cursor: Cursor, token: &str) -> bool {
-        if let Some((ident, _rest)) = cursor.ident() {
-            ident == token
-        } else {
-            false
-        }
     }
 
     #[doc(hidden)]

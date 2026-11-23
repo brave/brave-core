@@ -1,26 +1,26 @@
+use gix_error::{ErrorExt, Result};
 use std::{borrow::Cow, ffi::OsString, fmt::Display};
 
-use bstr::{BStr, BString, ByteSlice};
+use bstr::{BStr, BString};
+use gix_error::{ResultExt, validation};
 
-use crate::{Boolean, Error};
-
-fn bool_err(input: impl Into<BString>) -> Error {
-    Error::new(
-        "Booleans need to be 'no', 'off', 'false', '' or 'yes', 'on', 'true' or any number",
-        input,
-    )
-}
+use crate::{Boolean, Integer};
 
 impl TryFrom<OsString> for Boolean {
-    type Error = Error;
+    type Error = gix_error::Error;
 
-    fn try_from(value: OsString) -> Result<Self, Self::Error> {
+    fn try_from(value: OsString) -> Result<Self> {
         let value = gix_path::os_str_into_bstr(&value)
-            .map_err(|_| Error::new("Illformed UTF-8", std::path::Path::new(&value).display().to_string()))?;
+            .or_raise(|| validation("Illformed UTF-8").with_input(value.as_encoded_bytes()))?;
         Self::try_from(value)
     }
 }
 
+/// # Deviation
+///
+/// Numeric values use [`Integer`]'s bases and `k`/`m`/`g` suffixes, with the full
+/// `i64::MIN..=i64::MAX` range after applying the suffix. Zero is false; nonzero is true.
+///
 /// # Warning
 ///
 /// The direct usage of `try_from("string")` is discouraged as it will produce the wrong result for values
@@ -31,21 +31,30 @@ impl TryFrom<OsString> for Boolean {
 /// Instead of this, obtain booleans with `config.boolean(…)`, which handles the case were no separator is
 /// present correctly.
 impl TryFrom<&BStr> for Boolean {
-    type Error = Error;
+    type Error = gix_error::Error;
 
-    fn try_from(value: &BStr) -> Result<Self, Self::Error> {
+    fn try_from(value: &BStr) -> Result<Self> {
         if parse_true(value) {
             Ok(Boolean(true))
         } else if parse_false(value) {
             Ok(Boolean(false))
+        } else if let Ok(integer) = Integer::from_bytes::<i64>(value) {
+            Ok(Boolean(integer != 0))
         } else {
-            use std::str::FromStr;
-            if let Some(integer) = value.to_str().ok().and_then(|s| i64::from_str(s).ok()) {
-                Ok(Boolean(integer != 0))
-            } else {
-                Err(bool_err(value))
-            }
+            Err(
+                validation("Booleans need to be 'no', 'off', 'false', '' or 'yes', 'on', 'true' or any number")
+                    .with_input(value)
+                    .raise(),
+            )
         }
+    }
+}
+
+impl TryFrom<&str> for Boolean {
+    type Error = gix_error::Error;
+
+    fn try_from(value: &str) -> Result<Self> {
+        Self::try_from(BStr::new(value))
     }
 }
 
@@ -59,9 +68,16 @@ impl Boolean {
 }
 
 impl TryFrom<Cow<'_, BStr>> for Boolean {
-    type Error = Error;
-    fn try_from(c: Cow<'_, BStr>) -> Result<Self, Self::Error> {
+    type Error = gix_error::Error;
+    fn try_from(c: Cow<'_, BStr>) -> Result<Self> {
         Self::try_from(c.as_ref())
+    }
+}
+
+impl TryFrom<BString> for Boolean {
+    type Error = gix_error::Error;
+    fn try_from(value: BString) -> Result<Self> {
+        Self::try_from(BStr::new(&value))
     }
 }
 
@@ -79,7 +95,7 @@ impl From<Boolean> for bool {
 
 #[cfg(feature = "serde")]
 impl serde::Serialize for Boolean {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
     where
         S: serde::Serializer,
     {

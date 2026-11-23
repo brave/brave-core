@@ -8,8 +8,9 @@ pub type off64_t = c_longlong;
 pub type sigset_t = c_ulong;
 pub type socklen_t = i32;
 pub type time64_t = i64;
-pub type __u64 = c_ulonglong;
-pub type __s64 = c_longlong;
+// `struct stat64` is a synonym for `struct stat`, provided by Bionic for source
+// compatibility with other systems.
+pub type stat64 = stat;
 
 s! {
     // FIXME(1.0): This should not implement `PartialEq`
@@ -26,6 +27,9 @@ s! {
         pub rlim_max: u64,
     }
 
+    // Note that the 32-bit `dev_t`, `ino_t`, `off_t` and `blkcnt_t` typedefs do
+    // not match the wider fields Bionic actually uses here, so they cannot be
+    // spelled with those aliases.
     pub struct stat {
         pub st_dev: c_ulonglong,
         __pad0: Padding<[c_uchar; 4]>,
@@ -39,33 +43,11 @@ s! {
         pub st_size: c_longlong,
         pub st_blksize: crate::blksize_t,
         pub st_blocks: c_ulonglong,
-        pub st_atime: c_long,
+        pub st_atime: crate::time_t,
         pub st_atime_nsec: c_long,
-        pub st_mtime: c_long,
+        pub st_mtime: crate::time_t,
         pub st_mtime_nsec: c_long,
-        pub st_ctime: c_long,
-        pub st_ctime_nsec: c_long,
-        pub st_ino: c_ulonglong,
-    }
-
-    pub struct stat64 {
-        pub st_dev: c_ulonglong,
-        __pad0: Padding<[c_uchar; 4]>,
-        __st_ino: crate::ino_t,
-        pub st_mode: c_uint,
-        pub st_nlink: crate::nlink_t,
-        pub st_uid: crate::uid_t,
-        pub st_gid: crate::gid_t,
-        pub st_rdev: c_ulonglong,
-        __pad3: Padding<[c_uchar; 4]>,
-        pub st_size: c_longlong,
-        pub st_blksize: crate::blksize_t,
-        pub st_blocks: c_ulonglong,
-        pub st_atime: c_long,
-        pub st_atime_nsec: c_long,
-        pub st_mtime: c_long,
-        pub st_mtime_nsec: c_long,
-        pub st_ctime: c_long,
+        pub st_ctime: crate::time_t,
         pub st_ctime_nsec: c_long,
         pub st_ino: c_ulonglong,
     }
@@ -124,7 +106,7 @@ s! {
         pendingReaders: c_int,
         pendingWriters: c_int,
         attr: i32,
-        __reserved: [c_char; 12],
+        __reserved: Padding<[c_char; 12]>,
     }
 
     pub struct pthread_barrier_t {
@@ -188,13 +170,14 @@ pub const SA_NOCLDSTOP: c_int = 0x00000001;
 pub const SA_NOCLDWAIT: c_int = 0x00000002;
 pub const SA_NODEFER: c_int = 0x40000000;
 pub const SA_ONSTACK: c_int = 0x08000000;
-pub const SA_RESETHAND: c_int = 0x80000000;
+pub const SA_RESETHAND: c_int = u32_cast_int(0x80000000);
 pub const SA_RESTART: c_int = 0x10000000;
 pub const SA_SIGINFO: c_int = 0x00000004;
 
 pub const RTLD_GLOBAL: c_int = 2;
 pub const RTLD_NOW: c_int = 0;
 pub const RTLD_DEFAULT: *mut c_void = -1isize as *mut c_void;
+pub const RTLD_NEXT: *mut c_void = -2isize as *mut c_void;
 
 pub const PTRACE_GETFPREGS: c_int = 14;
 pub const PTRACE_SETFPREGS: c_int = 15;
@@ -209,7 +192,7 @@ pub const PTHREAD_RWLOCK_INITIALIZER: pthread_rwlock_t = pthread_rwlock_t {
     pendingReaders: 0,
     pendingWriters: 0,
     attr: 0,
-    __reserved: [0; 12],
+    __reserved: Padding::new([0; 12]),
 };
 pub const PTHREAD_STACK_MIN: size_t = 4096 * 2;
 pub const CPU_SETSIZE: size_t = 32;

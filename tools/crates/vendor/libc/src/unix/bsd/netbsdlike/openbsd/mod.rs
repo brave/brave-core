@@ -84,6 +84,20 @@ s! {
         __unused7: Padding<*mut c_void>,
     }
 
+    pub struct tm {
+        pub tm_sec: c_int,
+        pub tm_min: c_int,
+        pub tm_hour: c_int,
+        pub tm_mday: c_int,
+        pub tm_mon: c_int,
+        pub tm_year: c_int,
+        pub tm_wday: c_int,
+        pub tm_yday: c_int,
+        pub tm_isdst: c_int,
+        pub tm_gmtoff: c_long,
+        pub tm_zone: *const c_char,
+    }
+
     pub struct lconv {
         pub decimal_point: *mut c_char,
         pub thousands_sep: *mut c_char,
@@ -511,6 +525,77 @@ s! {
         pub p_name: [c_char; KI_MAXCOMLEN as usize],
     }
 
+    pub struct kinfo_file {
+        pub f_fileaddr: u64,
+        pub f_flag: u32,
+        pub f_iflags: u32,
+        pub f_type: u32,
+        pub f_count: u32,
+        pub f_msgcount: u32,
+        pub f_usecount: u32,
+        pub f_ucred: u64,
+        pub f_uid: u32,
+        pub f_gid: u32,
+        pub f_ops: u64,
+        pub f_offset: u64,
+        pub f_data: u64,
+        pub f_rxfer: u64,
+        pub f_rwfer: u64,
+        pub f_seek: u64,
+        pub f_rbytes: u64,
+        pub f_wbytes: u64,
+        pub v_un: u64,
+        pub v_type: u32,
+        pub v_tag: u32,
+        pub v_flag: u32,
+        pub va_rdev: u32,
+        pub v_data: u64,
+        pub v_mount: u64,
+        pub va_fileid: u64,
+        pub va_size: u64,
+        pub va_mode: u32,
+        pub va_fsid: u32,
+        pub f_mntonname: [c_char; KI_MNAMELEN as usize],
+        pub so_type: u32,
+        pub so_state: u32,
+        pub so_pcb: u64,
+        pub so_protocol: u32,
+        pub so_family: u32,
+        pub inp_ppcb: u64,
+        pub inp_lport: u32,
+        pub inp_laddru: [u32; 4],
+        pub inp_fport: u32,
+        pub inp_faddru: [u32; 4],
+        pub unp_conn: u64,
+        pub pipe_peer: u64,
+        pub pipe_state: u32,
+        pub kq_count: u32,
+        pub kq_state: u32,
+        __unused1: Padding<u32>,
+        pub p_pid: u32,
+        pub fd_fd: i32,
+        pub fd_ofileflags: u32,
+        pub p_uid: u32,
+        pub p_gid: u32,
+        pub p_tid: u32,
+        pub p_comm: [c_char; KI_MAXCOMLEN as usize],
+        pub inp_rtableid: u32,
+        pub so_splice: u64,
+        pub so_splicelen: i64,
+        pub so_rcv_cc: u64,
+        pub so_snd_cc: u64,
+        pub unp_refs: u64,
+        pub unp_nextref: u64,
+        pub unp_addr: u64,
+        pub unp_path: [c_char; KI_UNPPATHLEN as usize],
+        pub inp_proto: u32,
+        pub t_state: u32,
+        pub t_rcv_wnd: u64,
+        pub t_snd_wnd: u64,
+        pub t_snd_cwnd: u64,
+        pub va_nlink: u32,
+    }
+
     pub struct kinfo_vmentry {
         pub kve_start: c_ulong,
         pub kve_end: c_ulong,
@@ -535,6 +620,7 @@ s! {
 
     pub struct ptrace_thread_state {
         pub pts_tid: crate::pid_t,
+        pub pts_name: [c_char; PT_PTS_NAMELEN as usize],
     }
 
     // search.h
@@ -616,16 +702,16 @@ s! {
         pub d_reclen: u16,
         pub d_type: u8,
         pub d_namlen: u8,
-        __d_padding: [u8; 4],
+        __d_padding: Padding<[u8; 4]>,
         pub d_name: [c_char; 256],
     }
 
     pub struct sockaddr_storage {
         pub ss_len: u8,
         pub ss_family: crate::sa_family_t,
-        __ss_pad1: [u8; 6],
-        __ss_pad2: i64,
-        __ss_pad3: [u8; 240],
+        __ss_pad1: Padding<[u8; 6]>,
+        __ss_pad2: Padding<i64>,
+        __ss_pad3: Padding<[u8; 240]>,
     }
 
     pub struct siginfo_t {
@@ -634,9 +720,9 @@ s! {
         pub si_errno: c_int,
         pub si_addr: *mut c_char,
         #[cfg(target_pointer_width = "32")]
-        __pad: [u8; 112],
+        __pad: Padding<[u8; 112]>,
         #[cfg(target_pointer_width = "64")]
-        __pad: [u8; 108],
+        __pad: Padding<[u8; 108]>,
     }
 
     pub struct lastlog {
@@ -765,6 +851,22 @@ impl siginfo_t {
         }
         (*(self as *const siginfo_t).cast::<siginfo_timer>()).value
     }
+
+    pub unsafe fn si_status(&self) -> c_int {
+        #[repr(C)]
+        struct siginfo_proc {
+            _si_signo: c_int,
+            _si_code: c_int,
+            _si_errno: c_int,
+            _pad: Padding<[c_int; SI_PAD]>,
+            _pid: crate::pid_t,
+            _uid: crate::uid_t,
+            _utime: crate::clock_t,
+            _stime: crate::clock_t,
+            _status: c_int,
+        }
+        (*(self as *const siginfo_t).cast::<siginfo_proc>())._status
+    }
 }
 
 s_no_extra_traits! {
@@ -843,6 +945,9 @@ pub const EBADMSG: c_int = 92;
 pub const ENOTRECOVERABLE: c_int = 93;
 pub const EOWNERDEAD: c_int = 94;
 pub const EPROTO: c_int = 95;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const ELAST: c_int = 95;
 
 pub const F_DUPFD_CLOEXEC: c_int = 10;
@@ -997,6 +1102,12 @@ pub const MAP_NORESERVE: c_int = 0x0000;
 pub const MAP_HASSEMAPHORE: c_int = 0x0000;
 pub const MAP_TRYFIXED: c_int = 0;
 
+// minherit syscall inherit values
+pub const MAP_INHERIT_SHARE: c_int = 0;
+pub const MAP_INHERIT_COPY: c_int = 1;
+pub const MAP_INHERIT_NONE: c_int = 2;
+pub const MAP_INHERIT_ZERO: c_int = 3;
+
 pub const EIPSEC: c_int = 82;
 pub const ENOMEDIUM: c_int = 85;
 pub const EMEDIUMTYPE: c_int = 86;
@@ -1142,6 +1253,7 @@ pub const _SC_PHYS_PAGES: c_int = 500;
 pub const _SC_AVPHYS_PAGES: c_int = 501;
 pub const _SC_NPROCESSORS_CONF: c_int = 502;
 pub const _SC_NPROCESSORS_ONLN: c_int = 503;
+pub const HOST_NAME_MAX: c_int = 255;
 
 pub const FD_SETSIZE: usize = 1024;
 
@@ -1170,7 +1282,7 @@ pub const EVFILT_SIGNAL: i16 = -6;
 pub const EVFILT_TIMER: i16 = -7;
 pub const EVFILT_DEVICE: i16 = -8;
 pub const EVFILT_EXCEPT: i16 = -9;
-
+pub const EVFILT_USER: i16 = -10;
 pub const EV_ADD: u16 = 0x1;
 pub const EV_DELETE: u16 = 0x2;
 pub const EV_ENABLE: u16 = 0x4;
@@ -1186,6 +1298,13 @@ pub const EV_EOF: u16 = 0x8000;
 #[deprecated(since = "0.2.113", note = "Not stable across OS versions")]
 pub const EV_SYSFLAGS: u16 = 0xf800;
 
+pub const NOTE_TRIGGER: u32 = 0x01000000;
+pub const NOTE_FFNOP: u32 = 0x00000000;
+pub const NOTE_FFAND: u32 = 0x40000000;
+pub const NOTE_FFOR: u32 = 0x80000000;
+pub const NOTE_FFCOPY: u32 = 0xc0000000;
+pub const NOTE_FFCTRLMASK: u32 = 0xc0000000;
+pub const NOTE_FFLAGSMASK: u32 = 0x00ffffff;
 pub const NOTE_LOWAT: u32 = 0x00000001;
 pub const NOTE_EOF: u32 = 0x00000002;
 pub const NOTE_OOB: u32 = 0x00000004;
@@ -1226,6 +1345,8 @@ pub const NI_DGRAM: c_int = 16;
 pub const NI_MAXHOST: size_t = 256;
 
 pub const RTLD_LOCAL: c_int = 0;
+pub const RTLD_NODELETE: c_int = 0x400;
+pub const RTLD_NOLOAD: c_int = 0x800;
 
 pub const CTL_MAXNAME: c_int = 12;
 
@@ -1246,8 +1367,6 @@ pub const CTL_MACHDEP: c_int = 7;
 pub const CTL_DDB: c_int = 9;
 pub const CTL_VFS: c_int = 10;
 pub const CTL_MAXID: c_int = 11;
-
-pub const HW_NCPUONLINE: c_int = 25;
 
 pub const KERN_OSTYPE: c_int = 1;
 pub const KERN_OSRELEASE: c_int = 2;
@@ -1289,6 +1408,7 @@ pub const KERN_MALLOCSTATS: c_int = 39;
 pub const KERN_CPTIME: c_int = 40;
 pub const KERN_NCHSTATS: c_int = 41;
 pub const KERN_FORKSTAT: c_int = 42;
+#[deprecated(since = "0.2.190", note = "Removed in OpenBSD 7.2")]
 pub const KERN_NSELCOLL: c_int = 43;
 pub const KERN_TTY: c_int = 44;
 pub const KERN_CCPU: c_int = 45;
@@ -1389,6 +1509,19 @@ pub const KVE_INH_ZERO: c_int = 0x00000030;
 pub const KVE_F_STATIC: c_int = 0x1;
 pub const KVE_F_KMEM: c_int = 0x2;
 
+pub const KERN_FILE_BYFILE: c_int = 1;
+pub const KERN_FILE_BYPID: c_int = 2;
+pub const KERN_FILE_BYUID: c_int = 3;
+pub const KERN_FILESLOP: c_int = 10;
+
+pub const KERN_FILE_TEXT: c_int = -1;
+pub const KERN_FILE_CDIR: c_int = -2;
+pub const KERN_FILE_RDIR: c_int = -3;
+pub const KERN_FILE_TRACE: c_int = -4;
+
+pub const KI_MNAMELEN: c_int = 96;
+pub const KI_UNPPATHLEN: c_int = 104;
+
 pub const CHWFLOW: crate::tcflag_t = crate::MDMBUF | crate::CRTSCTS;
 pub const OLCUC: crate::tcflag_t = 0x20;
 pub const ONOCR: crate::tcflag_t = 0x40;
@@ -1401,6 +1534,8 @@ pub const ISOFSMNT_EXTATT: c_int = 0x4; // enable extended attr
 pub const ISOFSMNT_NOJOLIET: c_int = 0x8; // disable Joliet Ext
 pub const ISOFSMNT_SESS: c_int = 0x10; // use iso_args.sess
 
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const NFS_ARGSVERSION: c_int = 4; // change when nfs_args changes
 
 pub const NFSMNT_RESVPORT: c_int = 0; // always use reserved ports
@@ -1430,7 +1565,7 @@ pub const NFSMNT_ACDIRMIN: c_int = 0x100000; // acdirmin field valid
 pub const NFSMNT_ACDIRMAX: c_int = 0x200000; // acdirmax field valid
 
 /* Flags valid only in kernel */
-pub const NFSMNT_INTERNAL: c_int = 0xfffc0000; // Bits set internally
+pub const NFSMNT_INTERNAL: c_int = u32_cast_int(0xfffc0000); // Bits set internally
 pub const NFSMNT_HASWRITEVERF: c_int = 0x40000; // Has write verifier for V3
 pub const NFSMNT_GOTPATHCONF: c_int = 0x80000; // Got the V3 pathconf info
 pub const NFSMNT_GOTFSINFO: c_int = 0x100000; // Got the V3 fsinfo
@@ -1444,7 +1579,7 @@ pub const NFSMNT_WANTRCV: c_int = 0x8000000; // Want above
 pub const NFSMNT_WAITAUTH: c_int = 0x10000000; // Wait for authentication
 pub const NFSMNT_HASAUTH: c_int = 0x20000000; // Has authenticator
 pub const NFSMNT_WANTAUTH: c_int = 0x40000000; // Wants an authenticator
-pub const NFSMNT_AUTHERR: c_int = 0x80000000; // Authentication error
+pub const NFSMNT_AUTHERR: c_int = u32_cast_int(0x80000000); // Authentication error
 
 pub const MSDOSFSMNT_SHORTNAME: c_int = 0x1; // Force old DOS short names only
 pub const MSDOSFSMNT_LONGNAME: c_int = 0x2; // Force Win'95 long names
@@ -1460,6 +1595,15 @@ const SI_PAD: size_t = (SI_MAXSZ / size_of::<c_int>()) - 3;
 
 pub const MAP_STACK: c_int = 0x4000;
 pub const MAP_CONCEAL: c_int = 0x8000;
+
+// https://github.com/openbsd/src/blob/f8a2f73b6503213f5eb24ca315ac7e1f9421c0c9/sys/net/if.h#L135
+pub const LINK_STATE_UNKNOWN: c_int = 0; // link unknown
+pub const LINK_STATE_INVALID: c_int = 1; // link invalid
+pub const LINK_STATE_DOWN: c_int = 2; // link is down
+pub const LINK_STATE_KALIVE_DOWN: c_int = 3; // keepalive reports down
+pub const LINK_STATE_UP: c_int = 4; // link is up
+pub const LINK_STATE_HALF_DUPLEX: c_int = 5; // link is up and half duplex
+pub const LINK_STATE_FULL_DUPLEX: c_int = 6; // link is up and full duplex
 
 // https://github.com/openbsd/src/blob/HEAD/sys/net/if.h#L187
 pub const IFF_UP: c_int = 0x1; // interface is up
@@ -1490,6 +1634,8 @@ pub const PT_GET_THREAD_FIRST: c_int = 15;
 pub const PT_GET_THREAD_NEXT: c_int = 16;
 pub const PT_FIRSTMACH: c_int = 32;
 
+pub const PT_PTS_NAMELEN: c_int = 32;
+
 pub const SOCK_CLOEXEC: c_int = 0x8000;
 pub const SOCK_NONBLOCK: c_int = 0x4000;
 pub const SOCK_DNS: c_int = 0x1000;
@@ -1519,6 +1665,14 @@ pub const FUTEX_WAIT: c_int = 1;
 pub const FUTEX_WAKE: c_int = 2;
 pub const FUTEX_REQUEUE: c_int = 3;
 pub const FUTEX_PRIVATE_FLAG: c_int = 128;
+
+// sys/file.h
+pub const DTYPE_VNODE: c_int = 1;
+pub const DTYPE_SOCKET: c_int = 2;
+pub const DTYPE_PIPE: c_int = 3;
+pub const DTYPE_KQUEUE: c_int = 4;
+pub const DTYPE_DMABUF: c_int = 5;
+pub const DTYPE_SYNC: c_int = 6;
 
 // sysctl.h, kinfo_proc p_eflag constants
 pub const EPROC_CTTY: i32 = 0x01; // controlling tty vnode active
@@ -1611,7 +1765,10 @@ pub const LC_NUMERIC_MASK: c_int = 1 << crate::LC_NUMERIC;
 pub const LC_TIME_MASK: c_int = 1 << crate::LC_TIME;
 pub const LC_MESSAGES_MASK: c_int = 1 << crate::LC_MESSAGES;
 
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 const _LC_LAST: c_int = 7;
+
 pub const LC_ALL_MASK: c_int = (1 << _LC_LAST) - 2;
 
 pub const LC_GLOBAL_LOCALE: crate::locale_t = -1isize as crate::locale_t;
@@ -1689,57 +1846,63 @@ pub const RTAX_BFD: c_int = 11;
 pub const RTAX_DNS: c_int = 12;
 pub const RTAX_STATIC: c_int = 13;
 pub const RTAX_SEARCH: c_int = 14;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const RTAX_MAX: c_int = 15;
 
 const fn _ALIGN(p: usize) -> usize {
     (p + _ALIGNBYTES) & !_ALIGNBYTES
 }
 
+// include/paths.h
+pub const _PATH_DEFPATH: *const c_char =
+    cstr(b"/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/bin:/usr/local/sbin\0");
+pub const _PATH_BSHELL: *const c_char = cstr(b"/bin/sh\0");
+
 f! {
-    pub fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
+    pub unsafe fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
         (cmsg as *mut c_uchar).offset(_ALIGN(size_of::<cmsghdr>()) as isize)
     }
 
-    pub const fn CMSG_LEN(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_LEN(length: c_uint) -> c_uint {
         _ALIGN(size_of::<cmsghdr>()) as c_uint + length
     }
 
-    pub fn CMSG_NXTHDR(mhdr: *const crate::msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
+    pub unsafe fn CMSG_NXTHDR(mhdr: *const crate::msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
         if cmsg.is_null() {
             return crate::CMSG_FIRSTHDR(mhdr);
         }
         let next = cmsg as usize + _ALIGN((*cmsg).cmsg_len as usize) + _ALIGN(size_of::<cmsghdr>());
         let max = (*mhdr).msg_control as usize + (*mhdr).msg_controllen as usize;
         if next > max {
-            core::ptr::null_mut::<cmsghdr>()
+            ptr::null_mut()
         } else {
             (cmsg as usize + _ALIGN((*cmsg).cmsg_len as usize)) as *mut cmsghdr
         }
     }
 
-    pub const fn CMSG_SPACE(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_SPACE(length: c_uint) -> c_uint {
         (_ALIGN(size_of::<cmsghdr>()) + _ALIGN(length as usize)) as c_uint
     }
-}
 
-safe_f! {
-    pub const fn WSTOPSIG(status: c_int) -> c_int {
+    pub const safe fn WSTOPSIG(status: c_int) -> c_int {
         status >> 8
     }
 
-    pub const fn WIFSIGNALED(status: c_int) -> bool {
+    pub const safe fn WIFSIGNALED(status: c_int) -> bool {
         (status & 0o177) != 0o177 && (status & 0o177) != 0
     }
 
-    pub const fn WIFSTOPPED(status: c_int) -> bool {
+    pub const safe fn WIFSTOPPED(status: c_int) -> bool {
         (status & 0xff) == 0o177
     }
 
-    pub const fn WIFCONTINUED(status: c_int) -> bool {
+    pub const safe fn WIFCONTINUED(status: c_int) -> bool {
         (status & 0o177777) == 0o177777
     }
 
-    pub const fn makedev(major: c_uint, minor: c_uint) -> crate::dev_t {
+    pub const safe fn makedev(major: c_uint, minor: c_uint) -> crate::dev_t {
         let major = major as crate::dev_t;
         let minor = minor as crate::dev_t;
         let mut dev = 0;
@@ -1749,11 +1912,11 @@ safe_f! {
         dev
     }
 
-    pub const fn major(dev: crate::dev_t) -> c_uint {
+    pub const safe fn major(dev: crate::dev_t) -> c_uint {
         ((dev as c_uint) >> 8) & 0xff
     }
 
-    pub const fn minor(dev: crate::dev_t) -> c_uint {
+    pub const safe fn minor(dev: crate::dev_t) -> c_uint {
         let dev = dev as c_uint;
         let mut res = 0;
         res |= (dev) & 0xff;
@@ -1916,6 +2079,7 @@ extern "C" {
     pub fn getfsstat(buf: *mut statfs, bufsize: size_t, flags: c_int) -> c_int;
 
     pub fn elf_aux_info(aux: c_int, buf: *mut c_void, buflen: c_int) -> c_int;
+    pub fn getexecpath(buf: *mut c_char, bufsize: size_t) -> c_int;
 }
 
 #[link(name = "execinfo")]

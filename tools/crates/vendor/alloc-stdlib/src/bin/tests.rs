@@ -3,8 +3,6 @@
 extern crate core;
 use alloc_no_stdlib::{Allocator, SliceWrapper, SliceWrapperMut};
 use super::{HeapAlloc, StandardAlloc};
-#[cfg(feature="unsafe")]
-use alloc_stdlib::HeapAllocUninitialized;
 #[test]
 fn heap_test() {
   let mut halloc : HeapAlloc<u8> = HeapAlloc::<u8>{default_value: 0};
@@ -43,26 +41,6 @@ fn std_test() {
 
 }
 
-
-#[cfg(feature="unsafe")]
-#[test]
-fn std_unsafe_heap_test() {
-  let mut halloc = unsafe{HeapAllocUninitialized::<u8>::new()};
-  for _i in 1..10 { // heap test
-      let mut x = halloc.alloc_cell(100000);
-      x.slice_mut()[0] = 4;
-      let mut y = halloc.alloc_cell(110000);
-      y.slice_mut()[0] = 5;
-      let mut z = halloc.alloc_cell(120000);
-      z.slice_mut()[0] = 6;
-      assert_eq!(y.slice()[0], 5);
-      halloc.free_cell(y);
-      assert_eq!(x.slice()[0], 4);
-      assert_eq!(x.slice()[9], 0);
-      assert_eq!(z.slice()[0], 6);
-  }
-
-}
 
 #[cfg(feature="stdlib")]
 #[test]

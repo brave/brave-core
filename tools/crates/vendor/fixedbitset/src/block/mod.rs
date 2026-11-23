@@ -1,21 +1,26 @@
+// TODO: Remove once MSRV supports undocumented_unsafe_blocks
+#![allow(unknown_lints)]
 #![allow(clippy::undocumented_unsafe_blocks)]
 #![allow(dead_code)]
 // TODO: Remove once the transmutes are fixed
-#![allow(unknown_lints)]
 #![allow(clippy::missing_transmute_annotations)]
+// TODO: Remove once MSRV supports derived_hash_with_manual_eq
+#![allow(renamed_and_removed_lints)]
+#![allow(clippy::derive_hash_xor_eq)]
+#![allow(clippy::derived_hash_with_manual_eq)]
 
 use core::cmp::Ordering;
 use core::hash::{Hash, Hasher};
 
 #[cfg(all(
-    not(all(target_family = "wasm", target_feature = "simd128")),
+    not(all(target_arch = "wasm32", target_feature = "simd128")),
     not(target_feature = "sse2"),
     not(target_feature = "avx"),
     not(target_feature = "avx2"),
 ))]
 mod default;
 #[cfg(all(
-    not(all(target_family = "wasm", target_feature = "simd128")),
+    not(all(target_arch = "wasm32", target_feature = "simd128")),
     not(target_feature = "sse2"),
     not(target_feature = "avx"),
     not(target_feature = "avx2"),
@@ -61,9 +66,9 @@ mod avx2;
 ))]
 pub use self::avx2::*;
 
-#[cfg(all(target_family = "wasm", target_feature = "simd128"))]
+#[cfg(all(target_arch = "wasm32", target_feature = "simd128"))]
 mod wasm;
-#[cfg(all(target_family = "wasm", target_feature = "simd128"))]
+#[cfg(all(target_arch = "wasm32", target_feature = "simd128"))]
 pub use self::wasm::*;
 
 impl Block {

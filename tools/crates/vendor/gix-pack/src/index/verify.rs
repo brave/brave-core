@@ -1,38 +1,16 @@
+use gix_error::{Result, corruption, message};
 use std::sync::atomic::AtomicBool;
 
-use gix_features::progress::{DynNestedProgress, Progress};
+use gix_error::{ResultExt, bail};
 use gix_object::WriteTo;
+use gix_object::bstr::ByteSlice;
+use gix_utils::progress::{DynNestedProgress, Progress};
 
 use crate::index;
 
 ///
 pub mod integrity {
     use std::marker::PhantomData;
-
-    use gix_object::bstr::BString;
-
-    /// Returned by [`index::File::verify_integrity()`][crate::index::File::verify_integrity()].
-    #[derive(thiserror::Error, Debug)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("Reserialization of an object failed")]
-        Io(#[from] std::io::Error),
-        #[error("The fan at index {index} is out of order as it's larger then the following value.")]
-        Fan { index: usize },
-        #[error("{kind} object {id} could not be decoded")]
-        ObjectDecode {
-            source: gix_object::decode::Error,
-            kind: gix_object::Kind,
-            id: gix_hash::ObjectId,
-        },
-        #[error("{kind} object {id} wasn't re-encoded without change, wanted\n{expected}\n\nGOT\n\n{actual}")]
-        ObjectEncodeMismatch {
-            kind: gix_object::Kind,
-            id: gix_hash::ObjectId,
-            expected: BString,
-            actual: BString,
-        },
-    }
 
     /// Returned by [`index::File::verify_integrity()`][crate::index::File::verify_integrity()].
     pub struct Outcome {
@@ -77,20 +55,14 @@ pub mod integrity {
         Traverse(PhantomData<crate::index::verify::index::traverse::ProgressId>),
     }
 
-    impl From<ProgressId> for gix_features::progress::Id {
+    impl From<ProgressId> for gix_utils::progress::Id {
         fn from(v: ProgressId) -> Self {
             match v {
                 ProgressId::ChecksumBytes => *b"PTHI",
-                ProgressId::Traverse(_) => gix_features::progress::UNKNOWN,
+                ProgressId::Traverse(_) => gix_utils::progress::UNKNOWN,
             }
         }
     }
-}
-
-///
-pub mod checksum {
-    /// Returned by [`index::File::verify_checksum()`][crate::index::File::verify_checksum()].
-    pub type Error = crate::verify::checksum::Error;
 }
 
 /// Various ways in which a pack and index can be verified
@@ -108,15 +80,18 @@ pub enum Mode {
 }
 
 /// Information to allow verifying the integrity of an index with the help of its corresponding pack.
-pub struct PackContext<'a, F> {
+pub struct PackContext<'a, F, D = crate::MMap> {
     /// The pack data file itself.
-    pub data: &'a crate::data::File,
+    pub data: &'a crate::data::File<D>,
     /// The options further configuring the pack traversal and verification
     pub options: integrity::Options<F>,
 }
 
 /// Verify and validate the content of the index file
-impl index::File {
+impl<T> index::File<T>
+where
+    T: crate::FileData + Sync,
+{
     /// Returns the trailing hash stored at the end of this index file.
     ///
     /// It's a hash over all bytes of the index.
@@ -138,7 +113,7 @@ impl index::File {
         &self,
         progress: &mut dyn Progress,
         should_interrupt: &AtomicBool,
-    ) -> Result<gix_hash::ObjectId, checksum::Error> {
+    ) -> Result<gix_hash::ObjectId> {
         crate::verify::checksum_on_disk_or_mmap(
             self.path(),
             &self.data,
@@ -166,20 +141,21 @@ impl index::File {
     ///
     /// The given `progress` is inevitably consumed if there is an error, which is a tradeoff chosen to easily allow using `?` in the
     /// error case.
-    pub fn verify_integrity<C, F>(
+    pub fn verify_integrity<C, F, D>(
         &self,
-        pack: Option<PackContext<'_, F>>,
+        pack: Option<PackContext<'_, F, D>>,
         progress: &mut dyn DynNestedProgress,
         should_interrupt: &AtomicBool,
-    ) -> Result<integrity::Outcome, index::traverse::Error<index::verify::integrity::Error>>
+    ) -> Result<integrity::Outcome>
     where
         C: crate::cache::DecodeEntry,
         F: Fn() -> C + Send + Clone,
+        D: crate::FileData + Send + Sync,
     {
         if let Some(first_invalid) = crate::verify::fan(&self.fan) {
-            return Err(index::traverse::Error::Processor(integrity::Error::Fan {
-                index: first_invalid,
-            }));
+            bail!(corruption(format!(
+                "The fan at index {first_invalid} is out of order as it's larger then the following value."
+            )));
         }
 
         match pack {
@@ -207,6 +183,7 @@ impl index::File {
                         traversal,
                         thread_limit,
                         check: index::traverse::SafetyCheck::All,
+                        alloc_limit_bytes: pack.alloc_limit_bytes,
                         make_pack_lookup_cache,
                     },
                 )
@@ -217,10 +194,9 @@ impl index::File {
             None => self
                 .verify_checksum(
                     &mut progress
-                        .add_child_with_id("Sha1 of index".into(), integrity::ProgressId::ChecksumBytes.into()),
+                        .add_child_with_id("checksum of index".into(), integrity::ProgressId::ChecksumBytes.into()),
                     should_interrupt,
                 )
-                .map_err(index::traverse::Error::IndexVerify)
                 .map(|id| integrity::Outcome {
                     actual_index_checksum: id,
                     pack_traverse_statistics: None,
@@ -235,29 +211,28 @@ impl index::File {
         object_kind: gix_object::Kind,
         buf: &[u8],
         index_entry: &index::Entry,
-        _progress: &dyn gix_features::progress::Progress,
-    ) -> Result<(), integrity::Error> {
+        _progress: &dyn gix_utils::progress::Progress,
+    ) -> Result {
         if let Mode::HashCrc32Decode | Mode::HashCrc32DecodeEncode = verify_mode {
             use gix_object::Kind::*;
             match object_kind {
                 Tree | Commit | Tag => {
-                    let object = gix_object::ObjectRef::from_bytes(object_kind, buf).map_err(|err| {
-                        integrity::Error::ObjectDecode {
-                            source: err,
-                            kind: object_kind,
-                            id: index_entry.oid,
-                        }
-                    })?;
+                    let object =
+                        gix_object::ObjectRef::from_bytes(buf, object_kind, index_entry.oid.kind()).or_raise(|| {
+                            message!("{object_kind} object {} could not be decoded", index_entry.oid).corrupted()
+                        })?;
                     if let Mode::HashCrc32DecodeEncode = verify_mode {
                         encode_buf.clear();
-                        object.write_to(&mut *encode_buf)?;
+                        object
+                            .write_to(&mut *encode_buf)
+                            .or_raise(|| corruption("Reserialization of an object failed"))?;
                         if encode_buf.as_slice() != buf {
-                            return Err(integrity::Error::ObjectEncodeMismatch {
-                                kind: object_kind,
-                                id: index_entry.oid,
-                                expected: buf.into(),
-                                actual: encode_buf.clone().into(),
-                            });
+                            bail!(corruption(format!(
+                                "{object_kind} object {} wasn't re-encoded without change, wanted\n{}\n\nGOT\n\n{}",
+                                index_entry.oid,
+                                buf.as_bstr(),
+                                encode_buf.as_bstr()
+                            )));
                         }
                     }
                 }

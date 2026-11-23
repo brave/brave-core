@@ -18,13 +18,14 @@ fn test_drop() {
     use nix::sys::aio::*;
     use nix::sys::signal::*;
     use std::os::unix::io::AsFd;
+    use std::pin::pin;
     use tempfile::tempfile;
 
     const WBUF: &[u8] = b"CDEF";
 
     let f = tempfile().unwrap();
     f.set_len(6).unwrap();
-    let mut aiocb = Box::pin(AioWrite::new(
+    let mut aiocb = pin!(AioWrite::new(
         f.as_fd(),
         2, //offset
         WBUF,

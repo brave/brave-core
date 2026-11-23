@@ -1,94 +1,67 @@
-use std::{borrow::Cow, fmt::Display};
-
-use bstr::BStr;
-
-use crate::parse::{Event, Section};
+use crate::parse::{MaybeDecoded, Span};
 
 ///
 pub mod header;
 
 pub(crate) mod unvalidated;
 
-/// A parsed section header, containing a name and optionally a subsection name.
-#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
-pub struct Header<'a> {
+/// A parsed section header.
+#[derive(Clone, Debug)]
+pub(crate) struct HeaderData {
     /// The name of the header.
-    pub(crate) name: Name<'a>,
+    pub(crate) name: Span,
     /// The separator used to determine if the section contains a subsection.
     /// This is either a period `.` or a string of whitespace. Note that
     /// reconstruction of subsection format is dependent on this value. If this
     /// is all whitespace, then the subsection name needs to be surrounded by
     /// quotes to have perfect reconstruction.
-    pub(crate) separator: Option<Cow<'a, BStr>>,
-    pub(crate) subsection_name: Option<Cow<'a, BStr>>,
-}
-
-impl Section<'_> {
-    /// Turn this instance into a fully owned one with `'static` lifetime.
-    #[must_use]
-    pub fn to_owned(&self) -> Section<'static> {
-        Section {
-            header: self.header.to_owned(),
-            events: self.events.iter().map(Event::to_owned).collect(),
-        }
-    }
-}
-
-impl Display for Section<'_> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.header)?;
-        for event in &self.events {
-            event.fmt(f)?;
-        }
-        Ok(())
-    }
+    pub(crate) separator: Option<Span>,
+    pub(crate) subsection_name: Option<MaybeDecoded>,
 }
 
 mod types {
+    use bstr::ByteSlice;
+    use gix_error::{ErrorExt, Result, validation};
+
     macro_rules! generate_case_insensitive {
-        ($name:ident, $module:ident, $err_doc:literal, $validate:ident, $cow_inner_type:ty, $comment:literal) => {
-            ///
-            pub mod $module {
-                /// The error returned when `TryFrom` is invoked to create an instance.
-                #[derive(Debug, thiserror::Error, Copy, Clone)]
-                #[error($err_doc)]
-                pub struct Error;
-            }
-
+        ($name:ident, $err_doc:literal, $validate:ident, $cow_inner_type:ty, $comment:literal) => {
             #[doc = $comment]
+            ///
+            /// Invalid names produce a [validation error](gix_error::Error::is_validation()),
+            /// with the original bytes stored as `input` [metadata](gix_error::Error::metadata()).
             #[derive(Clone, Eq, Debug, Default)]
-            pub struct $name<'a>(pub(crate) std::borrow::Cow<'a, $cow_inner_type>);
+            pub struct $name(pub(crate) bstr::BString);
 
-            impl<'a> $name<'a> {
-                pub(crate) fn from_str_unchecked(s: &'a str) -> Self {
-                    $name(std::borrow::Cow::Borrowed(s.into()))
+            impl $name {
+                pub(crate) fn from_str_unchecked(s: &str) -> Self {
+                    $name(s.into())
                 }
-                /// Turn this instance into a fully owned one with `'static` lifetime.
+                /// Clone this instance.
                 #[must_use]
-                pub fn to_owned(&self) -> $name<'static> {
-                    $name(std::borrow::Cow::Owned(self.0.clone().into_owned()))
+                pub fn to_owned(&self) -> $name {
+                    self.clone()
                 }
             }
 
-            impl PartialEq for $name<'_> {
+            impl PartialEq for $name {
                 fn eq(&self, other: &Self) -> bool {
                     self.0.eq_ignore_ascii_case(&other.0)
                 }
             }
 
-            impl std::fmt::Display for $name<'_> {
+            impl std::fmt::Display for $name {
                 fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                    self.0.fmt(f)
+                    std::fmt::Display::fmt(&self.0, f)
                 }
             }
 
-            impl PartialOrd for $name<'_> {
+            impl PartialOrd for $name {
                 fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
                     Some(self.cmp(other))
                 }
             }
 
-            impl Ord for $name<'_> {
+            impl Ord for $name {
                 fn cmp(&self, other: &Self) -> std::cmp::Ordering {
                     let a = self.0.iter().map(|c| c.to_ascii_lowercase());
                     let b = other.0.iter().map(|c| c.to_ascii_lowercase());
@@ -96,7 +69,7 @@ mod types {
                 }
             }
 
-            impl std::hash::Hash for $name<'_> {
+            impl std::hash::Hash for $name {
                 fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
                     for b in self.0.iter() {
                         b.to_ascii_lowercase().hash(state);
@@ -104,45 +77,57 @@ mod types {
                 }
             }
 
-            impl<'a> std::convert::TryFrom<&'a str> for $name<'a> {
-                type Error = $module::Error;
+            impl std::convert::TryFrom<&str> for $name {
+                type Error = gix_error::Error;
 
-                fn try_from(s: &'a str) -> Result<Self, Self::Error> {
-                    Self::try_from(std::borrow::Cow::Borrowed(bstr::ByteSlice::as_bstr(s.as_bytes())))
+                fn try_from(s: &str) -> Result<Self> {
+                    Self::try_from(bstr::ByteSlice::as_bstr(s.as_bytes()))
                 }
             }
 
-            impl<'a> std::convert::TryFrom<String> for $name<'a> {
-                type Error = $module::Error;
+            impl std::convert::TryFrom<String> for $name {
+                type Error = gix_error::Error;
 
-                fn try_from(s: String) -> Result<Self, Self::Error> {
-                    Self::try_from(std::borrow::Cow::Owned(bstr::BString::from(s)))
+                fn try_from(s: String) -> Result<Self> {
+                    Self::try_from(bstr::BString::from(s))
                 }
             }
 
-            impl<'a> std::convert::TryFrom<std::borrow::Cow<'a, bstr::BStr>> for $name<'a> {
-                type Error = $module::Error;
+            impl std::convert::TryFrom<bstr::BString> for $name {
+                type Error = gix_error::Error;
 
-                fn try_from(s: std::borrow::Cow<'a, bstr::BStr>) -> Result<Self, Self::Error> {
-                    if $validate(s.as_ref()) {
-                        Ok(Self(s))
+                fn try_from(s: bstr::BString) -> Result<Self> {
+                    if $validate(s.as_slice().as_bstr()) {
+                        Ok(Self(s.into()))
                     } else {
-                        Err($module::Error)
+                        Err(validation($err_doc).with_input(s).raise())
                     }
                 }
             }
 
-            impl<'a> std::ops::Deref for $name<'a> {
-                type Target = $cow_inner_type;
+            impl std::convert::TryFrom<&bstr::BStr> for $name {
+                type Error = gix_error::Error;
 
-                fn deref(&self) -> &Self::Target {
-                    &self.0
+                fn try_from(s: &bstr::BStr) -> Result<Self> {
+                    if $validate(s) {
+                        Ok(Self(s.into()))
+                    } else {
+                        Err(validation($err_doc).with_input(s).raise())
+                    }
                 }
             }
 
-            impl<'a> std::convert::AsRef<str> for $name<'a> {
+            impl std::ops::Deref for $name {
+                type Target = $cow_inner_type;
+
+                fn deref(&self) -> &Self::Target {
+                    self.0.as_bstr()
+                }
+            }
+
+            impl std::convert::AsRef<str> for $name {
                 fn as_ref(&self) -> &str {
-                    std::str::from_utf8(self.0.as_ref()).expect("only valid UTF8 makes it through our validation")
+                    std::str::from_utf8(self.0.as_slice()).expect("only valid UTF8 makes it through our validation")
                 }
             }
         };
@@ -157,7 +142,6 @@ mod types {
 
     generate_case_insensitive!(
         Name,
-        name,
         "Valid names consist of alphanumeric characters or dashes.",
         is_valid_name,
         bstr::BStr,
@@ -166,18 +150,44 @@ mod types {
 
     generate_case_insensitive!(
         ValueName,
-        value_name,
         "Valid value names consist of alphanumeric characters or dashes, starting with an alphabetic character.",
         is_valid_value_name,
         bstr::BStr,
         "Wrapper struct for value names, like `path` in `include.path`, since keys are case-insensitive."
     );
 }
-pub use types::{name, value_name, Name, ValueName};
+pub use types::Name;
+pub(crate) use types::ValueName;
 
-pub(crate) fn into_cow_bstr(c: Cow<'_, str>) -> Cow<'_, BStr> {
-    match c {
-        Cow::Borrowed(s) => Cow::Borrowed(s.into()),
-        Cow::Owned(s) => Cow::Owned(s.into()),
+#[cfg(test)]
+mod tests {
+    use std::cmp::Ordering;
+
+    use super::ValueName;
+
+    fn key(key: &str) -> ValueName {
+        ValueName::try_from(key).expect("valid test key")
+    }
+
+    #[test]
+    fn value_names_reject_invalid_formats() {
+        for invalid in ["", "1a", "a.2", "##", "\""] {
+            assert!(ValueName::try_from(invalid).is_err(), "{invalid:?} is invalid");
+        }
+    }
+
+    #[test]
+    fn value_names_are_case_insensitive() {
+        assert_eq!(key("aB-c"), key("Ab-C"));
+        assert_eq!(key("a").cmp(&key("a")), Ordering::Equal);
+        assert_eq!(key("aBc").cmp(&key("AbC")), Ordering::Equal);
+
+        fn calculate_hash<T: std::hash::Hash>(value: T) -> u64 {
+            use std::hash::Hasher;
+            let mut state = std::collections::hash_map::DefaultHasher::new();
+            value.hash(&mut state);
+            state.finish()
+        }
+        assert_eq!(calculate_hash(key("aBc")), calculate_hash(key("AbC")));
     }
 }

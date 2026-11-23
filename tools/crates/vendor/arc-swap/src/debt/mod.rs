@@ -9,7 +9,7 @@
 //! gives it up, another (new) thread can claim it.
 //!
 //! The writers walk the whole chain and pay the debts (by bumping the ref counts) of the just
-//! removed pointer.
+//! removed pointer ‒ the confirmed ones and the unconfirmed ones taken on their own storage.
 //!
 //! Each node has some fast (but fallible) nodes and a fallback node, with different algorithms to
 //! claim them (see the relevant submodules).
@@ -28,24 +28,60 @@ mod list;
 ///
 /// It may contain an „owed“ reference count.
 #[derive(Debug)]
-pub(crate) struct Debt(pub(crate) AtomicUsize);
+pub(crate) struct Debt {
+    /// The owed pointer (encoded), or `NONE`.
+    pub(crate) ptr: AtomicUsize,
+    /// Address of the storage an unconfirmed debt was taken on, or `CONFIRMED`.
+    ///
+    /// An unconfirmed debt may name a reused address, so writers skip other storages' unconfirmed
+    /// debts. Confirmed debts carry no key, because the `ArcSwap` may move while a guard lives.
+    storage: AtomicUsize,
+}
 
 impl Debt {
+    /// The `storage` of a confirmed debt (no `AtomicPtr` lives at address 0).
+    const CONFIRMED: usize = 0;
+
     /// The value of pointer `3` should be pretty safe, for two reasons:
     ///
     /// * It's an odd number, but the pointers we have are likely aligned at least to the word size,
     ///   because the data at the end of the `Arc` has the counters.
     /// * It's in the very first page where NULL lives, so it's not mapped.
+    ///
+    /// Encoded values can't be `3` either (that needs an address 1..=3, in the same page).
     pub(crate) const NONE: usize = 0b11;
+
+    /// The value stored in a debt slot for the given pointer.
+    ///
+    /// NULL stays untagged, because it carries no reference count of any kind.
+    #[inline]
+    pub(crate) fn encode<T: RefCnt>(ptr: *const T::Base) -> usize {
+        if ptr.is_null() {
+            0
+        } else {
+            ptr as usize | T::TAG
+        }
+    }
 }
 
 impl Default for Debt {
     fn default() -> Self {
-        Debt(AtomicUsize::new(Self::NONE))
+        Debt {
+            ptr: AtomicUsize::new(Self::NONE),
+            storage: AtomicUsize::new(Self::CONFIRMED),
+        }
     }
 }
 
 impl Debt {
+    /// Marks the debt confirmed: writers of any storage may pay it from now on.
+    #[inline]
+    pub(crate) fn mark_confirmed(&self) {
+        // Relaxed: a writer of this storage matches the address anyway and a writer of a moved
+        // one runs after the move, which needs exclusive access, so after the whole `load`.
+        self.storage.store(Self::CONFIRMED, Relaxed);
+    }
+
     /// Tries to pay the given debt.
     ///
     /// If the debt is still there, for the given pointer, it is paid and `true` is returned. If it
@@ -56,24 +92,41 @@ impl Debt {
     ///
     /// * It is possible that someone paid the debt and then someone else put a debt for the same
     ///   pointer in there. This is fine, as we'll just pay the debt for that someone else.
-    /// * This relies on the fact that the same pointer must point to the same object and
-    ///   specifically to the same type ‒ the caller provides the type, it's destructor, etc.
-    /// * It also relies on the fact the same thing is not stuffed both inside an `Arc` and `Rc` or
-    ///   something like that, but that sounds like a reasonable assumption. Someone storing it
-    ///   through `ArcSwap<T>` and someone else with `ArcSwapOption<T>` will work.
+    /// * Only the reader that put the debt there pays it this way, so it knows the type.
+    /// * The tag lets `Arc` and `Weak` of the same object coexist. It also relies on the fact the
+    ///   same thing is not stuffed both inside an `Arc` and `Rc` or something like that, but that
+    ///   sounds like a reasonable assumption. Someone storing it through `ArcSwap<T>` and someone
+    ///   else with `ArcSwapOption<T>` will work.
     #[inline]
     pub(crate) fn pay<T: RefCnt>(&self, ptr: *const T::Base) -> bool {
-        self.0
-            // If we don't change anything because there's something else, Relaxed is fine.
+        self.ptr
+            // On failure, we have observed that the debt has been paid, but we need to establish a
+            // happens-before relationship with that debt being paid before we do anything that
+            // relies on the Arc's strong counter being incremented, so we need to Acquire.
+            // Arc does not sufficiently take care of this, as the memory model permits its Drop's
+            // `fetch_sub` to observe itself to be last remaining instance before the `fetch_add`s
+            // from the debt being repaid, and only after that observation does Arc have an Acquire
+            // fence.
             //
-            // The Release works as kind of Mutex. We make sure nothing from the debt-protected
-            // sections leaks below this point.
-            //
-            // Note that if it got paid already, it is inside the reference count. We don't
-            // necessarily observe that increment, but whoever destroys the pointer *must* see the
-            // up to date value, with all increments already counted in (the Arc takes care of that
-            // part).
-            .compare_exchange(ptr as usize, Self::NONE, Release, Relaxed)
+            // Unfortunately, we need SeqCst on the success
+            .compare_exchange(Self::encode::<T>(ptr), Self::NONE, SeqCst, SeqCst)
+            .is_ok()
+    }
+
+    /// Writer-side payment: pays a debt on `ptr` if it is confirmed or was taken on `storage_addr`.
+    fn pay_for_storage<T: RefCnt>(&self, ptr: *const T::Base, storage_addr: usize) -> bool {
+        let encoded = Self::encode::<T>(ptr);
+        // SeqCst: keeps the load in the same total order as the writer's pointer swap and the
+        // reader's confirm load (see fast.rs); it also acquires the `storage` store.
+        if self.ptr.load(SeqCst) != encoded {
+            return false;
+        }
+        let owner = self.storage.load(Relaxed);
+        if owner != storage_addr && owner != Self::CONFIRMED {
+            return false;
+        }
+        self.ptr
+            .compare_exchange(encoded, Self::NONE, SeqCst, SeqCst)
             .is_ok()
     }
 
@@ -98,10 +151,8 @@ impl Debt {
                     .fast_slots()
                     .chain(core::iter::once(node.helping_slot()));
                 for slot in all_slots {
-                    // Note: Release is enough even here. That makes sure the increment is
-                    // visible to whoever might acquire on this slot and can't leak below this.
-                    // And we are the ones doing decrements anyway.
-                    if slot.pay::<T>(ptr) {
+                    // Skips unconfirmed debts of other storages (they may name a reused address).
+                    if slot.pay_for_storage::<T>(ptr, storage_addr) {
                         // Pre-pay one more, for another future slot
                         T::inc(&val);
                     }

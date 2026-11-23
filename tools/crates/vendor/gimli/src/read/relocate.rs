@@ -1,6 +1,6 @@
 #[cfg(feature = "read")]
 use alloc::borrow::Cow;
-use core::fmt::Debug;
+use core::fmt;
 
 use crate::common::Format;
 use crate::read::{Reader, ReaderOffset, ReaderOffsetId, Result};
@@ -19,8 +19,8 @@ pub trait Relocate<T: ReaderOffset = usize> {
 /// This is useful for reading sections which contain relocations,
 /// such as those in a relocatable object file.
 /// It is generally not used for reading sections in an executable file.
-#[derive(Debug, Clone)]
-pub struct RelocateReader<R: Reader<Offset = usize>, T: Relocate<R::Offset>> {
+#[derive(Clone)]
+pub struct RelocateReader<R: Reader, T: Relocate<R::Offset>> {
     section: R,
     reader: R,
     relocate: T,
@@ -28,7 +28,7 @@ pub struct RelocateReader<R: Reader<Offset = usize>, T: Relocate<R::Offset>> {
 
 impl<R, T> RelocateReader<R, T>
 where
-    R: Reader<Offset = usize>,
+    R: Reader,
     T: Relocate<R::Offset>,
 {
     /// Create a new `RelocateReader` which applies relocations to the given section reader.
@@ -40,12 +40,29 @@ where
             relocate,
         }
     }
+
+    /// Get a reference to the underlying section reader.
+    pub fn inner(&self) -> &R {
+        &self.reader
+    }
+}
+
+impl<R, T> fmt::Debug for RelocateReader<R, T>
+where
+    R: Reader,
+    T: Relocate<R::Offset>,
+{
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> core::result::Result<(), fmt::Error> {
+        fmt.debug_tuple("RelocationReader")
+            .field(&self.reader)
+            .finish()
+    }
 }
 
 impl<R, T> Reader for RelocateReader<R, T>
 where
-    R: Reader<Offset = usize>,
-    T: Relocate<R::Offset> + Debug + Clone,
+    R: Reader,
+    T: Relocate<R::Offset> + fmt::Debug + Clone,
 {
     type Endian = R::Endian;
     type Offset = R::Offset;

@@ -1,0 +1,28 @@
+[package]
+name = "dua-core"
+version = "4.2.0"
+authors.workspace = true
+edition.workspace = true
+repository.workspace = true
+description = "Fast parallel filesystem traversal iterators"
+license.workspace = true
+rust-version = "1.88"
+
+[dependencies]
+crossbeam.workspace = true
+
+[target.'cfg(target_os = "macos")'.dependencies]
+libc = "0.2.186"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61.1", features = [
+    "Win32_Foundation",
+    "Win32_Security",
+    "Win32_Storage_FileSystem",
+] }
+
+[dev-dependencies]
+tempfile.workspace = true
+
+[lints]
+workspace = true

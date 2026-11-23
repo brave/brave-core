@@ -1,15 +1,17 @@
+use jcore::tz::AmbiguousOffset as JAmbiguousOffset;
+
 use crate::{
+    Timestamp, ZonedDateTime,
     civil::DateTime,
-    error::{err, Error, ErrorContext},
-    shared::util::itime::IAmbiguousOffset,
+    error::{Error, ErrorContext, tz::ambiguous::Error as E},
     tz::{Offset, TimeZone},
-    Timestamp, Zoned,
 };
 
 /// Configuration for resolving ambiguous datetimes in a particular time zone.
 ///
 /// This is useful for specifying how to disambiguate ambiguous datetimes at
-/// runtime. For example, as configuration for parsing [`Zoned`] values via
+/// runtime. For example, as configuration for parsing [`ZonedDateTime`] values
+/// via
 /// [`fmt::temporal::DateTimeParser::disambiguation`](crate::fmt::temporal::DateTimeParser::disambiguation).
 ///
 /// Note that there is no difference in using
@@ -38,7 +40,8 @@ use crate::{
 /// use jiff::{civil::date, tz};
 ///
 /// let newyork = tz::db().get("America/New_York")?;
-/// let ambiguous = newyork.to_ambiguous_zoned(date(2024, 3, 10).at(2, 30, 0, 0));
+/// let ambiguous = newyork
+///     .to_ambiguous_zoned_datetime(date(2024, 3, 10).at(2, 30, 0, 0));
 ///
 /// // NOTE: This is identical to `ambiguous.compatible()`.
 /// let zdt = ambiguous.disambiguate(tz::Disambiguation::Compatible)?;
@@ -53,8 +56,8 @@ use crate::{
 /// # Example: parsing
 ///
 /// This example shows how to set the disambiguation configuration while
-/// parsing a [`Zoned`] datetime. In this example, we always prefer the earlier
-/// time.
+/// parsing a [`ZonedDateTime`] datetime. In this example, we always prefer the
+/// earlier time.
 ///
 /// ```
 /// use jiff::{civil::date, fmt::temporal::DateTimeParser, tz};
@@ -62,7 +65,8 @@ use crate::{
 /// static PARSER: DateTimeParser = DateTimeParser::new()
 ///     .disambiguation(tz::Disambiguation::Earlier);
 ///
-/// let zdt = PARSER.parse_zoned("2024-03-10T02:30[America/New_York]")?;
+/// let zdt =
+///     PARSER.parse_zoned_datetime("2024-03-10T02:30[America/New_York]")?;
 /// // In earlier mode, forward transitions select the earlier time, unlike
 /// // in compatible mode. In this case, that's the pre-DST offset of -05.
 /// assert_eq!(zdt.datetime(), date(2024, 3, 10).at(1, 30, 0, 0));
@@ -71,46 +75,47 @@ use crate::{
 /// # Ok::<(), Box<dyn std::error::Error>>(())
 /// ```
 #[derive(Clone, Copy, Debug, Default)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[non_exhaustive]
 pub enum Disambiguation {
     /// In a backward transition, the earlier time is selected. In forward
     /// transition, the later time is selected.
     ///
     /// This is equivalent to [`AmbiguousTimestamp::compatible`] and
-    /// [`AmbiguousZoned::compatible`].
+    /// [`AmbiguousZonedDateTime::compatible`].
     #[default]
     Compatible,
     /// The earlier time is always selected.
     ///
     /// This is equivalent to [`AmbiguousTimestamp::earlier`] and
-    /// [`AmbiguousZoned::earlier`].
+    /// [`AmbiguousZonedDateTime::earlier`].
     Earlier,
     /// The later time is always selected.
     ///
     /// This is equivalent to [`AmbiguousTimestamp::later`] and
-    /// [`AmbiguousZoned::later`].
+    /// [`AmbiguousZonedDateTime::later`].
     Later,
     /// When an ambiguous datetime is encountered, this strategy will always
     /// result in an error. This is useful if you need to require datetimes
     /// from users to unambiguously refer to a specific instant.
     ///
     /// This is equivalent to [`AmbiguousTimestamp::unambiguous`] and
-    /// [`AmbiguousZoned::unambiguous`].
+    /// [`AmbiguousZonedDateTime::unambiguous`].
     Reject,
 }
 
 /// A possibly ambiguous [`Offset`].
 ///
 /// An `AmbiguousOffset` is part of both [`AmbiguousTimestamp`] and
-/// [`AmbiguousZoned`], which are created by
+/// [`AmbiguousZonedDateTime`], which are created by
 /// [`TimeZone::to_ambiguous_timestamp`] and
-/// [`TimeZone::to_ambiguous_zoned`], respectively.
+/// [`TimeZone::to_ambiguous_zoned_datetime`], respectively.
 ///
 /// When converting a civil datetime in a particular time zone to a precise
-/// instant in time (that is, either `Timestamp` or `Zoned`), then the primary
-/// thing needed to form a precise instant in time is an [`Offset`]. The
-/// problem is that some civil datetimes are ambiguous. That is, some do not
-/// exist (because they fall into a gap, where some civil time is skipped),
+/// instant in time (that is, either `Timestamp` or `ZonedDateTime`), then the
+/// primary thing needed to form a precise instant in time is an [`Offset`].
+/// The problem is that some civil datetimes are ambiguous. That is, some do
+/// not exist (because they fall into a gap, where some civil time is skipped),
 /// or some are repeated (because they fall into a fold, where some civil time
 /// is repeated).
 ///
@@ -120,10 +125,10 @@ pub enum Disambiguation {
 /// is true regardless of whether the ambiguity occurs as a result of a gap
 /// or a fold.
 ///
-/// It is generally considered very rare to need to inspect values of this
-/// type directly. Instead, higher level routines like
-/// [`AmbiguousZoned::compatible`] or [`AmbiguousZoned::unambiguous`] will
-/// implement a strategy for you.
+/// It is generally considered very rare to need to inspect values of this type
+/// directly. Instead, higher level routines like
+/// [`AmbiguousZonedDateTime::compatible`] or
+/// [`AmbiguousZonedDateTime::unambiguous`] will implement a strategy for you.
 ///
 /// # Example
 ///
@@ -150,6 +155,7 @@ pub enum Disambiguation {
 /// # Ok::<(), Box<dyn std::error::Error>>(())
 /// ```
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum AmbiguousOffset {
     /// The offset for a particular civil datetime and time zone is
     /// unambiguous.
@@ -204,22 +210,22 @@ pub enum AmbiguousOffset {
 
 impl AmbiguousOffset {
     #[inline]
-    pub(crate) const fn from_iambiguous_offset_const(
-        iaoff: IAmbiguousOffset,
+    pub(crate) const fn from_jcore(
+        offset: JAmbiguousOffset,
     ) -> AmbiguousOffset {
-        match iaoff {
-            IAmbiguousOffset::Unambiguous { offset } => {
-                let offset = Offset::from_ioffset_const(offset);
+        match offset {
+            JAmbiguousOffset::Unambiguous { offset } => {
+                let offset = Offset::from_jcore(offset);
                 AmbiguousOffset::Unambiguous { offset }
             }
-            IAmbiguousOffset::Gap { before, after } => {
-                let before = Offset::from_ioffset_const(before);
-                let after = Offset::from_ioffset_const(after);
+            JAmbiguousOffset::Gap { before, after } => {
+                let before = Offset::from_jcore(before);
+                let after = Offset::from_jcore(after);
                 AmbiguousOffset::Gap { before, after }
             }
-            IAmbiguousOffset::Fold { before, after } => {
-                let before = Offset::from_ioffset_const(before);
-                let after = Offset::from_ioffset_const(after);
+            JAmbiguousOffset::Fold { before, after } => {
+                let before = Offset::from_jcore(before);
+                let after = Offset::from_jcore(after);
                 AmbiguousOffset::Fold { before, after }
             }
         }
@@ -295,6 +301,7 @@ impl AmbiguousOffset {
 /// # Ok::<(), Box<dyn std::error::Error>>(())
 /// ```
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct AmbiguousTimestamp {
     dt: DateTime,
     offset: AmbiguousOffset,
@@ -655,18 +662,10 @@ impl AmbiguousTimestamp {
         let offset = match self.offset() {
             AmbiguousOffset::Unambiguous { offset } => offset,
             AmbiguousOffset::Gap { before, after } => {
-                return Err(err!(
-                    "the datetime {dt} is ambiguous since it falls into \
-                     a gap between offsets {before} and {after}",
-                    dt = self.dt,
-                ));
+                return Err(Error::from(E::BecauseGap { before, after }));
             }
             AmbiguousOffset::Fold { before, after } => {
-                return Err(err!(
-                    "the datetime {dt} is ambiguous since it falls into \
-                     a fold between offsets {before} and {after}",
-                    dt = self.dt,
-                ));
+                return Err(Error::from(E::BecauseFold { before, after }));
             }
         };
         offset.to_timestamp(self.dt)
@@ -739,16 +738,19 @@ impl AmbiguousTimestamp {
     /// disambiguation strategy without an extra clone of the `TimeZone`.
     ///
     /// This isn't currently exposed because I believe use cases for crate
-    /// users can be satisfied via [`TimeZone::into_ambiguous_zoned`] (which
-    /// is implemented via this routine).
+    /// users can be satisfied via [`TimeZone::into_ambiguous_zoned_datetime`]
+    /// (which is implemented via this routine).
     #[inline]
-    pub(crate) fn into_ambiguous_zoned(self, tz: TimeZone) -> AmbiguousZoned {
-        AmbiguousZoned::new(self, tz)
+    pub(crate) fn into_ambiguous_zoned_datetime(
+        self,
+        tz: TimeZone,
+    ) -> AmbiguousZonedDateTime {
+        AmbiguousZonedDateTime::new(self, tz)
     }
 }
 
-/// A possibly ambiguous [`Zoned`], created by
-/// [`TimeZone::to_ambiguous_zoned`].
+/// A possibly ambiguous [`ZonedDateTime`], created by
+/// [`TimeZone::to_ambiguous_zoned_datetime`].
 ///
 /// While this is called an ambiguous zoned datetime, the thing that is
 /// actually ambiguous is the offset. That is, an ambiguous zoned datetime
@@ -763,33 +765,33 @@ impl AmbiguousTimestamp {
 /// The purpose of this type is to represent that ambiguity (when it occurs)
 /// and enable callers to make a choice about how to resolve that ambiguity.
 /// In some cases, you might want to reject ambiguity altogether, which is
-/// supported by the [`AmbiguousZoned::unambiguous`] routine.
+/// supported by the [`AmbiguousZonedDateTime::unambiguous`] routine.
 ///
 /// This type provides four different out-of-the-box disambiguation strategies:
 ///
-/// * [`AmbiguousZoned::compatible`] implements the
+/// * [`AmbiguousZonedDateTime::compatible`] implements the
 /// [`Disambiguation::Compatible`] strategy. In the case of a gap, the offset
 /// after the gap is selected. In the case of a fold, the offset before the
 /// fold occurs is selected.
-/// * [`AmbiguousZoned::earlier`] implements the
+/// * [`AmbiguousZonedDateTime::earlier`] implements the
 /// [`Disambiguation::Earlier`] strategy. This always selects the "earlier"
 /// offset.
-/// * [`AmbiguousZoned::later`] implements the
+/// * [`AmbiguousZonedDateTime::later`] implements the
 /// [`Disambiguation::Later`] strategy. This always selects the "later"
 /// offset.
-/// * [`AmbiguousZoned::unambiguous`] implements the
+/// * [`AmbiguousZonedDateTime::unambiguous`] implements the
 /// [`Disambiguation::Reject`] strategy. It acts as an assertion that the
 /// offset is unambiguous. If it is ambiguous, then an appropriate error is
 /// returned.
 ///
-/// The [`AmbiguousZoned::disambiguate`] method can be used with the
+/// The [`AmbiguousZonedDateTime::disambiguate`] method can be used with the
 /// [`Disambiguation`] enum when the disambiguation strategy isn't known until
 /// runtime.
 ///
 /// Note also that these aren't the only disambiguation strategies. The
-/// [`AmbiguousOffset`] type, accessible via [`AmbiguousZoned::offset`],
-/// exposes the full details of the ambiguity. So any strategy can be
-/// implemented.
+/// [`AmbiguousOffset`] type, accessible via
+/// [`AmbiguousZonedDateTime::offset`], exposes the full details of the
+/// ambiguity. So any strategy can be implemented.
 ///
 /// # Example
 ///
@@ -803,7 +805,7 @@ impl AmbiguousTimestamp {
 ///
 /// let tz = tz::db().get("America/New_York")?;
 /// let dt = date(2024, 3, 10).at(2, 30, 0, 0);
-/// let ambiguous = tz.to_ambiguous_zoned(dt);
+/// let ambiguous = tz.to_ambiguous_zoned_datetime(dt);
 /// let offset = match ambiguous.offset() {
 ///     AmbiguousOffset::Unambiguous { offset } => offset,
 ///     // This is counter-intuitive, but in order to get the civil datetime
@@ -812,21 +814,24 @@ impl AmbiguousTimestamp {
 ///     AmbiguousOffset::Gap { before, .. } => before,
 ///     AmbiguousOffset::Fold { before, .. } => before,
 /// };
-/// let zdt = offset.to_timestamp(dt)?.to_zoned(ambiguous.into_time_zone());
+/// let zdt = offset
+///     .to_timestamp(dt)?
+///     .to_zoned_datetime(ambiguous.into_time_zone());
 /// assert_eq!(zdt.to_string(), "2024-03-10T03:30:00-04:00[America/New_York]");
 ///
 /// # Ok::<(), Box<dyn std::error::Error>>(())
 /// ```
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct AmbiguousZoned {
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub struct AmbiguousZonedDateTime {
     ts: AmbiguousTimestamp,
     tz: TimeZone,
 }
 
-impl AmbiguousZoned {
+impl AmbiguousZonedDateTime {
     #[inline]
-    fn new(ts: AmbiguousTimestamp, tz: TimeZone) -> AmbiguousZoned {
-        AmbiguousZoned { ts, tz }
+    fn new(ts: AmbiguousTimestamp, tz: TimeZone) -> AmbiguousZonedDateTime {
+        AmbiguousZonedDateTime { ts, tz }
     }
 
     /// Returns a reference to the time zone that was used to create this
@@ -839,7 +844,7 @@ impl AmbiguousZoned {
     ///
     /// let tz = tz::db().get("America/New_York")?;
     /// let dt = date(2024, 7, 10).at(17, 15, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(&tz, zdt.time_zone());
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -861,7 +866,7 @@ impl AmbiguousZoned {
     ///
     /// let tz = tz::db().get("America/New_York")?;
     /// let dt = date(2024, 7, 10).at(17, 15, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(tz, zdt.into_time_zone());
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -881,7 +886,7 @@ impl AmbiguousZoned {
     ///
     /// let tz = tz::db().get("America/New_York")?;
     /// let dt = date(2024, 7, 10).at(17, 15, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(zdt.datetime(), dt);
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -922,14 +927,14 @@ impl AmbiguousZoned {
     ///
     /// // Not ambiguous.
     /// let dt = date(2024, 7, 15).at(17, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(zdt.offset(), AmbiguousOffset::Unambiguous {
     ///     offset: tz::offset(-4),
     /// });
     ///
     /// // Ambiguous because of a gap.
     /// let dt = date(2024, 3, 10).at(2, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(zdt.offset(), AmbiguousOffset::Gap {
     ///     before: tz::offset(-5),
     ///     after: tz::offset(-4),
@@ -937,7 +942,7 @@ impl AmbiguousZoned {
     ///
     /// // Ambiguous because of a fold.
     /// let dt = date(2024, 11, 3).at(1, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(zdt.offset(), AmbiguousOffset::Fold {
     ///     before: tz::offset(-4),
     ///     after: tz::offset(-5),
@@ -965,17 +970,17 @@ impl AmbiguousZoned {
     ///
     /// // Not ambiguous.
     /// let dt = date(2024, 7, 15).at(17, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert!(!zdt.is_ambiguous());
     ///
     /// // Ambiguous because of a gap.
     /// let dt = date(2024, 3, 10).at(2, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert!(zdt.is_ambiguous());
     ///
     /// // Ambiguous because of a fold.
     /// let dt = date(2024, 11, 3).at(1, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert!(zdt.is_ambiguous());
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -998,11 +1003,11 @@ impl AmbiguousZoned {
     ///
     /// # Errors
     ///
-    /// This returns an error when the combination of the civil datetime
-    /// and offset would lead to a `Zoned` with a timestamp outside of the
-    /// [`Timestamp::MIN`] and [`Timestamp::MAX`] limits. This only occurs
-    /// when the civil datetime is "close" to its own [`DateTime::MIN`]
-    /// and [`DateTime::MAX`] limits.
+    /// This returns an error when the combination of the civil datetime and
+    /// offset would lead to a `ZonedDateTime` with a timestamp outside of the
+    /// [`Timestamp::MIN`] and [`Timestamp::MAX`] limits. This only occurs when
+    /// the civil datetime is "close" to its own [`DateTime::MIN`] and
+    /// [`DateTime::MAX`] limits.
     ///
     /// # Example
     ///
@@ -1013,7 +1018,7 @@ impl AmbiguousZoned {
     ///
     /// // Not ambiguous.
     /// let dt = date(2024, 7, 15).at(17, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(
     ///     zdt.compatible()?.to_string(),
     ///     "2024-07-15T17:30:00-04:00[America/New_York]",
@@ -1021,7 +1026,7 @@ impl AmbiguousZoned {
     ///
     /// // Ambiguous because of a gap.
     /// let dt = date(2024, 3, 10).at(2, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(
     ///     zdt.compatible()?.to_string(),
     ///     "2024-03-10T03:30:00-04:00[America/New_York]",
@@ -1029,7 +1034,7 @@ impl AmbiguousZoned {
     ///
     /// // Ambiguous because of a fold.
     /// let dt = date(2024, 11, 3).at(1, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(
     ///     zdt.compatible()?.to_string(),
     ///     "2024-11-03T01:30:00-04:00[America/New_York]",
@@ -1038,15 +1043,12 @@ impl AmbiguousZoned {
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     #[inline]
-    pub fn compatible(self) -> Result<Zoned, Error> {
-        let ts = self.ts.compatible().with_context(|| {
-            err!(
-                "error converting datetime {dt} to instant in time zone {tz}",
-                dt = self.datetime(),
-                tz = self.time_zone().diagnostic_name(),
-            )
-        })?;
-        Ok(ts.to_zoned(self.tz))
+    pub fn compatible(self) -> Result<ZonedDateTime, Error> {
+        let ts = self
+            .ts
+            .compatible()
+            .with_context(|| E::InTimeZone { tz: self.time_zone().clone() })?;
+        Ok(ts.to_zoned_datetime(self.tz))
     }
 
     /// Disambiguates this zoned datetime according to the
@@ -1060,11 +1062,11 @@ impl AmbiguousZoned {
     ///
     /// # Errors
     ///
-    /// This returns an error when the combination of the civil datetime
-    /// and offset would lead to a `Zoned` with a timestamp outside of the
-    /// [`Timestamp::MIN`] and [`Timestamp::MAX`] limits. This only occurs
-    /// when the civil datetime is "close" to its own [`DateTime::MIN`]
-    /// and [`DateTime::MAX`] limits.
+    /// This returns an error when the combination of the civil datetime and
+    /// offset would lead to a `ZonedDateTime` with a timestamp outside of the
+    /// [`Timestamp::MIN`] and [`Timestamp::MAX`] limits. This only occurs when
+    /// the civil datetime is "close" to its own [`DateTime::MIN`] and
+    /// [`DateTime::MAX`] limits.
     ///
     /// # Example
     ///
@@ -1075,7 +1077,7 @@ impl AmbiguousZoned {
     ///
     /// // Not ambiguous.
     /// let dt = date(2024, 7, 15).at(17, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(
     ///     zdt.earlier()?.to_string(),
     ///     "2024-07-15T17:30:00-04:00[America/New_York]",
@@ -1083,7 +1085,7 @@ impl AmbiguousZoned {
     ///
     /// // Ambiguous because of a gap.
     /// let dt = date(2024, 3, 10).at(2, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(
     ///     zdt.earlier()?.to_string(),
     ///     "2024-03-10T01:30:00-05:00[America/New_York]",
@@ -1091,7 +1093,7 @@ impl AmbiguousZoned {
     ///
     /// // Ambiguous because of a fold.
     /// let dt = date(2024, 11, 3).at(1, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(
     ///     zdt.earlier()?.to_string(),
     ///     "2024-11-03T01:30:00-04:00[America/New_York]",
@@ -1100,15 +1102,12 @@ impl AmbiguousZoned {
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     #[inline]
-    pub fn earlier(self) -> Result<Zoned, Error> {
-        let ts = self.ts.earlier().with_context(|| {
-            err!(
-                "error converting datetime {dt} to instant in time zone {tz}",
-                dt = self.datetime(),
-                tz = self.time_zone().diagnostic_name(),
-            )
-        })?;
-        Ok(ts.to_zoned(self.tz))
+    pub fn earlier(self) -> Result<ZonedDateTime, Error> {
+        let ts = self
+            .ts
+            .earlier()
+            .with_context(|| E::InTimeZone { tz: self.time_zone().clone() })?;
+        Ok(ts.to_zoned_datetime(self.tz))
     }
 
     /// Disambiguates this zoned datetime according to the
@@ -1122,11 +1121,11 @@ impl AmbiguousZoned {
     ///
     /// # Errors
     ///
-    /// This returns an error when the combination of the civil datetime
-    /// and offset would lead to a `Zoned` with a timestamp outside of the
-    /// [`Timestamp::MIN`] and [`Timestamp::MAX`] limits. This only occurs
-    /// when the civil datetime is "close" to its own [`DateTime::MIN`]
-    /// and [`DateTime::MAX`] limits.
+    /// This returns an error when the combination of the civil datetime and
+    /// offset would lead to a `ZonedDateTime` with a timestamp outside of the
+    /// [`Timestamp::MIN`] and [`Timestamp::MAX`] limits. This only occurs when
+    /// the civil datetime is "close" to its own [`DateTime::MIN`] and
+    /// [`DateTime::MAX`] limits.
     ///
     /// # Example
     ///
@@ -1137,7 +1136,7 @@ impl AmbiguousZoned {
     ///
     /// // Not ambiguous.
     /// let dt = date(2024, 7, 15).at(17, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(
     ///     zdt.later()?.to_string(),
     ///     "2024-07-15T17:30:00-04:00[America/New_York]",
@@ -1145,7 +1144,7 @@ impl AmbiguousZoned {
     ///
     /// // Ambiguous because of a gap.
     /// let dt = date(2024, 3, 10).at(2, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(
     ///     zdt.later()?.to_string(),
     ///     "2024-03-10T03:30:00-04:00[America/New_York]",
@@ -1153,7 +1152,7 @@ impl AmbiguousZoned {
     ///
     /// // Ambiguous because of a fold.
     /// let dt = date(2024, 11, 3).at(1, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(
     ///     zdt.later()?.to_string(),
     ///     "2024-11-03T01:30:00-05:00[America/New_York]",
@@ -1162,15 +1161,12 @@ impl AmbiguousZoned {
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     #[inline]
-    pub fn later(self) -> Result<Zoned, Error> {
-        let ts = self.ts.later().with_context(|| {
-            err!(
-                "error converting datetime {dt} to instant in time zone {tz}",
-                dt = self.datetime(),
-                tz = self.time_zone().diagnostic_name(),
-            )
-        })?;
-        Ok(ts.to_zoned(self.tz))
+    pub fn later(self) -> Result<ZonedDateTime, Error> {
+        let ts = self
+            .ts
+            .later()
+            .with_context(|| E::InTimeZone { tz: self.time_zone().clone() })?;
+        Ok(ts.to_zoned_datetime(self.tz))
     }
 
     /// Disambiguates this zoned datetime according to the
@@ -1183,11 +1179,11 @@ impl AmbiguousZoned {
     ///
     /// # Errors
     ///
-    /// This returns an error when the combination of the civil datetime
-    /// and offset would lead to a `Zoned` with a timestamp outside of the
-    /// [`Timestamp::MIN`] and [`Timestamp::MAX`] limits. This only occurs
-    /// when the civil datetime is "close" to its own [`DateTime::MIN`]
-    /// and [`DateTime::MAX`] limits.
+    /// This returns an error when the combination of the civil datetime and
+    /// offset would lead to a `ZonedDateTime` with a timestamp outside of the
+    /// [`Timestamp::MIN`] and [`Timestamp::MAX`] limits. This only occurs when
+    /// the civil datetime is "close" to its own [`DateTime::MIN`] and
+    /// [`DateTime::MAX`] limits.
     ///
     /// This also returns an error when the timestamp is ambiguous.
     ///
@@ -1200,7 +1196,7 @@ impl AmbiguousZoned {
     ///
     /// // Not ambiguous.
     /// let dt = date(2024, 7, 15).at(17, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert_eq!(
     ///     zdt.later()?.to_string(),
     ///     "2024-07-15T17:30:00-04:00[America/New_York]",
@@ -1208,26 +1204,23 @@ impl AmbiguousZoned {
     ///
     /// // Ambiguous because of a gap.
     /// let dt = date(2024, 3, 10).at(2, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert!(zdt.unambiguous().is_err());
     ///
     /// // Ambiguous because of a fold.
     /// let dt = date(2024, 11, 3).at(1, 30, 0, 0);
-    /// let zdt = tz.to_ambiguous_zoned(dt);
+    /// let zdt = tz.to_ambiguous_zoned_datetime(dt);
     /// assert!(zdt.unambiguous().is_err());
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     #[inline]
-    pub fn unambiguous(self) -> Result<Zoned, Error> {
-        let ts = self.ts.unambiguous().with_context(|| {
-            err!(
-                "error converting datetime {dt} to instant in time zone {tz}",
-                dt = self.datetime(),
-                tz = self.time_zone().diagnostic_name(),
-            )
-        })?;
-        Ok(ts.to_zoned(self.tz))
+    pub fn unambiguous(self) -> Result<ZonedDateTime, Error> {
+        let ts = self
+            .ts
+            .unambiguous()
+            .with_context(|| E::InTimeZone { tz: self.time_zone().clone() })?;
+        Ok(ts.to_zoned_datetime(self.tz))
     }
 
     /// Disambiguates this (possibly ambiguous) timestamp into a concrete
@@ -1256,7 +1249,7 @@ impl AmbiguousZoned {
     ///
     /// let newyork = tz::db().get("America/New_York")?;
     /// let dt = date(2024, 11, 3).at(1, 30, 0, 0);
-    /// let ambiguous = newyork.to_ambiguous_zoned(dt);
+    /// let ambiguous = newyork.to_ambiguous_zoned_datetime(dt);
     ///
     /// // In compatible mode, backward transitions select the earlier
     /// // time. In the EDT->EST transition, that's the -04 (EDT) offset.
@@ -1286,7 +1279,10 @@ impl AmbiguousZoned {
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     #[inline]
-    pub fn disambiguate(self, option: Disambiguation) -> Result<Zoned, Error> {
+    pub fn disambiguate(
+        self,
+        option: Disambiguation,
+    ) -> Result<ZonedDateTime, Error> {
         match option {
             Disambiguation::Compatible => self.compatible(),
             Disambiguation::Earlier => self.earlier(),

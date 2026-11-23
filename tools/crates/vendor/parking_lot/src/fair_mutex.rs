@@ -1,13 +1,6 @@
-// Copyright 2016 Amanieu d'Antras
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 use crate::raw_fair_mutex::RawFairMutex;
 
-/// A mutual exclusive primitive that is always fair, useful for protecting shared data
+/// A mutual exclusion primitive that uses fair unlocking, useful for protecting shared data.
 ///
 /// This mutex will block threads waiting for the lock to become available. The
 /// mutex can be statically initialized or created by the `new`
@@ -16,28 +9,23 @@ use crate::raw_fair_mutex::RawFairMutex;
 /// returned from `lock` and `try_lock`, which guarantees that the data is only
 /// ever accessed when the mutex is locked.
 ///
-/// The regular mutex provided by `parking_lot` uses eventual fairness
-/// (after some time it will default to the fair algorithm), but eventual
-/// fairness does not provide the same guarantees an always fair method would.
-/// Fair mutexes are generally slower, but sometimes needed.
+/// The regular mutex provided by `parking_lot` uses unfair unlocking by
+/// default, whereas this mutex always uses a fair unlock. When there are parked
+/// waiters, a fair unlock hands the mutex directly to one of them instead of
+/// making the mutex available for the unlocking thread to immediately
+/// re-acquire. Fair mutexes are generally slower, but can be useful when
+/// predictable handoff is more important than throughput.
 ///
-/// In a fair mutex the waiters form a queue, and the lock is always granted to
-/// the next requester in the queue, in first-in first-out order. This ensures
-/// that one thread cannot starve others by quickly re-acquiring the lock after
-/// releasing it.
-///
-/// A fair mutex may not be interesting if threads have different priorities (this is known as
-/// priority inversion).
+/// Fair unlocking does not imply strict first-in first-out ordering: threads
+/// may acquire the mutex while spinning or through `try_lock` without joining
+/// the queue of parked waiters.
 ///
 /// # Differences from the standard library `Mutex`
 ///
 /// - No poisoning, the lock is released normally on panic.
-/// - Only requires 1 byte of space, whereas the standard library boxes the
-///   `FairMutex` due to platform limitations.
-/// - Can be statically constructed.
-/// - Does not require any drop glue when dropped.
-/// - Inline fast path for the uncontended case.
-/// - Efficient handling of micro-contention using adaptive spinning.
+/// - Only requires 1 byte of lock state.
+/// - Always uses fair unlocking.
+/// - Supports locking with a timeout.
 /// - Allows raw locking & unlocking without a guard.
 ///
 /// # Examples
@@ -57,7 +45,7 @@ use crate::raw_fair_mutex::RawFairMutex;
 /// let data = Arc::new(FairMutex::new(0));
 ///
 /// let (tx, rx) = channel();
-/// for _ in 0..10 {
+/// for _ in 0..N {
 ///     let (data, tx) = (Arc::clone(&data), tx.clone());
 ///     thread::spawn(move || {
 ///         // The shared state can only be accessed once the lock is held.
@@ -76,21 +64,14 @@ use crate::raw_fair_mutex::RawFairMutex;
 /// ```
 pub type FairMutex<T> = lock_api::Mutex<RawFairMutex, T>;
 
-/// Creates a new fair mutex in an unlocked state ready for use.
-///
-/// This allows creating a fair mutex in a constant context on stable Rust.
-pub const fn const_fair_mutex<T>(val: T) -> FairMutex<T> {
-    FairMutex::const_new(<RawFairMutex as lock_api::RawMutex>::INIT, val)
-}
-
-/// An RAII implementation of a "scoped lock" of a mutex. When this structure is
-/// dropped (falls out of scope), the lock will be unlocked.
+/// An RAII guard which unlocks the mutex when dropped.
 ///
 /// The data protected by the mutex can be accessed through this guard via its
-/// `Deref` and `DerefMut` implementations.
+/// [`Deref`](core::ops::Deref) and [`DerefMut`](core::ops::DerefMut)
+/// implementations.
 pub type FairMutexGuard<'a, T> = lock_api::MutexGuard<'a, RawFairMutex, T>;
 
-/// An RAII mutex guard returned by `FairMutexGuard::map`, which can point to a
+/// An RAII mutex guard returned by [`FairMutexGuard::map`], which can point to a
 /// subfield of the protected data.
 ///
 /// The main difference between `MappedFairMutexGuard` and `FairMutexGuard` is that the
@@ -102,13 +83,13 @@ pub type MappedFairMutexGuard<'a, T> = lock_api::MappedMutexGuard<'a, RawFairMut
 #[cfg(test)]
 mod tests {
     use crate::FairMutex;
+    use std::sync::Arc;
     use std::sync::atomic::{AtomicUsize, Ordering};
     use std::sync::mpsc::channel;
-    use std::sync::Arc;
     use std::thread;
 
     #[cfg(feature = "serde")]
-    use bincode::{deserialize, serialize};
+    use postcard::{from_bytes, to_stdvec};
 
     #[derive(Eq, PartialEq, Debug)]
     struct NonCopy(i32);
@@ -122,7 +103,7 @@ mod tests {
 
     #[test]
     fn lots_and_lots() {
-        const J: u32 = 1000;
+        const J: u32 = if cfg!(miri) { 200 } else { 1000 };
         const K: u32 = 3;
 
         let m = Arc::new(FairMutex::new(0));
@@ -265,8 +246,8 @@ mod tests {
         let contents: Vec<u8> = vec![0, 1, 2];
         let mutex = FairMutex::new(contents.clone());
 
-        let serialized = serialize(&mutex).unwrap();
-        let deserialized: FairMutex<Vec<u8>> = deserialize(&serialized).unwrap();
+        let serialized = to_stdvec(&mutex).unwrap();
+        let deserialized: FairMutex<Vec<u8>> = from_bytes(&serialized).unwrap();
 
         assert_eq!(*(mutex.lock()), *(deserialized.lock()));
         assert_eq!(contents, *(deserialized.lock()));

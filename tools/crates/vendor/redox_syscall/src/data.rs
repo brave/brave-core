@@ -4,7 +4,10 @@ use core::{
     slice,
 };
 
-use crate::flag::{EventFlags, MapFlags, PtraceFlags};
+use crate::{
+    flag::{EventFlags, MapFlags, PtraceFlags, StdFsCallKind},
+    Error, EINVAL,
+};
 
 #[derive(Copy, Clone, Debug, Default)]
 #[repr(C)]
@@ -112,36 +115,6 @@ impl DerefMut for Map {
     }
 }
 
-#[derive(Copy, Clone, Debug, Default)]
-#[repr(C)]
-pub struct Packet {
-    pub id: u64,
-    pub pid: usize,
-    pub uid: u32,
-    pub gid: u32,
-    pub a: usize,
-    pub b: usize,
-    pub c: usize,
-    pub d: usize,
-}
-
-impl Deref for Packet {
-    type Target = [u8];
-    fn deref(&self) -> &[u8] {
-        unsafe {
-            slice::from_raw_parts(self as *const Packet as *const u8, mem::size_of::<Packet>())
-        }
-    }
-}
-
-impl DerefMut for Packet {
-    fn deref_mut(&mut self) -> &mut [u8] {
-        unsafe {
-            slice::from_raw_parts_mut(self as *mut Packet as *mut u8, mem::size_of::<Packet>())
-        }
-    }
-}
-
 #[derive(Copy, Clone, Debug, Default, PartialEq)]
 #[repr(C)]
 pub struct Stat {
@@ -205,10 +178,67 @@ impl DerefMut for StatVfs {
 }
 
 #[derive(Copy, Clone, Debug, Default, PartialEq)]
+#[repr(C, packed)]
+pub struct StdFsCallMeta {
+    pub kind: u8, // enum StdFsCallKind
+    _rsvd: [u8; 7],
+    pub arg1: u64,
+    pub arg2: u64,
+}
+
+impl StdFsCallMeta {
+    pub fn new(kind: StdFsCallKind, arg1: u64, arg2: u64) -> Self {
+        Self {
+            kind: kind as u8,
+            _rsvd: [0; 7],
+            arg1,
+            arg2,
+        }
+    }
+}
+
+impl Deref for StdFsCallMeta {
+    type Target = [u64];
+    fn deref(&self) -> &[u64] {
+        unsafe {
+            slice::from_raw_parts(
+                self as *const StdFsCallMeta as *const u64,
+                mem::size_of::<StdFsCallMeta>() / mem::size_of::<u64>(),
+            )
+        }
+    }
+}
+
+impl DerefMut for StdFsCallMeta {
+    fn deref_mut(&mut self) -> &mut [u64] {
+        unsafe {
+            slice::from_raw_parts_mut(
+                self as *mut StdFsCallMeta as *mut u64,
+                mem::size_of::<StdFsCallMeta>() / mem::size_of::<u64>(),
+            )
+        }
+    }
+}
+
+#[derive(Copy, Clone, Debug, Default, PartialEq)]
 #[repr(C)]
 pub struct TimeSpec {
     pub tv_sec: i64,
     pub tv_nsec: i32,
+}
+
+const NANOS_PER_SEC: u128 = 1_000_000_000;
+
+impl TimeSpec {
+    pub fn from_nanos(nanos: u128) -> Self {
+        Self {
+            tv_sec: i64::try_from(nanos / NANOS_PER_SEC).unwrap_or(i64::MAX),
+            tv_nsec: (nanos % NANOS_PER_SEC) as i32, // guaranteed to never overflow
+        }
+    }
+    pub fn to_nanos(&self) -> u128 {
+        self.tv_sec as u128 * NANOS_PER_SEC + self.tv_nsec as u128
+    }
 }
 
 impl Deref for TimeSpec {
@@ -366,7 +396,7 @@ pub struct ProcSchemeAttrs {
     pub pid: u32,
     pub euid: u32,
     pub egid: u32,
-    pub ens: u32,
+    pub prio: u32,
     pub debug_name: [u8; 32],
 }
 impl Deref for ProcSchemeAttrs {
@@ -406,6 +436,15 @@ impl DerefMut for CtxtStsBuf {
             )
         }
     }
+}
+
+#[derive(Copy, Clone, Debug, Default)]
+#[repr(C)]
+pub struct NewFdParams {
+    pub offset: u64,
+    pub number: usize,
+    pub flags: usize,
+    pub internal_flags: u8,
 }
 
 #[repr(u8)]
@@ -462,4 +501,39 @@ impl GlobalSchemes {
 pub struct KernelSchemeInfo {
     pub scheme_id: u8,
     pub fd: usize,
+}
+
+#[repr(C)]
+#[derive(Debug, Clone, Copy)]
+pub enum NumaMemoryPolicy {
+    /// Allocates from local node; fails if no memory is available in local node
+    NodeLocalStrict = 1,
+
+    /// Allocates from local node; falls back to allocating from other nodes in the increasing order of distance from the current node
+    NodeLocalLeniant = 2,
+}
+
+impl TryFrom<u64> for NumaMemoryPolicy {
+    type Error = Error;
+
+    fn try_from(value: u64) -> Result<Self, Self::Error> {
+        match value {
+            1 => Ok(NumaMemoryPolicy::NodeLocalStrict),
+            2 => Ok(NumaMemoryPolicy::NodeLocalLeniant),
+            _ => Err(Error::new(EINVAL)),
+        }
+    }
+}
+
+impl TryFrom<&[u8]> for NumaMemoryPolicy {
+    type Error = Error;
+
+    fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
+        let mut buf = [0u8; size_of::<NumaMemoryPolicy>()];
+        if buf.len() != value.len() {
+            return Err(Error::new(EINVAL));
+        };
+        buf.copy_from_slice(value);
+        NumaMemoryPolicy::try_from(u32::from_ne_bytes(buf) as u64)
+    }
 }

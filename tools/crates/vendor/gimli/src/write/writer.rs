@@ -1,7 +1,7 @@
 use crate::common::{Format, SectionId};
 use crate::constants;
 use crate::endianity::Endianity;
-use crate::leb128;
+use crate::leb128::write::Leb128;
 use crate::write::{Address, Error, Result};
 
 /// A trait for writing the data to a DWARF section.
@@ -154,6 +154,13 @@ pub trait Writer {
         self.write(&bytes)
     }
 
+    /// Write a u128.
+    fn write_u128(&mut self, val: u128) -> Result<()> {
+        let mut bytes = [0; 16];
+        self.endian().write_u128(&mut bytes, val);
+        self.write(&bytes)
+    }
+
     /// Write a u8 at the given offset.
     fn write_u8_at(&mut self, offset: usize, val: u8) -> Result<()> {
         let bytes = [val];
@@ -181,6 +188,13 @@ pub trait Writer {
         self.write_at(offset, &bytes)
     }
 
+    /// Write a u128 at the given offset.
+    fn write_u128_at(&mut self, offset: usize, val: u128) -> Result<()> {
+        let mut bytes = [0; 16];
+        self.endian().write_u128(&mut bytes, val);
+        self.write_at(offset, &bytes)
+    }
+
     /// Write unsigned data of the given size.
     ///
     /// Returns an error if the value is too large for the size.
@@ -200,6 +214,18 @@ pub trait Writer {
                     return Err(Error::ValueTooLarge);
                 }
                 self.write_u16(write_val)
+            }
+            3 => {
+                if val > 0xff_ffff {
+                    return Err(Error::ValueTooLarge);
+                }
+                let mut bytes = [0; 4];
+                self.endian().write_u32(&mut bytes, val as u32);
+                if self.endian().is_big_endian() {
+                    self.write(&bytes[1..])
+                } else {
+                    self.write(&bytes[..3])
+                }
             }
             4 => {
                 let write_val = val as u32;
@@ -265,6 +291,18 @@ pub trait Writer {
                 }
                 self.write_u16_at(offset, write_val)
             }
+            3 => {
+                if val > 0xff_ffff {
+                    return Err(Error::ValueTooLarge);
+                }
+                let mut bytes = [0; 4];
+                self.endian().write_u32(&mut bytes, val as u32);
+                if self.endian().is_big_endian() {
+                    self.write_at(offset, &bytes[1..])
+                } else {
+                    self.write_at(offset, &bytes[..3])
+                }
+            }
             4 => {
                 let write_val = val as u32;
                 if val != u64::from(write_val) {
@@ -279,18 +317,12 @@ pub trait Writer {
 
     /// Write an unsigned LEB128 encoded integer.
     fn write_uleb128(&mut self, val: u64) -> Result<()> {
-        let mut bytes = [0u8; 10];
-        // bytes is long enough so this will never fail.
-        let len = leb128::write::unsigned(&mut { &mut bytes[..] }, val).unwrap();
-        self.write(&bytes[..len])
+        self.write(Leb128::unsigned(val).bytes())
     }
 
-    /// Read an unsigned LEB128 encoded integer.
+    /// Write a signed LEB128 encoded integer.
     fn write_sleb128(&mut self, val: i64) -> Result<()> {
-        let mut bytes = [0u8; 10];
-        // bytes is long enough so this will never fail.
-        let len = leb128::write::signed(&mut { &mut bytes[..] }, val).unwrap();
-        self.write(&bytes[..len])
+        self.write(Leb128::signed(val).bytes())
     }
 
     /// Write an initial length according to the given DWARF format.
@@ -405,39 +437,43 @@ mod tests {
         let mut w = write::EndianVec::new(LittleEndian);
         w.write_udata(0x11, 1).unwrap();
         w.write_udata(0x2233, 2).unwrap();
+        w.write_udata(0x11_2233, 3).unwrap();
         w.write_udata(0x4455_6677, 4).unwrap();
         w.write_udata(0x8081_8283_8485_8687, 8).unwrap();
         #[rustfmt::skip]
         assert_eq!(w.slice(), &[
             0x11,
             0x33, 0x22,
+            0x33, 0x22, 0x11,
             0x77, 0x66, 0x55, 0x44,
             0x87, 0x86, 0x85, 0x84, 0x83, 0x82, 0x81, 0x80,
         ]);
         assert_eq!(w.write_udata(0x100, 1), Err(Error::ValueTooLarge));
         assert_eq!(w.write_udata(0x1_0000, 2), Err(Error::ValueTooLarge));
+        assert_eq!(w.write_udata(0x1_0000_0000, 3), Err(Error::ValueTooLarge));
         assert_eq!(w.write_udata(0x1_0000_0000, 4), Err(Error::ValueTooLarge));
-        assert_eq!(w.write_udata(0x00, 3), Err(Error::UnsupportedWordSize(3)));
-        w.write_udata_at(14, 0x11, 1).unwrap();
-        w.write_udata_at(12, 0x2233, 2).unwrap();
+        w.write_udata_at(17, 0x11, 1).unwrap();
+        w.write_udata_at(15, 0x2233, 2).unwrap();
+        w.write_udata_at(12, 0x11_2233, 3).unwrap();
         w.write_udata_at(8, 0x4455_6677, 4).unwrap();
         w.write_udata_at(0, 0x8081_8283_8485_8687, 8).unwrap();
         #[rustfmt::skip]
         assert_eq!(w.slice(), &[
             0x87, 0x86, 0x85, 0x84, 0x83, 0x82, 0x81, 0x80,
             0x77, 0x66, 0x55, 0x44,
+            0x33, 0x22, 0x11,
             0x33, 0x22,
             0x11,
         ]);
         assert_eq!(w.write_udata_at(0, 0x100, 1), Err(Error::ValueTooLarge));
         assert_eq!(w.write_udata_at(0, 0x1_0000, 2), Err(Error::ValueTooLarge));
         assert_eq!(
-            w.write_udata_at(0, 0x1_0000_0000, 4),
+            w.write_udata_at(0, 0x1_0000_0000, 3),
             Err(Error::ValueTooLarge)
         );
         assert_eq!(
-            w.write_udata_at(0, 0x00, 3),
-            Err(Error::UnsupportedWordSize(3))
+            w.write_udata_at(0, 0x1_0000_0000, 4),
+            Err(Error::ValueTooLarge)
         );
 
         let mut w = write::EndianVec::new(LittleEndian);
@@ -487,7 +523,9 @@ mod tests {
             .unwrap();
         assert_eq!(
             w.slice(),
-            &[0xff, 0xff, 0xff, 0xff, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11]
+            &[
+                0xff, 0xff, 0xff, 0xff, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11
+            ]
         );
     }
 }

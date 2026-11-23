@@ -1,4 +1,4 @@
-use super::{for_both, Either, Left, Right};
+use super::{Either, Left, Right};
 use core::iter;
 
 macro_rules! wrap_either {
@@ -39,6 +39,48 @@ where
     }
 }
 
+impl<A, B, L, R> Extend<Either<L, R>> for (A, B)
+where
+    A: Extend<L>,
+    B: Extend<R>,
+{
+    fn extend<T>(&mut self, iter: T)
+    where
+        T: IntoIterator<Item = Either<L, R>>,
+    {
+        iter.into_iter().for_each(move |item| match item {
+            // TODO: use `Extend::extend_one` <https://github.com/rust-lang/rust/issues/72631>
+            Left(item) => self.0.extend(iter::once(item)),
+            Right(item) => self.1.extend(iter::once(item)),
+        });
+    }
+}
+
+/// Collects `Left` and `Right` items into separate collections
+///
+/// ```
+/// use either::Either::*;
+/// let (threes, other): (Vec<i32>, Vec<i32>) = (1..10)
+///     .map(|i| if i % 3 == 0 { Left(i) } else { Right(i) })
+///     .collect();
+/// assert_eq!(threes, [3, 6, 9]);
+/// assert_eq!(other, [1, 2, 4, 5, 7, 8]);
+/// ```
+impl<A, B, L, R> FromIterator<Either<L, R>> for (A, B)
+where
+    A: Default + Extend<L>,
+    B: Default + Extend<R>,
+{
+    fn from_iter<T>(iter: T) -> Self
+    where
+        T: IntoIterator<Item = Either<L, R>>,
+    {
+        let mut pair = (A::default(), B::default());
+        pair.extend(iter);
+        pair
+    }
+}
+
 /// `Either<L, R>` is an iterator if both `L` and `R` are iterators.
 impl<L, R> Iterator for Either<L, R>
 where
@@ -55,6 +97,7 @@ where
         for_both!(self, inner => inner.size_hint())
     }
 
+    #[inline]
     fn fold<Acc, G>(self, init: Acc, f: G) -> Acc
     where
         G: FnMut(Acc, Self::Item) -> Acc,
@@ -145,6 +188,7 @@ where
         for_both!(self, inner => inner.nth_back(n))
     }
 
+    #[inline]
     fn rfold<Acc, G>(self, init: Acc, f: G) -> Acc
     where
         G: FnMut(Acc, Self::Item) -> Acc,
@@ -185,13 +229,14 @@ where
     type Item = Either<L::Item, R::Item>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        Some(map_either!(self.inner, ref mut inner => inner.next()?))
+        Some(map_both!(self.inner, ref mut inner => inner.next()?))
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
         for_both!(self.inner, ref inner => inner.size_hint())
     }
 
+    #[inline]
     fn fold<Acc, G>(self, init: Acc, f: G) -> Acc
     where
         G: FnMut(Acc, Self::Item) -> Acc,
@@ -211,11 +256,11 @@ where
     }
 
     fn last(self) -> Option<Self::Item> {
-        Some(map_either!(self.inner, inner => inner.last()?))
+        Some(map_both!(self.inner, inner => inner.last()?))
     }
 
     fn nth(&mut self, n: usize) -> Option<Self::Item> {
-        Some(map_either!(self.inner, ref mut inner => inner.nth(n)?))
+        Some(map_both!(self.inner, ref mut inner => inner.nth(n)?))
     }
 
     fn collect<B>(self) -> B
@@ -275,13 +320,14 @@ where
     R: DoubleEndedIterator,
 {
     fn next_back(&mut self) -> Option<Self::Item> {
-        Some(map_either!(self.inner, ref mut inner => inner.next_back()?))
+        Some(map_both!(self.inner, ref mut inner => inner.next_back()?))
     }
 
     fn nth_back(&mut self, n: usize) -> Option<Self::Item> {
-        Some(map_either!(self.inner, ref mut inner => inner.nth_back(n)?))
+        Some(map_both!(self.inner, ref mut inner => inner.nth_back(n)?))
     }
 
+    #[inline]
     fn rfold<Acc, G>(self, init: Acc, f: G) -> Acc
     where
         G: FnMut(Acc, Self::Item) -> Acc,

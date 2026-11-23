@@ -1,6 +1,6 @@
 //! Database indexes
 
-pub use crate::set::Iter;
+pub(super) use crate::set::Iter;
 
 use super::entries::Slot;
 use crate::{Map, Set, map, package};
@@ -11,12 +11,12 @@ pub(crate) struct Index(Map<package::Name, Set<Slot>>);
 
 impl Index {
     /// Create a new index
-    pub fn new() -> Self {
+    pub(super) fn new() -> Self {
         Self::default()
     }
 
     /// Insert an entry into the index
-    pub fn insert(&mut self, key: &package::Name, slot: Slot) -> bool {
+    pub(super) fn insert(&mut self, key: &package::Name, slot: Slot) -> bool {
         let values = match self.0.entry(key.clone()) {
             map::Entry::Vacant(entry) => entry.insert(Set::new()),
             map::Entry::Occupied(entry) => entry.into_mut(),
@@ -26,7 +26,7 @@ impl Index {
     }
 
     /// Get an iterator over advisory IDs for a given package name
-    pub fn get(&self, key: &package::Name) -> Option<Iter<'_, Slot>> {
+    pub(super) fn get(&self, key: &package::Name) -> Option<Iter<'_, Slot>> {
         self.0.get(key).map(|set| set.iter())
     }
 }

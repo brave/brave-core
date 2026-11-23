@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.73"
+rust-version = "1.65"
 name = "bstr"
-version = "1.12.1"
+version = "1.14.0"
 authors = ["Andrew Gallant <jamslam@gmail.com>"]
 build = false
 exclude = [
@@ -27,7 +27,6 @@ autoexamples = false
 autotests = false
 autobenches = false
 description = "A string type that is not required to be valid UTF-8."
-homepage = "https://github.com/BurntSushi/bstr"
 documentation = "https://docs.rs/bstr"
 readme = "README.md"
 keywords = [
@@ -55,17 +54,17 @@ rustdoc-args = [
 [features]
 alloc = [
     "memchr/alloc",
-    "serde?/alloc",
+    "serde_core?/alloc",
 ]
 default = [
     "std",
     "unicode",
 ]
-serde = ["dep:serde"]
+serde = ["dep:serde_core"]
 std = [
     "alloc",
     "memchr/std",
-    "serde?/std",
+    "serde_core?/std",
 ]
 unicode = ["dep:regex-automata"]
 
@@ -129,7 +128,7 @@ features = ["dfa-search"]
 optional = true
 default-features = false
 
-[dependencies.serde]
+[dependencies.serde_core]
 version = "1.0.85"
 optional = true
 default-features = false

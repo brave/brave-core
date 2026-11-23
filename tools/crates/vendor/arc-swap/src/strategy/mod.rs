@@ -19,12 +19,28 @@
 //! * [`DefaultStrategy`] (this one is used implicitly)
 //! * [`RwLock<()>`][std::sync::RwLock]
 //!
-//! # Testing
+//! # The `RwLock<()>` strategy
 //!
-//! Formally, the [`RwLock<()>`][std::sync::RwLock] may be used as a strategy too. It doesn't have
-//! the performance characteristics or lock-free guarantees of the others, but it is much simpler
-//! and contains less `unsafe` code (actually, less code altogether). Therefore, it can be used for
-//! testing purposes and cross-checking.
+//! With the `rwlock-strategy` feature, [`RwLock<()>`][std::sync::RwLock] may be used as a strategy
+//! too. It doesn't have the performance characteristics or lock-free guarantees of the others, but
+//! it is much simpler and contains less `unsafe` code (actually, less code altogether): a load
+//! takes the read lock just long enough to increment the reference count, so a reader always holds
+//! an owned reference. Therefore, it can be used for testing purposes and cross-checking, or as a
+//! fallback by code that owns its [`ArcSwapAny`] instances and wants to rule the default strategy
+//! out. The strategy is chosen per instance, so enabling the feature never changes
+//! [`DefaultStrategy`] for anyone else in the dependency graph:
+//!
+//! ```rust
+//! # #[cfg(feature = "rwlock-strategy")] {
+//! use std::sync::{Arc, RwLock};
+//!
+//! use arc_swap::ArcSwapAny;
+//!
+//! let shared: ArcSwapAny<Arc<u32>, RwLock<()>> = ArcSwapAny::with_strategy(Arc::new(1), RwLock::new(()));
+//! shared.store(Arc::new(2));
+//! assert_eq!(**shared.load(), 2);
+//! # }
+//! ```
 //!
 //! Note that generally, using [`RwLock<Arc<T>>`][std::sync::RwLock] is likely to be better
 //! performance wise. So if the goal is to not use third-party unsafe code, only the one in
@@ -35,6 +51,7 @@
 //!
 //! [`ArcSwap`]: crate::ArcSwap
 //! [`load`]: crate::ArcSwapAny::load
+//! [`ArcSwapAny`]: crate::ArcSwapAny
 
 use core::borrow::Borrow;
 use core::sync::atomic::AtomicPtr;
@@ -49,7 +66,12 @@ pub(crate) mod hybrid;
 ))]
 compile_error!("experimental-thread-local is incompatible with internal-test-strategies as it enables #[no_std]");
 
-#[cfg(feature = "internal-test-strategies")]
+#[cfg(all(feature = "rwlock-strategy", feature = "experimental-thread-local"))]
+compile_error!(
+    "experimental-thread-local is incompatible with rwlock-strategy as it enables #[no_std]"
+);
+
+#[cfg(feature = "rwlock-strategy")]
 mod rw_lock;
 // Do not use from outside of the crate.
 #[cfg(feature = "internal-test-strategies")]

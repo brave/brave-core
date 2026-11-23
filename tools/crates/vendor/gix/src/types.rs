@@ -162,7 +162,10 @@ pub struct Repository {
     /// A way to access objects.
     pub objects: crate::OdbHandle,
 
+    /// The worktree selected when the repository was opened, or `None` for a bare repository.
     pub(crate) work_tree: Option<PathBuf>,
+    /// The index selected when the repository was opened, including any `gitoxide.core.indexFile` override.
+    pub(crate) index_path: PathBuf,
     /// The path to the resolved common directory if this is a linked worktree repository or it is otherwise set.
     pub(crate) common_dir: Option<PathBuf>,
     /// A free-list of reusable object backing buffers
@@ -199,9 +202,11 @@ pub struct ThreadSafeRepository {
     /// A store for references to point at objects
     pub refs: crate::RefStore,
     /// A store for objects that contain data
-    pub objects: gix_features::threading::OwnShared<gix_odb::Store>,
+    pub objects: gix_parallel::OwnShared<gix_odb::Store>,
     /// The path to the worktree at which to find checked out files
     pub work_tree: Option<PathBuf>,
+    /// The path to the index selected when the repository was opened.
+    pub(crate) index_path: PathBuf,
     /// The path to the common directory if this is a linked worktree repository or it is otherwise set.
     pub common_dir: Option<PathBuf>,
     pub(crate) config: crate::config::Cache,
@@ -220,15 +225,18 @@ pub struct ThreadSafeRepository {
 pub struct Remote<'repo> {
     /// The remotes symbolic name, only present if persisted in git configuration files.
     pub(crate) name: Option<remote::Name<'static>>,
-    /// The url of the host to talk to, after application of replacements. If it is unset, the `push_url` must be set.
-    /// and fetches aren't possible.
-    pub(crate) url: Option<gix_url::Url>,
-    /// The rewritten `url`, if it was rewritten.
-    pub(crate) url_alias: Option<gix_url::Url>,
-    /// The url to use for pushing specifically.
-    pub(crate) push_url: Option<gix_url::Url>,
-    /// The rewritten `push_url`, if it was rewritten.
-    pub(crate) push_url_alias: Option<gix_url::Url>,
+    /// The urls of the hosts to talk to for fetching, in configuration order.
+    pub(crate) urls: Vec<gix_url::Url>,
+    /// Rewrite aliases corresponding one-for-one to `urls` when fetching, produced by `insteadOf` rules.
+    pub(crate) url_aliases: Vec<Option<gix_url::Url>>,
+    /// Rewrite aliases corresponding one-for-one to `urls` when they are push fallbacks because there are no explicit
+    /// `push_urls`. Matching `pushInsteadOf` rules take precedence, with `insteadOf` used when none match.
+    pub(crate) url_push_aliases: Vec<Option<gix_url::Url>>,
+    /// The explicit urls to use specifically for pushing, in configuration order.
+    pub(crate) push_urls: Vec<gix_url::Url>,
+    /// Rewrite aliases corresponding one-for-one to explicit `push_urls`, produced only by normal `insteadOf` rules;
+    /// `pushInsteadOf` deliberately does not apply to explicit push urls.
+    pub(crate) push_url_aliases: Vec<Option<gix_url::Url>>,
     /// Refspecs for use when fetching.
     pub(crate) fetch_specs: Vec<gix_refspec::RefSpec>,
     /// Refspecs for use when pushing.
@@ -241,6 +249,26 @@ pub struct Remote<'repo> {
     // pub(crate) prune_tags: bool,
     /// The owning repository.
     pub repo: &'repo Repository,
+}
+
+/// A remote without access to its source repository.
+///
+/// It's needed to allow flipping the underlying repository object hash.
+/// Git solves this by carefully partially initialising the repository,
+/// but doing this (including the transformation) seems easier.
+#[derive(Debug, Clone, PartialEq)]
+#[cfg(any(feature = "blocking-network-client", feature = "async-network-client"))]
+pub(crate) struct RemoteDetached {
+    /// The remotes symbolic name, only present if persisted in git configuration files.
+    pub(crate) name: Option<remote::Name<'static>>,
+    /// The urls of the hosts to talk to for fetching, in configuration order.
+    pub(crate) urls: Vec<gix_url::Url>,
+    /// The rewritten `urls` when used for fetching.
+    pub(crate) url_aliases: Vec<Option<gix_url::Url>>,
+    /// Refspecs for use when fetching.
+    pub(crate) fetch_specs: Vec<gix_refspec::RefSpec>,
+    /// Tell us what to do with tags when fetched.
+    pub(crate) fetch_tags: remote::fetch::Tags,
 }
 
 /// A utility to make matching against pathspecs simple.

@@ -5,7 +5,6 @@ use std::future::Future;
 use std::pin::Pin;
 use std::task::{Context, Poll};
 
-use futures_core::ready;
 use pin_project_lite::pin_project;
 
 use super::error::Overloaded;
@@ -54,9 +53,7 @@ where
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         match self.project().state.project() {
-            ResponseStateProj::Called { fut } => {
-                Poll::Ready(ready!(fut.poll(cx)).map_err(Into::into))
-            }
+            ResponseStateProj::Called { fut } => fut.poll(cx).map_err(Into::into),
             ResponseStateProj::Overloaded => Poll::Ready(Err(Overloaded::new().into())),
         }
     }

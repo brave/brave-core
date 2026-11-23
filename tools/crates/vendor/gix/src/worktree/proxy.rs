@@ -1,67 +1,75 @@
-#![allow(clippy::result_large_err)]
 use std::path::{Path, PathBuf};
 
+use gix_error::{ResultExt, bail};
+
 use crate::{
+    Repository, Result, ThreadSafeRepository,
     bstr::{BStr, BString, ByteSlice},
     worktree::Proxy,
-    Repository, ThreadSafeRepository,
 };
-
-#[allow(missing_docs)]
-pub mod into_repo {
-    use std::path::PathBuf;
-
-    /// The error returned by [`Proxy::into_repo()`][super::Proxy::into_repo()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(transparent)]
-        Open(#[from] crate::open::Error),
-        #[error("Worktree at '{}' is inaccessible", .base.display())]
-        MissingWorktree { base: PathBuf },
-        #[error(transparent)]
-        MissingGitDirFile(#[from] std::io::Error),
-    }
-}
 
 impl<'repo> Proxy<'repo> {
     pub(crate) fn new(parent: &'repo Repository, git_dir: impl Into<PathBuf>) -> Self {
         Proxy {
             parent,
-            git_dir: git_dir.into(),
+            git_dir: parent.current_dir().join(git_dir.into()),
+        }
+    }
+
+    pub(crate) fn new_if_gitdir_file_exists(parent: &'repo Repository, git_dir: impl Into<PathBuf>) -> Option<Self> {
+        let proxy = Proxy::new(parent, git_dir);
+        if proxy.git_dir.join("gitdir").is_file() {
+            Some(proxy)
+        } else {
+            None
         }
     }
 }
 
 impl Proxy<'_> {
-    /// Read the location of the checkout, the base of the work tree.
-    /// Note that the location might not exist.
-    pub fn base(&self) -> std::io::Result<PathBuf> {
+    fn dot_git(&self) -> std::io::Result<PathBuf> {
         let git_dir = self.git_dir.join("gitdir");
-        let base_dot_git = gix_discover::path::from_plain_file(&git_dir).ok_or_else(|| {
+        gix_discover::path::from_plain_file_relative_to_file(&git_dir).ok_or_else(|| {
             std::io::Error::new(
                 std::io::ErrorKind::NotFound,
-                format!("Required file '{}' does not exist", git_dir.display()),
+                format!("Required file \"{}\" does not exist", git_dir.display()),
             )
-        })??;
-
-        Ok(gix_discover::path::without_dot_git_dir(base_dot_git))
+        })?
     }
 
-    /// The git directory for the work tree, typically contained within the parent git dir.
+    /// Read the absolute location of the checkout, the base of the work tree.
+    /// Relative registrations are resolved against the private Git directory.
+    /// Note that the location might not exist.
+    pub fn base(&self) -> Result<PathBuf> {
+        Ok(gix_discover::path::without_dot_git_dir(self.dot_git().or_error()?))
+    }
+
+    /// The absolute git directory for the work tree, typically contained within the parent git dir.
+    /// Relative repository paths are anchored to the parent repository's captured current directory.
     pub fn git_dir(&self) -> &Path {
         &self.git_dir
     }
 
     /// The name of the worktree, which is derived from its folder within the `worktrees` directory within the parent `.git` folder.
-    pub fn id(&self) -> &BStr {
+    /// Return an error if the directory name cannot be represented as Git bytes.
+    pub fn id(&self) -> Result<&BStr> {
         gix_path::os_str_into_bstr(self.git_dir.file_name().expect("worktrees/ parent dir"))
-            .expect("no illformed UTF-8")
     }
 
     /// Return true if the worktree cannot be pruned, moved or deleted, which is useful if it is located on an external storage device.
     pub fn is_locked(&self) -> bool {
-        self.git_dir.join("locked").is_file()
+        self.git_dir.join("locked").symlink_metadata().is_ok()
+    }
+
+    /// Return true if this worktree can be pruned without an expiry grace period.
+    ///
+    /// Locked worktrees are never prunable. Otherwise, an unreadable `gitdir` file or missing target
+    /// makes the worktree prunable.
+    pub fn is_prunable(&self) -> bool {
+        !self.is_locked()
+            && self
+                .dot_git()
+                .map_or(true, |dot_git| dot_git.symlink_metadata().is_err())
     }
 
     /// Provide a reason for the locking of this worktree, if it is locked at all.
@@ -74,28 +82,44 @@ impl Proxy<'_> {
             .map(|contents| contents.trim().into())
     }
 
+    /// Set or clear this linked worktree's lock, even when its checkout is inaccessible.
+    ///
+    /// `Some(reason)` creates or replaces the reason, including an empty reason. `None` unlocks,
+    /// succeeding even if already unlocked. Reasons use Git's newline-terminated encoding and are
+    /// trimmed when read through [`Self::lock_reason()`]. The private Git directory must already exist
+    /// when locking. Callers must serialize concurrent changes to the lock and its reason.
+    /// See [`gix_worktree::set_lock()`] for filesystem details.
+    #[cfg(feature = "worktree-mutation")]
+    pub fn set_lock(&self, reason: Option<&BStr>) -> Result<()> {
+        gix_worktree::set_lock(&self.git_dir, reason)
+            .or_raise(|| crate::error::message!("Could not update the worktree lock in \"{}\"", self.git_dir.display()))
+    }
+
     /// Transform this proxy into a [`Repository`] while ignoring issues reading `base()` and ignoring that it might not exist.
     ///
     /// Most importantly, the `Repository` might be initialized with a non-existing work tree directory as the checkout
     /// was removed or moved in the mean time or is unavailable for other reasons.
     /// The caller will encounter io errors if it's used like the work tree is guaranteed to be present, but can still access
     /// a lot of information if work tree access is avoided.
-    pub fn into_repo_with_possibly_inaccessible_worktree(self) -> Result<Repository, crate::open::Error> {
+    /// The returned repository has absolute paths.
+    pub fn into_repo_with_possibly_inaccessible_worktree(self) -> Result<Repository> {
         let base = self.base().ok();
-        let repo = ThreadSafeRepository::open_from_paths(self.git_dir, base, self.parent.options.clone())?;
-        Ok(repo.into())
+        let options = self.parent.options.clone().without_repository_environment_overrides();
+        let common_dir = self.parent.current_dir().join(self.parent.common_dir());
+        ThreadSafeRepository::open_from_paths(self.git_dir, base, options, Some(common_dir)).map(Into::into)
     }
 
     /// Like `into_repo_with_possibly_inaccessible_worktree()` but will fail if the `base()` cannot be read or
     /// if the worktree doesn't exist.
     ///
-    /// Note that it won't fail if the worktree doesn't exist.
-    pub fn into_repo(self) -> Result<Repository, into_repo::Error> {
+    /// The returned repository has absolute paths, as with [`Self::into_repo_with_possibly_inaccessible_worktree()`].
+    pub fn into_repo(self) -> Result<Repository> {
         let base = self.base()?;
         if !base.is_dir() {
-            return Err(into_repo::Error::MissingWorktree { base });
+            bail!("Worktree at \"{}\" is inaccessible", base.display());
         }
-        let repo = ThreadSafeRepository::open_from_paths(self.git_dir, base.into(), self.parent.options.clone())?;
-        Ok(repo.into())
+        let options = self.parent.options.clone().without_repository_environment_overrides();
+        let common_dir = self.parent.current_dir().join(self.parent.common_dir());
+        ThreadSafeRepository::open_from_paths(self.git_dir, base.into(), options, Some(common_dir)).map(Into::into)
     }
 }

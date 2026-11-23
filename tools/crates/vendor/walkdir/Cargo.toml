@@ -12,15 +12,20 @@
 [package]
 edition = "2018"
 name = "walkdir"
-version = "2.5.0"
+version = "2.5.1"
 authors = ["Andrew Gallant <jamslam@gmail.com>"]
+build = false
 exclude = [
     "/ci/*",
     "/.travis.yml",
     "/appveyor.yml",
 ]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Recursively walk a directory."
-homepage = "https://github.com/BurntSushi/walkdir"
 documentation = "https://docs.rs/walkdir/"
 readme = "README.md"
 keywords = [
@@ -33,6 +38,16 @@ categories = ["filesystem"]
 license = "Unlicense/MIT"
 repository = "https://github.com/BurntSushi/walkdir"
 
+[badges.appveyor]
+repository = "BurntSushi/walkdir"
+
+[badges.travis-ci]
+repository = "BurntSushi/walkdir"
+
+[lib]
+name = "walkdir"
+path = "src/lib.rs"
+
 [dependencies.same-file]
 version = "1.0.1"
 
@@ -41,9 +56,3 @@ version = "0.3"
 
 [target."cfg(windows)".dependencies.winapi-util]
 version = "0.1.1"
-
-[badges.appveyor]
-repository = "BurntSushi/walkdir"
-
-[badges.travis-ci]
-repository = "BurntSushi/walkdir"

@@ -1,10 +1,10 @@
 use bstr::{BStr, BString, ByteSlice};
 
 use crate::{
+    Instruction, RefSpec, RefSpecRef,
     instruction::{Fetch, Push},
     parse::Operation,
     types::Mode,
-    Instruction, RefSpec, RefSpecRef,
 };
 
 /// Conversion. Use the [`RefSpecRef`][RefSpec::to_ref()] type for more usage options.
@@ -19,7 +19,7 @@ impl RefSpec {
         }
     }
 
-    /// Return true if the spec stats with a `+` and thus forces setting the reference.
+    /// Return true if the spec starts with a `+` and thus forces setting the reference.
     pub fn allow_non_fast_forward(&self) -> bool {
         matches!(self.mode, Mode::Force)
     }
@@ -69,10 +69,9 @@ mod impls {
         }
     }
 
-    #[allow(clippy::non_canonical_partial_ord_impl)]
     impl PartialOrd for RefSpec {
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-            Some(self.to_ref().cmp(&other.to_ref()))
+            Some(self.cmp(other))
         }
     }
 
@@ -99,15 +98,17 @@ impl<'a> RefSpecRef<'a> {
         self.src
     }
 
-    /// Return the right-hand side of the spec, typically the destination.
-    /// It takes many different forms so don't rely on this being a ref name.
+    /// Return the right-hand side of the spec, typically the destination ref name or ref pattern.
     ///
     /// It's not present in case of source-only specs.
     pub fn destination(&self) -> Option<&BStr> {
         self.dst
     }
 
-    /// Always returns the remote side, whose actual side in the refspec depends on how it was parsed.
+    /// Return the explicitly stored remote side, whose position depends on how the refspec was parsed.
+    ///
+    /// A one-sided push refspec has no explicit remote side and returns `None` here, even though its source
+    /// is later also used as its destination.
     pub fn remote(&self) -> Option<&BStr> {
         match self.op {
             Operation::Push => self.dst,
@@ -115,7 +116,7 @@ impl<'a> RefSpecRef<'a> {
         }
     }
 
-    /// Always returns the local side, whose actual side in the refspec depends on how it was parsed.
+    /// Return the explicitly stored local side, whose position depends on how the refspec was parsed.
     pub fn local(&self) -> Option<&BStr> {
         match self.op {
             Operation::Push => self.src,
@@ -126,7 +127,11 @@ impl<'a> RefSpecRef<'a> {
     /// Derive the prefix from the [`source`][Self::source()] side of this spec if this is a fetch spec,
     /// or the [`destination`][Self::destination()] side if it is a push spec, if it is possible to do so without ambiguity.
     ///
-    /// This means it starts with `refs/`. Note that it won't contain more than two components, like `refs/heads/`
+    /// Exact refs starting with `refs/` are returned unchanged, like `refs/heads/main`
+    /// or `refs/namespaces/foo/refs/heads/main`. Git-style ref patterns return the fixed portion before
+    /// their single `*` when it is more specific than `refs/`: both `refs/heads/*` and
+    /// `refs/heads/*/suffix` yield `refs/heads/`.
+    /// Negative refspecs and one-sided push refspecs return `None`.
     pub fn prefix(&self) -> Option<&BStr> {
         if self.mode == Mode::Negative {
             return None;
@@ -138,16 +143,32 @@ impl<'a> RefSpecRef<'a> {
         if source == "HEAD" {
             return source.into();
         }
-        let suffix = source.strip_prefix(b"refs/")?;
-        let slash_pos = suffix.find_byte(b'/')?;
-        let prefix = source[..="refs/".len() + slash_pos].as_bstr();
-        (!prefix.contains(&b'*')).then_some(prefix)
+
+        let sans_refs_prefix = source.strip_prefix(b"refs/")?;
+        if let Some(star_pos) = sans_refs_prefix.find_byte(b'*') {
+            if star_pos == 0
+                || sans_refs_prefix[star_pos + 1..].contains(&b'*')
+                || sans_refs_prefix.find_byteset(b"?[]\\").is_some()
+            {
+                return None;
+            }
+            let prefix = &source[.."refs/".len() + star_pos];
+            return (!prefix.is_empty()).then_some(prefix.as_bstr());
+        }
+        Some(source)
     }
 
-    /// As opposed to [`prefix()`][Self::prefix], if the latter is `None` it will expand to all possible prefixes and place them in `out`.
+    /// Append the remote-ref prefixes represented by this refspec to `out`, suitable for limiting the refs
+    /// requested from a remote. Unlike [`prefix()`][Self::prefix], partial names without an unambiguous prefix
+    /// are expanded to all of their Git-style ref-name candidates. For example, `main` expands to `main`,
+    /// `refs/main`, `refs/tags/main`, `refs/heads/main`, `refs/remotes/main`, and `refs/remotes/main/HEAD`.
     ///
-    /// Note that only the `source` side is considered.
+    /// Fetch refspecs use their source; push refspecs use their explicit destination. Negative refspecs produce
+    /// no prefixes because they only exclude refs selected by positive refspecs; they do not request remote refs.
     pub fn expand_prefixes(&self, out: &mut Vec<BString>) {
+        if self.mode == Mode::Negative {
+            return;
+        }
         match self.prefix() {
             Some(prefix) => out.push(prefix.into()),
             None => {

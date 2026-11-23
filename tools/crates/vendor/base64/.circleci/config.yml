@@ -14,13 +14,13 @@ workflows:
                 # be easier on the CI hosts since presumably those fat lower layers will already be cached, and
                 # therefore faster than a minimal, customized alpine.
                 # MSRV
-                'rust:1.48.0'
+                'rust:1.71.0'
               ]
               # a hacky scheme to work around CircleCI's inability to deal with mutable docker tags, forcing us to
               # get a nightly or stable toolchain via rustup instead of a mutable docker tag
               toolchain_override: [
                 '__msrv__', # won't add any other toolchains, just uses what's in the docker image
-                '1.70.0', # minimum needed to build dev-dependencies
+                '1.86.0', # minimum needed to build dev-dependencies
                 'stable',
                 'beta',
                 'nightly'
@@ -35,10 +35,13 @@ jobs:
         type: string
     docker:
       - image: << parameters.rust_img >>
+    retention:
+      # lower retention since repo activity is pretty bursty
+      caches: 7d
     steps:
       - checkout
       - restore_cache:
-          key: project-cache-v5-<< parameters.rust_img >>-<< parameters.toolchain_override >>-{{ checksum "Cargo.toml" }}
+          key: project-cache-v7-<< parameters.rust_img >>-<< parameters.toolchain_override >>-{{ checksum "Cargo.toml" }}
       - run:
           name: Setup toolchain
           command: |
@@ -94,7 +97,7 @@ jobs:
               cargo build --no-default-features --features alloc --all-targets
             fi
       - run:
-          name: Add arm toolchain
+          name: Add arm target
           command: rustup target add thumbv6m-none-eabi
       - run:
           name: Build ARM without default features (no_std)
@@ -103,8 +106,17 @@ jobs:
           name: Build ARM with only alloc feature
           command: cargo build --target thumbv6m-none-eabi --no-default-features --features alloc
       - run:
-          # dev dependencies can't build on 1.48.0
+          name: Add wasm target
+          command: rustup target add wasm32-unknown-unknown
+      - run:
+          name: Build wasm without default features (no_std)
+          command: cargo build --target wasm32-unknown-unknown --no-default-features
+      - run:
+          # dev dependencies can't build on MSRV
           name: Run tests
+          # enable non-runtime-detected simd
+          environment:
+            RUSTFLAGS: "-C target-cpu=native"
           command: |
             if [[ '<< parameters.toolchain_override >>' != '__msrv__' ]]
             then
@@ -114,6 +126,96 @@ jobs:
       - run:
           name: Build docs
           command: cargo doc --verbose
+      - run:
+          name: Test unsafe simd with miri x64 with stacked borrows
+          # enable non-runtime-detected simd
+          environment:
+            RUSTFLAGS: "-C target-feature=+avx2"
+          command: |
+            if [[ '<< parameters.toolchain_override >>' = 'nightly' ]]
+            then
+              rustup component add miri
+              cargo miri test --target x86_64-unknown-linux-gnu miri
+            fi
+      - run:
+          name: Test unsafe simd with miri aarch64 with stacked borrows
+          # enable non-runtime-detected simd
+          environment:
+            RUSTFLAGS: "-C target-feature=+neon"
+          command: |
+            if [[ '<< parameters.toolchain_override >>' = 'nightly' ]]
+            then
+              cargo miri test --target aarch64-unknown-linux-gnu miri
+            fi
+      - run:
+          name: Test unsafe simd with miri x64 with tree borrows
+          # enable non-runtime-detected simd
+          environment:
+            MIRIFLAGS: "-Zmiri-tree-borrows"
+            RUSTFLAGS: "-C target-feature=+avx2"
+          command: |
+            if [[ '<< parameters.toolchain_override >>' = 'nightly' ]]
+            then
+              rustup component add miri
+              cargo miri test --target x86_64-unknown-linux-gnu miri
+            fi
+      - run:
+          name: Test unsafe simd with miri aarch64 with tree borrows
+          # enable non-runtime-detected simd
+          environment:
+            MIRIFLAGS: "-Zmiri-tree-borrows"
+            RUSTFLAGS: "-C target-feature=+neon"
+          command: |
+            if [[ '<< parameters.toolchain_override >>' = 'nightly' ]]
+            then
+              cargo miri test --target aarch64-unknown-linux-gnu miri
+            fi
+      - run:
+          name: Test unsafe simd with miri x64 with strict provenance
+          # enable non-runtime-detected simd
+          environment:
+            MIRIFLAGS: "-Zmiri-strict-provenance"
+            RUSTFLAGS: "-C target-feature=+avx2"
+          command: |
+            if [[ '<< parameters.toolchain_override >>' = 'nightly' ]]
+            then
+              rustup component add miri
+              cargo miri test --target x86_64-unknown-linux-gnu miri
+            fi
+      - run:
+          name: Test unsafe simd with miri aarch64 with strict provenance
+          # enable non-runtime-detected simd
+          environment:
+            MIRIFLAGS: "-Zmiri-strict-provenance"
+            RUSTFLAGS: "-C target-feature=+neon"
+          command: |
+            if [[ '<< parameters.toolchain_override >>' = 'nightly' ]]
+            then
+              cargo miri test --target aarch64-unknown-linux-gnu miri
+            fi
+      - run:
+          name: Test unsafe simd with miri x64 with many seeds
+          # enable non-runtime-detected simd
+          environment:
+            MIRIFLAGS: "-Zmiri-many-seeds=0..4"
+            RUSTFLAGS: "-C target-feature=+avx2"
+          command: |
+            if [[ '<< parameters.toolchain_override >>' = 'nightly' ]]
+            then
+              rustup component add miri
+              cargo miri test --target x86_64-unknown-linux-gnu miri
+            fi
+      - run:
+          name: Test unsafe simd with miri aarch64 with many seeds
+          # enable non-runtime-detected simd
+          environment:
+            MIRIFLAGS: "-Zmiri-many-seeds=0..4"
+            RUSTFLAGS: "-C target-feature=+neon"
+          command: |
+            if [[ '<< parameters.toolchain_override >>' = 'nightly' ]]
+            then
+              cargo miri test --target aarch64-unknown-linux-gnu miri
+            fi
       - run:
           name: Confirm fuzzers can run
           # TERM=dumb prevents cargo fuzz list from printing with color
@@ -127,9 +229,8 @@ jobs:
             fi
 
       - save_cache:
-          key: project-cache-v5-<< parameters.rust_img >>-<< parameters.toolchain_override >>-{{ checksum "Cargo.toml" }}
+          key: project-cache-v7-<< parameters.rust_img >>-<< parameters.toolchain_override >>-{{ checksum "Cargo.toml" }}
           paths:
             # rust docker img doesn't use $HOME/[.cargo,.rustup]
             - /usr/local/cargo
             - /usr/local/rustup
-            - ./target

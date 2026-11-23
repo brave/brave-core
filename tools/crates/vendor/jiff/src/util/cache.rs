@@ -36,15 +36,13 @@ impl Expiration {
 
 impl core::fmt::Display for Expiration {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        let Some(instant) = self.0 else {
-            return write!(f, "expired");
-        };
-        let Some(now) = crate::now::monotonic_time() else {
-            return write!(f, "expired");
-        };
-        let Some(duration) = instant.checked_duration_since(now) else {
-            return write!(f, "expired");
-        };
-        write!(f, "{duration:?}")
+        let maybe_duration = self.0.and_then(|instant| {
+            crate::now::monotonic_time()
+                .and_then(|now| instant.checked_duration_since(now))
+        });
+        match maybe_duration {
+            None => f.write_str("expired"),
+            Some(duration) => core::fmt::Debug::fmt(&duration, f),
+        }
     }
 }

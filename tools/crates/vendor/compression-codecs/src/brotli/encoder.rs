@@ -31,7 +31,7 @@ impl BrotliEncoder {
         let mut input_len = 0;
         let mut output_len = 0;
 
-        let result = if !self.state.compress_stream(
+        if !self.state.compress_stream(
             op,
             &mut in_buf.len(),
             in_buf,
@@ -42,15 +42,13 @@ impl BrotliEncoder {
             &mut None,
             &mut |_, _, _, _| (),
         ) {
-            Err(io::Error::other("brotli error"))
-        } else {
-            Ok(())
-        };
+            return Err(io::Error::other("brotli error"));
+        }
 
         input.advance(input_len);
         output.advance(output_len);
 
-        result
+        Ok(())
     }
 }
 

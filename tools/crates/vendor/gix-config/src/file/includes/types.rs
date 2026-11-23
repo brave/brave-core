@@ -1,28 +1,4 @@
-use std::path::PathBuf;
-
-use crate::{parse, path::interpolate};
-
-/// The error returned when following includes.
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("Failed to copy configuration file into buffer")]
-    CopyBuffer(#[source] std::io::Error),
-    #[error("Could not read included configuration file at '{}'", path.display())]
-    Io { path: PathBuf, source: std::io::Error },
-    #[error(transparent)]
-    Parse(#[from] parse::Error),
-    #[error(transparent)]
-    Interpolate(#[from] interpolate::Error),
-    #[error("The maximum allowed length {} of the file include chain built by following nested resolve_includes is exceeded", .max_depth)]
-    IncludeDepthExceeded { max_depth: u8 },
-    #[error("Include paths from environment variables must not be relative as no config file paths exists as root")]
-    MissingConfigPath,
-    #[error("The git directory must be provided to support `gitdir:` conditional includes")]
-    MissingGitDir,
-    #[error(transparent)]
-    Realpath(#[from] gix_path::realpath::Error),
-}
+use crate::path::interpolate;
 
 /// Options to handle includes, like `include.path` or `includeIf.<condition>.path`,
 #[derive(Clone, Copy)]
@@ -37,7 +13,8 @@ pub struct Options<'a> {
     pub err_on_max_depth_exceeded: bool,
     /// If true, default false, failing to interpolate paths will result in an error.
     ///
-    /// Interpolation also happens if paths in conditional includes can't be interpolated.
+    /// This also applies to paths in conditional include patterns. If false, patterns with missing
+    /// interpolation context or unknown users are matched unchanged, while such include paths are skipped.
     pub err_on_interpolation_failure: bool,
     /// If true, default true, configuration not originating from a path will cause errors when trying to resolve
     /// relative include paths (which would require the including configuration's path).

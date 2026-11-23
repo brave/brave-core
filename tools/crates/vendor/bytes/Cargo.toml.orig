@@ -4,7 +4,7 @@ name = "bytes"
 # When releasing to crates.io:
 # - Update CHANGELOG.md.
 # - Create "v1.x.y" git tag.
-version = "1.11.0"
+version = "1.12.2"
 edition = "2021"
 rust-version = "1.57"
 license = "MIT"
@@ -17,13 +17,14 @@ repository = "https://github.com/tokio-rs/bytes"
 readme = "README.md"
 keywords = ["buffers", "zero-copy", "io"]
 categories = ["network-programming", "data-structures"]
+include = ["CHANGELOG.md", "LICENSE", "README.md", "SECURITY.md", "Cargo.toml", "src/**/*.rs", "tests/**/*.rs", "clippy.toml"]
 
 [features]
 default = ["std"]
 std = []
 
 [dependencies]
-serde = { version = "1.0.60", optional = true, default-features = false, features = ["alloc"] }
+serde = { version = "1.0.70", optional = true, default-features = false, features = ["alloc"] }
 # Use portable-atomic crate to support platforms without atomic CAS.
 # See "no_std support" section in readme for more information.
 #

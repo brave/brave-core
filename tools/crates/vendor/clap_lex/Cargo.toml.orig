@@ -1,6 +1,6 @@
 [package]
 name = "clap_lex"
-version = "0.7.6"
+version = "1.1.2"
 description = "Minimal, flexible command line parser"
 categories = ["command-line-interface"]
 keywords = [
@@ -22,12 +22,12 @@ pre-release-replacements = [
   {file="CHANGELOG.md", search="\\.\\.\\.HEAD", replace="...{{tag_name}}", exactly=1},
   {file="CHANGELOG.md", search="ReleaseDate", replace="{{date}}", min=1},
   {file="CHANGELOG.md", search="<!-- next-header -->", replace="<!-- next-header -->\n## [Unreleased] - ReleaseDate\n", exactly=1},
-  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: https://github.com/clap-rs/clap/compare/{{tag_name}}...HEAD", exactly=1},
+  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: {{repository}}/compare/{{tag_name}}...HEAD", exactly=1},
   {file="README.md", search="github.com/clap-rs/clap/blob/[^/]+/", replace="github.com/clap-rs/clap/blob/{{tag_name}}/", exactly=4, prerelease = true},
 ]
 
 [dev-dependencies]
-automod = "1.0.14"
+automod = "1.0.17"
 
 [lib]
 bench = false

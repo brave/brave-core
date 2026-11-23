@@ -2,14 +2,13 @@ use core_foundation_sys::array::CFArrayRef;
 use core_foundation_sys::base::{CFAllocatorRef, CFTypeID, OSStatus};
 use core_foundation_sys::data::CFDataRef;
 #[cfg(target_os = "macos")]
+use crate::base::SecKeychainRef;
+#[cfg(target_os = "macos")]
 use core_foundation_sys::dictionary::CFDictionaryRef;
-#[cfg(any(target_os = "macos", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use core_foundation_sys::error::CFErrorRef;
 use core_foundation_sys::string::CFStringRef;
 
-use crate::base::SecCertificateRef;
-use crate::base::SecKeyRef;
-use crate::base::SecKeychainRef;
+use crate::base::{SecCertificateRef, SecKeyRef};
 
 extern "C" {
     #[cfg(target_os = "macos")]
@@ -59,6 +58,7 @@ extern "C" {
         allocator: CFAllocatorRef,
         data: CFDataRef,
     ) -> SecCertificateRef;
+    #[cfg(target_os = "macos")]
     pub fn SecCertificateAddToKeychain(
         certificate: SecCertificateRef,
         keychain: SecKeychainRef,
@@ -73,9 +73,9 @@ extern "C" {
         certificate: SecCertificateRef,
         email_addresses: *mut CFArrayRef,
     ) -> OSStatus;
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+
     pub fn SecCertificateCopyNormalizedIssuerSequence(certificate: SecCertificateRef) -> CFDataRef;
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+
     pub fn SecCertificateCopyNormalizedSubjectSequence(certificate: SecCertificateRef)
         -> CFDataRef;
     #[cfg(target_os = "macos")]
@@ -85,9 +85,7 @@ extern "C" {
         certificate: SecCertificateRef,
         key: *mut SecKeyRef,
     ) -> OSStatus;
-    #[cfg(any(feature = "OSX_10_14", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub fn SecCertificateCopyKey(certificate: SecCertificateRef) -> SecKeyRef;
-    #[cfg(any(feature = "OSX_10_13", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub fn SecCertificateCopySerialNumberData(
         certificate: SecCertificateRef,
         error: *mut CFErrorRef,

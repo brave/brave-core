@@ -12,29 +12,78 @@
 
 include!("include.rs");
 
-// Ensure that types that are use'd and types that are referenced by path work.
+extern crate self as derive_path_test;
 
-mod foo {
-    use super::*;
-
-    #[derive(imp::FromBytes, imp::IntoBytes, imp::Unaligned)]
-    #[repr(C)]
-    pub struct Foo {
-        foo: u8,
-    }
-
-    #[derive(imp::FromBytes, imp::IntoBytes, imp::Unaligned)]
-    #[repr(C)]
-    pub struct Bar {
-        bar: u8,
-    }
+pub mod nested {
+    pub extern crate zerocopy_renamed as reexported_zerocopy;
 }
 
-use foo::Foo;
+// Ensure that types that are use'd and types that are referenced by path work.
 
-#[derive(imp::FromBytes, imp::IntoBytes, imp::Unaligned)]
-#[repr(C)]
-struct Baz {
-    foo: Foo,
-    bar: foo::Bar,
+macro_rules! test {
+    ($crate_path:tt) => {
+        mod foo {
+            use super::*;
+
+            #[derive(imp::FromBytes, imp::IntoBytes, imp::Unaligned)]
+            #[zerocopy(crate = $crate_path)]
+            #[repr(C)]
+            pub struct Foo {
+                foo: u8,
+            }
+
+            #[derive(imp::FromBytes, imp::IntoBytes, imp::Unaligned)]
+            #[zerocopy(crate = $crate_path)]
+            #[repr(C)]
+            pub struct Bar {
+                bar: u8,
+            }
+        }
+
+        use self::foo::Foo;
+
+        #[derive(imp::FromBytes, imp::IntoBytes, imp::Unaligned)]
+        #[zerocopy(crate = $crate_path)]
+        #[repr(C)]
+        struct Baz {
+            foo: Foo,
+            bar: foo::Bar,
+        }
+    };
+}
+
+test!("zerocopy_renamed");
+
+mod root_relative {
+    use super::*;
+
+    test!("derive_path_test::nested::reexported_zerocopy");
+}
+
+mod crate_relative {
+    use super::*;
+
+    test!("crate::nested::reexported_zerocopy");
+}
+
+mod super_relative {
+    use super::*;
+
+    test!("super::nested::reexported_zerocopy");
+}
+
+mod self_super_relative {
+    use super::*;
+
+    test!("self::super::nested::reexported_zerocopy");
+}
+
+mod super_super_relative {
+    use super::*;
+
+    mod inner {
+        use super::*;
+
+        test!("super::super::nested::reexported_zerocopy");
+    }
 }

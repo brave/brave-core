@@ -69,7 +69,8 @@ jobs:
       with:
         toolchain: ${{ matrix.rust }}
     - run: cargo build --verbose
-    - run: cargo doc --verbose
+    - if: startsWith(matrix.build, 'pinned-') == false
+      run: cargo doc --verbose
     - if: startsWith(matrix.build, 'pinned-') == false
       run: cargo test --verbose
     - if: matrix.build == 'nightly'

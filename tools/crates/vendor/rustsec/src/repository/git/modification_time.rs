@@ -7,7 +7,6 @@ use std::{
     collections::HashMap,
     path::PathBuf,
 };
-use tame_index::external::gix;
 use time::OffsetDateTime;
 
 use super::GitPath;
@@ -93,7 +92,16 @@ impl GitModificationTimes {
                     .into_commit()
                     .expect("id is actually a commit");
 
-                (commit.tree(), commit.time())
+                (
+                    commit.tree(),
+                    commit.time().map_err(|err| {
+                        Error::with_source(
+                            ErrorKind::Repo,
+                            format!("unable to parse commit time for '{}'", info.id),
+                            err,
+                        )
+                    })?,
+                )
             };
             let current_tree = db
                 .try_find(&main_tree_id, &mut buf)

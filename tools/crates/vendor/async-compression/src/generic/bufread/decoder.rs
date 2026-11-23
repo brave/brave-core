@@ -2,8 +2,7 @@ use crate::{
     codecs::DecodeV2,
     core::util::{PartialBuffer, WriteBuffer},
 };
-
-use std::{io::Result, ops::ControlFlow};
+use std::{io::Result, ops::ControlFlow, panic::AssertUnwindSafe};
 
 #[derive(Debug)]
 enum State {
@@ -11,6 +10,7 @@ enum State {
     Flushing,
     Done,
     Next,
+    Error(AssertUnwindSafe<std::io::Error>),
 }
 
 #[derive(Debug)]
@@ -54,7 +54,14 @@ impl Decoder {
                             Ok(true) => State::Flushing,
                             // ignore the first error, occurs when input is empty
                             // but we need to run decode to flush
-                            Err(err) if !first => return ControlFlow::Break(Err(err)),
+                            Err(err) if !first => {
+                                self.state = State::Error(AssertUnwindSafe(err));
+                                if output.written_len() > 0 {
+                                    return ControlFlow::Break(Ok(()));
+                                } else {
+                                    continue;
+                                }
+                            }
                             // poll for more data for the next decode
                             _ => break,
                         }
@@ -62,23 +69,45 @@ impl Decoder {
                 }
 
                 State::Flushing => {
-                    match decoder.finish(output) {
+                    let before = output.written_len();
+                    let result = decoder.finish(output).and_then(|finished| {
+                        if !finished
+                            && output.written_len() == before
+                            && !output.has_no_spare_space()
+                        {
+                            Err(std::io::ErrorKind::UnexpectedEof.into())
+                        } else {
+                            Ok(finished)
+                        }
+                    });
+                    match result {
                         Ok(true) => {
                             if self.multiple_members {
                                 if let Err(err) = decoder.reinit() {
-                                    return ControlFlow::Break(Err(err));
+                                    self.state = State::Error(AssertUnwindSafe(err));
+                                    if output.written_len() > 0 {
+                                        return ControlFlow::Break(Ok(()));
+                                    } else {
+                                        continue;
+                                    }
                                 }
 
-                                // The decode stage might consume all the input,
-                                // the next stage might need to poll again if it's empty.
-                                first = true;
+                                // Poll again only if the decode stage consumed all the input.
+                                first = input.unwritten().is_empty();
                                 State::Next
                             } else {
                                 State::Done
                             }
                         }
                         Ok(false) => State::Flushing,
-                        Err(err) => return ControlFlow::Break(Err(err)),
+                        Err(err) => {
+                            self.state = State::Error(AssertUnwindSafe(err));
+                            if output.written_len() > 0 {
+                                return ControlFlow::Break(Ok(()));
+                            } else {
+                                continue;
+                            }
+                        }
                     }
                 }
 
@@ -94,6 +123,13 @@ impl Decoder {
                     } else {
                         State::Decoding
                     }
+                }
+
+                State::Error(_) => {
+                    let State::Error(err) = std::mem::replace(&mut self.state, State::Done) else {
+                        unreachable!()
+                    };
+                    return ControlFlow::Break(Err(err.0));
                 }
             };
 
@@ -114,9 +150,8 @@ macro_rules! impl_decoder {
     () => {
         use crate::generic::bufread::Decoder as GenericDecoder;
 
-        use std::ops::ControlFlow;
+        use std::{ops::ControlFlow, task::ready};
 
-        use futures_core::ready;
         use pin_project_lite::pin_project;
 
         pin_project! {

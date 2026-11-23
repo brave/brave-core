@@ -1,8 +1,8 @@
-use std::collections::BTreeSet;
+use std::collections::{BTreeSet, HashSet};
 use std::str::FromStr;
 
-use crate::platforms::{OS, platform::PlatformReq};
 use once_cell::sync::OnceCell;
+use platforms::{Os, PlatformReq};
 
 use crate::Report;
 use crate::binary_scanning::BinaryFormat;
@@ -46,16 +46,21 @@ fn advisory_applicable_to_binary(
     }
 }
 
-fn at_least_one_os_runs_binary(binary_type: &BinaryFormat, os_list: &[OS]) -> bool {
+fn at_least_one_os_runs_binary(binary_type: &BinaryFormat, os_list: &[String]) -> bool {
+    let os_list = os_list
+        .iter()
+        .filter_map(|os| Os::from_str(os).ok())
+        .collect::<HashSet<_>>();
+
     use BinaryFormat::*;
     match binary_type {
-        PE => os_list.contains(&OS::Windows),
+        PE => os_list.contains(&Os::Windows),
         Macho => os_list.iter().any(|os| apple_OSs().contains(os)), // O(n*log(n))
         Elf32 | Elf64 => {
             // For now we'll assume it's affected if the list contains something other than Windows or Apple OSs
             os_list
                 .iter()
-                .any(|os| os != &OS::Windows && !apple_OSs().contains(os))
+                .any(|os| os != &Os::Windows && !apple_OSs().contains(os))
             // TODO: this could be improved if we somehow keep track of which OS uses elf and which doesn't.
             // Sadly `rustc --print-cfg` doesn't expose this information.
             // Perhaps we can make `platforms` expose the `family` which can be `windows` or `unix` or `unknown`?
@@ -70,15 +75,15 @@ fn at_least_one_os_runs_binary(binary_type: &BinaryFormat, os_list: &[OS]) -> bo
             // other than including all the platforms ever.
             os_list
                 .iter()
-                .any(|os| os == &OS::Unknown || os == &OS::None)
+                .any(|os| os == &Os::Unknown || os == &Os::None)
         }
         Unknown => true, // might be possible for detection based on panic messages?
     }
 }
 
 #[allow(non_snake_case)]
-fn apple_OSs() -> &'static BTreeSet<OS> {
-    static INSTANCE: OnceCell<BTreeSet<OS>> = OnceCell::new();
+fn apple_OSs() -> &'static BTreeSet<Os> {
+    static INSTANCE: OnceCell<BTreeSet<Os>> = OnceCell::new();
     INSTANCE.get_or_init(|| {
         let req = PlatformReq::from_str("*apple*").unwrap();
         req.matching_platforms().map(|p| p.target_os).collect()

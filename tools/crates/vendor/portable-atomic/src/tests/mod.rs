@@ -15,7 +15,7 @@ pub(crate) mod helper;
 #[path = "../../version.rs"]
 mod version;
 
-use test_helper as _;
+use test_helper as _; // For critical-section test
 
 use super::*;
 
@@ -32,9 +32,9 @@ test_atomic_int_pub!(i32);
 test_atomic_int_pub!(u32);
 test_atomic_int_pub!(i64);
 test_atomic_int_pub!(u64);
-#[cfg(not(all(valgrind, target_arch = "powerpc64")))] // TODO: Hang (as of Valgrind 3.25)
+#[cfg(not(all(valgrind, target_arch = "powerpc64")))] // TODO(powerpc64): Hang (as of Valgrind 3.26)
 test_atomic_int_pub!(i128);
-#[cfg(not(all(valgrind, target_arch = "powerpc64")))] // TODO: Hang (as of Valgrind 3.25)
+#[cfg(not(all(valgrind, target_arch = "powerpc64")))] // TODO(powerpc64): Hang (as of Valgrind 3.26)
 test_atomic_int_pub!(u128);
 
 #[cfg(all(feature = "float", portable_atomic_unstable_f16))]
@@ -42,6 +42,8 @@ test_atomic_float_pub!(f16);
 #[cfg(feature = "float")]
 test_atomic_float_pub!(f32);
 #[cfg(feature = "float")]
+// TODO: rustc bug: https://github.com/rust-lang/rust/issues/114479
+#[cfg(not(all(not(debug_assertions), target_arch = "x86", not(target_feature = "sse2"))))]
 test_atomic_float_pub!(f64);
 #[cfg(all(feature = "float", portable_atomic_unstable_f128))]
 test_atomic_float_pub!(f128);
@@ -192,7 +194,7 @@ fn test_is_lock_free() {
                 any(miri, portable_atomic_sanitize_thread),
                 not(portable_atomic_atomic_intrinsics),
             )),
-            portable_atomic_unstable_asm_experimental_arch,
+            not(portable_atomic_no_asm),
             any(
                 target_feature = "quadword-atomics",
                 portable_atomic_target_feature = "quadword-atomics",
@@ -428,7 +430,7 @@ LLVM version: 15.0.3",
 #[cfg(feature = "serde")]
 #[test]
 fn test_serde() {
-    use std::fmt;
+    use std::{eprint, eprintln, fmt};
 
     use serde::{
         de::{Deserialize, Deserializer},
@@ -462,14 +464,14 @@ fn test_serde() {
 
     macro_rules! t {
         ($atomic_type:ty, $value_type:ident $(as $token_value_type:ident)?, $token_type:ident) => {
-            std::eprint!("test_serde {} ... ", stringify!($value_type));
+            eprint!("test_serde {} ... ", stringify!($value_type));
             assert_tokens(&DebugPartialEq(<$atomic_type>::new($value_type::MAX)), &[
                 Token::$token_type($value_type::MAX $(as $token_value_type)?),
             ]);
             assert_tokens(&DebugPartialEq(<$atomic_type>::new($value_type::MIN)), &[
                 Token::$token_type($value_type::MIN $(as $token_value_type)?),
             ]);
-            std::eprintln!("ok");
+            eprintln!("ok");
         };
     }
 
@@ -485,9 +487,9 @@ fn test_serde() {
     t!(AtomicU32, u32, U32);
     t!(AtomicI64, i64, I64);
     t!(AtomicU64, u64, U64);
-    #[cfg(not(all(valgrind, target_arch = "powerpc64")))] // TODO: Hang (as of Valgrind 3.25)
+    #[cfg(not(all(valgrind, target_arch = "powerpc64")))] // TODO(powerpc64): Hang (as of Valgrind 3.26)
     t!(AtomicI128, i128, I128);
-    #[cfg(not(all(valgrind, target_arch = "powerpc64")))] // TODO: Hang (as of Valgrind 3.25)
+    #[cfg(not(all(valgrind, target_arch = "powerpc64")))] // TODO(powerpc64): Hang (as of Valgrind 3.26)
     t!(AtomicU128, u128, U128);
     // TODO(f16_and_f128): Test f16 & f128 once stabilized.
     #[cfg(feature = "float")]

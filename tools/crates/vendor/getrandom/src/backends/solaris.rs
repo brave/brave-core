@@ -14,11 +14,9 @@
 //! which also explains why this crate should not use getentropy(2).
 use crate::Error;
 use core::{ffi::c_void, mem::MaybeUninit};
+use libc::___errno as errno_location;
 
 pub use crate::util::{inner_u32, inner_u64};
-
-#[path = "../util_libc.rs"]
-mod util_libc;
 
 const MAX_BYTES: usize = 1024;
 
@@ -33,7 +31,10 @@ pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
             // Good. Keep going.
             Ok(ret) if ret == chunk.len() => {}
             // The syscall failed.
-            Ok(0) => return Err(util_libc::last_os_error()),
+            Ok(0) => {
+                let errno = unsafe { core::ptr::read(errno_location()) };
+                return Err(Error::from_errno(errno));
+            }
             // All other cases should be impossible.
             _ => return Err(Error::UNEXPECTED),
         }

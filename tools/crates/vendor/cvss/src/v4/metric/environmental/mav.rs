@@ -1,7 +1,7 @@
 //! Attack Vector (MAV)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -19,7 +19,7 @@ use core::{fmt, str::FromStr};
 /// > from across a network is larger than the number of potential attackers
 /// > that could exploit a vulnerability requiring physical access to a device,
 /// > and therefore warrants a greater severity.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ModifiedAttackVector {
     /// Physical (P)
     ///
@@ -67,13 +67,8 @@ pub enum ModifiedAttackVector {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
-}
-
-impl Default for ModifiedAttackVector {
-    fn default() -> Self {
-        Self::NotDefined
-    }
 }
 
 impl Metric for ModifiedAttackVector {
@@ -81,11 +76,11 @@ impl Metric for ModifiedAttackVector {
 
     fn as_str(self) -> &'static str {
         match self {
-            ModifiedAttackVector::NotDefined => "X",
-            ModifiedAttackVector::Network => "N",
-            ModifiedAttackVector::Adjacent => "A",
-            ModifiedAttackVector::Local => "L",
-            ModifiedAttackVector::Physical => "P",
+            Self::NotDefined => "X",
+            Self::Network => "N",
+            Self::Adjacent => "A",
+            Self::Local => "L",
+            Self::Physical => "P",
         }
     }
 }
@@ -99,13 +94,13 @@ impl fmt::Display for ModifiedAttackVector {
 impl FromStr for ModifiedAttackVector {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(ModifiedAttackVector::NotDefined),
-            "N" => Ok(ModifiedAttackVector::Network),
-            "A" => Ok(ModifiedAttackVector::Adjacent),
-            "L" => Ok(ModifiedAttackVector::Local),
-            "P" => Ok(ModifiedAttackVector::Physical),
+            "X" => Ok(Self::NotDefined),
+            "N" => Ok(Self::Network),
+            "A" => Ok(Self::Adjacent),
+            "L" => Ok(Self::Local),
+            "P" => Ok(Self::Physical),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

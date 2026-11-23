@@ -7,6 +7,397 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.11.3](https://github.com/rust-lang/cc-rs/compare/cc-v1.11.2...cc-v1.11.3) - 2026-11-20
+
+### Other
+
+- say which arguments the archiver gets on MSVC targets ([#2109](https://github.com/rust-lang/cc-rs/pull/2109))
+- note that `Debug` of the commands cc returns lists the environment on Unix ([#2098](https://github.com/rust-lang/cc-rs/pull/2098))
+
+## [1.11.2](https://github.com/rust-lang/cc-rs/compare/cc-v1.11.1...cc-v1.11.2) - 2026-11-13
+
+### Fixed
+
+- keep GCC from merging identical variables under AddressSanitizer ([#2094](https://github.com/rust-lang/cc-rs/pull/2094))
+
+### Other
+
+- Regenerate target info ([#2099](https://github.com/rust-lang/cc-rs/pull/2099))
+
+## [1.11.1](https://github.com/rust-lang/cc-rs/compare/cc-v1.11.0...cc-v1.11.1) - 2026-11-06
+
+### Fixed
+
+- *(target-parsing)* wasm32-none-component ([#2056](https://github.com/rust-lang/cc-rs/pull/2056))
+
+## [1.11.0](https://github.com/rust-lang/cc-rs/compare/cc-v1.10.0...cc-v1.11.0) - 2026-10-30
+
+### Added
+
+- add reproducible CodeView and source path remapping ([#2071](https://github.com/rust-lang/cc-rs/pull/2071))
+
+### Fixed
+
+- pass `.cc` sources to cl.exe as one `-Tp<path>` argument ([#2063](https://github.com/rust-lang/cc-rs/pull/2063))
+- pass -march=x86-64 to GCC on x86_64 Linux ([#2061](https://github.com/rust-lang/cc-rs/pull/2061))
+
+## [1.10.0](https://github.com/rust-lang/cc-rs/compare/cc-v1.9.0...cc-v1.10.0) - 2026-10-23
+
+### Added
+
+- Initial libtool support ([#1618](https://github.com/rust-lang/cc-rs/pull/1618))
+
+### Fixed
+
+- *(parallel)* print the child's exit status as debug output ([#2055](https://github.com/rust-lang/cc-rs/pull/2055))
+- *(target-parsing)* wasm32-none-component ([#2054](https://github.com/rust-lang/cc-rs/pull/2054))
+
+### Other
+
+- Regenerate target info ([#2053](https://github.com/rust-lang/cc-rs/pull/2053))
+
+## [1.9.0](https://github.com/rust-lang/cc-rs/compare/cc-v1.8.0...cc-v1.9.0) - 2026-10-19
+
+### Added
+
+- pass AddressSanitizer on to the C compiler ([#2045](https://github.com/rust-lang/cc-rs/pull/2045))
+- add source root for stable external object names ([#2034](https://github.com/rust-lang/cc-rs/pull/2034))
+- emit rerun-if-env-changed for the compiler's own env vars ([#2035](https://github.com/rust-lang/cc-rs/pull/2035))
+- *(env)* read Cargo's variables from the env snapshot ([#2028](https://github.com/rust-lang/cc-rs/pull/2028))
+- collect compile commands into a `compile_commands.json` ([#1990](https://github.com/rust-lang/cc-rs/pull/1990))
+
+### Fixed
+
+- don't prefer clang for -Clinker-plugin-lto=no ([#2046](https://github.com/rust-lang/cc-rs/pull/2046))
+- keep the order of flag and flag_if_supported ([#2044](https://github.com/rust-lang/cc-rs/pull/2044))
+- correct "arbitary" typo in target parser comment ([#2039](https://github.com/rust-lang/cc-rs/pull/2039))
+- correct "stablised" typos in TODO comments ([#2040](https://github.com/rust-lang/cc-rs/pull/2040))
+- *(msvc)* pass objects to the archiver relative to the output directory ([#2033](https://github.com/rust-lang/cc-rs/pull/2033))
+- honor disabled linker-plugin LTO ([#2024](https://github.com/rust-lang/cc-rs/pull/2024))
+- apply `RUSTC_WRAPPER` to the `cl.exe` cc finds itself ([#2022](https://github.com/rust-lang/cc-rs/pull/2022))
+
+### Other
+
+- *(parallel)* poll on jobserver helper thread ([#2021](https://github.com/rust-lang/cc-rs/pull/2021))
+- *(parallel)* add jobserver polling for windows ([#2020](https://github.com/rust-lang/cc-rs/pull/2020))
+- Regenerate windows sys bindings ([#2019](https://github.com/rust-lang/cc-rs/pull/2019))
+- *(parallel)* add polling for process exit on windows ([#2016](https://github.com/rust-lang/cc-rs/pull/2016))
+- *(parallel)* poll for process exit on macOS/bsd ([#2014](https://github.com/rust-lang/cc-rs/pull/2014))
+
+## [1.8.0](https://github.com/rust-lang/cc-rs/compare/cc-v1.7.0...cc-v1.8.0) - 2026-10-11
+
+### Added
+
+- add `CC_PREFER_CLANG_CL_OVER_MSVC` to override `prefer_clang_cl_over_msvc` ([#2001](https://github.com/rust-lang/cc-rs/pull/2001))
+
+### Fixed
+
+- *(panic)* fix panic in code and replace with error when appropriate ([#2008](https://github.com/rust-lang/cc-rs/pull/2008))
+- *(env)* do not panic if WASM_MUSL_SYSROOT not set ([#2007](https://github.com/rust-lang/cc-rs/pull/2007))
+- *(jobserver)* help thread gets more token than necessary ([#2006](https://github.com/rust-lang/cc-rs/pull/2006))
+- stop forwarding -Cprofile-generate/-Cprofile-use to the C compiler ([#2003](https://github.com/rust-lang/cc-rs/pull/2003))
+- do not apply target crt-static when target is overridden ([#1999](https://github.com/rust-lang/cc-rs/pull/1999))
+
+### Other
+
+- *(parallel)* poll for process exit on linux ([#2009](https://github.com/rust-lang/cc-rs/pull/2009))
+- document `NVCC` and other environment variables ([#2005](https://github.com/rust-lang/cc-rs/pull/2005))
+- *(jobserver)* poll for new token ([#2004](https://github.com/rust-lang/cc-rs/pull/2004))
+- *(parallel)* Use poll on unix ([#2000](https://github.com/rust-lang/cc-rs/pull/2000))
+
+## [1.7.0](https://github.com/rust-lang/cc-rs/compare/cc-v1.6.0...cc-v1.7.0) - 2026-10-10
+
+### Added
+
+- add `Tool::get_envs`, deprecate Tool::env and store tool env as `Arc<OsStr>` pairs ([#1985](https://github.com/rust-lang/cc-rs/pull/1985))
+- link `c++` when Clang uses libc++ ([#1978](https://github.com/rust-lang/cc-rs/pull/1978))
+- add `CC_MASM_ASM` and fall back to `llvm-ml` for MASM files ([#1975](https://github.com/rust-lang/cc-rs/pull/1975))
+
+### Fixed
+
+- *(target parsing)* for powerpc64-ibm-aix abi ([#1989](https://github.com/rust-lang/cc-rs/pull/1989))
+- ignore ASCII case in program name checks ([#1981](https://github.com/rust-lang/cc-rs/pull/1981))
+
+### Other
+
+- *(compile)* issue compilation cmds more frequently in parallel #1997 #1998
+- *(cache)* Optimize tool detection caching ([#1995](https://github.com/rust-lang/cc-rs/pull/1995))
+- *(cache)* optimize EnvSnapshot Hash, PartialEq, Ord impl ([#1994](https://github.com/rust-lang/cc-rs/pull/1994))
+- Regenerate target info ([#1988](https://github.com/rust-lang/cc-rs/pull/1988))
+
+## [1.6.0](https://github.com/rust-lang/cc-rs/compare/cc-v1.5.1...cc-v1.6.0) - 2026-10-03
+
+### Added
+
+- add `Build::create_archive` and `emit_link_directives` ([#1972](https://github.com/rust-lang/cc-rs/pull/1972))
+- read the process environment once per `Build`, on first use ([#1969](https://github.com/rust-lang/cc-rs/pull/1969))
+- add `Build::message_logger` for structured access to cc's messages ([#1967](https://github.com/rust-lang/cc-rs/pull/1967))
+- add `CXXSTDLIB_STATIC` to link the C++ stdlib statically from outside ([#1957](https://github.com/rust-lang/cc-rs/pull/1957))
+
+### Fixed
+
+- key the flag support cache on target, host, language and environment ([#1965](https://github.com/rust-lang/cc-rs/pull/1965))
+- forward each line of compiler stderr once and whole with `parallel` ([#1959](https://github.com/rust-lang/cc-rs/pull/1959))
+
+### Other
+
+- find compile commands by source file so tests pass with `parallel` ([#1973](https://github.com/rust-lang/cc-rs/pull/1973))
+- add support for `armeb-unknown-linux-gnueabi` ([#1958](https://github.com/rust-lang/cc-rs/pull/1958))
+
+## [1.5.1](https://github.com/rust-lang/cc-rs/compare/cc-v1.5.0...cc-v1.5.1) - 2026-09-25
+
+### Fixed
+
+- link the static C++ stdlib with `-bundle`, once per `Build` ([#1955](https://github.com/rust-lang/cc-rs/pull/1955))
+
+### Other
+
+- Use lp64d ABI for Redox riscv64 ([#1953](https://github.com/rust-lang/cc-rs/pull/1953))
+
+## [1.5.0](https://github.com/rust-lang/cc-rs/compare/cc-v1.4.7...cc-v1.5.0) - 2026-09-25
+
+### Added
+
+- inherit x86 target features from RUSTFLAGS ([#1948](https://github.com/rust-lang/cc-rs/pull/1948))
+
+### Fixed
+
+- don't report the file name cl.exe echoes as a warning in expand() ([#1950](https://github.com/rust-lang/cc-rs/pull/1950))
+- ignore MSVC `/link` flags with a warning ([#1949](https://github.com/rust-lang/cc-rs/pull/1949))
+- Make `windows_sys` more private and re-export types needed by cc-rs ([#1944](https://github.com/rust-lang/cc-rs/pull/1944))
+- pass -Tp on MSVC for .cc so they are not treated as objects ([#1930](https://github.com/rust-lang/cc-rs/pull/1930))
+
+### Other
+
+- document macOS SDKROOT and Xcode CLT for testing ([#1943](https://github.com/rust-lang/cc-rs/pull/1943))
+- remove License section from CONTRIBUTING.md ([#1942](https://github.com/rust-lang/cc-rs/pull/1942))
+- add CONTRIBUTING.md and Conventional Commit PR title check ([#1938](https://github.com/rust-lang/cc-rs/pull/1938))
+
+### Fixed
+
+- Pass `-Tp` immediately before `.cc` sources on MSVC (not clang-cl) when compiling C++ so they are not treated as object files ([#1877](https://github.com/rust-lang/cc-rs/issues/1877))
+
+## [1.4.7](https://github.com/rust-lang/cc-rs/compare/cc-v1.4.6...cc-v1.4.7) - 2026-09-18
+
+### Fixed
+
+- strip OUT_DIR from the object file name hash too ([#1902](https://github.com/rust-lang/cc-rs/pull/1902))
+- search_is_some clippy lint ([#1903](https://github.com/rust-lang/cc-rs/pull/1903))
+
+### Other
+
+- Regenerate target info ([#1924](https://github.com/rust-lang/cc-rs/pull/1924))
+- Regenerate windows sys bindings ([#1919](https://github.com/rust-lang/cc-rs/pull/1919))
+- Fix target info parsing ([#1911](https://github.com/rust-lang/cc-rs/pull/1911))
+- Add Z80 and SM83 target support ([#1900](https://github.com/rust-lang/cc-rs/pull/1900))
+
+## [1.4.6](https://github.com/rust-lang/cc-rs/compare/cc-v1.4.5...cc-v1.4.6) - 2026-09-11
+
+### Fixed
+
+- Prevent check_exe from dropping flags on the floor. ([#1884](https://github.com/rust-lang/cc-rs/pull/1884))
+- update fd handling to use BorrowedFd ([#1882](https://github.com/rust-lang/cc-rs/pull/1882))
+
+### Other
+
+- *(deps)* bump taiki-e/install-action from 2.87.2 to 2.87.4 ([#1888](https://github.com/rust-lang/cc-rs/pull/1888))
+- Regenerate target info ([#1891](https://github.com/rust-lang/cc-rs/pull/1891))
+- *(deps)* bump tombi-toml/setup-tombi from 1.5.0 to 1.5.1 ([#1890](https://github.com/rust-lang/cc-rs/pull/1890))
+- *(deps)* bump release-plz/action from 0.5.131 to 0.5.132 ([#1889](https://github.com/rust-lang/cc-rs/pull/1889))
+- Fix ci(test): make sure right toolchain is passed ([#1892](https://github.com/rust-lang/cc-rs/pull/1892))
+- *(deps)* bump tombi-toml/setup-tombi from 1.2.5 to 1.5.0 ([#1885](https://github.com/rust-lang/cc-rs/pull/1885))
+- *(deps)* bump taiki-e/install-action from 2.85.5 to 2.87.2 ([#1886](https://github.com/rust-lang/cc-rs/pull/1886))
+- add toml formatting check ([#1879](https://github.com/rust-lang/cc-rs/pull/1879))
+
+## [1.4.5](https://github.com/rust-lang/cc-rs/compare/cc-v1.4.4...cc-v1.4.5) - 2026-09-04
+
+### Fixed
+
+- probe flag support without OUT_DIR via tempfile ([#1875](https://github.com/rust-lang/cc-rs/pull/1875))
+
+### Other
+
+- simplify conditional logic using `then` method ([#1860](https://github.com/rust-lang/cc-rs/pull/1860))
+
+### Fixed
+
+- Probe flag support without `OUT_DIR` via tempfile, so `flag_if_supported` no longer silently drops flags outside Cargo build scripts ([#1875](https://github.com/rust-lang/cc-rs/pull/1875))
+
+## [1.4.4](https://github.com/rust-lang/cc-rs/compare/cc-v1.4.3...cc-v1.4.4) - 2026-08-21
+
+### Fixed
+
+- honour `Build::env` overrides in Android llvm-ar probe ([#1868](https://github.com/rust-lang/cc-rs/pull/1868))
+- honour `Build::env` overrides in flag support and compiler family detection probes ([#1866](https://github.com/rust-lang/cc-rs/pull/1866))
+
+## [1.4.3](https://github.com/rust-lang/cc-rs/compare/cc-v1.4.2...cc-v1.4.3) - 2026-08-14
+
+### Other
+
+- Update MSRV to 1.65 ([#1834](https://github.com/rust-lang/cc-rs/pull/1834))
+- Regenerate target info ([#1848](https://github.com/rust-lang/cc-rs/pull/1848))
+
+## [1.4.2](https://github.com/rust-lang/cc-rs/compare/cc-v1.4.1...cc-v1.4.2) - 2026-08-08
+
+### Fixed
+
+- Infer NEON, not VFPv4, from `neon` in the target name ([#1843](https://github.com/rust-lang/cc-rs/pull/1843))
+- do not emit `-mno-omit-leaf-frame-pointer` if unsupported ([#1845](https://github.com/rust-lang/cc-rs/pull/1845))
+
+## [1.4.1](https://github.com/rust-lang/cc-rs/compare/cc-v1.4.0...cc-v1.4.1) - 2026-08-07
+
+### Fixed
+
+- Fix `-Cforce-frame-pointers`'s corresponding `CFLAGS` ([#1814](https://github.com/rust-lang/cc-rs/pull/1814))
+- Fix parsing of thumbv7a-vex-v5 ([#1840](https://github.com/rust-lang/cc-rs/pull/1840))
+
+### Other
+
+- Regenerate target info ([#1839](https://github.com/rust-lang/cc-rs/pull/1839))
+- Add `aarch64_be` to `prefix_for_target` ([#1835](https://github.com/rust-lang/cc-rs/pull/1835))
+- Use lp64d ABI for Managarm riscv64 ([#1829](https://github.com/rust-lang/cc-rs/pull/1829))
+- Make cc work on Motor OS ([#1822](https://github.com/rust-lang/cc-rs/pull/1822))
+- Update edition to 2021 ([#1811](https://github.com/rust-lang/cc-rs/pull/1811))
+- Update MSRV to 1.64 ([#1808](https://github.com/rust-lang/cc-rs/pull/1808))
+
+## [1.4.0](https://github.com/rust-lang/cc-rs/compare/cc-v1.3.0...cc-v1.4.0) - 2026-07-24
+
+### Added
+
+- support trim paths with clang-cl.exe ([#1799](https://github.com/rust-lang/cc-rs/pull/1799))
+
+## [1.3.0](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.67...cc-v1.3.0) - 2026-07-18
+
+### Added
+
+- inherit path remap rules from cargo trim-paths ([#1794](https://github.com/rust-lang/cc-rs/pull/1794))
+
+## [1.2.67](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.66...cc-v1.2.67) - 2026-07-11
+
+### Other
+
+- Fix clippy warning ([#1788](https://github.com/rust-lang/cc-rs/pull/1788))
+- Regenerate target info ([#1785](https://github.com/rust-lang/cc-rs/pull/1785))
+- Add support for `aarch64-unknown-linux-pauthtest` target ([#1713](https://github.com/rust-lang/cc-rs/pull/1713))
+- Fix nightly compilation error ([#1783](https://github.com/rust-lang/cc-rs/pull/1783))
+
+## [1.2.66](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.65...cc-v1.2.66) - 2026-07-05
+
+### Other
+
+- Fix target parsing for aarch64-unknown-linux-pauthtest ([#1779](https://github.com/rust-lang/cc-rs/pull/1779))
+- Support new QNX targets ([#1775](https://github.com/rust-lang/cc-rs/pull/1775))
+- Add kache to the supported compiler wrappers ([#1770](https://github.com/rust-lang/cc-rs/pull/1770))
+
+## [1.2.65](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.64...cc-v1.2.65) - 2026-06-19
+
+### Other
+
+- Regenerate target info ([#1763](https://github.com/rust-lang/cc-rs/pull/1763))
+
+## [1.2.64](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.63...cc-v1.2.64) - 2026-06-12
+
+### Other
+
+- Add more bare-metal 32-bit Arm support ([#1753](https://github.com/rust-lang/cc-rs/pull/1753))
+- Remove unnecessary clone ([#1748](https://github.com/rust-lang/cc-rs/pull/1748))
+- Add default compiler prefixes for thumbv7a/thumbv7r/thumbv8r bare-metal targets ([#1742](https://github.com/rust-lang/cc-rs/pull/1742))
+
+## [1.2.63](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.62...cc-v1.2.63) - 2026-05-29
+
+### Other
+
+- Update shlex requirement from 1.3.0 to 2.0.1 ([#1736](https://github.com/rust-lang/cc-rs/pull/1736))
+
+## [1.2.62](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.61...cc-v1.2.62) - 2026-05-08
+
+### Other
+
+- Regenerate target info ([#1721](https://github.com/rust-lang/cc-rs/pull/1721))
+- Allow exceptions on wasm platforms ([#1714](https://github.com/rust-lang/cc-rs/pull/1714))
+- Add relibc env ([#1710](https://github.com/rust-lang/cc-rs/pull/1710))
+- recognize sh4 architecture in parse_arch() ([#1712](https://github.com/rust-lang/cc-rs/pull/1712))
+
+## [1.2.61](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.60...cc-v1.2.61) - 2026-04-24
+
+### Other
+
+- fix `OutputKind::Capture` documentation ([#1705](https://github.com/rust-lang/cc-rs/pull/1705))
+
+## [1.2.60](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.59...cc-v1.2.60) - 2026-04-10
+
+### Fixed
+
+- *(ar)* suppress warnings from `D` modifier probe ([#1700](https://github.com/rust-lang/cc-rs/pull/1700))
+
+## [1.2.59](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.58...cc-v1.2.59) - 2026-04-03
+
+### Fixed
+
+- *(ar)* deterministic archives with `D` modifier ([#1697](https://github.com/rust-lang/cc-rs/pull/1697))
+
+### Other
+
+- Regenerate target info ([#1698](https://github.com/rust-lang/cc-rs/pull/1698))
+- Fix target abi parsing for sanitiser targets ([#1695](https://github.com/rust-lang/cc-rs/pull/1695))
+
+## [1.2.58](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.57...cc-v1.2.58) - 2026-03-27
+
+### Other
+
+- Update Compile-time Requirements to add info about clang-cl.exe ([#1693](https://github.com/rust-lang/cc-rs/pull/1693))
+
+## [1.2.57](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.56...cc-v1.2.57) - 2026-03-13
+
+### Other
+
+- Size archiver batches according to argument length not argument count ([#1689](https://github.com/rust-lang/cc-rs/pull/1689))
+- Added `Build::env` for setting environment variables of compiler invocations and other child processes ([#1656](https://github.com/rust-lang/cc-rs/pull/1656) [#1682](https://github.com/rust-lang/cc-rs/pull/1682))
+
+## [1.2.56](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.55...cc-v1.2.56) - 2026-02-13
+
+### Other
+
+- Regenerate target info ([#1676](https://github.com/rust-lang/cc-rs/pull/1676))
+- Fix `clang-cl` target when cross-compiling ([#1670](https://github.com/rust-lang/cc-rs/pull/1670))
+
+## [1.2.55](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.54...cc-v1.2.55) - 2026-01-30
+
+### Other
+
+- Regenerate target info ([#1667](https://github.com/rust-lang/cc-rs/pull/1667))
+- Fix RUSTFLAGS typo in test-linker-plugin-lto ([#1665](https://github.com/rust-lang/cc-rs/pull/1665))
+- Disable PIC for armv7-sony-vita-newlibeabihf ([#1664](https://github.com/rust-lang/cc-rs/pull/1664))
+
+## [1.2.54](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.53...cc-v1.2.54) - 2026-01-23
+
+### Other
+
+- Fix x86_64-unknown-linux-gnuasan parsing ([#1661](https://github.com/rust-lang/cc-rs/pull/1661))
+- Regenerate target info ([#1660](https://github.com/rust-lang/cc-rs/pull/1660))
+
+## [1.2.53](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.52...cc-v1.2.53) - 2026-01-16
+
+### Other
+
+- Add missing RISC-V targets ([#1657](https://github.com/rust-lang/cc-rs/pull/1657))
+
+## [1.2.52](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.51...cc-v1.2.52) - 2026-01-09
+
+### Other
+
+- Fix contradictory doc for CC compiler in crate doc ([#1650](https://github.com/rust-lang/cc-rs/pull/1650))
+- Have CUDA compilaion check for sbsa-linux when targeting aarch64. ([#1647](https://github.com/rust-lang/cc-rs/pull/1647))
+- Update link for -Cdwarf-version; Remove -Z (stabilized in 1.88) ([#1648](https://github.com/rust-lang/cc-rs/pull/1648))
+- Fix Build::env_tool to check for .exe on windows ([#1646](https://github.com/rust-lang/cc-rs/pull/1646))
+
+## [1.2.51](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.50...cc-v1.2.51) - 2025-12-26
+
+### Other
+
+- Regenerate target info ([#1642](https://github.com/rust-lang/cc-rs/pull/1642))
+- Update Readmes ([#1641](https://github.com/rust-lang/cc-rs/pull/1641))
+
 ## [1.2.50](https://github.com/rust-lang/cc-rs/compare/cc-v1.2.49...cc-v1.2.50) - 2025-12-19
 
 ### Other

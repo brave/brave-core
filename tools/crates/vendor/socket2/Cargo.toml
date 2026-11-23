@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.70"
 name = "socket2"
-version = "0.6.1"
+version = "0.6.5"
 authors = [
     "Alex Crichton <alex@alexcrichton.com>",
     "Thomas de Zeeuw <thomasdezeeuw@gmail.com>",
@@ -90,11 +90,11 @@ all = []
 name = "socket2"
 path = "src/lib.rs"
 
-[target."cfg(unix)".dependencies.libc]
+[target.'cfg(any(unix, target_os = "wasi"))'.dependencies.libc]
 version = "0.2.172"
 
 [target."cfg(windows)".dependencies.windows-sys]
-version = "0.60"
+version = ">=0.60, <0.62"
 features = [
     "Win32_Foundation",
     "Win32_Networking_WinSock",

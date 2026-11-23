@@ -1,11 +1,10 @@
+use jcore::civil::ISOWeekDate as JISOWeekDate;
+
 use crate::{
+    ZonedDateTime,
     civil::{Date, DateTime, Weekday},
-    error::{err, Error},
-    util::{
-        rangeint::RInto,
-        t::{self, ISOWeek, ISOYear, C},
-    },
-    Zoned,
+    error::Error,
+    fmt::temporal::{DEFAULT_DATETIME_PARSER, DEFAULT_DATETIME_PRINTER},
 };
 
 /// A type representing an [ISO 8601 week date].
@@ -34,6 +33,51 @@ use crate::{
 /// Some domains use this method of timekeeping. Otherwise, unless you
 /// specifically want a week oriented calendar, it's likely that you'll never
 /// need to care about this type.
+///
+/// # Parsing and printing
+///
+/// The `ISOWeekDate` type provides convenient trait implementations of
+/// [`std::str::FromStr`] and [`std::fmt::Display`]. These use the format
+/// specified by ISO 8601 for week dates:
+///
+/// ```
+/// use jiff::civil::ISOWeekDate;
+///
+/// let week_date: ISOWeekDate = "2024-W24-7".parse()?;
+/// assert_eq!(week_date.to_string(), "2024-W24-7");
+/// assert_eq!(week_date.date().to_string(), "2024-06-16");
+///
+/// # Ok::<(), Box<dyn std::error::Error>>(())
+/// ```
+///
+/// ISO 8601 allows the `-` separator to be absent:
+///
+/// ```
+/// use jiff::civil::ISOWeekDate;
+///
+/// let week_date: ISOWeekDate = "2024W241".parse()?;
+/// assert_eq!(week_date.to_string(), "2024-W24-1");
+/// assert_eq!(week_date.date().to_string(), "2024-06-10");
+///
+/// // But you cannot mix and match. Either `-` separates
+/// // both the year and week, or neither.
+/// assert!("2024W24-1".parse::<ISOWeekDate>().is_err());
+/// assert!("2024-W241".parse::<ISOWeekDate>().is_err());
+///
+/// # Ok::<(), Box<dyn std::error::Error>>(())
+/// ```
+///
+/// And the `W` may also be lowercase:
+///
+/// ```
+/// use jiff::civil::ISOWeekDate;
+///
+/// let week_date: ISOWeekDate = "2024-w24-2".parse()?;
+/// assert_eq!(week_date.to_string(), "2024-W24-2");
+/// assert_eq!(week_date.date().to_string(), "2024-06-11");
+///
+/// # Ok::<(), Box<dyn std::error::Error>>(())
+/// ```
 ///
 /// # Default value
 ///
@@ -109,33 +153,24 @@ use crate::{
 /// }
 /// # Ok::<(), Box<dyn std::error::Error>>(())
 /// ```
-#[derive(Clone, Copy, Hash)]
+#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 pub struct ISOWeekDate {
-    year: ISOYear,
-    week: ISOWeek,
-    weekday: Weekday,
+    pub(crate) inner: JISOWeekDate,
 }
 
 impl ISOWeekDate {
-    /// The maximum representable ISO week date.
-    ///
-    /// The maximum corresponds to the ISO week date of the maximum [`Date`]
-    /// value. That is, `-9999-01-01`.
-    pub const MIN: ISOWeekDate = ISOWeekDate {
-        year: ISOYear::new_unchecked(-9999),
-        week: ISOWeek::new_unchecked(1),
-        weekday: Weekday::Monday,
-    };
-
     /// The minimum representable ISO week date.
     ///
     /// The minimum corresponds to the ISO week date of the minimum [`Date`]
+    /// value. That is, `-9999-01-01`.
+    pub const MIN: ISOWeekDate = ISOWeekDate { inner: JISOWeekDate::MIN };
+
+    /// The maximum representable ISO week date.
+    ///
+    /// The maximum corresponds to the ISO week date of the maximum [`Date`]
     /// value. That is, `9999-12-31`.
-    pub const MAX: ISOWeekDate = ISOWeekDate {
-        year: ISOYear::new_unchecked(9999),
-        week: ISOWeek::new_unchecked(52),
-        weekday: Weekday::Friday,
-    };
+    pub const MAX: ISOWeekDate = ISOWeekDate { inner: JISOWeekDate::MAX };
 
     /// The first day of the zeroth year.
     ///
@@ -152,11 +187,7 @@ impl ISOWeekDate {
     /// // the third day of the 0th year in the proleptic Gregorian calendar!
     /// assert_eq!(ISOWeekDate::default().date(), date(0, 1, 3));
     /// ```
-    pub const ZERO: ISOWeekDate = ISOWeekDate {
-        year: ISOYear::new_unchecked(0),
-        week: ISOWeek::new_unchecked(1),
-        weekday: Weekday::Monday,
-    };
+    pub const ZERO: ISOWeekDate = ISOWeekDate { inner: JISOWeekDate::ZERO };
 
     /// Create a new ISO week date from it constituent parts.
     ///
@@ -195,9 +226,9 @@ impl ISOWeekDate {
         week: i8,
         weekday: Weekday,
     ) -> Result<ISOWeekDate, Error> {
-        let year = ISOYear::try_new("year", year)?;
-        let week = ISOWeek::try_new("week", week)?;
-        ISOWeekDate::new_ranged(year, week, weekday)
+        JISOWeekDate::new(year, week, weekday.to_jcore())
+            .map(ISOWeekDate::from_jcore)
+            .map_err(Error::jcore_range)
     }
 
     /// Converts a Gregorian date to an ISO week date.
@@ -244,7 +275,7 @@ impl ISOWeekDate {
     /// ```
     #[inline]
     pub fn year(self) -> i16 {
-        self.year_ranged().get()
+        self.inner.year()
     }
 
     /// Returns the week component of this ISO 8601 week date.
@@ -269,7 +300,7 @@ impl ISOWeekDate {
     /// ```
     #[inline]
     pub fn week(self) -> i8 {
-        self.week_ranged().get()
+        self.inner.week()
     }
 
     /// Returns the day component of this ISO 8601 week date.
@@ -296,7 +327,7 @@ impl ISOWeekDate {
     /// ```
     #[inline]
     pub fn weekday(self) -> Weekday {
-        self.weekday
+        Weekday::from_jcore(self.inner.weekday())
     }
 
     /// Returns the ISO 8601 week date corresponding to the first day in the
@@ -306,7 +337,7 @@ impl ISOWeekDate {
     /// # Errors
     ///
     /// Since `-9999-01-01` falls on a Monday, it follows that the minimum
-    /// support Gregorian date is exactly equivalent to the minimum supported
+    /// supported Gregorian date is exactly equivalent to the minimum supported
     /// ISO 8601 week date. This means that this routine can never actually
     /// fail, but only insomuch as the minimums line up. For that reason, and
     /// for consistency with [`ISOWeekDate::last_of_week`], the API is
@@ -334,16 +365,10 @@ impl ISOWeekDate {
     /// ```
     #[inline]
     pub fn first_of_week(self) -> Result<ISOWeekDate, Error> {
-        // I believe this can never return an error because `Monday` is in
-        // bounds for all possible year-and-week combinations. This is *only*
-        // because -9999-01-01 corresponds to -9999-W01-Monday. Which is kinda
-        // lucky. And I guess if we ever change the ranges, this could become
-        // fallible.
-        ISOWeekDate::new_ranged(
-            self.year_ranged(),
-            self.week_ranged(),
-            Weekday::Monday,
-        )
+        self.inner
+            .first_of_week()
+            .map(ISOWeekDate::from_jcore)
+            .map_err(Error::jcore_range)
     }
 
     /// Returns the ISO 8601 week date corresponding to the last day in the
@@ -372,22 +397,18 @@ impl ISOWeekDate {
     /// // values, although, only when close to the maximum supported date.
     /// assert_eq!(
     ///     ISOWeekDate::MAX.last_of_week().unwrap_err().to_string(),
-    ///     "parameter 'weekday' with value 7 is not \
-    ///      in the required range of 1..=5",
+    ///     "parameter 'weekday (Monday 1-indexed)' \
+    ///      is not in the required range of 1..=7",
     /// );
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     #[inline]
     pub fn last_of_week(self) -> Result<ISOWeekDate, Error> {
-        // This can return an error when in the last week of the maximum year
-        // supported by Jiff. That's because the Saturday and Sunday of that
-        // week are actually in Gregorian year 10,000.
-        ISOWeekDate::new_ranged(
-            self.year_ranged(),
-            self.week_ranged(),
-            Weekday::Sunday,
-        )
+        self.inner
+            .last_of_week()
+            .map(ISOWeekDate::from_jcore)
+            .map_err(Error::jcore_range)
     }
 
     /// Returns the ISO 8601 week date corresponding to the first day in the
@@ -425,11 +446,10 @@ impl ISOWeekDate {
     /// ```
     #[inline]
     pub fn first_of_year(self) -> Result<ISOWeekDate, Error> {
-        // I believe this can never return an error because `Monday` is in
-        // bounds for all possible years. This is *only* because -9999-01-01
-        // corresponds to -9999-W01-Monday. Which is kinda lucky. And I guess
-        // if we ever change the ranges, this could become fallible.
-        ISOWeekDate::new_ranged(self.year_ranged(), C(1), Weekday::Monday)
+        self.inner
+            .first_of_year()
+            .map(ISOWeekDate::from_jcore)
+            .map_err(Error::jcore_range)
     }
 
     /// Returns the ISO 8601 week date corresponding to the last day in the
@@ -466,23 +486,18 @@ impl ISOWeekDate {
     /// // values, although, only when close to the maximum supported date.
     /// assert_eq!(
     ///     ISOWeekDate::MAX.last_of_year().unwrap_err().to_string(),
-    ///     "parameter 'weekday' with value 7 is not \
-    ///      in the required range of 1..=5",
+    ///     "parameter 'weekday (Monday 1-indexed)' \
+    ///      is not in the required range of 1..=7",
     /// );
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     #[inline]
     pub fn last_of_year(self) -> Result<ISOWeekDate, Error> {
-        // This can return an error when in the maximum year supported by
-        // Jiff. That's because the last Saturday and Sunday of that year are
-        // actually in Gregorian year 10,000.
-        let week = if self.in_long_year() {
-            ISOWeek::V::<53, 52, 53>()
-        } else {
-            ISOWeek::V::<52, 52, 53>()
-        };
-        ISOWeekDate::new_ranged(self.year_ranged(), week, Weekday::Sunday)
+        self.inner
+            .last_of_year()
+            .map(ISOWeekDate::from_jcore)
+            .map_err(Error::jcore_range)
     }
 
     /// Returns the total number of days in the year of this ISO 8601 week
@@ -504,11 +519,7 @@ impl ISOWeekDate {
     /// ```
     #[inline]
     pub fn days_in_year(self) -> i16 {
-        if self.in_long_year() {
-            371
-        } else {
-            364
-        }
+        self.inner.days_in_year()
     }
 
     /// Returns the total number of weeks in the year of this ISO 8601 week
@@ -530,11 +541,7 @@ impl ISOWeekDate {
     /// ```
     #[inline]
     pub fn weeks_in_year(self) -> i8 {
-        if self.in_long_year() {
-            53
-        } else {
-            52
-        }
+        self.inner.weeks_in_year()
     }
 
     /// Returns true if and only if the year of this week date is a "long"
@@ -555,7 +562,7 @@ impl ISOWeekDate {
     /// ```
     #[inline]
     pub fn in_long_year(self) -> bool {
-        is_long_year(self.year_ranged())
+        self.inner.in_long_year()
     }
 
     /// Returns the ISO 8601 date immediately following this one.
@@ -582,9 +589,10 @@ impl ISOWeekDate {
     /// ```
     #[inline]
     pub fn tomorrow(self) -> Result<ISOWeekDate, Error> {
-        // I suppose we could probably implement this in a more efficient
-        // manner but avoiding the roundtrip through Gregorian dates.
-        self.date().tomorrow().map(|d| d.iso_week_date())
+        self.inner
+            .tomorrow()
+            .map(ISOWeekDate::from_jcore)
+            .map_err(Error::jcore_range)
     }
 
     /// Returns the ISO 8601 week date immediately preceding this one.
@@ -611,9 +619,10 @@ impl ISOWeekDate {
     /// ```
     #[inline]
     pub fn yesterday(self) -> Result<ISOWeekDate, Error> {
-        // I suppose we could probably implement this in a more efficient
-        // manner but avoiding the roundtrip through Gregorian dates.
-        self.date().yesterday().map(|d| d.iso_week_date())
+        self.inner
+            .yesterday()
+            .map(ISOWeekDate::from_jcore)
+            .map_err(Error::jcore_range)
     }
 
     /// Converts this ISO week date to a Gregorian [`Date`].
@@ -636,98 +645,15 @@ impl ISOWeekDate {
     pub fn date(self) -> Date {
         Date::from_iso_week_date(self)
     }
-}
 
-impl ISOWeekDate {
-    /// Creates a new ISO week date from ranged values.
-    ///
-    /// While the ranged values given eliminate some error cases, not all
-    /// combinations of year/week/weekday values are valid ISO week dates
-    /// supported by this crate. For example, a week of `53` for short years,
-    /// or more niche, a week date that would be bigger than what is supported
-    /// by our `Date` type.
     #[inline]
-    pub(crate) fn new_ranged(
-        year: impl RInto<ISOYear>,
-        week: impl RInto<ISOWeek>,
-        weekday: Weekday,
-    ) -> Result<ISOWeekDate, Error> {
-        let year = year.rinto();
-        let week = week.rinto();
-        // All combinations of years, weeks and weekdays allowed by our
-        // range types are valid ISO week dates with one exception: a week
-        // number of 53 is only valid for "long" years. Or years with an ISO
-        // leap week. It turns out this only happens when the last day of the
-        // year is a Thursday.
-        //
-        // Note that if the ranges in this crate are changed, this could be
-        // a little trickier if the range of ISOYear is different from Year.
-        debug_assert_eq!(t::Year::MIN, ISOYear::MIN);
-        debug_assert_eq!(t::Year::MAX, ISOYear::MAX);
-        if week == C(53) && !is_long_year(year) {
-            return Err(err!(
-                "ISO week number `{week}` is invalid for year `{year}`"
-            ));
-        }
-        // And also, the maximum Date constrains what we can utter with
-        // ISOWeekDate so that we can preserve infallible conversions between
-        // them. So since 9999-12-31 maps to 9999 W52 Friday, it follows that
-        // Saturday and Sunday are not allowed. So reject them.
-        //
-        // We don't need to worry about the minimum because the minimum date
-        // (-9999-01-01) corresponds also to the minimum possible combination
-        // of an ISO week date's fields: -9999 W01 Monday. Nice.
-        if year == ISOYear::MAX_SELF
-            && week == C(52)
-            && weekday.to_monday_zero_offset()
-                > Weekday::Friday.to_monday_zero_offset()
-        {
-            return Err(Error::range(
-                "weekday",
-                weekday.to_monday_one_offset(),
-                Weekday::Monday.to_monday_one_offset(),
-                Weekday::Friday.to_monday_one_offset(),
-            ));
-        }
-        Ok(ISOWeekDate { year, week, weekday })
-    }
-
-    /// Like `ISOWeekDate::new_ranged`, but constrains out-of-bounds values
-    /// to their closest valid equivalent.
-    ///
-    /// For example, given 9999 W52 Saturday, this will return 9999 W52 Friday.
-    #[cfg(test)]
-    #[inline]
-    pub(crate) fn new_ranged_constrain(
-        year: impl RInto<ISOYear>,
-        week: impl RInto<ISOWeek>,
-        mut weekday: Weekday,
-    ) -> ISOWeekDate {
-        let year = year.rinto();
-        let mut week = week.rinto();
-        debug_assert_eq!(t::Year::MIN, ISOYear::MIN);
-        debug_assert_eq!(t::Year::MAX, ISOYear::MAX);
-        if week == C(53) && !is_long_year(year) {
-            week = ISOWeek::new(52).unwrap();
-        }
-        if year == ISOYear::MAX_SELF
-            && week == C(52)
-            && weekday.to_monday_zero_offset()
-                > Weekday::Friday.to_monday_zero_offset()
-        {
-            weekday = Weekday::Friday;
-        }
-        ISOWeekDate { year, week, weekday }
+    pub(crate) const fn from_jcore(week_date: JISOWeekDate) -> ISOWeekDate {
+        ISOWeekDate { inner: week_date }
     }
 
     #[inline]
-    pub(crate) fn year_ranged(self) -> ISOYear {
-        self.year
-    }
-
-    #[inline]
-    pub(crate) fn week_ranged(self) -> ISOWeek {
-        self.week
+    pub(crate) const fn to_jcore(self) -> JISOWeekDate {
+        self.inner
     }
 }
 
@@ -739,37 +665,38 @@ impl Default for ISOWeekDate {
 
 impl core::fmt::Debug for ISOWeekDate {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("ISOWeekDate")
-            .field("year", &self.year_ranged().debug())
-            .field("week", &self.week_ranged().debug())
-            .field("weekday", &self.weekday)
-            .finish()
+        core::fmt::Display::fmt(self, f)
     }
 }
 
-impl Eq for ISOWeekDate {}
+impl core::fmt::Display for ISOWeekDate {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        use crate::fmt::StdFmtWrite;
 
-impl PartialEq for ISOWeekDate {
-    #[inline]
-    fn eq(&self, other: &ISOWeekDate) -> bool {
-        // We roll our own so that we can call 'get' on our ranged integers
-        // in order to provoke panics for bugs in dealing with boundary
-        // conditions.
-        self.weekday == other.weekday
-            && self.week.get() == other.week.get()
-            && self.year.get() == other.year.get()
+        DEFAULT_DATETIME_PRINTER
+            .print_iso_week_date(self, StdFmtWrite(f))
+            .map_err(|_| core::fmt::Error)
+    }
+}
+
+impl core::str::FromStr for ISOWeekDate {
+    type Err = Error;
+
+    fn from_str(string: &str) -> Result<ISOWeekDate, Error> {
+        DEFAULT_DATETIME_PARSER.parse_iso_week_date(string)
     }
 }
 
 impl Ord for ISOWeekDate {
     #[inline]
     fn cmp(&self, other: &ISOWeekDate) -> core::cmp::Ordering {
-        (self.year.get(), self.week.get(), self.weekday.to_monday_one_offset())
-            .cmp(&(
-                other.year.get(),
-                other.week.get(),
-                other.weekday.to_monday_one_offset(),
-            ))
+        (self.year(), self.week(), self.weekday().to_monday_one_offset()).cmp(
+            &(
+                other.year(),
+                other.week(),
+                other.weekday().to_monday_one_offset(),
+            ),
+        )
     }
 }
 
@@ -794,82 +721,81 @@ impl From<DateTime> for ISOWeekDate {
     }
 }
 
-impl From<Zoned> for ISOWeekDate {
+impl From<ZonedDateTime> for ISOWeekDate {
     #[inline]
-    fn from(zdt: Zoned) -> ISOWeekDate {
+    fn from(zdt: ZonedDateTime) -> ISOWeekDate {
         ISOWeekDate::from(zdt.date())
     }
 }
 
-impl<'a> From<&'a Zoned> for ISOWeekDate {
+impl<'a> From<&'a ZonedDateTime> for ISOWeekDate {
     #[inline]
-    fn from(zdt: &'a Zoned) -> ISOWeekDate {
+    fn from(zdt: &'a ZonedDateTime) -> ISOWeekDate {
         ISOWeekDate::from(zdt.date())
     }
 }
 
-#[cfg(test)]
-impl quickcheck::Arbitrary for ISOWeekDate {
-    fn arbitrary(g: &mut quickcheck::Gen) -> ISOWeekDate {
-        let year = ISOYear::arbitrary(g);
-        let week = ISOWeek::arbitrary(g);
-        let weekday = Weekday::arbitrary(g);
-        ISOWeekDate::new_ranged_constrain(year, week, weekday)
-    }
+#[cfg(feature = "defmt")]
+impl defmt::Format for ISOWeekDate {
+    fn format(&self, f: defmt::Formatter) {
+        use crate::fmt::DefmtWrite;
 
-    fn shrink(&self) -> alloc::boxed::Box<dyn Iterator<Item = ISOWeekDate>> {
-        alloc::boxed::Box::new(
-            (self.year_ranged(), self.week_ranged(), self.weekday())
-                .shrink()
-                .map(|(year, week, weekday)| {
-                    ISOWeekDate::new_ranged_constrain(year, week, weekday)
-                }),
-        )
+        defmt::unwrap!(
+            DEFAULT_DATETIME_PRINTER.print_iso_week_date(self, DefmtWrite(f))
+        );
     }
 }
 
-/// Returns true if the given ISO year is a "long" year or not.
-///
-/// A "long" year is a year with 53 weeks. Otherwise, it's a "short" year
-/// with 52 weeks.
-fn is_long_year(year: ISOYear) -> bool {
-    // Inspired by: https://en.wikipedia.org/wiki/ISO_week_date#Weeks_per_year
-    let last = Date::new_ranged(year.rinto(), C(12).rinto(), C(31).rinto())
-        .expect("last day of year is always valid");
-    let weekday = last.weekday();
-    weekday == Weekday::Thursday
-        || (last.in_leap_year() && weekday == Weekday::Friday)
+#[cfg(feature = "serde")]
+impl serde_core::Serialize for ISOWeekDate {
+    #[inline]
+    fn serialize<S: serde_core::Serializer>(
+        &self,
+        serializer: S,
+    ) -> Result<S::Ok, S::Error> {
+        serializer.collect_str(self)
+    }
 }
 
-#[cfg(not(miri))]
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[cfg(feature = "serde")]
+impl<'de> serde_core::Deserialize<'de> for ISOWeekDate {
+    #[inline]
+    fn deserialize<D: serde_core::Deserializer<'de>>(
+        deserializer: D,
+    ) -> Result<ISOWeekDate, D::Error> {
+        use serde_core::de;
 
-    quickcheck::quickcheck! {
-        fn prop_all_long_years_have_53rd_week(year: ISOYear) -> bool {
-            !is_long_year(year)
-                || ISOWeekDate::new(year.get(), 53, Weekday::Sunday).is_ok()
-        }
+        struct ISOWeekDateVisitor;
 
-        fn prop_prev_day_is_less(wd: ISOWeekDate) -> quickcheck::TestResult {
-            use crate::ToSpan;
+        impl<'de> de::Visitor<'de> for ISOWeekDateVisitor {
+            type Value = ISOWeekDate;
 
-            if wd == ISOWeekDate::MIN {
-                return quickcheck::TestResult::discard();
+            fn expecting(
+                &self,
+                f: &mut core::fmt::Formatter,
+            ) -> core::fmt::Result {
+                f.write_str("an ISO 8601 week date string")
             }
-            let prev_date = wd.date().checked_add(-1.days()).unwrap();
-            quickcheck::TestResult::from_bool(prev_date.iso_week_date() < wd)
-        }
 
-        fn prop_next_day_is_greater(wd: ISOWeekDate) -> quickcheck::TestResult {
-            use crate::ToSpan;
-
-            if wd == ISOWeekDate::MAX {
-                return quickcheck::TestResult::discard();
+            #[inline]
+            fn visit_bytes<E: de::Error>(
+                self,
+                value: &[u8],
+            ) -> Result<ISOWeekDate, E> {
+                DEFAULT_DATETIME_PARSER
+                    .parse_iso_week_date(value)
+                    .map_err(de::Error::custom)
             }
-            let next_date = wd.date().checked_add(1.days()).unwrap();
-            quickcheck::TestResult::from_bool(wd < next_date.iso_week_date())
+
+            #[inline]
+            fn visit_str<E: de::Error>(
+                self,
+                value: &str,
+            ) -> Result<ISOWeekDate, E> {
+                self.visit_bytes(value.as_bytes())
+            }
         }
+
+        deserializer.deserialize_str(ISOWeekDateVisitor)
     }
 }

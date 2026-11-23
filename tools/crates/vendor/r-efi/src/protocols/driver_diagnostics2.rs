@@ -20,7 +20,7 @@ pub const TYPE_MANUFACTURING: Type = 2;
 pub const TYPE_CANCEL: Type = 3;
 pub const TYPE_MAXIMUM: Type = 4;
 
-pub type RunDiagnostics = eficall! {fn(
+pub type RunDiagnostics = unsafe extern "efiapi" fn(
     *mut Protocol,
     crate::base::Handle,
     crate::base::Handle,
@@ -29,7 +29,7 @@ pub type RunDiagnostics = eficall! {fn(
     *mut *mut crate::base::Guid,
     *mut usize,
     *mut *mut crate::base::Char16,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
 #[repr(C)]
 pub struct Protocol {

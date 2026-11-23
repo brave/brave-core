@@ -5,8 +5,10 @@ use tokio::sync::oneshot;
 use tokio_util::sync::{CancellationToken, WaitForCancellationFuture};
 
 use core::future::Future;
+use core::hash::Hash;
 use core::task::{Context, Poll};
 use futures_test::task::new_count_waker;
+use std::hash::{DefaultHasher, Hasher};
 
 #[test]
 fn cancel_token() {
@@ -562,4 +564,91 @@ fn run_until_cancelled_owned_test() {
             fut.as_mut().poll(&mut Context::from_waker(&waker))
         );
     }
+}
+
+#[test]
+fn cloned_cancellation_tokens_are_considered_equal() {
+    let token = CancellationToken::new();
+    let token_clone = token.clone();
+
+    assert_eq!(token, token_clone);
+}
+
+#[test]
+fn child_cancellation_tokens_are_not_considered_equal() {
+    let token = CancellationToken::new();
+    let token_clone = token.child_token();
+
+    assert_ne!(token, token_clone);
+}
+
+#[test]
+fn independent_cancellation_tokens_are_not_considered_equal() {
+    let token1 = CancellationToken::new();
+    let token2 = CancellationToken::new();
+
+    assert_ne!(token1, token2);
+}
+
+#[test]
+fn cloned_cancellation_tokens_have_same_hash() {
+    let token1 = CancellationToken::new();
+    let token2 = token1.clone();
+
+    let mut state1 = DefaultHasher::default();
+    token1.hash(&mut state1);
+    let mut state2 = DefaultHasher::default();
+    token2.hash(&mut state2);
+    assert_eq!(state1.finish(), state2.finish());
+}
+
+#[test]
+fn different_cancellation_tokens_have_different_hash() {
+    let token1 = CancellationToken::new();
+    let token2 = CancellationToken::new();
+
+    let mut state1 = DefaultHasher::default();
+    token1.hash(&mut state1);
+    let mut state2 = DefaultHasher::default();
+    token2.hash(&mut state2);
+    assert_ne!(state1.finish(), state2.finish());
+}
+
+#[test]
+fn cancel_descendant_waker_can_access_ancestor() {
+    use std::sync::atomic::{AtomicBool, Ordering};
+    use std::sync::Arc;
+    use std::task::{Wake, Waker};
+
+    struct ReenterLockOnWake {
+        token: CancellationToken,
+        woken: AtomicBool,
+    }
+
+    impl Wake for ReenterLockOnWake {
+        fn wake(self: Arc<Self>) {
+            assert!(self.token.child_token().is_cancelled());
+            self.woken.store(true, Ordering::SeqCst);
+        }
+    }
+
+    let root = CancellationToken::new();
+    let child = root.child_token();
+
+    let fut = child.cancelled();
+    pin!(fut);
+
+    let state = Arc::new(ReenterLockOnWake {
+        token: root.clone(),
+        woken: AtomicBool::new(false),
+    });
+    let waker = Waker::from(state.clone());
+    assert_eq!(
+        Poll::Pending,
+        fut.as_mut().poll(&mut Context::from_waker(&waker))
+    );
+    drop(waker);
+
+    root.cancel();
+    assert!(state.woken.load(Ordering::SeqCst));
 }

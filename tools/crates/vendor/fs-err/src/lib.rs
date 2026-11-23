@@ -1,11 +1,11 @@
 /*!
-fs-err is a drop-in replacement for [`std::fs`][std::fs] that provides more
+fs-err is a drop-in replacement for [`std::fs`] that provides more
 helpful messages on errors. Extra information includes which operations was
 attempted and any involved paths.
 
 # Error Messages
 
-Using [`std::fs`][std::fs], if this code fails:
+Using [`std::fs`], if this code fails:
 
 ```no_run
 # use std::fs::File;
@@ -27,7 +27,7 @@ failed to open file `does not exist.txt`: The system cannot find the file specif
 
 # Usage
 
-fs-err's API is the same as [`std::fs`][std::fs], so migrating code to use it is easy.
+fs-err's API is the same as [`std::fs`], so migrating code to use it is easy.
 
 ```no_run
 // use std::fs;
@@ -40,10 +40,9 @@ println!("Read foo.txt: {}", contents);
 # Ok::<(), std::io::Error>(())
 ```
 
-fs-err uses [`std::io::Error`][std::io::Error] for all errors. This helps fs-err
-compose well with traits from the standard library like
-[`std::io::Read`][std::io::Read] and crates that use them like
-[`serde_json`][serde_json]:
+fs-err uses [`std::io::Error`] for all errors. This helps fs-err compose well
+with traits from the standard library like [`std::io::Read`] and crates that
+use them like [`serde_json`]:
 
 ```no_run
 use fs_err::File;
@@ -61,8 +60,10 @@ println!("Program config: {:?}", decoded);
 
 # Feature flags
 
-* `expose_original_error`: when enabled, the [`Error::source()`](https://doc.rust-lang.org/stable/std/error/trait.Error.html#method.source) method of errors returned by this crate return the original `io::Error`. To avoid duplication in error messages,
-  this also suppresses printing its message in their `Display` implementation, so make sure that you are printing the full error chain.
+* `expose_original_error`: when enabled, the [`std::error::Error::source`] method of errors returned
+  by this crate return the original [`std::io::Error`]. To avoid duplication in error messages,
+  this also suppresses printing its message in their `Display` implementation, so make sure that you
+  are printing the full error chain.
 * `debug`: Debug filesystem errors faster by exposing more information. When a filesystem command
   fails, the error message might say "file does not exist." But it won't say **why** it doesn't exist.
   Perhaps the programmer misspelled the filename, perhaps that directory doesn't exist, or if it does,
@@ -95,17 +96,16 @@ fs-err = { features = ["debug_tokio", "tokio"] }
 
 The oldest rust version this crate is tested on is **1.40**.
 
-This crate will generally be conservative with rust version updates. It uses the [`autocfg`](https://crates.io/crates/autocfg) crate to allow wrapping new APIs without incrementing the MSRV.
+This crate will generally be conservative with rust version updates. It uses the [`autocfg`] crate to allow wrapping new APIs without incrementing the MSRV.
 
-If the `tokio` feature is enabled, this crate will inherit the MSRV of the selected [`tokio`](https://crates.io/crates/tokio) version.
+If the `tokio` feature is enabled, this crate will inherit the MSRV of the selected [`tokio`] version.
 
-[std::fs]: https://doc.rust-lang.org/stable/std/fs/
-[std::io::Error]: https://doc.rust-lang.org/stable/std/io/struct.Error.html
-[std::io::Read]: https://doc.rust-lang.org/stable/std/io/trait.Read.html
-[serde_json]: https://crates.io/crates/serde_json
+[`autocfg`]: https://crates.io/crates/autocfg
+[`serde_json`]: https://crates.io/crates/serde_json
+[`tokio`]: https://crates.io/crates/tokio
 */
 
-#![doc(html_root_url = "https://docs.rs/fs-err/3.2.2")]
+#![doc(html_root_url = "https://docs.rs/fs-err/3.3.2")]
 #![deny(missing_debug_implementations, missing_docs)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
@@ -132,7 +132,7 @@ pub use path::PathExt;
 
 /// Read the entire contents of a file into a bytes vector.
 ///
-/// Wrapper for [`fs::read`](https://doc.rust-lang.org/stable/std/fs/fn.read.html).
+/// Wrapper for [`std::fs::read`].
 pub fn read<P: AsRef<Path>>(path: P) -> io::Result<Vec<u8>> {
     let path = path.as_ref();
     let mut file = file::open(path).map_err(|err_gen| err_gen(path.to_path_buf()))?;
@@ -144,7 +144,7 @@ pub fn read<P: AsRef<Path>>(path: P) -> io::Result<Vec<u8>> {
 
 /// Read the entire contents of a file into a string.
 ///
-/// Wrapper for [`fs::read_to_string`](https://doc.rust-lang.org/stable/std/fs/fn.read_to_string.html).
+/// Wrapper for [`std::fs::read_to_string`].
 pub fn read_to_string<P: AsRef<Path>>(path: P) -> io::Result<String> {
     let path = path.as_ref();
     let mut file = file::open(path).map_err(|err_gen| err_gen(path.to_path_buf()))?;
@@ -156,7 +156,7 @@ pub fn read_to_string<P: AsRef<Path>>(path: P) -> io::Result<String> {
 
 /// Write a slice as the entire contents of a file.
 ///
-/// Wrapper for [`fs::write`](https://doc.rust-lang.org/stable/std/fs/fn.write.html).
+/// Wrapper for [`std::fs::write`].
 pub fn write<P: AsRef<Path>, C: AsRef<[u8]>>(path: P, contents: C) -> io::Result<()> {
     let path = path.as_ref();
     file::create(path)
@@ -168,7 +168,7 @@ pub fn write<P: AsRef<Path>, C: AsRef<[u8]>>(path: P, contents: C) -> io::Result
 /// Copies the contents of one file to another. This function will also copy the
 /// permission bits of the original file to the destination file.
 ///
-/// Wrapper for [`fs::copy`](https://doc.rust-lang.org/stable/std/fs/fn.copy.html).
+/// Wrapper for [`std::fs::copy`].
 pub fn copy<P, Q>(from: P, to: Q) -> io::Result<u64>
 where
     P: AsRef<Path>,
@@ -182,7 +182,7 @@ where
 
 /// Creates a new, empty directory at the provided path.
 ///
-/// Wrapper for [`fs::create_dir`](https://doc.rust-lang.org/stable/std/fs/fn.create_dir.html).
+/// Wrapper for [`std::fs::create_dir`].
 pub fn create_dir<P>(path: P) -> io::Result<()>
 where
     P: AsRef<Path>,
@@ -193,7 +193,7 @@ where
 
 /// Recursively create a directory and all of its parent components if they are missing.
 ///
-/// Wrapper for [`fs::create_dir_all`](https://doc.rust-lang.org/stable/std/fs/fn.create_dir_all.html).
+/// Wrapper for [`std::fs::create_dir_all`].
 pub fn create_dir_all<P>(path: P) -> io::Result<()>
 where
     P: AsRef<Path>,
@@ -204,7 +204,7 @@ where
 
 /// Removes an empty directory.
 ///
-/// Wrapper for [`fs::remove_dir`](https://doc.rust-lang.org/stable/std/fs/fn.remove_dir.html).
+/// Wrapper for [`std::fs::remove_dir`].
 pub fn remove_dir<P>(path: P) -> io::Result<()>
 where
     P: AsRef<Path>,
@@ -215,7 +215,7 @@ where
 
 /// Removes a directory at this path, after removing all its contents. Use carefully!
 ///
-/// Wrapper for [`fs::remove_dir_all`](https://doc.rust-lang.org/stable/std/fs/fn.remove_dir_all.html).
+/// Wrapper for [`std::fs::remove_dir_all`].
 pub fn remove_dir_all<P>(path: P) -> io::Result<()>
 where
     P: AsRef<Path>,
@@ -226,7 +226,7 @@ where
 
 /// Removes a file from the filesystem.
 ///
-/// Wrapper for [`fs::remove_file`](https://doc.rust-lang.org/stable/std/fs/fn.remove_file.html).
+/// Wrapper for [`std::fs::remove_file`].
 pub fn remove_file<P>(path: P) -> io::Result<()>
 where
     P: AsRef<Path>,
@@ -237,7 +237,7 @@ where
 
 /// Given a path, query the file system to get information about a file, directory, etc.
 ///
-/// Wrapper for [`fs::metadata`](https://doc.rust-lang.org/stable/std/fs/fn.metadata.html).
+/// Wrapper for [`std::fs::metadata`].
 pub fn metadata<P: AsRef<Path>>(path: P) -> io::Result<fs::Metadata> {
     let path = path.as_ref();
     fs::metadata(path).map_err(|source| Error::build(source, ErrorKind::Metadata, path))
@@ -245,7 +245,7 @@ pub fn metadata<P: AsRef<Path>>(path: P) -> io::Result<fs::Metadata> {
 
 /// Returns `Ok(true)` if the path points at an existing entity.
 ///
-/// Wrapper for [`fs::exists`](https://doc.rust-lang.org/stable/std/fs/fn.exists.html).
+/// Wrapper for [`std::fs::exists`].
 #[cfg(rustc_1_81)]
 pub fn exists<P: AsRef<Path>>(path: P) -> io::Result<bool> {
     let path = path.as_ref();
@@ -255,7 +255,7 @@ pub fn exists<P: AsRef<Path>>(path: P) -> io::Result<bool> {
 /// Returns the canonical, absolute form of a path with all intermediate components
 /// normalized and symbolic links resolved.
 ///
-/// Wrapper for [`fs::canonicalize`](https://doc.rust-lang.org/stable/std/fs/fn.canonicalize.html).
+/// Wrapper for [`std::fs::canonicalize`].
 pub fn canonicalize<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
     let path = path.as_ref();
     fs::canonicalize(path).map_err(|source| Error::build(source, ErrorKind::Canonicalize, path))
@@ -267,7 +267,7 @@ pub fn canonicalize<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
 /// systems often require these two paths to both be located on the same
 /// filesystem.
 ///
-/// Wrapper for [`fs::hard_link`](https://doc.rust-lang.org/stable/std/fs/fn.hard_link.html).
+/// Wrapper for [`std::fs::hard_link`].
 pub fn hard_link<P: AsRef<Path>, Q: AsRef<Path>>(original: P, link: Q) -> io::Result<()> {
     let original = original.as_ref();
     let link = link.as_ref();
@@ -278,7 +278,7 @@ pub fn hard_link<P: AsRef<Path>, Q: AsRef<Path>>(original: P, link: Q) -> io::Re
 
 /// Reads a symbolic link, returning the file that the link points to.
 ///
-/// Wrapper for [`fs::read_link`](https://doc.rust-lang.org/stable/std/fs/fn.read_link.html).
+/// Wrapper for [`std::fs::read_link`].
 pub fn read_link<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
     let path = path.as_ref();
     fs::read_link(path).map_err(|source| Error::build(source, ErrorKind::ReadLink, path))
@@ -286,7 +286,7 @@ pub fn read_link<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
 
 /// Rename a file or directory to a new name, replacing the original file if to already exists.
 ///
-/// Wrapper for [`fs::rename`](https://doc.rust-lang.org/stable/std/fs/fn.rename.html).
+/// Wrapper for [`std::fs::rename`].
 pub fn rename<P: AsRef<Path>, Q: AsRef<Path>>(from: P, to: Q) -> io::Result<()> {
     let from = from.as_ref();
     let to = to.as_ref();
@@ -298,7 +298,7 @@ pub fn rename<P: AsRef<Path>, Q: AsRef<Path>>(from: P, to: Q) -> io::Result<()> 
 ///
 /// The `link` path will be a symbolic link pointing to the `original` path.
 ///
-/// Wrapper for [`fs::soft_link`](https://doc.rust-lang.org/stable/std/fs/fn.soft_link.html).
+/// Wrapper for [`std::fs::soft_link`].
 #[deprecated = "replaced with std::os::unix::fs::symlink and \
 std::os::windows::fs::{symlink_file, symlink_dir}"]
 pub fn soft_link<P: AsRef<Path>, Q: AsRef<Path>>(original: P, link: Q) -> io::Result<()> {
@@ -312,7 +312,7 @@ pub fn soft_link<P: AsRef<Path>, Q: AsRef<Path>>(original: P, link: Q) -> io::Re
 
 /// Query the metadata about a file without following symlinks.
 ///
-/// Wrapper for [`fs::symlink_metadata`](https://doc.rust-lang.org/stable/std/fs/fn.symlink_metadata.html).
+/// Wrapper for [`std::fs::symlink_metadata`].
 pub fn symlink_metadata<P: AsRef<Path>>(path: P) -> io::Result<fs::Metadata> {
     let path = path.as_ref();
     fs::symlink_metadata(path)
@@ -321,7 +321,7 @@ pub fn symlink_metadata<P: AsRef<Path>>(path: P) -> io::Result<fs::Metadata> {
 
 /// Changes the permissions found on a file or a directory.
 ///
-/// Wrapper for [`fs::set_permissions`](https://doc.rust-lang.org/stable/std/fs/fn.set_permissions.html).
+/// Wrapper for [`std::fs::set_permissions`].
 pub fn set_permissions<P: AsRef<Path>>(path: P, perm: fs::Permissions) -> io::Result<()> {
     let path = path.as_ref();
     fs::set_permissions(path, perm)

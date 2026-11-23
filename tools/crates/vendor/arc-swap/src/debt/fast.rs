@@ -13,6 +13,8 @@
 //! hits somewhere in between the two reads of the pointer, or to have successfully acquired it
 //! before the change and before any cleanup of the old pointer happened (in which case we know the
 //! writer will see our debt).
+//!
+//! The slot's storage word is published before the pointer, by the SeqCst swap of the pointer.
 
 use core::cell::Cell;
 use core::slice::Iter;
@@ -40,7 +42,7 @@ impl Slots {
     ///
     /// Fails if there are no free slots.
     #[inline]
-    pub(super) fn get_debt(&self, ptr: usize, local: &Local) -> Option<&Debt> {
+    pub(super) fn get_debt(&self, ptr: usize, storage_addr: usize, local: &Local) -> Option<&Debt> {
         // Trick with offsets: we rotate through the slots (save the value from last time)
         // so successive leases are likely to succeed on the first attempt (or soon after)
         // instead of going through the list of already held ones.
@@ -51,11 +53,14 @@ impl Slots {
             // Note: the indexing check is almost certainly optimised out because the len
             // is used above. And using .get_unchecked was actually *slower*.
             let slot = &self.0[i];
-            if slot.0.load(Relaxed) == Debt::NONE {
+            if slot.ptr.load(Relaxed) == Debt::NONE {
                 // We are allowed to split into the check and acquiring the debt. That's because we
                 // are the only ones allowed to change NONE to something else. But we still need a
                 // read-write operation with SeqCst on it :-(
-                let old = slot.0.swap(ptr, SeqCst);
+                //
+                // The storage word is Relaxed: it gets published by the SeqCst swap of the pointer.
+                slot.storage.store(storage_addr, Relaxed);
+                let old = slot.ptr.swap(ptr, SeqCst);
                 debug_assert_eq!(Debt::NONE, old);
                 local.offset.set(i + 1);
                 return Some(&self.0[i]);

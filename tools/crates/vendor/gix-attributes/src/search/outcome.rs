@@ -1,13 +1,13 @@
 use bstr::{BString, ByteSlice};
 use gix_glob::Pattern;
-use kstring::{KString, KStringRef};
+use gix_parallel::OwnShared;
 
 use crate::{
-    search::{
-        refmap::RefMapKey, Assignments, AttributeId, Attributes, MatchKind, Metadata, MetadataCollection, Outcome,
-        TrackedAssignment, Value,
-    },
     AssignmentRef, NameRef, StateRef,
+    search::{
+        Assignments, AttributeId, Attributes, MatchKind, Metadata, MetadataCollection, Outcome, TrackedAssignment,
+        Value, refmap::RefMapKey,
+    },
 };
 
 /// Initialization
@@ -30,7 +30,7 @@ impl Outcome {
             }
 
             for (name, id) in self.selected.iter_mut().filter(|(_, id)| id.is_none()) {
-                *id = collection.name_to_meta.get(name.as_str()).map(|meta| meta.id);
+                *id = collection.name_to_meta.get(name.as_ref()).map(|meta| meta.id);
             }
         }
         self.reset();
@@ -41,25 +41,16 @@ impl Outcome {
     /// Users of this instance should prefer to limit their search as this would allow it to finish earlier.
     ///
     /// Note that `attribute_names` aren't validated to be valid names here, as invalid names definitely will always be unspecified.
-    pub fn initialize_with_selection<'a>(
+    pub fn initialize_with_selection(
         &mut self,
         collection: &MetadataCollection,
-        attribute_names: impl IntoIterator<Item = impl Into<KStringRef<'a>>>,
-    ) {
-        self.initialize_with_selection_inner(collection, &mut attribute_names.into_iter().map(Into::into));
-    }
-
-    fn initialize_with_selection_inner(
-        &mut self,
-        collection: &MetadataCollection,
-        attribute_names: &mut dyn Iterator<Item = KStringRef<'_>>,
+        attribute_names: impl IntoIterator<Item = impl AsRef<str>>,
     ) {
         self.selected.clear();
-        self.selected.extend(attribute_names.map(|name| {
-            (
-                name.to_owned(),
-                collection.name_to_meta.get(name.as_str()).map(|meta| meta.id),
-            )
+        self.selected.extend(attribute_names.into_iter().map(|name| {
+            let name: OwnShared<str> = name.as_ref().into();
+            let id = collection.name_to_meta.get(name.as_ref()).map(|meta| meta.id);
+            (name, id)
         }));
 
         self.initialize(collection);
@@ -137,8 +128,7 @@ impl Outcome {
                 .unwrap_or_else(|| crate::search::Match {
                     pattern: &DUMMY,
                     assignment: AssignmentRef {
-                        name: NameRef::try_from(name.as_bytes().as_bstr())
-                            .unwrap_or_else(|_| NameRef("invalid".into())),
+                        name: NameRef::try_from(name.as_ref().as_bytes().as_bstr()).unwrap_or(NameRef("invalid")),
                         state: StateRef::Unspecified,
                     },
                     kind: MatchKind::Attribute { macro_id: None },
@@ -188,6 +178,7 @@ impl Outcome {
             }
             // Let's be explicit - this is only non-empty for macros.
             let is_macro = !slot.macro_attributes.is_empty();
+            let expand_macro = is_macro && matches!(assignment.state, crate::State::Set);
 
             slot.r#match = Some(Match {
                 pattern: self.patterns.insert(pattern),
@@ -208,7 +199,7 @@ impl Outcome {
                 return true;
             }
 
-            if is_macro {
+            if expand_macro {
                 // TODO(borrowchk): one fine day we should be able to re-borrow `slot` without having to redo the array access.
                 let slot = &self.matches_by_id[id.0];
                 self.attrs_stack.extend(
@@ -309,7 +300,7 @@ impl MetadataCollection {
             None => {
                 let order = AttributeId(self.name_to_meta.len());
                 self.name_to_meta.insert(
-                    KString::from_ref(name),
+                    NameRef(name).to_owned(),
                     Metadata {
                         id: order,
                         macro_attributes: Default::default(),
@@ -333,7 +324,7 @@ impl MetadataCollection {
             Some(meta) => meta.id,
             None => {
                 let order = AttributeId(self.name_to_meta.len());
-                self.name_to_meta.insert(KString::from_ref(name), order.into());
+                self.name_to_meta.insert(NameRef(name).to_owned(), order.into());
                 order
             }
         }
@@ -344,7 +335,7 @@ impl MetadataCollection {
             inner: crate::Assignment { name, .. },
         } in attributes
         {
-            *order = self.id_for_attribute(&name.0);
+            *order = self.id_for_attribute(name.as_str());
         }
     }
 }

@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-transport"
-version = "0.49.1"
+version = "0.62.0"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,6 +29,7 @@ description = "A crate of the gitoxide project dedicated to implementing the git
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [package.metadata.docs.rs]
 features = [
@@ -49,13 +50,18 @@ blocking-client = ["gix-packetline/blocking-io"]
 default = []
 http-client = [
     "base64",
-    "gix-features/io-pipe",
+    "parking_lot",
+    "gix-utils/io-pipe",
     "blocking-client",
     "gix-credentials",
 ]
 http-client-curl = [
     "curl",
     "http-client",
+]
+http-client-curl-openssl = [
+    "http-client-curl",
+    "curl/ssl",
 ]
 http-client-curl-rust-tls = [
     "http-client-curl",
@@ -68,18 +74,21 @@ http-client-reqwest = [
 ]
 http-client-reqwest-native-tls = [
     "http-client-reqwest",
-    "reqwest/default-tls",
+    "reqwest/native-tls",
 ]
 http-client-reqwest-rust-tls = [
     "http-client-reqwest",
-    "reqwest/rustls-tls",
+    "reqwest/rustls",
 ]
 http-client-reqwest-rust-tls-trust-dns = [
     "http-client-reqwest",
-    "reqwest/rustls-tls",
-    "reqwest/trust-dns",
+    "reqwest/rustls",
+    "reqwest/hickory-dns",
 ]
-serde = ["dep:serde"]
+serde = [
+    "dep:serde",
+    "bstr/serde",
+]
 
 [lib]
 name = "gix_transport"
@@ -109,13 +118,14 @@ default-features = false
 [dependencies.curl]
 version = "0.4"
 optional = true
+default-features = false
 
 [dependencies.document-features]
 version = "0.2.0"
 optional = true
 
 [dependencies.futures-io]
-version = "0.3.16"
+version = "0.3.32"
 optional = true
 
 [dependencies.futures-lite]
@@ -123,38 +133,51 @@ version = "2.1.0"
 optional = true
 
 [dependencies.gix-command]
-version = "^0.6.3"
+version = "^0.12.1"
 
 [dependencies.gix-credentials]
-version = "^0.31.1"
+version = "^0.42.1"
 optional = true
 
-[dependencies.gix-features]
-version = "^0.44.1"
+[dependencies.gix-error]
+version = "^0.5.2"
 
 [dependencies.gix-packetline]
-version = "^0.19.3"
+version = "^0.24.1"
+
+[dependencies.gix-path]
+version = "^0.14.1"
 
 [dependencies.gix-quote]
-version = "^0.6.1"
+version = "^0.10.1"
 
 [dependencies.gix-sec]
-version = "^0.12.2"
+version = "^0.16.0"
+
+[dependencies.gix-trace]
+version = "^0.3.1"
 
 [dependencies.gix-url]
-version = "^0.33.1"
+version = "^0.40.1"
+
+[dependencies.gix-utils]
+version = "^0.5.1"
+features = ["bstr"]
+
+[dependencies.parking_lot]
+version = "0.12.4"
+optional = true
 
 [dependencies.pin-project-lite]
 version = "0.2.6"
 optional = true
 
 [dependencies.reqwest]
-version = "0.12.22"
+version = "0.13.4"
 features = [
     "blocking",
     "charset",
     "http2",
-    "macos-system-configuration",
 ]
 optional = true
 default-features = false
@@ -168,9 +191,6 @@ features = [
 optional = true
 default-features = false
 
-[dependencies.thiserror]
-version = "2.0.17"
-
 [dev-dependencies.async-std]
 version = "1.9.0"
 features = ["attributes"]
@@ -178,10 +198,11 @@ features = ["attributes"]
 [dev-dependencies.blocking]
 version = "1.6.2"
 
-[dev-dependencies.maybe-async]
-version = "0.2.6"
+[dev-dependencies.insta]
+version = "1.46.3"
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -200,7 +221,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

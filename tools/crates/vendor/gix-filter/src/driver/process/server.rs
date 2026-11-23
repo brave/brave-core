@@ -1,6 +1,8 @@
+use gix_error::{Result, bail};
 use std::{collections::HashSet, io::Write, str::FromStr};
 
 use bstr::{BString, ByteSlice};
+use gix_packetline::blocking_io::{StreamingPeekableIter, Writer, encode};
 
 use crate::driver::process::Server;
 
@@ -11,38 +13,6 @@ pub struct Request<'a> {
     pub command: String,
     /// A list of key-value pairs of meta-data related to `command`.
     pub meta: Vec<(String, BString)>,
-}
-
-///
-pub mod next_request {
-    use bstr::BString;
-
-    /// The error returned by [Server::next_request()][super::Server::next_request()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("Failed to read from the client")]
-        Io(#[from] std::io::Error),
-        #[error("{msg} '{actual}'")]
-        Protocol { msg: String, actual: BString },
-        #[error(transparent)]
-        PacketlineDecode(#[from] gix_packetline_blocking::decode::Error),
-    }
-}
-
-///
-pub mod handshake {
-    /// The error returned by [Server::handshake()][super::Server::handshake()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("Failed to read or write to the client")]
-        Io(#[from] std::io::Error),
-        #[error("{msg} '{actual}'")]
-        Protocol { msg: String, actual: String },
-        #[error("Could not select supported version from the one sent by the client: {}", actual.iter().map(ToString::to_string).collect::<Vec<_>>().join(", "))]
-        VersionMismatch { actual: Vec<usize> },
-    }
 }
 
 impl Server {
@@ -62,29 +32,31 @@ impl Server {
         welcome_prefix: &str,
         pick_version: &mut dyn FnMut(&[usize]) -> Option<usize>,
         available_capabilities: &[&str],
-    ) -> Result<Self, handshake::Error> {
-        let mut input = gix_packetline_blocking::StreamingPeekableIter::new(
+    ) -> Result<Self> {
+        use gix_error::{OptionExt, ResultExt, message};
+
+        let mut input = StreamingPeekableIter::new(
             stdin.lock(),
-            &[gix_packetline_blocking::PacketLineRef::Flush],
+            &[gix_packetline::PacketLineRef::Flush],
             false, /* packet tracing */
         );
         let mut read = input.as_read();
         let mut buf = String::new();
-        read.read_line_to_string(&mut buf)?;
+        read.read_line_to_string(&mut buf)
+            .or_raise(|| message("Failed to read or write to the client"))?;
         if buf
             .strip_prefix(welcome_prefix)
             .is_none_or(|rest| rest.trim_end() != "-client")
         {
-            return Err(handshake::Error::Protocol {
-                msg: format!("Expected '{welcome_prefix}-client, got"),
-                actual: buf,
-            });
+            bail!("Expected '{welcome_prefix}-client, got '{buf}'".corrupted());
         }
 
         let mut versions = Vec::new();
         loop {
             buf.clear();
-            let num_read = read.read_line_to_string(&mut buf)?;
+            let num_read = read
+                .read_line_to_string(&mut buf)
+                .or_raise(|| message("Failed to read or write to the client"))?;
             if num_read == 0 {
                 break;
             }
@@ -95,26 +67,34 @@ impl Server {
                 {
                     Some(version) => version,
                     None => {
-                        return Err(handshake::Error::Protocol {
-                            msg: "Expected 'version=<integer>', got".into(),
-                            actual: buf,
-                        })
+                        bail!("Expected 'version=<integer>', got '{buf}'".corrupted());
                     }
                 },
             );
         }
-        let version = pick_version(&versions).ok_or(handshake::Error::VersionMismatch { actual: versions })?;
-        read.reset_with(&[gix_packetline_blocking::PacketLineRef::Flush]);
-        let mut out = gix_packetline_blocking::Writer::new(stdout.lock());
-        out.write_all(format!("{welcome_prefix}-server").as_bytes())?;
-        out.write_all(format!("version={version}").as_bytes())?;
-        gix_packetline_blocking::encode::flush_to_write(out.inner_mut())?;
-        out.flush()?;
+        let version = pick_version(&versions).ok_or_raise(|| {
+            message!(
+                "Could not select supported version from the one sent by the client: {}",
+                versions.iter().map(ToString::to_string).collect::<Vec<_>>().join(", ")
+            )
+            .unsupported()
+        })?;
+        read.reset_with(&[gix_packetline::PacketLineRef::Flush]);
+        let mut out = Writer::new(stdout.lock());
+        out.write_all(format!("{welcome_prefix}-server").as_bytes())
+            .or_raise(|| message("Failed to read or write to the client"))?;
+        out.write_all(format!("version={version}").as_bytes())
+            .or_raise(|| message("Failed to read or write to the client"))?;
+        encode::flush_to_write(out.inner_mut()).or_raise(|| message("Failed to read or write to the client"))?;
+        out.flush()
+            .or_raise(|| message("Failed to read or write to the client"))?;
 
         let mut capabilities = HashSet::new();
         loop {
             buf.clear();
-            let num_read = read.read_line_to_string(&mut buf)?;
+            let num_read = read
+                .read_line_to_string(&mut buf)
+                .or_raise(|| message("Failed to read or write to the client"))?;
             if num_read == 0 {
                 break;
             }
@@ -130,10 +110,12 @@ impl Server {
         }
 
         for cap in &capabilities {
-            out.write_all(format!("capability={cap}").as_bytes())?;
+            out.write_all(format!("capability={cap}").as_bytes())
+                .or_raise(|| message("Failed to read or write to the client"))?;
         }
-        gix_packetline_blocking::encode::flush_to_write(out.inner_mut())?;
-        out.flush()?;
+        encode::flush_to_write(out.inner_mut()).or_raise(|| message("Failed to read or write to the client"))?;
+        out.flush()
+            .or_raise(|| message("Failed to read or write to the client"))?;
 
         drop(read);
         Ok(Server {
@@ -154,49 +136,44 @@ impl Server {
     ///
     /// Note that the process is supposed to shut-down once there are no more requests, and `git` will wait
     /// until it has finished.
-    pub fn next_request(&mut self) -> Result<Option<Request<'_>>, next_request::Error> {
+    pub fn next_request(&mut self) -> Result<Option<Request<'_>>> {
+        use gix_error::{ErrorExt, OptionExt, ResultExt, message};
+
         let mut buf = String::new();
         let mut read = self.input.as_read();
 
         match read.read_line_to_string(&mut buf) {
             Ok(_) => {}
             Err(err) if err.kind() == std::io::ErrorKind::UnexpectedEof => return Ok(None),
-            Err(err) => return Err(err.into()),
+            Err(err) => bail!(err.and_raise(message("Failed to read from the client"))),
         }
         let command = match buf.strip_prefix("command=").map(str::trim_end).map(ToOwned::to_owned) {
             Some(cmd) => cmd,
             None => {
-                return Err(next_request::Error::Protocol {
-                    msg: "Wanted 'command=<name>', got ".into(),
-                    actual: buf.into(),
-                })
+                bail!("Wanted 'command=<name>', got  '{buf}'".corrupted());
             }
         };
 
         let mut meta = Vec::with_capacity(1);
         while let Some(res) = read.read_data_line() {
-            let line = res??;
+            let line = res
+                .or_raise(|| message("Failed to read from the client"))?
+                .or_raise(|| message("Failed to decode packet line"))?;
             let line = line
                 .as_bstr()
-                .ok_or_else(|| next_request::Error::Protocol {
-                    msg: "expected data line, got ".into(),
-                    actual: format!("{line:?}").into(),
-                })?
+                .ok_or_raise(|| message!("expected data line, got  '{line:?}'").corrupted())?
                 .trim();
             let mut tokens = line.splitn(2, |b| *b == b'=');
             let (key, value) = tokens
                 .next()
                 .zip(tokens.next())
-                .ok_or_else(|| next_request::Error::Protocol {
-                    msg: "Expected 'key=value' metadata, got".into(),
-                    actual: line.into(),
-                })?;
+                .ok_or_raise(|| message!("Expected 'key=value' metadata, got '{}'", line.as_bstr()).corrupted())?;
             assert!(tokens.next().is_none(), "configured to yield at most two tokens");
             meta.push((key.as_bstr().to_string(), value.into()));
         }
 
         drop(read);
-        self.input.reset_with(&[gix_packetline_blocking::PacketLineRef::Flush]);
+        self.input.reset_with(&[gix_packetline::PacketLineRef::Flush]);
 
         Ok(Some(Request {
             parent: self,
@@ -209,9 +186,11 @@ impl Server {
 mod request {
     use std::io::Write;
 
+    use gix_packetline::blocking_io::{Writer, encode};
+
     use crate::driver::{
         process,
-        process::{server::Request, PacketlineReader},
+        process::{PacketlineReader, server::Request},
     };
 
     impl Request<'_> {
@@ -233,7 +212,7 @@ mod request {
             if let Some(message) = status.message() {
                 out.write_all(format!("status={message}").as_bytes())?;
             }
-            gix_packetline_blocking::encode::flush_to_write(out.inner_mut())?;
+            encode::flush_to_write(out.inner_mut())?;
             out.flush()
         }
     }
@@ -248,7 +227,7 @@ mod request {
     }
 
     struct WriteAndFlushOnDrop<'a> {
-        inner: &'a mut gix_packetline_blocking::Writer<std::io::StdoutLock<'static>>,
+        inner: &'a mut Writer<std::io::StdoutLock<'static>>,
     }
 
     impl std::io::Write for WriteAndFlushOnDrop<'_> {
@@ -263,7 +242,7 @@ mod request {
 
     impl Drop for WriteAndFlushOnDrop<'_> {
         fn drop(&mut self) {
-            gix_packetline_blocking::encode::flush_to_write(self.inner.inner_mut()).ok();
+            encode::flush_to_write(self.inner.inner_mut()).ok();
             self.inner.flush().ok();
         }
     }

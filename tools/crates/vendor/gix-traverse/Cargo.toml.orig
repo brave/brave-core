@@ -2,26 +2,43 @@ lints.workspace = true
 
 [package]
 name = "gix-traverse"
-version = "0.48.0"
+version = "0.64.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate of the gitoxide project"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-include = ["src/**/*", "LICENSE-*"]
-rust-version = "1.82"
-autotests = false
+edition = "2024"
+include = ["/src/**/*", "/LICENSE-*"]
+rust-version = "1.88"
 
 [lib]
 doctest = false
 
+[features]
+## Enable support for the SHA-1 hash by enabling the respective feature in the `gix-hash` crate.
+sha1 = ["gix-hash/sha1"]
+## Enable support for the SHA-256 hash by enabling the respective feature in the `gix-hash` crate.
+sha256 = ["gix-hash/sha256"]
+
 [dependencies]
-gix-hash = { version = "^0.20.0", path = "../gix-hash" }
-gix-object = { version = "^0.51.0", path = "../gix-object" }
-gix-date = { version = "^0.10.6", path = "../gix-date" }
-gix-hashtable = { version = "^0.10.0", path = "../gix-hashtable" }
-gix-revwalk = { version = "^0.22.0", path = "../gix-revwalk" }
-gix-commitgraph = { version = "^0.30.0", path = "../gix-commitgraph" }
+gix-hash = { version = "^0.28.1", path = "../gix-hash" }
+gix-error = { version = "^0.5.2", path = "../gix-error" }
+gix-object = { version = "^0.66.1", path = "../gix-object" }
+gix-date = { version = "^0.18.1", path = "../gix-date" }
+gix-hashtable = { version = "^0.18.0", path = "../gix-hashtable" }
+gix-revwalk = { version = "^0.38.0", path = "../gix-revwalk" }
+gix-commitgraph = { version = "^0.42.0", path = "../gix-commitgraph" }
 smallvec = "1.15.1"
-thiserror = "2.0.17"
 bitflags = "2"
+
+[dev-dependencies]
+gix-traverse = { path = ".", features = ["sha1", "sha256"] }
+gix-testtools = { path = "../tests/tools", default-features = false, features = ["sha1", "sha256"] }
+gix-odb = { path = "../gix-odb" }
+gix-object = { path = "../gix-object" }
+gix-commitgraph = { path = "../gix-commitgraph" }
+gix-path = { path = "../gix-path" }
+insta = "1.46.3"
+
+[package.metadata.docs.rs]
+features = ["sha1"]

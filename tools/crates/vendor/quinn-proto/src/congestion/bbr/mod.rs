@@ -2,7 +2,8 @@ use std::any::Any;
 use std::fmt::Debug;
 use std::sync::Arc;
 
-use rand::{Rng, SeedableRng};
+use rand::{RngExt, SeedableRng};
+use rand_pcg::Pcg32;
 
 use crate::congestion::ControllerMetrics;
 use crate::congestion::bbr::bw_estimation::BandwidthEstimation;
@@ -56,7 +57,7 @@ pub struct Bbr {
     bw_at_last_round: u64,
     round_wo_bw_gain: u64,
     ack_aggregation: AckAggregationState,
-    random_number_generator: rand::rngs::StdRng,
+    random_number_generator: Pcg32,
 }
 
 impl Bbr {
@@ -97,7 +98,7 @@ impl Bbr {
             bw_at_last_round: 0,
             round_wo_bw_gain: 0,
             ack_aggregation: AckAggregationState::default(),
-            random_number_generator: rand::rngs::StdRng::from_os_rng(),
+            random_number_generator: Pcg32::from_rng(&mut rand::rng()),
         }
     }
 
@@ -235,21 +236,25 @@ impl Bbr {
         }
 
         if self.mode == Mode::ProbeRtt {
-            if self.exit_probe_rtt_at.is_none() {
-                // If the window has reached the appropriate size, schedule exiting
-                // ProbeRtt.  The CWND during ProbeRtt is
-                // kMinimumCongestionWindow, but we allow an extra packet since QUIC
-                // checks CWND before sending a packet.
-                if bytes_in_flight < self.get_probe_rtt_cwnd() + self.current_mtu {
-                    const K_PROBE_RTT_TIME: Duration = Duration::from_millis(200);
-                    self.exit_probe_rtt_at = Some(now + K_PROBE_RTT_TIME);
+            match self.exit_probe_rtt_at {
+                None => {
+                    // If the window has reached the appropriate size, schedule exiting
+                    // ProbeRtt.  The CWND during ProbeRtt is
+                    // kMinimumCongestionWindow, but we allow an extra packet since QUIC
+                    // checks CWND before sending a packet.
+                    if bytes_in_flight < self.get_probe_rtt_cwnd() + self.current_mtu {
+                        const K_PROBE_RTT_TIME: Duration = Duration::from_millis(200);
+                        self.exit_probe_rtt_at = Some(now + K_PROBE_RTT_TIME);
+                    }
                 }
-            } else if is_round_start && now >= self.exit_probe_rtt_at.unwrap() {
-                if !self.is_at_full_bandwidth {
-                    self.enter_startup_mode();
-                } else {
-                    self.enter_probe_bandwidth_mode(now);
+                Some(exit_time) if is_round_start && now >= exit_time => {
+                    if !self.is_at_full_bandwidth {
+                        self.enter_startup_mode();
+                    } else {
+                        self.enter_probe_bandwidth_mode(now);
+                    }
                 }
+                Some(_) => {}
             }
         }
 

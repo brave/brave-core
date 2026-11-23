@@ -4,13 +4,13 @@ use bstr::{BStr, ByteSlice, ByteVec};
 use filetime::FileTime;
 
 use crate::{
-    entry,
+    AccelerateLookup, Entry, PathStorage, PathStorageRef, State, Version, entry,
     entry::{Stage, StageRaw},
-    extension, AccelerateLookup, Entry, PathStorage, PathStorageRef, State, Version,
+    extension,
 };
 
 // TODO: integrate this somehow, somewhere, depending on later usage.
-#[allow(dead_code)]
+#[expect(dead_code, reason = "to be used for when we handle checkouts/resets better")]
 mod sparse;
 
 /// General information and entries
@@ -69,8 +69,9 @@ impl State {
         })
     }
 
-    /// Find the entry index in [`entries()`][State::entries()] matching the given repository-relative
-    /// `path` and `stage`, or `None`.
+    /// Find the entry index in [`entries()`][State::entries()] matching the given `path` and `stage`, or `None`.
+    ///
+    /// The `path` must use the repository-relative, slash-separated [`State`] path format.
     ///
     /// Use the index for accessing multiple stages if they exists, but at least the single matching entry.
     pub fn entry_index_by_path_and_stage(&self, path: &BStr, stage: entry::Stage) -> Option<usize> {
@@ -142,13 +143,23 @@ impl State {
     /// It's required perform any case-insensitive lookup.
     /// TODO: needs multi-threaded insertion, raw-table to have multiple locks depending on bucket.
     pub fn prepare_icase_backing(&self) -> AccelerateLookup<'_> {
-        let _span = gix_features::trace::detail!("prepare_icase_backing", entries = self.entries.len());
+        let _span = gix_trace::detail!("prepare_icase_backing", entries = self.entries.len());
         let mut out = AccelerateLookup::with_capacity(self.entries.len());
         for entry in &self.entries {
             let entry_path = entry.path(self);
             let hash = AccelerateLookup::icase_hash(entry_path);
             out.icase_entries
                 .insert_unique(hash, entry, |e| AccelerateLookup::icase_hash(e.path(self)));
+            if entry_is_dir(entry) {
+                out.icase_dirs.insert_unique(
+                    hash,
+                    crate::DirEntry {
+                        entry,
+                        dir_end: entry.path.end,
+                    },
+                    |dir| AccelerateLookup::icase_hash(dir.path(self)),
+                );
+            }
 
             let mut last_pos = entry_path.len();
             while let Some(slash_idx) = entry_path[..last_pos].rfind_byte(b'/') {
@@ -177,12 +188,14 @@ impl State {
                 }
             }
         }
-        gix_features::trace::debug!(directories = out.icase_dirs.len(), "stored directories");
+        gix_trace::debug!(directories = out.icase_dirs.len(), "stored directories");
         out
     }
 
     /// Return the entry at `path` that is at the lowest available stage, using `lookup` for acceleration.
     /// It must have been created from this instance, and was ideally kept up-to-date with it.
+    ///
+    /// The `path` must use the repository-relative, slash-separated [`State`] path format.
     ///
     /// If `ignore_case` is `true`, a case-insensitive (ASCII-folding only) search will be performed.
     pub fn entry_by_path_icase<'a>(
@@ -206,14 +219,13 @@ impl State {
             .copied()
     }
 
-    /// Return the entry (at any stage) that is inside of `directory`, or `None`,
-    /// using `lookup` for acceleration.
-    /// Note that submodules are not detected as directories and the user should
-    /// make another call to [`entry_by_path_icase()`](Self::entry_by_path_icase) to check for this
-    /// possibility. Doing so might also reveal a sparse directory.
+    /// Return the entry (at any stage) that is inside `directory`, or `None`,
+    /// or a directory itself like a submodule or sparse directory, using `lookup` for acceleration.
     ///
-    /// If `ignore_case` is set
-    pub fn entry_closest_to_directory_icase<'a>(
+    /// The `directory` must use the repository-relative, slash-separated [`State`] path format.
+    ///
+    /// If `ignore_case` is set, a case-insensitive (ASCII-folding only) search will be performed.
+    pub fn entry_closest_to_directory_or_directory_icase<'a>(
         &'a self,
         directory: &BStr,
         ignore_case: bool,
@@ -234,14 +246,20 @@ impl State {
             .map(|dir| dir.entry)
     }
 
-    /// Return the entry (at any stage) that is inside of `directory`, or `None`.
-    /// Note that submodules are not detected as directories and the user should
-    /// make another call to [`entry_by_path_icase()`](Self::entry_by_path_icase) to check for this
-    /// possibility. Doing so might also reveal a sparse directory.
+    /// Return the entry (at any stage) that is inside `directory`, or `None`,
+    /// or that is a directory itself like a submodule or sparse directory.
     ///
-    /// Note that this is a case-sensitive search.
-    pub fn entry_closest_to_directory(&self, directory: &BStr) -> Option<&Entry> {
-        let idx = self.entry_index_by_path(directory).err()?;
+    /// The `directory` must use the repository-relative, slash-separated [`State`] path format.
+    ///
+    /// Note that this is a *case-sensitive* search.
+    pub fn entry_closest_to_directory_or_directory(&self, directory: &BStr) -> Option<&Entry> {
+        let idx = match self.entry_index_by_path(directory) {
+            Ok(idx) => {
+                let entry = &self.entries[idx];
+                return entry_is_dir(entry).then_some(entry);
+            }
+            Err(closest_idx) => closest_idx,
+        };
         for entry in &self.entries[idx..] {
             let path = entry.path(self);
             if path.get(..directory.len())? != directory {
@@ -259,8 +277,48 @@ impl State {
         None
     }
 
-    /// Find the entry index in [`entries()[..upper_bound]`][State::entries()] matching the given repository-relative
-    /// `path` and `stage`, or `None`.
+    /// Check if `path` is a directory that contains entries in the index, or is a submodule.
+    ///
+    /// The `path` must use the repository-relative, slash-separated [`State`] path format.
+    ///
+    /// Returns `true` if there is at least one entry in the index whose path starts with `path/`,
+    /// indicating that `path` is a directory containing indexed files.
+    ///
+    /// For example, if the index contains an entry at `dirname/file`, then calling this method
+    /// with `dirname` would return `true`, but calling it with `dir` would return `false`.
+    ///
+    /// Note that this is a case-sensitive search.
+    pub fn path_is_directory(&self, path: &BStr) -> bool {
+        self.entry_closest_to_directory_or_directory(path).is_some()
+    }
+
+    /// Check if `path` is a directory that contains entries in the index or is a submodule,
+    /// with optional case-insensitive matching.
+    ///
+    /// The `path` must use the repository-relative, slash-separated [`State`] path format.
+    ///
+    /// Returns `true` if there is at least one entry in the index whose path starts with `path/`,
+    /// indicating that `path` is a directory containing indexed files.
+    ///
+    /// If `ignore_case` is `true`, a case-insensitive (ASCII-folding only) search will be performed.
+    ///
+    /// For example, if the index contains an entry at `dirname/file`, then calling this method
+    /// with `dirname` (or `DirName` with `ignore_case = true`) would return `true`, but calling it
+    /// with `dir` would return `false`.
+    pub fn path_is_directory_icase<'a>(
+        &'a self,
+        path: &BStr,
+        ignore_case: bool,
+        lookup: &AccelerateLookup<'a>,
+    ) -> bool {
+        self.entry_closest_to_directory_or_directory_icase(path, ignore_case, lookup)
+            .is_some()
+    }
+
+    /// Find the entry index in [`entries()[..upper_bound]`][State::entries()] matching the given `path` and `stage`,
+    /// or `None`.
+    ///
+    /// The `path` must use the repository-relative, slash-separated [`State`] path format.
     ///
     /// Use the index for accessing multiple stages if they exists, but at least the single matching entry.
     ///
@@ -280,12 +338,16 @@ impl State {
 
     /// Like [`entry_index_by_path_and_stage()`](State::entry_index_by_path_and_stage()),
     /// but returns the entry instead of the index.
+    ///
+    /// The `path` must use the repository-relative, slash-separated [`State`] path format.
     pub fn entry_by_path_and_stage(&self, path: &BStr, stage: entry::Stage) -> Option<&Entry> {
         self.entry_index_by_path_and_stage(path, stage)
             .map(|idx| &self.entries[idx])
     }
 
     /// Return the entry at `path` that is either at stage 0, or at stage 2 (ours) in case of a merge conflict.
+    ///
+    /// The `path` must use the repository-relative, slash-separated [`State`] path format.
     ///
     /// Using this method is more efficient in comparison to doing two searches, one for stage 0 and one for stage 2.
     pub fn entry_by_path(&self, path: &BStr) -> Option<&Entry> {
@@ -310,11 +372,15 @@ impl State {
 
     /// Return the index at `Ok(index)` where the entry matching `path` (in any stage) can be found, or return
     /// `Err(index)` to indicate the insertion position at which an entry with `path` would fit in.
+    ///
+    /// The `path` must use the repository-relative, slash-separated [`State`] path format.
     pub fn entry_index_by_path(&self, path: &BStr) -> Result<usize, usize> {
         self.entries.binary_search_by(|e| e.path(self).cmp(path))
     }
 
     /// Return the slice of entries which all share the same `prefix`, or `None` if there isn't a single such entry.
+    ///
+    /// The `prefix` must use the repository-relative, slash-separated [`State`] path format.
     ///
     /// If `prefix` is empty, all entries are returned.
     pub fn prefixed_entries(&self, prefix: &BStr) -> Option<&[Entry]> {
@@ -322,6 +388,8 @@ impl State {
     }
 
     /// Return the range of entries which all share the same `prefix`, or `None` if there isn't a single such entry.
+    ///
+    /// The `prefix` must use the repository-relative, slash-separated [`State`] path format.
     ///
     /// If `prefix` is empty, the range will include all entries.
     pub fn prefixed_entries_range(&self, prefix: &BStr) -> Option<Range<usize>> {
@@ -343,12 +411,12 @@ impl State {
                 .walk_entry_stages(low_entry.path(self), low, Ordering::Less)
                 .unwrap_or(low);
         }
-        if let Some(high_entry) = self.entries.get(high) {
-            if high_entry.stage_raw() != 0 {
-                high = self
-                    .walk_entry_stages(high_entry.path(self), high, Ordering::Less)
-                    .unwrap_or(high);
-            }
+        if let Some(high_entry) = self.entries.get(high)
+            && high_entry.stage_raw() != 0
+        {
+            high = self
+                .walk_entry_stages(high_entry.path(self), high, Ordering::Less)
+                .unwrap_or(high);
         }
         (low != high).then_some(low..high)
     }
@@ -369,6 +437,8 @@ impl State {
 
     /// Return the range of entries that exactly match the given `path`, in all available stages, or `None` if no entry with such
     /// path exists.
+    ///
+    /// The `path` must use the repository-relative, slash-separated [`State`] path format.
     ///
     /// The range can be used to access the respective entries via [`entries()`](Self::entries()) or [`entries_mut()](Self::entries_mut()).
     pub fn entry_range(&self, path: &BStr) -> Option<Range<usize>> {
@@ -461,6 +531,8 @@ impl State {
 
     /// Like [`entry_index_by_path_and_stage()`][State::entry_index_by_path_and_stage()],
     /// but returns the mutable entry instead of the index.
+    ///
+    /// The `path` must use the repository-relative, slash-separated [`State`] path format.
     pub fn entry_mut_by_path_and_stage(&mut self, path: &BStr, stage: entry::Stage) -> Option<&mut Entry> {
         self.entry_index_by_path_and_stage(path, stage)
             .map(|idx| &mut self.entries[idx])
@@ -469,6 +541,8 @@ impl State {
     /// Push a new entry containing `stat`, `id`, `flags` and `mode` and `path` to the end of our storage, without performing
     /// any sanity checks. This means it's possible to push a new entry to the same path on the same stage and even after sorting
     /// the entries lookups may still return the wrong one of them unless the correct binary search criteria is chosen.
+    ///
+    /// The `path` must use the repository-relative, slash-separated [`State`] path format.
     ///
     /// Note that this *is likely* to break invariants that will prevent further lookups by path unless
     /// [`entry_index_by_path_and_stage_bounded()`][State::entry_index_by_path_and_stage_bounded()] is used with
@@ -556,6 +630,10 @@ impl State {
     pub fn tree(&self) -> Option<&extension::Tree> {
         self.tree.as_ref()
     }
+    /// Mutably access the `tree` extension.
+    pub fn tree_mut(&mut self) -> Option<&mut extension::Tree> {
+        self.tree.as_mut()
+    }
     /// Remove the `tree` extension.
     pub fn remove_tree(&mut self) -> Option<extension::Tree> {
         self.tree.take()
@@ -588,6 +666,10 @@ impl State {
     pub fn had_offset_table(&self) -> bool {
         self.offset_table_at_decode_time
     }
+}
+
+fn entry_is_dir(entry: &Entry) -> bool {
+    entry.mode.is_sparse() || entry.mode.is_submodule()
 }
 
 #[cfg(test)]

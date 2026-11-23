@@ -42,19 +42,11 @@ pub struct Mode {
 
 impl Mode {
     fn percent_location(&self) -> Option<Location> {
-        if self.percent {
-            Some(self.location)
-        } else {
-            None
-        }
+        if self.percent { Some(self.location) } else { None }
     }
 
     fn throughput_location(&self) -> Option<Location> {
-        if self.throughput {
-            Some(self.location)
-        } else {
-            None
-        }
+        if self.throughput { Some(self.location) } else { None }
     }
 }
 

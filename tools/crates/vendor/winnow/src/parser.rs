@@ -1,6 +1,5 @@
 //! Basic types to build the parsers
 
-use crate::ascii::Caseless as AsciiCaseless;
 use crate::combinator::impls;
 #[cfg(feature = "unstable-recover")]
 #[cfg(feature = "std")]
@@ -86,6 +85,57 @@ pub trait Parser<I, O, E> {
         Ok(o)
     }
 
+    /// Repeat this parse until all of `input` is consumed, generating `O` from it
+    ///
+    /// This is intended for integrating your parser into the rest of your application.
+    /// To instead iterate inside of a parser, see [iterator][crate::combinator::iterator].
+    ///
+    /// This assumes the [`Parser`] intends to read all of `input` and will return an
+    /// [`eof`][crate::combinator::eof] error if it does not.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// # #[cfg(feature = "ascii")] {
+    /// # use winnow::ascii::dec_uint;
+    /// # use winnow::ascii::newline;
+    /// # use winnow::combinator::terminated;
+    /// # use winnow::combinator::opt;
+    /// # use winnow::prelude::*;
+    /// fn number(input: &mut &str) -> Result<u32, ()> {
+    ///   terminated(dec_uint, opt(newline)).parse_next(input)
+    /// }
+    ///
+    /// let input = "10\n20\n30";
+    /// let numbers = number.parse_iter(input)
+    ///     .map(|r| r.unwrap()).collect::<Vec<_>>();
+    /// assert_eq!(numbers, vec![10, 20, 30]);
+    /// # }
+    /// ```
+    #[inline]
+    fn parse_iter(&mut self, input: I) -> impls::ParseIter<'_, Self, I, O, E>
+    where
+        Self: core::marker::Sized,
+        I: Stream,
+        // Force users to deal with `Incomplete` when `StreamIsPartial<true>`
+        I: StreamIsPartial,
+        E: ParserError<I>,
+        <E as ParserError<I>>::Inner: ParserError<I>,
+    {
+        debug_assert!(
+            !I::is_partial_supported(),
+            "partial streams need to handle `ErrMode::Incomplete`"
+        );
+
+        let start = input.checkpoint();
+        impls::ParseIter {
+            parser: self,
+            input: Some(input),
+            start: Some(start),
+            marker: Default::default(),
+        }
+    }
+
     /// Take tokens from the [`Stream`], turning it into the output
     ///
     /// This includes advancing the input [`Stream`] to the next location.
@@ -146,6 +196,7 @@ pub trait Parser<I, O, E> {
     ///
     /// By adding `by_ref`, we can make this work:
     /// ```rust
+    /// # #[cfg(feature = "binary")] {
     /// # use winnow::prelude::*;
     /// # use winnow::Parser;
     /// # use winnow::error::ParserError;
@@ -160,6 +211,7 @@ pub trait Parser<I, O, E> {
     ///     Ok(o)
     ///   }
     /// }
+    /// # }
     /// ```
     #[inline(always)]
     fn by_ref(&mut self) -> impls::ByRef<'_, Self, I, O, E>
@@ -168,9 +220,7 @@ pub trait Parser<I, O, E> {
     {
         impls::ByRef {
             p: self,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -179,10 +229,10 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::{error::ErrMode, Parser};
     /// # use winnow::prelude::*;
     /// use winnow::ascii::alpha1;
-    /// # fn main() {
     ///
     /// fn parser<'i>(input: &mut &'i str) -> ModalResult<i32> {
     ///     alpha1.value(1234).parse_next(input)
@@ -202,9 +252,7 @@ pub trait Parser<I, O, E> {
         impls::Value {
             parser: self,
             val,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -213,10 +261,10 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::{error::ErrMode, Parser};
     /// # use winnow::prelude::*;
     /// use winnow::ascii::alpha1;
-    /// # fn main() {
     ///
     /// fn parser<'i>(input: &mut &'i str) -> ModalResult<u32> {
     ///     alpha1.default_value().parse_next(input)
@@ -234,10 +282,7 @@ pub trait Parser<I, O, E> {
     {
         impls::DefaultValue {
             parser: self,
-            o2: Default::default(),
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -246,10 +291,10 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::{error::ErrMode, Parser};
     /// # use winnow::prelude::*;
     /// use winnow::ascii::alpha1;
-    /// # fn main() {
     ///
     /// fn parser<'i>(input: &mut &'i str) -> ModalResult<()> {
     ///     alpha1.void().parse_next(input)
@@ -266,9 +311,7 @@ pub trait Parser<I, O, E> {
     {
         impls::Void {
             parser: self,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -277,10 +320,10 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::prelude::*;
     /// # use winnow::error::ContextError;
     /// use winnow::ascii::alpha1;
-    /// # fn main() {
     ///
     /// fn parser1<'s>(i: &mut &'s str) -> ModalResult<&'s str> {
     ///   alpha1(i)
@@ -301,10 +344,7 @@ pub trait Parser<I, O, E> {
     {
         impls::OutputInto {
             parser: self,
-            i: Default::default(),
-            o: Default::default(),
-            o2: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -313,11 +353,11 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::{error::ErrMode, Parser};
     /// # use winnow::prelude::*;
     /// use winnow::ascii::{alpha1};
     /// use winnow::combinator::separated_pair;
-    /// # fn main() {
     ///
     /// fn parser<'i>(input: &mut &'i str) -> ModalResult<&'i str> {
     ///     separated_pair(alpha1, ',', alpha1).take().parse_next(input)
@@ -337,9 +377,7 @@ pub trait Parser<I, O, E> {
     {
         impls::Take {
             parser: self,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -356,6 +394,7 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::prelude::*;
     /// # use winnow::{error::ErrMode};
     /// use winnow::ascii::{alpha1};
@@ -368,6 +407,7 @@ pub trait Parser<I, O, E> {
     ///
     /// assert_eq!(parser.parse_peek("abcd,efgh1"), Ok(("1", (true, "abcd,efgh"))));
     /// assert!(parser.parse_peek("abcd;").is_err());
+    /// # }
     /// ```
     #[doc(alias = "consumed")]
     #[doc(alias = "with_recognized")]
@@ -379,9 +419,7 @@ pub trait Parser<I, O, E> {
     {
         impls::WithTaken {
             parser: self,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -390,6 +428,7 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::prelude::*;
     /// # use winnow::{error::ErrMode, stream::Stream};
     /// # use std::ops::Range;
@@ -403,6 +442,7 @@ pub trait Parser<I, O, E> {
     ///
     /// assert_eq!(parser.parse(LocatingSlice::new("abcd,efgh")), Ok((0..4, 5..9)));
     /// assert!(parser.parse_peek(LocatingSlice::new("abcd;")).is_err());
+    /// # }
     /// ```
     #[inline(always)]
     fn span(self) -> impls::Span<Self, I, O, E>
@@ -412,9 +452,7 @@ pub trait Parser<I, O, E> {
     {
         impls::Span {
             parser: self,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -431,6 +469,7 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::prelude::*;
     /// # use winnow::{error::ErrMode, stream::Stream};
     /// # use std::ops::Range;
@@ -445,6 +484,7 @@ pub trait Parser<I, O, E> {
     ///
     /// assert_eq!(parser.parse(LocatingSlice::new("abcd,efgh")), Ok(((1, 0..4), (2, 5..9))));
     /// assert!(parser.parse_peek(LocatingSlice::new("abcd;")).is_err());
+    /// # }
     /// ```
     #[inline(always)]
     fn with_span(self) -> impls::WithSpan<Self, I, O, E>
@@ -454,9 +494,7 @@ pub trait Parser<I, O, E> {
     {
         impls::WithSpan {
             parser: self,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -465,10 +503,10 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::prelude::*;
     /// # use winnow::{error::ErrMode, Parser};
     /// # use winnow::ascii::digit1;
-    /// # fn main() {
     ///
     /// fn parser<'i>(input: &mut &'i str) -> ModalResult<usize> {
     ///     digit1.map(|s: &str| s.len()).parse_next(input)
@@ -490,10 +528,7 @@ pub trait Parser<I, O, E> {
         impls::Map {
             parser: self,
             map,
-            i: Default::default(),
-            o: Default::default(),
-            o2: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -502,10 +537,10 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::{error::ErrMode, Parser};
     /// # use winnow::prelude::*;
     /// use winnow::ascii::digit1;
-    /// # fn main() {
     ///
     /// fn parser<'i>(input: &mut &'i str) -> ModalResult<u8> {
     ///     digit1.try_map(|s: &str| s.parse::<u8>()).parse_next(input)
@@ -533,11 +568,7 @@ pub trait Parser<I, O, E> {
         impls::TryMap {
             parser: self,
             map,
-            i: Default::default(),
-            o: Default::default(),
-            o2: Default::default(),
-            e: Default::default(),
-            e2: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -546,10 +577,10 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::{error::ErrMode, Parser};
     /// # use winnow::prelude::*;
     /// use winnow::ascii::digit1;
-    /// # fn main() {
     ///
     /// fn parser<'i>(input: &mut &'i str) -> ModalResult<u8> {
     ///     digit1.verify_map(|s: &str| s.parse::<u8>().ok()).parse_next(input)
@@ -579,10 +610,7 @@ pub trait Parser<I, O, E> {
         impls::VerifyMap {
             parser: self,
             map,
-            i: Default::default(),
-            o: Default::default(),
-            o2: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -591,6 +619,7 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "binary")] {
     /// # use winnow::{error::ErrMode, ModalResult, Parser};
     /// use winnow::token::take;
     /// use winnow::binary::u8;
@@ -601,10 +630,12 @@ pub trait Parser<I, O, E> {
     ///
     /// assert_eq!(length_take.parse_peek(&[2, 0, 1, 2][..]), Ok((&[2][..], &[0, 1][..])));
     /// assert!(length_take.parse_peek(&[4, 0, 1, 2][..]).is_err());
+    /// # }
     /// ```
     ///
     /// which is the same as
     /// ```rust
+    /// # #[cfg(feature = "binary")] {
     /// # use winnow::{error::ErrMode, ModalResult, Parser};
     /// use winnow::token::take;
     /// use winnow::binary::u8;
@@ -617,6 +648,7 @@ pub trait Parser<I, O, E> {
     ///
     /// assert_eq!(length_take.parse_peek(&[2, 0, 1, 2][..]), Ok((&[2][..], &[0, 1][..])));
     /// assert!(length_take.parse_peek(&[4, 0, 1, 2][..]).is_err());
+    /// # }
     /// ```
     #[inline(always)]
     fn flat_map<G, H, O2>(self, map: G) -> impls::FlatMap<Self, G, H, I, O, O2, E>
@@ -628,11 +660,7 @@ pub trait Parser<I, O, E> {
         impls::FlatMap {
             f: self,
             g: map,
-            h: Default::default(),
-            i: Default::default(),
-            o: Default::default(),
-            o2: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -641,11 +669,11 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::{error::ErrMode, Parser};
     /// # use winnow::prelude::*;
     /// use winnow::ascii::digit1;
     /// use winnow::token::take;
-    /// # fn main() {
     ///
     /// fn parser<'i>(input: &mut &'i str) -> ModalResult<&'i str> {
     ///     take(5u8).and_then(digit1).parse_next(input)
@@ -667,10 +695,7 @@ pub trait Parser<I, O, E> {
         impls::AndThen {
             outer: self,
             inner,
-            i: Default::default(),
-            o: Default::default(),
-            o2: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -679,6 +704,7 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::prelude::*;
     /// use winnow::{error::ErrMode, Parser};
     /// use winnow::ascii::digit1;
@@ -692,6 +718,7 @@ pub trait Parser<I, O, E> {
     ///
     /// // this will fail if digit1 fails
     /// assert!(parser.parse_peek("abc").is_err());
+    /// # }
     /// ```
     #[doc(alias = "from_str")]
     #[inline(always)]
@@ -704,10 +731,7 @@ pub trait Parser<I, O, E> {
     {
         impls::ParseTo {
             p: self,
-            i: Default::default(),
-            o: Default::default(),
-            o2: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -719,10 +743,10 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::{error::ErrMode, Parser};
     /// # use winnow::ascii::alpha1;
     /// # use winnow::prelude::*;
-    /// # fn main() {
     ///
     /// fn parser<'i>(input: &mut &'i str) -> ModalResult<&'i str> {
     ///     alpha1.verify(|s: &str| s.len() == 4).parse_next(input)
@@ -748,10 +772,7 @@ pub trait Parser<I, O, E> {
         impls::Verify {
             parser: self,
             filter,
-            i: Default::default(),
-            o: Default::default(),
-            o2: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -765,12 +786,12 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::prelude::*;
     /// # use winnow::{error::ErrMode, Parser};
     /// # use winnow::ascii::digit1;
     /// # use winnow::error::StrContext;
     /// # use winnow::error::StrContextValue;
-    /// # fn main() {
     ///
     /// fn parser<'i>(input: &mut &'i str) -> ModalResult<&'i str> {
     ///     digit1
@@ -795,9 +816,7 @@ pub trait Parser<I, O, E> {
         impls::Context {
             parser: self,
             context,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -811,12 +830,12 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::prelude::*;
     /// # use winnow::{error::ErrMode, Parser};
     /// # use winnow::ascii::digit1;
     /// # use winnow::error::StrContext;
     /// # use winnow::error::StrContextValue;
-    /// # fn main() {
     ///
     /// fn parser<'i>(input: &mut &'i str) -> ModalResult<&'i str> {
     ///     digit1
@@ -845,11 +864,7 @@ pub trait Parser<I, O, E> {
         impls::ContextWith {
             parser: self,
             context,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
-            c: Default::default(),
-            fi: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -858,6 +873,7 @@ pub trait Parser<I, O, E> {
     /// # Example
     ///
     /// ```rust
+    /// # #[cfg(feature = "ascii")] {
     /// # use winnow::prelude::*;
     /// # use winnow::Parser;
     /// # use winnow::Result;
@@ -865,7 +881,6 @@ pub trait Parser<I, O, E> {
     /// # use winnow::error::StrContext;
     /// # use winnow::error::AddContext;
     /// # use winnow::error::ContextError;
-    /// # fn main() {
     ///
     /// fn parser<'i>(input: &mut &'i str) -> Result<&'i str> {
     ///     digit1.map_err(|mut e: ContextError| {
@@ -887,10 +902,7 @@ pub trait Parser<I, O, E> {
         impls::MapErr {
             parser: self,
             map,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
-            e2: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -919,9 +931,7 @@ pub trait Parser<I, O, E> {
     {
         impls::CompleteErr {
             p: self,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -934,10 +944,7 @@ pub trait Parser<I, O, E> {
     {
         impls::ErrInto {
             parser: self,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
-            e2: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -962,9 +969,7 @@ pub trait Parser<I, O, E> {
         impls::RetryAfter {
             parser: self,
             recover,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -986,9 +991,7 @@ pub trait Parser<I, O, E> {
         impls::ResumeAfter {
             parser: self,
             recover,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 }
@@ -1019,15 +1022,15 @@ where
 /// assert!(parser.parse_peek(&b"bc"[..]).is_err());
 /// assert!(parser.parse_peek(&b""[..]).is_err());
 /// ```
-impl<I, E> Parser<I, u8, E> for u8
+impl<I, E> Parser<I, Self, E> for u8
 where
     I: StreamIsPartial,
     I: Stream,
-    I: Compare<u8>,
+    I: Compare<Self>,
     E: ParserError<I>,
 {
     #[inline(always)]
-    fn parse_next(&mut self, i: &mut I) -> Result<u8, E> {
+    fn parse_next(&mut self, i: &mut I) -> Result<Self, E> {
         crate::token::literal(*self).value(*self).parse_next(i)
     }
 }
@@ -1047,15 +1050,15 @@ where
 /// assert!(parser.parse_peek("bc").is_err());
 /// assert!(parser.parse_peek("").is_err());
 /// ```
-impl<I, E> Parser<I, char, E> for char
+impl<I, E> Parser<I, Self, E> for char
 where
     I: StreamIsPartial,
     I: Stream,
-    I: Compare<char>,
+    I: Compare<Self>,
     E: ParserError<I>,
 {
     #[inline(always)]
-    fn parse_next(&mut self, i: &mut I) -> Result<char, E> {
+    fn parse_next(&mut self, i: &mut I) -> Result<Self, E> {
         crate::token::literal(*self).value(*self).parse_next(i)
     }
 }
@@ -1081,38 +1084,6 @@ where
 impl<'s, I, E: ParserError<I>> Parser<I, <I as Stream>::Slice, E> for &'s [u8]
 where
     I: Compare<&'s [u8]> + StreamIsPartial,
-    I: Stream,
-{
-    #[inline(always)]
-    fn parse_next(&mut self, i: &mut I) -> Result<<I as Stream>::Slice, E> {
-        crate::token::literal(*self).parse_next(i)
-    }
-}
-
-/// This is a shortcut for [`literal`][crate::token::literal].
-///
-/// # Example
-/// ```rust
-/// # use winnow::prelude::*;
-/// # use winnow::{error::ErrMode, error::ContextError, error::Needed};
-/// # use winnow::combinator::alt;
-/// # use winnow::token::take;
-/// use winnow::ascii::Caseless;
-///
-/// fn parser<'s>(s: &mut &'s [u8]) -> ModalResult<&'s [u8]> {
-///   alt((Caseless(&"hello"[..]), take(5usize))).parse_next(s)
-/// }
-///
-/// assert_eq!(parser.parse_peek(&b"Hello, World!"[..]), Ok((&b", World!"[..], &b"Hello"[..])));
-/// assert_eq!(parser.parse_peek(&b"hello, World!"[..]), Ok((&b", World!"[..], &b"hello"[..])));
-/// assert_eq!(parser.parse_peek(&b"HeLlo, World!"[..]), Ok((&b", World!"[..], &b"HeLlo"[..])));
-/// assert_eq!(parser.parse_peek(&b"Something"[..]), Ok((&b"hing"[..], &b"Somet"[..])));
-/// assert!(parser.parse_peek(&b"Some"[..]).is_err());
-/// assert!(parser.parse_peek(&b""[..]).is_err());
-/// ```
-impl<'s, I, E: ParserError<I>> Parser<I, <I as Stream>::Slice, E> for AsciiCaseless<&'s [u8]>
-where
-    I: Compare<AsciiCaseless<&'s [u8]>> + StreamIsPartial,
     I: Stream,
 {
     #[inline(always)]
@@ -1155,39 +1126,6 @@ where
 /// # Example
 /// ```rust
 /// # use winnow::prelude::*;
-/// # use winnow::{error::ErrMode, error::ContextError, error::Needed};
-/// # use winnow::combinator::alt;
-/// # use winnow::token::take;
-/// use winnow::ascii::Caseless;
-///
-/// fn parser<'s>(s: &mut &'s [u8]) -> ModalResult<&'s [u8]> {
-///   alt((Caseless(b"hello"), take(5usize))).parse_next(s)
-/// }
-///
-/// assert_eq!(parser.parse_peek(&b"Hello, World!"[..]), Ok((&b", World!"[..], &b"Hello"[..])));
-/// assert_eq!(parser.parse_peek(&b"hello, World!"[..]), Ok((&b", World!"[..], &b"hello"[..])));
-/// assert_eq!(parser.parse_peek(&b"HeLlo, World!"[..]), Ok((&b", World!"[..], &b"HeLlo"[..])));
-/// assert_eq!(parser.parse_peek(&b"Something"[..]), Ok((&b"hing"[..], &b"Somet"[..])));
-/// assert!(parser.parse_peek(&b"Some"[..]).is_err());
-/// assert!(parser.parse_peek(&b""[..]).is_err());
-/// ```
-impl<'s, I, E: ParserError<I>, const N: usize> Parser<I, <I as Stream>::Slice, E>
-    for AsciiCaseless<&'s [u8; N]>
-where
-    I: Compare<AsciiCaseless<&'s [u8; N]>> + StreamIsPartial,
-    I: Stream,
-{
-    #[inline(always)]
-    fn parse_next(&mut self, i: &mut I) -> Result<<I as Stream>::Slice, E> {
-        crate::token::literal(*self).parse_next(i)
-    }
-}
-
-/// This is a shortcut for [`literal`][crate::token::literal].
-///
-/// # Example
-/// ```rust
-/// # use winnow::prelude::*;
 /// # use winnow::{error::ErrMode, error::ContextError};
 /// # use winnow::combinator::alt;
 /// # use winnow::token::take;
@@ -1212,38 +1150,6 @@ where
     }
 }
 
-/// This is a shortcut for [`literal`][crate::token::literal].
-///
-/// # Example
-/// ```rust
-/// # use winnow::prelude::*;
-/// # use winnow::{error::ErrMode, error::ContextError};
-/// # use winnow::combinator::alt;
-/// # use winnow::token::take;
-/// # use winnow::ascii::Caseless;
-///
-/// fn parser<'s>(s: &mut &'s str) -> ModalResult<&'s str> {
-///   alt((Caseless("hello"), take(5usize))).parse_next(s)
-/// }
-///
-/// assert_eq!(parser.parse_peek("Hello, World!"), Ok((", World!", "Hello")));
-/// assert_eq!(parser.parse_peek("hello, World!"), Ok((", World!", "hello")));
-/// assert_eq!(parser.parse_peek("HeLlo, World!"), Ok((", World!", "HeLlo")));
-/// assert_eq!(parser.parse_peek("Something"), Ok(("hing", "Somet")));
-/// assert!(parser.parse_peek("Some").is_err());
-/// assert!(parser.parse_peek("").is_err());
-/// ```
-impl<'s, I, E: ParserError<I>> Parser<I, <I as Stream>::Slice, E> for AsciiCaseless<&'s str>
-where
-    I: Compare<AsciiCaseless<&'s str>> + StreamIsPartial,
-    I: Stream,
-{
-    #[inline(always)]
-    fn parse_next(&mut self, i: &mut I) -> Result<<I as Stream>::Slice, E> {
-        crate::token::literal(*self).parse_next(i)
-    }
-}
-
 impl<I: Stream, E: ParserError<I>> Parser<I, (), E> for () {
     #[inline(always)]
     fn parse_next(&mut self, _i: &mut I) -> Result<(), E> {
@@ -1252,20 +1158,20 @@ impl<I: Stream, E: ParserError<I>> Parser<I, (), E> for () {
 }
 
 macro_rules! impl_parser_for_tuple {
-  ($($index:tt $parser:ident $output:ident),+) => (
-    #[allow(non_snake_case)]
-    impl<I: Stream, $($output),+, E: ParserError<I>, $($parser),+> Parser<I, ($($output),+,), E> for ($($parser),+,)
-    where
-      $($parser: Parser<I, $output, E>),+
-    {
-      #[inline(always)]
-      fn parse_next(&mut self, i: &mut I) -> Result<($($output),+,), E> {
-        $(let $output = self.$index.parse_next(i)?;)+
+    ($($index:tt $parser:ident $output:ident),+) => (
+        #[allow(non_snake_case)]
+        impl<I: Stream, $($output),+, E: ParserError<I>, $($parser),+> Parser<I, ($($output),+,), E> for ($($parser),+,)
+        where
+            $($parser: Parser<I, $output, E>),+
+        {
+            #[inline(always)]
+            fn parse_next(&mut self, i: &mut I) -> Result<($($output),+,), E> {
+                $(let $output = self.$index.parse_next(i)?;)+
 
-        Ok(($($output),+,))
-      }
-    }
-  )
+                Ok(($($output),+,))
+            }
+        }
+    )
 }
 
 macro_rules! impl_parser_for_tuples {
@@ -1292,18 +1198,7 @@ impl_parser_for_tuples!(
   7 P7 O7,
   8 P8 O8,
   9 P9 O9,
-  10 P10 O10,
-  11 P11 O11,
-  12 P12 O12,
-  13 P13 O13,
-  14 P14 O14,
-  15 P15 O15,
-  16 P16 O16,
-  17 P17 O17,
-  18 P18 O18,
-  19 P19 O19,
-  20 P20 O20,
-  21 P21 O21
+  10 P10 O10
 );
 
 #[cfg(feature = "alloc")]
@@ -1385,7 +1280,7 @@ where
     }
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "ascii", feature = "binary"))]
 mod tests {
     use super::*;
 
@@ -1402,10 +1297,10 @@ mod tests {
     #[doc(hidden)]
     #[macro_export]
     macro_rules! assert_size (
-    ($t:ty, $sz:expr) => (
-      assert!(core::mem::size_of::<$t>() <= $sz, "{} <= {} failed", core::mem::size_of::<$t>(), $sz);
+        ($t:ty, $sz:expr) => (
+            assert!(core::mem::size_of::<$t>() <= $sz, "{} <= {} failed", core::mem::size_of::<$t>(), $sz);
+        );
     );
-  );
 
     #[test]
     #[cfg(target_pointer_width = "64")]
@@ -1464,7 +1359,7 @@ Err(
         fn tuple_3<'i>(
             i: &mut Partial<&'i [u8]>,
         ) -> TestResult<Partial<&'i [u8]>, (u16, &'i [u8], &'i [u8])> {
-            (be_u16, take(3u8), "fg").parse_next(i)
+            (be_u16, take(3_u8), "fg").parse_next(i)
         }
 
         assert_parse!(

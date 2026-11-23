@@ -3,7 +3,7 @@
 
 [package]
 name = "dispatch2"
-version = "0.3.0" # Remember to update html_root_url in lib.rs
+version = "0.3.1" # Remember to update html_root_url in lib.rs
 description = "Bindings and wrappers for Apple's Grand Central Dispatch (GCD)"
 edition.workspace = true
 rust-version.workspace = true
@@ -52,7 +52,7 @@ objc2 = ["dep:objc2"]
 
 [package.metadata.release]
 shared-version = false
-tag-prefix = "dispatch"
+tag-prefix = "dispatch2"
 
 [dev-dependencies]
 static_assertions = "1.1.0"

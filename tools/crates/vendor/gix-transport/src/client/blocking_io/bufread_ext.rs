@@ -1,13 +1,14 @@
+use gix_error::Result;
 use std::{
     io,
     ops::{Deref, DerefMut},
 };
 
-use gix_packetline::{read::ProgressAction, PacketLineRef};
+use gix_packetline::{PacketLineRef, blocking_io::WithSidebands, read::ProgressAction};
 
 use crate::{
-    client::{Error, MessageKind},
     Protocol,
+    client::{Error, MessageKind},
 };
 /// A function `f(is_error, text)` receiving progress or error information.
 pub type HandleProgress<'a> = Box<dyn FnMut(bool, &[u8]) -> ProgressAction + 'a>;
@@ -25,9 +26,7 @@ pub trait ReadlineBufRead: io::BufRead {
     ///  * natural EOF
     ///  * ERR packet line encountered
     ///  * A `delimiter` packet line encountered
-    fn readline(
-        &mut self,
-    ) -> Option<io::Result<Result<gix_packetline::PacketLineRef<'_>, gix_packetline::decode::Error>>>;
+    fn readline(&mut self) -> Option<io::Result<Result<gix_packetline::PacketLineRef<'_>>>>;
 
     /// Read a line similar to `BufRead::read_line()`, but assure it doesn't try to find newlines
     /// which might concatenate multiple distinct packet lines.
@@ -44,7 +43,7 @@ pub trait ExtendedBufRead<'a>: ReadlineBufRead {
     fn set_progress_handler(&mut self, handle_progress: Option<HandleProgress<'a>>);
     /// Peek the next data packet line. Maybe None if the next line is a packet we stop at, queryable using
     /// [`stopped_at()`][ExtendedBufRead::stopped_at()].
-    fn peek_data_line(&mut self) -> Option<io::Result<Result<&[u8], Error>>>;
+    fn peek_data_line(&mut self) -> Option<io::Result<std::result::Result<&[u8], Error>>>;
     /// Resets the reader to allow reading past a previous stop, and sets delimiters according to the
     /// given protocol.
     fn reset(&mut self, version: Protocol);
@@ -53,7 +52,7 @@ pub trait ExtendedBufRead<'a>: ReadlineBufRead {
 }
 
 impl<T: ReadlineBufRead + ?Sized> ReadlineBufRead for Box<T> {
-    fn readline(&mut self) -> Option<io::Result<Result<PacketLineRef<'_>, gix_packetline::decode::Error>>> {
+    fn readline(&mut self) -> Option<io::Result<Result<PacketLineRef<'_>>>> {
         ReadlineBufRead::readline(self.deref_mut())
     }
     fn readline_str(&mut self, line: &mut String) -> io::Result<usize> {
@@ -66,7 +65,7 @@ impl<'a, T: ExtendedBufRead<'a> + ?Sized + 'a> ExtendedBufRead<'a> for Box<T> {
         self.deref_mut().set_progress_handler(handle_progress);
     }
 
-    fn peek_data_line(&mut self) -> Option<io::Result<Result<&[u8], Error>>> {
+    fn peek_data_line(&mut self) -> Option<io::Result<std::result::Result<&[u8], Error>>> {
         self.deref_mut().peek_data_line()
     }
 
@@ -79,8 +78,8 @@ impl<'a, T: ExtendedBufRead<'a> + ?Sized + 'a> ExtendedBufRead<'a> for Box<T> {
     }
 }
 
-impl<T: io::Read> ReadlineBufRead for gix_packetline::read::WithSidebands<'_, T, fn(bool, &[u8]) -> ProgressAction> {
-    fn readline(&mut self) -> Option<io::Result<Result<PacketLineRef<'_>, gix_packetline::decode::Error>>> {
+impl<T: io::Read> ReadlineBufRead for WithSidebands<'_, T, fn(bool, &[u8]) -> ProgressAction> {
+    fn readline(&mut self) -> Option<io::Result<Result<PacketLineRef<'_>>>> {
         self.read_data_line()
     }
 
@@ -89,8 +88,8 @@ impl<T: io::Read> ReadlineBufRead for gix_packetline::read::WithSidebands<'_, T,
     }
 }
 
-impl<'a, T: io::Read> ReadlineBufRead for gix_packetline::read::WithSidebands<'a, T, HandleProgress<'a>> {
-    fn readline(&mut self) -> Option<io::Result<Result<PacketLineRef<'_>, gix_packetline::decode::Error>>> {
+impl<'a, T: io::Read> ReadlineBufRead for WithSidebands<'a, T, HandleProgress<'a>> {
+    fn readline(&mut self) -> Option<io::Result<Result<PacketLineRef<'_>>>> {
         self.read_data_line()
     }
 
@@ -99,11 +98,11 @@ impl<'a, T: io::Read> ReadlineBufRead for gix_packetline::read::WithSidebands<'a
     }
 }
 
-impl<'a, T: io::Read> ExtendedBufRead<'a> for gix_packetline::read::WithSidebands<'a, T, HandleProgress<'a>> {
+impl<'a, T: io::Read> ExtendedBufRead<'a> for WithSidebands<'a, T, HandleProgress<'a>> {
     fn set_progress_handler(&mut self, handle_progress: Option<HandleProgress<'a>>) {
         self.set_progress_handler(handle_progress);
     }
-    fn peek_data_line(&mut self) -> Option<io::Result<Result<&[u8], Error>>> {
+    fn peek_data_line(&mut self) -> Option<io::Result<std::result::Result<&[u8], Error>>> {
         match self.peek_data_line() {
             Some(Ok(Ok(line))) => Some(Ok(Ok(line))),
             Some(Ok(Err(err))) => Some(Ok(Err(err.into()))),

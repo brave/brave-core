@@ -1,9 +1,9 @@
-use crate::rt::async_support::StreamVtable;
 use crate::rt::Cleanup;
-use std::alloc::Layout;
-use std::mem::{self, MaybeUninit};
-use std::ptr;
-use std::vec::Vec;
+use crate::rt::async_support::StreamOps;
+use alloc::alloc::Layout;
+use alloc::vec::Vec;
+use core::mem::{self, MaybeUninit};
+use core::ptr;
 
 /// A helper structure used with a stream to handle the canonical ABI
 /// representation of lists and track partial writes.
@@ -16,17 +16,15 @@ use std::vec::Vec;
 ///
 /// This value is created through the [`StreamWrite`](super::StreamWrite)
 /// future's return value.
-pub struct AbiBuffer<T: 'static> {
-    rust_storage: Vec<MaybeUninit<T>>,
-    vtable: &'static StreamVtable<T>,
+pub struct AbiBuffer<O: StreamOps> {
+    rust_storage: Vec<MaybeUninit<O::Payload>>,
+    ops: O,
     alloc: Option<Cleanup>,
     cursor: usize,
 }
 
-impl<T: 'static> AbiBuffer<T> {
-    pub(crate) fn new(mut vec: Vec<T>, vtable: &'static StreamVtable<T>) -> AbiBuffer<T> {
-        assert_eq!(vtable.lower.is_some(), vtable.lift.is_some());
-
+impl<O: StreamOps> AbiBuffer<O> {
+    pub(crate) fn new(mut vec: Vec<O::Payload>, mut ops: O) -> AbiBuffer<O> {
         // SAFETY: We're converting `Vec<T>` to `Vec<MaybeUninit<T>>`, which
         // should be safe.
         let rust_storage = unsafe {
@@ -34,7 +32,7 @@ impl<T: 'static> AbiBuffer<T> {
             let len = vec.len();
             let cap = vec.capacity();
             mem::forget(vec);
-            Vec::<MaybeUninit<T>>::from_raw_parts(ptr.cast(), len, cap)
+            Vec::<MaybeUninit<O::Payload>>::from_raw_parts(ptr.cast(), len, cap)
         };
 
         // If `lower` is provided then the canonical ABI format is different
@@ -43,31 +41,32 @@ impl<T: 'static> AbiBuffer<T> {
         // Note that this is probably pretty inefficient for "big" use cases
         // but it's hoped that "big" use cases are using `u8` and therefore
         // skip this entirely.
-        let alloc = vtable.lower.and_then(|lower| {
+        let alloc = if ops.native_abi_matches_canonical_abi() {
+            None
+        } else {
+            let elem_layout = ops.elem_layout();
             let layout = Layout::from_size_align(
-                vtable.layout.size() * rust_storage.len(),
-                vtable.layout.align(),
+                elem_layout.size() * rust_storage.len(),
+                elem_layout.align(),
             )
             .unwrap();
             let (mut ptr, cleanup) = Cleanup::new(layout);
-            let cleanup = cleanup?;
             // SAFETY: All items in `rust_storage` are already initialized so
             // it should be safe to read them and move ownership into the
             // canonical ABI format.
             unsafe {
                 for item in rust_storage.iter() {
                     let item = item.assume_init_read();
-                    lower(item, ptr);
-                    ptr = ptr.add(vtable.layout.size());
+                    ops.lower(item, ptr);
+                    ptr = ptr.add(elem_layout.size());
                 }
             }
-
-            Some(cleanup)
-        });
+            cleanup
+        };
         AbiBuffer {
             rust_storage,
             alloc,
-            vtable,
+            ops,
             cursor: 0,
         }
     }
@@ -78,7 +77,7 @@ impl<T: 'static> AbiBuffer<T> {
         // If there's no `lower` operation then it means that `T`'s layout is
         // the same in the canonical ABI so it can be used as-is. In this
         // situation the list would have been un-tampered with above.
-        if self.vtable.lower.is_none() {
+        if self.ops.native_abi_matches_canonical_abi() {
             // SAFETY: this should be in-bounds, so it should be safe.
             let ptr = unsafe { self.rust_storage.as_ptr().add(self.cursor).cast() };
             let len = self.rust_storage.len() - self.cursor;
@@ -94,7 +93,7 @@ impl<T: 'static> AbiBuffer<T> {
             .unwrap_or(ptr::null_mut());
         (
             // SAFETY: this should be in-bounds, so it should be safe.
-            unsafe { ptr.add(self.cursor * self.vtable.layout.size()) },
+            unsafe { ptr.add(self.cursor * self.ops.elem_layout().size()) },
             self.rust_storage.len() - self.cursor,
         )
     }
@@ -111,7 +110,7 @@ impl<T: 'static> AbiBuffer<T> {
     /// Also note that this can be an expensive operation if a partial write
     /// occurred as this will involve shifting items from the end of the vector
     /// to the start of the vector.
-    pub fn into_vec(mut self) -> Vec<T> {
+    pub fn into_vec(mut self) -> Vec<O::Payload> {
         self.take_vec()
     }
 
@@ -127,10 +126,10 @@ impl<T: 'static> AbiBuffer<T> {
     /// necessary for the starting `amt` items in this list.
     pub(crate) fn advance(&mut self, amt: usize) {
         assert!(amt + self.cursor <= self.rust_storage.len());
-        let Some(dealloc_lists) = self.vtable.dealloc_lists else {
+        if !self.ops.contains_lists() {
             self.cursor += amt;
             return;
-        };
+        }
         let (mut ptr, len) = self.abi_ptr_and_len();
         assert!(amt <= len);
         for _ in 0..amt {
@@ -138,14 +137,14 @@ impl<T: 'static> AbiBuffer<T> {
             // it was initialized with a `lower`, and then the pointer
             // arithmetic should all be in-bounds.
             unsafe {
-                dealloc_lists(ptr.cast_mut());
-                ptr = ptr.add(self.vtable.layout.size());
+                self.ops.dealloc_lists(ptr.cast_mut());
+                ptr = ptr.add(self.ops.elem_layout().size());
             }
         }
         self.cursor += amt;
     }
 
-    fn take_vec(&mut self) -> Vec<T> {
+    fn take_vec(&mut self) -> Vec<O::Payload> {
         // First, if necessary, convert remaining values within `self.alloc`
         // back into `self.rust_storage`. This is necessary when a lift
         // operation is available meaning that the representation of `T` is
@@ -155,15 +154,15 @@ impl<T: 'static> AbiBuffer<T> {
         // `AbiBuffer` was created it moved ownership of all values from the
         // original vector into the `alloc` value. This is the reverse
         // operation, moving all the values back into the vector.
-        if let Some(lift) = self.vtable.lift {
+        if !self.ops.native_abi_matches_canonical_abi() {
             let (mut ptr, mut len) = self.abi_ptr_and_len();
             // SAFETY: this should be safe as `lift` is operating on values that
             // were initialized with a previous `lower`, and the pointer
             // arithmetic here should all be in-bounds.
             unsafe {
                 for dst in self.rust_storage[self.cursor..].iter_mut() {
-                    dst.write(lift(ptr.cast_mut()));
-                    ptr = ptr.add(self.vtable.layout.size());
+                    dst.write(self.ops.lift(ptr.cast_mut()));
+                    ptr = ptr.add(self.ops.elem_layout().size());
                     len -= 1;
                 }
                 assert_eq!(len, 0);
@@ -187,12 +186,15 @@ impl<T: 'static> AbiBuffer<T> {
             let len = storage.len();
             let cap = storage.capacity();
             mem::forget(storage);
-            Vec::<T>::from_raw_parts(ptr.cast(), len, cap)
+            Vec::<O::Payload>::from_raw_parts(ptr.cast(), len, cap)
         }
     }
 }
 
-impl<T> Drop for AbiBuffer<T> {
+impl<O> Drop for AbiBuffer<O>
+where
+    O: StreamOps,
+{
     fn drop(&mut self) {
         let _ = self.take_vec();
     }
@@ -201,6 +203,7 @@ impl<T> Drop for AbiBuffer<T> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::rt::async_support::StreamVtable;
     use std::sync::atomic::{AtomicUsize, Ordering::Relaxed};
     use std::vec;
 

@@ -325,17 +325,64 @@ impl TempPath {
         self.disable_cleanup = disable_cleanup
     }
 
-    /// Create a new TempPath from an existing path. This can be done even if no
-    /// file exists at the given path.
+    /// Create a new TempPath from an existing path. This can be done even if no file exists at the
+    /// given path.
     ///
-    /// This is mostly useful for interacting with libraries and external
-    /// components that provide files to be consumed or expect a path with no
-    /// existing file to be given.
+    /// This is mostly useful for interacting with libraries and external components that provide
+    /// files to be consumed or expect a path with no existing file to be given.
+    ///
+    /// When passed a relative path, this function first tries to make it absolute (relative to the
+    /// current directory). If this fails, this function uses the relative path as-is.
+    ///
+    /// **DEPRECATED:** Use [`TempPath::try_from_path`] instead to handle the case where looking up
+    /// the current directory fails.
+    #[deprecated = "use TempPath::try_from_path"]
     pub fn from_path(path: impl Into<PathBuf>) -> Self {
+        let mut path = path.into();
+        // Best effort to resolve a relative path. If we fail, we keep the path as-is to
+        // preserve backwards compatibility.
+        //
+        // Ignore empty paths entirely. There's nothing we can do about them.
+        if path != Path::new("") && !path.is_absolute() {
+            if let Ok(cur_dir) = std::env::current_dir() {
+                path = cur_dir.join(path);
+            }
+        }
         Self {
-            path: path.into().into_boxed_path(),
+            path: path.into_boxed_path(),
             disable_cleanup: false,
         }
+    }
+
+    /// Create a new TempPath from an existing path. This can be done even if no file exists at the
+    /// given path.
+    ///
+    /// This is mostly useful for interacting with libraries and external components that provide
+    /// files to be consumed or expect a path with no existing file to be given.
+    ///
+    /// Relative paths are resolved relative to the current working directory. If the passed path is
+    /// empty or if the current working directory cannot be determined, this function returns an
+    /// error.
+    ///
+    /// **NOTE:** this function does not check if the target path exists.
+    pub fn try_from_path(path: impl Into<PathBuf>) -> io::Result<Self> {
+        let mut path = path.into();
+        if !path.is_absolute() {
+            if path == Path::new("") {
+                return Err(io::Error::new(
+                    io::ErrorKind::InvalidInput,
+                    "cannot construct a TempPath from an empty path",
+                ));
+            }
+            let mut cwd = std::env::current_dir()?;
+            cwd.push(path);
+            path = cwd;
+        };
+
+        Ok(Self {
+            path: path.into_boxed_path(),
+            disable_cleanup: false,
+        })
     }
 
     pub(crate) fn new(path: PathBuf, disable_cleanup: bool) -> Self {

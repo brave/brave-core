@@ -4,7 +4,7 @@
 use crate::aes::AesWriter;
 use crate::compression::CompressionMethod;
 use crate::read::{parse_single_extra_field, Config, ZipArchive, ZipFile};
-use crate::result::{ZipError, ZipResult};
+use crate::result::{invalid, ZipError, ZipResult};
 use crate::spec::{self, FixedSizeBlock, Zip32CDEBlock};
 #[cfg(feature = "aes-crypto")]
 use crate::types::AesMode;
@@ -177,7 +177,7 @@ pub(crate) mod zip_writer {
 }
 #[doc(inline)]
 pub use self::sealed::FileOptionExtension;
-use crate::result::ZipError::{InvalidArchive, UnsupportedArchive};
+use crate::result::ZipError::UnsupportedArchive;
 use crate::unstable::path_to_string;
 use crate::unstable::LittleEndianWriteExt;
 use crate::write::GenericZipWriter::{Closed, Storer};
@@ -290,9 +290,7 @@ impl ExtendedFileOptions {
     ) -> ZipResult<()> {
         let len = data.len() + 4;
         if self.extra_data.len() + self.central_extra_data.len() + len > u16::MAX as usize {
-            Err(InvalidArchive(
-                "Extra data field would be longer than allowed",
-            ))
+            Err(invalid!("Extra data field would be longer than allowed"))
         } else {
             let field = if central_only {
                 &mut self.central_extra_data
@@ -675,12 +673,12 @@ impl<A: Read + Write + Seek> ZipWriter<A> {
     pub fn deep_copy_file(&mut self, src_name: &str, dest_name: &str) -> ZipResult<()> {
         self.finish_file()?;
         if src_name == dest_name || self.files.contains_key(dest_name) {
-            return Err(InvalidArchive("That file already exists"));
+            return Err(invalid!("That file already exists"));
         }
         let write_position = self.inner.get_plain().stream_position()?;
         let src_index = self.index_by_name(src_name)?;
         let src_data = &mut self.files[src_index];
-        let src_data_start = src_data.data_start();
+        let src_data_start = src_data.data_start(self.inner.get_plain())?;
         debug_assert!(src_data_start <= write_position);
         let mut compressed_size = src_data.compressed_size;
         if compressed_size > (write_position - src_data_start) {
@@ -974,8 +972,8 @@ impl<W: Write + Seek> ZipWriter<W> {
         let extra_data_len = extra_data.len();
         if let Some(data) = central_extra_data {
             if extra_data_len + data.len() > u16::MAX as usize {
-                return Err(InvalidArchive(
-                    "Extra data and central extra data must be less than 64KiB when combined",
+                return Err(invalid!(
+                    "Extra data and central extra data must be less than 64KiB when combined"
                 ));
             }
             ExtendedFileOptions::validate_extra_data(data, true)?;
@@ -1047,7 +1045,7 @@ impl<W: Write + Seek> ZipWriter<W> {
 
     fn insert_file_data(&mut self, file: ZipFileData) -> ZipResult<usize> {
         if self.files.contains_key(&file.file_name) {
-            return Err(InvalidArchive("Duplicate filename"));
+            return Err(invalid!("Duplicate filename: {}", file.file_name));
         }
         let name = file.file_name.to_owned();
         self.files.insert(name.clone(), file);
@@ -1284,14 +1282,18 @@ impl<W: Write + Seek> ZipWriter<W> {
     ///     Ok(())
     /// }
     /// ```
-    pub fn raw_copy_file_rename<S: ToString>(&mut self, file: ZipFile, name: S) -> ZipResult<()> {
+    pub fn raw_copy_file_rename<R: Read, S: ToString>(
+        &mut self,
+        file: ZipFile<R>,
+        name: S,
+    ) -> ZipResult<()> {
         let options = file.options();
         self.raw_copy_file_rename_internal(file, name, options)
     }
 
-    fn raw_copy_file_rename_internal<S: ToString>(
+    fn raw_copy_file_rename_internal<R: Read, S: ToString>(
         &mut self,
-        mut file: ZipFile,
+        mut file: ZipFile<R>,
         name: S,
         options: SimpleFileOptions,
     ) -> ZipResult<()> {
@@ -1314,9 +1316,9 @@ impl<W: Write + Seek> ZipWriter<W> {
     /// This function ensures that the '/' path separator is used and normalizes `.` and `..`. It
     /// ignores any `..` or Windows drive letter that would produce a path outside the ZIP file's
     /// root.
-    pub fn raw_copy_file_to_path<P: AsRef<Path>>(
+    pub fn raw_copy_file_to_path<R: Read, P: AsRef<Path>>(
         &mut self,
-        file: ZipFile,
+        file: ZipFile<R>,
         path: P,
     ) -> ZipResult<()> {
         self.raw_copy_file_rename(file, path_to_string(path))
@@ -1345,7 +1347,7 @@ impl<W: Write + Seek> ZipWriter<W> {
     ///     Ok(())
     /// }
     /// ```
-    pub fn raw_copy_file(&mut self, file: ZipFile) -> ZipResult<()> {
+    pub fn raw_copy_file<R: Read>(&mut self, file: ZipFile<R>) -> ZipResult<()> {
         let name = file.name().to_owned();
         self.raw_copy_file_rename(file, name)
     }
@@ -1373,9 +1375,9 @@ impl<W: Write + Seek> ZipWriter<W> {
     ///     Ok(())
     /// }
     /// ```
-    pub fn raw_copy_file_touch(
+    pub fn raw_copy_file_touch<R: Read>(
         &mut self,
-        file: ZipFile,
+        file: ZipFile<R>,
         last_modified_time: DateTime,
         unix_mode: Option<u32>,
     ) -> ZipResult<()> {
@@ -1594,7 +1596,7 @@ impl<W: Write + Seek> ZipWriter<W> {
     pub fn shallow_copy_file(&mut self, src_name: &str, dest_name: &str) -> ZipResult<()> {
         self.finish_file()?;
         if src_name == dest_name {
-            return Err(InvalidArchive("Trying to copy a file to itself"));
+            return Err(invalid!("Trying to copy a file to itself"));
         }
         let src_index = self.index_by_name(src_name)?;
         let mut dest_data = self.files[src_index].to_owned();
@@ -1959,8 +1961,8 @@ fn update_local_zip64_extra_field<T: Write + Seek>(
     writer: &mut T,
     file: &mut ZipFileData,
 ) -> ZipResult<()> {
-    let block = file.zip64_extra_field_block().ok_or(InvalidArchive(
-        "Attempted to update a nonexistent ZIP64 extra field",
+    let block = file.zip64_extra_field_block().ok_or(invalid!(
+        "Attempted to update a nonexistent ZIP64 extra field"
     ))?;
 
     let zip64_extra_field_start = file.header_start
@@ -2525,7 +2527,7 @@ mod test {
         let mut zip = zip.finish_into_readable().unwrap();
         let file = zip.by_index(0).unwrap();
         assert_eq!(file.name(), "sleep");
-        assert_eq!(file.data_start(), page_size.into());
+        assert_eq!(file.data_start(), u64::from(page_size));
     }
 
     #[test]
@@ -2546,7 +2548,7 @@ mod test {
             let mut zip = ZipArchive::new(Cursor::new(&mut data)).unwrap();
             let file = zip.by_index(0).unwrap();
             assert_eq!(file.name(), "sleep");
-            assert_eq!(file.data_start(), page_size.into());
+            assert_eq!(file.data_start(), u64::from(page_size));
         }
     }
 

@@ -39,13 +39,13 @@ pub(crate) fn eval_from_str(src: &str) -> Result<Expr, String> {
 pub(crate) enum Expr {
     Constant(Atom),
     /// (func-name arg1 arg2)
-    Application(Box<Expr>, Vec<Expr>),
+    Application(Box<Self>, Vec<Self>),
     /// (if predicate do-this)
-    If(Box<Expr>, Box<Expr>),
+    If(Box<Self>, Box<Self>),
     /// (if predicate do-this otherwise-do-this)
-    IfElse(Box<Expr>, Box<Expr>, Box<Expr>),
+    IfElse(Box<Self>, Box<Self>, Box<Self>),
     /// '(3 (if (+ 3 3) 4 5) 7)
-    Quote(Vec<Expr>),
+    Quote(Vec<Self>),
 }
 
 /// We now wrap this type and a few other primitives into our Atom type.

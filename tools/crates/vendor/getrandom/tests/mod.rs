@@ -1,7 +1,12 @@
+//! Main `getrandom` tests
 use core::mem::MaybeUninit;
 use getrandom::{fill, fill_uninit};
 
-#[cfg(all(feature = "wasm_js", target_arch = "wasm32", target_os = "unknown"))]
+#[cfg(all(
+    feature = "wasm_js",
+    target_family = "wasm",
+    any(target_os = "unknown", target_os = "none"),
+))]
 use wasm_bindgen_test::wasm_bindgen_test as test;
 
 #[test]
@@ -40,12 +45,6 @@ fn num_diff_bits<T: DiffBits>(s1: &[T], s2: &[T]) -> usize {
     s1.iter().zip(s2.iter()).map(T::diff_bits).sum()
 }
 
-// TODO: use `[const { MaybeUninit::uninit() }; N]` after MSRV is bumped to 1.79+
-// or `MaybeUninit::uninit_array`
-fn uninit_vec(n: usize) -> Vec<MaybeUninit<u8>> {
-    vec![MaybeUninit::uninit(); n]
-}
-
 // Tests the quality of calling getrandom on two large buffers
 #[test]
 fn test_diff() {
@@ -55,8 +54,8 @@ fn test_diff() {
     fill(&mut v1).unwrap();
     fill(&mut v2).unwrap();
 
-    let mut t1 = uninit_vec(N);
-    let mut t2 = uninit_vec(N);
+    let mut t1 = [MaybeUninit::uninit(); N];
+    let mut t2 = [MaybeUninit::uninit(); N];
     let r1 = fill_uninit(&mut t1).unwrap();
     let r2 = fill_uninit(&mut t2).unwrap();
     assert_eq!(r1.len(), N);
@@ -148,8 +147,8 @@ fn test_small_uninit() {
         let mut num_bytes = 0;
         let mut diff_bits = 0;
         while num_bytes < 256 {
-            let mut buf1 = uninit_vec(N);
-            let mut buf2 = uninit_vec(N);
+            let mut buf1 = [MaybeUninit::uninit(); N];
+            let mut buf2 = [MaybeUninit::uninit(); N];
 
             let s1 = &mut buf1[..size];
             let s2 = &mut buf2[..size];
@@ -176,7 +175,7 @@ fn test_huge() {
 #[test]
 fn test_huge_uninit() {
     const N: usize = 100_000;
-    let mut huge = uninit_vec(N);
+    let mut huge = [MaybeUninit::uninit(); N];
     let res = fill_uninit(&mut huge).unwrap();
     assert_eq!(res.len(), N);
 }
@@ -210,88 +209,5 @@ fn test_multithreading() {
     // start all the tasks
     for tx in txs.iter() {
         tx.send(()).unwrap();
-    }
-}
-
-#[cfg(getrandom_backend = "custom")]
-mod custom {
-    use getrandom::Error;
-
-    struct Xoshiro128PlusPlus {
-        s: [u32; 4],
-    }
-
-    impl Xoshiro128PlusPlus {
-        fn new(mut seed: u64) -> Self {
-            const PHI: u64 = 0x9e3779b97f4a7c15;
-            let mut s = [0u32; 4];
-            for val in s.iter_mut() {
-                seed = seed.wrapping_add(PHI);
-                let mut z = seed;
-                z = (z ^ (z >> 30)).wrapping_mul(0xbf58476d1ce4e5b9);
-                z = (z ^ (z >> 27)).wrapping_mul(0x94d049bb133111eb);
-                z = z ^ (z >> 31);
-                *val = z as u32;
-            }
-            Self { s }
-        }
-
-        fn next_u32(&mut self) -> u32 {
-            let res = self.s[0]
-                .wrapping_add(self.s[3])
-                .rotate_left(7)
-                .wrapping_add(self.s[0]);
-
-            let t = self.s[1] << 9;
-
-            self.s[2] ^= self.s[0];
-            self.s[3] ^= self.s[1];
-            self.s[1] ^= self.s[2];
-            self.s[0] ^= self.s[3];
-
-            self.s[2] ^= t;
-
-            self.s[3] = self.s[3].rotate_left(11);
-
-            res
-        }
-    }
-
-    // This implementation uses current timestamp as a PRNG seed.
-    //
-    // WARNING: this custom implementation is for testing purposes ONLY!
-    #[no_mangle]
-    unsafe extern "Rust" fn __getrandom_v03_custom(dest: *mut u8, len: usize) -> Result<(), Error> {
-        use std::time::{SystemTime, UNIX_EPOCH};
-
-        assert_ne!(len, 0);
-
-        if len == 142 {
-            return Err(Error::new_custom(142));
-        }
-
-        let dest_u32 = dest.cast::<u32>();
-        let ts = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
-        let mut rng = Xoshiro128PlusPlus::new(ts.as_nanos() as u64);
-        for i in 0..len / 4 {
-            let val = rng.next_u32();
-            core::ptr::write_unaligned(dest_u32.add(i), val);
-        }
-        if len % 4 != 0 {
-            let start = 4 * (len / 4);
-            for i in start..len {
-                let val = rng.next_u32();
-                core::ptr::write_unaligned(dest.add(i), val as u8);
-            }
-        }
-        Ok(())
-    }
-
-    // Test that enabling the custom feature indeed uses the custom implementation
-    #[test]
-    fn test_custom() {
-        let mut buf = [0u8; 142];
-        let res = getrandom::fill(&mut buf);
-        assert!(res.is_err());
     }
 }

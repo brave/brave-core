@@ -9,8 +9,7 @@ Refs:
 - AVR® Instruction Set Manual, Rev. DS40002198B
   https://ww1.microchip.com/downloads/en/DeviceDoc/AVR-InstructionSet-Manual-DS40002198.pdf
 
-Generated asm:
-- avr https://godbolt.org/z/W5jxGsToc
+See tests/asm-test/asm/portable-atomic for generated assembly.
 */
 
 #[cfg(not(portable_atomic_no_asm))]
@@ -27,11 +26,11 @@ use core::arch::asm;
 )]
 pub(super) use super::super::avr as atomic;
 
-pub(super) type State = u8;
+pub(crate) type State = u8;
 
 /// Disables interrupts and returns the previous interrupt state.
 #[inline(always)]
-pub(super) fn disable() -> State {
+pub(crate) fn disable() -> State {
     let sreg: State;
     // SAFETY: reading the status register (SREG) and disabling interrupts are safe.
     // (see module-level comments of interrupt/mod.rs on the safety of using privileged instructions)
@@ -61,10 +60,14 @@ pub(super) fn disable() -> State {
 ///
 /// The state must be the one retrieved by the previous `disable`.
 #[inline(always)]
-pub(super) unsafe fn restore(prev_sreg: State) {
-    // SAFETY: the caller must guarantee that the state was retrieved by the previous `disable`,
+pub(crate) unsafe fn restore(prev_sreg: State) {
+    // SAFETY: the caller must guarantee that the state was retrieved by the previous `disable`.
+    //
+    // This clobbers the entire status register, but all other flags are the arithmetic flags that
+    // are changed as a side effect of arithmetic operations, etc., which LLVM recognizes unless
+    // preserves_flags is set, so it is safe to clobber them here.
+    // See also the discussion at https://github.com/taiki-e/portable-atomic/pull/40.
     unsafe {
-        // This clobbers the entire status register. See msp430.rs to safety on this.
         #[cfg(not(portable_atomic_no_asm))]
         asm!(
             "out 0x3F, {prev_sreg}", // SREG = prev_sreg

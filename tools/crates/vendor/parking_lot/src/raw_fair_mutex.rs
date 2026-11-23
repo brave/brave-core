@@ -1,10 +1,3 @@
-// Copyright 2016 Amanieu d'Antras
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 use crate::raw_mutex::RawMutex;
 use lock_api::RawMutexFair;
 
@@ -14,21 +7,21 @@ pub struct RawFairMutex(RawMutex);
 unsafe impl lock_api::RawMutex for RawFairMutex {
     const INIT: Self = RawFairMutex(<RawMutex as lock_api::RawMutex>::INIT);
 
-    type GuardMarker = <RawMutex as lock_api::RawMutex>::GuardMarker;
+    type Guard = <RawMutex as lock_api::RawMutex>::Guard;
 
     #[inline]
-    fn lock(&self) {
+    fn lock(&self) -> Self::Guard {
         self.0.lock()
     }
 
     #[inline]
-    fn try_lock(&self) -> bool {
+    fn try_lock(&self) -> Option<Self::Guard> {
         self.0.try_lock()
     }
 
     #[inline]
-    unsafe fn unlock(&self) {
-        self.unlock_fair()
+    unsafe fn unlock(&self, guard: Self::Guard) {
+        unsafe { self.unlock_fair(guard) }
     }
 
     #[inline]
@@ -39,13 +32,13 @@ unsafe impl lock_api::RawMutex for RawFairMutex {
 
 unsafe impl lock_api::RawMutexFair for RawFairMutex {
     #[inline]
-    unsafe fn unlock_fair(&self) {
-        self.0.unlock_fair()
+    unsafe fn unlock_fair(&self, guard: Self::Guard) {
+        unsafe { self.0.unlock_fair(guard) }
     }
 
     #[inline]
-    unsafe fn bump(&self) {
-        self.0.bump()
+    unsafe fn bump(&self, guard: &mut Self::Guard) {
+        unsafe { self.0.bump(guard) }
     }
 }
 
@@ -54,12 +47,12 @@ unsafe impl lock_api::RawMutexTimed for RawFairMutex {
     type Instant = <RawMutex as lock_api::RawMutexTimed>::Instant;
 
     #[inline]
-    fn try_lock_until(&self, timeout: Self::Instant) -> bool {
+    fn try_lock_until(&self, timeout: Self::Instant) -> Option<Self::Guard> {
         self.0.try_lock_until(timeout)
     }
 
     #[inline]
-    fn try_lock_for(&self, timeout: Self::Duration) -> bool {
+    fn try_lock_for(&self, timeout: Self::Duration) -> Option<Self::Guard> {
         self.0.try_lock_for(timeout)
     }
 }

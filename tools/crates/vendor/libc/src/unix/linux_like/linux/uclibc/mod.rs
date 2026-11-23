@@ -13,6 +13,17 @@ pub type __rlimit_resource_t = c_ulong;
 pub type __priority_which_t = c_uint;
 
 cfg_if! {
+    // Set `--cfg=libc_unstable_uclibc_time64` in RUSTFLAGS if your uClibc has 64-bit `time_t`.
+    if #[cfg(uclibc32_time64)] {
+        pub type time_t = i64;
+        pub type suseconds_t = i64;
+    } else {
+        pub type time_t = c_long;
+        pub type suseconds_t = c_long;
+    }
+}
+
+cfg_if! {
     if #[cfg(doc)] {
         // Used in `linux::arch` to define ioctl constants.
         pub(crate) type Ioctl = c_ulong;
@@ -36,12 +47,12 @@ s! {
         #[cfg(target_endian = "little")]
         pub f_fsid: c_ulong,
         #[cfg(target_pointer_width = "32")]
-        __f_unused: c_int,
+        __f_unused: Padding<c_int>,
         #[cfg(target_endian = "big")]
         pub f_fsid: c_ulong,
         pub f_flag: c_ulong,
         pub f_namemax: c_ulong,
-        __f_spare: [c_int; 6],
+        __f_spare: Padding<[c_int; 6]>,
     }
 
     pub struct regex_t {
@@ -87,37 +98,6 @@ s! {
         pub nr: crate::__s32,
     }
 
-    #[cfg_attr(
-        any(
-            target_pointer_width = "32",
-            target_arch = "x86_64",
-            target_arch = "powerpc64",
-            target_arch = "mips64",
-            target_arch = "s390x",
-            target_arch = "sparc64"
-        ),
-        repr(align(4))
-    )]
-    #[cfg_attr(
-        not(any(
-            target_pointer_width = "32",
-            target_arch = "x86_64",
-            target_arch = "powerpc64",
-            target_arch = "mips64",
-            target_arch = "s390x",
-            target_arch = "sparc64"
-        )),
-        repr(align(8))
-    )]
-    pub struct pthread_mutexattr_t {
-        size: [u8; crate::__SIZEOF_PTHREAD_MUTEXATTR_T],
-    }
-
-    #[repr(align(4))]
-    pub struct pthread_condattr_t {
-        size: [u8; crate::__SIZEOF_PTHREAD_CONDATTR_T],
-    }
-
     pub struct tcp_info {
         pub tcpi_state: u8,
         pub tcpi_ca_state: u8,
@@ -153,82 +133,16 @@ s! {
         pub tcpi_rcv_space: u32,
         pub tcpi_total_retrans: u32,
     }
-}
 
-impl siginfo_t {
-    pub unsafe fn si_addr(&self) -> *mut c_void {
-        #[repr(C)]
-        struct siginfo_sigfault {
-            _si_signo: c_int,
-            _si_errno: c_int,
-            _si_code: c_int,
-            si_addr: *mut c_void,
-        }
-        (*(self as *const siginfo_t as *const siginfo_sigfault)).si_addr
+    pub struct mbstate_t {
+        __mask: crate::wchar_t,
+        __wc: crate::wchar_t,
     }
 
-    pub unsafe fn si_value(&self) -> crate::sigval {
-        #[repr(C)]
-        struct siginfo_si_value {
-            _si_signo: c_int,
-            _si_errno: c_int,
-            _si_code: c_int,
-            _si_timerid: c_int,
-            _si_overrun: c_int,
-            si_value: crate::sigval,
-        }
-        (*(self as *const siginfo_t as *const siginfo_si_value)).si_value
-    }
-}
-
-s_no_extra_traits! {
-    // Internal, for casts to access union fields
-    struct sifields_sigchld {
-        si_pid: crate::pid_t,
-        si_uid: crate::uid_t,
-        si_status: c_int,
-        si_utime: c_long,
-        si_stime: c_long,
-    }
-
-    // Internal, for casts to access union fields
-    union sifields {
-        _align_pointer: *mut c_void,
-        sigchld: sifields_sigchld,
-    }
-
-    // Internal, for casts to access union fields. Note that some variants
-    // of sifields start with a pointer, which makes the alignment of
-    // sifields vary on 32-bit and 64-bit architectures.
-    struct siginfo_f {
-        _siginfo_base: [c_int; 3],
-        sifields: sifields,
-    }
-}
-
-impl siginfo_t {
-    unsafe fn sifields(&self) -> &sifields {
-        &(*(self as *const siginfo_t as *const siginfo_f)).sifields
-    }
-
-    pub unsafe fn si_pid(&self) -> crate::pid_t {
-        self.sifields().sigchld.si_pid
-    }
-
-    pub unsafe fn si_uid(&self) -> crate::uid_t {
-        self.sifields().sigchld.si_uid
-    }
-
-    pub unsafe fn si_status(&self) -> c_int {
-        self.sifields().sigchld.si_status
-    }
-
-    pub unsafe fn si_utime(&self) -> c_long {
-        self.sifields().sigchld.si_utime
-    }
-
-    pub unsafe fn si_stime(&self) -> c_long {
-        self.sifields().sigchld.si_stime
+    pub struct fpos64_t {
+        __pos: off64_t,
+        __mbstate: crate::mbstate_t,
+        __mblen_pending: c_int,
     }
 }
 
@@ -236,15 +150,7 @@ pub const MCL_CURRENT: c_int = 0x0001;
 pub const MCL_FUTURE: c_int = 0x0002;
 pub const MCL_ONFAULT: c_int = 0x0004;
 
-pub const SIGEV_THREAD_ID: c_int = 4;
-
 pub const AF_VSOCK: c_int = 40;
-
-// Most `*_SUPER_MAGIC` constants are defined at the `linux_like` level; the
-// following are only available on newer Linux versions than the versions
-// currently used in CI in some configurations, so we define them here.
-pub const BINDERFS_SUPER_MAGIC: c_long = 0x6c6f6f70;
-pub const XFS_SUPER_MAGIC: c_long = 0x58465342;
 
 pub const PTRACE_TRACEME: c_int = 0;
 pub const PTRACE_PEEKTEXT: c_int = 1;
@@ -288,79 +194,19 @@ pub const LC_MESSAGES: c_int = 5;
 pub const LC_ALL: c_int = 6;
 // end different section
 
-// MS_ flags for mount(2)
-pub const MS_RMT_MASK: c_ulong =
-    crate::MS_RDONLY | crate::MS_SYNCHRONOUS | crate::MS_MANDLOCK | crate::MS_I_VERSION;
-
 pub const ENOTSUP: c_int = EOPNOTSUPP;
 
 pub const IPV6_JOIN_GROUP: c_int = 20;
 pub const IPV6_LEAVE_GROUP: c_int = 21;
 
-// These are different from GNU
-pub const ABDAY_1: crate::nl_item = 0x300;
-pub const ABDAY_2: crate::nl_item = 0x301;
-pub const ABDAY_3: crate::nl_item = 0x302;
-pub const ABDAY_4: crate::nl_item = 0x303;
-pub const ABDAY_5: crate::nl_item = 0x304;
-pub const ABDAY_6: crate::nl_item = 0x305;
-pub const ABDAY_7: crate::nl_item = 0x306;
-pub const DAY_1: crate::nl_item = 0x307;
-pub const DAY_2: crate::nl_item = 0x308;
-pub const DAY_3: crate::nl_item = 0x309;
-pub const DAY_4: crate::nl_item = 0x30A;
-pub const DAY_5: crate::nl_item = 0x30B;
-pub const DAY_6: crate::nl_item = 0x30C;
-pub const DAY_7: crate::nl_item = 0x30D;
-pub const ABMON_1: crate::nl_item = 0x30E;
-pub const ABMON_2: crate::nl_item = 0x30F;
-pub const ABMON_3: crate::nl_item = 0x310;
-pub const ABMON_4: crate::nl_item = 0x311;
-pub const ABMON_5: crate::nl_item = 0x312;
-pub const ABMON_6: crate::nl_item = 0x313;
-pub const ABMON_7: crate::nl_item = 0x314;
-pub const ABMON_8: crate::nl_item = 0x315;
-pub const ABMON_9: crate::nl_item = 0x316;
-pub const ABMON_10: crate::nl_item = 0x317;
-pub const ABMON_11: crate::nl_item = 0x318;
-pub const ABMON_12: crate::nl_item = 0x319;
-pub const MON_1: crate::nl_item = 0x31A;
-pub const MON_2: crate::nl_item = 0x31B;
-pub const MON_3: crate::nl_item = 0x31C;
-pub const MON_4: crate::nl_item = 0x31D;
-pub const MON_5: crate::nl_item = 0x31E;
-pub const MON_6: crate::nl_item = 0x31F;
-pub const MON_7: crate::nl_item = 0x320;
-pub const MON_8: crate::nl_item = 0x321;
-pub const MON_9: crate::nl_item = 0x322;
-pub const MON_10: crate::nl_item = 0x323;
-pub const MON_11: crate::nl_item = 0x324;
-pub const MON_12: crate::nl_item = 0x325;
-pub const AM_STR: crate::nl_item = 0x326;
-pub const PM_STR: crate::nl_item = 0x327;
-pub const D_T_FMT: crate::nl_item = 0x328;
-pub const D_FMT: crate::nl_item = 0x329;
-pub const T_FMT: crate::nl_item = 0x32A;
-pub const T_FMT_AMPM: crate::nl_item = 0x32B;
-pub const ERA: crate::nl_item = 0x32C;
-pub const ERA_D_FMT: crate::nl_item = 0x32E;
-pub const ALT_DIGITS: crate::nl_item = 0x32F;
-pub const ERA_D_T_FMT: crate::nl_item = 0x330;
-pub const ERA_T_FMT: crate::nl_item = 0x331;
-pub const CODESET: crate::nl_item = 10;
-pub const CRNCYSTR: crate::nl_item = 0x215;
-pub const RADIXCHAR: crate::nl_item = 0x100;
-pub const THOUSEP: crate::nl_item = 0x101;
-pub const NOEXPR: crate::nl_item = 0x501;
-pub const YESSTR: crate::nl_item = 0x502;
-pub const NOSTR: crate::nl_item = 0x503;
-
 // Different than Gnu.
 pub const FILENAME_MAX: c_uint = 4095;
 
-pub const PRIO_PROCESS: c_int = 0;
-pub const PRIO_PGRP: c_int = 1;
-pub const PRIO_USER: c_int = 2;
+pub const HOST_NAME_MAX: c_int = 64;
+
+pub const PRIO_PROCESS: crate::__priority_which_t = 0;
+pub const PRIO_PGRP: crate::__priority_which_t = 1;
+pub const PRIO_USER: crate::__priority_which_t = 2;
 
 pub const SOMAXCONN: c_int = 128;
 
@@ -404,7 +250,6 @@ pub const O_TMPFILE: c_int = 0o20000000 | O_DIRECTORY;
 pub const PACKET_MR_UNICAST: c_int = 3;
 pub const PF_NFC: c_int = 39;
 pub const PF_VSOCK: c_int = 40;
-pub const POSIX_MADV_DONTNEED: c_int = 4;
 pub const PTRACE_EVENT_STOP: c_int = 128;
 pub const PTRACE_GETSIGMASK: c_uint = 0x420a;
 pub const PTRACE_PEEKSIGINFO: c_int = 0x4209;
@@ -413,13 +258,13 @@ pub const RTLD_NOLOAD: c_int = 0x00004;
 pub const RUSAGE_THREAD: c_int = 1;
 pub const SHM_EXEC: c_int = 0o100000;
 pub const SIGPOLL: c_int = SIGIO;
-pub const SOCK_DCCP: c_int = 6;
-#[deprecated(since = "0.2.70", note = "AF_PACKET must be used instead")]
-pub const SOCK_PACKET: c_int = 10;
 pub const TCP_COOKIE_TRANSACTIONS: c_int = 15;
 pub const UDP_GRO: c_int = 104;
 pub const UDP_SEGMENT: c_int = 103;
-pub const YESEXPR: c_int = ((5) << 8) | (0);
+
+// include/paths.h
+pub const _PATH_DEFPATH: *const c_char = cstr(b"/usr/bin:/bin\0");
+pub const _PATH_BSHELL: *const c_char = cstr(b"/bin/sh\0");
 
 extern "C" {
     pub fn gettimeofday(tp: *mut crate::timeval, tz: *mut crate::timezone) -> c_int;

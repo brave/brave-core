@@ -1,4 +1,29 @@
-//! Streaming decompression functionality.
+//! Core decompression functionality.
+//!
+//! # Using decompress with a wrapping buffer
+//!
+//! [`decompress`] and [`decompress_with_limit`] can be used with a wrapping buffer.
+//!
+//! To decompress with a wrapping buffer you must:
+//! - not pass `TINFL_FLAG_USING_NON_WRAPPING_OUTPUT_BUF` flag
+//! - pass an output buffer with a size of a power of 2
+//! - pass an output buffer  with a size greater or equal to the decompression window
+//!   (which cannot be more than 32KiB, so 32KiB is a safe size)
+//! - pass the same buffer on each call without modification
+//!
+//! You must process return values so that:
+//! - next call pass the input buffer without the first input bytes read skipped
+//! - next call pass the same output buffer
+//! - next call pass an out_pos incremented by the number of bytes output (wrapping to 0 if needed)
+//! - do a next call only if return status is `NeedsMoreInput` or `NeedsMoreInput`
+//!
+//! [`decompress`] will write to any byte after `out_pos` in the output buffer, but will not
+//! wrap around. This means that all bytes after `out_pos` must be saved while the ones before
+//! do not have to.
+//!
+//! [`decompress_with_limit`] will write to any byte after `out_pos` but not more than `out_max`
+//! and will not wrap around. This means that you can use the buffer as a ring buffer for your
+//! application usage, as long as you keep track of the number of disposable bytes.
 
 use super::*;
 use crate::shared::{update_adler32, HUFFMAN_LENGTH_ORDER};
@@ -46,8 +71,8 @@ impl HuffmanTable {
     /// If the returned value is negative, the code wasn't found in the
     /// fast lookup table and the full tree has to be traversed to find the code.
     #[inline]
-    fn fast_lookup(&self, bit_buf: BitBuffer) -> i16 {
-        self.look_up[(bit_buf & BitBuffer::from(FAST_LOOKUP_SIZE - 1)) as usize]
+    const fn fast_lookup(&self, bit_buf: BitBuffer) -> i16 {
+        self.look_up[(bit_buf & (FAST_LOOKUP_SIZE - 1) as BitBuffer) as usize]
     }
 
     /// Get the symbol and the code length from the huffman tree.
@@ -890,30 +915,47 @@ fn init_tree(r: &mut DecompressorOxide, l: &mut LocalVars) -> Option<Action> {
             total_symbols[cs] += 1;
         }
 
-        let mut used_symbols = 0;
         let mut total = 0u32;
-        // Count up the total number of used lengths and check that the table is not under or over-subscribed.
-        for (&ts, next) in total_symbols.iter().zip(next_code[1..].iter_mut()).skip(1) {
-            used_symbols += ts;
-            total += u32::from(ts);
-            total <<= 1;
-            *next = total;
+        let mut max_code_len = 0u32;
+        // Count up the total number of used lengths and check that the table
+        // is not over-subscribed at any step (matching zlib's inftrees.c).
+        {
+            let mut left = 1i32;
+            for (i, (&ts, next)) in total_symbols
+                .iter()
+                .zip(next_code[1..].iter_mut())
+                .enumerate()
+                .skip(1)
+            {
+                if ts > 0 {
+                    max_code_len = i as u32;
+                }
+                total += u32::from(ts);
+                total <<= 1;
+                *next = total;
+
+                left <<= 1;
+                left -= i32::from(ts);
+                if left < 0 {
+                    // Over-subscribed: too many codes for the available bit space.
+                    return Some(Action::Jump(BadTotalSymbols));
+                }
+            }
         }
 
+        // A complete Huffman code has total == 65536 (2^16 after left-shifting
+        // through all 15 possible code lengths). If total != 65536 the code is
+        // incomplete (unused bit patterns remain).
         //
-        // While it's not explicitly stated in the spec, a hufflen table
-        // with a single length (or none) would be invalid as there needs to be
-        // at minimum a length for both a non-zero length huffman code for the end of block symbol
-        // and one of the codes to represent 0 to make sense - so just reject that here as well.
-        //
-        // The distance table is allowed to have a single distance code though according to the spect it is
-        // supposed to be accompanied by a second dummy code. It can also be empty indicating no used codes.
-        //
-        // The literal/length table can not be empty as there has to be an end of block symbol,
-        // The standard doesn't specify that there should be a dummy code in case of a single
-        // symbol (i.e an empty block). Normally that's not an issue though the code will have
-        // to take that into account later on in case of malformed input.
-        if total != 65_536 && (used_symbols > 1 || bt == HUFFLEN_TABLE) {
+        // Per RFC 1951 and zlib's inftrees.c:
+        // - Code length (hufflen) tables must always be complete.
+        // - Literal/length and distance tables may be incomplete when
+        //   max_code_len <= 1: either all symbols are unused (max_code_len == 0,
+        //   e.g. a distance table with no backreferences) or a single symbol is
+        //   encoded with a 1-bit code (e.g. an EOB-only litlen table).
+        //   Tables with max_code_len > 1 that are incomplete are rejected, as
+        //   they have multi-bit codes that don't form a valid prefix code.
+        if total != 65_536 && (bt == HUFFLEN_TABLE || max_code_len > 1) {
             return Some(Action::Jump(BadTotalSymbols));
         }
 
@@ -1362,6 +1404,27 @@ pub fn decompress(
     out_pos: usize,
     flags: u32,
 ) -> (TINFLStatus, usize, usize) {
+    decompress_with_limit(r, in_buf, out, out_pos, usize::MAX, flags)
+}
+
+/// Same as [`decompress()`] with a maximum decompressed byte count.
+///
+/// By default [`decompress()`] decompress untill end of `out` buffer if possible.
+/// `decompress_with_limit` will stop when `out_max` bytes have been decompressed,
+/// or when `out` buffer is full, whichever comes first.
+///
+/// This is especially useful when using a wrapping output buffer. This helps keeping
+/// some data that has not yet been consumed in the buffer while decompressing new bytes.
+///
+/// `out_max` is the maximum number of *bytes* that decompress will write
+pub fn decompress_with_limit(
+    r: &mut DecompressorOxide,
+    in_buf: &[u8],
+    out: &mut [u8],
+    out_pos: usize,
+    out_max: usize,
+    flags: u32,
+) -> (TINFLStatus, usize, usize) {
     let out_buf_size_mask = if flags & TINFL_FLAG_USING_NON_WRAPPING_OUTPUT_BUF != 0 {
         usize::MAX
     } else {
@@ -1383,7 +1446,7 @@ pub fn decompress(
 
     let mut state = r.state;
 
-    let mut out_buf = OutputBuffer::from_slice_and_pos(out, out_pos);
+    let mut out_buf = OutputBuffer::from_slice_pos_and_max(out, out_pos, out_max);
 
     // Make a local copy of the important variables here so we can work with them on the stack.
     let mut l = LocalVars {
@@ -1845,7 +1908,7 @@ pub fn decompress(
                     let source_pos = out_buf.position()
                         .wrapping_sub(l.dist as usize) & out_buf_size_mask;
 
-                    let out_len = out_buf.get_ref().len();
+                    let out_len = out_buf.bytes_left();
                     let match_end_pos = out_buf.position() + l.counter as usize;
 
                     if match_end_pos > out_len ||

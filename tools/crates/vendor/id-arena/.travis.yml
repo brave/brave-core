@@ -16,6 +16,7 @@ matrix:
         - cargo test
         - cargo test --features rayon
     - name: "check no_std"
-      rust: nightly
+      rust: stable
       script:
-        - cargo check --no-default-features
+        - rustup target add x86_64-unknown-none
+        - cargo check --no-default-features --target x86_64-unknown-none

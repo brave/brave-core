@@ -1,15 +1,16 @@
 //! Implementation for C backends.
-use std::fmt;
-use std::marker;
-use std::mem::MaybeUninit;
-use std::os::raw::{c_int, c_uint};
-use std::ptr;
+use alloc::boxed::Box;
+use core::ffi::{c_int, c_uint};
+use core::fmt;
+use core::marker;
+use core::mem::MaybeUninit;
+use core::ptr;
 
 use super::*;
 use crate::mem;
 
 #[derive(Clone, Default)]
-pub struct ErrorMessage(Option<&'static str>);
+pub struct ErrorMessage(pub(crate) Option<&'static str>);
 
 impl ErrorMessage {
     pub fn get(&self) -> Option<&str> {
@@ -51,38 +52,8 @@ impl Default for StreamWrapper {
                 opaque: ptr::null_mut(),
                 state: ptr::null_mut(),
 
-                #[cfg(any(
-                    // zlib-ng
-                    feature = "zlib-ng",
-                    // libz-sys
-                    all(not(feature = "cloudflare_zlib"), not(feature = "zlib-ng"), not(feature = "zlib-rs"))
-                ))]
                 zalloc: allocator::zalloc,
-                #[cfg(any(
-                    // zlib-ng
-                    feature = "zlib-ng",
-                    // libz-sys
-                    all(not(feature = "cloudflare_zlib"), not(feature = "zlib-ng"), not(feature = "zlib-rs"))
-                ))]
                 zfree: allocator::zfree,
-
-                #[cfg(
-                    // cloudflare-zlib
-                    all(feature = "cloudflare_zlib", not(feature = "zlib-rs"), not(feature = "zlib-ng")),
-                )]
-                zalloc: Some(allocator::zalloc),
-                #[cfg(
-                    // cloudflare-zlib
-                    all(feature = "cloudflare_zlib", not(feature = "zlib-rs"), not(feature = "zlib-ng")),
-                )]
-                zfree: Some(allocator::zfree),
-
-                // for zlib-rs, it is most efficient to have it provide the allocator.
-                // The libz-rs-sys dependency is configured to use the rust system allocator
-                #[cfg(all(feature = "zlib-rs", not(feature = "zlib-ng")))]
-                zalloc: None,
-                #[cfg(all(feature = "zlib-rs", not(feature = "zlib-ng")))]
-                zfree: None,
             })),
         }
     }
@@ -98,22 +69,14 @@ impl Drop for StreamWrapper {
     }
 }
 
-#[cfg(any(
-    // zlib-ng
-    feature = "zlib-ng",
-    // cloudflare-zlib
-    all(feature = "cloudflare_zlib", not(feature = "zlib-rs"), not(feature = "zlib-ng")),
-    // libz-sys
-    all(not(feature = "cloudflare_zlib"), not(feature = "zlib-ng"), not(feature = "zlib-rs")),
-))]
 mod allocator {
     use super::*;
 
-    use std::alloc::{self, Layout};
-    use std::convert::TryFrom;
-    use std::os::raw::c_void;
+    use core::alloc::Layout;
+    use core::convert::TryFrom;
+    use core::ffi::c_void;
 
-    const ALIGN: usize = std::mem::align_of::<usize>();
+    const ALIGN: usize = core::mem::align_of::<usize>();
 
     fn align_up(size: usize, align: usize) -> usize {
         (size + align - 1) & !(align - 1)
@@ -128,7 +91,7 @@ mod allocator {
             .checked_mul(item_size)
             .and_then(|i| usize::try_from(i).ok())
             .map(|size| align_up(size, ALIGN))
-            .and_then(|i| i.checked_add(std::mem::size_of::<usize>()))
+            .and_then(|i| i.checked_add(core::mem::size_of::<usize>()))
         {
             Some(i) => i,
             None => return ptr::null_mut(),
@@ -143,7 +106,7 @@ mod allocator {
         unsafe {
             // Allocate the data, and if successful store the size we allocated
             // at the beginning and then return an offset pointer.
-            let ptr = alloc::alloc(layout) as *mut usize;
+            let ptr = ::alloc::alloc::alloc(layout) as *mut usize;
             if ptr.is_null() {
                 return ptr as *mut c_void;
             }
@@ -160,7 +123,7 @@ mod allocator {
             let ptr = (address as *mut usize).offset(-1);
             let size = *ptr;
             let layout = Layout::from_size_align_unchecked(size, ALIGN);
-            alloc::dealloc(ptr as *mut u8, layout)
+            ::alloc::alloc::dealloc(ptr as *mut u8, layout)
         }
     }
 }
@@ -196,8 +159,8 @@ impl<D: Direction> Stream<D> {
         ErrorMessage(if msg.is_null() {
             None
         } else {
-            let s = unsafe { std::ffi::CStr::from_ptr(msg) };
-            std::str::from_utf8(s.to_bytes()).ok()
+            let s = unsafe { core::ffi::CStr::from_ptr(msg) };
+            core::str::from_utf8(s.to_bytes()).ok()
         })
     }
 }
@@ -224,6 +187,7 @@ impl Direction for DirDecompress {
 #[derive(Debug)]
 pub struct Inflate {
     pub inner: Stream<DirDecompress>,
+    window_bits: u8,
 }
 
 impl Inflate {
@@ -292,6 +256,7 @@ impl InflateBackend for Inflate {
                     total_out: 0,
                     _marker: marker::PhantomData,
                 },
+                window_bits,
             }
         }
     }
@@ -315,13 +280,18 @@ impl InflateBackend for Inflate {
 
     fn reset(&mut self, zlib_header: bool) {
         let bits = if zlib_header {
-            MZ_DEFAULT_WINDOW_BITS
+            self.window_bits as c_int
         } else {
-            -MZ_DEFAULT_WINDOW_BITS
+            // Keep only the base-2 logarithm of the window size: a decoder
+            // created for gzip (window_bits + 16) resets to a raw deflate
+            // stream with the same window size.
+            -((self.window_bits & 15) as c_int)
         };
-        unsafe {
-            inflateReset2(self.inner.stream_wrapper.inner, bits);
-        }
+        let rc = unsafe { inflateReset2(self.inner.stream_wrapper.inner, bits) };
+        assert_eq!(
+            rc, MZ_OK,
+            "inflateReset2 failed despite valid window bits and an initialized stream"
+        );
         self.inner.total_out = 0;
         self.inner.total_in = 0;
     }
@@ -456,25 +426,13 @@ pub use self::c_backend::*;
 #[allow(bad_style)]
 #[allow(unused_imports)]
 mod c_backend {
-    use std::mem;
-    use std::os::raw::{c_char, c_int};
+    use core::ffi::{c_char, c_int};
+    use core::mem;
 
     #[cfg(feature = "zlib-ng")]
     use libz_ng_sys as libz;
 
-    #[cfg(all(feature = "zlib-rs", not(feature = "zlib-ng")))]
-    use libz_rs_sys as libz;
-
-    #[cfg(
-        // cloudflare-zlib
-        all(feature = "cloudflare_zlib", not(feature = "zlib-rs"), not(feature = "zlib-ng")),
-    )]
-    use cloudflare_zlib_sys as libz;
-
-    #[cfg(
-        // libz-sys
-        all(not(feature = "cloudflare_zlib"), not(feature = "zlib-ng"), not(feature = "zlib-rs")),
-    )]
+    #[cfg(not(feature = "zlib-ng"))]
     use libz_sys as libz;
 
     pub use libz::deflate as mz_deflate;

@@ -46,9 +46,13 @@
 #![deny(missing_debug_implementations)]
 #![no_std]
 #![warn(rust_2018_idioms)]
+#![allow(rustc::default_hash_types)]
 
 #[cfg(feature = "cargo-all")]
 compile_error!("'--all-features' is not supported; use '--features all' instead");
+
+#[cfg(all(feature = "goff", not(feature = "unstable")))]
+compile_error!("'goff' is an unstable feature; enable 'unstable' as well");
 
 #[cfg(any(feature = "read_core", feature = "write_core"))]
 #[allow(unused_imports)]
@@ -62,6 +66,9 @@ extern crate std;
 
 mod common;
 pub use common::*;
+
+mod constants;
+pub use constants::*;
 
 #[macro_use]
 pub mod endian;
@@ -86,6 +93,8 @@ pub mod build;
 pub mod archive;
 #[cfg(feature = "elf")]
 pub mod elf;
+#[cfg(feature = "goff")]
+pub mod goff;
 #[cfg(feature = "macho")]
 pub mod macho;
 #[cfg(any(feature = "coff", feature = "pe"))]

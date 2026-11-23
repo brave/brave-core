@@ -1,0 +1,5 @@
+error: unknown defmt attribute `FooBar`
+ --> tests/ui/derive-invalid-attr-arg-item.rs:2:9
+  |
+2 | #[defmt(FooBar)]
+  |         ^^^^^^

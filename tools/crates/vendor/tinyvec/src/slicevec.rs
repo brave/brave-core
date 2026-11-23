@@ -143,7 +143,7 @@ impl<'s, T> SliceVec<'s, T> {
   /// assert_eq!(drained_values.as_slice(), &[7, 8][..]);
   ///
   /// sv.drain(..);
-  /// assert_eq!(sv.as_slice(), &[]);
+  /// assert_eq!(sv.as_slice(), &[] as &[i32]);
   /// ```
   #[inline]
   pub fn drain<'p, R: RangeBounds<usize>>(
@@ -293,6 +293,13 @@ impl<'s, T> SliceVec<'s, T> {
     self.len == 0
   }
 
+  /// Checks if the length is equal to capacity.
+  #[inline(always)]
+  #[must_use]
+  pub fn is_full(&self) -> bool {
+    self.len() == self.capacity()
+  }
+
   /// The length of the `SliceVec` (in elements).
   #[inline(always)]
   #[must_use]
@@ -338,7 +345,7 @@ impl<'s, T> SliceVec<'s, T> {
   /// # use tinyvec::*;
   /// let mut arr = [0, 0];
   /// let mut sv = SliceVec::from_slice_len(&mut arr, 0);
-  /// assert_eq!(&sv[..], []);
+  /// assert_eq!(&sv[..], [] as [i32; 0]);
   /// sv.push(1);
   /// assert_eq!(&sv[..], [1]);
   /// sv.push(2);
@@ -634,6 +641,29 @@ impl<'s, T> SliceVec<'s, T> {
   }
 }
 
+impl<'s, T> SliceVec<'s, T> {
+  /// Returns the reference to the inner slice of the `SliceVec`.
+  ///
+  /// This returns the full array, even if the `SliceVec` length is currently
+  /// less than that.
+  #[inline(always)]
+  #[must_use]
+  pub const fn as_inner(&self) -> &[T] {
+    &*self.data
+  }
+
+  /// Returns a mutable reference to the inner slice of the `SliceVec`.
+  ///
+  /// This returns the full array, even if the `SliceVec` length is currently
+  /// less than that.
+  #[inline(always)]
+  #[must_use]
+  #[cfg(feature = "latest_stable_rust")]
+  pub const fn as_mut_inner(&mut self) -> &mut [T] {
+    self.data
+  }
+}
+
 #[cfg(feature = "grab_spare_slice")]
 impl<'s, T> SliceVec<'s, T> {
   /// Obtain the shared slice of the array _after_ the active memory.
@@ -890,20 +920,18 @@ where
 {
   #[allow(clippy::missing_inline_in_public_items)]
   fn fmt(&self, f: &mut Formatter) -> core::fmt::Result {
-    write!(f, "[")?;
-    if f.alternate() && !self.is_empty() {
-      write!(f, "\n    ")?;
-    }
-    for (i, elem) in self.iter().enumerate() {
-      if i > 0 {
-        write!(f, ",{}", if f.alternate() { "\n    " } else { " " })?;
-      }
-      Debug::fmt(elem, f)?;
-    }
-    if f.alternate() && !self.is_empty() {
-      write!(f, ",\n")?;
-    }
-    write!(f, "]")
+    <[T] as Debug>::fmt(self.as_slice(), f)
+  }
+}
+
+#[cfg(feature = "defmt")]
+#[cfg_attr(docs_rs, doc(cfg(feature = "defmt")))]
+impl<'s, T> defmt::Format for SliceVec<'s, T>
+where
+  T: defmt::Format,
+{
+  fn format(&self, fmt: defmt::Formatter<'_>) {
+    defmt::Format::format(self.as_slice(), fmt)
   }
 }
 
@@ -1065,5 +1093,33 @@ where
       write!(f, ",\n")?;
     }
     write!(f, "]")
+  }
+}
+
+#[cfg(test)]
+mod test {
+  use super::*;
+
+  #[cfg(feature = "alloc")]
+  #[test]
+  fn array_like_debug() {
+    #[derive(Debug, Default, Copy, Clone)]
+    #[allow(unused)]
+    struct S {
+      x: u8,
+      y: u8,
+    }
+
+    use core::fmt::Write;
+
+    let mut ar: [S; 2] = [S { x: 1, y: 2 }, S { x: 3, y: 4 }];
+    let mut buf_ar = alloc::string::String::new();
+    write!(&mut buf_ar, "{ar:#?}").unwrap();
+
+    let av: SliceVec<S> = SliceVec::from(&mut ar);
+    let mut buf_av = alloc::string::String::new();
+    write!(&mut buf_av, "{av:#?}").unwrap();
+
+    assert_eq!(buf_av, buf_ar)
   }
 }

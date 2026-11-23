@@ -6,12 +6,25 @@
 pub struct OutputBuffer<'a> {
     slice: &'a mut [u8],
     position: usize,
+    max: usize,
 }
 
 impl<'a> OutputBuffer<'a> {
     #[inline]
-    pub fn from_slice_and_pos(slice: &'a mut [u8], position: usize) -> OutputBuffer<'a> {
-        OutputBuffer { slice, position }
+    pub fn from_slice_pos_and_max(
+        slice: &'a mut [u8],
+        position: usize,
+        max_count: usize,
+    ) -> OutputBuffer<'a> {
+        let mut max = position.saturating_add(max_count);
+        if max > slice.len() {
+            max = slice.len();
+        }
+        OutputBuffer {
+            slice,
+            position,
+            max,
+        }
     }
 
     #[inline(always)]
@@ -45,7 +58,7 @@ impl<'a> OutputBuffer<'a> {
 
     #[inline]
     pub const fn bytes_left(&self) -> usize {
-        self.slice.len() - self.position
+        self.max - self.position
     }
 
     #[inline(always)]

@@ -1,4 +1,5 @@
-use std::fmt;
+use alloc::string::{String, ToString};
+use core::fmt;
 
 #[derive(Debug, Clone)]
 pub(crate) struct FilterOp {
@@ -24,13 +25,13 @@ impl FilterOp {
 
 #[cfg(not(feature = "regex"))]
 impl FilterOp {
-    pub fn new(spec: &str) -> Result<Self, String> {
+    pub(crate) fn new(spec: &str) -> Result<Self, String> {
         Ok(Self {
             inner: spec.to_string(),
         })
     }
 
-    pub fn is_match(&self, s: &str) -> bool {
+    pub(crate) fn is_match(&self, s: &str) -> bool {
         s.contains(&self.inner)
     }
 }

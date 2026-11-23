@@ -1,55 +1,5 @@
 //! Macros for use within the library. They are not publicly available.
 
-/// Helper macro for easily implementing `OpAssign`.
-macro_rules! __impl_assign {
-    ($sym:tt $op:ident $fn:ident $target:ty : $($(#[$attr:meta])* $t:ty),+) => {$(
-        #[allow(unused_qualifications)]
-        $(#[$attr])*
-        impl core::ops::$op<$t> for $target {
-            #[inline]
-            fn $fn(&mut self, rhs: $t) {
-                *self = *self $sym rhs;
-            }
-        }
-    )+};
-}
-
-/// Implement `AddAssign` for the provided types.
-macro_rules! impl_add_assign {
-    ($target:ty : $($(#[$attr:meta])* $t:ty),+ $(,)?) => {
-        $crate::internal_macros::__impl_assign!(
-            + AddAssign add_assign $target : $($(#[$attr])* $t),+
-        );
-    };
-}
-
-/// Implement `SubAssign` for the provided types.
-macro_rules! impl_sub_assign {
-    ($target:ty : $($(#[$attr:meta])* $t:ty),+ $(,)?) => {
-        $crate::internal_macros::__impl_assign!(
-            - SubAssign sub_assign $target : $($(#[$attr])* $t),+
-        );
-    };
-}
-
-/// Implement `MulAssign` for the provided types.
-macro_rules! impl_mul_assign {
-    ($target:ty : $($(#[$attr:meta])* $t:ty),+ $(,)?) => {
-        $crate::internal_macros::__impl_assign!(
-            * MulAssign mul_assign $target : $($(#[$attr])* $t),+
-        );
-    };
-}
-
-/// Implement `DivAssign` for the provided types.
-macro_rules! impl_div_assign {
-    ($target:ty : $($(#[$attr:meta])* $t:ty),+ $(,)?) => {
-        $crate::internal_macros::__impl_assign!(
-            / DivAssign div_assign $target : $($(#[$attr])* $t),+
-        );
-    };
-}
-
 /// Division of integers, rounding the resulting value towards negative infinity.
 macro_rules! div_floor {
     ($self:expr, $rhs:expr) => {
@@ -64,12 +14,8 @@ macro_rules! div_floor {
                 // which is all-ones iff the signs differ, and 0 otherwise. Then by
                 // adding this mask (which corresponds to the signed value -1), we
                 // get our correction.
-                let correction = (this ^ rhs) >> ($crate::size_of_val(&this) * 8 - 1);
-                if r != 0 {
-                    d + correction
-                } else {
-                    d
-                }
+                let correction = (this ^ rhs) >> (size_of_val(&this) * 8 - 1);
+                if r != 0 { d + correction } else { d }
             }
         }
     };
@@ -166,14 +112,17 @@ macro_rules! cascade {
         cascade!(@ordinal $ordinal);
         cascade!(@year $year);
 
-        let days_in_year = crate::util::days_in_year($year) as i16;
+        let days_in_year = crate::util::range_validated::days_in_year($year).cast_signed();
         #[allow(unused_assignments)]
         if crate::hint::unlikely($ordinal > days_in_year) {
             $ordinal -= days_in_year;
             $year += 1;
         } else if crate::hint::unlikely($ordinal < 1) {
             $year -= 1;
-            $ordinal += crate::util::days_in_year($year) as i16;
+            // The year may now be out of range if it was previously `MIN_YEAR`. This macro arm is
+            // only called in situations where this is possible, so branching on where this is a
+            // possibility is not necessary.
+            $ordinal += crate::util::days_in_year($year).cast_signed();
         }
     };
 }
@@ -185,14 +134,17 @@ macro_rules! ensure_ranged {
             Some(val) => val,
             None => {
                 $crate::hint::cold_path();
-                #[allow(trivial_numeric_casts)]
-                return Err(crate::error::ComponentRange {
-                    name: stringify!($value),
-                    minimum: <$type>::MIN.get() as i64,
-                    maximum: <$type>::MAX.get() as i64,
-                    value: $value as i64,
-                    conditional_message: None,
-                });
+                return Err(crate::error::ComponentRange::unconditional(stringify!($value)));
+            }
+        }
+    };
+
+    ($type:ty : $value:ident ($name:literal)) => {
+        match <$type>::new($value) {
+            Some(val) => val,
+            None => {
+                $crate::hint::cold_path();
+                return Err(crate::error::ComponentRange::unconditional($name));
             }
         }
     };
@@ -203,25 +155,12 @@ macro_rules! ensure_ranged {
                 Some(val) => val,
                 None => {
                     $crate::hint::cold_path();
-                    #[allow(trivial_numeric_casts)]
-                    return Err(crate::error::ComponentRange {
-                        name: stringify!($value),
-                        minimum: <$type>::MIN.get() as i64 / $factor as i64,
-                        maximum: <$type>::MAX.get() as i64 / $factor as i64,
-                        value: $value as i64,
-                        conditional_message: None,
-                    });
+                    return Err(crate::error::ComponentRange::unconditional(stringify!($value)));
                 }
             },
             None => {
                 $crate::hint::cold_path();
-                return Err(crate::error::ComponentRange {
-                    name: stringify!($value),
-                    minimum: <$type>::MIN.get() as i64 / $factor as i64,
-                    maximum: <$type>::MAX.get() as i64 / $factor as i64,
-                    value: $value as i64,
-                    conditional_message: None,
-                });
+                return Err(crate::error::ComponentRange::unconditional(stringify!($value)));
             }
         }
     };
@@ -235,7 +174,26 @@ macro_rules! const_try {
     ($e:expr) => {
         match $e {
             Ok(value) => value,
-            Err(error) => return Err(error),
+            Err(error) => {
+                $crate::hint::cold_path();
+                return Err(error);
+            }
+        }
+    };
+}
+
+/// Try to unwrap an expression, returning if not possible.
+///
+/// This is identical to `?` in terms of behavior, but marks the error path as cold.
+#[cfg(any(feature = "formatting", feature = "parsing", feature = "serde"))]
+macro_rules! try_likely_ok {
+    ($e:expr) => {
+        match $e {
+            Ok(value) => value,
+            Err(error) => {
+                $crate::hint::cold_path();
+                return Err(error.into());
+            }
         }
     };
 }
@@ -247,35 +205,31 @@ macro_rules! const_try_opt {
     ($e:expr) => {
         match $e {
             Some(value) => value,
-            None => return None,
-        }
-    };
-}
-
-/// Try to unwrap an expression, panicking if not possible.
-///
-/// This is similar to `$e.expect($message)`, but is usable in `const` contexts.
-macro_rules! expect_opt {
-    ($e:expr, $message:literal) => {
-        match $e {
-            Some(value) => value,
-            None => crate::expect_failed($message),
+            None => {
+                $crate::hint::cold_path();
+                return None;
+            }
         }
     };
 }
 
 /// `unreachable!()`, but better.
-#[cfg(any(feature = "formatting", feature = "parsing"))]
 macro_rules! bug {
-    () => { compile_error!("provide an error message to help fix a possible bug") };
-    ($descr:literal $($rest:tt)?) => {
-        panic!(concat!("internal error: ", $descr) $($rest)?)
-    }
+    () => {
+        compile_error!("provide an error message to help fix a possible bug")
+    };
+    ($descr:literal) => {{
+        $crate::hint::cold_path();
+        panic!(concat!("internal error: ", $descr))
+    }};
 }
 
-#[cfg(any(feature = "formatting", feature = "parsing"))]
 pub(crate) use bug;
-pub(crate) use {
-    __impl_assign, carry, cascade, const_try, const_try_opt, div_floor, ensure_ranged, expect_opt,
-    impl_add_assign, impl_div_assign, impl_mul_assign, impl_sub_assign,
-};
+pub(crate) use carry;
+pub(crate) use cascade;
+pub(crate) use const_try;
+pub(crate) use const_try_opt;
+pub(crate) use div_floor;
+pub(crate) use ensure_ranged;
+#[cfg(any(feature = "formatting", feature = "parsing", feature = "serde"))]
+pub(crate) use try_likely_ok;

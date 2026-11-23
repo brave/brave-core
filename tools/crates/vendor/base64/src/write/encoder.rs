@@ -63,7 +63,7 @@ const MIN_ENCODE_CHUNK_SIZE: usize = 3;
 pub struct EncoderWriter<'e, E: Engine, W: io::Write> {
     engine: &'e E,
     /// Where encoded data is written to. It's an Option as it's None immediately before Drop is
-    /// called so that finish() can return the underlying writer. None implies that finish() has
+    /// called so that `finish()` can return the underlying writer. None implies that `finish()` has
     /// been called successfully.
     delegate: Option<W>,
     /// Holds a partial chunk, if any, after the last `write()`, so that we may then fill the chunk
@@ -126,9 +126,10 @@ impl<'e, E: Engine, W: io::Write> EncoderWriter<'e, E, W> {
     pub fn finish(&mut self) -> Result<W> {
         // If we could consume self in finish(), we wouldn't have to worry about this case, but
         // finish() is retryable in the face of I/O errors, so we can't consume here.
-        if self.delegate.is_none() {
-            panic!("Encoder has already had finish() called");
-        };
+        assert!(
+            self.delegate.is_some(),
+            "Encoder has already had finish() called"
+        );
 
         self.write_final_leftovers()?;
 
@@ -168,7 +169,7 @@ impl<'e, E: Engine, W: io::Write> EncoderWriter<'e, E, W> {
     }
 
     /// Write as much of the encoded output to the delegate writer as it will accept, and store the
-    /// leftovers to be attempted at the next write() call. Updates `self.output_occupied_len`.
+    /// leftovers to be attempted at the next `write()` call. Updates `self.output_occupied_len`.
     ///
     /// # Errors
     ///
@@ -201,7 +202,7 @@ impl<'e, E: Engine, W: io::Write> EncoderWriter<'e, E, W> {
 
     /// Write all buffered encoded output. If this returns `Ok`, `self.output_occupied_len` is `0`.
     ///
-    /// This is basically write_all for the remaining buffered data but without the undesirable
+    /// This is basically `write_all` for the remaining buffered data but without the undesirable
     /// abort-on-`Ok(0)` behavior.
     ///
     /// # Errors
@@ -217,7 +218,7 @@ impl<'e, E: Engine, W: io::Write> EncoderWriter<'e, E, W> {
                 // other errors return
                 Err(e) => return Err(e),
                 // success no-ops because remaining length is already updated
-                Ok(_) => {}
+                Ok(()) => {}
             };
         }
 
@@ -263,9 +264,10 @@ impl<'e, E: Engine, W: io::Write> io::Write for EncoderWriter<'e, E, W> {
     ///
     /// Any errors emitted by the delegate writer are returned.
     fn write(&mut self, input: &[u8]) -> Result<usize> {
-        if self.delegate.is_none() {
-            panic!("Cannot write more after calling finish()");
-        }
+        assert!(
+            self.delegate.is_some(),
+            "Cannot write more after calling finish()"
+        );
 
         if input.is_empty() {
             return Ok(0);
@@ -283,7 +285,7 @@ impl<'e, E: Engine, W: io::Write> io::Write for EncoderWriter<'e, E, W> {
             return self
                 .write_to_delegate(current_len)
                 // did not read any input
-                .map(|_| 0);
+                .map(|()| 0);
         }
 
         debug_assert_eq!(0, self.output_occupied_len);
@@ -374,7 +376,7 @@ impl<'e, E: Engine, W: io::Write> io::Write for EncoderWriter<'e, E, W> {
         self.write_to_delegate(encoded_size)
             // no matter whether we wrote the full encoded buffer or not, we consumed the same
             // input
-            .map(|_| extra_input_read_len + input_chunks_to_encode_len)
+            .map(|()| extra_input_read_len + input_chunks_to_encode_len)
             .map_err(|e| {
                 // in case we filled and encoded `extra`, reset extra_len
                 self.extra_input_occupied_len = orig_extra_len;

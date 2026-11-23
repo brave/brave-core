@@ -1,13 +1,16 @@
 use std::hash::Hash;
 use std::mem::{self, size_of};
 use std::net::{SocketAddr, SocketAddrV4, SocketAddrV6};
+#[cfg(not(target_os = "wasi"))]
 use std::path::Path;
 use std::{fmt, io, ptr};
 
 #[cfg(windows)]
 use windows_sys::Win32::Networking::WinSock::SOCKADDR_IN6_0;
 
-use crate::sys::{c_int, sockaddr_in, sockaddr_in6, sockaddr_storage, AF_INET, AF_INET6, AF_UNIX};
+#[cfg(not(target_os = "wasi"))]
+use crate::sys::AF_UNIX;
+use crate::sys::{c_int, sockaddr_in, sockaddr_in6, sockaddr_storage, AF_INET, AF_INET6};
 use crate::Domain;
 
 /// The integer type used with `getsockname` on this platform.
@@ -212,6 +215,7 @@ impl SockAddr {
     /// Constructs a `SockAddr` with the family `AF_UNIX` and the provided path.
     ///
     /// Returns an error if the path is longer than `SUN_LEN`.
+    #[cfg(not(target_os = "wasi"))]
     pub fn unix<P>(path: P) -> io::Result<SockAddr>
     where
         P: AsRef<Path>,
@@ -249,7 +253,7 @@ impl SockAddr {
         &self.storage as *const sockaddr_storage as *const SockAddrStorage
     }
 
-    /// Retuns the address as the storage.
+    /// Returns the address as the storage.
     pub const fn as_storage(self) -> SockAddrStorage {
         SockAddrStorage {
             storage: self.storage,
@@ -269,6 +273,7 @@ impl SockAddr {
 
     /// Returns true if this address is of a unix socket (for local interprocess communication),
     /// i.e. it is from the `AF_UNIX` family, false otherwise.
+    #[cfg(not(target_os = "wasi"))]
     pub fn is_unix(&self) -> bool {
         self.storage.ss_family == AF_UNIX as sa_family_t
     }
@@ -293,7 +298,7 @@ impl SockAddr {
                 ip,
                 port,
                 addr.sin6_flowinfo,
-                #[cfg(unix)]
+                #[cfg(any(unix, all(target_os = "wasi", not(target_env = "p1"))))]
                 addr.sin6_scope_id,
                 #[cfg(windows)]
                 unsafe {
@@ -326,7 +331,7 @@ impl SockAddr {
     /// Returns the initialised storage bytes.
     fn as_bytes(&self) -> &[u8] {
         // SAFETY: `self.storage` is a C struct which can always be treated a
-        // slice of bytes. Furthermore, we ensure we don't read any unitialised
+        // slice of bytes. Furthermore, we ensure we don't read any uninitialised
         // bytes by using `self.len`.
         unsafe { std::slice::from_raw_parts(self.as_ptr().cast(), self.len as usize) }
     }
@@ -350,7 +355,10 @@ impl From<SocketAddrV4> for SockAddr {
             storage.sin_family = AF_INET as sa_family_t;
             storage.sin_port = addr.port().to_be();
             storage.sin_addr = crate::sys::to_in_addr(addr.ip());
-            storage.sin_zero = Default::default();
+            #[cfg(not(target_os = "wasi"))]
+            {
+                storage.sin_zero = Default::default();
+            }
             mem::size_of::<sockaddr_in>() as socklen_t
         };
         #[cfg(any(
@@ -385,7 +393,7 @@ impl From<SocketAddrV6> for SockAddr {
             storage.sin6_port = addr.port().to_be();
             storage.sin6_addr = crate::sys::to_in6_addr(addr.ip());
             storage.sin6_flowinfo = addr.flowinfo();
-            #[cfg(unix)]
+            #[cfg(any(unix, all(target_os = "wasi", not(target_env = "p1"))))]
             {
                 storage.sin6_scope_id = addr.scope_id();
             }
@@ -469,6 +477,7 @@ mod tests {
         let addr = SockAddr::from(std);
         assert!(addr.is_ipv4());
         assert!(!addr.is_ipv6());
+        #[cfg(not(target_os = "wasi"))]
         assert!(!addr.is_unix());
         assert_eq!(addr.family(), AF_INET as sa_family_t);
         assert_eq!(addr.domain(), Domain::IPV4);
@@ -483,7 +492,7 @@ mod tests {
         assert_eq!(addr.as_socket(), Some(SocketAddr::V4(std)));
         assert_eq!(addr.as_socket_ipv4(), Some(std));
         assert!(addr.as_socket_ipv6().is_none());
-        #[cfg(unix)]
+        #[cfg(all(unix, not(target_os = "wasi")))]
         {
             assert!(addr.as_pathname().is_none());
             assert!(addr.as_abstract_namespace().is_none());
@@ -497,6 +506,7 @@ mod tests {
         let addr = SockAddr::from(std);
         assert!(addr.is_ipv6());
         assert!(!addr.is_ipv4());
+        #[cfg(not(target_os = "wasi"))]
         assert!(!addr.is_unix());
         assert_eq!(addr.family(), AF_INET6 as sa_family_t);
         assert_eq!(addr.domain(), Domain::IPV6);
@@ -511,7 +521,7 @@ mod tests {
         assert_eq!(addr.as_socket(), Some(SocketAddr::V6(std)));
         assert!(addr.as_socket_ipv4().is_none());
         assert_eq!(addr.as_socket_ipv6(), Some(std));
-        #[cfg(unix)]
+        #[cfg(all(unix, not(target_os = "wasi")))]
         {
             assert!(addr.as_pathname().is_none());
             assert!(addr.as_abstract_namespace().is_none());

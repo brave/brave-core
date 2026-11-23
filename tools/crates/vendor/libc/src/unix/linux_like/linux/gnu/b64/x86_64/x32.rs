@@ -1,45 +1,8 @@
 use crate::prelude::*;
-use crate::pthread_mutex_t;
-
-s! {
-    pub struct statvfs {
-        pub f_bsize: c_ulong,
-        pub f_frsize: c_ulong,
-        pub f_blocks: crate::fsblkcnt_t,
-        pub f_bfree: crate::fsblkcnt_t,
-        pub f_bavail: crate::fsblkcnt_t,
-        pub f_files: crate::fsfilcnt_t,
-        pub f_ffree: crate::fsfilcnt_t,
-        pub f_favail: crate::fsfilcnt_t,
-        pub f_fsid: c_ulong,
-        pub f_flag: c_ulong,
-        pub f_namemax: c_ulong,
-        __f_spare: [c_int; 6],
-    }
-}
 
 pub const __SIZEOF_PTHREAD_MUTEX_T: usize = 32;
 pub const __SIZEOF_PTHREAD_RWLOCK_T: usize = 44;
 pub const __SIZEOF_PTHREAD_BARRIER_T: usize = 20;
-
-pub const PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t = pthread_mutex_t {
-    size: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0,
-    ],
-};
-pub const PTHREAD_ERRORCHECK_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t = pthread_mutex_t {
-    size: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0,
-    ],
-};
-pub const PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t = pthread_mutex_t {
-    size: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0,
-    ],
-};
 
 // Syscall table
 

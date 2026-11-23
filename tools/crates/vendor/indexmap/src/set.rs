@@ -13,14 +13,14 @@ pub use self::iter::{
 pub use self::mutable::MutableValues;
 pub use self::slice::Slice;
 
+use crate::TryReserveError;
 #[cfg(feature = "rayon")]
 pub use crate::rayon::set as rayon;
-use crate::TryReserveError;
 
 #[cfg(feature = "std")]
 use std::hash::RandomState;
 
-use crate::util::try_simplify_range;
+use crate::util::{assert_index_lt, try_simplify_range};
 use alloc::boxed::Box;
 use alloc::vec::Vec;
 use core::cmp::Ordering;
@@ -926,11 +926,7 @@ impl<T, S> IndexSet<T, S> {
     /// ```
     pub fn pop_if(&mut self, predicate: impl FnOnce(&T) -> bool) -> Option<T> {
         let last = self.last()?;
-        if predicate(last) {
-            self.pop()
-        } else {
-            None
-        }
+        if predicate(last) { self.pop() } else { None }
     }
 
     /// Scan through each value in the set and keep those where the
@@ -1285,14 +1281,8 @@ impl<T, S> Index<usize> for IndexSet<T, S> {
     ///
     /// ***Panics*** if `index` is out of bounds.
     fn index(&self, index: usize) -> &T {
-        if let Some(value) = self.get_index(index) {
-            value
-        } else {
-            panic!(
-                "index out of bounds: the len is {len} but the index is {index}",
-                len = self.len()
-            );
-        }
+        assert_index_lt(index, self.len());
+        &self.map.as_entries()[index].key
     }
 }
 

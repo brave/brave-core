@@ -16,7 +16,7 @@ The **terminal user interface** seems to be the least transparent part, but can 
 
 # Terminal User Interface
 
-By default, a TUI is provided to visualize all state. Have a look at [the example provided in the tui module](./tui/index.html).
+By default, a TUI is provided to visualize all state. Have a look at [the example provided in the tui module](./render/tui/index.html).
 
 **Please note** that it is behind the `render-tui` feature toggle, which is enabled by default.
 
@@ -29,7 +29,7 @@ seriously interfere with the TUI.
 
 # A demo application
 
-Please have a look at the [dashboard demo](https://github.com/Byron/crates-io-cli-rs/blob/master/prodash/examples/dashboard.rs).
+Please have a look at the [dashboard demo](https://github.com/GitoxideLabs/prodash/blob/main/examples/dashboard.rs).
 
 [![asciicast](https://asciinema.org/a/301838.svg)](https://asciinema.org/a/301838)
 

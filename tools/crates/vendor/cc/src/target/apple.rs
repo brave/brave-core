@@ -21,6 +21,19 @@ impl TargetInfo<'_> {
         }
     }
 
+    /// The variable that sets the deployment target on this Apple target, read
+    /// by cc and by the compiler.
+    pub(crate) fn apple_deployment_target_var(&self) -> Option<&'static str> {
+        match self.os {
+            "macos" => Some("MACOSX_DEPLOYMENT_TARGET"),
+            "ios" => Some("IPHONEOS_DEPLOYMENT_TARGET"),
+            "tvos" => Some("TVOS_DEPLOYMENT_TARGET"),
+            "watchos" => Some("WATCHOS_DEPLOYMENT_TARGET"),
+            "visionos" => Some("XROS_DEPLOYMENT_TARGET"),
+            _ => None,
+        }
+    }
+
     pub(crate) fn apple_version_flag(&self, min_version: &str) -> String {
         // There are many aliases for these, and `-mtargetos=` is preferred on Clang nowadays, but
         // for compatibility with older Clang, we use the earliest supported name here.

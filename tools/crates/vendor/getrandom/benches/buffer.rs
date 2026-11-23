@@ -1,8 +1,9 @@
-#![feature(test, maybe_uninit_uninit_array_transpose)]
+//! Basic benchmarks
+#![feature(test)]
 extern crate test;
 
 use std::{
-    mem::{size_of, MaybeUninit},
+    mem::{MaybeUninit, size_of},
     slice,
 };
 
@@ -23,7 +24,7 @@ fn bench_fill_uninit<const N: usize>() {
 }
 
 #[bench]
-pub fn bench_u32(b: &mut test::Bencher) {
+fn bench_u32(b: &mut test::Bencher) {
     #[inline(never)]
     fn inner() -> u32 {
         getrandom::u32().unwrap()
@@ -31,8 +32,9 @@ pub fn bench_u32(b: &mut test::Bencher) {
     b.bytes = 4;
     b.iter(inner);
 }
+
 #[bench]
-pub fn bench_u32_via_fill(b: &mut test::Bencher) {
+fn bench_u32_via_fill(b: &mut test::Bencher) {
     #[inline(never)]
     fn inner() -> u32 {
         let mut res = MaybeUninit::<u32>::uninit();
@@ -46,7 +48,7 @@ pub fn bench_u32_via_fill(b: &mut test::Bencher) {
 }
 
 #[bench]
-pub fn bench_u64(b: &mut test::Bencher) {
+fn bench_u64(b: &mut test::Bencher) {
     #[inline(never)]
     fn inner() -> u64 {
         getrandom::u64().unwrap()
@@ -56,7 +58,7 @@ pub fn bench_u64(b: &mut test::Bencher) {
 }
 
 #[bench]
-pub fn bench_u64_via_fill(b: &mut test::Bencher) {
+fn bench_u64_via_fill(b: &mut test::Bencher) {
     #[inline(never)]
     fn inner() -> u64 {
         let mut res = MaybeUninit::<u64>::uninit();
@@ -78,9 +80,9 @@ pub fn bench_u64_via_fill(b: &mut test::Bencher) {
 //   cargo asm --bench buffer --release buffer::p384::bench_getrandom::inner
 macro_rules! bench {
     ( $name:ident, $size:expr ) => {
-        pub mod $name {
+        mod $name {
             #[bench]
-            pub fn bench_fill(b: &mut test::Bencher) {
+            fn bench_fill(b: &mut test::Bencher) {
                 #[inline(never)]
                 fn inner() {
                     super::bench_fill::<{ $size }>()
@@ -90,7 +92,7 @@ macro_rules! bench {
                 b.iter(inner);
             }
             #[bench]
-            pub fn bench_fill_uninit(b: &mut test::Bencher) {
+            fn bench_fill_uninit(b: &mut test::Bencher) {
                 #[inline(never)]
                 fn inner() {
                     super::bench_fill_uninit::<{ $size }>()

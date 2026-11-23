@@ -6,6 +6,7 @@
 use crate::{Builder, Uuid};
 
 #[deprecated(note = "use types from the crate root instead")]
+#[allow(deprecated)]
 pub use crate::{timestamp::context::Context, Timestamp};
 
 impl Uuid {
@@ -20,7 +21,7 @@ impl Uuid {
     /// to be enabled.
     #[cfg(all(feature = "std", feature = "rng"))]
     pub fn now_v1(node_id: &[u8; 6]) -> Self {
-        let ts = Timestamp::now(crate::timestamp::context::shared_context());
+        let ts = Timestamp::now(crate::timestamp::context::shared_context_v1());
 
         Self::new_v1(ts, node_id)
     }
@@ -99,23 +100,27 @@ impl Uuid {
 mod tests {
     use super::*;
 
-    use crate::{std::string::ToString, Variant, Version};
-    #[cfg(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")))]
+    use crate::{std::string::ToString, ContextV1, NonNilUuid, Variant, Version};
+
+    #[cfg(all(target_family = "wasm", any(target_os = "unknown", target_os = "none")))]
     use wasm_bindgen_test::*;
 
     #[test]
     #[cfg_attr(
-        all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")),
+        all(target_family = "wasm", any(target_os = "unknown", target_os = "none")),
         wasm_bindgen_test
     )]
     fn test_new() {
         let time: u64 = 1_496_854_535;
         let time_fraction: u32 = 812_946_000;
         let node = [1, 2, 3, 4, 5, 6];
-        let context = Context::new(0);
+        let context = ContextV1::new(0);
 
-        let uuid = Uuid::new_v1(Timestamp::from_unix(&context, time, time_fraction), &node);
+        let timestamp = Timestamp::from_unix(&context, time, time_fraction);
 
+        let uuid = Uuid::new_v1(timestamp, &node);
+
+        assert_eq!(NonNilUuid::new_v1(timestamp, &node), uuid);
         assert_eq!(uuid.get_version(), Some(Version::Mac));
         assert_eq!(uuid.get_variant(), Variant::RFC4122);
         assert_eq!(
@@ -127,7 +132,7 @@ mod tests {
 
         assert_eq!(ts.0 - 0x01B2_1DD2_1381_4000, 14_968_545_358_129_460);
 
-        assert_eq!(Some(node), uuid.get_node_id(),);
+        assert_eq!(Some(node), uuid.get_node_id());
 
         // Ensure parsing the same UUID produces the same timestamp
         let parsed = Uuid::parse_str("20616934-4ba2-11e7-8000-010203040506").unwrap();
@@ -137,12 +142,12 @@ mod tests {
             parsed.get_timestamp().unwrap()
         );
 
-        assert_eq!(uuid.get_node_id().unwrap(), parsed.get_node_id().unwrap(),);
+        assert_eq!(uuid.get_node_id().unwrap(), parsed.get_node_id().unwrap());
     }
 
     #[test]
     #[cfg_attr(
-        all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")),
+        all(target_family = "wasm", any(target_os = "unknown", target_os = "none")),
         wasm_bindgen_test
     )]
     #[cfg(all(feature = "std", feature = "rng"))]
@@ -153,5 +158,6 @@ mod tests {
 
         assert_eq!(uuid.get_version(), Some(Version::Mac));
         assert_eq!(uuid.get_variant(), Variant::RFC4122);
+        assert!(!NonNilUuid::now_v1(&node).get().is_nil());
     }
 }

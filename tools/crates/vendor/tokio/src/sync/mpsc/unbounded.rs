@@ -101,6 +101,18 @@ pub fn unbounded_channel<T>() -> (UnboundedSender<T>, UnboundedReceiver<T>) {
     (tx, rx)
 }
 
+#[cfg(all(test, not(loom)))]
+pub(crate) fn unbounded_channel_from_index<T>(
+    start_index: usize,
+) -> (UnboundedSender<T>, UnboundedReceiver<T>) {
+    let (tx, rx) = chan::channel_from_index(start_index, Semaphore(AtomicUsize::new(0)));
+
+    let tx = UnboundedSender::new(tx);
+    let rx = UnboundedReceiver::new(rx);
+
+    (tx, rx)
+}
+
 /// No capacity
 #[derive(Debug)]
 pub(crate) struct Semaphore(pub(crate) AtomicUsize);
@@ -123,9 +135,9 @@ impl<T> UnboundedReceiver<T> {
     ///
     /// # Cancel safety
     ///
-    /// This method is cancel safe. If `recv` is used as the event in a
-    /// [`tokio::select!`](crate::select) statement and some other branch
-    /// completes first, it is guaranteed that no messages were received on this
+    /// This method is cancel safe. If `recv` is used as a branch in
+    /// [`tokio::select!`](crate::select) and another branch completes first,
+    /// it is guaranteed that no messages were received on this
     /// channel.
     ///
     /// [`close`]: Self::close
@@ -191,9 +203,9 @@ impl<T> UnboundedReceiver<T> {
     ///
     /// # Cancel safety
     ///
-    /// This method is cancel safe. If `recv_many` is used as the event in a
-    /// [`tokio::select!`](crate::select) statement and some other branch
-    /// completes first, it is guaranteed that no messages were received on this
+    /// This method is cancel safe. If `recv_many` is used as a branch in
+    /// [`tokio::select!`](crate::select) and another branch completes first,
+    /// it is guaranteed that no messages were received on this
     /// channel.
     ///
     /// [`close`]: Self::close

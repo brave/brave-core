@@ -13,7 +13,7 @@ mod streams;
 pub(crate) use self::prioritize::Prioritized;
 pub(crate) use self::recv::Open;
 pub(crate) use self::send::PollReset;
-pub(crate) use self::streams::{DynStreams, OpaqueStreamRef, StreamRef, Streams};
+pub(crate) use self::streams::{DynStreams, OpaqueStreamRef, RecvOutcome, StreamRef, Streams};
 
 use self::buffer::Buffer;
 use self::counts::Counts;
@@ -30,6 +30,12 @@ use crate::proto::*;
 
 use bytes::Bytes;
 use std::time::Duration;
+
+#[derive(Debug, Eq, PartialEq)]
+pub(super) enum BufferStatus {
+    Complete,
+    CodecFull,
+}
 
 #[derive(Debug)]
 pub struct Config {
@@ -72,6 +78,9 @@ pub struct Config {
     ///
     /// When this gets exceeded, we issue GOAWAYs.
     pub local_max_error_reset_streams: Option<usize>,
+
+    /// Connection-level budget policy for DATA framing overhead.
+    pub(crate) data_frame_budget: DataFrameBudget,
 }
 
 trait DebugStructExt<'a, 'b> {

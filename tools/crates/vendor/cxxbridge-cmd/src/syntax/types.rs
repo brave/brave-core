@@ -11,7 +11,7 @@ use crate::syntax::trivial::{self, TrivialReason};
 use crate::syntax::unpin::{self, UnpinReason};
 use crate::syntax::visit::{self, Visit};
 use crate::syntax::{
-    toposort, Api, Atom, Enum, ExternFn, ExternType, Impl, Lifetimes, Pair, Struct, Type, TypeAlias,
+    Api, Atom, Enum, ExternFn, ExternType, Impl, Lifetimes, Pair, Struct, Type, TypeAlias, toposort,
 };
 use indexmap::map::Entry;
 use proc_macro2::Ident;
@@ -214,10 +214,10 @@ impl<'a> Types<'a> {
         }
 
         for api in apis {
-            if let Api::Impl(imp) = api {
-                if let Some(key) = imp.ty.impl_key(&resolutions) {
-                    impls.insert(key, ConditionalImpl::from(imp));
-                }
+            if let Api::Impl(imp) = api
+                && let Some(key) = imp.ty.impl_key(&resolutions)
+            {
+                impls.insert(key, ConditionalImpl::from(imp));
             }
         }
 

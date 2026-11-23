@@ -343,6 +343,11 @@ pub struct Builder {
     ///
     /// When this gets exceeded, we issue GOAWAYs.
     local_max_error_reset_streams: Option<usize>,
+
+    /// connection-level budget for DATA framing overhead.
+    ///
+    /// When this gets exhausted, we issue a GOAWAY with `ENHANCE_YOUR_CALM`.
+    data_frame_budget: proto::DataFrameBudget,
 }
 
 #[derive(Debug)]
@@ -663,6 +668,7 @@ impl Builder {
             settings: Default::default(),
             stream_id: 1.into(),
             local_max_error_reset_streams: Some(proto::DEFAULT_LOCAL_RESET_COUNT_MAX),
+            data_frame_budget: proto::DataFrameBudget::Auto,
         }
     }
 
@@ -822,9 +828,10 @@ impl Builder {
     /// 0. If `max` is set to 0, then the remote will not be permitted to
     /// initiate streams.
     ///
-    /// Note that streams in the reserved state, i.e., push promises that have
-    /// been reserved but the stream has not started, do not count against this
-    /// setting.
+    /// Although the HTTP/2 specification excludes streams in the reserved state
+    /// from this limit, `h2` counts reserved push streams against this setting
+    /// to protect resources. This includes push promises whose response streams
+    /// have not yet started.
     ///
     /// Also note that if the remote *does* exceed the value set here, it is not
     /// a protocol level error. Instead, the `h2` library will immediately reset
@@ -1145,6 +1152,29 @@ impl Builder {
         self
     }
 
+    /// Sets a connection-level budget for limiting memory overhead from
+    /// received small DATA frames.
+    ///
+    /// HTTP/2 flow control accounts for DATA payload bytes, but not the
+    /// additional memory required to buffer each DATA frame. An excessive
+    /// number of small frames may therefore consume disproportionate memory.
+    ///
+    /// Small DATA frames consume this budget. The budget is restored when
+    /// buffered frames are consumed by the application, while sufficiently
+    /// large frames may also restore budget. Empty DATA frames are limited
+    /// separately and do not consume this budget.
+    ///
+    /// When this budget is exhausted, the connection is closed with
+    /// `ENHANCE_YOUR_CALM`.
+    ///
+    /// By default, the budget is half the target connection window, with a
+    /// minimum of 25,600 bytes. Changing the target window at runtime also
+    /// updates the permitted framing overhead.
+    pub fn data_frame_budget(&mut self, budget: usize) -> &mut Self {
+        self.data_frame_budget = proto::DataFrameBudget::Configured(budget);
+        self
+    }
+
     /// Sets the first stream ID to something other than 1.
     #[cfg(feature = "unstable")]
     pub fn initial_stream_id(&mut self, stream_id: u32) -> &mut Self {
@@ -1334,7 +1364,8 @@ where
                 reset_stream_max: builder.reset_stream_max,
                 remote_reset_stream_max: builder.pending_accept_reset_stream_max,
                 local_error_reset_streams_max: builder.local_max_error_reset_streams,
-                settings: builder.settings.clone(),
+                settings: builder.settings,
+                data_frame_budget: builder.data_frame_budget,
             },
         );
         let send_request = SendRequest {
@@ -1361,7 +1392,8 @@ where
     /// [`FlowControl`] instances, no `WINDOW_UPDATE` frames will be sent
     /// out until the number of "in flight" bytes drops below `size`.
     ///
-    /// The default value is 65,535.
+    /// The default value is 65,535. The automatic small-DATA-frame budget is
+    /// updated to match this target.
     ///
     /// See [`FlowControl`] documentation for more details.
     ///
@@ -1436,8 +1468,12 @@ where
     type Output = Result<(), crate::Error>;
 
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        self.inner.maybe_close_connection_if_no_streams();
+        // Snapshot before checking for shutdown: the last reference may be
+        // dropped after the shutdown check, before inner.poll registers a
+        // waker. A snapshot taken after that drop would be false and skip the
+        // self-wake below, leaving the connection pending without closing.
         let had_streams_or_refs = self.inner.has_streams_or_other_references();
+        self.inner.maybe_close_connection_if_no_streams();
         let result = self.inner.poll(cx).map_err(Into::into);
         // if we had streams/refs, and don't anymore, wake up one more time to
         // ensure proper shutdown
@@ -1485,6 +1521,22 @@ impl ResponseFuture {
     pub fn stream_id(&self) -> crate::StreamId {
         crate::StreamId::from_internal(self.inner.stream_id())
     }
+
+    /// Polls for informational responses (1xx status codes).
+    ///
+    /// This method should be called before polling the main response future
+    /// to check for any informational responses that have been received.
+    ///
+    /// Returns `Poll::Ready(Some(response))` if an informational response is available,
+    /// `Poll::Ready(None)` if no more informational responses are expected,
+    /// or `Poll::Pending` if no informational response is currently available.
+    pub fn poll_informational(
+        &mut self,
+        cx: &mut Context<'_>,
+    ) -> Poll<Option<Result<Response<()>, crate::Error>>> {
+        self.inner.poll_informational(cx).map_err(Into::into)
+    }
+
     /// Returns a stream of PushPromises
     ///
     /// # Panics
@@ -1675,6 +1727,11 @@ impl proto::Peer for Peer {
 
         if let Some(status) = pseudo.status {
             b = b.status(status);
+        } else {
+            // Every response must include :status (RFC 9113, section 8.3.2).
+            // https://www.rfc-editor.org/rfc/rfc9113.html#section-8.3.2
+            proto_err!(stream: "missing :status; stream={:?}", stream_id);
+            return Err(Error::library_reset(stream_id, Reason::PROTOCOL_ERROR));
         }
 
         let mut response = match b.body(()) {

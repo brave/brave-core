@@ -1,5 +1,5 @@
 use core::mem;
-#[rustversion::since(1.33)]
+#[rustversion::since(1.39)]
 use core::pin::Pin;
 use core::ptr;
 
@@ -31,6 +31,13 @@ use crate::imports::{Arc, Rc};
 /// value. It would be fine to point to a type-erased version of the same object, though (if one
 /// could use this trait with unsized types in the first place).
 ///
+/// Two types whose pointers can be equal must manage the same reference count, unless they use
+/// different [`TAG`](#associatedconstant.TAG)s. Types sharing the count (eg. `Arc`, `Option<Arc>`
+/// and `Pin<Arc>`) must use the same tag. If `as_ptr` or `into_ptr` can return NULL, that value
+/// must not own any reference count (NULL debts are shared by all the types).
+///
+/// Methods in this trait must not panic nor unwind.
+///
 /// Furthermore, the type should be Pin (eg. if the type is cloned or moved, it should still
 /// point/deref to the same place in memory).
 ///
@@ -40,6 +47,13 @@ use crate::imports::{Arc, Rc};
 pub unsafe trait RefCnt: Clone {
     /// The base type the pointer points to.
     type Base;
+
+    /// Distinguishes debts of types that share addresses but not reference counts (eg. `Arc` and
+    /// `Weak`).
+    ///
+    /// Non-null pointers of this type must have all the bits up to the highest set bit of `TAG`
+    /// zero. Passing a pointer violating that to an `ArcSwapAny` panics.
+    const TAG: usize = 0;
 
     /// Converts the smart pointer into a raw pointer, without affecting the reference count.
     ///
@@ -87,6 +101,17 @@ pub unsafe trait RefCnt: Clone {
     unsafe fn dec(ptr: *const Self::Base) {
         drop(Self::from_ptr(ptr));
     }
+}
+
+/// Panics if the pointer has the bits needed for `T::TAG` occupied.
+pub(crate) fn check_tag<T: RefCnt>(val: &T) {
+    // All the bits up to the highest set bit of TAG (none for TAG == 0).
+    let mask = (!0usize).checked_shr(T::TAG.leading_zeros()).unwrap_or(0);
+    assert_eq!(
+        T::as_ptr(val) as usize & mask,
+        0,
+        "Pointer not aligned enough for RefCnt::TAG"
+    );
 }
 
 unsafe impl<T> RefCnt for Arc<T> {
@@ -161,6 +186,7 @@ unsafe impl<T> RefCnt for Rc<T> {
 
 unsafe impl<T: RefCnt> RefCnt for Option<T> {
     type Base = T::Base;
+    const TAG: usize = T::TAG;
     fn into_ptr(me: Option<T>) -> *mut T::Base {
         me.map(T::into_ptr).unwrap_or_else(ptr::null_mut)
     }
@@ -176,8 +202,8 @@ unsafe impl<T: RefCnt> RefCnt for Option<T> {
     }
 }
 
-// Pin is only available since Rust 1.33.
-#[rustversion::since(1.33)]
+// Pin is only available since Rust 1.33, but Pin::into_inner is from 1.39.
+#[rustversion::since(1.39)]
 unsafe impl<T> RefCnt for Pin<Arc<T>> {
     type Base = T;
 
@@ -219,8 +245,8 @@ unsafe impl<T> RefCnt for Pin<Arc<T>> {
     }
 }
 
-// Pin is only available since Rust 1.33.
-#[rustversion::since(1.33)]
+// Pin is only available since Rust 1.33, but Pin::into_inner is from 1.39.
+#[rustversion::since(1.39)]
 unsafe impl<T> RefCnt for Pin<Rc<T>> {
     type Base = T;
 
@@ -265,6 +291,7 @@ unsafe impl<T> RefCnt for Pin<Rc<T>> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ArcSwapAny;
 
     #[test]
     fn ref_cnt_arc() {
@@ -283,8 +310,34 @@ mod tests {
         let _: Arc<Data> = unsafe { RefCnt::from_ptr(ptr) };
     }
 
-    // Pin is only available since Rust 1.33.
-    #[rustversion::since(1.33)]
+    /// A pointer into the middle of the `Arc`'s data, so it is odd.
+    #[derive(Clone)]
+    struct Odd(Arc<[u8; 2]>);
+
+    unsafe impl RefCnt for Odd {
+        type Base = [u8; 2];
+        const TAG: usize = 1;
+        fn into_ptr(me: Self) -> *mut [u8; 2] {
+            (RefCnt::into_ptr(me.0) as *mut u8).wrapping_add(1) as *mut [u8; 2]
+        }
+        fn as_ptr(me: &Self) -> *mut [u8; 2] {
+            (RefCnt::as_ptr(&me.0) as *mut u8).wrapping_add(1) as *mut [u8; 2]
+        }
+        unsafe fn from_ptr(ptr: *const [u8; 2]) -> Self {
+            Odd(RefCnt::from_ptr(
+                (ptr as *const u8).wrapping_sub(1) as *const [u8; 2]
+            ))
+        }
+    }
+
+    #[test]
+    #[should_panic(expected = "Pointer not aligned enough")]
+    fn misaligned_tag() {
+        ArcSwapAny::<Odd>::new(Odd(Arc::new([0, 0])));
+    }
+
+    // Pin is only available since Rust 1.33, but Pin::into_inner is from 1.39.
+    #[rustversion::since(1.39)]
     mod pin {
         use super::*;
         use core::marker::PhantomPinned;

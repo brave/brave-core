@@ -1,9 +1,10 @@
 //! Provide multiple traversal implementations with different performance envelopes.
 //!
 //! Use [`Simple`] for fast walks that maintain minimal state, or [`Topo`] for a more elaborate traversal.
+use gix_error::Result;
 use gix_hash::ObjectId;
 use gix_object::FindExt;
-use gix_revwalk::{graph::IdMap, PriorityQueue};
+use gix_revwalk::{PriorityQueue, graph::IdMap};
 use smallvec::SmallVec;
 
 /// A fast iterator over the ancestors of one or more starting commits.
@@ -61,6 +62,8 @@ pub struct Info {
     pub id: gix_hash::ObjectId,
     /// All parent ids we have encountered. Note that these will be at most one if [`Parents::First`] is enabled.
     pub parent_ids: ParentIds,
+    /// The generation number if this commit was read from a commit-graph.
+    pub generation: Option<gix_revwalk::graph::Generation>,
     /// The time at which the commit was created. It will only be `Some(_)` if the chosen traversal was
     /// taking dates into consideration.
     pub commit_time: Option<gix_date::SecondsSinceUnixEpoch>,
@@ -79,7 +82,7 @@ pub enum Either<'buf, 'cache> {
 impl Either<'_, '_> {
     /// Get a commit’s `tree_id` by either getting it from a [`gix_commitgraph::Graph`], if
     /// present, or a [`gix_object::CommitRefIter`] otherwise.
-    pub fn tree_id(self) -> Result<ObjectId, gix_object::decode::Error> {
+    pub fn tree_id(self) -> Result<ObjectId> {
         match self {
             Self::CommitRefIter(mut commit_ref_iter) => commit_ref_iter.tree_id(),
             Self::CachedCommit(commit) => Ok(commit.root_tree_id().into()),
@@ -88,7 +91,7 @@ impl Either<'_, '_> {
 
     /// Get a committer timestamp by either getting it from a [`gix_commitgraph::Graph`], if
     /// present, or a [`gix_object::CommitRefIter`] otherwise.
-    pub fn commit_time(self) -> Result<gix_date::SecondsSinceUnixEpoch, gix_object::decode::Error> {
+    pub fn commit_time(self) -> Result<gix_date::SecondsSinceUnixEpoch> {
         match self {
             Self::CommitRefIter(commit_ref_iter) => commit_ref_iter.committer().map(|c| c.seconds()),
             Self::CachedCommit(commit) => Ok(commit.committer_timestamp() as gix_date::SecondsSinceUnixEpoch),
@@ -103,7 +106,7 @@ pub fn find<'cache, 'buf, Find>(
     objects: Find,
     id: &gix_hash::oid,
     buf: &'buf mut Vec<u8>,
-) -> Result<Either<'buf, 'cache>, gix_object::find::existing_iter::Error>
+) -> Result<Either<'buf, 'cache>>
 where
     Find: gix_object::Find,
 {

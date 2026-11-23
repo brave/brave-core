@@ -30,6 +30,10 @@ mod imp;
 #[path = "freebsd/mod.rs"]
 mod imp;
 
+#[cfg(target_os = "hurd")]
+#[path = "hurd/mod.rs"]
+mod imp;
+
 #[cfg(target_os = "illumos")]
 #[path = "illumos/mod.rs"]
 mod imp;
@@ -80,7 +84,8 @@ mod imp;
     target_os = "openbsd",
     target_os = "cygwin",
     target_os = "redox",
-    target_os = "windows"
+    target_os = "windows",
+    target_os = "hurd",
 )))]
 #[path = "unknown/mod.rs"]
 mod imp;
@@ -90,7 +95,8 @@ mod imp;
     target_os = "macos",
     target_os = "netbsd",
     target_os = "openbsd",
-    target_os = "cygwin"
+    target_os = "cygwin",
+    target_os = "hurd",
 ))]
 mod architecture;
 mod bitness;
@@ -107,7 +113,8 @@ mod os_type;
     target_os = "macos",
     target_os = "netbsd",
     target_os = "openbsd",
-    target_os = "cygwin"
+    target_os = "cygwin",
+    target_os = "hurd",
 ))]
 mod uname;
 mod version;

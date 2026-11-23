@@ -3,15 +3,15 @@
 //! Provides services that are required to create and destroy child handles
 //! that support a given set of protocols.
 
-pub type ProtocolCreateChild = eficall! {fn(
+pub type ProtocolCreateChild = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut crate::base::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolDestroyChild = eficall! {fn(
+pub type ProtocolDestroyChild = unsafe extern "efiapi" fn(
     *mut Protocol,
     crate::base::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
 #[repr(C)]
 pub struct Protocol {

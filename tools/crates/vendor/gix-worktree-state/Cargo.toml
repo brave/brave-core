@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-worktree-state"
-version = "0.21.0"
+version = "0.37.0"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,6 +29,14 @@ description = "A crate of the gitoxide project implementing setting the worktree
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
+
+[package.metadata.docs.rs]
+features = ["sha1"]
+
+[features]
+sha1 = ["gix-index/sha1"]
+sha256 = ["gix-index/sha256"]
 
 [lib]
 name = "gix_worktree_state"
@@ -39,42 +47,54 @@ doctest = false
 version = "1.12.0"
 default-features = false
 
-[dependencies.gix-features]
-version = "^0.44.0"
+[dependencies.gix-error]
+version = "^0.5.2"
+features = ["bstr"]
 
 [dependencies.gix-filter]
-version = "^0.21.0"
+version = "^0.36.1"
 
 [dependencies.gix-fs]
-version = "^0.17.0"
-
-[dependencies.gix-glob]
-version = "^0.22.0"
-
-[dependencies.gix-hash]
-version = "^0.20.0"
+version = "^0.24.1"
 
 [dependencies.gix-index]
-version = "^0.42.0"
+version = "^0.58.0"
 
 [dependencies.gix-object]
-version = "^0.51.0"
+version = "^0.66.1"
+
+[dependencies.gix-parallel]
+version = "^0.50.0"
 
 [dependencies.gix-path]
-version = "^0.10.21"
+version = "^0.14.1"
+
+[dependencies.gix-trace]
+version = "^0.3.1"
+
+[dependencies.gix-utils]
+version = "^0.5.1"
+features = [
+    "interrupt",
+    "progress",
+]
 
 [dependencies.gix-worktree]
-version = "^0.43.0"
+version = "^0.59.0"
 features = ["attributes"]
 default-features = false
 
 [dependencies.io-close]
 version = "0.3.7"
 
-[dependencies.thiserror]
-version = "2.0.17"
+[dev-dependencies.insta]
+version = "1.46.3"
+
+[dev-dependencies.walkdir]
+version = "2.3.2"
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -93,7 +113,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

@@ -19,7 +19,9 @@ fn test_basic() {
         items: [
             Item::Fn {
                 vis: Visibility::Inherited,
+                modifiers: FnModifiers,
                 sig: Signature {
+                    safety: Safety::Default,
                     ident: "main",
                     generics: Generics,
                     output: ReturnType::Default,
@@ -58,7 +60,9 @@ fn test_comment() {
         items: [
             Item::Fn {
                 vis: Visibility::Inherited,
+                modifiers: FnModifiers,
                 sig: Signature {
+                    safety: Safety::Default,
                     ident: "main",
                     generics: Generics,
                     output: ReturnType::Default,

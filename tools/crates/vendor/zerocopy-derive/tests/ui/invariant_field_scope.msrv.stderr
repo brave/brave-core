@@ -1,0 +1,9 @@
+error[E0425]: cannot find value `b` in this scope
+  --> $DIR/invariant_field_scope.rs:16:28
+   |
+16 |     #[zerocopy(invariant(**b.unaligned_as_ref() > 0))]
+   |                            ^ a field by this name exists in `Self`
+
+error: aborting due to previous error
+
+For more information about this error, try `rustc --explain E0425`.

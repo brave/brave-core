@@ -4,6 +4,7 @@ use std::time::Duration;
 
 use bytes::Bytes;
 use http::{request::Parts, Method, Request as HttpRequest};
+#[cfg(any(feature = "query", feature = "form", feature = "json"))]
 use serde::Serialize;
 #[cfg(feature = "json")]
 use serde_json;
@@ -11,7 +12,9 @@ use url::Url;
 use web_sys::{RequestCache, RequestCredentials};
 
 use super::{Body, Client, Response};
-use crate::header::{HeaderMap, HeaderName, HeaderValue, CONTENT_TYPE};
+#[cfg(any(feature = "form", feature = "json"))]
+use crate::header::CONTENT_TYPE;
+use crate::header::{HeaderMap, HeaderName, HeaderValue};
 
 /// A request which can be executed with `Client::execute()`.
 pub struct Request {
@@ -23,6 +26,8 @@ pub struct Request {
     pub(super) cors: bool,
     pub(super) credentials: Option<RequestCredentials>,
     pub(super) cache: Option<RequestCache>,
+    pub(super) referrer: Option<String>,
+    pub(super) referrer_policy: Option<String>,
 }
 
 /// A builder to construct the properties of a `Request`.
@@ -44,6 +49,8 @@ impl Request {
             cors: true,
             credentials: None,
             cache: None,
+            referrer: None,
+            referrer_policy: None,
         }
     }
 
@@ -125,6 +132,8 @@ impl Request {
             cors: self.cors,
             credentials: self.credentials,
             cache: self.cache,
+            referrer: self.referrer.clone(),
+            referrer_policy: self.referrer_policy.clone(),
         })
     }
 }
@@ -157,9 +166,15 @@ impl RequestBuilder {
     /// as `.query(&[("key", "val")])`. It's also possible to serialize structs
     /// and maps into a key-value pair.
     ///
+    /// # Optional
+    ///
+    /// This requires the optional `query` feature to be enabled.
+    ///
     /// # Errors
     /// This method will fail if the object you provide cannot be serialized
     /// into a query string.
+    #[cfg(feature = "query")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "query")))]
     pub fn query<T: Serialize + ?Sized>(mut self, query: &T) -> RequestBuilder {
         let mut error = None;
         if let Ok(ref mut req) = self.request {
@@ -188,10 +203,16 @@ impl RequestBuilder {
     /// and also sets the `Content-Type: application/x-www-form-urlencoded`
     /// header.
     ///
+    /// # Optional
+    ///
+    /// This requires the optional `form` feature to be enabled.
+    ///
     /// # Errors
     ///
     /// This method fails if the passed value cannot be serialized into
     /// url encoded format
+    #[cfg(feature = "form")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "form")))]
     pub fn form<T: Serialize + ?Sized>(mut self, form: &T) -> RequestBuilder {
         let mut error = None;
         if let Ok(ref mut req) = self.request {
@@ -221,7 +242,8 @@ impl RequestBuilder {
             match serde_json::to_vec(json) {
                 Ok(body) => {
                     req.headers_mut()
-                        .insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
+                        .entry(CONTENT_TYPE)
+                        .or_insert_with(|| HeaderValue::from_static("application/json"));
                     *req.body_mut() = Some(body.into());
                 }
                 Err(err) => error = Some(crate::error::builder(err)),
@@ -474,6 +496,30 @@ impl RequestBuilder {
         self
     }
 
+    /// Set fetch referrer
+    ///
+    /// # WASM
+    ///
+    /// This maps to the browser `RequestInit.referrer` field.
+    pub fn fetch_referrer(mut self, referrer: &str) -> RequestBuilder {
+        if let Ok(ref mut req) = self.request {
+            req.referrer = Some(referrer.to_string());
+        }
+        self
+    }
+
+    /// Set fetch referrer policy
+    ///
+    /// # WASM
+    ///
+    /// This maps to the browser `RequestInit.referrerPolicy` field.
+    pub fn fetch_referrer_policy(mut self, policy: &str) -> RequestBuilder {
+        if let Ok(ref mut req) = self.request {
+            req.referrer_policy = Some(policy.to_string());
+        }
+        self
+    }
+
     /// Build a `Request`, which can be inspected, modified and executed with
     /// `Client::execute()`.
     pub fn build(self) -> crate::Result<Request> {
@@ -593,6 +639,8 @@ where
             cors: true,
             credentials: None,
             cache: None,
+            referrer: None,
+            referrer_policy: None,
         })
     }
 }

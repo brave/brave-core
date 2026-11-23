@@ -7,15 +7,13 @@
 
 #![allow(bad_style, clippy::upper_case_acronyms)]
 
-use std::os::raw;
-
 pub type wchar_t = u16;
 
-pub use crate::windows_sys::{FILETIME, GUID, HRESULT, SAFEARRAY};
+pub(crate) use crate::windows_sys::{FILETIME, GUID, HRESULT, SAFEARRAY};
 
 pub type REFIID = *const IID;
 pub type IID = GUID;
-pub type ULONG = raw::c_ulong;
+pub type ULONG = core::ffi::c_ulong;
 pub type DWORD = u32;
 pub type LPFILETIME = *mut FILETIME;
 pub type OLECHAR = WCHAR;
@@ -100,11 +98,11 @@ macro_rules! RIDL {
         RIDL!{@uuid $interface $($uuid),+}
     );
     (@deref $interface:ident $pinterface:ident) => (
-        impl ::std::ops::Deref for $interface {
+        impl ::core::ops::Deref for $interface {
             type Target = $pinterface;
             #[inline]
             fn deref(&self) -> &$pinterface {
-                unsafe { &*(self as *const $interface as *const $pinterface) }
+                unsafe { &*(self as *const Self).cast() }
             }
         }
     );
@@ -113,7 +111,10 @@ macro_rules! RIDL {
     )+}) => (
         impl $interface {
             $(#[inline] pub unsafe fn $method(&self, $($p: $t,)*) -> $rtr {
-                ((*self.lpVtbl).$method)(self as *const _ as *mut _, $($p,)*)
+                ((*self.lpVtbl).$method)(
+                    (self as *const Self).cast_mut(),
+                    $($p,)*
+                )
             })+
         }
     );
@@ -139,7 +140,7 @@ RIDL! {#[uuid(0x00000000, 0x0000, 0x0000, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x
 interface IUnknown(IUnknownVtbl) {
     fn QueryInterface(
         riid: REFIID,
-        ppvObject: *mut *mut raw::c_void,
+        ppvObject: *mut *mut core::ffi::c_void,
     ) -> HRESULT,
     fn AddRef() -> ULONG,
     fn Release() -> ULONG,

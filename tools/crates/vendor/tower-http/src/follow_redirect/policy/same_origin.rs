@@ -33,7 +33,7 @@ impl<B, E> Policy<B, E> for SameOrigin {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use http::{Request, Uri};
+    use http::{Method, Request, Uri};
 
     #[test]
     fn works() {
@@ -48,7 +48,9 @@ mod tests {
 
         let attempt = Attempt {
             status: Default::default(),
+            method: &Method::GET,
             location: &same_origin,
+            previous_method: &Method::GET,
             previous: request.uri(),
         };
         assert!(Policy::<(), ()>::redirect(&mut policy, &attempt)
@@ -60,7 +62,9 @@ mod tests {
 
         let attempt = Attempt {
             status: Default::default(),
+            method: &Method::GET,
             location: &cross_origin,
+            previous_method: &Method::GET,
             previous: request.uri(),
         };
         assert!(Policy::<(), ()>::redirect(&mut policy, &attempt)

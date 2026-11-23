@@ -18,7 +18,7 @@ impl OpenOptions {
     ///
     /// All options are initially set to `false`.
     ///
-    /// This is a wrapped version of [`tokio::fs::OpenOptions::new`]
+    /// This is a wrapped version of [`tokio::fs::OpenOptions::new`].
     ///
     /// # Examples
     ///

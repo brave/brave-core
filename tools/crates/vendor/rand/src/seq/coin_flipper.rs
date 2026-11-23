@@ -6,15 +6,15 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use crate::RngCore;
+use crate::Rng;
 
-pub(crate) struct CoinFlipper<R: RngCore> {
+pub(crate) struct CoinFlipper<R: Rng> {
     pub rng: R,
     chunk: u32, // TODO(opt): this should depend on RNG word size
     chunk_remaining: u32,
 }
 
-impl<R: RngCore> CoinFlipper<R> {
+impl<R: Rng> CoinFlipper<R> {
     pub fn new(rng: R) -> Self {
         Self {
             rng,

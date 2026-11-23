@@ -38,6 +38,7 @@ where
         use RelocationKind as K;
 
         let mut paired_addend = 0;
+        let mut subtractor = None;
         loop {
             let reloc = self.relocations.next()?;
             let endian = self.file.endian;
@@ -53,8 +54,9 @@ where
                 r_pcrel: reloc.r_pcrel,
                 r_length: reloc.r_length,
             };
+            let mut size = 8 << reloc.r_length;
             let g = E::Generic;
-            let unknown = (K::Unknown, E::Generic);
+            let unknown = (K::Unknown, E::Unknown);
             let (kind, encoding) = match cputype {
                 macho::CPU_TYPE_ARM => match (reloc.r_type, reloc.r_pcrel) {
                     (macho::ARM_RELOC_VANILLA, false) => (K::Absolute, g),
@@ -63,10 +65,19 @@ where
                 macho::CPU_TYPE_ARM64 | macho::CPU_TYPE_ARM64_32 => {
                     match (reloc.r_type, reloc.r_pcrel) {
                         (macho::ARM64_RELOC_UNSIGNED, false) => (K::Absolute, g),
+                        (macho::ARM64_RELOC_BRANCH26, true) => {
+                            size = 26;
+                            (K::PltRelative, E::AArch64Call)
+                        }
+                        (macho::ARM64_RELOC_POINTER_TO_GOT, true) => (K::GotRelative, g),
                         (macho::ARM64_RELOC_ADDEND, _) => {
                             paired_addend = i64::from(reloc.r_symbolnum)
                                 .wrapping_shl(64 - 24)
                                 .wrapping_shr(64 - 24);
+                            continue;
+                        }
+                        (macho::ARM64_RELOC_SUBTRACTOR, _) => {
+                            subtractor = Some(SymbolIndex(reloc.r_symbolnum as usize));
                             continue;
                         }
                         _ => unknown,
@@ -79,16 +90,27 @@ where
                 macho::CPU_TYPE_X86_64 => match (reloc.r_type, reloc.r_pcrel) {
                     (macho::X86_64_RELOC_UNSIGNED, false) => (K::Absolute, g),
                     (macho::X86_64_RELOC_SIGNED, true) => (K::Relative, E::X86RipRelative),
-                    (macho::X86_64_RELOC_BRANCH, true) => (K::Relative, E::X86Branch),
+                    (macho::X86_64_RELOC_BRANCH, true) => (K::PltRelative, E::X86Branch),
                     (macho::X86_64_RELOC_GOT, true) => (K::GotRelative, g),
                     (macho::X86_64_RELOC_GOT_LOAD, true) => (K::GotRelative, E::X86RipRelativeMovq),
+                    (macho::X86_64_RELOC_SUBTRACTOR, _) => {
+                        subtractor = Some(SymbolIndex(reloc.r_symbolnum as usize));
+                        continue;
+                    }
                     _ => unknown,
                 },
+                macho::CPU_TYPE_POWERPC | macho::CPU_TYPE_POWERPC64 => {
+                    match (reloc.r_type, reloc.r_pcrel) {
+                        (macho::PPC_RELOC_VANILLA, false) => (K::Absolute, g),
+                        _ => unknown,
+                    }
+                }
                 _ => unknown,
             };
-            let size = 8 << reloc.r_length;
             let target = if reloc.r_extern {
                 RelocationTarget::Symbol(SymbolIndex(reloc.r_symbolnum as usize))
+            } else if reloc.r_symbolnum == macho::R_ABS {
+                RelocationTarget::Absolute
             } else {
                 RelocationTarget::Section(SectionIndex(reloc.r_symbolnum as usize))
             };
@@ -124,6 +146,7 @@ where
                     encoding,
                     size,
                     target,
+                    subtractor,
                     addend,
                     implicit_addend,
                     flags,

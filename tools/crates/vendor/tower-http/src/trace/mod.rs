@@ -84,7 +84,7 @@
 //!                     .level(Level::INFO)
 //!                     .latency_unit(LatencyUnit::Micros)
 //!             )
-//!             // on so on for `on_eos`, `on_body_chunk`, and `on_failure`
+//!             // and so on for `on_eos`, `on_body_chunk`, and `on_failure`
 //!     )
 //!     .service_fn(handle);
 //! # let mut service = service;
@@ -615,6 +615,108 @@ mod tests {
         assert_eq!(0, ON_FAILURE.load(Ordering::SeqCst), "failure");
     }
 
+    #[tokio::test]
+    async fn classify_eos_on_trailers_success() {
+        static ON_EOS: Lazy<AtomicU32> = Lazy::new(|| AtomicU32::new(0));
+        static ON_FAILURE: Lazy<AtomicU32> = Lazy::new(|| AtomicU32::new(0));
+
+        let trace_layer = TraceLayer::new(TestClassify::new(false))
+            .on_eos(
+                |_trailers: Option<&HeaderMap>, _latency: Duration, _span: &Span| {
+                    ON_EOS.fetch_add(1, Ordering::SeqCst);
+                },
+            )
+            .on_failure(|_class: &'static str, _latency: Duration, _span: &Span| {
+                ON_FAILURE.fetch_add(1, Ordering::SeqCst);
+            });
+
+        let mut svc = ServiceBuilder::new()
+            .layer(trace_layer)
+            .service_fn(body_with_trailers);
+
+        let res = svc
+            .ready()
+            .await
+            .unwrap()
+            .call(Request::new(Body::empty()))
+            .await
+            .unwrap();
+
+        crate::test_helpers::to_bytes(res.into_body())
+            .await
+            .unwrap();
+        assert_eq!(1, ON_EOS.load(Ordering::SeqCst), "eos");
+        assert_eq!(0, ON_FAILURE.load(Ordering::SeqCst), "failure");
+    }
+
+    #[tokio::test]
+    async fn classify_eos_on_trailers_failure() {
+        static ON_EOS: Lazy<AtomicU32> = Lazy::new(|| AtomicU32::new(0));
+        static ON_FAILURE: Lazy<AtomicU32> = Lazy::new(|| AtomicU32::new(0));
+
+        let trace_layer = TraceLayer::new(TestClassify::new(true))
+            .on_eos(
+                |_trailers: Option<&HeaderMap>, _latency: Duration, _span: &Span| {
+                    ON_EOS.fetch_add(1, Ordering::SeqCst);
+                },
+            )
+            .on_failure(|_class: &'static str, _latency: Duration, _span: &Span| {
+                ON_FAILURE.fetch_add(1, Ordering::SeqCst);
+            });
+
+        let mut svc = ServiceBuilder::new()
+            .layer(trace_layer)
+            .service_fn(body_with_trailers);
+
+        let res = svc
+            .ready()
+            .await
+            .unwrap()
+            .call(Request::new(Body::empty()))
+            .await
+            .unwrap();
+
+        crate::test_helpers::to_bytes(res.into_body())
+            .await
+            .unwrap();
+        assert_eq!(1, ON_EOS.load(Ordering::SeqCst), "eos");
+        assert_eq!(1, ON_FAILURE.load(Ordering::SeqCst), "failure");
+    }
+
+    #[tokio::test]
+    async fn classify_eos_on_empty_stream() {
+        static ON_EOS: Lazy<AtomicU32> = Lazy::new(|| AtomicU32::new(0));
+        static ON_FAILURE: Lazy<AtomicU32> = Lazy::new(|| AtomicU32::new(0));
+
+        let trace_layer = TraceLayer::new(TestClassify::new(true))
+            .on_eos(
+                |_trailers: Option<&HeaderMap>, _latency: Duration, _span: &Span| {
+                    ON_EOS.fetch_add(1, Ordering::SeqCst);
+                },
+            )
+            .on_failure(|_class: &'static str, _latency: Duration, _span: &Span| {
+                ON_FAILURE.fetch_add(1, Ordering::SeqCst);
+            });
+
+        let mut svc = ServiceBuilder::new()
+            .layer(trace_layer)
+            .service_fn(streaming_body);
+
+        let res = svc
+            .ready()
+            .await
+            .unwrap()
+            .call(Request::new(Body::empty()))
+            .await
+            .unwrap();
+
+        crate::test_helpers::to_bytes(res.into_body())
+            .await
+            .unwrap();
+        assert_eq!(1, ON_EOS.load(Ordering::SeqCst), "eos");
+        assert_eq!(1, ON_FAILURE.load(Ordering::SeqCst), "failure");
+    }
+
     async fn echo(req: Request<Body>) -> Result<Response<Body>, BoxError> {
         Ok(Response::new(req.into_body()))
     }
@@ -631,5 +733,85 @@ mod tests {
         let body = Body::from_stream(stream);
 
         Ok(Response::new(body))
+    }
+
+    async fn body_with_trailers(_req: Request<Body>) -> Result<Response<Body>, BoxError> {
+        let mut trailers = HeaderMap::new();
+        trailers.insert("x-test-trailer", "value".parse().unwrap());
+        let body = Body::new(Body::from(Bytes::from("data")).with_trailers(trailers));
+        Ok(Response::new(body))
+    }
+
+    #[derive(Clone)]
+    struct TestClassify {
+        reject: bool,
+    }
+
+    impl TestClassify {
+        fn new(reject: bool) -> Self {
+            Self { reject }
+        }
+    }
+
+    impl crate::classify::MakeClassifier for TestClassify {
+        type FailureClass = &'static str;
+        type ClassifyEos = TestClassifyEos;
+        type Classifier = TestClassifyResponse;
+
+        fn make_classifier<B>(&self, _req: &Request<B>) -> Self::Classifier {
+            TestClassifyResponse {
+                reject: self.reject,
+            }
+        }
+    }
+
+    #[derive(Clone)]
+    struct TestClassifyResponse {
+        reject: bool,
+    }
+
+    impl crate::classify::ClassifyResponse for TestClassifyResponse {
+        type FailureClass = &'static str;
+        type ClassifyEos = TestClassifyEos;
+
+        fn classify_response<B>(
+            self,
+            _res: &Response<B>,
+        ) -> crate::classify::ClassifiedResponse<Self::FailureClass, Self::ClassifyEos> {
+            crate::classify::ClassifiedResponse::RequiresEos(TestClassifyEos {
+                reject: self.reject,
+            })
+        }
+
+        fn classify_error<E>(self, _error: &E) -> Self::FailureClass
+        where
+            E: std::fmt::Display + 'static,
+        {
+            "error"
+        }
+    }
+
+    #[derive(Clone)]
+    struct TestClassifyEos {
+        reject: bool,
+    }
+
+    impl crate::classify::ClassifyEos for TestClassifyEos {
+        type FailureClass = &'static str;
+
+        fn classify_eos(self, _trailers: Option<&HeaderMap>) -> Result<(), Self::FailureClass> {
+            if self.reject {
+                Err("classified as failure")
+            } else {
+                Ok(())
+            }
+        }
+
+        fn classify_error<E>(self, _error: &E) -> Self::FailureClass
+        where
+            E: std::fmt::Display + 'static,
+        {
+            "error"
+        }
     }
 }

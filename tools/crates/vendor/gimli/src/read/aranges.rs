@@ -124,6 +124,14 @@ impl<R: Reader> fallible_iterator::FallibleIterator for ArangeHeaderIter<R> {
     }
 }
 
+impl<R: Reader> Iterator for ArangeHeaderIter<R> {
+    type Item = Result<ArangeHeader<R>>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        ArangeHeaderIter::next(self).transpose()
+    }
+}
+
 /// A header for a set of entries in the `.debug_arange` section.
 ///
 /// These entries all belong to a single unit.
@@ -162,7 +170,7 @@ where
         let address_size = rest.read_address_size()?;
         let segment_size = rest.read_u8()?;
         if segment_size != 0 {
-            return Err(Error::UnsupportedSegmentSize);
+            return Err(Error::UnsupportedSegmentSize(segment_size));
         }
 
         // unit_length + version + offset + address_size + segment_size
@@ -232,9 +240,6 @@ where
 }
 
 /// An iterator over the aranges from a `.debug_aranges` section.
-///
-/// Can be [used with
-/// `FallibleIterator`](./index.html#using-with-fallibleiterator).
 #[derive(Debug, Clone)]
 pub struct ArangeEntryIter<R: Reader> {
     input: R,
@@ -310,6 +315,14 @@ impl<R: Reader> fallible_iterator::FallibleIterator for ArangeEntryIter<R> {
 
     fn next(&mut self) -> ::core::result::Result<Option<Self::Item>, Self::Error> {
         ArangeEntryIter::next(self)
+    }
+}
+
+impl<R: Reader> Iterator for ArangeEntryIter<R> {
+    type Item = Result<ArangeEntry>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        ArangeEntryIter::next(self).transpose()
     }
 }
 

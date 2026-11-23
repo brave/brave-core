@@ -1,4 +1,11 @@
-use crate::{helper, helper::Cascade, protocol, protocol::Context, Program};
+use crate::{
+    Program, helper,
+    helper::Cascade,
+    protocol,
+    protocol::{Context, ContextOptions},
+};
+use gix_error::Result;
+use gix_error::ResultExt;
 
 impl Default for Cascade {
     fn default() -> Self {
@@ -6,6 +13,7 @@ impl Default for Cascade {
             programs: Vec::new(),
             stderr: true,
             use_http_path: false,
+            context_options: ContextOptions::default(),
             query_user_only: false,
         }
     }
@@ -32,7 +40,11 @@ impl Cascade {
         } else {
             None
         }
-        .map(|name| vec![Program::from_custom_definition(name)])
+        .map(|name| {
+            vec![Program::from_kind(crate::program::Kind::ExternalName {
+                name_and_args: name.into(),
+            })]
+        })
         .unwrap_or_default()
     }
 }
@@ -68,12 +80,23 @@ impl Cascade {
     ///
     /// When _getting_ credentials, all programs are asked until the credentials are complete, stopping the cascade.
     /// When _storing_ or _erasing_ all programs are instructed in order.
-    #[allow(clippy::result_large_err)]
-    pub fn invoke(&mut self, mut action: helper::Action, mut prompt: gix_prompt::Options<'_>) -> protocol::Result {
+    /// The input context is validated even if no helpers are available.
+    pub fn invoke(
+        &mut self,
+        mut action: helper::Action,
+        mut prompt: gix_prompt::Options,
+    ) -> Result<Option<protocol::Outcome>> {
+        if let Some(ctx) = action.context_mut() {
+            ctx.options = self.context_options;
+            ctx.write_to(std::io::sink()).or_error()?;
+        }
         let mut url = action
             .context_mut()
             .map(|ctx| {
-                #[allow(clippy::manual_inspect)] /* false positive */
+                #[expect(
+                    clippy::manual_inspect,
+                    reason = "the suggested rewrite is a false positive for this mutation"
+                )] /* false positive */
                 ctx.destructure_url_in_place(self.use_http_path).map(|ctx| {
                     if self.query_user_only && ctx.password.is_none() {
                         ctx.password = Some("".into());
@@ -90,6 +113,7 @@ impl Cascade {
                 Ok(None) => {}
                 Ok(Some(stdout)) => {
                     let Context {
+                        options: _,
                         protocol,
                         host,
                         path,
@@ -97,9 +121,11 @@ impl Cascade {
                         password,
                         oauth_refresh_token,
                         password_expiry_utc,
+                        // Authentication challenges only flow from the server to helpers.
+                        www_authenticate: _,
                         url: ctx_url,
                         quit,
-                    } = Context::from_bytes(&stdout)?;
+                    } = Context::from_bytes(&stdout, self.context_options)?;
                     if let Some(dst_ctx) = action.context_mut() {
                         if let Some(src) = path {
                             dst_ctx.path = Some(src);
@@ -138,36 +164,41 @@ impl Cascade {
                         }
                     }
                 }
-                Err(helper::Error::CredentialsHelperFailed { .. }) => continue, // ignore helpers that we can't call
-                Err(err) if action.context().is_some() => return Err(err.into()), // communication errors are fatal when getting credentials
+                Err(err)
+                    if !err.is_cancelled() && err.downcast_any_ref::<helper::invoke::HelperFailure>().is_some() =>
+                {
+                    continue;
+                }
+                Err(err) if action.context().is_some() => return Err(err), // communication errors are fatal when getting credentials
                 Err(_) => {} // for other actions, ignore everything, try the operation
             }
         }
 
-        if prompt.mode != gix_prompt::Mode::Disable {
-            if let Some(ctx) = action.context_mut() {
-                ctx.url = url;
-                if ctx.username.is_none() {
-                    let message = ctx.to_prompt("Username");
-                    prompt.mode = gix_prompt::Mode::Visible;
-                    ctx.username = gix_prompt::ask(&message, &prompt)
-                        .map_err(|err| protocol::Error::Prompt {
-                            prompt: message,
-                            source: err,
-                        })?
-                        .into();
-                }
-                if ctx.password.is_none() {
-                    let message = ctx.to_prompt("Password");
-                    prompt.mode = gix_prompt::Mode::Hidden;
-                    ctx.password = gix_prompt::ask(&message, &prompt)
-                        .map_err(|err| protocol::Error::Prompt {
-                            prompt: message,
-                            source: err,
-                        })?
-                        .into();
-                }
+        if prompt.mode != gix_prompt::Mode::Disable
+            && let Some(ctx) = action.context_mut()
+        {
+            ctx.url = url;
+            if ctx.username.is_none() {
+                let message = ctx.to_prompt("Username");
+                prompt.mode = gix_prompt::Mode::Visible;
+                ctx.username = gix_prompt::ask(&message, &prompt)
+                    .or_raise(|| gix_error::message!("Couldn't obtain {message}"))?
+                    .into();
             }
+            if ctx.password.is_none() {
+                let message = ctx.to_prompt("Password");
+                prompt.mode = gix_prompt::Mode::Hidden;
+                ctx.password = gix_prompt::ask(&message, &prompt)
+                    .or_raise(|| gix_error::message!("Couldn't obtain {message}"))?
+                    .into();
+            }
+        }
+
+        if let Some(ctx) = action.context_mut()
+            && ctx.username.is_some()
+            && ctx.password.is_some()
+        {
+            ctx.www_authenticate.clear();
         }
 
         protocol::helper_outcome_to_result(

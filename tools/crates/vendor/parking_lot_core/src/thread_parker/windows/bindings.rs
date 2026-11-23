@@ -1,9 +1,9 @@
 #![allow(non_snake_case)]
 
-//! Manual bindings to the win32 API to avoid dependencies on windows-sys or winapi
-//! as these bindings will **never** change and `parking_lot_core` is a foundational
-//! dependency for the Rust ecosystem, so the dependencies used by it have an
-//! outsize affect
+//! Manual bindings to the small subset of the Win32 API used by this module.
+//!
+//! Keeping these stable system interfaces here avoids adding `windows-sys` or
+//! `winapi` as a dependency of the foundational `parking_lot_core` crate.
 
 pub const INFINITE: u32 = 4294967295;
 pub const ERROR_TIMEOUT: u32 = 1460;
@@ -12,12 +12,30 @@ pub const GENERIC_WRITE: u32 = 1073741824;
 pub const STATUS_SUCCESS: i32 = 0;
 pub const STATUS_TIMEOUT: i32 = 258;
 
-pub type HANDLE = isize;
-pub type HINSTANCE = isize;
+pub type HANDLE = *mut std::ffi::c_void;
+pub type HINSTANCE = *mut std::ffi::c_void;
 pub type BOOL = i32;
 pub type BOOLEAN = u8;
 pub type NTSTATUS = i32;
 pub type FARPROC = Option<unsafe extern "system" fn() -> isize>;
+pub type NtCreateKeyedEvent = unsafe extern "system" fn(
+    KeyedEventHandle: *mut HANDLE,
+    DesiredAccess: u32,
+    ObjectAttributes: *mut std::ffi::c_void,
+    Flags: u32,
+) -> NTSTATUS;
+pub type NtReleaseKeyedEvent = unsafe extern "system" fn(
+    EventHandle: HANDLE,
+    Key: *mut std::ffi::c_void,
+    Alertable: BOOLEAN,
+    Timeout: *mut i64,
+) -> NTSTATUS;
+pub type NtWaitForKeyedEvent = unsafe extern "system" fn(
+    EventHandle: HANDLE,
+    Key: *mut std::ffi::c_void,
+    Alertable: BOOLEAN,
+    Timeout: *mut i64,
+) -> NTSTATUS;
 pub type WaitOnAddress = unsafe extern "system" fn(
     Address: *const std::ffi::c_void,
     CompareAddress: *const std::ffi::c_void,

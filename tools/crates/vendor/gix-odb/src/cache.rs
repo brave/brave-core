@@ -133,25 +133,35 @@ impl<S> DerefMut for Cache<S> {
 }
 
 mod impls {
+    use gix_error::Result;
     use std::{cell::RefCell, io::Read, ops::DerefMut};
 
-    use gix_hash::{oid, ObjectId};
+    use gix_hash::{ObjectId, oid};
     use gix_object::{Data, Kind};
     use gix_pack::cache::Object;
 
-    use crate::{find::Header, pack::data::entry::Location, Cache};
+    use crate::{Cache, find::Header, pack::data::entry::Location};
 
     impl<S> gix_object::Write for Cache<S>
     where
         S: gix_object::Write,
     {
-        fn write_stream(
+        fn write_stream(&self, kind: Kind, size: u64, from: &mut dyn Read) -> Result<ObjectId> {
+            self.inner.write_stream(kind, size, from)
+        }
+
+        fn write_buf_with_known_id(&self, kind: Kind, from: &[u8], id: ObjectId) -> Result<ObjectId> {
+            self.inner.write_buf_with_known_id(kind, from, id)
+        }
+
+        fn write_stream_with_known_id(
             &self,
             kind: Kind,
             size: u64,
             from: &mut dyn Read,
-        ) -> Result<ObjectId, gix_object::write::Error> {
-            self.inner.write_stream(kind, size, from)
+            id: ObjectId,
+        ) -> Result<ObjectId> {
+            self.inner.write_stream_with_known_id(kind, size, from, id)
         }
     }
 
@@ -159,7 +169,7 @@ mod impls {
     where
         S: gix_pack::Find,
     {
-        fn try_find<'a>(&self, id: &oid, buffer: &'a mut Vec<u8>) -> Result<Option<Data<'a>>, gix_object::find::Error> {
+        fn try_find<'a>(&self, id: &oid, buffer: &'a mut Vec<u8>) -> Result<Option<Data<'a>>> {
             gix_pack::Find::try_find(self, id, buffer).map(|t| t.map(|t| t.0))
         }
     }
@@ -177,7 +187,7 @@ mod impls {
     where
         S: crate::Header,
     {
-        fn try_header(&self, id: &oid) -> Result<Option<Header>, gix_object::find::Error> {
+        fn try_header(&self, id: &oid) -> Result<Option<Header>> {
             self.inner.try_header(id)
         }
     }
@@ -186,7 +196,7 @@ mod impls {
     where
         S: gix_object::FindHeader,
     {
-        fn try_header(&self, id: &oid) -> Result<Option<gix_object::Header>, gix_object::find::Error> {
+        fn try_header(&self, id: &oid) -> Result<Option<gix_object::Header>> {
             self.inner.try_header(id)
         }
     }
@@ -199,11 +209,7 @@ mod impls {
             self.inner.contains(id)
         }
 
-        fn try_find<'a>(
-            &self,
-            id: &oid,
-            buffer: &'a mut Vec<u8>,
-        ) -> Result<Option<(Data<'a>, Option<Location>)>, gix_object::find::Error> {
+        fn try_find<'a>(&self, id: &oid, buffer: &'a mut Vec<u8>) -> Result<Option<(Data<'a>, Option<Location>)>> {
             match self.pack_cache.as_ref().map(RefCell::borrow_mut) {
                 Some(mut pack_cache) => self.try_find_cached(id, buffer, pack_cache.deref_mut()),
                 None => self.try_find_cached(id, buffer, &mut gix_pack::cache::Never),
@@ -215,11 +221,11 @@ mod impls {
             id: &oid,
             buffer: &'a mut Vec<u8>,
             pack_cache: &mut dyn gix_pack::cache::DecodeEntry,
-        ) -> Result<Option<(Data<'a>, Option<gix_pack::data::entry::Location>)>, gix_object::find::Error> {
-            if let Some(mut obj_cache) = self.object_cache.as_ref().map(RefCell::borrow_mut) {
-                if let Some(kind) = obj_cache.get(&id.as_ref().to_owned(), buffer) {
-                    return Ok(Some((Data::new(kind, buffer), None)));
-                }
+        ) -> Result<Option<(Data<'a>, Option<gix_pack::data::entry::Location>)>> {
+            if let Some(mut obj_cache) = self.object_cache.as_ref().map(RefCell::borrow_mut)
+                && let Some(kind) = obj_cache.get(&id.as_ref().to_owned(), buffer)
+            {
+                return Ok(Some((Data::new(buffer, kind, id.kind()), None)));
             }
             let possibly_obj = self.inner.try_find_cached(id.as_ref(), buffer, pack_cache)?;
             if let (Some(mut obj_cache), Some((obj, _location))) =
@@ -230,11 +236,14 @@ mod impls {
             Ok(possibly_obj)
         }
 
-        fn location_by_oid(&self, id: &oid, buf: &mut Vec<u8>) -> Option<gix_pack::data::entry::Location> {
+        fn location_by_oid(&self, id: &oid, buf: &mut Vec<u8>) -> Result<Option<gix_pack::data::entry::Location>> {
             self.inner.location_by_oid(id, buf)
         }
 
-        fn pack_offsets_and_oid(&self, pack_id: u32) -> Option<Vec<(u64, gix_hash::ObjectId)>> {
+        fn pack_offsets_and_oid(
+            &self,
+            pack_id: u32,
+        ) -> Result<Option<Vec<(gix_pack::data::Offset, gix_hash::ObjectId)>>> {
             self.inner.pack_offsets_and_oid(pack_id)
         }
 

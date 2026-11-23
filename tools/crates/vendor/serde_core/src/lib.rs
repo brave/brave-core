@@ -35,7 +35,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // Serde types in rustdoc of other crates get linked to here.
-#![doc(html_root_url = "https://docs.rs/serde_core/1.0.228")]
+#![doc(html_root_url = "https://docs.rs/serde_core/1.0.229")]
 // Support using Serde without the standard library!
 #![cfg_attr(not(feature = "std"), no_std)]
 // Show which crate feature enables conditionally compiled APIs in documentation.
@@ -54,7 +54,7 @@
     // clippy bug: https://github.com/rust-lang/rust-clippy/issues/7768
     clippy::semicolon_if_nothing_returned,
     // not available in our oldest supported compiler
-    clippy::empty_enum,
+    clippy::empty_enums,
     clippy::type_repetition_in_bounds, // https://github.com/rust-lang/rust-clippy/issues/8772
     // integer and float ser/de requires these sorts of casts
     clippy::cast_possible_truncation,

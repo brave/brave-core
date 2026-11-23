@@ -1,9 +1,10 @@
 [package]
 name = "memmap2"
-version = "0.9.9"
+version = "0.9.12"
 authors = [
     "Dan Burkert <dan@danburkert.com>",
     "Yevhenii Reizner <razrfalcon@gmail.com>",
+    "The Contributors",
 ]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/RazrFalcon/memmap2-rs"
@@ -11,7 +12,7 @@ documentation = "https://docs.rs/memmap2"
 description = "Cross-platform Rust API for memory-mapped file IO"
 keywords = ["mmap", "memory-map", "io", "file"]
 edition = "2021"
-rust-version = "1.63"
+rust-version = "1.65"
 
 [dependencies]
 stable_deref_trait = { version = "1.0", optional = true }

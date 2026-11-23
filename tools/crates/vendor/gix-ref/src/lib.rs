@@ -15,15 +15,27 @@
 //!   * **packed**
 //!     * references are stored in a single human-readable file, along with their targets if they are symbolic.
 //!
+//! Concrete recovery signals such as missing references and reflog identities expose classification-only
+//! [`gix_error::ClassificationMarker`] sources. Use `is_not_found()`, `is_corrupted()`, `is_validation()`, or
+//! `classify()` on [`gix_error::Exn`] and [`gix_error::Error`] rather than downcasting these sources to classifier
+//! error types. Callee errors retain their concrete causes. Locally detected failures may use a single classified
+//! [`gix_error::Message`] containing both the diagnostic and its values.
+//! Operations return [`gix_error::Error`], with diagnostic [`gix_error::Message`] keys documented where they are added.
+//! Inspect these dictionaries with [`metadata()`](gix_error::Error::metadata), and add context available at the call site.
+//! For recovery, downcast to [`file::find::NotFound`] to distinguish an absent reference from an absent object,
+//! [`file::find::ReferenceDecode`] for loose reference contents that could not be decoded,
+//! [`file::transaction::prepare::ReferenceOutOfDate`] or [`file::transaction::prepare::MustNotExist`] for a failed
+//! update constraint, and [`file::log::create_or_update::MissingCommitter`] for a missing reflog identity.
+//!
 //! ## Feature Flags
 #![cfg_attr(
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
 #![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
-#![deny(missing_docs, rust_2018_idioms, unsafe_code)]
+#![deny(missing_docs, unsafe_code)]
 
-use gix_hash::{oid, ObjectId};
+use gix_hash::{ObjectId, oid};
 pub use gix_object::bstr;
 use gix_object::bstr::{BStr, BString};
 
@@ -31,6 +43,7 @@ use gix_object::bstr::{BStr, BString};
 mod store_impl;
 pub use store_impl::{file, packed};
 
+mod compare;
 mod fullname;
 ///
 pub mod name;
@@ -50,9 +63,6 @@ mod target;
 pub mod log;
 
 ///
-pub mod peel;
-
-///
 pub mod store {
     ///
     pub mod init {
@@ -62,8 +72,6 @@ pub mod store {
         pub struct Options {
             /// How to write the ref-log.
             pub write_reflog: super::WriteReflog,
-            /// The kind of hash to expect in
-            pub object_hash: gix_hash::Kind,
             /// The equivalent of `core.precomposeUnicode`.
             pub precompose_unicode: bool,
             /// If `true`, we will avoid reading from or writing to references that contains Windows device names
@@ -86,14 +94,20 @@ pub mod store {
 
     /// A thread-local handle for interacting with a [`Store`][crate::Store] to find and iterate references.
     #[derive(Clone)]
-    #[allow(dead_code)]
+    #[expect(
+        dead_code,
+        reason = "the general reference-store handle is scaffolding for planned ref-table support"
+    )]
     pub(crate) struct Handle {
         /// A way to access shared state with the requirement that interior mutability doesn't leak or is incorporated into error types
         /// if it could. The latter can't happen if references to said internal aren't ever returned.
         state: handle::State,
     }
 
-    #[allow(dead_code)]
+    #[expect(
+        dead_code,
+        reason = "the general reference-store state is scaffolding for planned ref-table support"
+    )]
     pub(crate) enum State {
         Loose { store: file::Store },
     }
@@ -110,7 +124,10 @@ pub mod store {
 
 /// The git reference store.
 /// TODO: Figure out if handles are needed at all, which depends on the ref-table implementation.
-#[allow(dead_code)]
+#[expect(
+    dead_code,
+    reason = "callers still use file::Store directly while this general store awaits ref-table support"
+)]
 pub(crate) struct Store {
     inner: store::State,
 }

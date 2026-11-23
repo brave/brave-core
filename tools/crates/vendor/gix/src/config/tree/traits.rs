@@ -1,6 +1,8 @@
+use crate::error::{bail, validation};
+
 use crate::{
+    Result,
     bstr::{BStr, BString, ByteVec},
-    config::tree::key::validate_assignment,
 };
 
 /// Provide information about a configuration section.
@@ -34,6 +36,8 @@ pub enum Link {
     /// The environment variable of the given name will override the value of this key.
     EnvironmentOverride(&'static str),
     /// This config key is used as fallback if this key isn't set.
+    ///
+    /// This is descriptive metadata; configuration accessors don't follow it automatically.
     FallbackKey(&'static dyn Key),
 }
 
@@ -51,7 +55,11 @@ pub trait Key: std::fmt::Debug {
     /// The key's name, like `url` in `remote.origin.url`.
     fn name(&self) -> &str;
     /// See if `value` is allowed as value of this key, or return a descriptive error if it is not.
-    fn validate(&self, value: &BStr) -> Result<(), crate::config::tree::key::validate::Error>;
+    ///
+    /// Built-in keys include the logical `key` name and invalid value bytes as `input` in
+    /// [`crate::Error::metadata()`]. If a key or its fallback declares an environment override,
+    /// `environment_override` names this possible override, not the actual source of the value.
+    fn validate(&self, value: &BStr) -> Result<()>;
     /// The section containing this key. Git configuration has no free-standing keys, they are always underneath a section.
     fn section(&self) -> &dyn Section;
     /// The return value encodes three possible states to indicate subsection requirements
@@ -63,6 +71,18 @@ pub trait Key: std::fmt::Debug {
     /// Return the link to other resources, if available.
     fn link(&self) -> Option<&Link> {
         None
+    }
+    /// Return the value to use if this key is unset, if one is known.
+    fn default_value(&self) -> Option<&BStr> {
+        None
+    }
+    /// Return the value to use if this key is unset.
+    ///
+    /// # Panics
+    ///
+    /// If no default value is set.
+    fn default_value_or_panic(&self) -> &BStr {
+        self.default_value().expect("BUG: default value must be set")
     }
     /// Return a note about this key, if available.
     fn note(&self) -> Option<&Note> {
@@ -119,23 +139,23 @@ pub trait Key: std::fmt::Debug {
     /// The full name of the key for use in configuration overrides, like `core.bare`, or `remote.<subsection>.url` if `subsection` is
     /// not `None`.
     /// May fail if this key needs a subsection, or may not have a subsection.
-    fn full_name(&self, subsection: Option<&BStr>) -> Result<BString, String> {
+    fn full_name(&self, subsection: Option<&BStr>) -> Result<BString> {
         let section = self.section();
         let mut buf = BString::default();
         let subsection = match self.subsection_requirement() {
             None => subsection,
             Some(requirement) => match (requirement, subsection) {
                 (SubSectionRequirement::Never, Some(_)) => {
-                    return Err(format!(
+                    bail!(validation(format!(
                         "The key named '{}' cannot be used with non-static subsections.",
                         self.logical_name()
-                    ));
+                    )));
                 }
                 (SubSectionRequirement::Parameter(_), None) => {
-                    return Err(format!(
+                    bail!(validation(format!(
                         "The key named '{}' cannot be used without subsections.",
                         self.logical_name()
-                    ))
+                    )));
                 }
                 _ => subsection,
             },
@@ -161,11 +181,9 @@ pub trait Key: std::fmt::Debug {
 
     /// Return an assignment with the keys full name to `value`, suitable for [configuration overrides][crate::open::Options::config_overrides()].
     /// Note that this will fail if the key requires a subsection name.
-    fn validated_assignment(&self, value: &BStr) -> Result<BString, validate_assignment::Error> {
+    fn validated_assignment(&self, value: &BStr) -> Result<BString> {
         self.validate(value)?;
-        let mut key = self
-            .full_name(None)
-            .map_err(|message| validate_assignment::Error::Name { message })?;
+        let mut key = self.full_name(None)?;
         key.push(b'=');
         key.push_str(value);
         Ok(key)
@@ -173,25 +191,16 @@ pub trait Key: std::fmt::Debug {
 
     /// Return an assignment with the keys full name to `value`, suitable for [configuration overrides][crate::open::Options::config_overrides()].
     /// Note that this will fail if the key requires a subsection name.
-    fn validated_assignment_fmt(
-        &self,
-        value: &dyn std::fmt::Display,
-    ) -> Result<BString, crate::config::tree::key::validate_assignment::Error> {
+    fn validated_assignment_fmt(&self, value: &dyn std::fmt::Display) -> Result<BString> {
         let value = value.to_string();
         self.validated_assignment(value.as_str().into())
     }
 
     /// Return an assignment to `value` with the keys full name within `subsection`, suitable for [configuration overrides][crate::open::Options::config_overrides()].
     /// Note that this is only valid if this key supports parameterized sub-sections, or else an error is returned.
-    fn validated_assignment_with_subsection(
-        &self,
-        value: &BStr,
-        subsection: &BStr,
-    ) -> Result<BString, crate::config::tree::key::validate_assignment::Error> {
+    fn validated_assignment_with_subsection(&self, value: &BStr, subsection: &BStr) -> Result<BString> {
         self.validate(value)?;
-        let mut key = self
-            .full_name(Some(subsection))
-            .map_err(|message| validate_assignment::Error::Name { message })?;
+        let mut key = self.full_name(Some(subsection))?;
         key.push(b'=');
         key.push_str(value);
         Ok(key)

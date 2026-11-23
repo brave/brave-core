@@ -1,11 +1,15 @@
-use crate::config::tree::{keys, traits::SubSectionRequirement, Branch, Key, Section};
+use crate::config::tree::{Branch, Key, Section, keys, traits::SubSectionRequirement};
 
 const NAME_PARAMETER: Option<SubSectionRequirement> = Some(SubSectionRequirement::Parameter("name"));
 
 impl Branch {
     /// The `branch.<name>.merge` key.
-    pub const MERGE: Merge = Merge::new_with_validate("merge", &crate::config::Tree::BRANCH, validate::FullNameRef)
-        .with_subsection_requirement(NAME_PARAMETER);
+    pub const MERGE: Merge = Merge::new_with_validate(
+        "merge",
+        &crate::config::Tree::BRANCH,
+        keys::validate::FullNameRef::new(),
+    )
+    .with_subsection_requirement(NAME_PARAMETER);
     /// The `branch.<name>.pushRemote` key.
     pub const PUSH_REMOTE: keys::RemoteName =
         keys::RemoteName::new_remote_name("pushRemote", &crate::config::Tree::BRANCH)
@@ -26,40 +30,18 @@ impl Section for Branch {
 }
 
 /// The `branch.<name>.merge` key.
-pub type Merge = keys::Any<validate::FullNameRef>;
+pub type Merge = keys::Any<keys::validate::FullNameRef>;
 
 mod merge {
-    use std::borrow::Cow;
+    use gix_error::ResultExt;
+    use gix_ref::FullName;
 
-    use gix_ref::FullNameRef;
-
-    use crate::{bstr::BStr, config::tree::branch::Merge};
+    use crate::{Result, config::tree::branch::Merge};
 
     impl Merge {
         /// Return the validated full ref name from `value` if it is valid.
-        pub fn try_into_fullrefname(
-            value: Cow<'_, BStr>,
-        ) -> Result<Cow<'_, FullNameRef>, gix_validate::reference::name::Error> {
-            match value {
-                Cow::Borrowed(v) => v.try_into().map(Cow::Borrowed),
-                Cow::Owned(v) => v.try_into().map(Cow::Owned),
-            }
-        }
-    }
-}
-
-///
-pub mod validate {
-    use crate::{
-        bstr::BStr,
-        config::tree::{branch::Merge, keys},
-    };
-
-    pub struct FullNameRef;
-    impl keys::Validate for FullNameRef {
-        fn validate(&self, value: &BStr) -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-            Merge::try_into_fullrefname(value.into())?;
-            Ok(())
+        pub fn try_into_fullrefname(value: impl gix_utils::AsBStr) -> Result<FullName> {
+            FullName::try_from(value.as_bstr().to_owned()).or_error()
         }
     }
 }

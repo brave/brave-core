@@ -17,6 +17,7 @@ use zstd_safe::get_error_name;
 pub struct ZstdDecoder {
     decoder: Unshared<Decoder<'static>>,
     stream_ended: bool,
+    needs_input: bool,
 }
 
 impl Default for ZstdDecoder {
@@ -24,6 +25,7 @@ impl Default for ZstdDecoder {
         Self {
             decoder: Unshared::new(Decoder::new().unwrap()),
             stream_ended: false,
+            needs_input: false,
         }
     }
 }
@@ -41,6 +43,7 @@ impl ZstdDecoder {
         Self {
             decoder: Unshared::new(decoder),
             stream_ended: false,
+            needs_input: false,
         }
     }
 
@@ -49,6 +52,7 @@ impl ZstdDecoder {
         Ok(Self {
             decoder: Unshared::new(decoder),
             stream_ended: false,
+            needs_input: false,
         })
     }
 }
@@ -57,6 +61,7 @@ impl DecodeV2 for ZstdDecoder {
     fn reinit(&mut self) -> Result<()> {
         self.decoder.reinit()?;
         self.stream_ended = false;
+        self.needs_input = false;
         Ok(())
     }
 
@@ -65,7 +70,17 @@ impl DecodeV2 for ZstdDecoder {
         input: &mut PartialBuffer<&[u8]>,
         output: &mut WriteBuffer<'_>,
     ) -> Result<bool> {
+        let empty_input = input.unwritten().is_empty();
+        // Once buffered output is drained, wait for input before calling zstd
+        // again. Repeated empty-input calls (e.g. while a reader is Pending)
+        // otherwise trigger its no-forward-progress error and poison the context.
+        if empty_input && self.needs_input {
+            return Ok(false);
+        }
+        let before = output.written_len();
         let finished = self.decoder.run(input, output)?;
+        self.needs_input =
+            empty_input && output.written_len() == before && !output.has_no_spare_space();
         if finished {
             self.stream_ended = true;
         }

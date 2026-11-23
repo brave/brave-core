@@ -19,6 +19,17 @@ pub(super) fn connection_close(value: &HeaderValue) -> bool {
     connection_has(value, "close")
 }
 
+// Returns true if any `Connection` header field carries a `close` token.
+// A message may have more than one `Connection` header line, so all of them
+// must be inspected (`get`/`connection_close` alone only sees the first).
+#[cfg(feature = "http1")]
+pub(super) fn connection_any_close(headers: &http::HeaderMap) -> bool {
+    headers
+        .get_all(http::header::CONNECTION)
+        .iter()
+        .any(connection_close)
+}
+
 #[cfg(feature = "http1")]
 fn connection_has(value: &HeaderValue, needle: &str) -> bool {
     if let Ok(s) = value.to_str() {
@@ -28,6 +39,26 @@ fn connection_has(value: &HeaderValue, needle: &str) -> bool {
             }
         }
     }
+    false
+}
+
+#[cfg(feature = "http1")]
+pub(super) fn te_is_trailers(headers: &http::HeaderMap) -> bool {
+    header_value_list_has(headers.get_all(http::header::TE).into_iter(), "trailers")
+}
+
+#[cfg(feature = "http1")]
+fn header_value_list_has(values: http::header::ValueIter<'_, HeaderValue>, needle: &str) -> bool {
+    for value in values {
+        if let Ok(line) = value.to_str() {
+            for token in line.split(',') {
+                if token.trim().eq_ignore_ascii_case(needle) {
+                    return true;
+                }
+            }
+        }
+    }
+
     false
 }
 
@@ -51,13 +82,11 @@ pub(super) fn content_length_parse_all_values(values: ValueIter<'_, HeaderValue>
     for h in values {
         if let Ok(line) = h.to_str() {
             for v in line.split(',') {
-                if let Some(n) = from_digits(v.trim().as_bytes()) {
-                    if content_length.is_none() {
-                        content_length = Some(n)
-                    } else if content_length != Some(n) {
-                        return None;
-                    }
-                } else {
+                let n = from_digits(v.trim().as_bytes())?;
+
+                if content_length.is_none() {
+                    content_length = Some(n);
+                } else if content_length != Some(n) {
                     return None;
                 }
             }
@@ -84,7 +113,7 @@ fn from_digits(bytes: &[u8]) -> Option<u64> {
         match b {
             b'0'..=b'9' => {
                 result = result.checked_mul(RADIX)?;
-                result = result.checked_add((b - b'0') as u64)?;
+                result = result.checked_add(u64::from(b - b'0'))?;
             }
             _ => {
                 // not a DIGIT, get outta here!
@@ -156,4 +185,36 @@ pub(super) fn add_chunked(mut entry: http::header::OccupiedEntry<'_, HeaderValue
     }
 
     entry.insert(HeaderValue::from_static(CHUNKED));
+}
+
+#[cfg(all(test, feature = "http1"))]
+mod tests {
+    use super::te_is_trailers;
+    use http::header::{HeaderValue, TE};
+    use http::HeaderMap;
+
+    #[test]
+    fn te_is_trailers_accepts_comma_separated_values() {
+        let mut headers = HeaderMap::new();
+        headers.insert(TE, HeaderValue::from_static("gzip, Trailers"));
+
+        assert!(te_is_trailers(&headers));
+    }
+
+    #[test]
+    fn te_is_trailers_accepts_multiple_header_lines() {
+        let mut headers = HeaderMap::new();
+        headers.append(TE, HeaderValue::from_static("gzip"));
+        headers.append(TE, HeaderValue::from_static("trailers"));
+
+        assert!(te_is_trailers(&headers));
+    }
+
+    #[test]
+    fn te_is_trailers_rejects_missing_trailers_token() {
+        let mut headers = HeaderMap::new();
+        headers.insert(TE, HeaderValue::from_static("gzip"));
+
+        assert!(!te_is_trailers(&headers));
+    }
 }

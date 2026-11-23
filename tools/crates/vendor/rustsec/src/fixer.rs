@@ -42,7 +42,11 @@ impl Fixer {
     /// the vulnerability was actually fixed!
     /// It may remain if no semver-compatible fix was available.
     pub fn get_fix_command(&self, vulnerability: &Vulnerability, dry_run: bool) -> Command {
-        let cargo_path: &Path = self.path_to_cargo.as_deref().unwrap_or(Path::new("cargo"));
+        let cargo_path = self
+            .path_to_cargo
+            .as_deref()
+            .unwrap_or_else(|| Path::new("cargo"));
+
         let pkg_name = &vulnerability.package.name;
         let mut command = Command::new(cargo_path);
         command.arg("update");
@@ -52,7 +56,12 @@ impl Fixer {
         if dry_run {
             command.arg("--dry-run");
         }
-        // there can be more than one version of a given package in the lockfile, so we need to iterate over all of them
+        // There can be more than one version of a given package in the
+        // lockfile, so we need to iterate over all of them.
+        //
+        // Before we do, we need to add -- so that a lockfile entry starting
+        // with -- isn't interpreted as a flag by cargo.
+        command.arg("--");
         for pkg in self.lockfile.packages.iter().filter(|pkg| {
             &pkg.name == pkg_name && vulnerability.versions.is_vulnerable(&pkg.version)
         }) {
@@ -73,5 +82,69 @@ fn pkgid(pkg: &Package) -> String {
     match pkg.source.as_ref() {
         Some(source) => format!("{}#{}@{}", source, pkg.name, pkg.version),
         None => format!("{}@{}", pkg.name, pkg.version),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::Advisory;
+
+    #[test]
+    fn fix_command_package_separator() {
+        // Construct a lockfile with a name that could be interpreted as a flag.
+        let package_name = "--config=/tmp/attacker-config";
+        let lockfile: Lockfile = format!(
+            r#"version = 3
+
+[[package]]
+name = "{package_name}"
+version = "1.0.0"
+"#
+        )
+        .parse()
+        .expect("parse lock file");
+
+        // Build an advisory and vulnerability with the same name.
+        let advisory: Advisory = format!(
+            r#"```toml
+[advisory]
+id = "RUSTSEC-2026-0001"
+package = "{package_name}"
+date = "2026-11-10"
+
+[versions]
+patched = [">=2.0.0"]
+```
+
+# Test advisory
+
+Test.
+"#
+        )
+        .parse()
+        .expect("parse advisory");
+
+        let vulnerability = Vulnerability::new(&advisory, &lockfile.packages[0]);
+
+        // Build the fix command and validate that it looks as expected; that
+        // is, with the -- before the package name.
+        let args = Fixer::new(lockfile, Some("Cargo.toml".into()), None)
+            .get_fix_command(&vulnerability, true)
+            .get_args()
+            .map(|arg| arg.to_str().expect("arg is valid str").to_owned())
+            .collect::<Vec<_>>();
+
+        assert_eq!(
+            args,
+            [
+                "update",
+                "--manifest-path",
+                "Cargo.toml",
+                "--dry-run",
+                "--",
+                "--config=/tmp/attacker-config@1.0.0",
+            ]
+        );
     }
 }

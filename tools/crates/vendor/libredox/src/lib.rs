@@ -4,6 +4,7 @@
 #[cfg(feature = "call")]
 use self::error::{Error, Result};
 
+#[cfg(feature = "base")]
 pub mod error {
     use super::*;
 
@@ -23,6 +24,10 @@ pub mod error {
         pub fn errno(self) -> i32 {
             self.errno.into()
         }
+        #[expect(
+            unreachable_patterns,
+            reason = "EAGAIN and EWOULDBLOCK share the same number"
+        )]
         pub fn is_wouldblock(self) -> bool {
             matches!(self.errno(), errno::EAGAIN | errno::EWOULDBLOCK)
         }
@@ -107,11 +112,14 @@ pub mod error {
     pub type Result<T, E = Error> = core::result::Result<T, E>;
 }
 
+#[cfg(feature = "base")]
 pub mod flag {
     pub use libc::{
         O_ACCMODE, O_APPEND, O_ASYNC, O_CLOEXEC, O_CREAT, O_DIRECTORY, O_EXCL, O_FSYNC, O_NOFOLLOW,
         O_NONBLOCK, O_PATH, O_RDONLY, O_RDWR, O_TRUNC, O_WRONLY,
     };
+
+    pub use libc::{MSG_DONTROUTE, MSG_DONTWAIT, MSG_EOR, MSG_OOB, MSG_PEEK};
 
     pub use libc::{CLOCK_MONOTONIC, CLOCK_REALTIME};
 
@@ -150,6 +158,10 @@ pub mod flag {
         SIGXFSZ,
     };
 
+    pub use libc::{F_DUPFD, F_DUPFD_CLOEXEC, F_GETFD, F_SETFD};
+
+    pub use libc::RENAME_NOREPLACE;
+
     #[cfg(target_os = "redox")]
     pub use libc::{O_EXLOCK, O_SHLOCK, O_SYMLINK};
 
@@ -166,6 +178,7 @@ pub mod flag {
     pub const WCONTINUED: u32 = libc::WCONTINUED as u32;
 }
 
+#[cfg(feature = "base")]
 pub mod errno {
     pub use libc::{
         E2BIG, EACCES, EADDRINUSE, EADDRNOTAVAIL, EADV, EAFNOSUPPORT, EAGAIN, EALREADY, EBADE,
@@ -184,6 +197,7 @@ pub mod errno {
         ETIMEDOUT, ETOOMANYREFS, ETXTBSY, EUCLEAN, EUNATCH, EUSERS, EWOULDBLOCK, EXDEV, EXFULL,
     };
 }
+#[cfg(feature = "base")]
 pub mod data {
     pub use libc::iovec as IoVec;
     pub use libc::sigaction as SigAction;
@@ -238,14 +252,20 @@ extern "C" {
     fn redox_dup2_v1(old_fd: usize, new_fd: usize, buf: *const u8, len: usize) -> RawResult;
     fn redox_read_v1(fd: usize, dst_base: *mut u8, dst_len: usize) -> RawResult;
     fn redox_write_v1(fd: usize, src_base: *const u8, src_len: usize) -> RawResult;
-    fn redox_fsync_v1(fd: usize) -> RawResult;
-    fn redox_fdatasync_v1(fd: usize) -> RawResult;
     fn redox_fchmod_v1(fd: usize, new_mode: u16) -> RawResult;
     fn redox_fchown_v1(fd: usize, new_uid: u32, new_gid: u32) -> RawResult;
-    fn redox_fpath_v1(fd: usize, dst_base: *mut u8, dst_len: usize) -> RawResult;
+    fn redox_getdents_v0(fd: usize, buf: *mut u8, buf_len: usize, opaque: u64) -> RawResult;
     fn redox_fstat_v1(fd: usize, dst: *mut data::Stat) -> RawResult;
     fn redox_fstatvfs_v1(fd: usize, dst: *mut data::StatVfs) -> RawResult;
+    fn redox_fsync_v1(fd: usize) -> RawResult;
+    fn redox_fdatasync_v1(fd: usize) -> RawResult;
+    fn redox_ftruncate_v0(fd: usize, len: usize) -> RawResult;
     fn redox_futimens_v1(fd: usize, times: *const data::TimeSpec) -> RawResult;
+    /* TODO: Support unlinkat using std_fs_call
+    fn redox_unlinkat_v0(fd: usize, buf: *const u8, path_len: usize, flags: u32) -> RawResult;
+    */
+    fn redox_fpath_v1(fd: usize, dst_base: *mut u8, dst_len: usize) -> RawResult;
+    fn redox_relpathat_v0(dirfd: usize, fd: usize, dst_base: *mut u8, dst_len: usize) -> RawResult;
     fn redox_close_v1(fd: usize) -> RawResult;
 
     // NOTE: While the Redox kernel currently doesn't distinguish between threads and processes,
@@ -259,7 +279,7 @@ extern "C" {
     fn redox_get_rgid_v1() -> RawResult;
 
     fn redox_get_ens_v0() -> RawResult;
-
+    fn redox_get_ns_v0() -> RawResult;
     // This function is used to get the credentials, pid, euid, egid etc. of the process with the target pid.
     fn redox_get_proc_credentials_v1(cap_fd: usize, target_pid: usize, buf: &mut [u8])
         -> RawResult;
@@ -299,8 +319,29 @@ extern "C" {
         metadata: *const u64,
         metadata_len: usize,
     ) -> RawResult;
+    fn redox_sys_call_multiple_v0(
+        fds: *const usize,
+        fds_len: usize,
+        payload: *mut u8,
+        payload_len: usize,
+        flags: usize,
+        metadata: *const u64,
+        metadata_len: usize,
+    ) -> RawResult;
 
     fn redox_get_socket_token_v0(fd: usize, payload: *mut u8, payload_len: usize) -> RawResult;
+
+    fn redox_setns_v0(fd: usize) -> RawResult;
+
+    fn redox_register_scheme_to_ns_v0(
+        ns_fd: usize,
+        name_base: *const u8,
+        name_len: usize,
+        cap_fd: usize,
+    ) -> RawResult;
+
+    fn redox_fcntl_v0(fd: usize, cmd: usize, arg: usize) -> RawResult;
+
 }
 
 #[cfg(feature = "call")]
@@ -308,10 +349,14 @@ pub struct Fd(usize);
 
 #[cfg(feature = "call")]
 impl Fd {
+    pub fn new(raw: usize) -> Self {
+        Self(raw)
+    }
     #[inline]
     pub fn open(path: &str, flags: i32, mode: u16) -> Result<Self> {
         Ok(Self(call::open(path, flags, mode)?))
     }
+    #[inline]
     pub fn openat(&self, path: &str, flags: i32, fcntl_flags: u32) -> Result<Self> {
         Ok(Self(call::openat(self.raw(), path, flags, fcntl_flags)?))
     }
@@ -345,8 +390,22 @@ impl Fd {
         call::write(self.raw(), buf)
     }
     #[inline]
-    pub fn fpath(&self, path: &mut [u8]) -> Result<usize> {
-        call::fpath(self.raw(), path)
+    pub fn chmod(&self, new_mode: u16) -> Result<()> {
+        call::fchmod(self.raw(), new_mode)
+    }
+    #[inline]
+    pub fn chown(&self, new_uid: u32, new_gid: u32) -> Result<()> {
+        call::fchown(self.raw(), new_uid, new_gid)
+    }
+    #[inline]
+    pub fn getdents(self, buf: &mut [u8], opaque: u64) -> Result<usize> {
+        call::getdents(self.raw(), buf, opaque)
+    }
+    pub fn stat(&self) -> Result<data::Stat> {
+        call::fstat(self.raw())
+    }
+    pub fn statvfs(&self) -> Result<data::StatVfs> {
+        call::fstatvfs(self.raw())
     }
     #[inline]
     pub fn fsync(&self) -> Result<()> {
@@ -356,22 +415,28 @@ impl Fd {
     pub fn fdatasync(&self) -> Result<()> {
         call::fdatasync(self.raw())
     }
-
     #[inline]
-    pub fn chmod(&self, new_mode: u16) -> Result<()> {
-        call::fchmod(self.raw(), new_mode)
+    pub fn ftruncate(self, len: usize) -> Result<()> {
+        call::ftruncate(self.raw(), len)
     }
     #[inline]
-    pub fn chown(&self, new_uid: u32, new_gid: u32) -> Result<()> {
-        call::fchown(self.raw(), new_uid, new_gid)
+    pub fn futimens(self, times: &[data::TimeSpec; 2]) -> Result<()> {
+        call::futimens(self.raw(), times)
     }
-    pub fn stat(&self) -> Result<data::Stat> {
-        call::fstat(self.raw())
+    /* TODO: Support unlinkat using std_fs_call
+    #[inline]
+    pub fn unlinkat(&self, path: &str, flags: i32) -> Result<()> {
+        call::unlinkat(self.raw(), path, flags)
     }
-    pub fn statvfs(&self) -> Result<data::StatVfs> {
-        call::fstatvfs(self.raw())
+    */
+    #[inline]
+    pub fn fpath(&self, path: &mut [u8]) -> Result<usize> {
+        call::fpath(self.raw(), path)
     }
-    // TODO: futimens
+    #[inline]
+    pub fn relpathat(&self, fd: usize, path: &mut [u8]) -> Result<usize> {
+        call::relpathat(self.raw(), fd, path)
+    }
     #[inline]
     pub fn close(self) -> Result<()> {
         call::close(self.into_raw())
@@ -407,6 +472,11 @@ impl Fd {
     ) -> Result<usize> {
         call::call_rw(self.raw(), payload, flags, metadata)
     }
+
+    #[inline]
+    pub fn fcntl(&self, cmd: usize, arg: usize) -> Result<usize> {
+        call::fcntl(self.raw(), cmd, arg)
+    }
 }
 #[cfg(feature = "call")]
 impl Drop for Fd {
@@ -420,6 +490,65 @@ pub mod call {
     use core::mem::MaybeUninit;
 
     use super::*;
+
+    #[cfg(feature = "redox_syscall")]
+    pub trait Call {
+        unsafe fn raw_call(
+            &self,
+            payload: *mut u8,
+            payload_len: usize,
+            flags: syscall::CallFlags,
+            metadata: &[u64],
+        ) -> Result<usize>;
+    }
+
+    #[cfg(feature = "redox_syscall")]
+    impl Call for usize {
+        unsafe fn raw_call(
+            &self,
+            payload: *mut u8,
+            payload_len: usize,
+            flags: syscall::CallFlags,
+            metadata: &[u64],
+        ) -> Result<usize> {
+            Ok(Error::demux(unsafe {
+                redox_sys_call_v0(
+                    *self,
+                    payload,
+                    payload_len,
+                    flags.bits(),
+                    metadata.as_ptr(),
+                    metadata.len(),
+                )
+            })?)
+        }
+    }
+
+    #[cfg(feature = "redox_syscall")]
+    impl Call for &[usize] {
+        /// # Errors
+        ///
+        /// * `EXDEV` - The file descriptors belong to different schemes.
+        unsafe fn raw_call(
+            &self,
+            payload: *mut u8,
+            payload_len: usize,
+            flags: syscall::CallFlags,
+            metadata: &[u64],
+        ) -> Result<usize> {
+            Error::demux(unsafe {
+                redox_sys_call_multiple_v0(
+                    self.as_ptr(),
+                    self.len(),
+                    payload,
+                    payload_len,
+                    flags.bits(),
+                    metadata.as_ptr(),
+                    metadata.len(),
+                )
+            })
+        }
+    }
 
     /// flags and mode are binary compatible with libc
     #[inline]
@@ -466,14 +595,6 @@ pub mod call {
         Error::demux(unsafe { redox_write_v1(raw_fd, buf.as_ptr(), buf.len()) })
     }
     #[inline]
-    pub fn fsync(raw_fd: usize) -> Result<()> {
-        Error::demux(unsafe { redox_fsync_v1(raw_fd) }).map(|_| ())
-    }
-    #[inline]
-    pub fn fdatasync(raw_fd: usize) -> Result<()> {
-        Error::demux(unsafe { redox_fdatasync_v1(raw_fd) }).map(|_| ())
-    }
-    #[inline]
     pub fn fchmod(raw_fd: usize, new_mode: u16) -> Result<()> {
         Error::demux(unsafe { redox_fchmod_v1(raw_fd, new_mode) })?;
         Ok(())
@@ -484,8 +605,8 @@ pub mod call {
         Ok(())
     }
     #[inline]
-    pub fn fpath(raw_fd: usize, buf: &mut [u8]) -> Result<usize> {
-        Error::demux(unsafe { redox_fpath_v1(raw_fd, buf.as_mut_ptr(), buf.len()) })
+    pub fn getdents(fd: usize, buf: &mut [u8], opaque: u64) -> Result<usize> {
+        Error::demux(unsafe { redox_getdents_v0(fd, buf.as_mut_ptr(), buf.len(), opaque) })
     }
     #[inline]
     pub fn fstat(raw_fd: usize) -> Result<data::Stat> {
@@ -504,71 +625,100 @@ pub mod call {
         }
     }
     #[inline]
+    pub fn fsync(raw_fd: usize) -> Result<()> {
+        Error::demux(unsafe { redox_fsync_v1(raw_fd) }).map(|_| ())
+    }
+    #[inline]
+    pub fn fdatasync(raw_fd: usize) -> Result<()> {
+        Error::demux(unsafe { redox_fdatasync_v1(raw_fd) }).map(|_| ())
+    }
+    #[inline]
+    pub fn ftruncate(raw_fd: usize, new_size: usize) -> Result<()> {
+        Error::demux(unsafe { redox_ftruncate_v0(raw_fd, new_size) }).map(|_| ())
+    }
+    #[inline]
     pub fn futimens(raw_fd: usize, times: &[data::TimeSpec; 2]) -> Result<()> {
         Error::demux(unsafe { redox_futimens_v1(raw_fd, times.as_ptr()) })?;
         Ok(())
+    }
+    /* TODO: Support unlinkat using std_fs_call
+    #[inline]
+    pub fn unlinkat(fd: usize, path: impl AsRef<[u8]>, flags: i32) -> Result<()> {
+        let path = path.as_ref();
+        Error::demux(unsafe { redox_unlinkat_v0(fd, path.as_ptr(), path.len(), flags as u32) })
+            .map(|_| ())
+    }
+    */
+    #[inline]
+    pub fn fpath(raw_fd: usize, buf: &mut [u8]) -> Result<usize> {
+        Error::demux(unsafe { redox_fpath_v1(raw_fd, buf.as_mut_ptr(), buf.len()) })
+    }
+    #[inline]
+    pub fn relpathat(raw_fd: usize, fd: usize, buf: &mut [u8]) -> Result<usize> {
+        Error::demux(unsafe { redox_relpathat_v0(raw_fd, fd, buf.as_mut_ptr(), buf.len()) })
     }
     #[inline]
     pub fn close(raw_fd: usize) -> Result<()> {
         Error::demux(unsafe { redox_close_v1(raw_fd) })?;
         Ok(())
     }
+
     #[cfg(feature = "redox_syscall")]
     #[inline]
-    pub fn call_ro(
-        fd: usize,
+    pub fn call_ro<T: Call>(
+        fd: T,
         payload: &mut [u8],
         flags: syscall::CallFlags,
         metadata: &[u64],
     ) -> Result<usize> {
-        Ok(Error::demux(unsafe {
-            redox_sys_call_v0(
-                fd,
+        if flags.contains(syscall::CallFlags::WRITE) {
+            return Err(Error::new(syscall::EINVAL));
+        }
+        unsafe {
+            fd.raw_call(
                 payload.as_mut_ptr(),
                 payload.len(),
-                (flags | syscall::CallFlags::READ).bits(),
-                metadata.as_ptr(),
-                metadata.len(),
+                flags | syscall::CallFlags::READ,
+                metadata,
             )
-        })?)
+        }
     }
     #[cfg(feature = "redox_syscall")]
     #[inline]
-    pub fn call_wo(
-        fd: usize,
+    pub fn call_wo<T: Call>(
+        fd: T,
         payload: &[u8],
         flags: syscall::CallFlags,
         metadata: &[u64],
     ) -> Result<usize> {
-        Ok(Error::demux(unsafe {
-            redox_sys_call_v0(
-                fd,
-                payload.as_ptr() as *mut u8,
+        if flags.contains(syscall::CallFlags::READ) {
+            return Err(Error::new(syscall::EINVAL));
+        }
+        unsafe {
+            fd.raw_call(
+                payload.as_ptr().cast_mut(),
                 payload.len(),
-                (flags | syscall::CallFlags::WRITE).bits(),
-                metadata.as_ptr(),
-                metadata.len(),
+                flags | syscall::CallFlags::WRITE,
+                metadata,
             )
-        })?)
+        }
     }
     #[cfg(feature = "redox_syscall")]
     #[inline]
-    pub fn call_rw(
-        fd: usize,
+    pub fn call_rw<T: Call>(
+        fd: T,
         payload: &mut [u8],
         flags: syscall::CallFlags,
         metadata: &[u64],
     ) -> Result<usize> {
-        Ok(Error::demux(unsafe {
-            redox_sys_call_v0(
-                fd,
+        unsafe {
+            fd.raw_call(
                 payload.as_mut_ptr(),
                 payload.len(),
-                (flags | syscall::CallFlags::READ | syscall::CallFlags::WRITE).bits(),
-                metadata.as_ptr(),
-                metadata.len(),
+                flags | syscall::CallFlags::READ | syscall::CallFlags::WRITE,
+                metadata,
             )
-        })?)
+        }
     }
 
     #[inline]
@@ -710,5 +860,426 @@ pub mod call {
     #[inline]
     pub fn get_socket_token(fd: usize, buf: &mut [u8]) -> Result<usize> {
         Error::demux(unsafe { redox_get_socket_token_v0(fd, buf.as_mut_ptr(), buf.len()) })
+    }
+
+    #[inline]
+    pub fn setns(fd: usize) -> Result<usize> {
+        Error::demux(unsafe { redox_setns_v0(fd) })
+    }
+    #[inline]
+    pub fn getns() -> Result<usize> {
+        Error::demux(unsafe { redox_get_ns_v0() })
+    }
+
+    #[inline]
+    pub fn register_scheme_to_ns(ns_fd: usize, name: impl AsRef<str>, cap_fd: usize) -> Result<()> {
+        let name = name.as_ref();
+        Error::demux(unsafe {
+            redox_register_scheme_to_ns_v0(ns_fd, name.as_ptr(), name.len(), cap_fd)
+        })
+        .map(|_| ())
+    }
+
+    #[inline]
+    pub fn fcntl(fd: usize, cmd: usize, arg: usize) -> Result<usize> {
+        Error::demux(unsafe { redox_fcntl_v0(fd, cmd, arg) })
+    }
+}
+
+#[cfg(feature = "protocol")]
+pub mod protocol {
+    use bitflags::bitflags;
+
+    #[derive(Clone, Copy, Debug, Default)]
+    #[repr(C)]
+    pub struct ProcMeta {
+        pub pid: u32,
+        pub pgid: u32,
+        pub ppid: u32,
+        pub ruid: u32,
+        pub euid: u32,
+        pub suid: u32,
+        pub rgid: u32,
+        pub egid: u32,
+        pub sgid: u32,
+        pub ens: u32,
+        pub rns: u32,
+    }
+    unsafe impl plain::Plain for ProcMeta {}
+
+    #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+    #[repr(usize)]
+    pub enum ProcCall {
+        Waitpid = 0,
+        Setrens = 1,
+        Exit = 2,
+        Waitpgid = 3,
+        SetResugid = 4,
+        Setpgid = 5,
+        Getsid = 6,
+        Setsid = 7,
+        Kill = 8,
+        Sigq = 9,
+
+        // TODO: replace with sendfd equivalent syscall for sending memory
+        SyncSigPctl = 10,
+        Sigdeq = 11,
+        Getppid = 12,
+        Rename = 13,
+        DisableSetpgid = 14,
+
+        // Temporary calls for getting process credentials
+        GetProcCredentials = 15,
+
+        SetProcPriority = 16,
+        GetProcPriority = 17,
+
+        ControlTerm = 18,
+        Rlimit = 19,
+    }
+
+    const RLIM_INFINITY: u64 = !0;
+
+    #[derive(Clone, Copy, Debug)]
+    #[repr(C)]
+    pub struct Rlimit {
+        pub rlim_cur: u64,
+        pub rlim_max: u64,
+    }
+    impl Rlimit {
+        pub const fn const_default() -> Self {
+            Self {
+                rlim_cur: RLIM_INFINITY,
+                rlim_max: RLIM_INFINITY,
+            }
+        }
+    }
+    unsafe impl plain::Plain for Rlimit {}
+
+    #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+    #[repr(usize)]
+    pub enum PidfdCall {
+        SendSignal = 0,
+    }
+    #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+    #[repr(usize)]
+    pub enum ThreadCall {
+        // TODO: replace with sendfd equivalent syscall for sending memory, or force userspace to
+        // obtain its TCB memory from this server
+        SyncSigTctl = 0,
+        SignalThread = 1,
+    }
+
+    #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+    #[repr(usize)]
+    #[non_exhaustive]
+    pub enum SocketCall {
+        Bind = 0,
+        Connect = 1,
+        SetSockOpt = 2,
+        GetSockOpt = 3,
+        SendMsg = 4,
+        RecvMsg = 5,
+        Unbind = 6,
+        GetToken = 7,
+        GetPeerName = 8,
+        Shutdown = 9,
+    }
+
+    #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+    #[repr(usize)]
+    #[non_exhaustive]
+    pub enum FsCall {
+        Connect = 0,
+    }
+
+    #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+    #[repr(usize)]
+    pub enum TtyCall {
+        Termios = 0,
+        Flush = 1,
+        SendBreak = 2,
+        Flow = 3,
+        PtsName = 4,
+        PtLock = 5,
+        Pgrp = 6,
+        Winsize = 7,
+    }
+
+    impl ProcCall {
+        pub fn try_from_raw(raw: usize) -> Option<Self> {
+            Some(match raw {
+                0 => Self::Waitpid,
+                1 => Self::Setrens,
+                2 => Self::Exit,
+                3 => Self::Waitpgid,
+                4 => Self::SetResugid,
+                5 => Self::Setpgid,
+                6 => Self::Getsid,
+                7 => Self::Setsid,
+                8 => Self::Kill,
+                9 => Self::Sigq,
+                10 => Self::SyncSigPctl,
+                11 => Self::Sigdeq,
+                12 => Self::Getppid,
+                13 => Self::Rename,
+                14 => Self::DisableSetpgid,
+                15 => Self::GetProcCredentials,
+                16 => Self::SetProcPriority,
+                17 => Self::GetProcPriority,
+                18 => Self::ControlTerm,
+                19 => Self::Rlimit,
+                _ => return None,
+            })
+        }
+    }
+    impl PidfdCall {
+        pub fn try_from_raw(raw: usize) -> Option<Self> {
+            Some(match raw {
+                0 => Self::SendSignal,
+                _ => return None,
+            })
+        }
+    }
+    impl ThreadCall {
+        pub fn try_from_raw(raw: usize) -> Option<Self> {
+            Some(match raw {
+                0 => Self::SyncSigTctl,
+                1 => Self::SignalThread,
+                _ => return None,
+            })
+        }
+    }
+
+    impl SocketCall {
+        pub fn try_from_raw(raw: usize) -> Option<Self> {
+            Some(match raw {
+                0 => Self::Bind,
+                1 => Self::Connect,
+                2 => Self::SetSockOpt,
+                3 => Self::GetSockOpt,
+                4 => Self::SendMsg,
+                5 => Self::RecvMsg,
+                6 => Self::Unbind,
+                7 => Self::GetToken,
+                8 => Self::GetPeerName,
+                9 => Self::Shutdown,
+                _ => return None,
+            })
+        }
+    }
+
+    impl FsCall {
+        pub fn try_from_raw(raw: usize) -> Option<Self> {
+            Some(match raw {
+                0 => Self::Connect,
+                _ => return None,
+            })
+        }
+    }
+
+    impl TtyCall {
+        pub fn try_from_raw(raw: usize) -> Option<Self> {
+            Some(match raw {
+                0 => Self::Termios,
+                1 => Self::Flush,
+                2 => Self::SendBreak,
+                3 => Self::Flow,
+                4 => Self::PtsName,
+                5 => Self::PtLock,
+                6 => Self::Pgrp,
+                7 => Self::Winsize,
+                _ => return None,
+            })
+        }
+    }
+
+    bitflags! {
+        #[derive(Clone, Copy, Debug, Default, Eq, Ord, Hash, PartialEq, PartialOrd)]
+        pub struct WaitFlags: usize {
+            const WNOHANG =    0x01;
+            const WUNTRACED =  0x02;
+            const WCONTINUED = 0x08;
+        }
+    }
+    /// True if status indicates the child is stopped.
+    pub fn wifstopped(status: usize) -> bool {
+        (status & 0xff) == 0x7f
+    }
+
+    /// If wifstopped(status), the signal that stopped the child.
+    pub fn wstopsig(status: usize) -> usize {
+        (status >> 8) & 0xff
+    }
+
+    /// True if status indicates the child continued after a stop.
+    pub fn wifcontinued(status: usize) -> bool {
+        status == 0xffff
+    }
+
+    /// True if STATUS indicates termination by a signal.
+    pub fn wifsignaled(status: usize) -> bool {
+        ((status & 0x7f) + 1) as i8 >= 2
+    }
+
+    /// If wifsignaled(status), the terminating signal.
+    pub fn wtermsig(status: usize) -> usize {
+        status & 0x7f
+    }
+
+    /// True if status indicates normal termination.
+    pub fn wifexited(status: usize) -> bool {
+        wtermsig(status) == 0
+    }
+
+    /// If wifexited(status), the exit status.
+    pub fn wexitstatus(status: usize) -> usize {
+        (status >> 8) & 0xff
+    }
+
+    /// True if status indicates a core dump was created.
+    pub fn wcoredump(status: usize) -> bool {
+        (status & 0x80) != 0
+    }
+    #[derive(Clone, Copy, Debug)]
+    pub enum ProcKillTarget {
+        ThisGroup,
+        SingleProc(usize),
+        ProcGroup(usize),
+        All,
+    }
+    impl ProcKillTarget {
+        pub fn raw(self) -> usize {
+            match self {
+                Self::ThisGroup => 0,
+                Self::SingleProc(p) => p,
+                Self::ProcGroup(g) => usize::wrapping_neg(g),
+                Self::All => usize::wrapping_neg(1),
+            }
+        }
+        pub fn from_raw(raw: usize) -> Self {
+            let raw = raw as isize;
+            if raw == 0 {
+                Self::ThisGroup
+            } else if raw == -1 {
+                Self::All
+            } else if raw < 0 {
+                Self::ProcGroup(raw.wrapping_neg() as usize)
+            } else {
+                Self::SingleProc(raw as usize)
+            }
+        }
+    }
+    #[derive(Copy, Clone, Debug, Default, PartialEq)]
+    #[repr(C)]
+    pub struct RtSigInfo {
+        pub arg: usize,
+        pub code: i32,
+        pub uid: u32,
+        pub pid: u32, // TODO: usize?
+    }
+    unsafe impl plain::Plain for RtSigInfo {}
+
+    pub const SIGHUP: usize = 1;
+    pub const SIGINT: usize = 2;
+    pub const SIGQUIT: usize = 3;
+    pub const SIGILL: usize = 4;
+    pub const SIGTRAP: usize = 5;
+    pub const SIGABRT: usize = 6;
+    pub const SIGBUS: usize = 7;
+    pub const SIGFPE: usize = 8;
+    pub const SIGKILL: usize = 9;
+    pub const SIGUSR1: usize = 10;
+    pub const SIGSEGV: usize = 11;
+    pub const SIGUSR2: usize = 12;
+    pub const SIGPIPE: usize = 13;
+    pub const SIGALRM: usize = 14;
+    pub const SIGTERM: usize = 15;
+    pub const SIGSTKFLT: usize = 16;
+    pub const SIGCHLD: usize = syscall::SIGCHLD;
+    pub const SIGCONT: usize = 18;
+    pub const SIGSTOP: usize = 19;
+    pub const SIGTSTP: usize = syscall::SIGTSTP;
+    pub const SIGTTIN: usize = syscall::SIGTTIN;
+    pub const SIGTTOU: usize = syscall::SIGTTOU;
+    pub const SIGURG: usize = 23;
+    pub const SIGXCPU: usize = 24;
+    pub const SIGXFSZ: usize = 25;
+    pub const SIGVTALRM: usize = 26;
+    pub const SIGPROF: usize = 27;
+    pub const SIGWINCH: usize = 28;
+    pub const SIGIO: usize = 29;
+    pub const SIGPWR: usize = 30;
+    pub const SIGSYS: usize = 31;
+
+    bitflags! {
+        #[derive(Clone, Copy, Debug, Default, Eq, Ord, Hash, PartialEq, PartialOrd)]
+        pub struct NsPermissions: usize {
+            /// List schemes in the namespace
+            const LIST = 1 << 0;
+            /// Register a new scheme in the namespace
+            const INSERT = 1 << 1;
+            /// Delete a scheme from the namespace
+            const DELETE = 1 << 2;
+            /// Get scheme creation capabilities of the namespace
+            const SCHEME_CREATE = 1 << 3;
+        }
+    }
+
+    #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+    #[repr(usize)]
+    pub enum NsDup {
+        ForkNs = 0,
+        ShrinkPermissions = 1,
+        IssueRegister = 2,
+    }
+    impl NsDup {
+        pub fn try_from_raw(raw: usize) -> Option<Self> {
+            Some(match raw {
+                0 => Self::ForkNs,
+                1 => Self::ShrinkPermissions,
+                2 => Self::IssueRegister,
+                _ => return None,
+            })
+        }
+    }
+
+    // CLOEXEC flag
+    pub const O_CLOEXEC: usize = 0x0100_0000;
+
+    // fcntl flags
+    pub const F_DUPFD: usize = 0;
+    pub const F_GETFD: usize = 1;
+    pub const F_SETFD: usize = 2;
+    pub const F_DUPFD_CLOEXEC: usize = 1030;
+}
+
+#[cfg(feature = "numa")]
+pub mod numa {
+    pub use syscall::NumaMemoryPolicy;
+
+    unsafe extern "C" {
+        fn redox_numa_set_mem_policy_v0(policy: *const u8, len: usize) -> RawResult;
+        fn redox_numa_get_mem_policy_v0(policy: *mut u8, len: usize) -> RawResult;
+    }
+
+    use crate::RawResult;
+    use syscall::Error;
+
+    pub fn set_memory_policy(policy: NumaMemoryPolicy) -> syscall::Result<()> {
+        let policy = (policy as u64).to_ne_bytes();
+        Error::demux(unsafe { redox_numa_set_mem_policy_v0(policy.as_ptr(), policy.len()) })?;
+        Ok(())
+    }
+
+    pub fn current_memory_policy() -> syscall::Result<NumaMemoryPolicy> {
+        let mut policy = [0u8; size_of::<NumaMemoryPolicy>()];
+        Error::demux(unsafe {
+            redox_numa_get_mem_policy_v0(policy.as_mut_ptr(), size_of::<NumaMemoryPolicy>())
+        })?;
+        Ok(
+            NumaMemoryPolicy::try_from(u32::from_ne_bytes(policy) as u64)
+                .expect("Kernel must write a valid policy"),
+        )
     }
 }

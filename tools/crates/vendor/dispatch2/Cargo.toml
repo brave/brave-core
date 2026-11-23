@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.71"
 name = "dispatch2"
-version = "0.3.0"
+version = "0.3.1"
 authors = [
     "Mads Marquart <mads@marquart.dk>",
     "Mary <mary@mary.zone>",
@@ -62,7 +62,7 @@ targets = [
 
 [package.metadata.release]
 shared-version = false
-tag-prefix = "dispatch"
+tag-prefix = "dispatch2"
 
 [features]
 alloc = []
@@ -98,7 +98,7 @@ optional = true
 default-features = false
 
 [dependencies.objc2]
-version = ">=0.6.1, <0.8.0"
+version = ">=0.6.2, <0.8.0"
 features = ["std"]
 optional = true
 default-features = false

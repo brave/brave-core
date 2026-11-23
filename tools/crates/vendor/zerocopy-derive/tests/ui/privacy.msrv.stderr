@@ -1,0 +1,147 @@
+error[E0747]: type provided when a constant was expected
+   --> $DIR/privacy.rs:136:9
+    |
+136 |         _,
+    |         ^
+    |
+    = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+   --> $DIR/privacy.rs:144:9
+    |
+144 |         _,
+    |         ^
+    |
+    = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+   --> $DIR/privacy.rs:154:9
+    |
+154 |         _,
+    |         ^
+    |
+    = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+   --> $DIR/privacy.rs:162:9
+    |
+162 |         _,
+    |         ^
+    |
+    = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+   --> $DIR/privacy.rs:169:107
+    |
+169 |     let _: <Union as zerocopy_renamed::HasField<zerocopy_renamed::project_clients::TryFromBytesDerive, _, _, { zerocopy_renamed::ident_id...
+    |                                                                                                           ^
+    |
+    = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+   --> $DIR/privacy.rs:172:107
+    |
+172 |     let _: <Union as zerocopy_renamed::HasField<zerocopy_renamed::project_clients::TryFromBytesDerive, _, _, { zerocopy_renamed::ident_id...
+    |                                                                                                           ^
+    |
+    = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+   --> $DIR/privacy.rs:179:106
+    |
+179 |     let _: <Enum as zerocopy_renamed::HasField<zerocopy_renamed::project_clients::TryFromBytesDerive, _, _, { zerocopy_renamed::ident_id!...
+    |                                                                                                          ^
+    |
+    = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+   --> $DIR/privacy.rs:182:106
+    |
+182 |     let _: <Enum as zerocopy_renamed::HasField<zerocopy_renamed::project_clients::TryFromBytesDerive, _, _, { zerocopy_renamed::ident_id!...
+    |                                                                                                          ^
+    |
+    = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+   --> $DIR/privacy.rs:186:106
+    |
+186 |     let _: <Enum as zerocopy_renamed::HasField<zerocopy_renamed::project_clients::TryFromBytesDerive, _, _, { zerocopy_renamed::ident_id!...
+    |                                                                                                          ^
+    |
+    = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+  --> $DIR/privacy.rs:32:13
+   |
+32 |             _,
+   |             ^
+   |
+   = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+  --> $DIR/privacy.rs:39:13
+   |
+39 |             _,
+   |             ^
+   |
+   = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+  --> $DIR/privacy.rs:53:13
+   |
+53 |             _,
+   |             ^
+   |
+   = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+  --> $DIR/privacy.rs:60:13
+   |
+60 |             _,
+   |             ^
+   |
+   = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+  --> $DIR/privacy.rs:77:13
+   |
+77 |             _,
+   |             ^
+   |
+   = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+  --> $DIR/privacy.rs:84:13
+   |
+84 |             _,
+   |             ^
+   |
+   = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+   --> $DIR/privacy.rs:102:13
+    |
+102 |             _,
+    |             ^
+    |
+    = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+   --> $DIR/privacy.rs:109:13
+    |
+109 |             _,
+    |             ^
+    |
+    = help: const arguments cannot yet be inferred with `_`
+
+error[E0747]: type provided when a constant was expected
+   --> $DIR/privacy.rs:117:13
+    |
+117 |             _,
+    |             ^
+    |
+    = help: const arguments cannot yet be inferred with `_`
+
+error: aborting due to 18 previous errors
+
+For more information about this error, try `rustc --explain E0747`.

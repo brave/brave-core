@@ -17,11 +17,11 @@ use core::num::TryFromIntError;
 use core::ops::RangeInclusive;
 use yoke::Yokeable;
 use zerofrom::ZeroFrom;
+use zerovec::ZeroSlice;
+use zerovec::ZeroVec;
 use zerovec::ule::AsULE;
 #[cfg(feature = "alloc")]
 use zerovec::ule::UleError;
-use zerovec::ZeroSlice;
-use zerovec::ZeroVec;
 
 /// The type of trie represents whether the trie has an optimization that
 /// would make it smaller or faster.
@@ -43,6 +43,7 @@ use zerovec::ZeroVec;
 #[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
 #[cfg_attr(feature = "databake", derive(databake::Bake))]
 #[cfg_attr(feature = "databake", databake(path = icu_collections::codepointtrie))]
+#[allow(clippy::exhaustive_enums)] // based on a stable serialized form
 pub enum TrieType {
     /// Represents the "fast" type code point tries for the
     /// [`TrieType`] trait. The "fast max" limit is set to `0xffff`.
@@ -60,7 +61,7 @@ pub enum TrieType {
 /// This trait is used as a type parameter in constructing a `CodePointTrie`.
 ///
 /// This trait can be implemented on anything that can be represented as a u32s worth of data.
-pub trait TrieValue: Copy + Eq + PartialEq + zerovec::ule::AsULE + 'static {
+pub trait TrieValue: Copy + Eq + PartialEq + AsULE + 'static {
     /// Last-resort fallback value to return if we cannot read data from the trie.
     ///
     /// In most cases, the error value is read from the last element of the `data` array,
@@ -89,6 +90,7 @@ macro_rules! impl_primitive_trie_value {
                 Self::try_from(i)
             }
 
+            #[allow(trivial_numeric_casts)]
             fn to_u32(self) -> u32 {
                 // bitcast when the same size, zero-extend/sign-extend
                 // when not the same size
@@ -126,7 +128,7 @@ fn maybe_filter_value<T: TrieValue>(value: T, trie_null_value: T, null_value: T)
 /// ICU binary data.
 ///
 /// For more information:
-/// - [ICU Site design doc](http://site.icu-project.org/design/struct/utrie)
+/// - [ICU Site design doc](https://unicode-org.github.io/icu/design/struct/utrie)
 /// - [ICU User Guide section on Properties lookup](https://unicode-org.github.io/icu/userguide/strings/properties.html#lookup)
 // serde impls in crate::serde
 #[derive(Debug, Eq, PartialEq, Yokeable, ZeroFrom)]
@@ -158,6 +160,10 @@ pub struct CodePointTrie<'trie, T: TrieValue> {
     #[zerofrom(clone)] // TrieValue is Copy, this allows us to avoid
     // a T: ZeroFrom bound
     pub(crate) error_value: T,
+    // serde impl skips this field
+    #[zerofrom(clone)] // TrieValue is Copy, this allows us to avoid
+    // a T: ZeroFrom bound
+    pub(crate) null_value: T,
 }
 
 /// This struct contains the fixed-length header fields of a [`CodePointTrie`].
@@ -172,6 +178,7 @@ pub struct CodePointTrie<'trie, T: TrieValue> {
 #[cfg_attr(feature = "databake", derive(databake::Bake))]
 #[cfg_attr(feature = "databake", databake(path = icu_collections::codepointtrie))]
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Yokeable, ZeroFrom)]
+#[allow(clippy::exhaustive_structs)] // based on a stable serialized form
 pub struct CodePointTrieHeader {
     /// The code point of the start of the last range of the trie. A
     /// range is defined as a partition of the code point space such that the
@@ -210,13 +217,13 @@ pub struct CodePointTrieHeader {
 }
 
 impl TryFrom<u8> for TrieType {
-    type Error = crate::codepointtrie::error::Error;
+    type Error = Error;
 
-    fn try_from(trie_type_int: u8) -> Result<TrieType, crate::codepointtrie::error::Error> {
+    fn try_from(trie_type_int: u8) -> Result<TrieType, Error> {
         match trie_type_int {
             0 => Ok(TrieType::Fast),
             1 => Ok(TrieType::Small),
-            _ => Err(crate::codepointtrie::error::Error::FromDeserialized {
+            _ => Err(Error::FromDeserialized {
                 reason: "Cannot parse value for trie_type",
             }),
         }
@@ -275,6 +282,7 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
         index: ZeroVec<'trie, u16>,
         data: ZeroVec<'trie, T>,
         error_value: T,
+        null_value: T,
     ) -> Self {
         // Field invariants upheld: The caller is responsible.
         // In practice, this means that datagen in the databake
@@ -285,6 +293,7 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
             index,
             data,
             error_value,
+            null_value,
         }
     }
 
@@ -295,20 +304,21 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
         index: ZeroVec<'trie, u16>,
         data: ZeroVec<'trie, T>,
     ) -> Result<CodePointTrie<'trie, T>, Error> {
-        let error_value = Self::validate_fields(&header, &index, &data)?;
+        let (error_value, null_value) = Self::validate_fields(&header, &index, &data)?;
         // Field invariants upheld: Checked by `validate_fields` above.
         let trie: CodePointTrie<'trie, T> = CodePointTrie {
             header,
             index,
             data,
             error_value,
+            null_value,
         };
         Ok(trie)
     }
 
     /// Checks the invariant on the fields that fast-path access relies on for
     /// safety in order to omit slice bound checks and upon success returns the
-    /// `error_value` for the trie.
+    /// `error_value` and `null_value` for the trie.
     ///
     /// # Safety Usable Invariant
     ///
@@ -319,8 +329,9 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
         header: &CodePointTrieHeader,
         index: &ZeroSlice<u16>,
         data: &ZeroSlice<T>,
-    ) -> Result<T, Error> {
+    ) -> Result<(T, T), Error> {
         let error_value = data.last().ok_or(Error::EmptyDataVector)?;
+        let null_value = T::try_from_u32(header.null_value).map_err(|_| Error::InvalidNullValue)?;
 
         // `CodePointTrie` lookup has two stages: fast and small (the trie types
         // are also fast and small; they affect where the boundary between fast
@@ -387,7 +398,7 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
         // of `fast_index` subslice of `index` and `header.trie_type` will not
         // change subsequently.
 
-        Ok(error_value)
+        Ok((error_value, null_value))
     }
 
     /// Turns this trie into a version whose trie type is encoded in the Rust type.
@@ -409,12 +420,10 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
         // actual trie type agrees with the semantics of the typed wrapper.
         match self.header.trie_type {
             TrieType::Fast => Typed::Fast(unsafe {
-                core::mem::transmute::<&CodePointTrie<'trie, T>, &FastCodePointTrie<'trie, T>>(self)
+                &*(self as *const CodePointTrie<'trie, T> as *const FastCodePointTrie<'trie, T>)
             }),
             TrieType::Small => Typed::Small(unsafe {
-                core::mem::transmute::<&CodePointTrie<'trie, T>, &SmallCodePointTrie<'trie, T>>(
-                    self,
-                )
+                &*(self as *const CodePointTrie<'trie, T> as *const SmallCodePointTrie<'trie, T>)
             }),
         }
     }
@@ -758,8 +767,8 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
     /// # Examples
     ///
     /// ```no_run
-    /// use icu::collections::codepointtrie::planes;
     /// use icu::collections::codepointtrie::CodePointTrie;
+    /// use icu::collections::codepointtrie::planes;
     ///
     /// let planes_trie_u8: CodePointTrie<u8> = planes::get_planes_trie();
     /// let planes_trie_i8: CodePointTrie<i8> =
@@ -774,15 +783,22 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
     {
         let converted_data = self.data.try_into_converted()?;
         let error_ule = self.error_value.to_unaligned();
-        let slice = &[error_ule];
-        let error_vec = ZeroVec::<T>::new_borrowed(slice);
+        let error_slice = &[error_ule];
+        let error_vec = ZeroVec::<T>::new_borrowed(error_slice);
         let error_converted = error_vec.try_into_converted::<P>()?;
+        let null_ule = self.null_value.to_unaligned();
+        let null_slice = &[null_ule];
+        let null_vec = ZeroVec::<T>::new_borrowed(null_slice);
+        let null_converted = null_vec.try_into_converted::<P>()?;
         #[expect(clippy::expect_used)] // we know this cannot fail
         Ok(CodePointTrie {
             header: self.header,
             index: self.index,
             data: converted_data,
             error_value: error_converted
+                .get(0)
+                .expect("vector known to have one element"),
+            null_value: null_converted
                 .get(0)
                 .expect("vector known to have one element"),
         })
@@ -800,8 +816,8 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
     /// # Examples
     ///
     /// ```
-    /// use icu::collections::codepointtrie::planes;
     /// use icu::collections::codepointtrie::CodePointTrie;
+    /// use icu::collections::codepointtrie::planes;
     ///
     /// let planes_trie_u8: CodePointTrie<u8> = planes::get_planes_trie();
     /// let planes_trie_u16: CodePointTrie<u16> = planes_trie_u8
@@ -819,12 +835,14 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
         P: TrieValue,
     {
         let error_converted = f(self.error_value)?;
+        let null_converted = f(self.error_value)?;
         let converted_data = self.data.iter().map(f).collect::<Result<ZeroVec<P>, E>>()?;
         Ok(CodePointTrie {
             header: self.header,
             index: self.index.clone(),
             data: converted_data,
             error_value: error_converted,
+            null_value: null_converted,
         })
     }
 
@@ -897,8 +915,6 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
             });
         }
 
-        let null_value: T = T::try_from_u32(self.header.null_value).ok()?;
-
         let mut prev_i3_block: u32 = u32::MAX; // using u32::MAX (instead of -1 as an i32 in ICU)
         let mut prev_block: u32 = u32::MAX; // using u32::MAX (instead of -1 as an i32 in ICU)
         let mut c: u32 = start;
@@ -949,11 +965,7 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
                 }
                 let i2: u16 = self.index.get(i1 as usize)?;
                 let i3_block_idx: u32 = (i2 as u32) + ((c >> SHIFT_2) & INDEX_2_MASK);
-                i3_block = if let Some(i3b) = self.index.get(i3_block_idx as usize) {
-                    i3b as u32
-                } else {
-                    return None;
-                };
+                i3_block = self.index.get(i3_block_idx as usize)? as u32;
                 if i3_block == prev_i3_block && (c - start) >= CP_PER_INDEX_2_ENTRY {
                     // The index-3 block is the same as the previous one, and filled with value.
                     debug_assert!((c & (CP_PER_INDEX_2_ENTRY - 1)) == 0);
@@ -974,15 +986,15 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
                     // of a range, end it and return early, otherwise start a new
                     // range of null values.
                     if have_value {
-                        if null_value != value {
+                        if self.null_value != value {
                             return Some(CodePointMapRange {
                                 range: start..=(c - 1),
                                 value,
                             });
                         }
                     } else {
-                        trie_value = T::try_from_u32(self.header.null_value).ok()?;
-                        value = null_value;
+                        trie_value = self.null_value;
+                        value = self.null_value;
                         have_value = true;
                     }
                     prev_block = self.header.data_null_offset;
@@ -1003,27 +1015,15 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
             loop {
                 let mut block: u32;
                 if (i3_block & 0x8000) == 0 {
-                    block = if let Some(b) = self.index.get((i3_block + i3) as usize) {
-                        b as u32
-                    } else {
-                        return None;
-                    };
+                    block = self.index.get((i3_block + i3) as usize)? as u32;
                 } else {
                     // 18-bit indexes stored in groups of 9 entries per 8 indexes.
                     let mut group: u32 = (i3_block & 0x7fff) + (i3 & !7) + (i3 >> 3);
                     let gi: u32 = i3 & 7;
-                    let gi_val: u32 = if let Some(giv) = self.index.get(group as usize) {
-                        giv.into()
-                    } else {
-                        return None;
-                    };
+                    let gi_val: u32 = self.index.get(group as usize)?.into();
                     block = (gi_val << (2 + (2 * gi))) & 0x30000;
                     group += 1;
-                    let ggi_val: u32 = if let Some(ggiv) = self.index.get((group + gi) as usize) {
-                        ggiv as u32
-                    } else {
-                        return None;
-                    };
+                    let ggi_val: u32 = self.index.get((group + gi) as usize)? as u32;
                     block |= ggi_val;
                 }
 
@@ -1047,15 +1047,15 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
                         // return early, otherwise start a new range of null
                         // values.
                         if have_value {
-                            if null_value != value {
+                            if self.null_value != value {
                                 return Some(CodePointMapRange {
                                     range: start..=(c - 1),
                                     value,
                                 });
                             }
                         } else {
-                            trie_value = T::try_from_u32(self.header.null_value).ok()?;
-                            value = null_value;
+                            trie_value = self.null_value;
+                            value = self.null_value;
                             have_value = true;
                         }
                         c = (c + data_block_length) & !data_mask;
@@ -1066,8 +1066,8 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
                             if trie_value_2 != trie_value {
                                 if maybe_filter_value(
                                     trie_value_2,
-                                    T::try_from_u32(self.header.null_value).ok()?,
-                                    null_value,
+                                    self.null_value,
+                                    self.null_value,
                                 ) != value
                                 {
                                     return Some(CodePointMapRange {
@@ -1096,11 +1096,8 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
                             }
                         } else {
                             trie_value = trie_value_2;
-                            value = maybe_filter_value(
-                                trie_value_2,
-                                T::try_from_u32(self.header.null_value).ok()?,
-                                null_value,
-                            );
+                            value =
+                                maybe_filter_value(trie_value_2, self.null_value, self.null_value);
                             have_value = true;
                         }
 
@@ -1111,8 +1108,8 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
                             if trie_value_2 != trie_value {
                                 if maybe_filter_value(
                                     trie_value_2,
-                                    T::try_from_u32(self.header.null_value).ok()?,
-                                    null_value,
+                                    self.null_value,
+                                    self.null_value,
                                 ) != value
                                 {
                                     return Some(CodePointMapRange {
@@ -1164,12 +1161,7 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
         // stop at high_start - 1.
         let di: u32 = self.data.len() as u32 - HIGH_VALUE_NEG_DATA_OFFSET;
         let high_value: T = self.data.get(di as usize)?;
-        if maybe_filter_value(
-            high_value,
-            T::try_from_u32(self.header.null_value).ok()?,
-            null_value,
-        ) != value
-        {
+        if maybe_filter_value(high_value, self.null_value, self.null_value) != value {
             c -= 1;
         } else {
             c = CODE_POINT_MAX;
@@ -1188,8 +1180,8 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
     ///
     /// ```
     /// use core::ops::RangeInclusive;
-    /// use icu::collections::codepointtrie::planes;
     /// use icu::collections::codepointtrie::CodePointMapRange;
+    /// use icu::collections::codepointtrie::planes;
     ///
     /// let planes_trie = planes::get_planes_trie();
     ///
@@ -1320,6 +1312,12 @@ impl<'trie, T: TrieValue> CodePointTrie<'trie, T> {
     pub fn error_value(&self) -> T {
         self.error_value
     }
+
+    /// Returns the value used as a null value for this trie
+    #[inline]
+    pub fn null_value(&self) -> T {
+        self.null_value
+    }
 }
 
 #[cfg(feature = "databake")]
@@ -1329,7 +1327,11 @@ impl<T: TrieValue + databake::Bake> databake::Bake for CodePointTrie<'_, T> {
         let index = self.index.bake(env);
         let data = self.data.bake(env);
         let error_value = self.error_value.bake(env);
-        databake::quote! { unsafe { icu_collections::codepointtrie::CodePointTrie::from_parts_unstable_unchecked_v1(#header, #index, #data, #error_value) } }
+        let null_value = self.null_value.bake(env);
+        databake::quote! { unsafe {
+            #[allow(unused_unsafe)]
+            icu_collections::codepointtrie::CodePointTrie::from_parts_unstable_unchecked_v1(#header, #index, #data, #error_value, #null_value)
+        }}
     }
 }
 
@@ -1365,7 +1367,7 @@ impl<T: TrieValue + Into<u32>> CodePointTrie<'_, T> {
 
 impl<T: TrieValue> Clone for CodePointTrie<'_, T>
 where
-    <T as zerovec::ule::AsULE>::ULE: Clone,
+    <T as AsULE>::ULE: Clone,
 {
     fn clone(&self) -> Self {
         CodePointTrie {
@@ -1373,6 +1375,7 @@ where
             index: self.index.clone(),
             data: self.data.clone(),
             error_value: self.error_value,
+            null_value: self.null_value,
         }
     }
 }
@@ -1383,6 +1386,7 @@ where
 /// The start and end of the interval is represented as a
 /// `RangeInclusive<u32>`, and the value is represented as `T`.
 #[derive(PartialEq, Eq, Debug, Clone)]
+#[allow(clippy::exhaustive_structs)] // based on a stable serialized form
 pub struct CodePointMapRange<T> {
     /// Range of code points from start to end (inclusive).
     pub range: RangeInclusive<u32>,
@@ -1392,6 +1396,7 @@ pub struct CodePointMapRange<T> {
 
 /// A custom [`Iterator`] type specifically for a code point trie that returns
 /// [`CodePointMapRange`]s.
+#[derive(Debug)]
 pub struct CodePointMapRangeIterator<'a, T: TrieValue> {
     cpt: &'a CodePointTrie<'a, T>,
     // Initialize `range` to Some(CodePointMapRange{ start: u32::MAX, end: u32::MAX, value: 0}).
@@ -1664,6 +1669,8 @@ pub struct TypedCodePointTrieError;
 
 /// Holder for either fast or small trie with the trie
 /// type encoded into the Rust type.
+#[allow(clippy::exhaustive_enums)]
+#[derive(Debug)]
 pub enum Typed<F, S> {
     /// The trie type is fast.
     Fast(F),
@@ -1680,7 +1687,7 @@ mod tests {
     #[test]
     #[cfg(feature = "serde")]
     fn test_serde_with_postcard_roundtrip() -> Result<(), postcard::Error> {
-        let trie = crate::codepointtrie::planes::get_planes_trie();
+        let trie = planes::get_planes_trie();
         let trie_serialized: Vec<u8> = postcard::to_allocvec(&trie).unwrap();
 
         // Assert an expected (golden data) version of the serialized trie.
@@ -1865,12 +1872,12 @@ mod tests {
     }
 
     #[test]
-    #[allow(unused_unsafe)] // `unsafe` below is both necessary and unnecessary
     fn databake() {
         databake::test_bake!(
             CodePointTrie<'static, u32>,
             const,
             unsafe {
+                #[allow(unused_unsafe)]
                 crate::codepointtrie::CodePointTrie::from_parts_unstable_unchecked_v1(
                     crate::codepointtrie::CodePointTrieHeader {
                         high_start: 1u32,
@@ -1883,6 +1890,7 @@ mod tests {
                     zerovec::ZeroVec::new(),
                     zerovec::ZeroVec::new(),
                     0u32,
+                    5u32,
                 )
             },
             icu_collections,

@@ -18,38 +18,37 @@ pub struct Options<'a> {
     pub reject_shallow_remote: bool,
 }
 
-/// For use in [`RefMap::new()`] and [`fetch`](crate::fetch()).
+/// For use in [`crate::Handshake::prepare_lsrefs_or_extract_refmap()`] and [`fetch`](crate::fetch()).
 #[cfg(feature = "handshake")]
 pub struct Context<'a, T> {
     /// The outcome of the handshake performed with the remote.
     ///
     /// Note that it's mutable as depending on the protocol, it may contain refs that have been sent unconditionally.
-    pub handshake: &'a mut crate::handshake::Outcome,
+    pub handshake: &'a mut crate::Handshake,
     /// The transport to use when making an `ls-refs` or `fetch` call.
     ///
     /// This is always done if the underlying protocol is V2, which is implied by the absence of refs in the `handshake` outcome.
     pub transport: &'a mut T,
-    /// How to self-identify during the `ls-refs` call in [`RefMap::new()`] or the `fetch` call in [`fetch()`](crate::fetch()).
+    /// How to self-identify during the `ls-refs` call in [`crate::Handshake::prepare_lsrefs_or_extract_refmap()`] or the `fetch` call in [`fetch()`](crate::fetch()).
     ///
     /// This could be read from the `gitoxide.userAgent` configuration variable.
-    pub user_agent: (&'static str, Option<std::borrow::Cow<'static, str>>),
+    pub user_agent: crate::command::Feature,
     /// If `true`, output all packetlines using the `gix-trace` machinery.
     pub trace_packetlines: bool,
 }
 
 #[cfg(feature = "fetch")]
 mod with_fetch {
-    use crate::{
-        fetch,
-        fetch::{negotiate, refmap},
-    };
+    use bstr::ByteSlice;
+    use gix_error::Result;
+
+    use crate::fetch::{self, negotiate, refmap};
 
     /// For use in [`fetch`](crate::fetch()).
-    pub struct NegotiateContext<'a, 'b, 'c, Objects, Alternates, AlternatesOut, AlternatesErr, Find>
+    pub struct NegotiateContext<'a, 'b, 'c, Objects, Alternates, AlternatesOut, Find>
     where
         Objects: gix_object::Find + gix_object::FindHeader + gix_object::Exists,
-        Alternates: FnOnce() -> Result<AlternatesOut, AlternatesErr>,
-        AlternatesErr: Into<Box<dyn std::error::Error + Send + Sync + 'static>>,
+        Alternates: FnOnce() -> Result<AlternatesOut>,
         AlternatesOut: Iterator<Item = (gix_ref::file::Store, Find)>,
         Find: gix_object::Find,
     {
@@ -71,7 +70,7 @@ mod with_fetch {
     /// Typical implementations use the utilities found in the [`negotiate`] module.
     pub trait Negotiate {
         /// Typically invokes [`negotiate::mark_complete_and_common_ref()`].
-        fn mark_complete_and_common_ref(&mut self) -> Result<negotiate::Action, negotiate::Error>;
+        fn mark_complete_and_common_ref(&mut self) -> Result<negotiate::Action>;
         /// Typically invokes [`negotiate::add_wants()`].
         /// Returns `true` if wants were added, or `false` if the negotiation should be aborted.
         #[must_use]
@@ -82,7 +81,7 @@ mod with_fetch {
             state: &mut negotiate::one_round::State,
             arguments: &mut fetch::Arguments,
             previous_response: Option<&fetch::Response>,
-        ) -> Result<(negotiate::Round, bool), negotiate::Error>;
+        ) -> Result<(negotiate::Round, bool)>;
     }
 
     /// The outcome of [`fetch()`](crate::fetch()).
@@ -126,7 +125,7 @@ mod with_fetch {
         /// [`refmap::SpecIndex::ExplicitInRemote`] in [`refmap::Mapping`].
         pub refspecs: Vec<gix_refspec::RefSpec>,
         /// Refspecs which have been added implicitly due to settings of the `remote`, usually pre-initialized from
-        /// [`extra_refspecs` in RefMap options](refmap::init::Options).
+        /// [`extra_refspecs` in RefMap options](refmap::init::Context).
         /// They are referred to by [`refmap::SpecIndex::Implicit`] in [`refmap::Mapping`].
         ///
         /// They are never persisted nor are they typically presented to the user.
@@ -139,6 +138,37 @@ mod with_fetch {
         ///
         /// It was extracted from the `handshake` as advertised by the server.
         pub object_hash: gix_hash::Kind,
+    }
+
+    impl RefMap {
+        /// Return `true` if the explicit fetch refspecs represented by this mapping failed to match the remote in a way
+        /// that should typically be reported as "no mapping".
+        ///
+        /// Use this before negotiation or reference updates when callers need to reject a fetch early instead of proceeding
+        /// with an empty or purely implicit mapping set.
+        ///
+        /// This is the case if the server advertised refs but none matched at all, or if only implicit mappings were produced
+        /// while at least one explicit refspec required an actual ref match, as is the case for exact ref names like `HEAD`
+        /// or `refs/heads/main`.
+        pub fn is_missing_required_mapping(&self) -> bool {
+            let has_explicit_mapping = self
+                .mappings
+                .iter()
+                .any(|mapping| matches!(mapping.spec_index, crate::fetch::refmap::SpecIndex::ExplicitInRemote(_)));
+
+            (self.mappings.is_empty() && !self.remote_refs.is_empty())
+                || (!has_explicit_mapping && explicit_fetch_refspecs_require_a_match(&self.refspecs))
+        }
+    }
+
+    fn explicit_fetch_refspecs_require_a_match(refspecs: &[gix_refspec::RefSpec]) -> bool {
+        refspecs.iter().any(|spec| match spec.to_ref().instruction() {
+            gix_refspec::Instruction::Fetch(
+                gix_refspec::instruction::Fetch::Only { src } | gix_refspec::instruction::Fetch::AndUpdate { src, .. },
+            ) => src.find_byteset(b"*?[]\\").is_none() && gix_hash::ObjectId::from_hex(src).is_err(),
+            gix_refspec::Instruction::Fetch(gix_refspec::instruction::Fetch::Exclude { .. })
+            | gix_refspec::Instruction::Push(_) => false,
+        })
     }
 }
 #[cfg(feature = "fetch")]
@@ -237,7 +267,7 @@ pub enum ProgressId {
     RemoteProgress,
 }
 
-impl From<ProgressId> for gix_features::progress::Id {
+impl From<ProgressId> for gix_utils::progress::Id {
     fn from(v: ProgressId) -> Self {
         match v {
             ProgressId::RemoteProgress => *b"FERP",

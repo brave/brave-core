@@ -42,8 +42,9 @@ macro_rules! atomic_rmw {
             Ordering::Acquire => $op!("a", "", ""),
             Ordering::Release => $op!("", "l", ""),
             Ordering::AcqRel => $op!("a", "l", ""),
-            // In MSVC environments, SeqCst stores/writes needs fences after writes.
+            // In MSVC environments, SeqCst stores/writes by non-LSE* instructions needs fences after writes.
             // https://reviews.llvm.org/D141748
+            // https://github.com/llvm/llvm-project/commit/1ea201d73be2fdf03347e9c6be09ebed5f8e0e00
             #[cfg(target_env = "msvc")]
             Ordering::SeqCst if $write == Ordering::SeqCst => $op!("a", "l", "dmb ish"),
             // AcqRel and SeqCst RMWs are equivalent in non-MSVC environments.
@@ -63,8 +64,9 @@ macro_rules! atomic_rmw_inst {
             Ordering::Acquire => $op!("a", ""), // "a"
             Ordering::Release => $op!("6", ""), // "l"
             Ordering::AcqRel => $op!("e", ""),  // "al"
-            // In MSVC environments, SeqCst stores/writes needs fences after writes.
+            // In MSVC environments, SeqCst stores/writes by non-LSE* instructions needs fences after writes.
             // https://reviews.llvm.org/D141748
+            // https://github.com/llvm/llvm-project/commit/1ea201d73be2fdf03347e9c6be09ebed5f8e0e00
             #[cfg(target_env = "msvc")]
             Ordering::SeqCst if $write == Ordering::SeqCst => $op!("e", "dmb ish"),
             // AcqRel and SeqCst RMWs are equivalent in non-MSVC environments.
@@ -74,6 +76,7 @@ macro_rules! atomic_rmw_inst {
     };
 }
 
+#[rustfmt::skip]
 macro_rules! atomic_float {
     ($atomic_type:ident, $float_type:ident, $modifier:tt, $inst_modifier:tt) => {
         impl $atomic_type {
@@ -88,11 +91,10 @@ macro_rules! atomic_float {
                 unsafe {
                     #[cfg(not(portable_atomic_pre_llvm_20))]
                     macro_rules! add {
-                        ($acquire:tt, $release:tt, $fence:tt) => {
+                        ($acquire:tt, $release:tt, $_msvc_fence:tt) => {
                             asm!(
                                 start_lsfe!(),
-                                concat!("ldfadd", $acquire, $release, " {out:", $modifier, "}, {val:", $modifier, "}, [{dst}]"),
-                                $fence,
+                                concat!("ldfadd", $acquire, $release, " {val:", $modifier, "}, {out:", $modifier, "}, [{dst}]"), // atomic { _x = *dst; *dst = _x + val; out = _x }
                                 dst = in(reg) ptr_reg!(dst),
                                 val = in(vreg) val,
                                 out = lateout(vreg) out,
@@ -106,14 +108,13 @@ macro_rules! atomic_float {
                     // https://github.com/llvm/llvm-project/commit/67ff5ba9af9754261abe11d762af11532a816126
                     #[cfg(portable_atomic_pre_llvm_20)]
                     macro_rules! add {
-                        ($order:tt, $fence:tt) => {
+                        ($order:tt, $_msvc_fence:tt) => {
                             asm!(
-                                // ldfadd{,a,l,al} {h,s,d}0, {h,s,d}1, [x2]
+                                // ldfadd{,a,l,al} {h,s,d}0, {h,s,d}1, [x2] // atomic { _x = *x2; *x2 = _x + {h,s,d}0; {h,s,d}1 = _x }
                                 concat!(".inst 0x", $inst_modifier, "c", $order, "00041"),
-                                $fence,
                                 in("x2") ptr_reg!(dst),
-                                in("v1") val,
-                                out("v0") out,
+                                in("v0") val,
+                                out("v1") out,
                                 options(nostack),
                             )
                         };
@@ -139,11 +140,10 @@ macro_rules! atomic_float {
                 unsafe {
                     #[cfg(not(portable_atomic_pre_llvm_20))]
                     macro_rules! max {
-                        ($acquire:tt, $release:tt, $fence:tt) => {
+                        ($acquire:tt, $release:tt, $_msvc_fence:tt) => {
                             asm!(
                                 start_lsfe!(),
-                                concat!("ldfmaxnm", $acquire, $release, " {out:", $modifier, "}, {val:", $modifier, "}, [{dst}]"),
-                                $fence,
+                                concat!("ldfmaxnm", $acquire, $release, " {val:", $modifier, "}, {out:", $modifier, "}, [{dst}]"), // atomic { _x = *dst; *dst = _x.max(val); out = _x }
                                 dst = in(reg) ptr_reg!(dst),
                                 val = in(vreg) val,
                                 out = lateout(vreg) out,
@@ -157,14 +157,13 @@ macro_rules! atomic_float {
                     // https://github.com/llvm/llvm-project/commit/67ff5ba9af9754261abe11d762af11532a816126
                     #[cfg(portable_atomic_pre_llvm_20)]
                     macro_rules! max {
-                        ($order:tt, $fence:tt) => {
+                        ($order:tt, $_msvc_fence:tt) => {
                             asm!(
-                                // ldfmaxnm{,a,l,al} {h,s,d}0, {h,s,d}1, [x2]
+                                // ldfmaxnm{,a,l,al} {h,s,d}0, {h,s,d}1, [x2] // atomic { _x = *x2; *x2 = _x.max({h,s,d}0); {h,s,d}1 = _x }
                                 concat!(".inst 0x", $inst_modifier, "c", $order, "06041"),
-                                $fence,
                                 in("x2") ptr_reg!(dst),
-                                in("v1") val,
-                                out("v0") out,
+                                in("v0") val,
+                                out("v1") out,
                                 options(nostack),
                             )
                         };
@@ -185,11 +184,10 @@ macro_rules! atomic_float {
                 unsafe {
                     #[cfg(not(portable_atomic_pre_llvm_20))]
                     macro_rules! min {
-                        ($acquire:tt, $release:tt, $fence:tt) => {
+                        ($acquire:tt, $release:tt, $_msvc_fence:tt) => {
                             asm!(
                                 start_lsfe!(),
-                                concat!("ldfminnm", $acquire, $release, " {out:", $modifier, "}, {val:", $modifier, "}, [{dst}]"),
-                                $fence,
+                                concat!("ldfminnm", $acquire, $release, " {val:", $modifier, "}, {out:", $modifier, "}, [{dst}]"), // atomic { _x = *dst; *dst = _x.min(val); out = _x }
                                 dst = in(reg) ptr_reg!(dst),
                                 val = in(vreg) val,
                                 out = lateout(vreg) out,
@@ -203,14 +201,13 @@ macro_rules! atomic_float {
                     // https://github.com/llvm/llvm-project/commit/67ff5ba9af9754261abe11d762af11532a816126
                     #[cfg(portable_atomic_pre_llvm_20)]
                     macro_rules! min {
-                        ($order:tt, $fence:tt) => {
+                        ($order:tt, $_msvc_fence:tt) => {
                             asm!(
-                                // ldfminnm{,a,l,al} {h,s,d}0, {h,s,d}1, [x2]
+                                // ldfminnm{,a,l,al} {h,s,d}0, {h,s,d}1, [x2] // atomic { _x = *x2; *x2 = _x.min({h,s,d}0); {h,s,d}1 = _x }
                                 concat!(".inst 0x", $inst_modifier, "c", $order, "07041"),
-                                $fence,
                                 in("x2") ptr_reg!(dst),
-                                in("v1") val,
-                                out("v0") out,
+                                in("v0") val,
+                                out("v1") out,
                                 options(nostack),
                             )
                         };

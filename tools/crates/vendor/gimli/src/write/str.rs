@@ -1,9 +1,8 @@
 use alloc::vec::Vec;
-use indexmap::IndexSet;
-use std::ops::{Deref, DerefMut};
+use core::ops::{Deref, DerefMut};
 
 use crate::common::{DebugLineStrOffset, DebugStrOffset, SectionId};
-use crate::write::{BaseId, Result, Section, Writer};
+use crate::write::{BaseId, FnvIndexSet, Result, Section, Writer};
 
 // Requirements:
 // - values are `[u8]`, null bytes are not allowed
@@ -17,18 +16,15 @@ use crate::write::{BaseId, Result, Section, Writer};
 // - inserting requires either an allocation for duplicates,
 //   or a double lookup for non-duplicates
 // - doesn't preserve offsets when updating an existing `.debug_str` section
-//
-// Possible changes:
-// - calculate offsets as we add values, and use that as the id.
-//   This would avoid the need for DebugStrOffsets but would make it
-//   hard to implement `get`.
 macro_rules! define_string_table {
-    ($name:ident, $id:ident, $section:ident, $offset:ident, $offsets:ident, $docs:expr) => {
+    ($name:ident, $id:ident, $section:ident, $offset:ident, $docs:expr) => {
         #[doc=$docs]
         #[derive(Debug, Default)]
         pub struct $name {
             base_id: BaseId,
-            strings: IndexSet<Vec<u8>>,
+            strings: FnvIndexSet<Vec<u8>>,
+            offsets: Vec<$offset>,
+            len: usize,
         }
 
         impl $name {
@@ -45,7 +41,12 @@ macro_rules! define_string_table {
             {
                 let bytes = bytes.into();
                 assert!(!bytes.contains(&0));
-                let (index, _) = self.strings.insert_full(bytes);
+                let len = bytes.len();
+                let (index, inserted) = self.strings.insert_full(bytes);
+                if inserted {
+                    self.offsets.push($offset(self.len));
+                    self.len += len + 1;
+                }
                 $id::new(self.base_id, index)
             }
 
@@ -65,40 +66,23 @@ macro_rules! define_string_table {
                 self.strings.get_index(id.index).map(Vec::as_slice).unwrap()
             }
 
-            /// Write the string table to the `.debug_str` section.
+            /// Get the offset of a string in the table.
             ///
-            /// Returns the offsets at which the strings are written.
-            pub fn write<W: Writer>(&self, w: &mut $section<W>) -> Result<$offsets> {
-                let mut offsets = Vec::new();
-                let mut empty = None;
+            /// # Panics
+            ///
+            /// Panics if `id` is invalid.
+            pub fn offset(&self, id: $id) -> $offset {
+                debug_assert_eq!(self.base_id, id.base_id);
+                self.offsets[id.index]
+            }
+
+            /// Write the string table to the `.debug_str` section.
+            pub fn write<W: Writer>(&self, w: &mut $section<W>) -> Result<()> {
                 for bytes in self.strings.iter() {
-                    offsets.push(w.offset());
                     w.write(bytes)?;
-                    if empty.is_none() {
-                        empty = Some(w.offset());
-                    }
                     w.write_u8(0)?;
                 }
-                // Record the offset of the first null, for use as an empty string.
-                if let Some(empty) = empty {
-                    offsets.push(empty);
-                }
-
-                Ok($offsets {
-                    base_id: self.base_id,
-                    offsets,
-                })
-            }
-        }
-
-        impl $offsets {
-            pub(crate) fn get_empty(&self) -> Option<$id> {
-                if self.offsets.is_empty() {
-                    None
-                } else {
-                    // The last offset is always the empty string.
-                    Some($id::new(self.base_id, self.offsets.len() - 1))
-                }
+                Ok(())
             }
         }
     };
@@ -111,16 +95,10 @@ define_string_table!(
     StringId,
     DebugStr,
     DebugStrOffset,
-    DebugStrOffsets,
     "A table of strings that will be stored in a `.debug_str` section."
 );
 
 define_section!(DebugStr, DebugStrOffset, "A writable `.debug_str` section.");
-
-define_offsets!(
-    DebugStrOffsets: StringId => DebugStrOffset,
-    "The section offsets of all strings within a `.debug_str` section."
-);
 
 define_id!(
     LineStringId,
@@ -132,7 +110,6 @@ define_string_table!(
     LineStringId,
     DebugLineStr,
     DebugLineStrOffset,
-    DebugLineStrOffsets,
     "A table of strings that will be stored in a `.debug_line_str` section."
 );
 
@@ -142,57 +119,42 @@ define_section!(
     "A writable `.debug_line_str` section."
 );
 
-define_offsets!(
-    DebugLineStrOffsets: LineStringId => DebugLineStrOffset,
-    "The section offsets of all strings within a `.debug_line_str` section."
-);
-
 #[cfg(test)]
 #[cfg(feature = "read")]
 mod tests {
     use super::*;
+    use crate::LittleEndian;
     use crate::read;
     use crate::write::EndianVec;
-    use crate::LittleEndian;
 
     #[test]
     fn test_string_table() {
         let mut strings = StringTable::default();
         assert_eq!(strings.count(), 0);
-        let id1 = strings.add(&b"one"[..]);
-        let id2 = strings.add(&b"two"[..]);
-        assert_eq!(strings.add(&b"one"[..]), id1);
-        assert_eq!(strings.add(&b"two"[..]), id2);
-        assert_eq!(strings.get(id1), &b"one"[..]);
-        assert_eq!(strings.get(id2), &b"two"[..]);
-        assert_eq!(strings.count(), 2);
+        let id1 = strings.add(b"one");
+        let id2 = strings.add(b"two");
+        let id3 = strings.add([]);
+        assert_eq!(strings.add(b"one"), id1);
+        assert_eq!(strings.add(b"two"), id2);
+        assert_eq!(strings.add([]), id3);
+        assert_eq!(strings.get(id1), b"one");
+        assert_eq!(strings.get(id2), b"two");
+        assert_eq!(strings.get(id3), []);
+        assert_eq!(strings.count(), 3);
+        assert_eq!(strings.offset(id1), DebugStrOffset(0));
+        assert_eq!(strings.offset(id2), DebugStrOffset(4));
+        assert_eq!(strings.offset(id3), DebugStrOffset(8));
 
         let mut debug_str = DebugStr::from(EndianVec::new(LittleEndian));
-        let offsets = strings.write(&mut debug_str).unwrap();
-        assert_eq!(debug_str.slice(), b"one\0two\0");
-        assert_eq!(offsets.get(id1), DebugStrOffset(0));
-        assert_eq!(offsets.get(id2), DebugStrOffset(4));
-        assert_eq!(offsets.get(offsets.get_empty().unwrap()), DebugStrOffset(3));
-        assert_eq!(offsets.count(), 3);
-    }
-
-    #[test]
-    fn test_string_table_read() {
-        let mut strings = StringTable::default();
-        let id1 = strings.add(&b"one"[..]);
-        let id2 = strings.add(&b"two"[..]);
-
-        let mut debug_str = DebugStr::from(EndianVec::new(LittleEndian));
-        let offsets = strings.write(&mut debug_str).unwrap();
+        strings.write(&mut debug_str).unwrap();
+        assert_eq!(debug_str.slice(), b"one\0two\0\0");
 
         let read_debug_str = read::DebugStr::new(debug_str.slice(), LittleEndian);
-        let str1 = read_debug_str.get_str(offsets.get(id1)).unwrap();
-        let str2 = read_debug_str.get_str(offsets.get(id2)).unwrap();
-        let str3 = read_debug_str
-            .get_str(offsets.get(offsets.get_empty().unwrap()))
-            .unwrap();
-        assert_eq!(str1.slice(), &b"one"[..]);
-        assert_eq!(str2.slice(), &b"two"[..]);
+        let str1 = read_debug_str.get_str(strings.offset(id1)).unwrap();
+        let str2 = read_debug_str.get_str(strings.offset(id2)).unwrap();
+        let str3 = read_debug_str.get_str(strings.offset(id3)).unwrap();
+        assert_eq!(str1.slice(), b"one");
+        assert_eq!(str2.slice(), b"two");
         assert_eq!(str3.slice(), b"");
     }
 }

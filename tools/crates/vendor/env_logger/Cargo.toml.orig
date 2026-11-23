@@ -5,22 +5,24 @@ members = ["crates/*"]
 [workspace.package]
 repository = "https://github.com/rust-cli/env_logger"
 license = "MIT OR Apache-2.0"
-edition = "2021"
-rust-version = "1.71"  # MSRV
+edition = "2024"
+rust-version = "1.85"  # MSRV
 include = [
-  "build.rs",
-  "src/**/*",
-  "Cargo.toml",
-  "Cargo.lock",
-  "LICENSE*",
-  "README.md",
-  "benches/**/*",
-  "examples/**/*",
-  "tests/**/*",
+  "/build.rs",
+  "/src/**/*",
+  "/Cargo.toml",
+  "/Cargo.lock",
+  "/LICENSE*",
+  "/README.md",
+  "/examples/**/*"
 ]
 
 [workspace.lints.rust]
 rust_2018_idioms = { level = "warn", priority = -1 }
+
+non_ascii_idents = "warn"
+trivial_numeric_casts = "warn"
+unnameable_types = "warn"
 unreachable_pub = "warn"
 unsafe_op_in_unsafe_fn = "warn"
 unused_lifetimes = "warn"
@@ -28,15 +30,22 @@ unused_macro_rules = "warn"
 unused_qualifications = "warn"
 
 [workspace.lints.clippy]
+allow_attributes_without_reason = "warn"
 bool_assert_comparison = "allow"
 branches_sharing_code = "allow"
+byte_char_slices = "allow"  # sometimes explicit arrays are better
+cast_possible_truncation = "warn"
+cast_possible_wrap = "warn"
+cast_sign_loss = "warn"
 checked_conversions = "warn"
 collapsible_else_if = "allow"
+collapsible_match = "allow"
+collection_is_never_read = "warn"
 create_dir = "warn"
 dbg_macro = "warn"
 debug_assert_with_mut_call = "warn"
 doc_markdown = "warn"
-empty_enum = "warn"
+empty_enums = "warn"
 enum_glob_use = "warn"
 expl_impl_clone_on_copy = "warn"
 explicit_deref_methods = "warn"
@@ -44,9 +53,10 @@ explicit_into_iter_loop = "warn"
 fallible_impl_from = "warn"
 filter_map_next = "warn"
 flat_map_option = "warn"
+float_cmp = "warn"
 float_cmp_const = "warn"
 fn_params_excessive_bools = "warn"
-from_iter_instead_of_collect = "warn"
+fn_to_numeric_cast_any = "warn"
 if_same_then_else = "allow"
 implicit_clone = "warn"
 imprecise_flops = "warn"
@@ -62,10 +72,12 @@ linkedlist = "warn"
 lossy_float_literal = "warn"
 macro_use_imports = "warn"
 mem_forget = "warn"
+mismatching_type_param_order = "warn"
 mutex_integer = "warn"
-needless_continue = "warn"
+needless_continue = "allow"
 needless_for_each = "warn"
 negative_feature_names = "warn"
+partial_pub_fields = "warn"
 path_buf_push_overwrite = "warn"
 ptr_as_ptr = "warn"
 rc_mutex = "warn"
@@ -76,21 +88,35 @@ result_large_err = "allow"
 same_functions_in_if_condition = "warn"
 self_named_module_files = "warn"
 semicolon_if_nothing_returned = "warn"
+should_panic_without_expect = "warn"
 str_to_string = "warn"
 string_add = "warn"
 string_add_assign = "warn"
 string_lit_as_bytes = "warn"
-string_to_string = "warn"
 todo = "warn"
 trait_duplication_in_bounds = "warn"
+undocumented_unsafe_blocks = "warn"
 uninlined_format_args = "warn"
+unnecessary_safety_comment = "warn"
+unnecessary_safety_doc = "warn"
+unseparated_literal_suffix = "warn"
+use_self = "warn"
 verbose_file_reads = "warn"
 wildcard_imports = "warn"
 zero_sized_map_values = "warn"
 
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+debug = "line-tables-only"
+
 [package]
 name = "env_logger"
-version = "0.11.8"
+version = "0.11.12"
 description = """
 A logging implementation for `log` which is configured via an environment
 variable.
@@ -105,7 +131,7 @@ include.workspace = true
 
 [package.metadata.docs.rs]
 all-features = true
-rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]
+rustdoc-args = ["--generate-link-to-definition"]
 
 [package.metadata.release]
 pre-release-replacements = [
@@ -113,7 +139,7 @@ pre-release-replacements = [
   {file="CHANGELOG.md", search="\\.\\.\\.HEAD", replace="...{{tag_name}}", exactly=1},
   {file="CHANGELOG.md", search="ReleaseDate", replace="{{date}}", min=1},
   {file="CHANGELOG.md", search="<!-- next-header -->", replace="<!-- next-header -->\n## [Unreleased] - ReleaseDate\n", exactly=1},
-  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: https://github.com/rust-cli/env_logger/compare/{{tag_name}}...HEAD", exactly=1},
+  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: {{repository}}/compare/{{tag_name}}...HEAD", exactly=1},
 ]
 
 [features]
@@ -127,11 +153,11 @@ kv = ["log/kv"]
 unstable-kv = ["kv"]
 
 [dependencies]
-log = { version = "0.4.21", features = ["std"] }
-env_filter = { version = "0.1.0", path = "crates/env_filter", default-features = false }
-jiff = { version = "0.2.3", default-features = false, features = ["std"], optional = true }
-anstream = { version = "0.6.11", default-features = false, features = ["wincon"], optional = true }
-anstyle = { version = "1.0.6", optional = true }
+log = { version = "0.4.29", features = ["std"] }
+env_filter = { version = "2.0.0", path = "crates/env_filter", default-features = false, features = ["std"] }
+jiff = { version = "1.0.1", default-features = false, features = ["std"], optional = true }
+anstream = { version = "1.0.0", default-features = false, features = ["wincon"], optional = true }
+anstyle = { version = "1.0.13", optional = true }
 
 [[test]]
 name = "regexp_filter"

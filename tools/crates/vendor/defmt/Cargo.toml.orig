@@ -1,0 +1,62 @@
+[package]
+authors = [ "The Knurling-rs developers" ]
+categories = [
+  "embedded",
+  "no-std",
+  "development-tools::debugging",
+  "value-formatting",
+]
+description = "A highly efficient logging framework that targets resource-constrained devices, like microcontrollers"
+edition = "2021"
+keywords = [ "knurling", "logging", "logger", "formatting", "formatter" ]
+license = "MIT OR Apache-2.0"
+rust-version = "1.81"
+links = "defmt" # Prevent multiple versions of defmt being linked
+name = "defmt"
+readme = "README.md"
+repository = "https://github.com/knurling-rs/defmt"
+homepage = "https://knurling.ferrous-systems.com/"
+version = "1.2.0"
+
+[features]
+alloc = []
+avoid-default-panic = []
+ip_in_core = []
+# Include the panic information message if it is a single string literal. This might increase
+# the code size, but panic printouts might become more useful.
+panic-message = []
+
+# Encoding feature flags. These should only be set by end-user crates, not by library crates.
+#
+# If no encoding is selected, `defmt` will assume the encoding is "don't care" and
+# will pick a default one. The current default is `encoding-rzcobs`. The default may change
+# in minor releases, changing it is not considered a breaking change since all encodings
+# are guaranteed to be supported by the corresponding `defmt-decoder` version.
+
+# Raw encoding: All log frames are concatenated and sent over the wire with no framing or compression.
+# This is the fastest CPU-wise, but may end up being slower if the limiting factor is wire speed.
+encoding-raw = []
+
+# rzCOBS encoding: Performs framing on the log frames using reverse-COBS, additionally applying a
+# light compression for data known to contain many zero bytes, like defmt streams.
+# The framing allows the decoder to recover from missing or corrupted data, and start decoding
+# in the middle of a stream, for example when attaching to an already-running device.
+encoding-rzcobs = []
+
+# WARNING: for internal use only, not covered by semver guarantees
+unstable-test = [ "defmt-macros/unstable-test" ]
+
+[dependencies]
+# There is exactly one version of defmt-macros supported in this version of
+# defmt. Although, multiple versions of defmt might use the *same* defmt-macros.
+defmt-macros = { path = "../macros", version = "=1.2.0" }
+bitflags = "1"
+
+[dev-dependencies]
+rustc_version = "0.4"
+trybuild = "1"
+
+[package.metadata.docs.rs]
+features = [ "alloc" ]
+rustdoc-args = [ "--cfg=docsrs" ]
+targets = [ "thumbv6m-none-eabi", "thumbv7em-none-eabihf" ]

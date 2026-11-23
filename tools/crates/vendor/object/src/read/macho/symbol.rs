@@ -12,7 +12,7 @@ use crate::read::{
     SymbolMapEntry, SymbolScope, SymbolSection,
 };
 
-use super::{MachHeader, MachOFile};
+use super::{MachHeader, MachOFile, Section};
 
 /// A table of symbol entries in a Mach-O file.
 ///
@@ -49,10 +49,26 @@ impl<'data, Mach: MachHeader, R: ReadRef<'data>> SymbolTable<'data, Mach, R> {
         self.strings
     }
 
+    /// Return the symbol table.
+    #[inline]
+    pub fn symbols(&self) -> &'data [Mach::Nlist] {
+        self.symbols
+    }
+
     /// Iterate over the symbols.
     #[inline]
     pub fn iter(&self) -> slice::Iter<'data, Mach::Nlist> {
         self.symbols.iter()
+    }
+
+    /// Iterate over the symbols and their indices.
+    #[inline]
+    pub fn enumerate(
+        &self,
+    ) -> impl Iterator<Item = (SymbolIndex, &'data Mach::Nlist)> + use<'data, Mach, R> {
+        self.iter()
+            .enumerate()
+            .map(|(i, sym)| (SymbolIndex(i), sym))
     }
 
     /// Return true if the symbol table is empty.
@@ -72,6 +88,15 @@ impl<'data, Mach: MachHeader, R: ReadRef<'data>> SymbolTable<'data, Mach, R> {
         self.symbols
             .get(index.0)
             .read_error("Invalid Mach-O symbol index")
+    }
+
+    /// Return the symbol name for the given symbol.
+    pub fn symbol_name(
+        &self,
+        endian: Mach::Endian,
+        symbol: &'data Mach::Nlist,
+    ) -> read::Result<&'data [u8]> {
+        symbol.name(endian, self.strings)
     }
 
     /// Construct a map from addresses to a user-defined map entry.
@@ -100,10 +125,9 @@ impl<'data, Mach: MachHeader, R: ReadRef<'data>> SymbolTable<'data, Mach, R> {
         // Each module starts with one or two N_SO symbols (path, or directory + filename)
         // and one N_OSO symbol. The module is terminated by an empty N_SO symbol.
         for nlist in self.symbols {
-            let n_type = nlist.n_type();
-            if n_type & macho::N_STAB == 0 {
+            let Some(n_type) = nlist.n_type().stab() else {
                 continue;
-            }
+            };
             // TODO: includes global symbols too (N_GSYM). These may need to get their
             // address from regular symbols though.
             match n_type {
@@ -138,12 +162,12 @@ impl<'data, Mach: MachHeader, R: ReadRef<'data>> SymbolTable<'data, Mach, R> {
                             current_function = Some((name, nlist.n_value(endian).into()))
                         } else if let Some((name, address)) = current_function.take() {
                             if let Some(object) = object {
-                                symbols.push(ObjectMapEntry {
+                                symbols.push(ObjectMapEntry::new(
                                     address,
-                                    size: nlist.n_value(endian).into(),
+                                    nlist.n_value(endian).into(),
                                     name,
                                     object,
-                                });
+                                ));
                             }
                         }
                     }
@@ -153,22 +177,19 @@ impl<'data, Mach: MachHeader, R: ReadRef<'data>> SymbolTable<'data, Mach, R> {
                     // but no size
                     if let Ok(name) = nlist.name(endian, self.strings) {
                         if let Some(object) = object {
-                            symbols.push(ObjectMapEntry {
-                                address: nlist.n_value(endian).into(),
-                                size: 0,
+                            symbols.push(ObjectMapEntry::new(
+                                nlist.n_value(endian).into(),
+                                0,
                                 name,
                                 object,
-                            })
+                            ));
                         }
                     }
                 }
                 _ => {}
             }
         }
-        ObjectMap {
-            symbols: SymbolMap::new(symbols),
-            objects,
-        }
+        ObjectMap::new(symbols, objects)
     }
 }
 
@@ -311,7 +332,7 @@ where
         index: SymbolIndex,
         nlist: &'data Mach::Nlist,
     ) -> Option<Self> {
-        if nlist.n_type() & macho::N_STAB != 0 {
+        if nlist.n_type().is_stab() {
             return None;
         }
         Some(MachOSymbol { file, index, nlist })
@@ -358,36 +379,65 @@ where
 
     #[inline]
     fn address(&self) -> u64 {
+        if self.is_common() {
+            // The value is the size, not an address.
+            return 0;
+        }
         self.nlist.n_value(self.file.endian).into()
     }
 
     #[inline]
     fn size(&self) -> u64 {
+        if self.is_common() {
+            return self.nlist.n_value(self.file.endian).into();
+        }
         0
     }
 
     fn kind(&self) -> SymbolKind {
-        self.section()
+        if let Some(section) = self
+            .section()
             .index()
             .and_then(|index| self.file.section_internal(index).ok())
-            .map(|section| match section.kind {
+        {
+            if let Ok(name) = self.name_bytes() {
+                // Heuristic to match LLVM's convention for section symbols; may misclassify.
+                if self.is_local()
+                    && name.len() > 4
+                    && name.starts_with(b"ltmp")
+                    && name[4..].iter().all(|b| b.is_ascii_digit())
+                    && self.address() == section.section.addr(self.file.endian).into()
+                {
+                    return SymbolKind::Section;
+                }
+            }
+            match section.kind {
                 SectionKind::Text => SymbolKind::Text,
                 SectionKind::Data
                 | SectionKind::ReadOnlyData
                 | SectionKind::ReadOnlyString
-                | SectionKind::UninitializedData
-                | SectionKind::Common => SymbolKind::Data,
+                | SectionKind::UninitializedData => SymbolKind::Data,
                 SectionKind::Tls | SectionKind::UninitializedTls | SectionKind::TlsVariables => {
                     SymbolKind::Tls
                 }
                 _ => SymbolKind::Unknown,
-            })
-            .unwrap_or(SymbolKind::Unknown)
+            }
+        } else if self.is_common() {
+            SymbolKind::Data
+        } else {
+            SymbolKind::Unknown
+        }
     }
 
     fn section(&self) -> SymbolSection {
-        match self.nlist.n_type() & macho::N_TYPE {
-            macho::N_UNDF => SymbolSection::Undefined,
+        match self.nlist.n_type().typ() {
+            macho::N_UNDF => {
+                if self.is_common() {
+                    SymbolSection::Common
+                } else {
+                    SymbolSection::Undefined
+                }
+            }
             macho::N_ABS => SymbolSection::Absolute,
             macho::N_SECT => {
                 let n_sect = self.nlist.n_sect();
@@ -403,7 +453,7 @@ where
 
     #[inline]
     fn is_undefined(&self) -> bool {
-        self.nlist.n_type() & macho::N_TYPE == macho::N_UNDF
+        self.nlist.is_undefined()
     }
 
     #[inline]
@@ -413,22 +463,22 @@ where
 
     #[inline]
     fn is_common(&self) -> bool {
-        // Mach-O common symbols are based on section, not symbol
-        false
+        self.nlist.is_common()
     }
 
     #[inline]
     fn is_weak(&self) -> bool {
-        self.nlist.n_desc(self.file.endian) & (macho::N_WEAK_REF | macho::N_WEAK_DEF) != 0
+        let n_desc = self.nlist.n_desc(self.file.endian);
+        n_desc.intersects(macho::N_WEAK_REF | macho::N_WEAK_DEF)
     }
 
     fn scope(&self) -> SymbolScope {
         let n_type = self.nlist.n_type();
-        if n_type & macho::N_TYPE == macho::N_UNDF {
+        if self.is_undefined() {
             SymbolScope::Unknown
-        } else if n_type & macho::N_EXT == 0 {
+        } else if !n_type.is_ext() {
             SymbolScope::Compilation
-        } else if n_type & macho::N_PEXT != 0 {
+        } else if n_type.is_pext() {
             SymbolScope::Linkage
         } else {
             SymbolScope::Dynamic
@@ -447,21 +497,22 @@ where
 
     #[inline]
     fn flags(&self) -> SymbolFlags<SectionIndex, SymbolIndex> {
+        let n_type = self.nlist.n_type();
         let n_desc = self.nlist.n_desc(self.file.endian);
-        SymbolFlags::MachO { n_desc }
+        SymbolFlags::MachO { n_type, n_desc }
     }
 }
 
 /// A trait for generic access to [`macho::Nlist32`] and [`macho::Nlist64`].
 #[allow(missing_docs)]
-pub trait Nlist: Debug + Pod {
+pub trait Nlist: Debug + Pod + read::private::Sealed {
     type Word: Into<u64>;
     type Endian: endian::Endian;
 
     fn n_strx(&self, endian: Self::Endian) -> u32;
-    fn n_type(&self) -> u8;
+    fn n_type(&self) -> macho::SymbolFlags;
     fn n_sect(&self) -> u8;
-    fn n_desc(&self, endian: Self::Endian) -> u16;
+    fn n_desc(&self, endian: Self::Endian) -> macho::SymbolDesc;
     fn n_value(&self, endian: Self::Endian) -> Self::Word;
 
     fn name<'data, R: ReadRef<'data>>(
@@ -478,19 +529,39 @@ pub trait Nlist: Debug + Pod {
     ///
     /// This determines the meaning of the `n_type` field.
     fn is_stab(&self) -> bool {
-        self.n_type() & macho::N_STAB != 0
+        self.n_type().is_stab()
+    }
+
+    /// Return the STAB symbol type.
+    fn stab(&self) -> Option<macho::SymbolStab> {
+        self.n_type().stab()
     }
 
     /// Return true if this is an undefined symbol.
+    ///
+    /// This returns false for common symbols.
     fn is_undefined(&self) -> bool {
         let n_type = self.n_type();
-        n_type & macho::N_STAB == 0 && n_type & macho::N_TYPE == macho::N_UNDF
+        !n_type.is_stab()
+            && n_type.typ() == macho::N_UNDF
+            // Comparing `n_value` with 0 gives the same result for any endian.
+            && self.n_value(Self::Endian::default()).into() == 0
+    }
+
+    /// Return true if this is a common symbol.
+    fn is_common(&self) -> bool {
+        let n_type = self.n_type();
+        // Don't require N_EXT, to match the behavior of lld.
+        !n_type.is_stab()
+            && n_type.typ() == macho::N_UNDF
+            // Comparing `n_value` with 0 gives the same result for any endian.
+            && self.n_value(Self::Endian::default()).into() != 0
     }
 
     /// Return true if the symbol is a definition of a function or data object.
     fn is_definition(&self) -> bool {
         let n_type = self.n_type();
-        n_type & macho::N_STAB == 0 && n_type & macho::N_TYPE == macho::N_SECT
+        !n_type.is_stab() && n_type.typ() == macho::N_SECT
     }
 
     /// Return the library ordinal.
@@ -498,10 +569,12 @@ pub trait Nlist: Debug + Pod {
     /// This is either a 1-based index into the dylib load commands,
     /// or a special ordinal.
     #[inline]
-    fn library_ordinal(&self, endian: Self::Endian) -> u8 {
-        (self.n_desc(endian) >> 8) as u8
+    fn library_ordinal(&self, endian: Self::Endian) -> macho::SymbolLibrary {
+        self.n_desc(endian).library()
     }
 }
+
+impl<Endian: endian::Endian> read::private::Sealed for macho::Nlist32<Endian> {}
 
 impl<Endian: endian::Endian> Nlist for macho::Nlist32<Endian> {
     type Word = u32;
@@ -510,19 +583,21 @@ impl<Endian: endian::Endian> Nlist for macho::Nlist32<Endian> {
     fn n_strx(&self, endian: Self::Endian) -> u32 {
         self.n_strx.get(endian)
     }
-    fn n_type(&self) -> u8 {
+    fn n_type(&self) -> macho::SymbolFlags {
         self.n_type
     }
     fn n_sect(&self) -> u8 {
         self.n_sect
     }
-    fn n_desc(&self, endian: Self::Endian) -> u16 {
+    fn n_desc(&self, endian: Self::Endian) -> macho::SymbolDesc {
         self.n_desc.get(endian)
     }
     fn n_value(&self, endian: Self::Endian) -> Self::Word {
         self.n_value.get(endian)
     }
 }
+
+impl<Endian: endian::Endian> read::private::Sealed for macho::Nlist64<Endian> {}
 
 impl<Endian: endian::Endian> Nlist for macho::Nlist64<Endian> {
     type Word = u64;
@@ -531,13 +606,13 @@ impl<Endian: endian::Endian> Nlist for macho::Nlist64<Endian> {
     fn n_strx(&self, endian: Self::Endian) -> u32 {
         self.n_strx.get(endian)
     }
-    fn n_type(&self) -> u8 {
+    fn n_type(&self) -> macho::SymbolFlags {
         self.n_type
     }
     fn n_sect(&self) -> u8 {
         self.n_sect
     }
-    fn n_desc(&self, endian: Self::Endian) -> u16 {
+    fn n_desc(&self, endian: Self::Endian) -> macho::SymbolDesc {
         self.n_desc.get(endian)
     }
     fn n_value(&self, endian: Self::Endian) -> Self::Word {

@@ -1,5 +1,7 @@
 use flate2::read::GzDecoder;
 use flate2::read::MultiGzDecoder;
+use flate2::write::GzEncoder;
+use flate2::Compression;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::{self, BufReader};
@@ -31,7 +33,15 @@ fn test_extract_success_partial_multi() {
 // test extraction fails on a corrupt file
 #[test]
 fn test_extract_failure() {
-    let result = extract_file(Path::new("tests/corrupt-gz-file.bin"));
+    let mut encoder = GzEncoder::new(Vec::new(), Compression::default());
+    encoder.write_all(b"corrupt me").unwrap();
+    let mut gzip = encoder.finish().unwrap();
+    // The gzip footer stores CRC32 followed by ISIZE; corrupt a CRC byte.
+    let crc_offset = gzip.len() - 8;
+    gzip[crc_offset] ^= 0xff;
+
+    let mut output = Vec::new();
+    let result = GzDecoder::new(&gzip[..]).read_to_end(&mut output);
     assert_eq!(result.err().unwrap().kind(), io::ErrorKind::InvalidInput);
 }
 

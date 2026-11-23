@@ -1,7 +1,7 @@
 //! Value Density (V)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -10,11 +10,12 @@ use core::{fmt, str::FromStr};
 /// Value Density (V) - CVSS v4.0 Supplemental Metric Group
 ///
 /// Described in CVSS v4.0 Specification: Section 5.5
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ValueDensity {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
 
     /// Diffuse (D)
@@ -35,20 +36,14 @@ pub enum ValueDensity {
     Concentrated,
 }
 
-impl Default for ValueDensity {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for ValueDensity {
     const TYPE: MetricType = MetricType::V;
 
     fn as_str(self) -> &'static str {
         match self {
-            ValueDensity::NotDefined => "X",
-            ValueDensity::Diffuse => "D",
-            ValueDensity::Concentrated => "C",
+            Self::NotDefined => "X",
+            Self::Diffuse => "D",
+            Self::Concentrated => "C",
         }
     }
 }
@@ -62,11 +57,11 @@ impl fmt::Display for ValueDensity {
 impl FromStr for ValueDensity {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(ValueDensity::NotDefined),
-            "D" => Ok(ValueDensity::Diffuse),
-            "C" => Ok(ValueDensity::Concentrated),
+            "X" => Ok(Self::NotDefined),
+            "D" => Ok(Self::Diffuse),
+            "C" => Ok(Self::Concentrated),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

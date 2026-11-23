@@ -78,6 +78,7 @@ unsafe impl<T> Send for MainThreadBound<T> {}
 unsafe impl<T> Sync for MainThreadBound<T> {}
 
 impl<T> Drop for MainThreadBound<T> {
+    #[inline]
     fn drop(&mut self) {
         if mem::needs_drop::<T>() {
             // TODO: Figure out whether we should assume the main thread to be

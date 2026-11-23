@@ -10,6 +10,16 @@ use crate::sys::signal::SigSet;
 use crate::sys::stat::Mode;
 use crate::{errno::Errno, unistd::Pid, NixPath, Result};
 
+/// The posix_spawn* functions return 0 on success and an error number on
+/// failure, rather than -1 with `errno` set.
+fn spawn_result(res: libc::c_int) -> Result<()> {
+    if res == 0 {
+        Ok(())
+    } else {
+        Err(Errno::from_raw(res))
+    }
+}
+
 /// A spawn attributes object. See [posix_spawnattr_t](https://pubs.opengroup.org/onlinepubs/9699919799/functions/posix_spawnattr_init.html).
 #[repr(transparent)]
 #[derive(Debug)]
@@ -25,7 +35,7 @@ impl PosixSpawnAttr {
         let mut attr = mem::MaybeUninit::uninit();
         let res = unsafe { libc::posix_spawnattr_init(attr.as_mut_ptr()) };
 
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         let attr = unsafe { attr.assume_init() };
         Ok(PosixSpawnAttr { attr })
@@ -43,14 +53,14 @@ impl PosixSpawnAttr {
                 &mut self.attr as *mut libc::posix_spawnattr_t,
             )
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         let res = unsafe {
             libc::posix_spawnattr_init(
                 &mut self.attr as *mut libc::posix_spawnattr_t,
             )
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         Ok(self)
     }
@@ -65,7 +75,7 @@ impl PosixSpawnAttr {
                 flags.bits() as libc::c_short,
             )
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         Ok(())
     }
@@ -81,7 +91,7 @@ impl PosixSpawnAttr {
                 &mut flags,
             )
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         Ok(PosixSpawnFlags::from_bits_truncate(flags.into()))
     }
@@ -96,7 +106,7 @@ impl PosixSpawnAttr {
                 pgroup.as_raw(),
             )
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         Ok(())
     }
@@ -113,7 +123,7 @@ impl PosixSpawnAttr {
                 &mut pid,
             )
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         Ok(Pid::from_raw(pid))
     }
@@ -130,7 +140,7 @@ impl PosixSpawnAttr {
                 sigdefault.as_ref(),
             )
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         Ok(())
     }
@@ -147,7 +157,7 @@ impl PosixSpawnAttr {
                 sigset.as_mut_ptr(),
             )
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         let sigdefault =
             unsafe { SigSet::from_sigset_t_unchecked(sigset.assume_init()) };
@@ -164,7 +174,7 @@ impl PosixSpawnAttr {
                 sigdefault.as_ref(),
             )
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         Ok(())
     }
@@ -181,7 +191,7 @@ impl PosixSpawnAttr {
                 sigset.as_mut_ptr(),
             )
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         let sigdefault =
             unsafe { SigSet::from_sigset_t_unchecked(sigset.assume_init()) };
@@ -242,7 +252,7 @@ impl PosixSpawnFileActions {
         let res = unsafe {
             libc::posix_spawn_file_actions_init(actions.as_mut_ptr())
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
         Ok(unsafe {
             PosixSpawnFileActions {
                 fa: actions.assume_init(),
@@ -262,14 +272,14 @@ impl PosixSpawnFileActions {
                 &mut self.fa as *mut libc::posix_spawn_file_actions_t,
             )
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         let res = unsafe {
             libc::posix_spawn_file_actions_init(
                 &mut self.fa as *mut libc::posix_spawn_file_actions_t,
             )
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         Ok(self)
     }
@@ -285,7 +295,7 @@ impl PosixSpawnFileActions {
                 newfd,
             )
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         Ok(())
     }
@@ -311,7 +321,7 @@ impl PosixSpawnFileActions {
                 mode.bits(),
             )
         })?;
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         Ok(())
     }
@@ -327,7 +337,7 @@ impl PosixSpawnFileActions {
                 fd,
             )
         };
-        Errno::result(res)?;
+        spawn_result(res)?;
 
         Ok(())
     }

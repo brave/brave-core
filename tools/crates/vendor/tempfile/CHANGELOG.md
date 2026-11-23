@@ -1,5 +1,34 @@
 # Changelog
 
+## 3.27.0
+
+This release adds `TempPath::try_from_path` and deprecates `TempPath::from_path`.
+
+Prior to this release, `TempPath::from_path` made no attempts to convert relative paths into absolute paths. The following code would have deleted the wrong file:
+
+```rust
+let tmp_path = TempPath::from_path("foo")
+std::env::set_current_dir("/some/other/path").unwrap();
+drop(tmp_path);
+```
+
+Now:
+
+1. `TempPath::from_path` will attempt to convert relative paths into absolute paths. However, this isn't always possible as we need to call `std::env::current_dir`, which can fail. If we fail to convert the relative path to an absolute path, we simply keep the relative path.
+2. The `TempPath::try_from_path` behaves exactly like `TempPath::from_path`, except that it returns an error if we fail to convert a relative path into an absolute path (or if the passed path is empty).
+
+Neither function attempt to verify the existence of the file in question.
+
+Thanks to @meng-xu-cs for reporting this issue.
+
+## 3.26.0
+
+- Support `NamedTempFile::persist` on RedoxOS (#393) (thanks to @Andy-Python-Programmer).
+
+## 3.25.0
+
+- Allow `getrandom` 0.4.x while retaining support for `getrandom` 0.3.x.
+
 ## 3.24.0
 
 - Actually support WASIp2 without the nightly feature. This library is now feature complete on WASIp2 without any additional feature flags.

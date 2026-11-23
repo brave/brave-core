@@ -6,22 +6,75 @@ use crate::combinator::DisplayDebug;
 #[cfg(feature = "unstable-recover")]
 #[cfg(feature = "std")]
 use crate::error::FromRecoverableError;
+use crate::error::ParseError;
 use crate::error::{AddContext, FromExternalError, ParserError};
 #[cfg(feature = "unstable-recover")]
 #[cfg(feature = "std")]
 use crate::stream::Recover;
 use crate::stream::StreamIsPartial;
 use crate::stream::{Location, Stream};
-use crate::*;
+use crate::{Parser, Result};
 use core::borrow::Borrow;
 use core::ops::Range;
+
+/// Iterator implementation for [`Parser::parse_iter`]
+pub struct ParseIter<'p, P, I, O, E>
+where
+    I: Stream,
+{
+    pub(crate) parser: &'p mut P,
+    pub(crate) input: Option<I>,
+    pub(crate) start: Option<I::Checkpoint>,
+    pub(crate) marker: core::marker::PhantomData<(O, E)>,
+}
+
+impl<'p, I, O, E, P> Iterator for ParseIter<'p, P, I, O, E>
+where
+    P: Parser<I, O, E>,
+    I: Stream,
+    // Force users to deal with `Incomplete` when `StreamIsPartial<true>`
+    I: StreamIsPartial,
+    E: ParserError<I>,
+    <E as ParserError<I>>::Inner: ParserError<I>,
+{
+    type Item = Result<O, ParseError<I, <E as ParserError<I>>::Inner>>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let input = self.input.as_mut()?;
+        let len = input.eof_offset();
+        if len == 0 {
+            self.input = None;
+            return None;
+        }
+
+        let mut output = self.parser.parse_next(input);
+        // infinite loop check: the parser must always consume
+        if output.is_ok() && input.eof_offset() == len {
+            let err = <E as ParserError<I>>::assert(
+                input,
+                "`Parser::parse_iter` parsers must always consume",
+            );
+            output = Err(err);
+        }
+
+        match output {
+            Ok(output) => Some(Ok(output)),
+            Err(err) => {
+                let err = err.into_inner().unwrap_or_else(|_err| {
+                    panic!("complete parsers should not report `ErrMode::Incomplete(_)`")
+                });
+                let input = self.input.take()?;
+                let start = self.start.take()?;
+                Some(Err(ParseError::new(input, start, err)))
+            }
+        }
+    }
+}
 
 /// [`Parser`] implementation for [`Parser::by_ref`]
 pub struct ByRef<'p, P, I, O, E> {
     pub(crate) p: &'p mut P,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E)>,
 }
 
 impl<I, O, E, P> Parser<I, O, E> for ByRef<'_, P, I, O, E>
@@ -42,10 +95,7 @@ where
 {
     pub(crate) parser: F,
     pub(crate) map: G,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) o2: core::marker::PhantomData<O2>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E, O2)>,
 }
 
 impl<F, G, I, O, O2, E> Parser<I, O2, E> for Map<F, G, I, O, O2, E>
@@ -73,11 +123,7 @@ where
 {
     pub(crate) parser: F,
     pub(crate) map: G,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) o2: core::marker::PhantomData<O2>,
-    pub(crate) e: core::marker::PhantomData<E>,
-    pub(crate) e2: core::marker::PhantomData<E2>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, O2, E, E2)>,
 }
 
 impl<F, G, I, O, O2, E, E2> Parser<I, O2, E> for TryMap<F, G, I, O, O2, E, E2>
@@ -111,10 +157,7 @@ where
 {
     pub(crate) parser: F,
     pub(crate) map: G,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) o2: core::marker::PhantomData<O2>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E, O2)>,
 }
 
 impl<F, G, I, O, O2, E> Parser<I, O2, E> for VerifyMap<F, G, I, O, O2, E>
@@ -147,10 +190,7 @@ where
 {
     pub(crate) outer: F,
     pub(crate) inner: G,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) o2: core::marker::PhantomData<O2>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, O2, E)>,
 }
 
 impl<F, G, I, O, O2, E> Parser<I, O2, E> for AndThen<F, G, I, O, O2, E>
@@ -182,10 +222,7 @@ where
     E: ParserError<I>,
 {
     pub(crate) p: P,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) o2: core::marker::PhantomData<O2>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, O2, E)>,
 }
 
 impl<P, I, O, O2, E> Parser<I, O2, E> for ParseTo<P, I, O, O2, E>
@@ -217,11 +254,7 @@ where
 {
     pub(crate) f: F,
     pub(crate) g: G,
-    pub(crate) h: core::marker::PhantomData<H>,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) o2: core::marker::PhantomData<O2>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(H, I, O, O2, E)>,
 }
 
 impl<F, G, H, I, O, O2, E> Parser<I, O2, E> for FlatMap<F, G, H, I, O, O2, E>
@@ -240,9 +273,7 @@ where
 /// [`Parser`] implementation for [`Parser::complete_err`]
 pub struct CompleteErr<P, I, O, E> {
     pub(crate) p: P,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E)>,
 }
 
 impl<P, I, O, E> Parser<I, O, E> for CompleteErr<P, I, O, E>
@@ -278,10 +309,7 @@ where
 {
     pub(crate) parser: F,
     pub(crate) filter: G,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) o2: core::marker::PhantomData<O2>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E, O2)>,
 }
 
 impl<F, G, I, O, O2, E> Parser<I, O, E> for Verify<F, G, I, O, O2, E>
@@ -314,9 +342,7 @@ where
 {
     pub(crate) parser: F,
     pub(crate) val: O2,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E)>,
 }
 
 impl<F, I, O, O2, E> Parser<I, O2, E> for Value<F, I, O, O2, E>
@@ -337,10 +363,7 @@ where
     O2: core::default::Default,
 {
     pub(crate) parser: F,
-    pub(crate) o2: core::marker::PhantomData<O2>,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(O2, I, O, E)>,
 }
 
 impl<F, I, O, O2, E> Parser<I, O2, E> for DefaultValue<F, I, O, O2, E>
@@ -360,9 +383,7 @@ where
     F: Parser<I, O, E>,
 {
     pub(crate) parser: F,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E)>,
 }
 
 impl<F, I, O, E> Parser<I, (), E> for Void<F, I, O, E>
@@ -382,9 +403,7 @@ where
     I: Stream,
 {
     pub(crate) parser: F,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E)>,
 }
 
 impl<I, O, E, F> Parser<I, <I as Stream>::Slice, E> for Take<F, I, O, E>
@@ -414,9 +433,7 @@ where
     I: Stream,
 {
     pub(crate) parser: F,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E)>,
 }
 
 impl<F, I, O, E> Parser<I, (O, <I as Stream>::Slice), E> for WithTaken<F, I, O, E>
@@ -446,9 +463,7 @@ where
     I: Stream + Location,
 {
     pub(crate) parser: F,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E)>,
 }
 
 impl<I, O, E, F> Parser<I, Range<usize>, E> for Span<F, I, O, E>
@@ -473,9 +488,7 @@ where
     I: Stream + Location,
 {
     pub(crate) parser: F,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E)>,
 }
 
 impl<F, I, O, E> Parser<I, (O, Range<usize>), E> for WithSpan<F, I, O, E>
@@ -500,10 +513,7 @@ where
     O: Into<O2>,
 {
     pub(crate) parser: F,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) o2: core::marker::PhantomData<O2>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, O2, E)>,
 }
 
 impl<F, I, O, O2, E> Parser<I, O2, E> for OutputInto<F, I, O, O2, E>
@@ -524,10 +534,7 @@ where
     E: Into<E2>,
 {
     pub(crate) parser: F,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
-    pub(crate) e2: core::marker::PhantomData<E2>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E, E2)>,
 }
 
 impl<F, I, O, E, E2> Parser<I, O, E2> for ErrInto<F, I, O, E, E2>
@@ -552,9 +559,7 @@ where
 {
     pub(crate) parser: F,
     pub(crate) context: C,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E)>,
 }
 
 impl<F, I, O, E, C> Parser<I, O, E> for Context<F, I, O, E, C>
@@ -591,11 +596,7 @@ where
 {
     pub(crate) parser: P,
     pub(crate) context: F,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
-    pub(crate) c: core::marker::PhantomData<C>,
-    pub(crate) fi: core::marker::PhantomData<FI>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E, C, FI)>,
 }
 
 impl<P, I, O, E, F, C, FI> Parser<I, O, E> for ContextWith<P, I, O, E, F, C, FI>
@@ -629,10 +630,7 @@ where
 {
     pub(crate) parser: F,
     pub(crate) map: G,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
-    pub(crate) e2: core::marker::PhantomData<E2>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E, E2)>,
 }
 
 impl<F, G, I, O, E, E2> Parser<I, O, E2> for MapErr<F, G, I, O, E, E2>
@@ -662,9 +660,7 @@ where
 {
     pub(crate) parser: P,
     pub(crate) recover: R,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E)>,
 }
 
 #[cfg(feature = "unstable-recover")]
@@ -738,9 +734,7 @@ where
 {
     pub(crate) parser: P,
     pub(crate) recover: R,
-    pub(crate) i: core::marker::PhantomData<I>,
-    pub(crate) o: core::marker::PhantomData<O>,
-    pub(crate) e: core::marker::PhantomData<E>,
+    pub(crate) marker: core::marker::PhantomData<(I, O, E)>,
 }
 
 #[cfg(feature = "unstable-recover")]

@@ -7,9 +7,8 @@ use crate::Result;
 
 /// This is a wrapper around `libc::pollfd`.
 ///
-/// It's meant to be used as an argument to the [`poll`](fn.poll.html) and
-/// [`ppoll`](fn.ppoll.html) functions to specify the events of interest
-/// for a specific file descriptor.
+/// It's meant to be used as an argument to the [`poll`] and `ppoll` functions
+/// to specify the events of interest for a specific file descriptor.
 ///
 /// After a call to `poll` or `ppoll`, the events that occurred can be retrieved by calling
 /// [`revents()`](#method.revents) on the `PollFd` object from the array passed to `poll`.
@@ -34,7 +33,7 @@ impl<'fd> PollFd<'fd> {
     /// let (r, w) = pipe().unwrap();
     /// let pfd = PollFd::new(r.as_fd(), PollFlags::POLLIN);
     /// ```
-    /// These are placed in an array and passed to [`poll`] or [`ppoll`](fn.ppoll.html).
+    /// These are placed in an array and passed to [`poll`] or `ppoll`.
     // Unlike I/O functions, constructors like this must take `BorrowedFd`
     // instead of AsFd or &AsFd.  Otherwise, an `OwnedFd` argument would be
     // dropped at the end of the method, leaving the structure referencing a
@@ -62,7 +61,7 @@ impl<'fd> PollFd<'fd> {
         PollFlags::from_bits(self.pollfd.revents)
     }
 
-    /// Returns if any of the events of interest occured in the last call to `poll` or `ppoll`. Will
+    /// Returns if any of the events of interest occurred in the last call to `poll` or `ppoll`. Will
     /// only return `None` if the kernel provides status flags that Nix does not know about.
     ///
     /// Equivalent to `x.revents()? != PollFlags::empty()`.
@@ -72,7 +71,7 @@ impl<'fd> PollFd<'fd> {
         Some(self.revents()? != PollFlags::empty())
     }
 
-    /// Returns if all the events of interest occured in the last call to `poll` or `ppoll`. Will
+    /// Returns if all the events of interest occurred in the last call to `poll` or `ppoll`. Will
     /// only return `None` if the kernel provides status flags that Nix does not know about.
     ///
     /// Equivalent to `x.revents()? & x.events() == x.events()`.
@@ -176,7 +175,7 @@ libc_bitflags! {
 /// `poll` waits for one of a set of file descriptors to become ready to perform I/O.
 /// ([`poll(2)`](https://pubs.opengroup.org/onlinepubs/9699919799/functions/poll.html))
 ///
-/// `fds` contains all [`PollFd`](struct.PollFd.html) to poll.
+/// `fds` contains all [`PollFd`] to poll.
 /// The function will return as soon as any event occur for any of these `PollFd`s.
 ///
 /// The `timeout` argument specifies the number of milliseconds that `poll()`

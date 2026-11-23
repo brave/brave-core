@@ -1,32 +1,37 @@
-use bstr::{BStr, BString, ByteSlice};
-use kstring::KStringRef;
+use std::borrow::Borrow;
+
+use bstr::{BStr, ByteSlice};
+use gix_error::{OptionExt, Result, validation};
+use gix_parallel::OwnShared;
 
 use crate::{Name, NameRef};
 
 impl NameRef<'_> {
     /// Turn this ref into its owned counterpart.
     pub fn to_owned(self) -> Name {
-        Name(self.0.into())
+        Name(OwnShared::from(self.0))
     }
 
     /// Return the inner `str`.
     pub fn as_str(&self) -> &str {
-        self.0.as_str()
+        self.0
     }
 }
 
 impl AsRef<str> for NameRef<'_> {
     fn as_ref(&self) -> &str {
-        self.0.as_ref()
+        self.0
     }
 }
 
 impl<'a> TryFrom<&'a BStr> for NameRef<'a> {
-    type Error = Error;
+    type Error = gix_error::Error;
 
-    fn try_from(attr: &'a BStr) -> Result<Self, Self::Error> {
+    /// Invalid names produce a [validation error](gix_error::Error::is_validation()),
+    /// with the original bytes stored as `input` [metadata](gix_error::Error::metadata()).
+    fn try_from(attr: &'a BStr) -> Result<Self> {
         fn attr_valid(attr: &BStr) -> bool {
-            if attr.first() == Some(&b'-') {
+            if attr.is_empty() || attr.first() == Some(&b'-') {
                 return false;
             }
 
@@ -35,33 +40,58 @@ impl<'a> TryFrom<&'a BStr> for NameRef<'a> {
         }
 
         attr_valid(attr)
-            .then(|| NameRef(KStringRef::from_ref(attr.to_str().expect("no illformed utf8"))))
-            .ok_or_else(|| Error { attribute: attr.into() })
+            .then(|| NameRef(attr.to_str().expect("no illformed utf8")))
+            .ok_or_raise(|| validation("Attribute has non-ascii characters or starts with '-'").with_input(attr))
     }
 }
 
 impl<'a> Name {
     /// Provide our ref-type.
     pub fn as_ref(&'a self) -> NameRef<'a> {
-        NameRef(self.0.as_ref())
+        NameRef(self.as_str())
     }
 
     /// Return the inner `str`.
     pub fn as_str(&self) -> &str {
-        self.0.as_str()
+        &self.0
     }
 }
 
 impl AsRef<str> for Name {
     fn as_ref(&self) -> &str {
-        self.0.as_str()
+        self.as_str()
     }
 }
 
-/// The error returned by [`parse::Iter`][crate::parse::Iter].
-#[derive(Debug, thiserror::Error)]
-#[error("Attribute has non-ascii characters or starts with '-': {attribute}")]
-pub struct Error {
-    /// The attribute that failed to parse.
-    pub attribute: BString,
+impl Borrow<str> for Name {
+    fn borrow(&self) -> &str {
+        self.as_str()
+    }
+}
+
+#[cfg(feature = "serde")]
+impl serde::Serialize for Name {
+    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serializer.serialize_newtype_struct("Name", self.as_str())
+    }
+}
+
+#[cfg(feature = "serde")]
+impl<'de> serde::Deserialize<'de> for Name {
+    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        #[derive(serde::Deserialize)]
+        #[serde(rename = "Name")]
+        struct NameDef(String);
+
+        let NameDef(value) = <NameDef as serde::Deserialize>::deserialize(deserializer)?;
+        NameRef::try_from(value.as_bytes().as_bstr())
+            .map(NameRef::to_owned)
+            .map_err(serde::de::Error::custom)
+    }
 }

@@ -2,7 +2,7 @@
 
 use cargo_lock::Lockfile;
 use once_cell::sync::Lazy;
-use rustsec::{Database, database::Query, repository::git::Repository};
+use rustsec::{Database, database::Query, report::Settings, repository::git::Repository};
 use std::{path::Path, sync::Mutex};
 
 static DEFAULT_DATABASE: Lazy<Mutex<Database>> = Lazy::new(|| {
@@ -31,4 +31,15 @@ fn query_vulnerabilities_with_crate_scope() {
     let vuln_all = db.query_vulnerabilities(&lockfile, &Query::crate_scope());
     let vuln = db.vulnerabilities(&lockfile);
     assert_eq!(vuln_all, vuln);
+}
+
+#[test]
+fn query_warnings_local_crates() {
+    let lockfile_path = Path::new("./tests/support/local-warnings.lock");
+    let lockfile =
+        Lockfile::load(lockfile_path).expect("Should find the lock file in support folder.");
+    let db = DEFAULT_DATABASE.lock().unwrap();
+    let warnings =
+        db.query_vulnerabilities(&lockfile, &Settings::default().query().informational(true));
+    assert_eq!(warnings.len(), 0);
 }

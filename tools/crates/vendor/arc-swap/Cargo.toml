@@ -12,7 +12,7 @@
 [package]
 edition = "2018"
 name = "arc-swap"
-version = "1.8.0"
+version = "1.9.5"
 authors = ["Michal 'vorner' Vaner <vorner@vorner.cz>"]
 build = false
 autolib = false
@@ -46,12 +46,21 @@ status = "actively-developed"
 [features]
 experimental-strategies = []
 experimental-thread-local = []
-internal-test-strategies = []
+internal-test-strategies = ["rwlock-strategy"]
+rwlock-strategy = []
 weak = []
 
 [lib]
 name = "arc_swap"
 path = "src/lib.rs"
+
+[[test]]
+name = "bug-198"
+path = "tests/bug-198.rs"
+
+[[test]]
+name = "bug-210"
+path = "tests/bug-210.rs"
 
 [[test]]
 name = "random"

@@ -1,9 +1,9 @@
 use serde_core::de;
 use serde_core::ser;
 
+use crate::Value;
 use crate::alloc_prelude::*;
 use crate::map::Map;
-use crate::Value;
 
 /// Type representing a TOML table, payload of the `Value::Table` variant.
 ///
@@ -65,8 +65,7 @@ impl ser::Serialize for Table {
         use serde_core::ser::SerializeMap;
         let mut map = serializer.serialize_map(Some(self.len()))?;
         for (k, v) in self {
-            map.serialize_key(k)?;
-            map.serialize_value(v)?;
+            map.serialize_entry(k, v)?;
         }
         map.end()
     }
@@ -102,8 +101,17 @@ impl<'de> de::Deserialize<'de> for Table {
             {
                 let mut values = Map::new();
 
-                while let Some((key, value)) = visitor.next_entry()? {
-                    values.insert(key, value);
+                while let Some(key) = visitor.next_key::<String>()? {
+                    match values.entry(key) {
+                        crate::map::Entry::Vacant(vacant) => {
+                            vacant.insert(visitor.next_value()?);
+                        }
+                        crate::map::Entry::Occupied(occupied) => {
+                            let key = occupied.key();
+                            let msg = format!("duplicate key: `{key}`");
+                            return Err(de::Error::custom(msg));
+                        }
+                    }
                 }
 
                 Ok(values)
@@ -157,9 +165,21 @@ impl<'de> de::Deserializer<'de> for Table {
         Value::Table(self).deserialize_newtype_struct(name, visitor)
     }
 
+    fn deserialize_struct<V>(
+        self,
+        name: &'static str,
+        fields: &'static [&'static str],
+        visitor: V,
+    ) -> Result<V::Value, crate::de::Error>
+    where
+        V: de::Visitor<'de>,
+    {
+        Value::Table(self).deserialize_struct(name, fields, visitor)
+    }
+
     serde_core::forward_to_deserialize_any! {
         bool u8 u16 u32 u64 i8 i16 i32 i64 f32 f64 char str string unit seq
-        bytes byte_buf map unit_struct tuple_struct struct
+        bytes byte_buf map unit_struct tuple_struct
         tuple ignored_any identifier
     }
 }
@@ -365,6 +385,22 @@ impl SerializeMap {
             next_key: None,
         }
     }
+
+    fn write_entry<T>(&mut self, key: String, value: &T) -> Result<(), crate::ser::Error>
+    where
+        T: ser::Serialize + ?Sized,
+    {
+        match Value::try_from(value) {
+            Ok(value) => {
+                self.map.insert(key, value);
+            }
+            Err(crate::ser::Error {
+                inner: crate::ser::ErrorInner::UnsupportedNone,
+            }) => {}
+            Err(e) => return Err(e),
+        }
+        Ok(())
+    }
 }
 
 impl ser::SerializeMap for SerializeMap {
@@ -388,16 +424,18 @@ impl ser::SerializeMap for SerializeMap {
     {
         let key = self.next_key.take();
         let key = key.expect("serialize_value called before serialize_key");
-        match Value::try_from(value) {
-            Ok(value) => {
-                self.map.insert(key, value);
-            }
-            Err(crate::ser::Error {
-                inner: crate::ser::ErrorInner::UnsupportedNone,
-            }) => {}
-            Err(e) => return Err(e),
-        }
-        Ok(())
+        self.write_entry(key, value)
+    }
+
+    fn serialize_entry<K, V>(&mut self, key: &K, value: &V) -> Result<(), Self::Error>
+    where
+        K: ser::Serialize + ?Sized,
+        V: ser::Serialize + ?Sized,
+    {
+        let Value::String(key) = Value::try_from(key)? else {
+            return Err(crate::ser::Error::key_not_string());
+        };
+        self.write_entry(key, value)
     }
 
     fn end(self) -> Result<Table, crate::ser::Error> {
@@ -413,8 +451,7 @@ impl ser::SerializeStruct for SerializeMap {
     where
         T: ser::Serialize + ?Sized,
     {
-        ser::SerializeMap::serialize_key(self, key)?;
-        ser::SerializeMap::serialize_value(self, value)
+        ser::SerializeMap::serialize_entry(self, key, value)
     }
 
     fn end(self) -> Result<Table, crate::ser::Error> {

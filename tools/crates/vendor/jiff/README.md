@@ -74,10 +74,10 @@ $ cargo add jiff
 Third, edit `src/main.rs`. Delete what's there and replace it with this:
 
 ```rust
-use jiff::{Unit, Zoned};
+use jiff::{Unit, ZonedDateTime};
 
 fn main() -> Result<(), jiff::Error> {
-    let now = Zoned::now().round(Unit::Second)?;
+    let now = ZonedDateTime::now().round(Unit::Second)?;
     println!("{now}");
     Ok(())
 }
@@ -106,18 +106,6 @@ into your binary.
 The "[crate features](https://docs.rs/jiff/#crate-features)" section of the
 documentation lists the full set of supported features.
 
-### Future plans
-
-With `jiff 0.2` out about 6 months after the `jiff 0.1` initial release, my
-plan remains roughly the same as it started. That is, I'd still like to get a
-`jiff 1.0` release out this summer 2025 (in about 6 months) and then commit to
-it indefinitely. This plan may change if something critically wrong is found
-with the current API.
-
-The purpose of this plan is to get Jiff to a 1.0 stable state as quickly as
-possible. The reason is so that others feel comfortable relying on Jiff as
-a public dependency that won't cause ecosystem churn.
-
 ### Performance
 
 The most important design goal of Jiff is to be a high level datetime library
@@ -129,6 +117,15 @@ Note that performance is still an important goal. Some aspects of Jiff have
 had optimization attention paid to them, but many still have not. It is a goal
 to improve where we can, but performance will generally come second to API
 comprehension and correctness.
+
+The submodules in Jiff, especially `jiff::fmt`, often work as an escape hatch
+for more complicated APIs that provide more control. For example, using the
+`std::fmt::Display` implementation of `ZonedDateTime` makes it difficult to
+write the data into a reusable buffer. Conversely,
+[`jiff::fmt::temporal::DateTimePrinter::print_zoned_datetime`] provides a way to
+write a `ZonedDateTime` into an existing `String` or even a `Vec<u8>`.
+
+[`jiff::fmt::temporal::DateTimePrinter::print_zoned_datetime`]: https://docs.rs/jiff/latest/jiff/fmt/temporal/struct.DateTimePrinter.html#method.print_zoned_datetime
 
 ### Platform support
 
@@ -164,31 +161,44 @@ For more on platform support, see [`PLATFORM.md`](PLATFORM.md).
 
 ### Dependencies
 
-At time of writing, it is no accident that Jiff has zero dependencies on Unix.
-In general, my philosophy on adding new dependencies in an ecosystem crate like
-Jiff is very conservative. I consider there to be two primary use cases for
-adding new dependencies:
+At time of writing, it is no accident that Jiff has one required dependency
+on Unix. In general, my philosophy on adding new dependencies in an ecosystem
+crate like Jiff is very conservative. I consider there to be two primary use
+cases for adding new dependencies:
 
 1. When a dependency is _practically_ required in order to interact with a
-platform. For example, `windows-sys` for discovering the system time zone on
-Windows.
-2. When a dependency is necessary for inter-operability. For example, `serde`.
+platform.
+2. When a dependency is necessary for interoperability. For example, `serde`.
 But even here, I expect to be conservative, where I'm generally only willing
 to depend on things that have fewer breaking change releases than Jiff.
 
 A secondary use case for new dependencies is if Jiff gets split into multiple
-crates. I did a similar thing for the `regex` crate for very compelling
-reasons. It is possible that will happen with Jiff as well, although there are
-no plans for that. And in general, I expect the number of crates to stay small,
-if only to make keep maintenance lightweight. (Managing lots of semver API
-boundaries has a lot of overhead in my experience.)
+crates. This is exactly what happened with the introduction of `jiff-core`.
+This helps reuse code between `jiff` and `jiff-static`, and also provides some
+fundamental datetime conversions to consumers who don't need the full footprint
+of `jiff`.
 
 ### Minimum Rust version policy
 
-This crate's minimum supported `rustc` version is `1.70.0`.
+This crate's minimum supported `rustc` version (MSRV) is `1.85.0`. Jiff
+itself, and any dependencies of Jiff within this repository, will never use a
+Rust version that requires a Rust compiler released in the previous 1 year.
+(Dependents of Jiff in this repository, e.g., `jiff-icu`, may use a newer MSRV,
+but never one that is newer than the crate it is trying to integrate with.)
 
-The policy is that the minimum Rust version required to use this crate can be
-increased in minor version updates. For example, if jiff 1.0 requires Rust
-1.20.0, then jiff 1.0.z for all values of `z` will also require Rust 1.20.0 or
-newer. However, jiff 1.y for `y > 0` may require a newer minimum version of
-Rust.
+Jiff does have other dependencies whose MSRV is outside the control of Jiff
+(for example, `windows-sys` and `portable-atomic`), and it's possible there
+may be a choice between "upgrade and increase the MSRV for those targets where
+the dependency is used" and "don't upgrade, retain the MSRV but potentially
+introduce additional copies of crates into downstream dependency trees." While
+such instances should be quite rare because of Jiff's conservative dependency
+philosophy, it's possible it could happen. In which case, I reserve the right
+to make a judgment call that may, in practice, result in a newer-than-1-year
+Rust compiler for targets where that dependency is used.
+
+As is standard in the Rust ecosystem, Jiff does not consider an increase in
+its MSRV to be a semver incompatible change. However, Jiff will limit MSRV
+increases to minor version updates. For example, if Jiff `1.0` requires Rust
+`1.20.0`, then Jiff `1.0.z` for all values of `z` will also require Rust
+`1.20.0` or newer. However, Jiff `1.y` for `y > 0` may require a newer minimum
+version of Rust.

@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-pack"
-version = "0.61.1"
+version = "0.77.0"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,10 +29,13 @@ description = "Implements git packs and related data structures"
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
 features = [
+    "sha1",
+    "sha256",
     "document-features",
     "pack-cache-lru-dynamic",
     "object-cache-dynamic",
@@ -56,14 +59,22 @@ object-cache-dynamic = [
 ]
 pack-cache-lru-dynamic = ["dep:clru"]
 pack-cache-lru-static = ["dep:uluru"]
+parallel = [
+    "gix-parallel/parallel",
+    "dep:crossbeam-deque",
+]
 serde = [
     "dep:serde",
     "gix-object/serde",
+    "gix-zlib/serde",
 ]
+sha1 = ["gix-hash/sha1"]
+sha256 = ["gix-hash/sha256"]
 streaming-input = [
     "dep:parking_lot",
     "dep:gix-tempfile",
 ]
+testing = []
 wasm = ["gix-diff?/wasm"]
 
 [lib]
@@ -75,45 +86,63 @@ doctest = false
 version = "0.6.1"
 optional = true
 
+[dependencies.crc32fast]
+version = "1.5.0"
+
+[dependencies.crossbeam-deque]
+version = "0.8.6"
+optional = true
+
 [dependencies.document-features]
 version = "0.2.0"
 optional = true
 
 [dependencies.gix-chunk]
-version = "^0.4.12"
+version = "^0.10.1"
 
 [dependencies.gix-diff]
-version = "^0.54.1"
+version = "^0.70.0"
 optional = true
 default-features = false
 
-[dependencies.gix-features]
-version = "^0.44.1"
-features = [
-    "crc32",
-    "progress",
-    "zlib",
-]
+[dependencies.gix-error]
+version = "^0.5.2"
 
 [dependencies.gix-hash]
-version = "^0.20.1"
+version = "^0.28.1"
 
 [dependencies.gix-hashtable]
-version = "^0.10.0"
+version = "^0.18.0"
 optional = true
 
 [dependencies.gix-object]
-version = "^0.51.1"
+version = "^0.66.1"
+
+[dependencies.gix-parallel]
+version = "^0.50.0"
 
 [dependencies.gix-path]
-version = "^0.10.21"
+version = "^0.14.1"
+
+[dependencies.gix-trace]
+version = "^0.3.1"
 
 [dependencies.gix-traverse]
-version = "^0.48.0"
+version = "^0.64.0"
 optional = true
 
+[dependencies.gix-utils]
+version = "^0.5.1"
+features = [
+    "interrupt",
+    "progress",
+]
+
+[dependencies.gix-zlib]
+version = "^0.4.0"
+
 [dependencies.memmap2]
-version = "0.9.7"
+version = "0.9.11"
 
 [dependencies.parking_lot]
 version = "0.12.4"
@@ -129,21 +158,35 @@ default-features = false
 [dependencies.smallvec]
 version = "1.15.1"
 
-[dependencies.thiserror]
-version = "2.0.17"
-
 [dependencies.uluru]
 version = "3.0.0"
 optional = true
 
-[dev-dependencies]
+[dev-dependencies.bstr]
+version = "1.12.0"
+features = ["std"]
+default-features = false
+
+[dev-dependencies.criterion]
+version = "0.8.2"
+
+[dev-dependencies.insta]
+version = "1.46.3"
+
+[dev-dependencies.maplit]
+version = "1.0.2"
+
+[dev-dependencies.prodash]
+version = "31.0.0"
+features = ["progress-log"]
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies.gix-tempfile]
-version = "^19.0.0"
+version = "^26.0.0"
 optional = true
 default-features = false
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -162,7 +205,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

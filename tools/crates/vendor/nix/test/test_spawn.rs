@@ -191,3 +191,12 @@ fn spawnp_cmd_does_not_exist() {
         spawn::posix_spawnp(bin, &actions, &attr, args, envs).unwrap_err();
     assert_eq!(errno, Errno::ENOENT);
 }
+
+#[test]
+fn file_actions_report_errors() {
+    // posix_spawn_file_actions_* return the error number directly instead of
+    // returning -1 and setting errno.
+    let mut actions = PosixSpawnFileActions::init().unwrap();
+    assert_eq!(actions.add_dup2(-1, 1), Err(Errno::EBADF));
+    assert_eq!(actions.add_close(-1), Err(Errno::EBADF));
+}

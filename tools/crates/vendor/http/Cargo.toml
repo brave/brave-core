@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.57.0"
 name = "http"
-version = "1.4.0"
+version = "1.5.0"
 authors = [
     "Alex Crichton <alex@alexcrichton.com>",
     "Carl Lerche <me@carllerche.com>",
@@ -68,7 +68,7 @@ version = "0.3"
 version = "1"
 
 [dev-dependencies.rand]
-version = "0.8.0"
+version = "0.10"
 
 [dev-dependencies.serde]
 version = "1.0"

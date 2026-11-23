@@ -200,7 +200,7 @@ impl Global {
         let global_epoch = self.try_advance(guard);
 
         let steps = if cfg!(crossbeam_sanitize) {
-            usize::max_value()
+            usize::MAX
         } else {
             Self::COLLECT_STEPS
         };
@@ -226,7 +226,12 @@ impl Global {
     /// `try_advance()` is annotated `#[cold]` because it is rarely called.
     #[cold]
     pub(crate) fn try_advance(&self, guard: &Guard) -> Epoch {
-        let global_epoch = self.epoch.load(Ordering::Relaxed);
+        // For ThreadSanitizer that does not understand fences, we simulate the effect of `load; fence`.
+        let global_epoch = self.epoch.load(if cfg!(crossbeam_sanitize_thread) {
+            Ordering::Acquire
+        } else {
+            Ordering::Relaxed
+        });
         atomic::fence(Ordering::SeqCst);
 
         // For ThreadSanitizer that does not understand fences, we simulate the equivalent effect.

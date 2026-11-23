@@ -11,10 +11,11 @@
 
 [package]
 edition = "2018"
+rust-version = "1.75.0"
 name = "filetime"
-version = "0.2.26"
+version = "0.2.30"
 authors = ["Alex Crichton <alex@alexcrichton.com>"]
-build = false
+build = "build.rs"
 autolib = false
 autobins = false
 autoexamples = false
@@ -43,15 +44,13 @@ version = "1.0.0"
 [dev-dependencies.tempfile]
 version = "3"
 
-[target.'cfg(target_os = "redox")'.dependencies.libredox]
-version = "0.1.0"
-
 [target."cfg(unix)".dependencies.libc]
 version = "0.2.27"
 
-[target."cfg(windows)".dependencies.windows-sys]
-version = "0.60.0"
-features = [
-    "Win32_Foundation",
-    "Win32_Storage_FileSystem",
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = [
+    "cfg(emulate_second_only_system)",
+    "cfg(rust_199)",
 ]

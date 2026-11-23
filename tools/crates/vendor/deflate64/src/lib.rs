@@ -6,6 +6,7 @@
 
 #![forbid(unsafe_code)]
 #![deny(rust_2018_idioms, nonstandard_style, future_incompatible)]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 mod buffer;
 mod huffman_tree;
@@ -14,6 +15,8 @@ mod input_buffer;
 mod output_window;
 mod stream;
 
+#[cfg(feature = "checkpoint")]
+pub use inflater_managed::checkpoint;
 pub use inflater_managed::InflaterManaged;
 pub use stream::Deflate64Decoder;
 

@@ -205,6 +205,6 @@ unsafe fn reordering_barrier(r: uint64x2_t) {
             "/* {r:v} */",
             r = in(vreg) r,
             options(nomem, nostack),
-        )
+        );
     }
 }

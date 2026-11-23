@@ -14,7 +14,7 @@
 
 use proc_macro2::{Ident, Span, TokenStream};
 use quote::{format_ident, quote, quote_spanned};
-use syn::{spanned::Spanned, Data, DeriveInput, FieldsUnnamed, Generics, Variant};
+use syn::{Data, DeriveInput, FieldsUnnamed, Generics, Variant, spanned::Spanned};
 
 use crate::derives::args;
 use crate::derives::args::collect_args_fields;
@@ -51,7 +51,7 @@ pub(crate) fn gen_for_enum(
 ) -> Result<TokenStream, syn::Error> {
     if !matches!(&*item.kind(), Kind::Command(_)) {
         abort! { item.kind().span(),
-            "`{}` cannot be used with `command`",
+            "`{}` cannot be used with `#[command]`",
             item.kind().name(),
         }
     }
@@ -64,6 +64,8 @@ pub(crate) fn gen_for_enum(
     let augmentation = gen_augment(variants, item, false)?;
     let augmentation_update = gen_augment(variants, item, true)?;
     let has_subcommand = gen_has_subcommand(variants)?;
+    let initial_app_methods = item.initial_top_level_methods();
+    let final_app_methods = item.final_top_level_methods();
 
     Ok(quote! {
         #[allow(
@@ -119,14 +121,19 @@ pub(crate) fn gen_for_enum(
             clippy::suspicious_else_formatting,
             clippy::almost_swapped,
             clippy::redundant_locals,
+            clippy::self_assignment,
         )]
         #[automatically_derived]
         impl #impl_generics clap::Subcommand for #item_name #ty_generics #where_clause {
-            fn augment_subcommands <'b>(__clap_app: clap::Command) -> clap::Command {
-                #augmentation
+            fn augment_subcommands <'b>(mut __clap_app: clap::Command) -> clap::Command {
+                __clap_app = __clap_app #initial_app_methods;
+                __clap_app = #augmentation;
+                __clap_app #final_app_methods
             }
-            fn augment_subcommands_for_update <'b>(__clap_app: clap::Command) -> clap::Command {
-                #augmentation_update
+            fn augment_subcommands_for_update <'b>(mut __clap_app: clap::Command) -> clap::Command {
+                __clap_app = __clap_app #initial_app_methods;
+                __clap_app = #augmentation_update;
+                __clap_app #final_app_methods
             }
             fn has_subcommand(__clap_name: &str) -> bool {
                 #has_subcommand
@@ -157,9 +164,7 @@ fn gen_augment(
 
                     _ => abort!(
                         variant,
-                        "The enum variant marked with `external_subcommand` must be \
-                             a single-typed tuple, and the type must be either `Vec<String>` \
-                             or `Vec<OsString>`."
+                        "invalid type for `#[command(external_subcommand)]`, expected a newtype variant with either a `Vec<String>` or `Vec<OsString>`"
                     ),
                 };
                 let deprecations = if !override_required {
@@ -170,13 +175,12 @@ fn gen_augment(
                 let subty = subty_if_name(ty, "Vec").ok_or_else(|| {
                     format_err!(
                         ty.span(),
-                        "The type must be `Vec<_>` \
-                             to be used with `external_subcommand`."
+                        "invalid type for `#[command(external_subcommand)]`, expected a `Vec<_>`"
                     )
                 })?;
                 let subcommand = quote_spanned! { kind.span()=>
                     #deprecations
-                    let #app_var = #app_var
+                    #app_var = #app_var
                         .external_subcommand_value_parser(clap::value_parser!(#subty));
                 };
                 Some(subcommand)
@@ -195,25 +199,25 @@ fn gen_augment(
                     let subcommand = if override_required {
                         quote! {
                             #deprecations
-                            let #app_var = #app_var
+                            #app_var = #app_var
                                 #next_help_heading
                                 #next_display_order;
-                            let #app_var = <#ty as clap::Subcommand>::augment_subcommands_for_update(#app_var);
+                            #app_var = <#ty as clap::Subcommand>::augment_subcommands_for_update(#app_var);
                         }
                     } else {
                         quote! {
                             #deprecations
-                            let #app_var = #app_var
+                            #app_var = #app_var
                                 #next_help_heading
                                 #next_display_order;
-                            let #app_var = <#ty as clap::Subcommand>::augment_subcommands(#app_var);
+                            #app_var = <#ty as clap::Subcommand>::augment_subcommands(#app_var);
                         }
                     };
                     Some(subcommand)
                 }
                 _ => abort!(
                     variant,
-                    "`flatten` is usable only with single-typed tuple variants"
+                    "invalid variant for `#[command(flatten)]`, expected a newtype variant"
                 ),
             },
 
@@ -221,7 +225,10 @@ fn gen_augment(
                 let subcommand_var = Ident::new("__clap_subcommand", Span::call_site());
                 let arg_block = match variant.fields {
                     Named(_) => {
-                        abort!(variant, "non single-typed tuple enums are not supported")
+                        abort!(
+                            variant,
+                            "invalid variant for `#[command(subcommand)]`, expected a newtype variant"
+                        )
                     }
                     Unit => quote!( #subcommand_var ),
                     Unnamed(FieldsUnnamed { ref unnamed, .. }) if unnamed.len() == 1 => {
@@ -241,7 +248,10 @@ fn gen_augment(
                         }
                     }
                     Unnamed(..) => {
-                        abort!(variant, "non single-typed tuple enums are not supported")
+                        abort!(
+                            variant,
+                            "invalid variant for `#[command(subcommand)]`, expected a newtype variant"
+                        )
                     }
                 };
 
@@ -262,14 +272,14 @@ fn gen_augment(
                     quote!()
                 };
                 let subcommand = quote! {
-                    let #app_var = #app_var.subcommand({
+                    #app_var = #app_var.subcommand({
                         #deprecations;
-                        let #subcommand_var = clap::Command::new(#name);
-                        let #subcommand_var = #subcommand_var
+                        let mut #subcommand_var = clap::Command::new(#name);
+                        #subcommand_var = #subcommand_var
                             .subcommand_required(true)
                             .arg_required_else_help(true);
-                        let #subcommand_var = #subcommand_var #initial_app_methods;
-                        let #subcommand_var = #arg_block;
+                        #subcommand_var = #subcommand_var #initial_app_methods;
+                        #subcommand_var = #arg_block;
                         #subcommand_var #final_from_attrs #override_methods
                     });
                 };
@@ -278,22 +288,22 @@ fn gen_augment(
 
             Kind::Command(_) => {
                 let subcommand_var = Ident::new("__clap_subcommand", Span::call_site());
-                let sub_augment = match variant.fields {
+                let (sub_augment, initial_app_methods, final_from_attrs) = match variant.fields {
                     Named(ref fields) => {
-                        // Defer to `gen_augment` for adding cmd methods
                         let fields = collect_args_fields(item, fields)?;
-                        args::gen_augment(&fields, &subcommand_var, item, override_required)?
+                        let sub_augment =
+                            args::gen_augment(&fields, &subcommand_var, item, override_required)?;
+                        (
+                            sub_augment,
+                            item.initial_top_level_methods(),
+                            item.final_top_level_methods(),
+                        )
                     }
-                    Unit => {
-                        let arg_block = quote!( #subcommand_var );
-                        let initial_app_methods = item.initial_top_level_methods();
-                        let final_from_attrs = item.final_top_level_methods();
-                        quote! {
-                            let #subcommand_var = #subcommand_var #initial_app_methods;
-                            let #subcommand_var = #arg_block;
-                            #subcommand_var #final_from_attrs
-                        }
-                    }
+                    Unit => (
+                        quote! { #subcommand_var },
+                        item.initial_top_level_methods(),
+                        item.final_top_level_methods(),
+                    ),
                     Unnamed(FieldsUnnamed { ref unnamed, .. }) if unnamed.len() == 1 => {
                         let ty = &unnamed[0].ty;
                         let arg_block = if override_required {
@@ -309,17 +319,26 @@ fn gen_augment(
                                 }
                             }
                         };
-                        let initial_app_methods = item.initial_top_level_methods();
-                        let final_from_attrs = item.final_top_level_methods();
-                        quote! {
-                            let #subcommand_var = #subcommand_var #initial_app_methods;
-                            let #subcommand_var = #arg_block;
-                            #subcommand_var #final_from_attrs
-                        }
+                        (
+                            arg_block,
+                            item.initial_top_level_methods(),
+                            item.final_top_level_methods(),
+                        )
                     }
                     Unnamed(..) => {
-                        abort!(variant, "non single-typed tuple enums are not supported")
+                        abort!(
+                            variant,
+                            "invalid variant for `#[command(subcommand)]`, expected a newtype variant"
+                        )
                     }
+                };
+
+                let sub_augment = if parent_item.defer() {
+                    quote! {
+                        #subcommand_var.defer(|mut #subcommand_var| { #sub_augment })
+                    }
+                } else {
+                    sub_augment
                 };
 
                 let deprecations = if !override_required {
@@ -329,10 +348,12 @@ fn gen_augment(
                 };
                 let name = item.cased_name();
                 let subcommand = quote! {
-                    let #app_var = #app_var.subcommand({
+                    #app_var = #app_var.subcommand({
                         #deprecations
-                        let #subcommand_var = clap::Command::new(#name);
-                        #sub_augment
+                        let mut #subcommand_var = clap::Command::new(#name)
+                            #initial_app_methods;
+                        #subcommand_var = #sub_augment;
+                        #subcommand_var #final_from_attrs
                     });
                 };
                 Some(subcommand)
@@ -346,14 +367,11 @@ fn gen_augment(
     } else {
         quote!()
     };
-    let initial_app_methods = parent_item.initial_top_level_methods();
-    let final_app_methods = parent_item.final_top_level_methods();
-    Ok(quote! {
+    Ok(quote! {{
         #deprecations;
-        let #app_var = #app_var #initial_app_methods;
         #( #subcommands )*;
-        #app_var #final_app_methods
-    })
+        #app_var
+    }})
 }
 
 fn gen_has_subcommand(variants: &[(&Variant, Item)]) -> Result<TokenStream, syn::Error> {
@@ -401,7 +419,7 @@ fn gen_has_subcommand(variants: &[(&Variant, Item)]) -> Result<TokenStream, syn:
             }
             _ => abort!(
                 variant,
-                "`flatten` is usable only with single-typed tuple variants"
+                "invalid variant for `#[command(flatten)]`, expected newtype variant"
             ),
         })
         .collect::<Result<Vec<_>, syn::Error>>()?;
@@ -438,8 +456,7 @@ fn gen_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStream, sy
                 if ext_subcmd.is_some() {
                     abort!(
                         item.kind().span(),
-                        "Only one variant can be marked with `external_subcommand`, \
-                         this is the second"
+                        "`#[command(external_subcommand)] can only be specified once and has already been specified"
                     );
                 }
 
@@ -448,9 +465,7 @@ fn gen_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStream, sy
 
                     _ => abort!(
                         variant,
-                        "The enum variant marked with `external_subcommand` must be \
-                         a single-typed tuple, and the type must be either `Vec<String>` \
-                         or `Vec<OsString>`."
+                        "invalid type for `#[command(external_subcommand)]`, expected a newtype variant with either a `Vec<String>` or `Vec<OsString>`"
                     ),
                 };
 
@@ -463,16 +478,14 @@ fn gen_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStream, sy
                         } else {
                             abort!(
                                 ty.span(),
-                                "The type must be either `Vec<String>` or `Vec<OsString>` \
-                                 to be used with `external_subcommand`."
+                                "invalid type for `#[command(external_subcommand)]`, expected a `Vec<String>` or `Vec<OsString>`"
                             );
                         }
                     }
 
                     None => abort!(
                         ty.span(),
-                        "The type must be either `Vec<String>` or `Vec<OsString>` \
-                         to be used with `external_subcommand`."
+                        "invalid type for `#[command(external_subcommand)]`, expected a `Vec<String>` or `Vec<OsString>`"
                     ),
                 };
 
@@ -528,7 +541,7 @@ fn gen_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStream, sy
             }
             _ => abort!(
                 variant,
-                "`flatten` is usable only with single-typed tuple variants"
+                "invalid variant for `#[command(flatten)]`, expected newtype variant"
             ),
         }
     }).collect::<Result<Vec<_>, syn::Error>>()?;
@@ -609,7 +622,7 @@ fn gen_update_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStr
             Unnamed(ref fields) => {
                 if fields.unnamed.len() == 1 {
                     (
-                        quote!((ref mut __clap_arg)),
+                        quote!((__clap_arg)),
                         quote!(clap::FromArgMatches::update_from_arg_matches_mut(
                             __clap_arg,
                             __clap_arg_matches
@@ -646,7 +659,7 @@ fn gen_update_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStr
             }
             _ => abort!(
                 variant,
-                "`flatten` is usable only with single-typed tuple variants"
+                "invalid variant for `#[command(flatten)]`, expected newtype variant"
             ),
         }
     }).collect::<Result<Vec<_>, _>>()?;

@@ -1,19 +1,9 @@
+use gix_error::Result;
 use std::io::Write;
 
-use crate::{data::output, exact_vec};
+use gix_error::{ResultExt, message};
 
-/// The error returned by `next()` in the [`FromEntriesIter`] iterator.
-#[allow(missing_docs)]
-#[derive(Debug, thiserror::Error)]
-pub enum Error<E>
-where
-    E: std::error::Error + 'static,
-{
-    #[error(transparent)]
-    Io(#[from] gix_hash::io::Error),
-    #[error(transparent)]
-    Input(E),
-}
+use crate::{data::output, exact_vec};
 
 /// An implementation of [`Iterator`] to write [encoded entries][output::Entry] to an inner implementation each time
 /// `next()` is called.
@@ -39,22 +29,17 @@ pub struct FromEntriesIter<I, W> {
     is_done: bool,
 }
 
-impl<I, W, E> FromEntriesIter<I, W>
+impl<I, W> FromEntriesIter<I, W>
 where
-    I: Iterator<Item = Result<Vec<output::Entry>, E>>,
+    I: Iterator<Item = Result<Vec<output::Entry>>>,
     W: std::io::Write,
-    E: std::error::Error + 'static,
 {
     /// Create a new instance reading [entries][output::Entry] from an `input` iterator and write pack data bytes to
     /// `output` writer, resembling a pack of `version` with exactly `num_entries` amount of objects contained in it.
     /// `object_hash` is the kind of hash to use for the pack checksum and maybe other places, depending on the version.
     ///
-    /// The input chunks are expected to be sorted already. You can use the [`InOrderIter`][gix_features::parallel::InOrderIter] to assure
+    /// The input chunks are expected to be sorted already. You can use the [`InOrderIter`][gix_parallel::InOrderIter] to assure
     /// this happens on the fly holding entire chunks in memory as long as needed for them to be dispensed in order.
-    ///
-    /// # Panics
-    ///
-    /// Not all combinations of `object_hash` and `version` are supported currently triggering assertion errors.
     pub fn new(
         input: I,
         output: W,
@@ -62,10 +47,6 @@ where
         version: crate::data::Version,
         object_hash: gix_hash::Kind,
     ) -> Self {
-        assert!(
-            matches!(version, crate::data::Version::V2),
-            "currently only pack version 2 can be written",
-        );
         FromEntriesIter {
             input,
             output: gix_hash::io::Write::new(output, object_hash),
@@ -91,18 +72,18 @@ where
         self.trailer
     }
 
-    fn next_inner(&mut self) -> Result<u64, Error<E>> {
+    fn next_inner(&mut self) -> Result<u64> {
         let previous_written = self.written;
         if let Some((version, num_entries)) = self.header_info.take() {
             let header_bytes = crate::data::header::encode(version, num_entries);
             self.output
                 .write_all(&header_bytes[..])
-                .map_err(gix_hash::io::Error::from)?;
+                .map_err(gix_hash::io::from_std_io)?;
             self.written += header_bytes.len() as u64;
         }
         match self.input.next() {
             Some(entries) => {
-                for entry in entries.map_err(Error::Input)? {
+                for entry in entries.or_raise(|| message("Pack entry input iterator failed"))? {
                     if entry.is_invalid() {
                         self.pack_offsets_and_validity.push((0, false));
                         continue;
@@ -117,24 +98,19 @@ where
                     });
                     self.written += header
                         .write_to(entry.decompressed_size as u64, &mut self.output)
-                        .map_err(gix_hash::io::Error::from)? as u64;
+                        .map_err(gix_hash::io::from_std_io)? as u64;
                     self.written += std::io::copy(&mut &*entry.compressed_data, &mut self.output)
-                        .map_err(gix_hash::io::Error::from)?;
+                        .map_err(gix_hash::io::from_std_io)?;
                 }
             }
             None => {
-                let digest = self
-                    .output
-                    .hash
-                    .clone()
-                    .try_finalize()
-                    .map_err(gix_hash::io::Error::from)?;
+                let digest = self.output.hash.clone().try_finalize()?;
                 self.output
                     .inner
                     .write_all(digest.as_slice())
-                    .map_err(gix_hash::io::Error::from)?;
+                    .map_err(gix_hash::io::from_std_io)?;
                 self.written += digest.as_slice().len() as u64;
-                self.output.inner.flush().map_err(gix_hash::io::Error::from)?;
+                self.output.inner.flush().map_err(gix_hash::io::from_std_io)?;
                 self.is_done = true;
                 self.trailer = Some(digest);
             }
@@ -143,14 +119,13 @@ where
     }
 }
 
-impl<I, W, E> Iterator for FromEntriesIter<I, W>
+impl<I, W> Iterator for FromEntriesIter<I, W>
 where
-    I: Iterator<Item = Result<Vec<output::Entry>, E>>,
+    I: Iterator<Item = Result<Vec<output::Entry>>>,
     W: std::io::Write,
-    E: std::error::Error + 'static,
 {
     /// The amount of bytes written to `out` if `Ok` or the error `E` received from the input.
-    type Item = Result<u64, Error<E>>;
+    type Item = Result<u64>;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.is_done {

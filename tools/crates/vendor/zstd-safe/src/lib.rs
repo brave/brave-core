@@ -70,6 +70,39 @@ pub type ErrorCode = usize;
 /// Either a success code (usually number of bytes written), or an error code.
 pub type SafeResult = Result<usize, ErrorCode>;
 
+/// The error code zstd itself returns when an allocation fails
+/// (`-ZSTD_error_memory_allocation` as a `size_t`), for the places where a
+/// context is allocated on the Rust side of a call.
+#[cfg(feature = "experimental")]
+const MEMORY_ALLOCATION_ERROR: ErrorCode =
+    (zstd_sys::ZSTD_ErrorCode::ZSTD_error_memory_allocation as usize)
+        .wrapping_neg();
+
+/// The error code zstd itself returns for a parameter it does not support
+/// (`-ZSTD_error_parameter_unsupported` as a `size_t`), for the parameters
+/// that are refused on the Rust side of a call.
+#[cfg(feature = "experimental")]
+const PARAMETER_UNSUPPORTED_ERROR: ErrorCode =
+    (zstd_sys::ZSTD_ErrorCode::ZSTD_error_parameter_unsupported as usize)
+        .wrapping_neg();
+
+/// The error code zstd itself returns for an operation the context is in no
+/// state to perform (`-ZSTD_error_stage_wrong` as a `size_t`), for the places
+/// where that has to be decided on the Rust side of a call.
+const STAGE_WRONG_ERROR: ErrorCode =
+    (zstd_sys::ZSTD_ErrorCode::ZSTD_error_stage_wrong as usize).wrapping_neg();
+
+/// The error code `ZSTD_compress2()` returns when the destination is too
+/// small, leaving its frame in progress (`-ZSTD_error_dstSize_tooSmall`).
+const DST_SIZE_TOO_SMALL_ERROR: ErrorCode =
+    (zstd_sys::ZSTD_ErrorCode::ZSTD_error_dstSize_tooSmall as usize)
+        .wrapping_neg();
+
+/// The largest frame zstd compresses on the calling thread when its size is
+/// known (`ZSTDMT_JOBSIZE_MIN` in zstd 1.5; older versions used larger
+/// values, which only makes this cautious).
+const ZSTDMT_JOBSIZE_MIN: usize = 512 << 10;
+
 /// Indicates an error happened when parsing the frame content size.
 ///
 /// The stream may be corrupted, or the given frame prefix was too small.
@@ -220,11 +253,109 @@ pub fn compress_bound(src_size: usize) -> usize {
     unsafe { zstd_sys::ZSTD_compressBound(src_size) }
 }
 
+/// Remembers an error that may have left a context in a state zstd considers
+/// undefined.
+///
+/// zstd.h says of both `ZSTD_compressStream2()` and `ZSTD_decompressStream()`
+/// that "if an operation ends with an error, it may leave [the context] in an
+/// undefined state", and that calling them again on such a state is undefined
+/// behaviour - the context has to be reset first. So once a streaming
+/// operation fails, refuse to run another one until something resets the
+/// context, and hand the original error back instead.
+#[derive(Clone, Debug, Default)]
+struct Poison(Option<ErrorCode>);
+
+impl Poison {
+    /// Fails with the error that poisoned the context, if there was one.
+    fn guard(&self) -> Result<(), ErrorCode> {
+        match self.0 {
+            Some(code) => Err(code),
+            None => Ok(()),
+        }
+    }
+
+    /// Remembers `res` if it failed, and passes it through.
+    fn record(&mut self, res: SafeResult) -> SafeResult {
+        if let Err(code) = res {
+            self.0 = Some(code);
+        }
+        res
+    }
+
+    /// The context was reset, so it is usable again.
+    fn clear(&mut self) {
+        self.0 = None;
+    }
+}
+
+/// What a `CCtx` knows about its worker threads (`NbWorkers`).
+#[derive(Clone, Copy, Debug, Default)]
+struct Workers {
+    /// `NbWorkers` was ever set to a non-zero value, see `guard_own_tables`.
+    ever: bool,
+    /// `NbWorkers` is currently set to a non-zero value.
+    requested: bool,
+    /// A frame was started while `NbWorkers` was set, and is not finished.
+    ///
+    /// Its jobs may be running on the worker threads, reading the context's
+    /// dictionary and job table. zstd up to 1.5.7 does not wait for them when
+    /// the frame is abandoned: not on a session reset, not before a short
+    /// frame (which it compresses on the calling thread), and not before
+    /// freeing the dictionary when the context is freed. So the frame is
+    /// drained first, see `CCtx::drain()`.
+    pending: bool,
+    /// `ZSTD_e_end` was given for the `pending` frame. zstd then answers
+    /// `ZSTD_e_continue` by resetting the session without waiting for the
+    /// jobs, so that is refused here first.
+    ended: bool,
+    /// A `ZSTD_e_end` call took all of its input: zstd made the frame's last
+    /// job. It would hand any new input to a worker as a job after the last
+    /// one, which waits forever, so that is refused here first.
+    last: bool,
+    /// The size pledged for the next frame is short (see `short`).
+    pledged_short: bool,
+    /// The `pending` frame is known to be compressed on the calling thread:
+    /// its size is known (pledged, or given whole with `ZSTD_e_end`), and is
+    /// short (zstd hands out no jobs for a frame of at most
+    /// `ZSTDMT_JOBSIZE_MIN`).
+    short: bool,
+    /// The `pending` frame may have handed jobs to the worker threads: it
+    /// took some input, and is not `short`.
+    jobs: bool,
+    /// A job failed. zstd up to 1.5.7 can then keep a job it had prepared but
+    /// not handed to a worker yet (`jobReady`), after clearing it: the next
+    /// multithreaded frame hands that empty job to a worker, which crashes.
+    /// That stays in the context's multithreading state, which only freeing
+    /// the context frees, so no other multithreaded frame is started on it.
+    broken: bool,
+    /// `StableOutBuffer` is enabled. Draining needs an output buffer of its
+    /// own, which zstd then refuses, so it is not allowed with workers.
+    stable_out: bool,
+}
+
 /// Compression context
 ///
 /// It is recommended to allocate a single context per thread and re-use it
 /// for many compression operations.
-pub struct CCtx<'a>(NonNull<zstd_sys::ZSTD_CCtx>, PhantomData<&'a ()>);
+///
+/// # Worker threads and leaks
+///
+/// With `CParameter::NbWorkers`, the jobs of a frame run on worker threads,
+/// which read the dictionary. Anything that abandons a frame in progress
+/// waits for them, dropping the context included (see
+/// [`CCtx::wait_for_workers()`]). A context that is leaked instead
+/// (`mem::forget`, `Box::leak`, a reference cycle) never waits: with a
+/// dictionary or prefix it only *borrows* ([`CCtx::ref_cdict()`],
+/// [`CCtx::ref_prefix()`]), the workers may then read it after it is
+/// dropped. Do not leak a context that is compressing with worker threads
+/// from borrowed data. A dictionary loaded with
+/// [`CCtx::load_dictionary()`] is copied, and leaks with the context.
+pub struct CCtx<'a>(
+    NonNull<zstd_sys::ZSTD_CCtx>,
+    PhantomData<&'a ()>,
+    Poison,
+    Workers,
+);
 
 impl Default for CCtx<'_> {
     fn default() -> Self {
@@ -241,6 +372,8 @@ impl<'a> CCtx<'a> {
         Some(CCtx(
             NonNull::new(unsafe { zstd_sys::ZSTD_createCCtx() })?,
             PhantomData,
+            Poison::default(),
+            Workers::default(),
         ))
     }
 
@@ -254,6 +387,18 @@ impl<'a> CCtx<'a> {
             .expect("zstd returned null pointer when creating new context")
     }
 
+    /// Ends the session of a one-shot compression, and passes `res` through.
+    ///
+    /// zstd.h has these calls imply a reset, but most of them leave the stream
+    /// stage alone (and their source size behind as the pledged one), while
+    /// `ZSTD_compress2()` stays mid-frame when it fails. A later stream call
+    /// would then carry on from a state that still points at buffers and
+    /// dictionaries borrowed for that one call. So reset explicitly: the next
+    /// stream starts from scratch.
+    fn finish_one_shot(&mut self, res: SafeResult) -> SafeResult {
+        self.reset(ResetDirective::SessionOnly).and(res)
+    }
+
     /// Wraps the `ZSTD_compressCCtx()` function
     pub fn compress<C: WriteBuf + ?Sized>(
         &mut self,
@@ -261,8 +406,12 @@ impl<'a> CCtx<'a> {
         src: &[u8],
         compression_level: CompressionLevel,
     ) -> SafeResult {
+        // The one-shot calls run on the calling thread, but end by resetting
+        // the session (see `finish_one_shot`), and overwrite the parameters a
+        // multithreaded frame left open was started with.
+        self.drain();
         // Safety: ZSTD_compressCCtx returns how many bytes were written.
-        unsafe {
+        let res = unsafe {
             dst.write_from(|buffer, capacity| {
                 parse_code(zstd_sys::ZSTD_compressCCtx(
                     self.0.as_ptr(),
@@ -273,7 +422,8 @@ impl<'a> CCtx<'a> {
                     compression_level,
                 ))
             })
-        }
+        };
+        self.finish_one_shot(res)
     }
 
     /// Wraps the `ZSTD_compress2()` function.
@@ -282,18 +432,76 @@ impl<'a> CCtx<'a> {
         dst: &mut C,
         src: &[u8],
     ) -> SafeResult {
-        // Safety: ZSTD_compress2 returns how many bytes were written.
-        unsafe {
-            dst.write_from(|buffer, capacity| {
-                parse_code(zstd_sys::ZSTD_compress2(
-                    self.0.as_ptr(),
-                    buffer,
-                    capacity,
-                    ptr_void(src),
-                    src.len(),
-                ))
-            })
+        if !self.3.requested {
+            // Safety: ZSTD_compress2 returns how many bytes were written.
+            let res = unsafe {
+                dst.write_from(|buffer, capacity| {
+                    parse_code(zstd_sys::ZSTD_compress2(
+                        self.0.as_ptr(),
+                        buffer,
+                        capacity,
+                        ptr_void(src),
+                        src.len(),
+                    ))
+                })
+            };
+            // Unlike the others, this starts by resetting the session, and
+            // ends it when it succeeds. When it fails, it stays mid-frame:
+            // make streaming calls wait for an explicit reset.
+            self.2.clear();
+            return self.2.record(res);
         }
+
+        // With worker threads, a frame this leaves in progress must be one
+        // that can be waited for later, see `drain()`. `ZSTD_compress2()`
+        // runs its frame with stable buffers, and zstd would then refuse any
+        // other buffer: do what it does, but with ordinary ones. That costs
+        // nothing to a multithreaded frame, which copies its input and output
+        // anyway. A short frame, compressed on the calling thread, goes
+        // straight to the destination when it can hold the whole frame, and
+        // through a copy otherwise.
+        // Waiting for the frame in progress may find that one of its jobs
+        // failed: check `broken` after.
+        self.reset(ResetDirective::SessionOnly)?;
+        self.guard_broken()?;
+        let mut raw = Ok(0);
+        let mut taken = 0;
+        // Safety: ZSTD_compressStream2 reports how many bytes it wrote in
+        // `output.pos`.
+        let res = unsafe {
+            dst.write_from(|buffer, capacity| {
+                let mut output = zstd_sys::ZSTD_outBuffer {
+                    dst: buffer,
+                    size: capacity,
+                    pos: 0,
+                };
+                let mut input = zstd_sys::ZSTD_inBuffer {
+                    src: ptr_void(src),
+                    size: src.len(),
+                    pos: 0,
+                };
+                raw = parse_code(zstd_sys::ZSTD_compressStream2(
+                    self.0.as_ptr(),
+                    &mut output,
+                    &mut input,
+                    zstd_sys::ZSTD_EndDirective::ZSTD_e_end,
+                ));
+                taken = input.pos;
+                match raw {
+                    Ok(0) => Ok(output.pos),
+                    // As `ZSTD_compress2()`: the frame stays in progress.
+                    Ok(_) => Err(DST_SIZE_TOO_SMALL_ERROR),
+                    Err(code) => Err(code),
+                }
+            })
+        };
+        self.track_frame(
+            raw,
+            zstd_sys::ZSTD_EndDirective::ZSTD_e_end,
+            src.len(),
+            taken,
+        );
+        self.2.record(res)
     }
 
     /// Wraps the `ZSTD_compress_usingDict()` function.
@@ -304,8 +512,10 @@ impl<'a> CCtx<'a> {
         dict: &[u8],
         compression_level: CompressionLevel,
     ) -> SafeResult {
+        // See `compress()`.
+        self.drain();
         // Safety: ZSTD_compress_usingDict returns how many bytes were written.
-        unsafe {
+        let res = unsafe {
             dst.write_from(|buffer, capacity| {
                 parse_code(zstd_sys::ZSTD_compress_usingDict(
                     self.0.as_ptr(),
@@ -318,7 +528,8 @@ impl<'a> CCtx<'a> {
                     compression_level,
                 ))
             })
-        }
+        };
+        self.finish_one_shot(res)
     }
 
     /// Wraps the `ZSTD_compress_usingCDict()` function.
@@ -328,8 +539,10 @@ impl<'a> CCtx<'a> {
         src: &[u8],
         cdict: &CDict<'_>,
     ) -> SafeResult {
+        // See `compress()`.
+        self.drain();
         // Safety: ZSTD_compress_usingCDict returns how many bytes were written.
-        unsafe {
+        let res = unsafe {
             dst.write_from(|buffer, capacity| {
                 parse_code(zstd_sys::ZSTD_compress_usingCDict(
                     self.0.as_ptr(),
@@ -340,7 +553,8 @@ impl<'a> CCtx<'a> {
                     cdict.0.as_ptr(),
                 ))
             })
-        }
+        };
+        self.finish_one_shot(res)
     }
 
     /// Initializes the context with the given compression level.
@@ -348,12 +562,18 @@ impl<'a> CCtx<'a> {
     /// This is equivalent to running:
     /// * `reset()`
     /// * `set_parameter(CompressionLevel, compression_level)`
+    ///
+    /// Abandons the current frame, if any. With worker threads, this first
+    /// waits for its jobs, see [`CCtx::wait_for_workers()`].
     pub fn init(&mut self, compression_level: CompressionLevel) -> SafeResult {
+        // This also resets the session and unloads the dictionary.
+        self.drain();
+        self.2.clear();
         // Safety: Just FFI
         let code = unsafe {
             zstd_sys::ZSTD_initCStream(self.0.as_ptr(), compression_level)
         };
-        parse_code(code)
+        self.2.record(parse_code(code))
     }
 
     /// Wraps the `ZSTD_initCStream_srcSize()` function.
@@ -365,6 +585,8 @@ impl<'a> CCtx<'a> {
         compression_level: CompressionLevel,
         pledged_src_size: u64,
     ) -> SafeResult {
+        self.drain();
+        self.2.clear();
         // Safety: Just FFI
         let code = unsafe {
             zstd_sys::ZSTD_initCStream_srcSize(
@@ -385,6 +607,8 @@ impl<'a> CCtx<'a> {
         dict: &[u8],
         compression_level: CompressionLevel,
     ) -> SafeResult {
+        self.drain();
+        self.2.clear();
         // Safety: Just FFI
         let code = unsafe {
             zstd_sys::ZSTD_initCStream_usingDict(
@@ -398,13 +622,27 @@ impl<'a> CCtx<'a> {
     }
 
     /// Wraps the `ZSTD_initCStream_usingCDict()` function.
+    ///
+    /// Dictionary must outlive the context.
+    ///
+    /// ```compile_fail,E0515
+    /// # #![allow(deprecated)]
+    /// fn compressor() -> zstd_safe::CCtx<'static> {
+    ///     let cdict = zstd_safe::CDict::create(b"dictionary", 3);
+    ///     let mut cctx = zstd_safe::CCtx::create();
+    ///     cctx.init_using_cdict(&cdict).unwrap();
+    ///     cctx // `cdict` would be dropped while `cctx` still points at it.
+    /// }
+    /// ```
     #[cfg(feature = "experimental")]
     #[cfg_attr(feature = "doc-cfg", doc(cfg(feature = "experimental")))]
     #[deprecated]
-    pub fn init_using_cdict<'b>(&mut self, cdict: &CDict<'b>) -> SafeResult
+    pub fn init_using_cdict<'b>(&mut self, cdict: &'a CDict<'b>) -> SafeResult
     where
         'b: 'a, // Dictionary outlives the stream.
     {
+        self.drain();
+        self.2.clear();
         // Safety: Just FFI
         let code = unsafe {
             zstd_sys::ZSTD_initCStream_usingCDict(
@@ -412,7 +650,7 @@ impl<'a> CCtx<'a> {
                 cdict.0.as_ptr(),
             )
         };
-        parse_code(code)
+        self.2.record(parse_code(code))
     }
 
     /// Tries to load a dictionary.
@@ -424,7 +662,11 @@ impl<'a> CCtx<'a> {
     /// create a `CDict` first, then loads that.
     ///
     /// The dictionary will apply to all compressed frames, until a new dictionary is set.
+    ///
+    /// Like zstd, this fails with a `stage_wrong` error while a frame is in
+    /// progress: reset the session first (see [`CCtx::wait_for_workers()`]).
     pub fn load_dictionary(&mut self, dict: &[u8]) -> SafeResult {
+        self.guard_workers()?;
         // Safety: Just FFI
         parse_code(unsafe {
             zstd_sys::ZSTD_CCtx_loadDictionary(
@@ -437,11 +679,16 @@ impl<'a> CCtx<'a> {
 
     /// Wraps the `ZSTD_CCtx_refCDict()` function.
     ///
-    /// Dictionary must outlive the context.
+    /// Dictionary must outlive the context. With worker threads, do not leak
+    /// the context, see [its documentation](CCtx#worker-threads-and-leaks).
+    ///
+    /// Like zstd, this fails with a `stage_wrong` error while a frame is in
+    /// progress: reset the session first (see [`CCtx::wait_for_workers()`]).
     pub fn ref_cdict<'b>(&mut self, cdict: &CDict<'b>) -> SafeResult
     where
         'b: 'a,
     {
+        self.guard_workers()?;
         // Safety: Just FFI
         parse_code(unsafe {
             zstd_sys::ZSTD_CCtx_refCDict(self.0.as_ptr(), cdict.0.as_ptr())
@@ -451,7 +698,11 @@ impl<'a> CCtx<'a> {
     /// Return to "no-dictionary" mode.
     ///
     /// This will disable any dictionary/prefix previously registered for future frames.
+    ///
+    /// Like zstd, this fails with a `stage_wrong` error while a frame is in
+    /// progress: reset the session first (see [`CCtx::wait_for_workers()`]).
     pub fn disable_dictionary(&mut self) -> SafeResult {
+        self.guard_workers()?;
         // Safety: Just FFI
         parse_code(unsafe {
             zstd_sys::ZSTD_CCtx_loadDictionary(
@@ -467,10 +718,16 @@ impl<'a> CCtx<'a> {
     /// Just like a dictionary, decompression will need to be given the same prefix.
     ///
     /// This is best used if the "prefix" looks like the data to be compressed.
+    /// With worker threads, do not leak the context, see
+    /// [its documentation](CCtx#worker-threads-and-leaks).
+    ///
+    /// Like zstd, this fails with a `stage_wrong` error while a frame is in
+    /// progress: reset the session first (see [`CCtx::wait_for_workers()`]).
     pub fn ref_prefix<'b>(&mut self, prefix: &'b [u8]) -> SafeResult
     where
         'b: 'a,
     {
+        self.guard_workers()?;
         // Safety: Just FFI
         parse_code(unsafe {
             zstd_sys::ZSTD_CCtx_refPrefix(
@@ -497,6 +754,15 @@ impl<'a> CCtx<'a> {
         output: &mut OutBuffer<'_, C>,
         input: &mut InBuffer<'_>,
     ) -> SafeResult {
+        use zstd_sys::ZSTD_EndDirective::ZSTD_e_continue;
+        self.2.guard()?;
+        if let Some(res) =
+            self.before_stream(input.pos == input.src.len(), ZSTD_e_continue)
+        {
+            // Any input is welcome.
+            return res.map(|_| Self::in_size());
+        }
+        let remaining = input.src.len().saturating_sub(input.pos);
         let mut output = output.wrap();
         let mut input = input.wrap();
         // Safety: Just FFI
@@ -507,7 +773,11 @@ impl<'a> CCtx<'a> {
                 ptr_mut(&mut input),
             )
         };
-        parse_code(code)
+        let taken = input.buf.pos.saturating_sub(input.parent.pos);
+        let res = output.check(parse_code(code));
+        let res = self.2.record(input.check(res));
+        self.track_frame(res, ZSTD_e_continue, remaining, taken);
+        res
     }
 
     /// Performs a step of a streaming compression operation.
@@ -531,17 +801,29 @@ impl<'a> CCtx<'a> {
         input: &mut InBuffer<'_>,
         end_op: zstd_sys::ZSTD_EndDirective,
     ) -> SafeResult {
+        self.2.guard()?;
+        if let Some(res) =
+            self.before_stream(input.pos == input.src.len(), end_op)
+        {
+            return res;
+        }
+        let remaining = input.src.len().saturating_sub(input.pos);
         let mut output = output.wrap();
         let mut input = input.wrap();
         // Safety: Just FFI
-        parse_code(unsafe {
+        let code = unsafe {
             zstd_sys::ZSTD_compressStream2(
                 self.0.as_ptr(),
                 ptr_mut(&mut output),
                 ptr_mut(&mut input),
                 end_op,
             )
-        })
+        };
+        let taken = input.buf.pos.saturating_sub(input.parent.pos);
+        let res = output.check(parse_code(code));
+        let res = self.2.record(input.check(res));
+        self.track_frame(res, end_op, remaining, taken);
+        res
     }
 
     /// Flush any intermediate buffer.
@@ -553,12 +835,19 @@ impl<'a> CCtx<'a> {
         &mut self,
         output: &mut OutBuffer<'_, C>,
     ) -> SafeResult {
+        use zstd_sys::ZSTD_EndDirective::ZSTD_e_flush;
+        self.2.guard()?;
+        if let Some(res) = self.before_stream(true, ZSTD_e_flush) {
+            return res;
+        }
         let mut output = output.wrap();
         // Safety: Just FFI
         let code = unsafe {
             zstd_sys::ZSTD_flushStream(self.0.as_ptr(), ptr_mut(&mut output))
         };
-        parse_code(code)
+        let res = self.2.record(output.check(parse_code(code)));
+        self.track_frame(res, ZSTD_e_flush, 0, 0);
+        res
     }
 
     /// Ends the stream.
@@ -570,12 +859,205 @@ impl<'a> CCtx<'a> {
         &mut self,
         output: &mut OutBuffer<'_, C>,
     ) -> SafeResult {
+        use zstd_sys::ZSTD_EndDirective::ZSTD_e_end;
+        self.2.guard()?;
+        if let Some(res) = self.before_stream(true, ZSTD_e_end) {
+            return res;
+        }
         let mut output = output.wrap();
         // Safety: Just FFI
         let code = unsafe {
             zstd_sys::ZSTD_endStream(self.0.as_ptr(), ptr_mut(&mut output))
         };
-        parse_code(code)
+        let res = self.2.record(output.check(parse_code(code)));
+        self.track_frame(res, ZSTD_e_end, 0, 0);
+        res
+    }
+
+    /// Decides whether a streaming call may reach zstd, see `Workers`.
+    ///
+    /// Returns what the call should return instead when it may not.
+    fn before_stream(
+        &self,
+        no_input: bool,
+        end_op: zstd_sys::ZSTD_EndDirective,
+    ) -> Option<SafeResult> {
+        use zstd_sys::ZSTD_EndDirective::{ZSTD_e_continue, ZSTD_e_end};
+        if !self.3.requested {
+            return None;
+        }
+        if self.3.broken {
+            return Some(Err(STAGE_WRONG_ERROR));
+        }
+        if self.3.pending {
+            if (self.3.ended && end_op == ZSTD_e_continue)
+                || (self.3.last && !no_input)
+            {
+                return Some(Err(STAGE_WRONG_ERROR));
+            }
+        } else if no_input && end_op != ZSTD_e_end {
+            // Starting a frame with nothing in it. If it was then ended,
+            // zstd up to 1.5.7 would hand an empty job to a worker, which its
+            // own wait on errors (`ZSTDMT_waitForAllJobsCompleted`) takes for
+            // done before the worker even starts. `drain()` does wait for it,
+            // so this is only a safeguard: wait for some input, nothing would
+            // have been written yet anyway. (A frame that starts with
+            // `ZSTD_e_end` takes the size of its input, so an empty one is
+            // compressed on the calling thread.)
+            return Some(Ok(0));
+        }
+        None
+    }
+
+    /// Records what a streaming call left open, see `Workers`.
+    ///
+    /// `given` is how much input the call was given, and `taken` how much of
+    /// it zstd took.
+    fn track_frame(
+        &mut self,
+        res: SafeResult,
+        end_op: zstd_sys::ZSTD_EndDirective,
+        given: usize,
+        taken: usize,
+    ) {
+        use zstd_sys::ZSTD_EndDirective::ZSTD_e_end;
+        // A pledged size is for the frame this call started or continued.
+        let pledged_short = core::mem::take(&mut self.3.pledged_short);
+        if !self.3.requested {
+            return;
+        }
+        if !self.3.pending {
+            // This call started the frame. Given whole, its size is the
+            // input's, whatever was pledged.
+            self.3.short = if end_op == ZSTD_e_end {
+                given <= ZSTDMT_JOBSIZE_MIN
+            } else {
+                pledged_short
+            };
+        }
+        self.3.jobs |= taken > 0 && !self.3.short;
+        match res {
+            Ok(0) if end_op == ZSTD_e_end => self.end_frame(),
+            Ok(_) => {
+                self.3.pending = true;
+                if end_op == ZSTD_e_end {
+                    self.3.ended = true;
+                    self.3.last |= taken == given;
+                }
+            }
+            // When a job failed, zstd waited for the others and reset the
+            // session (refused directives and buffers never get that far).
+            // Otherwise, there are no jobs. Either way, nothing is left to
+            // wait for.
+            Err(_) => {
+                self.3.broken |= self.3.jobs;
+                self.end_frame();
+            }
+        }
+    }
+
+    /// Records that no frame is in progress anymore.
+    fn end_frame(&mut self) {
+        self.3.pending = false;
+        self.3.ended = false;
+        self.3.last = false;
+        self.3.short = false;
+        self.3.jobs = false;
+    }
+
+    /// Waits for the jobs of the frame in progress, if any, so that it can
+    /// be abandoned.
+    ///
+    /// Asking zstd to flush everything waits for every job to be done and
+    /// its output flushed (here to a scratch buffer, and thrown away). This
+    /// also hands a worker the job zstd prepared but could not hand out yet.
+    /// That compresses what was left in zstd's input buffer as one more
+    /// job: wasted work, but bounded by one job. Starting a new frame would
+    /// avoid it, but zstd up to 1.5.7 can then hand that prepared job out
+    /// after clearing it, and a worker crashes.
+    fn drain(&mut self) {
+        if !self.3.pending {
+            return;
+        }
+        let mut scratch = [0u8; 4096];
+        loop {
+            let mut output = zstd_sys::ZSTD_outBuffer {
+                dst: ptr_mut_void(&mut scratch[..]),
+                size: scratch.len(),
+                pos: 0,
+            };
+            let mut input = zstd_sys::ZSTD_inBuffer {
+                src: ptr_void(&[]),
+                size: 0,
+                pos: 0,
+            };
+            // Safety: Just FFI, with buffers that live through the call.
+            let code = unsafe {
+                zstd_sys::ZSTD_compressStream2(
+                    self.0.as_ptr(),
+                    &mut output,
+                    &mut input,
+                    zstd_sys::ZSTD_EndDirective::ZSTD_e_flush,
+                )
+            };
+            match parse_code(code) {
+                Ok(0) => break,
+                Ok(_) => continue,
+                // A job failed: see `track_frame`.
+                Err(_) => {
+                    self.3.broken |= self.3.jobs;
+                    break;
+                }
+            }
+        }
+        self.end_frame();
+    }
+
+    /// Fails while a frame is in progress (zstd refuses these calls then).
+    ///
+    /// zstd up to 1.5.7 would also take them after the session was reset
+    /// while worker threads were still running jobs, freeing what they read:
+    /// every reset here waits for them first, and this keeps the error the
+    /// same whatever the library does.
+    fn guard_workers(&self) -> Result<(), ErrorCode> {
+        if self.3.pending {
+            return Err(STAGE_WRONG_ERROR);
+        }
+        Ok(())
+    }
+
+    /// Fails if a multithreaded call failed on this context, see
+    /// `Workers::broken`.
+    fn guard_broken(&self) -> Result<(), ErrorCode> {
+        if self.3.requested && self.3.broken {
+            return Err(STAGE_WRONG_ERROR);
+        }
+        Ok(())
+    }
+
+    /// Abandons the current frame, if any, and waits for the worker threads
+    /// to be done with it.
+    ///
+    /// With `CParameter::NbWorkers`, the jobs of a frame run on worker
+    /// threads, reading the dictionary. Anything that abandons a frame in
+    /// progress waits for them first: a session reset (and `init()`, which
+    /// implies one), a one-shot compression, and dropping the context. This
+    /// is the same as `reset(SessionOnly)`. Waiting first compresses what was
+    /// left of the frame's input as one more job, and throws the result away.
+    ///
+    /// After a job failed on a worker thread (for instance because the frame
+    /// was given more than its pledged size), the context refuses any
+    /// streaming call or `compress2()` while `NbWorkers` is set, and setting
+    /// it again (with a `stage_wrong` error): zstd up to 1.5.7, the version
+    /// bundled here, can leave a cleared job behind that the next
+    /// multithreaded frame would hand to a worker, which crashes. Create a new
+    /// context then, or set `NbWorkers` to 0.
+    ///
+    /// Once a `ZSTD_e_end` call took all of its input, a frame takes no more:
+    /// that is refused with a `stage_wrong` error too, instead of the worker
+    /// threads waiting forever for a job after the last one.
+    pub fn wait_for_workers(&mut self) -> SafeResult {
+        self.reset(ResetDirective::SessionOnly)
     }
 
     /// Returns the size currently used by this context.
@@ -590,18 +1072,65 @@ impl<'a> CCtx<'a> {
     ///
     /// Depending on the reset mode, it can reset the session, the parameters, or both.
     ///
+    /// Resetting the session abandons the frame in progress, if any: with
+    /// worker threads, this first waits for its jobs, see
+    /// [`CCtx::wait_for_workers()`]. Like zstd, resetting only the parameters
+    /// fails with a `stage_wrong` error while a frame is in progress.
+    ///
     /// Wraps the `ZSTD_CCtx_reset()` function.
     pub fn reset(&mut self, reset: ResetDirective) -> SafeResult {
+        let resets_parameters = !matches!(reset, ResetDirective::SessionOnly);
+        if reset.resets_session() {
+            self.drain();
+        } else {
+            self.guard_workers()?;
+        }
+        let resets_session = reset.resets_session();
         // Safety: Just FFI
-        parse_code(unsafe {
+        let res = parse_code(unsafe {
             zstd_sys::ZSTD_CCtx_reset(self.0.as_ptr(), reset.as_sys())
-        })
+        });
+        if res.is_ok() && resets_session {
+            self.2.clear();
+            self.3.pledged_short = false;
+        }
+        if res.is_ok() && resets_parameters {
+            self.3.requested = false;
+            self.3.stable_out = false;
+        }
+        res
     }
 
     /// Sets a compression parameter.
     ///
     /// Some of these parameters need to be set during de-compression as well.
+    ///
+    /// Like zstd, changing `NbWorkers` fails with a `stage_wrong` error while
+    /// a frame is in progress, and so does setting it to a non-zero value
+    /// after a multithreaded call failed (see [`CCtx::wait_for_workers()`]).
+    /// `NbWorkers` and `StableOutBuffer` cannot be used together.
     pub fn set_parameter(&mut self, param: CParameter) -> SafeResult {
+        match param {
+            CParameter::NbWorkers(workers) => {
+                // zstd would resize the job table the old jobs still use.
+                self.guard_workers()?;
+                if workers != 0 {
+                    if self.3.broken {
+                        return Err(STAGE_WRONG_ERROR);
+                    }
+                    #[cfg(feature = "experimental")]
+                    if self.3.stable_out {
+                        return Err(PARAMETER_UNSUPPORTED_ERROR);
+                    }
+                }
+            }
+            // Waiting for the workers needs an output buffer of its own.
+            #[cfg(feature = "experimental")]
+            CParameter::StableOutBuffer(true) if self.3.requested => {
+                return Err(PARAMETER_UNSUPPORTED_ERROR);
+            }
+            _ => (),
+        }
         // TODO: Until bindgen properly generates a binding for this, we'll need to do it here.
 
         #[cfg(feature = "experimental")]
@@ -648,8 +1177,13 @@ impl<'a> CCtx<'a> {
             EnableDedicatedDictSearch(enable) => {
                 (ZSTD_c_enableDedicatedDictSearch, enable as c_int)
             }
+            // In stable mode zstd keeps reading from the `InBuffer` of one
+            // call during `flush_stream`/`end_stream`, but the slice is only
+            // borrowed for that one call: the safe API cannot uphold this.
             #[cfg(feature = "experimental")]
-            StableInBuffer(stable) => (ZSTD_c_stableInBuffer, stable as c_int),
+            StableInBuffer(true) => return Err(PARAMETER_UNSUPPORTED_ERROR),
+            #[cfg(feature = "experimental")]
+            StableInBuffer(false) => (ZSTD_c_stableInBuffer, 0),
             #[cfg(feature = "experimental")]
             StableOutBuffer(stable) => {
                 (ZSTD_c_stableOutBuffer, stable as c_int)
@@ -718,9 +1252,18 @@ impl<'a> CCtx<'a> {
         };
 
         // Safety: Just FFI
-        parse_code(unsafe {
+        let res = parse_code(unsafe {
             zstd_sys::ZSTD_CCtx_setParameter(self.0.as_ptr(), param, value)
-        })
+        });
+        if res.is_ok() && matches!(param, ZSTD_c_nbWorkers) {
+            self.3.requested = value != 0;
+            self.3.ever |= value != 0;
+        }
+        #[cfg(feature = "experimental")]
+        if res.is_ok() && matches!(param, ZSTD_c_stableOutBuffer) {
+            self.3.stable_out = value != 0;
+        }
+        res
     }
 
     /// Guarantee that the input size will be this value.
@@ -736,38 +1279,69 @@ impl<'a> CCtx<'a> {
         pledged_src_size: Option<u64>,
     ) -> SafeResult {
         // Safety: Just FFI
-        parse_code(unsafe {
+        let res = parse_code(unsafe {
             zstd_sys::ZSTD_CCtx_setPledgedSrcSize(
                 self.0.as_ptr(),
                 pledged_src_size.unwrap_or(CONTENTSIZE_UNKNOWN) as c_ulonglong,
             )
-        })
+        });
+        if res.is_ok() {
+            // See `Workers::short`.
+            self.3.pledged_short = matches!(
+                pledged_src_size,
+                Some(size) if size <= ZSTDMT_JOBSIZE_MIN as u64
+            );
+        }
+        res
+    }
+
+    /// Fails if the tables of this context may not be the ones its applied
+    /// parameters describe.
+    ///
+    /// Starting a multi-threaded frame overwrites the applied parameters with
+    /// those of the workers, but leaves the context's own stage and workspace
+    /// as the last single-threaded frame left them. If that frame was
+    /// abandoned before its first block, zstd still accepts the calls that
+    /// work on this context directly, and overruns a workspace that was sized
+    /// for other parameters. The applied parameters cannot be queried, so
+    /// refuse these calls as soon as a multi-threaded frame could have been
+    /// started.
+    #[cfg(feature = "experimental")]
+    fn guard_own_tables(&self) -> Result<(), ErrorCode> {
+        if self.3.ever {
+            return Err(STAGE_WRONG_ERROR);
+        }
+        Ok(())
     }
 
     /// Creates a copy of this context.
     ///
     /// This only works before any data has been compressed. An error will be
     /// returned otherwise.
+    /// A poisoned context cannot be cloned until its session is reset.
+    /// A context on which `NbWorkers` was ever set to a non-zero value cannot
+    /// be cloned anymore.
     #[cfg(feature = "experimental")]
     #[cfg_attr(feature = "doc-cfg", doc(cfg(feature = "experimental")))]
     pub fn try_clone(
         &self,
         pledged_src_size: Option<u64>,
     ) -> Result<Self, ErrorCode> {
-        // Safety: Just FFI
-        let context = NonNull::new(unsafe { zstd_sys::ZSTD_createCCtx() })
-            .ok_or(0usize)?;
+        // An error may leave the C context undefined; do not copy it.
+        self.2.guard()?;
+        self.guard_own_tables()?;
+        let context = Self::try_create().ok_or(MEMORY_ALLOCATION_ERROR)?;
 
         // Safety: Just FFI
         parse_code(unsafe {
             zstd_sys::ZSTD_copyCCtx(
-                context.as_ptr(),
+                context.0.as_ptr(),
                 self.0.as_ptr(),
                 pledged_src_size.unwrap_or(CONTENTSIZE_UNKNOWN),
             )
         })?;
 
-        Ok(CCtx(context, self.1))
+        Ok(context)
     }
 
     /// Wraps the `ZSTD_getBlockSize()` function.
@@ -779,13 +1353,23 @@ impl<'a> CCtx<'a> {
     }
 
     /// Wraps the `ZSTD_compressBlock()` function.
+    ///
+    /// Returns an error once `NbWorkers` was set to a non-zero value on this
+    /// context.
+    ///
+    /// # Safety
+    ///
+    /// `src` becomes this context's history window, so it must stay allocated and unmodified until
+    /// the next call to `compress_block` on this context (or until this context is dropped), as the
+    /// following block is compressed against it.
     #[cfg(feature = "experimental")]
     #[cfg_attr(feature = "doc-cfg", doc(cfg(feature = "experimental")))]
-    pub fn compress_block<C: WriteBuf + ?Sized>(
+    pub unsafe fn compress_block<C: WriteBuf + ?Sized>(
         &mut self,
         dst: &mut C,
         src: &[u8],
     ) -> SafeResult {
+        self.guard_own_tables()?;
         // Safety: ZSTD_compressBlock returns the number of bytes written.
         unsafe {
             dst.write_from(|buffer, capacity| {
@@ -858,6 +1442,10 @@ impl<'a> CCtx<'a> {
 
 impl<'a> Drop for CCtx<'a> {
     fn drop(&mut self) {
+        // zstd up to 1.5.7 frees the dictionary before it stops the worker
+        // threads, and does not stop a shared pool's at all: wait for the
+        // jobs of the frame in progress first.
+        self.drain();
         // Safety: Just FFI
         unsafe {
             zstd_sys::ZSTD_freeCCtx(self.0.as_ptr());
@@ -891,7 +1479,23 @@ pub fn get_error_name(code: usize) -> &'static str {
 /// If no dictionary was used, it will most likely be `'static`.
 ///
 /// Same as `DStream`.
-pub struct DCtx<'a>(NonNull<zstd_sys::ZSTD_DCtx>, PhantomData<&'a ()>);
+pub struct DCtx<'a>(
+    NonNull<zstd_sys::ZSTD_DCtx>,
+    PhantomData<&'a ()>,
+    Poison,
+    DState,
+);
+
+/// What a `DCtx` remembers about its own use.
+#[derive(Clone, Copy, Debug, Default)]
+struct DState {
+    /// `RefMultipleDDicts` was ever enabled, see `try_clone`.
+    #[cfg(feature = "experimental")]
+    multiple_ddicts: bool,
+    /// A streaming (or block) call ran since the session was last reset, so
+    /// a stream may be open, see `finish_one_shot`.
+    streamed: bool,
+}
 
 impl Default for DCtx<'_> {
     fn default() -> Self {
@@ -907,6 +1511,8 @@ impl<'a> DCtx<'a> {
         Some(DCtx(
             NonNull::new(unsafe { zstd_sys::ZSTD_createDCtx() })?,
             PhantomData,
+            Poison::default(),
+            DState::default(),
         ))
     }
 
@@ -920,6 +1526,34 @@ impl<'a> DCtx<'a> {
             .expect("zstd returned null pointer when creating new context")
     }
 
+    /// Ends the session of a one-shot decompression, and passes `res` through.
+    ///
+    /// zstd.h has these calls imply a reset, but they leave the stream stage
+    /// alone. A stream they interrupted would then carry on from a state that
+    /// still points at buffers and dictionaries borrowed for that one call. So
+    /// reset explicitly: the next stream starts from scratch.
+    ///
+    /// Only an open stream can carry on, though: a new one starts by setting
+    /// everything up again from the context's own dictionary. So when no
+    /// streaming call ran since the last reset, there is nothing to end, and
+    /// skipping the reset saves a call per frame - which shows on tiny ones.
+    ///
+    /// Only the check is inlined: it runs once per frame.
+    #[inline]
+    fn finish_one_shot(&mut self, res: SafeResult) -> SafeResult {
+        if self.3.streamed || self.2.guard().is_err() {
+            self.reset_after_one_shot(res)
+        } else {
+            res
+        }
+    }
+
+    #[cold]
+    #[inline(never)]
+    fn reset_after_one_shot(&mut self, res: SafeResult) -> SafeResult {
+        self.reset(ResetDirective::SessionOnly).and(res)
+    }
+
     /// Fully decompress the given frame.
     ///
     /// This decompress an entire frame in-memory. If you can have enough memory to store both the
@@ -931,7 +1565,7 @@ impl<'a> DCtx<'a> {
         dst: &mut C,
         src: &[u8],
     ) -> SafeResult {
-        unsafe {
+        let res = unsafe {
             dst.write_from(|buffer, capacity| {
                 parse_code(zstd_sys::ZSTD_decompressDCtx(
                     self.0.as_ptr(),
@@ -941,7 +1575,8 @@ impl<'a> DCtx<'a> {
                     src.len(),
                 ))
             })
-        }
+        };
+        self.finish_one_shot(res)
     }
 
     /// Fully decompress the given frame using a dictionary.
@@ -958,7 +1593,7 @@ impl<'a> DCtx<'a> {
         src: &[u8],
         dict: &[u8],
     ) -> SafeResult {
-        unsafe {
+        let res = unsafe {
             dst.write_from(|buffer, capacity| {
                 parse_code(zstd_sys::ZSTD_decompress_usingDict(
                     self.0.as_ptr(),
@@ -970,7 +1605,8 @@ impl<'a> DCtx<'a> {
                     dict.len(),
                 ))
             })
-        }
+        };
+        self.finish_one_shot(res)
     }
 
     /// Fully decompress the given frame using a dictionary.
@@ -984,7 +1620,7 @@ impl<'a> DCtx<'a> {
         src: &[u8],
         ddict: &DDict<'_>,
     ) -> SafeResult {
-        unsafe {
+        let res = unsafe {
             dst.write_from(|buffer, capacity| {
                 parse_code(zstd_sys::ZSTD_decompress_usingDDict(
                     self.0.as_ptr(),
@@ -995,7 +1631,8 @@ impl<'a> DCtx<'a> {
                     ddict.0.as_ptr(),
                 ))
             })
-        }
+        };
+        self.finish_one_shot(res)
     }
 
     /// Initializes an existing `DStream` for decompression.
@@ -1006,8 +1643,9 @@ impl<'a> DCtx<'a> {
     ///
     /// Wraps the `ZSTD_initCStream()` function.
     pub fn init(&mut self) -> SafeResult {
+        self.2.clear();
         let code = unsafe { zstd_sys::ZSTD_initDStream(self.0.as_ptr()) };
-        parse_code(code)
+        self.2.record(parse_code(code))
     }
 
     /// Wraps the `ZSTD_initDStream_usingDict()` function.
@@ -1015,6 +1653,7 @@ impl<'a> DCtx<'a> {
     #[cfg_attr(feature = "doc-cfg", doc(cfg(feature = "experimental")))]
     #[deprecated]
     pub fn init_using_dict(&mut self, dict: &[u8]) -> SafeResult {
+        self.2.clear();
         let code = unsafe {
             zstd_sys::ZSTD_initDStream_usingDict(
                 self.0.as_ptr(),
@@ -1026,20 +1665,34 @@ impl<'a> DCtx<'a> {
     }
 
     /// Wraps the `ZSTD_initDStream_usingDDict()` function.
+    ///
+    /// Dictionary must outlive the context.
+    ///
+    /// ```compile_fail,E0515
+    /// # #![allow(deprecated)]
+    /// fn decompressor() -> zstd_safe::DCtx<'static> {
+    ///     let ddict = zstd_safe::DDict::create(b"dictionary");
+    ///     let mut dctx = zstd_safe::DCtx::create();
+    ///     dctx.init_using_ddict(&ddict).unwrap();
+    ///     dctx // `ddict` would be dropped while `dctx` still points at it.
+    /// }
+    /// ```
     #[cfg(feature = "experimental")]
     #[cfg_attr(feature = "doc-cfg", doc(cfg(feature = "experimental")))]
     #[deprecated]
-    pub fn init_using_ddict<'b>(&mut self, ddict: &DDict<'b>) -> SafeResult
+    pub fn init_using_ddict<'b>(&mut self, ddict: &'a DDict<'b>) -> SafeResult
     where
         'b: 'a,
     {
+        self.2.clear();
+        // Safety: Just FFI
         let code = unsafe {
             zstd_sys::ZSTD_initDStream_usingDDict(
                 self.0.as_ptr(),
                 ddict.0.as_ptr(),
             )
         };
-        parse_code(code)
+        self.2.record(parse_code(code))
     }
 
     /// Resets the state of the context.
@@ -1048,9 +1701,15 @@ impl<'a> DCtx<'a> {
     ///
     /// Wraps the `ZSTD_DCtx_reset()` function.
     pub fn reset(&mut self, reset: ResetDirective) -> SafeResult {
-        parse_code(unsafe {
+        let resets_session = reset.resets_session();
+        let res = parse_code(unsafe {
             zstd_sys::ZSTD_DCtx_reset(self.0.as_ptr(), reset.as_sys())
-        })
+        });
+        if res.is_ok() && resets_session {
+            self.2.clear();
+            self.3.streamed = false;
+        }
+        res
     }
 
     /// Loads a dictionary.
@@ -1149,6 +1808,9 @@ impl<'a> DCtx<'a> {
             }
             #[cfg(feature = "experimental")]
             RefMultipleDDicts(value) => {
+                // From now on `ref_ddict` may allocate the table of
+                // dictionaries, which zstd keeps until the context is freed.
+                self.3.multiple_ddicts |= value;
                 (ZSTD_d_refMultipleDDicts, value as c_int)
             }
 
@@ -1176,6 +1838,8 @@ impl<'a> DCtx<'a> {
         output: &mut OutBuffer<'_, C>,
         input: &mut InBuffer<'_>,
     ) -> SafeResult {
+        self.2.guard()?;
+        self.3.streamed = true;
         let mut output = output.wrap();
         let mut input = input.wrap();
         let code = unsafe {
@@ -1185,7 +1849,8 @@ impl<'a> DCtx<'a> {
                 ptr_mut(&mut input),
             )
         };
-        parse_code(code)
+        let res = output.check(parse_code(code));
+        self.2.record(input.check(res))
     }
 
     /// Wraps the `ZSTD_DStreamInSize()` function.
@@ -1208,13 +1873,20 @@ impl<'a> DCtx<'a> {
     }
 
     /// Wraps the `ZSTD_decompressBlock()` function.
+    ///
+    /// # Safety
+    ///
+    /// The bytes written to `dst` become this context's history window, so `dst` must stay
+    /// allocated and unmodified until the next call to `decompress_block` or `insert_block` on this
+    /// context (or until this context is dropped), as the following block is decoded against it.
     #[cfg(feature = "experimental")]
     #[cfg_attr(feature = "doc-cfg", doc(cfg(feature = "experimental")))]
-    pub fn decompress_block<C: WriteBuf + ?Sized>(
+    pub unsafe fn decompress_block<C: WriteBuf + ?Sized>(
         &mut self,
         dst: &mut C,
         src: &[u8],
     ) -> SafeResult {
+        self.3.streamed = true;
         unsafe {
             dst.write_from(|buffer, capacity| {
                 parse_code(zstd_sys::ZSTD_decompressBlock(
@@ -1229,9 +1901,16 @@ impl<'a> DCtx<'a> {
     }
 
     /// Wraps the `ZSTD_insertBlock()` function.
+    ///
+    /// # Safety
+    ///
+    /// `block` becomes this context's history window, so it must stay allocated and unmodified
+    /// until the next call to `decompress_block` or `insert_block` on this context (or until this
+    /// context is dropped), as the following block is decoded against it.
     #[cfg(feature = "experimental")]
     #[cfg_attr(feature = "doc-cfg", doc(cfg(feature = "experimental")))]
-    pub fn insert_block(&mut self, block: &[u8]) -> usize {
+    pub unsafe fn insert_block(&mut self, block: &[u8]) -> usize {
+        self.3.streamed = true;
         unsafe {
             zstd_sys::ZSTD_insertBlock(
                 self.0.as_ptr(),
@@ -1245,15 +1924,81 @@ impl<'a> DCtx<'a> {
     ///
     /// This only works before any data has been decompressed. An error will be
     /// returned otherwise.
+    /// A poisoned context cannot be cloned until its session is reset.
+    /// The copy always starts at the beginning of a frame.
+    ///
+    /// A dictionary this context merely references (see [`DCtx::ref_ddict`])
+    /// is referenced by the copy too. One it owns cannot be shared, so an
+    /// error is also returned while a dictionary from
+    /// [`DCtx::load_dictionary`] or a prefix from [`DCtx::ref_prefix`] is set,
+    /// and once [`DParameter::RefMultipleDDicts`] has been enabled.
     #[cfg(feature = "experimental")]
     #[cfg_attr(feature = "doc-cfg", doc(cfg(feature = "experimental")))]
     pub fn try_clone(&self) -> Result<Self, ErrorCode> {
-        let context = NonNull::new(unsafe { zstd_sys::ZSTD_createDCtx() })
-            .ok_or(0usize)?;
+        use zstd_sys::ZSTD_dParameter::{
+            ZSTD_d_experimentalParam2 as ZSTD_d_stableOutBuffer,
+            ZSTD_d_windowLogMax,
+        };
 
-        unsafe { zstd_sys::ZSTD_copyDCtx(context.as_ptr(), self.0.as_ptr()) };
+        // An error may leave the C context undefined; do not copy it.
+        self.2.guard()?;
+        let mut context = Self::try_create().ok_or(MEMORY_ALLOCATION_ERROR)?;
 
-        Ok(DCtx(context, self.1))
+        // `ZSTD_copyDCtx()` is a plain `memcpy`, so a dictionary `self` owns
+        // would end up owned, and freed, by both contexts. A loaded dictionary
+        // or prefix shows up as memory a new context does not use - as do the
+        // streaming buffers, once data has been decompressed. The table behind
+        // `RefMultipleDDicts` is not counted there, and outlives the
+        // parameter, hence the flag.
+        if self.3.multiple_ddicts || self.sizeof() != context.sizeof() {
+            return Err(STAGE_WRONG_ERROR);
+        }
+
+        // `ZSTD_copyDCtx` stops where the streaming buffers start and leaves
+        // the parameters stored past that point (the window limit and the
+        // output buffer mode) at their defaults. Carry them over explicitly,
+        // on the fresh context so that it is still in its initial stage; the
+        // copy below does not touch these fields.
+        // Only for values that differ: the window limit reads back as a log,
+        // which rounds zstd's default limit down.
+        let get = |dctx: &Self, param| {
+            let mut value: c_int = 0;
+            // Safety: Just FFI
+            parse_code(unsafe {
+                zstd_sys::ZSTD_DCtx_getParameter(
+                    dctx.0.as_ptr(),
+                    param,
+                    &mut value,
+                )
+            })
+            .map(|_| value)
+        };
+        for param in [ZSTD_d_windowLogMax, ZSTD_d_stableOutBuffer] {
+            let value = get(self, param)?;
+            if value == get(&context, param)? {
+                continue;
+            }
+            // Safety: Just FFI
+            parse_code(unsafe {
+                zstd_sys::ZSTD_DCtx_setParameter(
+                    context.0.as_ptr(),
+                    param,
+                    value,
+                )
+            })?;
+        }
+
+        // Safety: Just FFI
+        unsafe {
+            zstd_sys::ZSTD_copyDCtx(context.0.as_ptr(), self.0.as_ptr())
+        };
+
+        // The position within a frame is copied, but not the state that goes
+        // with it (a partial header, a legacy context), so start from a frame
+        // boundary rather than run on what the new context never initialized.
+        context.reset(ResetDirective::SessionOnly)?;
+
+        Ok(context)
     }
 }
 
@@ -1545,6 +2290,13 @@ pub fn init_cstream(
 /// Bytes will be read starting at `src[pos]`.
 ///
 /// `pos` will be updated after reading.
+///
+/// # Invariant
+///
+/// `pos <= src.len()`
+///
+/// Both fields are public, so this is checked (and panics if it does not hold)
+/// whenever the buffer is given to zstd.
 pub struct InBuffer<'a> {
     pub src: &'a [u8],
     pub pos: usize,
@@ -1599,12 +2351,30 @@ pub unsafe trait WriteBuf {
     where
         F: FnOnce(*mut c_void, usize) -> SafeResult,
     {
-        let res = f(ptr_mut_void(self), self.capacity());
+        let capacity = self.capacity();
+        let res = f(ptr_mut_void(self), capacity);
         if let Ok(n) = res {
+            // Nothing can have been written past the end of the buffer; a
+            // larger count would mark memory we do not own as initialized.
+            assert!(n <= capacity, "zstd reported writing past the buffer");
             self.filled_until(n);
         }
         res
     }
+}
+
+/// The position of a `Cursor`, as an index into the buffer it wraps.
+///
+/// `Cursor` stores the position as a `u64` and lets it be set anywhere, so on a
+/// target where `usize` is narrower it can name an offset no buffer can hold.
+/// Saturating leaves such a position out of range, where the bounds checks
+/// below reject it; casting would wrap it around into a valid-looking offset
+/// and quietly read or write the wrong part of the buffer.
+#[cfg(feature = "std")]
+fn cursor_position<T>(cursor: &std::io::Cursor<T>) -> usize {
+    use core::convert::TryFrom;
+
+    usize::try_from(cursor.position()).unwrap_or(usize::MAX)
 }
 
 #[cfg(feature = "std")]
@@ -1614,32 +2384,47 @@ where
     T: WriteBuf,
 {
     fn as_slice(&self) -> &[u8] {
-        &self.get_ref().as_slice()[self.position() as usize..]
+        // A cursor past the inner buffer's initialized part has nothing
+        // initialized after it yet (see `filled_until` below).
+        self.get_ref()
+            .as_slice()
+            .get(cursor_position(self)..)
+            .unwrap_or(&[])
     }
 
     fn capacity(&self) -> usize {
         self.get_ref()
             .capacity()
-            .saturating_sub(self.position() as usize)
+            .saturating_sub(cursor_position(self))
     }
 
     fn as_mut_ptr(&mut self) -> *mut u8 {
-        let start = self.position() as usize;
+        let start = cursor_position(self);
         assert!(start <= self.get_ref().capacity());
         // Safety: start is still in the same memory allocation
         unsafe { self.get_mut().as_mut_ptr().add(start) }
     }
 
     unsafe fn filled_until(&mut self, n: usize) {
-        // Early exit: `n = 0` does not indicate anything.
-        if n == 0 {
-            return;
-        }
-
         // Here we assume data _before_ self.position() was already initialized.
         // Egh it's not actually guaranteed by Cursor? So let's guarantee it ourselves.
         // Since the cursor wraps another `WriteBuf`, we know how much data is initialized there.
-        let position = self.position() as usize;
+        let position = cursor_position(self);
+        let capacity = self.get_ref().capacity();
+        if n == 0 && position > capacity {
+            // Nothing was written, and nothing could have been: there is
+            // no room at all after the cursor.
+            return;
+        }
+        // Otherwise the caller wrote `n` bytes starting at `position`, so
+        // `position` is inside the buffer. Checking it before the zero-fill
+        // below keeps a position that could not be converted from running off
+        // the end.
+        //
+        // Note that `n == 0` still truncates the data after the cursor, like
+        // any other `n` does: an empty result must not leave a previous one
+        // in place.
+        assert!(position <= capacity);
         let initialized = self.get_ref().as_slice().len();
         if let Some(uninitialized) = position.checked_sub(initialized) {
             // Here, the cursor is further than the known-initialized part.
@@ -1647,10 +2432,9 @@ where
             // We'll zero bytes from the end of valid data (as_slice().len()) to the cursor position.
 
             // Safety:
-            // * We know `n > 0`
-            // * This means `self.capacity() > 0` (promise by the caller)
-            // * This means `self.get_ref().capacity() > self.position`
-            // * This means that `position` is within the nested pointer's allocation.
+            // * We checked `position <= self.get_ref().capacity()`
+            // * This means that `position` is within (or one past) the nested
+            //   pointer's allocation.
             // * Finally, `initialized + uninitialized = position`, so the entire byte
             //   range here is within the allocation
             unsafe {
@@ -1661,7 +2445,7 @@ where
             };
         }
 
-        let start = self.position() as usize;
+        let start = position;
         assert!(start + n <= self.get_ref().capacity());
         self.get_mut().filled_until(start + n);
     }
@@ -1814,12 +2598,30 @@ impl<'a, C: WriteBuf + ?Sized> OutBuffer<'a, C> {
 
     /// Returns a new `OutBuffer` around the given slice, starting at the given position.
     ///
+    /// If `pos` is past the initialized part of `dst` (for example a `Vec`
+    /// whose `len()` is smaller than `pos`), the gap is zero-filled, as a
+    /// `Cursor` would do.
+    ///
     /// # Panics
     ///
     /// If `pos > dst.capacity()`.
     pub fn around_pos(dst: &'a mut C, pos: usize) -> Self {
         if pos > dst.capacity() {
             panic!("Given position outside of the buffer bounds.");
+        }
+
+        let initialized = dst.as_slice().len();
+        if pos > initialized {
+            // Writing to this buffer marks everything before `pos` as
+            // initialized (see `set_pos`), so it has to be before we start.
+            // Safety: `initialized..pos` lies within `capacity()`, which
+            // `WriteBuf` promises is valid to write to.
+            unsafe {
+                dst.as_mut_ptr()
+                    .add(initialized)
+                    .write_bytes(0u8, pos - initialized);
+                dst.filled_until(pos);
+            }
         }
 
         OutBuffer { dst, pos }
@@ -1883,9 +2685,26 @@ impl<'a, C: WriteBuf + ?Sized> OutBuffer<'a, C> {
     }
 }
 
+impl<'a, 'b, C: WriteBuf + ?Sized> OutBufferWrapper<'a, 'b, C> {
+    /// Passes `res` through, and forgets the position reported by zstd if it
+    /// is an error, so the parent keeps the one from before the call.
+    ///
+    /// zstd.h makes no promise about `pos` after a failed call, and the legacy
+    /// decoders report the whole output buffer as written when they fail; only
+    /// a successful call vouches for the bytes up to `pos` being initialized.
+    fn check(&mut self, res: SafeResult) -> SafeResult {
+        if res.is_err() {
+            self.buf.pos = self.parent.pos;
+        }
+        res
+    }
+}
+
 impl<'a, 'b, C: WriteBuf + ?Sized> Drop for OutBufferWrapper<'a, 'b, C> {
     fn drop(&mut self) {
-        // Safe because we guarantee that data until `self.buf.pos` has been written.
+        // Safe because `self.buf.pos` either comes from a successful call,
+        // which guarantees that data until there has been written, or was put
+        // back to the parent's position by `check()`.
         unsafe { self.parent.set_pos(self.buf.pos) };
     }
 }
@@ -1935,6 +2754,12 @@ impl<'a> InBuffer<'a> {
     }
 
     fn wrap<'b>(&'b mut self) -> InBufferWrapper<'b, 'a> {
+        // The fields are public, so `pos` may not have gone through `set_pos`.
+        // Not all zstd functions check it before reading from `src + pos`.
+        if self.pos > self.src.len() {
+            panic!("Given position outside of the buffer bounds.");
+        }
+
         InBufferWrapper {
             buf: zstd_sys::ZSTD_inBuffer {
                 src: ptr_void(self.src),
@@ -1943,6 +2768,20 @@ impl<'a> InBuffer<'a> {
             },
             parent: self,
         }
+    }
+}
+
+impl<'a, 'b> InBufferWrapper<'a, 'b> {
+    /// Passes `res` through, and forgets the position reported by zstd if it
+    /// is an error, so the parent keeps the one from before the call.
+    ///
+    /// See `OutBufferWrapper::check()`: a failed call consumed nothing usable,
+    /// and the legacy decoders report the whole input as read.
+    fn check(&mut self, res: SafeResult) -> SafeResult {
+        if res.is_err() {
+            self.buf.pos = self.parent.pos;
+        }
+        res
     }
 }
 
@@ -2058,6 +2897,18 @@ pub enum ResetDirective {
 }
 
 impl ResetDirective {
+    /// Does this drop a session in progress?
+    ///
+    /// Only a session reset brings a context back from the undefined state an
+    /// error can leave it in - `Parameters` alone is refused while a session is
+    /// open.
+    fn resets_session(&self) -> bool {
+        matches!(
+            self,
+            ResetDirective::SessionOnly | ResetDirective::SessionAndParameters
+        )
+    }
+
     fn as_sys(self) -> zstd_sys::ZSTD_ResetDirective {
         match self {
             ResetDirective::SessionOnly => zstd_sys::ZSTD_ResetDirective::ZSTD_reset_session_only,
@@ -2133,6 +2984,12 @@ pub enum CParameter {
     #[cfg_attr(feature = "doc-cfg", doc(cfg(feature = "experimental")))]
     EnableDedicatedDictSearch(bool),
 
+    /// Whether zstd may keep referencing the input buffer instead of copying
+    /// it.
+    ///
+    /// This requires the input to stay allocated and unmodified until the
+    /// frame is complete, which a borrowed `InBuffer` cannot guarantee:
+    /// `CCtx::set_parameter` refuses to enable it and returns an error.
     #[cfg(feature = "experimental")]
     #[cfg_attr(feature = "doc-cfg", doc(cfg(feature = "experimental")))]
     StableInBuffer(bool),
@@ -2229,6 +3086,8 @@ pub enum CParameter {
     ///
     /// With any other value (including 1, a single compressing thread), these methods directly
     /// return, and the actual compression is done in the background (until a flush is requested).
+    /// A context compressing that way from a borrowed dictionary or prefix
+    /// must not be leaked, see [`CCtx`](CCtx#worker-threads-and-leaks).
     ///
     /// Note: this will only work if the `zstdmt` feature is activated.
     NbWorkers(u32),
@@ -2288,7 +3147,16 @@ pub fn train_from_buffer<C: WriteBuf + ?Sized>(
     samples_buffer: &[u8],
     samples_sizes: &[usize],
 ) -> SafeResult {
-    assert_eq!(samples_buffer.len(), samples_sizes.iter().sum());
+    // A plain `sum()` wraps around when overflow checks are disabled, and
+    // would accept sizes reaching far outside of `samples_buffer`.
+    let total_size = samples_sizes
+        .iter()
+        .try_fold(0usize, |total, &size| total.checked_add(size));
+    assert_eq!(
+        Some(samples_buffer.len()),
+        total_size,
+        "sample sizes don't add up to the samples buffer length"
+    );
 
     unsafe {
         dict_buffer.write_from(|buffer, capacity| {

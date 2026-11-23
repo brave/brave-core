@@ -1,7 +1,7 @@
 use alloc::string::String;
 use core::char;
 
-use crate::endian::{LittleEndian as LE, U16Bytes};
+use crate::endian::{LittleEndian as LE, U16};
 use crate::pe;
 use crate::read::{ReadError, ReadRef, Result};
 
@@ -155,18 +155,15 @@ impl ResourceName {
     }
 
     /// Returns the string unicode buffer.
-    pub fn data<'data>(
-        &self,
-        directory: ResourceDirectory<'data>,
-    ) -> Result<&'data [U16Bytes<LE>]> {
+    pub fn data<'data>(&self, directory: ResourceDirectory<'data>) -> Result<&'data [U16<LE>]> {
         let mut offset = u64::from(self.offset);
         let len = directory
             .data
-            .read::<U16Bytes<LE>>(&mut offset)
+            .read::<U16<LE>>(&mut offset)
             .read_error("Invalid resource name offset")?;
         directory
             .data
-            .read_slice::<U16Bytes<LE>>(&mut offset, len.get(LE).into())
+            .read_slice::<U16<LE>>(&mut offset, len.get(LE).into())
             .read_error("Invalid resource name length")
     }
 

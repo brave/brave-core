@@ -1,7 +1,7 @@
 //! Confidentiality Requirements (CR)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -25,13 +25,14 @@ use core::{fmt, str::FromStr};
 /// > assuming “reasonable worst case”, in absence of explicit values, these
 /// > metrics are set to the default value of Not Defined (X), which is
 /// > equivalent to the metric value of High (H).
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ConfidentialityRequirements {
     /// Not Defined (X)
     ///
     /// > This is the default value. Assigning this value indicates there is
     /// > insufficient information to choose one of the other values. This has
     /// > the same effect as assigning High as the worst case.
+    #[default]
     NotDefined,
     /// Low (L)
     ///
@@ -53,21 +54,15 @@ pub enum ConfidentialityRequirements {
     High,
 }
 
-impl Default for ConfidentialityRequirements {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for ConfidentialityRequirements {
     const TYPE: MetricType = MetricType::CR;
 
     fn as_str(self) -> &'static str {
         match self {
-            ConfidentialityRequirements::NotDefined => "X",
-            ConfidentialityRequirements::Low => "L",
-            ConfidentialityRequirements::Medium => "M",
-            ConfidentialityRequirements::High => "H",
+            Self::NotDefined => "X",
+            Self::Low => "L",
+            Self::Medium => "M",
+            Self::High => "H",
         }
     }
 }
@@ -81,12 +76,12 @@ impl fmt::Display for ConfidentialityRequirements {
 impl FromStr for ConfidentialityRequirements {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(ConfidentialityRequirements::NotDefined),
-            "L" => Ok(ConfidentialityRequirements::Low),
-            "M" => Ok(ConfidentialityRequirements::Medium),
-            "H" => Ok(ConfidentialityRequirements::High),
+            "X" => Ok(Self::NotDefined),
+            "L" => Ok(Self::Low),
+            "M" => Ok(Self::Medium),
+            "H" => Ok(Self::High),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),
@@ -105,27 +100,22 @@ pub(crate) mod merge {
     use alloc::borrow::ToOwned;
     use core::str::FromStr;
 
-    #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+    #[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
     pub(crate) enum MergedConfidentialityRequirements {
         Low,
         Medium,
+        #[default]
         High,
-    }
-
-    impl Default for MergedConfidentialityRequirements {
-        fn default() -> Self {
-            Self::High
-        }
     }
 
     impl FromStr for MergedConfidentialityRequirements {
         type Err = Error;
 
-        fn from_str(s: &str) -> Result<Self> {
+        fn from_str(s: &str) -> Result<Self, Error> {
             match s {
-                "L" => Ok(MergedConfidentialityRequirements::Low),
-                "M" => Ok(MergedConfidentialityRequirements::Medium),
-                "H" => Ok(MergedConfidentialityRequirements::High),
+                "L" => Ok(Self::Low),
+                "M" => Ok(Self::Medium),
+                "H" => Ok(Self::High),
                 _ => Err(Error::InvalidMetricV4 {
                     metric_type: MetricType::CR,
                     value: s.to_owned(),

@@ -81,7 +81,7 @@ impl<'data, Elf: FileHeader> AttributesSubsectionIterator<'data, Elf> {
         // First read the subsection length.
         let mut data = self.data;
         let length = data
-            .read::<endian::U32Bytes<Elf::Endian>>()
+            .read::<endian::U32<Elf::Endian>>()
             .read_error("ELF attributes section is too short")?
             .get(self.endian);
 
@@ -176,11 +176,13 @@ impl<'data, Elf: FileHeader> AttributesSubsubsectionIterator<'data, Elf> {
         // | <section-tag> <size> <section-number>* 0 <attribute>*
         // | <symbol-tag> <size> <symbol-number>* 0 <attribute>*
         let mut data = self.data;
-        let tag = *data
+        let tag = data
             .read::<u8>()
+            .copied()
+            .map(elf::AttributeTag)
             .read_error("ELF attributes subsection is too short")?;
         let length = data
-            .read::<endian::U32Bytes<Elf::Endian>>()
+            .read::<endian::U32<Elf::Endian>>()
             .read_error("ELF attributes subsection is too short")?
             .get(self.endian);
 
@@ -227,7 +229,7 @@ impl<'data, Elf: FileHeader> Iterator for AttributesSubsubsectionIterator<'data,
 /// followed by a series of attributes.
 #[derive(Debug, Clone)]
 pub struct AttributesSubsubsection<'data> {
-    tag: u8,
+    tag: elf::AttributeTag,
     length: u32,
     indices: Bytes<'data>,
     data: Bytes<'data>,
@@ -235,7 +237,7 @@ pub struct AttributesSubsubsection<'data> {
 
 impl<'data> AttributesSubsubsection<'data> {
     /// Return the tag of the attributes sub-subsection.
-    pub fn tag(&self) -> u8 {
+    pub fn tag(&self) -> elf::AttributeTag {
         self.tag
     }
 

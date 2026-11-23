@@ -79,12 +79,12 @@ impl<'data, 'file, Xcoff: FileHeader, R: ReadRef<'data>> XcoffSection<'data, 'fi
 
     /// Get the raw XCOFF relocation entries for this section.
     pub fn xcoff_relocations(&self) -> Result<&'data [Xcoff::Rel]> {
-        self.section.relocations(self.file.data)
+        self.section.relocations(self.file.data.0)
     }
 
     fn bytes(&self) -> Result<&'data [u8]> {
         self.section
-            .data(self.file.data)
+            .data(self.file.data.0)
             .read_error("Invalid XCOFF section offset or size")
     }
 }
@@ -173,25 +173,24 @@ where
     }
 
     fn kind(&self) -> SectionKind {
-        let section_type = self.section.s_flags() as u16;
-        if section_type & xcoff::STYP_TEXT != 0 {
+        let section_type = self.section.s_flags().typ();
+        if section_type.intersects(xcoff::STYP_TEXT) {
             SectionKind::Text
-        } else if section_type & xcoff::STYP_DATA != 0 {
+        } else if section_type.intersects(xcoff::STYP_DATA) {
             SectionKind::Data
-        } else if section_type & xcoff::STYP_TDATA != 0 {
+        } else if section_type.intersects(xcoff::STYP_TDATA) {
             SectionKind::Tls
-        } else if section_type & xcoff::STYP_BSS != 0 {
+        } else if section_type.intersects(xcoff::STYP_BSS) {
             SectionKind::UninitializedData
-        } else if section_type & xcoff::STYP_TBSS != 0 {
+        } else if section_type.intersects(xcoff::STYP_TBSS) {
             SectionKind::UninitializedTls
-        } else if section_type & (xcoff::STYP_DEBUG | xcoff::STYP_DWARF) != 0 {
+        } else if section_type.intersects(xcoff::STYP_DEBUG | xcoff::STYP_DWARF) {
             SectionKind::Debug
-        } else if section_type & (xcoff::STYP_LOADER | xcoff::STYP_OVRFLO) != 0 {
+        } else if section_type.intersects(xcoff::STYP_LOADER | xcoff::STYP_OVRFLO) {
             SectionKind::Metadata
-        } else if section_type
-            & (xcoff::STYP_INFO | xcoff::STYP_EXCEPT | xcoff::STYP_PAD | xcoff::STYP_TYPCHK)
-            != 0
-        {
+        } else if section_type.intersects(
+            xcoff::STYP_INFO | xcoff::STYP_EXCEPT | xcoff::STYP_PAD | xcoff::STYP_TYPCHK,
+        ) {
             SectionKind::Other
         } else {
             SectionKind::Unknown
@@ -287,7 +286,7 @@ where
 
 /// A trait for generic access to [`xcoff::SectionHeader32`] and [`xcoff::SectionHeader64`].
 #[allow(missing_docs)]
-pub trait SectionHeader: Debug + Pod {
+pub trait SectionHeader: Debug + Pod + read::private::Sealed {
     type Word: Into<u64>;
     type HalfWord: Into<u32>;
     type Xcoff: FileHeader<SectionHeader = Self, Word = Self::Word>;
@@ -302,7 +301,7 @@ pub trait SectionHeader: Debug + Pod {
     fn s_lnnoptr(&self) -> Self::Word;
     fn s_nreloc(&self) -> Self::HalfWord;
     fn s_nlnno(&self) -> Self::HalfWord;
-    fn s_flags(&self) -> u32;
+    fn s_flags(&self) -> xcoff::SectionFlags;
 
     /// Return the section name.
     fn name(&self) -> &[u8] {
@@ -333,6 +332,8 @@ pub trait SectionHeader: Debug + Pod {
     /// Read the relocations.
     fn relocations<'data, R: ReadRef<'data>>(&self, data: R) -> read::Result<&'data [Self::Rel]>;
 }
+
+impl read::private::Sealed for xcoff::SectionHeader32 {}
 
 impl SectionHeader for xcoff::SectionHeader32 {
     type Word = u32;
@@ -376,7 +377,7 @@ impl SectionHeader for xcoff::SectionHeader32 {
         self.s_nlnno.get(BE)
     }
 
-    fn s_flags(&self) -> u32 {
+    fn s_flags(&self) -> xcoff::SectionFlags {
         self.s_flags.get(BE)
     }
 
@@ -395,6 +396,8 @@ impl SectionHeader for xcoff::SectionHeader32 {
             .read_error("Invalid XCOFF relocation offset or number")
     }
 }
+
+impl read::private::Sealed for xcoff::SectionHeader64 {}
 
 impl SectionHeader for xcoff::SectionHeader64 {
     type Word = u64;
@@ -438,7 +441,7 @@ impl SectionHeader for xcoff::SectionHeader64 {
         self.s_nlnno.get(BE)
     }
 
-    fn s_flags(&self) -> u32 {
+    fn s_flags(&self) -> xcoff::SectionFlags {
         self.s_flags.get(BE)
     }
 

@@ -1,11 +1,11 @@
 pub use gix_status as plumbing;
 
-use crate::{config, config::cache::util::ApplyLeniencyDefault, util::OwnedOrStaticAtomicBool, Repository};
+use crate::{Repository, Result, config, config::cache::util::ApplyLeniencyDefault, util::OwnedOrStaticAtomicBool};
 
 /// A structure to hold options configuring the status request, which can then be turned into an iterator.
 pub struct Platform<'repo, Progress>
 where
-    Progress: gix_features::progress::Progress + 'static,
+    Progress: gix_utils::progress::Progress + 'static,
 {
     repo: &'repo Repository,
     progress: Progress,
@@ -63,16 +63,6 @@ impl Default for Submodule {
     }
 }
 
-/// The error returned by [status()](Repository::status).
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error(transparent)]
-    DirwalkOptions(#[from] config::boolean::Error),
-    #[error(transparent)]
-    ConfigureUntrackedFiles(#[from] config::key::GenericErrorWithValue),
-}
-
 /// Status
 impl Repository {
     /// Obtain a platform for configuring iterators for traversing git repository status information.
@@ -96,9 +86,9 @@ impl Repository {
     /// Whereas Git runs the index-modified check before the directory walk to set entries
     /// as up-to-date to (potentially) safe some disk-access, we run both in parallel which
     /// ultimately is much faster.
-    pub fn status<P>(&self, progress: P) -> Result<Platform<'_, P>, Error>
+    pub fn status<P>(&self, progress: P) -> Result<Platform<'_, P>>
     where
-        P: gix_features::progress::Progress + 'static,
+        P: gix_utils::progress::Progress + 'static,
     {
         let platform = Platform {
             repo: self,
@@ -133,25 +123,7 @@ impl Repository {
 
 ///
 pub mod is_dirty {
-    use std::convert::Infallible;
-
-    use crate::Repository;
-
-    /// The error returned by [Repository::is_dirty()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(transparent)]
-        StatusPlatform(#[from] crate::status::Error),
-        #[error(transparent)]
-        CreateStatusIterator(#[from] crate::status::into_iter::Error),
-        #[error(transparent)]
-        TreeIndexStatus(#[from] crate::status::tree_index::Error),
-        #[error(transparent)]
-        HeadTreeId(#[from] crate::reference::head_tree_id::Error),
-        #[error(transparent)]
-        OpenWorktreeIndex(#[from] crate::worktree::open_index::Error),
-    }
+    use crate::{Repository, Result};
 
     impl Repository {
         /// Returns `true` if the repository is dirty.
@@ -165,20 +137,30 @@ pub mod is_dirty {
         // TODO(performance): this could be its very own implementation with parallelism and the special:
         //                    stop once there is a change flag, but without using the iterator for
         //                    optimal resource usage.
-        pub fn is_dirty(&self) -> Result<bool, Error> {
+        pub fn is_dirty(&self) -> Result<bool> {
             {
-                let head_tree_id = self.head_tree_id()?;
+                let head_tree_id = self.head_tree_id_or_empty()?;
                 let mut index_is_dirty = false;
 
+                // The default pathspec would limit the comparison to the prefix of the current working directory.
+                let mut pathspec = self
+                    .pathspec(
+                        false, /* this forces the status from the root, ignoring the prefix/CWD */
+                        None::<&str>,
+                        false,
+                        &gix_index::State::new(self.object_hash()),
+                        gix_worktree::stack::state::attributes::Source::IdMapping,
+                    )
+                    .expect("Impossible for this to fail without patterns");
                 // Run this first as there is a high likelihood to find something, and it's very fast.
                 self.tree_index_status(
                     &head_tree_id,
                     &*self.index_or_empty()?,
-                    None,
+                    Some(&mut pathspec),
                     crate::status::tree_index::TrackRenames::Disabled,
                     |_, _, _| {
                         index_is_dirty = true;
-                        Ok::<_, Infallible>(gix_diff::index::Action::Cancel)
+                        Ok(std::ops::ControlFlow::Break(()))
                     },
                 )?;
                 if index_is_dirty {
@@ -186,49 +168,18 @@ pub mod is_dirty {
                 }
             }
             let is_dirty = self
-                .status(gix_features::progress::Discard)?
+                .status(gix_utils::progress::Discard)?
                 .index_worktree_rewrites(None)
                 .index_worktree_submodules(crate::status::Submodule::AsConfigured { check_dirty: true })
                 .index_worktree_options_mut(|opts| {
                     opts.dirwalk_options = None;
                 })
                 .into_index_worktree_iter(Vec::new())?
-                .take_while(Result::is_ok)
+                .take_while(std::result::Result::is_ok)
                 .next()
                 .is_some();
             Ok(is_dirty)
         }
-    }
-}
-
-///
-pub mod into_iter {
-    /// The error returned by [status::Platform::into_iter()](crate::status::Platform::into_iter()).
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(transparent)]
-        Index(#[from] crate::worktree::open_index::Error),
-        #[error("Failed to spawn producer thread")]
-        #[cfg(feature = "parallel")]
-        SpawnThread(#[source] std::io::Error),
-        #[error(transparent)]
-        #[cfg(not(feature = "parallel"))]
-        IndexWorktreeStatus(#[from] crate::status::index_worktree::Error),
-        #[error(transparent)]
-        ConfigSkipHash(#[from] crate::config::boolean::Error),
-        #[error(transparent)]
-        PrepareSubmodules(#[from] crate::submodule::modules::Error),
-        #[error("Could not create an index for the head tree to compare with the worktree index")]
-        HeadTreeIndex(#[from] crate::repository::index_from_tree::Error),
-        #[error("Could not obtain the tree id pointed to by `HEAD`")]
-        HeadTreeId(#[from] crate::reference::head_tree_id::Error),
-        #[error(transparent)]
-        AttributesAndExcludes(#[from] crate::repository::attributes::Error),
-        #[error(transparent)]
-        Pathspec(#[from] crate::pathspec::init::Error),
-        #[error(transparent)]
-        HeadTreeDiff(#[from] crate::status::tree_index::Error),
     }
 }
 

@@ -237,6 +237,7 @@ impl From<InvalidMessage> for AlertDescription {
 pub enum PeerMisbehaved {
     AttemptedDowngradeToTls12WhenTls13IsSupported,
     BadCertChainExtensions,
+    CipherSuiteDifferedOnRetry,
     DisallowedEncryptedExtension,
     DuplicateClientHelloExtensions,
     DuplicateEncryptedExtensions,
@@ -247,6 +248,7 @@ pub enum PeerMisbehaved {
     EarlyDataAttemptedInSecondClientHello,
     EarlyDataExtensionWithoutResumption,
     EarlyDataOfferedWithVariedCipherSuite,
+    EchAcceptanceVariedAfterRetry,
     HandshakeHashVariedAfterRetry,
     IllegalHelloRetryRequestWithEmptyCookie,
     IllegalHelloRetryRequestWithNoChanges,
@@ -267,6 +269,7 @@ pub enum PeerMisbehaved {
     MessageInterleavedWithHandshakeMessage,
     MissingBinderInPskExtension,
     MissingKeyShare,
+    MissingPskExtensionInSecondClientHello,
     MissingPskModesExtension,
     MissingQuicTransportParameters,
     OfferedDuplicateCertificateCompressions,

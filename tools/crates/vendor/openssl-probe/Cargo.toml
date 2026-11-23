@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.60.0"
 name = "openssl-probe"
-version = "0.1.6"
+version = "0.2.2"
 authors = ["Alex Crichton <alex@alexcrichton.com>"]
 build = false
 autolib = false
@@ -22,12 +22,13 @@ autoexamples = false
 autotests = false
 autobenches = false
 description = """
-Tool for helping to find SSL certificate locations on the system for OpenSSL
+A library for helping to find system-wide trust anchor ("root") certificate
+locations based on paths typically used by `openssl`.
 """
-homepage = "https://github.com/alexcrichton/openssl-probe"
+homepage = "https://github.com/rustls/openssl-probe"
 readme = "README.md"
-license = "MIT/Apache-2.0"
-repository = "https://github.com/alexcrichton/openssl-probe"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/rustls/openssl-probe"
 
 [lib]
 name = "openssl_probe"

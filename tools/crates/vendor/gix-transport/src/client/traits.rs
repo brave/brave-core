@@ -1,3 +1,4 @@
+use gix_error::Result;
 use std::{
     any::Any,
     borrow::Cow,
@@ -6,9 +7,7 @@ use std::{
 
 use bstr::BStr;
 
-#[cfg(any(feature = "blocking-client", feature = "async-client"))]
-use crate::client::{MessageKind, RequestWriter, WriteMode};
-use crate::{client::Error, Protocol};
+use crate::{Protocol, client::Error};
 
 /// This trait represents all transport related functions that don't require any input/output to be done which helps
 /// implementation to share more code across blocking and async programs.
@@ -19,21 +18,9 @@ pub trait TransportWithoutIO {
     /// of the identity in order to mark it as invalid. Otherwise the user might have difficulty updating obsolete
     /// credentials.
     /// Please note that most transport layers are unauthenticated and thus return [an error][Error::AuthenticationUnsupported] here.
-    fn set_identity(&mut self, _identity: gix_sec::identity::Account) -> Result<(), Error> {
+    fn set_identity(&mut self, _identity: gix_sec::identity::Account) -> std::result::Result<(), Error> {
         Err(Error::AuthenticationUnsupported)
     }
-    /// Get a writer for sending data and obtaining the response. It can be configured in various ways
-    /// to support the task at hand.
-    /// `write_mode` determines how calls to the `write(…)` method are interpreted, and `on_into_read` determines
-    /// which message to write when the writer is turned into the response reader using [`into_read()`][RequestWriter::into_read()].
-    /// If `trace` is `true`, then all packetlines written and received will be traced using facilities provided by the `gix_trace` crate.
-    #[cfg(any(feature = "blocking-client", feature = "async-client"))]
-    fn request(
-        &mut self,
-        write_mode: WriteMode,
-        on_into_read: MessageKind,
-        trace: bool,
-    ) -> Result<RequestWriter<'_>, Error>;
 
     /// Returns the canonical URL pointing to the destination of this transport.
     fn to_url(&self) -> Cow<'_, BStr>;
@@ -62,23 +49,13 @@ pub trait TransportWithoutIO {
     /// Pass `config` can be cast and interpreted by the implementation, as documented separately.
     ///
     /// The caller must know how that `config` data looks like for the intended implementation.
-    fn configure(&mut self, config: &dyn Any) -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>;
+    fn configure(&mut self, config: &dyn Any) -> Result;
 }
 
 // Would be nice if the box implementation could auto-forward to all implemented traits.
 impl<T: TransportWithoutIO + ?Sized> TransportWithoutIO for Box<T> {
-    fn set_identity(&mut self, identity: gix_sec::identity::Account) -> Result<(), Error> {
+    fn set_identity(&mut self, identity: gix_sec::identity::Account) -> std::result::Result<(), Error> {
         self.deref_mut().set_identity(identity)
-    }
-
-    #[cfg(any(feature = "blocking-client", feature = "async-client"))]
-    fn request(
-        &mut self,
-        write_mode: WriteMode,
-        on_into_read: MessageKind,
-        trace: bool,
-    ) -> Result<RequestWriter<'_>, Error> {
-        self.deref_mut().request(write_mode, on_into_read, trace)
     }
 
     fn to_url(&self) -> Cow<'_, BStr> {
@@ -93,24 +70,14 @@ impl<T: TransportWithoutIO + ?Sized> TransportWithoutIO for Box<T> {
         self.deref().connection_persists_across_multiple_requests()
     }
 
-    fn configure(&mut self, config: &dyn Any) -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    fn configure(&mut self, config: &dyn Any) -> Result {
         self.deref_mut().configure(config)
     }
 }
 
 impl<T: TransportWithoutIO + ?Sized> TransportWithoutIO for &mut T {
-    fn set_identity(&mut self, identity: gix_sec::identity::Account) -> Result<(), Error> {
+    fn set_identity(&mut self, identity: gix_sec::identity::Account) -> std::result::Result<(), Error> {
         self.deref_mut().set_identity(identity)
-    }
-
-    #[cfg(any(feature = "blocking-client", feature = "async-client"))]
-    fn request(
-        &mut self,
-        write_mode: WriteMode,
-        on_into_read: MessageKind,
-        trace: bool,
-    ) -> Result<RequestWriter<'_>, Error> {
-        self.deref_mut().request(write_mode, on_into_read, trace)
     }
 
     fn to_url(&self) -> Cow<'_, BStr> {
@@ -125,7 +92,7 @@ impl<T: TransportWithoutIO + ?Sized> TransportWithoutIO for &mut T {
         self.deref().connection_persists_across_multiple_requests()
     }
 
-    fn configure(&mut self, config: &dyn Any) -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    fn configure(&mut self, config: &dyn Any) -> Result {
         self.deref_mut().configure(config)
     }
 }

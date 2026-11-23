@@ -80,8 +80,8 @@
 #![allow(unused_imports)]
 use super::chapter_6;
 use super::chapter_7;
-use crate::Parser;
 use crate::_topic::stream;
+use crate::Parser;
 
 pub use super::chapter_0 as previous;
 pub use super::chapter_2 as next;

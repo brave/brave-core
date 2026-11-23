@@ -1,18 +1,11 @@
-use std::{io, sync::atomic::AtomicBool};
-
-pub use error::Error;
-use gix_features::progress::{self, prodash::DynNestedProgress, Count, Progress};
-
-use crate::cache::delta::{traverse, Tree};
-
-mod error;
+use gix_error::Result;
 
 pub(crate) struct TreeEntry {
     pub id: gix_hash::ObjectId,
     pub crc32: u32,
 }
 
-/// Information gathered while executing [`write_data_iter_to_stream()`][crate::index::File::write_data_iter_to_stream]
+/// Information gathered while executing [`write_data_iter_to_stream()`][crate::index::write_data_iter_to_stream]
 #[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Outcome {
@@ -27,7 +20,7 @@ pub struct Outcome {
     pub num_objects: u32,
 }
 
-/// The progress ids used in [`write_data_iter_from_stream()`][crate::index::File::write_data_iter_to_stream()].
+/// The progress ids used in [`write_data_iter_to_stream()`][crate::index::write_data_iter_to_stream()].
 ///
 /// Use this information to selectively extract the progress of interest in case the parent application has custom visualization.
 #[derive(Debug, Copy, Clone)]
@@ -48,7 +41,7 @@ pub enum ProgressId {
     IndexBytesWritten,
 }
 
-impl From<ProgressId> for gix_features::progress::Id {
+impl From<ProgressId> for gix_utils::progress::Id {
     fn from(v: ProgressId) -> Self {
         match v {
             ProgressId::IndexObjects => *b"IWIO",
@@ -60,52 +53,78 @@ impl From<ProgressId> for gix_features::progress::Id {
     }
 }
 
-/// Various ways of writing an index file from pack entries
-impl crate::index::File {
+pub(super) mod function {
+    use gix_error::{Result, message, validation};
+    use std::{io, sync::atomic::AtomicBool};
+
+    use gix_error::{OptionExt, ResultExt, bail};
+    use gix_utils::progress::{self, Count, Progress, prodash::DynNestedProgress};
+
+    use crate::cache::delta::{Tree, traverse};
+
+    use super::{Outcome, ProgressId, TreeEntry, modify_base};
+
     /// Write information about `entries` as obtained from a pack data file into a pack index file via the `out` stream.
     /// The resolver produced by `make_resolver` must resolve pack entries from the same pack data file that produced the
     /// `entries` iterator.
+    ///
+    /// # Ref-delta bases
+    ///
+    /// Bases available through an ODB lookup are handled by wrapping `entries` in
+    /// [`crate::data::input::LookupRefDeltaObjectsIter`]. As entries are consumed, it inserts each full base immediately
+    /// before the first delta that needs it, then rewrites that and later references to the same base as `OFS_DELTA`s.
+    ///
+    /// Remaining `REF_DELTA`s are resolved in-pack here. They are recorded by base object ID; while traversing the delta
+    /// tree, each fully resolved object is hashed and any deltas waiting for that ID are attached as its children. Thus an
+    /// in-pack base may occur before or after its delta, and forward-reference chains are supported. Resolution fails if a
+    /// referenced base was neither inserted by the wrapper nor found among the pack entries.
     ///
     /// * `kind` is the version of pack index to produce, use [`crate::index::Version::default()`] if in doubt.
     /// * `tread_limit` is used for a parallel tree traversal for obtaining object hashes with optimal performance.
     /// * `root_progress` is the top-level progress to stay informed about the progress of this potentially long-running
     ///   computation.
     /// * `object_hash` defines what kind of object hash we write into the index file.
+    /// * `alloc_limit_bytes` limits the maximum size of individual allocations for the delta tree and while resolving pack
+    ///   entries to compute object ids. `None` means no limit is applied.
     /// * `pack_version` is the version of the underlying pack for which `entries` are read. It's used in case none of these objects are provided
     ///   to compute a pack-hash.
     ///
     /// # Remarks
     ///
-    /// * neither in-pack nor out-of-pack Ref Deltas are supported here, these must have been resolved beforehand.
     /// * `make_resolver()` will only be called after the iterator stopped returning elements and produces a function that
     ///   provides all bytes belonging to a pack entry writing them to the given mutable output `Vec`.
     ///   It should return `None` if the entry cannot be resolved from the pack that produced the `entries` iterator, causing
     ///   the write operation to fail.
-    #[allow(clippy::too_many_arguments)]
+    #[expect(clippy::too_many_arguments)]
     pub fn write_data_iter_to_stream<F, F2, R>(
         version: crate::index::Version,
         make_resolver: F,
-        entries: &mut dyn Iterator<Item = Result<crate::data::input::Entry, crate::data::input::Error>>,
+        entries: &mut dyn Iterator<Item = Result<crate::data::input::Entry>>,
         thread_limit: Option<usize>,
         root_progress: &mut dyn DynNestedProgress,
         out: &mut dyn io::Write,
         should_interrupt: &AtomicBool,
         object_hash: gix_hash::Kind,
+        alloc_limit_bytes: Option<usize>,
         pack_version: crate::data::Version,
-    ) -> Result<Outcome, Error>
+    ) -> Result<Outcome>
     where
         F: FnOnce() -> io::Result<(F2, R)>,
         R: Send + Sync,
         F2: for<'r> Fn(crate::data::EntryRange, &'r R) -> Option<&'r [u8]> + Send + Clone,
     {
         if version != crate::index::Version::default() {
-            return Err(Error::Unsupported(version));
+            bail!(validation(format!(
+                "Indices of type {} cannot be written, only {} are supported",
+                version as usize,
+                crate::index::Version::default() as usize
+            )));
         }
         let mut num_objects: usize = 0;
         let mut last_seen_trailer = None;
         let (anticipated_num_objects, upper_bound) = entries.size_hint();
         let worst_case_num_objects_after_thin_pack_resolution = upper_bound.unwrap_or(anticipated_num_objects);
-        let mut tree = Tree::with_capacity(worst_case_num_objects_after_thin_pack_resolution)?;
+        let mut tree = Tree::with_capacity(worst_case_num_objects_after_thin_pack_resolution, alloc_limit_bytes)?;
         let indexing_start = std::time::Instant::now();
 
         root_progress.init(Some(4), progress::steps());
@@ -146,15 +165,24 @@ impl crate::index::File {
                         },
                     )?;
                 }
-                RefDelta { .. } => return Err(Error::IteratorInvariantNoRefDelta),
+                RefDelta { base_id } => {
+                    tree.add_child_by_id(
+                        base_id,
+                        pack_offset,
+                        TreeEntry {
+                            id: object_hash.null(),
+                            crc32,
+                        },
+                    )?;
+                }
                 OfsDelta { base_distance } => {
-                    let base_pack_offset =
-                        crate::data::entry::Header::verified_base_pack_offset(pack_offset, base_distance).ok_or(
-                            Error::IteratorInvariantBaseOffset {
-                                pack_offset,
-                                distance: base_distance,
-                            },
-                        )?;
+                    let base_pack_offset = crate::data::entry::Header::verified_base_pack_offset(
+                        pack_offset,
+                        base_distance,
+                    )
+                    .ok_or_raise(|| {
+                        message!("{pack_offset} is not a valid offset for pack offset {base_distance}").validation()
+                    })?;
                     tree.add_child(
                         base_pack_offset,
                         pack_offset,
@@ -169,9 +197,8 @@ impl crate::index::File {
             num_objects += 1;
             objects_progress.inc();
         }
-        let num_objects: u32 = num_objects
-            .try_into()
-            .map_err(|_| Error::IteratorInvariantTooManyObjects(num_objects))?;
+        let num_objects = u32::try_from(num_objects)
+            .or_raise(|| message!("Only u32::MAX objects can be stored in a pack, found {num_objects}").validation())?;
 
         objects_progress.show_throughput(indexing_start);
         decompressed_progress.show_throughput(indexing_start);
@@ -180,7 +207,7 @@ impl crate::index::File {
 
         root_progress.inc();
 
-        let (resolver, pack) = make_resolver().map_err(gix_hash::io::Error::from)?;
+        let (resolver, pack) = make_resolver().map_err(gix_hash::io::from_std_io)?;
         let sorted_pack_offsets_by_oid = {
             let traverse::Outcome { roots, children } = tree.traverse(
                 resolver,
@@ -192,7 +219,7 @@ impl crate::index::File {
                      entry,
                      decompressed: bytes,
                      ..
-                 }| { modify_base(data, entry, bytes, version.hash()) },
+                 }| modify_base(data, entry, bytes, object_hash),
                 traverse::Options {
                     object_progress: Box::new(
                         root_progress.add_child_with_id("Resolving".into(), ProgressId::ResolveObjects.into()),
@@ -202,6 +229,7 @@ impl crate::index::File {
                     thread_limit,
                     should_interrupt,
                     object_hash,
+                    alloc_limit_bytes,
                 },
             )?;
             root_progress.inc();
@@ -209,8 +237,7 @@ impl crate::index::File {
             let mut items = roots;
             items.extend(children);
             {
-                let _progress =
-                    root_progress.add_child_with_id("sorting by id".into(), gix_features::progress::UNKNOWN);
+                let _progress = root_progress.add_child_with_id("sorting by id".into(), gix_utils::progress::UNKNOWN);
                 items.sort_by_key(|e| e.data.id);
             }
 
@@ -224,15 +251,20 @@ impl crate::index::File {
                 let header = crate::data::header::encode(pack_version, 0);
                 let mut hasher = gix_hash::hasher(object_hash);
                 hasher.update(&header);
-                hasher.try_finalize().map_err(gix_hash::io::Error::from)?
+                hasher.try_finalize()?
             }
-            None => return Err(Error::IteratorInvariantTrailer),
+            None => {
+                bail!(validation(
+                    "The iterator failed to set a trailing hash over all prior pack entries in the last provided entry"
+                ));
+            }
         };
         let index_hash = crate::index::encode::write_to(
             out,
             sorted_pack_offsets_by_oid,
             &pack_hash,
             version,
+            object_hash,
             &mut root_progress.add_child_with_id("writing index file".into(), ProgressId::IndexBytesWritten.into()),
         )?;
         root_progress.show_throughput_with(
@@ -255,7 +287,7 @@ fn modify_base(
     pack_entry: &crate::data::Entry,
     decompressed: &[u8],
     hash: gix_hash::Kind,
-) -> Result<(), gix_hash::hasher::Error> {
+) -> Result {
     let object_kind = pack_entry.header.as_kind().expect("base object as source of iteration");
     let id = gix_object::compute_hash(hash, object_kind, decompressed)?;
     entry.id = id;

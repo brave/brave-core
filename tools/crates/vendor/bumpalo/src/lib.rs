@@ -59,6 +59,107 @@ impl<E: Display> Display for AllocOrInitError<E> {
     }
 }
 
+/// An RAII guard to rewind an allocation on drop (due to failed initialization
+/// of the allocation).
+#[derive(Debug)]
+struct RewindGuard<'a, const MIN_ALIGN: usize> {
+    bump: &'a Bump<MIN_ALIGN>,
+
+    /// The pointer we are guarding.
+    ptr: NonNull<u8>,
+
+    /// The `ChunkFooter` we are rewinding to.
+    rewind_footer: NonNull<ChunkFooter>,
+
+    /// The bump pointer within that `ChunkFooter` we are rewinding to.
+    rewind_footer_ptr: NonNull<u8>,
+
+    /// Whether the guard is active, and should rewind on drop.
+    active: bool,
+}
+
+impl<'a, const MIN_ALIGN: usize> RewindGuard<'a, MIN_ALIGN> {
+    /// # Safety
+    ///
+    /// * `ptr` must be the most-recent allocation in `bump`
+    ///
+    /// * `ptr` must have been allocated with the given `layout`.
+    ///
+    /// * `rewind_footer` must be the `bump`'s chunk footer pointer just before
+    ///   `ptr`'s allocation.
+    ///
+    /// * `rewind_footer_ptr` must be the `bump`'s chunk footer's bump pointer
+    ///   just before `ptr`'s allocation.
+    ///
+    /// Ownership of `ptr` is moved into this guard, and it must not be used
+    /// again except through this guard.
+    unsafe fn new(
+        bump: &'a Bump<MIN_ALIGN>,
+        ptr: NonNull<u8>,
+        rewind_footer: NonNull<ChunkFooter>,
+        rewind_footer_ptr: NonNull<u8>,
+    ) -> Self {
+        Self {
+            bump,
+            ptr,
+            rewind_footer,
+            rewind_footer_ptr,
+            active: true,
+        }
+    }
+
+    /// Finish this guard, yielding ownership of its pointer.
+    fn finish(mut self) -> NonNull<u8> {
+        self.active = false;
+        self.ptr
+    }
+}
+
+impl<const MIN_ALIGN: usize> Drop for RewindGuard<'_, MIN_ALIGN> {
+    fn drop(&mut self) {
+        if !self.active || !self.bump.is_last_allocation(self.ptr) {
+            return;
+        }
+
+        // When our pointer was the last allocation in the bump, we can reclaim
+        // its space. In fact, sometimes we can do even better than simply
+        // calling `dealloc`: we can reclaim any alignment padding we might have
+        // added (which `dealloc` cannot do) if we didn't allocate a new chunk
+        // for this result.
+        unsafe {
+            let current_footer = self.bump.current_chunk_footer.get();
+            if current_footer == self.rewind_footer {
+                // It's still the same chunk, so rewind the bump pointer to its
+                // original value (reclaiming any alignment padding we may have
+                // added).
+                current_footer.as_ref().ptr.set(self.rewind_footer_ptr);
+            } else {
+                // We allocated a new chunk for this pointer.
+                //
+                // We know our pointer is the only allocation in this chunk:
+                // `self.ptr` was the most-recent allocation in `self.bump`
+                // (guaranteed by `RewindGuard::new` callers) and if control reaches
+                // here then it is also the last allocation in `self.bump`, and
+                // therefore it is the only allocation in this chunk.
+                //
+                // Because this is the only allocation in this chunk, we can reset
+                // the chunk's bump pointer to the start of the chunk.
+                let bump_ptr =
+                    round_mut_ptr_down_to(current_footer.cast::<u8>().as_ptr(), MIN_ALIGN);
+                debug_assert_eq!(bump_ptr as usize % MIN_ALIGN, 0);
+                let data = current_footer.as_ref().data;
+                let bump_ptr = NonNull::new_unchecked(bump_ptr);
+                debug_assert!(
+                    data <= bump_ptr,
+                    "bump pointer {bump_ptr:#p} should still be greater than or equal to the \
+                 start of the bump chunk {data:#p}"
+                );
+                current_footer.as_ref().ptr.set(bump_ptr);
+            }
+        }
+    }
+}
+
 /// An arena to bump allocate into.
 ///
 /// ## No `Drop`s
@@ -296,6 +397,7 @@ pub struct Bump<const MIN_ALIGN: usize = 1> {
 }
 
 #[repr(C)]
+#[repr(align(16))]
 #[derive(Debug)]
 struct ChunkFooter {
     // Pointer to the start of this chunk allocation. This footer is always at
@@ -445,6 +547,14 @@ pub(crate) fn round_down_to(n: usize, divisor: usize) -> usize {
     n & !(divisor - 1)
 }
 
+/// A non-null, well-aligned pointer for zero-sized allocations.
+#[inline]
+fn dangling_for_align(align: usize) -> NonNull<u8> {
+    debug_assert!(align.is_power_of_two());
+    // SAFETY: `align` is a power of two, therefore non-zero.
+    unsafe { NonNull::new_unchecked(ptr::null_mut::<u8>().wrapping_add(align)) }
+}
+
 /// Same as `round_down_to` but preserves pointer provenance.
 #[inline]
 pub(crate) fn round_mut_ptr_down_to(ptr: *mut u8, divisor: usize) -> *mut u8 {
@@ -475,10 +585,10 @@ const SUPPORTED_ITER_ALIGNMENT: usize = 16;
 const CHUNK_ALIGN: usize = SUPPORTED_ITER_ALIGNMENT;
 const FOOTER_SIZE: usize = mem::size_of::<ChunkFooter>();
 
-// Assert that `ChunkFooter` is at most the supported alignment. This will give a
+// Assert that `ChunkFooter` is at the supported alignment. This will give a
 // compile time error if it is not the case
 const _FOOTER_ALIGN_ASSERTION: () = {
-    assert!(mem::align_of::<ChunkFooter>() <= CHUNK_ALIGN);
+    assert!(mem::align_of::<ChunkFooter>() == CHUNK_ALIGN);
 };
 
 // Maximum typical overhead per allocation imposed by allocators.
@@ -908,7 +1018,7 @@ impl<const MIN_ALIGN: usize> Bump<MIN_ALIGN> {
         let ptr = round_mut_ptr_down_to(footer_ptr.cast::<u8>(), MIN_ALIGN);
         debug_assert_eq!(ptr as usize % MIN_ALIGN, 0);
         debug_assert!(
-            data.as_ptr() < ptr,
+            data.as_ptr() <= ptr,
             "bump pointer {ptr:#p} should still be greater than or equal to the \
              start of the bump chunk {data:#p}"
         );
@@ -1195,68 +1305,10 @@ impl<const MIN_ALIGN: usize> Bump<MIN_ALIGN> {
     where
         F: FnOnce() -> Result<T, E>,
     {
-        let rewind_footer = self.current_chunk_footer.get();
-        let rewind_ptr = unsafe { rewind_footer.as_ref() }.ptr.get();
-        let mut inner_result_ptr = NonNull::from(self.alloc_with(f));
-        match unsafe { inner_result_ptr.as_mut() } {
-            Ok(t) => Ok(unsafe {
-                //SAFETY:
-                // The `&mut Result<T, E>` returned by `alloc_with` may be
-                // lifetime-limited by `E`, but the derived `&mut T` still has
-                // the same validity as in `alloc_with` since the error variant
-                // is already ruled out here.
-
-                // We could conditionally truncate the allocation here, but
-                // since it grows backwards, it seems unlikely that we'd get
-                // any more than the `Result`'s discriminant this way, if
-                // anything at all.
-                &mut *(t as *mut _)
-            }),
-            Err(e) => unsafe {
-                // If this result was the last allocation in this arena, we can
-                // reclaim its space. In fact, sometimes we can do even better
-                // than simply calling `dealloc` on the result pointer: we can
-                // reclaim any alignment padding we might have added (which
-                // `dealloc` cannot do) if we didn't allocate a new chunk for
-                // this result.
-                if self.is_last_allocation(inner_result_ptr.cast()) {
-                    let current_footer_p = self.current_chunk_footer.get();
-                    let current_ptr = &current_footer_p.as_ref().ptr;
-                    if current_footer_p == rewind_footer {
-                        // It's still the same chunk, so reset the bump pointer
-                        // to its original value upon entry to this method
-                        // (reclaiming any alignment padding we may have
-                        // added).
-                        current_ptr.set(rewind_ptr);
-                    } else {
-                        // We allocated a new chunk for this result.
-                        //
-                        // We know the result is the only allocation in this
-                        // chunk: Any additional allocations since the start of
-                        // this method could only have happened when running
-                        // the initializer function, which is called *after*
-                        // reserving space for this result. Therefore, since we
-                        // already determined via the check above that this
-                        // result was the last allocation, there must not have
-                        // been any other allocations, and this result is the
-                        // only allocation in this chunk.
-                        //
-                        // Because this is the only allocation in this chunk,
-                        // we can reset the chunk's bump finger to the start of
-                        // the chunk.
-                        current_ptr.set(current_footer_p.as_ref().data);
-                    }
-                }
-                //SAFETY:
-                // As we received `E` semantically by value from `f`, we can
-                // just copy that value here as long as we avoid a double-drop
-                // (which can't happen as any specific references to the `E`'s
-                // data in `self` are destroyed when this function returns).
-                //
-                // The order between this and the deallocation doesn't matter
-                // because `Self: !Sync`.
-                Err(ptr::read(e as *const _))
-            },
+        match self.try_alloc_try_with(f) {
+            Ok(x) => Ok(x),
+            Err(AllocOrInitError::Init(e)) => Err(e),
+            Err(AllocOrInitError::Alloc(_)) => oom(),
         }
     }
 
@@ -1304,66 +1356,18 @@ impl<const MIN_ALIGN: usize> Bump<MIN_ALIGN> {
         F: FnOnce() -> Result<T, E>,
     {
         let rewind_footer = self.current_chunk_footer.get();
-        let rewind_ptr = unsafe { rewind_footer.as_ref() }.ptr.get();
-        let mut inner_result_ptr = NonNull::from(self.try_alloc_with(f)?);
-        match unsafe { inner_result_ptr.as_mut() } {
-            Ok(t) => Ok(unsafe {
-                //SAFETY:
-                // The `&mut Result<T, E>` returned by `alloc_with` may be
-                // lifetime-limited by `E`, but the derived `&mut T` still has
-                // the same validity as in `alloc_with` since the error variant
-                // is already ruled out here.
-
-                // We could conditionally truncate the allocation here, but
-                // since it grows backwards, it seems unlikely that we'd get
-                // any more than the `Result`'s discriminant this way, if
-                // anything at all.
-                &mut *(t as *mut _)
-            }),
+        let rewind_footer_ptr = unsafe { rewind_footer.as_ref() }.ptr.get();
+        let ptr = self.try_alloc_with(f)?;
+        let ptr = NonNull::from(ptr).cast::<u8>();
+        let guard = unsafe { RewindGuard::new(self, ptr, rewind_footer, rewind_footer_ptr) };
+        match unsafe { guard.ptr.cast::<Result<T, E>>().as_mut() } {
+            Ok(t) => {
+                guard.finish();
+                Ok(unsafe { NonNull::from(t).as_mut() })
+            }
             Err(e) => unsafe {
-                // If this result was the last allocation in this arena, we can
-                // reclaim its space. In fact, sometimes we can do even better
-                // than simply calling `dealloc` on the result pointer: we can
-                // reclaim any alignment padding we might have added (which
-                // `dealloc` cannot do) if we didn't allocate a new chunk for
-                // this result.
-                if self.is_last_allocation(inner_result_ptr.cast()) {
-                    let current_footer_p = self.current_chunk_footer.get();
-                    let current_ptr = &current_footer_p.as_ref().ptr;
-                    if current_footer_p == rewind_footer {
-                        // It's still the same chunk, so reset the bump pointer
-                        // to its original value upon entry to this method
-                        // (reclaiming any alignment padding we may have
-                        // added).
-                        current_ptr.set(rewind_ptr);
-                    } else {
-                        // We allocated a new chunk for this result.
-                        //
-                        // We know the result is the only allocation in this
-                        // chunk: Any additional allocations since the start of
-                        // this method could only have happened when running
-                        // the initializer function, which is called *after*
-                        // reserving space for this result. Therefore, since we
-                        // already determined via the check above that this
-                        // result was the last allocation, there must not have
-                        // been any other allocations, and this result is the
-                        // only allocation in this chunk.
-                        //
-                        // Because this is the only allocation in this chunk,
-                        // we can reset the chunk's bump finger to the start of
-                        // the chunk.
-                        current_ptr.set(current_footer_p.as_ref().data);
-                    }
-                }
-                //SAFETY:
-                // As we received `E` semantically by value from `f`, we can
-                // just copy that value here as long as we avoid a double-drop
-                // (which can't happen as any specific references to the `E`'s
-                // data in `self` are destroyed when this function returns).
-                //
-                // The order between this and the deallocation doesn't matter
-                // because `Self: !Sync`.
-                Err(AllocOrInitError::Init(ptr::read(e as *const _)))
+                // Read the error out and then let the guard rewind.
+                Err(AllocOrInitError::Init(NonNull::from(e).as_ptr().read()))
             },
         }
     }
@@ -1554,14 +1558,17 @@ impl<const MIN_ALIGN: usize> Bump<MIN_ALIGN> {
         F: FnMut(usize) -> T,
     {
         let layout = Layout::array::<T>(len).unwrap_or_else(|_| oom());
-        let dst = self.alloc_layout(layout).cast::<T>();
+        let guard = self.alloc_layout_with_rewind(layout);
 
         unsafe {
+            let mut dst = guard.ptr.cast::<T>();
             for i in 0..len {
-                ptr::write(dst.as_ptr().add(i), f(i));
+                ptr::write(dst.as_ptr(), f(i));
+                dst = NonNull::new_unchecked(dst.as_ptr().add(1));
             }
 
-            let result = slice::from_raw_parts_mut(dst.as_ptr(), len);
+            let ptr = guard.finish();
+            let result = slice::from_raw_parts_mut(ptr.cast::<T>().as_ptr(), len);
             debug_assert_eq!(Layout::for_value(result), layout);
             result
         }
@@ -1599,21 +1606,22 @@ impl<const MIN_ALIGN: usize> Bump<MIN_ALIGN> {
         F: FnMut(usize) -> Result<T, E>,
     {
         let layout = Layout::array::<T>(len).unwrap_or_else(|_| oom());
-        let base_ptr = self.alloc_layout(layout);
-        let dst = base_ptr.cast::<T>();
+        let guard = self.alloc_layout_with_rewind(layout);
 
         unsafe {
+            let mut dst = guard.ptr.cast::<T>();
             for i in 0..len {
                 match f(i) {
-                    Ok(el) => ptr::write(dst.as_ptr().add(i), el),
-                    Err(e) => {
-                        self.dealloc(base_ptr, layout);
-                        return Err(e);
+                    Ok(el) => {
+                        ptr::write(dst.as_ptr(), el);
+                        dst = NonNull::new_unchecked(dst.as_ptr().add(1));
                     }
+                    Err(e) => return Err(e),
                 }
             }
 
-            let result = slice::from_raw_parts_mut(dst.as_ptr(), len);
+            let ptr = guard.finish();
+            let result = slice::from_raw_parts_mut(ptr.cast::<T>().as_ptr(), len);
             debug_assert_eq!(Layout::for_value(result), layout);
             Ok(result)
         }
@@ -1648,14 +1656,17 @@ impl<const MIN_ALIGN: usize> Bump<MIN_ALIGN> {
         F: FnMut(usize) -> T,
     {
         let layout = Layout::array::<T>(len).map_err(|_| AllocErr)?;
-        let dst = self.try_alloc_layout(layout)?.cast::<T>();
+        let guard = self.try_alloc_layout_with_rewind(layout)?;
 
         unsafe {
+            let mut dst = guard.ptr.cast::<T>();
             for i in 0..len {
-                ptr::write(dst.as_ptr().add(i), f(i));
+                ptr::write(dst.as_ptr(), f(i));
+                dst = NonNull::new_unchecked(dst.as_ptr().add(1));
             }
 
-            let result = slice::from_raw_parts_mut(dst.as_ptr(), len);
+            let ptr = guard.finish();
+            let result = slice::from_raw_parts_mut(ptr.cast::<T>().as_ptr(), len);
             debug_assert_eq!(Layout::for_value(result), layout);
             Ok(result)
         }
@@ -1886,10 +1897,12 @@ impl<const MIN_ALIGN: usize> Bump<MIN_ALIGN> {
 
     #[inline(always)]
     fn try_alloc_layout_fast(&self, layout: Layout) -> Option<NonNull<u8>> {
-        // We don't need to check for ZSTs here since they will automatically
-        // be handled properly: the pointer will be bumped by zero bytes,
-        // modulo alignment. This keeps the fast path optimized for non-ZSTs,
-        // which are much more common.
+        // ZSTs must not touch the footer: the current chunk may be the shared
+        // `EMPTY_CHUNK`, and writing to it would race with other threads.
+        if layout.size() == 0 {
+            return Some(dangling_for_align(layout.align().max(MIN_ALIGN)));
+        }
+
         unsafe {
             let footer_ptr = self.current_chunk_footer.get();
             let footer = footer_ptr.as_ref();
@@ -1908,7 +1921,6 @@ impl<const MIN_ALIGN: usize> Bump<MIN_ALIGN> {
                 is_pointer_aligned_to(ptr, MIN_ALIGN),
                 "bump pointer {ptr:#p} should be aligned to the minimum alignment of {MIN_ALIGN:#x}"
             );
-
             // This `match` should be boiled away by LLVM: `MIN_ALIGN` is a
             // constant and the layout's alignment is also constant in practice
             // after inlining.
@@ -2055,12 +2067,29 @@ impl<const MIN_ALIGN: usize> Bump<MIN_ALIGN> {
             // Set the new chunk as our new current chunk.
             self.current_chunk_footer.set(new_footer);
 
-            // And then we can rely on `tray_alloc_layout_fast` to allocate
+            // And then we can rely on `try_alloc_layout_fast` to allocate
             // space within this chunk.
             let ptr = self.try_alloc_layout_fast(layout);
             debug_assert!(ptr.is_some());
             ptr
         }
+    }
+
+    #[inline]
+    fn try_alloc_layout_with_rewind(
+        &self,
+        layout: Layout,
+    ) -> Result<RewindGuard<'_, MIN_ALIGN>, AllocErr> {
+        let rewind_footer = self.current_chunk_footer.get();
+        let rewind_footer_ptr = unsafe { rewind_footer.as_ref().ptr.get() };
+        let ptr = self.try_alloc_layout(layout)?;
+        Ok(unsafe { RewindGuard::new(self, ptr, rewind_footer, rewind_footer_ptr) })
+    }
+
+    #[inline]
+    fn alloc_layout_with_rewind(&self, layout: Layout) -> RewindGuard<'_, MIN_ALIGN> {
+        self.try_alloc_layout_with_rewind(layout)
+            .unwrap_or_else(|_| oom())
     }
 
     /// Returns an iterator over each chunk of allocated memory that
@@ -2218,10 +2247,12 @@ impl<const MIN_ALIGN: usize> Bump<MIN_ALIGN> {
     }
 
     #[inline]
-    unsafe fn is_last_allocation(&self, ptr: NonNull<u8>) -> bool {
-        let footer = self.current_chunk_footer.get();
-        let footer = footer.as_ref();
-        footer.ptr.get() == ptr
+    fn is_last_allocation(&self, ptr: NonNull<u8>) -> bool {
+        unsafe {
+            let footer = self.current_chunk_footer.get();
+            let footer = footer.as_ref();
+            footer.ptr.get() == ptr
+        }
     }
 
     #[inline]
@@ -2356,6 +2387,9 @@ impl<const MIN_ALIGN: usize> Bump<MIN_ALIGN> {
             // Try to allocate the delta size within this same block so we can
             // reuse the currently allocated space.
             let delta = new_size - old_size;
+            if delta == 0 {
+                return Ok(ptr);
+            }
             if let Some(p) =
                 self.try_alloc_layout_fast(layout_from_size_align(delta, old_layout.align())?)
             {
@@ -2460,23 +2494,34 @@ unsafe impl<'a, const MIN_ALIGN: usize> alloc::Alloc for &'a Bump<MIN_ALIGN> {
     unsafe fn realloc(
         &mut self,
         ptr: NonNull<u8>,
-        layout: Layout,
+        old_layout: Layout,
         new_size: usize,
     ) -> Result<NonNull<u8>, AllocErr> {
-        let old_size = layout.size();
+        let old_size = old_layout.size();
+        let new_layout = layout_from_size_align(new_size, old_layout.align())?;
 
         if old_size == 0 {
-            return self.try_alloc_layout(layout);
+            return self.try_alloc_layout(new_layout);
         }
 
-        let new_layout = layout_from_size_align(new_size, layout.align())?;
         if new_size <= old_size {
-            Bump::shrink(self, ptr, layout, new_layout)
+            Bump::shrink(self, ptr, old_layout, new_layout)
         } else {
-            Bump::grow(self, ptr, layout, new_layout)
+            Bump::grow(self, ptr, old_layout, new_layout)
         }
     }
 }
+
+/// This function tests that Bump isn't Sync.
+/// ```compile_fail
+/// use bumpalo::Bump;
+/// fn _requires_sync<T: Sync>(_value: T) {}
+/// fn _bump_not_sync(b: Bump) {
+///    _requires_sync(b);
+/// }
+/// ```
+#[cfg(doctest)]
+fn _doctest_only() {}
 
 #[cfg(any(feature = "allocator_api", feature = "allocator-api2"))]
 unsafe impl<'a, const MIN_ALIGN: usize> Allocator for &'a Bump<MIN_ALIGN> {
@@ -2529,9 +2574,23 @@ unsafe impl<'a, const MIN_ALIGN: usize> Allocator for &'a Bump<MIN_ALIGN> {
         old_layout: Layout,
         new_layout: Layout,
     ) -> Result<NonNull<[u8]>, AllocError> {
-        let mut ptr = self.grow(ptr, old_layout, new_layout)?;
-        ptr.as_mut()[old_layout.size()..].fill(0);
-        Ok(ptr)
+        let new_ptr = self.grow(ptr, old_layout, new_layout)?;
+
+        // Zero the tail of the new allocation (the bytes past the copied old contents).
+        // Write through a raw pointer rather than constructing a `&mut [u8]` over the full range,
+        // because the tail is uninitialized and `&mut [u8]` spanning uninit bytes is UB.
+        // `old_layout.size() <= new_layout.size()` (invariant of `Allocator` trait), so this cannot underflow.
+        let tail_len = new_layout.size() - old_layout.size();
+
+        // SAFETY: `new_ptr` covers `new_layout.size()` bytes.
+        // `old_layout.size() <= new_layout.size()` (invariant of `Allocator` trait).
+        // So `tail_len` bytes starting at offset `old_layout.size()` are in bounds.
+        unsafe {
+            let dst_ptr = new_ptr.as_ptr().cast::<u8>().add(old_layout.size());
+            ptr::write_bytes(dst_ptr, 0, tail_len);
+        }
+
+        Ok(new_ptr)
     }
 }
 
@@ -2614,6 +2673,31 @@ mod tests {
             let q = (&b).realloc(p, layout, 2).unwrap();
             assert!(q.as_ptr() as usize != p.as_ptr() as usize - 1);
             b.reset();
+        }
+    }
+
+    // Uses private `alloc` module.
+    #[test]
+    fn realloc_old_size_zero() {
+        use crate::alloc::Alloc;
+
+        let bump = Bump::new();
+
+        let old_layout = Layout::from_size_align(0, 1).unwrap();
+        let old_ptr = bump.alloc_layout(old_layout);
+        let new_size = 64;
+        let new_ptr = unsafe { (&bump).realloc(old_ptr, old_layout, new_size).unwrap() };
+        let new_ptr = new_ptr.as_ptr().cast::<u8>();
+
+        // Write to and read from the pointer. If it is invalid, then MIRI will
+        // complain.
+        unsafe {
+            for i in 0..new_size {
+                *new_ptr.add(i) = 0xAB;
+            }
+            for i in 0..new_size {
+                assert_eq!(*new_ptr.add(i), 0xAB);
+            }
         }
     }
 

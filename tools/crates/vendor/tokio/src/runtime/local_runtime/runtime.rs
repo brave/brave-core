@@ -2,7 +2,7 @@
 
 use crate::runtime::blocking::BlockingPool;
 use crate::runtime::scheduler::CurrentThread;
-use crate::runtime::{context, Builder, EnterGuard, Handle, BOX_FUTURE_THRESHOLD};
+use crate::runtime::{context, AutoBox, Builder, EnterGuard, Handle};
 use crate::task::JoinHandle;
 
 use crate::util::trace::SpawnMeta;
@@ -29,7 +29,6 @@ use std::time::Duration;
 /// [runtime]: crate::runtime::Runtime
 /// [module]: crate::runtime
 #[derive(Debug)]
-#[cfg_attr(docsrs, doc(cfg(tokio_unstable)))]
 pub struct LocalRuntime {
     /// Task scheduler
     scheduler: LocalRuntimeScheduler,
@@ -86,6 +85,11 @@ impl LocalRuntime {
     ///
     /// // Use the runtime...
     /// ```
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the I/O driver or other OS resources required by the
+    /// runtime cannot be initialized.
     ///
     /// [mod]: crate::runtime
     /// [runtime builder]: crate::runtime::Builder
@@ -154,7 +158,7 @@ impl LocalRuntime {
 
         // safety: spawn_local can only be called from `LocalRuntime`, which this is
         unsafe {
-            if std::mem::size_of::<F>() > BOX_FUTURE_THRESHOLD {
+            if AutoBox::<F>::SHOULD_BOX {
                 self.handle.spawn_local_named(Box::pin(future), meta)
             } else {
                 self.handle.spawn_local_named(future, meta)
@@ -221,7 +225,7 @@ impl LocalRuntime {
         let fut_size = mem::size_of::<F>();
         let meta = SpawnMeta::new_unnamed(fut_size);
 
-        if std::mem::size_of::<F>() > BOX_FUTURE_THRESHOLD {
+        if AutoBox::<F>::SHOULD_BOX {
             self.block_on_inner(Box::pin(future), meta)
         } else {
             self.block_on_inner(future, meta)
@@ -235,7 +239,12 @@ impl LocalRuntime {
             feature = "taskdump",
             feature = "rt",
             target_os = "linux",
-            any(target_arch = "aarch64", target_arch = "x86", target_arch = "x86_64")
+            any(
+                target_arch = "aarch64",
+                target_arch = "x86",
+                target_arch = "x86_64",
+                target_arch = "s390x"
+            )
         ))]
         let future = crate::runtime::task::trace::Trace::root(future);
 

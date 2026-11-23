@@ -11,8 +11,9 @@
 
 [package]
 edition = "2021"
+rust-version = "1.77"
 name = "rustc-hash"
-version = "2.1.1"
+version = "2.1.3"
 authors = ["The Rust Project Developers"]
 build = false
 autolib = false
@@ -45,5 +46,5 @@ name = "rustc_hash"
 path = "src/lib.rs"
 
 [dependencies.rand]
-version = "0.8"
+version = "0.9"
 optional = true

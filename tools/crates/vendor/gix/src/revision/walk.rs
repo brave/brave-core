@@ -2,19 +2,7 @@ use gix_hash::ObjectId;
 use gix_object::FindExt;
 use gix_traverse::commit::simple::CommitTimeOrder;
 
-use crate::{ext::ObjectIdExt, revision, Repository};
-
-/// The error returned by [`Platform::all()`] and [`Platform::selected()`].
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error(transparent)]
-    SimpleTraversal(#[from] gix_traverse::commit::simple::Error),
-    #[error(transparent)]
-    ShallowCommits(#[from] crate::shallow::read::Error),
-    #[error(transparent)]
-    ConfigBoolean(#[from] crate::config::boolean::Error),
-}
+use crate::{Repository, Result, ext::ObjectIdExt, revision};
 
 /// Specify how to sort commits during a [revision::Walk] traversal.
 ///
@@ -85,6 +73,8 @@ pub struct Info<'repo> {
     pub id: gix_hash::ObjectId,
     /// All parent ids we have encountered. Note that these will be at most one if [`Parents::First`][gix_traverse::commit::Parents::First] is enabled.
     pub parent_ids: gix_traverse::commit::ParentIds,
+    /// The generation number if this commit was read from a commit-graph.
+    pub generation: Option<gix_revwalk::graph::Generation>,
     /// The time at which the commit was created. It will only be `Some(_)` if the chosen traversal was
     /// taking dates into consideration.
     pub commit_time: Option<gix_date::SecondsSinceUnixEpoch>,
@@ -103,7 +93,7 @@ impl<'repo> Info<'repo> {
     ///
     /// Note that this is an expensive operation which shouldn't be performed unless one needs more than parent ids
     /// and commit time.
-    pub fn object(&self) -> Result<crate::Commit<'repo>, crate::object::find::existing::Error> {
+    pub fn object(&self) -> Result<crate::Commit<'repo>> {
         Ok(self.id().object()?.into_commit())
     }
 
@@ -129,6 +119,7 @@ impl<'repo> Info<'repo> {
         Info {
             id: info.id,
             parent_ids: info.parent_ids,
+            generation: info.generation,
             commit_time: info.commit_time,
             repo,
         }
@@ -140,6 +131,7 @@ impl<'repo> Info<'repo> {
         gix_traverse::commit::Info {
             id: self.id,
             parent_ids: self.parent_ids,
+            generation: self.generation,
             commit_time: self.commit_time,
         }
     }
@@ -196,6 +188,7 @@ impl Platform<'_> {
     /// control over this to the configuration of `core.commitGraph` (the default).
     ///
     /// Errors when loading the graph lead to falling back to the object database, it's treated as optional cache.
+    /// Active object replacements always disable the commit-graph, which only contains original parents.
     pub fn use_commit_graph(mut self, toggle: impl Into<Option<bool>>) -> Self {
         self.use_commit_graph = toggle.into();
         self
@@ -207,6 +200,7 @@ impl Platform<'_> {
     /// It interacts with [`use_commit_graph`][Platform::use_commit_graph()] as one would expect, but it's worth noting that if `None`,
     /// with [`use_commit_graph`][Platform::use_commit_graph()] being `true`, a graph will still be used for iteration.
     /// To turn the commit-graph off, call [`use_commit_graph(false)`][Platform::use_commit_graph()] instead.
+    /// Active object replacements disable even an explicitly supplied graph.
     pub fn with_commit_graph(mut self, graph: Option<gix_commitgraph::Graph>) -> Self {
         self.commit_graph = graph;
         self
@@ -230,10 +224,10 @@ impl Platform<'_> {
         for id in ids.into_iter() {
             let id = id.into();
             if !self.boundary.contains(&id) {
-                if let Some(time) = self.repo.find_commit(id).ok().and_then(|c| c.time().ok()) {
-                    if cutoff.is_none() || cutoff > Some(time.seconds) {
-                        cutoff = time.seconds.into();
-                    }
+                if let Some(time) = self.repo.find_commit(id).ok().and_then(|c| c.time().ok())
+                    && (cutoff.is_none() || cutoff > Some(time.seconds))
+                {
+                    cutoff = time.seconds.into();
                 }
                 self.boundary.push(id);
             }
@@ -266,10 +260,7 @@ impl<'repo> Platform<'repo> {
     /// if the traversal should exclude it and its ancestry entirely.
     ///
     /// If `filter` is None, no pruning of the graph will be performed which is the default.
-    pub fn selected(
-        self,
-        mut filter: impl FnMut(&gix_hash::oid) -> bool + 'repo,
-    ) -> Result<revision::Walk<'repo>, Error> {
+    pub fn selected(self, mut filter: impl FnMut(&gix_hash::oid) -> bool + 'repo) -> Result<revision::Walk<'repo>> {
         let Platform {
             repo,
             tips,
@@ -281,6 +272,14 @@ impl<'repo> Platform<'repo> {
             hidden,
         } = self;
         boundary.sort();
+        let commit_graph = if repo.has_object_replacements() {
+            None
+        } else {
+            commit_graph.or(use_commit_graph
+                .map_or_else(|| repo.config.may_use_commit_graph(), Ok)?
+                .then(|| repo.commit_graph().ok())
+                .flatten())
+        };
         Ok(revision::Walk {
             repo,
             inner: Box::new(
@@ -304,11 +303,11 @@ impl<'repo> Platform<'repo> {
                                     grafted_parents_to_skip.remove(idx);
                                     return false;
                                 }
-                                if commits.binary_search(&id).is_ok() {
-                                    if let Ok(commit) = repo.objects.find_commit_iter(&id, &mut buf) {
-                                        grafted_parents_to_skip.extend(commit.parent_ids());
-                                        grafted_parents_to_skip.sort();
-                                    }
+                                if commits.binary_search(&id).is_ok()
+                                    && let Ok(commit) = repo.objects.find_commit_iter(&id, &mut buf)
+                                {
+                                    grafted_parents_to_skip.extend(commit.parent_ids());
+                                    grafted_parents_to_skip.sort();
                                 }
                                 true
                             }
@@ -318,14 +317,8 @@ impl<'repo> Platform<'repo> {
                 })
                 .sorting(sorting.into_simple().expect("for now there is nothing else"))?
                 .parents(parents)
-                .hide(hidden)?
-                .commit_graph(
-                    commit_graph.or(use_commit_graph
-                        .map_or_else(|| self.repo.config.may_use_commit_graph(), Ok)?
-                        .then(|| self.repo.commit_graph().ok())
-                        .flatten()),
-                )
-                .map(|res| res.map_err(iter::Error::from)),
+                .commit_graph(commit_graph)
+                .hide(hidden)?,
             ),
         })
     }
@@ -335,32 +328,23 @@ impl<'repo> Platform<'repo> {
     ///
     /// It's highly recommended to set an [`object cache`](Repository::object_cache_size()) on the parent repo
     /// to greatly speed up performance if the returned id is supposed to be looked up right after.
-    pub fn all(self) -> Result<revision::Walk<'repo>, Error> {
+    pub fn all(self) -> Result<revision::Walk<'repo>> {
         self.selected(|_| true)
     }
 }
 
-///
-pub mod iter {
-    /// The error returned by the [Walk](crate::revision::Walk) iterator.
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(transparent)]
-        SimpleTraversal(#[from] gix_traverse::commit::simple::Error),
-    }
-}
-
 pub(crate) mod iter_impl {
+    use crate::Result;
+
     /// The iterator returned by [`crate::revision::walk::Platform::all()`].
     pub struct Walk<'repo> {
         /// The owning repository.
         pub repo: &'repo crate::Repository,
-        pub(crate) inner: Box<dyn Iterator<Item = Result<gix_traverse::commit::Info, super::iter::Error>> + 'repo>,
+        pub(crate) inner: Box<dyn Iterator<Item = Result<gix_traverse::commit::Info>> + 'repo>,
     }
 
     impl<'repo> Iterator for Walk<'repo> {
-        type Item = Result<super::Info<'repo>, super::iter::Error>;
+        type Item = Result<super::Info<'repo>>;
 
         fn next(&mut self) -> Option<Self::Item> {
             self.inner

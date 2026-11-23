@@ -81,7 +81,7 @@ pub type posix_spawnattr_t = *mut c_void;
 pub type posix_spawn_file_actions_t = *mut c_void;
 
 extern_ty! {
-    pub enum timezone {}
+    pub type timezone;
 }
 
 impl siginfo_t {
@@ -292,14 +292,14 @@ s! {
     pub struct pthread_mutex_t {
         flags: u32,
         lock: i32,
-        unused: i32,
+        unused: Padding<i32>,
         owner: i32,
         owner_count: i32,
     }
 
     pub struct pthread_cond_t {
         flags: u32,
-        unused: i32,
+        unused: Padding<i32>,
         mutex: *mut c_void,
         waiter_count: i32,
         lock: i32,
@@ -366,12 +366,6 @@ s! {
         pub sa_mask: crate::sigset_t,
         pub sa_flags: c_int,
         sa_userdata: *mut c_void,
-    }
-
-    pub struct sem_t {
-        pub type_: i32,
-        pub named_sem_id: i32, // actually a union with unnamed_sem (i32)
-        pub padding: [i32; 2],
     }
 
     pub struct ucred {
@@ -495,7 +489,20 @@ s! {
         pub ut_user: [c_char; 32],
         pub ut_line: [c_char; 16],
         pub ut_host: [c_char; 128],
-        __ut_reserved: [c_char; 64],
+        __ut_reserved: Padding<[c_char; 64]>,
+    }
+}
+
+s_no_extra_traits! {
+    pub struct sem_t {
+        pub type_: i32,
+        pub named_sem_id: __c_anonymous_sem_t_u,
+        padding: Padding<[i32; 2]>,
+    }
+
+    pub union __c_anonymous_sem_t_u {
+        pub named_sem_id: i32,
+        pub unnamed_sem: i32,
     }
 }
 
@@ -657,6 +664,14 @@ pub const SIG_SETMASK: c_int = 3;
 pub const SIGEV_NONE: c_int = 0;
 pub const SIGEV_SIGNAL: c_int = 1;
 pub const SIGEV_THREAD: c_int = 2;
+
+pub const AI_PASSIVE: c_int = 0x001;
+pub const AI_CANONNAME: c_int = 0x002;
+pub const AI_NUMERICHOST: c_int = 0x004;
+pub const AI_NUMERICSERV: c_int = 0x008;
+pub const AI_ALL: c_int = 0x100;
+pub const AI_ADDRCONFIG: c_int = 0x400;
+pub const AI_V4MAPPED: c_int = 0x800;
 
 pub const EAI_AGAIN: c_int = 2;
 pub const EAI_BADFLAGS: c_int = 3;
@@ -902,6 +917,9 @@ pub const MINSIGSTKSZ: size_t = 8192;
 pub const SIGSTKSZ: size_t = 16384;
 
 pub const IOV_MAX: c_int = 1024;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PATH_MAX: c_int = 1024;
 
 pub const SA_NOCLDSTOP: c_int = 0x01;
@@ -929,6 +947,7 @@ pub const RTLD_DEFAULT: *mut c_void = ptr::null_mut();
 pub const BUFSIZ: c_uint = 8192;
 pub const FILENAME_MAX: c_uint = 256;
 pub const FOPEN_MAX: c_uint = 128;
+pub const HOST_NAME_MAX: c_int = 255;
 pub const L_tmpnam: c_uint = 512;
 pub const TMP_MAX: c_uint = 32768;
 
@@ -1091,14 +1110,14 @@ pub const PTHREAD_STACK_MIN: size_t = 8192;
 pub const PTHREAD_MUTEX_INITIALIZER: pthread_mutex_t = pthread_mutex_t {
     flags: 0,
     lock: 0,
-    unused: -42,
+    unused: Padding::new(0),
     owner: -1,
     owner_count: 0,
 };
 pub const PTHREAD_COND_INITIALIZER: pthread_cond_t = pthread_cond_t {
     flags: 0,
-    unused: -42,
-    mutex: 0 as *mut _,
+    unused: Padding::new(0),
+    mutex: ptr::null_mut(),
     waiter_count: 0,
     lock: 0,
 };
@@ -1109,7 +1128,7 @@ pub const PTHREAD_RWLOCK_INITIALIZER: pthread_rwlock_t = pthread_rwlock_t {
     lock_count: 0,
     reader_count: 0,
     writer_count: 0,
-    waiters: [0 as *mut _; 2],
+    waiters: [ptr::null_mut(); 2],
 };
 
 pub const PTHREAD_MUTEX_DEFAULT: c_int = 0;
@@ -1156,6 +1175,14 @@ pub const SCM_RIGHTS: c_int = 0x01;
 pub const SOMAXCONN: c_int = 32;
 
 pub const NI_MAXHOST: size_t = 1025;
+pub const NI_MAXSERV: size_t = 32;
+
+pub const NI_NOFQDN: c_int = 0x01;
+pub const NI_NUMERICHOST: c_int = 0x02;
+pub const NI_NAMEREQD: c_int = 0x04;
+pub const NI_NUMERICSERV: c_int = 0x08;
+pub const NI_DGRAM: c_int = 0x10;
+pub const NI_NUMERICSCOPE: c_int = 0x40;
 
 pub const WNOHANG: c_int = 0x01;
 pub const WUNTRACED: c_int = 0x02;
@@ -1378,32 +1405,36 @@ pub const POSIX_SPAWN_SETSIGDEF: c_int = 0x10;
 pub const POSIX_SPAWN_SETSIGMASK: c_int = 0x20;
 pub const POSIX_SPAWN_SETSID: c_int = 0x40;
 
+// include/paths.h
+pub const _PATH_DEFPATH: *const c_char = cstr(b"/usr/bin:/bin\0");
+pub const _PATH_BSHELL: *const c_char = cstr(b"/bin/sh\0");
+
 const fn CMSG_ALIGN(len: usize) -> usize {
     len + size_of::<usize>() - 1 & !(size_of::<usize>() - 1)
 }
 
 f! {
-    pub fn CMSG_FIRSTHDR(mhdr: *const msghdr) -> *mut cmsghdr {
+    pub unsafe fn CMSG_FIRSTHDR(mhdr: *const msghdr) -> *mut cmsghdr {
         if (*mhdr).msg_controllen as usize >= size_of::<cmsghdr>() {
-            (*mhdr).msg_control as *mut cmsghdr
+            (*mhdr).msg_control.cast()
         } else {
-            core::ptr::null_mut::<cmsghdr>()
+            ptr::null_mut()
         }
     }
 
-    pub fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
+    pub unsafe fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
         (cmsg as *mut c_uchar).offset(CMSG_ALIGN(size_of::<cmsghdr>()) as isize)
     }
 
-    pub const fn CMSG_SPACE(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_SPACE(length: c_uint) -> c_uint {
         (CMSG_ALIGN(length as usize) + CMSG_ALIGN(size_of::<cmsghdr>())) as c_uint
     }
 
-    pub const fn CMSG_LEN(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_LEN(length: c_uint) -> c_uint {
         CMSG_ALIGN(size_of::<cmsghdr>()) as c_uint + length
     }
 
-    pub fn CMSG_NXTHDR(mhdr: *const msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
+    pub unsafe fn CMSG_NXTHDR(mhdr: *const msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
         if cmsg.is_null() {
             return crate::CMSG_FIRSTHDR(mhdr);
         }
@@ -1412,70 +1443,73 @@ f! {
             + CMSG_ALIGN(size_of::<cmsghdr>());
         let max = (*mhdr).msg_control as usize + (*mhdr).msg_controllen as usize;
         if next > max {
-            core::ptr::null_mut::<cmsghdr>()
+            ptr::null_mut()
         } else {
             (cmsg as usize + CMSG_ALIGN((*cmsg).cmsg_len as usize)) as *mut cmsghdr
         }
     }
 
-    pub fn FD_CLR(fd: c_int, set: *mut fd_set) -> () {
+    pub unsafe fn FD_CLR(fd: c_int, set: *mut fd_set) -> () {
         let fd = fd as usize;
         let size = size_of_val(&(*set).fds_bits[0]) * 8;
-        (*set).fds_bits[fd / size] &= !(1 << (fd % size));
-        return;
+        let Some(slot) = (*set).fds_bits.get_mut(fd / size) else {
+            panic!("fd {fd} out of range: valid fds are 0..FD_SETSIZE (0..{FD_SETSIZE})");
+        };
+        *slot &= !(1 << (fd % size));
     }
 
-    pub fn FD_ISSET(fd: c_int, set: *const fd_set) -> bool {
+    pub unsafe fn FD_ISSET(fd: c_int, set: *const fd_set) -> bool {
         let fd = fd as usize;
         let size = size_of_val(&(*set).fds_bits[0]) * 8;
-        return ((*set).fds_bits[fd / size] & (1 << (fd % size))) != 0;
+        let Some(slot) = (*set).fds_bits.get(fd / size) else {
+            panic!("fd {fd} out of range: valid fds are 0..FD_SETSIZE (0..{FD_SETSIZE})");
+        };
+        (*slot & (1 << (fd % size))) != 0
     }
 
-    pub fn FD_SET(fd: c_int, set: *mut fd_set) -> () {
+    pub unsafe fn FD_SET(fd: c_int, set: *mut fd_set) -> () {
         let fd = fd as usize;
         let size = size_of_val(&(*set).fds_bits[0]) * 8;
-        (*set).fds_bits[fd / size] |= 1 << (fd % size);
-        return;
+        let Some(slot) = (*set).fds_bits.get_mut(fd / size) else {
+            panic!("fd {fd} out of range: valid fds are 0..FD_SETSIZE (0..{FD_SETSIZE})");
+        };
+        *slot |= 1 << (fd % size);
     }
 
-    pub fn FD_ZERO(set: *mut fd_set) -> () {
-        for slot in (*set).fds_bits.iter_mut() {
-            *slot = 0;
-        }
+    pub unsafe fn FD_ZERO(set: *mut fd_set) -> () {
+        (*set).fds_bits.fill(0);
     }
-}
 
-safe_f! {
-    pub const fn WIFEXITED(status: c_int) -> bool {
+    pub const safe fn WIFEXITED(status: c_int) -> bool {
         (status & !0xff) == 0
     }
 
-    pub const fn WEXITSTATUS(status: c_int) -> c_int {
+    pub const safe fn WEXITSTATUS(status: c_int) -> c_int {
         status & 0xff
     }
 
-    pub const fn WIFSIGNALED(status: c_int) -> bool {
+    pub const safe fn WIFSIGNALED(status: c_int) -> bool {
         ((status >> 8) & 0xff) != 0
     }
 
-    pub const fn WTERMSIG(status: c_int) -> c_int {
+    pub const safe fn WTERMSIG(status: c_int) -> c_int {
         (status >> 8) & 0xff
     }
 
-    pub const fn WIFSTOPPED(status: c_int) -> bool {
+    pub const safe fn WIFSTOPPED(status: c_int) -> bool {
         ((status >> 16) & 0xff) != 0
     }
 
-    pub const fn WSTOPSIG(status: c_int) -> c_int {
+    pub const safe fn WSTOPSIG(status: c_int) -> c_int {
         (status >> 16) & 0xff
     }
 
     // actually WIFCORED, but this is used everywhere else
-    pub const fn WCOREDUMP(status: c_int) -> bool {
+    pub const safe fn WCOREDUMP(status: c_int) -> bool {
         (status & 0x10000) != 0
     }
 
-    pub const fn WIFCONTINUED(status: c_int) -> bool {
+    pub const safe fn WIFCONTINUED(status: c_int) -> bool {
         (status & 0x20000) != 0
     }
 }

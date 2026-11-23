@@ -19,7 +19,7 @@
 //! ```
 
 // Enable documentation for all features on docs.rs
-#![cfg_attr(docsrs, feature(doc_cfg, doc_auto_cfg))]
+#![cfg_attr(rustls_native_certs_docsrs, feature(doc_cfg))]
 
 use std::error::Error as StdError;
 use std::path::{Path, PathBuf};
@@ -47,10 +47,10 @@ use macos as platform;
 ///
 /// ## Environment Variables
 ///
-/// | Env. Var.      | Description                                                                           |
-/// |----------------|---------------------------------------------------------------------------------------|
-/// | SSL_CERT_FILE  | File containing an arbitrary number of certificates in PEM format.                    |
-/// | SSL_CERT_DIR   | Colon separated list of directories containing certificate files.                     |
+/// | Env. Var.     | Description                                                                           |
+/// |---------------|---------------------------------------------------------------------------------------|
+/// | SSL_CERT_FILE | File containing an arbitrary number of certificates in PEM format.                    |
+/// | SSL_CERT_DIR  | Colon separated list of directories containing certificate files.                     |
 ///
 /// If **either** (or **both**) are set, certificates are only loaded from
 /// the locations specified via environment variables and not the platform-
@@ -203,7 +203,9 @@ impl CertPaths {
             //
             // See <https://docs.openssl.org/3.5/man1/openssl-rehash/#options>
             dirs: match env::var_os(ENV_CERT_DIR) {
-                Some(dirs) => env::split_paths(&dirs).collect(),
+                Some(dirs) => env::split_paths(&dirs)
+                    .filter(|p| !p.as_os_str().is_empty())
+                    .collect(),
                 None => Vec::new(),
             },
         }
@@ -230,6 +232,10 @@ impl CertPaths {
 /// If `dir` is defined, a directory must exist at this path, and all files
 /// contained in it must be loaded successfully, subject to the rules outlined above for `file`.
 /// The directory is not scanned recursively and may be empty.
+///
+/// On Unix, each file is read at most once: directory entries that resolve to a file
+/// already read (for example the symlinks created by `openssl rehash`, or a link to
+/// `file`) are skipped.
 pub fn load_certs_from_paths(file: Option<&Path>, dir: Option<&Path>) -> CertificateResult {
     let dir = match dir {
         Some(d) => vec![d],
@@ -248,12 +254,16 @@ fn load_certs_from_paths_internal(
         return out;
     }
 
+    let mut seen = SeenFiles::default();
     if let Some(cert_file) = file {
+        if let Ok(metadata) = fs::metadata(cert_file) {
+            seen.first_visit(&metadata);
+        }
         load_pem_certs(cert_file, &mut out);
     }
 
     for cert_dir in dir.iter() {
-        load_pem_certs_from_dir(cert_dir.as_ref(), &mut out);
+        load_pem_certs_from_dir(cert_dir.as_ref(), &mut out, &mut seen);
     }
 
     out.certs
@@ -262,8 +272,38 @@ fn load_certs_from_paths_internal(
     out
 }
 
+/// Files already read, by identity.
+///
+/// Certificate directories typically hold several symlinks to each certificate
+/// (hash names, readable names) and often a copy of the bundle file too.
+#[derive(Default)]
+struct SeenFiles {
+    /// `(device, inode)` of each file read.
+    #[cfg(unix)]
+    ids: std::collections::HashSet<(u64, u64)>,
+}
+
+impl SeenFiles {
+    /// Records the file and returns whether it was not seen before.
+    ///
+    /// Always `true` where std exposes no stable file identity.
+    fn first_visit(&mut self, metadata: &fs::Metadata) -> bool {
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::MetadataExt;
+            self.ids
+                .insert((metadata.dev(), metadata.ino()))
+        }
+        #[cfg(not(unix))]
+        {
+            let _ = metadata;
+            true
+        }
+    }
+}
+
 /// Load certificate from certificate directory (what OpenSSL calls CAdir)
-fn load_pem_certs_from_dir(dir: &Path, out: &mut CertificateResult) {
+fn load_pem_certs_from_dir(dir: &Path, out: &mut CertificateResult, seen: &mut SeenFiles) {
     let dir_reader = match fs::read_dir(dir) {
         Ok(reader) => reader,
         Err(err) => {
@@ -297,7 +337,7 @@ fn load_pem_certs_from_dir(dir: &Path, out: &mut CertificateResult) {
             }
         };
 
-        if metadata.is_file() {
+        if metadata.is_file() && seen.first_visit(&metadata) {
             load_pem_certs(&path, out);
         }
     }
@@ -384,20 +424,20 @@ mod tests {
 
         {
             let mut file = File::create(&file_path).unwrap();
-            write!(file, "{}", &cert1).unwrap();
-            write!(file, "{}", &cert2).unwrap();
+            write!(file, "{}", cert1).unwrap();
+            write!(file, "{}", cert2).unwrap();
         }
 
         {
             // Duplicate (already in `file_path`)
             let mut file = File::create(dir_path.join("71f3bb26.0")).unwrap();
-            write!(file, "{}", &cert1).unwrap();
+            write!(file, "{}", cert1).unwrap();
         }
 
         {
             // Duplicate (already in `file_path`)
             let mut file = File::create(dir_path.join("912e7cd5.0")).unwrap();
-            write!(file, "{}", &cert2).unwrap();
+            write!(file, "{}", cert2).unwrap();
         }
 
         let result = CertPaths {
@@ -420,6 +460,70 @@ mod tests {
         }
         .load();
         assert_eq!(result.certs.len(), 2);
+    }
+
+    /// Each read of this file records one PEM error, which makes reads countable.
+    #[cfg(unix)]
+    const MALFORMED_PEM: &str = "-----BEGIN CERTIFICATE-----\n!!!\n-----END CERTIFICATE-----\n";
+
+    #[test]
+    #[cfg(unix)]
+    fn dir_symlinks_to_same_file_read_once() {
+        use std::os::unix::fs::symlink;
+
+        let temp_dir = tempfile::TempDir::new().unwrap();
+        let dir = temp_dir.path();
+        fs::write(dir.join("Example_Root.pem"), MALFORMED_PEM).unwrap();
+        symlink("Example_Root.pem", dir.join("01234567.0")).unwrap();
+        symlink(dir.join("Example_Root.pem"), dir.join("89abcdef.0")).unwrap();
+
+        let result = load_certs_from_paths_internal(None, &[dir]);
+        assert_eq!(result.errors.len(), 1, "{:?}", result.errors);
+    }
+
+    #[test]
+    #[cfg(unix)]
+    fn dir_entry_for_cert_file_skipped() {
+        use std::os::unix::fs::symlink;
+
+        let file_dir = tempfile::TempDir::new().unwrap();
+        let cert_dir = tempfile::TempDir::new().unwrap();
+        let file = file_dir.path().join("ca-bundle.crt");
+        fs::write(&file, MALFORMED_PEM).unwrap();
+        symlink(&file, cert_dir.path().join("ca-bundle.crt")).unwrap();
+
+        let result = load_certs_from_paths_internal(Some(&file), &[cert_dir.path()]);
+        assert_eq!(result.errors.len(), 1, "{:?}", result.errors);
+    }
+
+    #[test]
+    #[cfg(unix)]
+    fn dir_copies_with_same_content_all_read() {
+        let temp_dir = tempfile::TempDir::new().unwrap();
+        fs::write(temp_dir.path().join("a.pem"), MALFORMED_PEM).unwrap();
+        fs::write(temp_dir.path().join("b.pem"), MALFORMED_PEM).unwrap();
+
+        let result = load_certs_from_paths_internal(None, &[temp_dir.path()]);
+        assert_eq!(result.errors.len(), 2, "{:?}", result.errors);
+    }
+
+    #[test]
+    #[cfg(unix)]
+    fn dir_symlinks_still_load_certs() {
+        use std::os::unix::fs::symlink;
+
+        let temp_dir = tempfile::TempDir::new().unwrap();
+        let dir = temp_dir.path();
+        fs::write(
+            dir.join("chain.pem"),
+            include_str!("../tests/badssl-com-chain.pem"),
+        )
+        .unwrap();
+        symlink("chain.pem", dir.join("71f3bb26.0")).unwrap();
+
+        let result = load_certs_from_paths_internal(None, &[dir]);
+        assert!(result.errors.is_empty(), "{:?}", result.errors);
+        assert_eq!(result.certs.len(), 1);
     }
 
     #[test]
@@ -445,7 +549,11 @@ mod tests {
     #[test]
     fn from_env_missing_dir() {
         let mut result = CertificateResult::default();
-        load_pem_certs_from_dir(Path::new("no/such/directory"), &mut result);
+        load_pem_certs_from_dir(
+            Path::new("no/such/directory"),
+            &mut result,
+            &mut SeenFiles::default(),
+        );
         match &first_error(&result).kind {
             ErrorKind::Io { inner, .. } => assert_eq!(inner.kind(), io::ErrorKind::NotFound),
             _ => panic!("unexpected error {:?}", result.errors),

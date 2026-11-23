@@ -205,7 +205,6 @@ where
         buffer_usage,
         stripe_accumulator,
         total_bytes,
-        ..
     } = this;
 
     let n_stripes = secret_buffer.n_stripes();
@@ -216,8 +215,8 @@ where
     // Safety: This is an invariant of the buffer.
     unsafe {
         debug_assert!(*buffer_usage <= buffer.len());
-        assert_unchecked(*buffer_usage <= buffer.len())
-    };
+        assert_unchecked(*buffer_usage <= buffer.len());
+    }
 
     // We have some previous data saved; try to fill it up and process it first
     if !buffer.is_empty() {
@@ -267,7 +266,7 @@ where
         let (stripes, _) = stripes.bp_as_chunks();
 
         for stripe in stripes {
-            stripe_accumulator.process_stripe(vector, stripe, n_stripes, secret)
+            stripe_accumulator.process_stripe(vector, stripe, n_stripes, secret);
         }
         input = remainder;
     }
@@ -309,8 +308,8 @@ where
     // Safety: This is an invariant of the buffer.
     unsafe {
         debug_assert!(buffer_usage <= buffer.len());
-        assert_unchecked(buffer_usage <= buffer.len())
-    };
+        assert_unchecked(buffer_usage <= buffer.len());
+    }
 
     if total_bytes > CUTOFF {
         let input = &buffer[..buffer_usage];
@@ -442,7 +441,7 @@ pub use with_alloc::AllocRawHasher;
 /// secret we should be using.
 #[derive(Copy, Clone)]
 pub struct StripeAccumulator {
-    pub accumulator: [u64; 8],
+    accumulator: [u64; 8],
     current_stripe: usize,
 }
 
@@ -551,11 +550,11 @@ mod test {
 
     #[test]
     fn secret_buffer_allocate_default_is_valid() {
-        assert!(SecretBuffer::allocate_default().is_valid())
+        assert!(SecretBuffer::allocate_default().is_valid());
     }
 
     #[test]
     fn secret_buffer_allocate_with_seed_is_valid() {
-        assert!(SecretBuffer::allocate_with_seed(0xdead_beef).is_valid())
+        assert!(SecretBuffer::allocate_with_seed(0xdead_beef).is_valid());
     }
 }

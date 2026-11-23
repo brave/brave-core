@@ -123,8 +123,9 @@ impl<'a> WriteBuffer<'a> {
     }
 
     pub fn written(&self) -> &[u8] {
-        debug_assert!(self.index <= self.initialized);
+        assert!(self.index <= self.initialized);
 
+        // Safety: All bytes in the returned slice are initialized.
         unsafe { &*(&self.buffer[..self.index] as *const _ as *const [u8]) }
     }
 
@@ -153,10 +154,13 @@ impl<'a> WriteBuffer<'a> {
 
     /// Advance written index within initialized part.
     ///
-    /// Note that try to advance into uninitialized part would panic.
+    /// # Panics
+    ///
+    /// Panics if `amount` exceeds the number of initialized, unwritten bytes.
     pub fn advance(&mut self, amount: usize) {
-        debug_assert!(self.index + amount <= self.buffer.len());
-        debug_assert!(self.index + amount <= self.initialized);
+        // Check the remaining lengths to avoid overflowing `self.index + amount`.
+        assert!(amount <= self.buffer.len() - self.index);
+        assert!(amount <= self.initialized - self.index);
 
         self.index += amount;
     }
@@ -178,28 +182,37 @@ impl<'a> WriteBuffer<'a> {
         &mut self.buffer[self.index..]
     }
 
-    /// Asserts that the first `n` unfilled bytes of the buffer are initialized.
+    /// Asserts that the first `n` unwritten bytes of the buffer are initialized,
+    /// starting at [`WriteBuffer::written_len`].
     ///
     /// [`WriteBuffer`] assumes that bytes are never de-initialized, so this method
     /// does nothing when called with fewer bytes than are already known to be initialized.
     ///
+    /// # Panics
+    ///
+    /// Panics if `n` exceeds the number of unwritten bytes.
+    ///
     /// # Safety
     ///
-    /// The caller must ensure that `n` unfilled bytes of the buffer have already been initialized.
+    /// The caller must ensure that the first `n` unwritten bytes of the buffer have already been initialized.
     pub unsafe fn assume_init(&mut self, n: usize) {
-        debug_assert!(self.index <= (self.initialized + n));
-        debug_assert!((self.initialized + n) <= self.buffer.len());
+        // Check the remaining length to avoid overflowing `self.index + n`.
+        assert!(n <= self.buffer.len() - self.index);
 
-        self.initialized += n;
+        self.initialized = self.initialized.max(self.index + n);
     }
 
     /// Convenient function combining [`WriteBuffer::assume_init`] and [`WriteBuffer::advance`].
     ///
+    /// # Panics
+    ///
+    /// Panics if `n` exceeds the number of unwritten bytes.
+    ///
     /// # Safety
     ///
-    /// The caller must ensure that `n` unfilled bytes of the buffer have already been initialized.
+    /// The caller must ensure that the first `n` unwritten bytes of the buffer have already been initialized.
     pub unsafe fn assume_init_and_advance(&mut self, n: usize) {
-        debug_assert!(self.index + n <= self.buffer.len());
+        assert!(n <= self.buffer.len() - self.index);
 
         self.index += n;
         self.initialized = self.initialized.max(self.index);
@@ -208,11 +221,15 @@ impl<'a> WriteBuffer<'a> {
     /// Convenient function combining [`WriteBuffer::assume_init`] and [`WriteBuffer::advance`],
     /// works similar to [`Vec::set_len`].
     ///
+    /// # Panics
+    ///
+    /// Panics if `n` exceeds the buffer's capacity.
+    ///
     /// # Safety
     ///
     /// The caller must ensure that first `n` bytes of the buffer have already been initialized.
     pub unsafe fn set_written_and_initialized_len(&mut self, n: usize) {
-        debug_assert!(n <= self.buffer.len());
+        assert!(n <= self.buffer.len());
 
         self.index = n;
         self.initialized = self.initialized.max(n);
@@ -241,5 +258,133 @@ impl<'a> WriteBuffer<'a> {
         other.advance(len);
 
         len
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{PartialBuffer, WriteBuffer};
+    use std::{
+        mem::MaybeUninit,
+        panic::{catch_unwind, AssertUnwindSafe},
+    };
+
+    #[test]
+    fn advance_within_initialized_buffer() {
+        let mut storage = [1, 2, 3, 4];
+        let mut output = WriteBuffer::new_initialized(&mut storage);
+
+        output.advance(0);
+        assert!(output.written().is_empty());
+        output.advance(2);
+        assert_eq!(output.written(), &[1, 2]);
+        output.advance(2);
+        assert_eq!(output.written(), &[1, 2, 3, 4]);
+        output.advance(0);
+        assert_eq!(output.written(), &[1, 2, 3, 4]);
+    }
+
+    #[test]
+    #[should_panic]
+    fn advance_into_uninitialized_buffer_panics() {
+        let mut allocation = Vec::<u8>::with_capacity(8);
+        let mut output = WriteBuffer::new_uninitialized(&mut allocation.spare_capacity_mut()[..8]);
+
+        output.advance(1);
+    }
+
+    #[test]
+    fn advance_past_initialized_preserves_written_data() {
+        let mut storage = [MaybeUninit::uninit(); 4];
+        let mut output = WriteBuffer::new_uninitialized(&mut storage);
+        output.copy_unwritten_from(&mut PartialBuffer::new(&[1, 2][..]));
+        output.reset();
+        output.advance(1);
+
+        let result = catch_unwind(AssertUnwindSafe(|| output.advance(2)));
+
+        assert!(result.is_err());
+        assert_eq!(output.written(), &[1]);
+        output.advance(1);
+        assert_eq!(output.written(), &[1, 2]);
+    }
+
+    #[test]
+    #[should_panic]
+    fn advance_past_capacity_panics() {
+        let mut storage = [0; 4];
+        let mut output = WriteBuffer::new_initialized(&mut storage);
+        output.advance(4);
+
+        output.advance(1);
+    }
+
+    #[test]
+    #[should_panic]
+    fn advance_overflow_panics() {
+        let mut storage = [0; 4];
+        let mut output = WriteBuffer::new_initialized(&mut storage);
+        output.advance(1);
+
+        output.advance(usize::MAX);
+    }
+
+    #[test]
+    fn assume_init_is_not_additive() {
+        let mut storage = [MaybeUninit::new(1); 6];
+        let mut output = WriteBuffer::new_uninitialized(&mut storage);
+
+        for n in [4, 2, 4, 0] {
+            // Safety: All bytes in storage are initialized.
+            unsafe { output.assume_init(n) };
+            assert_eq!(output.initialized_len(), 4);
+            assert_eq!(output.written_len(), 0);
+        }
+    }
+
+    #[test]
+    fn assume_init_starts_at_written_len() {
+        let mut storage = [MaybeUninit::new(1); 6];
+        let mut output = WriteBuffer::new_uninitialized(&mut storage);
+
+        // Safety: All bytes in storage are initialized.
+        unsafe { output.assume_init(4) };
+        output.advance(2);
+        // Safety: All bytes in storage are initialized.
+        unsafe { output.assume_init(3) };
+        assert_eq!(output.initialized_len(), 5);
+        assert_eq!(output.written_len(), 2);
+    }
+
+    #[test]
+    #[should_panic]
+    fn assume_init_overflow_panics() {
+        let mut storage = [1; 4];
+        let mut output = WriteBuffer::new_initialized(&mut storage);
+        output.advance(1);
+
+        // Safety: Initialized storage; the invalid length must panic before use.
+        unsafe { output.assume_init(usize::MAX) };
+    }
+
+    #[test]
+    #[should_panic]
+    fn assume_init_and_advance_overflow_panics() {
+        let mut storage = [1; 4];
+        let mut output = WriteBuffer::new_initialized(&mut storage);
+        output.advance(1);
+
+        // Safety: Initialized storage; the invalid length must panic before use.
+        unsafe { output.assume_init_and_advance(usize::MAX) };
+    }
+
+    #[test]
+    #[should_panic]
+    fn set_written_and_initialized_len_past_capacity_panics() {
+        let mut storage = [1; 4];
+        let mut output = WriteBuffer::new_initialized(&mut storage);
+
+        // Safety: Initialized storage; the invalid length must panic before use.
+        unsafe { output.set_written_and_initialized_len(5) };
     }
 }

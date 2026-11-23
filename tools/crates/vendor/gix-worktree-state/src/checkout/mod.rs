@@ -10,13 +10,13 @@ pub struct Collision {
     pub error_kind: std::io::ErrorKind,
 }
 
-/// A path that encountered an IO error.
+/// A path that encountered an error.
 #[derive(Debug)]
 pub struct ErrorRecord {
     /// the path that encountered the error.
     pub path: BString,
-    /// The error
-    pub error: Box<dyn std::error::Error + Send + Sync + 'static>,
+    /// The error.
+    pub error: gix_error::Error,
 }
 
 /// The outcome of checking out an entire index.
@@ -37,15 +37,17 @@ pub struct Outcome {
 }
 
 /// Options to further configure the checkout operation.
-#[derive(Clone, Default)]
+///
+/// Create these with [`Options::new()`] to supply a filter pipeline with the repository's object hash.
+#[derive(Clone)]
 pub struct Options {
     /// capabilities of the file system
     pub fs: gix_fs::Capabilities,
     /// Options to configure how to validate path components.
     pub validate: gix_worktree::validate::path::component::Options,
-    /// If set, don't use more than this amount of threads.
-    /// Otherwise, usually use as many threads as there are logical cores.
-    /// A value of 0 is interpreted as no-limit
+    /// The maximum number of worker threads. `None` and `Some(0)` use the available logical cores,
+    /// capped at four on macOS to limit APFS creation contention. Positive limits override this tuning.
+    /// Without `gix-parallel/parallel`, checkout runs on the calling thread.
     pub thread_limit: Option<usize>,
     /// If true, we assume no file to exist in the target directory, and want exclusive access to it.
     /// This should be enabled when cloning to avoid checks for freshness of files. This also enables
@@ -55,6 +57,10 @@ pub struct Options {
     /// even if they appear to be changed. When creating directories that clash with existing worktree entries,
     /// these will try to delete the existing entry.
     /// This is similar in behaviour as `git checkout --force`.
+    ///
+    /// Note that when `destination_is_initially_empty` is `false`, existing files may still have their
+    /// executable bit updated to match the index. This option prevents overwriting file contents, but
+    /// does not necessarily prevent metadata updates.
     pub overwrite_existing: bool,
     /// If true, default false, try to checkout as much as possible and don't abort on first error which isn't
     /// due to a conflict.
@@ -70,32 +76,30 @@ pub struct Options {
     pub filter_process_delay: gix_filter::driver::apply::Delay,
 }
 
-/// The error returned by the [checkout()][crate::checkout()] function.
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("Could not convert path to UTF8: {}", .path)]
-    IllformedUtf8 { path: BString },
-    #[error("The clock was off when reading file related metadata after updating a file on disk")]
-    Time(#[from] std::time::SystemTimeError),
-    #[error("IO error while writing blob or reading file metadata or changing filetype")]
-    Io(#[from] std::io::Error),
-    #[error("object for checkout at {} could not be retrieved from object database", .path.display())]
-    Find {
-        #[source]
-        err: gix_object::find::existing_object::Error,
-        path: std::path::PathBuf,
-    },
-    #[error(transparent)]
-    Filter(#[from] gix_filter::pipeline::convert::to_worktree::Error),
-    #[error(transparent)]
-    FilterListDelayed(#[from] gix_filter::driver::delayed::list::Error),
-    #[error(transparent)]
-    FilterFetchDelayed(#[from] gix_filter::driver::delayed::fetch::Error),
-    #[error("The entry at path '{rela_path}' was listed as delayed by the filter process, but we never passed it")]
-    FilterPathUnknown { rela_path: BString },
-    #[error("The following paths were delayed and apparently forgotten to be processed by the filter driver: ")]
-    FilterPathsUnprocessed { rela_paths: Vec<BString> },
+impl Options {
+    fn thread_limit(&self) -> Option<usize> {
+        #[cfg(target_os = "macos")]
+        if self.thread_limit.is_none_or(|threads| threads == 0) {
+            return Some(gix_parallel::num_threads(None).min(4));
+        }
+        self.thread_limit
+    }
+
+    /// Create options with the given `filters` and default settings for the checkout operation.
+    pub fn new(filters: gix_filter::Pipeline) -> Self {
+        Self {
+            fs: Default::default(),
+            validate: Default::default(),
+            thread_limit: None,
+            destination_is_initially_empty: false,
+            overwrite_existing: false,
+            keep_going: false,
+            stat_options: Default::default(),
+            attributes: Default::default(),
+            filters,
+            filter_process_delay: Default::default(),
+        }
+    }
 }
 
 mod chunk;

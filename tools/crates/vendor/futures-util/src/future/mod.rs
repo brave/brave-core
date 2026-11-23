@@ -35,7 +35,7 @@ pub use self::future::CatchUnwind;
 #[cfg(feature = "std")]
 pub use self::future::{Remote, RemoteHandle};
 
-#[cfg(feature = "std")]
+#[cfg(any(feature = "std", all(feature = "alloc", feature = "spin")))]
 pub use self::future::{Shared, WeakShared};
 
 mod try_future;
@@ -114,13 +114,13 @@ pub use self::select_ok::{select_ok, SelectOk};
 mod either;
 pub use self::either::Either;
 
-#[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+#[cfg(target_has_atomic = "ptr")]
 #[cfg(feature = "alloc")]
 mod abortable;
-#[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+#[cfg(target_has_atomic = "ptr")]
 #[cfg(feature = "alloc")]
 pub use crate::abortable::{AbortHandle, AbortRegistration, Abortable, Aborted};
-#[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+#[cfg(target_has_atomic = "ptr")]
 #[cfg(feature = "alloc")]
 pub use abortable::abortable;
 

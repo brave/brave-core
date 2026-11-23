@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.71"
+rust-version = "1.85"
 name = "tokio"
-version = "1.48.0"
+version = "1.54.1"
 authors = ["Tokio Contributors <team@tokio.rs>"]
 build = false
 autolib = false
@@ -118,6 +118,7 @@ process = [
 ]
 rt = []
 rt-multi-thread = ["rt"]
+schedule-latency = []
 signal = [
     "libc",
     "mio/os-poll",
@@ -185,6 +186,10 @@ name = "fs_file"
 path = "tests/fs_file.rs"
 
 [[test]]
+name = "fs_file_join_error"
+path = "tests/fs_file_join_error.rs"
+
+[[test]]
 name = "fs_link"
 path = "tests/fs_link.rs"
 
@@ -225,6 +230,42 @@ name = "fs_uring"
 path = "tests/fs_uring.rs"
 
 [[test]]
+name = "fs_uring_cancel_open"
+path = "tests/fs_uring_cancel_open.rs"
+
+[[test]]
+name = "fs_uring_completed_then_dropped_before_repoll"
+path = "tests/fs_uring_completed_then_dropped_before_repoll.rs"
+
+[[test]]
+name = "fs_uring_file_read"
+path = "tests/fs_uring_file_read.rs"
+
+[[test]]
+name = "fs_uring_no_io"
+path = "tests/fs_uring_no_io.rs"
+
+[[test]]
+name = "fs_uring_read"
+path = "tests/fs_uring_read.rs"
+
+[[test]]
+name = "fs_uring_rename"
+path = "tests/fs_uring_rename.rs"
+
+[[test]]
+name = "fs_uring_runtime_shutdown"
+path = "tests/fs_uring_runtime_shutdown.rs"
+
+[[test]]
+name = "fs_uring_statx"
+path = "tests/fs_uring_statx.rs"
+
+[[test]]
+name = "fs_uring_statx_fd_leak_test"
+path = "tests/fs_uring_statx_fd_leak_test.rs"
+
+[[test]]
 name = "fs_write"
 path = "tests/fs_write.rs"
 
@@ -257,12 +298,20 @@ name = "io_copy_bidirectional"
 path = "tests/io_copy_bidirectional.rs"
 
 [[test]]
+name = "io_copy_buf"
+path = "tests/io_copy_buf.rs"
+
+[[test]]
 name = "io_driver"
 path = "tests/io_driver.rs"
 
 [[test]]
 name = "io_driver_drop"
 path = "tests/io_driver_drop.rs"
+
+[[test]]
+name = "io_emscripten"
+path = "tests/io_emscripten.rs"
 
 [[test]]
 name = "io_fill_buf"
@@ -299,6 +348,10 @@ path = "tests/io_read_buf.rs"
 [[test]]
 name = "io_read_exact"
 path = "tests/io_read_exact.rs"
+
+[[test]]
+name = "io_read_int"
+path = "tests/io_read_int.rs"
 
 [[test]]
 name = "io_read_line"
@@ -433,6 +486,10 @@ name = "process_issue_7144"
 path = "tests/process_issue_7144.rs"
 
 [[test]]
+name = "process_issue_8042"
+path = "tests/process_issue_8042.rs"
+
+[[test]]
 name = "process_kill_after_wait"
 path = "tests/process_kill_after_wait.rs"
 
@@ -453,8 +510,28 @@ name = "rt_basic"
 path = "tests/rt_basic.rs"
 
 [[test]]
+name = "rt_blocking_thread_exhaust"
+path = "tests/rt_blocking_thread_exhaust.rs"
+
+[[test]]
+name = "rt_busy_tick"
+path = "tests/rt_busy_tick.rs"
+
+[[test]]
 name = "rt_common"
 path = "tests/rt_common.rs"
+
+[[test]]
+name = "rt_common_before_park"
+path = "tests/rt_common_before_park.rs"
+
+[[test]]
+name = "rt_emscripten_block_on"
+path = "tests/rt_emscripten_block_on.rs"
+
+[[test]]
+name = "rt_emscripten_jspi"
+path = "tests/rt_emscripten_jspi.rs"
 
 [[test]]
 name = "rt_handle"
@@ -473,12 +550,24 @@ name = "rt_metrics"
 path = "tests/rt_metrics.rs"
 
 [[test]]
+name = "rt_multi_thread_emscripten"
+path = "tests/rt_multi_thread_emscripten.rs"
+
+[[test]]
 name = "rt_panic"
 path = "tests/rt_panic.rs"
 
 [[test]]
 name = "rt_poll_callbacks"
 path = "tests/rt_poll_callbacks.rs"
+
+[[test]]
+name = "rt_shutdown_err"
+path = "tests/rt_shutdown_err.rs"
+
+[[test]]
+name = "rt_spawn_blocking"
+path = "tests/rt_spawn_blocking.rs"
 
 [[test]]
 name = "rt_threaded"
@@ -489,8 +578,16 @@ name = "rt_time_start_paused"
 path = "tests/rt_time_start_paused.rs"
 
 [[test]]
+name = "rt_unstable_eager_driver_handoff"
+path = "tests/rt_unstable_eager_driver_handoff.rs"
+
+[[test]]
 name = "rt_unstable_metrics"
 path = "tests/rt_unstable_metrics.rs"
+
+[[test]]
+name = "rt_worker_index"
+path = "tests/rt_worker_index.rs"
 
 [[test]]
 name = "signal_ctrl_c"
@@ -551,6 +648,10 @@ path = "tests/sync_broadcast.rs"
 [[test]]
 name = "sync_broadcast_weak"
 path = "tests/sync_broadcast_weak.rs"
+
+[[test]]
+name = "sync_emscripten_blocking"
+path = "tests/sync_emscripten_blocking.rs"
 
 [[test]]
 name = "sync_errors"
@@ -625,6 +726,10 @@ name = "task_builder"
 path = "tests/task_builder.rs"
 
 [[test]]
+name = "task_emscripten"
+path = "tests/task_emscripten.rs"
+
+[[test]]
 name = "task_hooks"
 path = "tests/task_hooks.rs"
 
@@ -653,12 +758,20 @@ name = "task_trace_self"
 path = "tests/task_trace_self.rs"
 
 [[test]]
+name = "task_trace_wake"
+path = "tests/task_trace_wake.rs"
+
+[[test]]
 name = "task_yield_now"
 path = "tests/task_yield_now.rs"
 
 [[test]]
 name = "tcp_accept"
 path = "tests/tcp_accept.rs"
+
+[[test]]
+name = "tcp_accept_ready"
+path = "tests/tcp_accept_ready.rs"
 
 [[test]]
 name = "tcp_connect"
@@ -699,6 +812,10 @@ path = "tests/tcp_stream.rs"
 [[test]]
 name = "test_clock"
 path = "tests/test_clock.rs"
+
+[[test]]
+name = "time_alt"
+path = "tests/time_alt.rs"
 
 [[test]]
 name = "time_interval"
@@ -765,6 +882,10 @@ name = "uds_stream"
 path = "tests/uds_stream.rs"
 
 [[test]]
+name = "unix_shutdown"
+path = "tests/unix_shutdown.rs"
+
+[[test]]
 name = "unwindsafe"
 path = "tests/unwindsafe.rs"
 
@@ -773,7 +894,7 @@ version = "1.2.1"
 optional = true
 
 [dependencies.mio]
-version = "1.0.1"
+version = "1.2.0"
 optional = true
 default-features = false
 
@@ -785,7 +906,7 @@ optional = true
 version = "0.2.11"
 
 [dependencies.tokio-macros]
-version = "~2.6.0"
+version = "~2.7.0"
 optional = true
 
 [dev-dependencies.async-stream]
@@ -798,6 +919,9 @@ features = ["async-await"]
 [dev-dependencies.futures-concurrency]
 version = "7.6.3"
 
+[dev-dependencies.futures-test]
+version = "0.3.31"
+
 [dev-dependencies.mockall]
 version = "0.13.0"
 
@@ -807,11 +931,7 @@ version = "0.1"
 [dev-dependencies.tokio-test]
 version = "0.4.0"
 
-[dev-dependencies.tokio-util]
-version = "0.7"
-features = ["rt"]
-
-[target.'cfg(all(target_family = "wasm", not(target_os = "wasi")))'.dev-dependencies.wasm-bindgen-test]
+[target.'cfg(all(target_family = "wasm", target_os = "unknown"))'.dev-dependencies.wasm-bindgen-test]
 version = "0.3.0"
 
 [target.'cfg(all(tokio_unstable, target_has_atomic = "64"))'.dev-dependencies.tracing-mock]
@@ -822,7 +942,7 @@ version = "0.3.58"
 optional = true
 
 [target.'cfg(all(tokio_unstable, target_os = "linux"))'.dependencies.io-uring]
-version = "0.7.6"
+version = "0.7.11"
 optional = true
 default-features = false
 
@@ -831,7 +951,7 @@ version = "0.2.168"
 optional = true
 
 [target.'cfg(all(tokio_unstable, target_os = "linux"))'.dependencies.mio]
-version = "1.0.1"
+version = "1.2.0"
 features = [
     "os-poll",
     "os-ext",
@@ -841,6 +961,26 @@ default-features = false
 
 [target.'cfg(all(tokio_unstable, target_os = "linux"))'.dependencies.slab]
 version = "0.4.9"
+optional = true
+
+[target.'cfg(all(tokio_unstable, target_os = "linux"))'.dev-dependencies.backtrace]
+version = "0.3.58"
+
+[target.'cfg(all(unix, not(target_os = "emscripten")))'.dev-dependencies.nix]
+version = "0.31.0"
+features = [
+    "aio",
+    "fs",
+    "socket",
+]
+default-features = false
+
+[target.'cfg(any(not(target_family = "wasm"), target_os = "emscripten"))'.dev-dependencies.tempfile]
+version = "3.1.0"
+
+[target.'cfg(any(not(target_family = "wasm"), target_os = "emscripten", all(target_os = "wasi", not(target_env = "p1"))))'.dependencies.socket2]
+version = "0.6.3"
+features = ["all"]
 optional = true
 
 [target."cfg(loom)".dev-dependencies.loom]
@@ -853,23 +993,19 @@ features = [
 [target.'cfg(not(all(target_family = "wasm", target_os = "unknown")))'.dev-dependencies.rand]
 version = "0.9"
 
-[target.'cfg(not(target_family = "wasm"))'.dependencies.socket2]
-version = "0.6.0"
-features = ["all"]
-optional = true
-
 [target.'cfg(not(target_family = "wasm"))'.dev-dependencies.proptest]
 version = "1"
 
 [target.'cfg(not(target_family = "wasm"))'.dev-dependencies.socket2]
 version = "0.6.0"
 
-[target.'cfg(not(target_family = "wasm"))'.dev-dependencies.tempfile]
-version = "3.1.0"
-
 [target.'cfg(target_os = "freebsd")'.dev-dependencies.mio-aio]
-version = "1"
+version = "2"
 features = ["tokio"]
+
+[target.'cfg(target_os = "wasi")'.dependencies.libc]
+version = "0.2.168"
+optional = true
 
 [target."cfg(tokio_unstable)".dependencies.tracing]
 version = "0.1.29"
@@ -887,15 +1023,6 @@ optional = true
 
 [target."cfg(unix)".dev-dependencies.libc]
 version = "0.2.168"
-
-[target."cfg(unix)".dev-dependencies.nix]
-version = "0.29.0"
-features = [
-    "aio",
-    "fs",
-    "socket",
-]
-default-features = false
 
 [target."cfg(windows)".dependencies.windows-sys]
 version = "0.61"

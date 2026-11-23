@@ -1,6 +1,7 @@
+use gix_error::Result;
 use std::io::Write;
 
-use crate::{entry, extension, write::util::CountBytes, State, Version};
+use crate::{State, Version, entry, extension, write::util::CountBytes};
 
 /// A way to specify which of the optional extensions to write.
 #[derive(Default, Debug, Copy, Clone)]
@@ -60,6 +61,10 @@ pub struct Options {
 
 impl State {
     /// Serialize this instance to `out` with [`options`][Options].
+    ///
+    /// Note that the `tree` (tree-cache) extension is written as-is and is **not** recomputed or
+    /// invalidated to match the entries; see [`File::write()`](crate::File::write()) for the
+    /// implications and the recommended workaround.
     pub fn write_to(
         &self,
         out: impl std::io::Write,
@@ -67,8 +72,8 @@ impl State {
             extensions,
             skip_hash: _,
         }: Options,
-    ) -> Result<Version, gix_hash::io::Error> {
-        let _span = gix_features::trace::detail!("gix_index::State::write()");
+    ) -> Result<Version> {
+        let _span = gix_trace::detail!("gix_index::State::write()");
         let version = self.detect_required_version();
 
         let mut write = CountBytes::new(out);
@@ -85,9 +90,12 @@ impl State {
             .try_into()
             .expect("definitely not too many entries");
 
-        let offset_to_entries = header(&mut write, version, num_entries - removed_entries)?;
-        let offset_to_extensions = entries(&mut write, self, offset_to_entries)?;
-        let (extension_toc, out) = self.write_extensions(write, offset_to_extensions, extensions)?;
+        let offset_to_entries =
+            header(&mut write, version, num_entries - removed_entries).map_err(gix_hash::io::from_std_io)?;
+        let offset_to_extensions = entries(&mut write, self, offset_to_entries).map_err(gix_hash::io::from_std_io)?;
+        let (extension_toc, out) = self
+            .write_extensions(write, offset_to_extensions, extensions)
+            .map_err(gix_hash::io::from_std_io)?;
 
         if num_entries > 0
             && extensions
@@ -150,7 +158,7 @@ fn header<T: std::io::Write>(
     out: &mut CountBytes<T>,
     version: Version,
     num_entries: u32,
-) -> Result<u32, std::io::Error> {
+) -> std::result::Result<u32, std::io::Error> {
     let version = match version {
         Version::V2 => 2_u32.to_be_bytes(),
         Version::V3 => 3_u32.to_be_bytes(),
@@ -164,7 +172,11 @@ fn header<T: std::io::Write>(
     Ok(out.count)
 }
 
-fn entries<T: std::io::Write>(out: &mut CountBytes<T>, state: &State, header_size: u32) -> Result<u32, std::io::Error> {
+fn entries<T: std::io::Write>(
+    out: &mut CountBytes<T>,
+    state: &State,
+    header_size: u32,
+) -> std::result::Result<u32, std::io::Error> {
     for entry in state.entries() {
         if entry.flags.contains(entry::Flags::REMOVE) {
             continue;

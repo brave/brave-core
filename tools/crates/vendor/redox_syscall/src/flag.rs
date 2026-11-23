@@ -55,21 +55,12 @@ pub const F_GETFD: usize = 1;
 pub const F_SETFD: usize = 2;
 pub const F_GETFL: usize = 3;
 pub const F_SETFL: usize = 4;
-pub const F_DUPFD_CLOEXEC: usize = 1030;
+pub const F_GET_SCHEMEID: usize = 0x1000 | 1;
 
 pub const FUTEX_WAIT: usize = 0;
 pub const FUTEX_WAKE: usize = 1;
 pub const FUTEX_REQUEUE: usize = 2;
 pub const FUTEX_WAIT64: usize = 3;
-
-// packet.c = fd
-pub const SKMSG_FRETURNFD: usize = 0;
-
-// packet.uid:packet.gid = offset, packet.c = base address, packet.d = page count
-pub const SKMSG_PROVIDE_MMAP: usize = 1;
-
-// packet.id provides state, packet.c = dest fd or pointer to dest fd, packet.d = flags
-pub const SKMSG_FOBTAINFD: usize = 2;
 
 // TODO: Split SendFdFlags into caller flags and flags that the scheme receives?
 bitflags::bitflags! {
@@ -102,6 +93,9 @@ bitflags::bitflags! {
         /// If set, the file descriptors received will be placed into the *upper* file table.
         const UPPER_TBL = 4;
 
+        /// If set, the received file descriptors are marked as close-on-exec.
+        const CLOEXEC = 8;
+
         // No, cloexec won't be stored in the kernel in the future, when the stable ABI is moved to
         // relibc, so no flag for that!
     }
@@ -116,6 +110,9 @@ bitflags::bitflags! {
 
         /// If set, the file descriptors received will be placed into the *upper* file table.
         const UPPER_TBL = 2;
+
+        /// If set, the received file descriptors are marked as close-on-exec.
+        const CLOEXEC = 4;
     }
 }
 bitflags::bitflags! {
@@ -195,7 +192,6 @@ pub const O_SHLOCK: usize = 0x0010_0000;
 pub const O_EXLOCK: usize = 0x0020_0000;
 pub const O_ASYNC: usize = 0x0040_0000;
 pub const O_FSYNC: usize = 0x0080_0000;
-pub const O_CLOEXEC: usize = 0x0100_0000;
 pub const O_CREAT: usize = 0x0200_0000;
 pub const O_TRUNC: usize = 0x0400_0000;
 pub const O_EXCL: usize = 0x0800_0000;
@@ -228,10 +224,12 @@ pub enum ContextStatus {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 #[repr(usize)]
+#[allow(clippy::enum_clike_unportable_variant)]
 pub enum ContextVerb {
     Stop = 1,
     Unstop = 2,
     Interrupt = 3,
+    // XXX: false positive: https://github.com/rust-lang/rust-clippy/issues/8043
     ForceKill = usize::MAX,
 }
 impl ContextVerb {
@@ -249,13 +247,101 @@ impl ContextVerb {
 // NOT ABI STABLE!
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 #[repr(u8)]
+pub enum AddrSpaceVerb {
+    MmapMin = 255,
+}
+impl AddrSpaceVerb {
+    pub fn try_from_raw(verb: u8) -> Option<Self> {
+        Some(match verb {
+            255 => Self::MmapMin,
+
+            _ => return None,
+        })
+    }
+}
+
+// NOT ABI STABLE!
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(u8)]
 pub enum ProcSchemeVerb {
+    RegsInt = 250,
+    RegsFloat = 251,
+    RegsEnv = 252,
+    SchedAffinity = 253,
+    Start = 254,
     Iopl = 255,
 }
 impl ProcSchemeVerb {
     pub fn try_from_raw(verb: u8) -> Option<Self> {
         Some(match verb {
+            250 => Self::RegsInt,
+            251 => Self::RegsFloat,
+            252 => Self::RegsEnv,
+            253 => Self::SchedAffinity,
+            254 => Self::Start,
             255 => Self::Iopl,
+            _ => return None,
+        })
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum FileTableVerb {
+    Close = 1,
+    Dup2 = 2,
+    Reserved1 = 3,
+    Resize = 4,
+    Refresh = 5,
+    Move = 6,
+    Swap = 7,
+}
+impl FileTableVerb {
+    pub fn try_from_raw(value: u8) -> Option<Self> {
+        Some(match value {
+            1 => Self::Close,
+            2 => Self::Dup2,
+            3 => Self::Reserved1,
+            4 => Self::Resize,
+            5 => Self::Refresh,
+            6 => Self::Move,
+            7 => Self::Swap,
+            _ => return None,
+        })
+    }
+}
+
+/// NOT ABI-STABLE!
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(u64)]
+pub enum AcpiVerb {
+    // copies the rsdt/xsdt to the payload buffer (the number of bytes that fit), and returns the
+    // rsdt/xsdt length regardless
+    ReadRxsdt = 1,
+    // no payload, just returns 0 or 1
+    CheckShutdown = 2,
+    // reads and/or writes from/to an MSR specified in metadata[1], where the data is passed in
+    // `payload`.
+    Msr = 3,
+}
+impl AcpiVerb {
+    pub const fn try_from_raw(value: u64) -> Option<Self> {
+        Some(match value {
+            1 => Self::ReadRxsdt,
+            2 => Self::CheckShutdown,
+            3 => Self::Msr,
+            _ => return None,
+        })
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum NumaVerb {
+    MemPolicy = 1,
+}
+impl NumaVerb {
+    pub fn try_from_raw(value: u64) -> Option<Self> {
+        Some(match value {
+            1 => Self::MemPolicy,
             _ => return None,
         })
     }
@@ -378,6 +464,9 @@ bitflags! {
         /// has absolutely no effect on which signals are blocked etc. Meant to be used for
         /// short-lived critical sections inside libc.
         const INHIBIT_DELIVERY = 1;
+        /// Indicates userspace is running an exception handler, which means any new synchronous
+        /// exception will result in the termination of the current context ("double fault").
+        const HANDLING_EXCEPTION = 2;
     }
 }
 bitflags! {
@@ -404,8 +493,74 @@ bitflags! {
         const FD_EXCLUSIVE = 1 << 12;
         const FD_CLONE = 1 << 13;
         const FD_UPPER = 1 << 14;
+        const FD_CLOEXEC = 1 << 15;
+
+        /// Call is a standard fs call, with metadata defined in `StdFsCallMeta`
+        const STD_FS = 1 << 16;
+
+        // reserved: 1 << 17
+
+        /// Allow current timeslice to be lent out to the callee, which will have a preference of
+        /// switching back to this context until the current timeslice is exhausted, after which
+        /// the scheduler will continue as if it was switching away from this context.
+        const ALLOW_DIRECT_SWITCH = 1 << 18;
+
+        /// Call is taking multiple fds, syscall5 variant.
+        const MULTIPLE_FDS2 = 1 << 19;
+    }
+}
+
+#[repr(u8)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub enum StdFsCallKind {
+    // TODO: remove old syscalls
+    Fchmod = 1,
+    Fchown = 2,
+    Getdents = 3,
+    Fstat = 4,
+    Fstatvfs = 5,
+    Fsync = 6,
+    Ftruncate = 7,
+    Futimens = 8,
+    // 9 reserved in fscall RFC
+    Unlinkat = 10,
+    Relpathat = 11,
+    Lock = 12,
+    Unlock = 13,
+    GetLock = 14,
+    Frenameat = 15,
+    Flinkat = 16,
+}
+
+impl StdFsCallKind {
+    pub fn try_from_raw(raw: u8) -> Option<Self> {
+        use StdFsCallKind::*;
+
+        // TODO: Use a library where this match can be automated.
+        Some(match raw {
+            1 => Fchmod,
+            2 => Fchown,
+            3 => Getdents,
+            4 => Fstat,
+            5 => Fstatvfs,
+            6 => Fsync,
+            7 => Ftruncate,
+            8 => Futimens,
+            // 9 reserved in fscall RFC
+            10 => Unlinkat,
+            11 => Relpathat,
+            12 => Lock,
+            13 => Unlock,
+            14 => GetLock,
+            15 => Frenameat,
+            16 => Flinkat,
+            _ => return None,
+        })
     }
 }
 
 /// The tag for the fd number in the upper file descriptor table.
 pub const UPPER_FDTBL_TAG: usize = 1 << (usize::BITS - 2);
+
+/// The identifier for registering event timeout
+pub const EVENT_TIMEOUT_ID: usize = usize::MAX - 2;

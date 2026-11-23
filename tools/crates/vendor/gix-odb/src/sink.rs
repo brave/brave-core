@@ -1,31 +1,38 @@
+use gix_error::Result;
 use std::{
     cell::RefCell,
     io::{self, Write},
 };
 
-use gix_features::zlib::stream::deflate;
+use gix_error::ResultExt;
+use gix_zlib::stream::deflate;
 
 use crate::Sink;
 
 impl Sink {
-    /// Enable or disable compression. Compression is disabled by default
-    pub fn compress(mut self, enable: bool) -> Self {
-        if enable {
-            self.compressor = Some(RefCell::new(deflate::Write::new(io::sink())));
-        } else {
-            self.compressor = None;
-        }
+    /// Compress with the given level, or disable compression with `None`. Compression is disabled by default.
+    pub fn compress(mut self, compression: Option<gix_zlib::Compression>) -> Self {
+        self.compressor = compression.map(|level| RefCell::new(deflate::Write::new(io::sink(), level)));
         self
     }
 }
 
 impl gix_object::Write for Sink {
+    fn write_buf_with_known_id(
+        &self,
+        kind: gix_object::Kind,
+        mut from: &[u8],
+        id: gix_hash::ObjectId,
+    ) -> Result<gix_hash::ObjectId> {
+        self.write_stream_with_known_id(kind, from.len() as u64, &mut from, id)
+    }
+
     fn write_stream(
         &self,
         kind: gix_object::Kind,
         mut size: u64,
         from: &mut dyn io::Read,
-    ) -> Result<gix_hash::ObjectId, gix_object::write::Error> {
+    ) -> Result<gix_hash::ObjectId> {
         let mut buf = [0u8; u16::MAX as usize];
         let header = gix_object::encode::loose_header(kind, size);
 
@@ -38,21 +45,55 @@ impl gix_object::Write for Sink {
 
         let mut hasher = gix_hash::hasher(self.object_hash);
         hasher.update(&header);
-        possibly_compress(&header).map_err(Box::new)?;
+        possibly_compress(&header).or_error()?;
 
         while size != 0 {
             let bytes = (size as usize).min(buf.len());
-            from.read_exact(&mut buf[..bytes]).map_err(Box::new)?;
+            from.read_exact(&mut buf[..bytes]).or_error()?;
             hasher.update(&buf[..bytes]);
-            possibly_compress(&buf[..bytes]).map_err(Box::new)?;
+            possibly_compress(&buf[..bytes]).or_error()?;
             size -= bytes as u64;
         }
         if let Some(compressor) = self.compressor.as_ref() {
             let mut c = compressor.borrow_mut();
-            c.flush().map_err(Box::new)?;
+            c.flush().or_error()?;
             c.reset();
         }
 
-        Ok(hasher.try_finalize()?)
+        hasher.try_finalize()
+    }
+
+    fn write_stream_with_known_id(
+        &self,
+        kind: gix_object::Kind,
+        mut size: u64,
+        from: &mut dyn io::Read,
+        id: gix_hash::ObjectId,
+    ) -> Result<gix_hash::ObjectId> {
+        let mut buf = [0u8; u16::MAX as usize];
+        let header = gix_object::encode::loose_header(kind, size);
+
+        let possibly_compress = |buf: &[u8]| -> io::Result<()> {
+            if let Some(compressor) = self.compressor.as_ref() {
+                compressor.try_borrow_mut().expect("no recursion").write_all(buf)?;
+            }
+            Ok(())
+        };
+
+        possibly_compress(&header).or_error()?;
+
+        while size != 0 {
+            let bytes = (size as usize).min(buf.len());
+            from.read_exact(&mut buf[..bytes]).or_error()?;
+            possibly_compress(&buf[..bytes]).or_error()?;
+            size -= bytes as u64;
+        }
+        if let Some(compressor) = self.compressor.as_ref() {
+            let mut c = compressor.borrow_mut();
+            c.flush().or_error()?;
+            c.reset();
+        }
+
+        Ok(id)
     }
 }

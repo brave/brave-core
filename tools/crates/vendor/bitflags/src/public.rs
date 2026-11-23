@@ -148,23 +148,25 @@ macro_rules! __impl_public_bitflags {
                 }
 
                 fn all() {
-                    let mut truncated = <$T as $crate::Bits>::EMPTY;
-                    let mut i = 0;
+                    const ALL: $BitFlags = {
+                        let mut truncated = <$T as $crate::Bits>::EMPTY;
+                        let mut _i = 0;
 
-                    $(
-                        $crate::__bitflags_expr_safe_attrs!(
-                            $(#[$inner $($args)*])*
-                            {{
-                                let flag = <$PublicBitFlags as $crate::Flags>::FLAGS[i].value().bits();
+                        $(
+                            $crate::__bitflags_expr_safe_attrs!(
+                                $(#[$inner $($args)*])*
+                                {{
+                                    truncated |= <$PublicBitFlags as $crate::Flags>::FLAGS[_i]
+                                        .value().bits();
+                                    _i += 1;
+                                }}
+                            );
+                        )*
 
-                                truncated = truncated | flag;
-                                i += 1;
-                            }}
-                        );
-                    )*
+                        $BitFlags(truncated)
+                    };
 
-                    let _ = i;
-                    Self(truncated)
+                    ALL
                 }
 
                 fn bits(&self) {
@@ -190,19 +192,31 @@ macro_rules! __impl_public_bitflags {
                 }
 
                 fn from_name(name) {
+                    mod __bitflags_flag_names {
+                        #[allow(unused_imports)]
+                        use super::*;
+
+                        $(
+                            $crate::__bitflags_flag_name!(
+                                $(#[$inner $($args)*])*
+                                { pub(super) const $Flag = $Flag }
+                            );
+                        )*
+                    }
+
                     $(
                         $crate::__bitflags_flag!({
                             name: $Flag,
-                            named: {
+                            named: {{
                                 $crate::__bitflags_expr_safe_attrs!(
                                     $(#[$inner $($args)*])*
                                     {
-                                        if name == $crate::__private::core::stringify!($Flag) {
+                                        if name == __bitflags_flag_names::$Flag {
                                             return $crate::__private::core::option::Option::Some(Self($PublicBitFlags::$Flag.bits()));
                                         }
                                     }
                                 );
-                            },
+                            }},
                             unnamed: {},
                         });
                     )*
@@ -379,7 +393,7 @@ macro_rules! __impl_public_bitflags_ops {
         impl $crate::__private::core::ops::BitOr for $PublicBitFlags {
             type Output = Self;
 
-            /// The bitwise or (`|`) of the bits in two flags values.
+            /// The bitwise or (`|`) of the bits in `self` and `other`.
             #[inline]
             fn bitor(self, other: $PublicBitFlags) -> Self {
                 self.union(other)
@@ -388,7 +402,7 @@ macro_rules! __impl_public_bitflags_ops {
 
         $(#[$outer])*
         impl $crate::__private::core::ops::BitOrAssign for $PublicBitFlags {
-            /// The bitwise or (`|`) of the bits in two flags values.
+            /// The bitwise or (`|`) of the bits in `self` and `other`.
             #[inline]
             fn bitor_assign(&mut self, other: Self) {
                 self.insert(other);
@@ -399,7 +413,7 @@ macro_rules! __impl_public_bitflags_ops {
         impl $crate::__private::core::ops::BitXor for $PublicBitFlags {
             type Output = Self;
 
-            /// The bitwise exclusive-or (`^`) of the bits in two flags values.
+            /// The bitwise exclusive-or (`^`) of the bits in `self` and `other`.
             #[inline]
             fn bitxor(self, other: Self) -> Self {
                 self.symmetric_difference(other)
@@ -408,7 +422,7 @@ macro_rules! __impl_public_bitflags_ops {
 
         $(#[$outer])*
         impl $crate::__private::core::ops::BitXorAssign for $PublicBitFlags {
-            /// The bitwise exclusive-or (`^`) of the bits in two flags values.
+            /// The bitwise exclusive-or (`^`) of the bits in `self` and `other`.
             #[inline]
             fn bitxor_assign(&mut self, other: Self) {
                 self.toggle(other);
@@ -419,7 +433,7 @@ macro_rules! __impl_public_bitflags_ops {
         impl $crate::__private::core::ops::BitAnd for $PublicBitFlags {
             type Output = Self;
 
-            /// The bitwise and (`&`) of the bits in two flags values.
+            /// The bitwise and (`&`) of the bits in `self` and `other`.
             #[inline]
             fn bitand(self, other: Self) -> Self {
                 self.intersection(other)
@@ -428,7 +442,7 @@ macro_rules! __impl_public_bitflags_ops {
 
         $(#[$outer])*
         impl $crate::__private::core::ops::BitAndAssign for $PublicBitFlags {
-            /// The bitwise and (`&`) of the bits in two flags values.
+            /// The bitwise and (`&`) of the bits in `self` and `other`.
             #[inline]
             fn bitand_assign(&mut self, other: Self) {
                 *self = Self::from_bits_retain(self.bits()).intersection(other);
@@ -439,7 +453,7 @@ macro_rules! __impl_public_bitflags_ops {
         impl $crate::__private::core::ops::Sub for $PublicBitFlags {
             type Output = Self;
 
-            /// The intersection of a source flags value with the complement of a target flags value (`&!`).
+            /// The intersection of `self` with the complement of `other` (`&!`).
             ///
             /// This method is not equivalent to `self & !other` when `other` has unknown bits set.
             /// `difference` won't truncate `other`, but the `!` operator will.
@@ -451,7 +465,7 @@ macro_rules! __impl_public_bitflags_ops {
 
         $(#[$outer])*
         impl $crate::__private::core::ops::SubAssign for $PublicBitFlags {
-            /// The intersection of a source flags value with the complement of a target flags value (`&!`).
+            /// The intersection of `self` with the complement of `other` (`&!`).
             ///
             /// This method is not equivalent to `self & !other` when `other` has unknown bits set.
             /// `difference` won't truncate `other`, but the `!` operator will.
@@ -465,7 +479,7 @@ macro_rules! __impl_public_bitflags_ops {
         impl $crate::__private::core::ops::Not for $PublicBitFlags {
             type Output = Self;
 
-            /// The bitwise negation (`!`) of the bits in a flags value, truncating the result.
+            /// The bitwise negation (`!`) of the bits in `self`, truncating the result.
             #[inline]
             fn not(self) -> Self {
                 self.complement()
@@ -520,12 +534,12 @@ macro_rules! __impl_public_bitflags_consts {
                 $crate::__bitflags_flag!({
                     name: $Flag,
                     named: {
-                        $(#[$inner $($args)*])*
-                        #[allow(
-                            deprecated,
-                            non_upper_case_globals,
-                        )]
-                        pub const $Flag: Self = Self::from_bits_retain($value);
+                        $crate::__bitflags_item_safe_attrs!(
+                            $(#[$inner $($args)*])*
+                            {
+                                pub const $Flag: Self = Self::from_bits_retain($value);
+                            }
+                        );
                     },
                     unnamed: {},
                 });
@@ -534,37 +548,42 @@ macro_rules! __impl_public_bitflags_consts {
 
         $(#[$outer])*
         impl $crate::Flags for $PublicBitFlags {
-            const FLAGS: &'static [$crate::Flag<$PublicBitFlags>] = &[
-                $(
-                    $crate::__bitflags_flag!({
-                        name: $Flag,
-                        named: {
-                            $crate::__bitflags_expr_safe_attrs!(
-                                $(#[$inner $($args)*])*
-                                {
-                                    #[allow(
-                                        deprecated,
-                                        non_upper_case_globals,
-                                    )]
-                                    $crate::Flag::new($crate::__private::core::stringify!($Flag), $PublicBitFlags::$Flag)
-                                }
-                            )
-                        },
-                        unnamed: {
-                            $crate::__bitflags_expr_safe_attrs!(
-                                $(#[$inner $($args)*])*
-                                {
-                                    #[allow(
-                                        deprecated,
-                                        non_upper_case_globals,
-                                    )]
-                                    $crate::Flag::new("", $PublicBitFlags::from_bits_retain($value))
-                                }
-                            )
-                        },
-                    }),
-                )*
-            ];
+            const FLAGS: &'static [$crate::Flag<$PublicBitFlags>] = {
+                mod __bitflags_flag_names {
+                    #[allow(unused_imports)]
+                    use super::*;
+
+                    $(
+                        $crate::__bitflags_flag_name!(
+                            $(#[$inner $($args)*])*
+                            { pub(super) const $Flag = $Flag });
+                    )*
+                }
+
+                &[
+                    $(
+                        $crate::__bitflags_flag!({
+                            name: $Flag,
+                            named: {
+                                $crate::__bitflags_expr_safe_attrs!(
+                                    $(#[$inner $($args)*])*
+                                    {
+                                        $crate::Flag::new(__bitflags_flag_names::$Flag, $PublicBitFlags::$Flag)
+                                    }
+                                )
+                            },
+                            unnamed: {
+                                $crate::__bitflags_expr_safe_attrs!(
+                                    $(#[$inner $($args)*])*
+                                    {
+                                        $crate::Flag::new("", $PublicBitFlags::from_bits_retain($value))
+                                    }
+                                )
+                            },
+                        }),
+                    )*
+                ]
+            };
 
             type Bits = $T;
 
@@ -574,6 +593,33 @@ macro_rules! __impl_public_bitflags_consts {
 
             fn from_bits_retain(bits: $T) -> $PublicBitFlags {
                 $PublicBitFlags::from_bits_retain(bits)
+            }
+
+            fn all_named() -> $PublicBitFlags {
+                const ALL_NAMED: $T = {
+                    let mut truncated = <$T as $crate::Bits>::EMPTY;
+                    let mut i = 0;
+
+                    $(
+                        $crate::__bitflags_expr_safe_attrs!(
+                            $(#[$inner $($args)*])*
+                            {{
+                                let flag = &<$PublicBitFlags as $crate::Flags>::FLAGS[i];
+
+                                if flag.is_named() {
+                                    truncated = truncated | flag.value().bits();
+                                }
+
+                                i += 1;
+                            }}
+                        );
+                    )*
+
+                    let _ = i;
+                    truncated
+                };
+
+                $PublicBitFlags::from_bits_retain(ALL_NAMED)
             }
         }
     };

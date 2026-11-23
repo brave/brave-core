@@ -1,6 +1,6 @@
 # libc - Raw FFI bindings to platforms' system libraries
 
-[![GHA Status]][GitHub Actions] [![Cirrus CI Status]][Cirrus CI] [![Latest Version]][crates.io] [![Documentation]][docs.rs] ![License]
+[![GHA Status]][GitHub Actions] [![Latest Version]][crates.io] [![Documentation]][docs.rs] ![License]
 
 `libc` provides all of the definitions necessary to easily interoperate with C
 code (or "C-like" code) on each of the platforms that Rust supports. This
@@ -41,23 +41,9 @@ Add the following to your `Cargo.toml`:
 libc = "0.2"
 ```
 
-## Features
-
-* `std`: by default `libc` links to the standard library. Disable this feature
-  to remove this dependency and be able to use `libc` in `#![no_std]` crates.
-
-* `extra_traits`: all `struct`s implemented in `libc` are `Copy` and `Clone`.
-  This feature derives `Debug`, `Eq`, `Hash`, and `PartialEq`.
-
-The following features are deprecated:
-
-* `use_std`: this is equivalent to `std`
-* `const-extern-fn`: this is now enabled by default
-* `align`: this is now enabled by default
-
 ## Rust version support
 
-The minimum supported Rust toolchain version is currently **Rust 1.63**.
+The minimum supported Rust toolchain version is currently **Rust 1.65**.
 
 Increases to the MSRV are allowed to change without a major (i.e. semver-
 breaking) release in order to avoid a ripple effect in the ecosystem. A policy
@@ -73,8 +59,8 @@ you want to see.
 
 See [`ci/verify-build.py`](https://github.com/rust-lang/libc/blob/HEAD/ci/verify-build.py) for
 the platforms on which `libc` is guaranteed to build for each Rust toolchain.
-The test-matrix at [GitHub Actions] and [Cirrus CI] show the platforms in which
-`libc` tests are run.
+The test matrices at [GitHub Actions] show the platforms in which `libc` tests
+are run.
 
 <div class="platform_docs"></div>
 
@@ -108,8 +94,6 @@ dual licensed as above, without any additional terms or conditions.
 
 [GitHub Actions]: https://github.com/rust-lang/libc/actions
 [GHA Status]: https://github.com/rust-lang/libc/workflows/CI/badge.svg
-[Cirrus CI]: https://cirrus-ci.com/github/rust-lang/libc
-[Cirrus CI Status]: https://api.cirrus-ci.com/github/rust-lang/libc.svg
 [crates.io]: https://crates.io/crates/libc
 [Latest Version]: https://img.shields.io/crates/v/libc.svg
 [Documentation]: https://docs.rs/libc/badge.svg

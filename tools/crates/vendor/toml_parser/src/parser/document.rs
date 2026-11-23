@@ -3,6 +3,10 @@ use winnow::stream::Stream as _;
 use winnow::stream::TokenSlice;
 
 use super::EventReceiver;
+use crate::ErrorSink;
+use crate::Expected;
+use crate::ParseError;
+use crate::Span;
 #[cfg(feature = "debug")]
 use crate::debug::DebugErrorSink;
 #[cfg(feature = "debug")]
@@ -10,9 +14,6 @@ use crate::debug::DebugEventReceiver;
 use crate::decoder::Encoding;
 use crate::lexer::Token;
 use crate::lexer::TokenKind;
-use crate::ErrorSink;
-use crate::Expected;
-use crate::ParseError;
 
 /// Parse lexed tokens into [`Event`][super::Event]s
 pub fn parse_document(
@@ -626,27 +627,40 @@ fn opt_dot_keys(
 /// val = string / boolean / array / inline-table / date-time / float / integer
 /// ```
 fn value(tokens: &mut Stream<'_>, receiver: &mut dyn EventReceiver, error: &mut dyn ErrorSink) {
-    let Some(current_token) = tokens.next_token() else {
-        let previous_span = tokens
-            .previous_tokens()
-            .find(|t| {
-                !matches!(
-                    t.kind(),
-                    TokenKind::Whitespace
-                        | TokenKind::Comment
-                        | TokenKind::Newline
-                        | TokenKind::Eof
-                )
-            })
-            .map(|t| t.span())
-            .unwrap_or_default();
+    // Skip extra `=` tokens.
+    let current_token = loop {
+        let Some(current_token) = tokens.next_token() else {
+            let previous_span = tokens
+                .previous_tokens()
+                .find(|t| {
+                    !matches!(
+                        t.kind(),
+                        TokenKind::Whitespace
+                            | TokenKind::Comment
+                            | TokenKind::Newline
+                            | TokenKind::Eof
+                    )
+                })
+                .map(|t| t.span())
+                .unwrap_or_default();
+            error.report_error(
+                ParseError::new("missing value")
+                    .with_context(previous_span)
+                    .with_expected(&[Expected::Description("value")])
+                    .with_unexpected(previous_span.after()),
+            );
+            return;
+        };
+        if current_token.kind() != TokenKind::Equals {
+            break current_token;
+        }
         error.report_error(
-            ParseError::new("missing value")
-                .with_context(previous_span)
-                .with_expected(&[Expected::Description("value")])
-                .with_unexpected(previous_span.after()),
+            ParseError::new("extra `=`")
+                .with_context(current_token.span())
+                .with_expected(&[])
+                .with_unexpected(current_token.span()),
         );
-        return;
+        receiver.error(current_token.span(), error);
     };
 
     match current_token.kind() {
@@ -660,16 +674,8 @@ fn value(tokens: &mut Stream<'_>, receiver: &mut dyn EventReceiver, error: &mut 
             receiver.scalar(fake_key, encoding, error);
             seek(tokens, -1);
         }
-        TokenKind::Equals => {
-            error.report_error(
-                ParseError::new("extra `=`")
-                    .with_context(current_token.span())
-                    .with_expected(&[])
-                    .with_unexpected(current_token.span()),
-            );
-            receiver.error(current_token.span(), error);
-            value(tokens, receiver, error);
-        }
+        // Handled by the while loop above
+        TokenKind::Equals => unreachable!(),
         TokenKind::LeftCurlyBracket => {
             on_inline_table_open(tokens, current_token, receiver, error);
         }
@@ -795,7 +801,11 @@ fn on_array_open(
     error: &mut dyn ErrorSink,
 ) {
     if !receiver.array_open(array_open.span(), error) {
-        ignore_to_value_close(tokens, TokenKind::RightSquareBracket, receiver, error);
+        if let Some(span) =
+            ignore_to_value_close(tokens, TokenKind::RightSquareBracket, receiver, error)
+        {
+            receiver.array_close(span, error);
+        }
         return;
     }
 
@@ -817,14 +827,7 @@ fn on_array_open(
                 receiver.newline(current_token.span(), error);
             }
             TokenKind::Eof => {
-                error.report_error(
-                    ParseError::new("unclosed array")
-                        .with_context(array_open.span())
-                        .with_expected(&[Expected::Literal("]")])
-                        .with_unexpected(current_token.span()),
-                );
-                receiver.array_close(current_token.span().before(), error);
-                return;
+                break;
             }
             TokenKind::Comma => match state {
                 State::NeedsValue => {
@@ -968,7 +971,11 @@ fn on_inline_table_open(
     error: &mut dyn ErrorSink,
 ) {
     if !receiver.inline_table_open(inline_table_open.span(), error) {
-        ignore_to_value_close(tokens, TokenKind::RightCurlyBracket, receiver, error);
+        if let Some(span) =
+            ignore_to_value_close(tokens, TokenKind::RightCurlyBracket, receiver, error)
+        {
+            receiver.inline_table_close(span, error);
+        }
         return;
     }
 
@@ -1005,15 +1012,7 @@ fn on_inline_table_open(
                 receiver.newline(current_token.span(), error);
             }
             TokenKind::Eof => {
-                error.report_error(
-                    ParseError::new("unclosed inline table")
-                        .with_context(inline_table_open.span())
-                        .with_expected(&[Expected::Literal("}")])
-                        .with_unexpected(current_token.span()),
-                );
-
-                receiver.inline_table_close(current_token.span().before(), error);
-                return;
+                break;
             }
             TokenKind::Comma => match state {
                 State::NeedsKey | State::NeedsEquals | State::NeedsValue => {
@@ -1065,7 +1064,11 @@ fn on_inline_table_open(
                             .with_unexpected(current_token.span().before()),
                     );
                     receiver.error(current_token.span(), error);
-                    ignore_to_value_close(tokens, TokenKind::RightCurlyBracket, receiver, error);
+                    if let Some(span) =
+                        ignore_to_value_close(tokens, TokenKind::RightCurlyBracket, receiver, error)
+                    {
+                        receiver.error(span, error);
+                    }
                 }
                 State::NeedsEquals => {
                     error.report_error(
@@ -1086,6 +1089,25 @@ fn on_inline_table_open(
                 }
             },
             TokenKind::RightCurlyBracket => {
+                match state {
+                    State::NeedsKey => {}
+                    State::NeedsEquals => {
+                        receiver.key_val_sep(current_token.span().before(), error);
+                        receiver.scalar(
+                            current_token.span().before(),
+                            Some(Encoding::LiteralString),
+                            error,
+                        );
+                    }
+                    State::NeedsValue => {
+                        receiver.scalar(
+                            current_token.span().before(),
+                            Some(Encoding::LiteralString),
+                            error,
+                        );
+                    }
+                    State::NeedsComma => {}
+                }
                 receiver.inline_table_close(current_token.span(), error);
 
                 return;
@@ -1099,7 +1121,14 @@ fn on_inline_table_open(
                             .with_unexpected(current_token.span().before()),
                     );
                     receiver.error(current_token.span(), error);
-                    ignore_to_value_close(tokens, TokenKind::RightSquareBracket, receiver, error);
+                    if let Some(span) = ignore_to_value_close(
+                        tokens,
+                        TokenKind::RightSquareBracket,
+                        receiver,
+                        error,
+                    ) {
+                        receiver.error(span, error);
+                    }
                 }
                 State::NeedsEquals => {
                     error.report_error(
@@ -1227,13 +1256,24 @@ fn on_inline_table_open(
         })
         .map(|t| t.span())
         .unwrap_or_default();
+    match state {
+        State::NeedsKey => {}
+        State::NeedsEquals => {
+            receiver.key_val_sep(previous_span.after(), error);
+            receiver.scalar(previous_span.after(), Some(Encoding::LiteralString), error);
+        }
+        State::NeedsValue => {
+            receiver.scalar(previous_span.after(), Some(Encoding::LiteralString), error);
+        }
+        State::NeedsComma => {}
+    }
     error.report_error(
         ParseError::new("unclosed inline table")
             .with_context(inline_table_open.span())
             .with_expected(&[Expected::Literal("}")])
             .with_unexpected(previous_span.after()),
     );
-    receiver.array_close(previous_span.after(), error);
+    receiver.inline_table_close(previous_span.after(), error);
 }
 
 /// Parse whitespace, if present
@@ -1457,12 +1497,13 @@ fn ignore_to_newline(
 ///
 /// Attempts to ignore nested `[]`, `{}`.
 #[cold]
+#[must_use]
 fn ignore_to_value_close(
     tokens: &mut Stream<'_>,
     closing_kind: TokenKind,
     receiver: &mut dyn EventReceiver,
     error: &mut dyn ErrorSink,
-) {
+) -> Option<Span> {
     let mut array_count: usize = 0;
     let mut inline_table_count: usize = 0;
     while let Some(current_token) = tokens.next_token() {
@@ -1492,8 +1533,7 @@ fn ignore_to_value_close(
             }
             TokenKind::RightSquareBracket => {
                 if array_count == 0 && current_token.kind() == closing_kind {
-                    receiver.array_close(current_token.span(), error);
-                    break;
+                    return Some(current_token.span());
                 } else {
                     receiver.error(current_token.span(), error);
                     array_count = array_count.saturating_sub(1);
@@ -1505,8 +1545,7 @@ fn ignore_to_value_close(
             }
             TokenKind::RightCurlyBracket => {
                 if inline_table_count == 0 && current_token.kind() == closing_kind {
-                    receiver.inline_table_close(current_token.span(), error);
-                    break;
+                    return Some(current_token.span());
                 } else {
                     receiver.error(current_token.span(), error);
                     inline_table_count = inline_table_count.saturating_sub(1);
@@ -1517,6 +1556,7 @@ fn ignore_to_value_close(
             }
         }
     }
+    None
 }
 
 #[cold]

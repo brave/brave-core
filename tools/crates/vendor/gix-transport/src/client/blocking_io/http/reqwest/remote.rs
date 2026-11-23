@@ -2,80 +2,55 @@ use std::{
     any::Any,
     io::{Read, Write},
     str::FromStr,
-    sync::{atomic, Arc},
+    sync::Arc,
 };
 
-use gix_features::io::pipe;
+use gix_error::{Class, Error, ErrorExt, Result, ResultExt, message};
+use gix_utils::io::pipe;
+use parking_lot::Mutex;
 
-use crate::client::http::{self, options::FollowRedirects, redirect, reqwest::Remote, traits::PostBodyDataKind};
+use crate::client::blocking_io::http::{
+    self,
+    options::FollowRedirects,
+    redirect::{self, Action as RedirectAction},
+    reqwest::Remote,
+    traits::PostBodyDataKind,
+};
 
-/// The error returned by the 'remote' helper, a purely internal construct to perform http requests.
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error(transparent)]
-    Reqwest(#[from] reqwest::Error),
-    #[error("Could not finish reading all data to post to the remote")]
-    ReadPostBody(#[from] std::io::Error),
-    #[error("Request configuration failed")]
-    ConfigureRequest(#[from] Box<dyn std::error::Error + Send + Sync + 'static>),
-    #[error(transparent)]
-    Redirect(#[from] redirect::Error),
+fn classify_reqwest(err: reqwest::Error) -> Error {
+    let class = match err.status() {
+        Some(reqwest::StatusCode::FORBIDDEN) => Some(Class::PermissionDenied),
+        Some(reqwest::StatusCode::CONFLICT) => Some(Class::Conflict),
+        Some(reqwest::StatusCode::NOT_IMPLEMENTED) => Some(Class::Unsupported),
+        _ if err.is_timeout() || err.is_connect() || err.status().is_some_and(|status| status.is_server_error()) => {
+            Some(Class::Retryable)
+        }
+        _ => None,
+    };
+    match class {
+        Some(class) => Error::from_error(gix_error::ClassificationMarker::with_source(class, err)),
+        None => Error::from_error(err),
+    }
 }
 
-impl crate::IsSpuriousError for Error {
-    fn is_spurious(&self) -> bool {
-        match self {
-            Error::Reqwest(err) => {
-                err.is_timeout() || err.is_connect() || err.status().is_some_and(|status| status.is_server_error())
-            }
-            _ => false,
-        }
-    }
+fn authority_changed(curr_url: &reqwest::Url, prev_url: &reqwest::Url) -> bool {
+    curr_url.scheme() != prev_url.scheme()
+        || curr_url.host_str() != prev_url.host_str()
+        || curr_url.port_or_known_default() != prev_url.port_or_known_default()
 }
 
 impl Default for Remote {
     fn default() -> Self {
         let (req_send, req_recv) = std::sync::mpsc::sync_channel(0);
         let (res_send, res_recv) = std::sync::mpsc::sync_channel(0);
-        let handle = std::thread::spawn(move || -> Result<(), Error> {
+        let redirected_base_url_shared = Arc::new(Mutex::new(None));
+        let redirected_base_url_shared_for_field = redirected_base_url_shared.clone();
+        let handle = std::thread::spawn(gix_trace::in_thread(move || -> Result {
             let mut follow = None;
-            let mut redirected_base_url = None::<String>;
-            let allow_redirects = Arc::new(atomic::AtomicBool::new(false));
+            let redirect_action = Arc::new(Mutex::new(RedirectAction::Stop));
+            let redirect_tail = Arc::new(Mutex::new(String::new()));
 
-            // We may error while configuring, which is expected as part of the internal protocol. The error will be
-            // received and the sender of the request might restart us.
-            let client = reqwest::blocking::ClientBuilder::new()
-                .connect_timeout(std::time::Duration::from_secs(20))
-                .http1_title_case_headers()
-                .redirect(reqwest::redirect::Policy::custom({
-                    let allow_redirects = allow_redirects.clone();
-                    move |attempt| {
-                        if allow_redirects.load(atomic::Ordering::Relaxed) {
-                            let curr_url = attempt.url();
-                            let prev_urls = attempt.previous();
-
-                            match prev_urls.first() {
-                                Some(prev_url) if prev_url.host_str() != curr_url.host_str() => {
-                                    // git does not want to be redirected to a different host.
-                                    attempt.stop()
-                                }
-                                _ => {
-                                    // emulate default git behaviour which relies on curl default behaviour apparently.
-                                    const CURL_DEFAULT_REDIRS: usize = 50;
-                                    if prev_urls.len() >= CURL_DEFAULT_REDIRS {
-                                        attempt.error("too many redirects")
-                                    } else {
-                                        attempt.follow()
-                                    }
-                                }
-                            }
-                        } else {
-                            attempt.stop()
-                        }
-                    }
-                }))
-                .build()?;
+            let mut client = None;
 
             for Request {
                 url,
@@ -85,7 +60,75 @@ impl Default for Remote {
                 config,
             } in req_recv
             {
+                if client.is_none() {
+                    let mut builder = reqwest::blocking::ClientBuilder::new()
+                        .connect_timeout(std::time::Duration::from_secs(20))
+                        .http1_title_case_headers();
+                    if let Some(backend) = config.backend.as_ref() {
+                        let mut backend = backend
+                            .lock()
+                            .map_err(|_| message("HTTP backend configuration lock is poisoned").raise())?;
+                        if let Some(options) = backend.downcast_mut::<super::Options>()
+                            && let Some(configure_client) = options.configure_client.as_mut()
+                        {
+                            builder =
+                                configure_client(builder).or_raise(|| message("HTTP client configuration failed"))?;
+                        }
+                    }
+                    // Keep Git's redirect policy authoritative after client customization.
+                    client = Some(
+                        builder
+                            .redirect(reqwest::redirect::Policy::custom({
+                                let redirect_action = redirect_action.clone();
+                                let redirect_tail = redirect_tail.clone();
+                                move |attempt| {
+                                    match *redirect_action.lock() {
+                                        RedirectAction::Follow => {
+                                            let curr_url = attempt.url();
+                                            let prev_urls = attempt.previous();
+                                            // emulate default git behaviour which relies on curl default behaviour apparently.
+                                            const CURL_DEFAULT_REDIRS: usize = 50;
+                                            if prev_urls.len() >= CURL_DEFAULT_REDIRS {
+                                                return attempt.error("too many redirects");
+                                            }
+
+                                            match prev_urls.last() {
+                                                Some(prev_url) if !redirect::scheme_is_safe(curr_url.as_str(), prev_url.as_str()) => {
+                                                    // Don't follow insecure protocol redirects, particularly https-to-http downgrades.
+                                                    attempt.stop()
+                                                }
+                                                Some(prev_url) if authority_changed(curr_url, prev_url) => {
+                                                    // Allowed only if the tail doesn't change.
+                                                    let redirect_tail = redirect_tail.lock();
+                                                    if curr_url.as_str().ends_with(redirect_tail.as_str()) {
+                                                        attempt.follow()
+                                                    } else {
+                                                        let curr_url = curr_url.as_str().to_owned();
+                                                        let redirect_tail = redirect_tail.to_string();
+                                                        attempt.error(format!(
+                                                            "redirect url {curr_url:?} does not end with expected request suffix {redirect_tail:?}",
+                                                        ))
+                                                    }
+                                                }
+                                                _ => attempt.follow(),
+                                            }
+                                        }
+                                        RedirectAction::RejectConfiguredHeaders => {
+                                            attempt.error("refusing to follow redirect after request headers were configured")
+                                        }
+                                        RedirectAction::Stop => attempt.stop(),
+                                    }
+                                }
+                            }))
+                            .build()
+                            .map_err(classify_reqwest)
+                            .or_raise(|| message("Could not initialize HTTP client"))?,
+                    );
+                }
+                let client = client.as_ref().expect("initialized before making requests");
+                let redirected_base_url = redirected_base_url_shared.lock().clone();
                 let effective_url = redirect::swap_tails(redirected_base_url.as_deref(), &base_url, url.clone());
+                let has_configured_extra_headers = !config.extra_headers.is_empty();
                 let mut req_builder = if upload_body_kind.is_some() {
                     client.post(&effective_url)
                 } else {
@@ -110,59 +153,94 @@ impl Default for Remote {
                 req_builder = match upload_body_kind {
                     Some(PostBodyDataKind::BoundedAndFitsIntoMemory) => {
                         let mut buf = Vec::<u8>::with_capacity(512);
-                        post_body_rx.read_to_end(&mut buf)?;
+                        post_body_rx
+                            .read_to_end(&mut buf)
+                            .or_raise(|| message("Could not finish reading all data to post to the remote"))?;
                         req_builder.body(buf)
                     }
                     Some(PostBodyDataKind::Unbounded) => req_builder.body(reqwest::blocking::Body::new(post_body_rx)),
                     None => req_builder,
                 };
-                let mut req = req_builder.build()?;
-                if let Some(ref mut request_options) = config.backend.as_ref().and_then(|backend| backend.lock().ok()) {
-                    if let Some(options) = request_options.downcast_mut::<super::Options>() {
-                        if let Some(configure_request) = &mut options.configure_request {
-                            configure_request(&mut req)?;
-                        }
-                    }
+                let mut req = req_builder
+                    .build()
+                    .map_err(classify_reqwest)
+                    .or_raise(|| message("Could not build HTTP request"))?;
+                let mut has_configure_request = false;
+                if let Some(ref mut request_options) = config.backend.as_ref().and_then(|backend| backend.lock().ok())
+                    && let Some(options) = request_options.downcast_mut::<super::Options>()
+                    && let Some(configure_request) = &mut options.configure_request
+                {
+                    has_configure_request = true;
+                    configure_request(&mut req).or_raise(|| message("Request configuration failed"))?;
                 }
 
                 let follow = follow.get_or_insert(config.follow_redirects);
-                allow_redirects.store(
-                    matches!(follow, FollowRedirects::Initial | FollowRedirects::All),
-                    atomic::Ordering::Relaxed,
-                );
+                let may_follow_redirects = matches!(*follow, FollowRedirects::Initial | FollowRedirects::All);
+                let has_configured_request_headers = has_configure_request || has_configured_extra_headers;
+                *redirect_action.lock() =
+                    RedirectAction::from_request(may_follow_redirects, has_configured_request_headers);
+                url.strip_prefix(&base_url)
+                    .expect("BUG: caller assures `base_url` is subset of `url`")
+                    .clone_into(&mut redirect_tail.lock());
 
                 if *follow == FollowRedirects::Initial {
                     *follow = FollowRedirects::None;
                 }
 
-                let mut res = match client
-                    .execute(req)
-                    .and_then(reqwest::blocking::Response::error_for_status)
-                {
+                let mut www_authenticate = Vec::new();
+                let mut res = match client.execute(req).and_then(|res| {
+                    if res.status() == reqwest::StatusCode::UNAUTHORIZED {
+                        www_authenticate = res
+                            .headers()
+                            .get_all(reqwest::header::WWW_AUTHENTICATE)
+                            .iter()
+                            .map(|value| value.as_bytes().into())
+                            .collect();
+                    }
+                    res.error_for_status()
+                }) {
                     Ok(res) => res,
                     Err(err) => {
-                        let (kind, err) = match err.status() {
+                        // `error_for_status()` preserves the final URL for HTTP error responses. Capture it here so
+                        // authentication retries after redirected 401 responses use the redirected base URL.
+                        if let Some(actual_url) = err.url().map(reqwest::Url::as_str)
+                            && actual_url != effective_url
+                        {
+                            let new_base_url = redirect::base_url(actual_url, &base_url, url.clone())?;
+                            *redirected_base_url_shared.lock() = Some(new_base_url);
+                        }
+                        let err = match err.status() {
+                            Some(reqwest::StatusCode::UNAUTHORIZED) => std::io::Error::new(
+                                std::io::ErrorKind::PermissionDenied,
+                                crate::client::AuthenticationRequired { www_authenticate },
+                            ),
                             Some(status) => {
-                                let kind = if status == reqwest::StatusCode::UNAUTHORIZED {
-                                    std::io::ErrorKind::PermissionDenied
-                                } else if status.is_server_error() {
+                                let kind = if status.is_server_error() && status != reqwest::StatusCode::NOT_IMPLEMENTED
+                                {
                                     std::io::ErrorKind::ConnectionAborted
                                 } else {
                                     std::io::ErrorKind::Other
                                 };
-                                (kind, format!("Received HTTP status {}", status.as_str()))
+                                std::io::Error::new(
+                                    kind,
+                                    classify_reqwest(err)
+                                        .and_raise(message!("Received HTTP status {}", status.as_str())),
+                                )
                             }
-                            None => (std::io::ErrorKind::Other, err.to_string()),
+                            // Preserve the `reqwest::Error` as the source so the underlying cause -- e.g. a
+                            // connection or TLS failure -- isn't lost. It was previously stringified, which
+                            // dead-ended `source()` and hid the real reason a request failed. See #2140.
+                            None => std::io::Error::other(classify_reqwest(err)),
                         };
-                        let err = Err(std::io::Error::new(kind, err));
-                        headers_tx.channel.send(err).ok();
+                        headers_tx.channel.send(Err(err)).ok();
                         continue;
                     }
                 };
 
                 let actual_url = res.url().as_str();
                 if actual_url != effective_url.as_str() {
-                    redirected_base_url = redirect::base_url(actual_url, &base_url, url)?.into();
+                    let new_base_url = redirect::base_url(actual_url, &base_url, url)?;
+                    *redirected_base_url_shared.lock() = Some(new_base_url);
                 }
 
                 let send_headers = {
@@ -191,20 +269,21 @@ impl Default for Remote {
                 }
             }
             Ok(())
-        });
+        }));
 
         Remote {
             handle: Some(handle),
             request: req_send,
             response: res_recv,
             config: http::Options::default(),
+            redirected_base_url: redirected_base_url_shared_for_field,
         }
     }
 }
 
 /// utilities
 impl Remote {
-    fn restore_thread_after_failure(&mut self) -> http::Error {
+    fn restore_thread_after_failure(&mut self) -> Error {
         let err_that_brought_thread_down = self
             .handle
             .take()
@@ -212,10 +291,10 @@ impl Remote {
             .join()
             .expect("handler thread should never panic")
             .expect_err("something should have gone wrong with curl (we join on error only)");
+        let config = std::mem::take(&mut self.config);
         *self = Remote::default();
-        http::Error::InitHttpClient {
-            source: Box::new(err_that_brought_thread_down),
-        }
+        self.config = config;
+        err_that_brought_thread_down.and_raise(message("Could not initialize the http client"))
     }
 
     fn make_request(
@@ -224,23 +303,13 @@ impl Remote {
         base_url: &str,
         headers: impl IntoIterator<Item = impl AsRef<str>>,
         upload_body_kind: Option<PostBodyDataKind>,
-    ) -> Result<http::PostResponse<pipe::Reader, pipe::Reader, pipe::Writer>, http::Error> {
+    ) -> Result<http::PostResponse<pipe::Reader, pipe::Reader, pipe::Writer>> {
         let mut header_map = reqwest::header::HeaderMap::new();
         for header_line in headers {
-            let header_line = header_line.as_ref();
-            let colon_pos = header_line
-                .find(':')
-                .expect("header line must contain a colon to separate key and value");
-            let header_name = &header_line[..colon_pos];
-            let value = &header_line[colon_pos + 1..];
-
-            match reqwest::header::HeaderName::from_str(header_name)
-                .ok()
-                .zip(reqwest::header::HeaderValue::try_from(value.trim()).ok())
-            {
-                Some((key, val)) => header_map.insert(key, val),
-                None => continue,
-            };
+            insert_header(&mut header_map, header_line.as_ref());
+        }
+        for header_line in &self.config.extra_headers {
+            insert_header(&mut header_map, header_line);
         }
         if self
             .request
@@ -275,6 +344,25 @@ impl Remote {
     }
 }
 
+/// Add one `name: value` header line to `header_map`, ignoring malformed or unsupported input in `header_line`.
+///
+/// Git configuration may provide arbitrary extra header lines, so invalid names or values are skipped instead of
+/// failing request construction. Multiple entries with the same header name are preserved to match curl behavior.
+fn insert_header(header_map: &mut reqwest::header::HeaderMap, header_line: &str) {
+    let Some(colon_pos) = header_line.find(':') else {
+        return;
+    };
+    let header_name = &header_line[..colon_pos];
+    let value = &header_line[colon_pos + 1..];
+
+    if let Some((key, val)) = reqwest::header::HeaderName::from_str(header_name)
+        .ok()
+        .zip(reqwest::header::HeaderValue::try_from(value.trim()).ok())
+    {
+        header_map.append(key, val);
+    }
+}
+
 impl http::Http for Remote {
     type Headers = pipe::Reader;
     type ResponseBody = pipe::Reader;
@@ -285,7 +373,7 @@ impl http::Http for Remote {
         url: &str,
         base_url: &str,
         headers: impl IntoIterator<Item = impl AsRef<str>>,
-    ) -> Result<http::GetResponse<Self::Headers, Self::ResponseBody>, http::Error> {
+    ) -> Result<http::GetResponse<Self::Headers, Self::ResponseBody>> {
         self.make_request(url, base_url, headers, None).map(Into::into)
     }
 
@@ -295,15 +383,19 @@ impl http::Http for Remote {
         base_url: &str,
         headers: impl IntoIterator<Item = impl AsRef<str>>,
         post_body_kind: PostBodyDataKind,
-    ) -> Result<http::PostResponse<Self::Headers, Self::ResponseBody, Self::PostBody>, http::Error> {
+    ) -> Result<http::PostResponse<Self::Headers, Self::ResponseBody, Self::PostBody>> {
         self.make_request(url, base_url, headers, Some(post_body_kind))
     }
 
-    fn configure(&mut self, config: &dyn Any) -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    fn configure(&mut self, config: &dyn Any) -> Result {
         if let Some(config) = config.downcast_ref::<http::Options>() {
             self.config = config.clone();
         }
         Ok(())
+    }
+
+    fn redirected_base_url(&self) -> Option<String> {
+        self.redirected_base_url.lock().clone()
     }
 }
 

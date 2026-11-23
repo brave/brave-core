@@ -24,10 +24,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rust: [nightly, beta, stable, 1.82.0, 1.80.0, 1.76.0]
+        rust: [nightly, beta, stable, 1.88.0]
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{matrix.rust}}
@@ -40,9 +40,8 @@ jobs:
         if: matrix.rust == 'nightly'
       - run: cargo test
       - run: cargo check --no-default-features
-      - run: cargo check --features backtrace
-        if: matrix.rust != '1.80.0' && matrix.rust != '1.76.0'
-      - uses: actions/upload-artifact@v4
+      - run: cargo check
+      - uses: actions/upload-artifact@v7
         if: matrix.rust == 'nightly' && always()
         with:
           name: Cargo.lock
@@ -57,10 +56,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rust: [1.67.0, 1.65.0, 1.52.0, 1.51.0, 1.50.0, 1.39.0]
+        rust: [1.68.0]
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{matrix.rust}}
@@ -75,10 +74,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@nightly
       - run: cargo generate-lockfile -Z minimal-versions
-      - run: cargo check --locked --features backtrace
+      - run: cargo check --locked
 
   windows:
     name: Windows
@@ -87,11 +86,11 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rust-src
-      - run: cargo check --features backtrace
+      - run: cargo check
 
   doc:
     name: Documentation
@@ -102,7 +101,7 @@ jobs:
     env:
       RUSTDOCFLAGS: -Dwarnings
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@nightly
         with:
           components: rust-src
@@ -115,7 +114,7 @@ jobs:
     if: github.event_name != 'pull_request'
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@nightly
         with:
           components: clippy, rust-src
@@ -128,7 +127,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@miri
       - run: cargo miri setup
       - run: cargo miri test
@@ -141,7 +140,7 @@ jobs:
     if: github.event_name != 'pull_request'
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
       - uses: dtolnay/install@cargo-outdated
       - run: cargo outdated --workspace --exit-code 1

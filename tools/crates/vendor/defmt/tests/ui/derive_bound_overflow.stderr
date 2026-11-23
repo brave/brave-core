@@ -1,0 +1,32 @@
+error[E0275]: overflow evaluating the requirement `<F as FlavorT>::List<'static, Flavored<F>>: Format`
+  --> tests/ui/derive_bound_overflow.rs:14:9
+   |
+14 |     Str(F::List<'static, Self>),
+   |         ^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: required for `Flavored<F>` to implement `Format`
+  --> tests/ui/derive_bound_overflow.rs:11:10
+   |
+11 | #[derive(defmt::Format)]
+   |          ^^^^^^^^^^^^^ unsatisfied trait bound introduced in this `derive` macro
+12 | // #[defmt(bound())] // fixes the compile error
+13 | enum Flavored<F: FlavorT + 'static> {
+   |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `FlavorT::List`
+  --> tests/ui/derive_bound_overflow.rs:4:27
+   |
+4  |     type List<'a, T: 'a + ::defmt::Format>: ::defmt::Format;
+   |                           ^^^^^^^^^^^^^^^ required by this bound in `FlavorT::List`
+   = note: this error originates in the derive macro `defmt::Format` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0275]: overflow evaluating the requirement `Flavored<Flavor>: Format`
+  --> tests/ui/derive_bound_overflow.rs:20:5
+   |
+20 |     implements_format::<Flavored<Flavor>>(); // overflow by the compiler, can only be fixed by removing the bound
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: required by a bound in `implements_format`
+  --> tests/ui/derive_bound_overflow.rs:18:35
+   |
+18 |     const fn implements_format<T: defmt::Format>() {}
+   |                                   ^^^^^^^^^^^^^ required by this bound in `implements_format`

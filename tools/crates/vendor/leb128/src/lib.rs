@@ -207,6 +207,18 @@ pub mod write {
         }
     }
 
+    /// Return the number of bytes needed to encode `value` as unsigned LEB128.
+    pub fn unsigned_len(mut val: u64) -> usize {
+        let mut bytes_needed = 0;
+        loop {
+            bytes_needed += 1;
+            val >>= 7;
+            if val == 0 {
+                return bytes_needed;
+            }
+        }
+    }
+
     /// Write `val` to the `std::io::Write` stream `w` as a signed LEB128 value.
     ///
     /// On success, return the number of bytes written to `w`.
@@ -238,10 +250,26 @@ pub mod write {
             }
         }
     }
+
+    /// Return the number of bytes needed to encode `value` a signed LEB128.
+    pub fn signed_len(mut val: i64) -> usize {
+        let mut bytes_needed = 0;
+        loop {
+            bytes_needed += 1;
+            // Keep the sign bit for testing
+            val >>= 6;
+            if val == 0 || val == -1 {
+                return bytes_needed;
+            }
+            val >>= 1;
+        }
+    }
 }
 
 #[cfg(test)]
 mod tests {
+    use crate::write::{signed_len, unsigned_len};
+
     use super::*;
     use std;
     use std::io;
@@ -648,5 +676,25 @@ mod tests {
             read::unsigned(&mut readable).expect("Should succeed with correct value"),
             45156
         );
+    }
+
+    #[test]
+    fn test_write_unsigned_len() {
+        assert_eq!(unsigned_len(0), 1);
+        assert_eq!(unsigned_len(64), 1);
+        assert_eq!(unsigned_len(127), 1);
+        assert_eq!(unsigned_len(128), 2);
+        assert_eq!(unsigned_len((1 << 42) - 1), 6);
+        assert_eq!(unsigned_len(u64::MAX), 10);
+    }
+
+    #[test]
+    fn test_write_signed_len() {
+        assert_eq!(signed_len(0), 1);
+        assert_eq!(signed_len(32), 1);
+        assert_eq!(signed_len(64), 2);
+        assert_eq!(signed_len(-1), 1);
+        assert_eq!(signed_len(-32), 1);
+        assert_eq!(signed_len(i64::MAX), 10);
     }
 }

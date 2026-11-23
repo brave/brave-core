@@ -1,0 +1,29 @@
+error: use of deprecated constant `main::DEFMT_FORMAT_STRING`: unmatched `}` in format string, escape it as `}}`: this will be an error in a future release
+ --> tests/ui/deprecated-braces.rs:4:18
+  |
+4 |     defmt::info!("}{{}");
+  |                  ^^^^^^
+  |
+note: the lint level is defined here
+ --> tests/ui/deprecated-braces.rs:1:9
+  |
+1 | #![deny(deprecated)]
+  |         ^^^^^^^^^^
+
+error: use of deprecated constant `main::DEFMT_FORMAT_STRING`: unmatched `}` in format string, escape it as `}}`: this will be an error in a future release
+ --> tests/ui/deprecated-braces.rs:5:21
+  |
+5 |     defmt::println!("}{{}");
+  |                     ^^^^^^
+
+error: use of deprecated constant `_::defmt_timestamp::DEFMT_FORMAT_STRING`: unmatched `}` in format string, escape it as `}}`: this will be an error in a future release
+  --> tests/ui/deprecated-braces.rs:16:19
+   |
+16 | defmt::timestamp!("}{{}{=u32}", 0);
+   |                   ^^^^^^^^^^^^
+
+error: use of deprecated constant `<S as defmt::Format>::format::DEFMT_FORMAT_STRING`: unmatched `}` in format string, escape it as `}}`: this will be an error in a future release
+  --> tests/ui/deprecated-braces.rs:12:26
+   |
+12 |         defmt::write!(f, "}{{}");
+   |                          ^^^^^^

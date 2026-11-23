@@ -1,4 +1,4 @@
-use rand::{Rng, SeedableRng};
+use rand::{rngs, RngExt};
 
 use base64::engine::{general_purpose::STANDARD, Engine};
 use base64::*;
@@ -16,7 +16,7 @@ fn roundtrip_random<E: Engine>(
 ) {
     // let the short ones be short but don't let it get too crazy large
     let num_rounds = calculate_number_of_rounds(byte_len, approx_values_per_byte, max_rounds);
-    let mut r = rand::rngs::SmallRng::from_entropy();
+    let mut r = rand::make_rng::<rngs::SmallRng>();
     let mut decode_buf = Vec::new();
 
     for _ in 0..num_rounds {
@@ -24,7 +24,7 @@ fn roundtrip_random<E: Engine>(
         str_buf.clear();
         decode_buf.clear();
         while byte_buf.len() < byte_len {
-            byte_buf.push(r.gen::<u8>());
+            byte_buf.push(r.random::<u8>());
         }
 
         engine.encode_string(&byte_buf, str_buf);

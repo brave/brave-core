@@ -3,11 +3,12 @@ use crate::syntax::message::Message;
 use crate::syntax::report::Errors;
 use crate::syntax::visit::{self, Visit};
 use crate::syntax::{
-    error, ident, trivial, Api, Array, Enum, ExternFn, ExternType, FnKind, Impl, Lang, Lifetimes,
-    NamedType, Ptr, Receiver, Ref, Signature, SliceRef, Struct, Trait, Ty1, Type, TypeAlias, Types,
+    Api, Array, Enum, ExternFn, ExternType, FnKind, Impl, Lang, Lifetimes, NamedType, Ptr,
+    Receiver, Ref, Signature, SliceRef, Struct, Trait, Ty1, Type, TypeAlias, Types, error, ident,
+    trivial,
 };
 use proc_macro2::{Delimiter, Group, Ident, TokenStream};
-use quote::{quote, ToTokens};
+use quote::{ToTokens, quote};
 use std::fmt::Display;
 use syn::{GenericParam, Generics, Lifetime};
 
@@ -231,8 +232,9 @@ fn check_type_cxx_vector(cx: &mut Check, ptr: &Ty1) {
 }
 
 fn check_type_ref(cx: &mut Check, ty: &Ref) {
-    if ty.mutable && !ty.pinned {
-        if let Some(requires_pin) = match &ty.inner {
+    if ty.mutable
+        && !ty.pinned
+        && let Some(requires_pin) = match &ty.inner {
             Type::Ident(ident)
                 if ident.rust == CxxString
                     || (cx.types.cxx.contains(&ident.rust)
@@ -244,15 +246,15 @@ fn check_type_ref(cx: &mut Check, ty: &Ref) {
             }
             Type::CxxVector(_) => Some("CxxVector<...>".to_owned()),
             _ => None,
-        } {
-            cx.error(
-                ty,
-                format!(
-                    "mutable reference to C++ type requires a pin -- use Pin<&mut {}>",
-                    requires_pin,
-                ),
-            );
         }
+    {
+        cx.error(
+            ty,
+            format!(
+                "mutable reference to C++ type requires a pin -- use Pin<&mut {}>",
+                requires_pin,
+            ),
+        );
     }
 
     match ty.inner {
@@ -292,13 +294,12 @@ fn check_type_slice_ref(cx: &mut Check, ty: &SliceRef) {
     if !supported {
         let mutable = if ty.mutable { "mut " } else { "" };
         let mut msg = format!("unsupported &{}[T] element type", mutable);
-        if let Type::Ident(ident) = &ty.inner {
-            if cx.types.cxx.contains(&ident.rust)
-                && !cx.types.structs.contains_key(&ident.rust)
-                && !cx.types.enums.contains_key(&ident.rust)
-            {
-                msg += ": opaque C++ type is not supported yet";
-            }
+        if let Type::Ident(ident) = &ty.inner
+            && cx.types.cxx.contains(&ident.rust)
+            && !cx.types.structs.contains_key(&ident.rust)
+            && !cx.types.enums.contains_key(&ident.rust)
+        {
+            msg += ": opaque C++ type is not supported yet";
         }
         cx.error(ty, msg);
     }
@@ -318,13 +319,13 @@ fn check_type_fn(cx: &mut Check, ty: &Signature) {
     }
 
     for arg in &ty.args {
-        if let Type::Ptr(_) = arg.ty {
-            if ty.unsafety.is_none() {
-                cx.error(
-                    arg,
-                    "pointer argument requires that the function pointer be marked unsafe",
-                );
-            }
+        if let Type::Ptr(_) = arg.ty
+            && ty.unsafety.is_none()
+        {
+            cx.error(
+                arg,
+                "pointer argument requires that the function pointer be marked unsafe",
+            );
         }
     }
 }
@@ -339,11 +340,11 @@ fn check_api_struct(cx: &mut Check, strct: &Struct) {
         cx.error(span, "structs without any fields are not supported");
     }
 
-    if cx.types.cxx.contains(&name.rust) {
-        if let Some(ety) = cx.types.untrusted.get(&name.rust) {
-            let msg = "extern shared struct must be declared in an `unsafe extern` block";
-            cx.error(ety, msg);
-        }
+    if cx.types.cxx.contains(&name.rust)
+        && let Some(ety) = cx.types.untrusted.get(&name.rust)
+    {
+        let msg = "extern shared struct must be declared in an `unsafe extern` block";
+        cx.error(ety, msg);
     }
 
     for derive in &strct.derives {
@@ -418,7 +419,10 @@ fn check_api_enum(cx: &mut Check, enm: &Enum) {
                 let default_variants = enm.variants.iter().filter(|v| v.default).count();
                 if default_variants != 1 {
                     let mut msg = Message::new();
-                    write!(msg, "derive(Default) on enum requires exactly one variant to be marked with #[default]");
+                    write!(
+                        msg,
+                        "derive(Default) on enum requires exactly one variant to be marked with #[default]"
+                    );
                     if default_variants > 0 {
                         write!(msg, " (found {})", default_variants);
                     }

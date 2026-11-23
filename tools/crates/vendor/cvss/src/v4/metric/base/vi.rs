@@ -1,7 +1,7 @@
 //! Integrity Impact to the Vulnerable System (VI)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -19,7 +19,7 @@ use core::{fmt, str::FromStr};
 /// > system (e.g. due to insufficient logging).
 /// > The resulting score is greatest when the consequence to the system is
 /// > highest.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum IntegrityImpactToTheVulnerableSystem {
     /// None (N)
     ///
@@ -41,13 +41,8 @@ pub enum IntegrityImpactToTheVulnerableSystem {
     /// > the Vulnerable System. Alternatively, only some files can be modified,
     /// > but malicious modification would present a direct, serious consequence
     /// > to the Vulnerable System.
+    #[default]
     High,
-}
-
-impl Default for IntegrityImpactToTheVulnerableSystem {
-    fn default() -> Self {
-        Self::High
-    }
 }
 
 impl Metric for IntegrityImpactToTheVulnerableSystem {
@@ -55,9 +50,9 @@ impl Metric for IntegrityImpactToTheVulnerableSystem {
 
     fn as_str(self) -> &'static str {
         match self {
-            IntegrityImpactToTheVulnerableSystem::None => "N",
-            IntegrityImpactToTheVulnerableSystem::Low => "L",
-            IntegrityImpactToTheVulnerableSystem::High => "H",
+            Self::None => "N",
+            Self::Low => "L",
+            Self::High => "H",
         }
     }
 }
@@ -71,11 +66,11 @@ impl fmt::Display for IntegrityImpactToTheVulnerableSystem {
 impl FromStr for IntegrityImpactToTheVulnerableSystem {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "N" => Ok(IntegrityImpactToTheVulnerableSystem::None),
-            "L" => Ok(IntegrityImpactToTheVulnerableSystem::Low),
-            "H" => Ok(IntegrityImpactToTheVulnerableSystem::High),
+            "N" => Ok(Self::None),
+            "L" => Ok(Self::Low),
+            "H" => Ok(Self::High),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),
@@ -100,27 +95,22 @@ pub(crate) mod merge {
     /// Result of the merging of the base and modified metrics.
     ///
     /// Used in scoring.
-    #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+    #[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
     pub(crate) enum MergedIntegrityImpactToTheVulnerableSystem {
+        #[default]
         High,
         Low,
         None,
     }
 
-    impl Default for MergedIntegrityImpactToTheVulnerableSystem {
-        fn default() -> Self {
-            Self::High
-        }
-    }
-
     impl FromStr for MergedIntegrityImpactToTheVulnerableSystem {
         type Err = Error;
 
-        fn from_str(s: &str) -> Result<Self> {
+        fn from_str(s: &str) -> Result<Self, Error> {
             match s {
-                "H" => Ok(MergedIntegrityImpactToTheVulnerableSystem::High),
-                "L" => Ok(MergedIntegrityImpactToTheVulnerableSystem::Low),
-                "N" => Ok(MergedIntegrityImpactToTheVulnerableSystem::None),
+                "H" => Ok(Self::High),
+                "L" => Ok(Self::Low),
+                "N" => Ok(Self::None),
                 _ => Err(Error::InvalidMetricV4 {
                     metric_type: MetricType::VI,
                     value: s.to_owned(),

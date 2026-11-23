@@ -1,6 +1,6 @@
 [package]
 name = "anstream"
-version = "0.6.21"
+version = "1.0.0"
 description = "IO stream adapters for writing colored text that will gracefully degrade according to your terminal's capabilities."
 categories = ["command-line-interface"]
 keywords = ["ansi", "terminal", "color", "strip", "wincon"]
@@ -32,7 +32,7 @@ test = []
 
 [dependencies]
 anstyle = { version = "1.0.0", path = "../anstyle" }
-anstyle-parse = { version = "0.2.0", path = "../anstyle-parse" }
+anstyle-parse = { version = "1.0.0", path = "../anstyle-parse" }
 colorchoice = { version = "1.0.0", path = "../colorchoice" }
 anstyle-query = { version = "1.0.0", path = "../anstyle-query", optional = true }
 utf8parse = "0.2.2"

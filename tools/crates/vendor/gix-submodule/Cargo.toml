@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-submodule"
-version = "0.21.0"
+version = "0.36.1"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,6 +29,14 @@ description = "A crate of the gitoxide project dealing git submodules"
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
+
+[package.metadata.docs.rs]
+features = ["sha1"]
+
+[features]
+sha1 = ["gix-refspec/sha1"]
+sha256 = ["gix-refspec/sha256"]
 
 [lib]
 name = "gix_submodule"
@@ -40,26 +48,29 @@ version = "1.12.0"
 default-features = false
 
 [dependencies.gix-config]
-version = "^0.47.0"
+version = "^0.62.1"
+
+[dependencies.gix-error]
+version = "^0.5.2"
+features = ["bstr"]
 
 [dependencies.gix-path]
-version = "^0.10.21"
+version = "^0.14.1"
 
 [dependencies.gix-pathspec]
-version = "^0.13.0"
+version = "^0.22.1"
 
 [dependencies.gix-refspec]
-version = "^0.32.0"
+version = "^0.47.1"
 
 [dependencies.gix-url]
-version = "^0.33.0"
+version = "^0.40.1"
 
-[dependencies.thiserror]
-version = "2.0.17"
-
-[dev-dependencies]
+[dev-dependencies.insta]
+version = "1.46.3"
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -78,7 +89,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

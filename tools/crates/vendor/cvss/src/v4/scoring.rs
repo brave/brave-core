@@ -361,7 +361,7 @@ impl ScoringVector {
         // that is greater or equal (severity distance) than the to-be scored vector.
         for max_vector in &max_vectors {
             let max_vector = max_vector.trim_end_matches('/');
-            let v = ScoringVector::from_max_composed_vector(max_vector);
+            let v = Self::from_max_composed_vector(max_vector);
 
             severity_distance_av = self.av.level() - v.av.level();
             severity_distance_pr = self.pr.level() - v.pr.level();
@@ -513,7 +513,7 @@ struct MacroVector {
 
 impl MacroVector {
     fn new(eq1: u8, eq2: u8, eq3: u8, eq4: u8, eq5: u8, eq6: u8) -> Self {
-        MacroVector {
+        Self {
             eq1,
             eq2,
             eq3,

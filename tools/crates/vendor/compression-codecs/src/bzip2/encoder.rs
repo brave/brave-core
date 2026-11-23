@@ -55,17 +55,17 @@ impl BzEncoder {
         let prior_in = self.compress.total_in();
         let prior_out = self.compress.total_out();
 
-        let result = self
+        let status = self
             .compress
             // Safety: We **trust** bzip2 to only write initialized bytes into it
             .compress_uninit(input.unwritten(), unsafe { output.unwritten_mut() }, action)
-            .map_err(io::Error::other);
+            .map_err(io::Error::other)?;
 
         input.advance((self.compress.total_in() - prior_in) as usize);
         // Safety: We **trust** bzip2 to properly write bytes into it
         unsafe { output.assume_init_and_advance((self.compress.total_out() - prior_out) as usize) };
 
-        result
+        Ok(status)
     }
 }
 

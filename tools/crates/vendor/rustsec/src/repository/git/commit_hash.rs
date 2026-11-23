@@ -1,7 +1,5 @@
 use std::fmt::Display;
 
-use tame_index::external::gix;
-
 /// ID (i.e. SHA-1 hash) of a git commit
 ///
 /// This is a wrapper around [gix::ObjectId] to prevent gix semver changes
@@ -20,7 +18,7 @@ impl CommitHash {
     }
 
     pub(crate) fn from_gix(hash: gix::ObjectId) -> Self {
-        CommitHash { hash }
+        Self { hash }
     }
 
     /// Interpret this object id as raw byte slice.

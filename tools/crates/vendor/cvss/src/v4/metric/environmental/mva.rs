@@ -1,7 +1,7 @@
 //! Availability Impact to the Vulnerable System (MVA)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -22,11 +22,12 @@ use core::{fmt, str::FromStr};
 /// > attacks that consume network bandwidth, processor cycles, or disk space
 /// > all impact the availability of a system. The resulting score is greatest
 /// > when the consequence to the system is highest.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ModifiedAvailabilityImpactToTheVulnerableSystem {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
     /// None (N)
     ///
@@ -59,21 +60,15 @@ pub enum ModifiedAvailabilityImpactToTheVulnerableSystem {
     High,
 }
 
-impl Default for ModifiedAvailabilityImpactToTheVulnerableSystem {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for ModifiedAvailabilityImpactToTheVulnerableSystem {
     const TYPE: MetricType = MetricType::MVA;
 
     fn as_str(self) -> &'static str {
         match self {
-            ModifiedAvailabilityImpactToTheVulnerableSystem::NotDefined => "X",
-            ModifiedAvailabilityImpactToTheVulnerableSystem::None => "N",
-            ModifiedAvailabilityImpactToTheVulnerableSystem::Low => "L",
-            ModifiedAvailabilityImpactToTheVulnerableSystem::High => "H",
+            Self::NotDefined => "X",
+            Self::None => "N",
+            Self::Low => "L",
+            Self::High => "H",
         }
     }
 }
@@ -87,12 +82,12 @@ impl fmt::Display for ModifiedAvailabilityImpactToTheVulnerableSystem {
 impl FromStr for ModifiedAvailabilityImpactToTheVulnerableSystem {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(ModifiedAvailabilityImpactToTheVulnerableSystem::NotDefined),
-            "N" => Ok(ModifiedAvailabilityImpactToTheVulnerableSystem::None),
-            "L" => Ok(ModifiedAvailabilityImpactToTheVulnerableSystem::Low),
-            "H" => Ok(ModifiedAvailabilityImpactToTheVulnerableSystem::High),
+            "X" => Ok(Self::NotDefined),
+            "N" => Ok(Self::None),
+            "L" => Ok(Self::Low),
+            "H" => Ok(Self::High),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

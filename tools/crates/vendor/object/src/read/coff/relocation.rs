@@ -38,7 +38,7 @@ impl<'data, 'file, R: ReadRef<'data>, Coff: CoffHeader> Iterator
             let typ = relocation.typ.get(LE);
             let flags = RelocationFlags::Coff { typ };
             let g = E::Generic;
-            let unknown = (K::Unknown, E::Generic, 0, 0);
+            let unknown = (K::Unknown, E::Unknown, 0, 0);
             let (kind, encoding, size, addend) = match self.file.header.machine() {
                 pe::IMAGE_FILE_MACHINE_ARMNT => match typ {
                     pe::IMAGE_REL_ARM_ADDR32 => (K::Absolute, g, 32, 0),
@@ -94,6 +94,7 @@ impl<'data, 'file, R: ReadRef<'data>, Coff: CoffHeader> Iterator
                     encoding,
                     size,
                     target,
+                    subtractor: None,
                     addend,
                     implicit_addend: true,
                     flags,

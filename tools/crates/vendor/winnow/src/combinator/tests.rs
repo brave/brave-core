@@ -111,7 +111,7 @@ Ok(
 use ::core::convert::From;
 impl From<u32> for CustomError {
     fn from(_: u32) -> Self {
-        CustomError
+        Self
     }
 }
 
@@ -119,7 +119,7 @@ impl<I: Stream> ParserError<I> for CustomError {
     type Inner = Self;
 
     fn from_input(_: &I) -> Self {
-        CustomError
+        Self
     }
 
     fn into_inner(self) -> Result<Self::Inner, Self> {
@@ -205,7 +205,7 @@ Ok(
 fn test_parser_map_parser() {
     let input: &[u8] = &[100, 101, 102, 103, 104][..];
     assert_parse!(
-        take(4usize).and_then(take(2usize)).parse_peek(input),
+        take(4_usize).and_then(take(2_usize)).parse_peek(input),
         str![[r#"
 Ok(
     (
@@ -230,7 +230,7 @@ fn test_parser_into() {
     use crate::token::take;
 
     assert_parse!(
-        take(3u8)
+        take(3_u8)
             .output_into::<Vec<u8>>()
             .parse_peek(&b"abcdefg"[..]),
         str![[r#"
@@ -463,7 +463,7 @@ fn test_parser_verify() {
     use crate::token::take;
 
     fn test<'i>(i: &mut Partial<&'i [u8]>) -> TestResult<Partial<&'i [u8]>, &'i [u8]> {
-        take(5u8)
+        take(5_u8)
             .verify(|slice: &[u8]| slice[0] == b'a')
             .parse_next(i)
     }
@@ -537,7 +537,7 @@ Ok(
 fn test_parser_verify_ref() {
     use crate::token::take;
 
-    let mut parser1 = take(3u8).verify(|s: &[u8]| s == &b"abc"[..]);
+    let mut parser1 = take(3_u8).verify(|s: &[u8]| s == &b"abc"[..]);
 
     assert_parse!(
         parser1.parse_peek(&b"abcd"[..]),
@@ -589,7 +589,7 @@ Err(
 #[cfg(feature = "alloc")]
 fn test_parser_verify_alloc() {
     use crate::token::take;
-    let mut parser1 = take(3u8)
+    let mut parser1 = take(3_u8)
         .map(|s: &[u8]| s.to_vec())
         .verify(|s: &[u8]| s == &b"abc"[..]);
 
@@ -1266,14 +1266,14 @@ fn alt_test() {
     #[cfg(feature = "alloc")]
     impl From<u32> for ErrorStr {
         fn from(i: u32) -> Self {
-            ErrorStr(format!("custom error code: {i}"))
+            Self(format!("custom error code: {i}"))
         }
     }
 
     #[cfg(feature = "alloc")]
     impl<'a> From<&'a str> for ErrorStr {
         fn from(i: &'a str) -> Self {
-            ErrorStr(format!("custom error message: {i}"))
+            Self(format!("custom error message: {i}"))
         }
     }
 
@@ -1282,11 +1282,11 @@ fn alt_test() {
         type Inner = Self;
 
         fn from_input(input: &I) -> Self {
-            ErrorStr(format!("custom error message: ({input:?})"))
+            Self(format!("custom error message: ({input:?})"))
         }
 
         fn append(self, input: &I, _: &<I as Stream>::Checkpoint) -> Self {
-            ErrorStr(format!("custom error message: ({input:?}) - {self:?}"))
+            Self(format!("custom error message: ({input:?}) - {self:?}"))
         }
 
         fn into_inner(self) -> Result<Self::Inner, Self> {
@@ -1622,171 +1622,6 @@ Ok(
             101,
             102,
         ],
-    ),
-)
-
-"#]]
-        .raw()
-    );
-}
-
-#[test]
-fn permutation_test() {
-    #[allow(clippy::type_complexity)]
-    fn perm<'i>(
-        i: &mut Partial<&'i [u8]>,
-    ) -> TestResult<Partial<&'i [u8]>, (&'i [u8], &'i [u8], &'i [u8])> {
-        permutation(("abcd", "efg", "hi")).parse_next(i)
-    }
-
-    let a = &b"abcdefghijk"[..];
-    assert_parse!(
-        perm.parse_peek(Partial::new(a)),
-        str![[r#"
-Ok(
-    (
-        Partial {
-            input: [
-                106,
-                107,
-            ],
-            partial: true,
-        },
-        (
-            [
-                97,
-                98,
-                99,
-                100,
-            ],
-            [
-                101,
-                102,
-                103,
-            ],
-            [
-                104,
-                105,
-            ],
-        ),
-    ),
-)
-
-"#]]
-        .raw()
-    );
-    let b = &b"efgabcdhijk"[..];
-    assert_parse!(
-        perm.parse_peek(Partial::new(b)),
-        str![[r#"
-Ok(
-    (
-        Partial {
-            input: [
-                106,
-                107,
-            ],
-            partial: true,
-        },
-        (
-            [
-                97,
-                98,
-                99,
-                100,
-            ],
-            [
-                101,
-                102,
-                103,
-            ],
-            [
-                104,
-                105,
-            ],
-        ),
-    ),
-)
-
-"#]]
-        .raw()
-    );
-    let c = &b"hiefgabcdjk"[..];
-    assert_parse!(
-        perm.parse_peek(Partial::new(c)),
-        str![[r#"
-Ok(
-    (
-        Partial {
-            input: [
-                106,
-                107,
-            ],
-            partial: true,
-        },
-        (
-            [
-                97,
-                98,
-                99,
-                100,
-            ],
-            [
-                101,
-                102,
-                103,
-            ],
-            [
-                104,
-                105,
-            ],
-        ),
-    ),
-)
-
-"#]]
-        .raw()
-    );
-
-    let d = &b"efgxyzabcdefghi"[..];
-    assert_parse!(
-        perm.parse_peek(Partial::new(d)),
-        str![[r#"
-Err(
-    Backtrack(
-        InputError {
-            input: Partial {
-                input: [
-                    120,
-                    121,
-                    122,
-                    97,
-                    98,
-                    99,
-                    100,
-                    101,
-                    102,
-                    103,
-                    104,
-                    105,
-                ],
-                partial: true,
-            },
-        },
-    ),
-)
-
-"#]]
-        .raw()
-    );
-
-    let e = &b"efgabc"[..];
-    assert_parse!(
-        perm.parse_peek(Partial::new(e)),
-        str![[r#"
-Err(
-    Incomplete(
-        Unknown,
     ),
 )
 

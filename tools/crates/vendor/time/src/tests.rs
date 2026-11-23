@@ -25,84 +25,85 @@
 //! reasonable manner externally.
 
 use std::format;
-use std::num::NonZero;
+
+use rstest::rstest;
 
 use crate::ext::DigitCount;
 use crate::parsing::combinator::rfc::iso8601;
-use crate::parsing::shim::Integer;
-use crate::{duration, parsing};
+use crate::{format_description, parsing, signed_duration};
 
-#[test]
-fn digit_count() {
-    assert_eq!(1_u8.num_digits(), 1);
-    assert_eq!(9_u8.num_digits(), 1);
-    assert_eq!(10_u8.num_digits(), 2);
-    assert_eq!(99_u8.num_digits(), 2);
-    assert_eq!(100_u8.num_digits(), 3);
-
-    assert_eq!(1_u16.num_digits(), 1);
-    assert_eq!(9_u16.num_digits(), 1);
-    assert_eq!(10_u16.num_digits(), 2);
-    assert_eq!(99_u16.num_digits(), 2);
-    assert_eq!(100_u16.num_digits(), 3);
-    assert_eq!(999_u16.num_digits(), 3);
-    assert_eq!(1_000_u16.num_digits(), 4);
-    assert_eq!(9_999_u16.num_digits(), 4);
-    assert_eq!(10_000_u16.num_digits(), 5);
-
-    assert_eq!(1_u32.num_digits(), 1);
-    assert_eq!(9_u32.num_digits(), 1);
-    assert_eq!(10_u32.num_digits(), 2);
-    assert_eq!(99_u32.num_digits(), 2);
-    assert_eq!(100_u32.num_digits(), 3);
-    assert_eq!(999_u32.num_digits(), 3);
-    assert_eq!(1_000_u32.num_digits(), 4);
-    assert_eq!(9_999_u32.num_digits(), 4);
-    assert_eq!(10_000_u32.num_digits(), 5);
-    assert_eq!(99_999_u32.num_digits(), 5);
-    assert_eq!(100_000_u32.num_digits(), 6);
-    assert_eq!(999_999_u32.num_digits(), 6);
-    assert_eq!(1_000_000_u32.num_digits(), 7);
-    assert_eq!(9_999_999_u32.num_digits(), 7);
-    assert_eq!(10_000_000_u32.num_digits(), 8);
-    assert_eq!(99_999_999_u32.num_digits(), 8);
-    assert_eq!(100_000_000_u32.num_digits(), 9);
-    assert_eq!(999_999_999_u32.num_digits(), 9);
-    assert_eq!(1_000_000_000_u32.num_digits(), 10);
+#[rstest]
+#[case(1, 1)]
+#[case(9, 1)]
+#[case(10, 2)]
+#[case(99, 2)]
+#[case(100, 3)]
+fn digit_count_u8(#[case] input: u8, #[case] expected: u8) {
+    assert_eq!(input.num_digits(), expected);
 }
 
-#[expect(
-    let_underscore_drop,
-    reason = "no need for the resulting value, which is #![must_use]"
-)]
-#[test]
-fn debug() {
-    let _ = format!("{:?}", duration::Padding::Optimize);
-    let _ = format!("{:?}", parsing::ParsedItem(b"", 0));
-    let _ = format!("{:?}", parsing::component::Period::Am);
-    let _ = format!("{:?}", iso8601::ExtendedKind::Basic);
+#[rstest]
+#[case(1, 1)]
+#[case(9, 1)]
+#[case(10, 2)]
+#[case(99, 2)]
+#[case(100, 3)]
+#[case(999, 3)]
+#[case(1_000, 4)]
+#[case(9_999, 4)]
+#[case(10_000, 5)]
+fn digit_count_u16(#[case] input: u16, #[case] expected: u8) {
+    assert_eq!(input.num_digits(), expected);
 }
 
+#[rstest]
+#[case(1, 1)]
+#[case(9, 1)]
+#[case(10, 2)]
+#[case(99, 2)]
+#[case(100, 3)]
+#[case(999_999, 6)]
+#[case(1_000_000, 7)]
+#[case(9_999_999, 7)]
+#[case(10_000_000, 8)]
+#[case(99_999_999, 8)]
+#[case(100_000_000, 9)]
+#[case(999_999_999, 9)]
+#[case(1_000_000_000, 10)]
+fn digit_count_u32(#[case] input: u32, #[case] expected: u8) {
+    assert_eq!(input.num_digits(), expected);
+}
+
+#[rstest]
+#[case(signed_duration::Padding::Optimize)]
+#[case(parsing::ParsedItem(b"", 0))]
+#[case(format_description::Period::Am)]
+#[case(iso8601::ExtendedKind::Basic)]
+fn debug(#[case] input: impl std::fmt::Debug) {
+    drop(format!("{input:?}"));
+}
+
+#[rstest]
+#[case(format_description::Period::Am)]
+#[case(crate::time::Padding::Optimize)]
+fn clone(#[case] input: impl Clone + PartialEq) {
+    assert!(input.clone() == input);
+}
+
+#[rstest]
 #[expect(clippy::clone_on_copy, reason = "purpose of the test")]
-#[test]
-fn clone() {
-    assert_eq!(
-        parsing::component::Period::Am.clone(),
-        parsing::component::Period::Am
-    );
-    // does not impl Debug
-    assert!(crate::time::Padding::Optimize.clone() == crate::time::Padding::Optimize);
-    // does not impl PartialEq
+fn clone_matches() {
     assert!(matches!(
         iso8601::ExtendedKind::Basic.clone(),
         iso8601::ExtendedKind::Basic
     ));
 }
 
-#[test]
+#[rstest]
 fn parsing_internals() {
-    assert!(parsing::ParsedItem(b"", ())
-        .flat_map(|_| None::<()>)
-        .is_none());
-    assert!(<NonZero<u8> as Integer>::parse_bytes(b"256").is_none());
+    assert!(
+        parsing::ParsedItem(b"", ())
+            .flat_map(|_| None::<()>)
+            .is_none()
+    );
 }

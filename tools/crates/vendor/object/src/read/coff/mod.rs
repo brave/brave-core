@@ -22,7 +22,7 @@
 //! ### Example for low level API
 //!  ```no_run
 //! use object::pe;
-//! use object::read::coff::{CoffHeader, ImageSymbol as _};
+//! use object::read::coff::{CoffHeader, Symbol};
 //! use std::error::Error;
 //! use std::fs;
 //!

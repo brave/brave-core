@@ -1,6 +1,6 @@
 use std::marker::PhantomData;
 
-use gix_features::parallel;
+use gix_parallel as parallel;
 
 use super::Outcome;
 use crate::data::output;

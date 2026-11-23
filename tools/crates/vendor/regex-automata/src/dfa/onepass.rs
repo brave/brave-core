@@ -553,7 +553,7 @@ impl<'a> InternalBuilder<'a> {
             // than it. In the case of a one-pass DFA with no match states, the
             // min_match_id will keep this sentinel value.
             min_match_id: StateID::MAX,
-            classes: classes.clone(),
+            classes: classes,
             alphabet_len,
             stride2,
             pateps_offset: alphabet_len,
@@ -1982,10 +1982,13 @@ impl DFA {
         }
         // See PikeVM::try_search_slots for why we do this.
         let min = self.get_nfa().group_info().implicit_slot_len();
-        if slots.len() >= min {
+        // We can only use `try_search_slots_imp` when we have sufficient
+        // slots. And in particular, the one-pass DFA always requires two slots
+        // when `utf8empty` is `true`.
+        if slots.len() >= min && min >= 2 {
             return self.try_search_slots_imp(cache, input, slots);
         }
-        if self.get_nfa().pattern_len() == 1 {
+        if self.get_nfa().pattern_len() <= 1 {
             let mut enough = [None, None];
             let got = self.try_search_slots_imp(cache, input, &mut enough)?;
             // This is OK because we know `enough_slots` is strictly bigger
@@ -2093,9 +2096,20 @@ impl DFA {
         // be bad. In theory, we could avoid all this slot clearing if we knew
         // that every slot was always activated for every match. Then we would
         // know they would always be overwritten when a match is found.
+        //
+        // NOTE: We have to be careful here to avoid setting a length that
+        // exceeds the number of slots in our cache. Otherwise copying into
+        // the cache later will fail. This can happen when the number of
+        // caller provided slots is bigger than the number of slots in the
+        // compiled regex. (It's a bit of a weird case, but for simplicity and
+        // flexibility reasons, it is an API guarantee that the caller can
+        // provide any number of slots that they want.)
         let explicit_slots_len = core::cmp::min(
             Slots::LIMIT,
-            slots.len().saturating_sub(self.explicit_slot_start),
+            core::cmp::min(
+                slots.len().saturating_sub(self.explicit_slot_start),
+                cache.explicit_slots.len(),
+            ),
         );
         cache.setup_search(explicit_slots_len);
         for slot in cache.explicit_slots() {
@@ -2216,10 +2230,15 @@ impl DFA {
         // the path to the match state.
         if self.explicit_slot_start < slots.len() {
             // NOTE: The 'cache.explicit_slots()' slice is setup at the
-            // beginning of every search such that it is guaranteed to return a
-            // slice of length equivalent to 'slots[explicit_slot_start..]'.
-            slots[self.explicit_slot_start..]
-                .copy_from_slice(cache.explicit_slots());
+            // beginning of every search such that it is guaranteed
+            // to return a slice that is at most equal in length to
+            // 'slots[explicit_slot_start..]'. It may be smaller in
+            // cases where the caller provided more slots than there
+            // are in the compiled regex. In which case, we limit the
+            // length of `slots` to what we actually have.
+            let cache_slots = cache.explicit_slots();
+            slots[self.explicit_slot_start..][..cache_slots.len()]
+                .copy_from_slice(cache_slots);
             epsilons.slots().apply(at, &mut slots[self.explicit_slot_start..]);
         }
         *matched_pid = Some(pid);

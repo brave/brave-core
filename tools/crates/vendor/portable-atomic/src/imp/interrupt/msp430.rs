@@ -9,8 +9,7 @@ Refs:
 - MSP430x5xx and MSP430x6xx Family User's Guide, Rev. Q
   https://www.ti.com/lit/ug/slau208q/slau208q.pdf
 
-Generated asm:
-- msp430 https://godbolt.org/z/fc6h89xac
+See tests/asm-test/asm/portable-atomic for generated assembly.
 */
 
 #[cfg(not(portable_atomic_no_asm))]
@@ -26,16 +25,17 @@ use core::arch::asm;
 )]
 pub(super) use super::super::msp430 as atomic;
 
-pub(super) type State = u16;
+pub(crate) type State = u16;
 
 /// Disables interrupts and returns the previous interrupt state.
 #[inline(always)]
-pub(super) fn disable() -> State {
+pub(crate) fn disable() -> State {
     let sr: State;
     // SAFETY: reading the status register and disabling interrupts are safe.
     // (see module-level comments of interrupt/mod.rs on the safety of using privileged instructions)
+    //
+    // See "NOTE: Enable and Disable Interrupt" of User's Guide for NOP: https://www.ti.com/lit/ug/slau208q/slau208q.pdf#page=60
     unsafe {
-        // See "NOTE: Enable and Disable Interrupt" of User's Guide for NOP: https://www.ti.com/lit/ug/slau208q/slau208q.pdf#page=60
         #[cfg(not(portable_atomic_no_asm))]
         asm!(
             "mov r2, {sr}", // sr = SR
@@ -60,17 +60,18 @@ pub(super) fn disable() -> State {
 ///
 /// The state must be the one retrieved by the previous `disable`.
 #[inline(always)]
-pub(super) unsafe fn restore(prev_sr: State) {
+pub(crate) unsafe fn restore(prev_sr: State) {
     // SAFETY: the caller must guarantee that the state was retrieved by the previous `disable`,
+    //
+    // This clobbers the entire status register, but we never explicitly modify
+    // flags within a critical session, and the only flags that may be changed
+    // within a critical session are the arithmetic flags that are changed as
+    // a side effect of arithmetic operations, etc., which LLVM recognizes unless
+    // preserves_flags is set, so it is safe to clobber them here.
+    // See also the discussion at https://github.com/taiki-e/portable-atomic/pull/40.
+    //
+    // See "NOTE: Enable and Disable Interrupt" of User's Guide for NOP: https://www.ti.com/lit/ug/slau208q/slau208q.pdf#page=60
     unsafe {
-        // This clobbers the entire status register, but we never explicitly modify
-        // flags within a critical session, and the only flags that may be changed
-        // within a critical session are the arithmetic flags that are changed as
-        // a side effect of arithmetic operations, etc., which LLVM recognizes,
-        // so it is safe to clobber them here.
-        // See also the discussion at https://github.com/taiki-e/portable-atomic/pull/40.
-        //
-        // See "NOTE: Enable and Disable Interrupt" of User's Guide for NOP: https://www.ti.com/lit/ug/slau208q/slau208q.pdf#page=60
         #[cfg(not(portable_atomic_no_asm))]
         asm!(
             "nop {{ mov {prev_sr}, r2 {{ nop", // SR = prev_sr

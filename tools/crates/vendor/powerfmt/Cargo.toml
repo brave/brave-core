@@ -11,10 +11,16 @@
 
 [package]
 edition = "2021"
-rust-version = "1.67.0"
+rust-version = "1.79.0"
 name = "powerfmt"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Jacob Pratt <jacob@jhpratt.dev>"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = """
     `powerfmt` is a library that provides utilities for formatting values. This crate makes it
     significantly easier to support filling to a minimum width with alignment, avoid heap
@@ -38,16 +44,8 @@ repository = "https://github.com/jhpratt/powerfmt"
 
 [package.metadata.docs.rs]
 all-features = true
-rustdoc-args = [
-    "--cfg",
-    "__powerfmt_docs",
-    "--generate-link-to-definition",
-]
 targets = ["x86_64-unknown-linux-gnu"]
-
-[dependencies.powerfmt-macros]
-version = "=0.1.0"
-optional = true
+rustdoc-args = ["--generate-link-to-definition"]
 
 [features]
 alloc = []
@@ -57,3 +55,121 @@ default = [
 ]
 macros = ["dep:powerfmt-macros"]
 std = ["alloc"]
+
+[lib]
+name = "powerfmt"
+path = "src/lib.rs"
+
+[dependencies.powerfmt-macros]
+version = "=0.1.1"
+optional = true
+
+[lints.clippy]
+alloc_instead_of_core = "deny"
+dbg_macro = "warn"
+decimal_literal_representation = "warn"
+explicit_auto_deref = "warn"
+get_unwrap = "warn"
+manual_let_else = "warn"
+missing_docs_in_private_items = "warn"
+missing_enforced_import_renames = "warn"
+obfuscated_if_else = "warn"
+print_stdout = "warn"
+semicolon_outside_block = "warn"
+std_instead_of_core = "deny"
+todo = "warn"
+undocumented_unsafe_blocks = "deny"
+unimplemented = "warn"
+uninlined_format_args = "warn"
+unnested_or_patterns = "warn"
+unwrap_in_result = "warn"
+unwrap_used = "warn"
+use_debug = "warn"
+
+[lints.clippy.all]
+level = "warn"
+priority = -1
+
+[lints.clippy.nursery]
+level = "warn"
+priority = -1
+
+[lints.clippy.option_if_let_else]
+level = "allow"
+priority = 1
+
+[lints.clippy.redundant_pub_crate]
+level = "allow"
+priority = 1
+
+[lints.clippy.uninhabited_references]
+level = "allow"
+priority = 1
+
+[lints.rust]
+ambiguous_glob_reexports = "deny"
+clashing_extern_declarations = "deny"
+const_item_mutation = "deny"
+dangling_pointers_from_temporaries = "deny"
+deref_nullptr = "deny"
+drop_bounds = "deny"
+hidden_glob_reexports = "deny"
+improper_ctypes = "deny"
+improper_ctypes_definitions = "deny"
+invalid_from_utf8 = "deny"
+invalid_macro_export_arguments = "deny"
+invalid_nan_comparisons = "deny"
+invalid_reference_casting = "deny"
+invalid_value = "deny"
+macro_use_extern_crate = "warn"
+meta_variable_misuse = "warn"
+missing_abi = "warn"
+missing_copy_implementations = "warn"
+missing_debug_implementations = "warn"
+missing_docs = "warn"
+named_arguments_used_positionally = "deny"
+non_ascii_idents = "deny"
+noop_method_call = "warn"
+opaque_hidden_inferred_bound = "deny"
+overlapping_range_endpoints = "deny"
+single_use_lifetimes = "warn"
+suspicious_double_ref_op = "deny"
+trivial_casts = "warn"
+trivial_numeric_casts = "warn"
+unconditional_recursion = "deny"
+unnameable_test_items = "deny"
+unreachable_pub = "warn"
+unsafe_op_in_unsafe_fn = "deny"
+unstable_syntax_pre_expansion = "deny"
+unused_import_braces = "warn"
+unused_lifetimes = "warn"
+unused_qualifications = "warn"
+variant_size_differences = "warn"
+
+[lints.rust.future_incompatible]
+level = "deny"
+priority = -1
+
+[lints.rust.keyword_idents]
+level = "warn"
+priority = -1
+
+[lints.rust.let_underscore]
+level = "warn"
+priority = -1
+
+[lints.rust.rust_2018_idioms]
+level = "deny"
+priority = -1
+
+[lints.rust.unstable_name_collisions]
+level = "warn"
+priority = 1
+
+[lints.rust.unused]
+level = "warn"
+priority = -1
+
+[lints.rustdoc]
+private_doc_tests = "warn"
+unescaped_backticks = "warn"

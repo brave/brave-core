@@ -1,4 +1,4 @@
-use gix_features::zlib;
+use gix_error::Result;
 
 impl crate::Bundle {
     /// Find an object with the given [`ObjectId`](gix_hash::ObjectId) and place its data into `out`.
@@ -12,9 +12,9 @@ impl crate::Bundle {
         &self,
         id: &gix_hash::oid,
         out: &'a mut Vec<u8>,
-        inflate: &mut zlib::Inflate,
+        inflate: &mut gix_zlib::Inflate,
         cache: &mut dyn crate::cache::DecodeEntry,
-    ) -> Result<Option<(gix_object::Data<'a>, crate::data::entry::Location)>, crate::data::decode::Error> {
+    ) -> Result<Option<(gix_object::Data<'a>, crate::data::entry::Location)>> {
         let idx = match self.index.lookup(id) {
             Some(idx) => idx,
             None => return Ok(None),
@@ -33,9 +33,9 @@ impl crate::Bundle {
         &self,
         idx: u32,
         out: &'a mut Vec<u8>,
-        inflate: &mut zlib::Inflate,
+        inflate: &mut gix_zlib::Inflate,
         cache: &mut dyn crate::cache::DecodeEntry,
-    ) -> Result<(gix_object::Data<'a>, crate::data::entry::Location), crate::data::decode::Error> {
+    ) -> Result<(gix_object::Data<'a>, crate::data::entry::Location)> {
         let ofs = self.index.pack_offset_at_index(idx);
         let pack_entry = self.pack.entry(ofs)?;
         let header_size = pack_entry.header_size();
@@ -45,11 +45,14 @@ impl crate::Bundle {
                 out,
                 inflate,
                 &|id, _out| {
-                    let idx = self.index.lookup(id)?;
-                    self.pack
-                        .entry(self.index.pack_offset_at_index(idx))
-                        .ok()
-                        .map(crate::data::decode::entry::ResolvedBase::InPack)
+                    self.index
+                        .lookup(id)
+                        .map(|idx| {
+                            self.pack
+                                .entry(self.index.pack_offset_at_index(idx))
+                                .map(crate::data::decode::entry::ResolvedBase::InPack)
+                        })
+                        .transpose()
                 },
                 cache,
             )
@@ -58,6 +61,7 @@ impl crate::Bundle {
                     gix_object::Data {
                         kind: r.kind,
                         data: out.as_slice(),
+                        object_hash: self.pack.object_hash(),
                     },
                     crate::data::entry::Location {
                         pack_id: self.pack.id,

@@ -114,18 +114,18 @@ fn pretend_fields_used_enum(cont: &Container, variants: &[Variant]) -> TokenStre
     let type_ident = &cont.ident;
     let (_, ty_generics, _) = cont.generics.split_for_impl();
 
-    let patterns = variants
-        .iter()
-        .filter_map(|variant| match variant.style {
+    let mut patterns = Vec::new();
+    for variant in variants {
+        match variant.style {
             Style::Struct | Style::Tuple | Style::Newtype => {
                 let variant_ident = &variant.ident;
                 let members = variant.fields.iter().map(|field| &field.member);
                 let placeholders = (0usize..).map(|i| format_ident!("__v{}", i));
-                Some(quote!(#type_ident::#variant_ident { #(#members: #placeholders),* }))
+                patterns.push(quote!(#type_ident::#variant_ident { #(#members: #placeholders),* }));
             }
-            Style::Unit => None,
-        })
-        .collect::<Vec<_>>();
+            Style::Unit => {}
+        }
+    }
 
     let private2 = private;
     quote! {

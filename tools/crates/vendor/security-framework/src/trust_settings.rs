@@ -131,7 +131,7 @@ impl TrustSettings {
         let trust_settings: CFTypeRef = ptr::null_mut();
         cvt(unsafe {
             SecTrustSettingsSetTrustSettings(
-                cert.as_CFTypeRef() as *mut _,
+                cert.as_concrete_TypeRef(),
                 domain.into(),
                 trust_settings,
             )
@@ -168,7 +168,7 @@ impl TrustSettings {
                     .find(policy_name_key.as_CFTypeRef().cast())
                     .map(|name| unsafe { CFString::wrap_under_get_rule((*name).cast()) });
 
-                matches!(maybe_name, Some(ref name) if name != &ssl_policy_name)
+                matches!(maybe_name, Some(name) if name != ssl_policy_name)
             };
 
             if is_not_ssl_policy {

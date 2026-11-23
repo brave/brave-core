@@ -1,6 +1,6 @@
 [package]
 name = "env_filter"
-version = "0.1.4"
+version = "2.1.0"
 description = """
 Filter log events using environment variables
 """
@@ -22,19 +22,20 @@ pre-release-replacements = [
   {file="CHANGELOG.md", search="\\.\\.\\.HEAD", replace="...{{tag_name}}", exactly=1},
   {file="CHANGELOG.md", search="ReleaseDate", replace="{{date}}", min=1},
   {file="CHANGELOG.md", search="<!-- next-header -->", replace="<!-- next-header -->\n## [Unreleased] - ReleaseDate\n", exactly=1},
-  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: https://github.com/rust-cli/env_logger/compare/{{tag_name}}...HEAD", exactly=1},
+  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: {{repository}}/compare/{{tag_name}}...HEAD", exactly=1},
 ]
 
 [features]
-default = ["regex"]
+default = ["std", "regex"]
 regex = ["dep:regex"]
+std = ["log/std", "regex?/std"]
 
 [dependencies]
-log = { version = "0.4.8", features = ["std"] }
-regex = { version = "1.0.3", optional = true, default-features=false, features=["std", "perf"] }
+log = { version = "0.4.29" }
+regex = { version = "1.12.3", optional = true, default-features=false, features=["perf"] }
 
 [dev-dependencies]
-snapbox = "0.6"
+snapbox = "1.0"
 
 [lints]
 workspace = true

@@ -35,20 +35,24 @@ impl<'a> FromReader<'a> for MemoryType {
         Ok(MemoryType {
             memory64,
             shared,
-            initial: if memory64 {
+            initial: if reader.memory64() {
                 reader.read_var_u64()?
             } else {
                 reader.read_var_u32()?.into()
             },
             maximum: if !has_max {
                 None
-            } else if memory64 {
+            } else if reader.memory64() {
                 Some(reader.read_var_u64()?)
             } else {
                 Some(reader.read_var_u32()?.into())
             },
             page_size_log2: if has_page_size {
-                Some(reader.read_var_u32()?)
+                let val = reader.read_var_u32()?;
+                if val >= 64 {
+                    bail!(pos, "invalid custom page size");
+                }
+                Some(val)
             } else {
                 None
             },

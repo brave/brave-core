@@ -13,8 +13,7 @@
 edition = "2021"
 rust-version = "1.69"
 name = "nix"
-version = "0.30.1"
-authors = ["The nix-rust Project Developers"]
+version = "0.31.4"
 build = "build.rs"
 include = [
     "build.rs",
@@ -57,7 +56,7 @@ targets = [
 
 [features]
 acct = []
-aio = ["pin-utils"]
+aio = ["pin-project-lite"]
 default = []
 dir = ["fs"]
 env = []
@@ -122,15 +121,15 @@ version = "2.3.3"
 version = "1.0"
 
 [dependencies.libc]
-version = "0.2.171"
+version = "0.2.186"
 features = ["extra_traits"]
 
 [dependencies.memoffset]
 version = "0.9"
 optional = true
 
-[dependencies.pin-utils]
-version = "0.1.0"
+[dependencies.pin-project-lite]
+version = "0.2"
 optional = true
 
 [dev-dependencies.assert-impl]
@@ -149,7 +148,7 @@ version = "1.0.7"
 version = "3.7.1"
 
 [build-dependencies.cfg_aliases]
-version = "0.2.1"
+version = "0.2.2"
 
 [target.'cfg(any(target_os = "android", target_os = "linux"))'.dev-dependencies.caps]
 version = "0.5.3"

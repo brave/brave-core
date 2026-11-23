@@ -10,28 +10,101 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-utils"
-version = "0.3.1"
+version = "0.5.3"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
 autoexamples = false
 autotests = false
 autobenches = false
-description = "A crate with `gitoxide` utilities that don't need feature toggles"
+description = "Utilities shared by the gitoxide crates"
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
+
+[package.metadata.docs.rs]
+all-features = true
+features = ["document-features"]
+
+[[package.metadata.qa.checks]]
+args = ["--all-features"]
+
+[[package.metadata.qa.checks]]
+args = [
+    "--features",
+    "progress,progress-unit-bytes",
+]
+
+[[package.metadata.qa.checks]]
+args = [
+    "--features",
+    "progress,progress-unit-human-numbers",
+]
+
+[[package.metadata.qa.tests]]
+args = ["--all-features"]
+
+[package.metadata.qa.each-feature]
+args = ["--no-default-features"]
+exclude = [
+    "prodash",
+    "document-features",
+    "progress-unit-bytes",
+    "progress-unit-human-numbers",
+]
+
+[package.metadata.qa.wasm]
+targets = [
+    "wasm32-unknown-unknown",
+    "wasm32-wasip1",
+    "wasm32-wasip2",
+]
+
+[[package.metadata.qa.wasm.checks]]
+args = [
+    "--no-default-features",
+    "--features",
+    "progress,progress-unit-bytes",
+]
+
+[[package.metadata.qa.wasm.checks]]
+args = [
+    "--no-default-features",
+    "--features",
+    "progress,progress-unit-human-numbers",
+]
+
+[package.metadata.qa.wasm.each-feature]
+args = ["--no-default-features"]
+exclude = [
+    "bstr",
+    "prodash",
+    "document-features",
+    "progress-unit-bytes",
+    "progress-unit-human-numbers",
+]
 
 [features]
 bstr = ["dep:bstr"]
+cache-efficiency-debug = []
+interrupt = ["dep:gix-error"]
+io-pipe = ["dep:bytes"]
+prodash = ["dep:prodash"]
+progress = ["dep:prodash"]
+progress-unit-bytes = [
+    "dep:bytesize",
+    "prodash?/unit-bytes",
+]
+progress-unit-human-numbers = ["prodash?/unit-human"]
 
 [lib]
 name = "gix_utils"
@@ -44,14 +117,45 @@ features = ["std"]
 optional = true
 default-features = false
 
+[dependencies.bytes]
+version = "1.11.1"
+optional = true
+
+[dependencies.bytesize]
+version = "2.3.1"
+optional = true
+
+[dependencies.document-features]
+version = "0.2.0"
+optional = true
+
 [dependencies.fastrand]
-version = "2.0.0"
+version = "2.4.1"
+default-features = false
+
+[dependencies.gix-error]
+version = "^0.5.3"
+optional = true
+
+[dependencies.prodash]
+version = "31.0.1"
+optional = true
 
 [dependencies.unicode-normalization]
 version = "0.1.19"
 default-features = false
 
+[dev-dependencies.criterion]
+version = "0.8.2"
+
+[dev-dependencies.insta]
+version = "1.46.3"
+
+[target.'cfg(not(all(target_arch = "wasm32", target_os = "unknown")))'.dependencies.getrandom]
+version = "0.4"
+
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -70,7 +174,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"
@@ -129,3 +232,4 @@ level = "warn"
 priority = -1
 
 [lints.rust]
+unnameable_types = "warn"

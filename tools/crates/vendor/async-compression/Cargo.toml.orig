@@ -1,17 +1,21 @@
 [package]
 name = "async-compression"
-version = "0.4.36"
+version = "0.4.52"
 description = """
 Adaptors between compression crates and Rust's modern asynchronous IO types.
 """
+keywords = ["compression", "decompression", "async-io", "tokio", "futures-io"]
 authors.workspace = true
 categories.workspace = true
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
+rust-version.workspace = true
 
 [package.metadata.docs.rs]
 all-features = true
+rustc-args = ["--cfg", "async_compression_unstable"]
+rustdoc-args = ["--cfg", "async_compression_unstable"]
 
 [features]
 # groups
@@ -33,6 +37,8 @@ all-algorithms = [
 
 # algorithms
 brotli = ["compression-codecs/brotli"]
+# Unstable, also requires `--cfg async_compression_unstable`.
+brotli-mbrotli = ["compression-codecs/brotli-mbrotli"]
 bzip2 = ["compression-codecs/bzip2"]
 deflate = ["compression-codecs/deflate"]
 deflate64 = ["compression-codecs/deflate64"]
@@ -45,11 +51,12 @@ xz2 = ["compression-codecs/xz2", "xz"]
 zlib = ["compression-codecs/zlib"]
 zstd = ["compression-codecs/zstd"]
 zstdmt = ["compression-codecs/zstdmt", "zstd"]
+# Unstable, also requires `--cfg async_compression_unstable`.
+zstd-mzstd = ["compression-codecs/zstd-mzstd"]
 
 
 [dependencies]
 # core dependencies
-futures-core.workspace = true
 pin-project-lite.workspace = true
 compression-codecs.workspace = true
 compression-core.workspace = true
@@ -65,8 +72,8 @@ futures = "0.3.5"
 futures-test = "0.3.5"
 ntest = "0.9"
 proptest = "1"
-proptest-derive = "0.7"
-rand = "0.9"
+proptest-derive = "0.8"
+rand = "0.10"
 tokio = { version = "1.38.2", default-features = false, features = [
     "io-util",
     "macros",
@@ -75,13 +82,13 @@ tokio = { version = "1.38.2", default-features = false, features = [
 ] }
 tokio-util = { version = "0.7", default-features = false, features = ["io"] }
 
-brotli = "8"
+brotli = "9"
 bzip2 = "0.6"
 flate2 = "1.0.13"
-libzstd = { package = "zstd", version = "0.13.1", default-features = false }
+libzstd = { package = "zstd", version = "0.14.0", default-features = false }
 lz4 = "1.28.1"
 liblzma = "0.4.2"
-zstd-safe = { version = "7", default-features = false }
+zstd-safe = { version = "8", default-features = false }
 deflate64 = "0.1.5"
 
 [lints]
@@ -92,12 +99,20 @@ name = "brotli"
 required-features = ["brotli"]
 
 [[test]]
+name = "brotli-mbrotli"
+required-features = ["brotli-mbrotli"]
+
+[[test]]
 name = "bzip2"
 required-features = ["bzip2"]
 
 [[test]]
 name = "deflate"
 required-features = ["deflate"]
+
+[[test]]
+name = "deflate64"
+required-features = ["deflate64", "tokio"]
 
 [[test]]
 name = "gzip"
@@ -122,6 +137,10 @@ required-features = ["zlib"]
 [[test]]
 name = "zstd"
 required-features = ["zstd"]
+
+[[test]]
+name = "zstd-mzstd"
+required-features = ["zstd-mzstd"]
 
 [[test]]
 name = "zstd-dict"

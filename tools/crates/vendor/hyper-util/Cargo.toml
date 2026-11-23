@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.63"
+edition = "2024"
+rust-version = "1.85"
 name = "hyper-util"
-version = "0.1.19"
+version = "0.1.21"
 authors = ["Sean McArthur <sean@seanmonstar.com>"]
 build = false
 autolib = false
@@ -49,22 +49,24 @@ rustdoc-args = [
 __internal_happy_eyeballs_tests = []
 client = [
     "hyper/client",
-    "tokio/net",
     "dep:tracing",
     "dep:futures-channel",
     "dep:tower-service",
 ]
 client-legacy = [
     "client",
+    "tokio/net",
     "dep:socket2",
     "tokio/sync",
     "dep:libc",
     "dep:futures-util",
+    "dep:httparse",
 ]
 client-pool = [
     "client",
     "dep:futures-util",
     "dep:tower-layer",
+    "tokio/sync",
 ]
 client-proxy = [
     "client",
@@ -94,6 +96,10 @@ full = [
 ]
 http1 = ["hyper/http1"]
 http2 = ["hyper/http2"]
+rt-tracing-exec-force = [
+    "tokio",
+    "tracing",
+]
 server = ["hyper/server"]
 server-auto = [
     "server",
@@ -126,6 +132,10 @@ required-features = [
 ]
 
 [[example]]
+name = "client_tracing"
+path = "examples/client_tracing.rs"
+
+[[example]]
 name = "server"
 path = "examples/server.rs"
 required-features = [
@@ -152,7 +162,7 @@ name = "proxy"
 path = "tests/proxy.rs"
 
 [dependencies.base64]
-version = "0.22"
+version = "0.23"
 optional = true
 
 [dependencies.bytes]
@@ -161,9 +171,6 @@ version = "1.7.1"
 [dependencies.futures-channel]
 version = "0.3"
 optional = true
-
-[dependencies.futures-core]
-version = "0.3"
 
 [dependencies.futures-util]
 version = "0.3.16"
@@ -176,8 +183,12 @@ version = "1.0"
 [dependencies.http-body]
 version = "1.0.0"
 
+[dependencies.httparse]
+version = "1"
+optional = true
+
 [dependencies.hyper]
-version = "1.8.0"
+version = "1.9.0"
 
 [dependencies.ipnet]
 version = "2.9"
@@ -195,12 +206,12 @@ optional = true
 version = "0.2.4"
 
 [dependencies.socket2]
-version = ">=0.5.9, <0.7"
+version = "0.6"
 features = ["all"]
 optional = true
 
 [dependencies.tokio]
-version = "1"
+version = "1.13"
 optional = true
 default-features = false
 
@@ -213,7 +224,7 @@ version = "0.3"
 optional = true
 
 [dependencies.tracing]
-version = "0.1"
+version = "0.1.36"
 features = ["std"]
 optional = true
 default-features = false
@@ -242,6 +253,8 @@ features = [
     "macros",
     "test-util",
     "signal",
+    "net",
+    "io-util",
 ]
 
 [dev-dependencies.tokio-test]
@@ -250,11 +263,23 @@ version = "0.4"
 [dev-dependencies.tower-test]
 version = "0.4"
 
+[dev-dependencies.tracing-core]
+version = "0.1.29"
+
+[dev-dependencies.tracing-subscriber]
+version = "0.3"
+features = [
+    "fmt",
+    "registry",
+    "std",
+]
+default-features = false
+
 [target.'cfg(any(target_os = "linux", target_os = "macos"))'.dev-dependencies.pnet_datalink]
 version = "0.35.0"
 
 [target.'cfg(target_os = "macos")'.dependencies.system-configuration]
-version = ">=0.5, <0.7"
+version = "0.7"
 optional = true
 
 [target."cfg(windows)".dependencies.windows-registry]

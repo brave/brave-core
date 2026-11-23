@@ -40,6 +40,18 @@ impl<T: TrieValue> CodePointMapData<T> {
         CodePointMapDataBorrowed::new()
     }
 
+    #[cfg(feature = "serde")]
+    #[doc = icu_provider::gen_buffer_unstable_docs!(BUFFER, Self::new)]
+    pub fn try_new_with_buffer_provider(
+        provider: &(impl BufferProvider + ?Sized),
+    ) -> Result<Self, DataError>
+    where
+        T: EnumeratedProperty + for<'a> serde::Deserialize<'a>,
+    {
+        use icu_provider::buf::AsDeserializingBufferProvider;
+        Self::try_new_unstable(&provider.as_deserializing())
+    }
+
     #[doc = icu_provider::gen_buffer_unstable_docs!(UNSTABLE, Self::new)]
     pub fn try_new_unstable(
         provider: &(impl DataProvider<T::DataMarker> + ?Sized),
@@ -182,8 +194,8 @@ impl<'a, T: TrieValue> CodePointMapDataBorrowed<'a, T> {
     /// # Example
     ///
     /// ```
-    /// use icu::properties::props::GeneralCategory;
     /// use icu::properties::CodePointMapData;
+    /// use icu::properties::props::GeneralCategory;
     ///
     /// let gc = CodePointMapData::<GeneralCategory>::new();
     ///
@@ -206,8 +218,8 @@ impl<'a, T: TrieValue> CodePointMapDataBorrowed<'a, T> {
     /// # Examples
     ///
     /// ```
-    /// use icu::properties::props::GeneralCategory;
     /// use icu::properties::CodePointMapData;
+    /// use icu::properties::props::GeneralCategory;
     ///
     /// let gc = CodePointMapData::<GeneralCategory>::new();
     /// let mut ranges = gc.iter_ranges();
@@ -229,8 +241,8 @@ impl<'a, T: TrieValue> CodePointMapDataBorrowed<'a, T> {
     ///
     ///
     /// ```
-    /// use icu::properties::props::GeneralCategory;
     /// use icu::properties::CodePointMapData;
+    /// use icu::properties::props::GeneralCategory;
     ///
     /// let gc = CodePointMapData::<GeneralCategory>::new();
     /// let mut ranges = gc.iter_ranges_for_value(GeneralCategory::UppercaseLetter);
@@ -278,8 +290,8 @@ impl CodePointMapDataBorrowed<'_, GeneralCategory> {
     /// # Example
     ///
     /// ```
-    /// use icu::properties::props::{GeneralCategory, GeneralCategoryGroup};
     /// use icu::properties::CodePointMapData;
+    /// use icu::properties::props::{GeneralCategory, GeneralCategoryGroup};
     ///
     /// let gc = CodePointMapData::<GeneralCategory>::new();
     ///
@@ -291,7 +303,7 @@ impl CodePointMapDataBorrowed<'_, GeneralCategory> {
     /// assert!(!other_letter_set.contains('🎃')); // U+1F383 JACK-O-LANTERN
     /// ```
     #[cfg(feature = "alloc")]
-    pub fn get_set_for_value_group(self, value: GeneralCategoryGroup) -> crate::CodePointSetData {
+    pub fn get_set_for_value_group(self, value: GeneralCategoryGroup) -> CodePointSetData {
         let matching_gc_ranges = self
             .iter_ranges()
             .filter(|cpm_range| (1 << cpm_range.value as u32) & value.0 != 0)
@@ -341,8 +353,8 @@ impl<'a> CodePointMapDataBorrowed<'a, GeneralCategory> {
     /// # Examples
     ///
     /// ```
-    /// use icu::properties::props::{GeneralCategory, GeneralCategoryGroup};
     /// use icu::properties::CodePointMapData;
+    /// use icu::properties::props::{GeneralCategory, GeneralCategoryGroup};
     ///
     /// let gc = CodePointMapData::<GeneralCategory>::new();
     /// let mut ranges = gc.iter_ranges_for_group(GeneralCategoryGroup::Letter);
@@ -376,7 +388,7 @@ impl<'a> CodePointMapDataBorrowed<'a, GeneralCategory> {
 /// </div>
 ///
 /// [`TR44`]: https://www.unicode.org/reports/tr44
-pub trait EnumeratedProperty: crate::private::Sealed + TrieValue {
+pub trait EnumeratedProperty: crate::private::Sealed + TrieValue + Default {
     #[doc(hidden)]
     type DataMarker: DataMarker<DataStruct = PropertyCodePointMap<'static, Self>>;
     #[doc(hidden)]

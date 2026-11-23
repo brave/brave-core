@@ -5,7 +5,6 @@ use std::io;
 use crate::util;
 use std::path::Path;
 
-#[cfg(not(target_os = "redox"))]
 use {
     rustix::fs::{rename, unlink},
     std::fs::hard_link,
@@ -92,12 +91,11 @@ pub fn reopen(file: &File, path: &Path) -> io::Result<File> {
     Ok(new_file)
 }
 
-#[cfg(not(target_os = "redox"))]
 pub fn persist(old_path: &Path, new_path: &Path, overwrite: bool) -> io::Result<()> {
     if overwrite {
         rename(old_path, new_path)?;
     } else {
-        // On Linux and apple operating systems, use `renameat_with` to avoid overwriting an
+        // On Linux, apple and redox operating systems, use `renameat_with` to avoid overwriting an
         // existing name, if the kernel and the filesystem support it.
         #[cfg(any(
             target_os = "android",
@@ -107,6 +105,7 @@ pub fn persist(old_path: &Path, new_path: &Path, overwrite: bool) -> io::Result<
             target_os = "tvos",
             target_os = "visionos",
             target_os = "watchos",
+            target_os = "redox",
         ))]
         {
             use rustix::fs::{renameat_with, RenameFlags, CWD};
@@ -133,13 +132,6 @@ pub fn persist(old_path: &Path, new_path: &Path, overwrite: bool) -> io::Result<
         let _ = unlink(old_path);
     }
     Ok(())
-}
-
-#[cfg(target_os = "redox")]
-pub fn persist(_old_path: &Path, _new_path: &Path, _overwrite: bool) -> io::Result<()> {
-    // XXX implement when possible
-    use rustix::io::Errno;
-    Err(Errno::NOSYS.into())
 }
 
 pub fn keep(_: &Path) -> io::Result<()> {

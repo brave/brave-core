@@ -1,6 +1,6 @@
 use super::{
-    store, Buffer, Codec, Config, Counts, Frame, Prioritize, Prioritized, Store, Stream, StreamId,
-    StreamIdOverflow, WindowSize,
+    store, Buffer, BufferStatus, Codec, Config, Counts, Frame, Prioritize, Prioritized, Store,
+    Stream, StreamId, StreamIdOverflow, WindowSize,
 };
 use crate::codec::UserError;
 use crate::frame::{self, Reason};
@@ -167,6 +167,38 @@ impl Send {
         Ok(())
     }
 
+    /// Send interim informational headers (1xx responses) without changing stream state.
+    /// This allows multiple interim informational responses to be sent before the final response.
+    pub fn send_interim_informational_headers<B>(
+        &mut self,
+        frame: frame::Headers,
+        buffer: &mut Buffer<Frame<B>>,
+        stream: &mut store::Ptr,
+        _counts: &mut Counts,
+        task: &mut Option<Waker>,
+    ) -> Result<(), UserError> {
+        tracing::trace!(
+            "send_interim_informational_headers; frame={:?}; stream_id={:?}",
+            frame,
+            frame.stream_id()
+        );
+
+        // Validate headers
+        Self::check_headers(frame.fields())?;
+
+        debug_assert!(frame.is_informational(),
+            "Frame must be informational (1xx status code) at this point. Validation should happen at the public API boundary.");
+        debug_assert!(!frame.is_end_stream(),
+            "Informational frames must not have end_stream flag set. Validation should happen at the internal send informational header streams.");
+
+        // Queue the frame for sending WITHOUT changing stream state
+        // This is the key difference from send_headers - we don't call stream.state.send_open()
+        self.prioritize
+            .queue_frame(frame.into(), buffer, stream, task);
+
+        Ok(())
+    }
+
     /// Send an explicit RST_STREAM frame
     pub fn send_reset<B>(
         &mut self,
@@ -219,11 +251,22 @@ impl Send {
             return;
         }
 
-        // Clear all pending outbound frames.
-        // Note that we don't call `self.recv_err` because we want to enqueue
-        // the reset frame before transitioning the stream inside
-        // `reclaim_all_capacity`.
-        self.prioritize.clear_queue(buffer, stream);
+        // If the stream hasn't been opened yet (its initial HEADERS are still
+        // sitting in `pending_open`/`pending_send`), clearing the queue would
+        // drop those HEADERS and let a RST_STREAM become the first frame on an
+        // idle stream. HTTP/2 forbids that: §5.1 allows only HEADERS/PRIORITY
+        // on idle streams and §6.4 says RST_STREAM on idle is a PROTOCOL_ERROR.
+        // Keep the queued HEADERS so the stream opens, then send the reset
+        // immediately after.
+        if !stream.is_pending_open {
+            // Otherwise, drop any buffered DATA/HEADERS and only send the
+            // reset.
+            //
+            // Note that we don't call `self.recv_err` because we want to enqueue
+            // the reset frame before transitioning the stream inside
+            // `reclaim_all_capacity`.
+            self.prioritize.clear_queue(buffer, stream);
+        }
 
         let frame = frame::Reset::new(stream.id, reason);
 
@@ -274,6 +317,16 @@ impl Send {
         counts: &mut Counts,
         task: &mut Option<Waker>,
     ) -> Result<(), UserError> {
+        // Trailers are carried in a HEADERS frame and are therefore subject to the
+        // same prohibition on connection-specific header fields (RFC 9113 §8.2.2)
+        // as any other outbound HEADERS block. `send_headers`, `send_push_promise`
+        // and `send_interim_informational_headers` all validate this, and the
+        // receive path treats such a header as malformed. Validate here too so a
+        // caller cannot make this crate *generate* a message §8.2.2 forbids.
+        // Checked before the state transition so a rejected call leaves the stream
+        // untouched and still able to send valid trailers.
+        Self::check_headers(frame.fields())?;
+
         // TODO: Should this logic be moved into state.rs?
         if !stream.state.is_send_streaming() {
             return Err(UserError::UnexpectedFrameType);
@@ -291,20 +344,30 @@ impl Send {
         Ok(())
     }
 
-    pub fn poll_complete<T, B>(
+    pub fn buffer_pending<T, B>(
         &mut self,
-        cx: &mut Context,
         buffer: &mut Buffer<Frame<B>>,
         store: &mut Store,
         counts: &mut Counts,
         dst: &mut Codec<T, Prioritized<B>>,
-    ) -> Poll<io::Result<()>>
+    ) -> io::Result<BufferStatus>
     where
         T: AsyncWrite + Unpin,
         B: Buf,
     {
-        self.prioritize
-            .poll_complete(cx, buffer, store, counts, dst)
+        self.prioritize.buffer_pending(buffer, store, counts, dst)
+    }
+
+    pub fn reclaim_written_frame<T, B>(
+        &mut self,
+        buffer: &mut Buffer<Frame<B>>,
+        store: &mut Store,
+        dst: &mut Codec<T, Prioritized<B>>,
+    ) -> bool
+    where
+        B: Buf,
+    {
+        self.prioritize.reclaim_written_frame(buffer, store, dst)
     }
 
     /// Request capacity to send data
@@ -333,7 +396,16 @@ impl Send {
 
         stream.send_capacity_inc = false;
 
-        Poll::Ready(Some(Ok(self.capacity(stream))))
+        let capacity = self.capacity(stream);
+
+        // If capacity has been reduced to zero, for example due to a race
+        // with a SETTINGS frame, return Pending instead of Ready(Ok(0)).
+        if capacity == 0 {
+            stream.wait_send(cx);
+            return Poll::Pending;
+        }
+
+        Poll::Ready(Some(Ok(capacity)))
     }
 
     /// Current available stream send capacity

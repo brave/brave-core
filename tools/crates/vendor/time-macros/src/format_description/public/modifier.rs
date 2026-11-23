@@ -13,6 +13,7 @@ macro_rules! to_tokens {
         ),* $(,)?}
     ) => {
         $(#[$struct_attr])*
+        #[derive(Clone, Copy)]
         $struct_vis struct $struct_name {$(
             $(#[$field_attr])*
             $field_vis $field_name: $field_ty
@@ -31,17 +32,15 @@ macro_rules! to_tokens {
                 }
 
                 let mut tokens = quote_! {
-                    let mut value = $struct_name::default();
+                    $struct_name::default()
                 };
                 $(
                     #[allow(clippy::redundant_pattern_matching)]
                     if !matches!($field_name, $default) {
-                        quote_append!(tokens value.$field_name =);
-                        $field_name.append_to(&mut tokens);
-                        quote_append!(tokens ;);
+                        let method_name = Ident::new(concat!("with_", stringify!($field_name)), Span::mixed_site());
+                        quote_append!(tokens .#(method_name)(#S($field_name)));
                     }
                 )*
-                quote_append!(tokens value);
 
                 TokenTree::Group(Group::new(
                     Delimiter::Brace,
@@ -59,6 +58,7 @@ macro_rules! to_tokens {
         ),+ $(,)?}
     ) => {
         $(#[$enum_attr])*
+        #[derive(Clone, Copy)]
         $enum_vis enum $enum_name {$(
             $(#[$variant_attr])*
             $variant_name
@@ -85,18 +85,20 @@ to_tokens! {
 }
 
 to_tokens! {
-    pub(crate) enum MonthRepr {
-        Numerical,
-        Long,
-        Short,
+    pub(crate) struct MonthShort {
+        pub(crate) case_sensitive: bool = true,
     }
 }
 
 to_tokens! {
-    pub(crate) struct Month {
-        pub(crate) padding: Padding = Padding::Zero,
-        pub(crate) repr: MonthRepr = MonthRepr::Numerical,
+    pub(crate) struct MonthLong {
         pub(crate) case_sensitive: bool = true,
+    }
+}
+
+to_tokens! {
+    pub(crate) struct MonthNumerical {
+        pub(crate) padding: Padding = Padding::Zero,
     }
 }
 
@@ -107,66 +109,128 @@ to_tokens! {
 }
 
 to_tokens! {
-    pub(crate) enum WeekdayRepr {
-        Short,
-        Long,
-        Sunday,
-        Monday,
-    }
-}
-
-to_tokens! {
-    pub(crate) struct Weekday {
-        pub(crate) repr: WeekdayRepr = WeekdayRepr::Long,
-        pub(crate) one_indexed: bool = true,
+    pub(crate) struct WeekdayShort {
         pub(crate) case_sensitive: bool = true,
     }
 }
 
 to_tokens! {
-    pub(crate) enum WeekNumberRepr {
-        Iso,
-        Sunday,
-        Monday,
+    pub(crate) struct WeekdayLong {
+        pub(crate) case_sensitive: bool = true,
     }
 }
 
 to_tokens! {
-    pub(crate) struct WeekNumber {
+    pub(crate) struct WeekdaySunday {
+        pub(crate) one_indexed: bool = true,
+    }
+}
+
+to_tokens! {
+    pub(crate) struct WeekdayMonday {
+        pub(crate) one_indexed: bool = true,
+    }
+}
+
+to_tokens! {
+    pub(crate) struct WeekNumberIso {
         pub(crate) padding: Padding = Padding::Zero,
-        pub(crate) repr: WeekNumberRepr = WeekNumberRepr::Iso,
     }
 }
 
 to_tokens! {
-    pub(crate) enum YearRepr {
-        Full,
-        Century,
-        LastTwo,
-    }
-}
-
-to_tokens! {
-    pub(crate) enum YearRange {
-        Standard,
-        Extended,
-    }
-}
-
-to_tokens! {
-    pub(crate) struct Year {
+    pub(crate) struct WeekNumberSunday {
         pub(crate) padding: Padding = Padding::Zero,
-        pub(crate) repr: YearRepr = YearRepr::Full,
-        pub(crate) range: YearRange = YearRange::Extended,
-        pub(crate) iso_week_based: bool = false,
+    }
+}
+
+to_tokens! {
+    pub(crate) struct WeekNumberMonday {
+        pub(crate) padding: Padding = Padding::Zero,
+    }
+}
+
+to_tokens! {
+    pub(crate) struct CalendarYearFullStandardRange {
+        pub(crate) padding: Padding = Padding::Zero,
+        pub(crate) sign_is_mandatory: bool = false,
+    }
+}
+
+#[cfg(feature = "large-dates")]
+to_tokens! {
+    pub(crate) struct CalendarYearFullExtendedRange {
+        pub(crate) padding: Padding = Padding::Zero,
         pub(crate) sign_is_mandatory: bool = false,
     }
 }
 
 to_tokens! {
-    pub(crate) struct Hour {
+    pub(crate) struct CalendarYearCenturyStandardRange {
         pub(crate) padding: Padding = Padding::Zero,
-        pub(crate) is_12_hour_clock: bool = false,
+        pub(crate) sign_is_mandatory: bool = false,
+    }
+}
+
+#[cfg(feature = "large-dates")]
+to_tokens! {
+    pub(crate) struct CalendarYearCenturyExtendedRange {
+        pub(crate) padding: Padding = Padding::Zero,
+        pub(crate) sign_is_mandatory: bool = false,
+    }
+}
+
+to_tokens! {
+    pub(crate) struct IsoYearFullStandardRange {
+        pub(crate) padding: Padding = Padding::Zero,
+        pub(crate) sign_is_mandatory: bool = false,
+    }
+}
+
+#[cfg(feature = "large-dates")]
+to_tokens! {
+    pub(crate) struct IsoYearFullExtendedRange {
+        pub(crate) padding: Padding = Padding::Zero,
+        pub(crate) sign_is_mandatory: bool = false,
+    }
+}
+
+to_tokens! {
+    pub(crate) struct IsoYearCenturyStandardRange {
+        pub(crate) padding: Padding = Padding::Zero,
+        pub(crate) sign_is_mandatory: bool = false,
+    }
+}
+
+#[cfg(feature = "large-dates")]
+to_tokens! {
+    pub(crate) struct IsoYearCenturyExtendedRange {
+        pub(crate) padding: Padding = Padding::Zero,
+        pub(crate) sign_is_mandatory: bool = false,
+    }
+}
+
+to_tokens! {
+    pub(crate) struct CalendarYearLastTwo {
+        pub(crate) padding: Padding = Padding::Zero,
+    }
+}
+
+to_tokens! {
+    pub(crate) struct IsoYearLastTwo {
+        pub(crate) padding: Padding = Padding::Zero,
+    }
+}
+
+to_tokens! {
+    pub(crate) struct Hour12 {
+        pub(crate) padding: Padding = Padding::Zero,
+    }
+}
+
+to_tokens! {
+    pub(crate) struct Hour24 {
+        pub(crate) padding: Padding = Padding::Zero,
     }
 }
 
@@ -237,6 +301,7 @@ to_tokens! {
     }
 }
 
+#[derive(Clone, Copy)]
 pub(crate) struct Ignore {
     pub(crate) count: NonZero<u16>,
 }
@@ -250,21 +315,38 @@ impl ToTokenTree for Ignore {
 }
 
 to_tokens! {
-    pub(crate) enum UnixTimestampPrecision {
-        Second,
-        Millisecond,
-        Microsecond,
-        Nanosecond,
-    }
-}
-
-to_tokens! {
-    pub(crate) struct UnixTimestamp {
-        pub(crate) precision: UnixTimestampPrecision = UnixTimestampPrecision::Second,
+    pub(crate) struct UnixTimestampSecond {
         pub(crate) sign_is_mandatory: bool = false,
     }
 }
 
 to_tokens! {
-    pub(crate) struct End {}
+    pub(crate) struct UnixTimestampMillisecond {
+        pub(crate) sign_is_mandatory: bool = false,
+    }
+}
+
+to_tokens! {
+    pub(crate) struct UnixTimestampMicrosecond {
+        pub(crate) sign_is_mandatory: bool = false,
+    }
+}
+
+to_tokens! {
+    pub(crate) struct UnixTimestampNanosecond {
+        pub(crate) sign_is_mandatory: bool = false,
+    }
+}
+
+to_tokens! {
+    pub(crate) enum TrailingInput {
+        Prohibit,
+        Discard,
+    }
+}
+
+to_tokens! {
+    pub(crate) struct End {
+        pub(crate) trailing_input: TrailingInput = TrailingInput::Prohibit,
+    }
 }

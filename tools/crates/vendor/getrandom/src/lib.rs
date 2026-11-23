@@ -8,24 +8,9 @@
     html_favicon_url = "https://www.rust-lang.org/favicon.ico"
 )]
 #![doc = include_str!("../README.md")]
-#![warn(rust_2018_idioms, unused_lifetimes, missing_docs)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![cfg_attr(getrandom_backend = "efi_rng", feature(uefi_std))]
-#![deny(
-    clippy::cast_lossless,
-    clippy::cast_possible_truncation,
-    clippy::cast_possible_wrap,
-    clippy::cast_precision_loss,
-    clippy::cast_ptr_alignment,
-    clippy::cast_sign_loss,
-    clippy::char_lit_as_u8,
-    clippy::checked_conversions,
-    clippy::fn_to_numeric_cast,
-    clippy::fn_to_numeric_cast_with_truncation,
-    clippy::ptr_as_ptr,
-    clippy::unnecessary_cast,
-    clippy::useless_conversion
-)]
+#![cfg_attr(getrandom_backend = "extern_impl", feature(extern_item_impls))]
 
 #[macro_use]
 extern crate cfg_if;
@@ -39,7 +24,43 @@ mod util;
 #[cfg(feature = "std")]
 mod error_std_impls;
 
-pub use crate::error::Error;
+/// `rand_core` adapter
+#[cfg(feature = "sys_rng")]
+mod sys_rng;
+
+#[cfg(feature = "sys_rng")]
+pub use rand_core;
+#[cfg(feature = "sys_rng")]
+pub use sys_rng::SysRng;
+
+pub use crate::error::{Error, RawOsError};
+
+/// Attribute macros for overwriting the core functionality of this crate.
+///
+/// This allows `getrandom` to provide a default implementation and a common interface
+/// for all crates to use, while giving users a safe way to override that default where required.
+///
+/// Must be enabled via the `extern_impl` opt-in backend, as this functionality
+/// is currently limited to nightly.
+///
+/// # Examples
+///
+/// ```rust
+/// # use core::mem::MaybeUninit;
+/// # #[cfg(getrandom_backend = "extern_impl")]
+/// #[getrandom::implementation::fill_uninit]
+/// fn my_fill_uninit_implementation(
+///     dest: &mut [MaybeUninit<u8>]
+/// ) -> Result<(), getrandom::Error> {
+///     // ...
+/// #   let _ = dest;
+/// #   Err(Error::UNSUPPORTED)
+/// }
+/// ```
+#[cfg(getrandom_backend = "extern_impl")]
+pub mod implementation {
+    pub use crate::backends::extern_impl::{fill_uninit, u32, u64};
+}
 
 /// Fill `dest` with random bytes from the system's preferred random number source.
 ///
@@ -100,7 +121,7 @@ pub fn fill_uninit(dest: &mut [MaybeUninit<u8>]) -> Result<&mut [u8], Error> {
     }
 
     #[cfg(getrandom_msan)]
-    extern "C" {
+    unsafe extern "C" {
         fn __msan_unpoison(a: *mut core::ffi::c_void, size: usize);
     }
 

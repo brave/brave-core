@@ -173,6 +173,8 @@ jobs:
   semi-ancient:
     name: Check it compiles on old Rust (1.45.0)
     runs-on: ubuntu-latest
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -193,6 +195,8 @@ jobs:
   ancient:
     name: Check it compiles on old Rust (1.31.0)
     runs-on: ubuntu-latest
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -284,7 +288,8 @@ jobs:
         #
         # Running the tests multiple times increase the chances that data races are found
         # by the thread sanitizer.
-        for _ in $(seq 1 10); do cargo +nightly test -Z build-std --target $(uname -m)-apple-darwin; done
+        target="$(rustc +nightly -vV | sed -n 's/^host: //p')"
+        for _ in $(seq 1 10); do cargo +nightly test -Z build-std --target "$target"; done
       env:
         RUSTDOCFLAGS: "-Zsanitizer=thread"
         RUSTFLAGS: "-Zsanitizer=thread"

@@ -1,6 +1,6 @@
 /// Helper macro to execute a system call that returns an `io::Result`.
 //
-// Macro must be defined before any modules that uses them.
+// Macro must be defined before any modules that use them.
 #[allow(unused_macros)]
 macro_rules! syscall {
     ($fn: ident ( $($arg: expr),* $(,)* ) ) => {{
@@ -19,6 +19,7 @@ cfg_os_poll! {
         not(mio_unsupported_force_poll_poll),
         any(
             target_os = "android",
+            target_os = "emscripten",
             target_os = "illumos",
             target_os = "linux",
             target_os = "redox",
@@ -38,18 +39,24 @@ cfg_os_poll! {
             target_os = "watchos",
         )
     ), path = "selector/kqueue.rs")]
+    #[cfg_attr(all(
+        not(mio_unsupported_force_poll_poll),
+        target_os = "solaris",
+    ), path = "selector/event_ports.rs")]
     #[cfg_attr(any(
         mio_unsupported_force_poll_poll,
         target_os = "aix",
         target_os = "espidf",
+        target_os = "nuttx",
         target_os = "fuchsia",
         target_os = "haiku",
         target_os = "hermit",
         target_os = "hurd",
         target_os = "nto",
-        target_os = "solaris",
         target_os = "vita",
         target_os = "cygwin",
+        target_os = "wasi",
+        target_os = "horizon"
     ), path = "selector/poll.rs")]
     mod selector;
     pub(crate) use self::selector::*;
@@ -59,6 +66,7 @@ cfg_os_poll! {
         any(
             target_os = "android",
             target_os = "espidf",
+            target_os = "nuttx",
             target_os = "fuchsia",
             target_os = "hermit",
             target_os = "illumos",
@@ -69,14 +77,18 @@ cfg_os_poll! {
         not(mio_unsupported_force_waker_pipe),
         not(mio_unsupported_force_poll_poll), // `kqueue(2)` based waker doesn't work with `poll(2)`.
         any(
+            target_os = "dragonfly",
             target_os = "freebsd",
             target_os = "ios",
             target_os = "macos",
+            target_os = "netbsd",
+            target_os = "openbsd",
+            target_os = "solaris",
             target_os = "tvos",
             target_os = "visionos",
             target_os = "watchos",
         )
-    ), path = "waker/kqueue.rs")]
+    ), path = "waker/selector.rs")]
     #[cfg_attr(any(
         // NOTE: also add to the list for the `pipe` module below.
         mio_unsupported_force_waker_pipe,
@@ -84,27 +96,32 @@ cfg_os_poll! {
             // `kqueue(2)` based waker doesn't work with `poll(2)`.
             mio_unsupported_force_poll_poll,
             any(
+                target_os = "dragonfly",
                 target_os = "freebsd",
                 target_os = "ios",
                 target_os = "macos",
+                target_os = "netbsd",
+                target_os = "openbsd",
                 target_os = "tvos",
                 target_os = "visionos",
                 target_os = "watchos",
             ),
         ),
         target_os = "aix",
-        target_os = "dragonfly",
+        target_os = "emscripten",
         target_os = "haiku",
         target_os = "hurd",
-        target_os = "netbsd",
         target_os = "nto",
-        target_os = "openbsd",
         target_os = "redox",
-        target_os = "solaris",
+        all(mio_unsupported_force_poll_poll, target_os = "solaris"),
         target_os = "vita",
         target_os = "cygwin",
+        all(target_os = "wasi", target_env = "p1")
     ), path = "waker/pipe.rs")]
+    #[cfg_attr(any(target_os = "horizon", all(target_os = "wasi", not(target_env = "p1"))), path = "waker/single_threaded.rs")]
     mod waker;
+    #[cfg(all(not(mio_unsupported_force_poll_poll), target_os = "solaris"))]
+    pub(crate) use self::waker::Waker;
     // NOTE: the `Waker` type is expected in the selector module as the
     // `poll(2)` implementation needs to do some special stuff.
 
@@ -118,7 +135,7 @@ cfg_os_poll! {
 
         pub(crate) mod tcp;
         pub(crate) mod udp;
-        #[cfg(not(target_os = "hermit"))]
+        #[cfg(not(any(target_os = "hermit", target_os = "wasi")))]
         pub(crate) mod uds;
     }
 
@@ -143,18 +160,19 @@ cfg_os_poll! {
             // NOTE: also add to the list for the `pipe` module below.
             target_os = "aix",
             target_os = "dragonfly",
+            target_os = "emscripten",
             target_os = "haiku",
             target_os = "hurd",
             target_os = "netbsd",
             target_os = "nto",
             target_os = "openbsd",
             target_os = "redox",
-            target_os = "solaris",
+            all(mio_unsupported_force_poll_poll, target_os = "solaris"),
             target_os = "vita",
             target_os = "cygwin",
         ),
-        // Hermit doesn't support pipes.
         not(target_os = "hermit"),
+        not(target_os = "wasi"),
     ))]
     pub(crate) mod pipe;
 }

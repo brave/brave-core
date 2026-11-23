@@ -3,8 +3,8 @@
 use std::{convert::Infallible, error::Error};
 
 use bytes::Bytes;
-use http::{header::CONTENT_TYPE, Request, Response};
-use http_body_util::{combinators::BoxBody, BodyExt, Full};
+use http::{Request, Response, header::CONTENT_TYPE};
+use http_body_util::{BodyExt, Full, combinators::BoxBody};
 use hyper::{body::Incoming, service::service_fn};
 use hyper_util::{
     rt::{TokioExecutor, TokioIo},

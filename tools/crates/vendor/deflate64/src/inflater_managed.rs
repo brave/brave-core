@@ -7,37 +7,44 @@ use std::cmp::min;
 use std::mem::MaybeUninit;
 
 // Extra bits for length code 257 - 285.
-static EXTRA_LENGTH_BITS: &[u8] = &[
+static EXTRA_LENGTH_BITS: [u8; 29] = [
     0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 16,
 ];
 
 // The base length for length code 257 - 285.
 // The formula to get the real length for a length code is lengthBase[code - 257] + (value stored in extraBits)
-static LENGTH_BASE: &[u8] = &[
+static LENGTH_BASE: [u8; 29] = [
     3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83, 99, 115, 131,
     163, 195, 227, 3,
 ];
 
 // The base distance for distance code 0 - 31
 // The real distance for a distance code is  distanceBasePosition[code] + (value stored in extraBits)
-static DISTANCE_BASE_POSITION: &[u16] = &[
+static DISTANCE_BASE_POSITION: [u16; 32] = [
     1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513, 769, 1025, 1537,
     2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577, 32769, 49153,
 ];
 
 // code lengths for code length alphabet is stored in following order
-static CODE_ORDER: &[u8] = &[
+static CODE_ORDER: [u8; 19] = [
     16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15,
 ];
 
-static STATIC_DISTANCE_TREE_TABLE: &[u8] = &[
+static STATIC_DISTANCE_TREE_TABLE: [u8; 32] = [
     0x00, 0x10, 0x08, 0x18, 0x04, 0x14, 0x0c, 0x1c, 0x02, 0x12, 0x0a, 0x1a, 0x06, 0x16, 0x0e, 0x1e,
     0x01, 0x11, 0x09, 0x19, 0x05, 0x15, 0x0d, 0x1d, 0x03, 0x13, 0x0b, 0x1b, 0x07, 0x17, 0x0f, 0x1f,
 ];
 
 // source: https://github.com/dotnet/runtime/blob/82dac28143be0740d795f434db9b70f61b3b7a04/src/libraries/System.IO.Compression/src/System/IO/Compression/DeflateManaged/OutputWindow.cs#L17
-const TABLE_LOOKUP_LENGTH_MAX: usize = 65536;
-const TABLE_LOOKUP_DISTANCE_MAX: usize = 65538;
+// Note: the upstream comment says "65536 length as well as up to a 65538 distance", but actually
+//       it looks limit is 65538 length with 65538 distance.
+//       There is no mention for length / distance limit in [APPNOTE.TXT] so it's hard to know
+//       which is correct, but 65538 length with 65538 distance is much reasonable since
+//       original deflate have (2^8-1)+3 length with 2^15 distance, and
+//       65538 is (2^16-1)+3 and 65536 is 2^15.
+// [APPNOTE.TXT]: https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT
+const TABLE_LOOKUP_LENGTH_MAX: usize = 65538;
+pub(crate) const TABLE_LOOKUP_DISTANCE_MAX: usize = 65536;
 
 /// The streaming Inflater for deflate64
 ///
@@ -74,7 +81,18 @@ pub struct InflaterManaged {
     deflate64: bool,
     code_length_tree: HuffmanTree,
     uncompressed_size: usize,
-    current_inflated_count: usize,
+
+    // Cumulative counters updated once per inflate call
+    total_input_loaded: u64, // total bytes loaded into bit reader, only updated after decode()
+    total_output_consumed: u64, // total bytes returned to caller (also used for uncompressed_size limit)
+
+    // Lightweight checkpoint: updated after every write to output window
+    #[cfg(feature = "checkpoint")]
+    checkpoint_input_bits: u64, // exact input bit position of checkpoint
+    #[cfg(feature = "checkpoint")]
+    checkpoint_bit_buffer: u8, // low byte of input bit_buffer (future bits)
+    #[cfg(feature = "checkpoint")]
+    checkpoint_bfinal_block_type: u8, // (bfinal << 7) | block_type
 }
 
 impl InflaterManaged {
@@ -113,14 +131,29 @@ impl InflaterManaged {
             code_array_size: 0,
             distance_tree: HuffmanTree::invalid(),
             length_code: 0,
-            current_inflated_count: 0,
+            total_input_loaded: 0,
+            total_output_consumed: 0,
+            #[cfg(feature = "checkpoint")]
+            checkpoint_input_bits: 0,
+            #[cfg(feature = "checkpoint")]
+            checkpoint_bit_buffer: 0,
+            #[cfg(feature = "checkpoint")]
+            checkpoint_bfinal_block_type: 0,
         }
     }
 
-    /// Returns true if deflating finished
+    /// Returns true if decompression finished and no more output is available
     ///
     /// This also returns true if this inflater is in error state
     pub fn finished(&self) -> bool {
+        (self.state == InflaterState::Done && self.available_output() == 0)
+            || self.state == InflaterState::DataErrored
+    }
+
+    /// Returns true if decompression finished, but may still have output available in buffer
+    ///
+    /// This also returns true if this inflater is in error state
+    pub fn input_finished(&self) -> bool {
         self.state == InflaterState::Done || self.state == InflaterState::DataErrored
     }
 
@@ -162,14 +195,12 @@ impl InflaterManaged {
             let mut copied = 0;
             if self.uncompressed_size == usize::MAX {
                 copied = self.output.copy_to(output.reborrow());
-            } else if self.uncompressed_size > self.current_inflated_count {
-                let len = min(
-                    output.len(),
-                    self.uncompressed_size - self.current_inflated_count,
-                );
+            } else if (self.uncompressed_size as u64) > self.total_output_consumed {
+                let remaining =
+                    (self.uncompressed_size as u64 - self.total_output_consumed) as usize;
+                let len = min(output.len(), remaining);
                 output = output.index_mut(..len);
                 copied = self.output.copy_to(output.reborrow());
-                self.current_inflated_count += copied;
             } else {
                 self.state = InflaterState::Done;
                 self.output.clear_bytes_used();
@@ -177,6 +208,7 @@ impl InflaterManaged {
             if copied > 0 {
                 output = output.index_mut(copied..);
                 result.bytes_written += copied;
+                self.total_output_consumed += copied as u64;
             }
 
             if output.is_empty() {
@@ -187,7 +219,7 @@ impl InflaterManaged {
             if self.errored() {
                 result.data_error = true;
                 break 'while_loop false;
-            } else if self.finished() {
+            } else if self.input_finished() {
                 break 'while_loop false;
             }
             match self.decode(&mut input) {
@@ -202,6 +234,7 @@ impl InflaterManaged {
         } {}
 
         self.bits = input.bits;
+        self.total_input_loaded += input.read_bytes as u64;
         result.bytes_consumed = input.read_bytes;
         result
     }
@@ -212,7 +245,7 @@ impl InflaterManaged {
 
         if self.errored() {
             return Err(InternalErr::DataError);
-        } else if self.finished() {
+        } else if self.input_finished() {
             return Ok(());
         }
 
@@ -318,8 +351,11 @@ impl InflaterManaged {
                         // Done with this block, need to re-init bit buffer for next block
                         self.state = InflaterState::ReadingBFinal;
                         *end_of_block = true;
+                        self.update_checkpoint_after_write_or_eob(input, true);
                         return Ok(());
                     }
+
+                    self.update_checkpoint_after_write_or_eob(input, false);
 
                     // We can fail to copy all bytes for two reasons:
                     //    Running out of Input
@@ -344,8 +380,40 @@ impl InflaterManaged {
     ) -> Result<(), InternalErr> {
         *end_of_block_code_seen = false;
 
-        let mut free_bytes = self.output.free_bytes(); // it is a little bit faster than frequently accessing the property
-        while free_bytes > TABLE_LOOKUP_LENGTH_MAX {
+        if self.state == InflaterState::DecodeTop {
+            // Tight inner loop for decoding and processing deflate symbols when we know
+            // that there is both enough input available and also sufficient output space.
+            // State machine variables are not modified and self.state stays as DecodeTop.
+            match self.decode_block_fast_inner_loop(input) {
+                Ok((_, true)) => {
+                    // End of block reached
+                    *end_of_block_code_seen = true;
+                    self.state = InflaterState::ReadingBFinal;
+                    self.update_checkpoint_after_write_or_eob(input, true);
+                    return Ok(());
+                }
+                Ok((0, false)) => {
+                    // No fast progress, fall through to slower but comprehensive
+                    // state machine implementation which can load partial input.
+                }
+                Ok((_, false)) => {
+                    // Some fast progress was made. Return so that output can be
+                    // consumed by the caller and/or more input can be provided.
+                    self.update_checkpoint_after_write_or_eob(input, false);
+                    return Ok(());
+                }
+                Err(InternalErr::DataError) => {
+                    return Err(InternalErr::DataError);
+                }
+                Err(InternalErr::DataNeeded) => {
+                    unreachable!("fast inner loop never returns DataNeeded")
+                }
+            }
+        }
+
+        // State machine path
+        let mut free_bytes = self.output.free_bytes();
+        while free_bytes >= TABLE_LOOKUP_LENGTH_MAX {
             // With Deflate64 we can have up to a 64kb length, so we ensure at least that much space is available
             // in the OutputWindow to avoid overwriting previous unflushed output data.
 
@@ -362,11 +430,13 @@ impl InflaterManaged {
                         // literal
                         self.output.write(symbol as u8);
                         free_bytes -= 1;
+                        self.update_checkpoint_after_write_or_eob(input, false);
                     } else if symbol == 256 {
                         // end of block
                         *end_of_block_code_seen = true;
                         // Reset state
                         self.state = InflaterState::ReadingBFinal;
+                        self.update_checkpoint_after_write_or_eob(input, true);
                         return Ok(());
                     } else {
                         // length/distance pair
@@ -438,6 +508,7 @@ impl InflaterManaged {
                     self.output.write_length_distance(self.length, offset);
                     free_bytes -= self.length;
                     self.state = InflaterState::DecodeTop;
+                    self.update_checkpoint_after_write_or_eob(input, false);
                 }
 
                 _ => {
@@ -448,6 +519,79 @@ impl InflaterManaged {
         }
 
         Ok(())
+    }
+
+    /// Fast inner loop for decoding literals and length/distance pairs. Breaks out as soon as
+    /// maximum possible output cannot fit, or maximum possible input required is not available.
+    /// Returns (bytes_written, end_of_block) on success or InternalErr on failure.
+    fn decode_block_fast_inner_loop(
+        &mut self,
+        input: &mut InputBuffer<'_>,
+    ) -> Result<(usize, bool), InternalErr> {
+        let initial_free = self.output.free_bytes();
+
+        loop {
+            // Exit fast path if low on output space or input bits.
+            // Maximum input consumed per iteration is 64 bits, or 8 bytes:
+            //  16 bits for initial symbol value >= 257, indicating match length
+            //  16 bits for match length "extra bits"
+            //  16 bits for distance symbol
+            //  16 bits for distance "extra bits"
+            if self.output.free_bytes() < TABLE_LOOKUP_LENGTH_MAX || input.available_bytes() < 8 {
+                return Ok((initial_free - self.output.free_bytes(), false));
+            }
+
+            let symbol = self
+                .literal_length_tree
+                .get_next_symbol_assume_input(input)?;
+            match symbol {
+                0..=255 => {
+                    // Literal byte
+                    self.output.write(symbol as u8);
+                }
+                256 => {
+                    // End of block
+                    return Ok((initial_free - self.output.free_bytes(), true));
+                }
+                257..=285 => {
+                    // Length/distance pair
+                    let length_index = (symbol - 257) as usize;
+                    let length = if length_index < 8 {
+                        length_index + 3
+                    } else {
+                        let extra_bits = EXTRA_LENGTH_BITS[length_index] as i32;
+                        let bits = input.get_bits_assume_input(extra_bits);
+                        LENGTH_BASE[length_index] as usize + bits as usize
+                    };
+
+                    let distance_code = if self.block_type == BlockType::Dynamic {
+                        self.distance_tree.get_next_symbol_assume_input(input)? as usize
+                    } else {
+                        STATIC_DISTANCE_TREE_TABLE[input.get_bits_assume_input(5) as usize] as usize
+                    };
+
+                    let offset = if distance_code <= 3 {
+                        distance_code + 1
+                    } else {
+                        let extra_bits = ((distance_code - 2) >> 1) as i32;
+                        let bits = input.get_bits_assume_input(extra_bits);
+                        *DISTANCE_BASE_POSITION
+                            .get(distance_code)
+                            .ok_or(InternalErr::DataError)? as usize
+                            + bits as usize
+                    };
+
+                    if length > TABLE_LOOKUP_LENGTH_MAX || offset > TABLE_LOOKUP_DISTANCE_MAX {
+                        return Err(InternalErr::DataError);
+                    }
+                    self.output.write_length_distance(length, offset);
+                }
+                _ => {
+                    // Symbol out of range
+                    return Err(InternalErr::DataError);
+                }
+            }
+        }
     }
 
     // Format of the dynamic block header:
@@ -637,4 +781,19 @@ impl InflaterManaged {
         self.state = InflaterState::DecodeTop;
         Ok(())
     }
+
+    #[inline(always)]
+    #[allow(unused_variables)]
+    fn update_checkpoint_after_write_or_eob(
+        &mut self,
+        input: &InputBuffer<'_>,
+        end_of_block: bool,
+    ) {
+        #[cfg(feature = "checkpoint")]
+        checkpoint::update_checkpoint(self, input, end_of_block);
+    }
 }
+
+#[cfg(feature = "checkpoint")]
+#[path = "inflater_checkpoint.rs"]
+pub mod checkpoint;

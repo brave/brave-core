@@ -5,17 +5,44 @@ use gix_testtools::tempfile::TempDir;
 
 use super::*;
 
-type Result<T = ()> = std::result::Result<T, Box<dyn std::error::Error>>;
+use gix_testtools::{Result, TestResult};
 
-/// Convert a hexadecimal hash into its corresponding `ObjectId` or _panic_.
+static SHA1_TO_SHA256_HASHES: std::sync::LazyLock<std::collections::HashMap<&str, &str>> =
+    std::sync::LazyLock::new(|| {
+        [
+            (
+                "28ce6a8b26aa170e1de65536fe8abe1832bd3242",
+                "28ce6a8b26aa170e1de65536fe8abe1832bd3242000000000000000000000000",
+            ),
+            (
+                "0000000000000000000000111111111111111111",
+                "0000000000000000000000111111111111111111000000000000000000000000",
+            ),
+        ]
+        .into()
+    });
+
+/// Convert a hexadecimal SHA-1 hash or the corresponding SHA-256 hash into an `ObjectId` or
+/// _panic_.
 fn hex_to_id(hex: &str) -> gix_hash::ObjectId {
-    gix_hash::ObjectId::from_hex(hex.as_bytes()).expect("40 bytes hex")
+    match gix_testtools::object_hash() {
+        gix_hash::Kind::Sha1 => gix_hash::ObjectId::from_hex(hex.as_bytes()).expect("40 bytes hex"),
+        gix_hash::Kind::Sha256 => gix_hash::ObjectId::from_hex(
+            SHA1_TO_SHA256_HASHES
+                .get(hex)
+                .unwrap_or_else(|| panic!("SHA-1 {hex} wasn't mapped to SHA-256 yet"))
+                .as_bytes(),
+        )
+        .expect("64 bytes hex"),
+        _ => unimplemented!(),
+    }
 }
 
 fn empty_store(writemode: WriteReflog) -> Result<(TempDir, file::Store)> {
     let dir = TempDir::new()?;
-    let store = file::Store::at(
+    let store = file::Store::at_opts(
         dir.path().into(),
+        gix_testtools::object_hash(),
         crate::store::init::Options {
             write_reflog: writemode,
             ..Default::default()
@@ -36,7 +63,7 @@ fn reflog_lines(store: &file::Store, name: &str, buf: &mut Vec<u8>) -> Result<Ve
 const WRITE_MODES: &[WriteReflog] = &[WriteReflog::Normal, WriteReflog::Disable, WriteReflog::Always];
 
 #[test]
-fn should_autocreate_is_unaffected_by_writemode() -> Result {
+fn should_autocreate_is_unaffected_by_writemode() -> TestResult {
     let (_keep, store) = empty_store(WriteReflog::Disable)?;
     for should_create_name in &["HEAD", "refs/heads/main", "refs/remotes/any", "refs/notes/any"] {
         assert!(store.should_autocreate_reflog(Path::new(should_create_name)));
@@ -48,7 +75,7 @@ fn should_autocreate_is_unaffected_by_writemode() -> Result {
 }
 
 #[test]
-fn missing_reflog_creates_it_even_if_similarly_named_empty_dir_exists_and_append_log_lines() -> Result {
+fn missing_reflog_creates_it_even_if_similarly_named_empty_dir_exists_and_append_log_lines() -> TestResult {
     for mode in WRITE_MODES {
         let (_keep, store) = empty_store(*mode)?;
         let full_name_str = "refs/heads/main";
@@ -74,7 +101,7 @@ fn missing_reflog_creates_it_even_if_similarly_named_empty_dir_exists_and_append
                 assert_eq!(
                     reflog_lines(&store, full_name_str, &mut buf)?,
                     vec![crate::log::Line {
-                        previous_oid: gix_hash::Kind::Sha1.null(),
+                        previous_oid: gix_testtools::object_hash().null(),
                         new_oid: new,
                         signature: committer.clone(),
                         message: "the message".into()
@@ -114,7 +141,7 @@ fn missing_reflog_creates_it_even_if_similarly_named_empty_dir_exists_and_append
         // create onto existing directory
         let full_name_str = "refs/heads/other";
         let full_name: &FullNameRef = full_name_str.try_into()?;
-        let reflog_path = store.reflog_path(full_name_str.try_into().expect("valid"));
+        let reflog_path = store.reflog_path(full_name_str.try_into()?)?;
         let directory_in_place_of_reflog = reflog_path.join("empty-a").join("empty-b");
         std::fs::create_dir_all(directory_in_place_of_reflog)?;
 
@@ -153,5 +180,92 @@ fn missing_reflog_creates_it_even_if_similarly_named_empty_dir_exists_and_append
             }
         }
     }
+    Ok(())
+}
+
+#[test]
+fn non_empty_reflog_directory_preserves_open_error_context() -> TestResult {
+    let (_keep, store) = empty_store(WriteReflog::Normal)?;
+    let name: &FullNameRef = "refs/heads/main".try_into()?;
+    let path = store.reflog_path(name)?;
+    std::fs::create_dir_all(&path)?;
+    std::fs::write(path.join("keep"), b"not an empty directory")?;
+
+    let err = store
+        .reflog_create_or_append(
+            name,
+            None,
+            &gix_testtools::object_hash().null(),
+            None,
+            b"update".as_bstr(),
+            false,
+        )
+        .expect_err("a non-empty directory cannot be replaced with a reflog");
+    insta::assert_debug_snapshot!(gix_testtools::redact_debug_snapshot(&(err), &[(&(store.git_dir()).to_string_lossy(), "<git-dir>")]), "the conflicting directory exists", @r#"
+    Could not open reflog for appending, path="<git-dir>/logs/refs/heads/main"
+
+    Caused by:
+        0: I/O error (Other)
+        1: Directory not empty
+    "#);
+    let details = err.metadata().next().expect("reflog open context");
+    assert!(
+        err.downcast_any_ref::<gix_error::Message>().is_some(),
+        "reflog open context retains its message type"
+    );
+    assert_eq!(details.len(), 1, "open context contains only the path");
+    assert_eq!(
+        details["path"],
+        gix_error::MetadataValue::Path(path),
+        "the reflog path remains a native path"
+    );
+    assert!(
+        err.downcast_any_ref::<std::io::Error>().is_some(),
+        "the directory removal error remains accessible"
+    );
+    assert!(!err.is_not_found(), "the conflicting directory exists");
+    assert!(
+        !err.is_corrupted(),
+        "a directory collision does not imply corrupt reflog contents"
+    );
+    Ok(())
+}
+
+#[test]
+fn reflog_write_normalizes_committer_name_and_email_like_git() -> TestResult {
+    let (_keep, store) = empty_store(WriteReflog::Always)?;
+    let full_name_str = "refs/heads/main";
+    let full_name: &FullNameRef = full_name_str.try_into()?;
+    let new = hex_to_id("28ce6a8b26aa170e1de65536fe8abe1832bd3242");
+    let committer = Signature {
+        name: "  committer\n  ".into(),
+        email: "  committer@example.com\n  ".into(),
+        time: gix_date::parse_header("1234 +0800").unwrap(),
+    };
+
+    store.reflog_create_or_append(
+        full_name,
+        None,
+        &new,
+        committer.to_ref(&mut TimeBuf::default()).into(),
+        b"the message".as_bstr(),
+        false,
+    )?;
+
+    let mut buf = Vec::new();
+    assert_eq!(
+        reflog_lines(&store, full_name_str, &mut buf)?,
+        vec![crate::log::Line {
+            previous_oid: gix_testtools::object_hash().null(),
+            new_oid: new,
+            signature: Signature {
+                name: "committer".into(),
+                email: "committer@example.com".into(),
+                time: gix_date::parse_header("1234 +0800").unwrap(),
+            },
+            message: "the message".into()
+        }],
+        "it trimmed whitespace as basic fix for slightly malformed signatures"
+    );
     Ok(())
 }

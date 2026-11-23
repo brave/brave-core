@@ -103,25 +103,7 @@ impl CertStore {
     /// Common valid values for `which` are "My", "Root", "Trust", "CA".
     /// Additonal MSDN docs https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certopenstore#remarks
     pub fn open_current_user(which: &str) -> io::Result<CertStore> {
-        unsafe {
-            let data = OsStr::new(which)
-                .encode_wide()
-                .chain(Some(0))
-                .collect::<Vec<_>>();
-            let store = Cryptography::CertOpenStore(
-                Cryptography::CERT_STORE_PROV_SYSTEM_W,
-                Cryptography::CERT_QUERY_ENCODING_TYPE::default(),
-                Cryptography::HCRYPTPROV_LEGACY::default(),
-                Cryptography::CERT_SYSTEM_STORE_CURRENT_USER_ID
-                    << Cryptography::CERT_SYSTEM_STORE_LOCATION_SHIFT,
-                data.as_ptr() as *mut _,
-            );
-            if !store.is_null() {
-                Ok(CertStore(store))
-            } else {
-                Err(io::Error::last_os_error())
-            }
-        }
+        CertStoreBuilder::new().open_current_user(which)
     }
 
     /// Opens up the specified key store within the context of the local machine.
@@ -129,25 +111,7 @@ impl CertStore {
     /// Common valid values for `which` are "My", "Root", "Trust", "CA".
     /// Additonal MSDN docs https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certopenstore#remarks
     pub fn open_local_machine(which: &str) -> io::Result<CertStore> {
-        unsafe {
-            let data = OsStr::new(which)
-                .encode_wide()
-                .chain(Some(0))
-                .collect::<Vec<_>>();
-            let store = Cryptography::CertOpenStore(
-                Cryptography::CERT_STORE_PROV_SYSTEM_W,
-                Cryptography::CERT_QUERY_ENCODING_TYPE::default(),
-                Cryptography::HCRYPTPROV_LEGACY::default(),
-                Cryptography::CERT_SYSTEM_STORE_LOCAL_MACHINE_ID
-                    << Cryptography::CERT_SYSTEM_STORE_LOCATION_SHIFT,
-                data.as_ptr() as *mut _,
-            );
-            if !store.is_null() {
-                Ok(CertStore(store))
-            } else {
-                Err(io::Error::last_os_error())
-            }
-        }
+        CertStoreBuilder::new().open_local_machine(which)
     }
 
     /// Imports a PKCS#12-encoded key/certificate pair, returned as a
@@ -274,6 +238,78 @@ impl<'a> Iterator for Certs<'a> {
                 Some(next)
             }
         }
+    }
+}
+
+/// A builder for opening current-user and local-machine certificate stores.
+///
+/// By default, stores are opened with the same flags as
+/// `CertStore::open_current_user` and `CertStore::open_local_machine`.
+///
+/// ```no_run
+/// use schannel::cert_store::CertStoreBuilder;
+///
+/// let store = CertStoreBuilder::new()
+///     .read_only()
+///     .open_current_user("Root")?;
+/// # Ok::<(), std::io::Error>(())
+/// ```
+#[derive(Default)]
+pub struct CertStoreBuilder {
+    flags: u32,
+}
+
+impl CertStoreBuilder {
+    /// Returns a new `CertStoreBuilder` with default settings.
+    pub fn new() -> CertStoreBuilder {
+        CertStoreBuilder::default()
+    }
+
+    /// Opens stores with read-only access.
+    ///
+    /// Registry-backed stores are opened with read access, and attempts to
+    /// modify the store fail. By default, read-only access is not requested.
+    pub fn read_only(&mut self) -> &mut CertStoreBuilder {
+        self.flags |= Cryptography::CERT_STORE_READONLY_FLAG;
+        self
+    }
+
+    /// Opens the specified certificate store for the current user.
+    ///
+    /// Common valid values for `which` are "My", "Root", "Trust", "CA".
+    pub fn open_current_user(&self, which: &str) -> io::Result<CertStore> {
+        self.open(which, Cryptography::CERT_SYSTEM_STORE_CURRENT_USER_ID)
+    }
+
+    /// Opens the specified certificate store for the local machine.
+    ///
+    /// Common valid values for `which` are "My", "Root", "Trust", "CA".
+    pub fn open_local_machine(&self, which: &str) -> io::Result<CertStore> {
+        self.open(which, Cryptography::CERT_SYSTEM_STORE_LOCAL_MACHINE_ID)
+    }
+
+    fn open(&self, which: &str, location: u32) -> io::Result<CertStore> {
+        // Encode the system store name.
+        let data = OsStr::new(which)
+            .encode_wide()
+            .chain(Some(0))
+            .collect::<Vec<_>>();
+        let flags = self.flags | (location << Cryptography::CERT_SYSTEM_STORE_LOCATION_SHIFT);
+
+        // Keep the name alive while opening the store.
+        let store = unsafe {
+            Cryptography::CertOpenStore(
+                Cryptography::CERT_STORE_PROV_SYSTEM_W,
+                Cryptography::CERT_QUERY_ENCODING_TYPE::default(),
+                Cryptography::HCRYPTPROV_LEGACY::default(),
+                flags,
+                data.as_ptr() as *mut _,
+            )
+        };
+        if store.is_null() {
+            return Err(io::Error::last_os_error());
+        }
+        Ok(CertStore(store))
     }
 }
 

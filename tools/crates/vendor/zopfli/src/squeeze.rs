@@ -109,7 +109,7 @@ impl SymbolStats {
             let end = n;
 
             while i < end {
-                if (state.random_marsaglia() >> 4) % 3 == 0 {
+                if (state.random_marsaglia() >> 4).is_multiple_of(3) {
                     let index = state.random_marsaglia() as usize % n;
                     freqs[i] = freqs[index];
                 }
@@ -459,9 +459,9 @@ pub fn lz77_optimal<C: Cache>(
     the statistics of the previous run. */
     /* Repeat statistics with each time the cost model from the previous stat
     run. */
-    let mut current_iteration: u64 = 0;
-    let mut iterations_without_improvement: u64 = 0;
-    loop {
+    let mut iterations_without_improvement = 0;
+    let mut iterations = (0..max_iterations).into_iter().peekable();
+    while let Some(current_iteration) = iterations.next() {
         currentstore.reset();
         lz77_optimal_run(
             lmc,
@@ -477,6 +477,7 @@ pub fn lz77_optimal<C: Cache>(
 
         if cost < bestcost {
             iterations_without_improvement = 0;
+
             /* Copy to the output store. */
             outputstore = currentstore.clone();
             beststats = stats;
@@ -484,16 +485,19 @@ pub fn lz77_optimal<C: Cache>(
 
             debug!("Iteration {current_iteration}: {cost} bit");
         } else {
+            trace!("Iteration {current_iteration}: {cost} bit (no improvement)");
+
             iterations_without_improvement += 1;
-            trace!("Iteration {current_iteration}: {cost} bit");
             if iterations_without_improvement >= max_iterations_without_improvement {
                 break;
             }
         }
-        current_iteration += 1;
-        if current_iteration >= max_iterations {
-            break;
+
+        if iterations.peek().is_none() {
+            // No need to update stats or costs if no more iterations follow.
+            continue;
         }
+
         let laststats = stats;
         stats.clear_freqs();
         stats.get_statistics(&currentstore);
@@ -510,7 +514,9 @@ pub fn lz77_optimal<C: Cache>(
             stats.calculate_entropy();
             lastrandomstep = current_iteration;
         }
+
         lastcost = cost;
     }
+
     outputstore
 }

@@ -15,39 +15,56 @@ s! {
         pub st_rdev: crate::dev_t,
         __st_padding2: Padding<[c_long; 2]>,
         pub st_size: off_t,
-        pub st_atime: crate::time_t,
-        pub st_atime_nsec: c_long,
-        pub st_mtime: crate::time_t,
-        pub st_mtime_nsec: c_long,
-        pub st_ctime: crate::time_t,
-        pub st_ctime_nsec: c_long,
+
+        #[cfg(musl32_time64)]
+        __st_atim32: Padding<__c_anonymous_timespec32>,
+        #[cfg(musl32_time64)]
+        __st_mtim32: Padding<__c_anonymous_timespec32>,
+        #[cfg(musl32_time64)]
+        __st_ctim32: Padding<__c_anonymous_timespec32>,
+
+        #[cfg(musl_v1_2)]
         pub st_blksize: crate::blksize_t,
+        #[cfg(musl_v1_2)]
         __st_padding3: Padding<c_long>,
+        #[cfg(musl_v1_2)]
         pub st_blocks: crate::blkcnt_t,
+
+        pub st_atime: crate::time_t,
+        #[cfg(all(musl32_time64, target_endian = "big"))]
+        __pad0: Padding<u32>,
+        pub st_atime_nsec: c_long,
+        #[cfg(all(musl32_time64, target_endian = "little"))]
+        __pad0: Padding<u32>,
+        pub st_mtime: crate::time_t,
+        #[cfg(all(musl32_time64, target_endian = "big"))]
+        __pad1: Padding<u32>,
+        pub st_mtime_nsec: c_long,
+        #[cfg(all(musl32_time64, target_endian = "little"))]
+        __pad1: Padding<u32>,
+        pub st_ctime: crate::time_t,
+        #[cfg(all(musl32_time64, target_endian = "big"))]
+        __pad2: Padding<u32>,
+        pub st_ctime_nsec: c_long,
+        #[cfg(all(musl32_time64, target_endian = "little"))]
+        __pad2: Padding<u32>,
+
+        #[cfg(not(musl_v1_2))]
+        pub st_blksize: crate::blksize_t,
+        #[cfg(not(musl_v1_2))]
+        __st_padding3: Padding<c_long>,
+        #[cfg(not(musl_v1_2))]
+        pub st_blocks: crate::blkcnt_t,
+
+        #[cfg(not(musl_v1_2))]
         __st_padding4: Padding<[c_long; 14]>,
+        #[cfg(musl_v1_2)]
+        __st_padding4: Padding<[c_long; 2]>,
     }
 
-    pub struct stat64 {
-        pub st_dev: crate::dev_t,
-        __st_padding1: Padding<[c_long; 2]>,
-        pub st_ino: crate::ino64_t,
-        pub st_mode: crate::mode_t,
-        pub st_nlink: crate::nlink_t,
-        pub st_uid: crate::uid_t,
-        pub st_gid: crate::gid_t,
-        pub st_rdev: crate::dev_t,
-        __st_padding2: Padding<[c_long; 2]>,
-        pub st_size: off_t,
-        pub st_atime: crate::time_t,
-        pub st_atime_nsec: c_long,
-        pub st_mtime: crate::time_t,
-        pub st_mtime_nsec: c_long,
-        pub st_ctime: crate::time_t,
-        pub st_ctime_nsec: c_long,
-        pub st_blksize: crate::blksize_t,
-        __st_padding3: Padding<c_long>,
-        pub st_blocks: crate::blkcnt64_t,
-        __st_padding4: Padding<[c_long; 14]>,
+    struct __c_anonymous_timespec32 {
+        __tv_sec: c_long,
+        __tv_nsec: c_long,
     }
 
     pub struct stack_t {
@@ -57,9 +74,9 @@ s! {
     }
 
     pub struct ipc_perm {
-        #[cfg(musl_v1_2_3)]
+        #[cfg(musl_v1_2)]
         pub __key: crate::key_t,
-        #[cfg(not(musl_v1_2_3))]
+        #[cfg(not(musl_v1_2))]
         #[deprecated(
             since = "0.2.173",
             note = "This field is incorrectly named and will be changed
@@ -79,40 +96,40 @@ s! {
     pub struct shmid_ds {
         pub shm_perm: crate::ipc_perm,
         pub shm_segsz: size_t,
+        #[cfg(not(musl32_time64))]
         pub shm_atime: crate::time_t,
+        #[cfg(not(musl32_time64))]
         pub shm_dtime: crate::time_t,
+        #[cfg(not(musl32_time64))]
         pub shm_ctime: crate::time_t,
+        #[cfg(musl32_time64)]
+        __shm_atime_lo: Padding<c_long>,
+        #[cfg(musl32_time64)]
+        __shm_dtime_lo: Padding<c_long>,
+        #[cfg(musl32_time64)]
+        __shm_ctime_lo: Padding<c_long>,
         pub shm_cpid: crate::pid_t,
         pub shm_lpid: crate::pid_t,
         pub shm_nattch: c_ulong,
+        #[cfg(not(musl32_time64))]
         __pad1: Padding<c_ulong>,
+        #[cfg(not(musl32_time64))]
         __pad2: Padding<c_ulong>,
-    }
 
-    pub struct msqid_ds {
-        pub msg_perm: crate::ipc_perm,
-        #[cfg(target_endian = "big")]
-        __unused1: Padding<c_int>,
-        pub msg_stime: crate::time_t,
-        #[cfg(target_endian = "little")]
-        __unused1: Padding<c_int>,
-        #[cfg(target_endian = "big")]
-        __unused2: Padding<c_int>,
-        pub msg_rtime: crate::time_t,
-        #[cfg(target_endian = "little")]
-        __unused2: Padding<c_int>,
-        #[cfg(target_endian = "big")]
-        __unused3: Padding<c_int>,
-        pub msg_ctime: crate::time_t,
-        #[cfg(target_endian = "little")]
-        __unused3: Padding<c_int>,
-        pub __msg_cbytes: c_ulong,
-        pub msg_qnum: crate::msgqnum_t,
-        pub msg_qbytes: crate::msglen_t,
-        pub msg_lspid: crate::pid_t,
-        pub msg_lrpid: crate::pid_t,
-        __pad1: Padding<c_ulong>,
-        __pad2: Padding<c_ulong>,
+        #[cfg(musl32_time64)]
+        __shm_atime_hi: Padding<c_ushort>,
+        #[cfg(musl32_time64)]
+        __shm_dtime_hi: Padding<c_ushort>,
+        #[cfg(musl32_time64)]
+        __shm_ctime_hi: Padding<c_ushort>,
+        #[cfg(musl32_time64)]
+        __pad1: Padding<c_ushort>,
+        #[cfg(musl32_time64)]
+        pub shm_atime: crate::time_t,
+        #[cfg(musl32_time64)]
+        pub shm_dtime: crate::time_t,
+        #[cfg(musl32_time64)]
+        pub shm_ctime: crate::time_t,
     }
 
     pub struct statfs {
@@ -130,6 +147,7 @@ s! {
         pub f_spare: [c_ulong; 5],
     }
 
+    // FIXME(1.0,deprecate): lfs binding to be removed
     pub struct statfs64 {
         pub f_type: c_ulong,
         pub f_bsize: c_ulong,
@@ -143,6 +161,94 @@ s! {
         pub f_namelen: c_ulong,
         pub f_flags: c_ulong,
         pub f_spare: [c_ulong; 5],
+    }
+}
+
+cfg_if! {
+    if #[cfg(musl32_time64)] {
+        s! {
+            pub struct msqid_ds {
+                pub msg_perm: crate::ipc_perm,
+
+                #[cfg(target_endian = "big")]
+                __msg_stime_hi: Padding<c_ulong>,
+                #[cfg(target_endian = "big")]
+                __msg_stime_lo: Padding<c_ulong>,
+                #[cfg(target_endian = "big")]
+                __msg_rtime_hi: Padding<c_ulong>,
+                #[cfg(target_endian = "big")]
+                __msg_rtime_lo: Padding<c_ulong>,
+                #[cfg(target_endian = "big")]
+                __msg_ctime_hi: Padding<c_ulong>,
+                #[cfg(target_endian = "big")]
+                __msg_ctime_lo: Padding<c_ulong>,
+
+                #[cfg(target_endian = "little")]
+                __msg_stime_lo: Padding<c_ulong>,
+                #[cfg(target_endian = "little")]
+                __msg_stime_hi: Padding<c_ulong>,
+                #[cfg(target_endian = "little")]
+                __msg_rtime_lo: Padding<c_ulong>,
+                #[cfg(target_endian = "little")]
+                __msg_rtime_hi: Padding<c_ulong>,
+                #[cfg(target_endian = "little")]
+                __msg_ctime_lo: Padding<c_ulong>,
+                #[cfg(target_endian = "little")]
+                __msg_ctime_hi: Padding<c_ulong>,
+
+                pub __msg_cbytes: c_ulong,
+                pub msg_qnum: crate::msgqnum_t,
+                pub msg_qbytes: crate::msglen_t,
+                pub msg_lspid: crate::pid_t,
+                pub msg_lrpid: crate::pid_t,
+                __pad1: Padding<c_ulong>,
+                __pad2: Padding<c_ulong>,
+
+                pub msg_stime: crate::time_t,
+                pub msg_rtime: crate::time_t,
+                pub msg_ctime: crate::time_t,
+            }
+        }
+    } else {
+        s! {
+            pub struct msqid_ds {
+                pub msg_perm: crate::ipc_perm,
+
+                #[cfg(target_endian = "big")]
+                __unused1: Padding<c_int>,
+                #[cfg(target_endian = "big")]
+                pub msg_stime: crate::time_t,
+                #[cfg(target_endian = "big")]
+                __unused2: Padding<c_int>,
+                #[cfg(target_endian = "big")]
+                pub msg_rtime: crate::time_t,
+                #[cfg(target_endian = "big")]
+                __unused3: Padding<c_int>,
+                #[cfg(target_endian = "big")]
+                pub msg_ctime: crate::time_t,
+
+                #[cfg(target_endian = "little")]
+                pub msg_stime: crate::time_t,
+                #[cfg(target_endian = "little")]
+                __unused1: Padding<c_int>,
+                #[cfg(target_endian = "little")]
+                pub msg_rtime: crate::time_t,
+                #[cfg(target_endian = "little")]
+                __unused2: Padding<c_int>,
+                #[cfg(target_endian = "little")]
+                pub msg_ctime: crate::time_t,
+                #[cfg(target_endian = "little")]
+                __unused3: Padding<c_int>,
+
+                pub __msg_cbytes: c_ulong,
+                pub msg_qnum: crate::msgqnum_t,
+                pub msg_qbytes: crate::msglen_t,
+                pub msg_lspid: crate::pid_t,
+                pub msg_lrpid: crate::pid_t,
+                __pad1: Padding<c_ulong>,
+                __pad2: Padding<c_ulong>,
+            }
+        }
     }
 }
 
@@ -506,12 +612,10 @@ pub const SYS_modify_ldt: c_long = 4000 + 123;
 pub const SYS_adjtimex: c_long = 4000 + 124;
 pub const SYS_mprotect: c_long = 4000 + 125;
 pub const SYS_sigprocmask: c_long = 4000 + 126;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_create_module: c_long = 4000 + 127;
+// 127 was SYS_create_module
 pub const SYS_init_module: c_long = 4000 + 128;
 pub const SYS_delete_module: c_long = 4000 + 129;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_get_kernel_syms: c_long = 4000 + 130;
+// 130 was SYS_get_kernel_syms
 pub const SYS_quotactl: c_long = 4000 + 131;
 pub const SYS_getpgid: c_long = 4000 + 132;
 pub const SYS_fchdir: c_long = 4000 + 133;
@@ -566,8 +670,7 @@ pub const SYS_socket: c_long = 4000 + 183;
 pub const SYS_socketpair: c_long = 4000 + 184;
 pub const SYS_setresuid: c_long = 4000 + 185;
 pub const SYS_getresuid: c_long = 4000 + 186;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_query_module: c_long = 4000 + 187;
+// 187 was SYS_query_module
 pub const SYS_poll: c_long = 4000 + 188;
 pub const SYS_nfsservctl: c_long = 4000 + 189;
 pub const SYS_setresgid: c_long = 4000 + 190;

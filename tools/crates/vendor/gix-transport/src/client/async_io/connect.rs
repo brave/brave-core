@@ -1,35 +1,35 @@
-pub use crate::client::non_io_types::connect::{Error, Options};
+pub use crate::client::non_io_types::connect::Options;
 
 #[cfg(feature = "async-std")]
 pub(crate) mod function {
-    use crate::client::{git, non_io_types::connect::Error};
+    use crate::client::{async_io::Transport, git::async_io::Connection};
+    use gix_error::Result;
+    use gix_error::{ResultExt, bail, message};
 
     /// A general purpose connector connecting to a repository identified by the given `url`.
     ///
     /// This includes connections to
-    /// [git daemons][crate::client::git::connect()] only at the moment.
+    /// [git daemons][Connection::new_tcp()] only at the moment.
     ///
     /// Use `options` to further control specifics of the transport resulting from the connection.
-    pub async fn connect<Url, E>(
-        url: Url,
-        options: super::Options,
-    ) -> Result<Box<dyn crate::client::Transport + Send>, Error>
+    pub async fn connect<Url, E>(url: Url, options: super::Options) -> Result<Box<dyn Transport + Send>>
     where
         Url: TryInto<gix_url::Url, Error = E>,
-        gix_url::parse::Error: From<E>,
+        E: std::error::Error + Send + Sync + 'static,
     {
-        let mut url = url.try_into().map_err(gix_url::parse::Error::from)?;
+        let mut url = url.try_into().or_raise(|| message("Could not parse URL"))?;
         Ok(match url.scheme {
             gix_url::Scheme::Git => {
                 if url.user().is_some() {
-                    return Err(Error::UnsupportedUrlTokens {
-                        url: url.to_bstring(),
-                        scheme: url.scheme,
-                    });
+                    bail!(
+                        "The url {:?} contains information that would not be used by the {} protocol".validation(),
+                        url.to_bstring(),
+                        url.scheme
+                    );
                 }
                 let path = std::mem::take(&mut url.path);
                 Box::new(
-                    git::Connection::new_tcp(
+                    Connection::new_tcp(
                         url.host().expect("host is present in url"),
                         url.port,
                         path,
@@ -37,10 +37,15 @@ pub(crate) mod function {
                         options.trace,
                     )
                     .await
-                    .map_err(|e| Box::new(e) as Box<dyn std::error::Error + Send + Sync>)?,
+                    .or_raise(|| message("connection failed"))?,
                 )
             }
-            scheme => return Err(Error::UnsupportedScheme(scheme)),
+            scheme => {
+                bail!("The '{scheme}' protocol is currently unsupported".unsupported());
+            }
         })
     }
 }
+
+#[cfg(feature = "async-std")]
+pub use function::connect;

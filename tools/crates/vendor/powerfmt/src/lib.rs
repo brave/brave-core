@@ -3,8 +3,8 @@
 //! allocation, and avoid repetitive calculations.
 
 #![cfg_attr(not(feature = "std"), no_std)]
-#![cfg_attr(__powerfmt_docs, feature(doc_auto_cfg, rustc_attrs))]
-#![cfg_attr(__powerfmt_docs, allow(internal_features))]
+#![cfg_attr(docsrs, feature(doc_cfg, rustc_attrs))]
+#![cfg_attr(docsrs, allow(internal_features))]
 
 #[cfg(feature = "alloc")]
 extern crate alloc;

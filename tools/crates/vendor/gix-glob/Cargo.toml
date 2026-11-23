@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-glob"
-version = "0.22.1"
+version = "0.29.1"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,6 +29,7 @@ description = "A crate of the gitoxide project dealing with pattern matching"
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -44,7 +45,7 @@ serde = [
 [lib]
 name = "gix_glob"
 path = "src/lib.rs"
-doctest = false
+doctest = true
 
 [dependencies.bitflags]
 version = "2"
@@ -58,11 +59,17 @@ default-features = false
 version = "0.2.0"
 optional = true
 
-[dependencies.gix-features]
-version = "^0.44.1"
+[dependencies.gix-fs]
+version = "^0.24.1"
 
 [dependencies.gix-path]
-version = "^0.10.21"
+version = "^0.14.1"
+
+[dependencies.gix-trace]
+version = "^0.3.1"
+
+[dependencies.gix-utils]
+version = "^0.5.1"
 
 [dependencies.serde]
 version = "1.0.114"
@@ -70,9 +77,11 @@ features = ["derive"]
 optional = true
 default-features = false
 
-[dev-dependencies]
+[dev-dependencies.criterion]
+version = "0.8.2"
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -91,7 +100,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

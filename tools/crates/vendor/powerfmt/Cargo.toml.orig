@@ -1,9 +1,9 @@
 [package]
 name = "powerfmt"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Jacob Pratt <jacob@jhpratt.dev>"]
 edition = "2021"
-rust-version = "1.67.0"
+rust-version = "1.79.0"
 repository = "https://github.com/jhpratt/powerfmt"
 keywords = ["display", "format", "fmt", "formatter", "extension"]
 categories = ["no-std", "no-std::no-alloc", "rust-patterns"]
@@ -18,7 +18,7 @@ description = """
 [package.metadata.docs.rs]
 all-features = true
 targets = ["x86_64-unknown-linux-gnu"]
-rustdoc-args = ["--cfg", "__powerfmt_docs", "--generate-link-to-definition"]
+rustdoc-args = ["--generate-link-to-definition"]
 
 [lints]
 workspace = true

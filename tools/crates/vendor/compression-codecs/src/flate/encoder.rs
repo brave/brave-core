@@ -31,16 +31,16 @@ impl FlateEncoder {
         let prior_in = self.compress.total_in();
         let prior_out = self.compress.total_out();
 
-        let result = self
+        let status = self
             .compress
             // Safety: We **trust** flate2 to not write uninitialized bytes into buffer
-            .compress_uninit(input.unwritten(), unsafe { output.unwritten_mut() }, flush);
+            .compress_uninit(input.unwritten(), unsafe { output.unwritten_mut() }, flush)?;
 
         input.advance((self.compress.total_in() - prior_in) as usize);
         // Safety: We **trust** flate2 to write bytes properly into buffer
         unsafe { output.assume_init_and_advance((self.compress.total_out() - prior_out) as usize) };
 
-        Ok(result?)
+        Ok(status)
     }
 }
 

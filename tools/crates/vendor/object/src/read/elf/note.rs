@@ -119,7 +119,7 @@ impl<'data, Elf: FileHeader> Note<'data, Elf> {
     /// Return the `n_type` field of the `NoteHeader`.
     ///
     /// The meaning of this field is determined by `name`.
-    pub fn n_type(&self, endian: Elf::Endian) -> u32 {
+    pub fn n_type(&self, endian: Elf::Endian) -> elf::NoteType {
         self.header.n_type(endian)
     }
 
@@ -182,13 +182,15 @@ impl<'data, Elf: FileHeader> Note<'data, Elf> {
 
 /// A trait for generic access to [`elf::NoteHeader32`] and [`elf::NoteHeader64`].
 #[allow(missing_docs)]
-pub trait NoteHeader: Debug + Pod {
+pub trait NoteHeader: Debug + Pod + read::private::Sealed {
     type Endian: endian::Endian;
 
     fn n_namesz(&self, endian: Self::Endian) -> u32;
     fn n_descsz(&self, endian: Self::Endian) -> u32;
-    fn n_type(&self, endian: Self::Endian) -> u32;
+    fn n_type(&self, endian: Self::Endian) -> elf::NoteType;
 }
+
+impl<Endian: endian::Endian> read::private::Sealed for elf::NoteHeader32<Endian> {}
 
 impl<Endian: endian::Endian> NoteHeader for elf::NoteHeader32<Endian> {
     type Endian = Endian;
@@ -204,10 +206,12 @@ impl<Endian: endian::Endian> NoteHeader for elf::NoteHeader32<Endian> {
     }
 
     #[inline]
-    fn n_type(&self, endian: Self::Endian) -> u32 {
+    fn n_type(&self, endian: Self::Endian) -> elf::NoteType {
         self.n_type.get(endian)
     }
 }
+
+impl<Endian: endian::Endian> read::private::Sealed for elf::NoteHeader64<Endian> {}
 
 impl<Endian: endian::Endian> NoteHeader for elf::NoteHeader64<Endian> {
     type Endian = Endian;
@@ -223,7 +227,7 @@ impl<Endian: endian::Endian> NoteHeader for elf::NoteHeader64<Endian> {
     }
 
     #[inline]
-    fn n_type(&self, endian: Self::Endian) -> u32 {
+    fn n_type(&self, endian: Self::Endian) -> elf::NoteType {
         self.n_type.get(endian)
     }
 }
@@ -254,7 +258,7 @@ impl<'data, Endian: endian::Endian> GnuPropertyIterator<'data, Endian> {
 
     fn parse(&mut self) -> read::Result<GnuProperty<'data>> {
         (|| -> Result<_, ()> {
-            let pr_type = self.data.read_at::<U32<Endian>>(0)?.get(self.endian);
+            let pr_type = self.data.read_at::<U32<Endian, _>>(0)?.get(self.endian);
             let pr_datasz = self.data.read_at::<U32<Endian>>(4)?.get(self.endian) as usize;
             let pr_data = self.data.read_bytes_at(8, pr_datasz)?.0;
             self.data.skip(util::align(8 + pr_datasz, self.align))?;
@@ -275,7 +279,7 @@ impl<'data, Endian: endian::Endian> Iterator for GnuPropertyIterator<'data, Endi
 /// A property in a [`elf::NT_GNU_PROPERTY_TYPE_0`] note.
 #[derive(Debug)]
 pub struct GnuProperty<'data> {
-    pr_type: u32,
+    pr_type: elf::GnuPropertyType,
     pr_data: &'data [u8],
 }
 
@@ -283,7 +287,7 @@ impl<'data> GnuProperty<'data> {
     /// Return the property type.
     ///
     /// This is one of the `GNU_PROPERTY_*` constants.
-    pub fn pr_type(&self) -> u32 {
+    pub fn pr_type(&self) -> elf::GnuPropertyType {
         self.pr_type
     }
 

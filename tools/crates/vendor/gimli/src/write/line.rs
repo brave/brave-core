@@ -1,13 +1,12 @@
 use alloc::vec::Vec;
-use indexmap::{IndexMap, IndexSet};
-use std::ops::{Deref, DerefMut};
+use core::ops::{Deref, DerefMut};
 
 use crate::common::{DebugLineOffset, Encoding, Format, LineEncoding, SectionId};
 use crate::constants;
-use crate::leb128;
+use crate::leb128::write::Leb128;
 use crate::write::{
-    Address, DebugLineStrOffsets, DebugStrOffsets, Error, LineStringId, LineStringTable, Result,
-    Section, StringId, StringTable, Writer,
+    Address, Error, FnvIndexMap, FnvIndexSet, LineStringId, LineStringTable, Result, Section,
+    StringId, StringTable, Writer,
 };
 
 /// The number assigned to the first special opcode.
@@ -30,7 +29,7 @@ pub struct LineProgram {
     /// directory of the compilation unit.
     ///
     /// The first entry is for the working directory of the compilation unit.
-    directories: IndexSet<LineString>,
+    directories: FnvIndexSet<LineString>,
 
     /// A list of source file entries.
     ///
@@ -40,7 +39,7 @@ pub struct LineProgram {
     /// directory. Otherwise the directory is meaningless.
     ///
     /// Does not include comp_file, even for version >= 5.
-    files: IndexMap<(LineString, DirectoryId), FileInfo>,
+    files: FnvIndexMap<(LineString, DirectoryId), FileInfo>,
 
     /// True if the file entries may have valid timestamps.
     ///
@@ -115,8 +114,8 @@ impl LineProgram {
             none: false,
             encoding,
             line_encoding,
-            directories: IndexSet::new(),
-            files: IndexMap::new(),
+            directories: FnvIndexSet::default(),
+            files: FnvIndexMap::default(),
             prev_row: LineRow::initial_state(encoding, line_encoding),
             row: LineRow::initial_state(encoding, line_encoding),
             instructions: Vec::new(),
@@ -158,8 +157,8 @@ impl LineProgram {
             none: true,
             encoding,
             line_encoding,
-            directories: IndexSet::new(),
-            files: IndexMap::new(),
+            directories: FnvIndexSet::default(),
+            files: FnvIndexMap::default(),
             prev_row: LineRow::initial_state(encoding, line_encoding),
             row: LineRow::initial_state(encoding, line_encoding),
             instructions: Vec::new(),
@@ -328,6 +327,11 @@ impl LineProgram {
 
     /// Begin a new sequence and set its base address.
     ///
+    /// It is not necessary to call this method, since all of the other methods
+    /// will automatically begin a sequence if one has not already begun.
+    /// However, it may be useful in rare cases where you need to begin a sequence
+    /// while optionally setting the address.
+    ///
     /// # Panics
     ///
     /// Panics if a sequence has already begun.
@@ -339,15 +343,23 @@ impl LineProgram {
         }
     }
 
+    /// Set the address for the next row.
+    ///
+    /// This begins a sequence if one has not already begun.
+    ///
+    /// This does not begin a new sequence if one has already begun. Hence, the caller must
+    /// ensure that this address is greater than or equal to the address of the previous row.
+    pub fn set_address(&mut self, address: Address) {
+        self.in_sequence = true;
+        self.instructions.push(LineInstruction::SetAddress(address));
+    }
+
     /// End the sequence, and reset the row to its default values.
     ///
     /// Only the `address_offset` and op_index` fields of the current row are used.
     ///
-    /// # Panics
-    ///
-    /// Panics if a sequence has not begun.
+    /// This will emit an `EndSequence` instruction even if a sequence has not begun.
     pub fn end_sequence(&mut self, address_offset: u64) {
-        assert!(self.in_sequence);
         self.in_sequence = false;
         self.row.address_offset = address_offset;
         let op_advance = self.op_advance();
@@ -377,13 +389,13 @@ impl LineProgram {
     /// After the instructions are generated, it sets `discriminator` to 0, and sets
     /// `basic_block`, `prologue_end`, and `epilogue_begin` to false.
     ///
+    /// This begins a sequence if one has not already begun.
+    ///
     /// # Panics
     ///
-    /// Panics if a sequence has not begun.
     /// Panics if the address_offset decreases.
     pub fn generate_row(&mut self) {
-        assert!(self.in_sequence);
-
+        self.in_sequence = true;
         // Output fields that are reset on every row.
         if self.row.discriminator != 0 {
             self.instructions
@@ -505,6 +517,10 @@ impl LineProgram {
 
     /// Write the line number program to the given section.
     ///
+    /// `encoding` contains the encoding parameters of the associated compilation unit.
+    /// This is not used for writing the line number program, but is used to check for
+    /// compatibility with [`Self::encoding`].
+    ///
     /// # Panics
     ///
     /// Panics if `self.is_none()`.
@@ -512,13 +528,16 @@ impl LineProgram {
         &self,
         w: &mut DebugLine<W>,
         encoding: Encoding,
-        debug_line_str_offsets: &DebugLineStrOffsets,
-        debug_str_offsets: &DebugStrOffsets,
+        line_strings: &mut LineStringTable,
+        strings: &mut StringTable,
     ) -> Result<DebugLineOffset> {
         assert!(!self.is_none());
 
-        if encoding.version < self.version()
-            || encoding.format != self.format()
+        // `.debug_line` and `.debug_info` may use different versions, but version 5
+        // allows a file index of 0, which is not allowed in earlier versions.
+        //
+        // Also check that address size matches since there is no reason for it to differ.
+        if encoding.version < 5 && self.version() >= 5
             || encoding.address_size != self.address_size()
         {
             return Err(Error::IncompatibleLineProgramEncoding);
@@ -567,8 +586,8 @@ impl LineProgram {
                     w,
                     constants::DW_FORM_string,
                     self.encoding,
-                    debug_line_str_offsets,
-                    debug_str_offsets,
+                    line_strings,
+                    strings,
                 )?;
             }
             w.write_u8(0)?;
@@ -578,8 +597,8 @@ impl LineProgram {
                     w,
                     constants::DW_FORM_string,
                     self.encoding,
-                    debug_line_str_offsets,
-                    debug_str_offsets,
+                    line_strings,
+                    strings,
                 )?;
                 w.write_uleb128(dir.0 as u64)?;
                 w.write_uleb128(info.timestamp)?;
@@ -596,13 +615,7 @@ impl LineProgram {
             // Directory entries.
             w.write_uleb128(self.directories.len() as u64)?;
             for dir in self.directories.iter() {
-                dir.write(
-                    w,
-                    dir_form,
-                    self.encoding,
-                    debug_line_str_offsets,
-                    debug_str_offsets,
-                )?;
+                dir.write(w, dir_form, self.encoding, line_strings, strings)?;
             }
 
             // File name entry formats.
@@ -634,20 +647,6 @@ impl LineProgram {
                 .iter()
                 .find_map(|file| file.1.source.as_ref().map(LineString::form))
                 .unwrap_or(constants::DW_FORM_string);
-            // Create a string to use for files with no source.
-            // Note: An empty DW_LNCT_LLVM_source is interpreted as missing
-            // source code. Included source code should always be
-            // terminated by a "\n" line ending.
-            let file_source_empty = match file_source_form {
-                // If any file source is set, then `get_empty` will succeed.
-                // If all are missing then `file_source_form` will be `DW_FORM_string`.
-                constants::DW_FORM_line_strp => debug_line_str_offsets
-                    .get_empty()
-                    .map(LineString::LineStringRef),
-                constants::DW_FORM_strp => debug_str_offsets.get_empty().map(LineString::StringRef),
-                _ => None,
-            }
-            .unwrap_or(LineString::String(Vec::new()));
             if self.file_has_source {
                 w.write_uleb128(u64::from(constants::DW_LNCT_LLVM_source.0))?;
                 w.write_uleb128(file_source_form.0.into())?;
@@ -656,13 +655,7 @@ impl LineProgram {
             // File name entries.
             w.write_uleb128(self.files.len() as u64)?;
             let mut write_file = |file: &LineString, dir: DirectoryId, info: &FileInfo| {
-                file.write(
-                    w,
-                    file_form,
-                    self.encoding,
-                    debug_line_str_offsets,
-                    debug_str_offsets,
-                )?;
+                file.write(w, file_form, self.encoding, line_strings, strings)?;
                 w.write_uleb128(dir.0 as u64)?;
                 if self.file_has_timestamp {
                     w.write_uleb128(info.timestamp)?;
@@ -674,14 +667,22 @@ impl LineProgram {
                     w.write(&info.md5)?;
                 }
                 if self.file_has_source {
-                    let source = info.source.as_ref().unwrap_or(&file_source_empty);
-                    source.write(
-                        w,
-                        file_source_form,
-                        self.encoding,
-                        debug_line_str_offsets,
-                        debug_str_offsets,
-                    )?;
+                    if let Some(source) = info.source.as_ref() {
+                        source.write(w, file_source_form, self.encoding, line_strings, strings)?;
+                    } else {
+                        // Create a string to use for files with no source.
+                        // Note: An empty DW_LNCT_LLVM_source is interpreted as missing
+                        // source code. Included source code should always be
+                        // terminated by a "\n" line ending.
+                        let source = match file_source_form {
+                            constants::DW_FORM_line_strp => {
+                                LineString::LineStringRef(line_strings.add([]))
+                            }
+                            constants::DW_FORM_strp => LineString::StringRef(strings.add([])),
+                            _ => LineString::String(Vec::new()),
+                        };
+                        source.write(w, file_source_form, self.encoding, line_strings, strings)?;
+                    }
                 }
                 Ok(())
             };
@@ -709,7 +710,7 @@ impl LineProgram {
 }
 
 /// A row in the line number table that corresponds to a machine instruction.
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct LineRow {
     /// The offset of the instruction from the start address of the sequence.
     pub address_offset: u64,
@@ -844,13 +845,11 @@ impl LineInstruction {
                 w.write_address(address, encoding.address_size)?;
             }
             SetDiscriminator(val) => {
-                let mut bytes = [0u8; 10];
-                // bytes is long enough so this will never fail.
-                let len = leb128::write::unsigned(&mut { &mut bytes[..] }, val).unwrap();
+                let val = Leb128::unsigned(val);
                 w.write_u8(0)?;
-                w.write_uleb128(1 + len as u64)?;
+                w.write_uleb128(1 + val.len() as u64)?;
                 w.write_u8(constants::DW_LNE_set_discriminator.0)?;
-                w.write(&bytes[..len])?;
+                w.write(val.bytes())?;
             }
         }
         Ok(())
@@ -911,8 +910,8 @@ impl LineString {
         w: &mut DebugLine<W>,
         form: constants::DwForm,
         encoding: Encoding,
-        debug_line_str_offsets: &DebugLineStrOffsets,
-        debug_str_offsets: &DebugStrOffsets,
+        line_strings: &LineStringTable,
+        strings: &StringTable,
     ) -> Result<()> {
         if form != self.form() {
             return Err(Error::LineStringFormMismatch);
@@ -931,7 +930,7 @@ impl LineString {
                     return Err(Error::NeedVersion(5));
                 }
                 w.write_offset(
-                    debug_str_offsets.get(val).0,
+                    strings.offset(val).0,
                     SectionId::DebugStr,
                     encoding.format.word_size(),
                 )?;
@@ -941,7 +940,7 @@ impl LineString {
                     return Err(Error::NeedVersion(5));
                 }
                 w.write_offset(
-                    debug_line_str_offsets.get(val).0,
+                    line_strings.offset(val).0,
                     SectionId::DebugLineStr,
                     encoding.format.word_size(),
                 )?;
@@ -1034,207 +1033,549 @@ define_section!(
 );
 
 #[cfg(feature = "read")]
+pub use convert::*;
+#[cfg(feature = "read")]
 mod convert {
     use super::*;
     use crate::read::{self, Reader};
     use crate::write::{self, ConvertError, ConvertResult};
 
-    impl LineProgram {
-        /// Create a line number program by reading the data from the given program.
+    /// The result of [`ConvertLineProgram::read_row`].
+    #[derive(Debug, PartialEq, Eq)]
+    pub enum ConvertLineRow {
+        /// The address from a `DW_LNE_set_address` instruction.
         ///
-        /// Return the program and a mapping from file index to `FileId`.
-        pub fn from<R: Reader<Offset = usize>>(
-            mut from_program: read::IncompleteLineProgram<R>,
-            dwarf: &read::Dwarf<R>,
-            line_strings: &mut write::LineStringTable,
-            strings: &mut write::StringTable,
-            convert_address: &dyn Fn(u64) -> Option<Address>,
-        ) -> ConvertResult<(LineProgram, Vec<FileId>)> {
+        /// All subsequent rows in the sequence will have their `address_offset`
+        /// field set to an offset from this address.
+        SetAddress(u64),
+        /// A row produced by the line number program.
+        Row(LineRow),
+        /// The address offset of the end of the sequence.
+        EndSequence(u64),
+    }
+
+    /// The result of [`ConvertLineProgram::read_sequence`].
+    #[derive(Debug, PartialEq, Eq)]
+    pub struct ConvertLineSequence {
+        /// The address of the first instruction in the given rows.
+        ///
+        /// This will be `None` if there was no `DW_LNE_set_address` instruction.
+        pub start: Option<u64>,
+        /// The location of the next instruction after the given rows.
+        pub end: ConvertLineSequenceEnd,
+        /// The rows in the sequence.
+        ///
+        /// The `LineRow::address` fields are set to an offset from `Self::start`.
+        pub rows: Vec<LineRow>,
+    }
+
+    /// The location of the next instruction after a sequence of rows.
+    #[derive(Debug, PartialEq, Eq)]
+    pub enum ConvertLineSequenceEnd {
+        /// An offset in bytes from [`ConvertLineSequence::start`].
+        Length(u64),
+        /// An address set by a `DW_LNE_set_address` instruction.
+        Address(u64),
+    }
+
+    /// The next action to take in the conversion of a line number program.
+    #[derive(Debug)]
+    enum ConvertLineState {
+        /// Read and evaluate instructions for the next row.
+        ReadRow,
+        /// Return `self.address` then switch to `ConvertRow`.
+        SetAddress,
+        /// Convert `self.from_row` to a `LineRow`.
+        ///
+        /// If this state occurred after a `SetAddress`, `self.address` is still the
+        /// address that was set.
+        ConvertRow,
+    }
+
+    /// The state for the conversion of a line number program.
+    ///
+    /// After calling [`Dwarf::read_line_program`](crate::write::Dwarf::read_line_program),
+    /// or [`ConvertUnit::read_line_program`](write::ConvertUnit::read_line_program),
+    /// you may call either [`ConvertLineProgram::read_row`] to read the next row, or
+    /// [`ConvertLineProgram::read_sequence`] to read a sequence of rows.
+    ///
+    /// If desired, you may transform the rows that are read. For example, it may be useful
+    /// to modify the addresses of the rows to match a corresponding transformation of the
+    /// machine instructions.
+    ///
+    /// Next, you may call [`ConvertLineProgram::set_address`], [`ConvertLineProgram::generate_row`],
+    /// [`ConvertLineProgram::end_sequence`] to update the converted line number program.
+    ///
+    /// Once all rows have been converted, you may call [`ConvertLineProgram::program`] to
+    /// obtain the converted program and a mapping for file indices.
+    ///
+    /// ## Example Usage
+    ///
+    /// Convert a line program using [`ConvertLineProgram::read_row`].
+    ///
+    /// ```rust,no_run
+    /// use gimli::write::{Address, ConvertLineProgram, ConvertLineRow};
+    /// # fn example() -> Result<(), gimli::write::ConvertError> {
+    /// #    type Reader = gimli::read::EndianSlice<'static, gimli::LittleEndian>;
+    /// #    let from_program: gimli::read::IncompleteLineProgram<Reader> = unimplemented!();
+    /// #    let from_dwarf: gimli::read::Dwarf<_> = unimplemented!();
+    /// let mut dwarf = gimli::write::Dwarf::new();
+    /// // Start the conversion. This will convert the header, directories and files.
+    /// let mut convert = dwarf.read_line_program(
+    ///     &from_dwarf,
+    ///     from_program,
+    ///     // Use the original encodings.
+    ///     None,
+    ///     None,
+    /// )?;
+    /// // Read and convert each row in the program.
+    /// while let Some(row) = convert.read_row()? {
+    ///     match row {
+    ///         ConvertLineRow::SetAddress(address) => {
+    ///             convert.set_address(Address::Constant(address));
+    ///         }
+    ///         ConvertLineRow::Row(row) => {
+    ///             convert.generate_row(row);
+    ///         }
+    ///         ConvertLineRow::EndSequence(length) => {
+    ///             convert.end_sequence(length);
+    ///         }
+    ///     }
+    /// }
+    /// if convert.in_sequence() {
+    ///    // The sequence was never ended. This is invalid DWARF.
+    ///    return Err(gimli::write::ConvertError::MissingLineEndSequence);
+    /// }
+    /// let (program, files) = convert.program();
+    /// # Ok(())
+    /// # }
+    /// ```
+    #[derive(Debug)]
+    pub struct ConvertLineProgram<'a, R: Reader> {
+        from_dwarf: &'a read::Dwarf<R>,
+        from_program: read::IncompleteLineProgram<R>,
+        from_row: read::LineRow,
+        from_instructions: read::LineInstructions<R>,
+        files: Vec<FileId>,
+        dirs: Vec<DirectoryId>,
+        program: LineProgram,
+        line_strings: &'a mut write::LineStringTable,
+        #[allow(unused)] // May need LineString::StringRef in future.
+        strings: &'a mut write::StringTable,
+        address: Option<u64>,
+        state: ConvertLineState,
+    }
+
+    impl<'a, R: Reader + 'a> ConvertLineProgram<'a, R> {
+        pub(crate) fn new(
+            from_dwarf: &'a read::Dwarf<R>,
+            from_program: read::IncompleteLineProgram<R>,
+            mut from_comp_name: Option<R>,
+            encoding: Option<Encoding>,
+            line_encoding: Option<LineEncoding>,
+            line_strings: &'a mut write::LineStringTable,
+            strings: &'a mut write::StringTable,
+        ) -> ConvertResult<Self> {
+            let encoding = encoding.unwrap_or(from_program.header().encoding());
+            let line_encoding = line_encoding.unwrap_or(from_program.header().line_encoding());
+
             // Create mappings in case the source has duplicate files or directories.
             let mut dirs = Vec::new();
             let mut files = Vec::new();
 
-            let mut program = {
-                let from_header = from_program.header();
-                let encoding = from_header.encoding();
+            let from_header = from_program.header();
 
-                let working_dir = match from_header.directory(0) {
-                    Some(working_dir) => {
-                        LineString::from(working_dir, dwarf, line_strings, strings)?
-                    }
-                    None => LineString::new(&[][..], encoding, line_strings),
-                };
-
-                let (source_dir, source_file) = match from_header.file(0) {
-                    Some(source_file) => {
-                        let source_dir_index = source_file.directory_index();
-                        let source_dir = if source_dir_index != 0 {
-                            match from_header.directory(source_dir_index) {
-                                Some(source_dir) => Some(LineString::from(
-                                    source_dir,
-                                    dwarf,
-                                    line_strings,
-                                    strings,
-                                )?),
-                                None => return Err(ConvertError::InvalidDirectoryIndex),
-                            }
-                        } else {
-                            None
-                        };
-                        let source_file = LineString::from(
-                            source_file.path_name(),
-                            dwarf,
-                            line_strings,
-                            strings,
-                        )?;
-                        (source_dir, source_file)
-                    }
-                    None => (None, LineString::new(&[][..], encoding, line_strings)),
-                };
-
-                if from_header.line_base() > 0 {
-                    return Err(ConvertError::InvalidLineBase);
-                }
-                let mut program = LineProgram::new(
-                    encoding,
-                    from_header.line_encoding(),
-                    working_dir,
-                    source_dir,
-                    source_file,
-                    None, // We'll set this later if needed when we add the file again.
-                );
-
-                if from_header.version() <= 4 {
-                    // The first directory is implicit.
-                    dirs.push(DirectoryId(0));
-                    // A file index of 0 is invalid for version <= 4, but putting
-                    // something there makes the indexing easier.
-                    files.push(FileId::new(0));
-                }
-
-                for from_dir in from_header.include_directories() {
-                    let from_dir =
-                        LineString::from(from_dir.clone(), dwarf, line_strings, strings)?;
-                    dirs.push(program.add_directory(from_dir));
-                }
-
-                program.file_has_timestamp = from_header.file_has_timestamp();
-                program.file_has_size = from_header.file_has_size();
-                program.file_has_md5 = from_header.file_has_md5();
-                program.file_has_source = from_header.file_has_source();
-                for from_file in from_header.file_names().iter() {
-                    let from_name =
-                        LineString::from(from_file.path_name(), dwarf, line_strings, strings)?;
-                    let from_dir = from_file.directory_index();
-                    if from_dir >= dirs.len() as u64 {
-                        return Err(ConvertError::InvalidDirectoryIndex);
-                    }
-                    let from_dir = dirs[from_dir as usize];
-                    let from_info = Some(FileInfo {
-                        timestamp: from_file.timestamp(),
-                        size: from_file.size(),
-                        md5: *from_file.md5(),
-                        source: match from_file.source() {
-                            Some(source) => {
-                                Some(LineString::from(source, dwarf, line_strings, strings)?)
-                            }
-                            None => None,
-                        },
-                    });
-                    files.push(program.add_file(from_name, from_dir, from_info));
-                }
-
-                program
+            let working_dir = if let Some(from_working_dir) = from_header.directory(0) {
+                Self::convert_string(from_working_dir, from_dwarf, encoding, line_strings)?
+            } else if encoding.version <= 4 {
+                // This value won't be emitted, but we need to provide something.
+                LineString::String(Vec::new())
+            } else {
+                return Err(ConvertError::MissingCompilationDirectory);
             };
+
+            // `from_comp_name` is only needed for split DWARF version 4.
+            if from_header.version() >= 5 {
+                from_comp_name = None;
+            }
+            let (source_dir, source_file) = if let Some(from_comp_name) = from_comp_name {
+                (
+                    None,
+                    LineString::new(from_comp_name.to_slice()?, encoding, line_strings),
+                )
+            } else if let Some(from_source_file) = from_header.file(0) {
+                let dir_index = from_source_file.directory_index();
+                let source_dir = if dir_index != 0 {
+                    match from_header.directory(dir_index) {
+                        Some(from_source_dir) => Some(Self::convert_string(
+                            from_source_dir,
+                            from_dwarf,
+                            encoding,
+                            line_strings,
+                        )?),
+                        None => return Err(ConvertError::InvalidDirectoryIndex),
+                    }
+                } else {
+                    // Source dir matches working dir.
+                    None
+                };
+                let source_file = Self::convert_string(
+                    from_source_file.path_name(),
+                    from_dwarf,
+                    encoding,
+                    line_strings,
+                )?;
+                (source_dir, source_file)
+            } else if encoding.version <= 4 {
+                // This value won't be emitted, but we need to provide something.
+                (None, LineString::String(Vec::new()))
+            } else {
+                return Err(ConvertError::MissingCompilationName);
+            };
+
+            if from_header.line_base() > 0 {
+                return Err(ConvertError::InvalidLineBase);
+            }
+            let mut program = LineProgram::new(
+                encoding,
+                line_encoding,
+                working_dir,
+                source_dir,
+                source_file,
+                None, // We'll set this later if needed when we add the file again.
+            );
+
+            if from_header.version() <= 4 {
+                // The first directory is implicit.
+                dirs.push(DirectoryId(0));
+                // A file index of 0 is invalid for version <= 4, but putting
+                // something there makes the indexing easier.
+                files.push(FileId::new(0));
+            }
+
+            for from_attr in from_header.include_directories() {
+                let from_dir =
+                    Self::convert_string(from_attr.clone(), from_dwarf, encoding, line_strings)?;
+                dirs.push(program.add_directory(from_dir));
+            }
+
+            program.file_has_timestamp = from_header.file_has_timestamp();
+            program.file_has_size = from_header.file_has_size();
+            program.file_has_md5 = from_header.file_has_md5();
+            program.file_has_source = from_header.file_has_source();
+            for from_file in from_header.file_names() {
+                let (from_name, from_dir, from_info) =
+                    Self::convert_file(from_file, from_dwarf, &dirs, encoding, line_strings)?;
+                files.push(program.add_file(from_name, from_dir, from_info));
+            }
 
             // We can't use the `from_program.rows()` because that wouldn't let
             // us preserve address relocations.
-            let mut from_row = read::LineRow::new(from_program.header());
-            let mut instructions = from_program.header().instructions();
-            let mut address = None;
-            while let Some(instruction) = instructions.next_instruction(from_program.header())? {
+            let from_row = read::LineRow::new(from_program.header());
+            let from_instructions = from_program.header().instructions();
+            Ok(ConvertLineProgram {
+                from_dwarf,
+                from_program,
+                from_row,
+                from_instructions,
+                files,
+                dirs,
+                program,
+                line_strings,
+                strings,
+                address: None,
+                state: ConvertLineState::ReadRow,
+            })
+        }
+
+        fn convert_string(
+            from_attr: read::AttributeValue<R>,
+            from_dwarf: &read::Dwarf<R>,
+            encoding: Encoding,
+            line_strings: &mut write::LineStringTable,
+        ) -> ConvertResult<LineString> {
+            let r = from_dwarf.attr_line_string(from_attr)?;
+            Ok(LineString::new(r.to_slice()?, encoding, line_strings))
+        }
+
+        fn convert_file(
+            from_file: &read::FileEntry<R>,
+            from_dwarf: &read::Dwarf<R>,
+            dirs: &[DirectoryId],
+            encoding: Encoding,
+            line_strings: &mut write::LineStringTable,
+        ) -> ConvertResult<(LineString, DirectoryId, Option<FileInfo>)> {
+            let from_name =
+                Self::convert_string(from_file.path_name(), from_dwarf, encoding, line_strings)?;
+            let from_dir = from_file.directory_index();
+            if from_dir >= dirs.len() as u64 {
+                return Err(ConvertError::InvalidDirectoryIndex);
+            }
+            let from_dir = dirs[from_dir as usize];
+            let from_info = Some(FileInfo {
+                timestamp: from_file.timestamp(),
+                size: from_file.size(),
+                md5: *from_file.md5(),
+                source: match from_file.source() {
+                    Some(source) => Some(Self::convert_string(
+                        source,
+                        from_dwarf,
+                        encoding,
+                        line_strings,
+                    )?),
+                    None => None,
+                },
+            });
+            Ok((from_name, from_dir, from_info))
+        }
+
+        /// Read the next row from the source program.
+        ///
+        /// See [`ConvertLineProgram`] for an example of how to add the row to the converted program.
+        pub fn read_row(&mut self) -> ConvertResult<Option<ConvertLineRow>> {
+            match self.state {
+                ConvertLineState::ReadRow => {}
+                ConvertLineState::SetAddress => {
+                    if let Some(address) = self.address.take() {
+                        self.state = ConvertLineState::ConvertRow;
+                        return Ok(Some(ConvertLineRow::SetAddress(address)));
+                    }
+                    self.state = ConvertLineState::ReadRow;
+                    return Ok(Some(ConvertLineRow::Row(self.convert_row()?)));
+                }
+                ConvertLineState::ConvertRow => {
+                    self.state = ConvertLineState::ReadRow;
+                    return Ok(Some(ConvertLineRow::Row(self.convert_row()?)));
+                }
+            }
+            let mut tombstone = false;
+            self.address = None;
+            self.from_row.reset(self.from_program.header());
+            while let Some(instruction) = self
+                .from_instructions
+                .next_instruction(self.from_program.header())?
+            {
                 match instruction {
                     read::LineInstruction::SetAddress(val) => {
-                        if program.in_sequence() {
-                            return Err(ConvertError::UnsupportedLineInstruction);
+                        // Use address 0 so that all addresses are offsets.
+                        self.from_row.execute(
+                            read::LineInstruction::SetAddress(0),
+                            &mut self.from_program,
+                        )?;
+                        // Handle tombstones the same way that `from_row.execute` would have.
+                        let tombstone_address =
+                            !0 >> (64 - self.from_program.header().encoding().address_size * 8);
+                        tombstone = val == tombstone_address;
+                        if !tombstone {
+                            self.address = Some(val);
                         }
-                        match convert_address(val) {
-                            Some(val) => address = Some(val),
-                            None => return Err(ConvertError::InvalidAddress),
-                        }
-                        from_row
-                            .execute(read::LineInstruction::SetAddress(0), &mut from_program)?;
+                        continue;
                     }
-                    read::LineInstruction::DefineFile(_) => {
-                        return Err(ConvertError::UnsupportedLineInstruction);
+                    read::LineInstruction::DefineFile(ref from_file) => {
+                        let (from_name, from_dir, from_info) = Self::convert_file(
+                            from_file,
+                            self.from_dwarf,
+                            &self.dirs,
+                            self.program.encoding(),
+                            self.line_strings,
+                        )?;
+                        self.files
+                            .push(self.program.add_file(from_name, from_dir, from_info));
+                        continue;
                     }
-                    _ => {
-                        if from_row.execute(instruction, &mut from_program)? {
-                            if !program.in_sequence() {
-                                program.begin_sequence(address);
-                                address = None;
-                            }
-                            if from_row.end_sequence() {
-                                program.end_sequence(from_row.address());
-                            } else {
-                                program.row().address_offset = from_row.address();
-                                program.row().op_index = from_row.op_index();
-                                program.row().file = {
-                                    let file = from_row.file_index();
-                                    if file >= files.len() as u64 {
-                                        return Err(ConvertError::InvalidFileIndex);
-                                    }
-                                    if file == 0 && program.version() <= 4 {
-                                        return Err(ConvertError::InvalidFileIndex);
-                                    }
-                                    files[file as usize]
-                                };
-                                program.row().line = match from_row.line() {
-                                    Some(line) => line.get(),
-                                    None => 0,
-                                };
-                                program.row().column = match from_row.column() {
-                                    read::ColumnType::LeftEdge => 0,
-                                    read::ColumnType::Column(val) => val.get(),
-                                };
-                                program.row().discriminator = from_row.discriminator();
-                                program.row().is_statement = from_row.is_stmt();
-                                program.row().basic_block = from_row.basic_block();
-                                program.row().prologue_end = from_row.prologue_end();
-                                program.row().epilogue_begin = from_row.epilogue_begin();
-                                program.row().isa = from_row.isa();
-                                program.generate_row();
-                            }
-                            from_row.reset(from_program.header());
-                        }
+                    _ => {}
+                }
+                if !self.from_row.execute(instruction, &mut self.from_program)? {
+                    // This instruction didn't generate a new row.
+                    continue;
+                }
+                if tombstone {
+                    // Perform any reset that was required for the tombstone row.
+                    // Normally this is done when `read_row` is called again, but for
+                    // tombstones we loop immediately.
+                    if self.from_row.end_sequence() {
+                        tombstone = false;
+                        self.address = None;
                     }
-                };
+                    self.from_row.reset(self.from_program.header());
+                    continue;
+                }
+                if self.from_row.end_sequence() {
+                    return Ok(Some(ConvertLineRow::EndSequence(self.from_row.address())));
+                }
+                if let Some(address) = self.address.take() {
+                    self.state = ConvertLineState::ConvertRow;
+                    return Ok(Some(ConvertLineRow::SetAddress(address)));
+                } else {
+                    self.state = ConvertLineState::ReadRow;
+                    return Ok(Some(ConvertLineRow::Row(self.convert_row()?)));
+                }
             }
-            Ok((program, files))
+            Ok(None)
         }
-    }
 
-    impl LineString {
-        fn from<R: Reader<Offset = usize>>(
-            from_attr: read::AttributeValue<R>,
-            dwarf: &read::Dwarf<R>,
-            line_strings: &mut write::LineStringTable,
-            strings: &mut write::StringTable,
-        ) -> ConvertResult<LineString> {
-            Ok(match from_attr {
-                read::AttributeValue::String(r) => LineString::String(r.to_slice()?.to_vec()),
-                read::AttributeValue::DebugStrRef(offset) => {
-                    let r = dwarf.debug_str.get_str(offset)?;
-                    let id = strings.add(r.to_slice()?);
-                    LineString::StringRef(id)
-                }
-                read::AttributeValue::DebugLineStrRef(offset) => {
-                    let r = dwarf.debug_line_str.get_str(offset)?;
-                    let id = line_strings.add(r.to_slice()?);
-                    LineString::LineStringRef(id)
-                }
-                _ => return Err(ConvertError::UnsupportedLineStringForm),
+        fn convert_row(&self) -> ConvertResult<LineRow> {
+            Ok(LineRow {
+                address_offset: self.from_row.address(),
+                op_index: self.from_row.op_index(),
+                file: {
+                    let file = self.from_row.file_index();
+                    if file >= self.files.len() as u64 {
+                        return Err(ConvertError::InvalidFileIndex);
+                    }
+                    if file == 0 && self.from_program.header().version() <= 4 {
+                        return Err(ConvertError::InvalidFileIndex);
+                    }
+                    self.files[file as usize]
+                },
+                line: match self.from_row.line() {
+                    Some(line) => line.get(),
+                    None => 0,
+                },
+                column: match self.from_row.column() {
+                    read::ColumnType::LeftEdge => 0,
+                    read::ColumnType::Column(val) => val.get(),
+                },
+                discriminator: self.from_row.discriminator(),
+                is_statement: self.from_row.is_stmt(),
+                basic_block: self.from_row.basic_block(),
+                prologue_end: self.from_row.prologue_end(),
+                epilogue_begin: self.from_row.epilogue_begin(),
+                isa: self.from_row.isa(),
             })
+        }
+
+        /// Read the next sequence from the source program.
+        ///
+        /// This will read rows in the sequence up to either the end of the sequence,
+        /// or the next `DW_LNE_set_address` instruction.
+        ///
+        /// ## Example Usage
+        ///
+        /// ```rust,no_run
+        /// # use gimli::write::{Address, ConvertLineProgram, ConvertLineSequenceEnd};
+        /// # fn example<R: gimli::Reader>(mut convert: ConvertLineProgram<R>) -> Result<(), gimli::write::ConvertError> {
+        /// // Read and convert each sequence in the program.
+        /// while let Some(sequence) = convert.read_sequence()? {
+        ///     if let Some(start) = sequence.start {
+        ///         convert.set_address(Address::Constant(start));
+        ///     }
+        ///     for row in sequence.rows {
+        ///         convert.generate_row(row);
+        ///     }
+        ///     if let ConvertLineSequenceEnd::Length(length) = sequence.end {
+        ///         convert.end_sequence(length);
+        ///     }
+        /// }
+        /// # Ok(())
+        /// # }
+        /// ```
+        pub fn read_sequence(&mut self) -> ConvertResult<Option<ConvertLineSequence>> {
+            let mut start = None;
+            let mut rows = Vec::new();
+            match self.state {
+                ConvertLineState::ReadRow => {}
+                ConvertLineState::SetAddress | ConvertLineState::ConvertRow => {
+                    start = self.address;
+                    rows.push(self.convert_row()?);
+                    self.state = ConvertLineState::ReadRow;
+                }
+            }
+            while let Some(row) = self.read_row()? {
+                match row {
+                    ConvertLineRow::SetAddress(address) => {
+                        if !rows.is_empty() {
+                            self.address = Some(address);
+                            self.state = ConvertLineState::SetAddress;
+                            return Ok(Some(ConvertLineSequence {
+                                start,
+                                end: ConvertLineSequenceEnd::Address(address),
+                                rows,
+                            }));
+                        }
+                        start = Some(address);
+                    }
+                    ConvertLineRow::Row(row) => {
+                        rows.push(row);
+                    }
+                    ConvertLineRow::EndSequence(length) => {
+                        return Ok(Some(ConvertLineSequence {
+                            start,
+                            end: ConvertLineSequenceEnd::Length(length),
+                            rows,
+                        }));
+                    }
+                }
+            }
+            if !rows.is_empty() {
+                return Err(ConvertError::MissingLineEndSequence);
+            }
+            Ok(None)
+        }
+
+        /// Call [`LineProgram::begin_sequence`] for the converted program.
+        pub fn begin_sequence(&mut self, address: Option<Address>) {
+            self.program.begin_sequence(address);
+        }
+
+        /// Call [`LineProgram::set_address`] for the converted program.
+        pub fn set_address(&mut self, address: Address) {
+            self.program.set_address(address);
+        }
+
+        /// Call [`LineProgram::end_sequence`] for the converted program.
+        pub fn end_sequence(&mut self, address_offset: u64) {
+            self.program.end_sequence(address_offset);
+        }
+
+        /// Return [`LineProgram::in_sequence`] for the converted program.
+        pub fn in_sequence(&self) -> bool {
+            self.program.in_sequence()
+        }
+
+        /// Set the next row and call [`LineProgram::generate_row`] for the converted program.
+        pub fn generate_row(&mut self, row: LineRow) {
+            *self.program.row() = row;
+            self.program.generate_row();
+        }
+
+        /// Return the program and a mapping from source file index to `FileId`.
+        ///
+        /// The file index mapping is 0 based, regardless of the DWARF version.
+        /// For DWARF version <= 4, the entry at index 0 should not be used.
+        pub fn program(self) -> (LineProgram, Vec<FileId>) {
+            (self.program, self.files)
+        }
+
+        /// Convert the entire program.
+        ///
+        /// Returns the program and a mapping from source file index to `FileId`,
+        /// as for [`ConvertLineProgram::program`].
+        ///
+        /// See [`Dwarf::from`](crate::write::Dwarf::from) for the meaning of `convert_address`.
+        pub fn convert(
+            mut self,
+            convert_address: &dyn Fn(u64) -> Option<Address>,
+        ) -> ConvertResult<(LineProgram, Vec<FileId>)> {
+            while let Some(row) = self.read_row()? {
+                match row {
+                    ConvertLineRow::SetAddress(address) => {
+                        let address =
+                            convert_address(address).ok_or(ConvertError::InvalidAddress)?;
+                        self.set_address(address);
+                    }
+                    ConvertLineRow::Row(row) => {
+                        self.generate_row(row);
+                    }
+                    ConvertLineRow::EndSequence(length) => {
+                        self.end_sequence(length);
+                    }
+                }
+            }
+            if self.in_sequence() {
+                return Err(ConvertError::MissingLineEndSequence);
+            }
+            Ok(self.program())
         }
     }
 }
@@ -1243,9 +1584,9 @@ mod convert {
 #[cfg(feature = "read")]
 mod tests {
     use super::*;
+    use crate::LittleEndian;
     use crate::read;
     use crate::write::{AttributeValue, Dwarf, EndianVec, Sections, Unit};
-    use crate::LittleEndian;
 
     #[test]
     fn test_line_program() {
@@ -1368,15 +1709,277 @@ mod tests {
 
             let (file, dir) = program.get_file(*file_id);
             let (convert_file, convert_dir) = convert_program.get_file(*convert_file_id);
-            assert_eq!(file, convert_file);
             assert_eq!(
-                program.get_directory(dir),
-                convert_program.get_directory(convert_dir)
+                dwarf.get_line_string(file),
+                convert_dwarf.get_line_string(convert_file)
             );
             assert_eq!(
-                program.get_file_info(*file_id),
-                convert_program.get_file_info(*convert_file_id)
+                dwarf.get_line_string(program.get_directory(dir)),
+                convert_dwarf.get_line_string(convert_program.get_directory(convert_dir)),
             );
+            let info = program.get_file_info(*file_id);
+            let convert_info = convert_program.get_file_info(*convert_file_id);
+            assert_eq!(info.timestamp, convert_info.timestamp);
+            assert_eq!(info.size, convert_info.size);
+            assert_eq!(info.md5, convert_info.md5);
+            assert_eq!(
+                info.source.as_ref().map(|s| dwarf.get_line_string(s)),
+                convert_info
+                    .source
+                    .as_ref()
+                    .map(|s| convert_dwarf.get_line_string(s)),
+            );
+        }
+    }
+
+    #[test]
+    fn test_line_sequence() {
+        let dir1 = &b"dir1"[..];
+        let file1 = &b"file1"[..];
+        let file2 = &b"file2"[..];
+
+        for &version in &[2, 3, 4, 5] {
+            for &address_size in &[4, 8] {
+                for &format in &[Format::Dwarf32, Format::Dwarf64] {
+                    let encoding = Encoding {
+                        format,
+                        version,
+                        address_size,
+                    };
+                    let mut program = LineProgram::new(
+                        encoding,
+                        LineEncoding::default(),
+                        LineString::String(dir1.to_vec()),
+                        None,
+                        LineString::String(file1.to_vec()),
+                        None,
+                    );
+                    let dir_id = program.default_directory();
+                    program.add_file(LineString::String(file1.to_vec()), dir_id, None);
+                    // Ensure the default file index is valid.
+                    program.add_file(LineString::String(file2.to_vec()), dir_id, None);
+
+                    // Test instructions added by sequence related methods.
+                    {
+                        let mut program = program.clone();
+                        let address = Address::Constant(0x12);
+                        program.begin_sequence(Some(address));
+                        assert_eq!(
+                            program.instructions,
+                            vec![LineInstruction::SetAddress(address)]
+                        );
+                    }
+
+                    {
+                        let mut program = program.clone();
+                        program.begin_sequence(None);
+                        assert_eq!(program.instructions, Vec::new());
+                    }
+
+                    {
+                        let mut program = program.clone();
+                        let address = Address::Constant(0x12);
+                        program.set_address(address);
+                        assert_eq!(
+                            program.instructions,
+                            vec![LineInstruction::SetAddress(address)]
+                        );
+                    }
+
+                    {
+                        let mut program = program.clone();
+                        program.generate_row();
+                        assert_eq!(program.instructions, vec![LineInstruction::Copy]);
+                    }
+
+                    {
+                        let mut program = program.clone();
+                        program.end_sequence(0x1234);
+                        assert_eq!(
+                            program.instructions,
+                            vec![
+                                LineInstruction::AdvancePc(0x1234),
+                                LineInstruction::EndSequence
+                            ]
+                        );
+                    }
+
+                    {
+                        let mut program = program.clone();
+                        program.end_sequence(0);
+                        assert_eq!(program.instructions, vec![LineInstruction::EndSequence]);
+                    }
+
+                    // Test conversion of sequences.
+                    let mut expected_instructions = Vec::new();
+                    let mut sequence_rows = Vec::new();
+                    let mut expected_rows = Vec::new();
+                    let mut expected_sequences = Vec::new();
+
+                    // Basic sequence.
+                    let address = 0x12;
+                    let length = 0x1234;
+
+                    expected_rows.push(ConvertLineRow::SetAddress(address));
+                    program.begin_sequence(Some(Address::Constant(address)));
+
+                    expected_rows.push(ConvertLineRow::Row(program.row));
+                    sequence_rows.push(program.row);
+                    program.generate_row();
+
+                    expected_rows.push(ConvertLineRow::EndSequence(length));
+                    expected_sequences.push(ConvertLineSequence {
+                        start: Some(0x12),
+                        end: ConvertLineSequenceEnd::Length(length),
+                        rows: core::mem::take(&mut sequence_rows),
+                    });
+                    program.end_sequence(length);
+
+                    expected_instructions.extend_from_slice(&[
+                        LineInstruction::SetAddress(Address::Constant(address)),
+                        LineInstruction::Copy,
+                        LineInstruction::AdvancePc(length),
+                        LineInstruction::EndSequence,
+                    ]);
+
+                    // Empty sequence.
+                    program.begin_sequence(None);
+
+                    expected_rows.push(ConvertLineRow::EndSequence(0));
+                    expected_sequences.push(ConvertLineSequence {
+                        start: None,
+                        end: ConvertLineSequenceEnd::Length(0),
+                        rows: core::mem::take(&mut sequence_rows),
+                    });
+                    program.end_sequence(0);
+
+                    expected_instructions.extend_from_slice(&[LineInstruction::EndSequence]);
+
+                    // Multiple `DW_LNE_set_address` with tombstone.
+                    let address1 = 0x12;
+                    let address2 = 0x34;
+                    let tombstone = !0u64 >> (64 - address_size * 8);
+
+                    expected_rows.push(ConvertLineRow::SetAddress(address1));
+                    program.set_address(Address::Constant(address1));
+
+                    expected_rows.push(ConvertLineRow::Row(program.row));
+                    sequence_rows.push(program.row);
+                    program.generate_row();
+
+                    program.set_address(Address::Constant(tombstone));
+                    program.generate_row();
+
+                    expected_rows.push(ConvertLineRow::SetAddress(address2));
+                    expected_sequences.push(ConvertLineSequence {
+                        start: Some(address1),
+                        end: ConvertLineSequenceEnd::Address(address2),
+                        rows: core::mem::take(&mut sequence_rows),
+                    });
+                    program.set_address(Address::Constant(address2));
+
+                    expected_rows.push(ConvertLineRow::Row(program.row));
+                    sequence_rows.push(program.row);
+                    program.generate_row();
+
+                    expected_rows.push(ConvertLineRow::EndSequence(length));
+                    expected_sequences.push(ConvertLineSequence {
+                        start: Some(address2),
+                        end: ConvertLineSequenceEnd::Length(length),
+                        rows: core::mem::take(&mut sequence_rows),
+                    });
+                    program.end_sequence(length);
+
+                    expected_instructions.extend_from_slice(&[
+                        LineInstruction::SetAddress(Address::Constant(address1)),
+                        LineInstruction::Copy,
+                        LineInstruction::SetAddress(Address::Constant(address2)),
+                        LineInstruction::Copy,
+                        LineInstruction::AdvancePc(length),
+                        LineInstruction::EndSequence,
+                    ]);
+
+                    // No `DW_LNE_set_address`.
+                    expected_rows.push(ConvertLineRow::Row(program.row));
+                    sequence_rows.push(program.row);
+                    program.generate_row();
+
+                    expected_rows.push(ConvertLineRow::EndSequence(length));
+                    expected_sequences.push(ConvertLineSequence {
+                        start: None,
+                        end: ConvertLineSequenceEnd::Length(length),
+                        rows: core::mem::take(&mut sequence_rows),
+                    });
+                    program.end_sequence(length);
+
+                    expected_instructions.extend_from_slice(&[
+                        LineInstruction::Copy,
+                        LineInstruction::AdvancePc(length),
+                        LineInstruction::EndSequence,
+                    ]);
+
+                    // Write the DWARF.
+                    let mut unit = Unit::new(encoding, program);
+                    let root = unit.get_mut(unit.root());
+                    root.set(constants::DW_AT_stmt_list, AttributeValue::LineProgramRef);
+                    let mut dwarf = Dwarf::new();
+                    dwarf.units.add(unit);
+                    let mut sections = Sections::new(EndianVec::new(LittleEndian));
+                    dwarf.write(&mut sections).unwrap();
+
+                    // Read the DWARF.
+                    let read_dwarf = sections.read(LittleEndian);
+                    let read_unit_header = read_dwarf.units().next().unwrap().unwrap();
+                    let read_unit = read_dwarf.unit(read_unit_header).unwrap();
+                    let read_program = &read_unit.line_program.unwrap();
+
+                    // Test LineProgram::from.
+                    let convert_dwarf =
+                        Dwarf::from(&read_dwarf, &|address| Some(Address::Constant(address)))
+                            .unwrap();
+                    let convert_unit = convert_dwarf.units.iter().next().unwrap().1;
+                    let convert_program = &convert_unit.line_program;
+                    assert_eq!(convert_program.instructions, expected_instructions);
+
+                    // Test ConvertLineProgram::read_row.
+                    let mut convert_line_strings = LineStringTable::default();
+                    let mut convert_strings = StringTable::default();
+                    let mut convert_line = ConvertLineProgram::new(
+                        &read_dwarf,
+                        read_program.clone(),
+                        None,
+                        None,
+                        None,
+                        &mut convert_line_strings,
+                        &mut convert_strings,
+                    )
+                    .unwrap();
+                    let mut convert_rows = Vec::new();
+                    while let Some(convert_row) = convert_line.read_row().unwrap() {
+                        convert_rows.push(convert_row);
+                    }
+                    assert_eq!(convert_rows, expected_rows);
+
+                    // Test ConvertLineProgram::read_sequence.
+                    let mut convert_line_strings = LineStringTable::default();
+                    let mut convert_strings = StringTable::default();
+                    let mut convert_line = ConvertLineProgram::new(
+                        &read_dwarf,
+                        read_program.clone(),
+                        None,
+                        None,
+                        None,
+                        &mut convert_line_strings,
+                        &mut convert_strings,
+                    )
+                    .unwrap();
+                    let mut convert_sequences = Vec::new();
+                    while let Some(convert_sequence) = convert_line.read_sequence().unwrap() {
+                        convert_sequences.push(convert_sequence);
+                    }
+                    assert_eq!(convert_sequences, expected_sequences);
+                }
+            }
         }
     }
 
@@ -1415,38 +2018,7 @@ mod tests {
                     let file2_id =
                         program.add_file(LineString::String(file2.to_vec()), dir_id, None);
 
-                    // Test sequences.
-                    {
-                        let mut program = program.clone();
-                        let address = Address::Constant(0x12);
-                        program.begin_sequence(Some(address));
-                        assert_eq!(
-                            program.instructions,
-                            vec![LineInstruction::SetAddress(address)]
-                        );
-                    }
-
-                    {
-                        let mut program = program.clone();
-                        program.begin_sequence(None);
-                        assert_eq!(program.instructions, Vec::new());
-                    }
-
-                    {
-                        let mut program = program.clone();
-                        program.begin_sequence(None);
-                        program.end_sequence(0x1234);
-                        assert_eq!(
-                            program.instructions,
-                            vec![
-                                LineInstruction::AdvancePc(0x1234),
-                                LineInstruction::EndSequence
-                            ]
-                        );
-                    }
-
                     // Create a base program.
-                    program.begin_sequence(None);
                     program.row.line = 0x1000;
                     program.generate_row();
                     let base_row = program.row;
@@ -1656,9 +2228,15 @@ mod tests {
                         let mut program = program.clone();
                         program.row = test.0;
                         program.generate_row();
+                        program.end_sequence(test.0.address_offset);
                         assert_eq!(
-                            &program.instructions[base_instructions.len()..],
+                            &program.instructions
+                                [base_instructions.len()..program.instructions.len() - 1],
                             &test.1[..]
+                        );
+                        assert_eq!(
+                            program.instructions.last(),
+                            Some(&LineInstruction::EndSequence)
                         );
 
                         // Test LineProgram::from().
@@ -1680,8 +2258,13 @@ mod tests {
                         let convert_program = &convert_unit.line_program;
 
                         assert_eq!(
-                            &convert_program.instructions[base_instructions.len()..],
+                            &convert_program.instructions
+                                [base_instructions.len()..convert_program.instructions.len() - 1],
                             &test.1[..]
+                        );
+                        assert_eq!(
+                            convert_program.instructions.last(),
+                            Some(&LineInstruction::EndSequence)
                         );
                     }
                 }
@@ -1842,7 +2425,7 @@ mod tests {
                             None,
                         );
                         for address_advance in addresses.clone() {
-                            program.begin_sequence(Some(Address::Constant(0x1000)));
+                            program.set_address(Address::Constant(0x1000));
                             program.row().line = 0x10000;
                             program.generate_row();
                             for line_advance in lines.clone() {
@@ -1939,7 +2522,7 @@ mod tests {
                         file.clone(),
                         None,
                     );
-                    program.begin_sequence(Some(Address::Constant(0x1000)));
+                    program.set_address(Address::Constant(0x1000));
                     program.row().line = 0x10000;
                     program.generate_row();
 
@@ -1987,10 +2570,11 @@ mod tests {
                     let dir_id = program.default_directory();
                     let file_id =
                         program.add_file(LineString::String(b"file1".to_vec()), dir_id, None);
-                    program.begin_sequence(Some(Address::Constant(0x1000)));
+                    program.set_address(Address::Constant(0x1000));
                     program.row().file = file_id;
                     program.row().line = 0x10000;
                     program.generate_row();
+                    program.end_sequence(20);
 
                     let mut unit = Unit::new(encoding, program);
                     let root = unit.get_mut(unit.root());
@@ -2045,6 +2629,7 @@ mod tests {
                     program.row().file = file_id;
                     program.row().line = 0x10000;
                     program.generate_row();
+                    program.end_sequence(20);
 
                     // Test LineProgram::from().
                     let mut unit = Unit::new(encoding, program);
@@ -2073,12 +2658,21 @@ mod tests {
                     let convert_program = &convert_unit.line_program;
 
                     assert_eq!(
-                        &working_dir,
-                        convert_program.get_directory(convert_program.default_directory())
+                        dwarf.get_line_string(&working_dir),
+                        convert_dwarf.get_line_string(
+                            convert_program.get_directory(convert_program.default_directory())
+                        ),
                     );
                     let (_file_id, file, dir_id) = convert_program.files().next().unwrap();
-                    assert_eq!(&source_file, file);
-                    assert_eq!(&source_dir, convert_program.get_directory(dir_id));
+                    let dir = convert_program.get_directory(dir_id);
+                    assert_eq!(
+                        dwarf.get_line_string(&source_file),
+                        convert_dwarf.get_line_string(file)
+                    );
+                    assert_eq!(
+                        dwarf.get_line_string(&source_dir),
+                        convert_dwarf.get_line_string(dir),
+                    );
                 }
             }
         }
@@ -2128,6 +2722,7 @@ mod tests {
                     program.row().file = file_id;
                     program.row().line = 0x10000;
                     program.generate_row();
+                    program.end_sequence(20);
 
                     let mut unit = Unit::new(encoding, program);
                     let root = unit.get_mut(unit.root());

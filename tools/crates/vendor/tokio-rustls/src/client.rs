@@ -1,18 +1,17 @@
 use std::future::Future;
+use std::io::{self, BufRead as _};
 #[cfg(unix)]
 use std::os::unix::io::{AsRawFd, RawFd};
 #[cfg(windows)]
 use std::os::windows::io::{AsRawSocket, RawSocket};
 use std::pin::Pin;
+use std::sync::Arc;
 #[cfg(feature = "early-data")]
 use std::task::Waker;
 use std::task::{Context, Poll};
-use std::{
-    io::{self, BufRead as _},
-    sync::Arc,
-};
 
-use rustls::{pki_types::ServerName, ClientConfig, ClientConnection};
+use rustls::pki_types::ServerName;
+use rustls::{ClientConfig, ClientConnection};
 use tokio::io::{AsyncBufRead, AsyncRead, AsyncWrite, ReadBuf};
 
 use crate::common::{IoSession, MidHandshake, Stream, TlsState};
@@ -36,6 +35,12 @@ impl TlsConnector {
         self
     }
 
+    /// Returns a future that performs a TLS handshake with `domain` using the `stream`.
+    ///
+    /// You likely want to wrap this in a timeout (for example with [`tokio::time::timeout`][])
+    /// to bound the handshake time.
+    ///
+    /// [`tokio::time::timeout`]: https://docs.rs/tokio/latest/tokio/time/fn.timeout.html
     #[inline]
     pub fn connect<IO>(&self, domain: ServerName<'static>, stream: IO) -> Connect<IO>
     where
@@ -44,6 +49,15 @@ impl TlsConnector {
         self.connect_impl(domain, stream, None, |_| ())
     }
 
+    /// Similar to [`Self::connect()`], but calls `f` before performing the handshake.
+    ///
+    /// As with [`Self::connect()`] you likely want to wrap this in a timeout to
+    /// bound the handshake time.
+    ///
+    /// The `f` handler is given a mutable reference to a [`ClientConnection`][] that can
+    /// be used for tasks like writing early data.
+    ///
+    /// [`ClientConnection`]: https://docs.rs/rustls/latest/rustls/client/struct.ClientConnection.html
     #[inline]
     pub fn connect_with<IO, F>(&self, domain: ServerName<'static>, stream: IO, f: F) -> Connect<IO>
     where
@@ -92,6 +106,7 @@ impl TlsConnector {
             },
 
             need_flush: false,
+            error: None,
 
             #[cfg(feature = "early-data")]
             early_waker: None,
@@ -129,6 +144,12 @@ pub struct TlsConnectorWithAlpn<'c> {
 }
 
 impl TlsConnectorWithAlpn<'_> {
+    /// Returns a future that performs a TLS handshake with `domain` using the `stream`.
+    ///
+    /// You likely want to wrap this in a timeout (for example with [`tokio::time::timeout`][])
+    /// to bound the handshake time.
+    ///
+    /// [`tokio::time::timeout`]: https://docs.rs/tokio/latest/tokio/time/fn.timeout.html
     #[inline]
     pub fn connect<IO>(self, domain: ServerName<'static>, stream: IO) -> Connect<IO>
     where
@@ -138,6 +159,15 @@ impl TlsConnectorWithAlpn<'_> {
             .connect_impl(domain, stream, Some(self.alpn_protocols), |_| ())
     }
 
+    /// Similar to [`Self::connect()`], but calls `f` before performing the handshake.
+    ///
+    /// As with [`Self::connect()`] you likely want to wrap this in a timeout to
+    /// bound the handshake time.
+    ///
+    /// The `f` handler is given a mutable reference to a [`ClientConnection`][] that can
+    /// be used for tasks like writing early data.
+    ///
+    /// [`ClientConnection`]: https://docs.rs/rustls/latest/rustls/client/struct.ClientConnection.html
     #[inline]
     pub fn connect_with<IO, F>(self, domain: ServerName<'static>, stream: IO, f: F) -> Connect<IO>
     where
@@ -207,6 +237,8 @@ pub struct TlsStream<IO> {
     pub(crate) session: ClientConnection,
     pub(crate) state: TlsState,
     pub(crate) need_flush: bool,
+    /// Buffered error that occurred during batch reading
+    pub(crate) error: Option<io::Error>,
 
     #[cfg(feature = "early-data")]
     pub(crate) early_waker: Option<Waker>,
@@ -306,10 +338,31 @@ where
         cx: &mut Context<'_>,
         buf: &mut ReadBuf<'_>,
     ) -> Poll<io::Result<()>> {
+        if let Some(err) = self.error.take() {
+            return Poll::Ready(Err(err));
+        };
         let data = ready!(self.as_mut().poll_fill_buf(cx))?;
         let len = data.len().min(buf.remaining());
+        if len == 0 {
+            return Poll::Ready(Ok(()));
+        }
         buf.put_slice(&data[..len]);
-        self.consume(len);
+        self.as_mut().consume(len);
+
+        while buf.remaining() > 0 {
+            let data = match self.as_mut().poll_fill_buf(cx) {
+                Poll::Ready(Ok([])) => break,
+                Poll::Ready(Ok(data)) => data,
+                Poll::Ready(Err(err)) => {
+                    self.error = Some(err);
+                    break;
+                }
+                Poll::Pending => break,
+            };
+            let len = Ord::min(data.len(), buf.remaining());
+            buf.put_slice(&data[..len]);
+            self.as_mut().consume(len);
+        }
         Poll::Ready(Ok(()))
     }
 }

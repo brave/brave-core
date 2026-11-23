@@ -11,53 +11,141 @@
 
 [package]
 edition = "2018"
+rust-version = "1.95.0"
 name = "faster-hex"
-version = "0.10.0"
+version = "2.0.0"
 authors = ["zhangsoledad <787953403@qq.com>"]
 build = false
 exclude = [
     "afl/*",
     "benches/*",
     "fuzz/*",
-    "CHANGELOG.md",
+    "ci/*",
+    ".github/*",
+    ".cargo/*",
+    ".gitignore",
+    "rust-toolchain.toml",
+    "proptest-regressions/*",
 ]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
 autobenches = false
-description = "Fast hex encoding."
-homepage = "https://github.com/NervosFoundation/faster-hex"
+description = "Fast, checked hex encoding and decoding with SIMD and no_std support."
 readme = "README.md"
 keywords = [
     "simd",
     "hex",
     "no-std",
 ]
+categories = [
+    "encoding",
+    "no-std",
+]
 license = "MIT"
-repository = "https://github.com/NervosFoundation/faster-hex"
+repository = "https://github.com/nervosnetwork/faster-hex"
+
+[package.metadata.docs.rs]
+all-features = true
+
+[features]
+alloc = ["defmt?/alloc"]
+default = [
+    "std",
+    "serde",
+]
+defmt = ["defmt-03"]
+defmt-03 = [
+    "dep:defmt",
+    "heapless?/defmt",
+]
+heapless-09 = ["dep:heapless"]
+serde = [
+    "dep:serde",
+    "serde/alloc",
+    "alloc",
+]
+std = [
+    "alloc",
+    "serde?/std",
+]
 
 [lib]
 name = "faster_hex"
 path = "src/lib.rs"
+
+[[test]]
+name = "allocations"
+path = "tests/allocations.rs"
+
+[[test]]
+name = "concurrency"
+path = "tests/concurrency.rs"
+
+[[test]]
+name = "format"
+path = "tests/format.rs"
+
+[[test]]
+name = "owned_decode"
+path = "tests/owned_decode.rs"
+
+[[test]]
+name = "public_api"
+path = "tests/public_api.rs"
+
+[[test]]
+name = "serde_protocol"
+path = "tests/serde_protocol.rs"
+
+[dependencies.defmt]
+version = "0.3"
+optional = true
+
+[dependencies.heapless]
+version = "0.9.4"
+optional = true
+default-features = false
 
 [dependencies.serde]
 version = "1.0"
 optional = true
 default-features = false
 
-[dev-dependencies.bytes]
-version = "1.4.0"
+[dev-dependencies.better-hex]
+version = "1.0"
+
+[dev-dependencies.const-hex]
+version = "1.19"
 
 [dev-dependencies.criterion]
 version = "0.5"
 
+[dev-dependencies.data-encoding]
+version = "2"
+
+[dev-dependencies.defmt]
+version = "0.3"
+features = ["unstable-test"]
+
+[dev-dependencies.fashex]
+version = "0.1"
+
 [dev-dependencies.hex]
-version = "0.3.2"
+version = "0.4"
+
+[dev-dependencies.hex-simd]
+version = "0.8"
+
+[dev-dependencies.libc]
+version = "0.2"
+
+[dev-dependencies.postcard]
+version = "1.1.3"
+default-features = false
 
 [dev-dependencies.proptest]
-version = "1.0"
-
-[dev-dependencies.rustc-hex]
 version = "1.0"
 
 [dev-dependencies.serde]
@@ -67,20 +155,12 @@ features = ["derive"]
 [dev-dependencies.serde_json]
 version = "1.0"
 
-[features]
-alloc = []
-default = [
-    "std",
-    "serde",
-]
-serde = [
-    "dep:serde",
-    "alloc",
-]
-std = [
-    "alloc",
-    "serde?/std",
-]
+[lints.clippy]
+missing_errors_doc = "warn"
+missing_panics_doc = "warn"
+undocumented_unsafe_blocks = "warn"
 
-[target.'cfg(not(feature = "alloc"))'.dependencies.heapless]
-version = "0.8"
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = ["cfg(fuzzing)"]

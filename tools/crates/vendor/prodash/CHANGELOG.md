@@ -5,6 +5,176 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 31.0.1 (2026-10-01)
+
+### Chore
+
+ - <csr-id-6e49a33563bb92d8d34b6ae28169f20fad36deb8/> replace is-terminal with std::io::IsTerminal
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 58 commits contributed to the release.
+ - 266 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge pull request #75 from FalkWoldmann/replace-is-terminal ([`f54a5b5`](https://github.com/byron/prodash/commit/f54a5b5c2056471b8bce589e4b9ddd4e4e97c432))
+    - Replace is-terminal with std::io::IsTerminal ([`6e49a33`](https://github.com/byron/prodash/commit/6e49a33563bb92d8d34b6ae28169f20fad36deb8))
+    - Merge pull request #73 from GitoxideLabs/dependabot/github_actions/github-actions-9c1f293538 ([`0babd69`](https://github.com/byron/prodash/commit/0babd6960174ff05b2386742f824e3d343afd54c))
+    - Merge pull request #74 from GitoxideLabs/dependabot/cargo/cargo-b321a1b211 ([`95cf02d`](https://github.com/byron/prodash/commit/95cf02d596734571314988858aab51c68250bbf3))
+    - Bump the cargo group with 32 updates ([`fe95511`](https://github.com/byron/prodash/commit/fe9551118275012993626743d5643b1ad0d55f8b))
+    - Bump the github-actions group with 3 updates ([`0cd1f20`](https://github.com/byron/prodash/commit/0cd1f2030a96f473d5430fad2dfc2a83cbc8ca32))
+    - Merge pull request #72 from EliahKagan/claude/run-ci/msrv ([`73700bd`](https://github.com/byron/prodash/commit/73700bd89dcd587dd16dff2228839fdf857e1694))
+    - Correct the all-features floor to 1.88.0 ([`f372728`](https://github.com/byron/prodash/commit/f372728e11ec5cddd287cf36334f516785ed0d83))
+    - Record the all-features floor in CI, deliberately too low ([`7492e29`](https://github.com/byron/prodash/commit/7492e29d56ba581b393040ed9298ad6ccf6db6d5))
+    - Check the declared MSRV in CI ([`e4e6682`](https://github.com/byron/prodash/commit/e4e6682bcd91f3b3f1069623168989d7846f9e4d))
+    - Merge pull request #70 from GitoxideLabs/dependabot/github_actions/github-actions-f1670180c0 ([`4fe1536`](https://github.com/byron/prodash/commit/4fe1536b40ad9b3c729d752ddd786cf6d0947419))
+    - Bump the github-actions group across 1 directory with 4 updates ([`966fc02`](https://github.com/byron/prodash/commit/966fc024919a27bfc5b7e20c53815e6c67f4d0a8))
+    - Merge pull request #71 from GitoxideLabs/dependabot/cargo/cargo-2e98037b3d ([`5a31e36`](https://github.com/byron/prodash/commit/5a31e3611d861a084134cc972073d71c793cef56))
+    - Bump the cargo group with 44 updates ([`a9d36a9`](https://github.com/byron/prodash/commit/a9d36a9a95e9488eb407eb5dde9ef51d4fc1d10d))
+    - Merge pull request #68 from GitoxideLabs/dependabot/github_actions/github-actions-456de9a39c ([`4a6111c`](https://github.com/byron/prodash/commit/4a6111c80930a5877a67ad15df336b21c0f6df33))
+    - Merge pull request #69 from GitoxideLabs/dependabot/cargo/cargo-622a248cdb ([`6fcd28d`](https://github.com/byron/prodash/commit/6fcd28df5dae4a4d4e02b1da52a839e9b6a426fe))
+    - Bump the cargo group with 27 updates ([`7e2cca8`](https://github.com/byron/prodash/commit/7e2cca8eb1bdf3b32e2d4f46e3d0db90304b7fdd))
+    - Bump the github-actions group with 4 updates ([`5b67150`](https://github.com/byron/prodash/commit/5b67150e5b726a90e71a5940c50483be614648f3))
+    - Merge pull request #66 from GitoxideLabs/dependabot/github_actions/github-actions-eff35ed6e3 ([`e9f65de`](https://github.com/byron/prodash/commit/e9f65dedfc99d4b88e5c5c7ce8c57bfddbdd73e8))
+    - Bump the github-actions group across 1 directory with 2 updates ([`81f37cf`](https://github.com/byron/prodash/commit/81f37cf4ccd886e55b66b4eea9292c4ec223b008))
+    - Merge pull request #67 from GitoxideLabs/dependabot/cargo/cargo-fb0b8abc2b ([`7c40691`](https://github.com/byron/prodash/commit/7c40691ae086e900c805226a8fddfbf9c05b0b37))
+    - Bump the cargo group with 12 updates ([`ddc277c`](https://github.com/byron/prodash/commit/ddc277ce330e840162425f66a981b3cdc469ca47))
+    - Merge pull request #65 from GitoxideLabs/dependabot/cargo/cargo-5821c4e2b7 ([`a6288b7`](https://github.com/byron/prodash/commit/a6288b77427376869aa24acc11f21a825ff1d09c))
+    - Update MSRV to Rust 1.85 and edition 2024 ([`84f279d`](https://github.com/byron/prodash/commit/84f279d4b5f72d77f188d879357cdd952ccd0d30))
+    - Bump the cargo group across 1 directory with 17 updates ([`1b1c829`](https://github.com/byron/prodash/commit/1b1c829526ab5ef75ef1c0f2723b74b63e81f4ac))
+    - Merge pull request #64 from GitoxideLabs/dependabot/github_actions/github-actions-7849984952 ([`730bfc6`](https://github.com/byron/prodash/commit/730bfc6bcc5c28e909a7e8abe4409d1c77684672))
+    - Bump the github-actions group with 2 updates ([`d15cc3e`](https://github.com/byron/prodash/commit/d15cc3ec79bc1b7afaa6996d5e759bd4fce864a0))
+    - Merge pull request #63 from GitoxideLabs/dependabot/cargo/rand-0.10.1 ([`2e11435`](https://github.com/byron/prodash/commit/2e114352154f9b8ee175a72b8562bbf7280355bb))
+    - Bump rand from 0.10.0 to 0.10.1 ([`5fc967d`](https://github.com/byron/prodash/commit/5fc967d87060dd7484feee21a07eaaaabb1336aa))
+    - Merge pull request #61 from GitoxideLabs/dependabot/github_actions/github-actions-35010c1e9f ([`219705f`](https://github.com/byron/prodash/commit/219705f1432dbebb4515e5c8c7b10e65419a14ce))
+    - Bump zizmorcore/zizmor-action in the github-actions group ([`c8e9696`](https://github.com/byron/prodash/commit/c8e969660378f274106c9e1230d9599f5a7b72ea))
+    - Merge pull request #62 from GitoxideLabs/dependabot/cargo/cargo-9e451ad7e4 ([`ba0f015`](https://github.com/byron/prodash/commit/ba0f015ff864dfd95f11f7aa6563f05768f8d89f))
+    - Bump the cargo group with 29 updates ([`aeb5dad`](https://github.com/byron/prodash/commit/aeb5dad36267a1a9a478718238bbec1d6bb7aae9))
+    - Merge pull request #60 from GitoxideLabs/dependabot/cargo/cargo-0456f1f972 ([`5a2fb0f`](https://github.com/byron/prodash/commit/5a2fb0f53fbf87335298bfcd22dc08d8c896c38b))
+    - Adapt examples to changes in rand 0.10 ([`66c0e77`](https://github.com/byron/prodash/commit/66c0e77f9fb55633341174676c279284229f9955))
+    - Bump the cargo group with 46 updates ([`7d4e510`](https://github.com/byron/prodash/commit/7d4e5105b568cb429f286c64c0f913971a919dd6))
+    - Merge pull request #59 from GitoxideLabs/dependabot/github_actions/github-actions-d041fd5af3 ([`94870ed`](https://github.com/byron/prodash/commit/94870edbd6923abc634edf7793abb4f5d6c8f1f2))
+    - Bump the github-actions group with 2 updates ([`28ed770`](https://github.com/byron/prodash/commit/28ed7706694c8da13b7cfb1b33388950c2ce3574))
+    - Merge pull request #58 from GitoxideLabs/dependabot/cargo/time-0.3.47 ([`b055348`](https://github.com/byron/prodash/commit/b0553483f4e54c9d605932b4f7084c2a17150e57))
+    - Bump time from 0.3.46 to 0.3.47 ([`af9703c`](https://github.com/byron/prodash/commit/af9703c3250133264e163c515a87b3fa186aa998))
+    - Merge pull request #57 from GitoxideLabs/dependabot/cargo/cargo-f2781af7b9 ([`aa49b0e`](https://github.com/byron/prodash/commit/aa49b0e81140abce9fc12505f3297c42373f6177))
+    - Bump the cargo group with 16 updates ([`dca3945`](https://github.com/byron/prodash/commit/dca3945e8c2b7676f0934d9c1298938caa4d29e1))
+    - Merge pull request #56 from GitoxideLabs/dependabot/github_actions/github-actions-da358dd489 ([`e249faf`](https://github.com/byron/prodash/commit/e249faf1d4781d43be35773551ac53f05868d7ff))
+    - Bump the github-actions group with 2 updates ([`4c16a49`](https://github.com/byron/prodash/commit/4c16a49924fa5e22ee6d5654f5d1d66147495955))
+    - Merge pull request #53 from EliahKagan/rustup ([`211d3f6`](https://github.com/byron/prodash/commit/211d3f63c7dc2141b470f81c0e8ea3dc4507fb5a))
+    - Replace unmaintained `actions-rs` actions ([`236faaf`](https://github.com/byron/prodash/commit/236faafb5bcfb5cd051c3329999a32f2ef19f2f5))
+    - Merge pull request #52 from EliahKagan/fix-windows-ci ([`cceadc7`](https://github.com/byron/prodash/commit/cceadc7e33fa9bbebdfddcb4f5455058ae81f86f))
+    - Skip `render::tui` test on Windows, as it blocks forever ([`19025eb`](https://github.com/byron/prodash/commit/19025eb9743bff04c755fe64c1c20c3e8574c19f))
+    - Remove errant CI step fragment `progress-tree"` ([`a6d1e5c`](https://github.com/byron/prodash/commit/a6d1e5c8e190017db5aac2004211304e1564a419))
+    - Merge pull request #51 from GitoxideLabs/dependabot/cargo/cargo-5de1047ac4 ([`be0dc87`](https://github.com/byron/prodash/commit/be0dc87656ee3ec77a4171a9474e944dffac17bc))
+    - Fix `rand` method deprecations by switching to their new names ([`865cc64`](https://github.com/byron/prodash/commit/865cc64b01182f36f89aa25e0797d7fa22fdb047))
+    - Adapt examples to changes in `rand` so they build again ([`5f0cc9f`](https://github.com/byron/prodash/commit/5f0cc9fcbc7a2b6dcb61f4a3e5778a2d84c422da))
+    - Bump the cargo group with 4 updates ([`f764d13`](https://github.com/byron/prodash/commit/f764d13ae8ecad41a2508edda753cc01c07fbecf))
+    - Merge pull request #50 from EliahKagan/pinning ([`91573c7`](https://github.com/byron/prodash/commit/91573c768f6b8c3fb49f509da53297389fa4c5ef))
+    - Customize CodeQL workflow ([`ffae246`](https://github.com/byron/prodash/commit/ffae24658cce490cc158f36729cd9227ca7e7049))
+    - Switch CodeQL to advanced configuration ([`4321338`](https://github.com/byron/prodash/commit/432133878dd5631fcaabc89dcb3fe13655bc417c))
+    - Manage dependencies with cooldown, more pinning, more scanning ([`f7d2c71`](https://github.com/byron/prodash/commit/f7d2c7152a6feabe406de5cba581db8a1cbbd244))
+    - Commit the lockfile ([`e16e2ab`](https://github.com/byron/prodash/commit/e16e2ab03e207a1cb6cf9b815f28e79a87556a7b))
+</details>
+
+## 31.0.0 (2026-01-08)
+
+### Chore
+
+ - <csr-id-7d21bb5cff9a7df720e9e56419235e76a9924f0b/> Update various dependnecies
+
+### Bug Fixes
+
+ - <csr-id-3df00691101d2d21eeb82df03dbe1ca3bf45263e/> fix a few broken doc links
+
+### Other
+
+ - <csr-id-8bdc42571ebdda35a05df55129b0a759698b10f6/> bump actions/checkout in the github-actions group
+   Bumps the github-actions group with 1 update: [actions/checkout](https://github.com/actions/checkout).
+   
+   
+   Updates `actions/checkout` from 5 to 6
+   - [Release notes](https://github.com/actions/checkout/releases)
+   - [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)
+   - [Commits](https://github.com/actions/checkout/compare/v5...v6)
+   
+   ---
+   updated-dependencies:
+   - dependency-name: actions/checkout
+   dependency-version: '6'
+   dependency-type: direct:production
+   update-type: version-update:semver-major
+   dependency-group: github-actions
+   ...
+ - <csr-id-2717e5b4fdb86099913764fc4e004c0c00c78a08/> bump actions/checkout in the github-actions group
+   Bumps the github-actions group with 1 update: [actions/checkout](https://github.com/actions/checkout).
+   
+   
+   Updates `actions/checkout` from 4 to 5
+   - [Release notes](https://github.com/actions/checkout/releases)
+   - [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)
+   - [Commits](https://github.com/actions/checkout/compare/v4...v5)
+   
+   ---
+   updated-dependencies:
+   - dependency-name: actions/checkout
+   dependency-version: '5'
+   dependency-type: direct:production
+   update-type: version-update:semver-major
+   dependency-group: github-actions
+   ...
+
+### Chore (BREAKING)
+
+ - <csr-id-b6ea951130ea00be599d30e842cad60bee930f7d/> update `ratatui` to v0.30
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 13 commits contributed to the release.
+ - 208 days passed between releases.
+ - 5 commits were understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Thanks Clippy
+
+<csr-read-only-do-not-edit/>
+
+[Clippy](https://github.com/rust-lang/rust-clippy) helped 1 time to make code idiomatic. 
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Release prodash v31.0.0 ([`24a27a1`](https://github.com/byron/prodash/commit/24a27a1bd21ddb2ab62195acdd531bb1f35d27a3))
+    - Merge pull request #48 from GitoxideLabs/updates ([`7a2dbe0`](https://github.com/byron/prodash/commit/7a2dbe013e311e195cfe4c8a71953cdca8d55efa))
+    - Fix ratatui 0.30 compatibility issues ([`40d1a75`](https://github.com/byron/prodash/commit/40d1a759dfeff2795b76fc47544a30ab24d30628))
+    - Update `ratatui` to v0.30 ([`b6ea951`](https://github.com/byron/prodash/commit/b6ea951130ea00be599d30e842cad60bee930f7d))
+    - Merge pull request #47 from GitoxideLabs/updates ([`94b760f`](https://github.com/byron/prodash/commit/94b760ff7b58a6189e93352a7cfabb3312e7b021))
+    - Update various dependnecies ([`7d21bb5`](https://github.com/byron/prodash/commit/7d21bb5cff9a7df720e9e56419235e76a9924f0b))
+    - Thanks clippy ([`aed743a`](https://github.com/byron/prodash/commit/aed743a949e14af905642170e61978e6d1405637))
+    - Merge pull request #45 from GitoxideLabs/dependabot/github_actions/github-actions-76468cb07f ([`0e24337`](https://github.com/byron/prodash/commit/0e24337b8ed9a8bfc59457f4718eafdf4454d527))
+    - Bump actions/checkout in the github-actions group ([`8bdc425`](https://github.com/byron/prodash/commit/8bdc42571ebdda35a05df55129b0a759698b10f6))
+    - Merge pull request #44 from GitoxideLabs/dependabot/github_actions/github-actions-a331d3ec2d ([`f978c6f`](https://github.com/byron/prodash/commit/f978c6f55f5e56b5a755342982210cd8a5cd05f9))
+    - Bump actions/checkout in the github-actions group ([`2717e5b`](https://github.com/byron/prodash/commit/2717e5b4fdb86099913764fc4e004c0c00c78a08))
+    - Merge pull request #43 from slowmman/ft-fix-doc-links ([`423ff21`](https://github.com/byron/prodash/commit/423ff21c7d49b5048731aa159617c70e1b8d4b9f))
+    - Fix a few broken doc links ([`3df0069`](https://github.com/byron/prodash/commit/3df00691101d2d21eeb82df03dbe1ca3bf45263e))
+</details>
+
 ## 30.0.1 (2025-06-14)
 
 ### Documentation
@@ -16,7 +186,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <csr-read-only-do-not-edit/>
 
- - 4 commits contributed to the release.
+ - 5 commits contributed to the release.
+ - 2 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -27,6 +198,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release prodash v30.0.1 ([`171a83d`](https://github.com/byron/prodash/commit/171a83db7dcba88f3debdd2be63b77a83c622d31))
     - Merge pull request #42 from EliahKagan/update-doc-next ([`0f261de`](https://github.com/byron/prodash/commit/0f261de75dfcb9b1f865f5219cf8dc2a42c8e39b))
     - Don't describe `progress-tree-log` as a default feature in readme ([`901359a`](https://github.com/byron/prodash/commit/901359a7d55c62d7dfce48b720b1349d75a0bd95))
     - Merge pull request #41 from EliahKagan/update-doc ([`cf70e4a`](https://github.com/byron/prodash/commit/cf70e4a5092baa67f41caf6e2c3f6e0646b962f6))
@@ -47,32 +219,12 @@ progress-by-logging will have to add the feature themselves.
    the readme, to point to `GitoxideLabs/prodash`, since the repo
    was moved (though the old URL will still work as a redirect).
 
-### Other
-
- - <csr-id-25f8851b458838044550478e5aa5e44922e063f1/> bump actions/checkout in the github-actions group
-   Bumps the github-actions group with 1 update: [actions/checkout](https://github.com/actions/checkout).
-   
-   
-   Updates `actions/checkout` from 1 to 4
-   - [Release notes](https://github.com/actions/checkout/releases)
-   - [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)
-   - [Commits](https://github.com/actions/checkout/compare/v1...v4)
-   
-   ---
-   updated-dependencies:
-   - dependency-name: actions/checkout
-     dependency-version: '4'
-     dependency-type: direct:production
-     update-type: version-update:semver-major
-     dependency-group: github-actions
-   ...
-
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
  - 16 commits contributed to the release.
- - 59 days passed between releases.
+ - 60 days passed between releases.
  - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -101,9 +253,6 @@ progress-by-logging will have to add the feature themselves.
     - Use more consistent indentation in CI workflow ([`db0f01e`](https://github.com/byron/prodash/commit/db0f01e50412e46b998ef24c8a68ba56e047d260))
 </details>
 
-<csr-unknown>
-Add a SECURITY.md file with the same wording as in gitoxideand cargo-smart-release, with a hyperlink to draft a prodashadvisory.<csr-unknown/>
-
 ## 29.0.2 (2025-04-13)
 
 Update `bytesize` from v1 to v2.
@@ -113,6 +262,7 @@ Update `bytesize` from v1 to v2.
 <csr-read-only-do-not-edit/>
 
  - 4 commits contributed to the release.
+ - 33 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -134,19 +284,12 @@ Update `bytesize` from v1 to v2.
 <csr-id-88d33994876c7b2454cb1d827ebb2933bdecddd2/>
 <csr-id-373b6b1d0a95cff3085bda46ab629728d4fd6e43/>
 
-### Other
-
- - <csr-id-88d33994876c7b2454cb1d827ebb2933bdecddd2/> switch from `humantime` to `jiff`
-   Since prodash switched over to Jiff, Jiff has grown support for the
-   "friendly" duration format. It is meant to be a replacement for
-   `humantime` formatting of durations.
- - <csr-id-373b6b1d0a95cff3085bda46ab629728d4fd6e43/> bump jiff to 0.2
-
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
  - 6 commits contributed to the release.
+ - 225 days passed between releases.
  - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -176,22 +319,6 @@ Update `bytesize` from v1 to v2.
 <csr-id-5f066f26e347d80edd3cc9480d362b39ce762bd6/>
 <csr-id-aab09862ce8ff64d3c9bafd099e81df89c4c1670/>
 
-### Chore
-
- - <csr-id-5f066f26e347d80edd3cc9480d362b39ce762bd6/> update ratatui to 0.26.0
-   Requires an update to tui-react / crosstermion to work
-
-### Other
-
- - <csr-id-aab09862ce8ff64d3c9bafd099e81df89c4c1670/> switch from `time` to `jiff`
-   This swaps out `time` in favor of `jiff` for getting and formatting the
-   local time.
-   
-   Note that this does add the `%Z` to the format string, which will write
-   out time zone abbreviations like `EDT` along with the local datetime
-   itself. The `time` crate doesn't support this, but jiff's tzdb
-   integration let's it do it.
-
 ### New Features (BREAKING)
 
  - <csr-id-f3c3122a571512d0d90edced6f1057f395c9d39f/> upgrade `ratatui` to v0.26
@@ -201,6 +328,7 @@ Update `bytesize` from v1 to v2.
 <csr-read-only-do-not-edit/>
 
  - 9 commits contributed to the release.
+ - 213 days passed between releases.
  - 3 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -226,16 +354,12 @@ Update `bytesize` from v1 to v2.
 
 <csr-id-18686dbd32e6920ab5d7271c32481f7f41eae4de/>
 
-### Chore (BREAKING)
-
- - <csr-id-18686dbd32e6920ab5d7271c32481f7f41eae4de/> upgrade `ratatui` and `crosstermion` to latest versions.
-
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release.
- - 21 days passed between releases.
+ - 22 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -271,6 +395,7 @@ Update `bytesize` from v1 to v2.
 <csr-read-only-do-not-edit/>
 
  - 8 commits contributed to the release.
+ - 89 days passed between releases.
  - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -306,7 +431,7 @@ This release relaxes trait-bounds of `Count`, `Progress` and `NestedProgress` to
 <csr-read-only-do-not-edit/>
 
  - 5 commits contributed to the release.
- - 2 days passed between releases.
+ - 3 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -336,6 +461,7 @@ This release relaxes trait-bounds of `Count`, `Progress` and `NestedProgress` to
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release.
+ - 1 day passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -362,6 +488,7 @@ This release relaxes trait-bounds of `Count`, `Progress` and `NestedProgress` to
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release.
+ - 1 day passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -451,10 +578,6 @@ and no change of the progress information itself.
 
 <csr-id-05741765491984487beea7326eff9863b669ab51/>
 
-### Chore
-
- - <csr-id-05741765491984487beea7326eff9863b669ab51/> Adjusting changelogs prior to release of prodash v25.0.2
-
 ### New Features
 
  - <csr-id-24d0b2aaa58978990fea90c2f3b387e238acf966/> Add new trait `DynProgress` & type `BoxedDynProgress`
@@ -492,7 +615,7 @@ and no change of the progress information itself.
 <csr-read-only-do-not-edit/>
 
  - 4 commits contributed to the release.
- - 60 days passed between releases.
+ - 61 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -551,16 +674,12 @@ and no change of the progress information itself.
 
 <csr-id-fe5d01736179271f6b7bf20367f5d0e2bb616c4a/>
 
-### Chore (BREAKING)
-
- - <csr-id-fe5d01736179271f6b7bf20367f5d0e2bb616c4a/> switch from `tui` to `ratatui`.
-   The latter is a maintained fork.
-
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
  - 4 commits contributed to the release.
+ - 61 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -736,10 +855,6 @@ Most notably, `parking_lot` was upgraded to the latest version.
 
 <csr-id-46aeffd13cda49146c8a33e93c8c9b0fbcb15c8b/>
 
-### Chore
-
- - <csr-id-46aeffd13cda49146c8a33e93c8c9b0fbcb15c8b/> switch to Rust edition 2021
-
 ### Changed (BREAKING)
 
  - <csr-id-53cb09dc0314b0e8ce58dc50e0c07a053b963ccd/> remove `Tree` and `TreeOptions` in favor of `tree::Root` and `tree::root::Options`.
@@ -756,7 +871,7 @@ Most notably, `parking_lot` was upgraded to the latest version.
 <csr-read-only-do-not-edit/>
 
  - 5 commits contributed to the release.
- - 11 days passed between releases.
+ - 12 days passed between releases.
  - 3 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -796,6 +911,7 @@ Most notably, `parking_lot` was upgraded to the latest version.
 <csr-read-only-do-not-edit/>
 
  - 4 commits contributed to the release.
+ - 37 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -963,7 +1079,7 @@ Most notably, `parking_lot` was upgraded to the latest version.
 <csr-read-only-do-not-edit/>
 
  - 5 commits contributed to the release.
- - 2 days passed between releases.
+ - 3 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#12](https://github.com/byron/prodash/issues/12)
 
@@ -990,16 +1106,12 @@ Most notably, `parking_lot` was upgraded to the latest version.
 
  - <csr-id-bab2ea09089e2eb8e4e826bb17211a444aa35f31/> line renderer adjusts when resizing the terminal.
 
-### Chore (BREAKING)
-
- - <csr-id-a3b26782dc074c469b5fc480595d2ac9ef8bc9d0/> upgrade dependencies to tui `0.19` and crossterm `0.25`
-
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release.
- - 175 days passed between releases.
+ - 176 days passed between releases.
  - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1093,16 +1205,12 @@ Most notably, `parking_lot` was upgraded to the latest version.
 
 <csr-id-e4f2ab842b34f4a4fe9b2f4c34b664a2e3dba200/>
 
-### Chore
-
- - <csr-id-e4f2ab842b34f4a4fe9b2f4c34b664a2e3dba200/> Upgrade dashmap to 5.0.1 (with security fix)
-
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release.
- - 5 days passed between releases.
+ - 6 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1157,7 +1265,7 @@ Most notably, `parking_lot` was upgraded to the latest version.
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release.
- - 19 days passed between releases.
+ - 20 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1237,7 +1345,7 @@ Most notably, `parking_lot` was upgraded to the latest version.
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release.
- - 4 days passed between releases.
+ - 5 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1310,16 +1418,12 @@ Most notably, `parking_lot` was upgraded to the latest version.
 
 <csr-id-e6f53d59ef1aef027a2aad5b164535c6ca0d620b/>
 
-### Chore
-
- - <csr-id-e6f53d59ef1aef027a2aad5b164535c6ca0d620b/> upgrade dashmap to latest version
-
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
  - 6 commits contributed to the release over the course of 47 calendar days.
- - 109 days passed between releases.
+ - 110 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#8](https://github.com/byron/prodash/issues/8)
 
@@ -1386,7 +1490,7 @@ Most notably, `parking_lot` was upgraded to the latest version.
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release.
- - 25 days passed between releases.
+ - 26 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1443,7 +1547,7 @@ Most notably, `parking_lot` was upgraded to the latest version.
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release.
- - 38 days passed between releases.
+ - 39 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1549,18 +1653,12 @@ Most notably, `parking_lot` was upgraded to the latest version.
 
 * Upgrade to TUI v0.15
 
-### Other
-
- - <csr-id-e3665a2100fba190fc0f047ff05f2904f4dcaf4a/> prep release
- - <csr-id-c91d410e8d6242b78c44119155b5fc3b2956d111/> prepare release
- - <csr-id-03d1c2067778fb6ec231bf18dd587046a03434bc/> Upgrade to tui 0.15
-
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
  - 13 commits contributed to the release over the course of 109 calendar days.
- - 110 days passed between releases.
+ - 111 days passed between releases.
  - 3 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1586,6 +1684,8 @@ Most notably, `parking_lot` was upgraded to the latest version.
     - Fix typo ([`75f311e`](https://github.com/byron/prodash/commit/75f311e5da2b5aeff608048d13075acb3dd41a0e))
 </details>
 
+## v0.7.0 (2021-05-02)
+
 ## v12.0.2 (2021-01-12)
 
 ### Commit Statistics
@@ -1593,7 +1693,7 @@ Most notably, `parking_lot` was upgraded to the latest version.
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release.
- - 3 days passed between releases.
+ - 4 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1655,7 +1755,7 @@ Most notably, `parking_lot` was upgraded to the latest version.
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release.
- - 49 days passed between releases.
+ - 50 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1669,6 +1769,8 @@ Most notably, `parking_lot` was upgraded to the latest version.
     - Upgrade to tui 14 ([`06791b3`](https://github.com/byron/prodash/commit/06791b3cf0dd2589985bc1deb82b73e9278ae723))
     - Update to tui 14 ([`169d62d`](https://github.com/byron/prodash/commit/169d62d04f50eb1b97e6766eb8e7a8f7878b2aef))
 </details>
+
+## v0.6.0 (2021-01-04)
 
 ## v11.0.0 (2020-11-15)
 
@@ -1702,6 +1804,10 @@ Most notably, `parking_lot` was upgraded to the latest version.
     - Upgrade to tui 0.12 ([`0606d46`](https://github.com/byron/prodash/commit/0606d4639c286c1917b85aee02f294dbadbaba77))
 </details>
 
+## v0.5.0 (2020-11-15)
+
+## v0.4.0 (2020-09-28)
+
 ## v10.0.2 (2020-09-17)
 
 * Remove `futures-util` dependency
@@ -1711,7 +1817,7 @@ Most notably, `parking_lot` was upgraded to the latest version.
 <csr-read-only-do-not-edit/>
 
  - 10 commits contributed to the release over the course of 3 calendar days.
- - 3 days passed between releases.
+ - 4 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1733,6 +1839,8 @@ Most notably, `parking_lot` was upgraded to the latest version.
     - (cargo-release) version 0.3.1 ([`0a6b6bc`](https://github.com/byron/prodash/commit/0a6b6bcb2ce629254e715ecdff5544303e7c2d2c))
     - Upgrade futures-lite dependency ([`da021ea`](https://github.com/byron/prodash/commit/da021ea8306eaadb2bd40b155d4c431a164b6c42))
 </details>
+
+## v0.3.2 (2020-09-14)
 
 ## v10.0.1 (2020-09-13)
 
@@ -1779,7 +1887,7 @@ Most notably, `parking_lot` was upgraded to the latest version.
 <csr-read-only-do-not-edit/>
 
  - 1 commit contributed to the release.
- - 27 days passed between releases.
+ - 28 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1793,6 +1901,8 @@ Most notably, `parking_lot` was upgraded to the latest version.
     - Progress with 'Send + 'static' bounds; bump major version ([`50a90ec`](https://github.com/byron/prodash/commit/50a90ece86e9642cb8005a7b1472d29b4b14f197))
 </details>
 
+## v0.3.1 (2020-09-13)
+
 ## v9.0.0 (2020-08-16)
 
 ### Breaking
@@ -1804,7 +1914,7 @@ Most notably, `parking_lot` was upgraded to the latest version.
 <csr-read-only-do-not-edit/>
 
  - 1 commit contributed to the release.
- - 4 days passed between releases.
+ - 5 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1873,22 +1983,6 @@ Add missing trailing paranthesis in throughput display
 * Move `tui` and `line` renderers into the `render` module
 * Rename `log-renderer` feature to `progress-tree-log`
 * Rename `tui-renderer*` into `render-tui*` and `line-renderer*` into `render-line*`
-
-### Other
-
- - <csr-id-66800fd4e6c9f517f19da4e26a75cb3f139353b0/> Attempt to impl throughput in display…
-   …which can't work because it's actually never mutable due to the way
-   drawing work: it operates on a snapshot, a copy, that is not written
-   back.
-   
-   And even if it was, the type system statically concludes sync is needed
-   as well for this to work.
-   
-   Long story short: No state changes are ever allowed with a system like
-   this, and throughput needs to maintain just that.
-   
-   Throughput must be implemented in each renderer.
- - <csr-id-64cfe9e87e038fb36492307dfb75cbc8204180d8/> Try to manually implement/run a local executor
 
 ### Commit Statistics
 
@@ -2037,6 +2131,7 @@ Add missing trailing paranthesis in throughput display
 <csr-read-only-do-not-edit/>
 
  - 5 commits contributed to the release.
+ - 1 day passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -2054,6 +2149,8 @@ Add missing trailing paranthesis in throughput display
     - Decouple prodash from local crosstermion for tui migration ([`1105cfd`](https://github.com/byron/prodash/commit/1105cfd46d9a163c6e6d6c761fec8f70a0b08156))
 </details>
 
+## v0.3.0 (2020-07-22)
+
 ## v7.0.4 (2020-07-21)
 
 * **tree::Item**
@@ -2066,7 +2163,7 @@ Add missing trailing paranthesis in throughput display
 <csr-read-only-do-not-edit/>
 
  - 7 commits contributed to the release over the course of 1 calendar day.
- - 9 days passed between releases.
+ - 10 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -2123,6 +2220,7 @@ cleanup and code simplification in the line renderer.
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release.
+ - 1 day passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -2136,6 +2234,8 @@ cleanup and code simplification in the line renderer.
     - Bump patch level ([`9a7c2ef`](https://github.com/byron/prodash/commit/9a7c2efec958c5b0729e799177a94f5089882158))
     - Various improvements to help integrating with the line renderer ([`3711394`](https://github.com/byron/prodash/commit/371139409619f4a3195aaeabc8bf38a3b3ec6209))
 </details>
+
+## v0.2.0 (2020-07-11)
 
 ## v7.0.1 (2020-07-10)
 
@@ -2168,11 +2268,6 @@ Prevent cursor movement if no progress bar is drawn.
 
 Add new render-line, change feature flag names.
 
-### Other
-
- - <csr-id-a684188b3eee0cc67fe48b9ae14aa9cd63603caf/> first version of 'slow' event loop which actually won't respond quickly either :D
- - <csr-id-1bc5c764c9b1190f168d076b2183a27569750421/> bump patch level
-
 ### New Features
 
 * **line**
@@ -2195,7 +2290,7 @@ Add new render-line, change feature flag names.
 <csr-read-only-do-not-edit/>
 
  - 81 commits contributed to the release over the course of 4 calendar days.
- - 4 days passed between releases.
+ - 5 days passed between releases.
  - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -2289,6 +2384,12 @@ Add new render-line, change feature flag names.
     - Fix Cargo.toml to allow 'cargo test' to work without specifying features ([`748ab4b`](https://github.com/byron/prodash/commit/748ab4be6aa5fc975fcdcacbd92a2fa388103734))
 </details>
 
+## v0.1.4 (2020-07-06)
+
+## v0.1.3 (2020-07-06)
+
+## v0.1.2 (2020-07-06)
+
 ## v6.0.0 (2020-07-05)
 
 <csr-id-bbf2651e379b5758d53a889d9fb220c616d2a096/>
@@ -2297,10 +2398,6 @@ Factor terminal input into the new `crosstermion` crate.
 
 Due to this work, the default features changed, which is a breaking change for those who relied on it.
 Now when using the `render-tui`, one will also have to specify either the `with-crossbeam` or `render-tui-termion` feature.
-
-### Other
-
- - <csr-id-bbf2651e379b5758d53a889d9fb220c616d2a096/> Add Key input transformation
 
 ### Commit Statistics
 
@@ -2343,6 +2440,8 @@ Now when using the `render-tui`, one will also have to specify either the `with-
     - Add Key input transformation ([`bbf2651`](https://github.com/byron/prodash/commit/bbf2651e379b5758d53a889d9fb220c616d2a096))
     - Initial version of crosstermium ([`25c8a98`](https://github.com/byron/prodash/commit/25c8a986ffb96e7c5783478c796c849a258c2ae0))
 </details>
+
+## v0.1.1 (2020-07-05)
 
 ## v5.0.0 (2020-07-03)
 
@@ -2456,6 +2555,7 @@ One might argue that the flush should happen in the terminal instance itself, bu
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release.
+ - 1 day passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -2479,7 +2579,7 @@ One might argue that the flush should happen in the terminal instance itself, bu
 <csr-read-only-do-not-edit/>
 
  - 4 commits contributed to the release over the course of 33 calendar days.
- - 42 days passed between releases.
+ - 43 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -2580,7 +2680,7 @@ a redraw manually.
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release.
- - 1 day passed between releases.
+ - 2 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -2676,7 +2776,7 @@ a redraw manually.
 <csr-read-only-do-not-edit/>
 
  - 1 commit contributed to the release.
- - 5 days passed between releases.
+ - 6 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -2699,6 +2799,7 @@ a redraw manually.
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release.
+ - 1 day passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -2793,7 +2894,7 @@ a redraw manually.
 <csr-read-only-do-not-edit/>
 
  - 6 commits contributed to the release over the course of 1 calendar day.
- - 2 days passed between releases.
+ - 3 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -2822,7 +2923,7 @@ a redraw manually.
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release.
- - 2 days passed between releases.
+ - 3 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -2912,10 +3013,6 @@ a redraw manually.
 - Bugfix: Don't allow values of 0 for when to recompute task column widths
  
 
-### Other
-
- - <csr-id-82baf266045d44ba31aad4e570c687d7c51d0df7/> assure we never try to do 'x % 0' :D
-
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
@@ -2944,6 +3041,7 @@ a redraw manually.
 <csr-read-only-do-not-edit/>
 
  - 4 commits contributed to the release.
+ - 1 day passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -2993,7 +3091,7 @@ a redraw manually.
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release over the course of 1 calendar day.
- - 15 days passed between releases.
+ - 16 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -3087,6 +3185,7 @@ a redraw manually.
 <csr-read-only-do-not-edit/>
 
  - 1 commit contributed to the release.
+ - 1 day passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -3133,6 +3232,7 @@ a redraw manually.
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release.
+ - 1 day passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -3176,28 +3276,4 @@ a redraw manually.
 
 * fix toggles - previously prodash, withoug tui, would always build humantime and unicode width
 * add support for logging as user interface
-
-## v0.7.0 (2021-05-02)
-
-## v0.6.0 (2021-01-04)
-
-## v0.5.0 (2020-11-15)
-
-## v0.4.0 (2020-09-28)
-
-## v0.3.2 (2020-09-14)
-
-## v0.3.1 (2020-09-13)
-
-## v0.3.0 (2020-07-22)
-
-## v0.2.0 (2020-07-11)
-
-## v0.1.4 (2020-07-06)
-
-## v0.1.3 (2020-07-06)
-
-## v0.1.2 (2020-07-06)
-
-## v0.1.1 (2020-07-05)
 

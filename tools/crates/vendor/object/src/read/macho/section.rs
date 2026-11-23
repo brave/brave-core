@@ -1,12 +1,12 @@
 use core::fmt::Debug;
-use core::{fmt, result, slice, str};
+use core::{fmt, mem, slice, str};
 
-use crate::endian::{self, Endianness};
+use crate::endian::{self, Endianness, U32};
 use crate::macho;
 use crate::pod::Pod;
 use crate::read::{
-    self, gnu_compression, CompressedData, CompressedFileRange, ObjectSection, ReadError, ReadRef,
-    RelocationMap, Result, SectionFlags, SectionIndex, SectionKind,
+    self, CompressedData, CompressedFileRange, Error, ObjectSection, ReadError, ReadRef,
+    RelocationMap, Result, SectionFlags, SectionIndex, SectionKind, gnu_compression,
 };
 
 use super::{MachHeader, MachOFile, MachORelocationIterator};
@@ -99,16 +99,13 @@ where
     fn bytes(&self) -> Result<&'data [u8]> {
         self.internal
             .section
-            .data(self.file.endian, self.internal.data)
+            .data(self.file.endian, self.internal.data, self.internal.offset)
             .read_error("Invalid Mach-O section size or offset")
     }
 
     // Try GNU-style "ZLIB" header decompression.
     fn maybe_compressed_gnu(&self) -> Result<Option<CompressedFileRange>> {
-        if !self
-            .name()
-            .map_or(false, |name| name.starts_with("__zdebug_"))
-        {
+        if !self.name().is_ok_and(|name| name.starts_with("__zdebug_")) {
             return Ok(None);
         }
         let (section_offset, section_size) = self
@@ -151,16 +148,14 @@ where
     #[inline]
     fn align(&self) -> u64 {
         let align = self.internal.section.align(self.file.endian);
-        if align < 64 {
-            1 << align
-        } else {
-            0
-        }
+        if align < 64 { 1 << align } else { 0 }
     }
 
     #[inline]
     fn file_range(&self) -> Option<(u64, u64)> {
-        self.internal.section.file_range(self.file.endian)
+        self.internal
+            .section
+            .file_range(self.file.endian, self.internal.offset)
     }
 
     #[inline]
@@ -186,7 +181,7 @@ where
     }
 
     fn compressed_data(&self) -> read::Result<CompressedData<'data>> {
-        self.compressed_file_range()?.data(self.file.data)
+        self.compressed_file_range()?.data(self.file.data.0)
     }
 
     #[inline]
@@ -233,6 +228,7 @@ where
     fn flags(&self) -> SectionFlags {
         SectionFlags::MachO {
             flags: self.internal.section.flags(self.file.endian),
+            reserved2: self.internal.section.reserved2(self.file.endian),
         }
     }
 }
@@ -247,42 +243,88 @@ pub(super) struct MachOSectionInternal<'data, Mach: MachHeader, R: ReadRef<'data
     /// This is required for dyld caches, where this may be a different subcache
     /// from the file containing the Mach-O load commands.
     pub data: R,
+    /// The file offset of the section.
+    ///
+    /// Used instead of `section.offset()` to handle file offsets greater than 32-bit.
+    pub offset: u64,
 }
 
 impl<'data, Mach: MachHeader, R: ReadRef<'data>> MachOSectionInternal<'data, Mach, R> {
-    pub(super) fn parse(index: SectionIndex, section: &'data Mach::Section, data: R) -> Self {
-        // TODO: we don't validate flags, should we?
-        let kind = match (section.segment_name(), section.name()) {
-            (b"__TEXT", b"__text") => SectionKind::Text,
-            (b"__TEXT", b"__const") => SectionKind::ReadOnlyData,
-            (b"__TEXT", b"__cstring") => SectionKind::ReadOnlyString,
-            (b"__TEXT", b"__literal4") => SectionKind::ReadOnlyData,
-            (b"__TEXT", b"__literal8") => SectionKind::ReadOnlyData,
-            (b"__TEXT", b"__literal16") => SectionKind::ReadOnlyData,
-            (b"__TEXT", b"__eh_frame") => SectionKind::ReadOnlyData,
-            (b"__TEXT", b"__gcc_except_tab") => SectionKind::ReadOnlyData,
-            (b"__DATA", b"__data") => SectionKind::Data,
-            (b"__DATA", b"__const") => SectionKind::ReadOnlyData,
-            (b"__DATA", b"__bss") => SectionKind::UninitializedData,
-            (b"__DATA", b"__common") => SectionKind::Common,
-            (b"__DATA", b"__thread_data") => SectionKind::Tls,
-            (b"__DATA", b"__thread_bss") => SectionKind::UninitializedTls,
-            (b"__DATA", b"__thread_vars") => SectionKind::TlsVariables,
-            (b"__DWARF", _) => SectionKind::Debug,
-            _ => SectionKind::Unknown,
-        };
+    pub(super) fn parse(
+        endian: Mach::Endian,
+        index: SectionIndex,
+        readonly: Option<bool>,
+        section: &'data Mach::Section,
+        data: R,
+        offset: u64,
+    ) -> Self {
+        let kind = Self::parse_kind(endian, readonly, section);
         MachOSectionInternal {
             index,
             kind,
             section,
             data,
+            offset,
+        }
+    }
+
+    fn parse_kind(
+        endian: Mach::Endian,
+        readonly: Option<bool>,
+        section: &Mach::Section,
+    ) -> SectionKind {
+        let flags = section.flags(endian);
+        let segment_name = section.segment_name();
+
+        // Don't require the S_ATTR_DEBUG flag for DWARF, but treat its presence
+        // in any other segment as unknown.
+        if segment_name == b"__DWARF" {
+            return SectionKind::Debug;
+        }
+        if flags.contains(macho::S_ATTR_DEBUG) {
+            return SectionKind::Unknown;
+        }
+
+        match flags.typ() {
+            macho::S_ZEROFILL | macho::S_GB_ZEROFILL => SectionKind::UninitializedData,
+            macho::S_CSTRING_LITERALS => SectionKind::ReadOnlyString,
+            macho::S_4BYTE_LITERALS
+            | macho::S_8BYTE_LITERALS
+            | macho::S_16BYTE_LITERALS
+            | macho::S_LITERAL_POINTERS => SectionKind::ReadOnlyData,
+            macho::S_SYMBOL_STUBS => SectionKind::Text,
+            macho::S_THREAD_LOCAL_REGULAR => SectionKind::Tls,
+            macho::S_THREAD_LOCAL_ZEROFILL => SectionKind::UninitializedTls,
+            macho::S_THREAD_LOCAL_VARIABLES => SectionKind::TlsVariables,
+            macho::S_REGULAR
+            | macho::S_COALESCED
+            | macho::S_NON_LAZY_SYMBOL_POINTERS
+            | macho::S_LAZY_SYMBOL_POINTERS
+            | macho::S_MOD_INIT_FUNC_POINTERS
+            | macho::S_MOD_TERM_FUNC_POINTERS
+            | macho::S_INTERPOSING
+            | macho::S_LAZY_DYLIB_SYMBOL_POINTERS
+            | macho::S_THREAD_LOCAL_VARIABLE_POINTERS
+            | macho::S_THREAD_LOCAL_INIT_FUNCTION_POINTERS
+            | macho::S_INIT_FUNC_OFFSETS => {
+                if flags
+                    .intersects(macho::S_ATTR_PURE_INSTRUCTIONS | macho::S_ATTR_SOME_INSTRUCTIONS)
+                {
+                    SectionKind::Text
+                } else if readonly.unwrap_or(segment_name == b"__TEXT") {
+                    SectionKind::ReadOnlyData
+                } else {
+                    SectionKind::Data
+                }
+            }
+            _ => SectionKind::Unknown,
         }
     }
 }
 
 /// A trait for generic access to [`macho::Section32`] and [`macho::Section64`].
 #[allow(missing_docs)]
-pub trait Section: Debug + Pod {
+pub trait Section: Debug + Pod + read::private::Sealed {
     type Word: Into<u64>;
     type Endian: endian::Endian;
 
@@ -290,11 +332,21 @@ pub trait Section: Debug + Pod {
     fn segname(&self) -> &[u8; 16];
     fn addr(&self, endian: Self::Endian) -> Self::Word;
     fn size(&self, endian: Self::Endian) -> Self::Word;
+    /// The file offset of the section.
+    ///
+    /// Note that for offsets larger than `u32::MAX` this will be truncated, so you will
+    /// need to determine the offset in another way.
+    /// `(section.addr - segment.vmaddr) + segment.fileoff` is equivalent for well-formed files.
+    /// Alternatively, you can use [`Segment::section_offsets`](super::Segment::section_offsets)
+    /// to track the file offset of consecutive sections to determine when overflow occurs.
     fn offset(&self, endian: Self::Endian) -> u32;
     fn align(&self, endian: Self::Endian) -> u32;
     fn reloff(&self, endian: Self::Endian) -> u32;
     fn nreloc(&self, endian: Self::Endian) -> u32;
-    fn flags(&self, endian: Self::Endian) -> u32;
+    fn flags(&self, endian: Self::Endian) -> macho::SectionFlags;
+    fn reserved1(&self, endian: Self::Endian) -> u32;
+    fn reserved2(&self, endian: Self::Endian) -> u32;
+    fn reserved3(&self, endian: Self::Endian) -> u32;
 
     /// Return the `sectname` bytes up until the null terminator.
     fn name(&self) -> &[u8] {
@@ -314,17 +366,36 @@ pub trait Section: Debug + Pod {
         }
     }
 
-    /// Return the offset and size of the section in the file.
+    /// Return the section type from the flags field.
+    fn section_type(&self, endian: Self::Endian) -> macho::SectionType {
+        self.flags(endian).typ()
+    }
+
+    /// Return the size of the section in the file.
     ///
     /// Returns `None` for sections that have no data in the file.
-    fn file_range(&self, endian: Self::Endian) -> Option<(u64, u64)> {
-        match self.flags(endian) & macho::SECTION_TYPE {
+    fn file_size(&self, endian: Self::Endian) -> Option<u64> {
+        match self.section_type(endian) {
             macho::S_ZEROFILL | macho::S_GB_ZEROFILL | macho::S_THREAD_LOCAL_ZEROFILL => None,
-            _ => Some((self.offset(endian).into(), self.size(endian).into())),
+            _ => Some(self.size(endian).into()),
         }
     }
 
+    /// Return the offset and size of the section in the file.
+    ///
+    /// `offset` must be the section file offset. See [`Self::offset`] and
+    /// [`Segment::section_offsets`](super::Segment::section_offsets).
+    ///
+    /// Returns `None` for sections that have no data in the file.
+    fn file_range(&self, endian: Self::Endian, offset: u64) -> Option<(u64, u64)> {
+        let size = self.file_size(endian)?;
+        Some((offset, size))
+    }
+
     /// Return the section data.
+    ///
+    /// `offset` must be the section file offset. See [`Self::offset`] and
+    /// [`Segment::section_offsets`](super::Segment::section_offsets).
     ///
     /// Returns `Ok(&[])` if the section has no data.
     /// Returns `Err` for invalid values.
@@ -332,9 +403,11 @@ pub trait Section: Debug + Pod {
         &self,
         endian: Self::Endian,
         data: R,
-    ) -> result::Result<&'data [u8], ()> {
-        if let Some((offset, size)) = self.file_range(endian) {
+        offset: u64,
+    ) -> Result<&'data [u8]> {
+        if let Some(size) = self.file_size(endian) {
             data.read_bytes_at(offset, size)
+                .read_error("Invalid Mach-O section size or offset")
         } else {
             Ok(&[])
         }
@@ -351,7 +424,50 @@ pub trait Section: Debug + Pod {
         data.read_slice_at(self.reloff(endian).into(), self.nreloc(endian) as usize)
             .read_error("Invalid Mach-O relocations offset or number")
     }
+
+    /// Return the size of symbol stubs in this section.
+    ///
+    /// Returns 0 if this section does not contain symbol stubs.
+    fn symbol_stub_size(&self, endian: Self::Endian) -> u32 {
+        if self.section_type(endian) == macho::S_SYMBOL_STUBS {
+            self.reserved2(endian)
+        } else {
+            0
+        }
+    }
+
+    /// Return the indirect symbols referenced by this section.
+    ///
+    /// Returns an empty slice if this section does not reference indirect symbols.
+    fn indirect_symbols<'data>(
+        &self,
+        endian: Self::Endian,
+        indirect_symbols: &'data [U32<Self::Endian, macho::IndirectSymbol>],
+    ) -> Result<&'data [U32<Self::Endian, macho::IndirectSymbol>]> {
+        let entry_size = match self.section_type(endian) {
+            macho::S_NON_LAZY_SYMBOL_POINTERS
+            | macho::S_LAZY_SYMBOL_POINTERS
+            | macho::S_LAZY_DYLIB_SYMBOL_POINTERS
+            | macho::S_THREAD_LOCAL_VARIABLE_POINTERS => mem::size_of::<Self::Word>(),
+            macho::S_SYMBOL_STUBS => {
+                let reserved2 = self.reserved2(endian);
+                if reserved2 == 0 {
+                    return Err(Error("Invalid Mach-O stub size"));
+                }
+                reserved2 as usize
+            }
+            _ => return Ok(&[]),
+        };
+        let start = self.reserved1(endian) as usize;
+        let count = self.size(endian).into() as usize / entry_size;
+        indirect_symbols
+            .get(start..)
+            .and_then(|symbols| symbols.get(..count))
+            .read_error("Invalid Mach-O indirect symbol index or count")
+    }
 }
+
+impl<Endian: endian::Endian> read::private::Sealed for macho::Section32<Endian> {}
 
 impl<Endian: endian::Endian> Section for macho::Section32<Endian> {
     type Word = u32;
@@ -381,10 +497,21 @@ impl<Endian: endian::Endian> Section for macho::Section32<Endian> {
     fn nreloc(&self, endian: Self::Endian) -> u32 {
         self.nreloc.get(endian)
     }
-    fn flags(&self, endian: Self::Endian) -> u32 {
+    fn flags(&self, endian: Self::Endian) -> macho::SectionFlags {
         self.flags.get(endian)
     }
+    fn reserved1(&self, endian: Self::Endian) -> u32 {
+        self.reserved1.get(endian)
+    }
+    fn reserved2(&self, endian: Self::Endian) -> u32 {
+        self.reserved2.get(endian)
+    }
+    fn reserved3(&self, _endian: Self::Endian) -> u32 {
+        0
+    }
 }
+
+impl<Endian: endian::Endian> read::private::Sealed for macho::Section64<Endian> {}
 
 impl<Endian: endian::Endian> Section for macho::Section64<Endian> {
     type Word = u64;
@@ -414,7 +541,16 @@ impl<Endian: endian::Endian> Section for macho::Section64<Endian> {
     fn nreloc(&self, endian: Self::Endian) -> u32 {
         self.nreloc.get(endian)
     }
-    fn flags(&self, endian: Self::Endian) -> u32 {
+    fn flags(&self, endian: Self::Endian) -> macho::SectionFlags {
         self.flags.get(endian)
+    }
+    fn reserved1(&self, endian: Self::Endian) -> u32 {
+        self.reserved1.get(endian)
+    }
+    fn reserved2(&self, endian: Self::Endian) -> u32 {
+        self.reserved2.get(endian)
+    }
+    fn reserved3(&self, endian: Self::Endian) -> u32 {
+        self.reserved3.get(endian)
     }
 }

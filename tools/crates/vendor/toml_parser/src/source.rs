@@ -1,8 +1,8 @@
+use crate::ErrorSink;
+use crate::Expected;
 use crate::decoder::Encoding;
 use crate::decoder::StringBuilder;
 use crate::lexer::Lexer;
-use crate::ErrorSink;
-use crate::Expected;
 
 /// Data encoded as TOML
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]

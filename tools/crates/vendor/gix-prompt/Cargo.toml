@@ -10,16 +10,16 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.95"
 name = "gix-prompt"
-version = "0.11.2"
+version = "0.19.2"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
-    "README.md",
+    "/src/**/*",
+    "/LICENSE-*",
+    "/README.md",
 ]
 autolib = false
 autobins = false
@@ -30,6 +30,14 @@ description = "A crate of the gitoxide project for handling prompts in the termi
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
+
+[package.metadata.qa.wasm]
+targets = [
+    "wasm32-unknown-unknown",
+    "wasm32-wasip1",
+    "wasm32-wasip2",
+]
 
 [lib]
 name = "gix_prompt"
@@ -37,29 +45,33 @@ path = "src/lib.rs"
 doctest = false
 
 [dependencies.gix-command]
-version = "^0.6.3"
+version = "^0.12.2"
 
 [dependencies.gix-config-value]
-version = "^0.15.2"
+version = "^0.21.2"
 
-[dependencies.thiserror]
-version = "2.0.17"
+[dependencies.gix-error]
+version = "^0.5.3"
+
+[dev-dependencies.insta]
+version = "1.46.3"
 
 [dev-dependencies.serial_test]
-version = "3.1.0"
+version = "4.0.1"
 default-features = false
 
 [target.'cfg(any(target_os = "linux", target_os = "freebsd", target_os = "macos"))'.dev-dependencies.expectrl]
-version = "0.7.0"
+version = "0.9.0"
 
 [target."cfg(unix)".dependencies.parking_lot]
-version = "0.12.4"
+version = "0.13.0"
 
 [target."cfg(unix)".dependencies.rustix]
 version = "1.1.2"
 features = ["termios"]
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -78,7 +90,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"
@@ -137,3 +148,4 @@ level = "warn"
 priority = -1
 
 [lints.rust]
+unnameable_types = "warn"

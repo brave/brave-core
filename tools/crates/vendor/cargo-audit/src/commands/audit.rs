@@ -1,31 +1,35 @@
 //! The `cargo audit` subcommand
 
-#[cfg(feature = "fix")]
-mod fix;
+use std::{
+    fmt,
+    io::{self, IsTerminal},
+    path::PathBuf,
+    process::exit,
+};
 
-#[cfg(feature = "binary-scanning")]
-mod binary_scanning;
+use clap::{Parser, Subcommand, ValueEnum};
 
 use crate::{
     auditor::Auditor,
     config::{AuditConfig, DenyOption, FilterList, OutputFormat},
-    error::display_err_with_source,
+    error::{Error, ErrorKind, display_err_with_source},
     lockfile,
     prelude::*,
+    terminal::ColorChoice,
 };
-use abscissa_core::{
-    FrameworkError, FrameworkErrorKind, config::Override, error::Context, terminal::ColorChoice,
-};
-use clap::{Parser, ValueEnum};
-use rustsec::platforms::target::{Arch, OS};
-use std::{fmt, path::PathBuf, process::exit};
+
+#[cfg(feature = "fix")]
+mod fix;
+#[cfg(feature = "fix")]
+use fix::FixCommand;
 
 #[cfg(feature = "binary-scanning")]
-use self::binary_scanning::BinCommand;
-#[cfg(feature = "fix")]
-use self::fix::FixCommand;
-#[cfg(any(feature = "fix", feature = "binary-scanning"))]
-use clap::Subcommand;
+mod binary_scanning;
+#[cfg(feature = "binary-scanning")]
+use binary_scanning::BinCommand;
+
+mod update_db;
+use update_db::UpdateDbCommand;
 
 #[derive(Debug, Clone, Copy, Default, ValueEnum)]
 #[value(rename_all = "kebab-case")] // If you change this, remember to update `fmt::Display` impl.
@@ -41,9 +45,9 @@ enum Color {
 impl From<Color> for ColorChoice {
     fn from(value: Color) -> Self {
         match value {
-            Color::Always => ColorChoice::Always,
-            Color::Auto => ColorChoice::Auto,
-            Color::Never => ColorChoice::Never,
+            Color::Always => Self::Always,
+            Color::Auto => Self::Auto,
+            Color::Never => Self::Never,
         }
     }
 }
@@ -52,19 +56,18 @@ impl fmt::Display for Color {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         // NOTE: This must be in sync with values genereted in ValueEnum implementation.
         match self {
-            Color::Always => f.write_str("always"),
-            Color::Auto => f.write_str("auto"),
-            Color::Never => f.write_str("never"),
+            Self::Always => f.write_str("always"),
+            Self::Auto => f.write_str("auto"),
+            Self::Never => f.write_str("never"),
         }
     }
 }
 
 /// The `cargo audit` subcommand
-#[derive(Command, Clone, Default, Debug, Parser)]
+#[derive(Clone, Default, Debug, Parser)]
 #[command(version)]
 pub struct AuditCommand {
     /// Optional subcommand (used for `cargo audit fix` and `cargo audit bin`)
-    #[cfg(any(feature = "fix", feature = "binary-scanning"))]
     #[command(subcommand)]
     subcommand: Option<AuditSubcommand>,
 
@@ -108,6 +111,10 @@ pub struct AuditCommand {
     )]
     ignore: Vec<String>,
 
+    /// Skip checking for yanked crates
+    #[arg(long = "no-yanked", help = "do not check for yanked crates")]
+    no_yanked: bool,
+
     /// Skip fetching the advisory database git repository
     #[arg(
         short = 'n',
@@ -125,14 +132,14 @@ pub struct AuditCommand {
         long = "target-arch",
         help = "filter vulnerabilities by CPU (default: no filter). Can be specified multiple times"
     )]
-    target_arch: Vec<Arch>,
+    target_arch: Vec<String>,
 
     /// Target OS to find vulnerabilities for
     #[arg(
         long = "target-os",
         help = "filter vulnerabilities by OS (default: no filter). Can be specified multiple times"
     )]
-    target_os: Vec<OS>,
+    target_os: Vec<String>,
 
     /// URL to the advisory database git repository
     #[arg(short = 'u', long = "url", help = "URL for advisory database git repo")]
@@ -160,13 +167,16 @@ pub struct AuditCommand {
 }
 
 /// Subcommands of `cargo audit`
-#[cfg(any(feature = "fix", feature = "binary-scanning"))]
-#[derive(Subcommand, Clone, Debug, Runnable)]
-pub enum AuditSubcommand {
+#[derive(Subcommand, Clone, Debug)]
+pub(super) enum AuditSubcommand {
     /// `cargo audit fix` subcommand
     #[cfg(feature = "fix")]
     #[command(about = "automatically upgrade vulnerable dependencies")]
     Fix(FixCommand),
+
+    /// `cargo audit update-db` subcommand
+    #[command(about = "update the advisory database")]
+    UpdateDb(UpdateDbCommand),
 
     /// `cargo audit bin` subcommand
     #[cfg(feature = "binary-scanning")]
@@ -182,22 +192,24 @@ If not, recovers a part of the dependency list from panic messages."
 
 impl AuditCommand {
     /// Get the color configuration
-    pub fn term_colors(&self) -> ColorChoice {
+    pub(crate) fn term_colors(&self) -> ColorChoice {
         if let Some(color) = self.color {
-            color.into()
-        } else {
-            match std::env::var("CARGO_TERM_COLOR") {
-                Ok(e) if e == "always" => ColorChoice::Always,
-                Ok(e) if e == "never" => ColorChoice::Never,
-                Ok(e) if e == "auto" => ColorChoice::Auto,
-                _ => ColorChoice::default(),
-            }
+            return color.into();
+        }
+
+        match std::env::var("CARGO_TERM_COLOR") {
+            Ok(e) if e == "always" => ColorChoice::Always,
+            Ok(e) if e == "never" => ColorChoice::Never,
+            Ok(e) if e == "auto" => ColorChoice::Auto,
+            _ => match io::stdout().is_terminal() {
+                true => ColorChoice::Auto,
+                false => ColorChoice::Never,
+            },
         }
     }
-}
 
-impl Override<AuditConfig> for AuditCommand {
-    fn override_config(&self, config: AuditConfig) -> Result<AuditConfig, FrameworkError> {
+    /// Override loaded config with explicit command-line arguments
+    pub fn override_config(&self, config: AuditConfig) -> Result<AuditConfig, Error> {
         let mut config = config;
         if let Some(db) = &self.db {
             config.database.path = Some(db.into());
@@ -207,7 +219,7 @@ impl Override<AuditConfig> for AuditCommand {
             config.advisories.ignore.push(
                 advisory_id
                     .parse()
-                    .map_err(|e| Context::new(FrameworkErrorKind::ParseError, Some(Box::new(e))))?,
+                    .map_err(|e| ErrorKind::Parse.context(e))?,
             );
         }
 
@@ -235,6 +247,9 @@ impl Override<AuditConfig> for AuditCommand {
         }
 
         config.output.quiet |= self.quiet;
+        if self.quiet {
+            config.output.show_tree = false;
+        }
 
         // Handle output format (--json flag takes precedence for backward compatibility)
         if self.output_json {
@@ -243,22 +258,31 @@ impl Override<AuditConfig> for AuditCommand {
             config.output.format = format;
         }
 
-        Ok(config)
-    }
-}
-
-impl Runnable for AuditCommand {
-    fn run(&self) {
-        #[cfg(feature = "fix")]
-        if let Some(AuditSubcommand::Fix(fix)) = &self.subcommand {
-            fix.run();
-            exit(0)
+        if self.no_yanked {
+            config.yanked.enabled = false;
         }
 
-        #[cfg(feature = "binary-scanning")]
-        if let Some(AuditSubcommand::Bin(bin)) = &self.subcommand {
-            bin.run();
-            exit(0)
+        Ok(config)
+    }
+
+    /// Run the `cargo audit` subcommand with the given configuration
+    pub fn run(&self, config: &AuditConfig) {
+        match &self.subcommand {
+            #[cfg(feature = "binary-scanning")]
+            Some(AuditSubcommand::Bin(bin)) => {
+                bin.run(config);
+                exit(0);
+            }
+            #[cfg(feature = "fix")]
+            Some(AuditSubcommand::Fix(fix)) => {
+                fix.run(config);
+                exit(0);
+            }
+            Some(AuditSubcommand::UpdateDb(update_db)) => {
+                update_db.run(config);
+                exit(0);
+            }
+            None => {}
         }
 
         let maybe_path = self.file.as_deref();
@@ -268,7 +292,7 @@ impl Runnable for AuditCommand {
             status_err!("{}", display_err_with_source(&e));
             exit(2);
         });
-        let mut auditor = self.auditor();
+        let mut auditor = Auditor::new(config);
         let report = auditor.audit_lockfile(&path);
         match report {
             Ok(report) => {
@@ -282,13 +306,6 @@ impl Runnable for AuditCommand {
                 exit(2);
             }
         };
-    }
-}
-
-impl AuditCommand {
-    /// Initialize `Auditor`
-    pub fn auditor(&self) -> Auditor {
-        Auditor::new(&APP.config())
     }
 }
 

@@ -1,10 +1,9 @@
 [package]
 name = "bstr"
-version = "1.12.1"  #:version
+version = "1.14.0"  #:version
 authors = ["Andrew Gallant <jamslam@gmail.com>"]
 description = "A string type that is not required to be valid UTF-8."
 documentation = "https://docs.rs/bstr"
-homepage = "https://github.com/BurntSushi/bstr"
 repository = "https://github.com/BurntSushi/bstr"
 readme = "README.md"
 keywords = ["string", "str", "byte", "bytes", "text"]
@@ -12,7 +11,7 @@ license = "MIT OR Apache-2.0"
 categories = ["text-processing", "encoding"]
 exclude = ["/.github", "/scripts", "/src/unicode/data"]
 edition = "2021"
-rust-version = "1.73"
+rust-version = "1.65"
 resolver = "2"
 
 [workspace]
@@ -23,14 +22,14 @@ bench = false
 
 [features]
 default = ["std", "unicode"]
-std = ["alloc", "memchr/std", "serde?/std"]
-alloc = ["memchr/alloc", "serde?/alloc"]
+std = ["alloc", "memchr/std", "serde_core?/std"]
+alloc = ["memchr/alloc", "serde_core?/alloc"]
 unicode = ["dep:regex-automata"]
-serde = ["dep:serde"]
+serde = ["dep:serde_core"]
 
 [dependencies]
 memchr = { version = "2.7.1", default-features = false }
-serde = { version = "1.0.85", default-features = false, optional = true }
+serde_core = { version = "1.0.85", default-features = false, optional = true }
 
 [dependencies.regex-automata]
 version = "0.4.1"

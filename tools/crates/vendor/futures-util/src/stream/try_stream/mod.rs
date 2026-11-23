@@ -89,10 +89,10 @@ mod try_flatten;
 #[allow(unreachable_pub)] // https://github.com/rust-lang/rust/issues/57411
 pub use self::try_flatten::TryFlatten;
 
-#[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+#[cfg(target_has_atomic = "ptr")]
 #[cfg(feature = "alloc")]
 mod try_flatten_unordered;
-#[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+#[cfg(target_has_atomic = "ptr")]
 #[cfg(feature = "alloc")]
 #[allow(unreachable_pub)] // https://github.com/rust-lang/rust/issues/57411
 pub use self::try_flatten_unordered::TryFlattenUnordered;
@@ -133,26 +133,26 @@ mod try_take_while;
 #[allow(unreachable_pub)] // https://github.com/rust-lang/rust/issues/57411
 pub use self::try_take_while::TryTakeWhile;
 
-#[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+#[cfg(target_has_atomic = "ptr")]
 #[cfg(feature = "alloc")]
 mod try_buffer_unordered;
-#[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+#[cfg(target_has_atomic = "ptr")]
 #[cfg(feature = "alloc")]
 #[allow(unreachable_pub)] // https://github.com/rust-lang/rust/issues/57411
 pub use self::try_buffer_unordered::TryBufferUnordered;
 
-#[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+#[cfg(target_has_atomic = "ptr")]
 #[cfg(feature = "alloc")]
 mod try_buffered;
-#[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+#[cfg(target_has_atomic = "ptr")]
 #[cfg(feature = "alloc")]
 #[allow(unreachable_pub)] // https://github.com/rust-lang/rust/issues/57411
 pub use self::try_buffered::TryBuffered;
 
-#[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+#[cfg(target_has_atomic = "ptr")]
 #[cfg(feature = "alloc")]
 mod try_for_each_concurrent;
-#[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+#[cfg(target_has_atomic = "ptr")]
 #[cfg(feature = "alloc")]
 #[allow(unreachable_pub)] // https://github.com/rust-lang/rust/issues/57411
 pub use self::try_for_each_concurrent::TryForEachConcurrent;
@@ -311,7 +311,7 @@ pub trait TryStreamExt: TryStream {
     /// Any successful values produced by this stream will not be passed to the
     /// closure, and will be passed through.
     ///
-    /// The returned value of the closure must implement the [`TryFuture`](futures_core::future::TryFuture) trait
+    /// The returned value of the closure must implement the [`TryFuture`] trait
     /// and can represent some more work to be done before the composed stream
     /// is finished.
     ///
@@ -415,7 +415,7 @@ pub trait TryStreamExt: TryStream {
     /// yielding a future. That future will then be executed to completion
     /// before moving on to the next item.
     ///
-    /// The returned value is a [`Future`](futures_core::future::Future) where the
+    /// The returned value is a [`Future`] where the
     /// [`Output`](futures_core::future::Future::Output) type is
     /// `Result<(), Self::Error>`. If any of the intermediate
     /// futures or the stream returns an error, this future will return
@@ -551,7 +551,7 @@ pub trait TryStreamExt: TryStream {
     /// assert_eq!(Err(oneshot::Canceled), fut.await);
     /// # })
     /// ```
-    #[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+    #[cfg(target_has_atomic = "ptr")]
     #[cfg(feature = "alloc")]
     fn try_for_each_concurrent<Fut, F>(
         self,
@@ -760,8 +760,11 @@ pub trait TryStreamExt: TryStream {
     /// # Examples
     /// ```
     /// # futures::executor::block_on(async {
-    /// use futures::stream::{self, StreamExt, TryStreamExt};
-    /// use futures::pin_mut;
+    /// use core::pin::pin;
+    ///
+    /// use futures::stream;
+    /// use futures::stream::StreamExt;
+    /// use futures::stream::TryStreamExt;
     ///
     /// let stream = stream::iter(vec![Ok(1i32), Ok(6i32), Err("error")]);
     /// let halves = stream.try_filter_map(|x| async move {
@@ -769,7 +772,7 @@ pub trait TryStreamExt: TryStream {
     ///     Ok(ret)
     /// });
     ///
-    /// pin_mut!(halves);
+    /// let mut halves = pin!(halves);
     /// assert_eq!(halves.next().await, Some(Ok(3)));
     /// assert_eq!(halves.next().await, Some(Err("error")));
     /// # })
@@ -827,7 +830,7 @@ pub trait TryStreamExt: TryStream {
     /// assert_eq!(values, vec![Ok(1), Ok(2), Ok(4), Err(3), Err(5)]);
     /// # });
     /// ```
-    #[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+    #[cfg(target_has_atomic = "ptr")]
     #[cfg(feature = "alloc")]
     fn try_flatten_unordered(self, limit: impl Into<Option<usize>>) -> TryFlattenUnordered<Self>
     where
@@ -937,7 +940,7 @@ pub trait TryStreamExt: TryStream {
     /// the subsequent successful results of the stream. If the stream is empty,
     /// the default value will be returned.
     ///
-    /// Works with all collections that implement the [`Extend`](std::iter::Extend) trait.
+    /// Works with all collections that implement the [`Extend`] trait.
     ///
     /// This method is similar to [`concat`](crate::stream::StreamExt::concat), but will
     /// exit early if an error is encountered in the stream.
@@ -974,7 +977,7 @@ pub trait TryStreamExt: TryStream {
 
     /// Attempt to execute several futures from a stream concurrently (unordered).
     ///
-    /// This stream's `Ok` type must be a [`TryFuture`](futures_core::future::TryFuture) with an `Error` type
+    /// This stream's `Ok` type must be a [`TryFuture`] with an `Error` type
     /// that matches the stream's `Error` type.
     ///
     /// This adaptor will buffer up to `n` futures and then return their
@@ -1029,7 +1032,7 @@ pub trait TryStreamExt: TryStream {
     /// assert_eq!(buffered.next().await, Some(Err("error in the stream")));
     /// # Ok::<(), Box<dyn std::error::Error>>(()) }).unwrap();
     /// ```
-    #[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+    #[cfg(target_has_atomic = "ptr")]
     #[cfg(feature = "alloc")]
     fn try_buffer_unordered(self, n: usize) -> TryBufferUnordered<Self>
     where
@@ -1043,7 +1046,7 @@ pub trait TryStreamExt: TryStream {
 
     /// Attempt to execute several futures from a stream concurrently.
     ///
-    /// This stream's `Ok` type must be a [`TryFuture`](futures_core::future::TryFuture) with an `Error` type
+    /// This stream's `Ok` type must be a [`TryFuture`] with an `Error` type
     /// that matches the stream's `Error` type.
     ///
     /// This adaptor will buffer up to `n` futures and then return their
@@ -1105,7 +1108,7 @@ pub trait TryStreamExt: TryStream {
     /// assert_eq!(buffered.next().await, Some(Err("error in the stream")));
     /// # Ok::<(), Box<dyn std::error::Error>>(()) }).unwrap();
     /// ```
-    #[cfg_attr(target_os = "none", cfg(target_has_atomic = "ptr"))]
+    #[cfg(target_has_atomic = "ptr")]
     #[cfg(feature = "alloc")]
     fn try_buffered(self, n: usize) -> TryBuffered<Self>
     where
@@ -1134,7 +1137,7 @@ pub trait TryStreamExt: TryStream {
     /// Wraps a [`TryStream`] into a stream compatible with libraries using
     /// futures 0.1 `Stream`. Requires the `compat` feature to be enabled.
     /// ```
-    /// # if cfg!(miri) { return; } // Miri does not support epoll
+    /// # if cfg!(miri) { return; } // Miri does not support epoll_create
     /// use futures::future::{FutureExt, TryFutureExt};
     /// # let (tx, rx) = futures::channel::oneshot::channel();
     ///

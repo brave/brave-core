@@ -11,7 +11,7 @@ numbers to decimal strings.
 This Rust implementation is a line-by-line port of Victor Zverovich's
 implementation in C++, [https://github.com/vitaut/zmij][upstream].
 
-[upstream]: https://github.com/vitaut/zmij/tree/d22904d82206a5812e8dc7e26cc1ced90135fb2a
+[upstream]: https://github.com/vitaut/zmij/tree/b32688a1849d1b8f092c1740c61a6b05ea4679ae
 
 ## Example
 
@@ -23,9 +23,17 @@ fn main() {
 }
 ```
 
-## Performance (lower is better)
+## Performance
 
-![performance](https://raw.githubusercontent.com/dtolnay/zmij/master/performance.png)
+The [dtoa-benchmark] compares this library and other Rust floating point
+formatting implementations across a range of precisions. The vertical axis in
+this chart shows nanoseconds taken by a single execution of
+`zmij::Buffer::new().format_finite(value)` so a lower result indicates a faster
+library.
+
+[dtoa-benchmark]: https://github.com/dtolnay/dtoa-benchmark
+
+![performance](https://raw.githubusercontent.com/dtolnay/zmij/master/dtoa-benchmark.png)
 
 <br>
 

@@ -1,6 +1,6 @@
 # toml_datetime
 
-[![Documentation](https://img.shields.io/badge/docs-master-blue.svg)](https://docs.rs/toml_datetime)
+[![Documentation](https://img.shields.io/badge/docs-main-blue.svg)](https://docs.rs/toml_datetime)
 ![License](https://img.shields.io/crates/l/toml_datetime.svg)
 [![Crates Status](https://img.shields.io/crates/v/toml_datetime.svg)](https://crates.io/crates/toml_datetime)
 

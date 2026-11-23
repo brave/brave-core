@@ -116,4 +116,4 @@ previous version trains on a case-by-case basis, but we don't guarantee it.
 For information about a particular yanked or un-yanked version, see our [yank
 log][yank-log].
 
-[yank-log]: https://github.com/google/zerocopy/blob/main/CHANGELOG.md#yanks-and-regressions
+[yank-log]: https://github.com/google/zerocopy/blob/main/zerocopy/CHANGELOG.md#yanks-and-regressions

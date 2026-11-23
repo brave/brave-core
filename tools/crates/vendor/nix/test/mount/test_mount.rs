@@ -128,7 +128,7 @@ fn test_mount_noexec_disallows_exec() {
     assert!(
         mode.contains(Mode::S_IXUSR | Mode::S_IXGRP | Mode::S_IXOTH),
         "{:?} did not have execute permissions",
-        &test_path
+        test_path
     );
 
     // while forking and unmounting prevent other child processes

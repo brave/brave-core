@@ -51,6 +51,7 @@ pub enum GlobalQueueIdentifier {
 
 impl GlobalQueueIdentifier {
     /// Convert and consume [GlobalQueueIdentifier] into its raw value.
+    #[inline]
     pub fn to_identifier(self) -> isize {
         match self {
             GlobalQueueIdentifier::Priority(queue_priority) => queue_priority.0 as isize,
@@ -70,6 +71,7 @@ dispatch_object_not_data!(unsafe DispatchQueue);
 
 impl DispatchQueue {
     /// Create a new [`DispatchQueue`].
+    #[inline]
     pub fn new(label: &str, queue_attribute: Option<&DispatchQueueAttr>) -> DispatchRetained<Self> {
         let label = CString::new(label).expect("Invalid label!");
 
@@ -78,6 +80,7 @@ impl DispatchQueue {
     }
 
     /// Create a new [`DispatchQueue`] with a given target [`DispatchQueue`].
+    #[inline]
     pub fn new_with_target(
         label: &str,
         queue_attribute: Option<&DispatchQueueAttr>,
@@ -90,6 +93,7 @@ impl DispatchQueue {
     }
 
     /// Return a system-defined global concurrent [`DispatchQueue`] with the priority derived from [GlobalQueueIdentifier].
+    #[inline]
     pub fn global_queue(identifier: GlobalQueueIdentifier) -> DispatchRetained<Self> {
         let raw_identifier = identifier.to_identifier();
 
@@ -110,6 +114,7 @@ impl DispatchQueue {
     }
 
     /// Submit a function for synchronous execution on the [`DispatchQueue`].
+    #[inline]
     pub fn exec_sync<F>(&self, work: F)
     where
         F: Send + FnOnce(),
@@ -125,6 +130,7 @@ impl DispatchQueue {
     }
 
     /// Submit a function for asynchronous execution on the [`DispatchQueue`].
+    #[inline]
     pub fn exec_async<F>(&self, work: F)
     where
         // We need `'static` to make sure any referenced values are borrowed for
@@ -138,6 +144,7 @@ impl DispatchQueue {
     }
 
     /// Enqueue a function for execution at the specified time on the [`DispatchQueue`].
+    #[inline]
     pub fn after<F>(&self, when: DispatchTime, work: F) -> Result<(), QueueAfterError>
     where
         F: Send + FnOnce(),
@@ -151,6 +158,7 @@ impl DispatchQueue {
     }
 
     /// Enqueue a barrier function for asynchronous execution on the [`DispatchQueue`] and return immediately.
+    #[inline]
     pub fn barrier_async<F>(&self, work: F)
     where
         // We need `'static` to make sure any referenced values are borrowed for
@@ -164,6 +172,7 @@ impl DispatchQueue {
     }
 
     /// Enqueue a barrier function for synchronous execution on the [`DispatchQueue`] and wait until that function completes.
+    #[inline]
     pub fn barrier_sync<F>(&self, work: F)
     where
         F: Send + FnOnce(),
@@ -175,6 +184,7 @@ impl DispatchQueue {
     }
 
     /// Submit a function for synchronous execution and mark the function as a barrier for subsequent concurrent tasks.
+    #[inline]
     pub fn barrier_async_and_wait<F>(&self, work: F)
     where
         // We need `'static` to make sure any referenced values are borrowed for
@@ -188,6 +198,7 @@ impl DispatchQueue {
     }
 
     /// Sets a function at the given key that will be executed at [`DispatchQueue`] destruction.
+    #[inline]
     pub fn set_specific<F>(&self, key: NonNull<()>, destructor: F)
     where
         F: Send + FnOnce(),
@@ -205,6 +216,7 @@ impl DispatchQueue {
     }
 
     /// Set the QOS class floor of the [`DispatchQueue`].
+    #[inline]
     pub fn set_qos_class_floor(
         &self,
         qos_class: DispatchQoS,
@@ -249,6 +261,7 @@ impl DispatchQueueAttr {
     // };
 
     /// A dispatch queue that executes blocks concurrently.
+    #[inline]
     pub fn concurrent() -> Option<&'static Self> {
         // SAFETY: Queues are
         unsafe { Some(&_dispatch_queue_attr_concurrent) }
@@ -256,6 +269,7 @@ impl DispatchQueueAttr {
 }
 
 /// Executes blocks submitted to the main queue.
+#[inline]
 pub fn dispatch_main() -> ! {
     extern "C" {
         // `dispatch_main` is marked DISPATCH_NOTHROW.

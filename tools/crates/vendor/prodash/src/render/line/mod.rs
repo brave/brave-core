@@ -4,4 +4,4 @@ compile_error!("Please use the 'render-line-crossterm' feature");
 mod draw;
 mod engine;
 
-pub use engine::{render, JoinHandle, Options, StreamKind};
+pub use engine::{JoinHandle, Options, StreamKind, render};

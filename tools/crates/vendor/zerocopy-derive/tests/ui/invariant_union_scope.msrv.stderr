@@ -1,0 +1,15 @@
+error[E0425]: cannot find value `b` in this scope
+  --> $DIR/invariant_union_scope.rs:18:28
+   |
+18 |     #[zerocopy(invariant(**b.unaligned_as_ref() > 0))]
+   |                            ^ not found in this scope
+
+error[E0425]: cannot find value `a` in this scope
+  --> $DIR/invariant_union_scope.rs:21:28
+   |
+21 |     #[zerocopy(invariant(**a.unaligned_as_ref() > 0))]
+   |                            ^ not found in this scope
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0425`.

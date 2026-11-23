@@ -7,7 +7,7 @@ name = "http-body"
 #   - README.md
 # - Update CHANGELOG.md.
 # - Create "http-body-x.y.z" git tag.
-version = "1.0.1"
+version = "1.1.0"
 authors = [
   "Carl Lerche <me@carllerche.com>",
   "Lucio Franco <luciofranco14@gmail.com>",
@@ -23,7 +23,7 @@ Trait representing an asynchronous, streaming, HTTP request or response body.
 """
 keywords = ["http"]
 categories = ["web-programming"]
-rust-version = "1.49"
+rust-version = "1.61"
 
 [dependencies]
 bytes = "1"

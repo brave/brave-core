@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.9.12] - 2026-10-21
+### Added
+- Add `MmapOptions::map_if_safe()` to allow creation read-only mappings of a file from safe code if the kernel can guarantee the file is immutable and large enough.
+  [@alexlarsson](https://github.com/alexlarsson)
+- Add `MmapOptions::no_probe_handle()` to disable probing of file handles on Windows to improve performance, at the cost of no longer being able to remap later with more capabilities.
+  [@mat-gas](https://github.com/mat-gas)
+- Add support for OpenHarmony targets (`*-unknown-linux-ohos`).
+  [@hiyms](https://github.com/hiyms)
+
+### Changed
+- Cache allocation granularity on Windows to prevent repeated syscalls.
+  [@mat-gas](https://github.com/mat-gas)
+
+## [0.9.11] - 2026-06-22
+### Fixed
+- Fix unchecked pointer arithmetic in `advice_range`, `unchecked_advise_range`, `flush_range` and `flush_async_range`.
+### Changed
+- Bump the MSRV from 1.63 to 1.65.
+
+## [0.9.10] - 2026-02-15
+### Fixed
+- Fix compilation on AIX targets.
+  [@xingxue-ibm](https://github.com/xingxue-ibm)
+### Changed
+- Return `ErrorKind::Unsupported` on unsupported platforms to allow reliable runtime detection.
+  [@daxpedda](https://github.com/daxpedda)
+
 ## [0.9.9] - 2025-10-21
 ### Fixed
 - Fix compilation on visionOS (and other apple operating systems).

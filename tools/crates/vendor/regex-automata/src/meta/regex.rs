@@ -16,10 +16,11 @@ use crate::{
         strategy::{self, Strategy},
         wrappers,
     },
-    nfa::thompson::WhichCaptures,
+    nfa::thompson::{self, WhichCaptures},
     util::{
         captures::{Captures, GroupInfo},
         iter,
+        look::LookMatcher,
         pool::{Pool, PoolGuard},
         prefilter::Prefilter,
         primitives::{NonMaxUsize, PatternID},
@@ -1212,6 +1213,70 @@ impl Regex {
 /// Lower level search routines that give more control, and require the caller
 /// to provide an explicit [`Cache`] parameter.
 impl Regex {
+    /// This is like [`Regex::is_match`], but requires the caller to
+    /// explicitly pass a [`Cache`].
+    ///
+    /// # Why pass a `Cache` explicitly?
+    ///
+    /// Passing a `Cache` explicitly will bypass the use of an internal memory
+    /// pool used by `Regex` to get a `Cache` for a search. The use of this
+    /// pool can be slower in some cases when a `Regex` is used from multiple
+    /// threads simultaneously. Typically, performance only becomes an issue
+    /// when there is heavy contention, which in turn usually only occurs
+    /// when each thread's primary unit of work is a regex search on a small
+    /// haystack.
+    ///
+    /// Owning the `Cache` also lets the caller decide how long it lives and
+    /// how much memory it may use, for example by keeping a bounded number of
+    /// caches per thread instead of one per thread per regex in the pool.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use regex_automata::{meta::Regex, Input};
+    ///
+    /// let re = Regex::new(r"Samwise|Sam")?;
+    /// let mut cache = re.create_cache();
+    /// let input = Input::new(
+    ///     "one of the chief characters, Samwise the Brave",
+    /// );
+    /// assert!(re.is_match_with(&mut cache, &input));
+    ///
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    ///
+    /// # Example: capture groups are disabled
+    ///
+    /// Unlike the other search routines in this group, this one still works
+    /// when capture groups are disabled via
+    /// [`Config::which_captures`](crate::meta::Config::which_captures), since
+    /// it doesn't need to report match offsets:
+    ///
+    /// ```
+    /// use regex_automata::{meta::Regex, nfa::thompson::WhichCaptures, Input};
+    ///
+    /// let re = Regex::builder()
+    ///     .configure(Regex::config().which_captures(WhichCaptures::None))
+    ///     .build(r"Samwise|Sam")?;
+    /// let mut cache = re.create_cache();
+    /// let input = Input::new(
+    ///     "one of the chief characters, Samwise the Brave",
+    /// );
+    /// assert!(re.is_match_with(&mut cache, &input));
+    /// // Routines that report match offsets require capture groups.
+    /// assert_eq!(None, re.search_half_with(&mut cache, &input));
+    ///
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    #[inline]
+    pub fn is_match_with(&self, cache: &mut Cache, input: &Input<'_>) -> bool {
+        let input = input.clone().earliest(true);
+        if self.imp.info.is_impossible(&input) {
+            return false;
+        }
+        self.imp.strat.is_match(cache, &input)
+    }
+
     /// This is like [`Regex::search`], but requires the caller to
     /// explicitly pass a [`Cache`].
     ///
@@ -1706,6 +1771,8 @@ impl Regex {
     /// available and a few cases where it is not.
     ///
     /// ```
+    /// # if cfg!(miri) { return Ok(()); } // miri takes too long
+    ///
     /// use regex_automata::meta::Regex;
     ///
     /// let len = |pattern| {
@@ -1731,6 +1798,8 @@ impl Regex {
     /// every pattern must have the same static number.
     ///
     /// ```
+    /// # if cfg!(miri) { return Ok(()); } // miri takes too long
+    ///
     /// use regex_automata::meta::Regex;
     ///
     /// let len = |patterns| {
@@ -1914,7 +1983,10 @@ impl Clone for Regex {
         let pool = {
             let strat = Arc::clone(&imp.strat);
             let create: CachePoolFn = Box::new(move || strat.create_cache());
-            Pool::new(create)
+            Pool::with_capacity(
+                self.imp.info.config().get_pool_capacity(),
+                create,
+            )
         };
         Regex { imp, pool }
     }
@@ -1931,7 +2003,11 @@ struct RegexInfoI {
 }
 
 impl RegexInfo {
-    fn new(config: Config, hirs: &[&Hir]) -> RegexInfo {
+    /// Creates a new `RegexInfo` from the configuration and HIRs that make up
+    /// a meta regex.
+    ///
+    /// This is exported for use in some tests.
+    pub(super) fn new(config: Config, hirs: &[&Hir]) -> RegexInfo {
         // Collect all of the properties from each of the HIRs, and also
         // union them into one big set of properties representing all HIRs
         // as if they were in one big alternation.
@@ -2474,6 +2550,7 @@ pub struct Config {
     backtrack: Option<bool>,
     byte_classes: Option<bool>,
     line_terminator: Option<u8>,
+    pool_capacity: Option<usize>,
 }
 
 impl Config {
@@ -3030,6 +3107,17 @@ impl Config {
         Config { line_terminator: Some(byte), ..self }
     }
 
+    /// Sets the capacity used to manage a pool of [`Cache`] values in the
+    /// higher level convenience APIs.
+    ///
+    /// When not configured explicitly, a reasonable default is selected. It
+    /// is rarely expected that a number large than the number of logical CPUs
+    /// makes sense as a value. A smaller number could result in slowdowns if
+    /// many regex queries are run under contention.
+    pub fn pool_capacity(self, capacity: usize) -> Config {
+        Config { pool_capacity: Some(capacity), ..self }
+    }
+
     /// Toggle whether the hybrid NFA/DFA (also known as the "lazy DFA") should
     /// be available for use by the meta regex engine.
     ///
@@ -3201,6 +3289,18 @@ impl Config {
         self.line_terminator.unwrap_or(b'\n')
     }
 
+    /// Returns the configured pool capacity, as set by
+    /// [`Config::pool_capacity`].
+    ///
+    /// If it was not explicitly set, then a default value is returned.
+    pub fn get_pool_capacity(&self) -> usize {
+        // The default is an empirically chosen value that balances memory
+        // usage with runtime performance. In practice, with `std` enabled,
+        // we choose a value that matches the total number of CPUs.
+        const DEFAULT_POOL_CAPACITY: usize = 8;
+        self.pool_capacity.unwrap_or(DEFAULT_POOL_CAPACITY)
+    }
+
     /// Returns whether the hybrid NFA/DFA regex engine may be used, as set by
     /// [`Config::hybrid`].
     ///
@@ -3261,6 +3361,27 @@ impl Config {
         }
     }
 
+    /// Returns a "baseline" Thompson configuration for constructing NFAs based
+    /// on this configuration.
+    ///
+    /// This is just a convenience routine to avoid repeating configuration
+    /// construction.
+    ///
+    /// Callers may still need to set other things, like whether the NFA should
+    /// be compiled in reverse. Callers may also override settings, like
+    /// forcing no capture states to be included.
+    pub(crate) fn to_thompson_config(&self) -> thompson::Config {
+        let mut lookm = LookMatcher::new();
+        lookm.set_line_terminator(self.get_line_terminator());
+        thompson::Config::new()
+            .utf8(self.get_utf8_empty())
+            .reverse(false)
+            .nfa_size_limit(self.get_nfa_size_limit())
+            .shrink(false)
+            .which_captures(self.get_which_captures())
+            .look_matcher(lookm)
+    }
+
     /// Overwrite the default configuration such that the options in `o` are
     /// always used. If an option in `o` is not set, then the corresponding
     /// option in `self` is used. If it's not set in `self` either, then it
@@ -3287,6 +3408,7 @@ impl Config {
             backtrack: o.backtrack.or(self.backtrack),
             byte_classes: o.byte_classes.or(self.byte_classes),
             line_terminator: o.line_terminator.or(self.line_terminator),
+            pool_capacity: o.pool_capacity.or(self.pool_capacity),
         }
     }
 }
@@ -3611,7 +3733,7 @@ impl Builder {
         let pool = {
             let strat = Arc::clone(&strat);
             let create: CachePoolFn = Box::new(move || strat.create_cache());
-            Pool::new(create)
+            Pool::with_capacity(self.config.get_pool_capacity(), create)
         };
         Ok(Regex { imp: Arc::new(RegexI { strat, info }), pool })
     }

@@ -254,8 +254,8 @@ pub mod persist {
     use std::path::Path;
 
     use crate::{
-        handle::{expect_none, Closed, Writable},
         Handle, REGISTRY,
+        handle::{Closed, Writable, expect_none},
     };
 
     mod error {
@@ -280,7 +280,7 @@ pub mod persist {
 
         impl<T: Debug> std::error::Error for Error<T> {
             fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-                self.error.source()
+                Some(&self.error)
             }
         }
     }
@@ -343,7 +343,10 @@ impl ContainingDirectory {
     fn resolve(self, dir: &Path) -> std::io::Result<&Path> {
         match self {
             ContainingDirectory::Exists => Ok(dir),
-            ContainingDirectory::CreateAllRaceProof(retries) => crate::create_dir::all(dir, retries),
+            ContainingDirectory::CreateAllRaceProof {
+                retries,
+                shared_repository_permissions,
+            } => crate::create_dir::all(dir, retries, shared_repository_permissions),
         }
     }
 }

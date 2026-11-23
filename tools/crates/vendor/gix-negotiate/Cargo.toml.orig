@@ -2,30 +2,39 @@ lints.workspace = true
 
 [package]
 name = "gix-negotiate"
-version = "0.22.0"
+version = "0.38.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate of the gitoxide project implementing negotiation algorithms"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-rust-version = "1.82"
-include = ["src/**/*", "LICENSE-*"]
+edition = "2024"
+rust-version = "1.88"
+include = ["/src/**/*", "/LICENSE-*"]
 
 [lib]
 doctest = false
 test = false
 
+[features]
+## Enable support for the SHA-1 hash by forwarding the feature to dependencies.
+sha1 = ["gix-hash/sha1"]
+## Enable support for the SHA-256 hash by forwarding the feature to dependencies.
+sha256 = ["gix-hash/sha256"]
+
 [dependencies]
-gix-hash = { version = "^0.20.0", path = "../gix-hash" }
-gix-object = { version = "^0.51.0", path = "../gix-object" }
-gix-date = { version = "^0.10.6", path = "../gix-date" }
-gix-commitgraph = { version = "^0.30.0", path = "../gix-commitgraph" }
-gix-revwalk = { version = "^0.22.0", path = "../gix-revwalk" }
-thiserror = "2.0.17"
-smallvec = "1.15.1"
+gix-error = { version = "^0.5.2", path = "../gix-error" }
+gix-hash = { version = "^0.28.1", path = "../gix-hash" }
+gix-object = { version = "^0.66.1", path = "../gix-object" }
+gix-date = { version = "^0.18.1", path = "../gix-date" }
+gix-commitgraph = { version = "^0.42.0", path = "../gix-commitgraph" }
+gix-revwalk = { version = "^0.38.0", path = "../gix-revwalk" }
 bitflags = "2"
 
 [dev-dependencies]
 gix-testtools = { path = "../tests/tools" }
-gix-odb = { path = "../gix-odb" }
-gix-ref = { path = "../gix-ref" }
+gix-odb = { path = "../gix-odb", features = ["sha1", "sha256"] }
+gix-ref = { path = "../gix-ref", features = ["sha1", "sha256"] }
+gix-hash = { path = "../gix-hash", features = ["sha1", "sha256"] }
+
+[package.metadata.docs.rs]
+features = ["sha1"]

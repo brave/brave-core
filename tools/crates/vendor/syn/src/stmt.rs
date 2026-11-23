@@ -1,9 +1,13 @@
 use crate::attr::Attribute;
+#[cfg(feature = "parsing")]
+use crate::error::Result;
 use crate::expr::Expr;
 use crate::item::Item;
 use crate::mac::Macro;
 use crate::pat::Pat;
 use crate::token;
+use alloc::boxed::Box;
+use alloc::vec::Vec;
 
 ast_struct! {
     /// A braced block containing Rust statements.
@@ -43,6 +47,8 @@ ast_struct! {
     pub struct Local {
         pub attrs: Vec<Attribute>,
         pub let_token: Token![let],
+        /// (Non-exhaustive) Additional optional information about a local.
+        pub modifiers: LocalModifiers,
         pub pat: Pat,
         pub init: Option<LocalInit>,
         pub semi_token: Token![;],
@@ -64,6 +70,33 @@ ast_struct! {
 }
 
 ast_struct! {
+    /// Additional optional information about a `let` statement.
+    /// This data structure may grow to accommodate future Rust language
+    /// changes, including the following in-progress RFCs:
+    ///
+    /// - [#139076] "Super let"
+    ///
+    /// [#139076]: https://github.com/rust-lang/rust/issues/139076
+    #[cfg_attr(docsrs, doc(cfg(feature = "full")))]
+    #[non_exhaustive]
+    pub struct LocalModifiers {}
+}
+
+impl Default for LocalModifiers {
+    fn default() -> Self {
+        LocalModifiers {}
+    }
+}
+
+impl LocalModifiers {
+    #[cfg(feature = "parsing")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "parsing")))]
+    pub fn require_empty(&self) -> Result<()> {
+        Ok(())
+    }
+}
+
+ast_struct! {
     /// A macro invocation in statement position.
     ///
     /// Syntactically it's ambiguous which other kind of statement this macro
@@ -80,6 +113,7 @@ ast_struct! {
 #[cfg(feature = "parsing")]
 pub(crate) mod parsing {
     use crate::attr::Attribute;
+    use crate::buffer::Cursor;
     use crate::classify;
     use crate::error::Result;
     use crate::expr::{Expr, ExprBlock, ExprMacro};
@@ -90,9 +124,13 @@ pub(crate) mod parsing {
     use crate::parse::{Parse, ParseStream};
     use crate::pat::{Pat, PatType};
     use crate::path::Path;
-    use crate::stmt::{Block, Local, LocalInit, Stmt, StmtMacro};
+    use crate::stmt::{Block, Local, LocalInit, LocalModifiers, Stmt, StmtMacro};
     use crate::token;
     use crate::ty::Type;
+    use crate::verbatim;
+    use alloc::boxed::Box;
+    use alloc::vec::Vec;
+    use core::mem;
     use proc_macro2::TokenStream;
 
     struct AllowNoSemi(bool);
@@ -196,8 +234,9 @@ pub(crate) mod parsing {
     }
 
     fn parse_stmt(input: ParseStream, allow_nosemi: AllowNoSemi) -> Result<Stmt> {
-        let begin = input.fork();
+        let begin = input.cursor();
         let attrs = input.call(Attribute::parse_outer)?;
+        let attrs_end = input.cursor();
 
         // brace-style macros; paren and bracket macros get parsed as
         // expression statements.
@@ -259,7 +298,7 @@ pub(crate) mod parsing {
             let item = item::parsing::parse_rest_of_item(begin, attrs, input)?;
             Ok(Stmt::Item(item))
         } else {
-            stmt_expr(input, allow_nosemi, attrs)
+            stmt_expr(begin, input, allow_nosemi, attrs, attrs_end)
         }
     }
 
@@ -325,6 +364,7 @@ pub(crate) mod parsing {
         Ok(Local {
             attrs,
             let_token,
+            modifiers: LocalModifiers {},
             pat,
             init,
             semi_token,
@@ -332,9 +372,11 @@ pub(crate) mod parsing {
     }
 
     fn stmt_expr(
+        begin: Cursor,
         input: ParseStream,
         allow_nosemi: AllowNoSemi,
         mut attrs: Vec<Attribute>,
+        attrs_end: Cursor,
     ) -> Result<Stmt> {
         let mut e = Expr::parse_with_earlier_boundary_rule(input)?;
 
@@ -383,8 +425,18 @@ pub(crate) mod parsing {
                 | Expr::Verbatim(_) => break,
             };
         }
-        attrs.extend(attr_target.replace_attrs(Vec::new()));
-        attr_target.replace_attrs(attrs);
+
+        if !attrs.is_empty() {
+            if let Expr::Verbatim(expr_tokens) = attr_target {
+                let mut attr_tokens = verbatim::between(begin, attrs_end);
+                attr_tokens.extend(mem::replace(expr_tokens, TokenStream::new()));
+                *expr_tokens = attr_tokens;
+            } else {
+                let inner_attrs = attr_target.replace_attrs(Vec::new());
+                attrs.extend(inner_attrs);
+                attr_target.replace_attrs(attrs);
+            }
+        }
 
         let semi_token: Option<Token![;]> = input.parse()?;
 

@@ -1,10 +1,63 @@
 use object::read::elf::{FileHeader, SectionHeader};
 use object::read::{Object, ObjectSection, ObjectSymbol};
 use object::{
-    elf, read, write, Architecture, BinaryFormat, Endianness, LittleEndian, SectionIndex,
-    SectionKind, SymbolFlags, SymbolKind, SymbolScope, SymbolSection, U32,
+    Architecture, BinaryFormat, Endianness, LittleEndian, SectionIndex, SectionKind, SymbolFlags,
+    SymbolKind, SymbolScope, SymbolSection, U32, elf, read, write,
 };
 use std::io::Write;
+
+#[test]
+fn phnum_overflow() {
+    let file_header = write::elf::FileHeader {
+        os_abi: elf::ELFOSABI_SYSV,
+        abi_version: 0,
+        e_type: elf::ET_DYN,
+        e_machine: elf::EM_X86_64,
+        e_entry: 0,
+        e_flags: elf::FileFlags(0),
+    };
+
+    for count in 0xfffe..0x10001 {
+        let mut bytes = Vec::new();
+        let mut writer = write::elf::Writer::new(Endianness::Little, true, &mut bytes);
+
+        writer.reserve_file_header();
+        writer.reserve_program_headers(count);
+        writer.reserve_null_section_index();
+        writer.reserve_shstrtab_section_index();
+        writer.reserve_shstrtab().unwrap();
+        writer.reserve_section_headers();
+
+        writer.write_file_header(&file_header).unwrap();
+        writer.write_align_program_headers();
+        for _ in 0..count {
+            writer.write_program_header(&write::elf::ProgramHeader {
+                p_type: elf::PT_NOTE,
+                p_flags: elf::ProgramFlags(0),
+                p_offset: 0,
+                p_vaddr: 0,
+                p_paddr: 0,
+                p_filesz: 0,
+                p_memsz: 0,
+                p_align: 0,
+            });
+        }
+        writer.write_shstrtab();
+        writer.write_null_section_header();
+        writer.write_shstrtab_section_header();
+
+        let object = read::elf::ElfFile64::<Endianness>::parse(&*bytes).unwrap();
+        assert_eq!(object.architecture(), Architecture::X86_64);
+        assert_eq!(object.elf_program_headers().len(), count as usize);
+    }
+
+    // Error if missing section headers.
+    let mut bytes = Vec::new();
+    let mut writer = write::elf::Writer::new(Endianness::Little, true, &mut bytes);
+    writer.reserve_file_header();
+    writer.reserve_program_headers(0xffff);
+    assert!(writer.write_file_header(&file_header).is_err());
+}
 
 #[test]
 fn symtab_shndx() {
@@ -56,6 +109,52 @@ fn empty_symtab() {
     assert_eq!(strtab.size(), 1);
 }
 
+// .dynsym must link to .dynstr even when only the null dynamic symbol is present.
+#[test]
+fn empty_dynsym() {
+    let file_header = write::elf::FileHeader {
+        os_abi: elf::ELFOSABI_SYSV,
+        abi_version: 0,
+        e_type: elf::ET_DYN,
+        e_machine: elf::EM_X86_64,
+        e_entry: 0,
+        e_flags: elf::FileFlags(0),
+    };
+
+    let mut bytes = Vec::new();
+    let mut writer = write::elf::Writer::new(Endianness::Little, true, &mut bytes);
+
+    writer.reserve_file_header();
+    writer.reserve_null_dynamic_symbol_index();
+    writer.reserve_dynsym();
+    writer.reserve_dynstr().unwrap();
+    writer.reserve_null_section_index();
+    writer.reserve_dynsym_section_index();
+    let dynstr_index = writer.reserve_dynstr_section_index();
+    writer.reserve_shstrtab_section_index();
+    writer.reserve_shstrtab().unwrap();
+    writer.reserve_section_headers();
+
+    writer.write_file_header(&file_header).unwrap();
+    writer.write_null_dynamic_symbol();
+    writer.write_dynstr();
+    writer.write_shstrtab();
+    writer.write_null_section_header();
+    writer.write_dynsym_section_header(0, 1);
+    writer.write_dynstr_section_header(0);
+    writer.write_shstrtab_section_header();
+
+    let object = read::elf::ElfFile64::<Endianness>::parse(&*bytes).unwrap();
+    let dynsym = object.section_by_name(".dynsym").unwrap();
+    assert_eq!(dynsym.size(), 24);
+    let dynstr = object.section_by_name(".dynstr").unwrap();
+    assert_eq!(dynstr.size(), 1);
+    assert_eq!(
+        dynsym.elf_section_header().sh_link(Endianness::Little),
+        dynstr_index.0,
+    );
+}
+
 #[test]
 fn aligned_sections() {
     let mut object =
@@ -89,8 +188,8 @@ fn aligned_sections() {
 #[cfg(feature = "compression")]
 #[test]
 fn compression_zlib() {
-    use object::read::ObjectSection;
     use object::LittleEndian as LE;
+    use object::read::ObjectSection;
 
     let data = b"test data data data";
     let len = data.len() as u64;
@@ -114,9 +213,11 @@ fn compression_zlib() {
         object::SectionKind::Other,
     );
     object.section_mut(section).set_data(compressed, 1);
-    object.section_mut(section).flags = object::SectionFlags::Elf {
-        sh_flags: object::elf::SHF_COMPRESSED.into(),
+    let object::SectionFlags::Elf { sh_flags, .. } = object.section_flags_mut(section) else {
+        unreachable!();
     };
+    *sh_flags = object::elf::SHF_COMPRESSED;
+
     let bytes = object.write().unwrap();
 
     //std::fs::write(&"compression.o", &bytes).unwrap();
@@ -175,11 +276,14 @@ fn note() {
     // Add note section with align = 4.
     let mut buffer = Vec::new();
 
+    let nt1 = elf::NoteType(1);
+    let nt2 = elf::NoteType(2);
+
     buffer
         .write_all(object::bytes_of(&elf::NoteHeader32 {
             n_namesz: U32::new(endian, 6),
             n_descsz: U32::new(endian, 11),
-            n_type: U32::new(endian, 1),
+            n_type: U32::new(endian, nt1),
         }))
         .unwrap();
     buffer.write_all(b"name1\0\0\0").unwrap();
@@ -189,7 +293,7 @@ fn note() {
         .write_all(object::bytes_of(&elf::NoteHeader32 {
             n_namesz: U32::new(endian, 6),
             n_descsz: U32::new(endian, 11),
-            n_type: U32::new(endian, 2),
+            n_type: U32::new(endian, nt2),
         }))
         .unwrap();
     buffer.write_all(b"name2\0\0\0").unwrap();
@@ -205,7 +309,7 @@ fn note() {
         .write_all(object::bytes_of(&elf::NoteHeader32 {
             n_namesz: U32::new(endian, 6),
             n_descsz: U32::new(endian, 11),
-            n_type: U32::new(endian, 1),
+            n_type: U32::new(endian, nt1),
         }))
         .unwrap();
     buffer.write_all(b"name1\0\0\0\0\0\0\0").unwrap();
@@ -215,7 +319,7 @@ fn note() {
         .write_all(object::bytes_of(&elf::NoteHeader32 {
             n_namesz: U32::new(endian, 4),
             n_descsz: U32::new(endian, 11),
-            n_type: U32::new(endian, 2),
+            n_type: U32::new(endian, nt2),
         }))
         .unwrap();
     buffer.write_all(b"abc\0").unwrap();
@@ -239,11 +343,11 @@ fn note() {
     let note = notes.next().unwrap().unwrap();
     assert_eq!(note.name(), b"name1");
     assert_eq!(note.desc(), b"descriptor\0");
-    assert_eq!(note.n_type(endian), 1);
+    assert_eq!(note.n_type(endian), nt1);
     let note = notes.next().unwrap().unwrap();
     assert_eq!(note.name(), b"name2");
     assert_eq!(note.desc(), b"descriptor\0");
-    assert_eq!(note.n_type(endian), 2);
+    assert_eq!(note.n_type(endian), nt2);
     assert!(notes.next().unwrap().is_none());
 
     let section = sections.section(SectionIndex(2)).unwrap();
@@ -253,11 +357,11 @@ fn note() {
     let note = notes.next().unwrap().unwrap();
     assert_eq!(note.name(), b"name1");
     assert_eq!(note.desc(), b"descriptor\0");
-    assert_eq!(note.n_type(endian), 1);
+    assert_eq!(note.n_type(endian), nt1);
     let note = notes.next().unwrap().unwrap();
     assert_eq!(note.name(), b"abc");
     assert_eq!(note.desc(), b"descriptor\0");
-    assert_eq!(note.n_type(endian), 2);
+    assert_eq!(note.n_type(endian), nt2);
     assert!(notes.next().unwrap().is_none());
 }
 
@@ -287,7 +391,7 @@ fn gnu_property_inner<Elf: FileHeader<Endian = Endianness>>(architecture: Archit
         sections.section_name(endian, section).unwrap(),
         b".note.gnu.property"
     );
-    assert_eq!(section.sh_flags(endian).into(), u64::from(elf::SHF_ALLOC));
+    assert_eq!(section.sh_flags(endian), elf::SHF_ALLOC);
     let mut notes = section.notes(endian, bytes).unwrap().unwrap();
     let note = notes.next().unwrap().unwrap();
     let mut props = note.gnu_properties(endian).unwrap();

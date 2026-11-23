@@ -96,7 +96,7 @@ impl Iso2022JpDecoder {
     }
 
     decoder_functions!(
-        {
+        preamble = {
             if self.pending_prepended {
                 // lead was set in EscapeStart and "prepended"
                 // in Escape.
@@ -127,8 +127,20 @@ impl Iso2022JpDecoder {
                 }
             }
         },
-        {},
-        {
+        loop_preamble = {},
+        eof = {
+            match self.decoder_state {
+                Iso2022JpDecoderState::TrailByte
+                | Iso2022JpDecoderState::EscapeStart
+                | Iso2022JpDecoderState::Escape => {
+                    // We need to check space without intent to write in order to
+                    // make sure that there is space for the replacement character.
+                    if let Space::Full(_) = dest.check_space_bmp() {
+                        return (DecoderResult::OutputFull, src_consumed, dest.written());
+                    }
+                }
+                _ => {}
+            }
             match self.decoder_state {
                 Iso2022JpDecoderState::TrailByte | Iso2022JpDecoderState::EscapeStart => {
                     self.decoder_state = self.output_state;
@@ -142,7 +154,7 @@ impl Iso2022JpDecoder {
                 _ => {}
             }
         },
-        {
+        body = {
             match self.decoder_state {
                 Iso2022JpDecoderState::Ascii => {
                     if b == 0x1Bu8 {
@@ -190,7 +202,7 @@ impl Iso2022JpDecoder {
                         continue;
                     }
                     self.output_flag = false;
-                    if b >= 0x21u8 && b <= 0x5Fu8 {
+                    if (0x21u8..=0x5Fu8).contains(&b) {
                         destination_handle.write_upper_bmp(u16::from(b) - 0x21u16 + 0xFF61u16);
                         continue;
                     }
@@ -206,7 +218,7 @@ impl Iso2022JpDecoder {
                         continue;
                     }
                     self.output_flag = false;
-                    if b >= 0x21u8 && b <= 0x7Eu8 {
+                    if (0x21u8..=0x7Eu8).contains(&b) {
                         self.lead = b;
                         self.decoder_state = Iso2022JpDecoderState::TrailByte;
                         continue;
@@ -353,14 +365,14 @@ impl Iso2022JpDecoder {
                 }
             }
         },
-        self,
-        src_consumed,
-        dest,
-        source,
-        b,
-        destination_handle,
-        unread_handle,
-        check_space_bmp
+        self = self,
+        src_consumed = src_consumed,
+        dest = dest,
+        source = source,
+        byte = b,
+        destination_handle = destination_handle,
+        unread_handle = unread_handle,
+        destination_check = check_space_bmp
     );
 }
 
@@ -373,31 +385,18 @@ fn is_kanji_mapped(bmp: u16) -> bool {
 }
 
 #[cfg(not(feature = "fast-kanji-encode"))]
-#[cfg_attr(
-    feature = "cargo-clippy",
-    allow(if_let_redundant_pattern_matching, if_same_then_else)
-)]
+#[allow(clippy::redundant_pattern_matching, clippy::if_same_then_else)]
 #[inline(always)]
 fn is_kanji_mapped(bmp: u16) -> bool {
-    if 0x4EDD == bmp {
-        true
-    } else if let Some(_) = jis0208_level1_kanji_shift_jis_encode(bmp) {
+    0x4EDD == bmp
+        || jis0208_level1_kanji_shift_jis_encode(bmp).is_some()
         // Use the shift_jis variant, because we don't care about the
         // byte values here.
-        true
-    } else if let Some(_) = jis0208_level2_and_additional_kanji_encode(bmp) {
-        true
-    } else if let Some(_) = position(&IBM_KANJI[..], bmp) {
-        true
-    } else {
-        false
-    }
+        || jis0208_level2_and_additional_kanji_encode(bmp).is_some()
+        || position(&IBM_KANJI[..], bmp).is_some()
 }
 
-#[cfg_attr(
-    feature = "cargo-clippy",
-    allow(if_let_redundant_pattern_matching, if_same_then_else)
-)]
+#[allow(clippy::redundant_pattern_matching, clippy::if_same_then_else)]
 fn is_mapped_for_two_byte_encode(bmp: u16) -> bool {
     // The code below uses else after return to
     // keep the same structure as in EUC-JP.
@@ -413,24 +412,16 @@ fn is_mapped_for_two_byte_encode(bmp: u16) -> bool {
             true
         } else {
             let bmp_minus_space = bmp.wrapping_sub(0x3000);
-            if bmp_minus_space < 3 {
-                // fast-track common punctuation
-                true
-            } else if in_inclusive_range16(bmp, 0xFF61, 0xFF9F) {
-                true
-            } else if bmp == 0x2212 {
-                true
-            } else if let Some(_) = jis0208_range_encode(bmp) {
-                true
-            } else if in_inclusive_range16(bmp, 0xFA0E, 0xFA2D) || bmp == 0xF929 || bmp == 0xF9DC {
-                true
-            } else if let Some(_) = ibm_symbol_encode(bmp) {
-                true
-            } else if let Some(_) = jis0208_symbol_encode(bmp) {
-                true
-            } else {
-                false
-            }
+            // fast-track common punctuation
+            bmp_minus_space < 3
+                || in_inclusive_range16(bmp, 0xFF61, 0xFF9F)
+                || bmp == 0x2212
+                || jis0208_range_encode(bmp).is_some()
+                || in_inclusive_range16(bmp, 0xFA0E, 0xFA2D)
+                || bmp == 0xF929
+                || bmp == 0xF9DC
+                || ibm_symbol_encode(bmp).is_some()
+                || jis0208_symbol_encode(bmp).is_some()
         }
     }
 }
@@ -483,10 +474,7 @@ impl Iso2022JpEncoder {
     }
 
     pub fn has_pending_state(&self) -> bool {
-        match self.state {
-            Iso2022JpEncoderState::Ascii => false,
-            _ => true,
-        }
+        !matches!(self.state, Iso2022JpEncoderState::Ascii)
     }
 
     pub fn max_buffer_length_from_utf16_without_replacement(
@@ -523,7 +511,7 @@ impl Iso2022JpEncoder {
     }
 
     encoder_functions!(
-        {
+        eof = {
             match self.state {
                 Iso2022JpEncoderState::Ascii => {}
                 _ => match dest.check_space_three() {
@@ -537,7 +525,7 @@ impl Iso2022JpEncoder {
                 },
             }
         },
-        {
+        body = {
             match self.state {
                 Iso2022JpEncoderState::Ascii => {
                     if c == '\u{0E}' || c == '\u{0F}' || c == '\u{1B}' {
@@ -740,14 +728,14 @@ impl Iso2022JpEncoder {
                 }
             }
         },
-        self,
-        src_consumed,
-        source,
-        dest,
-        c,
-        destination_handle,
-        unread_handle,
-        check_space_three
+        self = self,
+        src_consumed = src_consumed,
+        source = source,
+        dest = dest,
+        c = c,
+        destination_handle = destination_handle,
+        unread_handle = unread_handle,
+        destination_check = check_space_three
     );
 }
 
@@ -929,6 +917,52 @@ mod tests {
     }
 
     #[test]
+    fn test_iso_2022_jp_decode_eof_with_small_output() {
+        let cases: [(&[u8], &str); 5] = [
+            (b"\x1B$B9\x1B", "\u{FFFD}\u{FFFD}"),
+            (b"\x1B$B9\x1B$", "\u{FFFD}\u{FFFD}\u{FFFD}"),
+            (b"\x1B$B9\x1B(", "\u{FFFD}\u{FFFD}\u{FFFD}"),
+            (b"\x80\x1B$", "\u{FFFD}\u{FFFD}$"),
+            (b"a\x1B$B9", "a\u{FFFD}"),
+        ];
+        for &(bytes, expect) in cases.iter() {
+            decode_iso_2022_jp(bytes, expect);
+        }
+        for &(bytes, expect) in cases.iter() {
+            for len in 4..16 {
+                let mut decoder = ISO_2022_JP.new_decoder_without_bom_handling();
+                let mut dst = vec![0u8; len];
+                let mut output = String::new();
+                let mut src = bytes;
+                loop {
+                    let (result, read, written, _) = decoder.decode_to_utf8(src, &mut dst, true);
+                    output.push_str(core::str::from_utf8(&dst[..written]).unwrap());
+                    src = &src[read..];
+                    if result == CoderResult::InputEmpty {
+                        break;
+                    }
+                }
+                assert_eq!(output, expect);
+            }
+            for len in 2..8 {
+                let mut decoder = ISO_2022_JP.new_decoder_without_bom_handling();
+                let mut dst = vec![0u16; len];
+                let mut output = Vec::new();
+                let mut src = bytes;
+                loop {
+                    let (result, read, written, _) = decoder.decode_to_utf16(src, &mut dst, true);
+                    output.extend_from_slice(&dst[..written]);
+                    src = &src[read..];
+                    if result == CoderResult::InputEmpty {
+                        break;
+                    }
+                }
+                assert_eq!(String::from_utf16(&output).unwrap(), expect);
+            }
+        }
+    }
+
+    #[test]
     fn test_iso_2022_jp_encode() {
         // Empty
         encode_iso_2022_jp("", b"");
@@ -978,27 +1012,6 @@ mod tests {
             encode_iso_2022_jp("\u{58FA}\u{00A5}", b"\x1B$B\x54\x64\x1B(J\x5C\x1B(B");
             encode_iso_2022_jp("\u{58FA}a", b"\x1B$B\x54\x64\x1B(Ba");
         }
-    }
-
-    #[test]
-    #[cfg_attr(miri, ignore)] // Miri is too slow
-    fn test_iso_2022_jp_decode_all() {
-        let input = include_bytes!("test_data/iso_2022_jp_in.txt");
-        let expectation = include_str!("test_data/iso_2022_jp_in_ref.txt");
-        let (cow, had_errors) = ISO_2022_JP.decode_without_bom_handling(input);
-        assert!(had_errors, "Should have had errors.");
-        assert_eq!(&cow[..], expectation);
-    }
-
-    #[test]
-    #[cfg_attr(miri, ignore)] // Miri is too slow
-    fn test_iso_2022_jp_encode_all() {
-        let input = include_str!("test_data/iso_2022_jp_out.txt");
-        let expectation = include_bytes!("test_data/iso_2022_jp_out_ref.txt");
-        let (cow, encoding, had_errors) = ISO_2022_JP.encode(input);
-        assert!(!had_errors, "Should not have had errors.");
-        assert_eq!(encoding, ISO_2022_JP);
-        assert_eq!(&cow[..], &expectation[..]);
     }
 
     #[test]

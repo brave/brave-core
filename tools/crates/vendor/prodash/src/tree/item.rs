@@ -2,8 +2,8 @@ use std::{
     fmt::Debug,
     ops::Deref,
     sync::{
-        atomic::{AtomicUsize, Ordering},
         Arc,
+        atomic::{AtomicUsize, Ordering},
     },
     time::SystemTime,
 };

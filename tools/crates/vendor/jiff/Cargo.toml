@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.70"
+edition = "2024"
+rust-version = "1.85"
 name = "jiff"
-version = "0.2.16"
+version = "1.0.2"
 authors = ["Andrew Gallant <jamslam@gmail.com>"]
 build = false
 include = [
@@ -49,6 +49,7 @@ categories = [
 ]
 license = "Unlicense OR MIT"
 repository = "https://github.com/BurntSushi/jiff"
+resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -57,10 +58,25 @@ rustdoc-args = [
     "docsrs_jiff",
 ]
 
+[package.metadata.playground]
+default-features = true
+features = [
+    "logging",
+    "serde",
+    "static",
+    "tzdb-bundle-always",
+]
+
 [features]
 alloc = [
+    "jcore/alloc",
     "serde_core?/alloc",
     "portable-atomic-util/alloc",
+]
+arbitrary = [
+    "dep:arbitrary",
+    "jcore/arbitrary",
+    "std",
 ]
 default = [
     "std",
@@ -71,11 +87,18 @@ default = [
     "tzdb-concatenated",
     "perf-inline",
 ]
+defmt = [
+    "dep:defmt",
+    "jcore/defmt",
+]
 js = [
     "dep:wasm-bindgen",
     "dep:js-sys",
 ]
-logging = ["dep:log"]
+logging = [
+    "dep:log",
+    "jcore/logging",
+]
 perf-inline = []
 serde = ["dep:serde_core"]
 static = [
@@ -85,13 +108,17 @@ static = [
 static-tz = ["dep:jiff-static"]
 std = [
     "alloc",
+    "jcore/std",
     "log?/std",
     "serde_core?/std",
 ]
-tz-fat = ["jiff-static?/tz-fat"]
+tz-fat = [
+    "jcore/tz-fat",
+    "jiff-static?/tz-fat",
+]
 tz-system = [
     "std",
-    "dep:windows-sys",
+    "dep:windows-link",
 ]
 tzdb-bundle-always = [
     "dep:jiff-tzdb",
@@ -112,12 +139,26 @@ path = "src/lib.rs"
 name = "integration"
 path = "tests/lib.rs"
 
+[dependencies.arbitrary]
+version = "1.4.2"
+features = ["derive"]
+optional = true
+
+[dependencies.defmt]
+version = "1.0.0"
+optional = true
+
+[dependencies.jcore]
+version = "1.0.1"
+default-features = false
+package = "jiff-core"
+
 [dependencies.jiff-static]
-version = "0.2"
+version = "1.0"
 optional = true
 
 [dependencies.jiff-tzdb]
-version = "0.1.4"
+version = "1.0.0"
 optional = true
 
 [dependencies.log]
@@ -149,6 +190,11 @@ version = "1.39.0"
 [dev-dependencies.log]
 version = "0.4.21"
 
+[dev-dependencies.postcard]
+version = "1.1.3"
+features = ["use-std"]
+default-features = false
+
 [dev-dependencies.quickcheck]
 version = "1.0.3"
 default-features = false
@@ -166,6 +212,9 @@ version = "0.9.34"
 [dev-dependencies.tabwriter]
 version = "1.4.0"
 
+[dev-dependencies.tempfile]
+version = "3.27.0"
+
 [dev-dependencies.time]
 version = "0.3.36"
 features = [
@@ -173,6 +222,9 @@ features = [
     "macros",
     "parsing",
 ]
+
+[dev-dependencies.time-tz]
+version = "2.0.0"
 
 [dev-dependencies.tzfile]
 version = "0.1.3"
@@ -189,14 +241,14 @@ version = "0.2.70"
 optional = true
 
 [target."cfg(any())".dependencies.jiff-static]
-version = "=0.2.16"
+version = "=1.0.2"
 
 [target.'cfg(any(windows, target_family = "wasm"))'.dependencies.jiff-tzdb-platform]
-version = "0.1.3"
+version = "1.0.0"
 optional = true
 
 [target.'cfg(not(target_family = "wasm"))'.dev-dependencies.hifitime]
-version = "3.9.0"
+version = "4.3.0"
 
 [target.'cfg(not(target_has_atomic = "ptr"))'.dependencies.portable-atomic]
 version = "1.10.0"
@@ -206,20 +258,11 @@ default-features = false
 version = "0.2.4"
 default-features = false
 
-[target."cfg(windows)".dependencies.windows-sys]
-version = ">=0.52.0, <=0.61.*"
-features = [
-    "Win32_Foundation",
-    "Win32_System_Time",
-]
+[target."cfg(windows)".dependencies.windows-link]
+version = "0.2.1"
 optional = true
-default-features = false
 
 [lints.rust.unexpected_cfgs]
 level = "allow"
 priority = 0
 check-cfg = ["cfg(docsrs_jiff)"]
-
-[profile.testrelease]
-debug-assertions = false
-inherits = "test"

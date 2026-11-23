@@ -82,7 +82,9 @@ pub(super) fn read(_db: &TimeZoneDatabase, path: &str) -> Option<TimeZone> {
 /// `android-system-properties` does though. We don't bother supporting >10
 /// year old versions of Android. (Although support for that could be added
 /// if there was a real need.) Also, when this fails, we give better error
-/// messages via `dlerror()` in the logs.
+/// messages via `dlerror()` in the logs. UPDATE: We don't give better error
+/// messages any more because `dlerror()` isn't sound to use for all possible
+/// libc implementations in a multi-threaded environment.
 struct PropertyGetter {
     /// A `dlopen` handle to `libc.so`.
     ///
@@ -120,11 +122,7 @@ impl PropertyGetter {
         // SAFETY: OK because we provide a valid NUL terminated string.
         let handle = unsafe { dlopen(cstr("libc.so\0").as_ptr(), 0) };
         let Some(libc) = NonNull::new(handle) else {
-            let _msg = dlerror_message();
-            warn!(
-                "could not open libc.so via `dlopen`: {err}",
-                err = crate::util::escape::Bytes(&_msg),
-            );
+            warn!("could not open libc.so via `dlopen`:");
             return None;
         };
 
@@ -226,12 +224,9 @@ unsafe fn load_symbol<F>(handle: NonNull<c_void>, symbol: &CStr) -> Option<F> {
     if sym.is_null() {
         // SAFETY: We know `handle` is non-null.
         let _ = unsafe { dlclose(handle.as_ptr()) };
-        let _msg = dlerror_message();
         warn!(
-            "could not load `{symbol}` \
-             symbol from `libc.so: {err}",
+            "could not load `{symbol}` symbol from `libc.so",
             symbol = crate::util::escape::Bytes(symbol.to_bytes()),
-            err = crate::util::escape::Bytes(&_msg),
         );
         return None;
     }
@@ -240,48 +235,6 @@ unsafe fn load_symbol<F>(handle: NonNull<c_void>, symbol: &CStr) -> Option<F> {
     // declared in `include/sys/system_properties.h` on Android.
     let function = unsafe { mem::transmute_copy::<*mut c_void, F>(&sym) };
     Some(function)
-}
-
-/// Returns the error message given by `dlerror`.
-///
-/// Callers should only use this when they expect an error to have occurred
-/// with one of the `dl*` APIs. If `dlerror` returns a null pointer, then a
-/// generic "unknown error" message is returned.
-fn dlerror_message() -> Vec<u8> {
-    // SAFETY: I believe `dlerror()` is always safe to call.
-    let msg = unsafe { dlerror() };
-    if msg.is_null() {
-        return b"unknown error".to_vec();
-    }
-    // SAFETY: We've verified that `msg` is not null and the contract of
-    // `dlerror` says that it returns a NUL terminated C string. Moreover,
-    // we do not hold on to this string and instead copy it to the heap
-    // immediately.
-    //
-    // One wonders if `dlerror()` is actually sound in this context. While
-    // Jiff can guarantee that itself will call `dlerror()` in only one
-    // thread, Jiff can't prevent other parts of the process from calling
-    // `dlerror()`. In particular, `dlerror(3)` says:
-    //
-    // > The message returned by dlerror() may reside in a statically allocated
-    // > buffer that is overwritten by subsequent dlerror() calls.
-    //
-    // But no mention is made about whether this statically allocated buffer
-    // is written to in a thread safe way. Or whether the string returned to
-    // the caller can be unceremoniously overwritten by a simultaneously
-    // executing thread.
-    //
-    // However, in practice, this could be sound if the libc in use is doing
-    // something sensible like using a thread local. Then I believe this is
-    // fine.
-    //
-    // My goodness C is awful. If this turns out to be unsound, then since
-    // `dlerror()` isn't essential, we'll probably just have to stop using it.
-    // So dumb.
-    //
-    // Note that in theory the error path should never be exercised.
-    let cstr = unsafe { CStr::from_ptr(msg) };
-    cstr.to_bytes().to_vec()
 }
 
 /// Creates a C string "literal" and returns it as a raw pointer.
@@ -295,10 +248,9 @@ fn cstr(string: &'static str) -> &'static CStr {
 // this. We're only doing it for one platform, so it doesn't seem like a huge
 // deal. But if this turns out to be a problem in practice, I'm fine accepting
 // a target specific dependency on `libc` for Android.
-extern "C" {
+unsafe extern "C" {
     fn dlopen(filename: *const c_char, flag: i32) -> *mut c_void;
     fn dlclose(handle: *mut c_void) -> i32;
-    fn dlerror() -> *mut c_char;
     fn dlsym(handle: *mut c_void, symbol: *const c_char) -> *mut c_void;
 }
 

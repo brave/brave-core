@@ -5,7 +5,6 @@ use crate::{
     Map,
     error::{Error, ErrorKind},
 };
-use platforms::target::{Arch, OS};
 use semver::VersionReq;
 use serde::{Deserialize, Deserializer, Serialize, Serializer, de::Error as DeError};
 use std::{
@@ -21,11 +20,11 @@ use std::{
 pub struct Affected {
     /// CPU architectures that this vulnerability is specific to
     #[serde(default)]
-    pub arch: Vec<Arch>,
+    pub arch: Vec<String>,
 
     /// Operating systems that this vulnerability is specific to
     #[serde(default)]
-    pub os: Vec<OS>,
+    pub os: Vec<String>,
 
     /// Paths to types and/or functions containing vulnerable code, enumerated
     /// as canonical Rust paths (i.e. starting with the crate name), sans any
@@ -95,7 +94,7 @@ impl FromStr for FunctionPath {
         }
 
         if segments.len() >= 2 {
-            Ok(FunctionPath(segments))
+            Ok(Self(segments))
         } else {
             fail!(
                 ErrorKind::Parse,
@@ -145,7 +144,7 @@ impl FromStr for Identifier {
     /// Parse an `Identifier` within a `path`
     fn from_str(identifier: &str) -> Result<Self, Error> {
         validate_identifier(identifier)?;
-        Ok(Identifier(identifier.into()))
+        Ok(Self(identifier.into()))
     }
 }
 
@@ -176,7 +175,7 @@ fn validate_identifier(identifier: &str) -> Result<(), Error> {
             ),
             _ => fail!(
                 ErrorKind::Parse,
-                "invalid character in identifier: '{}'",
+                "invalid character {c:?} in identifier: '{}'",
                 identifier
             ),
         }

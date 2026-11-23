@@ -63,8 +63,8 @@ s! {
         pub msg_qbytes: crate::msglen_t,
         pub msg_lspid: crate::pid_t,
         pub msg_lrpid: crate::pid_t,
-        __glibc_reserved4: u64,
-        __glibc_reserved5: u64,
+        __glibc_reserved4: Padding<u64>,
+        __glibc_reserved5: Padding<u64>,
     }
 
     pub struct semid_ds {
@@ -94,8 +94,19 @@ s! {
         )))]
         __reserved2: Padding<crate::__syscall_ulong_t>,
         pub sem_nsems: crate::__syscall_ulong_t,
-        __glibc_reserved3: crate::__syscall_ulong_t,
-        __glibc_reserved4: crate::__syscall_ulong_t,
+        __glibc_reserved3: Padding<crate::__syscall_ulong_t>,
+        __glibc_reserved4: Padding<crate::__syscall_ulong_t>,
+    }
+
+    // net/iucv/iucv.h
+
+    pub struct sockaddr_iucv {
+        pub siucv_family: crate::sa_family_t,
+        __siucv_port: Padding<u16>, // unused crate::in_port_t
+        __siucv_addr: Padding<u32>, // unused crate::in_addr_t
+        pub siucv_nodeid: [c_char; 8],
+        pub siucv_user_id: [c_char; 8],
+        pub siucv_name: [c_char; 8],
     }
 
     pub struct timex {

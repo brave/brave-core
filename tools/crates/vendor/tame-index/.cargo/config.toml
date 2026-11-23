@@ -13,7 +13,6 @@ rustflags = [
     "-Wclippy::dbg_macro",
     "-Wclippy::debug_assert_with_mut_call",
     "-Wclippy::doc_markdown",
-    "-Wclippy::empty_enum",
     "-Wclippy::enum_glob_use",
     "-Wclippy::exit",
     "-Wclippy::expl_impl_clone_on_copy",
@@ -63,7 +62,6 @@ rustflags = [
     "-Wclippy::string_add_assign",
     "-Wclippy::string_add",
     "-Wclippy::string_lit_as_bytes",
-    "-Wclippy::string_to_string",
     "-Wclippy::todo",
     "-Wclippy::trait_duplication_in_bounds",
     "-Wclippy::unimplemented",
@@ -77,7 +75,4 @@ rustflags = [
     "-Wrust_2018_idioms",
     "-Wunexpected_cfgs",
     # END - Embark standard lints v6 for Rust 1.55+
-
-    # We want all public items to have at least _some_ documentation
-    "-Dmissing-docs",
 ]

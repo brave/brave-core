@@ -2,8 +2,8 @@
 
 use alloc::string::ToString;
 
-use serde_core::de::value::BorrowedStrDeserializer;
 use serde_core::de::IntoDeserializer;
+use serde_core::de::value::BorrowedStrDeserializer;
 
 /// Check if deserializing a [`Datetime`][crate::Datetime]
 pub fn is_datetime(name: &'static str) -> bool {
@@ -53,6 +53,10 @@ where
         } else {
             panic!("next_value_seed called before next_key_seed")
         }
+    }
+
+    fn size_hint(&self) -> Option<usize> {
+        Some(usize::from(self.date.is_some()))
     }
 }
 

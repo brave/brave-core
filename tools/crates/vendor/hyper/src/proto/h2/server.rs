@@ -53,6 +53,7 @@ pub(crate) struct Config {
     pub(crate) keep_alive_interval: Option<Duration>,
     pub(crate) keep_alive_timeout: Duration,
     pub(crate) max_send_buffer_size: usize,
+    pub(crate) header_table_size: Option<u32>,
     pub(crate) max_header_list_size: u32,
     pub(crate) date_header: bool,
 }
@@ -68,6 +69,7 @@ impl Default for Config {
             max_concurrent_streams: Some(200),
             max_pending_accept_reset_streams: None,
             max_local_error_reset_streams: Some(DEFAULT_MAX_LOCAL_ERROR_RESET_STREAMS),
+            header_table_size: None,
             keep_alive_interval: None,
             keep_alive_timeout: Duration::from_secs(20),
             max_send_buffer_size: DEFAULT_MAX_SEND_BUF_SIZE,
@@ -92,6 +94,8 @@ pin_project! {
     }
 }
 
+//#[expect(clippy::large_enum_variant, reason = "the whole future is boxed")]
+#[allow(clippy::large_enum_variant)]
 enum State<T, B>
 where
     B: Body,
@@ -142,6 +146,9 @@ where
         if let Some(max) = config.max_pending_accept_reset_streams {
             builder.max_pending_accept_reset_streams(max);
         }
+        if let Some(size) = config.header_table_size {
+            builder.header_table_size(size);
+        }
         if config.enable_connect_protocol {
             builder.enable_connect_protocol();
         }
@@ -177,11 +184,11 @@ where
 
     pub(crate) fn graceful_shutdown(&mut self) {
         trace!("graceful_shutdown");
-        match self.state {
+        match &mut self.state {
             State::Handshaking { .. } => {
                 self.close_pending = true;
             }
-            State::Serving(ref mut srv) => {
+            State::Serving(srv) => {
                 if srv.closing.is_none() {
                     srv.conn.graceful_shutdown();
                 }
@@ -203,11 +210,8 @@ where
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         let me = &mut *self;
         loop {
-            let next = match me.state {
-                State::Handshaking {
-                    ref mut hs,
-                    ref ping_config,
-                } => {
+            let next = match &mut me.state {
+                State::Handshaking { hs, ping_config } => {
                     let mut conn = ready!(Pin::new(hs).poll(cx).map_err(crate::Error::new_h2))?;
                     let ping = if ping_config.is_enabled() {
                         let pp = conn.ping_pong().expect("conn.ping_pong");
@@ -222,7 +226,7 @@ where
                         date_header: me.date_header,
                     })
                 }
-                State::Serving(ref mut srv) => {
+                State::Serving(srv) => {
                     // graceful_shutdown was called before handshaking finished,
                     if me.close_pending && srv.closing.is_none() {
                         srv.conn.graceful_shutdown();
@@ -263,8 +267,7 @@ where
                         let ping = self
                             .ping
                             .as_ref()
-                            .map(|ping| ping.0.clone())
-                            .unwrap_or_else(ping::disabled);
+                            .map_or_else(ping::disabled, |ping| ping.0.clone());
 
                         // Record the headers received
                         ping.record_non_data();
@@ -317,7 +320,7 @@ where
                     }
                     None => {
                         // no more incoming streams...
-                        if let Some((ref ping, _)) = self.ping {
+                        if let Some((ping, _)) = &self.ping {
                             ping.ensure_not_timed_out()?;
                         }
 
@@ -339,7 +342,7 @@ where
     }
 
     fn poll_ping(&mut self, cx: &mut Context<'_>) {
-        if let Some((_, ref mut estimator)) = self.ping {
+        if let Some((_, estimator)) = &mut self.ping {
             match estimator.poll(cx) {
                 Poll::Ready(ping::Ponged::SizeUpdate(wnd)) => {
                     self.conn.set_target_window_size(wnd);
@@ -466,7 +469,10 @@ where
 
                     let (head, body) = res.into_parts();
                     let mut res = ::http::Response::from_parts(head, ());
-                    super::strip_connection_headers(res.headers_mut(), false);
+                    super::strip_connection_headers(
+                        res.headers_mut(),
+                        super::MessageKind::Response,
+                    );
 
                     // set Date header if it isn't already set if instructed
                     if *me.date_header {

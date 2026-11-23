@@ -11,7 +11,10 @@ jobs:
     strategy:
       matrix:
         rust: [stable, beta, nightly]
-        os: [ubuntu-latest, macos-14, windows-latest]
+        # Pin ubuntu-26.04 because we need GNU Make >= 4.4 (24.04 ships 4.3).
+        # 4.4 understands both `--jobserver-style=fifo` and `=pipe`, so the
+        # tests exercise both jobserver wire formats against a single make.
+        os: [ubuntu-26.04, macos-14, windows-latest]
     steps:
       - uses: actions/checkout@master
       - name: Install Rust (rustup)
@@ -22,22 +25,26 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
 
-      - run: cargo test --locked
+      # macOS ships BSD make as `make`; Homebrew installs GNU make as `gmake`.
+      - name: Install GNU Make (macOS)
+        if: startsWith(matrix.os, 'macos')
+        run: brew install make
+        shell: bash
 
-      - name: Compile make 4.4.1
-        uses: ./.github/actions/compile-make
-        with:
-          version: 4.4.1
-
-      - name: Test against GNU Make 4.4.1
+      - name: Print GNU Make version
         if: ${{ !startsWith(matrix.os, 'windows') }}
         shell: bash
-        run: cargo test --locked
+        run: "$MAKE --version"
         env:
-          MAKE: /usr/local/bin/make-4.4.1
+          MAKE: ${{ startsWith(matrix.os, 'macos') && 'gmake' || 'make' }}
+
+      - run: cargo test --locked
+        shell: bash
+        env:
+          MAKE: ${{ startsWith(matrix.os, 'macos') && 'gmake' || 'make' }}
 
       - name: Ensure wasm32-unknown-unknown be buildable
-        if: matrix.os == 'ubuntu-latest'
+        if: startsWith(matrix.os, 'ubuntu')
         shell: bash
         run: |
           rustup target add wasm32-unknown-unknown
@@ -51,20 +58,16 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Install make dependencies
-        run: apk add musl-dev bash curl make tar
+        run: apk add musl-dev bash make
 
       - uses: Swatinem/rust-cache@v2
 
-      - name: Compile make 4.4.1
-        uses: ./.github/actions/compile-make
-        with:
-          version: 4.4.1
-
-      - name: Test against GNU Make 4.4.1
+      - name: Print GNU Make version
+        run: make --version
         shell: bash
-        run: cargo test --locked
-        env:
-          MAKE: /usr/local/bin/make-4.4.1
+
+      - run: cargo test --locked
+        shell: bash
 
   rustfmt:
     name: Rustfmt

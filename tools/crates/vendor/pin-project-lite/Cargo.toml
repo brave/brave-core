@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.37"
 name = "pin-project-lite"
-version = "0.2.16"
+version = "0.2.18"
 build = false
 exclude = [
     "/.*",
@@ -41,11 +41,11 @@ categories = [
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/taiki-e/pin-project-lite"
 
-[package.metadata.cargo_check_external_types]
-allowed_external_types = []
-
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
+
+[package.metadata.cargo_check_external_types]
+allowed_external_types = []
 
 [lib]
 name = "pin_project_lite"
@@ -88,6 +88,11 @@ pedantic = "warn"
 trailing_empty_array = "warn"
 transmute_undefined_repr = "warn"
 undocumented_unsafe_blocks = "warn"
+unused_trait_names = "warn"
+
+[lints.clippy.assert_is_empty]
+level = "allow"
+priority = 1
 
 [lints.clippy.bool_assert_comparison]
 level = "allow"
@@ -98,6 +103,10 @@ level = "allow"
 priority = 1
 
 [lints.clippy.cast_lossless]
+level = "allow"
+priority = 1
+
+[lints.clippy.collapsible_match]
 level = "allow"
 priority = 1
 
@@ -114,10 +123,6 @@ level = "allow"
 priority = 1
 
 [lints.clippy.incompatible_msrv]
-level = "allow"
-priority = 1
-
-[lints.clippy.lint_groups_priority]
 level = "allow"
 priority = 1
 
@@ -181,10 +186,6 @@ priority = 1
 level = "allow"
 priority = 1
 
-[lints.clippy.unreadable_literal]
-level = "allow"
-priority = 1
-
 [lints.rust]
 deprecated_safe = "warn"
 improper_ctypes = "warn"
@@ -192,6 +193,7 @@ improper_ctypes_definitions = "warn"
 non_ascii_idents = "warn"
 rust_2018_idioms = "warn"
 single_use_lifetimes = "warn"
+unnameable_types = "warn"
 unreachable_pub = "warn"
 
 [lints.rust.unexpected_cfgs]

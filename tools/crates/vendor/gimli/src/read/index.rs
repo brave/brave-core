@@ -167,7 +167,7 @@ impl<R: Reader> UnitIndex<R> {
         let unit_count = input.read_u32()?;
         let slot_count = input.read_u32()?;
         if slot_count != 0 && (slot_count & (slot_count - 1) != 0 || slot_count <= unit_count) {
-            return Err(Error::InvalidIndexSlotCount);
+            return Err(Error::InvalidIndexSlotCount(slot_count));
         }
 
         let hash_ids = input.split(R::Offset::from_u64(u64::from(slot_count) * 8)?)?;
@@ -175,7 +175,7 @@ impl<R: Reader> UnitIndex<R> {
 
         let mut sections = [IndexSectionId::DebugAbbrev; SECTION_COUNT_MAX as usize];
         if section_count > SECTION_COUNT_MAX.into() {
-            return Err(Error::InvalidIndexSectionCount);
+            return Err(Error::UnsupportedIndexSectionCount(section_count));
         }
         for i in 0..section_count {
             let section = input.read_u32()?;
@@ -256,22 +256,16 @@ impl<R: Reader> UnitIndex<R> {
     }
 
     /// Return the section offsets and sizes for the given row index.
-    pub fn sections(&self, mut row: u32) -> Result<UnitIndexSectionIterator<'_, R>> {
-        if row == 0 {
-            return Err(Error::InvalidIndexRow);
+    pub fn sections(&self, row: u32) -> Result<UnitIndexSectionIterator<'_, R>> {
+        if row == 0 || row > self.unit_count {
+            return Err(Error::InvalidIndexRow(row));
         }
-        row -= 1;
-        if row >= self.unit_count {
-            return Err(Error::InvalidIndexRow);
-        }
+        let row_offset =
+            R::Offset::from_u64(u64::from(row - 1) * u64::from(self.section_count) * 4)?;
         let mut offsets = self.offsets.clone();
-        offsets.skip(R::Offset::from_u64(
-            u64::from(row) * u64::from(self.section_count) * 4,
-        )?)?;
+        offsets.skip(row_offset)?;
         let mut sizes = self.sizes.clone();
-        sizes.skip(R::Offset::from_u64(
-            u64::from(row) * u64::from(self.section_count) * 4,
-        )?)?;
+        sizes.skip(row_offset)?;
         Ok(UnitIndexSectionIterator {
             sections: self.sections[..self.section_count as usize].iter(),
             offsets,

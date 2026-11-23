@@ -10,25 +10,12 @@ impl LineRef<'_> {
 }
 
 mod write {
+    use gix_error::{Result, bail};
     use std::io;
 
     use gix_object::bstr::{BStr, ByteSlice};
 
     use crate::log::Line;
-
-    /// The Error produced by [`Line::write_to()`] (but wrapped in an io error).
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    enum Error {
-        #[error(r"Messages must not contain newlines (\n)")]
-        IllegalCharacter,
-    }
-
-    impl From<Error> for io::Error {
-        fn from(err: Error) -> Self {
-            io::Error::other(err)
-        }
-    }
 
     /// Output
     impl Line {
@@ -36,13 +23,17 @@ mod write {
         pub fn write_to(&self, out: &mut dyn io::Write) -> io::Result<()> {
             write!(out, "{} {} ", self.previous_oid, self.new_oid)?;
             self.signature.write_to(out)?;
-            writeln!(out, "\t{}", check_newlines(self.message.as_ref())?)
+            writeln!(
+                out,
+                "\t{}",
+                check_newlines(self.message.as_ref()).map_err(io::Error::other)?
+            )
         }
     }
 
-    fn check_newlines(input: &BStr) -> Result<&BStr, Error> {
+    fn check_newlines(input: &BStr) -> Result<&BStr> {
         if input.find_byte(b'\n').is_some() {
-            return Err(Error::IllegalCharacter);
+            bail!(gix_error::validation(r"Messages must not contain newlines (\n)"));
         }
         Ok(input)
     }
@@ -71,131 +62,67 @@ impl<'a> From<LineRef<'a>> for Line {
     }
 }
 
-///
-pub mod decode {
+mod decode {
+    use gix_error::{ErrorExt, Message, OptionExt, Result, ResultExt, corruption, ensure};
     use gix_object::bstr::{BStr, ByteSlice};
-    use winnow::{
-        combinator::{alt, eof, fail, opt, preceded, terminated},
-        error::{AddContext, ParserError, StrContext},
-        prelude::*,
-        token::{rest, take_while},
-    };
 
-    use crate::{file::log::LineRef, parse::hex_hash};
-
-    ///
-    mod error {
-        use gix_object::bstr::{BString, ByteSlice};
-
-        /// The error returned by [`from_bytes(…)`][super::Line::from_bytes()]
-        #[derive(Debug)]
-        pub struct Error {
-            pub input: BString,
-        }
-
-        impl std::fmt::Display for Error {
-            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                write!(
-                    f,
-                    r"{:?} did not match '<old-hexsha> <new-hexsha> <name> <<email>> <timestamp> <tz>\t<message>'",
-                    self.input
-                )
-            }
-        }
-
-        impl std::error::Error for Error {}
-
-        impl Error {
-            pub(crate) fn new(input: &[u8]) -> Self {
-                Error {
-                    input: input.as_bstr().to_owned(),
-                }
-            }
-        }
-    }
-    pub use error::Error;
+    use crate::{file::log::LineRef, parse::hex_hash_any};
 
     impl<'a> LineRef<'a> {
-        /// Decode a line from the given bytes which are expected to start at a hex sha.
-        pub fn from_bytes(mut input: &'a [u8]) -> Result<LineRef<'a>, Error> {
-            one::<()>(&mut input).map_err(|_| Error::new(input))
+        /// Decode a reflog line from the given bytes.
+        ///
+        /// Valid input starts with the previous object id, the new object id, a
+        /// signature, and an optional tab-separated message, for example:
+        ///
+        /// `0123456789012345678901234567890123456789 89abcdef89abcdef89abcdef89abcdef89abcdef Name <name@example.com> 1700000000 +0000\tmessage`
+        ///
+        /// Errors include [metadata](gix_error::Error::metadata()) `input` (bytes), the first input line without its
+        /// trailing newline.
+        pub fn from_bytes(input: &'a [u8]) -> Result<LineRef<'a>> {
+            decode(input).or_raise(|| Message::new("Could not decode reflog line").with_input(first_line(input)))
         }
     }
 
-    fn message<'a, E: ParserError<&'a [u8]>>(i: &mut &'a [u8]) -> ModalResult<&'a BStr, E> {
-        if i.is_empty() {
-            rest.map(ByteSlice::as_bstr).parse_next(i)
-        } else {
-            terminated(take_while(0.., |c| c != b'\n'), opt(b'\n'))
-                .map(ByteSlice::as_bstr)
-                .parse_next(i)
-        }
+    /// Return the first line from `input`, without its trailing newline.
+    ///
+    /// If `input` contains no newline, all of `input` is returned.
+    fn first_line(input: &[u8]) -> &[u8] {
+        let line_end = input.iter().position(|b| *b == b'\n').unwrap_or(input.len());
+        &input[..line_end]
     }
 
-    fn one<'a, E: ParserError<&'a [u8]> + AddContext<&'a [u8], StrContext>>(
-        bytes: &mut &'a [u8],
-    ) -> ModalResult<LineRef<'a>, E> {
-        let mut tokens = bytes.splitn(2, |b| *b == b'\t');
-        if let (Some(mut first), Some(mut second)) = (tokens.next(), tokens.next()) {
-            let (old, new, signature) = (
-                terminated(hex_hash, b" ").context(StrContext::Expected("<old-hexsha>".into())),
-                terminated(hex_hash, b" ").context(StrContext::Expected("<new-hexsha>".into())),
-                gix_actor::signature::decode.context(StrContext::Expected("<name> <<email>> <timestamp>".into())),
-            )
-                .context(StrContext::Expected(
-                    r"<old-hexsha> <new-hexsha> <name> <<email>> <timestamp> <tz>\t<message>".into(),
-                ))
-                .parse_next(&mut first)?;
+    /// Parse one reflog line from `bytes`.
+    ///
+    /// Only one line is parsed; any bytes after the first newline are
+    /// ignored. If the line has no tab separator, the message is empty.
+    ///
+    /// Return an error if the first line does not match the reflog line
+    /// format.
+    fn decode(bytes: &[u8]) -> Result<LineRef<'_>> {
+        let invalid = || corruption("Malformed reflog line");
+        let line = first_line(bytes);
+        let (mut head, message) = match line.find_byte(b'\t') {
+            Some(tab) => (&line[..tab], line[tab + 1..].as_bstr()),
+            None => (line, BStr::new(b"")),
+        };
 
-            // forward the buffer🤦‍♂️
-            message.parse_next(bytes)?;
-            let message = message(&mut second)?;
-            Ok(LineRef {
-                previous_oid: old,
-                new_oid: new,
-                signature,
-                message,
-            })
-        } else {
-            (
-                (
-                    terminated(hex_hash, b" ").context(StrContext::Expected("<old-hexsha>".into())),
-                    terminated(hex_hash, b" ").context(StrContext::Expected("<new-hexsha>".into())),
-                    gix_actor::signature::decode.context(StrContext::Expected("<name> <<email>> <timestamp>".into())),
-                )
-                    .context(StrContext::Expected(
-                        r"<old-hexsha> <new-hexsha> <name> <<email>> <timestamp> <tz>\t<message>".into(),
-                    )),
-                alt((
-                    preceded(
-                        b'\t',
-                        message.context(StrContext::Expected("<optional message>".into())),
-                    ),
-                    b'\n'.value(Default::default()),
-                    eof.value(Default::default()),
-                    fail.context(StrContext::Expected(
-                        "log message must be separated from signature with whitespace".into(),
-                    )),
-                )),
-            )
-                .map(|((old, new, signature), message)| LineRef {
-                    previous_oid: old,
-                    new_oid: new,
-                    signature,
-                    message,
-                })
-                .parse_next(bytes)
-        }
+        let old = hex_hash_any(&mut head).map_err(|()| invalid().raise())?;
+        head = head.strip_prefix(b" ").ok_or_raise(invalid)?;
+        let new = hex_hash_any(&mut head).map_err(|()| invalid().raise())?;
+        head = head.strip_prefix(b" ").ok_or_raise(invalid)?;
+        let signature = gix_actor::signature::decode(&mut head).or_raise(|| corruption("Invalid reflog signature"))?;
+        ensure!(head.is_empty(), invalid());
+        Ok(LineRef {
+            previous_oid: old,
+            new_oid: new,
+            signature,
+            message,
+        })
     }
 
     #[cfg(test)]
-    mod test {
+    mod test_decode {
         use super::*;
-
-        /// Convert a hexadecimal hash into its corresponding `ObjectId` or _panic_.
-        fn hex_to_oid(hex: &str) -> gix_hash::ObjectId {
-            gix_hash::ObjectId::from_hex(hex.as_bytes()).expect("40 bytes hex")
-        }
 
         fn with_newline(mut v: Vec<u8>) -> Vec<u8> {
             v.push(b'\n');
@@ -203,32 +130,18 @@ pub mod decode {
         }
 
         mod invalid {
-            use gix_testtools::to_bstr_err;
-            use winnow::{error::TreeError, prelude::*};
-
-            use super::one;
+            use super::decode;
 
             #[test]
             fn completely_bogus_shows_error_with_context() {
-                let err = one::<TreeError<&[u8], _>>
-                    .parse_peek(b"definitely not a log entry")
-                    .map_err(to_bstr_err)
-                    .expect_err("this should fail");
-                assert!(err.to_string().contains("<old-hexsha> <new-hexsha>"));
+                let input = b"definitely not a log entry".as_slice();
+                decode(input).expect_err("this should fail");
             }
 
             #[test]
             fn missing_whitespace_between_signature_and_message() {
                 let line = "0000000000000000000000000000000000000000 0000000000000000000000000000000000000000 one <foo@example.com> 1234567890 -0000message";
-                let err = one::<TreeError<&[u8], _>>
-                    .parse_peek(line.as_bytes())
-                    .map_err(to_bstr_err)
-                    .expect_err("this should fail");
-                assert!(
-                    err.to_string()
-                        .contains("log message must be separated from signature with whitespace"),
-                    "expected\n  `log message must be separated from signature with whitespace`\nin\n```\n{err}\n```"
-                );
+                decode(line.as_bytes()).expect_err("this should fail");
             }
         }
 
@@ -240,10 +153,7 @@ pub mod decode {
             let line_with_nl = with_newline(line_without_nl.clone());
             for input in &[line_without_nl, line_with_nl] {
                 assert_eq!(
-                    one::<winnow::error::InputError<_>>
-                        .parse_peek(input)
-                        .expect("successful parsing")
-                        .1,
+                    decode(input.as_slice()).expect("successful parsing"),
                     LineRef {
                         previous_oid: NULL_SHA1.as_bstr(),
                         new_oid: NULL_SHA1.as_bstr(),
@@ -264,10 +174,7 @@ pub mod decode {
             let line_with_nl = with_newline(line_without_nl.clone());
 
             for input in &[line_without_nl, line_with_nl] {
-                let (remaining, res) = one::<winnow::error::InputError<_>>
-                    .parse_peek(input)
-                    .expect("successful parsing");
-                assert!(remaining.is_empty(), "all consuming even without trailing newline");
+                let res = decode(input.as_slice()).expect("successful parsing");
                 let actual = LineRef {
                     previous_oid: b"a5828ae6b52137b913b978e16cd2334482eb4c1f".as_bstr(),
                     new_oid: b"89b43f80a514aee58b662ad606e6352e03eaeee4".as_bstr(),
@@ -279,31 +186,16 @@ pub mod decode {
                     message: b"pull --ff-only: Fast-forward".as_bstr(),
                 };
                 assert_eq!(res, actual);
-                assert_eq!(
-                    actual.previous_oid(),
-                    hex_to_oid("a5828ae6b52137b913b978e16cd2334482eb4c1f")
-                );
-                assert_eq!(actual.new_oid(), hex_to_oid("89b43f80a514aee58b662ad606e6352e03eaeee4"));
+                assert_eq!(actual.previous_oid(), "a5828ae6b52137b913b978e16cd2334482eb4c1f");
+                assert_eq!(actual.new_oid(), "89b43f80a514aee58b662ad606e6352e03eaeee4");
             }
         }
 
         #[test]
         fn two_lines_in_a_row_with_and_without_newline() {
             let lines = b"0000000000000000000000000000000000000000 0000000000000000000000000000000000000000 one <foo@example.com> 1234567890 -0000\t\n0000000000000000000000000000000000000000 0000000000000000000000000000000000000000 two <foo@example.com> 1234567890 -0000\thello";
-            let (remainder, parsed) = one::<winnow::error::InputError<_>>
-                .parse_peek(lines)
-                .expect("parse single line");
+            let parsed = decode(lines.as_slice()).expect("parse single line");
             assert_eq!(parsed.message, b"".as_bstr(), "first message is empty");
-
-            let (remainder, parsed) = one::<winnow::error::InputError<_>>
-                .parse_peek(remainder)
-                .expect("parse single line");
-            assert_eq!(
-                parsed.message,
-                b"hello".as_bstr(),
-                "second message is not and contains no newline"
-            );
-            assert!(remainder.is_empty());
         }
     }
 }

@@ -1,10 +1,3 @@
-// Copyright 2016 Amanieu d'Antras
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 //! This library exposes a low-level API for creating your own efficient
 //! synchronization primitives.
 //!
@@ -12,21 +5,32 @@
 //!
 //! To keep synchronization primitives small, all thread queuing and suspending
 //! functionality is offloaded to the *parking lot*. The idea behind this is based
-//! on the Webkit [`WTF::ParkingLot`](https://webkit.org/blog/6161/locking-in-webkit/)
+//! on the WebKit [`WTF::ParkingLot`](https://webkit.org/blog/6161/locking-in-webkit/)
 //! class, which essentially consists of a hash table mapping of lock addresses
-//! to queues of parked (sleeping) threads. The Webkit parking lot was itself
-//! inspired by Linux [futexes](http://man7.org/linux/man-pages/man2/futex.2.html),
+//! to queues of parked (sleeping) threads. The WebKit parking lot was itself
+//! inspired by Linux [futexes](https://man7.org/linux/man-pages/man2/futex.2.html),
 //! but it is more powerful since it allows invoking callbacks while holding a
 //! queue lock.
 //!
 //! There are two main operations that can be performed on the parking lot:
 //!
 //!  - *Parking* refers to suspending the thread while simultaneously enqueuing it
-//! on a queue keyed by some address.
-//! - *Unparking* refers to dequeuing a thread from a queue keyed by some address
-//! and resuming it.
+//!    on a queue keyed by some address.
+//!  - *Unparking* refers to dequeuing a thread from a queue keyed by some address
+//!    and resuming it.
 //!
 //! See the documentation of the individual functions for more details.
+//!
+//! Parking-lot operations never unwind. If an operation panics, the process
+//! aborts.
+//!
+//! # Use in global allocators
+//!
+//! Synchronization primitives built on this parking lot must not be used
+//! internally by a global allocator. Parking-lot operations may allocate
+//! memory, including while internal locks are held. If the allocator then
+//! blocks on one of these primitives, it may recursively invoke itself or
+//! deadlock.
 //!
 //! # Building custom synchronization primitives
 //!
@@ -55,13 +59,12 @@
 mod parking_lot;
 mod spinwait;
 mod thread_parker;
-mod util;
 mod word_lock;
 
 pub use self::parking_lot::deadlock;
-pub use self::parking_lot::{park, unpark_all, unpark_filter, unpark_one, unpark_requeue};
+pub use self::parking_lot::{DEFAULT_PARK_TOKEN, DEFAULT_UNPARK_TOKEN};
 pub use self::parking_lot::{
     FilterOp, ParkResult, ParkToken, RequeueOp, UnparkResult, UnparkToken,
 };
-pub use self::parking_lot::{DEFAULT_PARK_TOKEN, DEFAULT_UNPARK_TOKEN};
+pub use self::parking_lot::{park, unpark_all, unpark_filter, unpark_one, unpark_requeue};
 pub use self::spinwait::SpinWait;

@@ -1,0 +1,34 @@
+# Modified for gitoxide from the upstream imara-diff crate.
+# Upstream source: git cat-file -p 32d1e45d3df061e6ccba6db7fdce92db29e345d8:Cargo.toml
+lints.workspace = true
+
+[package]
+name = "gix-imara-diff"
+version = "0.3.4"
+edition = "2024"
+authors = ["pascalkuthe <pascalkuthe@pm.me>", "Sebastian Thiel <sebastian.thiel@icloud.com>"]
+rust-version = "1.88"
+license = "Apache-2.0"
+
+description = "A high performance library for computing diffs, maintained as a modified copy of upstream imara-diff for gitoxide."
+repository = "https://github.com/GitoxideLabs/gitoxide"
+keywords = ["diff", "difference", "myers", "compare", "changes"]
+readme = "README.md"
+include = ["/src/**/*", "/LICENSE", "/README.md", "!/src/tests.rs"]
+
+[dependencies]
+bstr = { version = "1.12.0", default-features = false }
+hashbrown = { version = ">=0.15, <=0.17", default-features = false, features = ["default-hasher", "inline-more"] }
+
+[features]
+default = []
+unified_diff = []
+
+[dev-dependencies]
+arbitrary = { version = "1.4.2", features = ["derive"] }
+gix-imara-diff = { path = ".", features = ["unified_diff" ] }
+gix-hash = { version = "^0.29.0", path = "../gix-hash", features = ["sha1"] }
+gix-object = { version = "^0.67.0", path = "../gix-object", features = ["sha1"] }
+gix-testtools = { path = "../tests/tools", default-features = false }
+cov-mark = "2.1.0"
+expect-test = "1.4.0"

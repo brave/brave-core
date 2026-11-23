@@ -1,0 +1,29 @@
+error: Transparent format can only be applied to structs with one field (got 0)
+ --> tests/ui/derive-transparent-empty.rs:7:10
+  |
+7 | #[derive(defmt::Format)]
+  |          ^^^^^^^^^^^^^
+  |
+  = note: this error originates in the derive macro `defmt::Format` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: Transparent format can only be applied when all variants have exactly one field (got 0)
+  --> tests/ui/derive-transparent-empty.rs:11:10
+   |
+11 | #[derive(defmt::Format)]
+   |          ^^^^^^^^^^^^^
+   |
+   = note: this error originates in the derive macro `defmt::Format` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0004]: non-exhaustive patterns: type `&&Empty` is non-empty
+ --> tests/ui/derive-transparent-empty.rs:3:10
+  |
+3 | #[derive(defmt::Format)]
+  |          ^^^^^^^^^^^^^
+  |
+note: `Empty` defined here
+ --> tests/ui/derive-transparent-empty.rs:5:6
+  |
+5 | enum Empty {}
+  |      ^^^^^
+  = note: the matched value is of type `&&Empty`
+  = note: this error originates in the derive macro `defmt::Format` (in Nightly builds, run with -Z macro-backtrace for more info)

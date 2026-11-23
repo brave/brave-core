@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.61.0"
 name = "camino"
-version = "1.2.2"
+version = "1.2.6"
 authors = [
     "Without Boats <saoirse@without.boats>",
     "Ashley Williams <ashley666ashley@gmail.com>",
@@ -21,9 +21,14 @@ authors = [
     "Rain <rain@sunshowers.io>",
 ]
 build = "build.rs"
-exclude = [
-    ".cargo/**/*",
-    ".github/**/*",
+include = [
+    "/build.rs",
+    "/src/**/*.rs",
+    "/tests/**/*.rs",
+    "/CHANGELOG.md",
+    "/LICENSE-APACHE",
+    "/LICENSE-MIT",
+    "/README.md",
 ]
 autolib = false
 autobins = false
@@ -50,6 +55,35 @@ repository = "https://github.com/camino-rs/camino"
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--cfg=doc_cfg"]
+
+[[package.metadata.release.pre-release-replacements]]
+file = "CHANGELOG.md"
+search = "Unreleased"
+replace = "[{{version}}]"
+min = 1
+
+[[package.metadata.release.pre-release-replacements]]
+file = "CHANGELOG.md"
+search = "ReleaseDate"
+replace = "{{date}}"
+min = 1
+
+[[package.metadata.release.pre-release-replacements]]
+file = "CHANGELOG.md"
+search = "<!-- next-header -->"
+replace = """
+<!-- next-header -->
+## Unreleased - ReleaseDate
+"""
+exactly = 1
+
+[[package.metadata.release.pre-release-replacements]]
+file = "CHANGELOG.md"
+search = "<!-- next-url -->"
+replace = """
+<!-- next-url -->
+[{{version}}]: https://github.com/camino-rs/camino/releases/tag/camino-{{version}}"""
+exactly = 1
 
 [features]
 proptest1 = ["dep:proptest"]

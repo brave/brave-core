@@ -1,3 +1,8 @@
+# 0.4.12 (January 31, 2026)
+
+* Help the compiler elide copies in `try_remove()` (#160)
+* Add security policy (#154)
+
 # 0.4.11 (August 8, 2025)
 
 * Fix `Slab::get_disjoint_mut` out of bounds (#152)

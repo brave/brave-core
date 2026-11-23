@@ -115,7 +115,6 @@ mod tests {
     use super::*;
     use crate::test_helpers::Body;
     use crate::{compression::Compression, test_helpers::WithTrailers};
-    use flate2::write::GzEncoder;
     use http::Response;
     use http::{HeaderMap, HeaderName, Request};
     use http_body_util::BodyExt;

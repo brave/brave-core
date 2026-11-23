@@ -85,22 +85,20 @@ jobs:
         # Pinned until cargo-semver-checks supports rustdoc format v57 (Rust 1.93+)
         rust-toolchain: "1.92.0"
 
-  # FIXME: failed on https://github.com/alexcrichton/tar-rs/pull/443, needs
-  # investigation.
-  # revdep:
-  #   name: Reverse deps
-  #   runs-on: ubuntu-24.04
-  #   timeout-minutes: 30
-  #   steps:
-  #   - uses: actions/checkout@v6
-  #   - uses: dtolnay/rust-toolchain@stable
-  #   - uses: Swatinem/rust-cache@v2
-  #     with:
-  #       workspaces: xtask
-  #   - name: Test reverse dependencies
-  #     run: cargo xtask revdep-test
-  #   - name: Verify tests catch regressions
-  #     run: cargo xtask revdep-test --self-test
+  revdep:
+    name: Reverse deps
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+    - uses: actions/checkout@v6
+    - uses: dtolnay/rust-toolchain@stable
+    - uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: xtask
+    - name: Test reverse dependencies
+      run: cargo xtask revdep-test
+    - name: Verify tests catch regressions
+      run: cargo xtask revdep-test --self-test
 
   publish_docs:
     name: Publish Documentation
@@ -126,7 +124,7 @@ jobs:
   # repository settings as the single required status check.
   required-checks:
     if: always()
-    needs: [test, wasm, rustfmt, semver-checks, publish_docs]
+    needs: [test, wasm, rustfmt, semver-checks, revdep, publish_docs]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -136,4 +134,5 @@ jobs:
           needs.wasm.result != 'success' ||
           needs.rustfmt.result != 'success' ||
           needs.semver-checks.result != 'success' ||
+          needs.revdep.result != 'success' ||
           needs.publish_docs.result != 'success'

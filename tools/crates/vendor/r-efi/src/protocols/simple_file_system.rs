@@ -14,10 +14,10 @@ pub const PROTOCOL_GUID: crate::base::Guid = crate::base::Guid::from_fields(
 
 pub const REVISION: u64 = 0x0000000000010000u64;
 
-pub type ProtocolOpenVolume = eficall! {fn(
+pub type ProtocolOpenVolume = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut *mut crate::protocols::file::Protocol,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
 #[repr(C)]
 pub struct Protocol {

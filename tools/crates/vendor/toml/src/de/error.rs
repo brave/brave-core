@@ -164,11 +164,7 @@ impl core::fmt::Display for Error {
     }
 }
 
-#[cfg(feature = "std")]
-impl std::error::Error for Error {}
-#[cfg(not(feature = "std"))]
-#[cfg(feature = "serde")]
-impl serde_core::de::StdError for Error {}
+impl core::error::Error for Error {}
 
 fn translate_position(input: &[u8], index: usize) -> (usize, usize) {
     if input.is_empty() {

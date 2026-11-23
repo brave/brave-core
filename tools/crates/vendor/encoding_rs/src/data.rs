@@ -453,7 +453,7 @@ pub static SINGLE_BYTE_DATA: SingleByteData = SingleByteData {
     ],
 };
 
-#[cfg_attr(feature = "cargo-clippy", allow(unreadable_literal))]
+#[allow(clippy::unreadable_literal)]
 static BIG5_ASTRALNESS: [u32; 589] = [
     0x445F0520, 0xB882520F, 0x400000F8, 0x044EA920, 0x00000000, 0x00010B34, 0x00000000, 0x00000000,
     0x00000000, 0x0C000000, 0x00000040, 0x00000000, 0x00580400, 0x0000003C, 0x5C800000, 0xBBF3DCAD,

@@ -37,7 +37,7 @@ mod imp {
             primitive::*,
         },
         ::std::{collections::hash_map::DefaultHasher, prelude::v1::*},
-        ::zerocopy::*,
+        ::zerocopy_renamed::*,
     };
 }
 
@@ -59,6 +59,7 @@ pub mod util {
         Copy,
         Clone,
     )]
+    #[zerocopy(crate = "zerocopy_renamed")]
     #[repr(C, align(2))]
     pub struct AU16(pub u16);
 
@@ -89,41 +90,58 @@ pub mod util {
     }
 
     #[macro_export]
-    macro_rules! test_trivial_is_bit_valid {
+    macro_rules! test_trivial_is_safe {
         ($x:ty => $name:ident) => {
             #[test]
             fn $name() {
-                util::test_trivial_is_bit_valid::<$x>();
+                util::test_trivial_is_safe::<$x>();
             }
         };
     }
 
     // Under some circumstances, our `TryFromBytes` derive generates a trivial
-    // `is_bit_valid` impl that unconditionally returns `true`. This test
-    // attempts to validate that this is, indeed, the behavior of our
-    // `TryFromBytes` derive. It is not foolproof, but is likely to catch some
-    // mistakes.
+    // `is_safe` impl that unconditionally returns `true`. This test attempts to
+    // validate that this is, indeed, the behavior of our `TryFromBytes` derive.
+    // It is not foolproof, but is likely to catch some mistakes.
     //
     // As of this writing, this happens when deriving `TryFromBytes` thanks to a
     // top-level `#[derive(FromBytes)]`.
-    pub fn test_trivial_is_bit_valid<T: super::imp::TryFromBytes>() {
-        // This test works based on the insight that a trivial `is_bit_valid`
-        // impl should never load any bytes from memory. Thus, while it is
-        // technically a violation of `is_bit_valid`'s safety precondition to
-        // pass a pointer to uninitialized memory, the `is_bit_valid` impl we
-        // expect our derives to generate should never touch this memory, and
-        // thus should never exhibit UB. By contrast, if our derives are
-        // spuriously generating non-trivial `is_bit_valid` impls, this should
-        // cause UB which may be caught by Miri.
+    pub fn test_trivial_is_safe<T: super::imp::TryFromBytes>() {
+        use super::imp::{MaybeUninit, Ptr, ReadOnly};
 
-        let buf = super::imp::MaybeUninit::<T>::uninit();
-        let ptr = super::imp::Ptr::from_ref(&buf);
+        // This test works based on the insight that a trivial `is_safe` impl
+        // should never load any bytes from memory. Thus, while it is technically
+        // a violation of `is_safe`'s safety precondition to pass a pointer to
+        // uninitialized memory, the `is_safe` impl we expect our derives to
+        // generate should never touch this memory, and thus should never exhibit
+        // UB. By contrast, if our derives are spuriously generating non-trivial
+        // `is_safe` impls, this should cause UB which may be caught by Miri.
+
+        let mut buf = MaybeUninit::<T>::uninit();
+        let ptr = Ptr::from_mut(&mut buf);
         // SAFETY: This is intentionally unsound; see the preceding comment.
         let ptr = unsafe { ptr.assume_initialized() };
+        let mut ptr = ptr.transmute::<ReadOnly<MaybeUninit<T>>, _, _>();
+        let ptr = ptr.reborrow_shared();
 
-        // SAFETY: `T` and `MaybeUninit<T>` have the same layout, so this is a
-        // size-preserving cast. It is also a provenance-preserving cast.
-        let ptr = unsafe { ptr.cast_unsized_unchecked(|p| p.cast_sized()) };
-        assert!(<T as super::imp::TryFromBytes>::is_bit_valid(ptr));
+        let ptr = ptr.cast::<_, ::zerocopy_renamed::pointer::cast::CastSized, _>();
+        assert!(<T as super::imp::TryFromBytes>::is_safe(ptr));
+    }
+
+    pub fn test_is_safe<T: super::imp::TryFromBytes, V: super::imp::IntoBytes>(
+        val: V,
+        is_safe: bool,
+    ) {
+        use super::imp::{
+            pointer::{cast::CastSized, BecauseImmutable},
+            ReadOnly,
+        };
+
+        let ro = ReadOnly::new(val);
+        let candidate = ::zerocopy_renamed::Ptr::from_ref(&ro);
+        let candidate = candidate.recall_validity();
+        let candidate = candidate.cast::<ReadOnly<T>, CastSized, (_, BecauseImmutable)>();
+
+        super::imp::assert_eq!(T::is_safe(candidate), is_safe);
     }
 }

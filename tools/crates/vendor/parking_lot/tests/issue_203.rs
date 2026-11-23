@@ -10,7 +10,7 @@ impl Drop for Bar {
 }
 
 thread_local! {
-    static B: Bar = Bar(RwLock::new(()));
+    static B: Bar = const { Bar(RwLock::new(())) };
 }
 
 #[test]

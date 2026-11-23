@@ -1,12 +1,13 @@
-use core::{fmt, iter::FusedIterator, marker::PhantomData};
+use core::{fmt, iter::FusedIterator, marker::PhantomData, ptr::NonNull};
 
 use crate::{
+    TryReserveError,
+    alloc::{Allocator, Global},
     control::Tag,
     raw::{
-        Allocator, Bucket, FullBucketsIndices, Global, RawDrain, RawExtractIf, RawIntoIter,
-        RawIter, RawIterHash, RawIterHashIndices, RawTable,
+        Bucket, FullBucketsIndices, RawDrain, RawExtractIf, RawIntoIter, RawIter, RawIterHash,
+        RawIterHashIndices, RawTable,
     },
-    TryReserveError,
 };
 
 /// Low-level hash table with explicit hashing.
@@ -43,8 +44,7 @@ use crate::{
 ///
 /// [`HashMap`]: super::HashMap
 /// [`HashSet`]: super::HashSet
-/// [`Eq`]: https://doc.rust-lang.org/std/cmp/trait.Eq.html
-/// [`Hash`]: https://doc.rust-lang.org/std/hash/trait.Hash.html
+/// [`Hash`]: core::hash::Hash
 pub struct HashTable<T, A = Global>
 where
     A: Allocator,
@@ -66,6 +66,7 @@ impl<T> HashTable<T, Global> {
     /// assert_eq!(table.len(), 0);
     /// assert_eq!(table.capacity(), 0);
     /// ```
+    #[must_use]
     pub const fn new() -> Self {
         Self {
             raw: RawTable::new(),
@@ -85,6 +86,7 @@ impl<T> HashTable<T, Global> {
     /// assert_eq!(table.len(), 0);
     /// assert!(table.capacity() >= 10);
     /// ```
+    #[must_use]
     pub fn with_capacity(capacity: usize) -> Self {
         Self {
             raw: RawTable::with_capacity(capacity),
@@ -133,6 +135,7 @@ where
     /// #     test()
     /// # }
     /// ```
+    #[must_use]
     pub const fn new_in(alloc: A) -> Self {
         Self {
             raw: RawTable::new_in(alloc),
@@ -181,6 +184,7 @@ where
     /// #     test()
     /// # }
     /// ```
+    #[must_use]
     pub fn with_capacity_in(capacity: usize, alloc: A) -> Self {
         Self {
             raw: RawTable::with_capacity_in(capacity, alloc),
@@ -512,7 +516,7 @@ where
     #[inline]
     pub unsafe fn get_bucket_entry_unchecked(&mut self, index: usize) -> OccupiedEntry<'_, T, A> {
         OccupiedEntry {
-            bucket: self.raw.bucket(index),
+            bucket: unsafe { self.raw.bucket(index) },
             table: self,
         }
     }
@@ -588,7 +592,7 @@ where
     /// ```
     #[inline]
     pub unsafe fn get_bucket_unchecked(&self, index: usize) -> &T {
-        self.raw.bucket(index).as_ref()
+        unsafe { self.raw.bucket(index).as_ref() }
     }
 
     /// Gets a mutable reference to an entry in the table at the given bucket index,
@@ -666,7 +670,7 @@ where
     /// ```
     #[inline]
     pub unsafe fn get_bucket_unchecked_mut(&mut self, index: usize) -> &mut T {
-        self.raw.bucket(index).as_mut()
+        unsafe { self.raw.bucket(index).as_mut() }
     }
 
     /// Inserts an element into the `HashTable` with the given hash value, but
@@ -763,7 +767,7 @@ where
     /// # }
     /// ```
     pub fn shrink_to_fit(&mut self, hasher: impl Fn(&T) -> u64) {
-        self.raw.shrink_to(self.len(), hasher)
+        self.raw.shrink_to(self.len(), hasher);
     }
 
     /// Shrinks the capacity of the table with a lower limit. It will drop
@@ -817,8 +821,7 @@ where
     /// in case of allocation error. Use [`try_reserve`](HashTable::try_reserve) instead
     /// if you want to handle memory allocation failure.
     ///
-    /// [`isize::MAX`]: https://doc.rust-lang.org/std/primitive.isize.html
-    /// [`abort`]: https://doc.rust-lang.org/alloc/alloc/fn.handle_alloc_error.html
+    /// [`abort`]: stdalloc::alloc::handle_alloc_error
     ///
     /// # Examples
     ///
@@ -840,7 +843,7 @@ where
     /// # }
     /// ```
     pub fn reserve(&mut self, additional: usize, hasher: impl Fn(&T) -> u64) {
-        self.raw.reserve(additional, hasher)
+        self.raw.reserve(additional, hasher);
     }
 
     /// Tries to reserve capacity for at least `additional` more elements to be inserted
@@ -918,7 +921,7 @@ where
     /// # }
     /// ```
     pub fn num_buckets(&self) -> usize {
-        self.raw.buckets()
+        self.raw.num_buckets()
     }
 
     /// Returns the number of elements the table can hold without reallocating.
@@ -1066,6 +1069,29 @@ where
     /// ```
     pub fn iter_mut(&mut self) -> IterMut<'_, T> {
         IterMut {
+            inner: unsafe { self.raw.iter() },
+            marker: PhantomData,
+        }
+    }
+
+    /// An iterator visiting all elements in arbitrary order,
+    /// with pointers to the elements.
+    /// The iterator element type is `NonNull<T>`.
+    ///
+    /// This iterator is intended for APIs where only part of the elements are
+    /// mutable, with the remainder being immutable. In these cases, wrapping
+    /// the ordinary mutable iterator is incorrect because all components of
+    /// the element type will be [invariant]. A correct implementation will use
+    /// an appropriate [`PhantomData`] marker to make the immutable parts
+    /// [covariant] and the mutable parts invariant.
+    ///
+    /// [invariant]: https://doc.rust-lang.org/stable/reference/subtyping.html#r-subtyping.variance.invariant
+    /// [covariant]: https://doc.rust-lang.org/stable/reference/subtyping.html#r-subtyping.variance.covariant
+    ///
+    /// See the documentation for [`UnsafeIter`] for more information on how
+    /// to correctly use this.
+    pub fn unsafe_iter(&mut self) -> UnsafeIter<'_, T> {
+        UnsafeIter {
             inner: unsafe { self.raw.iter() },
             marker: PhantomData,
         }
@@ -1524,7 +1550,7 @@ where
         hashes: [u64; N],
         eq: impl FnMut(usize, &T) -> bool,
     ) -> [Option<&'_ mut T>; N] {
-        self.raw.get_disjoint_unchecked_mut(hashes, eq)
+        unsafe { self.raw.get_disjoint_unchecked_mut(hashes, eq) }
     }
 
     /// Attempts to get mutable references to `N` values in the map at once, without validating that
@@ -1535,7 +1561,7 @@ where
         hashes: [u64; N],
         eq: impl FnMut(usize, &T) -> bool,
     ) -> [Option<&'_ mut T>; N] {
-        self.raw.get_disjoint_unchecked_mut(hashes, eq)
+        unsafe { self.raw.get_disjoint_unchecked_mut(hashes, eq) }
     }
 
     /// Returns the total amount of memory allocated internally by the hash
@@ -1608,6 +1634,10 @@ where
             raw: self.raw.clone(),
         }
     }
+
+    fn clone_from(&mut self, source: &Self) {
+        self.raw.clone_from(&source.raw);
+    }
 }
 
 impl<T, A> fmt::Debug for HashTable<T, A>
@@ -1624,8 +1654,7 @@ where
 ///
 /// This `enum` is constructed from the [`entry`] method on [`HashTable`].
 ///
-/// [`HashTable`]: struct.HashTable.html
-/// [`entry`]: struct.HashTable.html#method.entry
+/// [`entry`]: HashTable::entry
 ///
 /// # Examples
 ///
@@ -1920,12 +1949,18 @@ where
             Entry::Vacant(entry) => Entry::Vacant(entry),
         }
     }
+
+    /// Converts the `Entry` into a mutable reference to the underlying table.
+    pub fn into_table(self) -> &'a mut HashTable<T, A> {
+        match self {
+            Entry::Occupied(entry) => entry.table,
+            Entry::Vacant(entry) => entry.table,
+        }
+    }
 }
 
 /// A view into an occupied entry in a `HashTable`.
 /// It is part of the [`Entry`] enum.
-///
-/// [`Entry`]: enum.Entry.html
 ///
 /// # Examples
 ///
@@ -2242,12 +2277,83 @@ where
     pub fn bucket_index(&self) -> usize {
         unsafe { self.table.raw.bucket_index(&self.bucket) }
     }
+
+    /// Provides owned access to the value of the entry and allows to replace or
+    /// remove it based on the value of the returned option.
+    ///
+    /// The hash of the new item should be the same as the old item.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # #[cfg(feature = "nightly")]
+    /// # fn test() {
+    /// use hashbrown::{HashTable, DefaultHashBuilder};
+    /// use hashbrown::hash_table::Entry;
+    /// use std::hash::BuildHasher;
+    ///
+    /// let mut table = HashTable::new();
+    /// let hasher = DefaultHashBuilder::default();
+    /// let hasher = |(key, _): &_| hasher.hash_one(key);
+    /// table.insert_unique(hasher(&("poneyland", 42)), ("poneyland", 42), hasher);
+    ///
+    /// let entry = match table.entry(hasher(&("poneyland", 42)), |entry| entry.0 == "poneyland", hasher) {
+    ///     Entry::Occupied(e) => unsafe {
+    ///         e.replace_entry_with(|(k, v)| {
+    ///             assert_eq!(k, "poneyland");
+    ///             assert_eq!(v, 42);
+    ///             Some(("poneyland", v + 1))
+    ///         })
+    ///     }
+    ///     Entry::Vacant(_) => panic!(),
+    /// };
+    ///
+    /// match entry {
+    ///     Entry::Occupied(e) => {
+    ///         assert_eq!(e.get(), &("poneyland", 43));
+    ///     }
+    ///     Entry::Vacant(_) => panic!(),
+    /// }
+    ///
+    /// let entry = match table.entry(hasher(&("poneyland", 43)), |entry| entry.0 == "poneyland", hasher) {
+    ///     Entry::Occupied(e) => unsafe { e.replace_entry_with(|(_k, _v)| None) },
+    ///     Entry::Vacant(_) => panic!(),
+    /// };
+    ///
+    /// match entry {
+    ///     Entry::Vacant(e) => {
+    ///         // nice!
+    ///     }
+    ///     Entry::Occupied(_) => panic!(),
+    /// }
+    ///
+    /// assert!(table.is_empty());
+    /// # }
+    /// # fn main() {
+    /// #     #[cfg(feature = "nightly")]
+    /// #     test()
+    /// # }
+    /// ```
+    #[cfg_attr(feature = "inline-more", inline)]
+    pub fn replace_entry_with<F>(self, f: F) -> Entry<'a, T, A>
+    where
+        F: FnOnce(T) -> Option<T>,
+    {
+        unsafe {
+            match self.table.raw.replace_bucket_with(self.bucket.clone(), f) {
+                None => Entry::Occupied(self),
+                Some(tag) => Entry::Vacant(VacantEntry {
+                    tag,
+                    index: self.bucket_index(),
+                    table: self.table,
+                }),
+            }
+        }
+    }
 }
 
 /// A view into a vacant entry in a `HashTable`.
 /// It is part of the [`Entry`] enum.
-///
-/// [`Entry`]: enum.Entry.html
 ///
 /// # Examples
 ///
@@ -2425,8 +2531,7 @@ where
 /// This `struct` is created by the [`iter`] method on [`HashTable`]. See its
 /// documentation for more.
 ///
-/// [`iter`]: struct.HashTable.html#method.iter
-/// [`HashTable`]: struct.HashTable.html
+/// [`iter`]: HashTable::iter
 pub struct Iter<'a, T> {
     inner: RawIter<T>,
     marker: PhantomData<&'a T>,
@@ -2498,11 +2603,20 @@ impl<T: fmt::Debug> fmt::Debug for Iter<'_, T> {
 /// This `struct` is created by the [`iter_mut`] method on [`HashTable`]. See its
 /// documentation for more.
 ///
-/// [`iter_mut`]: struct.HashTable.html#method.iter_mut
-/// [`HashTable`]: struct.HashTable.html
+/// [`iter_mut`]: HashTable::iter_mut
 pub struct IterMut<'a, T> {
     inner: RawIter<T>,
     marker: PhantomData<&'a mut T>,
+}
+impl<T> IterMut<'_, T> {
+    /// Returns a iterator of references over the remaining items.
+    #[cfg_attr(feature = "inline-more", inline)]
+    pub fn iter(&self) -> Iter<'_, T> {
+        Iter {
+            inner: self.inner.clone(),
+            marker: PhantomData,
+        }
+    }
 }
 
 impl<T> Default for IterMut<'_, T> {
@@ -2552,12 +2666,125 @@ where
     T: fmt::Debug,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_list()
-            .entries(Iter {
-                inner: self.inner.clone(),
-                marker: PhantomData,
-            })
-            .finish()
+        f.debug_list().entries(self.iter()).finish()
+    }
+}
+
+/// An unsafe iterator over the entries of a `HashTable` in arbitrary order.
+/// The iterator element type is `NonNull<T>`.
+///
+/// This `struct` is created by the [`unsafe_iter`] method on [`HashTable`].
+///
+/// This is used for implementations of iterators with "mixed" mutability on
+/// the iterated elements. For example, a mutable iterator for a map may return
+/// an immutable key alongside a mutable value, even though these are both
+/// stored inside the table.
+///
+/// If you have no idea what any of this means, you probably should be using
+/// [`IterMut`] instead, as it does not have any safety requirements.
+///
+/// # Safety
+///
+/// In order to correctly use this iterator, it should be wrapped in a safe
+/// iterator struct with the appropriate [`PhantomData`] marker to indicate the
+/// correct [variance].
+///
+/// For example, below is a simplified [`hash_map::IterMut`] implementation
+/// that correctly returns a [covariant] key, and an [invariant] value:
+///
+/// [variance]: https://doc.rust-lang.org/stable/reference/subtyping.html#r-subtyping.variance
+/// [covariant]: https://doc.rust-lang.org/stable/reference/subtyping.html#r-subtyping.variance.covariant
+/// [invariant]: https://doc.rust-lang.org/stable/reference/subtyping.html#r-subtyping.variance.invariant
+/// [`hash_map::IterMut`]: crate::hash_map::IterMut
+/// [`unsafe_iter`]: HashTable::unsafe_iter
+///
+/// ```rust
+/// use core::marker::PhantomData;
+/// use hashbrown::hash_table;
+///
+/// pub struct IterMut<'a, K, V> {
+///     inner: hash_table::UnsafeIter<'a, (K, V)>,
+///     // Covariant over keys, invariant over values
+///     marker: PhantomData<(&'a K, &'a mut V)>,
+/// }
+/// impl<'a, K, V> Iterator for IterMut<'a, K, V> {
+///     // Immutable keys, mutable values
+///     type Item = (&'a K, &'a mut V);
+///
+///     fn next(&mut self) -> Option<Self::Item> {
+///         // SAFETY: The lifetime of the dereferenced pointer is derived from
+///         // the lifetime of its iterator, ensuring that it's always valid.
+///         // Additionally, we match the mutability in `self.marker` to ensure
+///         // the correct variance.
+///         let &mut (ref key, ref mut val) = unsafe { self.inner.next()?.as_mut() };
+///         Some((key, val))
+///     }
+/// }
+/// ```
+pub struct UnsafeIter<'a, T> {
+    inner: RawIter<T>,
+    marker: PhantomData<&'a ()>,
+}
+impl<T> UnsafeIter<'_, T> {
+    /// Returns a iterator of references over the remaining items.
+    #[cfg_attr(feature = "inline-more", inline)]
+    pub fn iter(&self) -> Iter<'_, T> {
+        Iter {
+            inner: self.inner.clone(),
+            marker: PhantomData,
+        }
+    }
+}
+
+impl<T> Default for UnsafeIter<'_, T> {
+    #[cfg_attr(feature = "inline-more", inline)]
+    fn default() -> Self {
+        UnsafeIter {
+            inner: Default::default(),
+            marker: PhantomData,
+        }
+    }
+}
+impl<T> Iterator for UnsafeIter<'_, T> {
+    type Item = NonNull<T>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        // Avoid `Option::map` because it bloats LLVM IR.
+        match self.inner.next() {
+            Some(bucket) => Some(unsafe { NonNull::new_unchecked(bucket.as_ptr()) }),
+            None => None,
+        }
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.inner.size_hint()
+    }
+
+    fn fold<B, F>(self, init: B, mut f: F) -> B
+    where
+        Self: Sized,
+        F: FnMut(B, Self::Item) -> B,
+    {
+        self.inner.fold(init, |acc, bucket| unsafe {
+            f(acc, NonNull::new_unchecked(bucket.as_ptr()))
+        })
+    }
+}
+
+impl<T> ExactSizeIterator for UnsafeIter<'_, T> {
+    fn len(&self) -> usize {
+        self.inner.len()
+    }
+}
+
+impl<T> FusedIterator for UnsafeIter<'_, T> {}
+
+impl<T> fmt::Debug for UnsafeIter<'_, T>
+where
+    T: fmt::Debug,
+{
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_list().entries(self.iter()).finish()
     }
 }
 
@@ -2629,8 +2856,7 @@ impl<T> fmt::Debug for IterBuckets<'_, T> {
 /// This `struct` is created by the [`iter_hash`] method on [`HashTable`]. See its
 /// documentation for more.
 ///
-/// [`iter_hash`]: struct.HashTable.html#method.iter_hash
-/// [`HashTable`]: struct.HashTable.html
+/// [`iter_hash`]: HashTable::iter_hash
 pub struct IterHash<'a, T> {
     inner: RawIterHash<T>,
     marker: PhantomData<&'a T>,
@@ -2695,8 +2921,7 @@ where
 /// This `struct` is created by the [`iter_hash_mut`] method on [`HashTable`]. See its
 /// documentation for more.
 ///
-/// [`iter_hash_mut`]: struct.HashTable.html#method.iter_hash_mut
-/// [`HashTable`]: struct.HashTable.html
+/// [`iter_hash_mut`]: HashTable::iter_hash_mut
 pub struct IterHashMut<'a, T> {
     inner: RawIterHash<T>,
     marker: PhantomData<&'a mut T>,
@@ -2802,14 +3027,25 @@ impl<T> fmt::Debug for IterHashBuckets<'_, T> {
 /// (provided by the [`IntoIterator`] trait). See its documentation for more.
 /// The table cannot be used after calling that method.
 ///
-/// [`into_iter`]: struct.HashTable.html#method.into_iter
-/// [`HashTable`]: struct.HashTable.html
-/// [`IntoIterator`]: https://doc.rust-lang.org/core/iter/trait.IntoIterator.html
+/// [`into_iter`]: HashTable::into_iter
 pub struct IntoIter<T, A = Global>
 where
     A: Allocator,
 {
     inner: RawIntoIter<T, A>,
+}
+impl<T, A> IntoIter<T, A>
+where
+    A: Allocator,
+{
+    /// Returns a iterator of references over the remaining items.
+    #[cfg_attr(feature = "inline-more", inline)]
+    pub fn iter(&self) -> Iter<'_, T> {
+        Iter {
+            inner: self.inner.iter(),
+            marker: PhantomData,
+        }
+    }
 }
 
 impl<T, A: Allocator> Default for IntoIter<T, A> {
@@ -2861,12 +3097,7 @@ where
     A: Allocator,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_list()
-            .entries(Iter {
-                inner: self.inner.iter(),
-                marker: PhantomData,
-            })
-            .finish()
+        f.debug_list().entries(self.iter()).finish()
     }
 }
 
@@ -2875,10 +3106,19 @@ where
 /// This `struct` is created by the [`drain`] method on [`HashTable`].
 /// See its documentation for more.
 ///
-/// [`HashTable`]: struct.HashTable.html
-/// [`drain`]: struct.HashTable.html#method.drain
+/// [`drain`]: HashTable::drain
 pub struct Drain<'a, T, A: Allocator = Global> {
     inner: RawDrain<'a, T, A>,
+}
+impl<T, A: Allocator> Drain<'_, T, A> {
+    /// Returns a iterator of references over the remaining items.
+    #[cfg_attr(feature = "inline-more", inline)]
+    pub fn iter(&self) -> Iter<'_, T> {
+        Iter {
+            inner: self.inner.iter(),
+            marker: PhantomData,
+        }
+    }
 }
 
 impl<T, A: Allocator> Iterator for Drain<'_, T, A> {
@@ -2911,12 +3151,7 @@ impl<T, A: Allocator> FusedIterator for Drain<'_, T, A> {}
 
 impl<T: fmt::Debug, A: Allocator> fmt::Debug for Drain<'_, T, A> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_list()
-            .entries(Iter {
-                inner: self.inner.iter(),
-                marker: PhantomData,
-            })
-            .finish()
+        f.debug_list().entries(self.iter()).finish()
     }
 }
 
@@ -2957,6 +3192,6 @@ mod tests {
     fn test_allocation_info() {
         assert_eq!(HashTable::<()>::new().allocation_size(), 0);
         assert_eq!(HashTable::<u32>::new().allocation_size(), 0);
-        assert!(HashTable::<u32>::with_capacity(1).allocation_size() > core::mem::size_of::<u32>());
+        assert!(HashTable::<u32>::with_capacity(1).allocation_size() > size_of::<u32>());
     }
 }

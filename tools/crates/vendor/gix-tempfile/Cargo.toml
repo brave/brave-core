@@ -10,16 +10,16 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-tempfile"
-version = "19.0.1"
+version = "26.0.1"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
-    "README.md",
+    "/src/**/*",
+    "/LICENSE-*",
+    "/README.md",
 ]
 autolib = false
 autobins = false
@@ -30,6 +30,7 @@ description = "A tempfile implementation with a global registry to assure cleanu
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -47,10 +48,10 @@ signals = [
 name = "gix_tempfile"
 path = "src/lib.rs"
 test = true
-doctest = false
+doctest = true
 
 [dependencies.dashmap]
-version = "6.0.1"
+version = "6.2.1"
 optional = true
 
 [dependencies.document-features]
@@ -58,28 +59,36 @@ version = "0.2.0"
 optional = true
 
 [dependencies.gix-fs]
-version = "^0.17.0"
+version = "^0.24.1"
 
 [dependencies.parking_lot]
 version = "0.12.4"
 
 [dependencies.signal-hook]
-version = "0.3.18"
+version = "0.4.3"
 optional = true
 default-features = false
 
 [dependencies.signal-hook-registry]
-version = "1.4.5"
+version = "1.4.8"
 optional = true
 
 [dependencies.tempfile]
-version = "3.23.0"
+version = "3.26.0"
+
+[dev-dependencies.insta]
+version = "1.46.3"
 
 [target."cfg(not(windows))".dependencies.libc]
-version = "0.2.176"
+version = "0.2.186"
 default-features = false
 
+[target."cfg(windows)".dependencies.windows-sys]
+version = "0.61.1"
+features = ["Win32_Storage_FileSystem"]
+
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -98,7 +107,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

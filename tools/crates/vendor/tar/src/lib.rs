@@ -5,10 +5,28 @@
 //! an archive is never required to be fully resident in memory, and all objects
 //! provide largely a streaming interface to read bytes from.
 //!
-//! [1]: http://en.wikipedia.org/wiki/Tar_%28computing%29
+//! [1]: https://en.wikipedia.org/wiki/Tar_%28computing%29
+//!
+//! # Security
+//!
+//! When unpacking archives ([`Archive::unpack`], [`Entry::unpack_in`]), a
+//! best-effort is made to prevent writing files outside the destination
+//! directory: paths containing `..` are rejected, and symlink targets within
+//! the archive are validated before use.
+//!
+//! **Concurrent mutation of the destination tree is outside the threat model.**
+//! If another process modifies the destination (for example, by atomically
+//! swapping a symlink) while extraction is in progress, this crate may follow
+//! a path outside the intended destination. Preventing such TOCTOU races
+//! requires OS primitives (e.g. `openat`/`O_PATH` used throughout) that this
+//! crate does not use. When extracting untrusted archives in an environment
+//! where the destination may be concurrently modified, use the [`cap-std`]
+//! crate and/or OS-level sandboxing.
+//!
+//! [`cap-std`]: https://docs.rs/cap-std/
 
 // More docs about the detailed tar format can also be found here:
-// http://www.freebsd.org/cgi/man.cgi?query=tar&sektion=5&manpath=FreeBSD+8-current
+// https://man.freebsd.org/cgi/man.cgi?query=tar&sektion=5&manpath=FreeBSD+8-current
 
 // NB: some of the coding patterns and idioms here may seem a little strange.
 //     This is currently attempting to expose a super generic interface while

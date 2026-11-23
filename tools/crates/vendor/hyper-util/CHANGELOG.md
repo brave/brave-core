@@ -1,3 +1,59 @@
+# 0.1.21 (2026-09-24)
+
+This release bumps the minimal supported Rust version (MSRV) from 1.64 to 1.85.
+
+This release bumps the rust edition from 2021 to 2024.
+
+## Additions
+
+- Add crate-level documentation. ([#327](https://github.com/hyperium/hyper-util/pull/327))
+- Add `client::legacy::Builder::http2_header_table_size()` method. ([#274](https://github.com/hyperium/hyper-util/pull/274))
+- Add `client::legacy::Builder::http2_max_concurrent_streams()` method. ([#274](https://github.com/hyperium/hyper-util/pull/274))
+- Add `client::legacy::Builder::http2_max_local_error_reset_streams()` method. ([#277](https://github.com/hyperium/hyper-util/pull/277))
+- Add `client::legacy::connect::HttpConnector::set_mark()` method. ([#303](https://github.com/hyperium/hyper-util/pull/303))
+- Add `rt::tracing::WithSpanExecutor<E>`, `hyper_util::rt::tracing::CurrentSpanExecutor<E>`, and `hyper_util::rt::tracing::MkSpanExecutor<E, F>` executors. ([#323](https://github.com/hyperium/hyper-util/pull/323))
+
+## Fixes
+
+- Fix `client::legacy::Client` so that it properly validates CONNECT responses. ([#315](https://github.com/hyperium/hyper-util/pull/315))
+- Fix `client::legacy::Client` to cancel the idle interval once its pool empties. ([#292](https://github.com/hyperium/hyper-util/pull/292))
+- Fix `client::legacy::Client` to properly handle IPv6 addresses when using a SOCKS proxy. ([#302](https://github.com/hyperium/hyper-util/pull/302))
+- Fix `client::pool::cache` to preserve readiness with clones. ([#297](https://github.com/hyperium/hyper-util/pull/297))
+- Fix `client::pool::cache` to wake its waiters in FIFO order. ([#298](https://github.com/hyperium/hyper-util/pull/298))
+- Fix `client::pool::singleton::Singleton` to properly handle cancellation. ([#299](https://github.com/hyperium/hyper-util/pull/299))
+- Fix `client::pool::singleton::Singleton` to share errors with all waiters. ([#296](https://github.com/hyperium/hyper-util/pull/296))
+- Fix `client::proxy::matcher` handling for IP wildcards. ([#309](https://github.com/hyperium/hyper-util/pull/309))
+- The `tokio/net` feature is narrowed to the `client-legacy` feature flag, from the `client` feature flag. ([#276](https://github.com/hyperium/hyper-util/pull/276))
+- Various fixes to the `client::legacy::Client`'s SOCKS proxying. ([#302](https://github.com/hyperium/hyper-util/pull/302)) ([#307](https://github.com/hyperium/hyper-util/pull/307)) ([#308](https://github.com/hyperium/hyper-util/pull/308)) ([#310](https://github.com/hyperium/hyper-util/pull/310))
+
+## Changes
+
+This release contains a minor behavioral change for users of the `tracing`
+feature flag to be aware of.
+
+This feature flag was introduced in v0.1.11. When enabled,
+`rt::TokioExecutor<E>` began propagating the currently active `tracing::Span`
+to spawned tasks when `hyper::rt::Executor::execute()` is called. This caused
+issues for some users, due to background tasks keeping a span open for the
+duration of a long-lived connection.
+
+This behavior has now been removed from `rt::TokioExecutor<E>`
+([#322](https://github.com/hyperium/hyper-util/pull/322)) by default. A
+collection of executor wrappers have been added to a new `rt::tracing`
+submodule, to provide facilities for instrumenting a client or server's spawned
+tasks. See the module-level documentation of `rt::tracing` for more
+information.
+
+To temporarily preserve the previous `rt::TokioExecutor<E>` span propagation
+behavior, enable the `rt-tracing-exec-force` feature. Note that this feature
+flag will be removed in a future release.
+
+# 0.1.20 (2026-02-02)
+
+- Fix `proxy::Matcher` to properly match domains regardless of casing
+- Fix system proxy matcher dependency on macOS when used in sandboxed environements.
+- Increased MSRV to 1.64.
+
 # 0.1.19 (2025-12-03)
 
 - Add `client::pool` module for composable pools. Enable with the `client-pool` feature.

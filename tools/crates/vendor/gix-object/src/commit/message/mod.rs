@@ -1,9 +1,9 @@
 use std::borrow::Cow;
 
 use crate::{
+    CommitRef,
     bstr::{BStr, BString, ByteSlice, ByteVec},
     commit::MessageRef,
-    CommitRef,
 };
 
 ///
@@ -19,7 +19,9 @@ impl<'a> CommitRef<'a> {
     /// Return an iterator over message trailers as obtained from the last paragraph of the commit message.
     /// Maybe empty.
     pub fn message_trailers(&self) -> body::Trailers<'a> {
-        BodyRef::from_bytes(self.message).trailers()
+        MessageRef::from_bytes(self.message)
+            .body()
+            .map_or(body::Trailers { cursor: &[] }, |body| body.trailers())
     }
 }
 
@@ -37,6 +39,12 @@ impl<'a> CommitRef<'a> {
         self.message_trailers().co_authored_by()
     }
 
+    /// Get an iterator over `Assisted-by` trailers in the commit message.
+    /// This is useful for identifying agents that assisted with a commit.
+    pub fn assisted_by_trailers(&self) -> impl Iterator<Item = body::TrailerRef<'a>> {
+        self.message_trailers().assisted_by()
+    }
+
     /// Get all authors mentioned in `Signed-off-by` and `Co-authored-by` trailers.
     /// This is useful for squashed commits that contain multiple authors.
     /// Returns a Vec of author strings that can include both signers and co-authors.
@@ -45,7 +53,7 @@ impl<'a> CommitRef<'a> {
     }
 
     /// Get an iterator over all attribution-related trailers
-    /// (`Signed-off-by,` `Co-authored-by`, `Acked-by`, `Reviewed-by`, `Tested-by`).
+    /// (`Signed-off-by,` `Co-authored-by`, `Assisted-by`, `Acked-by`, `Reviewed-by`, `Tested-by`).
     /// This provides a comprehensive view of everyone who contributed to or reviewed the commit.
     /// Note that the same name may occur multiple times, it's not a unified list.
     pub fn attribution_trailers(&self) -> impl Iterator<Item = body::TrailerRef<'a>> {
@@ -58,7 +66,7 @@ impl<'a> MessageRef<'a> {
     ///
     /// Note that this cannot fail as everything will be interpreted as title if there is no body separator.
     pub fn from_bytes(input: &'a [u8]) -> Self {
-        let (title, body) = decode::message(input);
+        let (title, body) = decode::message_title_and_body(input);
         MessageRef { title, body }
     }
 
@@ -88,12 +96,12 @@ pub(crate) fn summary(message: &BStr) -> Cow<'_, BStr> {
             let mut out = BString::default();
             let mut previous_pos = None;
             loop {
-                if let Some(previous_pos) = previous_pos {
-                    if previous_pos + 1 == pos {
-                        let len_after_trim = out.trim_end().len();
-                        out.resize(len_after_trim, 0);
-                        break out.into();
-                    }
+                if let Some(previous_pos) = previous_pos
+                    && previous_pos + 1 == pos
+                {
+                    let len_after_trim = out.trim_end().len();
+                    out.resize(len_after_trim, 0);
+                    break out.into();
                 }
                 let message_to_newline = &message[previous_pos.map_or(0, |p| p + 1)..pos];
 
@@ -125,6 +133,6 @@ pub(crate) fn summary(message: &BStr) -> Cow<'_, BStr> {
 /// Note that we only parse trailers from the bottom of the body.
 #[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone, Copy)]
 pub struct BodyRef<'a> {
-    body_without_trailer: &'a BStr,
-    start_of_trailer: &'a [u8],
+    body: &'a BStr,
+    trailer_start: usize,
 }

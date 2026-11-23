@@ -1,6 +1,5 @@
 //! This module provides a [`Builder`] for reading, modifying, and then writing ELF files.
 use alloc::vec::Vec;
-use core::convert::TryInto;
 use core::fmt;
 use core::marker::PhantomData;
 #[cfg(not(feature = "std"))]
@@ -8,12 +7,12 @@ use hashbrown::HashMap;
 #[cfg(feature = "std")]
 use std::collections::HashMap;
 
+use crate::Endianness;
 use crate::build::{ByteString, Bytes, Error, Id, IdPrivate, Item, Result, Table};
 use crate::elf;
-use crate::read::elf::{Dyn, FileHeader, ProgramHeader, Rela, SectionHeader, Sym};
+use crate::read::elf::{FileHeader, ProgramHeader, Rela, SectionHeader, Sym};
 use crate::read::{self, FileKind, ReadRef};
-use crate::write;
-use crate::Endianness;
+use crate::write::{self, WritableBuffer};
 
 /// A builder for reading, modifying, and then writing ELF files.
 ///
@@ -282,9 +281,8 @@ impl<'data> Builder<'data> {
                 }
                 elf::SHT_NOTE => SectionData::Note(section.data(endian, data)?.into()),
                 elf::SHT_DYNAMIC => {
-                    let (dyns, link) = section.dynamic(endian, data)?.unwrap();
-                    let dynamic_strings = sections.strings(endian, data, link)?;
-                    Self::read_dynamics::<Elf, _>(endian, dyns, dynamic_strings)?
+                    let dynamic_table = section.dynamic_table(endian, data, &sections)?.unwrap();
+                    Self::read_dynamics::<Elf, _>(&dynamic_table)?
                 }
                 elf::SHT_GNU_ATTRIBUTES => {
                     let attributes = section.attributes(endian, data)?;
@@ -316,7 +314,7 @@ impl<'data> Builder<'data> {
                     _ => return Err(Error(format!("Unsupported section type {:x}", other))),
                 },
             };
-            let sh_flags = section.sh_flags(endian).into();
+            let sh_flags = section.sh_flags(endian);
             let sh_link = section.sh_link(endian);
             let sh_link_section = if sh_link == 0 {
                 None
@@ -330,7 +328,7 @@ impl<'data> Builder<'data> {
                 Some(SectionId(sh_link as usize - 1))
             };
             let sh_info = section.sh_info(endian);
-            let sh_info_section = if sh_info == 0 || sh_flags & u64::from(elf::SHF_INFO_LINK) == 0 {
+            let sh_info_section = if sh_info == 0 || !sh_flags.contains(elf::SHF_INFO_LINK) {
                 None
             } else {
                 if sh_info as usize >= sections.len() {
@@ -341,9 +339,9 @@ impl<'data> Builder<'data> {
                 }
                 Some(SectionId(sh_info as usize - 1))
             };
-            let sh_flags = section.sh_flags(endian).into();
+            let sh_flags = section.sh_flags(endian);
             let sh_addr = section.sh_addr(endian).into();
-            if sh_flags & u64::from(elf::SHF_ALLOC) != 0 {
+            if sh_flags.contains(elf::SHF_ALLOC) {
                 for segment in &mut builder.segments {
                     if segment.contains_address(sh_addr) {
                         segment.sections.push(id);
@@ -410,7 +408,7 @@ impl<'data> Builder<'data> {
                 dynamic_symbols.len(),
             )
             .map(SectionData::DynamicRelocation)
-        } else if link.0 == 0 || section.sh_flags(endian).into() & u64::from(elf::SHF_ALLOC) != 0 {
+        } else if link.0 == 0 || section.sh_flags(endian).contains(elf::SHF_ALLOC) {
             // If there's no link, then none of the relocations may reference symbols.
             // Assume that these are dynamic relocations, but don't use the dynamic
             // symbol table when parsing.
@@ -434,10 +432,10 @@ impl<'data> Builder<'data> {
             )
             .map(SectionData::Relocation)
         } else {
-            return Err(Error(format!(
+            Err(Error(format!(
                 "Invalid sh_link {} in relocation section at index {}",
                 link.0, index,
-            )));
+            )))
         }
     }
 
@@ -477,33 +475,20 @@ impl<'data> Builder<'data> {
     }
 
     fn read_dynamics<Elf, R>(
-        endian: Elf::Endian,
-        dyns: &'data [Elf::Dyn],
-        strings: read::StringTable<'data, R>,
+        dynamic_table: &read::elf::DynamicTable<'data, Elf, R>,
     ) -> Result<SectionData<'data>>
     where
         Elf: FileHeader<Endian = Endianness>,
         R: ReadRef<'data>,
     {
-        let mut dynamics = Vec::with_capacity(dyns.len());
-        for d in dyns {
-            let tag = d.d_tag(endian).into().try_into().map_err(|_| {
-                Error(format!(
-                    "Unsupported dynamic tag 0x{:x}",
-                    d.d_tag(endian).into()
-                ))
-            })?;
-            if tag == elf::DT_NULL {
-                break;
-            }
-            let val = d.d_val(endian).into();
-            dynamics.push(if d.is_string(endian) {
-                let val =
-                    strings
-                        .get(val.try_into().map_err(|_| {
-                            Error(format!("Unsupported dynamic string 0x{:x}", val))
-                        })?)
-                        .map_err(|_| Error(format!("Invalid dynamic string 0x{:x}", val)))?;
+        let mut dynamics = Vec::with_capacity(dynamic_table.len());
+        for d in dynamic_table {
+            let tag = d.tag;
+            let val = d.val;
+            dynamics.push(if d.is_string() {
+                let val = d
+                    .string(dynamic_table.strings())
+                    .map_err(|_| Error(format!("Invalid dynamic string 0x{:x}", val)))?;
                 Dynamic::String {
                     tag,
                     val: val.into(),
@@ -581,8 +566,8 @@ impl<'data> Builder<'data> {
             let mut builder_subsection = AttributesSubsection::new(subsection.vendor().into());
             let mut subsubsections = subsection.subsubsections();
             while let Some(subsubsection) = subsubsections.next()? {
-                let tag = match subsubsection.tag() {
-                    elf::Tag_File => AttributeTag::File,
+                let scope = match subsubsection.tag() {
+                    elf::Tag_File => AttributeScope::File,
                     elf::Tag_Section => {
                         let mut tag_sections = Vec::new();
                         let mut indices = subsubsection.indices();
@@ -596,7 +581,7 @@ impl<'data> Builder<'data> {
                             }
                             tag_sections.push(SectionId(index - 1));
                         }
-                        AttributeTag::Section(tag_sections)
+                        AttributeScope::Section(tag_sections)
                     }
                     elf::Tag_Symbol => {
                         let mut tag_symbols = Vec::new();
@@ -611,19 +596,19 @@ impl<'data> Builder<'data> {
                             }
                             tag_symbols.push(SymbolId(index - 1));
                         }
-                        AttributeTag::Symbol(tag_symbols)
+                        AttributeScope::Symbol(tag_symbols)
                     }
                     tag => {
                         return Err(Error(format!(
                             "Unsupported attribute tag 0x{:x} in section at index {}",
                             tag, index,
-                        )))
+                        )));
                     }
                 };
                 let data = subsubsection.attributes_data().into();
                 builder_subsection
                     .subsubsections
-                    .push(AttributesSubsubsection { tag, data });
+                    .push(AttributesSubsubsection { scope, data });
             }
             builder_attributes.subsections.push(builder_subsection);
         }
@@ -643,8 +628,8 @@ impl<'data> Builder<'data> {
     {
         let strings = dynamic_symbols.strings();
         let mut ids = HashMap::new();
-        ids.insert(0, VersionId::local());
-        ids.insert(1, VersionId::global());
+        ids.insert(elf::VER_NDX_LOCAL, VersionId::local());
+        ids.insert(elf::VER_NDX_GLOBAL, VersionId::global());
 
         if let Some((mut verdefs, link)) = sections.gnu_verdef(endian, data)? {
             if link != dynamic_symbols.string_section() {
@@ -652,9 +637,9 @@ impl<'data> Builder<'data> {
             }
             while let Some((verdef, mut verdauxs)) = verdefs.next()? {
                 let flags = verdef.vd_flags.get(endian);
-                if flags & elf::VER_FLG_BASE != 0 {
+                if flags.contains(elf::VER_FLG_BASE) {
                     if flags != elf::VER_FLG_BASE
-                        || verdef.vd_ndx.get(endian) != 1
+                        || verdef.vd_ndx.get(endian) != elf::VER_NDX_GLOBAL
                         || verdef.vd_cnt.get(endian) != 1
                     {
                         return Err(Error::new("Unsupported VER_FLG_BASE in SHT_GNU_VERDEF"));
@@ -669,10 +654,10 @@ impl<'data> Builder<'data> {
                     continue;
                 }
 
-                let index = verdef.vd_ndx.get(endian) & elf::VERSYM_VERSION;
+                let index = verdef.vd_ndx.get(endian);
                 let id = self.versions.next_id();
                 if ids.insert(index, id).is_some() {
-                    return Err(Error(format!("Duplicate SHT_GNU_VERDEF index {}", index)));
+                    return Err(Error(format!("Duplicate SHT_GNU_VERDEF index {}", index.0)));
                 }
 
                 let mut names = Vec::new();
@@ -701,10 +686,13 @@ impl<'data> Builder<'data> {
                     name: verneed.file(endian, strings)?.into(),
                 });
                 while let Some(vernaux) = vernauxs.next()? {
-                    let index = vernaux.vna_other.get(endian) & elf::VERSYM_VERSION;
+                    let index = vernaux.vna_other.get(endian);
                     let id = self.versions.next_id();
                     if ids.insert(index, id).is_some() {
-                        return Err(Error(format!("Duplicate SHT_GNU_VERNEED index {}", index)));
+                        return Err(Error(format!(
+                            "Duplicate SHT_GNU_VERNEED index {}",
+                            index.0
+                        )));
                     }
 
                     let data = VersionData::Need(VersionNeed {
@@ -729,21 +717,30 @@ impl<'data> Builder<'data> {
                 let index = versym.0.get(endian);
                 let symbol = self.dynamic_symbols.get_mut(SymbolId(id));
                 symbol.version = *ids
-                    .get(&(index & elf::VERSYM_VERSION))
+                    .get(&index.index())
                     .ok_or_else(|| Error(format!("Invalid SHT_GNU_VERSYM index {:x}", index)))?;
-                symbol.version_hidden = index & elf::VERSYM_HIDDEN != 0;
+                symbol.version_hidden = index.is_hidden();
             }
         }
         Ok(())
     }
 
     /// Write the ELF file to the buffer.
+    ///
+    /// This calls [`WritableBuffer::reserve`] with the total file size.
     pub fn write(mut self, buffer: &mut dyn write::WritableBuffer) -> Result<()> {
         struct SectionOut {
             id: SectionId,
             name: Option<write::StringId>,
-            offset: usize,
+            offset: u64,
+            size: u64,
             attributes: Vec<u8>,
+        }
+        impl SectionOut {
+            fn set_range(&mut self, range: (u64, u64)) {
+                self.offset = range.0;
+                self.size = range.1;
+            }
         }
 
         struct SymbolOut {
@@ -763,143 +760,153 @@ impl<'data> Builder<'data> {
             versions: Vec<VersionId>,
         }
 
+        struct Offset(u64);
+        impl Offset {
+            fn reserve(&mut self, size: u64, align: u64) -> (u64, u64) {
+                self.0 = write::align(self.0, align);
+                let offset = self.0;
+                self.0 += size;
+                (offset, size)
+            }
+        }
+
         // TODO: require the caller to do this?
         self.delete_orphans();
         self.delete_unused_versions();
 
-        let mut writer = write::elf::Writer::new(self.endian, self.is_64, buffer);
-
         // Find metadata sections, and assign section indices.
-        let mut shstrtab_id = None;
-        let mut symtab_id = None;
-        let mut symtab_shndx_id = None;
-        let mut strtab_id = None;
-        let mut dynsym_id = None;
-        let mut dynstr_id = None;
-        let mut hash_id = None;
-        let mut gnu_hash_id = None;
-        let mut gnu_versym_id = None;
-        let mut gnu_verdef_id = None;
-        let mut gnu_verneed_id = None;
+        let section_num = if self.sections.is_empty() {
+            0
+        } else {
+            // Code below depends on this check.
+            u32::try_from(1 + self.sections.count()).map_err(|_| Error::new("Too many sections"))?
+        };
+        let mut shstrtab_index = 0;
+        let mut symtab_index = 0;
+        let mut symtab_shndx_index = 0;
+        let mut strtab_index = 0;
+        let mut dynsym_index = 0;
+        let mut dynstr_index = 0;
+        let mut hash_index = 0;
+        let mut gnu_hash_index = 0;
+        let mut gnu_versym_index = 0;
+        let mut gnu_verdef_index = 0;
+        let mut gnu_verneed_index = 0;
         let mut out_sections = Vec::with_capacity(self.sections.len());
-        let mut out_sections_index = vec![None; self.sections.len()];
-        if !self.sections.is_empty() {
-            writer.reserve_null_section_index();
-        }
-        for section in &self.sections {
-            let index = match &section.data {
+        let mut out_sections_index = vec![0; self.sections.len()];
+        let mut shstrtab = write::StringTable::new();
+        for (section, index) in self.sections.iter().zip(1..) {
+            match &section.data {
                 SectionData::Data(_)
                 | SectionData::UninitializedData(_)
                 | SectionData::Relocation(_)
                 | SectionData::DynamicRelocation(_)
                 | SectionData::Note(_)
                 | SectionData::Dynamic(_)
-                | SectionData::Attributes(_) => writer.reserve_section_index(),
+                | SectionData::Attributes(_) => {}
                 SectionData::SectionString => {
-                    if shstrtab_id.is_some() {
+                    if shstrtab_index != 0 {
                         return Err(Error::new("Multiple .shstrtab sections"));
                     }
-                    shstrtab_id = Some(section.id);
-                    writer.reserve_shstrtab_section_index_with_name(&section.name)
+                    shstrtab_index = index;
                 }
                 SectionData::Symbol => {
-                    if symtab_id.is_some() {
+                    if symtab_index != 0 {
                         return Err(Error::new("Multiple .symtab sections"));
                     }
-                    symtab_id = Some(section.id);
-                    writer.reserve_symtab_section_index_with_name(&section.name)
+                    symtab_index = index;
                 }
                 SectionData::SymbolSectionIndex => {
-                    if symtab_shndx_id.is_some() {
+                    if symtab_shndx_index != 0 {
                         return Err(Error::new("Multiple .symtab_shndx sections"));
                     }
-                    symtab_shndx_id = Some(section.id);
-                    writer.reserve_symtab_shndx_section_index_with_name(&section.name)
+                    symtab_shndx_index = index;
                 }
                 SectionData::String => {
-                    if strtab_id.is_some() {
+                    if strtab_index != 0 {
                         return Err(Error::new("Multiple .strtab sections"));
                     }
-                    strtab_id = Some(section.id);
-                    writer.reserve_strtab_section_index_with_name(&section.name)
+                    strtab_index = index;
                 }
                 SectionData::DynamicSymbol => {
-                    if dynsym_id.is_some() {
+                    if dynsym_index != 0 {
                         return Err(Error::new("Multiple .dynsym sections"));
                     }
-                    dynsym_id = Some(section.id);
-                    writer.reserve_dynsym_section_index_with_name(&section.name)
+                    dynsym_index = index;
                 }
                 SectionData::DynamicString => {
-                    if dynstr_id.is_some() {
+                    if dynstr_index != 0 {
                         return Err(Error::new("Multiple .dynstr sections"));
                     }
-                    dynstr_id = Some(section.id);
-                    writer.reserve_dynstr_section_index_with_name(&section.name)
+                    dynstr_index = index;
                 }
                 SectionData::Hash => {
-                    if hash_id.is_some() {
+                    if hash_index != 0 {
                         return Err(Error::new("Multiple .hash sections"));
                     }
-                    hash_id = Some(section.id);
-                    writer.reserve_hash_section_index_with_name(&section.name)
+                    hash_index = index;
                 }
                 SectionData::GnuHash => {
-                    if gnu_hash_id.is_some() {
+                    if gnu_hash_index != 0 {
                         return Err(Error::new("Multiple .gnu.hash sections"));
                     }
-                    gnu_hash_id = Some(section.id);
-                    writer.reserve_gnu_hash_section_index_with_name(&section.name)
+                    gnu_hash_index = index;
                 }
                 SectionData::GnuVersym => {
-                    if gnu_versym_id.is_some() {
+                    if gnu_versym_index != 0 {
                         return Err(Error::new("Multiple .gnu.version sections"));
                     }
-                    gnu_versym_id = Some(section.id);
-                    writer.reserve_gnu_versym_section_index_with_name(&section.name)
+                    gnu_versym_index = index;
                 }
                 SectionData::GnuVerdef => {
-                    if gnu_verdef_id.is_some() {
+                    if gnu_verdef_index != 0 {
                         return Err(Error::new("Multiple .gnu.version_d sections"));
                     }
-                    gnu_verdef_id = Some(section.id);
-                    writer.reserve_gnu_verdef_section_index_with_name(&section.name)
+                    gnu_verdef_index = index;
                 }
                 SectionData::GnuVerneed => {
-                    if gnu_verneed_id.is_some() {
+                    if gnu_verneed_index != 0 {
                         return Err(Error::new("Multiple .gnu.version_r sections"));
                     }
-                    gnu_verneed_id = Some(section.id);
-                    writer.reserve_gnu_verneed_section_index_with_name(&section.name)
+                    gnu_verneed_index = index;
                 }
             };
-            out_sections_index[section.id.0] = Some(index);
 
             let name = if section.name.is_empty() {
                 None
             } else {
-                Some(writer.add_section_name(&section.name))
+                Some(shstrtab.add(&section.name))
             };
             out_sections.push(SectionOut {
                 id: section.id,
                 name,
                 offset: 0,
+                size: 0,
                 attributes: Vec::new(),
             });
+            out_sections_index[section.id.0] = index;
         }
 
-        // Assign dynamic strings.
+        // Add dynamic strings to string table.
+        let mut dynstr = write::StringTable::new();
         for section in &self.sections {
             if let SectionData::Dynamic(dynamics) = &section.data {
                 for dynamic in dynamics {
                     if let Dynamic::String { val, .. } = dynamic {
-                        writer.add_dynamic_string(val);
+                        dynstr.add(val);
                     }
                 }
             }
         }
 
-        // Assign dynamic symbol indices.
+        // Assign dynamic symbol indices and add symbol names to string table.
+        let dynsym_num = if dynsym_index == 0 && self.dynamic_symbols.is_empty() {
+            0
+        } else {
+            // Code below depends on this check, even if dynsym_index == 0.
+            u32::try_from(1 + self.dynamic_symbols.count())
+                .map_err(|_| Error::new("Too many dynamic symbols"))?
+        };
         let mut out_dynsyms = Vec::with_capacity(self.dynamic_symbols.len());
         // Local symbols must come before global.
         let local_symbols = self
@@ -915,11 +922,11 @@ impl<'data> Builder<'data> {
             let mut hash = None;
             let mut gnu_hash = None;
             if !symbol.name.is_empty() {
-                name = Some(writer.add_dynamic_string(&symbol.name));
-                if hash_id.is_some() {
+                name = Some(dynstr.add(&symbol.name));
+                if hash_index != 0 {
                     hash = Some(elf::hash(&symbol.name));
                 }
-                if gnu_hash_id.is_some()
+                if gnu_hash_index != 0
                     && (symbol.section.is_some() || symbol.st_shndx != elf::SHN_UNDEF)
                 {
                     gnu_hash = Some(elf::gnu_hash(&symbol.name));
@@ -937,8 +944,9 @@ impl<'data> Builder<'data> {
             .take_while(|sym| self.dynamic_symbols.get(sym.id).st_bind() == elf::STB_LOCAL)
             .count();
         // We must sort for GNU hash before allocating symbol indices.
-        let mut gnu_hash_symbol_count = 0;
-        if gnu_hash_id.is_some() {
+        let gnu_hash_symbol_count = if gnu_hash_index == 0 {
+            0
+        } else {
             if self.gnu_hash_bucket_count == 0 {
                 return Err(Error::new(".gnu.hash bucket count is zero"));
             }
@@ -947,34 +955,46 @@ impl<'data> Builder<'data> {
                 None => (0, 0),
                 Some(hash) => (1, hash % self.gnu_hash_bucket_count),
             });
-            gnu_hash_symbol_count = out_dynsyms
+            out_dynsyms
                 .iter()
                 .skip(num_local_dynamic)
                 .skip_while(|sym| sym.gnu_hash.is_none())
-                .count() as u32;
-        }
-        let mut out_dynsyms_index = vec![None; self.dynamic_symbols.len()];
-        if dynsym_id.is_some() {
-            writer.reserve_null_dynamic_symbol_index();
-        }
-        for out_dynsym in &mut out_dynsyms {
-            out_dynsyms_index[out_dynsym.id.0] = Some(writer.reserve_dynamic_symbol_index());
+                .count() as u32
+        };
+        let num_local_dynamic = num_local_dynamic as u32;
+        let mut out_dynsyms_index = vec![0; self.dynamic_symbols.len()];
+        for (out_dynsym, index) in out_dynsyms.iter().zip(1..) {
+            out_dynsyms_index[out_dynsym.id.0] = index;
         }
 
         // Hash parameters.
         let hash_index_base = 1; // Null symbol.
-        let hash_chain_count = hash_index_base + out_dynsyms.len() as u32;
+        let hash_chain_count = dynsym_num;
 
         // GNU hash parameters.
         let gnu_hash_index_base = if gnu_hash_symbol_count == 0 {
             0
         } else {
-            out_dynsyms.len() as u32 - gnu_hash_symbol_count
+            dynsym_num - 1 - gnu_hash_symbol_count
         };
-        let gnu_hash_symbol_base = gnu_hash_index_base + 1; // Null symbol.
+        let gnu_hash_table = write::elf::GnuHashTable {
+            bucket_count: self.gnu_hash_bucket_count,
+            bloom_shift: self.gnu_hash_bloom_shift,
+            bloom_count: self.gnu_hash_bloom_count,
+            symbol_base: gnu_hash_index_base + 1, // Null symbol.
+            symbol_count: gnu_hash_symbol_count,
+        };
 
-        // Assign symbol indices.
+        // Assign symbol indices and add names to string table.
+        let sym_num = if symtab_index == 0 && self.symbols.is_empty() {
+            0
+        } else {
+            // Code below depends on this check, even if symtab_index == 0.
+            u32::try_from(1 + self.symbols.count()).map_err(|_| Error::new("Too many symbols"))?
+        };
         let mut out_syms = Vec::with_capacity(self.symbols.len());
+        let mut strtab = write::StringTable::new();
+        let mut need_symtab_shndx = symtab_shndx_index != 0;
         // Local symbols must come before global.
         let local_symbols = self
             .symbols
@@ -988,9 +1008,13 @@ impl<'data> Builder<'data> {
             let name = if symbol.name.is_empty() {
                 None
             } else {
-                Some(writer.add_string(&symbol.name))
+                Some(strtab.add(&symbol.name))
             };
-
+            if let Some(section_id) = symbol.section {
+                if out_sections_index[section_id.0] >= elf::SHN_LORESERVE.into() {
+                    need_symtab_shndx = true;
+                }
+            }
             out_syms.push(SymbolOut {
                 id: symbol.id,
                 name,
@@ -999,16 +1023,18 @@ impl<'data> Builder<'data> {
         let num_local = out_syms
             .iter()
             .take_while(|sym| self.symbols.get(sym.id).st_bind() == elf::STB_LOCAL)
-            .count();
-        let mut out_syms_index = vec![None; self.symbols.len()];
-        if symtab_id.is_some() {
-            writer.reserve_null_symbol_index();
-        }
-        for out_sym in out_syms.iter_mut() {
-            out_syms_index[out_sym.id.0] = Some(writer.reserve_symbol_index(None));
+            .count() as u32;
+        let mut out_syms_index = vec![0; self.symbols.len()];
+        for (out_sym, index) in out_syms.iter().zip(1..) {
+            out_syms_index[out_sym.id.0] = index;
         }
 
         // Count the versions and add version strings.
+        // len() instead of count() because we use version.id directly as the index
+        // (leaving gaps for deleted versions).
+        if VERSION_ID_BASE + self.versions.len() - 1 > usize::from(elf::VERSYM_VERSION) {
+            return Err(Error::new("Too many versions"));
+        }
         let mut verdef_count = 0;
         let mut verdaux_count = 0;
         let mut verdef_shared_base = false;
@@ -1018,7 +1044,7 @@ impl<'data> Builder<'data> {
         if let Some(version_base) = &self.version_base {
             verdef_count += 1;
             verdaux_count += 1;
-            writer.add_dynamic_string(version_base);
+            dynstr.add(version_base);
         }
         for version in &self.versions {
             match &version.data {
@@ -1028,21 +1054,21 @@ impl<'data> Builder<'data> {
                     } else {
                         verdaux_count += def.names.len();
                         for name in &def.names {
-                            writer.add_dynamic_string(name);
+                            dynstr.add(name);
                         }
                     }
                     verdef_count += 1;
                 }
                 VersionData::Need(need) => {
                     vernaux_count += 1;
-                    writer.add_dynamic_string(&need.name);
+                    dynstr.add(&need.name);
                     out_version_files[need.file.0].versions.push(version.id);
                 }
             }
         }
         for file in &self.version_files {
             verneed_count += 1;
-            writer.add_dynamic_string(&file.name);
+            dynstr.add(&file.name);
         }
 
         // Build the attributes sections.
@@ -1054,25 +1080,27 @@ impl<'data> Builder<'data> {
             if attributes.subsections.is_empty() {
                 continue;
             }
-            let mut writer = writer.attributes_writer();
+            let mut writer = write::elf::AttributesWriter::new(self.endian);
             for subsection in &attributes.subsections {
                 writer.start_subsection(&subsection.vendor);
                 for subsubsection in &subsection.subsubsections {
-                    writer.start_subsubsection(subsubsection.tag.tag());
-                    match &subsubsection.tag {
-                        AttributeTag::File => {}
-                        AttributeTag::Section(sections) => {
+                    writer.start_subsubsection(subsubsection.scope.tag());
+                    match &subsubsection.scope {
+                        AttributeScope::File => {}
+                        AttributeScope::Section(sections) => {
                             for id in sections {
-                                if let Some(index) = out_sections_index[id.0] {
-                                    writer.write_subsubsection_index(index.0);
+                                let index = out_sections_index[id.0];
+                                if index != 0 {
+                                    writer.write_subsubsection_index(index);
                                 }
                             }
                             writer.write_subsubsection_index(0);
                         }
-                        AttributeTag::Symbol(symbols) => {
+                        AttributeScope::Symbol(symbols) => {
                             for id in symbols {
-                                if let Some(index) = out_syms_index[id.0] {
-                                    writer.write_subsubsection_index(index.0);
+                                let index = out_syms_index[id.0];
+                                if index != 0 {
+                                    writer.write_subsubsection_index(index);
                                 }
                             }
                             writer.write_subsubsection_index(0);
@@ -1087,45 +1115,50 @@ impl<'data> Builder<'data> {
         }
 
         // TODO: support section headers in strtab
-        if shstrtab_id.is_none() && !out_sections.is_empty() {
+        if shstrtab_index == 0 && section_num != 0 {
             return Err(Error::new(".shstrtab section is needed but not present"));
         }
-        if symtab_id.is_none() && !out_syms.is_empty() {
+        if symtab_index == 0 && sym_num != 0 {
             return Err(Error::new(".symtab section is needed but not present"));
         }
-        if symtab_shndx_id.is_none() && writer.symtab_shndx_needed() {
+        if symtab_shndx_index == 0 && need_symtab_shndx {
             return Err(Error::new(
                 ".symtab.shndx section is needed but not present",
             ));
-        } else if symtab_shndx_id.is_some() {
-            writer.require_symtab_shndx();
         }
-        if strtab_id.is_none() && writer.strtab_needed() {
+        if strtab_index == 0 && !strtab.is_empty() {
             return Err(Error::new(".strtab section is needed but not present"));
-        } else if strtab_id.is_some() {
-            writer.require_strtab();
         }
-        if dynsym_id.is_none() && !out_dynsyms.is_empty() {
+        if dynsym_index == 0 && dynsym_num != 0 {
             return Err(Error::new(".dynsym section is needed but not present"));
         }
-        if dynstr_id.is_none() && writer.dynstr_needed() {
+        if dynstr_index == 0 && !dynstr.is_empty() {
             return Err(Error::new(".dynstr section is needed but not present"));
-        } else if dynstr_id.is_some() {
-            writer.require_dynstr();
         }
-        if gnu_verdef_id.is_none() && verdef_count > 0 {
+        if gnu_verdef_index == 0 && verdef_count != 0 {
             return Err(Error::new(
                 ".gnu.version_d section is needed but not present",
             ));
         }
-        if gnu_verneed_id.is_none() && verneed_count > 0 {
+        if gnu_verneed_index == 0 && verneed_count != 0 {
             return Err(Error::new(
                 ".gnu.version_r section is needed but not present",
             ));
         }
 
+        let encoder = self.encoder();
+        let address_size = encoder.address_size();
+
+        // Build string tables.
+        let mut shstrtab_data = Vec::new();
+        let shstrtab_len = encoder.strtab(&mut shstrtab_data, &mut shstrtab)?;
+        let mut strtab_data = Vec::new();
+        let strtab_len = encoder.strtab(&mut strtab_data, &mut strtab)?;
+        let mut dynstr_data = Vec::new();
+        let dynstr_len = encoder.strtab(&mut dynstr_data, &mut dynstr)?;
+
         // Start reserving file ranges.
-        writer.reserve_file_header();
+        let mut offset = Offset(encoder.file_header_size());
 
         let mut dynsym_addr = None;
         let mut dynstr_addr = None;
@@ -1135,15 +1168,19 @@ impl<'data> Builder<'data> {
         let mut verdef_addr = None;
         let mut verneed_addr = None;
 
-        if !self.segments.is_empty() {
+        let mut e_phoff = 0;
+        let segment_num =
+            u32::try_from(self.segments.count()).map_err(|_| Error::new("Too many segments"))?;
+        if segment_num != 0 {
+            let size = u64::from(segment_num) * encoder.program_header_size();
+            e_phoff = offset.reserve(size, address_size).0;
             // TODO: support program headers in other locations.
-            if self.header.e_phoff != writer.reserved_len() as u64 {
+            if self.header.e_phoff != e_phoff {
                 return Err(Error(format!(
                     "Unsupported e_phoff value 0x{:x}",
                     self.header.e_phoff
                 )));
             }
-            writer.reserve_program_headers(self.segments.count() as u32);
         }
 
         let mut alloc_sections = Vec::new();
@@ -1172,65 +1209,76 @@ impl<'data> Builder<'data> {
                 let out_section = &mut out_sections[*index];
                 let section = &self.sections.get(out_section.id);
 
-                if section.sh_type == elf::SHT_NOBITS {
+                if let SectionData::UninitializedData(len) = &section.data {
                     // sh_offset is meaningless for SHT_NOBITS, so preserve the input
                     // value without checking it.
-                    out_section.offset = section.sh_offset as usize;
+                    out_section.offset = section.sh_offset;
+                    out_section.size = *len;
                     continue;
                 }
 
-                if section.sh_offset < writer.reserved_len() as u64 {
+                if section.sh_offset < offset.0 {
                     return Err(Error(format!(
                         "Unsupported sh_offset value 0x{:x} for section '{}', expected at least 0x{:x}",
-                        section.sh_offset,
-                        section.name,
-                        writer.reserved_len(),
+                        section.sh_offset, section.name, offset.0,
                     )));
                 }
                 // The input sh_offset needs to be preserved so that offsets in program
                 // headers are correct.
-                writer.reserve_until(section.sh_offset as usize);
-                out_section.offset = match &section.data {
+                offset.0 = section.sh_offset;
+                out_section.set_range(match &section.data {
                     SectionData::Data(data) => {
-                        writer.reserve(data.len(), section.sh_addralign as usize)
+                        offset.reserve(data.len() as u64, section.sh_addralign)
                     }
-                    SectionData::DynamicRelocation(relocations) => writer
-                        .reserve_relocations(relocations.len(), section.sh_type == elf::SHT_RELA),
+                    SectionData::DynamicRelocation(relocations) => {
+                        let size = relocations.len() as u64
+                            * encoder.rel_size(section.sh_type == elf::SHT_RELA);
+                        offset.reserve(size, address_size)
+                    }
                     SectionData::Note(data) => {
-                        writer.reserve(data.len(), section.sh_addralign as usize)
+                        offset.reserve(data.len() as u64, section.sh_addralign)
                     }
-                    SectionData::Dynamic(dynamics) => writer.reserve_dynamics(1 + dynamics.len()),
+                    SectionData::Dynamic(dynamics) => {
+                        let size = (1 + dynamics.len() as u64) * encoder.dyn_size();
+                        offset.reserve(size, address_size)
+                    }
                     SectionData::DynamicSymbol => {
                         dynsym_addr = Some(section.sh_addr);
-                        writer.reserve_dynsym()
+                        let size = u64::from(dynsym_num) * encoder.sym_size();
+                        offset.reserve(size, address_size)
                     }
                     SectionData::DynamicString => {
                         dynstr_addr = Some(section.sh_addr);
-                        writer.reserve_dynstr()
+                        offset.reserve(dynstr_len.into(), 1)
                     }
                     SectionData::Hash => {
                         hash_addr = Some(section.sh_addr);
-                        writer.reserve_hash(self.hash_bucket_count, hash_chain_count)
+                        let size = encoder.hash_size(self.hash_bucket_count, hash_chain_count);
+                        offset.reserve(size, write::elf::ALIGN_HASH)
                     }
                     SectionData::GnuHash => {
                         gnu_hash_addr = Some(section.sh_addr);
-                        writer.reserve_gnu_hash(
+                        let size = encoder.gnu_hash_size(
                             self.gnu_hash_bloom_count,
                             self.gnu_hash_bucket_count,
                             gnu_hash_symbol_count,
-                        )
+                        );
+                        offset.reserve(size, address_size)
                     }
                     SectionData::GnuVersym => {
                         versym_addr = Some(section.sh_addr);
-                        writer.reserve_gnu_versym()
+                        let size = encoder.gnu_versym_size(dynsym_num);
+                        offset.reserve(size, write::elf::ALIGN_GNU_VERSYM)
                     }
                     SectionData::GnuVerdef => {
                         verdef_addr = Some(section.sh_addr);
-                        writer.reserve_gnu_verdef(verdef_count, verdaux_count)
+                        let size = encoder.gnu_verdef_size(verdef_count, verdaux_count);
+                        offset.reserve(size, write::elf::ALIGN_GNU_VERDEF)
                     }
                     SectionData::GnuVerneed => {
                         verneed_addr = Some(section.sh_addr);
-                        writer.reserve_gnu_verneed(verneed_count, vernaux_count)
+                        let size = encoder.gnu_verneed_size(verneed_count, vernaux_count);
+                        offset.reserve(size, write::elf::ALIGN_GNU_VERNEED)
                     }
                     _ => {
                         return Err(Error(format!(
@@ -1238,8 +1286,8 @@ impl<'data> Builder<'data> {
                             section.sh_type, section.name,
                         )));
                     }
-                };
-                if out_section.offset as u64 != section.sh_offset {
+                });
+                if out_section.offset != section.sh_offset {
                     return Err(Error(format!(
                         "Unaligned sh_offset value 0x{:x} for section '{}', expected 0x{:x}",
                         section.sh_offset, section.name, out_section.offset,
@@ -1254,16 +1302,12 @@ impl<'data> Builder<'data> {
             if !self.segments.is_empty() && section.is_alloc() {
                 continue;
             }
-            out_section.offset = match &section.data {
-                SectionData::Data(data) => {
-                    writer.reserve(data.len(), section.sh_addralign as usize)
-                }
-                SectionData::UninitializedData(_) => writer.reserved_len(),
-                SectionData::Note(data) => {
-                    writer.reserve(data.len(), section.sh_addralign as usize)
-                }
+            out_section.set_range(match &section.data {
+                SectionData::Data(data) => offset.reserve(data.len() as u64, section.sh_addralign),
+                SectionData::UninitializedData(len) => (offset.0, *len),
+                SectionData::Note(data) => offset.reserve(data.len() as u64, section.sh_addralign),
                 SectionData::Attributes(_) => {
-                    writer.reserve(out_section.attributes.len(), section.sh_addralign as usize)
+                    offset.reserve(out_section.attributes.len() as u64, section.sh_addralign)
                 }
                 // These are handled elsewhere.
                 SectionData::Relocation(_)
@@ -1279,12 +1323,22 @@ impl<'data> Builder<'data> {
                         section.sh_type
                     )));
                 }
-            };
+            })
         }
 
-        writer.reserve_symtab();
-        writer.reserve_symtab_shndx();
-        writer.reserve_strtab();
+        if symtab_index != 0 {
+            let size = u64::from(sym_num) * encoder.sym_size();
+            let range = offset.reserve(size, address_size);
+            out_sections[symtab_index as usize - 1].set_range(range);
+        }
+        if symtab_shndx_index != 0 {
+            let range = offset.reserve(u64::from(sym_num) * 4, 4);
+            out_sections[symtab_shndx_index as usize - 1].set_range(range);
+        }
+        if strtab_index != 0 {
+            let range = offset.reserve(strtab_len.into(), 1);
+            out_sections[strtab_index as usize - 1].set_range(range);
+        }
 
         // Reserve non-alloc relocations.
         for out_section in &mut out_sections {
@@ -1295,36 +1349,68 @@ impl<'data> Builder<'data> {
             let SectionData::Relocation(relocations) = &section.data else {
                 continue;
             };
-            out_section.offset =
-                writer.reserve_relocations(relocations.len(), section.sh_type == elf::SHT_RELA);
+            let size =
+                relocations.len() as u64 * encoder.rel_size(section.sh_type == elf::SHT_RELA);
+            out_section.set_range(offset.reserve(size, address_size));
         }
 
-        writer.reserve_shstrtab();
-        writer.reserve_section_headers();
+        if shstrtab_index != 0 {
+            let range = offset.reserve(shstrtab_len.into(), 1);
+            out_sections[shstrtab_index as usize - 1].set_range(range);
+        }
+        let e_shoff = if section_num != 0 {
+            let size = section_num as u64 * encoder.section_header_size();
+            offset.reserve(size, address_size).0
+        } else {
+            0
+        };
+
+        // Finished layout.
+        let reserved_len = offset.0;
+        // If the total length fits in 32-bit, then none of the u32 file size casts below
+        // need checking.
+        if !self.is_64 && reserved_len > u64::from(u32::MAX) {
+            return Err(Error(format!("File size overflow: {reserved_len:#x}")));
+        }
+        buffer
+            .reserve(reserved_len)
+            .map_err(|_| Error(format!("Cannot allocate buffer length {reserved_len:#x}")))?;
+        let buffer = &mut write::CountingBuffer::new(buffer);
 
         // Start writing.
-        writer.write_file_header(&write::elf::FileHeader {
+        let header = write::elf::FileHeader {
             os_abi: self.header.os_abi,
             abi_version: self.header.abi_version,
             e_type: self.header.e_type,
             e_machine: self.header.e_machine,
             e_entry: self.header.e_entry,
             e_flags: self.header.e_flags,
-        })?;
+        };
+        let layout = write::elf::FileHeaderLayout {
+            e_phoff,
+            segment_num,
+            e_shoff,
+            section_num,
+            shstrtab_index,
+        };
+        encoder.file_header(buffer, &header, &layout)?;
 
         if !self.segments.is_empty() {
-            writer.write_align_program_headers();
+            buffer.resize(e_phoff);
             for segment in &self.segments {
-                writer.write_program_header(&write::elf::ProgramHeader {
-                    p_type: segment.p_type,
-                    p_flags: segment.p_flags,
-                    p_offset: segment.p_offset,
-                    p_vaddr: segment.p_vaddr,
-                    p_paddr: segment.p_paddr,
-                    p_filesz: segment.p_filesz,
-                    p_memsz: segment.p_memsz,
-                    p_align: segment.p_align,
-                });
+                encoder.program_header(
+                    buffer,
+                    &write::elf::ProgramHeader {
+                        p_type: segment.p_type,
+                        p_flags: segment.p_flags,
+                        p_offset: segment.p_offset,
+                        p_vaddr: segment.p_vaddr,
+                        p_paddr: segment.p_paddr,
+                        p_filesz: segment.p_filesz,
+                        p_memsz: segment.p_memsz,
+                        p_align: segment.p_align,
+                    },
+                );
             }
         }
 
@@ -1338,19 +1424,20 @@ impl<'data> Builder<'data> {
                     continue;
                 }
 
-                writer.pad_until(out_section.offset);
+                buffer.resize(out_section.offset);
                 match &section.data {
                     SectionData::Data(data) => {
-                        writer.write(data);
+                        buffer.write_bytes(data);
                     }
                     SectionData::DynamicRelocation(relocations) => {
                         for rel in relocations {
                             let r_sym = if let Some(symbol) = rel.symbol {
-                                out_dynsyms_index[symbol.0].unwrap().0
+                                out_dynsyms_index[symbol.0]
                             } else {
                                 0
                             };
-                            writer.write_relocation(
+                            encoder.relocation(
+                                buffer,
                                 section.sh_type == elf::SHT_RELA,
                                 &write::elf::Rel {
                                     r_offset: rel.r_offset,
@@ -1362,7 +1449,7 @@ impl<'data> Builder<'data> {
                         }
                     }
                     SectionData::Note(data) => {
-                        writer.write(data);
+                        buffer.write_bytes(data);
                     }
                     SectionData::Dynamic(dynamics) => {
                         for d in dynamics {
@@ -1376,7 +1463,7 @@ impl<'data> Builder<'data> {
                                         elf::DT_STRTAB => dynstr_addr.ok_or(Error::new(
                                             "Missing .dynstr section for DT_STRTAB",
                                         ))?,
-                                        elf::DT_STRSZ => writer.dynstr_len() as u64,
+                                        elf::DT_STRSZ => dynstr_len.into(),
                                         elf::DT_HASH => hash_addr.ok_or(Error::new(
                                             "Missing .hash section for DT_HASH",
                                         ))?,
@@ -1398,137 +1485,155 @@ impl<'data> Builder<'data> {
                                             return Err(Error(format!(
                                                 "Cannot generate value for dynamic tag 0x{:x}",
                                                 tag
-                                            )))
+                                            )));
                                         }
                                     };
-                                    writer.write_dynamic(tag, val);
+                                    encoder.dynamic(buffer, tag, val)?;
                                 }
                                 Dynamic::Integer { tag, val } => {
-                                    writer.write_dynamic(tag, val);
+                                    encoder.dynamic(buffer, tag, val)?;
                                 }
                                 Dynamic::String { tag, ref val } => {
-                                    let val = writer.get_dynamic_string(val);
-                                    writer.write_dynamic_string(tag, val);
+                                    let val = dynstr.get_offset(dynstr.get_id(val));
+                                    encoder.dynamic(buffer, tag, val.into())?;
                                 }
                             }
                         }
-                        writer.write_dynamic(elf::DT_NULL, 0);
+                        encoder.dynamic(buffer, elf::DT_NULL, 0)?;
                     }
                     SectionData::DynamicSymbol => {
-                        writer.write_null_dynamic_symbol();
+                        encoder.null_symbol(buffer);
                         for out_dynsym in &out_dynsyms {
                             let symbol = self.dynamic_symbols.get(out_dynsym.id);
-                            let section =
-                                symbol.section.map(|id| out_sections_index[id.0].unwrap());
-                            writer.write_dynamic_symbol(&write::elf::Sym {
-                                name: out_dynsym.name,
-                                section,
-                                st_info: symbol.st_info,
-                                st_other: symbol.st_other,
-                                st_shndx: symbol.st_shndx,
-                                st_value: symbol.st_value,
-                                st_size: symbol.st_size,
-                            });
+                            let section = symbol.section.map(|id| out_sections_index[id.0]);
+                            encoder.symbol(
+                                buffer,
+                                &write::elf::Sym {
+                                    st_name: dynstr.maybe_get_offset(out_dynsym.name),
+                                    section,
+                                    st_info: symbol.st_info,
+                                    st_other: symbol.st_other,
+                                    st_shndx: symbol.st_shndx,
+                                    st_value: symbol.st_value,
+                                    st_size: symbol.st_size,
+                                },
+                            );
                         }
                     }
                     SectionData::DynamicString => {
-                        writer.write_dynstr();
+                        buffer.write_bytes(&dynstr_data);
                     }
                     SectionData::Hash => {
                         if self.hash_bucket_count == 0 {
                             return Err(Error::new(".hash bucket count is zero"));
                         }
-                        writer.write_hash(self.hash_bucket_count, hash_chain_count, |index| {
-                            out_dynsyms
-                                .get(index.checked_sub(hash_index_base)? as usize)?
-                                .hash
-                        });
-                    }
-                    SectionData::GnuHash => {
-                        if self.gnu_hash_bucket_count == 0 {
-                            return Err(Error::new(".gnu.hash bucket count is zero"));
-                        }
-                        writer.write_gnu_hash(
-                            gnu_hash_symbol_base,
-                            self.gnu_hash_bloom_shift,
-                            self.gnu_hash_bloom_count,
-                            self.gnu_hash_bucket_count,
-                            gnu_hash_symbol_count,
+                        encoder.hash_table(
+                            buffer,
+                            self.hash_bucket_count,
+                            hash_chain_count,
                             |index| {
-                                out_dynsyms[(gnu_hash_index_base + index) as usize]
-                                    .gnu_hash
-                                    .unwrap()
+                                out_dynsyms
+                                    .get(index.checked_sub(hash_index_base)? as usize)?
+                                    .hash
                             },
                         );
                     }
+                    SectionData::GnuHash => {
+                        if gnu_hash_table.bucket_count == 0 {
+                            return Err(Error::new(".gnu.hash bucket count is zero"));
+                        }
+                        encoder.gnu_hash_table(buffer, &gnu_hash_table, |index| {
+                            out_dynsyms[(gnu_hash_index_base + index) as usize]
+                                .gnu_hash
+                                .unwrap()
+                        });
+                    }
                     SectionData::GnuVersym => {
-                        writer.write_null_gnu_versym();
+                        encoder.gnu_versym(buffer, elf::VER_NDX_LOCAL.into());
                         for out_dynsym in &out_dynsyms {
                             let symbol = self.dynamic_symbols.get(out_dynsym.id);
-                            let mut index = symbol.version.0 as u16;
-                            if symbol.version_hidden {
-                                index |= elf::VERSYM_HIDDEN;
-                            }
-                            writer.write_gnu_versym(index);
+                            let index = symbol.version.index().versym(symbol.version_hidden);
+                            encoder.gnu_versym(buffer, index);
                         }
                     }
                     SectionData::GnuVerdef => {
-                        writer.write_align_gnu_verdef();
+                        let mut count = verdef_count;
                         if let Some(version_base) = &self.version_base {
+                            count -= 1;
                             let verdef = write::elf::Verdef {
                                 version: elf::VER_DEF_CURRENT,
                                 flags: elf::VER_FLG_BASE,
-                                index: 1,
+                                index: elf::VER_NDX_GLOBAL,
                                 aux_count: 1,
-                                name: writer.get_dynamic_string(version_base),
+                                name: dynstr.get_offset(dynstr.get_id(version_base)),
+                                hash: elf::hash(version_base),
                             };
                             if verdef_shared_base {
-                                writer.write_gnu_verdef_shared(&verdef);
+                                encoder.gnu_verdef_shared(buffer, &verdef);
                             } else {
-                                writer.write_gnu_verdef(&verdef);
+                                encoder.gnu_verdef(buffer, count != 0, &verdef);
                             }
                         }
                         for version in &self.versions {
                             if let VersionData::Def(def) = &version.data {
+                                count -= 1;
+                                let aux_count = u16::try_from(def.names.len()).map_err(|_| {
+                                    Error::new("Too many auxiliary version definitions")
+                                })?;
                                 let mut names = def.names.iter();
                                 let name = names.next().ok_or_else(|| {
                                     Error(format!("Missing SHT_GNU_VERDEF name {}", version.id.0))
                                 })?;
-                                writer.write_gnu_verdef(&write::elf::Verdef {
+                                let verdef = write::elf::Verdef {
                                     version: elf::VER_DEF_CURRENT,
                                     flags: def.flags,
-                                    index: version.id.0 as u16,
-                                    aux_count: def.names.len() as u16,
-                                    name: writer.get_dynamic_string(name),
-                                });
+                                    index: version.id.index(),
+                                    aux_count,
+                                    name: dynstr.get_offset(dynstr.get_id(name)),
+                                    hash: elf::hash(name),
+                                };
+                                encoder.gnu_verdef(buffer, count != 0, &verdef);
+                                let mut aux_count = names.len();
                                 for name in names {
-                                    writer.write_gnu_verdaux(writer.get_dynamic_string(name));
+                                    aux_count -= 1;
+                                    encoder.gnu_verdaux(
+                                        buffer,
+                                        aux_count != 0,
+                                        dynstr.get_offset(dynstr.get_id(name)),
+                                    );
                                 }
                             }
                         }
                     }
                     SectionData::GnuVerneed => {
-                        writer.write_align_gnu_verneed();
+                        let mut count = verneed_count;
                         for file in &self.version_files {
                             let out_file = &out_version_files[file.id.0];
-                            if out_file.versions.is_empty() {
-                                continue;
-                            }
-                            writer.write_gnu_verneed(&write::elf::Verneed {
+                            count -= 1;
+                            let aux_count =
+                                u16::try_from(out_file.versions.len()).map_err(|_| {
+                                    Error::new("Too many auxiliary version dependencies")
+                                })?;
+                            let verneed = write::elf::Verneed {
                                 version: elf::VER_NEED_CURRENT,
-                                aux_count: out_file.versions.len() as u16,
-                                file: writer.get_dynamic_string(&file.name),
-                            });
+                                aux_count,
+                                file: dynstr.get_offset(dynstr.get_id(&file.name)),
+                            };
+                            encoder.gnu_verneed(buffer, count != 0, &verneed);
+                            let mut aux_count = out_file.versions.len();
                             for id in &out_file.versions {
+                                aux_count -= 1;
                                 let version = self.versions.get(*id);
                                 // This will always match.
                                 if let VersionData::Need(need) = &version.data {
                                     debug_assert_eq!(*id, version.id);
-                                    writer.write_gnu_vernaux(&write::elf::Vernaux {
+                                    let vernaux = write::elf::Vernaux {
                                         flags: need.flags,
-                                        index: version.id.0 as u16,
-                                        name: writer.get_dynamic_string(&need.name),
-                                    });
+                                        index: version.id.index(),
+                                        name: dynstr.get_offset(dynstr.get_id(&need.name)),
+                                        hash: elf::hash(&need.name),
+                                    };
+                                    encoder.gnu_vernaux(buffer, aux_count != 0, &vernaux);
                                 }
                             }
                         }
@@ -1551,22 +1656,19 @@ impl<'data> Builder<'data> {
             }
             match &section.data {
                 SectionData::Data(data) => {
-                    writer.write_align(section.sh_addralign as usize);
-                    debug_assert_eq!(out_section.offset, writer.len());
-                    writer.write(data);
+                    buffer.resize(out_section.offset);
+                    buffer.write_bytes(data);
                 }
                 SectionData::UninitializedData(_) => {
                     // Nothing to do.
                 }
                 SectionData::Note(data) => {
-                    writer.write_align(section.sh_addralign as usize);
-                    debug_assert_eq!(out_section.offset, writer.len());
-                    writer.write(data);
+                    buffer.resize(out_section.offset);
+                    buffer.write_bytes(data);
                 }
                 SectionData::Attributes(_) => {
-                    writer.write_align(section.sh_addralign as usize);
-                    debug_assert_eq!(out_section.offset, writer.len());
-                    writer.write(&out_section.attributes);
+                    buffer.resize(out_section.offset);
+                    buffer.write_bytes(&out_section.attributes);
                 }
                 // These are handled elsewhere.
                 SectionData::Relocation(_)
@@ -1583,56 +1685,81 @@ impl<'data> Builder<'data> {
             }
         }
 
-        writer.write_null_symbol();
+        let mut symtab_shndx_data = Vec::new();
+        if symtab_index != 0 {
+            let out_section = &out_sections[symtab_index as usize - 1];
+            buffer.resize(out_section.offset);
+            encoder.null_symbol(buffer);
+            if need_symtab_shndx {
+                encoder.u32(&mut symtab_shndx_data, 0u32);
+            }
+        }
         for out_sym in &out_syms {
             let symbol = self.symbols.get(out_sym.id);
-            let section = symbol.section.map(|id| out_sections_index[id.0].unwrap());
-            writer.write_symbol(&write::elf::Sym {
-                name: out_sym.name,
-                section,
+            let sym = write::elf::Sym {
+                section: symbol.section.map(|id| out_sections_index[id.0]),
+                st_name: strtab.maybe_get_offset(out_sym.name),
                 st_info: symbol.st_info,
                 st_other: symbol.st_other,
                 st_shndx: symbol.st_shndx,
                 st_value: symbol.st_value,
                 st_size: symbol.st_size,
-            });
+            };
+            let index = encoder.symbol(buffer, &sym);
+            if need_symtab_shndx {
+                encoder.u32(&mut symtab_shndx_data, index.unwrap_or(0));
+            }
         }
-        writer.write_symtab_shndx();
-        writer.write_strtab();
+        if symtab_shndx_index != 0 {
+            let out_section = &out_sections[symtab_shndx_index as usize - 1];
+            buffer.resize(out_section.offset);
+            buffer.write_bytes(&symtab_shndx_data);
+        }
+        if strtab_index != 0 {
+            let out_section = &out_sections[strtab_index as usize - 1];
+            buffer.resize(out_section.offset);
+            buffer.write_bytes(&strtab_data);
+        }
 
         // Write non-alloc relocations.
-        for section in &self.sections {
+        for out_section in &mut out_sections {
+            let section = self.sections.get(out_section.id);
             if !self.segments.is_empty() && section.is_alloc() {
                 continue;
             }
             let SectionData::Relocation(relocations) = &section.data else {
                 continue;
             };
-            writer.write_align_relocation();
+            buffer.resize(out_section.offset);
             for rel in relocations {
                 let r_sym = if let Some(id) = rel.symbol {
-                    out_syms_index[id.0].unwrap().0
+                    out_syms_index[id.0]
                 } else {
                     0
                 };
-                writer.write_relocation(
-                    section.sh_type == elf::SHT_RELA,
-                    &write::elf::Rel {
-                        r_offset: rel.r_offset,
-                        r_sym,
-                        r_type: rel.r_type,
-                        r_addend: rel.r_addend,
-                    },
-                );
+                let rel = write::elf::Rel {
+                    r_offset: rel.r_offset,
+                    r_sym,
+                    r_type: rel.r_type,
+                    r_addend: rel.r_addend,
+                };
+                encoder.relocation(buffer, section.sh_type == elf::SHT_RELA, &rel);
             }
         }
 
-        writer.write_shstrtab();
+        if shstrtab_index != 0 {
+            let out_section = &out_sections[shstrtab_index as usize - 1];
+            buffer.resize(out_section.offset);
+            buffer.write_bytes(&shstrtab_data);
+        }
 
-        writer.write_null_section_header();
+        if e_shoff != 0 {
+            buffer.resize(e_shoff);
+            encoder.null_section_header(buffer, &layout);
+        }
         for out_section in &out_sections {
             let section = self.sections.get(out_section.id);
-            match &section.data {
+            let mut header = match &section.data {
                 SectionData::Data(_)
                 | SectionData::UninitializedData(_)
                 | SectionData::Relocation(_)
@@ -1640,107 +1767,71 @@ impl<'data> Builder<'data> {
                 | SectionData::Note(_)
                 | SectionData::Dynamic(_)
                 | SectionData::Attributes(_) => {
-                    let sh_size = match &section.data {
-                        SectionData::Data(data) => data.len() as u64,
-                        SectionData::UninitializedData(len) => *len,
-                        SectionData::Relocation(relocations) => {
-                            (relocations.len()
-                                * self.class().rel_size(section.sh_type == elf::SHT_RELA))
-                                as u64
-                        }
-                        SectionData::DynamicRelocation(relocations) => {
-                            (relocations.len()
-                                * self.class().rel_size(section.sh_type == elf::SHT_RELA))
-                                as u64
-                        }
-                        SectionData::Note(data) => data.len() as u64,
-                        SectionData::Dynamic(dynamics) => {
-                            ((1 + dynamics.len()) * self.class().dyn_size()) as u64
-                        }
-                        SectionData::Attributes(_) => out_section.attributes.len() as u64,
-                        _ => {
-                            return Err(Error(format!(
-                                "Unimplemented size for section type {:x}",
-                                section.sh_type
-                            )))
-                        }
-                    };
                     let sh_link = if let Some(id) = section.sh_link_section {
-                        if let Some(index) = out_sections_index[id.0] {
-                            index.0
-                        } else {
+                        let index = out_sections_index[id.0];
+                        if index == 0 {
                             return Err(Error(format!(
                                 "Invalid sh_link from section '{}' to deleted section '{}'",
                                 section.name,
                                 self.sections.get(id).name,
                             )));
                         }
+                        index
                     } else {
                         0
                     };
                     let sh_info = if let Some(id) = section.sh_info_section {
-                        if let Some(index) = out_sections_index[id.0] {
-                            index.0
-                        } else {
+                        let index = out_sections_index[id.0];
+                        if index == 0 {
                             return Err(Error(format!(
                                 "Invalid sh_info link from section '{}' to deleted section '{}'",
                                 section.name,
                                 self.sections.get(id).name,
                             )));
                         }
+                        index
                     } else {
                         section.sh_info
                     };
-                    writer.write_section_header(&write::elf::SectionHeader {
-                        name: out_section.name,
+                    write::elf::SectionHeader {
                         sh_type: section.sh_type,
                         sh_flags: section.sh_flags,
-                        sh_addr: section.sh_addr,
-                        sh_offset: out_section.offset as u64,
-                        sh_size,
                         sh_link,
                         sh_info,
                         sh_addralign: section.sh_addralign,
                         sh_entsize: section.sh_entsize,
-                    });
+                        ..Default::default()
+                    }
                 }
-                SectionData::SectionString => {
-                    writer.write_shstrtab_section_header();
-                }
-                SectionData::Symbol => {
-                    writer.write_symtab_section_header(1 + num_local as u32);
-                }
+                SectionData::SectionString => encoder.strtab_section_header(),
+                SectionData::Symbol => encoder.symtab_section_header(strtab_index, 1 + num_local),
                 SectionData::SymbolSectionIndex => {
-                    writer.write_symtab_shndx_section_header();
+                    encoder.symtab_shndx_section_header(symtab_index)
                 }
-                SectionData::String => {
-                    writer.write_strtab_section_header();
-                }
-                SectionData::DynamicString => {
-                    writer.write_dynstr_section_header(section.sh_addr);
-                }
+                SectionData::String => encoder.strtab_section_header(),
+                SectionData::DynamicString => encoder.dynstr_section_header(),
                 SectionData::DynamicSymbol => {
-                    writer
-                        .write_dynsym_section_header(section.sh_addr, 1 + num_local_dynamic as u32);
+                    encoder.dynsym_section_header(dynstr_index, 1 + num_local_dynamic)
                 }
-                SectionData::Hash => {
-                    writer.write_hash_section_header(section.sh_addr);
-                }
-                SectionData::GnuHash => {
-                    writer.write_gnu_hash_section_header(section.sh_addr);
-                }
-                SectionData::GnuVersym => {
-                    writer.write_gnu_versym_section_header(section.sh_addr);
-                }
+                SectionData::Hash => encoder.hash_section_header(dynsym_index),
+                SectionData::GnuHash => encoder.gnu_hash_section_header(dynsym_index),
+                SectionData::GnuVersym => encoder.gnu_versym_section_header(dynsym_index),
                 SectionData::GnuVerdef => {
-                    writer.write_gnu_verdef_section_header(section.sh_addr);
+                    encoder.gnu_verdef_section_header(dynstr_index, verdef_count)
                 }
                 SectionData::GnuVerneed => {
-                    writer.write_gnu_verneed_section_header(section.sh_addr);
+                    encoder.gnu_verneed_section_header(dynstr_index, verneed_count)
                 }
+            };
+            header.sh_name = shstrtab.maybe_get_offset(out_section.name);
+            header.sh_offset = out_section.offset;
+            header.sh_size = out_section.size;
+            if header.sh_flags.contains(elf::SHF_ALLOC) {
+                header.sh_addr = section.sh_addr;
             }
+            encoder.section_header(buffer, &header);
         }
-        debug_assert_eq!(writer.reserved_len(), writer.len());
+        debug_assert_eq!(reserved_len, buffer.count());
         Ok(())
     }
 
@@ -1895,29 +1986,29 @@ impl<'data> Builder<'data> {
         }
     }
 
-    /// Return the ELF file class that will be written.
+    /// Return the ELF file encoder.
     ///
     /// This can be useful for calculating sizes.
-    pub fn class(&self) -> write::elf::Class {
-        write::elf::Class { is_64: self.is_64 }
+    pub fn encoder(&self) -> write::elf::Encoder<Endianness> {
+        write::elf::Encoder::new(self.endian, self.is_64, self.header.e_machine)
     }
 
     /// Calculate the size of the file header.
-    pub fn file_header_size(&self) -> usize {
-        self.class().file_header_size()
+    pub fn file_header_size(&self) -> u64 {
+        self.encoder().file_header_size()
     }
 
     /// Calculate the size of the program headers.
-    pub fn program_headers_size(&self) -> usize {
-        self.segments.count() * self.class().program_header_size()
+    pub fn program_headers_size(&self) -> u64 {
+        self.segments.count() as u64 * self.encoder().program_header_size()
     }
 
     /// Calculate the size of the dynamic symbol table.
     ///
     /// To get an accurate result, you may need to first call
     /// [`Self::delete_orphan_symbols`].
-    pub fn dynamic_symbol_size(&self) -> usize {
-        (1 + self.dynamic_symbols.count()) * self.class().sym_size()
+    pub fn dynamic_symbol_size(&self) -> u64 {
+        (1 + self.dynamic_symbols.count() as u64) * self.encoder().sym_size()
     }
 
     /// Calculate the size of the dynamic string table.
@@ -1927,8 +2018,8 @@ impl<'data> Builder<'data> {
     ///
     /// To get an accurate result, you may need to first call
     /// [`Self::delete_orphan_symbols`] and [`Self::delete_unused_versions`].
-    pub fn dynamic_string_size(&self) -> usize {
-        let mut dynstr = write::string::StringTable::default();
+    pub fn dynamic_string_size(&self) -> u64 {
+        let mut dynstr = write::StringTable::default();
         for section in &self.sections {
             if let SectionData::Dynamic(dynamics) = &section.data {
                 for dynamic in dynamics {
@@ -1966,9 +2057,9 @@ impl<'data> Builder<'data> {
     ///
     /// To get an accurate result, you may need to first call
     /// [`Self::delete_orphan_symbols`].
-    pub fn hash_size(&self) -> usize {
+    pub fn hash_size(&self) -> u64 {
         let chain_count = 1 + self.dynamic_symbols.count();
-        self.class()
+        self.encoder()
             .hash_size(self.hash_bucket_count, chain_count as u32)
     }
 
@@ -1976,9 +2067,9 @@ impl<'data> Builder<'data> {
     ///
     /// To get an accurate result, you may need to first call
     /// [`Self::delete_orphan_symbols`].
-    pub fn gnu_hash_size(&self) -> usize {
+    pub fn gnu_hash_size(&self) -> u64 {
         let symbol_count = self.dynamic_symbols.count_defined();
-        self.class().gnu_hash_size(
+        self.encoder().gnu_hash_size(
             self.gnu_hash_bloom_count,
             self.gnu_hash_bucket_count,
             symbol_count as u32,
@@ -1989,16 +2080,16 @@ impl<'data> Builder<'data> {
     ///
     /// To get an accurate result, you may need to first call
     /// [`Self::delete_orphan_symbols`] and [`Self::delete_unused_versions`].
-    pub fn gnu_versym_size(&self) -> usize {
+    pub fn gnu_versym_size(&self) -> u64 {
         let symbol_count = 1 + self.dynamic_symbols.count();
-        self.class().gnu_versym_size(symbol_count)
+        self.encoder().gnu_versym_size(symbol_count as u32)
     }
 
     /// Calculate the size of the GNU version definition section.
     ///
     /// To get an accurate result, you may need to first call
     /// [`Self::delete_orphan_symbols`] and [`Self::delete_unused_versions`].
-    pub fn gnu_verdef_size(&self) -> usize {
+    pub fn gnu_verdef_size(&self) -> u64 {
         let mut verdef_count = 0;
         let mut verdaux_count = 0;
         if self.version_base.is_some() {
@@ -2013,14 +2104,14 @@ impl<'data> Builder<'data> {
                 verdef_count += 1;
             }
         }
-        self.class().gnu_verdef_size(verdef_count, verdaux_count)
+        self.encoder().gnu_verdef_size(verdef_count, verdaux_count)
     }
 
     /// Calculate the size of the GNU version dependency section.
     ///
     /// To get an accurate result, you may need to first call
     /// [`Self::delete_orphan_symbols`] and [`Self::delete_unused_versions`].
-    pub fn gnu_verneed_size(&self) -> usize {
+    pub fn gnu_verneed_size(&self) -> u64 {
         let verneed_count = self.version_files.count();
         let mut vernaux_count = 0;
         for version in &self.versions {
@@ -2028,7 +2119,8 @@ impl<'data> Builder<'data> {
                 vernaux_count += 1;
             }
         }
-        self.class().gnu_verneed_size(verneed_count, vernaux_count)
+        self.encoder()
+            .gnu_verneed_size(verneed_count as u16, vernaux_count)
     }
 
     /// Calculate the memory size of a section.
@@ -2037,21 +2129,23 @@ impl<'data> Builder<'data> {
     ///
     /// To get an accurate result, you may need to first call
     /// [`Self::delete_orphan_symbols`] and [`Self::delete_unused_versions`].
-    pub fn section_size(&self, section: &Section<'_>) -> usize {
+    pub fn section_size(&self, section: &Section<'_>) -> u64 {
         if section.delete || !section.is_alloc() {
             return 0;
         }
         match &section.data {
-            SectionData::Data(data) => data.len(),
-            SectionData::UninitializedData(len) => *len as usize,
+            SectionData::Data(data) => data.len() as u64,
+            SectionData::UninitializedData(len) => *len,
             SectionData::Relocation(relocations) => {
-                relocations.len() * self.class().rel_size(section.sh_type == elf::SHT_RELA)
+                relocations.len() as u64 * self.encoder().rel_size(section.sh_type == elf::SHT_RELA)
             }
             SectionData::DynamicRelocation(relocations) => {
-                relocations.len() * self.class().rel_size(section.sh_type == elf::SHT_RELA)
+                relocations.len() as u64 * self.encoder().rel_size(section.sh_type == elf::SHT_RELA)
             }
-            SectionData::Note(data) => data.len(),
-            SectionData::Dynamic(dynamics) => (1 + dynamics.len()) * self.class().dyn_size(),
+            SectionData::Note(data) => data.len() as u64,
+            SectionData::Dynamic(dynamics) => {
+                (1 + dynamics.len() as u64) * self.encoder().dyn_size()
+            }
             SectionData::DynamicString => self.dynamic_string_size(),
             SectionData::DynamicSymbol => self.dynamic_symbol_size(),
             SectionData::Hash => self.hash_size(),
@@ -2080,7 +2174,7 @@ impl<'data> Builder<'data> {
             if section.delete || !section.is_alloc() {
                 continue;
             }
-            self.sections.get_mut(id).sh_size = self.section_size(section) as u64;
+            self.sections.get_mut(id).sh_size = self.section_size(section);
         }
     }
 
@@ -2163,7 +2257,7 @@ pub struct Header {
     /// The OS ABI field in the file header.
     ///
     /// One of the `ELFOSABI*` constants.
-    pub os_abi: u8,
+    pub os_abi: elf::OsAbi,
     /// The ABI version field in the file header.
     ///
     /// The meaning of this field depends on the `os_abi` value.
@@ -2171,17 +2265,17 @@ pub struct Header {
     /// The object file type in the file header.
     ///
     /// One of the `ET_*` constants.
-    pub e_type: u16,
+    pub e_type: elf::FileType,
     /// The architecture in the file header.
     ///
     /// One of the `EM_*` constants.
-    pub e_machine: u16,
+    pub e_machine: elf::Machine,
     /// Entry point virtual address in the file header.
     pub e_entry: u64,
     /// The processor-specific flags in the file header.
     ///
     /// A combination of the `EF_*` constants.
-    pub e_flags: u32,
+    pub e_flags: elf::FileFlags,
     /// The file offset of the program header table.
     ///
     /// Writing will fail if the program header table cannot be placed at this offset.
@@ -2221,11 +2315,11 @@ pub struct Segment<'data> {
     /// The `p_type` field in the ELF program header.
     ///
     /// One of the `PT_*` constants.
-    pub p_type: u32,
+    pub p_type: elf::ProgramType,
     /// The `p_flags` field in the ELF program header.
     ///
     /// A combination of the `PF_*` constants.
-    pub p_flags: u32,
+    pub p_flags: elf::ProgramFlags,
     /// The `p_offset` field in the ELF program header.
     ///
     /// This is the file offset of the data in the segment. This should
@@ -2383,8 +2477,8 @@ impl<'data> Segments<'data> {
         self.push(Segment {
             id,
             delete: false,
-            p_type: 0,
-            p_flags: 0,
+            p_type: elf::PT_NULL,
+            p_flags: elf::ProgramFlags(0),
             p_offset: 0,
             p_vaddr: 0,
             p_paddr: 0,
@@ -2408,7 +2502,11 @@ impl<'data> Segments<'data> {
     /// The file offset and address will be derived from the current maximum for any segment.
     /// The address will be chosen so that `p_paddr % align == p_offset % align`.
     /// You may wish to use [`Builder::load_align`] for the alignment.
-    pub fn add_load_segment(&mut self, flags: u32, align: u64) -> &mut Segment<'data> {
+    pub fn add_load_segment(
+        &mut self,
+        flags: elf::ProgramFlags,
+        align: u64,
+    ) -> &mut Segment<'data> {
         let mut max_offset = 0;
         let mut max_addr = 0;
         for segment in &*self {
@@ -2499,11 +2597,11 @@ pub struct Section<'data> {
     /// The `sh_type` field in the ELF section header.
     ///
     /// One of the `SHT_*` constants.
-    pub sh_type: u32,
+    pub sh_type: elf::SectionType,
     /// The `sh_flags` field in the ELF section header.
     ///
     /// A combination of the `SHF_*` constants.
-    pub sh_flags: u64,
+    pub sh_flags: elf::SectionFlags,
     /// The `sh_addr` field in the ELF section header.
     pub sh_addr: u64,
     /// The `sh_offset` field in the ELF section header.
@@ -2552,16 +2650,16 @@ impl<'data> Section<'data> {
 
     /// Returns true if the section flags include `SHF_ALLOC`.
     pub fn is_alloc(&self) -> bool {
-        self.sh_flags & u64::from(elf::SHF_ALLOC) != 0
+        self.sh_flags.contains(elf::SHF_ALLOC)
     }
 
     /// Return the segment permission flags that are equivalent to the section flags.
-    pub fn p_flags(&self) -> u32 {
+    pub fn p_flags(&self) -> elf::ProgramFlags {
         let mut p_flags = elf::PF_R;
-        if self.sh_flags & u64::from(elf::SHF_WRITE) != 0 {
+        if self.sh_flags.contains(elf::SHF_WRITE) {
             p_flags |= elf::PF_W;
         }
-        if self.sh_flags & u64::from(elf::SHF_EXECINSTR) != 0 {
+        if self.sh_flags.contains(elf::SHF_EXECINSTR) {
             p_flags |= elf::PF_X;
         }
         p_flags
@@ -2623,8 +2721,8 @@ impl<'data> Sections<'data> {
             id,
             delete: false,
             name: ByteString::default(),
-            sh_type: 0,
-            sh_flags: 0,
+            sh_type: elf::SHT_NULL,
+            sh_flags: elf::SectionFlags(0),
             sh_addr: 0,
             sh_offset: 0,
             sh_size: 0,
@@ -2711,13 +2809,13 @@ pub struct Symbol<'data, const DYNAMIC: bool = false> {
     /// Used to set the `st_shndx` field in the ELF symbol.
     pub section: Option<SectionId>,
     /// The `st_info` field in the ELF symbol.
-    pub st_info: u8,
+    pub st_info: elf::SymbolInfo,
     /// The `st_other` field in the ELF symbol.
-    pub st_other: u8,
+    pub st_other: elf::SymbolOther,
     /// The `st_shndx` field in the ELF symbol.
     ///
     /// Only used if `Self::section` is `None`.
-    pub st_shndx: u16,
+    pub st_shndx: elf::SymbolSection,
     /// The `st_value` field in the ELF symbol.
     pub st_value: u64,
     /// The `st_size` field in the ELF symbol.
@@ -2744,20 +2842,20 @@ impl<'data, const DYNAMIC: bool> Symbol<'data, DYNAMIC> {
 
     /// Get the `st_bind` component of the `st_info` field.
     #[inline]
-    pub fn st_bind(&self) -> u8 {
-        self.st_info >> 4
+    pub fn st_bind(&self) -> elf::SymbolBind {
+        self.st_info.st_bind()
     }
 
     /// Get the `st_type` component of the `st_info` field.
     #[inline]
-    pub fn st_type(&self) -> u8 {
-        self.st_info & 0xf
+    pub fn st_type(&self) -> elf::SymbolType {
+        self.st_info.st_type()
     }
 
     /// Set the `st_info` field given the `st_bind` and `st_type` components.
     #[inline]
-    pub fn set_st_info(&mut self, st_bind: u8, st_type: u8) {
-        self.st_info = (st_bind << 4) + (st_type & 0xf);
+    pub fn set_st_info(&mut self, st_bind: elf::SymbolBind, st_type: elf::SymbolType) {
+        self.st_info = st_bind | st_type;
     }
 }
 
@@ -2780,9 +2878,9 @@ impl<'data, const DYNAMIC: bool> Symbols<'data, DYNAMIC> {
             delete: false,
             name: ByteString::default(),
             section: None,
-            st_info: 0,
-            st_other: 0,
-            st_shndx: 0,
+            st_info: elf::SymbolInfo(0),
+            st_other: elf::SymbolOther(0),
+            st_shndx: elf::SHN_UNDEF,
             st_value: 0,
             st_size: 0,
             version: VersionId::local(),
@@ -2801,7 +2899,7 @@ pub struct Relocation<const DYNAMIC: bool = false> {
     /// The symbol referenced by the ELF relocation.
     pub symbol: Option<SymbolId<DYNAMIC>>,
     /// The `r_type` field in the ELF relocation.
-    pub r_type: u32,
+    pub r_type: elf::RelocationType,
     /// The `r_addend` field in the ELF relocation.
     ///
     /// Only used if the section type is `SHT_RELA`.
@@ -2832,14 +2930,14 @@ pub enum Dynamic<'data> {
         /// The `d_tag` field in the dynamic entry.
         ///
         /// One of the `DT_*` values.
-        tag: u32,
+        tag: elf::DynamicTag,
     },
     /// The value is an integer.
     Integer {
         /// The `d_tag` field in the dynamic entry.
         ///
         /// One of the `DT_*` values.
-        tag: u32,
+        tag: elf::DynamicTag,
         /// The `d_val` field in the dynamic entry.
         val: u64,
     },
@@ -2848,7 +2946,7 @@ pub enum Dynamic<'data> {
         /// The `d_tag` field in the dynamic entry.
         ///
         /// One of the `DT_*` values.
-        tag: u32,
+        tag: elf::DynamicTag,
         /// The string value.
         ///
         /// This will be stored in the dynamic string section.
@@ -2860,7 +2958,7 @@ impl<'data> Dynamic<'data> {
     /// The `d_tag` field in the dynamic entry.
     ///
     /// One of the `DT_*` values.
-    pub fn tag(&self) -> u32 {
+    pub fn tag(&self) -> elf::DynamicTag {
         match self {
             Dynamic::Auto { tag } => *tag,
             Dynamic::Integer { tag, .. } => *tag,
@@ -2966,12 +3064,17 @@ impl VersionId {
 
     /// Return the ID for a version index of [`elf::VER_NDX_LOCAL`].
     pub fn local() -> Self {
-        VersionId(elf::VER_NDX_LOCAL as usize)
+        VersionId(elf::VER_NDX_LOCAL.0 as usize)
     }
 
     /// Return the ID for a version index of [`elf::VER_NDX_GLOBAL`].
     pub fn global() -> Self {
-        VersionId(elf::VER_NDX_GLOBAL as usize)
+        VersionId(elf::VER_NDX_GLOBAL.0 as usize)
+    }
+
+    /// Convert to `elf::VersionIndex`.
+    pub fn index(self) -> elf::VersionIndex {
+        elf::VersionIndex(self.0 as u16)
     }
 }
 
@@ -3021,12 +3124,12 @@ pub struct VersionDef<'data> {
     /// The version flags.
     ///
     /// A combination of the `VER_FLG_*` constants.
-    pub flags: u16,
+    pub flags: elf::VersionFlags,
 }
 
 impl<'data> VersionDef<'data> {
     /// Optimise for the common case where the first version is the same as the base version.
-    fn is_shared(&self, index: usize, base: Option<&ByteString<'_>>) -> bool {
+    fn is_shared(&self, index: u16, base: Option<&ByteString<'_>>) -> bool {
         index == 1 && self.names.len() == 1 && self.names.first() == base
     }
 }
@@ -3041,7 +3144,7 @@ pub struct VersionNeed<'data> {
     /// The version flags.
     ///
     /// A combination of the `VER_FLG_*` constants.
-    pub flags: u16,
+    pub flags: elf::VersionFlags,
 }
 
 /// A table of versions that are referenced by symbols.
@@ -3096,36 +3199,36 @@ impl<'data> AttributesSubsection<'data> {
 /// A sub-subsection in an attributes section.
 #[derive(Debug, Clone)]
 pub struct AttributesSubsubsection<'data> {
-    /// The sub-subsection tag.
-    pub tag: AttributeTag,
+    /// The sub-subsection scope.
+    pub scope: AttributeScope,
     /// The data containing the attributes.
     pub data: Bytes<'data>,
 }
 
-/// The tag for a sub-subsection in an attributes section.
+/// The scope that the attributes in a sub-subsection apply to.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub enum AttributeTag {
+pub enum AttributeScope {
     /// The attributes apply to the whole file.
     ///
-    /// Correspeonds to [`elf::Tag_File`].
+    /// Corresponds to [`elf::Tag_File`].
     File,
     /// The attributes apply to the given sections.
     ///
-    /// Correspeonds to [`elf::Tag_Section`].
+    /// Corresponds to [`elf::Tag_Section`].
     Section(Vec<SectionId>),
     /// The attributes apply to the given symbols.
     ///
-    /// Correspeonds to [`elf::Tag_Symbol`].
+    /// Corresponds to [`elf::Tag_Symbol`].
     Symbol(Vec<SymbolId>),
 }
 
-impl AttributeTag {
-    /// Return the corresponding `elf::Tag_*` value for this tag.
-    pub fn tag(&self) -> u8 {
+impl AttributeScope {
+    /// Return the corresponding `elf::Tag_*` value for this scope.
+    pub fn tag(&self) -> elf::AttributeTag {
         match self {
-            AttributeTag::File => elf::Tag_File,
-            AttributeTag::Section(_) => elf::Tag_Section,
-            AttributeTag::Symbol(_) => elf::Tag_Symbol,
+            AttributeScope::File => elf::Tag_File,
+            AttributeScope::Section(_) => elf::Tag_Section,
+            AttributeScope::Symbol(_) => elf::Tag_Symbol,
         }
     }
 }

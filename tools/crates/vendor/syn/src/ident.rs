@@ -49,15 +49,16 @@ pub(crate) fn xid_ok(symbol: &str) -> bool {
 }
 
 #[cfg(feature = "parsing")]
-mod parsing {
+pub(crate) mod parsing {
     use crate::buffer::Cursor;
     use crate::error::Result;
     use crate::parse::{Parse, ParseStream};
     use crate::token::Token;
+    use alloc::string::ToString;
     use proc_macro2::Ident;
 
-    fn accept_as_ident(ident: &Ident) -> bool {
-        match ident.to_string().as_str() {
+    pub(crate) fn accept_as_ident(repr: &str) -> bool {
+        match repr {
             "_" |
             // Based on https://doc.rust-lang.org/1.65.0/reference/keywords.html
             "abstract" | "as" | "async" | "await" | "become" | "box" | "break" |
@@ -77,7 +78,7 @@ mod parsing {
         fn parse(input: ParseStream) -> Result<Self> {
             input.step(|cursor| {
                 if let Some((ident, rest)) = cursor.ident() {
-                    if accept_as_ident(&ident) {
+                    if accept_as_ident(&ident.to_string()) {
                         Ok((ident, rest))
                     } else {
                         Err(cursor.error(format_args!(
@@ -95,7 +96,7 @@ mod parsing {
     impl Token for Ident {
         fn peek(cursor: Cursor) -> bool {
             if let Some((ident, _rest)) = cursor.ident() {
-                accept_as_ident(&ident)
+                accept_as_ident(&ident.to_string())
             } else {
                 false
             }

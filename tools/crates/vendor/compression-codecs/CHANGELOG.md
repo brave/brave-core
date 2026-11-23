@@ -7,6 +7,88 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.48](https://github.com/Nullus157/async-compression/compare/compression-codecs-v0.4.47...compression-codecs-v0.4.48) - 2026-11-21
+
+### Added
+
+- *(zstd)* add `zrip` backend ([#513](https://github.com/Nullus157/async-compression/pull/513))
+
+## [0.4.47](https://github.com/Nullus157/async-compression/compare/compression-codecs-v0.4.46...compression-codecs-v0.4.47) - 2026-11-02
+
+### Fixed
+
+- *(gzip)* validate and consume FHCRC header bytes ([#511](https://github.com/Nullus157/async-compression/pull/511))
+
+## [0.4.46](https://github.com/Nullus157/async-compression/compare/compression-codecs-v0.4.45...compression-codecs-v0.4.46) - 2026-10-17
+
+### Added
+
+- *(zstd)* add `mzstd` v0.2.5 ([#505](https://github.com/Nullus157/async-compression/pull/505))
+
+### Other
+
+- add keywords to compression crates ([#502](https://github.com/Nullus157/async-compression/pull/502))
+
+## [0.4.45](https://github.com/Nullus157/async-compression/compare/compression-codecs-v0.4.44...compression-codecs-v0.4.45) - 2026-09-30
+
+### Other
+
+- *(deps)* update brotli requirement from 8 to 9 ([#499](https://github.com/Nullus157/async-compression/pull/499))
+
+## [0.4.44](https://github.com/Nullus157/async-compression/compare/compression-codecs-v0.4.43...compression-codecs-v0.4.44) - 2026-09-29
+
+### Added
+
+- *(brotli)* add optional mbrotli backend ([#492](https://github.com/Nullus157/async-compression/pull/492))
+
+## [0.4.43](https://github.com/Nullus157/async-compression/compare/compression-codecs-v0.4.42...compression-codecs-v0.4.43) - 2026-09-16
+
+### Fixed
+
+- *(gzip)* reject invalid header before the full 10 bytes arrive ([#489](https://github.com/Nullus157/async-compression/pull/489))
+
+## [0.4.42](https://github.com/Nullus157/async-compression/compare/compression-codecs-v0.4.41...compression-codecs-v0.4.42) - 2026-09-14
+
+### Fixed
+
+- *(zstd)* avoid no-progress errors while awaiting input ([#486](https://github.com/Nullus157/async-compression/pull/486))
+
+## [0.4.41](https://github.com/Nullus157/async-compression/compare/compression-codecs-v0.4.40...compression-codecs-v0.4.41) - 2026-09-09
+
+### Other
+
+- Return UnexpectedEof when deflate64 does not progress ([#483](https://github.com/Nullus157/async-compression/pull/483))
+
+## [0.4.40](https://github.com/Nullus157/async-compression/compare/compression-codecs-v0.4.39...compression-codecs-v0.4.40) - 2026-09-07
+
+### Other
+
+- *(deps)* update zstd requirement from 0.13 to 0.14 ([#481](https://github.com/Nullus157/async-compression/pull/481))
+
+## [0.4.39](https://github.com/Nullus157/async-compression/compare/compression-codecs-v0.4.38...compression-codecs-v0.4.39) - 2026-09-02
+
+### Other
+
+- updated the following local packages: compression-core
+
+## [0.4.38](https://github.com/Nullus157/async-compression/compare/compression-codecs-v0.4.37...compression-codecs-v0.4.38) - 2026-04-21
+
+### Other
+
+- Include license files in published crates ([#467](https://github.com/Nullus157/async-compression/pull/467))
+
+## [0.4.37](https://github.com/Nullus157/async-compression/compare/compression-codecs-v0.4.36...compression-codecs-v0.4.37) - 2026-02-18
+
+### Other
+
+- Stop consuming input on errors in codecs. ([#451](https://github.com/Nullus157/async-compression/pull/451))
+
+## [0.4.36](https://github.com/Nullus157/async-compression/compare/compression-codecs-v0.4.35...compression-codecs-v0.4.36) - 2026-01-10
+
+### Other
+
+- Set async-compression msrv ([#440](https://github.com/Nullus157/async-compression/pull/440))
+
 ## [0.4.35](https://github.com/Nullus157/async-compression/compare/compression-codecs-v0.4.34...compression-codecs-v0.4.35) - 2025-12-11
 
 ### Other

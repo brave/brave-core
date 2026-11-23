@@ -1,3 +1,5 @@
+#![allow(clippy::double_must_use)] // `async_trait` generates `#[must_use]` on boxed futures.
+
 mod bufread_ext;
 pub use bufread_ext::{ExtendedBufRead, HandleProgress, ReadlineBufRead};
 

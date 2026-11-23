@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.95"
 name = "gix-packetline"
-version = "0.19.3"
+version = "0.24.2"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,12 +29,57 @@ description = "A crate of the gitoxide project implementing the pkt-line seriali
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [package.metadata.docs.rs]
 features = [
     "document-features",
     "blocking-io",
     "serde",
+]
+
+[[package.metadata.qa.checks]]
+args = ["--all-features"]
+
+[[package.metadata.qa.checks]]
+args = [
+    "--features",
+    "blocking-io",
+]
+
+[[package.metadata.qa.checks]]
+args = [
+    "--features",
+    "async-io",
+]
+
+[[package.metadata.qa.tests]]
+args = [
+    "--features",
+    "blocking-io",
+    "--test",
+    "blocking-packetline",
+]
+
+[[package.metadata.qa.tests]]
+args = [
+    "--features",
+    "async-io",
+    "--test",
+    "async-packetline",
+]
+
+[[package.metadata.qa.doctests]]
+args = [
+    "--features",
+    "blocking-io",
+]
+
+[package.metadata.qa.wasm]
+targets = [
+    "wasm32-unknown-unknown",
+    "wasm32-wasip1",
+    "wasm32-wasip2",
 ]
 
 [features]
@@ -54,7 +99,7 @@ serde = [
 [lib]
 name = "gix_packetline"
 path = "src/lib.rs"
-doctest = false
+doctest = true
 
 [dependencies.bstr]
 version = "1.12.0"
@@ -66,20 +111,23 @@ version = "0.2.0"
 optional = true
 
 [dependencies.faster-hex]
-version = "0.10.0"
+version = "2.0.0"
 features = ["std"]
 default-features = false
 
 [dependencies.futures-io]
-version = "0.3.16"
+version = "0.3.32"
 optional = true
 
 [dependencies.futures-lite]
 version = "2.1.0"
 optional = true
 
+[dependencies.gix-error]
+version = "^0.5.3"
+
 [dependencies.gix-trace]
-version = "^0.1.15"
+version = "^0.3.2"
 
 [dependencies.pin-project-lite]
 version = "0.2.6"
@@ -94,17 +142,15 @@ features = [
 optional = true
 default-features = false
 
-[dependencies.thiserror]
-version = "2.0.17"
-
 [dev-dependencies.async-std]
 version = "1.9.0"
 features = ["attributes"]
 
-[dev-dependencies.maybe-async]
-version = "0.2.6"
+[dev-dependencies.insta]
+version = "1.46.3"
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -123,7 +169,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"
@@ -182,3 +227,4 @@ level = "warn"
 priority = -1
 
 [lints.rust]
+unnameable_types = "warn"

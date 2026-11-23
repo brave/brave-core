@@ -30,13 +30,13 @@ pub(crate) struct Entries {
 
 impl Entries {
     /// Create a new database entries collection
-    pub fn new() -> Self {
+    pub(super) fn new() -> Self {
         Self::default()
     }
 
     /// Load an advisory from a file and insert it into the database entry table
     // TODO(tarcieri): factor more of this into `advisory.rs`?
-    pub fn load_file(&mut self, path: &Path) -> Result<Option<Slot>, Error> {
+    pub(super) fn load_file(&mut self, path: &Path) -> Result<Option<Slot>, Error> {
         let mut advisory = Advisory::load_file(path)?;
 
         // TODO(tarcieri): deprecate and remove legacy TOML-based advisory format
@@ -53,7 +53,8 @@ impl Entries {
         if path.file_name().unwrap() != expected_filename && !Advisory::is_draft(path) {
             fail!(
                 ErrorKind::Repo,
-                "expected {} to be named {:?}",
+                "expected {} to be named {:?}; draft advisory filenames must start with \
+                 RUSTSEC-0000-0000. and end in .md",
                 path.display(),
                 expected_filename
             );
@@ -137,17 +138,17 @@ impl Entries {
     }
 
     /// Find an advisory by its `advisory::Id`
-    pub fn find_by_id(&self, id: &advisory::Id) -> Option<&Advisory> {
+    pub(super) fn find_by_id(&self, id: &advisory::Id) -> Option<&Advisory> {
         self.index.get(id).and_then(|slot| self.get(*slot))
     }
 
     /// Get an advisory from the database by its [`Slot`]
-    pub fn get(&self, slot: Slot) -> Option<&Advisory> {
+    pub(super) fn get(&self, slot: Slot) -> Option<&Advisory> {
         self.advisories.get(slot.0)
     }
 
     /// Iterate over all of the entries in the database
-    pub fn iter(&self) -> Iter<'_> {
+    pub(super) fn iter(&self) -> Iter<'_> {
         self.advisories.iter()
     }
 }
@@ -159,5 +160,43 @@ impl IntoIterator for Entries {
 
     fn into_iter(self) -> Self::IntoIter {
         self.advisories.into_iter()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Entries;
+    use std::fs;
+
+    #[test]
+    fn filename_error_explains_draft_format() {
+        let dir = tempfile::tempdir().unwrap();
+        let package_dir = dir.path().join("crates/base");
+        fs::create_dir_all(&package_dir).unwrap();
+
+        let advisory = include_str!("../../tests/support/example_advisory_v3.md")
+            .replace("RUSTSEC-2001-2101", "RUSTSEC-0000-0000");
+        let path = package_dir.join("RUSTSEC-0000-0000-decompression.md");
+        fs::write(&path, &advisory).unwrap();
+
+        let mut entries = Entries::new();
+        let error = entries.load_file(&path).unwrap_err().to_string();
+        assert_eq!(
+            error,
+            format!(
+                "git operation failed: expected {} to be named \"RUSTSEC-0000-0000.md\"; \
+                 draft advisory filenames must start with RUSTSEC-0000-0000. and end in .md",
+                path.display()
+            )
+        );
+
+        let second_path = package_dir.join("RUSTSEC-0000-0000.brotli.md");
+        fs::write(&second_path, &advisory).unwrap();
+
+        let renamed_path = package_dir.join("RUSTSEC-0000-0000.decompression.md");
+        fs::rename(&path, &renamed_path).unwrap();
+
+        entries.load_file(&renamed_path).unwrap();
+        entries.load_file(&second_path).unwrap();
     }
 }

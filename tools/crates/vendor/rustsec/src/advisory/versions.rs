@@ -54,7 +54,7 @@ impl TryFrom<RawVersions> for Versions {
 
     fn try_from(raw: RawVersions) -> Result<Self, Self::Error> {
         validate_ranges(&raw)?;
-        Ok(Versions {
+        Ok(Self {
             patched: raw.patched,
             unaffected: raw.unaffected,
         })

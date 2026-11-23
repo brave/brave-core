@@ -1,0 +1,21 @@
+bench_ref_from_bytes_dynamic_padding:
+	cmp rsi, 12
+	setae al
+	mov ecx, esi
+	or ecx, edi
+	test cl, 3
+	sete cl
+	and cl, al
+	cmp cl, 1
+	je .LBB5_2
+	xor edi, edi
+	mov rax, rdi
+	ret
+.LBB5_2:
+	add rsi, -9
+	movabs rcx, -6148914691236517205
+	mov rax, rsi
+	mul rcx
+	shr rdx
+	mov rax, rdi
+	ret

@@ -21,14 +21,12 @@
 extern crate std;
 
 pub(crate) mod error;
-pub mod platform;
-pub mod target;
+pub use error::Error;
 
-pub use crate::{
-    error::Error,
-    platform::{Platform, Tier},
-    target::{Arch, Endian, Env, PointerWidth, OS},
-};
-
+mod platform;
 #[cfg(feature = "std")]
-pub use crate::platform::PlatformReq;
+pub use platform::PlatformReq;
+pub use platform::{Platform, Tier};
+
+mod target;
+pub use target::{Arch, Endian, Env, Os, PointerWidth};

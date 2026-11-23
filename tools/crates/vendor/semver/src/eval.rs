@@ -136,20 +136,16 @@ fn matches_caret(cmp: &Comparator, ver: &Version) -> bool {
         return false;
     }
 
-    let minor = match cmp.minor {
-        None => return true,
-        Some(minor) => minor,
+    let Some(minor) = cmp.minor else {
+        return true;
     };
 
-    let patch = match cmp.patch {
-        None => {
-            if cmp.major > 0 {
-                return ver.minor >= minor;
-            } else {
-                return ver.minor == minor;
-            }
+    let Some(patch) = cmp.patch else {
+        if cmp.major > 0 {
+            return ver.minor >= minor;
+        } else {
+            return ver.minor == minor;
         }
-        Some(patch) => patch,
     };
 
     if cmp.major > 0 {

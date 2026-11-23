@@ -16,7 +16,7 @@ use crate::errno::Errno;
 use crate::sys::socket::addr::alg::AlgAddr;
 #[cfg(linux_android)]
 use crate::sys::socket::addr::netlink::NetlinkAddr;
-#[cfg(all(feature = "ioctl", apple_targets))]
+#[cfg(all(feature = "ioctl", target_os = "macos"))]
 use crate::sys::socket::addr::sys_control::SysControlAddr;
 use crate::{NixPath, Result};
 use cfg_if::cfg_if;
@@ -1134,7 +1134,7 @@ pub union SockaddrStorage {
     dl: LinkAddr,
     #[cfg(linux_android)]
     nl: NetlinkAddr,
-    #[cfg(all(feature = "ioctl", apple_targets))]
+    #[cfg(all(feature = "ioctl", target_os = "macos"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "ioctl")))]
     sctl: SysControlAddr,
     #[cfg(feature = "net")]
@@ -1216,7 +1216,7 @@ impl SockaddrLike for SockaddrStorage {
                 libc::AF_PACKET => unsafe {
                     LinkAddr::from_raw(addr, l).map(|dl| Self { dl })
                 },
-                #[cfg(all(feature = "ioctl", apple_targets))]
+                #[cfg(all(feature = "ioctl", target_os = "macos"))]
                 libc::AF_SYSTEM => unsafe {
                     SysControlAddr::from_raw(addr, l).map(|sctl| Self { sctl })
                 },
@@ -1375,7 +1375,7 @@ impl SockaddrStorage {
     accessors! {as_netlink_addr, as_netlink_addr_mut, NetlinkAddr,
     AddressFamily::Netlink, libc::sockaddr_nl, nl}
 
-    #[cfg(all(feature = "ioctl", apple_targets))]
+    #[cfg(all(feature = "ioctl", target_os = "macos"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "ioctl")))]
     accessors! {as_sys_control_addr, as_sys_control_addr_mut, SysControlAddr,
     AddressFamily::System, libc::sockaddr_ctl, sctl}
@@ -1413,7 +1413,7 @@ impl fmt::Display for SockaddrStorage {
                 #[cfg(any(linux_android, target_os = "fuchsia"))]
                 #[cfg(feature = "net")]
                 libc::AF_PACKET => self.dl.fmt(f),
-                #[cfg(apple_targets)]
+                #[cfg(target_os = "macos")]
                 #[cfg(feature = "ioctl")]
                 libc::AF_SYSTEM => self.sctl.fmt(f),
                 libc::AF_UNIX => self.su.fmt(f),
@@ -1475,7 +1475,7 @@ impl Hash for SockaddrStorage {
                 #[cfg(any(linux_android, target_os = "fuchsia"))]
                 #[cfg(feature = "net")]
                 libc::AF_PACKET => self.dl.hash(s),
-                #[cfg(apple_targets)]
+                #[cfg(target_os = "macos")]
                 #[cfg(feature = "ioctl")]
                 libc::AF_SYSTEM => self.sctl.hash(s),
                 libc::AF_UNIX => self.su.hash(s),
@@ -1505,7 +1505,7 @@ impl PartialEq for SockaddrStorage {
                 #[cfg(any(linux_android, target_os = "fuchsia"))]
                 #[cfg(feature = "net")]
                 (libc::AF_PACKET, libc::AF_PACKET) => self.dl == other.dl,
-                #[cfg(apple_targets)]
+                #[cfg(target_os = "macos")]
                 #[cfg(feature = "ioctl")]
                 (libc::AF_SYSTEM, libc::AF_SYSTEM) => self.sctl == other.sctl,
                 (libc::AF_UNIX, libc::AF_UNIX) => self.su == other.su,
@@ -1727,7 +1727,7 @@ pub mod alg {
 
 feature! {
 #![feature = "ioctl"]
-#[cfg(apple_targets)]
+#[cfg(target_os = "macos")]
 pub mod sys_control {
     use crate::sys::socket::addr::AddressFamily;
     use libc::{self, c_uchar};

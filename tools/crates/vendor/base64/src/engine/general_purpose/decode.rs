@@ -1,6 +1,7 @@
+use crate::alphabet::Symbol;
 use crate::{
     engine::{general_purpose::INVALID_VALUE, DecodeEstimate, DecodeMetadata, DecodePaddingMode},
-    DecodeError, DecodeSliceError, PAD_BYTE,
+    DecodeError, DecodeSliceError,
 };
 
 #[doc(hidden)]
@@ -15,7 +16,7 @@ impl GeneralPurposeEstimate {
         let rem = encoded_len % 4;
         Self {
             rem,
-            conservative_decoded_len: (encoded_len / 4 + (rem > 0) as usize) * 3,
+            conservative_decoded_len: (encoded_len / 4 + usize::from(rem > 0)) * 3,
         }
     }
 }
@@ -26,40 +27,105 @@ impl DecodeEstimate for GeneralPurposeEstimate {
     }
 }
 
-/// Helper to avoid duplicating num_chunks calculation, which is costly on short inputs.
+/// Helper to avoid duplicating `num_chunks` calculation, which is costly on short inputs.
 /// Returns the decode metadata, or an error.
 // We're on the fragile edge of compiler heuristics here. If this is not inlined, slow. If this is
 // inlined(always), a different slow. plain ol' inline makes the benchmarks happiest at the moment,
 // but this is fragile and the best setting changes with only minor code modifications.
+#[allow(clippy::too_many_arguments)]
 #[inline]
 pub(crate) fn decode_helper(
     input: &[u8],
-    estimate: GeneralPurposeEstimate,
+    estimate: &GeneralPurposeEstimate,
     output: &mut [u8],
     decode_table: &[u8; 256],
     decode_allow_trailing_bits: bool,
+    padding: Symbol,
     padding_mode: DecodePaddingMode,
+    simd_prefix: impl FnOnce(&[u8], usize, &mut [u8]) -> (usize, usize),
 ) -> Result<DecodeMetadata, DecodeSliceError> {
     let input_complete_nonterminal_quads_len =
-        complete_quads_len(input, estimate.rem, output.len(), decode_table)?;
+        complete_quads_len(input, estimate.rem, output.len(), decode_table, padding)?;
+
+    let output_complete_quad_len = input_complete_nonterminal_quads_len / 4 * 3;
+
+    // A SIMD backend, when applicable, decodes a leading prefix; the scalar loops decode the rest.
+    // `simd_prefix` returns `(input_consumed, output_written)` and must consume only whole, valid
+    // quads: `input_consumed % 4 == 0` and `<= input_complete_nonterminal_quads_len` (the terminal
+    // quad is left to `decode_suffix`), `output_written == input_consumed / 4 * 3`, and only those
+    // output bytes are written. It stops on the first invalid/ambiguous quad so the scalar decoder
+    // reports the precise error offset. `(0, 0)` (pure scalar) is always valid.
+    let (input_index, output_index) =
+        simd_prefix(input, input_complete_nonterminal_quads_len, output);
+
+    debug_assert!(input_index % 4 == 0, "prefix must consume whole quads");
+    debug_assert!(
+        input_index <= input_complete_nonterminal_quads_len,
+        "prefix must not consume the terminal quad"
+    );
+    debug_assert!(
+        output_index == input_index / 4 * 3,
+        "prefix output must match consumed input"
+    );
+
+    decode_complete_quads(
+        input,
+        input_index,
+        input_complete_nonterminal_quads_len,
+        decode_table,
+        output,
+        output_index,
+    )?;
+
+    super::decode_suffix::decode_suffix(
+        input,
+        input_complete_nonterminal_quads_len,
+        output,
+        output_complete_quad_len,
+        decode_table,
+        decode_allow_trailing_bits,
+        padding,
+        padding_mode,
+    )
+}
+
+/// Decode the complete non-terminal quads in `input[input_index_start..input_index_end]` (both
+/// bounds multiples of 4), writing to `output` starting at `output_index_start`, which must equal
+/// `input_index_start / 4 * 3`. Error offsets are reported in absolute input coordinates.
+#[inline]
+fn decode_complete_quads(
+    input: &[u8],
+    input_index_start: usize,
+    input_index_end: usize,
+    decode_table: &[u8; 256],
+    output: &mut [u8],
+    output_index_start: usize,
+) -> Result<(), DecodeSliceError> {
+    debug_assert!(
+        input_index_start % 4 == 0,
+        "quad start must be quad-aligned"
+    );
+    debug_assert!(input_index_end % 4 == 0, "quad end must be quad-aligned");
+    debug_assert!(
+        output_index_start == input_index_start / 4 * 3,
+        "output start must match consumed input"
+    );
 
     const UNROLLED_INPUT_CHUNK_SIZE: usize = 32;
     const UNROLLED_OUTPUT_CHUNK_SIZE: usize = UNROLLED_INPUT_CHUNK_SIZE / 4 * 3;
 
-    let input_complete_quads_after_unrolled_chunks_len =
-        input_complete_nonterminal_quads_len % UNROLLED_INPUT_CHUNK_SIZE;
-
-    let input_unrolled_loop_len =
-        input_complete_nonterminal_quads_len - input_complete_quads_after_unrolled_chunks_len;
+    let quads_len = input_index_end - input_index_start;
+    let unrolled_loop_len = quads_len - quads_len % UNROLLED_INPUT_CHUNK_SIZE;
+    let input_unrolled_loop_end = input_index_start + unrolled_loop_len;
 
     // chunks of 32 bytes
-    for (chunk_index, chunk) in input[..input_unrolled_loop_len]
+    for (chunk_index, chunk) in input[input_index_start..input_unrolled_loop_end]
         .chunks_exact(UNROLLED_INPUT_CHUNK_SIZE)
         .enumerate()
     {
-        let input_index = chunk_index * UNROLLED_INPUT_CHUNK_SIZE;
-        let chunk_output = &mut output[chunk_index * UNROLLED_OUTPUT_CHUNK_SIZE
-            ..(chunk_index + 1) * UNROLLED_OUTPUT_CHUNK_SIZE];
+        let input_index = input_index_start + chunk_index * UNROLLED_INPUT_CHUNK_SIZE;
+        let output_base = output_index_start + chunk_index * UNROLLED_OUTPUT_CHUNK_SIZE;
+        let chunk_output = &mut output[output_base..output_base + UNROLLED_OUTPUT_CHUNK_SIZE];
 
         decode_chunk_8(
             &chunk[0..8],
@@ -88,36 +154,23 @@ pub(crate) fn decode_helper(
     }
 
     // remaining quads, except for the last possibly partial one, as it may have padding
-    let output_unrolled_loop_len = input_unrolled_loop_len / 4 * 3;
-    let output_complete_quad_len = input_complete_nonterminal_quads_len / 4 * 3;
+    let output_after_unroll_start = output_index_start + unrolled_loop_len / 4 * 3;
+    for (chunk_index, chunk) in input[input_unrolled_loop_end..input_index_end]
+        .chunks_exact(4)
+        .enumerate()
     {
-        let output_after_unroll = &mut output[output_unrolled_loop_len..output_complete_quad_len];
+        let output_base = output_after_unroll_start + chunk_index * 3;
+        let chunk_output = &mut output[output_base..output_base + 3];
 
-        for (chunk_index, chunk) in input
-            [input_unrolled_loop_len..input_complete_nonterminal_quads_len]
-            .chunks_exact(4)
-            .enumerate()
-        {
-            let chunk_output = &mut output_after_unroll[chunk_index * 3..chunk_index * 3 + 3];
-
-            decode_chunk_4(
-                chunk,
-                input_unrolled_loop_len + chunk_index * 4,
-                decode_table,
-                chunk_output,
-            )?;
-        }
+        decode_chunk_4(
+            chunk,
+            input_unrolled_loop_end + chunk_index * 4,
+            decode_table,
+            chunk_output,
+        )?;
     }
 
-    super::decode_suffix::decode_suffix(
-        input,
-        input_complete_nonterminal_quads_len,
-        output,
-        output_complete_quad_len,
-        decode_table,
-        decode_allow_trailing_bits,
-        padding_mode,
-    )
+    Ok(())
 }
 
 /// Returns the length of complete quads, except for the last one, even if it is complete.
@@ -133,6 +186,7 @@ pub(crate) fn complete_quads_len(
     input_len_rem: usize,
     output_len: usize,
     decode_table: &[u8; 256],
+    padding: Symbol,
 ) -> Result<usize, DecodeSliceError> {
     debug_assert!(input.len() % 4 == input_len_rem);
 
@@ -140,7 +194,7 @@ pub(crate) fn complete_quads_len(
     if input_len_rem == 1 {
         let last_byte = input[input.len() - 1];
         // exclude pad bytes; might be part of padding that extends from earlier in the input
-        if last_byte != PAD_BYTE && decode_table[usize::from(last_byte)] == INVALID_VALUE {
+        if last_byte != padding.as_u8() && decode_table[usize::from(last_byte)] == INVALID_VALUE {
             return Err(DecodeError::InvalidByte(input.len() - 1, last_byte).into());
         }
     };
@@ -150,7 +204,7 @@ pub(crate) fn complete_quads_len(
         .len()
         .saturating_sub(input_len_rem)
         // if rem was 0, subtract 4 to avoid padding
-        .saturating_sub((input_len_rem == 0) as usize * 4);
+        .saturating_sub(usize::from(input_len_rem == 0) * 4);
     debug_assert!(
         input.is_empty() || (1..=4).contains(&(input.len() - input_complete_nonterminal_quads_len))
     );
@@ -251,7 +305,7 @@ fn decode_chunk_8(
     Ok(())
 }
 
-/// Like [decode_chunk_8] but for 4 bytes of input and 3 bytes of output.
+/// Like [`decode_chunk_8`] but for 4 bytes of input and 3 bytes of output.
 #[inline(always)]
 fn decode_chunk_4(
     input: &[u8],

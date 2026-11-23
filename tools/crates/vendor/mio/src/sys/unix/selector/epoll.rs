@@ -1,5 +1,5 @@
 use std::io;
-use std::os::fd::{AsRawFd, FromRawFd, OwnedFd, RawFd};
+use std::os::fd::{AsFd, AsRawFd, BorrowedFd, FromRawFd, OwnedFd, RawFd};
 #[cfg(debug_assertions)]
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::time::Duration;
@@ -50,9 +50,12 @@ impl Selector {
                 // turning sub-millisecond timeouts into a zero timeout, unless
                 // the caller explicitly requests that by specifying a zero
                 // timeout.
-                to.checked_add(Duration::from_nanos(999_999))
-                    .unwrap_or(to)
-                    .as_millis() as libc::c_int
+                libc::c_int::try_from(
+                    to.checked_add(Duration::from_nanos(999_999))
+                        .unwrap_or(to)
+                        .as_millis(),
+                )
+                .unwrap_or(libc::c_int::MAX)
             })
             .unwrap_or(-1);
 
@@ -108,6 +111,12 @@ cfg_io_source! {
         pub fn id(&self) -> usize {
             self.id
         }
+    }
+}
+
+impl AsFd for Selector {
+    fn as_fd(&self) -> BorrowedFd<'_> {
+        self.ep.as_fd()
     }
 }
 

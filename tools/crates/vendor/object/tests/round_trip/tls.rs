@@ -1,11 +1,11 @@
 #![cfg(all(feature = "read", feature = "write"))]
 
 use object::read::{Object, ObjectSection, ObjectSymbol};
-use object::{read, write};
 use object::{
     Architecture, BinaryFormat, Endianness, RelocationEncoding, RelocationKind, SectionKind,
     SymbolFlags, SymbolKind, SymbolScope,
 };
+use object::{read, write};
 
 #[test]
 fn coff_x86_64_tls() {
