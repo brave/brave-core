@@ -365,8 +365,10 @@ IN_PROC_BROWSER_TEST_F(PinnedTabResetUpstreamVerticalTabsBrowserTest,
     return tab_view && tab_view->pinned();
   }));
 
-  tab_view->OnMousePressed(CreateDoubleClick(*tab_view));
-  tab_view->OnMouseReleased(CreateRelease(*tab_view));
+  // TabView's mouse handlers are private, so call them through views::View.
+  views::View* view = tab_view;
+  view->OnMousePressed(CreateDoubleClick(*view));
+  view->OnMouseReleased(CreateRelease(*view));
 
   EXPECT_EQ(2, model()->count());
   ExpectPinnedTabReset();
