@@ -14,6 +14,9 @@ these answers:
   version, so `PLASTER` can't regenerate it, a plastered patch whose plaster
   merged cleanly, and that the base changed only in its context, takes the
   commit's version.
+* `UNCHANGED_FAILING_PLASTER` -- a plastered patch whose plaster fails on the
+  Chromium checked out, and is the same in the commit as rebased so far, takes
+  the commit's version.
 * `CODEHEALTH_TRACKER` -- a CodeHealth tracker the base doesn't have is the
   branch's own, so the branch's last version of it is taken.
 * `VERSION_BUMP` -- the version commit takes the newer Chromium tag and
@@ -113,6 +116,10 @@ class Rule(enum.Enum):
     CONTEXT_ONLY_PLASTERED_PATCH = (
         'Plastered patches taken from the commit, as the base only moved their '
         'context and Chromium is checked out on another version'
+    )
+    UNCHANGED_FAILING_PLASTER = (
+        'Plastered patches taken from the commit, as their plaster fails on '
+        'this Chromium and neither side changed it'
     )
     CODEHEALTH_TRACKER = (
         "CodeHealth trackers taken from the branch's last version"
@@ -230,6 +237,9 @@ class ConflictedStep:
             Rule.PLASTER: self._regenerate_from_plaster,
             Rule.CONTEXT_ONLY_PLASTERED_PATCH: (
                 self._take_commit_plastered_patch
+            ),
+            Rule.UNCHANGED_FAILING_PLASTER: (
+                self._take_commit_patch_of_failing_plaster
             ),
             Rule.CODEHEALTH_TRACKER: self._take_branch_codehealth_tracker,
             Rule.VERSION_BUMP: self._settle_version_bump,
@@ -443,6 +453,32 @@ class ConflictedStep:
         if plaster_path.as_posix() in self.paths:
             return False
         return self._take_commit_patch_if_context_only(path)
+
+    def _take_commit_patch_of_failing_plaster(self, path: str) -> bool:
+        """Takes the commit's version of a plastered patch whose plaster fails
+        on the Chromium checked out, when the commit has the same plaster as
+        the rebase so far.
+
+        Tried after `PLASTER`, so with Chromium on the version rebased so far
+        and the plaster not conflicted, it is only reached when the plaster
+        failed. The plaster is then not what conflicts, and the commit's patch
+        is its output for the commit's Chromium: a later commit fixing the
+        plaster for this Chromium regenerates the patch.
+        """
+        plaster_file = patchfile.plaster_path_for_patch(Path(path))
+        if plaster_file is None or not self._chromium_in_sync:
+            return False
+        plaster_path = repository.brave.to_repo_relative(plaster_file)
+        if plaster_path.as_posix() in self.paths:
+            return False
+        if self.read(path, Stage.COMMIT) is None:
+            return False
+        if _file_at('HEAD', plaster_path.as_posix()) != _file_at(
+            self.commit, plaster_path.as_posix()
+        ):
+            return False
+        repository.brave.run_git('checkout', '--theirs', '--', path)
+        return True
 
     def _take_commit_patch_if_context_only(self, path: str) -> bool:
         """Takes the commit's version of a patch whose lines the base left

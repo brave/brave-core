@@ -551,6 +551,28 @@ class PlasterRuleTest(_RebaseStopTestCase):
         self.assertEqual(step.resolve(), [])
         self.assertEqual(self.read(FOO_PATCH), conflicted_patch)
 
+    def test_takes_the_commit_patch_when_its_unchanged_plaster_fails(self):
+        """A later commit fixes the plaster for this Chromium, regenerating the
+        patch then."""
+        ancestor = self.plastered('BraveThing')
+        commit_patch = ancestor[FOO_PATCH].replace('index ', 'index 1')
+        step = self.stop_rebase(
+            ancestor=ancestor,
+            base={FOO_PATCH: ancestor[FOO_PATCH].replace('index ', 'index 0')},
+            commit={FOO_PATCH: commit_patch},
+        )
+        # This Chromium moved what the plaster rewrites.
+        self.repo.write_and_stage_file(
+            FOO, '// foo.cc\n  MovedThing thing;\n', self.repo.chromium
+        )
+        self.repo.commit('Move the thing', self.repo.chromium)
+
+        self.assertEqual(
+            step.resolve(),
+            [Resolution(path=FOO_PATCH, rule=Rule.UNCHANGED_FAILING_PLASTER)],
+        )
+        self.assertEqual(self.read(FOO_PATCH), commit_patch)
+
     def test_deletes_the_patch_the_base_deleted_with_its_plaster(self):
         ancestor = self.plastered('BraveThing')
         step = self.stop_rebase(
