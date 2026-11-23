@@ -12,4 +12,9 @@ BASE_FEATURE(kUseChromiumWebViewsAutofill, base::FEATURE_DISABLED_BY_DEFAULT);
 BASE_FEATURE(kUseProfileWebViewConfiguration,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+// Controls whether the web view's layout parameters are overridden to account
+// for obscured insets using private WebKit API.
+BASE_FEATURE(kOverrideWebViewLayoutParameters,
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
 }  // namespace brave::features

@@ -5,6 +5,8 @@
 
 #include "brave/ios/web_view/public/cwv_web_view_extras.h"
 
+#include <algorithm>
+
 #include "base/apple/foundation_util.h"
 #include "base/json/json_writer.h"
 #include "base/strings/sys_string_conversions.h"
@@ -31,6 +33,28 @@
 #include "ios/web_view/public/cwv_navigation_delegate.h"
 #include "net/base/apple/url_conversions.h"
 #include "net/base/filename_util.h"
+
+// WebKit SPI used to override the sizes WebKit uses for the layout viewport and
+// CSS viewport units.
+@interface WKWebView (BraveLayoutParametersSPI)
+- (void)_overrideLayoutParametersWithMinimumLayoutSize:(CGSize)minimumLayoutSize
+                         minimumUnobscuredSizeOverride:
+                             (CGSize)minimumUnobscuredSizeOverride
+                         maximumUnobscuredSizeOverride:
+                             (CGSize)maximumUnobscuredSizeOverride;
+- (void)_clearOverrideLayoutParameters;
+@end
+
+namespace {
+
+// Returns the size of `bounds` inset by `insets`, clamped to be non-negative.
+CGSize SizeInsetByInsets(CGRect bounds, UIEdgeInsets insets) {
+  CGRect rect = UIEdgeInsetsInsetRect(bounds, insets);
+  return CGSizeMake(std::max<CGFloat>(0, CGRectGetWidth(rect)),
+                    std::max<CGFloat>(0, CGRectGetHeight(rect)));
+}
+
+}  // namespace
 
 const CWVUserAgentType CWVUserAgentTypeNone =
     static_cast<CWVUserAgentType>(web::UserAgentType::NONE);
@@ -249,6 +273,42 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
   CRWWebController* web_controller =
       web::WebStateImpl::FromWebState(self.webState)->GetWebController();
   return base::apple::ObjCCast<WKWebView>(web_controller.webView);
+}
+
+- (void)
+    overrideLayoutParametersWithObscuredInsets:(UIEdgeInsets)obscuredInsets
+                          minimumViewportInset:(UIEdgeInsets)minViewportInset
+                          maximumViewportInset:(UIEdgeInsets)maxViewportInset {
+  WKWebView* webView = self.internalWebView;
+  SEL selector =
+      @selector(_overrideLayoutParametersWithMinimumLayoutSize:
+                minimumUnobscuredSizeOverride:maximumUnobscuredSizeOverride:);
+  if (!webView || ![webView respondsToSelector:selector]) {
+    return;
+  }
+  // Ensure the WKWebView's frame reflects any pending layout changes.
+  [self layoutIfNeeded];
+  CGRect bounds = webView.bounds;
+  if (CGRectIsEmpty(bounds)) {
+    return;
+  }
+  [webView
+      _overrideLayoutParametersWithMinimumLayoutSize:SizeInsetByInsets(
+                                                         bounds, obscuredInsets)
+                       minimumUnobscuredSizeOverride:SizeInsetByInsets(
+                                                         bounds,
+                                                         maxViewportInset)
+                       maximumUnobscuredSizeOverride:SizeInsetByInsets(
+                                                         bounds,
+                                                         minViewportInset)];
+}
+
+- (void)clearOverrideLayoutParameters {
+  WKWebView* webView = self.internalWebView;
+  if (![webView respondsToSelector:@selector(_clearOverrideLayoutParameters)]) {
+    return;
+  }
+  [webView _clearOverrideLayoutParameters];
 }
 
 - (NSURL*)originalRequestURLForLastCommitedNavigation {

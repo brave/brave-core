@@ -12,6 +12,7 @@ namespace brave::features {
 
 BASE_DECLARE_FEATURE(kUseChromiumWebViewsAutofill);
 BASE_DECLARE_FEATURE(kUseProfileWebViewConfiguration);
+BASE_DECLARE_FEATURE(kOverrideWebViewLayoutParameters);
 
 }  // namespace brave::features
 

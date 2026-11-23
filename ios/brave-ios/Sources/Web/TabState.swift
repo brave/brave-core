@@ -374,6 +374,12 @@ public protocol WebViewProxy: AnyObject {
   var isKeyboardVisible: Bool { get }
   var obscuredInsets: UIEdgeInsets { get set }
   func setMinimumViewportInset(_ minInset: UIEdgeInsets, maximumViewportInset: UIEdgeInsets)
+  func overrideLayoutParameters(
+    obscuredInsets: UIEdgeInsets,
+    minimumViewportInset: UIEdgeInsets,
+    maximumViewportInset: UIEdgeInsets
+  )
+  func clearOverrideLayoutParameters()
   func becomeFirstResponder() -> Bool
 }
 

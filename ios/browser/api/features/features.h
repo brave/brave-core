@@ -100,6 +100,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kUseChromiumSearchEngines;
 @property(class, nonatomic, readonly) Feature* kTabGroupsEnabled;
 @property(class, nonatomic, readonly) Feature* kBraveSearchVerticalsEnabled;
+@property(class, nonatomic, readonly) Feature* kOverrideWebViewLayoutParameters;
 @end
 
 NS_ASSUME_NONNULL_END

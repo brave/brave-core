@@ -787,6 +787,21 @@ public class BrowserViewController: UIViewController {
 
     // But we still need to update the scroll indicator insets manually
     webViewProxy.scrollView?.scrollIndicatorInsets = scrollIndicatorInsets
+
+    if FeatureList.kOverrideWebViewLayoutParameters.enabled {
+      // WebKit always resolves default viewport units (vw/vh) against the full web view bounds, so
+      // override the layout parameters to ensure they account for the obscured insets & horizontal
+      // safe area insets.
+      minViewportInset.left = view.safeAreaInsets.left
+      minViewportInset.right = view.safeAreaInsets.right
+      maxViewportInset.left = view.safeAreaInsets.left
+      maxViewportInset.right = view.safeAreaInsets.right
+      webViewProxy.overrideLayoutParameters(
+        obscuredInsets: obscuredInsets,
+        minimumViewportInset: minViewportInset,
+        maximumViewportInset: maxViewportInset
+      )
+    }
   }
 
   fileprivate func updateToolbarStateForTraitCollection(
