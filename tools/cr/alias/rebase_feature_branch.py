@@ -144,7 +144,7 @@ def cmd_rebase_feature_branch(args: list[str]) -> int:
         merge_base = repository.brave.run_git('merge-base', to_ref, 'HEAD')
         _require_no_version_bumps(merge_base)
         if parsed.dry_run:
-            rebase.run(to_ref=to_ref, dry_run=True)
+            rebase.run(from_ref=merge_base, to_ref=to_ref, dry_run=True)
             return 0
         _require_chromium_synced(to_ref)
         rebase.run(

@@ -2513,6 +2513,7 @@ class Rebase(Task):
         """
         if dry_run:
             self._dry_run(
+                from_ref=from_ref,
                 to_ref=to_ref,
                 recommit=recommit,
                 discard_regen_changes=discard_regen_changes,
@@ -2533,9 +2534,19 @@ class Rebase(Task):
         self._continue(state, skip=skip, resuming=is_continuation or skip)
         self._report(state)
 
+    @staticmethod
+    def _rebase_start(from_ref: str | None, to_ref: str) -> tuple[str, str]:
+        """Where a rebase onto `to_ref` takes the branch's commits from: the
+        reference, `from_ref` or the branch's start, and its commit."""
+        if from_ref is None:
+            from_ref = versioning.branch_start('HEAD', to_ref)
+        from_ref = _solve_brave_ref(from_ref)
+        return from_ref, repository.brave.run_git('rev-parse', from_ref)
+
     def _dry_run(
         self,
         *,
+        from_ref: str | None,
         to_ref: str | None,
         recommit: bool,
         discard_regen_changes: bool,
@@ -2543,7 +2554,7 @@ class Rebase(Task):
     ) -> None:
         """Checks whether a rebase with these arguments would change anything.
 
-        It would when `to_ref` has moved past the branch's fork point, or when
+        It would when the branch's commits don't start from `to_ref`, or when
         the plan's rewrites (autosquash, `squash_minor_bumps`,
         `discard_regen_changes`) change it. Unlike `merge --dry-run`, never-
         merge commits such as `[WIP]` don't count: a rebase keeps them.
@@ -2556,11 +2567,11 @@ class Rebase(Task):
             raise RebaseNeededException(
                 f'{branch} needs a rebase: --recommit always rewrites it.'
             )
-        base = repository.brave.run_git('merge-base', to_ref, 'HEAD')
+        _, base = self._rebase_start(from_ref, to_ref)
         if base != repository.brave.run_git('rev-parse', to_ref):
             raise RebaseNeededException(
-                f'{branch} needs a rebase: {to_ref} has moved on since '
-                f'{base[:12]}.'
+                f'{branch} needs a rebase: its commits start from '
+                f'{base[:12]}, not {to_ref}.'
             )
         plan = RebasePlan.capture(
             base,
@@ -2600,17 +2611,12 @@ class Rebase(Task):
             )
 
         to_ref = _solve_brave_ref(to_ref)
-
-        if from_ref is None:
-            from_ref = versioning.branch_start('HEAD', to_ref)
-
-        from_ref = _solve_brave_ref(from_ref)
+        from_ref, rebase_base = self._rebase_start(from_ref, to_ref)
 
         # Adding this check to see if `merge-base` differs at all in outcome
         # from the tree-walking type of resolution we have been doing with
         # `from_ref`.
         merge_base = repository.brave.run_git('merge-base', to_ref, 'HEAD')
-        rebase_base = repository.brave.run_git('rev-parse', from_ref)
         if rebase_base != merge_base:
             logging.warning(
                 'This rebase starts from %s (resolved from [bold cyan]%s[/]), '

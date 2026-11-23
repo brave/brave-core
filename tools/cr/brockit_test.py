@@ -2097,6 +2097,17 @@ class RebaseDryRunTest(unittest.TestCase):
         )
         self._dry_run(squash_minor_bumps=True)
 
+    def test_commits_before_the_branch_start_need_a_rebase(self):
+        """The rebase takes the branch's commits from before its bump, not
+        from the merge-base, so it drops a commit ahead of the bump."""
+        self._git('checkout', '-B', 'cr149', 'origin/master')
+        self._git('branch', '--set-upstream-to=origin/master')
+        self.fake_chromium_src.commit_empty('Stray', self.brave)
+        self.fake_chromium_src.update_brave_version('152.0.7204.1')
+        with self.assertRaises(brockit.RebaseNeededException) as caught:
+            self._dry_run(squash_minor_bumps=True)
+        self.assertIn('not ', str(caught.exception))
+
     def test_moved_base_needs_a_rebase(self):
         self.fake_chromium_src.commit_empty('[cr149] Feature A', self.brave)
         self._git('checkout', '-b', '_tmp_upstream', 'origin/master')
