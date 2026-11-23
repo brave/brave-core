@@ -167,7 +167,16 @@ std::optional<std::string_view> GetSIWEHeaderDomain(std::string_view message,
     return std::nullopt;
   }
 
-  return message.substr(0, n);
+  const auto domain = message.substr(0, n);
+  // The header has to be the message's first line. Leading whitespace is
+  // tolerated because a verifier may trim before parsing, but any other
+  // content in front of the header means this is a plain message that merely
+  // quotes it, not an attempted sign-in.
+  if (base::TrimWhitespaceASCII(domain, base::TRIM_LEADING).contains('\n')) {
+    return std::nullopt;
+  }
+
+  return domain;
 }
 
 bool ShrinkMessage(std::string_view& msg_view, std::string_view::size_type n) {

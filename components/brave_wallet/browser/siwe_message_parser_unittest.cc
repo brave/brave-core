@@ -121,6 +121,10 @@ TEST_F(SIWEMessageParserTest, Start) {
            base::StrCat({"://example.com", starting_token(), "\n"}),
            base::StrCat({"example.com:abc", starting_token(), "\n"}),
            base::StrCat({"example.com::3388", starting_token(), "\n"}),
+           // A line in front of the header. Newline stripping would otherwise
+           // canonicalize the whole prefix into the valid host
+           // https://noteexample.com and report a domain mismatch.
+           base::StrCat({"Note\nexample.com", valid_start_suffix()}),
        }) {
     SCOPED_TRACE(testing::Message() << "\"" << invalid_case << "\"");
     EXPECT_FALSE(parser_.Parse(invalid_case));
@@ -243,6 +247,11 @@ TEST_F(SIWEMessageParserTest, HasSIWEHeader) {
                          starting_token(),
                          " went on to ask for my recovery phrase.\n"
                          "The real site never does that."}),
+           // A plain EIP-191 message that quotes the header on its own line.
+           base::StrCat({"Reporting a phishing site. A popup said:\n",
+                         "example.com", starting_token(),
+                         "\nand then asked for my recovery phrase."}),
+           base::StrCat({"Note\nexample.com", valid_start_suffix()}),
        }) {
     SCOPED_TRACE(testing::Message() << "\"" << not_siwe << "\"");
     EXPECT_FALSE(SIWEMessageParser::HasSIWEHeader(not_siwe));
