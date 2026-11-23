@@ -979,7 +979,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, BubbleAnchoredToLocationBar) {
   EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable,
-                              WindowOpenDisposition::kCurrentTab);
+                              ui::mojom::WindowOpenDisposition::kCurrentTab);
 
   tab_helper()->ShowSpeedreaderBubble(
       speedreader::SpeedreaderBubbleLocation::kLocationBar);

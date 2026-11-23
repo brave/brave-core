@@ -1094,7 +1094,7 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
         browser(),
         ai_chat::ConversationUrl(
             conversation_handler_->get_conversation_uuid()),
-        WindowOpenDisposition::kNewForegroundTab,
+        ui::mojom::WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
     return WaitForEntriesFrame(
         browser()->tab_strip_model()->GetActiveWebContents());

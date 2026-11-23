@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "content/public/browser/security_principal.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
 
 struct NavigateParams;
@@ -36,8 +37,10 @@ namespace {
 std::optional<content::StoragePartitionConfig>
 GetNewTabTargetStoragePartitionConfig(const NavigateParams& params) {
   if (!params.browser ||
-      (params.disposition != WindowOpenDisposition::kNewForegroundTab &&
-       params.disposition != WindowOpenDisposition::kNewBackgroundTab) ||
+      (params.disposition !=
+           ui::mojom::WindowOpenDisposition::kNewForegroundTab &&
+       params.disposition !=
+           ui::mojom::WindowOpenDisposition::kNewBackgroundTab) ||
       !ui::PageTransitionCoreTypeIs(params.transition,
                                     ui::PAGE_TRANSITION_TYPED) ||
       params.url != chrome::GetNewTabURL(params.browser)) {

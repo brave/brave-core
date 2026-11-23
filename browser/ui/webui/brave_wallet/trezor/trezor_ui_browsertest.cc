@@ -114,7 +114,7 @@ IN_PROC_BROWSER_TEST_F(TrezorUIBrowserTest, CheckOpenerInPopup) {
 IN_PROC_BROWSER_TEST_F(TrezorUIBrowserTest, BlankPopupToOtherSiteLosesOpener) {
   auto* trezor_bridge = ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(kUntrustedTrezorURL),
-      WindowOpenDisposition::kNewForegroundTab,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   EXPECT_FALSE(BlankPopupKeepsOpener(trezor_bridge,
                                      GURL("https://example.com/empty.html")));
@@ -124,7 +124,7 @@ IN_PROC_BROWSER_TEST_F(TrezorUIBrowserTest,
                        BlankPopupFromOtherUntrustedUILosesOpener) {
   auto* ledger_bridge = ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(kUntrustedLedgerURL),
-      WindowOpenDisposition::kNewForegroundTab,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   EXPECT_FALSE(BlankPopupKeepsOpener(
       ledger_bridge, GURL("https://connect.trezor.io/empty.html")));
