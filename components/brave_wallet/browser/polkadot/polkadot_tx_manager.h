@@ -73,7 +73,6 @@ class PolkadotTxManager : public TxManager,
 
  private:
   friend class PolkadotTxManagerUnitTest;
-  FRIEND_TEST_ALL_PREFIXES(PolkadotTxManagerUnitTest, OnLatestBlock);
 
   PolkadotTxStateManager& GetPolkadotTxStateManager();
 

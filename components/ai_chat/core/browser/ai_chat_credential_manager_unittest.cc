@@ -20,6 +20,7 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -203,46 +204,36 @@ class AIChatCredentialManagerUnitTest : public testing::Test {
 
   void TestGetPremiumStatus(mojom::PremiumStatus expected_status,
                             mojom::PremiumInfoPtr expected_info) {
-    base::RunLoop run_loop;
-    ai_chat_credential_manager_->GetPremiumStatus(base::BindLambdaForTesting(
-        [&](mojom::PremiumStatus status, mojom::PremiumInfoPtr info) {
-          EXPECT_EQ(status, expected_status);
-          if (expected_info) {
-            ASSERT_TRUE(info);
-            EXPECT_EQ(info->remaining_credential_count,
-                      expected_info->remaining_credential_count);
+    base::test::TestFuture<mojom::PremiumStatus, mojom::PremiumInfoPtr> future;
+    ai_chat_credential_manager_->GetPremiumStatus(future.GetCallback());
+    auto [status, info] = future.Take();
+    EXPECT_EQ(status, expected_status);
+    if (expected_info) {
+      ASSERT_TRUE(info);
+      EXPECT_EQ(info->remaining_credential_count,
+                expected_info->remaining_credential_count);
 
-            if (expected_info->next_active_at) {
-              ASSERT_TRUE(info->next_active_at);
-              EXPECT_EQ(info->next_active_at, expected_info->next_active_at);
-            } else {
-              EXPECT_FALSE(info->next_active_at);
-            }
-          } else {
-            ASSERT_FALSE(info);
-          }
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+      if (expected_info->next_active_at) {
+        ASSERT_TRUE(info->next_active_at);
+        EXPECT_EQ(info->next_active_at, expected_info->next_active_at);
+      } else {
+        EXPECT_FALSE(info->next_active_at);
+      }
+    } else {
+      ASSERT_FALSE(info);
+    }
   }
 
   void TestFetchPremiumCredential(
       std::optional<CredentialCacheEntry> expected_credential) {
-    base::RunLoop run_loop;
-    ai_chat_credential_manager_->FetchPremiumCredential(
-        base::BindLambdaForTesting(
-            [&](std::optional<CredentialCacheEntry> credential) {
-              ASSERT_EQ(credential.has_value(),
-                        expected_credential.has_value());
-              if (credential && expected_credential) {
-                EXPECT_EQ(credential->credential,
-                          expected_credential->credential);
-                EXPECT_EQ(credential->expires_at,
-                          expected_credential->expires_at);
-              }
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<std::optional<CredentialCacheEntry>> future;
+    ai_chat_credential_manager_->FetchPremiumCredential(future.GetCallback());
+    std::optional<CredentialCacheEntry> credential = future.Take();
+    ASSERT_EQ(credential.has_value(), expected_credential.has_value());
+    if (credential && expected_credential) {
+      EXPECT_EQ(credential->credential, expected_credential->credential);
+      EXPECT_EQ(credential->expires_at, expected_credential->expires_at);
+    }
   }
 
   PrefService* prefs() { return &prefs_service_; }
@@ -270,10 +261,12 @@ TEST_F(AIChatCredentialManagerUnitTest, PutCredentialInCache) {
   ai_chat_credential_manager_->PutCredentialInCache(entry);
   const auto& cached_creds_dict =
       prefs_service_.GetDict(prefs::kBraveChatPremiumCredentialCache);
-  EXPECT_EQ(cached_creds_dict.size(), 1u);
-  EXPECT_EQ(base::ValueToTime(*(cached_creds_dict.Find("credential"))),
-            entry.expires_at);
+  ASSERT_EQ(cached_creds_dict.size(), 1u);
+  const base::Value* value = cached_creds_dict.Find("credential");
+  ASSERT_TRUE(value);
+  EXPECT_EQ(base::ValueToTime(*value), entry.expires_at);
 }
+
 TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatusInactive) {
   // By default there should be no credentials.
   TestGetPremiumStatus(mojom::PremiumStatus::Inactive, nullptr);

@@ -6,15 +6,16 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_transaction_task.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -28,7 +29,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using testing::_;
-using testing::SaveArg;
 
 namespace brave_wallet {
 
@@ -112,6 +112,15 @@ class ZCashCreateTransparentTransactionTaskTest : public testing::Test {
 
   mojom::AccountIdPtr& account_id() { return account_id_; }
 
+  // Starts `task` and waits for its one-shot callback.
+  base::expected<ZCashTransaction, std::string> RunTask(
+      ZCashCreateTransparentTransactionTask& task) {
+    base::test::TestFuture<base::expected<ZCashTransaction, std::string>>
+        future;
+    task.Start(future.GetCallback());
+    return future.Take();
+  }
+
  private:
   base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
@@ -153,25 +162,14 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest, TransactionCreated) {
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
 
-  base::MockCallback<
-      ZCashCreateTransparentTransactionTask::CreateTransactionCallback>
-      callback;
-
   auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
       pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1,
       10000);
 
-  base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(::testing::DoAll(
-          SaveArg<0>(&tx_result),
-          base::test::RunOnceClosure(task_environment().QuitClosure())));
+  auto tx_result = RunTask(*task);
 
-  task->Start(callback.Get());
-
-  task_environment().RunUntilQuit();
-
-  EXPECT_TRUE(tx_result.has_value());
+  ASSERT_TRUE(tx_result.has_value());
+  ASSERT_EQ(tx_result.value().transparent_part().outputs.size(), 2u);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount, 10000u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].address, kAddress1);
@@ -217,27 +215,16 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest, TransactionCreated_Testnet) {
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
 
-  base::MockCallback<
-      ZCashCreateTransparentTransactionTask::CreateTransactionCallback>
-      callback;
-
   auto testnet_context = zcash_action_context(testnet_account_id);
 
   auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
       pass_key(), zcash_wallet_service(), std::move(testnet_context),
       "tmCxJG72RWN66xwPtNgu4iKHpyysGrc7rEg", 10000);
 
-  base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(::testing::DoAll(
-          SaveArg<0>(&tx_result),
-          base::test::RunOnceClosure(task_environment().QuitClosure())));
+  auto tx_result = RunTask(*task);
 
-  task->Start(callback.Get());
-
-  task_environment().RunUntilQuit();
-
-  EXPECT_TRUE(tx_result.has_value());
+  ASSERT_TRUE(tx_result.has_value());
+  ASSERT_EQ(tx_result.value().transparent_part().outputs.size(), 2u);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount, 10000u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].address,
@@ -278,25 +265,14 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest, TransactionCreated_u64Check) {
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
 
-  base::MockCallback<
-      ZCashCreateTransparentTransactionTask::CreateTransactionCallback>
-      callback;
-
   auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
       pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1,
       15000000000u);
 
-  base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(::testing::DoAll(
-          SaveArg<0>(&tx_result),
-          base::test::RunOnceClosure(task_environment().QuitClosure())));
+  auto tx_result = RunTask(*task);
 
-  task->Start(callback.Get());
-
-  task_environment().RunUntilQuit();
-
-  EXPECT_TRUE(tx_result.has_value());
+  ASSERT_TRUE(tx_result.has_value());
+  ASSERT_EQ(tx_result.value().transparent_part().outputs.size(), 2u);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount,
             15000000000u);
@@ -339,23 +315,11 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest,
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
 
-  base::MockCallback<
-      ZCashCreateTransparentTransactionTask::CreateTransactionCallback>
-      callback;
-
   auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
       pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1,
       kZCashFullAmount);
 
-  base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(::testing::DoAll(
-          SaveArg<0>(&tx_result),
-          base::test::RunOnceClosure(task_environment().QuitClosure())));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilQuit();
+  auto tx_result = RunTask(*task);
 
   EXPECT_FALSE(tx_result.has_value());
 }
@@ -388,23 +352,11 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest,
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
 
-  base::MockCallback<
-      ZCashCreateTransparentTransactionTask::CreateTransactionCallback>
-      callback;
-
   auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
       pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1,
       20000000000u);
 
-  base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(::testing::DoAll(
-          SaveArg<0>(&tx_result),
-          base::test::RunOnceClosure(task_environment().QuitClosure())));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilQuit();
+  auto tx_result = RunTask(*task);
 
   EXPECT_FALSE(tx_result.has_value());
 }
@@ -437,23 +389,11 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest,
         std::move(callback).Run(base::unexpected("error"));
       });
 
-  base::MockCallback<
-      ZCashCreateTransparentTransactionTask::CreateTransactionCallback>
-      callback;
-
   auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
       pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1,
       60);
 
-  base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(::testing::DoAll(
-          SaveArg<0>(&tx_result),
-          base::test::RunOnceClosure(task_environment().QuitClosure())));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilQuit();
+  auto tx_result = RunTask(*task);
 
   EXPECT_FALSE(tx_result.has_value());
 }
@@ -486,23 +426,11 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest,
         std::move(callback).Run(zcash::mojom::BlockIDPtr());
       });
 
-  base::MockCallback<
-      ZCashCreateTransparentTransactionTask::CreateTransactionCallback>
-      callback;
-
   auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
       pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1,
       60);
 
-  base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(::testing::DoAll(
-          SaveArg<0>(&tx_result),
-          base::test::RunOnceClosure(task_environment().QuitClosure())));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilQuit();
+  auto tx_result = RunTask(*task);
 
   EXPECT_FALSE(tx_result.has_value());
 }
@@ -534,23 +462,11 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest,
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
 
-  base::MockCallback<
-      ZCashCreateTransparentTransactionTask::CreateTransactionCallback>
-      callback;
-
   auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
       pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1,
       100000);
 
-  base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(::testing::DoAll(
-          SaveArg<0>(&tx_result),
-          base::test::RunOnceClosure(task_environment().QuitClosure())));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilQuit();
+  auto tx_result = RunTask(*task);
 
   EXPECT_FALSE(tx_result.has_value());
 }
@@ -583,25 +499,14 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest, TransactionCreated_MaxFunds) {
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
 
-  base::MockCallback<
-      ZCashCreateTransparentTransactionTask::CreateTransactionCallback>
-      callback;
-
   auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
       pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1,
       kZCashFullAmount);
 
-  base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(::testing::DoAll(
-          SaveArg<0>(&tx_result),
-          base::test::RunOnceClosure(task_environment().QuitClosure())));
+  auto tx_result = RunTask(*task);
 
-  task->Start(callback.Get());
-
-  task_environment().RunUntilQuit();
-
-  EXPECT_TRUE(tx_result.has_value());
+  ASSERT_TRUE(tx_result.has_value());
+  ASSERT_EQ(tx_result.value().transparent_part().outputs.size(), 1u);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount, 195000u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].address, kAddress1);

@@ -55,7 +55,6 @@ class TxStorage {
   static std::unique_ptr<TxStorage> MakeWithMemoryOnlyStorage();
 
  private:
-  friend class TxStateManagerUnitTest;
   friend class TxStorageUnitTest;
   FRIEND_TEST_ALL_PREFIXES(TxStorageUnitTest, ReadWriteAndClear);
   FRIEND_TEST_ALL_PREFIXES(TxStorageUnitTest, ReadWriteAndClearInMemory);

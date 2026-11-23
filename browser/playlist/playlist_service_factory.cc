@@ -21,13 +21,10 @@
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/components/playlist/content/browser/media_detector_component_manager.h"
-#include "brave/components/playlist/content/browser/playlist_constants.h"
 #include "brave/components/playlist/content/browser/playlist_p3a.h"
 #include "brave/components/playlist/content/browser/playlist_service.h"
-#include "brave/components/playlist/content/browser/type_converter.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
-#include "brave/components/playlist/core/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -241,23 +238,7 @@ void PlaylistServiceFactory::RegisterLocalStatePrefs(
 
 void PlaylistServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  auto default_list = mojom::Playlist::New();
-  default_list->id = kDefaultPlaylistID;
-
-  base::DictValue playlists_value;
-  playlists_value.Set(kDefaultPlaylistID,
-                      playlist::ConvertPlaylistToValue(default_list));
-  registry->RegisterDictionaryPref(kPlaylistsPref, std::move(playlists_value));
-
-  auto order_list = base::ListValue();
-  order_list.Append(kDefaultPlaylistID);
-  registry->RegisterListPref(kPlaylistOrderPref, std::move(order_list));
-
-  registry->RegisterDictionaryPref(kPlaylistItemsPref);
-  registry->RegisterBooleanPref(kPlaylistEnabledPref, true);
-  registry->RegisterBooleanPref(kPlaylistCacheByDefault, true);
-  registry->RegisterStringPref(kPlaylistDefaultSaveTargetListID,
-                               kDefaultPlaylistID);
+  PlaylistService::RegisterProfilePrefs(registry);
 }
 
 PlaylistServiceFactory::PlaylistServiceFactory()

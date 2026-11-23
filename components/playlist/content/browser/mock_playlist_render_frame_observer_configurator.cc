@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/playlist/test/mock_playlist_render_frame_observer_configurator.h"
+#include "brave/components/playlist/content/browser/mock_playlist_render_frame_observer_configurator.h"
 
 #include <utility>
 
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace playlist {
 MockPlaylistRenderFrameObserverConfigurator::

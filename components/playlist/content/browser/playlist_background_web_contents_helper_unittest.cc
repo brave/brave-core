@@ -10,9 +10,9 @@
 #include "base/functional/bind.h"
 #include "base/run_loop.h"
 #include "base/test/gmock_callback_support.h"
-#include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/playlist/test/mock_playlist_render_frame_observer_configurator.h"
-#include "brave/browser/playlist/test/playlist_unittest_base.h"
+#include "brave/components/playlist/content/browser/mock_playlist_render_frame_observer_configurator.h"
+#include "brave/components/playlist/content/browser/playlist_service.h"
+#include "brave/components/playlist/content/browser/playlist_unittest_base.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "content/public/browser/render_frame_host.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -35,8 +35,7 @@ TEST_F(PlaylistBackgroundWebContentsHelperTest,
           base::Unretained(&configurator_)));
 
   PlaylistBackgroundWebContentsHelper::CreateForWebContents(
-      web_contents(),
-      PlaylistServiceFactory::GetForBrowserContext(browser_context()),
+      web_contents(), playlist_service(),
       base::BindOnce([](GURL, std::vector<mojom::PlaylistItemPtr>) {}));
 
   // AddMediaDetector is sent after AddMediaSourceAPISuppressor on the same

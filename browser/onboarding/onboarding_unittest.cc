@@ -7,6 +7,7 @@
 
 #include "base/command_line.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_path_override.h"
@@ -85,13 +86,26 @@ class OnboardingTest : public testing::Test {
         &FakeTimeNow, nullptr, nullptr);
   }
 
+  // Called when a helper's first-run check allows it to highlight.
+  void OnCanHighlight(content::WebContents* contents) {
+    EXPECT_EQ(contents, web_contents_.get());
+    can_highlight_reported_ = true;
+  }
+
   // Creates the helper and waits for its first-run check, which runs on the
-  // thread pool on non-first runs.
+  // thread pool on non-first runs. Afterwards, `can_highlight_reported_` says
+  // whether the helper may highlight; otherwise it has cleaned up and no longer
+  // observes the contents.
   std::unique_ptr<OnboardingTabHelper> MaybeCreateAndWait() {
+    can_highlight_reported_ = false;
+    const auto callback_reset =
+        OnboardingTabHelper::SetCanHighlightCallbackForTesting(
+            base::BindRepeating(&OnboardingTest::OnCanHighlight,
+                                base::Unretained(this)));
     auto helper = OnboardingTabHelper::MaybeCreate(tab_);
     if (helper) {
       EXPECT_TRUE(base::test::RunUntil(
-          [&] { return helper->can_highlight_ || helper->cleaned_up_; }));
+          [&] { return can_highlight_reported_ || !helper->web_contents(); }));
     }
     return helper;
   }
@@ -103,6 +117,7 @@ class OnboardingTest : public testing::Test {
   std::unique_ptr<TestingProfileManager> profile_manager_;
   std::unique_ptr<content::WebContents> web_contents_;
   tabs::MockTabInterface tab_;
+  bool can_highlight_reported_ = false;
 };
 
 TEST_F(OnboardingTest, HelperCreationTestForFirstRun) {
@@ -114,13 +129,13 @@ TEST_F(OnboardingTest, HelperCreationTestForFirstRun) {
   // Check helper is created for first run.
   auto tab_helper = MaybeCreateAndWait();
   ASSERT_TRUE(tab_helper);
-  EXPECT_TRUE(tab_helper->can_highlight_);
+  EXPECT_TRUE(can_highlight_reported_);
 
   // Even seven days passed durig the first run, helper should be created.
   const auto time_override = AdvanceTimeNow(base::Days(8));
   tab_helper = MaybeCreateAndWait();
   ASSERT_TRUE(tab_helper);
-  EXPECT_TRUE(tab_helper->can_highlight_);
+  EXPECT_TRUE(can_highlight_reported_);
 
   // Check helper is not created when |kLastShieldsIconHighlightTime| is not
   // null.
@@ -148,7 +163,7 @@ TEST_F(OnboardingTest, HelperCreationTestForNonFirstRun) {
       onboarding::prefs::kLastShieldsIconHighlightTime);
   auto tab_helper = MaybeCreateAndWait();
   ASSERT_TRUE(tab_helper);
-  EXPECT_TRUE(tab_helper->can_highlight_);
+  EXPECT_TRUE(can_highlight_reported_);
   ASSERT_TRUE(tab_helper->CanHighlightBraveShields());
 
   // Check exiting tab doesn't give highlight when 7 days passed.
@@ -158,6 +173,6 @@ TEST_F(OnboardingTest, HelperCreationTestForNonFirstRun) {
   // Check a new tab stops observing once the check finds 7 days passed.
   tab_helper = MaybeCreateAndWait();
   ASSERT_TRUE(tab_helper);
-  EXPECT_FALSE(tab_helper->can_highlight_);
+  EXPECT_FALSE(can_highlight_reported_);
   EXPECT_FALSE(tab_helper->web_contents());
 }
