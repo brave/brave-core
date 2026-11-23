@@ -6,10 +6,17 @@
 #include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
 
 #include <algorithm>
+#include <memory>
+#include <queue>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -22,13 +29,12 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
-#include "chrome/browser/prefs/browser_prefs.h"
-#include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/test/browser_task_environment.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -102,13 +108,8 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
  protected:
   void SetUp() override {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
-
-    TestingProfile::Builder builder;
-    auto prefs =
-        std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
-    RegisterUserProfilePrefs(prefs->registry());
-    builder.SetPrefService(std::move(prefs));
-    profile_ = builder.Build();
+    brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
     wallet_service_ = std::make_unique<BraveWalletService>(
         url_loader_factory_.GetSafeWeakWrapper(),
         TestBraveWalletServiceDelegate::Create(), GetPrefs(), GetLocalState());
@@ -132,7 +133,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
             url_loader_factory_.GetSafeWeakWrapper());
   }
 
-  PrefService* GetPrefs() { return profile_->GetPrefs(); }
+  PrefService* GetPrefs() { return &prefs_; }
   TestingPrefServiceSimple* GetLocalState() { return &local_state_; }
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
     return network_manager_->GetNetworkURL(chain_id, coin);
@@ -140,10 +141,10 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscoveryManager>
       wallet_service_observer_;
-  content::BrowserTaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   TestingPrefServiceSimple local_state_;
-  std::unique_ptr<TestingProfile> profile_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<BraveWalletService> wallet_service_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
   std::unique_ptr<AssetDiscoveryManager> asset_discovery_manager_;

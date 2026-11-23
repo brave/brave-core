@@ -7,9 +7,7 @@
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
-#include "chrome/test/base/testing_profile_manager.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/test/browser_task_environment.h"
@@ -60,13 +58,13 @@ class BraveShieldsUtilProfilesTest : public testing::Test {
       }
 
       auto incognito = incognito_profile();
-      // Now change value for incognito and expect that values are not depended
-      // on the regular profile.
+      // Incognito overrides must leave the regular profile setting intact.
       for (const auto& [ivalue, iexpect] : cases) {
         auto* incognito_map =
             HostContentSettingsMapFactory::GetForProfile(incognito.get());
 
         setter(incognito_map, ivalue);
+        EXPECT_EQ(getter(regular_map), expect);
         const auto iget = getter(incognito_map);
         if (iexpect != iget) {
           ADD_FAILURE() << "Incognito profile: Set " << ivalue << " Get "

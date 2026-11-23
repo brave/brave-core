@@ -127,8 +127,12 @@ source_set("tor_unit_tests") {
     "//components/prefs:test_support",
     "//content/public/browser",
     "//content/test:test_support",
+    "//net",
+    "//net:test_support",
+    "//net/traffic_annotation:test_support",
     "//testing/gmock",
     "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
     "//url",
   ]
 }

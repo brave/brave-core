@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/eth_allowance_manager.h"
 
+#include <algorithm>
+#include <limits>
 #include <map>
 #include <memory>
 #include <optional>
@@ -17,8 +19,11 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/run_loop.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
+#include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
@@ -35,18 +40,14 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
-#include "chrome/browser/prefs/browser_prefs.h"
-#include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -96,65 +97,6 @@ constexpr char kTokenListJson[] = R"({
       }
     })";
 
-constexpr char kAllowanceCacheJson[] = R"({
-  "0x1": {
-    "allowances_found": [
-      {
-        "amount": "0x0000000000000000000000000000000000000000000000000000000000000001",
-        "approver_address": "0x00000000000000000000000091272b2c4990927d1fe28201cf0a6ce288a221d6",
-        "contract_address": "0x0c10bf8fcb7bf5412187a595ab97a3609160b5c6",
-        "spender_address": "0x000000000000000000000000dac308312e195710467ce36effe51ac7a4ecbf01"
-      }
-    ],
-    "last_block_number": {
-      "0x00000000000000000000000091272b2c4990927d1fE28201cf0A6CE288a221d6": "0x1054bfe"
-    }
-  },
-  "0xa4b1": {
-    "allowances_found": [
-      {
-        "amount": "0x0000000000000000000000000000000000000000000000000000000000000001",
-        "approver_address": "0x00000000000000000000000091272b2c4990927d1fe28201cf0a6ce288a221d6",
-        "contract_address": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
-        "spender_address": "0x000000000000000000000000dac308312e195710467ce36effe51ac7a4ecbf01"
-      }
-    ],
-    "last_block_number": {
-      "0x00000000000000000000000091272b2c4990927d1fE28201cf0A6CE288a221d6": "0x504d1a3"
-    }
-  }
-})";
-
-constexpr char kIncorrectAllowanceCacheDataJson[] = R"({
-            "0x1": {
-               "allowances_found": [ {
-                  "amount":
-         "0x0000000000000000000000000000000000000000000000000000000000000001",
-                  "approver_address":
-         "0x00000000000000000000000091272b2c4990927d1fe28201cf0a6ce288a221d6",
-                  "spender_address":
-         "0x000000000000000000000000dac308312e195710467ce36effe51ac7a4ecbf01"
-               } ],
-               "last_block_number": "0x1054bfe"
-            }
-         })";
-
-constexpr char incorrect_allowance_chache_block_number_json[] = R"({
-            "0x1": {
-               "allowances_found": [ {
-                  "amount":
-         "0x0000000000000000000000000000000000000000000000000000000000000001",
-                  "approver_address":
-         "0x00000000000000000000000091272b2c4990927d1fe28201cf0a6ce288a221d6",
-                  "contract_address":
-         "0x0c10bf8fcb7bf5412187a595ab97a3609160b5c6",
-                  "spender_address":
-         "0x000000000000000000000000dac308312e195710467ce36effe51ac7a4ecbf01"
-               } ],
-               "last_block_number": "123456"
-            }
-         })";
-
 constexpr char get_block_response[] =
     R"({"jsonrpc":"2.0","id":1,"result":"0x10964ec"})";
 
@@ -180,18 +122,25 @@ constexpr char kFirstAccountLastBlockCacheJson[] = R"({"0x1": {
 }})";
 // Block following `kCachedLastBlockNumber`.
 constexpr char kExpectedFromBlockWithCache[] = "0x1054bff";
+constexpr char kOtherAccountHexAddress[] =
+    "0x000000000000000000000000000000000000000000000000000000000000AAAA";
 constexpr char kUncachedContractAddress[] =
     "0x4444444444444444444444444444444444444444";
 constexpr char kTokenListContractAddress[] =
     "0x3333333333333333333333333333333333333333";
+constexpr char kOtherChainContractAddress[] =
+    "0x5555555555555555555555555555555555555555";
 
 // Creates an allowance cache for the first ETH account on mainnet that holds
-// one allowance for `cached_contract_address`.
+// one allowance for `cached_contract_address` approved by `approver_address`.
+// The allowance is stored under `chain_id`.
 base::DictValue CreateFirstAccountAllowanceCache(
-    const std::string& cached_contract_address) {
+    const std::string& cached_contract_address,
+    const std::string& approver_address = kFirstAccountHexAddress,
+    const std::string& chain_id = "0x1") {
   base::DictValue allowance;
   allowance.Set("amount", std::string(kCachedAmount));
-  allowance.Set("approver_address", std::string(kFirstAccountHexAddress));
+  allowance.Set("approver_address", approver_address);
   allowance.Set("contract_address", cached_contract_address);
   allowance.Set("spender_address", std::string(kCachedSpenderTopic));
 
@@ -207,12 +156,10 @@ base::DictValue CreateFirstAccountAllowanceCache(
   chain_section.Set("last_block_number", std::move(last_block_number));
 
   base::DictValue cache;
-  cache.Set("0x1", std::move(chain_section));
+  cache.Set(chain_id, std::move(chain_section));
   return cache;
 }
 
-using AllowancesMap = std::map<std::string, mojom::AllowanceInfoPtr>;
-using AllowancesMapCallback = base::OnceCallback<void(const AllowancesMap&)>;
 using OnDiscoverEthAllowancesCompletedValidation =
     base::RepeatingCallback<void(const std::vector<mojom::AllowanceInfoPtr>&)>;
 
@@ -262,13 +209,8 @@ class EthAllowanceManagerUnitTest : public testing::Test {
  protected:
   void SetUp() override {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
-
-    TestingProfile::Builder builder;
-    auto prefs =
-        std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
-    RegisterUserProfilePrefs(prefs->registry());
-    builder.SetPrefService(std::move(prefs));
-    profile_ = builder.Build();
+    brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
     wallet_service_ = std::make_unique<BraveWalletService>(
         url_loader_factory_.GetSafeWeakWrapper(),
         TestBraveWalletServiceDelegate::Create(), GetPrefs(), GetLocalState());
@@ -493,13 +435,22 @@ class EthAllowanceManagerUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  void TestLoadCachedAllowances(const std::string& chain_id,
-                                const std::string& hex_account_address,
-                                AllowancesMapCallback test_validation) {
-    AllowancesMap allowance_map;
-    eth_allowance_manager_->LoadCachedAllowances(chain_id, hex_account_address,
-                                                 allowance_map);
-    std::move(test_validation).Run(allowance_map);
+  // Runs discovery for the first ETH account with an empty `eth_getLogs`
+  // result and expects no allowances, i.e. the seeded cache is not surfaced.
+  void ExpectNoAllowancesDiscovered() {
+    auto generate_empty_response = base::BindLambdaForTesting(
+        [&](const std::vector<std::string>& eth_account_address,
+            const TokenListMap& token_list_map) {
+          return PrepareResponses(kEthAllowanceDetectedResponse,
+                                  eth_account_address, token_list_map,
+                                  base::DoNothing());
+        });
+    auto allowances_validation = base::BindLambdaForTesting(
+        [](const std::vector<mojom::AllowanceInfoPtr>& allowances) {
+          ASSERT_TRUE(allowances.empty());
+        });
+    TestAllowancesLoading(kTokenListJson, generate_empty_response, 1, 1,
+                          allowances_validation, get_block_response);
   }
 
   std::map<GURL, std::map<std::string, std::string>> PrepareResponses(
@@ -547,16 +498,16 @@ class EthAllowanceManagerUnitTest : public testing::Test {
         .FindByDottedPath("0x1.allowances_found");
   }
 
-  PrefService* GetPrefs() { return profile_->GetPrefs(); }
+  PrefService* GetPrefs() { return &prefs_; }
   TestingPrefServiceSimple* GetLocalState() { return &local_state_; }
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
     return wallet_service_->network_manager()->GetNetworkURL(chain_id, coin);
   }
 
   network::TestURLLoaderFactory url_loader_factory_;
-  content::BrowserTaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
-  std::unique_ptr<TestingProfile> profile_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<BraveWalletService> wallet_service_;
   std::unique_ptr<EthAllowanceManager> eth_allowance_manager_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
@@ -567,84 +518,38 @@ class EthAllowanceManagerUnitTest : public testing::Test {
   std::vector<std::string> get_logs_from_blocks_;
 };
 
-TEST_F(EthAllowanceManagerUnitTest, LoadCachedAllowances) {
-  CreateCachedAllowancesPrefs(kAllowanceCacheJson);
-  TestLoadCachedAllowances(
-      "0x1",
-      "0x00000000000000000000000091272b2c4990927d1fE28201cf0A6CE288a221d6",
-      base::BindLambdaForTesting([](const AllowancesMap& allowance_map) {
-        ASSERT_EQ(allowance_map.size(), 1u);
-        const auto map_key =
-            base::JoinString({"0x0c10bf8fcb7bf5412187a595ab97a3609160b5c6",
-                              "0x00000000000000000000000091272b2c4990927d1fe282"
-                              "01cf0a6ce288a221d6",
-                              "0x000000000000000000000000dac308312e195710467ce3"
-                              "6effe51ac7a4ecbf01"},
-                             "_");
-
-        auto allowance_iter = allowance_map.find(map_key);
-        ASSERT_TRUE(allowance_map.end() != allowance_iter);
-        const auto allowance = allowance_iter->second.Clone();
-        EXPECT_EQ(allowance->contract_address,
-                  "0x0c10bf8fcb7bf5412187a595ab97a3609160b5c6");
-        EXPECT_EQ(allowance->approver_address,
-                  "0x00000000000000000000000091272b2c4990927d1fe28201cf0a6ce288"
-                  "a221d6");
-        EXPECT_EQ(allowance->spender_address,
-                  "0x000000000000000000000000dac308312e195710467ce36effe51ac7a4"
-                  "ecbf01");
-        EXPECT_EQ(allowance->amount,
-                  "0x0000000000000000000000000000000000000000000000000000000000"
-                  "000001");
-      }));
-}
-
-TEST_F(EthAllowanceManagerUnitTest, CouldNotLoadCachedAllowancesPrefsEmpty) {
-  TestLoadCachedAllowances(
-      "0x1",
-      "0x00000000000000000000000091272b2c4990927d1fE28201cf0A6CE288a221d6",
-      base::BindLambdaForTesting([](const AllowancesMap& allowance_map) {
-        EXPECT_TRUE(allowance_map.empty());
-      }));
-}
-
-TEST_F(EthAllowanceManagerUnitTest, CouldNotLoadCachedAllowancesByAddress) {
-  CreateCachedAllowancesPrefs(kAllowanceCacheJson);
-  TestLoadCachedAllowances(
-      "0x1",
-      "0x000000000000000000000000000000000000000000000000000000000000AAAA",
-      base::BindLambdaForTesting([](const AllowancesMap& allowance_map) {
-        EXPECT_TRUE(allowance_map.empty());
-      }));
-
-  TestLoadCachedAllowances(
-      "0x99",
-      "0x00000000000000000000000091272b2c4990927d1fE28201cf0A6CE288a221d6",
-      base::BindLambdaForTesting([](const AllowancesMap& allowance_map) {
-        EXPECT_TRUE(allowance_map.empty());
-      }));
+// Cached allowances are surfaced by discovery in
+// `CachedAllowancesUsedInDiscovery`; the cases below must be ignored.
+TEST_F(EthAllowanceManagerUnitTest,
+       CachedAllowancesOfOtherApproverIgnoredInDiscovery) {
+  GetPrefs()->SetDict(kBraveWalletEthAllowancesCache,
+                      CreateFirstAccountAllowanceCache(
+                          kUncachedContractAddress, kOtherAccountHexAddress));
+  ExpectNoAllowancesDiscovered();
 }
 
 TEST_F(EthAllowanceManagerUnitTest,
-       CouldNotLoadCachedAllowancesIncorrectCacheData) {
-  CreateCachedAllowancesPrefs(kIncorrectAllowanceCacheDataJson);
-  TestLoadCachedAllowances(
-      "0x1",
-      "0x00000000000000000000000091272b2c4990927d1fe28201cf0a6ce288a221d6",
-      base::BindLambdaForTesting([](const AllowancesMap& allowance_map) {
-        EXPECT_TRUE(allowance_map.empty());
-      }));
+       CachedAllowancesWithMissingFieldIgnoredInDiscovery) {
+  // The allowance has no `contract_address`.
+  CreateCachedAllowancesPrefs(base::StrCat(
+      {R"({"0x1": {"allowances_found": [{"amount": ")", kCachedAmount,
+       R"(", "approver_address": ")", kFirstAccountHexAddress,
+       R"(", "spender_address": ")", kCachedSpenderTopic,
+       R"("}], "last_block_number": {")", kFirstAccountHexAddress, R"(": ")",
+       kCachedLastBlockNumber, R"("}}})"}));
+  ExpectNoAllowancesDiscovered();
 }
 
 TEST_F(EthAllowanceManagerUnitTest,
-       CouldNotLoadCachedAllowancesIncorrectCacheBlockNumber) {
-  CreateCachedAllowancesPrefs(incorrect_allowance_chache_block_number_json);
-  TestLoadCachedAllowances(
-      "0x1",
-      "0x00000000000000000000000091272b2c4990927d1fe28201cf0a6ce288a221d6",
-      base::BindLambdaForTesting([](const AllowancesMap& allowance_map) {
-        EXPECT_TRUE(allowance_map.empty());
-      }));
+       CachedAllowancesWithIncorrectBlockNumberSectionIgnoredInDiscovery) {
+  // `last_block_number` is a string instead of a per-account dictionary.
+  CreateCachedAllowancesPrefs(base::StrCat(
+      {R"({"0x1": {"allowances_found": [{"amount": ")", kCachedAmount,
+       R"(", "approver_address": ")", kFirstAccountHexAddress,
+       R"(", "contract_address": ")", kUncachedContractAddress,
+       R"(", "spender_address": ")", kCachedSpenderTopic,
+       R"("}], "last_block_number": "123456"}})"}));
+  ExpectNoAllowancesDiscovered();
 }
 
 TEST_F(EthAllowanceManagerUnitTest, BreakAllowanceDiscoveringIfTokenListEmpty) {
@@ -742,10 +647,8 @@ TEST_F(EthAllowanceManagerUnitTest, AllowancesLoadingFailedGetBlock) {
   TestAllowancesLoading(kTokenListJson, generate_responses, account_count, 3,
                         allowances_validation, get_block_response_wrong);
 
-  const auto& allowance_cashe_dict =
-      GetPrefs()->GetDict(kBraveWalletEthAllowancesCache);
-  const auto* chain_id_dict = allowance_cashe_dict.FindDict("0x1");
-  ASSERT_TRUE(!chain_id_dict);
+  EXPECT_THAT(GetPrefs()->GetDict(kBraveWalletEthAllowancesCache),
+              base::test::IsJson("{}"));
 }
 
 TEST_F(EthAllowanceManagerUnitTest, AllowancesRevoked) {
@@ -973,10 +876,8 @@ TEST_F(EthAllowanceManagerUnitTest, AllowancesLoadingReset) {
   TestAllowancesLoading(kTokenListJson, generate_responses, 2, 2,
                         allowances_validation, get_block_response, 1);
 
-  const auto& allowance_cashe_dict =
-      GetPrefs()->GetDict(kBraveWalletEthAllowancesCache);
-  const auto* chain_id_dict = allowance_cashe_dict.FindDict("0x1");
-  ASSERT_TRUE(nullptr == chain_id_dict);
+  EXPECT_THAT(GetPrefs()->GetDict(kBraveWalletEthAllowancesCache),
+              base::test::IsJson("{}"));
 }
 
 TEST_F(EthAllowanceManagerUnitTest, CachedAllowancesUsedInDiscovery) {
@@ -1017,6 +918,74 @@ TEST_F(EthAllowanceManagerUnitTest, CachedAllowancesUsedInDiscovery) {
   const auto* allowances_found = GetCachedAllowancesFound();
   ASSERT_TRUE(allowances_found);
   EXPECT_EQ(allowances_found->GetList().size(), 1u);
+}
+
+TEST_F(EthAllowanceManagerUnitTest,
+       CachedAllowanceApproverMatchedIgnoringCase) {
+  // The cached approver is lowercase while the account address is not.
+  const std::string cached_approver =
+      base::ToLowerASCII(kFirstAccountHexAddress);
+  GetPrefs()->SetDict(kBraveWalletEthAllowancesCache,
+                      CreateFirstAccountAllowanceCache(kUncachedContractAddress,
+                                                       cached_approver));
+
+  auto generate_empty_response = base::BindLambdaForTesting(
+      [&](const std::vector<std::string>& eth_account_address,
+          const TokenListMap& token_list_map) {
+        return PrepareResponses(kEthAllowanceDetectedResponse,
+                                eth_account_address, token_list_map,
+                                base::DoNothing());
+      });
+
+  auto allowances_validation = base::BindLambdaForTesting(
+      [&](const std::vector<mojom::AllowanceInfoPtr>& allowances) {
+        ASSERT_EQ(allowances.size(), 1u);
+        EXPECT_EQ(allowances[0]->chain_id, "0x1");
+        EXPECT_EQ(allowances[0]->contract_address, kUncachedContractAddress);
+        // The cached value is returned as stored.
+        EXPECT_EQ(allowances[0]->approver_address, cached_approver);
+        EXPECT_EQ(allowances[0]->spender_address, kCachedSpenderTopic);
+        EXPECT_EQ(allowances[0]->amount, kCachedAmount);
+      });
+
+  TestAllowancesLoading(kTokenListJson, generate_empty_response, 1, 1,
+                        allowances_validation, get_block_response);
+}
+
+TEST_F(EthAllowanceManagerUnitTest, CachedAllowancesOfOtherChainNotSurfaced) {
+  // Mainnet cache entry that is surfaced next to a `0x99` cache entry of the
+  // same account, which must not be returned nor modified.
+  base::DictValue cache =
+      CreateFirstAccountAllowanceCache(kUncachedContractAddress);
+  base::DictValue other_chain_cache = CreateFirstAccountAllowanceCache(
+      kOtherChainContractAddress, kFirstAccountHexAddress, "0x99");
+  const base::DictValue expected_other_chain_section =
+      other_chain_cache.FindDict("0x99")->Clone();
+  cache.Merge(std::move(other_chain_cache));
+  GetPrefs()->SetDict(kBraveWalletEthAllowancesCache, std::move(cache));
+
+  auto generate_empty_response = base::BindLambdaForTesting(
+      [&](const std::vector<std::string>& eth_account_address,
+          const TokenListMap& token_list_map) {
+        return PrepareResponses(kEthAllowanceDetectedResponse,
+                                eth_account_address, token_list_map,
+                                base::DoNothing());
+      });
+
+  auto allowances_validation = base::BindLambdaForTesting(
+      [](const std::vector<mojom::AllowanceInfoPtr>& allowances) {
+        ASSERT_EQ(allowances.size(), 1u);
+        EXPECT_EQ(allowances[0]->chain_id, "0x1");
+        EXPECT_EQ(allowances[0]->contract_address, kUncachedContractAddress);
+      });
+
+  TestAllowancesLoading(kTokenListJson, generate_empty_response, 1, 1,
+                        allowances_validation, get_block_response);
+
+  const auto* other_chain_section =
+      GetPrefs()->GetDict(kBraveWalletEthAllowancesCache).FindDict("0x99");
+  ASSERT_TRUE(other_chain_section);
+  EXPECT_EQ(*other_chain_section, expected_other_chain_section);
 }
 
 TEST_F(EthAllowanceManagerUnitTest, CachedAllowanceRevokedByLog) {

@@ -105,30 +105,3 @@ if (!is_android) {
     }
   }
 }
-
-source_set("unit_tests") {
-  testonly = true
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-
-  sources = [ "permission_lifetime_manager_unittest.cc" ]
-
-  deps = [
-    "//base/test:test_support",
-    "//chrome/browser",
-    "//chrome/browser/content_settings:content_settings_factory",
-    "//chrome/browser/permissions",
-    "//chrome/test:test_support",
-    "//chrome/test/base:testing_browser_process",
-    "//components/content_settings/core/browser",
-    "//components/permissions",
-    "//components/pref_registry",
-    "//components/sync_preferences:test_support",
-    "//content/test:test_support",
-    "//testing/gtest",
-  ]
-
-  if (enable_brave_wallet) {
-    sources += [ "brave_wallet_permission_context_unittest.cc" ]
-    deps += [ "//brave/components/brave_wallet/browser:permission_utils" ]
-  }
-}

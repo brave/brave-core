@@ -324,9 +324,20 @@ TEST_F(AIChatUIPageHandlerTest, AssociateUrlContent_InvalidConversation) {
   // Should not crash
 }
 
+class AIChatUIPageHandlerWorkspaceDisabledTest
+    : public AIChatUIPageHandlerTest {
+ public:
+  AIChatUIPageHandlerWorkspaceDisabledTest() {
+    scoped_feature_list_.InitAndDisableFeature(features::kAIChatWorkspaceTools);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
 // The picker is experimental and must stay inert unless the feature is on.
-// kAIChatWorkspaceTools is disabled by default, so no ScopedFeatureList here.
-TEST_F(AIChatUIPageHandlerTest, ShowWorkspaceFolderPicker_FeatureDisabled) {
+TEST_F(AIChatUIPageHandlerWorkspaceDisabledTest,
+       ShowWorkspaceFolderPicker_FeatureDisabled) {
   auto* conversation = service()->CreateConversation();
   ASSERT_TRUE(conversation);
 
@@ -440,7 +451,8 @@ std::vector<mojom::AssociatedContentPtr> NewConversationWithWorkspace(
   return workspaces;
 }
 
-TEST_F(AIChatUIPageHandlerTest, NewConversation_WorkspaceFeatureDisabled) {
+TEST_F(AIChatUIPageHandlerWorkspaceDisabledTest,
+       NewConversation_WorkspaceFeatureDisabled) {
   mojo::Remote<mojom::ConversationHandler> conversation;
   EXPECT_TRUE(NewConversationWithWorkspace(*page_handler(), GURL(kWorkspaceUrl),
                                            conversation)
