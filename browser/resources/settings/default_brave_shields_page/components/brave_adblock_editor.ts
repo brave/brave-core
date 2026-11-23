@@ -42,10 +42,6 @@ class AdBlockFiltersEditor extends AdBlockFiltersEditorBase {
     this.mirrorPref('brave.ad_block.developer_mode', 'developerModePref_')
   }
 
-  override ready() {
-    super.ready()
-  }
-
   handleInputChange_(e: Event) {
     this.value = (e.target as HTMLInputElement).value
   }
