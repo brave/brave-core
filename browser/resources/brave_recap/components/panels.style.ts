@@ -60,6 +60,14 @@ export const style = scoped.css`
     }
   }
 
+  /* The empty state is the first thing shown, so where the card fades in on
+   * arrival, its panel waits for the card to land. */
+  @media (min-width: 601px) and (prefers-reduced-motion: no-preference) {
+    .slide-empty & .panel {
+      animation-delay: var(--leo-duration-l);
+    }
+  }
+
   @media ${LANDSCAPE_QUERY} {
     & {
       padding-inline: 0 var(--leo-spacing-2xl);

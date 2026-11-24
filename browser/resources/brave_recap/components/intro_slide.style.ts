@@ -88,6 +88,18 @@ export const style = scoped.css`
     }
   }
 
+  /* Where the card fades in on arrival, the messages wait for it to land. After
+   * navigation the rules above already wait for the slide. */
+  @media (min-width: 601px) and (prefers-reduced-motion: no-preference) {
+    .message {
+      animation-delay: var(--leo-duration-l);
+    }
+
+    .message.end {
+      animation-delay: calc(var(--leo-duration-l) + var(--leo-duration-xs));
+    }
+  }
+
   @media ${LANDSCAPE_QUERY} {
     .intro {
       padding-inline: var(--leo-spacing-2xl);
