@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Review Brave's permission contexts with the chooser permission rule
+
+      Brave's own contexts in `brave/components/permissions/contexts` (Brave
+      Wallet's, Google sign-in's) grant per-origin permissions as Chrome's
+      chooser contexts do. The other device rules cover Device APIs Brave
+      doesn't implement.
+    add_before_line:
+      line:
+        'rules:
+        "agents/knowledge_base/rules/device/isolate-chooser-permissions-across-origins-and-storage-partitions.md"'
+      code: |2-
+            path_expression: "brave/components/permissions/contexts/.*\\.(?:cc|h|mm)"

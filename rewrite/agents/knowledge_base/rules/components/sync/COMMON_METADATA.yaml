@@ -1,0 +1,54 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Review Brave's device info observers with the sync stop cleanup rule
+
+      Brave's sync device list observes `DeviceInfoTracker` like Chrome's does.
+    add_before_line:
+      line:
+        'rules:
+        "agents/knowledge_base/rules/components/sync/allow-device-info-observer-cleanup-when-sync-stops.md"'
+      code: |2-
+            path_expression: "brave/(?:browser|components|ios)/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
+
+  - description: |-
+      Review Brave's sync bridges with the metadata commit order rule
+
+      Brave implements `DataTypeSyncBridge`s of its own (e.g. AI Chat's).
+    add_before_line:
+      line:
+        'rules:
+        "agents/knowledge_base/rules/components/sync/apply-sync-metadata-before-committing-database-transaction.md"'
+      code: |2-
+            path_expression: "brave/(?:browser|components|ios)/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
+
+  - description: Review Brave's sync bridges with the remote specifics rule
+    add_before_line:
+      line:
+        'rules:
+        "agents/knowledge_base/rules/components/sync/check-is-tracking-metadata-before-getting-remote-specifics.md"'
+      code: |2-
+            path_expression: "brave/(?:browser|components)/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
+
+  - description: Review Brave's sync code with the unsupported proto fields rule
+    add_before_line:
+      line:
+        'rules:
+        "agents/knowledge_base/rules/components/sync/do-not-map-unsupported-sync-proto-fields-to-entities.md"'
+      code: |2-
+            path_expression: "brave/browser/sync/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
+            path_expression: "brave/components/(?:.*/)?(?:[^/]*_)?sync[^/]*\\.(?:cc|cpp|h|hpp|mm)"
+            path_expression: "brave/components/sync/protocol/[^/]*\\.proto"
+
+  - description:
+      Review Brave's sync additions with the deprecated proto fields rule
+    add_before_line:
+      line:
+        'rules:
+        "agents/knowledge_base/rules/components/sync/retain-proto-visitors-for-deprecated-sync-fields.md"'
+      code: |2-
+            path_expression: "brave/components/sync/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm|proto)"

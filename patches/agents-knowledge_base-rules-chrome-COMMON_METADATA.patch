@@ -1,0 +1,15 @@
+diff --git a/agents/knowledge_base/rules/chrome/COMMON_METADATA b/agents/knowledge_base/rules/chrome/COMMON_METADATA
+index e0b96f1d1a261d324156a62dda1965f950e898f9..04821a866e407bbb0788cc0387716df2837dc425 100644
+--- a/agents/knowledge_base/rules/chrome/COMMON_METADATA
++++ b/agents/knowledge_base/rules/chrome/COMMON_METADATA
+@@ -20,4 +20,10 @@ agentic_review {
+     content_patterns: "\\b(?:sysctl\\w*|IsVirtualMachine|setgroups|initgroups|CFBundleDocumentTypes)\\b"
+     rules: "agents/knowledge_base/rules/chrome/include-uttypeicons-for-imported-type-declarations.md"
+   }
++  capability_groups {
++    path_expression: "brave/(?:app|browser|common|renderer|utility)/.*"
++    rules: "agents/knowledge_base/rules/chrome/gate-tab-strip-layout-changes-on-immersive-mode.md"
++    rules: "agents/knowledge_base/rules/chrome/test-preference-registration-and-propagation.md"
++    rules: "agents/knowledge_base/rules/chrome/update-ui-strings-across-all-surfaces.md"
++  }
+ }

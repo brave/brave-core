@@ -1,0 +1,15 @@
+diff --git a/agents/knowledge_base/rules/base/COMMON_METADATA b/agents/knowledge_base/rules/base/COMMON_METADATA
+index f8a37c127ad263e6de307ec63722a23fbf3c5d83..a5d8c8e1bc658e8853e6ac66f0bea03dedf008cb 100644
+--- a/agents/knowledge_base/rules/base/COMMON_METADATA
++++ b/agents/knowledge_base/rules/base/COMMON_METADATA
+@@ -93,4 +93,10 @@ agentic_review {
+     content_patterns: "\\bTaskObserver\\b"
+     rules: "agents/knowledge_base/rules/base/gate-test-only-task-observers-behind-opt-in.md"
+   }
++  capability_groups {
++    path_expression: "brave/base/.*"
++    rules: "agents/knowledge_base/rules/base/avoid-duplicating-standard-cpp-features.md"
++    rules: "agents/knowledge_base/rules/base/avoid-single-feature-utilities-in-base.md"
++    rules: "agents/knowledge_base/rules/base/restrict-platform-specific-apis-over-dummy-values.md"
++  }
+ }
