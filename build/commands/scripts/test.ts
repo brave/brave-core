@@ -29,6 +29,12 @@ async function buildTests(testsToRun: string[]) {
   config.buildTargets = testsToRun
   util.touchOverriddenFiles()
 
+  // autoninja needs build.ninja, which gn gen writes. Unchanged args skip
+  // the regeneration, so an existing output directory stays cheap.
+  if (!config.use_no_gn_gen) {
+    await util.generateNinjaFiles()
+  }
+
   await util.buildTargets(config.buildTargets, config.defaultOptions)
 }
 
