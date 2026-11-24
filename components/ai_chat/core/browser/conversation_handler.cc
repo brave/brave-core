@@ -31,6 +31,8 @@
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/notreached.h"
+#include "base/numerics/clamped_math.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/numerics/safe_math.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
@@ -2673,10 +2675,8 @@ void ConversationHandler::MaybeHandleRemovedThreadEntries(
     return;
   }
   mojom::Thread* thread = container->thread.get();
-  thread->entry_count =
-      thread->entry_count > removed_entry_count
-          ? thread->entry_count - static_cast<uint32_t>(removed_entry_count)
-          : 0;
+  thread->entry_count = base::ClampSub(
+      thread->entry_count, base::saturated_cast<uint32_t>(removed_entry_count));
   OnConversationThreadUpdate(*thread);
 }
 
