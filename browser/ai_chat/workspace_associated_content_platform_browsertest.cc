@@ -10,10 +10,12 @@
 #include <vector>
 
 #include "base/json/json_writer.h"
+#include "base/location.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_view_util.h"
 #include "base/test/run_until.h"
 #include "base/test/test_future.h"
+#include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/browser/ai_chat/workspace_associated_content_browsertest_base.h"
 #include "brave/browser/ui/webui/ai_chat/leo_workspace_page_handler.h"
@@ -98,7 +100,9 @@ class WorkspaceAssociatedContentPlatformBrowserTest
   static void DisplayFile(content::WebContents* web_contents,
                           const GURL& workspace_url,
                           std::string_view name,
-                          std::string_view file) {
+                          std::string_view file,
+                          base::Location location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
     EXPECT_EQ(file, content::EvalJs(
                         web_contents,
                         content::JsReplace(
@@ -242,16 +246,12 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentPlatformBrowserTest,
   ui->BindInterface(handler.BindNewPipeAndPassReceiver());
 
   {
-    base::test::TestFuture<std::optional<mojo_base::BigBuffer>,
-                           std::optional<std::string>>
+    base::test::TestFuture<base::expected<mojo_base::BigBuffer, std::string>>
         printed;
-    handler->PrintFileToPdf(
-        "viewer", /*landscape=*/false,
-        printed.GetCallback<std::optional<mojo_base::BigBuffer>,
-                            const std::optional<std::string>&>());
-    const auto& [pdf, error] = printed.Get();
-    EXPECT_FALSE(error) << *error;
-    ASSERT_TRUE(pdf);
+    handler->PrintFileToPdf("viewer", /*landscape=*/false,
+                            printed.GetCallback());
+    const auto& pdf = printed.Get();
+    ASSERT_TRUE(pdf.has_value()) << pdf.error();
     const std::string_view bytes = base::as_string_view(pdf->byte_span());
     EXPECT_TRUE(bytes.starts_with("%PDF-"));
     // 2x3 inches is 144x216 points.
@@ -260,16 +260,12 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentPlatformBrowserTest,
 
   // A viewer the page hasn't framed has nothing to print.
   {
-    base::test::TestFuture<std::optional<mojo_base::BigBuffer>,
-                           std::optional<std::string>>
+    base::test::TestFuture<base::expected<mojo_base::BigBuffer, std::string>>
         printed;
-    handler->PrintFileToPdf(
-        "other", /*landscape=*/false,
-        printed.GetCallback<std::optional<mojo_base::BigBuffer>,
-                            const std::optional<std::string>&>());
-    const auto& [pdf, error] = printed.Get();
-    EXPECT_FALSE(pdf);
-    EXPECT_EQ("The file to print is not being displayed", error);
+    handler->PrintFileToPdf("other", /*landscape=*/false,
+                            printed.GetCallback());
+    EXPECT_EQ(base::unexpected("The file to print is not being displayed"),
+              printed.Get());
   }
 }
 #endif  // BUILDFLAG(ENABLE_PRINTING)

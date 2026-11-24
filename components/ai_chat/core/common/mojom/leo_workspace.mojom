@@ -22,5 +22,5 @@ interface LeoWorkspaceHandler {
   //
   // Returns the PDF, or a message describing why it couldn't be produced.
   PrintFileToPdf(string viewer_frame_name, bool landscape)
-      => (mojo_base.mojom.BigBuffer? pdf, string? error);
+      => result<mojo_base.mojom.BigBuffer, string>;
 };

@@ -11,6 +11,7 @@
 
 #include "base/functional/bind.h"
 #include "base/strings/strcat.h"
+#include "base/types/expected.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/leo_workspace_util.h"
 #include "content/public/browser/render_frame_host.h"
@@ -50,7 +51,7 @@ namespace {
 using ActivePrintManager = printing::PrintViewManager;
 #else
 using ActivePrintManager = printing::PrintViewManagerBasic;
-#endif
+#endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
 // The hidden workspace WebContents is created bare, without the print managers
 // a tab gets, so they are attached the first time something is printed from it.
@@ -68,12 +69,12 @@ void OnPdfPrinted(mojom::LeoWorkspaceHandler::PrintFileToPdfCallback callback,
                   print_to_pdf::PdfPrintResult result,
                   scoped_refptr<base::RefCountedMemory> data) {
   if (result != print_to_pdf::PdfPrintResult::kPrintSuccess || !data) {
-    std::move(callback).Run(std::nullopt,
-                            print_to_pdf::PdfPrintResultToString(result));
+    std::move(callback).Run(
+        base::unexpected(print_to_pdf::PdfPrintResultToString(result)));
     return;
   }
   std::move(callback).Run(
-      mojo_base::BigBuffer(base::span<const uint8_t>(*data)), std::nullopt);
+      mojo_base::BigBuffer(base::span<const uint8_t>(*data)));
 }
 
 #endif  // BUILDFLAG(ENABLE_PRINTING)
@@ -159,8 +160,8 @@ void LeoWorkspacePageHandler::PrintFileToPdf(
   content::RenderFrameHost* file_frame = FindLeoWorkspaceFileFrame(
       web_ui_->GetRenderFrameHost(), viewer_frame_name);
   if (!file_frame) {
-    std::move(callback).Run(std::nullopt,
-                            "The file to print is not being displayed");
+    std::move(callback).Run(
+        base::unexpected("The file to print is not being displayed"));
     return;
   }
 
@@ -183,7 +184,8 @@ void LeoWorkspacePageHandler::PrintFileToPdf(
           /*prefer_css_page_size=*/true, /*generate_tagged_pdf=*/std::nullopt,
           /*generate_document_outline=*/std::nullopt);
   if (std::holds_alternative<std::string>(params)) {
-    std::move(callback).Run(std::nullopt, std::get<std::string>(params));
+    std::move(callback).Run(
+        base::unexpected(std::move(std::get<std::string>(params))));
     return;
   }
   auto print_pages_params =
@@ -203,8 +205,8 @@ void LeoWorkspacePageHandler::PrintFileToPdf(
                             std::move(print_pages_params),
                             std::move(on_printed));
 #else
-  std::move(callback).Run(std::nullopt,
-                          "Printing is not supported on this platform");
+  std::move(callback).Run(
+      base::unexpected("Printing is not supported on this platform"));
 #endif  // BUILDFLAG(ENABLE_PRINTING)
 }
 
