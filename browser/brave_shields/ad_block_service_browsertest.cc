@@ -62,6 +62,10 @@
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/common/features.h"
@@ -74,6 +78,7 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
 #include "crypto/sha2.h"
+#include "net/base/isolation_info.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/install_default_websocket_handlers.h"
@@ -2059,6 +2064,38 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
         tab, content::JsReplace("location = $1", destination));
     navigation.Wait();
     ASSERT_TRUE(navigation.last_navigation_succeeded());
+    EXPECT_EQ(expected.PathForRequest(),
+              EvalJs(tab, "document.body.innerText"));
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       EphemeralStorageNavigationUsesDestinationSettings) {
+  query_filter::test::ScopedTestingQueryFilterRules rules;
+  ASSERT_TRUE(StartNavigationEchoServer());
+  const GURL outgoing = embedded_test_server()->GetURL("a.com", "/simple.html");
+  const GURL destination = dynamic_server_.GetURL("b.com", "/new?fbclid=1");
+  content_settings()->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromString("[*.]b.com:*"),
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::COOKIES,
+      CONTENT_SETTING_SESSION_ONLY);
+  auto* tab = web_contents();
+  for (bool filter_destination : {false, true}) {
+    SCOPED_TRACE(filter_destination);
+    brave_shields::SetBraveShieldsEnabled(content_settings(),
+                                          !filter_destination, outgoing);
+    brave_shields::SetBraveShieldsEnabled(content_settings(),
+                                          filter_destination, destination);
+    ASSERT_TRUE(content::NavigateToURL(tab, outgoing));
+    const GURL expected =
+        filter_destination ? destination.Resolve("/new") : destination;
+    content::TestNavigationObserver navigation(tab);
+    content::ExecuteScriptAsync(
+        tab, content::JsReplace("location = $1", destination));
+    navigation.Wait();
+    ASSERT_TRUE(navigation.last_navigation_succeeded());
+    ASSERT_TRUE(
+        tab->GetPrimaryMainFrame()->GetIsolationInfoForSubresources().nonce());
     EXPECT_EQ(expected.PathForRequest(),
               EvalJs(tab, "document.body.innerText"));
   }

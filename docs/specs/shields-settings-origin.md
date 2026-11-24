@@ -122,9 +122,7 @@ settings context available to their loader factory. For a worker used by B
 under A, use A for fetches and WebSockets when A is the factory's top-frame
 origin. When no frame token or request-level trusted isolation info is available,
 use the factory's top-frame isolation origin if usable; if opaque or absent,
-use defaults. Do not use the worker script's origin as a substitute. A WebSocket
-with unset `resource_type` is not a main-frame navigation merely because the
-default numeric value of that field denotes `kMainFrame`.
+use defaults. Do not use the worker script's origin as a substitute.
 
 ## Implementation constraints
 
@@ -158,9 +156,12 @@ must not assemble a list of candidate origins:
 1. Use the request's trusted `IsolationInfo` when present. Only if absent may
    `kWorkerMainResource`, `kWorkerSubResource`, `kServiceWorkerScript`, or
    `kServiceWorkerSubResource` use factory isolation info. Determine whether
-   this is a main-frame navigation from the isolation request type when
-   available; otherwise use the request resource type. A WebSocket handshake
-   is not a navigation.
+   this is a main-frame navigation only from the isolation request type. The
+   resource type is not a source: a navigation request that a service worker
+   fetches keeps `kMainFrame`, and a WebSocket handshake leaves it unset,
+   which is numerically `kMainFrame`. A nonce on main-frame isolation info,
+   such as the one for a site whose storage is forgotten on close, does not
+   change whether it is a main-frame navigation.
 2. For the initial main-frame network request, Chromium supplies the navigation
    isolation context on the request. For `kMainFrame`, snapshot its non-opaque
    `top_frame_origin()` as the settings key; missing or opaque means defaults.
@@ -225,6 +226,7 @@ distinct sites; P is a popup, and Q is a popup opened by P.
 | Setup | Measured request | Expected key |
 | --- | --- | --- |
 | Main frame on A navigates to B. | B's server records the request for `/new`. | B |
+| Main frame on A navigates to B, whose cookies are cleared when the site closes, so its isolation info carries a nonce. | B's server records the request for `/new`. | B, not A |
 | Main frame on B redirects to C, and C redirects back to B. | Each server records the request for its hop. | The destination of each hop: B, then C, then B |
 | A document on A fetches a URL that redirects B → C → B. | Each server records the request for its hop. | A for every hop |
 | A on A loads a child frame through B → C → B. | Each server records the request for its hop. | A for every hop |
@@ -329,7 +331,7 @@ rules.
 | A `kSubFrame` or `kOther` request has isolation info that conflicts with the frame's stored key. | The stored key, including stored defaults |
 | A `kMainFrame` request has a non-opaque top-frame isolation origin and an outgoing frame token. | The isolation origin |
 | A `kMainFrame` request has an opaque top-frame isolation origin. The outgoing document has an inherited site key or no key. | Defaults |
-| A `kMainFrame` request has no isolation info. | Defaults |
+| A request with `kMainFrame` resource type has no isolation info. | The requesting document's key, or defaults without a frame |
 | A worker request omits request context. | The worker factory's context |
 | A worker request supplies request context. | The request context, not the factory's |
 | A document-subresource request omits request context. | No factory fallback |

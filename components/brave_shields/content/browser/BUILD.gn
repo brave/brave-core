@@ -59,7 +59,6 @@ static_library("browser") {
     "//net",
     "//services/network/public/cpp",
     "//third_party/blink/public/mojom:mojom_platform_headers",
-    "//third_party/blink/public/mojom:mojom_platform_shared",
     "//url",
   ]
 }

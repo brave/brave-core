@@ -23,7 +23,6 @@
 #include "net/base/isolation_info.h"
 #include "net/base/net_errors.h"
 #include "services/network/public/cpp/resource_request.h"
-#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -204,14 +203,11 @@ ShieldsSettingsOrigin ShieldsSettingsOrigin::ForRequest(
              factory_info) {
     info = &*factory_info;
   }
-  // A navigation's token can still name the outgoing document. WebSocket
-  // handshakes leave resource_type unset (numerically kMainFrame).
+  // A navigation's token can still name the outgoing document. The resource
+  // type is not used: requests a service worker refetches keep kMainFrame.
   const bool navigation =
-      !request.url.SchemeIsWSOrWSS() &&
-      (info
-           ? info->request_type() == net::IsolationInfo::RequestType::kMainFrame
-           : request.resource_type ==
-                 static_cast<int>(blink::mojom::ResourceType::kMainFrame));
+      info &&
+      info->request_type() == net::IsolationInfo::RequestType::kMainFrame;
   if (!navigation) {
     if (document_key) {
       return *document_key;

@@ -557,15 +557,20 @@ TEST_F(BraveRequestInfoFrameTest, RedirectPreservesOrReplacesDefaultKey) {
   EXPECT_EQ(GURL(), original.ForRedirect(redirected).GetURL());
 }
 
-TEST_F(BraveRequestInfoFrameTest, MainFrameWithoutIsolationUsesDefaults) {
+TEST_F(BraveRequestInfoFrameTest,
+       MainFrameResourceTypeWithoutIsolationUsesDocumentKey) {
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
       web_contents(), GURL("https://first.example/"));
   network::ResourceRequest request;
   request.url = GURL("https://second.example/");
   request.resource_type =
       static_cast<int>(blink::mojom::ResourceType::kMainFrame);
+  EXPECT_EQ(GURL("https://first.example/"),
+            brave_shields::ShieldsSettingsOrigin::ForRequest(
+                request, main_rfh()->GetGlobalFrameToken())
+                .GetURL());
   EXPECT_TRUE(brave_shields::ShieldsSettingsOrigin::ForRequest(
-                  request, main_rfh()->GetGlobalFrameToken())
+                  request, content::GlobalRenderFrameHostToken())
                   .GetURL()
                   .is_empty());
 }
