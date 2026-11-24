@@ -72,17 +72,21 @@ class BraveVPNWireguardConnectionAPIUnitTest : public testing::Test {
 TEST_F(BraveVPNWireguardConnectionAPIUnitTest, SetSelectedRegion) {
   local_state()->SetString(prefs::kBraveVPNWireguardProfileCredentials,
                            "region-a");
+  local_state()->SetBoolean(prefs::kBraveVPNSmartProxyRoutingEnabled, true);
   GetConnectionAPI()->OnFetchHostnames(
       "region-a",
       R"([{"hostname": "test", "display-name": "test",
-           "offline": false, "capacity-score": 1}])",
+           "offline": false, "capacity-score": 1,
+           "smart-routing-enabled": true}])",
       true);
   ASSERT_EQ("test", GetConnectionAPI()->GetHostname());
+  ASSERT_TRUE(GetConnectionAPI()->SmartRoutingEnabled());
   GetConnectionAPI()->SetSelectedRegion("region-b");
   EXPECT_TRUE(local_state()
                   ->GetString(prefs::kBraveVPNWireguardProfileCredentials)
                   .empty());
   EXPECT_TRUE(GetConnectionAPI()->GetHostname().empty());
+  EXPECT_FALSE(GetConnectionAPI()->SmartRoutingEnabled());
 }
 
 }  // namespace brave_vpn
