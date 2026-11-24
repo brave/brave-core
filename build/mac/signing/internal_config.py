@@ -12,7 +12,7 @@
 import os
 
 from signing.chromium_config import ChromiumCodeSignConfig
-from signing.model import Distribution, NotarizeAndStapleLevel
+from signing.model import Distribution
 
 BRAVE_CHANNEL = os.environ.get('BRAVE_CHANNEL')
 
@@ -45,14 +45,8 @@ class InternalCodeSignConfig(ChromiumCodeSignConfig):
     @property
     def run_spctl_assess(self):
         # It only makes sense to run spctl assess when the binary was notarized
-        # and stapled. This implementation checks whether that is the case.
-        #
-        # It's tempting to use self._notarize here, but it does not contain the
-        # correct value: When this object is a DistributionCodeSignConfig, then
-        # its _notarize always has the default value STAPLE instead of the value
-        # from the base config from which it was created. We therefore refer to
-        # invoker.args.notarize, which does contain the correct value.
-        return self.invoker.args.notarize == NotarizeAndStapleLevel.STAPLE
+        # and stapled.
+        return self.notarize.should_staple()
 
     @property
     def app_dir(self):
