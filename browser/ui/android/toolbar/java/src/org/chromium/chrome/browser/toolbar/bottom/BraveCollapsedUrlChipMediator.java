@@ -9,9 +9,9 @@ import android.graphics.Color;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.ui.base.ViewUtils;
@@ -29,8 +29,8 @@ import java.util.function.Supplier;
  * scrolls down, on phones and tablets alike. This mediator shows a small "collapsed chip" whenever
  * the controls are not on screen, so that the page's host (minus trivial subdomains, e.g.
  * "search.brave.com") remains visible at all times, matching Safari / Brave iOS behavior. The chip
- * is display-only: tapping it re-shows the browser controls, so the chip never becomes a
- * navigation or spoofing surface.
+ * is display-only: tapping it re-shows the browser controls, so the chip never becomes a navigation
+ * or spoofing surface.
  */
 @NullMarked
 class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Observer {

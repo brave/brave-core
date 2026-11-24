@@ -13,8 +13,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Handler;
-import android.text.BidiFormatter;
 import android.os.Looper;
+import android.text.BidiFormatter;
 import android.view.LayoutInflater;
 import android.view.PixelCopy;
 import android.view.View;
@@ -51,10 +51,10 @@ import java.util.function.Supplier;
 /**
  * Hosts the collapsed URL chip overlay shown while the browser controls are scrolled away.
  *
- * <p>The chip is an overlay on the activity content: as the browser controls (the toolbar with
- * the URL bar) slide off screen, a small translucent pill fades in at the bottom of the screen
- * showing the page's host minus trivial subdomains. Tapping it re-shows the browser controls. The
- * chip is never a navigation surface, so it cannot be used to spoof or open URLs.
+ * <p>The chip is an overlay on the activity content: as the browser controls (the toolbar with the
+ * URL bar) slide off screen, a small translucent pill fades in at the bottom of the screen showing
+ * the page's host minus trivial subdomains. Tapping it re-shows the browser controls. The chip is
+ * never a navigation surface, so it cannot be used to spoof or open URLs.
  */
 @NullMarked
 public class BraveCollapsedUrlChipCoordinator {
