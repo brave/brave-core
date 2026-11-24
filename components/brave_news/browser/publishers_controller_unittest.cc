@@ -20,7 +20,6 @@
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
-#include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
@@ -99,15 +98,14 @@ class BraveNewsPublishersControllerTest : public testing::Test {
   }
 
   void SetSubscribedSources(const std::vector<std::string>& publisher_ids) {
-    ScopedDictPrefUpdate update(&pref_service_, prefs::kBraveNewsSources);
     for (const auto& id : publisher_ids) {
-      update->Set(id, true);
+      pref_manager_->SetPublisherSubscribed(id, mojom::UserEnabled::ENABLED);
     }
   }
 
   bool CombinedSourceExists(const std::string& publisher_id) {
     const auto& value = pref_service_.GetDict(prefs::kBraveNewsSources);
-    return value.FindBool(publisher_id).has_value();
+    return value.FindDict(publisher_id) != nullptr;
   }
 
   bool DirectSourceExists(const std::string& publisher_id) {

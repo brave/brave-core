@@ -36,12 +36,14 @@ if (enable_brave_news) {
     sources = [
       "brave_news_policy_unittest.cc",
       "locales_helper_unittest.cc",
+      "pref_names_unittest.cc",
       "subscriptions_snapshot_unittest.cc",
     ]
 
     deps = [
       ":common",
       "//base",
+      "//base/test:test_support",
       "//components/sync_preferences:test_support",
       "//testing/gtest",
     ]

@@ -9,9 +9,6 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
-#include "base/strings/strcat.h"
-#include "brave/components/brave_news/common/pref_names.h"
-#include "components/prefs/scoped_user_pref_update.h"
 
 namespace brave_news {
 
@@ -27,27 +24,6 @@ constexpr auto kMigrateChannels =
     });
 
 }  // namespace
-
-void MigrateChannels(PrefService& prefs) {
-  ScopedDictPrefUpdate update(&prefs, prefs::kBraveNewsChannels);
-
-  auto& locale_channel_subscriptions = prefs.GetDict(prefs::kBraveNewsChannels);
-  for (auto [locale, channels] : locale_channel_subscriptions) {
-    const auto& channels_dict = channels.GetDict();
-
-    for (const auto& [from, to] : kMigrateChannels) {
-      auto maybe_migrate = channels_dict.FindBool(from);
-      if (!maybe_migrate.value_or(false)) {
-        continue;
-      }
-
-      // If we were subscribed to the channel "from", subscribe to the channel
-      // "to" and remove that subscription.
-      update->SetByDottedPath(base::StrCat({locale, ".", to}), true);
-      update->RemoveByDottedPath(base::StrCat({locale, ".", from}));
-    }
-  }
-}
 
 std::string GetMigratedChannel(const std::string& channel) {
   const auto* migrated_channel = base::FindOrNull(kMigrateChannels, channel);

@@ -12,6 +12,8 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
+#include "base/json/values_util.h"
+#include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/channel_migrator.h"
@@ -24,6 +26,14 @@
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_news {
+
+namespace {
+
+base::Value NowAsValue() {
+  return base::TimeToValue(base::Time::Now());
+}
+
+}  // namespace
 
 BraveNewsPrefManager::BraveNewsPrefManager(PrefService& prefs) : prefs_(prefs) {
   pref_change_registrar_.Init(&*prefs_);
@@ -89,8 +99,16 @@ SubscriptionsSnapshot BraveNewsPrefManager::GetSubscriptions() {
   absl::flat_hash_set<std::string> disabled_publishers;
   absl::flat_hash_set<std::string> enabled_publishers;
   auto& subscriptions = prefs_->GetDict(prefs::kBraveNewsSources);
-  for (const auto&& [publisher_id, subscribed] : subscriptions) {
-    if (subscribed.GetBool()) {
+  for (const auto&& [publisher_id, entry] : subscriptions) {
+    const auto* entry_dict = entry.GetIfDict();
+    if (!entry_dict) {
+      continue;
+    }
+    auto enabled = entry_dict->FindBool(prefs::kBraveNewsSourcesKeyEnabled);
+    if (!enabled) {
+      continue;
+    }
+    if (*enabled) {
       enabled_publishers.insert(publisher_id);
     } else {
       disabled_publishers.insert(publisher_id);
@@ -117,7 +135,11 @@ void BraveNewsPrefManager::SetPublisherSubscribed(
     if (enabled == mojom::UserEnabled::NOT_MODIFIED) {
       update->Remove(publisher_id);
     } else {
-      update->Set(publisher_id, enabled == mojom::UserEnabled::ENABLED);
+      update->Set(publisher_id,
+                  base::DictValue()
+                      .Set(prefs::kBraveNewsSourcesKeyEnabled,
+                           enabled == mojom::UserEnabled::ENABLED)
+                      .Set(prefs::kBraveNewsKeyChangedAt, NowAsValue()));
     }
   }
 }
@@ -135,13 +157,12 @@ std::string BraveNewsPrefManager::AddDirectPublisher(const GURL& url,
   auto entry_id = base::Uuid::GenerateRandomV4().AsLowercaseString();
   std::string entry_title = title.empty() ? url.spec() : title;
 
-  // We use a dictionary pref, but that's to reserve space for more
-  // future customization on a feed. For now we just store a bool, and
-  // remove the entire entry if a user unsubscribes from a user feed.
+  // The entire entry is removed if a user unsubscribes from a user feed.
   ScopedDictPrefUpdate update(&*prefs_, prefs::kBraveNewsDirectFeeds);
   base::DictValue value;
   value.Set(prefs::kBraveNewsDirectFeedsKeySource, url.spec());
   value.Set(prefs::kBraveNewsDirectFeedsKeyTitle, entry_title);
+  value.Set(prefs::kBraveNewsKeyChangedAt, NowAsValue());
   update->SetByDottedPath(entry_id, std::move(value));
 
   return entry_id;
@@ -155,7 +176,9 @@ void BraveNewsPrefManager::SetChannelSubscribed(const std::string& locale,
   if (!subscribed) {
     dict->Remove(channel);
   } else {
-    dict->Set(channel, true);
+    dict->Set(channel, base::DictValue()
+                           .Set(prefs::kBraveNewsChannelsKeySubscribed, true)
+                           .Set(prefs::kBraveNewsKeyChangedAt, NowAsValue()));
   }
 }
 
@@ -197,11 +220,17 @@ BraveNewsPrefManager::GetChannels() {
   auto& pref = prefs_->GetDict(prefs::kBraveNewsChannels);
 
   for (const auto&& [locale, channels] : pref) {
-    std::vector<std::string> subscribed;
+    const auto* entries = channels.GetIfDict();
+    if (!entries) {
+      continue;
+    }
 
-    auto& entries = channels.GetDict();
-    for (const auto&& [channel, is_subscribed] : entries) {
-      if (is_subscribed.GetIfBool().value_or(false)) {
+    std::vector<std::string> subscribed;
+    for (const auto&& [channel, entry] : *entries) {
+      const auto* entry_dict = entry.GetIfDict();
+      if (entry_dict &&
+          entry_dict->FindBool(prefs::kBraveNewsChannelsKeySubscribed)
+              .value_or(false)) {
         subscribed.push_back(GetMigratedChannel(channel));
       }
     }

@@ -7,8 +7,13 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
+#include <string>
 
 #include "base/containers/flat_set.h"
+#include "base/json/values_util.h"
+#include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
@@ -26,6 +31,31 @@ class BraveNewsPrefManagerTest : public testing::Test {
   }
 
  protected:
+  std::optional<base::Time> GetSourceChangedAt(const std::string& id) {
+    const auto* entry =
+        pref_service_.GetDict(prefs::kBraveNewsSources).FindDict(id);
+    return entry ? base::ValueToTime(entry->Find(prefs::kBraveNewsKeyChangedAt))
+                 : std::nullopt;
+  }
+
+  std::optional<base::Time> GetDirectFeedChangedAt(const std::string& id) {
+    const auto* entry =
+        pref_service_.GetDict(prefs::kBraveNewsDirectFeeds).FindDict(id);
+    return entry ? base::ValueToTime(entry->Find(prefs::kBraveNewsKeyChangedAt))
+                 : std::nullopt;
+  }
+
+  std::optional<base::Time> GetChannelChangedAt(const std::string& locale,
+                                                const std::string& channel) {
+    const auto* locale_dict =
+        pref_service_.GetDict(prefs::kBraveNewsChannels).FindDict(locale);
+    const auto* entry = locale_dict ? locale_dict->FindDict(channel) : nullptr;
+    return entry ? base::ValueToTime(entry->Find(prefs::kBraveNewsKeyChangedAt))
+                 : std::nullopt;
+  }
+
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   sync_preferences::TestingPrefServiceSyncable pref_service_;
 
   std::unique_ptr<BraveNewsPrefManager> pref_manager_;
@@ -230,4 +260,92 @@ TEST_F(BraveNewsPrefManagerTest, ChannelMigrationsAreApplied) {
   EXPECT_TRUE(pref_manager_->GetSubscriptions().GetChannelSubscribed("en_US",
                                                                      "Sports"));
 }
+
+TEST_F(BraveNewsPrefManagerTest, SetPublisherSubscribedRecordsChangedAt) {
+  const base::Time first = base::Time::Now();
+  pref_manager_->SetPublisherSubscribed("One", mojom::UserEnabled::ENABLED);
+  pref_manager_->SetPublisherSubscribed("Two", mojom::UserEnabled::DISABLED);
+  EXPECT_EQ(first, GetSourceChangedAt("One"));
+  EXPECT_EQ(first, GetSourceChangedAt("Two"));
+
+  task_environment_.AdvanceClock(base::Minutes(1));
+  const base::Time second = base::Time::Now();
+  pref_manager_->SetPublisherSubscribed("Two", mojom::UserEnabled::ENABLED);
+  EXPECT_EQ(first, GetSourceChangedAt("One"));
+  EXPECT_EQ(second, GetSourceChangedAt("Two"));
+
+  auto subscriptions = pref_manager_->GetSubscriptions();
+  EXPECT_TRUE(subscriptions.enabled_publishers().contains("One"));
+  EXPECT_TRUE(subscriptions.enabled_publishers().contains("Two"));
+  EXPECT_TRUE(subscriptions.disabled_publishers().empty());
+
+  pref_manager_->SetPublisherSubscribed("Two",
+                                        mojom::UserEnabled::NOT_MODIFIED);
+  EXPECT_EQ(std::nullopt, GetSourceChangedAt("Two"));
+}
+
+TEST_F(BraveNewsPrefManagerTest, AddDirectPublisherRecordsChangedAt) {
+  const base::Time added = base::Time::Now();
+  auto id =
+      pref_manager_->AddDirectPublisher(GURL("https://example.com"), "Example");
+  EXPECT_EQ(added, GetDirectFeedChangedAt(id));
+
+  // Re-adding an existing feed is not a change.
+  task_environment_.AdvanceClock(base::Minutes(1));
+  EXPECT_EQ(id, pref_manager_->AddDirectPublisher(GURL("https://example.com"),
+                                                  "Example"));
+  EXPECT_EQ(added, GetDirectFeedChangedAt(id));
+}
+
+TEST_F(BraveNewsPrefManagerTest, SetChannelSubscribedRecordsChangedAt) {
+  const base::Time first = base::Time::Now();
+  pref_manager_->SetChannelSubscribed("en_US", "Test", true);
+  EXPECT_EQ(first, GetChannelChangedAt("en_US", "Test"));
+
+  task_environment_.AdvanceClock(base::Minutes(1));
+  const base::Time second = base::Time::Now();
+  pref_manager_->SetChannelSubscribed("ja_JA", "Test", true);
+  EXPECT_EQ(first, GetChannelChangedAt("en_US", "Test"));
+  EXPECT_EQ(second, GetChannelChangedAt("ja_JA", "Test"));
+
+  pref_manager_->SetChannelSubscribed("en_US", "Test", false);
+  EXPECT_EQ(std::nullopt, GetChannelChangedAt("en_US", "Test"));
+}
+
+TEST_F(BraveNewsPrefManagerTest, MigratedPrefsAreReadable) {
+  {
+    base::DictValue sources;
+    sources.Set("enabled_publisher", true);
+    sources.Set("disabled_publisher", false);
+    pref_service_.SetDict(prefs::kBraveNewsSources, std::move(sources));
+
+    base::DictValue channels;
+    channels.Set("en_US", base::DictValue().Set("Top News", true));
+    pref_service_.SetDict(prefs::kBraveNewsChannels, std::move(channels));
+
+    base::DictValue direct_feeds;
+    direct_feeds.Set(
+        "feed_id",
+        base::DictValue()
+            .Set(prefs::kBraveNewsDirectFeedsKeySource, "https://example.com/")
+            .Set(prefs::kBraveNewsDirectFeedsKeyTitle, "Example"));
+    pref_service_.SetDict(prefs::kBraveNewsDirectFeeds,
+                          std::move(direct_feeds));
+  }
+
+  prefs::MigrateProfilePrefs(&pref_service_);
+
+  auto subscriptions = pref_manager_->GetSubscriptions();
+  EXPECT_EQ(1u, subscriptions.enabled_publishers().size());
+  EXPECT_TRUE(subscriptions.enabled_publishers().contains("enabled_publisher"));
+  EXPECT_EQ(1u, subscriptions.disabled_publishers().size());
+  EXPECT_TRUE(
+      subscriptions.disabled_publishers().contains("disabled_publisher"));
+  EXPECT_TRUE(subscriptions.GetChannelSubscribed("en_US", "Top News"));
+  ASSERT_EQ(1u, subscriptions.direct_feeds().size());
+  EXPECT_EQ("feed_id", subscriptions.direct_feeds()[0].id);
+  EXPECT_EQ(GURL("https://example.com/"), subscriptions.direct_feeds()[0].url);
+  EXPECT_EQ("Example", subscriptions.direct_feeds()[0].title);
+}
+
 }  // namespace brave_news

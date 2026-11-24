@@ -223,6 +223,8 @@ void MigrateObsoleteBraveProfilePrefsAfterChromium(
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   brave_news::p3a::prefs::MigrateObsoleteProfileNewsMetricsPrefs(profile_prefs);
+  // Added 2026-11
+  brave_news::prefs::MigrateProfilePrefs(profile_prefs);
 #endif
 
   // Added 2023-09

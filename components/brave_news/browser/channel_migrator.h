@@ -8,11 +8,8 @@
 
 #include <string>
 
-#include "components/prefs/pref_service.h"
-
 namespace brave_news {
 
-void MigrateChannels(PrefService& prefs);
 std::string GetMigratedChannel(const std::string& channel);
 
 }  // namespace brave_news

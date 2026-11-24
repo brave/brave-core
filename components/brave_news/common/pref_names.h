@@ -40,7 +40,22 @@ inline constexpr char kBraveNewsDisabledByPolicy[] =
 inline constexpr char kBraveNewsDirectFeedsKeyTitle[] = "title";
 inline constexpr char kBraveNewsDirectFeedsKeySource[] = "source";
 
+// Subscription entries are stored as dictionaries:
+//   kBraveNewsSources:     {<publisher_id>: {enabled: bool, changed_at: time}}
+//   kBraveNewsDirectFeeds: {<id>: {source: url, title: str, changed_at: time}}
+//   kBraveNewsChannels:    {<locale>: {<channel>: {subscribed: bool,
+//                                                  changed_at: time}}}
+// `changed_at` is serialized with base::TimeToValue().
+inline constexpr char kBraveNewsKeyChangedAt[] = "changed_at";
+inline constexpr char kBraveNewsSourcesKeyEnabled[] = "enabled";
+inline constexpr char kBraveNewsChannelsKeySubscribed[] = "subscribed";
+
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
+// Migrates subscription prefs from the legacy format (bare booleans and direct
+// feeds without a `changed_at`) to the format described above. Entries that
+// are migrated are given a `changed_at` of the current time.
+void MigrateProfilePrefs(PrefService* prefs);
 
 }  // namespace prefs
 
