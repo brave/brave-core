@@ -297,6 +297,13 @@ export const style = scoped.css`
     }
   }
 
+  @keyframes recap-card-in {
+    from {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+  }
+
   .help {
     max-width: 240px;
     font: var(--leo-font-default-regular);
@@ -335,6 +342,14 @@ export const style = scoped.css`
     pointer-events: none;
     transition: opacity var(--leo-duration-m) var(--leo-easing-out)
       var(--recap-hold-delay);
+  }
+
+  /* On desktops and tablets the card floats on the stage, so on arrival the
+   * whole card fades in and grows into place. */
+  @media (min-width: 601px) {
+    .recap-card {
+      animation: recap-card-in var(--leo-duration-l) var(--leo-easing-out) both;
+    }
   }
 
   /* Phones and narrow windows: the card takes the whole view. */
@@ -381,6 +396,12 @@ export const style = scoped.css`
 
     .background-image {
       animation: none;
+    }
+  }
+
+  @media (min-width: 601px) and (prefers-reduced-motion: reduce) {
+    .recap-card {
+      animation: fade-in var(--leo-duration-m) var(--leo-easing-out) both;
     }
   }
 `

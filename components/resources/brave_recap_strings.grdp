@@ -57,8 +57,8 @@
   <message name="IDS_BRAVE_RECAP_COPY_FAILED" desc="Replaces the hint under the post buttons when the share image couldn't be copied to the clipboard" formatter_data="webui=BraveRecap">
     Couldn't copy the image. Download it instead.
   </message>
-  <message name="IDS_BRAVE_RECAP_SHARE_POST_TEXT" desc="Prefilled social post on X, and the body of the prefilled Reddit post. $1 is a count of ads and trackers, $2 a duration, $3 an amount of data." formatter_data="webui=BraveRecap">
-    Brave has blocked <ph name="BLOCKED">$1<ex>184,213</ex></ph> ads and trackers for me, saving <ph name="TIME_SAVED">$2<ex>2.14 days</ex></ph> and <ph name="DATA_SAVED">$3<ex>6.9 GB</ex></ph> of data. Try it:
+  <message name="IDS_BRAVE_RECAP_SHARE_POST_TEXT" desc="Prefilled social post on X, and the body of the prefilled Reddit post. $1 is a count of ads and trackers, $2 a duration, $3 an amount of data. The hashtag placeholder must be kept untranslated." formatter_data="webui=BraveRecap">
+    Brave has blocked <ph name="BLOCKED">$1<ex>184,213</ex></ph> ads and trackers for me, saving <ph name="TIME_SAVED">$2<ex>2.14 days</ex></ph> and <ph name="DATA_SAVED">$3<ex>6.9 GB</ex></ph> of data. <ph name="HASHTAG">#braverecap<ex>#braverecap</ex></ph>. Try it:
   </message>
   <message name="IDS_BRAVE_RECAP_SHARE_POST_TITLE" desc="Prefilled Reddit post title, required by Reddit. $1 is a count of ads and trackers." formatter_data="webui=BraveRecap">
     Brave has blocked <ph name="BLOCKED">$1<ex>184,213</ex></ph> ads and trackers for me
