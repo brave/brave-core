@@ -44,6 +44,7 @@ import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.content_public.browser.WebContentsObserver;
 import org.chromium.ui.UiUtils;
+import org.chromium.ui.util.TokenHolder;
 import org.chromium.url.GURL;
 
 import java.util.function.Supplier;
@@ -55,6 +56,10 @@ import java.util.function.Supplier;
  * URL bar) slide off screen, a small translucent pill fades in at the bottom of the screen showing
  * the page's host minus trivial subdomains. Tapping it re-shows the browser controls. The chip is
  * never a navigation surface, so it cannot be used to spoof or open URLs.
+ *
+ * <p>On non-secure (plaintext HTTP) pages the chip is not shown at all: the browser controls are
+ * pinned visible instead, so the omnibox — with its own security indicator — stays the identity
+ * surface.
  */
 @NullMarked
 public class BraveCollapsedUrlChipCoordinator {
@@ -69,6 +74,12 @@ public class BraveCollapsedUrlChipCoordinator {
     private final Callback<@Nullable Boolean> mFullscreenObserverCallback =
             this::onFullscreenChanged;
     private final BrowserStateBrowserControlsVisibilityDelegate mVisibilityDelegate;
+
+    /**
+     * Token holding the browser controls persistently shown on non-secure pages; the omnibox must
+     * stay on screen there. {@link TokenHolder#INVALID_TOKEN} when not pinned.
+     */
+    private int mPersistentShowToken = TokenHolder.INVALID_TOKEN;
 
     private @Nullable WebContentsObserver mWebContentsObserver;
     private @Nullable Tab mObservedTab;
@@ -212,6 +223,18 @@ public class BraveCollapsedUrlChipCoordinator {
                     public void setChipAlpha(float alpha) {
                         mChipView.setAlpha(alpha);
                     }
+
+                    @Override
+                    public void setPinnedControlsVisible(boolean pinned) {
+                        if (pinned) {
+                            if (mPersistentShowToken == TokenHolder.INVALID_TOKEN) {
+                                mPersistentShowToken = mVisibilityDelegate.showControlsPersistent();
+                            }
+                        } else if (mPersistentShowToken != TokenHolder.INVALID_TOKEN) {
+                            mVisibilityDelegate.releasePersistentShowingToken(mPersistentShowToken);
+                            mPersistentShowToken = TokenHolder.INVALID_TOKEN;
+                        }
+                    }
                 };
 
         mChipView.setOnClickListener(v -> mVisibilityDelegate.showControlsTransient());
@@ -245,6 +268,10 @@ public class BraveCollapsedUrlChipCoordinator {
         mFullscreenSupplier.removeObserver(mFullscreenObserverCallback);
         mTabSupplier.removeObserver(mTabObserverCallback);
         observeTab(null);
+        if (mPersistentShowToken != TokenHolder.INVALID_TOKEN) {
+            mVisibilityDelegate.releasePersistentShowingToken(mPersistentShowToken);
+            mPersistentShowToken = TokenHolder.INVALID_TOKEN;
+        }
         if (mPillHidden) {
             setGesturePillHidden(false, hasGestureNavigation());
         }
@@ -344,11 +371,7 @@ public class BraveCollapsedUrlChipCoordinator {
         GURL url = gurlForSpec(spec);
         if (url == null) return null;
         String host = UrlFormatter.formatUrlForDisplayOmitSchemePathAndTrivialSubdomains(url);
-        // Keep the omnibox's security cue: a bare host alone would present a trusted-looking
-        // identity for plaintext HTTP pages. The placeholder keeps word order in RTL locales.
-        if ("http".equals(url.getScheme())) {
-            return mActivity.getString(R.string.brave_collapsed_url_chip_not_secure, host);
-        }
+        // unicodeWrap keeps bidi-isolated host rendering in RTL locales.
         return BidiFormatter.getInstance().unicodeWrap(host);
     }
 

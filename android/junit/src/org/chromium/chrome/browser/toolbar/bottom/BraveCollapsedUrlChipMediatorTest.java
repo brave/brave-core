@@ -253,6 +253,51 @@ public class BraveCollapsedUrlChipMediatorTest {
     }
 
     @Test
+    public void testNonSecurePagePinsControlsAndWithholdsChip() {
+        mUrlSpecRef.set("http://example.com/");
+        mMediator.onUrlSpecChanged();
+        assertTrue(mDelegate.mLastPinned);
+        notifyAndroidControlsVisibility(View.INVISIBLE);
+        assertFalse(mDelegate.mLastVisible);
+        assertNull(mDelegate.mLastText);
+    }
+
+    @Test
+    public void testNavigateToSecureUnpins() {
+        mUrlSpecRef.set("http://example.com/");
+        mMediator.onUrlSpecChanged();
+        assertTrue(mDelegate.mLastPinned);
+
+        mUrlSpecRef.set(URL_SPEC);
+        mMediator.onUrlSpecChanged();
+        assertFalse(mDelegate.mLastPinned);
+        notifyAndroidControlsVisibility(View.INVISIBLE);
+        assertTrue(mDelegate.mLastVisible);
+        assertEquals(FORMATTED, mDelegate.mLastText);
+    }
+
+    @Test
+    public void testDestroyUnpins() {
+        mUrlSpecRef.set("http://example.com/");
+        mMediator.onUrlSpecChanged();
+        assertTrue(mDelegate.mLastPinned);
+
+        mMediator.destroy();
+        assertFalse(mDelegate.mLastPinned);
+    }
+
+    @Test
+    public void testPinnedStatePropagatesOnlyOnTransition() {
+        mUrlSpecRef.set("http://example.com/");
+        mMediator.onUrlSpecChanged();
+        int count = mDelegate.mPinnedCallCount;
+
+        notifyOffsetChanged();
+        mMediator.onUrlSpecChanged();
+        assertEquals(count, mDelegate.mPinnedCallCount);
+    }
+
+    @Test
     public void testIsLightContentBackground() {
         assertTrue(
                 BraveCollapsedUrlChipMediator.isLightContentBackground(
@@ -308,6 +353,8 @@ public class BraveCollapsedUrlChipMediatorTest {
         private @Nullable String mLastText;
         private boolean mLastVisible;
         private float mLastAlpha;
+        private boolean mLastPinned;
+        private int mPinnedCallCount;
 
         @Override
         public void setChipText(@Nullable String text) {
@@ -322,6 +369,12 @@ public class BraveCollapsedUrlChipMediatorTest {
         @Override
         public void setChipAlpha(float alpha) {
             mLastAlpha = alpha;
+        }
+
+        @Override
+        public void setPinnedControlsVisible(boolean pinned) {
+            mLastPinned = pinned;
+            mPinnedCallCount++;
         }
     }
 }

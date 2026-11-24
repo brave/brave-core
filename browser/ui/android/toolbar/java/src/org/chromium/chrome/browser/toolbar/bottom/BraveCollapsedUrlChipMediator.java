@@ -31,6 +31,10 @@ import java.util.function.Supplier;
  * "search.brave.com") remains visible at all times, matching Safari / Brave iOS behavior. The chip
  * is display-only: tapping it re-shows the browser controls, so the chip never becomes a navigation
  * or spoofing surface.
+ *
+ * <p>Non-secure (plaintext HTTP) pages never get a chip: the browser controls are pinned visible
+ * instead ({@link Delegate#setPinnedControlsVisible}), so the omnibox — with its own security
+ * indicator — remains the identity surface.
  */
 @NullMarked
 class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Observer {
@@ -42,6 +46,13 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
         void setChipVisible(boolean visible);
 
         void setChipAlpha(float alpha);
+
+        /**
+         * Pins the browser controls visible while true. On non-secure pages the chip must never
+         * replace the omnibox as the page's identity surface: instead of showing the chip, the
+         * browser controls stay on screen, keeping the omnibox's own security indicator visible.
+         */
+        void setPinnedControlsVisible(boolean pinned);
     }
 
     private final BrowserControlsSizer mSizer;
@@ -56,6 +67,7 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
     private @Nullable String mLastChipText;
     private boolean mChipTextInitialized;
     private boolean mAndroidControlsVisible = true;
+    private boolean mLastPinned;
     private boolean mDestroyed;
 
     BraveCollapsedUrlChipMediator(
@@ -83,6 +95,7 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
         mDelegate.setChipVisible(false);
         mDelegate.setChipAlpha(0f);
         mDelegate.setChipText(null);
+        mDelegate.setPinnedControlsVisible(false);
     }
 
     void onUrlSpecChanged() {
@@ -129,12 +142,26 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
             mLastUrlSpec = spec;
             mChipTextInitialized = true;
             mLastChipText = null;
-            if (spec != null && isEligibleUrlSpec(spec)) {
+            if (spec != null && isEligibleUrlSpec(spec) && !isNonSecureUrlSpec(spec)) {
                 mLastChipText = mTextFormatter.apply(spec);
             }
             mDelegate.setChipText(mLastChipText);
+            updatePinnedControls(
+                    spec != null && isNonSecureUrlSpec(spec)
+                            && Boolean.TRUE.equals(mEnabledSupplier.get()));
         }
         updateChipDisplay();
+    }
+
+    /**
+     * Pins the browser controls visible for the lifetime of a non-secure page, so the omnibox
+     * (with its own security indicator) stays on screen instead of the chip replacing it.
+     * Token churn is avoided by only propagating state changes.
+     */
+    private void updatePinnedControls(boolean pinned) {
+        if (pinned == mLastPinned) return;
+        mLastPinned = pinned;
+        mDelegate.setPinnedControlsVisible(pinned);
     }
 
     private void updateChipDisplay() {
@@ -168,6 +195,18 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
         if (!"http".equals(scheme) && !"https".equals(scheme)) return false;
         String host = url.getHost();
         return host != null && !host.isEmpty();
+    }
+
+    /**
+     * True for plaintext HTTP pages: non-secure content whose identity the omnibox indicates with
+     * its own "Not secure" state. Chip text is withheld and the browser controls are pinned so the
+     * omnibox stays as the identity surface.
+     */
+    static boolean isNonSecureUrlSpec(@Nullable String spec) {
+        if (spec == null || spec.isEmpty()) return false;
+        GURL url = new GURL(spec);
+        if (GURL.isEmptyOrInvalid(url)) return false;
+        return "http".equals(url.getScheme());
     }
 
     /**

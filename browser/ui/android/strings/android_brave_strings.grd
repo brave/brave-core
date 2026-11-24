@@ -159,9 +159,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CONTEXTMENU_COPY_CLEAN_LINK"  desc="Text for Copy clean link">
         Copy clean link
       </message>
-      <message name="IDS_BRAVE_COLLAPSED_URL_CHIP_NOT_SECURE" desc="Full text shown on the collapsed URL chip when the page is loaded over plaintext HTTP; {HOST_PLACEHOLDER} is the displayed host. Matches the omnibox's 'Not secure' warning.">
-        Not secure <ph name="HOST_PLACEHOLDER">%1$s</ph>
-      </message>
       <message name="IDS_PASSWORD_SETTINGS_IMPORT_ACTION_TITLE" desc="Title for the password import action in Android settings">
         Import passwords
       </message>
