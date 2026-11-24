@@ -1,9 +1,9 @@
 {
   'configurations': [
     {
-      'dashboard-bot-name': 'win11-hp-laptop-typical',
-      'browser-type': 'chromium',
-      'profile': 'chrome-typical-win',
+      'dashboard-bot-name': 'win-delllaptop-ln',
+      'browser-type': 'brave',
+      'profile': 'brave-typical-win',
       'extra-browser-args': ['--disable-backgrounding-occluded-windows'],
       'extra-benchmark-args': [],
     },
@@ -17,7 +17,7 @@
     {
       'name': 'loading.desktop.brave.startup',
       'pageset-repeat': 10,
-      'stories': ['example.com_cold', 'load:site:example:2023'],
+      'stories': ['example.com_cold'],
     },
     {
       'name': 'system_health.memory_desktop',
