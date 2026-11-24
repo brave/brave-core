@@ -11,6 +11,10 @@ Subcommands:
                     renames.
   - mv              Move a file/directory in brave-core and repair every
                     downstream artefact.
+  - rebase-feature-branch
+                    Rebase a feature branch onto a Chromium update, refreshing
+                    plaster patches and using brockit's logic to resolve patch
+                    conflicts
   - install-hook    Install the commit-msg hook from
                     tools/cr/alias/commit-msg.py.
   - setup-alias     Register the `git cr` alias in the local .git/config.
@@ -162,6 +166,10 @@ def main() -> int:
             import alias.follow_renames
 
             return alias.follow_renames.cmd_follow_renames(rest)
+        if subcmd == 'rebase-feature-branch':
+            import alias.rebase_feature_branch
+
+            return alias.rebase_feature_branch.cmd_rebase_feature_branch(rest)
     except UserValidationError as e:
         print(e, file=sys.stderr)
         return 1
