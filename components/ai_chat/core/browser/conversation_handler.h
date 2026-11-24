@@ -506,8 +506,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   std::vector<mojom::ConversationTurnPtr>& GetMutableConversationHistory(
       std::optional<std::string_view> thread_uuid);
 
-  // Returns whether |thread_uuid| is unset (the root conversation) or an
-  // existing thread with the threads feature enabled.
+  // If |thread_uuid| is provided, checks that the thread is valid and that the
+  // threads feature is enabled. Returns true if no thread (i.e. the root
+  // conversation) is provided.
   bool MaybeCheckValidThread(
       const std::optional<std::string>& thread_uuid) const;
 

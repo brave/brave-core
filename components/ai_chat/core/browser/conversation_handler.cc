@@ -1713,6 +1713,7 @@ ConversationHandler::GetMutableConversationHistory(
 bool ConversationHandler::MaybeCheckValidThread(
     const std::optional<std::string>& thread_uuid) const {
   if (!thread_uuid.has_value()) {
+    // Nothing to check since there is no thread.
     return true;
   }
   return base::FeatureList::IsEnabled(features::kAIChatThreads) &&
