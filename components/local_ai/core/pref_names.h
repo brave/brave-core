@@ -15,6 +15,13 @@ namespace local_ai::prefs {
 inline constexpr char kBraveHistoryEmbeddingsEnabled[] =
     "brave.history_embeddings_enabled";
 
+// Local-state-scoped: base names of the profiles whose
+// `kBraveHistoryEmbeddingsEnabled` is on, kept so a profile that is not loaded
+// still counts. The EmbeddingGemma model is shared by every profile, and is
+// only registered for download and update while this is not empty.
+inline constexpr char kHistoryEmbeddingsEnabledProfiles[] =
+    "brave.local_ai.history_embeddings_enabled_profiles";
+
 // Local-state-scoped: umbrella master switch for all local AI features.
 // Surfaced as the Brave Origin Settings "Local AI" toggle. When false,
 // every local AI surface (history embeddings UI, the brave-history-embeddings

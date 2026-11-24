@@ -7,9 +7,12 @@
 #define BRAVE_COMPONENTS_LOCAL_AI_CORE_LOCAL_MODELS_UPDATER_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/no_destructor.h"
@@ -117,16 +120,31 @@ class LocalModelsUpdaterState {
 };
 
 // Registers or unregisters the local models component to match the
-// `kBraveLocalAIEnabled` master switch, and keeps it in sync for the rest of
-// the session. The switch is managed by Brave Origin, whose purchase check is
+// `kBraveLocalAIEnabled` master switch and
+// `kHistoryEmbeddingsEnabledProfiles`, and keeps it in sync for the rest of the
+// session. The switch is managed by Brave Origin, whose purchase check is
 // asynchronous, so its value can land after components are registered.
+//
+// `profile_names` holds the base names of all profiles that exist. Before the
+// first sync, entries of `kHistoryEmbeddingsEnabledProfiles` that are not in
+// `profile_names` are removed. Profiles deleted in an earlier session then no
+// longer count, and the model is removed if no remaining profile uses it. With
+// no `profile_names`, which profiles exist is unknown, so nothing is removed.
 void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus,
-    PrefService* local_state);
+    PrefService* local_state,
+    const std::optional<base::flat_set<std::string>>& profile_names);
 
 // Drops the references taken by ManageLocalModelsComponentRegistration(). Must
 // run before `cus` and `local_state` are destroyed.
 void ShutdownLocalModelsComponentRegistration();
+
+// Records in `prefs::kHistoryEmbeddingsEnabledProfiles` whether the profile
+// with base name `profile_name` has Semantic history search on. The model is
+// registered only while at least one profile does.
+void SetHistoryEmbeddingsEnabledForProfile(PrefService& local_state,
+                                           std::string_view profile_name,
+                                           bool enabled);
 
 }  // namespace local_ai
 
