@@ -13,7 +13,10 @@ import './profile_customization_test-chromium.js'
 // <if expr="enable_brave_custom_profile_image_webui">
 
 import type {ProfileCustomizationAppElement} from 'chrome://profile-customization/profile_customization_app.js'
-import {ProfileCustomizationBrowserProxyImpl} from 'chrome://profile-customization/profile_customization_browser_proxy.js'
+import {
+  ProfileCustomizationBrowserProxyImpl,
+  ProfileCustomizationStyle,
+} from 'chrome://profile-customization/profile_customization_browser_proxy.js'
 import type {BrCustomProfileImageRowElement} from 'chrome://resources/brave/custom_profile_image_row.js'
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js'
 import {
@@ -82,11 +85,13 @@ function profileCustomizationTests() {
   let app: ProfileCustomizationAppElement
   let browserProxy: TestProfileCustomizationBrowserProxy
 
-  async function createApp(isLocalProfileCreation = true) {
+  async function createApp(
+    profileCustomizationStyle = ProfileCustomizationStyle.LOCAL_PROFILE_CREATION,
+  ) {
     document.body.replaceChildren()
     loadTimeData.overrideValues({
       profileName: 'Test profile',
-      isLocalProfileCreation,
+      profileCustomizationStyle,
     })
     browserProxy = new TestProfileCustomizationBrowserProxy()
     browserProxy.setProfileInfo({
@@ -212,7 +217,7 @@ function profileCustomizationTests() {
   })
 
   test('DoesNotAddRowToNonLocalCustomization', async function() {
-    await createApp(false)
+    await createApp(ProfileCustomizationStyle.DEFAULT)
     assertEquals(null, app.shadowRoot.querySelector('br-custom-profile-image-row'))
   })
 }

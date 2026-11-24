@@ -84,7 +84,9 @@ class ProfileCustomizationFileChooserBrowserTest : public InProcessBrowserTest {
     SCOPED_TRACE(location.ToString());
     delegate_ =
         SigninViewControllerDelegate::CreateProfileCustomizationDelegate(
-            browser(), is_local_profile_creation);
+            browser(), is_local_profile_creation
+                           ? ProfileCustomizationStyle::kLocalProfileCreation
+                           : ProfileCustomizationStyle::kDefault);
     ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
   }
 
