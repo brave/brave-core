@@ -8,6 +8,7 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/pointer/mock_touch_ui_controller.h"
+#include "ui/base/ui_base_features.h"
 #include "ui/gfx/geometry/insets.h"
 
 TEST(BraveLayoutConstantsTest, BraveValueTest) {
@@ -30,7 +31,8 @@ TEST(BraveLayoutConstantsTest, BraveValueTest) {
   EXPECT_EQ(2, GetLayoutConstant(LayoutConstant::kLocationBarElementPadding));
   EXPECT_EQ(0, GetLayoutConstant(
                    LayoutConstant::kLocationBarTrailingDecorationEdgePadding));
-  EXPECT_EQ(16, GetLayoutConstant(LayoutConstant::kTabCloseButtonSize));
+  EXPECT_EQ(features::IsRoundedIconsEnabled() ? 14 : 16,
+            GetLayoutConstant(LayoutConstant::kTabCloseButtonSize));
   EXPECT_EQ(16, GetLayoutConstant(LayoutConstant::kTabAlertIndicatorIconWidth));
   EXPECT_EQ(20,
             GetLayoutConstant(LayoutConstant::kVerticalTabStripButtonIconSize));

@@ -1649,6 +1649,7 @@ source_set("unit_tests") {
       "//components/prefs:test_support",
       "//testing/gmock",
       "//testing/gtest",
+      "//ui/base:features",
       "//ui/base:test_support",
       "//ui/gfx",
     ]
