@@ -147,16 +147,17 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
             }
             mDelegate.setChipText(mLastChipText);
             updatePinnedControls(
-                    spec != null && isNonSecureUrlSpec(spec)
+                    spec != null
+                            && isNonSecureUrlSpec(spec)
                             && Boolean.TRUE.equals(mEnabledSupplier.get()));
         }
         updateChipDisplay();
     }
 
     /**
-     * Pins the browser controls visible for the lifetime of a non-secure page, so the omnibox
-     * (with its own security indicator) stays on screen instead of the chip replacing it.
-     * Token churn is avoided by only propagating state changes.
+     * Pins the browser controls visible for the lifetime of a non-secure page, so the omnibox (with
+     * its own security indicator) stays on screen instead of the chip replacing it. Token churn is
+     * avoided by only propagating state changes.
      */
     private void updatePinnedControls(boolean pinned) {
         if (pinned == mLastPinned) return;
