@@ -71,6 +71,6 @@ substitutions:
     count: 6
     regex:
       re_pattern:
-        'protected (accessor
+        'protected ((?:accessor|readonly)
         (?:metricsReporting_|showRestart_|showSignoutDialog_|syncFirstSetupInProgress_|signinAvailable_|chromeSigninUserChoiceInfo_):)'
       replace: 'private \1'

@@ -8,3 +8,12 @@ substitutions:
       Free `settings-people-page` for the Brave subclass to register.
     drop_custom_element_registration:
       class_name: SettingsPeoplePageElement
+
+  - description: |-
+      Let the Brave subclass force `signinAllowed_` on.
+
+      Its constructor sets it to true: Brave sets `signin.allowed` to false,
+      which would otherwise hide `#edit-profile`.
+    regex:
+      pattern: 'protected readonly signinAllowed_: boolean ='
+      replace: 'protected signinAllowed_: boolean ='

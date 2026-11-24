@@ -1,8 +1,17 @@
 diff --git a/chrome/browser/resources/settings/people_page/people_page.ts b/chrome/browser/resources/settings/people_page/people_page.ts
-index 9abc9f93caae10219f38599a654c122e2bac8454..58ce8199963aee28efb599d43a7d0ab4d8b46763 100644
+index 687b5681758162a783c12edf6bbdd777b312fd02..f591a49477540bd395503c6264ea9f2f0d1fecbd 100644
 --- a/chrome/browser/resources/settings/people_page/people_page.ts
 +++ b/chrome/browser/resources/settings/people_page/people_page.ts
-@@ -509,4 +509,3 @@ declare global {
+@@ -132,7 +132,7 @@ export class SettingsPeoplePageElement extends SettingsPeoplePageElementBase {
+    * migrated, this should be removed, and UIs hidden behind it should
+    * become default.
+    */
+-  protected readonly signinAllowed_: boolean =
++  protected signinAllowed_: boolean =
+       loadTimeData.getBoolean('signinAllowed');
+   /**
+    * This property stores whether the profile is a Dasherless profiles,
+@@ -501,4 +501,3 @@ declare global {
    }
  }
  
