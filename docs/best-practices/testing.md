@@ -1,4 +1,4 @@
-# Test Isolation and Specific Patterns
+# Testing
 
 <a id="TI-001"></a>
 
@@ -1038,3 +1038,22 @@ target back in; edit `.env`/`package.json` if you need the branding to match.
 
 The same "matches nothing, still succeeds" failure mode applies to parameterized
 suites; see [TI-042](#TI-042).
+
+---
+
+<a id="TI-044"></a>
+
+## ✅ Prefer Unit Tests Over Browser Tests
+
+**Prefer a unit test over a browser test whenever it can validate the behavior,
+since unit tests are generally faster and more reliable.**
+
+When adding a test, find a similar existing test and adapt its setup and
+patterns. Use browser tests when browser integration is needed, and retain the
+CUJ coverage required by [ARCH-062](./architecture.md#ARCH-062) for user-visible
+UI changes.
+
+See
+[Chromium's guidance on unit tests and browser tests](https://www.chromium.org/developers/testing/running-tests/#unit-tests-and-browser-tests).
+
+---
