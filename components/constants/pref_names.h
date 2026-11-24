@@ -115,6 +115,10 @@ inline constexpr char kSafetynetStatus[] = "safetynet.status";
 // Google Ads click id from the Play Store install referrer.
 inline constexpr char kReferralAndroidGbraid[] =
     "brave.referral.android_gbraid";
+// Wall-clock time the first_open conversion was reported, so second_open
+// can echo back the identical value.
+inline constexpr char kReferralAndroidFirstOpenTimestamp[] =
+    "brave.referral.android_first_open_timestamp";
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)

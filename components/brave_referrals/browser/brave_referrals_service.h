@@ -138,9 +138,11 @@ class BraveReferralsService {
   // most once.
   void MaybeReportAndroidConversion();
   void ReportAndroidConversion(const std::string& gbraid,
-                               AndroidConversionEvent event);
+                               AndroidConversionEvent event,
+                               base::Time first_open_timestamp);
   std::string BuildConversionPayload(const std::string& gbraid,
-                                     AndroidConversionEvent event) const;
+                                     AndroidConversionEvent event,
+                                     base::Time first_open_timestamp) const;
   void OnConversionLoadComplete(
       scoped_refptr<net::HttpResponseHeaders> headers);
   android_brave_referrer::BraveReferrer android_brave_referrer_;

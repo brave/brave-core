@@ -12,6 +12,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
@@ -266,6 +267,8 @@ TEST_F(BraveReferralsServiceTest, AndroidFirstOpenSentImmediately) {
   EXPECT_EQ(*body.FindString("app_event_name"), "brave_first_open");
   ASSERT_TRUE(body.FindString("gbraid"));
   EXPECT_EQ(*body.FindString("gbraid"), kTestGbraid);
+  ASSERT_TRUE(body.FindString("timestamp"));
+  EXPECT_FALSE(body.FindString("timestamp")->empty());
   ASSERT_TRUE(body.FindString("app_version"));
   EXPECT_FALSE(body.FindString("app_version")->empty());
   ASSERT_TRUE(body.FindString("os_version"));
@@ -281,6 +284,16 @@ TEST_F(BraveReferralsServiceTest, AndroidFirstOpenThenSecondOpenOnNextRun) {
   task_environment_.FastForwardBy(base::Minutes(1));
   ASSERT_EQ(conversion_request_count_, 1u);
 
+  base::DictValue first_open_body =
+      base::test::ParseJsonDict(conversion_request_body_);
+  ASSERT_TRUE(first_open_body.FindString("timestamp"));
+  const std::string first_open_timestamp =
+      *first_open_body.FindString("timestamp");
+
+  // Advance time so a bug that recomputes the timestamp for second_open
+  // (instead of echoing the stashed value) would be caught.
+  task_environment_.FastForwardBy(base::Minutes(1));
+
   referrals_service_.reset();
   CreateReferralsService();
   referrals_service_->Start();
@@ -294,6 +307,8 @@ TEST_F(BraveReferralsServiceTest, AndroidFirstOpenThenSecondOpenOnNextRun) {
   EXPECT_EQ(*body.FindString("app_event_name"), "brave_second_open");
   ASSERT_TRUE(body.FindString("gbraid"));
   EXPECT_EQ(*body.FindString("gbraid"), kTestGbraid);
+  ASSERT_TRUE(body.FindString("timestamp"));
+  EXPECT_EQ(*body.FindString("timestamp"), first_open_timestamp);
 }
 
 TEST_F(BraveReferralsServiceTest, AndroidFirstOpenDroppedWhenStatsDisabled) {
@@ -310,7 +325,10 @@ TEST_F(BraveReferralsServiceTest, AndroidFirstOpenDroppedWhenStatsDisabled) {
 }
 
 TEST_F(BraveReferralsServiceTest, AndroidConversionSentOnFollowingRun) {
+  const base::Time first_open_timestamp = base::Time::Now();
   pref_service_.SetString(kReferralAndroidGbraid, kTestGbraid);
+  pref_service_.SetTime(kReferralAndroidFirstOpenTimestamp,
+                        first_open_timestamp);
 
   CreateReferralsService();
   referrals_service_->Start();
@@ -325,6 +343,10 @@ TEST_F(BraveReferralsServiceTest, AndroidConversionSentOnFollowingRun) {
   EXPECT_EQ(*body.FindString("app_event_name"), "brave_second_open");
   ASSERT_TRUE(body.FindString("gbraid"));
   EXPECT_EQ(*body.FindString("gbraid"), kTestGbraid);
+  ASSERT_TRUE(body.FindString("timestamp"));
+  EXPECT_EQ(*body.FindString("timestamp"),
+            base::NumberToString(
+                first_open_timestamp.InMillisecondsSinceUnixEpoch()));
   ASSERT_TRUE(body.FindString("app_version"));
   EXPECT_FALSE(body.FindString("app_version")->empty());
   ASSERT_TRUE(body.FindString("os_version"));
@@ -335,6 +357,7 @@ TEST_F(BraveReferralsServiceTest, AndroidConversionSentOnFollowingRun) {
 
 TEST_F(BraveReferralsServiceTest, AndroidConversionSentOnlyOnce) {
   pref_service_.SetString(kReferralAndroidGbraid, kTestGbraid);
+  pref_service_.SetTime(kReferralAndroidFirstOpenTimestamp, base::Time::Now());
 
   CreateReferralsService();
   referrals_service_->Start();
@@ -352,6 +375,7 @@ TEST_F(BraveReferralsServiceTest, AndroidConversionSentOnlyOnce) {
 
 TEST_F(BraveReferralsServiceTest, AndroidConversionDroppedWhenStatsDisabled) {
   pref_service_.SetString(kReferralAndroidGbraid, kTestGbraid);
+  pref_service_.SetTime(kReferralAndroidFirstOpenTimestamp, base::Time::Now());
   pref_service_.SetBoolean(kStatsReportingEnabled, false);
 
   CreateReferralsService();
@@ -365,6 +389,7 @@ TEST_F(BraveReferralsServiceTest, AndroidConversionDroppedWhenStatsDisabled) {
 
 TEST_F(BraveReferralsServiceTest, AndroidConversionDroppedOnRequestFailure) {
   pref_service_.SetString(kReferralAndroidGbraid, kTestGbraid);
+  pref_service_.SetTime(kReferralAndroidFirstOpenTimestamp, base::Time::Now());
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         if (request.url.path() == kBraveConversionPath) {
