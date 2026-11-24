@@ -71,6 +71,7 @@ source_set("brave_shields_impl") {
     "//components/favicon/content",
     "//components/prefs",
     "//components/proxy_config",
+    "//components/sessions",
     "//components/tabs:public",
     "//components/user_prefs",
     "//extensions/buildflags",

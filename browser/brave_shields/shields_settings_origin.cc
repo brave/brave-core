@@ -6,9 +6,12 @@
 #include "brave/browser/brave_shields/shields_settings_origin.h"
 
 #include <memory>
+#include <string>
 
 #include "base/supports_user_data.h"
 #include "brave/browser/net/worker_url_loader_context.h"
+#include "components/sessions/content/content_serialized_navigation_driver.h"
+#include "components/sessions/content/extended_info_handler.h"
 #include "content/public/browser/document_user_data.h"
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/navigation_controller.h"
@@ -101,6 +104,34 @@ void SetForDocument(content::RenderFrameHost* render_frame_host,
 }
 
 }  // namespace
+
+// Only the origin is session data. An absent field selects the ordinary
+// fallback (profile defaults for an inherited page without an initiator).
+class ShieldsSettingsOrigin::SessionHandler
+    : public sessions::ExtendedInfoHandler {
+ public:
+  std::string GetExtendedInfo(content::NavigationEntry* entry) const override {
+    const auto* data = static_cast<const HistorySettingsOrigin*>(
+        entry->GetUserData(&HistorySettingsOrigin::kKey));
+    return data ? data->value.GetURL().spec() : std::string();
+  }
+
+  void RestoreExtendedInfo(const std::string& info,
+                           content::NavigationEntry* entry) override {
+    const auto origin = url::Origin::Create(GURL(info));
+    if (!origin.opaque() && origin.GetURL().spec() == info) {
+      entry->SetUserData(&HistorySettingsOrigin::kKey,
+                         std::make_unique<HistorySettingsOrigin>(
+                             ShieldsSettingsOrigin(origin)));
+    }
+  }
+};
+
+void ShieldsSettingsOrigin::RegisterSessionHandler() {
+  sessions::ContentSerializedNavigationDriver::GetInstance()
+      ->RegisterExtendedInfoHandler("brave_shields_settings_origin",
+                                    std::make_unique<SessionHandler>());
+}
 
 ShieldsSettingsOrigin::ShieldsSettingsOrigin(const url::Origin& origin)
     : url_(origin.GetURL()) {}
@@ -269,11 +300,21 @@ void ShieldsSettingsOrigin::OnNavigationFinished(
     DocumentOrigin::CreateForCurrentDocument(render_frame_host,
                                              ForCommit(*handle));
   }
-  auto* entry = render_frame_host->GetController().GetLastCommittedEntry();
-  entry->SetUserData(
-      &HistorySettingsOrigin::kKey,
-      std::make_unique<HistorySettingsOrigin>(
-          DocumentOrigin::GetForCurrentDocument(render_frame_host)->value));
+  auto& controller = render_frame_host->GetController();
+  auto* entry = controller.GetLastCommittedEntry();
+  const auto& key =
+      DocumentOrigin::GetForCurrentDocument(render_frame_host)->value;
+  const auto* prior = static_cast<const HistorySettingsOrigin*>(
+      entry->GetUserData(&HistorySettingsOrigin::kKey));
+  const bool session_data_changed =
+      prior ? prior->value.GetURL() != key.GetURL() : !key.GetURL().is_empty();
+  entry->SetUserData(&HistorySettingsOrigin::kKey,
+                     std::make_unique<HistorySettingsOrigin>(key));
+  // The session service already serialized the entry at
+  // NavigationEntryCommitted.
+  if (session_data_changed) {
+    controller.NotifyEntryChanged(entry);
+  }
 }
 
 }  // namespace brave_shields

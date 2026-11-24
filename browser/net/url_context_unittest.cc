@@ -532,6 +532,31 @@ TEST_F(BraveRequestInfoFrameTest, RedirectOnlyReplacesMainFrameKey) {
   }
 }
 
+TEST_F(BraveRequestInfoFrameTest, RedirectPreservesOrReplacesDefaultKey) {
+  const auto site = url::Origin::Create(GURL("https://site.example"));
+  const auto main = net::IsolationInfo::RequestType::kMainFrame;
+  const auto defaults = brave_shields::ShieldsSettingsOrigin();
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             site.GetURL());
+  const auto original =
+      brave_shields::ShieldsSettingsOrigin::ForFrame(*main_rfh());
+  network::ResourceRequest redirected;
+  redirected.url = GURL("https://site.example/new");
+  EXPECT_EQ(GURL(), defaults.ForRedirect(redirected).GetURL());
+  redirected.trusted_params.emplace();
+  for (auto type : {net::IsolationInfo::RequestType::kSubFrame,
+                    net::IsolationInfo::RequestType::kOther}) {
+    redirected.trusted_params->isolation_info = MakeIsolationInfo(site, type);
+    EXPECT_EQ(GURL(), defaults.ForRedirect(redirected).GetURL());
+  }
+  redirected.trusted_params->isolation_info = MakeIsolationInfo(site, main);
+  EXPECT_EQ(site.GetURL(), original.ForRedirect(redirected).GetURL());
+  EXPECT_EQ(site.GetURL(), defaults.ForRedirect(redirected).GetURL());
+  redirected.trusted_params->isolation_info =
+      MakeIsolationInfo(site.DeriveNewOpaqueOrigin(), main);
+  EXPECT_EQ(GURL(), original.ForRedirect(redirected).GetURL());
+}
+
 TEST_F(BraveRequestInfoFrameTest, MainFrameWithoutIsolationUsesDefaults) {
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
       web_contents(), GURL("https://first.example/"));

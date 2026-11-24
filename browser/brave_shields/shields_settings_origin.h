@@ -42,6 +42,7 @@ namespace brave_shields {
 class ShieldsSettingsOrigin {
  public:
   ShieldsSettingsOrigin() = default;
+  static void RegisterSessionHandler();
   static ShieldsSettingsOrigin ForFrame(content::RenderFrameHost& frame);
 
   // An about:blank popup can retain its opening subframe's factory after
@@ -67,6 +68,7 @@ class ShieldsSettingsOrigin {
   const GURL& GetURL() const { return url_; }
 
  private:
+  class SessionHandler;
   friend class brave::BraveRequestInfo;
   friend class BraveShieldsWebContentsObserver;
 

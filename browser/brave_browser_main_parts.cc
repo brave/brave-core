@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/path_service.h"
+#include "brave/browser/brave_shields/shields_settings_origin.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -89,6 +90,7 @@ int ChromeBrowserMainParts::PreMainMessageLoopRun() {
 }
 
 void ChromeBrowserMainParts::PreBrowserStart() {
+  brave_shields::ShieldsSettingsOrigin::RegisterSessionHandler();
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Register() must be called after the SerializedNavigationDriver is
   // initialized, but before any calls to
