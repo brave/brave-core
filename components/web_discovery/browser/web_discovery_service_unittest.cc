@@ -121,6 +121,15 @@ TEST_F(WebDiscoveryServiceTest, ServiceDoesNotStartWhenDisabled) {
   EXPECT_EQ(0, url_loader_factory_.NumPending());
 }
 
+TEST_F(WebDiscoveryServiceTest, DisablingCancelsPendingConfigRequests) {
+  profile_prefs_.SetBoolean(kWebDiscoveryEnabled, true);
+  CreateService();
+  ASSERT_TRUE(url_loader_factory_.IsPending(GetQuorumHost() + "/config"));
+
+  profile_prefs_.SetBoolean(kWebDiscoveryEnabled, false);
+  EXPECT_EQ(0, url_loader_factory_.NumPending());
+}
+
 TEST_F(WebDiscoveryServiceTest, ServiceTogglesOnPrefChange) {
   // Start disabled
   profile_prefs_.SetBoolean(kWebDiscoveryEnabled, false);
