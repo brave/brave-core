@@ -447,8 +447,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(
       ConversationHandlerUnitTest,
       GetTools_MemoryToolFilteredForTemporaryConversations);
-  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
-                           ThreadHistory);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, ThreadHistory);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            ModifyConversation_Thread);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
