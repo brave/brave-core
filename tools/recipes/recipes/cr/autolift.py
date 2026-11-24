@@ -229,7 +229,15 @@ def RunSteps(
         # A lift builds Android too: every sync checks its deps out.
         api.brave_core_checkout.apply_config('deprecated_linux')
         api.brave_core_checkout.apply_config('deprecated_android')
-        root = api.brave_core_checkout.ensure_checkout()
+        # A channel bump's lift syncs to each channel's own version, so syncing
+        # to master's first is wasted, once a sync has checked out the
+        # depot_tools Brockit imports.
+        synced = api.path.exists(
+            api.path.abs(api.path.chromium_src) / 'third_party' / 'depot_tools'
+        )
+        root = api.brave_core_checkout.ensure_checkout(
+            sync=not (tag and synced)
+        )
         # The agent commits with `git cr commit`. A resumed run keeps the
         # checkout, hook included.
         api.brave_core_checkout.install_commit_hook()
@@ -608,6 +616,7 @@ def GenTests(api: TEST_DEPS):
                 'brave-core checkout branch',
                 ['checkout', '--force', '-B', 'master'],
             ),
+            # A fresh workspace has nothing for the lift's Brockit to run with.
             api.post_process(post_process.MustRun, 'pnpm run sync'),
             advised(AUTOLIFT, 'advise', '157.0.8103.38'),
             api.post_process(post_process.DoesNotRun, 'sync tooling'),
@@ -617,6 +626,30 @@ def GenTests(api: TEST_DEPS):
                 ['cat', r'.*/b/src/brave/\.autolift/cr157\.x/report\.md'],
             ),
             api.post_process(post_process.StatusSuccess),
+        ),
+    )
+
+    # In a workspace synced before, a channel bump leaves the sync to its lift.
+    yield api.test(
+        'channel bump in a synced workspace',
+        new_run(
+            api.properties(chromium_version='157.0.8103.38'),
+            api.path.dirs('b/src/third_party/depot_tools'),
+            api.post_process(post_process.DoesNotRun, 'pnpm run sync'),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
+        ),
+    )
+
+    # A cr<N> run syncs all the same: its lift starts from the branch's version.
+    yield api.test(
+        'lift in a synced workspace',
+        new_run(
+            api.properties(milestone=158),
+            api.path.dirs('b/src/third_party/depot_tools'),
+            api.post_process(post_process.MustRun, 'pnpm run sync'),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
         ),
     )
 

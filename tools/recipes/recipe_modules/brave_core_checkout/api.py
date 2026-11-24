@@ -296,7 +296,7 @@ class BraveCoreCheckoutApi(RecipeApi):
         )
 
     def ensure_checkout(
-        self, *, chromium_src: str | Path | None = None
+        self, *, chromium_src: str | Path | None = None, sync: bool = True
     ) -> Path:
         """Check out brave-core on `brave_core_ref` and Chromium, then sync.
 
@@ -309,6 +309,8 @@ class BraveCoreCheckoutApi(RecipeApi):
         Args:
             chromium_src: Chromium `src/` directory. Defaults to the `path`
                 module's `chromium_src`.
+            sync: Whether to run `pnpm run sync`, which a recipe that moves
+                Chromium to another version itself can skip.
 
         Returns:
             The absolute `Path` to the brave-core checkout root.
@@ -322,7 +324,8 @@ class BraveCoreCheckoutApi(RecipeApi):
         # Before `pnpm run sync`, which already needs the RBE settings.
         self._write_dotenv()
         self._install_secrets()
-        self._pnpm_sync()
+        if sync:
+            self._pnpm_sync()
         return self._root
 
     def _install_secrets(self) -> None:

@@ -59,6 +59,9 @@ def RunSteps(api: DEPS):
     if mode == 'ensure_checkout':
         api.brave_core_checkout.ensure_checkout()
         return
+    if mode == 'ensure_checkout_no_sync':
+        api.brave_core_checkout.ensure_checkout(sync=False)
+        return
     if mode == 'commit_hook':
         api.brave_core_checkout.ensure_checkout()
         api.brave_core_checkout.install_commit_hook()
@@ -265,6 +268,18 @@ def GenTests(api: TEST_DEPS):
         api.post_process(post_process.MustRun, 'pnpm run sync'),
         api.post_process(post_process.DoesNotRun, 'pnpm run sync (2)'),
         api.post_process(post_process.StatusSuccess),
+    )
+    # A recipe that moves Chromium itself skips the sync.
+    yield api.test(
+        'ensure_checkout without sync',
+        api.env.set('MODE', 'ensure_checkout_no_sync'),
+        api.brave_core_checkout.with_git_cache(),
+        api.brave_core_checkout.git_cache_populated(),
+        api.chromium_checkout.existing_checkout(),
+        api.post_process(post_process.MustRun, 'brave-core checkout ref'),
+        api.post_process(post_process.DoesNotRun, 'pnpm run sync'),
+        api.post_process(post_process.StatusSuccess),
+        api.post_process(post_process.DropExpectation),
     )
     # Chromium already deployed (`chrome/VERSION` present), maybe on another
     # version: synced all the same, once.
