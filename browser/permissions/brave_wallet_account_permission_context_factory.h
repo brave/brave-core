@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "chrome/browser/profiles/profile_keyed_service_factory.h"
 
 namespace base {
 template <typename T>
@@ -24,7 +24,7 @@ class BraveWalletAccountPermissionContext;
 }
 
 class BraveWalletAccountPermissionContextFactory
-    : public BrowserContextKeyedServiceFactory {
+    : public ProfileKeyedServiceFactory {
  public:
   static permissions::BraveWalletAccountPermissionContext* GetForProfile(
       content::BrowserContext* profile);
@@ -40,10 +40,8 @@ class BraveWalletAccountPermissionContextFactory
       const BraveWalletAccountPermissionContextFactory&) = delete;
   ~BraveWalletAccountPermissionContextFactory() override;
 
-  // BrowserContextKeyedServiceFactory methods:
+  // ProfileKeyedServiceFactory:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
-      content::BrowserContext* context) const override;
-  content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
 };
 

@@ -13,10 +13,8 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/permissions/contexts/brave_wallet_account_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 // static
 permissions::BraveWalletAccountPermissionContext*
@@ -36,9 +34,13 @@ BraveWalletAccountPermissionContextFactory::GetInstance() {
 
 BraveWalletAccountPermissionContextFactory::
     BraveWalletAccountPermissionContextFactory()
-    : BrowserContextKeyedServiceFactory(
+    : ProfileKeyedServiceFactory(
           "BraveWalletAccountPermissionContextFactory",
-          BrowserContextDependencyManager::GetInstance()) {
+          // Incognito grants live only in the off-the-record settings map, so
+          // the off-the-record profile needs its own instance.
+          ProfileSelections::Builder()
+              .WithRegular(ProfileSelection::kOwnInstance)
+              .Build()) {
   DependsOn(HostContentSettingsMapFactory::GetInstance());
   DependsOn(brave_wallet::BraveWalletServiceFactory::GetInstance());
 }
@@ -49,6 +51,11 @@ BraveWalletAccountPermissionContextFactory::
 std::unique_ptr<KeyedService> BraveWalletAccountPermissionContextFactory::
     BuildServiceInstanceForBrowserContext(
         content::BrowserContext* context) const {
+  if (!base::FeatureList::IsEnabled(
+          brave_wallet::features::kBraveWalletAccountObjectPermissions)) {
+    return nullptr;
+  }
+
   auto* profile = Profile::FromBrowserContext(context);
 
   HostContentSettingsMap* host_content_settings_map =
@@ -65,16 +72,4 @@ std::unique_ptr<KeyedService> BraveWalletAccountPermissionContextFactory::
   // TODO(https://github.com/brave/brave-browser/issues/61873): Run the legacy
   // migration here, before the store is returned.
   return account_context;
-}
-
-content::BrowserContext*
-BraveWalletAccountPermissionContextFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  if (!base::FeatureList::IsEnabled(
-          brave_wallet::features::kBraveWalletAccountObjectPermissions)) {
-    return nullptr;
-  }
-
-  // Incognito grants live only in the off-the-record settings map.
-  return GetBrowserContextOwnInstanceInIncognito(context);
 }
