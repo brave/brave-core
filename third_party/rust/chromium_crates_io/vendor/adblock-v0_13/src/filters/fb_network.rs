@@ -144,6 +144,20 @@ impl<'a> FlatNetworkFilter<'a> {
     }
 
     #[inline(always)]
+    pub fn include_to_domains(&self) -> Option<&[u32]> {
+        self.fb_filter
+            .opt_to_domains()
+            .map(|data| fb_vector_to_slice(data))
+    }
+
+    #[inline(always)]
+    pub fn exclude_to_domains(&self) -> Option<&[u32]> {
+        self.fb_filter
+            .opt_not_to_domains()
+            .map(|data| fb_vector_to_slice(data))
+    }
+
+    #[inline(always)]
     pub fn hostname(&self) -> Option<&'a str> {
         if self.mask.is_hostname_anchor() {
             self.fb_filter.hostname()
@@ -260,17 +274,34 @@ impl NetworkMatchable for FlatNetworkFilter<'_> {
         }
         if !check_included_domains_mapped(
             self.include_domains(),
-            request,
+            request.source_hostname_hashes.as_deref(),
             &self.filter_data_context.unique_domains_hashes_map,
         ) {
             return false;
         }
         if !check_excluded_domains_mapped(
             self.exclude_domains(),
-            request,
+            request.source_hostname_hashes.as_deref(),
             &self.filter_data_context.unique_domains_hashes_map,
         ) {
             return false;
+        }
+        // `$to=` is rare: avoid reading the optional flatbuffer fields unless the filter has it.
+        if self.mask.contains(NetworkFilterMask::HAS_TO_OPTION) {
+            if !check_included_domains_mapped(
+                self.include_to_domains(),
+                request.hostname_hashes.as_deref(),
+                &self.filter_data_context.unique_domains_hashes_map,
+            ) {
+                return false;
+            }
+            if !check_excluded_domains_mapped(
+                self.exclude_to_domains(),
+                request.hostname_hashes.as_deref(),
+                &self.filter_data_context.unique_domains_hashes_map,
+            ) {
+                return false;
+            }
         }
         check_pattern(
             self.mask,
