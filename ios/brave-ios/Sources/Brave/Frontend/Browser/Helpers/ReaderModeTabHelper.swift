@@ -189,8 +189,7 @@ extension ReaderModeTabHelper: TabPolicyDecider {
     requestInfo: WebRequestInfo
   ) async -> WebPolicyDecision {
     guard let requestURL = request.url else { return .cancel }
-    let sourceURL = tab.visibleURL ?? tab.lastCommittedURL
-    if Self.allowsNavigation(from: sourceURL, to: requestURL) {
+    if Self.allowsNavigation(from: tab.lastCommittedURL, to: requestURL) {
       return .allow
     }
     return .cancel
