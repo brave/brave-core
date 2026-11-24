@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let unit tests load chrome-untrusted:// iframes.
+    regex:
+      re_pattern: '(\n(\s*)context_builder->SetProtocolHandler\(\s*kTestWebUIScheme,\s*web::CreateWebUIProtocolHandler\(browser_state\)\);)'
+      replace: |-
+        \1
+        \2context_builder->SetProtocolHandler(
+        \2    "chrome-untrusted", web::CreateWebUIProtocolHandler(browser_state));
