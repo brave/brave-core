@@ -690,7 +690,7 @@ void BraveReferralsService::ReportAndroidConversion(
     const std::string& gbraid,
     AndroidConversionEvent event,
     base::Time first_open_timestamp) {
-  DCheckCurrentlyOnUIThread();
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (!pref_service_->GetBoolean(kStatsReportingEnabled)) {
     return;
