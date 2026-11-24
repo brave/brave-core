@@ -83,7 +83,7 @@ class PsstSettingsService : public KeyedService {
 
   bool IsPsstInfobarEnabled() const;
   void SetPsstInfobarEnabled(bool enabled);
-  
+
   void IncrementInfobarReviewSuggestionsCount(const url::Origin& origin);
 
   bool IsPsstEnabled() const;

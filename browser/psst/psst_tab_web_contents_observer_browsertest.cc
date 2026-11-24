@@ -1095,9 +1095,9 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
   // Site b's infobar has never been shown, so its own per-origin count alone
   // would allow it, but the global pref must still suppress it.
-  EXPECT_EQ(
-      GetPsstSettingsService()->GetInfobarShownCount(url::Origin::Create(url_b)),
-      0);
+  EXPECT_EQ(GetPsstSettingsService()->GetInfobarShownCount(
+                url::Origin::Create(url_b)),
+            0);
 
   IconLabelBubbleView* const psst_view = GetPsstPageActionView();
   ASSERT_TRUE(psst_view);
