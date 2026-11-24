@@ -20,10 +20,7 @@ const kPdf = [0x25, 0x50, 0x44, 0x46]
 let printFileToPdf: jest.Mock
 
 beforeEach(() => {
-  printFileToPdf = jest.fn(async () => ({
-    pdf: { bytes: kPdf },
-    error: null,
-  }))
+  printFileToPdf = jest.fn(async () => ({ bytes: kPdf }))
 })
 
 afterEach(() => {
@@ -144,7 +141,7 @@ describe('createPdfPrinter', () => {
   })
 
   it('reports the browser failing to print', async () => {
-    printFileToPdf.mockResolvedValue({ pdf: null, error: 'Print failed' })
+    printFileToPdf.mockRejectedValue('Print failed')
     const result = print('a.html')
     postFromViewer({ type: kFileDisplayed, file: 'a.html' })
     await expect(result).rejects.toThrow(

@@ -51,10 +51,21 @@ export type PrintFileToPdf = (
   options: PrintToPdfOptions,
 ) => Promise<Uint8Array<ArrayBuffer>>
 
+// The part of LeoWorkspaceHandlerRemote used here. PrintFileToPdf returns a
+// result<>, which the bindings unwrap: they resolve with the PDF or reject
+// with the error. The .m.js JSDoc, which typescript reads, doesn't know that
+// and types the response as `{ result }`, so it is typed here instead.
+export interface PdfPrintingHandler {
+  printFileToPdf(
+    viewerFrameName: string,
+    landscape: boolean,
+  ): Promise<BigBuffer>
+}
+
 let handler: LeoWorkspaceHandlerRemote | undefined
-function getHandler(): LeoWorkspaceHandlerRemote {
+function getHandler(): PdfPrintingHandler {
   handler ??= LeoWorkspaceHandler.getRemote()
-  return handler
+  return handler as unknown as PdfPrintingHandler
 }
 
 // BigBuffer is a mojo union: either inlined bytes or shared memory to map.
@@ -153,21 +164,18 @@ async function displayFile(
  */
 export function createPdfPrinter(
   origin = window.location.origin,
-  getRemote: () => Pick<
-    LeoWorkspaceHandlerRemote,
-    'printFileToPdf'
-  > = getHandler,
+  getRemote: () => PdfPrintingHandler = getHandler,
 ): PrintFileToPdf {
   return async (path, { landscape }) => {
     const frameName = `leo-workspace-pdf-${crypto.randomUUID()}`
     const iframe = await displayFile(path, frameName, origin)
     try {
-      const { pdf, error } = await getRemote().printFileToPdf(
-        frameName,
-        landscape,
-      )
-      if (!pdf) {
-        throw new Error(`could not print ${path} to PDF: ${error ?? 'unknown'}`)
+      let pdf: BigBuffer
+      try {
+        // Rejects with the browser's error message if it couldn't print.
+        pdf = await getRemote().printFileToPdf(frameName, landscape)
+      } catch (error) {
+        throw new Error(`could not print ${path} to PDF: ${error}`)
       }
       return readBigBuffer(pdf)
     } finally {
