@@ -25,6 +25,7 @@ interface Props {
   turnModelKey: string
   turnNEARVerified?: boolean
   isPremiumUser?: boolean
+  isDisabled?: boolean
 }
 
 export function RegenerateAnswerMenu(props: Props) {
@@ -37,6 +38,7 @@ export function RegenerateAnswerMenu(props: Props) {
     turnModelKey,
     turnNEARVerified,
     isPremiumUser,
+    isDisabled,
   } = props
 
   const modelDisplayName =
@@ -83,6 +85,7 @@ export function RegenerateAnswerMenu(props: Props) {
         slot='anchor-content'
         kind='plain-faint'
         size='tiny'
+        isDisabled={isDisabled}
         onClick={isOpen ? onClose : onOpen}
         title={getLocale(S.CHAT_UI_REGENERATE_ANSWER_MENU_TOOLTIP).replace(
           '$1',

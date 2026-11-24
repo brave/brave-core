@@ -966,10 +966,16 @@ describe('ContextActionsAssistant rendering', () => {
       events: [{ completionEvent: { completion } }],
     }) as Mojom.ConversationTurn
 
+  const model = {
+    key: 'model-1',
+    displayName: 'Model 1',
+    options: { leoModelOptions: {} },
+  } as unknown as Mojom.Model
+
   const baseOverrides: Partial<UntrustedConversationContext> = {
     isMobile: false,
     isLeoModel: true,
-    allModels: [],
+    allModels: [model],
     canSubmitUserEntries: true,
     trimmedTokens: BigInt(0),
     totalTokens: BigInt(0),
@@ -1043,6 +1049,33 @@ describe('ContextActionsAssistant rendering', () => {
     // hidden; every earlier, completed response keeps them — including the
     // tool-call/task response.
     expect(assistantTurnsShowingActions(container)).toEqual([true, false])
+  })
+
+  it('disables edit and regenerate for completed responses while generating', () => {
+    const { container } = renderConversation(
+      [
+        { ...humanTurn('Question 1', '1'), modelKey: 'model-1' },
+        { ...assistantTurn('Response 1', '2'), modelKey: 'model-1' },
+        { ...humanTurn('Question 2', '3'), modelKey: 'model-1' },
+        { ...assistantTurn('Response 2', '4'), modelKey: 'model-1' },
+      ],
+      true,
+    )
+
+    const firstResponse = container.querySelectorAll(
+      '[data-testid="assistant-turn"]',
+    )[0]
+    const editButton = firstResponse.querySelector(
+      `[title="${S.CHAT_UI_EDIT_BUTTON_LABEL}"]`,
+    )
+    expect(editButton).not.toBeNull()
+    expect(editButton!.getAttribute('isdisabled')).toBe('true')
+
+    const regenerateAnchor = firstResponse.querySelector('leo-buttonmenu')
+    expect(regenerateAnchor).not.toBeNull()
+    expect(
+      regenerateAnchor!.querySelector('leo-button')!.getAttribute('isdisabled'),
+    ).toBe('true')
   })
 
   it('hides context actions for a lone active group while generating', () => {
