@@ -130,7 +130,8 @@ public class BraveCollapsedUrlChipMediatorTest {
 
         assertTrue(mDelegate.mLastVisible);
         // No alpha pin on the show path: the coordinator fades the chip in; setting 1 here would
-        // defeat that animation. The last alpha call is the preceding hide's 0f.
+        // defeat that animation. The mediator never touches alpha outside destroy(), so mLastAlpha
+        // stays at DelegateFake's field default.
         assertEquals(0f, mDelegate.mLastAlpha, 0.001f);
         assertEquals(FORMATTED, mDelegate.mLastText);
     }
