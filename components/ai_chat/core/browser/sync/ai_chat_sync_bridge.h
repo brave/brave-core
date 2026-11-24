@@ -9,12 +9,25 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
+#include <vector>
 
+#include "base/containers/flat_set.h"
+#include "base/functional/callback.h"
 #include "base/functional/function_ref.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "components/sync/model/data_type_sync_bridge.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
+
+namespace sync_pb {
+class AIChatConversationSpecifics;
+}  // namespace sync_pb
+
+namespace syncer {
+class SyncMetadataStoreChangeList;
+}  // namespace syncer
 
 namespace ai_chat {
 
@@ -39,8 +52,19 @@ class AIChatDatabase;
 // its processor live on so the sync start handshake survives storage toggles).
 class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
  public:
-  explicit AIChatSyncBridge(
-      std::unique_ptr<syncer::DataTypeLocalChangeProcessor> change_processor);
+  // Reports the conversations a batch of remote changes touched: each one a
+  // record was written to, and each one a tombstone named, even if it was
+  // already gone. The list is never empty.
+  using RemoteChangesAppliedCallback = base::RepeatingCallback<void(
+      std::vector<std::string> conversation_uuids)>;
+
+  // |on_remote_changes_applied| runs on this sequence once per batch that
+  // touched a conversation, naming only those: a listener that reloaded any
+  // other conversation would discard state that conversation hasn't saved
+  // yet.
+  AIChatSyncBridge(
+      std::unique_ptr<syncer::DataTypeLocalChangeProcessor> change_processor,
+      RemoteChangesAppliedCallback on_remote_changes_applied);
   AIChatSyncBridge(const AIChatSyncBridge&) = delete;
   AIChatSyncBridge& operator=(const AIChatSyncBridge&) = delete;
   ~AIChatSyncBridge() override;
@@ -56,8 +80,6 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   void ClearDatabase();
 
   // syncer::DataTypeSyncBridge:
-  std::unique_ptr<syncer::MetadataChangeList> CreateMetadataChangeList()
-      override;
   std::optional<syncer::ModelError> MergeFullSyncData(
       std::unique_ptr<syncer::MetadataChangeList> metadata_change_list,
       syncer::EntityChangeList entity_data) override;
@@ -117,6 +139,57 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   void PutEntry(const std::string& conversation_uuid,
                 const std::string& entry_uuid);
 
+  // Returns a change list that writes straight to the database's sync metadata
+  // table. Requires a database.
+  std::unique_ptr<syncer::SyncMetadataStoreChangeList>
+  CreateMetadataStoreChangeList();
+
+  // Saves the metadata changes the processor passed to MergeFullSyncData() or
+  // ApplyIncrementalSyncChanges(). The processor records the batch's progress
+  // marker and each record's new version before it calls the bridge, so they
+  // are kept in memory (the default CreateMetadataChangeList()) and saved only
+  // once the batch has been written. Otherwise a batch that failed would count
+  // as received, and sync would never download it again.
+  void ApplyMetadataChanges(
+      std::unique_ptr<syncer::MetadataChangeList> metadata_change_list);
+
+  // Writes |changes|, a batch from the server, to the database, and runs
+  // |on_remote_changes_applied_| for the conversations it touched. Returns
+  // false when a record fails to write. The batch's metadata changes are then
+  // dropped, so it downloads again on the next start, and local updates to the
+  // records from the failed one on are skipped for the rest of the session.
+  [[nodiscard]] bool ApplyRemoteChanges(
+      const syncer::EntityChangeList& changes,
+      syncer::MetadataChangeList& metadata_change_list);
+
+  // Whether a local update to |storage_key| must not reach the processor,
+  // because a batch failed; see |storage_keys_skipping_local_puts_|.
+  bool ShouldSkipLocalPut(const std::string& storage_key) const;
+
+  // Writes |specifics|, an added or updated record from the server, to the
+  // database, and inserts the conversation it wrote to into
+  // |affected_conversation_uuids|. A record this device can't store because of
+  // its own content (it doesn't decode, for example it comes from a newer
+  // client, or its associated content would collide) is skipped: retrying it
+  // would fail the same way every time. Returns false only when the database
+  // fails to store a good record.
+  [[nodiscard]] bool ApplyRemoteRecord(
+      const sync_pb::AIChatConversationSpecifics& specifics,
+      base::flat_set<std::string>& affected_conversation_uuids);
+
+  // Deletes the record |storage_key| names, and inserts its conversation into
+  // |affected_conversation_uuids|. Returns false only when the database fails
+  // to delete.
+  [[nodiscard]] bool ApplyRemoteTombstone(
+      std::string_view storage_key,
+      base::flat_set<std::string>& affected_conversation_uuids);
+
+  // Runs |on_remote_changes_applied_| when |affected_conversation_uuids| isn't
+  // empty. Also called when a batch fails part-way, since the records written
+  // before the failure stay written.
+  void NotifyRemoteChangesApplied(
+      base::flat_set<std::string> affected_conversation_uuids);
+
   // Attached via SetDatabase()/ClearDatabase(); null before the first attach
   // and whenever on-disk storage is disabled.
   raw_ptr<AIChatDatabase> database_ = nullptr;
@@ -124,6 +197,23 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   // True once the initial metadata load + ModelReadyToSync() has run, so it is
   // done only for the first attached database.
   bool model_ready_to_sync_ = false;
+
+  RemoteChangesAppliedCallback on_remote_changes_applied_;
+
+  // The records a failed batch didn't write: the failing one and those after
+  // it. The processor records a batch's new record versions in memory before
+  // calling the bridge, and keeps them after the failure. A local update to
+  // one of those records would save that version with its own metadata, so the
+  // next start would take the remote change as already received and drop it.
+  // Local updates to them are therefore skipped for the rest of the session,
+  // and the next start applies the remote change over them. A local delete
+  // still goes through: saving the tombstone at the batch's version is right,
+  // since the delete came after the remote change.
+  absl::flat_hash_set<std::string> storage_keys_skipping_local_puts_;
+
+  // Set when a first-sync merge fails, to skip every local update for the
+  // rest of the session. First sync runs again on the next start.
+  bool skip_all_local_puts_ = false;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

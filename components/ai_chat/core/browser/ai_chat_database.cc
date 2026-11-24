@@ -627,6 +627,25 @@ std::optional<std::string> AIChatDatabase::GetConversationUuidForEntry(
   return statement.ColumnString(0);
 }
 
+std::optional<std::string>
+AIChatDatabase::GetConversationUuidForAssociatedContent(
+    std::string_view content_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return std::nullopt;
+  }
+
+  static constexpr char kQuery[] =
+      "SELECT conversation_uuid FROM associated_content WHERE uuid=?";
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
+  CHECK(statement.is_valid());
+  statement.BindString(0, content_uuid);
+  if (!statement.Step()) {
+    return std::nullopt;
+  }
+  return statement.ColumnString(0);
+}
+
 std::optional<base::Time> AIChatDatabase::GetConversationModifiedTime(
     std::string_view conversation_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
