@@ -10,35 +10,35 @@ For site-specific settings this is the origin URL (scheme, host, effective
 port); `GURL()` selects profile defaults. Defaults is a result, not an
 instruction to try another origin. Never use an opaque origin's precursor.
 
-### NAV-1: two requests in one tab before a cross-site commit
+## Main-frame HTTP requests use the destination site's settings
 
-1. Commit `https://a.test/old` in the primary main frame. Execute
-   `location.assign("https://b.test/new")` in that document. Assume no redirect,
-   cancellation, or competing navigation.
-2. In `WebContentsObserver::DidStartNavigation(handle)`,
-   `NavigationRequest::StartNavigation()` has set `WILL_START_REQUEST`.
-   `handle->IsInPrimaryMainFrame()` is true, `handle->IsSameDocument()` and
-   `handle->HasCommitted()` are false, and `handle->GetURL()` is
-   `https://b.test/new`. At this callback,
-   `web_contents->GetPrimaryMainFrame()->GetLastCommittedURL()` is
-   `https://a.test/old`.
-3. For the initial main-frame HTTP request for `/new`,
-   `ctx->shields_settings_origin_.GetURL()` must equal `GURL("https://b.test/")`
-   **before the first settings lookup**, before `ReadyToCommitNavigation` for B.
-   Configuring A to `ALLOW` and B to `BLOCK` must yield `BLOCK` from
-   `GetAdControlType` for this request; reversing them must yield `ALLOW`.
-4. For a subresource request made by the document at `https://a.test/old`
-   before B commits, the field on **that request's** `BraveRequestInfo` must
-   equal `GURL("https://a.test/")` at lookup. Starting the navigation to B
-   must not overwrite A's document value.
-5. In `DidFinishNavigation(handle)`, a successful, non-error commit to B has
-   `handle->HasCommitted()` true and `handle->IsErrorPage()` false. Subsequent
-   requests from the committed B document use B. If B was canceled without a
-   commit, A's stored document value remains A.
+When the primary main frame navigates from `https://a.test/old` to
+`https://b.test/new` without a redirect, the HTTP request for `/new` uses B's
+Shields settings. In `WebContentsObserver::DidStartNavigation(handle)`,
+`NavigationRequest::StartNavigation()` has set `WILL_START_REQUEST`:
+`handle->IsInPrimaryMainFrame()` is true, `handle->IsSameDocument()` and
+`handle->HasCommitted()` are false, and `handle->GetURL()` is
+`https://b.test/new`. At this callback,
+`web_contents->GetPrimaryMainFrame()->GetLastCommittedURL()` is `https://a.test/old`.
 
-For a primary-main-frame network request with no usable site origin, the
-field must instead contain a value whose `GetURL()` equals `GURL()`, even if
-its frame token resolves to A's `RenderFrameHost`.
+For the request for `/new`, `ctx->shields_settings_origin_.GetURL()` must equal
+`GURL("https://b.test/")` before the first settings lookup in `MakeCTX`, before
+`ReadyToCommitNavigation` for B. Configuring A to `ALLOW` and B to `BLOCK`
+must yield `BLOCK` from `GetAdControlType`; reversing them must yield `ALLOW`.
+If a primary-main-frame network request has no usable site origin, the settings
+URL must be `GURL()`, even if its frame token resolves to A's `RenderFrameHost`.
+
+## Subresource requests use the committed top-level document's settings
+
+If the document at `https://a.test/old` issues a fetch after navigation to B
+starts but before B commits, `ctx->shields_settings_origin_.GetURL()` for the
+fetch must equal `GURL("https://a.test/")`. Starting the navigation to B must
+not overwrite A's document value.
+
+In `DidFinishNavigation(handle)`, a successful, non-error commit to B has
+`handle->HasCommitted()` true and `handle->IsErrorPage()` false. Fetches from
+the committed B document use B. If the navigation is canceled without a commit,
+fetches from A continue to use A.
 
 ## Document and factory cases
 
@@ -70,14 +70,14 @@ between candidate origins. The adblock engine and its two inputs,
 are outside this change.
 
 **Open design question:** Which production object supplies
-`shields_settings_origin_` for NAV-1 step 3, and which method assigns the field
+`shields_settings_origin_` for the main-frame HTTP request for `/new`, and which method assigns the field
 before the first settings lookup? The branch currently assigns it in `MakeCTX`
 by calling `ctx->GetShieldsSettingsOrigin(isolation_info)`. That getter computes
 the value; it does not satisfy this contract.
 
 ## Acceptance evidence
 
-- For NAV-1, observe what the destination server receives for `/new` with both
+- For the main-frame navigation, observe what the destination server receives for `/new` with both
   configurations of A and B. A subresource fetch after B commits is insufficient.
 - For the initial empty popup, observe a request issued by that document before
   a subsequent main-frame document commits. A later popup document or a child
