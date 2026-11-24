@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
+#include "base/test/bind.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_key.h"
 #include "chrome/browser/ui/side_panel/side_panel_native_view.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -38,22 +39,25 @@ TEST(SidePanelEntryTest, DefaultContentWidthWithoutCallback) {
   EXPECT_EQ(400, MakeEntry(base::NullCallback())->GetDefaultContentWidth());
 }
 
-TEST(SidePanelEntryTest, PreferredWidthBelowMinimumIsIgnored) {
-  EXPECT_EQ(400, MakeEntry(base::BindRepeating([] {
-                   return 399;
-                 }))->GetDefaultContentWidth());
-}
+TEST(SidePanelEntryTest, PreferredWidth) {
+  struct {
+    const char* name;
+    int preferred;
+    int expected;
+  } const kTestCases[] = {
+      {"Below minimum is ignored", 399, 400},
+      {"At minimum is used", 400, 400},
+      {"Above minimum is used", 520, 520},
+  };
 
-TEST(SidePanelEntryTest, PreferredWidthAtMinimumIsUsed) {
-  EXPECT_EQ(400, MakeEntry(base::BindRepeating([] {
-                   return 400;
-                 }))->GetDefaultContentWidth());
-}
-
-TEST(SidePanelEntryTest, PreferredWidthAboveMinimumIsUsed) {
-  EXPECT_EQ(520, MakeEntry(base::BindRepeating([] {
-                   return 520;
-                 }))->GetDefaultContentWidth());
+  for (const auto& tc : kTestCases) {
+    SCOPED_TRACE(tc.name);
+    const int preferred = tc.preferred;
+    EXPECT_EQ(tc.expected,
+              MakeEntry(base::BindLambdaForTesting([preferred] {
+                return preferred;
+              }))->GetDefaultContentWidth());
+  }
 }
 
 }  // namespace brave

@@ -10,18 +10,11 @@
 #include "base/base64.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_vpn {
-
-using v1::endpoints::kSupportTicketEmailKey;
-using v1::endpoints::kSupportTicketPartnerClientIdKey;
-using v1::endpoints::kSupportTicketPaymentValidationMethodKey;
-using v1::endpoints::kSupportTicketSubjectKey;
-using v1::endpoints::kSupportTicketSubscriberCredential;
-using v1::endpoints::kSupportTicketSupportTicketKey;
 
 TEST(BraveVPNAPIHelperTest, TicketInfoTest) {
   base::DictValue ticket_value = GetValueWithTicketInfos(
@@ -32,17 +25,17 @@ TEST(BraveVPNAPIHelperTest, TicketInfoTest) {
       "Love the Brave VPN!\n\nsubscriber-credential: "
       "credential\npayment-validation-method: brave-premium\ntimezone: "
       "USA/Boston";
-  EXPECT_THAT(
-      ticket_value,
-      base::test::IsJson(
-          base::DictValue()
-              .Set(kSupportTicketEmailKey, "brave-vpn@brave.com")
-              .Set(kSupportTicketSubjectKey, "It's cool feature")
-              .Set(kSupportTicketSupportTicketKey,
-                   base::Base64Encode(expected_support_ticket))
-              .Set(kSupportTicketPartnerClientIdKey, "com.brave.browser")
-              .Set(kSupportTicketSubscriberCredential, "credential")
-              .Set(kSupportTicketPaymentValidationMethodKey, "brave-premium")));
+  EXPECT_THAT(ticket_value,
+              base::test::IsJson(absl::StrFormat(
+                  R"({
+                    "email": "brave-vpn@brave.com",
+                    "subject": "It's cool feature",
+                    "support-ticket": "%s",
+                    "partner-client-id": "com.brave.browser",
+                    "subscriber-credential": "credential",
+                    "payment-validation-method": "brave-premium"
+                  })",
+                  base::Base64Encode(expected_support_ticket))));
 }
 
 }  // namespace brave_vpn
