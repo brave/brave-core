@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 
+import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroupAdapter;
@@ -815,6 +816,65 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     AutofillAndPasswordsFragment.EXTRA_REFERRER,
                     AutofillAndPasswordsFragment.AutofillSettingsReferrer.SETTINGS_MENU);
 
+    // Search headers come from the XML categories, which don't match the sections the main
+    // settings are reordered into at runtime in rearrangePreferenceOrders().
+    private static void updateSearchIndexSectionHeaders(
+            Context context, SettingsIndexData indexData) {
+        setSearchIndexHeader(
+                context,
+                indexData,
+                R.string.prefs_section_features,
+                PREF_SHIELDS_AND_PRIVACY,
+                PREF_BRAVE_NEWS_V2,
+                PREF_BRAVE_WALLET,
+                PREF_BRAVE_PLAYLIST,
+                PREF_BRAVE_VPN,
+                PREF_BRAVE_LEO);
+        setSearchIndexHeader(
+                context,
+                indexData,
+                R.string.prefs_section_general,
+                PREF_BRAVE_SEARCH_ENGINES,
+                MainSettings.PREF_HOMEPAGE,
+                PREF_HOME_SCREEN_WIDGET,
+                PREF_SYNC,
+                PREF_BRAVE_STATS,
+                PREF_NOTIFICATIONS,
+                PREF_CONTENT_SETTINGS,
+                PREF_DOWNLOADS,
+                PREF_BRAVE_ORIGIN,
+                MainSettings.PREF_DEFAULT_BROWSER);
+        setSearchIndexHeader(
+                context,
+                indexData,
+                R.string.prefs_section_display,
+                PREF_TABS,
+                PREF_MEDIA,
+                PREF_APPEARANCE,
+                PREF_NEW_TAB_PAGE,
+                PREF_ACCESSIBILITY,
+                PREF_BRAVE_LANGUAGES,
+                MainSettings.PREF_AUTOFILL_AND_PASSWORDS);
+        setSearchIndexHeader(
+                context,
+                indexData,
+                R.string.prefs_about_section,
+                MainSettings.PREF_DEVELOPER,
+                PREF_ABOUT_CHROME);
+    }
+
+    private static void setSearchIndexHeader(
+            Context context, SettingsIndexData indexData, @StringRes int headerId, String... keys) {
+        String header = context.getString(headerId);
+        for (String key : keys) {
+            SettingsIndexData.Entry entry =
+                    indexData.getEntryForKey(MainSettings.class.getName(), key);
+            if (entry == null) continue;
+            indexData.updateEntry(
+                    entry.id, new SettingsIndexData.Entry.Builder(entry).setHeader(header).build());
+        }
+    }
+
     public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new ChromeBaseSearchIndexProvider(MainSettings.class.getName(), 0) {
 
@@ -844,19 +904,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                             context, indexData, profile);
                     BraveAutofillOptionsSearchIndex.updateSearchIndexEntries(
                             context, indexData, AUTOFILL_OPTIONS_SEARCH_INDEX_ROUTES);
-                    // Upstream XML places it under Basics; Brave shows it under Display.
-                    SettingsIndexData.Entry autofillEntry =
-                            indexData.getEntryForKey(
-                                    MainSettings.class.getName(),
-                                    MainSettings.PREF_AUTOFILL_AND_PASSWORDS);
-                    if (autofillEntry != null) {
-                        indexData.updateEntry(
-                                autofillEntry.id,
-                                new SettingsIndexData.Entry.Builder(autofillEntry)
-                                        .setHeader(
-                                                context.getString(R.string.prefs_section_display))
-                                        .build());
-                    }
+                    updateSearchIndexSectionHeaders(context, indexData);
                     // Remove upstream preferences hidden from the main settings UI.
                     // "languages" is safe to remove now that
                     // LanguageSettings.SEARCH_INDEX_DATA_PROVIDER
