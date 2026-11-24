@@ -3,6 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+#include <memory>
+
+#include "brave/browser/ui/views/infobars/web_discovery_infobar_content_view.h"
+#include "brave/browser/ui/views/infobars/web_discovery_infobar_view.h"
+#include "brave/browser/web_discovery/web_discovery_infobar_delegate.h"
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -18,6 +24,7 @@
 #include "extensions/common/constants.h"
 #include "extensions/test/extension_background_page_waiter.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "ui/views/view_utils.h"
 
 namespace web_discovery {
 
@@ -47,6 +54,15 @@ IN_PROC_BROWSER_TEST_F(WebDiscoveryTest, InfobarAddedTest) {
   infobar_manager->AddObserver(&observer);
   tab_helper->ShowInfoBar(browser()->GetProfile()->GetPrefs());
   infobar_manager->RemoveObserver(&observer);
+
+  // WebDiscoveryInfoBarView lays out its content view in its own coordinates,
+  // so the content view must be a direct child.
+  auto infobar = std::make_unique<WebDiscoveryInfoBarView>(
+      std::make_unique<WebDiscoveryInfoBarDelegate>(
+          browser()->GetProfile()->GetPrefs()));
+  EXPECT_TRUE(std::ranges::any_of(infobar->children(), [](views::View* child) {
+    return views::IsViewClass<WebDiscoveryInfoBarContentView>(child);
+  }));
 }
 
 // Verifies that the WDP JS module loads without errors in the Brave Extension

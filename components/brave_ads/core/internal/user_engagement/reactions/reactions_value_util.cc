@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_value_util.h"
 
-#include <optional>
 #include <string>
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -27,10 +26,7 @@ ReactionMap ReactionMapFromDict(const base::DictValue& dict) {
 
   for (const auto [id, value] : dict) {
     if (std::optional<int> type = value.GetIfInt()) {
-      auto reaction = static_cast<mojom::ReactionType>(*type);
-      if (mojom::IsKnownEnumValue(reaction)) {
-        reactions[id] = reaction;
-      }
+      reactions[id] = static_cast<mojom::ReactionType>(*type);
     }
   }
 

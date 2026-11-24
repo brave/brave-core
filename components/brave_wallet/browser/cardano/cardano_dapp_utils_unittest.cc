@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_dapp_utils.h"
 
+#include <string>
+
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
@@ -14,6 +16,7 @@
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_wallet {
 
@@ -77,49 +80,42 @@ TEST(CardanoDappUtilsTest, FormatCardanoTxDetails) {
 
   base::DictValue details = FormatCardanoTxDetails(tx_body, utxos);
 
-  base::DictValue expected =
-      base::DictValue()
-          .Set("inputs",
-               base::ListValue().Append(
-                   base::DictValue()
-                       .Set("txHash", base::HexEncodeLower(matched_tx_hash))
-                       .Set("index", "0")
-                       .Set("value", "5000000")
-                       .Set("address", address1->ToString())
-                       .Set("tokens",
-                            base::ListValue().Append(
-                                base::DictValue()
-                                    .Set("tokenId",
-                                         base::HexEncodeLower(token_id))
-                                    .Set("value", "10")))))
-          .Set("outputs", base::ListValue().Append(
-                              base::DictValue()
-                                  .Set("address", address2->ToString())
-                                  .Set("value", "3000000")
-                                  .Set("tokens", base::ListValue())))
-          .Set("mint", base::ListValue().Append(
-                           base::DictValue()
-                               .Set("tokenId", base::HexEncodeLower(token_id))
-                               .Set("value", "7")))
-          .Set("withdrawals", base::ListValue().Append(
-                                  base::DictValue()
-                                      .Set("address", address1->ToString())
-                                      .Set("value", "1000000")))
-          .Set("scriptDataHash", base::HexEncodeLower(script_data_hash))
-          // Unmatched utxo -> JSON null value/tokens/address.
-          .Set("collateral",
-               base::ListValue().Append(
-                   base::DictValue()
-                       .Set("txHash", base::HexEncodeLower(unmatched_tx_hash))
-                       .Set("index", "1")
-                       .Set("value", base::Value())
-                       .Set("tokens", base::Value())
-                       .Set("address", base::Value())))
-          .Set("collateralReturn", base::DictValue()
-                                       .Set("address", address2->ToString())
-                                       .Set("value", "2000000")
-                                       .Set("tokens", base::ListValue()))
-          .Set("totalCollateral", "2500000");
+  const std::string expected = absl::StrFormat(
+      R"({
+        "inputs": [{
+          "txHash": "%s",
+          "index": "0",
+          "value": "5000000",
+          "address": "%s",
+          "tokens": [{"tokenId": "%s", "value": "10"}]
+        }],
+        "outputs": [{
+          "address": "%s",
+          "value": "3000000",
+          "tokens": []
+        }],
+        "mint": [{"tokenId": "%s", "value": "7"}],
+        "withdrawals": [{"address": "%s", "value": "1000000"}],
+        "scriptDataHash": "%s",
+        "collateral": [{
+          "txHash": "%s",
+          "index": "1",
+          "value": null,
+          "tokens": null,
+          "address": null
+        }],
+        "collateralReturn": {
+          "address": "%s",
+          "value": "2000000",
+          "tokens": []
+        },
+        "totalCollateral": "2500000"
+      })",
+      base::HexEncodeLower(matched_tx_hash), address1->ToString(),
+      base::HexEncodeLower(token_id), address2->ToString(),
+      base::HexEncodeLower(token_id), address1->ToString(),
+      base::HexEncodeLower(script_data_hash),
+      base::HexEncodeLower(unmatched_tx_hash), address2->ToString());
 
   EXPECT_THAT(details, base::test::IsJson(expected));
 }
