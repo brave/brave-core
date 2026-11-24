@@ -117,6 +117,8 @@ class SidebarController : public SidebarService::Observer,
   SidebarService* GetSidebarService();
 
   // SidebarService::Observer overrides:
+  void OnItemUpdated(const SidebarItem& item,
+                     const SidebarItemUpdate& update) override;
   void OnShowSidebarOptionChanged(
       SidebarService::ShowSidebarOption option) override;
 

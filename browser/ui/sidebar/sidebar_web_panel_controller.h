@@ -37,6 +37,12 @@ class SidebarWebPanelController : public TabStripModelObserver {
   // a single frame rather than one animating over the other.
   void ToggleWebPanel(const SidebarItem& item, bool suppress_animations);
 
+  // Reloads the open panel's existing WebContents in place under `item`'s
+  // user-agent choice, preserving whatever page the panel is currently
+  // showing (which may not be `item.url` anymore, if the user navigated
+  // within the panel).
+  void ReapplyUserAgent(const SidebarItem& item);
+
   // True only while a panel is open and not animating closed. Callers asking
   // "is a panel on offer to the user" want this.
   bool HasOpenPanel() const;

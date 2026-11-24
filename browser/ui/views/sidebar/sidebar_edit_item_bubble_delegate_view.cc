@@ -166,8 +166,11 @@ void SidebarEditItemBubbleDelegateView::UpdateItem() {
     new_url = target_item_.url;
   }
 
-  GetSidebarService(browser_)->UpdateItem(target_item_.url, new_url,
-                                          target_item_.title, new_title);
+  sidebar::SidebarItem new_item = target_item_;
+  new_item.url = new_url;
+  new_item.title = new_title;
+
+  GetSidebarService(browser_)->UpdateItem(target_item_, new_item);
 }
 
 void SidebarEditItemBubbleDelegateView::UpdateOKButtonEnabledState() {
