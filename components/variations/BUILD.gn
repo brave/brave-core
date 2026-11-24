@@ -28,13 +28,22 @@ static_library("variations") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "command_line_utils_unittest.cc" ]
+  sources = [
+    "command_line_utils_unittest.cc",
+    "variations_seed_store_unittest.cc",
+  ]
 
   deps = [
     ":buildflags",
     ":variations",
     "//base",
+    "//base/test:test_support",
+    "//components/prefs:test_support",
     "//components/variations",
+    "//components/variations/proto",
+    "//components/version_info:channel",
+    "//crypto",
     "//testing/gtest",
+    "//third_party/boringssl",
   ]
 }

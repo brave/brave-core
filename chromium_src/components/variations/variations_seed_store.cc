@@ -19,19 +19,20 @@ class PublicKeyWrapper {
  public:
   static const crypto::keypair::PublicKey& GetPublicKey(
       const crypto::keypair::PublicKey& public_key);
+  static bool AcceptsHybridSignatures();
 };
 
 }  // namespace variations
 
-#define Verify(signature_algorithm, public_key, seed_bytes, signature)    \
-  Verify(signature_algorithm, PublicKeyWrapper::GetPublicKey(public_key), \
-         seed_bytes, signature)
-
 #include <components/variations/variations_seed_store.cc>
 
-#undef Verify
-
 namespace variations {
+
+// static
+bool PublicKeyWrapper::AcceptsHybridSignatures() {
+  // Chromium tests keep upstream's hybrid key verification.
+  return base::CurrentTestVendor::Get() == base::TestVendor::kChromium;
+}
 
 // static
 const crypto::keypair::PublicKey& PublicKeyWrapper::GetPublicKey(
