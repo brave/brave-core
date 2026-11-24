@@ -125,6 +125,43 @@ class ChangeTest(unittest.TestCase):
             self.assertIsNone(source.read('missing.txt'))
 
 
+class DirectoryWideTest(unittest.TestCase):
+    def _wide(self, path: str, **fields) -> bool:
+        return knowledge_base.CapabilityGroup.from_fields(
+            {'rules': ['x.md'], **fields}
+        ).directory_wide_for(path)
+
+    def test_whole_top_level_directories(self):
+        for paths, path in (
+            (['chrome/.*'], 'chrome/a.cc'),
+            (['(?:ios|base/apple)/.*'], 'base/apple/b.mm'),
+            # Brave's own paths beside it don't narrow it for upstream files.
+            (['agents/.*', 'brave/agents/.*\\.md'], 'agents/c.md'),
+        ):
+            with self.subTest(paths=paths):
+                self.assertTrue(self._wide(path, path_expression=paths))
+
+    def test_narrower_or_targeted_groups(self):
+        for path, fields in (
+            (
+                'components/sync/a.cc',
+                {'path_expression': ['components/sync/.*']},
+            ),
+            ('chrome/a.cc', {'path_expression': ['(?:.*/)?[^/]*\\.cc']}),
+            (
+                'components/sync/a.cc',
+                {'path_expression': ['components/.*', 'components/sync/.*']},
+            ),
+            (
+                'chrome/a.cc',
+                {'path_expression': ['chrome/.*'], 'content_patterns': ['x']},
+            ),
+            ('chrome/a.cc', {}),
+        ):
+            with self.subTest(fields=fields):
+                self.assertFalse(self._wide(path, **fields))
+
+
 class RuleTest(unittest.TestCase):
     def test_read(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -568,6 +605,78 @@ class ReviewTest(_FakeRepoTest):
             matches[2].rule.url.startswith(knowledge_base._CHROMIUM_URL)
         )
 
+    def test_a_file_counts_for_the_lines_it_adds(self):
+        # As upstream's reviewer reads a change: removals alone don't count.
+        self.assertNotIn(
+            'general/style', self._review(_diff('browser/gone.cc', '-x'))
+        )
+        self.assertIn(
+            'general/style', self._review(_diff('browser/new.cc', '+x'))
+        )
+
+    def test_a_patch_adding_nothing_upstream_has_no_upstream_view(self):
+        self.chromium('components/sync/e.cc', '')
+        patch = _diff(
+            'patches/components-sync-e.cc.patch',
+            '+diff --git a/components/sync/e.cc b/components/sync/e.cc',
+            '++++ b/components/sync/e.cc',
+            '+-  RemovedByBrave();',
+        )
+        self.assertNotIn('general/sync', self._review(patch))
+
+    def test_a_plaster_counts_through_its_patch(self):
+        self.chromium('components/sync/f.cc', '')
+        self.assertNotIn(
+            'general/sync',
+            self._review(
+                _diff('rewrite/components/sync/f.cc.yaml', '+substitutions:')
+            ),
+        )
+
+    def test_an_override_skips_directory_wide_groups(self):
+        rules = 'agents/knowledge_base/rules'
+        self.chromium(f'{rules}/components/wide.md', _rule('components/wide'))
+        self.chromium(
+            f'{rules}/components/COMMON_METADATA',
+            'agentic_review {\n'
+            '  capability_groups {\n'
+            '    path_expression: "components/.*"\n'
+            f'    rules: "{rules}/components/wide.md"\n'
+            '  }\n'
+            '}\n',
+        )
+        self.chromium('components/sync/h.cc', '')
+        matches = self._review(
+            _diff('chromium_src/components/sync/h.cc', '+#define A B')
+        )
+        self.assertIn('general/sync', matches)
+        self.assertNotIn('components/wide', matches)
+
+    def test_a_shadow_counts_upstream_for_its_own_code(self):
+        self.chromium('components/sync/g.cc', '')
+        boilerplate = _diff(
+            'chromium_src/components/sync/g.cc',
+            '+/* Copyright (c) 2026 The Brave Authors. All rights reserved.',
+            '+ * License, v. 2.0. */',
+            '+',
+            '+#include "brave/components/sync/brave_g.h"',
+            '+#include <components/sync/g.cc>  // IWYU pragma: export',
+        )
+        self.assertNotIn('general/sync', self._review(boilerplate))
+        code = _diff(
+            'chromium_src/components/sync/g.cc',
+            '+#define Start Start_ChromiumImpl',
+            '+#include <components/sync/g.cc>',
+        )
+        self.assertEqual(
+            {
+                'chromium_src/components/sync/g.cc': [
+                    '+#define Start Start_ChromiumImpl'
+                ]
+            },
+            self._review(code)['general/sync'],
+        )
+
     def test_a_patch_is_matched_by_the_lines_it_adds(self):
         self.chromium('components/sync/d.cc', '')
         patch = _diff(
@@ -626,6 +735,70 @@ class PathLocalRulesTest(_FakeRepoTest):
                 f'{self._RULE}: no `severity`',
                 f'{self._RULE}: no **Rule.** paragraph',
                 f'{self._RULE}: no **Why.** paragraph',
+            ],
+            knowledge_base.lint(),
+        )
+
+
+class UpstreamScopesTest(_FakeRepoTest):
+    """Brave's scopes for Chromium's rules, read as part of Chromium's
+    knowledge base: paths and rules relative to Chromium's `src`."""
+
+    _RULE = 'chrome/browser/profiles/knowledge_base/keep-profiles-apart.md'
+
+    def setUp(self):
+        super().setUp()
+        self.chromium(self._RULE, _rule('profiles/keep-profiles-apart'))
+        self.brave(
+            'docs/knowledge_base/upstream/chrome/COMMON_METADATA',
+            'agentic_review {\n'
+            '  capability_groups {\n'
+            '    path_expression: "brave/browser/profiles/.*"\n'
+            '    path_expression: '
+            '"chrome/browser/profiles/profile_impl\\\\.cc"\n'
+            f'    rules: "{self._RULE}"\n'
+            '  }\n'
+            '}\n',
+        )
+
+    def _review(self, diff: str) -> dict:
+        return {
+            m.rule.name: list(m.files)
+            for m in knowledge_base.review(Change.parse(diff))
+        }
+
+    def test_reach_brave_files_and_overrides(self):
+        self.chromium('chrome/browser/profiles/profile_impl.cc', '')
+        matches = self._review(
+            _diff('browser/profiles/brave_profile.cc', '+x')
+            + _diff('browser/other/y.cc', '+y')
+            + _diff(
+                'chromium_src/chrome/browser/profiles/profile_impl.cc', '+z'
+            )
+        )
+        self.assertEqual(
+            [
+                'browser/profiles/brave_profile.cc',
+                'chromium_src/chrome/browser/profiles/profile_impl.cc',
+            ],
+            sorted(matches['profiles/keep-profiles-apart']),
+        )
+
+    def test_lint_checks_their_rules_upstream(self):
+        self.assertEqual([], knowledge_base.lint())
+        self.brave(
+            'docs/knowledge_base/upstream/chrome/COMMON_METADATA',
+            'agentic_review {\n'
+            '  capability_groups {\n'
+            '    path_expression: "brave/browser/.*"\n'
+            '    rules: "chrome/browser/gone.md"\n'
+            '  }\n'
+            '}\n',
+        )
+        self.assertEqual(
+            [
+                'docs/knowledge_base/upstream/chrome/COMMON_METADATA: '
+                'capability_groups[0]: chrome/browser/gone.md: no such file'
             ],
             knowledge_base.lint(),
         )
