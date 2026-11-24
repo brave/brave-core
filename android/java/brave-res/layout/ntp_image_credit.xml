@@ -40,6 +40,12 @@
             android:visibility="gone"/>
     </FrameLayout>
 
+    <Space
+        android:id="@+id/sponsored_logo_bottom_space"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/sponsored_label"
         android:layout_width="wrap_content"

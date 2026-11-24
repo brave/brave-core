@@ -1344,11 +1344,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     }
 
     private void updateNewTabTakeoverDisclosure(boolean wasWallpaperShown) {
-        boolean isNewTabTakeoverShown = wasWallpaperShown && mNtpImageGlobal instanceof Wallpaper;
+        boolean shouldDisplayDisclosure =
+                wasWallpaperShown
+                        && mNtpImageGlobal instanceof Wallpaper
+                        && ((Wallpaper) mNtpImageGlobal).shouldDisplayNewTabTakeoverDisclosure();
         if (mNtpAdapter != null) {
-            mNtpAdapter.setNewTabTakeoverDisclosureVisible(isNewTabTakeoverShown);
+            mNtpAdapter.setNewTabTakeoverDisclosureVisible(shouldDisplayDisclosure);
         }
-        if (isNewTabTakeoverShown && mDisclosureTooltipController == null) {
+        if (shouldDisplayDisclosure && mDisclosureTooltipController == null) {
             assertNonNull(mProfile);
             mDisclosureTooltipController =
                     new NewTabTakeoverDisclosureTooltipController(
@@ -1357,7 +1360,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                             BraveRewardsHelper::isRewardsEnabled,
                             NewTabTakeoverDisclosureTooltip::new,
                             mShouldAutoDisplayNewTabTakeoverDisclosureTooltip);
-        } else if (!isNewTabTakeoverShown && mDisclosureTooltipController != null) {
+        } else if (!shouldDisplayDisclosure && mDisclosureTooltipController != null) {
             mDisclosureTooltipController.dismiss();
             mDisclosureTooltipController = null;
         }

@@ -100,7 +100,8 @@ public class NTPBackgroundImagesBridge {
             String creativeInstanceId,
             String wallpaperId,
             boolean isRichMedia,
-            int metricType) {
+            int metricType,
+            boolean shouldDisplayNewTabTakeoverDisclosure) {
         // The metricType int value can be passed directly since @IntDef just validates the value
         return new Wallpaper(
                 imagePath,
@@ -112,7 +113,8 @@ public class NTPBackgroundImagesBridge {
                 creativeInstanceId,
                 wallpaperId,
                 isRichMedia,
-                metricType);
+                metricType,
+                shouldDisplayNewTabTakeoverDisclosure);
     }
 
     @CalledByNative
