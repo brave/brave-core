@@ -12,10 +12,13 @@ substitutions:
       Upstream's Android bottom bar owns the bottom controls when enabled, so
       keep upstream behavior there.
     regex:
-      re_pattern: '^( *)(public LocationBarFocusScrimHandler.*?\{.*?)(\n^\1\})'
+      re_pattern: '^( *)(public LocationBarFocusScrimHandler.*?\{.*?)(\n\1\})'
       re_flags: [DOTALL, MULTILINE]
       replace: |-
-        \1\2\n\1\1if (!ChromeFeatureList.sAndroidBottomBar.isEnabled()) {\n\1\1\1mScrimModel.set(ScrimProperties.AFFECTS_NAVIGATION_BAR, true);\n\1\1}\3
+        \1\2
+                if (!ChromeFeatureList.sAndroidBottomBar.isEnabled()) {
+                    mScrimModel.set(ScrimProperties.AFFECTS_NAVIGATION_BAR, true);
+                }\3
   - description: |-
       Set the omnibox focus scrim bottom margin to zero.
 
@@ -23,7 +26,10 @@ substitutions:
       the bottom-chin area. This keeps the gesture-navigation region covered.
       Upstream's Android bottom bar keeps upstream's margin.
     regex:
-      re_pattern: '^( *)(public void updateScrimVisualState\(\) \{.*?)(\n^\1\})'
+      re_pattern: '^( *)(public void updateScrimVisualState\(\) \{.*?)(\n\1\})'
       re_flags: [DOTALL, MULTILINE]
       replace: |-
-        \1\2\n\1\1if (!ChromeFeatureList.sAndroidBottomBar.isEnabled()) {\n\1\1\1mScrimModel.set(ScrimProperties.BOTTOM_MARGIN, 0);\n\1\1}\3
+        \1\2
+                if (!ChromeFeatureList.sAndroidBottomBar.isEnabled()) {
+                    mScrimModel.set(ScrimProperties.BOTTOM_MARGIN, 0);
+                }\3
