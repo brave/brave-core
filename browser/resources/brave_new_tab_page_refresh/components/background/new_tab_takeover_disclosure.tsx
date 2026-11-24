@@ -30,7 +30,10 @@ interface Props {
 
 export function NewTabTakeoverDisclosure(props: Props) {
   const actions = useBackgroundActions()
-  const { shouldAutoDisplayNewTabTakeoverDisclosure } = props.background
+  const {
+    shouldDisplayNewTabTakeoverDisclosure,
+    shouldAutoDisplayNewTabTakeoverDisclosure,
+  } = props.background
 
   const [tooltipVisible, setTooltipVisible] = React.useState(false)
   const tooltipShowTimer = React.useRef<number | undefined>(undefined)
@@ -108,6 +111,10 @@ export function NewTabTakeoverDisclosure(props: Props) {
 
   function cancelScheduledShow() {
     window.clearTimeout(tooltipShowTimer.current)
+  }
+
+  if (!shouldDisplayNewTabTakeoverDisclosure) {
+    return null
   }
 
   return (

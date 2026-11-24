@@ -33,6 +33,7 @@ const newTabTakeoverBackgrounds = {
       imageUrl: sampleBackground,
     },
     metricType: NewTabPageAdMetricType.kConfirmation,
+    shouldDisplayNewTabTakeoverDisclosure: true,
     shouldAutoDisplayNewTabTakeoverDisclosure: true,
   },
 
@@ -48,6 +49,7 @@ const newTabTakeoverBackgrounds = {
       imageUrl: '',
     },
     metricType: NewTabPageAdMetricType.kConfirmation,
+    shouldDisplayNewTabTakeoverDisclosure: true,
     shouldAutoDisplayNewTabTakeoverDisclosure: true,
   },
 

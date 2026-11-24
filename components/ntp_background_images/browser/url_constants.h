@@ -43,6 +43,8 @@ inline constexpr char kWallpaperFilePathKey[] = "wallpaperImagePath";
 inline constexpr char kWallpaperColorKey[] = "wallpaperColor";
 inline constexpr char kWallpaperMetricTypeKey[] = "metricType";
 inline constexpr char kWallpaperTypeKey[] = "type";
+inline constexpr char kShouldDisplayNewTabTakeoverDisclosureKey[] =
+    "shouldDisplayNewTabTakeoverDisclosure";
 inline constexpr char kWallpaperRandomKey[] = "random";
 inline constexpr char kWallpaperFocalPointXKey[] = "wallpaperFocalPointX";
 inline constexpr char kWallpaperFocalPointYKey[] = "wallpaperFocalPointY";

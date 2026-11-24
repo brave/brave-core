@@ -629,7 +629,10 @@ std::optional<base::DictValue> NTPSponsoredContentData::MaybeGetBackgroundAt(
                .Set(kCompanyNameKey, creative.logo.company_name)
                .Set(kAltKey, creative.logo.alt_text)
                .Set(kDestinationURLKey, creative.logo.destination_url))
-      .Set(kWallpaperTypeKey, *wallpaper_type);
+      .Set(kWallpaperTypeKey, *wallpaper_type)
+      .Set(kShouldDisplayNewTabTakeoverDisclosureKey,
+           campaign.type !=
+               brave_ads::mojom::NewTabPageAdCampaignType::kProduct);
 }
 
 std::optional<base::DictValue> NTPSponsoredContentData::MaybeGetBackground(

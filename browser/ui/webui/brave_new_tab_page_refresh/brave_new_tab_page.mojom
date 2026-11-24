@@ -40,6 +40,7 @@ struct NewTabTakeoverBackground {
   string image_url;
   NewTabTakeoverLogo? logo;
   brave_ads.mojom.NewTabPageAdMetricType metric_type;
+  bool should_display_new_tab_takeover_disclosure;
   bool should_auto_display_new_tab_takeover_disclosure;
 };
 

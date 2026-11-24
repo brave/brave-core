@@ -194,7 +194,8 @@ void NewTabPageHandler::GetNewTabTakeoverBackground(
 void NewTabPageHandler::OnGetNewTabTakeoverBackground(
     GetNewTabTakeoverBackgroundCallback callback,
     mojom::NewTabTakeoverBackgroundPtr new_tab_takeover_background) {
-  if (new_tab_takeover_background) {
+  if (new_tab_takeover_background &&
+      new_tab_takeover_background->should_display_new_tab_takeover_disclosure) {
     new_tab_takeover_background
         ->should_auto_display_new_tab_takeover_disclosure =
         ntp_background_images::ShouldAutoDisplayNewTabTakeoverDisclosureTooltip(
