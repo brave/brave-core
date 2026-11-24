@@ -63,10 +63,10 @@ TEST(BraveAdsReactionsValueUtilTest, ReactionMapFromDict) {
   EXPECT_EQ(expected_reactions, ReactionMapFromDict(dict));
 }
 
-TEST(BraveAdsReactionsValueUtilTest, ReactionMapFromDictSkipsNonIntValues) {
+TEST(BraveAdsReactionsValueUtilTest, ReactionMapFromDictSkipsInvalidValues) {
   // Arrange
-  const base::DictValue dict =
-      base::test::ParseJsonDict(R"JSON({"a": 1, "b": "x"})JSON");
+  const base::DictValue dict = base::test::ParseJsonDict(
+      R"JSON({"a": 1, "b": "x", "c": -1, "d": 2147483647})JSON");
 
   // Act & Assert
   const ReactionMap expected_reactions = {{"a", mojom::ReactionType::kLiked}};
