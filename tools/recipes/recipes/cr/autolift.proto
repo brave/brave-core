@@ -29,6 +29,9 @@ message InputProperties {
   // from `cr<milestone>` (master when unset), without syncing it with the
   // newer branches.
   string chromium_version = 4;
+  // With `chromium_version`, the channels the bump leaves alone, by name
+  // (`beta`) or branch (`1.101.x`), e.g. for a tag meant only for release.
+  repeated string skip_channels = 5;
 }
 
 // A commit the run wrote or changed, which a human should review.

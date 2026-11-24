@@ -122,6 +122,8 @@ def _advise(
         cmd.append('--autofix')
     if properties.resume:
         cmd.append('--resume')
+    for channel in properties.skip_channels:
+        cmd += ['--skip-channel', channel]
     result = api.step(
         'advise',
         [*cmd, '--json-output', api.json.output()],
@@ -626,6 +628,21 @@ def GenTests(api: TEST_DEPS):
                 ['cat', r'.*/b/src/brave/\.autolift/cr157\.x/report\.md'],
             ),
             api.post_process(post_process.StatusSuccess),
+        ),
+    )
+
+    # The channels a bump skips go to `advise`, which tells the agent.
+    yield api.test(
+        'channel bump skipping a channel',
+        new_run(
+            api.properties(
+                chromium_version='157.0.8103.38', skip_channels=['beta']
+            ),
+            advised(
+                AUTOLIFT, 'advise', '157.0.8103.38', '--skip-channel', 'beta'
+            ),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
         ),
     )
 
