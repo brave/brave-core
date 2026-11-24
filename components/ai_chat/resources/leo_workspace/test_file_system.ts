@@ -15,6 +15,8 @@
 // - a missing entry throws unless `create` is passed, and asking for the wrong
 //   kind of entry throws.
 // - createWritable() truncates: the file ends up with exactly what was written.
+// - removeEntry() throws for a missing entry, and for a non-empty directory
+//   unless `recursive` is passed.
 //
 // Entries are iterated in insertion order (the real API makes no ordering
 // guarantee), which lets tests distinguish code that sorts from code that
@@ -133,6 +135,22 @@ class FakeDirectoryHandle {
     const file = new FakeFileHandle(name, '')
     this.children.set(name, file)
     return file
+  }
+
+  async removeEntry(name: string, options?: { recursive?: boolean }) {
+    validateName(name)
+    const existing = this.children.get(name)
+    if (!existing) {
+      throw new Error(`NotFoundError: ${name}`)
+    }
+    if (
+      existing.kind === 'directory'
+      && existing.children.size > 0
+      && !options?.recursive
+    ) {
+      throw new Error(`InvalidModificationError: ${name} is not empty`)
+    }
+    this.children.delete(name)
   }
 
   async *entries(): AsyncGenerator<

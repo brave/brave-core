@@ -584,7 +584,7 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
   }
   EXPECT_THAT(names, ::testing::UnorderedElementsAre(
                          "view", "str_replace_based_edit_tool", "grep", "glob",
-                         "append_file"));
+                         "append_file", "delete_file"));
 }
 
 // An empty workspace can only reach its own OPFS, so its tools run without

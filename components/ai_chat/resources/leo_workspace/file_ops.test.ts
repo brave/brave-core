@@ -447,6 +447,43 @@ describe('appendFile', () => {
   })
 })
 
+describe('deleteFile', () => {
+  it('deletes a file at the root', async () => {
+    const root = createFakeWorkspace({ 'a.txt': 'a', 'b.txt': 'b' })
+    expect(await ops.deleteFile(root, 'a.txt')).toBe('Deleted a.txt')
+    expect(snapshotFakeWorkspace(root)).toEqual({ 'b.txt': 'b' })
+  })
+
+  it('deletes a nested file and keeps its now-empty directory', async () => {
+    const root = createFakeWorkspace({ 'src/a.ts': 'a' })
+    expect(await ops.deleteFile(root, './src//a.ts')).toBe('Deleted src/a.ts')
+    expect(snapshotFakeWorkspace(root)).toEqual({})
+    expect(await ops.isDirectory(root, 'src')).toBe(true)
+  })
+
+  it('rejects a file that does not exist', async () => {
+    const root = createFakeWorkspace({ 'a.txt': 'a' })
+    await expect(ops.deleteFile(root, 'nope.txt')).rejects.toThrow()
+    await expect(ops.deleteFile(root, 'nope/a.txt')).rejects.toThrow()
+    expect(snapshotFakeWorkspace(root)).toEqual({ 'a.txt': 'a' })
+  })
+
+  it('rejects a directory, even an empty one', async () => {
+    const root = createFakeWorkspace({ 'src/a.ts': 'a', 'docs/': '' })
+    await expect(ops.deleteFile(root, 'src')).rejects.toThrow()
+    await expect(ops.deleteFile(root, 'docs')).rejects.toThrow()
+    expect(snapshotFakeWorkspace(root)).toEqual({ 'src/a.ts': 'a' })
+    expect(await ops.isDirectory(root, 'docs')).toBe(true)
+  })
+
+  it('rejects the workspace root', async () => {
+    const root = createFakeWorkspace({ 'a.txt': 'a' })
+    await expect(ops.deleteFile(root, '')).rejects.toThrow('empty file path')
+    await expect(ops.deleteFile(root, '/')).rejects.toThrow('empty file path')
+    expect(snapshotFakeWorkspace(root)).toEqual({ 'a.txt': 'a' })
+  })
+})
+
 describe('strReplace', () => {
   it('replaces the single occurrence of old_str', async () => {
     const root = createFakeWorkspace({ 'a.ts': 'const x = 1\nconst y = 2\n' })
@@ -590,6 +627,7 @@ describe('workspace confinement', () => {
       escapes,
     )
     await expect(ops.insert(root, '../a.txt', 0, 'x')).rejects.toThrow(escapes)
+    await expect(ops.deleteFile(root, '../a.txt')).rejects.toThrow(escapes)
   })
 
   it('rejects .. in the middle of a path', async () => {

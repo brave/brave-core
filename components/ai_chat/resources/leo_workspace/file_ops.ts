@@ -352,6 +352,25 @@ export async function createFile(
   return `${existed ? 'Overwrote' : 'Created'} ${path} (${fileText.length} bytes)`
 }
 
+// Deletes the file at |path|. Only files can be deleted: a directory, the
+// workspace root or a missing path is an error, so a mistaken path can't remove
+// a whole tree.
+export async function deleteFile(
+  root: FileSystemDirectoryHandle,
+  path: string,
+): Promise<string> {
+  const parts = splitPath(path)
+  if (parts.length === 0) {
+    throw new Error('empty file path')
+  }
+  const name = parts.pop() as string
+  const dir = await getDir(root, parts.join('/'))
+  // Throws if |name| is missing or is a directory.
+  await dir.getFileHandle(name)
+  await dir.removeEntry(name)
+  return `Deleted ${normalizePath(path)}`
+}
+
 export async function strReplace(
   root: FileSystemDirectoryHandle,
   path: string,
