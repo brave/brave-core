@@ -30,52 +30,56 @@ namespace brave_shields {
 
 namespace {
 
-class DocumentOrigin : public content::DocumentUserData<DocumentOrigin> {
+class DocumentSettingsOrigin
+    : public content::DocumentUserData<DocumentSettingsOrigin> {
  public:
   const ShieldsSettingsOrigin value;
 
  private:
   // No public constructors to force going through static methods of
   // DocumentUserData (e.g. CreateForCurrentDocument).
-  DocumentOrigin(content::RenderFrameHost* frame, ShieldsSettingsOrigin origin)
+  DocumentSettingsOrigin(content::RenderFrameHost* frame,
+                         ShieldsSettingsOrigin origin)
       : DocumentUserData(frame), value(origin) {}
 
-  friend content::DocumentUserData<DocumentOrigin>;
+  friend content::DocumentUserData<DocumentSettingsOrigin>;
   DOCUMENT_USER_DATA_KEY_DECL();
 };
-DOCUMENT_USER_DATA_KEY_IMPL(DocumentOrigin);
+DOCUMENT_USER_DATA_KEY_IMPL(DocumentSettingsOrigin);
 
-struct NavigationOrigin : content::NavigationHandleUserData<NavigationOrigin> {
-  NavigationOrigin(content::NavigationHandle&, ShieldsSettingsOrigin initiator)
+struct InitiatorSettingsOrigin
+    : content::NavigationHandleUserData<InitiatorSettingsOrigin> {
+  InitiatorSettingsOrigin(content::NavigationHandle&,
+                          ShieldsSettingsOrigin initiator)
       : inherited(initiator) {}
   const ShieldsSettingsOrigin inherited;
   NAVIGATION_HANDLE_USER_DATA_KEY_DECL();
 };
-NAVIGATION_HANDLE_USER_DATA_KEY_IMPL(NavigationOrigin);
+NAVIGATION_HANDLE_USER_DATA_KEY_IMPL(InitiatorSettingsOrigin);
 
-// History entries can outlive the document and the page it inherited from.
-struct HistorySettingsOrigin : base::SupportsUserData::Data {
+// Navigation entries can outlive the document and the page it inherited from.
+struct NavigationEntrySettingsOrigin : base::SupportsUserData::Data {
   static constexpr char kKey = 0;
 
-  explicit HistorySettingsOrigin(ShieldsSettingsOrigin origin)
+  explicit NavigationEntrySettingsOrigin(ShieldsSettingsOrigin origin)
       : value(origin) {}
 
   std::unique_ptr<Data> Clone() override {
-    return std::make_unique<HistorySettingsOrigin>(value);
+    return std::make_unique<NavigationEntrySettingsOrigin>(value);
   }
 
   const ShieldsSettingsOrigin value;
 };
 
-const HistorySettingsOrigin* GetHistorySettingsOrigin(
+const NavigationEntrySettingsOrigin* GetNavigationEntrySettingsOrigin(
     content::NavigationHandle* handle) {
   if (!handle->IsHistory() || handle->WasServerRedirect() ||
       handle->GetNetErrorCode() != net::OK) {
     return nullptr;
   }
   const auto* entry = handle->GetNavigationEntry();
-  return entry ? static_cast<const HistorySettingsOrigin*>(
-                     entry->GetUserData(&HistorySettingsOrigin::kKey))
+  return entry ? static_cast<const NavigationEntrySettingsOrigin*>(
+                     entry->GetUserData(&NavigationEntrySettingsOrigin::kKey))
                : nullptr;
 }
 
@@ -103,10 +107,10 @@ bool ShouldTrack(content::NavigationHandle* handle) {
 
 void SetForDocument(content::RenderFrameHost* render_frame_host,
                     ShieldsSettingsOrigin value) {
-  if (DocumentOrigin::GetForCurrentDocument(render_frame_host)) {
-    DocumentOrigin::DeleteForCurrentDocument(render_frame_host);
+  if (DocumentSettingsOrigin::GetForCurrentDocument(render_frame_host)) {
+    DocumentSettingsOrigin::DeleteForCurrentDocument(render_frame_host);
   }
-  DocumentOrigin::CreateForCurrentDocument(render_frame_host, value);
+  DocumentSettingsOrigin::CreateForCurrentDocument(render_frame_host, value);
 }
 
 }  // namespace
@@ -120,8 +124,8 @@ class ShieldsSettingsOrigin::SessionHandler
     : public sessions::ExtendedInfoHandler {
  public:
   std::string GetExtendedInfo(content::NavigationEntry* entry) const override {
-    const auto* data = static_cast<const HistorySettingsOrigin*>(
-        entry->GetUserData(&HistorySettingsOrigin::kKey));
+    const auto* data = static_cast<const NavigationEntrySettingsOrigin*>(
+        entry->GetUserData(&NavigationEntrySettingsOrigin::kKey));
     return data ? data->value.GetURL().spec() : std::string();
   }
 
@@ -129,8 +133,8 @@ class ShieldsSettingsOrigin::SessionHandler
                            content::NavigationEntry* entry) override {
     const auto origin = url::Origin::Create(GURL(info));
     if (!origin.opaque() && origin.GetURL().spec() == info) {
-      entry->SetUserData(&HistorySettingsOrigin::kKey,
-                         std::make_unique<HistorySettingsOrigin>(
+      entry->SetUserData(&NavigationEntrySettingsOrigin::kKey,
+                         std::make_unique<NavigationEntrySettingsOrigin>(
                              ShieldsSettingsOrigin(origin)));
     }
   }
@@ -170,7 +174,7 @@ ShieldsSettingsOrigin::ShieldsSettingsOrigin(const url::Origin& origin)
 ShieldsSettingsOrigin ShieldsSettingsOrigin::ForFrame(
     content::RenderFrameHost& frame) {
   const auto* main = frame.GetOutermostMainFrame();
-  if (const auto* data = DocumentOrigin::GetForCurrentDocument(main)) {
+  if (const auto* data = DocumentSettingsOrigin::GetForCurrentDocument(main)) {
     return data->value;
   }
   const auto& origin = main->GetLastCommittedOrigin();
@@ -250,13 +254,13 @@ ShieldsSettingsOrigin ShieldsSettingsOrigin::ForIsolationInfo(
 // static
 ShieldsSettingsOrigin ShieldsSettingsOrigin::ForCommit(
     content::NavigationHandle& handle) {
-  if (const auto* saved = GetHistorySettingsOrigin(&handle)) {
+  if (const auto* saved = GetNavigationEntrySettingsOrigin(&handle)) {
     return saved->value;
   }
   // about:blank can inherit a subframe's DOM origin, but its Shields key
   // is the one captured from the initiating outermost document.
   if (handle.GetURL().IsAboutBlank() || handle.GetURL().IsAboutSrcdoc()) {
-    const auto* data = NavigationOrigin::GetForNavigationHandle(handle);
+    const auto* data = InitiatorSettingsOrigin::GetForNavigationHandle(handle);
     return data ? data->inherited : ShieldsSettingsOrigin();
   }
   const auto origin_to_commit =
@@ -271,7 +275,7 @@ ShieldsSettingsOrigin ShieldsSettingsOrigin::ForCommit(
   if (!origin.opaque()) {
     return ShieldsSettingsOrigin(origin);
   }
-  const auto* data = NavigationOrigin::GetForNavigationHandle(handle);
+  const auto* data = InitiatorSettingsOrigin::GetForNavigationHandle(handle);
   return data ? data->inherited : ShieldsSettingsOrigin();
 }
 
@@ -291,8 +295,8 @@ void ShieldsSettingsOrigin::OnNavigationStarted(
   if (!ShouldTrack(handle)) {
     return;
   }
-  NavigationOrigin::CreateForNavigationHandle(*handle,
-                                              GetInitiatorValue(handle));
+  InitiatorSettingsOrigin::CreateForNavigationHandle(*handle,
+                                                     GetInitiatorValue(handle));
 }
 
 // static
@@ -322,20 +326,20 @@ void ShieldsSettingsOrigin::OnNavigationFinished(
   content::RenderFrameHost* render_frame_host = handle->GetRenderFrameHost();
   // The document already has a value if it was set while pending commit, or
   // if the commit kept the initial empty document of a new window.
-  if (!DocumentOrigin::GetForCurrentDocument(render_frame_host)) {
-    DocumentOrigin::CreateForCurrentDocument(render_frame_host,
-                                             ForCommit(*handle));
+  if (!DocumentSettingsOrigin::GetForCurrentDocument(render_frame_host)) {
+    DocumentSettingsOrigin::CreateForCurrentDocument(render_frame_host,
+                                                     ForCommit(*handle));
   }
   auto& controller = render_frame_host->GetController();
   auto* entry = controller.GetLastCommittedEntry();
   const auto& key =
-      DocumentOrigin::GetForCurrentDocument(render_frame_host)->value;
-  const auto* prior = static_cast<const HistorySettingsOrigin*>(
-      entry->GetUserData(&HistorySettingsOrigin::kKey));
+      DocumentSettingsOrigin::GetForCurrentDocument(render_frame_host)->value;
+  const auto* prior = static_cast<const NavigationEntrySettingsOrigin*>(
+      entry->GetUserData(&NavigationEntrySettingsOrigin::kKey));
   const bool session_data_changed =
       prior ? prior->value.GetURL() != key.GetURL() : !key.GetURL().is_empty();
-  entry->SetUserData(&HistorySettingsOrigin::kKey,
-                     std::make_unique<HistorySettingsOrigin>(key));
+  entry->SetUserData(&NavigationEntrySettingsOrigin::kKey,
+                     std::make_unique<NavigationEntrySettingsOrigin>(key));
   // The session service already serialized the entry at
   // NavigationEntryCommitted.
   if (session_data_changed) {
