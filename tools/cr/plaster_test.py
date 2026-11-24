@@ -13316,5 +13316,196 @@ class SubrepositoryPlasterTest(unittest.TestCase):
         self.assertEqual([file.path for file in found], [self.plaster_path])
 
 
+class ApplyCommandTest(unittest.TestCase):
+    """`plaster apply`'s `--rev`, `--commit` and `--amend`."""
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+
+    def _add_source(self, name: str) -> str:
+        """Commits a Chromium source, and returns its plaster's path in
+        brave."""
+        source = f'chrome/browser/{name}.cc'
+        self.fake_chromium_src.write_and_stage_file(
+            source, f'Initial {name} content.', self.fake_chromium_src.chromium
+        )
+        self.fake_chromium_src.commit(
+            f'Add {source}', self.fake_chromium_src.chromium
+        )
+        return f'rewrite/{source}.yaml'
+
+    def _commit_plaster(self, plaster_path: str, replace: str) -> str:
+        name = Path(plaster_path).name.removesuffix('.cc.yaml')
+        self.fake_chromium_src.write_and_stage_file(
+            plaster_path,
+            textwrap.dedent(f'''\
+                substitutions:
+                  - description: Replace {name}
+                    regex:
+                      re_pattern: '{name}'
+                      replace: '{replace}'
+            '''),
+            self.fake_chromium_src.brave,
+        )
+        return self.fake_chromium_src.commit(
+            f'Plaster {name}', self.fake_chromium_src.brave
+        )
+
+    def _patch(self, plaster_path: str) -> Path:
+        return plaster.PlasterTarget.resolve(
+            plaster.PLASTER_FILES_PATH.parent / plaster_path
+        ).patch
+
+    def _apply(
+        self,
+        rev: str | None = None,
+        filepaths: list[str] | None = None,
+        commit: str | None = None,
+        amend: bool = False,
+    ) -> int:
+        return plaster.apply(
+            argparse.Namespace(
+                rev=rev,
+                all=False,
+                filepaths=filepaths or [],
+                commit=commit,
+                amend=amend,
+            )
+        )
+
+    def _git(self, *args: str) -> str:
+        return self.fake_chromium_src._run_git_command(
+            list(args), self.fake_chromium_src.brave
+        )
+
+    def _committed_files(self, rev: str = 'HEAD') -> list[str]:
+        return self._git(
+            'diff-tree', '--no-commit-id', '--name-only', '-r', rev
+        ).split()
+
+    def test_a_single_commit_applies_only_its_plasters(self):
+        first = self._add_source('foo')
+        second = self._add_source('bar')
+        self._commit_plaster(first, 'FOO')
+        commit = self._commit_plaster(second, 'BAR')
+
+        self.assertEqual(self._apply(commit), 0)
+
+        self.assertTrue(self._patch(second).exists())
+        self.assertFalse(self._patch(first).exists())
+
+    def test_a_range_applies_the_plasters_after_its_start(self):
+        first = self._add_source('foo')
+        second = self._add_source('bar')
+        third = self._add_source('baz')
+        start = self._commit_plaster(first, 'FOO')
+        self._commit_plaster(second, 'BAR')
+        end = self._commit_plaster(third, 'BAZ')
+
+        self.assertEqual(self._apply(f'{start}..{end}'), 0)
+
+        self.assertFalse(self._patch(first).exists())
+        self.assertTrue(self._patch(second).exists())
+        self.assertTrue(self._patch(third).exists())
+
+    def test_a_range_ignores_plasters_it_deletes(self):
+        first = self._add_source('foo')
+        second = self._add_source('bar')
+        start = self._commit_plaster(first, 'FOO')
+        self._commit_plaster(second, 'BAR')
+        self._commit_plaster(first, 'FOO2')
+        self.fake_chromium_src.delete_file(first, self.fake_chromium_src.brave)
+        self.fake_chromium_src.delete_file(second, self.fake_chromium_src.brave)
+        end = self.fake_chromium_src.commit(
+            'Delete the plasters', self.fake_chromium_src.brave
+        )
+
+        self.assertEqual(self._apply(f'{start}..{end}'), 0)
+
+        self.assertFalse(self._patch(first).exists())
+        self.assertFalse(self._patch(second).exists())
+
+    def test_applies_plasters_that_are_up_to_date(self):
+        plaster_path = self._add_source('foo')
+        commit = self._commit_plaster(plaster_path, 'FOO')
+
+        with mock.patch.object(
+            plaster.PlasterFile, 'needs_apply', return_value=False
+        ):
+            self.assertEqual(self._apply(commit), 0)
+
+        self.assertTrue(self._patch(plaster_path).exists())
+
+    def test_a_commit_without_plasters_applies_nothing(self):
+        plaster_path = self._add_source('foo')
+        self._commit_plaster(plaster_path, 'FOO')
+        commit = self.fake_chromium_src.commit_empty(
+            'Nothing', self.fake_chromium_src.brave
+        )
+
+        self.assertEqual(self._apply(commit), 0)
+
+        self.assertFalse(self._patch(plaster_path).exists())
+
+    def test_commit_commits_the_changed_patches(self):
+        plaster_path = self._add_source('foo')
+        plastered = self._commit_plaster(plaster_path, 'FOO')
+
+        self.assertEqual(
+            self._apply(filepaths=[plaster_path], commit='Patch foo'), 0
+        )
+
+        self.assertEqual(self._git('rev-parse', 'HEAD~1'), plastered)
+        self.assertEqual(self._git('log', '-1', '--format=%s'), 'Patch foo')
+        self.assertEqual(
+            self._committed_files(), ['patches/chrome-browser-foo.cc.patch']
+        )
+
+    def test_amend_amends_the_changed_patches_into_head(self):
+        plaster_path = self._add_source('foo')
+        plastered = self._commit_plaster(plaster_path, 'FOO')
+        parent = self._git('rev-parse', 'HEAD~1')
+
+        self.assertEqual(self._apply(rev=plastered, amend=True), 0)
+
+        self.assertEqual(self._git('rev-parse', 'HEAD~1'), parent)
+        self.assertEqual(self._git('log', '-1', '--format=%s'), 'Plaster foo')
+        self.assertEqual(
+            self._committed_files(),
+            ['patches/chrome-browser-foo.cc.patch', plaster_path],
+        )
+
+    def test_commit_leaves_other_staged_changes_staged(self):
+        plaster_path = self._add_source('foo')
+        self._commit_plaster(plaster_path, 'FOO')
+        self.fake_chromium_src.write_and_stage_file(
+            'other.txt', 'other\n', self.fake_chromium_src.brave
+        )
+
+        self.assertEqual(
+            self._apply(filepaths=[plaster_path], commit='Patch foo'), 0
+        )
+
+        self.assertNotIn('other.txt', self._committed_files())
+        self.assertEqual(
+            self._git('diff', '--cached', '--name-only'), 'other.txt'
+        )
+
+    def test_commit_without_patch_changes_makes_no_commit(self):
+        plaster_path = self._add_source('foo')
+        self._commit_plaster(plaster_path, 'FOO')
+        self._apply(filepaths=[plaster_path], commit='Patch foo')
+        head = self._git('rev-parse', 'HEAD')
+
+        self.assertEqual(
+            self._apply(filepaths=[plaster_path], commit='Again'), 0
+        )
+        self.assertEqual(self._apply(filepaths=[plaster_path], amend=True), 0)
+
+        self.assertEqual(self._git('rev-parse', 'HEAD'), head)
+
+
 if __name__ == '__main__':
     unittest.main()
