@@ -65,9 +65,10 @@ void PsstUiDelegateImpl::Show(
 
   const int infobar_shown_count =
       psst_settings_service_->GetInfobarShownCount(origin_.value());
-  // Show the infobar only if it has been shown less than the max allowed
-  // times for this site.
-  if (infobar_shown_count < kMaxPsstInfobarShownCounter) {
+  // Show the infobar only if it is enabled globally and has been shown less
+  // than the max allowed times for this site.
+  if (psst_settings_service_->IsPsstInfobarEnabled() &&
+      infobar_shown_count < kMaxPsstInfobarShownCounter) {
     psst_settings_service_->IncrementInfobarShownCount(origin_.value());
     ui_presenter_->ShowInfoBar(
         base::BindOnce(&PsstUiDelegateImpl::OnUserAcceptedInfobar,
@@ -176,6 +177,8 @@ void PsstUiDelegateImpl::OnDialogClose() {
 }
 
 void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
+  CHECK(origin_);
+  LOG(INFO) << "[PSST] OnUserAcceptedInfobar is_accepted:" << is_accepted;
   // Handle the user's response to the infobar
   if (is_accepted) {
     // Hide notification badge on the icon after the user interacts with the
@@ -188,6 +191,9 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
                        weak_ptr_factory_.GetWeakPtr()));
 
     ui_presenter_->ShowConsentDialog();
+    psst_settings_service_->IncrementInfobarReviewSuggestionsCount(origin_.value());
+    // Disable infobar globally and do not show it again
+    psst_settings_service_->SetPsstInfobarEnabled(false);
   } else {
     psst_settings_service_->IncrementInfobarDeclineCount(origin_.value());
 

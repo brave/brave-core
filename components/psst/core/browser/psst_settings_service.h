@@ -81,6 +81,11 @@ class PsstSettingsService : public KeyedService {
   // website setting.
   void IncrementInfobarDeclineCount(const url::Origin& origin);
 
+  bool IsPsstInfobarEnabled() const;
+  void SetPsstInfobarEnabled(bool enabled);
+  
+  void IncrementInfobarReviewSuggestionsCount(const url::Origin& origin);
+
   bool IsPsstEnabled() const;
   void SetPsstEnabled(bool enabled);
 

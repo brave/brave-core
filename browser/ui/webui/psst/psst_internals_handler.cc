@@ -45,6 +45,7 @@ std::vector<mojom::PsstWebsiteSettingsEntryPtr> BuildWebsiteSettingsEntries(
       entry->site = site;
       entry->infobar_shown_count = settings.infobar_shown_counter;
       entry->infobar_decline_count = settings.infobar_decline_counter;
+      entry->infobar_review_sugg_counter = settings.infobar_review_sugg_counter;
       result.push_back(std::move(entry));
       continue;
     }
@@ -54,6 +55,7 @@ std::vector<mojom::PsstWebsiteSettingsEntryPtr> BuildWebsiteSettingsEntries(
       entry->site = site;
       entry->infobar_shown_count = settings.infobar_shown_counter;
       entry->infobar_decline_count = settings.infobar_decline_counter;
+      entry->infobar_review_sugg_counter = settings.infobar_review_sugg_counter;
       entry->consent_status =
           static_cast<mojom::ConsentStatus>(wss.consent_status);
       entry->script_version = wss.script_version;
