@@ -53,10 +53,9 @@ TEST(SidePanelEntryTest, PreferredWidth) {
   for (const auto& tc : kTestCases) {
     SCOPED_TRACE(tc.name);
     const int preferred = tc.preferred;
-    EXPECT_EQ(tc.expected,
-              MakeEntry(base::BindLambdaForTesting([preferred] {
-                return preferred;
-              }))->GetDefaultContentWidth());
+    auto entry = MakeEntry(
+        base::BindLambdaForTesting([preferred] { return preferred; }));
+    EXPECT_EQ(tc.expected, entry->GetDefaultContentWidth());
   }
 }
 

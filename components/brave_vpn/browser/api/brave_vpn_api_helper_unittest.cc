@@ -25,17 +25,17 @@ TEST(BraveVPNAPIHelperTest, TicketInfoTest) {
       "Love the Brave VPN!\n\nsubscriber-credential: "
       "credential\npayment-validation-method: brave-premium\ntimezone: "
       "USA/Boston";
-  EXPECT_THAT(ticket_value,
-              base::test::IsJson(absl::StrFormat(
-                  R"({
-                    "email": "brave-vpn@brave.com",
-                    "subject": "It's cool feature",
-                    "support-ticket": "%s",
-                    "partner-client-id": "com.brave.browser",
-                    "subscriber-credential": "credential",
-                    "payment-validation-method": "brave-premium"
-                  })",
-                  base::Base64Encode(expected_support_ticket))));
+  const std::string expected = absl::StrFormat(
+      R"({
+        "email": "brave-vpn@brave.com",
+        "subject": "It's cool feature",
+        "support-ticket": "%s",
+        "partner-client-id": "com.brave.browser",
+        "subscriber-credential": "credential",
+        "payment-validation-method": "brave-premium"
+      })",
+      base::Base64Encode(expected_support_ticket));
+  EXPECT_THAT(ticket_value, base::test::IsJson(expected));
 }
 
 }  // namespace brave_vpn
