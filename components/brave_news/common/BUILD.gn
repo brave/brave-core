@@ -76,6 +76,7 @@ if (enable_brave_news) {
       "//brave/components/l10n/common",
       "//brave/components/p3a_utils",
       "//components/prefs",
+      "//crypto",
       "//url",
     ]
   }

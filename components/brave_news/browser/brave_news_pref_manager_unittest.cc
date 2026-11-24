@@ -66,6 +66,12 @@ TEST_F(BraveNewsPrefManagerTest, CanAddDirectFeed) {
                                                   "Example"));
 }
 
+TEST_F(BraveNewsPrefManagerTest, DirectFeedIdIsDerivedFromUrl) {
+  EXPECT_EQ(GetDirectFeedId(GURL("https://example.com/")),
+            pref_manager_->AddDirectPublisher(GURL("https://example.com/"),
+                                              "Example"));
+}
+
 TEST_F(BraveNewsPrefManagerTest, CantAddDuplicateFeed) {
   auto id = pref_manager_->AddDirectPublisher(GURL("https://example.com"),
                                               "Example 1");
@@ -347,7 +353,8 @@ TEST_F(BraveNewsPrefManagerTest, MigratedPrefsAreReadable) {
       subscriptions.disabled_publishers().contains("disabled_publisher"));
   EXPECT_TRUE(subscriptions.GetChannelSubscribed("en_US", "Top News"));
   ASSERT_EQ(1u, subscriptions.direct_feeds().size());
-  EXPECT_EQ("feed_id", subscriptions.direct_feeds()[0].id);
+  EXPECT_EQ(GetDirectFeedId(GURL("https://example.com/")),
+            subscriptions.direct_feeds()[0].id);
   EXPECT_EQ(GURL("https://example.com/"), subscriptions.direct_feeds()[0].url);
   EXPECT_EQ("Example", subscriptions.direct_feeds()[0].title);
 }

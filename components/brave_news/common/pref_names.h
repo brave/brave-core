@@ -6,10 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_PREF_NAMES_H_
 
+#include <string>
+
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_NEWS));
 
+class GURL;
 class PrefService;
 class PrefRegistrySimple;
 
@@ -43,6 +46,7 @@ inline constexpr char kBraveNewsDirectFeedsKeySource[] = "source";
 // Subscription entries are stored as dictionaries:
 //   kBraveNewsSources:     {<publisher_id>: {enabled: bool, changed_at: time}}
 //   kBraveNewsDirectFeeds: {<id>: {source: url, title: str, changed_at: time}}
+//                          where <id> is GetDirectFeedId(source).
 //   kBraveNewsChannels:    {<locale>: {<channel>: {subscribed: bool,
 //                                                  changed_at: time}}}
 // `changed_at` is serialized with base::TimeToValue().
@@ -59,14 +63,19 @@ inline constexpr char kBraveNewsChannelsKeySubscribed[] = "subscribed";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
-// Migrates subscription prefs from the legacy format (bare booleans and direct
-// feeds without a `changed_at`) to the format described above. Entries that
-// are migrated are given a `changed_at` of the current time.
+// Migrates subscription prefs from the legacy format (bare booleans, direct
+// feeds without a `changed_at` and direct feeds keyed by a random UUID) to the
+// format described above. Entries that are given a `changed_at` by the
+// migration get the current time.
 void MigrateProfilePrefs(PrefService* prefs);
 
 }  // namespace prefs
 
 bool IsEnabled(PrefService* prefs);
+
+// Returns the id for the direct feed at |url|. This is derived from the URL so
+// that the same feed has the same id across devices.
+std::string GetDirectFeedId(const GURL& url);
 
 }  // namespace brave_news
 

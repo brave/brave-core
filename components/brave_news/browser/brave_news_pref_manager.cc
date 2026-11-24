@@ -14,7 +14,6 @@
 #include "base/functional/bind.h"
 #include "base/json/values_util.h"
 #include "base/time/time.h"
-#include "base/uuid.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/channel_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -178,27 +177,9 @@ std::string BraveNewsPrefManager::AddDirectPublisher(const GURL& url,
     return match->id;
   }
 
-  // If the user previously unsubscribed from this feed, revive the tombstone
-  // rather than creating a new entry.
-  std::string entry_id;
-  for (const auto&& [id, entry] :
-       prefs_->GetDict(prefs::kBraveNewsDirectFeeds)) {
-    const auto* entry_dict = entry.GetIfDict();
-    if (!entry_dict || !IsTombstone(*entry_dict)) {
-      continue;
-    }
-    const auto* source =
-        entry_dict->FindString(prefs::kBraveNewsDirectFeedsKeySource);
-    if (source && GURL(*source) == url) {
-      entry_id = id;
-      break;
-    }
-  }
-
-  if (entry_id.empty()) {
-    // UUID for each entry as feed url might change via redirects etc
-    entry_id = base::Uuid::GenerateRandomV4().AsLowercaseString();
-  }
+  // The id is derived from the URL, so if the user previously unsubscribed from
+  // this feed its tombstone is revived.
+  std::string entry_id = GetDirectFeedId(url);
   std::string entry_title = title.empty() ? url.spec() : title;
 
   ScopedDictPrefUpdate update(&*prefs_, prefs::kBraveNewsDirectFeeds);
@@ -206,7 +187,7 @@ std::string BraveNewsPrefManager::AddDirectPublisher(const GURL& url,
   value.Set(prefs::kBraveNewsDirectFeedsKeySource, url.spec());
   value.Set(prefs::kBraveNewsDirectFeedsKeyTitle, entry_title);
   value.Set(prefs::kBraveNewsKeyChangedAt, NowAsValue());
-  update->SetByDottedPath(entry_id, std::move(value));
+  update->Set(entry_id, std::move(value));
 
   return entry_id;
 }

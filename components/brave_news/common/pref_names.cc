@@ -5,9 +5,13 @@
 
 #include "brave/components/brave_news/common/pref_names.h"
 
+#include <optional>
+#include <string>
 #include <string_view>
+#include <utility>
 
 #include "base/json/values_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_news/common/locales_helper.h"
@@ -16,6 +20,8 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "crypto/hash.h"
+#include "url/gurl.h"
 
 namespace brave_news {
 namespace prefs {
@@ -99,6 +105,66 @@ void MigrateDirectFeeds(PrefService& prefs, const base::Value& changed_at) {
   }
 }
 
+// Returns the id a direct feed entry should be keyed by, or std::nullopt if the
+// entry has no valid source.
+std::optional<std::string> GetExpectedDirectFeedId(const base::Value& feed) {
+  const auto* dict = feed.GetIfDict();
+  const auto* source =
+      dict ? dict->FindString(kBraveNewsDirectFeedsKeySource) : nullptr;
+  if (!source) {
+    return std::nullopt;
+  }
+  GURL url(*source);
+  if (!url.is_valid()) {
+    return std::nullopt;
+  }
+  return GetDirectFeedId(url);
+}
+
+// Whether direct feed entry |a| should be kept over |b| when both have the same
+// id: live entries beat tombstones, then the most recently changed wins.
+bool ShouldPreferDirectFeed(const base::DictValue& a,
+                            const base::DictValue& b) {
+  const bool a_deleted = a.FindBool(kBraveNewsKeyDeleted).value_or(false);
+  const bool b_deleted = b.FindBool(kBraveNewsKeyDeleted).value_or(false);
+  if (a_deleted != b_deleted) {
+    return !a_deleted;
+  }
+  const auto a_changed_at = base::ValueToTime(a.Find(kBraveNewsKeyChangedAt));
+  const auto b_changed_at = base::ValueToTime(b.Find(kBraveNewsKeyChangedAt));
+  return a_changed_at.value_or(base::Time()) >
+         b_changed_at.value_or(base::Time());
+}
+
+// Re-keys direct feeds from random UUIDs to GetDirectFeedId(source). Entries
+// without a valid source are left alone.
+void MigrateDirectFeedIds(PrefService& prefs) {
+  const auto& direct_feeds = prefs.GetDict(kBraveNewsDirectFeeds);
+  bool needs_migration = false;
+  for (const auto [id, feed] : direct_feeds) {
+    auto expected_id = GetExpectedDirectFeedId(feed);
+    if (expected_id && *expected_id != id) {
+      needs_migration = true;
+      break;
+    }
+  }
+  if (!needs_migration) {
+    return;
+  }
+
+  base::DictValue migrated;
+  for (const auto [id, feed] : direct_feeds) {
+    const std::string new_id = GetExpectedDirectFeedId(feed).value_or(id);
+    const auto* existing = migrated.FindDict(new_id);
+    if (existing && (!feed.is_dict() ||
+                     !ShouldPreferDirectFeed(feed.GetDict(), *existing))) {
+      continue;
+    }
+    migrated.Set(new_id, feed.Clone());
+  }
+  prefs.SetDict(kBraveNewsDirectFeeds, std::move(migrated));
+}
+
 }  // namespace
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
@@ -122,6 +188,9 @@ void MigrateProfilePrefs(PrefService* prefs) {
   MigrateSources(*prefs, changed_at);
   MigrateChannels(*prefs, changed_at);
   MigrateDirectFeeds(*prefs, changed_at);
+
+  // Added 2026-11: key direct feeds by a hash of their URL.
+  MigrateDirectFeedIds(*prefs);
 }
 
 }  // namespace prefs
@@ -133,6 +202,10 @@ bool IsEnabled(PrefService* prefs) {
   }
   return prefs->GetBoolean(prefs::kNewTabPageShowToday) &&
          prefs->GetBoolean(prefs::kBraveNewsOptedIn);
+}
+
+std::string GetDirectFeedId(const GURL& url) {
+  return base::HexEncodeLower(crypto::hash::Sha256(url.spec()));
 }
 
 }  // namespace brave_news

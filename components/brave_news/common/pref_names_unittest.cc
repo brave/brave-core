@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_news/common/pref_names.h"
 
+#include <string>
 #include <utility>
 
 #include "base/json/values_util.h"
@@ -14,8 +15,17 @@
 #include "base/values.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace brave_news::prefs {
+
+namespace {
+
+std::string IdFor(const std::string& url) {
+  return GetDirectFeedId(GURL(url));
+}
+
+}  // namespace
 
 class BraveNewsPrefsMigrationTest : public testing::Test {
  public:
@@ -72,7 +82,7 @@ TEST_F(BraveNewsPrefsMigrationTest, MigratesLegacyPrefs) {
                                             .Set("changed_at", now.Clone()))));
 
   EXPECT_EQ(pref_service_.GetDict(kBraveNewsDirectFeeds),
-            base::DictValue().Set("feed_id",
+            base::DictValue().Set(IdFor("https://example.com/feed"),
                                   base::DictValue()
                                       .Set("source", "https://example.com/feed")
                                       .Set("title", "Example")
@@ -129,10 +139,12 @@ TEST_F(BraveNewsPrefsMigrationTest, MigratesOnlyLegacyEntries) {
   pref_service_.SetDict(
       kBraveNewsDirectFeeds,
       base::DictValue()
-          .Set("legacy", base::DictValue().Set("source", "https://a.com/"))
-          .Set("current", base::DictValue()
-                              .Set("source", "https://b.com/")
-                              .Set("changed_at", earlier.Clone())));
+          .Set(IdFor("https://a.com/"),
+               base::DictValue().Set("source", "https://a.com/"))
+          .Set(IdFor("https://b.com/"),
+               base::DictValue()
+                   .Set("source", "https://b.com/")
+                   .Set("changed_at", earlier.Clone())));
 
   MigrateProfilePrefs(&pref_service_);
 
@@ -157,11 +169,11 @@ TEST_F(BraveNewsPrefsMigrationTest, MigratesOnlyLegacyEntries) {
                 .Set("changed_at", earlier.Clone()));
 
   const auto& direct_feeds = pref_service_.GetDict(kBraveNewsDirectFeeds);
-  EXPECT_EQ(*direct_feeds.FindDict("legacy"),
+  EXPECT_EQ(*direct_feeds.FindDict(IdFor("https://a.com/")),
             base::DictValue()
                 .Set("source", "https://a.com/")
                 .Set("changed_at", now.Clone()));
-  EXPECT_EQ(*direct_feeds.FindDict("current"),
+  EXPECT_EQ(*direct_feeds.FindDict(IdFor("https://b.com/")),
             base::DictValue()
                 .Set("source", "https://b.com/")
                 .Set("changed_at", earlier.Clone()));
@@ -173,6 +185,103 @@ TEST_F(BraveNewsPrefsMigrationTest, EmptyPrefsAreUnchanged) {
   EXPECT_FALSE(pref_service_.HasPrefPath(kBraveNewsSources));
   EXPECT_FALSE(pref_service_.HasPrefPath(kBraveNewsChannels));
   EXPECT_FALSE(pref_service_.HasPrefPath(kBraveNewsDirectFeeds));
+}
+
+TEST_F(BraveNewsPrefsMigrationTest, DirectFeedIdIsStableHashOfUrl) {
+  EXPECT_EQ(IdFor("https://example.com/feed"),
+            IdFor("https://example.com/feed"));
+  EXPECT_NE(IdFor("https://example.com/feed"),
+            IdFor("https://example.com/other"));
+  // SHA-256, hex encoded.
+  EXPECT_EQ(64u, IdFor("https://example.com/feed").size());
+}
+
+TEST_F(BraveNewsPrefsMigrationTest, RekeysDirectFeedsByUrlHash) {
+  pref_service_.SetDict(kBraveNewsDirectFeeds, base::test::ParseJsonDict(R"({
+    "uuid-live": {"source": "https://a.com/feed", "title": "A"},
+    "uuid-deleted": {"source": "https://b.com/feed", "deleted": true,
+                     "changed_at": "1"},
+    "uuid-no-source": {"title": "No source"},
+    "uuid-invalid-source": {"source": "not a url", "title": "Invalid"}
+  })"));
+
+  MigrateProfilePrefs(&pref_service_);
+
+  const base::Value now = base::TimeToValue(base::Time::Now());
+  EXPECT_EQ(
+      pref_service_.GetDict(kBraveNewsDirectFeeds),
+      base::DictValue()
+          .Set(IdFor("https://a.com/feed"),
+               base::DictValue()
+                   .Set("source", "https://a.com/feed")
+                   .Set("title", "A")
+                   .Set("changed_at", now.Clone()))
+          .Set(IdFor("https://b.com/feed"),
+               base::DictValue()
+                   .Set("source", "https://b.com/feed")
+                   .Set("deleted", true)
+                   .Set("changed_at", "1"))
+          .Set("uuid-no-source", base::DictValue()
+                                     .Set("title", "No source")
+                                     .Set("changed_at", now.Clone()))
+          .Set("uuid-invalid-source", base::DictValue()
+                                          .Set("source", "not a url")
+                                          .Set("title", "Invalid")
+                                          .Set("changed_at", now.Clone())));
+}
+
+TEST_F(BraveNewsPrefsMigrationTest, RekeyingDuplicateDirectFeedsPrefersLive) {
+  const base::Value older = base::TimeToValue(base::Time::Now());
+  task_environment_.AdvanceClock(base::Days(1));
+  const base::Value newer = base::TimeToValue(base::Time::Now());
+
+  pref_service_.SetDict(
+      kBraveNewsDirectFeeds,
+      base::DictValue()
+          .Set("uuid-1", base::DictValue()
+                             .Set("source", "https://a.com/feed")
+                             .Set("title", "Live")
+                             .Set("changed_at", older.Clone()))
+          .Set("uuid-2", base::DictValue()
+                             .Set("source", "https://a.com/feed")
+                             .Set("deleted", true)
+                             .Set("changed_at", newer.Clone())));
+
+  MigrateProfilePrefs(&pref_service_);
+
+  EXPECT_EQ(pref_service_.GetDict(kBraveNewsDirectFeeds),
+            base::DictValue().Set(IdFor("https://a.com/feed"),
+                                  base::DictValue()
+                                      .Set("source", "https://a.com/feed")
+                                      .Set("title", "Live")
+                                      .Set("changed_at", older.Clone())));
+}
+
+TEST_F(BraveNewsPrefsMigrationTest,
+       RekeyingDuplicateDirectFeedsPrefersMostRecent) {
+  const base::Value older = base::TimeToValue(base::Time::Now());
+  task_environment_.AdvanceClock(base::Days(1));
+  const base::Value newer = base::TimeToValue(base::Time::Now());
+
+  pref_service_.SetDict(
+      kBraveNewsDirectFeeds,
+      base::DictValue()
+          .Set("uuid-1", base::DictValue()
+                             .Set("source", "https://a.com/feed")
+                             .Set("title", "Older")
+                             .Set("changed_at", older.Clone()))
+          .Set("uuid-2", base::DictValue()
+                             .Set("source", "https://a.com/feed")
+                             .Set("title", "Newer")
+                             .Set("changed_at", newer.Clone())));
+
+  MigrateProfilePrefs(&pref_service_);
+
+  const auto& direct_feeds = pref_service_.GetDict(kBraveNewsDirectFeeds);
+  EXPECT_EQ(1u, direct_feeds.size());
+  const auto* feed = direct_feeds.FindDict(IdFor("https://a.com/feed"));
+  ASSERT_TRUE(feed);
+  EXPECT_EQ("Newer", *feed->FindString("title"));
 }
 
 }  // namespace brave_news::prefs
