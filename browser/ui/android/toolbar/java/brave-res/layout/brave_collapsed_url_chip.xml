@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Collapsed URL chip: shown while the bottom toolbar is scrolled away
+<!-- Collapsed URL chip: shown while the browser controls are scrolled away
      (see BraveCollapsedUrlChipMediator). Display-only, non-navigational. -->
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"

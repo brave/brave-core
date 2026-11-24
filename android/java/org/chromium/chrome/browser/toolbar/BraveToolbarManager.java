@@ -425,7 +425,9 @@ public class BraveToolbarManager extends ToolbarManager
         if (mBraveCollapsedUrlChipCoordinator != null) return;
         BrowserStateBrowserControlsVisibilityDelegate controlsVisibilityDelegate =
                 mBrowserControlsSizer.getBrowserVisibilityDelegate();
-        assert controlsVisibilityDelegate != null;
+        // Release-safe bail-out: `assert` is stripped in release builds, and the delegate is
+        // only null before browser-controls init, which the chip never needs to precede.
+        if (controlsVisibilityDelegate == null) return;
         // Safe default: the chip init can run before native flags are cached, and the
         // MutableFlagWithSafeDefault falls back to its safe default (enabled, matching native)
         // there instead of crashing, which also keeps tests without native stable.
