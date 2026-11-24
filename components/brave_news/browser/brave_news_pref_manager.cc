@@ -33,6 +33,22 @@ base::Value NowAsValue() {
   return base::TimeToValue(base::Time::Now());
 }
 
+bool IsTombstone(const base::DictValue& entry) {
+  return entry.FindBool(prefs::kBraveNewsKeyDeleted).value_or(false);
+}
+
+// Returns |entry| as a dictionary if it is a live (non-tombstone) entry.
+const base::DictValue* GetLiveEntry(const base::Value* entry) {
+  const auto* dict = entry ? entry->GetIfDict() : nullptr;
+  return dict && !IsTombstone(*dict) ? dict : nullptr;
+}
+
+base::DictValue MakeTombstone() {
+  return base::DictValue()
+      .Set(prefs::kBraveNewsKeyDeleted, true)
+      .Set(prefs::kBraveNewsKeyChangedAt, NowAsValue());
+}
+
 }  // namespace
 
 BraveNewsPrefManager::BraveNewsPrefManager(PrefService& prefs) : prefs_(prefs) {
@@ -100,7 +116,7 @@ SubscriptionsSnapshot BraveNewsPrefManager::GetSubscriptions() {
   absl::flat_hash_set<std::string> enabled_publishers;
   auto& subscriptions = prefs_->GetDict(prefs::kBraveNewsSources);
   for (const auto&& [publisher_id, entry] : subscriptions) {
-    const auto* entry_dict = entry.GetIfDict();
+    const auto* entry_dict = GetLiveEntry(&entry);
     if (!entry_dict) {
       continue;
     }
@@ -129,11 +145,20 @@ void BraveNewsPrefManager::SetPublisherSubscribed(
 
   if (is_direct_feed && enabled == mojom::UserEnabled::DISABLED) {
     ScopedDictPrefUpdate update(&*prefs_, prefs::kBraveNewsDirectFeeds);
-    update->Remove(publisher_id);
+    // Keep the source so the tombstone can be matched by URL.
+    auto tombstone = MakeTombstone();
+    if (const auto* source =
+            update->FindDict(publisher_id)
+                ->FindString(prefs::kBraveNewsDirectFeedsKeySource)) {
+      tombstone.Set(prefs::kBraveNewsDirectFeedsKeySource, *source);
+    }
+    update->Set(publisher_id, std::move(tombstone));
   } else if (!is_direct_feed) {
     ScopedDictPrefUpdate update(&*prefs_, prefs::kBraveNewsSources);
     if (enabled == mojom::UserEnabled::NOT_MODIFIED) {
-      update->Remove(publisher_id);
+      if (GetLiveEntry(update->Find(publisher_id))) {
+        update->Set(publisher_id, MakeTombstone());
+      }
     } else {
       update->Set(publisher_id,
                   base::DictValue()
@@ -153,11 +178,29 @@ std::string BraveNewsPrefManager::AddDirectPublisher(const GURL& url,
     return match->id;
   }
 
-  // UUID for each entry as feed url might change via redirects etc
-  auto entry_id = base::Uuid::GenerateRandomV4().AsLowercaseString();
+  // If the user previously unsubscribed from this feed, revive the tombstone
+  // rather than creating a new entry.
+  std::string entry_id;
+  for (const auto&& [id, entry] :
+       prefs_->GetDict(prefs::kBraveNewsDirectFeeds)) {
+    const auto* entry_dict = entry.GetIfDict();
+    if (!entry_dict || !IsTombstone(*entry_dict)) {
+      continue;
+    }
+    const auto* source =
+        entry_dict->FindString(prefs::kBraveNewsDirectFeedsKeySource);
+    if (source && GURL(*source) == url) {
+      entry_id = id;
+      break;
+    }
+  }
+
+  if (entry_id.empty()) {
+    // UUID for each entry as feed url might change via redirects etc
+    entry_id = base::Uuid::GenerateRandomV4().AsLowercaseString();
+  }
   std::string entry_title = title.empty() ? url.spec() : title;
 
-  // The entire entry is removed if a user unsubscribes from a user feed.
   ScopedDictPrefUpdate update(&*prefs_, prefs::kBraveNewsDirectFeeds);
   base::DictValue value;
   value.Set(prefs::kBraveNewsDirectFeedsKeySource, url.spec());
@@ -174,7 +217,9 @@ void BraveNewsPrefManager::SetChannelSubscribed(const std::string& locale,
   ScopedDictPrefUpdate update(&*prefs_, prefs::kBraveNewsChannels);
   auto* dict = update->EnsureDict(locale);
   if (!subscribed) {
-    dict->Remove(channel);
+    if (GetLiveEntry(dict->Find(channel))) {
+      dict->Set(channel, MakeTombstone());
+    }
   } else {
     dict->Set(channel, base::DictValue()
                            .Set(prefs::kBraveNewsChannelsKeySubscribed, true)
@@ -186,17 +231,21 @@ std::vector<DirectFeed> BraveNewsPrefManager::GetDirectFeeds() {
   std::vector<DirectFeed> result;
   const auto& direct_feeds = prefs_->GetDict(prefs::kBraveNewsDirectFeeds);
   for (const auto&& [key, value] : direct_feeds) {
-    // Non dict values will be flagged as an issue elsewhere.
-    if (!value.is_dict()) {
+    const auto* entry = GetLiveEntry(&value);
+    if (!entry) {
+      continue;
+    }
+    const auto* source =
+        entry->FindString(prefs::kBraveNewsDirectFeedsKeySource);
+    const auto* title = entry->FindString(prefs::kBraveNewsDirectFeedsKeyTitle);
+    if (!source || !title) {
       continue;
     }
 
     result.push_back({
         .id = key,
-        .url = GURL(
-            *value.GetDict().FindString(prefs::kBraveNewsDirectFeedsKeySource)),
-        .title =
-            *value.GetDict().FindString(prefs::kBraveNewsDirectFeedsKeyTitle),
+        .url = GURL(*source),
+        .title = *title,
     });
   }
   return result;
@@ -227,7 +276,7 @@ BraveNewsPrefManager::GetChannels() {
 
     std::vector<std::string> subscribed;
     for (const auto&& [channel, entry] : *entries) {
-      const auto* entry_dict = entry.GetIfDict();
+      const auto* entry_dict = GetLiveEntry(&entry);
       if (entry_dict &&
           entry_dict->FindBool(prefs::kBraveNewsChannelsKeySubscribed)
               .value_or(false)) {

@@ -279,9 +279,11 @@ TEST_F(BraveNewsPrefManagerTest, SetPublisherSubscribedRecordsChangedAt) {
   EXPECT_TRUE(subscriptions.enabled_publishers().contains("Two"));
   EXPECT_TRUE(subscriptions.disabled_publishers().empty());
 
+  task_environment_.AdvanceClock(base::Minutes(1));
+  const base::Time third = base::Time::Now();
   pref_manager_->SetPublisherSubscribed("Two",
                                         mojom::UserEnabled::NOT_MODIFIED);
-  EXPECT_EQ(std::nullopt, GetSourceChangedAt("Two"));
+  EXPECT_EQ(third, GetSourceChangedAt("Two"));
 }
 
 TEST_F(BraveNewsPrefManagerTest, AddDirectPublisherRecordsChangedAt) {
@@ -308,8 +310,10 @@ TEST_F(BraveNewsPrefManagerTest, SetChannelSubscribedRecordsChangedAt) {
   EXPECT_EQ(first, GetChannelChangedAt("en_US", "Test"));
   EXPECT_EQ(second, GetChannelChangedAt("ja_JA", "Test"));
 
+  task_environment_.AdvanceClock(base::Minutes(1));
+  const base::Time third = base::Time::Now();
   pref_manager_->SetChannelSubscribed("en_US", "Test", false);
-  EXPECT_EQ(std::nullopt, GetChannelChangedAt("en_US", "Test"));
+  EXPECT_EQ(third, GetChannelChangedAt("en_US", "Test"));
 }
 
 TEST_F(BraveNewsPrefManagerTest, MigratedPrefsAreReadable) {
@@ -346,6 +350,103 @@ TEST_F(BraveNewsPrefManagerTest, MigratedPrefsAreReadable) {
   EXPECT_EQ("feed_id", subscriptions.direct_feeds()[0].id);
   EXPECT_EQ(GURL("https://example.com/"), subscriptions.direct_feeds()[0].url);
   EXPECT_EQ("Example", subscriptions.direct_feeds()[0].title);
+}
+
+TEST_F(BraveNewsPrefManagerTest, ResettingPublisherLeavesTombstone) {
+  pref_manager_->SetPublisherSubscribed("One", mojom::UserEnabled::ENABLED);
+  pref_manager_->SetPublisherSubscribed("Two", mojom::UserEnabled::DISABLED);
+
+  task_environment_.AdvanceClock(base::Minutes(1));
+  const base::Time deleted_at = base::Time::Now();
+  pref_manager_->SetPublisherSubscribed("One",
+                                        mojom::UserEnabled::NOT_MODIFIED);
+  pref_manager_->SetPublisherSubscribed("Two",
+                                        mojom::UserEnabled::NOT_MODIFIED);
+
+  const auto tombstone =
+      base::DictValue()
+          .Set(prefs::kBraveNewsKeyDeleted, true)
+          .Set(prefs::kBraveNewsKeyChangedAt, base::TimeToValue(deleted_at));
+  const auto& sources = pref_service_.GetDict(prefs::kBraveNewsSources);
+  EXPECT_EQ(tombstone, *sources.FindDict("One"));
+  EXPECT_EQ(tombstone, *sources.FindDict("Two"));
+
+  auto subscriptions = pref_manager_->GetSubscriptions();
+  EXPECT_TRUE(subscriptions.enabled_publishers().empty());
+  EXPECT_TRUE(subscriptions.disabled_publishers().empty());
+
+  // Re-subscribing replaces the tombstone.
+  pref_manager_->SetPublisherSubscribed("One", mojom::UserEnabled::ENABLED);
+  EXPECT_TRUE(
+      pref_manager_->GetSubscriptions().enabled_publishers().contains("One"));
+}
+
+TEST_F(BraveNewsPrefManagerTest, ResettingUnknownPublisherDoesNotTombstone) {
+  pref_manager_->SetPublisherSubscribed("Unknown",
+                                        mojom::UserEnabled::NOT_MODIFIED);
+  EXPECT_FALSE(
+      pref_service_.GetDict(prefs::kBraveNewsSources).contains("Unknown"));
+}
+
+TEST_F(BraveNewsPrefManagerTest, UnsubscribingChannelLeavesTombstone) {
+  pref_manager_->SetChannelSubscribed("en_US", "Test", true);
+
+  task_environment_.AdvanceClock(base::Minutes(1));
+  const base::Time deleted_at = base::Time::Now();
+  pref_manager_->SetChannelSubscribed("en_US", "Test", false);
+
+  const auto* locale =
+      pref_service_.GetDict(prefs::kBraveNewsChannels).FindDict("en_US");
+  ASSERT_TRUE(locale);
+  EXPECT_EQ(
+      base::DictValue()
+          .Set(prefs::kBraveNewsKeyDeleted, true)
+          .Set(prefs::kBraveNewsKeyChangedAt, base::TimeToValue(deleted_at)),
+      *locale->FindDict("Test"));
+
+  auto subscriptions = pref_manager_->GetSubscriptions();
+  EXPECT_FALSE(subscriptions.GetChannelSubscribed("en_US", "Test"));
+  EXPECT_TRUE(subscriptions.GetChannelLocales().empty());
+
+  // Re-subscribing replaces the tombstone.
+  pref_manager_->SetChannelSubscribed("en_US", "Test", true);
+  EXPECT_TRUE(
+      pref_manager_->GetSubscriptions().GetChannelSubscribed("en_US", "Test"));
+}
+
+TEST_F(BraveNewsPrefManagerTest, UnsubscribingUnknownChannelDoesNotTombstone) {
+  pref_manager_->SetChannelSubscribed("en_US", "Test", false);
+  const auto* locale =
+      pref_service_.GetDict(prefs::kBraveNewsChannels).FindDict("en_US");
+  EXPECT_FALSE(locale && locale->contains("Test"));
+}
+
+TEST_F(BraveNewsPrefManagerTest, RemovingDirectFeedLeavesTombstone) {
+  auto id = pref_manager_->AddDirectPublisher(GURL("https://example.com/"),
+                                              "Example");
+
+  task_environment_.AdvanceClock(base::Minutes(1));
+  const base::Time deleted_at = base::Time::Now();
+  pref_manager_->SetPublisherSubscribed(id, mojom::UserEnabled::DISABLED);
+
+  EXPECT_EQ(
+      base::DictValue()
+          .Set(prefs::kBraveNewsKeyDeleted, true)
+          .Set(prefs::kBraveNewsKeyChangedAt, base::TimeToValue(deleted_at))
+          .Set(prefs::kBraveNewsDirectFeedsKeySource, "https://example.com/"),
+      *pref_service_.GetDict(prefs::kBraveNewsDirectFeeds).FindDict(id));
+  EXPECT_TRUE(pref_manager_->GetSubscriptions().direct_feeds().empty());
+
+  // Re-adding the feed revives the tombstone.
+  task_environment_.AdvanceClock(base::Minutes(1));
+  const base::Time readded_at = base::Time::Now();
+  EXPECT_EQ(id, pref_manager_->AddDirectPublisher(GURL("https://example.com/"),
+                                                  "Example 2"));
+  EXPECT_EQ(readded_at, GetDirectFeedChangedAt(id));
+  auto direct_feeds = pref_manager_->GetSubscriptions().direct_feeds();
+  ASSERT_EQ(1u, direct_feeds.size());
+  EXPECT_EQ(id, direct_feeds[0].id);
+  EXPECT_EQ("Example 2", direct_feeds[0].title);
 }
 
 }  // namespace brave_news

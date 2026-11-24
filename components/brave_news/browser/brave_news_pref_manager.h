@@ -48,7 +48,8 @@ class BraveNewsPrefManager {
   SubscriptionsSnapshot GetSubscriptions();
 
   // Enables/disables/resets a publisher. When a direct feed is set to a
-  // non-enabled state it is deleted.
+  // non-enabled state it is deleted. Deleted entries are kept as tombstones
+  // (see pref_names.h).
   void SetPublisherSubscribed(const std::string& publisher_id,
                               brave_news::mojom::UserEnabled enabled);
 
@@ -62,7 +63,7 @@ class BraveNewsPrefManager {
                             const std::string& channel,
                             bool subscribed);
 
-  // Clears all Brave News related preferences.
+  // Clears all Brave News related preferences, including tombstones.
   void ClearPrefs();
 
  private:

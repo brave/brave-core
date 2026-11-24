@@ -46,7 +46,14 @@ inline constexpr char kBraveNewsDirectFeedsKeySource[] = "source";
 //   kBraveNewsChannels:    {<locale>: {<channel>: {subscribed: bool,
 //                                                  changed_at: time}}}
 // `changed_at` is serialized with base::TimeToValue().
+//
+// Removing an entry (unsubscribing from a channel, resetting a combined
+// publisher to NOT_MODIFIED or unsubscribing from a direct feed) replaces it
+// with a tombstone so the deletion can be synced:
+//   {deleted: true, changed_at: time}
+// Direct feed tombstones also keep `source`.
 inline constexpr char kBraveNewsKeyChangedAt[] = "changed_at";
+inline constexpr char kBraveNewsKeyDeleted[] = "deleted";
 inline constexpr char kBraveNewsSourcesKeyEnabled[] = "enabled";
 inline constexpr char kBraveNewsChannelsKeySubscribed[] = "subscribed";
 
