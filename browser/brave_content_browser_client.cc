@@ -1500,7 +1500,8 @@ void BraveContentBrowserClient::CreateWebSocketWithFrameId(
         handshake_client,
     content::ContentBrowserClient::WebSocketOptions options,
     int process_id,
-    const url::Origin& initiator_origin) {
+    const url::Origin& initiator_origin,
+    const net::IsolationInfo& isolation_info) {
   content::BrowserContext* browser_context = nullptr;
   content::GlobalRenderFrameHostToken render_frame_token;
   url::Origin request_initiator;
@@ -1533,7 +1534,7 @@ void BraveContentBrowserClient::CreateWebSocketWithFrameId(
 
   if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     auto* proxy = BraveProxyingWebSocket<base::WeakPtr>::ProxyWebSocket(
-        browser_context, render_frame_token, request_initiator,
+        browser_context, render_frame_token, request_initiator, isolation_info,
         std::move(factory), url, site_for_cookies, user_agent);
     CreateChromeWebSocket<base::WeakPtr>(
         frame, url, site_for_cookies, user_agent, std::move(handshake_client),
@@ -1544,7 +1545,8 @@ void BraveContentBrowserClient::CreateWebSocketWithFrameId(
     auto* proxy =
         BraveProxyingWebSocket<std::shared_ptr>::ProxyWebSocket(  // nocheck
             browser_context, render_frame_token, request_initiator,
-            std::move(factory), url, site_for_cookies, user_agent);
+            isolation_info, std::move(factory), url, site_for_cookies,
+            user_agent);
     CreateChromeWebSocket<std::shared_ptr>(  // nocheck
         frame, url, site_for_cookies,        // nocheck
         user_agent, std::move(handshake_client), std::move(options), proxy);

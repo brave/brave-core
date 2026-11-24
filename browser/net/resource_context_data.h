@@ -85,7 +85,8 @@ class ResourceContextData : public base::SupportsUserData::Data {
       const std::optional<std::string>& user_agent,
       content::BrowserContext* browser_context,
       content::GlobalRenderFrameHostToken render_frame_token,
-      const url::Origin& origin);
+      const url::Origin& origin,
+      const net::IsolationInfo& isolation_info);
 
   void RemoveProxy(BraveProxyingURLLoaderFactory<T>* proxy);
   void RemoveProxyWebSocket(BraveProxyingWebSocket<T>* proxy);

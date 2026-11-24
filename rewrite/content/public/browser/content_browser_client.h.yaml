@@ -15,9 +15,10 @@ substitutions:
       which have no `RenderFrameHost` (crbug.com/40195467), so `CreateWebSocket`
       alone gives the embedder no way to resolve the `BrowserContext` or the
       per-site Shields settings. This sibling also carries the initiator
-      renderer's process id and origin. The default implementation in
-      `brave/chromium_src/content/public/browser/content_browser_client.cc`
-      drops both and forwards to `CreateWebSocket`, so embedders that don't
+      renderer's process id and origin, and the handshake's `IsolationInfo`,
+      whose top frame origin Shields settings use. The default implementation
+      in `brave/chromium_src/content/public/browser/content_browser_client.cc`
+      drops them and forwards to `CreateWebSocket`, so embedders that don't
       care are unaffected. Drop this once upstream proxies frameless requests
       itself.
     add_to_public:
@@ -25,7 +26,8 @@ substitutions:
       code: |-
 
         // Same as `CreateWebSocket`, but also carries the initiator renderer's
-        // process id and origin, for handshakes that have no `RenderFrameHost`.
+        // process id and origin, for handshakes that have no `RenderFrameHost`,
+        // and the handshake's isolation info.
         virtual void CreateWebSocketWithFrameId(
             RenderFrameHost* frame,
             WebSocketFactory factory,
@@ -36,4 +38,5 @@ substitutions:
                 handshake_client,
             WebSocketOptions options,
             int process_id,
-            const url::Origin& initiator_origin);
+            const url::Origin& initiator_origin,
+            const net::IsolationInfo& isolation_info);

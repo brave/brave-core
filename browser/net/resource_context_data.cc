@@ -81,7 +81,8 @@ BraveProxyingWebSocket<T>* ResourceContextData<T>::CreateProxyingWebSocket(
     const std::optional<std::string>& user_agent,
     content::BrowserContext* browser_context,
     content::GlobalRenderFrameHostToken render_frame_token,
-    const url::Origin& origin) {
+    const url::Origin& origin,
+    const net::IsolationInfo& isolation_info) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   auto* self = static_cast<ResourceContextData*>(
@@ -98,13 +99,13 @@ BraveProxyingWebSocket<T>* ResourceContextData<T>::CreateProxyingWebSocket(
 
   network::ResourceRequest request;
   request.url = url;
-  // TODO(iefremov): site_for_cookies is not enough, we should find a way
-  // to initialize NetworkIsolationKey.
   request.site_for_cookies = site_for_cookies;
   if (user_agent) {
     request.headers.SetHeader(net::HttpRequestHeaders::kUserAgent, *user_agent);
   }
   request.request_initiator = origin;
+  request.trusted_params = network::ResourceRequest::TrustedParams();
+  request.trusted_params->isolation_info = isolation_info;
 
   auto proxy = std::make_unique<BraveProxyingWebSocket<T>>(
       std::move(factory), request, render_frame_token, browser_context,

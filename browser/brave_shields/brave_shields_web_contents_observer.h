@@ -67,8 +67,20 @@ class BraveShieldsWebContentsObserver
 
  protected:
   // content::WebContentsObserver overrides.
+  void DidStartNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
+  void DidOpenRequestedURL(content::WebContents* new_contents,
+                           content::RenderFrameHost* source_render_frame_host,
+                           const GURL& url,
+                           const content::Referrer& referrer,
+                           WindowOpenDisposition disposition,
+                           ui::PageTransition transition,
+                           bool started_from_context_menu,
+                           bool renderer_initiated) override;
 
   // brave_shields::mojom::BraveShieldsHost.
   void OnJavaScriptBlocked(const std::u16string& details) override;

@@ -5,11 +5,13 @@
 
 substitutions:
   - description: |-
-      Preserve renderer process and initiator origin for intercepted WebSockets.
+      Preserve renderer process, initiator origin and isolation info for
+      intercepted WebSockets.
 
       SharedWorker and ServiceWorker WebSockets have no RenderFrameHost
       (crbug.com/40195467), so embedders need this context to resolve the
-      BrowserContext and per-site settings. Drop this once upstream proxies
+      BrowserContext and per-site settings. The isolation info carries the top
+      frame origin that Shields settings use. Drop this once upstream proxies
       frameless requests itself.
     regex:
       re_pattern:
@@ -18,4 +20,4 @@ substitutions:
       re_flags: [DOTALL]
       replace: |-
         \1CreateWebSocketWithFrameId\2,
-                frame_id_.child_id.value(), origin_\3
+                frame_id_.child_id.value(), origin_, isolation_info_\3
