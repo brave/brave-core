@@ -6,11 +6,8 @@
 """Integration tests for rebase_feature_branch.py, running cmd.py as a
 subprocess against a FakeChromiumRepo."""
 
-import os
 import subprocess
 import unittest
-from pathlib import Path
-from unittest import mock
 
 import _boot  # noqa: F401
 from cmd_test import _Sandbox, _git
@@ -20,8 +17,6 @@ from exceptions import RebaseNeededException
 _SYNCED = '140.0.7000.0'
 _NEXT = '140.0.7001.0'
 
-_BRAVE_ROOT = Path(__file__).resolve().parents[3]
-
 FOO = 'chrome/browser/foo.cc'
 FOO_PLASTER = f'rewrite/{FOO}.yaml'
 FOO_PATCH = 'patches/chrome-browser-foo.cc.patch'
@@ -29,22 +24,6 @@ FOO_PATCH = 'patches/chrome-browser-foo.cc.patch'
 
 class TestRebaseFeatureBranch(unittest.TestCase):
     def setUp(self) -> None:
-        # The rebase runs `git cr` after each commit. These make it this
-        # checkout's, run against the sandbox.
-        self.enterContext(
-            mock.patch.dict(
-                os.environ,
-                {
-                    'PATH': os.pathsep.join(
-                        [
-                            str(_BRAVE_ROOT / 'tools' / 'cr' / 'bootstrap'),
-                            os.environ['PATH'],
-                        ]
-                    ),
-                    'BRAVE_LAUNCHER_CHECKOUT_DIR': str(_BRAVE_ROOT),
-                },
-            )
-        )
         self._sandbox = self.enterContext(_Sandbox())
         self._sandbox.repo.add_tag(_SYNCED)
         self._sandbox.repo.update_brave_version(_SYNCED)

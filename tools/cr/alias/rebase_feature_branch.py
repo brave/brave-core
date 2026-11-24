@@ -22,13 +22,16 @@ from __future__ import annotations
 
 import argparse
 import re
+import shlex
 import subprocess
 import sys
 
 import _boot  # noqa: F401
+import plaster
 import repository
 from alias.base import UserValidationError
 from versioning import PACKAGE_FILE, Version, read_chromium_version_file
+from vpython_utils import VPYTHON3_PATH
 
 
 def _resolve_to_ref(to_ref: str | None) -> str:
@@ -147,7 +150,16 @@ def cmd_rebase_feature_branch(args: list[str]) -> int:
         rebase.run(
             from_ref=merge_base,
             to_ref=to_ref,
-            exec_command='plaster apply --rev HEAD --amend',
+            exec_command=shlex.join(
+                [
+                    str(VPYTHON3_PATH),
+                    plaster.__file__,
+                    'apply',
+                    '--rev',
+                    'HEAD',
+                    '--amend',
+                ]
+            ),
         )
     except brockit.RebaseNeededException:
         wanted = _unsynced_chrome_tag(to_ref)
