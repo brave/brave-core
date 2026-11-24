@@ -257,7 +257,8 @@ std::vector<BraveAction> ListBraveSpecificActions(
 
   std::vector<BraveAction> brave_actions;
   brave_actions.push_back(kShowAddBookmarkButton);
-  if (prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled)) {
+  if (prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled) ||
+      prefs->GetBoolean(prefs::kVerticalTabsEnabled)) {
     brave_actions.push_back(kShowVerticalTabToggleButtonAction);
   }
 

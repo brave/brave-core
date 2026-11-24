@@ -8,6 +8,10 @@
 
 #include "build/build_config.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/common/pref_names.h"
+#endif
+
 class PrefRegistrySimple;
 class PrefService;
 
@@ -17,22 +21,6 @@ enum TabHoverMode { TOOLTIP = 0, CARD = 1, CARD_WITH_PREVIEW = 2 };
 
 inline constexpr char kTabHoverMode[] = "brave.tabs.hover_mode";
 
-inline constexpr char kVerticalTabsEnabled[] =
-    "brave.tabs.vertical_tabs_enabled";
-inline constexpr char kVerticalTabsCollapsed[] =
-    "brave.tabs.vertical_tabs_collapsed";
-inline constexpr char kVerticalTabsExpandedStatePerWindow[] =
-    "brave.tabs.vertical_tabs_expanded_state_per_window";
-inline constexpr char kVerticalTabsShowTitleOnWindow[] =
-    "brave.tabs.vertical_tabs_show_title_on_window";
-inline constexpr char kVerticalTabsFloatingEnabled[] =
-    "brave.tabs.vertical_tabs_floating_enabled";
-inline constexpr char kVerticalTabsShowToggleButton[] =
-    "brave.tabs.vertical_tabs_show_toggle_button";
-inline constexpr char kVerticalTabsExpandedWidth[] =
-    "brave.tabs.vertical_tabs_expanded_width";
-inline constexpr char kVerticalTabsShowScrollbar[] =
-    "brave.tabs.vertical_tabs_show_scrollbar";
 // When tabs::kBraveScrollableTabStrip is on: toggles visibility of the
 // horizontal tab strip scroll buttons only (wheel/trackpad overflow scrolling
 // is unchanged).

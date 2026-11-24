@@ -38,6 +38,32 @@ inline constexpr char kVerticalTabsHideCompletelyWhenCollapsed[] =
 // side.
 inline constexpr char kVerticalTabsOnRight[] =
     "brave.tabs.vertical_tabs_on_right";
+
+// A boolean specifying whether the vertical tabs toggle button is shown.
+inline constexpr char kVerticalTabsShowToggleButton[] =
+    "brave.tabs.vertical_tabs_show_toggle_button";
+
+inline constexpr char kVerticalTabsEnabled[] =
+    "brave.tabs.vertical_tabs_enabled";
+
+inline constexpr char kVerticalTabsCollapsed[] =
+    "brave.tabs.vertical_tabs_collapsed";
+
+inline constexpr char kVerticalTabsExpandedStatePerWindow[] =
+    "brave.tabs.vertical_tabs_expanded_state_per_window";
+
+inline constexpr char kVerticalTabsShowTitleOnWindow[] =
+    "brave.tabs.vertical_tabs_show_title_on_window";
+
+inline constexpr char kVerticalTabsFloatingEnabled[] =
+    "brave.tabs.vertical_tabs_floating_enabled";
+
+inline constexpr char kVerticalTabsExpandedWidth[] =
+    "brave.tabs.vertical_tabs_expanded_width";
+
+inline constexpr char kVerticalTabsShowScrollbar[] =
+    "brave.tabs.vertical_tabs_show_scrollbar";
+
 }  // namespace brave_tabs
 #endif  // !BUILDFLAG(IS_ANDROID)
 

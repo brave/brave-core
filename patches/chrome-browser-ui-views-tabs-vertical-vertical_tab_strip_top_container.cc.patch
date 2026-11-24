@@ -1,0 +1,40 @@
+diff --git a/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_top_container.cc b/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_top_container.cc
+index a0f701fc3b0adf0d22ee7ca9408bf633b33495c2..373e12d543b5faff71fa26633d23e900a9fbae67 100644
+--- a/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_top_container.cc
++++ b/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_top_container.cc
+@@ -147,7 +147,7 @@ views::ProposedLayout VerticalTabStripTopContainer::CalculateProposedLayout(
+     combo_button_orientation_ = views::LayoutOrientation::kVertical;
+     int current_y = 0;
+ 
+-    if (collapse_button_) {
++    if (collapse_button_ && collapse_button_->GetVisible()) {
+       const gfx::Size pref_size = collapse_button_->GetPreferredSize();
+       const int baseline_height = GetBaselineMinHeight();
+       current_y = std::max(0, (baseline_height - pref_size.height()) / 2);
+@@ -259,7 +259,7 @@ views::ProposedLayout VerticalTabStripTopContainer::CalculateProposedLayout(
+     }
+ 
+     int current_y = 0;
+-    if (collapse_button_) {
++    if (collapse_button_ && collapse_button_->GetVisible()) {
+       const gfx::Size pref_size = collapse_button_->GetPreferredSize();
+       gfx::Rect bounds(left_alignment,
+                        std::max(0, y_baseline - pref_size.height() / 2),
+@@ -467,7 +467,7 @@ gfx::Size VerticalTabStripTopContainer::GetComboButtonPreferredSize() const {
+ 
+ int VerticalTabStripTopContainer::GetPreferredWidth() const {
+   int total_width = GetComboButtonPreferredSize().width();
+-  if (collapse_button_) {
++  if (collapse_button_ && collapse_button_->GetVisible()) {
+     total_width +=
+         collapse_button_->GetPreferredSize().width() +
+         GetLayoutConstant(LayoutConstant::kVerticalTabStripTopButtonPadding);
+@@ -477,7 +477,7 @@ int VerticalTabStripTopContainer::GetPreferredWidth() const {
+ 
+ int VerticalTabStripTopContainer::GetBaselineMinHeight() const {
+   int min_height = GetComboButtonPreferredSize().height();
+-  if (collapse_button_) {
++  if (collapse_button_ && collapse_button_->GetVisible()) {
+     min_height =
+         std::max(min_height, collapse_button_->GetPreferredSize().height());
+   }

@@ -45,8 +45,12 @@ class VerticalTabStripRegionView
   void ObserveVerticalTabOnRightPref();
   void OnVerticalTabOnRightPrefChanged();
 
+  void ObserveShowToggleButtonPref();
+  void OnShowToggleButtonPrefChanged();
+
   PrefChangeRegistrar hide_completely_pref_registrar_;
   PrefChangeRegistrar vertical_tab_on_right_pref_registrar_;
+  PrefChangeRegistrar show_toggle_button_pref_registrar_;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
