@@ -463,7 +463,9 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
   }
 
   func presentBraveShieldsView() {
-    guard let selectedTab = tabManager.selectedTab, var url = selectedTab.visibleURL else { return }
+    guard let selectedTab = tabManager.selectedTab, var url = selectedTab.lastCommittedURL else {
+      return
+    }
     if let internalURL = InternalURL(url) {
       guard let orignalURL = internalURL.url.strippedInternalURL else { return }
       url = orignalURL

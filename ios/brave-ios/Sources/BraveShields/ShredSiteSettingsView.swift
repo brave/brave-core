@@ -57,7 +57,7 @@ public struct ShredSiteSettingsView: View {
         )
       } header: {
         Text(
-          viewModel.visibleURL?.displayURL?.baseDomain ?? viewModel.visibleURL?.absoluteString ?? ""
+          viewModel.tabURL?.displayURL?.baseDomain ?? viewModel.tabURL?.absoluteString ?? ""
         )
       }
     }
