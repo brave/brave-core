@@ -102,6 +102,19 @@ class TestRebaseFeatureBranch(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn('no upstream', result.stderr)
 
+    def test_chromium_bump_branch_is_refused(self) -> None:
+        _git(
+            self._sandbox.root, 'checkout', '-b', 'cr160', '--track', self._base
+        )
+        self._commit_file('feature.txt')
+        head = self._rev_parse('HEAD')
+
+        result = self._sandbox.run_gc(['rebase-feature-branch'])
+
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('Chromium bump branch, cr160', result.stderr)
+        self.assertEqual(self._rev_parse('HEAD'), head)
+
     def test_dry_run_reports_a_needed_rebase(self) -> None:
         self._fork_feature('--track', self._base)
         head = self._rev_parse('HEAD')

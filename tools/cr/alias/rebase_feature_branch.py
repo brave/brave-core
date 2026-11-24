@@ -21,6 +21,7 @@ Usage
 from __future__ import annotations
 
 import argparse
+import re
 import subprocess
 import sys
 
@@ -61,6 +62,16 @@ def _require_chromium_synced(onto: str) -> None:
             f'git_cr: Chromium is at {read_chromium_version_file()}, but the '
             f'branch is rebased onto Chromium {wanted}. Sync Chromium to '
             f'{wanted} first.'
+        )
+
+
+def _require_feature_branch() -> None:
+    branch = repository.brave.rebased_branch()
+    if re.fullmatch(r'cr\d+', branch):
+        raise UserValidationError(
+            'git_cr: Detected that the current branch is a Chromium bump '
+            f'branch, {branch}. rebase-feature-branch is only intended for '
+            'feature branches. For Chromium bump branches, use brockit.'
         )
 
 
@@ -112,6 +123,7 @@ def cmd_rebase_feature_branch(args: list[str]) -> int:
     parsed = parser.parse_args(args)
     if parsed.to_ref is not None and (parsed.is_continuation or parsed.skip):
         parser.error('--to-ref cannot be combined with --continue or --skip')
+    _require_feature_branch()
 
     # Imported lazily: brockit is a heavy module.
     import brockit
