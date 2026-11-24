@@ -281,6 +281,46 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentPlatformBrowserTest,
         printed.Get());
   }
 }
+
+// html_to_pdf renders a workspace file exactly as the viewer displays it, and
+// saves it to the workspace as a PDF. The file's own stylesheet, referenced by
+// relative path, sets the page size, so the PDF's page size shows that the file
+// was rendered with the resources it references, served from the workspace by
+// the viewer's service worker. The file name has a space in it, which has to
+// survive the trip through the viewer's URLs.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentPlatformBrowserTest,
+                       HtmlToPdfSavesAPdfOfTheRenderedFile) {
+  auto* content = CreateOpfsWorkspace();
+  CreateFile(content, "docs/print.css", "@page { size: 2in 3in; margin: 0 }");
+  CreateFile(content, "docs/my page.html",
+             "<!doctype html><link rel=\"stylesheet\" href=\"print.css\">"
+             "<p>Hello, PDF</p>");
+  content::WebContents* web_contents = content->GetWebContentsForTesting();
+
+  const std::string text =
+      RunTool(content, "html_to_pdf",
+              base::DictValue().Set("path", "docs/my page.html"));
+  EXPECT_THAT(text, ::testing::StartsWith("Created docs/my page.pdf ("));
+  EXPECT_THAT(text, ::testing::EndsWith(" bytes) from docs/my page.html"));
+
+  // Read back as Latin-1, so every byte is one character.
+  const std::string pdf = content::EvalJs(web_contents, R"JS(
+      (async () => {
+        const root = await navigator.storage.getDirectory();
+        const docs = await root.getDirectoryHandle('docs');
+        const file = await (await docs.getFileHandle('my page.pdf')).getFile();
+        return Array.from(new Uint8Array(await file.arrayBuffer()),
+                          byte => String.fromCharCode(byte)).join('');
+      })()
+  )JS")
+                              .ExtractString();
+  EXPECT_THAT(pdf, ::testing::StartsWith("%PDF-"));
+  // 2x3 inches is 144x216 points.
+  EXPECT_EQ("0 0 144 216", PdfMediaBox(pdf));
+
+  // The viewer it was rendered in is gone again.
+  EXPECT_FALSE(content::ChildFrameAt(web_contents->GetPrimaryMainFrame(), 0));
+}
 #endif  // BUILDFLAG(ENABLE_PRINTING)
 
 }  // namespace ai_chat
