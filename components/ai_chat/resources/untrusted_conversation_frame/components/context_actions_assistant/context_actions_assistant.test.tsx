@@ -252,4 +252,53 @@ describe('ContextActionsAssistant', () => {
       renderResult.getByTitle(S.CHAT_UI_CREATE_THREAD_BUTTON_LABEL),
     ).toBeInTheDocument()
   })
+
+  it('disables the edit and regenerate actions while a request is in progress', async () => {
+    const renderResult = renderAssistant(false, { isGenerating: true })
+
+    const editButton = renderResult.getByTitle(S.CHAT_UI_EDIT_BUTTON_LABEL)
+    expect(editButton.getAttribute('isdisabled')).toBe('true')
+
+    const anchorButton = await getRegenerateAnchorButton()
+    expect(anchorButton.getAttribute('isdisabled')).toBe('true')
+  })
+
+  it('enables the edit and regenerate actions when no request is in progress', async () => {
+    const renderResult = renderAssistant(false, { isGenerating: false })
+
+    const editButton = renderResult.getByTitle(S.CHAT_UI_EDIT_BUTTON_LABEL)
+    expect(editButton.getAttribute('isdisabled')).not.toBe('true')
+
+    const anchorButton = await getRegenerateAnchorButton()
+    expect(anchorButton.getAttribute('isdisabled')).not.toBe('true')
+  })
+
+  it('does not open the regenerate menu while a request is in progress', async () => {
+    renderAssistant(false, { isGenerating: true })
+
+    const anchorButton = await getRegenerateAnchorButton()
+    await clickRegenerateAnchor(anchorButton)
+
+    const menu = document.querySelector('leo-buttonmenu')
+    expect(menu).toHaveAttribute('isOpen', 'false')
+  })
+
+  it('closes the regenerate menu when a request starts', async () => {
+    const { mockRef } = renderAssistant(false)
+
+    const anchorButton = await getRegenerateAnchorButton()
+    await clickRegenerateAnchor(anchorButton)
+    await getOpenMenu()
+
+    await act(async () => {
+      mockRef.current!.api.state.update({ isGenerating: true })
+    })
+
+    await waitFor(() => {
+      expect(document.querySelector('leo-buttonmenu')).toHaveAttribute(
+        'isOpen',
+        'false',
+      )
+    })
+  })
 })
