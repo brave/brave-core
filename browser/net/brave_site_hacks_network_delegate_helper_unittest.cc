@@ -162,7 +162,7 @@ TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest,
                                 GURL("https://bondy.brian.org")});
   for (const auto& url : urls) {
     auto brave_request_info = this->MakeRequest(url);
-    brave_request_info->set_tab_origin(
+    brave_request_info->SetTabOriginForTesting(
         GURL("chrome-extension://aemmndcbldboiebfnladdacbdfmadadm/"));
     const GURL original_referrer("https://hello.brianbondy.com/about");
     brave_request_info->set_referrer(original_referrer);

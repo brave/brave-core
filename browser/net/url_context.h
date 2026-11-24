@@ -16,6 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/types/optional_ref.h"
+#include "brave/browser/brave_shields/shields_settings_origin.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/global_routing_id.h"
 #include "net/base/isolation_info.h"
@@ -81,7 +82,7 @@ class BraveRequestInfo {
   void set_request_url(const GURL& value);
 
   const GURL& tab_origin() const;
-  void set_tab_origin(const GURL& value);
+  void SetTabOriginForTesting(const GURL& value);
 
   const GURL& tab_url() const;
   void set_tab_url(const GURL& value);
@@ -240,12 +241,15 @@ class BraveRequestInfo {
   template <template <typename> class T>
   friend class ::BraveRequestHandlerImpl;
 
+  brave_shields::ShieldsSettingsOrigin GetShieldsSettingsOrigin(
+      const net::IsolationInfo* isolation_info) const;
+
   GURL* new_url() const;
   void set_new_url(GURL* value);
 
   std::string method_;
   GURL request_url_;
-  GURL tab_origin_;
+  brave_shields::ShieldsSettingsOrigin shields_settings_origin_;
   GURL tab_url_;
   std::optional<url::Origin> request_initiator_;
   std::optional<url::Origin> top_frame_origin_;

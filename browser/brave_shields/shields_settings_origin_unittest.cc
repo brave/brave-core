@@ -6,17 +6,17 @@
 #include "brave/browser/brave_shields/shields_settings_origin.h"
 
 #include <memory>
-#include <optional>
 
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
-#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_observer.h"
+#include "content/public/common/referrer.h"
 #include "content/public/test/navigation_simulator.h"
 #include "content/public/test/test_renderer_host.h"
 #include "net/http/http_response_headers.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -24,96 +24,50 @@ namespace brave_shields {
 
 namespace {
 
-url::Origin A() {
-  return url::Origin::Create(GURL("https://a.test"));
+GURL A() {
+  return GURL("https://a.test/");
 }
-
-url::Origin B() {
-  return url::Origin::Create(GURL("https://b.test"));
+GURL B() {
+  return GURL("https://b.test/");
 }
-
-// Forwards navigation events to the `ShieldsSettingsOrigin` hooks, as
-// `BraveShieldsWebContentsObserver` does.
-class ShieldsSettingsOriginObserver : public content::WebContentsObserver {
- public:
-  explicit ShieldsSettingsOriginObserver(content::WebContents* web_contents)
-      : content::WebContentsObserver(web_contents) {}
-
-  void DidStartNavigation(content::NavigationHandle* handle) override {
-    ShieldsSettingsOrigin::OnNavigationStarted(handle);
-  }
-  void ReadyToCommitNavigation(content::NavigationHandle* handle) override {
-    ShieldsSettingsOrigin::OnReadyToCommitNavigation(handle);
-  }
-  void DidFinishNavigation(content::NavigationHandle* handle) override {
-    ShieldsSettingsOrigin::OnNavigationFinished(handle);
-  }
-};
 
 }  // namespace
-
-TEST(ShieldsSettingsOriginResolveTest, UsesNonOpaqueOrigin) {
-  EXPECT_EQ(A(), ShieldsSettingsOrigin::Resolve(A(), GURL("https://b.test/"),
-                                                url::Origin()));
-}
-
-TEST(ShieldsSettingsOriginResolveTest, UsesUrlOriginWhenOriginIsOpaque) {
-  EXPECT_EQ(B(), ShieldsSettingsOrigin::Resolve(url::Origin(),
-                                                GURL("https://b.test/"), A()));
-}
-
-TEST(ShieldsSettingsOriginResolveTest, UsesUrlOriginWhenOriginIsMissing) {
-  EXPECT_EQ(B(), ShieldsSettingsOrigin::Resolve(std::nullopt,
-                                                GURL("https://b.test/"), A()));
-}
-
-TEST(ShieldsSettingsOriginResolveTest,
-     UsesInheritedWhenOriginAndUrlOriginAreOpaque) {
-  EXPECT_EQ(A(), ShieldsSettingsOrigin::Resolve(url::Origin(),
-                                                GURL("data:text/html,x"), A()));
-}
-
-TEST(ShieldsSettingsOriginResolveTest, OpaqueInheritedStaysOpaque) {
-  EXPECT_TRUE(ShieldsSettingsOrigin::Resolve(std::nullopt, GURL("about:blank"),
-                                             url::Origin())
-                  .opaque());
-}
 
 class ShieldsSettingsOriginTest : public ChromeRenderViewHostTestHarness {
  protected:
   void SetUp() override {
     ChromeRenderViewHostTestHarness::SetUp();
-    observer_ = std::make_unique<ShieldsSettingsOriginObserver>(web_contents());
-  }
-
-  void TearDown() override {
-    observer_.reset();
-    ChromeRenderViewHostTestHarness::TearDown();
+    BraveShieldsWebContentsObserver::CreateForWebContents(web_contents());
   }
 
   std::unique_ptr<content::WebContents> CreateObservedContents() {
     auto contents = CreateTestWebContents();
-    new_observers_.push_back(
-        std::make_unique<ShieldsSettingsOriginObserver>(contents.get()));
+    BraveShieldsWebContentsObserver::CreateForWebContents(contents.get());
     return contents;
   }
 
-  url::Origin GetForMainFrame() {
-    return ShieldsSettingsOrigin::GetForFrame(main_rfh());
+  void OpenWindow(content::WebContents* contents) {
+    content::WebContentsObserver* observer =
+        BraveShieldsWebContentsObserver::FromWebContents(web_contents());
+    observer->DidOpenRequestedURL(contents, main_rfh(), GURL(),
+                                  content::Referrer(),
+                                  WindowOpenDisposition::kNewPopup,
+                                  ui::PAGE_TRANSITION_LINK, false, true);
   }
 
-  std::unique_ptr<ShieldsSettingsOriginObserver> observer_;
-  std::vector<std::unique_ptr<ShieldsSettingsOriginObserver>> new_observers_;
+  GURL GetForMainFrame() {
+    return ShieldsSettingsOrigin::ForFrame(*main_rfh()).GetURL();
+  }
 };
 
 TEST_F(ShieldsSettingsOriginTest, GetForFrameWithoutValueUsesCommittedOrigin) {
   // No observer, so the document has no stored value.
-  observer_.reset();
-  content::NavigationSimulator::NavigateAndCommitFromBrowser(
-      web_contents(), GURL("https://a.test/"));
-  ASSERT_FALSE(ShieldsSettingsOrigin::GetForCurrentDocument(main_rfh()));
-
-  EXPECT_EQ(A(), GetForMainFrame());
+  auto contents = CreateTestWebContents();
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(contents.get(),
+                                                             A());
+  EXPECT_EQ(A(),
+            ShieldsSettingsOrigin::ForFrame(*contents->GetPrimaryMainFrame())
+                .GetURL());
 }
 
 TEST_F(ShieldsSettingsOriginTest, GetForFrameUsesOutermostMainFrameValue) {
@@ -124,16 +78,14 @@ TEST_F(ShieldsSettingsOriginTest, GetForFrameUsesOutermostMainFrameValue) {
   child = content::NavigationSimulator::NavigateAndCommitFromDocument(
       GURL("https://b.test/"), child);
 
-  EXPECT_EQ(A(), ShieldsSettingsOrigin::GetForFrame(child));
+  EXPECT_EQ(A(), ShieldsSettingsOrigin::ForFrame(*child).GetURL());
 }
 
 TEST_F(ShieldsSettingsOriginTest, CommitStoresCommittedOrigin) {
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
       web_contents(), GURL("https://a.test/"));
 
-  const auto* data = ShieldsSettingsOrigin::GetForCurrentDocument(main_rfh());
-  ASSERT_TRUE(data);
-  EXPECT_EQ(A(), data->value());
+  EXPECT_EQ(A(), GetForMainFrame());
 }
 
 TEST_F(ShieldsSettingsOriginTest, SandboxedResponseStoresUrlOrigin) {
@@ -153,7 +105,7 @@ TEST_F(ShieldsSettingsOriginTest, BrowserInitiatedOpaqueNavigationIsOpaque) {
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
       web_contents(), GURL("data:text/html,x"));
 
-  EXPECT_TRUE(GetForMainFrame().opaque());
+  EXPECT_TRUE(GetForMainFrame().is_empty());
 }
 
 TEST_F(ShieldsSettingsOriginTest,
@@ -205,7 +157,6 @@ TEST_F(ShieldsSettingsOriginTest, SubframeNavigationDoesNotChangeValue) {
   child = content::NavigationSimulator::NavigateAndCommitFromDocument(
       GURL("https://b.test/"), child);
 
-  ASSERT_FALSE(ShieldsSettingsOrigin::GetForCurrentDocument(child));
   EXPECT_EQ(A(), GetForMainFrame());
 }
 
@@ -214,23 +165,25 @@ TEST_F(ShieldsSettingsOriginTest, NewWindowCopiesOpenerPageValue) {
       web_contents(), GURL("https://a.test/"));
   auto new_contents = CreateObservedContents();
 
-  ShieldsSettingsOrigin::SetForNewWindow(new_contents.get(), main_rfh());
+  OpenWindow(new_contents.get());
 
-  EXPECT_EQ(A(), ShieldsSettingsOrigin::GetForFrame(
-                     new_contents->GetPrimaryMainFrame()));
+  EXPECT_EQ(
+      A(), ShieldsSettingsOrigin::ForFrame(*new_contents->GetPrimaryMainFrame())
+               .GetURL());
 }
 
 TEST_F(ShieldsSettingsOriginTest, NewWindowValueSurvivesOpenerNavigation) {
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
       web_contents(), GURL("https://a.test/"));
   auto new_contents = CreateObservedContents();
-  ShieldsSettingsOrigin::SetForNewWindow(new_contents.get(), main_rfh());
+  OpenWindow(new_contents.get());
 
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
       web_contents(), GURL("https://b.test/"));
 
-  EXPECT_EQ(A(), ShieldsSettingsOrigin::GetForFrame(
-                     new_contents->GetPrimaryMainFrame()));
+  EXPECT_EQ(
+      A(), ShieldsSettingsOrigin::ForFrame(*new_contents->GetPrimaryMainFrame())
+               .GetURL());
 }
 
 TEST_F(ShieldsSettingsOriginTest, NewWindowIgnoredAfterInitialNavigation) {
@@ -240,25 +193,27 @@ TEST_F(ShieldsSettingsOriginTest, NewWindowIgnoredAfterInitialNavigation) {
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
       new_contents.get(), GURL("https://b.test/"));
 
-  ShieldsSettingsOrigin::SetForNewWindow(new_contents.get(), main_rfh());
+  OpenWindow(new_contents.get());
 
-  EXPECT_EQ(B(), ShieldsSettingsOrigin::GetForFrame(
-                     new_contents->GetPrimaryMainFrame()));
+  EXPECT_EQ(
+      B(), ShieldsSettingsOrigin::ForFrame(*new_contents->GetPrimaryMainFrame())
+               .GetURL());
 }
 
 TEST_F(ShieldsSettingsOriginTest, NewWindowOpaqueNavigationCopiesOpenerValue) {
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
       web_contents(), GURL("https://a.test/"));
   auto new_contents = CreateObservedContents();
-  ShieldsSettingsOrigin::SetForNewWindow(new_contents.get(), main_rfh());
+  OpenWindow(new_contents.get());
 
   auto simulator = content::NavigationSimulator::CreateRendererInitiated(
       GURL("about:blank#x"), new_contents->GetPrimaryMainFrame());
   simulator->SetInitiatorFrame(new_contents->GetPrimaryMainFrame());
   simulator->Commit();
 
-  EXPECT_EQ(A(), ShieldsSettingsOrigin::GetForFrame(
-                     new_contents->GetPrimaryMainFrame()));
+  EXPECT_EQ(
+      A(), ShieldsSettingsOrigin::ForFrame(*new_contents->GetPrimaryMainFrame())
+               .GetURL());
 }
 
 }  // namespace brave_shields

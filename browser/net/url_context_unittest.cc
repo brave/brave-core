@@ -5,7 +5,7 @@
 
 #include "brave/browser/net/url_context.h"
 
-#include "brave/browser/brave_shields/shields_settings_origin.h"
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -18,6 +18,7 @@
 #include "content/public/test/test_renderer_host.h"
 #include "net/base/isolation_info.h"
 #include "net/cookies/site_for_cookies.h"
+#include "net/http/http_response_headers.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_request.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -404,17 +405,24 @@ TEST_F(BraveRequestInfoTest,
 
 class BraveRequestInfoFrameTest : public ChromeRenderViewHostTestHarness {
  protected:
-  // Commits `url` and stores `value` as the page's Shields settings origin.
-  void CommitWithValue(const GURL& url, const url::Origin& value) {
-    content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                               url);
-    if (brave_shields::ShieldsSettingsOrigin::GetForCurrentDocument(
-            main_rfh())) {
-      brave_shields::ShieldsSettingsOrigin::DeleteForCurrentDocument(
-          main_rfh());
-    }
-    brave_shields::ShieldsSettingsOrigin::CreateForCurrentDocument(main_rfh(),
-                                                                   value);
+  void SetUp() override {
+    ChromeRenderViewHostTestHarness::SetUp();
+    brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
+        web_contents());
+  }
+
+  void CommitInheritedPage(const url::Origin& opener) {
+    auto sandboxed = content::NavigationSimulator::CreateBrowserInitiated(
+        opener.GetURL(), web_contents());
+    sandboxed->SetResponseHeaders(net::HttpResponseHeaders::TryToCreate(
+        "HTTP/1.1 200 OK\nContent-Security-Policy: sandbox allow-scripts\n"));
+    sandboxed->Commit();
+    auto navigation = content::NavigationSimulator::CreateRendererInitiated(
+        GURL("about:blank"), main_rfh());
+    navigation->SetInitiatorFrame(main_rfh());
+    navigation->Commit();
+    ASSERT_EQ(GURL("about:blank"), main_rfh()->GetLastCommittedURL());
+    ASSERT_TRUE(main_rfh()->GetLastCommittedOrigin().opaque());
   }
 
   std::unique_ptr<BraveRequestInfo> MakeCTXForMainFrame(
@@ -423,6 +431,10 @@ class BraveRequestInfoFrameTest : public ChromeRenderViewHostTestHarness {
           net::IsolationInfo::RequestType::kMainFrame) {
     network::ResourceRequest request;
     request.url = GURL("https://request.example/fetch");
+    request.resource_type = static_cast<int>(
+        request_type == net::IsolationInfo::RequestType::kMainFrame
+            ? blink::mojom::ResourceType::kMainFrame
+            : blink::mojom::ResourceType::kScript);
     request.trusted_params = network::ResourceRequest::TrustedParams();
     request.trusted_params->isolation_info =
         MakeIsolationInfo(top_frame_origin, request_type);
@@ -456,7 +468,8 @@ class BraveRequestInfoFrameTest : public ChromeRenderViewHostTestHarness {
 TEST_F(BraveRequestInfoFrameTest,
        WithoutIsolationInfoUsesOutermostMainFrameOrigin) {
   const url::Origin page = url::Origin::Create(GURL("https://page.example"));
-  CommitWithValue(page.GetURL(), page);
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             page.GetURL());
   content::RenderFrameHost* child = CommitChild(GURL("https://child.example/"));
 
   auto ctx = MakeCTXWithoutIsolationInfo(child);
@@ -468,7 +481,7 @@ TEST_F(BraveRequestInfoFrameTest,
 TEST_F(BraveRequestInfoFrameTest, WithoutIsolationInfoUsesStoredPageValue) {
   const url::Origin stored =
       url::Origin::Create(GURL("https://stored.example"));
-  CommitWithValue(GURL("https://page.example/"), stored);
+  CommitInheritedPage(stored);
   content::RenderFrameHost* child = CommitChild(GURL("https://child.example/"));
 
   EXPECT_EQ(stored.GetURL(), MakeCTXWithoutIsolationInfo(child)->tab_origin());
@@ -478,8 +491,8 @@ TEST_F(BraveRequestInfoFrameTest,
        MainFrameNavigationUsesNonOpaqueTopFrameOrigin) {
   const url::Origin top_frame_origin =
       url::Origin::Create(GURL("https://top-frame.example"));
-  CommitWithValue(GURL("https://page.example/"),
-                  url::Origin::Create(GURL("https://stored.example")));
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(
+      web_contents(), GURL("https://outgoing.example/"));
 
   EXPECT_EQ(top_frame_origin.GetURL(),
             MakeCTXForMainFrame(top_frame_origin)->tab_origin());
@@ -488,7 +501,7 @@ TEST_F(BraveRequestInfoFrameTest,
 TEST_F(BraveRequestInfoFrameTest, FrameRequestUsesStoredPageValue) {
   const url::Origin stored =
       url::Origin::Create(GURL("https://stored.example"));
-  CommitWithValue(GURL("https://page.example/"), stored);
+  CommitInheritedPage(stored);
 
   for (auto request_type : {net::IsolationInfo::RequestType::kSubFrame,
                             net::IsolationInfo::RequestType::kOther}) {
@@ -502,17 +515,20 @@ TEST_F(BraveRequestInfoFrameTest, FrameRequestUsesStoredPageValue) {
 }
 
 TEST_F(BraveRequestInfoFrameTest,
-       MainFrameNavigationWithOpaqueTopFrameUsesStoredPageValue) {
+       MainFrameNavigationWithOpaqueTopFrameUsesDefaults) {
   const url::Origin stored =
       url::Origin::Create(GURL("https://stored.example"));
-  CommitWithValue(GURL("https://page.example/"), stored);
+  CommitInheritedPage(stored);
 
-  EXPECT_EQ(stored.GetURL(), MakeCTXForMainFrame(url::Origin())->tab_origin());
+  EXPECT_TRUE(MakeCTXForMainFrame(stored.DeriveNewOpaqueOrigin())
+                  ->tab_origin()
+                  .is_empty());
 }
 
 TEST_F(BraveRequestInfoFrameTest,
        MainFrameNavigationWithOpaqueStoredPageValueHasNoTabOrigin) {
-  CommitWithValue(GURL("https://page.example/"), url::Origin());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(
+      web_contents(), GURL("data:text/html,page"));
 
   EXPECT_TRUE(MakeCTXForMainFrame(url::Origin())->tab_origin().is_empty());
 }

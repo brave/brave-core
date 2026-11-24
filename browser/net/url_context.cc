@@ -117,12 +117,13 @@ void BraveRequestInfo::set_request_url(const GURL& value) {
 
 const GURL& BraveRequestInfo::tab_origin() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return tab_origin_;
+  return shields_settings_origin_.GetURL();
 }
 
-void BraveRequestInfo::set_tab_origin(const GURL& value) {
+void BraveRequestInfo::SetTabOriginForTesting(const GURL& value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  tab_origin_ = value;
+  shields_settings_origin_ =
+      brave_shields::ShieldsSettingsOrigin(url::Origin::Create(value));
 }
 
 const GURL& BraveRequestInfo::tab_url() const {
@@ -497,6 +498,28 @@ void BraveRequestInfo::set_new_url(GURL* value) {
   new_url_ = value;
 }
 
+brave_shields::ShieldsSettingsOrigin BraveRequestInfo::GetShieldsSettingsOrigin(
+    const net::IsolationInfo* isolation_info) const {
+  // The token of a main-frame navigation can still point to the outgoing
+  // document. Its settings must never be applied to the destination.
+  // WebSocket requests carry isolation info but leave resource_type unset.
+  const bool is_main_frame =
+      isolation_info
+          ? isolation_info->request_type() ==
+                net::IsolationInfo::RequestType::kMainFrame
+          : resource_type() == blink::mojom::ResourceType::kMainFrame;
+  if (!is_main_frame) {
+    if (auto* frame =
+            content::RenderFrameHost::FromFrameToken(render_frame_token())) {
+      return brave_shields::ShieldsSettingsOrigin::ForFrame(*frame);
+    }
+  }
+  return isolation_info
+             ? brave_shields::ShieldsSettingsOrigin::ForIsolationInfo(
+                   *isolation_info)
+             : brave_shields::ShieldsSettingsOrigin();
+}
+
 // static
 std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     const network::ResourceRequest& request,
@@ -532,7 +555,6 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
 
   ctx->set_render_frame_token(render_frame_token);
 
-  // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
   const net::IsolationInfo* isolation_info = nullptr;
   if (request.trusted_params) {
     isolation_info = &request.trusted_params->isolation_info;
@@ -558,29 +580,7 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
           render_frame_host->GetOutermostMainFrame()->GetLastCommittedOrigin());
     }
   }
-  // Shields settings use the origin stored for the page the request belongs
-  // to. A main frame navigation belongs to the new page, but its frame token
-  // still refers to the current one, so it uses the top frame origin instead,
-  // and only uses the current page's stored origin when that is opaque.
-  // Frameless requests have no page, so they use the top frame origin, or the
-  // default settings when it is opaque.
-  url::Origin settings_origin;
-  auto* render_frame_host =
-      content::RenderFrameHost::FromFrameToken(ctx->render_frame_token());
-  const bool is_main_frame_navigation =
-      isolation_info && isolation_info->request_type() ==
-                            net::IsolationInfo::RequestType::kMainFrame;
-  if (render_frame_host && !is_main_frame_navigation) {
-    settings_origin =
-        brave_shields::ShieldsSettingsOrigin::GetForFrame(render_frame_host);
-  } else if (isolation_info && isolation_info->top_frame_origin() &&
-             !isolation_info->top_frame_origin()->opaque()) {
-    settings_origin = *isolation_info->top_frame_origin();
-  } else if (render_frame_host) {
-    settings_origin =
-        brave_shields::ShieldsSettingsOrigin::GetForFrame(render_frame_host);
-  }
-  ctx->set_tab_origin(settings_origin.GetURL());
+  ctx->shields_settings_origin_ = ctx->GetShieldsSettingsOrigin(isolation_info);
 
   if (old_ctx) {
     ctx->set_internal_redirect(old_ctx->internal_redirect());
