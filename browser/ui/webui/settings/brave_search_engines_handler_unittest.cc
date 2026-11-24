@@ -170,14 +170,20 @@ TEST_F(BraveSearchEnginesHandlerTest,
 
   // engine_b is the private default; engine_a is not.
   const base::ListValue& list = result->GetList();
-  auto engine_a =
-      base::test::ParseJsonDict(R"({"keyword": "engine_a", "default": false})");
-  auto engine_b =
-      base::test::ParseJsonDict(R"({"keyword": "engine_b", "default": true})");
+  const auto private_keyword =
+      base::test::DictionaryHasValue("keyword", base::Value("engine_b"));
+  const auto is_default =
+      base::test::DictionaryHasValue("default", base::Value(true));
+  const auto is_other =
+      base::test::DictionaryHasValue("default", base::Value(false));
+  EXPECT_THAT(list, testing::Contains(private_keyword).Times(1));
+  EXPECT_THAT(list, testing::Contains(base::test::DictionaryHasValue(
+                                          "keyword", base::Value("engine_a")))
+                        .Times(1));
   EXPECT_THAT(list,
-              testing::Contains(base::test::DictionaryHasValues(engine_a)));
-  EXPECT_THAT(list,
-              testing::Contains(base::test::DictionaryHasValues(engine_b)));
+              testing::Each(testing::AnyOf(
+                  testing::AllOf(private_keyword, is_default),
+                  testing::AllOf(testing::Not(private_keyword), is_other))));
 }
 
 // Verify that setDefaultPrivateSearchEngine updates the pref when given a
