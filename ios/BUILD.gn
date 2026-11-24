@@ -158,6 +158,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/brave_shields/element_picker/element_picker_localized_texts.h",
   "//brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper_bridge.h",
   "//brave/ios/browser/brave_shields/scriptlets/scriptlets_tab_helper_bridge.h",
+  "//brave/ios/browser/saved_tab_groups/brave_tab_group_id.h",
 ]
 
 brave_core_public_headers += ads_public_headers
