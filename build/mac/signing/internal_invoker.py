@@ -70,6 +70,9 @@ def stub_out_signing_in_upstream():
             # `codesign --display` fail when signing is skipped. So don't invoke
             # codesign at all:
             return None  # Indicates the command should not be run
+        if args[:2] == ['pkgutil', '--check-signature']:
+            # The PKG is unsigned, so verifying its signature would fail.
+            return None
         if args[0] == 'productbuild':
             try:
                 sign_index = args.index('--sign')
