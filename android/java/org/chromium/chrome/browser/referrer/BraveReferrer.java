@@ -277,7 +277,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
 
     private void onReferrerReady() {
         PostTask.postTask(
-                TaskTraits.UI_BEST_EFFORT,
+                TaskTraits.UI_DEFAULT,
                 () -> {
                     BraveReferrerJni.get().onReferrerReady(mNativeBraveReferrer, mGbraid);
                 });
