@@ -5,16 +5,46 @@
 
 #include "brave/browser/brave_shields/shields_settings_origin.h"
 
+#include <memory>
+
+#include "base/supports_user_data.h"
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "net/base/net_errors.h"
 #include "url/gurl.h"
 
 namespace brave_shields {
 
 namespace {
+
+// History entries can outlive the document and the page it inherited from.
+struct HistorySettingsOrigin : base::SupportsUserData::Data {
+  static constexpr char kKey = 0;
+
+  explicit HistorySettingsOrigin(const url::Origin& origin) : value(origin) {}
+
+  std::unique_ptr<Data> Clone() override {
+    return std::make_unique<HistorySettingsOrigin>(value);
+  }
+
+  const url::Origin value;
+};
+
+const HistorySettingsOrigin* GetHistorySettingsOrigin(
+    content::NavigationHandle* handle) {
+  if (!handle->IsHistory() || handle->WasServerRedirect() ||
+      handle->GetNetErrorCode() != net::OK) {
+    return nullptr;
+  }
+  const auto* entry = handle->GetNavigationEntry();
+  return entry ? static_cast<const HistorySettingsOrigin*>(
+                     entry->GetUserData(&HistorySettingsOrigin::kKey))
+               : nullptr;
+}
 
 // Returns the value of the page that initiated `handle`. Browser-initiated
 // navigations have no such page, so they get an opaque origin (default
@@ -115,8 +145,10 @@ void ShieldsSettingsOrigin::OnReadyToCommitNavigation(
   if (!data) {
     return;
   }
-  data->set_value(Resolve(handle->GetOriginToCommit(), handle->GetURL(),
-                          data->inherited()));
+  const auto* saved = GetHistorySettingsOrigin(handle);
+  data->set_value(saved ? saved->value
+                        : Resolve(handle->GetOriginToCommit(), handle->GetURL(),
+                                  data->inherited()));
   // A new RenderFrameHost keeps document data set while it is pending commit,
   // so the new document has its value before it can make requests. A reused
   // RenderFrameHost still hosts the current document, which keeps its own
@@ -138,15 +170,18 @@ void ShieldsSettingsOrigin::OnNavigationFinished(
   content::RenderFrameHost* render_frame_host = handle->GetRenderFrameHost();
   // The document already has a value if it was set while pending commit, or
   // if the commit kept the initial empty document of a new window.
-  if (GetForCurrentDocument(render_frame_host)) {
-    return;
+  if (!GetForCurrentDocument(render_frame_host)) {
+    auto* data =
+        ShieldsSettingsOriginNavigationData::GetForNavigationHandle(*handle);
+    CreateForCurrentDocument(render_frame_host,
+                             data ? data->value()
+                                  : Resolve(handle->GetOriginToCommit(),
+                                            handle->GetURL(), url::Origin()));
   }
-  auto* data =
-      ShieldsSettingsOriginNavigationData::GetForNavigationHandle(*handle);
-  CreateForCurrentDocument(render_frame_host,
-                           data ? data->value()
-                                : Resolve(handle->GetOriginToCommit(),
-                                          handle->GetURL(), url::Origin()));
+  auto* entry = render_frame_host->GetController().GetLastCommittedEntry();
+  entry->SetUserData(&HistorySettingsOrigin::kKey,
+                     std::make_unique<HistorySettingsOrigin>(
+                         GetForCurrentDocument(render_frame_host)->value()));
 }
 
 NAVIGATION_HANDLE_USER_DATA_KEY_IMPL(ShieldsSettingsOriginNavigationData);

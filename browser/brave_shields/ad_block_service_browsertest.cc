@@ -63,6 +63,10 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/common/features.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/weak_document_ptr.h"
+#include "content/public/test/back_forward_cache_util.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "crypto/sha2.h"
@@ -2003,6 +2007,46 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
   SetAds(brave_shields::ControlType::ALLOW,
          embedded_test_server()->GetURL("d.com", "/"));
   EXPECT_FALSE(CanFetch(frame, ad_url));
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       RecreatedInheritedPageKeepsSettingsOnBack) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  const GURL ad_url = embedded_test_server()->GetURL("e.com", "/adbanner.js");
+  const GURL a_url = embedded_test_server()->GetURL("a.com", "/");
+  const GURL b_url = embedded_test_server()->GetURL("b.com", "/");
+  const GURL away_url = embedded_test_server()->GetURL("c.com", "/simple.html");
+  const GURL new_opener_url =
+      embedded_test_server()->GetURL("d.com", "/simple.html");
+
+  content::WebContents* opener = web_contents();
+  content::WebContents* popup = OpenPopupFromSandboxedFrame("");
+  content::DisableBackForwardCacheForTesting(
+      popup, content::BackForwardCache::TEST_REQUIRES_NO_CACHING);
+
+  // Commit an inherited document with its own history entry. The initial
+  // empty document can be replaced by the first cross-document navigation.
+  const GURL inherited_url("about:blank?history");
+  ASSERT_TRUE(content::NavigateToURLFromRenderer(popup, inherited_url));
+  ASSERT_TRUE(popup->GetPrimaryMainFrame()->GetLastCommittedOrigin().opaque());
+  auto& controller = popup->GetController();
+  const int entry_id = controller.GetLastCommittedEntry()->GetUniqueID();
+  const auto document = popup->GetPrimaryMainFrame()->GetWeakDocumentPtr();
+  SetAds(brave_shields::ControlType::ALLOW, a_url);
+  ASSERT_TRUE(CanFetch(popup, ad_url));
+
+  ASSERT_TRUE(content::NavigateToURL(popup, away_url));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !document.AsRenderFrameHostIfValid(); }));
+  ASSERT_TRUE(content::NavigateToURL(opener, new_opener_url));
+  ASSERT_TRUE(content::HistoryGoBack(popup));
+  ASSERT_EQ(entry_id, controller.GetLastCommittedEntry()->GetUniqueID());
+  ASSERT_EQ(inherited_url, popup->GetLastCommittedURL());
+  ASSERT_FALSE(popup->GetPrimaryMainFrame()->IsErrorDocument());
+  ASSERT_TRUE(CanFetch(popup, ad_url.Resolve("/simple.html")));
+
+  ExpectUsesSettingsOf(FetchFrom(popup->GetPrimaryMainFrame(), ad_url), a_url,
+                       {b_url, away_url, new_opener_url});
 }
 
 #if !BUILDFLAG(IS_ANDROID)
