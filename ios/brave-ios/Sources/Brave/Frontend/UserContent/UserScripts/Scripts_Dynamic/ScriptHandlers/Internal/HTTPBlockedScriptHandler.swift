@@ -54,10 +54,7 @@ class HTTPBlockedScriptHandler: TabContentScript {
 
   @MainActor private func didProceed(tab: some TabState) {
     let upgradedHTTPSRequest = tab.httpsUpgradeHelper?.upgradedHTTPSRequest
-    guard let url = upgradedHTTPSRequest?.url ?? tab.visibleURL?.strippedInternalURL else {
-      //      assertionFailure(
-      //        "There should be no way this method can be triggered if the tab is not on an internal url"
-      //      )
+    guard let url = upgradedHTTPSRequest?.url ?? tab.lastCommittedURL?.strippedInternalURL else {
       return
     }
 
