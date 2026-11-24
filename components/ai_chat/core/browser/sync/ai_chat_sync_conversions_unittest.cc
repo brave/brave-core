@@ -217,7 +217,7 @@ TEST(AIChatSyncConversionsTest, ConversationMetadataToSpecifics) {
   conversation->trimmed_tokens = 56;
 
   sync_pb::AIChatConversationSpecifics specifics =
-      ConversationMetadataToSpecifics(*conversation);
+      ConversationMetadataToSpecifics(*conversation, base::Time());
 
   ASSERT_TRUE(specifics.has_conversation());
   EXPECT_FALSE(specifics.has_entry());
@@ -236,10 +236,66 @@ TEST(AIChatSyncConversionsTest, ConversationMetadataToSpecificsNoModelKey) {
   conversation->model_key = std::nullopt;
 
   sync_pb::AIChatConversationSpecifics specifics =
-      ConversationMetadataToSpecifics(*conversation);
+      ConversationMetadataToSpecifics(*conversation, base::Time());
 
   ASSERT_TRUE(specifics.has_conversation());
   EXPECT_FALSE(specifics.conversation().has_model_key());
+}
+
+TEST(AIChatSyncConversionsTest, ModifiedTimeRoundTrip) {
+  const base::Time modified_time =
+      base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(42));
+
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv-1";
+  auto conversation_specifics =
+      ConversationMetadataToSpecifics(*conversation, modified_time);
+  EXPECT_EQ(conversation_specifics.conversation()
+                .modified_time_windows_epoch_micros(),
+            42);
+  EXPECT_EQ(GetModifiedTimeFromSpecifics(conversation_specifics),
+            modified_time);
+
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->created_time = base::Time::Now();
+  auto entry_specifics = EntryToSpecifics("conv-1", *entry, modified_time,
+                                          /*associated_content=*/{});
+  EXPECT_EQ(entry_specifics.entry().modified_time_windows_epoch_micros(), 42);
+  EXPECT_EQ(GetModifiedTimeFromSpecifics(entry_specifics), modified_time);
+}
+
+TEST(AIChatSyncConversionsTest, NullModifiedTimeIsLeftUnset) {
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv-1";
+  auto conversation_specifics =
+      ConversationMetadataToSpecifics(*conversation, base::Time());
+  EXPECT_FALSE(conversation_specifics.conversation()
+                   .has_modified_time_windows_epoch_micros());
+
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->created_time = base::Time::Now();
+  auto entry_specifics = EntryToSpecifics("conv-1", *entry, base::Time(),
+                                          /*associated_content=*/{});
+  EXPECT_FALSE(
+      entry_specifics.entry().has_modified_time_windows_epoch_micros());
+}
+
+TEST(AIChatSyncConversionsTest, MissingModifiedTimeReadsAsNull) {
+  // A record without a time, e.g. from a sender that didn't know one, is
+  // treated as the oldest copy.
+  sync_pb::AIChatConversationSpecifics conversation_specifics;
+  conversation_specifics.mutable_conversation()->set_uuid("conv-1");
+  EXPECT_TRUE(GetModifiedTimeFromSpecifics(conversation_specifics).is_null());
+
+  sync_pb::AIChatConversationSpecifics entry_specifics;
+  entry_specifics.mutable_entry()->set_uuid("entry-1");
+  EXPECT_TRUE(GetModifiedTimeFromSpecifics(entry_specifics).is_null());
+
+  EXPECT_TRUE(
+      GetModifiedTimeFromSpecifics(sync_pb::AIChatConversationSpecifics())
+          .is_null());
 }
 
 TEST(AIChatSyncConversionsTest, EntryToSpecificsMapsFields) {
@@ -255,7 +311,7 @@ TEST(AIChatSyncConversionsTest, EntryToSpecificsMapsFields) {
       base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(42));
 
   sync_pb::AIChatConversationSpecifics specifics =
-      EntryToSpecifics("conv-1", *entry, {});
+      EntryToSpecifics("conv-1", *entry, base::Time(), {});
 
   ASSERT_TRUE(specifics.has_entry());
   EXPECT_FALSE(specifics.has_conversation());
@@ -314,7 +370,7 @@ TEST(AIChatSyncConversionsTest,
   entry->edits->push_back(std::move(latest_edit));
 
   sync_pb::AIChatConversationSpecifics specifics =
-      EntryToSpecifics("conv-1", *entry, {});
+      EntryToSpecifics("conv-1", *entry, base::Time(), {});
 
   ASSERT_TRUE(specifics.has_entry());
   const auto& proto = specifics.entry();
@@ -363,7 +419,7 @@ TEST(AIChatSyncConversionsTest, EntryToSpecificsFiltersAssociatedContent) {
   content.push_back(std::move(unattached));
 
   sync_pb::AIChatConversationSpecifics specifics =
-      EntryToSpecifics("conv-1", *entry, content);
+      EntryToSpecifics("conv-1", *entry, base::Time(), content);
 
   ASSERT_TRUE(specifics.has_entry());
   ASSERT_EQ(specifics.entry().associated_content_size(), 1);
@@ -404,7 +460,7 @@ TEST(AIChatSyncConversionsTest, EntryToSpecificsFiltersWorkspaceContent) {
   content.push_back(std::move(workspace));
 
   sync_pb::AIChatConversationSpecifics specifics =
-      EntryToSpecifics("conv-1", *entry, content);
+      EntryToSpecifics("conv-1", *entry, base::Time(), content);
 
   ASSERT_TRUE(specifics.has_entry());
   // Only PageContent should be synced, Workspace should be filtered out.
@@ -426,7 +482,7 @@ TEST(AIChatSyncConversionsTest, EntryToSpecificsCompletionEventCompressed) {
       mojom::CompletionEvent::New(completion)));
 
   sync_pb::AIChatConversationSpecifics specifics =
-      EntryToSpecifics("conv-1", *entry, {});
+      EntryToSpecifics("conv-1", *entry, base::Time(), {});
 
   ASSERT_TRUE(specifics.has_entry());
   ASSERT_EQ(specifics.entry().events_size(), 1);
@@ -448,7 +504,7 @@ TEST(AIChatSyncConversionsTest, EntryToSpecificsSearchQueriesEvent) {
           std::vector<std::string>{"query one", "query two"})));
 
   sync_pb::AIChatConversationSpecifics specifics =
-      EntryToSpecifics("conv-1", *entry, {});
+      EntryToSpecifics("conv-1", *entry, base::Time(), {});
 
   ASSERT_TRUE(specifics.has_entry());
   ASSERT_EQ(specifics.entry().events_size(), 1);
@@ -532,7 +588,7 @@ TEST(AIChatSyncConversionsTest, EntryToSpecificsWebSourcesEvent) {
       mojom::ConversationEntryEvent::NewSourcesEvent(std::move(sources_event)));
   entry->events = std::move(events);
 
-  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  auto specifics = EntryToSpecifics("conv-1", *entry, base::Time(), {});
   ASSERT_TRUE(specifics.has_entry());
   ASSERT_EQ(specifics.entry().events_size(), 1);
   const auto& event = specifics.entry().events(0);
@@ -571,7 +627,7 @@ TEST(AIChatSyncConversionsTest, EntryToSpecificsToolUseEvent) {
       mojom::ConversationEntryEvent::NewToolUseEvent(std::move(tool_use)));
   entry->events = std::move(events);
 
-  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  auto specifics = EntryToSpecifics("conv-1", *entry, base::Time(), {});
   ASSERT_TRUE(specifics.has_entry());
   ASSERT_EQ(specifics.entry().events_size(), 1);
   const auto& event = specifics.entry().events(0);
@@ -610,7 +666,7 @@ TEST(AIChatSyncConversionsTest, EntryToSpecificsUploadedFiles) {
   files.push_back(std::move(pdf));
   entry->uploaded_files = std::move(files);
 
-  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  auto specifics = EntryToSpecifics("conv-1", *entry, base::Time(), {});
   ASSERT_TRUE(specifics.has_entry());
   ASSERT_EQ(specifics.entry().uploaded_files_size(), 2);
   EXPECT_EQ(specifics.entry().uploaded_files(0).filename(), "cat.jpg");
@@ -631,7 +687,7 @@ TEST(AIChatSyncConversionsTest,
   entry->skill = mojom::SkillEntry::New("/summarize", "Summarize this page");
   entry->near_verification_status = mojom::NEARVerificationStatus::New(true);
 
-  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  auto specifics = EntryToSpecifics("conv-1", *entry, base::Time(), {});
   ASSERT_TRUE(specifics.has_entry());
   const auto& proto = specifics.entry();
   ASSERT_TRUE(proto.has_skill());
@@ -648,7 +704,7 @@ TEST(AIChatSyncConversionsTest, EntryToSpecificsOmitsAbsentSkillAndNear) {
   entry->character_type = mojom::CharacterType::HUMAN;
   entry->action_type = mojom::ActionType::QUERY;
 
-  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  auto specifics = EntryToSpecifics("conv-1", *entry, base::Time(), {});
   ASSERT_TRUE(specifics.has_entry());
   EXPECT_FALSE(specifics.entry().has_skill());
   EXPECT_FALSE(specifics.entry().has_near_verification_status());
@@ -667,7 +723,7 @@ TEST(AIChatSyncConversionsTest, ConversationMetadataRoundTrip) {
       std::vector<mojom::AssociatedContentPtr>() /* associated_content */);
 
   auto rebuilt = SpecificsToConversationMetadata(
-      ConversationMetadataToSpecifics(*original));
+      ConversationMetadataToSpecifics(*original, base::Time()));
   ASSERT_TRUE(rebuilt);
 
   // Compares every synced field; non-persisted fields (e.g. has_content, which
@@ -682,7 +738,7 @@ TEST(AIChatSyncConversionsTest, ConversationMetadataRoundTripUnsetModelKey) {
   original->title = "Minimal";
 
   auto rebuilt = SpecificsToConversationMetadata(
-      ConversationMetadataToSpecifics(*original));
+      ConversationMetadataToSpecifics(*original, base::Time()));
   ASSERT_TRUE(rebuilt);
   EXPECT_FALSE(rebuilt->model_key.has_value());
   ExpectConversationEquals(FROM_HERE, rebuilt, original,
@@ -701,8 +757,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripBasic) {
   entry->model_key = "claude-opus";
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt =
-      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  auto rebuilt = SpecificsToEntry(
+      EntryToSpecifics("conv-1", *entry, base::Time(), {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
   EXPECT_TRUE(rebuilt_content.empty());
@@ -810,9 +866,10 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripAllFields) {
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
   base::flat_map<std::string, std::string> rebuilt_texts;
-  auto rebuilt = SpecificsToEntry(
-      EntryToSpecifics("conv-all", *entry, associated_content, texts),
-      rebuilt_content, &rebuilt_texts);
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-all", *entry, base::Time(),
+                                        associated_content, texts),
+                       rebuilt_content, &rebuilt_texts);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
   ExpectAssociatedContentEquals(FROM_HERE, rebuilt_content, associated_content,
@@ -837,8 +894,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripCompletionEvent) {
   entry->events = std::move(events);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt =
-      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  auto rebuilt = SpecificsToEntry(
+      EntryToSpecifics("conv-1", *entry, base::Time(), {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -858,8 +915,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripSearchQueriesEvent) {
   entry->events = std::move(events);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt =
-      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  auto rebuilt = SpecificsToEntry(
+      EntryToSpecifics("conv-1", *entry, base::Time(), {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -888,8 +945,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripWebSourcesEvent) {
   entry->events = std::move(events);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt =
-      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  auto rebuilt = SpecificsToEntry(
+      EntryToSpecifics("conv-1", *entry, base::Time(), {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -919,8 +976,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripToolUseEvent) {
   entry->events = std::move(events);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt =
-      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  auto rebuilt = SpecificsToEntry(
+      EntryToSpecifics("conv-1", *entry, base::Time(), {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -949,8 +1006,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripToolUseArtifacts) {
   entry->events = std::move(events);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt =
-      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  auto rebuilt = SpecificsToEntry(
+      EntryToSpecifics("conv-1", *entry, base::Time(), {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -979,8 +1036,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripImageContentBlock) {
   entry->events = std::move(events);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt =
-      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  auto rebuilt = SpecificsToEntry(
+      EntryToSpecifics("conv-1", *entry, base::Time(), {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -1001,8 +1058,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripInlineSearchEvent) {
   entry->events = std::move(events);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt =
-      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  auto rebuilt = SpecificsToEntry(
+      EntryToSpecifics("conv-1", *entry, base::Time(), {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -1041,7 +1098,8 @@ TEST(AIChatSyncConversionsTest,
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
   auto rebuilt = SpecificsToEntry(
-      EntryToSpecifics("conv-1", *entry, all_content), rebuilt_content);
+      EntryToSpecifics("conv-1", *entry, base::Time(), all_content),
+      rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
   ExpectAssociatedContentEquals(FROM_HERE, rebuilt_content, expected_content,
@@ -1086,7 +1144,7 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripUploadedFiles) {
 
   entry->uploaded_files = std::move(files);
 
-  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  auto specifics = EntryToSpecifics("conv-1", *entry, base::Time(), {});
   ASSERT_TRUE(specifics.has_entry());
   ASSERT_EQ(specifics.entry().uploaded_files_size(), 2);
   // Raw bytes are inlined for the image; the large extracted text is gzipped.
@@ -1132,7 +1190,7 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripWebSourcesContentBlock) {
       mojom::ConversationEntryEvent::NewToolUseEvent(std::move(tool_use)));
   entry->events = std::move(events);
 
-  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  auto specifics = EntryToSpecifics("conv-1", *entry, base::Time(), {});
   ASSERT_EQ(specifics.entry().events(0).tool_use().output_size(), 1);
   EXPECT_TRUE(specifics.entry()
                   .events(0)
@@ -1171,7 +1229,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripAssociatedContentText) {
   base::flat_map<std::string, std::string> texts;
   texts["ac-1"] = content_text;
 
-  auto specifics = EntryToSpecifics("conv-1", *entry, all_content, texts);
+  auto specifics =
+      EntryToSpecifics("conv-1", *entry, base::Time(), all_content, texts);
   ASSERT_EQ(specifics.entry().associated_content_size(), 1);
   ASSERT_TRUE(specifics.entry().associated_content(0).has_last_contents());
   EXPECT_TRUE(
@@ -1210,7 +1269,8 @@ TEST(AIChatSyncConversionsTest, SpecificsToEntryRejectsWorkspaceContent) {
   // The outgoing path never writes Workspace content, so build an otherwise
   // valid entry and then mark its content as Workspace on the wire, as a peer
   // could.
-  auto specifics = EntryToSpecifics("conv-1", *entry, all_content);
+  auto specifics =
+      EntryToSpecifics("conv-1", *entry, base::Time(), all_content);
   ASSERT_EQ(specifics.entry().associated_content_size(), 1);
   {
     // Control: the unmodified entry decodes, so the rejection below is due to
@@ -1241,8 +1301,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripSkillAndNearVerification) {
   entry->near_verification_status = mojom::NEARVerificationStatus::New(true);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt =
-      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  auto rebuilt = SpecificsToEntry(
+      EntryToSpecifics("conv-1", *entry, base::Time(), {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -1255,8 +1315,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripWithoutSkillOrNear) {
   entry->action_type = mojom::ActionType::QUERY;
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt =
-      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  auto rebuilt = SpecificsToEntry(
+      EntryToSpecifics("conv-1", *entry, base::Time(), {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
   EXPECT_FALSE(rebuilt->skill);
