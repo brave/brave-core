@@ -21,7 +21,8 @@ source_set("impl") {
     ":workspaces",
     "//base",
     "//chrome/browser/ui:browser_tabrestore",
-    "//chrome/browser/ui:browser_window_header",
+    "//chrome/browser/ui:browser_tabstrip",
+    "//chrome/browser/ui:unload_controller",
     "//chrome/browser/ui/browser_window:create_browser_window",
     "//chrome/browser/ui/tabs:tab_strip",
   ]
@@ -41,6 +42,8 @@ source_set("workspaces") {
   public_deps = [
     "//base",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip_model_observer",
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/sessions",
@@ -61,5 +64,28 @@ source_set("unit_tests") {
     "//components/sync_preferences:test_support",
     "//content/test:test_support",
     "//testing/gtest",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "workspace_service_browsertest.cc" ]
+
+  deps = [
+    ":workspaces",
+    "//base",
+    "//base/test:test_support",
+    "//chrome/browser/ui:browser_init_state",
+    "//chrome/browser/ui:browser_tabstrip",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//ui/base",
+    "//url",
   ]
 }

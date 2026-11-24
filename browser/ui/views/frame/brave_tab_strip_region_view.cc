@@ -6,9 +6,11 @@
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
 
 #include <memory>
+#include <optional>
 
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/toolbars_small_icons.h"
@@ -16,6 +18,8 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
 #include "brave/browser/workspaces/features.h"
+#include "brave/browser/workspaces/workspace_service.h"
+#include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -37,12 +41,45 @@
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/button_controller.h"
+#include "ui/views/controls/label.h"
 #include "ui/views/layout/flex_layout_types.h"
 #include "ui/views/repeat_controller.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/view_utils.h"
 
 namespace {
+
+// Toolbar button which has the Spaces icon and then a label for the space name.
+// TabStripControlButton sizes itself to a fixed square and ignores its label,
+// so a workspace name set on it would otherwise never be given room to draw.
+class WorkspacesTabStripButton : public TabStripControlButton {
+  METADATA_HEADER(WorkspacesTabStripButton, TabStripControlButton)
+
+ public:
+  using TabStripControlButton::TabStripControlButton;
+  ~WorkspacesTabStripButton() override = default;
+
+  // TabStripControlButton:
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override {
+    gfx::Size size =
+        TabStripControlButton::CalculatePreferredSize(available_size);
+    if (GetText().empty()) {
+      return size;
+    }
+    // Measured by hand rather than through GetLayoutManager(): this button
+    // keeps LabelButton's DelegatingLayoutManager, which does not report the
+    // label width here and collapses the button to the bare icon.
+    size.Enlarge(label()->GetPreferredSize(views::SizeBounds()).width() +
+                     GetImageLabelSpacing(),
+                 0);
+    return size;
+  }
+};
+
+BEGIN_METADATA(WorkspacesTabStripButton)
+END_METADATA
+
 // Pattern from ui/views/controls/scrollbar/scroll_bar_button.h (scroll bar
 // line/page repeat). Uses kOnPress so the primary action is not fired again on
 // release.
@@ -292,7 +329,7 @@ void BraveHorizontalTabStripRegionView::CreateWorkspaceButtonIfNeeded() {
   const std::optional<size_t> strip_idx = GetIndexOf(tab_strip_);
   CHECK(strip_idx.has_value());
   workspaces_button_ = AddChildViewAt(
-      std::make_unique<TabStripControlButton>(
+      std::make_unique<WorkspacesTabStripButton>(
           bwi,
           base::BindRepeating(
               &BraveHorizontalTabStripRegionView::OnWorkspacesButtonPressed,
@@ -309,6 +346,29 @@ void BraveHorizontalTabStripRegionView::CreateWorkspaceButtonIfNeeded() {
       l10n_util::GetStringUTF16(IDS_TOOLTIP_WORKSPACES_BUTTON));
   workspaces_button_->GetViewAccessibility().SetName(
       l10n_util::GetStringUTF16(IDS_ACCNAME_WORKSPACES_BUTTON));
+
+  if (auto* service =
+          WorkspaceServiceFactory::GetForProfile(bwi->GetProfile())) {
+    workspaces_changed_subscription_ =
+        service->RegisterWorkspacesChanged(base::BindRepeating(
+            &BraveHorizontalTabStripRegionView::UpdateWorkspaceButtonLabel,
+            base::Unretained(this)));
+  }
+  UpdateWorkspaceButtonLabel();
+}
+
+void BraveHorizontalTabStripRegionView::UpdateWorkspaceButtonLabel() {
+  if (!workspaces_button_) {
+    return;
+  }
+  auto* bwi = tab_strip_->GetBrowserWindowInterface();
+  auto* service = WorkspaceServiceFactory::GetForProfile(bwi->GetProfile());
+  CHECK(service);
+  // An unmanaged window has no name, which clears the label back to the icon.
+  const std::optional<std::string> workspace_name =
+      service->GetWorkspaceNameForWindow(bwi->GetSessionID());
+  workspaces_button_->SetText(
+      workspace_name ? base::UTF8ToUTF16(*workspace_name) : std::u16string());
 }
 
 void BraveHorizontalTabStripRegionView::
@@ -374,7 +434,7 @@ void BraveHorizontalTabStripRegionView::OnWorkspacesButtonPressed() {
   auto* bwi = tab_strip_->GetBrowserWindowInterface();
   auto* controller = WorkspacesBubbleController::From(bwi);
   CHECK(controller);
-  controller->ShowBubble(workspaces_button_, bwi->GetProfile());
+  controller->ShowBubble(workspaces_button_, bwi);
 }
 
 views::View::Views BraveHorizontalTabStripRegionView::GetChildrenInZOrder() {

@@ -11,25 +11,30 @@
 
 #include "components/sessions/core/session_command.h"
 #include "components/sessions/core/session_id.h"
-#include "ui/base/mojom/window_show_state.mojom.h"
-#include "ui/gfx/geometry/rect.h"
 
-class Profile;
-class TabStripModel;
+class BrowserWindowInterface;
 struct WorkspaceMetadata;
 
-// Iterates all normal browser windows for |profile|, serializes their state
-// into session commands, and returns the result.  |window_count| and
-// |tab_count| are incremented to reflect what was captured.  Returns an empty
-// vector if there are no tabs to save.
+// Serializes the tab strip of |window| into session commands and returns the
+// result.  |workspace.number_of_tabs| is set to what was captured.  Returns an
+// empty vector if the window has no tabs.
+//
+// Window geometry is deliberately not captured: a workspace owns tabs, and the
+// window it is loaded into keeps its own bounds.
 std::vector<std::unique_ptr<sessions::SessionCommand>>
-GenerateBrowserSessionCommandsForWorkspace(Profile* profile,
-                                           WorkspaceMetadata& workspace);
+SerializeWindowForWorkspace(BrowserWindowInterface* window,
+                            WorkspaceMetadata& workspace);
 
-// Deserializes |commands| and opens the encoded windows/tabs in new browser
-// windows belonging to |profile|.  Must be called on the UI thread.
-void RestoreBrowserSessionCommandsForWorkspace(
-    Profile* profile,
+// Deserializes |commands| into |window|, preserving pinned state, tab groups
+// and navigation history.  |window| arrives holding the placeholder tab it was
+// created with; the saved tabs are appended after it and the placeholder is
+// then closed, in that order, because emptying a tab strip closes the window.
+// Must be called on the UI thread.
+//
+// A placeholder whose page runs a beforeunload handler can outlive this call,
+// since TabStripModel closes those asynchronously.
+void RestoreWorkspaceIntoWindow(
+    BrowserWindowInterface* window,
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands);
 
 #endif  // BRAVE_BROWSER_WORKSPACES_WORKSPACE_SESSION_UTILS_H_

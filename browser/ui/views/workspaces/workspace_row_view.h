@@ -34,7 +34,12 @@ class WorkspaceInfoButton : public views::Button {
 
   void SetSelected(bool selected);
 
+  // views::Button:
+  void OnEnabledChanged() override;
+
  private:
+  void UpdateLabelColors();
+
   bool selected_ = false;
   raw_ptr<views::Label> name_label_;
   raw_ptr<views::Label> stats_label_;
@@ -43,6 +48,13 @@ class WorkspaceInfoButton : public views::Button {
 // A workspace list row that highlights its background on hover and shows a
 // darker tint when selected.  SetNotifyEnterExitOnChild propagates mouse
 // enter/exit from child buttons up to this view so the whole row responds.
+//
+// Passing a null |on_delete_clicked| omits the overflow menu, which is how the
+// window's unmanaged row is rendered: it is implicit and cannot be deleted.
+//
+// A row can also be marked unavailable, which is how a workspace already open
+// in another window is shown: it stays listed, but cannot be picked until the
+// window holding it lets go.
 class WorkspaceRowView : public views::View,
                          public ui::SimpleMenuModel::Delegate {
   using RowClickedCallback = base::RepeatingCallback<void()>;
@@ -55,6 +67,10 @@ class WorkspaceRowView : public views::View,
   ~WorkspaceRowView() override;
 
   void SetSelected(bool selected);
+
+  // Marks the row as pickable or not. An unavailable row does not respond to
+  // clicks or hover.
+  void SetAvailable(bool available);
 
   // views::View:
   void OnMouseEntered(const ui::MouseEvent& event) override;
@@ -70,12 +86,13 @@ class WorkspaceRowView : public views::View,
   void ShowMoreMenu();
 
   bool selected_ = false;
+  bool available_ = true;
 
   RowClickedCallback on_delete_;
   std::unique_ptr<ui::SimpleMenuModel> menu_model_;
   std::unique_ptr<views::MenuRunner> menu_runner_;
   raw_ptr<WorkspaceInfoButton> info_button_;
-  raw_ptr<views::ImageButton> more_button_;
+  raw_ptr<views::ImageButton> more_button_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_WORKSPACES_WORKSPACE_ROW_VIEW_H_
