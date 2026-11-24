@@ -12,8 +12,9 @@ Subcommands:
   - mv              Move a file/directory in brave-core and repair every
                     downstream artefact.
   - rebase-feature-branch
-                    Rebase a feature branch onto a Chromium update, resolving
-                    brockit's known conflicts and refreshing plaster patches.
+                    Rebase a feature branch onto a Chromium update, refreshing
+                    plaster patches and using brockit's logic to resolve patch
+                    conflicts
   - install-hook    Install the commit-msg hook from
                     tools/cr/alias/commit-msg.py.
   - setup-alias     Register the `git cr` alias in the local .git/config.
