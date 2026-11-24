@@ -1124,7 +1124,7 @@ extension BrowserViewController: ToolbarDelegate {
   }
 
   func tabToolbarDidSelectShredSiteData(_ tabToolbar: ToolbarProtocol) {
-    guard let tab = tabManager.selectedTab, let url = tab.visibleURL else { return }
+    guard let tab = tabManager.selectedTab, let url = tab.lastCommittedURL else { return }
     let alert = UIAlertController.shredDataAlert(url: url) { [weak self] _ in
       self?.shredData(for: url, in: tab)
     }

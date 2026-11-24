@@ -295,12 +295,14 @@ extension BrowserViewController {
       }
     }
     if BraveCore.FeatureList.kBraveShredFeature.enabled {
-      let isShredAvailable = tabManager.selectedTab?.visibleURL?.isShredAvailable ?? false
+      let isShredAvailable = tabManager.selectedTab?.lastCommittedURL?.isShredAvailable ?? false
       actions.append(
         .init(id: .shredData, attributes: isShredAvailable ? [] : [.disabled]) {
           @MainActor [unowned self] _ in
           self.dismiss(animated: true) {
-            guard let tab = self.tabManager.selectedTab, let url = tab.visibleURL else { return }
+            guard let tab = self.tabManager.selectedTab, let url = tab.lastCommittedURL else {
+              return
+            }
             let alert = UIAlertController.shredDataAlert(url: url) { _ in
               self.shredData(for: url, in: tab)
             }
