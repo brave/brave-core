@@ -11,6 +11,7 @@ import android.view.View;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.ui.base.ViewUtils;
@@ -46,7 +47,7 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
     private final BrowserControlsSizer mSizer;
     private final Supplier<@Nullable String> mUrlSpecSupplier;
     private final Supplier<Boolean> mEnabledSupplier;
-    private final Supplier<Boolean> mFullscreenSupplier;
+    private final NullableObservableSupplier<Boolean> mFullscreenSupplier;
     private final Supplier<Boolean> mCanShowControlsSupplier;
     private final Function<String, @Nullable String> mTextFormatter;
     private final Delegate mDelegate;
@@ -61,7 +62,7 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
             BrowserControlsSizer sizer,
             Supplier<@Nullable String> urlSpecSupplier,
             Supplier<Boolean> enabledSupplier,
-            Supplier<Boolean> fullscreenSupplier,
+            NullableObservableSupplier<Boolean> fullscreenSupplier,
             Supplier<Boolean> canShowControlsSupplier,
             Function<String, @Nullable String> textFormatter,
             Delegate delegate) {

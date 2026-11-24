@@ -24,6 +24,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import org.chromium.base.Callback;
+import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
@@ -70,7 +72,26 @@ public class BraveCollapsedUrlChipMediatorTest {
                         mSizer,
                         mUrlSpecRef::get,
                         mEnabledSupplier,
-                        mFullscreenRef::get,
+                        new NullableObservableSupplier<Boolean>() {
+                            @Override
+                            public Boolean get() {
+                                return mFullscreenRef.get();
+                            }
+
+                            @Override
+                            public Boolean addObserver(
+                                    Callback<? super Boolean> obs, int behavior) {
+                                return get();
+                            }
+
+                            @Override
+                            public void removeObserver(Callback<? super Boolean> obs) {}
+
+                            @Override
+                            public int getObserverCount() {
+                                return 0;
+                            }
+                        },
                         mCanShowRef::get,
                         mTextFormatter,
                         mDelegate);
