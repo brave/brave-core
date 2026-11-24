@@ -8,7 +8,9 @@ import { render, act, waitFor } from '@testing-library/react'
 import * as Mojom from '../../../common/mojom'
 import { BRAVE_SUMMARY_MODEL_KEY } from '../../../common/constants'
 import ContextActionsAssistant from '.'
-import MockContext from '../../mock_untrusted_conversation_context'
+import MockContext, {
+  MockContextRef,
+} from '../../mock_untrusted_conversation_context'
 import '@testing-library/jest-dom'
 
 const mockModels: Mojom.Model[] = [
@@ -129,8 +131,10 @@ function renderAssistant(isSummaryResponse: boolean) {
         },
         { ...assistantSummaryTurn, uuid: 'turn-uuid' },
       ]
-  return render(
+  const mockRef = React.createRef<MockContextRef>()
+  const renderResult = render(
     <MockContext
+      ref={mockRef}
       conversationHandler={{
         getConversationHistory() {
           return Promise.resolve({ conversationHistory })
@@ -146,9 +150,11 @@ function renderAssistant(isSummaryResponse: boolean) {
       <ContextActionsAssistant
         turnUuid='turn-uuid'
         turnModelKey='model-one'
+        onEditAnswerClicked={jest.fn()}
       />
     </MockContext>,
   )
+  return { ...renderResult, mockRef }
 }
 
 describe('ContextActionsAssistant', () => {
@@ -171,5 +177,54 @@ describe('ContextActionsAssistant', () => {
     await getOpenMenu()
 
     await renderResult.findByTestId(BRAVE_SUMMARY_MODEL_KEY)
+  })
+
+  it('disables the edit and regenerate actions while a request is in progress', async () => {
+    const renderResult = renderAssistant(false, { isGenerating: true })
+
+    const editButton = renderResult.getByTitle(S.CHAT_UI_EDIT_BUTTON_LABEL)
+    expect(editButton.getAttribute('isdisabled')).toBe('true')
+
+    const anchorButton = await getRegenerateAnchorButton()
+    expect(anchorButton.getAttribute('isdisabled')).toBe('true')
+  })
+
+  it('enables the edit and regenerate actions when no request is in progress', async () => {
+    const renderResult = renderAssistant(false, { isGenerating: false })
+
+    const editButton = renderResult.getByTitle(S.CHAT_UI_EDIT_BUTTON_LABEL)
+    expect(editButton.getAttribute('isdisabled')).not.toBe('true')
+
+    const anchorButton = await getRegenerateAnchorButton()
+    expect(anchorButton.getAttribute('isdisabled')).not.toBe('true')
+  })
+
+  it('does not open the regenerate menu while a request is in progress', async () => {
+    renderAssistant(false, { isGenerating: true })
+
+    const anchorButton = await getRegenerateAnchorButton()
+    await clickRegenerateAnchor(anchorButton)
+
+    const menu = document.querySelector('leo-buttonmenu')
+    expect(menu).toHaveAttribute('isOpen', 'false')
+  })
+
+  it('closes the regenerate menu when a request starts', async () => {
+    const { mockRef } = renderAssistant(false)
+
+    const anchorButton = await getRegenerateAnchorButton()
+    await clickRegenerateAnchor(anchorButton)
+    await getOpenMenu()
+
+    await act(async () => {
+      mockRef.current!.api.state.update({ isGenerating: true })
+    })
+
+    await waitFor(() => {
+      expect(document.querySelector('leo-buttonmenu')).toHaveAttribute(
+        'isOpen',
+        'false',
+      )
+    })
   })
 })

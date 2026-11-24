@@ -3160,6 +3160,30 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer_ErrorCases) {
             single_entry_history);
 }
 
+// Modifying or regenerating while a request is in progress must be a no-op, as
+// the UI disables those actions until the request completes.
+TEST_F(ConversationHandlerUnitTest,
+       ModifyConversationAndRegenerateAnswer_NoOpWhileRequestInProgress) {
+  conversation_handler_->MaybeUnlinkAssociatedContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  auto history = SetupHistory({{"question", false}, {"answer", false}});
+
+  EXPECT_CALL(*engine, GenerateAssistantResponse).Times(0);
+  conversation_handler_->SetRequestInProgressForTesting(true);
+
+  conversation_handler_->ModifyConversation(history[0]->uuid.value(), "edited",
+                                            std::nullopt, std::nullopt);
+  conversation_handler_->ModifyConversation(
+      history[1]->uuid.value(), "edited answer", std::nullopt, std::nullopt);
+  conversation_handler_->RegenerateAnswer(history[1]->uuid.value(),
+                                          "new_model_key", std::nullopt);
+
+  EXPECT_EQ(conversation_handler_->GetConversationHistory(), history);
+}
+
 TEST_F(ConversationHandlerUnitTest,
        MaybeFetchOrClearContentStagedConversation) {
   // Fetch with result should update the conversation history and call

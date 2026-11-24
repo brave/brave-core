@@ -56,9 +56,11 @@ describe('regenerate answer menu', () => {
   const TestComponent = ({
     onRegenerateMock,
     turnModelKeyOverride,
+    isDisabled,
   }: {
     onRegenerateMock?: jest.Mock
     turnModelKeyOverride?: string
+    isDisabled?: boolean
   }) => {
     const [isOpen, setIsOpen] = React.useState(false)
     const [turnModelKey, setTurnModelKey] = React.useState(
@@ -81,6 +83,7 @@ describe('regenerate answer menu', () => {
         onRegenerate={onRegenerate}
         leoModels={mockModels}
         turnModelKey={turnModelKey}
+        isDisabled={isDisabled}
       />
     )
   }
@@ -249,5 +252,24 @@ describe('regenerate answer menu', () => {
 
     // Verify onRegenerate was called when clicking the model option
     expect(onRegenerateMock).toHaveBeenCalledWith('1')
+  })
+
+  it('does not open when disabled', async () => {
+    const onRegenerateMock = jest.fn()
+    render(
+      <TestComponent
+        onRegenerateMock={onRegenerateMock}
+        isDisabled
+      />,
+    )
+
+    const anchorButton = (await getAndTestAnchorButton())!
+    expect(anchorButton.getAttribute('isdisabled')).toBe('true')
+
+    await clickAnchorButton(anchorButton)
+
+    const menu = document.querySelector('leo-buttonmenu')
+    expect(menu).toHaveAttribute('isOpen', 'false')
+    expect(onRegenerateMock).not.toHaveBeenCalled()
   })
 })
