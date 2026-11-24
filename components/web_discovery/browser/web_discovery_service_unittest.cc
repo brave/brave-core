@@ -6,11 +6,17 @@
 #include "brave/components/web_discovery/browser/web_discovery_service.h"
 
 #include <memory>
+#include <string>
 
+#include "base/base_paths.h"
+#include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/weak_ptr.h"
+#include "base/path_service.h"
 #include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
+#include "brave/components/web_discovery/browser/util.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -56,6 +62,10 @@ class WebDiscoveryServiceTest : public testing::Test {
     profile_prefs_.registry()->RegisterBooleanPref(kWebDiscoveryEnabled, false);
 
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    // Only the last group in hpn-config.json is still eligible to join.
+    base::Time last_group_date;
+    ASSERT_TRUE(base::Time::FromUTCString("2024-06-27", &last_group_date));
+    task_environment_.AdvanceClock(last_group_date - base::Time::Now());
   }
 
  protected:
@@ -65,9 +75,24 @@ class WebDiscoveryServiceTest : public testing::Test {
         shared_url_loader_factory_, &backup_results_service_);
   }
 
-  // An active service has in-flight server config requests, which never get a
-  // response here. Stopping destroys the loaders and disconnects them.
-  bool IsActive() { return url_loader_factory_.NumPending() > 0; }
+  void ExpectCredentialJoin() {
+    const base::FilePath data_path =
+        base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
+            .AppendASCII("brave/test/data/web_discovery");
+    std::string collector_config;
+    std::string quorum_config;
+    ASSERT_TRUE(base::ReadFileToString(data_path.AppendASCII("hpn-config.json"),
+                                       &collector_config));
+    ASSERT_TRUE(base::ReadFileToString(
+        data_path.AppendASCII("quorum-config.json"), &quorum_config));
+    ASSERT_TRUE(url_loader_factory_.SimulateResponseForPendingRequest(
+        GetAnonymousHPNHost() + "/config", collector_config, net::HTTP_OK,
+        network::TestURLLoaderFactory::kUrlMatchPrefix));
+    ASSERT_TRUE(url_loader_factory_.SimulateResponseForPendingRequest(
+        GetQuorumHost() + "/config", quorum_config));
+    url_loader_factory_.WaitForRequest(GURL(GetDirectHPNHost() + "/join"));
+    EXPECT_TRUE(url_loader_factory_.IsPending(GetDirectHPNHost() + "/join"));
+  }
 
   base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
@@ -86,33 +111,33 @@ TEST_F(WebDiscoveryServiceTest, ServiceStartsWhenEnabled) {
 
   CreateService();
 
-  EXPECT_TRUE(IsActive());
+  ASSERT_NO_FATAL_FAILURE(ExpectCredentialJoin());
 }
 
 TEST_F(WebDiscoveryServiceTest, ServiceDoesNotStartWhenDisabled) {
   // Test disabled via enabled pref
   profile_prefs_.SetBoolean(kWebDiscoveryEnabled, false);
   CreateService();
-  EXPECT_FALSE(IsActive());
+  EXPECT_EQ(0, url_loader_factory_.NumPending());
 }
 
 TEST_F(WebDiscoveryServiceTest, ServiceTogglesOnPrefChange) {
   // Start disabled
   profile_prefs_.SetBoolean(kWebDiscoveryEnabled, false);
   CreateService();
-  EXPECT_FALSE(IsActive());
+  EXPECT_EQ(0, url_loader_factory_.NumPending());
 
   // Enable
   profile_prefs_.SetBoolean(kWebDiscoveryEnabled, true);
-  EXPECT_TRUE(IsActive());
+  ASSERT_NO_FATAL_FAILURE(ExpectCredentialJoin());
 
   // Disable again
   profile_prefs_.SetBoolean(kWebDiscoveryEnabled, false);
-  EXPECT_FALSE(IsActive());
+  EXPECT_EQ(0, url_loader_factory_.NumPending());
 
   // Enable again
   profile_prefs_.SetBoolean(kWebDiscoveryEnabled, true);
-  EXPECT_TRUE(IsActive());
+  ASSERT_NO_FATAL_FAILURE(ExpectCredentialJoin());
 }
 
 }  // namespace web_discovery
