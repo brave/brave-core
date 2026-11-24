@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/win/parental_controls.cc b/chrome/browser/win/parental_controls.cc
+index 84e6d8af5f272b3531ca3efba7181ed2525a4da7..a6df33e52123e9080626779291de26a0e15eaf46 100644
+--- a/chrome/browser/win/parental_controls.cc
++++ b/chrome/browser/win/parental_controls.cc
+@@ -81,6 +81,7 @@ class WinParentalControlsValue {
+       // InitializeWinParentalControls() got called in tests because updating
+       // all test fixtures to call it seemed daunting.
+       CHECK_IS_TEST();
++      return std::nullopt;
+     }
+     Microsoft::WRL::ComPtr<IWindowsParentalControlsCore> parent_controls;
+     HRESULT hr = ::CoCreateInstance(__uuidof(WindowsParentalControls), nullptr,
