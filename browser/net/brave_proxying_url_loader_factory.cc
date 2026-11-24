@@ -118,6 +118,12 @@ BraveProxyingURLLoaderFactory<T>::InProgressRequest::InProgressRequest(
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner)
     : factory_(factory),
       request_(request),
+      settings_origin_(brave_shields::ShieldsSettingsOrigin::ForRequest(
+          request,
+          render_frame_token,
+          factory.url_loader_factory_type_,
+          factory.isolation_info_,
+          factory.document_settings_origin_)),
       original_initiator_(request.request_initiator),
       request_id_(request_id),
       network_service_request_id_(network_service_request_id),
@@ -209,9 +215,10 @@ template <>
 void BraveProxyingURLLoaderFactory<
     std::shared_ptr>::InProgressRequest::CreateBraveRequestInfo() {
   ctx_ = brave::BraveRequestInfo::MakeCTX(
-      request_, render_frame_token_, request_id_, browser_context_, ctx_.get(),
-      original_initiator_, factory_->url_loader_factory_type_,
-      factory_->request_initiator_, factory_->isolation_info_);
+      request_, render_frame_token_, settings_origin_, request_id_,
+      browser_context_, ctx_.get(), original_initiator_,
+      factory_->url_loader_factory_type_, factory_->request_initiator_,
+      factory_->isolation_info_);
 }
 
 template <>
@@ -221,9 +228,10 @@ void BraveProxyingURLLoaderFactory<
     factory_->request_handler_->OnURLRequestDestroyed(ctx_);
   }
   ctx_owned_ = brave::BraveRequestInfo::MakeCTX(
-      request_, render_frame_token_, request_id_, browser_context_,
-      ctx_owned_.get(), original_initiator_, factory_->url_loader_factory_type_,
-      factory_->request_initiator_, factory_->isolation_info_);
+      request_, render_frame_token_, settings_origin_, request_id_,
+      browser_context_, ctx_owned_.get(), original_initiator_,
+      factory_->url_loader_factory_type_, factory_->request_initiator_,
+      factory_->isolation_info_);
   ctx_ = ctx_owned_->AsWeakPtr();
 }
 
@@ -718,13 +726,13 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::
   target_client_->OnReceiveRedirect(redirect_info,
                                     std::move(current_response_head_));
   request_.UpdateOnRedirect(redirect_info);
+  settings_origin_ = settings_origin_.ForRedirect(request_);
 
   // The request method can be changed to "GET". In this case we need to
   // reset the request body manually.
   if (request_.method == net::HttpRequestHeaders::kGetMethod) {
     request_.request_body = nullptr;
   }
-
 }
 
 template <template <typename> class T>
@@ -797,6 +805,10 @@ BraveProxyingURLLoaderFactory<T>::BraveProxyingURLLoaderFactory(
     : request_handler_(request_handler),
       browser_context_(browser_context),
       render_frame_token_(render_frame_token),
+      document_settings_origin_(
+          brave_shields::ShieldsSettingsOrigin::ForEmbeddedDocumentFactory(
+              render_frame_token,
+              url_loader_factory_type)),
       url_loader_factory_type_(url_loader_factory_type),
       request_initiator_(request_initiator),
       isolation_info_(isolation_info),

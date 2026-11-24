@@ -53,6 +53,7 @@ source_set("brave_shields_impl") {
   deps = [
     "//base:i18n",
     "//brave/browser:browser_process",
+    "//brave/browser/net:worker_url_loader_context",
     "//brave/components/brave_perf_predictor/browser",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common",
@@ -75,6 +76,8 @@ source_set("brave_shields_impl") {
     "//extensions/buildflags",
     "//net",
     "//net:net_features",
+    "//services/network/public/cpp",
+    "//third_party/blink/public/mojom:mojom_platform_shared",
   ]
 
   deps += [ "//brave/components/containers/buildflags" ]

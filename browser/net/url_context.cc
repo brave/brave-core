@@ -9,9 +9,8 @@
 #include <string>
 #include <utility>
 
-#include "base/notreached.h"
-#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/brave_shields/shields_settings_origin.h"
+#include "brave/browser/net/worker_url_loader_context.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -24,35 +23,6 @@
 namespace brave {
 
 namespace {
-
-// Worker URLLoader factories cover worker script loads and fetch/XHR-style
-// requests made by workers. Worker WebSocket handshakes are handled by
-// BraveProxyingWebSocket instead. These URLLoader factories can be created
-// without a RenderFrameHost, and requests made through them do not always carry
-// TrustedParams. Use the context captured when those factories were created as
-// a fallback. Other factory types already get their context from the request or
-// frame; retaining that path avoids changing their behavior when a factory is
-// reused or a request redirects.
-bool ShouldUseFactoryURLLoaderContext(
-    content::ContentBrowserClient::URLLoaderFactoryType type) {
-  using URLLoaderFactoryType =
-      content::ContentBrowserClient::URLLoaderFactoryType;
-  switch (type) {
-    case URLLoaderFactoryType::kWorkerMainResource:
-    case URLLoaderFactoryType::kWorkerSubResource:
-    case URLLoaderFactoryType::kServiceWorkerScript:
-    case URLLoaderFactoryType::kServiceWorkerSubResource:
-      return true;
-    case URLLoaderFactoryType::kNavigation:
-    case URLLoaderFactoryType::kDownload:
-    case URLLoaderFactoryType::kDocumentSubResource:
-    case URLLoaderFactoryType::kPrefetch:
-    case URLLoaderFactoryType::kDevTools:
-    case URLLoaderFactoryType::kEarlyHints:
-      return false;
-  }
-  NOTREACHED();
-}
 
 std::string GetUploadData(const network::ResourceRequest& request) {
   std::string upload_data;
@@ -498,32 +468,11 @@ void BraveRequestInfo::set_new_url(GURL* value) {
   new_url_ = value;
 }
 
-brave_shields::ShieldsSettingsOrigin BraveRequestInfo::GetShieldsSettingsOrigin(
-    const net::IsolationInfo* isolation_info) const {
-  // The token of a main-frame navigation can still point to the outgoing
-  // document. Its settings must never be applied to the destination.
-  // WebSocket requests carry isolation info but leave resource_type unset.
-  const bool is_main_frame =
-      isolation_info
-          ? isolation_info->request_type() ==
-                net::IsolationInfo::RequestType::kMainFrame
-          : resource_type() == blink::mojom::ResourceType::kMainFrame;
-  if (!is_main_frame) {
-    if (auto* frame =
-            content::RenderFrameHost::FromFrameToken(render_frame_token())) {
-      return brave_shields::ShieldsSettingsOrigin::ForFrame(*frame);
-    }
-  }
-  return isolation_info
-             ? brave_shields::ShieldsSettingsOrigin::ForIsolationInfo(
-                   *isolation_info)
-             : brave_shields::ShieldsSettingsOrigin();
-}
-
 // static
 std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     const network::ResourceRequest& request,
     content::GlobalRenderFrameHostToken render_frame_token,
+    brave_shields::ShieldsSettingsOrigin settings_origin,
     uint64_t request_identifier,
     content::BrowserContext* browser_context,
     brave::BraveRequestInfo* old_ctx,
@@ -580,7 +529,7 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
           render_frame_host->GetOutermostMainFrame()->GetLastCommittedOrigin());
     }
   }
-  ctx->shields_settings_origin_ = ctx->GetShieldsSettingsOrigin(isolation_info);
+  ctx->shields_settings_origin_ = std::move(settings_origin);
 
   if (old_ctx) {
     ctx->set_internal_redirect(old_ctx->internal_redirect());

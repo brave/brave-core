@@ -158,6 +158,7 @@ class BraveProxyingWebSocket
       receiver_as_header_client_;
 
   network::ResourceRequest request_;
+  const brave_shields::ShieldsSettingsOrigin settings_origin_;
   network::mojom::URLResponseHead response_;
   scoped_refptr<net::HttpResponseHeaders> override_headers_;
   mojo::PendingRemote<network::mojom::WebSocket> websocket_;

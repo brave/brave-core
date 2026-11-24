@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/supports_user_data.h"
+#include "brave/browser/net/worker_url_loader_context.h"
 #include "content/public/browser/document_user_data.h"
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/navigation_controller.h"
@@ -18,6 +19,8 @@
 #include "content/public/browser/web_contents.h"
 #include "net/base/isolation_info.h"
 #include "net/base/net_errors.h"
+#include "services/network/public/cpp/resource_request.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -110,9 +113,73 @@ ShieldsSettingsOrigin ShieldsSettingsOrigin::ForFrame(
     return data->value;
   }
   const auto& origin = main->GetLastCommittedOrigin();
-  return ShieldsSettingsOrigin(
-      origin.opaque() ? url::Origin::Create(main->GetLastCommittedURL())
-                      : origin);
+  if (!origin.opaque()) {
+    return ShieldsSettingsOrigin(origin);
+  }
+  const GURL& url = main->GetLastCommittedURL();
+  return url.SchemeIsHTTPOrHTTPS()
+             ? ShieldsSettingsOrigin(url::Origin::Create(url))
+             : ShieldsSettingsOrigin();
+}
+
+// static
+std::optional<ShieldsSettingsOrigin>
+ShieldsSettingsOrigin::ForEmbeddedDocumentFactory(
+    const content::GlobalRenderFrameHostToken& token,
+    content::ContentBrowserClient::URLLoaderFactoryType type) {
+  if (type == content::ContentBrowserClient::URLLoaderFactoryType::
+                  kDocumentSubResource) {
+    auto* frame = content::RenderFrameHost::FromFrameToken(token);
+    if (frame && frame != frame->GetOutermostMainFrame()) {
+      return ForFrame(*frame);
+    }
+  }
+  return std::nullopt;
+}
+
+// static
+ShieldsSettingsOrigin ShieldsSettingsOrigin::ForRequest(
+    const network::ResourceRequest& request,
+    const content::GlobalRenderFrameHostToken& token,
+    std::optional<content::ContentBrowserClient::URLLoaderFactoryType>
+        factory_type,
+    base::optional_ref<const net::IsolationInfo> factory_info,
+    base::optional_ref<const ShieldsSettingsOrigin> document_key) {
+  const net::IsolationInfo* info = nullptr;
+  if (request.trusted_params) {
+    info = &request.trusted_params->isolation_info;
+  } else if (factory_type &&
+             brave::ShouldUseFactoryURLLoaderContext(*factory_type) &&
+             factory_info) {
+    info = &*factory_info;
+  }
+  // A navigation's token can still name the outgoing document. WebSocket
+  // handshakes leave resource_type unset (numerically kMainFrame).
+  const bool navigation =
+      !request.url.SchemeIsWSOrWSS() &&
+      (info
+           ? info->request_type() == net::IsolationInfo::RequestType::kMainFrame
+           : request.resource_type ==
+                 static_cast<int>(blink::mojom::ResourceType::kMainFrame));
+  if (!navigation) {
+    if (document_key) {
+      return *document_key;
+    }
+    if (auto* frame = content::RenderFrameHost::FromFrameToken(token)) {
+      return ForFrame(*frame);
+    }
+  }
+  return info ? ForIsolationInfo(*info) : ShieldsSettingsOrigin();
+}
+
+ShieldsSettingsOrigin ShieldsSettingsOrigin::ForRedirect(
+    const network::ResourceRequest& request) const {
+  if (request.trusted_params &&
+      request.trusted_params->isolation_info.request_type() ==
+          net::IsolationInfo::RequestType::kMainFrame) {
+    return ForIsolationInfo(request.trusted_params->isolation_info);
+  }
+  return *this;
 }
 
 // static
@@ -128,6 +195,12 @@ ShieldsSettingsOrigin ShieldsSettingsOrigin::ForCommit(
     content::NavigationHandle& handle) {
   if (const auto* saved = GetHistorySettingsOrigin(&handle)) {
     return saved->value;
+  }
+  // about:blank can inherit a subframe's DOM origin, but its Shields key
+  // is the one captured from the initiating outermost document.
+  if (handle.GetURL().IsAboutBlank() || handle.GetURL().IsAboutSrcdoc()) {
+    const auto* data = NavigationOrigin::GetForNavigationHandle(handle);
+    return data ? data->inherited : ShieldsSettingsOrigin();
   }
   const auto origin_to_commit =
       handle.HasCommitted()

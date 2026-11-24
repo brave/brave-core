@@ -6,7 +6,15 @@
 #ifndef BRAVE_BROWSER_BRAVE_SHIELDS_SHIELDS_SETTINGS_ORIGIN_H_
 #define BRAVE_BROWSER_BRAVE_SHIELDS_SHIELDS_SETTINGS_ORIGIN_H_
 
+#include <optional>
+
+#include "base/types/optional_ref.h"
+#include "content/public/browser/content_browser_client.h"
 #include "url/gurl.h"
+
+namespace network {
+struct ResourceRequest;
+}  // namespace network
 
 namespace brave {
 class BraveRequestInfo;
@@ -17,6 +25,7 @@ class Origin;
 }
 
 namespace content {
+struct GlobalRenderFrameHostToken;
 class NavigationHandle;
 class RenderFrameHost;
 class WebContents;
@@ -34,6 +43,26 @@ class ShieldsSettingsOrigin {
  public:
   ShieldsSettingsOrigin() = default;
   static ShieldsSettingsOrigin ForFrame(content::RenderFrameHost& frame);
+
+  // An about:blank popup can retain its opening subframe's factory after
+  // the subframe goes away. Copy the key while its outermost document exists.
+  static std::optional<ShieldsSettingsOrigin> ForEmbeddedDocumentFactory(
+      const content::GlobalRenderFrameHostToken& token,
+      content::ContentBrowserClient::URLLoaderFactoryType type);
+
+  static ShieldsSettingsOrigin ForRequest(
+      const network::ResourceRequest& request,
+      const content::GlobalRenderFrameHostToken& token,
+      std::optional<content::ContentBrowserClient::URLLoaderFactoryType>
+          factory_type = std::nullopt,
+      base::optional_ref<const net::IsolationInfo> factory_info = std::nullopt,
+      base::optional_ref<const ShieldsSettingsOrigin> document_key =
+          std::nullopt);
+
+  // Subresources still belong to the original document after a redirect.
+  // A main-frame redirect carries the next destination's isolation info.
+  ShieldsSettingsOrigin ForRedirect(
+      const network::ResourceRequest& request) const;
 
   const GURL& GetURL() const { return url_; }
 

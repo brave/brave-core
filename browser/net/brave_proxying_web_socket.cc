@@ -38,6 +38,9 @@ BraveProxyingWebSocket<T>::BraveProxyingWebSocket(
       receiver_as_auth_handler_(this),
       receiver_as_header_client_(this),
       request_(request),
+      settings_origin_(
+          brave_shields::ShieldsSettingsOrigin::ForRequest(request,
+                                                           render_frame_token)),
       on_disconnect_(std::move(on_disconnect)) {}
 
 template <template <typename> class T>
@@ -76,8 +79,9 @@ BraveProxyingWebSocket<T>* BraveProxyingWebSocket<T>::ProxyWebSocket(
 template <>
 void BraveProxyingWebSocket<std::shared_ptr>::CreateBraveRequestInfo() {
   CHECK(!ctx_owned_);
-  ctx_ = brave::BraveRequestInfo::MakeCTX(
-      request_, render_frame_token_, request_id_, browser_context_, ctx_.get());
+  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
+                                          settings_origin_, request_id_,
+                                          browser_context_, ctx_.get());
 }
 
 template <>
@@ -85,9 +89,9 @@ void BraveProxyingWebSocket<base::WeakPtr>::CreateBraveRequestInfo() {
   if (ctx_) {
     request_handler_->OnURLRequestDestroyed(ctx_);
   }
-  ctx_owned_ = brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
-                                                request_id_, browser_context_,
-                                                ctx_owned_.get());
+  ctx_owned_ = brave::BraveRequestInfo::MakeCTX(
+      request_, render_frame_token_, settings_origin_, request_id_,
+      browser_context_, ctx_owned_.get());
   ctx_ = ctx_owned_->AsWeakPtr();
 }
 

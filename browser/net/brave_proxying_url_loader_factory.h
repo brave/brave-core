@@ -158,6 +158,7 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
     T<brave::BraveRequestInfo> ctx_;
     const raw_ref<BraveProxyingURLLoaderFactory> factory_;
     network::ResourceRequest request_;
+    brave_shields::ShieldsSettingsOrigin settings_origin_;
     const std::optional<url::Origin> original_initiator_;
     const uint64_t request_id_;
     const int32_t network_service_request_id_;
@@ -288,6 +289,8 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
   const raw_ref<BraveRequestHandler<T>> request_handler_;
   raw_ptr<content::BrowserContext> browser_context_ = nullptr;
   const content::GlobalRenderFrameHostToken render_frame_token_;
+  const std::optional<brave_shields::ShieldsSettingsOrigin>
+      document_settings_origin_;
   const content::ContentBrowserClient::URLLoaderFactoryType
       url_loader_factory_type_;
   const url::Origin request_initiator_;

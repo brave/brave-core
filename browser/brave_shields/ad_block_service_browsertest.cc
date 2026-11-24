@@ -52,6 +52,8 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/query_filter/browser/test_support/query_filter_test_helper.h"
+#include "brave/components/query_filter/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -70,6 +72,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "content/public/test/test_utils.h"
 #include "crypto/sha2.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -1769,6 +1772,27 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // Tests for the origin whose Shields settings apply to a request.
 class AdBlockServiceSettingsOriginTest : public AdBlockServiceTest {
  protected:
+  // Let the server echo measure the network delegate's Shields lookup.
+  AdBlockServiceSettingsOriginTest() {
+    network_query_filter_only_.InitAndDisableFeature(
+        query_filter::features::kQueryFilterBrowserThrottleEnabled);
+  }
+  base::test::ScopedFeatureList network_query_filter_only_;
+
+  // Report the URL that reached the server, including its query string.
+  bool StartNavigationEchoServer() {
+    dynamic_server_.RegisterRequestHandler(base::BindRepeating(
+        [](const net::test_server::HttpRequest& request)
+            -> std::unique_ptr<net::test_server::HttpResponse> {
+          auto response =
+              std::make_unique<net::test_server::BasicHttpResponse>();
+          response->set_content_type("text/plain");
+          response->set_content(request.relative_url);
+          return response;
+        }));
+    return dynamic_server_.Start();
+  }
+
   // Opens an about:blank popup from a sandboxed b.com frame in an a.com page.
   // The popup's origin is opaque, derived from b.com.
   content::WebContents* OpenPopupFromSandboxedFrame(
@@ -1891,6 +1915,9 @@ class AdBlockServiceSettingsOriginTest : public AdBlockServiceTest {
   void ExpectUsesSettingsOf(const base::RepeatingCallback<bool()>& can_load,
                             const GURL& expected,
                             const std::vector<GURL>& others) {
+    for (const GURL& other : others) {
+      SetAds(brave_shields::ControlType::BLOCK, other);
+    }
     SetAds(brave_shields::ControlType::ALLOW, expected);
     EXPECT_TRUE(can_load.Run());
 
@@ -1901,6 +1928,16 @@ class AdBlockServiceSettingsOriginTest : public AdBlockServiceTest {
       SetAds(brave_shields::ControlType::ALLOW, other);
     }
     EXPECT_FALSE(can_load.Run());
+  }
+
+  void ExpectInheritedPopupSettings(content::WebContents* popup) {
+    const GURL a = embedded_test_server()->GetURL("a.com", "/");
+    const GURL ad = embedded_test_server()->GetURL("e.com", "/adbanner.js");
+    ASSERT_TRUE(CanFetch(popup, ad.Resolve("/simple.html")));
+    ExpectUsesSettingsOf(
+        FetchFrom(popup->GetPrimaryMainFrame(), ad), a,
+        {GURL(), embedded_test_server()->GetURL("b.com", "/"),
+         embedded_test_server()->GetURL("c.com", "/simple.html")});
   }
 
   // Returns a callback that reports whether `target` can fetch `url`.
@@ -1946,33 +1983,81 @@ class AdBlockServiceSettingsOriginTest : public AdBlockServiceTest {
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
                        MainFrameNavigationUsesDestinationSettings) {
-  UpdateCustomAdBlockInstanceWithRules("*$document,removeparam=tracking");
-  dynamic_server_.RegisterRequestHandler(base::BindRepeating(
-      [](const net::test_server::HttpRequest& request)
-          -> std::unique_ptr<net::test_server::HttpResponse> {
-        auto response = std::make_unique<net::test_server::BasicHttpResponse>();
-        response->set_content_type("text/plain");
-        response->set_content(request.relative_url);
-        return response;
-      }));
-  ASSERT_TRUE(dynamic_server_.Start());
+  query_filter::test::ScopedTestingQueryFilterRules rules;
+  ASSERT_TRUE(StartNavigationEchoServer());
   const GURL outgoing = embedded_test_server()->GetURL("a.com", "/simple.html");
-  const GURL destination = dynamic_server_.GetURL("b.com", "/page?tracking=1");
+  const GURL destination = dynamic_server_.GetURL("b.com", "/new?fbclid=1");
   auto* tab = web_contents();
   for (bool filter_destination : {false, true}) {
     SCOPED_TRACE(filter_destination);
-    SetAds(filter_destination ? brave_shields::ControlType::ALLOW
-                              : brave_shields::ControlType::BLOCK,
-           outgoing);
-    SetAds(filter_destination ? brave_shields::ControlType::BLOCK
-                              : brave_shields::ControlType::ALLOW,
-           destination);
+    brave_shields::SetBraveShieldsEnabled(content_settings(),
+                                          !filter_destination, outgoing);
+    brave_shields::SetBraveShieldsEnabled(content_settings(),
+                                          filter_destination, destination);
     ASSERT_TRUE(content::NavigateToURL(tab, outgoing));
     const GURL expected =
-        filter_destination ? destination.Resolve("/page") : destination;
-    ASSERT_TRUE(content::NavigateToURLFromRenderer(tab, destination, expected));
+        filter_destination ? destination.Resolve("/new") : destination;
+    content::TestNavigationObserver navigation(tab);
+    content::ExecuteScriptAsync(
+        tab, content::JsReplace("location = $1", destination));
+    navigation.Wait();
+    ASSERT_TRUE(navigation.last_navigation_succeeded());
     EXPECT_EQ(expected.PathForRequest(),
               EvalJs(tab, "document.body.innerText"));
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       DirectPopupNavigationUsesDestinationSettings) {
+  query_filter::test::ScopedTestingQueryFilterRules rules;
+  ASSERT_TRUE(StartNavigationEchoServer());
+  const GURL a = embedded_test_server()->GetURL("a.com", "/simple.html");
+  const GURL b = embedded_test_server()->GetURL("b.com", "/simple.html");
+  const GURL destination = dynamic_server_.GetURL("c.com", "/new?fbclid=1");
+  NavigateToURL(a);
+  auto* opener = AddFrame(b);
+  ASSERT_TRUE(opener);
+  for (bool filter_destination : {false, true}) {
+    SCOPED_TRACE(filter_destination);
+    brave_shields::SetBraveShieldsEnabled(content_settings(),
+                                          !filter_destination, a);
+    brave_shields::SetBraveShieldsEnabled(content_settings(),
+                                          !filter_destination, b);
+    brave_shields::SetBraveShieldsEnabled(content_settings(),
+                                          filter_destination, destination);
+    auto* popup = OpenPopup(opener, destination.spec());
+    EXPECT_EQ(filter_destination ? "/new" : "/new?fbclid=1",
+              EvalJs(popup, "document.body.innerText"));
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(
+    AdBlockServiceSettingsOriginTest,
+    NavigationAwayFromInheritedPopupUsesDestinationSettings) {
+  query_filter::test::ScopedTestingQueryFilterRules rules;
+  ASSERT_TRUE(StartNavigationEchoServer());
+  const GURL a = embedded_test_server()->GetURL("a.com", "/simple.html");
+  const GURL b = embedded_test_server()->GetURL("b.com", "/simple.html");
+  const GURL destination = dynamic_server_.GetURL("c.com", "/new?fbclid=1");
+  NavigateToURL(a);
+  auto* opener = AddFrame(b);
+  ASSERT_TRUE(opener);
+  for (bool filter_destination : {false, true}) {
+    SCOPED_TRACE(filter_destination);
+    brave_shields::SetBraveShieldsEnabled(content_settings(),
+                                          !filter_destination, a);
+    brave_shields::SetBraveShieldsEnabled(content_settings(),
+                                          !filter_destination, b);
+    brave_shields::SetBraveShieldsEnabled(content_settings(),
+                                          filter_destination, destination);
+    auto* popup = OpenPopup(opener, "about:blank");
+    content::TestNavigationObserver navigation(popup);
+    content::ExecuteScriptAsync(
+        popup, content::JsReplace("location = $1", destination));
+    navigation.Wait();
+    ASSERT_TRUE(navigation.last_navigation_succeeded());
+    EXPECT_EQ(filter_destination ? "/new" : "/new?fbclid=1",
+              EvalJs(popup, "document.body.innerText"));
   }
 }
 
@@ -1981,20 +2066,29 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
   UpdateAdBlockInstanceWithRules("adbanner.js");
   const GURL a = embedded_test_server()->GetURL("a.com", "/simple.html");
   const GURL b = embedded_test_server()->GetURL("b.com", "/simple.html");
-  const GURL c = embedded_test_server()->GetURL("c.com", "/simple.html");
   const GURL ad = embedded_test_server()->GetURL("d.com", "/adbanner.js");
   NavigateToURL(a);
   auto* opener = AddFrame(b);
   ASSERT_TRUE(opener);
-  content::WebContentsAddedObserver opened;
-  ASSERT_TRUE(ExecJs(opener, "window.open()"));
-  auto* popup = opened.GetWebContents();
-  ASSERT_TRUE(popup->GetController().IsInitialBlankNavigation());
-  // A child uses its own loader factory, unlike the initial empty document.
-  auto* child = AddFrameTo(popup, c);
-  ASSERT_TRUE(child);
-  ASSERT_TRUE(CanFetch(child, ad.Resolve("/simple.html")));
-  ExpectUsesSettingsOf(FetchFrom(child, ad), a, {b, c});
+  // Start the fetch synchronously in the popup's realm, while its first
+  // cross-document navigation is still waiting for a response.
+  auto fetch = [&](const GURL& url) {
+    return EvalJs(opener,
+                  content::JsReplace(
+                      R"(
+      (async () => {
+        const p = window.open($1);
+        try {
+          if (p.document.URL !== 'about:blank') throw Error(p.document.URL);
+          return await p.fetch($2, {mode: 'no-cors'}).then(() => true, () => false);
+        } finally { p.close(); }
+      })())",
+                      embedded_test_server()->GetURL("c.com", "/hung"), url))
+        .ExtractBool();
+  };
+  ASSERT_TRUE(fetch(ad.Resolve("/simple.html")));
+  ExpectUsesSettingsOf(base::BindLambdaForTesting([&] { return fetch(ad); }), a,
+                       {b});
 }
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
@@ -2021,6 +2115,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
   ASSERT_TRUE(tab->GetPrimaryMainFrame()->GetLastCommittedOrigin().opaque());
   ASSERT_TRUE(content::NavigateToURLFromRenderer(tab, GURL("about:blank")));
   ASSERT_TRUE(tab->GetPrimaryMainFrame()->GetLastCommittedOrigin().opaque());
+  ASSERT_TRUE(CanFetch(tab, ad.Resolve("/simple.html")));
   ExpectUsesSettingsOf(FetchFrom(tab->GetPrimaryMainFrame(), ad), a, {GURL()});
 }
 
@@ -2042,6 +2137,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
   ASSERT_TRUE(navigation.last_navigation_succeeded());
   ASSERT_EQ(GURL("about:blank"), tab->GetLastCommittedURL());
   ASSERT_TRUE(tab->GetPrimaryMainFrame()->GetLastCommittedOrigin().opaque());
+  ASSERT_TRUE(CanFetch(tab, ad.Resolve("/simple.html")));
   ExpectUsesSettingsOf(FetchFrom(tab->GetPrimaryMainFrame(), ad), a,
                        {b, GURL()});
 }
@@ -2135,6 +2231,170 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       InheritedPopupAfterOpenerCrossSiteCommit) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  auto* opener = web_contents();
+  auto* popup = OpenAboutBlankPopupFromSubFrame();
+  ASSERT_TRUE(popup);
+  auto document = popup->GetPrimaryMainFrame()->GetWeakDocumentPtr();
+  ASSERT_TRUE(content::NavigateToURL(
+      opener, embedded_test_server()->GetURL("c.com", "/simple.html")));
+  ASSERT_EQ(document.AsRenderFrameHostIfValid(), popup->GetPrimaryMainFrame());
+  ExpectInheritedPopupSettings(popup);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       InheritedPopupAfterOpenerDestruction) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  auto* opener =
+      OpenPopup(web_contents(),
+                embedded_test_server()->GetURL("a.com", "/simple.html").spec());
+  auto* frame = AddFrameTo(
+      opener, embedded_test_server()->GetURL("b.com", "/simple.html"));
+  ASSERT_TRUE(frame);
+  auto* popup = OpenPopup(frame, "about:blank");
+  content::WebContentsDestroyedWatcher destroyed(opener);
+  opener->ClosePage();
+  destroyed.Wait();
+  ExpectInheritedPopupSettings(popup);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       InheritedPopupAfterIntermediateOpenerDestruction) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  auto* intermediate = OpenPopupFromSandboxedFrame("");
+  auto* popup = OpenPopup(intermediate, "about:blank");
+  content::WebContentsDestroyedWatcher destroyed(intermediate);
+  intermediate->ClosePage();
+  destroyed.Wait();
+  ExpectInheritedPopupSettings(popup);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       InheritedPopupAfterIntermediateOpenerNavigation) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  auto* intermediate = OpenPopupFromSandboxedFrame("");
+  auto* popup = OpenPopup(intermediate, "about:blank");
+  ASSERT_TRUE(content::NavigateToURL(
+      intermediate, embedded_test_server()->GetURL("c.com", "/simple.html")));
+  ExpectInheritedPopupSettings(popup);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       InheritedPopupAfterOpeningFrameRemoval) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  auto* opener = web_contents();
+  auto* popup = OpenAboutBlankPopupFromSubFrame();
+  content::RenderFrameDeletedObserver deleted(ChildFrameAt(opener, 0));
+  ASSERT_TRUE(ExecJs(opener, "document.querySelector('iframe').remove()"));
+  ASSERT_TRUE(deleted.WaitUntilDeleted());
+  ExpectInheritedPopupSettings(popup);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       InheritedPopupAfterOpeningFrameNavigation) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  auto* opener = web_contents();
+  auto* popup = OpenAboutBlankPopupFromSubFrame();
+  ASSERT_TRUE(content::NavigateToURLFromRenderer(
+      ChildFrameAt(opener, 0),
+      embedded_test_server()->GetURL("c.com", "/simple.html")));
+  ExpectInheritedPopupSettings(popup);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       InheritedPopupAfterOpenerPushState) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  auto* opener = web_contents();
+  auto* popup = OpenAboutBlankPopupFromSubFrame();
+  ASSERT_TRUE(ExecJs(opener, "history.pushState(null, '', '/new-path')"));
+  ASSERT_EQ("/new-path", opener->GetLastCommittedURL().path());
+  ExpectInheritedPopupSettings(popup);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       InheritedPopupAfterOpenerFragmentChange) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  auto* opener = web_contents();
+  auto* popup = OpenAboutBlankPopupFromSubFrame();
+  ASSERT_TRUE(ExecJs(opener,
+                     "new Promise(resolve => {onhashchange = () => "
+                     "resolve(true); location.hash='new';})"));
+  ExpectInheritedPopupSettings(popup);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       InheritedPopupAfterOpenerSameSiteCommit) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  auto* opener = web_contents();
+  auto* popup = OpenAboutBlankPopupFromSubFrame();
+  ASSERT_TRUE(content::NavigateToURL(
+      opener, embedded_test_server()->GetURL("a.com", "/title1.html")));
+  ExpectInheritedPopupSettings(popup);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       OutgoingDocumentDuringCrossSiteNavigation) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  const GURL a = embedded_test_server()->GetURL("a.com", "/simple.html");
+  const GURL b = embedded_test_server()->GetURL("b.com", "/simple.html");
+  const GURL ad = embedded_test_server()->GetURL("e.com", "/adbanner.js");
+  NavigateToURL(a);
+  auto* tab = web_contents();
+  content::TestNavigationManager navigation(tab, b);
+  content::ExecuteScriptAsync(tab, content::JsReplace("location = $1", b));
+  ASSERT_TRUE(navigation.WaitForRequestStart());
+  ASSERT_EQ(a, tab->GetLastCommittedURL());
+  ASSERT_TRUE(CanFetch(tab, ad.Resolve("/simple.html")));
+  ExpectUsesSettingsOf(FetchFrom(tab->GetPrimaryMainFrame(), ad), a,
+                       {b, GURL()});
+  ASSERT_TRUE(navigation.WaitForNavigationFinished());
+  ASSERT_TRUE(navigation.was_committed());
+  ASSERT_EQ(b, tab->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       InheritedDocumentDuringCanceledNavigation) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  auto* popup = OpenAboutBlankPopupFromSubFrame();
+  auto doc = popup->GetPrimaryMainFrame()->GetWeakDocumentPtr();
+  const GURL destination =
+      embedded_test_server()->GetURL("c.com", "/simple.html");
+  content::TestNavigationManager navigation(popup, destination);
+  content::ExecuteScriptAsync(popup,
+                              content::JsReplace("location = $1", destination));
+  ASSERT_TRUE(navigation.WaitForRequestStart());
+  ExpectInheritedPopupSettings(popup);
+  popup->Stop();
+  ASSERT_TRUE(navigation.WaitForNavigationFinished());
+  ASSERT_FALSE(navigation.was_committed());
+  ASSERT_EQ(doc.AsRenderFrameHostIfValid(), popup->GetPrimaryMainFrame());
+  ExpectInheritedPopupSettings(popup);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       RetainedSandboxedDocumentKeepsSettingsOnBack) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  const GURL a =
+      embedded_test_server()->GetURL("a.com", "/csp_sandboxed_main_frame.html");
+  const GURL c = embedded_test_server()->GetURL("c.com", "/simple.html");
+  const GURL ad = embedded_test_server()->GetURL("e.com", "/adbanner.js");
+  NavigateToURL(a);
+  auto* tab = web_contents();
+  auto doc = tab->GetPrimaryMainFrame()->GetWeakDocumentPtr();
+  ASSERT_TRUE(tab->GetPrimaryMainFrame()->GetLastCommittedOrigin().opaque());
+  ASSERT_TRUE(content::NavigateToURL(tab, c));
+  ASSERT_TRUE(doc.AsRenderFrameHostIfValid());
+  ASSERT_TRUE(doc.AsRenderFrameHostIfValid()->IsInLifecycleState(
+      content::RenderFrameHost::LifecycleState::kInBackForwardCache));
+  ASSERT_TRUE(content::HistoryGoBack(tab));
+  ASSERT_EQ(doc.AsRenderFrameHostIfValid(), tab->GetPrimaryMainFrame());
+  ASSERT_TRUE(CanFetch(tab, ad.Resolve("/simple.html")));
+  ExpectUsesSettingsOf(FetchFrom(tab->GetPrimaryMainFrame(), ad), a,
+                       {GURL(), c});
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
                        RecreatedInheritedPageKeepsSettingsOnBack) {
   UpdateAdBlockInstanceWithRules("adbanner.js");
   const GURL ad_url = embedded_test_server()->GetURL("e.com", "/adbanner.js");
@@ -2172,6 +2432,98 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
 
   ExpectUsesSettingsOf(FetchFrom(popup->GetPrimaryMainFrame(), ad_url), a_url,
                        {b_url, away_url, new_opener_url});
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       RecreatedInheritedPageAfterOpenerDestruction) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  auto* opener =
+      OpenPopup(web_contents(),
+                embedded_test_server()->GetURL("a.com", "/simple.html").spec());
+  AddSandboxedFrame(opener,
+                    embedded_test_server()->GetURL("b.com", "/simple.html"),
+                    "allow-scripts allow-popups");
+  auto* popup = OpenPopup(ChildFrameAt(opener, 0), "about:blank");
+  content::DisableBackForwardCacheForTesting(
+      popup, content::BackForwardCache::TEST_REQUIRES_NO_CACHING);
+  ASSERT_TRUE(
+      content::NavigateToURLFromRenderer(popup, GURL("about:blank?history")));
+  const int entry =
+      popup->GetController().GetLastCommittedEntry()->GetUniqueID();
+  auto doc = popup->GetPrimaryMainFrame()->GetWeakDocumentPtr();
+  ASSERT_TRUE(content::NavigateToURL(
+      popup, embedded_test_server()->GetURL("c.com", "/simple.html")));
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return !doc.AsRenderFrameHostIfValid(); }));
+  content::WebContentsDestroyedWatcher destroyed(opener);
+  opener->ClosePage();
+  destroyed.Wait();
+  ASSERT_TRUE(content::HistoryGoBack(popup));
+  ASSERT_EQ(entry,
+            popup->GetController().GetLastCommittedEntry()->GetUniqueID());
+  ASSERT_FALSE(popup->GetPrimaryMainFrame()->IsErrorDocument());
+  ExpectInheritedPopupSettings(popup);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       NonOpaquePopupNavigatesItselfToInheritedBlank) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  auto* popup = OpenAboutBlankPopupFromSubFrame();
+  ASSERT_TRUE(popup);
+  const auto prior = popup->GetPrimaryMainFrame()->GetWeakDocumentPtr();
+  ASSERT_TRUE(
+      content::NavigateToURLFromRenderer(popup, GURL("about:blank?new")));
+  ASSERT_NE(prior.AsRenderFrameHostIfValid(), popup->GetPrimaryMainFrame());
+  ASSERT_EQ("b.com",
+            popup->GetPrimaryMainFrame()->GetLastCommittedOrigin().host());
+  ExpectInheritedPopupSettings(popup);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       PopupCopiesDefaultSettingsFromOpeningPage) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  const GURL b = embedded_test_server()->GetURL("b.com", "/simple.html");
+  const GURL ad = embedded_test_server()->GetURL("e.com", "/adbanner.js");
+  NavigateToURL(GURL("data:text/html,<body></body>"));
+  auto* frame = AddFrame(b);
+  ASSERT_TRUE(frame);
+  auto* popup = OpenPopup(frame, "about:blank");
+  ASSERT_EQ(url::Origin::Create(b),
+            popup->GetPrimaryMainFrame()->GetLastCommittedOrigin());
+  ASSERT_TRUE(CanFetch(popup, ad.Resolve("/simple.html")));
+  ExpectUsesSettingsOf(FetchFrom(popup->GetPrimaryMainFrame(), ad), GURL(),
+                       {b});
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       RecreatedInheritedPageRestoresDefaultSettings) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  const GURL b = embedded_test_server()->GetURL("b.com", "/simple.html");
+  const GURL c = embedded_test_server()->GetURL("c.com", "/simple.html");
+  const GURL ad = embedded_test_server()->GetURL("e.com", "/adbanner.js");
+  NavigateToURL(GURL("data:text/html,<body></body>"));
+  auto* opener = web_contents();
+  AddSandboxedFrame(opener, b, "allow-scripts allow-popups");
+  auto* popup = OpenPopup(ChildFrameAt(opener, 0), "about:blank");
+  content::DisableBackForwardCacheForTesting(
+      popup, content::BackForwardCache::TEST_REQUIRES_NO_CACHING);
+  const GURL inherited("about:blank?history");
+  ASSERT_TRUE(content::NavigateToURLFromRenderer(popup, inherited));
+  const int entry =
+      popup->GetController().GetLastCommittedEntry()->GetUniqueID();
+  auto doc = popup->GetPrimaryMainFrame()->GetWeakDocumentPtr();
+  ASSERT_TRUE(content::NavigateToURL(popup, c));
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return !doc.AsRenderFrameHostIfValid(); }));
+  ASSERT_TRUE(content::NavigateToURL(opener, b));
+  ASSERT_TRUE(content::HistoryGoBack(popup));
+  ASSERT_EQ(entry,
+            popup->GetController().GetLastCommittedEntry()->GetUniqueID());
+  ASSERT_EQ(inherited, popup->GetLastCommittedURL());
+  ASSERT_FALSE(popup->GetPrimaryMainFrame()->IsErrorDocument());
+  ASSERT_TRUE(CanFetch(popup, ad.Resolve("/simple.html")));
+  ExpectUsesSettingsOf(FetchFrom(popup->GetPrimaryMainFrame(), ad), GURL(),
+                       {b, c});
 }
 
 #if !BUILDFLAG(IS_ANDROID)

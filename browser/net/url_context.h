@@ -219,6 +219,7 @@ class BraveRequestInfo {
   static std::unique_ptr<brave::BraveRequestInfo> MakeCTX(
       const network::ResourceRequest& request,
       content::GlobalRenderFrameHostToken render_frame_token,
+      brave_shields::ShieldsSettingsOrigin settings_origin,
       uint64_t request_identifier,
       content::BrowserContext* browser_context,
       brave::BraveRequestInfo* old_ctx,
@@ -240,9 +241,6 @@ class BraveRequestInfo {
   // We should also remove the one below.
   template <template <typename> class T>
   friend class ::BraveRequestHandlerImpl;
-
-  brave_shields::ShieldsSettingsOrigin GetShieldsSettingsOrigin(
-      const net::IsolationInfo* isolation_info) const;
 
   GURL* new_url() const;
   void set_new_url(GURL* value);
