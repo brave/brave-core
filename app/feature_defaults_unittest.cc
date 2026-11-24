@@ -229,6 +229,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kServiceWorkerAutoPreload,
       &features::kSkillsEnabled,
       &features::kTabHoverCardImages,
+      &features::kToolbarGlowUp,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kTrustSafetySentimentSurvey,
       &features::kTrustSafetySentimentSurveyV2,
