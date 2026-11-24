@@ -30,6 +30,7 @@ import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.components.security_state.ConnectionSecurityLevel;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -48,6 +49,7 @@ public class BraveCollapsedUrlChipMediatorTest {
     private ArgumentCaptor<BrowserControlsStateProvider.Observer> mObserverCaptor;
     private DelegateFake mDelegate;
     private AtomicReference<String> mUrlSpecRef;
+    private AtomicReference<Integer> mSecurityLevelRef;
     private AtomicReference<Boolean> mFullscreenRef;
     private AtomicReference<Boolean> mCanShowRef;
     private Supplier<Boolean> mEnabledSupplier;
@@ -59,6 +61,7 @@ public class BraveCollapsedUrlChipMediatorTest {
         mObserverCaptor = ArgumentCaptor.forClass(BrowserControlsStateProvider.Observer.class);
         mDelegate = new DelegateFake();
         mUrlSpecRef = new AtomicReference<>(URL_SPEC);
+        mSecurityLevelRef = new AtomicReference<>(ConnectionSecurityLevel.SECURE);
         mFullscreenRef = new AtomicReference<>(Boolean.FALSE);
         mCanShowRef = new AtomicReference<>(Boolean.TRUE);
         mEnabledSupplier = () -> true;
@@ -71,6 +74,7 @@ public class BraveCollapsedUrlChipMediatorTest {
                 new BraveCollapsedUrlChipMediator(
                         mSizer,
                         mUrlSpecRef::get,
+                        mSecurityLevelRef::get,
                         mEnabledSupplier,
                         new NullableObservableSupplier<Boolean>() {
                             @Override
@@ -295,6 +299,52 @@ public class BraveCollapsedUrlChipMediatorTest {
         notifyOffsetChanged();
         mMediator.onUrlSpecChanged();
         assertEquals(count, mDelegate.mPinnedCallCount);
+    }
+
+    @Test
+    public void testMixedContentPinsControlsAndWithholdsChip() {
+        // Passive mixed content downgrades an https page to WARNING.
+        mSecurityLevelRef.set(ConnectionSecurityLevel.WARNING);
+        mMediator.onSecurityLevelChanged();
+        assertTrue(mDelegate.mLastPinned);
+
+        notifyAndroidControlsVisibility(View.INVISIBLE);
+        assertFalse(mDelegate.mLastVisible);
+        assertNull(mDelegate.mLastText);
+    }
+
+    @Test
+    public void testSecurityLevelUpgradeUnpins() {
+        mSecurityLevelRef.set(ConnectionSecurityLevel.DANGEROUS);
+        mMediator.onSecurityLevelChanged();
+        assertTrue(mDelegate.mLastPinned);
+
+        mSecurityLevelRef.set(ConnectionSecurityLevel.SECURE);
+        mMediator.onSecurityLevelChanged();
+        assertFalse(mDelegate.mLastPinned);
+
+        notifyAndroidControlsVisibility(View.INVISIBLE);
+        assertTrue(mDelegate.mLastVisible);
+        assertEquals(FORMATTED, mDelegate.mLastText);
+    }
+
+    @Test
+    public void testHttpPinsEvenWithSecureLevel() {
+        mSecurityLevelRef.set(ConnectionSecurityLevel.SECURE);
+        mUrlSpecRef.set("http://example.com/");
+        mMediator.onUrlSpecChanged();
+        assertTrue(mDelegate.mLastPinned);
+    }
+
+    @Test
+    public void testUnknownSecurityLevelDoesNotPinHttps() {
+        mSecurityLevelRef.set(null);
+        mMediator.onSecurityLevelChanged();
+        assertFalse(mDelegate.mLastPinned);
+
+        notifyAndroidControlsVisibility(View.INVISIBLE);
+        assertTrue(mDelegate.mLastVisible);
+        assertEquals(FORMATTED, mDelegate.mLastText);
     }
 
     @Test

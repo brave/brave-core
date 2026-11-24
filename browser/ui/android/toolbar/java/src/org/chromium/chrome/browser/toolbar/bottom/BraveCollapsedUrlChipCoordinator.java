@@ -39,6 +39,7 @@ import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsV
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObserver;
 import org.chromium.chrome.browser.toolbar.R;
+import org.chromium.components.security_state.SecurityStateModel;
 import org.chromium.components.url_formatter.UrlFormatter;
 import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.content_public.browser.WebContents;
@@ -57,9 +58,10 @@ import java.util.function.Supplier;
  * the page's host minus trivial subdomains. Tapping it re-shows the browser controls. The chip is
  * never a navigation surface, so it cannot be used to spoof or open URLs.
  *
- * <p>On non-secure (plaintext HTTP) pages the chip is not shown at all: the browser controls are
- * pinned visible instead, so the omnibox — with its own security indicator — stays the identity
- * surface.
+ * <p>On non-secure pages the chip is not shown at all: the browser controls are pinned visible
+ * instead, so the omnibox — with its own security indicator — stays the identity surface. A page
+ * counts as non-secure when it is plaintext HTTP or when its connection security level is anything
+ * other than SECURE (mixed content, mixed forms, certificate errors).
  */
 @NullMarked
 public class BraveCollapsedUrlChipCoordinator {
@@ -83,6 +85,12 @@ public class BraveCollapsedUrlChipCoordinator {
 
     private @Nullable WebContentsObserver mWebContentsObserver;
     private @Nullable Tab mObservedTab;
+
+    /**
+     * Cached connection security level (see ConnectionSecurityLevel) of the active tab; null while
+     * unknown.
+     */
+    private @Nullable Integer mCachedSecurityLevel;
 
     /** Re-observes the tab when its content changes (e.g. WebContents swaps). */
     private final TabObserver mTabContentObserver =
@@ -245,10 +253,13 @@ public class BraveCollapsedUrlChipCoordinator {
         // state, and the window may not be attached yet (insets queries would crash).
         mFullscreenSupplier.addSyncObserver(mFullscreenObserverCallback);
 
+        refreshSecurityLevel();
+
         mMediator =
                 new BraveCollapsedUrlChipMediator(
                         sizer,
                         this::getUrlSpec,
+                        this::currentSecurityLevel,
                         enabledSupplier,
                         fullscreenSupplier,
                         this::canShowBrowserControls,
@@ -282,7 +293,21 @@ public class BraveCollapsedUrlChipCoordinator {
 
     private void onTabChanged(@Nullable Tab tab) {
         observeTab(tab);
+        refreshSecurityLevel();
         mMediator.onUrlSpecChanged();
+    }
+
+    /** Re-reads the cached connection security level of the active tab. */
+    private void refreshSecurityLevel() {
+        Tab tab = mTabSupplier.get();
+        mCachedSecurityLevel =
+                tab == null
+                        ? null
+                        : SecurityStateModel.getSecurityLevelForWebContents(tab.getWebContents());
+    }
+
+    private @Nullable Integer currentSecurityLevel() {
+        return mCachedSecurityLevel;
     }
 
     private void onFullscreenChanged(@Nullable Boolean fullscreen) {
@@ -329,6 +354,7 @@ public class BraveCollapsedUrlChipCoordinator {
                 new WebContentsObserver(webContents) {
                     @Override
                     public void didStartLoading(GURL url) {
+                        refreshSecurityLevel();
                         onUrlSpecChanged();
                         restartContentSampling();
                     }
@@ -336,8 +362,17 @@ public class BraveCollapsedUrlChipCoordinator {
                     @Override
                     public void didFinishNavigationInPrimaryMainFrame(
                             NavigationHandle navigationHandle) {
+                        refreshSecurityLevel();
                         onUrlSpecChanged();
                         restartContentSampling();
+                    }
+
+                    @Override
+                    public void didChangeVisibleSecurityState() {
+                        // Mixed content can appear on an already-committed page; re-evaluate the
+                        // pin so the omnibox never disappears behind such content.
+                        refreshSecurityLevel();
+                        mMediator.onSecurityLevelChanged();
                     }
 
                     @Override

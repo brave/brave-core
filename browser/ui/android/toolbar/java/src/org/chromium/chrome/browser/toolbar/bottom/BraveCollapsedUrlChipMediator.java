@@ -14,6 +14,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.components.security_state.ConnectionSecurityLevel;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.util.ColorUtils;
 import org.chromium.url.GURL;
@@ -32,9 +33,11 @@ import java.util.function.Supplier;
  * is display-only: tapping it re-shows the browser controls, so the chip never becomes a navigation
  * or spoofing surface.
  *
- * <p>Non-secure (plaintext HTTP) pages never get a chip: the browser controls are pinned visible
- * instead ({@link Delegate#setPinnedControlsVisible}), so the omnibox — with its own security
- * indicator — remains the identity surface.
+ * <p>Non-secure pages never get a chip: the browser controls are pinned visible instead ({@link
+ * Delegate#setPinnedControlsVisible}), so the omnibox — with its own security indicator — remains
+ * the identity surface. A page counts as non-secure when it is plaintext HTTP or when its
+ * connection security level is anything other than SECURE, which covers mixed content (active and
+ * passive), mixed forms and certificate errors.
  */
 @NullMarked
 class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Observer {
@@ -48,15 +51,17 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
         void setChipAlpha(float alpha);
 
         /**
-         * Pins the browser controls visible while true. On non-secure pages the chip must never
-         * replace the omnibox as the page's identity surface: instead of showing the chip, the
-         * browser controls stay on screen, keeping the omnibox's own security indicator visible.
+         * Pins the browser controls visible while true. On non-secure or mixed-content pages the
+         * chip must never replace the omnibox as the page's identity surface: instead of showing
+         * the chip, the browser controls stay on screen, keeping the omnibox's own security
+         * indicator visible.
          */
         void setPinnedControlsVisible(boolean pinned);
     }
 
     private final BrowserControlsSizer mSizer;
     private final Supplier<@Nullable String> mUrlSpecSupplier;
+    private final Supplier<@Nullable Integer> mSecurityLevelSupplier;
     private final Supplier<Boolean> mEnabledSupplier;
     private final NullableObservableSupplier<Boolean> mFullscreenSupplier;
     private final Supplier<Boolean> mCanShowControlsSupplier;
@@ -64,8 +69,8 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
     private final Delegate mDelegate;
 
     private @Nullable String mLastUrlSpec;
+    private @Nullable Boolean mLastInsecureContent;
     private @Nullable String mLastChipText;
-    private boolean mChipTextInitialized;
     private boolean mAndroidControlsVisible = true;
     private boolean mLastPinned;
     private boolean mDestroyed;
@@ -73,6 +78,7 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
     BraveCollapsedUrlChipMediator(
             BrowserControlsSizer sizer,
             Supplier<@Nullable String> urlSpecSupplier,
+            Supplier<@Nullable Integer> securityLevelSupplier,
             Supplier<Boolean> enabledSupplier,
             NullableObservableSupplier<Boolean> fullscreenSupplier,
             Supplier<Boolean> canShowControlsSupplier,
@@ -80,6 +86,7 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
             Delegate delegate) {
         mSizer = sizer;
         mUrlSpecSupplier = urlSpecSupplier;
+        mSecurityLevelSupplier = securityLevelSupplier;
         mEnabledSupplier = enabledSupplier;
         mFullscreenSupplier = fullscreenSupplier;
         mCanShowControlsSupplier = canShowControlsSupplier;
@@ -104,6 +111,11 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
 
     /** Re-evaluates chip visibility when the page enters or exits fullscreen. */
     void onFullscreenChanged() {
+        updateChip();
+    }
+
+    /** Re-evaluates chip visibility when the page's security state changes (e.g. mixed content). */
+    void onSecurityLevelChanged() {
         updateChip();
     }
 
@@ -136,22 +148,34 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
         if (mDestroyed) return;
 
         @Nullable String spec = mUrlSpecSupplier.get();
-        // Also force the first update so the delegate never inherits stale
-        // text from a previous mediator instance.
-        if (!Objects.equals(spec, mLastUrlSpec) || !mChipTextInitialized) {
+        boolean insecureContent = isNonSecureUrlSpec(spec) || isInsecureSecurityLevel();
+        // Recompute text when the spec or the page's security state changed; also force the first
+        // update so the delegate never inherits stale text from a previous mediator instance.
+        if (!Objects.equals(spec, mLastUrlSpec)
+                || mLastInsecureContent == null
+                || insecureContent != mLastInsecureContent) {
             mLastUrlSpec = spec;
-            mChipTextInitialized = true;
+            mLastInsecureContent = insecureContent;
             mLastChipText = null;
-            if (spec != null && isEligibleUrlSpec(spec) && !isNonSecureUrlSpec(spec)) {
+            if (spec != null && isEligibleUrlSpec(spec) && !insecureContent) {
                 mLastChipText = mTextFormatter.apply(spec);
             }
             mDelegate.setChipText(mLastChipText);
-            updatePinnedControls(
-                    spec != null
-                            && isNonSecureUrlSpec(spec)
-                            && Boolean.TRUE.equals(mEnabledSupplier.get()));
         }
+        updatePinnedControls(
+                spec != null && insecureContent && Boolean.TRUE.equals(mEnabledSupplier.get()));
         updateChipDisplay();
+    }
+
+    /**
+     * True when the page is non-secure enough that the omnibox must stay on screen: any connection
+     * security level other than {@link ConnectionSecurityLevel#SECURE} (plaintext HTTP, active or
+     * passive mixed content, mixed forms, certificate errors and other non-secure states). Null (no
+     * tab or security state not yet known) never counts as insecure.
+     */
+    private boolean isInsecureSecurityLevel() {
+        @Nullable Integer level = mSecurityLevelSupplier.get();
+        return level != null && level != ConnectionSecurityLevel.SECURE;
     }
 
     /**
