@@ -22,14 +22,20 @@ using ValueOrError = base::expected<base::Value, std::string>;
 
 // Parses a Server-Sent Events (SSE) byte stream delivered in arbitrary chunks.
 //
-// Callers feed chunks via Process(). Complete lines starting with "data: {"
-// are parsed as JSON asynchronously on |task_runner|, which must be sequenced.
-// For each successfully recognised event the |on_event| callback is invoked
-// with the parsed value (or an error), in stream order.
+// A UTF-8 BOM at the start of the stream is skipped. Lines may end in CRLF, LF
+// or CR. The values of consecutive `data:` lines, each with one optional
+// leading space removed, are joined with "\n" and the event is dispatched on
+// the next blank line. As the SSE spec requires, an event is discarded if the
+// stream ends before its blank line. Comments and all other fields (`event:`,
+// `id:`, `retry:`, ...) are ignored.
 //
-// Bytes that arrive after the last line-ending in a chunk are kept in an
-// internal line buffer and prepended to the next chunk so lines split across
-// network chunks are reassembled correctly.
+// Events are only dispatched when their data is a JSON object candidate, i.e.
+// its first non-whitespace character is `{`. Empty data (e.g. an event carrying
+// only an `id:`) and other payloads, such as the `[DONE]` sentinel sent by
+// OpenAI-compatible servers, are dropped. Dispatched data is parsed as JSON
+// asynchronously on `task_runner`, which must be sequenced, and `on_event`
+// receives the parsed values in stream order, or an error for data that is not
+// valid JSON. `on_event` may destroy the parser.
 class SSEParser {
  public:
   SSEParser(scoped_refptr<base::SequencedTaskRunner> task_runner,
@@ -40,10 +46,10 @@ class SSEParser {
   SSEParser& operator=(const SSEParser&) = delete;
 
   // Feed the next chunk of raw SSE bytes. May dispatch async JSON parse
-  // operations and synchronously advance the line buffer.
+  // operations.
   void Process(std::string_view chunk);
 
-  // Discards the partial-line buffer, and the events and
+  // Discards all buffered input without dispatching, and the events and
   // RunAfterPendingEvents() callbacks still pending (e.g. on retry).
   void Clear();
 
@@ -55,13 +61,22 @@ class SSEParser {
 
  private:
   void ProcessLine(std::string_view line);
+  void DispatchEvent();
   void OnJsonParsed(ValueOrError result);
   void RunCallback(base::OnceClosure callback);
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   base::RepeatingCallback<void(ValueOrError)> on_event_;
 
+  // Bytes after the last line ending, prepended to the next chunk.
   std::string line_buffer_;
+  // `data:` values of the current event, each followed by "\n".
+  std::string data_buffer_;
+  // Whether the previous chunk ended with CR, so that a LF starting the next
+  // chunk completes a CRLF rather than terminating an empty line.
+  bool skip_leading_lf_ = false;
+  // True until the start of the stream has been checked for a BOM.
+  bool at_stream_start_ = true;
 
   base::WeakPtrFactory<SSEParser> weak_ptr_factory_{this};
 };
