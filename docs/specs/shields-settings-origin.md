@@ -228,6 +228,9 @@ distinct sites; P is a popup, and Q is a popup opened by P.
 | Main frame on B redirects to C, and C redirects back to B. | Each server records the request for its hop. | The destination of each hop: B, then C, then B |
 | A document on A fetches a URL that redirects B → C → B. | Each server records the request for its hop. | A for every hop |
 | A on A loads a child frame through B → C → B. | Each server records the request for its hop. | A for every hop |
+| A on A loads a script whose URL redirects from B to C. A block rule matches C's URL. | The script request to C | A, not B or C |
+| Main frame on A navigates to B, which redirects to C. A `$csp` rule matches C. | The CSP added to C's response | C, not A or B |
+| A on A loads a child frame that redirects from B to C. A `$csp` rule matches C. | The CSP added to C's response | A, not B or C |
 | A `data:` top frame embeds B. B's shared worker fetches a URL that redirects from B to C. | The final request to C | Defaults |
 | A tab visits B, then another site. Going Back to B redirects to C; BFCache is disabled. | A fetch from the committed C document | C, not B or the other site |
 | Main frame on A starts a cross-site navigation that has not committed. | A fetch from the outgoing A document | A |
@@ -251,9 +254,13 @@ distinct sites; P is a popup, and Q is a popup opened by P.
 | B under A calls `window.open()`. | A fetch from the popup's initial empty document, before another document commits | A |
 | B under A opens an `about:blank` popup whose DOM origin is B. | A fetch from the popup | A |
 | B under A opens an `about:blank` popup, which embeds C. | A fetch from C | A, not B or C |
+| B under A opens an `about:blank` popup, which embeds C. A `$csp` rule matches C. | The CSP added to C's response | A, not B or C |
 | B under A opens an `about:blank` popup, which loads a child frame at C. A `$subdocument` rule matches C. | The navigation request for C | A |
 | B under A opens a popup directly at C. | The navigation request for C | C |
 | B under A opens a popup directly at C. | A fetch from C after commit | C |
+| A opens a popup at B, which redirects to C, and C redirects back to B. | Each server records the request for its hop. | The destination of each hop: B, then C, then B |
+| A opens a popup at B, which redirects to C. C responds with `Content-Security-Policy: sandbox`. | A fetch from the sandboxed C document | C, not A or B |
+| B under A opens a popup at a URL that redirects to `javascript:`. Nothing commits. | A fetch from a child frame of the popup's initial empty document | A |
 | An inherited popup with key A navigates to C. | A fetch from C after commit | C, not A or B |
 | A sandboxed frame under A opens a popup. | A fetch from a child frame of the popup | A |
 | Repeat the previous case with `noopener`. | A fetch from a child frame of the popup | A |
