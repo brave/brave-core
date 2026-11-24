@@ -106,3 +106,68 @@ successful unfiltered control so a failed request alone cannot pass the test.
   missing or opaque isolation origins. Use browser tests when the claim is that
   Chromium generates a particular request or delivers a callback at a particular
   time; do not supply that input or invoke that callback from the test.
+
+## Regression checklist
+
+For each change to origin selection, check the expected result in each row.
+Run `AdBlockServiceSettingsOriginTest.*` in `brave_browser_tests` on Linux;
+individual tests have platform guards. Test names below are relative to that
+suite in [the browser test source](../browser/brave_shields/ad_block_service_browsertest.cc).
+The last Linux run passed 28 of 30; the two unverified rows are requirements,
+not evidence that the branch satisfies them.
+
+| Scenario and expected result | Browser test |
+| --- | --- |
+| Navigate A → B: filtering the initial HTTP request must follow B, not A. **Unverified:** the filtered navigation failed before the server-echo assertion. | `MainFrameNavigationUsesDestinationSettings` |
+| Fetch from child B under A: use A. | `SubFrameUsesTopFrameSettings` |
+| Fetch from a nested cross-site frame: use outermost A. | `NestedFrameUsesTopFrameSettings` |
+| Sandboxed HTTP document with opaque DOM origin: use its HTTP site's settings. | `SandboxedMainFrameUsesUrlSettings` |
+| Sandboxed A navigates itself to `about:blank`: retain A despite the opaque committed origin. | `SandboxedPageNavigatesItselfToAboutBlank` |
+| Sandboxed B under A navigates the top frame to `about:blank`: use A, not B or defaults. | `SandboxedChildNavigatesTopToAboutBlank` |
+| B under A calls `window.open()`: a request from the initial empty document must use A. **Unverified:** the initial-blank assertion failed; the test also attempts its fetch from a child rather than from that document. | `InitialEmptyPopupUsesOpenerPageSettings` |
+| B under A opens `about:blank`: the popup itself fetches using A even though its DOM origin is B. | `AboutBlankPopupFromSubFrameUsesOpenerPageSettings` |
+| C embedded in that popup fetches: use A, not opener frame B or child C. | `FrameInAboutBlankPopupFromSubFrameUsesOpenerPageSettings` |
+| Load a child frame at C in that popup: the `$subdocument` rule for the **frame navigation itself** follows A. | `FrameNavigationInAboutBlankPopupFromSubFrameUsesOpenerPageSettings` |
+| B under A opens directly at C: a fetch after commit uses C. | `CrossSitePopupFromSubFrameUsesPopupSettings` |
+| Navigate an already inherited popup to C: a fetch after commit uses C instead of A or B. | `InheritedPopupSwitchesToCommittedSiteSettings` |
+| Fetch from a child of a popup opened by a sandboxed frame: follow the opening page A. | `OpaquePopupUsesOpenerPageSettings` |
+| Repeat the opaque-popup child fetch with `noopener`: still use A. | `OpaqueNoopenerPopupUsesOpenerPageSettings` |
+| Open an inheriting popup from an opaque popup: preserve the original page's settings through both openings. | `OpaquePopupFromOpaquePopupUsesOriginalPageSettings` |
+| Navigate the opener from A to D: requests in the popup continue to follow A. | `OpaquePopupKeepsSettingsAfterOpenerNavigates` |
+| Change the inherited popup's fragment: retain the same document and A's settings. | `InheritedPopupKeepsSettingsAcrossFragmentNavigation` |
+| Destroy the inherited document, navigate its opener elsewhere, then go Back: the recreated document uses the original entry's settings. | `RecreatedInheritedPageKeepsSettingsOnBack` |
+| Use Open Link in New Tab on `about:blank` in a sandboxed frame: the new tab uses A (desktop context-menu path). | `ContextMenuTabFromSandboxedFrameUsesPageSettings` |
+| Browser navigates A to `data:`; a fetch from child B follows defaults, neither A nor B. | `BrowserInitiatedOpaqueTopFrameUsesDefaultSettings` |
+| Browser navigates a site popup to `data:`: its own fetch follows defaults, not the opener. | `BrowserInitiatedOpaquePopupUsesDefaultSettings` |
+| WebSocket opened by B under A: use A. | `WebSocketInSubFrameUsesTopFrameSettings` |
+| Dedicated worker fetch from B under A: use A. | `DedicatedWorkerInSubFrameUsesTopFrameSettings` |
+| Dedicated worker WebSocket from B under A: use A. | `DedicatedWorkerWebSocketInSubFrameUsesTopFrameSettings` |
+| Shared worker fetch from B under A: use A. | `SharedWorkerInSubFrameUsesTopFrameSettings` |
+| Shared worker WebSocket from B under A: use A. | `SharedWorkerWebSocketUsesTopFrameSettings` |
+| Service worker fetch from B under A: use A. | `ServiceWorkerInSubFrameUsesTopFrameSettings` |
+| Service worker WebSocket from B under A: use A. | `ServiceWorkerWebSocketInSubFrameUsesTopFrameSettings` |
+| Shared worker fetch from B embedded in a `data:` top frame: use defaults, not B. | `SharedWorkerInOpaqueTopFrameUsesDefaultSettings` |
+| Shared worker WebSocket from B embedded in a `data:` top frame: use defaults, not B. | `SharedWorkerWebSocketInOpaqueTopFrameUsesDefaultSettings` |
+
+### Supplied-input and compatibility checks
+
+Run `ShieldsSettingsOriginTest.*:BraveRequestInfo*Test.*` in `brave_unit_tests`.
+The tests below identify inputs that a browser test cannot reliably force. They
+also preserve the distinction between the settings URL and the origins used by
+adblock rules. Names refer to [the frame fallback test](../browser/brave_shields/shields_settings_origin_unittest.cc)
+and [request context tests](../browser/net/url_context_unittest.cc).
+
+| Inputs or invariant | Unit tests |
+| --- | --- |
+| No stored document value or Brave observer: use the committed non-opaque frame origin. | `GetForFrameWithoutValueUsesCommittedOrigin` |
+| Child request without isolation info: preserve the outermost top-frame origin for rules; if the page has an inherited settings value, use it for settings. | `WithoutIsolationInfoUsesOutermostMainFrameOrigin`, `WithoutIsolationInfoUsesStoredPageValue` |
+| For both `kSubFrame` and `kOther`, a live frame's stored settings value wins over conflicting isolation info. | `FrameRequestUsesStoredPageValue` |
+| For `kMainFrame`, use a non-opaque top-frame isolation origin even with an outgoing frame token. An opaque one gives defaults whether the outgoing document has inherited site settings or no site settings. | `MainFrameNavigationUsesNonOpaqueTopFrameOrigin`, `MainFrameNavigationWithOpaqueTopFrameUsesDefaults`, `MainFrameNavigationWithOpaqueStoredPageValueHasNoTabOrigin` |
+| Frameless worker: omitted request context permits worker factory fallback; explicit request context wins. A document-subresource factory must not supply this fallback. | `UsesFactoryContextWhenWorkerRequestOmitsRequestContext`, `RequestContextOverridesFactoryContext`, `NonWorkerFactoryTypeIgnoresFactoryContextFallback` |
+| Frameless WebSocket: a request initiator alone does not supply a settings URL; neither does an opaque top-frame isolation origin. | `FramelessRequestIgnoresInitiatorForTabOrigin`, `FramelessRequestWithOpaqueTopFrameHasNoTabOrigin` |
+| Initiator bookkeeping is independent: use the worker factory initiator when omitted; preserve an original initiator over a replacement request initiator. | `WorkerRequestFallsBackToFactoryInitiator`, `OriginalInitiatorOverridesRequestInitiator` |
+| Preserve raw opaque top-frame origins with and without precursors. Preserve the separate rule inputs for missing, non-opaque, and opaque initiators and for main-frame, subframe, and subresource requests. These are not settings-origin fallback rules. | `KeepsOpaqueTopFrameOrigin`, `KeepsOpaqueTopFrameOriginWithoutPrecursor`, `RequestInitiatorForAdblockRules*`, `FirstPartyOriginForAdblockRules*` |
+
+The browser checklist does not establish opener closure, cancellation before
+commit, or restoration of a *retained* BFCache document. Opener navigation and
+history recreation have dedicated tests; neither substitutes for those cases.
