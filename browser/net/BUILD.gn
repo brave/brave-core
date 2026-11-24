@@ -8,14 +8,6 @@ import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
 
-source_set("worker_url_loader_context") {
-  sources = [ "worker_url_loader_context.h" ]
-  public_deps = [
-    "//base",
-    "//content/public/browser",
-  ]
-}
-
 source_set("features") {
   sources = [
     "features.cc",

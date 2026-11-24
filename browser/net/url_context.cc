@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "brave/browser/brave_shields/shields_settings_origin.h"
-#include "brave/browser/net/worker_url_loader_context.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -487,7 +486,8 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   ctx->set_request_url(request.url);
   const bool use_factory_context =
       url_loader_factory_type &&
-      ShouldUseFactoryURLLoaderContext(*url_loader_factory_type);
+      brave_shields::ShieldsSettingsOrigin::UsesFactoryContext(
+          *url_loader_factory_type);
   std::optional<url::Origin> request_initiator =
       original_request_initiator ? *original_request_initiator
                                  : request.request_initiator;

@@ -43,6 +43,12 @@ class ShieldsSettingsOrigin {
  public:
   ShieldsSettingsOrigin() = default;
   static void RegisterSessionHandler();
+
+  // Worker factories can be created without a frame, and their requests do
+  // not always carry TrustedParams. Other factory types already get their
+  // context from the request or frame.
+  static bool UsesFactoryContext(
+      content::ContentBrowserClient::URLLoaderFactoryType type);
   static ShieldsSettingsOrigin ForFrame(content::RenderFrameHost& frame);
 
   // An about:blank popup can retain its opening subframe's factory after

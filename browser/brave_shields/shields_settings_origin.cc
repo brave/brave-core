@@ -8,8 +8,8 @@
 #include <memory>
 #include <string>
 
+#include "base/notreached.h"
 #include "base/supports_user_data.h"
-#include "brave/browser/net/worker_url_loader_context.h"
 #include "components/sessions/content/content_serialized_navigation_driver.h"
 #include "components/sessions/content/extended_info_handler.h"
 #include "content/public/browser/document_user_data.h"
@@ -127,6 +127,27 @@ class ShieldsSettingsOrigin::SessionHandler
   }
 };
 
+// static
+bool ShieldsSettingsOrigin::UsesFactoryContext(
+    content::ContentBrowserClient::URLLoaderFactoryType type) {
+  using Type = content::ContentBrowserClient::URLLoaderFactoryType;
+  switch (type) {
+    case Type::kWorkerMainResource:
+    case Type::kWorkerSubResource:
+    case Type::kServiceWorkerScript:
+    case Type::kServiceWorkerSubResource:
+      return true;
+    case Type::kNavigation:
+    case Type::kDownload:
+    case Type::kDocumentSubResource:
+    case Type::kPrefetch:
+    case Type::kDevTools:
+    case Type::kEarlyHints:
+      return false;
+  }
+  NOTREACHED();
+}
+
 void ShieldsSettingsOrigin::RegisterSessionHandler() {
   sessions::ContentSerializedNavigationDriver::GetInstance()
       ->RegisterExtendedInfoHandler("brave_shields_settings_origin",
@@ -179,8 +200,7 @@ ShieldsSettingsOrigin ShieldsSettingsOrigin::ForRequest(
   const net::IsolationInfo* info = nullptr;
   if (request.trusted_params) {
     info = &request.trusted_params->isolation_info;
-  } else if (factory_type &&
-             brave::ShouldUseFactoryURLLoaderContext(*factory_type) &&
+  } else if (factory_type && UsesFactoryContext(*factory_type) &&
              factory_info) {
     info = &*factory_info;
   }
