@@ -56,6 +56,9 @@ export default function TabsMenu() {
   const handleClose = React.useCallback((isOpen: boolean) => {
     if (isOpen) return
 
+    // Focusing the conversation frame also lands here; don't take focus back.
+    if (document.activeElement instanceof HTMLIFrameElement) return
+
     const editor = document.querySelector<HTMLElement>('[data-editor]')
     if (!editor) return
 

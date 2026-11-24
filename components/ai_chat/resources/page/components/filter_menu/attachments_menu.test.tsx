@@ -589,4 +589,68 @@ describe('TabsMenu', () => {
       document.body.removeChild(editor)
     })
   })
+
+  describe('closing', () => {
+    const renderWithEditor = async () => {
+      const editor = document.createElement('div')
+      editor.setAttribute('data-editor', 'true')
+      editor.contentEditable = 'true'
+      // jsdom only focuses contenteditable elements with a tabindex.
+      editor.tabIndex = 0
+      editor.textContent = '@test'
+      document.body.appendChild(editor)
+
+      const { container } = await renderOpenedMenu({
+        conversationOverrides: { inputText: ['@test'] },
+        initialState: {
+          tabs: [
+            {
+              contentId: 1,
+              title: 'Test Tab',
+              url: { url: 'https://test.com' },
+              id: 1,
+            },
+          ],
+        },
+      })
+      const menu = await waitFor(() => {
+        expect(container.querySelector('leo-menu-item')).toBeTruthy()
+        return container.querySelector('leo-buttonmenu')!
+      })
+      return { editor, menu }
+    }
+
+    const closeMenu = (menu: Element) =>
+      act(async () => {
+        menu.dispatchEvent(new Event('close'))
+        await new Promise((resolve) => setTimeout(resolve))
+      })
+
+    it('returns focus to the composer when dismissed in the page', async () => {
+      const { editor, menu } = await renderWithEditor()
+      const button = document.createElement('button')
+      document.body.appendChild(button)
+      button.focus()
+
+      await closeMenu(menu)
+
+      expect(document.activeElement).toBe(editor)
+      editor.remove()
+      button.remove()
+    })
+
+    it('leaves focus in the conversation frame when dismissed by focusing it', async () => {
+      const { editor, menu } = await renderWithEditor()
+      const frame = document.createElement('iframe')
+      document.body.appendChild(frame)
+
+      frame.focus()
+      await closeMenu(menu)
+
+      expect(document.activeElement).toBe(frame)
+      expect(editor).toHaveTextContent('@test')
+      editor.remove()
+      frame.remove()
+    })
+  })
 })
