@@ -15,13 +15,12 @@ import * as Log from '../lib/log.ts'
 import util from '../lib/util.ts'
 import assert from 'node:assert'
 import { getAffectedTests } from '../lib/affectedTests.js'
+import { getTestBinary, getTestsToRun } from '../lib/testUtils.ts'
 import {
-  getTestBinary,
-  getTestsToRun,
-  getApplicableFilters,
-  getChromiumTestsSuites,
-  getDefaultTestSuiteArgs,
-} from '../lib/testUtils.ts'
+  applyEnvDefaults,
+  getTestRunArgs,
+  getTestRunEnvDefaults,
+} from '../lib/testRunSpec.ts'
 import { isCI, isTeamcity } from '../lib/ciDetect.ts'
 import { getPassthroughArgs } from '../lib/commandsUtils.ts'
 
@@ -44,8 +43,6 @@ async function runTests(
     fs.unlinkSync(allResultsFilePath)
   }
 
-  const upstreamTestSuites = getChromiumTestsSuites(config)
-
   // Run the tests
   testSuitesToRun.every((testSuite) => {
     if (testSuite === 'brave_unit_tests' && isTeamcity && !config.isMobile()) {
@@ -54,103 +51,13 @@ async function runTests(
 
     const isJunitTestSuite = testSuite.endsWith('_junit_tests')
 
-    let braveArgs: string[] = []
-
-    if (!isJunitTestSuite) {
-      braveArgs.push('--enable-logging=stderr')
-    }
-
-    // Android and ios don't support --v
-    if (!config.isMobile()) {
-      braveArgs.push('--v=' + options.v)
-
-      if (options.vmodule) {
-        braveArgs.push('--vmodule=' + options.vmodule)
-      }
-    }
-
-    if (options.filter) {
-      braveArgs.push('--gtest_filter=' + options.filter)
-    }
-
-    if (options.run_disabled_tests) {
-      if (config.isIOS()) {
-        braveArgs.push('--gtest_also_run_disabled_tests')
-      } else {
-        braveArgs.push('--output-disabled-tests')
-      }
-    }
-
-    if (options.disable_brave_extension && !config.isIOS()) {
-      braveArgs.push('--disable-brave-extension')
-    }
-
-    if (options.single_process && !config.isIOS()) {
-      braveArgs.push('--single_process')
-    }
-
-    if (!isJunitTestSuite) {
-      if (
-        options.test_launcher_jobs != null
-        // --clones doesn't produce any test results and fails with AppLaunchError
-        && !config.isIOS()
-      ) {
-        braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
-      }
-      braveArgs = braveArgs.concat(passthroughArgs)
-    } else {
-      // Retain --json-results-file for junit tests.
-      const jsonResultsArg = passthroughArgs.find((arg) =>
-        arg.startsWith('--json-results-file='),
-      )
-      if (jsonResultsArg) {
-        braveArgs.push(jsonResultsArg)
-      }
-    }
-
-    let runArgs = braveArgs.slice()
-    let runOptions = config.defaultOptions
+    const runArgs = getTestRunArgs(config, testSuite, options, passthroughArgs)
+    const runOptions = config.defaultOptions
 
     // Upstream tests expect to be run from the output directory
     runOptions.cwd = config.outputDir
 
-    // Prepend default test suite args
-    runArgs = getDefaultTestSuiteArgs(testSuite).concat(runArgs)
-
-    // Set ASAN_OPTIONS (if not already set) only for test launching.
-    // Note: other stages (like build) shouldn't set ASAN_OPTIONS to avoid
-    // LSAN failures. Chromium uses the same approach.
-    if (config.isAsan() && !runOptions.env.ASAN_OPTIONS) {
-      let asanOptions = ['detect_odr_violation=0']
-      if (config.isLsan()) {
-        asanOptions.push('detect_leaks=1')
-      }
-      runOptions.env.ASAN_OPTIONS = asanOptions.join(' ')
-    }
-    if (config.isLsan() && !runOptions.env.LSAN_OPTIONS) {
-      const suppressionsFilePath = path.join(
-        config.braveCoreDir,
-        'test',
-        'sanitizers',
-        'lsan_suppressions.cfg',
-      )
-      runOptions.env.LSAN_OPTIONS = `suppressions=${suppressionsFilePath}`
-    }
-
-    // Filter out upstream tests that are known to fail for Brave
-    const filterFilePaths = getApplicableFilters(config, testSuite)
-    if (filterFilePaths.length > 0) {
-      runArgs.push(`--test-launcher-filter-file=${filterFilePaths.join(';')}`)
-    }
-    if (isTeamcity && !config.isIOS()) {
-      if (upstreamTestSuites.includes(testSuite)) {
-        const ignorePreliminaryFailures =
-          '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
-        if (!runArgs.includes(ignorePreliminaryFailures)) {
-          runArgs.push(ignorePreliminaryFailures)
-        }
-      }
-    }
+    applyEnvDefaults(runOptions.env, getTestRunEnvDefaults(config, testSuite))
 
     let convertJSONToXML = false
     let outputFilename = path.join(config.srcDir, testSuite)
@@ -269,14 +176,6 @@ async function runTests(
         console.error(`Missing test runner executable ${testRunner}`)
         progStatus = 1
       } else {
-        // this defines where coverage raw data is stored.
-        // %4m uses a pool of 4 files to write into and is used by chromium.
-        // note: that more files will take up more space but might be slightly faster
-        // https://clang.llvm.org/docs/SourceBasedCodeCoverage.html#running-the-instrumented-program
-        // this has no effect if project is built without coverage.
-        runOptions.env.LLVM_PROFILE_FILE =
-          runOptions.env.LLVM_PROFILE_FILE
-          || `${config.outputDir}/coverage/${testSuite}/%4m.profraw`
         progStatus = util.run(testRunner, runArgs, runOptions).status
       }
     }

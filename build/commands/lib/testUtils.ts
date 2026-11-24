@@ -26,7 +26,7 @@ export function getTestBinary(config: Config, suite: string) {
     testBinary = path.join(`${testBinary}.app`)
   }
 
-  if (process.platform === 'win32') {
+  if (config.targetOS === 'win') {
     testBinary = path.join(`${testBinary}.exe`)
   }
   return path.join(config.outputDir, testBinary)
