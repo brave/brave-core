@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
@@ -127,8 +128,8 @@ class EmptyImageDataStore : public image_fetcher::ImageDataStore {
     std::move(callback).Run(/*needs_transcoding=*/false, std::string());
   }
   void DeleteImage(const std::string& key) override {}
-  void GetAllKeys(image_fetcher::KeysCallback callback) override {
-    std::move(callback).Run({});
+  void GetAllKeys(image_fetcher::StoreKeysCallback callback) override {
+    std::move(callback).Run(std::vector<std::string>());
   }
 
  private:
