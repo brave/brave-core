@@ -69,12 +69,17 @@ substitutions:
             channel = "dev"
           }
 
-  - description: Name and version the package as Brave.
+  - description: |-
+      Name and version the package as Brave.
+
+      Only official builds put the version in the package file names.
     add_after_line:
       line: package = "chromium-browser"
       code: |2-
             package = brave_linux_package_name
-            chrome_version_full = brave_version
+            if (is_official_build) {
+              chrome_version_full = brave_version
+            }
 
   - description: |-
       Name the Debian package as Brave does
@@ -86,12 +91,24 @@ substitutions:
         "$root_out_dir/${package}-${channel}_${chrome_version_full}-1_${deb_arch}.deb"
         ]
       code: |2-
-            outputs = []
-            if (channel == "stable") {
-              outputs = [ "$root_out_dir/${package}_${chrome_version_full}_${deb_arch}.deb" ]
-            } else {
-              outputs = [ "$root_out_dir/${package}-${channel}_${chrome_version_full}_${deb_arch}.deb" ]
-            }
+              outputs = []
+              if (channel == "stable") {
+                outputs = [ "$root_out_dir/${package}_${chrome_version_full}_${deb_arch}.deb" ]
+              } else {
+                outputs = [ "$root_out_dir/${package}-${channel}_${chrome_version_full}_${deb_arch}.deb" ]
+              }
+
+  - description: |-
+      Leave the channel suffix off the stable unversioned Debian package.
+
+      Brave's `debian/build.py` names it so.
+    add_after_line:
+      line: outputs = [ "$root_out_dir/${package}-${channel}_${deb_arch}.deb" ]
+      code: |2-
+              if (channel == "stable") {
+                outputs = []
+                outputs = [ "$root_out_dir/${package}_${deb_arch}.deb" ]
+              }
 
   - description: Leave the channel suffix off the stable RPM package.
     add_after_line:
@@ -100,10 +117,22 @@ substitutions:
         "$root_out_dir/${package}-${channel}-${chrome_version_full}-1.${rpm_arch}.rpm"
         ]
       code: |2-
-              if (channel == "stable") {
-                outputs = []
-                outputs = [ "$root_out_dir/${package}-${chrome_version_full}-1.${rpm_arch}.rpm" ]
-              }
+                if (channel == "stable") {
+                  outputs = []
+                  outputs = [ "$root_out_dir/${package}-${chrome_version_full}-1.${rpm_arch}.rpm" ]
+                }
+
+  - description: |-
+      Leave the channel suffix off the stable unversioned RPM package.
+
+      Brave's `rpm/build.py` names it so.
+    add_after_line:
+      line: outputs = [ "$root_out_dir/${package}-${channel}.${rpm_arch}.rpm" ]
+      code: |2-
+                if (channel == "stable") {
+                  outputs = []
+                  outputs = [ "$root_out_dir/${package}.${rpm_arch}.rpm" ]
+                }
 
   - description: Add the nightly channel package.
     add_at_end_of_the_file:
