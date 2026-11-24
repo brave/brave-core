@@ -13,10 +13,11 @@ where:
     AST-introspected rendering of the failing expression and its sub-values, so
     every check in a hook runs. See `check.py`.
   * `steps` is an ordered `dict` mapping step name -> step dict
-    (`{'name', 'cmd', 'cwd'?, 'env'?, 'retcode'?}`), plus the terminal
-    `'$result'` entry. `$result` has no `failure` key on success. On a non-infra
-    failure it is `{'failure': {'failure': {}, 'humanReason': ...}}`; on an
-    infra failure/exception it is `{'failure': {'humanReason': ...}}`.
+    (`{'name', 'cmd', 'cwd'?, 'env'?, 'retcode'?, 'output_properties'?}`),
+    plus the terminal `'$result'` entry. `$result` has no `failure` key on
+    success, only a `summaryMarkdown` if the recipe returned one. On a
+    non-infra failure it is `{'failure': {'failure': {}, 'humanReason': ...}}`;
+    on an infra failure/exception it is `{'failure': {'humanReason': ...}}`.
 
 A check function returns `None` to only assert, or a (subset) `dict` to *filter*
 the recorded steps for the written expectation; the runner subset-verifies that
@@ -26,9 +27,9 @@ expectation file entirely (see `DropExpectation`).
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 import re
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from check import Checker
@@ -163,6 +164,122 @@ def StepFailure(check: Checker, step_odict: Steps, step: str) -> None:
     check(step_odict[step].get('retcode', 0) != 0)
 
 
+# -- Output properties --------------------------------------------------------
+
+
+def GetBuildProperties(step_odict: Steps) -> dict[str, Any]:
+    """Retrieves the build properties for a recipe."""
+    build_properties = {}
+    for name, step in step_odict.items():
+        if name == RESULT_STEP:
+            continue
+        for prop, value in step.get('output_properties', {}).items():
+            build_properties[prop] = value
+    return build_properties
+
+
+def PropertyEquals(
+    check: Checker, step_odict: Steps, key: str, value: Any
+) -> None:
+    """Assert that a recipe's output property `key` equals `value`.
+
+    Args:
+      key (str) - The key to look for in output properties.
+      value (jsonish) - The value to look for in output properties.
+
+    Usage:
+      yield api.test(
+          ..., api.post_process(PropertyEquals, 'do_not_retry', True)
+      )
+    """
+    build_properties = GetBuildProperties(step_odict)
+
+    if check(key in build_properties):
+        check(build_properties[key] == value)
+
+
+def PropertyMatchesRE(
+    check: Checker,
+    step_odict: Steps,
+    key: str,
+    pattern: str | re.Pattern,
+) -> None:
+    """Assert that a recipe's output property `key` value matches `pattern`.
+
+    Args:
+      key - The key to look for in output properties.
+      pattern - The pattern for comparison.
+
+    Usage:
+      yield api.test(
+          ...,
+          api.post_process(PropertyMatchesRE, 'key', r'.*value.*'),
+      )
+    """
+    build_properties = GetBuildProperties(step_odict)
+
+    if check(key in build_properties):
+        if check(isinstance(build_properties[key], str)):
+            check(re.search(pattern, build_properties[key]))
+
+
+def PropertyMatchesCallable(
+    check: Checker,
+    step_odict: Steps,
+    key: str,
+    matcher: Callable[[Checker, Any], bool],
+) -> None:
+    """Assert that a recipe's output property `key` meets conditions of
+    `matcher`.
+
+    Args:
+      key - The key to look for in output properties.
+      matcher - A callable that evaluates the property.
+
+    Usage:
+      yield api.test(
+          ...,
+          api.post_process(
+              PropertyMatchesCallable,
+              'key',
+              lambda check, x: check('foo' in x),
+          ),
+      )
+    """
+    build_properties = GetBuildProperties(step_odict)
+
+    if check(key in build_properties):
+        check(matcher(check, build_properties[key]))
+
+
+def PropertiesContain(check: Checker, step_odict: Steps, key: str) -> None:
+    """Assert that a recipe's output properties contain `key`.
+
+    Args:
+      key (str) - The key to check for.
+
+    Usage:
+      yield api.test(..., api.post_process(PropertiesContain, 'key'))
+    """
+    build_properties = GetBuildProperties(step_odict)
+
+    check(key in build_properties)
+
+
+def PropertiesDoNotContain(check: Checker, step_odict: Steps, key: str) -> None:
+    """Assert that a recipe's output properties do not contain `key`.
+
+    Args:
+      key (str) - The key to check for.
+
+    Usage:
+      yield api.test(..., api.post_process(PropertiesDoNotContain, 'key'))
+    """
+    build_properties = GetBuildProperties(step_odict)
+
+    check(key not in build_properties)
+
+
 # -- Overall result -----------------------------------------------------------
 
 
@@ -201,6 +318,52 @@ def StatusException(check: Checker, step_odict: Steps) -> None:
     check(
         'recipe had infra failure (found non-infra failure instead)',
         'failure' not in result['failure'],
+    )
+
+
+def SummaryMarkdown(check: Checker, step_odict: Steps, summary: str) -> None:
+    """Assert that recipe output summary is the same as the given summary.
+
+    Args:
+      summary (str): the string to match.
+
+    Usage:
+      yield api.test(..., api.post_process(SummaryMarkdown, 'summary'))
+    """
+    result = step_odict[RESULT_STEP]
+    actual_summary = result.get('failure', {}).get('humanReason') or result.get(
+        'summaryMarkdown'
+    )
+    if not check("recipe doesn't output any summary", actual_summary):
+        return
+    check(
+        'expected recipe output summary %r (found summary %r instead)'
+        % (summary, actual_summary),
+        summary == actual_summary,
+    )
+
+
+def SummaryMarkdownRE(
+    check: Checker, step_odict: Steps, summary_regex: str
+) -> None:
+    """Assert that recipe output summary matches given regex.
+
+    Args:
+      summary_regex (str): the regular expression to match.
+
+    Usage:
+      yield api.test(..., api.post_process(SummaryMarkdownRE, 'summary: .*'))
+    """
+    result = step_odict[RESULT_STEP]
+    actual_summary = result.get('failure', {}).get('humanReason') or result.get(
+        'summaryMarkdown'
+    )
+    if not check("recipe doesn't output any summary", actual_summary):
+        return
+    check(
+        'expected recipe output summary matches %r (found summary %r instead)'
+        % (summary_regex, actual_summary),
+        re.search(summary_regex, actual_summary),
     )
 
 

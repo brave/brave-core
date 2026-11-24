@@ -34,10 +34,10 @@ void SerpMetricsServiceFactoryIOS::RegisterProfilePrefs(
 
 std::unique_ptr<KeyedService>
 SerpMetricsServiceFactoryIOS::BuildServiceInstanceFor(
-    ProfileIOS* profile) const {
+    ProfileIOS& profile) const {
   return std::make_unique<SerpMetricsService>(
       *GetApplicationContext()->GetLocalState(),
-      SerpMetricsPrefTimePeriodStoreFactory(profile->GetPrefs(),
+      SerpMetricsPrefTimePeriodStoreFactory(profile.GetPrefs(),
                                             kSerpMetricsTimePeriodStorage));
 }
 

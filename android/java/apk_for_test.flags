@@ -678,13 +678,13 @@
 
 -keep class org.chromium.chrome.browser.BraveApplicationImplBase
 
--keep class org.chromium.chrome.browser.dom_distiller.ReaderModeManager {
+-keep class org.chromium.chrome.browser.reader_mode.ReaderModeManager {
     *** mTab;
     <init>(...);
     *** shouldUseReaderModeMessages(...);
 }
 
--keep class org.chromium.chrome.browser.dom_distiller.BraveReaderModeManager {
+-keep class org.chromium.chrome.browser.reader_mode.BraveReaderModeManager {
     <init>(...);
     *** shouldUseReaderModeMessages(...);
 }
@@ -720,10 +720,6 @@
 
 -keep class org.chromium.chrome.browser.BraveAppHooks {
     public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.tab.TabBrowserControlsConstraintsHelper {
-    *** getObservableConstraints(...);
 }
 
 -keep class org.chromium.components.cached_flags.CachedFlag {

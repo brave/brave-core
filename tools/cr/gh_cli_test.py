@@ -110,6 +110,16 @@ class GhCliTest(unittest.TestCase):
             ['gh', 'pr', 'list', '--head', 'cr149', '--json=number,url'],
         )
 
+    def test_list_prs_of_another_repo(self):
+        self.run.return_value = _completed(stdout='[]')
+        self.assertEqual(
+            self.gh.list_prs(head='cr149', fields='number', repo='o/r'), []
+        )
+        self.assertEqual(
+            self._last_cmd()[-2:],
+            ['--repo', 'o/r'],
+        )
+
     def test_list_issues_parses_json_and_builds_args(self):
         payload = [{'number': 3, 'title': 'Bump'}]
         self.run.return_value = _completed(stdout=json.dumps(payload))

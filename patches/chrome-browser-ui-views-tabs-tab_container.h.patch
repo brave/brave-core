@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_container.h b/chrome/browser/ui/views/tabs/tab_container.h
-index 0cb7bd56fd4dd42849a50ee738d4ba3490bc8362..5e0a273896b707814b00bcf5edf6042273c71bce 100644
+index 680123d02ab04507f134a1017829e6135e2d3b58..90e5a0bfd76795068cdce4af4730c2bd2ff3f2d3 100644
 --- a/chrome/browser/ui/views/tabs/tab_container.h
 +++ b/chrome/browser/ui/views/tabs/tab_container.h
 @@ -80,12 +80,12 @@ class TabContainer : public views::View,

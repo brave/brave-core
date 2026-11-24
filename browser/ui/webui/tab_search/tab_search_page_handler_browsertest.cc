@@ -32,8 +32,7 @@
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/history_embeddings/test/fake_history_embeddings_search.h"
-#include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -49,7 +48,6 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_controller.h"
@@ -62,10 +60,16 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
+#include "brave/components/history_embeddings/test/fake_history_embeddings_search.h"
+#include "brave/components/local_ai/core/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 namespace {
 
@@ -82,7 +86,9 @@ constexpr char kBarDotComTitle2[] = "bar.com 2";
 constexpr char kTopic[] = "topic";
 constexpr char kTopic2[] = "topic2";
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
 constexpr char kPassage[] = "an excerpt of the page's text";
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 }  // namespace
 
@@ -188,7 +194,8 @@ class TabSearchPageHandlerBrowserTest : public InProcessBrowserTest {
                           ui_test_utils::BrowserTestWaitFlags wait_flags =
                               ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP) {
     ui_test_utils::NavigateToURLWithDisposition(
-        browser, url, WindowOpenDisposition::kNewForegroundTab, wait_flags);
+        browser, url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
+        wait_flags);
     content::WebContents* web_contents =
         browser->tab_strip_model()->GetActiveWebContents();
     web_contents->UpdateTitleForEntry(
@@ -446,6 +453,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
   run_loop2.Run();
 }
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
 // Turns on everything `IsHistoryEmbeddingsEnabledForProfile` needs except the
 // profile pref, which tests set themselves.
 class TabSearchPageHandlerHistoryEmbeddingsBrowserTest
@@ -453,7 +461,7 @@ class TabSearchPageHandlerHistoryEmbeddingsBrowserTest
  public:
   TabSearchPageHandlerHistoryEmbeddingsBrowserTest() {
     scoped_features_.InitAndEnableFeature(
-        history_embeddings::kHistoryEmbeddings);
+        brave_history_embeddings::kHistoryEmbeddings);
   }
 
  private:
@@ -582,7 +590,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   // hold anything.
   handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
       [](const std::vector<GURL>& urls,
-         history_embeddings::TabPassagesCallback callback) {
+         brave_history_embeddings::TabPassagesCallback callback) {
         std::move(callback).Run(
             std::vector<std::vector<std::string>>(urls.size(), {kPassage}));
       }));
@@ -618,7 +626,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   bool fetched = false;
   handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
       [&fetched](const std::vector<GURL>& urls,
-                 history_embeddings::TabPassagesCallback callback) {
+                 brave_history_embeddings::TabPassagesCallback callback) {
         fetched = true;
         std::move(callback).Run(
             std::vector<std::vector<std::string>>(urls.size(), {kPassage}));
@@ -654,7 +662,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   bool fetched = false;
   handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
       [this, &fetched](const std::vector<GURL>& urls,
-                       history_embeddings::TabPassagesCallback callback) {
+                       brave_history_embeddings::TabPassagesCallback callback) {
         fetched = true;
         // The user turns the opt-in off while the read is outstanding.
         profile1()->GetPrefs()->SetBoolean(
@@ -694,7 +702,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   bool fetched = false;
   handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
       [&fetched](const std::vector<GURL>& urls,
-                 history_embeddings::TabPassagesCallback callback) {
+                 brave_history_embeddings::TabPassagesCallback callback) {
         fetched = true;
         std::move(callback).Run(
             std::vector<std::vector<std::string>>(urls.size(), {kPassage}));
@@ -713,3 +721,4 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   EXPECT_TRUE(sent_tabs[0].passages.empty());
   EXPECT_FALSE(fetched);
 }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)

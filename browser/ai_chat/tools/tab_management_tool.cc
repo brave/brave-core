@@ -45,8 +45,6 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/history/history_service_factory.h"
-#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
@@ -56,7 +54,6 @@
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/history_embeddings/content/history_embeddings_service.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/tab_groups/tab_group_color.h"
 #include "components/tab_groups/tab_group_id.h"
@@ -69,6 +66,9 @@
 #include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/history_embeddings/history_embeddings_service_factory.h"
+#include "brave/browser/history_embeddings/history_embeddings_utils.h"
+#include "brave/components/history_embeddings/content/history_embeddings_service.h"
 #include "brave/components/history_embeddings/content/open_tab_passages.h"
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
@@ -636,7 +636,8 @@ bool TabManagementTool::CanReadPageContent() const {
   // The embeddings service is original-profile only, so an off-the-record
   // profile would otherwise attach the regular profile's page text.
   if (profile_->IsOffTheRecord() ||
-      !history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile_)) {
+      !brave_history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
+          profile_)) {
     return false;
   }
   if (tab_passages_fetcher_for_testing_) {
@@ -644,7 +645,8 @@ bool TabManagementTool::CanReadPageContent() const {
   }
   return HistoryServiceFactory::GetForProfile(
              profile_, ServiceAccessType::EXPLICIT_ACCESS) &&
-         HistoryEmbeddingsServiceFactory::GetForProfile(profile_);
+         brave_history_embeddings::HistoryEmbeddingsServiceFactory::
+             GetForProfile(profile_);
 #else
   return false;
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
@@ -884,11 +886,12 @@ void TabManagementTool::HandleListTabs(UseToolCallback callback) {
       if (tab_passages_fetcher_for_testing_) {
         tab_passages_fetcher_for_testing_.Run(urls, std::move(on_ready));
       } else {
-        history_embeddings::GetPassagesForUrls(
+        brave_history_embeddings::GetPassagesForUrls(
             HistoryServiceFactory::GetForProfile(
                 profile_, ServiceAccessType::EXPLICIT_ACCESS),
-            HistoryEmbeddingsServiceFactory::GetForProfile(profile_)
-                ->AsWeakPtr(),
+            brave_history_embeddings::HistoryEmbeddingsServiceFactory::
+                GetForProfile(profile_)
+                    ->AsWeakPtr(),
             urls, kMaxPassagesPerTab, kMaxPassageBytes, std::move(on_ready),
             &passages_task_tracker_);
       }

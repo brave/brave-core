@@ -37,6 +37,10 @@ use incrementalmerkletree::{Address, Level, Marking, Position, Retention};
 
 use rand::{rngs::OsRng, CryptoRng, Error as OtherError, RngCore};
 
+chromium::import! {
+    "//brave/components/brave_wallet/common:rust_lib" as brave_wallet;
+}
+
 use brave_wallet::impl_error;
 use std::sync::Arc;
 use zcash_note_encryption::{batch, BatchDomain, Domain, ShieldedOutput, COMPACT_NOTE_SIZE};
@@ -217,11 +221,11 @@ mod ffi {
         merkle_path: CxxMerklePath,
     }
 
-    // Represents compact Orchard action which is a piece of transaction data stored
-    // in the blockchain. Parts of this action are used for different purposes.
-    // cmx is used to construct commitment tree, nullifier is used to construct
-    // nullifier set. ephemeral_key add enc_cipher_text check whether this
-    // action is related to the account. https://github.com/zcash/orchard/blob/5c451beb05a10337a57a7fdf279c1dd6a533b805/src/note_encryption.rs#L271
+    // Represents compact Orchard action which is a piece of transaction data
+    // stored in the blockchain. Parts of this action are used for different
+    // purposes. cmx is used to construct commitment tree, nullifier is used to
+    // construct nullifier set. ephemeral_key add enc_cipher_text check whether
+    // this action is related to the account. https://github.com/zcash/orchard/blob/5c451beb05a10337a57a7fdf279c1dd6a533b805/src/note_encryption.rs#L271
     struct CxxOrchardCompactAction {
         nullifier: [u8; 32],       // kOrchardNullifierSize
         ephemeral_key: [u8; 32],   // kOrchardEphemeralKeySize
@@ -231,25 +235,27 @@ mod ffi {
         is_block_last_action: bool,
     }
 
-    // Represents information about tree state at the end of the block prior to the
-    // scan range. Used in batch decoding to allow inserting leafs to the tree.
-    // https://github.com/zcash/incrementalmerkletree/blob/382d915c068a5691e900e129e58b3da215cba6f2/incrementalmerkletree/src/frontier.rs#L35
+    // Represents information about tree state at the end of the block prior to
+    // the scan range. Used in batch decoding to allow inserting leafs to the
+    // tree. https://github.com/zcash/incrementalmerkletree/blob/382d915c068a5691e900e129e58b3da215cba6f2/incrementalmerkletree/src/frontier.rs#L35
     #[derive(Clone)]
     struct CxxOrchardShardTreeState {
-        // Frontier is a compressed representation of merkle tree state at some leaf position
-        // It allows to compute merkle path to the next leafs without storing all the tree
-        // May be empty if no frontier inserted(In case of append)
+        // Frontier is a compressed representation of merkle tree state at some
+        // leaf position It allows to compute merkle path to the next leafs
+        // without storing all the tree May be empty if no frontier inserted(In
+        // case of append)
         frontier: Vec<u8>,
         // Block height of the previous block prior to the scan range
         // The height of the block
         block_height: u32,
-        // Tree size of the tree at the end of the prior block, used to calculate leafs indexes
+        // Tree size of the tree at the end of the prior block, used to
+        // calculate leafs indexes
         tree_size: u32,
     }
 
     // Retention of the leaf in the shard tree descibes lifetime of the leaf.
-    // Leafs which are marked couldn't be pruned and checkpointed leafs also keep
-    // tree state for the leaf. https://github.com/zcash/incrementalmerkletree/blob/382d915c068a5691e900e129e58b3da215cba6f2/incrementalmerkletree/src/lib.rs#L82
+    // Leafs which are marked couldn't be pruned and checkpointed leafs also
+    // keep tree state for the leaf. https://github.com/zcash/incrementalmerkletree/blob/382d915c068a5691e900e129e58b3da215cba6f2/incrementalmerkletree/src/lib.rs#L82
     #[derive(Clone)]
     struct CxxOrchardCheckpointRetention {
         checkpoint: bool,
@@ -389,9 +395,9 @@ mod ffi {
             actions: Vec<CxxOrchardCompactAction>,
         ) -> Box<CxxOrchardDecodedBlocksBundleResult>;
 
-        // Same as batch_decode but trial-decrypts the actions under the Ironwood
-        // (v3 note plaintext) domain. The resulting bundle feeds a separate
-        // Ironwood commitment tree. fvk array size should match
+        // Same as batch_decode but trial-decrypts the actions under the
+        // Ironwood (v3 note plaintext) domain. The resulting bundle feeds a
+        // separate Ironwood commitment tree. fvk array size should match
         // kOrchardFullViewKeySize.
         fn batch_decode_ironwood(
             fvk_bytes: &[u8; 96],
@@ -409,8 +415,8 @@ mod ffi {
             self: &CxxOrchardExtendedSpendingKey,
             diversifier_index: u32,
         ) -> [u8; 43]; // Array size should match kOrchardRawBytesSize
-                       // Internal addresses are used for change or internal shielding and
-                       // shouldn't be exposed to public.
+                       // Internal addresses are used for change or internal
+                       // shielding and shouldn't be exposed to public.
         fn internal_address(
             self: &CxxOrchardExtendedSpendingKey,
             diversifier_index: u32,
@@ -463,7 +469,8 @@ mod ffi {
         fn complete(
             self: &CxxOrchardUnauthorizedBundle,
             sighash: [u8; 32],
-        ) -> Box<CxxOrchardAuthorizedBundleResult>; // Array size should match kZCashDigestSize
+        ) -> Box<CxxOrchardAuthorizedBundleResult>; // Array size should match
+                                                    // kZCashDigestSize
 
         // Orchard part of v5 transaction as described in
         // https://zips.z.cash/zip-0225
@@ -871,8 +878,8 @@ fn create_orchard_builder_internal(
     is_v6_transaction: bool,
 ) -> Box<CxxOrchardUnauthorizedBundleResult> {
     let tx_version = if is_v6_transaction { OrchardTxVersion::V6 } else { OrchardTxVersion::V5 };
-    // To construct transaction orchard tree state of some block should be provided
-    // But in tests we can use empty anchor.
+    // To construct transaction orchard tree state of some block should be
+    // provided But in tests we can use empty anchor.
     let anchor = if orchard_tree_bytes.len() > 0 {
         match read_commitment_tree::<
             MerkleHashOrchard,
@@ -907,9 +914,10 @@ fn create_orchard_builder_internal(
     let mut builder = match orchard::builder::Builder::new(
         orchard::builder::BundleType::DEFAULT,
         bundle_version,
-        // `default_flags` picks the only representable `cross_address_enabled` value for
-        // this bundle version (e.g. post-NU6.3 Orchard forbids `true`, unlike
-        // `OrchardFlags::ENABLED`, which would make `Builder::new` fail).
+        // `default_flags` picks the only representable `cross_address_enabled`
+        // value for this bundle version (e.g. post-NU6.3 Orchard forbids
+        // `true`, unlike `OrchardFlags::ENABLED`, which would make
+        // `Builder::new` fail).
         bundle_version.default_flags(),
         anchor,
     ) {
@@ -1268,14 +1276,14 @@ where
     for (output_idx, ((_, output), decrypted_note)) in
         input_actions.iter().zip(decrypted_opts).enumerate()
     {
-        // If the commitment is the last in the block, ensure that is is retained as a
-        // checkpoint
+        // If the commitment is the last in the block, ensure that is is
+        // retained as a checkpoint
         let is_checkpoint = &output.is_block_last_action;
         let block_id = &output.block_id;
         let retention: Retention<BlockHeight> = match (decrypted_note.is_some(), is_checkpoint) {
             (is_marked, true) => {
-                // incrementalmerkletree 0.8 replaced the `is_marked: bool` field
-                // of `Retention::Checkpoint` with a `marking: Marking`.
+                // incrementalmerkletree 0.8 replaced the `is_marked: bool`
+                // field of `Retention::Checkpoint` with a `marking: Marking`.
                 let marking = if is_marked { Marking::Marked } else { Marking::None };
                 Retention::Checkpoint { id: BlockHeight::from_u32(*block_id), marking }
             }
@@ -1447,7 +1455,8 @@ impl CxxOrchardShardTree {
         checkpoint: u32,
     ) -> Box<CxxOrchardWitnessResult> {
         // shardtree 0.6 returns `Ok(None)` when no witness exists at the
-        // requested checkpoint (previously this was folded into the error case).
+        // requested checkpoint (previously this was folded into the error
+        // case).
         match self.0.tree.witness_at_checkpoint_id_caching(
             (commitment_tree_position as u64).into(),
             &checkpoint.into(),
@@ -1568,8 +1577,8 @@ impl<H: HashSer> TryFrom<&CxxOrchardShard> for LocatedPrunableTree<H> {
     fn try_from(item: &CxxOrchardShard) -> Result<Self, Self::Error> {
         let shard_tree =
             read_shard(&mut Cursor::new(&item.data)).map_err(|_| Error::ShardStoreError)?;
-        // shardtree 0.6 made `LocatedTree::from_parts` fallible (it validates the
-        // tree shape against the address).
+        // shardtree 0.6 made `LocatedTree::from_parts` fallible (it validates
+        // the tree shape against the address).
         let located_tree: LocatedTree<_, (_, RetentionFlags)> =
             LocatedPrunableTree::from_parts(Address::from(&item.address), shard_tree)
                 .map_err(|_| Error::ShardStoreError)?;
@@ -1898,11 +1907,12 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore for ShardStoreImpl<H, SHARD_
     }
 
     // shardtree 0.7 added an explicit checkpoint-retention set, consulted by
-    // `ShardTree::prune_excess_checkpoints` to exempt pinned checkpoints from the
-    // `max_checkpoints` budget. Populated only via `ShardTree::ensure_retained`.
-    // The delegate persists this only for the Orchard pool (`OrchardStorage`'s
-    // `*OrchardRetainedCheckpoint*` methods); for the Ironwood pool it no-ops /
-    // returns empty, since no equivalent storage exists yet for that pool.
+    // `ShardTree::prune_excess_checkpoints` to exempt pinned checkpoints from
+    // the `max_checkpoints` budget. Populated only via
+    // `ShardTree::ensure_retained`. The delegate persists this only for the
+    // Orchard pool (`OrchardStorage`'s `*OrchardRetainedCheckpoint*` methods);
+    // for the Ironwood pool it no-ops / returns empty, since no equivalent
+    // storage exists yet for that pool.
     fn add_retained_checkpoint(
         &mut self,
         checkpoint_id: Self::CheckpointId,

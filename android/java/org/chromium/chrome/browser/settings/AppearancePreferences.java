@@ -285,6 +285,9 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     .setEnabled(BottomToolbarConfiguration.isToolbarTopAnchored());
         }
 
+        updatePreferenceTitle(
+                AppearanceSettingsFragment.PREF_BOTTOM_BAR_SWITCH,
+                getString(R.string.brave_bottom_bar_setting_title));
         updatePreferenceIcon(
                 AppearanceSettingsFragment.PREF_BOTTOM_BAR_SWITCH,
                 R.drawable.ic_browser_mobile_bottom_toolbar);
@@ -431,10 +434,10 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         setPreferenceOrder(PREF_BRAVE_CUSTOMIZE_MENU, 3);
         setPreferenceOrder(AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT, 4);
         setPreferenceOrder(PREF_ADDRESS_BAR, 5);
-        setPreferenceOrder(AppearanceSettingsFragment.PREF_HOMEPAGE, 6);
         // Only one of the two bottom navigation toolbar switches is present, so they share a slot.
-        setPreferenceOrder(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, 7);
-        setPreferenceOrder(AppearanceSettingsFragment.PREF_BOTTOM_BAR_SWITCH, 7);
+        setPreferenceOrder(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, 6);
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_BOTTOM_BAR_SWITCH, 6);
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_HOMEPAGE, 7);
         setPreferenceOrder(PREF_ENABLE_MULTI_WINDOWS, 8);
         setPreferenceOrder(PREF_GENERAL_SECTION, 9);
         setPreferenceOrder(PREF_BRAVE_NIGHT_MODE_ENABLED, 10);
@@ -502,6 +505,10 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     // duplicate ID.
                     indexData.removeEntryForKey(
                             AppearancePreferences.class.getName(), PREF_ADDRESS_BAR);
+                    // Brave never offers Gemini, so its toolbar toggle is never shown.
+                    indexData.removeEntryForKey(
+                            AppearancePreferences.class.getName(),
+                            AppearanceSettingsFragment.PREF_GLIC_BOTTOM_BAR_BUTTON_SWITCH);
                     // Unless the bottom bar moves the "Homepage" row here, Brave keeps it in main
                     // settings and the upstream copy would be a second search result for the same
                     // screen.
@@ -570,6 +577,11 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     if (!BottomBarConfigUtils.shouldShowSettingsToggle(context)) {
                         indexData.removeEntryForKey(
                                 frag, AppearanceSettingsFragment.PREF_BOTTOM_BAR_SWITCH);
+                    } else {
+                        indexData.updateEntryForKey(
+                                frag,
+                                AppearanceSettingsFragment.PREF_BOTTOM_BAR_SWITCH,
+                                R.string.brave_bottom_bar_setting_title);
                     }
 
                     if (BraveRewardsPolicy.isDisabledByPolicy(profile)) {

@@ -1,0 +1,48 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipe_engine;
+
+// How a recipe ended.
+enum Status {
+  STATUS_UNSPECIFIED = 0;
+  // The recipe succeeded.
+  SUCCESS = 1;
+  // The recipe failed because of its input, e.g. tests failed.
+  FAILURE = 2;
+  // The recipe failed for reasons unrelated to its input, e.g. a crash.
+  INFRA_FAILURE = 3;
+}
+
+// The result of a recipe, as returned by `RunSteps`.
+message RawResult {
+  // Human-readable summary of what happened, in Markdown.
+  string summary_markdown = 1;
+  // How the recipe ended.
+  Status status = 2;
+}
+
+// The legacy form of a recipe's result, as `--output-result-json` writes it.
+message Result {
+  oneof oneof_result {
+    // The JSON result of a recipe. Always a JSON object, or omitted.
+    string json_result = 1;
+
+    // Why the recipe failed.
+    Failure failure = 2;
+  }
+}
+
+message Failure {
+  // A human-readable reason for the failure.
+  string human_reason = 1;
+
+  message Dummy {}
+
+  // Set for non-infra failures, and unset for infra failures.
+  Dummy failure = 5;
+}

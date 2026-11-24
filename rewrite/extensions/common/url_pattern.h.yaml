@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare `CanonicalizeHostForMatching()` as a public static member.
+
+      Debounce and Request-OTR rules canonicalise hosts the way URL patterns
+      do, and call upstream's helper rather than keeping copies of it.
+    add_to_public:
+      class_name: URLPattern
+      code: |-
+        // Removes trailing dot(s) from `host_piece` if any.
+        static std::string_view CanonicalizeHostForMatching(
+            std::string_view host_piece);

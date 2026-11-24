@@ -151,6 +151,19 @@ const jestConfig: Config = {
     // It can also break if CI or devs perform a build in a directory not known
     // by this list.
     // Instead, we should get the directory from config.js:outputDir.
+    // TypeScript Mojo bindings: Brave's are only generated as `.ts`, and they
+    // import the bindings library and other modules from `//resources/mojo`.
+    '^gen\\/(.*)\\.mojom-webui\\.js$': [
+      ...getBuildOutputPathList('gen/$1.mojom-webui.ts'),
+      ...getBuildOutputPathList('gen/$1.mojom-webui.js'),
+    ],
+    '^(\\.{1,2}/.*)\\.mojom-webui\\.js$': '$1.mojom-webui',
+    '^//resources/mojo/mojo/public/js/bindings\\.js$': getBuildOutputPathList(
+      'gen/mojo/public/js/bindings.js',
+    ),
+    '^//resources/mojo/(.*)': getBuildOutputPathList(
+      'gen/ui/webui/resources/tsc/mojo/$1',
+    ),
     '^gen\\/(.*)': getBuildOutputPathList('gen/$1'),
     'chrome://resources\\/(.*)': getBuildOutputPathList(
       'gen/ui/webui/resources/tsc/$1',

@@ -5,14 +5,14 @@
 
 substitutions:
   - description: |
-      Correct the screenshot overlay's bounds for
-      NativeViewHostManagesLayers.
+      Place the screenshot overlay at the native window's origin.
 
-      CreateAndAddUIOverlay() and ResetUIOverlayBounds() both compute the
-      overlay bounds identically, so the same fix applies in both places.
-      See https://github.com/brave/brave-browser/issues/58258.
+      The overlay is a child of `native_window->layer()`, whose coordinates are
+      relative to the window, while `native_window->bounds()` is relative to its
+      parent, so using it offsets the overlay from the cursor by the window's
+      origin. CreateAndAddUIOverlay() and ResetUIOverlayBounds() both compute
+      the bounds. See https://github.com/brave/brave-browser/issues/58258.
     count: 2
     regex:
       pattern: 'const gfx::Rect bounds = native_window->bounds();'
-      replace: |-
-        const gfx::Rect bounds = AdjustScreenshotOverlayBounds(native_window->bounds());
+      replace: 'const gfx::Rect bounds(native_window->bounds().size());'

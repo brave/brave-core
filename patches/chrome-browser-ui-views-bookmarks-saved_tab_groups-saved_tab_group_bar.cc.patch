@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc b/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc
-index e9b4deb8da7870ae648baf6ceb43736a69267483..7022ba4af7ab2836a59aa86dc73cf86b15715894 100644
+index daf3ec9364d563ce781d9627b4d12410a30007cf..1c02fecdb6576eb4c5993b40bb00b545f99cfccf 100644
 --- a/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc
 +++ b/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc
-@@ -380,7 +380,7 @@ void SavedTabGroupBar::AddTabGroupButton(const SavedTabGroup& group,
+@@ -381,7 +381,7 @@ void SavedTabGroupBar::AddTabGroupButton(const SavedTabGroup& group,
    int clamped_index =
        index < num_buttons ? index : std::max(0, num_buttons - 1);
    views::View* view = AddChildViewAt(

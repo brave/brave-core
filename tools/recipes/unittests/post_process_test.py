@@ -36,6 +36,13 @@ def _steps(failure=None):
     return steps
 
 
+def _steps_with_properties():
+    steps = _steps()
+    steps['compile']['output_properties'] = {'got_revision': 'abc', 'n': 1}
+    steps['test']['output_properties'] = {'n': 2}
+    return steps
+
+
 def _run(func, steps, *args):
     """Run a check hook, returning (failure_count, return_value)."""
     hook = PostprocessHookContext(func, args, {}, __file__, 0)
@@ -147,6 +154,68 @@ class DropExpectationTest(unittest.TestCase):
     def test_returns_empty_mapping(self):
         _, result = _run(pp.DropExpectation, _steps())
         self.assertEqual(result, {})
+
+
+class OutputPropertiesTest(unittest.TestCase):
+    def test_later_step_wins(self):
+        self.assertEqual(
+            pp.GetBuildProperties(_steps_with_properties()),
+            {'got_revision': 'abc', 'n': 2},
+        )
+
+    def test_property_equals(self):
+        steps = _steps_with_properties()
+        self.assertEqual(_run(pp.PropertyEquals, steps, 'n', 2)[0], 0)
+        self.assertEqual(_run(pp.PropertyEquals, steps, 'n', 1)[0], 1)
+        self.assertEqual(_run(pp.PropertyEquals, steps, 'missing', 1)[0], 1)
+
+    def test_property_matches_re(self):
+        steps = _steps_with_properties()
+        self.assertEqual(
+            _run(pp.PropertyMatchesRE, steps, 'got_revision', '^a')[0], 0
+        )
+        self.assertEqual(
+            _run(pp.PropertyMatchesRE, steps, 'got_revision', '^z')[0], 1
+        )
+        # A non-string value fails rather than raising.
+        self.assertEqual(_run(pp.PropertyMatchesRE, steps, 'n', '2')[0], 1)
+
+    def test_property_matches_callable(self):
+        steps = _steps_with_properties()
+        self.assertEqual(
+            _run(
+                pp.PropertyMatchesCallable,
+                steps,
+                'n',
+                lambda check, value: check(value > 1),
+            )[0],
+            0,
+        )
+
+    def test_properties_contain(self):
+        steps = _steps_with_properties()
+        self.assertEqual(_run(pp.PropertiesContain, steps, 'n')[0], 0)
+        self.assertEqual(_run(pp.PropertiesContain, steps, 'x')[0], 1)
+        self.assertEqual(_run(pp.PropertiesDoNotContain, steps, 'x')[0], 0)
+        self.assertEqual(_run(pp.PropertiesDoNotContain, steps, 'n')[0], 1)
+
+
+class SummaryMarkdownTest(unittest.TestCase):
+    def test_failure_reason_is_the_summary(self):
+        steps = _steps(_FAILURE)
+        self.assertEqual(_run(pp.SummaryMarkdown, steps, 'boom')[0], 0)
+        self.assertEqual(_run(pp.SummaryMarkdown, steps, 'other')[0], 1)
+        self.assertEqual(_run(pp.SummaryMarkdownRE, steps, '^bo')[0], 0)
+
+    def test_success_summary(self):
+        steps = _steps()
+        steps['$result']['summaryMarkdown'] = 'all good'
+        self.assertEqual(_run(pp.SummaryMarkdown, steps, 'all good')[0], 0)
+        self.assertEqual(_run(pp.SummaryMarkdownRE, steps, 'x')[0], 1)
+
+    def test_no_summary_fails(self):
+        self.assertEqual(_run(pp.SummaryMarkdown, _steps(), 'x')[0], 1)
+        self.assertEqual(_run(pp.SummaryMarkdownRE, _steps(), 'x')[0], 1)
 
 
 if __name__ == '__main__':

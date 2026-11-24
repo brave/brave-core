@@ -46,6 +46,7 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -596,7 +597,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
   }
 
   void ReloadAndWaitForLoadStop(BrowserWindowInterface* browser) {
-    chrome::Reload(browser, WindowOpenDisposition::kCurrentTab);
+    chrome::Reload(browser, ui::mojom::WindowOpenDisposition::kCurrentTab);
     ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
   }
 

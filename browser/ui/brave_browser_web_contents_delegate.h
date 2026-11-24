@@ -11,6 +11,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "chrome/browser/ui/browser_web_contents_delegate/browser_web_contents_delegate.h"
+#include "ui/base/mojom/window_open_disposition.mojom-forward.h"
 
 class BrowserUiController;
 
@@ -35,7 +36,7 @@ class BraveBrowserWebContentsDelegate : public BrowserWebContentsDelegate {
       content::WebContents* source,
       std::unique_ptr<content::WebContents> new_contents,
       const GURL& target_url,
-      WindowOpenDisposition disposition,
+      ui::mojom::WindowOpenDisposition disposition,
       const blink::mojom::WindowFeatures& window_features,
       bool user_gesture,
       bool* was_blocked) override;

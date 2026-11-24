@@ -35,8 +35,6 @@
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
-#include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
-#include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/prefs/pref_service.h"
@@ -71,7 +69,7 @@ bool IsActiveTabNTP(content::WebContents* active_web_contents) {
     return false;
   }
   const GURL url = entry->GetURL();
-  return NewTabUI::IsNewTab(url) || NewTabPageUI::IsNewTabPageOrigin(url) ||
+  return search::IsNewTabOrigin(url) || search::IsNewTabPageOrigin(url) ||
          search::NavEntryIsInstantNTP(active_web_contents, entry);
 }
 

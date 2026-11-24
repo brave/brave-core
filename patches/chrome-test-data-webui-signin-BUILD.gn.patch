@@ -1,5 +1,5 @@
 diff --git a/chrome/test/data/webui/signin/BUILD.gn b/chrome/test/data/webui/signin/BUILD.gn
-index f058ef223736900f79950612989655f5cfbdcdc3..1cbf04f2f232887d73d11749dc51c393dbac9a79 100644
+index 22cc003882ab27ff7fc8aa7773dcbc51e7360a58..4e6b99cbc3d4007155fbde715d1059688554c5a5 100644
 --- a/chrome/test/data/webui/signin/BUILD.gn
 +++ b/chrome/test/data/webui/signin/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index f058ef223736900f79950612989655f5cfbdcdc3..1cbf04f2f232887d73d11749dc51c393
  import("//components/signin/features.gni")
  import("../build_webui_tests.gni")
  
-@@ -94,4 +95,5 @@ build_webui_tests("build") {
+@@ -89,4 +90,5 @@ build_webui_tests("build") {
        "//chrome/browser/resources/signin/profile_picker:build_ts",
      ]
    }

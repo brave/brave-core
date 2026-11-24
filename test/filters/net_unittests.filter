@@ -29,6 +29,11 @@
 -KeyPinningStateChrome.UpdateKeyPinsListTimestamp
 -KeyPinningStateChrome.UpdateKeyPinsListValidPin
 
+# This test fails because of kBravePartitionHSTS: AddHSTS() stores the entry in
+# the host's own partition, and the test's request looks it up in its
+# NetworkAnonymizationKey's, so it isn't upgraded.
+-URLRequestHttpJobTest.NonCompliantHosts
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -CanPoolTest.CanNotPoolWithBadPins
 -CanonicalCookieTest.CreateWithExpires

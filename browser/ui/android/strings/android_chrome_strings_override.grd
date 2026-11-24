@@ -217,6 +217,12 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SAFETY_FRE_PROMO_INCOGNITO_CAROUSEL_TITLE" desc="Title of the Locked Private slide on the Safety Promo Carousel screen of the First Run Experience.">
         Lock your Private tabs
       </message>
+      <message name="IDS_SAFETY_FRE_PROMO_INCOGNITO_BOTTOM_SHEET_TITLE" desc="Title of the bottom sheet that shows the user how to lock their Private tabs. Opened from the Show me how button on the Safety Promo Carousel screen of the First Run Experience.">
+        Secure your Private tabs
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_INCOGNITO_BOTTOM_SHEET_INSTRUCTIONS_STEP_3" desc="Third step in the bottom sheet that shows the user how to lock their Private tabs. 'Lock Private tabs when you leave Brave' is a setting in Brave's Privacy and security settings. Opened from the Show me how button on the Safety Promo Carousel screen of the First Run Experience.">
+        Toggle on Lock Private tabs when you leave Brave
+      </message>
       <message name="IDS_NEW_INCOGNITO_TAB_TITLE" desc="Title in tab strip when opening a new Private tab.">
         New Private tab
       </message>

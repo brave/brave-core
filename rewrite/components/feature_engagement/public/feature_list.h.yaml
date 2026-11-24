@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Define Brave's IPH variation params.
+
+      `DEFINE_VARIATION_PARAM` is undefined at the end of the header, so
+      Brave's params are defined in place, ahead of the demo-mode choices
+      that list them.
+    regex:
+      re_pattern:
+        '^((?://[^\n]*\n)*inline constexpr
+        flags_ui::FeatureEntry::FeatureVariation\s+kIPHDemoModeChoiceVariations\[\])'
+      re_flags: [MULTILINE]
+      replace: |-
+        BRAVE_FEATURE_ENGAGEMENT_VARIATION_PARAMS
+
+        \1
+
+  - description: |-
+      List Brave's IPH features among the demo-mode choices.
+
+      This makes them selectable on their own in the flags page.
+    regex:
+      re_pattern:
+        '(kIPHDemoModeChoiceVariations\[\] = \{\s*// clang-format off\n)'
+      replace: |
+        \1        BRAVE_FEATURE_ENGAGEMENT_VARIATION_ENTRIES

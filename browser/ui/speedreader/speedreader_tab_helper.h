@@ -19,7 +19,7 @@
 #include "brave/components/speedreader/speedreader_util.h"
 #include "brave/components/speedreader/tts_player.h"
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
-#include "components/dom_distiller/content/browser/distillable_page_utils.h"
+#include "components/web_distiller/content/browser/distillable_page_utils.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "url/gurl.h"
@@ -55,7 +55,7 @@ class SpeedreaderTabHelper : public tabs::ContentsObservingTabFeature,
                              public SpeedreaderDelegate,
                              public mojom::SpeedreaderHost,
                              public SpeedreaderService::Observer,
-                             public dom_distiller::DistillabilityObserver,
+                             public web_distiller::DistillabilityObserver,
                              public speedreader::TtsPlayer::Observer {
  public:
   struct Observer : public base::CheckedObserver {
@@ -189,8 +189,8 @@ class SpeedreaderTabHelper : public tabs::ContentsObservingTabFeature,
   void OnAppearanceSettingsChanged(
       const mojom::AppearanceSettings& view_settings) override;
 
-  // dom_distiller::DistillabilityObserver:
-  void OnResult(const dom_distiller::DistillabilityResult& result) override;
+  // web_distiller::DistillabilityObserver:
+  void OnResult(const web_distiller::DistillabilityResult& result) override;
 
   void SetDocumentAttribute(const std::string& attribute,
                             const std::string& value);

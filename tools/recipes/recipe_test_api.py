@@ -79,7 +79,7 @@ class StepTestData(BaseTestData):
 
     Seeded in `GenTests` via `api.step_data(name, ...)`, or by a step's own
     `step_test_data=` default. During simulation the `step` module builds the
-    step's `StepData` from this, and raises `CalledProcessError` when the step
+    step's `StepData` from this, and raises `StepFailure` when the step
     is `check`ed and `retcode` is non-zero.
     """
 

@@ -13,7 +13,7 @@ import path from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { checkoutChromiumRef } from './chromiumFetch.ts'
 import config from './config.ts'
-import { snapshotConfig } from './configSnapshot.ts'
+import { mockConfig } from './configMock.ts'
 import * as Log from './log.ts'
 import util from './util.ts'
 
@@ -47,7 +47,6 @@ describe('checkoutChromiumRef', () => {
   let tmpDir: string
   let upstream: string
   let srcDir: string
-  let restoreConfig: () => void
   let savedEnv: Record<string, string | undefined>
 
   // Commit an empty change onto whatever `upstream` has checked out.
@@ -109,7 +108,7 @@ describe('checkoutChromiumRef', () => {
   }
 
   beforeEach(() => {
-    restoreConfig = snapshotConfig()
+    mockConfig()
 
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'brave-chromium-fetch-'))
 
@@ -165,7 +164,6 @@ describe('checkoutChromiumRef', () => {
 
   afterEach(() => {
     jest.restoreAllMocks()
-    restoreConfig()
     for (const [name, value] of Object.entries(savedEnv)) {
       if (value === undefined) {
         delete process.env[name]

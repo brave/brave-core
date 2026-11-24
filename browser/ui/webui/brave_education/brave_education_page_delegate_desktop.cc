@@ -12,6 +12,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
@@ -33,7 +34,7 @@ BraveEducationPageDelegateDesktop::~BraveEducationPageDelegateDesktop() =
 
 void BraveEducationPageDelegateDesktop::OpenURL(
     const GURL& url,
-    WindowOpenDisposition disposition) {
+    ui::mojom::WindowOpenDisposition disposition) {
   window_interface_->OpenGURL(url, disposition);
 }
 

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/certificate_manager/certificate_manager.ts b/chrome/browser/resources/certificate_manager/certificate_manager.ts
-index ae4ab5203dc2d7f03a5affaabcda810bcea36d5b..a9beb6433874ef875efcd52bd317037290a19d0a 100644
+index 5488a0f999381f72de2b8b779ae23d57a6082d31..0854418c2f4de61f25714b97710c48728727ab68 100644
 --- a/chrome/browser/resources/certificate_manager/certificate_manager.ts
 +++ b/chrome/browser/resources/certificate_manager/certificate_manager.ts
-@@ -481,4 +481,3 @@ declare global {
+@@ -480,4 +480,3 @@ declare global {
    }
  }
  

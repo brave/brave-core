@@ -1,8 +1,8 @@
 diff --git a/ios/web/js_messaging/java_script_content_world.h b/ios/web/js_messaging/java_script_content_world.h
-index 06bad8e89372c1ce885ce849f32ed558f751cbe0..ac7e3badebc03e495599dfa4b6488d5faf5252dd 100644
+index 06bad8e89372c1ce885ce849f32ed558f751cbe0..bf7bb26bc65114c69048460ba06c30e27eb271f6 100644
 --- a/ios/web/js_messaging/java_script_content_world.h
 +++ b/ios/web/js_messaging/java_script_content_world.h
-@@ -49,6 +49,15 @@ class JavaScriptContentWorld {
+@@ -49,6 +49,16 @@ class JavaScriptContentWorld {
    // Returns true if and only if `feature` has been added to this content world.
    bool HasFeature(const JavaScriptFeature* feature);
  
@@ -12,7 +12,8 @@ index 06bad8e89372c1ce885ce849f32ed558f751cbe0..ac7e3badebc03e495599dfa4b6488d5f
 +      const std::string& handler_name);
 +
 + protected:
-+  base::flat_map<std::string, const JavaScriptFeature*>
++  base::flat_map<std::string,
++                 raw_ptr<const JavaScriptFeature, DanglingUntriaged>>
 +      prompt_replying_features_;
 +
   private:

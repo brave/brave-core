@@ -567,7 +567,8 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
 }
 
 void BraveBrowserView::URLStarredChanged(content::WebContents* web_contents,
-                                         bool starred) {
+                                         bool starred,
+                                         bool is_bookmark_added_or_removed) {
   if (web_contents == GetActiveWebContents()) {
     SetStarredState(starred);
   }
@@ -1068,6 +1069,12 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
   }
 
   return false;
+}
+
+gfx::Size BraveBrowserView::GetContentsSize() const {
+  // Brave's contents container insets the web view (its rounded corners border
+  // and the reader mode toolbar), so report the size WebContents gets.
+  return multi_contents_view_->GetActiveContentsView()->size();
 }
 
 void BraveBrowserView::UpdateRoundedCornersUI() {

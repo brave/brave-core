@@ -1,13 +1,13 @@
 diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridItemTouchHelperCallback.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridItemTouchHelperCallback.java
-index 0cd400a2b70ac08fccbc23c1474387e5c1111ff9..8e41d338e18978ba30faf0b58450b72a02db2456 100644
+index 623c6e7906000490d551bce29c7c8192acd86af2..a4c708dc758d61dde59d39d36c429fc0ae894785 100644
 --- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridItemTouchHelperCallback.java
 +++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridItemTouchHelperCallback.java
-@@ -83,7 +83,7 @@ public class TabGridItemTouchHelperCallback extends TabListItemTouchHelperCallba
+@@ -78,7 +78,7 @@ public class TabGridItemTouchHelperCallback extends TabListItemTouchHelperCallba
      private final @Nullable UngroupBarStatusHandler mUngroupBarStatusHandler;
      private final int mLongPressDpThresholdSquared;
      private final TabGroupCreationDialogManager mTabGroupCreationDialogManager;
 -    private final @TabListLayoutType int mLayoutType;
 +    protected @TabListLayoutType int mLayoutType;
-     private float mSwipeToDismissThreshold;
      private float mMergeThreshold;
      private float mUngroupThreshold;
+     private int mDragFlags;

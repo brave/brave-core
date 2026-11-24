@@ -5,8 +5,10 @@
 
 #include "brave/components/password_manager/services/csv_password/csv_safari_password_parser_impl.h"
 
+#include <optional>
 #include <utility>
 
+#include "base/types/expected.h"
 #include "brave/components/password_manager/core/browser/import/csv_safari_password.h"
 #include "brave/components/password_manager/core/browser/import/csv_safari_password_sequence.h"
 
@@ -20,12 +22,11 @@ CSVSafariPasswordParserImpl::~CSVSafariPasswordParserImpl() = default;
 
 void CSVSafariPasswordParserImpl::ParseCSV(const std::string& raw_json,
                                            ParseCSVCallback callback) {
-  mojom::CSVSafariPasswordSequencePtr result = nullptr;
-  CSVSafariPasswordSequence seq(raw_json);
-  if (seq.result() == CSVSafariPassword::Status::kOK) {
+  mojom::CSVSafariPasswordSequencePtr result;
+  if (auto seq = CSVSafariPasswordSequence::Create(raw_json); seq.has_value()) {
     result = mojom::CSVSafariPasswordSequence::New();
-    for (const auto& pwd : seq) {
-      result->csv_passwords.push_back(pwd);
+    while (std::optional<CSVSafariPassword> pwd = seq->NextPassword()) {
+      result->csv_passwords.push_back(*std::move(pwd));
     }
   }
   std::move(callback).Run(std::move(result));

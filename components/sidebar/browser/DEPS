@@ -9,7 +9,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "sidebar_service\.cc": [
+  "sidebar_service\\.cc": [
     "!brave/components/l10n/common/locale_util.h",
   ],
 }

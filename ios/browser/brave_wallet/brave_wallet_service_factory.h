@@ -28,7 +28,7 @@ class BraveWalletServiceFactory
  private:
   // TypedProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      ProfileIOS* profile) const override;
+      ProfileIOS& profile) const override;
 
   BraveWalletServiceFactory(const BraveWalletServiceFactory&) = delete;
   BraveWalletServiceFactory& operator=(const BraveWalletServiceFactory&) =

@@ -1,0 +1,108 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* Based on Chromium code subject to the following license:
+ * Copyright 2025 The Chromium Authors
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=//resources/cr_elements/cr_shared_vars.css.js
+ * #import=//resources/cr_elements/cr_hidden_style_lit.css.js
+ * #scheme=relative
+ * #include=cr-hidden-style-lit
+ * #css_wrapper_metadata_end */
+
+:host {
+  display: block;
+}
+
+#disclaimer {
+  padding: 6px 10px 8px;
+  color: var(--cr-secondary-text-color);
+  font-size: 11px;
+  font-weight: 400;
+  text-wrap: pretty;
+}
+
+.card {
+  background: var(
+    --color-history-embeddings-background,
+    var(--cr-card-background-color)
+  );
+  border-radius: var(--cr-card-border-radius);
+  box-shadow: var(--cr-card-shadow);
+  margin-block-end: var(--card-padding-between, 16px);
+  padding-block: var(--cr-history-embeddings-card-padding-block, 0);
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  padding: var(--cr-history-embeddings-heading-padding, 23px 24px 13px);
+  font-size: var(--cr-history-embeddings-heading-font-size, 16px);
+  font-weight: 500;
+  line-height: var(--cr-history-embeddings-heading-line-height, 24px);
+  color: var(
+    --color-history-embeddings-foreground,
+    var(--cr-primary-text-color)
+  );
+}
+
+h2 cr-icon {
+  flex-shrink: 0;
+}
+
+.loading {
+  padding: var(--cr-history-embeddings-loading-padding, 4px 24px 24px 24px);
+}
+
+hr {
+  border: 0;
+  display: var(--cr-history-embeddings-hr-display, block);
+  height: 1px;
+  background: var(
+    --color-history-embeddings-divider,
+    var(--cr-fallback-color-divider)
+  );
+  margin: 0 24px;
+}
+
+hr:last-of-type {
+  display: none;
+}
+
+cr-url-list-item {
+  --cr-url-list-item-height: auto;
+  --cr-url-list-item-padding: var(
+    --cr-history-embeddings-url-list-item-padding,
+    14px 24px
+  );
+}
+
+hr:has(+ cr-url-list-item:hover),
+cr-url-list-item:hover + hr {
+  opacity: 0;
+}
+
+.time {
+  margin-inline-start: 16px;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  font-size: var(--cr-history-embeddings-footer-font-size, inherit);
+  line-height: var(--cr-history-embeddings-footer-line-height, inherit);
+  gap: 8px;
+  padding: var(--cr-history-embeddings-footer-padding, 16px 24px 24px);
+  color: var(
+    --color-history-embeddings-foreground-subtle,
+    var(--cr-secondary-text-color)
+  );
+}

@@ -36,10 +36,11 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
-namespace history_embeddings {
+namespace brave_history_embeddings {
 
 class OpenTabSearchBrowserTest : public InProcessBrowserTest {
  public:
@@ -81,7 +82,7 @@ class OpenTabSearchBrowserTest : public InProcessBrowserTest {
                  const GURL& url,
                  const std::string& title) {
     ui_test_utils::NavigateToURLWithDisposition(
-        target, url, WindowOpenDisposition::kNewForegroundTab,
+        target, url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     content::WebContents* contents =
         target->tab_strip_model()->GetActiveWebContents();
@@ -200,7 +201,6 @@ IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, RanksAndDropsUnmatchedTabs) {
   const std::vector<OpenTabInfo> ranked = future.Take();
 
   // Every eligible open tab is offered to `Search()` for scoring...
-  EXPECT_TRUE(fake.last_skip_answering());
   EXPECT_THAT(
       fake.last_url_id_filter(),
       testing::UnorderedElementsAre(foo_url_id, bar_url_id, baz_url_id));
@@ -287,4 +287,4 @@ IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, SameUrlYieldsEveryTab) {
   EXPECT_THAT(tab_ids, testing::UnorderedElementsAre(tab_id_a, tab_id_b));
 }
 
-}  // namespace history_embeddings
+}  // namespace brave_history_embeddings

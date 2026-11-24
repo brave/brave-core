@@ -1,8 +1,8 @@
 diff --git a/base/threading/thread_restrictions.h b/base/threading/thread_restrictions.h
-index 95bafac63e471e57579c8296f16bd34bf547c839..e6b088e7170b016ec3cf7c78a11c6fa1174c6742 100644
+index b825a5801daca5f9ae698dbd2d1086771936d577..578055c45d6352b6805b80b575f7d252ff93dee6 100644
 --- a/base/threading/thread_restrictions.h
 +++ b/base/threading/thread_restrictions.h
-@@ -752,6 +752,8 @@ class BASE_EXPORT ScopedAllowBaseSyncPrimitives {
+@@ -757,6 +757,8 @@ class BASE_EXPORT ScopedAllowBaseSyncPrimitives {
        const ScopedAllowBaseSyncPrimitives&) = delete;
  
   private:

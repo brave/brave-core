@@ -13,8 +13,8 @@
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -39,21 +39,30 @@
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #endif  // BUILDFLAG(ENABLE_COMMANDER)
 
-// Must precede the macro below, which would otherwise rewrite these
-// declarations.
-#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 
-// The setting is live, but the service is built from it once at profile setup,
-// so the two can disagree. `HistoryEmbeddingsProvider::Start()` CHECKs on the
-// service.
-#define IsHistoryEmbeddingsEnabledForProfile(profile) \
-  IsHistoryEmbeddingsEnabledForProfile(profile) &&    \
-      HistoryEmbeddingsServiceFactory::GetForProfile(profile) != nullptr
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+namespace brave_history_embeddings {
+class HistoryEmbeddingsSearch;
+}  // namespace brave_history_embeddings
+
+// Implemented in //brave/browser/history_embeddings:service. Returns the
+// profile's HistoryEmbeddingsService, or null when it was not built. Forward
+// declared to keep this override free of a compile-time dependency on //brave.
+brave_history_embeddings::HistoryEmbeddingsSearch*
+BraveGetHistoryEmbeddingsSearch(Profile* profile);
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #include <chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc>
 
-#undef IsHistoryEmbeddingsEnabledForProfile
+brave_history_embeddings::HistoryEmbeddingsSearch*
+ChromeAutocompleteProviderClient::GetBraveHistoryEmbeddingsSearch() {
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  return BraveGetHistoryEmbeddingsSearch(profile_);
+#else
+  return nullptr;
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+}
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 commander::CommanderFrontendDelegate*
@@ -91,11 +100,12 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
   if (ai_chat_service->IsAIChatHistoryEnabled() &&
       ai_chat::features::kOmniboxOpensFullPage.Get()) {
     conversation_handler = ai_chat_service->CreateConversation();
-    browser->OpenURL({ai_chat::ConversationUrl(
-                          conversation_handler->get_conversation_uuid()),
-                      content::Referrer(), WindowOpenDisposition::kCurrentTab,
-                      ui::PageTransition::PAGE_TRANSITION_GENERATED, false},
-                     {});
+    browser->OpenURL(
+        {ai_chat::ConversationUrl(
+             conversation_handler->get_conversation_uuid()),
+         content::Referrer(), ui::mojom::WindowOpenDisposition::kCurrentTab,
+         ui::PageTransition::PAGE_TRANSITION_GENERATED, false},
+        {});
   } else {
     auto* chat_tab_helper =
         ai_chat::AIChatTabHelper::From(tabs::TabInterface::MaybeGetFromContents(

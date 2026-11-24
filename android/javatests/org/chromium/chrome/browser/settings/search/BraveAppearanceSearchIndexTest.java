@@ -100,6 +100,18 @@ public class BraveAppearanceSearchIndexTest {
         assertEquals(mContext.getString(R.string.address_bar_shortcut), entry.title);
     }
 
+    @Test
+    @SmallTest
+    @Restriction(DeviceFormFactor.PHONE)
+    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void testBottomBarSwitchRetitledWithAndroidBottomBar() {
+        buildIndex();
+
+        SettingsIndexData.Entry entry = getEntry(AppearanceSettingsFragment.PREF_BOTTOM_BAR_SWITCH);
+        assertNotNull(entry);
+        assertEquals(mContext.getString(R.string.brave_bottom_bar_setting_title), entry.title);
+    }
+
     private void buildIndex() {
         ThreadUtils.runOnUiThreadBlocking(
                 () -> SettingsSearchCoordinator.buildIndexInternal(mContext, mProfile, mIndexData));

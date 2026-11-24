@@ -10,7 +10,6 @@ import os
 import shutil
 import sys
 
-from distutils.dir_util import copy_tree
 from brave_chromium_utils import wspath, sys_path
 from lib.config import PLATFORM, enable_verbose_mode, is_verbose_mode
 from pathlib import Path

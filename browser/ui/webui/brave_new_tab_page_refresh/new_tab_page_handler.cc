@@ -46,6 +46,7 @@
 #include "content/public/browser/web_contents.h"
 #include "third_party/metrics_proto/omnibox_event.pb.h"
 #include "third_party/metrics_proto/omnibox_input_type.pb.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "url/gurl.h"
 
@@ -719,7 +720,7 @@ void NewTabPageHandler::OnSponsoredSitesUpdate() {
 }
 
 void NewTabPageHandler::OpenGURL(const GURL& gurl,
-                                 WindowOpenDisposition disposition) {
+                                 ui::mojom::WindowOpenDisposition disposition) {
   if (auto* tab = tabs::TabInterface::MaybeGetFromContents(
           base::to_address(web_contents_))) {
     tab->GetBrowserWindowInterface()->OpenGURL(gurl, disposition);

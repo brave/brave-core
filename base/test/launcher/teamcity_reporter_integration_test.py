@@ -14,7 +14,6 @@ service message output. Intended to run from the build output directory, e.g.:
 
 import difflib
 import os
-import re
 import subprocess
 import sys
 import unittest

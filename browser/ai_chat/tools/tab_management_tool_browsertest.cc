@@ -43,8 +43,8 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/local_ai/core/pref_names.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/prefs/pref_service.h"
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
@@ -897,7 +897,7 @@ class TabManagementToolPageContentBrowserTest
  public:
   TabManagementToolPageContentBrowserTest() {
     scoped_features_.InitAndEnableFeature(
-        history_embeddings::kHistoryEmbeddings);
+        brave_history_embeddings::kHistoryEmbeddings);
   }
 
   void SetUpOnMainThread() override {

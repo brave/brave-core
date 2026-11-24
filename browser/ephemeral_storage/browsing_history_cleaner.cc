@@ -30,7 +30,8 @@ BrowsingHistoryCleaner::BrowsingHistoryCleaner(
   // `GetAllSyncedClientsGroupedByName`.
   browsing_history_service_ = std::make_unique<history::BrowsingHistoryService>(
       this, history_service, WebHistoryServiceFactory::GetForProfile(profile),
-      sync_service, /*device_info_tracker=*/nullptr);
+      sync_service, /*device_info_tracker=*/nullptr,
+      /*critical_action_provider=*/nullptr);
 }
 
 BrowsingHistoryCleaner::~BrowsingHistoryCleaner() = default;

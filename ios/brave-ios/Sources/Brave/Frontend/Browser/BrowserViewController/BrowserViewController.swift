@@ -3282,7 +3282,7 @@ extension BrowserViewController: UIScreenshotServiceDelegate {
     rect.origin.y = scrollView.contentSize.height - rect.height - scrollView.contentOffset.y
 
     do {
-      let data = try await tab.createFullPagePDF()
+      let data = try await tab.createPDF(rect: .null)
       return (data, 0, data != nil ? rect : .zero)
     } catch {
       return (nil, 0, .zero)

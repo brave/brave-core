@@ -1,8 +1,8 @@
 diff --git a/ios/web/public/js_messaging/java_script_feature.h b/ios/web/public/js_messaging/java_script_feature.h
-index aa824df4831a5e3685e7fc2622e715bfa2492b0f..565c8e7a7e872e8703a0c5af98ab1fd6521fc5c4 100644
+index 632f353364c8a7322b3d9239170dca628bfff830..115911d568b47ac0dfb7d13cf414c917d66b7eab 100644
 --- a/ios/web/public/js_messaging/java_script_feature.h
 +++ b/ios/web/public/js_messaging/java_script_feature.h
-@@ -201,6 +201,12 @@ class JavaScriptFeature {
+@@ -203,6 +203,12 @@ class JavaScriptFeature {
  
    JavaScriptFeature(const JavaScriptFeature&) = delete;
  
@@ -15,7 +15,7 @@ index aa824df4831a5e3685e7fc2622e715bfa2492b0f..565c8e7a7e872e8703a0c5af98ab1fd6
   protected:
    explicit JavaScriptFeature(ContentWorld supported_world);
  
-@@ -292,6 +298,7 @@ class JavaScriptFeature {
+@@ -294,6 +300,7 @@ class JavaScriptFeature {
        ScriptMessageReplyCallback callback);
  
   private:

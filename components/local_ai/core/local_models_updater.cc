@@ -24,10 +24,10 @@
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -106,7 +106,8 @@ class LocalModelsComponentRegistrar {
 
   bool IsEnabled() const {
     return cus_ && ShouldInstallLocalModels(pref_change_registrar_.prefs()) &&
-           base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings);
+           base::FeatureList::IsEnabled(
+               brave_history_embeddings::kHistoryEmbeddings);
   }
 
   void Sync() {

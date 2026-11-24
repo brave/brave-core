@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let Brave's legacy confirm infobars get a creation pass key.
+
+      They create their infobars directly rather than through
+      `infobars::BrowserInfoBarManager`, like upstream's burndown list.
+    add_friend:
+      class_name: ConfirmInfoBarCreationAllowlist
+      friend_type:
+        - class BraveConfirmP3AInfoBarDelegate
+        - class RequestOTRInfoBarDelegate
+        - class SyncCannotRunInfoBarDelegate
+        - class brave_ads::CreativeSearchResultAdClickedInfoBarDelegate
+        - class ntp_background_images::NewTabTakeoverInfoBarDelegate
+        - class psst::PsstInfoBarDelegate

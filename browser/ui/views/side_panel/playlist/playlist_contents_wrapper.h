@@ -12,6 +12,7 @@
 #include "base/callback_list.h"
 #include "brave/browser/ui/webui/playlist_ui.h"
 #include "chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h"
+#include "ui/base/mojom/window_open_disposition.mojom-forward.h"
 
 class BrowserView;
 class PlaylistSidePanelCoordinator;
@@ -50,7 +51,7 @@ class PlaylistContentsWrapper
       content::WebContents* source,
       std::unique_ptr<content::WebContents> new_contents,
       const GURL& target_url,
-      WindowOpenDisposition disposition,
+      ui::mojom::WindowOpenDisposition disposition,
       const blink::mojom::WindowFeatures& window_features,
       bool user_gesture,
       bool* was_blocked) override;

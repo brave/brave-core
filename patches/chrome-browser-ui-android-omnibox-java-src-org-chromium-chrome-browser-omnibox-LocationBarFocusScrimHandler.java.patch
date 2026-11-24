@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
-index 845e7811de646f64d5d3068eb829ddc60369ac54..d13e1d415c9adb9f4a13be168f344cbe446a4402 100644
+index dce2f67bd5e6a37b01d40297e49e547d7b49b974..a98d3ef722bf53f31a6d193d8f50c590b36e21df 100644
 --- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
 +++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
-@@ -73,7 +73,6 @@ public class LocationBarFocusScrimHandler {
+@@ -72,7 +72,6 @@ public class LocationBarFocusScrimHandler {
      private final Context mContext;
      private final NonNullObservableSupplier<Integer> mTabStripHeightSupplier;
      private final Callback<Integer> mTabStripHeightChangeCallback;
@@ -13,7 +13,7 @@ index 845e7811de646f64d5d3068eb829ddc60369ac54..d13e1d415c9adb9f4a13be168f344cbe
 @@ -99,7 +98,6 @@ public class LocationBarFocusScrimHandler {
              BottomControlsStacker bottomControlsStacker) {
          mScrimManager = scrimManager;
-         mLocationBarDataProvider = locationBarDataProvider;
+         mResourceProvider = resourceProvider;
 -        mBottomControlsStacker = bottomControlsStacker;
          mContext = context;
          Callback<Boolean> visibilityChangeCallbackWrapper =
@@ -26,7 +26,7 @@ index 845e7811de646f64d5d3068eb829ddc60369ac54..d13e1d415c9adb9f4a13be168f344cbe
      }
  
      /** Compute and apply property updates needed for accurate visual representation of scrim. */
-@@ -154,9 +153,7 @@ public class LocationBarFocusScrimHandler {
+@@ -150,9 +149,7 @@ public class LocationBarFocusScrimHandler {
                      default -> throw new IllegalStateException("Unhandled scrim state");
                  };
          mScrimModel.set(ScrimProperties.BACKGROUND_COLOR, scrimColor);

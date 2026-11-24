@@ -184,6 +184,7 @@ void PartitionedStoragePageActionController::UpdatePageAction(
   std::optional<containers::ContainerModel> model =
       GetContainerModelForWebContents(web_contents);
   if (!model) {
+    page_action_controller_->HideSuggestionChip(kActionShowPartitionedStorage);
     page_action_controller_->Hide(kActionShowPartitionedStorage);
     page_action_controller_->ClearOverrideChipColors(
         kActionShowPartitionedStorage);

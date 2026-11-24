@@ -83,6 +83,13 @@ class DefinesTest(unittest.TestCase):
             2, DefineReach.count('Foo', ['Foo FooBar', None, 'x.Foo()'])
         )
 
+    def test_count_skips_comments_and_strings(self) -> None:
+        text = (
+            'Foo();  // Foo\n/* Foo\n Foo */ Bar("Foo // x", \'"\');\n'
+            'const char* u = "http://a";  Foo();'
+        )
+        self.assertEqual(2, DefineReach.count('Foo', [text]))
+
 
 class RunTest(unittest.TestCase):
     """A Chromium repository with two tags, and a Brave override."""
@@ -139,8 +146,21 @@ class RunTest(unittest.TestCase):
 
     def test_run(self) -> None:
         self.assertEqual(
+            [Reach('a/b.h', 'Old', 1, 0)], DefineReach('old', 'new').run()
+        )
+
+    def test_counts_the_cc_of_a_header_that_keeps_its_define(self) -> None:
+        self._write(
+            define_reach.repository.brave.root / 'chromium_src/a/b.h',
+            '#define Old BraveOld\n#include <a/b.h>\n',
+        )
+        self.assertEqual(
             [Reach('a/b.h', 'Old', 2, 0)], DefineReach('old', 'new').run()
         )
+
+    def test_refuses_a_missing_tag(self) -> None:
+        with self.assertRaisesRegex(LookupError, 'unfetched'):
+            DefineReach('unfetched', 'new').run()
 
     def test_skips_dead_tokens_a_patch_adds(self) -> None:
         brave = define_reach.repository.brave.root
@@ -155,7 +175,7 @@ class RunTest(unittest.TestCase):
             '--- a/a/b.cc\n+++ b/a/b.cc\n+HOOK;\n',
         )
         self.assertEqual(
-            [Reach('a/b.cc', 'Gone', 0, 0), Reach('a/b.h', 'Old', 2, 0)],
+            [Reach('a/b.cc', 'Gone', 0, 0), Reach('a/b.h', 'Old', 1, 0)],
             DefineReach('old', 'new').run(),
         )
 

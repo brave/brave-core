@@ -10,7 +10,6 @@ from collections.abc import Callable, Mapping, Sequence
 import contextlib
 import logging
 from pathlib import Path
-import subprocess
 from typing import TYPE_CHECKING
 
 import config_types
@@ -20,6 +19,7 @@ from recipe_api import (
     OutputPlaceholder,
     Placeholder,
     RecipeApi,
+    StepFailure as _StepFailure,
 )
 from recipe_test_api import PlaceholderTestData, StepTestData
 from resource_semaphore import ResourceWaiter
@@ -127,6 +127,18 @@ class StepApi(RecipeApi):
         return self.m.platform.total_memory
 
     @property
+    def StepFailure(self) -> type[_StepFailure]:
+        """This is the base Exception class for all step failures.
+
+        It can be manually raised from recipe code to fail the recipe.
+
+        Usage:
+          * `raise api.step.StepFailure("some reason")`
+          * `except api.step.StepFailure:`
+        """
+        return _StepFailure
+
+    @property
     def active_result(self) -> StepData | None:
         """The currently active (open) result from the last step that was run.
 
@@ -232,7 +244,7 @@ class StepApi(RecipeApi):
                 `context.cwd` (and, when neither is set, the engine's cwd).
             env: Whole-variable environment overrides layered on top of
                 `context.env` (the explicit value wins per key).
-            check: Raise `CalledProcessError` on non-zero exit when True.
+            check: Raise `StepFailure` on non-zero exit when True.
             stdin: An input placeholder whose data is fed to the command, e.g.
                 `api.json.input({'k': 'v'})`.
             stdout: An output placeholder capturing the command's standard
@@ -259,7 +271,7 @@ class StepApi(RecipeApi):
             placeholder in *cmd*.
 
         Raises:
-            subprocess.CalledProcessError: If `check` and the process fails.
+            StepFailure: If `check` and the process fails.
             RuntimeError: On Windows, if the command cannot be resolved.
         """
         # Namespaces the step under any enclosing `nest` and makes a repeated
@@ -353,12 +365,7 @@ class StepApi(RecipeApi):
         self._step_stack.push(result, name_tokens)
 
         if check and retcode != 0:
-            raise subprocess.CalledProcessError(
-                retcode,
-                rendered_cmd,
-                output=result.stdout,
-                stderr=result.stderr,
-            )
+            raise _StepFailure(name, result)
         return result
 
 

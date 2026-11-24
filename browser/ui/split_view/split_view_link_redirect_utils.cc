@@ -24,8 +24,8 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "content/public/common/referrer.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -176,7 +176,7 @@ bool MaybeRedirectToRightPane(content::NavigationHandle& handle) {
   NavigateParams params(target_tab->GetBrowserWindowInterface(),
                         handle.GetURL(), ui::PAGE_TRANSITION_LINK);
   params.source_contents = target_contents;
-  params.disposition = WindowOpenDisposition::kCurrentTab;
+  params.disposition = ui::mojom::WindowOpenDisposition::kCurrentTab;
 
   // Preserve original navigation's referrer.
   // As this redirects to existing right pane, orignal navigation's opener

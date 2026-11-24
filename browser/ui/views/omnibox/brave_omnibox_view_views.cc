@@ -26,7 +26,7 @@
 #include "components/search_engines/template_url_service.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/gfx/text_elider.h"
 
 namespace {
@@ -184,7 +184,7 @@ void BraveOmniboxViewViews::OnClipboardTextForPasteAndSearchRetrieved(
 
   NavigateParams params(location_bar_view_->browser(), url,
                         ui::PAGE_TRANSITION_GENERATED);
-  params.disposition = WindowOpenDisposition::kCurrentTab;
+  params.disposition = ui::mojom::WindowOpenDisposition::kCurrentTab;
   Navigate(&params);
 }
 

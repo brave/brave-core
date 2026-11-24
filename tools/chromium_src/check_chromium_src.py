@@ -600,7 +600,7 @@ class ChromiumSrcOverridesChecker:
 
         keys = ['re_excludes', 'path_excludes']
         for key in keys:
-            if not key in self.config_data:
+            if key not in self.config_data:
                 self.add_error(f"Key '{key}' is missing from {config_path}.")
                 return False
 

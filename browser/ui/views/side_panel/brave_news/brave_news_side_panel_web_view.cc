@@ -16,8 +16,8 @@
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 
 using SidePanelWebUIViewT_BraveNewsUI = SidePanelWebUIViewT<BraveNewsUI>;
@@ -29,9 +29,9 @@ namespace {
 // The sidebar requests a new tab either by opening a `_blank` link (which
 // arrives as a new-tab disposition) or via `window.open()`. Everything else
 // (plain link clicks) should navigate the main browser's active tab.
-bool ShouldOpenInNewTab(WindowOpenDisposition disposition) {
-  return disposition == WindowOpenDisposition::kNewForegroundTab ||
-         disposition == WindowOpenDisposition::kNewBackgroundTab;
+bool ShouldOpenInNewTab(ui::mojom::WindowOpenDisposition disposition) {
+  return disposition == ui::mojom::WindowOpenDisposition::kNewForegroundTab ||
+         disposition == ui::mojom::WindowOpenDisposition::kNewBackgroundTab;
 }
 
 }  // namespace
@@ -63,7 +63,7 @@ content::WebContents* BraveNewsSidePanelWebView::AddNewContents(
     content::WebContents* source,
     std::unique_ptr<content::WebContents> new_contents,
     const GURL& target_url,
-    WindowOpenDisposition disposition,
+    ui::mojom::WindowOpenDisposition disposition,
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {
@@ -78,8 +78,8 @@ content::WebContents* BraveNewsSidePanelWebView::AddNewContents(
   // the main browser's active tab.
   NavigateParams params(browser, target_url, ui::PAGE_TRANSITION_LINK);
   params.disposition = ShouldOpenInNewTab(disposition)
-                           ? WindowOpenDisposition::kNewForegroundTab
-                           : WindowOpenDisposition::kCurrentTab;
+                           ? ui::mojom::WindowOpenDisposition::kNewForegroundTab
+                           : ui::mojom::WindowOpenDisposition::kCurrentTab;
   params.window_action = NavigateParams::WindowAction::kNoAction;
   params.user_gesture = user_gesture;
   Navigate(&params);
@@ -103,7 +103,7 @@ content::WebContents* BraveNewsSidePanelWebView::OpenURLFromTab(
   // everything else navigates its active tab.
   content::OpenURLParams new_params(params);
   if (!ShouldOpenInNewTab(new_params.disposition)) {
-    new_params.disposition = WindowOpenDisposition::kCurrentTab;
+    new_params.disposition = ui::mojom::WindowOpenDisposition::kCurrentTab;
   }
   return browser->OpenURL(new_params, std::move(navigation_handle_callback));
 }

@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/settings/android/java/src/org/chromium/components/browser_ui/settings/SettingsUtils.java b/components/browser_ui/settings/android/java/src/org/chromium/components/browser_ui/settings/SettingsUtils.java
-index 66ca55396b33f3114b614a4b20e8c453e8ddc3a7..0327ade91115acdd6a66442f426e9d0a1bcb7e3d 100644
+index 3f9e0fd1e4c3e34c83e8f5bdbc0329a14b349711..33b342547329d6eddd74cd909e777eb590f4b244 100644
 --- a/components/browser_ui/settings/android/java/src/org/chromium/components/browser_ui/settings/SettingsUtils.java
 +++ b/components/browser_ui/settings/android/java/src/org/chromium/components/browser_ui/settings/SettingsUtils.java
 @@ -147,7 +147,7 @@ public class SettingsUtils {

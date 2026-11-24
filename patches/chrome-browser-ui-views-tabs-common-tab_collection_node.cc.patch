@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_collection_node.cc b/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
-index 30479cd6255027baeb168f2c07e277f1f3d4eedb..be6e39d1c1aaadf2ab6e0ecf39af60ece52ae11f 100644
+index 0d651c18cf0a348fe63eb4ce322a2ceb8125e065..d0b0e8ace610c912fd875d47ee603569bde655eb 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
-@@ -27,6 +27,8 @@ TabCollectionNode::Type GetTypeFromNode(tabs::ConstChildPtr node_data_) {
+@@ -28,6 +28,8 @@ TabCollectionNode::Type GetTypeFromNode(tabs::ConstChildPtr node_data_) {
            node_data_)) {
      switch (std::get<tabs::ConstDanglingUntriagedTabCollection>(node_data_)
                  ->type()) {
@@ -11,7 +11,7 @@ index 30479cd6255027baeb168f2c07e277f1f3d4eedb..be6e39d1c1aaadf2ab6e0ecf39af60ec
        case tabs::TabCollection::Type::TABSTRIP:
          return TabCollectionNode::Type::TABSTRIP;
        case tabs::TabCollection::Type::PINNED:
-@@ -98,6 +100,8 @@ void TabCollectionNode::SetController(
+@@ -76,6 +78,8 @@ tabs::TabCollectionNodeHandle GetHandleFromNode(tabs::ConstChildPtr node_data) {
  std::unique_ptr<views::View> TabCollectionNode::CreateViewForNode(
      TabCollectionNode* node_for_view) {
    switch (node_for_view->type()) {

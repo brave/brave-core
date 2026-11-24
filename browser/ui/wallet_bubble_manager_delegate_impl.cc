@@ -45,7 +45,7 @@ class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView,
       WebUIContentsWrapper* contents_wrapper,
       const std::optional<gfx::Rect>& anchor_rect = std::nullopt,
       views::BubbleBorder::Arrow arrow = views::BubbleBorder::TOP_RIGHT)
-      : WebUIBubbleDialogView(anchor_view,
+      : WebUIBubbleDialogView(views::BubbleAnchor(anchor_view),
                               contents_wrapper->GetWeakPtr(),
                               anchor_rect,
                               arrow) {
