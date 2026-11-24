@@ -1779,6 +1779,11 @@ AIChatDatabase::DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
            << begin_time.value_or(base::Time()) << " to "
            << end_time.value_or(base::Time::Max());
 
+  // Workspace content is not web content, so it is never cleared along with
+  // browsing history.
+  static constexpr int kWorkspaceContentType =
+      std::to_underlying(mojom::ContentType::Workspace);
+
   // Collect the entries whose associated content is about to be cleared (only
   // rows that actually still hold content), so the caller can propagate the
   // change. This must run before the UPDATE below.
@@ -1788,14 +1793,16 @@ AIChatDatabase::DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
       " FROM associated_content"
       " WHERE (url IS NOT NULL OR title IS NOT NULL OR last_contents IS NOT "
       "NULL)"
+      "  AND content_type != ?"
       "  AND conversation_uuid IN ("
       "   SELECT conversation_uuid"
       "   FROM conversation_entry"
       "   WHERE date >= ? AND date <= ?)";
   sql::Statement select_statement(GetDB().GetUniqueStatement(kSelectQuery));
   CHECK(select_statement.is_valid());
-  select_statement.BindTime(0, begin_time.value_or(base::Time()));
-  select_statement.BindTime(1, end_time.value_or(base::Time::Max()));
+  select_statement.BindInt(0, kWorkspaceContentType);
+  select_statement.BindTime(1, begin_time.value_or(base::Time()));
+  select_statement.BindTime(2, end_time.value_or(base::Time::Max()));
   while (select_statement.Step()) {
     cleared.emplace_back(select_statement.ColumnString(0),
                          select_statement.ColumnString(1));
@@ -1806,19 +1813,21 @@ AIChatDatabase::DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
     return std::nullopt;
   }
 
-  // Set any associated content url, title and content to NULL where
-  // conversation had any entry between begin_time and end_time.
+  // Set any non-workspace associated content url, title and content to NULL
+  // where conversation had any entry between begin_time and end_time.
   static constexpr char kQuery[] =
       "UPDATE associated_content"
       " SET url=NULL, title=NULL, last_contents=NULL"
-      " WHERE conversation_uuid IN ("
+      " WHERE content_type != ?"
+      " AND conversation_uuid IN ("
       "  SELECT conversation_uuid"
       "  FROM conversation_entry"
       "  WHERE date >= ? AND date <= ?)";
   sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
   CHECK(statement.is_valid());
-  statement.BindTime(0, begin_time.value_or(base::Time()));
-  statement.BindTime(1, end_time.value_or(base::Time::Max()));
+  statement.BindInt(0, kWorkspaceContentType);
+  statement.BindTime(1, begin_time.value_or(base::Time()));
+  statement.BindTime(2, end_time.value_or(base::Time::Max()));
   if (!statement.Run()) {
     DVLOG(0) << "Failed to execute 'associated_content' update statement for "
                 "DeleteAssociatedWebContent: "

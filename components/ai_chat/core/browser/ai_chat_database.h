@@ -130,8 +130,9 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
 
   // Clears (sets to NULL) the url/title/last_contents of associated content for
   // every conversation that has an entry dated within [begin_time, end_time].
-  // Returns the entries whose content was actually cleared, so callers can
-  // propagate the change; returns std::nullopt if the operation failed.
+  // Workspace content is not web content and is left untouched. Returns the
+  // entries whose content was actually cleared, so callers can propagate the
+  // change; returns std::nullopt if the operation failed.
   virtual std::optional<std::vector<ClearedAssociatedContentEntry>>
   DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
                              std::optional<base::Time> end_time);
