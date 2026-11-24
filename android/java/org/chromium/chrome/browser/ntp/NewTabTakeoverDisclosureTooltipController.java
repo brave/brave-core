@@ -64,13 +64,14 @@ class NewTabTakeoverDisclosureTooltipController {
             View rootView,
             PrefService prefService,
             BooleanSupplier isRewardsEnabled,
-            TooltipFactory tooltipFactory) {
+            TooltipFactory tooltipFactory,
+            boolean shouldAutoDisplay) {
         mRootView = rootView;
         mPrefService = prefService;
         mIsRewardsEnabled = isRewardsEnabled;
         mTooltipFactory = tooltipFactory;
 
-        if (canAutoDisplay()) {
+        if (shouldAutoDisplay && canAutoDisplay()) {
             ViewTreeObserver.OnGlobalLayoutListener listener =
                     () -> {
                         if (findDisclosureLabelIfVisible() == null) {

@@ -145,6 +145,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private @Nullable Wallpaper mWallpaper;
 
     private @Nullable NewTabTakeoverDisclosureTooltipController mDisclosureTooltipController;
+    private boolean mShouldAutoDisplayNewTabTakeoverDisclosureTooltip;
 
     private @Nullable PopupWindowTooltip mTopSitesTooltip;
     private boolean mTopSitesTooltipScrolledAway;
@@ -374,7 +375,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         setNtpViews();
 
         // Show recent tabs dialog for variants B, C, and D if NTP was shown after inactivity
-        maybeShowRecentTabsDialog();
+        if (shouldShowRecentTabsSnackbar()) {
+            showRecentTabsSnackbar();
+        }
 
         if (mMvTilesContainerLayout != null) {
             scheduleTopSitesTooltipCheck();
@@ -1268,6 +1271,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         mWindowAndroid = windowAndroid;
+        mShouldAutoDisplayNewTabTakeoverDisclosureTooltip = !shouldShowRecentTabsSnackbar();
 
         assert mMvTilesContainerLayout != null : "Something has changed in the upstream!";
 
@@ -1351,7 +1355,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                             this,
                             UserPrefs.get(mProfile),
                             BraveRewardsHelper::isRewardsEnabled,
-                            NewTabTakeoverDisclosureTooltip::new);
+                            NewTabTakeoverDisclosureTooltip::new,
+                            mShouldAutoDisplayNewTabTakeoverDisclosureTooltip);
         } else if (!isNewTabTakeoverShown && mDisclosureTooltipController != null) {
             mDisclosureTooltipController.dismiss();
             mDisclosureTooltipController = null;
@@ -1577,13 +1582,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     }
 
     /**
-     * Shows the recent tabs snackbar if variant B is active, and either OPTION_NEW_TAB or
-     * OPTION_NEW_TAB_AFTER_INACTIVITY is selected. For OPTION_NEW_TAB_AFTER_INACTIVITY, only shows
-     * when app was returned from background after inactivity threshold.
+     * Returns whether the recent tabs snackbar should be shown, which is when variant B is active,
+     * and either OPTION_NEW_TAB or OPTION_NEW_TAB_AFTER_INACTIVITY is selected. For
+     * OPTION_NEW_TAB_AFTER_INACTIVITY, only when app was returned from background after inactivity
+     * threshold.
      */
-    private void maybeShowRecentTabsDialog() {
+    private boolean shouldShowRecentTabsSnackbar() {
         if (!BraveFreshNtpHelper.isEnabled() || !BraveFreshNtpHelper.getVariant().equals("B")) {
-            return;
+            return false;
         }
 
         // Check if OPTION_NEW_TAB or OPTION_NEW_TAB_AFTER_INACTIVITY is selected
@@ -1593,19 +1599,17 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         if (openingScreenOption
                         != BravePreferenceKeys.BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY
                 && openingScreenOption != BravePreferenceKeys.BRAVE_OPENING_SCREEN_OPTION_NEW_TAB) {
-            return;
+            return false;
         }
 
         // Check the flag set by BraveReturnToChromeUtil when NTP was shown
         // For OPTION_NEW_TAB_AFTER_INACTIVITY, flag is set only after inactivity threshold
         // For OPTION_NEW_TAB, flag is set whenever NTP is shown at startup
-        boolean shouldShowSnackbar =
-                ChromeSharedPreferences.getInstance()
-                        .readBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, false);
-        if (!shouldShowSnackbar) {
-            return;
-        }
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, false);
+    }
 
+    private void showRecentTabsSnackbar() {
         // Clear the flag so snackbar is only shown once
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, false);
