@@ -22,13 +22,14 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Drives the collapsed URL chip shown while the Brave bottom toolbar is scrolled away.
+ * Drives the collapsed URL chip shown while the browser controls are scrolled away.
  *
  * <p>Chromium's browser controls hide the toolbar (and with it the URL) completely while the user
- * scrolls down. This mediator shows a small "collapsed chip" whenever the toolbar is not on screen,
- * so that the page's host (minus trivial subdomains, e.g. "search.brave.com") remains visible at
- * all times, matching Safari / Brave iOS behavior. The chip is display-only: tapping it re-shows
- * the browser controls, so the chip never becomes a navigation or spoofing surface.
+ * scrolls down, on phones and tablets alike. This mediator shows a small "collapsed chip" whenever
+ * the controls are not on screen, so that the page's host (minus trivial subdomains, e.g.
+ * "search.brave.com") remains visible at all times, matching Safari / Brave iOS behavior. The chip
+ * is display-only: tapping it re-shows the browser controls, so the chip never becomes a
+ * navigation or spoofing surface.
  */
 @NullMarked
 class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Observer {
@@ -84,6 +85,11 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
     }
 
     void onUrlSpecChanged() {
+        updateChip();
+    }
+
+    /** Re-evaluates chip visibility when the page enters or exits fullscreen. */
+    void onFullscreenChanged() {
         updateChip();
     }
 

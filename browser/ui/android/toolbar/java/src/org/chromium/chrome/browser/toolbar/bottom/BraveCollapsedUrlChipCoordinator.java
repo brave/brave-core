@@ -36,6 +36,7 @@ import org.chromium.cc.input.BrowserControlsState;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabObserver;
 import org.chromium.chrome.browser.toolbar.R;
 import org.chromium.components.url_formatter.UrlFormatter;
 import org.chromium.content_public.browser.NavigationHandle;
@@ -47,10 +48,10 @@ import org.chromium.url.GURL;
 import java.util.function.Supplier;
 
 /**
- * Hosts the collapsed URL chip overlay shown while the Brave bottom toolbar is scrolled away.
+ * Hosts the collapsed URL chip overlay shown while the browser controls are scrolled away.
  *
- * <p>The chip is an overlay on the activity content: as the bottom toolbar (with the URL bar /
- * search pill) slides off screen, a small translucent pill fades in at the bottom of the screen
+ * <p>The chip is an overlay on the activity content: as the browser controls (the toolbar with
+ * the URL bar) slide off screen, a small translucent pill fades in at the bottom of the screen
  * showing the page's host minus trivial subdomains. Tapping it re-shows the browser controls. The
  * chip is never a navigation surface, so it cannot be used to spoof or open URLs.
  */
@@ -62,10 +63,24 @@ public class BraveCollapsedUrlChipCoordinator {
     private final View mChipView;
     private final TextView mChipTextView;
     private final NullableObservableSupplier<Tab> mTabSupplier;
+    private final NullableObservableSupplier<Boolean> mFullscreenSupplier;
     private final Callback<@Nullable Tab> mTabObserverCallback = this::onTabChanged;
+    private final Callback<@Nullable Boolean> mFullscreenObserverCallback =
+            this::onFullscreenChanged;
     private final BrowserStateBrowserControlsVisibilityDelegate mVisibilityDelegate;
 
     private @Nullable WebContentsObserver mWebContentsObserver;
+    private @Nullable Tab mObservedTab;
+
+    /** Re-observes the tab when its content changes (e.g. WebContents swaps). */
+    private final TabObserver mTabContentObserver =
+            new TabObserver() {
+                @Override
+                public void onContentChanged(Tab tab) {
+                    observeTab(tab);
+                    mMediator.onUrlSpecChanged();
+                }
+            };
 
     /** The current page background color; drives the chip's inverted styling. */
     private int mLastContentColor = Color.TRANSPARENT;
@@ -88,6 +103,12 @@ public class BraveCollapsedUrlChipCoordinator {
     /** Maximum sampling cadence for long-idle content. */
     private static final long CONTENT_SAMPLE_IDLE_MAX_INTERVAL_MS = 1000;
 
+    /** Consecutive unchanged samples after which sampling stops until the content changes. */
+    private static final int CONTENT_SAMPLE_SETTLED_TICKS = 30;
+
+    /** Minimum height, in px, of a below-chip strip for sampling to be meaningful. */
+    private static final int CONTENT_SAMPLE_MIN_STRIP_PX = 8;
+
     /** Height of the content strip sampled below the chip, in px. */
     private static final int CONTENT_SAMPLE_HEIGHT_PX = 40;
 
@@ -105,6 +126,12 @@ public class BraveCollapsedUrlChipCoordinator {
     private @MonotonicNonNull Bitmap mSampleBitmap;
     private boolean mSampling;
     private int mStableSampleCount;
+
+    /**
+     * Incremented on every start/stop so in-flight {@link android.view.PixelCopy} callbacks from a
+     * superseded sampling run are ignored instead of racing a new run on the shared bitmap.
+     */
+    private int mSampleGeneration;
 
     /** Re-lays-out the chip when the window bounds change (e.g. entering split view). */
     private final ComponentCallbacks mComponentCallbacks =
@@ -125,10 +152,11 @@ public class BraveCollapsedUrlChipCoordinator {
             BrowserControlsSizer sizer,
             NullableObservableSupplier<Tab> tabSupplier,
             Supplier<Boolean> enabledSupplier,
-            Supplier<Boolean> fullscreenSupplier,
+            NullableObservableSupplier<Boolean> fullscreenSupplier,
             BrowserStateBrowserControlsVisibilityDelegate visibilityDelegate) {
         mActivity = activity;
         mTabSupplier = tabSupplier;
+        mFullscreenSupplier = fullscreenSupplier;
         mVisibilityDelegate = visibilityDelegate;
 
         ViewGroup parent = activity.findViewById(android.R.id.content);
@@ -147,12 +175,15 @@ public class BraveCollapsedUrlChipCoordinator {
 
                     @Override
                     public void setChipVisible(boolean visible) {
+                        // Per-offset-change calls collapse to real transitions only; this keeps
+                        // repeated show() calls from restarting sampling or re-reading insets.
+                        if (visible == mChipShowing) return;
+                        // One gesture-nav read per show transition: the check bottoms out in
+                        // an insets query and all consumers use the same value. Reads happen
+                        // only here (decor view attached, insets valid); querying during early
+                        // init, before attach, crashes on null root insets.
+                        boolean hasGestureNavigation = hasGestureNavigation();
                         if (visible) {
-                            // One gesture-nav read per show transition: the check bottoms out in
-                            // an insets query and all three consumers use the same value. Reads
-                            // happen only here (decor view attached, insets valid); querying
-                            // during early init, before attach, crashes on null root insets.
-                            boolean hasGestureNavigation = hasGestureNavigation();
                             if (mChipView.getVisibility() != View.VISIBLE) {
                                 applyNavigationBarInset(hasGestureNavigation);
                                 applyChipColors();
@@ -172,7 +203,7 @@ public class BraveCollapsedUrlChipCoordinator {
                         // hide is a no-op unless it was actually hidden; skip the insets query
                         // otherwise (it may be invalid during early init).
                         if (visible || mPillHidden) {
-                            setGesturePillHidden(visible, hasGestureNavigation());
+                            setGesturePillHidden(visible, hasGestureNavigation);
                         }
                     }
 
@@ -186,6 +217,9 @@ public class BraveCollapsedUrlChipCoordinator {
 
         parent.addView(mChipView);
         mActivity.registerComponentCallbacks(mComponentCallbacks);
+        // NONE: no notify-on-add; the mediator's first updateChip() already covers the current
+        // state, and the window may not be attached yet (insets queries would crash).
+        mFullscreenSupplier.addSyncObserver(mFullscreenObserverCallback);
 
         mMediator =
                 new BraveCollapsedUrlChipMediator(
@@ -207,6 +241,7 @@ public class BraveCollapsedUrlChipCoordinator {
     public void destroy() {
         stopContentSampling();
         mActivity.unregisterComponentCallbacks(mComponentCallbacks);
+        mFullscreenSupplier.removeObserver(mFullscreenObserverCallback);
         mTabSupplier.removeObserver(mTabObserverCallback);
         observeTab(null);
         if (mPillHidden) {
@@ -222,7 +257,21 @@ public class BraveCollapsedUrlChipCoordinator {
         mMediator.onUrlSpecChanged();
     }
 
+    private void onFullscreenChanged(@Nullable Boolean fullscreen) {
+        if (fullscreen == null) return;
+        mMediator.onFullscreenChanged();
+        // The page handed immersive mode back; restore the pill it didn't take (the chip's
+        // own hide path defers the restore while the page is in fullscreen).
+        if (!fullscreen && mPillHidden && !mChipShowing) {
+            setGesturePillHidden(false, hasGestureNavigation());
+        }
+    }
+
     private void observeTab(@Nullable Tab tab) {
+        if (mObservedTab != null) {
+            mObservedTab.removeObserver(mTabContentObserver);
+            mObservedTab = null;
+        }
         if (mWebContentsObserver != null) {
             mWebContentsObserver.observe(null);
             mWebContentsObserver = null;
@@ -232,6 +281,8 @@ public class BraveCollapsedUrlChipCoordinator {
             applyChipColors();
             return;
         }
+        tab.addObserver(mTabContentObserver);
+        mObservedTab = tab;
         WebContents webContents = tab.getWebContents();
         if (webContents == null) {
             mLastContentColor = Color.TRANSPARENT;
@@ -245,12 +296,14 @@ public class BraveCollapsedUrlChipCoordinator {
                     @Override
                     public void didStartLoading(GURL url) {
                         onUrlSpecChanged();
+                        restartContentSampling();
                     }
 
                     @Override
                     public void didFinishNavigationInPrimaryMainFrame(
                             NavigationHandle navigationHandle) {
                         onUrlSpecChanged();
+                        restartContentSampling();
                     }
 
                     @Override
@@ -259,6 +312,7 @@ public class BraveCollapsedUrlChipCoordinator {
                         if (color == mLastContentColor) return;
                         mLastContentColor = color;
                         applyChipColors();
+                        restartContentSampling();
                     }
                 };
     }
@@ -282,7 +336,15 @@ public class BraveCollapsedUrlChipCoordinator {
         if (spec == null) return null;
         GURL url = gurlForSpec(spec);
         if (url == null) return null;
-        return UrlFormatter.formatUrlForDisplayOmitSchemePathAndTrivialSubdomains(url);
+        String host = UrlFormatter.formatUrlForDisplayOmitSchemePathAndTrivialSubdomains(url);
+        // Keep the omnibox's security cue: a bare host alone would present a trusted-looking
+        // identity for plaintext HTTP pages.
+        if ("http".equals(url.getScheme())) {
+            return mActivity.getString(R.string.brave_collapsed_url_chip_not_secure)
+                    + " "
+                    + host;
+        }
+        return host;
     }
 
     private @Nullable GURL gurlForSpec(@Nullable String spec) {
@@ -339,6 +401,9 @@ public class BraveCollapsedUrlChipCoordinator {
      */
     private void setGesturePillHidden(boolean hidden, boolean hasGestureNavigation) {
         if (!hasGestureNavigation || mPillHidden == hidden) return;
+        // While the page owns immersive mode (e.g. fullscreen video), leave the bars alone;
+        // onFullscreenChanged restores the pill once the page hands the state back.
+        if (!hidden && Boolean.TRUE.equals(mFullscreenSupplier.get())) return;
         Window window = mActivity.getWindow();
         WindowInsetsControllerCompat controller =
                 WindowCompat.getInsetsController(window, window.getDecorView());
@@ -380,16 +445,25 @@ public class BraveCollapsedUrlChipCoordinator {
      * Chromium exposes that decision, so it is re-implemented locally.
      */
     private void startContentSampling(boolean hasGestureNavigation) {
-        if (!hasGestureNavigation || mSampling) return;
+        if (!hasGestureNavigation) return;
         mSampling = true;
         mStableSampleCount = 0;
+        mSampleGeneration++;
+        // Supersede any pending tick from a previous run; the generation counter keeps
+        // in-flight PixelCopy callbacks from the old run from racing this one.
+        mSamplerHandler.removeCallbacks(mSampleRunnable);
         mSamplerHandler.post(mSampleRunnable);
     }
 
     private void stopContentSampling() {
-        if (!mSampling) return;
         mSampling = false;
+        mSampleGeneration++;
         mSamplerHandler.removeCallbacks(mSampleRunnable);
+    }
+
+    /** Restarts settled sampling when the content under the chip is known to have changed. */
+    private void restartContentSampling() {
+        if (mChipShowing) startContentSampling(hasGestureNavigation());
     }
 
     private void sampleContentUnderChip() {
@@ -397,20 +471,26 @@ public class BraveCollapsedUrlChipCoordinator {
             mSampling = false;
             return;
         }
+        final int generation = mSampleGeneration;
         Window window = mActivity.getWindow();
         View decor = window.getDecorView();
         int[] loc = new int[2];
         mChipView.getLocationInWindow(loc);
         int chipLeft = loc[0];
-        int chipBottom = loc[1] + mChipView.getHeight();
+        int chipTop = loc[1];
+        int chipBottom = chipTop + mChipView.getHeight();
         int width = mChipView.getWidth();
-        int top = Math.min(chipBottom + CONTENT_SAMPLE_GAP_PX, decor.getHeight() - 1);
-        int bottom = Math.min(top + CONTENT_SAMPLE_HEIGHT_PX, decor.getHeight());
-        Rect strip = new Rect(chipLeft, top, chipLeft + width, bottom);
-        if (strip.isEmpty()) {
+        // Prefer the content strip just below the chip. When the chip sits at the
+        // screen's bottom edge the strip collapses to nothing; PixelCopy reads the
+        // composed window (chip included), so there is no valid region to sample —
+        // skip the tick and keep the current palette.
+        int stripTop = Math.min(chipBottom + CONTENT_SAMPLE_GAP_PX, decor.getHeight() - 1);
+        int stripBottom = Math.min(stripTop + CONTENT_SAMPLE_HEIGHT_PX, decor.getHeight());
+        if (stripBottom - stripTop < CONTENT_SAMPLE_MIN_STRIP_PX) {
             rescheduleSampling();
             return;
         }
+        Rect strip = new Rect(chipLeft, stripTop, chipLeft + width, stripBottom);
         if (mSampleBitmap == null) {
             mSampleBitmap =
                     Bitmap.createBitmap(
@@ -422,8 +502,16 @@ public class BraveCollapsedUrlChipCoordinator {
                     strip,
                     mSampleBitmap,
                     copyResult -> {
+                        // Superseded by a start/stop on another chain; never touch the shared
+                        // bitmap or spawn a duplicate chain.
+                        if (generation != mSampleGeneration) return;
                         if (mSampling && copyResult == PixelCopy.SUCCESS) {
                             applySampledContentColor(mSampleBitmap);
+                            if (mStableSampleCount >= CONTENT_SAMPLE_SETTLED_TICKS) {
+                                // Content settled; navigation/color hooks restart sampling.
+                                mSampling = false;
+                                return;
+                            }
                         }
                         rescheduleSampling();
                     },
