@@ -4,7 +4,8 @@ The **Shields settings origin** is the key Brave passes to `IsBraveShieldsEnable
 `GetAdControlType`, and `GetCosmeticFilteringControlType`. It is an origin URL
 (scheme, host, and effective port), or `GURL()` for profile defaults. It answers
 whose preferences to read. It does not decide whether an adblock rule considers
-a request first-party, nor which site to use when evaluating adblock rules. In the examples below, A, B, and C are distinct HTTPS origins.
+a request first-party, nor which site to use when evaluating adblock rules. In
+the examples below, A, B, and C are distinct HTTPS origins.
 
 ## Main-frame navigations
 
