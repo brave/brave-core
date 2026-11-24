@@ -29,6 +29,16 @@ For a cross-document navigation without redirects, the boundaries are:
   `!IsErrorPage()` for B, fetches by the B document use B. If the navigation is
   canceled without committing, fetches by the A document continue to use A.
 
+### Redirects
+
+When a main-frame navigation goes from A to B and B redirects to C, the
+request to B uses B and the request to C uses C. Re-evaluate the destination
+at each redirect, including a redirect back to B; a same-origin hop keeps the
+same key. For a fetch or an embedded-frame navigation owned by A, all hops
+use A. A worker request that starts with the profile-default key keeps it.
+If Back results in a server redirect, the newly committed destination uses
+its own key rather than the one saved on the old entry.
+
 ## Requests made by documents
 
 A document's fetches and WebSockets use the settings of its **outermost
@@ -95,6 +105,16 @@ commit host belonging to that navigation or at commit; never install it on a
 host that still serves the previous document. Discard uncommitted navigation
 state on cancellation.
 
+## History and session restore
+
+When restoring the original entry without a server redirect, use the same Shields
+settings key it had before, whether restored by Back/Forward or by session
+restore after browser shutdown. When the key is a site origin, persist that
+origin in the navigation entry's session data. When the document used profile
+defaults, store no site origin and continue to use defaults on restore. The
+key must be available by the first Shields lookup for the restored document;
+look up the current preferences rather than restoring an old filtering decision.
+
 ## Worker requests
 
 Dedicated, shared, and service worker requests must retain the top-level
@@ -111,7 +131,7 @@ default numeric value of that field denotes `kMainFrame`.
 - `ShieldsSettingsOrigin` owns the selection rules and the result. Callers must
   not assemble candidate origins or write navigation, document, or history
   storage. Lifecycle writes belong on `BraveShieldsWebContentsObserver`.
-- `BraveRequestInfo::shields_settings_origin_` is a snapshot for **one request**.
+- `BraveRequestInfo::shields_settings_origin_` is a snapshot for **one request stage**.
   At the first settings lookup its `GetURL()` must already be the key specified
   above. `GetShieldsSettingsOrigin` and `tab_origin()` may read it; neither may
   calculate it. An empty value means use defaults, not try another source.
@@ -127,7 +147,9 @@ settings. `BraveProxyingURLLoaderFactory::InProgressRequest` and
 request owner supplies a typed `ShieldsSettingsOrigin` snapshot to `MakeCTX`
 on both ownership variants. `MakeCTX` assigns that value directly to
 `shields_settings_origin_`. Recreating a context for the same request stage
-must not re-read a now-navigated frame or opener.
+must not re-read a now-navigated frame or opener. On a redirect, pass the
+updated request to `ShieldsSettingsOrigin::ForRedirect` before constructing
+the next stage’s context.
 
 The following rules specify the snapshot's source. Implement them inside
 `ShieldsSettingsOrigin`, using the existing request/factory context; the proxy
@@ -164,6 +186,11 @@ successful unfiltered control so a failed request alone cannot pass the test.
   for `/new`. With a rule that strips a query parameter, the parameter must be
   stripped when filtering is enabled on B only and retained when enabled on A
   only. A successful fetch from B after commit does not test this lookup.
+- **Redirects:** For a main-frame navigation, a document fetch, and an embedded
+  frame navigation, observe what each server actually receives. Reverse the
+  preferences and verify every hop, including the return to the first host.
+  Separately verify the default-key worker request and the document committed
+  after a history redirect.
 - **Initial popup:** Issue the measured request from the initial empty main-frame
   document before a later document commits. A fetch from a child added to the
   popup or from a committed `about:blank` document tests a different case.
@@ -176,6 +203,10 @@ successful unfiltered control so a failed request alone cannot pass the test.
   A blocked. It must follow A in both cases, with defaults set oppositely.
 - **History:** Verify destruction of the original document, navigate the opener
   elsewhere, and observe filtering after Back restores the same entry.
+- **Session restore:** Close the opener of an inherited `about:blank` popup,
+  shut down the browser, and restore the session. Verify that a request from
+  the restored popup follows the original site's current settings. Repeat for
+  a popup that inherited profile defaults.
 - **Unit tests:** Keep input/output tests for selection and precedence, including
   missing or opaque isolation origins. Use browser tests when the claim is that
   Chromium generates a particular request or delivers a callback at a particular
@@ -184,21 +215,20 @@ successful unfiltered control so a failed request alone cannot pass the test.
 ## Regression checklist
 
 For each change to origin selection, check the expected result in each row.
-Run `AdBlockServiceSettingsOriginTest.*` in `brave_browser_tests` on Linux;
-individual tests have platform guards. Test names below are relative to that
-suite in [the browser test source](../browser/brave_shields/ad_block_service_browsertest.cc).
-The last Linux run passed 28 of 30; the two unverified rows are requirements,
-not evidence that the branch satisfies them.
+Run `AdBlockServiceSettingsOriginTest.*:AdBlockServiceSettingsOriginRestartTest.*`
+from `brave_browser_tests` on Linux. Names below are relative to the first
+suite, except the restart pairs, which belong to the second. Some tests have
+platform guards. See [browser test source](../browser/brave_shields/ad_block_service_browsertest.cc).
 
 | Scenario and expected result | Browser test |
 | --- | --- |
-| Navigate A → B: filtering the initial HTTP request must follow B, not A. **Unverified:** the filtered navigation failed before the server-echo assertion. | `MainFrameNavigationUsesDestinationSettings` |
+| Navigate A → B: filtering the initial HTTP request must follow B, not A. | `MainFrameNavigationUsesDestinationSettings` |
 | Fetch from child B under A: use A. | `SubFrameUsesTopFrameSettings` |
 | Fetch from a nested cross-site frame: use outermost A. | `NestedFrameUsesTopFrameSettings` |
 | Sandboxed HTTP document with opaque DOM origin: use its HTTP site's settings. | `SandboxedMainFrameUsesUrlSettings` |
 | Sandboxed A navigates itself to `about:blank`: retain A despite the opaque committed origin. | `SandboxedPageNavigatesItselfToAboutBlank` |
 | Sandboxed B under A navigates the top frame to `about:blank`: use A, not B or defaults. | `SandboxedChildNavigatesTopToAboutBlank` |
-| B under A calls `window.open()`: a request from the initial empty document must use A. **Unverified:** the initial-blank assertion failed; the test also attempts its fetch from a child rather than from that document. | `InitialEmptyPopupUsesOpenerPageSettings` |
+| B under A calls `window.open()`: a request from the initial empty document must use A. | `InitialEmptyPopupUsesOpenerPageSettings` |
 | B under A opens `about:blank`: the popup itself fetches using A even though its DOM origin is B. | `AboutBlankPopupFromSubFrameUsesOpenerPageSettings` |
 | C embedded in that popup fetches: use A, not opener frame B or child C. | `FrameInAboutBlankPopupFromSubFrameUsesOpenerPageSettings` |
 | Load a child frame at C in that popup: the `$subdocument` rule for the **frame navigation itself** follows A. | `FrameNavigationInAboutBlankPopupFromSubFrameUsesOpenerPageSettings` |
@@ -222,6 +252,31 @@ not evidence that the branch satisfies them.
 | Service worker WebSocket from B under A: use A. | `ServiceWorkerWebSocketInSubFrameUsesTopFrameSettings` |
 | Shared worker fetch from B embedded in a `data:` top frame: use defaults, not B. | `SharedWorkerInOpaqueTopFrameUsesDefaultSettings` |
 | Shared worker WebSocket from B embedded in a `data:` top frame: use defaults, not B. | `SharedWorkerWebSocketInOpaqueTopFrameUsesDefaultSettings` |
+| Main-frame redirect B → C → B: each request follows its own destination. | `MainFrameRedirectUsesEachDestination` |
+| A fetches through B → C → B: each hop uses A. | `FetchRedirectKeepsDocumentSettings` |
+| A navigates an embedded frame through B → C → B: each hop uses A. | `SubframeRedirectKeepsOutermostSettings` |
+| The shared worker under a default-key top frame still follows defaults at the redirected destination. | `SharedWorkerRedirectKeepsProfileDefaults` |
+| Back to B redirects to C: the committed document uses C. | `HistoryRedirectCommitsDestinationSettings` |
+| Opening a popup directly at C uses C for the initial network request. | `DirectPopupNavigationUsesDestinationSettings` |
+| Navigating an inherited popup to C uses C for the navigation itself. | `NavigationAwayFromInheritedPopupUsesDestinationSettings` |
+| After the opener commits another site, the loaded popup still uses A. | `InheritedPopupAfterOpenerCrossSiteCommit` |
+| The popup itself uses A after its opener is destroyed. | `InheritedPopupAfterOpenerDestruction` |
+| After the intermediate opener closes, its inheriting popup keeps A. | `InheritedPopupAfterIntermediateOpenerDestruction` |
+| After the intermediate opener navigates away, its inheriting popup keeps A. | `InheritedPopupAfterIntermediateOpenerNavigation` |
+| Removing the opening frame leaves the popup's key at A. | `InheritedPopupAfterOpeningFrameRemoval` |
+| Navigating the opening frame leaves the popup's key at A. | `InheritedPopupAfterOpeningFrameNavigation` |
+| The opener's pushState leaves the popup's key at A. | `InheritedPopupAfterOpenerPushState` |
+| The opener's fragment change leaves the popup's key at A. | `InheritedPopupAfterOpenerFragmentChange` |
+| The opener's same-site commit leaves the popup's key at A. | `InheritedPopupAfterOpenerSameSiteCommit` |
+| The outgoing document continues to use A before the next document commits. | `OutgoingDocumentDuringCrossSiteNavigation` |
+| Canceling a pending navigation leaves the inherited document using A. | `InheritedDocumentDuringCanceledNavigation` |
+| Back activates the same cached sandboxed HTTP document and preserves A. | `RetainedSandboxedDocumentKeepsSettingsOnBack` |
+| With BFCache enabled and the opener gone, Back recreates the non-cacheable inherited document with its saved key. | `RecreatedInheritedPageAfterOpenerDestruction` |
+| A non-opaque inherited popup navigating itself to blank retains the outermost key. | `NonOpaquePopupNavigatesItselfToInheritedBlank` |
+| An inheriting popup copies defaults from the opening page. | `PopupCopiesDefaultSettingsFromOpeningPage` |
+| A recreated history document restores its saved default key. | `RecreatedInheritedPageRestoresDefaultSettings` |
+| Close the opener and restart; the restored popup follows current settings for A. | `PRE_RestoresInheritedSiteAfterRestart`, `RestoresInheritedSiteAfterRestart` |
+| Repeat with an inherited default key; the restored popup follows current profile defaults. | `PRE_RestoresInheritedDefaultsAfterRestart`, `RestoresInheritedDefaultsAfterRestart` |
 
 ### Supplied-input and compatibility checks
 
@@ -241,8 +296,5 @@ and [request context tests](../browser/net/url_context_unittest.cc).
 | Frameless WebSocket: a request initiator alone does not supply a settings URL; neither does an opaque top-frame isolation origin. | `FramelessRequestIgnoresInitiatorForTabOrigin`, `FramelessRequestWithOpaqueTopFrameHasNoTabOrigin` |
 | Initiator bookkeeping is independent: use the worker factory initiator when omitted; preserve an original initiator over a replacement request initiator. | `WorkerRequestFallsBackToFactoryInitiator`, `OriginalInitiatorOverridesRequestInitiator` |
 | Preserve raw opaque top-frame origins with and without precursors. Preserve the separate rule inputs for missing, non-opaque, and opaque initiators and for main-frame, subframe, and subresource requests. These are not settings-origin fallback rules. | `KeepsOpaqueTopFrameOrigin`, `KeepsOpaqueTopFrameOriginWithoutPrecursor`, `RequestInitiatorForAdblockRules*`, `FirstPartyOriginForAdblockRules*` |
-
-The browser checklist does not establish opener closure, opening-frame removal,
-changes to the opener via the same-document History API, cancellation before
-commit, or restoration of a *retained* BFCache document. Opener navigation and
-history recreation have dedicated tests; neither substitutes for those cases.
+| Rebuilding a request context uses the supplied snapshot. A stored default wins over conflicting isolation; main-frame navigation without isolation uses defaults. | `RebuiltContextUsesSuppliedSnapshot`, `StoredDefaultsOverrideConflictingIsolation`, `MainFrameWithoutIsolationUsesDefaults` |
+| Redirects refresh trusted main-frame keys, including unchanged, default-to-site and site-to-default inputs. Other requests retain their captured key, including defaults. | `RedirectOnlyReplacesMainFrameKey`, `RedirectPreservesOrReplacesDefaultKey` |
