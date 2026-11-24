@@ -194,6 +194,23 @@ $ git commit -m " Update patches from Chromium 119.7049.17 to Chromium 120.0.705
 $ pnpm run init
 ```
 
+### Reviewing new callers of the system network context
+
+When `package.json` changes the Chromium version, `pnpm run presubmit` warns
+about each upstream file that newly calls the system network context. Every
+profile shares that context, and it ignores the Tor proxy, so a request made
+there for a Private or Tor window leaks out of it. The warning doesn't fail
+presubmit, so read the summary for it. For each file it lists, check that the
+request is browser-wide, not made for a profile or page, then add the file to
+`build/system_network_context_callers.txt`. A request made for a profile needs a
+fix, such as using that profile's storage partition.
+
+To run the check again after editing the list, or outside a version change:
+
+```shell
+$ pnpm run presubmit --check_system_network_context
+```
+
 ### Regenerating l18n strings
 
 This last step consists of regenarating all string files that are replicated in
