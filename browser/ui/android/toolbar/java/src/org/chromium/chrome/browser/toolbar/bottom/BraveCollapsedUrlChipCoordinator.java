@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.text.BidiFormatter;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.PixelCopy;
@@ -268,9 +269,17 @@ public class BraveCollapsedUrlChipCoordinator {
     }
 
     private void observeTab(@Nullable Tab tab) {
-        if (mObservedTab != null) {
-            mObservedTab.removeObserver(mTabContentObserver);
-            mObservedTab = null;
+        if (mObservedTab != tab) {
+            // Guarded so a same-tab content change (e.g. a WebContents swap) does not mutate the
+            // tab's observer list while it is iterating its observers.
+            if (mObservedTab != null) {
+                mObservedTab.removeObserver(mTabContentObserver);
+                mObservedTab = null;
+            }
+            if (tab != null) {
+                tab.addObserver(mTabContentObserver);
+                mObservedTab = tab;
+            }
         }
         if (mWebContentsObserver != null) {
             mWebContentsObserver.observe(null);
@@ -281,8 +290,6 @@ public class BraveCollapsedUrlChipCoordinator {
             applyChipColors();
             return;
         }
-        tab.addObserver(mTabContentObserver);
-        mObservedTab = tab;
         WebContents webContents = tab.getWebContents();
         if (webContents == null) {
             mLastContentColor = Color.TRANSPARENT;
@@ -338,13 +345,11 @@ public class BraveCollapsedUrlChipCoordinator {
         if (url == null) return null;
         String host = UrlFormatter.formatUrlForDisplayOmitSchemePathAndTrivialSubdomains(url);
         // Keep the omnibox's security cue: a bare host alone would present a trusted-looking
-        // identity for plaintext HTTP pages.
+        // identity for plaintext HTTP pages. The placeholder keeps word order in RTL locales.
         if ("http".equals(url.getScheme())) {
-            return mActivity.getString(R.string.brave_collapsed_url_chip_not_secure)
-                    + " "
-                    + host;
+            return mActivity.getString(R.string.brave_collapsed_url_chip_not_secure, host);
         }
-        return host;
+        return BidiFormatter.getInstance().unicodeWrap(host);
     }
 
     private @Nullable GURL gurlForSpec(@Nullable String spec) {
@@ -392,12 +397,17 @@ public class BraveCollapsedUrlChipCoordinator {
      * transition.
      */
     private boolean hasGestureNavigation() {
+        if (!mChipView.isAttachedToWindow()) return false;
         return UiUtils.isGestureNavigationMode(mActivity.getWindow());
     }
 
+    private int mSavedSystemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT;
+
     /**
      * Hides the system gesture pill while the chip shows (only one bottom indicator on screen) and
-     * restores it after; no-op on 3-button nav.
+     * restores it after; no-op on 3-button nav. The previous system-bar behavior is saved and
+     * restored instead of forcing a default, so behavior set by other components (e.g.
+     * FullscreenManager's edge-to-edge handling) survives.
      */
     private void setGesturePillHidden(boolean hidden, boolean hasGestureNavigation) {
         if (!hasGestureNavigation || mPillHidden == hidden) return;
@@ -408,11 +418,12 @@ public class BraveCollapsedUrlChipCoordinator {
         WindowInsetsControllerCompat controller =
                 WindowCompat.getInsetsController(window, window.getDecorView());
         if (hidden) {
+            mSavedSystemBarsBehavior = controller.getSystemBarsBehavior();
             controller.setSystemBarsBehavior(
                     WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
             controller.hide(WindowInsetsCompat.Type.navigationBars());
         } else {
-            controller.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_DEFAULT);
+            controller.setSystemBarsBehavior(mSavedSystemBarsBehavior);
             controller.show(WindowInsetsCompat.Type.navigationBars());
         }
         mPillHidden = hidden;
