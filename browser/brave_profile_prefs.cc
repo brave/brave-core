@@ -418,6 +418,11 @@ void RegisterProfilePrefsForMigration(
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterProfilePrefsForMigration(registry);
 #endif
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Added 2026-11
+  registry->RegisterBooleanPref(brave_tabs::kVerticalTabsEnabled, false);
+#endif
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

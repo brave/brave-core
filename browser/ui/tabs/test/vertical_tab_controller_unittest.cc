@@ -29,6 +29,8 @@ class VerticalTabControllerUnitTest : public testing::Test {
   void SetUp() override {
     tabs::RegisterProfilePrefs(pref_service_.registry());
     brave_tabs::RegisterBraveProfilePrefs(pref_service_.registry());
+    pref_service_.registry()->RegisterBooleanPref(
+        brave_tabs::kVerticalTabsEnabled, false);
     focus_mode::RegisterProfilePrefs(pref_service_.registry());
   }
 
