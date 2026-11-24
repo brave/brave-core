@@ -18,6 +18,7 @@
 #include "chrome/browser/transition_manager/full_browser_transition_manager.h"
 #include "components/image_fetcher/core/cache/image_data_store.h"
 #include "components/image_fetcher/core/cache/image_store_types.h"
+#include "components/image_fetcher/core/image_fetcher_types.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "services/network/public/cpp/cross_thread_pending_shared_url_loader_factory.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -118,7 +119,7 @@ class EmptyImageDataStore : public image_fetcher::ImageDataStore {
   }
   bool IsInitialized() override { return initialized_; }
   void SaveImage(const std::string& key,
-                 std::string image_data,
+                 image_fetcher::ImageData image_data,
                  bool needs_transcoding) override {}
   void LoadImage(const std::string& key,
                  bool needs_transcoding,
