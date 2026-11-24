@@ -11,6 +11,7 @@
 
 #include "base/functional/bind.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/leo_workspace_util.h"
@@ -19,7 +20,10 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"
 #include "mojo/public/cpp/base/big_buffer.h"
+#include "net/http/http_response_headers.h"
 #include "printing/buildflags/buildflags.h"
+#include "services/network/public/cpp/header_util.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -162,6 +166,20 @@ void LeoWorkspacePageHandler::PrintFileToPdf(
   if (!file_frame) {
     std::move(callback).Run(
         base::unexpected("The file to print is not being displayed"));
+    return;
+  }
+  // The viewer's service worker answers a file it can't read (e.g. one that
+  // doesn't exist) with an error page, which must not be printed as if it were
+  // the file.
+  const network::mojom::URLResponseHead* response_head =
+      file_frame->GetLastResponseHead();
+  const int response_code = response_head && response_head->headers
+                                ? response_head->headers->response_code()
+                                : 0;
+  if (!network::IsSuccessfulStatus(response_code)) {
+    std::move(callback).Run(base::unexpected(
+        base::StrCat({"The file to print could not be loaded (HTTP ",
+                      base::NumberToString(response_code), ")"})));
     return;
   }
 

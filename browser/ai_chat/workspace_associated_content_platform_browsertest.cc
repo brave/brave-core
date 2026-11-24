@@ -267,6 +267,19 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentPlatformBrowserTest,
     EXPECT_EQ(base::unexpected("The file to print is not being displayed"),
               printed.Get());
   }
+
+  // A file the viewer couldn't load is displayed as the service worker's error
+  // page, which must not be printed in its place.
+  DisplayFile(web_contents, content->page_url(), "missing", "missing.html");
+  {
+    base::test::TestFuture<base::expected<mojo_base::BigBuffer, std::string>>
+        printed;
+    handler->PrintFileToPdf("missing", /*landscape=*/false,
+                            printed.GetCallback());
+    EXPECT_EQ(
+        base::unexpected("The file to print could not be loaded (HTTP 404)"),
+        printed.Get());
+  }
 }
 #endif  // BUILDFLAG(ENABLE_PRINTING)
 
