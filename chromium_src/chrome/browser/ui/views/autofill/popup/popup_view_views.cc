@@ -16,11 +16,13 @@ namespace autofill {
 
 namespace {
 
-// Password rows in off-the-record profiles, including Tor windows, keep their
-// placeholder icon. `PasswordFaviconLoaderImpl` fetches favicons through the
-// browser-wide system network context or through the original profile, so the
-// request would leave the off-the-record profile's network partition, and in a
-// Tor window it would bypass the Tor proxy.
+// Password rows in off-the-record profiles, including Tor windows, load their
+// favicon from the site's `/favicon.ico` through the profile's
+// `ImageFetcherService`, which uses the profile's own network context. The
+// Google favicon server path goes through `LargeIconService`, which off-the-
+// record profiles share with the original profile, so the request would leave
+// the off-the-record profile's network partition, and in a Tor window it would
+// bypass the Tor proxy.
 class OffTheRecordPasswordFaviconLoader : public PasswordFaviconLoaderImpl {
  public:
   using PasswordFaviconLoaderImpl::PasswordFaviconLoaderImpl;
@@ -29,7 +31,10 @@ class OffTheRecordPasswordFaviconLoader : public PasswordFaviconLoaderImpl {
             base::CancelableTaskTracker* task_tracker,
             OnLoadSuccess on_success,
             OnLoadFail on_fail) override {
-    std::move(on_fail).Run();
+    Suggestion::FaviconDetails details = favicon_details;
+    details.can_be_requested_from_google = false;
+    PasswordFaviconLoaderImpl::Load(details, task_tracker,
+                                    std::move(on_success), std::move(on_fail));
   }
 };
 
