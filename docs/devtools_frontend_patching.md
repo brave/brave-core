@@ -39,3 +39,29 @@ hardlinks that counterpart next to the upstream file, replacing `.ts` with
 Instead, you should import the `{filename}.patch.js` file (See step #2 above).
 `chromium_src/third_party/devtools-frontend/src/scripts/build/generate_devtools_grd.py`
 will automatically add the `.patch.js` file into the resource bundle.
+
+## Testing
+
+Brave's DevTools changes are unit tested with upstream's Mocha and Karma setup
+(see `//third_party/devtools-frontend/src/test/unit/README.md`), run in the
+Brave build.
+
+1. Add the test next to the file it tests, as
+   `//brave/third_party/devtools-frontend/src/front_end/{path}/Foo.test.ts`. A
+   test of a `chromium_src` override is named after the override as compiled:
+   `Foo.patch.test.ts` for `Foo.patch.ts`.
+2. List it in the `sources.gni` next to it, and add that list to the directory's
+   `unittests` target with plaster, as for sources.
+3. Run it:
+   ```sh
+   pnpm run test devtools_frontend_unittests [<test file or dir> ...]
+   ```
+   Without a test, it runs all of Brave's. Upstream's tests can be named too
+   (`front_end/panels/network`), which runs them against Brave's overrides.
+   Other options go to `dt test` (`--grep=<text>`, `--debug`). On hosts that
+   restrict unprivileged user namespaces (Ubuntu 23.10+), add `--no-sandbox`.
+
+A test reaches a `chromium_src` override through the module's entry point
+(`./network.js`), which exports the patched class. Test Brave's additions to a
+view against upstream's `DEFAULT_VIEW` rather than a view stub: a stub never
+renders the elements Brave adds.

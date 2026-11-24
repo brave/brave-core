@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import fs from 'fs-extra'
+import { globSync } from 'node:fs'
 import path from 'node:path'
 import type { Config } from './config.ts'
 
@@ -43,6 +44,36 @@ export function getTestBinary(config: Config, suite: string) {
     testBinary = path.join(`${testBinary}.exe`)
   }
   return path.join(config.outputDir, testBinary)
+}
+
+export const devtoolsFrontendTestSuite = 'devtools_frontend_unittests'
+
+export function getBrowserBinary(config: Config): string {
+  const binary = path.join(config.outputDir, 'brave')
+  if (process.platform === 'win32') {
+    return `${binary}.exe`
+  }
+  if (process.platform === 'darwin') {
+    return fs
+      .readFileSync(`${binary}_helper`, 'utf-8')
+      .trim()
+      .replace(/\\ /g, ' ')
+  }
+  return binary
+}
+
+// Brave's own DevTools frontend tests, as paths in the devtools-frontend
+// checkout, where the build hardlinks them next to upstream's.
+export function getBraveDevtoolsFrontendTests(config: Config): string[] {
+  const braveDevtoolsDir = path.join(
+    config.braveCoreDir,
+    'third_party',
+    'devtools-frontend',
+    'src',
+  )
+  return globSync('front_end/**/*.test.ts', { cwd: braveDevtoolsDir })
+    .map((test) => test.split(path.sep).join('/'))
+    .sort()
 }
 
 export function getChromiumTestsSuites(config: Config) {

@@ -128,6 +128,20 @@ group("brave_network_tests") {
              "json")
 }
 
+if (!is_android && !is_ios) {
+  # Upstream's DevTools frontend test runner, with the browser it runs the tests
+  # in. See //brave/docs/devtools_frontend_patching.md.
+  group("devtools_frontend_unittests") {
+    testonly = true
+    data_deps = [
+      "//brave",
+      "//third_party/devtools-frontend/src/test:run",
+      "//third_party/devtools-frontend/src/test:unittests",
+      "//third_party/devtools-frontend/src/test/api:devtools_api_tests",
+    ]
+  }
+}
+
 # This target serves as a canonical place to define all code that has to be
 # buildable in all platforms in a single build run.
 group("all") {
@@ -141,6 +155,7 @@ group("all") {
 
   if (!is_android && !is_ios) {
     deps += [
+      ":devtools_frontend_unittests",
       "//brave/test:brave_interactive_ui_tests",
       "//brave/test:brave_network_audit_tests",
       "//chrome/test:browser_tests",
