@@ -11,9 +11,8 @@ substitutions:
       first seed fetch reports a country.
     regex:
       re_pattern:
-        '(ChromeFeatureListCreator::SetupInitialPrefs\(\)
-        \{.*?)(\n#endif[^\n]*\n\})'
-      re_flags: [DOTALL]
+        '(initial_seed =
+        first_run::ExtractVariationsSeedFromInitialPrefs\(\s*\*installer_initial_prefs_\);)'
       replace: |-
         \1
-          MaybeSetVariationsCountry(compressed_variations_seed, *local_state_);\2
+              MaybeSetVariationsCountry(initial_seed.get(), *local_state_);
