@@ -218,7 +218,7 @@ For each change to origin selection, check the expected result in each row.
 Run `AdBlockServiceSettingsOriginTest.*:AdBlockServiceSettingsOriginRestartTest.*`
 from `brave_browser_tests` on Linux. Names below are relative to the first
 suite, except the restart pairs, which belong to the second. Some tests have
-platform guards. See [browser test source](../browser/brave_shields/ad_block_service_browsertest.cc).
+platform guards. See [browser test source](../../browser/brave_shields/ad_block_service_browsertest.cc).
 
 | Scenario and expected result | Browser test |
 | --- | --- |
@@ -283,8 +283,8 @@ platform guards. See [browser test source](../browser/brave_shields/ad_block_ser
 Run `ShieldsSettingsOriginTest.*:BraveRequestInfo*Test.*` in `brave_unit_tests`.
 The tests below identify inputs that a browser test cannot reliably force. They
 also preserve the distinction between the settings URL and the origins used by
-adblock rules. Names refer to [the frame fallback test](../browser/brave_shields/shields_settings_origin_unittest.cc)
-and [request context tests](../browser/net/url_context_unittest.cc).
+adblock rules. Names refer to [the frame fallback test](../../browser/brave_shields/shields_settings_origin_unittest.cc)
+and [request context tests](../../browser/net/url_context_unittest.cc).
 
 | Inputs or invariant | Unit tests |
 | --- | --- |
