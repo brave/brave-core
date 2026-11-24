@@ -85,7 +85,7 @@ class ProtectionStatsTabHelper: TabObserver, @preconcurrency ProtectionStatsTabH
   /// content blocker stats and the global Shields stats for any resource that
   /// is determined to be blocked.
   func handleBlockedResources(_ resources: [BlockedResource], sourceURL: URL) {
-    guard let tab, let currentTabURL = tab.visibleURL else {
+    guard let tab, let currentTabURL = tab.lastCommittedURL else {
       return
     }
 
@@ -146,7 +146,7 @@ class ProtectionStatsTabHelper: TabObserver, @preconcurrency ProtectionStatsTabH
         let subframeBaseDomains = (tab.currentPageData?.allSubframeURLs ?? [])
           .compactMap(\.baseDomain)
         guard let sourceURLBaseDomain = sourceURL.baseDomain,
-          tab.visibleURL?.baseDomain == sourceURLBaseDomain
+          tab.lastCommittedURL?.baseDomain == sourceURLBaseDomain
             || subframeBaseDomains.contains(sourceURLBaseDomain) == true
         else {
           return
