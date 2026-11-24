@@ -28,6 +28,10 @@ class BraveUserAgentExceptions {
   ~BraveUserAgentExceptions();
   static BraveUserAgentExceptions* GetInstance();  // singleton
 
+  static BraveUserAgentExceptions CreateForTesting() {
+    return BraveUserAgentExceptions();
+  }
+
   void OnComponentReady(const base::FilePath&);
   bool CanShowBrave(const GURL& url);
   void SetIsReadyForTesting() { is_ready_ = true; }

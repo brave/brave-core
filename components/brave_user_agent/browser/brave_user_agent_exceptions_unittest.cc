@@ -7,7 +7,6 @@
 
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/task/current_thread.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_user_agent/common/features.h"
@@ -17,32 +16,31 @@
 namespace brave_user_agent {
 
 class BraveUserAgentExceptionsUnitTest : public testing::Test {
- public:
-  BraveUserAgentExceptionsUnitTest() {}
-
  protected:
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+  BraveUserAgentExceptions exceptions_ =
+      BraveUserAgentExceptions::CreateForTesting();
 };
 
-TEST_F(BraveUserAgentExceptionsUnitTest, TestCanShowBraveDomainsNotLoaded) {
-  // BraveUserAgentExceptions returns nullptr when feature is disabled.
-  base::test::ScopedFeatureList features;
-  features.InitAndEnableFeature(brave_user_agent::features::kUseBraveUserAgent);
+TEST_F(BraveUserAgentExceptionsUnitTest, SingletonFollowsFeatureFlag) {
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndDisableFeature(features::kUseBraveUserAgent);
+    EXPECT_EQ(nullptr, BraveUserAgentExceptions::GetInstance());
+  }
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kUseBraveUserAgent);
+  EXPECT_NE(nullptr, BraveUserAgentExceptions::GetInstance());
+}
 
-  auto* brave_user_agent_exceptions = BraveUserAgentExceptions::GetInstance();
+TEST_F(BraveUserAgentExceptionsUnitTest, TestCanShowBraveDomainsNotLoaded) {
   // Excepted domains not loaded; default to true.
   GURL url = GURL("https://brave.com");
-  ASSERT_TRUE(brave_user_agent_exceptions->CanShowBrave(url));
+  ASSERT_TRUE(exceptions_.CanShowBrave(url));
 }
 
 TEST_F(BraveUserAgentExceptionsUnitTest, TestCanShowBraveDomainsLoaded) {
-  // BraveUserAgentExceptions returns nullptr when feature is disabled.
-  base::test::ScopedFeatureList features;
-  features.InitAndEnableFeature(brave_user_agent::features::kUseBraveUserAgent);
-
-  auto* brave_user_agent_exceptions = BraveUserAgentExceptions::GetInstance();
-
   // Load excepted domains to hide brave
   const char* excepted_domains = R""""(
     brave.com
@@ -53,29 +51,19 @@ TEST_F(BraveUserAgentExceptionsUnitTest, TestCanShowBraveDomainsLoaded) {
   base::FilePath excepted_domains_path =
       temp_dir_.GetPath().AppendASCII("brave-checks.txt");
   ASSERT_TRUE(base::WriteFile(excepted_domains_path, excepted_domains));
-  brave_user_agent_exceptions->OnComponentReady(temp_dir_.GetPath());
-  // run for callback to OnExceptedDomainsLoaded
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return !brave_user_agent_exceptions->CanShowBrave(
-        GURL("https://brave.com"));
-  }));
+  exceptions_.OnComponentReady(temp_dir_.GetPath());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !exceptions_.CanShowBrave(GURL("https://brave.com")); }));
 
   // Test excepted domains (hide we are Brave)
-  ASSERT_FALSE(
-      brave_user_agent_exceptions->CanShowBrave(GURL("https://brave.com")));
-  ASSERT_FALSE(brave_user_agent_exceptions->CanShowBrave(
-      GURL("https://brave.com/privacy")));
-  ASSERT_FALSE(
-      brave_user_agent_exceptions->CanShowBrave(GURL("https://site.example")));
+  ASSERT_FALSE(exceptions_.CanShowBrave(GURL("https://brave.com")));
+  ASSERT_FALSE(exceptions_.CanShowBrave(GURL("https://brave.com/privacy")));
+  ASSERT_FALSE(exceptions_.CanShowBrave(GURL("https://site.example")));
   // Test other domains (show we are Brave)
-  ASSERT_TRUE(brave_user_agent_exceptions->CanShowBrave(
-      GURL("https://adifferentsite.example")));
-  ASSERT_TRUE(
-      brave_user_agent_exceptions->CanShowBrave(GURL("https://youtube.com")));
-  ASSERT_TRUE(
-      brave_user_agent_exceptions->CanShowBrave(GURL("https://github.io")));
-  ASSERT_TRUE(
-      brave_user_agent_exceptions->CanShowBrave(GURL("https://github.com")));
+  ASSERT_TRUE(exceptions_.CanShowBrave(GURL("https://adifferentsite.example")));
+  ASSERT_TRUE(exceptions_.CanShowBrave(GURL("https://youtube.com")));
+  ASSERT_TRUE(exceptions_.CanShowBrave(GURL("https://github.io")));
+  ASSERT_TRUE(exceptions_.CanShowBrave(GURL("https://github.com")));
 }
 
 }  // namespace brave_user_agent
