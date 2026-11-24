@@ -172,17 +172,18 @@ void AddSandboxedFrame(const content::ToRenderFrameHost& parent,
 // Adds a subframe loading csp_rules.html from `host` to the main frame of
 // `contents`, and expects a `$csp` rule to have blocked its inline script only
 // if `blocked` is true.
-void ExpectCspRuleBlockedFrame(net::EmbeddedTestServer* server,
-                               content::WebContents* contents,
-                               std::string_view host,
-                               bool blocked) {
+// Like `ExpectCspRuleBlockedFrame`, but loads the frame from `url`, which may
+// redirect to `host`.
+void ExpectCspRuleBlockedFrameAt(content::WebContents* contents,
+                                 const GURL& url,
+                                 std::string_view host,
+                                 bool blocked) {
   content::RenderFrameHost* main_frame = contents->GetPrimaryMainFrame();
   size_t index = 0;
   while (content::ChildFrameAt(main_frame, index)) {
     ++index;
   }
-  ASSERT_NO_FATAL_FAILURE(
-      AddFrame(main_frame, server->GetURL(host, "/csp_rules.html")));
+  ASSERT_NO_FATAL_FAILURE(AddFrame(main_frame, url));
   content::RenderFrameHost* frame = content::ChildFrameAt(main_frame, index);
   ASSERT_TRUE(frame);
   ASSERT_EQ(host, frame->GetLastCommittedOrigin()
@@ -191,6 +192,14 @@ void ExpectCspRuleBlockedFrame(net::EmbeddedTestServer* server,
   ASSERT_TRUE(ExecJs(frame, "window.allLoaded"));
   EXPECT_EQ(true, EvalJs(frame, "!!window.loadedNonceScript"));
   EXPECT_EQ(!blocked, EvalJs(frame, "!!window.loadedUnsafeInlineScript"));
+}
+
+void ExpectCspRuleBlockedFrame(net::EmbeddedTestServer* server,
+                               content::WebContents* contents,
+                               std::string_view host,
+                               bool blocked) {
+  ExpectCspRuleBlockedFrameAt(contents, server->GetURL(host, "/csp_rules.html"),
+                              host, blocked);
 }
 
 // Calls `window.open(url)` from `opener` and returns the popup once it loads.
@@ -2556,6 +2565,90 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleOpaqueTopFrame) {
   ASSERT_TRUE(ExecJs(frame, "window.allLoaded"));
   EXPECT_EQ(true, EvalJs(frame, "!!window.loadedNonceScript"));
   EXPECT_EQ(false, EvalJs(frame, "!!window.loadedUnsafeInlineScript"));
+}
+
+// A main frame redirected from b.com to c.com uses c.com as first party, not
+// the a.com page that started the navigation or the b.com redirect source.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleMainFrameRedirect) {
+  // The first-party rule blocks inline scripts. The third-party rule omits
+  // 'self', so it would also block the same-party script.
+  UpdateAdBlockInstanceWithRules(
+      "||c.com^$~third-party,csp=script-src 'nonce-abcdef' 'unsafe-eval' "
+      "'self'\n"
+      "||c.com^$third-party,csp=script-src 'nonce-abcdef' 'unsafe-eval'");
+
+  NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+  const GURL final_url =
+      embedded_test_server()->GetURL("c.com", "/csp_rules.html");
+  ASSERT_TRUE(content::NavigateToURLFromRenderer(
+      web_contents(),
+      embedded_test_server()->GetURL("b.com",
+                                     "/cross-site/c.com/csp_rules.html"),
+      final_url));
+
+  content::WebContents* contents = web_contents();
+  ASSERT_TRUE(ExecJs(contents, "window.allLoaded"));
+  EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
+  EXPECT_EQ(true, EvalJs(contents, "!!window.loadedSamePartyScript"));
+  EXPECT_EQ(false, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+}
+
+// A frame redirected from b.com uses the a.com top frame as first party, not
+// the redirect source or the final URL.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleFrameRedirect) {
+  // Applied to third-party only.
+  UpdateAdBlockInstanceWithRules(
+      "||a.com^$third-party,csp=script-src 'nonce-abcdef' 'unsafe-eval' "
+      "'self'\n"
+      "||c.com^$third-party,csp=script-src 'nonce-abcdef' 'unsafe-eval' "
+      "'self'");
+
+  NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+  ASSERT_NO_FATAL_FAILURE(ExpectCspRuleBlockedFrameAt(
+      web_contents(),
+      embedded_test_server()->GetURL("b.com",
+                                     "/cross-site/c.com/csp_rules.html"),
+      "c.com", /*blocked=*/true));
+  ASSERT_NO_FATAL_FAILURE(ExpectCspRuleBlockedFrameAt(
+      web_contents(),
+      embedded_test_server()->GetURL("b.com",
+                                     "/cross-site/a.com/csp_rules.html"),
+      "a.com", /*blocked=*/false));
+}
+
+// A popup from a.com that redirects from b.com to a sandboxed c.com document
+// has an opaque origin derived from c.com, so its frames use c.com as first
+// party, not the opener or the redirect source.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleSandboxedPopupRedirect) {
+  // Applied to third-party only.
+  UpdateAdBlockInstanceWithRules(
+      "||a.com^$third-party,csp=script-src 'nonce-abcdef' 'unsafe-eval' "
+      "'self'\n"
+      "||b.com^$third-party,csp=script-src 'nonce-abcdef' 'unsafe-eval' "
+      "'self'\n"
+      "||c.com^$third-party,csp=script-src 'nonce-abcdef' 'unsafe-eval' "
+      "'self'");
+
+  NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+  content::WebContents* popup = OpenPopup(
+      web_contents(),
+      embedded_test_server()
+          ->GetURL("b.com", "/cross-site/c.com/csp_sandboxed_main_frame.html")
+          .spec());
+  ASSERT_EQ(
+      embedded_test_server()->GetURL("c.com", "/csp_sandboxed_main_frame.html"),
+      popup->GetPrimaryMainFrame()->GetLastCommittedURL());
+  const url::Origin& popup_origin =
+      popup->GetPrimaryMainFrame()->GetLastCommittedOrigin();
+  ASSERT_TRUE(popup_origin.opaque());
+  ASSERT_EQ("c.com", popup_origin.GetTupleOrPrecursorTupleIfOpaque().host());
+
+  ASSERT_NO_FATAL_FAILURE(ExpectCspRuleBlockedFrame(
+      embedded_test_server(), popup, "a.com", /*blocked=*/true));
+  ASSERT_NO_FATAL_FAILURE(ExpectCspRuleBlockedFrame(
+      embedded_test_server(), popup, "b.com", /*blocked=*/true));
+  ASSERT_NO_FATAL_FAILURE(ExpectCspRuleBlockedFrame(
+      embedded_test_server(), popup, "c.com", /*blocked=*/false));
 }
 
 // Verify that Content Security Policies from multiple `$csp` rules are
