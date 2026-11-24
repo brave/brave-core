@@ -31,9 +31,12 @@ namespace {
 
 // Mirrors Chromium's own desktop "request mobile/tablet site" user-agent
 // construction (chrome/browser/ui/browser_commands.cc,
-// SetAndroidOsForTabletSite()), but for phone form factor rather than tablet.
-constexpr char kOsOverrideForMobileSite[] = "Linux; Android 13; Mobile";
-constexpr char kChPlatformOverrideForMobileSite[] = "Android";
+// SetAndroidOsForTabletSite()) as OpenWebPanel() sets the UA override on a
+// new WebContents before its first navigation. If we use
+// SetAndroidOsForTabletSite(), we add extra cost - navigation first and then
+// reapply.
+constexpr char kOsOverrideForMobileSite[] = "Linux; Android 9; Chrome tablet";
+constexpr char kChPlatformOverrideForTabletSite[] = "Android";
 
 blink::UserAgentOverride BuildMobileUserAgentOverride() {
   blink::UserAgentOverride ua_override;
@@ -44,8 +47,8 @@ blink::UserAgentOverride BuildMobileUserAgentOverride() {
                                                        product);
   ua_override.ua_metadata_override = embedder_support::GetUserAgentMetadata();
   ua_override.ua_metadata_override->mobile = true;
-  ua_override.ua_metadata_override->form_factors = {blink::kMobileFormFactor};
-  ua_override.ua_metadata_override->platform = kChPlatformOverrideForMobileSite;
+  ua_override.ua_metadata_override->form_factors = {blink::kTabletFormFactor};
+  ua_override.ua_metadata_override->platform = kChPlatformOverrideForTabletSite;
   ua_override.ua_metadata_override->platform_version = std::string();
   return ua_override;
 }
