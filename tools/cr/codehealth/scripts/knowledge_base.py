@@ -65,12 +65,16 @@ regexes, compatible with the RE2 syntax upstream writes: write flags scoped,
 
 A repository's DIR_METADATA files scope `agentic_review` to their directory,
 inheriting from their ancestors, importing `mixins` and dropping
-`exclude_rules`, as `dirmd` computes them. Brave reviews its changes with two
-knowledge bases: its own, `docs/knowledge_base/rules`, which applies to every
-Brave file, and Chromium's, `agents/knowledge_base/rules`, which applies to
-each Brave file as `brave/<path>`, and to the upstream file it overrides
-(`chromium_src`, `rewrite/` plasters and `patches/`, through the lines the
-patch adds) under the upstream file's path and DIR_METADATA.
+`exclude_rules`, as `dirmd` computes them. Their rules can live beside the code
+they cover (`<dir>/knowledge_base/*.md`, as upstream's
+`net/device_bound_sessions` keeps them), outside any knowledge base.
+
+Brave reviews its changes with two knowledge bases: its own,
+`docs/knowledge_base/rules`, which applies to every Brave file, and Chromium's,
+`agents/knowledge_base/rules`, which applies to each Brave file as
+`brave/<path>`, and to the upstream file it overrides (`chromium_src`,
+`rewrite/` plasters and `patches/`, through the lines the patch adds) under the
+upstream file's path and DIR_METADATA.
 
     vpython3 tools/cr/codehealth/scripts/knowledge_base.py match [DIFF]
         [--head REV]
@@ -1250,8 +1254,14 @@ class _Lint:
             self._metadata(self._src, path.relative_to(self._src).as_posix())
         names: dict[str, str] = {}
         for path in sorted(files):
-            if path.endswith('.md') and any(
-                PurePosixPath(path).is_relative_to(root) for root in roots
+            # A rule kept beside the code a DIR_METADATA scopes it to, as
+            # upstream's net/device_bound_sessions/knowledge_base, is outside
+            # any knowledge base.
+            if path.endswith('.md') and (
+                path in named
+                or any(
+                    PurePosixPath(path).is_relative_to(root) for root in roots
+                )
             ):
                 self._rule(path, named, names)
         return self.problems

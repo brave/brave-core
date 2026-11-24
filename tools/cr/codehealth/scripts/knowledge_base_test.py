@@ -583,6 +583,54 @@ class ReviewTest(_FakeRepoTest):
         )
 
 
+class PathLocalRulesTest(_FakeRepoTest):
+    """Rules a Brave DIR_METADATA keeps beside the code it scopes them to, as
+    upstream's net/device_bound_sessions/knowledge_base."""
+
+    _RULE = 'components/foo/knowledge_base/check-foo.md'
+
+    def setUp(self):
+        super().setUp()
+        self.brave(self._RULE, _rule('components/foo/check-foo'))
+        self.brave(
+            'components/foo/DIR_METADATA',
+            'agentic_review {\n'
+            '  capability_groups {\n'
+            '    path_expression: "components/foo/.*\\\\.(?:cc|h)"\n'
+            f'    rules: "{self._RULE}"\n'
+            '  }\n'
+            '}\n',
+        )
+
+    def test_apply_only_under_their_directory(self):
+        matches = knowledge_base.review(
+            Change.parse(
+                _diff('components/foo/a.cc', '+x')
+                + _diff('components/bar/b.cc', '+y')
+            )
+        )
+        files = {m.rule.name: list(m.files) for m in matches}
+        self.assertEqual(
+            ['components/foo/a.cc'], files['components/foo/check-foo']
+        )
+
+    def test_are_linted(self):
+        self.assertEqual([], knowledge_base.lint())
+        self.brave(
+            self._RULE,
+            '---\nname: components/foo/check-foo\nrubric: design\n---\n\n'
+            'No paragraphs.\n',
+        )
+        self.assertEqual(
+            [
+                f'{self._RULE}: no `severity`',
+                f'{self._RULE}: no **Rule.** paragraph',
+                f'{self._RULE}: no **Why.** paragraph',
+            ],
+            knowledge_base.lint(),
+        )
+
+
 class LintTest(_FakeRepoTest):
     def test_problems(self):
         rules = 'docs/knowledge_base/rules/x'
