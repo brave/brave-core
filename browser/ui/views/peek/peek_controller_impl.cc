@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/callback_list.h"
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
@@ -46,6 +47,11 @@ class PeekControllerImpl::Peek : public PeekContents::Delegate,
                                                std::move(contents));
     CreateWidget();
     view_->SetWebContents(contents_->web_contents());
+    // A Peek belongs to its tab, so it goes when the tab is closed or moved to
+    // another window.
+    source_tab_detach_subscription_ =
+        source_tab.RegisterWillDetach(base::BindRepeating(
+            &Peek::OnSourceTabWillDetach, base::Unretained(this)));
   }
   Peek(const Peek&) = delete;
   Peek& operator=(const Peek&) = delete;
@@ -83,6 +89,14 @@ class PeekControllerImpl::Peek : public PeekContents::Delegate,
     }
     widget_->Show();
     view_->FocusContents();
+  }
+
+  void Hide() {
+    if (!IsVisible()) {
+      return;
+    }
+    widget_->Hide();
+    paint_as_active_lock_.reset();
   }
 
   void UpdateBounds() {
@@ -141,12 +155,18 @@ class PeekControllerImpl::Peek : public PeekContents::Delegate,
     PostControllerTask(&PeekControllerImpl::ClosePeek);
   }
 
+  void OnSourceTabWillDetach(tabs::TabInterface* tab,
+                             tabs::TabInterface::DetachReason reason) {
+    controller_->ClosePeek(*this);
+  }
+
   const raw_ref<PeekControllerImpl> controller_;
   const raw_ref<tabs::TabInterface> source_tab_;
   std::unique_ptr<PeekContents> contents_;
   std::unique_ptr<views::Widget> widget_;
   raw_ptr<PeekView> view_ = nullptr;
   std::unique_ptr<views::Widget::PaintAsActiveLock> paint_as_active_lock_;
+  base::CallbackListSubscription source_tab_detach_subscription_;
   base::WeakPtrFactory<Peek> weak_factory_{this};
 };
 
@@ -172,6 +192,12 @@ PeekView* PeekControllerImpl::peek_view_for_testing() {
 views::Widget* PeekControllerImpl::widget_for_testing() {
   Peek* peek = GetActivePeek();
   return peek ? peek->widget() : nullptr;
+}
+
+content::WebContents* PeekControllerImpl::GetWebContentsForTesting(
+    tabs::TabInterface& tab) {
+  Peek* peek = FindPeek(tab);
+  return peek ? peek->web_contents() : nullptr;
 }
 
 bool PeekControllerImpl::CanOpenFrom(content::WebContents* source) {
@@ -210,8 +236,10 @@ bool PeekControllerImpl::Open(content::WebContents& source,
   }
   content::WebContents* raw_contents = contents.get();
 
-  // One Peek at a time, so opening another replaces it.
-  peeks_.clear();
+  // A tab has one Peek, so opening another replaces it.
+  if (Peek* existing = FindPeek(source_tab)) {
+    ClosePeek(*existing);
+  }
   Peek& peek = *peeks_.emplace_back(
       std::make_unique<Peek>(*this, source_tab, std::move(contents)));
   if (source_tab.IsActivated()) {
@@ -247,8 +275,7 @@ void PeekControllerImpl::OnTabStripModelChanged(
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
   if (selection.active_tab_changed()) {
-    // A Peek goes when its tab is deactivated.
-    peeks_.clear();
+    UpdateVisibility();
   }
 }
 
@@ -293,6 +320,19 @@ PeekControllerImpl::Peek* PeekControllerImpl::FindPeek(
     }
   }
   return nullptr;
+}
+
+void PeekControllerImpl::UpdateVisibility() {
+  Peek* active_peek = GetActivePeek();
+  // Hide first, so two cards are never shown at once.
+  for (const auto& peek : peeks_) {
+    if (peek.get() != active_peek) {
+      peek->Hide();
+    }
+  }
+  if (active_peek) {
+    active_peek->Show(/*animate=*/false);
+  }
 }
 
 void PeekControllerImpl::ClosePeek(Peek& peek) {

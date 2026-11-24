@@ -36,8 +36,8 @@ class Widget;
 // contents area. A separate widget is needed because views can't paint above
 // the native web contents view on every platform.
 //
-// One Peek is open at a time, over the active tab. It goes when another tab
-// is activated.
+// Each tab can have one Peek. Only the active tab's is shown; the others are
+// hidden, with their pages kept, until their tab is active again.
 class PeekControllerImpl : public PeekController,
                            public TabStripModelObserver,
                            public views::ViewObserver,
@@ -52,6 +52,8 @@ class PeekControllerImpl : public PeekController,
   // The active tab's Peek view and widget.
   PeekView* peek_view_for_testing();
   views::Widget* widget_for_testing();
+  // The contents of `tab`'s Peek, shown or hidden.
+  content::WebContents* GetWebContentsForTesting(tabs::TabInterface& tab);
 
   // PeekController:
   bool CanOpenFrom(content::WebContents* source) override;
@@ -81,6 +83,9 @@ class PeekControllerImpl : public PeekController,
   Peek* GetActivePeek() const;
   Peek* FindPeek(const tabs::TabInterface& source_tab) const;
   Peek* FindPeek(const content::WebContents& peek_contents) const;
+
+  // Shows the active tab's Peek, if it has one, and hides the others.
+  void UpdateVisibility();
 
   // Destroys `peek` and its page.
   void ClosePeek(Peek& peek);

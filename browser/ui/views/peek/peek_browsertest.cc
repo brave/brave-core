@@ -44,6 +44,7 @@
 #include "content/public/browser/render_widget_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/storage_partition_config.h"
+#include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -306,16 +307,62 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ClickOutsideCardClosesPeek) {
   WaitForPeekClosed();
 }
 
-// A Peek is shown over its tab, so it goes when another tab is activated.
-IN_PROC_BROWSER_TEST_F(PeekBrowserTest, SwitchingTabsClosesPeek) {
+// A Peek belongs to its tab: switching away hides it, and switching back shows
+// the same page again.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, SwitchingTabsHidesAndRestoresPeek) {
+  AddTab();
+  const GURL url = GetURL("b.com", "/title2.html");
+  OpenPeek(url);
+  content::WebContents* contents = peek_contents();
+  views::Widget* widget = controller()->widget_for_testing();
+  ASSERT_TRUE(widget->IsVisible());
+
+  tab_strip_model()->ActivateTabAt(0);
+  EXPECT_FALSE(controller()->IsShowing());
+  EXPECT_FALSE(widget->IsVisible());
+  EXPECT_EQ(contents, controller()->GetWebContentsForTesting(
+                          *tab_strip_model()->GetTabAtIndex(1)));
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return contents->GetVisibility() == content::Visibility::HIDDEN;
+  }));
+
+  tab_strip_model()->ActivateTabAt(1);
+  ASSERT_TRUE(controller()->IsShowing());
+  EXPECT_EQ(contents, peek_contents());
+  EXPECT_EQ(widget, controller()->widget_for_testing());
+  EXPECT_TRUE(widget->IsVisible());
+  EXPECT_EQ(url, contents->GetLastCommittedURL());
+  EXPECT_EQ(2, tab_strip_model()->count());
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, EachTabKeepsItsOwnPeek) {
+  OpenPeek(GetURL("b.com", "/title1.html"));
+  content::WebContents* first = peek_contents();
+
+  AddTab();
+  OpenPeek(GetURL("c.com", "/title2.html"));
+  content::WebContents* second = peek_contents();
+  ASSERT_NE(first, second);
+
+  tab_strip_model()->ActivateTabAt(0);
+  EXPECT_EQ(first, peek_contents());
+  EXPECT_EQ(second, controller()->GetWebContentsForTesting(
+                        *tab_strip_model()->GetTabAtIndex(1)));
+
+  tab_strip_model()->ActivateTabAt(1);
+  EXPECT_EQ(second, peek_contents());
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ClosingSourceTabClosesHiddenPeek) {
   AddTab();
   OpenPeek(GetURL("b.com", "/title2.html"));
   content::WebContentsDestroyedWatcher destroyed(peek_contents());
-
   tab_strip_model()->ActivateTabAt(0);
+
+  tab_strip_model()->CloseWebContentsAt(1, TabCloseTypes::CLOSE_NONE);
   destroyed.Wait();
+  EXPECT_EQ(1, tab_strip_model()->count());
   EXPECT_FALSE(controller()->IsShowing());
-  EXPECT_EQ(2, tab_strip_model()->count());
 }
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpeningAnotherPeekReplacesIt) {
