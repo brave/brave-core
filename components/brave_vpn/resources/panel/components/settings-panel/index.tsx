@@ -25,6 +25,11 @@ function SettingsPanel(props: Props) {
   const autoReconnectEnabled = useSelector((state) => state.autoReconnectEnabled)
   const smartProxyRoutingEnabled = useSelector((state) => state.smartProxyRoutingEnabled)
 
+  const [allowLanTraffic, setAllowLanTraffic] = React.useState({
+    available: false,
+    allowed: true
+  })
+
   React.useEffect(() => {
     getPanelBrowserAPI()
       .serviceHandler.getAutoReconnectState()
@@ -32,10 +37,16 @@ function SettingsPanel(props: Props) {
         setAutoReconnectAvailable(available)
         dispatch(Actions.autoReconnectStateChanged(enabled))
       })
+    getPanelBrowserAPI().serviceHandler.getAllowLanTraffic().then(setAllowLanTraffic)
   }, [dispatch])
 
   const handleClick = (entry: ManageURLType) => {
     getPanelBrowserAPI().panelHandler.openVpnUI(entry)
+  }
+
+  const handleAllowLanTrafficChange = ({ checked }: { checked: boolean }) => {
+    setAllowLanTraffic({ ...allowLanTraffic, allowed: checked })
+    getPanelBrowserAPI().serviceHandler.allowLanTraffic(checked)
   }
 
   function handleKeyDown(
@@ -91,6 +102,33 @@ function SettingsPanel(props: Props) {
                   onChange={handleAutoReconnectChange}
                   size='small'
                   aria-label={getLocale(S.BRAVE_VPN_RECONNECT_AUTOMATICALLY)}
+                />
+              </Styles.Setting>
+            </>
+          )}
+          {allowLanTraffic.available && (
+            <>
+              <Styles.Setting
+                onClick={
+                  e => handleAllowLanTrafficChange({
+                    checked: !allowLanTraffic.allowed
+                  })
+                }
+              >
+                <Styles.StyledIcon name='hierarchy-structure'></Styles.StyledIcon>
+                <Styles.SettingLabelBox>
+                  <Styles.SettingLabel>
+                    {getLocale(S.BRAVE_VPN_ALLOW_LAN_TRAFFIC)}
+                  </Styles.SettingLabel>
+                <Styles.SettingDesc>
+                  {getLocale(S.BRAVE_VPN_ALLOW_LAN_TRAFFIC_DESC)}
+                </Styles.SettingDesc>
+                </Styles.SettingLabelBox>
+                <Toggle
+                  checked={allowLanTraffic.allowed}
+                  onChange={handleAllowLanTrafficChange}
+                  size='small'
+                  aria-label={getLocale(S.BRAVE_VPN_ALLOW_LAN_TRAFFIC)}
                 />
               </Styles.Setting>
             </>
