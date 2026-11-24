@@ -11,8 +11,9 @@ import os.log
 public final class SessionTabGroup: NSManagedObject, CRUD {
   @NSManaged public var title: String
   @NSManaged public var index: Int32
+  @NSManaged public var color: Int16
+  @NSManaged public var collapsed: Bool
   @NSManaged private(set) public var groupId: UUID
-
   @NSManaged private(set) public var sessionWindow: SessionWindow?
   @NSManaged private(set) public var sessionTabs: Set<SessionTab>?
 
@@ -31,6 +32,11 @@ public final class SessionTabGroup: NSManagedObject, CRUD {
   @objc
   private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
     super.init(entity: entity, insertInto: context)
+  }
+
+  /// `color` when it is a known `TabGroupColorId`, otherwise grey.
+  public var resolvedColor: Int16 {
+    (0...8).contains(color) ? color : 0
   }
 
   public init(
@@ -52,6 +58,8 @@ public final class SessionTabGroup: NSManagedObject, CRUD {
     self.index = index
     self.groupId = groupId
     self.title = title
+    self.color = 0
+    self.collapsed = false
   }
 
   public static var tabGroupCount: Int {
