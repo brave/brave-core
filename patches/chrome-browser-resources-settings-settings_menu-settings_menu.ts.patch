@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/resources/settings/settings_menu/settings_menu.ts b/chrome/browser/resources/settings/settings_menu/settings_menu.ts
+index 1323457cd9314b62e9235633e628ac072b281a17..6a8acad04d853fb52874f766c9a58ccb2cc03342 100644
+--- a/chrome/browser/resources/settings/settings_menu/settings_menu.ts
++++ b/chrome/browser/resources/settings/settings_menu/settings_menu.ts
+@@ -189,11 +189,6 @@ export class SettingsMenuElement extends SettingsMenuElementBase {
+         route, /* dynamicParams */ undefined, /* removeSearch */ true);
+   }
+ 
+-  protected onExtensionsLinkClick_() {
+-    chrome.metricsPrivate.recordUserAction(
+-        'SettingsMenu_ExtensionsLinkClicked');
+-  }
+-
+   protected onAutofillClick_() {
+     this.metricsBrowserProxy_.recordAutofillSettingsReferrer(
+         'Autofill.YourSavedInfoSettingsPage.VisitReferrer',

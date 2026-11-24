@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/resources/settings/performance_page/performance_page.ts b/chrome/browser/resources/settings/performance_page/performance_page.ts
+index a04020a3502d9628d6386d09ab339b74576b40ee..c450fc99cf5fba3d1e9acb79fe549c00ef0b1ca6 100644
+--- a/chrome/browser/resources/settings/performance_page/performance_page.ts
++++ b/chrome/browser/resources/settings/performance_page/performance_page.ts
+@@ -84,16 +84,6 @@ export class SettingsPerformancePageElement extends
+     }
+   }
+ 
+-  protected onDiscardRingChange_() {
+-    this.metricsProxy_.recordDiscardRingTreatmentEnabledChanged(
+-        PrefService.getInstance().getPref<boolean>(DISCARD_RING_PREF).value);
+-  }
+-
+-  protected onDiscardRingTreatmentSubLabelLinkClicked_() {
+-    OpenWindowProxyImpl.getInstance().openUrl(
+-        loadTimeData.getString('discardRingTreatmentLearnMoreUrl'));
+-  }
+-
+   protected onPerformanceInterventionSubLabelLinkClicked_() {
+     OpenWindowProxyImpl.getInstance().openUrl(
+         loadTimeData.getString('performanceInterventionLearnMoreUrl'));

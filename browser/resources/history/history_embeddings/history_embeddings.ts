@@ -147,7 +147,7 @@ export class BraveHistoryEmbeddingsElement extends BraveHistoryEmbeddingsElement
 
   // Whether the query gets an embeddings search: the profile's
   // HistoryEmbeddingsService was built, and the query has enough words.
-  protected shouldSearch_(): boolean {
+  private shouldSearch_(): boolean {
     if (!this.enabled_ || !this.searchQuery) {
       return false
     }

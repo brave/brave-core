@@ -13,3 +13,18 @@ substitutions:
     regex:
       pattern: 'protected accessor hasScreenReader_:'
       replace: 'private accessor hasScreenReader_:'
+
+  - description: |-
+      Exempt the handlers of the controls Brave removes from the lint.
+
+      Brave's mangler removes the image labels toggle and the captions row, so
+      `@webui-eslint/lit-member-visibility` rejects their handlers. Making them
+      private would leave them and their imports unused, which TypeScript
+      rejects.
+    count: 2
+    regex:
+      re_pattern:
+        '^( *)(protected (?:onA11yImageLabelsChange_|onCaptionsClick_)\()'
+      re_flags: [MULTILINE]
+      replace:
+        '\1// eslint-disable-next-line @webui-eslint/lit-member-visibility\n\1\2'

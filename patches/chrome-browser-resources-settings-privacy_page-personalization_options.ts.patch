@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index 6cc29cab6cccdf25908fd532859a5052f9d59e3f..9a49810e96e3d40d58b2722ba87f5e73ed6c4249 100644
+index 6cc29cab6cccdf25908fd532859a5052f9d59e3f..70064008b8c50159bde5e50e328c2337f2262b24 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 @@ -59,8 +59,10 @@ import {PrivacyPageBrowserProxyImpl} from './privacy_page_browser_proxy.js';
@@ -87,16 +87,30 @@ index 6cc29cab6cccdf25908fd532859a5052f9d59e3f..9a49810e96e3d40d58b2722ba87f5e73
    }
  
    // <if expr="not is_chromeos">
-@@ -207,7 +211,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -207,7 +211,8 @@ export class SettingsPersonalizationOptionsElement extends
      return loadTimeData.getStringF('priceEmailNotificationsPrefDesc', username);
    }
  
 -  // <if expr="_google_chrome and not is_chromeos">
 +  // <if expr="not is_chromeos">
++  // eslint-disable-next-line @webui-eslint/lit-member-visibility
    protected onMetricsReportingChange_(e: Event) {
      const target = e.target as CrToggleElement;
      this.browserProxy_.setMetricsReportingEnabled(target.checked);
-@@ -276,7 +280,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -227,6 +232,7 @@ export class SettingsPersonalizationOptionsElement extends
+   }
+   // </if>
+ 
++  // eslint-disable-next-line @webui-eslint/lit-member-visibility
+   protected showSearchSuggestToggle_(): boolean {
+     if (pageVisibility?.privacy === undefined) {
+       // pageVisibility isn't defined in non-Guest profiles
+@@ -272,11 +278,12 @@ export class SettingsPersonalizationOptionsElement extends
+   // </if><!-- chromeos -->
+   // </if><!-- _google_chrome -->
+ 
++  // eslint-disable-next-line @webui-eslint/lit-member-visibility
+   protected onSignoutDialogClose_() {
      if (this.shadowRoot
              .querySelector<SettingsSignoutDialogElement>(
                  'settings-signout-dialog')!.wasConfirmed()) {
@@ -105,7 +119,7 @@ index 6cc29cab6cccdf25908fd532859a5052f9d59e3f..9a49810e96e3d40d58b2722ba87f5e73
        this.$.signinAllowedToggle.checked = false;
        this.$.signinAllowedToggle.sendPrefChange();
        this.$.toast.show();
-@@ -285,7 +289,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -285,7 +292,7 @@ export class SettingsPersonalizationOptionsElement extends
      this.showSignoutDialog_ = false;
    }
  
@@ -114,13 +128,14 @@ index 6cc29cab6cccdf25908fd532859a5052f9d59e3f..9a49810e96e3d40d58b2722ba87f5e73
    protected onSigninAllowedSettingsBooleanControlChange_() {
      if (this.syncStatus.signedInState === SignedInState.SYNCING &&
          !this.$.signinAllowedToggle.checked) {
-@@ -297,12 +301,16 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -297,12 +304,17 @@ export class SettingsPersonalizationOptionsElement extends
        this.$.toast.show();
      }
    }
 +  // </if>
  
 +  // <if expr="not is_chromeos">
++  // eslint-disable-next-line @webui-eslint/lit-member-visibility
    protected onRestartClick_(e: Event) {
      e.stopPropagation();
      this.performRestart(RestartType.RESTART);

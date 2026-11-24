@@ -63,14 +63,14 @@ export class BraveAccountDialogsElement extends CrLitElement {
     }
   }
 
-  protected onBackButtonClicked() {
+  private onBackButtonClicked() {
     assert(this.dialog)
     this.dialog = {
       type: this.dialog.type === 'PASSWORD_RESET' ? 'SIGN_IN' : 'ENTRY',
     }
   }
 
-  protected onCloseDialog() {
+  private onCloseDialog() {
     this.browserProxy.closeDialog()
   }
 

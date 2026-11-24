@@ -74,3 +74,18 @@ substitutions:
         'protected ((?:accessor|readonly)
         (?:metricsReporting_|showRestart_|showSignoutDialog_|syncFirstSetupInProgress_|signinAvailable_|chromeSigninUserChoiceInfo_):)'
       replace: 'private \1'
+
+  - description: |-
+      Exempt the handlers only Google Chrome's template binds from the lint.
+
+      Brave builds them, but the template binds them in Google Chrome builds
+      only, so `@webui-eslint/lit-member-visibility` rejects them. Making them
+      private would leave them unused, which TypeScript rejects.
+    count: 4
+    regex:
+      re_pattern:
+        '^( *)(protected
+        (?:onMetricsReportingChange_|showSearchSuggestToggle_|onSignoutDialogClose_|onRestartClick_)\()'
+      re_flags: [MULTILINE]
+      replace:
+        '\1// eslint-disable-next-line @webui-eslint/lit-member-visibility\n\1\2'
