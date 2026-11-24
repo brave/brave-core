@@ -42,7 +42,6 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.safe_browsing.settings.NoGooglePlayServicesDialog;
 import org.chromium.chrome.browser.safety_hub.SafetyHubExpandablePreference;
 import org.chromium.chrome.browser.settings.BraveDialogPreference;
@@ -556,7 +555,7 @@ public class BravePrivacySettings extends PrivacySettings {
         String key = preference.getKey();
         SharedPreferencesManager preferencesManager = ChromeSharedPreferences.getInstance();
         if (PREF_HTTPS_FIRST_MODE.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            UserPrefs.get(getProfile())
                     .setBoolean(Pref.HTTPS_ONLY_MODE_ENABLED, (boolean) newValue);
         } else if (PREF_HTTPS_UPGRADE.equals(key)) {
             switch ((int) newValue) {
@@ -584,11 +583,10 @@ public class BravePrivacySettings extends PrivacySettings {
                     break;
             }
         } else if (PREF_DE_AMP.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            UserPrefs.get(getProfile())
                     .setBoolean(BravePref.DE_AMP_PREF_ENABLED, (boolean) newValue);
         } else if (PREF_DEBOUNCE.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                    .setBoolean(BravePref.DEBOUNCE_ENABLED, (boolean) newValue);
+            UserPrefs.get(getProfile()).setBoolean(BravePref.DEBOUNCE_ENABLED, (boolean) newValue);
         } else if (PREF_BLOCK_SWITCH_TO_APP_NOTICES.equals(key)) {
             if (mFilterListAndroidHandler != null) {
                 mFilterListAndroidHandler.enableFilter(
@@ -630,11 +628,11 @@ public class BravePrivacySettings extends PrivacySettings {
                             ? BraveShieldsContentSettings.DEFAULT
                             : BraveShieldsContentSettings.ALLOW_RESOURCE);
         } else if (PREF_REQUEST_OTR.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            UserPrefs.get(getProfile())
                     .setInteger(BravePref.REQUEST_OTR_ACTION_OPTION, (int) newValue);
             updateRequestOtrPref();
         } else if (PREF_FINGERPRINT_LANGUAGE.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            UserPrefs.get(getProfile())
                     .setBoolean(BravePref.REDUCE_LANGUAGE_ENABLED, (boolean) newValue);
         } else if (PREF_SHIELDS_SAVE_CONTACT_INFO.equals(key)) {
             handleShieldsSaveContactInfo((boolean) newValue);
@@ -689,7 +687,7 @@ public class BravePrivacySettings extends PrivacySettings {
         } else if (PREF_SPONSORED_ADS_ENABLED.equals(key)) {
             UserPrefs.get(getProfile()).setBoolean(BravePref.SPONSORED_ENABLED, (boolean) newValue);
         } else if (PREF_SOCIAL_BLOCKING_GOOGLE.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            UserPrefs.get(getProfile())
                     .setBoolean(BravePref.GOOGLE_LOGIN_CONTROL_TYPE, (boolean) newValue);
         } else if (PREF_SOCIAL_BLOCKING_FACEBOOK.equals(key)) {
             BraveLocalState.get().setBoolean(BravePref.FB_EMBED_CONTROL_TYPE, (boolean) newValue);
@@ -788,8 +786,7 @@ public class BravePrivacySettings extends PrivacySettings {
             assumeNonNull(mHttpsFirstModePrefLegacy);
             mHttpsFirstModePrefLegacy.setVisible(!httpsByDefaultIsEnabled);
             mHttpsFirstModePrefLegacy.setChecked(
-                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                            .getBoolean(Pref.HTTPS_ONLY_MODE_ENABLED));
+                    UserPrefs.get(getProfile()).getBoolean(Pref.HTTPS_ONLY_MODE_ENABLED));
         } else {
             assumeNonNull(mHttpsFirstModePref);
             mHttpsFirstModePref.setVisible(!httpsByDefaultIsEnabled);
@@ -905,8 +902,7 @@ public class BravePrivacySettings extends PrivacySettings {
                 preferencesManager.readBoolean(BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, false));
 
         mFingerprntLanguagePref.setChecked(
-                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                        .getBoolean(BravePref.REDUCE_LANGUAGE_ENABLED));
+                UserPrefs.get(getProfile()).getBoolean(BravePref.REDUCE_LANGUAGE_ENABLED));
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.isFilterListEnabled(
                     FilterListConstants.SWITCH_TO_APP_UUID,
@@ -917,15 +913,13 @@ public class BravePrivacySettings extends PrivacySettings {
         // Debounce
         if (mDebouncePref != null) {
             mDebouncePref.setChecked(
-                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                            .getBoolean(BravePref.DEBOUNCE_ENABLED));
+                    UserPrefs.get(getProfile()).getBoolean(BravePref.DEBOUNCE_ENABLED));
         }
 
         // Social blocking
         if (mSocialBlockingGoogle != null) {
             mSocialBlockingGoogle.setChecked(
-                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                            .getBoolean(BravePref.GOOGLE_LOGIN_CONTROL_TYPE));
+                    UserPrefs.get(getProfile()).getBoolean(BravePref.GOOGLE_LOGIN_CONTROL_TYPE));
         }
         if (mSocialBlockingFacebook != null) {
             mSocialBlockingFacebook.setChecked(
@@ -942,8 +936,7 @@ public class BravePrivacySettings extends PrivacySettings {
 
         if (mDeAmpPref != null) {
             mDeAmpPref.setChecked(
-                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                            .getBoolean(BravePref.DE_AMP_PREF_ENABLED));
+                    UserPrefs.get(getProfile()).getBoolean(BravePref.DE_AMP_PREF_ENABLED));
         }
 
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REQUEST_OTR_TAB)) {
@@ -965,8 +958,7 @@ public class BravePrivacySettings extends PrivacySettings {
 
     private void updateRequestOtrPref() {
         int requestOtrPrefValue =
-                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                        .getInteger(BravePref.REQUEST_OTR_ACTION_OPTION);
+                UserPrefs.get(getProfile()).getInteger(BravePref.REQUEST_OTR_ACTION_OPTION);
         if (requestOtrPrefValue == BraveShieldsContentSettings.ALWAYS) {
             mRequestOtrPref.setCheckedIndex(0);
             mRequestOtrPref.setSummary(
