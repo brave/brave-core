@@ -38,8 +38,7 @@ bool ShouldWaitForFrameToPlaceBrowserView(
     return false;
   }
   const auto params = frame_view->GetBrowserLayoutParams();
-  return !params.IsEmpty() && delegate.ShouldShowVerticalTabs() &&
-         delegate.ShouldShowWindowTitleForVerticalTabs() &&
+  return !params.IsEmpty() && delegate.ShouldShowWindowTitleForVerticalTabs() &&
          !delegate.IsFullscreen() &&
          !params.visual_client_area.Contains(browser_view.bounds());
 #else

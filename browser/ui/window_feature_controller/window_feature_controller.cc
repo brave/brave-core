@@ -16,6 +16,5 @@ bool BraveDisablesImmersiveFullscreenMode(const ui::UnownedUserDataHost& host) {
 bool BraveShouldShowTitlebar(const ui::UnownedUserDataHost& host) {
   const auto* vertical_tab_controller = VerticalTabController::Get(host);
   return vertical_tab_controller &&
-         vertical_tab_controller->ShouldShowBraveVerticalTabs() &&
          vertical_tab_controller->ShouldShowWindowTitleForVerticalTabs();
 }

@@ -84,7 +84,13 @@ bool VerticalTabController::ShouldShowBraveVerticalTabs() const {
 }
 
 bool VerticalTabController::ShouldShowWindowTitleForVerticalTabs() const {
-  if (!ShouldShowBraveVerticalTabs()) {
+  // The preference is shared by both backends. Layout follows each backend's
+  // own strategy; only the title bar area is controlled here.
+  const bool upstream_vertical_tabs_shown =
+      tabs::IsUpstreamVerticalTabsForceEnabled() &&
+      type_ == BrowserWindowInterface::TYPE_NORMAL &&
+      prefs_->GetBoolean(prefs::kVerticalTabsEnabled);
+  if (!ShouldShowBraveVerticalTabs() && !upstream_vertical_tabs_shown) {
     return false;
   }
 

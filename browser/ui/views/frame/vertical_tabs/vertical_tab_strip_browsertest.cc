@@ -2554,6 +2554,38 @@ IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsTest, HideCompletelyWhenCollapsed) {
   EXPECT_FALSE(region->layer()->GetMasksToBounds());
 }
 
+// The "Show title bar" pref is shared with upstream vertical tabs; it only
+// reserves the window title bar area.
+IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsTest, ShowTitleOnWindowPref) {
+  state_controller()->SetVerticalTabsEnabled(true);
+  ASSERT_TRUE(state_controller()->ShouldDisplayVerticalTabs());
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* vtc = VerticalTabController::From(browser());
+  ASSERT_FALSE(vtc->ShouldShowBraveVerticalTabs());
+
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, true);
+  EXPECT_TRUE(vtc->ShouldShowWindowTitleForVerticalTabs());
+  EXPECT_TRUE(browser_view->ShouldShowWindowTitle());
+#if BUILDFLAG(IS_MAC)
+  EXPECT_GT(browser_view->browser_widget()->GetFrameView()->GetTopInset(false),
+            0);
+#endif
+
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, false);
+  EXPECT_FALSE(vtc->ShouldShowWindowTitleForVerticalTabs());
+  EXPECT_FALSE(browser_view->ShouldShowWindowTitle());
+#if BUILDFLAG(IS_MAC)
+  EXPECT_EQ(browser_view->browser_widget()->GetFrameView()->GetTopInset(false),
+            0);
+#endif
+
+  // Horizontal tabs never show the title area.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, true);
+  state_controller()->SetVerticalTabsEnabled(false);
+  EXPECT_FALSE(vtc->ShouldShowWindowTitleForVerticalTabs());
+}
+
 // Tests for the "Left/Right" position setting of upstream vertical tabs.
 class UpstreamVerticalTabsPositionTest : public UpstreamVerticalTabsTest {
  public:

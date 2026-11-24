@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/view_ids.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/common/pref_names.h"
 #include "ui/base/hit_test.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/outsets_f.h"
@@ -41,10 +42,16 @@ BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
   frame_graphic_ =
       std::make_unique<BraveWindowFrameGraphic>(browser->GetProfile());
 
-  if (VerticalTabController::From(browser)->SupportsBraveVerticalTabs()) {
+  if (VerticalTabController::From(browser)->SupportsBraveVerticalTabs() ||
+      tabs::IsUpstreamVerticalTabsForceEnabled()) {
     auto* prefs = browser->GetProfile()->GetOriginalProfile()->GetPrefs();
     show_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsEnabled, prefs,
+        base::BindRepeating(
+            &BraveBrowserFrameViewMac::UpdateWindowTitleAndControls,
+            base::Unretained(this)));
+    show_upstream_vertical_tabs_.Init(
+        prefs::kVerticalTabsEnabled, prefs,
         base::BindRepeating(
             &BraveBrowserFrameViewMac::UpdateWindowTitleAndControls,
             base::Unretained(this)));
@@ -117,6 +124,11 @@ int BraveBrowserFrameViewMac::GetTopInset(bool restored) const {
     // Bypassing BrowserFrameViewMac's implementation so that we don't have any
     // inset when hiding title bar.
     return 0;
+  }
+
+  if (ShouldShowWindowTitleForVerticalTabs()) {
+    // Upstream vertical tabs: only reserve the title bar area.
+    return 30;
   }
 
   if (!tabs::HorizontalTabsUpdateEnabled()) {
