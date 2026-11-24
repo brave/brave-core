@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.view.View;
 
+import androidx.preference.Preference;
 import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceScreen;
 
@@ -50,11 +51,27 @@ public class BraveClearBrowsingDataFragment extends ClearBrowsingDataFragment
         super.onCreatePreferences(savedInstanceState, rootKey);
 
         getPreferenceScreen().addPreference(buildClearLeoAIHistory());
-        getPreferenceScreen()
-                .addPreference(
-                        BraveRewardsHelper.isRewardsEnabled()
-                                ? buildResetBraveRewardsDataPref()
-                                : buildClearBraveAdsDataPref());
+        Preference braveAdsData =
+                BraveRewardsHelper.isRewardsEnabled()
+                        ? buildResetBraveRewardsDataPref()
+                        : buildClearBraveAdsDataPref();
+        getPreferenceScreen().addPreference(braveAdsData);
+
+        // addPreference() appends, which leaves Brave's rows below the sections
+        // that close the screen. Keep the Leo AI checkbox with the other
+        // checkboxes, then those sections, then the Brave Ads link last. The
+        // expandable section is absent while DbdPasswordRemovalOnAndroid is off.
+        int order = mClearAIChatDataCheckBoxPreference.getOrder() + 1;
+        for (String key :
+                new String[] {
+                    PREF_MANAGE_OTHER_GOOGLE_DATA_EXPANDABLE, PREF_SIGN_OUT_OF_CHROME_TEXT
+                }) {
+            Preference preference = findPreference(key);
+            if (preference != null) {
+                preference.setOrder(order++);
+            }
+        }
+        braveAdsData.setOrder(order);
     }
 
     private ClearBrowsingDataCheckBoxPreference buildClearLeoAIHistory() {
