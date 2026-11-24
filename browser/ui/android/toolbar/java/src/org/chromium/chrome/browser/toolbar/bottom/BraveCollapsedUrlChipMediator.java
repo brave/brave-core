@@ -33,11 +33,12 @@ import java.util.function.Supplier;
  * is display-only: tapping it re-shows the browser controls, so the chip never becomes a navigation
  * or spoofing surface.
  *
- * <p>Non-secure pages never get a chip: the browser controls are pinned visible instead ({@link
+ * <p>Non-secure web pages never get a chip: the browser controls are pinned visible instead ({@link
  * Delegate#setPinnedControlsVisible}), so the omnibox — with its own security indicator — remains
- * the identity surface. A page counts as non-secure when it is plaintext HTTP or when its
- * connection security level is anything other than SECURE, which covers mixed content (active and
- * passive), mixed forms and certificate errors.
+ * the identity surface. An http/https page counts as non-secure when it is plaintext HTTP or when
+ * its connection security level is anything other than SECURE, which covers mixed content (active
+ * and passive), mixed forms and certificate errors. Internal pages (chrome://, about:blank,
+ * file://, data:) are unaffected: neither chip nor pinning applies there.
  */
 @NullMarked
 class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Observer {
@@ -69,6 +70,7 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
     private final Delegate mDelegate;
 
     private @Nullable String mLastUrlSpec;
+    private @Nullable Integer mLastSecurityLevel;
     private @Nullable Boolean mLastInsecureContent;
     private @Nullable String mLastChipText;
     private boolean mAndroidControlsVisible = true;
@@ -148,7 +150,22 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
         if (mDestroyed) return;
 
         @Nullable String spec = mUrlSpecSupplier.get();
-        boolean insecureContent = isNonSecureUrlSpec(spec) || isInsecureSecurityLevel();
+        @Nullable Integer level = mSecurityLevelSupplier.get();
+        // Cheap path: nothing the chip state depends on changed. GURL parsing is a JNI
+        // round-trip, so it must not run on every scroll-offset callback.
+        if (mLastInsecureContent != null
+                && Objects.equals(spec, mLastUrlSpec)
+                && Objects.equals(level, mLastSecurityLevel)) {
+            updateChipDisplay();
+            return;
+        }
+        // Only web pages (http/https) are pinned: a non-SECURE level on internal pages
+        // (chrome://, about:blank, file://, data:) carries no spoofable identity and must
+        // not disable the normal scroll-hiding UX there.
+        boolean insecureContent =
+                spec != null
+                        && (isNonSecureUrlSpec(spec)
+                                || (isEligibleUrlSpec(spec) && isInsecureSecurityLevel(level)));
         // Recompute text when the spec or the page's security state changed; also force the first
         // update so the delegate never inherits stale text from a previous mediator instance.
         if (!Objects.equals(spec, mLastUrlSpec)
@@ -169,12 +186,11 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
 
     /**
      * True when the page is non-secure enough that the omnibox must stay on screen: any connection
-     * security level other than {@link ConnectionSecurityLevel#SECURE} (plaintext HTTP, active or
-     * passive mixed content, mixed forms, certificate errors and other non-secure states). Null (no
-     * tab or security state not yet known) never counts as insecure.
+     * security level other than {@link ConnectionSecurityLevel#SECURE} (active or passive mixed
+     * content, mixed forms, certificate errors and other non-secure states). Null (no tab or
+     * security state not yet known) never counts as insecure.
      */
-    private boolean isInsecureSecurityLevel() {
-        @Nullable Integer level = mSecurityLevelSupplier.get();
+    private boolean isInsecureSecurityLevel(@Nullable Integer level) {
         return level != null && level != ConnectionSecurityLevel.SECURE;
     }
 
@@ -193,18 +209,18 @@ class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Obse
         boolean featureEnabled = Boolean.TRUE.equals(mEnabledSupplier.get());
         boolean fullscreen = Boolean.TRUE.equals(mFullscreenSupplier.get());
         boolean canShowControls = Boolean.TRUE.equals(mCanShowControlsSupplier.get());
+        // The android controls swap to a composited texture as soon as scrolling starts (hidden
+        // ratio > 0), so the visibility callback alone fires mid-scroll. Require the controls to
+        // be fully off screen before showing the chip.
+        boolean controlsFullyHidden = mSizer.getBrowserControlHiddenRatio() == 1f;
         boolean visible =
                 featureEnabled
                         && !fullscreen
                         && canShowControls
                         && !mAndroidControlsVisible
+                        && controlsFullyHidden
                         && mLastChipText != null;
         mDelegate.setChipVisible(visible);
-        // Only pin alpha on the hide path; on show the coordinator fades 0→1 and setting 1 here
-        // would defeat the animation.
-        if (!visible) {
-            mDelegate.setChipAlpha(0f);
-        }
     }
 
     /**

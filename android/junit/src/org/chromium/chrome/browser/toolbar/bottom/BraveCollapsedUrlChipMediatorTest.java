@@ -11,6 +11,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -66,6 +67,9 @@ public class BraveCollapsedUrlChipMediatorTest {
         mCanShowRef = new AtomicReference<>(Boolean.TRUE);
         mEnabledSupplier = () -> true;
         mTextFormatter = spec -> URL_SPEC.equals(spec) ? FORMATTED : null;
+        // The chip only shows once the browser controls are fully hidden (hidden ratio 1);
+        // default the sizer mock to the fully-hidden state.
+        when(mSizer.getBrowserControlHiddenRatio()).thenReturn(1f);
         createMediator();
     }
 
@@ -345,6 +349,35 @@ public class BraveCollapsedUrlChipMediatorTest {
         notifyAndroidControlsVisibility(View.INVISIBLE);
         assertTrue(mDelegate.mLastVisible);
         assertEquals(FORMATTED, mDelegate.mLastText);
+    }
+
+    @Test
+    public void testInternalPageDoesNotPin() {
+        // Internal pages have no spoofable origin; they keep scroll-hiding and no chip.
+        mSecurityLevelRef.set(ConnectionSecurityLevel.NONE);
+        mUrlSpecRef.set("chrome://version/");
+        mMediator.onUrlSpecChanged();
+        assertFalse(mDelegate.mLastPinned);
+
+        notifyAndroidControlsVisibility(View.INVISIBLE);
+        assertFalse(mDelegate.mLastVisible);
+        assertNull(mDelegate.mLastText);
+    }
+
+    @Test
+    public void testChipHiddenWhileControlsPartiallyVisible() {
+        // The android-controls visibility flip fires mid-scroll (ratio > 0); the chip must
+        // wait until the controls are fully hidden.
+        when(mSizer.getBrowserControlHiddenRatio()).thenReturn(0.5f);
+        notifyAndroidControlsVisibility(View.INVISIBLE);
+        assertFalse(mDelegate.mLastVisible);
+
+        when(mSizer.getBrowserControlHiddenRatio()).thenReturn(1f);
+        // VISIBLE→INVISIBLE toggle re-triggers the mediator despite the unchanged-visibility
+        // early-return.
+        notifyAndroidControlsVisibility(View.VISIBLE);
+        notifyAndroidControlsVisibility(View.INVISIBLE);
+        assertTrue(mDelegate.mLastVisible);
     }
 
     @Test

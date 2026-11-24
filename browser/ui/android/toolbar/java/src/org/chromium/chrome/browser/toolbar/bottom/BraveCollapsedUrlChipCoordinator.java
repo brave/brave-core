@@ -126,6 +126,12 @@ public class BraveCollapsedUrlChipCoordinator {
     /** Consecutive unchanged samples after which sampling stops until the content changes. */
     private static final int CONTENT_SAMPLE_SETTLED_TICKS = 30;
 
+    /**
+     * Hard cap on sampling ticks per chip-showing run; continuously animated content never reaches
+     * the settled-ticks stop, so this bounds the PixelCopy battery cost even then.
+     */
+    private static final int CONTENT_SAMPLE_MAX_TICKS = 100;
+
     /** Minimum height, in px, of a below-chip strip for sampling to be meaningful. */
     private static final int CONTENT_SAMPLE_MIN_STRIP_PX = 8;
 
@@ -146,6 +152,7 @@ public class BraveCollapsedUrlChipCoordinator {
     private @MonotonicNonNull Bitmap mSampleBitmap;
     private boolean mSampling;
     private int mStableSampleCount;
+    private int mSampleTickCount;
 
     /**
      * Incremented on every start/stop so in-flight {@link android.view.PixelCopy} callbacks from a
@@ -517,6 +524,7 @@ public class BraveCollapsedUrlChipCoordinator {
         if (!hasGestureNavigation) return;
         mSampling = true;
         mStableSampleCount = 0;
+        mSampleTickCount = 0;
         mSampleGeneration++;
         // Supersede any pending tick from a previous run; the generation counter keeps
         // in-flight PixelCopy callbacks from the old run from racing this one.
@@ -540,6 +548,13 @@ public class BraveCollapsedUrlChipCoordinator {
             mSampling = false;
             return;
         }
+        if (mSampleTickCount >= CONTENT_SAMPLE_MAX_TICKS) {
+            // Hard cap reached (continuously animated content never settles); stop until a
+            // navigation/color-change hook restarts sampling.
+            mSampling = false;
+            return;
+        }
+        mSampleTickCount++;
         final int generation = mSampleGeneration;
         Window window = mActivity.getWindow();
         View decor = window.getDecorView();
