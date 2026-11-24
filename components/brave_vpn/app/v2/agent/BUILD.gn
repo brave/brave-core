@@ -192,6 +192,8 @@ source_set("test_support") {
     "test/fake_connection_api.h",
     "test/fake_connection_manager.cc",
     "test/fake_connection_manager.h",
+    "test/vpn_region_test_util.cc",
+    "test/vpn_region_test_util.h",
   ]
 
   public_deps = [

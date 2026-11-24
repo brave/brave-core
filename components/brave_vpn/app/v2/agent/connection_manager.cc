@@ -84,9 +84,9 @@ const std::optional<std::string>& ConnectionManager::error_message() const {
   return error_message_;
 }
 
-const mojom::VpnRegion& ConnectionManager::current_region() const {
+const mojom::VpnRegionSelection& ConnectionManager::region_selection() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return *current_region_;
+  return *region_selection_;
 }
 
 bool ConnectionManager::auto_reconnect_enabled() const {
@@ -195,7 +195,14 @@ void ConnectionManager::GetAllRegions(GetAllRegionsCallback callback) {
       base::BindOnce(std::move(callback), std::vector<mojom::VpnRegionPtr>()));
 }
 
-void ConnectionManager::SetSelectedRegion(mojom::VpnRegionPtr region) {
+void ConnectionManager::SelectRegion(const std::string& name) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // TODO(https://github.com/brave/brave-browser/issues/54641)
+  // Implement once there are concrete connection API stubs.
+  NOTIMPLEMENTED_LOG_ONCE();
+}
+
+void ConnectionManager::SelectRegionAutomatically() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // TODO(https://github.com/brave/brave-browser/issues/54641)
   // Implement once there are concrete connection API stubs.
@@ -255,14 +262,15 @@ void ConnectionManager::UpdateConnectionState(
                     error_message_);
 }
 
-void ConnectionManager::UpdateSelectedRegion(mojom::VpnRegionPtr region) {
+void ConnectionManager::UpdateRegionSelection(
+    mojom::VpnRegionSelectionPtr selection) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK(region);
-  if (current_region_->Equals(*region)) {
+  CHECK(selection);
+  if (region_selection_->Equals(*selection)) {
     return;
   }
-  current_region_ = std::move(region);
-  observers_.Notify(&Observer::OnSelectedRegionChanged, *current_region_);
+  region_selection_ = std::move(selection);
+  observers_.Notify(&Observer::OnRegionSelectionChanged, *region_selection_);
 }
 
 void ConnectionManager::UpdateAutoReconnectState(bool enabled) {

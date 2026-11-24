@@ -27,9 +27,8 @@ constexpr wchar_t kFakeServerName[] = L"fake-agent";
 constexpr char kFakeServerName[] = "fake-agent";
 #endif
 
-std::string DescribeCall(std::string_view method, mojom::VpnRegionPtr value) {
-  return value ? base::StrCat({method, "(", value->name, ")"})
-               : base::StrCat({method, "(null)"});
+std::string DescribeCall(std::string_view method, std::string_view value) {
+  return base::StrCat({method, "(", value, ")"});
 }
 
 std::string DescribeCall(std::string_view method, bool value) {
@@ -58,8 +57,12 @@ void FakeBrowserHost::GetAllRegions(GetAllRegionsCallback callback) {
   std::move(callback).Run({});
 }
 
-void FakeBrowserHost::SetSelectedRegion(mojom::VpnRegionPtr region) {
-  calls_.push_back(DescribeCall("SetSelectedRegion", std::move(region)));
+void FakeBrowserHost::SelectRegion(const std::string& name) {
+  calls_.push_back(DescribeCall("SelectRegion", name));
+}
+
+void FakeBrowserHost::SelectRegionAutomatically() {
+  calls_.push_back("SelectRegionAutomatically");
 }
 
 void FakeBrowserHost::SetAutoReconnectState(bool enable) {

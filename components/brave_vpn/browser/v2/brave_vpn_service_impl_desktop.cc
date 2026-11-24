@@ -96,19 +96,32 @@ void BraveVpnServiceImpl::Disconnect() {
 
 void BraveVpnServiceImpl::GetSelectedRegion(
     GetSelectedRegionCallback callback) {
-  // TODO(https://github.com/brave/brave-browser/issues/54624)
-  NOTIMPLEMENTED();
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+  if (agent_state_) {
+    std::move(callback).Run(agent_state_->selected_region.Clone());
+    return;
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   std::move(callback).Run(mojom::Region::New());
 }
 
 void BraveVpnServiceImpl::SetSelectedRegion(mojom::RegionPtr region) {
-  // TODO(https://github.com/brave/brave-browser/issues/54624)
-  NOTIMPLEMENTED();
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (auto* host = GetConnectedBrowserHost()) {
+    host->SelectRegion(region->name);
+  } else {
+    VLOG(1) << __func__ << ": agent not available";
+  }
 }
 
 void BraveVpnServiceImpl::ClearSelectedRegion() {
-  // TODO(https://github.com/brave/brave-browser/issues/54624)
-  NOTIMPLEMENTED();
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (auto* host = GetConnectedBrowserHost()) {
+    host->SelectRegionAutomatically();
+  } else {
+    VLOG(1) << __func__ << ": agent not available";
+  }
 }
 
 void BraveVpnServiceImpl::GetProductUrls(GetProductUrlsCallback callback) {
@@ -143,7 +156,7 @@ void BraveVpnServiceImpl::GetSupportData(GetSupportDataCallback callback) {
   if (agent_state_) {
     last_hostname = agent_state_->last_hostname;
   }
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   std::move(callback).Run(
       version_info::GetBraveVersionWithoutChromiumMajorVersion(),
       std::string(version_info::GetOSType()), std::move(last_hostname),
@@ -178,7 +191,7 @@ void BraveVpnServiceImpl::GetAutoReconnectState(
     auto_reconnect_available = true;
     auto_reconnect_enabled = agent_state_->auto_reconnect_enabled;
   }
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   std::move(callback).Run(auto_reconnect_available, auto_reconnect_enabled);
 }
 
@@ -199,7 +212,7 @@ void BraveVpnServiceImpl::GetSmartProxyRoutingState(
   if (agent_state_) {
     smart_proxy_routing_enabled = agent_state_->smart_proxy_routing_enabled;
   }
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   std::move(callback).Run(smart_proxy_routing_enabled);
 }
 
@@ -222,7 +235,7 @@ void BraveVpnServiceImpl::GetAllowLanTraffic(
     allow_lan_traffic_available = agent_state_->allow_lan_traffic_available;
     allow_lan_traffic_enabled = agent_state_->allow_lan_traffic_enabled;
   }
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   std::move(callback).Run(allow_lan_traffic_available,
                           allow_lan_traffic_enabled);
 }

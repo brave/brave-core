@@ -27,10 +27,45 @@ enum VpnConnectionState {
   kInternalError,
 };
 
+// Region precision for a VPN region.
+enum RegionPrecision {
+  kDefault,
+  kCity,
+  kCountry,
+  kCityByCountry,
+};
+
+// SmartProxy availability state for a VPN region.
+enum SmartProxyState {
+  kNone,
+  kSome,
+  kAll,
+};
+
 // VPN region information. Intentionally decoupled from V1 and UI Region
 // structure, as it is not intended to be compatible.
 struct VpnRegion {
   string name;
+  string title;
+  string country;
+  string continent;
+  string country_iso_code;
+  int32 server_count;
+  RegionPrecision region_precision;
+  SmartProxyState smart_proxy_state;
+  array<VpnRegion> subregions;
+};
+
+// The user's region choice, persisted by the agent.
+struct VpnRegionSelection {
+  // True when the user hasn't picked a region and the agent picks one. While
+  // true, the agent may change the region on its own.
+  bool is_automatic;
+
+  // The region the agent connects to: the user's pick, or the one it resolved
+  // when automatic selection is enabled. Null only while is_automatic and
+  // nothing could be resolved yet, e.g. before the region list is fetched.
+  VpnRegion? region;
 };
 
 // Browser's subordinate surface, passed to the agent's BrowserHost, so the
@@ -42,8 +77,9 @@ interface BrowserEndpoint {
   // states, and null is passed otherwise.
   OnConnectionStateChanged(VpnConnectionState state, string? error_message);
 
-  // Updates the currently selected VPN region.
-  OnSelectedRegionChanged(VpnRegion region);
+  // Updates the region selection: whether it is automatic, and the region it
+  // currently resolves to.
+  OnRegionSelectionChanged(VpnRegionSelection selection);
 
   // Updates the current auto-reconnect state.
   OnAutoReconnectStateChanged(bool enabled);
@@ -122,9 +158,16 @@ interface BrowserHost {
   // is fetched from the VPN provider.
   GetAllRegions() => (array<VpnRegion> regions);
 
-  // Sets the desired region to connect to. The agent may decline; an actual
-  // change is reported through the corresponding BrowserEndpoint callback.
-  SetSelectedRegion(VpnRegion region);
+  // Selects the region by name and persists the choice. Once the agent's
+  // region list is available, the name is checked against it: if no region
+  // has that name, the agent falls back to automatic selection. Any resulting
+  // change is reported through the corresponding BrowserEndpoint callback;
+  // nothing is reported before the region list is available.
+  SelectRegion(string name);
+
+  // Returns to automatic selection and persists that. Any resulting change is
+  // reported through the corresponding BrowserEndpoint callback.
+  SelectRegionAutomatically();
 
   // Requests an auto-reconnect state change. The agent may decline; an
   // actual change is reported through the corresponding BrowserEndpoint

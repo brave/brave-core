@@ -19,6 +19,7 @@
 #include "base/location.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
+#include "base/strings/strcat.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/power_monitor_test.h"
 #include "base/test/task_environment.h"
@@ -26,6 +27,7 @@
 #include "brave/components/brave_vpn/app/v2/agent/connection_api.h"
 #include "brave/components/brave_vpn/app/v2/agent/test/fake_connection_api.h"
 #include "brave/components/brave_vpn/app/v2/agent/test/fake_connection_manager.h"
+#include "brave/components/brave_vpn/app/v2/agent/test/vpn_region_test_util.h"
 #include "brave/components/brave_vpn/common/mojom/browser_agent.mojom.h"
 #include "net/base/mock_network_change_notifier.h"
 #include "net/base/network_change_notifier.h"
@@ -65,8 +67,14 @@ class TestObserver : public ConnectionManager::Observer {
       std::move(quit_on_awaited_state_).Run();
     }
   }
-  void OnSelectedRegionChanged(const mojom::VpnRegion& region) override {
-    selected_region_name_updates_.push_back(region.name);
+  void OnRegionSelectionChanged(
+      const mojom::VpnRegionSelection& selection) override {
+    region_selection_updates_.push_back(
+        selection.is_automatic
+            ? base::StrCat({"auto(",
+                            selection.region ? selection.region->name : "",
+                            ")"})
+            : selection.region->name);
   }
   void OnAutoReconnectStateChanged(bool enabled) override {
     auto_reconnect_state_updates_.push_back(enabled);
@@ -85,8 +93,8 @@ class TestObserver : public ConnectionManager::Observer {
   const std::vector<ConnectionStateUpdate>& connection_state_updates() const {
     return connection_state_updates_;
   }
-  const std::vector<std::string>& selected_region_name_updates() const {
-    return selected_region_name_updates_;
+  const std::vector<std::string>& region_selection_updates() const {
+    return region_selection_updates_;
   }
   const std::vector<bool>& auto_reconnect_state_updates() const {
     return auto_reconnect_state_updates_;
@@ -116,7 +124,7 @@ class TestObserver : public ConnectionManager::Observer {
   mojom::VpnConnectionState awaited_state_ =
       mojom::VpnConnectionState::kDisconnected;
   base::OnceClosure quit_on_awaited_state_;
-  std::vector<std::string> selected_region_name_updates_;
+  std::vector<std::string> region_selection_updates_;
   std::vector<bool> auto_reconnect_state_updates_;
   std::vector<bool> smart_proxy_routing_state_updates_;
   std::vector<AllowLanTrafficStateUpdate> allow_lan_traffic_state_updates_;
@@ -183,18 +191,32 @@ TEST_F(ConnectionManagerTest, UpdatesErrorMessageAtSameConnectionState) {
   EXPECT_EQ(std::nullopt, manager_.error_message());
 }
 
-// Regions are compared by value, not by pointer: a new but equal region is no
-// change.
-TEST_F(ConnectionManagerTest, UpdatesSelectedRegion) {
-  EXPECT_EQ("", manager_.current_region().name);
+// Region selections are compared by value, not by pointer: a new but equal
+// region selection is no change.
+TEST_F(ConnectionManagerTest, UpdatesRegionSelection) {
+  EXPECT_TRUE(manager_.region_selection().is_automatic);
+  EXPECT_TRUE(manager_.region_selection().region.is_null());
 
-  manager_.UpdateSelectedRegion(mojom::VpnRegion::New("Europe"));
-  manager_.UpdateSelectedRegion(mojom::VpnRegion::New("Europe"));
-  manager_.UpdateSelectedRegion(mojom::VpnRegion::New("Asia"));
+  manager_.UpdateRegionSelection(MakeTestPickedSelection("Europe"));
+  manager_.UpdateRegionSelection(MakeTestPickedSelection("Europe"));
+  manager_.UpdateRegionSelection(MakeTestPickedSelection("Asia"));
+  EXPECT_FALSE(manager_.region_selection().is_automatic);
+  ASSERT_TRUE(manager_.region_selection().region);
+  EXPECT_EQ("Asia", manager_.region_selection().region->name);
 
-  EXPECT_EQ("Asia", manager_.current_region().name);
-  EXPECT_EQ((std::vector<std::string>{"Europe", "Asia"}),
-            observer_.selected_region_name_updates());
+  manager_.UpdateRegionSelection(MakeTestAutomaticSelection(std::nullopt));
+  manager_.UpdateRegionSelection(MakeTestAutomaticSelection("America"));
+  EXPECT_TRUE(manager_.region_selection().is_automatic);
+  ASSERT_TRUE(manager_.region_selection().region);
+  EXPECT_EQ("America", manager_.region_selection().region->name);
+
+  manager_.UpdateRegionSelection(MakeTestPickedSelection("America"));
+  EXPECT_FALSE(manager_.region_selection().is_automatic);
+  ASSERT_TRUE(manager_.region_selection().region);
+  EXPECT_EQ("America", manager_.region_selection().region->name);
+  EXPECT_EQ((std::vector<std::string>{"Europe", "Asia", "auto()",
+                                      "auto(America)", "America"}),
+            observer_.region_selection_updates());
 }
 
 // Both fields count: a change to either one alone must notify.

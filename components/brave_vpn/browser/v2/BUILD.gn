@@ -27,6 +27,13 @@ static_library("browser") {
     sources += [ "brave_vpn_service_impl_desktop.cc" ]
   }
 
+  if (enable_brave_vpn_v2_apps) {
+    sources += [
+      "region_conversions.cc",
+      "region_conversions.h",
+    ]
+  }
+
   public_deps = [
     "//brave/components/brave_vpn/browser",
     "//brave/components/brave_vpn/common/buildflags",
@@ -69,6 +76,10 @@ source_set("unit_tests") {
     "purchased_state_manager_unittest.cc",
     "skus_service_client_unittest.cc",
   ]
+
+  if (enable_brave_vpn_v2_apps) {
+    sources += [ "region_conversions_unittest.cc" ]
+  }
 
   deps = [
     ":browser",

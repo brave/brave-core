@@ -15,6 +15,7 @@
 #include "base/base64.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
+#include "base/strings/strcat.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -56,6 +57,14 @@ constexpr char kTestDomain[] = "vpn.brave.com";
 constexpr char kTestEnvironment[] = "unittest-env";
 #if !BUILDFLAG(IS_ANDROID)
 constexpr char kTestEmail[] = "test@example.com";
+
+// A region as the UI passes it to SetSelectedRegion(). Only the name reaches
+// the agent, so it is the only field set.
+mojom::RegionPtr MakeUiRegion(std::string name) {
+  auto region = mojom::Region::New();
+  region->name = std::move(name);
+  return region;
+}
 #else   // !BUILDFLAG(IS_ANDROID)
 constexpr char kTestPurchaseToken[] = "test-purchase-token";
 constexpr char kTestPackage[] = "com.brave.browser_nightly";
@@ -78,8 +87,32 @@ std::optional<base::DictValue> DecodePurchaseToken(const std::string& encoded) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 constexpr char kTestHostname[] = "us-east-1.example.com";
 
+// Region selections as the agent reports them. The conversion of the region
+// itself is covered by region_conversions_unittest.cc, so the regions here
+// carry only a name.
+mojom::VpnRegionPtr MakeAgentRegion(std::string name) {
+  auto region = mojom::VpnRegion::New();
+  region->name = std::move(name);
+  return region;
+}
+
+// A region the user picked.
+mojom::VpnRegionSelectionPtr MakePickedSelection(std::string name) {
+  return mojom::VpnRegionSelection::New(/*is_automatic=*/false,
+                                        MakeAgentRegion(std::move(name)));
+}
+
+// Automatic selection, resolved to |name| or unresolved if it's null.
+mojom::VpnRegionSelectionPtr MakeAutomaticSelection(
+    std::optional<std::string> name) {
+  return mojom::VpnRegionSelection::New(
+      /*is_automatic=*/true,
+      name ? MakeAgentRegion(std::move(*name)) : nullptr);
+}
+
 // Records the observer events the agent-driven flows depend on: connection
-// state changes, smart proxy routing changes and agent failures.
+// state changes, selected region changes, smart proxy routing changes and agent
+// failures.
 class ConnectionStateRecorder : public mojom::ServiceObserver {
  public:
   void Observe(mojom::ServiceHandler* service) {
@@ -87,7 +120,9 @@ class ConnectionStateRecorder : public mojom::ServiceObserver {
   }
 
   const std::vector<mojom::ConnectionState>& states() const { return states_; }
-
+  const std::vector<std::string>& selected_regions() const {
+    return selected_regions_;
+  }
   const std::vector<bool>& auto_reconnect_states() const {
     return auto_reconnect_states_;
   }
@@ -108,7 +143,11 @@ class ConnectionStateRecorder : public mojom::ServiceObserver {
   void OnPurchasedStateChanged(
       mojom::PurchasedState state,
       const std::optional<std::string>& description) override {}
-  void OnSelectedRegionChanged(mojom::RegionPtr region) override {}
+  void OnSelectedRegionChanged(mojom::RegionPtr region) override {
+    selected_regions_.push_back(region->is_automatic
+                                    ? base::StrCat({"auto(", region->name, ")"})
+                                    : region->name);
+  }
   void OnAutoReconnectStateChanged(bool enabled) override {
     auto_reconnect_states_.push_back(enabled);
   }
@@ -119,6 +158,7 @@ class ConnectionStateRecorder : public mojom::ServiceObserver {
 
  private:
   std::vector<mojom::ConnectionState> states_;
+  std::vector<std::string> selected_regions_;
   std::vector<bool> auto_reconnect_states_;
   std::vector<bool> smart_proxy_routing_states_;
   size_t agent_failures_ = 0;
@@ -214,18 +254,27 @@ class BraveVpnServiceImplTest : public testing::Test {
     return future.Take();
   }
 
+  mojom::RegionPtr GetSelectedRegion() {
+    base::test::TestFuture<mojom::RegionPtr> future;
+    service_->GetSelectedRegion(future.GetCallback());
+    return future.Take();
+  }
+
   // Calls every entry point that sends something to the agent.
   void CallEveryAgentAction() {
     service_->Connect();
     service_->Disconnect();
     service_->ToggleConnection();
     service_->ResetConnectionState();
+    service_->SetSelectedRegion(MakeUiRegion("de"));
+    service_->ClearSelectedRegion();
     service_->EnableAutoReconnect(true);
     service_->EnableSmartProxyRouting(true);
     service_->AllowLanTraffic(true);
   }
 
   void ExpectAgentSettingsUnavailable() {
+    EXPECT_TRUE(GetSelectedRegion().Equals(mojom::Region::New()));
     EXPECT_EQ(GetAutoReconnectState(), std::make_tuple(false, false));
     EXPECT_FALSE(GetSmartProxyRoutingState());
     EXPECT_EQ(GetAllowLanTraffic(), std::make_tuple(false, false));
@@ -270,6 +319,9 @@ class BraveVpnServiceImplTest : public testing::Test {
       mojom::VpnConnectionState state,
       std::optional<std::string> error_message = std::nullopt) {
     service_->OnConnectionStateChanged(state, error_message);
+  }
+  void ReportAgentRegionSelection(mojom::VpnRegionSelectionPtr selection) {
+    service_->OnRegionSelectionChanged(std::move(selection));
   }
   void ReportAgentAutoReconnectState(bool enabled) {
     service_->OnAutoReconnectStateChanged(enabled);
@@ -927,6 +979,7 @@ TEST_F(BraveVpnServiceImplTest, AgentReportedSettingsLiveWithSession) {
   // A live session alone makes auto-reconnect available.
   EXPECT_EQ(GetAutoReconnectState(), std::make_tuple(true, false));
 
+  ReportAgentRegionSelection(MakePickedSelection("de"));
   ReportAgentAutoReconnectState(true);
   ReportAgentSmartProxyRoutingState(true);
   ReportAgentAllowLanTrafficState(/*available=*/true, /*enabled=*/false);
@@ -935,7 +988,11 @@ TEST_F(BraveVpnServiceImplTest, AgentReportedSettingsLiveWithSession) {
   EXPECT_TRUE(GetSmartProxyRoutingState());
   EXPECT_EQ(GetAllowLanTraffic(), std::make_tuple(true, false));
   EXPECT_EQ(std::get<2>(GetSupportData()), kTestHostname);
-
+  {
+    const mojom::RegionPtr region = GetSelectedRegion();
+    ASSERT_TRUE(region);
+    EXPECT_EQ(region->name, "de");
+  }
   NotifyAgentDisconnected();
   ExpectAgentSettingsUnavailable();
 }
@@ -977,6 +1034,8 @@ TEST_F(BraveVpnServiceImplTest, AgentActionsReachAgent) {
   service_->Connect();
   service_->Disconnect();
   service_->ResetConnectionState();
+  service_->SetSelectedRegion(MakeUiRegion("de"));
+  service_->ClearSelectedRegion();
   service_->EnableAutoReconnect(true);
   service_->EnableSmartProxyRouting(true);
   service_->AllowLanTraffic(false);
@@ -984,10 +1043,10 @@ TEST_F(BraveVpnServiceImplTest, AgentActionsReachAgent) {
 
   EXPECT_THAT(
       fake_agent_.browser_host_calls(),
-      testing::ElementsAre("Connect", "Disconnect", "ResetConnectionState",
-                           "SetAutoReconnectState(true)",
-                           "SetSmartProxyRoutingState(true)",
-                           "SetAllowLanTrafficState(false)"));
+      testing::ElementsAre(
+          "Connect", "Disconnect", "ResetConnectionState", "SelectRegion(de)",
+          "SelectRegionAutomatically", "SetAutoReconnectState(true)",
+          "SetSmartProxyRoutingState(true)", "SetAllowLanTrafficState(false)"));
 }
 
 // Toggling stops a tunnel that is up or on its way up, and starts one
@@ -1024,6 +1083,95 @@ TEST_F(BraveVpnServiceImplTest, AgentActionsNeedAnnouncedSession) {
   fake_agent_.FlushBrowserHostForTesting();
 
   EXPECT_THAT(fake_agent_.browser_host_calls(), testing::IsEmpty());
+}
+
+// A session exists before the agent's first report arrives, and the UI can ask
+// in between. The answer has to be an empty region.
+TEST_F(BraveVpnServiceImplTest, SelectedRegionIsEmptyBeforeFirstReport) {
+  CreateService();
+  NotifyAgentConnected();
+
+  EXPECT_TRUE(GetSelectedRegion().Equals(mojom::Region::New()));
+}
+
+TEST_F(BraveVpnServiceImplTest, AgentReportedRegionSelectionIsPublished) {
+  CreateService();
+  NotifyAgentConnected();
+
+  ReportAgentRegionSelection(MakePickedSelection("de"));
+  mojom::RegionPtr region = GetSelectedRegion();
+  ASSERT_TRUE(region);
+  EXPECT_EQ(region->name, "de");
+  EXPECT_FALSE(region->is_automatic);
+
+  ReportAgentRegionSelection(MakeAutomaticSelection("us"));
+  region = GetSelectedRegion();
+  ASSERT_TRUE(region);
+  EXPECT_EQ(region->name, "us");
+  EXPECT_TRUE(region->is_automatic);
+
+  // Not resolved yet: an empty region that is still automatic.
+  ReportAgentRegionSelection(MakeAutomaticSelection(std::nullopt));
+  region = GetSelectedRegion();
+  ASSERT_TRUE(region);
+  EXPECT_TRUE(region->name.empty());
+  EXPECT_TRUE(region->is_automatic);
+}
+
+TEST_F(BraveVpnServiceImplTest, RegionSelectionChangesNotifyObservers) {
+  CreateService();
+  ConnectionStateRecorder recorder;
+  recorder.Observe(service_.get());
+  NotifyAgentConnected();
+
+  ReportAgentRegionSelection(MakePickedSelection("de"));
+  ReportAgentRegionSelection(MakePickedSelection("de"));
+  ReportAgentRegionSelection(MakeAutomaticSelection("de"));
+  ReportAgentRegionSelection(MakeAutomaticSelection(std::nullopt));
+  ReportAgentRegionSelection(MakeAutomaticSelection(std::nullopt));
+  recorder.FlushForTesting();
+
+  EXPECT_THAT(recorder.selected_regions(),
+              testing::ElementsAre("de", "auto(de)", "auto()"));
+}
+
+// Selecting a region is a request: the agent may fall back to automatic
+// selection instead, so what the service shows changes only when the agent
+// reports the outcome.
+TEST_F(BraveVpnServiceImplTest, SelectingRegionWaitsForAgentReport) {
+  CreateService();
+  ASSERT_NO_FATAL_FAILURE(StartAgentSession());
+
+  service_->SetSelectedRegion(MakeUiRegion("de"));
+  fake_agent_.FlushBrowserHostForTesting();
+  ASSERT_THAT(fake_agent_.browser_host_calls(),
+              testing::ElementsAre("SelectRegion(de)"));
+
+  EXPECT_TRUE(GetSelectedRegion().Equals(mojom::Region::New()));
+}
+
+// End to end, through the real client: selections cross the pipe and reach the
+// UI, including an unresolved automatic one, whose region is null.
+TEST_F(BraveVpnServiceImplTest, AgentRegionSelectionReachesObservers) {
+  CreateService();
+  ConnectionStateRecorder recorder;
+  recorder.Observe(service_.get());
+  ASSERT_NO_FATAL_FAILURE(StartAgentSession());
+
+  fake_agent_.browser_endpoint()->OnRegionSelectionChanged(
+      MakeAutomaticSelection(std::nullopt));
+  fake_agent_.browser_endpoint()->OnRegionSelectionChanged(
+      MakePickedSelection("de"));
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return recorder.selected_regions().size() >= 2u;
+  })) << "the agent's selections never reached the observer";
+
+  EXPECT_THAT(recorder.selected_regions(),
+              testing::ElementsAre("auto()", "de"));
+  const mojom::RegionPtr region = GetSelectedRegion();
+  ASSERT_TRUE(region);
+  EXPECT_EQ(region->name, "de");
+  EXPECT_FALSE(region->is_automatic);
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)

@@ -40,7 +40,8 @@ class FakeBrowserEndpoint : public mojom::BrowserEndpoint {
   void OnConnectionStateChanged(
       mojom::VpnConnectionState state,
       const std::optional<std::string>& error_message) override;
-  void OnSelectedRegionChanged(mojom::VpnRegionPtr region) override;
+  void OnRegionSelectionChanged(
+      mojom::VpnRegionSelectionPtr selection) override;
   void OnAutoReconnectStateChanged(bool enabled) override;
   void OnSmartProxyRoutingStateChanged(bool enabled) override;
   void OnAllowLanTrafficStateChanged(bool available, bool enabled) override;
@@ -50,8 +51,9 @@ class FakeBrowserEndpoint : public mojom::BrowserEndpoint {
   const std::vector<ConnectionStateUpdate>& connection_state_updates() const {
     return connection_state_updates_;
   }
-  const std::vector<mojom::VpnRegionPtr>& selected_region_updates() const {
-    return selected_region_updates_;
+  const std::vector<mojom::VpnRegionSelectionPtr>& region_selection_updates()
+      const {
+    return region_selection_updates_;
   }
   const std::vector<bool>& auto_reconnect_state_updates() const {
     return auto_reconnect_state_updates_;
@@ -73,7 +75,7 @@ class FakeBrowserEndpoint : public mojom::BrowserEndpoint {
 
  private:
   std::vector<ConnectionStateUpdate> connection_state_updates_;
-  std::vector<mojom::VpnRegionPtr> selected_region_updates_;
+  std::vector<mojom::VpnRegionSelectionPtr> region_selection_updates_;
   std::vector<bool> auto_reconnect_state_updates_;
   std::vector<bool> smart_proxy_routing_state_updates_;
   std::vector<AllowLanTrafficStateUpdate> allow_lan_traffic_state_updates_;

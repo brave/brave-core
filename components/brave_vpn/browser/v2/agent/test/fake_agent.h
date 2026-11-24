@@ -48,7 +48,8 @@ class FakeBrowserHost : public mojom::BrowserHost {
   void Disconnect() override;
   void ResetConnectionState() override;
   void GetAllRegions(GetAllRegionsCallback callback) override;
-  void SetSelectedRegion(mojom::VpnRegionPtr region) override;
+  void SelectRegion(const std::string& name) override;
+  void SelectRegionAutomatically() override;
   void SetAutoReconnectState(bool enable) override;
   void SetSmartProxyRoutingState(bool enable) override;
   void SetAllowLanTrafficState(bool enable) override;

@@ -158,7 +158,7 @@ class BraveVpnServiceImpl : public BraveVpnService
     mojom::VpnConnectionState connection_state =
         mojom::VpnConnectionState::kDisconnected;
     std::string connection_error;
-    mojom::VpnRegionPtr selected_region;
+    mojom::RegionPtr selected_region = mojom::Region::New();
     bool auto_reconnect_enabled = false;
     bool smart_proxy_routing_enabled = false;
     bool allow_lan_traffic_available = false;
@@ -185,7 +185,8 @@ class BraveVpnServiceImpl : public BraveVpnService
   void OnConnectionStateChanged(
       mojom::VpnConnectionState state,
       const std::optional<std::string>& error_message) override;
-  void OnSelectedRegionChanged(mojom::VpnRegionPtr region) override;
+  void OnRegionSelectionChanged(
+      mojom::VpnRegionSelectionPtr selection) override;
   void OnAutoReconnectStateChanged(bool enabled) override;
   void OnSmartProxyRoutingStateChanged(bool enabled) override;
   void OnAllowLanTrafficStateChanged(bool available, bool enabled) override;

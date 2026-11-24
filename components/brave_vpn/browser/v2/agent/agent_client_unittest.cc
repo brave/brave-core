@@ -143,7 +143,8 @@ class TestBrowserEndpoint : public mojom::BrowserEndpoint {
     connection_states_.push_back(state);
     RecordCall();
   }
-  void OnSelectedRegionChanged(mojom::VpnRegionPtr region) override {
+  void OnRegionSelectionChanged(
+      mojom::VpnRegionSelectionPtr selection) override {
     RecordCall();
   }
   void OnAutoReconnectStateChanged(bool enabled) override { RecordCall(); }
