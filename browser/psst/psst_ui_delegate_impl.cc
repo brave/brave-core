@@ -178,7 +178,6 @@ void PsstUiDelegateImpl::OnDialogClose() {
 
 void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
   CHECK(origin_);
-  LOG(INFO) << "[PSST] OnUserAcceptedInfobar is_accepted:" << is_accepted;
   // Handle the user's response to the infobar
   if (is_accepted) {
     // Hide notification badge on the icon after the user interacts with the
@@ -191,7 +190,8 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
                        weak_ptr_factory_.GetWeakPtr()));
 
     ui_presenter_->ShowConsentDialog();
-    psst_settings_service_->IncrementInfobarReviewSuggestionsCount(origin_.value());
+    psst_settings_service_->IncrementInfobarReviewSuggestionsCount(
+        origin_.value());
     // Disable infobar globally and do not show it again
     psst_settings_service_->SetPsstInfobarEnabled(false);
   } else {

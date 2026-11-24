@@ -10,7 +10,6 @@
 #include "brave/components/psst/core/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
-#include "base/logging.h"
 
 namespace psst {
 
@@ -22,7 +21,8 @@ constexpr char kScriptVersionSettingsKey[] = "script_version";
 constexpr char kUidsToPerformSettingsKey[] = "uids_to_perform";
 constexpr char kInfobarShownCounterSettingsKey[] = "infobar_shown_counter";
 constexpr char kInfobarDeclineCounterSettingsKey[] = "infobar_decline_counter";
-constexpr char kInfobarReviewSuggCounterSettingsKey[] = "infobar_review_sugg_counter";
+constexpr char kInfobarReviewSuggCounterSettingsKey[] =
+    "infobar_review_sugg_counter";
 
 base::ListValue VectorToList(std::vector<std::string> values) {
   base::ListValue list;
@@ -252,8 +252,8 @@ void PsstSettingsService::SetPsstInfobarEnabled(bool enabled) {
   prefs_->SetBoolean(prefs::kPsstInfobarEnabled, enabled);
 }
 
-void PsstSettingsService::IncrementInfobarReviewSuggestionsCount(const url::Origin& origin) {
-  LOG(INFO) << "[PSST] IncrementInfobarReviewSuggestionsCount origin:" << origin;
+void PsstSettingsService::IncrementInfobarReviewSuggestionsCount(
+    const url::Origin& origin) {
   IncrementInfobarCounter(origin, kInfobarReviewSuggCounterSettingsKey,
                           *host_content_settings_map_);
   observers_.Notify(&PsstSettingsService::PrefObserver::OnPsstPrefsChange,
