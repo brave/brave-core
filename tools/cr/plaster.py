@@ -6493,7 +6493,7 @@ def _commit_patches(patches: list[Path], message: str | None) -> None:
         return
     if message is None:
         repository.brave.run_git(
-            'commit', '--amend', '--no-edit', '--', *patches
+            'commit', '--amend', '--no-edit', '--no-verify', '--', *patches
         )
     else:
         repository.brave.run_git('commit', '-m', message, '--', *patches)
