@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/download/download_file_picker.cc b/chrome/browser/download/download_file_picker.cc
+index 885cf1b7753f2e8eeef32a365da24270d32499e7..034a29143db1a348526adcc6384fd75dd9015bed 100644
+--- a/chrome/browser/download/download_file_picker.cc
++++ b/chrome/browser/download/download_file_picker.cc
+@@ -160,7 +160,9 @@ DownloadFilePicker::DownloadFilePicker(download::DownloadItem* item,
+   GURL caller = GetEffectiveAuthorityURL(download_item_);
+ 
+   select_file_dialog_->SelectFile(
+-      ui::SelectFileDialog::SELECT_SAVEAS_FILE, std::u16string(),
++      ui::SelectFileDialog::SELECT_SAVEAS_FILE, GetTitle(
++          content::DownloadItemUtils::GetRenderFrameHost(download_item_),
++          std::u16string(), &caller),
+       suggested_path_, &file_type_info, 0, base::FilePath::StringType(),
+       owning_window, &caller);
+ }
