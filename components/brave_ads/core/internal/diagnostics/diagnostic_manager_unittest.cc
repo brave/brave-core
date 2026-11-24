@@ -219,6 +219,11 @@ TEST_F(BraveAdsDiagnosticManagerTest,
   // Assert
   EXPECT_THAT(
       *permission_rules_entries,
+      ::testing::Contains(base::test::DictionaryHasValue(
+                              "name", base::Value("Catalog permission")))
+          .Times(1));
+  EXPECT_THAT(
+      *permission_rules_entries,
       ::testing::Contains(base::test::IsJson(
           R"JSON({"name": "Catalog permission", "value": "true"})JSON")));
 }
