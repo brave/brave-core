@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Put web app shims in Brave's per-channel apps folder.
+
+      `GetLocalizableBraveAppShortcutsSubdirName()`, in the chromium_src
+      override, names the folder after the Brave channel instead of Chrome's.
+    regex:
+      re_pattern:
+        '(GetChromeAppsFolderImpl\(bool create_if_missing\)
+        \{.*?\.Append\()GetLocalizableAppShortcutsSubdirName\(\)'
+      re_flags: [DOTALL]
+      replace: '\1GetLocalizableBraveAppShortcutsSubdirName()'
+
+  - description: |-
+      Keep upstream's folder name helper, which nothing calls now.
+    regex:
+      re_pattern:
+        '^(base::FilePath GetLocalizableAppShortcutsSubdirName\(\) \{)'
+      re_flags: [MULTILINE]
+      replace: '[[maybe_unused]] \1'
