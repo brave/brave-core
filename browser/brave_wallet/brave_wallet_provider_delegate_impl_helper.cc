@@ -13,6 +13,7 @@
 #include "base/notreached.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/brave_pages.h"
+#include "brave/browser/ui/peek/public/peek_controller.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
@@ -29,6 +30,20 @@ constexpr auto kAccountCreationCoinName =
         {{brave_wallet::mojom::CoinType::SOL, "Solana"},
          {brave_wallet::mojom::CoinType::ADA, "Cardano"},
          {brave_wallet::mojom::CoinType::DOT, "Polkadot"}});
+
+// The wallet UI is attached to a tab. A page in Peek is moved into one first,
+// so the user can see which site the request comes from. Returns false if the
+// Peek was hidden, so it's now a background tab, which must not open wallet UI.
+bool MaybeMoveOutOfPeek(content::WebContents* web_contents) {
+  auto* peek_controller = PeekController::FromPeekContents(web_contents);
+  if (!peek_controller) {
+    return true;
+  }
+  peek_controller->OpenAsTab(*web_contents);
+  auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents);
+  return tab && tab->IsActivated();
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -38,6 +53,7 @@ void ShowPanel(content::WebContents* web_contents) {
     return;
   }
 
+  MaybeMoveOutOfPeek(web_contents);
   auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
       tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (tab_helper) {
@@ -62,6 +78,9 @@ void ShowAccountCreation(content::WebContents* web_contents,
   }
 
   if (web_contents) {
+    if (!MaybeMoveOutOfPeek(web_contents)) {
+      return;
+    }
     BrowserWindowInterface* browser =
         GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
             web_contents);

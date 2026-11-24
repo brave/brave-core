@@ -17,6 +17,10 @@
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/widget/widget.h"
 
+namespace views {
+class MenuButtonController;
+}  // namespace views
+
 class BraveShieldsActionView : public views::LabelButton {
   METADATA_HEADER(BraveShieldsActionView, views::LabelButton)
  public:
@@ -44,12 +48,17 @@ class BraveShieldsActionView : public views::LabelButton {
   SkPath GetHighlightPath() const;
   views::Widget* GetBubbleWidget();
 
+  // Opens the Shields panel for the active tab, as pressing the button does.
+  // Returns true if the panel is shown, including if it already was.
+  bool ShowPanel();
+
  private:
   void OnControllerStateChanged();
   void ButtonPressed();
 
   const raw_ptr<BrowserWindowInterface> browser_window_interface_ = nullptr;
   std::unique_ptr<BraveShieldsActionController> controller_;
+  raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;
   base::WeakPtrFactory<BraveShieldsActionView> weak_ptr_factory_{this};
 };
 
