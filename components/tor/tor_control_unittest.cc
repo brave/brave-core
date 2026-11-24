@@ -5,6 +5,7 @@
 
 #include "brave/components/tor/tor_control.h"
 
+#include <map>
 #include <memory>
 #include <optional>
 #include <string>
@@ -126,14 +127,20 @@ class TorControlReadTest : public testing::Test {
         ExpectCommand("RESETCONF __OwningControllerProcess"));
     ASSERT_NO_FATAL_FAILURE(Send("250 OK\r\n"));
 
-    base::test::TestFuture<bool> subscribed;
-    control_->Subscribe(TorControlEvent::NETWORK_LIVENESS,
-                        subscribed.GetCallback());
-    ASSERT_NO_FATAL_FAILURE(ExpectCommand("SETEVENTS NETWORK_LIVENESS"));
-    ASSERT_NO_FATAL_FAILURE(Send("250 OK\r\n"));
-    EXPECT_FALSE(subscribed.Get());
+    ASSERT_NO_FATAL_FAILURE(Subscribe(TorControlEvent::NETWORK_LIVENESS,
+                                      "SETEVENTS NETWORK_LIVENESS"));
     replies_loop.Run();
     testing::Mock::VerifyAndClearExpectations(&delegate_);
+  }
+
+  // Subscribes to `event` and answers the SETEVENTS command, which lists every
+  // subscribed event.
+  void Subscribe(TorControlEvent event, std::string_view expected_command) {
+    base::test::TestFuture<bool> subscribed;
+    control_->Subscribe(event, subscribed.GetCallback());
+    ASSERT_NO_FATAL_FAILURE(ExpectCommand(expected_command));
+    ASSERT_NO_FATAL_FAILURE(Send("250 OK\r\n"));
+    EXPECT_FALSE(subscribed.Get());
   }
 
   // Reads one CRLF-terminated command TorControl wrote to the socket.
@@ -365,79 +372,82 @@ TEST_F(TorControlReadTest, StrayLineFeedClosesConnection) {
   run_loop.Run();
 }
 
-TEST(TorControlTest, ReadLine) {
-  content::BrowserTaskEnvironment task_environment;
-  scoped_refptr<base::SequencedTaskRunner> io_task_runner =
-      content::GetIOThreadTaskRunner({});
-
-  MockTorControlDelegate delegate;
-  std::unique_ptr<TorControl> control =
-      std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
-
-  EXPECT_CALL(delegate, OnTorControlClosed(false)).Times(2);
-  io_task_runner->PostTask(FROM_HERE,
-                           base::BindOnce(
-                               [](std::unique_ptr<TorControl> control) {
-                                 EXPECT_FALSE(control->ReadLine("500"));
-                                 EXPECT_FALSE(control->ReadLine("500/OK"));
-                               },
-                               std::move(control)));
-
-  control = std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
-  EXPECT_CALL(delegate, OnTorRawMid("250", "SOCKSPORT=9050")).Times(1);
-  EXPECT_CALL(delegate, OnTorRawEnd("250", "OK")).Times(1);
-  io_task_runner->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](std::unique_ptr<TorControl> control) {
-                       EXPECT_TRUE(control->ReadLine("250-SOCKSPORT=9050"));
-                       EXPECT_TRUE(control->ReadLine("250 OK"));
-                     },
-                     std::move(control)));
-
-  // Test Async:
-  control = std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
-  using tor::TorControlEvent;
-  EXPECT_CALL(delegate, OnTorRawAsync("650", "FAKEVENT WHAT")).Times(1);
-  EXPECT_CALL(delegate, OnTorRawAsync("650", "NETWORK_LIVENESS UP")).Times(1);
-  EXPECT_CALL(delegate, OnTorRawAsync("650", "NETWORK_LIVENESS DOWN")).Times(1);
-  EXPECT_CALL(delegate, OnTorRawAsync("650", "FAKEVENT BEGIN")).Times(1);
-  EXPECT_CALL(delegate, OnTorRawAsync("650", "CONTINUE=FAKEVENT")).Times(1);
-  EXPECT_CALL(delegate, OnTorRawAsync("650", "END=FAKEVENT")).Times(1);
-  EXPECT_CALL(delegate, OnTorRawAsync("650", "CIRC 1000 EXTENDED")).Times(1);
-  EXPECT_CALL(delegate, OnTorRawAsync("650", "EXTRAMAGIC=99")).Times(1);
-  EXPECT_CALL(delegate, OnTorRawAsync("650", "ANONYMITY=high")).Times(1);
-  EXPECT_CALL(delegate,
-              OnTorEvent(TorControlEvent::NETWORK_LIVENESS, "DOWN", testing::_))
-      .Times(1);
-  std::map<std::string, std::string> circ_extra = {{"ANONYMITY", "high"},
-                                                   {"EXTRAMAGIC", "99"}};
-  EXPECT_CALL(delegate,
-              OnTorEvent(TorControlEvent::CIRC, "1000 EXTENDED", circ_extra))
-      .Times(1);
+// A line too short to hold a status code and separator closes the connection.
+TEST_F(TorControlReadTest, ShortLineClosesConnection) {
   base::RunLoop run_loop;
-  // The IO sequence runs tasks in order, and the reply runs on the owner
-  // sequence after the delegate notifications posted by all of them.
-  io_task_runner->PostTaskAndReply(
-      FROM_HERE,
-      base::BindOnce(
-          [](std::unique_ptr<TorControl> control) {
-            EXPECT_FALSE(control->ReadLine("650 FAKEVENT WHAT"));
-            EXPECT_TRUE(control->ReadLine("650 NETWORK_LIVENESS UP"));
-            // Emulate subscribe
-            control->async_events_[TorControlEvent::NETWORK_LIVENESS] = 1;
-            EXPECT_TRUE(control->ReadLine("650 NETWORK_LIVENESS DOWN"));
-            // Async skip
-            EXPECT_TRUE(control->ReadLine("650-FAKEVENT BEGIN"));
-            EXPECT_TRUE(control->ReadLine("650-CONTINUE=FAKEVENT"));
-            EXPECT_TRUE(control->ReadLine("650 END=FAKEVENT"));
-            // Normal multi async
-            control->async_events_[TorControlEvent::CIRC] = 1;
-            EXPECT_TRUE(control->ReadLine("650-CIRC 1000 EXTENDED"));
-            EXPECT_TRUE(control->ReadLine("650-EXTRAMAGIC=99"));
-            EXPECT_TRUE(control->ReadLine("650 ANONYMITY=high"));
-          },
-          std::move(control)),
-      run_loop.QuitClosure());
+  EXPECT_CALL(delegate_, OnTorControlClosed(true))
+      .WillOnce(base::test::RunClosure(run_loop.QuitClosure()));
+  EXPECT_CALL(delegate_, OnTorRawEnd(testing::_, testing::_)).Times(0);
+
+  ASSERT_NO_FATAL_FAILURE(Send("500\r\n"));
+  run_loop.Run();
+}
+
+// A status code followed by an unknown separator closes the connection.
+TEST_F(TorControlReadTest, UnknownSeparatorClosesConnection) {
+  base::RunLoop run_loop;
+  EXPECT_CALL(delegate_, OnTorControlClosed(true))
+      .WillOnce(base::test::RunClosure(run_loop.QuitClosure()));
+  EXPECT_CALL(delegate_, OnTorRawEnd(testing::_, testing::_)).Times(0);
+
+  ASSERT_NO_FATAL_FAILURE(Send("500/OK\r\n"));
+  run_loop.Run();
+}
+
+// A known event that TorControl is not subscribed to is not reported.
+TEST_F(TorControlReadTest, UnsubscribedEventIsNotReported) {
+  base::RunLoop run_loop;
+  EXPECT_CALL(delegate_, OnTorEvent(testing::_, testing::_, testing::_))
+      .Times(0);
+  EXPECT_CALL(delegate_, OnTorEvent(TorControlEvent::NETWORK_LIVENESS, "DOWN",
+                                    testing::IsEmpty()))
+      .WillOnce(base::test::RunClosure(run_loop.QuitClosure()));
+
+  // Handshake() subscribed to NETWORK_LIVENESS but not to CIRC.
+  ASSERT_NO_FATAL_FAILURE(
+      Send("650 CIRC 1000 EXTENDED\r\n650 NETWORK_LIVENESS DOWN\r\n"));
+  run_loop.Run();
+}
+
+// A multi-line event with an unknown name is skipped through its final line,
+// and the event after it is reported.
+TEST_F(TorControlReadTest, UnknownMultiLineEventIsSkipped) {
+  base::RunLoop run_loop;
+  EXPECT_CALL(delegate_, OnTorRawAsync("650", "FAKEVENT BEGIN"));
+  EXPECT_CALL(delegate_, OnTorRawAsync("650", "CONTINUE=FAKEVENT"));
+  EXPECT_CALL(delegate_, OnTorRawAsync("650", "END=FAKEVENT"));
+  EXPECT_CALL(delegate_, OnTorRawAsync("650", "NETWORK_LIVENESS DOWN"));
+  EXPECT_CALL(delegate_, OnTorEvent(testing::_, testing::_, testing::_))
+      .Times(0);
+  EXPECT_CALL(delegate_, OnTorEvent(TorControlEvent::NETWORK_LIVENESS, "DOWN",
+                                    testing::IsEmpty()))
+      .WillOnce(base::test::RunClosure(run_loop.QuitClosure()));
+
+  ASSERT_NO_FATAL_FAILURE(
+      Send("650-FAKEVENT BEGIN\r\n"
+           "650-CONTINUE=FAKEVENT\r\n"
+           "650 END=FAKEVENT\r\n"
+           "650 NETWORK_LIVENESS DOWN\r\n"));
+  run_loop.Run();
+}
+
+// A subscribed multi-line event is reported once, with its continuation and
+// final lines as key-value pairs.
+TEST_F(TorControlReadTest, MultiLineEvent) {
+  ASSERT_NO_FATAL_FAILURE(
+      Subscribe(TorControlEvent::CIRC, "SETEVENTS CIRC NETWORK_LIVENESS"));
+
+  base::RunLoop run_loop;
+  const std::map<std::string, std::string> extra = {{"ANONYMITY", "high"},
+                                                    {"EXTRAMAGIC", "99"}};
+  EXPECT_CALL(delegate_,
+              OnTorEvent(TorControlEvent::CIRC, "1000 EXTENDED", extra))
+      .WillOnce(base::test::RunClosure(run_loop.QuitClosure()));
+
+  ASSERT_NO_FATAL_FAILURE(
+      Send("650-CIRC 1000 EXTENDED\r\n"
+           "650-EXTRAMAGIC=99\r\n"
+           "650 ANONYMITY=high\r\n"));
   run_loop.Run();
 }
 
