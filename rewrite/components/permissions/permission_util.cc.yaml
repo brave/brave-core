@@ -1,0 +1,35 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Map grouped Brave permission requests to their UMA values.'
+    regex:
+      re_pattern:
+        '(RequestTypeForUma
+        PermissionUtil::GetUmaValueForMultipleRequests\([^)]*\) \{)'
+      replace: |-
+        \1
+          BRAVE_GET_UMA_VALUE_FOR_REQUESTS
+
+  - description: 'Map Brave request types to their UMA values.'
+    regex:
+      re_pattern:
+        '(RequestTypeForUma
+        PermissionUtil::GetUmaValueForRequestType\(.*?)(\n  \}\n\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE\2
+
+  - description: 'Map Brave permission types to their content settings.'
+    regex:
+      re_pattern:
+        '(ContentSettingsType
+        PermissionUtil::PermissionTypeToContentSettingsTypeSafe\(.*?)(\n  \}\n\n  return
+        ContentSettingsType::DEFAULT;)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE\2
