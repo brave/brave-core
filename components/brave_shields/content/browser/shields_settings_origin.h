@@ -57,6 +57,14 @@ class ShieldsSettingsOrigin {
       const content::GlobalRenderFrameHostToken& token,
       content::ContentBrowserClient::URLLoaderFactoryType type);
 
+  // Returns the key for a network request before its first Shields lookup.
+  // The request's trusted `IsolationInfo` is used, or `factory_info` for a
+  // worker request without one when `factory_type` allows it. A main-frame
+  // navigation, identified only by that isolation request type, uses its
+  // top-frame origin. Any other request uses `document_key` when given, then
+  // the outermost page of the frame named by `token`. A frameless request
+  // uses the isolation top-frame origin. Missing or opaque origins select
+  // the profile defaults.
   static ShieldsSettingsOrigin ForRequest(
       const network::ResourceRequest& request,
       const content::GlobalRenderFrameHostToken& token,
@@ -71,6 +79,8 @@ class ShieldsSettingsOrigin {
   ShieldsSettingsOrigin ForRedirect(
       const network::ResourceRequest& request) const;
 
+  // Returns the origin URL to pass to Shields settings lookups. An empty URL
+  // means the profile defaults apply.
   const GURL& GetURL() const { return url_; }
 
  private:

@@ -30,10 +30,17 @@ namespace brave_shields {
 
 namespace {
 
-struct DocumentOrigin : content::DocumentUserData<DocumentOrigin> {
+class DocumentOrigin : public content::DocumentUserData<DocumentOrigin> {
+ public:
+  const ShieldsSettingsOrigin value;
+
+ private:
+  // No public constructors to force going through static methods of
+  // DocumentUserData (e.g. CreateForCurrentDocument).
   DocumentOrigin(content::RenderFrameHost* frame, ShieldsSettingsOrigin origin)
       : DocumentUserData(frame), value(origin) {}
-  const ShieldsSettingsOrigin value;
+
+  friend content::DocumentUserData<DocumentOrigin>;
   DOCUMENT_USER_DATA_KEY_DECL();
 };
 DOCUMENT_USER_DATA_KEY_IMPL(DocumentOrigin);
@@ -106,6 +113,9 @@ void SetForDocument(content::RenderFrameHost* render_frame_host,
 
 // Only the origin is session data. An absent field selects the ordinary
 // fallback (profile defaults for an inherited page without an initiator).
+// The stored value is an unversioned origin URL, and saved sessions outlive
+// browser updates. If the format changes, add a version marker and keep
+// restoring this format.
 class ShieldsSettingsOrigin::SessionHandler
     : public sessions::ExtendedInfoHandler {
  public:
