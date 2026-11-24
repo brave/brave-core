@@ -564,6 +564,7 @@ leo_icons_sources = [
   "volume-off.svg",
   "volume-on.svg",
   "wallet-ledger.svg",
+  "wallet-trezor.svg",
   "warning-circle-filled.svg",
   "warning-circle-outline.svg",
   "warning-triangle-filled.svg",
