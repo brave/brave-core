@@ -13,11 +13,7 @@ namespace {
 base::FilePath GetLocalizableBraveAppShortcutsSubdirName();
 }
 
-#define BRAVE_GET_CHROME_APPS_FOLDER_IMPL \
-  return path.Append(GetLocalizableBraveAppShortcutsSubdirName());
-
 #include <chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm>
-#undef BRAVE_GET_CHROME_APPS_FOLDER_IMPL
 
 namespace {
 constexpr char kBraveBrowserDevelopmentAppDirName[] =
