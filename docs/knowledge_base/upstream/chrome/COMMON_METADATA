@@ -1,0 +1,216 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Brave's scopes for Chromium's Chrome, WebUI and build rules, read as part of
+# Chromium's knowledge base: paths and rules are relative to Chromium's `src`,
+# Brave's own files are `brave/...`, and an override counts under the path of
+# the file it overrides.
+
+agentic_review {
+  capability_groups {
+    # Brave overrides android_webview (aw_permission_manager.cc, renderer); the
+    # wording rule fits its comments.
+    path_expression: "android_webview/.+\\.(?:cc|h|java)"
+    rules: "agents/knowledge_base/rules/android_webview/distinguish-chrome-browser-and-embedding-app-in-webview.md"
+  }
+  capability_groups {
+    # Brave's own Lit/Polymer WebUI elements (settings etc.) have Mocha suites
+    # in brave/test/data/webui; shadows and manglers of upstream elements too.
+    path_expression: "brave/browser/resources/(?:.*/)?[^/]*\\.ts"
+    path_expression: "chrome/browser/resources/.*\\.ts"
+    content_patterns: "\\b(?:CrLitElement|PolymerElement|customElements\\.define)\\b|static get is\\(\\)"
+    rules: "agents/knowledge_base/rules/chrome/add-mocha-unit-tests-for-webui-components.md"
+  }
+  capability_groups {
+    # Brave defines download interruption strings in
+    # brave/app/generated_resources.grd and overrides the download UI.
+    path_expression: "brave/(?:app|browser)/.*\\.(?:grdp?|cc|h|mm)"
+    path_expression: "chrome/browser/download/.*"
+    path_expression: "chrome/app/.*\\.grdp?"
+    content_patterns: "\\bIDS_DOWNLOAD_\\w*INTERRUPT\\w*"
+    rules: "agents/knowledge_base/rules/chrome/download-interrupted-string-status-vs-description-naming.md"
+  }
+  capability_groups {
+    # Brave's vertical tab toggles live in brave/browser/ui
+    # (brave_browser_command_controller.cc,
+    # frame/brave_system_menu_model_builder.cc) and brave/app command utils,
+    # beyond ui/{frame,tabs,toolbar}.
+    path_expression: "brave/(?:app|browser/ui)/.*\\.(?:cc|h|mm)"
+    path_expression: "chrome/browser/ui/.*\\.(?:cc|h|mm)"
+    content_patterns: "(?i:vertical_?tab|immersive|tab_?strip_?(?:region|layout))|\\bIDC_TOGGLE_\\w+"
+    rules: "agents/knowledge_base/rules/chrome/gate-tab-strip-layout-changes-on-immersive-mode.md"
+  }
+  capability_groups {
+    # Brave packs WebUI in brave_paks.gni and registers its WebUIConfigs through
+    # chromium_src chrome_web_ui_configs.cc.
+    path_expression: "brave/brave_paks\\.gni"
+    path_expression: "brave/browser/resources/BUILD\\.gn"
+    path_expression: "chrome/browser/ui/webui/chrome(?:_untrusted)?_web_ui_configs\\.cc"
+    path_expression: "chrome/chrome_paks\\.gni"
+    path_expression: "chrome/browser/resources/BUILD\\.gn"
+    rules: "agents/knowledge_base/rules/chrome/match-target-platforms-in-webui-paks.md"
+  }
+  capability_groups {
+    # Brave overrides chrome/app_shim/app_shim_controller.mm; no Brave-owned app
+    # shim code.
+    path_expression: "chrome/app_shim/.*"
+    path_expression: "components/remote_cocoa/app_shim/.*"
+    rules: "agents/knowledge_base/rules/chrome/no-browser-window-host-calls-in-app-shims.md"
+  }
+  capability_groups {
+    # Brave registers prefs throughout its own code and in overrides (e.g.
+    # chromium_src browser_prefs.cc).
+    path_expression: "brave/(?:app|browser|common|components|renderer|utility|ios)/.*\\.(?:cc|h|mm)"
+    path_expression: "(?:chrome|components|ios)/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bRegister\\w*Pref\\w*\\(|\\bPrefRegistry\\w*\\b"
+    rules: "agents/knowledge_base/rules/chrome/test-preference-registration-and-propagation.md"
+  }
+  capability_groups {
+    # Brave's strings live in brave/app/*.grd and per-feature .grdp files;
+    # patches change upstream grd strings too.
+    path_expression: "brave/(?:.*/)?[^/]*\\.grdp?"
+    path_expression: "(?:chrome|components|ios/chrome)/(?:.*/)?[^/]*\\.grdp?"
+    rules: "agents/knowledge_base/rules/chrome/update-ui-strings-across-all-surfaces.md"
+  }
+  capability_groups {
+    # Brave defines its own policies (brave/components/policy/resources/template
+    # s/policy_definitions/BraveSoftware/*.yaml).
+    path_expression: "brave/components/policy/resources/templates/.*\\.yaml"
+    path_expression: "components/policy/resources/templates/.*"
+    rules: "agents/knowledge_base/rules/components/support-dynamic-refresh-for-enterprise-policies.md"
+  }
+  capability_groups {
+    # brave/build/android holds Brave build Python; none shells out today, so
+    # the targeted group costs nothing and covers future helpers.
+    path_expression: "brave/build/android/(?:.*/)?[^/]*\\.py"
+    content_patterns: "RunShellCommand|\\.Shell\\(|shell=True"
+    rules: "build/android/knowledge_base/prefer-deviceutils-helpers-over-raw-shell-commands.md"
+  }
+  capability_groups {
+    # Brave now authors its own rules and scopes upstream ones: one concept per
+    # rule, narrowest scope, real symbols.
+    path_expression: "brave/docs/knowledge_base/.*\\.md"
+    path_expression: "brave/(?:.*/)?knowledge_base/[^/]*\\.md"
+    path_expression: "brave/(?:.*/)?(?:DIR|COMMON)_METADATA"
+    path_expression: "brave/rewrite/agents/knowledge_base/.*\\.yaml"
+    rules: "components/enterprise/knowledge_base/keep-knowledge-base-rules-atomic-and-scoped.md"
+  }
+  capability_groups {
+    # Signin API rule: Brave's own code still calls IdentityManager/AccountInfo
+    # (brave_sync_auth_manager, brave_profile_manager, BraveSigninManager.java,
+    # iOS web view); scope by the API, not the directory, so the 22 profile
+    # shadows aren't flooded.
+    path_expression: "brave/(?:android|browser|components|ios)/.*\\.(?:cc|h|mm|java)"
+    path_expression: "chrome/browser/(?:profiles|signin|ui/profiles|ui/views/profiles)/.*"
+    path_expression: "components/signin/.*"
+    path_expression: "chrome/android/.*/(?:profiles|signin)/.*"
+    content_patterns: "\\b(?:GetAccountsWithRefreshTokens|HasAccountWithRefreshToken|HasPrimaryAccountWithRefreshToken|AreRefreshTokensLoaded|GetExtendedAccountInfoForAccountsWithRefreshToken)\\b"
+    rules: "components/signin/agents/knowledge_base/rules/check-are-refresh-tokens-loaded-for-async-account-list.md"
+  }
+  capability_groups {
+    # Signin API rule: Brave's own code still calls IdentityManager/AccountInfo
+    # (brave_sync_auth_manager, brave_profile_manager, BraveSigninManager.java,
+    # iOS web view); scope by the API, not the directory, so the 22 profile
+    # shadows aren't flooded.
+    path_expression: "brave/(?:android|browser|components|ios)/.*\\.(?:cc|h|mm|java)"
+    path_expression: "chrome/browser/(?:profiles|signin|ui/profiles|ui/views/profiles)/.*"
+    path_expression: "components/signin/.*"
+    path_expression: "chrome/android/.*/(?:profiles|signin)/.*"
+    content_patterns: "\\bsignin_metrics::AccessPoint\\b|@SigninAccessPoint|\\bSigninAccessPoint\\b"
+    rules: "components/signin/agents/knowledge_base/rules/do-not-branch-behavior-on-signin-access-point.md"
+  }
+  capability_groups {
+    # Brave Account handles the user's email (brave/components/brave_account);
+    # logging it is the same leak; scoped to log lines that name account data.
+    path_expression: "brave/(?:android|browser|components|ios)/.*\\.(?:cc|h|mm|java)"
+    path_expression: "chrome/browser/(?:profiles|signin|ui/profiles|ui/views/profiles)/.*"
+    path_expression: "components/signin/.*"
+    path_expression: "chrome/android/.*/(?:profiles|signin)/.*"
+    content_patterns: "\\b(?:D?V?LOG|SYSLOG|DVLOG|Log\\.[dewi])\\b.*(?i:email|gaia|account_?(?:id|info))"
+    rules: "components/signin/agents/knowledge_base/rules/do-not-log-account-pii.md"
+  }
+  capability_groups {
+    # Signin API rule: Brave's own code still calls IdentityManager/AccountInfo
+    # (brave_sync_auth_manager, brave_profile_manager, BraveSigninManager.java,
+    # iOS web view); scope by the API, not the directory, so the 22 profile
+    # shadows aren't flooded.
+    path_expression: "brave/(?:android|browser|components|ios)/.*\\.(?:cc|h|mm|java)"
+    path_expression: "chrome/browser/(?:profiles|signin|ui/profiles|ui/views/profiles)/.*"
+    path_expression: "components/signin/.*"
+    path_expression: "chrome/android/.*/(?:profiles|signin)/.*"
+    content_patterns: "\\bConsentLevel::kSync\\b|ConsentLevel\\.SYNC\\b"
+    rules: "components/signin/agents/knowledge_base/rules/do-not-use-deprecated-consent-level-ksync.md"
+  }
+  capability_groups {
+    # Brave Account stores account state in prefs
+    # (brave_account_state_prefs.cc); privacy approval matters for Brave too.
+    path_expression: "brave/(?:browser|components|ios)/.*\\.(?:cc|h|mm)"
+    path_expression: "chrome/browser/(?:profiles|signin|ui/profiles|ui/views/profiles)/.*"
+    path_expression: "components/signin/.*"
+    path_expression: "chrome/android/.*/(?:profiles|signin)/.*"
+    content_patterns: "\\bRegister\\w*Pref\\(.*(?i:email|gaia|account)"
+    rules: "components/signin/agents/knowledge_base/rules/document-privacy-approval-when-storing-pii-in-prefs.md"
+  }
+  capability_groups {
+    # Signin API rule: Brave's own code still calls IdentityManager/AccountInfo
+    # (brave_sync_auth_manager, brave_profile_manager, BraveSigninManager.java,
+    # iOS web view); scope by the API, not the directory, so the 22 profile
+    # shadows aren't flooded.
+    path_expression: "brave/(?:android|browser|components|ios)/.*\\.(?:cc|h|mm|java)"
+    path_expression: "chrome/browser/(?:profiles|signin|ui/profiles|ui/views/profiles)/.*"
+    path_expression: "components/signin/.*"
+    path_expression: "chrome/android/.*/(?:profiles|signin)/.*"
+    content_patterns: "\\b(?:GetPrimaryAccountInfo|GetPrimaryAccountId|HasPrimaryAccount|PrimaryAccountAccessTokenFetcher)\\b"
+    rules: "components/signin/agents/knowledge_base/rules/handle-primary-account-disappearing-during-async-operations.md"
+  }
+  capability_groups {
+    # Signin API rule: Brave's own code still calls IdentityManager/AccountInfo
+    # (brave_sync_auth_manager, brave_profile_manager, BraveSigninManager.java,
+    # iOS web view); scope by the API, not the directory, so the 22 profile
+    # shadows aren't flooded.
+    path_expression: "brave/(?:android|browser|components|ios)/.*\\.(?:cc|h|mm|java)"
+    path_expression: "chrome/browser/(?:profiles|signin|ui/profiles|ui/views/profiles)/.*"
+    path_expression: "components/signin/.*"
+    path_expression: "chrome/android/.*/(?:profiles|signin)/.*"
+    content_patterns: "(?i:gaia_?id)"
+    rules: "components/signin/agents/knowledge_base/rules/prefer-gaia-id-class-over-raw-string.md"
+  }
+  capability_groups {
+    # Signin API rule: Brave's own code still calls IdentityManager/AccountInfo
+    # (brave_sync_auth_manager, brave_profile_manager, BraveSigninManager.java,
+    # iOS web view); scope by the API, not the directory, so the 22 profile
+    # shadows aren't flooded.
+    path_expression: "brave/(?:android|browser|components|ios)/.*\\.(?:cc|h|mm|java)"
+    path_expression: "chrome/browser/(?:profiles|signin|ui/profiles|ui/views/profiles)/.*"
+    path_expression: "components/signin/.*"
+    path_expression: "chrome/android/.*/(?:profiles|signin)/.*"
+    content_patterns: "\\b(?:GetAccountsInCookieJar|AccountsInCookieJarInfo)\\b"
+    rules: "components/signin/agents/knowledge_base/rules/prefer-get-accounts-with-refresh-tokens-over-cookie-jar.md"
+  }
+  capability_groups {
+    # Signin API rule: Brave's own code still calls IdentityManager/AccountInfo
+    # (brave_sync_auth_manager, brave_profile_manager, BraveSigninManager.java,
+    # iOS web view); scope by the API, not the directory, so the 22 profile
+    # shadows aren't flooded.
+    path_expression: "brave/(?:android|browser|components|ios)/.*\\.(?:cc|h|mm|java)"
+    path_expression: "chrome/browser/(?:profiles|signin|ui/profiles|ui/views/profiles)/.*"
+    path_expression: "components/signin/.*"
+    path_expression: "chrome/android/.*/(?:profiles|signin)/.*"
+    content_patterns: "\\b(?:FindExtendedAccountInfoByEmailAddress|CoreAccountInfo|AccountInfo)\\b.*(?i:email)|(?i:email).*\\b(?:CoreAccountInfo|AccountInfo)\\b"
+    rules: "components/signin/agents/knowledge_base/rules/use-gaia-id-instead-of-email-for-account-identity.md"
+  }
+  capability_groups {
+    # 29 Brave WebUI files hand-build Mojo remotes/routers (new tab page,
+    # settings, Leo, welcome); upstream's group already covers shadows under
+    # chrome/browser/resources and ui/webui/resources.
+    path_expression: "brave/(?:browser/resources|components/.*/resources|ui/webui/resources)/.*\\.tsx?"
+    content_patterns: "bindNewPipeAndPassReceiver\\("
+    content_patterns: "bindNewPipeAndPassRemote\\("
+    content_patterns: "\\.getRemote\\("
+    content_patterns: "CallbackRouter\\(\\)"
+    content_patterns: "HandlerRemote\\(\\)"
+    rules: "ui/webui/knowledge_base/use-autogenerated-mojo-browser-proxy.md"
+  }
+}

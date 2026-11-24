@@ -1,0 +1,626 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Brave's scopes for Chromium's iOS rules, read as part of Chromium's knowledge
+# base: paths and rules are relative to Chromium's `src`, Brave's own files are
+# `brave/...`, and an override counts under the path of the file it overrides.
+
+agentic_review {
+  capability_groups {
+    # Brave keeps one Objective-C .m bridge (rewards_notification.m); new ones
+    # should be .mm.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.m"
+    rules: "ios/agents/knowledge_base/rules/general/all-ios-source-files-must-be-objective-cpp.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:weakSelf|strongSelf|weak_self|strong_self|self)\\s*->"
+    content_patterns: "\\b(?:strongSelf|strong_self)\\s*=\\s*(?:weakSelf|weak_self)\\b"
+    content_patterns: "\\[(?:weakSelf|weak_self)\\s+[a-zA-Z0-9_]+"
+    content_patterns: "\\b(?:__strong\\s+)?(?:__)?typeof(?:__)?\\s*\\([^)]*weakSelf[^)]*\\)\\s*strongSelf\\b"
+    content_patterns: "\\b[A-Za-z0-9_]*(?:[Cc]ompletion|[Cc]allback|[Hh]andler|[Aa]ction|[Bb]lock|[Pp]rovider)\\w*\\s*[:=]\\s*(?:\\([^)\\n]*\\)\\s*)?\\^"
+    content_patterns: "\\b(?:weakSelf|weak_self)\\s*=\\s*self\\b"
+    content_patterns: "\\bbase::Bind(?:Once|Repeating)\\s*\\(\\s*\\^"
+    content_patterns: "(?:[:=(,\\[]|\\breturn\\s+|  )\\s*\\^\\s*(?:[A-Za-z_]\\w*(?:<[^>\\n]*>)?\\s*\\**\\s*)?(?:\\(|\\{)"
+    rules: "ios/agents/knowledge_base/rules/general/blocks-must-be-kept-short-single-method-call.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bNSTimer\\b"
+    content_patterns: "\\b(?:scheduledT|t)imerWithTimeInterval\\b"
+    content_patterns: "\\bbase::(?:OneShotTimer|RepeatingTimer|RetainingOneShotTimer)\\b"
+    rules: "ios/agents/knowledge_base/rules/general/invalidate-timers-in-teardown.md"
+  }
+  capability_groups {
+    # Brave Objective-C++ bridges and shadows can set user-visible text;
+    # content-targeted on string literal assignments.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.mm"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.mm"
+    content_patterns: "\\.(?:text|title|placeholder|accessibilityLabel|accessibilityHint|accessibilityValue)\\s*=\\s*@\"[^\"\\n]*[A-Za-z]"
+    content_patterns: "\\bsetTitle:\\s*@\"[^\"\\n]*[A-Za-z]"
+    content_patterns: "\\b(?:actionWithTitle|alertControllerWithTitle|menuWithTitle):\\s*@\"[^\"\\n]*[A-Za-z]"
+    content_patterns: "\\bmessage:\\s*@\"[^\"\\n]*[A-Za-z]"
+    rules: "ios/agents/knowledge_base/rules/general/localize-user-visible-strings.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "@synchronized\\s*\\("
+    content_patterns: "@property\\s*\\([^)\\n]*\\batomic\\b"
+    content_patterns: "\\b(?:base::Lock|base::AutoLock|std::mutex|std::lock_guard|NSLock|NSRecursiveLock|os_unfair_lock)\\b"
+    rules: "ios/agents/knowledge_base/rules/general/no-multithreaded-objects.md"
+  }
+  capability_groups {
+    # Brave adds its iOS flags through the about_flags.mm shadow and patch.
+    path_expression: "ios/chrome/browser/flags/about_flags\\.mm"
+    content_patterns: "\\bFEATURE_(?:WITH_PARAMS_)?VALUE_TYPE\\b"
+    content_patterns: "\\b(?:SINGLE|MULTI|ENABLE_DISABLE)_VALUE_TYPE(?:_AND_VALUE)?\\b"
+    content_patterns: "\\bPLATFORM_FEATURE_(?:WITH_PARAMS_)?VALUE_TYPE\\b"
+    content_patterns: "\\bflag_descriptions::k[A-Za-z0-9_]+(?:Name|Description)\\b"
+    content_patterns: "\\bflags_ui::kOs[A-Za-z0-9_]*\\b"
+    rules: "ios/chrome/browser/intelligence/kb/chrome/append-new-flags-to-end-of-about-flags.md"
+  }
+  capability_groups {
+    # Brave writes flag descriptions for its iOS flags.
+    path_expression: "brave/ios/(?:app|browser)/(?:.*/)?[^/]*flag[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/chrome/browser/flags/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?:inline\\s+)?(?:constexpr|const|extern\\s+const)\\s+char(?:16_t)?\\s+k[A-Za-z0-9_]*Description"
+    content_patterns: "\\bk[A-Za-z0-9_]*Description\\[\\]\\s*="
+    content_patterns: "\\\"(?:When|If)\\s+(?:enabled|disabled|active|set),\\s+"
+    content_patterns: "\\\"(?:Enables|Disables|Allows|Provides|Shows|Hides|Controls)\\s+(?:the\\s+)?[A-Za-z0-9_]+"
+    content_patterns: "(?i)\\b(?:dark[- ]launch|backend[- ]only|no-op\\s+feature|prerequisite|capability)\\b"
+    rules: "ios/chrome/browser/intelligence/kb/chrome/avoid-tautological-flag-descriptions.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bDependsOn\\s*\\("
+    content_patterns: "\\b(?:Refcounted)?(?:Profile|BrowserState|BrowserContext)?KeyedService(?:Base)?Factory(?:IOS)?\\b"
+    content_patterns: "\\bBuildServiceInstanceFor\\s*\\("
+    content_patterns: "\\bGetServiceFor(?:Profile|BrowserState)(?:As)?\\b"
+    content_patterns: "\\bCreateServiceInstanceFor\\b"
+    rules: "ios/chrome/browser/intelligence/kb/chrome/declare-keyed-service-factory-dependencies-with-depends-on.md"
+  }
+  capability_groups {
+    # Brave registers WebUI pages through the
+    # chrome_web_ui_ios_controller_factory.mm shadow and its own ui/webui.
+    path_expression: "brave/ios/browser/ui/webui/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/chrome/browser/webui/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bNewWebUIIOS<"
+    content_patterns: "\\bInternalDebugPagesEnabled\\s*\\("
+    content_patterns: "\\bInternalDebugPagesDisabledUI\\b"
+    content_patterns: "\\bkChromeUI[A-Za-z0-9_]*(?:Internals|Interstitials)Host\\b"
+    content_patterns: "\\bGetWebUIIOSFactoryFunction\\b"
+    rules: "ios/chrome/browser/intelligence/kb/chrome/guard-internal-debug-webui-pages.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bBuildServiceInstanceFor\\b"
+    content_patterns: "->\\s*GetLocalState\\s*\\("
+    content_patterns: "->\\s*GetPrefs\\s*\\("
+    content_patterns: "\\bprefs::k[A-Za-z0-9_]+\\b"
+    content_patterns: "\\b(?:local_state_|profile_prefs_|prefs_)->"
+    rules: "ios/chrome/browser/intelligence/kb/chrome/query-browser-wide-prefs-from-local-state.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bRegister(?:Profile|BrowserState)Prefs\\s*\\("
+    content_patterns: "\\bregistry->Register(?:Boolean|Integer|Double|String|List|Dictionary|FilePath|Int64|Uint64|Time|TimeDelta)Pref\\b"
+    content_patterns: "\\b(?:ProfileKeyedServiceFactory(?:IOS)?|Browser(?:State|Context)KeyedServiceFactory)\\b"
+    content_patterns: "\\bvoid\\s+[A-Za-z0-9_:]*Factory::Register(?:Profile|BrowserState)Prefs\\b"
+    content_patterns: "\\buser_prefs::PrefRegistrySyncable\\s*\\*"
+    rules: "ios/chrome/browser/intelligence/kb/chrome/register-keyed-service-preferences-in-factory.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:Refcounted)?(?:Profile|BrowserState)KeyedServiceFactory(?:IOS)?\\b"
+    content_patterns: "\\bBuildServiceInstanceFor(?:Profile|BrowserState)?\\s*[(]"
+    content_patterns: "\\bGetBrowserState(?:ToUse|OwnInstanceInIncognito|RedirectedInIncognito)\\b"
+    content_patterns: "\\bServiceIsNULLWhileTesting\\b"
+    content_patterns: "\\bProfileSelection::k(?:OwnInstanceInIncognito|RedirectedInIncognito|NoInstanceInIncognito)\\b"
+    content_patterns: "\\bProfileSelection::kOwnInstanceInIncognito\\b"
+    content_patterns: "\\bBuildServiceInstanceFor(?:BrowserState|Profile)?\\s*[(]"
+    content_patterns: "\\b(?:DataProtection|RealTime|Enterprise)UrlLookupService\\b"
+    content_patterns: "\\bVisitedURLRankingService(?:Factory)?\\b"
+    content_patterns: "\\bProfileKeyedServiceFactoryIOS\\b"
+    rules: "ios/chrome/browser/intelligence/kb/chrome/rely-on-keyed-service-factory-default-incognito-behavior.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:CallJavaScriptFunction|CallAsyncJavaScriptFunction)\\s*[(]"
+    content_patterns: "\\bJavaScriptFeature::GetWebFramesManager\\b"
+    content_patterns: "\\bGetMainWebFrame\\s*[(]"
+    content_patterns: "\\bclass\\s+[A-Za-z0-9_]+JavaScriptFeature\\b"
+    content_patterns: "\\b[A-Za-z0-9_]+JavaScriptFeature::"
+    rules: "ios/chrome/browser/intelligence/kb/general/accept-webframe-in-javascript-feature-apis.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:base::)?ScopedBlockingCall(?:WithBaseSyncPrimitives)?\\b"
+    content_patterns: "\\b(?:base::)?BlockingType::(?:WILL_BLOCK|MAY_BLOCK)\\b"
+    content_patterns: "\\b(?:base::)?AssertBlockingAllowed\\s*\\("
+    content_patterns: "\\b(?:scoped_blocking_call|scoped_blocking_call_internal)\\.h\\b"
+    content_patterns: "\\b(?:ComputeAppIdentifierPrefix|GetAccessGroup)\\b"
+    rules: "ios/chrome/browser/intelligence/kb/general/annotate-blocking-scopes-with-scoped-blocking-call.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\breturn\\s+(?:nullptr|std::nullopt|nil)\\s*;"
+    content_patterns: "\\bif\\s*[(][^)]*==\\s*(?:nullptr|nil)\\s*[)]"
+    content_patterns: "\\bif\\s*[(][^)]*!=\\s*(?:nullptr|nil)\\s*[)]"
+    content_patterns: "\\bif\\s*[(]\\s*![a-zA-Z0-9_]+\\s*[)]\\s*\\{\\s*return\\b"
+    content_patterns: "(?i)/[/].*?\\b(?:returns?\\s+nullptr|returns?\\s+null|can\\s+be\\s+null|[n]ullable|contract)\\b"
+    rules: "ios/chrome/browser/intelligence/kb/general/audit-callers-when-relaxing-contract-to-nullptr.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:base::)?(?:PathExists|DirectoryExists|ReadFileToString|WriteFile)\\b"
+    content_patterns: "\\bcheckResourceIsReachableAndReturnError\\b"
+    content_patterns: "\\b(?:UIImage\\s*\\(\\s*contentsOfFile:|imageWithContentsOfFile:)"
+    content_patterns: "\\b(?:Data|NSData)\\s*\\(\\s*contentsOf:"
+    content_patterns: "\\b(?:PostTaskAndReply(?:WithResult)?|MayBlock)\\b"
+    rules: "ios/chrome/browser/intelligence/kb/general/avoid-blocking-main-thread-with-file-io.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\^\\s*(?:\\([^)]*\\))?\\s*\\{"
+    content_patterns: "\\b(?:base::)?CallbackToBlock\\b"
+    content_patterns: "(?:->|\\.)(?:GetWeakPtr|AsWeakPtr)\\b"
+    content_patterns: "\\b(?:base::)?WeakPtr<[A-Za-z0-9_:]+>"
+    content_patterns: "\\b(?:weakSelf|weak_self)\\.[a-zA-Z0-9_]+"
+    rules: "ios/chrome/browser/intelligence/kb/general/avoid-capturing-this-in-objc-blocks.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:base::)?raw_ptr<[^>]*\\bDanglingUntriaged\\b"
+    content_patterns: "\\b(?:base::)?raw_ptr<[^>]*\\b(?:Flaky|AcrossTasks|Leaked)DanglingUntriaged\\b"
+    content_patterns: "\\b(?:base::)?raw_ptr<[^>]*\\bDisableDanglingPtrDetection\\b"
+    content_patterns: "\\b(?:DanglingUntriaged|FlakyDanglingUntriaged|LeakedDanglingUntriaged|AcrossTasksDanglingUntriaged)\\b"
+    content_patterns: "\\bbase::UnsafeDanglingUntriaged\\b"
+    rules: "ios/chrome/browser/intelligence/kb/general/avoid-dangling-untriaged-on-raw-ptr.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstd::exchange\\s*\\("
+    content_patterns: "-\\s*\\(\\s*BOOL\\s*\\)\\s*(?:should|can|is|has|allows?)[A-Z]\\w*"
+    content_patterns: "\\bbool\\s+(?:[A-Za-z0-9_]+::)?(?:Should|Is|Has|Can|Must|Allows?)[A-Z]\\w*\\s*\\("
+    content_patterns: "\\.(?:clear|drain|take_all|pop_all)\\s*\\("
+    content_patterns: "\\[\\w+\\s+removeAllObjects\\]"
+    rules: "ios/chrome/browser/intelligence/kb/general/avoid-destructive-side-effects-in-predicates.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:std::)?unique_ptr<[^>]+>\\s*\\([^;)]*\\)"
+    content_patterns: "\\b(?:base::)?WrapUnique(?:<[^>]+>)?\\s*\\([^;)]*\\)"
+    content_patterns: "\\b[a-zA-Z0-9_]+\\.reset\\s*\\([^)]*\\.get\\s*\\(\\s*\\)"
+    content_patterns: "\\b[A-Za-z0-9_:]+\\s*\\*+\\s+[a-z_]\\w*\\s*=\\s*[a-z_]\\w*\\.get\\s*\\(\\s*\\)"
+    content_patterns: "\\bauto\\*?\\s+[a-z_]\\w*\\s*=\\s*[a-z_]\\w*\\.get\\s*\\(\\s*\\)"
+    rules: "ios/chrome/browser/intelligence/kb/general/avoid-dual-ownership-when-transferring-unique-ptr.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bNOTREACHED\\s*[(]"
+    content_patterns: "\\bcase\\s+[A-Za-z0-9_:]+\\s*:\\s*(?:\\n\\s*)?NOTREACHED"
+    content_patterns: "[-+]\\s*[(]\\s*void\\s*[)]\\s*(?:didTap|didSelect|handle)[A-Za-z0-9_]*"
+    content_patterns: "@selector[(](?:didTap|didSelect|buttonTapped|actionTriggered)[A-Za-z0-9_]*[)]"
+    content_patterns: "\\bswitch\\s*[(][a-zA-Z0-9_.*->]*\\b(?:error|Error|Action|State|Type)\\b"
+    rules: "ios/chrome/browser/intelligence/kb/general/avoid-notreached-in-ui-action-handlers.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "@property\\s*\\([^)]*\\)\\s*(?:const\\s+)?(?:base::)?raw_ptr<"
+    content_patterns: "@property\\b[^;]*\\b(?:base::)?(?:raw_ptr|raw_ref)<"
+    content_patterns: "\\b(?:base::)?raw_ptr<[^>]+>\\s+_[a-zA-Z0-9_]+;"
+    content_patterns: "\\s*(?:const\\s+)?[a-zA-Z0-9_]+::[a-zA-Z0-9_:<>]+\\s*\\*\\s*_[a-zA-Z0-9_]+;"
+    content_patterns: "\\s*(?:const\\s+)?[a-zA-Z0-9_]+(?:Service|Manager|Client|Factory|Bridge|Consumer|Observer|Store|Interface|Backend|Model|IOS|Tracker|Handler|Provider|Controller)\\s*\\*\\s*_[a-zA-Z0-9_]+;"
+    rules: "ios/chrome/browser/intelligence/kb/general/avoid-raw-ptr-in-objective-c-properties.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:_[a-zA-Z0-9_]+|[a-zA-Z0-9_]+_)\\s*\\?\\s*(?:_[a-zA-Z0-9_]+|[a-zA-Z0-9_]+_)->"
+    content_patterns: "\\bif\\s*\\(\\s*!?(?:_[a-zA-Z0-9_]+|[a-zA-Z0-9_]+_)\\s*(?:==|!=)\\s*(?:nullptr|nil|NULL)\\s*\\)"
+    content_patterns: "\\b[a-zA-Z0-9_]+_\\s*&&\\s*[a-zA-Z0-9_]+_->"
+    content_patterns: "\\bif\\s*\\(\\s*!?(?:_|m_)?[a-zA-Z0-9_]*(?:_|Model|Service|Client|Manager|Handler|Delegate|Provider|Factory|Coordinator|View)\\s*\\)"
+    content_patterns: "\\bif\\s*\\(\\s*!?\\s*(?:this->)?[a-z0-9_]+_\\s*\\)"
+    rules: "ios/chrome/browser/intelligence/kb/general/avoid-speculative-null-checks-on-invariant-dependencies.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstatic_cast<\\s*(?:std::)?optional<"
+    content_patterns: "\\breturn\\s+static_cast<\\s*(?:std::)?optional<"
+    content_patterns: "=\\s*static_cast<\\s*(?:std::)?optional<"
+    content_patterns: "\\bstatic_cast<\\s*std::optional\\s*<"
+    content_patterns: "\\bstatic_cast<\\s*(?:base::)?expected<"
+    rules: "ios/chrome/browser/intelligence/kb/general/avoid-static-cast-between-optional-types.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bAmountOf(?:Free|Total)DiskSpace\\b"
+    content_patterns: "\\b(?:base::)?SysInfo::AmountOf[A-Za-z0-9_]*DiskSpace\\b"
+    content_patterns: "\\bNSURLVolume(?:Available|Total)Capacity(?:[A-Za-z0-9_]*)?Key\\b"
+    content_patterns: "\\bNSFileSystem(?:FreeSize|Size)\\b"
+    content_patterns: "\\b(?:statvfs|fstatvfs|statfs|fstatfs)\\s*[(]"
+    rules: "ios/chrome/browser/intelligence/kb/general/avoid-unapproved-disk-space-queries.md"
+  }
+  capability_groups {
+    # Brave injects 77 page scripts (brave-ios UserScripts, js_messaging,
+    # playlist); listeners cost every page.
+    path_expression: "brave/ios/(?:.*/)?[^/]*\\.(?:js|ts)"
+    content_patterns: "\\baddEventListener\\s*[(]\\s*['\\\"](?:pointermove|mousemove|touchmove|scroll|wheel|pointerrawupdate)['\\\"]"
+    content_patterns: "['\\\"](?:pointermove|mousemove|touchmove|scroll|wheel|pointerrawupdate)['\\\"]"
+    content_patterns: "\\b(?:window|document)\\.addEventListener\\s*[(]\\s*['\\\"](?:pointer|mouse|touch|scroll)"
+    content_patterns: "\\bon(?:pointermove|mousemove|touchmove|scroll|wheel)\\b"
+    content_patterns: "\\b(?:PointerEvent|MouseEvent|TouchEvent)\\b"
+    rules: "ios/chrome/browser/intelligence/kb/general/avoid-unmanaged-high-frequency-listeners-in-web-scripts.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bbase::Unretained\\s*\\("
+    content_patterns: "\\bDETACH_FROM_(?:SEQUENCE|THREAD)\\s*\\("
+    content_patterns: "\\b(?:weak_ptr_factory_|weak_factory_)\\.GetWeakPtr\\s*\\(\\s*\\)"
+    content_patterns: "\\bPostTask(?:AndReply)?\\s*\\(\\s*FROM_HERE"
+    content_patterns: "->PostTask\\s*\\(\\s*FROM_HERE,\\s*base::BindOnce\\s*\\(\\s*\\^"
+    rules: "ios/chrome/browser/intelligence/kb/general/avoid-unretained-for-background-tasks.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "->(?:GetWeakPtr|AsWeakPtr)\\s*\\("
+    content_patterns: "\\b(?:base::)?WeakPtr<[^>]+>\\s+[_a-zA-Z0-9]+"
+    content_patterns: "\\bif\\s*\\(\\s*!_?[a-zA-Z0-9_]*(?:weak|Weak|ptr|Ptr|service|Service|manager|Manager|client|Client|cache|Cache)\\b"
+    content_patterns: "\\b[a-zA-Z0-9_]+_?\\s*=\\s*[^;]+->(?:GetWeakPtr|AsWeakPtr)\\s*\\("
+    content_patterns: "\\breturn\\s+[_a-zA-Z0-9]+(?:_ptr)?\\.get\\s*\\(\\s*\\);"
+    rules: "ios/chrome/browser/intelligence/kb/general/avoid-weakptr-as-lazy-initialization-cache.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bbase::Bind(?:Once|Repeating)\\s*\\(\\s*\\^"
+    content_patterns: "\\bbase::Bind(?:Once|Repeating)\\s*\\([^)]*\\bself\\b"
+    content_patterns: "\\bbase::Bind(?:Once|Repeating)\\s*\\([^)]*(?:weakSelf|weak_self|weak[A-Z]\\w*)"
+    content_patterns: "\\bstd::(?:make_shared|shared_ptr)\\s*<"
+    content_patterns: "\\bbase::Bind(?:Once|Repeating)\\s*\\(\\s*&"
+    rules: "ios/chrome/browser/intelligence/kb/general/bind-objc-objects-weakly-in-base-bind.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\.(?:spec|possibly_invalid_spec)\\s*[(]"
+    content_patterns: "->(?:spec|possibly_invalid_spec)\\s*[(]"
+    content_patterns: "\\b[a-zA-Z0-9_]*(?:url|URL|Url)\\.(?:is_valid|spec)\\s*[(]"
+    content_patterns: "\\bif\\s*[(][^)]*\\b(?:is_valid|is_empty)\\s*[(]"
+    content_patterns: "\\b(?:EncodeString|SetString|WriteStringPref|Append)\\w*\\s*[(][^)]*\\.spec"
+    rules: "ios/chrome/browser/intelligence/kb/general/check-gurl-is-valid-before-spec.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\[[a-zA-Z0-9_.]+\\s+addObject:\\s*"
+    content_patterns: "\\[[a-zA-Z0-9_.]+\\s+insertObject:\\s*"
+    content_patterns: "\\[[a-zA-Z0-9_.]+\\s+setObject:[^:]+\\s+forKey(?:edSubscript)?:\\s*"
+    content_patterns: "\\baddObject:\\s*"
+    content_patterns: "\\binsertObject:\\s*[^:]+\\s+atIndex:"
+    rules: "ios/chrome/browser/intelligence/kb/general/check-non-nil-before-collection-insert.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b[A-Za-z0-9_]+_IsValid\\s*\\("
+    content_patterns: "(?:->|\\.)(?:set_|add_)[a-z0-9_]+\\s*\\(\\s*static_cast<"
+    content_patterns: "\\bstatic_cast<[A-Za-z0-9_:]*(?:Role|Type|State|Mode|Status|Action|Reason|Result|Kind|Enum)>\\s*\\("
+    content_patterns: "\\b(?:==|!=)\\s*static_cast<\\s*(?:int|unsigned|uint\\d+_t|int\\d+_t|size_t)\\s*>\\s*\\("
+    content_patterns: "\\b(?:FindDouble|FindInt|GetIfDouble|GetIfInt)\\s*\\("
+    rules: "ios/chrome/browser/intelligence/kb/general/compare-unvalidated-integers-against-cast-enums.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bfor\\s*\\(\\s*(?:id|[A-Za-z0-9_]+\\s*\\*)\\s+\\w+\\s+in\\s+"
+    content_patterns: "\\b(?:NSArray|NSDictionary|NSSet)(?:<[^>]+>)?\\s*\\*\\s*\\w+\\s*="
+    content_patterns: "\\b(?:NSMutableArray|NSMutableDictionary|NSMutableSet)(?:<[^>]+>)?\\s*\\*"
+    content_patterns: "\\b\\[\\w+\\s+(?:mutableCopy|copy)\\]"
+    content_patterns: "\\bstd::exchange\\s*\\([^,]+,\\s*\\["
+    content_patterns: "\\bremoveObjectsInArray\\s*:"
+    content_patterns: "\\bstd::exchange\\s*\\([^,]+,\\s*(?:\\[NSMutableArray\\s+(?:new|array)\\]|\\{\\}|nil|nullptr)\\)"
+    content_patterns: "\\b(?:_?pendingTasks|_?pending_tasks|pendingRequests|deferredTasks)\\b"
+    content_patterns: "\\b(?:executedTasks|executed_tasks|completedTasks|finishedTasks)\\b"
+    content_patterns: "\\b(?:executeTasks|drainQueue|processQueue|flushQueue|dispatchQueue)\\w*\\s*[:(]"
+    rules: "ios/chrome/browser/intelligence/kb/general/copy-or-swap-mutable-collection-before-reentrant-iteration.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "@property\\s*\\([^)]*(?:strong|retain)[^)]*\\)\\s*id<[A-Za-z0-9_]+(?:Delegate|Provider|Observer|Commands)>"
+    content_patterns: "@property\\s*\\([^)]*\\bweak\\b[^)]*\\)\\s*id<[A-Za-z0-9_]+(?:Delegate|Provider|Observer|Commands)>"
+    content_patterns: "\\b(?:__weak\\s+)?id<[A-Za-z0-9_]+(?:Delegate|Provider|Observer|Commands)>\\s+_[a-zA-Z0-9_]+"
+    content_patterns: "\\b__weak\\s+id<[A-Za-z0-9_]+(?:Delegate|Provider|Observer|Commands)>"
+    content_patterns: "\\bHandlerForProtocol\\s*\\("
+    rules: "ios/chrome/browser/intelligence/kb/general/delegate-properties-and-ivars-must-be-weak.md"
+  }
+  capability_groups {
+    # Brave adds public CWV headers under ios/web_view/public.
+    path_expression: "brave/ios/web_view/public/(?:.*/)?[^/]*\\.h"
+    content_patterns: "@interface\\s+CWV\\w*"
+    content_patterns: "@interface\\b"
+    content_patterns: "\\bCWV_EXPORT\\b"
+    content_patterns: "[\"<]cwv_export\\.h[\">]"
+    content_patterns: "__attribute__\\s*\\(\\(\\s*visibility\\b"
+    rules: "ios/chrome/browser/intelligence/kb/general/export-public-classes-with-cwv-export.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "->Cancel\\s*\\("
+    content_patterns: "\\b(?:base::)?Cancelable(?:Once|Repeating)(?:Callback|Closure)\\b"
+    content_patterns: "\\bstd::unique_ptr<\\s*(?:base::)?Cancelable"
+    content_patterns: "\\b[a-zA-Z0-9_]*callback_?->Cancel\\s*\\("
+    rules: "ios/chrome/browser/intelligence/kb/general/guard-cancelable-callback-pointer-before-cancel.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bif\\s*\\(\\s*!?_?[a-zA-Z0-9]+->[a-zA-Z0-9_]+\\s*\\)"
+    content_patterns: "\\bif\\s*\\(\\s*!_?[a-zA-Z0-9_]+\\s*\\)\\s*\\{?"
+    content_patterns: "->[a-zA-Z0-9_]+\\.(?:Clear|clear|reset|Reset)\\s*\\("
+    content_patterns: "\\bif\\s*\\(\\s*!?[a-zA-Z0-9_]+->[a-zA-Z0-9_]+\\s*(?:==|!=)\\s*nullptr\\b"
+    content_patterns: "\\bif\\s*\\(\\s*!_?[a-zA-Z0-9_]+\\s*\\|\\|\\s*!?[a-zA-Z0-9_]+->"
+    rules: "ios/chrome/browser/intelligence/kb/general/guard-enclosing-pointer-before-member-access.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\.[a-zA-Z0-9_]*reset\\s*\\(\\s*\\)"
+    content_patterns: "=\\s*(?:std::)?nullopt\\b"
+    content_patterns: "\\b(?:std::)?optional<[^>]+>\\s+\\w+_"
+    content_patterns: "\\bif\\s*\\(\\s*!?[a-zA-Z0-9_]+_\\s*\\)"
+    content_patterns: "\\b[a-zA-Z0-9_]+_->"
+    rules: "ios/chrome/browser/intelligence/kb/general/guard-optional-dereference-after-reset.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bFeatureScript::CreateWith(?:Filename|String)\\b"
+    content_patterns: "\\b(?:FeatureScript::)?InjectionTime::kDocument(?:Start|End)\\b"
+    content_patterns: "\\b(?:FeatureScript::)?kDocumentEnd\\b"
+    content_patterns: "\\b(?:FeatureScript::)?kDocumentStart\\b"
+    content_patterns: "\\bJavaScriptFeature::FeatureScript\\b"
+    rules: "ios/chrome/browser/intelligence/kb/general/inject-security-feature-scripts-at-document-start.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:base::)?OnceCallback<[^>]+>"
+    content_patterns: "\\b(?:base::)?OnceClosure\\b"
+    content_patterns: "(?i)\\b(?:completion|completionHandler|completionBlock):\\s*[(][^)]*\\^"
+    content_patterns: "\\bstd::move\\s*\\([^)]+\\)\\.Run\\s*\\("
+    content_patterns: "(?i)if\\s*\\(\\s*(?:completion|completionBlock|completionHandler)\\b"
+    rules: "ios/chrome/browser/intelligence/kb/general/invoke-callback-on-early-return.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bScriptMessageReceived(?:WithReply)?\\b"
+    content_patterns: "\\b(?:web::)?ScriptMessage\\b"
+    content_patterns: "\\bJavaScriptFeature\\b"
+    content_patterns: "\\b(?:Get)?ScriptMessageHandler(?:Name|WithReply)?\\b"
+    content_patterns: "\\b(?:ScopedWKScriptMessageHandler|addScriptMessageHandler)\\b"
+    rules: "ios/chrome/browser/intelligence/kb/general/no-check-or-notreached-on-script-messages.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:base::)?Bind(?:Once|Repeating)\\s*\\("
+    content_patterns: "\\b(?:base::)?WeakPtr<[A-Za-z0-9_:]*>"
+    content_patterns: "->(?:GetWeakPtr|AsWeakPtr)\\s*\\(\\s*\\)|\\b(?:weak_ptr_factory_|weak_factory_)\\.GetWeakPtr\\b"
+    content_patterns: "\\b(?:weak_ptr|weak_this|weak_self|strongSelf|strong_self)->|\\b[a-zA-Z0-9_]+\\.get\\s*\\(\\s*\\)"
+    content_patterns: "\\b(?:WebStateList|IdType|StrongAlias)\\b"
+    rules: "ios/chrome/browser/intelligence/kb/general/pass-weakptr-to-async-callbacks.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:base::)?WeakPtr<\\s*(?:web::)?[A-Za-z0-9_:]+\\s*>"
+    content_patterns: "\\b(?:raw_ptr<\\s*)?web::WebState\\s*(?:\\*|>)"
+    content_patterns: "->GetWeakPtr\\s*\\(\\s*\\)"
+    content_patterns: "\\b(?:base::)?Scoped(?:MultiSource)?Observation<[A-Za-z0-9_:]+,\\s*[A-Za-z0-9_:]*Observer>"
+    content_patterns: "\\b(?:WebStateObserver(?:Bridge)?|webStateDestroyed:|(?:On|Did)[A-Za-z0-9_]*(?:Destroyed|Closing)\\s*\\()"
+    content_patterns: "\\bUIDragItem\\b"
+    content_patterns: "\\b(?:TabGroupInfo|TabInfo)\\b"
+    content_patterns: "\\blocalObject\\b"
+    content_patterns: "\\binitWith(?:TabGroup|Tab|WebState):"
+    content_patterns: "\\bbase::WeakPtr<(?:const\\s+)?(?:TabGroup|ProfileIOS|WebState)>"
+    rules: "ios/chrome/browser/intelligence/kb/general/prefer-weakptr-over-observer-reset.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:Add|Remove)(?:Observer|Listener|Observation)\\s*\\("
+    content_patterns: "\\b(?:base::)?Scoped(?:MultiSource)?Observation<"
+    content_patterns: "\\b_?[a-zA-Z0-9_]*(?:observation_|Bridge)\\.(?:Observe|Reset|reset|RemoveObservation)\\s*\\("
+    content_patterns: "\\b[A-Za-z0-9_:]*(?:BeingDeleted|BeingDestroyed|SourceDestroyed|ShuttingDown|On[A-Za-z0-9_]*Destroyed|OnIdentityManagerShutdown|DidShutdown|didShutdown)\\b"
+    content_patterns: "\\bvoid\\s+[A-Za-z0-9_:]*(?:Shutdown|TearDown|CleanUp|Stop)\\s*\\("
+    rules: "ios/chrome/browser/intelligence/kb/general/unregister-observers-or-use-scoped-observation.md"
+  }
+  capability_groups {
+    # Brave shadows ios/web_view/internal autofill and download bridges.
+    path_expression: "brave/ios/web_view/(?:.*/)?[^/]*\\.(?:h|mm)"
+    path_expression: "ios/web_view/internal/(?:.*/)?[^/]*\\.(?:h|mm)"
+    content_patterns: "@protocol\\s+\\w+Bridge\\b"
+    content_patterns: "\\b(?:Autofill|PasswordManager|Suggestions)DriverIOSBridge\\b"
+    content_patterns: "\\bCWV[A-Z]\\w*(?:Controller|Bridge)\\b"
+    content_patterns: "[-+]\\s*\\([^)]*\\)\\s*notifyFormsSeen\\b"
+    content_patterns: "\\bnotifyFormsSeen\\b"
+    rules: "ios/chrome/browser/intelligence/kb/general/update-web-view-bridge-implementations-for-shared-protocols.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bdispatch_async\\b"
+    content_patterns: "\\bdispatch_sync\\b"
+    content_patterns: "\\bdispatch_get_main_queue\\b"
+    content_patterns: "\\bdispatch_get_global_queue\\b"
+    content_patterns: "\\bdispatch_queue_create\\b"
+    rules: "ios/chrome/browser/intelligence/kb/general/use-chromium-task-runner-not-grand-central-dispatch.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:base::(?:apple|mac)::)?ObjCCast(?:Strict)?\\s*<"
+    content_patterns: "\\bstatic_cast\\s*<\\s*(?:const\\s+)?[A-Z][A-Za-z0-9_]*\\s*\\*\\s*>"
+    content_patterns: "\\(\\s*(?:UI|NS|CRW|[A-Z][A-Za-z0-9_]*)\\s*\\*\\s*\\)"
+    content_patterns: "\\[[a-zA-Z0-9_.]+\\s+isKindOfClass:"
+    content_patterns: "\\bobjectForTrait:\\s*\\["
+    rules: "ios/chrome/browser/intelligence/kb/general/use-objc-cast-strict-for-objective-c-downcasting.md"
+  }
+  capability_groups {
+    # correctness or safety rule for Objective-C++/C++; Brave's iOS bridges
+    # (ios/browser, app, web, web_view) and its ios/ shadows have this code;
+    # upstream's content patterns keep it targeted.
+    path_expression: "brave/ios/(?:app|browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "ios/(?:chrome/browser|web|web_view)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:top_)?frame_origin\\s*\\(\\s*\\)\\s*->"
+    content_patterns: "\\b(?:top_)?frame_origin\\s*\\(\\s*\\)\\s*\\*"
+    content_patterns: "\\b(?:top_)?frame_origin\\s*\\(\\s*\\)\\."
+    content_patterns: "\\b(?:top_)?frame_origin\\s*\\(\\s*\\)"
+    content_patterns: "\\.(?:top_)?frame_origin\\b"
+    rules: "ios/chrome/browser/intelligence/kb/general/verify-isolation-info-origin-before-dereference.md"
+  }
+}

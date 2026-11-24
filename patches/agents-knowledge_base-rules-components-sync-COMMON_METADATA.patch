@@ -1,46 +1,51 @@
 diff --git a/agents/knowledge_base/rules/components/sync/COMMON_METADATA b/agents/knowledge_base/rules/components/sync/COMMON_METADATA
-index a6459a3f628cae6426c63ac4e77846f83077e7c0..50099816f2833cdde48951fbd10e15d92cb87df4 100644
+index a6459a3f628cae6426c63ac4e77846f83077e7c0..be4af3003fe7735bc594a5b5a010bd2ef6d6c15a 100644
 --- a/agents/knowledge_base/rules/components/sync/COMMON_METADATA
 +++ b/agents/knowledge_base/rules/components/sync/COMMON_METADATA
-@@ -15,6 +15,7 @@ agentic_review {
+@@ -15,6 +15,8 @@ agentic_review {
      path_expression: "components/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
      path_expression: "ios/chrome/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
      content_patterns: "\\b(?:DeviceInfoTracker|OnDeviceInfoChange)\\b"
 +    path_expression: "brave/(?:browser|components|ios)/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
++    path_expression_exclusion: "brave/.*_(?:unit|browser)?test\\.(?:cc|h|mm)"
      rules: "agents/knowledge_base/rules/components/sync/allow-device-info-observer-cleanup-when-sync-stops.md"
    }
    capability_groups {
-@@ -23,6 +24,7 @@ agentic_review {
+@@ -23,6 +25,8 @@ agentic_review {
      path_expression: "components/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
      path_expression: "ios/chrome/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
      content_patterns: "\\b(?:\\w*MetadataChangeList|DataTypeSyncBridge|ApplyMetadataChanges)\\b"
 +    path_expression: "brave/(?:browser|components|ios)/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
++    path_expression_exclusion: "brave/.*_(?:unit|browser)?test\\.(?:cc|h|mm)"
      rules: "agents/knowledge_base/rules/components/sync/apply-sync-metadata-before-committing-database-transaction.md"
    }
    capability_groups {
-@@ -30,6 +32,7 @@ agentic_review {
+@@ -30,6 +34,8 @@ agentic_review {
      path_expression: "chromeos/ash/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
      path_expression: "components/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
      content_patterns: "\\b(?:GetPossiblyTrimmedRemoteSpecifics|IsTrackingMetadata)\\b"
 +    path_expression: "brave/(?:browser|components)/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
++    path_expression_exclusion: "brave/.*_(?:unit|browser)?test\\.(?:cc|h|mm)"
      rules: "agents/knowledge_base/rules/components/sync/check-is-tracking-metadata-before-getting-remote-specifics.md"
    }
    capability_groups {
-@@ -47,6 +50,9 @@ agentic_review {
+@@ -47,6 +53,10 @@ agentic_review {
      path_expression: "components/(?:.*/)?(?:[^/]*_)?sync[^/]*\\.(?:cc|cpp|h|hpp|mm)"
      path_expression: "components/sync/protocol/[^/]*\\.proto"
      path_expression: "ios/chrome/browser/sync/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
 +    path_expression: "brave/browser/sync/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm)"
 +    path_expression: "brave/components/(?:.*/)?(?:[^/]*_)?sync[^/]*\\.(?:cc|cpp|h|hpp|mm)"
 +    path_expression: "brave/components/sync/protocol/[^/]*\\.proto"
++    path_expression_exclusion: "brave/.*_(?:unit|browser)?test\\.(?:cc|h|mm)"
      rules: "agents/knowledge_base/rules/components/sync/do-not-map-unsupported-sync-proto-fields-to-entities.md"
    }
    capability_groups {
-@@ -57,6 +63,7 @@ agentic_review {
+@@ -57,6 +67,8 @@ agentic_review {
    }
    capability_groups {
      path_expression: "components/sync/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm|proto)"
 +    path_expression: "brave/components/sync/(?:.*/)?[^/]*\\.(?:cc|cpp|h|hpp|mm|proto)"
++    path_expression_exclusion: "brave/.*_(?:unit|browser)?test\\.(?:cc|h|mm)"
      rules: "agents/knowledge_base/rules/components/sync/retain-proto-visitors-for-deprecated-sync-fields.md"
    }
  }

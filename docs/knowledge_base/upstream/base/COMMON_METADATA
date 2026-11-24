@@ -1,0 +1,84 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Brave's scopes for Chromium's `base` rules, read as part of Chromium's
+# knowledge base: paths and rules are relative to Chromium's `src`, Brave's own
+# files are `brave/...`, and an override counts under the path of the file it
+# overrides.
+
+agentic_review {
+  capability_groups {
+    # brave/base is Brave's //base; shadows/plasters adding API to base headers
+    # (check_is_test.h, debug/alias.h, feature_internal.h, strings/to_string.h)
+    # are the overrides where helpers get added.
+    path_expression: "brave/base/.*"
+    path_expression: "base/(?:check_is_test|debug/alias|feature_internal|strings/to_string)\\.h"
+    rules: "agents/knowledge_base/rules/base/avoid-duplicating-standard-cpp-features.md"
+  }
+  capability_groups {
+    # same scope: Brave adding single-caller helpers to brave/base or into
+    # upstream base headers via shadows.
+    path_expression: "brave/base/.*"
+    path_expression: "base/(?:check_is_test|debug/alias|feature_internal|strings/to_string)\\.h"
+    rules: "agents/knowledge_base/rules/base/avoid-single-feature-utilities-in-base.md"
+  }
+  capability_groups {
+    # Brave Windows code launches processes (brave_vpn/win service_commands,
+    # base/process/process_launcher_win.cc).
+    path_expression: "brave/(?:.*/)?(?:win/.*|[^/]*_win\\.(?:cc|h))"
+    content_patterns: "\\b(?:CreateProcess\\w*|HRESULT_FROM_WIN32|ReplaceFile|CoCreateInstance|OpenProcessToken|GetTokenInformation)\\b"
+    rules: "agents/knowledge_base/rules/base/check-terminating-null-windows-environment-block.md"
+  }
+  capability_groups {
+    # Brave Windows services handle process tokens and security descriptors
+    # (brave_vpn/win).
+    path_expression: "brave/(?:.*/)?(?:win/.*|[^/]*_win\\.(?:cc|h))"
+    content_patterns: "\\b(?:CreateProcess\\w*|HRESULT_FROM_WIN32|ReplaceFile|CoCreateInstance|OpenProcessToken|GetTokenInformation)\\b"
+    rules: "agents/knowledge_base/rules/base/disallow-double-quotes-in-sddl-security-attributes.md"
+  }
+  capability_groups {
+    # Brave adds perfetto::Category("brave.*") entries through
+    # rewrite/base/trace_event/builtin_categories.h.yaml; upstream content
+    # pattern misses perfetto::Category lines.
+    path_expression: "base/trace_event/builtin_categories\\.h"
+    content_patterns: "perfetto::Category\\("
+    content_patterns: "\\bSetDescription\\b"
+    rules: "agents/knowledge_base/rules/base/document-trace-categories-with-set-description.md"
+  }
+  capability_groups {
+    # Brave launches its own features (and pins base ones through the
+    # feature_list.cc plaster); a launch can leave companion features disabled.
+    path_expression: "brave/(?:.*/)?[^/]*features?\\.(?:cc|h)"
+    path_expression: "base/feature_list\\.cc"
+    content_patterns: "\\bFEATURE_ENABLED_BY_DEFAULT\\b"
+    rules: "agents/knowledge_base/rules/base/enable-companion-flags-on-feature-launch.md"
+  }
+  capability_groups {
+    # brave/base defines Java sources (brave_base_shared_preferences_java.gni);
+    # the base/BUILD.gn patch must append to base_java, so it is left out.
+    path_expression: "brave/base/(?:BUILD\\.gn|[^/]*\\.gni)"
+    content_patterns: "\\b(?:android_library|generate_jni)\\b|\\.java\\b"
+    rules: "agents/knowledge_base/rules/base/independent-android-library-targets-in-base.md"
+  }
+  capability_groups {
+    # brave/base has per-platform APIs (process/process_launcher_{posix,win},
+    # apple/, mac/).
+    path_expression: "brave/base/.*"
+    rules: "agents/knowledge_base/rules/base/restrict-platform-specific-apis-over-dummy-values.md"
+  }
+  capability_groups {
+    # 37 Brave C++ files use delete this; (e.g.
+    # browser/android/brave_sync_worker.cc); base::SelfDeleting exists upstream.
+    path_expression: "brave/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bdelete\\s+this\\s*;"
+    rules: "agents/knowledge_base/rules/base/use-base-self-deleting-for-self-deleting-classes.md"
+  }
+  capability_groups {
+    # brave/base/apple (base_value_bridge, foundation_util) and brave/base/mac
+    # exist.
+    path_expression: "brave/base/(?:apple|mac|ios)/.*"
+    rules: "agents/knowledge_base/rules/base/use-mac-and-apple-platform-namespaces.md"
+  }
+}
