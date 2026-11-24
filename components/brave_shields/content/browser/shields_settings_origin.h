@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_SHIELDS_SHIELDS_SETTINGS_ORIGIN_H_
-#define BRAVE_BROWSER_BRAVE_SHIELDS_SHIELDS_SETTINGS_ORIGIN_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_SHIELDS_SETTINGS_ORIGIN_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_SHIELDS_SETTINGS_ORIGIN_H_
 
 #include <optional>
 
@@ -92,4 +92,4 @@ class ShieldsSettingsOrigin {
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_BROWSER_BRAVE_SHIELDS_SHIELDS_SETTINGS_ORIGIN_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_SHIELDS_SETTINGS_ORIGIN_H_

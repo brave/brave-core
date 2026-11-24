@@ -16,4 +16,13 @@ source_set("unit_tests") {
     "//components/sync_preferences:test_support",
     "//testing/gtest",
   ]
+
+  if (!is_android) {
+    sources += [ "shields_settings_origin_unittest.cc" ]
+    deps += [
+      "//chrome/test/base:chrome_render_view_host_test_harness",
+      "//content/test:test_support",
+      "//url",
+    ]
+  }
 }

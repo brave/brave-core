@@ -16,7 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/types/optional_ref.h"
-#include "brave/browser/brave_shields/shields_settings_origin.h"
+#include "brave/components/brave_shields/content/browser/shields_settings_origin.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/global_routing_id.h"
 #include "net/base/isolation_info.h"
