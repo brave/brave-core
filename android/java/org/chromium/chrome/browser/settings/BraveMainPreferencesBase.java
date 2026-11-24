@@ -844,6 +844,19 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                             context, indexData, profile);
                     BraveAutofillOptionsSearchIndex.updateSearchIndexEntries(
                             context, indexData, AUTOFILL_OPTIONS_SEARCH_INDEX_ROUTES);
+                    // Upstream XML places it under Basics; Brave shows it under Display.
+                    SettingsIndexData.Entry autofillEntry =
+                            indexData.getEntryForKey(
+                                    MainSettings.class.getName(),
+                                    MainSettings.PREF_AUTOFILL_AND_PASSWORDS);
+                    if (autofillEntry != null) {
+                        indexData.updateEntry(
+                                autofillEntry.id,
+                                new SettingsIndexData.Entry.Builder(autofillEntry)
+                                        .setHeader(
+                                                context.getString(R.string.prefs_section_display))
+                                        .build());
+                    }
                     // Remove upstream preferences hidden from the main settings UI.
                     // "languages" is safe to remove now that
                     // LanguageSettings.SEARCH_INDEX_DATA_PROVIDER
