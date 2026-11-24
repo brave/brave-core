@@ -51,7 +51,7 @@ BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
     show_title_bar_on_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
         base::BindRepeating(
-            &BraveBrowserFrameViewMac::UpdateWindowTitleVisibility,
+            &BraveBrowserFrameViewMac::UpdateWindowTitleAndControls,
             base::Unretained(this)));
   }
 
@@ -202,6 +202,27 @@ void BraveBrowserFrameViewMac::OnTopOverlayRevealFractionChanged(
 }
 
 void BraveBrowserFrameViewMac::ResetWindowControlsPosition() {
+  auto* widget = GetWidget();
+  if (!widget || widget->IsClosed()) {
+    return;
+  }
+
+  // Call upstream's OnTabStripStateChanged() to force AppKit to refresh the
+  // titlebar height and traffic light layout after Brave's tab strip or
+  // titlebar prefs change. This runs asynchronously via
+  // UpdateWindowTitleAndControls() so tab strip reparenting completes before
+  // OnTabStripStateChanged() triggers a synchronous layout. Skip while in
+  // fullscreen so we don't fight AppKit or ImmersiveModeControllerCocoa's
+  // state, and only call if NSWindowStyleMaskFullSizeContentView is currently
+  // set.
+  if (!GetBrowserView()->IsFullscreen()) {
+    if (NSWindow* window = widget->GetNativeWindow().GetNativeNSWindow();
+        window && !(window.styleMask & NSWindowStyleMaskFullScreen) &&
+        (window.styleMask & NSWindowStyleMaskFullSizeContentView)) {
+      OnTabStripStateChanged();
+    }
+  }
+
   browser_widget()->ResetWindowControlsPosition();
   UpdateWindowControlsOpacity();
 }

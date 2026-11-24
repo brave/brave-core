@@ -32,26 +32,29 @@ NSColor* g_brave_title_color = nil;
 namespace remote_cocoa {
 
 void NativeWidgetNSWindowBridge::SetWindowTitleVisibility(bool visible) {
-  NSUInteger styleMask = [window_ styleMask];
-  if (visible)
-    styleMask |= NSWindowStyleMaskTitled;
-  else
-    styleMask &= ~NSWindowStyleMaskTitled;
+  // Keep NSWindowStyleMaskTitled intact; stripping it causes AppKit on
+  // macOS 27+ to lose rounded window corners after exiting fullscreen.
+  window_.titleVisibility =
+      visible ? NSWindowTitleVisible : NSWindowTitleHidden;
 
-  [window_ setStyleMask:styleMask];
-
-  ResetWindowControlsPosition();
-
-  // Sometimes title is not visible until window is resized. In order to avoid
-  // this, reset title to force it to be visible.
-  if (visible) {
-    NSString* title = window_.title;
+  // Sometimes title visibility changes are not reflected until the window is
+  // resized. Resetting the title forces AppKit to update it immediately.
+  if (NSString* title = window_.title; title.length) {
     window_.title = @"";
     window_.title = title;
   }
+
+  ResetWindowControlsPosition();
 }
 
 void NativeWidgetNSWindowBridge::ResetWindowControlsPosition() {
+  // Traffic lights are managed separately by AppKit during fullscreen and
+  // fullscreen transitions.
+  if (in_fullscreen_transition() ||
+      ([window_ styleMask] & NSWindowStyleMaskFullScreen)) {
+    return;
+  }
+
   // Call undocumented method of NSThemeFrame in order to reset window controls'
   // position.
   //
