@@ -155,10 +155,20 @@ void BraveRequestInfo::set_top_frame_origin(std::optional<url::Origin> value) {
   top_frame_origin_ = std::move(value);
 }
 
+bool BraveRequestInfo::is_main_frame_request() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return is_main_frame_request_;
+}
+
+void BraveRequestInfo::set_is_main_frame_request(bool value) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  is_main_frame_request_ = value;
+}
+
 url::Origin BraveRequestInfo::first_party_origin_for_adblock_rules() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   url::Origin request_origin = url::Origin::Create(request_url_);
-  if (resource_type_ == blink::mojom::ResourceType::kMainFrame) {
+  if (is_main_frame_request_) {
     return GetPrecursorOriginIfOpaque(
         request_origin.opaque() && request_initiator_ ? *request_initiator_
                                                       : request_origin);
@@ -542,6 +552,7 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     ctx->set_tab_origin(
         isolation_info->top_frame_origin().value_or(url::Origin()).GetURL());
     ctx->set_top_frame_origin(isolation_info->top_frame_origin());
+    ctx->set_is_main_frame_request(isolation_info->IsMainFrameRequest());
   }
   // TODO(iefremov): We still need this for WebSockets, currently
   // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
