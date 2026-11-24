@@ -16,7 +16,10 @@ final class AdBlockEngineTests: XCTestCase {
     )!
 
     // When
-    // We create an engine
+    // We create an engine. `$to=` rules ask the domain resolver whether a
+    // destination is only a public suffix. iOS builds adblock without the
+    // embedded resolver, so this has to be installed first.
+    AdblockEngine.setDomainResolver()
     let engine = try AdblockEngine(rules: String(contentsOf: sampleFilterListURL, encoding: .utf8))
 
     // Then
