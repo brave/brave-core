@@ -154,8 +154,6 @@ class BraveOnDeviceSpeechRecognitionEngineTest : public testing::Test {
         media::ChannelLayoutConfig::Mono(), sample_rate_hz, ChunkFrames()));
   }
 
-  void FlushSessionRemote() { engine_->asr_session_.FlushForTesting(); }
-
   // Set before Start is queued, so unlike the fake's view it cannot be fooled
   // by a message that has been sent but not yet delivered.
   bool session_created() const { return engine_->session_created_; }
@@ -405,7 +403,7 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
       FROM_HERE, replied.GetCallback());
   ASSERT_TRUE(replied.Wait());
   // Makes sure a Start, if one was sent, has reached the fake.
-  FlushSessionRemote();
+  session.session_receiver().FlushForTesting();
   ASSERT_FALSE(session.started().IsReady());
 
   SetAudioParameters();
@@ -434,7 +432,7 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, StartsOnlyOnce) {
 
   SetAudioParameters();
   // Makes sure a second Start, if one was sent, has reached the fake.
-  FlushSessionRemote();
+  session.session_receiver().FlushForTesting();
 
   EXPECT_FALSE(session.started().IsReady());
 }
