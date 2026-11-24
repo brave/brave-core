@@ -29,6 +29,11 @@
     <item type="id" name="menu_item_background_drawable_position" />
     <item type="id" name="contextmenu_copy_clean_link" />
 
+    <!-- NTP privacy stats widget menu -->
+    <item type="id" name="ntp_stats_menu_privacy_report" />
+    <item type="id" name="ntp_stats_menu_launch_recap" />
+    <item type="id" name="ntp_stats_menu_hide" />
+
     <!-- Brave Talk notification -->
     <item type="id" name="media_playback_mic_notification" />
 </resources>

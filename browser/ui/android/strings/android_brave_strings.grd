@@ -1617,9 +1617,6 @@ Are you sure you want to do this?
       <message name="IDS_TURN_ON_PRIVACY_STATS" desc="Button text for onboading bottomsheet.">
         Turn on privacy reports
       </message>
-      <message name="IDS_VISIBILITY" desc="Text for visibility.">
-        Visibility
-      </message>
       <message name="IDS_WEEK" desc="Tab title text">
         Week
       </message>
@@ -1736,6 +1733,18 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_PRIVACY_STATS" desc="Private stats title text.">
         Privacy Stats
+      </message>
+      <message name="IDS_NTP_STATS_MENU_MORE_OPTIONS" desc="Accessibility label of the button that opens the options menu of the privacy stats widget on the new tab page.">
+        More options
+      </message>
+      <message name="IDS_NTP_STATS_MENU_PRIVACY_REPORT" desc="Privacy stats widget menu item that opens the privacy report.">
+        Privacy report
+      </message>
+      <message name="IDS_NTP_STATS_MENU_LAUNCH_RECAP" desc="Privacy stats widget menu item that opens the Brave Recap page, a summary of what Shields has blocked.">
+        Launch Brave recap
+      </message>
+      <message name="IDS_NTP_STATS_MENU_HIDE" desc="Privacy stats widget menu item that hides the widget from the new tab page.">
+        Hide privacy stats
       </message>
       <message name="IDS_NTP_RECAP_BANNER_TITLE" desc="Title of the new tab page banner announcing that the Shields recap page is available.">
         Your Shields recap is ready

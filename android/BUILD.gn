@@ -358,7 +358,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_toggle_down.xml",
     "java/brave-res/drawable/ic_toggle_up.xml",
     "java/brave-res/drawable/ic_trash_icon.xml",
-    "java/brave-res/drawable/ic_visibility_off.xml",
     "java/brave-res/drawable/ic_vpn_always_on_1.xml",
     "java/brave-res/drawable/ic_vpn_always_on_2.xml",
     "java/brave-res/drawable/ic_vpn_always_on_3.xml",
