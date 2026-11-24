@@ -1,8 +1,16 @@
 diff --git a/services/network/restricted_cookie_manager.cc b/services/network/restricted_cookie_manager.cc
-index 071489be837c510331b3910e3cd47e9f48fb4f53..57dc0751698abb47a18fe16c30d0672d48e8ac88 100644
+index 071489be837c510331b3910e3cd47e9f48fb4f53..f27e4a1d1cef666755913c4490f6916c5b2d23b8 100644
 --- a/services/network/restricted_cookie_manager.cc
 +++ b/services/network/restricted_cookie_manager.cc
-@@ -322,7 +322,7 @@ class RestrictedCookieManager::Listener
+@@ -30,6 +30,7 @@
+ #include "mojo/public/cpp/base/shared_memory_version.h"
+ #include "mojo/public/cpp/bindings/message.h"
+ #include "mojo/public/cpp/bindings/remote.h"
++#include "net/base/features.h"
+ #include "net/base/isolation_info.h"
+ #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+ #include "net/cookies/canonical_cookie.h"
+@@ -322,7 +323,7 @@ class RestrictedCookieManager::Listener
      // site from observing their cookies being deleted at a later time, which
      // can happen due to eviction or due to the user explicitly deleting all
      // cookies.
@@ -11,7 +19,7 @@ index 071489be837c510331b3910e3cd47e9f48fb4f53..57dc0751698abb47a18fe16c30d0672d
              change.cookie, url_, site_for_cookies_, top_frame_origin_,
              restricted_cookie_manager_->GetCookieSettingOverrides(
                  storage_access_api_status_, /*is_ad_tagged=*/false,
-@@ -546,7 +546,7 @@ void RestrictedCookieManager::CookieListToGetAllForUrlCallback(
+@@ -546,7 +547,7 @@ void RestrictedCookieManager::CookieListToGetAllForUrlCallback(
  
    net::CookieAccessResultList maybe_included_cookies = cookie_list;
    net::CookieAccessResultList excluded_cookies = excluded_list;
@@ -20,7 +28,7 @@ index 071489be837c510331b3910e3cd47e9f48fb4f53..57dc0751698abb47a18fe16c30d0672d
        url, site_for_cookies, &top_frame_origin, cookie_setting_overrides,
        maybe_included_cookies, excluded_cookies);
  
-@@ -759,7 +759,7 @@ void RestrictedCookieManager::SetCanonicalCookie(
+@@ -759,7 +760,7 @@ void RestrictedCookieManager::SetCanonicalCookie(
                                  /*force_disable_third_party_cookies=*/false);
    // Check cookie accessibility with cookie_settings.
    // TODO(morlovich): Try to validate site_for_cookies as well.
@@ -29,7 +37,34 @@ index 071489be837c510331b3910e3cd47e9f48fb4f53..57dc0751698abb47a18fe16c30d0672d
        cookie, url, site_for_cookies, top_frame_origin, cookie_setting_overrides,
        &status);
  
-@@ -1098,7 +1098,7 @@ void RestrictedCookieManager::CookiesEnabledFor(
+@@ -1033,6 +1034,26 @@ void RestrictedCookieManager::GetCookiesString(
+     bool apply_devtools_overrides,
+     bool force_disable_third_party_cookies,
+     GetCookiesStringCallback callback) {
++  if (!base::FeatureList::IsEnabled(
++          net::features::kBraveCookieJarSharedVersion)) {
++    get_version_shared_memory = false;
++  }
++
++  base::ScopedClosureRunner bump_shared_version;
++  const net::CookieAccessDelegate* delegate =
++      cookie_store_->cookie_access_delegate();
++  if (delegate &&
++      delegate->ShouldUseEphemeralStorage(
++          url, EffectiveSiteForCookies(renderer_site_for_cookies),
++          EffectiveTopFrameOrigin(renderer_top_frame_origin))) {
++    get_version_shared_memory = false;
++    // Unretained is safe because the callback is executed in this scope.
++    bump_shared_version.ReplaceClosure(base::BindOnce(
++        [](RestrictedCookieManager* manager) {
++          manager->IncrementSharedVersion();
++        },
++        base::Unretained(this)));
++  }
+   TRACE_EVENT("net", "RestrictedCookieManager::GetCookiesString");
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+ 
+@@ -1098,7 +1119,7 @@ void RestrictedCookieManager::CookiesEnabledFor(
      return;
    }
  

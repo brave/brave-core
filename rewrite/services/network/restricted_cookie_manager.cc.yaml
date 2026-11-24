@@ -31,3 +31,42 @@ substitutions:
     regex:
       pattern: 'IsFullCookieAccessAllowed'
       replace: 'IsEphemeralCookieAccessAllowed'
+
+  - description: |-
+      Include the CookieJar shared-version kill switch.
+    add_include:
+      header:
+        - net/base/features.h
+
+  - description: |-
+      Keep ephemeral cookie reads off the shared-memory fast path.
+
+      The shared version only tracks the persistent store, and a renderer may
+      still hold a region from before the context became ephemeral. Refuse it
+      a new region, and bump the version on the way out, including on the
+      early-return paths, so the next read goes through IPC. The bump is armed
+      from this one check because it has to outlive the body.
+      kBraveCookieJarSharedVersion forces the sync IPC path for every read.
+    preempt_function_impl:
+      function_name: RestrictedCookieManager::GetCookiesString
+      code: |-
+        if (!base::FeatureList::IsEnabled(
+                net::features::kBraveCookieJarSharedVersion)) {
+          get_version_shared_memory = false;
+        }
+
+        base::ScopedClosureRunner bump_shared_version;
+        const net::CookieAccessDelegate* delegate =
+            cookie_store_->cookie_access_delegate();
+        if (delegate &&
+            delegate->ShouldUseEphemeralStorage(
+                url, EffectiveSiteForCookies(renderer_site_for_cookies),
+                EffectiveTopFrameOrigin(renderer_top_frame_origin))) {
+          get_version_shared_memory = false;
+          // Unretained is safe because the callback is executed in this scope.
+          bump_shared_version.ReplaceClosure(base::BindOnce(
+              [](RestrictedCookieManager* manager) {
+                manager->IncrementSharedVersion();
+              },
+              base::Unretained(this)));
+        }
