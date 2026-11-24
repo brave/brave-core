@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/ui/views/location_bar/selected_keyword_view.cc b/chrome/browser/ui/views/location_bar/selected_keyword_view.cc
+index 6249a0e19d7967864424f42e85fe62caf53d2e7e..bfa2e68b408b275e20aaf34dca542f8c5eb62722 100644
+--- a/chrome/browser/ui/views/location_bar/selected_keyword_view.cc
++++ b/chrome/browser/ui/views/location_bar/selected_keyword_view.cc
+@@ -52,6 +52,13 @@ ui::ImageModel SelectedKeywordView::GetKeywordIcon(
+     const std::u16string& keyword,
+     const OmniboxController* omnibox_controller,
+     Profile* profile) {
++  if (IsSemanticHistoryKeyword(keyword, omnibox_controller, profile)) {
++    return ui::ImageModel::FromVectorIcon(
++        features::IsRoundedIconsEnabled() ? omnibox::kSearchSparkIcon
++                                          : omnibox::kSearchSparkOldIcon,
++        kForegroundColorId,
++        GetLayoutConstant(LayoutConstant::kLocationBarIconSize));
++  }
+   const int icon_size = GetLayoutConstant(LayoutConstant::kLocationBarIconSize);
+ 
+   const TemplateURLService* service =
