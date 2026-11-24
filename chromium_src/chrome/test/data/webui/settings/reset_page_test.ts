@@ -7,7 +7,10 @@ import './reset_page_test-chromium.js'
 
 import 'chrome://settings/lazy_load.js'
 
-import type {SettingsResetProfileDialogElement} from 'chrome://settings/lazy_load.js'
+import type {
+  CrCheckboxElement,
+  SettingsResetProfileDialogElement,
+} from 'chrome://settings/lazy_load.js'
 import {ResetBrowserProxyImpl} from 'chrome://settings/settings.js'
 import {
   assertDeepEquals,
@@ -46,16 +49,18 @@ suite('BraveResetProfileDialog', () => {
   })
 
   test('the send settings checkbox is unchecked, disabled and not shown', () => {
-    const checkbox = dialog.$.sendSettings
+    const checkbox =
+        dialog.shadowRoot.querySelector<CrCheckboxElement>('#sendSettings')
+    assertTrue(!!checkbox)
     assertFalse(checkbox.checked)
     assertTrue(checkbox.disabled)
     assertFalse(isVisible(checkbox))
   })
 
-  test('the footer holding the checkbox is hidden', () => {
-    const footer = dialog.$.sendSettings.parentElement
-    assertTrue(!!footer)
-    assertTrue(footer.hidden)
+  test('the footer, when it holds the checkbox, is hidden', () => {
+    const footer =
+        dialog.shadowRoot.querySelector<HTMLElement>('[slot="footer"]')
+    assertTrue(!footer || footer.hidden)
   })
 
   test('resetting does not send settings', async () => {
