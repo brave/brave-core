@@ -440,19 +440,21 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
       static_cast<CustomCornersBackground*>(views().toolbar->background());
   CustomCornersBackground::Corners toolbar_corners;
 
-#if BUILDFLAG(IS_LINUX)
+  // Without a horizontal tab strip or window title bar above it, the toolbar
+  // should not round its top corners with frame-colored cutouts.
   if (delegate().ShouldShowVerticalTabs() &&
       !delegate().ShouldShowWindowTitleForVerticalTabs()) {
-    // Curve toolbar corners like window corner as toolbar it's top-most UI in
-    // vertical tabs.
+#if BUILDFLAG(IS_LINUX)
+    // Curve the toolbar corners to match the window corners, since the toolbar
+    // is the topmost UI.
     toolbar_corners[CornerOrientation::kTopTrailing] =
         toolbar_background->GetWindowCorner(/*upper=*/true);
     toolbar_corners[CornerOrientation::kTopLeading] =
         toolbar_background->GetWindowCorner(/*upper=*/true);
+#endif  // BUILDFLAG(IS_LINUX)
     toolbar_background->SetCorners(toolbar_corners);
     return;
   }
-#endif  // BUILDFLAG(IS_LINUX)
 
   toolbar_corners[CornerOrientation::kTopTrailing].type =
       CustomCornersBackground::CornerType::kRoundedWithBackground;
