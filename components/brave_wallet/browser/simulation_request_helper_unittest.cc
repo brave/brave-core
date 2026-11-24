@@ -19,10 +19,10 @@
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
-using base::test::ParseJson;
 
 namespace brave_wallet {
 
@@ -157,7 +157,7 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )");
   ASSERT_TRUE(params);
-  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+  EXPECT_THAT(*params, base::test::IsJson(expected_params));
 
   // OK: Params for legacy (type-0) EVM contract interaction is encoded
   // properly.
@@ -181,7 +181,7 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )";
   ASSERT_TRUE(params);
-  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+  EXPECT_THAT(*params, base::test::IsJson(expected_params));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -207,7 +207,7 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )");
   ASSERT_TRUE(params);
-  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+  EXPECT_THAT(*params, base::test::IsJson(expected_params));
 
   // OK: Params for EIP-1559 (type-2) EVM contract interaction is encoded
   // correctly.
@@ -230,7 +230,7 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )";
   ASSERT_TRUE(params);
-  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+  EXPECT_THAT(*params, base::test::IsJson(expected_params));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -257,7 +257,7 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )");
   ASSERT_TRUE(params);
-  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+  EXPECT_THAT(*params, base::test::IsJson(expected_params));
 
   // OK: Custom origin for contract interaction is encoded in params metadata
   // correctly.
@@ -281,7 +281,7 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )";
   ASSERT_TRUE(params);
-  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+  EXPECT_THAT(*params, base::test::IsJson(expected_params));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -308,7 +308,7 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )");
   ASSERT_TRUE(params);
-  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+  EXPECT_THAT(*params, base::test::IsJson(expected_params));
 
   // OK: Custom origin for contract interaction is encoded in params metadata
   // correctly.
@@ -332,7 +332,7 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )";
   ASSERT_TRUE(params);
-  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+  EXPECT_THAT(*params, base::test::IsJson(expected_params));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -368,7 +368,7 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )");
   ASSERT_TRUE(params);
-  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+  EXPECT_THAT(*params, base::test::IsJson(expected_params));
 
   // OK: Params for EIP-1559 (type-2) EVM contract deployment transaction is
   // encoded correctly.
@@ -391,7 +391,7 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )";
   ASSERT_TRUE(params);
-  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+  EXPECT_THAT(*params, base::test::IsJson(expected_params));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -413,7 +413,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(params);
-  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+  EXPECT_THAT(*params, base::test::IsJson(expected_params));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -435,7 +435,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(params);
-  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+  EXPECT_THAT(*params, base::test::IsJson(expected_params));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -459,7 +459,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(params);
-  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+  EXPECT_THAT(*params, base::test::IsJson(expected_params));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -483,7 +483,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(params);
-  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
+  EXPECT_THAT(*params, base::test::IsJson(expected_params));
 }
 
 TEST(SimulationRequestHelperUnitTest,

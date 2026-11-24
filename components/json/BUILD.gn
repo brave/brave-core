@@ -28,6 +28,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/json",
+    "//testing/gmock",
     "//testing/gtest",
   ]
 }

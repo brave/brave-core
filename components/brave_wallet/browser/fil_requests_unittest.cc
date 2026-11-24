@@ -7,6 +7,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -97,8 +98,7 @@ TEST(FilRequestUnitTest, estimateGas_WhenSendToFEVM) {
 }
 
 TEST(FilRequestUnitTest, getChainHead) {
-  EXPECT_EQ(base::test::ParseJson(fil::getChainHead()),
-            base::test::ParseJson(R"({
+  EXPECT_THAT(fil::getChainHead(), base::test::IsJson(R"({
                 "id": 1,
                 "jsonrpc": "2.0",
                 "method": "Filecoin.ChainHead",

@@ -9,6 +9,7 @@
 
 #include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -21,24 +22,31 @@ constexpr char kBlockhash[] = "J7rBdM6AecPDEZp8aPq5iPSNKVkU5Q76F3oAV4eW5wsW";
 namespace brave_wallet::solana {
 
 TEST(SolanaRequestsUnitTest, getBalance) {
-  EXPECT_EQ(
-      base::test::ParseJsonDict(getBalance("key")),
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"getBalance","params":["key"]})"));
+  EXPECT_THAT(getBalance("key"), base::test::IsJson(R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "getBalance",
+        "params": ["key"]
+      })"));
 }
 
 TEST(SolanaRequestsUnitTest, getTokenAccountBalance) {
-  EXPECT_EQ(
-      base::test::ParseJsonDict(getTokenAccountBalance("key")),
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"getTokenAccountBalance","params":["key"]})"));
+  EXPECT_THAT(getTokenAccountBalance("key"), base::test::IsJson(R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "getTokenAccountBalance",
+        "params": ["key"]
+      })"));
 }
 
 TEST(SolanaRequestsUnitTest, sendTransaction) {
-  EXPECT_EQ(
-      base::test::ParseJsonDict(sendTransaction("signed_tx", std::nullopt)),
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"sendTransaction","params":["signed_tx",{"encoding":"base64"}]})"));
+  EXPECT_THAT(sendTransaction("signed_tx", std::nullopt),
+              base::test::IsJson(R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "sendTransaction",
+        "params": ["signed_tx", {"encoding": "base64"}]
+      })"));
 
   std::string expected_json_string = R"(
       {
@@ -60,10 +68,12 @@ TEST(SolanaRequestsUnitTest, sendTransaction) {
 }
 
 TEST(SolanaRequestsUnitTest, getLatestBlockhash) {
-  EXPECT_EQ(
-      base::test::ParseJsonDict(getLatestBlockhash()),
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"getLatestBlockhash","params":[]})"));
+  EXPECT_THAT(getLatestBlockhash(), base::test::IsJson(R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "getLatestBlockhash",
+        "params": []
+      })"));
 }
 
 TEST(SolanaRequestsUnitTest, getSignatureStatuses) {
@@ -91,24 +101,30 @@ TEST(SolanaRequestsUnitTest, getSignatureStatuses) {
 }
 
 TEST(SolanaRequestsUnitTest, getAccountInfo) {
-  EXPECT_EQ(
-      base::test::ParseJsonDict(getAccountInfo("pubkey")),
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"getAccountInfo","params":["pubkey",{"encoding":"base64"}]})"));
+  EXPECT_THAT(getAccountInfo("pubkey"), base::test::IsJson(R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "getAccountInfo",
+        "params": ["pubkey", {"encoding": "base64"}]
+      })"));
 }
 
 TEST(SolanaRequestsUnitTest, getFeeForMessage) {
-  EXPECT_EQ(
-      base::test::ParseJsonDict(getFeeForMessage("message")),
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"getFeeForMessage","params":["message",{"commitment":"confirmed"}]})"));
+  EXPECT_THAT(getFeeForMessage("message"), base::test::IsJson(R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "getFeeForMessage",
+        "params": ["message", {"commitment": "confirmed"}]
+      })"));
 }
 
 TEST(SolanaRequestsUnitTest, getBlockHeight) {
-  EXPECT_EQ(
-      base::test::ParseJsonDict(getBlockHeight()),
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"getBlockHeight","params":[]})"));
+  EXPECT_THAT(getBlockHeight(), base::test::IsJson(R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "getBlockHeight",
+        "params": []
+      })"));
 }
 
 TEST(SolanaRequestsUnitTest, getTokenAccountsByOwner) {
