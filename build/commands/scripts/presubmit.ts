@@ -29,6 +29,11 @@ const program = new Command()
       .argParser(parseInteger),
   )
   .option('--fix', 'try to fix found issues automatically')
+  .option(
+    '--check_system_network_context',
+    'check upstream callers of the system network context, which otherwise '
+      + 'only runs when the Chromium version changes',
+  )
   .option('--json <output>', 'an output file for a JSON report')
   .action(runPresubmit)
 
@@ -71,6 +76,9 @@ function runPresubmit(options: ReturnType<typeof program.opts>) {
 
   if (options.fix) {
     cmdOptions.env.PRESUBMIT_FIX = '1'
+  }
+  if (options.check_system_network_context) {
+    cmdOptions.env.PRESUBMIT_CHECK_SYSTEM_NETWORK_CONTEXT = '1'
   }
   util.run('git', args, cmdOptions)
 }

@@ -821,6 +821,129 @@ def CheckNoCommittedSecretsFiles(input_api, output_api):
     ]
 
 
+# Calls that reach the system network context, which every profile shares.
+_SYSTEM_NETWORK_CONTEXT_CALLS = (
+    r'SystemNetworkContextManager::GetInstance\(\)'
+    r'|system_network_context_manager\(\)'
+    r'|shared_url_loader_factory\(\)'
+)
+
+# Upstream files that are known to call the system network context.
+_SYSTEM_NETWORK_CONTEXT_CALLERS_FILE = (
+    'build/system_network_context_callers.txt'
+)
+
+
+def _FindSystemNetworkContextCallers(input_api):
+    """Returns upstream non-test files calling the system network context, or
+    None when the upstream tree isn't a git checkout."""
+    try:
+        output = input_api.subprocess.check_output(
+            [
+                'git',
+                '-C',
+                brave_chromium_utils.get_src_dir(),
+                'grep',
+                '-l',
+                '-E',
+                _SYSTEM_NETWORK_CONTEXT_CALLS,
+                'HEAD',
+                '--',
+                '*.cc',
+                '*.mm',
+                ':!*test*',
+                ':!brave/*',
+                ':!third_party/*',
+            ],
+            encoding='utf-8',
+        )
+    except input_api.subprocess.CalledProcessError as e:
+        # `git grep` exits with 1 when nothing matches.
+        if e.returncode == 1:
+            return set()
+        return None
+    except OSError:
+        return None
+    return {
+        line.removeprefix('HEAD:')
+        for line in output.splitlines()
+        if line.strip()
+    }
+
+
+def _ChangesChromiumVersion(input_api):
+    """Returns whether the change edits the Chromium tag in package.json."""
+
+    def chromium_tag(lines):
+        try:
+            package = input_api.json.loads('\n'.join(lines))
+            return package['config']['projects']['chrome']['tag']
+        except (ValueError, KeyError, TypeError):
+            return None
+
+    for f in input_api.AffectedFiles(include_deletes=False):
+        if f.LocalPath().replace(os.sep, '/') != 'package.json':
+            continue
+        return chromium_tag(f.OldContents()) != chromium_tag(f.NewContents())
+    return False
+
+
+def CheckSystemNetworkContextCallers(input_api, output_api):
+    """Warns about new upstream callers of the system network context.
+
+    Every profile shares the system network context, and it ignores a
+    profile's own network settings, including the Tor proxy. A request made
+    there for a Private or Tor window leaves that window's network context.
+    Upstream adds such callers with no Brave patch to review, so this compares
+    them with a reviewed list when the Chromium version changes, or when
+    `pnpm run presubmit --check_system_network_context` asks for it.
+    """
+    if not input_api.PRESUBMIT_CHECK_SYSTEM_NETWORK_CONTEXT and not (
+        _ChangesChromiumVersion(input_api)
+    ):
+        return []
+
+    callers = _FindSystemNetworkContextCallers(input_api)
+    if callers is None:
+        return []
+
+    callers_file = input_api.os_path.join(
+        input_api.PresubmitLocalPath(), _SYSTEM_NETWORK_CONTEXT_CALLERS_FILE
+    )
+    with open(callers_file, encoding='utf-8') as f:
+        known = {
+            line.strip()
+            for line in f
+            if line.strip() and not line.startswith('#')
+        }
+
+    results = []
+    new_callers = sorted(callers - known)
+    if new_callers:
+        results.append(
+            output_api.PresubmitPromptWarning(
+                'New upstream callers of the system network context. Every '
+                'profile shares it, and it ignores the Tor proxy, so a '
+                'request made there for a Private or Tor window leaks out of '
+                'it. Check that each one is a browser-wide request, not one '
+                'made for a profile or page, then add it to '
+                f'{_SYSTEM_NETWORK_CONTEXT_CALLERS_FILE}. See '
+                'https://github.com/brave/internal/issues/1932.',
+                items=new_callers,
+            )
+        )
+    removed_callers = sorted(known - callers)
+    if removed_callers:
+        results.append(
+            output_api.PresubmitNotifyResult(
+                'These files no longer call the system network context. '
+                f'Remove them from {_SYSTEM_NETWORK_CONTEXT_CALLERS_FILE}.',
+                items=removed_callers,
+            )
+        )
+    return results
+
+
 # DON'T ADD NEW BRAVE CHECKS AFTER THIS LINE.
 #
 # This call inlines Chromium checks into current scope from src/PRESUBMIT.py. We
