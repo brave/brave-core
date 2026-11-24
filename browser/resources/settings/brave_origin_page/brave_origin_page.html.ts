@@ -5,7 +5,6 @@
 
 import { html, nothing } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 
-import { RestartType } from '../relaunch_mixin_lit.js'
 import { SettingsBraveOriginPageElement } from './brave_origin_page.js'
 
 export function getHtml(this: SettingsBraveOriginPageElement) {
@@ -257,7 +256,6 @@ export function getHtml(this: SettingsBraveOriginPageElement) {
           ${this.shouldShowRelaunchDialog
             ? html`
                 <relaunch-confirmation-dialog
-                  .restartType="${RestartType.RESTART}"
                   @close="${this.onRelaunchDialogClose}"
                 >
                 </relaunch-confirmation-dialog>
