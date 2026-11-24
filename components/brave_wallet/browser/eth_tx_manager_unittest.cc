@@ -1280,6 +1280,55 @@ TEST_F(EthTxManagerUnitTest, ProcessEthHardwareSignature) {
                                      mojom::TransactionStatus::Submitted}));
 }
 
+// Regression test: a hardware signature that arrives after the user has
+// already rejected the transaction must not resurrect and broadcast it.
+TEST_F(EthTxManagerUnitTest, ProcessEthHardwareSignatureAfterRejected) {
+  auto tx_data =
+      mojom::TxData::New("0x1", "0x06", "" /* gas_price */, "" /* gas_limit */,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  AddUnapprovedEvmDappTransaction(
+      tx_data.Clone(), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+  ASSERT_TRUE(base::test::RunUntil([&] { return callback_called; }));
+
+  // User rejects the transaction while the hardware device is still
+  // producing a signature for it (e.g. "Cancel" was clicked, but the device
+  // itself later approves the stale request).
+  base::test::TestFuture<bool> reject_future;
+  eth_tx_manager()->RejectTransaction(tx_meta_id, reject_future.GetCallback());
+  EXPECT_TRUE(reject_future.Get());
+  auto rejected_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(rejected_meta);
+  EXPECT_EQ(rejected_meta->status(), mojom::TransactionStatus::Rejected);
+
+  SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
+
+  // The late-arriving hardware signature must be rejected and must not
+  // publish/broadcast the transaction or move it off Rejected.
+  base::test::TestFuture<bool, mojom::ProviderError, const std::string&>
+      sign_future;
+  eth_tx_manager()->ProcessEthHardwareSignature(
+      tx_meta_id,
+      mojom::EthereumSignatureVRS::New(
+          *PrefixedHexStringToBytes("0x00"),
+          *PrefixedHexStringToBytes("0x93b9121e82df014428924df439ff044f89c205dd"
+                                    "76a194f8b11f50d2eade744e"),
+          *PrefixedHexStringToBytes("0x7aa705c9144742836b7fbbd0745c57f67b60df7b"
+                                    "8d1790fe59f91ed8d2bfc11d")),
+      sign_future.GetCallback());
+  const auto& [success, error_out, error_message_out] = sign_future.Get();
+  EXPECT_FALSE(success);
+  EXPECT_EQ(error_out, mojom::ProviderError::kResourceNotFound);
+  auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Rejected);
+}
+
 TEST_F(EthTxManagerUnitTest, ProcessEthHardwareSignatureFail) {
   auto tx_data = mojom::TxData::New(
       mojom::kMainnetChainId, "0x06", "" /* gas_price */, "" /* gas_limit */,

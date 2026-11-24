@@ -131,6 +131,8 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                            GetSolTransactionMessageToSign);
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest,
                            ProcessSolanaHardwareSignature);
+  FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest,
+                           ProcessSolanaHardwareSignatureAfterRejected);
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, RetryTransaction);
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, GetEstimatedTxFee);
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, GetSolanaTxFeeEstimation);
