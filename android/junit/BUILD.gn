@@ -344,7 +344,9 @@ if (is_android) {
     sources = [ "src/org/chromium/chrome/browser/omnibox/BraveLocationBarFocusScrimHandlerUnitTest.java" ]
 
     deps = [
+      "//base:base_java_test_support",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/flags:java",
       "//chrome/browser/ui/android/omnibox:java",
       "//chrome/browser/ui/android/theme:java",
     ]
