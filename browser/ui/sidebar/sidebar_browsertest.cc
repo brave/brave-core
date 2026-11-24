@@ -2777,11 +2777,10 @@ class SidebarTorBrowserTest : public SidebarBrowserTest {
   std::atomic<int> regular_item_favicon_requests_ = 0;
 };
 
-// A web item's favicon falls back to ImageFetcherService, which uses the
-// system network context. A Tor window must never use it, because the request
-// would go straight to the item's host instead of through Tor. The Tor proxy is
-// not reachable in tests, so any request for the Tor item's favicon that
-// reaches the test server has bypassed Tor.
+// A web item's favicon falls back to ImageFetcherService. A Tor window's
+// request must go through Tor rather than straight to the item's host. The Tor
+// proxy is not reachable in tests, so any request for the Tor item's favicon
+// that reaches the test server has bypassed Tor.
 IN_PROC_BROWSER_TEST_F(SidebarTorBrowserTest,
                        TorWindowSidebarFaviconNotFetchedOutsideTor) {
   BrowserWindowInterface* tor_browser =
