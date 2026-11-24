@@ -212,89 +212,125 @@ successful unfiltered control so a failed request alone cannot pass the test.
   Chromium generates a particular request or delivers a callback at a particular
   time; do not supply that input or invoke that callback from the test.
 
-## Regression checklist
+## Required browser tests
 
-For each change to origin selection, check the expected result in each row.
-Run `AdBlockServiceSettingsOriginTest.*:AdBlockServiceSettingsOriginRestartTest.*`
-from `brave_browser_tests` on Linux. Names below are relative to the first
-suite, except the restart pairs, which belong to the second. Some tests have
-platform guards. See [browser test source](../../browser/brave_shields/ad_block_service_browsertest.cc).
+Each row below is a separate test. Apply the rules in
+[Acceptance tests](#acceptance-tests) to every row: set the expected key and
+each competing key to opposite settings, reverse them, and include a successful
+control. "Defaults" means the profile default settings. A, B, C, D, and E are
+distinct sites; P is a popup, and Q is a popup opened by P.
 
-| Scenario and expected result | Browser test |
+### Navigations and redirects
+
+| Setup | Measured request | Expected key |
+| --- | --- | --- |
+| Main frame on A navigates to B. | B's server records the request for `/new`. | B |
+| Main frame on B redirects to C, and C redirects back to B. | Each server records the request for its hop. | The destination of each hop: B, then C, then B |
+| A document on A fetches a URL that redirects B → C → B. | Each server records the request for its hop. | A for every hop |
+| A on A loads a child frame through B → C → B. | Each server records the request for its hop. | A for every hop |
+| A `data:` top frame embeds B. B's shared worker fetches a URL that redirects from B to C. | The final request to C | Defaults |
+| A tab visits B, then another site. Going Back to B redirects to C; BFCache is disabled. | A fetch from the committed C document | C, not B or the other site |
+| Main frame on A starts a cross-site navigation that has not committed. | A fetch from the outgoing A document | A |
+
+### Frames and sandboxed documents
+
+| Setup | Measured request | Expected key |
+| --- | --- | --- |
+| A embeds B. | A fetch from B | A |
+| A embeds B, which embeds C. | A fetch from C | A |
+| An HTTP response from A commits a sandboxed main document with an opaque origin. | A fetch from that document | A |
+| A sandboxed A document navigates itself to `about:blank`. | A fetch from the `about:blank` document | A |
+| Sandboxed B under A navigates the top frame to `about:blank`. | A fetch from the top-level `about:blank` document | A, not B or defaults |
+| From a sandboxed frame under A, use Open Link in New Tab on `about:blank` (desktop only). | A fetch from the new tab | A |
+| The browser navigates a tab from A to `data:`, which then embeds B. | A fetch from B | Defaults, not A or B |
+
+### Popup creation
+
+| Setup | Measured request | Expected key |
+| --- | --- | --- |
+| B under A calls `window.open()`. | A fetch from the popup's initial empty document, before another document commits | A |
+| B under A opens an `about:blank` popup whose DOM origin is B. | A fetch from the popup | A |
+| B under A opens an `about:blank` popup, which embeds C. | A fetch from C | A, not B or C |
+| B under A opens an `about:blank` popup, which loads a child frame at C. A `$subdocument` rule matches C. | The navigation request for C | A |
+| B under A opens a popup directly at C. | The navigation request for C | C |
+| B under A opens a popup directly at C. | A fetch from C after commit | C |
+| An inherited popup with key A navigates to C. | A fetch from C after commit | C, not A or B |
+| A sandboxed frame under A opens a popup. | A fetch from a child frame of the popup | A |
+| Repeat the previous case with `noopener`. | A fetch from a child frame of the popup | A |
+| An opaque inherited popup P opens an inheriting popup Q. | A fetch from Q | A |
+| A popup is opened from a page whose key is defaults. | A fetch from the popup | Defaults |
+| The browser navigates a popup from a site page to `data:`. | A fetch from the popup | Defaults, not the opener's key |
+| A non-opaque inherited popup navigates itself to `about:blank`. | A fetch from the new document | A |
+
+### Popup lifetime
+
+In each case, P inherits A and has finished loading before the change.
+
+| Change before the request | Measured request | Expected key |
+| --- | --- | --- |
+| P was opened by a sandboxed frame under A. The opener navigates from A to D. | A fetch from a child frame of P | A, not D |
+| The opener commits a different site. | A fetch from P | A |
+| The opener commits a different path on A. | A fetch from P | A |
+| The opener changes its fragment. | A fetch from P | A |
+| The opener calls `history.pushState`. | A fetch from P | A |
+| The opener closes, and its `WebContents` is destroyed. | P's first fetch after destruction | A |
+| The opening frame B navigates. | A fetch from P | A |
+| The opening frame B is removed. | A fetch from P | A |
+| P opens Q, then P closes. | A fetch from Q | A |
+| P opens Q, then P navigates away. | A fetch from Q | A |
+| P changes its own fragment. | A fetch from P | A |
+| P starts a navigation that is canceled before commit. | A fetch from P's still-committed document | A |
+| P navigates to C. | The navigation request for C | C |
+
+### History and session restore
+
+| Setup | Measured request | Expected key |
+| --- | --- | --- |
+| A sandboxed HTTP document on A navigates away. Back activates the same document from BFCache. | A fetch from the restored document | A |
+| An inherited `about:blank?history` document in P is destroyed. The opener navigates to D, and P goes Back to that entry. | A fetch from the recreated document | A |
+| The same as the previous case, but the opener is destroyed before Back. Keep BFCache enabled. | A fetch from the recreated document | A |
+| The same history case, but P inherited defaults. | A fetch from the recreated document | Defaults |
+| P inherits A and commits `about:blank?restore`. Close the opener, shut down the browser, and restore the last session. | A fetch from the restored P | A's current settings |
+| Repeat the session restore case with a P that inherited defaults. | A fetch from the restored P | Current defaults |
+
+### Workers and WebSockets
+
+In each case, B is embedded in a top frame.
+
+| Request source | Measured request | Expected key |
+| --- | --- | --- |
+| B under A | A WebSocket handshake | A |
+| A dedicated worker of B under A | A fetch | A |
+| A dedicated worker of B under A | A WebSocket handshake | A |
+| A shared worker of B under A | A fetch | A |
+| A shared worker of B under A | A WebSocket handshake | A |
+| A service worker of B under A | A fetch | A |
+| A service worker of B under A | A WebSocket handshake | A |
+| A shared worker of B under a `data:` top frame | A fetch | Defaults, not B |
+| A shared worker of B under a `data:` top frame | A WebSocket handshake | Defaults, not B |
+
+## Required unit tests
+
+Each row supplies inputs that a browser test cannot reliably create. Unit tests
+must also keep the settings key separate from the origins used by adblock
+rules.
+
+| Inputs | Expected result |
 | --- | --- |
-| Navigate A → B: filtering the initial HTTP request must follow B, not A. | `MainFrameNavigationUsesDestinationSettings` |
-| Fetch from child B under A: use A. | `SubFrameUsesTopFrameSettings` |
-| Fetch from a nested cross-site frame: use outermost A. | `NestedFrameUsesTopFrameSettings` |
-| Sandboxed HTTP document with opaque DOM origin: use its HTTP site's settings. | `SandboxedMainFrameUsesUrlSettings` |
-| Sandboxed A navigates itself to `about:blank`: retain A despite the opaque committed origin. | `SandboxedPageNavigatesItselfToAboutBlank` |
-| Sandboxed B under A navigates the top frame to `about:blank`: use A, not B or defaults. | `SandboxedChildNavigatesTopToAboutBlank` |
-| B under A calls `window.open()`: a request from the initial empty document must use A. | `InitialEmptyPopupUsesOpenerPageSettings` |
-| B under A opens `about:blank`: the popup itself fetches using A even though its DOM origin is B. | `AboutBlankPopupFromSubFrameUsesOpenerPageSettings` |
-| C embedded in that popup fetches: use A, not opener frame B or child C. | `FrameInAboutBlankPopupFromSubFrameUsesOpenerPageSettings` |
-| Load a child frame at C in that popup: the `$subdocument` rule for the **frame navigation itself** follows A. | `FrameNavigationInAboutBlankPopupFromSubFrameUsesOpenerPageSettings` |
-| B under A opens directly at C: a fetch after commit uses C. | `CrossSitePopupFromSubFrameUsesPopupSettings` |
-| Navigate an already inherited popup to C: a fetch after commit uses C instead of A or B. | `InheritedPopupSwitchesToCommittedSiteSettings` |
-| Fetch from a child of a popup opened by a sandboxed frame: follow the opening page A. | `OpaquePopupUsesOpenerPageSettings` |
-| Repeat the opaque-popup child fetch with `noopener`: still use A. | `OpaqueNoopenerPopupUsesOpenerPageSettings` |
-| Open an inheriting popup from an opaque popup: preserve the original page's settings through both openings. | `OpaquePopupFromOpaquePopupUsesOriginalPageSettings` |
-| Navigate the opener from A to D: requests in the popup continue to follow A. | `OpaquePopupKeepsSettingsAfterOpenerNavigates` |
-| Change the inherited popup's fragment: retain the same document and A's settings. | `InheritedPopupKeepsSettingsAcrossFragmentNavigation` |
-| Destroy the inherited document, navigate its opener elsewhere, then go Back: the recreated document uses the original entry's settings. | `RecreatedInheritedPageKeepsSettingsOnBack` |
-| Use Open Link in New Tab on `about:blank` in a sandboxed frame: the new tab uses A (desktop context-menu path). | `ContextMenuTabFromSandboxedFrameUsesPageSettings` |
-| Browser navigates A to `data:`; a fetch from child B follows defaults, neither A nor B. | `BrowserInitiatedOpaqueTopFrameUsesDefaultSettings` |
-| Browser navigates a site popup to `data:`: its own fetch follows defaults, not the opener. | `BrowserInitiatedOpaquePopupUsesDefaultSettings` |
-| WebSocket opened by B under A: use A. | `WebSocketInSubFrameUsesTopFrameSettings` |
-| Dedicated worker fetch from B under A: use A. | `DedicatedWorkerInSubFrameUsesTopFrameSettings` |
-| Dedicated worker WebSocket from B under A: use A. | `DedicatedWorkerWebSocketInSubFrameUsesTopFrameSettings` |
-| Shared worker fetch from B under A: use A. | `SharedWorkerInSubFrameUsesTopFrameSettings` |
-| Shared worker WebSocket from B under A: use A. | `SharedWorkerWebSocketUsesTopFrameSettings` |
-| Service worker fetch from B under A: use A. | `ServiceWorkerInSubFrameUsesTopFrameSettings` |
-| Service worker WebSocket from B under A: use A. | `ServiceWorkerWebSocketInSubFrameUsesTopFrameSettings` |
-| Shared worker fetch from B embedded in a `data:` top frame: use defaults, not B. | `SharedWorkerInOpaqueTopFrameUsesDefaultSettings` |
-| Shared worker WebSocket from B embedded in a `data:` top frame: use defaults, not B. | `SharedWorkerWebSocketInOpaqueTopFrameUsesDefaultSettings` |
-| Main-frame redirect B → C → B: each request follows its own destination. | `MainFrameRedirectUsesEachDestination` |
-| A fetches through B → C → B: each hop uses A. | `FetchRedirectKeepsDocumentSettings` |
-| A navigates an embedded frame through B → C → B: each hop uses A. | `SubframeRedirectKeepsOutermostSettings` |
-| The shared worker under a default-key top frame still follows defaults at the redirected destination. | `SharedWorkerRedirectKeepsProfileDefaults` |
-| Back to B redirects to C: the committed document uses C. | `HistoryRedirectCommitsDestinationSettings` |
-| Opening a popup directly at C uses C for the initial network request. | `DirectPopupNavigationUsesDestinationSettings` |
-| Navigating an inherited popup to C uses C for the navigation itself. | `NavigationAwayFromInheritedPopupUsesDestinationSettings` |
-| After the opener commits another site, the loaded popup still uses A. | `InheritedPopupAfterOpenerCrossSiteCommit` |
-| The popup itself uses A after its opener is destroyed. | `InheritedPopupAfterOpenerDestruction` |
-| After the intermediate opener closes, its inheriting popup keeps A. | `InheritedPopupAfterIntermediateOpenerDestruction` |
-| After the intermediate opener navigates away, its inheriting popup keeps A. | `InheritedPopupAfterIntermediateOpenerNavigation` |
-| Removing the opening frame leaves the popup's key at A. | `InheritedPopupAfterOpeningFrameRemoval` |
-| Navigating the opening frame leaves the popup's key at A. | `InheritedPopupAfterOpeningFrameNavigation` |
-| The opener's pushState leaves the popup's key at A. | `InheritedPopupAfterOpenerPushState` |
-| The opener's fragment change leaves the popup's key at A. | `InheritedPopupAfterOpenerFragmentChange` |
-| The opener's same-site commit leaves the popup's key at A. | `InheritedPopupAfterOpenerSameSiteCommit` |
-| The outgoing document continues to use A before the next document commits. | `OutgoingDocumentDuringCrossSiteNavigation` |
-| Canceling a pending navigation leaves the inherited document using A. | `InheritedDocumentDuringCanceledNavigation` |
-| Back activates the same cached sandboxed HTTP document and preserves A. | `RetainedSandboxedDocumentKeepsSettingsOnBack` |
-| With BFCache enabled and the opener gone, Back recreates the non-cacheable inherited document with its saved key. | `RecreatedInheritedPageAfterOpenerDestruction` |
-| A non-opaque inherited popup navigating itself to blank retains the outermost key. | `NonOpaquePopupNavigatesItselfToInheritedBlank` |
-| An inheriting popup copies defaults from the opening page. | `PopupCopiesDefaultSettingsFromOpeningPage` |
-| A recreated history document restores its saved default key. | `RecreatedInheritedPageRestoresDefaultSettings` |
-| Close the opener and restart; the restored popup follows current settings for A. | `PRE_RestoresInheritedSiteAfterRestart`, `RestoresInheritedSiteAfterRestart` |
-| Repeat with an inherited default key; the restored popup follows current profile defaults. | `PRE_RestoresInheritedDefaultsAfterRestart`, `RestoresInheritedDefaultsAfterRestart` |
-
-### Supplied-input and compatibility checks
-
-Run `ShieldsSettingsOriginTest.*:BraveRequestInfo*Test.*` in `brave_unit_tests`.
-The tests below identify inputs that a browser test cannot reliably force. They
-also preserve the distinction between the settings URL and the origins used by
-adblock rules. Names refer to [the frame fallback test](../../browser/brave_shields/shields_settings_origin_unittest.cc)
-and [request context tests](../../browser/net/url_context_unittest.cc).
-
-| Inputs or invariant | Unit tests |
-| --- | --- |
-| No stored document value or Brave observer: use the committed non-opaque frame origin. | `GetForFrameWithoutValueUsesCommittedOrigin` |
-| Child request without isolation info: preserve the outermost top-frame origin for rules; if the page has an inherited settings value, use it for settings. | `WithoutIsolationInfoUsesOutermostMainFrameOrigin`, `WithoutIsolationInfoUsesStoredPageValue` |
-| For both `kSubFrame` and `kOther`, a live frame's stored settings value wins over conflicting isolation info. | `FrameRequestUsesStoredPageValue` |
-| For `kMainFrame`, use a non-opaque top-frame isolation origin even with an outgoing frame token. An opaque one gives defaults whether the outgoing document has inherited site settings or no site settings. | `MainFrameNavigationUsesNonOpaqueTopFrameOrigin`, `MainFrameNavigationWithOpaqueTopFrameUsesDefaults`, `MainFrameNavigationWithOpaqueStoredPageValueHasNoTabOrigin` |
-| Frameless worker: omitted request context permits worker factory fallback; explicit request context wins. A document-subresource factory must not supply this fallback. | `UsesFactoryContextWhenWorkerRequestOmitsRequestContext`, `RequestContextOverridesFactoryContext`, `NonWorkerFactoryTypeIgnoresFactoryContextFallback` |
-| Frameless WebSocket: a request initiator alone does not supply a settings URL; neither does an opaque top-frame isolation origin. | `FramelessRequestIgnoresInitiatorForTabOrigin`, `FramelessRequestWithOpaqueTopFrameHasNoTabOrigin` |
-| Initiator bookkeeping is independent: use the worker factory initiator when omitted; preserve an original initiator over a replacement request initiator. | `WorkerRequestFallsBackToFactoryInitiator`, `OriginalInitiatorOverridesRequestInitiator` |
-| Preserve raw opaque top-frame origins with and without precursors. Preserve the separate rule inputs for missing, non-opaque, and opaque initiators and for main-frame, subframe, and subresource requests. These are not settings-origin fallback rules. | `KeepsOpaqueTopFrameOrigin`, `KeepsOpaqueTopFrameOriginWithoutPrecursor`, `RequestInitiatorForAdblockRules*`, `FirstPartyOriginForAdblockRules*` |
-| Rebuilding a request context uses the supplied snapshot. A stored default wins over conflicting isolation; main-frame navigation without isolation uses defaults. | `RebuiltContextUsesSuppliedSnapshot`, `StoredDefaultsOverrideConflictingIsolation`, `MainFrameWithoutIsolationUsesDefaults` |
-| Redirects refresh trusted main-frame keys, including unchanged, default-to-site and site-to-default inputs. Other requests retain their captured key, including defaults. | `RedirectOnlyReplacesMainFrameKey`, `RedirectPreservesOrReplacesDefaultKey` |
+| A frame has no stored key and no Brave observer. | Its committed non-opaque origin |
+| A child request has no isolation info. | Rules use the outermost top-frame origin. Settings use the page's stored key if there is one. |
+| A `kSubFrame` or `kOther` request has isolation info that conflicts with the frame's stored key. | The stored key, including stored defaults |
+| A `kMainFrame` request has a non-opaque top-frame isolation origin and an outgoing frame token. | The isolation origin |
+| A `kMainFrame` request has an opaque top-frame isolation origin. The outgoing document has an inherited site key or no key. | Defaults |
+| A `kMainFrame` request has no isolation info. | Defaults |
+| A worker request omits request context. | The worker factory's context |
+| A worker request supplies request context. | The request context, not the factory's |
+| A document-subresource request omits request context. | No factory fallback |
+| A frameless WebSocket has an initiator but no usable isolation origin, or an opaque top-frame isolation origin. | Defaults |
+| A worker request omits its initiator. | The factory's initiator, for rules only |
+| A request has an original initiator and a different request initiator. | The original initiator, for rules only |
+| The top-frame origin is opaque, with or without a precursor. | The raw opaque origin, unchanged |
+| Rule initiators are missing, non-opaque, or opaque, for main-frame, subframe, and subresource requests. | The existing rule origins, unchanged |
+| A request context is rebuilt from a supplied snapshot. | The supplied snapshot |
+| A trusted main-frame redirect changes the key, keeps it, changes defaults to a site, or changes a site to defaults. | The redirect destination's key |
+| A subframe or subresource redirect starts with a site key or defaults. | The captured key |
