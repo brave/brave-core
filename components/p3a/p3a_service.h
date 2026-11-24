@@ -116,8 +116,8 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
     return remote_config_manager_.get();
   }
 
-  MessageManager* message_manager_for_testing() {
-    return message_manager_.get();
+  bool IsMessageManagerActiveForTesting() const {
+    return message_manager_->IsActive();
   }
 
   // MessageManager::Delegate
