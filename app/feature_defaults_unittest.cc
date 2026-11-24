@@ -224,6 +224,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &features::kReadAnythingOmniboxChip,
 #endif
+      &features::kRoundedIcons,
       &features::kSCTAuditingHashdance,
       &features::kServiceWorkerAutoPreload,
       &features::kSkillsEnabled,

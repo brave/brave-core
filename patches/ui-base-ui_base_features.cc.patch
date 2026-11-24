@@ -1,0 +1,13 @@
+diff --git a/ui/base/ui_base_features.cc b/ui/base/ui_base_features.cc
+index f8dde3956202f5dc0cb20b4b38d396ad47b8a422..2b4a37a1e096554e1e25030cc61d2d99c98a2d87 100644
+--- a/ui/base/ui_base_features.cc
++++ b/ui/base/ui_base_features.cc
+@@ -521,7 +521,7 @@ BASE_FEATURE(kGlassFrame, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE_PARAM(bool, kGlassExpandOnHoverEnabled, &kGlassFrame, true);
+ BASE_FEATURE_PARAM(bool, kGlassFrameEnabledByDefault, &kGlassFrame, true);
+ 
+-BASE_FEATURE(kRoundedIcons, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kRoundedIcons, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kWebUIRoundedIcons, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ // Updates the default dark neutrals for the theme palette.
