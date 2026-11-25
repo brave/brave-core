@@ -12,8 +12,9 @@ match against. In the examples below, A, B, and C are distinct HTTPS origins.
 For a primary-main-frame HTTP navigation from `https://a.test/old` to
 `https://b.test/new`, use `https://b.test` for the **Shields settings origin**,
 both for the navigation itself and for the Shields settings applied when
-loading and rendering the `/new` content. For a main-frame network request with no usable settings origin, use **profile
-defaults**. Never substitute the origin of the document being navigated away from.
+loading and rendering the `/new` content. For a main-frame network request with
+no usable settings origin, use **profile defaults**. Never substitute the origin
+of the document being navigated away from.
 
 For a cross-document navigation without redirects, the boundaries are:
 
