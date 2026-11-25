@@ -97,7 +97,7 @@ class PsstSettingsService : public KeyedService {
   const raw_ref<HostContentSettingsMap>
       host_content_settings_map_;         // NOT OWNED
   raw_ptr<PrefService> prefs_ = nullptr;  // NOT OWNED
-  raw_ptr<brave_origin::BraveOriginService> brave_origin_service_ = nullptr;
+  raw_ptr<brave_origin::BraveOriginService> brave_origin_service_;
   base::ObserverList<PrefObserver> observers_;
   PrefChangeRegistrar pref_change_registrar_;
   base::WeakPtrFactory<PsstSettingsService> weak_ptr_factory_{this};
