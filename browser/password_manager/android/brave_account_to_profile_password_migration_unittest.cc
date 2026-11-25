@@ -287,6 +287,27 @@ TEST_F(BraveAccountToProfilePasswordMigrationTest, MigratesAccountToProfile) {
   EXPECT_EQ(0u, GetLogins(account_store_.get()).size());
 }
 
+// The whole credential has to survive, not just the password: the first sync
+// after the migration picks the winner for a conflicting credential by
+// timestamp, so a reset `date_created` would make the migrated copy lose.
+TEST_F(BraveAccountToProfilePasswordMigrationTest, MigrationKeepsCredential) {
+  EnableFeature();
+  const base::Time created = base::Time::Now() - base::Days(7);
+  PasswordForm form =
+      MakeForm("https://a.com/", "u", "p", /*blocked=*/false, created);
+  form.notes.emplace_back(u"note value", created);
+  AddLogin(account_store_.get(), form);
+
+  RunMigration();
+
+  std::vector<PasswordForm> profile_logins = GetLogins(profile_store_.get());
+  ASSERT_EQ(1u, profile_logins.size());
+  EXPECT_EQ(created, profile_logins[0].date_created);
+  EXPECT_EQ(created, profile_logins[0].date_password_modified);
+  EXPECT_EQ(form.notes, profile_logins[0].notes);
+  EXPECT_EQ(0u, GetLogins(account_store_.get()).size());
+}
+
 TEST_F(BraveAccountToProfilePasswordMigrationTest, MigratesBlocklistEntry) {
   EnableFeature();
   AddLogin(account_store_.get(),
