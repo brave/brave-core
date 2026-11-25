@@ -86,7 +86,7 @@ function profileCustomizationTests() {
   let browserProxy: TestProfileCustomizationBrowserProxy
 
   async function createApp(
-    profileCustomizationStyle = ProfileCustomizationStyle.LOCAL_PROFILE_CREATION,
+    profileCustomizationStyle = ProfileCustomizationStyle.SIGNED_OUT_PROFILE_CREATION,
   ) {
     document.body.replaceChildren()
     loadTimeData.overrideValues({
@@ -217,7 +217,7 @@ function profileCustomizationTests() {
   })
 
   test('DoesNotAddRowToNonLocalCustomization', async function() {
-    await createApp(ProfileCustomizationStyle.DEFAULT)
+    await createApp(ProfileCustomizationStyle.SIGNED_IN_PROFILE_CREATION)
     assertEquals(null, app.shadowRoot.querySelector('br-custom-profile-image-row'))
   })
 }

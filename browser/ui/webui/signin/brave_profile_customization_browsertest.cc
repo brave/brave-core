@@ -53,7 +53,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileCustomizationFeatureEnabledWebUITest,
 IN_PROC_BROWSER_TEST_F(BraveProfileCustomizationFeatureEnabledWebUITest,
                        PreservesLocalProfileCreation) {
   RunTest("signin/profile_customization_test.js",
-          "runMochaSuite('LocalProfileCreationTest')");
+          "runMochaSuite('SignedOutProfileCreationTest')");
 }
 
 }  // namespace
