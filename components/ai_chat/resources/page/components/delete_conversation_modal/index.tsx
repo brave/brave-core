@@ -13,6 +13,18 @@ import styles from './style.module.scss'
 export default function DeleteConversationModal() {
   // Context
   const aiChatContext = useAIChat()
+  const cancelButtonRef = React.useRef<HTMLElement>(null)
+
+  // Start on Cancel so a stray keypress can't delete; Delete is one Tab away.
+  // TODO(https://github.com/brave/leo/issues/1522): Use Dialog's initial
+  // focus option once Nala has one.
+  React.useEffect(() => {
+    if (!aiChatContext.deletingConversationId) {
+      return
+    }
+    const timeout = setTimeout(() => cancelButtonRef.current?.focus())
+    return () => clearTimeout(timeout)
+  }, [aiChatContext.deletingConversationId])
 
   // Computed
   const title =
@@ -44,6 +56,7 @@ export default function DeleteConversationModal() {
       >
         <div className={styles.buttonsWrapper}>
           <Button
+            ref={cancelButtonRef}
             kind='plain-faint'
             size='medium'
             onClick={() => aiChatContext.setDeletingConversationId(null)}
