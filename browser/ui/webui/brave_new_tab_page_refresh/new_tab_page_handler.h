@@ -95,8 +95,9 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
       const std::string& destination_url,
       brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
       NotifyNewTabTakeoverLogoClickedCallback callback) override;
-  void NotifyNewTabTakeoverDisclosureLearnMoreClicked(
-      NotifyNewTabTakeoverDisclosureLearnMoreClickedCallback callback) override;
+  void SuppressNewTabTakeoverDisclosureTooltipAutoDisplay(
+      SuppressNewTabTakeoverDisclosureTooltipAutoDisplayCallback callback)
+      override;
   void NotifyNewTabTakeoverDisclosureTooltipAutoDisplayed(
       NotifyNewTabTakeoverDisclosureTooltipAutoDisplayedCallback callback)
       override;
