@@ -46,6 +46,8 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
@@ -254,9 +256,20 @@ void ContentAgentToolProvider::ExecuteActions(
     return;
   }
 
+  // Upstream doesn't implicitly grant a navigate target's origin anymore, and
+  // our tasks have no delegate to confirm new origins, so grant it explicitly.
+  for (const auto& action : actions.actions()) {
+    if (action.has_navigate()) {
+      actions.mutable_task_metadata()
+          ->mutable_security()
+          ->add_added_writable_mainframe_origins(
+              url::Origin::Create(GURL(action.navigate().url())).Serialize());
+    }
+  }
+
   actor_service_->PerformActions(
       actor::TaskId(actions.task_id()), std::move(requests.value()),
-      actor::ActorTaskMetadata(),
+      actor::ActorTaskMetadata(actions),
       base::BindOnce(&ContentAgentToolProvider::OnActionsFinished,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }

@@ -509,4 +509,29 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, HistoryTool_Back) {
   EXPECT_EQ(web_contents()->GetURL(), url_first);
 }
 
+// Runs with upstream's cross-origin navigation gating left on, as it ships.
+class ContentAgentToolsNavigationGatingTest : public ContentAgentToolsTest {
+ public:
+  ContentAgentToolsNavigationGatingTest() {
+    gating_feature_list_.InitAndEnableFeature(
+        actor::kGlicCrossOriginNavigationGating);
+  }
+
+ private:
+  base::test::ScopedFeatureList gating_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(ContentAgentToolsNavigationGatingTest,
+                       NavigateToNewOrigin) {
+  auto navigate_tool = FindToolByName("web_page_navigator");
+  ASSERT_TRUE(navigate_tool);
+
+  base::DictValue input;
+  input.Set("website_url", embedded_https_test_server()
+                               .GetURL("example.com", "/actor/input.html")
+                               .spec());
+  ExecuteToolAndWait(navigate_tool, *base::WriteJson(input));
+  EXPECT_EQ(web_contents()->GetLastCommittedURL().host(), "example.com");
+}
+
 }  // namespace ai_chat
