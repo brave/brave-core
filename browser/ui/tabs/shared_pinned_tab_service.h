@@ -131,6 +131,20 @@ class SharedPinnedTabService : public KeyedService,
   bool IsTrackedContentsFor(content::WebContents* contents,
                             content::WebContents* shared_contents) const;
 
+  // A window may contain one pinned tab that must never be tracked in
+  // |pinned_tab_data_| (see SharedPinnedTabExclusionMarker), which offsets
+  // every raw pinned-tab index in that window relative to |pinned_tab_data_|.
+  // These three helpers translate between the two index spaces.
+
+  // Raw pinned-tab index of |model|'s excluded tab, or -1 if it has none.
+  int FindExcludedPinnedIndex(TabStripModel* model) const;
+  // Raw pinned-tab index in |model| (must not be the excluded tab's own
+  // index) -> the corresponding index into |pinned_tab_data_|.
+  int ToCanonicalIndex(TabStripModel* model, int raw_index) const;
+  // Index into |pinned_tab_data_| -> the raw pinned-tab index to use in
+  // |model|, accounting for |model|'s own excluded tab (if any).
+  int ToRawIndex(TabStripModel* model, int canonical_index) const;
+
   raw_ptr<Profile> profile_;
 
   base::flat_set<raw_ptr<BrowserWindowInterface>> browsers_;

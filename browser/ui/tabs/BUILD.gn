@@ -62,10 +62,13 @@ source_set("tabs_public") {
     sources += [
       "public/before_unload_ignore_controller.h",
       "public/closing_last_tab_controller.h",
+      "public/shared_pinned_tab_exclusion_marker.h",
       "public/tab_cycling_controller.h",
+      "shared_pinned_tab_exclusion_marker.cc",
     ]
     public_deps += [
       "//chrome/browser/ui/tabs:tab_strip_model_observer",
+      "//content/public/browser",
       "//ui/events",
       "//ui/views",
     ]
