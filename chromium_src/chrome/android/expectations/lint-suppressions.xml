@@ -6,6 +6,27 @@
 -->
 <lint>
     <issue id="ExportedService" severity="ignore" />
+
+    <!-- Upstream's MediaCaptureNotificationService keeps "camera" in its
+         android:foregroundServiceType list, but Brave asks for
+         FOREGROUND_SERVICE_CAMERA on desktop Android only (see
+         rewrite/chrome/android/java/AndroidManifest.xml.yaml). Since Android 14
+         every foreground service type needs its own permission, so lint reports
+         the pair as incomplete.
+
+         Nothing is broken on the builds we ship. That service only runs as a
+         foreground service when media::kAndroidEnableBackgroundMediaCapturing is
+         enabled, and that feature is off by default. With the feature off the
+         service only posts the "camera in use" notification, and the type is
+         never read.
+
+         The permission is not free to add: Google asks for a written
+         declaration and a demo video from any app that requests it. So if
+         upstream turns the feature on, remove this entry and decide then
+         whether Brave wants to run that foreground service at all. -->
+    <issue id="ForegroundServicePermission">
+        <ignore regexp="foregroundServiceType:camera" />
+    </issue>
     <issue id="DuplicateDefinition">
         <ignore regexp="chrome/android/java/res/values/colors.xml" />
     </issue>
