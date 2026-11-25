@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Include what the popup tracking members use
+    add_include:
+      header:
+        - chrome/browser/ui/browser_window/public/browser_window_interface.h
+
+  - description: |-
+      Declare popup tracking methods
+
+      SetWebContentsAddNewContentsBrowser() enables redirecting new popup
+      contents to a browser window and CloseTrackedPopups() closes them.
+    add_to_public:
+      class_name: WebUIContentsWrapper
+      code: |-
+        void SetWebContentsAddNewContentsBrowser(
+            base::WeakPtr<BrowserWindowInterface> browser);
+        void CloseTrackedPopups();
+
+  - description: |-
+      Add popup tracking members
+    add_to_protected:
+      class_name: WebUIContentsWrapper
+      code: |-
+        std::vector<base::WeakPtr<content::WebContents>> tracked_popups_;
+        base::WeakPtr<BrowserWindowInterface> browser_;

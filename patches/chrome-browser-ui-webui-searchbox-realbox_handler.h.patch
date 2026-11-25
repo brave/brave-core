@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/searchbox/realbox_handler.h b/chrome/browser/ui/webui/searchbox/realbox_handler.h
+index 19b1e4f2ab925866827a306d4b2d4822ba2a8eb8..c496a7335eb549557af0b20df2192691c87eaea5 100644
+--- a/chrome/browser/ui/webui/searchbox/realbox_handler.h
++++ b/chrome/browser/ui/webui/searchbox/realbox_handler.h
+@@ -43,6 +43,7 @@ class RealboxHandler : public ContextualSearchboxHandler {
+       const gfx::VectorIcon& icon) const override;
+ 
+  private:
++  friend class BraveRealboxHandlerTest;
+   base::WeakPtrFactory<RealboxHandler> weak_ptr_factory_{this};
+ };
+ 

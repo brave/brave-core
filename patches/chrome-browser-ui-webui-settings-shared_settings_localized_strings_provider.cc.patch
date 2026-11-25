@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/webui/settings/shared_settings_localized_strings_provider.cc b/chrome/browser/ui/webui/settings/shared_settings_localized_strings_provider.cc
+index 5944de937225558c1f4422ce6e6fc2aea6158b71..4dc45304f3e16b86f3fab90ff2f4fb9c10bc5bcb 100644
+--- a/chrome/browser/ui/webui/settings/shared_settings_localized_strings_provider.cc
++++ b/chrome/browser/ui/webui/settings/shared_settings_localized_strings_provider.cc
+@@ -280,6 +280,7 @@ void AddSharedSyncPageStrings(content::WebUIDataSource* html_source) {
+ }
+ 
+ void AddSecureDnsStrings(content::WebUIDataSource* html_source) {
++  [&]() -> void {
+   webui::LocalizedString kLocalizedStrings[] = {
+       {"secureDns", IDS_SETTINGS_SECURE_DNS},
+       {"secureDnsDescription", IDS_SETTINGS_SECURE_DNS_DESCRIPTION},
+@@ -306,6 +307,8 @@ void AddSecureDnsStrings(content::WebUIDataSource* html_source) {
+   };
+ 
+   html_source->AddLocalizedStrings(kLocalizedStrings);
++  }();
++  BraveAddSecureDnsStrings(html_source);
+ }
+ 
+ }  // namespace settings
