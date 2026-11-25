@@ -32,6 +32,7 @@ constexpr auto kBraveDisabledTrialNames =
         "InterestCohortAPI",
         "FencedFrames",
         "Fledge",
+        "JSSelfProfilingInDedicatedWorker",
         "Prerender2CrossOriginIframes",
         "SignedExchangeSubresourcePrefetch",
         "SubresourceWebBundles",

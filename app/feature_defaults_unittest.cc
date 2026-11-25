@@ -384,6 +384,7 @@ TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
       &blink::features::kLanguageDetectionAPI,
       &blink::features::kPrerender2,
       &blink::features::kProfilerAPI,
+      &blink::features::kProfilerAPIForDedicatedWorker,
       &blink::features::kTranslationAPI,
       &blink::features::kUserMediaElement,
       &blink::features::kWebAppInstallation,

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed777d34fcc1 100644
+index 747f2112411bdd3853fdaa16757fe728dbd1ec62..74901c6dbe6a92b855cc00f912dd4cff383df0c1 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -185,6 +185,14 @@
@@ -17,7 +17,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
      // browser_process_read_access indicates the runtime feature state should be
      // readable in the browserprocess via RuntimeFeatureStateReadContext.
      // TODO(crbug.com/1377000): this feature does not support origin trial
-@@ -331,6 +339,8 @@
+@@ -336,6 +344,8 @@
      },
      {
        name: "AIDecisionModelAPI",
@@ -26,7 +26,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        status: {
          "Win": "experimental",
          "Mac": "experimental",
-@@ -341,6 +351,8 @@
+@@ -346,6 +356,8 @@
      },
      {
        name: "AIDecisionModelAPIForWorkers",
@@ -35,7 +35,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        status: "test",
      },
      {
-@@ -355,7 +367,8 @@
+@@ -360,7 +372,8 @@
        origin_trial_feature_name: "AISemanticEmbedderAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
@@ -45,7 +45,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -467,6 +480,8 @@
+@@ -483,6 +496,8 @@
      },
      {
        name: "AIPromptAPI",
@@ -54,7 +54,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        public: true,
        status: {
          "Win": "stable",
-@@ -494,6 +509,8 @@
+@@ -510,6 +525,8 @@
      },
      {
        name: "AIPromptAPIMultimodalInput",
@@ -63,7 +63,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        status: {
          "Win": "stable",
          "Mac": "stable",
-@@ -548,7 +565,8 @@
+@@ -576,7 +593,8 @@
        origin_trial_feature_name: "AIProofreaderAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
@@ -73,7 +73,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -563,7 +581,8 @@
+@@ -591,7 +609,8 @@
        origin_trial_feature_name: "AIRewriterAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
@@ -83,7 +83,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -572,6 +591,8 @@
+@@ -600,6 +619,8 @@
      },
      {
        name: "AISummarizationAPI",
@@ -92,7 +92,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        status: {
          "Win": "stable",
          "Mac": "stable",
-@@ -606,7 +627,8 @@
+@@ -634,7 +655,8 @@
        origin_trial_feature_name: "AIWriterAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
@@ -102,7 +102,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -743,6 +765,8 @@
+@@ -765,6 +787,8 @@
      {
        // Gates the returned accuracyMode parameter upon permissions.query({name: "geolocation"})
        name: "ApproximateGeolocationPermissionAccuracyMode",
@@ -111,7 +111,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        depends_on: ["ApproximateGeolocationPermission"],
      },
      {
-@@ -1533,6 +1557,8 @@
+@@ -1606,6 +1630,8 @@
        // https://github.com/WICG/controlled-frame/blob/main/README.md for more
        // info.
        name: "ControlledFrame",
@@ -120,7 +120,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        public: true,
        status: "stable",
      },
-@@ -3008,6 +3034,8 @@
+@@ -3128,6 +3154,8 @@
      },
      {
        name: "ExtensionScriptTagging",
@@ -129,7 +129,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        public: true,
        status: "stable",
        base_feature: "ExtensionScriptTagging",
-@@ -3141,7 +3169,9 @@
+@@ -3261,7 +3289,9 @@
      },
      {
        name: "FencedFrames",
@@ -140,7 +140,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        // This helps enable and expose the <fencedframe> element, but note that
        // blink::features::kFencedFrames must be enabled as well, as we require
        // the support of the browser process to fully enable the feature.
-@@ -3237,6 +3267,7 @@
+@@ -3354,6 +3384,7 @@
      {
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
@@ -148,7 +148,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        status: "experimental",
      },
      {
-@@ -3251,6 +3282,7 @@
+@@ -3368,6 +3399,7 @@
      {
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
@@ -156,7 +156,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        status: {"default": "stable"},
      },
      {
-@@ -4050,6 +4082,8 @@
+@@ -4191,6 +4223,8 @@
      {
        // https://chromestatus.com/feature/5152834368700416
        name: "InstallElement",
@@ -165,7 +165,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        status: {
          "Android": "",
          "iOS": "",
-@@ -4149,7 +4183,8 @@
+@@ -4296,7 +4330,8 @@
          "Android": "stable",
          "default": "",
        },
@@ -175,7 +175,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -5302,6 +5337,8 @@
+@@ -5471,6 +5506,8 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
@@ -184,7 +184,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        status: "stable",
      },
      {
-@@ -5376,6 +5413,8 @@
+@@ -5538,11 +5575,15 @@
      },
      {
        name: "ProfilerAPI",
@@ -193,7 +193,14 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        status: "stable",
      },
      {
-@@ -5518,6 +5557,8 @@
+       // When enabled, dedicated workers can use profiler API
+       name: "ProfilerAPIForDedicatedWorker",
++      brave_base_feature_overridden: true,
++      base_feature_status: "disabled",
+       origin_trial_feature_name: "JSSelfProfilingInDedicatedWorker",
+       status: "experimental",
+     },
+@@ -5674,6 +5715,8 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
@@ -202,7 +209,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        status: "stable",
      },
      {
-@@ -7121,7 +7162,8 @@
+@@ -7358,7 +7401,8 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -212,7 +219,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -7309,6 +7351,8 @@
+@@ -7546,6 +7590,8 @@
      },
      {
        name: "UserMediaElement",
@@ -221,7 +228,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        status: "stable",
        public: true,
      },
-@@ -7451,6 +7495,8 @@
+@@ -7692,6 +7738,8 @@
      {
        // https://chromestatus.com/feature/5183481574850560
        name: "WebAppInstallation",
@@ -230,7 +237,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        status: {
          "Android": "",
          "iOS": "",
-@@ -7781,6 +7827,7 @@
+@@ -8027,6 +8075,7 @@
        origin_trial_feature_name: "WebMCP",
        origin_trial_allows_third_party: true,
        public: true,
@@ -238,7 +245,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
        base_feature_status: "enabled",
        copied_from_base_feature_if: "overridden",
        // Note that `depends_on` isn't supported by origin trials.
-@@ -7790,7 +7837,7 @@
+@@ -8036,7 +8085,7 @@
          "WebMCPFormAssociatedCustomElements",
          "WebMCPWaitForToolsUntil"
        ],
@@ -247,7 +254,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed77
      },
      {
        name: "WebMCPContinuations",
-@@ -8244,5 +8291,10 @@
+@@ -8505,5 +8554,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },

@@ -166,6 +166,14 @@ substitutions:
       value: disabled
 
   - description: |-
+      Ship the JS Self-Profiling API's dedicated worker base feature disabled.
+
+      It doesn't depend on `ProfilerAPI`, so pinning that one leaves it on.
+    set_blink_runtime_enabled_feature_state:
+      feature_name: ProfilerAPIForDedicatedWorker
+      value: disabled
+
+  - description: |-
       Pin the reduced user-agent minor version on.
 
       This is what upstream ships today, so it changes nothing on its own.
