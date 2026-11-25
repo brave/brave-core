@@ -12,6 +12,7 @@
 #include <map>
 #include <memory>
 #include <optional>
+#include <set>
 #include <string>
 #include <utility>
 #include <vector>
@@ -1510,6 +1511,90 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContentKeepsWorkspaceContent) {
   cleared = db_->DeleteAssociatedWebContent(std::nullopt, std::nullopt);
   ASSERT_TRUE(cleared.has_value());
   EXPECT_TRUE(cleared->empty());
+}
+
+TEST_P(AIChatDatabaseTest, GetWorkspaceUrls) {
+  const GURL shared_workspace_url(
+      "workspace://11111111-1111-4111-8111-111111111111");
+  const GURL other_workspace_url(
+      "workspace://22222222-2222-4222-8222-222222222222");
+
+  auto history1 = CreateSampleChatHistory(1u, -1);
+  std::vector<mojom::AssociatedContentPtr> contents1;
+  // The same workspace is referenced twice within one conversation.
+  contents1.push_back(mojom::AssociatedContent::New(
+      "workspace-content", mojom::ContentType::Workspace, "Workspace", 1,
+      shared_workspace_url, 100, history1[0]->uuid.value(), false));
+  contents1.push_back(mojom::AssociatedContent::New(
+      "workspace-content-2", mojom::ContentType::Workspace, "Workspace", 2,
+      shared_workspace_url, 100, history1[0]->uuid.value(), false));
+  contents1.push_back(mojom::AssociatedContent::New(
+      "page-content", mojom::ContentType::PageContent, "page title", 3,
+      GURL("https://example.com/page"), 62, history1[0]->uuid.value(), false));
+  contents1.push_back(mojom::AssociatedContent::New(
+      "urlless-content", mojom::ContentType::PageContent, "page title", 4,
+      GURL(), 62, history1[0]->uuid.value(), false));
+  mojom::ConversationPtr metadata1 = mojom::Conversation::New(
+      "conv-1", "title", base::Time::Now() - base::Hours(1), true, std::nullopt,
+      0, 0, false, std::move(contents1));
+  ASSERT_TRUE(db_->AddConversation(
+      std::move(metadata1),
+      {"workspace text", "workspace text", "page text", "urlless text"},
+      history1[0]->Clone()));
+
+  auto history2 = CreateSampleChatHistory(1u, -2);
+  std::vector<mojom::AssociatedContentPtr> contents2;
+  // A second conversation references the shared workspace and its own.
+  contents2.push_back(mojom::AssociatedContent::New(
+      "workspace-content-3", mojom::ContentType::Workspace, "Workspace", 1,
+      shared_workspace_url, 100, history2[0]->uuid.value(), false));
+  contents2.push_back(mojom::AssociatedContent::New(
+      "workspace-content-4", mojom::ContentType::Workspace, "Workspace", 2,
+      other_workspace_url, 100, history2[0]->uuid.value(), false));
+  mojom::ConversationPtr metadata2 = mojom::Conversation::New(
+      "conv-2", "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
+      0, 0, false, std::move(contents2));
+  ASSERT_TRUE(db_->AddConversation(std::move(metadata2),
+                                   {"workspace text", "workspace text"},
+                                   history2[0]->Clone()));
+
+  // Only workspaces are reported, each once, whatever conversation or entry
+  // references them.
+  std::set<GURL> urls = db_->GetWorkspaceUrls();
+  ASSERT_EQ(urls.size(), 2u);
+  EXPECT_TRUE(urls.contains(shared_workspace_url));
+  EXPECT_TRUE(urls.contains(other_workspace_url));
+
+  // Deleting one referencing conversation keeps the still-referenced one.
+  ASSERT_TRUE(db_->DeleteConversation("conv-2"));
+  urls = db_->GetWorkspaceUrls();
+  ASSERT_EQ(urls.size(), 1u);
+  EXPECT_TRUE(urls.contains(shared_workspace_url));
+}
+
+TEST_P(AIChatDatabaseTest, DeleteAllDataAndGetWorkspaceUrls) {
+  const GURL workspace_url("workspace://11111111-1111-4111-8111-111111111111");
+  auto history = CreateSampleChatHistory(1u, -1);
+  std::vector<mojom::AssociatedContentPtr> contents;
+  contents.push_back(mojom::AssociatedContent::New(
+      "workspace-content", mojom::ContentType::Workspace, "Workspace", 1,
+      workspace_url, 100, history[0]->uuid.value(), false));
+  contents.push_back(mojom::AssociatedContent::New(
+      "page-content", mojom::ContentType::PageContent, "page title", 2,
+      GURL("https://example.com/page"), 62, history[0]->uuid.value(), false));
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      "conv-1", "title", base::Time::Now() - base::Hours(1), true, std::nullopt,
+      0, 0, false, std::move(contents));
+  ASSERT_TRUE(db_->AddConversation(std::move(metadata),
+                                   {"workspace text", "page text"},
+                                   history[0]->Clone()));
+
+  // The workspaces are reported from before the deletion.
+  std::optional<std::set<GURL>> urls = db_->DeleteAllDataAndGetWorkspaceUrls();
+  ASSERT_TRUE(urls.has_value());
+  EXPECT_EQ(*urls, std::set<GURL>{workspace_url});
+  EXPECT_TRUE(db_->GetAllConversations().empty());
+  EXPECT_TRUE(db_->GetWorkspaceUrls().empty());
 }
 
 TEST_P(AIChatDatabaseTest, DeleteConversationEntryWithAssociatedContent) {

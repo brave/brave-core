@@ -114,6 +114,8 @@ static_library("browser") {
     "types.h",
     "utils.cc",
     "utils.h",
+    "workspace_data_deleter.cc",
+    "workspace_data_deleter.h",
   ]
 
   if (is_android) {

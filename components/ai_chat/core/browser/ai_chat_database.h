@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_DATABASE_H_
 
 #include <optional>
+#include <set>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -19,6 +20,7 @@
 #include "components/sync/model/sync_metadata_store.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
+#include "url/gurl.h"
 
 namespace sql {
 class Statement;
@@ -125,8 +127,17 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   virtual bool DeleteConversationEntry(
       std::string_view conversation_entry_uuid);
 
+  // Returns the distinct workspace://<uuid> URLs referenced by any
+  // conversation's associated content.
+  virtual std::set<GURL> GetWorkspaceUrls();
+
   // Drops all data and tables in the database, and re-creates empty tables
   virtual bool DeleteAllData();
+
+  // DeleteAllData(), returning the GetWorkspaceUrls() the deleted data
+  // referenced so their data can be deleted too, or std::nullopt if the
+  // deletion failed (in which case the data may still reference them).
+  std::optional<std::set<GURL>> DeleteAllDataAndGetWorkspaceUrls();
 
   // Clears (sets to NULL) the url/title/last_contents of associated content for
   // every conversation that has an entry dated within [begin_time, end_time].

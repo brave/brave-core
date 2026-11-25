@@ -19,8 +19,11 @@
 #include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "base/uuid.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/workspace_associated_content_browsertest_base.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -290,6 +293,95 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
   EXPECT_EQ(page_url, web_contents->GetLastCommittedURL());
   EXPECT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+}
+
+// Deleting a workspace removes what its origin stored, so that restoring it
+// finds neither the folder handle nor the grants to use it.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       DeleteWorkspaceDataClearsStorageAndGrants) {
+  auto* content = CreateContent(CreateWorkspaceFolder());
+  const GURL workspace_url = content->url();
+  const GURL page_url = content->page_url();
+  ASSERT_TRUE(WaitForStoredHandle(content));
+  ASSERT_EQ(CONTENT_SETTING_ALLOW,
+            GetSetting(page_url, ContentSettingsType::FILE_SYSTEM_READ_GUARD));
+  ASSERT_EQ(CONTENT_SETTING_ALLOW,
+            GetSetting(page_url, ContentSettingsType::FILE_SYSTEM_WRITE_GUARD));
+  DestroyContents();
+
+  // A second workspace must be left alone.
+  auto* other = CreateContent(CreateWorkspaceFolder());
+  ASSERT_TRUE(WaitForStoredHandle(other));
+
+  base::test::TestFuture<void> deleted;
+  WorkspaceAssociatedContent::DeleteWorkspaceData(
+      workspace_url, browser()->GetProfile(), deleted.GetCallback());
+  ASSERT_TRUE(deleted.Wait());
+
+  EXPECT_EQ(CONTENT_SETTING_ASK,
+            GetSetting(page_url, ContentSettingsType::FILE_SYSTEM_READ_GUARD));
+  EXPECT_EQ(CONTENT_SETTING_ASK,
+            GetSetting(page_url, ContentSettingsType::FILE_SYSTEM_WRITE_GUARD));
+  EXPECT_EQ(CONTENT_SETTING_ALLOW,
+            GetSetting(other->page_url(),
+                       ContentSettingsType::FILE_SYSTEM_READ_GUARD));
+
+  // The restored page finds no saved handle.
+  auto restored = WorkspaceAssociatedContent::CreateFromUrl(
+      workspace_url, std::nullopt, browser()->GetProfile(), base::DoNothing());
+  ASSERT_TRUE(restored);
+  content::WebContents* web_contents = restored->GetWebContentsForTesting();
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents));
+  EXPECT_EQ(false, content::EvalJs(web_contents, R"JS(
+      new Promise((resolve, reject) => {
+        const open = indexedDB.open('leo-workspace', 1);
+        open.onerror = () => reject(open.error);
+        open.onupgradeneeded = () => open.result.createObjectStore('handles');
+        open.onsuccess = () => {
+          const db = open.result;
+          const request =
+              db.transaction('handles').objectStore('handles').get('root');
+          request.onerror = () => reject(request.error);
+          request.onsuccess = () => {
+            db.close();
+            resolve(!!request.result);
+          };
+        };
+      })
+  )JS"));
+}
+
+// Deleting the conversation that attached a workspace deletes the workspace's
+// data through the remover AIChatServiceFactory wires to AIChatService, so the
+// wiring between the two halves holds.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       DeleteLastConversationDeletesWorkspaceData) {
+  auto* service =
+      AIChatServiceFactory::GetForBrowserContext(browser()->GetProfile());
+  ConversationHandler* conversation = service->CreateConversation();
+  const std::string conversation_uuid = conversation->get_conversation_uuid();
+
+  // The conversation owns the workspace, as it does in production, so the
+  // workspace's page is destroyed along with the conversation. (The fixture
+  // can't own it: its teardown waits for a stored handle the deletion clears.)
+  auto content = std::make_unique<WorkspaceAssociatedContent>(
+      CreateWorkspaceFolder(), browser()->GetProfile(), base::DoNothing());
+  const GURL page_url = content->page_url();
+  ASSERT_TRUE(WaitForStoredHandle(content.get()));
+  ASSERT_EQ(CONTENT_SETTING_ALLOW,
+            GetSetting(page_url, ContentSettingsType::FILE_SYSTEM_READ_GUARD));
+  service->AssociateOwnedContent(std::move(content), conversation_uuid);
+
+  service->DeleteConversation(conversation_uuid);
+
+  // Deleting the conversation and clearing the workspace's data are both
+  // asynchronous.
+  EXPECT_TRUE(base::test::RunUntil([&] {
+    return GetSetting(page_url, ContentSettingsType::FILE_SYSTEM_READ_GUARD) ==
+           CONTENT_SETTING_ASK;
+  }));
+  EXPECT_EQ(CONTENT_SETTING_ASK,
+            GetSetting(page_url, ContentSettingsType::FILE_SYSTEM_WRITE_GUARD));
 }
 
 // Stored URLs are read back from the database, so anything that isn't exactly
