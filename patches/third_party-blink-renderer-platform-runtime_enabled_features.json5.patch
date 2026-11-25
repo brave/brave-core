@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..3c1a1fbf1e4f5279dcb2f3574ebec0d0396faf22 100644
+index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..6636ae47c39761509fd4ae846a98ed777d34fcc1 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -185,6 +185,14 @@
@@ -111,15 +111,6 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..3c1a1fbf1e4f5279dcb2f3574ebec0d0
        depends_on: ["ApproximateGeolocationPermission"],
      },
      {
-@@ -1455,7 +1479,7 @@
-       // objects that live on the compositor thread.
-       // [1] https://drafts.csswg.org/css-animations-2/#timeline-triggers
-       name: "CompositorTimelineTrigger",
--      status: "stable",
-+      status: "experimental", // Brave: revert when crbug.com/541924666 is fixed.
-     },
-     {
-       name: "CompressionDictionaryTransport",
 @@ -1533,6 +1557,8 @@
        // https://github.com/WICG/controlled-frame/blob/main/README.md for more
        // info.

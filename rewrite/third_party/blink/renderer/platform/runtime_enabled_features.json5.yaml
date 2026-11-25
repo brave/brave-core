@@ -47,19 +47,6 @@ substitutions:
           ],
         }
 
-  - description: |-
-      Hold CompositorTimelineTrigger at experimental.
-
-      The anchor matches the status so we get to review it if anything
-      changes.
-    regex:
-      pattern: |2-
-              name: "CompositorTimelineTrigger",
-              status: "stable",
-      replace: |2-
-              name: "CompositorTimelineTrigger",
-              status: "experimental", // Brave: revert when crbug.com/541924666 is fixed.
-
   # The two following entries are plastered to generate no `base::Feature` at
   # all.
   - description:
