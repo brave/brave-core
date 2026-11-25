@@ -7,7 +7,6 @@
 
 #include <optional>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include "base/functional/callback_helpers.h"
@@ -85,14 +84,6 @@ class MockOAIAPIClient : public OAIAPIClient {
                EngineConsumer::GenerationCompletedCallback,
                const std::optional<std::vector<std::string>>&),
               (override));
-
-  std::string GetMessagesJson(std::vector<OAIMessage> messages) {
-    auto serialized = OAIAPIClient::SerializeOAIMessages(std::move(messages));
-    std::string messages_json;
-    base::JSONWriter::WriteWithOptions(
-        serialized, base::JSONWriter::OPTIONS_PRETTY_PRINT, &messages_json);
-    return messages_json;
-  }
 };
 
 class EngineConsumerOAIUnitTest : public testing::Test {
@@ -128,14 +119,6 @@ class EngineConsumerOAIUnitTest : public testing::Test {
 
   MockOAIAPIClient* GetClient() {
     return static_cast<MockOAIAPIClient*>(engine_->GetAPIForTesting());
-  }
-
-  std::string FormatComparableMessagesJson(std::string_view formatted_json) {
-    auto messages = base::test::ParseJson(formatted_json);
-    std::string messages_json;
-    base::JSONWriter::WriteWithOptions(
-        messages, base::JSONWriter::OPTIONS_PRETTY_PRINT, &messages_json);
-    return messages_json;
   }
 
   void TearDown() override {}
@@ -207,7 +190,6 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
                            mojom::ContentType::PageContent);
 
   auto* client = GetClient();
-  base::RunLoop run_loop;
 
   auto invoke_completion_callback = [](const std::string& result_string) {
     return [result_string](
@@ -234,40 +216,39 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
           "<question>Question 1</question><question>Question 2</question>"
           "<question>Question 3</question>"));
 
-  engine_->GenerateQuestionSuggestions(
-      {page_content}, base::BindLambdaForTesting(
-                          [](EngineConsumer::SuggestedQuestionResult result) {
-                            EXPECT_TRUE(result.has_value());
-                            EXPECT_EQ(result.value().size(), 1ull);
-                          }));
+  base::test::TestFuture<EngineConsumer::SuggestedQuestionResult> future1;
+  base::test::TestFuture<EngineConsumer::SuggestedQuestionResult> future2;
+  base::test::TestFuture<EngineConsumer::SuggestedQuestionResult> future3;
+  base::test::TestFuture<EngineConsumer::SuggestedQuestionResult> future4;
 
-  engine_->GenerateQuestionSuggestions(
-      {page_content}, base::BindLambdaForTesting(
-                          [](EngineConsumer::SuggestedQuestionResult result) {
-                            EXPECT_EQ(result.value()[0], "Question 1");
-                            EXPECT_EQ(result.value()[1], "Question 2");
-                          }));
+  engine_->GenerateQuestionSuggestions({page_content}, future1.GetCallback());
+  engine_->GenerateQuestionSuggestions({page_content}, future2.GetCallback());
+  engine_->GenerateQuestionSuggestions({page_content}, future3.GetCallback());
+  engine_->GenerateQuestionSuggestions({page_content}, future4.GetCallback());
 
-  engine_->GenerateQuestionSuggestions(
-      {page_content}, base::BindLambdaForTesting(
-                          [](EngineConsumer::SuggestedQuestionResult result) {
-                            EXPECT_EQ(result.value()[0], "Question 1");
-                            EXPECT_EQ(result.value()[1], "Question 2");
-                          }));
+  auto result1 = future1.Take();
+  ASSERT_TRUE(result1.has_value());
+  EXPECT_EQ(result1.value().size(), 1ull);
 
-  engine_->GenerateQuestionSuggestions(
-      {page_content},
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::SuggestedQuestionResult result) {
-            ASSERT_TRUE(result.has_value());
-            ASSERT_EQ(result->size(), 3u);
-            EXPECT_EQ((*result)[0], "Question 1");
-            EXPECT_EQ((*result)[1], "Question 2");
-            EXPECT_EQ((*result)[2], "Question 3");
-            run_loop.Quit();
-          }));
+  auto result2 = future2.Take();
+  ASSERT_TRUE(result2.has_value());
+  ASSERT_EQ(result2->size(), 2u);
+  EXPECT_EQ((*result2)[0], "Question 1");
+  EXPECT_EQ((*result2)[1], "Question 2");
 
-  run_loop.Run();
+  auto result3 = future3.Take();
+  ASSERT_TRUE(result3.has_value());
+  ASSERT_EQ(result3->size(), 2u);
+  EXPECT_EQ((*result3)[0], "Question 1");
+  EXPECT_EQ((*result3)[1], "Question 2");
+
+  auto result4 = future4.Take();
+  ASSERT_TRUE(result4.has_value());
+  ASSERT_EQ(result4->size(), 3u);
+  EXPECT_EQ((*result4)[0], "Question 1");
+  EXPECT_EQ((*result4)[1], "Question 2");
+  EXPECT_EQ((*result4)[2], "Question 3");
+
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
@@ -278,7 +259,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
 
   // Test error case: result doesn't have a value
   {
-    base::RunLoop run_loop;
+    base::test::TestFuture<EngineConsumer::SuggestedQuestionResult> future;
     EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
         .WillOnce(
             [](const mojom::ModelOptions&, std::vector<OAIMessage>,
@@ -291,23 +272,18 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
                   .Run(base::unexpected(mojom::APIError::RateLimitReached));
             });
 
-    engine_->GenerateQuestionSuggestions(
-        {page_content},
-        base::BindLambdaForTesting(
-            [&run_loop](EngineConsumer::SuggestedQuestionResult result) {
-              // Check that error is properly propagated
-              EXPECT_FALSE(result.has_value());
-              EXPECT_EQ(result.error(), mojom::APIError::RateLimitReached);
-              run_loop.Quit();
-            }));
+    engine_->GenerateQuestionSuggestions({page_content}, future.GetCallback());
 
-    run_loop.Run();
+    // Check that error is properly propagated
+    auto result = future.Take();
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), mojom::APIError::RateLimitReached);
     testing::Mock::VerifyAndClearExpectations(client);
   }
 
   // Test error case: result has an empty event
   {
-    base::RunLoop run_loop;
+    base::test::TestFuture<EngineConsumer::SuggestedQuestionResult> future;
     EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
         .WillOnce(
             [](const mojom::ModelOptions&, std::vector<OAIMessage>,
@@ -321,23 +297,18 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
                       nullptr, std::nullopt /* model_key */)));
             });
 
-    engine_->GenerateQuestionSuggestions(
-        {page_content},
-        base::BindLambdaForTesting(
-            [&run_loop](EngineConsumer::SuggestedQuestionResult result) {
-              // Check that error is properly propagated
-              EXPECT_FALSE(result.has_value());
-              EXPECT_EQ(result.error(), mojom::APIError::InternalError);
-              run_loop.Quit();
-            }));
+    engine_->GenerateQuestionSuggestions({page_content}, future.GetCallback());
 
-    run_loop.Run();
+    // Check that error is properly propagated
+    auto result = future.Take();
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), mojom::APIError::InternalError);
     testing::Mock::VerifyAndClearExpectations(client);
   }
 
   // Test error case: result has a non-completion event
   {
-    base::RunLoop run_loop;
+    base::test::TestFuture<EngineConsumer::SuggestedQuestionResult> future;
     EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
         .WillOnce(
             [](const mojom::ModelOptions&, std::vector<OAIMessage>,
@@ -353,23 +324,18 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
                       std::nullopt /* model_key */)));
             });
 
-    engine_->GenerateQuestionSuggestions(
-        {page_content},
-        base::BindLambdaForTesting(
-            [&run_loop](EngineConsumer::SuggestedQuestionResult result) {
-              // Check that error is properly propagated
-              EXPECT_FALSE(result.has_value());
-              EXPECT_EQ(result.error(), mojom::APIError::InternalError);
-              run_loop.Quit();
-            }));
+    engine_->GenerateQuestionSuggestions({page_content}, future.GetCallback());
 
-    run_loop.Run();
+    // Check that error is properly propagated
+    auto result = future.Take();
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), mojom::APIError::InternalError);
     testing::Mock::VerifyAndClearExpectations(client);
   }
 
   // Test error case: result has an empty completion
   {
-    base::RunLoop run_loop;
+    base::test::TestFuture<EngineConsumer::SuggestedQuestionResult> future;
     EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
         .WillOnce(
             [](const mojom::ModelOptions&, std::vector<OAIMessage>,
@@ -385,17 +351,12 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
                       std::nullopt /* model_key */)));
             });
 
-    engine_->GenerateQuestionSuggestions(
-        {page_content},
-        base::BindLambdaForTesting(
-            [&run_loop](EngineConsumer::SuggestedQuestionResult result) {
-              // Check that error is properly propagated
-              EXPECT_FALSE(result.has_value());
-              EXPECT_EQ(result.error(), mojom::APIError::InternalError);
-              run_loop.Quit();
-            }));
+    engine_->GenerateQuestionSuggestions({page_content}, future.GetCallback());
 
-    run_loop.Run();
+    // Check that error is properly propagated
+    auto result = future.Take();
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), mojom::APIError::InternalError);
     testing::Mock::VerifyAndClearExpectations(client);
   }
 }
@@ -460,7 +421,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Prepare to capture API client request
   auto* client = GetClient();
-  auto run_loop = std::make_unique<base::RunLoop>();
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
@@ -495,19 +456,15 @@ TEST_F(EngineConsumerOAIUnitTest,
   // Initiate the test
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {}, base::DoNothing(),
-      base::BindLambdaForTesting([&run_loop, &assistant_response](
-                                     EngineConsumer::GenerationResult result) {
-        EXPECT_EQ(result.value(),
-                  EngineConsumer::GenerationResultData(
-                      mojom::ConversationEntryEvent::NewCompletionEvent(
-                          mojom::CompletionEvent::New(assistant_response)),
-                      std::nullopt /* model_key */));
-        run_loop->Quit();
-      }));
+      false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
 
-  // Run the test
-  run_loop->Run();
+  auto result = future.Take();
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(result.value(),
+            EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New(assistant_response)),
+                std::nullopt /* model_key */));
 
   // Verify the expectations
   testing::Mock::VerifyAndClearExpectations(client);
@@ -607,7 +564,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       std::vector<std::string>{} /* child_thread_uuids */));
 
   auto* client = GetClient();
-  auto run_loop = std::make_unique<base::RunLoop>();
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
@@ -659,24 +616,21 @@ TEST_F(EngineConsumerOAIUnitTest,
     history.push_back(std::move(entry));
   }
 
-  engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult result) {
-            EXPECT_EQ(result.value(),
-                      EngineConsumer::GenerationResultData(
-                          mojom::ConversationEntryEvent::NewCompletionEvent(
-                              mojom::CompletionEvent::New("I dont know")),
-                          std::nullopt /* model_key */));
-            run_loop->Quit();
-          }));
+  engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
+                                     false, {}, std::nullopt, {},
+                                     base::DoNothing(), future.GetCallback());
 
-  run_loop->Run();
+  auto result = future.Take();
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(result.value(),
+            EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New("I dont know")),
+                std::nullopt /* model_key */));
   testing::Mock::VerifyAndClearExpectations(client);
 
   // Test with a modified server reply.
-  run_loop = std::make_unique<base::RunLoop>();
+  base::test::TestFuture<EngineConsumer::GenerationResult> future2;
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [&expected_system_message](
@@ -718,12 +672,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {}, EngineConsumer::ToHistoryView(GetHistoryWithModifiedReply()), false,
-      {}, std::nullopt, {}, base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult result) {
-            run_loop->Quit();
-          }));
-  run_loop->Run();
+      {}, std::nullopt, {}, base::DoNothing(), future2.GetCallback());
+  EXPECT_TRUE(future2.Wait());
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
@@ -794,7 +744,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   entry->text = "What is my name?";
   history.push_back(std::move(entry));
 
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
@@ -819,13 +769,11 @@ TEST_F(EngineConsumerOAIUnitTest,
                     std::nullopt /* model_key */)));
           });
 
-  engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
+                                     false, {}, std::nullopt, {},
+                                     base::DoNothing(), future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_TRUE(future.Wait());
 }
 
 TEST_F(EngineConsumerOAIUnitTest,
@@ -875,7 +823,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       {l10n_util::GetStringUTF8(
           IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_SYSTEM_PROMPT_SEGMENT)});
 
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [&](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
@@ -912,13 +860,11 @@ TEST_F(EngineConsumerOAIUnitTest,
                     std::nullopt /* model_key */)));
           });
 
-  engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
+                                     false, {}, std::nullopt, {},
+                                     base::DoNothing(), future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_TRUE(future.Wait());
 }
 
 TEST_F(EngineConsumerOAIUnitTest,
@@ -958,7 +904,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   history.push_back(std::move(entry));
 
   auto* client = GetClient();
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
@@ -991,14 +937,12 @@ TEST_F(EngineConsumerOAIUnitTest,
                     std::nullopt /* model_key */)));
           });
 
-  engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history),
-      true,  // is_temporary_chat = true
-      {}, std::nullopt, {}, base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
+                                     true,  // is_temporary_chat = true
+                                     {}, std::nullopt, {}, base::DoNothing(),
+                                     future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
@@ -1728,7 +1672,7 @@ TEST_F(EngineConsumerOAIUnitTest,
                                      base::DoNothing(), future.GetCallback());
 
   auto result = future.Take();
-  EXPECT_FALSE(result.has_value());
+  ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error(), mojom::APIError::InternalError);
 
   testing::Mock::VerifyAndClearExpectations(client);
@@ -1741,7 +1685,7 @@ class EngineConsumerOAIUnitTest_GenerateRewrite
 TEST_P(EngineConsumerOAIUnitTest_GenerateRewrite, GenerateRewriteSuggestion) {
   GenerateRewriteTestParam params = GetParam();
   auto* client = GetClient();
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   std::string test_text = "Hello World";
   std::string expected_response = "Improved text here.";
@@ -1819,8 +1763,8 @@ TEST_P(EngineConsumerOAIUnitTest_GenerateRewrite, GenerateRewriteSuggestion) {
             // also test the client part here so we can make sure each logical
             // feature such as rewrite requests would produce the expected
             // serialized messages.
-            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
-                      FormatComparableMessagesJson(expected_messages));
+            EXPECT_THAT(OAIAPIClient::SerializeOAIMessages(std::move(messages)),
+                        base::test::IsJson(expected_messages));
 
             // Return completion
             std::move(completed_callback)
@@ -1830,19 +1774,15 @@ TEST_P(EngineConsumerOAIUnitTest_GenerateRewrite, GenerateRewriteSuggestion) {
                     std::nullopt /* model_key*/)));
           });
 
-  engine_->GenerateRewriteSuggestion(
-      test_text, params.action_type, base::DoNothing(),
-      base::BindLambdaForTesting([&run_loop, &expected_response](
-                                     EngineConsumer::GenerationResult result) {
-        ASSERT_TRUE(result.has_value());
-        ASSERT_TRUE(result->event);
-        ASSERT_TRUE(result->event->is_completion_event());
-        EXPECT_EQ(result->event->get_completion_event()->completion,
-                  expected_response);
-        run_loop.Quit();
-      }));
+  engine_->GenerateRewriteSuggestion(test_text, params.action_type,
+                                     base::DoNothing(), future.GetCallback());
 
-  run_loop.Run();
+  auto result = future.Take();
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_completion_event());
+  EXPECT_EQ(result->event->get_completion_event()->completion,
+            expected_response);
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
@@ -1947,8 +1887,8 @@ TEST_F(EngineConsumerOAIUnitTest, GetSuggestedTopics) {
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
-            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
-                      FormatComparableMessagesJson(expected_messages1));
+            EXPECT_THAT(OAIAPIClient::SerializeOAIMessages(std::move(messages)),
+                        base::test::IsJson(expected_messages1));
             auto completion_event =
                 mojom::ConversationEntryEvent::NewCompletionEvent(
                     mojom::CompletionEvent::New(
@@ -1964,8 +1904,8 @@ TEST_F(EngineConsumerOAIUnitTest, GetSuggestedTopics) {
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
-            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
-                      FormatComparableMessagesJson(expected_messages2));
+            EXPECT_THAT(OAIAPIClient::SerializeOAIMessages(std::move(messages)),
+                        base::test::IsJson(expected_messages2));
             auto completion_event =
                 mojom::ConversationEntryEvent::NewCompletionEvent(
                     mojom::CompletionEvent::New(
@@ -1981,8 +1921,8 @@ TEST_F(EngineConsumerOAIUnitTest, GetSuggestedTopics) {
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
-            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
-                      FormatComparableMessagesJson(expected_messages3));
+            EXPECT_THAT(OAIAPIClient::SerializeOAIMessages(std::move(messages)),
+                        base::test::IsJson(expected_messages3));
             auto completion_event =
                 mojom::ConversationEntryEvent::NewCompletionEvent(
                     mojom::CompletionEvent::New(
@@ -2030,8 +1970,8 @@ TEST_F(EngineConsumerOAIUnitTest, GetSuggestedTopics_SingleTabChunk) {
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
-            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
-                      FormatComparableMessagesJson(expected_messages));
+            EXPECT_THAT(OAIAPIClient::SerializeOAIMessages(std::move(messages)),
+                        base::test::IsJson(expected_messages));
             auto completion_event =
                 mojom::ConversationEntryEvent::NewCompletionEvent(
                     mojom::CompletionEvent::New(
@@ -2087,8 +2027,8 @@ TEST_F(EngineConsumerOAIUnitTest, GetFocusTabs) {
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
-            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
-                      FormatComparableMessagesJson(expected_messages1));
+            EXPECT_THAT(OAIAPIClient::SerializeOAIMessages(std::move(messages)),
+                        base::test::IsJson(expected_messages1));
             auto completion_event =
                 mojom::ConversationEntryEvent::NewCompletionEvent(
                     mojom::CompletionEvent::New(
@@ -2103,8 +2043,8 @@ TEST_F(EngineConsumerOAIUnitTest, GetFocusTabs) {
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
-            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
-                      FormatComparableMessagesJson(expected_messages2));
+            EXPECT_THAT(OAIAPIClient::SerializeOAIMessages(std::move(messages)),
+                        base::test::IsJson(expected_messages2));
             auto completion_event =
                 mojom::ConversationEntryEvent::NewCompletionEvent(
                     mojom::CompletionEvent::New(
