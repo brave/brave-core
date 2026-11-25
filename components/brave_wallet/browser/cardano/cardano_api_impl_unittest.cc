@@ -276,6 +276,7 @@ class CardanoApiImplTest : public testing::Test {
 TEST_F(CardanoApiImplTest, GetNetworkId) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -301,6 +302,7 @@ TEST_F(CardanoApiImplTest, GetNetworkId) {
 TEST_F(CardanoApiImplTest, GetUsedAddresses) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -331,6 +333,7 @@ TEST_F(CardanoApiImplTest, GetUsedAddresses) {
 TEST_F(CardanoApiImplTest, GetUnusedAddresses) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -358,6 +361,7 @@ TEST_F(CardanoApiImplTest, GetUnusedAddresses) {
 TEST_F(CardanoApiImplTest, GetChangeAddress) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -387,6 +391,7 @@ TEST_F(CardanoApiImplTest, GetChangeAddress) {
 TEST_F(CardanoApiImplTest, SignData_Approved) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -438,6 +443,7 @@ TEST_F(CardanoApiImplTest, SignData_Approved) {
 TEST_F(CardanoApiImplTest, SignData_Rejected) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -478,6 +484,7 @@ TEST_F(CardanoApiImplTest,
        SignData_PermissionRevokedWhileQueued_RejectedBeforeSigning) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -530,6 +537,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
   CreateWallet();
   UnlockWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -546,6 +554,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
     provider()->GetNetworkId(future.GetCallback());
     auto [networkId, error] = future.Take();
     EXPECT_EQ(0, networkId);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -557,6 +566,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
     provider()->GetUsedAddresses(future.GetCallback());
     auto [addrs, error] = future.Take();
     EXPECT_FALSE(addrs);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -568,6 +578,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
     provider()->GetUnusedAddresses(future.GetCallback());
     auto [addrs, error] = future.Take();
     EXPECT_FALSE(addrs);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -579,6 +590,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
     provider()->GetChangeAddress(future.GetCallback());
     auto [addr, error] = future.Take();
     EXPECT_FALSE(addr);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -590,6 +602,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
     provider()->GetRewardAddresses(future.GetCallback());
     auto [addrs, error] = future.Take();
     EXPECT_FALSE(addrs);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -602,6 +615,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
     provider()->GetBalance(future.GetCallback());
     auto [balance, error] = future.Take();
     EXPECT_FALSE(balance);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -613,6 +627,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
     provider()->GetUtxos(std::nullopt, nullptr, future.GetCallback());
     auto [utxos, error] = future.Take();
     EXPECT_FALSE(utxos);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -624,6 +639,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
     provider()->SubmitTx("", future.GetCallback());
     auto [tx_hash, error] = future.Take();
     EXPECT_FALSE(tx_hash);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -635,6 +651,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
     provider()->SignData("", "", future.GetCallback());
     auto [data, error] = future.Take();
     EXPECT_FALSE(data);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -646,6 +663,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
     provider()->GetCollateral("", future.GetCallback());
     auto [result, error] = future.Take();
     EXPECT_FALSE(result);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -655,6 +673,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
   CreateWallet();
   UnlockWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   auto new_account = MakeIndexBasedAccountId(mojom::CoinType::ADA,
                                              mojom::KeyringId::kCardanoMainnet,
@@ -676,6 +695,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
     provider()->GetNetworkId(future.GetCallback());
     auto [networkId, error] = future.Take();
     EXPECT_EQ(0, networkId);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -687,6 +707,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
     provider()->GetUsedAddresses(future.GetCallback());
     auto [addrs, error] = future.Take();
     EXPECT_FALSE(addrs);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -698,6 +719,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
     provider()->GetUnusedAddresses(future.GetCallback());
     auto [addrs, error] = future.Take();
     EXPECT_FALSE(addrs);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -709,6 +731,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
     provider()->GetChangeAddress(future.GetCallback());
     auto [addr, error] = future.Take();
     EXPECT_FALSE(addr);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -720,6 +743,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
     provider()->GetRewardAddresses(future.GetCallback());
     auto [addrs, error] = future.Take();
     EXPECT_FALSE(addrs);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -732,6 +756,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
     provider()->GetBalance(future.GetCallback());
     auto [balance, error] = future.Take();
     EXPECT_FALSE(balance);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -743,6 +768,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
     provider()->GetUtxos(std::nullopt, nullptr, future.GetCallback());
     auto [utxos, error] = future.Take();
     EXPECT_FALSE(utxos);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -754,6 +780,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
     provider()->SignTx("", false, future.GetCallback());
     auto [tx, error] = future.Take();
     EXPECT_FALSE(tx);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -765,6 +792,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
     provider()->SubmitTx("", future.GetCallback());
     auto [tx_hash, error] = future.Take();
     EXPECT_FALSE(tx_hash);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -776,6 +804,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
     provider()->SignData("", "", future.GetCallback());
     auto [data, error] = future.Take();
     EXPECT_FALSE(data);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -787,6 +816,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
     provider()->GetCollateral("", future.GetCallback());
     auto [result, error] = future.Take();
     EXPECT_FALSE(result);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -848,6 +878,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsSuccess_WhenHasPermission) {
         future;
     provider()->GetRewardAddresses(future.GetCallback());
     auto [addrs, error] = future.Take();
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->error_message, "Not implemented");
   }
 
@@ -876,6 +907,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsSuccess_WhenHasPermission) {
         future;
     provider()->GetCollateral("", future.GetCallback());
     auto [result, error] = future.Take();
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->error_message, "Not implemented");
   }
 }
@@ -1347,6 +1379,7 @@ TEST_F(CardanoApiImplTest, SubmitTx_FailsNotHex) {
 TEST_F(CardanoApiImplTest, SignTx_WrongTransactionFormat) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -1378,6 +1411,7 @@ TEST_F(CardanoApiImplTest, SignTx_WrongTransactionFormat) {
 TEST_F(CardanoApiImplTest, SignTx_Declined) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -1418,6 +1452,7 @@ TEST_F(CardanoApiImplTest,
        SignTx_PermissionRevokedWhileQueued_RejectedBeforeSigning) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -1471,6 +1506,7 @@ TEST_F(CardanoApiImplTest,
 TEST_F(CardanoApiImplTest, SignTx_DeclinedByPartialSignError) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -1528,6 +1564,7 @@ TEST_F(CardanoApiImplTest, SignTx_DeclinedByPartialSignError) {
 TEST_F(CardanoApiImplTest, SignTx) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -1572,6 +1609,7 @@ TEST_F(CardanoApiImplTest, SignTx) {
                      future.GetCallback());
 
   mojom::SignCardanoTransactionRequestPtr request = waiter.WaitAndProcess(true);
+  ASSERT_TRUE(request);
 
   auto addr1 = keyring_service()
                    ->GetCardanoAddress(added_account->account_id,
@@ -1598,6 +1636,7 @@ TEST_F(CardanoApiImplTest, SignTx) {
 TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -1657,6 +1696,7 @@ TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
 TEST_F(CardanoApiImplTest, SignTx_NoDuplicateSignatures) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -1721,6 +1761,7 @@ TEST_F(CardanoApiImplTest, SignTx_NoDuplicateSignatures) {
 TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
   CreateWallet();
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -1771,6 +1812,7 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
   provider()->SignTx(base::HexEncode(unsigned_tx_bytes), true,
                      future.GetCallback());
   auto request = waiter.WaitAndProcess(true);
+  ASSERT_TRUE(request);
 
   auto addr1 = keyring_service()
                    ->GetCardanoAddress(added_account->account_id,
