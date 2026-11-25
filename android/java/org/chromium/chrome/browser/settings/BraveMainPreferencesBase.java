@@ -16,6 +16,7 @@ import android.provider.Settings;
 
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceScreen;
@@ -801,6 +802,15 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             BraveSearchWidgetUtils.requestPinAppWidget();
             return false;
         }
+        if (PREF_RATE_BRAVE.equals(key)) {
+            if (ContextUtils.activityFromContext(context) instanceof FragmentActivity activity) {
+                BraveRateDialogFragment.newInstance(true)
+                        .show(
+                                activity.getSupportFragmentManager(),
+                                BraveRateDialogFragment.TAG_FRAGMENT);
+            }
+            return false;
+        }
         return MainSettings.openSearchResult(
                 context, profile, key, extras, modalDialogManager, shownInTab);
     }
@@ -855,6 +865,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 PREF_ACCESSIBILITY,
                 PREF_BRAVE_LANGUAGES,
                 MainSettings.PREF_AUTOFILL_AND_PASSWORDS);
+        setSearchIndexHeader(context, indexData, R.string.prefs_support_section, PREF_RATE_BRAVE);
         setSearchIndexHeader(
                 context,
                 indexData,
@@ -927,10 +938,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                         indexData.removeEntry(
                                 getUniqueId(BraveAccountSectionController.PREF_BRAVE_ACCOUNT));
                     }
-                    // Brave leaf switches/actions in main settings have no sub-screen to
-                    // navigate to from search results, so exclude them from the index.
+                    // Leaf switch with no sub-screen to navigate to from search results.
                     indexData.removeEntry(getUniqueId(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE));
-                    indexData.removeEntry(getUniqueId(PREF_RATE_BRAVE));
                     // Leaf prefs from brave_main_preferences.xml that are conditionally hidden.
                     if (!BraveSearchWidgetUtils.isRequestPinAppWidgetSupported()) {
                         indexData.removeEntry(getUniqueId(PREF_HOME_SCREEN_WIDGET));
