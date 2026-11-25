@@ -15,6 +15,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#include "brave/components/brave_shields/content/browser/shields_settings_origin.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -270,8 +271,33 @@ void BraveShieldsWebContentsObserver::RegisterProfilePrefs(
   registry->RegisterUint64Pref(prefs::kFingerprintingBlocked, 0);
 }
 
+void BraveShieldsWebContentsObserver::DidStartNavigation(
+    NavigationHandle* navigation_handle) {
+  ShieldsSettingsOrigin::OnNavigationStarted(navigation_handle);
+}
+
+void BraveShieldsWebContentsObserver::DidFinishNavigation(
+    NavigationHandle* navigation_handle) {
+  ShieldsSettingsOrigin::OnNavigationFinished(navigation_handle);
+}
+
+void BraveShieldsWebContentsObserver::DidOpenRequestedURL(
+    content::WebContents* new_contents,
+    content::RenderFrameHost* source_render_frame_host,
+    const GURL& url,
+    const content::Referrer& referrer,
+    WindowOpenDisposition disposition,
+    ui::PageTransition transition,
+    bool started_from_context_menu,
+    bool renderer_initiated) {
+  ShieldsSettingsOrigin::SetForNewWindow(new_contents,
+                                         source_render_frame_host);
+}
+
 void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
     NavigationHandle* navigation_handle) {
+  ShieldsSettingsOrigin::OnReadyToCommitNavigation(navigation_handle);
+
   // Ignore same document navigations.
   if (navigation_handle->IsSameDocument()) {
     return;

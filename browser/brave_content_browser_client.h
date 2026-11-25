@@ -180,7 +180,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
           handshake_client,
       content::ContentBrowserClient::WebSocketOptions options,
       int process_id,
-      const url::Origin& initiator_origin) override;
+      const url::Origin& initiator_origin,
+      const net::IsolationInfo& isolation_info) override;
 
   void MaybeHideReferrer(content::BrowserContext* browser_context,
                          const GURL& request_url,

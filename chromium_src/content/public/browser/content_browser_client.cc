@@ -43,7 +43,8 @@ void ContentBrowserClient::CreateWebSocketWithFrameId(
         handshake_client,
     WebSocketOptions options,
     int /*process_id*/,
-    const url::Origin& /*initiator_origin*/) {
+    const url::Origin& /*initiator_origin*/,
+    const net::IsolationInfo& /*isolation_info*/) {
   // The frameless SharedWorker/ServiceWorker context (crbug.com/40195467) is
   // only consumed by the Brave override; the default path ignores it and
   // forwards to the regular CreateWebSocket.

@@ -68,11 +68,14 @@ source_set("brave_shields_impl") {
     "//components/favicon/content",
     "//components/prefs",
     "//components/proxy_config",
+    "//components/sessions",
     "//components/tabs:public",
     "//components/user_prefs",
     "//extensions/buildflags",
     "//net",
     "//net:net_features",
+    "//services/network/public/cpp",
+    "//third_party/blink/public/mojom:mojom_platform_shared",
   ]
 
   deps += [ "//brave/components/containers/buildflags" ]
@@ -150,6 +153,8 @@ source_set("unit_tests") {
       "//components/favicon/content",
       "//components/favicon/core/test:test_support",
       "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//net",
     ]
   }
 }

@@ -5,14 +5,20 @@
 
 #include "brave/browser/net/url_context.h"
 
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/global_routing_id.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/navigation_simulator.h"
+#include "content/public/test/test_renderer_host.h"
 #include "net/base/isolation_info.h"
 #include "net/cookies/site_for_cookies.h"
+#include "net/http/http_response_headers.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_request.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -22,10 +28,32 @@
 namespace brave {
 namespace {
 
-net::IsolationInfo MakeIsolationInfo(const url::Origin& top_frame_origin) {
+net::IsolationInfo MakeIsolationInfo(
+    const url::Origin& top_frame_origin,
+    net::IsolationInfo::RequestType request_type =
+        net::IsolationInfo::RequestType::kOther) {
   return net::IsolationInfo::Create(
-      net::IsolationInfo::RequestType::kOther, top_frame_origin,
-      top_frame_origin, net::SiteForCookies::FromOrigin(top_frame_origin));
+      request_type, top_frame_origin, top_frame_origin,
+      net::SiteForCookies::FromOrigin(top_frame_origin));
+}
+
+std::unique_ptr<BraveRequestInfo> MakeRequestContext(
+    const network::ResourceRequest& request,
+    content::GlobalRenderFrameHostToken token,
+    uint64_t identifier,
+    content::BrowserContext* context,
+    BraveRequestInfo* old_ctx,
+    base::optional_ref<const url::Origin> original_initiator = std::nullopt,
+    std::optional<content::ContentBrowserClient::URLLoaderFactoryType> type =
+        std::nullopt,
+    base::optional_ref<const url::Origin> factory_initiator = std::nullopt,
+    base::optional_ref<const net::IsolationInfo> factory_info = std::nullopt) {
+  return BraveRequestInfo::MakeCTX(
+      request, token,
+      brave_shields::ShieldsSettingsOrigin::ForRequest(request, token, type,
+                                                       factory_info),
+      identifier, context, old_ctx, original_initiator, type, factory_initiator,
+      factory_info);
 }
 
 class BraveRequestInfoTest : public testing::Test {
@@ -49,7 +77,7 @@ TEST_F(BraveRequestInfoTest,
   const net::IsolationInfo factory_isolation_info =
       MakeIsolationInfo(factory_top_frame_origin);
 
-  auto ctx = BraveRequestInfo::MakeCTX(
+  auto ctx = MakeRequestContext(
       request, content::GlobalRenderFrameHostToken(), 1, &profile,
       /*old_ctx=*/nullptr, /*original_request_initiator=*/std::nullopt,
       content::ContentBrowserClient::URLLoaderFactoryType::kWorkerSubResource,
@@ -76,7 +104,7 @@ TEST_F(BraveRequestInfoTest, WorkerRequestFallsBackToFactoryInitiator) {
   const url::Origin factory_initiator =
       url::Origin::Create(GURL("https://factory-initiator.example"));
 
-  auto ctx = BraveRequestInfo::MakeCTX(
+  auto ctx = MakeRequestContext(
       request, content::GlobalRenderFrameHostToken(), 1, &profile,
       /*old_ctx=*/nullptr, /*original_request_initiator=*/std::nullopt,
       content::ContentBrowserClient::URLLoaderFactoryType::kWorkerSubResource,
@@ -95,7 +123,7 @@ TEST_F(BraveRequestInfoTest, OriginalInitiatorOverridesRequestInitiator) {
   request.request_initiator =
       url::Origin::Create(GURL("https://request-initiator.example"));
 
-  auto ctx = BraveRequestInfo::MakeCTX(
+  auto ctx = MakeRequestContext(
       request, content::GlobalRenderFrameHostToken(), 1, &profile,
       /*old_ctx=*/nullptr, original_request_initiator);
 
@@ -123,7 +151,7 @@ TEST_F(BraveRequestInfoTest, RequestContextOverridesFactoryContext) {
   request.trusted_params->isolation_info =
       MakeIsolationInfo(request_top_frame_origin);
 
-  auto ctx = BraveRequestInfo::MakeCTX(
+  auto ctx = MakeRequestContext(
       request, content::GlobalRenderFrameHostToken(), 1, &profile,
       /*old_ctx=*/nullptr, /*original_request_initiator=*/std::nullopt,
       content::ContentBrowserClient::URLLoaderFactoryType::kWorkerSubResource,
@@ -150,7 +178,7 @@ TEST_F(BraveRequestInfoTest,
   const url::Origin factory_top_frame_origin =
       url::Origin::Create(GURL("https://factory-top-frame.example"));
 
-  auto ctx = BraveRequestInfo::MakeCTX(
+  auto ctx = MakeRequestContext(
       request, content::GlobalRenderFrameHostToken(), 1, &profile,
       /*old_ctx=*/nullptr, /*original_request_initiator=*/std::nullopt,
       content::ContentBrowserClient::URLLoaderFactoryType::kDocumentSubResource,
@@ -162,23 +190,36 @@ TEST_F(BraveRequestInfoTest,
   EXPECT_TRUE(ctx->network_anonymization_key().IsEmpty());
 }
 
-TEST_F(BraveRequestInfoTest, WorkerWebSocketFallsBackToInitiatorTabOrigin) {
+TEST_F(BraveRequestInfoTest, FramelessRequestIgnoresInitiatorForTabOrigin) {
   TestingProfile profile;
-  const url::Origin initiator =
-      url::Origin::Create(GURL("https://worker-initiator.example"));
   network::ResourceRequest request;
-  request.url = GURL("wss://tracker.example/socket");
-  request.request_initiator = initiator;
+  request.url = GURL("wss://socket.example/socket");
+  request.request_initiator =
+      url::Origin::Create(GURL("https://initiator.example"));
   ASSERT_FALSE(request.trusted_params);
 
-  auto ctx = BraveRequestInfo::MakeCTX(
-      request, content::GlobalRenderFrameHostToken(), 1, &profile,
-      /*old_ctx=*/nullptr);
+  auto ctx = MakeRequestContext(request, content::GlobalRenderFrameHostToken(),
+                                1, &profile,
+                                /*old_ctx=*/nullptr);
 
-  ASSERT_TRUE(ctx->request_initiator());
-  EXPECT_EQ(initiator, *ctx->request_initiator());
-  EXPECT_EQ(initiator.GetURL(), ctx->tab_origin());
+  EXPECT_TRUE(ctx->tab_origin().is_empty());
   EXPECT_FALSE(ctx->top_frame_origin());
+}
+
+TEST_F(BraveRequestInfoTest, FramelessRequestWithOpaqueTopFrameHasNoTabOrigin) {
+  TestingProfile profile;
+  network::ResourceRequest request;
+  request.url = GURL("wss://socket.example/socket");
+  request.request_initiator =
+      url::Origin::Create(GURL("https://initiator.example"));
+  request.trusted_params = network::ResourceRequest::TrustedParams();
+  request.trusted_params->isolation_info = MakeIsolationInfo(url::Origin());
+
+  auto ctx = MakeRequestContext(request, content::GlobalRenderFrameHostToken(),
+                                1, &profile,
+                                /*old_ctx=*/nullptr);
+
+  EXPECT_TRUE(ctx->tab_origin().is_empty());
 }
 
 // Opaque top frame origins are kept as is, so their precursor is not lost.
@@ -193,9 +234,9 @@ TEST_F(BraveRequestInfoTest, KeepsOpaqueTopFrameOrigin) {
   request.trusted_params = network::ResourceRequest::TrustedParams();
   request.trusted_params->isolation_info = MakeIsolationInfo(sandboxed);
 
-  auto ctx = BraveRequestInfo::MakeCTX(
-      request, content::GlobalRenderFrameHostToken(), 1, &profile,
-      /*old_ctx=*/nullptr);
+  auto ctx = MakeRequestContext(request, content::GlobalRenderFrameHostToken(),
+                                1, &profile,
+                                /*old_ctx=*/nullptr);
 
   EXPECT_EQ(sandboxed, ctx->top_frame_origin());
   EXPECT_EQ(a_com, ctx->first_party_origin_for_adblock_rules());
@@ -211,12 +252,45 @@ TEST_F(BraveRequestInfoTest, KeepsOpaqueTopFrameOriginWithoutPrecursor) {
   request.trusted_params = network::ResourceRequest::TrustedParams();
   request.trusted_params->isolation_info = MakeIsolationInfo(opaque);
 
-  auto ctx = BraveRequestInfo::MakeCTX(
-      request, content::GlobalRenderFrameHostToken(), 1, &profile,
-      /*old_ctx=*/nullptr);
+  auto ctx = MakeRequestContext(request, content::GlobalRenderFrameHostToken(),
+                                1, &profile,
+                                /*old_ctx=*/nullptr);
 
   EXPECT_EQ(opaque, ctx->top_frame_origin());
   EXPECT_TRUE(ctx->first_party_origin_for_adblock_rules().opaque());
+}
+
+TEST_F(BraveRequestInfoTest, RequestInitiatorForAdblockRulesNoInitiator) {
+  BraveRequestInfo ctx(GURL("https://example.com/script.js"));
+
+  EXPECT_EQ(std::nullopt, ctx.request_initiator_for_adblock_rules());
+}
+
+TEST_F(BraveRequestInfoTest, RequestInitiatorForAdblockRulesNonOpaque) {
+  const url::Origin initiator =
+      url::Origin::Create(GURL("https://initiator.example"));
+  BraveRequestInfo ctx(GURL("https://example.com/script.js"));
+  ctx.set_request_initiator(initiator);
+
+  EXPECT_EQ(initiator, ctx.request_initiator_for_adblock_rules());
+}
+
+TEST_F(BraveRequestInfoTest, RequestInitiatorForAdblockRulesUsesPrecursor) {
+  const url::Origin precursor =
+      url::Origin::Create(GURL("https://initiator.example"));
+  BraveRequestInfo ctx(GURL("https://example.com/script.js"));
+  ctx.set_request_initiator(precursor.DeriveNewOpaqueOrigin());
+
+  EXPECT_EQ(precursor, ctx.request_initiator_for_adblock_rules());
+}
+
+TEST_F(BraveRequestInfoTest,
+       RequestInitiatorForAdblockRulesOpaqueWithoutPrecursor) {
+  const url::Origin opaque;
+  BraveRequestInfo ctx(GURL("https://example.com/script.js"));
+  ctx.set_request_initiator(opaque);
+
+  EXPECT_EQ(opaque, ctx.request_initiator_for_adblock_rules());
 }
 
 TEST_F(BraveRequestInfoTest, FirstPartyOriginForAdblockRulesMainFrame) {
@@ -346,6 +420,237 @@ TEST_F(BraveRequestInfoTest,
     ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
     EXPECT_TRUE(ctx.first_party_origin_for_adblock_rules().opaque());
   }
+}
+
+class BraveRequestInfoFrameTest : public ChromeRenderViewHostTestHarness {
+ protected:
+  void SetUp() override {
+    ChromeRenderViewHostTestHarness::SetUp();
+    brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
+        web_contents());
+  }
+
+  void CommitInheritedPage(const url::Origin& opener) {
+    auto sandboxed = content::NavigationSimulator::CreateBrowserInitiated(
+        opener.GetURL(), web_contents());
+    sandboxed->SetResponseHeaders(net::HttpResponseHeaders::TryToCreate(
+        "HTTP/1.1 200 OK\nContent-Security-Policy: sandbox allow-scripts\n"));
+    sandboxed->Commit();
+    auto navigation = content::NavigationSimulator::CreateRendererInitiated(
+        GURL("about:blank"), main_rfh());
+    navigation->SetInitiatorFrame(main_rfh());
+    navigation->Commit();
+    ASSERT_EQ(GURL("about:blank"), main_rfh()->GetLastCommittedURL());
+    ASSERT_TRUE(main_rfh()->GetLastCommittedOrigin().opaque());
+  }
+
+  std::unique_ptr<BraveRequestInfo> MakeCTXForMainFrame(
+      const url::Origin& top_frame_origin,
+      net::IsolationInfo::RequestType request_type =
+          net::IsolationInfo::RequestType::kMainFrame) {
+    network::ResourceRequest request;
+    request.url = GURL("https://request.example/fetch");
+    request.resource_type = static_cast<int>(
+        request_type == net::IsolationInfo::RequestType::kMainFrame
+            ? blink::mojom::ResourceType::kMainFrame
+            : blink::mojom::ResourceType::kScript);
+    request.trusted_params = network::ResourceRequest::TrustedParams();
+    request.trusted_params->isolation_info =
+        MakeIsolationInfo(top_frame_origin, request_type);
+    return MakeRequestContext(request, main_rfh()->GetGlobalFrameToken(), 1,
+                              profile(), /*old_ctx=*/nullptr);
+  }
+
+  // Returns a child of the main frame that has committed `url`.
+  content::RenderFrameHost* CommitChild(const GURL& url) {
+    content::RenderFrameHost* child =
+        content::RenderFrameHostTester::For(main_rfh())->AppendChild("child");
+    return content::NavigationSimulator::NavigateAndCommitFromDocument(url,
+                                                                       child);
+  }
+
+  // Makes a context for a script request from `render_frame_host` that has no
+  // isolation info.
+  std::unique_ptr<BraveRequestInfo> MakeCTXWithoutIsolationInfo(
+      content::RenderFrameHost* render_frame_host) {
+    network::ResourceRequest request;
+    request.url = GURL("https://request.example/script.js");
+    request.request_initiator = render_frame_host->GetLastCommittedOrigin();
+    request.resource_type =
+        static_cast<int>(blink::mojom::ResourceType::kScript);
+    return MakeRequestContext(request, render_frame_host->GetGlobalFrameToken(),
+                              1, profile(),
+                              /*old_ctx=*/nullptr);
+  }
+};
+
+// A fresh lookup against the current frame would now find the new page.
+// Rebuilding a context for the original request must honor the owner's copy.
+TEST_F(BraveRequestInfoFrameTest, RebuiltContextUsesSuppliedSnapshot) {
+  network::ResourceRequest request;
+  request.url = GURL("https://request.example/script.js");
+  request.resource_type = static_cast<int>(blink::mojom::ResourceType::kScript);
+  const GURL first("https://first.example/");
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             first);
+  auto snapshot = brave_shields::ShieldsSettingsOrigin::ForRequest(
+      request, main_rfh()->GetGlobalFrameToken());
+  auto original =
+      BraveRequestInfo::MakeCTX(request, main_rfh()->GetGlobalFrameToken(),
+                                snapshot, 1, profile(), nullptr);
+  const GURL second("https://second.example/");
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             second);
+  auto token = main_rfh()->GetGlobalFrameToken();
+  ASSERT_EQ(second,
+            brave_shields::ShieldsSettingsOrigin::ForRequest(request, token)
+                .GetURL());
+  auto rebuilt = BraveRequestInfo::MakeCTX(request, token, snapshot, 1,
+                                           profile(), original.get());
+  EXPECT_EQ(first, rebuilt->tab_origin());
+}
+
+TEST_F(BraveRequestInfoFrameTest, RedirectOnlyReplacesMainFrameKey) {
+  const GURL first("https://first.example/");
+  const GURL second("https://second.example/");
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             first);
+  const auto original =
+      brave_shields::ShieldsSettingsOrigin::ForFrame(*main_rfh());
+  network::ResourceRequest redirected;
+  redirected.url = second;
+  EXPECT_EQ(first, original.ForRedirect(redirected).GetURL());
+  redirected.trusted_params.emplace();
+  for (auto type : {net::IsolationInfo::RequestType::kOther,
+                    net::IsolationInfo::RequestType::kSubFrame,
+                    net::IsolationInfo::RequestType::kMainFrame}) {
+    redirected.trusted_params->isolation_info =
+        MakeIsolationInfo(url::Origin::Create(second), type);
+    EXPECT_EQ(
+        type == net::IsolationInfo::RequestType::kMainFrame ? second : first,
+        original.ForRedirect(redirected).GetURL());
+  }
+}
+
+TEST_F(BraveRequestInfoFrameTest, RedirectPreservesOrReplacesDefaultKey) {
+  const auto site = url::Origin::Create(GURL("https://site.example"));
+  const auto main = net::IsolationInfo::RequestType::kMainFrame;
+  const auto defaults = brave_shields::ShieldsSettingsOrigin();
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             site.GetURL());
+  const auto original =
+      brave_shields::ShieldsSettingsOrigin::ForFrame(*main_rfh());
+  network::ResourceRequest redirected;
+  redirected.url = GURL("https://site.example/new");
+  EXPECT_EQ(GURL(), defaults.ForRedirect(redirected).GetURL());
+  redirected.trusted_params.emplace();
+  for (auto type : {net::IsolationInfo::RequestType::kSubFrame,
+                    net::IsolationInfo::RequestType::kOther}) {
+    redirected.trusted_params->isolation_info = MakeIsolationInfo(site, type);
+    EXPECT_EQ(GURL(), defaults.ForRedirect(redirected).GetURL());
+  }
+  redirected.trusted_params->isolation_info = MakeIsolationInfo(site, main);
+  EXPECT_EQ(site.GetURL(), original.ForRedirect(redirected).GetURL());
+  EXPECT_EQ(site.GetURL(), defaults.ForRedirect(redirected).GetURL());
+  redirected.trusted_params->isolation_info =
+      MakeIsolationInfo(site.DeriveNewOpaqueOrigin(), main);
+  EXPECT_EQ(GURL(), original.ForRedirect(redirected).GetURL());
+}
+
+TEST_F(BraveRequestInfoFrameTest,
+       MainFrameResourceTypeWithoutIsolationUsesDocumentKey) {
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(
+      web_contents(), GURL("https://first.example/"));
+  network::ResourceRequest request;
+  request.url = GURL("https://second.example/");
+  request.resource_type =
+      static_cast<int>(blink::mojom::ResourceType::kMainFrame);
+  EXPECT_EQ(GURL("https://first.example/"),
+            brave_shields::ShieldsSettingsOrigin::ForRequest(
+                request, main_rfh()->GetGlobalFrameToken())
+                .GetURL());
+  EXPECT_TRUE(brave_shields::ShieldsSettingsOrigin::ForRequest(
+                  request, content::GlobalRenderFrameHostToken())
+                  .GetURL()
+                  .is_empty());
+}
+
+TEST_F(BraveRequestInfoFrameTest,
+       WithoutIsolationInfoUsesOutermostMainFrameOrigin) {
+  const url::Origin page = url::Origin::Create(GURL("https://page.example"));
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             page.GetURL());
+  content::RenderFrameHost* child = CommitChild(GURL("https://child.example/"));
+
+  auto ctx = MakeCTXWithoutIsolationInfo(child);
+
+  EXPECT_EQ(page, ctx->top_frame_origin());
+  EXPECT_EQ(page, ctx->first_party_origin_for_adblock_rules());
+}
+
+TEST_F(BraveRequestInfoFrameTest, WithoutIsolationInfoUsesStoredPageValue) {
+  const url::Origin stored =
+      url::Origin::Create(GURL("https://stored.example"));
+  CommitInheritedPage(stored);
+  content::RenderFrameHost* child = CommitChild(GURL("https://child.example/"));
+
+  EXPECT_EQ(stored.GetURL(), MakeCTXWithoutIsolationInfo(child)->tab_origin());
+}
+
+TEST_F(BraveRequestInfoFrameTest,
+       MainFrameNavigationUsesNonOpaqueTopFrameOrigin) {
+  const url::Origin top_frame_origin =
+      url::Origin::Create(GURL("https://top-frame.example"));
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(
+      web_contents(), GURL("https://outgoing.example/"));
+
+  EXPECT_EQ(top_frame_origin.GetURL(),
+            MakeCTXForMainFrame(top_frame_origin)->tab_origin());
+}
+
+TEST_F(BraveRequestInfoFrameTest, StoredDefaultsOverrideConflictingIsolation) {
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(
+      web_contents(), GURL("data:text/html,page"));
+  EXPECT_TRUE(MakeCTXForMainFrame(
+                  url::Origin::Create(GURL("https://conflict.example/")),
+                  net::IsolationInfo::RequestType::kOther)
+                  ->tab_origin()
+                  .is_empty());
+}
+
+TEST_F(BraveRequestInfoFrameTest, FrameRequestUsesStoredPageValue) {
+  const url::Origin stored =
+      url::Origin::Create(GURL("https://stored.example"));
+  CommitInheritedPage(stored);
+
+  for (auto request_type : {net::IsolationInfo::RequestType::kSubFrame,
+                            net::IsolationInfo::RequestType::kOther}) {
+    SCOPED_TRACE(static_cast<int>(request_type));
+    EXPECT_EQ(stored.GetURL(),
+              MakeCTXForMainFrame(
+                  url::Origin::Create(GURL("https://top-frame.example")),
+                  request_type)
+                  ->tab_origin());
+  }
+}
+
+TEST_F(BraveRequestInfoFrameTest,
+       MainFrameNavigationWithOpaqueTopFrameUsesDefaults) {
+  const url::Origin stored =
+      url::Origin::Create(GURL("https://stored.example"));
+  CommitInheritedPage(stored);
+
+  EXPECT_TRUE(MakeCTXForMainFrame(stored.DeriveNewOpaqueOrigin())
+                  ->tab_origin()
+                  .is_empty());
+}
+
+TEST_F(BraveRequestInfoFrameTest,
+       MainFrameNavigationWithOpaqueStoredPageValueHasNoTabOrigin) {
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(
+      web_contents(), GURL("data:text/html,page"));
+
+  EXPECT_TRUE(MakeCTXForMainFrame(url::Origin())->tab_origin().is_empty());
 }
 
 }  // namespace

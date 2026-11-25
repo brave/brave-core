@@ -9,9 +9,8 @@
 #include <string>
 #include <utility>
 
-#include "base/notreached.h"
-#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/shields_settings_origin.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -23,35 +22,6 @@
 namespace brave {
 
 namespace {
-
-// Worker URLLoader factories cover worker script loads and fetch/XHR-style
-// requests made by workers. Worker WebSocket handshakes are handled by
-// BraveProxyingWebSocket instead. These URLLoader factories can be created
-// without a RenderFrameHost, and requests made through them do not always carry
-// TrustedParams. Use the context captured when those factories were created as
-// a fallback. Other factory types already get their context from the request or
-// frame; retaining that path avoids changing their behavior when a factory is
-// reused or a request redirects.
-bool ShouldUseFactoryURLLoaderContext(
-    content::ContentBrowserClient::URLLoaderFactoryType type) {
-  using URLLoaderFactoryType =
-      content::ContentBrowserClient::URLLoaderFactoryType;
-  switch (type) {
-    case URLLoaderFactoryType::kWorkerMainResource:
-    case URLLoaderFactoryType::kWorkerSubResource:
-    case URLLoaderFactoryType::kServiceWorkerScript:
-    case URLLoaderFactoryType::kServiceWorkerSubResource:
-      return true;
-    case URLLoaderFactoryType::kNavigation:
-    case URLLoaderFactoryType::kDownload:
-    case URLLoaderFactoryType::kDocumentSubResource:
-    case URLLoaderFactoryType::kPrefetch:
-    case URLLoaderFactoryType::kDevTools:
-    case URLLoaderFactoryType::kEarlyHints:
-      return false;
-  }
-  NOTREACHED();
-}
 
 std::string GetUploadData(const network::ResourceRequest& request) {
   std::string upload_data;
@@ -116,12 +86,13 @@ void BraveRequestInfo::set_request_url(const GURL& value) {
 
 const GURL& BraveRequestInfo::tab_origin() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return tab_origin_;
+  return shields_settings_origin_.GetURL();
 }
 
-void BraveRequestInfo::set_tab_origin(const GURL& value) {
+void BraveRequestInfo::SetTabOriginForTesting(const GURL& value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  tab_origin_ = value;
+  shields_settings_origin_ =
+      brave_shields::ShieldsSettingsOrigin(url::Origin::Create(value));
 }
 
 const GURL& BraveRequestInfo::tab_url() const {
@@ -143,6 +114,15 @@ void BraveRequestInfo::set_request_initiator(
     const std::optional<url::Origin>& value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   request_initiator_ = value;
+}
+
+std::optional<url::Origin>
+BraveRequestInfo::request_initiator_for_adblock_rules() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!request_initiator_) {
+    return std::nullopt;
+  }
+  return GetPrecursorOriginIfOpaque(*request_initiator_);
 }
 
 const std::optional<url::Origin>& BraveRequestInfo::top_frame_origin() const {
@@ -491,6 +471,7 @@ void BraveRequestInfo::set_new_url(GURL* value) {
 std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     const network::ResourceRequest& request,
     content::GlobalRenderFrameHostToken render_frame_token,
+    brave_shields::ShieldsSettingsOrigin settings_origin,
     uint64_t request_identifier,
     content::BrowserContext* browser_context,
     brave::BraveRequestInfo* old_ctx,
@@ -505,7 +486,8 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   ctx->set_request_url(request.url);
   const bool use_factory_context =
       url_loader_factory_type &&
-      ShouldUseFactoryURLLoaderContext(*url_loader_factory_type);
+      brave_shields::ShieldsSettingsOrigin::UsesFactoryContext(
+          *url_loader_factory_type);
   std::optional<url::Origin> request_initiator =
       original_request_initiator ? *original_request_initiator
                                  : request.request_initiator;
@@ -522,7 +504,6 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
 
   ctx->set_render_frame_token(render_frame_token);
 
-  // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
   const net::IsolationInfo* isolation_info = nullptr;
   if (request.trusted_params) {
     isolation_info = &request.trusted_params->isolation_info;
@@ -539,20 +520,7 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     // given that this is always empty for subresources.
     ctx->set_network_anonymization_key(
         isolation_info->network_anonymization_key());
-    ctx->set_tab_origin(
-        isolation_info->top_frame_origin().value_or(url::Origin()).GetURL());
     ctx->set_top_frame_origin(isolation_info->top_frame_origin());
-  }
-  // TODO(iefremov): We still need this for WebSockets, currently
-  // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
-  // (See |BraveProxyingWebSocket|).
-  if (ctx->tab_origin().is_empty()) {
-    content::WebContents* contents = content::WebContents::FromRenderFrameHost(
-        content::RenderFrameHost::FromFrameToken(ctx->render_frame_token()));
-    if (contents) {
-      ctx->set_tab_origin(
-          url::Origin::Create(contents->GetLastCommittedURL()).GetURL());
-    }
   }
   if (!ctx->top_frame_origin()) {
     if (auto* render_frame_host = content::RenderFrameHost::FromFrameToken(
@@ -561,11 +529,7 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
           render_frame_host->GetOutermostMainFrame()->GetLastCommittedOrigin());
     }
   }
-  // Shared and service worker WebSockets have no frame, so fall back to the
-  // initiator origin for Shields settings.
-  if (ctx->tab_origin().is_empty() && ctx->request_initiator()) {
-    ctx->set_tab_origin(ctx->request_initiator()->GetURL());
-  }
+  ctx->shields_settings_origin_ = std::move(settings_origin);
 
   if (old_ctx) {
     ctx->set_internal_redirect(old_ctx->internal_redirect());

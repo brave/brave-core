@@ -16,6 +16,7 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
+#include "brave/components/brave_shields/content/browser/shields_settings_origin.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
@@ -89,6 +90,7 @@ int ChromeBrowserMainParts::PreMainMessageLoopRun() {
 }
 
 void ChromeBrowserMainParts::PreBrowserStart() {
+  brave_shields::ShieldsSettingsOrigin::RegisterSessionHandler();
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Register() must be called after the SerializedNavigationDriver is
   // initialized, but before any calls to

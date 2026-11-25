@@ -304,36 +304,102 @@ TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
   EXPECT_EQ(0ULL, this->host_resolver_->num_resolve());
 }
 
-// The request from opaque origins (e.g. sandboxed about:blank iframe)
-// also must be processed by adblock and treated as third-party.
-TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, OpaqueInitiator) {
+// An opaque initiator is matched as the origin it was derived from, so the
+// default first-party exception applies to requests to that site.
+TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest,
+           OpaqueInitiatorUsesPrecursorForDefault1pException) {
+  this->ResetAdblockInstance("||brave.com/test.txt");
   const GURL url("https://brave.com/test.txt");
-  const url::Origin opaque_initiator =
-      url::Origin::Create(GURL("https://brave.com")).DeriveNewOpaqueOrigin();
-  ASSERT_TRUE(opaque_initiator.opaque());
 
   {
-    this->ResetAdblockInstance("||brave.com/test.txt");
-
     auto request_info = this->MakeRequest(url);
     request_info->set_resource_type(blink::mojom::ResourceType::kScript);
-    request_info->set_request_initiator(opaque_initiator);
+    request_info->set_request_initiator(
+        url::Origin::Create(GURL("https://brave.com")).DeriveNewOpaqueOrigin());
+
+    EXPECT_TRUE(this->CheckRequest(request_info));
+    EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
+  }
+
+  {
+    // Positive control: a precursor on another site is third party.
+    auto request_info = this->MakeRequest(url);
+    request_info->set_resource_type(blink::mojom::ResourceType::kScript);
+    request_info->set_request_initiator(
+        url::Origin::Create(GURL("https://other.com")).DeriveNewOpaqueOrigin());
+
+    EXPECT_TRUE(this->CheckRequest(request_info));
+    EXPECT_EQ(request_info->blocked_by(), brave::kAdBlocked);
+  }
+}
+
+TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest,
+           OpaqueInitiatorUsesPrecursorForThirdPartyOption) {
+  this->ResetAdblockInstance("||brave.com/test.txt$~third-party");
+  const GURL url("https://brave.com/test.txt");
+
+  {
+    auto request_info = this->MakeRequest(url);
+    request_info->set_resource_type(blink::mojom::ResourceType::kScript);
+    request_info->set_aggressive_blocking(true);
+    request_info->set_request_initiator(
+        url::Origin::Create(GURL("https://brave.com")).DeriveNewOpaqueOrigin());
 
     EXPECT_TRUE(this->CheckRequest(request_info));
     EXPECT_EQ(request_info->blocked_by(), brave::kAdBlocked);
   }
 
   {
-    // Apply only to first-party requests.
-    this->ResetAdblockInstance("||brave.com/test.txt$~third-party");
-
+    // Positive control: a precursor on another site is third party.
     auto request_info = this->MakeRequest(url);
     request_info->set_resource_type(blink::mojom::ResourceType::kScript);
-    request_info->set_request_initiator(opaque_initiator);
+    request_info->set_aggressive_blocking(true);
+    request_info->set_request_initiator(
+        url::Origin::Create(GURL("https://other.com")).DeriveNewOpaqueOrigin());
 
     EXPECT_TRUE(this->CheckRequest(request_info));
     EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
   }
+}
+
+TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest,
+           OpaqueInitiatorUsesPrecursorForDomainOption) {
+  this->ResetAdblockInstance("||tracker.com/test.txt$domain=brave.com");
+  const GURL url("https://tracker.com/test.txt");
+
+  {
+    auto request_info = this->MakeRequest(url);
+    request_info->set_resource_type(blink::mojom::ResourceType::kScript);
+    request_info->set_request_initiator(
+        url::Origin::Create(GURL("https://brave.com")).DeriveNewOpaqueOrigin());
+
+    EXPECT_TRUE(this->CheckRequest(request_info));
+    EXPECT_EQ(request_info->blocked_by(), brave::kAdBlocked);
+  }
+
+  {
+    // Positive control: a precursor on another site doesn't match.
+    auto request_info = this->MakeRequest(url);
+    request_info->set_resource_type(blink::mojom::ResourceType::kScript);
+    request_info->set_request_initiator(
+        url::Origin::Create(GURL("https://other.com")).DeriveNewOpaqueOrigin());
+
+    EXPECT_TRUE(this->CheckRequest(request_info));
+    EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
+  }
+}
+
+// An opaque initiator without a precursor is third party to every request.
+TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest,
+           OpaqueInitiatorWithoutPrecursorIsThirdParty) {
+  this->ResetAdblockInstance("||brave.com/test.txt");
+
+  auto request_info = this->MakeRequest(GURL("https://brave.com/test.txt"));
+  request_info->set_resource_type(blink::mojom::ResourceType::kScript);
+  request_info->set_request_initiator(url::Origin());
+
+  EXPECT_TRUE(this->CheckRequest(request_info));
+  EXPECT_EQ(request_info->blocked_by(), brave::kAdBlocked);
 }
 
 TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, Default1pException) {

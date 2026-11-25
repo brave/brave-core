@@ -100,7 +100,7 @@ class BraveUserAgentNetworkDelegateHelperTest : public ::testing::Test {
       owned_request_ = std::make_unique<BraveRequestInfo>();
       ctx = owned_request_->AsWeakPtr();
     }
-    ctx->set_tab_origin(GURL(tab_origin));
+    ctx->SetTabOriginForTesting(GURL(tab_origin));
     int result = OnBeforeStartTransaction_UserAgentWork(&headers, {}, ctx);
     EXPECT_EQ(result, net::OK);
     return {headers.GetHeader(kSecCHUAHeader),

@@ -16,6 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/types/optional_ref.h"
+#include "brave/components/brave_shields/content/browser/shields_settings_origin.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/global_routing_id.h"
 #include "net/base/isolation_info.h"
@@ -81,13 +82,18 @@ class BraveRequestInfo {
   void set_request_url(const GURL& value);
 
   const GURL& tab_origin() const;
-  void set_tab_origin(const GURL& value);
+  void SetTabOriginForTesting(const GURL& value);
 
   const GURL& tab_url() const;
   void set_tab_url(const GURL& value);
 
   const std::optional<url::Origin>& request_initiator() const;
   void set_request_initiator(const std::optional<url::Origin>& value);
+
+  // The request initiator to match adblock rules against. Shields ignores
+  // sandboxing, so an opaque initiator is replaced by its precursor origin
+  // when it has one. An opaque initiator without a precursor stays opaque.
+  std::optional<url::Origin> request_initiator_for_adblock_rules() const;
 
   // The origin of the top-level frame the request belongs to, when known. This
   // is the frame's actual origin, so it is opaque when the top frame is
@@ -213,6 +219,7 @@ class BraveRequestInfo {
   static std::unique_ptr<brave::BraveRequestInfo> MakeCTX(
       const network::ResourceRequest& request,
       content::GlobalRenderFrameHostToken render_frame_token,
+      brave_shields::ShieldsSettingsOrigin settings_origin,
       uint64_t request_identifier,
       content::BrowserContext* browser_context,
       brave::BraveRequestInfo* old_ctx,
@@ -240,7 +247,7 @@ class BraveRequestInfo {
 
   std::string method_;
   GURL request_url_;
-  GURL tab_origin_;
+  brave_shields::ShieldsSettingsOrigin shields_settings_origin_;
   GURL tab_url_;
   std::optional<url::Origin> request_initiator_;
   std::optional<url::Origin> top_frame_origin_;
