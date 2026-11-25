@@ -79,6 +79,11 @@
 #include "ui/views/widget/widget.h"
 
 namespace {
+
+constexpr int kSplitViewDividerThickness =
+    MultiContentsResizeArea::kHandleResizeAxisSize +
+    MultiContentsResizeArea::kHandleResizeAxisPadding;
+
 ui::MouseEvent GetDummyEvent() {
   return ui::MouseEvent(ui::EventType::kMousePressed, gfx::PointF(),
                         gfx::PointF(), base::TimeTicks::Now(), 0, 0);
@@ -373,7 +378,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BraveMultiContentsViewTest) {
   EXPECT_FALSE(
       browser_view->top_container_separator_for_testing()->GetVisible());
   EXPECT_TRUE(split_view_separator()->GetVisible());
-  EXPECT_EQ(kRoundedCornersContentsViewMargin,
+  EXPECT_EQ(kSplitViewDividerThickness,
             split_view_separator()->GetPreferredSize().width());
 
   // Check corner radius.
@@ -504,7 +509,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, ResizeAreaSizeAfterLayoutChange) {
   NewSplitTab();
   RunScheduledLayouts();
 
-  EXPECT_EQ(kRoundedCornersContentsViewMargin,
+  EXPECT_EQ(kSplitViewDividerThickness,
             split_view_separator()->GetPreferredSize().width());
 
   auto* tab_strip_model = browser()->tab_strip_model();
@@ -515,13 +520,13 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, ResizeAreaSizeAfterLayoutChange) {
   tab_strip_model->UpdateSplitLayout(*split_id,
                                      split_tabs::SplitTabLayout::kStacked);
   RunScheduledLayouts();
-  EXPECT_EQ(kRoundedCornersContentsViewMargin,
+  EXPECT_EQ(kSplitViewDividerThickness,
             split_view_separator()->GetPreferredSize().height());
 
   tab_strip_model->UpdateSplitLayout(*split_id,
                                      split_tabs::SplitTabLayout::kSideBySide);
   RunScheduledLayouts();
-  EXPECT_EQ(kRoundedCornersContentsViewMargin,
+  EXPECT_EQ(kSplitViewDividerThickness,
             split_view_separator()->GetPreferredSize().width());
 }
 
