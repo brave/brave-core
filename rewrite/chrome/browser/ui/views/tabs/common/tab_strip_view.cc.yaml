@@ -18,3 +18,28 @@ substitutions:
         \1
               case TabCollectionNode::Type::TREE_NODE:
                 break;
+
+  - description: |
+      Create a vertical scroll bar that follows the "show scroll bar" pref, and
+      apply the pref-aware scroll bar mode right away.
+    regex:
+      re_pattern: 'std::make_unique<VerticalTabStripScrollBar>\(\s*(collection_node_->GetController\(\)->GetStateController\(\))\)\)'
+      replace: |-
+        CreateBraveVerticalTabStripScrollBar(
+                \1,
+                collection_node_->GetController()
+                    ->GetBrowserView()
+                    ->GetProfile()
+                    ->GetPrefs()));
+            scroll_view->SetVerticalScrollBarMode(
+                GetBraveVerticalTabStripScrollBarMode(scroll_view))
+
+  - description: |
+      Don't force the vertical scroll bar to be visible when its overflow
+      visuals are enabled; honor the "show scroll bar" pref instead.
+    regex:
+      re_pattern: '(::EnableOverflowVisuals\(.*?SetVerticalScrollBarMode\()\s*views::ScrollView::ScrollBarMode::kEnabled\)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+                GetBraveVerticalTabStripScrollBarMode(scroll_view))

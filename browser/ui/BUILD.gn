@@ -186,6 +186,9 @@ source_set("ui") {
   public_deps = []
 
   if (toolkit_views) {
+    deps +=
+        [ "//brave/browser/ui/views/tabs:brave_vertical_tab_strip_scrollbar" ]
+
     public_deps += [
       "//chrome/browser/ui/views/extensions:extensions_menu_entry_view",
       "//chrome/browser/ui/views/extensions:extensions_menu_item_view",

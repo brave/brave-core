@@ -66,6 +66,7 @@
 #include "chrome/browser/ui/views/tabs/tab/tab_context_menu_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_group_header.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_scroll_bar.h"
 #include "chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_top_container.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -88,10 +89,12 @@
 #include "ui/events/event.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/views/controls/scroll_view.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_manager.h"
 #include "ui/views/paint_info.h"
 #include "ui/views/test/views_test_utils.h"
+#include "ui/views/view_utils.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/browser/ui/view_ids.h"
@@ -2552,6 +2555,51 @@ IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsTest, HideCompletelyWhenCollapsed) {
       BrowserView::GetBrowserViewForBrowser(browser()));
   EXPECT_TRUE(region->GetVisible());
   EXPECT_FALSE(region->layer()->GetMasksToBounds());
+}
+
+// The "show scroll bar" pref must be honored by upstream vertical tabs, and
+// changes must apply immediately.
+IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsTest, ShowScrollBarPref) {
+  state_controller()->SetVerticalTabsEnabled(true);
+  ASSERT_TRUE(state_controller()->ShouldDisplayVerticalTabs());
+  auto* region = region_view();
+  ASSERT_TRUE(region);
+
+  // Finds the scroll views which use VerticalTabStripScrollBar.
+  std::vector<views::ScrollView*> scroll_views;
+  std::vector<views::View*> pending = {region};
+  while (!pending.empty()) {
+    views::View* view = pending.back();
+    pending.pop_back();
+    if (auto* scroll_view = views::AsViewClass<views::ScrollView>(view);
+        scroll_view && views::IsViewClass<VerticalTabStripScrollBar>(
+                           scroll_view->vertical_scroll_bar())) {
+      scroll_views.push_back(scroll_view);
+    }
+    for (views::View* child : view->children()) {
+      pending.push_back(child);
+    }
+  }
+  ASSERT_FALSE(scroll_views.empty());
+
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  using Mode = views::ScrollView::ScrollBarMode;
+
+  // Hidden by default.
+  ASSERT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsShowScrollbar));
+  for (auto* scroll_view : scroll_views) {
+    EXPECT_EQ(Mode::kHiddenButEnabled, scroll_view->GetVerticalScrollBarMode());
+  }
+
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, true);
+  for (auto* scroll_view : scroll_views) {
+    EXPECT_EQ(Mode::kEnabled, scroll_view->GetVerticalScrollBarMode());
+  }
+
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, false);
+  for (auto* scroll_view : scroll_views) {
+    EXPECT_EQ(Mode::kHiddenButEnabled, scroll_view->GetVerticalScrollBarMode());
+  }
 }
 
 // Tests for the "Left/Right" position setting of upstream vertical tabs.

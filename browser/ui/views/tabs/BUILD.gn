@@ -34,6 +34,26 @@ if (enable_brave_tree_tabs) {
   }
 }
 
+# Vertical tab strip scroll bar which follows the "show scroll bar" pref. The
+# chromium_src override of
+# //chrome/browser/ui/views/tabs/common/tab_strip_view.cc forward-declares the
+# hooks, and //brave/browser/ui links them.
+source_set("brave_vertical_tab_strip_scrollbar") {
+  sources = [
+    "brave_vertical_tab_strip_scrollbar.cc",
+    "brave_vertical_tab_strip_scrollbar.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/ui:brave_tab_prefs",
+    "//chrome/browser/ui/views/tabs/vertical",
+    "//components/prefs",
+    "//ui/base/metadata",
+    "//ui/views",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
