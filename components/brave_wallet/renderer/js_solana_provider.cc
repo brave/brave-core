@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/to_vector.h"
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
@@ -453,7 +454,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignMessage(
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->SignMessage(
-      blob_msg->GetBlob(), display_str,
+      base::ToVector(blob_msg->GetBlob()), display_str,
       base::BindOnce(&JSSolanaProvider::OnSignMessage,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
@@ -917,7 +918,7 @@ JSSolanaProvider::GetSignatureBlobFromV8Signature(
     return std::nullopt;
   }
 
-  return sig_blob_value->GetBlob();
+  return std::move(*sig_blob_value).TakeBlob();
 }
 
 std::optional<std::string> JSSolanaProvider::GetPubkeyStringFromV8Pubkey(

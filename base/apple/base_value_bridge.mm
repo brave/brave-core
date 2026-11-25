@@ -220,9 +220,9 @@
         self.stringValue = base::SysUTF8ToNSString(value.GetString());
         break;
       case base::Value::Type::BINARY:
-        self.binaryValue = [param = std::cref(value.GetBlob())] {
+        self.binaryValue = [param = value.GetBlob()] {
           const auto a = [[NSMutableArray alloc] init];
-          for (const auto& o : param.get()) {
+          for (const auto& o : param) {
             [a addObject:@(o)];
           }
           return a;

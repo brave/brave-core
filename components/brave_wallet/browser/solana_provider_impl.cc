@@ -12,6 +12,8 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
+#include "base/containers/span.h"
+#include "base/containers/to_vector.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -717,7 +719,8 @@ void SolanaProviderImpl::Request(base::DictValue arg,
         base::BindOnce(&SolanaProviderImpl::OnRequestSignAllTransactions,
                        weak_factory_.GetWeakPtr(), std::move(callback)));
   } else if (*method == kSolanaSignMessage) {
-    const auto* message = params->FindBlob(kMessage);
+    std::optional<base::span<const uint8_t>> message =
+        params->FindBlob(kMessage);
     if (!message) {
       std::move(callback).Run(
           mojom::SolanaProviderError::kParsingError,
@@ -730,7 +733,8 @@ void SolanaProviderImpl::Request(base::DictValue arg,
     if (display_str) {
       display = *display_str;
     }
-    SignMessage(*message, std::move(display), std::move(callback));
+    SignMessage(base::ToVector(*message), std::move(display),
+                std::move(callback));
   } else {
     std::move(callback).Run(
         mojom::SolanaProviderError::kMethodNotFound,
