@@ -2013,6 +2013,37 @@ IN_PROC_BROWSER_TEST_F(WebPanelSplitViewBrowserTest,
   EXPECT_FALSE(tab_model()->GetTabAtIndex(PanelIndex())->IsSplit());
 }
 
+// The command-level refusal only covers the IDC_NEW_SPLIT_TAB accelerator.
+// chrome::NewSplitTab() itself refuses too, which covers every other caller
+// (toolbar button, WebUI control, tab context menu, etc.), and keeps working
+// normally once a regular tab is active again.
+IN_PROC_BROWSER_TEST_F(WebPanelSplitViewBrowserTest,
+                       NewSplitTabRefusedWhilePanelIsActive) {
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  chrome::AddTabAt(browser(), GURL(kRegularTabURL), -1, /*foreground=*/true);
+  const int normal_index = tab_model()->active_index();
+
+  tab_model()->ActivateTabAt(PanelIndex());
+  ASSERT_TRUE(IsWebPanelTabActive(browser()));
+  const int count_before = tab_model()->count();
+
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
+                      split_tabs::SplitTabCreatedSource::kTabContextMenu);
+
+  EXPECT_EQ(count_before, tab_model()->count())
+      << "NewSplitTab() created a split while the panel was active";
+  EXPECT_FALSE(tab_model()->GetTabAtIndex(PanelIndex())->IsSplit());
+
+  tab_model()->ActivateTabAt(normal_index);
+  ASSERT_FALSE(IsWebPanelTabActive(browser()));
+
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
+                      split_tabs::SplitTabCreatedSource::kTabContextMenu);
+
+  EXPECT_EQ(count_before + 1, tab_model()->count());
+  EXPECT_TRUE(tab_model()->GetActiveTab()->IsSplit());
+}
+
 // Rearranging an existing split doesn't add a tab, so it has to keep working
 // while the panel is open and active beside it.
 IN_PROC_BROWSER_TEST_F(WebPanelSplitViewBrowserTest,
