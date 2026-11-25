@@ -110,7 +110,9 @@ TEST_P(TeamcityReporterTest, OnBrokenTestEarlyExit) {
   EXPECT_EQ(GetStr(), "");
 }
 
-TEST_P(TeamcityReporterTest, MissingResultOnSuccess) {
+using TeamcityReporterDeathTest = TeamcityReporterTest;
+
+TEST_P(TeamcityReporterDeathTest, MissingResultOnSuccess) {
   TestResult result;
   result.full_name = "TestSuite.TestName";
   result.status = TestResult::TEST_SUCCESS;
@@ -119,7 +121,7 @@ TEST_P(TeamcityReporterTest, MissingResultOnSuccess) {
   EXPECT_DEATH_IF_SUPPORTED(teamcity_reporter_->OnTestFinished(result), "");
 }
 
-TEST_P(TeamcityReporterTest, MissingResultOnFailure) {
+TEST_P(TeamcityReporterDeathTest, MissingResultOnFailure) {
   TestResult result;
   result.full_name = "TestSuite.TestName";
   result.status = TestResult::TEST_FAILURE;
@@ -128,7 +130,7 @@ TEST_P(TeamcityReporterTest, MissingResultOnFailure) {
   EXPECT_DEATH_IF_SUPPORTED(teamcity_reporter_->OnTestFinished(result), "");
 }
 
-TEST_P(TeamcityReporterTest, UnexpectedResultOnSkipped) {
+TEST_P(TeamcityReporterDeathTest, UnexpectedResultOnSkipped) {
   TestResult result;
   result.full_name = "TestSuite.TestName";
   result.status = TestResult::TEST_SKIPPED;
@@ -137,7 +139,7 @@ TEST_P(TeamcityReporterTest, UnexpectedResultOnSkipped) {
   EXPECT_DEATH_IF_SUPPORTED(teamcity_reporter_->OnTestResult(result), "");
 }
 
-TEST_P(TeamcityReporterTest, MissingStart) {
+TEST_P(TeamcityReporterDeathTest, MissingStart) {
   TestResult result;
   result.full_name = "TestSuite.TestName";
   result.status = TestResult::TEST_SUCCESS;
@@ -145,7 +147,7 @@ TEST_P(TeamcityReporterTest, MissingStart) {
   EXPECT_DEATH_IF_SUPPORTED(teamcity_reporter_->OnTestFinished(result), "");
 }
 
-TEST_P(TeamcityReporterTest, NoReportingAfterEarlyExit) {
+TEST_P(TeamcityReporterDeathTest, NoReportingAfterEarlyExit) {
   teamcity_reporter_->OnBrokenTestEarlyExit();
   ClearStr();
 
@@ -158,6 +160,7 @@ TEST_P(TeamcityReporterTest, NoReportingAfterEarlyExit) {
 }
 
 INSTANTIATE_TEST_SUITE_P(, TeamcityReporterTest, testing::Bool());
+INSTANTIATE_TEST_SUITE_P(, TeamcityReporterDeathTest, testing::Bool());
 
 class TeamcityReporterIgnorePreliminaryFailuresTest
     : public TeamcityReporterTest {

@@ -5,46 +5,38 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 
-#include "chrome/test/base/browser_with_test_window_test.h"
+#include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "components/tabs/public/mock_tab_interface.h"
 #include "components/tabs/public/tab_interface.h"
-#include "content/public/test/web_contents_tester.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
-class BraveWalletTabHelperUnitTest : public BrowserWithTestWindowTest {
+class BraveWalletTabHelperUnitTest : public ChromeRenderViewHostTestHarness {
  public:
   BraveWalletTabHelperUnitTest() = default;
   ~BraveWalletTabHelperUnitTest() override = default;
 
   void SetUp() override {
-    BrowserWithTestWindowTest::SetUp();
-    web_contents_ =
-        content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
-    ASSERT_TRUE(web_contents_.get());
-    ON_CALL(tab_, GetContents())
-        .WillByDefault(testing::Return(web_contents_.get()));
-    tabs::TabLookupFromWebContents::CreateForWebContents(web_contents_.get(),
-                                                         &tab_);
+    ChromeRenderViewHostTestHarness::SetUp();
+    ASSERT_TRUE(web_contents());
+    ON_CALL(tab_, GetContents()).WillByDefault(testing::Return(web_contents()));
+    tabs::TabLookupFromWebContents::CreateForWebContents(web_contents(), &tab_);
     brave_wallet_tab_helper_ =
         std::make_unique<brave_wallet::BraveWalletTabHelper>(tab_);
   }
 
   void TearDown() override {
     brave_wallet_tab_helper_.reset();
-    web_contents_.reset();
-    BrowserWithTestWindowTest::TearDown();
+    ChromeRenderViewHostTestHarness::TearDown();
   }
 
   brave_wallet::BraveWalletTabHelper* brave_wallet_tab_helper() {
     return brave_wallet_tab_helper_.get();
   }
 
-  content::WebContents* web_contents() { return web_contents_.get(); }
-
  private:
-  std::unique_ptr<content::WebContents> web_contents_;
   tabs::MockTabInterface tab_;
   std::unique_ptr<brave_wallet::BraveWalletTabHelper> brave_wallet_tab_helper_;
 };

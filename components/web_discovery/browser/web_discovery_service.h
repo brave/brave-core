@@ -68,19 +68,6 @@ class WebDiscoveryService : public KeyedService {
       mojo::Remote<mojom::DocumentExtractor> document_extractor);
 
  private:
-  friend class WebDiscoveryServiceTest;
-  FRIEND_TEST_ALL_PREFIXES(WebDiscoveryServiceTest, ServiceStartsWhenEnabled);
-  FRIEND_TEST_ALL_PREFIXES(WebDiscoveryServiceTest,
-                           ServiceDoesNotStartWhenDisabled);
-  FRIEND_TEST_ALL_PREFIXES(WebDiscoveryServiceTest,
-                           ServiceDoesNotStartWhenDisabledByPolicy);
-  FRIEND_TEST_ALL_PREFIXES(WebDiscoveryServiceTest,
-                           ServiceRestartsWhenReEnabled);
-  FRIEND_TEST_ALL_PREFIXES(WebDiscoveryServiceTest,
-                           ServiceStopsOnDisabledPrefChange);
-  FRIEND_TEST_ALL_PREFIXES(WebDiscoveryServiceTest,
-                           ServiceStopsOnPolicyDisabledPrefChange);
-
   void Start();
   void Stop();
   void ClearPrefs();

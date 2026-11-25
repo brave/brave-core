@@ -40,6 +40,9 @@ class BraveAdsRewardConfirmationUtilTest : public test::TestBase {
   }
 };
 
+using BraveAdsRewardConfirmationUtilDeathTest =
+    BraveAdsRewardConfirmationUtilTest;
+
 TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
@@ -130,7 +133,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
   EXPECT_FALSE(confirmation);
 }
 
-TEST_F(BraveAdsRewardConfirmationUtilTest,
+TEST_F(BraveAdsRewardConfirmationUtilDeathTest,
        DoNotBuildRewardConfirmationWithInvalidTransaction) {
   // Act & Assert
 #if CHECK_WILL_STREAM()
@@ -143,7 +146,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
                             kFailureLog);
 }
 
-TEST_F(BraveAdsRewardConfirmationUtilTest,
+TEST_F(BraveAdsRewardConfirmationUtilDeathTest,
        DoNotBuildRewardConfirmationForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();

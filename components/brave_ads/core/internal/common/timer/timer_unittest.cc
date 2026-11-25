@@ -22,6 +22,8 @@ class BraveAdsTimerTest : public test::TestBase {
   Timer timer_;
 };
 
+using BraveAdsTimerDeathTest = BraveAdsTimerTest;
+
 TEST_F(BraveAdsTimerTest, IsNotRunningInitially) {
   // Act & Assert
   EXPECT_FALSE(timer_.IsRunning());
@@ -128,7 +130,7 @@ TEST_F(BraveAdsTimerTest, StopReturnsFalseIfNotRunning) {
   EXPECT_FALSE(timer_.Stop());
 }
 
-TEST_F(BraveAdsTimerTest, StartWithPrivacyChecksNegativeDelay) {
+TEST_F(BraveAdsTimerDeathTest, StartWithPrivacyChecksNegativeDelay) {
   // Arrange
   const test::ScopedRandTimeDeltaWithJitterForTesting
       scoped_rand_time_delta_with_jitter(base::Milliseconds(-1));

@@ -83,6 +83,8 @@ class BraveOriginPolicyManagerTest : public testing::Test {
   TestingPrefServiceSimple pref_service_;
 };
 
+using BraveOriginPolicyManagerDeathTest = BraveOriginPolicyManagerTest;
+
 class TestObserver : public brave_policy::BravePolicyObserver {
  public:
   void OnBravePoliciesReady() override { ready_called_ = true; }
@@ -236,7 +238,8 @@ TEST_F(BraveOriginPolicyManagerTest, GetPolicyValue_ProfileScopedPolicy) {
   EXPECT_FALSE(result.value());  // Should return local state value, not default
 }
 
-TEST_F(BraveOriginPolicyManagerTest, GetPolicyValue_RequiresInitialization) {
+TEST_F(BraveOriginPolicyManagerDeathTest,
+       GetPolicyValue_RequiresInitialization) {
   auto* manager = BraveOriginPolicyManager::GetInstance();
   // Should crash/check fail when not initialized
   EXPECT_DEATH_IF_SUPPORTED(manager->GetPolicyValue(kTestGlobalPolicyKey), "");
@@ -268,14 +271,14 @@ TEST_F(BraveOriginPolicyManagerTest,
   EXPECT_TRUE(profile_policies.at(kProfilePolicyKey));
 }
 
-TEST_F(BraveOriginPolicyManagerTest,
+TEST_F(BraveOriginPolicyManagerDeathTest,
        GetAllBrowserPolicies_RequiresInitialization) {
   auto* manager = BraveOriginPolicyManager::GetInstance();
   // Should crash/check fail when not initialized
   EXPECT_DEATH_IF_SUPPORTED(manager->GetAllBrowserPolicies(), "");
 }
 
-TEST_F(BraveOriginPolicyManagerTest,
+TEST_F(BraveOriginPolicyManagerDeathTest,
        GetAllProfilePolicies_RequiresInitialization) {
   auto* manager = BraveOriginPolicyManager::GetInstance();
   // Should crash/check fail when not initialized
@@ -389,7 +392,8 @@ TEST_F(BraveOriginPolicyManagerTest, SetPolicyValue_ProfilePref_UpdatesValue) {
   EXPECT_TRUE(result.value());
 }
 
-TEST_F(BraveOriginPolicyManagerTest, SetPolicyValue_RequiresInitialization) {
+TEST_F(BraveOriginPolicyManagerDeathTest,
+       SetPolicyValue_RequiresInitialization) {
   auto* manager = BraveOriginPolicyManager::GetInstance();
   // Should crash/check fail when not initialized
   EXPECT_DEATH_IF_SUPPORTED(manager->SetPolicyValue(kTestGlobalPolicyKey, true),

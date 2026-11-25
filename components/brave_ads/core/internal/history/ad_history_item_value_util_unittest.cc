@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/history/test/ad_history_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 // pnpm test brave_unit_tests --filter=BraveAds*
 
@@ -106,6 +107,87 @@ TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromLegacyDict) {
                                      mojom::ConfirmationType::kViewedImpression,
                                      /*use_random_uuids=*/false),
             AdHistoryItemFromDict(dict));
+}
+
+TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromEmptyDict) {
+  // Act & Assert
+  EXPECT_EQ(AdHistoryItemInfo(), AdHistoryItemFromDict({}));
+}
+
+TEST_F(BraveAdsAdHistoryItemValueUtilTest,
+       AdHistoryItemFromDictWithNonStringFields) {
+  // Arrange
+  const base::DictValue dict = base::test::ParseJsonDict(
+      R"JSON(
+          {
+            "adContent": {
+              "adType": 1,
+              "adAction": 2,
+              "placementId": 3,
+              "brand": 4
+            },
+            "categoryContent": {
+              "category": 5
+            }
+          })JSON");
+
+  // Act & Assert
+  EXPECT_EQ(AdHistoryItemInfo(), AdHistoryItemFromDict(dict));
+}
+
+TEST_F(BraveAdsAdHistoryItemValueUtilTest,
+       AdHistoryItemFromDictWithInvalidCreatedAt) {
+  // Arrange
+  const base::DictValue not_a_number_dict =
+      base::test::ParseJsonDict(R"JSON({"createdAt": "not-a-number"})JSON");
+  const base::DictValue non_string_dict =
+      base::test::ParseJsonDict(R"JSON({"createdAt": 5})JSON");
+
+  // Act & Assert
+  EXPECT_EQ(AdHistoryItemInfo(), AdHistoryItemFromDict(not_a_number_dict));
+  EXPECT_EQ(AdHistoryItemInfo(), AdHistoryItemFromDict(non_string_dict));
+}
+
+TEST_F(BraveAdsAdHistoryItemValueUtilTest,
+       AdHistoryItemFromDictIgnoresInlineContentAndPromotedContentAds) {
+  // Arrange
+  const base::DictValue inline_content_ad_dict = base::test::ParseJsonDict(
+      R"JSON(
+          {
+            "adContent": {
+              "adType": "inline_content_ad",
+              "placementId": "9bac9ae4-693c-4569-9b3e-300e357780cf"
+            }
+          })JSON");
+  const base::DictValue promoted_content_ad_dict = base::test::ParseJsonDict(
+      R"JSON(
+          {
+            "adContent": {
+              "adType": "promoted_content_ad",
+              "placementId": "9bac9ae4-693c-4569-9b3e-300e357780cf"
+            }
+          })JSON");
+
+  // Act & Assert
+  EXPECT_EQ(AdHistoryItemInfo(), AdHistoryItemFromDict(inline_content_ad_dict));
+  EXPECT_EQ(AdHistoryItemInfo(),
+            AdHistoryItemFromDict(promoted_content_ad_dict));
+}
+
+TEST_F(BraveAdsAdHistoryItemValueUtilTest,
+       AdHistoryItemFromDictWithOnlySegmentContent) {
+  // Arrange
+  const base::DictValue dict = base::test::ParseJsonDict(
+      R"JSON({"categoryContent": {"category": "untargeted"}})JSON");
+  const base::DictValue legacy_dict = base::test::ParseJsonDict(
+      R"JSON({"category_content": {"category": "untargeted"}})JSON");
+
+  AdHistoryItemInfo expected_ad_history_item;
+  expected_ad_history_item.segment = "untargeted";
+
+  // Act & Assert
+  EXPECT_EQ(expected_ad_history_item, AdHistoryItemFromDict(dict));
+  EXPECT_EQ(expected_ad_history_item, AdHistoryItemFromDict(legacy_dict));
 }
 
 }  // namespace brave_ads

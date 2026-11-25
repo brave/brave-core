@@ -257,13 +257,45 @@ TEST(BraveWalletUtilsUnitTest, TransactionReceiptAndValue) {
       "0xc6ef2fc5426d6ad6fd9e2a26abeab0aa2411b7ab17f30a99d3cb96aed1d1055b";
   tx_receipt.cumulative_gas_used = 0x33bc;
   tx_receipt.gas_used = 0x4dc;
+  tx_receipt.from = "0x2f015c60e0be116b1f0cd534704db9c92118fb6a";
+  tx_receipt.to = "0x3535353535353535353535353535353535353535";
   tx_receipt.contract_address = "0xb60e8dd61c5d32be8058bb8eb970870f07233155";
+  tx_receipt.logs_bloom = "0x00000000000000000000000000000f10";
   tx_receipt.status = true;
 
   base::DictValue tx_receipt_value = TransactionReceiptToValue(tx_receipt);
   auto tx_receipt_from_value = ValueToTransactionReceipt(tx_receipt_value);
   ASSERT_NE(tx_receipt_from_value, std::nullopt);
   EXPECT_EQ(tx_receipt, *tx_receipt_from_value);
+
+  // Every key is required.
+  for (const char* key :
+       {"transaction_hash", "transaction_index", "block_hash", "block_number",
+        "from", "to", "cumulative_gas_used", "gas_used", "contract_address",
+        "logs_bloom", "status"}) {
+    SCOPED_TRACE(key);
+    base::DictValue value = tx_receipt_value.Clone();
+    ASSERT_TRUE(value.Remove(key));
+    EXPECT_EQ(ValueToTransactionReceipt(value), std::nullopt);
+  }
+
+  // Numeric fields must be valid 0x-prefixed hex.
+  for (const char* key : {"transaction_index", "block_number",
+                          "cumulative_gas_used", "gas_used"}) {
+    for (const char* invalid : {"zz", "1"}) {
+      SCOPED_TRACE(testing::Message() << key << "=" << invalid);
+      base::DictValue value = tx_receipt_value.Clone();
+      value.Set(key, invalid);
+      EXPECT_EQ(ValueToTransactionReceipt(value), std::nullopt);
+    }
+  }
+
+  // Status must be a bool.
+  {
+    base::DictValue value = tx_receipt_value.Clone();
+    value.Set("status", "true");
+    EXPECT_EQ(ValueToTransactionReceipt(value), std::nullopt);
+  }
 }
 
 TEST(BraveWalletUtilsUnitTest, SwapInfoToValue_Basic) {
@@ -286,21 +318,21 @@ TEST(BraveWalletUtilsUnitTest, SwapInfoToValue_Basic) {
   base::DictValue value = SwapInfoToValue(swap_info);
 
   // Verify all fields are correctly serialized
-  EXPECT_EQ(*value.FindString("source_coin"), "ETH");
-  EXPECT_EQ(*value.FindString("source_chain_id"), mojom::kMainnetChainId);
-  EXPECT_EQ(*value.FindString("source_token_address"),
-            "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
-  EXPECT_EQ(*value.FindString("source_amount"), "1000000000000000000");
-  EXPECT_EQ(*value.FindString("destination_coin"), "ETH");
-  EXPECT_EQ(*value.FindString("destination_chain_id"), mojom::kMainnetChainId);
-  EXPECT_EQ(*value.FindString("destination_token_address"),
-            "0xdAC17F958D2ee523a2206206994597C13D831ec7");
-  EXPECT_EQ(*value.FindString("destination_amount"), "2000000");
-  EXPECT_EQ(*value.FindString("destination_amount_min"), "1950000");
-  EXPECT_EQ(*value.FindString("recipient"),
-            "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb");
-  EXPECT_EQ(*value.FindString("provider"), "ZERO_EX");
-  EXPECT_EQ(*value.FindString("route_id"), "test-route-id");
+  EXPECT_EQ(value, ParseJsonDict(R"({
+    "source_coin": "ETH",
+    "source_chain_id": "0x1",
+    "source_token_address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+    "source_amount": "1000000000000000000",
+    "destination_coin": "ETH",
+    "destination_chain_id": "0x1",
+    "destination_token_address":
+        "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+    "destination_amount": "2000000",
+    "destination_amount_min": "1950000",
+    "recipient": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+    "provider": "ZERO_EX",
+    "route_id": "test-route-id"
+  })"));
 }
 
 TEST(BraveWalletUtilsUnitTest, SwapInfoToValueAndBack_RoundTrip) {
@@ -469,7 +501,9 @@ TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {
   EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::DOT), "polkadot");
 
   static_assert(AllCoinsTested<7>());
+}
 
+TEST(BraveWalletUtilsDeathTest, GetPrefKeyForCoinTypeInvalid) {
   EXPECT_NOTREACHED_DEATH(
       GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)));
 }

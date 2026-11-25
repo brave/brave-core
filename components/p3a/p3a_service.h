@@ -14,7 +14,6 @@
 
 #include "base/callback_list.h"
 #include "base/containers/flat_map.h"
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_base.h"
@@ -117,6 +116,10 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
     return remote_config_manager_.get();
   }
 
+  bool IsMessageManagerActiveForTesting() const {
+    return message_manager_->IsActive();
+  }
+
   // MessageManager::Delegate
   void OnRotation(MetricLogType log_type) override;
   void OnMetricCycled(const std::string& histogram_name) override;
@@ -142,15 +145,6 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
 
  private:
   friend class base::RefCountedThreadSafe<P3AService>;
-  friend class P3AServiceTest;
-  FRIEND_TEST_ALL_PREFIXES(P3AServiceTest, MessageManagerStartedWhenP3AEnabled);
-  FRIEND_TEST_ALL_PREFIXES(P3AServiceTest,
-                           MessageManagerNotStartedWhenP3ADisabled);
-  FRIEND_TEST_ALL_PREFIXES(P3AServiceTest,
-                           MessageManagerNotStartedWhenP3ADisabledByPolicy);
-  FRIEND_TEST_ALL_PREFIXES(P3AServiceTest,
-                           MessageManagerStartsAndStopsOnPrefChange);
-  FRIEND_TEST_ALL_PREFIXES(P3AServiceTest, MetricValueStored);
 
   ~P3AService() override;
 

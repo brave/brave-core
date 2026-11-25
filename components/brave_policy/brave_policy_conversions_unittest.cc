@@ -84,13 +84,6 @@ TEST_F(BravePolicyConversionsTest, BraveInPolicyConversions) {
   EXPECT_EQ(*source, "policySourceBrave");
 }
 
-// Test that the string resource is correctly defined
-TEST_F(BravePolicyConversionsTest, BraveStringResourceExists) {
-  // Verify that IDS_POLICY_SOURCE_BRAVE is defined and has expected
-  // content This is a compile-time check that our string resource is available
-  EXPECT_NE(IDS_POLICY_SOURCE_BRAVE, 0);
-}
-
 // Test that kPolicySources array has the correct entry for Brave
 TEST_F(BravePolicyConversionsTest, BraveInPolicySourcesArray) {
   // Verify that the kPolicySources array has "policySourceBrave" at the correct

@@ -9,6 +9,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/dcheck_is_on.h"
+#include "base/test/gtest_util.h"
 #include "brave/components/brave_rewards/core/engine/publisher/static_values.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -428,15 +429,6 @@ TEST(RewardsMediaYouTubeTest, GetVideoUrl) {
 #if !DCHECK_IS_ON()
   url = YouTube::GetVideoUrl(media_id);
   EXPECT_EQ(url, media_url);
-#else
-// As per
-// https://source.chromium.org/chromium/chromium/src/+/master:base/test/gtest_util.h;l=23
-// Death tests misbehave on Android.
-#if !BUILDFLAG(IS_ANDROID)
-  GTEST_FLAG_SET(death_test_style, "threadsafe");
-  EXPECT_DEATH(
-      { YouTube::GetVideoUrl(media_id); }, "DCHECK failed: !media_id.empty*");
-#endif  // !BUILDFLAG(IS_ANDROID)
 #endif
 
   media_id = "FsC15IBOpxw";
@@ -464,16 +456,6 @@ TEST(RewardsMediaYouTubeTest, GetChannelUrl) {
 #if !DCHECK_IS_ON()
   url = YouTube::GetChannelUrl(channel_id);
   EXPECT_EQ(url, channel_url);
-#else
-// As per
-// https://source.chromium.org/chromium/chromium/src/+/master:base/test/gtest_util.h;l=23
-// Death tests misbehave on Android.
-#if !BUILDFLAG(IS_ANDROID)
-  GTEST_FLAG_SET(death_test_style, "threadsafe");
-  EXPECT_DEATH(
-      { YouTube::GetChannelUrl(channel_id); },
-      "DCHECK failed: !publisher_key.empty*");
-#endif  // !BUILDFLAG(IS_ANDROID)
 #endif
 
   channel_id = "UCFNTTISby1c_H-rm5Ww5rZg";
@@ -483,6 +465,16 @@ TEST(RewardsMediaYouTubeTest, GetChannelUrl) {
   channel_id = "UC7I7VAGLNgIgK0oPzTgpgmw";
   url = YouTube::GetChannelUrl(channel_id);
   EXPECT_EQ(url, channel_url + channel_id);
+}
+
+TEST(RewardsMediaYouTubeDeathTest, GetVideoUrlEmptyId) {
+  EXPECT_DCHECK_DEATH_WITH(YouTube::GetVideoUrl(std::string()),
+                           "DCHECK failed: !media_id.empty*");
+}
+
+TEST(RewardsMediaYouTubeDeathTest, GetChannelUrlEmptyId) {
+  EXPECT_DCHECK_DEATH_WITH(YouTube::GetChannelUrl(std::string()),
+                           "DCHECK failed: !publisher_key.empty*");
 }
 
 TEST(RewardsMediaYouTubeTest, GetFavIconUrl) {

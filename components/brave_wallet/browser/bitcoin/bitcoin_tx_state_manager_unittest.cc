@@ -11,6 +11,8 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
+#include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
@@ -43,6 +45,41 @@ class BitcoinTxStateManagerUnitTest : public testing::Test {
 
   PrefService* GetPrefs() { return &prefs_; }
 
+  std::unique_ptr<BitcoinTxMeta> MakeValidMeta() {
+    auto btc_account_id =
+        account_resolver_delegate_->RegisterAccount(MakeIndexBasedAccountId(
+            mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84,
+            mojom::AccountKind::kDerived, 1));
+
+    std::unique_ptr<BitcoinTransaction> tx =
+        std::make_unique<BitcoinTransaction>();
+    tx->set_amount(200000);
+    tx->set_to("tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm");
+
+    BitcoinTransaction::TxInput input;
+    input.utxo_address = "tb1q56kslnp386v43wpp6wkpx072ryud5gu865efx8";
+    input.utxo_value = 200000;
+    tx->AddInput(std::move(input));
+
+    BitcoinTransaction::TxOutput output;
+    output.address = "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm";
+    output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+        "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm", true);
+    output.amount = 200000 - 1000;
+    tx->AddOutput(std::move(output));
+
+    auto meta = std::make_unique<BitcoinTxMeta>(btc_account_id, std::move(tx));
+    meta->set_id(TxMeta::GenerateMetaID());
+    meta->set_status(mojom::TransactionStatus::Submitted);
+    meta->set_created_time(base::Time::Now());
+    meta->set_submitted_time(base::Time::Now());
+    meta->set_confirmed_time(base::Time::Now());
+    meta->set_tx_hash(
+        "aa388f50b725767653e150ad8990ec11a2146d75acafbe492af08213849fe2c5");
+    meta->set_chain_id(mojom::kBitcoinTestnet);
+    return meta;
+  }
+
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
   std::unique_ptr<TxStorage> tx_storage_;
@@ -52,43 +89,49 @@ class BitcoinTxStateManagerUnitTest : public testing::Test {
 };
 
 TEST_F(BitcoinTxStateManagerUnitTest, BitcoinTxMetaAndValue) {
-  auto btc_account_id =
-      account_resolver_delegate_->RegisterAccount(MakeIndexBasedAccountId(
-          mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84,
-          mojom::AccountKind::kDerived, 1));
+  std::unique_ptr<BitcoinTxMeta> meta = MakeValidMeta();
 
-  std::unique_ptr<BitcoinTransaction> tx =
-      std::make_unique<BitcoinTransaction>();
-  tx->set_amount(200000);
-  tx->set_to("tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm");
-
-  BitcoinTransaction::TxInput input;
-  input.utxo_address = "tb1q56kslnp386v43wpp6wkpx072ryud5gu865efx8";
-  input.utxo_value = 200000;
-  tx->AddInput(std::move(input));
-
-  BitcoinTransaction::TxOutput output;
-  output.address = "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm";
-  output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
-      "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm", true);
-  output.amount = 200000 - 1000;
-  tx->AddOutput(std::move(output));
-
-  BitcoinTxMeta meta(btc_account_id, std::move(tx));
-  meta.set_id(TxMeta::GenerateMetaID());
-  meta.set_status(mojom::TransactionStatus::Submitted);
-  meta.set_created_time(base::Time::Now());
-  meta.set_submitted_time(base::Time::Now());
-  meta.set_confirmed_time(base::Time::Now());
-  meta.set_tx_hash(
-      "aa388f50b725767653e150ad8990ec11a2146d75acafbe492af08213849fe2c5");
-  meta.set_chain_id(mojom::kBitcoinTestnet);
-
-  base::DictValue meta_value = meta.ToValue();
+  base::DictValue meta_value = meta->ToValue();
   auto meta_from_value =
       bitcoin_tx_state_manager_->ValueToBitcoinTxMeta(meta_value);
   ASSERT_TRUE(meta_from_value);
-  EXPECT_EQ(*meta_from_value, meta);
+  EXPECT_EQ(*meta_from_value, *meta);
+}
+
+TEST_F(BitcoinTxStateManagerUnitTest, ValueToBitcoinTxMetaRejectsMalformedTx) {
+  const base::DictValue valid_value = MakeValidMeta()->ToValue();
+  ASSERT_TRUE(bitcoin_tx_state_manager_->ValueToBitcoinTxMeta(valid_value));
+
+  {
+    base::DictValue value = valid_value.Clone();
+    ASSERT_TRUE(value.Remove("tx"));
+    EXPECT_FALSE(bitcoin_tx_state_manager_->ValueToBitcoinTxMeta(value));
+  }
+  {
+    base::DictValue value = valid_value.Clone();
+    value.Set("tx", "not a dict");
+    EXPECT_FALSE(bitcoin_tx_state_manager_->ValueToBitcoinTxMeta(value));
+  }
+  for (const char* key : {"inputs", "outputs"}) {
+    SCOPED_TRACE(key);
+    base::DictValue value = valid_value.Clone();
+    value.FindDict("tx")->Set(key, "not a list");
+    EXPECT_FALSE(bitcoin_tx_state_manager_->ValueToBitcoinTxMeta(value));
+  }
+  for (const char* key : {"locktime", "to", "amount"}) {
+    SCOPED_TRACE(key);
+    base::DictValue value = valid_value.Clone();
+    ASSERT_TRUE(value.FindDict("tx")->Remove(key));
+    EXPECT_FALSE(bitcoin_tx_state_manager_->ValueToBitcoinTxMeta(value));
+  }
+  {
+    base::DictValue value = valid_value.Clone();
+    base::ListValue* inputs = value.FindDict("tx")->FindList("inputs");
+    ASSERT_TRUE(inputs);
+    ASSERT_EQ(1u, inputs->size());
+    ASSERT_TRUE(inputs->front().GetDict().Remove("utxo_value"));
+    EXPECT_FALSE(bitcoin_tx_state_manager_->ValueToBitcoinTxMeta(value));
+  }
 }
 
 }  // namespace brave_wallet
