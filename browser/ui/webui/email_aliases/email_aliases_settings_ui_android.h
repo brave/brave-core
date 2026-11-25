@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_EMAIL_ALIASES_EMAIL_ALIASES_SETTINGS_UI_ANDROID_H_
 
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
-#include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/components/email_aliases/email_aliases.mojom-forward.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/webui_config.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"

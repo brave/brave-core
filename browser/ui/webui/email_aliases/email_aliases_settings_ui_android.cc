@@ -16,6 +16,7 @@
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources_map.h"
 #include "brave/components/email_aliases/constants.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
 #include "chrome/browser/profiles/profile.h"

@@ -914,7 +914,7 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
         .Add<email_aliases::mojom::EmailAliasesService>()
         .Add<email_aliases::mojom::EmailAliasesMetrics>();
   }
-#endif
+#endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_PSST)
