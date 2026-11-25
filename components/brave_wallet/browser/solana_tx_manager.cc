@@ -1290,6 +1290,17 @@ void SolanaTxManager::ProcessSolanaHardwareSignature(
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
     return;
   }
+  if (meta->status() != mojom::TransactionStatus::Unapproved) {
+    // Reject a stale hardware signature for a transaction that was already
+    // rejected/cancelled (or otherwise moved past Unapproved) by the user
+    // while the device signing was still in flight.
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewSolanaProviderError(
+            mojom::SolanaProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
   std::optional<std::vector<std::uint8_t>> transaction_bytes =
       meta->tx()->GetSignedTransactionBytes(&keyring_service(), meta->from(),
                                             hw_signature);

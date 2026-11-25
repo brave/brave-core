@@ -1871,6 +1871,7 @@ TEST_F(SolanaTxManagerUnitTest, ProcessSolanaHardwareSignature) {
   EXPECT_TRUE(Base58Decode(signature, &signature_bytes, kSolanaSignatureSize));
 
   auto meta = solana_tx_manager()->GetTxForTesting(system_transfer_meta_id);
+  ASSERT_TRUE(meta);
   meta->tx()->message()->set_recent_blockhash(latest_blockhash1_);
   meta->tx()->message()->set_last_valid_block_height(last_valid_block_height1_);
   ASSERT_TRUE(
@@ -1880,6 +1881,66 @@ TEST_F(SolanaTxManagerUnitTest, ProcessSolanaHardwareSignature) {
   TestProcessSolanaHardwareSignature(system_transfer_meta_id, signature_bytes,
                                      true, mojom::SolanaProviderError::kSuccess,
                                      "");
+}
+
+// Regression test: a hardware signature that arrives after the user has
+// already rejected the transaction must not resurrect and broadcast it.
+TEST_F(SolanaTxManagerUnitTest, ProcessSolanaHardwareSignatureAfterRejected) {
+  std::vector<mojom::HardwareWalletAccountPtr> hw_infos;
+  hw_infos.push_back(mojom::HardwareWalletAccount::New(
+      "89DzXVKJ79xf9MkzTxatQESh5fcvsqBo9fCsbAXkCaZE", "path", "name 1",
+      mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kSolana));
+  auto from = keyring_service_->AddHardwareAccountsSync(std::move(hw_infos))[0]
+                  ->account_id.Clone();
+  const std::string to = "148FvZU6e67eSB12wv7fXCH5FsTDW8tsxXo3nFuZhfCF";
+  mojom::SolanaTxDataPtr system_transfer_data = nullptr;
+  TestMakeSystemProgramTransferTxData(from, to, 1, nullptr,
+                                      mojom::SolanaProviderError::kSuccess, "",
+                                      &system_transfer_data);
+  ASSERT_TRUE(system_transfer_data);
+  SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_,
+                 kMockGetFeeForMessageResponse, false,
+                 last_valid_block_height1_);
+  std::string system_transfer_meta_id;
+  AddUnapprovedTransaction(mojom::kSolanaMainnet,
+                           std::move(system_transfer_data), from,
+                           &system_transfer_meta_id);
+  ASSERT_FALSE(system_transfer_meta_id.empty());
+
+  std::string signature =
+      "fJaHU9cDUoLsWLXJSPTgW3bAkhuZL319v2479igQtSp1ZyBjPi923jWkALg48uS75z5fp1JK"
+      "1T4vdWi2D35fFEj";
+  std::vector<uint8_t> signature_bytes;
+  EXPECT_TRUE(Base58Decode(signature, &signature_bytes, kSolanaSignatureSize));
+
+  auto meta = solana_tx_manager()->GetTxForTesting(system_transfer_meta_id);
+  ASSERT_TRUE(meta);
+  meta->tx()->message()->set_recent_blockhash(latest_blockhash1_);
+  meta->tx()->message()->set_last_valid_block_height(last_valid_block_height1_);
+  ASSERT_TRUE(
+      solana_tx_manager()->GetSolanaTxStateManager().AddOrUpdateTx(*meta));
+
+  // User rejects the transaction while the hardware device is still
+  // producing a signature for it.
+  base::test::TestFuture<bool> reject_future;
+  solana_tx_manager()->RejectTransaction(system_transfer_meta_id,
+                                         reject_future.GetCallback());
+  EXPECT_TRUE(reject_future.Get());
+  auto rejected_meta =
+      solana_tx_manager()->GetTxForTesting(system_transfer_meta_id);
+  ASSERT_TRUE(rejected_meta);
+  EXPECT_EQ(rejected_meta->status(), mojom::TransactionStatus::Rejected);
+
+  // The late-arriving hardware signature must be rejected and must not
+  // publish/broadcast the transaction or move it off Rejected.
+  TestProcessSolanaHardwareSignature(
+      system_transfer_meta_id, signature_bytes, false,
+      mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+  auto final_meta =
+      solana_tx_manager()->GetTxForTesting(system_transfer_meta_id);
+  ASSERT_TRUE(final_meta);
+  EXPECT_EQ(final_meta->status(), mojom::TransactionStatus::Rejected);
 }
 
 TEST_F(SolanaTxManagerUnitTest, RebroadcastTransaction) {

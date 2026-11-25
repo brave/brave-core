@@ -574,6 +574,54 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignatureError) {
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
 }
 
+// Regression test: a hardware signature that arrives after the user has
+// already rejected the transaction must not resurrect and broadcast it.
+TEST_F(FilTxManagerUnitTest, ProcessHardwareSignatureAfterRejected) {
+  const auto from_account = FilTestAcc(0);
+  const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
+
+  auto tx_data = mojom::FilTxData::New(
+      "1" /* nonce */, "2" /* gas_premium */, "3" /* gas_fee_cap */,
+      "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
+  const std::string meta_id = AddUnapprovedTransaction(
+      mojom::kFilecoinTestnet, std::move(tx_data), from_account);
+  ASSERT_FALSE(meta_id.empty());
+  auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
+  auto message = tx_meta->tx()->GetMessageToSignJson(
+      FilAddress::FromAddress(from_account->address));
+  ASSERT_TRUE(message);
+  auto signed_message = GetSignedMessage(*message, "data");
+
+  // User rejects the transaction while the hardware device is still
+  // producing a signature for it.
+  base::test::TestFuture<bool> reject_future;
+  fil_tx_manager()->RejectTransaction(meta_id, reject_future.GetCallback());
+  EXPECT_TRUE(reject_future.Get());
+  auto rejected_meta = fil_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(rejected_meta);
+  EXPECT_EQ(rejected_meta->status(), mojom::TransactionStatus::Rejected);
+
+  // The late-arriving hardware signature must be rejected and must not
+  // publish/broadcast the transaction or move it off Rejected.
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      future;
+  fil_tx_manager()->ProcessFilHardwareSignature(
+      meta_id, mojom::FilecoinSignature::New(signed_message),
+      future.GetCallback());
+  auto [success, error_union, err_message] = future.Take();
+  EXPECT_FALSE(success);
+  ASSERT_TRUE(error_union->is_filecoin_provider_error());
+  EXPECT_EQ(error_union->get_filecoin_provider_error(),
+            mojom::FilecoinProviderError::kInternalError);
+  EXPECT_EQ(err_message,
+            l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+  auto final_meta = fil_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(final_meta);
+  EXPECT_EQ(final_meta->status(), mojom::TransactionStatus::Rejected);
+}
+
 TEST_F(FilTxManagerUnitTest, RestrictedFromAddress) {
   const auto from_account = FilTestAcc(0);
   BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(

@@ -76,6 +76,13 @@ void BitcoinTxManager::ProcessBtcHardwareSignature(
     std::move(callback).Run(false);
     return;
   }
+  if (meta->status() != mojom::TransactionStatus::Unapproved) {
+    // Reject a stale hardware signature for a transaction that was already
+    // rejected/cancelled (or otherwise moved past Unapproved) by the user
+    // while the device signing was still in flight.
+    std::move(callback).Run(false);
+    return;
+  }
 
   meta->set_status(mojom::TransactionStatus::Approved);
   if (!tx_state_manager().AddOrUpdateTx(*meta)) {
