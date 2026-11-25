@@ -4,15 +4,15 @@ The **Shields settings origin** is the key Brave passes to `IsBraveShieldsEnable
 `GetAdControlType`, and `GetCosmeticFilteringControlType`. It is an origin URL
 (scheme, host, and effective port), or `GURL()` for profile defaults. It answers
 whose preferences to read. It does not decide whether an adblock rule considers
-a request first-party, nor which site to use when evaluating adblock rules. In
-the examples below, A, B, and C are distinct HTTPS origins.
+a request first-party, nor which origin, hostname, or domain adblock rules
+match against. In the examples below, A, B, and C are distinct HTTPS origins.
 
 ## Main-frame navigations
 
 For a primary-main-frame HTTP navigation from `https://a.test/old` to
-`https://b.test/new`, use **B** for the HTTP request for `/new`. This applies to
-the navigation request itself, not just to requests made by `/new` after commit.
-For a main-frame network request with no usable settings origin, use **profile
+`https://b.test/new`, use `https://b.test` for the **Shields settings origin**,
+both for the navigation itself and for the Shields settings applied when
+loading and rendering the `/new` content. For a main-frame network request with no usable settings origin, use **profile
 defaults**. Never substitute the origin of the document being navigated away from.
 
 For a cross-document navigation without redirects, the boundaries are:
