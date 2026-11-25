@@ -1,6 +1,5 @@
 include_rules = [
   "+brave/app/vector_icons",
-  "+brave/browser/brave_origin",
   "+brave/components/infobars/core",
   "+brave/components/psst/core",
   "+brave/ui/color/nala",

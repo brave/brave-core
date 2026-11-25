@@ -6,6 +6,7 @@ include_rules = [
   "+components/crx_file",
   "+components/keyed_service/core",
   "+components/policy/core/common",
+  "+components/policy",
   "+crypto",
   "+components/prefs",
   "+components/sync_preferences",

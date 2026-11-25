@@ -249,14 +249,11 @@ bool PsstSettingsService::IsPsstEnabled() const {
 }
 
 void PsstSettingsService::SetPsstEnabled(bool enabled) {
-  // When BraveOrigin controls this pref, it must be set via the policy
-  // manager rather than directly in the pref store, or the write is
-  // shadowed by the enforced BraveOrigin value.
   if (brave_origin_service_ &&
       brave_origin_service_->IsPolicyControlledByBraveOrigin(
           policy::key::kPsstEnabled)) {
+    // For case when BraveOrigin is enabled
     brave_origin_service_->SetPolicyValue(policy::key::kPsstEnabled, enabled);
-    return;
   }
   prefs_->SetBoolean(prefs::kPsstEnabled, enabled);
 }
