@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/command_line.h"
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/constants/brave_paths.h"
@@ -11,7 +10,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/common/content_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "third_party/blink/public/common/features.h"
@@ -80,20 +78,6 @@ class WindowManagementDisabledTest : public WindowManagementBrowserTestBase {};
 
 IN_PROC_BROWSER_TEST_F(WindowManagementDisabledTest, IsDisabled) {
   EXPECT_EQ(kExpectedDisabled, Probe());
-}
-
-// Guards `IsDisabled` against passing only because the API went away upstream.
-class WindowManagementEnabledTest : public WindowManagementBrowserTestBase {
- public:
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    WindowManagementBrowserTestBase::SetUpCommandLine(command_line);
-    command_line->AppendSwitchASCII(switches::kEnableBlinkFeatures,
-                                    "BraveWindowManagement");
-  }
-};
-
-IN_PROC_BROWSER_TEST_F(WindowManagementEnabledTest, IsExposedWhenFlagIsOn) {
-  EXPECT_EQ(kExpectedEnabled, Probe());
 }
 
 // The `brave://flags` entry toggles this base::Feature, which is copied into
