@@ -538,13 +538,18 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
 
   if (!is_vertical_tab) {
     // In order to make margin between the bounding box and tab strip.
-    int vertical_margin = tab1->data().pinned ? 4 : 2;
+    // Pinned tabs are inset within the bounding box only with the updated
+    // horizontal tab style.
+    const int vertical_margin =
+        tab1->data().pinned && !tabs::HorizontalTabsUpdateEnabled()
+            ? 4
+            : tabs::kHorizontalSplitViewTileVerticalMargin;
     bounding_rects.Inset(
         gfx::Insets::VH(vertical_margin, tabs::kHorizontalTabInset));
   }
 
   const float corner_radius =
-      !is_vertical_tab && tabs::UseCompactHorizontalTabs() ? 9.0f : 12.f;
+      tabs::GetSplitViewTileCornerRadius(is_vertical_tab);
 
   auto* cp = GetColorProvider();
   DCHECK(cp);

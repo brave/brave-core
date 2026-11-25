@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.h"
 
+#include <algorithm>
+
 #include "base/check.h"
 #include "base/dcheck_is_on.h"
 #include "base/logging.h"
@@ -12,11 +14,13 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "ui/gfx/color_utils.h"
+#include "ui/gfx/geometry/vector2d.h"
 #include "ui/views/view_utils.h"
 
 #include <chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc>
@@ -26,6 +30,7 @@ namespace {
 using tabs::HorizontalTabsUpdateEnabled;
 
 constexpr auto kPaddingForVerticalTabInTile = 4;
+constexpr int kPaddingForVerticalPinnedTabInTile = 2;
 constexpr int kPaddingForHorizontalTabInTile = 4;
 
 // Returns a value indicating if the browser frame view is "condensed", i.e.
@@ -111,6 +116,18 @@ class BraveVerticalTabStyle : public HorizontalTabStyleViews {
 
   // true when |tab| is shown at the beginning of split view.
   bool IsStartSplitTab(const Tab* tab) const;
+
+  // true when the other tab in the same split is laid out in the same row,
+  // e.g. pinned tabs in the vertical tab strip's grid.
+  bool IsSplitTabPartnerInSameRow() const;
+
+  // Returns the insets between the tab's bounds and its visible shape so that
+  // the split view tile's bounding box doesn't touch the tab's edges.
+  gfx::Insets GetInsetsInSplitTile() const;
+
+  // Returns the horizontal and vertical corner radii that make the tab's shape
+  // concentric with the split view tile's bounding box.
+  gfx::Vector2d GetCornerRadiiInSplitTile() const;
 
   // Return tab background color for certain tab states.
   std::optional<SkColor> GetTargetTabBackgroundColor(
@@ -230,12 +247,13 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
   float tab_left = aligned_bounds.x();
   float tab_right = aligned_bounds.right();
   float tab_bottom = aligned_bounds.bottom();
-  int radius = tabs::GetTabCornerRadius(*tab());
+  const int radius = tabs::GetTabCornerRadius(*tab());
+  gfx::Vector2d radii(radius, radius);
 
   // For hit testing, the tab shape should not be rounded, as that would leave
   // small hit test gaps between adjacent tabs at their corners.
   if (path_type == TabStyle::PathType::kHitTest) {
-    radius = 0;
+    radii = gfx::Vector2d();
   }
 
   if (is_pinned) {
@@ -251,30 +269,18 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
     }
   }
 
-  if (!is_pinned && IsSplitTab(tab()) &&
-      path_type != TabStyle::PathType::kHitTest) {
-    if (ShouldShowVerticalTabs()) {
-      IsStartSplitTab(tab())
-          ? tab_top += scale* kPaddingForVerticalTabInTile
-          : tab_bottom -= scale * kPaddingForVerticalTabInTile;
-      tab_left += scale * kPaddingForVerticalTabInTile;
-      tab_right -= scale * kPaddingForVerticalTabInTile;
-    } else {
-      constexpr int kAdditionalVerticalPadding =
-          tabs::kHorizontalSplitViewTabVerticalSpacing -
-          tabs::kHorizontalTabGap;
-      tab_top += scale * kAdditionalVerticalPadding;
-      tab_bottom -= scale * kAdditionalVerticalPadding;
-
-      IsStartSplitTab(tab())
-          ? tab_left += scale* kPaddingForHorizontalTabInTile
-          : tab_right -= scale * kPaddingForHorizontalTabInTile;
-    }
+  if (IsSplitTab(tab()) && path_type != TabStyle::PathType::kHitTest) {
+    const gfx::Insets insets = GetInsetsInSplitTile();
+    tab_top += scale * insets.top();
+    tab_left += scale * insets.left();
+    tab_right -= scale * insets.right();
+    tab_bottom -= scale * insets.bottom();
+    radii = GetCornerRadiiInSplitTile();
   }
 
   SkPathBuilder builder(
-      SkPath::RRect({tab_left, tab_top, tab_right, tab_bottom}, radius * scale,
-                    radius * scale));
+      SkPath::RRect({tab_left, tab_top, tab_right, tab_bottom},
+                    radii.x() * scale, radii.y() * scale));
 
   // Convert path to be relative to the tab origin.
   gfx::PointF origin(tab()->origin());
@@ -608,6 +614,64 @@ bool BraveVerticalTabStyle::IsStartSplitTab(const Tab* tab) const {
                               [&tab_to_left](const Tab* split_tab) {
                                 return split_tab == tab_to_left;
                               });
+}
+
+bool BraveVerticalTabStyle::IsSplitTabPartnerInSameRow() const {
+  return std::ranges::any_of(
+      tab()->controller()->GetTabsInSplit(tab()), [this](const Tab* split_tab) {
+        return split_tab != tab() && split_tab->y() == tab()->y();
+      });
+}
+
+gfx::Insets BraveVerticalTabStyle::GetInsetsInSplitTile() const {
+  const bool is_start = IsStartSplitTab(tab());
+
+  if (!ShouldShowVerticalTabs()) {
+    constexpr int kAdditionalVerticalPadding =
+        tabs::kHorizontalSplitViewTabVerticalSpacing - tabs::kHorizontalTabGap;
+    return gfx::Insets::TLBR(kAdditionalVerticalPadding,
+                             is_start ? kPaddingForHorizontalTabInTile : 0,
+                             kAdditionalVerticalPadding,
+                             is_start ? 0 : kPaddingForHorizontalTabInTile);
+  }
+
+  if (!tab()->data().pinned) {
+    return gfx::Insets::TLBR(is_start ? kPaddingForVerticalTabInTile : 0,
+                             kPaddingForVerticalTabInTile,
+                             is_start ? 0 : kPaddingForVerticalTabInTile,
+                             kPaddingForVerticalTabInTile);
+  }
+
+  // Pinned tabs are laid out in a grid, so split tabs can be placed side by
+  // side or stacked when the grid has a single column.
+  constexpr int kPadding = kPaddingForVerticalPinnedTabInTile;
+  if (IsSplitTabPartnerInSameRow()) {
+    return gfx::Insets::TLBR(kPadding, is_start ? kPadding : 0, kPadding,
+                             is_start ? 0 : kPadding);
+  }
+  return gfx::Insets::TLBR(is_start ? kPadding : 0, kPadding,
+                           is_start ? 0 : kPadding, kPadding);
+}
+
+gfx::Vector2d BraveVerticalTabStyle::GetCornerRadiiInSplitTile() const {
+  const bool is_vertical = ShouldShowVerticalTabs();
+  const gfx::Insets insets = GetInsetsInSplitTile();
+
+  // Padding between the tile's bounding box and the tab's shape on the outer
+  // edges. In vertical tabs, the bounding box is the union of the tabs' bounds.
+  int padding_x = std::max(insets.left(), insets.right());
+  int padding_y = std::max(insets.top(), insets.bottom());
+  if (!is_vertical) {
+    // In horizontal tabs, both the bounding box and the tab's shape are inset
+    // horizontally by kHorizontalTabInset from the tabs' bounds, but they're
+    // inset vertically by different amounts.
+    padding_y += tabs::GetHorizontalTabVerticalSpacing() -
+                 tabs::kHorizontalSplitViewTileVerticalMargin;
+  }
+
+  const int tile_radius = tabs::GetSplitViewTileCornerRadius(is_vertical);
+  return gfx::Vector2d(std::max(0, tile_radius - padding_x),
+                       std::max(0, tile_radius - padding_y));
 }
 
 TabStyle::TabColors BraveVerticalTabStyle::CalculateTargetColors() const {

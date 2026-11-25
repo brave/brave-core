@@ -6,11 +6,13 @@
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
 #include <algorithm>
+#include <initializer_list>
 #include <optional>
 #include <utility>
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/containers/container_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -29,6 +31,7 @@
 #include "chrome/browser/ui/views/tabs/hovercard/hover_card_anchor_target.h"
 #include "chrome/browser/ui/views/tabs/tab/alert_indicator_button.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_close_button.h"
+#include "chrome/browser/ui/views/tabs/tab/tab_icon.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -632,6 +635,8 @@ void BraveTab::Layout(PassKey) {
 
   LayoutSuperclass<Tab>(this);
 
+  CenterIconsInPinnedSplitTab();
+
   if (IsAtMinWidthForVerticalTabStrip()) {
     if (showing_close_button_) {
       close_button_->SetX(GetLocalBounds().CenterPoint().x() -
@@ -646,6 +651,49 @@ void BraveTab::Layout(PassKey) {
 
   LayoutTreeToggleButton();
   LayoutSmallTabAccentIcon();
+}
+
+void BraveTab::CenterIconsInPinnedSplitTab() {
+  if (!data().pinned || !split().has_value() || ShouldRenderAsNormalTab()) {
+    return;
+  }
+
+  auto* vtc =
+      VerticalTabController::From(controller()->GetBrowserWindowInterface());
+  if (!tabs::HorizontalTabsUpdateEnabled() &&
+      (!vtc || !vtc->ShouldShowBraveVerticalTabs())) {
+    return;
+  }
+
+  // Pinned tab icons are centered in the tab's bounds, but tabs in a split
+  // view tile are painted with asymmetric insets. Move icons to the center of
+  // the painted shape.
+  const gfx::RectF shape_bounds = gfx::SkRectToRectF(
+      tab_style_views()
+          ->GetPath(TabStyle::PathType::kHighlight, 1, /*flags=*/{})
+          .getBounds());
+  if (shape_bounds.IsEmpty()) {
+    return;
+  }
+
+  const gfx::PointF shape_center = shape_bounds.CenterPoint();
+  gfx::Vector2d offset(base::ClampRound(shape_center.x() - width() / 2.0f),
+                       base::ClampRound(shape_center.y() - height() / 2.0f));
+  if (offset.IsZero()) {
+    return;
+  }
+
+  // The shape is in physical coordinates while child bounds are mirrored.
+  if (GetMirrored()) {
+    offset.set_x(-offset.x());
+  }
+
+  for (views::View* view : std::initializer_list<views::View*>{
+           icon_.get(), alert_indicator_button_.get()}) {
+    if (view->GetVisible()) {
+      view->SetPosition(view->origin() + offset);
+    }
+  }
 }
 
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,

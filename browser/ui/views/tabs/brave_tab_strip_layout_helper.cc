@@ -142,6 +142,10 @@ int GetTabCornerRadius(const Tab& tab) {
   return tabs::kTabBorderRadius;
 }
 
+int GetSplitViewTileCornerRadius(bool is_vertical_tab) {
+  return !is_vertical_tab && UseCompactHorizontalTabs() ? 9 : 12;
+}
+
 void CalculatePinnedTabsBoundsInGrid(
     const std::vector<TabWidthConstraints>& tabs,
     std::optional<int> width,
