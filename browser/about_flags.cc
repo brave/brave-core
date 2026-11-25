@@ -1651,6 +1651,16 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           FEATURE_VALUE_TYPE(blink::features::kBraveRoundTimeStamps),          \
       },                                                                       \
       {                                                                        \
+          "brave-reporting-api",                                               \
+          "Enable Reporting API",                                              \
+          "Controls whether the Chromium Reporting API is enabled. When "      \
+          "enabled, the Reporting API ignores Background Sync site "           \
+          "permission "                                                        \
+          "checks.",                                                           \
+          kOsDesktop | kOsAndroid,                                             \
+          FEATURE_VALUE_TYPE(blink::features::kBraveReportingAPI),             \
+      },                                                                       \
+      {                                                                        \
           "restrict-event-source-pool",                                        \
           "Restrict Event Source Pool",                                        \
           "Limits simultaneous active WebSockets connections per eTLD+1",      \

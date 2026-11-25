@@ -6,7 +6,7 @@ index cba008f07f4406a1ad4abbb3c5b4c61828c67a5c..3113243a2f28d0de082a23ba4bacfa14
      },
                                                               {scoped: true});
      this.contentElement.style.contain = 'layout style';
-+    storageTreeElement.removeChild(this.trustTokensTreeElement); [this.backgroundFetchTreeElement, this.backgroundSyncTreeElement, this.periodicBackgroundSyncTreeElement, this.reportingApiTreeElement].forEach(e => backgroundServiceTreeElement.removeChild(e));
++    storageTreeElement.removeChild(this.trustTokensTreeElement); [this.backgroundFetchTreeElement, this.backgroundSyncTreeElement, this.periodicBackgroundSyncTreeElement].forEach(e => backgroundServiceTreeElement.removeChild(e));
    }
  
    private addSidebarSection(title: string, jslogContext: string): UI.TreeOutline.TreeElement {

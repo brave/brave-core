@@ -28,6 +28,13 @@ BASE_FEATURE(kBraveBlockScreenFingerprinting,
 #endif
 );
 
+// Controls whether the Chromium Reporting API is enabled.
+//
+// This is here for expert users, NOT for enablement by default or via Griffin.
+// Specifically, the decision to skip the Background Sync check for Reporting
+// API is based on this flag change being a user-initiated decision.
+BASE_FEATURE(kBraveReportingAPI, base::FEATURE_DISABLED_BY_DEFAULT);
+
 // Enables protection against fingerprinting via high-resolution time stamps.
 BASE_FEATURE(kBraveRoundTimeStamps, base::FEATURE_DISABLED_BY_DEFAULT);
 
