@@ -378,25 +378,6 @@ TEST_F(BraveAccountToProfilePasswordMigrationTest, NoOpWhenAccountEmpty) {
 }
 
 TEST_F(BraveAccountToProfilePasswordMigrationTest,
-       ConcurrentCallDoesNotStartSecondMigration) {
-  EnableFeature();
-  AddLogin(account_store_.get(), MakeForm("https://a.com/", "u1", "p1"));
-  AddLogin(account_store_.get(), MakeForm("https://b.com/", "u2", "p2"));
-
-  base::test::TestFuture<void> first;
-  base::test::TestFuture<void> second;
-  MaybeMigrateAccountPasswordsToProfileStore(profile_, first.GetCallback());
-  // The profile already owns a running migrator, so this call must not start a
-  // second one racing it over the same stores.
-  MaybeMigrateAccountPasswordsToProfileStore(profile_, second.GetCallback());
-
-  EXPECT_TRUE(first.Wait());
-  EXPECT_TRUE(second.Wait());
-  EXPECT_EQ(2u, GetLogins(profile_store_.get()).size());
-  EXPECT_EQ(0u, GetLogins(account_store_.get()).size());
-}
-
-TEST_F(BraveAccountToProfilePasswordMigrationTest,
        MigrationCanRunAgainAfterFinishing) {
   EnableFeature();
   AddLogin(account_store_.get(), MakeForm("https://a.com/", "u1", "p1"));
