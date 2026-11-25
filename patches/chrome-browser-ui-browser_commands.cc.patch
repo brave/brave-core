@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 99a8ccd83b4f7da993daafa2d8776d6dc91e122a..acb65265c72411785b692785811c0b4e9e792904 100644
+index 99a8ccd83b4f7da993daafa2d8776d6dc91e122a..62ad3814c6df2142c2a66e6c7cf63f191c9d4159 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
 @@ -407,7 +407,7 @@ content::WebContents* DuplicateTabAt(BrowserWindowInterface* browser,
@@ -64,7 +64,15 @@ index 99a8ccd83b4f7da993daafa2d8776d6dc91e122a..acb65265c72411785b692785811c0b4e
    if (!toast_controller) {
      CloseSelectedTabAndRecordTabCountMetric(browser);
      return;
-@@ -1809,8 +1823,14 @@ void NewSplitTab(BrowserWindowInterface* browser,
+@@ -1802,6 +1816,7 @@ void GroupTab(BrowserWindowInterface* browser) {
+ void NewSplitTab(BrowserWindowInterface* browser,
+                  split_tabs::SplitTabLayout layout,
+                  split_tabs::SplitTabCreatedSource source) {
++  if (sidebar::IsWebPanelTabActive(browser)) return;
+   TabStripModel* const tab_strip_model = browser->GetTabStripModel();
+   const int active_index = tab_strip_model->active_index();
+   // In Incognito or Enterprise Isolated modes, we can't show the regular Split
+@@ -1809,8 +1824,14 @@ void NewSplitTab(BrowserWindowInterface* browser,
    const GURL new_tab_url =
        !browser->GetProfile()->IsPrimaryOTRProfileWithRegularParent() &&
                tab_strip_model->count() > 1

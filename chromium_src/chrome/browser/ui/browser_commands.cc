@@ -67,4 +67,12 @@ int BraveInsertDuplicatedTab(TabStripModel* tab_strip_model,
 
 }  // namespace
 
+// Defined in brave/browser/ui/sidebar/sidebar_utils.cc. The patched
+// NewSplitTab() returns early when the web panel tab is active, because split
+// view pivots on the active tab. We don't want to make split tab with web
+// panel's tab.
+namespace sidebar {
+bool IsWebPanelTabActive(BrowserWindowInterface* browser);
+}  // namespace sidebar
+
 #include <chrome/browser/ui/browser_commands.cc>
