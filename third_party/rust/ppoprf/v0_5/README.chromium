@@ -1,0 +1,10 @@
+Name: ppoprf
+URL: https://crates.io/crates/ppoprf
+Version: 0.5.0
+Revision: a9174ac0c84700308b588d90eb044aace3ea1273
+License: MPL-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/ppoprf-v0_5/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Puncturable Partially-Oblivious Pseudo-Random Function
