@@ -18,6 +18,8 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "components/permissions/permission_util.h"
+#include "components/permissions/request_type.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/visibility.h"
@@ -90,13 +92,13 @@ BraveWalletProviderDelegateImpl::GetAllowedAccounts(
     return std::vector<std::string>();
   }
 
-  auto permission = CoinTypeToPermissionType(type);
-  if (!permission) {
-    return std::nullopt;
-  }
+  auto content_settings_type =
+      brave_wallet::CoinTypeToContentSettingsType(type);
 
   return permissions::BraveWalletPermissionContext::GetAllowedAccounts(
-      *permission, content::RenderFrameHost::FromID(host_id_), accounts);
+      permissions::PermissionUtil::ContentSettingsTypeToPermissionType(
+          *content_settings_type),
+      content::RenderFrameHost::FromID(host_id_), accounts);
 }
 
 void BraveWalletProviderDelegateImpl::RequestPermissions(
@@ -109,9 +111,9 @@ void BraveWalletProviderDelegateImpl::RequestPermissions(
                             std::vector<std::string>());
     return;
   }
-  auto request_type = CoinTypeToPermissionRequestType(type);
-  auto permission = CoinTypeToPermissionType(type);
-  if (!request_type || !permission) {
+  auto content_settings_type =
+      brave_wallet::CoinTypeToContentSettingsType(type);
+  if (!content_settings_type) {
     std::move(callback).Run(mojom::RequestPermissionsError::kInternal,
                             std::nullopt);
     return;
@@ -119,35 +121,43 @@ void BraveWalletProviderDelegateImpl::RequestPermissions(
   // Check if there's already a permission request in progress
   auto* rfh = content::RenderFrameHost::FromID(host_id_);
   if (rfh && permissions::BraveWalletPermissionContext::HasRequestsInProgress(
-                 rfh, *request_type)) {
+                 rfh, permissions::ContentSettingsTypeToRequestType(
+                          *content_settings_type))) {
     std::move(callback).Run(mojom::RequestPermissionsError::kRequestInProgress,
                             std::nullopt);
     return;
   }
 
   permissions::BraveWalletPermissionContext::RequestWalletPermissions(
-      accounts, *permission, origin, content::RenderFrameHost::FromID(host_id_),
+      accounts,
+      permissions::PermissionUtil::ContentSettingsTypeToPermissionType(
+          *content_settings_type),
+      origin, content::RenderFrameHost::FromID(host_id_),
       base::BindOnce(&OnRequestPermissions, std::move(callback)));
 }
 
 bool BraveWalletProviderDelegateImpl::IsAccountAllowed(
     mojom::CoinType type,
     const std::string& account) {
-  auto permission = CoinTypeToPermissionType(type);
-  if (!permission) {
+  auto content_settings_type =
+      brave_wallet::CoinTypeToContentSettingsType(type);
+  if (!content_settings_type) {
     return false;
   }
 
   const auto allowed_accounts =
       permissions::BraveWalletPermissionContext::GetAllowedAccounts(
-          *permission, content::RenderFrameHost::FromID(host_id_), {account});
+          permissions::PermissionUtil::ContentSettingsTypeToPermissionType(
+              *content_settings_type),
+          content::RenderFrameHost::FromID(host_id_), {account});
 
   return allowed_accounts && IsAccountInAllowedList(*allowed_accounts, account);
 }
 
 bool BraveWalletProviderDelegateImpl::IsPermissionDenied(mojom::CoinType type) {
-  auto permission = CoinTypeToPermissionType(type);
-  if (!permission) {
+  auto content_settings_type =
+      brave_wallet::CoinTypeToContentSettingsType(type);
+  if (!content_settings_type) {
     return false;
   }
 
@@ -159,7 +169,9 @@ bool BraveWalletProviderDelegateImpl::IsPermissionDenied(mojom::CoinType type) {
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
 
   return permissions::BraveWalletPermissionContext::IsPermissionDenied(
-      *permission, web_contents->GetBrowserContext(),
+      permissions::PermissionUtil::ContentSettingsTypeToPermissionType(
+          *content_settings_type),
+      web_contents->GetBrowserContext(),
       url::Origin::Create(rfh->GetLastCommittedURL()));
 }
 

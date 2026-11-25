@@ -17,6 +17,8 @@
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
+#include "components/permissions/permission_util.h"
+#include "components/permissions/request_type.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/page.h"
 #include "content/public/browser/render_frame_host.h"
@@ -127,16 +129,16 @@ void WalletPanelHandler::RequestPermission(
 
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
 
-  auto request_type =
-      brave_wallet::CoinTypeToPermissionRequestType(account_id->coin);
-  auto permission = brave_wallet::CoinTypeToPermissionType(account_id->coin);
-  if (!request_type || !permission) {
+  auto content_settings_type =
+      brave_wallet::CoinTypeToContentSettingsType(account_id->coin);
+  if (!content_settings_type) {
     std::move(callback).Run(false);
     return;
   }
 
   if (permissions::BraveWalletPermissionContext::HasRequestsInProgress(
-          rfh, *request_type)) {
+          rfh, permissions::ContentSettingsTypeToRequestType(
+                   *content_settings_type))) {
     std::move(callback).Run(false);
     return;
   }
@@ -144,7 +146,10 @@ void WalletPanelHandler::RequestPermission(
   auto address = brave_wallet::GetAccountPermissionIdentifier(account_id);
 
   permissions::BraveWalletPermissionContext::RequestWalletPermissions(
-      {address}, *permission, rfh->GetLastCommittedOrigin(), rfh,
+      {address},
+      permissions::PermissionUtil::ContentSettingsTypeToPermissionType(
+          *content_settings_type),
+      rfh->GetLastCommittedOrigin(), rfh,
       base::BindOnce(
           [](RequestPermissionCallback cb, std::string address,
              std::vector<std::string> allowed_addresses) {

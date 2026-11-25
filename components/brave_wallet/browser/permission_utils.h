@@ -14,19 +14,12 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 class GURL;
 namespace url {
 class Origin;
-}
-
-namespace blink {
-enum class PermissionType;
-}
-
-namespace permissions {
-enum class RequestType;
 }
 
 namespace brave_wallet {
@@ -42,7 +35,7 @@ enum class CoinType : int32_t;
  * https://origin as the original requesting_origin and 0x123... as the account
  * address.
  */
-bool ParseRequestingOriginFromSubRequest(permissions::RequestType type,
+bool ParseRequestingOriginFromSubRequest(ContentSettingsType type,
                                          const url::Origin& origin,
                                          url::Origin* requesting_origin,
                                          std::string* account);
@@ -52,7 +45,7 @@ bool ParseRequestingOriginFromSubRequest(permissions::RequestType type,
  * new_origin. If type != kBraveEthereum, there would be separator like
  * https://origin__BrG4...
  */
-std::optional<url::Origin> GetSubRequestOrigin(permissions::RequestType type,
+std::optional<url::Origin> GetSubRequestOrigin(ContentSettingsType type,
                                                const url::Origin& old_origin,
                                                std::string_view account);
 
@@ -66,10 +59,7 @@ GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
                                 const std::vector<std::string>& accounts,
                                 const url::Origin& origin);
 
-std::optional<blink::PermissionType> CoinTypeToPermissionType(
-    mojom::CoinType coin_type);
-
-std::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
+std::optional<ContentSettingsType> CoinTypeToContentSettingsType(
     mojom::CoinType coin_type);
 
 }  // namespace brave_wallet

@@ -12,6 +12,8 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/android/chrome_jni_headers/ConnectAccountFragment_jni.h"
+#include "components/permissions/permission_util.h"
+#include "components/permissions/request_type.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 
@@ -67,22 +69,26 @@ static void JNI_ConnectAccountFragment_ConnectAccount(
       static_cast<brave_wallet::mojom::CoinType>(account_id_coin);
   CHECK(brave_wallet::mojom::IsKnownEnumValue(coin));
 
-  auto request_type = brave_wallet::CoinTypeToPermissionRequestType(coin);
-  auto permission = brave_wallet::CoinTypeToPermissionType(coin);
+  auto content_settings_type =
+      brave_wallet::CoinTypeToContentSettingsType(coin);
 
-  if (!request_type || !permission) {
+  if (!content_settings_type) {
     PlainCallConnectAccountCallback(env, java_callback, false);
     return;
   }
 
   if (permissions::BraveWalletPermissionContext::HasRequestsInProgress(
-          rfh, *request_type)) {
+          rfh, permissions::ContentSettingsTypeToRequestType(
+                   *content_settings_type))) {
     PlainCallConnectAccountCallback(env, java_callback, false);
     return;
   }
 
   permissions::BraveWalletPermissionContext::RequestWalletPermissions(
-      {account_address}, *permission, rfh->GetLastCommittedOrigin(), rfh,
+      {account_address},
+      permissions::PermissionUtil::ContentSettingsTypeToPermissionType(
+          *content_settings_type),
+      rfh->GetLastCommittedOrigin(), rfh,
       base::BindOnce(
           [](JNIEnv* env,
              base::android::ScopedJavaGlobalRef<jobject> java_callback,

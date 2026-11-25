@@ -296,9 +296,8 @@ TEST_F(BraveWalletPermissionContextUnitTest, GetWebSitesWithPermission) {
             entry.permission, browser_context());
     ASSERT_EQ(web_sites.size(), 1u);
 
-    auto origin_wallet_address = brave_wallet::GetSubRequestOrigin(
-        permissions::ContentSettingsTypeToRequestType(entry.type), origin,
-        entry.address);
+    auto origin_wallet_address =
+        brave_wallet::GetSubRequestOrigin(entry.type, origin, entry.address);
     ASSERT_TRUE(origin_wallet_address);
     // origin_wallet_address looks like that
     // "https://www.brave.com__brg44hdsehzapvs8beqzvkq4egwevs3fre6ze2eno6s8/"

@@ -336,9 +336,14 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
   std::vector<std::string> accounts;
   url::Origin requesting_origin;
   for (const auto& request : manager->Requests()) {
+    const auto content_settings_type =
+        permissions::RequestTypeToContentSettingsType(request->request_type());
+    if (!content_settings_type) {
+      continue;
+    }
     std::string account;
     if (!ParseRequestingOriginFromSubRequest(
-            request->request_type(),
+            *content_settings_type,
             url::Origin::Create(request->requesting_origin()),
             &requesting_origin, &account)) {
       continue;

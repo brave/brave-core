@@ -47,8 +47,10 @@ PermissionOriginLifetimeMonitorImpl::SubscribeToPermissionOriginDestruction(
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   url::Origin sub_request_origin;
   bool is_sub_request_origin = false;
-  for (auto type : {RequestType::kBraveEthereum, RequestType::kBraveSolana,
-                    RequestType::kBraveCardano, RequestType::kBravePolkadot}) {
+  for (auto type :
+       {ContentSettingsType::BRAVE_ETHEREUM, ContentSettingsType::BRAVE_SOLANA,
+        ContentSettingsType::BRAVE_CARDANO,
+        ContentSettingsType::BRAVE_POLKADOT}) {
     if (brave_wallet::ParseRequestingOriginFromSubRequest(
             type, url::Origin::Create(requesting_origin), &sub_request_origin,
             nullptr)) {
