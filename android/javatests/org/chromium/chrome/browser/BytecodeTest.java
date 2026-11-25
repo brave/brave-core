@@ -436,8 +436,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tabmodel/TabCollectionTabModelImpl"));
         Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/identity_disc/IdentityDiscController"));
-        Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/password_manager/settings/PasswordsPreference")); // presubmit: ignore-long-line
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs"));
@@ -915,12 +913,6 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         boolean.class,
                         String.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/identity_disc/IdentityDiscController",
-                        "calculateButtonData",
-                        MethodModifier.REGULAR,
-                        void.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/password_manager/settings/PasswordsPreference",
@@ -2200,19 +2192,6 @@ public class BytecodeTest {
                         "org/chromium/base/shared_preferences/StrictPreferenceKeyChecker",
                         "org/chromium/base/shared_preferences/BraveStrictPreferenceKeyChecker",
                         PreferenceKeyRegistry.class));
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/identity_disc/IdentityDiscController",
-                        "org/chromium/chrome/browser/identity_disc/BraveIdentityDiscController",
-                        Activity.class,
-                        WindowAndroid.class,
-                        ActivityResultTracker.class,
-                        DeviceLockActivityLauncher.class,
-                        MonotonicObservableSupplier.class,
-                        BottomSheetController.class,
-                        ModalDialogManager.class,
-                        SnackbarManager.class,
-                        Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs",

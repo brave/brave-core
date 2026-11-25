@@ -19,7 +19,6 @@ public class BraveCachedFlag extends CachedFlag {
             "IncognitoReauthenticationForAndroid";
     private static final String MAGIC_STACK_ANDROID = "MagicStackAndroid";
     private static final String RETAIN_OMNIBOX_ON_FOCUS = "RetainOmniboxOnFocus";
-    private static final String SIGNIN_LEVEL_UP_BUTTON = "SigninLevelUpButton";
     private static final String SURFACE_POLISH = "SurfacePolish";
     private static final String AUTOFILL_ENABLE_LOYALTY_CARDS_FILLING =
             "AutofillEnableLoyaltyCardsFilling";
@@ -36,7 +35,6 @@ public class BraveCachedFlag extends CachedFlag {
         sFlags.put(INCOGNITO_REAUTHENTICATION_FOR_ANDROID, true);
         sFlags.put(MAGIC_STACK_ANDROID, false);
         sFlags.put(RETAIN_OMNIBOX_ON_FOCUS, true);
-        sFlags.put(SIGNIN_LEVEL_UP_BUTTON, false);
         sFlags.put(SURFACE_POLISH, false);
     }
 

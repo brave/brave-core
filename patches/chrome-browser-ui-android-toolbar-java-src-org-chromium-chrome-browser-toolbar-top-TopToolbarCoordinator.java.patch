@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator.java
+index 3a1bc558f383956f3de6749488e4820ac81e4f74..209db06f7de014614b6ccddad6b6d4a6518a5441 100644
+--- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator.java
++++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator.java
+@@ -316,7 +316,7 @@ public class TopToolbarCoordinator implements Toolbar, TopControlLayer {
+                         mToolbarLayout,
+                         () -> toolbarDataProvider.getTab());
+ 
+-        ViewStub signinButtonStub = mToolbarLayout.findViewById(R.id.signin_button_stub);
++        ViewStub signinButtonStub = null;
+         if (signinButtonStub != null) {
+             mSigninButtonCoordinator =
+                     new SigninButtonCoordinator(
