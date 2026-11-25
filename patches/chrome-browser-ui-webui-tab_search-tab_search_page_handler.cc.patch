@@ -1,0 +1,324 @@
+diff --git a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
+index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883bf6d9d72 100644
+--- a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
++++ b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
+@@ -171,7 +171,7 @@ tab_search::mojom::SplitTabLayout GetMojoSplitLayout(
+ 
+ }  // namespace
+ 
+-TabSearchPageHandler::TabSearchPageHandler(
++TabSearchPageHandler_ChromiumImpl::TabSearchPageHandler_ChromiumImpl(
+     mojo::PendingReceiver<tab_search::mojom::PageHandler> receiver,
+     mojo::PendingRemote<tab_search::mojom::Page> page,
+     content::WebUI* web_ui,
+@@ -188,20 +188,20 @@ TabSearchPageHandler::TabSearchPageHandler(
+       debounce_timer_(std::make_unique<base::RetainingOneShotTimer>(
+           FROM_HERE,
+           kTabsChangeDelay,
+-          base::BindRepeating(&TabSearchPageHandler::NotifyTabsChanged,
++          base::BindRepeating(&TabSearchPageHandler_ChromiumImpl::NotifyTabsChanged,
+                               base::Unretained(this)))),
+       log_metrics_(log_metrics),
+       browser_window_changed_subscription_(
+           webui::RegisterBrowserWindowInterfaceChanged(
+               web_ui->GetWebContents(),
+               base::BindRepeating(
+-                  &TabSearchPageHandler::BrowserWindowInterfaceChanged,
++                  &TabSearchPageHandler_ChromiumImpl::BrowserWindowInterfaceChanged,
+                   base::Unretained(this)))),
+       aggregator_(std::make_unique<tabs_api::TabStripServiceAggregator>(
+           std::make_unique<tabs_api::BrowserTabStripServiceTracker>(
+               profile_,
+               base::BindRepeating(&ShouldTrackBrowser, profile_)),
+-          base::BindRepeating(&TabSearchPageHandler::OnTabEvents,
++          base::BindRepeating(&TabSearchPageHandler_ChromiumImpl::OnTabEvents,
+                               base::Unretained(this)))) {
+   if (IsWebContentsVisible()) {
+     bubble_showing_ = true;
+@@ -209,14 +209,14 @@ TabSearchPageHandler::TabSearchPageHandler(
+   BrowserWindowInterfaceChanged();
+ }
+ 
+-TabSearchPageHandler::~TabSearchPageHandler() {
++TabSearchPageHandler_ChromiumImpl::~TabSearchPageHandler_ChromiumImpl() {
+   if (bubble_showing_) {
+     LogCloseMetrics();
+   }
+   pref_change_registrar_.Reset();
+ }
+ 
+-void TabSearchPageHandler::CloseTab(int32_t tab_id) {
++void TabSearchPageHandler_ChromiumImpl::CloseTab(int32_t tab_id) {
+   tabs::TabInterface* const tab = GetTabInterface(tab_id);
+   if (!tab) {
+     return;
+@@ -246,7 +246,7 @@ void TabSearchPageHandler::CloseTab(int32_t tab_id) {
+   // Do not add code past this point.
+ }
+ 
+-void TabSearchPageHandler::CloseTabs(const std::vector<int32_t>& tab_ids) {
++void TabSearchPageHandler_ChromiumImpl::CloseTabs(const std::vector<int32_t>& tab_ids) {
+   std::vector<tabs_api::NodeId> nodes;
+   std::optional<split_tabs::SplitTabId> split_id;
+   tabs::TabInterface* valid_tab = nullptr;
+@@ -294,7 +294,7 @@ void TabSearchPageHandler::CloseTabs(const std::vector<int32_t>& tab_ids) {
+   CHECK(result.has_value(), base::NotFatalUntil::M162);
+ }
+ 
+-void TabSearchPageHandler::CloseWebUiTab() {
++void TabSearchPageHandler_ChromiumImpl::CloseWebUiTab() {
+   tabs::TabInterface* const tab =
+       tabs::TabInterface::GetFromContents(web_ui_->GetWebContents());
+   if (tab) {
+@@ -305,12 +305,12 @@ void TabSearchPageHandler::CloseWebUiTab() {
+ 
+ // Tab Search UI can also hosted inside a tab and so we still need to
+ // be able to handle browser window changes.
+-void TabSearchPageHandler::BrowserWindowInterfaceChanged() {
++void TabSearchPageHandler_ChromiumImpl::BrowserWindowInterfaceChanged() {
+   browser_ = webui::GetBrowserWindowInterface(web_ui_->GetWebContents());
+   page_->HostWindowChanged();
+ }
+ 
+-void TabSearchPageHandler::GetProfileData(GetProfileDataCallback callback) {
++void TabSearchPageHandler_ChromiumImpl::GetProfileData(GetProfileDataCallback callback) {
+   TRACE_EVENT0("browser", "TabSearchPageHandler:GetProfileTabs");
+   auto profile_tabs = CreateProfileData();
+   // On first run record the number of windows and tabs open for the given
+@@ -336,7 +336,7 @@ void TabSearchPageHandler::GetProfileData(GetProfileDataCallback callback) {
+   std::move(callback).Run(std::move(profile_tabs));
+ }
+ 
+-tabs::TabInterface* TabSearchPageHandler::GetTabInterface(int32_t tab_id) {
++tabs::TabInterface* TabSearchPageHandler_ChromiumImpl::GetTabInterface(int32_t tab_id) {
+   const tabs::TabHandle handle = tabs::TabHandle(tab_id);
+   tabs::TabInterface* const tab = handle.Get();
+   if (!tab) {
+@@ -349,7 +349,7 @@ tabs::TabInterface* TabSearchPageHandler::GetTabInterface(int32_t tab_id) {
+   return tab;
+ }
+ 
+-void TabSearchPageHandler::GetIsSplit(GetIsSplitCallback callback) {
++void TabSearchPageHandler_ChromiumImpl::GetIsSplit(GetIsSplitCallback callback) {
+   bool is_split = false;
+   GURL url = web_ui_->GetWebContents()->GetURL();
+   if (search::IsSplitViewNewTabPage(url)) {
+@@ -359,7 +359,7 @@ void TabSearchPageHandler::GetIsSplit(GetIsSplitCallback callback) {
+   std::move(callback).Run(is_split);
+ }
+ 
+-void TabSearchPageHandler::SwitchToTab(
++void TabSearchPageHandler_ChromiumImpl::SwitchToTab(
+     tab_search::mojom::SwitchToTabInfoPtr switch_to_tab_info) {
+   tabs::TabInterface* const tab = GetTabInterface(switch_to_tab_info->tab_id);
+   if (!tab) {
+@@ -393,7 +393,7 @@ void TabSearchPageHandler::SwitchToTab(
+   }
+ }
+ 
+-void TabSearchPageHandler::OpenRecentlyClosedEntry(int32_t session_id) {
++void TabSearchPageHandler_ChromiumImpl::OpenRecentlyClosedEntry(int32_t session_id) {
+   sessions::TabRestoreService* tab_restore_service =
+       TabRestoreServiceFactory::GetForProfile(profile_);
+   if (!tab_restore_service) {
+@@ -411,7 +411,7 @@ void TabSearchPageHandler::OpenRecentlyClosedEntry(int32_t session_id) {
+       ui::mojom::WindowOpenDisposition::kNewForegroundTab);
+ }
+ 
+-void TabSearchPageHandler::ReplaceActiveSplitTab(int32_t replacement_tab_id) {
++void TabSearchPageHandler_ChromiumImpl::ReplaceActiveSplitTab(int32_t replacement_tab_id) {
+   tabs::TabInterface* const active_tab = browser_->GetActiveTabInterface();
+   if (active_tab->GetSplit().has_value()) {
+     const auto result = GetTabStripService(browser_)->ReplaceTabInSplit(
+@@ -421,7 +421,7 @@ void TabSearchPageHandler::ReplaceActiveSplitTab(int32_t replacement_tab_id) {
+   }
+ }
+ 
+-void TabSearchPageHandler::SaveRecentlyClosedExpandedPref(bool expanded) {
++void TabSearchPageHandler_ChromiumImpl::SaveRecentlyClosedExpandedPref(bool expanded) {
+   profile_->GetPrefs()->SetBoolean(
+       tab_search_prefs::kTabSearchRecentlyClosedSectionExpanded, expanded);
+ 
+@@ -433,7 +433,7 @@ void TabSearchPageHandler::SaveRecentlyClosedExpandedPref(bool expanded) {
+   }
+ }
+ 
+-void TabSearchPageHandler::StartTabGroupTutorial() {
++void TabSearchPageHandler_ChromiumImpl::StartTabGroupTutorial() {
+   // Close the tab search bubble if showing.
+   auto embedder = webui_controller_->embedder();
+   if (embedder) {
+@@ -455,14 +455,14 @@ void TabSearchPageHandler::StartTabGroupTutorial() {
+   tutorial_service->StartTutorial(tutorial_id, context);
+ }
+ 
+-void TabSearchPageHandler::MaybeShowUI() {
++void TabSearchPageHandler_ChromiumImpl::MaybeShowUI() {
+   auto embedder = webui_controller_->embedder();
+   if (embedder) {
+     embedder->ShowUI();
+   }
+ }
+ 
+-tab_search::mojom::ProfileDataPtr TabSearchPageHandler::CreateProfileData() {
++tab_search::mojom::ProfileDataPtr TabSearchPageHandler_ChromiumImpl::CreateProfileData() {
+   auto profile_data = tab_search::mojom::ProfileData::New();
+ 
+   std::set<DedupKey> tab_dedup_keys;
+@@ -507,7 +507,7 @@ tab_search::mojom::ProfileDataPtr TabSearchPageHandler::CreateProfileData() {
+   return profile_data;
+ }
+ 
+-void TabSearchPageHandler::WalkContainer(
++void TabSearchPageHandler_ChromiumImpl::WalkContainer(
+     const tabs_api::mojom::ContainerPtr& container,
+     tab_search::mojom::Window* window,
+     tab_search::mojom::ProfileData* profile_data,
+@@ -552,7 +552,7 @@ void TabSearchPageHandler::WalkContainer(
+   }
+ }
+ 
+-void TabSearchPageHandler::AddRecentlyClosedEntries(
++void TabSearchPageHandler_ChromiumImpl::AddRecentlyClosedEntries(
+     std::vector<tab_search::mojom::RecentlyClosedTabPtr>& recently_closed_tabs,
+     std::vector<tab_search::mojom::RecentlyClosedTabGroupPtr>&
+         recently_closed_tab_groups,
+@@ -708,7 +708,7 @@ void TabSearchPageHandler::AddRecentlyClosedEntries(
+   }
+ }
+ 
+-bool TabSearchPageHandler::AddRecentlyClosedTab(
++bool TabSearchPageHandler_ChromiumImpl::AddRecentlyClosedTab(
+     sessions::tab_restore::Tab* tab,
+     const base::Time& close_time,
+     std::vector<tab_search::mojom::RecentlyClosedTabPtr>& recently_closed_tabs,
+@@ -741,7 +741,7 @@ bool TabSearchPageHandler::AddRecentlyClosedTab(
+   return true;
+ }
+ 
+-tab_search::mojom::TabPtr TabSearchPageHandler::GetTab(
++tab_search::mojom::TabPtr TabSearchPageHandler_ChromiumImpl::GetTab(
+     tabs::TabInterface* tab) const {
+   auto tab_mojom_data = tab_search::mojom::Tab::New();
+   content::WebContents* contents = tab->GetContents();
+@@ -856,7 +856,7 @@ tab_search::mojom::TabPtr TabSearchPageHandler::GetTab(
+ }
+ 
+ tab_search::mojom::RecentlyClosedTabPtr
+-TabSearchPageHandler::GetRecentlyClosedTab(sessions::tab_restore::Tab* tab,
++TabSearchPageHandler_ChromiumImpl::GetRecentlyClosedTab(sessions::tab_restore::Tab* tab,
+                                            const base::Time& close_time) {
+   auto recently_closed_tab = tab_search::mojom::RecentlyClosedTab::New();
+   CHECK(tab->navigations.size() > 0, base::NotFatalUntil::M162);
+@@ -887,12 +887,12 @@ TabSearchPageHandler::GetRecentlyClosedTab(sessions::tab_restore::Tab* tab,
+   return recently_closed_tab;
+ }
+ 
+-tabs_api::TabStripService* TabSearchPageHandler::GetTabStripService(
++tabs_api::TabStripService* TabSearchPageHandler_ChromiumImpl::GetTabStripService(
+     BrowserWindowInterface* browser) const {
+   return TabStripServiceFeature::From(browser)->GetTabStripService();
+ }
+ 
+-void TabSearchPageHandler::OnTabEvents(
++void TabSearchPageHandler_ChromiumImpl::OnTabEvents(
+     const std::vector<tabs_api::mojom::TabsEventPtr>& events) {
+   const auto* preload_state =
+       WebUIContentsPreloadState::FromWebContents(web_ui_->GetWebContents());
+@@ -915,7 +915,7 @@ void TabSearchPageHandler::OnTabEvents(
+   }
+ }
+ 
+-void TabSearchPageHandler::OnNodesRemoved(
++void TabSearchPageHandler_ChromiumImpl::OnNodesRemoved(
+     const tabs_api::mojom::OnNodesClosedEventPtr& event) {
+   std::vector<int> tab_ids;
+   std::set<SessionID> tab_restore_ids;
+@@ -943,7 +943,7 @@ void TabSearchPageHandler::OnNodesRemoved(
+   }
+ }
+ 
+-void TabSearchPageHandler::OnTabsRemoved(std::vector<int> tab_ids,
++void TabSearchPageHandler_ChromiumImpl::OnTabsRemoved(std::vector<int> tab_ids,
+                                          std::set<SessionID> tab_restore_ids) {
+   auto tabs_removed_info = tab_search::mojom::TabsRemovedInfo::New();
+   tabs_removed_info->tab_ids = std::move(tab_ids);
+@@ -970,7 +970,7 @@ void TabSearchPageHandler::OnTabsRemoved(std::vector<int> tab_ids,
+   page_->TabsRemoved(std::move(tabs_removed_info));
+ }
+ 
+-void TabSearchPageHandler::OnTabDataChanged(
++void TabSearchPageHandler_ChromiumImpl::OnTabDataChanged(
+     const tabs_api::mojom::TabChange& event) {
+   // Ignore if the UI is hidden or the event doesn't contain
+   // relevant tab data changes.
+@@ -1000,7 +1000,7 @@ void TabSearchPageHandler::OnTabDataChanged(
+   page_->TabUpdated(std::move(tab_update_info));
+ }
+ 
+-void TabSearchPageHandler::OnSplitTabRemoved() {
++void TabSearchPageHandler_ChromiumImpl::OnSplitTabRemoved() {
+   GURL url = web_ui_->GetWebContents()->GetURL();
+   if (!search::IsSplitViewNewTabPage(url)) {
+     return;
+@@ -1011,13 +1011,13 @@ void TabSearchPageHandler::OnSplitTabRemoved() {
+   }
+ }
+ 
+-void TabSearchPageHandler::ScheduleDebounce() {
++void TabSearchPageHandler_ChromiumImpl::ScheduleDebounce() {
+   if (!debounce_timer_->IsRunning()) {
+     debounce_timer_->Reset();
+   }
+ }
+ 
+-void TabSearchPageHandler::NotifyTabsChanged() {
++void TabSearchPageHandler_ChromiumImpl::NotifyTabsChanged() {
+   if (!IsWebContentsVisible()) {
+     return;
+   }
+@@ -1025,26 +1025,26 @@ void TabSearchPageHandler::NotifyTabsChanged() {
+   debounce_timer_->Stop();
+ }
+ 
+-void TabSearchPageHandler::OnVisibilityChanged(content::Visibility visibility) {
++void TabSearchPageHandler_ChromiumImpl::OnVisibilityChanged(content::Visibility visibility) {
+   if (bubble_showing_ && visibility == content::Visibility::HIDDEN) {
+     LogCloseMetrics();
+   }
+ }
+ 
+-bool TabSearchPageHandler::IsWebContentsVisible() {
++bool TabSearchPageHandler_ChromiumImpl::IsWebContentsVisible() {
+   auto visibility = web_ui_->GetWebContents()->GetVisibility();
+   return visibility == content::Visibility::VISIBLE ||
+          visibility == content::Visibility::OCCLUDED;
+ }
+ 
+-void TabSearchPageHandler::BeforeBubbleWidgetShowed() {
++void TabSearchPageHandler_ChromiumImpl::BeforeBubbleWidgetShowed() {
+   NotifyTabsChanged();
+   bubble_showing_ = true;
+   action_ = TabSearchCloseAction::kNoAction;
+   num_tabs_closed_ = 0;
+ }
+ 
+-void TabSearchPageHandler::LogCloseMetrics() {
++void TabSearchPageHandler_ChromiumImpl::LogCloseMetrics() {
+   if (log_metrics_) {
+     base::UmaHistogramCounts1000("Tabs.TabSearch.NumTabsClosedPerInstance",
+                                  num_tabs_closed_);
+@@ -1053,11 +1053,11 @@ void TabSearchPageHandler::LogCloseMetrics() {
+   bubble_showing_ = false;
+ }
+ 
+-void TabSearchPageHandler::SetTimerForTesting(
++void TabSearchPageHandler_ChromiumImpl::SetTimerForTesting(
+     std::unique_ptr<base::RetainingOneShotTimer> timer) {
+   debounce_timer_ = std::move(timer);
+   debounce_timer_->Start(
+       FROM_HERE, kTabsChangeDelay,
+-      base::BindRepeating(&TabSearchPageHandler::NotifyTabsChanged,
++      base::BindRepeating(&TabSearchPageHandler_ChromiumImpl::NotifyTabsChanged,
+                           base::Unretained(this)));
+ }

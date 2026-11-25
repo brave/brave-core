@@ -1,0 +1,48 @@
+diff --git a/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.h b/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.h
+index 5fac04d607288c8dea520234a2f6dc5e5d1be398..b7d689d3ef32c0ede0d43ded72ed7755d4580e18 100644
+--- a/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.h
++++ b/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.h
+@@ -31,7 +31,7 @@ namespace page_image_service {
+ class ImageServiceHandler;
+ }  // namespace page_image_service
+ 
+-class BookmarksSidePanelUI;
++class BookmarksSidePanelUI_ChromiumImpl;
+ 
+ // Merge nodes Side Panel IDs. Those IDs do not map to any real bookmark ID.
+ extern const char kSidePanelRootBookmarkID[];
+@@ -40,26 +40,26 @@ extern const char kSidePanelOtherBookmarksID[];
+ extern const char kSidePanelMobileBookmarksID[];
+ extern const char kSidePanelManagedBookmarksID[];
+ 
+-class BookmarksSidePanelUIConfig
+-    : public DefaultTopChromeWebUIConfig<BookmarksSidePanelUI> {
++class BookmarksSidePanelUIConfig_Unused
++    : public DefaultTopChromeWebUIConfig<BookmarksSidePanelUI_ChromiumImpl> {
+  public:
+-  BookmarksSidePanelUIConfig();
++  BookmarksSidePanelUIConfig_Unused();
+ 
+   // DefaultTopChromeWebUIConfig:
+   bool IsPreloadable() override;
+   std::optional<int> GetCommandIdForTesting() override;
+ };
+ 
+-class BookmarksSidePanelUI
++class BookmarksSidePanelUI_ChromiumImpl
+     : public TopChromeWebUIController,
+       public side_panel::mojom::BookmarksPageHandlerFactory,
+       public shopping_service::mojom::ShoppingServiceHandlerFactory,
+       public commerce::price_tracking::mojom::PriceTrackingHandlerFactory {
+  public:
+-  explicit BookmarksSidePanelUI(content::WebUI* web_ui);
+-  BookmarksSidePanelUI(const BookmarksSidePanelUI&) = delete;
+-  BookmarksSidePanelUI& operator=(const BookmarksSidePanelUI&) = delete;
+-  ~BookmarksSidePanelUI() override;
++  explicit BookmarksSidePanelUI_ChromiumImpl(content::WebUI* web_ui);
++  BookmarksSidePanelUI_ChromiumImpl(const BookmarksSidePanelUI_ChromiumImpl&) = delete;
++  BookmarksSidePanelUI_ChromiumImpl& operator=(const BookmarksSidePanelUI_ChromiumImpl&) = delete;
++  ~BookmarksSidePanelUI_ChromiumImpl() override;
+ 
+   // Instantiates the implementor of the mojom::PageHandlerFactory mojo
+   // interface passing the pending receiver that will be internally bound.

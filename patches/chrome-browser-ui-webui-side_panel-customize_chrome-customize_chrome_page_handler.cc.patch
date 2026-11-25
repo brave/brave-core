@@ -1,0 +1,505 @@
+diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.cc b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.cc
+index b4753b795e5139cb09d7960d05a2dfec118ff4b9..590f7b45c317a95d18060337c7b1a205eb6247c1 100644
+--- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.cc
++++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.cc
+@@ -83,7 +83,7 @@ void OpenWebPage(Profile* profile, const GURL& url) {
+ }  // namespace
+ 
+ // static
+-bool CustomizeChromePageHandler::IsSupported(
++bool CustomizeChromePageHandler_ChromiumImpl::IsSupported(
+     NtpCustomBackgroundService* ntp_custom_background_service,
+     Profile* profile) {
+   if (!ntp_custom_background_service) {
+@@ -101,8 +101,8 @@ bool CustomizeChromePageHandler::IsSupported(
+   return true;
+ }
+ 
+-CustomizeChromePageHandler::CustomizeChromePageHandler(
+-    mojo::PendingReceiver<side_panel::mojom::CustomizeChromePageHandler>
++CustomizeChromePageHandler_ChromiumImpl::CustomizeChromePageHandler_ChromiumImpl(
++    mojo::PendingReceiver<side_panel::mojom::CustomizeChromePageHandler_ChromiumImpl>
+         pending_page_handler,
+     mojo::PendingRemote<side_panel::mojom::CustomizeChromePage> pending_page,
+     NtpCustomBackgroundService* ntp_custom_background_service,
+@@ -121,7 +121,7 @@ CustomizeChromePageHandler::CustomizeChromePageHandler(
+           webui::RegisterBrowserWindowInterfaceChanged(
+               web_contents_,
+               base::BindRepeating(
+-                  &CustomizeChromePageHandler::OnBrowserWindowInterfaceChanged,
++                  &CustomizeChromePageHandler_ChromiumImpl::OnBrowserWindowInterfaceChanged,
+                   base::Unretained(this)))),
+       page_(std::move(pending_page)),
+       receiver_(this, std::move(pending_page_handler)),
+@@ -139,44 +139,44 @@ CustomizeChromePageHandler::CustomizeChromePageHandler(
+   pref_change_registrar_.Init(profile_->GetPrefs());
+   pref_change_registrar_.Add(
+       prefs::kNtpModulesVisible,
+-      base::BindRepeating(&CustomizeChromePageHandler::UpdateModulesSettings,
++      base::BindRepeating(&CustomizeChromePageHandler_ChromiumImpl::UpdateModulesSettings,
+                           base::Unretained(this)));
+   pref_change_registrar_.Add(
+       prefs::kNtpDisabledModules,
+-      base::BindRepeating(&CustomizeChromePageHandler::UpdateModulesSettings,
++      base::BindRepeating(&CustomizeChromePageHandler_ChromiumImpl::UpdateModulesSettings,
+                           base::Unretained(this)));
+   pref_change_registrar_.Add(
+       ntp_prefs::kNtpCustomLinksVisible,
+       base::BindRepeating(
+-          &CustomizeChromePageHandler::UpdateMostVisitedSettings,
++          &CustomizeChromePageHandler_ChromiumImpl::UpdateMostVisitedSettings,
+           base::Unretained(this)));
+   pref_change_registrar_.Add(
+       ntp_prefs::kNtpEnterpriseShortcutsVisible,
+       base::BindRepeating(
+-          &CustomizeChromePageHandler::UpdateMostVisitedSettings,
++          &CustomizeChromePageHandler_ChromiumImpl::UpdateMostVisitedSettings,
+           base::Unretained(this)));
+   pref_change_registrar_.Add(
+       ntp_prefs::kNtpPersonalShortcutsVisible,
+       base::BindRepeating(
+-          &CustomizeChromePageHandler::UpdateMostVisitedSettings,
++          &CustomizeChromePageHandler_ChromiumImpl::UpdateMostVisitedSettings,
+           base::Unretained(this)));
+   pref_change_registrar_.Add(
+       ntp_prefs::kNtpShortcutsVisible,
+       base::BindRepeating(
+-          &CustomizeChromePageHandler::UpdateMostVisitedSettings,
++          &CustomizeChromePageHandler_ChromiumImpl::UpdateMostVisitedSettings,
+           base::Unretained(this)));
+   ntp_tiles::MostVisitedSites::AddEnterpriseShortcutsObserver(
+       pref_change_registrar_,
+       base::BindRepeating(
+-          &CustomizeChromePageHandler::UpdateMostVisitedSettings,
++          &CustomizeChromePageHandler_ChromiumImpl::UpdateMostVisitedSettings,
+           base::Unretained(this)));
+   pref_change_registrar_.Add(
+       prefs::kNtpHiddenModules,
+-      base::BindRepeating(&CustomizeChromePageHandler::UpdateModulesSettings,
++      base::BindRepeating(&CustomizeChromePageHandler_ChromiumImpl::UpdateModulesSettings,
+                           base::Unretained(this)));
+   pref_change_registrar_.Add(
+       prefs::kNtpToolChipsVisible,
+-      base::BindRepeating(&CustomizeChromePageHandler::UpdateToolChipsSettings,
++      base::BindRepeating(&CustomizeChromePageHandler_ChromiumImpl::UpdateToolChipsSettings,
+                           base::Unretained(this)));
+ 
+   ntp_custom_background_service_observation_.Observe(
+@@ -187,7 +187,7 @@ CustomizeChromePageHandler::CustomizeChromePageHandler(
+   }
+ }
+ 
+-CustomizeChromePageHandler::~CustomizeChromePageHandler() {
++CustomizeChromePageHandler_ChromiumImpl::~CustomizeChromePageHandler_ChromiumImpl() {
+   if (ntp_background_service_) {
+     ntp_background_service_->RemoveObserver(this);
+   }
+@@ -199,7 +199,7 @@ CustomizeChromePageHandler::~CustomizeChromePageHandler() {
+   }
+ }
+ 
+-void CustomizeChromePageHandler::ScrollToSection(
++void CustomizeChromePageHandler_ChromiumImpl::ScrollToSection(
+     CustomizeChromeSection section) {
+   last_requested_section_ = section;
+   if (section == CustomizeChromeSection::kUnspecified) {
+@@ -209,28 +209,28 @@ void CustomizeChromePageHandler::ScrollToSection(
+   page_->ScrollToSection(section);
+ }
+ 
+-void CustomizeChromePageHandler::AttachedTabStateUpdated(const GURL& url) {
++void CustomizeChromePageHandler_ChromiumImpl::AttachedTabStateUpdated(const GURL& url) {
+   last_source_url_ = url;
+   page_->AttachedTabStateUpdated(GetNewTabPageType(url));
+ }
+ 
+-bool CustomizeChromePageHandler::IsNtpManagedByThirdPartySearchEngine() const {
++bool CustomizeChromePageHandler_ChromiumImpl::IsNtpManagedByThirdPartySearchEngine() const {
+   return template_url_service_ &&
+          template_url_service_->GetDefaultSearchProvider() &&
+          !template_url_service_->GetDefaultSearchProvider()->HasGoogleBaseURLs(
+              template_url_service_->search_terms_data());
+ }
+ 
+-void CustomizeChromePageHandler::SetDefaultColor() {
++void CustomizeChromePageHandler_ChromiumImpl::SetDefaultColor() {
+   theme_service_->UseDeviceTheme(false);
+   theme_service_->UseDefaultTheme();
+ }
+ 
+-void CustomizeChromePageHandler::SetFollowDeviceTheme(bool follow) {
++void CustomizeChromePageHandler_ChromiumImpl::SetFollowDeviceTheme(bool follow) {
+   theme_service_->UseDeviceTheme(follow);
+ }
+ 
+-void CustomizeChromePageHandler::SetBackgroundImage(
++void CustomizeChromePageHandler_ChromiumImpl::SetBackgroundImage(
+     const std::string& attribution_1,
+     const std::string& attribution_2,
+     const GURL& attribution_url,
+@@ -243,7 +243,7 @@ void CustomizeChromePageHandler::SetBackgroundImage(
+   MaybeDisableExtensionOverridingNtp();
+ }
+ 
+-void CustomizeChromePageHandler::SetDailyRefreshCollectionId(
++void CustomizeChromePageHandler_ChromiumImpl::SetDailyRefreshCollectionId(
+     const std::string& collection_id) {
+   // Only populating the |collection_id| turns on refresh daily which overrides
+   // the the selected image.
+@@ -254,7 +254,7 @@ void CustomizeChromePageHandler::SetDailyRefreshCollectionId(
+   MaybeDisableExtensionOverridingNtp();
+ }
+ 
+-void CustomizeChromePageHandler::GetBackgroundCollections(
++void CustomizeChromePageHandler_ChromiumImpl::GetBackgroundCollections(
+     GetBackgroundCollectionsCallback callback) {
+   if (!ntp_background_service_ || background_collections_callback_) {
+     std::move(callback).Run(
+@@ -266,7 +266,7 @@ void CustomizeChromePageHandler::GetBackgroundCollections(
+   ntp_background_service_->FetchCollectionInfo();
+ }
+ 
+-void CustomizeChromePageHandler::GetReplacementCollectionPreviewImage(
++void CustomizeChromePageHandler_ChromiumImpl::GetReplacementCollectionPreviewImage(
+     const std::string& collection_id,
+     GetReplacementCollectionPreviewImageCallback callback) {
+   callback = mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+@@ -279,7 +279,7 @@ void CustomizeChromePageHandler::GetReplacementCollectionPreviewImage(
+       collection_id, std::move(callback));
+ }
+ 
+-void CustomizeChromePageHandler::GetBackgroundImages(
++void CustomizeChromePageHandler_ChromiumImpl::GetBackgroundImages(
+     const std::string& collection_id,
+     GetBackgroundImagesCallback callback) {
+   if (background_images_callback_) {
+@@ -297,7 +297,7 @@ void CustomizeChromePageHandler::GetBackgroundImages(
+   ntp_background_service_->FetchCollectionImageInfo(collection_id);
+ }
+ 
+-void CustomizeChromePageHandler::ChooseLocalCustomBackground(
++void CustomizeChromePageHandler_ChromiumImpl::ChooseLocalCustomBackground(
+     ChooseLocalCustomBackgroundCallback callback) {
+   // Early return if the select file dialog is already active.
+   if (select_file_dialog_) {
+@@ -325,14 +325,14 @@ void CustomizeChromePageHandler::ChooseLocalCustomBackground(
+       nullptr);
+ }
+ 
+-void CustomizeChromePageHandler::RemoveBackgroundImage() {
++void CustomizeChromePageHandler_ChromiumImpl::RemoveBackgroundImage() {
+   if (ntp_custom_background_service_) {
+     ntp_custom_background_service_->ResetCustomBackgroundInfo();
+     MaybeDisableExtensionOverridingNtp();
+   }
+ }
+ 
+-void CustomizeChromePageHandler::UpdateTheme() {
++void CustomizeChromePageHandler_ChromiumImpl::UpdateTheme() {
+   if (ntp_custom_background_service_) {
+     ntp_custom_background_service_->RefreshBackgroundIfNeeded();
+   }
+@@ -404,18 +404,18 @@ void CustomizeChromePageHandler::UpdateTheme() {
+   page_->SetTheme(std::move(theme));
+ }
+ 
+-void CustomizeChromePageHandler::UpdateThemeEditable(bool is_theme_editable) {
++void CustomizeChromePageHandler_ChromiumImpl::UpdateThemeEditable(bool is_theme_editable) {
+   page_->SetThemeEditable(is_theme_editable);
+ }
+ 
+-void CustomizeChromePageHandler::OpenChromeWebStore() {
++void CustomizeChromePageHandler_ChromiumImpl::OpenChromeWebStore() {
+   open_url_callback_.Run(
+       GURL("https://chromewebstore.google.com/category/themes"));
+   UMA_HISTOGRAM_ENUMERATION("NewTabPage.ChromeWebStoreOpen",
+                             NtpChromeWebStoreOpen::kAppearance);
+ }
+ 
+-void CustomizeChromePageHandler::OpenThirdPartyThemePage(
++void CustomizeChromePageHandler_ChromiumImpl::OpenThirdPartyThemePage(
+     const std::string& theme_id) {
+   open_url_callback_.Run(GURL("https://chromewebstore.google.com/detail/" +
+                               base::EscapePath(theme_id)));
+@@ -423,7 +423,7 @@ void CustomizeChromePageHandler::OpenThirdPartyThemePage(
+                             NtpChromeWebStoreOpen::kCollections);
+ }
+ 
+-void CustomizeChromePageHandler::OpenChromeWebStoreCategoryPage(
++void CustomizeChromePageHandler_ChromiumImpl::OpenChromeWebStoreCategoryPage(
+     side_panel::mojom::ChromeWebStoreCategory category) {
+   std::string path;
+   NtpChromeWebStoreOpen page;
+@@ -444,7 +444,7 @@ void CustomizeChromePageHandler::OpenChromeWebStoreCategoryPage(
+   UMA_HISTOGRAM_ENUMERATION("NewTabPage.ChromeWebStoreOpen", page);
+ }
+ 
+-void CustomizeChromePageHandler::OpenChromeWebStoreCollectionPage(
++void CustomizeChromePageHandler_ChromiumImpl::OpenChromeWebStoreCollectionPage(
+     side_panel::mojom::ChromeWebStoreCollection collection) {
+   std::string path;
+   NtpChromeWebStoreOpen page;
+@@ -461,7 +461,7 @@ void CustomizeChromePageHandler::OpenChromeWebStoreCollectionPage(
+   UMA_HISTOGRAM_ENUMERATION("NewTabPage.ChromeWebStoreOpen", page);
+ }
+ 
+-void CustomizeChromePageHandler::OpenChromeWebStoreHomePage() {
++void CustomizeChromePageHandler_ChromiumImpl::OpenChromeWebStoreHomePage() {
+   open_url_callback_.Run(
+       GURL("https://chromewebstore.google.com/"
+            "?utm_source=chromeSidebarExtensionCards"));
+@@ -469,7 +469,7 @@ void CustomizeChromePageHandler::OpenChromeWebStoreHomePage() {
+                             NtpChromeWebStoreOpen::kHomePage);
+ }
+ 
+-void CustomizeChromePageHandler::OpenNtpManagedByPage() {
++void CustomizeChromePageHandler_ChromiumImpl::OpenNtpManagedByPage() {
+   const extensions::Extension* extension_managing_ntp =
+       extensions::GetExtensionOverridingNewTabPage(profile_);
+   if (extension_managing_ntp) {
+@@ -482,7 +482,7 @@ void CustomizeChromePageHandler::OpenNtpManagedByPage() {
+   open_url_callback_.Run(GURL(chrome::kBrowserSettingsSearchEngineURL));
+ }
+ 
+-void CustomizeChromePageHandler::SetMostVisitedSettings(
++void CustomizeChromePageHandler_ChromiumImpl::SetMostVisitedSettings(
+     const std::vector<ntp_tiles::TileType>& types,
+     bool visible,
+     bool personal_shortcuts_visible) {
+@@ -523,7 +523,7 @@ void CustomizeChromePageHandler::SetMostVisitedSettings(
+   }
+ }
+ 
+-void CustomizeChromePageHandler::UpdateMostVisitedSettings() {
++void CustomizeChromePageHandler_ChromiumImpl::UpdateMostVisitedSettings() {
+   std::vector<ntp_tiles::TileType> disabled_shortcuts;
+   // If no enterprise shortcuts are set by policy, hide the enterprise shortcuts
+   // option, but leave the preference as is.
+@@ -536,7 +536,7 @@ void CustomizeChromePageHandler::UpdateMostVisitedSettings() {
+       IsPersonalShortcutsVisible(), std::move(disabled_shortcuts));
+ }
+ 
+-void CustomizeChromePageHandler::OnBrowserWindowInterfaceChanged() {
++void CustomizeChromePageHandler_ChromiumImpl::OnBrowserWindowInterfaceChanged() {
+ #if !BUILDFLAG(IS_ANDROID)
+   if (!base::FeatureList::IsEnabled(ntp_features::kNtpFooter)) {
+     return;
+@@ -564,20 +564,20 @@ void CustomizeChromePageHandler::OnBrowserWindowInterfaceChanged() {
+ #endif
+ }
+ 
+-void CustomizeChromePageHandler::SetToolChipsVisible(bool visible) {
++void CustomizeChromePageHandler_ChromiumImpl::SetToolChipsVisible(bool visible) {
+   profile_->GetPrefs()->SetBoolean(prefs::kNtpToolChipsVisible, visible);
+ }
+ 
+-void CustomizeChromePageHandler::UpdateToolChipsSettings() {
++void CustomizeChromePageHandler_ChromiumImpl::UpdateToolChipsSettings() {
+   page_->SetToolsSettings(
+       profile_->GetPrefs()->GetBoolean(prefs::kNtpToolChipsVisible));
+ }
+ 
+-void CustomizeChromePageHandler::SetFooterVisible(bool visible) {
++void CustomizeChromePageHandler_ChromiumImpl::SetFooterVisible(bool visible) {
+   profile_->GetPrefs()->SetBoolean(prefs::kNtpFooterVisible, visible);
+ }
+ 
+-void CustomizeChromePageHandler::UpdateFooterSettings() {
++void CustomizeChromePageHandler_ChromiumImpl::UpdateFooterSettings() {
+ #if !BUILDFLAG(IS_ANDROID)
+   auto management_notice_state =
+       side_panel::mojom::ManagementNoticeState::New();
+@@ -608,12 +608,12 @@ void CustomizeChromePageHandler::UpdateFooterSettings() {
+ #endif
+ }
+ 
+-void CustomizeChromePageHandler::SetModulesVisible(bool visible) {
++void CustomizeChromePageHandler_ChromiumImpl::SetModulesVisible(bool visible) {
+   DisableModuleAutoRemoval(profile_, ntp_modules::kAllModulesId);
+   profile_->GetPrefs()->SetBoolean(prefs::kNtpModulesVisible, visible);
+ }
+ 
+-void CustomizeChromePageHandler::SetModuleDisabled(const std::string& module_id,
++void CustomizeChromePageHandler_ChromiumImpl::SetModuleDisabled(const std::string& module_id,
+                                                    bool disabled) {
+   DisableModuleAutoRemoval(profile_, module_id);
+   ScopedListPrefUpdate update(profile_->GetPrefs(), prefs::kNtpDisabledModules);
+@@ -627,7 +627,7 @@ void CustomizeChromePageHandler::SetModuleDisabled(const std::string& module_id,
+   }
+ }
+ 
+-void CustomizeChromePageHandler::UpdateModulesSettings() {
++void CustomizeChromePageHandler_ChromiumImpl::UpdateModulesSettings() {
+   std::vector<std::string> disabled_module_ids;
+   for (const auto& id :
+        profile_->GetPrefs()->GetList(prefs::kNtpDisabledModules)) {
+@@ -663,15 +663,15 @@ void CustomizeChromePageHandler::UpdateModulesSettings() {
+       profile_->GetPrefs()->GetBoolean(prefs::kNtpModulesVisible));
+ }
+ 
+-void CustomizeChromePageHandler::UpdateScrollToSection() {
++void CustomizeChromePageHandler_ChromiumImpl::UpdateScrollToSection() {
+   ScrollToSection(last_requested_section_);
+ }
+ 
+-void CustomizeChromePageHandler::UpdateAttachedTabState() {
++void CustomizeChromePageHandler_ChromiumImpl::UpdateAttachedTabState() {
+   AttachedTabStateUpdated(last_source_url_);
+ }
+ 
+-void CustomizeChromePageHandler::UpdateNtpManagedByName() {
++void CustomizeChromePageHandler_ChromiumImpl::UpdateNtpManagedByName() {
+   std::string name;
+   std::string description;
+ 
+@@ -690,13 +690,13 @@ void CustomizeChromePageHandler::UpdateNtpManagedByName() {
+   page_->NtpManagedByNameUpdated(name, description);
+ }
+ 
+-void CustomizeChromePageHandler::MaybeDisableExtensionOverridingNtp() {
++void CustomizeChromePageHandler_ChromiumImpl::MaybeDisableExtensionOverridingNtp() {
+ #if !BUILDFLAG(IS_ANDROID)
+   customize_chrome::MaybeDisableExtensionOverridingNtp(profile_);
+ #endif
+ }
+ 
+-void CustomizeChromePageHandler::LogEvent(NTPLoggingEventType event) {
++void CustomizeChromePageHandler_ChromiumImpl::LogEvent(NTPLoggingEventType event) {
+   switch (event) {
+     case NTP_BACKGROUND_UPLOAD_CANCEL:
+       base::RecordAction(base::UserMetricsAction(
+@@ -733,7 +733,7 @@ void CustomizeChromePageHandler::LogEvent(NTPLoggingEventType event) {
+   }
+ }
+ 
+-void CustomizeChromePageHandler::UpdatePrefAndLogEvent(
++void CustomizeChromePageHandler_ChromiumImpl::UpdatePrefAndLogEvent(
+     const char* pref_name,
+     bool new_value,
+     NTPLoggingEventType event) {
+@@ -741,7 +741,7 @@ void CustomizeChromePageHandler::UpdatePrefAndLogEvent(
+   LogEvent(event);
+ }
+ 
+-std::set<ntp_tiles::TileType> CustomizeChromePageHandler::GetTileTypes() const {
++std::set<ntp_tiles::TileType> CustomizeChromePageHandler_ChromiumImpl::GetTileTypes() const {
+   std::set<ntp_tiles::TileType> tile_types;
+   if (IsEnterpriseShortcutsVisible()) {
+     tile_types.insert(ntp_tiles::TileType::kEnterpriseShortcuts);
+@@ -755,11 +755,11 @@ std::set<ntp_tiles::TileType> CustomizeChromePageHandler::GetTileTypes() const {
+   return tile_types;
+ }
+ 
+-bool CustomizeChromePageHandler::IsShortcutsVisible() const {
++bool CustomizeChromePageHandler_ChromiumImpl::IsShortcutsVisible() const {
+   return profile_->GetPrefs()->GetBoolean(ntp_prefs::kNtpShortcutsVisible);
+ }
+ 
+-bool CustomizeChromePageHandler::IsPersonalShortcutsVisible() const {
++bool CustomizeChromePageHandler_ChromiumImpl::IsPersonalShortcutsVisible() const {
+   // Always return true if no enterprise shortcuts are set by policy.
+   if (IsEnterpriseShortcutsEmpty()) {
+     return true;
+@@ -768,30 +768,30 @@ bool CustomizeChromePageHandler::IsPersonalShortcutsVisible() const {
+       ntp_prefs::kNtpPersonalShortcutsVisible);
+ }
+ 
+-bool CustomizeChromePageHandler::IsEnterpriseShortcutsVisible() const {
++bool CustomizeChromePageHandler_ChromiumImpl::IsEnterpriseShortcutsVisible() const {
+   return profile_->GetPrefs()->GetBoolean(
+       ntp_prefs::kNtpEnterpriseShortcutsVisible);
+ }
+ 
+-bool CustomizeChromePageHandler::IsEnterpriseShortcutsEmpty() const {
++bool CustomizeChromePageHandler_ChromiumImpl::IsEnterpriseShortcutsEmpty() const {
+   return !ntp_tiles::MostVisitedSites::HasEnterpriseShortcuts(
+       *profile_->GetPrefs());
+ }
+ 
+-void CustomizeChromePageHandler::OnNativeThemeUpdated(
++void CustomizeChromePageHandler_ChromiumImpl::OnNativeThemeUpdated(
+     ui::NativeTheme* observed_theme) {
+   UpdateTheme();
+ }
+ 
+-void CustomizeChromePageHandler::OnThemeChanged() {
++void CustomizeChromePageHandler_ChromiumImpl::OnThemeChanged() {
+   UpdateTheme();
+ }
+ 
+-void CustomizeChromePageHandler::OnCustomBackgroundImageUpdated() {
++void CustomizeChromePageHandler_ChromiumImpl::OnCustomBackgroundImageUpdated() {
+   OnThemeChanged();
+ }
+ 
+-void CustomizeChromePageHandler::OnCollectionInfoAvailable() {
++void CustomizeChromePageHandler_ChromiumImpl::OnCollectionInfoAvailable() {
+   if (!background_collections_callback_) {
+     return;
+   }
+@@ -822,7 +822,7 @@ void CustomizeChromePageHandler::OnCollectionInfoAvailable() {
+   std::move(background_collections_callback_).Run(std::move(collections));
+ }
+ 
+-void CustomizeChromePageHandler::OnCollectionImagesAvailable() {
++void CustomizeChromePageHandler_ChromiumImpl::OnCollectionImagesAvailable() {
+   if (!background_images_callback_) {
+     return;
+   }
+@@ -862,25 +862,25 @@ void CustomizeChromePageHandler::OnCollectionImagesAvailable() {
+   std::move(background_images_callback_).Run(std::move(images));
+ }
+ 
+-void CustomizeChromePageHandler::OnNextCollectionImageAvailable() {}
++void CustomizeChromePageHandler_ChromiumImpl::OnNextCollectionImageAvailable() {}
+ 
+-void CustomizeChromePageHandler::OnNtpBackgroundServiceShuttingDown() {
++void CustomizeChromePageHandler_ChromiumImpl::OnNtpBackgroundServiceShuttingDown() {
+   ntp_background_service_->RemoveObserver(this);
+   ntp_background_service_ = nullptr;
+ }
+ 
+-void CustomizeChromePageHandler::OnTemplateURLServiceChanged() {
++void CustomizeChromePageHandler_ChromiumImpl::OnTemplateURLServiceChanged() {
+   UpdateNtpManagedByName();
+ }
+ 
+-void CustomizeChromePageHandler::OnTemplateURLServiceShuttingDown() {
++void CustomizeChromePageHandler_ChromiumImpl::OnTemplateURLServiceShuttingDown() {
+   CHECK(template_url_service_);
+   template_url_service_->RemoveObserver(this);
+   template_url_service_ = nullptr;
+ }
+ 
+ #if !BUILDFLAG(IS_ANDROID)
+-void CustomizeChromePageHandler::OnFooterVisibilityUpdated(bool visible) {
++void CustomizeChromePageHandler_ChromiumImpl::OnFooterVisibilityUpdated(bool visible) {
+   if (!base::FeatureList::IsEnabled(ntp_features::kNtpFooter)) {
+     return;
+   }
+@@ -888,7 +888,7 @@ void CustomizeChromePageHandler::OnFooterVisibilityUpdated(bool visible) {
+ }
+ #endif
+ 
+-void CustomizeChromePageHandler::FileSelected(const ui::SelectedFileInfo& file,
++void CustomizeChromePageHandler_ChromiumImpl::FileSelected(const ui::SelectedFileInfo& file,
+                                               int index) {
+   CHECK(choose_local_custom_background_callback_, base::NotFatalUntil::M162);
+   if (ntp_custom_background_service_) {
+@@ -911,14 +911,14 @@ void CustomizeChromePageHandler::FileSelected(const ui::SelectedFileInfo& file,
+   std::move(choose_local_custom_background_callback_).Run(true);
+ }
+ 
+-void CustomizeChromePageHandler::FileSelectionCanceled() {
++void CustomizeChromePageHandler_ChromiumImpl::FileSelectionCanceled() {
+   CHECK(choose_local_custom_background_callback_, base::NotFatalUntil::M162);
+   select_file_dialog_ = nullptr;
+   LogEvent(NTP_BACKGROUND_UPLOAD_CANCEL);
+   std::move(choose_local_custom_background_callback_).Run(false);
+ }
+ 
+-side_panel::mojom::NewTabPageType CustomizeChromePageHandler::GetNewTabPageType(
++side_panel::mojom::NewTabPageType CustomizeChromePageHandler_ChromiumImpl::GetNewTabPageType(
+     const GURL& url) {
+   if (search::IsNewTabPageOrigin(url)) {
+     return side_panel::mojom::NewTabPageType::kFirstPartyWebUI;

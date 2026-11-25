@@ -8,37 +8,26 @@
 
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome.mojom.h"
 
-// Declares our own version of CustomizeChromePageHandler before replacing
-// Chromium's class name in order to avoid name conflicts.
-class CustomizeChromePageHandler;
-using BraveCustomizeChromePageHandler = CustomizeChromePageHandler;
-
+// The plaster rewrite renames every CustomizeChromePageHandler token in the
+// upstream header, including the mojom interface. Alias the renamed mojom
+// interface back to the real one.
 namespace side_panel::mojom {
-using CustomizeChromePageHandler_Chromium = CustomizeChromePageHandler;
+using CustomizeChromePageHandler_ChromiumImpl = CustomizeChromePageHandler;
 }  // namespace side_panel::mojom
 
-// In order to replace the Chromium version of CustomizeChromePageHandler with
-// our own version, changes Chromium version's name to
-// CustomizeChromePageHandler_Chromium
-#define CustomizeChromePageHandler CustomizeChromePageHandler_Chromium
-
-// Add friend declaration
-#define ScrollToSection                   \
-  ScrollToSection_Unused() {}             \
-  friend BraveCustomizeChromePageHandler; \
-  void ScrollToSection
+// Declared before the upstream header so that its `friend class
+// ::CustomizeChromePageHandler` refers to the Brave subclass defined below.
+class CustomizeChromePageHandler;
 
 #include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.h>  // IWYU pragma: export
-
-#undef ScrollToSection
-#undef CustomizeChromePageHandler
 
 class CustomizeChromeUI;
 
 // We're extending the CustomizeChromePageHandler to:
 // * Add methods to close the side panel from the web UI.
 // * Add methods to (un)set pref for "Darker Theme"
-class CustomizeChromePageHandler : public CustomizeChromePageHandler_Chromium {
+class CustomizeChromePageHandler
+    : public CustomizeChromePageHandler_ChromiumImpl {
  public:
   CustomizeChromePageHandler(
       mojo::PendingReceiver<side_panel::mojom::CustomizeChromePageHandler>
@@ -56,7 +45,7 @@ class CustomizeChromePageHandler : public CustomizeChromePageHandler_Chromium {
     customize_chrome_ui_ = std::move(customize_chrome_ui);
   }
 
-  // CustomizeChromePageHandler_Chromium:
+  // CustomizeChromePageHandler_ChromiumImpl:
   void ClosePanel() override;
   void GetUseDarkerTheme(GetUseDarkerThemeCallback callback) override;
   void SetUseDarkerTheme(bool use_darker_theme) override;

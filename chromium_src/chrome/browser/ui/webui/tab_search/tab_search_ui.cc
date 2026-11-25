@@ -14,9 +14,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
-#define TabSearchUI TabSearchUI_ChromiumImpl
 #include <chrome/browser/ui/webui/tab_search/tab_search_ui.cc>
-#undef TabSearchUI
 
 TabSearchUI::TabSearchUI(content::WebUI* web_ui)
     : TabSearchUI_ChromiumImpl(web_ui) {
