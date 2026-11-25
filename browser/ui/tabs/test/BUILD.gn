@@ -42,9 +42,13 @@ source_set("browser_tests") {
     ]
     deps += [
       "//brave/browser/ui",
+      "//brave/browser/ui/sidebar",
+      "//brave/browser/ui/sidebar:sidebar_impl",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/browser/ui/tabs:tabs_public",
       "//brave/components/resources:scaled_resources",
+      "//brave/components/sidebar/browser",
+      "//brave/components/sidebar/common",
       "//chrome/browser/ui:browser_tabrestore",
       "//chrome/browser/ui:browser_tabstrip",
       "//chrome/browser/ui:browser_window_header",

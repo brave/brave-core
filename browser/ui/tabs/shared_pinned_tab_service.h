@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
@@ -130,6 +131,23 @@ class SharedPinnedTabService : public KeyedService,
   // Whether |contents| is |shared_contents| itself or a dummy for it.
   bool IsTrackedContentsFor(content::WebContents* contents,
                             content::WebContents* shared_contents) const;
+
+  // A window may contain one pinned tab that must never be tracked in
+  // |pinned_tab_data_| (see SharedPinnedTabExclusionMarker), which offsets
+  // every raw pinned-tab index in that window relative to |pinned_tab_data_|.
+  // These three helpers translate between the two index spaces.
+
+  // Raw pinned-tab index of |model|'s excluded tab, or std::nullopt if it has
+  // none. Assume at most one excluded pinned tab in the tab strip model.
+  std::optional<int> FindExcludedPinnedIndex(TabStripModel* model) const;
+
+  // Raw pinned-tab index in |model| (must not be the excluded tab's own
+  // index) -> the corresponding index into |pinned_tab_data_|.
+  int ToCanonicalIndex(TabStripModel* model, int raw_index) const;
+
+  // Index into |pinned_tab_data_| -> the raw pinned-tab index to use in
+  // |model|, accounting for |model|'s own excluded tab (if any).
+  int ToRawIndex(TabStripModel* model, int canonical_index) const;
 
   raw_ptr<Profile> profile_;
 
