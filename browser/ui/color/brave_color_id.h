@@ -124,7 +124,6 @@
     E_CPONLY(kColorBraveSplitViewTileBackgroundHorizontal) \
     E_CPONLY(kColorBraveSplitViewTileBackgroundVertical)   \
     E_CPONLY(kColorBraveSplitViewTileBackgroundBorder)     \
-    E_CPONLY(kColorBraveSplitViewTileDivider)              \
     E_CPONLY(kColorBraveSplitViewActiveWebViewBorder)      \
     E_CPONLY(kColorBraveSplitViewInactiveWebViewBorder)    \
     E_CPONLY(kColorBraveSplitViewMenuButtonIcon)           \
