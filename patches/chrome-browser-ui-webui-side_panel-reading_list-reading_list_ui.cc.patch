@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/webui/side_panel/reading_list/reading_list_ui.cc b/chrome/browser/ui/webui/side_panel/reading_list/reading_list_ui.cc
+index 4e7919249dfac6e066907caad06037e8e18ebb6c..9936cacc2836cf05d5f0a6ba05a27953e149116f 100644
+--- a/chrome/browser/ui/webui/side_panel/reading_list/reading_list_ui.cc
++++ b/chrome/browser/ui/webui/side_panel/reading_list/reading_list_ui.cc
+@@ -104,7 +104,7 @@ void ReadingListUI::CreatePageHandler(
+     mojo::PendingRemote<reading_list::mojom::Page> page,
+     mojo::PendingReceiver<reading_list::mojom::PageHandler> receiver) {
+   CHECK(page, base::NotFatalUntil::M162);
+-  page_handler_ = std::make_unique<ReadingListPageHandler>(
++  page_handler_ = std::make_unique<BraveReadingListPageHandler>(
+       std::move(receiver), std::move(page), this, web_ui());
+ }
+ 
