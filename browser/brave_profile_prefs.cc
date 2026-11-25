@@ -137,6 +137,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/themes/pref_names.h"
+#include "brave/browser/ui/peek/peek_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_prefs.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
@@ -579,6 +580,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_tabs::RegisterBraveProfilePrefs(registry);
   focus_mode::RegisterProfilePrefs(registry);
+  peek::prefs::RegisterProfilePrefs(registry);
 
   brave_welcome_page::prefs::RegisterProfilePrefs(registry);
 #endif  // !BUILDFLAG(IS_ANDROID)

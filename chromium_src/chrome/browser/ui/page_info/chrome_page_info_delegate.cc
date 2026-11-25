@@ -6,8 +6,18 @@
 #include "chrome/browser/ui/page_info/chrome_page_info_delegate.h"
 
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/url_constants.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+// Called from the plastered ChromePageInfoDelegate::OpenCookiesDialog().
+// Implemented in //brave/browser/ui/peek:page_info. Returns true if
+// `web_contents` is shown in Peek and the request was handled.
+namespace peek {
+bool ShowCookiesDialogInTab(content::WebContents* web_contents);
+}  // namespace peek
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #include <chrome/browser/ui/page_info/chrome_page_info_delegate.cc>
 

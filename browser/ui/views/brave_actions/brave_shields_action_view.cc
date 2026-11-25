@@ -62,6 +62,7 @@ BraveShieldsActionView::BraveShieldsActionView(
       base::BindRepeating(&BraveShieldsActionView::ButtonPressed,
                           weak_ptr_factory_.GetWeakPtr()),
       std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
+  menu_button_controller_ = menu_button_controller.get();
   SetButtonController(std::move(menu_button_controller));
 }
 
@@ -95,6 +96,14 @@ SkPath BraveShieldsActionView::GetHighlightPath() const {
 
 views::Widget* BraveShieldsActionView::GetBubbleWidget() {
   return controller_->GetBubbleWidget();
+}
+
+bool BraveShieldsActionView::ShowPanel() {
+  // A press closes the panel if it's open.
+  if (GetBubbleWidget()) {
+    return true;
+  }
+  return menu_button_controller_->Activate(nullptr);
 }
 
 void BraveShieldsActionView::Update() {
