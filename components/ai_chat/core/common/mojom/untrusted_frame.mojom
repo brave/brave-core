@@ -21,8 +21,9 @@ interface ParentUIFrame {
   // This is sent to the parent trusted webui rather than straight to the
   // browser to allow for further rating feedback to be attached. The parent
   // frame deals with it instead of the child frame, due to UI space as well as
-  // sensitive user information being captured.
-  RateMessage(string turn_uuid, bool is_liked);
+  // sensitive user information being captured. |thread_uuid| is the thread the
+  // turn belongs to, or null for the root conversation.
+  RateMessage(string turn_uuid, bool is_liked, string? thread_uuid);
 
   // Notify the parent that the child has received a drag enter. We don't have
   // a corresponding DragEnd because the parent should intercept the drag event
@@ -73,8 +74,9 @@ interface UntrustedConversationHandler {
   // e.g. reduce rate limiting.
   SwitchToNonPremiumModel();
 
-  // Regenerate answer using specified model.
-  RegenerateAnswer(string turn_uuid, string model_key);
+  // Regenerate answer using specified model. |thread_uuid| is the thread the
+  // turn belongs to, or null for the root conversation.
+  RegenerateAnswer(string turn_uuid, string model_key, string? thread_uuid);
 
   // The browser should generate some questions and fire an event when they
   // are ready.
@@ -99,7 +101,8 @@ interface UntrustedConversationHandler {
 interface UntrustedConversationUserActions {
   ModifyConversation(string entry_uuid,
                      string new_text,
-                     string? skill_shortcut);
+                     string? skill_shortcut,
+                     string? thread_uuid);
 
   // Allows a client to provide an answer to a tool use request
   // as a result of a user action. `entry_uuid` is the response the tool use

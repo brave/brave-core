@@ -89,7 +89,7 @@ function AssistantEvent(
               + (checked ? 'x' : ' ')
               + processedCompletion.slice(at + 2)
             if (next === processedCompletion) return
-            context.userActions?.modifyConversation(entryUuid, next, null)
+            context.userActions?.modifyConversation(entryUuid, next, null, null)
           }
         : undefined
 
