@@ -71,6 +71,14 @@ void EmailAliasesPromoUI::OnPromoClosed() {
   delegate_->OnPromoClosed();
 }
 
+void EmailAliasesPromoUI::OnGetStarted() {
+  if (!delegate_) {
+    return;
+  }
+
+  delegate_->OnGetStarted();
+}
+
 EmailAliasesPromoUIConfig::EmailAliasesPromoUIConfig()
     : content::DefaultWebUIConfig<EmailAliasesPromoUI>(content::kChromeUIScheme,
                                                        kEmailAliasesPromoHost) {

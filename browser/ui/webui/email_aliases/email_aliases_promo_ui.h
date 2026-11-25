@@ -30,6 +30,7 @@ class EmailAliasesPromoUI
 
  private:
   void OnPromoClosed() override;
+  void OnGetStarted() override;
 
   mojo::Receiver<email_aliases::mojom::EmailAliasesPromoHandler> promo_handler_{
       this};

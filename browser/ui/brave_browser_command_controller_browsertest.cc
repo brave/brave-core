@@ -56,6 +56,8 @@
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_controller.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -90,9 +92,10 @@
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
+#include "brave/browser/ui/webui/email_aliases/email_aliases_promo_ui.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/pref_names.h"
-#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -1121,37 +1124,86 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
   }));
 }
 
-// Check that closing the promo dialog navigates to the email aliases settings
-// page.
-IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
-                       EmailAliasesPromoClosedOpensSettings) {
-  // kPromoShown defaults to false, so the command shows the promo dialog first.
-  // Prevent it from auto-closing on focus loss during the test.
-  email_aliases::EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
-  absl::Cleanup restore_auto_close = [] {
-    email_aliases::EmailAliasesController::DisableAutoCloseBubbleForTesting(
-        false);
-  };
+class BraveBrowserCommandControllerEmailAliasesPromoTest
+    : public BraveBrowserCommandControllerWithEmailAliasesTest {
+ public:
+  void SetUpOnMainThread() override {
+    BraveBrowserCommandControllerWithEmailAliasesTest::SetUpOnMainThread();
+    embedded_test_server()->ServeFilesFromSourceDirectory("chrome/test/data");
+    ASSERT_TRUE(embedded_test_server()->Start());
+    // The active tab must not be an NTP/about:blank, otherwise opening the
+    // settings page reuses the current tab instead of adding a new one.
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(
+        browser(), embedded_test_server()->GetURL("/simple.html")));
+  }
 
-  auto* command_controller = chrome::BrowserCommandController::From(browser());
-  ASSERT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_EMAIL_ALIASES));
-  command_controller->ExecuteCommand(IDC_SHOW_EMAIL_ALIASES);
+  // Shows the promo (kPromoShown defaults to false).
+  void ShowPromo(email_aliases::EmailAliasesController** out_controller) {
+    auto* controller = email_aliases::EmailAliasesController::From(browser());
+    ASSERT_TRUE(controller);
+    chrome::BrowserCommandController::From(browser())->ExecuteCommand(
+        IDC_SHOW_EMAIL_ALIASES);
+    ASSERT_TRUE(controller->GetBubbleForTesting());
+    *out_controller = controller;
+  }
 
-  auto* controller = email_aliases::EmailAliasesController::From(browser());
-  ASSERT_NE(nullptr, controller->GetBubbleForTesting());
+  // Gets the browser-side promo handler, i.e. what the WebUI talks to when a
+  // button is clicked in the promo.
+  void GetPromoHandler(
+      email_aliases::EmailAliasesController* controller,
+      email_aliases::mojom::EmailAliasesPromoHandler** out_handler) {
+    auto* bubble = controller->GetBubbleForTesting();
+    ASSERT_TRUE(bubble);
+    auto* promo_ui =
+        bubble->GetWebUI()->GetController()->GetAs<EmailAliasesPromoUI>();
+    ASSERT_TRUE(promo_ui);
+    *out_handler = promo_ui;
+  }
 
-  // Closing navigates to settings.
-  controller->CloseBubble();
+  int GetTabCount() const { return browser()->tab_strip_model()->count(); }
 
-  ASSERT_TRUE(base::test::RunUntil([&]() {
+  bool IsSettingsActive() const {
     return browser()
                ->tab_strip_model()
                ->GetActiveWebContents()
                ->GetVisibleURL() == chrome::GetSettingsUrl("email-aliases");
-  }));
+  }
+};
+
+// Clicking "Get started" closes the promo and opens the email aliases
+// settings page.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerEmailAliasesPromoTest,
+                       GetStartedOpensSettings) {
+  email_aliases::EmailAliasesController* controller = nullptr;
+  ASSERT_NO_FATAL_FAILURE(ShowPromo(&controller));
+  const int initial_tab_count = GetTabCount();
+
+  email_aliases::mojom::EmailAliasesPromoHandler* handler = nullptr;
+  ASSERT_NO_FATAL_FAILURE(GetPromoHandler(controller, &handler));
+  handler->OnGetStarted();
+
+  EXPECT_EQ(nullptr, controller->GetBubbleForTesting());
+  ASSERT_TRUE(base::test::RunUntil([&]() { return IsSettingsActive(); }));
+  EXPECT_EQ(initial_tab_count + 1, GetTabCount());
 
   // Continue to show the promo until the first login
   EXPECT_FALSE(browser()->GetProfile()->GetPrefs()->GetBoolean(
       email_aliases::prefs::kPromoShown));
+}
+
+// Dismissing the promo with the close button must not open the settings page.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerEmailAliasesPromoTest,
+                       CloseButtonDoesNotOpenSettings) {
+  email_aliases::EmailAliasesController* controller = nullptr;
+  ASSERT_NO_FATAL_FAILURE(ShowPromo(&controller));
+  const int initial_tab_count = GetTabCount();
+
+  email_aliases::mojom::EmailAliasesPromoHandler* handler = nullptr;
+  ASSERT_NO_FATAL_FAILURE(GetPromoHandler(controller, &handler));
+  handler->OnPromoClosed();
+
+  EXPECT_EQ(nullptr, controller->GetBubbleForTesting());
+  EXPECT_EQ(initial_tab_count, GetTabCount());
+  EXPECT_FALSE(IsSettingsActive());
 }
 #endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
