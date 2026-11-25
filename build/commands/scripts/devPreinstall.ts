@@ -34,7 +34,6 @@ function checkUnpinnedPackageJsonDependencies(): void {
     fs.readFileSync(packageJsonPath, 'utf8'),
   ) as Partial<Record<(typeof depScopes)[number], Record<string, string>>>
 
-  const unpinned: string[] = []
   for (const scope of depScopes) {
     const deps = packageJson[scope]
     if (!deps) {
@@ -42,20 +41,15 @@ function checkUnpinnedPackageJsonDependencies(): void {
     }
     for (const [name, version] of Object.entries(deps)) {
       if (!validPinnedPattern.test(version)) {
-        unpinned.push(`  ${scope}: ${name} = ${version}`)
+        console.error(
+          `Found unpinned dependency in package.json (${scope}): ${name} = ${version}`,
+        )
+        console.error(
+          'Please pin all dependencies in package.json (exact X.Y.Z, github:owner/repo#<40-char-sha>, or catalog:).',
+        )
+        process.exit(1)
       }
     }
-  }
-
-  if (unpinned.length > 0) {
-    console.error('Found unpinned dependencies in package.json:')
-    for (const entry of unpinned) {
-      console.error(entry)
-    }
-    console.error(
-      'Please pin all dependencies in package.json (exact X.Y.Z, github:owner/repo#<40-char-sha>, or catalog:).',
-    )
-    process.exit(1)
   }
 }
 
