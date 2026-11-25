@@ -6,7 +6,8 @@
 import path from 'node:path'
 import os from 'node:os'
 import fs from 'fs-extra'
-import updatePatches from './updatePatches.js'
+import rootDir from './rootDir.cjs'
+import updatePatches, { exclusionsFilter } from './updatePatches.ts'
 import util from './util.ts'
 
 const dirPrefixTmp = 'brave-browser-test-update-patches-'
@@ -240,5 +241,63 @@ describe('updatePatches diff pins', function () {
       'utf-8',
     )
     expect(patchContents).toContain('Binary files')
+  })
+})
+
+describe('exclusionsFilter', function () {
+  test('excludes paths a + line matches, by path, prefix or suffix', () => {
+    const filter = exclusionsFilter(
+      ['+chrome/VERSION', '+chrome/app/theme/default/*', '+*.png'].join('\n'),
+    )
+    expect(filter('chrome/VERSION')).toBe(false)
+    expect(filter('chrome/app/theme/default/icon.svg')).toBe(false)
+    expect(filter('ui/icon.png')).toBe(false)
+    expect(filter('chrome/browser/foo.cc')).toBe(true)
+    expect(filter('chrome/VERSION.txt')).toBe(true)
+  })
+
+  test('keeps paths a - line matches, wherever the + line is', () => {
+    const contents = ['-chrome/app/theme/theme_resources.grd', '+*.grd']
+    for (const lines of [contents, [...contents].reverse()]) {
+      const filter = exclusionsFilter(lines.join('\n'))
+      expect(filter('chrome/app/theme/theme_resources.grd')).toBe(true)
+      expect(filter('chrome/app/chromium_strings.grd')).toBe(false)
+    }
+  })
+
+  test('ignores comments and blank lines', () => {
+    const filter = exclusionsFilter(
+      ['# A comment', '', '+*.xtb  # trailing comment', '   '].join('\n'),
+    )
+    expect(filter('chrome/app/resources/x.xtb')).toBe(false)
+    expect(filter('chrome/app/resources/x.grd')).toBe(true)
+  })
+
+  test('never gives an empty path a patch', () => {
+    expect(exclusionsFilter('')('')).toBe(false)
+  })
+
+  test('refuses a line without a + or -', () => {
+    expect(() => exclusionsFilter('+*.png\n*.svg')).toThrow(
+      'Exclusions line 2 must start with + or -: *.svg',
+    )
+  })
+
+  test("reads brave's exclusions file", async () => {
+    const filter = exclusionsFilter(
+      await fs.readFile(
+        path.join(
+          rootDir,
+          'src',
+          'brave',
+          'build',
+          'update_patches_exclusions.cfg',
+        ),
+        'utf-8',
+      ),
+    )
+    expect(filter('chrome/app/theme/theme_resources.grd')).toBe(true)
+    expect(filter('chrome/app/chromium_strings.grd')).toBe(false)
+    expect(filter('chrome/VERSION')).toBe(false)
   })
 })

@@ -1,59 +1,25 @@
 // Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import fs from 'node:fs'
 import { glob } from 'node:fs/promises'
 import path from 'node:path'
+import * as buildOptions from '../lib/buildOptions.ts'
 import config from '../lib/config.ts'
 import {
   getPatchedRepositories,
   joinSourcePath,
+  type PatchedRepository,
   splitSourcePath,
 } from '../lib/repositories.ts'
-import updatePatches from '../lib/updatePatches.js'
+import updatePatches, { exclusionsFilter } from '../lib/updatePatches.ts'
 
-function loadChromiumPathFilter(filePath) {
-  const configLines = fs
-    .readFileSync(filePath, 'utf-8')
-    .split('\n')
-    // @ts-ignore
-    .map((line) => line.split('#')[0].trim()) // Removing comments.
-    .filter((line) => line.length > 0)
+type PathFilter = (file: string) => boolean
 
-  const prefixes = []
-  const suffixes = []
-  const exactMatches = new Set()
-
-  // This should be revisited in the future once `path.matchesGlob` is stable
-  // and available in node to use, as this current implementation is a bit
-  // naive.
-  for (const line of configLines) {
-    if (line.startsWith('*')) {
-      suffixes.push(line.slice(1))
-    } else if (line.endsWith('*')) {
-      prefixes.push(line.slice(0, -1))
-    } else {
-      exactMatches.add(line)
-    }
-  }
-
-  return (s) => {
-    if (s.length === 0) {
-      return false
-    }
-    if (exactMatches.has(s)) {
-      return false
-    }
-    if (prefixes.some((prefix) => s.startsWith(prefix))) {
-      return false
-    }
-    if (suffixes.some((suffix) => s.endsWith(suffix))) {
-      return false
-    }
-    return true
-  }
+function loadChromiumPathFilter(filePath: string): PathFilter {
+  return exclusionsFilter(fs.readFileSync(filePath, 'utf-8'))
 }
 
 // Extension of plaster files under `rewrite/`. Keep in sync with
@@ -66,14 +32,17 @@ const versionUpgradeFile = '.version_upgrade'
 // Builds, per repository, a predicate that tells whether one of its source
 // paths has its patch managed by a plaster file. In such case
 // `update_patches` by-default skips the given patch.
-async function loadPlasterPathFilters(repositories, rewriteDir) {
+async function loadPlasterPathFilters(
+  repositories: PatchedRepository[],
+  rewriteDir: string,
+): Promise<(repo: PatchedRepository) => PathFilter> {
   // Keyed by label, the name a repository is identified by, so nothing here
   // has to know how its path is spelled.
-  /** @type {Map<string, Set<string>>} */
-  const managedSources = new Map(
-    repositories.map((repo) => [repo.label, new Set()]),
+  const managedSources = new Map<string, Set<string>>(
+    repositories.map((repo) => [repo.label, new Set<string>()]),
   )
-  const sourcesFor = (repo) => managedSources.get(repo.label) ?? new Set()
+  const sourcesFor = (repo: PatchedRepository): Set<string> =>
+    managedSources.get(repo.label) ?? new Set()
 
   // The second pattern matches plaster files whose name starts with a dot (e.g.
   // a plaster for a dotfile like `.rustfmt.toml.yaml`); glob's `*` skips
@@ -98,7 +67,10 @@ async function loadPlasterPathFilters(repositories, rewriteDir) {
   }
 }
 
-export default async function RunCommand(filePaths, options) {
+export default async function RunCommand(
+  filePaths: string[],
+  options: buildOptions.BuildDirOptions & { plasterCheck?: boolean },
+): Promise<void> {
   config.update(options)
 
   const repositories = getPatchedRepositories()
