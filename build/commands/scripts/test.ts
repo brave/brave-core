@@ -15,7 +15,11 @@ import * as Log from '../lib/log.ts'
 import util from '../lib/util.ts'
 import assert from 'node:assert'
 import { getAffectedTests } from '../lib/affectedTests.js'
-import { getTestBinary, getTestsToRun } from '../lib/testUtils.ts'
+import {
+  getTestBinary,
+  getTestsToRun,
+  parseTestSuites,
+} from '../lib/testUtils.ts'
 import {
   applyEnvDefaults,
   getTestRunArgs,
@@ -31,12 +35,14 @@ async function buildTests(testsToRun: string[]) {
   await util.buildTargets(config.buildTargets, config.defaultOptions)
 }
 
+// Runs the tests of `mainTestSuite`. Returns whether to keep running tests:
+// false if a test failed and results aren't saved to files.
 async function runTests(
   mainTestSuite: string,
   testSuitesToRun: string[],
   options: buildOptions.TestOptions,
   passthroughArgs: string[],
-) {
+): Promise<boolean> {
   const allResultsFilePath = path.join(config.srcDir, `${mainTestSuite}.txt`)
   // Clear previous results file
   if (fs.existsSync(allResultsFilePath)) {
@@ -44,7 +50,7 @@ async function runTests(
   }
 
   // Run the tests
-  testSuitesToRun.every((testSuite) => {
+  return testSuitesToRun.every((testSuite) => {
     if (testSuite === 'brave_unit_tests' && isTeamcity && !config.isMobile()) {
       runChromiumTestLauncherTeamcityReporterIntegrationTests()
     }
@@ -223,7 +229,10 @@ function runChromiumTestLauncherTeamcityReporterIntegrationTests() {
 }
 
 program
-  .argument('<suite>', 'test suite to run')
+  .argument(
+    '<suites>',
+    'comma-separated test suites, test groups or gn labels to run',
+  )
   .apply(buildOptions.supportBuildConfigArg)
   .apply(buildOptions.supportBuildDir)
   .apply(buildOptions.supportTargetConfig)
@@ -231,7 +240,7 @@ program
   .apply(buildOptions.supportTestOptions)
   .allowUnknownOption(true)
   .allowExcessArguments(true)
-  .action(async (mainTestSuite, buildConfig, options, command) => {
+  .action(async (suites, buildConfig, options, command) => {
     if (buildConfig) {
       config.buildConfig = buildConfig
     }
@@ -242,9 +251,16 @@ program
       process.exit(1)
     }
 
-    const testsSuitesToRun = options.base
-      ? await getAffectedTests({ ...options, suite: mainTestSuite })
-      : getTestsToRun(config, mainTestSuite)
+    // Each given suite runs like `test <suite>` would, with its own results
+    // file, but all tests are built at once.
+    const suiteRuns: { suite: string; tests: string[] }[] = []
+    for (const suite of parseTestSuites(suites)) {
+      const tests = options.base
+        ? await getAffectedTests({ ...options, suite })
+        : getTestsToRun(config, suite)
+      suiteRuns.push({ suite, tests })
+    }
+    const testsSuitesToRun = [...new Set(suiteRuns.flatMap((r) => r.tests))]
 
     if (testsSuitesToRun.length === 0 && !options.quiet) {
       console.warn('SKIP: No tests need to run')
@@ -259,7 +275,11 @@ program
       await buildTests(testsSuitesToRun)
     }
     if (!options.skip_run) {
-      await runTests(mainTestSuite, testsSuitesToRun, options, passthroughArgs)
+      for (const { suite, tests } of suiteRuns) {
+        if (!(await runTests(suite, tests, options, passthroughArgs))) {
+          break
+        }
+      }
     }
   })
   .parseAsync()
