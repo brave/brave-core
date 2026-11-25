@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "Hubo un error al importar los marcadores.";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "Hubo un error al importar el historial.";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "Hubo un error al importar las contraseñas. Algunas contraseñas no pudieron importarse debido a conflictos.";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "Hubo un error al importar las contraseñas.";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "Hubo un error al descomprimir el archivo.";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "Selecciona un archivo...";
 
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "En la lista de aplicaciones (ordenadas alfabéticamente), encuentra y pulsa **Safari**.";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "El archivo zip no contiene datos de importación.";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "Por favor, espera mientras transferimos tus datos de forma segura.\nEsto puede tomar unos minutos.";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "Se han detectado varios perfiles";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "Personal";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Marcadores importados";

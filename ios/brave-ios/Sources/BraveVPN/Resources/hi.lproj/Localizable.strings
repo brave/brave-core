@@ -7,27 +7,6 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "उपलब्ध सर्वर";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "खरीदें";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "1 सदस्यता पर 5 डिवाइस सुरक्षित रखें";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "Chooअपना भौगोलिक/देश का स्थान चुनें";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave कभी भी आपकी गतिविधि को लॉग नहीं करता है";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "हर ऐप और अपने पूरे डिवाइस को सुरक्षित रखें";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "घर या सार्वजनिक Wi-Fi के लिए अधिक सुरक्षित";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "बिजली की तेजी से, 100 Mbps तक";
-
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
 "vpn.cityCountTitle" = "%ld शहर";
 
@@ -57,9 +36,6 @@
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "समस्या";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "कनेक्शन की विश्वसनीयता की समस्या";
 
 /* Description used for specific issue field for customer support contact form. */
 "vpn.contactFormIssueDescription" = "कृपया समस्या के बारे में बताने वाली श्रेणी चुनें।";
@@ -111,9 +87,6 @@
 
 /* The button text that starts the trial action */
 "vpn.freeTrialPeriodAction" = "7 दिन फ़्री में आज़माएँ";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "सभी सब्सक्रिप्शन ऑटो-रिन्यू हो जाते हैं, लेकिन उन्हें रिन्यूअल से पहले कैंसल किया जा सकता है।";
 
 /* Text explaining how the VPN works. */
 "vpn.installProfileBody" = "यह प्रोफ़ाइल VPN को आपके डिवाइस पर हर समय ट्रैफ़िक को अपने-आप कनेक्ट और सुरक्षित करने की अनुमति देती है। यह VPN कनेक्शन एन्क्रिप्ट किया जाएगा और संभावित रूप से नुकसान पहुँचाने वाले और हमला करने वाले कनेक्शंस को ब्लॉक करने के लिए Brave के इंटेलिजेंट फ़ायरवॉल के ज़रिए रूट किया जाएगा।";
@@ -172,20 +145,11 @@
 /* Message that we show after successfully changing tunnel protocol. */
 "vpn.protocolSwitchSuccessPopupText" = "VPN टनल प्रोटोकॉल बदल गया।";
 
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "आपके सिस्टम के टाइमज़ोन के आधार पर, आपका सबसे नज़दीकी सर्वर क्षेत्र अपने-आप चुना जाएगा। इंटरनेट की तेज़ गति के लिए इसका सुझाव दिया जाता है।";
-
 /* Message for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorMessage" = "सर्वर को स्विच नहीं कर पाए, कृपया बाद में कोशिश करें।";
 
 /* Title for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorTitle" = "सर्वर की गड़बड़ी";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "सर्वर क्षेत्र";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "VPN क्षेत्र बदल गया।";
 
 /* Yearly tier explaination. Subscription will be renewed annually. */
 "vpn.renewAnnually" = "हर साल रिन्यू होती है";
@@ -229,9 +193,6 @@
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "टेक्निकल सपोर्ट से संपर्क करें";
 
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "सर्वर सूची रिट्रीव नहीं कर पाए, कृपया बाद में कोशिश करें।";
-
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPN सपोर्ट";
 
@@ -249,12 +210,6 @@
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "कॉन्फ़िगरेशन रीसेट करें";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "होस्ट";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "स्थान";
 
 /* Header title for vpn settings server section. */
 "vpn.settingsServerSection" = "सर्वर";
@@ -307,32 +262,17 @@
 /* Title for an alert when the VPN can't be configured */
 "vpn.vpnConfigGenericErrorTitle" = "गड़बड़ी";
 
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "आपका डिवाइस काम कर पाए, इसके लिए Brave VPN पर VPN प्रोफ़ाइल इंस्टॉल करना ज़रूरी होता है। ";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "अनुमति नहीं दी गई";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "ऑफ़र कोड रिडीम नहीं कर पाए। कृपया फिर से कोशिश करें या अपने ऑफ़र कोड की जानकारी जाँचकर फिर से कोशिश करें।";
-
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "खरीदारी पूरी नहीं हो पाई। कृपया फिर से कोशिश करे या Apple पर अपने भुगतान की जानकारी देखकर फिर से कोशिश करें।";
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "गड़बड़ी";
 
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "सब्सक्रिप्शन की राशि आपके iTunes अकाउंट के ज़रिए ली जाएगी।\n\nजब आप सब्सक्रिप्शन खरीदते हैं, तो मुफ़्त ट्रायल का बचा हुआ कोई भी हिस्सा, अगर ऑफ़र किया गया हो, तो खत्म हो जाता है।\n\nसब्सक्रिप्शन की मौजूदा अवधि खत्म होने के कम से कम 24 घंटे पहले अगर उसे रद्द नहीं किया जाता, तो वह अपने आप रिन्यू हो जाता है।\n\nआप अपने सब्सक्रिप्शन को सेटिंग में जाकर मैनेज कर सकते हैं।\n\nBrave का इस्तेमाल करके, आप इस्तेमाल की शर्तों और प्राइवेसी पॉलिसी से सहमत होते हैं।";
-
 /* The title shown on the menu when the VPN connection is disconnected */
 "vpn.vpnOffMenuButtonTitle" = "VPN बंद है";
 
 /* The title shown on the menu when the VPN connection is connected */
 "vpn.vpnOnMenuButtonTitle" = "VPN चालू है";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "कोड रिडीम करें";
 
 /* The alert title showing vpn region is changed */
 "vpn.vpnRegionChangedTitle" = "VPN क्षेत्र बदल गया";
@@ -351,9 +291,6 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "सालाना सब्सक्रिप्शन ";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "रिन्यू से साल भर में %@ बचत होती है";
 
 /* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
 "vpn.yearlySubDisclaimer" = "बेस्ट वैल्यू";

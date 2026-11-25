@@ -61,9 +61,6 @@
 /* The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes */
 "wallet.autoLockTitle" = "Автоматично заключване след";
 
-/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet */
-"wallet.backupRecoveryPhraseBackButtonTitle" = "Фраза за възстановяване";
-
 /* The subtitle of the backup recovery phrase screen */
 "wallet.backupRecoveryPhraseSubtitle" = "Фразата ти за възстановяване е ключът за достъп до портфейла ти, в случай че забравиш паролата си или изгубиш устройството си.\n\nСъхранявай я на сигурно място, което не е достъпно за други хора, и избягвай да я споделяш с когото и да било.";
 
@@ -819,9 +816,6 @@
 
 /* The title of a button that Selects all visible options. */
 "wallet.selectAllButtonTitle" = "Избиране на всички";
-
-/* The accessibility label for the selected account picker */
-"wallet.selectedAccount" = "Избран акаунт";
 
 /* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
 "wallet.selectNetworksTitle" = "Избери мрежи";

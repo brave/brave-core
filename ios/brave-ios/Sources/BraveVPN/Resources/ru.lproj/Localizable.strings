@@ -7,27 +7,6 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "ДОСТУПНЫЕ СЕРВЕРЫ";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "Купить";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "Поддержка до 5 устройств по одной подписке";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "Выбирайте свое местоположение";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Отсутствие журналов активности";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Защита каждого вашего приложения и всего устройства";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "Повышенная безопасность для домашнего или публичного Wi-Fi-соединения";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "Скорость до 100 Мбит/с";
-
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
 "vpn.cityCountTitle" = "%ld город";
 
@@ -57,9 +36,6 @@
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "Проблема";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Ненадежное подключение";
 
 /* Description used for specific issue field for customer support contact form. */
 "vpn.contactFormIssueDescription" = "Выберите наиболее подходящую категорию проблемы.";
@@ -111,9 +87,6 @@
 
 /* The button text that starts the trial action */
 "vpn.freeTrialPeriodAction" = "Попробовать бесплатно в течение 7 дней";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Все подписки продлеваются автоматически. Однако вы можете отменить подписку до того, как она будет продлена.";
 
 /* Text explaining how the VPN works. */
 "vpn.installProfileBody" = "В этом режиме сеть VPN автоматически проверяет весь трафик на устройстве, делая просмотр безопасным. VPN-соединение зашифровано, а трафик проходит через умный брандмауэр Brave, который не пропускает потенциально вредоносный контент и блокирует попытки отслеживания.";
@@ -172,20 +145,11 @@
 /* Message that we show after successfully changing tunnel protocol. */
 "vpn.protocolSwitchSuccessPopupText" = "VPN-протокол изменен.";
 
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Ближайшие к вам серверы будут выбраны автоматически. Они определятся по часовому поясу вашей системы, и это поможет установить высокую скорость интернет-соединения.";
-
 /* Message for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorMessage" = "Не удалось изменить серверы. Повторите попытку позже.";
 
 /* Title for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorTitle" = "Ошибка сервера";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Местонахождение серверов";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "Местонахождение серверов изменено.";
 
 /* Yearly tier explaination. Subscription will be renewed annually. */
 "vpn.renewAnnually" = "Обновления ежегодно";
@@ -229,9 +193,6 @@
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Обратиться в службу технической поддержки";
 
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Не удалось получить список серверов. Повторите попытку позже.";
-
 /* Button for FAQ */
 "vpn.settingsFAQ" = "Справочная информация в отношении VPN";
 
@@ -249,12 +210,6 @@
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "Сбросить настройки";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Хост-сервер";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Расположение";
 
 /* Header title for vpn settings server section. */
 "vpn.settingsServerSection" = "Сервер";
@@ -307,32 +262,17 @@
 /* Title for an alert when the VPN can't be configured */
 "vpn.vpnConfigGenericErrorTitle" = "Ошибка";
 
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Для работы Brave VPN необходимо установить профиль VPN на вашем устройстве.";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "В доступе отказано";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Не удалось активировать промо-код. Проверьте его и попробуйте снова или свяжитесь со службой поддержки.";
-
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "Невозможно завершить осуществление покупки. Повторите попытку или проверьте свои платежные реквизиты в сети Apple и попробуйте еще раз.";
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "Ошибка";
 
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Плата за подписки будет взиматься через ваш аккаунт iTunes.\n\nПри покупке подписки неиспользованный период бесплатной версии аннулируется.\n\nПодписка будет обновляться автоматически. Чтобы отменить подписку, откажитесь от нее как минимум за 24 часа до окончания текущего расчетного периода.\n\nВы можете управлять подписками в настройках.\n\nИспользуя Brave, вы соглашаетесь с нашими Условиями использования и Политикой конфиденциальности.";
-
 /* The title shown on the menu when the VPN connection is disconnected */
 "vpn.vpnOffMenuButtonTitle" = "VPN выключен";
 
 /* The title shown on the menu when the VPN connection is connected */
 "vpn.vpnOnMenuButtonTitle" = "VPN включен";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Активировать код";
 
 /* The alert title showing vpn region is changed */
 "vpn.vpnRegionChangedTitle" = "Регион VPN изменен";
@@ -351,9 +291,6 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "Ежегодная подписка";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Продлевайте ежегодно и экономьте %@";
 
 /* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
 "vpn.yearlySubDisclaimer" = "ВЫГОДНО";

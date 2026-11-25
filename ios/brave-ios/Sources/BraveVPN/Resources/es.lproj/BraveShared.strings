@@ -47,13 +47,7 @@
 "vpn.infoCheckServers" = "Cientos de servidores en todo el mundo";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "Bloquea las conexiones de red no deseadas";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxBlockAdsAlternate" = "Bloquear anuncios & rastreadores en todas las aplicaciones ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "Admite velocidades de hasta 100 Mbps";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxFastAlternate" = "Fast and unlimited up to 100 Mbps";
@@ -138,10 +132,4 @@
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Ajuste actual: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "Región de la VPN";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "Actualiza tu método de pago";
 

@@ -7,27 +7,6 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "เซิร์ฟเวอร์ที่ใช้งานได้";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "ซื้อ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "คุ้มครองอุปกรณ์ถึง 5 เครื่องเพียงสมัครสมาชิกแค่ 1 ครั้ง";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "เลือกตำแหน่งที่ตั้งตามภูมิภาค/ประเทศของคุณ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave จะไม่บันทึกกิจกรรมของคุณ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "คุ้มครองทุกแอป & และทุกอุปกรณ์ของคุณ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "ปลอดภัยกว่าสำหรับทั้ง Wi-Fi ในบ้านหรือสาธารณะ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "ความเร็วสูงสุดถึง 100 Mbps";
-
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
 "vpn.cityCountTitle" = "%ld เมือง";
 
@@ -57,9 +36,6 @@
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "ปัญหา";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "ปัญหาความน่าเชื่อถือในการเชื่อมต่อ";
 
 /* Description used for specific issue field for customer support contact form. */
 "vpn.contactFormIssueDescription" = "กรุณาเลือกหมวดหมู่ที่อธิบายปัญหา";
@@ -111,9 +87,6 @@
 
 /* The button text that starts the trial action */
 "vpn.freeTrialPeriodAction" = "ทดลองใช้ฟรี 7 วัน";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "การสมัครสมาชิกทั้งหมดจะได้รับการต่ออายุโดยอัตโนมัติ แต่สามารถยกเลิกก่อนต่ออายุ";
 
 /* Text explaining how the VPN works. */
 "vpn.installProfileBody" = "โปรไฟล์นี้ช่วยให้ VPN เชื่อมต่อและรักษาความปลอดภัยการรับส่งข้อมูลบนอุปกรณ์ของคุณโดยอัตโนมัติตลอดเวลา การเชื่อมต่อ VPN นี้จะถูกเข้ารหัสและกำหนดเส้นทางผ่านไฟร์วอลล์อัจฉริยะของ Brave เพื่อบล็อกการเชื่อมต่อที่อาจก่อให้เกิดอันตรายและบุกรุกได้";
@@ -172,20 +145,11 @@
 /* Message that we show after successfully changing tunnel protocol. */
 "vpn.protocolSwitchSuccessPopupText" = "โปรโตคอลอุโมงค์ VPN มีการเปลี่ยนแปลง";
 
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "ภูมิภาคของเซิร์ฟเวอร์ที่ใกล้เคียงที่สุดกับคุณจะถูกเลือกโดยอัตโนมัติตามเขตเวลาในระบบของคุณ ซึ่งเป็นการทำงานที่เราแนะนำให้เพื่อให้มั่นใจได้ว่าอินเทอร์เน็ตจะทำงานได้อย่างรวดเร็ว";
-
 /* Message for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorMessage" = "ไม่สามารถสลับเซิร์ฟเวอร์ได้ โปรดลองอีกครั้งในภายหลัง";
 
 /* Title for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorTitle" = "ข้อผิดพลาดของเซิร์ฟเวอร์";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "ภูมิภาคของเซิร์ฟเวอร์";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "เปลี่ยนภูมิภาคของ VPN แล้ว";
 
 /* Yearly tier explaination. Subscription will be renewed annually. */
 "vpn.renewAnnually" = "ต่ออายุทุกปี";
@@ -229,9 +193,6 @@
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "ติดต่อฝ่ายสนับสนุนทางเทคนิค";
 
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "ไม่สามารถดึงรายการเซิร์ฟเวอร์ได้ กรุณาลองอีกครั้งในภายหลัง";
-
 /* Button for FAQ */
 "vpn.settingsFAQ" = "การสนับสนุนเกี่ยวกับ VPN";
 
@@ -249,12 +210,6 @@
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "รีเซ็ตการกำหนดค่า";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "โฮสต์";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "ตำแหน่ง";
 
 /* Header title for vpn settings server section. */
 "vpn.settingsServerSection" = "เซิร์ฟเวอร์";
@@ -307,32 +262,17 @@
 /* Title for an alert when the VPN can't be configured */
 "vpn.vpnConfigGenericErrorTitle" = "ข้อผิดพลาด";
 
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN จำเป็นต้องติดตั้งโปรไฟล์ VPN บนอุปกรณ์ของคุณจึงจะทำงานได้ ";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "ปฏิเสธการอนุญาต";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "ไม่สามารถแลกรับรหัสข้อเสนอได้ โปรดลองอีกครั้ง หรือตรวจสอบรายละเอียดรหัสข้อเสนอของคุณแล้วลองอีกครั้ง";
-
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "ไม่สามารถดำเนินการสั่งซื้อให้เสร็จสมบูรณ์ได้ โปรดลองอีกครั้ง หรือตรวจสอบรายละเอียดการชำระเงินของคุณบน Apple แล้วลองอีกครั้ง";
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "ข้อผิดพลาด";
 
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "ค่าสมัครสมาชิกจะถูกเรียกเก็บผ่านทางบัญชีของ iTunes\nหากมีส่วนที่ไม่ได้ใช้งานในช่วงทดลองใช้ฟรี ส่วนนี้จะถูกริบคืนเมื่อคุณซื้อการสมัครสมาชิก\n\nการสมัครของคุณจะต่ออายุโดยอัตโนมัติเว้นแต่จะว่าถูกยกเลิกอย่างน้อย 24 ชั่วโมงก่อนสิ้นสุดระยะเวลาใช้งานในปัจจุบัน\n\nคุณสามารถจัดการการสมัครสมาชิกของคุณได้ในการตั้งค่า\n\nการใช้งาน Brave นั้นแสดงว่าคุณได้ยอมรับข้อกำหนดการใช้งานและนโยบายความเป็นส่วนตัวแล้ว";
-
 /* The title shown on the menu when the VPN connection is disconnected */
 "vpn.vpnOffMenuButtonTitle" = "ปิด VPN";
 
 /* The title shown on the menu when the VPN connection is connected */
 "vpn.vpnOnMenuButtonTitle" = "เปิด VPN";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "รหัสแลก";
 
 /* The alert title showing vpn region is changed */
 "vpn.vpnRegionChangedTitle" = "เปลี่ยนภูมิภาค VPN แล้ว";
@@ -351,9 +291,6 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "การสมัครสมาชิกรายปี";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "ต่ออายุรายปี จะประหยัด %@";
 
 /* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
 "vpn.yearlySubDisclaimer" = "คุ้มค่าที่สุด";

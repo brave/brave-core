@@ -16,27 +16,6 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "Trackery a reklamy jsou zablokovány";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "Reklamy \nblokované";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "**Přehrávač Brave** je vaše vstupenka na video bez reklam a nepřerušované zážitky z videa.";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "Upravit moje štíty";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "Tato webová stránka začala blokovat některé blokátory reklam, což znamená, že jejich webová stránka nemusí fungovat podle očekávání.";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Chcete-li tento problém vyřešit, může za vás Brave upravit nastavení vašich štítů. Po úpravě můžete zkusit sledovat tento obsah v přehrávači Brave.";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "Zachovat aktuální nastavení";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "Upravte nastavení blokování reklam pro tuto webovou stránku";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Automatické přesměrování stránek AMP";
 
@@ -79,32 +58,11 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "Blokuje JavaScript (může poškodit stránky).";
 
-/* Title for the brave player feature */
-"BravePlayer" = "Přehrávač Brave";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Vždy otevírejte videa z této webové stránky pomocí přehrávače Brave";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "Vyzkoušejte to";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "Teď ne";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Přehrávač Brave vám umožňuje sledovat videa bez přerušení.";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Místo toho sledujte v přehrávači Brave";
-
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "Pokročilé nastavení";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Reklamy a další otravnosti jsou zablokovány";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Zjistěte více.";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "Změnit výchozí globální štíty";
@@ -217,17 +175,11 @@
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "Čeká na stažení";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Edit";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "Zadejte odkaz na seznam filtrů";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "Naposledy aktualizováno %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Zde zadejte adresu URL seznamu filtrů ";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Blokovat otisky prstů";
@@ -411,9 +363,6 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Trackery a blokování reklam";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Trackery \nblokovány";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Aktualizovat seznamy";
