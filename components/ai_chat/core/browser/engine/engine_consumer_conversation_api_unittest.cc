@@ -11,7 +11,6 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/callback_helpers.h"
-#include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
@@ -77,16 +76,16 @@ class MockConversationAPIClient : public ConversationAPIClient {
                const std::optional<std::string>& model_name),
               (override));
 
-  std::string GetMessagesJson(std::vector<OAIMessage> messages) {
+  base::ListValue GetMessages(std::vector<OAIMessage> messages) {
     auto body = CreateJSONRequestBody(std::move(messages), std::nullopt,
                                       std::nullopt, {}, std::nullopt, true);
     auto dict = base::test::ParseJsonDict(body);
     base::ListValue* messages_list = dict.FindList("messages");
-    EXPECT_TRUE(messages_list);
-    std::string messages_json;
-    base::JSONWriter::WriteWithOptions(
-        *messages_list, base::JSONWriter::OPTIONS_PRETTY_PRINT, &messages_json);
-    return messages_json;
+    if (!messages_list) {
+      ADD_FAILURE() << "Request body has no messages list: " << body;
+      return base::ListValue();
+    }
+    return std::move(*messages_list);
   }
 };
 
@@ -128,14 +127,6 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
   }
 
   void TearDown() override {}
-
-  std::string FormatComparableMessagesJson(std::string_view formatted_json) {
-    auto messages = base::test::ParseJson(formatted_json);
-    std::string messages_json;
-    base::JSONWriter::WriteWithOptions(
-        messages, base::JSONWriter::OPTIONS_PRETTY_PRINT, &messages_json);
-    return messages_json;
-  }
 
  protected:
   base::test::TaskEnvironment task_environment_;
@@ -179,7 +170,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       expected_page_content, expected_user_message_content);
 
   auto* mock_api_client = GetMockConversationAPIClient();
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
                     std::optional<base::ListValue> oai_tool_definitions,
@@ -203,8 +194,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                         expected_user_message_content);
 
         // Verify JSON serialization matches expected format
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -223,10 +214,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {}, base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
+      false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -262,7 +251,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       expected_user_message_content);
 
   auto* mock_api_client = GetMockConversationAPIClient();
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
                     std::optional<base::ListValue> oai_tool_definitions,
@@ -288,8 +277,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                         expected_user_message_content);
 
         // Verify JSON serialization matches expected format
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -309,10 +298,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content_1, page_content_2}}}},
       EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
+      base::DoNothing(), future.GetCallback());
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -335,7 +322,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   ])";
 
   auto* mock_api_client = GetMockConversationAPIClient();
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
                     std::optional<base::ListValue> oai_tool_definitions,
@@ -362,8 +349,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                         "Is this related to a broader series?");
 
         // Verify JSON serialization matches expected format
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -382,10 +369,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {}, base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
+      false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -444,7 +429,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   ])";
 
   auto* mock_api_client = GetMockConversationAPIClient();
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
                     std::optional<base::ListValue> oai_tool_definitions,
@@ -454,7 +439,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         // Should have 3 messages (user, assistant, user)
-        EXPECT_EQ(messages.size(), 3u);
+        ASSERT_EQ(messages.size(), 3u);
 
         // First message: user with page content, excerpt, and text
         EXPECT_EQ(messages[0].role, "user");
@@ -478,8 +463,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                         "Is it related to a broader series?");
 
         // Verify JSON serialization matches expected format
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -490,10 +475,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {}, base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
+      false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -573,7 +556,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   ])";
 
   auto* mock_api_client = GetMockConversationAPIClient();
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
                     std::optional<base::ListValue> oai_tool_definitions,
@@ -605,8 +588,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                         "Is it related to a broader series?");
 
         // Verify JSON serialization matches expected format
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -617,10 +600,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {}, base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
+      false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -639,7 +620,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   ])";
 
   auto* mock_api_client = GetMockConversationAPIClient();
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
                     std::optional<base::ListValue> oai_tool_definitions,
@@ -662,8 +643,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                                  mojom::SimpleRequestType::kRequestSummary);
 
         // Verify JSON serialization matches expected format
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -685,10 +666,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {}, base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
+      false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -757,8 +736,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
               VerifyTextBlock(FROM_HERE, messages[0].content[2],
                               "What is this about?");
 
-              EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                        FormatComparableMessagesJson(expected_messages));
+              EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                          base::test::IsJson(expected_messages));
               auto completion_event =
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("Test response"));
@@ -774,17 +753,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     turn->text = "What is this about?";
     history.push_back(std::move(turn));
 
-    base::RunLoop run_loop;
+    base::test::TestFuture<EngineConsumer::GenerationResult> future;
     PageContent page_content("This is a test page content.",
                              mojom::ContentType::PageContent);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-        false, {}, std::nullopt, {}, base::DoNothing(),
-        base::BindLambdaForTesting(
-            [&run_loop](EngineConsumer::GenerationResult) {
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
+    EXPECT_TRUE(future.Wait());
     testing::Mock::VerifyAndClearExpectations(mock_api_client);
   }
 
@@ -843,8 +818,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
               VerifyTextBlock(FROM_HERE, messages[0].content[2],
                               "What is this about?");
 
-              EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                        FormatComparableMessagesJson(expected_messages));
+              EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                          base::test::IsJson(expected_messages));
               auto completion_event =
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("Test response"));
@@ -860,17 +835,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     turn->text = "What is this about?";
     history.push_back(std::move(turn));
 
-    base::RunLoop run_loop;
+    base::test::TestFuture<EngineConsumer::GenerationResult> future;
     PageContent page_content("This is a test page content.",
                              mojom::ContentType::PageContent);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-        false, {}, std::nullopt, {}, base::DoNothing(),
-        base::BindLambdaForTesting(
-            [&run_loop](EngineConsumer::GenerationResult) {
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
+    EXPECT_TRUE(future.Wait());
     testing::Mock::VerifyAndClearExpectations(mock_api_client);
   }
 
@@ -932,8 +903,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
               VerifyTextBlock(FROM_HERE, messages[0].content[2],
                               "What is this about?");
 
-              EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                        FormatComparableMessagesJson(expected_messages));
+              EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                          base::test::IsJson(expected_messages));
               auto completion_event =
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("Test response"));
@@ -949,17 +920,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     turn->text = "What is this about?";
     history.push_back(std::move(turn));
 
-    base::RunLoop run_loop;
+    base::test::TestFuture<EngineConsumer::GenerationResult> future;
     PageContent page_content("This is a test page content.",
                              mojom::ContentType::PageContent);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-        false, {}, std::nullopt, {}, base::DoNothing(),
-        base::BindLambdaForTesting(
-            [&run_loop](EngineConsumer::GenerationResult) {
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
+    EXPECT_TRUE(future.Wait());
     testing::Mock::VerifyAndClearExpectations(mock_api_client);
   }
 
@@ -998,8 +965,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
               VerifyTextBlock(FROM_HERE, messages[0].content[1],
                               "What is this about?");
 
-              EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                        FormatComparableMessagesJson(expected_messages));
+              EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                          base::test::IsJson(expected_messages));
               auto completion_event =
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("Test response"));
@@ -1015,17 +982,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     turn->text = "What is this about?";
     history.push_back(std::move(turn));
 
-    base::RunLoop run_loop;
+    base::test::TestFuture<EngineConsumer::GenerationResult> future;
     PageContent page_content("This is a test page content.",
                              mojom::ContentType::PageContent);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-        false, {}, std::nullopt, {}, base::DoNothing(),
-        base::BindLambdaForTesting(
-            [&run_loop](EngineConsumer::GenerationResult) {
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
+    EXPECT_TRUE(future.Wait());
     testing::Mock::VerifyAndClearExpectations(mock_api_client);
   }
 
@@ -1069,8 +1032,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
               VerifyTextBlock(FROM_HERE, messages[0].content[1],
                               "What is this about?");
 
-              EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                        FormatComparableMessagesJson(expected_messages));
+              EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                          base::test::IsJson(expected_messages));
               auto completion_event =
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("Test response"));
@@ -1086,17 +1049,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     turn->text = "What is this about?";
     history.push_back(std::move(turn));
 
-    base::RunLoop run_loop;
+    base::test::TestFuture<EngineConsumer::GenerationResult> future;
     PageContent page_content("This is a test page content.",
                              mojom::ContentType::PageContent);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-        false, {}, std::nullopt, {}, base::DoNothing(),
-        base::BindLambdaForTesting(
-            [&run_loop](EngineConsumer::GenerationResult) {
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
+    EXPECT_TRUE(future.Wait());
     testing::Mock::VerifyAndClearExpectations(mock_api_client);
   }
 
@@ -1139,8 +1098,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
               VerifyTextBlock(FROM_HERE, messages[0].content[1],
                               "What is this about?");
 
-              EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                        FormatComparableMessagesJson(expected_messages));
+              EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                          base::test::IsJson(expected_messages));
               auto completion_event =
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("Test response"));
@@ -1156,17 +1115,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     turn->text = "What is this about?";
     history.push_back(std::move(turn));
 
-    base::RunLoop run_loop;
+    base::test::TestFuture<EngineConsumer::GenerationResult> future;
     PageContent page_content("This is a test page content.",
                              mojom::ContentType::PageContent);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-        false, {}, std::nullopt, {}, base::DoNothing(),
-        base::BindLambdaForTesting(
-            [&run_loop](EngineConsumer::GenerationResult) {
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
+    EXPECT_TRUE(future.Wait());
     testing::Mock::VerifyAndClearExpectations(mock_api_client);
   }
 }
@@ -1221,8 +1176,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         VerifyTextBlock(FROM_HERE, messages[0].content[1],
                         "What is this about?");
 
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New("Test response"));
@@ -1237,16 +1192,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   turn->text = "What is this about?";
   history.push_back(std::move(turn));
 
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
   PageContent page_content("This is a test page content.",
                            mojom::ContentType::PageContent);
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
       true,  // is_temporary_chat = true
-      {}, std::nullopt, {}, base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
+      {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -1282,17 +1235,15 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   turn->model_key = kChatAutomaticModelKey;
   history.push_back(std::move(turn));
 
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
   PageContent page_content("This is a test page content.",
                            mojom::ContentType::PageContent);
   PageContentsMap page_contents{{"turn-1", {page_content}}};
 
   engine_->GenerateAssistantResponse(
       std::move(page_contents), EngineConsumer::ToHistoryView(history), false,
-      {}, std::nullopt, {}, base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
+      {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -1427,7 +1378,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_PageContentsOrderedBeforeTurns) {
   auto* mock_api_client = GetMockConversationAPIClient();
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
@@ -1455,7 +1406,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                 mojom::CompletionEvent::New(""));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
-        run_loop.Quit();
       });
 
   PageContent page_content("Test page content",
@@ -1472,18 +1422,16 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {}, base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&](EngineConsumer::GenerationResult) { /* handled above */ }));
+      false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_PageContentsExcludedForMissingTurns) {
   auto* mock_api_client = GetMockConversationAPIClient();
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
@@ -1505,7 +1453,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                 mojom::CompletionEvent::New(""));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
-        run_loop.Quit();
       });
 
   // Create page content for a turn UUID that doesn't exist in conversation
@@ -1522,21 +1469,19 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       std::vector<std::string>{} /* child_thread_uuids */);
   history.push_back(std::move(turn));
 
-  engine_->GenerateAssistantResponse(
-      {{"missing-turn", {page_content}}},
-      EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&](EngineConsumer::GenerationResult) { /* handled above */ }));
+  engine_->GenerateAssistantResponse({{"missing-turn", {page_content}}},
+                                     EngineConsumer::ToHistoryView(history),
+                                     false, {}, std::nullopt, {},
+                                     base::DoNothing(), future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_MultiplePageContentsForSameTurn) {
   auto* mock_api_client = GetMockConversationAPIClient();
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
@@ -1567,7 +1512,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                 mojom::CompletionEvent::New(""));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
-        run_loop.Quit();
       });
 
   PageContent page_content1("First page content",
@@ -1587,18 +1531,16 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content1, video_content}}},
       EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&](EngineConsumer::GenerationResult) { /* handled above */ }));
+      base::DoNothing(), future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_MultiTurnConversationWithPageContents) {
   auto* mock_api_client = GetMockConversationAPIClient();
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
@@ -1638,7 +1580,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                 mojom::CompletionEvent::New(""));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
-        run_loop.Quit();
       });
 
   PageContent page_content1("Content for first turn",
@@ -1678,11 +1619,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content1}}, {"turn-2", {page_content2}}},
       EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&](EngineConsumer::GenerationResult) { /* handled above */ }));
+      base::DoNothing(), future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -1724,7 +1663,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                                      max_length));
         engine_->SetMaxAssociatedContentLengthForTesting(max_length);
 
-        base::RunLoop run_loop;
+        base::test::TestFuture<EngineConsumer::GenerationResult> future;
         EXPECT_CALL(*mock_api_client, PerformRequest)
             .WillOnce(
                 [&](std::vector<OAIMessage> messages,
@@ -1766,15 +1705,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                   std::move(callback).Run(
                       base::ok(EngineConsumer::GenerationResultData(
                           std::move(completion_event), std::nullopt)));
-                  run_loop.Quit();
                 });
 
         engine_->GenerateAssistantResponse(
             {{"turn-1", {page_content_1, page_content_2}},
              {"turn-2", {page_content_3}}},
             EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
-            base::DoNothing(), base::DoNothing());
-        run_loop.Run();
+            base::DoNothing(), future.GetCallback());
+        EXPECT_TRUE(future.Wait());
         testing::Mock::VerifyAndClearExpectations(mock_api_client);
       };
 
@@ -1877,7 +1815,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       EngineConsumer::GetImageDataURL(uploaded_images[5]->data), kTestPrompt);
 
   auto* mock_api_client = GetMockConversationAPIClient();
-  base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
                     std::optional<base::ListValue> oai_tool_definitions,
@@ -1921,8 +1858,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         VerifyTextBlock(FROM_HERE, messages[0].content[8], kTestPrompt);
 
         // Verify JSON serialization matches expected format
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -2022,8 +1959,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         VerifyTextBlock(FROM_HERE, messages[0].content[4], kTestPrompt);
 
         // Verify JSON serialization matches expected format
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -2165,8 +2102,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         VerifyTextBlock(FROM_HERE, messages[0].content[idx], kTestPrompt);
 
         // Verify JSON serialization matches expected format
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -2244,8 +2181,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         VerifyTextBlock(FROM_HERE, messages[0].content[2], kTestPrompt);
 
         // Verify JSON serialization matches expected format
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -2342,8 +2279,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         VerifyTextBlock(FROM_HERE, messages[0].content[5], kTestPrompt);
 
         // Verify JSON serialization matches expected format
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -2504,7 +2441,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       ]
     }
   ])";
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
@@ -2516,9 +2453,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::optional<std::string>& model_name) {
         // One user turn, one assistant turn, one tool turn
         EXPECT_EQ(messages.size(), 3u);
-        EXPECT_THAT(
-            mock_api_client->GetMessagesJson(std::move(messages)),
-            base::test::IsJson(base::test::ParseJson(expected_messages)));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(""));
@@ -2526,12 +2462,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             std::move(completion_event), std::nullopt)));
       });
 
-  engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
+  engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
+                                     false, {}, std::nullopt, {},
+                                     base::DoNothing(), future.GetCallback());
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -2637,7 +2571,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       ]
     }
   ])";
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
@@ -2649,8 +2583,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::optional<std::string>& model_name) {
         // One user turn, one assistant turn, two tool turns
         EXPECT_EQ(messages.size(), 4u);
-        EXPECT_THAT(base::test::ParseJson(
-                        mock_api_client->GetMessagesJson(std::move(messages))),
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                     base::test::IsJson(expected_messages));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -2659,12 +2592,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             std::move(completion_event), std::nullopt)));
       });
 
-  engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
+  engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
+                                     false, {}, std::nullopt, {},
+                                     base::DoNothing(), future.GetCallback());
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -2874,7 +2805,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       ]
     }
   ])";
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
@@ -2884,8 +2815,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
-        EXPECT_THAT(base::test::ParseJson(
-                        mock_api_client->GetMessagesJson(std::move(messages))),
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                     base::test::IsJson(expected_messages));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -2894,12 +2824,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             std::move(completion_event), std::nullopt)));
       });
 
-  engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
+  engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
+                                     false, {}, std::nullopt, {},
+                                     base::DoNothing(), future.GetCallback());
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -2953,7 +2881,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       ]
     }
   ])";
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<OAIMessage> messages,
@@ -2964,9 +2892,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 2u);
-        EXPECT_THAT(
-            mock_api_client->GetMessagesJson(std::move(messages)),
-            base::test::IsJson(base::test::ParseJson(expected_messages)));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(""));
@@ -2974,12 +2901,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             std::move(completion_event), std::nullopt)));
       });
 
-  engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
+  engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
+                                     false, {}, std::nullopt, {},
+                                     base::DoNothing(), future.GetCallback());
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -3031,8 +2956,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
                                    mojom::SimpleRequestType::kRequestQuestions);
 
           // Verify JSON serialization matches expected format
-          EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                    FormatComparableMessagesJson(expected_messages));
+          EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                      base::test::IsJson(expected_messages));
 
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -3150,7 +3075,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                                      base::DoNothing(), future.GetCallback());
 
   auto result = future.Take();
-  EXPECT_FALSE(result.has_value());
+  ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error(), mojom::APIError::InternalError);
 
   testing::Mock::VerifyAndClearExpectations(client);
@@ -3164,7 +3089,7 @@ TEST_P(EngineConsumerConversationAPIUnitTest_GenerateRewrite,
        GenerateRewriteSuggestion) {
   GenerateRewriteTestParam params = GetParam();
   auto* client = GetMockConversationAPIClient();
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   std::string test_text = "Hello World";
   std::string expected_response = "Rewritten text here.";
@@ -3247,8 +3172,8 @@ TEST_P(EngineConsumerConversationAPIUnitTest_GenerateRewrite,
             }
 
             // Verify JSON serialization matches expected format
-            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
-                      FormatComparableMessagesJson(expected_messages));
+            EXPECT_THAT(client->GetMessages(std::move(messages)),
+                        base::test::IsJson(expected_messages));
 
             // Return completion
             std::move(completed_callback)
@@ -3258,19 +3183,15 @@ TEST_P(EngineConsumerConversationAPIUnitTest_GenerateRewrite,
                     std::nullopt)));
           });
 
-  engine_->GenerateRewriteSuggestion(
-      test_text, params.action_type, base::DoNothing(),
-      base::BindLambdaForTesting([&run_loop, &expected_response](
-                                     EngineConsumer::GenerationResult result) {
-        ASSERT_TRUE(result.has_value());
-        ASSERT_TRUE(result->event);
-        ASSERT_TRUE(result->event->is_completion_event());
-        EXPECT_EQ(result->event->get_completion_event()->completion,
-                  expected_response);
-        run_loop.Quit();
-      }));
+  engine_->GenerateRewriteSuggestion(test_text, params.action_type,
+                                     base::DoNothing(), future.GetCallback());
 
-  run_loop.Run();
+  auto result = future.Take();
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_completion_event());
+  EXPECT_EQ(result->event->get_completion_event()->completion,
+            expected_response);
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
@@ -3525,8 +3446,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages1));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages1));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
@@ -3543,8 +3464,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages2));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages2));
         // Test response with newlines in the array
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -3562,8 +3483,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages3));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages3));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
@@ -3597,8 +3518,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages1));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages1));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
@@ -3615,8 +3536,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages2));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages2));
         std::move(callback).Run(
             base::unexpected(mojom::APIError::RateLimitReached));
       });
@@ -3639,8 +3560,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages1));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages1));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
@@ -3657,8 +3578,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages2));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages2));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
@@ -3675,8 +3596,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages3));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages3));
         std::move(callback).Run(
             base::unexpected(mojom::APIError::RateLimitReached));
       });
@@ -3711,8 +3632,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages1));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages1));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
@@ -3729,8 +3650,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages2));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages2));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New("not well structured"));
@@ -3745,9 +3666,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(
-                      expected_messages3_skipped_invalid_response));
+        EXPECT_THAT(
+            mock_api_client->GetMessages(std::move(messages)),
+            base::test::IsJson(expected_messages3_skipped_invalid_response));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
@@ -3777,8 +3698,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages1));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages1));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
@@ -3795,8 +3716,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages2));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages2));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
@@ -3813,8 +3734,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages3));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages3));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
@@ -3856,7 +3777,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       tabs, base::BindLambdaForTesting(
                 [&](base::expected<std::vector<std::string>, mojom::APIError>
                         result) {
-                  EXPECT_FALSE(result.has_value());
+                  ASSERT_FALSE(result.has_value());
                   EXPECT_EQ(result.error(), mojom::APIError::InternalError);
                 }));
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
@@ -3893,8 +3814,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages));
         // Test response with newlines in the array
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -3961,8 +3882,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages1));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages1));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
@@ -3978,8 +3899,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages2));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages2));
         // Test response with newlines in the array
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -4044,8 +3965,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages1));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages1));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
@@ -4061,8 +3982,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         EXPECT_EQ(messages.size(), 1u);
-        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
-                  FormatComparableMessagesJson(expected_messages2));
+        EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
+                    base::test::IsJson(expected_messages2));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
