@@ -1153,6 +1153,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SETTINGS_EXIT" desc="Text for Settings exit.">
         Settings exit
       </message>
+      <message name="IDS_SETTINGS_EMAIL_ALIASES_ROW_TITLE" desc="Label for the settings row that opens the Email Aliases page and title of that page">
+        Email Aliases
+      </message>
       <message name="IDS_BRAVE_ADS_NEW_USER_OFFER_TITLE" desc="Title for Brave Ads offer.">
         Enable Brave Rewards
       </message>
