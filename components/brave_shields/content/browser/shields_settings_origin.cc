@@ -217,20 +217,22 @@ ShieldsSettingsOrigin ShieldsSettingsOrigin::ForRequest(
              factory_info) {
     info = &*factory_info;
   }
-  // A navigation's token can still name the outgoing document. The resource
-  // type is not used: requests a service worker refetches keep kMainFrame.
-  const bool navigation =
-      info &&
-      info->request_type() == net::IsolationInfo::RequestType::kMainFrame;
-  if (!navigation) {
-    if (document_key) {
-      return *document_key;
-    }
-    if (auto* frame = content::RenderFrameHost::FromFrameToken(token)) {
-      return ForFrame(*frame);
-    }
+  const ShieldsSettingsOrigin top_frame_value =
+      info ? ForIsolationInfo(*info) : ShieldsSettingsOrigin();
+  // A main-frame request's token can still name the outgoing document. The
+  // resource type is not used: requests a service worker refetches keep
+  // kMainFrame.
+  if (info &&
+      info->request_type() == net::IsolationInfo::RequestType::kMainFrame) {
+    return top_frame_value;
   }
-  return info ? ForIsolationInfo(*info) : ShieldsSettingsOrigin();
+  if (document_key) {
+    return *document_key;
+  }
+  if (auto* frame = content::RenderFrameHost::FromFrameToken(token)) {
+    return ForFrame(*frame);
+  }
+  return top_frame_value;
 }
 
 ShieldsSettingsOrigin ShieldsSettingsOrigin::ForRedirect(
