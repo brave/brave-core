@@ -27,6 +27,10 @@ import {
 } from '../lib/testRunSpec.ts'
 import { isCI, isTeamcity } from '../lib/ciDetect.ts'
 import { getPassthroughArgs } from '../lib/commandsUtils.ts'
+import {
+  checkIsolateOptions,
+  createIsolate,
+} from '../../isolate/generator/createIsolate.ts'
 
 async function buildTests(testsToRun: string[]) {
   config.buildTargets = testsToRun
@@ -247,6 +251,10 @@ program
     }
     config.update(options)
 
+    if (options.isolate) {
+      checkIsolateOptions(config, options)
+    }
+
     if (config.isIOS() && config.targetEnvironment === 'device') {
       Log.error('Running ios tests on a device is not yet supported')
       process.exit(1)
@@ -283,6 +291,10 @@ program
       await buildTests(suiteRuns ? affectedTests : suites)
     }
     suiteRuns ??= await getSuiteRuns()
+    if (options.isolate) {
+      createIsolate(config, suites, options, passthroughArgs)
+      return
+    }
     if (!options.skip_run) {
       for (const { suite, tests } of suiteRuns) {
         if (!(await runTests(suite, tests, options, passthroughArgs))) {
