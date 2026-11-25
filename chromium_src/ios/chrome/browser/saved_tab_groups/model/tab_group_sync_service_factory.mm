@@ -1,0 +1,158 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Replaces the upstream factory. There is no `TabGroupLocalUpdateObserver`:
+// its constructor CHECKs that no regular browser exists, and it watches a
+// `WebStateList` Brave does not use. The service exists only while
+// `kTabGroupsEnabled` is on, so startup cannot close groups before the
+// delegate can see them.
+
+#import "ios/chrome/browser/saved_tab_groups/model/tab_group_sync_service_factory.h"
+
+#import <memory>
+#import <string_view>
+#import <utility>
+
+#import "base/feature_list.h"
+#import "base/functional/bind.h"
+#import "base/functional/callback.h"
+#import "base/no_destructor.h"
+#import "brave/ios/browser/saved_tab_groups/brave_tab_group_sync_delegate.h"
+#import "brave/ios/browser/saved_tab_groups/brave_tab_group_sync_model.h"
+#import "brave/ios/browser/saved_tab_groups/features.h"
+#import "components/collaboration/internal/collaboration_finder_impl.h"
+#import "components/saved_tab_groups/public/synthetic_field_trial_helper.h"
+#import "components/saved_tab_groups/public/tab_group_sync_service.h"
+#import "components/saved_tab_groups/public/tab_group_sync_service_factory_helper.h"
+#import "components/sync_device_info/device_info_sync_service.h"
+#import "ios/chrome/app/tests_hook.h"
+#import "ios/chrome/browser/data_sharing/model/data_sharing_service_factory.h"
+#import "ios/chrome/browser/data_sharing/model/personal_collaboration_data/personal_collaboration_data_service_factory.h"
+#import "ios/chrome/browser/metrics/model/ios_chrome_metrics_service_accessor.h"
+#import "ios/chrome/browser/optimization_guide/model/optimization_guide_service.h"
+#import "ios/chrome/browser/optimization_guide/model/optimization_guide_service_factory.h"
+#import "ios/chrome/browser/sessions/model/session_restoration_service_factory.h"
+#import "ios/chrome/browser/shared/model/browser/browser_list_factory.h"
+#import "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#import "ios/chrome/browser/signin/model/identity_manager_factory.h"
+#import "ios/chrome/browser/sync/model/data_type_store_service_factory.h"
+#import "ios/chrome/browser/sync/model/device_info_sync_service_factory.h"
+#import "ios/chrome/common/channel_info.h"
+
+namespace tab_groups {
+
+namespace {
+
+std::unique_ptr<KeyedService> BuildService(
+    SyntheticFieldTrialHelper* synthetic_field_trial_helper,
+    ProfileIOS& profile) {
+  if (profile.IsOffTheRecord() ||
+      !base::FeatureList::IsEnabled(brave::features::kTabGroupsEnabled)) {
+    return nullptr;
+  }
+
+  // Give the opportunity for the test hook to override the factory from
+  // the provider (allowing EG tests to use a fake TabGroupSyncService).
+  if (auto tab_group_sync_service =
+          tests_hook::CreateTabGroupSyncService(&profile)) {
+    return tab_group_sync_service;
+  }
+
+  syncer::DeviceInfoTracker* device_info_tracker =
+      DeviceInfoSyncServiceFactory::GetForProfile(profile)
+          ->GetDeviceInfoTracker();
+  auto* opt_guide = OptimizationGuideServiceFactory::GetForProfile(profile);
+  auto* identity_manager = IdentityManagerFactory::GetForProfile(profile);
+  auto* personal_collaboration_data_service =
+      data_sharing::personal_collaboration_data::
+          PersonalCollaborationDataServiceFactory::GetForProfile(profile);
+  auto* data_sharing_service =
+      data_sharing::DataSharingServiceFactory::GetForProfile(profile);
+  auto collaboration_finder =
+      std::make_unique<collaboration::CollaborationFinderImpl>(
+          data_sharing_service);
+
+  std::unique_ptr<TabGroupSyncService> tab_group_sync_service =
+      CreateTabGroupSyncService(
+          ::GetChannel(), DataTypeStoreServiceFactory::GetForProfile(profile),
+          profile.GetPrefs(), device_info_tracker, opt_guide, identity_manager,
+          personal_collaboration_data_service, std::move(collaboration_finder),
+          synthetic_field_trial_helper, data_sharing_service->GetLogger());
+
+  tab_group_sync_service->SetTabGroupSyncDelegate(
+      std::make_unique<brave::BraveTabGroupSyncDelegate>(
+          [BraveTabGroupSyncLocalModels sharedModel]));
+  return tab_group_sync_service;
+}
+
+}  // namespace
+
+// static
+TabGroupSyncServiceFactory::TestingFactory
+TabGroupSyncServiceFactory::GetDefaultFactory() {
+  // GetSyntheticFieldTrialHelper() returns a pointer to a singleton that is
+  // never deallocated, so it is safe to use base::Unretained(...) here.
+  return base::BindOnce(
+      &BuildService,
+      base::Unretained(
+          TabGroupSyncServiceFactory::GetSyntheticFieldTrialHelper()));
+}
+
+TabGroupSyncServiceFactory::TabGroupSyncServiceFactory(PassKey key)
+    : TypedProfileKeyedServiceFactoryIOS(std::move(key),
+                                         "TabGroupSyncServiceFactory",
+                                         TestingCreation::kNoServiceForTests,
+                                         ServiceCreation::kCreateWithProfile) {
+  DependsOn(BrowserListFactory::GetInstance());
+  DependsOn(DataTypeStoreServiceFactory::GetInstance());
+  DependsOn(DeviceInfoSyncServiceFactory::GetInstance());
+  DependsOn(SessionRestorationServiceFactory::GetInstance());
+  DependsOn(OptimizationGuideServiceFactory::GetInstance());
+  // The dependency on IdentityManager is only for the purpose of recording "on
+  // signin" metrics.
+  DependsOn(IdentityManagerFactory::GetInstance());
+  DependsOn(data_sharing::DataSharingServiceFactory::GetInstance());
+  DependsOn(data_sharing::personal_collaboration_data::
+                PersonalCollaborationDataServiceFactory::GetInstance());
+}
+
+std::unique_ptr<KeyedService>
+TabGroupSyncServiceFactory::BuildServiceInstanceFor(ProfileIOS& profile) const {
+  return BuildService(GetSyntheticFieldTrialHelper(), profile);
+}
+
+// static
+void TabGroupSyncServiceFactory::RegisterFieldTrial(
+    std::string_view trial_name,
+    std::string_view group_name) {
+  IOSChromeMetricsServiceAccessor::RegisterSyntheticFieldTrial(
+      trial_name, group_name,
+      variations::SyntheticTrialAnnotationMode::kCurrentLog);
+}
+
+// static
+void TabGroupSyncServiceFactory::OnHadSyncedTabGroup(bool had_synced_group) {
+  RegisterFieldTrial(kSyncedTabGroupFieldTrialName,
+                     had_synced_group ? kHasOwnedTabGroupTypeName
+                                      : kHasNotOwnedTabGroupTypeName);
+}
+
+// static
+void TabGroupSyncServiceFactory::OnHadSharedTabGroup(bool had_shared_group) {
+  RegisterFieldTrial(kSharedTabGroupFieldTrialName,
+                     had_shared_group ? kHasOwnedTabGroupTypeName
+                                      : kHasNotOwnedTabGroupTypeName);
+}
+
+// static
+SyntheticFieldTrialHelper*
+TabGroupSyncServiceFactory::GetSyntheticFieldTrialHelper() {
+  static base::NoDestructor<SyntheticFieldTrialHelper> kInstance(
+      base::BindRepeating(&TabGroupSyncServiceFactory::OnHadSyncedTabGroup),
+      base::BindRepeating(&TabGroupSyncServiceFactory::OnHadSharedTabGroup));
+  return kInstance.get();
+}
+
+}  // namespace tab_groups
