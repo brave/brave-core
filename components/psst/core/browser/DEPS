@@ -1,5 +1,6 @@
 include_rules = [
   "+brave/components/brave_origin",
+  "+brave/components/skus",
   "+components/component_updater",
   "+components/content_settings/core/browser",
   "+components/content_settings/core/common",
@@ -10,5 +11,6 @@ include_rules = [
   "+crypto",
   "+components/prefs",
   "+components/sync_preferences",
+  "+mojo/public/cpp/bindings",
   "+services/network/public",
 ]

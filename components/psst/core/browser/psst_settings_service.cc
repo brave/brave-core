@@ -245,14 +245,21 @@ void PsstSettingsService::IncrementInfobarDeclineCount(
 }
 
 bool PsstSettingsService::IsPsstEnabled() const {
-  return prefs_->GetBoolean(prefs::kPsstEnabled);
+  if (brave_origin_service_ &&
+      brave_origin_service_->IsPolicyControlledByBraveOrigin(
+          policy::key::kPsstEnabled)) {
+    // For case when BraveOrigin is enabled
+    return brave_origin_service_->GetPolicyValue(policy::key::kPsstEnabled)
+        .value_or(false);
+  } else {
+    return prefs_->GetBoolean(prefs::kPsstEnabled);
+  }
 }
 
 void PsstSettingsService::SetPsstEnabled(bool enabled) {
   if (brave_origin_service_ &&
       brave_origin_service_->IsPolicyControlledByBraveOrigin(
           policy::key::kPsstEnabled)) {
-    // For case when BraveOrigin is enabled
     brave_origin_service_->SetPolicyValue(policy::key::kPsstEnabled, enabled);
   }
   prefs_->SetBoolean(prefs::kPsstEnabled, enabled);
