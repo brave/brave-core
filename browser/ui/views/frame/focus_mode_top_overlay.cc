@@ -73,6 +73,7 @@ FocusModeTopOverlay::FocusModeTopOverlay(base::PassKey<BraveBrowserView>,
       shadow_(this, gfx::RoundedCornersF(0), kShadow) {
   SetPaintToLayer();
   layer()->SetFillsBoundsOpaquely(true);
+  layer()->SetMasksToBounds(true);
 
   animation_.SetSlideDuration(kRevealAnimationDuration);
   animation_.Reset(1.0);
