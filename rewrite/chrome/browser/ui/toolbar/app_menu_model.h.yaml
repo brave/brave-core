@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Include bookmark_sub_menu_model.h
+
+      Upstream only forward declares BookmarkSubMenuModel; Brave's subclasses
+      need the full definition.
+    add_include:
+      header:
+        - chrome/browser/ui/toolbar/bookmark_sub_menu_model.h
+
+  - description: |-
+      Expose sub_menus_ to subclasses
+
+      BraveAppMenuModel needs to manipulate the private sub_menus_ vector.
+    add_to_protected:
+      class_name: AppMenuModel
+      code: |-
+        std::vector<std::unique_ptr<SimpleMenuModel>>& sub_menus() {
+          return sub_menus_;
+        }

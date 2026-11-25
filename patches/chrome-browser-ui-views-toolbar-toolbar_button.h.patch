@@ -1,0 +1,130 @@
+diff --git a/chrome/browser/ui/views/toolbar/toolbar_button.h b/chrome/browser/ui/views/toolbar/toolbar_button.h
+index d07788186e8f89111ae22ad8348ab9ca9da17008..87f95e8f9f6c9ad05a708e37d60847b588c3d2dd 100644
+--- a/chrome/browser/ui/views/toolbar/toolbar_button.h
++++ b/chrome/browser/ui/views/toolbar/toolbar_button.h
+@@ -48,9 +48,9 @@ class MenuRunner;
+ 
+ // This class provides basic drawing and mouse-over behavior for buttons
+ // appearing in the toolbar.
+-class ToolbarButton : public views::LabelButton,
++class ToolbarButton_ChromiumImpl : public views::LabelButton,
+                       public views::ContextMenuController {
+-  METADATA_HEADER(ToolbarButton, views::LabelButton)
++  METADATA_HEADER(ToolbarButton_ChromiumImpl, views::LabelButton)
+ 
+  public:
+   enum class Edge {
+@@ -64,27 +64,27 @@ class ToolbarButton : public views::LabelButton,
+ 
+   // More convenient form of the ctor below, when |model| and |tab_strip_model|
+   // are both nullptr.
+-  explicit ToolbarButton(PressedCallback callback = PressedCallback());
++  explicit ToolbarButton_ChromiumImpl(PressedCallback callback = PressedCallback());
+ 
+   // |tab_strip_model| must outlive this class.
+   // |model| can be null if no menu is to be shown.
+   // |tab_strip_model| is only needed if showing the menu with |model| requires
+   // an active tab. There may be no active tab in |tab_strip_model| during
+   // shutdown.
+-  ToolbarButton(PressedCallback callback,
++  ToolbarButton_ChromiumImpl(PressedCallback callback,
+                 std::unique_ptr<ui::MenuModel> model,
+                 TabStripModel* tab_strip_model,
+                 bool trigger_menu_on_long_press = true);
+-  ToolbarButton(const ToolbarButton&) = delete;
+-  ToolbarButton& operator=(const ToolbarButton&) = delete;
+-  ~ToolbarButton() override;
++  ToolbarButton_ChromiumImpl(const ToolbarButton_ChromiumImpl&) = delete;
++  ToolbarButton_ChromiumImpl& operator=(const ToolbarButton_ChromiumImpl&) = delete;
++  ~ToolbarButton_ChromiumImpl() override;
+ 
+   // Highlights the button by setting the label to given |highlight_text|, using
+   // tinting it using the |hightlight_color| if set. The highlight is displayed
+   // using an animation. If some highlight is already set, it shows the new
+   // highlight directly without any animation. To clear the previous highlight
+   // (also using an animation), call this function with both parameters empty.
+-  void SetHighlight(const std::u16string& highlight_text,
++  virtual void SetHighlight(const std::u16string& highlight_text,
+                     std::optional<SkColor> highlight_color);
+ 
+   // Sets the leading margin when the browser is maximized and updates layout to
+@@ -118,7 +118,7 @@ class ToolbarButton : public views::LabelButton,
+   virtual void UpdateIcon();
+ 
+   // Returns the button's corner radius for `edge`.
+-  virtual float GetCornerRadiusFor(ToolbarButton::Edge edge) const;
++  virtual float GetCornerRadiusFor(ToolbarButton_ChromiumImpl::Edge edge) const;
+ 
+   // Gets/Sets |layout_insets_|, see comment there.
+   std::optional<gfx::Insets> GetLayoutInsets() const;
+@@ -172,6 +172,11 @@ class ToolbarButton : public views::LabelButton,
+ 
+   void SetInternalPadding(gfx::Insets insets);
+ 
++  void SetMenuModel(std::unique_ptr<ui::MenuModel> model);
++  bool HasVectorIcons() const;
++  const gfx::VectorIcon& GetVectorIcon() const;
++  const gfx::VectorIcon& GetVectorTouchIcon() const;
++
+  protected:
+   struct VectorIcons {
+     // RAW_PTR_EXCLUSION: Never allocated by PartitionAlloc (always points to a
+@@ -260,7 +265,7 @@ class ToolbarButton : public views::LabelButton,
+ 
+   class HighlightColorAnimation : gfx::AnimationDelegate {
+    public:
+-    explicit HighlightColorAnimation(ToolbarButton* parent);
++    explicit HighlightColorAnimation(ToolbarButton_ChromiumImpl* parent);
+     HighlightColorAnimation(const HighlightColorAnimation&) = delete;
+     HighlightColorAnimation& operator=(const HighlightColorAnimation&) = delete;
+     ~HighlightColorAnimation() override;
+@@ -295,7 +300,7 @@ class ToolbarButton : public views::LabelButton,
+ 
+     void ClearHighlightColor();
+ 
+-    const raw_ptr<ToolbarButton> parent_;
++    const raw_ptr<ToolbarButton_ChromiumImpl> parent_;
+ 
+     // A highlight color is used to signal special states. When set this color
+     // is used as a base for background, text, border and ink drops. When not
+@@ -380,7 +385,7 @@ class ToolbarButton : public views::LabelButton,
+ 
+   base::CallbackListSubscription subscription_ =
+       ui::TouchUiController::Get()->RegisterCallback(
+-          base::BindRepeating(&ToolbarButton::TouchUiChanged,
++          base::BindRepeating(&ToolbarButton_ChromiumImpl::TouchUiChanged,
+                               base::Unretained(this)));
+ 
+   // Default background color
+@@ -390,26 +395,26 @@ class ToolbarButton : public views::LabelButton,
+       ChromeColorIds::kChromeColorsStart;
+ 
+   // A factory for tasks that show the dropdown context menu for the button.
+-  base::WeakPtrFactory<ToolbarButton> show_menu_factory_{this};
++  base::WeakPtrFactory<ToolbarButton_ChromiumImpl> show_menu_factory_{this};
+ };
+ 
+ class ToolbarButtonActionViewInterface
+     : public views::LabelButtonActionViewInterface {
+  public:
+-  explicit ToolbarButtonActionViewInterface(ToolbarButton* action_view);
++  explicit ToolbarButtonActionViewInterface(ToolbarButton_ChromiumImpl* action_view);
+   ~ToolbarButtonActionViewInterface() override = default;
+ 
+   // LabelButtonActionViewInterface:
+   void ActionItemChangedImpl(actions::ActionItem* action_item) override;
+ 
+  private:
+-  raw_ptr<ToolbarButton> action_view_;
++  raw_ptr<ToolbarButton_ChromiumImpl> action_view_;
+ };
+ 
+-BEGIN_VIEW_BUILDER(CHROME_VIEWS_EXPORT, ToolbarButton, views::LabelButton)
++BEGIN_VIEW_BUILDER(CHROME_VIEWS_EXPORT, ToolbarButton_ChromiumImpl, views::LabelButton)
+ VIEW_BUILDER_PROPERTY(std::optional<gfx::Insets>, LayoutInsets)
+ END_VIEW_BUILDER
+ 
+-DEFINE_VIEW_BUILDER(CHROME_VIEWS_EXPORT, ToolbarButton)
++DEFINE_VIEW_BUILDER(CHROME_VIEWS_EXPORT, ToolbarButton_ChromiumImpl)
+ 
+ #endif  // CHROME_BROWSER_UI_VIEWS_TOOLBAR_TOOLBAR_BUTTON_H_

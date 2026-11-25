@@ -6,19 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_TOOLBAR_BUTTON_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_TOOLBAR_BUTTON_H_
 
-#include "ui/views/animation/ink_drop_observer.h"
-
-#define ToolbarButton ToolbarButton_ChromiumImpl
-#define SetHighlight                                  \
-  SetMenuModel(std::unique_ptr<ui::MenuModel> model); \
-  bool HasVectorIcons() const;                        \
-  const gfx::VectorIcon& GetVectorIcon() const;       \
-  const gfx::VectorIcon& GetVectorTouchIcon() const;  \
-  virtual void SetHighlight
-
 #include <chrome/browser/ui/views/toolbar/toolbar_button.h>  // IWYU pragma: export
-#undef SetHighlight
-#undef ToolbarButton
+
+#include "ui/views/animation/ink_drop_observer.h"
+#include "ui/views/metadata/view_factory.h"
 
 class ToolbarButton : public ToolbarButton_ChromiumImpl,
                       public views::InkDropObserver {
@@ -56,5 +47,12 @@ class ToolbarButton : public ToolbarButton_ChromiumImpl,
   bool activated_ = false;
   std::optional<SkColor> icon_enabled_colors_override_;
 };
+
+BEGIN_VIEW_BUILDER(CHROME_VIEWS_EXPORT,
+                   ToolbarButton,
+                   ToolbarButton_ChromiumImpl)
+END_VIEW_BUILDER
+
+DEFINE_VIEW_BUILDER(CHROME_VIEWS_EXPORT, ToolbarButton)
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_TOOLBAR_BUTTON_H_

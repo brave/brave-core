@@ -1,0 +1,37 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use BraveRecentTabsSubMenuModel in the app menu
+
+      BraveRecentTabsSubMenuModel is declared in
+      brave/browser/ui/toolbar/brave_recent_tabs_sub_menu_model.h, which the
+      chromium_src shadow includes.
+    rename_class:
+      class_name: RecentTabsSubMenuModel
+      rename: BraveRecentTabsSubMenuModel
+
+  - description: |-
+      Use Brave's new incognito window menu label
+
+      IDS_BRAVE_NEW_INCOGNITO_WINDOW is declared in
+      brave/grit/brave_generated_resources.h, which the chromium_src shadow
+      includes. rename_class does not apply as this is a resource id, not a
+      class.
+    regex:
+      re_pattern: '(IDC_NEW_INCOGNITO_WINDOW,\s+)IDS_NEW_INCOGNITO_WINDOW,'
+      replace: '\1IDS_BRAVE_NEW_INCOGNITO_WINDOW,'
+    count: 1
+
+  - description: |-
+      Keep the "Save and share" menu title
+
+      Use IDS_SAVE_AND_SHARE_MENU instead of "Cast, save, and share".
+      rename_class does not apply as this is a resource id, not a class.
+    regex:
+      re_pattern: '(\?\s+)IDS_CAST_SAVE_AND_SHARE_MENU'
+      replace: '\1IDS_SAVE_AND_SHARE_MENU'
+    count: 1

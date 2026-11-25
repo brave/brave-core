@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Don't pin any actions
+
+      We don't want anything pinned. The downloads button is shown
+      ephemerally on download status change.
+    preempt_function_impl:
+      function_name: PinnedToolbarActionsContainer::UpdateActionState
+      code: if ((true)) return;
+
+  - description: |-
+      Only show the downloads and send-tab-to-self actions ephemerally
+
+      We only want to allow these buttons in the pinned toolbar container.
+    preempt_function_impl:
+      function_name: PinnedToolbarActionsContainer::ShowActionEphemerallyInToolbar
+      return_if: 'id != kActionShowDownloads && id != kActionSendTabToSelf'

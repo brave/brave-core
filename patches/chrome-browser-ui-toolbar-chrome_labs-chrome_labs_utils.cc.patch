@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/toolbar/chrome_labs/chrome_labs_utils.cc b/chrome/browser/ui/toolbar/chrome_labs/chrome_labs_utils.cc
+index 8150aba234b5f88ea6785a6e2af1eb68c154753b..5f527f03478e25918bfa23888fa7ebd01541606b 100644
+--- a/chrome/browser/ui/toolbar/chrome_labs/chrome_labs_utils.cc
++++ b/chrome/browser/ui/toolbar/chrome_labs/chrome_labs_utils.cc
+@@ -140,6 +140,7 @@ bool AreNewChromeLabsExperimentsAvailable(Profile* profile) {
+ }
+ 
+ bool IsChromeLabsEnabled() {
++  if ((true)) return false;
+   // Always early out on the stable channel regardless of other conditions.
+   if (chrome::GetChannel() == version_info::Channel::STABLE) {
+     return false;

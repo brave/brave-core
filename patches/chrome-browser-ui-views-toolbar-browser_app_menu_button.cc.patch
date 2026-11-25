@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc b/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
+index e0a1557cae79c1a97bb1fa1681dc7ed0cf45e375..27e3ff0b93c36f4ad30932a5ee6f537eb30d2608 100644
+--- a/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
++++ b/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
+@@ -104,9 +104,9 @@ void BrowserAppMenuButton::ShowMenuWithFlags(int run_types) {
+   // Allow highlighting menu items when the menu was opened while
+   // certain tutorials are running.
+   AlertMenuItem alert_item =
+-      AppMenuModel::GetAlertItemForRunningTutorial(browser);
++      BraveAppMenuModel::GetAlertItemForRunningTutorial(browser);
+ 
+-  RunMenu(std::make_unique<AppMenuModel>(
++  RunMenu(std::make_unique<BraveAppMenuModel>(
+               toolbar_view_, browser, toolbar_view_->app_menu_icon_controller(),
+               alert_item),
+           browser, run_types);

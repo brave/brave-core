@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Make SetHighlight virtual
+
+      Brave's ToolbarButton subclass overrides SetHighlight.
+    make_virtual:
+      class_name: ToolbarButton
+      method_name: SetHighlight
+
+  - description: |-
+      Rename ToolbarButton to ToolbarButton_ChromiumImpl
+
+      Brave's chromium_src toolbar_button.h declares a ToolbarButton subclass
+      that reuses the upstream name.
+    rename_class:
+      class_name: ToolbarButton
+      rename: ToolbarButton_ChromiumImpl
+
+  - description: |-
+      Declare Brave menu model and vector icon accessors
+
+      These are defined in chromium_src toolbar_button.cc.
+    add_to_public:
+      class_name: ToolbarButton_ChromiumImpl
+      code: |-
+        void SetMenuModel(std::unique_ptr<ui::MenuModel> model);
+        bool HasVectorIcons() const;
+        const gfx::VectorIcon& GetVectorIcon() const;
+        const gfx::VectorIcon& GetVectorTouchIcon() const;

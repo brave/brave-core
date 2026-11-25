@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/ui/toolbar/app_menu_model.cc b/chrome/browser/ui/toolbar/app_menu_model.cc
+index 8a1d52f8b1db10677a500dc81ab1b0317630986f..33de27bb9bd42d5a8db314a2d3cfe738cd6a86f6 100644
+--- a/chrome/browser/ui/toolbar/app_menu_model.cc
++++ b/chrome/browser/ui/toolbar/app_menu_model.cc
+@@ -2179,7 +2179,7 @@ void AppMenuModel::Build() {
+   // available, it will be shown in disabled state. (crbug.com/40703208)
+   if (!browser_->GetProfile()->IsGuestSession()) {
+     AddItemWithStringIdAndVectorIcon(
+-        this, IDC_NEW_INCOGNITO_WINDOW, IDS_NEW_INCOGNITO_WINDOW,
++        this, IDC_NEW_INCOGNITO_WINDOW, IDS_BRAVE_NEW_INCOGNITO_WINDOW,
+         features::IsRoundedIconsEnabled() ? kIncognitoIcon
+                                           : kIncognitoRefreshMenuOldIcon);
+     SetElementIdentifierAt(
+@@ -2234,7 +2234,7 @@ void AppMenuModel::Build() {
+ 
+   if (!browser_->GetProfile()->IsOffTheRecord()) {
+     auto recent_tabs_sub_menu =
+-        std::make_unique<RecentTabsSubMenuModel>(provider_, browser_);
++        std::make_unique<BraveRecentTabsSubMenuModel>(provider_, browser_);
+     recent_tabs_sub_menu->RegisterLogMenuMetricsCallback(base::BindRepeating(
+         &AppMenuModel::LogMenuMetrics, base::Unretained(this)));
+     sub_menus_.push_back(std::move(recent_tabs_sub_menu));
+@@ -2448,7 +2448,7 @@ void AppMenuModel::Build() {
+   sub_menus_.push_back(
+       std::make_unique<SaveAndShareSubMenuModel>(this, browser_));
+   int string_id = media_router::MediaRouterEnabled(browser()->GetProfile())
+-                      ? IDS_CAST_SAVE_AND_SHARE_MENU
++                      ? IDS_SAVE_AND_SHARE_MENU
+                       : IDS_SAVE_AND_SHARE_MENU;
+   AddSubMenuWithStringIdAndVectorIcon(
+       this, kSaveAndShareMenuPlaceholder, string_id, sub_menus_.back().get(),

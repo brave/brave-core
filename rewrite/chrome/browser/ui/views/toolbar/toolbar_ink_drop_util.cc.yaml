@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use Brave's ink drop configuration for toolbar buttons
+
+      Brave configures ink drop with its own hover and ripple callbacks
+      (CreateToolbarInkdropCallbacks) instead of the upstream opacity and
+      base color settings.
+    preempt_function_impl:
+      function_name: ConfigureInkDrop
+      code: |-
+        if (!highlight_generator) {
+          highlight_generator =
+              std::make_unique<ToolbarButtonHighlightPathGenerator>();
+        }
+
+        if ((true)) {
+          host->SetHasInkDropActionOnClick(true);
+          views::HighlightPathGenerator::Install(host,
+                                                std::move(highlight_generator));
+          views::InkDrop::Get(host)->SetMode(views::InkDropHost::InkDropMode::ON);
+          CreateToolbarInkdropCallbacks(host, kColorToolbarInkDropHover,
+                                        kColorToolbarInkDropRipple);
+          return;
+        }

@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/toolbar/app_menu_model.h b/chrome/browser/ui/toolbar/app_menu_model.h
+index 0b1b4fc9344c2263e4b2a066ed41161e61b16009..147eb9bde4c696890f0e4427e9ef39ccac96e93e 100644
+--- a/chrome/browser/ui/toolbar/app_menu_model.h
++++ b/chrome/browser/ui/toolbar/app_menu_model.h
+@@ -13,6 +13,7 @@
+ #include "build/build_config.h"
+ #include "chrome/app/chrome_command_ids.h"
+ #include "chrome/browser/ui/safety_hub/safety_hub_constants.h"
++#include "chrome/browser/ui/toolbar/bookmark_sub_menu_model.h"
+ #include "components/prefs/pref_change_registrar.h"
+ #include "components/user_education/common/menu/highlighting_simple_menu_model_delegate.h"
+ #include "ui/base/accelerators/accelerator.h"
+@@ -356,6 +357,9 @@ class AppMenuModel : public ui::SimpleMenuModel,
+   }
+ 
+  protected:
++  std::vector<std::unique_ptr<SimpleMenuModel>>& sub_menus() {
++    return sub_menus_;
++  }
+   // Helper function to record the menu action in a UMA histogram.
+   virtual void LogMenuAction(AppMenuAction action_id);
+ 
