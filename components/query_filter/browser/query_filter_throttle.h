@@ -39,6 +39,9 @@ class QueryFilterThrottle : public blink::URLLoaderThrottle {
   // blink::URLLoaderThrottle:
   void WillStartRequest(network::ResourceRequest* request,
                         bool* defer) override;
+  // TODO(https://github.com/brave/brave-browser/issues/23742): Implementation
+  // missing. Redirect needs more investigation to be sure it doesn't affect
+  // debouncing.
   void WillRedirectRequest(
       net::RedirectInfo* redirect_info,
       const network::mojom::URLResponseHead& response_head,
