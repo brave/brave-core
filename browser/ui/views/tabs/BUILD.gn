@@ -136,6 +136,7 @@ source_set("unit_tests") {
     "//chrome/browser/ui/views/tabs/tab",
     "//chrome/test:test_support",
     "//components/prefs:test_support",
+    "//components/split_tabs",
     "//components/tabs:public",
     "//components/tabs:test_support",
     "//content/test:test_support",

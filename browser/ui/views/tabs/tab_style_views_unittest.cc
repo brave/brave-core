@@ -12,6 +12,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/numerics/safe_conversions.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -26,9 +27,11 @@
 #include "third_party/skia/include/core/SkRRect.h"
 #include "ui/events/event.h"
 #include "ui/gfx/favicon_size.h"
+#include "ui/gfx/geometry/insets_f.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/gfx/geometry/vector2d_f.h"
 #include "ui/views/test/views_test_utils.h"
 #include "ui/views/widget/widget.h"
 
@@ -295,8 +298,11 @@ class BraveTabStyleSplitTabTest : public BraveTabStyleIsHoveringTest {
         {.render_units = TabStyle::RenderUnits::kDips});
   }
 
-  gfx::RectF GetShapeBounds(Tab* tab) {
-    return gfx::SkRectToRectF(GetShape(tab).getBounds());
+  // Returns the bounds of |tab|'s shape in its parent's coordinates.
+  gfx::RectF GetShapeBoundsInParent(Tab* tab) {
+    gfx::RectF bounds = gfx::SkRectToRectF(GetShape(tab).getBounds());
+    bounds.Offset(gfx::Vector2dF(tab->x(), tab->y()));
+    return bounds;
   }
 
   // Sets up |tab1| and |tab2| as a split and lays them out next to each other
@@ -314,57 +320,50 @@ class BraveTabStyleSplitTabTest : public BraveTabStyleIsHoveringTest {
     views::test::RunScheduledLayout(tab2);
   }
 
-  // Verifies that the shapes of the split tabs in the horizontal tab strip are
-  // inset from the tile's bounding box and their corners are concentric with
-  // the tile's corners.
+  // Verifies that the split tabs in the horizontal tab strip are inset from the
+  // tile's bounding box by the same padding on every side, that the gap between
+  // them is the same as the padding, and that their corners are concentric
+  // with the tile's corners.
   void ExpectHorizontalSplitTabsAreInsetInTile(Tab* tab1, Tab* tab2) {
-    // Matches kPaddingForHorizontalTabInTile and the additional vertical
-    // padding for split tabs in horizontal_tab_style_views.cc.
-    constexpr int kHorizontalPadding = 4;
-    const int vertical_inset = tabs::kHorizontalSplitViewTabVerticalSpacing -
-                               tabs::kHorizontalTabGap +
-                               tabs::GetHorizontalTabVerticalSpacing();
+    const int padding = tabs::GetSplitViewTilePadding(
+        /*is_vertical_tab=*/false, tab1->data().pinned);
 
-    const gfx::RectF shape1 = GetShapeBounds(tab1);
-    EXPECT_EQ(tabs::kHorizontalTabInset + kHorizontalPadding, shape1.x());
-    EXPECT_EQ(tab1->width() - tabs::kHorizontalTabInset, shape1.right());
-    EXPECT_EQ(vertical_inset, shape1.y());
-    EXPECT_EQ(tab1->height() - vertical_inset, shape1.bottom());
+    // Matches the bounding box painted by BraveTabContainer.
+    gfx::RectF tile(gfx::UnionRects(tab1->bounds(), tab2->bounds()));
+    tile.Inset(gfx::InsetsF::VH(tabs::kHorizontalSplitViewTileVerticalMargin,
+                                tabs::kHorizontalTabInset));
 
-    const gfx::RectF shape2 = GetShapeBounds(tab2);
-    EXPECT_EQ(tabs::kHorizontalTabInset, shape2.x());
-    EXPECT_EQ(tab2->width() - tabs::kHorizontalTabInset - kHorizontalPadding,
-              shape2.right());
-    EXPECT_EQ(vertical_inset, shape2.y());
-    EXPECT_EQ(tab2->height() - vertical_inset, shape2.bottom());
+    const gfx::RectF shape1 = GetShapeBoundsInParent(tab1);
+    const gfx::RectF shape2 = GetShapeBoundsInParent(tab2);
+    EXPECT_EQ(padding, shape1.x() - tile.x());
+    EXPECT_EQ(padding, tile.right() - shape2.right());
+    EXPECT_EQ(padding, shape2.x() - shape1.right());
+    for (const gfx::RectF& shape : {shape1, shape2}) {
+      EXPECT_EQ(padding, shape.y() - tile.y());
+      EXPECT_EQ(padding, tile.bottom() - shape.bottom());
+    }
 
-    const int tile_radius =
-        tabs::GetSplitViewTileCornerRadius(/*is_vertical_tab=*/false);
-    const SkVector expected_radii = SkVector::Make(
-        tile_radius - kHorizontalPadding,
-        tile_radius -
-            (vertical_inset - tabs::kHorizontalSplitViewTileVerticalMargin));
+    const int expected_radius =
+        tabs::GetSplitViewTileCornerRadius(/*is_vertical_tab=*/false) - padding;
     for (Tab* tab : {tab1, tab2}) {
       SkRRect rrect;
       ASSERT_TRUE(GetShape(tab).isRRect(&rrect));
       for (auto corner :
            {SkRRect::kUpperLeft_Corner, SkRRect::kUpperRight_Corner,
             SkRRect::kLowerRight_Corner, SkRRect::kLowerLeft_Corner}) {
-        EXPECT_EQ(expected_radii, rrect.radii(corner));
+        EXPECT_EQ(SkVector::Make(expected_radius, expected_radius),
+                  rrect.radii(corner));
       }
     }
   }
+
+  // These tests check the layout of the updated horizontal tab style.
+  base::test::ScopedFeatureList feature_list_{tabs::kBraveHorizontalTabsUpdate};
 };
 
-// Verifies that pinned tabs in a horizontal split view tile are inset so that
-// the tile's bounding box doesn't touch them, that their corners are concentric
-// with the tile's corners, and that their favicons stay centered in the inset
-// shape.
+// Verifies that pinned tabs in a horizontal split view tile are evenly inset in
+// the tile and that their favicons stay centered in the inset shape.
 TEST_F(BraveTabStyleSplitTabTest, PinnedSplitTabsAreInsetInTile) {
-  if (!tabs::HorizontalTabsUpdateEnabled()) {
-    GTEST_SKIP();
-  }
-
   Tab* tab1 = CreateTab(1);
   Tab* tab2 = CreateTab(2);
 
@@ -382,19 +381,14 @@ TEST_F(BraveTabStyleSplitTabTest, PinnedSplitTabsAreInsetInTile) {
     ASSERT_TRUE(icon->GetVisible());
     // The icon's bounds include insets around the favicon.
     const int favicon_x = icon->x() + icon->GetInsets().left();
-    EXPECT_EQ(base::ClampRound(GetShapeBounds(tab).CenterPoint().x()),
-              favicon_x + gfx::kFaviconSize / 2);
+    EXPECT_EQ(base::ClampRound(GetShapeBoundsInParent(tab).CenterPoint().x()),
+              tab->x() + favicon_x + gfx::kFaviconSize / 2);
   }
 }
 
-// Verifies that unpinned tabs in a horizontal split view tile are inset so that
-// the tile's bounding box doesn't touch them, and that their corners are
-// concentric with the tile's corners.
+// Verifies that unpinned tabs in a horizontal split view tile are evenly inset
+// in the tile.
 TEST_F(BraveTabStyleSplitTabTest, UnpinnedSplitTabsAreInsetInTile) {
-  if (!tabs::HorizontalTabsUpdateEnabled()) {
-    GTEST_SKIP();
-  }
-
   Tab* tab1 = CreateTab(1);
   Tab* tab2 = CreateTab(2);
   SetUpHorizontalSplitTabs(

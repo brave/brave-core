@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/views/tabs/tab_strip_layout_types.h"
 #include "chrome/browser/ui/views/tabs/tab_width_constraints.h"
 #include "chrome/test/views/chrome_views_test_base.h"
+#include "components/split_tabs/split_tab_id.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -48,6 +49,20 @@ TabWidthConstraints MakeTabConstraints(TabPinned pinned,
   TabWidthConstraints constraints(state, size_info);
   constraints.set_is_tab_in_group(in_group);
   return constraints;
+}
+
+// Helper function to create TabWidthConstraints for a pinned tab in |split|.
+TabWidthConstraints MakePinnedSplitTabConstraints(
+    split_tabs::SplitTabId split) {
+  TabSizeInfo size_info;
+  size_info.pinned_tab_width = kVerticalTabMinWidth;
+  size_info.min_active_width = 56;
+  size_info.min_inactive_width = 32;
+  size_info.standard_width = 256;
+
+  TabLayoutState state(TabOpen::kOpen, TabPinned::kPinned, TabActive::kInactive,
+                       split);
+  return TabWidthConstraints(state, size_info);
 }
 
 // A BraveTab whose GetTabNestingInfo() is directly settable, so tests can
@@ -226,6 +241,62 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   EXPECT_EQ(result[0].width(), result[1].width());
   EXPECT_EQ(45, result[0].width());
   EXPECT_EQ(result[0].width(), result[2].width() + 1);
+}
+
+TEST(BraveTabStripLayoutHelperUnitTest,
+     CalculatePinnedTabsBoundsInGrid_SplitTabsInSameRowShareSpacing) {
+  const split_tabs::SplitTabId split = split_tabs::SplitTabId::GenerateNew();
+  std::vector<TabWidthConstraints> tabs;
+  tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
+  tabs.push_back(MakePinnedSplitTabConstraints(split));
+  tabs.push_back(MakePinnedSplitTabConstraints(split));
+
+  std::vector<gfx::Rect> expected;
+  {
+    std::vector<TabWidthConstraints> unsplit_tabs;
+    for (int i = 0; i < 3; ++i) {
+      unsplit_tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
+    }
+    CalculatePinnedTabsBoundsInGrid(unsplit_tabs, 150, &expected);
+  }
+
+  std::vector<gfx::Rect> result;
+  CalculatePinnedTabsBoundsInGrid(tabs, 150, &result);
+  ASSERT_EQ(3u, result.size());
+
+  // The tab outside of the split isn't affected.
+  EXPECT_EQ(expected[0], result[0]);
+
+  // Split tabs share the spacing between them, keeping their outer edges.
+  EXPECT_EQ(result[1].y(), result[2].y());
+  EXPECT_EQ(kVerticalPinnedSplitTabsSpacing, result[2].x() - result[1].right());
+  EXPECT_EQ(expected[1].x(), result[1].x());
+  EXPECT_EQ(expected[2].right(), result[2].right());
+  EXPECT_EQ(expected[1].height(), result[1].height());
+  EXPECT_EQ(expected[2].height(), result[2].height());
+}
+
+TEST(BraveTabStripLayoutHelperUnitTest,
+     CalculatePinnedTabsBoundsInGrid_StackedSplitTabsShareSpacing) {
+  const split_tabs::SplitTabId split = split_tabs::SplitTabId::GenerateNew();
+  std::vector<TabWidthConstraints> tabs;
+  tabs.push_back(MakePinnedSplitTabConstraints(split));
+  tabs.push_back(MakePinnedSplitTabConstraints(split));
+
+  // Only one tab fits in a row.
+  constexpr int kAvailableWidth =
+      kVerticalTabMinWidth + 2 * kMarginForVerticalTabContainers;
+  std::vector<gfx::Rect> result;
+  CalculatePinnedTabsBoundsInGrid(tabs, kAvailableWidth, &result);
+  ASSERT_EQ(2u, result.size());
+
+  EXPECT_EQ(result[0].x(), result[1].x());
+  EXPECT_EQ(kVerticalPinnedSplitTabsSpacing,
+            result[1].y() - result[0].bottom());
+  EXPECT_EQ(kMarginForVerticalTabContainers, result[0].y());
+  EXPECT_EQ(kMarginForVerticalTabContainers + 2 * kVerticalTabHeight +
+                kVerticalTabsSpacing,
+            result[1].bottom());
 }
 
 TEST(BraveTabStripLayoutHelperUnitTest,

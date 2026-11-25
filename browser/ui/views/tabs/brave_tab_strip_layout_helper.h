@@ -35,6 +35,11 @@ inline constexpr int kVerticalTabsSpacing = 4;
 inline constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing;
 inline constexpr int kPinnedUnpinnedSeparatorHeight = 1;
 
+// The spacing between adjacent pinned tabs in the same split in the vertical
+// tab strip's grid. The tabs' shapes are inset instead so that the gap between
+// them can match the split view tile's padding.
+inline constexpr int kVerticalPinnedSplitTabsSpacing = 0;
+
 // The base offset per level for vertical tabs in tree tabs
 inline constexpr int kBaseOffsetPerLevel = 20;
 
@@ -52,6 +57,10 @@ int GetTabCornerRadius(const Tab& tab);
 
 // Returns the corner radius of the split view tile's bounding box.
 int GetSplitViewTileCornerRadius(bool is_vertical_tab);
+
+// Returns the padding between the split view tile's bounding box and the shapes
+// of the tabs in it. It's also the gap between the tabs in the tile.
+int GetSplitViewTilePadding(bool is_vertical_tab, bool is_pinned);
 
 void CalculatePinnedTabsBoundsInGrid(
     const std::vector<TabWidthConstraints>& tabs,

@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/tabs/tab_types.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
+#include "chrome/browser/ui/views/tabs/tab_layout_state.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_layout.h"
 #include "chrome/browser/ui/views/tabs/tab_width_constraints.h"
@@ -146,6 +147,19 @@ int GetSplitViewTileCornerRadius(bool is_vertical_tab) {
   return !is_vertical_tab && UseCompactHorizontalTabs() ? 9 : 12;
 }
 
+int GetSplitViewTilePadding(bool is_vertical_tab, bool is_pinned) {
+  if (is_vertical_tab) {
+    return is_pinned ? 2 : 4;
+  }
+
+  // The vertical distance between the tile's bounding box and the tab's shape.
+  // Split tabs have kHorizontalSplitViewTabVerticalSpacing instead of
+  // kHorizontalTabGap between the tab's shape and the tab strip's bounds.
+  return GetHorizontalTabVerticalSpacing() +
+         kHorizontalSplitViewTabVerticalSpacing - kHorizontalTabGap -
+         kHorizontalSplitViewTileVerticalMargin;
+}
+
 void CalculatePinnedTabsBoundsInGrid(
     const std::vector<TabWidthConstraints>& tabs,
     std::optional<int> width,
@@ -195,6 +209,7 @@ void CalculatePinnedTabsBoundsInGrid(
 
   auto* tab_style = TabStyle::Get();
 
+  const size_t first_index = result->size();
   gfx::Rect rect(/* x= */ kMarginForVerticalTabContainers,
                  /* y= */ kMarginForVerticalTabContainers,
                  /* width= */ base_pinned_tab_width +
@@ -228,6 +243,32 @@ void CalculatePinnedTabsBoundsInGrid(
       // New line
       rect.set_x(kMarginForVerticalTabContainers);
       rect.set_y(result->back().bottom() + kVerticalTabsSpacing);
+    }
+  }
+
+  // Split tabs next to each other, in the same row or stacked in a single
+  // column, share the spacing between them.
+  constexpr int kSpacingToShare =
+      kVerticalTabsSpacing - kVerticalPinnedSplitTabsSpacing;
+  for (size_t index = first_index; index + 1 < result->size(); ++index) {
+    const TabLayoutState& state = tabs[index].state();
+    const TabLayoutState& next_state = tabs[index + 1].state();
+    if (!state.split().has_value() || state.split() != next_state.split() ||
+        state.open() != TabOpen::kOpen || next_state.open() != TabOpen::kOpen) {
+      continue;
+    }
+
+    gfx::Rect& first = (*result)[index];
+    gfx::Rect& second = (*result)[index + 1];
+    if (first.y() == second.y()) {
+      first.set_width(first.width() + kSpacingToShare / 2);
+      second.SetByBounds(second.x() - (kSpacingToShare - kSpacingToShare / 2),
+                         second.y(), second.right(), second.bottom());
+    } else if (first.x() == second.x()) {
+      first.set_height(first.height() + kSpacingToShare / 2);
+      second.SetByBounds(second.x(),
+                         second.y() - (kSpacingToShare - kSpacingToShare / 2),
+                         second.right(), second.bottom());
     }
   }
 }
