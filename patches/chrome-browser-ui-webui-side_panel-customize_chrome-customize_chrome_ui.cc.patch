@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.cc b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.cc
-index b215bf7227ec2403a7bfaafac556a9b100106d68..4f9d308d4c1f3acaee46accf0bf57a450110b460 100644
+index b215bf7227ec2403a7bfaafac556a9b100106d68..505d34f2491a37c6bcd1875cbd3693b5277c7a6f 100644
 --- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.cc
 +++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.cc
-@@ -112,7 +112,7 @@ CustomizeChromeUI::CustomizeChromeUI(content::WebUI* web_ui)
+@@ -86,6 +86,7 @@ CustomizeChromeUI::CustomizeChromeUI(content::WebUI* web_ui)
+                                    profile_)),
+       page_factory_receiver_(this),
+       id_(RandInt64()) {
++  [&]() -> void {
+ #if BUILDFLAG(IS_ANDROID)
+   const bool wallpaper_search_enabled = false;
+ #else
+@@ -112,7 +113,7 @@ CustomizeChromeUI::CustomizeChromeUI(content::WebUI* web_ui)
        {"backButton", IDS_ACCNAME_BACK},
        {"title", IDS_SIDE_PANEL_CUSTOMIZE_CHROME_TITLE},
        // Header strings.
@@ -11,22 +19,7 @@ index b215bf7227ec2403a7bfaafac556a9b100106d68..4f9d308d4c1f3acaee46accf0bf57a45
        {"cardsHeader", IDS_NTP_CUSTOMIZE_MENU_MODULES_LABEL},
        {"categoriesHeader", IDS_NTP_CUSTOMIZE_THEMES_HEADER},
        {"footerHeader", IDS_NTP_CUSTOMIZE_FOOTER_HEADER},
-@@ -278,6 +278,14 @@ CustomizeChromeUI::CustomizeChromeUI(content::WebUI* web_ui)
-       {"newBadgeLabel", IDS_NEW_BADGE},
-   };
-   source->AddLocalizedStrings(kLocalizedStrings);
-+  source->AddLocalizedString("braveCustomizeMenuToolbarLabel",
-+                             IDS_BRAVE_CUSTOMIZE_MENU_TOOLBAR_LABEL);
-+  source->AddLocalizedStrings(webui::kCustomizeChromeStrings);
-+#if defined(TOOLKIT_VIEWS)
-+  source->AddBoolean("shouldShowDarkerThemeToggle",
-+                     base::FeatureList::IsEnabled(
-+                         darker_theme::features::kBraveDarkerTheme));
-+#endif  // defined(TOOLKIT_VIEWS)
- 
-   source->AddBoolean(
-       "modulesEnabled",
-@@ -285,7 +293,7 @@ CustomizeChromeUI::CustomizeChromeUI(content::WebUI* web_ui)
+@@ -285,7 +286,7 @@ CustomizeChromeUI::CustomizeChromeUI(content::WebUI* web_ui)
                               IdentityManagerFactory::GetForProfile(profile_)));
  
    source->AddBoolean("showDeviceThemeToggle",
@@ -35,7 +28,16 @@ index b215bf7227ec2403a7bfaafac556a9b100106d68..4f9d308d4c1f3acaee46accf0bf57a45
                       true);
  #else
                       false);
-@@ -470,6 +478,7 @@ void CustomizeChromeUI::CreatePageHandler(
+@@ -368,6 +369,8 @@ CustomizeChromeUI::CustomizeChromeUI(content::WebUI* web_ui)
+                 CustomizeChromeUI::kChromeThemeCollectionElementId,
+                 CustomizeChromeUI::kChromeThemeElementId,
+                 CustomizeChromeUI::kChromeThemeBackElementId});
++  }();
++  UpdateBraveDataSource(profile_);
+ }
+ 
+ CustomizeChromeUI::~CustomizeChromeUI() = default;
+@@ -470,6 +473,7 @@ void CustomizeChromeUI::CreatePageHandler(
      mojo::PendingRemote<side_panel::mojom::CustomizeChromePage> pending_page,
      mojo::PendingReceiver<side_panel::mojom::CustomizeChromePageHandler>
          pending_page_handler) {
@@ -43,7 +45,7 @@ index b215bf7227ec2403a7bfaafac556a9b100106d68..4f9d308d4c1f3acaee46accf0bf57a45
    CHECK(pending_page.is_valid(), base::NotFatalUntil::M162);
    customize_chrome_page_handler_ = std::make_unique<CustomizeChromePageHandler>(
        std::move(pending_page_handler), std::move(pending_page),
-@@ -487,6 +496,10 @@ void CustomizeChromeUI::CreatePageHandler(
+@@ -487,6 +491,10 @@ void CustomizeChromeUI::CreatePageHandler(
          is_theme_editable_.value());
      is_theme_editable_.reset();
    }

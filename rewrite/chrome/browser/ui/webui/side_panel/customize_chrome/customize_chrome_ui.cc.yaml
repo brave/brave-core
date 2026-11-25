@@ -5,24 +5,6 @@
 
 substitutions:
   - description: |-
-      Add Brave-specific strings and booleans to the WebUI data source.
-
-      Adds the Brave toolbar label, the customize chrome strings and a boolean
-      for the Darker Theme toggle.
-    regex:
-      pattern: 'source->AddLocalizedStrings(kLocalizedStrings);'
-      replace: |-
-        source->AddLocalizedStrings(kLocalizedStrings);
-          source->AddLocalizedString("braveCustomizeMenuToolbarLabel",
-                                     IDS_BRAVE_CUSTOMIZE_MENU_TOOLBAR_LABEL);
-          source->AddLocalizedStrings(webui::kCustomizeChromeStrings);
-        #if defined(TOOLKIT_VIEWS)
-          source->AddBoolean("shouldShowDarkerThemeToggle",
-                             base::FeatureList::IsEnabled(
-                                 darker_theme::features::kBraveDarkerTheme));
-        #endif  // defined(TOOLKIT_VIEWS)
-
-  - description: |-
       Use a Brave-specific label for the appearance header.
     regex:
       pattern: 'IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL'
@@ -37,6 +19,16 @@ substitutions:
         #if (BUILDFLAG\(IS_CHROMEOS\) \|\| BUILDFLAG\(IS_WIN\))
       replace: |-
         #if 0   // \1
+
+  - description: |-
+      Add Brave-specific strings and booleans to the WebUI data source.
+
+      Adds the Brave toolbar label, the customize chrome strings and a boolean
+      for the Darker Theme toggle.
+    after_function_impl:
+      function_name: CustomizeChromeUI::CustomizeChromeUI
+      code: |-
+        UpdateBraveDataSource(profile_);
 
   - description: |-
       Hand the new page handler a reference to CustomizeChromeUI.
