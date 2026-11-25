@@ -24,6 +24,14 @@ def LoadLeoOverrides():
     with open(leo_overrides_config_path, 'r', encoding='utf-8') as f:
         leo_overrides_config = json.load(f)
 
+    # foo_old.icon maps to the same icon as foo.icon unless listed explicitly.
+    for icon, leo_override in list(leo_overrides_config.items()):
+        if icon.endswith('_old.icon'):
+            continue
+        leo_overrides_config.setdefault(
+            icon.removesuffix('.icon') + '_old.icon', leo_override
+        )
+
     leo_overrides = {}
     for icon, leo_override in leo_overrides_config.items():
         if not icon.startswith("//"):
