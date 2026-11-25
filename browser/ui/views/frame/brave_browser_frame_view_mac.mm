@@ -190,9 +190,21 @@ void BraveBrowserFrameViewMac::UpdateWindowControlsOpacity() {
   const double alpha =
       std::clamp((reveal_fraction - kFadeStart) / (1.0 - kFadeStart), 0.0, 1.0);
 
+  // Hide the buttons via `setHidden:` instead of `alphaValue == 0.0` when fully
+  // invisible; AppKit reports zero-alpha standard window buttons as disabled,
+  // which breaks menu validation and keyboard shortcuts such as Cmd+M and
+  // Cmd+Shift+W.
+  const bool hidden = (alpha == 0.0);
   for (NSWindowButton kind :
        {NSWindowCloseButton, NSWindowMiniaturizeButton, NSWindowZoomButton}) {
-    [[window standardWindowButton:kind] setAlphaValue:alpha];
+    NSButton* button = [window standardWindowButton:kind];
+    if (hidden) {
+      [button setHidden:YES];
+      [button setAlphaValue:1.0];
+    } else {
+      [button setAlphaValue:alpha];
+      [button setHidden:NO];
+    }
   }
 }
 
