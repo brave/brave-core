@@ -899,10 +899,7 @@ mod css_validation {
                 .unwrap()
         });
 
-        if RE_INVALID_DIRECTIVE.is_match(style) {
-            return false;
-        }
-        true
+        !RE_INVALID_DIRECTIVE.is_match(style)
     }
 
     struct SelectorParseImpl {

@@ -53,6 +53,7 @@ impl Default for NetworkFilterDebugData {
 struct NetworkFilterListBuilder<'a, 'f> {
     filter_map_builder: FlatMultiMapBuilder<ShortHash, NetworkFilterFlatEntry<'a>>,
     opt_domains_map_builder: FlatMultiMapBuilder<ShortHash, NetworkFilterFlatEntry<'a>>,
+    opt_to_domains_map_builder: FlatMultiMapBuilder<ShortHash, NetworkFilterFlatEntry<'a>>,
     token_frequencies: TokenSelector,
     filters_to_optimize: HashMap<ShortHash, Vec<NetworkFilter<'f>>>,
     tokens_buffer: TokensBuffer,
@@ -173,6 +174,7 @@ impl<'a, 'f> NetworkFilterListBuilder<'a, 'f> {
         Self {
             filter_map_builder: FlatMultiMapBuilder::with_capacity(1024),
             opt_domains_map_builder: FlatMultiMapBuilder::with_capacity(256),
+            opt_to_domains_map_builder: FlatMultiMapBuilder::with_capacity(256),
             token_frequencies: TokenSelector::new(1024),
             filters_to_optimize: HashMap::new(),
             tokens_buffer: TokensBuffer::default(),
@@ -187,6 +189,26 @@ impl<'a, 'f> NetworkFilterListBuilder<'a, 'f> {
         builder: &mut EngineFlatBuilder<'a>,
     ) {
         let multi_tokens = network_filter.get_tokens(&mut self.tokens_buffer);
+
+        // `$to=` must not end up in a near-universal bucket. Skip the filter if:
+        //  1) All its positive `$to=` destinations are too common (e.g. `$to=com`) and there is no
+        //     more selective key (pattern/hostname tokens or `$domain=`/`$from=`);
+        //  2) it has only excluded `$to=~` destinations and would land in the catch-all bucket.
+        if network_filter.to_only_broad
+            && matches!(
+                multi_tokens,
+                FilterTokens::OptToDomains | FilterTokens::Empty
+            )
+        {
+            return;
+        }
+        if network_filter.opt_to_domains.is_none()
+            && network_filter.opt_not_to_domains.is_some()
+            && multi_tokens == FilterTokens::Empty
+        {
+            return;
+        }
+
         let id = network_filter.get_id();
 
         if !self.optimize
@@ -213,6 +235,12 @@ impl<'a, 'f> NetworkFilterListBuilder<'a, 'f> {
                 FilterTokens::OptDomains => {
                     for token in &self.tokens_buffer {
                         self.opt_domains_map_builder
+                            .insert(to_short_hash(*token), NetworkFilterFlatEntry { filter, id });
+                    }
+                }
+                FilterTokens::OptToDomains => {
+                    for token in &self.tokens_buffer {
+                        self.opt_to_domains_map_builder
                             .insert(to_short_hash(*token), NetworkFilterFlatEntry { filter, id });
                     }
                 }
@@ -254,12 +282,6 @@ impl<'a, 'f> NetworkRulesBuilder<'a, 'f> {
         if filter.is_badfilter() {
             // Note: `get_id()` doesn't include BAD_FILTER bit.
             self.bad_filter_ids.insert(filter.get_id());
-            return;
-        }
-
-        // For now, filters with $to options are parsed but ignored
-        // to preserve existing matching behavior.
-        if filter.has_to_option() {
             return;
         }
 
@@ -354,11 +376,16 @@ impl<'a, 'f> FlatSerialize<'a, EngineFlatBuilder<'a>> for NetworkRulesBuilder<'a
             rule_list
                 .opt_domains_map_builder
                 .retain_by_value(|entry| !value.bad_filter_ids.contains(&entry.id));
+            rule_list
+                .opt_to_domains_map_builder
+                .retain_by_value(|entry| !value.bad_filter_ids.contains(&entry.id));
 
             let flat_filter_map =
                 FlatMultiMapBuilder::finish(rule_list.filter_map_builder, builder);
             let flat_opt_domains_map =
                 FlatMultiMapBuilder::finish(rule_list.opt_domains_map_builder, builder);
+            let flat_opt_to_domains_map =
+                FlatMultiMapBuilder::finish(rule_list.opt_to_domains_map_builder, builder);
 
             serialized_lists.push(fb::NetworkFilterList::create(
                 builder.raw_builder(),
@@ -367,6 +394,8 @@ impl<'a, 'f> FlatSerialize<'a, EngineFlatBuilder<'a>> for NetworkRulesBuilder<'a
                     filter_map_values: Some(flat_filter_map.values),
                     opt_domains_map_index: Some(flat_opt_domains_map.keys),
                     opt_domains_map_values: Some(flat_opt_domains_map.values),
+                    opt_to_domains_map_index: Some(flat_opt_to_domains_map.keys),
+                    opt_to_domains_map_values: Some(flat_opt_to_domains_map.values),
                 },
             ));
         }

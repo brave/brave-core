@@ -4,11 +4,11 @@ version = 4
 
 [[package]]
 name = "adblock"
-version = "0.13.3"
+version = "0.13.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "arrayvec",
- "base64",
+ "base64 0.23.1",
  "bitflags 2.13.2",
  "cssparser",
  "flatbuffers",
@@ -24,7 +24,6 @@ dependencies = [
  "serde",
  "serde_json",
  "thiserror 1.0.69",
- "url",
 ]
 
 [[package]]
@@ -138,6 +137,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "base64"
 version = "0.22.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "base64"
+version = "0.23.1"
 
 [[package]]
 name = "bech32"
@@ -340,7 +343,7 @@ name = "challenge-bypass-ristretto"
 version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "base64",
+ "base64 0.22.1",
  "curve25519-dalek",
  "digest 0.10.7",
  "hmac 0.12.1",
@@ -1214,7 +1217,6 @@ dependencies = [
 [[package]]
 name = "itertools"
 version = "0.14.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "either",
 ]
@@ -1650,7 +1652,7 @@ name = "ppoprf"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "base64",
+ "base64 0.22.1",
  "bincode",
  "bitvec",
  "curve25519-dalek",
@@ -1791,7 +1793,7 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.12.3"
+version = "1.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "aho-corasick",
@@ -2032,7 +2034,7 @@ name = "skus"
 version = "1.0.0"
 dependencies = [
  "async-trait",
- "base64",
+ "base64 0.22.1",
  "bigdecimal",
  "challenge-bypass-ristretto",
  "chrono",

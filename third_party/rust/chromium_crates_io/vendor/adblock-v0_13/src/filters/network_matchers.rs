@@ -63,7 +63,7 @@ fn is_anchored_by_hostname(
             // `filter_hostname` is infix of `hostname` and needs match full labels
             (wildcard_filter_hostname
                 || filter_hostname.ends_with('.')
-                || hostname[filter_hostname_len..].starts_with('.'))
+                || hostname[match_index + filter_hostname_len..].starts_with('.'))
                 && (filter_hostname.starts_with('.')
                     || hostname[match_index - 1..].starts_with('.'))
         }
@@ -404,30 +404,26 @@ where
 
 #[inline]
 pub fn check_options(mask: NetworkFilterMask, request: &request::Request) -> bool {
-    // We first discard requests based on type, protocol and party. This is really
+    // We first check requests based on type, protocol and party. This is really
     // cheap and should be done first.
-    if !mask.check_cpt_allowed(&request.request_type)
-        || (!mask.first_party() && !request.is_third_party)
-        || (!mask.third_party() && request.is_third_party)
-        || (request.is_https && !mask.for_https())
-        || (request.is_http && !mask.for_http())
-        || !NetworkFilterMask::check_method_allowed(mask, request.method.as_ref())
-    {
-        return false;
-    }
-    true
+    mask.check_cpt_allowed(&request.request_type)
+        && (mask.first_party() || request.is_third_party)
+        && (mask.third_party() || !request.is_third_party)
+        && (!request.is_https || mask.for_https())
+        && (!request.is_http || mask.for_http())
+        && NetworkFilterMask::check_method_allowed(mask, request.method.as_ref())
 }
 
 #[inline]
 pub fn check_included_domains_mapped(
     opt_domains: Option<&[u32]>,
-    request: &request::Request,
+    hostname_hashes: Option<&[Hash]>,
     mapping: &HashMap<Hash, u32>,
 ) -> bool {
-    // Source URL must be among these domains to match
+    // Hostname must be among these domains to match
     if let Some(included_domains) = opt_domains.as_ref() {
-        if let Some(source_hashes) = request.source_hostname_hashes.as_ref() {
-            if source_hashes.iter().all(|h| {
+        if let Some(hashes) = hostname_hashes {
+            if hashes.iter().all(|h| {
                 mapping
                     .get(h)
                     .is_none_or(|index| !utils::bin_lookup(included_domains, *index))
@@ -435,7 +431,7 @@ pub fn check_included_domains_mapped(
                 return false;
             }
         } else {
-            // If there are domain restrictions but no source hostname, we can't apply the rule
+            // If there are domain restrictions but no hostname, we can't apply the rule
             return false;
         }
     }
@@ -445,12 +441,12 @@ pub fn check_included_domains_mapped(
 #[inline]
 pub fn check_excluded_domains_mapped(
     opt_not_domains: Option<&[u32]>,
-    request: &request::Request,
+    hostname_hashes: Option<&[Hash]>,
     mapping: &HashMap<Hash, u32>,
 ) -> bool {
     if let Some(excluded_domains) = opt_not_domains.as_ref() {
-        if let Some(source_hashes) = request.source_hostname_hashes.as_ref() {
-            if source_hashes.iter().any(|h| {
+        if let Some(hashes) = hostname_hashes {
+            if hashes.iter().any(|h| {
                 mapping
                     .get(h)
                     .is_some_and(|index| utils::bin_lookup(excluded_domains, *index))
@@ -458,8 +454,8 @@ pub fn check_excluded_domains_mapped(
                 return false;
             }
         } else {
-            // If there are domain restrictions but no source hostname
-            // (i.e. about:blank), apply the rule anyway.
+            // If there are domain restrictions but no hostname
+            // (i.e. about:blank for source), apply the rule anyway.
             return true;
         }
     }

@@ -3,66 +3,26 @@ use std::sync::OnceLock;
 
 use adblock::Engine;
 use criterion::*;
-use tokio::runtime::Runtime;
 
 use adblock::filters::network::{NetworkFilter, NetworkFilterMask};
 use adblock::request::Request;
 use adblock::resources::Resource;
 
-const DEFAULT_LISTS_URL: &str = "https://raw.githubusercontent.com/brave/adblock-resources/master/filter_lists/list_catalog.json";
-
-async fn get_all_filters() -> Vec<String> {
-    use futures::FutureExt;
-
-    #[derive(serde::Serialize, serde::Deserialize)]
-    struct ComponentDescriptor {
-        sources: Vec<SourceDescriptor>,
-    }
-
-    #[derive(serde::Serialize, serde::Deserialize)]
-    struct SourceDescriptor {
-        url: String,
-    }
-
-    let default_components = reqwest::get(DEFAULT_LISTS_URL)
-        .then(|resp| resp.expect("Could not get default filter listing").text())
-        .map(|text| {
-            serde_json::from_str::<Vec<ComponentDescriptor>>(
-                &text.expect("Could not get default filter listing as text"),
-            )
-            .expect("Could not parse default filter listing JSON")
-        })
-        .await;
-
-    let filters_fut: Vec<_> = default_components[0]
-        .sources
-        .iter()
-        .map(|list| {
-            reqwest::get(&list.url)
-                .then(|resp| resp.expect("Could not request rules").text())
-                .map(|text| {
-                    text.expect("Could not get rules as text")
-                        .lines()
-                        .map(|s| s.to_owned())
-                        .collect::<Vec<_>>()
-                })
-        })
-        .collect();
-
-    futures::future::join_all(filters_fut)
-        .await
-        .iter()
-        .flatten()
-        .cloned()
-        .collect()
+fn live_filter_list() -> String {
+    std::fs::read_to_string("data/live-filters.txt").unwrap_or_else(|e| {
+        panic!("failed to read data/live-filters.txt ({e}). Run: node data/fetch-live-lists.js")
+    })
 }
 
 static ALL_FILTERS: OnceLock<Box<[String]>> = OnceLock::new();
 
 fn all_filters() -> &'static [String] {
     ALL_FILTERS.get_or_init(|| {
-        let async_runtime = Runtime::new().expect("Could not start Tokio runtime");
-        async_runtime.block_on(get_all_filters()).into_boxed_slice()
+        live_filter_list()
+            .lines()
+            .map(str::to_owned)
+            .collect::<Vec<_>>()
+            .into_boxed_slice()
     })
 }
 
