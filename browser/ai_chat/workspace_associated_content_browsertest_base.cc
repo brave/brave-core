@@ -15,7 +15,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/strings/strcat.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/components/ai_chat/core/common/constants.h"
+#include "brave/browser/ui/webui/ai_chat/leo_workspace_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -24,6 +24,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/features.h"
+#include "url/origin.h"
 
 namespace ai_chat {
 
@@ -105,11 +106,7 @@ bool WorkspaceAssociatedContentBrowserTestBase::WaitForStoredHandle(
 // static
 GURL WorkspaceAssociatedContentBrowserTestBase::ViewerURL(
     const GURL& workspace_url) {
-  const std::string host =
-      base::StrCat({kAIChatLeoWorkspaceViewUIHostPrefix, workspace_url.host()});
-  GURL::Replacements replacements;
-  replacements.SetHostStr(host);
-  return workspace_url.ReplaceComponents(replacements);
+  return GetLeoWorkspaceViewerOrigin(workspace_url.host()).GetURL();
 }
 
 // static

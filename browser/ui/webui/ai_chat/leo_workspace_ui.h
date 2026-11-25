@@ -7,15 +7,22 @@
 #define BRAVE_BROWSER_UI_WEBUI_AI_CHAT_LEO_WORKSPACE_UI_H_
 
 #include <memory>
+#include <string_view>
 
 #include "brave/components/ai_chat/core/common/mojom/leo_workspace.mojom-forward.h"
 #include "content/public/browser/webui_config.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
+#include "url/origin.h"
 
 namespace ai_chat {
 
 class LeoWorkspacePageHandler;
+
+// The origin of the viewer document of the workspace served from
+// |workspace_host| (<uuid>.leo-workspace):
+// chrome-untrusted://view.<uuid>.leo-workspace.
+url::Origin GetLeoWorkspaceViewerOrigin(std::string_view workspace_host);
 
 class LeoWorkspaceUIConfig : public content::WebUIConfig {
  public:

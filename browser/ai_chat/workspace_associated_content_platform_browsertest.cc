@@ -96,21 +96,26 @@ class WorkspaceAssociatedContentPlatformBrowserTest
   }
 
   // Frames the viewer of |web_contents|' workspace, as a frame named |name|,
-  // displaying |file|, and waits for the viewer to report that it has.
+  // displaying |file|, and waits for the viewer to report that it has, with
+  // |expected_message|: FILE_DISPLAYED, or FILE_DISPLAY_FAILED for a file it
+  // couldn't display.
   static void DisplayFile(content::WebContents* web_contents,
                           const GURL& workspace_url,
                           std::string_view name,
                           std::string_view file,
+                          std::string_view expected_message = "FILE_DISPLAYED",
                           base::Location location = base::Location::Current()) {
     SCOPED_TRACE(location.ToString());
-    EXPECT_EQ(file, content::EvalJs(
-                        web_contents,
-                        content::JsReplace(
-                            R"JS(
+    EXPECT_EQ(expected_message,
+              content::EvalJs(web_contents,
+                              content::JsReplace(
+                                  R"JS(
         new Promise(resolve => {
           addEventListener('message', event => {
-            if (event.data?.type === 'FILE_DISPLAYED') {
-              resolve(event.data.file);
+            if (event.data?.file === $3 &&
+                (event.data.type === 'FILE_DISPLAYED' ||
+                 event.data.type === 'FILE_DISPLAY_FAILED')) {
+              resolve(event.data.type);
             }
           });
           const frame = document.createElement('iframe');
@@ -119,9 +124,10 @@ class WorkspaceAssociatedContentPlatformBrowserTest
           document.body.appendChild(frame);
         })
     )JS",
-                            name,
-                            ViewerURL(workspace_url)
-                                .Resolve(base::StrCat({"/#file=", file})))));
+                                  name,
+                                  ViewerURL(workspace_url)
+                                      .Resolve(base::StrCat({"/#file=", file})),
+                                  file)));
   }
 
   // The page size of the first page of |pdf|, in points, as "0 0 <w> <h>".
@@ -269,8 +275,10 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentPlatformBrowserTest,
   }
 
   // A file the viewer couldn't load is displayed as the service worker's error
-  // page, which must not be printed in its place.
-  DisplayFile(web_contents, content->page_url(), "missing", "missing.html");
+  // page. The viewer tells the workspace so, and the browser won't print the
+  // error page in its place either.
+  DisplayFile(web_contents, content->page_url(), "missing", "missing.html",
+              "FILE_DISPLAY_FAILED");
   {
     base::test::TestFuture<base::expected<mojo_base::BigBuffer, std::string>>
         printed;

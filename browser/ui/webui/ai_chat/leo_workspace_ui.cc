@@ -131,8 +131,7 @@ void CreateAndAddWorkspaceDataSource(content::BrowserContext* browser_context,
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       absl::StrFormat("frame-src %s;",
-                      UntrustedOrigin(base::StrCat(
-                          {kAIChatLeoWorkspaceViewUIHostPrefix, url.host()}))));
+                      GetLeoWorkspaceViewerOrigin(url.host()).Serialize()));
 
   // Allow being framed by the AI Chat page for the workspace file lightbox, and
   // by its conversation frame for `::workspace[path]{inline}` directives.
@@ -175,6 +174,11 @@ void RegisterViewerServiceWorker(content::BrowserContext* browser_context,
 }
 
 }  // namespace
+
+url::Origin GetLeoWorkspaceViewerOrigin(std::string_view workspace_host) {
+  return url::Origin::Create(GURL(UntrustedOrigin(
+      base::StrCat({kAIChatLeoWorkspaceViewUIHostPrefix, workspace_host}))));
+}
 
 bool LeoWorkspaceUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {

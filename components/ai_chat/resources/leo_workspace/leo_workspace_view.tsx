@@ -105,6 +105,24 @@ async function initializeServiceWorker(
   })
 }
 
+// The HTTP status the document in |iframe| was served with, or null if it isn't
+// known. The service worker answers a file it can't read with an error status
+// and page, which loads just like a file does.
+export function documentResponseStatus(
+  iframe: HTMLIFrameElement,
+): number | null {
+  try {
+    const [entry] = (iframe.contentWindow?.performance.getEntriesByType(
+      'navigation',
+    ) ?? []) as PerformanceNavigationTiming[]
+    // 0 when the status isn't exposed.
+    return entry?.responseStatus || null
+  } catch {
+    // The document isn't same-origin with the viewer.
+    return null
+  }
+}
+
 let contentIframe: HTMLIFrameElement | null = null
 
 function displayFileInIframe(filename: string) {
@@ -122,12 +140,23 @@ function displayFileInIframe(filename: string) {
     contentIframe = document.createElement('iframe')
   }
 
-  // Fires once the file and its subresources have loaded.
-  contentIframe.onload = () => {
+  // Fires once the file and its subresources have loaded, or once the service
+  // worker's error page has, if the file couldn't be read.
+  const iframe = contentIframe
+  iframe.onload = () => {
+    const status = documentResponseStatus(iframe)
+    if (status !== null && (status < 200 || status > 299)) {
+      notifyParent({
+        type: kFileDisplayFailed,
+        file: filename,
+        error: `The file could not be loaded (HTTP ${status})`,
+      })
+      return
+    }
     notifyParent({ type: kFileDisplayed, file: filename })
   }
-  contentIframe.src = filePathToUrlPath(filename)
-  root.appendChild(contentIframe)
+  iframe.src = filePathToUrlPath(filename)
+  root.appendChild(iframe)
 
   console.debug('[leo-workspace-view] displaying file:', filename)
 }
@@ -136,16 +165,17 @@ let serviceWorkerReady = false
 let pendingParent: Window | null = null
 let pendingWsOrigin: string | null = null
 
-async function initialize() {
-  console.debug('[leo-workspace-view] bundle loaded at', window.location.origin)
+// Starts the viewer, served from |viewerOrigin|, for the workspace |parent|.
+// Exported for tests, which can't give the page a viewer origin of its own.
+export async function initialize(viewerOrigin: string, parent: Window | null) {
+  console.debug('[leo-workspace-view] bundle loaded at', viewerOrigin)
 
-  const wsOrigin = workspaceOrigin(window.location.origin)
+  const wsOrigin = workspaceOrigin(viewerOrigin)
   if (!wsOrigin) {
     console.error('[leo-workspace-view] invalid viewer origin')
     return
   }
 
-  const parent = window.parent !== window ? window.parent : window.opener
   if (!parent) {
     console.error('[leo-workspace-view] cannot access parent workspace')
     return
@@ -195,4 +225,9 @@ async function displayFile(filename: string) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', initialize)
+document.addEventListener('DOMContentLoaded', () =>
+  initialize(
+    window.location.origin,
+    window.parent !== window ? window.parent : window.opener,
+  ),
+)

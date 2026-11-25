@@ -13,7 +13,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/types/expected.h"
-#include "brave/components/ai_chat/core/common/constants.h"
+#include "brave/browser/ui/webui/ai_chat/leo_workspace_ui.h"
 #include "brave/components/ai_chat/core/common/leo_workspace_util.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -57,18 +57,6 @@ using ActivePrintManager = printing::PrintViewManager;
 using ActivePrintManager = printing::PrintViewManagerBasic;
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
-// The hidden workspace WebContents is created bare, without the print managers
-// a tab gets, so they are attached the first time something is printed from it.
-// A workspace that is framed by a tab (e.g. in the file lightbox) already has
-// them.
-void EnsurePrintingInitialized(content::WebContents* web_contents) {
-  if (headless::HeadlessPrintManager::FromWebContents(web_contents) ||
-      ActivePrintManager::FromWebContents(web_contents)) {
-    return;
-  }
-  printing::InitializePrintingForWebContents(web_contents);
-}
-
 void OnPdfPrinted(mojom::LeoWorkspaceHandler::PrintFileToPdfCallback callback,
                   print_to_pdf::PdfPrintResult result,
                   scoped_refptr<base::RefCountedMemory> data) {
@@ -108,9 +96,8 @@ content::RenderFrameHost* FindLeoWorkspaceFileFrame(
       !IsAIChatLeoWorkspaceHost(workspace_origin.host())) {
     return nullptr;
   }
-  const url::Origin viewer_origin = url::Origin::Create(GURL(base::StrCat(
-      {content::kChromeUIUntrustedScheme, url::kStandardSchemeSeparator,
-       kAIChatLeoWorkspaceViewUIHostPrefix, workspace_origin.host(), "/"})));
+  const url::Origin viewer_origin =
+      GetLeoWorkspaceViewerOrigin(workspace_origin.host());
 
   content::RenderFrameHost* viewer_frame = nullptr;
   workspace_frame->ForEachRenderFrameHostWithAction(
@@ -186,7 +173,11 @@ void LeoWorkspacePageHandler::PrintFileToPdf(
 #if BUILDFLAG(ENABLE_PRINTING)
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(file_frame);
-  EnsurePrintingInitialized(web_contents);
+  // The hidden workspace WebContents is created bare, without the print
+  // managers a tab gets, so they are attached the first time something is
+  // printed from it. This does nothing for any that are already attached, e.g.
+  // to a tab that frames the workspace in the file lightbox.
+  printing::InitializePrintingForWebContents(web_contents);
 
   std::variant<printing::mojom::PrintPagesParamsPtr, std::string> params =
       print_to_pdf::GetPrintPagesParams(

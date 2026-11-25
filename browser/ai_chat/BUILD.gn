@@ -421,6 +421,7 @@ source_set("workspace_browser_test_support") {
     "//url",
   ]
   deps = [
+    "//brave/browser/ui/webui/ai_chat",
     "//brave/components/ai_chat/core/common",
     "//chrome/browser/profiles:profile",
     "//chrome/test/base:chrome_test_utils",
