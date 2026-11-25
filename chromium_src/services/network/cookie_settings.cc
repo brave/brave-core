@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "net/base/features.h"
+#include "net/cookies/cookie_setting_override.h"
 #include "url/origin.h"
 
 #include <services/network/cookie_settings.cc>
@@ -26,7 +27,12 @@ bool CookieSettings::IsEphemeralCookieAccessible(
   // enabled, Brave doesn't care about whether access is being requested for a
   // specific cookie or not, so we simply return |true| if that's the case.
   // See https://crrev.com/c/2895004 for the upstream change that required this.
-  if (IsEphemeralCookieAccessAllowed(url, site_for_cookies, top_frame_origin,
+  // Partitioned cookies still honor the override, as upstream's per-cookie
+  // check does.
+  if (!(cookie.IsPartitioned() &&
+        overrides.Has(
+            net::CookieSettingOverride::kForceDisablePartitionedCookies)) &&
+      IsEphemeralCookieAccessAllowed(url, site_for_cookies, top_frame_origin,
                                      overrides,
                                      /*cookie_partition_key=*/std::nullopt)) {
     return true;
@@ -63,7 +69,11 @@ bool CookieSettings::AnnotateAndMoveUserBlockedEphemeralCookies(
   if (top_frame_origin)
     top_frame_origin_opt = *top_frame_origin;
 
-  if (IsEphemeralCookieAccessAllowed(url, site_for_cookies,
+  // Let upstream annotate when it disables partitioned cookies, so those are
+  // still excluded.
+  if (!overrides.Has(
+          net::CookieSettingOverride::kForceDisablePartitionedCookies) &&
+      IsEphemeralCookieAccessAllowed(url, site_for_cookies,
                                      top_frame_origin_opt, overrides,
                                      /*cookie_partition_key=*/std::nullopt)) {
     return true;
