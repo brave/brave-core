@@ -108,6 +108,8 @@ source_set("unit_tests") {
     "on_device_speech_locales_unittest.cc",
     "on_device_speech_models_component_installer_unittest.cc",
     "on_device_speech_models_state_unittest.cc",
+    "pref_names_unittest.cc",
+    "utils_unittest.cc",
   ]
 
   deps = [

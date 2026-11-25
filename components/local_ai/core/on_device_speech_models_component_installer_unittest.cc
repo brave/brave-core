@@ -99,17 +99,13 @@ class OnDeviceSpeechModelsComponentInstallerTestBase : public testing::Test {
         .WillRepeatedly([this](component_updater::ServiceObserver* observer) {
           cus_observer_ = nullptr;
         });
-    // The other model is not enabled, so it is taken off disk at startup.
-    EXPECT_CALL(*cus_, UnregisterComponent(ComponentIdOf(other_model())))
-        .Times(testing::AnyNumber())
-        .WillRepeatedly(testing::Return(false));
+    ExpectOtherModelRemovals();
     local_state_ = std::make_unique<TestingPrefServiceSimple>();
     prefs::RegisterLocalStatePrefs(local_state_->registry());
     // Most tests are about an enabled model. The ones about a model that is not
     // enabled clear this.
-    local_state_->SetBoolean(EnabledPref(), true);
+    EnableOnDeviceSpeechModel(*local_state_, model());
     install_dir_ = InstallDirOf(model());
-    other_install_dir_ = InstallDirOf(other_model());
   }
 
   void TearDown() override {
@@ -150,6 +146,14 @@ class OnDeviceSpeechModelsComponentInstallerTestBase : public testing::Test {
     return base::test::RunUntil([&]() { return download_count_ == count; });
   }
 
+  // The other model is not enabled, so its registrar takes it off disk at
+  // startup and at each change of the enabled model.
+  void ExpectOtherModelRemovals() {
+    EXPECT_CALL(*cus_, UnregisterComponent(ComponentIdOf(other_model())))
+        .Times(testing::AnyNumber())
+        .WillRepeatedly(testing::Return(false));
+  }
+
   // The model this run is about, and the other one.
   OnDeviceSpeechModel model() const { return model_; }
   OnDeviceSpeechModel other_model() const {
@@ -157,10 +161,6 @@ class OnDeviceSpeechModelsComponentInstallerTestBase : public testing::Test {
   }
 
   std::string ComponentId() const { return ComponentIdOf(model()); }
-
-  std::string_view EnabledPref() const {
-    return GetOnDeviceSpeechModelEnabledPref(model());
-  }
 
   // Delivered the way the update service delivers it, to whoever it
   // registered.
@@ -182,9 +182,11 @@ class OnDeviceSpeechModelsComponentInstallerTestBase : public testing::Test {
   }
 
   bool IsEnabled(OnDeviceSpeechModel speech_model) {
-    return local_state_->GetBoolean(
-        GetOnDeviceSpeechModelEnabledPref(speech_model));
+    return GetEnabledOnDeviceSpeechModel(local_state_.get()) == speech_model;
   }
+
+  // Clears the model that the user enabled.
+  void DisableModel() { local_state_->ClearPref(prefs::kOnDeviceSpeechModel); }
 
  protected:
   brave_component_updater::MockOnDemandUpdater on_demand_updater_;
@@ -192,27 +194,20 @@ class OnDeviceSpeechModelsComponentInstallerTestBase : public testing::Test {
   std::unique_ptr<TestingPrefServiceSimple> local_state_;
   base::test::TaskEnvironment task_environment_;
   base::FilePath install_dir_;
-  base::FilePath other_install_dir_;
   raw_ptr<component_updater::ServiceObserver> cus_observer_ = nullptr;
   int download_count_ = 0;
 
   // Drives `ManageOnDeviceSpeechModelsComponentRegistration` against a model
   // that is installed and on disk, and asserts it registers nothing,
-  // downloads nothing, and takes the model away. When the test enabled the
-  // other model too, also puts that model on disk and asserts the same for it.
+  // downloads nothing, and takes the model away.
   void ExpectNoRegistrationAndDeletedCopy(
       const base::Location& location = FROM_HERE) {
     SCOPED_TRACE(location.ToString());
-    const bool other_enabled = IsEnabled(other_model());
     CreateDirectory(install_dir_);
     ASSERT_TRUE(PathExists(install_dir_));
     auto* state = OnDeviceSpeechModelsState::GetInstance();
     state->SetInstallDir(model(), install_dir_);
     ASSERT_TRUE(state->IsModelInstalled(model()));
-    if (other_enabled) {
-      ASSERT_TRUE(CreateDirectory(other_install_dir_));
-      state->SetInstallDir(other_model(), other_install_dir_);
-    }
 
     EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
     EXPECT_CALL(on_demand_updater_, EnsureInstalled(testing::_, testing::_))
@@ -221,10 +216,6 @@ class OnDeviceSpeechModelsComponentInstallerTestBase : public testing::Test {
     EXPECT_CALL(*cus_, UnregisterComponent(ComponentId()))
         .Times(1)
         .WillOnce(testing::Return(false));
-    if (other_enabled) {
-      EXPECT_CALL(*cus_, UnregisterComponent(ComponentIdOf(other_model())))
-          .WillOnce(testing::Return(false));
-    }
     ManageOnDeviceSpeechModelsComponentRegistration(cus_.get(),
                                                     local_state_.get());
     // Reported gone before the files are, so nothing acts on a model whose
@@ -234,41 +225,23 @@ class OnDeviceSpeechModelsComponentInstallerTestBase : public testing::Test {
     EXPECT_FALSE(IsEnabled(model()));
     ASSERT_TRUE(
         base::test::RunUntil([&]() { return !PathExists(install_dir_); }));
-    if (other_enabled) {
-      EXPECT_FALSE(state->IsModelInstalled(other_model()));
-      EXPECT_FALSE(IsEnabled(other_model()));
-      ASSERT_TRUE(base::test::RunUntil(
-          [&]() { return !PathExists(other_install_dir_); }));
-    }
   }
 
-  // Enables the other model too, and drives
-  // `ManageOnDeviceSpeechModelsComponentRegistration` until both models are
-  // registered and have asked for their downloads. Then publishes both models
-  // as installed.
-  void StartWithBothModelsInstalled() {
-    local_state_->SetBoolean(GetOnDeviceSpeechModelEnabledPref(other_model()),
-                             true);
+  // Drives `ManageOnDeviceSpeechModelsComponentRegistration` until the model is
+  // registered and has asked for its download. Then publishes the model as
+  // installed.
+  void StartWithTheModelInstalled() {
     EXPECT_CALL(*cus_, RegisterComponent(RegistrationOf(ComponentId())))
-        .WillOnce(testing::Return(true));
-    EXPECT_CALL(*cus_,
-                RegisterComponent(RegistrationOf(ComponentIdOf(other_model()))))
         .WillOnce(testing::Return(true));
     base::test::TestFuture<void> requested;
     EXPECT_CALL(on_demand_updater_, EnsureInstalled(ComponentId(), testing::_))
         .WillOnce([&requested]() { requested.SetValue(); });
-    base::test::TestFuture<void> other_requested;
-    EXPECT_CALL(on_demand_updater_,
-                EnsureInstalled(ComponentIdOf(other_model()), testing::_))
-        .WillOnce([&other_requested]() { other_requested.SetValue(); });
     ManageOnDeviceSpeechModelsComponentRegistration(cus_.get(),
                                                     local_state_.get());
     ASSERT_TRUE(requested.Wait());
-    ASSERT_TRUE(other_requested.Wait());
 
-    auto* state = OnDeviceSpeechModelsState::GetInstance();
-    state->SetInstallDir(model(), install_dir_);
-    state->SetInstallDir(other_model(), other_install_dir_);
+    OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(model(),
+                                                            install_dir_);
   }
 
   // Hands `ComponentReady` a finished download and asserts it is not published
@@ -454,7 +427,7 @@ TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest,
 // Tests the same for a model disabled while the download was in flight.
 TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest,
        ComponentReady_NoInstallWhenNotEnabled) {
-  local_state_->ClearPref(EnabledPref());
+  DisableModel();
   ExpectComponentReadyRefused();
 }
 
@@ -485,41 +458,34 @@ TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest,
 // enabled. A copy already on disk is removed rather than kept up to date.
 TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest,
        ManageOnDeviceSpeechModelsComponentRegistration_RemovesWhenNotEnabled) {
-  local_state_->ClearPref(EnabledPref());
+  DisableModel();
   ExpectNoRegistrationAndDeletedCopy();
 }
 
-// Tests that `ManageOnDeviceSpeechModelsComponentRegistration` removes both
-// models, and clears both prefs, when Brave's own feature flag is off, one of
-// the two conditions `CanOfferOnDeviceSpeech` requires.
+// Tests that `ManageOnDeviceSpeechModelsComponentRegistration` removes the
+// model, and clears the enabled model, when Brave's own feature flag is off,
+// one of the two conditions `CanOfferOnDeviceSpeech` requires.
 TEST_P(
     OnDeviceSpeechModelsComponentInstallerUnitTest,
     ManageOnDeviceSpeechModelsComponentRegistration_RemovesWhenFeatureDisabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndDisableFeature(kBraveOnDeviceSpeechRecognition);
-  // A shared gate takes both models away, so enable the other one too.
-  local_state_->SetBoolean(GetOnDeviceSpeechModelEnabledPref(other_model()),
-                           true);
-
   ExpectNoRegistrationAndDeletedCopy();
 }
 
-// Tests that `ManageOnDeviceSpeechModelsComponentRegistration` removes both
-// models, and clears both prefs, when the Local AI master switch is off, the
-// other condition `CanOfferOnDeviceSpeech` requires. Brave Origin manages this
-// one, so it can turn off long after startup.
+// Tests that `ManageOnDeviceSpeechModelsComponentRegistration` removes the
+// model, and clears the enabled model, when the Local AI master switch is off,
+// the other condition `CanOfferOnDeviceSpeech` requires. Brave Origin manages
+// this one, so it can turn off long after startup.
 TEST_P(
     OnDeviceSpeechModelsComponentInstallerUnitTest,
     ManageOnDeviceSpeechModelsComponentRegistration_RemovesWhenLocalAIDisabled) {
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
-  // A shared gate takes both models away, so enable the other one too.
-  local_state_->SetBoolean(GetOnDeviceSpeechModelEnabledPref(other_model()),
-                           true);
   ExpectNoRegistrationAndDeletedCopy();
 }
 
-// Tests that both models are removed even where the component updater may not
-// be used. Removing it is not an update, and --disable-component-update says
+// Tests that the model is removed even where the component updater may not be
+// used. Removing it is not an update, and --disable-component-update says
 // nothing about whether the user still wants an on-device model.
 TEST_P(
     OnDeviceSpeechModelsComponentInstallerUnitTest,
@@ -529,41 +495,33 @@ TEST_P(
   brave_component_updater::BraveOnDemandUpdater::GetInstance()
       ->RegisterOnDemandUpdater(/*is_component_update_disabled=*/true,
                                 &on_demand_updater_);
-  // A shared gate takes both models away, so enable the other one too.
-  local_state_->SetBoolean(GetOnDeviceSpeechModelEnabledPref(other_model()),
-                           true);
-
   ExpectNoRegistrationAndDeletedCopy();
 }
 
 // Tests that the pref is followed for the rest of the session rather than read
-// once, so both models, already registered and downloaded, are taken away when
+// once, so the model, already registered and downloaded, is taken away when
 // the switch turns off later. Brave Origin resolves it asynchronously, so it
 // can land well after components are registered.
 TEST_P(
     OnDeviceSpeechModelsComponentInstallerUnitTest,
     ManageOnDeviceSpeechModelsComponentRegistration_RemovesWhenLocalAIPrefChanges) {
-  // Waits until both registrations reach the service, so this is the settled
+  // Waits until the registration reaches the service, so this is the settled
   // case and not the in-flight one
   // `ManageOnDeviceSpeechModelsComponentRegistration_TogglingWhileRegistrationPending`
   // covers.
-  ASSERT_NO_FATAL_FAILURE(StartWithBothModelsInstalled());
+  ASSERT_NO_FATAL_FAILURE(StartWithTheModelInstalled());
 
-  // The components were registered, so the update service owns removing the
+  // The component was registered, so the update service owns removing the
   // files through `ComponentInstaller::Uninstall`. All we do is stop reporting
-  // the models as installed. Clearing the request is part of the same change,
+  // the model as installed. Clearing the request is part of the same change,
   // so it does not unregister a second time.
   EXPECT_CALL(*cus_, UnregisterComponent(ComponentId()))
-      .WillOnce(testing::Return(true));
-  EXPECT_CALL(*cus_, UnregisterComponent(ComponentIdOf(other_model())))
       .WillOnce(testing::Return(true));
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
 
   auto* state = OnDeviceSpeechModelsState::GetInstance();
   EXPECT_FALSE(state->IsModelInstalled(model()));
-  EXPECT_FALSE(state->IsModelInstalled(other_model()));
   EXPECT_FALSE(IsEnabled(model()));
-  EXPECT_FALSE(IsEnabled(other_model()));
 
   // Shutting down drops the references the registrars hold, which is what
   // keeps them from dangling once the browser process tears down. The switch
@@ -571,11 +529,9 @@ TEST_P(
   testing::Mock::VerifyAndClearExpectations(cus_.get());
   ShutdownOnDeviceSpeechModelsComponentRegistration();
   state->SetInstallDir(model(), install_dir_);
-  state->SetInstallDir(other_model(), other_install_dir_);
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, true);
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
   EXPECT_TRUE(state->IsModelInstalled(model()));
-  EXPECT_TRUE(state->IsModelInstalled(other_model()));
 }
 
 // The other direction, and the one a first run takes: the switch is off while
@@ -607,7 +563,7 @@ TEST_P(
   // arrives late. The registrar observes the pref, so it clears it again before
   // `SetBoolean` returns. If it stayed true, turning the switch on later would
   // download the model without asking again.
-  local_state_->SetBoolean(EnabledPref(), true);
+  EnableOnDeviceSpeechModel(*local_state_, model());
   EXPECT_FALSE(IsEnabled(model()));
 
   // Turning the switch on asks again rather than downloading. `Sync` decides
@@ -618,6 +574,7 @@ TEST_P(
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, true);
   testing::Mock::VerifyAndClearExpectations(cus_.get());
   testing::Mock::VerifyAndClearExpectations(&on_demand_updater_);
+  ExpectOtherModelRemovals();
 
   // Enabling the model registers it and requests the download.
   base::RunLoop run_loop;
@@ -627,7 +584,7 @@ TEST_P(
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(ComponentId(), testing::_))
       .Times(1)
       .WillOnce([quit = run_loop.QuitClosure()]() { quit.Run(); });
-  local_state_->SetBoolean(EnabledPref(), true);
+  EnableOnDeviceSpeechModel(*local_state_, model());
   run_loop.Run();
 
   // Disabling it takes it away again, the same as turning the switch off does.
@@ -637,7 +594,7 @@ TEST_P(
   EXPECT_CALL(*cus_, UnregisterComponent(ComponentId()))
       .Times(1)
       .WillOnce(testing::Return(true));
-  local_state_->ClearPref(EnabledPref());
+  DisableModel();
   EXPECT_FALSE(state->IsModelInstalled(model()));
 }
 
@@ -666,7 +623,7 @@ TEST_P(
                                                   local_state_.get());
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, true);
-  local_state_->SetBoolean(EnabledPref(), true);
+  EnableOnDeviceSpeechModel(*local_state_, model());
   run_loop.Run();
   EXPECT_TRUE(PathExists(install_dir_));
 
@@ -704,7 +661,7 @@ TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest,
 
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, true);
-  local_state_->SetBoolean(EnabledPref(), true);
+  EnableOnDeviceSpeechModel(*local_state_, model());
   ASSERT_TRUE(base::test::RunUntil([&]() { return installers.size() == 2u; }));
 
   EXPECT_EQ(installers[0], installers[1]);
@@ -737,7 +694,7 @@ TEST_P(
 // The model is not enabled: nothing registered.
 TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest,
        MaybeRegisterOnDeviceSpeechModelsComponent_NoRegisterWhenNotEnabled) {
-  local_state_->ClearPref(EnabledPref());
+  DisableModel();
   ExpectMaybeRegisterRefused();
 }
 
@@ -878,8 +835,8 @@ TEST_P(
 TEST_P(
     OnDeviceSpeechModelsComponentInstallerUnitTest,
     MaybeRegisterOnDeviceSpeechModelsComponent_UnregistersWhenModelDisabledDuringRegistration) {
-  ExpectRegistrationAbandonedAfter(base::BindLambdaForTesting(
-      [&]() { local_state_->ClearPref(EnabledPref()); }));
+  ExpectRegistrationAbandonedAfter(
+      base::BindLambdaForTesting([&]() { DisableModel(); }));
 }
 
 // Switch turned off and back on, and the model enabled again, while a
@@ -911,7 +868,7 @@ TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest,
   MaybeRegisterOnDeviceSpeechModelsComponent(model(), future.GetCallback());
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, true);
-  local_state_->SetBoolean(EnabledPref(), true);
+  EnableOnDeviceSpeechModel(*local_state_, model());
 
   EXPECT_TRUE(future.Get());
   EXPECT_TRUE(
@@ -1096,18 +1053,13 @@ TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest, ComponentIdMatchesKey) {
   EXPECT_EQ(ComponentId(), crx_file::id_util::GenerateIdFromHash(hash));
 }
 
-// Tests that enabling one model does not register the other, and that the other
-// registers once its own pref is enabled.
+// Tests that a request for the model that the user did not enable is refused,
+// and that enabling that model registers it in place of the first one. The
+// registrar unregisters the first model and stops using it before the other
+// model downloads.
 TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest,
-       OtherModelRegistersOnlyOnceEnabled) {
-  base::test::TestFuture<void> requested;
-  EXPECT_CALL(*cus_, RegisterComponent(RegistrationOf(ComponentId())))
-      .WillOnce(testing::Return(true));
-  EXPECT_CALL(on_demand_updater_, EnsureInstalled(ComponentId(), testing::_))
-      .WillOnce([&requested]() { requested.SetValue(); });
-  ManageOnDeviceSpeechModelsComponentRegistration(cus_.get(),
-                                                  local_state_.get());
-  ASSERT_TRUE(requested.Wait());
+       EnablingTheOtherModelRegistersItInstead) {
+  ASSERT_NO_FATAL_FAILURE(StartWithTheModelInstalled());
 
   base::test::TestFuture<bool> refused;
   MaybeRegisterOnDeviceSpeechModelsComponent(other_model(),
@@ -1121,28 +1073,13 @@ TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest,
   EXPECT_CALL(on_demand_updater_,
               EnsureInstalled(ComponentIdOf(other_model()), testing::_))
       .WillOnce([&other_requested]() { other_requested.SetValue(); });
-  local_state_->SetBoolean(GetOnDeviceSpeechModelEnabledPref(other_model()),
-                           true);
-  EXPECT_TRUE(other_requested.Wait());
-}
-
-// Tests that disabling a model removes only that model, and leaves the other
-// model and its pref alone.
-TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest,
-       DisablingRemovesOnlyItsOwnModel) {
-  ASSERT_NO_FATAL_FAILURE(StartWithBothModelsInstalled());
-
-  // Registered, so the update service holds it and removes the files itself.
   EXPECT_CALL(*cus_, UnregisterComponent(ComponentId()))
       .WillOnce(testing::Return(true));
-  EXPECT_CALL(*cus_, UnregisterComponent(ComponentIdOf(other_model())))
-      .Times(0);
-  local_state_->ClearPref(EnabledPref());
-
-  auto* state = OnDeviceSpeechModelsState::GetInstance();
-  EXPECT_FALSE(state->IsModelInstalled(model()));
-  EXPECT_TRUE(state->IsModelInstalled(other_model()));
-  EXPECT_TRUE(IsEnabled(other_model()));
+  EnableOnDeviceSpeechModel(*local_state_, other_model());
+  EXPECT_FALSE(
+      OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(model()));
+  EXPECT_TRUE(other_requested.Wait());
+  EXPECT_FALSE(IsEnabled(model()));
 }
 
 INSTANTIATE_TEST_SUITE_P(

@@ -75,9 +75,7 @@
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
 #include "brave/browser/history_embeddings/history_embeddings_utils.h"
-#include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/utils.h"
-#include "ui/base/text/bytes_formatting.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -519,6 +517,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"semanticHistorySearchSubLabel",
        IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_SUB_LABEL},
       {"onDeviceSpeechModelLabel", IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_LABEL},
+      {"onDeviceSpeechModelSubLabel",
+       IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_SUB_LABEL},
+      {"onDeviceSpeechModelOff", IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_OFF},
+      {"onDeviceSpeechModelEnglish",
+       IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_ENGLISH},
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
       {"historyRetentionLabel", IDS_SETTINGS_HISTORY_RETENTION_LABEL},
       {"historyRetentionSubLabel", IDS_SETTINGS_HISTORY_RETENTION_SUB_LABEL},
@@ -1248,10 +1251,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(profile)
           ->IsEnabled());
 
-  html_source->AddString(
-      "onDeviceSpeechModelSubLabel",
-      l10n_util::GetStringFUTF16(IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_SUB_LABEL,
-                                 ui::FormatBytes(local_ai::kApproxModelSize)));
   html_source->AddBoolean(
       "isOnDeviceSpeechModelAvailable",
       local_ai::CanOfferOnDeviceSpeech(g_browser_process->local_state()));
