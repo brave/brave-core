@@ -12,6 +12,7 @@
 #include <atomic>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_set.h"
@@ -43,6 +44,15 @@ class FakeBrowserHost : public mojom::BrowserHost {
 
   const std::vector<std::string>& calls() const { return calls_; }
 
+  void set_all_regions(
+      std::optional<std::vector<mojom::VpnRegionPtr>> regions) {
+    all_regions_ = std::move(regions);
+  }
+  bool has_held_get_all_regions_request() const {
+    return !held_get_all_regions_replies_.empty();
+  }
+  void DropHeldGetAllRegionsReplies() { held_get_all_regions_replies_.clear(); }
+
   // mojom::BrowserHost:
   void Connect() override;
   void Disconnect() override;
@@ -56,6 +66,9 @@ class FakeBrowserHost : public mojom::BrowserHost {
 
  private:
   std::vector<std::string> calls_;
+  std::optional<std::vector<mojom::VpnRegionPtr>> all_regions_ =
+      std::vector<mojom::VpnRegionPtr>();
+  std::vector<GetAllRegionsCallback> held_get_all_regions_replies_;
 };
 
 // FakeAgent simulates agent's IPC server, in-process. It substitutes for the
@@ -118,6 +131,11 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
   // session without exiting.
   void DropSessionHandles();
 
+  // The reply for BrowserHost::GetAllRegions(), or nullopt to withhold the
+  // reply. A withheld reply is dropped with the session, which is what the
+  // browser sees when the agent exits. Defaults to an empty list.
+  void set_all_regions(std::optional<std::vector<mojom::VpnRegionPtr>> regions);
+
   // The BrowserEndpoint of the newest session, for calling into the browser the
   // way the agent does. Usable as soon as BindBrowserHost() has arrived, even
   // while its reply is withheld: the real agent sends its current state before
@@ -156,6 +174,7 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
 
   bool has_held_initialize_request() const;
   bool has_held_bind_browser_host_request() const;
+  bool has_held_get_all_regions_request() const;
 
   // What the browser has sent through BrowserHost, across all sessions. Call
   // FlushBrowserHostForTesting() first so everything sent has arrived.

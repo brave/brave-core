@@ -17,6 +17,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
+#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -40,10 +41,13 @@
 #include "components/version_info/version_info.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "net/http/http_status_code.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 #include "brave/components/brave_vpn/browser/v2/agent/test/fake_agent.h"
@@ -71,6 +75,12 @@ constexpr char kTestPackage[] = "com.brave.browser_nightly";
 constexpr char kTestProductId[] = "test-product-id";
 constexpr char kExpectedDefaultPackage[] = "com.brave.browser";
 constexpr char kExpectedDefaultProductId[] = "brave-firewall-vpn-premium";
+
+// A region list as the server sends it.
+constexpr char kServerRegionsJson[] = R"([
+  {"name": "eu-de", "name-pretty": "Germany"},
+  {"name": "na-usa", "name-pretty": "USA"}
+])";
 
 // The payload the Java side receives: base64 of a flat JSON dict. Returns
 // nullopt if either layer fails to decode, so a malformed payload fails the
@@ -216,11 +226,36 @@ class BraveVpnServiceImplTest : public testing::Test {
               value);
   }
 
+  std::vector<std::string> GetAllRegionNames() {
+    base::test::TestFuture<std::vector<mojom::RegionPtr>> future;
+    service_->GetAllRegions(future.GetCallback());
+    std::vector<std::string> names;
+    for (const auto& region : future.Take()) {
+      names.push_back(region->name);
+    }
+    return names;
+  }
+
 #if BUILDFLAG(IS_ANDROID)
   std::string GetPurchaseToken() {
     base::test::TestFuture<std::string> future;
     service_->GetPurchaseToken(future.GetCallback<const std::string&>());
     return future.Take();
+  }
+
+  // Answers every request with |body| and |status|. If |request_url| is set, it
+  // receives the URL of the last request.
+  void RespondToRequestsWith(std::string body,
+                             net::HttpStatusCode status,
+                             GURL* request_url = nullptr) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [this, body = std::move(body), status,
+         request_url](const network::ResourceRequest& request) {
+          if (request_url) {
+            *request_url = request.url;
+          }
+          url_loader_factory_.AddResponse(request.url.spec(), body, status);
+        }));
   }
 #else  // BUILDFLAG(IS_ANDROID)
   // (available, enabled)
@@ -274,6 +309,7 @@ class BraveVpnServiceImplTest : public testing::Test {
   }
 
   void ExpectAgentSettingsUnavailable() {
+    EXPECT_THAT(GetAllRegionNames(), testing::IsEmpty());
     EXPECT_TRUE(GetSelectedRegion().Equals(mojom::Region::New()));
     EXPECT_EQ(GetAutoReconnectState(), std::make_tuple(false, false));
     EXPECT_FALSE(GetSmartProxyRoutingState());
@@ -449,6 +485,9 @@ TEST_F(BraveVpnServiceImplTest, SafeDefaultsAfterShutdown) {
   CallEveryAgentAction();
   ExpectAgentSettingsUnavailable();
 #else   // !BUILDFLAG(IS_ANDROID)
+  // The API client is gone, so no request goes out.
+  EXPECT_THAT(GetAllRegionNames(), testing::IsEmpty());
+
   // The purchase token comes straight from the prefs, which outlive the
   // service, so this one keeps working rather than degrading to a default.
   {
@@ -515,6 +554,28 @@ TEST_F(BraveVpnServiceImplTest, PurchaseTokenReflectsPrefs) {
     EXPECT_THAT(*payload, base::test::DictionaryHasValue(
                               "subscription_id", base::Value(kTestProductId)));
   }
+}
+
+TEST_F(BraveVpnServiceImplTest, AllRegionsComeFromServer) {
+  CreateService();
+
+  GURL request_url;
+  RespondToRequestsWith(kServerRegionsJson, net::HTTP_OK, &request_url);
+
+  EXPECT_THAT(GetAllRegionNames(), testing::ElementsAre("eu-de", "na-usa"));
+  EXPECT_THAT(request_url.path(),
+              testing::EndsWith(
+                  base::StrCat({"/", mojom::kRegionPrecisionCityByCountry})));
+}
+
+TEST_F(BraveVpnServiceImplTest, AllRegionsAreEmptyWhenFetchFails) {
+  CreateService();
+
+  RespondToRequestsWith(kServerRegionsJson, net::HTTP_INTERNAL_SERVER_ERROR);
+  EXPECT_THAT(GetAllRegionNames(), testing::IsEmpty());
+
+  RespondToRequestsWith("not json", net::HTTP_OK);
+  EXPECT_THAT(GetAllRegionNames(), testing::IsEmpty());
 }
 
 #else  // BUILDFLAG(IS_ANDROID)
@@ -1172,6 +1233,38 @@ TEST_F(BraveVpnServiceImplTest, AgentRegionSelectionReachesObservers) {
   ASSERT_TRUE(region);
   EXPECT_EQ(region->name, "de");
   EXPECT_FALSE(region->is_automatic);
+}
+
+TEST_F(BraveVpnServiceImplTest, AllRegionsComeFromAgent) {
+  CreateService();
+  ASSERT_NO_FATAL_FAILURE(StartAgentSession());
+
+  std::vector<mojom::VpnRegionPtr> agent_regions;
+  agent_regions.push_back(MakeAgentRegion("us"));
+  agent_regions.push_back(MakeAgentRegion("de"));
+  fake_agent_.set_all_regions(std::move(agent_regions));
+
+  EXPECT_THAT(GetAllRegionNames(), testing::ElementsAre("us", "de"));
+}
+
+// A request the agent never answers still gets a reply once the agent goes
+// away, so the UI isn't left waiting.
+TEST_F(BraveVpnServiceImplTest, AllRegionsAreEmptyIfAgentExitsBeforeReplying) {
+  CreateService();
+  ASSERT_NO_FATAL_FAILURE(StartAgentSession());
+
+  fake_agent_.set_all_regions(std::nullopt);
+
+  base::test::TestFuture<std::vector<mojom::RegionPtr>> future;
+  service_->GetAllRegions(future.GetCallback());
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return fake_agent_.has_held_get_all_regions_request();
+  })) << "the fake agent was never asked for regions";
+
+  fake_agent_.set_transport_fails(true);
+  fake_agent_.CloseAllConnections();
+
+  EXPECT_TRUE(future.Take().empty());
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)

@@ -105,6 +105,7 @@ source_set("unit_tests") {
     "//services/network/public/cpp",
     "//testing/gtest",
     "//ui/base",
+    "//url",
   ]
 
   if (enable_brave_vpn_v2_apps) {

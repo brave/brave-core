@@ -167,8 +167,8 @@ struct PurchasedInfo {
   string? description;
 };
 
-// Make sure updating BraveVpnService properly when member is added to Region
-// struct. Ex, IsValidRegionValue(). It should also check new member.
+// When adding a member, update the functions that parse and convert the struct,
+// such as ParseRegionList() and BrowserRegionFromAgent().
 struct Region {
   string name;
   string name_pretty;

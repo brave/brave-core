@@ -14,7 +14,6 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "base/notimplemented.h"
 #include "base/sequence_checker.h"
 #include "base/types/to_address.h"
 #include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
@@ -129,12 +128,6 @@ void BraveVpnServiceImpl::LoadPurchasedState(const std::string& domain) {
   if (purchased_state_manager_) {
     purchased_state_manager_->Load(domain);
   }
-}
-
-void BraveVpnServiceImpl::GetAllRegions(GetAllRegionsCallback callback) {
-  // TODO(https://github.com/brave/brave-browser/issues/54624)
-  NOTIMPLEMENTED();
-  std::move(callback).Run({});
 }
 
 void BraveVpnServiceImpl::Shutdown() {

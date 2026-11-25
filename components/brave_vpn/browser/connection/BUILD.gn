@@ -55,6 +55,7 @@ source_set("common") {
   ]
   deps = [
     "//brave/components/api_request_helper",
+    "//brave/components/brave_vpn/browser",
     "//brave/components/brave_vpn/browser/api",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",

@@ -9,13 +9,17 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/base64.h"
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "base/notimplemented.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_region_data_parser.h"
 #include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
 #include "brave/components/brave_vpn/browser/v2/api/transport_protocol.h"
 #include "brave/components/brave_vpn/browser/v2/purchased_state_manager.h"
@@ -41,6 +45,26 @@ std::string GetStringPreferenceOrDefault(const PrefService& pref_service,
   return pref_service.GetString(pref_name);
 }
 
+// Bridges the endpoint client's typed result to the GetAllRegions contract:
+// success -> the parsed region list; failure -> empty list.
+void RunGetAllRegionsCallback(
+    BraveVpnServiceImpl::GetAllRegionsCallback callback,
+    base::expected<std::string, std::string> result) {
+  if (!result.has_value()) {
+    VLOG(1) << __func__ << ": failed to fetch region list: " << result.error();
+    std::move(callback).Run({});
+    return;
+  }
+  std::optional<base::ListValue> value =
+      base::JSONReader::ReadList(*result, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+  if (!value) {
+    VLOG(1) << __func__ << ": failed to parse region list";
+    std::move(callback).Run({});
+    return;
+  }
+  std::move(callback).Run(ParseRegionList(*value));
+}
+
 // Bridges the endpoint client's typed result to the legacy ResponseCallback
 // contract: value -> (payload, true); error -> (error string, false).
 void RunResponseCallback(BraveVpnServiceImpl::ResponseCallback callback,
@@ -50,6 +74,17 @@ void RunResponseCallback(BraveVpnServiceImpl::ResponseCallback callback,
       success ? std::move(result).value() : std::move(result).error(), success);
 }
 }  // namespace
+
+void BraveVpnServiceImpl::GetAllRegions(GetAllRegionsCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!api_client_) {
+    std::move(callback).Run({});
+    return;
+  }
+  api_client_->GetServerRegions(
+      base::BindOnce(&RunGetAllRegionsCallback, std::move(callback)),
+      mojom::kRegionPrecisionCityByCountry);
+}
 
 void BraveVpnServiceImpl::GetPurchaseToken(GetPurchaseTokenCallback callback) {
   // Get the Android purchase token (for Google Play Store).
