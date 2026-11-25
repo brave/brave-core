@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "base/numerics/safe_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
@@ -380,10 +379,11 @@ TEST_F(BraveTabStyleSplitTabTest, PinnedSplitTabsAreInsetInTile) {
   for (Tab* tab : {tab1, tab2}) {
     const TabIcon* icon = tab->GetTabIconForTesting();
     ASSERT_TRUE(icon->GetVisible());
-    // The icon's bounds include insets around the favicon.
+    // The icon's bounds include insets around the favicon. The shape's center
+    // can be at a half pixel, so the favicon is centered within half a pixel.
     const int favicon_x = icon->x() + icon->GetInsets().left();
-    EXPECT_EQ(base::ClampRound(GetShapeBoundsInParent(tab).CenterPoint().x()),
-              tab->x() + favicon_x + gfx::kFaviconSize / 2);
+    EXPECT_NEAR(GetShapeBoundsInParent(tab).CenterPoint().x(),
+                tab->x() + favicon_x + gfx::kFaviconSize / 2.0f, 0.5f);
   }
 }
 

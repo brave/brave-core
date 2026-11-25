@@ -134,9 +134,8 @@ void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
           next != tabs.end() && tab.state().split().has_value() &&
           tab.state().split() == next->state().split() &&
           next->state().open() == TabOpen::kOpen;
-      rect.set_y(rect.bottom() + (next_in_same_split
-                                      ? kVerticalSplitTabsSpacing
-                                      : kVerticalTabsSpacing));
+      rect.set_y(rect.bottom() + (next_in_same_split ? kVerticalSplitTabsSpacing
+                                                     : kVerticalTabsSpacing));
     }
   }
 }

@@ -19,6 +19,7 @@
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
@@ -806,22 +807,24 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitTabInsetsTest) {
   // Get normal tab's border insets.
   const auto insets = tab_strip()->tab_at(1)->GetBorder()->GetInsets();
 
-  // Check split tab's first & second tabs' insets are different.
-  // value 4 here is copied from |kPaddingForVerticalTabInTile| in
-  // chromium_src/chrome/browser/ui/views/tabs/tab_style_views.cc.
+  // Split tabs' contents are inset by the tile's padding on the outer edge, and
+  // by half of the gap between the tabs on the inner edge.
+  constexpr int kOuter = tabs::kSplitViewTilePadding;
+  constexpr int kInner =
+      (tabs::kSplitViewTilePadding - tabs::kVerticalSplitTabsSpacing) / 2;
   EXPECT_EQ(tab_strip()->tab_at(2)->GetBorder()->GetInsets(),
-            insets + gfx::Insets::TLBR(4, 0, 0, 0));
+            insets + gfx::Insets::TLBR(kOuter, 0, kInner, 0));
   EXPECT_EQ(tab_strip()->tab_at(3)->GetBorder()->GetInsets(),
-            insets + gfx::Insets::TLBR(0, 0, 4, 0));
+            insets + gfx::Insets::TLBR(kInner, 0, kOuter, 0));
 
   SwapActiveSplitTab();
   EXPECT_EQ(2, tab_strip()->GetActiveIndex());
 
   // Check split tabs have proper insets after swap
   EXPECT_EQ(tab_strip()->tab_at(2)->GetBorder()->GetInsets(),
-            insets + gfx::Insets::TLBR(4, 0, 0, 0));
+            insets + gfx::Insets::TLBR(kOuter, 0, kInner, 0));
   EXPECT_EQ(tab_strip()->tab_at(3)->GetBorder()->GetInsets(),
-            insets + gfx::Insets::TLBR(0, 0, 4, 0));
+            insets + gfx::Insets::TLBR(kInner, 0, kOuter, 0));
 
   // Check pinned split tabs have same insets with other pinned tab
   chrome::PinTab(browser());

@@ -295,8 +295,7 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   ASSERT_EQ(2u, result.size());
 
   EXPECT_EQ(result[0].x(), result[1].x());
-  EXPECT_EQ(kVerticalSplitTabsSpacing,
-            result[1].y() - result[0].bottom());
+  EXPECT_EQ(kVerticalSplitTabsSpacing, result[1].y() - result[0].bottom());
   EXPECT_EQ(kMarginForVerticalTabContainers, result[0].y());
   EXPECT_EQ(kMarginForVerticalTabContainers + 2 * kVerticalTabHeight +
                 kVerticalTabsSpacing,
