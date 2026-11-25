@@ -126,9 +126,17 @@ void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
                                                          : 0);
     result->push_back(rect);
 
-    // Update rect for the next tab.
+    // Update rect for the next tab. Tabs in the same split are closer to each
+    // other than other tabs.
     if (tab.state().open() == TabOpen::kOpen) {
-      rect.set_y(rect.bottom() + kVerticalTabsSpacing);
+      const auto next = iter + 1;
+      const bool next_in_same_split =
+          next != tabs.end() && tab.state().split().has_value() &&
+          tab.state().split() == next->state().split() &&
+          next->state().open() == TabOpen::kOpen;
+      rect.set_y(rect.bottom() + (next_in_same_split
+                                      ? kVerticalSplitTabsSpacing
+                                      : kVerticalTabsSpacing));
     }
   }
 }
@@ -143,21 +151,12 @@ int GetTabCornerRadius(const Tab& tab) {
   return tabs::kTabBorderRadius;
 }
 
-int GetSplitViewTilePadding(bool is_vertical_tab, bool is_pinned) {
-  if (is_vertical_tab) {
-    return is_pinned ? 2 : 4;
-  }
-
-  return kHorizontalSplitViewTilePadding;
-}
-
 int GetSplitViewTabCornerRadius(const Tab& tab) {
   return GetTabCornerRadius(tab);
 }
 
 int GetSplitViewTileCornerRadius(const Tab& tab, bool is_vertical_tab) {
-  return GetSplitViewTabCornerRadius(tab) +
-         GetSplitViewTilePadding(is_vertical_tab, tab.data().pinned);
+  return GetSplitViewTabCornerRadius(tab) + kSplitViewTilePadding;
 }
 
 void CalculatePinnedTabsBoundsInGrid(
@@ -253,7 +252,7 @@ void CalculatePinnedTabsBoundsInGrid(
   // Split tabs next to each other, in the same row or stacked in a single
   // column, share the spacing between them.
   constexpr int kSpacingToShare =
-      kVerticalTabsSpacing - kVerticalPinnedSplitTabsSpacing;
+      kVerticalTabsSpacing - kVerticalSplitTabsSpacing;
   for (size_t index = first_index; index + 1 < result->size(); ++index) {
     const TabLayoutState& state = tabs[index].state();
     const TabLayoutState& next_state = tabs[index + 1].state();

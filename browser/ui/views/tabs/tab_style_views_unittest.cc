@@ -325,8 +325,7 @@ class BraveTabStyleSplitTabTest : public BraveTabStyleIsHoveringTest {
   // them is the same as the padding, and that their corners are concentric
   // with the tile's corners.
   void ExpectHorizontalSplitTabsAreInsetInTile(Tab* tab1, Tab* tab2) {
-    const int padding = tabs::GetSplitViewTilePadding(
-        /*is_vertical_tab=*/false, tab1->data().pinned);
+    const int padding = tabs::kSplitViewTilePadding;
 
     // Matches the bounding box painted by BraveTabContainer.
     gfx::RectF tile(gfx::UnionRects(tab1->bounds(), tab2->bounds()));

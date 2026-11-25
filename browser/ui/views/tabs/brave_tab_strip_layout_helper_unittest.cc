@@ -273,7 +273,7 @@ TEST(BraveTabStripLayoutHelperUnitTest,
 
   // Split tabs share the spacing between them, keeping their outer edges.
   EXPECT_EQ(result[1].y(), result[2].y());
-  EXPECT_EQ(kVerticalPinnedSplitTabsSpacing, result[2].x() - result[1].right());
+  EXPECT_EQ(kVerticalSplitTabsSpacing, result[2].x() - result[1].right());
   EXPECT_EQ(expected[1].x(), result[1].x());
   EXPECT_EQ(expected[2].right(), result[2].right());
   EXPECT_EQ(expected[1].height(), result[1].height());
@@ -295,12 +295,42 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   ASSERT_EQ(2u, result.size());
 
   EXPECT_EQ(result[0].x(), result[1].x());
-  EXPECT_EQ(kVerticalPinnedSplitTabsSpacing,
+  EXPECT_EQ(kVerticalSplitTabsSpacing,
             result[1].y() - result[0].bottom());
   EXPECT_EQ(kMarginForVerticalTabContainers, result[0].y());
   EXPECT_EQ(kMarginForVerticalTabContainers + 2 * kVerticalTabHeight +
                 kVerticalTabsSpacing,
             result[1].bottom());
+}
+
+TEST(BraveTabStripLayoutHelperUnitTest,
+     CalculateVerticalTabBounds_SplitTabsUseSplitSpacing) {
+  const split_tabs::SplitTabId split = split_tabs::SplitTabId::GenerateNew();
+  auto make_unpinned_split_tab = [&]() {
+    TabSizeInfo size_info;
+    size_info.pinned_tab_width = kVerticalTabMinWidth;
+    size_info.min_active_width = 56;
+    size_info.min_inactive_width = 32;
+    size_info.standard_width = 256;
+    return TabWidthConstraints(
+        TabLayoutState(TabOpen::kOpen, TabPinned::kUnpinned,
+                       TabActive::kInactive, split),
+        size_info);
+  };
+
+  std::vector<TabWidthConstraints> tabs;
+  tabs.push_back(MakeTabConstraints(TabPinned::kUnpinned));
+  tabs.push_back(make_unpinned_split_tab());
+  tabs.push_back(make_unpinned_split_tab());
+  tabs.push_back(MakeTabConstraints(TabPinned::kUnpinned));
+
+  auto [bounds, _] = CalculateVerticalTabBounds(
+      tabs, 200, /*should_layout_pinned_tabs_in_grid=*/false);
+  ASSERT_EQ(4u, bounds.size());
+
+  EXPECT_EQ(bounds[0].bottom() + kVerticalTabsSpacing, bounds[1].y());
+  EXPECT_EQ(bounds[1].bottom() + kVerticalSplitTabsSpacing, bounds[2].y());
+  EXPECT_EQ(bounds[2].bottom() + kVerticalTabsSpacing, bounds[3].y());
 }
 
 TEST(BraveTabStripLayoutHelperUnitTest,
