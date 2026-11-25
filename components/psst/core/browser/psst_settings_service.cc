@@ -7,7 +7,9 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/psst/core/browser/pref_names.h"
+#include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
@@ -79,8 +81,11 @@ void IncrementInfobarCounter(
 
 PsstSettingsService::PsstSettingsService(
     HostContentSettingsMap& host_content_settings_map,
-    PrefService* prefs)
-    : host_content_settings_map_(host_content_settings_map), prefs_(prefs) {
+    PrefService* prefs,
+    brave_origin::BraveOriginService* brave_origin_service)
+    : host_content_settings_map_(host_content_settings_map),
+      prefs_(prefs),
+      brave_origin_service_(brave_origin_service) {
   CHECK(prefs_);
 
   pref_change_registrar_.Init(prefs_);
@@ -244,6 +249,15 @@ bool PsstSettingsService::IsPsstEnabled() const {
 }
 
 void PsstSettingsService::SetPsstEnabled(bool enabled) {
+  // When BraveOrigin controls this pref, it must be set via the policy
+  // manager rather than directly in the pref store, or the write is
+  // shadowed by the enforced BraveOrigin value.
+  if (brave_origin_service_ &&
+      brave_origin_service_->IsPolicyControlledByBraveOrigin(
+          policy::key::kPsstEnabled)) {
+    brave_origin_service_->SetPolicyValue(policy::key::kPsstEnabled, enabled);
+    return;
+  }
   prefs_->SetBoolean(prefs::kPsstEnabled, enabled);
 }
 

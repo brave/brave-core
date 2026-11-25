@@ -33,6 +33,7 @@ static_library("psst") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/app/vector_icons",
+    "//brave/browser/brave_origin",
     "//brave/browser/ui/views/page_action",
     "//brave/components/constants",
     "//brave/components/infobars/core",

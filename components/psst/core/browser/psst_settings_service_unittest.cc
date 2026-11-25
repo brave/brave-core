@@ -66,8 +66,8 @@ class PsstSettingsServiceUnitTest : public testing::Test {
     map_ = base::MakeRefCounted<HostContentSettingsMap>(
         &prefs_, /*is_off_the_record=*/false, /*store_last_modified=*/false,
         /*restore_session=*/false, /*should_record_metrics=*/false);
-    psst_settings_service_ =
-        std::make_unique<PsstSettingsService>(*map_, &prefs_);
+    psst_settings_service_ = std::make_unique<PsstSettingsService>(
+        *map_, &prefs_, /*brave_origin_service=*/nullptr);
   }
 
   void TearDown() override {

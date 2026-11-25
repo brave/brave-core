@@ -44,6 +44,7 @@ static_library("browser") {
 
   deps = [
     "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/brave_origin",
     "//brave/components/brave_stats/browser",
     "//brave/components/psst/buildflags",
     "//brave/components/psst/core/common",
@@ -52,6 +53,7 @@ static_library("browser") {
     "//components/content_settings/core/browser",
     "//components/crx_file",
     "//components/keyed_service/core",
+    "//components/policy/core/common",
     "//components/pref_registry",
     "//components/prefs",
     "//crypto",
