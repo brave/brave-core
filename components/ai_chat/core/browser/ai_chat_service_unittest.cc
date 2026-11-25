@@ -1329,6 +1329,48 @@ TEST_P(AIChatServiceUnitTest, DeleteConversations_TimeRange) {
   ExpectConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 1 : 0);
 }
 
+// "All time" (as browsing_data::CalculateBeginDeleteTime() and
+// CalculateEndDeleteTime() give it) deletes every persisted conversation, even
+// those not loaded into memory.
+TEST_P(AIChatServiceUnitTest, DeleteConversations_AllTimeDeletesUnloaded) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  ConversationHandler* conversation_handler = CreateConversation();
+  conversation_handler->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  // Restart, so the conversation is only in the database: conversations are
+  // loaded lazily, and nothing has asked for them yet.
+  ResetService();
+  WaitForSyncBridgeReady();
+
+  ai_chat_service_->DeleteConversations(base::Time(), base::Time::Max());
+  ExpectConversationsSize(FROM_HERE, 0);
+
+  // Verify deleted from database
+  ResetService();
+  ExpectConversationsSize(FROM_HERE, 0);
+}
+
+// "All time" also deletes the workspaces only the database referenced.
+TEST_P(AIChatServiceUnitTest, DeleteConversations_AllTimeDeletesWorkspaces) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  std::vector<GURL> deleted_workspaces;
+  UseWorkspaceDataDeleter(deleted_workspaces);
+
+  const GURL saved_url("workspace://11111111-1111-4111-8111-111111111111");
+  NiceMock<MockAIChatDatabase>* mock_db = UseMockDatabase();
+  ON_CALL(*mock_db, GetWorkspaceUrls())
+      .WillByDefault(testing::Return(std::set<GURL>{saved_url}));
+  ON_CALL(*mock_db, DeleteAllData()).WillByDefault(testing::Return(true));
+
+  ai_chat_service_->DeleteConversations(base::Time(), base::Time::Max());
+  WaitForWorkspaceDeletions();
+  EXPECT_THAT(deleted_workspaces, testing::ElementsAre(saved_url));
+}
+
 TEST_P(AIChatServiceUnitTest,
        DeleteConversation_DeletesWorkspaceDataWhenNoLongerReferenced) {
   std::vector<GURL> deleted_workspaces;

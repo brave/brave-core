@@ -453,7 +453,13 @@ ConversationHandler* AIChatService::CreateConversationHandlerForContent(
 
 void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
                                         std::optional<base::Time> end_time) {
-  if (!begin_time.has_value() && !end_time.has_value()) {
+  // An unbounded range, e.g. "All time" from clearing browsing data, covers
+  // every conversation, including those not loaded into memory yet, so it is
+  // the same as deleting everything.
+  const bool unbounded_begin = !begin_time || begin_time->is_null();
+  const bool unbounded_end =
+      !end_time || end_time->is_null() || end_time->is_max();
+  if (unbounded_begin && unbounded_end) {
     // Every workspace becomes unreferenced, so collect the in-memory ones
     // before the data referencing them is gone.
     std::set<GURL> workspace_urls = GetInMemoryWorkspaceUrls();
