@@ -30,15 +30,12 @@ void GetSearchProvidersUsingKeywordResult(
       removed_keyword_guids);
   // Resort template_urls in the order of prepopulated search engines.
   if (template_urls && !template_urls->empty()) {
-    std::vector<std::unique_ptr<TemplateURLData>> prepopulated_urls =
+    TemplateURLPrepopulateData::PrepopulatedEngineVector prepopulated_engines =
         template_url_data_resolver.GetPrepopulatedEngines();
-    for (const auto& template_url_data :
-         std::views::reverse(prepopulated_urls)) {
+    for (const auto& engine : std::views::reverse(prepopulated_engines)) {
       auto it = std::ranges::find_if(
-          *template_urls,
-          [&template_url_data](std::unique_ptr<TemplateURL>& t_url1) {
-            return (t_url1->prepopulate_id() ==
-                    template_url_data->prepopulate_id);
+          *template_urls, [&engine](std::unique_ptr<TemplateURL>& t_url1) {
+            return t_url1->prepopulate_id() == engine->id;
           });
       if (it != end(*template_urls))
         std::rotate(begin(*template_urls), it, it + 1);

@@ -380,14 +380,13 @@ constexpr int kTestExtensionPrepopulatedId = 83;
 // TemplateURLData with search engines settings from test extension manifest.
 // chrome/test/data/extensions/settings_override/manifest.json
 std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(Profile* profile) {
-  PrefService* prefs = profile->GetPrefs();
   // Enforcing that `kTestExtensionPrepopulatedId` is not part of the
   // prepopulated set for the current profile's country.
-  for (auto& data : TemplateURLPrepopulateData::GetPrepopulatedEngines(
-           *prefs, regional_capabilities::RegionalCapabilitiesServiceFactory::
-                       GetForProfile(profile)
-                           ->GetRegionalPrepopulatedEngines())) {
-    EXPECT_NE(data->prepopulate_id, kTestExtensionPrepopulatedId);
+  for (const TemplateURLPrepopulateData::PrepopulatedEngine* engine :
+       regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
+           profile)
+           ->GetRegionalPrepopulatedEngines()) {
+    EXPECT_NE(engine->id, kTestExtensionPrepopulatedId);
   }
 
   auto result = std::make_unique<TemplateURLData>();
@@ -406,7 +405,7 @@ std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(Profile* profile) {
 
   std::unique_ptr<TemplateURLData> prepopulated =
       TemplateURLPrepopulateData::GetPrepopulatedEngineFromFullList(
-          *prefs,
+          *profile->GetPrefs(),
           regional_capabilities::RegionalCapabilitiesServiceFactory::
               GetForProfile(profile)
                   ->GetRegionalPrepopulatedEngines(),

@@ -246,38 +246,37 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
   for (country_codes::CountryId country_id : kCountryIds) {
     search_engines_test_environment_.pref_service().SetInteger(
         kCountryIDAtInstall, country_id.Serialize());
-    std::vector<std::unique_ptr<TemplateURLData>> urls = GetPrepopulatedEngines(
-        search_engines_test_environment_.pref_service(),
+    std::vector<raw_ptr<const PrepopulatedEngine>> engines =
         search_engines_test_environment_.regional_capabilities_service()
-            .GetRegionalPrepopulatedEngines());
+            .GetRegionalPrepopulatedEngines();
     std::set<int> unique_ids;
-    for (auto& url : urls) {
-      ASSERT_TRUE(unique_ids.find(url->prepopulate_id) == unique_ids.end());
-      unique_ids.insert(url->prepopulate_id);
+    for (const PrepopulatedEngine* engine : engines) {
+      ASSERT_TRUE(unique_ids.find(engine->id) == unique_ids.end());
+      unique_ids.insert(engine->id);
     }
   }
 }
 
 // Verifies that each prepopulate data entry has required fields
 TEST_F(BraveTemplateURLPrepopulateDataTest, ProvidersFromPrepopulated) {
-  std::vector<std::unique_ptr<TemplateURLData>> t_urls =
-      TemplateURLPrepopulateData::GetPrepopulatedEngines(
-          search_engines_test_environment_.pref_service(),
-          search_engines_test_environment_.regional_capabilities_service()
-              .GetRegionalPrepopulatedEngines());
+  std::vector<raw_ptr<const PrepopulatedEngine>> engines =
+      search_engines_test_environment_.regional_capabilities_service()
+          .GetRegionalPrepopulatedEngines();
 
   // Ensure all the URLs have the required fields populated.
-  ASSERT_FALSE(t_urls.empty());
-  for (size_t i = 0; i < t_urls.size(); ++i) {
-    ASSERT_FALSE(t_urls[i]->short_name().empty());
-    ASSERT_FALSE(t_urls[i]->keyword().empty());
-    ASSERT_FALSE(t_urls[i]->favicon_url.host().empty());
-    ASSERT_FALSE(GetHostFromTemplateURLData(*t_urls[i]).empty());
-    ASSERT_FALSE(t_urls[i]->input_encodings.empty());
-    EXPECT_GT(t_urls[i]->prepopulate_id, 0);
-    EXPECT_TRUE(t_urls[0]->safe_for_autoreplace);
-    EXPECT_TRUE(t_urls[0]->date_created.is_null());
-    EXPECT_TRUE(t_urls[0]->last_modified.is_null());
+  ASSERT_FALSE(engines.empty());
+  for (const PrepopulatedEngine* engine : engines) {
+    std::unique_ptr<TemplateURLData> t_url =
+        TemplateURLDataFromPrepopulatedEngine(*engine);
+    ASSERT_FALSE(t_url->short_name().empty());
+    ASSERT_FALSE(t_url->keyword().empty());
+    ASSERT_FALSE(t_url->favicon_url.host().empty());
+    ASSERT_FALSE(GetHostFromTemplateURLData(*t_url).empty());
+    ASSERT_FALSE(t_url->input_encodings.empty());
+    EXPECT_GT(t_url->prepopulate_id, 0);
+    EXPECT_TRUE(t_url->safe_for_autoreplace);
+    EXPECT_TRUE(t_url->date_created.is_null());
+    EXPECT_TRUE(t_url->last_modified.is_null());
   }
 }
 
