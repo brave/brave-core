@@ -350,6 +350,8 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                 mNTPBackgroundImagesBridge.wallpaperLogoClicked(mWallpaper);
                             }
                         });
+                imageCreditViewHolder.mSponsoredLogoBottomSpace.setVisibility(
+                        mIsNewTabTakeoverDisclosureVisible ? View.GONE : View.VISIBLE);
             }
 
             boolean isImageCreditPositioned = mRecyclerViewHeight > 0;
@@ -901,6 +903,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         FrameLayout mImageCreditLayout;
         TextView mCreditTv;
         ImageView mSponsoredLogo;
+        View mSponsoredLogoBottomSpace;
         TextView mDisclosureLabel;
 
         ImageCreditViewHolder(View itemView) {
@@ -910,6 +913,8 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             this.mImageCreditLayout = (FrameLayout) itemView.findViewById(R.id.image_credit_layout);
             this.mCreditTv = (TextView) itemView.findViewById(R.id.credit_text);
             this.mSponsoredLogo = (ImageView) itemView.findViewById(R.id.sponsored_logo);
+            this.mSponsoredLogoBottomSpace =
+                    itemView.findViewById(R.id.sponsored_logo_bottom_space);
             this.mDisclosureLabel = (TextView) itemView.findViewById(R.id.sponsored_label);
             BraveTouchUtils.ensureMinTouchTarget(this.mCreditTv);
             BraveTouchUtils.ensureMinTouchTarget(this.mDisclosureLabel);

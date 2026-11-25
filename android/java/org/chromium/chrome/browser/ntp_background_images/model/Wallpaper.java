@@ -18,6 +18,7 @@ public class Wallpaper extends NTPImage {
     private final String mWallpaperId;
     private final boolean mIsRichMedia;
     private final @NewTabPageAdMetricType.EnumType int mMetricType;
+    private final boolean mShouldDisplayNewTabTakeoverDisclosure;
 
     public Wallpaper(
             String imagePath,
@@ -29,7 +30,8 @@ public class Wallpaper extends NTPImage {
             String creativeInstanceId,
             String wallpaperId,
             boolean isRichMedia,
-            @NewTabPageAdMetricType.EnumType int metricType) {
+            @NewTabPageAdMetricType.EnumType int metricType,
+            boolean shouldDisplayNewTabTakeoverDisclosure) {
         mImagePath = imagePath;
         mFocalPointX = focalPointX;
         mFocalPointY = focalPointY;
@@ -40,6 +42,7 @@ public class Wallpaper extends NTPImage {
         mWallpaperId = wallpaperId;
         mIsRichMedia = isRichMedia;
         mMetricType = metricType;
+        mShouldDisplayNewTabTakeoverDisclosure = shouldDisplayNewTabTakeoverDisclosure;
     }
 
     public String getImagePath() {
@@ -80,5 +83,9 @@ public class Wallpaper extends NTPImage {
 
     public @NewTabPageAdMetricType.EnumType int metricType() {
         return mMetricType;
+    }
+
+    public boolean shouldDisplayNewTabTakeoverDisclosure() {
+        return mShouldDisplayNewTabTakeoverDisclosure;
     }
 }

@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Looper;
 import android.view.View;
 import android.view.View.MeasureSpec;
@@ -70,6 +71,10 @@ public class BraveNtpAdapterNewTabTakeoverDisclosureTest {
     }
 
     private BraveNtpAdapter createAdapter(int recyclerViewHeight) {
+        return createAdapter(recyclerViewHeight, /* sponsoredLogo= */ null);
+    }
+
+    private BraveNtpAdapter createAdapter(int recyclerViewHeight, Bitmap sponsoredLogo) {
         BraveNtpAdapter adapter =
                 new BraveNtpAdapter(
                         mActivity,
@@ -81,7 +86,7 @@ public class BraveNtpAdapterNewTabTakeoverDisclosureTest {
                         /* ntpImage= */ null,
                         /* sponsoredTab= */ null,
                         /* wallpaper= */ null,
-                        /* sponsoredLogo= */ null,
+                        sponsoredLogo,
                         /* nTPBackgroundImagesBridge= */ null,
                         /* isNewsLoading= */ false,
                         recyclerViewHeight,
@@ -111,6 +116,14 @@ public class BraveNtpAdapterNewTabTakeoverDisclosureTest {
 
     private View getDisclosureLabel() {
         return mRecyclerView.findViewById(R.id.sponsored_label);
+    }
+
+    private View getSponsoredLogoBottomSpace() {
+        return mRecyclerView.findViewById(R.id.sponsored_logo_bottom_space);
+    }
+
+    private static Bitmap createSponsoredLogo() {
+        return Bitmap.createBitmap(/* width= */ 1, /* height= */ 1, Bitmap.Config.ARGB_8888);
     }
 
     @Test
@@ -207,5 +220,30 @@ public class BraveNtpAdapterNewTabTakeoverDisclosureTest {
         getDisclosureLabel().performClick();
 
         verifyNoInteractions(mOnBraveNtpListener);
+    }
+
+    @Test
+    public void testHideSponsoredLogoBottomSpaceWhenSponsoredLogoIsNotVisible() {
+        createAdapter(HEIGHT);
+
+        assertEquals(View.GONE, getSponsoredLogoBottomSpace().getVisibility());
+    }
+
+    @Test
+    public void
+            testShowSponsoredLogoBottomSpaceWhenSponsoredLogoIsVisibleAndDisclosureIsNotVisible() {
+        createAdapter(HEIGHT, createSponsoredLogo());
+
+        assertEquals(View.VISIBLE, getSponsoredLogoBottomSpace().getVisibility());
+    }
+
+    @Test
+    public void testHideSponsoredLogoBottomSpaceWhenDisclosureIsVisible() {
+        BraveNtpAdapter adapter = createAdapter(HEIGHT, createSponsoredLogo());
+
+        adapter.setNewTabTakeoverDisclosureVisible(true);
+        layout();
+
+        assertEquals(View.GONE, getSponsoredLogoBottomSpace().getVisibility());
     }
 }
