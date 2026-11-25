@@ -47,13 +47,7 @@
 "vpn.infoCheckServers" = "दुनियाभर में सैकड़ों सर्वर";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "अनचाहे नेटवर्क कनेक्शन को ब्लॉक करता है";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxBlockAdsAlternate" = "सभी ऐप्स में ऐड्स & ट्रैकर्स ब्लॉक करें ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "100 एमबीपीएस तक की स्पीड को सपोर्ट करता है";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxFastAlternate" = "100 Mbps तक तेज और असीमित";
@@ -138,10 +132,4 @@
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "मौजूदा सेटिंग: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "VPN क्षेत्र";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "कृपया अपना पेमेंट का तरीका अपडेट करें";
 

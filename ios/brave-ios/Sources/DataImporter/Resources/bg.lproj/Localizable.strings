@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "Възникна грешка при импортирането на отметките.";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "Възникна грешка при импортирането на историята.";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "Възникна грешка при импортирането на пароли.\nНякои пароли не могат да се импортират поради конфликти.";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "Възникна грешка при импортирането на паролите.";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "Възникна грешка при разархивирането на файла.";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "Избор на файл...";
 
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "В списъка с приложения (подредени по азбучен ред) намери и докосни **Safari**.";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "Zip файлът не съдържа данни за импортиране.";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "Моля, изчакай, докато прехвърлим данните ти по сигурен начин.\nТова може да отнеме няколко секунди.";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "Открити са няколко профила";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "Лични";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Импортирани отметки";

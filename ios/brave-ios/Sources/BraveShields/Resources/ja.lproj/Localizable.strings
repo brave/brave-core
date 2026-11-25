@@ -16,27 +16,6 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "トラッカーと&広告をブロック済み";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "ブロック済みの\n広告";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "**Braveプレーヤー**は、広告なしで途切れることのない動画視聴をお楽しみいただけるツールです。";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "プレーヤーを使用する";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "このサイトで一部の広告ブロッカーのブロックを開始しました。予期せぬ動作が観察される可能性があります。";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "この問題に対処するため、Braveではシールドの設定を調整することができます。調整後は、代わりにBrave プレーヤーでこのコンテンツの視聴をお試しください。";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "現在の設定を維持する";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "このサイトの広告ブロック設定を調整";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMPページの自動リダイレクト";
 
@@ -79,32 +58,11 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "JavaScriptをブロックする（サイトが正常に動作しない可能性があります）";
 
-/* Title for the brave player feature */
-"BravePlayer" = "Braveプレーヤー";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "このサイトからの動画を常にBraveプレーヤーで開く";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "利用する";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "後で";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Braveプレーヤーなら、途切れることなく動画の視聴をお楽しみいただけます。";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "代わりにBraveプレーヤーで視聴";
-
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "詳細設定";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "ブロック済みの広告やトラッカー";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "以下について詳しく";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "Shieldsの全体のデフォルトを変更する";
@@ -217,17 +175,11 @@
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "ダウンロード待ち";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "編集する";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "フィルターリストのURLを入力";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "最終更新 %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "フィルターリストのURLをここに入力してください";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "フィンガープリントをブロック";
@@ -411,9 +363,6 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "トラッカー&広告をブロック";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "ブロック済みの\nトラッカー";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "リストを更新";

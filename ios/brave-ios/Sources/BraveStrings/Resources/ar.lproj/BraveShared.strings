@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "حول";
 
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertMessage" = "يتيح لك ذلك حفظ الصورة في ألبوم الكاميرا.";
-
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "يرغب Brave في الوصول إلى صورك";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "إضافة إشارة مرجعية";
 
@@ -63,9 +57,6 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "اسم المستخدم";
-
-/* Settings autofill section title */
-"Autofill" = "الملء التلقائي";
 
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "الحسابات";
@@ -133,9 +124,6 @@
 /* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
 "backgroundDownloadingTitleSingleDownload" = "جارٍ تنزيل \"%@\"";
 
-/* cookie settings option */
-"Block3rdPartyCookies" = "حظر ملفات تعريف الارتباط الخاصة بالجهات الخارجية";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "حظر جميع ملفات تعريف الارتباط";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "فشل في تعيين التفضيل. يرجى المحاولة مرة أخرى.";
 
-/* title for section showing page blocking statistics */
-"BlockingMonitor" = "حجب المراقبة";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "حظر النوافذ المنبثقة";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "إضافة إشارة مرجعية لعلامات التبويب %lld";
-
-/* Bookmark Folder Section Title */
-"BookmarkFolder" = "مجلد الإشارات المرجعية";
-
-/* Bookmark Info Section Title */
-"BookmarkInfo" = "معلومات الإشارة المرجعية";
 
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "إشارات";
@@ -225,9 +204,6 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields والخصوصية";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "محادثة Brave";
 
 /* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
 "BraveTranslate.languageSelectionButtonTitle" = "تحديد اللغة";
@@ -415,14 +391,8 @@
 /* Section title in settings panel */
 "ClearPrivateData" = "مسح البيانات الخاصة";
 
-/* The cancel button when confirming clear private data. */
-"ClearPrivateDataAlertCancelButtonTitle" = "إلغاء";
-
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertMessage" = "هل أنت متأكد؟";
-
-/* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "موافق";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "حذف البيانات";
@@ -441,9 +411,6 @@
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "موافق";
-
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "خطأ العميل";
 
 /* Button title to close a menu. */
 "Close" = "إغلاق";
@@ -481,17 +448,11 @@
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
 "CopyCleanLink" = "نسخ الرابط النظيف";
 
-/* Context menu item for copying an image to the clipboard */
-"CopyImageActionTitle" = "نسخ الصورة";
-
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "نسخ الرابط";
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "نسخ معلومات علامات التبويب إلى الحافظة.";
-
-/* Copy rewards internals info for support */
-"CopyWalletSupportInfo" = "نسخ معلومات الدعم";
 
 /* Create PDF share action. */
 "CreatePDF" = "إنشاء ملف PDF";
@@ -504,9 +465,6 @@
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "اكتب عنوان url للبحث واستبدل الاستعلام بـ %1$s.\nعلى سبيل المثال: https://youtube.com/search?q=%2$s \n(إذا كان الموقع يدعم OpenSearch، فسيتم توفير خيار للإضافة تلقائيًا أثناء تحرير هذا الحقل.)";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "إضافة تلقائية";
 
 /* A title explaining that an error shown while adding custom search engine */
 "customSearchEngine.customSearchEngineAddErrorTitle" = "خطأ في إضافة محرك البحث المخصص";
@@ -590,12 +548,6 @@
 "defaultBrowserCallout.notificationTitle" = "احصل على حماية Brave، على كل رابط";
 
 /* No comment provided by engineer. */
-"defaultBrowserCalloutCloseAccesabilityLabel" = "إغلاق وسيلة شرح المتصفح الافتراضي";
-
-/* Name for default Brave theme. */
-"defaultThemeName" = "Brave الافتراضي";
-
-/* No comment provided by engineer. */
 "Delete" = "حذف";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
@@ -649,9 +601,6 @@
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "التنزيلات";
 
-/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
-"DownloadsPanelEmptyStateTitle" = "ستظهر الملفات التي تم تنزيلها هنا.";
-
 /* Action item title of long press for Opening the existing - active Tab url in a new Tab */
 "DuplicateActiveTab" = "علامة تبويب نشطة مكررة";
 
@@ -700,48 +649,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "أدخل اسم المجلد";
 
-/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "يستخدم %1$@ التشفير عادةً لحماية معلوماتك. عندما حاول Brave الاتصال بـ %2$@ هذه المرة، أرسل موقع الويب بيانات اعتماد غير عادية وغير صحيحة. قد يحدث هذا عندما يحاول أحد المهاجمين التظاهر بأنه %3$@، أو عندما تقطع شاشة تسجيل الدخول إلى Wi-Fi الاتصال. تبقى معلوماتك آمنة لأن Brave أوقف الاتصال قبل تبادل أي بيانات.<br />لا يمكنك زيارة %4$@ الآن لأن موقع الويب يستخدم تثبيت الشهادة. عادة ما تكون أخطاء الشبكة والهجمات مؤقتة، لذلك من المحتمل أن تعمل هذه الصفحة لاحقًا.";
-
-/* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningDetails" = "تعذر على هذا الخادم إثبات أنه %@؛ شهادة الأمان الخاصة به غير موثوق بها من قبل نظام تشغيل جهازك. قد يكون هذا بسبب خطأ في التكوين أو محاولة مهاجم اعتراض اتصالك.";
-
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningTitle" = "قد يحاول المهاجمون سرقة معلوماتك من %@ (على سبيل المثال، كلمات المرور أو الرسائل أو بطاقات الائتمان).";
-
-/* Label for button to go back from the error page */
-"ErrorPagesBackToSafetyButton" = "العودة إلى بر الأمان";
-
-/* Title on the certificate error page */
-"ErrorPagesCertErrorTitle" = "لا يمكن لهذا الموقع توفير اتصال آمن";
-
-/* Title on the certificate error page */
-"ErrorPagesCertWarningTitle" = "اتصالك ليس خاصًا";
-
-/* Label for button to hide advanced actions on the error page */
-"ErrorPagesHideDetailsButton" = "إخفاء التفاصيل";
-
-/* Label for learn more link on error page */
-"ErrorPagesLearnMoreButton" = "اعرف المزيد";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesMoreDetailsButton" = "مزيد من التفاصيل";
-
-/* Title of the No Internet error page */
-"ErrorPagesNoInternetTitle" = "لا يوجد اتصال بالإنترنت";
-
-/* Text telling the user to Try: The following list of things */
-"ErrorPagesNoInternetTry" = "يبدو أنك لست متصلًا بالإنترنت. لإصلاح ذلك، حاول";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem1" = "فحص كبلات الشبكة والمودم والموجه";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem2" = "إعادة الاتصال بشبكة Wi-Fi";
-
-/* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesProceedAnywayButton" = "انتقل إلى %@ (غير آمن)";
-
 /* Button to exclude a topsite url from the most visited list */
 "ExcludeMostVisitedSite" = "احذف";
 
@@ -775,29 +682,14 @@
 /* Share action title */
 "FindInPage" = "بحث في الصفحة";
 
-/* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "تم";
-
 /* Find `search query` */
 "FindInPageFormat" = "بحث عن ";
-
-/* Accessibility label for next result button in Find in Page Toolbar. */
-"FindInPageNextResultButtonAccessibilityLabel" = "النتيجة التالية في الصفحة";
-
-/* Accessibility label for previous result button in Find in Page Toolbar. */
-"FindInPagePreviousResultButtonAccessibilityLabel" = "النتيجة السابقة في الصفحة";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findInPageTitle" = "بحث في الصفحة";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findNextTitle" = "بحث عن التالي";
-
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "في هذه الصفحة";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findPreviousTitle" = "بحث عن السابق";
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "السماح بفتح الروابط العامة في التطبيقات الخارجية";
@@ -822,9 +714,6 @@
 
 /* Hides the rewards icon */
 "HideRewardsIcon" = "إخفاء أيقونة مكافآت Brave";
-
-/* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "يخفي أيقونة Brave Rewards عند عدم تمكين Brave Rewards";
 
 /* Title for history menu item */
 "HistortMenuItem" = "السجل";
@@ -867,12 +756,6 @@
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "استيراد بيانات التصفح";
-
-/* title for per-site shield toggles */
-"IndividualControls" = "أدوات التحكم الفردية";
-
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "تفاصيل غير صالحة في طلب الدفع";
 
 /* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
 "JavaScriptDialogEmbeddedPageTitle" = "صفحة مضمنة في هذه الصفحة";
@@ -931,30 +814,6 @@
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "فلتر";
 
-/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
-"LoginDetailLastModifiedCellFormatTitle" = "آخر تعديل %@";
-
-/* Label displayed above the password row in Login Detail View. */
-"LoginDetailPasswordCellTitle" = "كلمة المرور";
-
-/* Label displayed above the username row in Login Detail View. */
-"LoginDetailUsernameCellTitle" = "اسم المستخدم";
-
-/* Label displayed above the website row in Login Detail View. */
-"LoginDetailWebsiteCellTitle" = "موقع الويب";
-
-/* Label for the button used to deselect all logins. */
-"LoginListDeselectAllButtonTitle" = "إلغاء تحديد الكل";
-
-/* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "لم يتم العثور على بيانات تسجيل الدخول";
-
-/* Title for Logins List View screen. */
-"LoginListScreenTitle" = "بيانات تسجيل الدخول";
-
-/* Label for the button used to select all logins. */
-"LoginListSelectAllButtonTitle" = "تحديد الكل";
-
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "تمكين الصوت في الخلفية";
 
@@ -969,9 +828,6 @@
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "إظهار";
-
-/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
-"monthAbbreviation" = "شهر";
 
 /* Bookmark title / Device name */
 "Name" = "الاسم";
@@ -1048,9 +904,6 @@
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "تعرف على المزيد حول الصور الدعائية";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"ntp.settingsAutoOpenKeyboard" = "فتح تلقائي للوحة المفاتيح";
-
 /* A setting to enable or disable background on the NTP screen. */
 "ntp.settingsBackgroundImages" = "الخلفية";
 
@@ -1087,53 +940,8 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "من خلال تشغيل المكافآت ، فإنك توافق على %@.";
 
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "اربح الرموز المميزة وكافئ منشئي المحتوى على المحتوى الرائع أثناء التصفح.";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "اربح نقاطًا وكافئ منشئي المحتوى على المحتوى الرائع أثناء التصفح.";
-
-/* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "إعلانات Brave هنا!";
-
-/* Title for ads onboarding screen */
-"OBAdsTitle" = "سيعرض Brave إعلانك الأول في";
-
-/* Title for when the user completes onboarding */
-"OBCompleteTitle" = "أنت الآن جاهز للانطلاق.";
-
-/* Button to show information on how to enable ads */
-"OBDidntSeeAdButton" = "لم أرى إعلان";
-
-/* A generic error body for onboarding */
-"OBErrorDetails" = "حدث خطأ ما أثناء إنشاء محفظتك. يرجى المحاولة مرة أخرى";
-
 /* No comment provided by engineer. */
 "OBErrorOkay" = "حسنًا";
-
-/* A generic error title for onboarding */
-"OBErrorTitle" = "معذرةً";
-
-/* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "بدء التصفح";
-
-/* Button to join Brave Rewards. */
-"OBJoinButton" = "انضمام";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "السماح لـ Brave بالتحقق من حافظتي بحثًا عن رمز إحالة مطابق";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "ربما تكون قد قمت بتنزيل Brave لدعم المحيل الخاص بك. للكشف عن المحيل الخاص بك، يقوم Brave بإجراء فحص لمرة واحدة لحافظتك بحثًا عن رمز الإحالة المطابق. يقتصر هذا الفحص على الرمز فقط ولن يتم إرسال أي بيانات شخصية أخرى. إذا قمت بإلغاء الاشتراك، فلن يتلقى المحيل مكافآت من Brave.";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentNoButton" = "عدم السماح بهذا الفحص";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentTitle" = "فحص رمز الإحالة المجهول";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentYesButton" = "السماح بفحص الحافظة لمرة واحدة";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "بالنقر فوق نعم، فإنك توافق على";
@@ -1150,32 +958,8 @@
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "يدعم الاشتراك في إعلانات Brave الخاصة الناشرين ومنشئي المحتوى مع كل إعلان يتم عرضه.";
 
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "اربح الرموز المميزة وكافئ منشئي المحتوى على المحتوى الرائع أثناء التصفح.";
-
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "سياسة الخصوصية";
-
-/* Title for rewards onboarding screen */
-"OBRewardsTitle" = "مكافآت Brave";
-
-/* Save button to save current selection */
-"OBSaveButton" = "حفظ";
-
-/* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "قم بإختيار محرك البحث الإفتراضي";
-
-/* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "مرحباً بك في متصفح Brave";
-
-/* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "حظر أدوات التتبع التي تغزو الخصوصية حتى تتمكن من التصفح دون متابعتك عبر الويب";
-
-/* Title for shields onboarding screen */
-"OBShieldsTitle" = "دروع Brave";
-
-/* Button to show the Brave Rewards Ads. */
-"OBShowMeButton" = "أظهر لي";
 
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "البدء";
@@ -1210,20 +994,11 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "فتح الكل (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "فتح إعدادات Brave Rewards";
-
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "حدث خطأ غير معروف أثناء فتح مجلد التنزيلات في تطبيق الملفات.";
 
-/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
-"openExternalAppURLHost" = "٪%@ يقول:";
-
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "السماح لـ %@ بتبديل التطبيقات؟";
-
-/* Context menu for opening image in new tab */
-"OpenImageInNewTab" = "فتح الصورة في علامة تبويب جديدة";
 
 /* Context menu item for opening a link in a new private browsing window */
 "OpenInNewPrivateWindowTitle" = "فتح في نافذة خاصة جديدة";
@@ -1360,12 +1135,6 @@
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "إعدادات الخصوصية الأخرى";
 
-/* Section name for other settings. */
-"OtherSettingsSection" = "إعدادات أخرى";
-
-/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
-"p3a.continue" = "متابعة";
-
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "تساعد هذه الاستجابات الخاصة متصفح Brave على تقدير الاستخدام العام لميزات معينة وجعلها أفضل بالنسبة لك.";
 
@@ -1396,12 +1165,6 @@
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "مستوى تكبير/تصغير صفحة الويب الافتراضي";
 
-/* Description for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesDescription" = "عندما يتغير مستوى التكبير / التصغير لموقع الويب، سيظهر موقع الويب في القائمة هنا. حاليًا، لا توجد مواقع ويب تم تكبيرها أو تصغيرها.";
-
-/* Title for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesTitle" = "لا توجد مواقع ويب مضافة";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "جميع مواقع الويب الأخرى";
 
@@ -1426,12 +1189,6 @@
 /* Setting to allow the app to restore private browsing tabs */
 "PersistentPrivateBrowsing" = "التصفح الخاص المستمر";
 
-/* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "يسمح لـ Brave باستعادة علامات تبويب التصفح الخاصة، حتى إذا قمت بإغلاق / إعادة فتح التطبيق";
-
-/* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "استعادة علامات التبويب الخاصة";
-
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "الصورة بواسطة %@";
 
@@ -1446,12 +1203,6 @@
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "خيارات التشغيل";
-
-/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
-"playlist.carplayRestartPlaybackButtonStateDisabled" = "تم التعطيل. انقر لتمكين إعادة تشغيل التشغيل.";
-
-/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
-"playlist.carplayRestartPlaybackButtonStateEnabled" = "تم التمكين. انقر لتعطيل إعادة تشغيل التشغيل.";
 
 /* The description of the checkbox that allows the user to restart audio/video playback */
 "playlist.carplayRestartPlaybackOptionDetailsTitle" = "تحديد ما إذا كان تحديد عنصر قيد التشغيل بالفعل سيؤدي إلى إعادة تشغيل التشغيل أم لا، أو متابعة التشغيل من حيث توقف آخر مرة";
@@ -1699,9 +1450,6 @@
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "افتح مركز الخصوصية";
 
-/* The title of the button action which open the privacy hub */
-"privacyHub.openPrivacyHubWidgetActionTitle" = "افتح مركز الخصوصية";
-
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "يتم تخزين بيانات مركز الخصوصية محليًا ولا يتم إرسالها إلى أي مكان.";
 
@@ -1771,23 +1519,11 @@
 /* Private button title */
 "Private" = "متخفي";
 
-/* No comment provided by engineer. */
-"PrivateBrowsing" = "التصفح الخاص";
-
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "التصفح الخاص فقط";
 
 /* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
 "PrivateBrowsingOnlyWarning" = "سيؤدي وضع التصفح الخاص فقط إلى إغلاق جميع علامات التبويب الحالية وتسجيل خروجك من جميع المواقع.";
-
-/* Private tab details */
-"PrivateTabBody" = "لا يتم حفظ علامات التبويب الخاصة في Brave، لكنها لا تجعلك مجهول الهوية عبر الإنترنت. ولن تظهر المواقع التي تزورها في علامة تبويب خاصة في سجلك وتختفي ملفات تعريف الارتباط الخاصة بها دائمًا عند إغلاقها - لن يكون هناك أي أثر لها في Brave. ومع ذلك، سيتم حفظ التنزيلات.\nيمكن لمشغل شبكة الهاتف (أو مالك شبكة Wi-Fi أو شبكة VPN التي تتصل بها) معرفة المواقع التي تزورها وستتعرف هذه المواقع على عنوان بروتوكول الإنترنت العام الخاص بك، حتى في علامات التبويب الخاصة.";
-
-/* Private tab detail text */
-"PrivateTabDetails" = "يؤدي استخدام علامات التبويب الخاصة فقط إلى تغيير ما يفعله Brave على جهازك، ولا يغير سلوك أي شخص آخر.\n\nتتعرف المواقع دائمًا على عنوان بروتوكول الإنترنت الخاص بك عند زيارتها. ومن خلال ذلك، يمكنها في كثير من الأحيان تخمين مكانك تقريبًا - عادة مدينتك. في بعض الأحيان يمكن أن يكون تخمين الموقع أكثر تحديدًا. كما تعرف المواقع أيضًا كل ما تخبرها به على وجه التحديد، مثل مصطلحات البحث. إذا قمت بتسجيل الدخول إلى أحد المواقع، فستعرف أنك مالك هذا الحساب. وستظل قيد تسجيل الخروج عند إغلاق علامات التبويب الخاصة لأن Brave سيتخلص من ملف تعريف الارتباط الذي يبقيك قيد تسجيل الدخول.\n\nيمكن لأي شخص يقوم بتوصيلك بالإنترنت (مزود خدمة الإنترنت) رؤية كل نشاط الشبكة الخاص بك. وفي كثير من الأحيان، هذا هو مشغل شبكة المحمول الخاص بك. وإذا كنت متصلًا بشبكة Wi-Fi، فهذا هو مالك تلك الشبكة، أما إذا كنت تستخدم شبكة VPN، فهذا هو الشخص الذي يدير شبكة VPN هذه. ويمكن لمزود خدمة الإنترنت معرفة المواقع التي تزورها أثناء زيارتها. إذا كانت هذه المواقع تستخدم HTTPS، فلن تتمكن من إجراء أكثر من مجرد تخمين متعلم حول ما تفعله على تلك المواقع. ولكن إذا كان الموقع يستخدم HTTP فقط، فيمكن لمزود خدمة الإنترنت رؤية كل شيء: مصطلحات البحث والصفحات التي تقرأها والروابط التي تتبعها.\n\nإذا كان صاحب العمل يدير جهازك، فقد يتتبع أيضا ما تفعله به. وربما لن يمنعه استخدام علامات التبويب الخاصة من معرفة المواقع التي زرتها. كما يمكن لشخص آخر لديه حق الوصول إلى جهازك أيضًا تثبيت برنامج يراقب نشاطك، ولن تحميك علامات التبويب الخاصة من ذلك أيضًا.";
-
-/* Private tab information link */
-"PrivateTabLink" = "تعرف على علامات التبويب الخاصة.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "علامة تبويب خاصة";
@@ -1846,12 +1582,6 @@
 /* Accessibility label for brightness adjustment slider in Reader Mode display settings */
 "ReaderModeBrightSliderAccessibilityLabel" = "السطوع";
 
-/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
-"ReaderModeDisplaySettingsButtonTitle" = "إعدادات العرض";
-
-/* Error displayed when reader mode cannot be enabled */
-"ReaderModeErrorConvertDisplayText" = "حدث خطأ أثناء تحويل الصفحة";
-
 /* Font type setting in the reading view settings */
 "ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
 
@@ -1863,15 +1593,6 @@
 
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "لتغيير نوع الخط.";
-
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "جارٍ تحميل المحتوى...";
-
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadOriginalLinkText" = "تحميل الصفحة الأصلية";
-
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "تعذر عرض الصفحة في طريقة عرض القارئ.";
 
 /* Title of a bar that show up when you enter reader mode. */
 "readerModeSettingsButton" = "وضع القارئ";
@@ -1894,14 +1615,8 @@
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "لا توجد علامات تبويب مغلقة مؤخرًا.";
 
-/* Open Tab action title */
-"recently.closed.open" = "السعر الافتتاحي";
-
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "إعادة فتح آخر علامة تبويب مغلقة";
-
-/* Description for alert to ask user for opening last closed tab in list */
-"recently.closed.shake.description" = "هل تريد فتح أحدث علامة تبويب مغلقة؟";
 
 /* Action item title of long press for Opening recently closed tab view */
 "recently.closed.title" = "علامات التبويب المغلقة مؤخرًا";
@@ -1987,12 +1702,6 @@
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "يرغب \"%@\" في الوصول إلى الميكروفون";
 
-/* Name of folder where restored bookmarks are retrieved */
-"RestoredBookmarksFolderName" = "الإشارات المرجعية المستعادة";
-
-/* Name of folder where restored favorites are retrieved */
-"RestoredFavoritesFolderName" = "قائمة المفضلات المستعادة";
-
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "نعم";
 
@@ -2035,80 +1744,11 @@
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "تم التحقق من منشئ المحتوى هذا من قِبل Brave Creators.";
 
-/* Displayed next to a number representing the total number of publishers supported */
-"rewards.totalSupportedCount" = "عدد منشئي المحتوى الذين تساعد في دعمهم هذا الشهر.";
-
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "لم يتحقق منشئ المحتوى هذا ولن يتم تضمينه في دعم منشئي المحتوى";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "المبلغ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAnonymous" = "مجهول";
-
-/* No comment provided by engineer. */
-"RewardsInternalsBalanceInfoHeader" = "معلومات الرصيد";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "هل أنت متأكد من رغبتك في مسح جميع سجلات المكافآت؟";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsTitle" = "مسح السجلات";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionAmount" = "مقدار المساهمة";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "رموز Brave المميزة";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorNone" = "بلا";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "تأييد";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUserFunds" = "أموال المستخدم";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepACOff" = "إيقاف المساهمة التلقائية";
-
-/* 'AC' refers to Auto-Contribute */
-"RewardsInternalsContributionsStepACTableEmpty" = "جدول المساهمة التلقائية فارغ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCompleted" = "مكتمل";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCreds" = "بيانات الاعتماد";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepExternalTransaction" = "المعاملات الخارجية";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "فشل";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepNotEnoughFunds" = "لا توجد أموال كافية";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepPrepare" = "إعداد";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepReserve" = "الاحتياطي";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "إيقاف المكافآت";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "البدء";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsTitle" = "المساهمات";
-
-/* No comment provided by engineer. */
-"RewardsInternalsCreatedAt" = "تم إنشاؤه في";
 
 /* No comment provided by engineer. */
 "RewardsInternalsDeviceInfoHeader" = "معلومات الجهاز";
@@ -2128,9 +1768,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "بذرة المعلومات الأساسية";
 
-/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
-"RewardsInternalsLogsCount" = "تظهر %d من السجلات";
-
 /* No comment provided by engineer. */
 "RewardsInternalsLogsTitle" = "السجلات";
 
@@ -2141,34 +1778,13 @@
 "RewardsInternalsNotSupported" = "غير مدعوم";
 
 /* No comment provided by engineer. */
-"RewardsInternalsProcessor" = "المعالج";
-
-/* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "ناشر";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublishers" = "الناشرون";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRetryCount" = "عدد مرات إعادة المحاولة";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeAutoContribute" = "المساهمة التلقائية";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeOneTimeTip" = "نصيحة لمرة واحدة";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "إكرامية دورية";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "الملف الشخصي للمكافآت والجهاز ومعلومات الرصيد (تتم مشاركتها دائمًا)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "معلومات أساسية";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableContributionsDescription" = "أي مساهمات يتم تقديمها إلى الناشرين من خلال الإكرامية أو المساهمة التلقائية";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableDatabaseDescription" = "مخزن البيانات الداخلي";
@@ -2204,9 +1820,6 @@
 "RewardsInternalsTitle" = "المكافآت الداخلية";
 
 /* No comment provided by engineer. */
-"RewardsInternalsTotalAmount" = "المبلغ الإجمالي";
-
-/* No comment provided by engineer. */
 "RewardsInternalsTotalBalance" = "إجمالي الرصيد";
 
 /* No comment provided by engineer. */
@@ -2233,17 +1846,11 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "حفظ";
 
-/* Label for the button used to save changes in some text input. */
-"SaveChangesButtonTitle" = "حفظ التغييرات";
-
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "بيانات تسجيل الدخول المحفوظة";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "علامات التبويب المحفوظة";
-
-/* Context menu item for saving an image */
-"SaveImageActionTitle" = "حفظ الصورة";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "حفظ تسجيلات الدخول";
@@ -2257,23 +1864,8 @@
 /* Search engines section of settings */
 "SearchEngines" = "محرّكات البحث";
 
-/* Accessibility hint describing the action performed when a search suggestion is clicked */
-"SearchesForSuggestionButtonAccessibilityText" = "للبحث عن الاقتراح";
-
 /* Section header for history and bookmarks and open tabs option */
 "SearchHistorySectionHeader" = "على جهازك";
-
-/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
-"SearchInputViewClearButtonTitle" = "مسح البحث";
-
-/* Accessibility label for entering search mode for logins */
-"SearchInputViewOverlayAccessibilityLabel" = "الدخول إلى وضع البحث";
-
-/* Accessibility label for the search input field in the Logins list */
-"SearchInputViewTextFieldAccessibilityLabel" = "حقل إدخال البحث";
-
-/* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "بحث";
 
 /* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
 "searchQuickBarPrefix" = "بحث عن \"%@\"";
@@ -2287,9 +1879,6 @@
 /* Label for showing browser suggestion setting */
 "SearchSettingBrowserSuggestionCellTitle" = "إظهار اقتراحات المتصفح";
 
-/* Navigation title for search settings. */
-"SearchSettingNavTitle" = "بحث";
-
 /* Label for showing recent search setting. */
 "SearchSettingRecentSearchesCellTitle" = "إظهار عمليات البحث الأخيرة";
 
@@ -2299,23 +1888,11 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "إظهار اقتراحات البحث";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
-"SearchSuggestionFromFormatText" = "اقتراحات البحث من %@";
-
 /* Action title for open a playlist item in Playlist. */
 "searchSuggestionOpenPlaylistActionTitle" = "فتح في قائمة التشغيل";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "التبديل إلى علامة التبويب هذه";
-
-/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
-"SearchSuggestionSectionTitleFormat" = "بحث %@";
-
-/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "بحث";
-
-/* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "اقتراحات البحث";
 
 /* Search suggestions optin subtitle when prompting to turn on suggestions */
 "searchSuggestionsSubtitle" = "هل ترغب في تمكين اقتراحات البحث؟";
@@ -2428,9 +2005,6 @@
 /* Row name for licenses. */
 "SettingsLicenses" = "التراخيص";
 
-/* Title for settings menu item */
-"SettingsMenuItem" = "الإعدادات";
-
 /* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
 "SettingsTabsOptionBottomBar" = "الشريط السفلي";
 
@@ -2442,9 +2016,6 @@
 
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "مشاركة الرابط";
-
-/* Title for sharing url menu item */
-"ShareWithMenuItem" = "مشاركة مع...";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "shareWithTitle" = "مشاركة مع...";
@@ -2478,9 +2049,6 @@
 
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "مشاركة الأخبار";
-
-/* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "قامت Brave Shields بحماية خصوصيتك على الإنترنت.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "تهانينا. أنت مميز جدًا.";
@@ -2665,14 +2233,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "اختصارات Siri";
 
-/* Button to show the bookmarks list */
-"ShowBookmarks" = "إظهار الإشارات المرجعية";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "عرض التنزيلات";
-
-/* Button to show the history list */
-"ShowHistory" = "عرض السجل";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showHistoryTitle" = "عرض السجل";
@@ -2800,9 +2362,6 @@
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.configurationInformationText" = "قم بإدارة المعلومات التي تريد مزامنتها بين الأجهزة. تؤثر هذه الإعدادات فقط على هذا الجهاز.";
 
-/* Copied action complete title */
-"sync.copied" = "تم النسخ.";
-
 /* Copied codewords title */
 "sync.copiedToClipboard" = "تم النسخ إلى الحافظة!";
 
@@ -2845,14 +2404,8 @@
 /* Sync enter code words */
 "sync.enterCodeWords" = "أدخل شِفرة الكلمات";
 
-/* Enter sync code words below */
-"sync.enterCodeWordsBelow" = "أدخل كلمات الرمز أدناه";
-
 /* Sync Error message for when the sync code is expired */
 "sync.expiredError" = "انتهت صلاحية رمز المزامنة هذا، يرجى إنشاء رمز مزامنة جديد والمحاولة مرةً أخرى.";
-
-/* Generic Sync Error Description */
-"sync.genericError" = "معذرةً، حدث خطأ ما";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "تمكين الكاميرا";
@@ -2896,9 +2449,6 @@
 /* Error title for when the sync code does not have the correct amount of words */
 "sync.notEnoughWordsTitle" = "لا توجد كلمات كافية";
 
-/* Sync pair device settings section title */
-"sync.pair" = "إقران";
-
 /* QR Code section title */
 "sync.qrCode" = "رمز الاستجابة السريعة";
 
@@ -2932,12 +2482,6 @@
 /* Title for removing other device from Sync */
 "sync.removeOtherDeviceTitle" = "إزالة %@ من سلسلة المزامنة؟";
 
-/* Sync remove device. */
-"sync.removeThisDevice" = "حذف هذا الجهاز";
-
-/* Sync remove device? */
-"sync.removeThisDeviceQuestionDesc" = "سيتم فصل هذا الجهاز عن مجموعة المزامنة ولن يتلقى بيانات المزامنة أو يرسلها بعد الآن. وستظل جميع البيانات الموجودة على الجهاز.";
-
 /* Scan sync code title */
 "sync.scan" = "فحص";
 
@@ -2956,20 +2500,11 @@
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "إعدادات المزامنة";
 
-/* Show code words instead */
-"sync.showCodeWords" = "إظهار كلمات التعليمات البرمجية بدلًا من ذلك";
-
 /* Switch back to camera button */
 "sync.switchBackToCameraButton" = "سأستخدم الكاميرا...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "هذا الحذف دائم ولا توجد طريقة لاستعادة البيانات. إذا قررت البدء في استخدام المزامنة مرةً أخرى، فستحتاج إلى إنشاء حساب جديد وإعادة إضافة كل جهاز واحدًا تلو الآخر.";
-
-/* Sync you browser settings across devices. */
-"sync.Syncdevices" = "الأجهزة والإعدادات";
-
-/* Sync remove device? */
-"sync.syncRemoveThisDeviceQuestion" = "إزالة هذا الجهاز؟";
 
 /* Sync settings section title */
 "sync.syncTitle" = "مزامنة";
@@ -3006,9 +2541,6 @@
 
 /* Word count title */
 "sync.wordCount" = "عدد الكلمات: %i";
-
-/* Accessibility label for action denoting closing a tab in tab list (tray) */
-"TabAccessibilityCloseActionLabel" = "إغلاق";
 
 /* Accessibility label for a close button that when tapped opens a new tab */
 "tabGrid.addTabAccessibilityLabel" = "علامة تبويب جديدة";
@@ -3049,17 +2581,11 @@
 /* A title shown when in private browsing mode with no tabs open */
 "tabGrid.privateBrowsingInfoTitle" = "علامة تبويب خاصة";
 
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.privateBrowsingModeAccessibilityLabel" = "التصفح الخاص";
-
 /* A label in the tab tray mode switcher for private browsing mode */
 "tabGrid.privateBrowsingModeTitle" = "متخفي";
 
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "إعدادات علامات التبويب الخاصة";
-
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.regularBrowsingModeAccessibilityLabel" = "التصفح العادي";
 
 /* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
 "tabGrid.selectedTabs" = "علامات التبويب المحددة";
@@ -3090,18 +2616,6 @@
 
 /* Label for synced tabs menu item that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsMenuItemLabel" = "مزامنة";
-
-/* Accessiblity hint for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityHint" = "لتشغيل الوضع الخاص أو إيقاف تشغيله";
-
-/* Accessibility label for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityLabel" = "الوضع الخاص";
-
-/* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "إيقاف";
-
-/* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "تشغيل";
 
 /* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardDescription" = "ركز تلقائيًا على شريط العناوين عند إنشاء علامة تبويب جديدة";
@@ -3163,9 +2677,6 @@
 /* Accessibility Label for the tab toolbar Forward button */
 "TabToolbarForwardButtonAccessibilityLabel" = "إلى الأمام";
 
-/* Accessibility label for the lock icon, which is only present if the connection is secure */
-"TabToolbarLockImageAccessibilityLabel" = "اتصال آمن";
-
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "القائمة";
 
@@ -3180,9 +2691,6 @@
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "عرض القارئ";
-
-/* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "إضافة إلى قائمة القراءة";
 
 /* Accessibility Label for the tab toolbar Reload button */
 "TabToolbarReloadButtonAccessibilityLabel" = "إعادة التحميل";
@@ -3199,47 +2707,14 @@
 /* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "البحث الصوتي";
 
-/* Accessibility label for the lock icon, which is only present if the connection is insecure */
-"TabToolbarWarningImageAccessibilityLabel" = "اتصال غير آمن";
-
-/* Accessibility label for the Tabs Tray view. */
-"TabTrayAccessibilityLabel" = "درج علامات التبويب";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabTrayAddTabAccessibilityLabel" = "إضافة علامة تبويب";
-
-/* Accessibility hint for tab tray's displayed tab. */
-"TabTrayCellCloseAccessibilityHint" = "اسحب لليمين أو اليسار بثلاثة أصابع لإغلاق علامة التبويب.";
-
-/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
-"TabTrayClosingTabAccessibilityNotificationText" = "إغلاق علامة التبويب";
-
-/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
-"TabTrayEmptyVoiceOverText" = "لا توجد علامات تبويب";
-
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
-"TabTrayMultiTabPositionFormatVoiceOverText" = "علامات التبويب %1$@ إلى %2$@ من %3$@";
-
-/* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "علامة تبويب جديدة";
-
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "علامات تبويب البحث";
-
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
-"TabTraySingleTabPositionFormatVoiceOverText" = "علامة التبويب b %1$@ من %2$@";
 
 /* No comment provided by engineer. */
 "TermsOfService" = "شروط الخدمة";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "شروط الاستخدام";
-
-/* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "مشاركة...";
-
-/* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "شارك Brave مع أصدقائك!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "تلقائي";
@@ -3252,9 +2727,6 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "فاتح";
-
-/* Name for app theme settings */
-"themesSettings" = "المظاهر";
 
 /* No comment provided by engineer. */
 "Title" = "العنوان";
@@ -3385,9 +2857,6 @@
 /* A title at the top of the screen that shows a list of sources that are ranked the highest */
 "today.popularSourcesTitle" = "المصادر الشائعة";
 
-/* A button title that is placed on promoted cards */
-"today.promoted" = "تمت ترقيته";
-
 /* Title for long press action sheet list which has item for rate / hide */
 "today.rateBraveCardActionSheetTitle" = "قيّم Brave في آب ستور";
 
@@ -3442,14 +2911,8 @@
 /* Title of an action that allows the user to translate the current web-page to another language */
 "TranslatePage" = "ترجمة الصفحة";
 
-/* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "هل تريد تشغيل اقتراحات البحث؟";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "فتح القفل";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "وسائل الدفع غير المدعومة";
 
 /* Bookmark URL */
 "URL" = "‏عنوان URL";
@@ -3459,18 +2922,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "urlRedirectsSettings" = "عمليات إعادة توجيه موقع الويب";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "تم الإلغاء بواسطة المستخدم";
-
-/* No comment provided by engineer. */
-"UserWalletCloseButtonTitle" = "إغلاق";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorMessage" = "حدثت مشكلة أثناء تسجيل الدخول إلى حساب Uphold الخاص بك. يرجى المحاولة مرةً أخرى";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "معذرةً، حدث خطأ ما";
 
 /* Message for error alert when a VCard contact file cannot be parsed or opened */
 "VCard.unableToOpenContactErrorMessage" = "لم يتمكن من قراءة ملف جهة الاتصال. قد يكون تالفًا أو بصيغة غير مدعومة.";
@@ -3535,9 +2986,6 @@
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = " عناصر واجهة المستخدم";
 
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "سنه";
-
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "نعم";
 
@@ -3547,20 +2995,11 @@
 /* History tableview section header */
 "Yesterday" = "أمس";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "تمكين مقاطع فيديو YouTube عالية الجودة";
-
-/* Description of setting to enable high quality youtube videos */
-"YoutubeMediaQualityDetails" = "سيؤدي تمكين هذه الميزة التجريبية إلى تشغيل الفيديو بأقصى جودة متاحة وسيستخدم بيانات إضافية.";
-
 /* Setting that disables highest quality video playback */
 "YoutubeMediaQualityOff" = "إيقاف";
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "تشغيل";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "جودة تشغيل YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "السماح عبر شبكة Wi-Fi";

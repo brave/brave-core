@@ -16,27 +16,6 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "כלי מעקב ומודעות נחסמו";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "מודעות\nנחסמו";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "**נגן Brave** הוא כרטיס הכניסה שלך לחוויית וידאו חלקה ללא פרסומות.";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "התאימו עבורי את המגנים";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "האתר התחיל לחסום חוסמי-פרסומות, אז ייתכן שהאתר שלהם לא עובד כפי שמצופה.";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "כדי לטפל בבעיה, Brave יכול להתאים עבורך את הגדרות המגנים שלך. לאחר ההתאמה, תהיה לך אפשרות לנסות לצפות בתוכן הזה בנגן Brave במקום זאת.";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "שמירת ההגדרות הנוכחיות";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "התאמת הגדרות חוסם המודעות עבור אתר זה";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "הפניה אוטומטית של דפי AMP";
 
@@ -79,32 +58,11 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "זה חוסם את JavaScript (עלול להפריע לפעולה של אתרים).";
 
-/* Title for the brave player feature */
-"BravePlayer" = "נגן Brave";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "פתיחה תמידית של סרטונים מתוך אתר זה עם נגן Brave";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "לנסות את זה";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "לא עכשיו";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "נגן Brave מאפשר לך לצפות בסרטונים ללא הפרעות.";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "צפייה בנגן Brave במקום זאת";
-
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "בקרות מתקדמות";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "פרסומות ומטרדים אחרים נחסמו";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "למידע נוסף";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "שינוי הגדרות ברירת מחדל גלובליות של מגנים";
@@ -217,17 +175,11 @@
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "הורדה בהמתנה";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "ערוך";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "יש להזין את כתובת ה-URL של רשימת הסינון";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "עדכון אחרון %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "יש להזין URL של רשימת מסננים כאן";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "חסום טביעות אצבע";
@@ -411,9 +363,6 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "כלי מעקב וחוסמי מודעות";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "כלי מעקב\nשנחסמו";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "עדכון רשימות";

@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "Er deed zich een fout voor tijdens het importeren van de bladwijzers.";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "Er deed zich een fout voor tijdens het importeren van de geschiedenis.";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "Er deed zich een fout voor tijdens het importeren van de wachtwoorden.\nSommige wachtwoorden konden niet worden geïmporteerd vanwege conflicten.";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "Er deed zich een fout voor tijdens het importeren van de wachtwoorden.";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "Er deed zich een fout voor tijdens het uitpakken van het bestand.";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "Kies een bestand...";
 
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "Zoek **Safari** in de lijst met apps (alfabetisch gesorteerd) en tik erop.";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "Het zip-bestand bevat geen importgegevens.";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "Even geduld. We zetten je gegevens veilig over.\nDit kan enkele ogenblikken duren.";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "Meerdere profielen gevonden";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "Persoonlijk";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Geïmporteerde bladwijzers";

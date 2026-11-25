@@ -7,27 +7,6 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "الخوادم المتاحة";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "شراء";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "حماية 5 أجهزة باشتراك واحد";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "اختيار موقعك الجغرافي / بلدك";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "لا يسجل Brave نشاطك أبدًا";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "حماية كل التطبيقات & وجهازك بالكامل";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "أكثر أمانًا للمنزل أو شبكة Wi-Fi العامة";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "بسرعة البرق تصل إلى 100 ميجابت في الثانية";
-
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
 "vpn.cityCountTitle" = "%ld مدينة";
 
@@ -57,9 +36,6 @@
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "المشكلة";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "مشكلة في موثوقية الاتصال";
 
 /* Description used for specific issue field for customer support contact form. */
 "vpn.contactFormIssueDescription" = "الرجاء اختيار الفئة التي تصف المشكلة.";
@@ -111,9 +87,6 @@
 
 /* The button text that starts the trial action */
 "vpn.freeTrialPeriodAction" = "جرب لمدة 7 أيام مجانًا";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "يتم تجديد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها قبل التجديد.";
 
 /* Text explaining how the VPN works. */
 "vpn.installProfileBody" = "يسمح ملف التعريف هذا لشبكة VPN بالاتصال تلقائيًا وتأمين حركة المرور عبر جهازك طوال الوقت. سيتم تشفير اتصال VPN هذا وتوجيهه عبر جدار الحماية الذكي من Brave لحظر الاتصالات التي يحتمل أن تكون ضارة وغازية.";
@@ -172,20 +145,11 @@
 /* Message that we show after successfully changing tunnel protocol. */
 "vpn.protocolSwitchSuccessPopupText" = "تم تغيير البروتوكول النفقي لشبكة VPN.";
 
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "سيتم تحديد منطقة الخادم الأكثر قربًا منك تلقائيًا، بناءً على المنطقة الزمنية لنظامك. يوصى بذلك لضمان سرعات إنترنت عالية.";
-
 /* Message for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorMessage" = "فشل تبديل الخوادم، يرجى إعادة المحاولة لاحقًا.";
 
 /* Title for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorTitle" = "خطأ في الخادم";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "منطقة الخادم";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "تم تغيير منطقة VPN.";
 
 /* Yearly tier explaination. Subscription will be renewed annually. */
 "vpn.renewAnnually" = "يتجدد سنويًا";
@@ -229,9 +193,6 @@
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "الاتصال بالدعم الفني";
 
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "فشل استرداد قائمة الخوادم، يرجى إعادة المحاولة لاحقًا.";
-
 /* Button for FAQ */
 "vpn.settingsFAQ" = "دعم VPN";
 
@@ -249,12 +210,6 @@
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "إعادة التكوين";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "مضيف";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "الموقع";
 
 /* Header title for vpn settings server section. */
 "vpn.settingsServerSection" = "الخادم";
@@ -307,32 +262,17 @@
 /* Title for an alert when the VPN can't be configured */
 "vpn.vpnConfigGenericErrorTitle" = "خطأ";
 
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "يتطلب Brave VPN تثبيت ملف تعريف VPN على جهازك للعمل. ";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "تم رفض الإذن";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "غير قادر على استرداد رمز العرض. يرجى المحاولة مرةً أخرى، أو التحقق من تفاصيل رمز العرض الخاص بك والمحاولة مرةً أخرى.";
-
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "يتعذر إكمال عملية الشراء. يرجى المحاولة مرة أخرى، أو التحقق من تفاصيل الدفع الخاصة بك على Apple والمحاولة مرة أخرى.";
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "خطأ";
 
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "سيتم فرض رسوم على الاشتراكات عبر حساب iTunes الخاص بك.\n\nتتم مصادرة أي جزء غير مستخدم من الإصدار التجريبي المجاني، إذا تم عرضه، عند شراء اشتراك.\n\nسيتم تجديد اشتراكك تلقائيًا ما لم يتم إلغاؤه قبل 24 ساعة على الأقل من نهاية الفترة الحالية.\n\nيمكنك إدارة اشتراكاتك في الإعدادات.\n\nباستخدام Brave، فإنك توافق على شروط الاستخدام وسياسة الخصوصية.";
-
 /* The title shown on the menu when the VPN connection is disconnected */
 "vpn.vpnOffMenuButtonTitle" = "VPN معطل";
 
 /* The title shown on the menu when the VPN connection is connected */
 "vpn.vpnOnMenuButtonTitle" = "VPN مشغل";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "استرداد الرمز";
 
 /* The alert title showing vpn region is changed */
 "vpn.vpnRegionChangedTitle" = "تم تغيير منطقة VPN.";
@@ -351,9 +291,6 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "اشتراك سنوي";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "قم بالتجديد السنوي ووفر %@";
 
 /* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
 "vpn.yearlySubDisclaimer" = "أفضل قيمة";

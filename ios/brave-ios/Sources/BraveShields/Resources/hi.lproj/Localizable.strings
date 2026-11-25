@@ -16,27 +16,6 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "ट्रैकर्स & ऐड्स ब्लॉक किए गए";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "ऐड्स \nब्लॉक किए गए";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** ऐड फ़्री और बिना रुकावट वाले वीडियो अनुभव के लिए आपका टिकट है।";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "मेरे लिए Shields एडजस्ट करें";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "इस साइट ने कुछ ऐड ब्लॉकर्स को ब्लॉक करना शुरू कर दिया है, जिसका मतलब है कि शायद उनकी साइट उम्मीद के मुताबिक काम न करे।";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "इस समस्या को सुलझाने के लिए, Brave आपके लिए Shields सेटिंग एडजस्ट कर सकता है। एडजस्ट होने के बाद, आप इस सामग्री को इसके बजाय Brave Player में चलाकर देख सकते हैं।";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "मौजूदा सेटिंग रखें";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "इस साइट के लिए ऐड ब्लॉक सेटिंग एडजस्ट करें";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP पेजों को अपने-आप रीडायइरेक्ट करें";
 
@@ -79,32 +58,11 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "JavaScript (साइटें खराब हो सकती हैं) ब्लॉक करता है।";
 
-/* Title for the brave player feature */
-"BravePlayer" = "Brave प्लेयर";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "इस साइट के वीडियो हमेशा Brave Player में खोलें";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "इसे आज़माएँ";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "अभी नहीं";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Brave Player आपको बिना रुकावट के वीडियो देखने देता है।";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "इसके बजाय Brave Player में देखें";
-
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "उन्नत कंट्रोल";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "विज्ञापन और अन्य बकवास चीज़ें ब्लॉक की गईं";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "ज़्यादा जानें";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "Shields ग्लोबल डिफ़ॉल्ट्स बदलें";
@@ -217,17 +175,11 @@
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "डाउनलोड बकाया है";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "बदलाव करें";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "फ़िल्टर लिस्ट का URL डालें";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "पिछली बार अपडेट करने का समय %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "फ़िल्टर सूची का URL यहाँ दर्ज करें ";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "फ़िंगरप्रिंटिंग ब्लॉक करें";
@@ -411,9 +363,6 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "ट्रैकर्स & ऐड्स ब्लॉक करना";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "ट्रैकर्स \nको ब्लॉक किया गया";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "लिस्ट अपडेट करें";

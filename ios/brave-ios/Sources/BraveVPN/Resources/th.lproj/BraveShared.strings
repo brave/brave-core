@@ -47,13 +47,7 @@
 "vpn.infoCheckServers" = "เซิร์ฟเวอร์กว่าหลายร้อยตำแหน่งทั่วโลก";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "บล็อกการเชื่อมต่อเครือข่ายที่ไม่ต้องการ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxBlockAdsAlternate" = "บล็อกโฆษณา & ตัวติดตามจากทุกแอป ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "รองรับความเร็วที่ 100 Mbps";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxFastAlternate" = "เร็วและไม่จำกัด สูงสุด 100 Mbps";
@@ -138,10 +132,4 @@
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "การตั้งค่าปัจจุบัน: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "ภูมิภาคของ VPN";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "โปรดอัปเดตวิธีการชำระเงินของคุณ";
 

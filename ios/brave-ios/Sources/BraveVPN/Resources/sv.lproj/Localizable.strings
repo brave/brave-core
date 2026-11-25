@@ -7,27 +7,6 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "TILLGÄNGLIGA SERVRAR";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "Köp";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "Skydda 5 enheter med 1 prenumeration";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "Välj din geografiska plats/land";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave loggar aldrig din aktivitet";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Skydda alla appar och hela din enhet";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "Säkrare Wi-Fi i hemmet eller offentligt";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "Blixtsnabbt, upp till 100 Mbps";
-
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
 "vpn.cityCountTitle" = "%ld stad";
 
@@ -57,9 +36,6 @@
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "Problem";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Problem med anslutningstillförlitlighet";
 
 /* Description used for specific issue field for customer support contact form. */
 "vpn.contactFormIssueDescription" = "Välj den kategori som beskriver problemet.";
@@ -111,9 +87,6 @@
 
 /* The button text that starts the trial action */
 "vpn.freeTrialPeriodAction" = "prova gratis i 7 dagar";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Alla prenumerationer förnyas automatiskt men kan avbrytas innan förnyelse.";
 
 /* Text explaining how the VPN works. */
 "vpn.installProfileBody" = "Den här profilen tillåter VPN att automatiskt ansluta och säkra trafik över din enhet, hela tiden. Den här VPN-anslutningen kommer krypteras och dirigeras genom Braves intelligenta brandvägg för att blockera potentiellt skadliga och invasiva anslutningar.";
@@ -172,20 +145,11 @@
 /* Message that we show after successfully changing tunnel protocol. */
 "vpn.protocolSwitchSuccessPopupText" = "VPN-tunnelprotokoll har ändrats.";
 
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "En serverregion som ligger närmast dig väljs automatiskt baserat på systemets tidszon. Detta rekommenderas för att säkerställa snabba internethastigheter.";
-
 /* Message for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorMessage" = "Det gick inte att byta servrar, vänligen försök igen senare.";
 
 /* Title for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorTitle" = "Serverfel";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Serverregion";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "VPN region ändrades.";
 
 /* Yearly tier explaination. Subscription will be renewed annually. */
 "vpn.renewAnnually" = "Förnyas varje år";
@@ -229,9 +193,6 @@
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Kontakta teknisk support";
 
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Det gick inte att hämta serverlistan, vänligen försök igen senare.";
-
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPN-support";
 
@@ -249,12 +210,6 @@
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "Återställ konfiguration";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Värd";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Plats";
 
 /* Header title for vpn settings server section. */
 "vpn.settingsServerSection" = "Server";
@@ -307,32 +262,17 @@
 /* Title for an alert when the VPN can't be configured */
 "vpn.vpnConfigGenericErrorTitle" = "Fel";
 
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN kräver att en VPN-profil installeras på din enhet för att fungera.";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Åtkomst nekad";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Det gick inte att lösa in erbjudandekoden. Försök igen, eller kontrollera informationen om dina erbjudandekoder och försök igen.";
-
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "Kunde inte slutföra köp. Vänligen försök igen eller kontrollera din betalningsinformation på Apple och försök igen.";
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "Fel";
 
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Prenumerationer debiteras via ditt iTunes-konto.\n\nEventuell oanvänd del av den kostnadsfria provperioden, om den erbjuds, förverkas när du köper en prenumeration.\n\nDin prenumeration förnyas automatiskt såvida den inte sägs upp minst 24 timmar före slutet av den aktuella perioden.\n\nDu kan hantera dina prenumerationer i Inställningar.\n\nGenom att använda Brave godkänner du användarvillkoren och sekretesspolicyn.";
-
 /* The title shown on the menu when the VPN connection is disconnected */
 "vpn.vpnOffMenuButtonTitle" = "VPN avstängd";
 
 /* The title shown on the menu when the VPN connection is connected */
 "vpn.vpnOnMenuButtonTitle" = "VPN på";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Lös in kod";
 
 /* The alert title showing vpn region is changed */
 "vpn.vpnRegionChangedTitle" = "VPN-region ändrad";
@@ -351,9 +291,6 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "Årlig prenumeration";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Förnya årligen och spara %@";
 
 /* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
 "vpn.yearlySubDisclaimer" = "BÄSTA VÄRDE";
