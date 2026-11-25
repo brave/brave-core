@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Over";
 
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertMessage" = "Hiermee kun je de afbeeldingen in je Filmrol bewaren.";
-
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave wil graag toegang tot je foto's";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Voeg bladwijzer toe";
 
@@ -63,9 +57,6 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Gebruikersnaam";
-
-/* Settings autofill section title */
-"Autofill" = "Automatisch aanvullen";
 
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Accounts";
@@ -133,9 +124,6 @@
 /* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
 "backgroundDownloadingTitleSingleDownload" = "\"%@\" downloaden";
 
-/* cookie settings option */
-"Block3rdPartyCookies" = "Blokkeer cookies van derden";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blokkeer alle cookies";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Voorkeur kon niet worden ingesteld. Probeer het opnieuw.";
 
-/* title for section showing page blocking statistics */
-"BlockingMonitor" = "Blokkeringmonitor";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokkeer pop-ups";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Voeg bladwijzer voor %lld tabbladen toe";
-
-/* Bookmark Folder Section Title */
-"BookmarkFolder" = "Bladwijzermap";
-
-/* Bookmark Info Section Title */
-"BookmarkInfo" = "Bladwijzerinformatie";
 
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Bladwijzers";
@@ -225,9 +204,6 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields & Privacy";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
 
 /* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
 "BraveTranslate.languageSelectionButtonTitle" = "Selecteer een taal";
@@ -415,14 +391,8 @@
 /* Section title in settings panel */
 "ClearPrivateData" = "Wis privégegevens";
 
-/* The cancel button when confirming clear private data. */
-"ClearPrivateDataAlertCancelButtonTitle" = "Annuleer";
-
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertMessage" = "Weet je het zeker?";
-
-/* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "OK";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "Wis gegevens";
@@ -441,9 +411,6 @@
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "OK";
-
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "Clientfout";
 
 /* Button title to close a menu. */
 "Close" = "Sluit";
@@ -481,17 +448,11 @@
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
 "CopyCleanLink" = "Kopieer clean link";
 
-/* Context menu item for copying an image to the clipboard */
-"CopyImageActionTitle" = "Kopieer afbeelding";
-
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Kopieer link";
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Kopieer tabbladgegevens naar het klembord.";
-
-/* Copy rewards internals info for support */
-"CopyWalletSupportInfo" = "Kopieer ondersteuningsgegevens";
 
 /* Create PDF share action. */
 "CreatePDF" = "Maak pdf";
@@ -504,9 +465,6 @@
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Typ de zoek-URL en vervang de query door %1$s.\nVoorbeeld: https://youtube.com/search?q=%2$s \n(Als de site ondersteuning biedt voor OpenSearch, wordt een optie voor automatisch toevoegen gegeven wanneer dit veld wordt bewerkt.)";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "Voeg automatisch toe";
 
 /* A title explaining that an error shown while adding custom search engine */
 "customSearchEngine.customSearchEngineAddErrorTitle" = "Fout bij toevoegen van aangepaste zoekmachine";
@@ -590,12 +548,6 @@
 "defaultBrowserCallout.notificationTitle" = "Laat Brave je beschermen bij elke link";
 
 /* No comment provided by engineer. */
-"defaultBrowserCalloutCloseAccesabilityLabel" = "Sluit toelichting over standaardbrowser";
-
-/* Name for default Brave theme. */
-"defaultThemeName" = "Standaard Brave";
-
-/* No comment provided by engineer. */
 "Delete" = "Verwijder";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
@@ -649,9 +601,6 @@
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Downloads";
 
-/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
-"DownloadsPanelEmptyStateTitle" = "Hier zie je gedownloade bestanden.";
-
 /* Action item title of long press for Opening the existing - active Tab url in a new Tab */
 "DuplicateActiveTab" = "Dubbel actief tabblad";
 
@@ -700,48 +649,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Voer mapnaam in";
 
-/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ gebruikt normaal encryptie om je informatie te beschermen. Wanneer Brave deze keer probeerde verbinding te maken met %2$@, stuurde de website ongebruikelijke en onjuiste inloggegevens terug. Dit kan gebeuren als een aanvaller zich voordoet als %3$@ of als de verbinding is onderbroken door een inlogscherm voor wifi. Je informatie is nog steeds veilig omdat Brave de verbinding heeft gestopt voordat er gegevens werden uitgewisseld.<br />Je kunt %4$@ nu niet bezoeken omdat de website certificaatkoppeling gebruikt. Netwerkfouten en aanvallen zijn doorgaans tijdelijk, waardoor deze pagina wellicht later weer zal werken.";
-
-/* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningDetails" = "Deze server kon niet bewijzen dat het %@ is omdat het beveiligingscertificaat van de server niet wordt vertrouwd door het besturingssysteem van je apparaat. Mogelijk wordt dit veroorzaakt door een verkeerde configuratie of een aanvaller die je verbinding wil onderscheppen.";
-
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningTitle" = "Aanvallers proberen mogelijk je informatie van %@ te stelen (bijvoorbeeld wachtwoorden, berichten of creditcards).";
-
-/* Label for button to go back from the error page */
-"ErrorPagesBackToSafetyButton" = "Breng me in veiligheid";
-
-/* Title on the certificate error page */
-"ErrorPagesCertErrorTitle" = "Deze site kan geen beveiligde verbinding leveren";
-
-/* Title on the certificate error page */
-"ErrorPagesCertWarningTitle" = "Je verbinding is niet privé";
-
-/* Label for button to hide advanced actions on the error page */
-"ErrorPagesHideDetailsButton" = "Verberg details";
-
-/* Label for learn more link on error page */
-"ErrorPagesLearnMoreButton" = "Meer informatie";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesMoreDetailsButton" = "Meer details";
-
-/* Title of the No Internet error page */
-"ErrorPagesNoInternetTitle" = "Geen internettoegang";
-
-/* Text telling the user to Try: The following list of things */
-"ErrorPagesNoInternetTry" = "Zo te zien ben je niet online. Probeer het volgende:";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem1" = "Controleer de netwerkkabels. modem en router";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem2" = "Maak opnieuw verbinding met Wifi";
-
-/* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesProceedAnywayButton" = "Ga verder naar %@ (onveilig)";
-
 /* Button to exclude a topsite url from the most visited list */
 "ExcludeMostVisitedSite" = "Verwijder";
 
@@ -775,29 +682,14 @@
 /* Share action title */
 "FindInPage" = "Zoek op pagina";
 
-/* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "Gereed";
-
 /* Find `search query` */
 "FindInPageFormat" = "Zoek ";
-
-/* Accessibility label for next result button in Find in Page Toolbar. */
-"FindInPageNextResultButtonAccessibilityLabel" = "Volgend resultaat op pagina";
-
-/* Accessibility label for previous result button in Find in Page Toolbar. */
-"FindInPagePreviousResultButtonAccessibilityLabel" = "Vorig resultaat op pagina";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findInPageTitle" = "Zoek op pagina";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findNextTitle" = "Zoek volgende";
-
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "Op deze pagina";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findPreviousTitle" = "Zoek vorige";
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Sta toe dat universele links worden geopend in externe apps";
@@ -822,9 +714,6 @@
 
 /* Hides the rewards icon */
 "HideRewardsIcon" = "Verberg Brave Rewards-pictogram";
-
-/* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Verbergt het Brave Rewards-pictogram wanneer Brave Rewards niet is ingeschakeld";
 
 /* Title for history menu item */
 "HistortMenuItem" = "Geschiedenis";
@@ -867,12 +756,6 @@
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Importeer browsergegevens";
-
-/* title for per-site shield toggles */
-"IndividualControls" = "Individuele Bedieningselementen";
-
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "Ongeldige gegevens in betalingsverzoek";
 
 /* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
 "JavaScriptDialogEmbeddedPageTitle" = "Een ingesloten pagina op deze pagina";
@@ -931,30 +814,6 @@
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Filter";
 
-/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
-"LoginDetailLastModifiedCellFormatTitle" = "Laatst gewijzigd op %@";
-
-/* Label displayed above the password row in Login Detail View. */
-"LoginDetailPasswordCellTitle" = "wachtwoord";
-
-/* Label displayed above the username row in Login Detail View. */
-"LoginDetailUsernameCellTitle" = "gebruikersnaam";
-
-/* Label displayed above the website row in Login Detail View. */
-"LoginDetailWebsiteCellTitle" = "website";
-
-/* Label for the button used to deselect all logins. */
-"LoginListDeselectAllButtonTitle" = "Deselecteer alles";
-
-/* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "Geen logins gevonden";
-
-/* Title for Logins List View screen. */
-"LoginListScreenTitle" = "Logins";
-
-/* Label for the button used to select all logins. */
-"LoginListSelectAllButtonTitle" = "Selecteer alles";
-
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "Schakel achtergrondaudio in";
 
@@ -969,9 +828,6 @@
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Toon";
-
-/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
-"monthAbbreviation" = "mnd.";
 
 /* Bookmark title / Device name */
 "Name" = "Naam";
@@ -1048,9 +904,6 @@
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Meer informatie over gesponsorde afbeeldingen";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"ntp.settingsAutoOpenKeyboard" = "Open toetsenbord automatisch";
-
 /* A setting to enable or disable background on the NTP screen. */
 "ntp.settingsBackgroundImages" = "Achtergrond";
 
@@ -1087,53 +940,8 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Als je Rewards aanzet, ga je akkoord met de %@.";
 
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "Verdien tokens en beloon creators voor geweldige content terwijl je browset.";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "Verdien punten en beloon creators voor geweldige content terwijl je browset.";
-
-/* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Brave Ads is er!";
-
-/* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave toont je eerste advertentie in";
-
-/* Title for when the user completes onboarding */
-"OBCompleteTitle" = "Je bent er klaar voor.";
-
-/* Button to show information on how to enable ads */
-"OBDidntSeeAdButton" = "Ik zag geen advertentie";
-
-/* A generic error body for onboarding */
-"OBErrorDetails" = "Er is iets misgegaan bij het maken van je wallet. Probeer het opnieuw.";
-
 /* No comment provided by engineer. */
 "OBErrorOkay" = "OK";
-
-/* A generic error title for onboarding */
-"OBErrorTitle" = "Sorry";
-
-/* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "Browsen maar";
-
-/* Button to join Brave Rewards. */
-"OBJoinButton" = "Neem deel";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Sta toe dat Brave op het klembord zoekt naar een passende verwijzingscode";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Misschien heb je Brave gedownload om je verwijzer te steunen. Brave kan deze verwijzer achterhalen door eenmalig op het klembord te zoeken naar de passende verwijzingscode. Hierbij wordt alleen de code gezocht en worden geen andere persoonsgegevens overgedragen. Als je je afmeldt, ontvangt de verwijzer geen beloningen van Brave.";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentNoButton" = "Zoek niet";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentTitle" = "Zoek anonieme verwijzingscode";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentYesButton" = "Zoek eenmalig op klembord";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "Als je op 'Ja' tikt, ga je akkoord met de";
@@ -1150,32 +958,8 @@
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Door je aan te melden voor privéadvertenties in Brave steun je uitgevers en contentcreators wanneer je advertenties bekijkt.";
 
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Verdien tokens en beloon creators voor geweldige content terwijl je browset.";
-
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Privacybeleid";
-
-/* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Brave Rewards";
-
-/* Save button to save current selection */
-"OBSaveButton" = "Bewaar";
-
-/* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "Selecteer je standaard zoekmachine";
-
-/* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Welkom bij Brave Browser";
-
-/* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "Blokkeer trackers die je privacy niet respecteren, zodat je kunt browsen zonder gevolgd te worden";
-
-/* Title for shields onboarding screen */
-"OBShieldsTitle" = "Brave Shields";
-
-/* Button to show the Brave Rewards Ads. */
-"OBShowMeButton" = "Toon me";
 
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Start";
@@ -1210,20 +994,11 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Open alles (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Open Brave Rewards-instellingen";
-
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Er deed zich een onbekende fout voor tijdens het openen van de map Downloads in de app Bestanden.";
 
-/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
-"openExternalAppURLHost" = "%@ zegt:";
-
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "Mag %@ een app openen?";
-
-/* Context menu for opening image in new tab */
-"OpenImageInNewTab" = "Open afbeelding in nieuw tabblad";
 
 /* Context menu item for opening a link in a new private browsing window */
 "OpenInNewPrivateWindowTitle" = "Open in nieuw privévenster";
@@ -1360,12 +1135,6 @@
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Overige privacyinstellingen";
 
-/* Section name for other settings. */
-"OtherSettingsSection" = "Overige instellingen";
-
-/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
-"p3a.continue" = "Ga door";
-
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "Deze privéantwoorden helpen Brave om het algehele gebruik van bepaalde functies in te schatten en voor u te verbeteren.";
 
@@ -1396,12 +1165,6 @@
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Standaard zoomniveau voor webpagina";
 
-/* Description for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesDescription" = "Als het zoomniveau voor een website is gewijzigd, vind je die website in deze lijst. Momenteel zijn er geen websites waarop in- of uitgezoomd is.";
-
-/* Title for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesTitle" = "Geen websites toegevoegd";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Alle overige websites";
 
@@ -1426,12 +1189,6 @@
 /* Setting to allow the app to restore private browsing tabs */
 "PersistentPrivateBrowsing" = "Permanente privémodus";
 
-/* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Staat Brave toe om privétabbladen te herstellen, zelfs als je de app sluit of opnieuw opent";
-
-/* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "Herstel privétabbladen";
-
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Foto gemaakt door %@";
 
@@ -1446,12 +1203,6 @@
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Afspeelopties";
-
-/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
-"playlist.carplayRestartPlaybackButtonStateDisabled" = "Uitgeschakeld. Tik om het herstarten van het afspelen in te schakelen.";
-
-/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
-"playlist.carplayRestartPlaybackButtonStateEnabled" = "Ingeschakeld. Tik om het herstarten van het afspelen uit te schakelen.";
 
 /* The description of the checkbox that allows the user to restart audio/video playback */
 "playlist.carplayRestartPlaybackOptionDetailsTitle" = "Kies of de selectie van een item dat al wordt afgespeeld ervoor zorgt dat het afspelen wordt herstart of gestart waar je gebleven was";
@@ -1699,9 +1450,6 @@
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "Open Privacycentrum";
 
-/* The title of the button action which open the privacy hub */
-"privacyHub.openPrivacyHubWidgetActionTitle" = "Open Privacycentrum";
-
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Gegevens van het Privacycentrum worden lokaal bewaard en niet verstuurd.";
 
@@ -1771,23 +1519,11 @@
 /* Private button title */
 "Private" = "Privé";
 
-/* No comment provided by engineer. */
-"PrivateBrowsing" = "Privémodus";
-
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Alleen privémodus";
 
 /* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
 "PrivateBrowsingOnlyWarning" = "In 'Alleen privémodus' worden al je huidige tabbladen gesloten en word je uitgelogd bij alle sites.";
-
-/* Private tab details */
-"PrivateTabBody" = "Hoewel privétabbladen niet worden bewaard in Brave, garanderen ze jouw online anonimiteit niet. Sites die je bezoekt op privétabbladen, zie je niet in je geschiedenis en eventuele cookies worden altijd gewist wanneer je deze tabbladen sluit zodat er in Brave geen enkel spoor van die bezochte sites is. Downloads worden wel bewaard.\nJe mobiele provider (of de eigenaar van het wifinetwerk of VPN waarmee je verbonden bent) kan zien welke sites je bezoekt en die sites hebben je openbare IP-adres, zelfs als je privétabbladen gebruikt.";
-
-/* Private tab detail text */
-"PrivateTabDetails" = "Het gebruik van privétabbladen is alleen van invloed op wat Brave op jouw apparaat doet. Het gedrag van anderen blijft ongewijzigd.\n\nSites weten altijd je IP-adres wanneer je ze bezoekt. Op basis van dat adres kunnen ze vaak je locatie bij benadering schatten. Doorgaans is dat de stad in je buurt, maar soms kunnen ze je locatie ook nauwkeuriger bepalen. Sites kunnen eveneens gegevens onthouden die je invoert, zoals zoektermen. Als je inlogt op sites, weten ze dat jij de eigenaar bent van dat account. Bij het sluiten van privétabbladen ben je nog steeds uitgelogd want Brave wist de cookie die je ingelogd houdt.\n\nDe service waarmee je verbinding maakt met internet (je internetprovider) kan al je netwerkactiviteit zien. Vaak is dit je mobiele provider. Als je bent verbonden met een wifinetwerk, is dit de eigenaar van dat netwerk en als je een VPN gebruikt, is het de service die dit VPN aanbiedt. Je internetprovider kan zien welke sites je bezoekt wanneer je ze bezoekt. Als die sites HTTPS gebruiken, kunnen ze alleen maar een beredeneerde schatting doen over wat je op die sites doet. Maar als een site alleen HTTP gebruikt, weet je internetprovider alles: gebruikte zoektermen, bezochte pagina's en gevolgde links.\n\nAls je apparaat wordt beheerd door je werkgever, houdt deze mogelijk ook bij wat je met dat apparaat doet. Het gebruik van privétabbladen belet niet dat je werkgever niet weet welke sites je bezoekt. Iemand anders met toegang tot je apparaat kan ook software hebben geïnstalleerd die je activiteit bewaakt en privétabbladen beschermen je hier niet tegen.";
-
-/* Private tab information link */
-"PrivateTabLink" = "Meer informatie over privétabbladen.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Privétabblad";
@@ -1846,12 +1582,6 @@
 /* Accessibility label for brightness adjustment slider in Reader Mode display settings */
 "ReaderModeBrightSliderAccessibilityLabel" = "Helderheid";
 
-/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
-"ReaderModeDisplaySettingsButtonTitle" = "Weergave-instellingen";
-
-/* Error displayed when reader mode cannot be enabled */
-"ReaderModeErrorConvertDisplayText" = "Er deed zich een fout voor tijdens het converteren van de pagina";
-
 /* Font type setting in the reading view settings */
 "ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
 
@@ -1863,15 +1593,6 @@
 
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Wijzigt het lettertype.";
-
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "Content laden…";
-
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadOriginalLinkText" = "Laad originele pagina";
-
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "De pagina kon niet in de Leesweergave worden weergegeven.";
 
 /* Title of a bar that show up when you enter reader mode. */
 "readerModeSettingsButton" = "Leesmodus";
@@ -1894,14 +1615,8 @@
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "Geen recent gesloten tabbladen.";
 
-/* Open Tab action title */
-"recently.closed.open" = "Open";
-
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "Open laatst gesloten tabblad opnieuw";
-
-/* Description for alert to ask user for opening last closed tab in list */
-"recently.closed.shake.description" = "Wil je het laatst gesloten tabblad openen?";
 
 /* Action item title of long press for Opening recently closed tab view */
 "recently.closed.title" = "Recent gesloten tabbladen";
@@ -1987,12 +1702,6 @@
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "'%@' wil graag toegang tot de microfoon";
 
-/* Name of folder where restored bookmarks are retrieved */
-"RestoredBookmarksFolderName" = "Herstelde bladwijzers";
-
-/* Name of folder where restored favorites are retrieved */
-"RestoredFavoritesFolderName" = "Herstelde favorieten";
-
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "Ja";
 
@@ -2035,80 +1744,11 @@
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Deze contentcreator is geverifieerd met Brave Creators";
 
-/* Displayed next to a number representing the total number of publishers supported */
-"rewards.totalSupportedCount" = "Aantal contentcreators die je deze maand hebt gesteund.";
-
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Deze creator is niet geverifieerd en wordt niet in het creatorprogramma opgenomen";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Bedrag";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAnonymous" = "Anoniem";
-
-/* No comment provided by engineer. */
-"RewardsInternalsBalanceInfoHeader" = "Informatie over saldo";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "Weet je zeker dat je alle Rewards-logs wilt wissen?";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsTitle" = "Wis logs";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionAmount" = "Bijdragebedrag";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Brave-tokens";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorNone" = "Geen";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "Uphold";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUserFunds" = "Saldo van gebruiker";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepACOff" = "Automatische bijdrage uit";
-
-/* 'AC' refers to Auto-Contribute */
-"RewardsInternalsContributionsStepACTableEmpty" = "Tabel van automatische bijdrage leeg";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCompleted" = "Voltooid";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCreds" = "Referenties";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepExternalTransaction" = "Externe transactie";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "Mislukt";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepNotEnoughFunds" = "Onvoldoende saldo";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepPrepare" = "Bereid voor";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepReserve" = "Reservering";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "Rewards uit";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "Start";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsTitle" = "Bijdragen";
-
-/* No comment provided by engineer. */
-"RewardsInternalsCreatedAt" = "Gemaakt op";
 
 /* No comment provided by engineer. */
 "RewardsInternalsDeviceInfoHeader" = "Apparaatgegevens";
@@ -2128,9 +1768,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Key Info Seed";
 
-/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
-"RewardsInternalsLogsCount" = "%d logs getoond";
-
 /* No comment provided by engineer. */
 "RewardsInternalsLogsTitle" = "Logs";
 
@@ -2141,34 +1778,13 @@
 "RewardsInternalsNotSupported" = "Niet ondersteund";
 
 /* No comment provided by engineer. */
-"RewardsInternalsProcessor" = "Verwerker";
-
-/* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Uitgever";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublishers" = "Uitgevers";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRetryCount" = "Aantal nieuwe pogingen";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeAutoContribute" = "Automatische bijdrage";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeOneTimeTip" = "Eenmalige fooi";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "Periodieke fooi";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "Rewards-profiel, apparaat en saldo (altijd gedeeld)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Basisinformatie";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableContributionsDescription" = "Alle bijdragen aan uitgevers via fooien of automatische bijdragen";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableDatabaseDescription" = "De interne gegevensopslag";
@@ -2204,9 +1820,6 @@
 "RewardsInternalsTitle" = "Rewards-gegevens";
 
 /* No comment provided by engineer. */
-"RewardsInternalsTotalAmount" = "Totaalbedrag";
-
-/* No comment provided by engineer. */
 "RewardsInternalsTotalBalance" = "Saldototaal";
 
 /* No comment provided by engineer. */
@@ -2233,17 +1846,11 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Bewaar";
 
-/* Label for the button used to save changes in some text input. */
-"SaveChangesButtonTitle" = "Wijzigingen opslaan";
-
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Bewaarde logins";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "Bewaarde tabbladen";
-
-/* Context menu item for saving an image */
-"SaveImageActionTitle" = "Bewaar afbeelding";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Bewaar logins";
@@ -2257,23 +1864,8 @@
 /* Search engines section of settings */
 "SearchEngines" = "Zoekmachines";
 
-/* Accessibility hint describing the action performed when a search suggestion is clicked */
-"SearchesForSuggestionButtonAccessibilityText" = "Zoekopdrachten voor de suggestie";
-
 /* Section header for history and bookmarks and open tabs option */
 "SearchHistorySectionHeader" = "Op je apparaat";
-
-/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
-"SearchInputViewClearButtonTitle" = "Wis zoekopdracht";
-
-/* Accessibility label for entering search mode for logins */
-"SearchInputViewOverlayAccessibilityLabel" = "Start zoekmodus";
-
-/* Accessibility label for the search input field in the Logins list */
-"SearchInputViewTextFieldAccessibilityLabel" = "Invoerveld voor zoekopdracht";
-
-/* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "Zoeken";
 
 /* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
 "searchQuickBarPrefix" = "Zoek '%@'";
@@ -2287,9 +1879,6 @@
 /* Label for showing browser suggestion setting */
 "SearchSettingBrowserSuggestionCellTitle" = "Toon browsersuggesties";
 
-/* Navigation title for search settings. */
-"SearchSettingNavTitle" = "Zoeken";
-
 /* Label for showing recent search setting. */
 "SearchSettingRecentSearchesCellTitle" = "Toon recente zoekopdrachten";
 
@@ -2299,23 +1888,11 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "Toon zoeksuggesties";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
-"SearchSuggestionFromFormatText" = "Zoeksuggesties van %@";
-
 /* Action title for open a playlist item in Playlist. */
 "searchSuggestionOpenPlaylistActionTitle" = "Openen in playlist";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Ga naar dit tabblad";
-
-/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
-"SearchSuggestionSectionTitleFormat" = "%@ Search";
-
-/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "Zoeken";
-
-/* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "Zoeksuggesties";
 
 /* Search suggestions optin subtitle when prompting to turn on suggestions */
 "searchSuggestionsSubtitle" = "Wil je zoeksuggesties inschakelen?";
@@ -2428,9 +2005,6 @@
 /* Row name for licenses. */
 "SettingsLicenses" = "Licenties";
 
-/* Title for settings menu item */
-"SettingsMenuItem" = "Instellingen";
-
 /* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
 "SettingsTabsOptionBottomBar" = "Balk onderaan";
 
@@ -2442,9 +2016,6 @@
 
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Deel link";
-
-/* Title for sharing url menu item */
-"ShareWithMenuItem" = "Deel met...";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "shareWithTitle" = "Deel met...";
@@ -2478,9 +2049,6 @@
 
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Deel het nieuws";
-
-/* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields heeft net je online privacy beschermd.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Gefeliciteerd! Je bent heel bijzonder.";
@@ -2665,14 +2233,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri-opdrachten";
 
-/* Button to show the bookmarks list */
-"ShowBookmarks" = "Toon bladwijzers";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Toon downloads";
-
-/* Button to show the history list */
-"ShowHistory" = "Toon geschiedenis";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showHistoryTitle" = "Toon geschiedenis";
@@ -2800,9 +2362,6 @@
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.configurationInformationText" = "Beheer welke gegevens je wilt synchroniseren tussen je apparaten. Deze instellingen zijn alleen van toepassing op dit apparaat.";
 
-/* Copied action complete title */
-"sync.copied" = "Gekopieerd.";
-
 /* Copied codewords title */
 "sync.copiedToClipboard" = "Gekopieerd naar klembord.";
 
@@ -2845,14 +2404,8 @@
 /* Sync enter code words */
 "sync.enterCodeWords" = "Voer codewoorden in";
 
-/* Enter sync code words below */
-"sync.enterCodeWordsBelow" = "Voer codewoorden hieronder in";
-
 /* Sync Error message for when the sync code is expired */
 "sync.expiredError" = "Deze synchronisatiecode is verlopen. Genereer een nieuwe synchronisatiecode en probeer het opnieuw.";
-
-/* Generic Sync Error Description */
-"sync.genericError" = "Er is iets misgegaan";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "Schakel camera in";
@@ -2896,9 +2449,6 @@
 /* Error title for when the sync code does not have the correct amount of words */
 "sync.notEnoughWordsTitle" = "Onvoldoende woorden";
 
-/* Sync pair device settings section title */
-"sync.pair" = "Koppel";
-
 /* QR Code section title */
 "sync.qrCode" = "QR-code";
 
@@ -2932,12 +2482,6 @@
 /* Title for removing other device from Sync */
 "sync.removeOtherDeviceTitle" = "Wil je %@ verwijderen uit de synchronisatieketen?";
 
-/* Sync remove device. */
-"sync.removeThisDevice" = "Verwijder dit apparaat";
-
-/* Sync remove device? */
-"sync.removeThisDeviceQuestionDesc" = "Dit apparaat wordt verwijderd uit de synchronisatiegroep en ontvangt of stuurt geen synchronisatiegegevens meer. Alle bestaande gegevens op het apparaat blijven behouden.";
-
 /* Scan sync code title */
 "sync.scan" = "Scan";
 
@@ -2956,20 +2500,11 @@
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "Synchronisatie-instellingen";
 
-/* Show code words instead */
-"sync.showCodeWords" = "Toon liever codewoorden";
-
 /* Switch back to camera button */
 "sync.switchBackToCameraButton" = "Ik gebruik mijn camera...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Deze verwijdering is definitief en je kunt de gegevens niet terugzetten. Als je later je apparaten opnieuw wilt synchroniseren, moet je een nieuw account maken en elk apparaat weer toevoegen.";
-
-/* Sync you browser settings across devices. */
-"sync.Syncdevices" = "Apparaten en instellingen";
-
-/* Sync remove device? */
-"sync.syncRemoveThisDeviceQuestion" = "Wil je dit apparaat verwijderen?";
 
 /* Sync settings section title */
 "sync.syncTitle" = "Synchronisatie";
@@ -3006,9 +2541,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Aantal woorden: %i";
-
-/* Accessibility label for action denoting closing a tab in tab list (tray) */
-"TabAccessibilityCloseActionLabel" = "Sluit";
 
 /* Accessibility label for a close button that when tapped opens a new tab */
 "tabGrid.addTabAccessibilityLabel" = "Nieuw tabblad";
@@ -3049,17 +2581,11 @@
 /* A title shown when in private browsing mode with no tabs open */
 "tabGrid.privateBrowsingInfoTitle" = "Privétabblad";
 
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.privateBrowsingModeAccessibilityLabel" = "Privémodus";
-
 /* A label in the tab tray mode switcher for private browsing mode */
 "tabGrid.privateBrowsingModeTitle" = "Privé";
 
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Instellingen Privétabbladen";
-
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.regularBrowsingModeAccessibilityLabel" = "Regulier browsen";
 
 /* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
 "tabGrid.selectedTabs" = "Geselecteerde tabbladen";
@@ -3090,18 +2616,6 @@
 
 /* Label for synced tabs menu item that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsMenuItemLabel" = "Synchronisatie";
-
-/* Accessiblity hint for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityHint" = "Zet de privémodus aan of uit";
-
-/* Accessibility label for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityLabel" = "Privémodus";
-
-/* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "Uit";
-
-/* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "Aan";
 
 /* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardDescription" = "Focus automatisch op de adresbalk wanneer u een nieuw tabblad maakt";
@@ -3163,9 +2677,6 @@
 /* Accessibility Label for the tab toolbar Forward button */
 "TabToolbarForwardButtonAccessibilityLabel" = "Ga verder";
 
-/* Accessibility label for the lock icon, which is only present if the connection is secure */
-"TabToolbarLockImageAccessibilityLabel" = "Beveiligde verbinding";
-
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menu";
 
@@ -3180,9 +2691,6 @@
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Leesweergave";
-
-/* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "Voeg toe aan leeslijst";
 
 /* Accessibility Label for the tab toolbar Reload button */
 "TabToolbarReloadButtonAccessibilityLabel" = "Laad opnieuw";
@@ -3199,47 +2707,14 @@
 /* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Gesproken zoekopdrachten";
 
-/* Accessibility label for the lock icon, which is only present if the connection is insecure */
-"TabToolbarWarningImageAccessibilityLabel" = "Onbeveiligde verbinding";
-
-/* Accessibility label for the Tabs Tray view. */
-"TabTrayAccessibilityLabel" = "Tabbladenvak";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabTrayAddTabAccessibilityLabel" = "Voeg tabblad toe";
-
-/* Accessibility hint for tab tray's displayed tab. */
-"TabTrayCellCloseAccessibilityHint" = "Veeg rechts of links met drie vingers om het tabblad te sluiten.";
-
-/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
-"TabTrayClosingTabAccessibilityNotificationText" = "Tabblad wordt gesloten";
-
-/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
-"TabTrayEmptyVoiceOverText" = "Geen tabbladen";
-
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
-"TabTrayMultiTabPositionFormatVoiceOverText" = "Tabbladen %1$@ tot %2$@ van %3$@";
-
-/* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "Nieuw tabblad";
-
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "Zoek tabbladen";
-
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
-"TabTraySingleTabPositionFormatVoiceOverText" = "Tab %1$@ van %2$@";
 
 /* No comment provided by engineer. */
 "TermsOfService" = "Servicevoorwaarden";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Gebruiksvoorwaarden";
-
-/* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "Deel...";
-
-/* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Deel Brave met je vrienden!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Automatisch";
@@ -3252,9 +2727,6 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Licht";
-
-/* Name for app theme settings */
-"themesSettings" = "Thema's";
 
 /* No comment provided by engineer. */
 "Title" = "Naam";
@@ -3385,9 +2857,6 @@
 /* A title at the top of the screen that shows a list of sources that are ranked the highest */
 "today.popularSourcesTitle" = "Populaire bronnen";
 
-/* A button title that is placed on promoted cards */
-"today.promoted" = "Gepromoot";
-
 /* Title for long press action sheet list which has item for rate / hide */
 "today.rateBraveCardActionSheetTitle" = "Beoordeel Brave in de App Store";
 
@@ -3442,14 +2911,8 @@
 /* Title of an action that allows the user to translate the current web-page to another language */
 "TranslatePage" = "Vertaal pagina";
 
-/* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "Wil je de zoeksuggesties aanzetten?";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Ontgrendel";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "Niet-ondersteunde betaalmethoden";
 
 /* Bookmark URL */
 "URL" = "URL";
@@ -3459,18 +2922,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "urlRedirectsSettings" = "Websiteomleidingen";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "Geannuleerd door gebruiker";
-
-/* No comment provided by engineer. */
-"UserWalletCloseButtonTitle" = "Sluit";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorMessage" = "Er deed zich een probleem voor tijdens het inloggen op je Uphold-account. Probeer het opnieuw.";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "Er is iets misgegaan";
 
 /* Message for error alert when a VCard contact file cannot be parsed or opened */
 "VCard.unableToOpenContactErrorMessage" = "Het contactbestand kon niet worden gelezen. Het kan beschadigd zijn of in een niet-ondersteund formaat.";
@@ -3535,9 +2986,6 @@
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Widgets";
 
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "jaar";
-
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ja";
 
@@ -3547,20 +2995,11 @@
 /* History tableview section header */
 "Yesterday" = "Gisteren";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "YouTube-video's van hoge kwaliteit inschakelen";
-
-/* Description of setting to enable high quality youtube videos */
-"YoutubeMediaQualityDetails" = "Als je deze experimentele functie gebruikt, zie je video's in de hoogste kwaliteit en verbruik je ook meer data.  ";
-
 /* Setting that disables highest quality video playback */
 "YoutubeMediaQualityOff" = "Uit";
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Aan";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "YouTube-afspeelkwaliteit";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Sta toe via wifi";

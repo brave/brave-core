@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Про";
 
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertMessage" = "Це дозволить збергіати зображення до папки «Камера».";
-
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave хоче отримати доступ до «Фотографій»";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Додати закладку";
 
@@ -63,9 +57,6 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Ім’я користувача";
-
-/* Settings autofill section title */
-"Autofill" = "Автозаповнення";
 
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Облікові записи";
@@ -133,9 +124,6 @@
 /* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
 "backgroundDownloadingTitleSingleDownload" = "Завантаження \"%@\"";
 
-/* cookie settings option */
-"Block3rdPartyCookies" = "Блокування додаткових файлів cookie";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Блокувати всі файли cookie";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Збій установлення параметра. Спробуйте ще раз пізніше.";
 
-/* title for section showing page blocking statistics */
-"BlockingMonitor" = "Блокування програм відстеження";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Блокування спливаючих вікон";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Додати закладку для декількох вкладок (%lld)";
-
-/* Bookmark Folder Section Title */
-"BookmarkFolder" = "Папка із закладками";
-
-/* Bookmark Info Section Title */
-"BookmarkInfo" = "Дані закладки";
 
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Закладки";
@@ -225,9 +204,6 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields і конфіденційність";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
 
 /* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
 "BraveTranslate.languageSelectionButtonTitle" = "Обрати мову";
@@ -415,14 +391,8 @@
 /* Section title in settings panel */
 "ClearPrivateData" = "Видалити особисті дані";
 
-/* The cancel button when confirming clear private data. */
-"ClearPrivateDataAlertCancelButtonTitle" = "Скасувати";
-
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertMessage" = "Ви впевнені?";
-
-/* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "ОК";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "Видалити дані";
@@ -441,9 +411,6 @@
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "ОК";
-
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "Помилка клієнта";
 
 /* Button title to close a menu. */
 "Close" = "Закрити";
@@ -481,17 +448,11 @@
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
 "CopyCleanLink" = "Скопіювати очищене посилання";
 
-/* Context menu item for copying an image to the clipboard */
-"CopyImageActionTitle" = "Скопіювати зображення";
-
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Скопіювати посилання";
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Скопіювати інформацію про вкладки до буфера обміну.";
-
-/* Copy rewards internals info for support */
-"CopyWalletSupportInfo" = "Скопіювати відомості для служби підтримки";
 
 /* Create PDF share action. */
 "CreatePDF" = "Створити PDF";
@@ -504,9 +465,6 @@
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Напишіть URL-адресу для пошуку та замініть запит таким: %1$s.\nНаприклад: https://youtube.com/search?q=%2$s\n(Якщо сайт підтримує OpenSearch, під час редагування цього поля ви зможете автоматично додати необхідне значення.)";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "Автоматичне додавання";
 
 /* A title explaining that an error shown while adding custom search engine */
 "customSearchEngine.customSearchEngineAddErrorTitle" = "Помилка додавання користувацької пошукової системи";
@@ -590,12 +548,6 @@
 "defaultBrowserCallout.notificationTitle" = "Отримайте захист Brave у кожному посиланні";
 
 /* No comment provided by engineer. */
-"defaultBrowserCalloutCloseAccesabilityLabel" = "Закрити запит на встановлення браузера за замовчуванням";
-
-/* Name for default Brave theme. */
-"defaultThemeName" = "Стандартна тема Brave";
-
-/* No comment provided by engineer. */
 "Delete" = "Видалити";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
@@ -649,9 +601,6 @@
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Завантаження";
 
-/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
-"DownloadsPanelEmptyStateTitle" = "Тут будуть відображатись завантажені файли.";
-
 /* Action item title of long press for Opening the existing - active Tab url in a new Tab */
 "DuplicateActiveTab" = "Дублювати активну вкладку";
 
@@ -700,48 +649,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Уведіть назву папки";
 
-/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ зазвичай використовує шифрування для захисту вашої інформації. Коли Brave намагався підключитися до %2$@ цього разу, вебсайт надіслав незвичні й неправильні облікові дані. Таке може траплятися, коли хакер намагається видати себе за %3$@ або ж якщо екран підключення до Wi-Fi перервав підключення. Ваша інформація повністю захищена, оскільки Brave припинив підключення, перш ніж будь-які дані було передано.<br />Наразі ви не можете відвідати %4$@, тому що вебсайт використовує закріплення сертифікату. Мережеві помилки й атаки зазвичай тимчасові, тож ця сторінка, скоріш за все, працюватиме пізніше.";
-
-/* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningDetails" = "Сервер не може довести, що він є %@; його сертифікат безпеки не є довіреним сертифікатом для операційної системи вашого пристрою. Це могло статися через помилку конфігурації або через спроби зловмисника перехопити ваше під’єднання.";
-
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningTitle" = "Зловмисники можуть намагатися викрасти вашу інформацію з %@ (наприклад, паролі, повідомлення або дані кредитних карток).";
-
-/* Label for button to go back from the error page */
-"ErrorPagesBackToSafetyButton" = "Назад до розділу безпеки";
-
-/* Title on the certificate error page */
-"ErrorPagesCertErrorTitle" = "Сайт не може гарантувати безпечне з’єднання";
-
-/* Title on the certificate error page */
-"ErrorPagesCertWarningTitle" = "Ваше з’єднання не захищено";
-
-/* Label for button to hide advanced actions on the error page */
-"ErrorPagesHideDetailsButton" = "Сховати подробиці";
-
-/* Label for learn more link on error page */
-"ErrorPagesLearnMoreButton" = "Докладніше";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesMoreDetailsButton" = "Показати повну інформацію";
-
-/* Title of the No Internet error page */
-"ErrorPagesNoInternetTitle" = "Немає доступу до Інтернету";
-
-/* Text telling the user to Try: The following list of things */
-"ErrorPagesNoInternetTry" = "Схоже, що ви не в мережі. Спробуйте наведені далі дії.";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem1" = "Перевірте стан мережевих кабелів, модема й маршрутизатора.";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem2" = "Повторно під’єднайтеся до Wi-Fi.";
-
-/* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesProceedAnywayButton" = "Перейти на %@ (небезпечно)";
-
 /* Button to exclude a topsite url from the most visited list */
 "ExcludeMostVisitedSite" = "Видалити";
 
@@ -775,29 +682,14 @@
 /* Share action title */
 "FindInPage" = "Пошук на сторінці";
 
-/* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "Завершено";
-
 /* Find `search query` */
 "FindInPageFormat" = "Знайти ";
-
-/* Accessibility label for next result button in Find in Page Toolbar. */
-"FindInPageNextResultButtonAccessibilityLabel" = "Наступний результат на сторінці";
-
-/* Accessibility label for previous result button in Find in Page Toolbar. */
-"FindInPagePreviousResultButtonAccessibilityLabel" = "Попередній результат на сторінці";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findInPageTitle" = "Пошук на сторінці";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findNextTitle" = "Знайти далі";
-
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "На цій сторінці";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findPreviousTitle" = "Знайти попереднє";
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Дозволити відкривати універсальні посилання в зовнішніх додатках";
@@ -822,9 +714,6 @@
 
 /* Hides the rewards icon */
 "HideRewardsIcon" = "Не показувати позначку Brave Rewards";
-
-/* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Позначка Brave Rewards не відображатиметься, коли Brave Rewards не ввімкнено";
 
 /* Title for history menu item */
 "HistortMenuItem" = "Історія";
@@ -867,12 +756,6 @@
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Імпорт даних перегляду";
-
-/* title for per-site shield toggles */
-"IndividualControls" = "Індивідуальні налаштування";
-
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "Недійсні дані в запиті платежу";
 
 /* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
 "JavaScriptDialogEmbeddedPageTitle" = "Убудована сторінка на цій сторінці";
@@ -931,30 +814,6 @@
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Фільтрувати";
 
-/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
-"LoginDetailLastModifiedCellFormatTitle" = "Останні зміни: %@";
-
-/* Label displayed above the password row in Login Detail View. */
-"LoginDetailPasswordCellTitle" = "пароль";
-
-/* Label displayed above the username row in Login Detail View. */
-"LoginDetailUsernameCellTitle" = "ім’я користувача";
-
-/* Label displayed above the website row in Login Detail View. */
-"LoginDetailWebsiteCellTitle" = "веб-сайт";
-
-/* Label for the button used to deselect all logins. */
-"LoginListDeselectAllButtonTitle" = "Зняти все виділення";
-
-/* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "Немає облікових даних";
-
-/* Title for Logins List View screen. */
-"LoginListScreenTitle" = "Облікові дані";
-
-/* Label for the button used to select all logins. */
-"LoginListSelectAllButtonTitle" = "Вибрати все";
-
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "Дозволити програвання аудіо у фоновому режимі";
 
@@ -969,9 +828,6 @@
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Показати";
-
-/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
-"monthAbbreviation" = "міс.";
 
 /* Bookmark title / Device name */
 "Name" = "Назва";
@@ -1048,9 +904,6 @@
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Докладніше про рекламні зображення";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"ntp.settingsAutoOpenKeyboard" = "Автоматично відкривати клавіатуру";
-
 /* A setting to enable or disable background on the NTP screen. */
 "ntp.settingsBackgroundImages" = "Фон";
 
@@ -1087,53 +940,8 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Увімкнувши Rewards, ви приймаєте умови документа %@.";
 
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "Заробляйте токени під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "Заробляйте бали під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
-
-/* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Brave Ads уже доступний!";
-
-/* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave покаже першу рекламу через";
-
-/* Title for when the user completes onboarding */
-"OBCompleteTitle" = "Тепер усе готово.";
-
-/* Button to show information on how to enable ads */
-"OBDidntSeeAdButton" = "Рекламу не було показано";
-
-/* A generic error body for onboarding */
-"OBErrorDetails" = "Під час створення гаманця сталася помилка. Спробуйте ще раз";
-
 /* No comment provided by engineer. */
 "OBErrorOkay" = "OK";
-
-/* A generic error title for onboarding */
-"OBErrorTitle" = "Помилка";
-
-/* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "Почати використання";
-
-/* Button to join Brave Rewards. */
-"OBJoinButton" = "Приєднатися";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Дозволити Brave перевіряти код рекомендації в моєму буфері обміну";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Ви могли завантажити Brave за рекомендацією користувача. Щоб його виявити, Brave одноразово перевірить код рекомендації у вашому буфері обміну. Буде перевірено лише наявність коду, і жодні персональні дані не буде передано. Якщо ви забороните перевірку, користувач, шо надіслав вам рекомендацію, не отримає винагороду від Brave.";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentNoButton" = "Не дозволяти перевірку";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentTitle" = "Анонімна перевірка коду рекомендації";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentYesButton" = "Дозволити одноразову перевірку буфера обміну";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "Якщо ви торкаєтеся «Так», ви погоджуєтеся з";
@@ -1150,32 +958,8 @@
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Вибравши приватні рекламні оголошення Brave, кожним переглядом реклами ви підтримуєте видавців й авторів умісту.";
 
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Заробляйте токени під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
-
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Політика конфіденційності";
-
-/* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Нагороди Brave";
-
-/* Save button to save current selection */
-"OBSaveButton" = "Зберегти";
-
-/* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "Виберіть пошукову систему за замовчуванням";
-
-/* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Вітаємо в браузері Brave!";
-
-/* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "Блокування трекерів, які порушують приватність, щоб за вами не стежили в мережі";
-
-/* Title for shields onboarding screen */
-"OBShieldsTitle" = "Щити Brave";
-
-/* Button to show the Brave Rewards Ads. */
-"OBShowMeButton" = "Показати";
 
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Початок";
@@ -1210,20 +994,11 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Відкрити всі (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Відкрити налаштування Brave Rewards";
-
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Під час відкриття папки «Завантаження» у програмі «Файли» сталася помилка.";
 
-/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
-"openExternalAppURLHost" = "%@ повідомляє:";
-
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "Дозволити перемикання програм за допомогою %@?";
-
-/* Context menu for opening image in new tab */
-"OpenImageInNewTab" = "Відкрити зображення в новій вкладці";
 
 /* Context menu item for opening a link in a new private browsing window */
 "OpenInNewPrivateWindowTitle" = "Відкрити в новому приватному вікні";
@@ -1360,12 +1135,6 @@
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Інші налаштування конфіденційності";
 
-/* Section name for other settings. */
-"OtherSettingsSection" = "Інші налаштування";
-
-/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
-"p3a.continue" = "Продовжити";
-
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "Ці приватні відповіді допомагають Brave оцінити загальне використання певних функцій і покращити їх для вас.";
 
@@ -1396,12 +1165,6 @@
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Рівень масштабування сторінки за замовчуванням";
 
-/* Description for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesDescription" = "Якщо буде змінено рівень масштабування сторінки, то вона відображатиметься в цьому списку. Наразі немає вебсайтів, для яких би було змінено рівень масштабування.";
-
-/* Title for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesTitle" = "Немає доданих вебсайтів";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Усі інші вебсайти";
 
@@ -1426,12 +1189,6 @@
 /* Setting to allow the app to restore private browsing tabs */
 "PersistentPrivateBrowsing" = "Постійний перегляд у приватному режимі";
 
-/* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Дозволити Brave відновлювати вкладки приватного режиму, навіть після перезапуску додатка";
-
-/* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "Відновлення вкладок приватного режиму";
-
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Фото від %@";
 
@@ -1446,12 +1203,6 @@
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Параметри відтворення";
-
-/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
-"playlist.carplayRestartPlaybackButtonStateDisabled" = "Вимкнено. Торкніться, щоб увімкнути відтворення з початку.";
-
-/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
-"playlist.carplayRestartPlaybackButtonStateEnabled" = "Увімкнено. Торкніться, щоб вимкнути відтворення з початку.";
 
 /* The description of the checkbox that allows the user to restart audio/video playback */
 "playlist.carplayRestartPlaybackOptionDetailsTitle" = "Налаштування того, чи буде відтворення об’єкта, що вже відтворювався, починатися з початку або ж продовжуватися з місця останньої зупинки";
@@ -1699,9 +1450,6 @@
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "Відкрити центр конфіденційності";
 
-/* The title of the button action which open the privacy hub */
-"privacyHub.openPrivacyHubWidgetActionTitle" = "Відкрити центр конфіденційності";
-
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Дані центру конфіденційності зберігаються локально й нікуди не надсилаються.";
 
@@ -1771,23 +1519,11 @@
 /* Private button title */
 "Private" = "Приватний";
 
-/* No comment provided by engineer. */
-"PrivateBrowsing" = "Перегляд у приватному режимі";
-
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Перегляд тільки у приватному режимі";
 
 /* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
 "PrivateBrowsingOnlyWarning" = "У режимі «Тільки приватний перегляд» буде закрито всі відкриті вкладки та виконано вихід з усіх сайтів.";
-
-/* Private tab details */
-"PrivateTabBody" = "Приватні вкладки не зберігаються в Brave, але це не робить ваші дії в Інтернеті анонімними. Сайти, які ви переглядаєте з приватних вкладок, не відображаються в історії, а файли cookie видаляються після закриття вкладки. У Brave не залишиться жодних даних про ваш сеанс, окрім завантажень.\nПроте оператор мобільного зв’язку (або власник мережі Wi-Fi чи VPN, до якої ви підключені) може бачити, які сайти ви відвідуєте. Сайти отримують інформацію про вашу публічну IP-адресу, навіть коли ви переглядаєте їх із приватних вкладок.";
-
-/* Private tab detail text */
-"PrivateTabDetails" = "Використання приватних вкладок впливає лише на роботу Brave на вашому пристрої та не впливає на дії поза вашим пристроєм.\n\nІнформація про вашу IP-адресу завжди передається на сайти, завдяки чому можна визначити ваше розташування. Зазвичай це місто, але інколи результати відстеження розташування можуть бути більш точними. Також сайти мають доступ до всієї інформації, яку ви вводите, наприклад до пошукових запитів. Якщо ви ввійдете до системи на веб-сайті, стане відомо, що ви є власником облікового запису. Коли ви закриєте приватну вкладку, буде виконано вихід з облікового запису, оскільки Brave видалить файл cookie, створений під час входу.\n\nКомпанія, що надає підключення до Інтернету (зазвичай провайдер мобільної мережі або власник мереж Wi-Fi чи VPN), може переглядати всю вашу мережеву діяльність і журнал відвідувань сайтів. Якщо на сайті використовується протокол HTTPS, провайдер може лише здогадуватися про ваші дії на сайті. Якщо ж на сайті використовується протокол HTTP, провайдер має інформацію про всі ваші пошукові запити, відвідувані сторінки та посилання.\n\nЯкщо ваш роботодавець керує вашим пристроєм, то він також може відстежувати ваші дії. Імовірно, використання приватних вкладок не допоможе приховати інформацію про те, які сайти ви відвідували. Крім того, інші люди, що мають доступ до вашого пристрою, можуть також установити програму, що відстежуватиме вашу діяльність. У цьому разі приватні вкладки також вам не допоможуть.";
-
-/* Private tab information link */
-"PrivateTabLink" = "Докладніше про приватні вкладки.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Приватна вкладка";
@@ -1846,12 +1582,6 @@
 /* Accessibility label for brightness adjustment slider in Reader Mode display settings */
 "ReaderModeBrightSliderAccessibilityLabel" = "Яскравість";
 
-/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
-"ReaderModeDisplaySettingsButtonTitle" = "Налаштування дисплея";
-
-/* Error displayed when reader mode cannot be enabled */
-"ReaderModeErrorConvertDisplayText" = "Під час перетворення сторінки сталася помилка";
-
 /* Font type setting in the reading view settings */
 "ReaderModeFontButtonSansSerifTitle" = "Без зарубок";
 
@@ -1863,15 +1593,6 @@
 
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Зміна типу шрифту.";
-
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "Завантаження вмісту…";
-
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadOriginalLinkText" = "Завантаження вихідної сторінки";
-
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "Неможливо відобразити сторінку в режимі читання.";
 
 /* Title of a bar that show up when you enter reader mode. */
 "readerModeSettingsButton" = "Режим читання";
@@ -1894,14 +1615,8 @@
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "Немає нещодавно закритих вкладок.";
 
-/* Open Tab action title */
-"recently.closed.open" = "Відкриті";
-
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "Відкриття останньої закритої вкладки";
-
-/* Description for alert to ask user for opening last closed tab in list */
-"recently.closed.shake.description" = "Ви хочете відкрити нещодавно закриті вкладки?";
 
 /* Action item title of long press for Opening recently closed tab view */
 "recently.closed.title" = "Нещодавно закриті вкладки";
@@ -1987,12 +1702,6 @@
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "Сайт %@ хоче отримати доступ до мікрофона";
 
-/* Name of folder where restored bookmarks are retrieved */
-"RestoredBookmarksFolderName" = "Відновлені закладки";
-
-/* Name of folder where restored favorites are retrieved */
-"RestoredFavoritesFolderName" = "Відновлений список вибраного";
-
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "Так";
 
@@ -2035,80 +1744,11 @@
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Цього автора контенту перевірили Автори Brave";
 
-/* Displayed next to a number representing the total number of publishers supported */
-"rewards.totalSupportedCount" = "Кількість авторів умісту, яких ви підтримали цього місяця.";
-
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Цей автор не підтвердив особу і його не буде додано до програми підтримки авторів";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Сума";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAnonymous" = "Анонімно";
-
-/* No comment provided by engineer. */
-"RewardsInternalsBalanceInfoHeader" = "Інформація про баланс";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "Дійсно очистити всі журнали Rewards?";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsTitle" = "Очистити журнали";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionAmount" = "Сума внеску";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Токени Brave";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorNone" = "Немає";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "Uphold";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUserFunds" = "Кошти користувача";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepACOff" = "Автовнески вимкнено";
-
-/* 'AC' refers to Auto-Contribute */
-"RewardsInternalsContributionsStepACTableEmpty" = "Таблиця автовнесків порожня";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCompleted" = "Завершено";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCreds" = "Облікові дані";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepExternalTransaction" = "Зовнішня транзакція";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "Помилка";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepNotEnoughFunds" = "Недостатньо коштів";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepPrepare" = "Підготувати";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepReserve" = "Зберегти";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "Винагороди вимкнено";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "Початок";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsTitle" = "Внески";
-
-/* No comment provided by engineer. */
-"RewardsInternalsCreatedAt" = "Створено:";
 
 /* No comment provided by engineer. */
 "RewardsInternalsDeviceInfoHeader" = "Інформація про пристрій";
@@ -2128,9 +1768,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Інформація про ключ";
 
-/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
-"RewardsInternalsLogsCount" = "Показано журналів: %d";
-
 /* No comment provided by engineer. */
 "RewardsInternalsLogsTitle" = "Журнали";
 
@@ -2141,34 +1778,13 @@
 "RewardsInternalsNotSupported" = "Не підтримується";
 
 /* No comment provided by engineer. */
-"RewardsInternalsProcessor" = "Обробник";
-
-/* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Видавець";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublishers" = "Видавці";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRetryCount" = "Кількість повторів";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeAutoContribute" = "Автовнесок";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeOneTimeTip" = "Одноразовий платіж";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "Повторний платіж";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "Профіль винагород, пристрій і баланс (надсилається завжди)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Основна інформація";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableContributionsDescription" = "Будь-які внески на користь видавців через платежі чи автовнески";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableDatabaseDescription" = "Сховище внутрішніх даних";
@@ -2204,9 +1820,6 @@
 "RewardsInternalsTitle" = "Внутрішні дані Rewards";
 
 /* No comment provided by engineer. */
-"RewardsInternalsTotalAmount" = "Загальна сума";
-
-/* No comment provided by engineer. */
 "RewardsInternalsTotalBalance" = "Загальний баланс";
 
 /* No comment provided by engineer. */
@@ -2233,17 +1846,11 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Зберегти";
 
-/* Label for the button used to save changes in some text input. */
-"SaveChangesButtonTitle" = "Зберегти зміни";
-
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Збережені облікові дані";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "Збережені вкладки";
-
-/* Context menu item for saving an image */
-"SaveImageActionTitle" = "Зберегти зображення";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Зберегти облікові дані";
@@ -2257,23 +1864,8 @@
 /* Search engines section of settings */
 "SearchEngines" = "Пошукові системи";
 
-/* Accessibility hint describing the action performed when a search suggestion is clicked */
-"SearchesForSuggestionButtonAccessibilityText" = "Пошук за підказками";
-
 /* Section header for history and bookmarks and open tabs option */
 "SearchHistorySectionHeader" = "На вашому пристрої";
-
-/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
-"SearchInputViewClearButtonTitle" = "Видалити дані пошуку";
-
-/* Accessibility label for entering search mode for logins */
-"SearchInputViewOverlayAccessibilityLabel" = "Віхд до режиму пошуку";
-
-/* Accessibility label for the search input field in the Logins list */
-"SearchInputViewTextFieldAccessibilityLabel" = "Поле пошуку";
-
-/* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "Пошук";
 
 /* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
 "searchQuickBarPrefix" = "Пошук \"%@\"";
@@ -2287,9 +1879,6 @@
 /* Label for showing browser suggestion setting */
 "SearchSettingBrowserSuggestionCellTitle" = "Показувати підказки браузера";
 
-/* Navigation title for search settings. */
-"SearchSettingNavTitle" = "Пошук";
-
 /* Label for showing recent search setting. */
 "SearchSettingRecentSearchesCellTitle" = "Показати недавні пошукові запити";
 
@@ -2299,23 +1888,11 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "Показувати пошукові підказки";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
-"SearchSuggestionFromFormatText" = "Пошукові підказки %@";
-
 /* Action title for open a playlist item in Playlist. */
 "searchSuggestionOpenPlaylistActionTitle" = "Відкрити в списку відтворення";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Перейти до цієї вкладки";
-
-/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
-"SearchSuggestionSectionTitleFormat" = "Пошукова система %@";
-
-/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "Пошук";
-
-/* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "Пошукові підказки";
 
 /* Search suggestions optin subtitle when prompting to turn on suggestions */
 "searchSuggestionsSubtitle" = "Бажаєте увімкнути пошукові підказки?";
@@ -2428,9 +2005,6 @@
 /* Row name for licenses. */
 "SettingsLicenses" = "Ліцензії";
 
-/* Title for settings menu item */
-"SettingsMenuItem" = "Налаштування";
-
 /* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
 "SettingsTabsOptionBottomBar" = "Нижня панель";
 
@@ -2442,9 +2016,6 @@
 
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Поділитися посиланням";
-
-/* Title for sharing url menu item */
-"ShareWithMenuItem" = "Поділитися з…";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "shareWithTitle" = "Поділитися з…";
@@ -2478,9 +2049,6 @@
 
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Поділитися новинами";
-
-/* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields захищає вашу конфіденційність онлайн.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Вітаємо! Неперевершеність — ваше друге ім’я.";
@@ -2665,14 +2233,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Ярлики Siri";
 
-/* Button to show the bookmarks list */
-"ShowBookmarks" = "Показати закладки";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Показати завантаження";
-
-/* Button to show the history list */
-"ShowHistory" = "Показати журнал";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showHistoryTitle" = "Показати журнал";
@@ -2800,9 +2362,6 @@
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.configurationInformationText" = "Виберіть інформацію, що синхронізуватиметься між пристроями. Ці налаштування стосуватимуться лише цього пристрою.";
 
-/* Copied action complete title */
-"sync.copied" = "Скопійовано!";
-
 /* Copied codewords title */
 "sync.copiedToClipboard" = "Скопійовано в буфер!";
 
@@ -2845,14 +2404,8 @@
 /* Sync enter code words */
 "sync.enterCodeWords" = "Введіть кодові слова";
 
-/* Enter sync code words below */
-"sync.enterCodeWordsBelow" = "Введіть кодові слова нижче";
-
 /* Sync Error message for when the sync code is expired */
 "sync.expiredError" = "Термін дії цього коду синхронізації минув. Згенеруйте новий код і повторіть спробу.";
-
-/* Generic Sync Error Description */
-"sync.genericError" = "На жаль, сталася помилка.";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "Увімкнути камеру";
@@ -2896,9 +2449,6 @@
 /* Error title for when the sync code does not have the correct amount of words */
 "sync.notEnoughWordsTitle" = "Недостатньо слів";
 
-/* Sync pair device settings section title */
-"sync.pair" = "З'єднати";
-
 /* QR Code section title */
 "sync.qrCode" = "QR код";
 
@@ -2932,12 +2482,6 @@
 /* Title for removing other device from Sync */
 "sync.removeOtherDeviceTitle" = "Видалити %@ з ланцюжка синхронізації?";
 
-/* Sync remove device. */
-"sync.removeThisDevice" = "Вилучити цей пристрій";
-
-/* Sync remove device? */
-"sync.removeThisDeviceQuestionDesc" = "Цей пристрій буде від'єднаний від синхронізації і більше не буде обмінюватись даними. Всі наявні дані залишаться на пристрої.";
-
 /* Scan sync code title */
 "sync.scan" = "Сканувати";
 
@@ -2956,20 +2500,11 @@
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "Налаштування синхронізації";
 
-/* Show code words instead */
-"sync.showCodeWords" = "Показати кодові слова";
-
 /* Switch back to camera button */
 "sync.switchBackToCameraButton" = "Використати камеру…";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Дані буде видалено остаточно. Їх неможливо буде відновити. Якщо ви вирішите знову користуватися синхронізацією, вам потрібно буде створити новий обліковий запис і ще раз додати свої пристрої.";
-
-/* Sync you browser settings across devices. */
-"sync.Syncdevices" = "Пристрої та налаштування";
-
-/* Sync remove device? */
-"sync.syncRemoveThisDeviceQuestion" = "Вилучити цей пристрій?";
 
 /* Sync settings section title */
 "sync.syncTitle" = "Синхронізація";
@@ -3006,9 +2541,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Кількість слів: %i";
-
-/* Accessibility label for action denoting closing a tab in tab list (tray) */
-"TabAccessibilityCloseActionLabel" = "Закрити";
 
 /* Accessibility label for a close button that when tapped opens a new tab */
 "tabGrid.addTabAccessibilityLabel" = "Нова вкладка";
@@ -3049,17 +2581,11 @@
 /* A title shown when in private browsing mode with no tabs open */
 "tabGrid.privateBrowsingInfoTitle" = "Приватна вкладка";
 
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.privateBrowsingModeAccessibilityLabel" = "Перегляд у приватному режимі";
-
 /* A label in the tab tray mode switcher for private browsing mode */
 "tabGrid.privateBrowsingModeTitle" = "Приватний";
 
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Налаштування приватних вкладок";
-
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.regularBrowsingModeAccessibilityLabel" = "Звичайний перегляд";
 
 /* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
 "tabGrid.selectedTabs" = "Вибрані вкладки";
@@ -3090,18 +2616,6 @@
 
 /* Label for synced tabs menu item that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsMenuItemLabel" = "Синхронізація";
-
-/* Accessiblity hint for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityHint" = "Увімкнення/вимкнення приватного режиму";
-
-/* Accessibility label for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityLabel" = "Приватний режим";
-
-/* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "Вимк.";
-
-/* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "Увімк.";
 
 /* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardDescription" = "Автоматично фокусувати адресну панель при створенні нової вкладки";
@@ -3163,9 +2677,6 @@
 /* Accessibility Label for the tab toolbar Forward button */
 "TabToolbarForwardButtonAccessibilityLabel" = "Вперед";
 
-/* Accessibility label for the lock icon, which is only present if the connection is secure */
-"TabToolbarLockImageAccessibilityLabel" = "Захищене з’єднання";
-
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Меню";
 
@@ -3180,9 +2691,6 @@
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Режим читання";
-
-/* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "Додати до списку читання";
 
 /* Accessibility Label for the tab toolbar Reload button */
 "TabToolbarReloadButtonAccessibilityLabel" = "Перезавантажити";
@@ -3199,47 +2707,14 @@
 /* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Голосовий пошук";
 
-/* Accessibility label for the lock icon, which is only present if the connection is insecure */
-"TabToolbarWarningImageAccessibilityLabel" = "Незахищене з’єднання";
-
-/* Accessibility label for the Tabs Tray view. */
-"TabTrayAccessibilityLabel" = "Лоток вкладок";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabTrayAddTabAccessibilityLabel" = "Додати вкладку";
-
-/* Accessibility hint for tab tray's displayed tab. */
-"TabTrayCellCloseAccessibilityHint" = "Щоб закрити вкладку, проведіть трьома пальцями праворуч або ліворуч.";
-
-/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
-"TabTrayClosingTabAccessibilityNotificationText" = "Закриваємо вкладку";
-
-/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
-"TabTrayEmptyVoiceOverText" = "Немає вкладок";
-
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
-"TabTrayMultiTabPositionFormatVoiceOverText" = "Вкладки: з %1$@ по %2$@ із %3$@";
-
-/* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "Нова вкладка";
-
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "Пошук у вкладках";
-
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
-"TabTraySingleTabPositionFormatVoiceOverText" = "Вкладки: %1$@ із %2$@";
 
 /* No comment provided by engineer. */
 "TermsOfService" = "Умови обслуговування";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Умови використання";
-
-/* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "Поділитися…";
-
-/* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Поділіться Brave з друзями!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Автоматично";
@@ -3252,9 +2727,6 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Світла";
-
-/* Name for app theme settings */
-"themesSettings" = "Теми";
 
 /* No comment provided by engineer. */
 "Title" = "Заголовок";
@@ -3385,9 +2857,6 @@
 /* A title at the top of the screen that shows a list of sources that are ranked the highest */
 "today.popularSourcesTitle" = "Популярні джерела";
 
-/* A button title that is placed on promoted cards */
-"today.promoted" = "Реклама";
-
 /* Title for long press action sheet list which has item for rate / hide */
 "today.rateBraveCardActionSheetTitle" = "Оцінити Brave у App Store";
 
@@ -3442,14 +2911,8 @@
 /* Title of an action that allows the user to translate the current web-page to another language */
 "TranslatePage" = "Перекласти сторінку";
 
-/* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "Увімкнути пошукові підказки?";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Розблокувати";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "Інструменти оплати не підтримуються";
 
 /* Bookmark URL */
 "URL" = "URL";
@@ -3459,18 +2922,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "urlRedirectsSettings" = "Переспрямування на сторінки";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "Скасував користувач";
-
-/* No comment provided by engineer. */
-"UserWalletCloseButtonTitle" = "Закрити";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorMessage" = "Під час входу до акаунту Uphold сталася помилка. Спробуйте пізніше";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "На жаль, сталася помилка.";
 
 /* Message for error alert when a VCard contact file cannot be parsed or opened */
 "VCard.unableToOpenContactErrorMessage" = "Не вдалося прочитати файл контакту. Він може бути пошкодженим або в непідтримуваному форматі.";
@@ -3535,9 +2986,6 @@
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Віджети";
 
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "р.";
-
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Так";
 
@@ -3547,20 +2995,11 @@
 /* History tableview section header */
 "Yesterday" = "Учора";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Увімкнути високоякісні відео Youtube";
-
-/* Description of setting to enable high quality youtube videos */
-"YoutubeMediaQualityDetails" = "Ця експериментальна функція відтворюватиме відео з максимальною доступною якістю, що призведе до збільшення використовуваних даних.";
-
 /* Setting that disables highest quality video playback */
 "YoutubeMediaQualityOff" = "Вимк.";
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Увімк.";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "Якість відео Youtube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Дозволити через мережі Wi-Fi";

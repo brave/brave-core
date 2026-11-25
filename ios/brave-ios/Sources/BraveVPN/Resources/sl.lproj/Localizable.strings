@@ -7,27 +7,6 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "RAZPOLOŽLJIVI STREŽNIKI";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "Kupi";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "Zaščitite 5 naprav z eno naročnino";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "Izberite svojo geografsko lokacijo/državo";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave nikoli ne beleži vaših dejavnosti";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Zaščitite vsako aplikacijo in amp; amp; amp; celotno napravo";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "Varnejše za domači ali javni Wi-Fi";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "Svetlobna hitrost do 100 Mb/s";
-
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
 "vpn.cityCountTitle" = "%ld Mesto";
 
@@ -57,9 +36,6 @@
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "Težava";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Težava z zanesljivostjo povezave";
 
 /* Description used for specific issue field for customer support contact form. */
 "vpn.contactFormIssueDescription" = "Prosimo, izberite kategorijo, ki opisuje težavo.";
@@ -111,9 +87,6 @@
 
 /* The button text that starts the trial action */
 "vpn.freeTrialPeriodAction" = "poskusite 7 dni brezplačno";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Vse naročnine se samodejno podaljšajo, vendar jih lahko prekličete pred podaljšanjem.";
 
 /* Text explaining how the VPN works. */
 "vpn.installProfileBody" = "Ta profil omogoča VPN, da samodejno povezuje in varuje promet v vaši napravi ves čas. Ta VPN povezava bo šifrirana in preusmerjena prek inteligentnega požarnega zidu Brave, da blokira potencialno škodljive in invazivne povezave.";
@@ -172,20 +145,11 @@
 /* Message that we show after successfully changing tunnel protocol. */
 "vpn.protocolSwitchSuccessPopupText" = "VPN tunelski protokol spremenjen.";
 
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Regija strežnika, ki je vam najbližja, bo samodejno izbrana glede na vaš časovni pas sistema. To je priporočljivo, da se zagotovijo hitre internetne hitrosti.";
-
 /* Message for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorMessage" = "Zamenjava strežnikov ni uspela. Prosimo, poskusite pozneje.";
 
 /* Title for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorTitle" = "Napaka strežnika";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Regija strežnika";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "Regija VPN spremenjena.";
 
 /* Yearly tier explaination. Subscription will be renewed annually. */
 "vpn.renewAnnually" = "Obnovi se vsako leto";
@@ -229,9 +193,6 @@
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Obrnite se na tehnično podporo";
 
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Pridobivanje seznama strežnikov ni uspelo. Prosimo, poskusite pozneje.";
-
 /* Button for FAQ */
 "vpn.settingsFAQ" = "Podpora za VPN";
 
@@ -249,12 +210,6 @@
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "Ponastavi konfiguracijo";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Gostitelj";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Lokacija";
 
 /* Header title for vpn settings server section. */
 "vpn.settingsServerSection" = "Strežnik";
@@ -307,32 +262,17 @@
 /* Title for an alert when the VPN can't be configured */
 "vpn.vpnConfigGenericErrorTitle" = "Napaka";
 
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN zahteva, da je na vaši napravi nameščen profil VPN. ";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Dovoljenje zavrnjeno";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Kode ponudbe ni mogoče odkupiti. Prosimo, poskusite znova ali preverite podatke kode ponudbe in poskusite znova.";
-
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "Nakupa ni mogoče dokončati. Prosimo, poskusite znova ali preverite svoje podatke o plačilu pri Apple in poskusite znova.";
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "Napaka";
 
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Naročnine bodo zaračunane prek vašega iTunes računa.\n\nVsak morebitni neizkoriščen del brezplačnega preizkusa se ob nakupu naročnine izgubi.\n\nVaša naročnina se bo samodejno obnovila, razen če je preklicana vsaj 24 ur pred koncem trenutnega obdobja.\n\nNaročnine lahko upravljate v nastavitvah.\n\nZ uporabo brskalnika Brave se strinjate s pogoji uporabe in politiko zasebnosti.";
-
 /* The title shown on the menu when the VPN connection is disconnected */
 "vpn.vpnOffMenuButtonTitle" = "VPN izključena";
 
 /* The title shown on the menu when the VPN connection is connected */
 "vpn.vpnOnMenuButtonTitle" = "VPN vključena";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Odkupi kodo";
 
 /* The alert title showing vpn region is changed */
 "vpn.vpnRegionChangedTitle" = "Regija VPN spremenjena";
@@ -351,9 +291,6 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "Letna naročnina";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Letno obnovljivi varčevanje %@";
 
 /* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
 "vpn.yearlySubDisclaimer" = "NAJBOLJŠA VREDNOST";

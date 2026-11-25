@@ -47,13 +47,7 @@
 "vpn.infoCheckServers" = "Εκατοντάδες διακομιστές σε όλο τον κόσμο";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "Αποκλείει ανεπιθύμητες συνδέσεις δικτύου";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxBlockAdsAlternate" = "Αποκλεισμός διαφημίσεων & προγραμμάτων παρακολούθησης σε όλες τις εφαρμογές ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "Υποστηρίζει ταχύτητες έως 100 Mbps";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxFastAlternate" = "Γρήγορο και απεριόριστο έως τα 100 Mbps";
@@ -138,10 +132,4 @@
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Τρέχουσα ρύθμιση: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "Περιοχή VPN";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "Ενημερώστε τον τρόπο πληρωμής σας";
 

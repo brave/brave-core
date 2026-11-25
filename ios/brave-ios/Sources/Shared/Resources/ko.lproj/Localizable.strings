@@ -1,6 +1,3 @@
-/* Toast displayed to user after copy url pressed. */
-"AppMenuCopyURLConfirmMessage" = "URL이 클립보드에 복사됨";
-
 /* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
 "AppMenuViewDesktopSiteTitleString" = "데스크톱 사이트 요청";
 
@@ -49,9 +46,6 @@
 /* The button to open a new tab with the Downloads home panel */
 "DownloadsButtonTitle" = "다운로드";
 
-/* Question shown to user when tapping a link that opens the App Store app */
-"ExternalLinkAppStoreConfirmationTitle" = "이 링크를 App Store 앱에서 여시겠습니까?";
-
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "이동";
 
@@ -76,17 +70,11 @@
 /* Accessibility label for button resetting font size in display settings of reader mode */
 "ReaderModeResetFontSizeAccessibilityLabel" = "텍스트 크기 재설정";
 
-/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
-"SaveLoginPrompt" = "%@에 대한 비밀번호를 저장하시겠습니까?";
-
 /* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
 "SaveLoginUsernamePrompt" = "%2$@에 대한 %1$@ 로그인 정보를 저장하시겠습니까?";
 
 /* OK button to dismiss the error prompt. */
 "ScanQRCodeErrorOKButton" = "확인";
-
-/* Text for the instructions label, displayed in the QR scanner view */
-"ScanQRCodeInstructionsLabel" = "스캔할 QR 코드를 프레임에 맞추십시오.";
 
 /* Text of the prompt that is shown to the user when the data is invalid */
 "ScanQRCodeInvalidDataErrorMessage" = "데이터가 올바르지 않습니다.";
@@ -123,9 +111,6 @@
 
 /* Title of the message shown when the user attempts to navigate to an invalid link. */
 "UnableToOpenURLErrorTitle" = "페이지를 열 수 없음";
-
-/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginPrompt" = "%2$@에 대한 %1$@ 로그인 정보를 업데이트하시겠습니까?";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
 "UpdateLoginUsernamePrompt" = "%2$@에 대한 %1$@ 로그인 정보를 업데이트하시겠습니까?";

@@ -16,27 +16,6 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "Elementi za praćenje & i oglasi su blokirani";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "Oglasi \nBlokirani";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "**Reproduktor Brave** vaša je ulaznica za iskustvo prikazivanja videozapisa bez oglasa i prekida.";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "Namjesti štitove za mene";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "Ovim su se mrežnim mjestom počeli blokirati neki programi za blokiranje oglasa, a to znači da mrežno mjesto možda neće raditi prema očekivanome.";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Kako bi se riješio problem, preglednikom Brave mogu se namjestiti postavke štitova umjesto vas. Nakon namještanja možete pokušati gledati sadržaj u Reproduktoru Brave.";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "Zadrži trenutačne postavke";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "Namještanje postavki blokiranja oglasa za ovo mrežno mjesto";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Automatsko preusmjeravanje stranica AMP";
 
@@ -79,32 +58,11 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "Blokira jezik JavaScript (mogu se rušiti mrežna mjesta).";
 
-/* Title for the brave player feature */
-"BravePlayer" = "Reproduktor Brave";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Uvijek otvarajte videozapise s ovog mrežnog mjesta Reproduktorom Brave";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "Isprobaj";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "Ne sada";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Uz Reproduktor Brave možete gledati videozapise bez prekida.";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Umjesto toga gledajte u Reproduktoru Brave";
-
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "Napredne kontrole";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Blokirani oglasi i druge čudne stavke";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Saznaj više";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "Promijeni globalne zadane postavke Štitova";
@@ -217,17 +175,11 @@
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "Preuzimanje na čekanju";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Uredi";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "Dodaj URL popisa filtra";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "Posljednje ažuriranje: %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Ovdje upišite URL popisa filtra";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Blokiraj izrade digitalnog otiska";
@@ -411,9 +363,6 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Blokiranje elementa za praćenje i oglasa";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Elementi za praćenje \nblokirani";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Ažuriraj popise";

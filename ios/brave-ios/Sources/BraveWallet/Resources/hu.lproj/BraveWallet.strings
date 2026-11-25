@@ -61,9 +61,6 @@
 /* The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes */
 "wallet.autoLockTitle" = "Automatikus zárolási idő: ";
 
-/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet */
-"wallet.backupRecoveryPhraseBackButtonTitle" = "Helyreállítási kifejezés";
-
 /* The subtitle of the backup recovery phrase screen */
 "wallet.backupRecoveryPhraseSubtitle" = "A helyreállítási kifejezés a kulcs a pénztárcájához való hozzáféréshez, ha elfelejti jelszavát vagy elveszíti eszközét.\n\nTartsa biztonságos helyen, amelyhez mások nem férhetnek hozzá, és ne ossza meg másokkal.";
 
@@ -819,9 +816,6 @@
 
 /* The title of a button that Selects all visible options. */
 "wallet.selectAllButtonTitle" = "Összes kiválasztása";
-
-/* The accessibility label for the selected account picker */
-"wallet.selectedAccount" = "Kiválasztott számla";
 
 /* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
 "wallet.selectNetworksTitle" = "Hálózatok kiválasztása";

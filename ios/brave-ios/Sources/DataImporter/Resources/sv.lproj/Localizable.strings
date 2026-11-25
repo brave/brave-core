@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "Ett fel inträffade när bokmärken skulle importeras.";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "Ett fel inträffade vid import av Historik.";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "Ett fel inträffade vid import av lösenord.\nVissa lösenord kunde inte importeras på grund av konflikter.";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "Ett fel inträffade vid import av lösenord.";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "Ett fel inträffade när filen packades upp.";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "Välj en fil ...";
 
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "I listan över appar (sorterade i alfabetisk ordning) letar du upp och trycker på **Safari**.";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "Zip-filen innehåller inte importdata.";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "Vänligen vänta medan vi på ett säkert sätt överför dina data.\nDetta kan ta en stund.";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "Flera profiler upptäckta";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "Personlig";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Importerade bokmärken";
