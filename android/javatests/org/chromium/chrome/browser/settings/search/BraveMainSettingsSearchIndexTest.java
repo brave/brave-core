@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.settings.search;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import android.content.Context;
@@ -78,6 +79,13 @@ public class BraveMainSettingsSearchIndexTest {
         assertHeader(R.string.prefs_section_display, "tabs");
         assertHeader(R.string.prefs_section_display, "accessibility");
         assertHeader(R.string.prefs_section_display, MainSettings.PREF_AUTOFILL_AND_PASSWORDS);
+    }
+
+    @Test
+    @SmallTest
+    public void testSupportSectionHeaders() {
+        assertNotNull(mIndexData.getEntryForKey(MainSettings.class.getName(), "rate_brave"));
+        assertHeader(R.string.prefs_support_section, "rate_brave");
     }
 
     @Test

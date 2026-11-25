@@ -191,9 +191,8 @@ public class BraveSettingsSearchTest {
 
         // Support section
 
-        // Disabled — see https://github.com/brave/brave-browser/issues/57196
-        // clearAndTypeIntoSearch("Rate Brave");
-        // assertSearchResult("Rate Brave");
+        clearAndTypeIntoSearch("Rate Brave");
+        assertSearchResult("Rate Brave", "Support");
 
         // About section
         // "Developer options" visibility depends on channel/pref, so it is covered separately by
