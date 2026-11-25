@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Don't crash building a tab_groups event payload for an unsupported
+      window.
+
+      SupportsTabGroups() says whether a window should expose tab groups
+      as a feature; on Android it's false for non-normal windows (e.g. a
+      popup/CCT). But the TabModel's group tracking isn't actually
+      restricted by window type, so FindBrowserWithGroup() can still
+      return such a window as the owner of a group. Reporting that group
+      to the tab_groups extension API hits this CHECK instead of just
+      omitting it.
+    regex:
+      pattern: 'CHECK(SupportsTabGroups(browser));'
+      replace: |-
+        if (!SupportsTabGroups(browser)) {
+            return std::nullopt;
+          }
