@@ -20,6 +20,7 @@
 #include "brave/components/brave_vpn/app/v2/agent/test/fake_browser.h"
 #include "brave/components/brave_vpn/app/v2/agent/test/fake_browser_endpoint.h"
 #include "brave/components/brave_vpn/app/v2/agent/test/fake_connection_manager.h"
+#include "brave/components/brave_vpn/app/v2/agent/test/vpn_region_test_util.h"
 #include "brave/components/brave_vpn/common/mojom/browser_agent.mojom.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -139,7 +140,7 @@ TEST_F(BrowserHostImplTest, StopsObservingManagerOnDestruction) {
 TEST_F(BrowserHostImplTest, SendsCurrentStateOnCreation) {
   connection_manager_.UpdateConnectionState(
       mojom::VpnConnectionState::kConnectFailed, "Server unreachable");
-  connection_manager_.UpdateSelectedRegion(mojom::VpnRegion::New("Europe"));
+  connection_manager_.UpdateRegionSelection(MakeTestPickedSelection("Europe"));
   connection_manager_.UpdateAutoReconnectState(true);
   connection_manager_.UpdateSmartProxyRoutingState(true);
   connection_manager_.UpdateAllowLanTrafficState(true, true);
@@ -157,9 +158,10 @@ TEST_F(BrowserHostImplTest, SendsCurrentStateOnCreation) {
   EXPECT_EQ(mojom::VpnConnectionState::kConnectFailed, states[0].state);
   EXPECT_EQ("Server unreachable", states[0].error_message);
 
-  const auto& regions = endpoint.selected_region_updates();
+  const auto& regions = endpoint.region_selection_updates();
   ASSERT_EQ(1u, regions.size());
-  EXPECT_EQ("Europe", regions[0]->name);
+  ASSERT_TRUE(regions[0]->region);
+  EXPECT_EQ("Europe", regions[0]->region->name);
 
   EXPECT_EQ(std::vector<bool>{true}, endpoint.auto_reconnect_state_updates());
   EXPECT_EQ(std::vector<bool>{true},
@@ -184,7 +186,7 @@ TEST_F(BrowserHostImplTest, RelaysStateChangesToEndpoint) {
       mojom::VpnConnectionState::kConnecting, std::nullopt);
   connection_manager_.UpdateConnectionState(
       mojom::VpnConnectionState::kConnectFailed, "Server unreachable");
-  connection_manager_.UpdateSelectedRegion(mojom::VpnRegion::New("Asia"));
+  connection_manager_.UpdateRegionSelection(MakeTestPickedSelection("Asia"));
   connection_manager_.UpdateAutoReconnectState(true);
   connection_manager_.UpdateSmartProxyRoutingState(true);
   connection_manager_.UpdateAllowLanTrafficState(true, false);
@@ -201,9 +203,10 @@ TEST_F(BrowserHostImplTest, RelaysStateChangesToEndpoint) {
   EXPECT_EQ(mojom::VpnConnectionState::kConnectFailed, states[2].state);
   EXPECT_EQ("Server unreachable", states[2].error_message);
 
-  const auto& regions = endpoint.selected_region_updates();
+  const auto& regions = endpoint.region_selection_updates();
   ASSERT_EQ(2u, regions.size());
-  EXPECT_EQ("Asia", regions[1]->name);
+  ASSERT_TRUE(regions[1]->region);
+  EXPECT_EQ("Asia", regions[1]->region->name);
 
   EXPECT_EQ((std::vector<bool>{false, true}),
             endpoint.auto_reconnect_state_updates());
@@ -225,7 +228,8 @@ TEST_F(BrowserHostImplTest, ForwardsCallsToConnectionManager) {
   browser_.host()->Connect();
   browser_.host()->Disconnect();
   browser_.host()->ResetConnectionState();
-  browser_.host()->SetSelectedRegion(mojom::VpnRegion::New("Europe"));
+  browser_.host()->SelectRegion("Europe");
+  browser_.host()->SelectRegionAutomatically();
   browser_.host()->SetAutoReconnectState(true);
   browser_.host()->SetSmartProxyRoutingState(true);
   // False rather than true: proves the request was recorded, not just that the
@@ -236,8 +240,8 @@ TEST_F(BrowserHostImplTest, ForwardsCallsToConnectionManager) {
   EXPECT_EQ(1, connection_manager_.connect_calls());
   EXPECT_EQ(1, connection_manager_.disconnect_calls());
   EXPECT_EQ(1, connection_manager_.reset_connection_state_calls());
-  ASSERT_TRUE(connection_manager_.last_selected_region());
-  EXPECT_EQ("Europe", connection_manager_.last_selected_region()->name);
+  EXPECT_EQ("Europe", connection_manager_.last_selected_region_name());
+  EXPECT_EQ(1, connection_manager_.select_region_automatically_calls());
   EXPECT_EQ(true, connection_manager_.last_auto_reconnect_request());
   EXPECT_EQ(true, connection_manager_.last_smart_proxy_routing_request());
   EXPECT_EQ(false, connection_manager_.last_allow_lan_traffic_request());
@@ -245,8 +249,8 @@ TEST_F(BrowserHostImplTest, ForwardsCallsToConnectionManager) {
 
 TEST_F(BrowserHostImplTest, ReturnsRegionsFromConnectionManager) {
   std::vector<mojom::VpnRegionPtr> regions;
-  regions.push_back(mojom::VpnRegion::New("Europe"));
-  regions.push_back(mojom::VpnRegion::New("Asia"));
+  regions.push_back(MakeTestRegion("Europe"));
+  regions.push_back(MakeTestRegion("Asia"));
   connection_manager_.set_regions(std::move(regions));
   CreateHost();
 

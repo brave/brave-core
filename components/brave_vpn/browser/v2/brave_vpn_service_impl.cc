@@ -25,6 +25,10 @@
 #include "build/build_config.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+#include "brave/components/brave_vpn/browser/v2/region_conversions.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+
 // The agent apps build only on desktop, so the related code assumes desktop
 // only APIs are available; asserted once rather than guarded at call sites.
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
@@ -128,6 +132,7 @@ void BraveVpnServiceImpl::LoadPurchasedState(const std::string& domain) {
 }
 
 void BraveVpnServiceImpl::GetAllRegions(GetAllRegionsCallback callback) {
+  // TODO(https://github.com/brave/brave-browser/issues/54624)
   NOTIMPLEMENTED();
   std::move(callback).Run({});
 }
@@ -318,13 +323,18 @@ void BraveVpnServiceImpl::OnConnectionStateChanged(
   }
 }
 
-void BraveVpnServiceImpl::OnSelectedRegionChanged(mojom::VpnRegionPtr region) {
+void BraveVpnServiceImpl::OnRegionSelectionChanged(
+    mojom::VpnRegionSelectionPtr selection) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(agent_state_);
-  agent_state_->selected_region = std::move(region);
-  // TODO(https://github.com/brave/brave-browser/issues/54624)
-  // Notify the UI and plumb the value to GetSelectedRegion(), once the agent's
-  // region can be resolved to the one the UI knows.
+  mojom::RegionPtr region =
+      selection->region ? BrowserRegionFromAgent(std::move(selection->region))
+                        : mojom::Region::New();
+  region->is_automatic = selection->is_automatic;
+  if (!agent_state_->selected_region.Equals(region)) {
+    agent_state_->selected_region = std::move(region);
+    NotifySelectedRegionChanged(agent_state_->selected_region.Clone());
+  }
 }
 
 void BraveVpnServiceImpl::OnAutoReconnectStateChanged(bool enabled) {

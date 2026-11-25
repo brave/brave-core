@@ -41,8 +41,12 @@ void FakeConnectionManager::GetAllRegions(GetAllRegionsCallback callback) {
       FROM_HERE, base::BindOnce(std::move(callback), mojo::Clone(regions_)));
 }
 
-void FakeConnectionManager::SetSelectedRegion(mojom::VpnRegionPtr region) {
-  last_selected_region_ = std::move(region);
+void FakeConnectionManager::SelectRegion(const std::string& name) {
+  last_selected_region_name_ = name;
+}
+
+void FakeConnectionManager::SelectRegionAutomatically() {
+  ++select_region_automatically_calls_;
 }
 
 void FakeConnectionManager::SetAutoReconnectState(bool enable) {

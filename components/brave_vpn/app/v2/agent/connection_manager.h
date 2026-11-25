@@ -77,7 +77,8 @@ class ConnectionManager
     virtual void OnConnectionStateChanged(
         mojom::VpnConnectionState state,
         std::optional<std::string> error_message) = 0;
-    virtual void OnSelectedRegionChanged(const mojom::VpnRegion& region) = 0;
+    virtual void OnRegionSelectionChanged(
+        const mojom::VpnRegionSelection& selection) = 0;
     virtual void OnAutoReconnectStateChanged(bool enabled) = 0;
     virtual void OnSmartProxyRoutingStateChanged(bool enabled) = 0;
     virtual void OnAllowLanTrafficStateChanged(bool available,
@@ -107,7 +108,7 @@ class ConnectionManager
 
   mojom::VpnConnectionState connection_state() const;
   const std::optional<std::string>& error_message() const;
-  const mojom::VpnRegion& current_region() const;
+  const mojom::VpnRegionSelection& region_selection() const;
   bool auto_reconnect_enabled() const;
   bool smart_proxy_routing_enabled() const;
   bool allow_lan_traffic_available() const;
@@ -129,8 +130,15 @@ class ConnectionManager
   // is fetched from the VPN provider. |callback| always runs asynchronously,
   // and runs with an empty list if they can't be fetched.
   virtual void GetAllRegions(GetAllRegionsCallback callback);
-  // Sets the desired region which is currently selected in the UI.
-  virtual void SetSelectedRegion(mojom::VpnRegionPtr region);
+  // Selects the region by name and persists the choice. Once the region list
+  // is available, the name is checked against it: if no region has that name,
+  // the manager falls back to automatic selection. Any resulting change is
+  // reported through observer's OnRegionSelectionChanged; nothing is reported
+  // before the region list is available.
+  virtual void SelectRegion(const std::string& name);
+  // Returns to automatic selection and persists that. Any resulting change is
+  // reported through observer's OnRegionSelectionChanged.
+  virtual void SelectRegionAutomatically();
   // Sets the desired auto-reconnect state; this is a suggestion for the
   // agent and can be rejected; if the actual state gets changed, an update
   // will be dispatched via the corresponding observer callback.
@@ -149,7 +157,7 @@ class ConnectionManager
   // value didn't change.
   void UpdateConnectionState(mojom::VpnConnectionState state,
                              std::optional<std::string> error_message);
-  void UpdateSelectedRegion(mojom::VpnRegionPtr region);
+  void UpdateRegionSelection(mojom::VpnRegionSelectionPtr selection);
   void UpdateAutoReconnectState(bool enabled);
   void UpdateSmartProxyRoutingState(bool enabled);
   void UpdateAllowLanTrafficState(bool available, bool enabled);
@@ -240,7 +248,8 @@ class ConnectionManager
   mojom::VpnConnectionState connection_state_ =
       mojom::VpnConnectionState::kDisconnected;
   std::optional<std::string> error_message_;
-  mojom::VpnRegionPtr current_region_ = mojom::VpnRegion::New();
+  mojom::VpnRegionSelectionPtr region_selection_ =
+      mojom::VpnRegionSelection::New(/*is_automatic=*/true, /*region=*/nullptr);
   bool auto_reconnect_enabled_ = false;
   bool smart_proxy_routing_enabled_ = false;
   bool allow_lan_traffic_available_ = false;

@@ -30,7 +30,7 @@ BrowserHostImpl::BrowserHostImpl(
   // follows through the corresponding observer callbacks.
   OnConnectionStateChanged(connection_manager_->connection_state(),
                            connection_manager_->error_message());
-  OnSelectedRegionChanged(connection_manager_->current_region());
+  OnRegionSelectionChanged(connection_manager_->region_selection());
   OnAutoReconnectStateChanged(connection_manager_->auto_reconnect_enabled());
   OnSmartProxyRoutingStateChanged(
       connection_manager_->smart_proxy_routing_enabled());
@@ -70,8 +70,12 @@ void BrowserHostImpl::GetAllRegions(GetAllRegionsCallback callback) {
   connection_manager_->GetAllRegions(std::move(callback));
 }
 
-void BrowserHostImpl::SetSelectedRegion(mojom::VpnRegionPtr region) {
-  connection_manager_->SetSelectedRegion(std::move(region));
+void BrowserHostImpl::SelectRegion(const std::string& name) {
+  connection_manager_->SelectRegion(name);
+}
+
+void BrowserHostImpl::SelectRegionAutomatically() {
+  connection_manager_->SelectRegionAutomatically();
 }
 
 void BrowserHostImpl::SetAutoReconnectState(bool enable) {
@@ -92,8 +96,9 @@ void BrowserHostImpl::OnConnectionStateChanged(
   browser_endpoint_->OnConnectionStateChanged(state, error_message);
 }
 
-void BrowserHostImpl::OnSelectedRegionChanged(const mojom::VpnRegion& region) {
-  browser_endpoint_->OnSelectedRegionChanged(region.Clone());
+void BrowserHostImpl::OnRegionSelectionChanged(
+    const mojom::VpnRegionSelection& selection) {
+  browser_endpoint_->OnRegionSelectionChanged(selection.Clone());
 }
 
 void BrowserHostImpl::OnAutoReconnectStateChanged(bool enabled) {
