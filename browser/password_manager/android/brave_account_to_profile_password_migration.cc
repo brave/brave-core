@@ -65,11 +65,10 @@ base::Time LatestTimestamp(const StoredCredential& credential) {
 }
 
 // True if the profile-store copy already reflects `account_credential`, i.e. it
-// holds
-// the same password or a more recently changed one. This is the condition under
-// which the account copy needs no write, and equally the condition under which
-// it is safe to drop from the account store: a same-key profile copy with an
-// older, different password means the write did not land.
+// holds the same password or a more recently changed one. This is the condition
+// under which the account copy needs no write, and equally the condition under
+// which it is safe to drop from the account store: a same-key profile copy with
+// an older, different password means the write did not land.
 // Both credentials are expected to have equal unique keys; callers establish
 // that with AreStoredCredentialUniqueKeysEqual before asking.
 bool ProfileCopyIsUpToDate(const StoredCredential& profile_credential,
