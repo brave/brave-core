@@ -124,6 +124,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
     private @Nullable BraveAccountSectionController mAccountController;
+    private @Nullable BraveEmailAliasesSectionController mEmailAliasesController;
     private @Nullable VpnCalloutPreference mVpnCalloutPreference;
     private boolean mNotificationClicked;
 
@@ -147,6 +148,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         CustomizeBraveMenu.propagateMenuItemExtras(findPreference(PREF_APPEARANCE), getArguments());
 
         mAccountController = BraveAccountSectionController.maybeCreate(this);
+        mEmailAliasesController = BraveEmailAliasesSectionController.maybeCreate(this);
 
         overrideChromiumPreferences();
         initRateBrave();
@@ -427,6 +429,13 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         int passwordsAndAutofillSectionOrder = displaySectionOrder;
         setPreferenceOrder(
                 MainSettings.PREF_AUTOFILL_AND_PASSWORDS, ++passwordsAndAutofillSectionOrder);
+        if (mEmailAliasesController != null) {
+            setPreferenceOrder(
+                    BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES,
+                    ++passwordsAndAutofillSectionOrder);
+        } else {
+            removePreferenceIfPresent(BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES);
+        }
 
         int supportSectionOrder = passwordsAndAutofillSectionOrder;
         setPreferenceOrder(PREF_SUPPORT_SECTION, ++supportSectionOrder);
@@ -505,6 +514,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     }
 
     private void updatePreferenceIcons() {
+        updatePreferenceIcon(
+                BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES, R.drawable.ic_email_shield);
         updatePreferenceIcon(PREF_CONTENT_SETTINGS, R.drawable.ic_tune);
         updatePreferenceIcon(PREF_DOWNLOADS, R.drawable.ic_download);
         updatePreferenceIcon(PREF_LANGUAGES, R.drawable.ic_product_translate);
@@ -692,9 +703,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     }
 
     /**
-     * Hides the policy-controlled feature rows (VPN/Rewards-News/Wallet/Leo and the VPN promo
-     * callout) for Brave Origin subscribers until the profile policy service has finished applying
-     * Brave Origin policies, then evaluates their real policy state.
+     * Hides the policy-controlled feature rows (VPN/Rewards-News/Wallet/Leo/Email Aliases and the
+     * VPN promo callout) for Brave Origin subscribers until the profile policy service has finished
+     * applying Brave Origin policies, then evaluates their real policy state.
      *
      * <p>Brave Origin merges its feature policies into the managed pref store as part of profile
      * policy initialization. In the brief window before that completes -- most visibly when the
@@ -757,6 +768,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         checkNewsPolicyAndUpdatePreference();
         checkVpnPolicyAndUpdatePreference();
         checkWalletPolicyAndUpdatePreference();
+        if (mEmailAliasesController != null) {
+            mEmailAliasesController.updateVisibility();
+        }
     }
 
     /** Toggles visibility of every policy-controlled feature surface still on the screen. */
@@ -766,6 +780,15 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         setPreferenceVisibleIfPresent(PREF_BRAVE_VPN, visible);
         setPreferenceVisibleIfPresent(PREF_BRAVE_WALLET, visible);
         setPreferenceVisibleIfPresent(PREF_BRAVE_VPN_CALLOUT, visible);
+        if (mEmailAliasesController != null) {
+            if (visible) {
+                // Email Aliases is hidden rather than removed when disabled, so re-evaluate it.
+                mEmailAliasesController.updateVisibility();
+            } else {
+                setPreferenceVisibleIfPresent(
+                        BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES, false);
+            }
+        }
     }
 
     private void setPreferenceVisibleIfPresent(String key, boolean visible) {
@@ -799,6 +822,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             // "pin widget" request. Keep the search state as is, like the other external-activity
             // results handled upstream.
             BraveSearchWidgetUtils.requestPinAppWidget();
+            return false;
+        }
+        if (BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES.equals(key)) {
+            // Email Aliases opens in its own activity rather than a settings sub-screen.
+            BraveEmailAliasesSectionController.open(ContextUtils.activityFromContext(context));
             return false;
         }
         return MainSettings.openSearchResult(
@@ -926,6 +954,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     if (!BraveAccountFeatures.isBraveAccountEnabled()) {
                         indexData.removeEntry(
                                 getUniqueId(BraveAccountSectionController.PREF_BRAVE_ACCOUNT));
+                    }
+                    if (!BraveEmailAliasesSectionController.isEnabled(profile)) {
+                        indexData.removeEntry(
+                                getUniqueId(BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES));
                     }
                     // Brave leaf switches/actions in main settings have no sub-screen to
                     // navigate to from search results, so exclude them from the index.
