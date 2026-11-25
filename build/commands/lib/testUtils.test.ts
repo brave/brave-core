@@ -7,7 +7,7 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import type { Config } from './config.ts'
-import { getApplicableFilters } from './testUtils.ts'
+import { getApplicableFilters, parseTestSuites } from './testUtils.ts'
 
 let srcDir: string
 let braveFilterDir: string
@@ -133,5 +133,15 @@ describe('getApplicableFilters', () => {
     expect(
       getApplicableFilters(makeConfig({ is_asan: true }), 'browser_tests'),
     ).toEqual([braveFilterPath, upstreamFilterPath])
+  })
+})
+
+describe('parseTestSuites', () => {
+  it('splits suites and gn labels, dropping duplicates', () => {
+    expect(
+      parseTestSuites(
+        'brave_unit_tests, //brave/test:brave_browser_tests,,brave_unit_tests',
+      ),
+    ).toEqual(['brave_unit_tests', 'brave_browser_tests'])
   })
 })
