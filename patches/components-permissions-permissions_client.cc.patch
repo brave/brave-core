@@ -1,0 +1,13 @@
+diff --git a/components/permissions/permissions_client.cc b/components/permissions/permissions_client.cc
+index 3519d16bc2b042043ccdde3a1466c6f6c638f739..306110a0df997c10aa7e52c38484c0679ae506c0 100644
+--- a/components/permissions/permissions_client.cc
++++ b/components/permissions/permissions_client.cc
+@@ -149,7 +149,7 @@ std::optional<bool> PermissionsClient::HasPreviouslyAutoRevokedPermission(
+   return std::nullopt;
+ }
+ 
+-bool PermissionsClient::CanBypassEmbeddingOriginCheck(
++bool PermissionsClient::CanBypassEmbeddingOriginCheck(ContentSettingsType type,
+     const GURL& requesting_origin,
+     const GURL& embedding_origin) {
+   return false;

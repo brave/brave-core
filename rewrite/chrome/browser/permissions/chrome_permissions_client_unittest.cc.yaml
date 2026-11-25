@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Pass a content settings type to `CanBypassEmbeddingOriginCheck`
+
+      Brave adds the parameter to the function. These tests check the WebUI
+      origins, which bypass the check whatever the permission is.
+    regex:
+      re_pattern: '(CanBypassEmbeddingOriginCheck\()\s*'
+      replace: '\1ContentSettingsType::GEOLOCATION, '
+    # Every call in the file.
+    count: 10

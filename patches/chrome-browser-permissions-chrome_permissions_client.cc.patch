@@ -1,0 +1,55 @@
+diff --git a/chrome/browser/permissions/chrome_permissions_client.cc b/chrome/browser/permissions/chrome_permissions_client.cc
+index fee3e45e9e6d7dc1aef4a98f5174fbf16d7dfba6..1994fffe2cd06bb983248b3f78a87b63944459fd 100644
+--- a/chrome/browser/permissions/chrome_permissions_client.cc
++++ b/chrome/browser/permissions/chrome_permissions_client.cc
+@@ -14,6 +14,7 @@
+ #include "base/no_destructor.h"
+ #include "base/strings/string_util.h"
+ #include "base/time/time.h"
++#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/actor/actor_keyed_service.h"
+ #include "chrome/browser/app_mode/app_mode_utils.h"
+@@ -136,6 +137,10 @@
+ #include "chrome/browser/safe_browsing/safe_browsing_service.h"
+ #endif
+ 
++#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
++#include "brave/browser/permissions/brave_wallet_permission_prompt_android.h"
++#endif  // BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
++
+ namespace {
+ 
+ using permissions::PermissionPromptDisposition;
+@@ -716,9 +721,17 @@ ChromePermissionsClient::GetAutoApprovalStatus(
+   return permissions::PermissionAction::IGNORED;
+ }
+ 
+-bool ChromePermissionsClient::CanBypassEmbeddingOriginCheck(
++bool ChromePermissionsClient::CanBypassEmbeddingOriginCheck(ContentSettingsType type,
+     const GURL& requesting_origin,
+     const GURL& embedding_origin) {
++  #if BUILDFLAG(ENABLE_BRAVE_WALLET)
++  if (type == ContentSettingsType::BRAVE_ETHEREUM ||
++      type == ContentSettingsType::BRAVE_SOLANA ||
++      type == ContentSettingsType::BRAVE_CARDANO ||
++      type == ContentSettingsType::BRAVE_POLKADOT) {
++    return true;
++  }
++  #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+ // TODO(crbug.com/532219239): This function should get url::Origin instead of
+ // GURL directly.
+ #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+@@ -994,6 +1007,12 @@ ChromePermissionsClient::MaybeCreateMessageUI(
+     content::WebContents* web_contents,
+     const permissions::PermissionRequest& request,
+     base::WeakPtr<permissions::PermissionPromptAndroid> prompt) {
++  #if BUILDFLAG(ENABLE_BRAVE_WALLET)
++  if (auto delegate =
++          BraveWalletPermissionPrompt::MaybeCreate(web_contents, prompt)) {
++    return delegate;
++  }
++  #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+   ContentSettingsType type = request.GetContentSettingsType();
+   if (ShouldUseQuietUI(web_contents, request) ||
+       // The quiet UI is enabled for both Notifications and Geolocation but the
