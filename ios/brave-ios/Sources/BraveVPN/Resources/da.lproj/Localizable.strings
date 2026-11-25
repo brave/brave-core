@@ -7,27 +7,6 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "TILGÆNGELIGE SERVERE";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "Køb";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "Beskyt 5 enheder på 1 abonnement";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "Vælg din placering/dit land";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave sporer aldrig din aktivitet";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Beskyt alle dine apps og hele din enhed";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "Mere sikkerhed til privat eller offentligt Wi-Fi";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "Lynhurtigt, op til 100 Mbps";
-
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
 "vpn.cityCountTitle" = "%ld by";
 
@@ -57,9 +36,6 @@
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "Problem";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Problem med forbindelsens pålidelighed";
 
 /* Description used for specific issue field for customer support contact form. */
 "vpn.contactFormIssueDescription" = "Vælg den kategori, der beskriver problemet.";
@@ -111,9 +87,6 @@
 
 /* The button text that starts the trial action */
 "vpn.freeTrialPeriodAction" = "prøv 7 dage gratis";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Alle abonnementer fornyes automatisk, men kan opsiges inden fornyelse.";
 
 /* Text explaining how the VPN works. */
 "vpn.installProfileBody" = "Denne profil giver VPN mulighed for hele tiden automatisk at oprette forbindelse og sikre trafik på tværs af din enhed. Denne VPN-forbindelse vil blive krypteret og dirigeret gennem Braves intelligente firewall for at blokere potentielt skadelige og invasive forbindelser.";
@@ -172,20 +145,11 @@
 /* Message that we show after successfully changing tunnel protocol. */
 "vpn.protocolSwitchSuccessPopupText" = "VPN-tunnelprotokol ændret.";
 
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Et serverområde, der ligger nærmest dig, vil automatisk blive valgt, baseret på din systemtidszone. Dette anbefales for at sikre hurtige internethastigheder.";
-
 /* Message for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorMessage" = "Det lykkedes ikke at skifte server. Prøv igen senere.";
 
 /* Title for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorTitle" = "Serverfejl";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Serverregion";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "VPN-region ændret.";
 
 /* Yearly tier explaination. Subscription will be renewed annually. */
 "vpn.renewAnnually" = "Fornys årligt";
@@ -229,9 +193,6 @@
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Kontakt teknisk support";
 
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Kunne ikke hente serverlisten. Prøv igen senere.";
-
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPN-support";
 
@@ -249,12 +210,6 @@
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "Nulstil konfiguration";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Vært";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Placering";
 
 /* Header title for vpn settings server section. */
 "vpn.settingsServerSection" = "Server";
@@ -307,32 +262,17 @@
 /* Title for an alert when the VPN can't be configured */
 "vpn.vpnConfigGenericErrorTitle" = "Fejl";
 
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN kræver, at en VPN-profil er installeret på din enhed for at fungere.";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Adgang nægtet";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Rabatkoden kunne ikke indløses. Prøv igen, eller tjek oplysningerne om din rabatkode, og prøv igen.";
-
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "Kan ikke gennemføre købet. Prøv igen, eller tjek dine betalingsoplysninger på Apple, og prøv igen.";
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "Fejl";
 
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Abonnementer vil blive opkrævet via din iTunes-konto.\n\nEnhver ubrugt del af den gratis prøveperiode, hvis en sådan tilbydes, mistes, når du køber et abonnement.\n\nDit abonnement fornyes automatisk, medmindre det opsiges mindst 24 timer før udgangen af ​​den aktuelle periode.\n\nDu kan administrere dine abonnementer i Indstillinger.\n\nVed at bruge Brave accepterer du vilkårene for brug og privatlivspolitikken.";
-
 /* The title shown on the menu when the VPN connection is disconnected */
 "vpn.vpnOffMenuButtonTitle" = "VPN slået fra";
 
 /* The title shown on the menu when the VPN connection is connected */
 "vpn.vpnOnMenuButtonTitle" = "VPN slået til";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Indløs kode";
 
 /* The alert title showing vpn region is changed */
 "vpn.vpnRegionChangedTitle" = "VPN-region ændret";
@@ -351,9 +291,6 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "Årligt abonnement";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Forny årligt, og spar %@";
 
 /* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
 "vpn.yearlySubDisclaimer" = "BEDSTE VÆRDI";

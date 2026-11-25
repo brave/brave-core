@@ -16,27 +16,6 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "트래커 및 광고 차단됨";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "차단된 \n광고 수";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "**Brave 플레이어**를 이용하면 광고나 끊김 없이 동영상을 재생할 수 있습니다.";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "나에게 맞게 Shields 조정하기";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "이 사이트는 일부 광고 차단 프로그램을 차단하기 시작했으므로 사이트가 제대로 작동하지 않을 수 있습니다.";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "이 문제를 해결하려면 Brave의 Shield 설정을 조정하세요. 조정한 후 Brave 플레이어에서 이 콘텐츠를 시청하면 됩니다.";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "현재 설정 유지";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "이 사이트의 광고 차단 설정 조정";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP 페이지 자동 리디렉션";
 
@@ -79,32 +58,11 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "자바스크립트 차단(사이트가 깨질 수 있음).";
 
-/* Title for the brave player feature */
-"BravePlayer" = "Brave 플레이어";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "이 사이트의 동영상을 항상 Brave 플레이어로 열기";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "사용해보기";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "나중에";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Brave 플레이어를 이용하면 끊김 없이 동영상을 시청할 수 있습니다.";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "대신 Brave 플레이어에서 시청";
-
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "고급 컨트롤";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "광고 및 기타 불쾌한 것 차단됨";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "자세히 알아보기";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "Shields 전역 기본값 변경";
@@ -217,17 +175,11 @@
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "다운로드 대기 중";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "편집";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "필터 목록 URL 입력";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "최근 업데이트 %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "여기에 필터 목록 URL 입력 ";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "지문 차단";
@@ -341,10 +293,10 @@
 "ShieldsDefaults" = "Brave Shields 전역 기본값";
 
 /* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "새로운 사이트에 적용되는 기본 Shields 설정입니다. 이 설정을 변경해도 기존 사이트별 설정에는 영향을 주지 않습니다.";
+"ShieldsDefaultsFooter" = "새 사이트에 적용되는 기본 Shields 설정이 있습니다. 설정을 변경해도 기존 사이트별 설정에는 영향을 주지 않습니다.";
 
 /* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Brave의 개인정보 보호 없이 이 사이트를 브라우징하고 계십니다. Shields 사용 시 제대로 작동하지 않나요?";
+"ShieldsDownDisclaimer" = "Brave의 개인 정보 보호없이 이 사이트를 탐색하고 있습니다. 실드가 제대로 작동하지 않습니까?";
 
 /* Time Saved Days */
 "ShieldsTimeStatsDays" = "일";
@@ -401,7 +353,7 @@
 "SiteIsNotSecure" = "사이트가 비보안임";
 
 /* No comment provided by engineer. */
-"SiteReportedBody" = "이 사이트에 문제가 있다는 사실을 Brave 개발자가 파악할 수 있게 해주셔서 감사합니다. 최선을 다해 해결하겠습니다!";
+"SiteReportedBody" = "이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!";
 
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "감사합니다.";
@@ -411,9 +363,6 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "트래커 및 광고 차단";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "차단된 \n트래커 수";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "목록 업데이트";

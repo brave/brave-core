@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "Παρουσιάστηκε σφάλμα κατά την εισαγωγή σελιδοδεικτών.";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "Παρουσιάστηκε σφάλμα κατά την εισαγωγή του ιστορικού.";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "Παρουσιάστηκε σφάλμα κατά την εισαγωγή κωδικών πρόσβασης. Ορισμένοι κωδικοί πρόσβασης δεν μπόρεσαν να εισαχθούν λόγω συγκρουόμενων κωδικών.";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "Παρουσιάστηκε σφάλμα κατά την εισαγωγή κωδικών πρόσβασης.";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "Παρουσιάστηκε σφάλμα κατά την αποσυμπίεση του αρχείου.";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "Επιλογή αρχείου...";
 
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "Από τη λίστα εφαρμογών (αλφαβητική ταξινόμηση), βρείτε και πατήστε **Safari**.";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "Το αρχείο zip δεν περιέχει δεδομένα εισαγωγής.";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "Περιμένετε ενώ μεταφέρουμε με ασφάλεια τα δεδομένα σας. Αυτό μπορεί να διαρκέσει λίγα λεπτά.";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "Εντοπίστηκαν πολλαπλά προφίλ";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "Προσωπικό";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Εισαγόμενοι σελιδοδείκτες";

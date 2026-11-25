@@ -16,27 +16,6 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "Αποκλείστηκαν προγράμματα παρακολούθησης & διαφημίσεις";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "Αποκλεισμένες \nδιαφημίσεις";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "Το **Brave Player** είναι το εισιτήριό σας για μια εμπειρία βίντεο χωρίς διαφημίσεις και διακοπές.";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "Προσαρμογή Ασπίδων για εμένα";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "Αυτός ο ιστότοπος έχει αρχίσει να αποκλείει ορισμένα προγράμματα αποκλεισμού διαφημίσεων, πράγμα που σημαίνει ότι ο ιστότοπος ενδέχεται να μην λειτουργεί όπως αναμένεται.";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Για την αντιμετώπιση αυτού του ζητήματος, το Brave μπορεί να προσαρμόσει τις ρυθμίσεις των ασπίδων σας για εσάς. Μετά την προσαρμογή, μπορείτε να δοκιμάσετε να παρακολουθήσετε αυτό το περιεχόμενο στο Brave Player.";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "Διατήρηση τρεχουσών ρυθμίσεων";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "Προσαρμογή ρυθμίσεων αποκλεισμού διαφημίσεων για αυτόν τον ιστότοπο";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Αυτόματη ανακατεύθυνση σελίδων AMP";
 
@@ -79,32 +58,11 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "Αποκλείει τη JavaScript (μπορεί να εμποδίσει τη λειτουργία ιστότοπων).";
 
-/* Title for the brave player feature */
-"BravePlayer" = "Brave Player";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Άνοιγμα βίντεο από αυτόν τον ιστότοπο πάντα με το Brave Player";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "Δοκιμή";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "Όχι τώρα";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Το Brave Player σάς επιτρέπει να παρακολουθείτε βίντεο χωρίς διακοπές.";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Παρακολούθηση στο Brave Player";
-
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "Ρυθμίσεις για προχωρημένους";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Οι διαφημίσεις και άλλα ανατριχιαστικά πράγματα αποκλείστηκαν";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Μάθετε περισσότερα";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "Αλλαγή καθολικών προεπιλογών Ασπίδων";
@@ -217,17 +175,11 @@
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "Λήψη σε εκκρεμότητα";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Επεξεργασία";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "Εισαγάγετε τη διεύθυνση URL της λίστας φίλτρων";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "Τελευταία ενημέρωση %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Εισαγάγετε τη διεύθυνση URL της λίστας φίλτρων εδώ ";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Αποκλεισμός αναγνώρισης αποτυπώματος";
@@ -411,9 +363,6 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Αποκλεισμός ιχνηλατών & διαφημίσεων";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Αποκλεισμένα \nπρογράμματα παρακολούθησης";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Ενημέρωση λιστών";

@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "אירעה שגיאה במהלך ייבוא הסימניות.";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "אירעה שגיאה במהלך ייבוא ההיסטוריה.";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "אירעה שגיאה במהלך ייבוא הסיסמאות.\nלא ניתן היה לייבא סיסמאות מסוימות כתוצאה מקונפליקטים.";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "אירעה שגיאה במהלך ייבוא הסיסמאות.";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "אירעה שגיאה במהלך חילוץ הקובץ.";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "בחירת קובץ...";
 
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "מרשימת האפליקציות (מסודרות לפי סדר אלפביתי), מציאה ולחיצה על **Safari**.";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "הקובץ המכווץ לא מכיל נתוני ייבוא.";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "נא להמתין בזמן שאנחנו מעבירים באופן מאובטח את הנתונים שלך.\nזה עשוי לקחת כמה רגעים.";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "זוהו פרופילים מרובים";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "אישי";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "סימניות מיובאות";

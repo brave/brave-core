@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "匯入書籤時發生錯誤。";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "匯入歷史記錄時發生錯誤。";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "匯入密碼時發生錯誤。\n由於衝突，某些密碼無法匯入。";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "匯入密碼時發生錯誤。";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "解壓縮檔案時發生錯誤。";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "選擇檔案...";
 
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "從應用程式清單 (依字母順序排序)，找到並點選 **Safari**。";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "zip 檔案不包含匯入資料。";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "請稍候，我們會安全地傳輸您的資料。\n這可能需要一些時間。";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "偵測到多重設定檔";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "個人";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "已匯入的書籤";

@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "북마크를 가져오는 동안 오류가 발생했습니다.";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "기록을 가져오는 동안 오류가 발생했습니다.";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "비밀번호를 가져오는 동안 오류가 발생했습니다.\n일부 비밀번호가 충돌을 일으켜서 가져오지 못했습니다.";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "비밀번호를 가져오는 동안 오류가 발생했습니다.";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "파일 압축을 푸는 동안 오류가 발생했습니다.";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "파일 선택...";
 
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "앱 목록(알파벳 순으로 정렬됨)에서 **Safari**를 찾아 탭하세요.";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "압축 파일에 가져오기 데이터가 포함되어 있지 않습니다.";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "데이터를 안전하게 전송하는 동안 기다려 주세요.\n잠시 시간이 걸릴 수 있습니다.";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "여러 프로필이 감지됨";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "개인";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "가져온 북마크";

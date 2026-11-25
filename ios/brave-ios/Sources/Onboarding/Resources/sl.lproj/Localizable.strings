@@ -4,9 +4,6 @@
 /* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
 "advanceStep2OnboardingButtonTitle" = "Preizkusi!";
 
-/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
-"BraveTranslateOnboarding.disableTranslateButtonTitle" = "Onemogočite to funkcijo";
-
 /* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
 "BraveTranslateOnboarding.translateDescription" = "Strani lahko prevedete v jezike, ki jih podpira vaša naprava iOS. Morda boste morali konfigurirati jezike, če je to prvič, da uporabljate to funkcijo.";
 

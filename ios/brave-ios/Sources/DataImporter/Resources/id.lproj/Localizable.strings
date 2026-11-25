@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "Terjadi kesalahan saat mengimpor Bookmark.";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "Terjadi kesalahan saat mengimpor Riwayat.";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "Terjadi kesalahan saat mengimpor Kata Sandi.\nBeberapa kata sandi tidak bisa diimpor karena terjadi konflik.";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "Terjadi kesalahan saat mengimpor Kata Sandi.";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "Terjadi kesalahan saat membuka zip file.";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "Pilih file...";
 
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "Dari daftar aplikasi (diurutkan sesuai abjad), cari dan ketuk **Safari**.";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "File zip tidak berisi data impor.";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "Tunggu sementara kami mentransfer data Anda dengan aman.\nMungkin butuh waktu beberapa saat.";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "Beberapa profil terdeteksi";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "Personal";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Markah Buku yang Diimpor";

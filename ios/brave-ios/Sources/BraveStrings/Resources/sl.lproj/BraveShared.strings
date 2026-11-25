@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "O možnostih";
 
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertMessage" = "To vam omogoči, da sliko shranite v svojo fotografijo.";
-
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave bi rad dostopal do vaših fotografij";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Dodaj zaznamek";
 
@@ -63,9 +57,6 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Uporabniško ime";
-
-/* Settings autofill section title */
-"Autofill" = "Samodejno izpolnjevanje";
 
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Računi";
@@ -133,9 +124,6 @@
 /* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
 "backgroundDownloadingTitleSingleDownload" = "Prenašanje »%@«";
 
-/* cookie settings option */
-"Block3rdPartyCookies" = "Blokiraj piškotke drugih spletnih mest";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blokiraj vse piškotke";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Ni bilo mogoče nastaviti nastavitve. Poskusite znova.";
 
-/* title for section showing page blocking statistics */
-"BlockingMonitor" = "Monitor blokiranja";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokiraj pojavna okna";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Dodaj zaznamek za %lld zavihkov";
-
-/* Bookmark Folder Section Title */
-"BookmarkFolder" = "Mapa zaznamkov";
-
-/* Bookmark Info Section Title */
-"BookmarkInfo" = "Informacije o zaznamku";
 
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Zaznamki";
@@ -225,9 +204,6 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Ščiti & zasebnost";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
 
 /* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
 "BraveTranslate.languageSelectionButtonTitle" = "Izbira jezika";
@@ -415,14 +391,8 @@
 /* Section title in settings panel */
 "ClearPrivateData" = "Počisti zasebne podatke";
 
-/* The cancel button when confirming clear private data. */
-"ClearPrivateDataAlertCancelButtonTitle" = "Prekliči";
-
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertMessage" = "Ste prepričani?";
-
-/* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "V redu";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "Počisti podatke";
@@ -441,9 +411,6 @@
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "V redu";
-
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "Napaka odjemalca";
 
 /* Button title to close a menu. */
 "Close" = "Zapri";
@@ -481,17 +448,11 @@
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
 "CopyCleanLink" = "Kopirajte čisto povezavo";
 
-/* Context menu item for copying an image to the clipboard */
-"CopyImageActionTitle" = "Kopiraj sliko";
-
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Kopiraj povezavo";
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Kopiraj informacije zavihkov v odložišče.";
-
-/* Copy rewards internals info for support */
-"CopyWalletSupportInfo" = "Kopiraj podporne informacije";
 
 /* Create PDF share action. */
 "CreatePDF" = "Ustvari PDF";
@@ -504,9 +465,6 @@
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Napišite URL iskanja in zamenjajte poizvedbo s %1$s.\nNa primer: https://youtube.com/search?q=%2$s \n(Če spletno mesto podpira OpenSearch, bo možnost samodejnega dodajanja na voljo pri urejanju tega polja.)";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "Samodejno dodajanje";
 
 /* A title explaining that an error shown while adding custom search engine */
 "customSearchEngine.customSearchEngineAddErrorTitle" = "Napaka pri dodajanju iskalnika po meri";
@@ -590,12 +548,6 @@
 "defaultBrowserCallout.notificationTitle" = "Zaščita Brave na vsaki povezavi";
 
 /* No comment provided by engineer. */
-"defaultBrowserCalloutCloseAccesabilityLabel" = "Zapri opomnik privzetega brskalnika";
-
-/* Name for default Brave theme. */
-"defaultThemeName" = "Privzeto za Brave";
-
-/* No comment provided by engineer. */
 "Delete" = "Izbriši";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
@@ -649,9 +601,6 @@
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Prenosi";
 
-/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
-"DownloadsPanelEmptyStateTitle" = "Prenešene datoteke se bodo prikažejo tukaj.";
-
 /* Action item title of long press for Opening the existing - active Tab url in a new Tab */
 "DuplicateActiveTab" = "Podvoji zavihek";
 
@@ -700,48 +649,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Vnesite ime mape";
 
-/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ običajno uporablja šifriranje za zaščito vaših informacij. Ko je Brave poskusil povezati se s %2$@, je spletno mesto poslalo nenavadne in nepravilne poverilnice. To se lahko zgodi, ko se napadalec poskuša predstavljati kot %3$@, ali ko zaslonska plošča za prijavo Wi-Fi prekine povezavo. Vaši podatki so še vedno varni, ker je Brave prekinil povezavo, preden so bili izmenjani kakršni koli podatki.<br />Vendar ne morete obiskati %4$@ ravno zdaj, ker spletno mesto uporablja fiksiranje potrdila. Napake v omrežju in napadi so ponavadi začasni, zato bo ta stran verjetno delala pozneje.";
-
-/* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningDetails" = "Ta strežnik ni mogel dokazati, da je %@; njegov varnostni certifikat ni pričakovan od operacijskega sistema vaše naprave. To lahko povzroči napačna konfiguracija ali napadalec, ki poskuša prestrezati vašo povezavo.";
-
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningTitle" = "Napadalci bi lahko poskušali ukrasti vaše informacije iz %@ (na primer gesla, sporočila ali kreditne kartice).";
-
-/* Label for button to go back from the error page */
-"ErrorPagesBackToSafetyButton" = "Nazaj v varnost";
-
-/* Title on the certificate error page */
-"ErrorPagesCertErrorTitle" = "To spletno mesto ne more zagotoviti varno povezavo";
-
-/* Title on the certificate error page */
-"ErrorPagesCertWarningTitle" = "Vaša povezava ni zasebna";
-
-/* Label for button to hide advanced actions on the error page */
-"ErrorPagesHideDetailsButton" = "Skrij podrobnosti";
-
-/* Label for learn more link on error page */
-"ErrorPagesLearnMoreButton" = "Preberite več";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesMoreDetailsButton" = "Več podrobnosti";
-
-/* Title of the No Internet error page */
-"ErrorPagesNoInternetTitle" = "Brez dostopa do interneta";
-
-/* Text telling the user to Try: The following list of things */
-"ErrorPagesNoInternetTry" = "Izgleda, da niste na spletu. Če želite to popraviti, poskusite";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem1" = "Preverjanje omrežnih kablov, modema in usmerjevalnika";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem2" = "Ponovno se povežite z Wi-Fi";
-
-/* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesProceedAnywayButton" = "Nadaljujem do %@ (nevarno)";
-
 /* Button to exclude a topsite url from the most visited list */
 "ExcludeMostVisitedSite" = "Odstrani";
 
@@ -775,29 +682,14 @@
 /* Share action title */
 "FindInPage" = "Iskanje na strani";
 
-/* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "Končano";
-
 /* Find `search query` */
 "FindInPageFormat" = "Iskanje ";
-
-/* Accessibility label for next result button in Find in Page Toolbar. */
-"FindInPageNextResultButtonAccessibilityLabel" = "Naslednji rezultat na strani";
-
-/* Accessibility label for previous result button in Find in Page Toolbar. */
-"FindInPagePreviousResultButtonAccessibilityLabel" = "Prejšnji rezultat na strani";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findInPageTitle" = "Iskanje na strani";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findNextTitle" = "Poišči naslednje";
-
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "Na tej strani";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findPreviousTitle" = "Poišči prejšnje";
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Dovolite univerzalnim povezavam, da se odprejo v zunanjih aplikacijah";
@@ -822,9 +714,6 @@
 
 /* Hides the rewards icon */
 "HideRewardsIcon" = "Skrij ikono storitve Brave Rewards";
-
-/* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Skriva ikono Brave Rewards, kadar Brave Rewards ni omogočen";
 
 /* Title for history menu item */
 "HistortMenuItem" = "Zgodovina";
@@ -867,12 +756,6 @@
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Uvozi podatke brskanja";
-
-/* title for per-site shield toggles */
-"IndividualControls" = "Individualne krmilnike";
-
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "Neveljavni podatki v zahtevku za plačilo";
 
 /* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
 "JavaScriptDialogEmbeddedPageTitle" = "Vdelana stran na tej strani";
@@ -931,30 +814,6 @@
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Filter";
 
-/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
-"LoginDetailLastModifiedCellFormatTitle" = "Nazadnje spremenjeno %@";
-
-/* Label displayed above the password row in Login Detail View. */
-"LoginDetailPasswordCellTitle" = "geslo";
-
-/* Label displayed above the username row in Login Detail View. */
-"LoginDetailUsernameCellTitle" = "uporabniško ime";
-
-/* Label displayed above the website row in Login Detail View. */
-"LoginDetailWebsiteCellTitle" = "spletno mesto";
-
-/* Label for the button used to deselect all logins. */
-"LoginListDeselectAllButtonTitle" = "Prekliči izbiro vseh";
-
-/* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "Nobenih prijav ni bilo najdenih";
-
-/* Title for Logins List View screen. */
-"LoginListScreenTitle" = "Prijave";
-
-/* Label for the button used to select all logins. */
-"LoginListSelectAllButtonTitle" = "Izberite vse";
-
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "Omogoči glasbo v ozadju";
 
@@ -969,9 +828,6 @@
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Razkrij";
-
-/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
-"monthAbbreviation" = "me.";
 
 /* Bookmark title / Device name */
 "Name" = "Ime";
@@ -1048,9 +904,6 @@
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Preberite več o sponzoriranih slikah";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"ntp.settingsAutoOpenKeyboard" = "Samodejno odpri tipkovnico";
-
 /* A setting to enable or disable background on the NTP screen. */
 "ntp.settingsBackgroundImages" = "Ozadje";
 
@@ -1087,53 +940,8 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Z vključitvijo nagrad se strinjate s %@.";
 
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "Zaslužite žetone in nagradite ustvarjalce za odličnde vsebine, medtem ko brskate.";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "Zaslužite točke in nagradite ustvarjalce za odlično vsebino med brskanjem.";
-
-/* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Brave Oglasi so tukaj!";
-
-/* Title for ads onboarding screen */
-"OBAdsTitle" = "Brskalnik Brave vam bo pokazal prvi oglas v";
-
-/* Title for when the user completes onboarding */
-"OBCompleteTitle" = "Zdaj ste pripravljeni za pot.";
-
-/* Button to show information on how to enable ads */
-"OBDidntSeeAdButton" = "Nisem videl oglasa";
-
-/* A generic error body for onboarding */
-"OBErrorDetails" = "Pri ustvarjanju vaše denarnice je šlo nekaj narobe. Prosimo, poskusite znova";
-
 /* No comment provided by engineer. */
 "OBErrorOkay" = "V redu";
-
-/* A generic error title for onboarding */
-"OBErrorTitle" = "Oprostite";
-
-/* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "Začnite z brskanjem";
-
-/* Button to join Brave Rewards. */
-"OBJoinButton" = "Pridruži se";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Dovolite Brave, da preverka moj odložišče za ujemajoči se kodo priporočila";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Morda ste prenasili Brave v podporo svojemu priporočitelju. Če želite odkriti svojega priporočitelja, Brave opravi enkratno preverjanje vašega odložišča za ujemajoči se kodo priporočila. To preverjanje je omejeno samo na kodo, nobeni drugi osebni podatki ne bodo poslani. Če se odjava, vaš priporočitelj ne bo prejel nagrad od Brave.";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentNoButton" = "Ne dovolite tega preverjanja";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentTitle" = "Anonimna preverka kode priporočila";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentYesButton" = "Dovolite enkratno preverjanje odložišča";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "Z dotikom Ja se strinjate s ";
@@ -1150,32 +958,8 @@
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Prijava v Brave zasebne oglase podpira izdajatelje in ustvarjalce vsebine z vsakim oglasom, ki ga vidite.";
 
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Zaslužite žetone in nagradite ustvarjalce za odličnde vsebine, medtem ko brskate.";
-
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Zasebnost";
-
-/* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Storitev Brave Rewards";
-
-/* Save button to save current selection */
-"OBSaveButton" = "Shrani";
-
-/* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "Izberite privzeti iskalnik";
-
-/* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Dobrodošli v Brave brskalnik";
-
-/* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "Blokirajte zasebnostne sledilce, ki jih profilirajo, da lahko brskate brez sledenja po spletu";
-
-/* Title for shields onboarding screen */
-"OBShieldsTitle" = "Ščiti Brave";
-
-/* Button to show the Brave Rewards Ads. */
-"OBShowMeButton" = "Pokaži mi";
 
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Začni";
@@ -1210,20 +994,11 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Odpri vse (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Odpri nastavitve Brave Nagrade";
-
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Pri odpiranju mape Prenosi v aplikaciji Datoteke je prišlo do neznane napake.";
 
-/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
-"openExternalAppURLHost" = "%@ pravi:";
-
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "Dovoli %@ da zamenja aplikacije?";
-
-/* Context menu for opening image in new tab */
-"OpenImageInNewTab" = "Odpri sliko v novem zavihku";
 
 /* Context menu item for opening a link in a new private browsing window */
 "OpenInNewPrivateWindowTitle" = "Odpri v novem zasebnem oknu";
@@ -1360,12 +1135,6 @@
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Druge nastavitve zasebnosti";
 
-/* Section name for other settings. */
-"OtherSettingsSection" = "Druge nastavitve";
-
-/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
-"p3a.continue" = "Naprej";
-
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "Ti zasebni odgovori pomagajo družbi Brave oceniti splošno uporabo določenih funkcij in jih izboljšati za vas.";
 
@@ -1396,12 +1165,6 @@
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Privzeta raven povečave spletne strani";
 
-/* Description for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesDescription" = "Ko se raven povečave spletne strani spremeni, se spletna stran pojavi na seznamu tukaj. Trenutno ni spletnih mest, ki bi bila povečana ali pomanjšana.";
-
-/* Title for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesTitle" = "Nobenih spletnih mest dodanih";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Vsa druga spletna mesta";
 
@@ -1426,12 +1189,6 @@
 /* Setting to allow the app to restore private browsing tabs */
 "PersistentPrivateBrowsing" = "Trajno zasebno brskanje";
 
-/* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Dovolite Brave, da obnovi zavihke zasebnega brskanja, tudi če zaprete / ponovno odprete aplikacijo";
-
-/* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "Obnovi zasebne zavihke";
-
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Fotografija avtorja %@";
 
@@ -1446,12 +1203,6 @@
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Možnosti predvajanja";
-
-/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
-"playlist.carplayRestartPlaybackButtonStateDisabled" = "Onemogočeno. Tapni za omogočanje ponovnega zagona predvajanja.";
-
-/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
-"playlist.carplayRestartPlaybackButtonStateEnabled" = "Omogočeno. Tapni za onemogočanje ponovnega zagona predvajanja.";
 
 /* The description of the checkbox that allows the user to restart audio/video playback */
 "playlist.carplayRestartPlaybackOptionDetailsTitle" = "Odloči, ali bo izbira že predvajajočega se elementa ponovno zagnala predvajanje ali nadaljevala predvajanje od zadnje točke";
@@ -1699,9 +1450,6 @@
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "Odpri Unikum za zasebnost";
 
-/* The title of the button action which open the privacy hub */
-"privacyHub.openPrivacyHubWidgetActionTitle" = "Odprite Privacy Hub";
-
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Podatki Unikuma za zasebnost se shranjujejo lokalno in se nikoli ne pošljejo nikamor.";
 
@@ -1771,23 +1519,11 @@
 /* Private button title */
 "Private" = "Način brez beleženja zgodovine";
 
-/* No comment provided by engineer. */
-"PrivateBrowsing" = "Zasebno brskanje";
-
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Samo zasebno brskanje";
 
 /* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
 "PrivateBrowsingOnlyWarning" = "Način samo zasebnega brskanja bo zaprl vse vaše trenutne zavihke in vas odjavil s vseh spletnih mest.";
-
-/* Private tab details */
-"PrivateTabBody" = "Zasebni zavihki niso shranjeni v Bravu, vendar vas ne naredijo anonimne na spletu. Spletna mesta, ki jih obiščete v zasebnem zavihku, se ne bodo pojavila v vaši zgodovini in njihovi piškotki se vedno izginejo, ko jih zaprete – v Bravu ne bo nobene sledi. Prenos datotek pa bo shranjen.\nVaš mobilni operater (ali lastnik brezžične mreže ali VPN, na katerega ste povezani) lahko vidi, katera spletna mesta obiskujete in ta spletna mesta bodo izvedela vaš javni naslov IP, tudi v zasebnih zavihkih.";
-
-/* Private tab detail text */
-"PrivateTabDetails" = "Uporaba samo zasebnih zavihkov spremeni le, kaj počne Brave na vaši napravi, ne spremeni pa vedenja druge osebe.\n\nSpletna mesta vedno izvedejo vaš naslov IP, ko jih obiščete. Na podlagi tega pogosto lahko ugibajo, kje se nahajate – običajno vaš kraj. Včasih je lahko ta ugibanje lokacije veliko bolj specifično. Spletna mesta tudi vedo vse, kar jim posebej poveste, kot so iskalni izrazi. Če se prijavite na spletno mesto, bodo vedeli, da ste lastnik tega računa. Še vedno boste odjavljeni, ko zaprete zasebne zavihke, ker bo Brave vrzel piškotka, ki vas drži prijavljenega.\n\nTok, ki vas povezuje s svetom (vaš ponudnik storitev interneta), lahko vidi vso vašo dejavnost omrežja. Pogosto je to vaš mobilni operater. Če ste povezani z brezžično mrežo, je to lastnik te mreže, in če uporabljate VPN, je to tisti, ki upravlja ta VPN. Vaš ponudnik storitev interneta lahko vidi, katera spletna mesta obiskujete, ko jih obiskujete. Če ta spletna mesta uporabljajo HTTPS, ne morejo narediti nič drugega kot izobrazovano ugibanje o tem, kaj počnete na teh spletnih mestih. Če pa spletno mesto uporablja samo HTTP, lahko vaš ponudnik storitev interneta vidi vse: vaše iskalne izraze, katere strani ste brali in katere povezave ste sledili.\n\nČe vaša delodajalec upravlja vašo napravo, lahko spremlja tudi, kaj počnete z njo. Uporaba zasebnih zavihkov verjetno ne bo preprečila, da bi vedeli, katera spletna mesta ste obiskali. Druga oseba z dostopom do vaše naprave bi lahko namestila tudi programsko opremo, ki spremlja vašo dejavnost, in zasebni zavihki vas ne bodo zaščitili niti pred tem.";
-
-/* Private tab information link */
-"PrivateTabLink" = "Izvedite več o zasebnih zavihkih.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Zavihek brez beleženja zgodovine";
@@ -1846,12 +1582,6 @@
 /* Accessibility label for brightness adjustment slider in Reader Mode display settings */
 "ReaderModeBrightSliderAccessibilityLabel" = "Svetlost";
 
-/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
-"ReaderModeDisplaySettingsButtonTitle" = "Nastavitve prikaza";
-
-/* Error displayed when reader mode cannot be enabled */
-"ReaderModeErrorConvertDisplayText" = "Prišlo je do napake pri pretvorbi strani";
-
 /* Font type setting in the reading view settings */
 "ReaderModeFontButtonSansSerifTitle" = "Brez serifov";
 
@@ -1863,15 +1593,6 @@
 
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Spremeni vrsto pisave.";
-
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "Nalaganje vsebine…";
-
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadOriginalLinkText" = "Naloži izvirno stran";
-
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "Strani ni bilo mogoče prikazati v ogledovalcu za branje.";
 
 /* Title of a bar that show up when you enter reader mode. */
 "readerModeSettingsButton" = "Način branja";
@@ -1894,14 +1615,8 @@
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "Ni nedavno zaprtih zavihkov.";
 
-/* Open Tab action title */
-"recently.closed.open" = "Odpri";
-
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "Ponovno odpri zadnji zaprt zavihek";
-
-/* Description for alert to ask user for opening last closed tab in list */
-"recently.closed.shake.description" = "Ali želite odpreti zadnje zaprt zavihek?";
 
 /* Action item title of long press for Opening recently closed tab view */
 "recently.closed.title" = "Nedavno zaprti zavihki";
@@ -1987,12 +1702,6 @@
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "\"%@\" bi rad dostopil do mikrofona";
 
-/* Name of folder where restored bookmarks are retrieved */
-"RestoredBookmarksFolderName" = "Obnovljeni zaznamki";
-
-/* Name of folder where restored favorites are retrieved */
-"RestoredFavoritesFolderName" = "Obnovljeni priljubljeni";
-
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "Da";
 
@@ -2035,80 +1744,11 @@
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Ta ustvarjalec vsebine je preverjen z Brave Ustvarjalci";
 
-/* Displayed next to a number representing the total number of publishers supported */
-"rewards.totalSupportedCount" = "Število ustvarjalcev vsebine, katerim pomagate pri podpori v tem mesecu.";
-
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Ta ustvarjalec ni preverjen in ne bo vključen v podporo ustvarjalcev";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Znesek";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAnonymous" = "Anonimno";
-
-/* No comment provided by engineer. */
-"RewardsInternalsBalanceInfoHeader" = "Podatki o stanju";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "Ali ste prepričani, da želite izbrisati vse dnevnike nagrad?";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsTitle" = "Izbriši dnevnike";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionAmount" = "Znesek donacije";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Braveovi žetoni";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorNone" = "Brez";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "Podpri";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUserFunds" = "Uporabnikova sredstva";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepACOff" = "Samodejni prispevek izključen";
-
-/* 'AC' refers to Auto-Contribute */
-"RewardsInternalsContributionsStepACTableEmpty" = "Tabela samodejnega prispevka je prazna";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCompleted" = "Zaključeno";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCreds" = "Poverilnice";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepExternalTransaction" = "Zunanja transakcija";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "Ni uspelo";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepNotEnoughFunds" = "Ni dovolj sredstev";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepPrepare" = "Pripravi";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepReserve" = "Zadrži";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "Nagrade izključene";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "Začni";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsTitle" = "Donacije";
-
-/* No comment provided by engineer. */
-"RewardsInternalsCreatedAt" = "Ustvarjeno ob";
 
 /* No comment provided by engineer. */
 "RewardsInternalsDeviceInfoHeader" = "Podatki o napravi";
@@ -2128,9 +1768,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Seme ključnih informacij";
 
-/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
-"RewardsInternalsLogsCount" = "Prikazano je %d dnevnikov";
-
 /* No comment provided by engineer. */
 "RewardsInternalsLogsTitle" = "Dnevniki";
 
@@ -2141,34 +1778,13 @@
 "RewardsInternalsNotSupported" = "Ni podprto";
 
 /* No comment provided by engineer. */
-"RewardsInternalsProcessor" = "Procesor";
-
-/* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Založnik";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublishers" = "Založbe";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRetryCount" = "Število poskusov";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeAutoContribute" = "Samodejni prispevek";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeOneTimeTip" = "Enkratna nagrade";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "Ponavljajoča se naročnina";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "Profil nagrad, naprava in podatki o stanju (vedno so deljeni)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Osnovni podatki";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableContributionsDescription" = "Vsi prispevki, ki jih naredite založnikom prek naročnine ali samodejnega prispevka";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableDatabaseDescription" = "Notranja podatkovna baza";
@@ -2204,9 +1820,6 @@
 "RewardsInternalsTitle" = "Notranje nagrade";
 
 /* No comment provided by engineer. */
-"RewardsInternalsTotalAmount" = "Skupni znesek";
-
-/* No comment provided by engineer. */
 "RewardsInternalsTotalBalance" = "Skupno stanje";
 
 /* No comment provided by engineer. */
@@ -2233,17 +1846,11 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Shrani";
 
-/* Label for the button used to save changes in some text input. */
-"SaveChangesButtonTitle" = "Shrani spremembe";
-
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Shranjene prijave";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "Shranjeni zavihki";
-
-/* Context menu item for saving an image */
-"SaveImageActionTitle" = "Shrani sliko";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Shrani prijave";
@@ -2257,23 +1864,8 @@
 /* Search engines section of settings */
 "SearchEngines" = "Iskalniki";
 
-/* Accessibility hint describing the action performed when a search suggestion is clicked */
-"SearchesForSuggestionButtonAccessibilityText" = "Iskanje za predlog";
-
 /* Section header for history and bookmarks and open tabs option */
 "SearchHistorySectionHeader" = "Na vaši napravi";
-
-/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
-"SearchInputViewClearButtonTitle" = "Počisti iskanje";
-
-/* Accessibility label for entering search mode for logins */
-"SearchInputViewOverlayAccessibilityLabel" = "Vstopite v način iskanja";
-
-/* Accessibility label for the search input field in the Logins list */
-"SearchInputViewTextFieldAccessibilityLabel" = "Polje iskanja";
-
-/* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "Išči";
 
 /* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
 "searchQuickBarPrefix" = "Iskanje \"%@\"";
@@ -2287,9 +1879,6 @@
 /* Label for showing browser suggestion setting */
 "SearchSettingBrowserSuggestionCellTitle" = "Pokaži predloge brskalnika";
 
-/* Navigation title for search settings. */
-"SearchSettingNavTitle" = "Išči";
-
 /* Label for showing recent search setting. */
 "SearchSettingRecentSearchesCellTitle" = "Pokaži nedavna iskanja";
 
@@ -2299,23 +1888,11 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "Pokaži predloge iskanja";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
-"SearchSuggestionFromFormatText" = "Iskalni predlogi od %@";
-
 /* Action title for open a playlist item in Playlist. */
 "searchSuggestionOpenPlaylistActionTitle" = "Odpri na seznamu predvajanja";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Preklopi na ta zavihek";
-
-/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
-"SearchSuggestionSectionTitleFormat" = "%@ iskanje";
-
-/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "Išči";
-
-/* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "Predlogi iskanja";
 
 /* Search suggestions optin subtitle when prompting to turn on suggestions */
 "searchSuggestionsSubtitle" = "Ali želite omogočiti predlog iskanja?";
@@ -2428,9 +2005,6 @@
 /* Row name for licenses. */
 "SettingsLicenses" = "Licence";
 
-/* Title for settings menu item */
-"SettingsMenuItem" = "Nastavitve";
-
 /* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
 "SettingsTabsOptionBottomBar" = "Spodnja vrstica";
 
@@ -2442,9 +2016,6 @@
 
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Deli povezavo";
-
-/* Title for sharing url menu item */
-"ShareWithMenuItem" = "Delite z...";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "shareWithTitle" = "Delite z...";
@@ -2478,9 +2049,6 @@
 
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Delite novice";
-
-/* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Ščiti je pravkar zaščitila vašo spletno zasebnost.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Čestitke. Ste kar posebni.";
@@ -2665,14 +2233,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Bližnjice za Siri";
 
-/* Button to show the bookmarks list */
-"ShowBookmarks" = "Pokaži zaznamke";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Prikaži prenose";
-
-/* Button to show the history list */
-"ShowHistory" = "Prikaži zgodovino";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showHistoryTitle" = "Prikaži zgodovino";
@@ -2800,9 +2362,6 @@
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.configurationInformationText" = "Upravljajte informacije, ki jih želite sinhronizirati med napravami. Te nastavitve vplivajo samo na to napravo.";
 
-/* Copied action complete title */
-"sync.copied" = "Kopirano!";
-
 /* Copied codewords title */
 "sync.copiedToClipboard" = "Kopirano v odložišče!";
 
@@ -2845,14 +2404,8 @@
 /* Sync enter code words */
 "sync.enterCodeWords" = "Vnesi kodne besede";
 
-/* Enter sync code words below */
-"sync.enterCodeWordsBelow" = "Vnesite kodne besede spodaj";
-
 /* Sync Error message for when the sync code is expired */
 "sync.expiredError" = "Ta koda sinhronizacije je potekla. Prosimo, ustvarite novo kodo sinhronizacije in poskusite znova.";
-
-/* Generic Sync Error Description */
-"sync.genericError" = "Žal se je nekaj motilo";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "Omogoči kamero";
@@ -2896,9 +2449,6 @@
 /* Error title for when the sync code does not have the correct amount of words */
 "sync.notEnoughWordsTitle" = "Premalo besed";
 
-/* Sync pair device settings section title */
-"sync.pair" = "Seznani";
-
 /* QR Code section title */
 "sync.qrCode" = "Koda QR";
 
@@ -2932,12 +2482,6 @@
 /* Title for removing other device from Sync */
 "sync.removeOtherDeviceTitle" = "Odstrani %@ iz sinhronizacijske verige?";
 
-/* Sync remove device. */
-"sync.removeThisDevice" = "Odstrani to napravo";
-
-/* Sync remove device? */
-"sync.removeThisDeviceQuestionDesc" = "Ta naprava bo izklopljena iz sinhronizacijske skupine in ne bo več prejemala ali pošiljala podatkov sinhronizacije. Vsi obstoječi podatki bodo ostali na napravi.";
-
 /* Scan sync code title */
 "sync.scan" = "Skeniraj";
 
@@ -2956,20 +2500,11 @@
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "Nastavitve sinhronizacije";
 
-/* Show code words instead */
-"sync.showCodeWords" = "Namesto tega prikaži kodne besede";
-
 /* Switch back to camera button */
 "sync.switchBackToCameraButton" = "Uporabil bom svojo kamero ...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Ta izbris je trajen in podatkov ni mogoče obnoviti. Če bi se odločili, da ponovno uporabite sinhronizacijo, boste morali ustvariti nov račun in posamično dodati vsako napravo.";
-
-/* Sync you browser settings across devices. */
-"sync.Syncdevices" = "Naprave in nastavitve";
-
-/* Sync remove device? */
-"sync.syncRemoveThisDeviceQuestion" = "Odstrani to napravo?";
 
 /* Sync settings section title */
 "sync.syncTitle" = "Sinhronizacija";
@@ -3006,9 +2541,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Število besed: %i";
-
-/* Accessibility label for action denoting closing a tab in tab list (tray) */
-"TabAccessibilityCloseActionLabel" = "Zapri";
 
 /* Accessibility label for a close button that when tapped opens a new tab */
 "tabGrid.addTabAccessibilityLabel" = "Nov zavihek";
@@ -3049,17 +2581,11 @@
 /* A title shown when in private browsing mode with no tabs open */
 "tabGrid.privateBrowsingInfoTitle" = "Zavihek brez beleženja zgodovine";
 
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.privateBrowsingModeAccessibilityLabel" = "Zasebno brskanje";
-
 /* A label in the tab tray mode switcher for private browsing mode */
 "tabGrid.privateBrowsingModeTitle" = "Način brez beleženja zgodovine";
 
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Nastavitve zasebnih zavihkov";
-
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.regularBrowsingModeAccessibilityLabel" = "Običajno brskanje";
 
 /* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
 "tabGrid.selectedTabs" = "Izbrani zavihki";
@@ -3090,18 +2616,6 @@
 
 /* Label for synced tabs menu item that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsMenuItemLabel" = "Sinhronizacija";
-
-/* Accessiblity hint for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityHint" = "Vklopi ali izklopi zasebni način";
-
-/* Accessibility label for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityLabel" = "Zasebni način";
-
-/* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "Izklopljeno";
-
-/* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "Vklopljeno";
 
 /* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardDescription" = "Samodejno osredotoči naslovno vrstico pri ustvarjanju novega zavihka";
@@ -3163,9 +2677,6 @@
 /* Accessibility Label for the tab toolbar Forward button */
 "TabToolbarForwardButtonAccessibilityLabel" = "Naprej";
 
-/* Accessibility label for the lock icon, which is only present if the connection is secure */
-"TabToolbarLockImageAccessibilityLabel" = "Varna povezava";
-
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Meni";
 
@@ -3180,9 +2691,6 @@
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Pogled za branje";
-
-/* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "Dodaj na seznam za branje";
 
 /* Accessibility Label for the tab toolbar Reload button */
 "TabToolbarReloadButtonAccessibilityLabel" = "Ponovno naložite";
@@ -3199,47 +2707,14 @@
 /* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Glasovno iskanje";
 
-/* Accessibility label for the lock icon, which is only present if the connection is insecure */
-"TabToolbarWarningImageAccessibilityLabel" = "Nezdrava povezava";
-
-/* Accessibility label for the Tabs Tray view. */
-"TabTrayAccessibilityLabel" = "Vrstilnik zavihkov";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabTrayAddTabAccessibilityLabel" = "Dodaj zavihek";
-
-/* Accessibility hint for tab tray's displayed tab. */
-"TabTrayCellCloseAccessibilityHint" = "Povlecite s tremi prsti na desno ali levo, da zavrete zavihek.";
-
-/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
-"TabTrayClosingTabAccessibilityNotificationText" = "Zapiranje zavihka";
-
-/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
-"TabTrayEmptyVoiceOverText" = "Ni zavihkov";
-
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
-"TabTrayMultiTabPositionFormatVoiceOverText" = "Zavihki %1$@ do %2$@ od %3$@";
-
-/* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "Nov zavihek";
-
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "Iskanje zavihkov";
-
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
-"TabTraySingleTabPositionFormatVoiceOverText" = "Zavihek %1$@ od %2$@";
 
 /* No comment provided by engineer. */
 "TermsOfService" = "Pogoji poslovanja";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Pogoji uporabe";
-
-/* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "Skupna raba...";
-
-/* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Delite brskalnik Brave s svojimi prijatelji!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Samodejno";
@@ -3252,9 +2727,6 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Svetlo";
-
-/* Name for app theme settings */
-"themesSettings" = "Teme";
 
 /* No comment provided by engineer. */
 "Title" = "Naslov";
@@ -3385,9 +2857,6 @@
 /* A title at the top of the screen that shows a list of sources that are ranked the highest */
 "today.popularSourcesTitle" = "Priljubljeni viri";
 
-/* A button title that is placed on promoted cards */
-"today.promoted" = "Promovirano";
-
 /* Title for long press action sheet list which has item for rate / hide */
 "today.rateBraveCardActionSheetTitle" = "Oceni Brave v App Store";
 
@@ -3442,14 +2911,8 @@
 /* Title of an action that allows the user to translate the current web-page to another language */
 "TranslatePage" = "Prevedi stran";
 
-/* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "Vključiti predloge za iskanje?";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Odkleni";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "Nepodprti plačilni instrumenti";
 
 /* Bookmark URL */
 "URL" = "URL";
@@ -3459,18 +2922,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "urlRedirectsSettings" = "Preusmeritve spletnih mest";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "Uporabnik je preklical";
-
-/* No comment provided by engineer. */
-"UserWalletCloseButtonTitle" = "Zapri";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorMessage" = "Prišlo je do težave pri prijavi v vaš račun Uphold. Prosimo, poskusite ponovno";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "Žal se je nekaj motilo";
 
 /* Message for error alert when a VCard contact file cannot be parsed or opened */
 "VCard.unableToOpenContactErrorMessage" = "Datoteke s stiki ni bilo mogoče prebrati. Morda je poškodovana ali v nepodprtem formatu.";
@@ -3535,9 +2986,6 @@
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Pripomočki";
 
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "leto";
-
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Da";
 
@@ -3547,20 +2995,11 @@
 /* History tableview section header */
 "Yesterday" = "Včeraj";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Omogoči visokokakovostne YouTube-ove videoposnetke";
-
-/* Description of setting to enable high quality youtube videos */
-"YoutubeMediaQualityDetails" = "Če omogočite to eksperimentalno funkcijo, se bo predvajanje videa izvajalo z največjo razpoložljivo kakovostjo in bo zahtevalo dodatne podatke.";
-
 /* Setting that disables highest quality video playback */
 "YoutubeMediaQualityOff" = "Izklopljeno";
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Vklopljeno";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "Kakovost predvajanja YouTube-a";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Dovoli prek Wi-Fija";
