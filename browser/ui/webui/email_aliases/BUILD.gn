@@ -15,6 +15,13 @@ source_set("email_aliases") {
     "email_aliases_promo_ui.h",
   ]
 
+  if (is_android) {
+    sources += [
+      "email_aliases_settings_ui_android.cc",
+      "email_aliases_settings_ui_android.h",
+    ]
+  }
+
   deps = [
     "//base",
     "//brave/browser/brave_account",
