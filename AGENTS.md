@@ -1,1 +1,44 @@
-Refer to canonical agent instructions in `.claude/CLAUDE.md`.
+This is the Brave Core repository, which contains a set of complex changes and
+scripts used for deeply modifying Chromium to make the Brave browser for
+windows, mac, linux, android and ios.
+
+All files in this src/brave directory are for Brave customizations. The chromium
+repository is the parent directory at src/ and all other children of that
+directory.
+
+## Conventions
+
+- Keep comments, commit messages, and PR descriptions succinct — essential "why"
+  only.
+
+## Development Tasks
+
+When asked to explore a task, read only the docs that you need from docs/ using
+the list at docs/README.md
+
+When working directly on code, consult with only relevant best practices listed
+at docs/best_practices.md
+
+## Design System (Leo / Nala)
+
+For any UI or visual work (WebUI, desktop views, Android, iOS), use Leo/Nala as
+the design reference and quality bar:
+
+- Read `node_modules/@brave/leo/AGENTS.md` (the pinned Leo version) for tokens,
+  components, icons, and Storybook references.
+- Check the result against docs/best-practices/nala.md before finishing or
+  reviewing.
+
+## Destructive Operations
+
+- NEVER delete caches, build output directories, or any machine state outside
+  the repo working tree (e.g. `~/.cache/*`, `out/` dirs). This is forbidden even
+  when it looks like the only fix. Always ask first, explain what the deletion
+  costs, and wait for approval.
+
+<!--
+  For any further personal preferences, create your own AGENTS.md in a parent
+  directory, e.g. ~/Development/Brave/AGENTS.md. Also consider a harness-specific
+  instruction file, like ~/.claude/CLAUDE.md for global Claude Code instructions.
+  See more options in the documentation for your own agent harness.
+  -->
