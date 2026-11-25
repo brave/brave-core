@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/downloads/BUILD.gn b/chrome/browser/ui/webui/downloads/BUILD.gn
+index e2dd9d34990a7915b747308176815020eb14a186..70f3323b4cab4d2cecf5b630df2881a4814559c3 100644
+--- a/chrome/browser/ui/webui/downloads/BUILD.gn
++++ b/chrome/browser/ui/webui/downloads/BUILD.gn
+@@ -30,6 +30,7 @@ source_set("downloads") {
+   deps = [
+     ":mojo_bindings",
+     "//base",
++    "//brave/app:brave_generated_resources_grit",
+     "//chrome/browser:defaults",
+     "//chrome/browser:primitives",
+     "//chrome/browser/download",

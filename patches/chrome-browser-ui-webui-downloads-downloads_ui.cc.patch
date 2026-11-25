@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/webui/downloads/downloads_ui.cc b/chrome/browser/ui/webui/downloads/downloads_ui.cc
+index 3a8177373f660f024c99db5547c7f8f80b18a7c3..3ba952bea3430eec9aca83c241194aae23197fa1 100644
+--- a/chrome/browser/ui/webui/downloads/downloads_ui.cc
++++ b/chrome/browser/ui/webui/downloads/downloads_ui.cc
+@@ -12,6 +12,7 @@
+ #include "base/metrics/histogram_functions.h"
+ #include "base/threading/thread.h"
+ #include "base/values.h"
++#include "brave/grit/brave_generated_resources.h"
+ #include "build/branding_buildflags.h"
+ #include "chrome/browser/browser_process.h"
+ #include "chrome/browser/defaults.h"
+@@ -74,7 +75,7 @@ content::WebUIDataSource* CreateAndAddDownloadsUIHTMLSource(Profile* profile) {
+   source->AddBoolean("requestsApVerdicts", requests_ap_verdicts);
+ 
+   static constexpr webui::LocalizedString kStrings[] = {
+-      {"title", IDS_DOWNLOAD_HISTORY_TITLE},
++      {"title", IDS_DOWNLOADS_TITLE},
+       {"searchResultsPlural", IDS_SEARCH_RESULTS_PLURAL},
+       {"searchResultsSingular", IDS_SEARCH_RESULTS_SINGULAR},
+       {"actionMenuDescription", IDS_DOWNLOAD_ACTION_MENU_DESCRIPTION},

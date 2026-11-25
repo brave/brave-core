@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 // Add what the brave-history-embeddings element needs to brave://history's data
-// source. Hooked via macro substitution of the one-and-only
+// source. Hooked via the rewrite/ plaster that replaces the one-and-only
 // ManagedUIHandler::Initialize() call in the upstream constructor -- by the
 // time it runs the data source has been created and is in scope.
 
@@ -37,8 +37,4 @@ class BraveHistoryUIInitializer {
 
 }  // namespace
 
-#define ManagedUIHandler BraveHistoryUIInitializer
-
 #include <chrome/browser/ui/webui/history/history_ui_platform_handlers_desktop.cc>
-
-#undef ManagedUIHandler

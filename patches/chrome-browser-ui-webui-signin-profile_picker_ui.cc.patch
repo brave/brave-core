@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/webui/signin/profile_picker_ui.cc b/chrome/browser/ui/webui/signin/profile_picker_ui.cc
+index cc442b7e0ea1a2bc83ce72becaa37f1999c92f45..0ab303a77007a572f27d2c99422e6496bdb25bea 100644
+--- a/chrome/browser/ui/webui/signin/profile_picker_ui.cc
++++ b/chrome/browser/ui/webui/signin/profile_picker_ui.cc
+@@ -236,7 +236,7 @@ void AddFlags(content::WebUIDataSource* html_source,
+       "profilesReorderingEnabled",
+       base::FeatureList::IsEnabled(switches::kProfilesReordering));
+   html_source->AddBoolean("signInProfileCreationFlowSupported",
+-                          AccountConsistencyModeManager::IsDiceSignInAllowed());
++                          /* AccountConsistencyModeManager::IsDiceSignInAllowed() */ false);
+ 
+   html_source->AddBoolean("isBrowserSigninAllowed", IsBrowserSigninAllowed());
+   html_source->AddBoolean("isForceSigninEnabled",

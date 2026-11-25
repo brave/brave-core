@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/webui/settings/reset_settings_handler.cc b/chrome/browser/ui/webui/settings/reset_settings_handler.cc
+index 3d000e66d85bf1afca8a3f44a368065710e45bab..6c38e6a65b0e79c6f105c7ff40c9bd1514cc9f80 100644
+--- a/chrome/browser/ui/webui/settings/reset_settings_handler.cc
++++ b/chrome/browser/ui/webui/settings/reset_settings_handler.cc
+@@ -99,7 +99,7 @@ bool ResetSettingsHandler::ShouldShowResetProfileBanner(Profile* profile) {
+ 
+ ResetSettingsHandler::ResetSettingsHandler(Profile* profile)
+     : profile_(profile),
+-      resetter_(std::make_unique<ProfileResetter>(profile_)) {}
++      resetter_(std::make_unique<BraveProfileResetter>(profile_)) {}
+ 
+ ResetSettingsHandler::~ResetSettingsHandler() = default;
+ 
+@@ -291,7 +291,7 @@ void ResetSettingsHandler::ResetProfile(
+ 
+ ProfileResetter* ResetSettingsHandler::GetResetter() {
+   if (!resetter_) {
+-    resetter_ = std::make_unique<ProfileResetter>(profile_);
++    resetter_ = std::make_unique<BraveProfileResetter>(profile_);
+   }
+   return resetter_.get();
+ }
