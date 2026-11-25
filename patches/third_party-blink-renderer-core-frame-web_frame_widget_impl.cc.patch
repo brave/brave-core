@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/core/frame/web_frame_widget_impl.cc b/third_party/blink/renderer/core/frame/web_frame_widget_impl.cc
+index 12a25717a53d09fbd96d59c8db858f949791aba1..ab26fa7bef7e2882c5601fe37ba7a6c2249ddfd2 100644
+--- a/third_party/blink/renderer/core/frame/web_frame_widget_impl.cc
++++ b/third_party/blink/renderer/core/frame/web_frame_widget_impl.cc
+@@ -5878,7 +5878,8 @@ void WebFrameWidgetImpl::DidUpdateSurfaceAndScreen(
+         screen->UpdateDisplayId(effective_screen_infos.current().display_id);
+         CoreInitializer::GetInstance().DidUpdateScreens(
+             *local_frame->GetFrame(), effective_screen_infos);
+-        if (window_screen_has_changed) {
++        if (window_screen_has_changed &&
++            RuntimeEnabledFeatures::BraveWindowManagementEnabled()) {
+           screen->DispatchEvent(*Event::Create(event_type_names::kChange));
+         }
+         if (color_gamut_changed) {

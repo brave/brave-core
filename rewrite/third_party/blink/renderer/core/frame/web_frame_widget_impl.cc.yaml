@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Fire `change` on `window.screen` only if `BraveWindowManagement` is on.
+
+      Hiding `Screen.onchange` doesn't stop `screen.addEventListener('change')`,
+      since `Screen` is an `EventTarget` and the event is dispatched
+      unconditionally whenever the screen setup changes.
+    regex:
+      pattern: 'if (window_screen_has_changed) {'
+      replace: |-
+        if (window_screen_has_changed &&
+                    RuntimeEnabledFeatures::BraveWindowManagementEnabled()) {
