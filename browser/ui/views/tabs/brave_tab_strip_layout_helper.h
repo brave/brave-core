@@ -65,7 +65,8 @@ int GetSplitViewTabCornerRadius(const Tab& tab);
 
 // Returns the corner radius of the split view tile's bounding box. It's
 // concentric with the corners of the tabs in the tile, so it's the tabs' radius
-// plus the tile's padding.
+// plus the tile's padding, except for horizontal tabs without the updated
+// style.
 int GetSplitViewTileCornerRadius(const Tab& tab, bool is_vertical_tab);
 
 void CalculatePinnedTabsBoundsInGrid(

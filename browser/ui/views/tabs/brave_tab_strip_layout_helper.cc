@@ -155,6 +155,11 @@ int GetSplitViewTabCornerRadius(const Tab& tab) {
 }
 
 int GetSplitViewTileCornerRadius(const Tab& tab, bool is_vertical_tab) {
+  if (!is_vertical_tab && !HorizontalTabsUpdateEnabled()) {
+    // Horizontal tabs use upstream's shape, which isn't inset in the tile.
+    return UseCompactHorizontalTabs() ? 9 : 12;
+  }
+
   return GetSplitViewTabCornerRadius(tab) + kSplitViewTilePadding;
 }
 
