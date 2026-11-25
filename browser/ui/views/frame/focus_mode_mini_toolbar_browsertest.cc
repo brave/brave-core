@@ -13,6 +13,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/focus_mode_title_bar_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_outline.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_container_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
@@ -66,8 +67,9 @@ class FocusModeMiniToolbarBrowserTestBase : public InProcessBrowserTest {
         ->GetActiveContentsContainerView();
   }
 
-  MultiContentsViewMiniToolbar* active_mini_toolbar() {
-    return active_contents_container()->mini_toolbar();
+  BraveMultiContentsViewMiniToolbar* active_mini_toolbar() {
+    return BraveMultiContentsViewMiniToolbar::From(
+        active_contents_container()->mini_toolbar());
   }
 
   const BraveContentsContainerOutline* active_contents_outline() {
@@ -167,4 +169,53 @@ IN_PROC_BROWSER_TEST_F(FocusModeTitleBarUrlDisplayBrowserTest,
   SetFocusModeEnabled(true);
   ASSERT_TRUE(browser_view()->focus_mode_title_bar_for_testing()->GetVisible());
   EXPECT_TRUE(WaitForMiniToolbarVisible(false));
+}
+
+IN_PROC_BROWSER_TEST_F(FocusModeMiniToolbarBrowserTest,
+                       HoverSlidesMiniToolbar) {
+  EXPECT_FALSE(active_mini_toolbar()->hover_detector_for_testing());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("a.test", "/empty.html")));
+
+  SetFocusModeEnabled(true);
+  ASSERT_TRUE(WaitForMiniToolbarVisible(true));
+  EXPECT_TRUE(active_mini_toolbar()->hover_detector_for_testing());
+  EXPECT_DOUBLE_EQ(1.0, active_mini_toolbar()->GetRevealFraction());
+  EXPECT_EQ(0, active_mini_toolbar()->GetSlideOffset());
+  EXPECT_TRUE(active_mini_toolbar()->GetCanProcessEventsWithinSubtree());
+
+  active_mini_toolbar()->OnHoverStateChangedForTesting(true);
+  EXPECT_FALSE(active_mini_toolbar()->GetCanProcessEventsWithinSubtree());
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return active_mini_toolbar()->GetRevealFraction() == 0.0; }));
+  EXPECT_EQ(active_mini_toolbar()->height(),
+            active_mini_toolbar()->GetSlideOffset());
+  EXPECT_TRUE(active_mini_toolbar()->GetVisible());
+
+  active_mini_toolbar()->OnHoverStateChangedForTesting(false);
+  EXPECT_TRUE(active_mini_toolbar()->GetCanProcessEventsWithinSubtree());
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return active_mini_toolbar()->GetRevealFraction() == 1.0; }));
+  EXPECT_EQ(0, active_mini_toolbar()->GetSlideOffset());
+}
+
+IN_PROC_BROWSER_TEST_F(FocusModeMiniToolbarBrowserTest,
+                       DisablingFocusModeResetsHoverSlide) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("a.test", "/empty.html")));
+
+  SetFocusModeEnabled(true);
+  ASSERT_TRUE(WaitForMiniToolbarVisible(true));
+
+  active_mini_toolbar()->OnHoverStateChangedForTesting(true);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return active_mini_toolbar()->GetRevealFraction() == 0.0; }));
+
+  SetFocusModeEnabled(false);
+  EXPECT_TRUE(WaitForMiniToolbarVisible(false));
+  EXPECT_FALSE(active_mini_toolbar()->hover_detector_for_testing());
+  EXPECT_DOUBLE_EQ(1.0, active_mini_toolbar()->GetRevealFraction());
+  EXPECT_EQ(0, active_mini_toolbar()->GetSlideOffset());
+  EXPECT_TRUE(active_mini_toolbar()->GetCanProcessEventsWithinSubtree());
 }

@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_CONTENTS_CONTAINER_OUTLINE_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_CONTENTS_CONTAINER_OUTLINE_H_
 
+#include "base/callback_list.h"
 #include "chrome/browser/ui/views/frame/contents_container_outline.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
@@ -39,7 +40,7 @@ class BraveContentsContainerOutline : public ContentsContainerOutline {
   // reserved inset. The mini toolbar sizes its margins to clear this.
   static int GetStrokeThickness(Style style);
 
-  using ContentsContainerOutline::ContentsContainerOutline;
+  explicit BraveContentsContainerOutline(views::View* mini_toolbar);
   ~BraveContentsContainerOutline() override;
 
   void UpdateStyle(Style style,
@@ -89,7 +90,9 @@ class BraveContentsContainerOutline : public ContentsContainerOutline {
   // The ring's centre line, in this view's coordinates. OnPaint() strokes it,
   // and SetClipPath() builds the toolbar's clip from the same notch, so the
   // two cannot disagree.
-  SkPath BuildRingPath() const;
+  SkPath BuildRingPath(bool include_notch = true) const;
+
+  int GetMiniToolbarSlideOffset() const;
 
   // ContentsContainerOutline:
   void OnPaint(gfx::Canvas* canvas) override;
@@ -97,6 +100,7 @@ class BraveContentsContainerOutline : public ContentsContainerOutline {
 
   Style style_ = Style::kHidden;
   gfx::RoundedCornersF contents_corner_radii_;
+  base::CallbackListSubscription mini_toolbar_reveal_subscription_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_CONTENTS_CONTAINER_OUTLINE_H_

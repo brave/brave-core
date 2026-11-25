@@ -8,11 +8,14 @@
 #include <memory>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/i18n/rtl.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "third_party/skia/include/core/SkClipOp.h"
 #include "third_party/skia/include/core/SkMatrix.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkPathBuilder.h"
@@ -21,6 +24,7 @@
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/rect_f.h"
+#include "ui/gfx/geometry/vector2d.h"
 #include "ui/gfx/scoped_canvas.h"
 #include "ui/views/view_utils.h"
 
@@ -42,6 +46,18 @@ void AppendMiniToolbarNotch(const gfx::RectF& notch,
   path.lineTo(notch.x() + corner_radius, notch.bottom() - corner_radius);
   path.arcTo(radii, 0, SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCW,
              SkPoint(notch.x(), notch.bottom()));
+}
+
+SkPath BuildMiniToolbarFootprint(const gfx::RectF& notch,
+                                 const gfx::RectF& bounds) {
+  SkPathBuilder clip;
+  clip.moveTo(notch.right(), notch.y());
+  AppendMiniToolbarNotch(notch, ContentsContainerOutline::kCornerRadius, clip);
+  clip.lineTo(notch.x(), bounds.bottom());
+  clip.lineTo(bounds.right(), bounds.bottom());
+  clip.lineTo(bounds.right(), notch.y());
+  clip.close();
+  return clip.detach();
 }
 
 }  // namespace
@@ -164,6 +180,18 @@ SkPath BraveContentsContainerOutline::MirrorHorizontally(
   return path.makeTransform(flip);
 }
 
+BraveContentsContainerOutline::BraveContentsContainerOutline(
+    views::View* mini_toolbar)
+    : ContentsContainerOutline(mini_toolbar) {
+  if (auto* brave_toolbar =
+          views::AsViewClass<BraveMultiContentsViewMiniToolbar>(mini_toolbar)) {
+    mini_toolbar_reveal_subscription_ =
+        brave_toolbar->RegisterRevealFractionChanged(
+            base::BindRepeating(&BraveContentsContainerOutline::SchedulePaint,
+                                base::Unretained(this)));
+  }
+}
+
 BraveContentsContainerOutline::~BraveContentsContainerOutline() = default;
 
 void BraveContentsContainerOutline::UpdateStyle(
@@ -221,13 +249,13 @@ gfx::RectF BraveContentsContainerOutline::GetMiniToolbarNotch() const {
   return notch;
 }
 
-SkPath BraveContentsContainerOutline::BuildRingPath() const {
+SkPath BraveContentsContainerOutline::BuildRingPath(bool include_notch) const {
   const float stroke_offset = GetStrokeOffset();
 
   gfx::RectF local_bounds(GetLocalBounds());
   local_bounds.Inset(stroke_offset);
 
-  const gfx::RectF notch = GetMiniToolbarNotch();
+  const gfx::RectF notch = include_notch ? GetMiniToolbarNotch() : gfx::RectF();
 
   // Views mirrors the toolbar's logical bottom right to the physical bottom
   // left in RTL, while we paint unflipped. GetPath() always cuts the notch out
@@ -252,8 +280,33 @@ SkPath BraveContentsContainerOutline::BuildRingPath() const {
   return mirror ? MirrorHorizontally(path, local_bounds) : path;
 }
 
+int BraveContentsContainerOutline::GetMiniToolbarSlideOffset() const {
+  if (!mini_toolbar_ || !mini_toolbar_->GetVisible() ||
+      mini_toolbar_->size().IsEmpty()) {
+    return 0;
+  }
+
+  if (auto* brave_toolbar =
+          views::AsViewClass<BraveMultiContentsViewMiniToolbar>(
+              mini_toolbar_)) {
+    if (brave_toolbar->GetRevealFraction() == 0.0) {
+      return mini_toolbar_->height();
+    }
+    return brave_toolbar->GetSlideOffset();
+  }
+
+  return 0;
+}
+
 void BraveContentsContainerOutline::OnPaint(gfx::Canvas* canvas) {
   if (style_ == Style::kHidden) {
+    return;
+  }
+
+  const int dy = GetMiniToolbarSlideOffset();
+  const bool fully_hidden = mini_toolbar_ && mini_toolbar_->height() > 0 &&
+                            dy >= mini_toolbar_->height();
+  if (style_ == Style::kMiniToolbarOnly && (!mini_toolbar_ || fully_hidden)) {
     return;
   }
 
@@ -263,14 +316,55 @@ void BraveContentsContainerOutline::OnPaint(gfx::Canvas* canvas) {
   flags.setStyle(cc::PaintFlags::kStroke_Style);
   flags.setAntiAlias(true);
 
-  gfx::ScopedCanvas scoped_canvas(canvas);
   if (style_ == Style::kMiniToolbarOnly) {
-    // The ring detours around the mini toolbar and otherwise runs along the
-    // container's edges, so clipping to the toolbar leaves just the detour.
-    canvas->ClipRect(mini_toolbar_->GetMirroredBounds());
+    gfx::ScopedCanvas scoped_canvas(canvas);
+    if (dy > 0) {
+      canvas->ClipRect(GetLocalBounds());
+      canvas->Translate(gfx::Vector2d(0, dy));
+      gfx::RectF notch_clip(mini_toolbar_->GetMirroredBounds());
+      notch_clip.Outset(GetStrokeOffset());
+      canvas->ClipRect(notch_clip);
+    } else {
+      // The ring detours around the mini toolbar and otherwise runs along the
+      // container's edges, so clipping to the toolbar leaves just the detour.
+      canvas->ClipRect(mini_toolbar_->GetMirroredBounds());
+    }
+    canvas->DrawPath(BuildRingPath(), flags);
+    return;
   }
 
-  canvas->DrawPath(BuildRingPath(), flags);
+  if (dy <= 0) {
+    canvas->DrawPath(BuildRingPath(/*include_notch=*/true), flags);
+    return;
+  }
+
+  if (fully_hidden) {
+    canvas->DrawPath(BuildRingPath(/*include_notch=*/false), flags);
+    return;
+  }
+
+  {
+    gfx::ScopedCanvas scoped_canvas(canvas);
+    SkPath footprint = BuildMiniToolbarFootprint(
+        GetMiniToolbarNotch(), gfx::RectF(mini_toolbar_->bounds()));
+    if (base::i18n::IsRTL()) {
+      footprint = MirrorHorizontally(footprint, gfx::RectF(GetLocalBounds()));
+    }
+    SkMatrix translate;
+    translate.setTranslate(0, dy);
+    footprint = footprint.makeTransform(translate);
+    canvas->ClipPath(footprint, /*do_anti_alias=*/true, SkClipOp::kDifference);
+    canvas->DrawPath(BuildRingPath(/*include_notch=*/false), flags);
+  }
+  {
+    gfx::ScopedCanvas scoped_canvas(canvas);
+    canvas->ClipRect(GetLocalBounds());
+    canvas->Translate(gfx::Vector2d(0, dy));
+    gfx::RectF notch_clip(mini_toolbar_->GetMirroredBounds());
+    notch_clip.Outset(GetStrokeOffset());
+    canvas->ClipRect(notch_clip);
+    canvas->DrawPath(BuildRingPath(/*include_notch=*/true), flags);
+  }
 }
 
 void BraveContentsContainerOutline::SetClipPath() {
@@ -291,17 +385,10 @@ void BraveContentsContainerOutline::SetClipPath() {
   // Keep the toolbar's side of the detour, closed along its own right and
   // bottom edges. The stroke then straddles the seam, so no sliver of web
   // contents can surface between the toolbar and the ring.
-  SkPathBuilder clip;
-  clip.moveTo(notch.right(), notch.y());
-  AppendMiniToolbarNotch(notch, kCornerRadius, clip);
-  clip.lineTo(notch.x(), local_bounds.bottom());
-  clip.lineTo(local_bounds.right(), local_bounds.bottom());
-  clip.lineTo(local_bounds.right(), notch.y());
-  clip.close();
+  SkPath path = BuildMiniToolbarFootprint(notch, local_bounds);
 
   // Views mirrors the toolbar's bounds in RTL but not what it paints, so the
   // detour has to be flipped to the toolbar's other side.
-  SkPath path = clip.detach();
   if (base::i18n::IsRTL()) {
     path = MirrorHorizontally(path, local_bounds);
   }

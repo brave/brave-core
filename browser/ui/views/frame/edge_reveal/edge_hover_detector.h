@@ -42,9 +42,13 @@ class EdgeHoverDetector : public views::WidgetObserver,
   //   - `is_hover_point`: Returns true if the specified screen coordinate is
   //     considered within the edge's active region.
   //   - `hover_state_changed`: Called when the hover state has changed.
+  // Optional `enter_delay` and `exit_delay` override the default debounce
+  // delays.
   EdgeHoverDetector(views::Widget* host,
                     IsHoverPointCallback is_hover_point,
-                    HoverStateChangedCallback hover_state_changed);
+                    HoverStateChangedCallback hover_state_changed,
+                    base::TimeDelta enter_delay = kMouseEnterDelay,
+                    base::TimeDelta exit_delay = kMouseExitDelay);
 
   EdgeHoverDetector(const EdgeHoverDetector&) = delete;
   EdgeHoverDetector& operator=(const EdgeHoverDetector&) = delete;
@@ -74,6 +78,8 @@ class EdgeHoverDetector : public views::WidgetObserver,
 
   IsHoverPointCallback is_hover_point_;
   HoverStateChangedCallback hover_state_changed_;
+  const base::TimeDelta enter_delay_;
+  const base::TimeDelta exit_delay_;
   std::unique_ptr<views::EventMonitor> event_monitor_;
   base::OneShotTimer timer_;
   bool hovering_ = false;
