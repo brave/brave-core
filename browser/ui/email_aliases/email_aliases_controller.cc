@@ -179,6 +179,11 @@ class EmailAliasesPromoDialogDelegate
   // email_aliases::mojom::EmailAliasesPromoHandler
   void OnPromoClosed() override { Close(); }
 
+  void OnGetStarted() override {
+    Close();
+    email_aliases_controller_->OpenSettingsPage();
+  }
+
   // ui::WebDialogDelegate:
   void OnDialogShown(content::WebUI* webui) override {
     if (auto* ui = webui->GetController()->GetAs<EmailAliasesPromoUI>()) {
@@ -289,14 +294,8 @@ void EmailAliasesController::ShowPromoBubble(content::WebContents* initiator) {
 
   bubble_ = EmailAliasesPromoDialogDelegate::ShowPromo(*this, initiator);
   bubble_->GetWebDialogDelegate()->RegisterOnDialogClosedCallback(
-      base::BindOnce(&EmailAliasesController::OnPromoBubbleClosed,
+      base::BindOnce(&EmailAliasesController::OnBubbleClosed,
                      weak_factory_.GetWeakPtr()));
-}
-
-void EmailAliasesController::OnPromoBubbleClosed(const std::string&) {
-  OnBubbleClosed({});
-  ShowSingletonTabOverwritingNTP(base::to_address(browser_),
-                                 GURL(kEmailAliasesSettingsURL));
 }
 
 }  // namespace email_aliases

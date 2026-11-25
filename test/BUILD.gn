@@ -1508,7 +1508,9 @@ test("brave_browser_tests") {
     deps += [
       "//brave/browser/email_aliases:browser_tests",
       "//brave/browser/ui/email_aliases",
+      "//brave/browser/ui/webui/email_aliases",
       "//brave/components/email_aliases:features",
+      "//brave/components/email_aliases:mojom",
       "//brave/components/email_aliases:pref_names",
     ]
   }

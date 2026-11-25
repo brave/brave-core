@@ -86,5 +86,8 @@ interface EmailAliasesPanelHandler {
 interface EmailAliasesPromoHandler {
   // Notify promo closed (the bubble can close). Fire and forget.
   OnPromoClosed();
+
+  // Notify the "Get started" button was clicked. Fire and forget.
+  OnGetStarted();
 };
 

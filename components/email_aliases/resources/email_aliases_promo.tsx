@@ -353,7 +353,7 @@ export const EmailAliasesPromoConnected = ({
   return (
     <EmailAliasesPromo
       onClose={() => emailAliasesPromoHandler.onPromoClosed()}
-      onGetStarted={() => emailAliasesPromoHandler.onPromoClosed()}
+      onGetStarted={() => emailAliasesPromoHandler.onGetStarted()}
     />
   )
 }
