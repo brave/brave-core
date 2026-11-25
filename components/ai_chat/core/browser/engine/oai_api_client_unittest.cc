@@ -7,13 +7,11 @@
 
 #include <optional>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/strings/utf_string_conversions.h"
@@ -116,24 +114,6 @@ class OAIAPIUnitTest : public testing::Test {
 
   void TearDown() override { client_.reset(); }
 
-  std::string GetMessagesJson(std::string_view body_json) {
-    auto dict = base::test::ParseJsonDict(body_json);
-    base::ListValue* events = dict.FindList("messages");
-    EXPECT_TRUE(events);
-    std::string events_json;
-    base::JSONWriter::WriteWithOptions(
-        *events, base::JSONWriter::OPTIONS_PRETTY_PRINT, &events_json);
-    return events_json;
-  }
-
-  std::string FormatComparableEventsJson(std::string_view formatted_json) {
-    auto messages = base::test::ParseJson(formatted_json);
-    std::string json;
-    base::JSONWriter::WriteWithOptions(
-        messages, base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);
-    return json;
-  }
-
  protected:
   base::test::TaskEnvironment task_environment_;
   std::unique_ptr<TestOAIAPIClient> client_;
@@ -174,8 +154,10 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
         EXPECT_EQ(url, expected_url);
         EXPECT_EQ(headers.contains("Authorization"), true);
         EXPECT_EQ(method, net::HttpRequestHeaders::kPostMethod);
-        EXPECT_EQ(GetMessagesJson(body),
-                  FormatComparableEventsJson(expected_conversation_body));
+        EXPECT_THAT(
+            base::test::ParseJsonDict(body),
+            base::test::DictionaryHasValue(
+                "messages", base::test::ParseJson(expected_conversation_body)));
 
         auto chunk = base::test::ParseJson(server_chunk);
         data_received_callback.Run(base::ok(std::move(chunk)));
@@ -242,6 +224,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithStopSequences) {
       client_->GetMockAPIRequestHelper();
   testing::StrictMock<MockCallbacks> mock_callbacks;
   base::RunLoop run_loop;
+  std::string request_body;
 
   EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
       .WillOnce([&](const std::string& method, const GURL& url,
@@ -250,12 +233,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithStopSequences) {
                     ResultCallback result_callback,
                     const base::flat_map<std::string, std::string>& headers,
                     const api_request_helper::APIRequestOptions& options) {
-        auto dict = base::test::ParseJsonDict(body);
-        base::ListValue* stop_list = dict.FindList("stop");
-        EXPECT_TRUE(stop_list);
-        EXPECT_EQ(stop_list->size(), 2u);
-        EXPECT_EQ((*stop_list)[0].GetString(), "/title");
-        EXPECT_EQ((*stop_list)[1].GetString(), "END");
+        request_body = body;
 
         std::move(result_callback)
             .Run(api_request_helper::APIRequestResult(200, base::Value(), {},
@@ -284,6 +262,13 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithStopSequences) {
       stop_sequences);
 
   run_loop.Run();
+
+  auto dict = base::test::ParseJsonDict(request_body);
+  const base::ListValue* stop_list = dict.FindList("stop");
+  ASSERT_TRUE(stop_list);
+  ASSERT_EQ(stop_list->size(), 2u);
+  EXPECT_EQ((*stop_list)[0].GetString(), "/title");
+  EXPECT_EQ((*stop_list)[1].GetString(), "END");
 }
 
 TEST_F(OAIAPIUnitTest, PerformRequest_WithEmptyStopSequences) {
@@ -734,6 +719,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithToolUseResponse) {
       client_->GetMockAPIRequestHelper();
   testing::StrictMock<MockCallbacks> mock_callbacks;
   base::RunLoop run_loop;
+  std::string request_body;
 
   // Build tool definitions
   base::ListValue tool_defs;
@@ -752,17 +738,8 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithToolUseResponse) {
                     ResultCallback result_callback,
                     const base::flat_map<std::string, std::string>& headers,
                     const api_request_helper::APIRequestOptions& options) {
-        // Verify tools are included in the request body
-        auto dict = base::test::ParseJsonDict(body);
-        base::ListValue* tools = dict.FindList("tools");
-        EXPECT_TRUE(tools);
-        EXPECT_EQ(tools->size(), 1u);
-        const base::DictValue* tool = (*tools)[0].GetIfDict();
-        EXPECT_TRUE(tool);
-        EXPECT_EQ(*tool->FindString("type"), "function");
-        const base::DictValue* func = tool->FindDict("function");
-        EXPECT_TRUE(func);
-        EXPECT_EQ(*func->FindString("name"), "get_weather");
+        // The tools are verified from the test body after the run loop.
+        request_body = body;
 
         // Send a tool call response chunk
         auto chunk = base::test::ParseJson(R"({
@@ -844,6 +821,22 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithToolUseResponse) {
                      base::Unretained(&mock_callbacks)));
 
   run_loop.Run();
+
+  // Verify tools are included in the request body
+  auto dict = base::test::ParseJsonDict(request_body);
+  const base::ListValue* tools = dict.FindList("tools");
+  ASSERT_TRUE(tools);
+  ASSERT_EQ(tools->size(), 1u);
+  const base::DictValue* tool = (*tools)[0].GetIfDict();
+  ASSERT_TRUE(tool);
+  const std::string* tool_type = tool->FindString("type");
+  ASSERT_TRUE(tool_type);
+  EXPECT_EQ(*tool_type, "function");
+  const base::DictValue* func = tool->FindDict("function");
+  ASSERT_TRUE(func);
+  const std::string* func_name = func->FindString("name");
+  ASSERT_TRUE(func_name);
+  EXPECT_EQ(*func_name, "get_weather");
 
   testing::Mock::VerifyAndClearExpectations(mock_request_helper);
   testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
