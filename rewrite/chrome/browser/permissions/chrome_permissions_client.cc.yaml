@@ -11,6 +11,7 @@ substitutions:
     add_include:
       header:
         - brave/components/brave_wallet/common/buildflags/buildflags.h
+        - brave/components/brave_wallet/common/features.h
 
   - description: |
       Include what the substitutions below use in `ENABLE_BRAVE_WALLET` builds
@@ -75,10 +76,13 @@ substitutions:
       function_name: ChromePermissionsClient::CanBypassEmbeddingOriginCheck
       code: |-
         #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-        if (type == ContentSettingsType::BRAVE_ETHEREUM ||
-            type == ContentSettingsType::BRAVE_SOLANA ||
-            type == ContentSettingsType::BRAVE_CARDANO ||
-            type == ContentSettingsType::BRAVE_POLKADOT) {
-          return true;
+        if (!base::FeatureList::IsEnabled(
+                brave_wallet::features::kBraveWalletAccountObjectPermissions)) {
+          if (type == ContentSettingsType::BRAVE_ETHEREUM ||
+              type == ContentSettingsType::BRAVE_SOLANA ||
+              type == ContentSettingsType::BRAVE_CARDANO ||
+              type == ContentSettingsType::BRAVE_POLKADOT) {
+            return true;
+          }
         }
         #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
