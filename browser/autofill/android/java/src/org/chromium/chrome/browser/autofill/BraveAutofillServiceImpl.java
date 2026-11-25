@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.autofill;
 
 import android.app.assist.AssistStructure;
 import android.app.assist.AssistStructure.ViewNode;
+import android.content.res.XmlResourceParser;
 import android.os.CancellationSignal;
 import android.service.autofill.Dataset;
 import android.service.autofill.FillCallback;
@@ -24,6 +25,9 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.VisibleForTesting;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
@@ -35,10 +39,13 @@ import org.chromium.components.autofill.AutofillProfile;
 import org.chromium.components.autofill.FieldType;
 import org.chromium.components.autofill.RecordType;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Implementation of the Brave autofill service for filling address data in third-party apps.
@@ -113,11 +120,142 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
             return;
         }
 
+        ViewNode focusedNode = BraveAutofillViewStructureParser.findFocusedNode(structure);
+        fields =
+                restrictToFocusedOrigin(
+                        fields, nodesMap, focusedNode, packageName, getCompatModeRiskPackages());
+        if (fields.isEmpty()) {
+            callback.onSuccess(null);
+            return;
+        }
+
         if (BraveAutofillViewStructureParser.hasAddressFields(fields)) {
             fillAddressAutofill(fields, nodesMap, callback);
         } else {
             callback.onSuccess(null);
         }
+    }
+
+    // Lazily parsed from autofill_service_configuration.xml by getCompatModeRiskPackages() below
+    // — never hand-edit this; it mirrors whatever that file currently declares.
+    private static @Nullable Set<String> sCompatModeRiskPackages;
+
+    /**
+     * Returns the {@code compatibility-package} names declared in {@code
+     * autofill_service_configuration.xml} — the same resource {@code AndroidManifest.xml} points
+     * Android's autofill framework at — read from that resource directly so this can never drift
+     * from what's actually declared there. Android may route these packages through an
+     * accessibility-based "compat mode" bridge whose resulting structure has no concept of frame or
+     * origin boundaries, unlike Chromium's native autofill bridge. See restrictToFocusedOrigin.
+     */
+    private static Set<String> getCompatModeRiskPackages() {
+        if (sCompatModeRiskPackages != null) {
+            return sCompatModeRiskPackages;
+        }
+        Set<String> packages = new HashSet<>();
+        try (XmlResourceParser parser =
+                ContextUtils.getApplicationContext()
+                        .getResources()
+                        .getXml(R.xml.autofill_service_configuration)) {
+            int eventType = parser.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                if (eventType == XmlPullParser.START_TAG
+                        && "compatibility-package".equals(parser.getName())) {
+                    // AAPT2 compiles android: attributes on plain res/xml/ resources (unlike
+                    // layouts) without preserving the android: namespace URI, so match by local
+                    // attribute name instead of namespace + name.
+                    for (int i = 0; i < parser.getAttributeCount(); i++) {
+                        if ("name".equals(parser.getAttributeName(i))) {
+                            String name = parser.getAttributeValue(i);
+                            if (name != null) {
+                                packages.add(name);
+                            }
+                            break;
+                        }
+                    }
+                }
+                eventType = parser.next();
+            }
+        } catch (IOException | XmlPullParserException | RuntimeException e) {
+            Log.e(TAG, "Failed to parse autofill_service_configuration.xml", e);
+        }
+        sCompatModeRiskPackages = packages;
+        return packages;
+    }
+
+    /**
+     * Restricts {@code fields} to those that share the currently focused field's web origin, so a
+     * cross-origin iframe's fields (e.g. a third-party ad) never get bundled into the same dataset
+     * as the field the user is actually filling.
+     *
+     * <p>Chromium's native autofill bridge scopes one request to a single HTML form and stamps
+     * every field — including ones in the page's own cross-origin iframes — with its real origin
+     * via {@link ViewNode#getWebDomain}, so for that path this is a same-origin check that's a
+     * no-op: every field in the one form already shares the main frame's origin.
+     *
+     * <p>Android's accessibility-based "compat mode" (used for browsers listed in {@code
+     * autofill_service_configuration.xml} that the OS also compat-allowlists) has no per-field
+     * origin info at all — {@code getWebDomain()} is null for every node. For a package that could
+     * be running in compat mode, fail closed in that case: keep only the field the user is actually
+     * filling rather than risk bundling unrelated, possibly cross-origin content.
+     *
+     * <p>{@code focusedNode} must come from {@link
+     * BraveAutofillViewStructureParser#findFocusedNode}, which searches the raw structure — not
+     * from looking up which classified field has {@code isFocused() == true} in {@code nodesMap}. A
+     * node can be the real, currently-focused field and still fail classification (e.g. a
+     * cross-origin field that happens to share a hint with an earlier-seen node loses that hint,
+     * see {@link BraveAutofillViewStructureParser#getHint}), so it would never appear in {@code
+     * nodesMap} at all. Searching {@code nodesMap} for focus would then find nothing and return
+     * {@code fields} unrestricted — defeating this method's entire purpose for exactly the
+     * adversarial case it exists to catch.
+     *
+     * @param compatModeRiskPackages Packages that could be running in compat mode — see {@link
+     *     #getCompatModeRiskPackages}, which is what production code passes here.
+     * @return A new map restricted as above, or {@code fields} unchanged if no node anywhere in the
+     *     structure is focused, or if the focused field has no web origin and the requesting
+     *     package isn't a known browser (e.g. a native, non-WebView app, where {@code
+     *     getWebDomain()} is null for everything and that's expected, not a missing signal). If the
+     *     focused field has no web origin and the package could be in compat mode, but the focused
+     *     field itself isn't one of the classified {@code fields} (the adversarial case above),
+     *     returns an empty map rather than any of the classified fields.
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static Map<String, AutofillId> restrictToFocusedOrigin(
+            Map<String, AutofillId> fields,
+            Map<AutofillId, ViewNode> nodesMap,
+            @Nullable ViewNode focusedNode,
+            String packageName,
+            Set<String> compatModeRiskPackages) {
+        if (focusedNode == null) {
+            return fields;
+        }
+
+        String trustedDomain = focusedNode.getWebDomain();
+        if (trustedDomain == null) {
+            if (!compatModeRiskPackages.contains(packageName)) {
+                return fields;
+            }
+            AutofillId focusedId = focusedNode.getAutofillId();
+            Map<String, AutofillId> restricted = new HashMap<>();
+            if (focusedId == null) {
+                return restricted;
+            }
+            for (Map.Entry<String, AutofillId> entry : fields.entrySet()) {
+                if (focusedId.equals(entry.getValue())) {
+                    restricted.put(entry.getKey(), entry.getValue());
+                }
+            }
+            return restricted;
+        }
+
+        Map<String, AutofillId> restricted = new HashMap<>();
+        for (Map.Entry<String, AutofillId> entry : fields.entrySet()) {
+            ViewNode node = nodesMap.get(entry.getValue());
+            if (node != null && trustedDomain.equals(node.getWebDomain())) {
+                restricted.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return restricted;
     }
 
     /**
