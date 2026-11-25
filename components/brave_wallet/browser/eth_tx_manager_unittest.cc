@@ -243,6 +243,8 @@ class EthTxManagerUnitTest : public testing::Test {
                     ]
                   }
                 })");
+          } else {
+            ADD_FAILURE() << "Unhandled request: " << request_string;
           }
         }));
 
@@ -2047,6 +2049,17 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
   meta.tx()->set_nonce(uint256_t(4));
   meta.set_status(mojom::TransactionStatus::Submitted);
   ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
+
+  // Receipt requests sent by UpdatePendingTransactions() are intentionally left
+  // unanswered so nothing is confirmed before the block tracker fires.
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([](const network::ResourceRequest& request) {
+        auto header_value = request.headers.GetHeader("X-Eth-Method");
+        ASSERT_TRUE(header_value);
+        if (*header_value != "eth_getTransactionReceipt") {
+          ADD_FAILURE() << "Unhandled request: " << *header_value;
+        }
+      }));
 
   eth_tx_manager()->UpdatePendingTransactions(std::nullopt);
 
