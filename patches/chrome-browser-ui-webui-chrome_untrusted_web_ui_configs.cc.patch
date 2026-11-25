@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.cc b/chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.cc
+index 861c5c41cf767ef97d6706e16c7232efab6a3233..a767380fe1b6f8c42b5f12c1a1628cb5015eb17b 100644
+--- a/chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.cc
++++ b/chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.cc
+@@ -45,6 +45,7 @@
+ #endif  // BUILDFLAG(IS_ANDROID)
+ 
+ void RegisterChromeUntrustedWebUIConfigs() {
++  [&]() -> void {
+   // Don't add calls to `AddUntrustedWebUIConfig()` for ash-specific UIs here.
+   // Add them to `AshWebUIConfigManager::RegisterUntrustedWebUIConfigs()` in
+   // ash_web_ui_config_manager.cc
+@@ -103,4 +104,6 @@ void RegisterChromeUntrustedWebUIConfigs() {
+   map.AddUntrustedWebUIConfig(
+       std::make_unique<NtpMicrosoftAuthUntrustedUIConfig>());
+ #endif  // BUILDFLAG(IS_ANDROID)
++  }();
++  RegisterBraveUntrustedWebUIConfigs();
+ }

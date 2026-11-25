@@ -3,27 +3,39 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <stdint.h>
+
+#include "base/values.h"
 #include "brave/browser/importer/brave_external_process_importer_host.h"
 #include "brave/components/constants/pref_names.h"
+#include "components/user_data_importer/common/importer_data_types.h"
 
-#define ExternalProcessImporterHost BraveExternalProcessImporterHost
+namespace {
 
-// NOTE: When we add new import feature, also consider to add it for importing
-// in welcome page.
-// See IMPORT_BROWSER_DATA_REQUESTED action in welcome_reducer.ts.
-#define BRAVE_IMPORT_DATA                                          \
-  if (type_dict.FindBool(kImportDialogExtensions).value_or(false)) \
-    selected_items |= user_data_importer::EXTENSIONS;              \
-  if (type_dict.FindBool(kImportDialogPayments).value_or(false))   \
+// Reads the Brave-specific import dialog selections.
+//
+// NOTE: When we add a new import feature, also consider adding it for
+// importing in the welcome page. See IMPORT_BROWSER_DATA_REQUESTED action in
+// welcome_reducer.ts.
+void AddBraveSelectedItems(const base::DictValue& type_dict,
+                           uint16_t& selected_items) {
+  if (type_dict.FindBool(kImportDialogExtensions).value_or(false)) {
+    selected_items |= user_data_importer::EXTENSIONS;
+  }
+  if (type_dict.FindBool(kImportDialogPayments).value_or(false)) {
     selected_items |= user_data_importer::PAYMENTS;
+  }
+}
 
-#define BRAVE_SEND_BROWSER_PROFILE_DATA                                        \
-  browser_profile.Set(                                                         \
-      "extensions", (browser_services & user_data_importer::EXTENSIONS) != 0); \
-  browser_profile.Set("payments",                                              \
+// Reports the Brave-supported import services to the WebUI.
+void SetBraveBrowserProfileServices(base::DictValue& browser_profile,
+                                    uint16_t browser_services) {
+  browser_profile.Set("extensions",
+                      (browser_services & user_data_importer::EXTENSIONS) != 0);
+  browser_profile.Set("payments",
                       (browser_services & user_data_importer::PAYMENTS) != 0);
+}
+
+}  // namespace
 
 #include <chrome/browser/ui/webui/settings/import_data_handler.cc>
-#undef ExternalProcessImporterHost
-#undef BRAVE_IMPORT_DATA
-#undef BRAVE_SEND_BROWSER_PROFILE_DATA
