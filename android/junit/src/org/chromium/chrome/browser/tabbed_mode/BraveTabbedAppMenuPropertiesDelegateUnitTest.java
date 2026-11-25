@@ -101,7 +101,6 @@ import org.chromium.components.commerce.core.CommerceFeatureUtils;
 import org.chromium.components.commerce.core.CommerceFeatureUtilsJni;
 import org.chromium.components.commerce.core.ShoppingService;
 import org.chromium.components.content_settings.ContentSetting;
-import org.chromium.components.power_bookmarks.PowerBookmarkMeta;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.signin.identitymanager.IdentityManager;
 import org.chromium.components.sync.SyncService;
@@ -274,7 +273,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         when(mPane.getPaneId()).thenReturn(PaneId.TAB_SWITCHER);
 
         PowerBookmarkUtils.setPriceTrackingEligibleForTesting(false);
-        PowerBookmarkUtils.setPowerBookmarkMetaForTesting(PowerBookmarkMeta.newBuilder().build());
         BraveTabbedAppMenuPropertiesDelegate delegate =
                 new BraveTabbedAppMenuPropertiesDelegate(
                         context,
