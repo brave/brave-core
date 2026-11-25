@@ -268,11 +268,8 @@ class QueryFilterServiceWorkerBrowserTest : public InProcessBrowserTest {
   std::vector<GURL> requests_;
 };
 
-// A typed navigation is restarted without tracking parameters before the
-// service worker can answer it, so the worker's cached document and the
-// beacon it sends both see the stripped URL.
 IN_PROC_BROWSER_TEST_F(QueryFilterServiceWorkerBrowserTest,
-                       ServiceWorkerDoesNotObserveTrackingQuery) {
+                       TrackingParamFilteredInServiceWorker) {
   ASSERT_NO_FATAL_FAILURE(NavigateAndRegisterServiceWorker());
 
   const GURL tracked = ServerURL("/?fbclid=abcd1234&gclid=wxyz5678&keep=1");
@@ -295,14 +292,9 @@ IN_PROC_BROWSER_TEST_F(QueryFilterServiceWorkerBrowserTest,
   ExpectNoTrackingQueryInRequests();
 }
 
-// Counterfactual for the test ServiceWorkerDoesNotObserveTrackingQuery: with
-// query filtering disabled (Brave Shields off) nothing restarts the navigation,
-// so the tracking parameters survive all the way to the service worker and its
-// beacon. This proves the stripping in ServiceWorkerDoesNotObserveTrackingQuery
-// is caused by the query filter, not the test setup.
 IN_PROC_BROWSER_TEST_F(
     QueryFilterServiceWorkerBrowserTest,
-    ServiceWorkerObservesTrackingQueryWhenFilteringDisabled) {
+    TrackingParamNotFilteredInServiceWorkerWhenShieldsDisabled) {
   ASSERT_NO_FATAL_FAILURE(NavigateAndRegisterServiceWorker());
 
   const GURL tracked = ServerURL("/?fbclid=abcd1234&gclid=wxyz5678&keep=1");
