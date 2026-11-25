@@ -10,7 +10,7 @@ const manageRoot = document.getElementById('manageRoot')!
 
 customElements.whenDefined('brave-account-compact-row').then(() => {
   mount(signInRoot, manageRoot, {
-    onLoggedInChange: () => { },
+    onLoggedInChange: () => {},
     styleTarget: document.head,
   })
 })
