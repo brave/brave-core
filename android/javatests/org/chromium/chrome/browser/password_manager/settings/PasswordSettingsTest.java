@@ -17,7 +17,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import static org.chromium.ui.test.util.ViewUtils.onViewWaiting;
+import static org.chromium.base.test.transit.ViewFinder.waitForView;
 
 import android.os.Bundle;
 
@@ -94,7 +94,7 @@ public class PasswordSettingsTest {
     public void testResetListEmpty() {
         // Load the preferences, they should show the empty list.
         mTestHelper.startPasswordSettingsFromMainSettings(mPasswordSettingsActivityTestRule);
-        onViewWaiting(allOf(withText(R.string.password_manager_settings_title), isDisplayed()));
+        waitForView(allOf(withText(R.string.password_manager_settings_title), isDisplayed()));
 
         ThreadUtils.runOnUiThreadBlocking(
                 () -> {
@@ -119,7 +119,7 @@ public class PasswordSettingsTest {
                 });
 
         mTestHelper.startPasswordSettingsFromMainSettings(mPasswordSettingsActivityTestRule);
-        onViewWaiting(allOf(withText(R.string.password_manager_settings_title), isDisplayed()));
+        waitForView(allOf(withText(R.string.password_manager_settings_title), isDisplayed()));
 
         ThreadUtils.runOnUiThreadBlocking(
                 () -> {
@@ -146,7 +146,7 @@ public class PasswordSettingsTest {
                 });
 
         mTestHelper.startPasswordSettingsFromMainSettings(mPasswordSettingsActivityTestRule);
-        onViewWaiting(allOf(withText(R.string.password_manager_settings_title), isDisplayed()));
+        waitForView(allOf(withText(R.string.password_manager_settings_title), isDisplayed()));
         ThreadUtils.runOnUiThreadBlocking(
                 () -> {
                     PasswordSettings savedPasswordPrefs =

@@ -19,7 +19,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
-import static org.chromium.ui.test.util.ViewUtils.onViewWaiting;
+import static org.chromium.base.test.transit.ViewFinder.waitForView;
 
 import android.os.Bundle;
 import android.view.View;
@@ -1384,7 +1384,7 @@ public class BraveSettingsSearchTest {
      * be active (search_query_container visible), then confirms no preference-title views exist.
      */
     private void assertSearchResultEmpty() {
-        onViewWaiting(withId(R.id.search_query_container)).check(matches(isDisplayed()));
+        waitForView(withId(R.id.search_query_container)).onView().check(matches(isDisplayed()));
         // Scope to the results (detail) pane: the main-list (header) pane always shows preference
         // titles, so an unscoped check would never observe an empty result set (151 two-pane).
         onView(allOf(withResourceEntryName("title"), inSearchResultsPane())).check(doesNotExist());
@@ -1392,7 +1392,8 @@ public class BraveSettingsSearchTest {
 
     private void assertSearchResultDoesNotContain(String text) {
         // Ensure the results RecyclerView is visible before asserting absence.
-        onViewWaiting(allOf(withId(R.id.recycler_view), inSearchResultsPane()))
+        waitForView(allOf(withId(R.id.recycler_view), inSearchResultsPane()))
+                .onView()
                 .check(matches(isDisplayed()));
         onView(allOf(withText(text), withResourceEntryName("title"), inSearchResultsPane()))
                 .check(doesNotExist());
@@ -1416,10 +1417,8 @@ public class BraveSettingsSearchTest {
         if (sectionHeader != null) {
             // Section headers have id=0 (invalid resource ID), so we match by text only, scoped to
             // the results (detail) pane so a same-named main-list item can't satisfy the check.
-            onViewWaiting(
-                            allOf(
-                                    withText(equalToIgnoringCase(sectionHeader)),
-                                    inSearchResultsPane()))
+            waitForView(allOf(withText(equalToIgnoringCase(sectionHeader)), inSearchResultsPane()))
+                    .onView()
                     .check(matches(isDisplayed()));
         }
         // Match specifically the preference title TextView (resource entry name "title").
@@ -1428,11 +1427,12 @@ public class BraveSettingsSearchTest {
         // works across package boundaries.
         // equalToIgnoringCase: settings search is case-insensitive, so callers may pass
         // lowercase search terms while the indexed title uses different capitalisation.
-        onViewWaiting(
+        waitForView(
                         allOf(
                                 withText(equalToIgnoringCase(text)),
                                 withResourceEntryName("title"),
                                 inSearchResultsPane()))
+                .onView()
                 .check(matches(isDisplayed()));
     }
 
@@ -1447,7 +1447,8 @@ public class BraveSettingsSearchTest {
      * the current section, and verifies the title appears in the correct one.
      */
     private void assertOneOfSearchResultsIs(String title, String sectionHeader) {
-        onViewWaiting(allOf(withId(R.id.recycler_view), inSearchResultsPane()))
+        waitForView(allOf(withId(R.id.recycler_view), inSearchResultsPane()))
+                .onView()
                 .check(
                         (view, e) -> {
                             if (e != null) throw e;
@@ -1491,7 +1492,8 @@ public class BraveSettingsSearchTest {
      * page and its sub-page land under one header. The summary is what distinguishes them.
      */
     private void assertSearchResultWithSummary(String title, String summary) {
-        onViewWaiting(allOf(withId(R.id.recycler_view), inSearchResultsPane()))
+        waitForView(allOf(withId(R.id.recycler_view), inSearchResultsPane()))
+                .onView()
                 .check(
                         (view, e) -> {
                             if (e != null) throw e;
@@ -1588,25 +1590,28 @@ public class BraveSettingsSearchTest {
      * text as an autocomplete suggestion.
      */
     private void clickSearchResult(String text) {
-        onViewWaiting(
+        waitForView(
                         allOf(
                                 withText(equalToIgnoringCase(text)),
                                 withResourceEntryName("title"),
                                 inSearchResultsPane()))
+                .onView()
                 .perform(click());
     }
 
     /** Asserts that a preference row with the given title is visible on the current screen. */
     private void assertPreferenceTitleDisplayed(String text) {
-        onViewWaiting(allOf(withText(equalToIgnoringCase(text)), withResourceEntryName("title")))
+        waitForView(allOf(withText(equalToIgnoringCase(text)), withResourceEntryName("title")))
+                .onView()
                 .check(matches(isDisplayed()));
     }
 
     private void typeIntoSearch(String query) {
         // search_box is the always-visible placeholder; clicking it calls enterSearchState()
         // which hides search_box and makes search_query_container + search_query visible.
-        onViewWaiting(withId(R.id.search_box)).perform(click());
-        onViewWaiting(withId(R.id.search_query))
+        waitForView(withId(R.id.search_box)).onView().perform(click());
+        waitForView(withId(R.id.search_query))
+                .onView()
                 .perform(click(), typeText(query), closeSoftKeyboard());
     }
 
