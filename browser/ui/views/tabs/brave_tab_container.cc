@@ -549,7 +549,7 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
   }
 
   const float corner_radius =
-      tabs::GetSplitViewTileCornerRadius(is_vertical_tab);
+      tabs::GetSplitViewTileCornerRadius(*tab1, is_vertical_tab);
 
   auto* cp = GetColorProvider();
   DCHECK(cp);

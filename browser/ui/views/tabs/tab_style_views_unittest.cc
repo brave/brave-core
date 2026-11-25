@@ -343,9 +343,11 @@ class BraveTabStyleSplitTabTest : public BraveTabStyleIsHoveringTest {
       EXPECT_EQ(padding, tile.bottom() - shape.bottom());
     }
 
-    const int expected_radius =
-        tabs::GetSplitViewTileCornerRadius(/*is_vertical_tab=*/false) - padding;
     for (Tab* tab : {tab1, tab2}) {
+      const int expected_radius = tabs::GetTabCornerRadius(*tab);
+      EXPECT_EQ(expected_radius + padding,
+                tabs::GetSplitViewTileCornerRadius(*tab,
+                                                   /*is_vertical_tab=*/false));
       SkRRect rrect;
       ASSERT_TRUE(GetShape(tab).isRRect(&rrect));
       for (auto corner :

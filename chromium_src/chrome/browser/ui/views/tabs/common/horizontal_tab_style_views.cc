@@ -664,9 +664,7 @@ gfx::Insets BraveVerticalTabStyle::GetInsetsInSplitTile() const {
 }
 
 int BraveVerticalTabStyle::GetCornerRadiusInSplitTile() const {
-  return std::max(0,
-                  tabs::GetSplitViewTileCornerRadius(ShouldShowVerticalTabs()) -
-                      GetPaddingInSplitTile());
+  return tabs::GetSplitViewTabCornerRadius(*tab());
 }
 
 TabStyle::TabColors BraveVerticalTabStyle::CalculateTargetColors() const {

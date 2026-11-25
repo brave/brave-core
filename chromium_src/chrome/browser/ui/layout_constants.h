@@ -42,10 +42,6 @@ int GetHorizontalTabVerticalSpacing();
 // The amount of space before the first tab view.
 inline constexpr int kHorizontalTabStripLeftMargin = 3;
 
-// The amount of visual spacing between the top and bottom of tabs and the
-// bounds of the tab strip region for a split view tab.
-inline constexpr int kHorizontalSplitViewTabVerticalSpacing = 6;
-
 // The height of the tab strip in horizontal mode.
 int GetHorizontalTabStripHeight();
 

@@ -143,21 +143,21 @@ int GetTabCornerRadius(const Tab& tab) {
   return tabs::kTabBorderRadius;
 }
 
-int GetSplitViewTileCornerRadius(bool is_vertical_tab) {
-  return !is_vertical_tab && UseCompactHorizontalTabs() ? 9 : 12;
-}
-
 int GetSplitViewTilePadding(bool is_vertical_tab, bool is_pinned) {
   if (is_vertical_tab) {
     return is_pinned ? 2 : 4;
   }
 
-  // The vertical distance between the tile's bounding box and the tab's shape.
-  // Split tabs have kHorizontalSplitViewTabVerticalSpacing instead of
-  // kHorizontalTabGap between the tab's shape and the tab strip's bounds.
-  return GetHorizontalTabVerticalSpacing() +
-         kHorizontalSplitViewTabVerticalSpacing - kHorizontalTabGap -
-         kHorizontalSplitViewTileVerticalMargin;
+  return kHorizontalSplitViewTilePadding;
+}
+
+int GetSplitViewTabCornerRadius(const Tab& tab) {
+  return GetTabCornerRadius(tab);
+}
+
+int GetSplitViewTileCornerRadius(const Tab& tab, bool is_vertical_tab) {
+  return GetSplitViewTabCornerRadius(tab) +
+         GetSplitViewTilePadding(is_vertical_tab, tab.data().pinned);
 }
 
 void CalculatePinnedTabsBoundsInGrid(
@@ -235,10 +235,14 @@ void CalculatePinnedTabsBoundsInGrid(
     rect.set_width(tab_width);
 
     // Update rect for the next pinned tabs. If overflowed, break into new line.
-    if (rect.right() + kVerticalTabMinWidth + kVerticalTabsSpacing +
+    // Use the bounds of the tab that was just added. |rect|'s width has already
+    // been updated for the next tab, so |rect.right()| would be off when the
+    // widths differ.
+    const int previous_right = result->back().right();
+    if (previous_right + kVerticalTabMinWidth + kVerticalTabsSpacing +
             kMarginForVerticalTabContainers <
         width.value_or(tab_style->GetStandardWidth(/*is_split*/ true))) {
-      rect.set_x(rect.right() + kVerticalTabsSpacing);
+      rect.set_x(previous_right + kVerticalTabsSpacing);
     } else {
       // New line
       rect.set_x(kMarginForVerticalTabContainers);

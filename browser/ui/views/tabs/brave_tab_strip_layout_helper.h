@@ -53,14 +53,24 @@ inline constexpr int kNestedTabStackedOffset = 12;
 // view tile's bounding box.
 inline constexpr int kHorizontalSplitViewTileVerticalMargin = 2;
 
-int GetTabCornerRadius(const Tab& tab);
+// The padding between the horizontal tab strip's split view tile and the tabs
+// in it. It's also the gap between the tabs.
+inline constexpr int kHorizontalSplitViewTilePadding = 2;
 
-// Returns the corner radius of the split view tile's bounding box.
-int GetSplitViewTileCornerRadius(bool is_vertical_tab);
+int GetTabCornerRadius(const Tab& tab);
 
 // Returns the padding between the split view tile's bounding box and the shapes
 // of the tabs in it. It's also the gap between the tabs in the tile.
 int GetSplitViewTilePadding(bool is_vertical_tab, bool is_pinned);
+
+// Returns the corner radius of the tabs' shapes inside a split view tile. It's
+// the same as the radius of non-split tabs.
+int GetSplitViewTabCornerRadius(const Tab& tab);
+
+// Returns the corner radius of the split view tile's bounding box. It's
+// concentric with the corners of the tabs in the tile, so it's the tabs' radius
+// plus the tile's padding.
+int GetSplitViewTileCornerRadius(const Tab& tab, bool is_vertical_tab);
 
 void CalculatePinnedTabsBoundsInGrid(
     const std::vector<TabWidthConstraints>& tabs,

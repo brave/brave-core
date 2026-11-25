@@ -187,7 +187,11 @@ TEST(BraveTabStripLayoutHelperUnitTest,
 
   // The last tab's right should be the edge of available width minus margin
   EXPECT_EQ(kAvailableWidth - kMarginForVerticalTabContainers,
-            result[2].right() + 1);
+            result[2].right());
+
+  // The spacing between tabs is the same even when their widths differ.
+  EXPECT_EQ(kVerticalTabsSpacing, result[1].x() - result[0].right());
+  EXPECT_EQ(kVerticalTabsSpacing, result[2].x() - result[1].right());
 }
 
 TEST(BraveTabStripLayoutHelperUnitTest,
