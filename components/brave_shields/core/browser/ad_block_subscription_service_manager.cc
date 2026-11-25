@@ -163,11 +163,8 @@ base::FilePath AdBlockSubscriptionServiceManager::GetSubscriptionPath(
   const std::array<uint8_t, crypto::hash::kSha256Size> hash =
       crypto::hash::Sha256(sub_url.spec());
 
-  std::string pathsafe_hash;
-  base::Base64UrlEncode(hash, base::Base64UrlEncodePolicy::INCLUDE_PADDING,
-                        &pathsafe_hash);
-
-  return subscription_path_.AppendASCII(pathsafe_hash);
+  return subscription_path_.AppendASCII(base::Base64UrlEncode(
+      hash, base::Base64UrlEncodePolicy::INCLUDE_PADDING));
 }
 
 GURL AdBlockSubscriptionServiceManager::GetListTextFileUrl(

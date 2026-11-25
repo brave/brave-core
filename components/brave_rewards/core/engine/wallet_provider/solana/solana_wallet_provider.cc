@@ -114,9 +114,8 @@ void SolanaWalletProvider::OnPostChallengesResponse(
   std::string message =
       base::StrCat({base::ToLowerASCII(wallet->payment_id), ".", challenge_id});
   auto signed_message = signer->SignMessage(base::as_byte_span(message));
-  std::string signature;
-  base::Base64UrlEncode(
-      signed_message, base::Base64UrlEncodePolicy::INCLUDE_PADDING, &signature);
+  const std::string signature = base::Base64UrlEncode(
+      signed_message, base::Base64UrlEncodePolicy::INCLUDE_PADDING);
 
   auto url = Get<EnvironmentConfig>().rewards_url().Resolve("/connect/");
   url = net::AppendOrReplaceQueryParameter(url, "msg", message);

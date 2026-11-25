@@ -147,10 +147,8 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
 
   GURL add_base64_redirect_param(const GURL& original_url,
                                  const GURL& landing_url) {
-    std::string encoded_destination;
-    base::Base64UrlEncode(landing_url.spec(),
-                          base::Base64UrlEncodePolicy::OMIT_PADDING,
-                          &encoded_destination);
+    const std::string encoded_destination = base::Base64UrlEncode(
+        landing_url.spec(), base::Base64UrlEncodePolicy::OMIT_PADDING);
     const std::string query = absl::StrFormat("url=%s", encoded_destination);
     GURL::Replacements replacement;
     replacement.SetQueryStr(query);
