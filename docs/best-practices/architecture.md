@@ -2141,7 +2141,7 @@ not an address-bar use, so the exception does not cover it.
 
 ---
 
-<a id="ARCH-077"></a>
+<a id="ARCH-078"></a>
 
 ## ✅ Use the Frame's Origin for Security Decisions, Not the URL
 
