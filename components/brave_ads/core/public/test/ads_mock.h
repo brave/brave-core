@@ -6,9 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_TEST_ADS_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_TEST_ADS_MOCK_H_
 
+#include <cstdint>
 #include <memory>
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
@@ -16,6 +18,7 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "url/gurl.h"
 
 namespace brave_ads::test {
 
@@ -94,6 +97,13 @@ class AdsMock : public Ads {
               (mojom::CreativeSearchResultAdInfoPtr,
                mojom::SearchResultAdEventType,
                ResultCallback),
+              (override));
+  MOCK_METHOD(void,
+              MaybeGetOrderPatterns,
+              (int32_t,
+               const std::vector<GURL>&,
+               std::optional<std::string>,
+               MaybeGetOrderPatternsCallback),
               (override));
   MOCK_METHOD(void,
               PurgeOrphanedAdEventsForType,

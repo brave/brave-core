@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSIONS_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -18,10 +19,12 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/resource/order_extraction_patterns_resource.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/attempted_ad_event_key.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 class GURL;
 
@@ -48,6 +51,26 @@ class Conversions final : public TabManagerObserver {
   // tab_id until that tab navigates away from the matching URL or closes.
   void MaybeConvert(int32_t tab_id, const std::vector<GURL>& redirect_chain);
 
+  // `should_extract_id`/`should_extract_value` are the campaign's own
+  // request. Each patterns struct is empty unless its flag is true.
+  using MaybeGetOrderPatternsCallback = base::OnceCallback<void(
+      bool should_extract_id,
+      mojom::OrderIdExtractionPatternsInfoPtr id_extraction_patterns,
+      bool should_extract_value,
+      mojom::OrderValueExtractionPatternsInfoPtr value_extraction_patterns)>;
+
+  // `detected_language` comes from Translate's page detection, supplied by
+  // the caller; with no value, tries every language in schema order.
+  void MaybeGetOrderPatterns(int32_t tab_id,
+                             const std::vector<GURL>& redirect_chain,
+                             std::optional<std::string> detected_language,
+                             MaybeGetOrderPatternsCallback callback);
+
+  const OrderExtractionPatternsResource& GetOrderExtractionPatternsResource()
+      const {
+    return order_extraction_patterns_resource_;
+  }
+
  private:
   void GetCampaignConversions(int32_t tab_id,
                               const std::vector<GURL>& redirect_chain);
@@ -70,6 +93,22 @@ class Conversions final : public TabManagerObserver {
                            const std::vector<GURL>& redirect_chain,
                            const CampaignConversionList& campaign_conversions,
                            const AdEventList& ad_events);
+
+  void MaybeGetOrderPatternsForCampaignConversionsCallback(
+      int32_t tab_id,
+      const std::vector<GURL>& redirect_chain,
+      std::optional<std::string> detected_language,
+      MaybeGetOrderPatternsCallback callback,
+      bool success,
+      const CampaignConversionList& campaign_conversions);
+  void MaybeGetOrderPatternsForAdEventsCallback(
+      int32_t tab_id,
+      const std::vector<GURL>& redirect_chain,
+      std::optional<std::string> detected_language,
+      MaybeGetOrderPatternsCallback callback,
+      const CampaignConversionList& campaign_conversions,
+      bool success,
+      const AdEventList& ad_events);
 
   // Prunes attempted ad events for campaigns the tab no longer matches, so
   // a later, distinct purchase under the same ad event can convert again.
@@ -110,6 +149,8 @@ class Conversions final : public TabManagerObserver {
       campaign_conversions_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
+
+  const OrderExtractionPatternsResource order_extraction_patterns_resource_;
 
   base::ScopedObservation<TabManager, TabManagerObserver>
       tab_manager_observation_{this};

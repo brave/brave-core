@@ -153,6 +153,54 @@ struct CampaignConversionInfo {
   mojo_base.mojom.TimeDelta observation_window;
 };
 
+struct OrderExtractionSelectorInfo {
+  string selector;
+  string? attribute_name;
+
+  // Applied to the resolved text/attribute value; uses the first capture
+  // group if present, otherwise the whole match. Unset uses the value as-is.
+  string? pattern;
+
+  // Re-validates the resolved value whenever set, even if `pattern` already
+  // narrowed it. Unset means no further validation.
+  string? validation_pattern;
+};
+
+struct OrderIdExtractionPatternsInfo {
+  array<OrderExtractionSelectorInfo> selectors;
+  array<string> regexes;
+
+  // Bounds how much combined element text, in UTF-8 bytes, the element-text
+  // fallback will accumulate and regex-test.
+  uint32 max_combined_text_length_to_search;
+
+  // Bounds how many element levels below the document root the element-text
+  // fallback descends into.
+  uint32 number_of_descendant_levels_to_search;
+
+  // Re-validates an ID resolved with no narrower pattern of its own, since
+  // that result can otherwise be untrusted, unbounded page content.
+  string? validation_pattern;
+};
+
+struct OrderValueExtractionPatternsInfo {
+  array<OrderExtractionSelectorInfo> selectors;
+
+  // Keyed by currency code (e.g. "EUR"), so a matching currency's
+  // identity survives into `OrderInfo`.
+  map<string, string> currency_regexes;
+
+  array<string> keyword_regexes;
+  uint32 number_of_ancestor_levels_to_search;
+};
+
+struct OrderExtractionPatternsInfo {
+  OrderIdExtractionPatternsInfo id;
+  bool should_extract_id;
+  OrderValueExtractionPatternsInfo value;
+  bool should_extract_value;
+};
+
 enum NotificationAdEventType {
   kServedImpression = 0,
   kViewedImpression,
