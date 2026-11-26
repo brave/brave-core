@@ -10,6 +10,7 @@
 #include <map>
 #include <numeric>
 #include <optional>
+#include <set>
 #include <string>
 #include <utility>
 #include <vector>
@@ -41,6 +42,11 @@
 namespace ai_chat {
 
 namespace {
+
+// Workspace content is not web content, so it is never cleared along with
+// browsing history.
+constexpr int kWorkspaceContentType =
+    std::to_underlying(mojom::ContentType::Workspace);
 
 constexpr char kSearchQueriesSeparator[] = "|||";
 
@@ -1750,6 +1756,34 @@ bool AIChatDatabase::DeleteEntryAndOwnedRows(
   return true;
 }
 
+std::set<GURL> AIChatDatabase::GetWorkspaceUrls() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return {};
+  }
+
+  // The url is encrypted, so it can't be made distinct by the query.
+  static constexpr char kQuery[] =
+      "SELECT url FROM associated_content"
+      " WHERE content_type = ? AND url IS NOT NULL";
+  sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
+  CHECK(statement.is_valid());
+  statement.BindInt(0, kWorkspaceContentType);
+
+  std::set<GURL> urls;
+  while (statement.Step()) {
+    std::optional<std::string> url =
+        DecryptOptionalColumnToString(statement, 0);
+    if (url.has_value()) {
+      GURL gurl(*url);
+      if (gurl.is_valid()) {
+        urls.insert(std::move(gurl));
+      }
+    }
+  }
+  return urls;
+}
+
 bool AIChatDatabase::DeleteAllData() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Ignore init failure when deletion. We only need the database to be open.
@@ -1768,6 +1802,17 @@ bool AIChatDatabase::DeleteAllData() {
   return LazyInit(true);
 }
 
+std::optional<std::set<GURL>>
+AIChatDatabase::DeleteAllDataAndGetWorkspaceUrls() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // Collected first, as nothing references them once the data is gone.
+  std::set<GURL> workspace_urls = GetWorkspaceUrls();
+  if (!DeleteAllData()) {
+    return std::nullopt;
+  }
+  return workspace_urls;
+}
+
 std::optional<std::vector<ClearedAssociatedContentEntry>>
 AIChatDatabase::DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
                                            std::optional<base::Time> end_time) {
@@ -1778,11 +1823,6 @@ AIChatDatabase::DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
   DVLOG(4) << "Deleting associated web content for time range "
            << begin_time.value_or(base::Time()) << " to "
            << end_time.value_or(base::Time::Max());
-
-  // Workspace content is not web content, so it is never cleared along with
-  // browsing history.
-  static constexpr int kWorkspaceContentType =
-      std::to_underlying(mojom::ContentType::Workspace);
 
   // Collect the entries whose associated content is about to be cleared (only
   // rows that actually still hold content), so the caller can propagate the

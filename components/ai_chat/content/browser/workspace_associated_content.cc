@@ -5,14 +5,17 @@
 
 #include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 
+#include <array>
 #include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
 
+#include "base/barrier_closure.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/escape.h"
@@ -22,7 +25,10 @@
 #include "brave/components/ai_chat/content/browser/content_tool.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/browser/website_settings_info.h"
+#include "components/content_settings/core/browser/website_settings_registry.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permissions_client.h"
 #include "content/public/browser/browser_context.h"
@@ -83,7 +89,58 @@ std::optional<std::string> ParseWorkspaceUrl(const GURL& url) {
   return uuid.AsLowercaseString();
 }
 
+// The URL of the origin that serves the workspace's files:
+// chrome-untrusted://view.<uuid>.leo-workspace/
+GURL BuildViewerUrl(std::string_view uuid) {
+  return GURL(base::StrCat({content::kChromeUIUntrustedScheme,
+                            url::kStandardSchemeSeparator,
+                            kAIChatLeoWorkspaceViewUIHostPrefix, uuid,
+                            kAIChatLeoWorkspaceUIHostSuffix, "/"}));
+}
+
 }  // namespace
+
+// static
+void WorkspaceAssociatedContent::DeleteWorkspaceData(
+    const GURL& workspace_url,
+    content::BrowserContext* browser_context,
+    base::OnceClosure callback) {
+  std::optional<std::string> uuid = ParseWorkspaceUrl(workspace_url);
+  if (!uuid || !browser_context) {
+    std::move(callback).Run();
+    return;
+  }
+  DVLOG(2) << __func__ << " deleting workspace " << workspace_url.spec();
+
+  const std::array<GURL, 2> origin_urls = {BuildPageUrl(*uuid),
+                                           BuildViewerUrl(*uuid)};
+  base::RepeatingClosure barrier =
+      base::BarrierClosure(origin_urls.size(), std::move(callback));
+  auto* map =
+      permissions::PermissionsClient::Get()->GetSettingsMap(browser_context);
+  for (const GURL& origin_url : origin_urls) {
+    browser_context->GetStoragePartitionForUrl(origin_url)
+        ->ClearDataForOrigin(content::StoragePartition::REMOVE_DATA_MASK_ALL,
+                             origin_url, barrier);
+
+    // Remove every site setting scoped to the origin, e.g. the File System
+    // Access grants made by DeliverDirectoryHandle(), which are scoped to a
+    // single workspace's origin. Patterns with a domain wildcard could match
+    // several workspaces, so they are left alone.
+    if (!map) {
+      continue;
+    }
+    for (const content_settings::WebsiteSettingsInfo* info :
+         *content_settings::WebsiteSettingsRegistry::GetInstance()) {
+      map->ClearSettingsForOneTypeWithPredicate(
+          info->type(), [&origin_url](const ContentSettingPatternSource& s) {
+            return s.primary_pattern != ContentSettingsPattern::Wildcard() &&
+                   !s.primary_pattern.HasDomainWildcard() &&
+                   s.primary_pattern.Matches(origin_url);
+          });
+    }
+  }
+}
 
 WorkspaceAssociatedContent::WorkspaceAssociatedContent(
     std::optional<base::FilePath> folder_path,

@@ -13,6 +13,7 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
@@ -75,6 +76,18 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
   // |file_path| is empty.
   static std::optional<GURL> GetFileUrl(const GURL& workspace_url,
                                         std::string_view file_path);
+
+  // Deletes everything the workspace identified by |workspace_url|
+  // (workspace://<uuid>) has stored in |browser_context|: the storage of its
+  // page and file viewer origins (IndexedDB, origin private file system,
+  // service workers, cookies, etc.) and their site settings, including the
+  // File System Access grants. Call only once no conversation references the
+  // workspace. |callback| runs once the storage has been cleared, or straight
+  // away if |workspace_url| is not a valid workspace URL.
+  static void DeleteWorkspaceData(
+      const GURL& workspace_url,
+      content::BrowserContext* browser_context,
+      base::OnceClosure callback = base::DoNothing());
 
   // AssociatedContentDelegate:
   void GetContent(GetPageContentCallback callback) override;

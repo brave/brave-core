@@ -25,6 +25,7 @@
 #include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/workspace_data_deleter.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "build/build_config.h"
@@ -161,6 +162,13 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
               base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers));
         },
         context));
+    service->SetWorkspaceDataDeleter(std::make_unique<WorkspaceDataDeleter>(
+        *service, base::BindRepeating(
+                      [](content::BrowserContext* context, const GURL& url) {
+                        WorkspaceAssociatedContent::DeleteWorkspaceData(
+                            url, context);
+                      },
+                      context)));
   }
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)

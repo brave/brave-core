@@ -10,6 +10,7 @@
 #include <iterator>
 #include <memory>
 #include <optional>
+#include <set>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -42,6 +43,7 @@
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/tools/memory_storage_tool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/browser/workspace_data_deleter.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -215,6 +217,9 @@ void AIChatService::Shutdown() {
   // Disconnect remotes
   receivers_.ClearWithReason(0, "Shutting down");
   weak_ptr_factory_.InvalidateWeakPtrs();
+  // Nothing is deleted once the profile is shutting down, including by
+  // replies to database reads already in flight.
+  workspace_data_deleter_.reset();
   // Tear down the sync bridge on the DB sequence BEFORE destroying the
   // database. The bridge holds a raw_ptr<AIChatDatabase>; if the database
   // were destroyed first, the raw_ptr would dangle until the
@@ -449,6 +454,10 @@ ConversationHandler* AIChatService::CreateConversationHandlerForContent(
 void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
                                         std::optional<base::Time> end_time) {
   if (!begin_time.has_value() && !end_time.has_value()) {
+    // Every workspace becomes unreferenced, so collect the in-memory ones
+    // before the data referencing them is gone.
+    std::set<GURL> workspace_urls = GetInMemoryWorkspaceUrls();
+
     // Delete all conversations
     // Delete in-memory data
     conversation_observations_.RemoveAllObservations();
@@ -461,8 +470,17 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
 
     // Delete database data
     if (ai_chat_db_) {
-      ai_chat_db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteAllData));
+      // The database also reports the workspaces only it referenced, e.g. from
+      // conversations that haven't been loaded.
+      ai_chat_db_.AsyncCall(&AIChatDatabase::DeleteAllDataAndGetWorkspaceUrls)
+          .Then(base::BindOnce(&AIChatService::NotifySavedConversationsDeleted,
+                               weak_ptr_factory_.GetWeakPtr(),
+                               std::move(workspace_urls)));
       ReloadConversations();
+    } else {
+      // Nothing was saved, so nothing else references them.
+      NotifySavedConversationsDeleted(std::move(workspace_urls),
+                                      std::set<GURL>());
     }
     if (ai_chat_metrics_ != nullptr) {
       ai_chat_metrics_->RecordConversationsCleared();
@@ -482,12 +500,14 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
   }
 
   // Avoid notifying the list once per deleted conversation.
+  std::set<GURL> workspace_urls;
   for (const auto& uuid : conversation_keys) {
-    DeleteConversationWithoutNotifyingList(uuid);
+    workspace_urls.merge(DeleteConversationWithoutNotifyingList(uuid));
   }
   if (!conversation_keys.empty()) {
     OnConversationListChanged();
   }
+  NotifyWorkspacesReleased(workspace_urls);
 }
 
 void AIChatService::DeleteAssociatedWebContent(
@@ -588,7 +608,7 @@ void AIChatService::MaybeInitStorage() {
     if (ai_chat_db_) {
       DVLOG(0) << "Unloading AI Chat database due to pref change";
       base::SequenceBound<AIChatDatabase> ai_chat_db = std::move(ai_chat_db_);
-      ai_chat_db.AsyncCall(&AIChatDatabase::DeleteAllData)
+      ai_chat_db.AsyncCall(&AIChatDatabase::DeleteAllDataAndGetWorkspaceUrls)
           .Then(base::BindOnce(&AIChatService::OnDataDeletedForDisabledStorage,
                                weak_ptr_factory_.GetWeakPtr()));
     }
@@ -620,7 +640,8 @@ void AIChatService::OnOsCryptAsyncReady(
   }
 }
 
-void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
+void AIChatService::OnDataDeletedForDisabledStorage(
+    std::optional<std::set<GURL>> workspace_urls) {
   // Remove any conversations from in-memory that aren't connected to UI.
   // This is done now, in the callback from DeleteAllData, in case there
   // was any in-progress operations that would have resulted in adding data
@@ -649,6 +670,9 @@ void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
     NotifyConversationGenerationStateChanged();
   }
   OnConversationListChanged();
+  // The saved conversations are gone. Conversations still open are kept, and
+  // are removed once they unload, as they can no longer be persisted.
+  NotifySavedConversationsDeleted({}, std::move(workspace_urls));
   // Re-check the preference since it could have been re-enabled
   // whilst the database operation was in progress. If so, we can re-use
   // the same database instance (post data deletion).
@@ -854,12 +878,90 @@ void AIChatService::GetPremiumStatus(
 }
 
 void AIChatService::DeleteConversation(const std::string& id) {
-  DeleteConversationWithoutNotifyingList(id);
+  std::set<GURL> workspace_urls = DeleteConversationWithoutNotifyingList(id);
   OnConversationListChanged();
+  NotifyWorkspacesReleased(workspace_urls);
 }
 
-void AIChatService::DeleteConversationWithoutNotifyingList(
+std::set<GURL> AIChatService::GetWorkspaceUrlsForConversation(
+    const std::string& id) const {
+  std::set<GURL> urls;
+  auto add = [&urls](const std::vector<mojom::AssociatedContentPtr>& contents) {
+    for (const auto& content : contents) {
+      if (content->content_type == mojom::ContentType::Workspace &&
+          content->url.is_valid()) {
+        urls.insert(content->url);
+      }
+    }
+  };
+  if (const auto* conversation = base::FindPtrOrNull(conversations_, id)) {
+    add(conversation->associated_content);
+  }
+  // A live conversation may have a workspace attached which isn't in its
+  // metadata yet, e.g. before its first entry is sent.
+  if (const auto* handler = base::FindOrNull(conversation_handlers_, id)) {
+    add((*handler)->associated_content_manager()->GetAssociatedContent());
+  }
+  return urls;
+}
+
+void AIChatService::SetWorkspaceDataDeleter(
+    std::unique_ptr<WorkspaceDataDeleter> deleter) {
+  workspace_data_deleter_ = std::move(deleter);
+}
+
+void AIChatService::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void AIChatService::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
+}
+
+std::set<GURL> AIChatService::GetInMemoryWorkspaceUrls() const {
+  std::set<GURL> urls;
+  for (const auto& [id, conversation] : conversations_) {
+    urls.merge(GetWorkspaceUrlsForConversation(id));
+  }
+  // Handlers without metadata, e.g. conversations that have no entries yet.
+  for (const auto& [id, handler] : conversation_handlers_) {
+    if (!conversations_.contains(id)) {
+      urls.merge(GetWorkspaceUrlsForConversation(id));
+    }
+  }
+  return urls;
+}
+
+void AIChatService::GetSavedWorkspaceUrls(
+    base::OnceCallback<void(std::set<GURL>)> callback) {
+  if (!ai_chat_db_) {
+    std::move(callback).Run({});
+    return;
+  }
+  // Database tasks run in order, so this is read after any write already
+  // requested, e.g. the deletion of a conversation.
+  ai_chat_db_.AsyncCall(&AIChatDatabase::GetWorkspaceUrls)
+      .Then(std::move(callback));
+}
+
+void AIChatService::NotifyWorkspacesReleased(
+    const std::set<GURL>& workspace_urls) {
+  if (workspace_urls.empty()) {
+    return;
+  }
+  observers_.Notify(&Observer::OnWorkspacesReleased, workspace_urls);
+}
+
+void AIChatService::NotifySavedConversationsDeleted(
+    std::set<GURL> released_workspace_urls,
+    std::optional<std::set<GURL>> saved_workspace_urls) {
+  observers_.Notify(&Observer::OnSavedConversationsDeleted,
+                    released_workspace_urls, saved_workspace_urls);
+}
+
+std::set<GURL> AIChatService::DeleteConversationWithoutNotifyingList(
     const std::string& id) {
+  std::set<GURL> workspace_urls = GetWorkspaceUrlsForConversation(id);
   if (auto node = conversation_handlers_.extract(id)) {
     conversation_observations_.RemoveObservation(node.mapped().get());
     if (ai_chat_metrics_) {
@@ -894,6 +996,7 @@ void AIChatService::DeleteConversationWithoutNotifyingList(
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteConversation))
         .WithArgs(id);
   }
+  return workspace_urls;
 }
 
 void AIChatService::RenameConversation(const std::string& id,
@@ -1112,8 +1215,16 @@ void AIChatService::MaybeUnloadConversation(
 
   bool has_history = conversation_handler->HasAnyHistory();
   bool is_temporary = conversation_handler->GetIsTemporary();
+  // A conversation that isn't persisted is gone for good once unloaded, so it
+  // stops referencing its workspaces just as if it had been deleted.
+  const bool erase = !IsAIChatHistoryEnabled() || !has_history || is_temporary;
 
   auto uuid = conversation_handler->get_conversation_uuid();
+  // Collected before the handler goes, as it holds any live workspace content.
+  std::set<GURL> workspace_urls;
+  if (erase) {
+    workspace_urls = GetWorkspaceUrlsForConversation(uuid);
+  }
   conversation_observations_.RemoveObservation(conversation_handler.get());
   conversation_handlers_.erase(uuid);
 
@@ -1121,7 +1232,7 @@ void AIChatService::MaybeUnloadConversation(
            << conversations_.size() << " Conversation metadata items and "
            << conversation_handlers_.size()
            << " ConversationHandler instances.";
-  if (!IsAIChatHistoryEnabled() || !has_history || is_temporary) {
+  if (erase) {
     // Can erase because no active UI and no history, so it's
     // not a real / persistable conversation
     conversations_.erase(uuid);
@@ -1135,6 +1246,7 @@ void AIChatService::MaybeUnloadConversation(
              << conversation_handlers_.size()
              << " ConversationHandler instances.";
     OnConversationListChanged();
+    NotifyWorkspacesReleased(workspace_urls);
   }
 }
 

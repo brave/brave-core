@@ -88,6 +88,10 @@ class WorkspaceAssociatedContentBrowserTestBase : public PlatformBrowserTest {
   [[nodiscard]] static bool WaitForStoredHandle(
       WorkspaceAssociatedContent* content);
 
+  // Destroys every workspace created by CreateContent(), once each has saved
+  // its handle (see TearDownOnMainThread()).
+  void DestroyContents();
+
   // The URL of the viewer belonging to the workspace at |workspace_url|.
   static GURL ViewerURL(const GURL& workspace_url);
 

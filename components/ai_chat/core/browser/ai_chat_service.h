@@ -12,6 +12,7 @@
 #include <map>
 #include <memory>
 #include <optional>
+#include <set>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -25,9 +26,12 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
+#include "base/observer_list_types.h"
 #include "base/scoped_multi_source_observation.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/threading/sequence_bound.h"
+#include "base/types/optional_ref.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
@@ -50,6 +54,7 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "url/gurl.h"
 
 namespace syncer {
 class DataTypeControllerDelegate;
@@ -72,6 +77,7 @@ class ModelService;
 class TabTrackerService;
 class AIChatMetrics;
 class MemoryStorageTool;
+class WorkspaceDataDeleter;
 
 bool CanAssociateContent(AssociatedContentDelegate* delegate);
 
@@ -102,6 +108,26 @@ class AIChatService : public KeyedService,
     // The conversation was viewed or removed.
     virtual void CloseCompletionNotification(
         const std::string& conversation_uuid) = 0;
+  };
+
+  // Told when conversations stop referencing the workspaces attached to them.
+  class Observer : public base::CheckedObserver {
+   public:
+    // Conversations referencing |workspace_urls| were removed, either deleted
+    // or unloaded without having been persisted. Other conversations, in
+    // memory or persisted, may still reference them. Any database deletion
+    // the removal needs has been requested, so GetSavedWorkspaceUrls() won't
+    // report the removed conversations' references.
+    virtual void OnWorkspacesReleased(const std::set<GURL>& workspace_urls) {}
+
+    // Every persisted conversation was deleted. |released_workspace_urls| are
+    // those referenced by the in-memory conversations deleted along with them,
+    // and |saved_workspace_urls| those the deleted data referenced, or
+    // std::nullopt if the deletion failed (so the data may still reference
+    // them). Conversations still in memory may still reference either.
+    virtual void OnSavedConversationsDeleted(
+        const std::set<GURL>& released_workspace_urls,
+        base::optional_ref<const std::set<GURL>> saved_workspace_urls) {}
   };
 
   AIChatService(
@@ -348,6 +374,21 @@ class AIChatService : public KeyedService,
     workspace_content_restorer_ = std::move(workspace_content_restorer);
   }
 
+  // Takes ownership of the deleter of workspaces' stored data, which observes
+  // this service.
+  void SetWorkspaceDataDeleter(std::unique_ptr<WorkspaceDataDeleter> deleter);
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
+
+  // Returns the workspace URLs referenced by any in-memory conversation, from
+  // both its metadata and, if loaded, its live associated content.
+  std::set<GURL> GetInMemoryWorkspaceUrls() const;
+  // Runs |callback| with the workspace URLs referenced by persisted
+  // conversations, read after every database write already requested (so
+  // straight away, with none, if there is no database).
+  void GetSavedWorkspaceUrls(base::OnceCallback<void(std::set<GURL>)> callback);
+
  private:
   // Key is uuid
   using ConversationMap =
@@ -438,7 +479,10 @@ class AIChatService : public KeyedService,
   void OnPremiumStatusReceived(GetPremiumStatusCallback callback,
                                mojom::PremiumStatus status,
                                mojom::PremiumInfoPtr info);
-  void OnDataDeletedForDisabledStorage(bool success);
+  // |workspace_urls| are those the deleted data referenced, or std::nullopt if
+  // the deletion failed.
+  void OnDataDeletedForDisabledStorage(
+      std::optional<std::set<GURL>> workspace_urls);
   mojom::ServiceStatePtr BuildState();
   void OnStateChanged();
   void OnSkillsChanged();
@@ -469,8 +513,21 @@ class AIChatService : public KeyedService,
   // client is connected.
   void MaybeMarkGenerationComplete(const std::string& conversation_uuid);
   // DeleteConversation() without OnConversationListChanged(), for callers that
-  // delete several conversations and then send the list once.
-  void DeleteConversationWithoutNotifyingList(const std::string& id);
+  // delete several conversations and then send the list once. Returns the
+  // workspace URLs the deleted conversation referenced.
+  std::set<GURL> DeleteConversationWithoutNotifyingList(const std::string& id);
+
+  // Returns the workspace URLs referenced by conversation |id|, from both its
+  // metadata and, if loaded, its live associated content.
+  std::set<GURL> GetWorkspaceUrlsForConversation(const std::string& id) const;
+  // Tells observers that conversations referencing |workspace_urls| were
+  // removed, if there are any.
+  void NotifyWorkspacesReleased(const std::set<GURL>& workspace_urls);
+  // Tells observers that every persisted conversation was deleted (see
+  // Observer::OnSavedConversationsDeleted()).
+  void NotifySavedConversationsDeleted(
+      std::set<GURL> released_workspace_urls,
+      std::optional<std::set<GURL>> saved_workspace_urls);
   void ShowCompletionNotification(const std::string& uuid);
 
   raw_ptr<ModelService> model_service_;
@@ -592,6 +649,11 @@ class AIChatService : public KeyedService,
   std::unique_ptr<NotificationDelegate> notification_delegate_;
   // Conversations we've shown a notification for.
   base::flat_set<std::string> notified_conversations_;
+
+  base::ObserverList<Observer> observers_;
+  // Observes this service, so it is declared after |observers_| to stop
+  // observing before the list is destroyed.
+  std::unique_ptr<WorkspaceDataDeleter> workspace_data_deleter_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };

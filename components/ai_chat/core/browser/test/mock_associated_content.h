@@ -36,9 +36,12 @@ class MockAssociatedContent : public AssociatedContentDelegate {
 
   void SetIsVideo(bool is_video) { is_video_ = is_video; }
 
-  // Overrides the content type GetContent gives, e.g. for a workspace.
+  // Overrides the content type GetContent gives, e.g. for a workspace. Also
+  // seeds the cached content, as association gating reads the cache before
+  // GetContent ever runs.
   void SetContentType(mojom::ContentType content_type) {
     content_type_ = content_type;
+    set_cached_page_content(PageContent("", content_type));
   }
 
   void SetTitle(std::u16string title);

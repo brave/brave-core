@@ -64,12 +64,16 @@ void WorkspaceAssociatedContentBrowserTestBase::TearDownOnMainThread() {
   // trips the dangling pointer detector in IndexedDB's BackingStore (it binds
   // the external object Unretained, guarded only by a WeakPtr checked inside
   // the callback), so let every write land before destroying anything.
+  DestroyContents();
+  PlatformBrowserTest::TearDownOnMainThread();
+}
+
+void WorkspaceAssociatedContentBrowserTestBase::DestroyContents() {
   for (const auto& content : contents_) {
     EXPECT_TRUE(WaitForStoredHandle(content.get()))
         << "workspace " << content->uuid();
   }
   contents_.clear();
-  PlatformBrowserTest::TearDownOnMainThread();
 }
 
 base::FilePath

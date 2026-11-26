@@ -51,6 +51,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/browser/workspace_data_deleter.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -285,6 +286,7 @@ class MockAIChatDatabase : public AIChatDatabase {
   MOCK_METHOD(bool, DeleteConversationEntry, (std::string_view), (override));
   MOCK_METHOD(bool, DeleteConversation, (std::string_view), (override));
   MOCK_METHOD(bool, DeleteAllData, (), (override));
+  MOCK_METHOD((std::set<GURL>), GetWorkspaceUrls, (), (override));
   MOCK_METHOD((std::optional<std::vector<ClearedAssociatedContentEntry>>),
               DeleteAssociatedWebContent,
               (std::optional<base::Time>, std::optional<base::Time>),
@@ -509,6 +511,45 @@ class AIChatServiceUnitTest : public testing::Test,
   void ResetService() {
     DestroyService();
     CreateService();
+  }
+
+  // Gives the service a WorkspaceDataDeleter which records, in
+  // |deleted_workspaces|, the workspaces whose data it deletes.
+  void UseWorkspaceDataDeleter(std::vector<GURL>& deleted_workspaces) {
+    ai_chat_service_->SetWorkspaceDataDeleter(
+        std::make_unique<WorkspaceDataDeleter>(
+            *ai_chat_service_,
+            base::BindLambdaForTesting([&deleted_workspaces](const GURL& url) {
+              deleted_workspaces.push_back(url);
+            })));
+  }
+
+  // Waits until the WorkspaceDataDeleter has acted on every workspace released
+  // so far. It decides in the reply to a read of the saved workspaces, and
+  // reads run in order on the database sequence, so a read posted after it
+  // replies after it. Replies to the database's deletions can themselves start
+  // one more read (e.g. when deleting everything fails), hence the two reads.
+  // Doesn't wait for anything without a database, as nothing is asynchronous.
+  void WaitForWorkspaceDeletions() {
+    for (int i = 0; i < 2; ++i) {
+      base::test::TestFuture<std::set<GURL>> saved_workspace_urls;
+      ai_chat_service_->GetSavedWorkspaceUrls(
+          saved_workspace_urls.GetCallback());
+      ASSERT_TRUE(saved_workspace_urls.Wait());
+    }
+  }
+
+  // Replaces the service's database with a mock living on the main thread,
+  // and returns it for setting expectations on.
+  NiceMock<MockAIChatDatabase>* UseMockDatabase() {
+    auto mock_db = base::SequenceBound<NiceMock<MockAIChatDatabase>>(
+        task_environment_.GetMainThreadTaskRunner());
+    NiceMock<MockAIChatDatabase>* mock_db_ptr = nullptr;
+    mock_db.PostTaskWithThisObject(base::BindLambdaForTesting(
+        [&](NiceMock<MockAIChatDatabase>* db) { mock_db_ptr = db; }));
+    CHECK(base::test::RunUntil([&] { return mock_db_ptr != nullptr; }));
+    ai_chat_service_->SetDatabaseForTesting(std::move(mock_db));
+    return mock_db_ptr;
   }
 
   void ExpectConversationsSize(base::Location location, size_t size) {
@@ -1286,6 +1327,245 @@ TEST_P(AIChatServiceUnitTest, DeleteConversations_TimeRange) {
   // Verify deleted from database
   ResetService();
   ExpectConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 1 : 0);
+}
+
+TEST_P(AIChatServiceUnitTest,
+       DeleteConversation_DeletesWorkspaceDataWhenNoLongerReferenced) {
+  std::vector<GURL> deleted_workspaces;
+  UseWorkspaceDataDeleter(deleted_workspaces);
+
+  const GURL shared_url("workspace://11111111-1111-4111-8111-111111111111");
+  const GURL other_url("workspace://22222222-2222-4222-8222-222222222222");
+  NiceMock<MockAssociatedContent> shared_workspace1;
+  shared_workspace1.SetContentType(mojom::ContentType::Workspace);
+  shared_workspace1.SetUrl(shared_url);
+  NiceMock<MockAssociatedContent> shared_workspace2;
+  shared_workspace2.SetContentType(mojom::ContentType::Workspace);
+  shared_workspace2.SetUrl(shared_url);
+  NiceMock<MockAssociatedContent> other_workspace;
+  other_workspace.SetContentType(mojom::ContentType::Workspace);
+  other_workspace.SetUrl(other_url);
+
+  // Two conversations share a workspace, and a third has its own.
+  ConversationHandler* handler1 = CreateConversation();
+  auto client1 = CreateConversationClient(handler1);
+  ai_chat_service_->MaybeAssociateContent(&shared_workspace1,
+                                          handler1->get_conversation_uuid());
+  ConversationHandler* handler2 = CreateConversation();
+  auto client2 = CreateConversationClient(handler2);
+  ai_chat_service_->MaybeAssociateContent(&shared_workspace2,
+                                          handler2->get_conversation_uuid());
+  ConversationHandler* handler3 = CreateConversation();
+  auto client3 = CreateConversationClient(handler3);
+  ai_chat_service_->MaybeAssociateContent(&other_workspace,
+                                          handler3->get_conversation_uuid());
+  const std::string uuid1 = handler1->get_conversation_uuid();
+  const std::string uuid2 = handler2->get_conversation_uuid();
+  const std::string uuid3 = handler3->get_conversation_uuid();
+
+  // The shared workspace is still referenced by the second conversation.
+  ai_chat_service_->DeleteConversation(uuid1);
+  WaitForWorkspaceDeletions();
+  EXPECT_THAT(deleted_workspaces, testing::IsEmpty());
+
+  ai_chat_service_->DeleteConversation(uuid3);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return deleted_workspaces.size() == 1u; }));
+  EXPECT_THAT(deleted_workspaces, testing::ElementsAre(other_url));
+
+  ai_chat_service_->DeleteConversation(uuid2);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return deleted_workspaces.size() == 2u; }));
+  EXPECT_THAT(deleted_workspaces, testing::ElementsAre(other_url, shared_url));
+}
+
+TEST_P(AIChatServiceUnitTest, DeleteConversations_DeletesAllWorkspaceData) {
+  std::vector<GURL> deleted_workspaces;
+  UseWorkspaceDataDeleter(deleted_workspaces);
+
+  const GURL workspace_url("workspace://11111111-1111-4111-8111-111111111111");
+  NiceMock<MockAssociatedContent> workspace;
+  workspace.SetContentType(mojom::ContentType::Workspace);
+  workspace.SetUrl(workspace_url);
+  NiceMock<MockAssociatedContent> page;
+  page.SetUrl(GURL("https://example.com"));
+
+  ConversationHandler* handler1 = CreateConversation();
+  auto client1 = CreateConversationClient(handler1);
+  ai_chat_service_->MaybeAssociateContent(&workspace,
+                                          handler1->get_conversation_uuid());
+  ConversationHandler* handler2 = CreateConversation();
+  auto client2 = CreateConversationClient(handler2);
+  ai_chat_service_->MaybeAssociateContent(&page,
+                                          handler2->get_conversation_uuid());
+
+  ai_chat_service_->DeleteConversations();
+  WaitForWorkspaceDeletions();
+  // Only workspaces are deleted, and only once.
+  EXPECT_THAT(deleted_workspaces, testing::ElementsAre(workspace_url));
+}
+
+// A temporary conversation is gone for good once unloaded, so its workspaces
+// are deleted then, unless another conversation still references them.
+TEST_P(AIChatServiceUnitTest,
+       UnloadTemporaryConversation_DeletesWorkspaceDataWhenNoLongerReferenced) {
+  std::vector<GURL> deleted_workspaces;
+  UseWorkspaceDataDeleter(deleted_workspaces);
+
+  const GURL shared_url("workspace://11111111-1111-4111-8111-111111111111");
+  const GURL other_url("workspace://22222222-2222-4222-8222-222222222222");
+  NiceMock<MockAssociatedContent> shared_workspace1;
+  shared_workspace1.SetContentType(mojom::ContentType::Workspace);
+  shared_workspace1.SetUrl(shared_url);
+  NiceMock<MockAssociatedContent> shared_workspace2;
+  shared_workspace2.SetContentType(mojom::ContentType::Workspace);
+  shared_workspace2.SetUrl(shared_url);
+  NiceMock<MockAssociatedContent> other_workspace;
+  other_workspace.SetContentType(mojom::ContentType::Workspace);
+  other_workspace.SetUrl(other_url);
+
+  // A temporary conversation shares its workspace with a conversation that
+  // stays open.
+  ConversationHandler* temporary1 = CreateConversation();
+  temporary1->SetTemporary(true);
+  temporary1->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  auto temporary_client1 = CreateConversationClient(temporary1);
+  ai_chat_service_->MaybeAssociateContent(&shared_workspace1,
+                                          temporary1->get_conversation_uuid());
+  ConversationHandler* open = CreateConversation();
+  auto open_client = CreateConversationClient(open);
+  ai_chat_service_->MaybeAssociateContent(&shared_workspace2,
+                                          open->get_conversation_uuid());
+  // Another temporary conversation has a workspace of its own.
+  ConversationHandler* temporary2 = CreateConversation();
+  temporary2->SetTemporary(true);
+  temporary2->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  auto temporary_client2 = CreateConversationClient(temporary2);
+  ai_chat_service_->MaybeAssociateContent(&other_workspace,
+                                          temporary2->get_conversation_uuid());
+
+  // The shared workspace is still referenced by the open conversation.
+  const std::string temporary1_uuid = temporary1->get_conversation_uuid();
+  DisconnectConversationClient(temporary_client1.get());
+  WaitForConversationUnload();
+  WaitForWorkspaceDeletions();
+  EXPECT_FALSE(ai_chat_service_->GetConversation(temporary1_uuid));
+  EXPECT_THAT(deleted_workspaces, testing::IsEmpty());
+
+  const std::string temporary2_uuid = temporary2->get_conversation_uuid();
+  DisconnectConversationClient(temporary_client2.get());
+  WaitForConversationUnload();
+  WaitForWorkspaceDeletions();
+  EXPECT_FALSE(ai_chat_service_->GetConversation(temporary2_uuid));
+  EXPECT_THAT(deleted_workspaces, testing::ElementsAre(other_url));
+}
+
+// Deleting every conversation (e.g. resetting Leo's data) also deletes the
+// workspaces only the database referenced, as conversations that haven't been
+// loaded do.
+TEST_P(AIChatServiceUnitTest, DeleteConversations_DeletesPersistedWorkspaces) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  std::vector<GURL> deleted_workspaces;
+  UseWorkspaceDataDeleter(deleted_workspaces);
+
+  const GURL saved_url("workspace://11111111-1111-4111-8111-111111111111");
+  const GURL live_url("workspace://22222222-2222-4222-8222-222222222222");
+  NiceMock<MockAIChatDatabase>* mock_db = UseMockDatabase();
+  ON_CALL(*mock_db, GetWorkspaceUrls())
+      .WillByDefault(testing::Return(std::set<GURL>{saved_url}));
+  ON_CALL(*mock_db, DeleteAllData()).WillByDefault(testing::Return(true));
+
+  NiceMock<MockAssociatedContent> live_workspace;
+  live_workspace.SetContentType(mojom::ContentType::Workspace);
+  live_workspace.SetUrl(live_url);
+  ConversationHandler* handler = CreateConversation();
+  auto client = CreateConversationClient(handler);
+  ai_chat_service_->MaybeAssociateContent(&live_workspace,
+                                          handler->get_conversation_uuid());
+
+  ai_chat_service_->DeleteConversations();
+  WaitForWorkspaceDeletions();
+  EXPECT_THAT(deleted_workspaces, testing::ElementsAre(saved_url, live_url));
+}
+
+// If deleting every conversation fails, workspaces the database still
+// references are kept.
+TEST_P(AIChatServiceUnitTest,
+       DeleteConversations_KeepsPersistedWorkspacesWhenDeletionFails) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  std::vector<GURL> deleted_workspaces;
+  UseWorkspaceDataDeleter(deleted_workspaces);
+
+  const GURL saved_url("workspace://11111111-1111-4111-8111-111111111111");
+  const GURL live_url("workspace://22222222-2222-4222-8222-222222222222");
+  NiceMock<MockAIChatDatabase>* mock_db = UseMockDatabase();
+  ON_CALL(*mock_db, GetWorkspaceUrls())
+      .WillByDefault(testing::Return(std::set<GURL>{saved_url}));
+  ON_CALL(*mock_db, DeleteAllData()).WillByDefault(testing::Return(false));
+
+  // The live workspace was never saved, so nothing references it once its
+  // conversation is gone.
+  NiceMock<MockAssociatedContent> live_workspace;
+  live_workspace.SetContentType(mojom::ContentType::Workspace);
+  live_workspace.SetUrl(live_url);
+  ConversationHandler* handler = CreateConversation();
+  auto client = CreateConversationClient(handler);
+  ai_chat_service_->MaybeAssociateContent(&live_workspace,
+                                          handler->get_conversation_uuid());
+
+  ai_chat_service_->DeleteConversations();
+  WaitForWorkspaceDeletions();
+  EXPECT_THAT(deleted_workspaces, testing::ElementsAre(live_url));
+}
+
+// Disabling history deletes the saved conversations' workspaces, except those
+// of conversations still open, which go once those conversations unload.
+TEST_P(AIChatServiceUnitTest,
+       DisableStoragePref_DeletesWorkspacesExceptForOpenConversations) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  std::vector<GURL> deleted_workspaces;
+  UseWorkspaceDataDeleter(deleted_workspaces);
+
+  const GURL saved_url("workspace://11111111-1111-4111-8111-111111111111");
+  const GURL open_url("workspace://22222222-2222-4222-8222-222222222222");
+  NiceMock<MockAIChatDatabase>* mock_db = UseMockDatabase();
+  ON_CALL(*mock_db, GetWorkspaceUrls())
+      .WillByDefault(testing::Return(std::set<GURL>{saved_url, open_url}));
+  ON_CALL(*mock_db, DeleteAllData()).WillByDefault(testing::Return(true));
+
+  // The conversation owns its workspace, as it does in production, so the
+  // workspace doesn't keep the conversation loaded once it is closed.
+  auto open_workspace = std::make_unique<NiceMock<MockAssociatedContent>>();
+  open_workspace->SetContentType(mojom::ContentType::Workspace);
+  open_workspace->SetUrl(open_url);
+  ConversationHandler* handler = CreateConversation();
+  handler->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  auto client = CreateConversationClient(handler);
+  const std::string uuid = handler->get_conversation_uuid();
+  ai_chat_service_->AssociateOwnedContent(std::move(open_workspace), uuid);
+
+  // The database is detached straight away, so WaitForWorkspaceDeletions()
+  // can't wait on it. Nothing else is deleted while the conversation is open.
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return !deleted_workspaces.empty(); }));
+  WaitForConversationUnload();
+  EXPECT_THAT(deleted_workspaces, testing::ElementsAre(saved_url));
+  ASSERT_TRUE(ai_chat_service_->GetConversation(uuid));
+
+  // The open conversation can't be persisted any more, so it is erased once
+  // closed, along with its workspace. With no database, that happens straight
+  // away.
+  DisconnectConversationClient(client.get());
+  WaitForConversationUnload();
+  EXPECT_FALSE(ai_chat_service_->GetConversation(uuid));
+  EXPECT_THAT(deleted_workspaces, testing::ElementsAre(saved_url, open_url));
 }
 
 TEST_P(
