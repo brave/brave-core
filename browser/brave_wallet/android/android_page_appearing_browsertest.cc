@@ -40,6 +40,7 @@
 #include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/scoped_web_ui_controller_factory_registration.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 
@@ -184,7 +185,7 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
  public:
   AndroidPageAppearingBrowserTest() {
     factory_ = std::make_unique<TestWebUIControllerFactory>(kWalletPageHost);
-    content::WebUIControllerFactory::RegisterFactory(factory_.get());
+    factory_registration_.emplace(factory_.get());
   }
 
   void SetUpOnMainThread() override {
@@ -343,6 +344,9 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   std::optional<std::string> file_digest_;
 
   std::unique_ptr<TestWebUIControllerFactory> factory_;
+  // Declared after `factory_` so it unregisters before the factory is freed.
+  std::optional<content::ScopedWebUIControllerFactoryRegistration>
+      factory_registration_;
   raw_ptr<brave_wallet::BraveWalletService> wallet_service_;
   network::TestURLLoaderFactory url_loader_factory_;
 };
