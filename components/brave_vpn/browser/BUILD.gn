@@ -10,6 +10,8 @@ assert(enable_brave_vpn)
 # Browser sources shared between v1 and v2 implementations.
 static_library("browser") {
   sources = [
+    "brave_vpn_region_data_parser.cc",
+    "brave_vpn_region_data_parser.h",
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
     "brave_vpn_service_observer.cc",
@@ -101,6 +103,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "brave_vpn_region_data_parser_unittest.cc",
     "brave_vpn_service_observer_unittest.cc",
     "brave_vpn_service_unittest.cc",
   ]

@@ -7,9 +7,12 @@
 #include <optional>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/notimplemented.h"
+#include "base/notreached.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
 #include "brave/components/brave_vpn/browser/v2/brave_vpn_service_impl.h"
@@ -20,7 +23,12 @@
 #include "brave/components/brave_vpn/common/mojom/browser_agent.mojom.h"
 #include "brave/components/version_info/version_info.h"
 #include "components/version_info/version_info.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+#include "brave/components/brave_vpn/browser/v2/region_conversions.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
 namespace brave_vpn::v2 {
 namespace {
@@ -43,6 +51,33 @@ void RunCreateSupportTicketCallback(
                           success ? std::string() : std::move(result).error());
 }
 }  // namespace
+
+void BraveVpnServiceImpl::GetAllRegions(GetAllRegionsCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  auto* host = GetConnectedBrowserHost();
+  if (!host) {
+    VLOG(1) << __func__ << ": agent not available";
+    std::move(callback).Run({});
+    return;
+  }
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+  host->GetAllRegions(base::BindOnce(
+      [](GetAllRegionsCallback callback,
+         std::vector<mojom::VpnRegionPtr> agent_regions) {
+        std::vector<mojom::RegionPtr> regions;
+        regions.reserve(agent_regions.size());
+        for (auto& agent_region : agent_regions) {
+          regions.push_back(BrowserRegionFromAgent(std::move(agent_region)));
+        }
+        std::move(callback).Run(std::move(regions));
+      },
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          std::move(callback), std::vector<mojom::RegionPtr>())));
+#else
+  // GetConnectedBrowserHost() always returns nullptr without V2 apps.
+  NOTREACHED();
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+}
 
 bool BraveVpnServiceImpl::IsConnected() const {
   return connection_state_ == mojom::ConnectionState::CONNECTED &&

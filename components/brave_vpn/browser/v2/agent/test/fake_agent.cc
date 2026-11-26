@@ -54,7 +54,16 @@ void FakeBrowserHost::ResetConnectionState() {
 
 void FakeBrowserHost::GetAllRegions(GetAllRegionsCallback callback) {
   calls_.push_back("GetAllRegions");
-  std::move(callback).Run({});
+  if (!all_regions_) {
+    held_get_all_regions_replies_.push_back(std::move(callback));
+    return;
+  }
+  std::vector<mojom::VpnRegionPtr> regions;
+  regions.reserve(all_regions_->size());
+  for (const auto& region : *all_regions_) {
+    regions.push_back(region.Clone());
+  }
+  std::move(callback).Run(std::move(regions));
 }
 
 void FakeBrowserHost::SelectRegion(const std::string& name) {
@@ -122,6 +131,13 @@ void FakeAgent::DropSessionHandles() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   browser_endpoints_.clear();
   host_receivers_.Clear();
+  browser_host_.DropHeldGetAllRegionsReplies();
+}
+
+void FakeAgent::set_all_regions(
+    std::optional<std::vector<mojom::VpnRegionPtr>> regions) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  browser_host_.set_all_regions(std::move(regions));
 }
 
 mojom::BrowserEndpoint* FakeAgent::browser_endpoint() {
@@ -172,6 +188,11 @@ bool FakeAgent::has_held_initialize_request() const {
 bool FakeAgent::has_held_bind_browser_host_request() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return !held_bind_browser_host_reply_.is_null();
+}
+
+bool FakeAgent::has_held_get_all_regions_request() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return browser_host_.has_held_get_all_regions_request();
 }
 
 const std::vector<std::string>& FakeAgent::browser_host_calls() const {
