@@ -44,6 +44,8 @@ class WebDiscoveryCTATest : public testing::Test {
     ASSERT_TRUE(web_contents_.get());
   }
 
+  void TearDown() override { GetWebDiscoveryCTAIDForTesting().clear(); }
+
   void SetBraveSearchAsDefaultProvider() {
     // Set brave search as a default provider.
     std::unique_ptr<TemplateURL> brave = CreateTestTemplateURL(
