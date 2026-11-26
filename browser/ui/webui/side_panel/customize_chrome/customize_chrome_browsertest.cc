@@ -191,11 +191,12 @@ IN_PROC_BROWSER_TEST_F(CustomizeChromeSidePanelBrowserTest,
         const {browserProxyFactory} = await import(
             'chrome://customize-chrome-side-panel.top-chrome/' +
             'customize_toolbar.mojom-webui.js');
-        window.notified = false;
-        browserProxyFactory.getInstance()
-            .callbackRouter.notifyActionsUpdated.addListener(() => {
-              window.notified = true;
-            });
+        window.notifiedPromise = new Promise(resolve => {
+          browserProxyFactory.getInstance()
+              .callbackRouter.notifyActionsUpdated.addListener(() => {
+                resolve(true);
+              });
+        });
       })()
   )"));
 
@@ -208,10 +209,7 @@ IN_PROC_BROWSER_TEST_F(CustomizeChromeSidePanelBrowserTest,
 
   // The WebUI client is notified, and...
   devtools_action_item->SetVisible(false);
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return content::EvalJs(web_contents, "window.notified === true")
-        .ExtractBool();
-  }));
+  ASSERT_EQ(true, content::EvalJs(web_contents, "window.notifiedPromise"));
 
   // Devtools is now absent from the actions list.
   EXPECT_FALSE(ContainsAction(ListActions(web_contents), ActionId::kDevTools));
