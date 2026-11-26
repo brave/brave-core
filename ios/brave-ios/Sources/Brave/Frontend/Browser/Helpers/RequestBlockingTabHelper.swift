@@ -47,7 +47,7 @@ extension RequestBlockingTabHelper: RequestBlockingTabHelperBridge {
     guard let tab,
       let resourceType = AdblockResourceType(rawValue: resourceType),
       let adblockMode = tab.braveShieldsHelper?.shieldLevel(
-        for: sourceURL,
+        for: tab.lastCommittedURL,
         considerAllShieldsOption: true
       ).adBlockMode
     else {
