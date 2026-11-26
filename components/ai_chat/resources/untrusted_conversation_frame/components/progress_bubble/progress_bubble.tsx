@@ -109,7 +109,7 @@ function useStickyState() {
 
 /**
  * Computes the bubble's display state (`progressText`, `isComplete`,
- * `isInterrupted`, `isExpandable`, `isAwaitingApproval`) from the response group and the current
+ * `isInterrupted`, `isExpandable`) from the response group and the current
  * conversation state. Pulls conversation state from context internally so
  * callers only have to supply what's specific to the bubble instance.
  */
@@ -161,18 +161,6 @@ function useProgressState(
     ? conversationState.toolUseTaskState
     : Mojom.TaskState.kNone
 
-  // Any tool use in the turn can carry the challenge, not just the last one.
-  const isAwaitingApproval =
-    isActiveGroup
-    && taskState !== Mojom.TaskState.kStopped
-    && !!responseGroup
-      ?.at(-1)
-      ?.events?.some(
-        (event) =>
-          !!event.toolUseEvent?.permissionChallenge
-          && !event.toolUseEvent.output,
-      )
-
   return React.useMemo(() => {
     const isExpandable = !!responseGroup && isAssistantGroupTask(responseGroup)
 
@@ -205,9 +193,7 @@ function useProgressState(
     } else if (isExpandable) {
       isComplete = true
       isInterrupted = INTERRUPTED_TASK_STATES.includes(taskState)
-      if (isAwaitingApproval) {
-        progressText = getLocale(S.CHAT_UI_TASK_STATE_AWAITING_APPROVAL_LABEL)
-      } else if (taskState === Mojom.TaskState.kPaused) {
+      if (taskState === Mojom.TaskState.kPaused) {
         progressText = getLocale(S.CHAT_UI_TASK_STATE_PAUSED_LABEL)
       }
       if (taskState === Mojom.TaskState.kStopped) {
@@ -219,20 +205,13 @@ function useProgressState(
       }
     }
 
-    return {
-      progressText,
-      isComplete,
-      isInterrupted,
-      isExpandable,
-      isAwaitingApproval,
-    }
+    return { progressText, isComplete, isInterrupted, isExpandable }
   }, [
     groupIsWorking,
     toolInput,
     lastEvent?.toolUseEvent,
     responseGroup,
     taskState,
-    isAwaitingApproval,
   ])
 }
 
@@ -241,13 +220,8 @@ export default function ProgressBubble(props: Props) {
 
   const { isStuck, beforeRef, afterRef, beforeEl } = useStickyState()
 
-  const {
-    progressText,
-    isComplete,
-    isInterrupted,
-    isExpandable,
-    isAwaitingApproval,
-  } = useProgressState(props.responseGroup, props.isLastGroup)
+  const { progressText, isComplete, isInterrupted, isExpandable } =
+    useProgressState(props.responseGroup, props.isLastGroup)
 
   // This component doesn't show if not expandable and not generating.
   if (!progressText) {
@@ -280,7 +254,6 @@ export default function ProgressBubble(props: Props) {
           isStuck && styles.isStuck,
           !isComplete && styles.isActive,
           isInterrupted && styles.isInterrupted,
-          isAwaitingApproval && styles.isAwaitingApproval,
           isExpandable && styles.isExpandable,
         )}
         onClick={onClickHandler}
@@ -289,11 +262,9 @@ export default function ProgressBubble(props: Props) {
           <Icon
             className={styles.icon}
             name={
-              isAwaitingApproval
-                ? 'warning-triangle-outline'
-                : props.isLastGroup && isInterrupted
-                  ? 'close-circle'
-                  : 'check-circle-outline'
+              props.isLastGroup && isInterrupted
+                ? 'close-circle'
+                : 'check-circle-outline'
             }
           />
         )}

@@ -133,11 +133,7 @@ async function renderWithGeneration(
   })
 }
 
-async function expectIndicators(
-  generating: number,
-  completed: number,
-  awaitingUserInput = 0,
-) {
+async function expectIndicators(generating: number, completed: number) {
   await waitFor(() => {
     expect(document.querySelectorAll('.generatingIndicator').length).toBe(
       generating,
@@ -145,9 +141,6 @@ async function expectIndicators(
     expect(document.querySelectorAll('.completedIndicator').length).toBe(
       completed,
     )
-    expect(
-      document.querySelectorAll('.awaitingUserInputIndicator').length,
-    ).toBe(awaitingUserInput)
   })
 }
 
@@ -623,16 +616,6 @@ describe('ConversationsList', () => {
         'uuid-1': CG.kCompletedNotViewed,
       })
       await expectIndicators(0, 0)
-    })
-
-    it('shows approval warning when awaitingUserInput and not active', async () => {
-      await renderWithGeneration('uuid-2', { 'uuid-1': CG.kAwaitingUserInput })
-      await expectIndicators(0, 0, 1)
-    })
-
-    it('hides approval warning when awaitingUserInput but active', async () => {
-      await renderWithGeneration('uuid-1', { 'uuid-1': CG.kAwaitingUserInput })
-      await expectIndicators(0, 0, 0)
     })
 
     it('shows nothing when idle (no entry)', async () => {
