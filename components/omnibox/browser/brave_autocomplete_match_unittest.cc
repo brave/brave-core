@@ -3,9 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "components/omnibox/browser/autocomplete_match.h"
-
 #include "components/grit/brave_components_strings.h"
+#include "components/omnibox/browser/autocomplete_match.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_data.h"
 #include "components/search_engines/template_url_starter_pack_data.h"
