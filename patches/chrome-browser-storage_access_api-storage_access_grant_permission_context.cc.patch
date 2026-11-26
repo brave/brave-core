@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc b/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc
-index cef7b2361df8693acd688954877ca277bdffe11b..7ad31c839303a49db2de60d913b6ea40ebe9e6c4 100644
+index ac645a7c8e02b9c5496443e48b503817a6842e54..7cf3990331cc32365252f6c6b59299f38ed918c7 100644
 --- a/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc
 +++ b/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc
-@@ -428,6 +428,8 @@ void StorageAccessGrantPermissionContext::DecidePermission(
+@@ -438,6 +438,8 @@ void StorageAccessGrantPermissionContext::DecidePermission(
      return;
    }
  

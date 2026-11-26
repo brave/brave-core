@@ -1,5 +1,5 @@
 diff --git a/components/privacy_sandbox/privacy_sandbox_features.cc b/components/privacy_sandbox/privacy_sandbox_features.cc
-index 578d3d012f03824ced4ae88be31172ba1b54c55e..7703b961d8383f4568f0433dd630527e7d045e26 100644
+index 7b6d43f41f0f726666c114671291f60a926f63e8..c3c8bd9624dfeded96404914f1930c3f81537ad2 100644
 --- a/components/privacy_sandbox/privacy_sandbox_features.cc
 +++ b/components/privacy_sandbox/privacy_sandbox_features.cc
 @@ -8,8 +8,8 @@

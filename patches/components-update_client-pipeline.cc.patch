@@ -1,8 +1,8 @@
 diff --git a/components/update_client/pipeline.cc b/components/update_client/pipeline.cc
-index 1dc226ba413db31ae59d1e8d4310a899950e0925..a9b5f79ce90707c595ca303177020049d2fc04d3 100644
+index 17a1a3e5ac0b94cb97f70d86898df99ba5888d8a..5617769e9a73b3b39d7ac9aecf1775042ef62d1d 100644
 --- a/components/update_client/pipeline.cc
 +++ b/components/update_client/pipeline.cc
-@@ -267,6 +267,7 @@ std::queue<Operation> MakeOperations(
+@@ -272,6 +272,7 @@ std::queue<Operation> MakeOperations(
    for (const ProtocolParser::Operation& operation : pipeline.operations) {
      if (operation.type == "download") {
        // expects: `urls` (list of url objects), `size`, and `out` (hash object)

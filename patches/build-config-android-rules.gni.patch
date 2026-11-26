@@ -1,5 +1,5 @@
 diff --git a/build/config/android/rules.gni b/build/config/android/rules.gni
-index b4f37278c39cea3a87699c176770f6580b9fe590..97301c388073cd57d29ae62cda411399436eb939 100644
+index 36b23958bf6732da8ad13130f41a5ea8e8b0526c..325cc0d43bc47ad9d09f0bab1edec6ffe1ead3c4 100644
 --- a/build/config/android/rules.gni
 +++ b/build/config/android/rules.gni
 @@ -414,6 +414,11 @@ if (!is_robolectric && enable_java_templates) {

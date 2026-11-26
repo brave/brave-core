@@ -1,5 +1,5 @@
 diff --git a/build/toolchain/gcc_toolchain.gni b/build/toolchain/gcc_toolchain.gni
-index fd68d8b18cbdb6ea1c8e488b8b9f4830c8d48cba..675dddc62170d1897c55f70bc57479e01e1fa217 100644
+index 2a4cba1e44818369df09c2c9734ebde1ba88c038..ff3770cf67308f3aaad83201e89840b369118ca2 100644
 --- a/build/toolchain/gcc_toolchain.gni
 +++ b/build/toolchain/gcc_toolchain.gni
 @@ -215,7 +215,7 @@ template("single_gcc_toolchain") {

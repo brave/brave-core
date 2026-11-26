@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/default_browser/default_browser_features.cc b/chrome/browser/default_browser/default_browser_features.cc
-index e91e3f9697b84b288697dbf6927eec0c8c1b5401..e9c11e4f400520efc850460ee27d0b00416f8f87 100644
+index b2385c7a34d03fbedd78719c4dc58ddcf8ea8aee..b7e8fdd24109c9a0c230463909401fa2865734fd 100644
 --- a/chrome/browser/default_browser/default_browser_features.cc
 +++ b/chrome/browser/default_browser/default_browser_features.cc
-@@ -169,7 +169,7 @@ GURL GetDefaultBrowserVisualGuideURL() {
+@@ -178,7 +178,7 @@ GURL GetDefaultBrowserVisualGuideURL() {
  #endif
  }
  

@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/common/autofill_features.cc b/components/autofill/core/common/autofill_features.cc
-index 8f5a2bc949031f9a540ceebcb139f5161f84772e..707e8b51bba33074d7b09a7dd78de53db89a4fc0 100644
+index 35e4548d2e5423cf8a59bdeb119a50cf028e215d..33671c1d8adb61f9a07bb93a02ccdc6acd7c97a3 100644
 --- a/components/autofill/core/common/autofill_features.cc
 +++ b/components/autofill/core/common/autofill_features.cc
-@@ -260,7 +260,7 @@ BASE_FEATURE_PARAM(
+@@ -266,7 +266,7 @@ BASE_FEATURE_PARAM(
  
  // If enabled, the client may trigger the server model for AutofillAI type
  // predictions.
@@ -11,7 +11,7 @@ index 8f5a2bc949031f9a540ceebcb139f5161f84772e..707e8b51bba33074d7b09a7dd78de53d
  
  // The maximum duration for which an AutofillAI server model response is kept in
  // the local cache. NOTE: It is advisable to choose a value that is at least as
-@@ -409,7 +409,7 @@ DEFINE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(
+@@ -415,7 +415,7 @@ DEFINE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(
      kAutofillAiWalletVehicleRegistration);
  
  // Enables the second iteration AutofillAI.
@@ -20,7 +20,7 @@ index 8f5a2bc949031f9a540ceebcb139f5161f84772e..707e8b51bba33074d7b09a7dd78de53d
  
  // When enabled, autofill will fill not skip filling fields that had an initial
  // value which was modified.
-@@ -417,9 +417,7 @@ BASE_FEATURE(kAutofillAllowFillingModifiedInitialValues,
+@@ -423,9 +423,7 @@ BASE_FEATURE(kAutofillAllowFillingModifiedInitialValues,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
  // When enabled, the ambient autofill experience is enabled in Chrome.
@@ -31,7 +31,7 @@ index 8f5a2bc949031f9a540ceebcb139f5161f84772e..707e8b51bba33074d7b09a7dd78de53d
  // A comma-separated list of EntityType string names (e.g. "Passport,Driver's
  // license,Vehicle") supported for Ambient Autofill, in addition to any types
  // enabled via `kAutofillAmbientAutofillPassport` or
-@@ -455,9 +453,7 @@ BASE_FEATURE(kAutofillAmbientAutofillSpiiCache,
+@@ -461,9 +459,7 @@ BASE_FEATURE(kAutofillAmbientAutofillSpiiCache,
  
  // Controls whether pContext suggestion suppression in Ambient Autofill is
  // enabled, including the UI to suppress suggestions.

@@ -1,5 +1,5 @@
 diff --git a/components/autofill/core/browser/payments/credit_card_access_manager.cc b/components/autofill/core/browser/payments/credit_card_access_manager.cc
-index 859c5e5e6d8d8fe3898d171a182e1393ec5defa5..47713fe303a9e475f48781e8531e0a1dc7e0ed3a 100644
+index 82d8c8f960ad63d3c5d1957d98e1e31f87397399..5bb11b96dc652ebe81ca54fff7f8dc4389660e08 100644
 --- a/components/autofill/core/browser/payments/credit_card_access_manager.cc
 +++ b/components/autofill/core/browser/payments/credit_card_access_manager.cc
 @@ -418,10 +418,10 @@ void CreditCardAccessManager::FetchCreditCard(

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc
-index 28f21bf213c3282873b050f873f144a7def23d80..3a2caa43e1b63c28d830ac7f5f5ef88354e4bd55 100644
+index cef5075787370bfb5b693efb4f7ef7a09ac7ddba..0fb95bbad1ea2ca6071bea971893d741a80976b2 100644
 --- a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc
 +++ b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc
-@@ -212,6 +212,9 @@ class RecentTabsSubMenuModelTest : public InProcessBrowserTest {
+@@ -216,6 +216,9 @@ class RecentTabsSubMenuModelTest : public InProcessBrowserTest {
      return new_browser;
    }
  

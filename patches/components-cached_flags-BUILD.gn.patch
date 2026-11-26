@@ -1,8 +1,8 @@
 diff --git a/components/cached_flags/BUILD.gn b/components/cached_flags/BUILD.gn
-index 80ccc44bc1ed9f410b5be6beec4c65443e346654..c09f5de9c50aee5abd35b95e6fa1c52de23c19bf 100644
+index 2e17c3aa0752a7416b15421e68dc1213c1c29569..40fdc3831b7eadf0f763ec324535980d3758fbe9 100644
 --- a/components/cached_flags/BUILD.gn
 +++ b/components/cached_flags/BUILD.gn
-@@ -28,6 +28,7 @@ android_library("java") {
+@@ -29,6 +29,7 @@ android_library("java") {
      "android/java/src/org/chromium/components/cached_flags/IntCachedFeatureParam.java",
      "android/java/src/org/chromium/components/cached_flags/StringCachedFeatureParam.java",
    ]

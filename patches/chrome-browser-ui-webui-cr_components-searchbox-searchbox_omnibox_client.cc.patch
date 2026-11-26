@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc
-index fbfe724d66b1770db794d6fab996dddb58b733ce..dcee1e91bfe0cb5cd4a017e6abafbf34f6372901 100644
+index c1309b675f15978b54e865c5d973fefed0681e52..b5c5ff352d59f07cb61bc7539aa20baf2fac2755 100644
 --- a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc
 +++ b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc
-@@ -164,8 +164,8 @@ void SearchboxOmniboxClient::OnAutocompleteAccept(
+@@ -158,8 +158,8 @@ void SearchboxOmniboxClient::OnAutocompleteAccept(
    }
  #endif  // BUILDFLAG(ENABLE_EXTENSIONS) && BUILDFLAG(SAFE_BROWSING_AVAILABLE)
  

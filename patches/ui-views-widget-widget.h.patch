@@ -1,5 +1,5 @@
 diff --git a/ui/views/widget/widget.h b/ui/views/widget/widget.h
-index 514422f9884d2f7110c864a8bfaa6d3ee3566540..7a7381da315989fd4464ad9086fd49bcc6278009 100644
+index 4bb2cab987aa8a8445f3e773d6d1d7a844eb9517..db44ccf12f99e4191a138524f317aa19da68e2f3 100644
 --- a/ui/views/widget/widget.h
 +++ b/ui/views/widget/widget.h
 @@ -660,7 +660,7 @@ class VIEWS_EXPORT Widget : public internal::NativeWidgetDelegate,

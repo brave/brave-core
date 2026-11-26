@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index 53643f7418a23a61229c84fae05c66d8cfa0d057..70b05d752e13040bc308559d1a92fdb8226876ef 100644
+index ee5a2ac00ad63c4623bc6a2af5e46475f60e62f8..e89ce73e38ff31714cdb5cc5de1ac30f3ba2dff3 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-@@ -2407,6 +2407,12 @@ ShapedText* BaseRenderingContext2D::shapeText(const String& text) {
+@@ -2444,6 +2444,12 @@ ShapedText* BaseRenderingContext2D::shapeText(const String& text) {
        return MakeGarbageCollected<ShapedText>();
      }
  

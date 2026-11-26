@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py b/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py
-index 8cd5a8c83274a1f78d21c14d54bd3f324e0576dc..7051c845c9a534d59c2426daf9ebf94028695530 100644
+index cd40c546ebd5175f958c0e0b535b10732be6dbe5..020bf33a935a76a85c44f32d42ed1274566feb02 100644
 --- a/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py
 +++ b/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py
-@@ -130,3 +130,4 @@ class TaskQueue(object):
+@@ -136,3 +136,4 @@ class TaskQueue(object):
                  break
  
          self._pool.join()

@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.py b/chrome/installer/linux/debian/build.py
-index e9d12851e35b38b0cf409dc019b89eba3a7d5028..f2d5ecb2646e04ca6b8047358b385fe7ea7bc0bc 100755
+index 721a56c1cd2fb81a7d78062acc72e3f61590363a..8b5f2191a6133bd9c18da19ceea28c3de82249e2 100755
 --- a/chrome/installer/linux/debian/build.py
 +++ b/chrome/installer/linux/debian/build.py
 @@ -176,6 +176,8 @@ def main() -> None:

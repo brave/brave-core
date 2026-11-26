@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 747f2112411bdd3853fdaa16757fe728dbd1ec62..74901c6dbe6a92b855cc00f912dd4cff383df0c1 100644
+index 68f0a4b2c2220ca3556d68b1f07edbbaadc7e843..96bef7609e731a102e2036daddf464af7f59ae28 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -185,6 +185,14 @@
@@ -156,7 +156,7 @@ index 747f2112411bdd3853fdaa16757fe728dbd1ec62..74901c6dbe6a92b855cc00f912dd4cff
        status: {"default": "stable"},
      },
      {
-@@ -4191,6 +4223,8 @@
+@@ -4195,6 +4227,8 @@
      {
        // https://chromestatus.com/feature/5152834368700416
        name: "InstallElement",
@@ -165,7 +165,7 @@ index 747f2112411bdd3853fdaa16757fe728dbd1ec62..74901c6dbe6a92b855cc00f912dd4cff
        status: {
          "Android": "",
          "iOS": "",
-@@ -4296,7 +4330,8 @@
+@@ -4300,7 +4334,8 @@
          "Android": "stable",
          "default": "",
        },
@@ -175,7 +175,7 @@ index 747f2112411bdd3853fdaa16757fe728dbd1ec62..74901c6dbe6a92b855cc00f912dd4cff
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -5471,6 +5506,8 @@
+@@ -5475,6 +5510,8 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
@@ -184,7 +184,7 @@ index 747f2112411bdd3853fdaa16757fe728dbd1ec62..74901c6dbe6a92b855cc00f912dd4cff
        status: "stable",
      },
      {
-@@ -5538,11 +5575,15 @@
+@@ -5542,11 +5579,15 @@
      },
      {
        name: "ProfilerAPI",
@@ -200,7 +200,7 @@ index 747f2112411bdd3853fdaa16757fe728dbd1ec62..74901c6dbe6a92b855cc00f912dd4cff
        origin_trial_feature_name: "JSSelfProfilingInDedicatedWorker",
        status: "experimental",
      },
-@@ -5674,6 +5715,8 @@
+@@ -5678,6 +5719,8 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
@@ -209,7 +209,7 @@ index 747f2112411bdd3853fdaa16757fe728dbd1ec62..74901c6dbe6a92b855cc00f912dd4cff
        status: "stable",
      },
      {
-@@ -7358,7 +7401,8 @@
+@@ -7368,7 +7411,8 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -219,7 +219,7 @@ index 747f2112411bdd3853fdaa16757fe728dbd1ec62..74901c6dbe6a92b855cc00f912dd4cff
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -7546,6 +7590,8 @@
+@@ -7556,6 +7600,8 @@
      },
      {
        name: "UserMediaElement",
@@ -228,7 +228,7 @@ index 747f2112411bdd3853fdaa16757fe728dbd1ec62..74901c6dbe6a92b855cc00f912dd4cff
        status: "stable",
        public: true,
      },
-@@ -7692,6 +7738,8 @@
+@@ -7702,6 +7748,8 @@
      {
        // https://chromestatus.com/feature/5183481574850560
        name: "WebAppInstallation",
@@ -237,7 +237,7 @@ index 747f2112411bdd3853fdaa16757fe728dbd1ec62..74901c6dbe6a92b855cc00f912dd4cff
        status: {
          "Android": "",
          "iOS": "",
-@@ -8027,6 +8075,7 @@
+@@ -8037,6 +8085,7 @@
        origin_trial_feature_name: "WebMCP",
        origin_trial_allows_third_party: true,
        public: true,
@@ -245,7 +245,7 @@ index 747f2112411bdd3853fdaa16757fe728dbd1ec62..74901c6dbe6a92b855cc00f912dd4cff
        base_feature_status: "enabled",
        copied_from_base_feature_if: "overridden",
        // Note that `depends_on` isn't supported by origin trials.
-@@ -8036,7 +8085,7 @@
+@@ -8046,7 +8095,7 @@
          "WebMCPFormAssociatedCustomElements",
          "WebMCPWaitForToolsUntil"
        ],
@@ -254,7 +254,7 @@ index 747f2112411bdd3853fdaa16757fe728dbd1ec62..74901c6dbe6a92b855cc00f912dd4cff
      },
      {
        name: "WebMCPContinuations",
-@@ -8505,5 +8554,10 @@
+@@ -8515,5 +8564,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },

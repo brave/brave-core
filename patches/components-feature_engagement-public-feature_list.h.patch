@@ -1,8 +1,8 @@
 diff --git a/components/feature_engagement/public/feature_list.h b/components/feature_engagement/public/feature_list.h
-index c86363c9dd8fe357988c16741e0e963cab461725..97d12efdd7902f8d7c415505ace0f39f74e38a0c 100644
+index 00182d5b9b3f16e62247003087898a319cfca3a5..c696b27feb71b40405a2f03d71f7aba23f5e1172 100644
 --- a/components/feature_engagement/public/feature_list.h
 +++ b/components/feature_engagement/public/feature_list.h
-@@ -675,12 +675,15 @@ DEFINE_VARIATION_PARAM(kIPHExtensionsPinnedByDefaultFeature,
+@@ -681,12 +681,15 @@ DEFINE_VARIATION_PARAM(kIPHExtensionsPinnedByDefaultFeature,
                         "IPH_ExtensionsPinnedByDefault");
  #endif
  

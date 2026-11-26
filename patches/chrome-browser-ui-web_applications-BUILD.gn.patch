@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/web_applications/BUILD.gn b/chrome/browser/ui/web_applications/BUILD.gn
-index e30285918d768bb1f64c338ba2184ea5820ffb86..97dafdf309221ea6dabb76884a570637bc5525c4 100644
+index aa13db1a4fb0482cbdbfa1183b88133ef6d39044..f89bd3141251b4792fb04332908f8aecb8f4f58f 100644
 --- a/chrome/browser/ui/web_applications/BUILD.gn
 +++ b/chrome/browser/ui/web_applications/BUILD.gn
 @@ -2,6 +2,7 @@

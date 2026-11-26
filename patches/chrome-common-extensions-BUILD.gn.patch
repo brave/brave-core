@@ -1,5 +1,5 @@
 diff --git a/chrome/common/extensions/BUILD.gn b/chrome/common/extensions/BUILD.gn
-index 7efad30fb77225a514f7f6ff6eade0e1e2876e40..d489ab69ab10e224c7e57cdd9ecd01b21bc8a8eb 100644
+index 89e2e0815ab2f4664d7478f52032b01a332d3ab3..4e807f1ba927bf10f71ba58ee0b4ffa5ee2a6725 100644
 --- a/chrome/common/extensions/BUILD.gn
 +++ b/chrome/common/extensions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 7efad30fb77225a514f7f6ff6eade0e1e2876e40..d489ab69ab10e224c7e57cdd9ecd01b2
  import("//extensions/buildflags/buildflags.gni")
  import("//tools/json_schema_compiler/json_features.gni")
  
-@@ -28,6 +29,7 @@ source_set("extensions") {
+@@ -29,6 +30,7 @@ source_set("extensions") {
      "sync_helper.h",
      "webui_origin_access.h",
    ]
@@ -18,7 +18,7 @@ index 7efad30fb77225a514f7f6ff6eade0e1e2876e40..d489ab69ab10e224c7e57cdd9ecd01b2
  
    # Files that can only be included from here.
    sources = [
-@@ -54,6 +56,7 @@ source_set("extensions") {
+@@ -56,6 +58,7 @@ source_set("extensions") {
      "sync_helper.cc",
      "webui_origin_access.cc",
    ]
@@ -26,7 +26,7 @@ index 7efad30fb77225a514f7f6ff6eade0e1e2876e40..d489ab69ab10e224c7e57cdd9ecd01b2
  
    public_deps = [
      "//base",
-@@ -66,6 +69,7 @@ source_set("extensions") {
+@@ -68,6 +71,7 @@ source_set("extensions") {
      "//ui/gfx/geometry",
      "//url",
    ]
@@ -34,7 +34,7 @@ index 7efad30fb77225a514f7f6ff6eade0e1e2876e40..d489ab69ab10e224c7e57cdd9ecd01b2
  
    deps = [
      "//chrome/app:branded_strings",
-@@ -92,6 +96,7 @@ source_set("extensions") {
+@@ -94,6 +98,7 @@ source_set("extensions") {
      "//ui/message_center/public/cpp",
      "//url",
    ]

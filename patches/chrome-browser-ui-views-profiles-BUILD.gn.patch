@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/profiles/BUILD.gn b/chrome/browser/ui/views/profiles/BUILD.gn
-index e45ad11011dd300250ef1508c00637a68d507ba1..414294ad7e2cf873fbef55276b0594e2b82ce2ea 100644
+index 374136e50774055625675d550ab18dd2317530d5..81dbdb4cacef550a0a592b1b3c6828fb911d3d20 100644
 --- a/chrome/browser/ui/views/profiles/BUILD.gn
 +++ b/chrome/browser/ui/views/profiles/BUILD.gn
 @@ -2,6 +2,7 @@

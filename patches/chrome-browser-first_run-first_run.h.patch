@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/first_run/first_run.h b/chrome/browser/first_run/first_run.h
-index f9e756e95dfe27ea9d9a24931fed55a331f2a299..b7dde70919cd8f6b18e5ddb118b57f7298ecc0f3 100644
+index 17a4655c59ecbcc1cfabb9c68d999a16543dde6c..c149bf1a849aa2f3a1bc71367b430eb9cedbb779 100644
 --- a/chrome/browser/first_run/first_run.h
 +++ b/chrome/browser/first_run/first_run.h
-@@ -76,7 +76,7 @@ struct MasterPrefs {
+@@ -82,7 +82,7 @@ struct MasterPrefs {
  #endif
  #if BUILDFLAG(IS_LINUX)
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)

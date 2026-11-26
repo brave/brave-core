@@ -1,8 +1,8 @@
 diff --git a/ui/base/ui_base_features.cc b/ui/base/ui_base_features.cc
-index f8dde3956202f5dc0cb20b4b38d396ad47b8a422..2b4a37a1e096554e1e25030cc61d2d99c98a2d87 100644
+index e519de7acc66f8820e8189e5e0ac65bfc73eb4d5..4d316fc5dd32ea5ed1b79afa7a456391a9e8c9c2 100644
 --- a/ui/base/ui_base_features.cc
 +++ b/ui/base/ui_base_features.cc
-@@ -521,7 +521,7 @@ BASE_FEATURE(kGlassFrame, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -519,7 +519,7 @@ BASE_FEATURE(kGlassFrame, base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE_PARAM(bool, kGlassExpandOnHoverEnabled, &kGlassFrame, true);
  BASE_FEATURE_PARAM(bool, kGlassFrameEnabledByDefault, &kGlassFrame, true);
  

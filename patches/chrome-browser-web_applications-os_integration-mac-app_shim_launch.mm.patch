@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm b/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm
-index f4039d8ed49dbce2215be454b4cc4e1097c9ddc6..0db995a818e1fbf940dec92c2df6374d5fe598b3 100644
+index 9dad5c9befafd5f1a6b4b137687cde4f0fd1d0c2..d771c833df2524c65ecbf662cc21f35ae5bb04f2 100644
 --- a/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm
 +++ b/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm
 @@ -159,6 +159,11 @@ void LaunchTheFirstShimThatWorksOnFileThread(
@@ -14,7 +14,7 @@ index f4039d8ed49dbce2215be454b4cc4e1097c9ddc6..0db995a818e1fbf940dec92c2df6374d
    base::mac::LaunchApplication(
        shim_path, command_line, /*url_specs=*/{},
        {.activate = launch_mode != ShimLaunchMode::kBackground,
-@@ -274,6 +279,12 @@ void LaunchShimForTesting(const base::FilePath& shim_path,  // IN-TEST
+@@ -280,6 +285,12 @@ void LaunchShimForTesting(const base::FilePath& shim_path,  // IN-TEST
                            ShimLaunchedCallback launched_callback,
                            ShimTerminatedCallback terminated_callback,
                            const base::FilePath& chromium_path) {

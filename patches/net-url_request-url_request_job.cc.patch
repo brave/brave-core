@@ -1,5 +1,5 @@
 diff --git a/net/url_request/url_request_job.cc b/net/url_request/url_request_job.cc
-index 2b13832faed8b2952e639755f3ccc9e8a0c8d31c..daa0d9bbb307ee7b2a973269d5e0c616f0acae1f 100644
+index 9b5b607958e7a9e4cb13ef2e377c06cedd1521a4..0877fc7ee799a850c1ca0303c4f2b779c8ccec4a 100644
 --- a/net/url_request/url_request_job.cc
 +++ b/net/url_request/url_request_job.cc
 @@ -318,6 +318,7 @@ GURL URLRequestJob::ComputeReferrerForPolicy(

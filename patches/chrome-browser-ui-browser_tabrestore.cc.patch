@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_tabrestore.cc b/chrome/browser/ui/browser_tabrestore.cc
-index f2a9542aea8d31977a7918886c41d5d9a49617af..6f67d10d1a356b8e4148cefb923e29b10d692533 100644
+index 359b914e32c9418943a5ad1ce45cfeaf64b500aa..3c88e7026fb837237d5bdf0dc123ceb213d9ba6d 100644
 --- a/chrome/browser/ui/browser_tabrestore.cc
 +++ b/chrome/browser/ui/browser_tabrestore.cc
 @@ -72,6 +72,10 @@ std::unique_ptr<WebContents> CreateRestoredTab(
@@ -13,7 +13,7 @@ index f2a9542aea8d31977a7918886c41d5d9a49617af..6f67d10d1a356b8e4148cefb923e29b1
    create_params.initially_hidden = initially_hidden;
    create_params.desired_renderer_state =
        WebContents::CreateParams::kNoRendererProcess;
-@@ -290,9 +294,10 @@ WebContents* AddRestoredTab(
+@@ -289,9 +293,10 @@ WebContents* AddRestoredTab(
        last_active_time_ticks, last_active_time, session_storage_namespace,
        user_agent_override, extra_data, initially_hidden, from_session_restore);
  
@@ -25,7 +25,7 @@ index f2a9542aea8d31977a7918886c41d5d9a49617af..6f67d10d1a356b8e4148cefb923e29b1
  }
  
  WebContents* ReplaceRestoredTab(
-@@ -331,6 +336,7 @@ WebContents* ReplaceRestoredTab(
+@@ -330,6 +335,7 @@ WebContents* ReplaceRestoredTab(
  
    LoadRestoredTabIfVisible(browser, raw_web_contents);
  

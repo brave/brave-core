@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/metrics/chrome_feature_list_creator.cc b/chrome/browser/metrics/chrome_feature_list_creator.cc
-index 79b8a08823de19fadf8af107007736c109d638a1..c262c99d80093a6adbb0f339a167ce0f85e836e6 100644
+index 6b8b129805efdffb875e10c49a71e0ad6b690a7c..05f5a696dbf74b7c551718c544d11c98454c499c 100644
 --- a/chrome/browser/metrics/chrome_feature_list_creator.cc
 +++ b/chrome/browser/metrics/chrome_feature_list_creator.cc
-@@ -208,6 +208,7 @@ ChromeFeatureListCreator::GetOrCreateMetricsServicesManager() {
+@@ -203,6 +203,7 @@ ChromeFeatureListCreator::GetOrCreateMetricsServicesManager() {
      if (installer_initial_prefs_) {
        initial_seed = first_run::ExtractVariationsSeedFromInitialPrefs(
            *installer_initial_prefs_);

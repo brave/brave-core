@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
-index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c025625216ac7a68 100644
+index 25589fd8278e8edf28f88f878c1e8257273b6170..6ce28650083915f262b85c77f3e38bf114d4340b 100644
 --- a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
 +++ b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
 @@ -173,7 +173,7 @@ tab_search::mojom::SplitTabLayout GetMojoSplitLayout(
@@ -142,7 +142,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
    tabs::TabInterface* const active_tab = browser_->GetActiveTabInterface();
    if (active_tab->GetSplit().has_value()) {
      const auto result = GetTabStripService(browser_)->ReplaceTabInSplit(
-@@ -461,7 +461,7 @@ void TabSearchPageHandler::ReplaceActiveSplitTab(int32_t replacement_tab_id) {
+@@ -463,7 +463,7 @@ void TabSearchPageHandler::ReplaceActiveSplitTab(int32_t replacement_tab_id) {
    }
  }
  
@@ -151,7 +151,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
    profile_->GetPrefs()->SetBoolean(
        tab_search_prefs::kTabSearchRecentlyClosedSectionExpanded, expanded);
  
-@@ -473,7 +473,7 @@ void TabSearchPageHandler::SaveRecentlyClosedExpandedPref(bool expanded) {
+@@ -475,7 +475,7 @@ void TabSearchPageHandler::SaveRecentlyClosedExpandedPref(bool expanded) {
    }
  }
  
@@ -160,7 +160,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
    // Close the tab search bubble if showing.
    auto embedder = webui_controller_->embedder();
    if (embedder) {
-@@ -495,14 +495,14 @@ void TabSearchPageHandler::StartTabGroupTutorial() {
+@@ -497,14 +497,14 @@ void TabSearchPageHandler::StartTabGroupTutorial() {
    tutorial_service->StartTutorial(tutorial_id, context);
  }
  
@@ -177,7 +177,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
    auto profile_data = tab_search::mojom::ProfileData::New();
  
    std::set<DedupKey> tab_dedup_keys;
-@@ -548,7 +548,7 @@ tab_search::mojom::ProfileDataPtr TabSearchPageHandler::CreateProfileData() {
+@@ -550,7 +550,7 @@ tab_search::mojom::ProfileDataPtr TabSearchPageHandler::CreateProfileData() {
    return profile_data;
  }
  
@@ -186,7 +186,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
      const tabs_api::mojom::ContainerPtr& container,
      tab_search::mojom::Window* window,
      tab_search::mojom::ProfileData* profile_data,
-@@ -593,7 +593,7 @@ void TabSearchPageHandler::WalkContainer(
+@@ -595,7 +595,7 @@ void TabSearchPageHandler::WalkContainer(
    }
  }
  
@@ -195,7 +195,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
      std::vector<tab_search::mojom::RecentlyClosedTabPtr>& recently_closed_tabs,
      std::vector<tab_search::mojom::RecentlyClosedTabGroupPtr>&
          recently_closed_tab_groups,
-@@ -749,7 +749,7 @@ void TabSearchPageHandler::AddRecentlyClosedEntries(
+@@ -751,7 +751,7 @@ void TabSearchPageHandler::AddRecentlyClosedEntries(
    }
  }
  
@@ -204,7 +204,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
      sessions::tab_restore::Tab* tab,
      const base::Time& close_time,
      std::vector<tab_search::mojom::RecentlyClosedTabPtr>& recently_closed_tabs,
-@@ -782,7 +782,7 @@ bool TabSearchPageHandler::AddRecentlyClosedTab(
+@@ -784,7 +784,7 @@ bool TabSearchPageHandler::AddRecentlyClosedTab(
    return true;
  }
  
@@ -213,7 +213,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
      tabs::TabInterface* tab) const {
    auto tab_mojom_data = tab_search::mojom::Tab::New();
    content::WebContents* contents = tab->GetContents();
-@@ -897,7 +897,7 @@ tab_search::mojom::TabPtr TabSearchPageHandler::GetTab(
+@@ -899,7 +899,7 @@ tab_search::mojom::TabPtr TabSearchPageHandler::GetTab(
  }
  
  tab_search::mojom::RecentlyClosedTabPtr
@@ -222,7 +222,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
                                             const base::Time& close_time) {
    auto recently_closed_tab = tab_search::mojom::RecentlyClosedTab::New();
    CHECK(tab->navigations.size() > 0, base::NotFatalUntil::M162);
-@@ -928,12 +928,12 @@ TabSearchPageHandler::GetRecentlyClosedTab(sessions::tab_restore::Tab* tab,
+@@ -930,12 +930,12 @@ TabSearchPageHandler::GetRecentlyClosedTab(sessions::tab_restore::Tab* tab,
    return recently_closed_tab;
  }
  
@@ -237,7 +237,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
      const std::vector<tabs_api::mojom::TabsEventPtr>& events) {
    const auto* preload_state =
        WebUIContentsPreloadState::FromWebContents(web_ui_->GetWebContents());
-@@ -956,7 +956,7 @@ void TabSearchPageHandler::OnTabEvents(
+@@ -958,7 +958,7 @@ void TabSearchPageHandler::OnTabEvents(
    }
  }
  
@@ -246,7 +246,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
      sessions::TabRestoreService* service) {
    std::set<SessionID> current_ids;
    const auto* preload_state =
-@@ -975,12 +975,12 @@ void TabSearchPageHandler::TabRestoreServiceChanged(
+@@ -977,12 +977,12 @@ void TabSearchPageHandler::TabRestoreServiceChanged(
    existing_tab_restore_ids_ = std::move(current_ids);
  }
  
@@ -261,7 +261,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
      const tabs_api::mojom::OnNodesClosedEventPtr& event) {
    std::vector<int> tab_ids;
  
-@@ -999,7 +999,7 @@ void TabSearchPageHandler::OnNodesRemoved(
+@@ -1001,7 +1001,7 @@ void TabSearchPageHandler::OnNodesRemoved(
    }
  }
  
@@ -270,7 +270,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
                                           std::set<SessionID> tab_restore_ids) {
    auto tabs_removed_info = tab_search::mojom::TabsRemovedInfo::New();
    tabs_removed_info->tab_ids = std::move(tab_ids);
-@@ -1026,7 +1026,7 @@ void TabSearchPageHandler::OnTabsRemoved(std::vector<int> tab_ids,
+@@ -1028,7 +1028,7 @@ void TabSearchPageHandler::OnTabsRemoved(std::vector<int> tab_ids,
    page_->TabsRemoved(std::move(tabs_removed_info));
  }
  
@@ -279,7 +279,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
      const tabs_api::mojom::TabChange& event) {
    // Ignore if the UI is hidden or the event doesn't contain
    // relevant tab data changes.
-@@ -1056,7 +1056,7 @@ void TabSearchPageHandler::OnTabDataChanged(
+@@ -1058,7 +1058,7 @@ void TabSearchPageHandler::OnTabDataChanged(
    page_->TabUpdated(std::move(tab_update_info));
  }
  
@@ -288,7 +288,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
      tabs::TabInterface* /*tab*/,
      std::optional<split_tabs::SplitTabId> new_split) {
    if (new_split.has_value()) {
-@@ -1068,13 +1068,13 @@ void TabSearchPageHandler::OnSplitChanged(
+@@ -1070,13 +1070,13 @@ void TabSearchPageHandler::OnSplitChanged(
    }
  }
  
@@ -304,7 +304,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
    if (!IsWebContentsVisible()) {
      return;
    }
-@@ -1082,7 +1082,7 @@ void TabSearchPageHandler::NotifyTabsChanged() {
+@@ -1084,7 +1084,7 @@ void TabSearchPageHandler::NotifyTabsChanged() {
    debounce_timer_->Stop();
  }
  
@@ -313,7 +313,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
    if (visibility == content::Visibility::HIDDEN) {
      recently_closed_tab_restore_ids_.clear();
      if (bubble_showing_) {
-@@ -1091,20 +1091,20 @@ void TabSearchPageHandler::OnVisibilityChanged(content::Visibility visibility) {
+@@ -1093,20 +1093,20 @@ void TabSearchPageHandler::OnVisibilityChanged(content::Visibility visibility) {
    }
  }
  
@@ -337,7 +337,7 @@ index e0b349836cfdbb9f511217d194358908660d466e..db20ba4f844a740c379db9e6c0256252
    if (log_metrics_) {
      base::UmaHistogramCounts1000("Tabs.TabSearch.NumTabsClosedPerInstance",
                                   num_tabs_closed_);
-@@ -1113,11 +1113,11 @@ void TabSearchPageHandler::LogCloseMetrics() {
+@@ -1115,11 +1115,11 @@ void TabSearchPageHandler::LogCloseMetrics() {
    bubble_showing_ = false;
  }
  

@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 307358f3adda69e6f853f41835618addaf9742c0..2cfd61e0dde69c4f3311d7c582d87d0d0977f585 100644
+index 74d99dca6cbed3fec1fdeba17d634a3bd299e39d..724afeed8161f2b2f17022e05b9ad1544f3f8fdd 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -14,6 +14,7 @@
@@ -10,7 +10,7 @@ index 307358f3adda69e6f853f41835618addaf9742c0..2cfd61e0dde69c4f3311d7c582d87d0d
  import("//build/cipd/cipd.gni")
  import("//build/config/buildflags_paint_preview.gni")
  import("//build/config/chrome_build.gni")
-@@ -149,6 +150,7 @@ if (is_android) {
+@@ -162,6 +163,7 @@ if (is_android) {
  # This target no longer has any sources of its own; it is a pure aggregator
  # of public_deps for consumers that have not yet been migrated to direct deps.
  group("test_support") {
@@ -18,7 +18,7 @@ index 307358f3adda69e6f853f41835618addaf9742c0..2cfd61e0dde69c4f3311d7c582d87d0d
    testonly = true
    public_deps = [
      "//chrome/browser/glic/public:provider_features",
-@@ -161,6 +163,7 @@ group("test_support") {
+@@ -174,6 +176,7 @@ group("test_support") {
      "//chrome/browser/search_engines:test_support",
      "//chrome/browser/signin:identity_test_support",
    ]
@@ -26,7 +26,7 @@ index 307358f3adda69e6f853f41835618addaf9742c0..2cfd61e0dde69c4f3311d7c582d87d0d
  
    if (enable_guest_view) {
      public_deps += [ "//components/guest_view/browser:test_support" ]
-@@ -2679,6 +2682,7 @@ test("unit_tests") {
+@@ -2704,6 +2707,7 @@ test("unit_tests") {
      "//third_party/rust/fend_core/v1/wrapper:unit_tests",
      "//ui/strings:app_locale_settings_grit",
    ]
@@ -34,7 +34,7 @@ index 307358f3adda69e6f853f41835618addaf9742c0..2cfd61e0dde69c4f3311d7c582d87d0d
  
    if (enable_devtools_frontend) {
      deps += [ "//chrome/browser/ui/webui/devtools:unit_tests" ]
-@@ -3777,6 +3781,7 @@ if (!is_android && !is_chromeos_device) {
+@@ -3671,6 +3675,7 @@ if (!is_android && !is_chromeos_device) {
      ldflags = []
  
      deps = [

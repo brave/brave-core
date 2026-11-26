@@ -1,8 +1,8 @@
 diff --git a/components/javascript_dialogs/tab_modal_dialog_manager.cc b/components/javascript_dialogs/tab_modal_dialog_manager.cc
-index bffeb732ae2c825efe9b7968d54537cd275a05bd..e8fdc81485d641807d92e502c253423f064ee5a9 100644
+index a2a9830baf3de620f8b57bc5f439bff1baaebf44..217133eeaf69114dcface5253145450d75839b78 100644
 --- a/components/javascript_dialogs/tab_modal_dialog_manager.cc
 +++ b/components/javascript_dialogs/tab_modal_dialog_manager.cc
-@@ -254,6 +254,7 @@ void TabModalDialogManager::CancelDialogs(content::WebContents* web_contents,
+@@ -258,6 +258,7 @@ void TabModalDialogManager::CancelDialogs(content::WebContents* web_contents,
  
  void TabModalDialogManager::OnVisibilityChanged(
      content::Visibility visibility) {

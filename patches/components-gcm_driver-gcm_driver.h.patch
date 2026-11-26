@@ -1,8 +1,8 @@
 diff --git a/components/gcm_driver/gcm_driver.h b/components/gcm_driver/gcm_driver.h
-index 2f5328444dd2e4af881396753ab06bbe5ed90404..7df637207f3bca8d987f2d40e0deac8c1e5ce3fb 100644
+index 05bcefd1f08aeb95a383b01c8c4054ee14793ae1..61fd3cf277d1c3062a6d04f4b2449c3fca27c97a 100644
 --- a/components/gcm_driver/gcm_driver.h
 +++ b/components/gcm_driver/gcm_driver.h
-@@ -251,6 +251,8 @@ class GCMDriver {
+@@ -260,6 +260,8 @@ class GCMDriver {
    // Allows the InstanceID system to integrate with GCM encryption storage.
    GCMEncryptionProvider* GetEncryptionProviderInternal();
  

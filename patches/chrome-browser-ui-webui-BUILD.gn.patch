@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index c56b156d64f18081477e74b125b588b836665295..049b960756270efd1e97bd1dc0cdc571dd176a41 100644
+index 6b56ffb8caad6158f0373fdb387e1ae53ccfda4f..38f3507841534a0e3cd3d13b3be19eaa5e19dda6 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
-@@ -309,6 +309,8 @@ source_set("configs") {
+@@ -311,6 +311,8 @@ source_set("configs") {
    if (enable_webui_history) {
      deps += [ "//chrome/browser/ui/webui/history" ]
    }
@@ -11,7 +11,7 @@ index c56b156d64f18081477e74b125b588b836665295..049b960756270efd1e97bd1dc0cdc571
  }
  
  source_set("webui") {
-@@ -357,7 +359,7 @@ source_set("webui_util") {
+@@ -371,7 +373,7 @@ source_set("webui_url_utils") {
  # //ui/resources only defines under "not is_android or is_desktop_android or
  # enable_webui_ntp"; gate the target to where it was compiled inside :ui.
  if (enable_extensions_core || enable_webui_ntp ||

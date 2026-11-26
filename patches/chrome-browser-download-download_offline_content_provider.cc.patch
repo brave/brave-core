@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/download/download_offline_content_provider.cc b/chrome/browser/download/download_offline_content_provider.cc
-index bf6855c8b07bb5baa9eaeef359fbd91eab3d41d0..50726485d2e8ead81713e88336b54b6e67cc7743 100644
+index e610f86861c46a2cd26754a62dd079e8d6032695..4c51e2bceb5babff5b064acaa93bd3ed83514f28 100644
 --- a/chrome/browser/download/download_offline_content_provider.cc
 +++ b/chrome/browser/download/download_offline_content_provider.cc
 @@ -491,7 +491,7 @@ void DownloadOfflineContentProvider::OnDownloadUpdated(DownloadItem* item) {

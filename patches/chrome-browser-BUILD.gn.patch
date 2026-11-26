@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 1e9e43c2e08a008baaf913ad98776f5f0588421a..55525b6e8db1be40f687b4649181c1264fe42e1a 100644
+index f001c2da542abc4e9af87b7cf6c2e5a90b99b335..4ea52477066eca418025e737d0679a6a08d72deb 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -1459,6 +1459,7 @@ source_set("core") {
+@@ -1461,6 +1461,7 @@ source_set("core") {
      "//ui/webui/resources/cr_components/color_change_listener:mojom",
      "//ui/webui/tracked_element",
    ]
@@ -10,7 +10,7 @@ index 1e9e43c2e08a008baaf913ad98776f5f0588421a..55525b6e8db1be40f687b4649181c126
  
    if (enable_webui_ntp) {
      deps += [
-@@ -2230,6 +2231,7 @@ source_set("browser") {
+@@ -2234,6 +2235,7 @@ source_set("browser") {
      ":browser_features",
      ":buildflags",
      ":primitives",
@@ -18,7 +18,7 @@ index 1e9e43c2e08a008baaf913ad98776f5f0588421a..55525b6e8db1be40f687b4649181c126
      "//chrome/browser/accessibility/accessibility_prefs",
      "//chrome/browser/browsing_data",
      "//chrome/browser/download",
-@@ -4128,7 +4130,7 @@ source_set("browser") {
+@@ -4132,7 +4134,7 @@ source_set("browser") {
  
    # TODO(https://crbug.com/356905053): Add more dependencies here and merge this
    # block with the `enable_extensions` block above.

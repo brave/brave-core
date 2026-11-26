@@ -1,5 +1,5 @@
 diff --git a/components/tabs/public/tab_collection.h b/components/tabs/public/tab_collection.h
-index ea97e9085389e6ef40f27231256bcca39cd69ab2..5ce5c9729b8098b86d4646272cdb52e622c782a1 100644
+index 96e44ea060e4db4943d4e3a4a29ba34cef11c8c3..e45b8e9870ab4727597ac75c330d4705bdbb06f9 100644
 --- a/components/tabs/public/tab_collection.h
 +++ b/components/tabs/public/tab_collection.h
 @@ -264,7 +264,7 @@ class TabCollection : public SupportsHandles<TabCollectionHandleFactory> {

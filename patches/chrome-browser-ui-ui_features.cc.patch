@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
-index cdffe9662a24de1d37204de9e48a4bc3bb525ab1..ec441754d85cd85ce760976d460359ff8e993f24 100644
+index 6c2281badd13d54bed7caa77a2b8b843d3b284a6..e3da9627ab81d2d770107e334be01e592ebe83a8 100644
 --- a/chrome/browser/ui/ui_features.cc
 +++ b/chrome/browser/ui/ui_features.cc
 @@ -127,7 +127,7 @@ BASE_FEATURE_PARAM(int,

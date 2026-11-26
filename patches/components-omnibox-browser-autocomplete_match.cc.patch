@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/autocomplete_match.cc b/components/omnibox/browser/autocomplete_match.cc
-index 5922244bedaa5cb7b013fde03a3fe93fdd5fd89a..23e2e5d81797ad22db2cc62b2d0581475e6882a4 100644
+index 1e2a5e94895c7d14a12e0ec9dd8e52a60353a11f..ea138f0d485c352d0bb8e76fb6157fbecabee256 100644
 --- a/components/omnibox/browser/autocomplete_match.cc
 +++ b/components/omnibox/browser/autocomplete_match.cc
-@@ -550,6 +550,9 @@ AutocompleteMatch& AutocompleteMatch::operator=(
+@@ -548,6 +548,9 @@ AutocompleteMatch& AutocompleteMatch::operator=(
  const gfx::VectorIcon& AutocompleteMatch::GetVectorIcon(
      bool is_bookmark,
      const TemplateURL* turl) const {
@@ -12,7 +12,7 @@ index 5922244bedaa5cb7b013fde03a3fe93fdd5fd89a..23e2e5d81797ad22db2cc62b2d058147
    if (suggest_template.has_value() && suggest_template->has_type_icon()) {
      // Update this assertion and the switch below whenever values are added.
      static_assert(omnibox::SuggestTemplateInfo::IconType_MAX ==
-@@ -1434,6 +1437,9 @@ std::u16string AutocompleteMatch::GetKeywordPlaceholder(
+@@ -1432,6 +1435,9 @@ std::u16string AutocompleteMatch::GetKeywordPlaceholder(
    }
    int message_id;
    switch (template_url->starter_pack_id()) {
@@ -22,7 +22,7 @@ index 5922244bedaa5cb7b013fde03a3fe93fdd5fd89a..23e2e5d81797ad22db2cc62b2d058147
      case template_url_starter_pack_data::StarterPackId::kBookmarks:
        message_id = IDS_OMNIBOX_BOOKMARKS_SCOPE_PLACEHOLDER_TEXT;
        break;
-@@ -1547,6 +1553,8 @@ AutocompleteMatch::GetOmniboxEventResultType(int action_index) const {
+@@ -1545,6 +1551,8 @@ AutocompleteMatch::GetOmniboxEventResultType(int action_index) const {
  
    if (action_index >= 0 && static_cast<size_t>(action_index) < actions.size()) {
      switch (actions[action_index]->ActionId()) {

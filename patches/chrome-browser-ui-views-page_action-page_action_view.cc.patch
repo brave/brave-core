@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 4d0e79119f2ccfaade8b3757a78d61d31e668086..931eeac1612d2022e1f48ae081454c298c3b449a 100644
+index 21dbf04aa5e478e9ce1ba7f7915f4a5273024274..d63ed41f719f4b868222f3a316dd507e077ece29 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
 @@ -93,7 +93,7 @@ PageActionView::PageActionView(actions::ActionItem* action_item,
@@ -110,7 +110,7 @@ index 4d0e79119f2ccfaade8b3757a78d61d31e668086..931eeac1612d2022e1f48ae081454c29
  }
  
  bool PageActionView::IsBubbleShowing() const {
-@@ -943,6 +973,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
+@@ -941,6 +971,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
  }
  
  SkColor PageActionView::GetBackgroundColor() const {
@@ -120,7 +120,7 @@ index 4d0e79119f2ccfaade8b3757a78d61d31e668086..931eeac1612d2022e1f48ae081454c29
    if (observation_.IsObserving() &&
        observation_.GetSource()->GetOverrideBackgroundColorId().has_value() &&
        GetColorProvider()) {
-@@ -953,6 +986,9 @@ SkColor PageActionView::GetBackgroundColor() const {
+@@ -951,6 +984,9 @@ SkColor PageActionView::GetBackgroundColor() const {
  }
  
  SkColor PageActionView::GetForegroundColor() const {

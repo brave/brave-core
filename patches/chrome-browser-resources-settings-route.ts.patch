@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/route.ts b/chrome/browser/resources/settings/route.ts
-index 950e1623902d1514c6066b31ddb0553dd43136dc..e193c4cf752e2ab2a4372c8aec096353908dc479 100644
+index 6fc01d20aa44c72e34b6d7a73c554c2bdbb66d14..040894835ec4aadb4a33a291ea502a4f14df747e 100644
 --- a/chrome/browser/resources/settings/route.ts
 +++ b/chrome/browser/resources/settings/route.ts
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 950e1623902d1514c6066b31ddb0553dd43136dc..e193c4cf752e2ab2a4372c8aec096353
  import {assert, assertNotReachedCase} from 'chrome://resources/js/assert.js';
  
  import {loadTimeData} from './i18n_setup.js';
-@@ -436,6 +437,7 @@ function createRoutes(): SettingsRoutes {
+@@ -434,6 +435,7 @@ function createRoutes(): SettingsRoutes {
          loadTimeData.getString('performancePageTitle'), 'settings:speed');
    }
  
@@ -18,7 +18,7 @@ index 950e1623902d1514c6066b31ddb0553dd43136dc..e193c4cf752e2ab2a4372c8aec096353
    return r as unknown as SettingsRoutes;
  }
  
-@@ -470,7 +472,7 @@ export let routes: SettingsRoutes = Router.getInstance().getRoutes();
+@@ -468,7 +470,7 @@ export let routes: SettingsRoutes = Router.getInstance().getRoutes();
  export function getTopLevelRoute(): Route {
    if (!loadTimeData.getBoolean('isGuest')) {
      return loadTimeData.getString('settingsRefresh2026') !== '' ? routes.BASIC :

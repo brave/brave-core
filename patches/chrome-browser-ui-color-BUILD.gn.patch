@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/color/BUILD.gn b/chrome/browser/ui/color/BUILD.gn
-index b1ded4077a15b0c326c5a5ef44bf721b757f7e45..f6f85e4c5c45894c19f8657a3468026862c5c8b8 100644
+index 0ac9aa0489827e54cafa9afe5d54de88c05fc366..65e3d827ca5dced144d0ef3f514fc51425726c9f 100644
 --- a/chrome/browser/ui/color/BUILD.gn
 +++ b/chrome/browser/ui/color/BUILD.gn
-@@ -47,6 +47,7 @@ source_set("mixers") {
+@@ -46,6 +46,7 @@ source_set("mixers") {
      "tab_strip_color_mixer.cc",
      "tab_strip_color_mixer.h",
    ]
@@ -10,7 +10,7 @@ index b1ded4077a15b0c326c5a5ef44bf721b757f7e45..f6f85e4c5c45894c19f8657a34680268
  
    deps = [
      ":color_headers",
-@@ -64,6 +65,7 @@ source_set("mixers") {
+@@ -63,6 +64,7 @@ source_set("mixers") {
      "//ui/color:color_provider_utils_internal",
      "//ui/color:mixers",
    ]

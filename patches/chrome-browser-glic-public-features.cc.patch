@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/glic/public/features.cc b/chrome/browser/glic/public/features.cc
-index d3069e735171726e0ee73fa33717eec363039fc3..da4a7d7a5d1077701bb51e28ec624176d041c2fb 100644
+index 22ac8b9ee39122f529596185be1c8dba01546f02..63fd44f4c73d9ae0236b9587541ad9d984a8a0a3 100644
 --- a/chrome/browser/glic/public/features.cc
 +++ b/chrome/browser/glic/public/features.cc
-@@ -253,13 +253,8 @@ bool IsGlicNativeLoadingPlaceholderEnabled() {
+@@ -255,13 +255,8 @@ bool IsGlicNativeLoadingPlaceholderEnabled() {
           !base::FeatureList::IsEnabled(kGlicNoWebUiLoader);
  }
  

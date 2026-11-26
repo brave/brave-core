@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.html.ts
-index 21fac0e4efd2aa77e4d766c5da41f2a3633b52c7..517b1703fc38d35fb49945721859d44db0c01106 100644
+index d12d4d3cfcd891458fc4ef4e51346c61b5c80b5a..771ead5de26e1932bdac783bfb4fed209cc69cb5 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html.ts
-@@ -14,6 +14,7 @@ import type {SettingsPersonalizationOptionsElement} from './personalization_opti
+@@ -11,6 +11,7 @@ import type {SettingsPersonalizationOptionsElement} from './personalization_opti
  
  export function getHtml(this: SettingsPersonalizationOptionsElement) {
    return html`<!--_html_template_start_-->
@@ -10,7 +10,7 @@ index 21fac0e4efd2aa77e4d766c5da41f2a3633b52c7..517b1703fc38d35fb49945721859d44d
  <if expr="not is_chromeos">
  <div id="chromeSigninUserChoiceSetting" class="hr cr-row" role="group"
      ?hidden="${!this.chromeSigninUserChoiceInfo_?.shouldShowSettings}"
-@@ -55,6 +56,7 @@ export function getHtml(this: SettingsPersonalizationOptionsElement) {
+@@ -52,6 +53,7 @@ export function getHtml(this: SettingsPersonalizationOptionsElement) {
      no-set-pref>
  </settings-toggle-button>
  </if><!-- not chromeos -->
@@ -18,7 +18,7 @@ index 21fac0e4efd2aa77e4d766c5da41f2a3633b52c7..517b1703fc38d35fb49945721859d44d
  <if expr="_google_chrome">
  <if expr="is_chromeos">
  <!-- Ash Browser settings show a link to the OS settings instead. -->
-@@ -66,6 +68,8 @@ ${!this.shouldUseMetricsConsentRestructure_ ? html`
+@@ -63,6 +65,8 @@ ${!this.shouldUseMetricsConsentRestructure_ ? html`
    </cr-link-row>
  ` : ''}
  </if><!-- chromeos -->
@@ -27,7 +27,7 @@ index 21fac0e4efd2aa77e4d766c5da41f2a3633b52c7..517b1703fc38d35fb49945721859d44d
  <if expr="not is_chromeos">
  ${!this.shouldUseMetricsConsentRestructure_ ? html`
    <div class="cr-row hr toggle-button-wrapper">
-@@ -95,11 +99,13 @@ ${!this.shouldUseMetricsConsentRestructure_ ? html`
+@@ -92,11 +96,13 @@ ${!this.shouldUseMetricsConsentRestructure_ ? html`
  ` : ''}
  </if><!-- not chromeos -->
  </if><!-- _google_chrome -->
@@ -41,7 +41,7 @@ index 21fac0e4efd2aa77e4d766c5da41f2a3633b52c7..517b1703fc38d35fb49945721859d44d
  <if expr="_google_chrome">
  <if expr="not is_chromeos">
  <settings-toggle-button id="spellCheckControl" class="hr"
-@@ -120,12 +126,14 @@ ${!this.shouldUseMetricsConsentRestructure_ ? html`
+@@ -117,12 +123,14 @@ ${!this.shouldUseMetricsConsentRestructure_ ? html`
  </cr-link-row>
  </if><!-- chromeos -->
  </if><!-- _google_chrome -->
@@ -56,7 +56,7 @@ index 21fac0e4efd2aa77e4d766c5da41f2a3633b52c7..517b1703fc38d35fb49945721859d44d
  
  <!-- This toggle is only shown for users with the appropriate enterprise
          policy enabled. The state is not changeable by the user, so when shown,
-@@ -146,6 +154,7 @@ ${this.showPriceEmailNotificationsToggle_() ? html`
+@@ -143,6 +151,7 @@ ${this.showPriceEmailNotificationsToggle_() ? html`
    </settings-toggle-button>
  ` : ''}
  
@@ -64,7 +64,7 @@ index 21fac0e4efd2aa77e4d766c5da41f2a3633b52c7..517b1703fc38d35fb49945721859d44d
  ${this.showSignoutDialog_ ? html`
    <settings-signout-dialog .syncStatus="${this.syncStatus}"
        @close="${this.onSignoutDialogClose_}">
-@@ -167,5 +176,6 @@ ${this.shouldShowRelaunchDialog ? html`
+@@ -163,5 +172,6 @@ ${this.shouldShowRelaunchDialog ? html`
    <div>$i18n{chromeSigninChoiceToast}</div>
  </cr-toast>
  </if>

@@ -1,8 +1,8 @@
 diff --git a/services/network/network_context.cc b/services/network/network_context.cc
-index b8e4c44459884661aed637befeaa7ce481ab94bf..94f05a30f16ee4c37e72b7640d759b5834d74db0 100644
+index 8c7a731da9a5457cdcc74f1668adb1eaf7d22f2a..74050d0faac6316205b6d5c427a67cca81aec527 100644
 --- a/services/network/network_context.cc
 +++ b/services/network/network_context.cc
-@@ -884,6 +884,8 @@ NetworkContext::NetworkContext(
+@@ -889,6 +889,8 @@ NetworkContext::NetworkContext(
        session_cleanup_cookie_store,
        std::move(on_url_request_context_builder_configured));
    url_request_context_ = url_request_context_owner_.url_request_context.get();

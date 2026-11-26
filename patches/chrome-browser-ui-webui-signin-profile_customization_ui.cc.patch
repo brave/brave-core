@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/signin/profile_customization_ui.cc b/chrome/browser/ui/webui/signin/profile_customization_ui.cc
-index 7e701a751fcb21315113fac91394e288a2d7db33..8ce80e95008e50ac64d4da0113d642bc7c11b59d 100644
+index f8e06db4443e1b6b02b773bd9260c2d8e00d6ccd..87f8b1d9932ea91221629bd1609d879ad7181c5b 100644
 --- a/chrome/browser/ui/webui/signin/profile_customization_ui.cc
 +++ b/chrome/browser/ui/webui/signin/profile_customization_ui.cc
 @@ -42,6 +42,8 @@ ProfileCustomizationUI::ProfileCustomizationUI(content::WebUI* web_ui)

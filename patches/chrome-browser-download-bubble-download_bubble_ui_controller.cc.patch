@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/download/bubble/download_bubble_ui_controller.cc b/chrome/browser/download/bubble/download_bubble_ui_controller.cc
-index 1594c55744cc7276cbb969cc5d1e0594ef75a14d..3ca43381b9c9dd668080f073295e32c77e56b682 100644
+index 6ca247edea880f3aa712b9fc7b1457721de097ec..3dde38ef39d282f8f0ff63cc71a16e321f950d43 100644
 --- a/chrome/browser/download/bubble/download_bubble_ui_controller.cc
 +++ b/chrome/browser/download/bubble/download_bubble_ui_controller.cc
-@@ -269,7 +269,7 @@ void DownloadBubbleUIController::ProcessDownloadButtonPress(
+@@ -266,7 +266,7 @@ void DownloadBubbleUIController::ProcessDownloadButtonPress(
    }
    download::DownloadItem* item = model->GetDownloadItem();
    DownloadCommands commands(model);
@@ -11,7 +11,7 @@ index 1594c55744cc7276cbb969cc5d1e0594ef75a14d..3ca43381b9c9dd668080f073295e32c7
    DownloadItemWarningData::WarningSurface warning_surface =
        is_main_view ? DownloadItemWarningData::WarningSurface::BUBBLE_MAINPAGE
                     : DownloadItemWarningData::WarningSurface::BUBBLE_SUBPAGE;
-@@ -348,6 +348,7 @@ void DownloadBubbleUIController::ProcessDownloadButtonPress(
+@@ -345,6 +345,7 @@ void DownloadBubbleUIController::ProcessDownloadButtonPress(
      case DownloadCommands::ALWAYS_OPEN_TYPE:
      case DownloadCommands::CANCEL_DEEP_SCAN:
      case DownloadCommands::OPEN_SAFE_BROWSING_SETTING:

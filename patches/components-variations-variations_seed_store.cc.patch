@@ -1,8 +1,8 @@
 diff --git a/components/variations/variations_seed_store.cc b/components/variations/variations_seed_store.cc
-index 4155e8f4fbea1b87a206d3b41cd1c139d31c1931..62eed5b25da7f6c9d11b9f63c124518c65472dc4 100644
+index 5c8a3b77d9613912e9cd325e7f703ae17c3e00af..89e216ff138dad4adf0ae94f8cea1c21d75ff164 100644
 --- a/components/variations/variations_seed_store.cc
 +++ b/components/variations/variations_seed_store.cc
-@@ -553,6 +553,7 @@ VerifySignatureResult VerifyHybridSeedSignature(
+@@ -554,6 +554,7 @@ VerifySignatureResult VerifyHybridSeedSignature(
      const std::string& seed_bytes,
      std::string_view key_id_str,
      std::string_view base64_signature) {
@@ -10,7 +10,7 @@ index 4155e8f4fbea1b87a206d3b41cd1c139d31c1931..62eed5b25da7f6c9d11b9f63c124518c
    // Require canonical single-digit key IDs in [1, kNumPinnedHybridKeys].
    static_assert(kNumPinnedHybridKeys <= 9);
    if (key_id_str.size() != 1 || key_id_str[0] < '1' ||
-@@ -673,7 +674,7 @@ VerifySignatureResult VerifySeedSignature(
+@@ -674,7 +675,7 @@ VerifySignatureResult VerifySeedSignature(
    CHECK(public_key);
  
    if (!crypto::sign::Verify(crypto::sign::SignatureKind::ECDSA_SHA256,

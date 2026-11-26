@@ -1,5 +1,5 @@
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
-index c43c4e1867f4d8ad8ffde907985d2b2bd49b43c5..5876e1f5fc63439bfa96f414fb3ff7976b0907f8 100644
+index b67a4eec0233ed5c709540c7a28213c09ba908a7..d3d677a1549e2a6f4dbb6eb572fd492a177e4ba3 100644
 --- a/components/strings/BUILD.gn
 +++ b/components/strings/BUILD.gn
 @@ -116,7 +116,7 @@ grit_strings("components_branded_strings") {
@@ -19,7 +19,7 @@ index c43c4e1867f4d8ad8ffde907985d2b2bd49b43c5..5876e1f5fc63439bfa96f414fb3ff797
    if (is_android) {
      _xtb_locales -= [ "cy" ]
    }
-@@ -174,6 +175,7 @@ grit_strings("components_locale_settings") {
+@@ -177,6 +178,7 @@ grit_strings("components_locale_settings") {
    if (is_android) {
      create_android_resources = true
    }

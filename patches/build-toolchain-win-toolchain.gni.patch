@@ -1,5 +1,5 @@
 diff --git a/build/toolchain/win/toolchain.gni b/build/toolchain/win/toolchain.gni
-index d4e809146c0e79b44c786b59980b3a9c5321f260..c0106ad087bd9c30d5a0c6311521f57a7905f28f 100644
+index bd6b8089de35647d2d9aefb9ff619cdaa8ca58bd..930292ddd7e8082ffc08150116cec2607b379edd 100644
 --- a/build/toolchain/win/toolchain.gni
 +++ b/build/toolchain/win/toolchain.gni
 @@ -186,7 +186,7 @@ template("msvc_toolchain") {

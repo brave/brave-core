@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/signin_view_controller_delegate_views.h b/chrome/browser/ui/views/profiles/signin_view_controller_delegate_views.h
-index 2a62ba52b331de48a7cd1d0466df9fb73f8dfe15..a20c61f168a8f7972fda9d165197e54442147a0f 100644
+index 87f9758943d660ed87c44486f9d251f74be5bb79..d8c261a6ff8b0c33d2a987c12aed6fa2d8b5b30e 100644
 --- a/chrome/browser/ui/views/profiles/signin_view_controller_delegate_views.h
 +++ b/chrome/browser/ui/views/profiles/signin_view_controller_delegate_views.h
-@@ -120,6 +120,10 @@ class SigninViewControllerDelegateViews
+@@ -119,6 +119,10 @@ class SigninViewControllerDelegateViews
    void OnViewAddedToWidget(views::View* observed_view) override;
    void OnViewIsDeleting(View* observed_view) override;
  

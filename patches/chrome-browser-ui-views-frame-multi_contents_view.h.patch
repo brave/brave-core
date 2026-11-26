@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/multi_contents_view.h b/chrome/browser/ui/views/frame/multi_contents_view.h
-index e39f000c2a9df3a6bc7b65f33a0d6f100840939a..f2df0a33b11048f3f2d4018761299f11b4b91f54 100644
+index 68df9668f7827974712b5de5108ff32c72ad083d..44243cb687354fa87fcfcb81ebc9e98c941e8b8f 100644
 --- a/chrome/browser/ui/views/frame/multi_contents_view.h
 +++ b/chrome/browser/ui/views/frame/multi_contents_view.h
-@@ -64,7 +64,7 @@ class MultiContentsView
+@@ -65,7 +65,7 @@ class MultiContentsView
      int end = 0;
    };
  
@@ -11,7 +11,7 @@ index e39f000c2a9df3a6bc7b65f33a0d6f100840939a..f2df0a33b11048f3f2d4018761299f11
    static constexpr float kSplitViewContentCornerRadius = 6;
    static constexpr gfx::RoundedCornersF kSplitViewContentRoundedCorners{
        kSplitViewContentCornerRadius};
-@@ -75,13 +75,13 @@ class MultiContentsView
+@@ -76,13 +76,13 @@ class MultiContentsView
    MultiContentsView& operator=(const MultiContentsView&) = delete;
    ~MultiContentsView() override;
  
@@ -28,7 +28,7 @@ index e39f000c2a9df3a6bc7b65f33a0d6f100840939a..f2df0a33b11048f3f2d4018761299f11
  
    // Returns the currently inactive ContentsWebView.
    ContentsWebView* GetInactiveContentsView() const;
-@@ -133,7 +133,7 @@ class MultiContentsView
+@@ -134,7 +134,7 @@ class MultiContentsView
  
    // Helper method to execute an arbitrary callback on each visible contents
    // view. Will execute the callback on the active contents view first.
@@ -37,7 +37,7 @@ index e39f000c2a9df3a6bc7b65f33a0d6f100840939a..f2df0a33b11048f3f2d4018761299f11
        base::RepeatingCallback<void(ContentsWebView*)> callback);
  
    // If in a split view, swaps the positions of the two active tabs.
-@@ -220,7 +220,10 @@ class MultiContentsView
+@@ -221,7 +221,10 @@ class MultiContentsView
    const FocusableViewMap* GetFocusableViewsMapFor(
        const ContentsContainerView* container) const;
  
@@ -48,7 +48,7 @@ index e39f000c2a9df3a6bc7b65f33a0d6f100840939a..f2df0a33b11048f3f2d4018761299f11
    FRIEND_TEST_ALL_PREFIXES(MultiContentsViewBrowserTest, DropTargetLayout);
    FRIEND_TEST_ALL_PREFIXES(MultiContentsViewBrowserTest,
                             LeadingSeparatorLayout);
-@@ -262,7 +265,7 @@ class MultiContentsView
+@@ -269,7 +272,7 @@ class MultiContentsView
  
    int GetInactiveIndex() const;
  
@@ -57,7 +57,7 @@ index e39f000c2a9df3a6bc7b65f33a0d6f100840939a..f2df0a33b11048f3f2d4018761299f11
    void OnNtpFooterFocused(views::WebView*);
    void OnActorOverlayFocused(views::WebView*);
    void OnReadAnythingOverlayFocused(ContentsContainerView* container,
-@@ -279,7 +282,7 @@ class MultiContentsView
+@@ -286,7 +289,7 @@ class MultiContentsView
    // `MultiContentsView`. Returns 0 if not in a split view.
    int GetMinViewSize(gfx::Rect available_space) const;
  

@@ -1,5 +1,5 @@
 diff --git a/components/sync/base/features.h b/components/sync/base/features.h
-index 3fb48b3d7a0f8110a5d12e7abd1ebdbfdab64cf1..811f6333be49e418701cdacabe4d43b00ebe83a6 100644
+index 54abf5dd1544b9aa3018e1720a9a1f1c3a282478..62f576892bcd08cc7d73912b256fd5050c3d92fe 100644
 --- a/components/sync/base/features.h
 +++ b/components/sync/base/features.h
 @@ -55,7 +55,7 @@ BASE_DECLARE_FEATURE(kSyncNotebook);
@@ -11,7 +11,7 @@ index 3fb48b3d7a0f8110a5d12e7abd1ebdbfdab64cf1..811f6333be49e418701cdacabe4d43b0
  
  #if !BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(IS_IOS)
  // Flag that controls Uno fast-follow features which are:
-@@ -105,7 +105,7 @@ DECLARE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuable);
+@@ -100,7 +100,7 @@ DECLARE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuable);
  #endif
  
  // Enables syncing of usage metadata from Google Wallet passes.

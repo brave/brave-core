@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.cc b/chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.cc
-index 7c3149d7a1243b3871b53dcb13e4ba6566dd44a2..796d85f6502bf27ab870e6ad4e173f6c3aced00f 100644
+index 8dbf15d234de540bfff3cde63234d7ff606c8064..1afadff2dea74a8d515c296581587091f4cfeae8 100644
 --- a/chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.cc
 +++ b/chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.cc
-@@ -63,6 +63,7 @@ void SidePanelControllerViews::OpenSidePanel(
+@@ -81,6 +81,7 @@ void SidePanelControllerViews::OnEntryWillHide(
  
  SidePanelNativeView SidePanelControllerViews::CreateCustomizeChromeView(
      SidePanelEntryScope& scope) {
@@ -10,7 +10,7 @@ index 7c3149d7a1243b3871b53dcb13e4ba6566dd44a2..796d85f6502bf27ab870e6ad4e173f6c
    auto customize_chrome_web_view =
        std::make_unique<SidePanelWebUIViewT<CustomizeChromeUI>>(
            scope, base::RepeatingClosure(), base::RepeatingClosure(),
-@@ -92,6 +93,12 @@ SidePanelNativeView SidePanelControllerViews::CreateCustomizeChromeView(
+@@ -110,6 +111,12 @@ SidePanelNativeView SidePanelControllerViews::CreateCustomizeChromeView(
    customize_chrome_ui_->UpdateThemeEditable(ShouldEnableEditTheme(url));
  
    return customize_chrome_web_view;

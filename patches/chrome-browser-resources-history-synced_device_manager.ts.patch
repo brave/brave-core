@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/history/synced_device_manager.ts b/chrome/browser/resources/history/synced_device_manager.ts
-index 55829229096fc0b73e419327c4d8bedfd9df4a22..3cc668cffcbd6c01d3bcaa9fc9f13b26f1d32845 100644
+index 17289d9e7b196827ab39967ff2053532dd9c4fbc..425512e0f0026bf9e7f63023070d5e5060e838fe 100644
 --- a/chrome/browser/resources/history/synced_device_manager.ts
 +++ b/chrome/browser/resources/history/synced_device_manager.ts
-@@ -445,15 +445,6 @@ export class HistorySyncedDeviceManagerElement extends CrLitElement {
+@@ -442,15 +442,6 @@ export class HistorySyncedDeviceManagerElement extends CrLitElement {
      }
  
      this.fire('history-view-changed');

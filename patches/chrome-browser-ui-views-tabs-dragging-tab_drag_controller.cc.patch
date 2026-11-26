@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.cc b/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.cc
-index 3fdb521e1b9a5d795ee467e8d5789fc04bda9798..4789ffd1cbc460f9e3367ada4485a952766e1560 100644
+index 04187c49e6c44e3dfc9631944fd7a025f9c0f9f3..8f8e7ec81f3240ac0dca3847373bb675da6f451b 100644
 --- a/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.cc
 +++ b/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.cc
-@@ -1592,7 +1592,13 @@ void TabDragController::AttachToNewContext(
+@@ -1610,7 +1610,13 @@ void TabDragController::AttachToNewContext(
  
        const bool pinned = detached_tab_collection->get()->pinned_;
  

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/glic/public/provider_features.cc b/chrome/browser/glic/public/provider_features.cc
-index c2214054d526e0bc4a02e96ddef54ebc1de7efe6..49259ed56f3a129c47c811507bea934c4ec37229 100644
+index 707017e197b62a75fe63d124e500762d5f64e3db..9443faacbcb0f114e31d1c65e4b8410ae53a4133 100644
 --- a/chrome/browser/glic/public/provider_features.cc
 +++ b/chrome/browser/glic/public/provider_features.cc
 @@ -72,13 +72,8 @@ PopulateSelectionInlineCueFeatureParams(const base::Feature& feature) {
