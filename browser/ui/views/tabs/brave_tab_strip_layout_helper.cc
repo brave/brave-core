@@ -189,6 +189,7 @@ void CalculatePinnedTabsBoundsInGrid(
     std::vector<gfx::Rect>* result) {
   DCHECK(tabs.size());
   DCHECK(result);
+  DCHECK(result->empty());
 
   const int pinned_tab_count =
       std::ranges::count_if(tabs, [](const TabWidthConstraints& tab) {
@@ -232,7 +233,6 @@ void CalculatePinnedTabsBoundsInGrid(
 
   auto* tab_style = TabStyle::Get();
 
-  const size_t first_index = result->size();
   gfx::Rect rect(/* x= */ kMarginForVerticalTabContainers,
                  /* y= */ kMarginForVerticalTabContainers,
                  /* width= */ base_pinned_tab_width +
@@ -276,7 +276,7 @@ void CalculatePinnedTabsBoundsInGrid(
   // Split tabs next to each other, in the same row or stacked in a single
   // column, have no spacing between them. They grow toward each other to keep
   // the outer edges of the split.
-  for (size_t index = first_index; index + 1 < result->size(); ++index) {
+  for (size_t index = 0; index + 1 < result->size(); ++index) {
     if (!AreAdjacentSplitTabs(tabs[index].state(), tabs[index + 1].state())) {
       continue;
     }
