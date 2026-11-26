@@ -123,4 +123,9 @@
     <dimen name="new_tab_takeover_disclosure_tooltip_arrow_width">12dp</dimen>
     <dimen name="new_tab_takeover_disclosure_tooltip_arrow_height">6dp</dimen>
     <dimen name="new_tab_takeover_disclosure_tooltip_screen_margin">16dp</dimen>
+    <dimen name="new_tab_takeover_disclosure_tooltip_close_button_width">30dp</dimen>
+    <dimen name="new_tab_takeover_disclosure_tooltip_close_button_height">32dp</dimen>
+    <dimen name="new_tab_takeover_disclosure_tooltip_close_button_padding_start">8dp</dimen>
+    <dimen name="new_tab_takeover_disclosure_tooltip_close_button_padding_end">6dp</dimen>
+    <dimen name="new_tab_takeover_disclosure_tooltip_close_button_padding_vertical">8dp</dimen>
 </resources>

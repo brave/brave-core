@@ -373,6 +373,38 @@ public class NewTabTakeoverDisclosureTooltipControllerTest {
     }
 
     @Test
+    public void testSuppressAutoDisplayWhenCloseIsClicked() {
+        NewTabTakeoverDisclosureTooltip tooltip = autoDisplay();
+
+        mTooltipDelegate.onCloseClicked(tooltip);
+
+        verify(tooltip).dismiss();
+        assertEquals(0, mRemainingDisplayCount);
+    }
+
+    @Test
+    public void testDoNotAutoDisplayAfterCloseIsClicked() {
+        NewTabTakeoverDisclosureTooltip tooltip = autoDisplay();
+        mTooltipDelegate.onCloseClicked(tooltip);
+
+        mController = createController();
+        layout();
+
+        assertEquals(1, mTooltips.size());
+    }
+
+    @Test
+    public void testOpenTooltipWhenLabelIsClickedAfterCloseIsClicked() {
+        NewTabTakeoverDisclosureTooltip tooltip = autoDisplay();
+        mTooltipDelegate.onCloseClicked(tooltip);
+
+        mController.onDisclosureLabelClicked(mDisclosureLabel);
+
+        assertEquals(2, mTooltips.size());
+        verify(getLastTooltip()).show();
+    }
+
+    @Test
     public void testDismissShownTooltipWhenControllerIsDismissed() {
         NewTabTakeoverDisclosureTooltip tooltip = autoDisplay();
 

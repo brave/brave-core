@@ -35,6 +35,8 @@ class NewTabTakeoverDisclosureTooltip {
         void onPopupWindowTooltipDismissed(NewTabTakeoverDisclosureTooltip tooltip);
 
         void onLearnMoreClicked(NewTabTakeoverDisclosureTooltip tooltip);
+
+        void onCloseClicked(NewTabTakeoverDisclosureTooltip tooltip);
     }
 
     private final PopupWindowTooltip mTooltip;
@@ -52,9 +54,6 @@ class NewTabTakeoverDisclosureTooltip {
                         R.dimen.new_tab_takeover_disclosure_tooltip_screen_margin);
         int width =
                 Math.min(maxWidth, resources.getDisplayMetrics().widthPixels - 2 * screenMargin);
-        int padding =
-                resources.getDimensionPixelSize(
-                        R.dimen.new_tab_takeover_disclosure_tooltip_padding);
         int arrowWidth =
                 resources.getDimensionPixelSize(
                         R.dimen.new_tab_takeover_disclosure_tooltip_arrow_width);
@@ -70,7 +69,7 @@ class NewTabTakeoverDisclosureTooltip {
                         .dismissOnInsideTouch(false)
                         .dismissOnOutsideTouch(true)
                         .backgroundDimDisabled(true)
-                        .padding((float) padding)
+                        .padding(0f)
                         .arrowWidth((float) arrowWidth)
                         .arrowHeight((float) arrowHeight)
                         .margin(0f)
@@ -86,13 +85,19 @@ class NewTabTakeoverDisclosureTooltip {
                     return true;
                 };
 
+        View contentView = mTooltip.findViewById(R.id.new_tab_takeover_disclosure_tooltip);
+        PopupWindowTooltipUtils.setWidth(contentView, width);
+
         TextView textView = mTooltip.findViewById(R.id.new_tab_takeover_disclosure_tooltip_text);
-        PopupWindowTooltipUtils.setWidth(textView, width);
         textView.setText(buildText(context, () -> delegate.onLearnMoreClicked(this)));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
 
-        ViewGroup tooltipLayout = (ViewGroup) textView.getParent();
-        int shadowPadding = (int) textView.getElevation();
+        View closeButton =
+                mTooltip.findViewById(R.id.new_tab_takeover_disclosure_tooltip_close_button);
+        closeButton.setOnClickListener(view -> delegate.onCloseClicked(this));
+
+        ViewGroup tooltipLayout = (ViewGroup) contentView.getParent();
+        int shadowPadding = (int) contentView.getElevation();
         // The arrow already leaves room for the shadow below the bubble so no bottom padding is
         // needed.
         tooltipLayout.setPadding(

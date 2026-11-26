@@ -54,6 +54,12 @@ class NewTabTakeoverDisclosureTooltipController {
                     suppressAutoDisplay();
                     TabUtils.openUrlInSameTab(NewTabTakeoverDisclosureTooltip.LEARN_MORE_URL);
                 }
+
+                @Override
+                public void onCloseClicked(NewTabTakeoverDisclosureTooltip tooltip) {
+                    dismiss();
+                    suppressAutoDisplay();
+                }
             };
 
     private @Nullable NewTabTakeoverDisclosureTooltip mTooltip;
