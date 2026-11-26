@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 4523bbd811153cf6e200c0bebc61512138922c0e..a2132a6392682946802134bed58e92bb47e28c0f 100644
+index 4523bbd811153cf6e200c0bebc61512138922c0e..5d3f5a358ddbe14ea23d5f7fd7f32b4cdca10c34 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -35,7 +35,17 @@ index 4523bbd811153cf6e200c0bebc61512138922c0e..a2132a6392682946802134bed58e92bb
      "//chrome/browser:global_features",
      "//chrome/browser/background",
      "//chrome/browser/bookmarks",
-@@ -2256,7 +2259,7 @@ source_set("unit_tests") {
+@@ -2156,6 +2159,9 @@ source_set("unit_tests") {
+     "//ui/menus",
+     "//ui/webui:buildflags",
+   ]
++  if (!enable_webui_ntp) {
++    deps += [ "//components/search" ]
++  }
+ 
+   if (enable_webui_ntp) {
+     deps += [ "//components/search" ]
+@@ -2256,7 +2262,7 @@ source_set("unit_tests") {
        ]
      }
  
@@ -44,7 +54,7 @@ index 4523bbd811153cf6e200c0bebc61512138922c0e..a2132a6392682946802134bed58e92bb
        sources += [ "api/mdns/mdns_api_unittest.cc" ]
        deps += [ "//chrome/browser/extensions/api/mdns" ]
      }
-@@ -2372,6 +2375,7 @@ source_set("unit_tests") {
+@@ -2372,6 +2378,7 @@ source_set("unit_tests") {
  }
  
  # By default these tests run on Win, Mac, Linux, Chrome OS and desktop Android.
@@ -52,7 +62,7 @@ index 4523bbd811153cf6e200c0bebc61512138922c0e..a2132a6392682946802134bed58e92bb
  source_set("browser_tests") {
    testonly = true
  
-@@ -3344,6 +3348,7 @@ source_set("browser_tests") {
+@@ -3344,6 +3351,7 @@ source_set("browser_tests") {
    deps +=
        [ "//chrome/browser/extensions/api/image_writer_private:browser_tests" ]
  }
