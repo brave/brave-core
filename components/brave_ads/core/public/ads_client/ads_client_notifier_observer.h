@@ -12,11 +12,16 @@
 
 #include "base/observer_list_types.h"
 #include "base/time/time.h"
+#include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace brave_ads {
 
@@ -36,6 +41,14 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
 
   // Invoked when a resource component with `id` has been unregistered.
   virtual void OnNotifyDidUnregisterResourceComponent(const std::string& id) {}
+
+  // Invoked when the sponsored content component delivers an updated, or
+  // no longer available, conversion config.
+  virtual void OnNotifySponsoredContentComponentDidChange(
+      base::optional_ref<const base::DictValue> value) {}
+
+  // Invoked when the sponsored content component is unregistered.
+  virtual void OnNotifyDidUnregisterSponsoredContentComponent() {}
 
   // Called when the Brave Rewards wallet did update.
   virtual void OnNotifyRewardsWalletDidUpdate(

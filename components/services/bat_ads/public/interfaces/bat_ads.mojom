@@ -32,6 +32,10 @@ interface BatAdsClientNotifier {
   NotifyResourceComponentDidChange(string manifest_version, string id);
   NotifyDidUnregisterResourceComponent(string id);
 
+  NotifySponsoredContentComponentDidChange(
+      mojo_base.mojom.DictionaryValue? value);
+  NotifyDidUnregisterSponsoredContentComponent();
+
   NotifyRewardsWalletDidUpdate(string payment_id, string recovery_seed_base64);
 
   NotifyTabTextContentDidChange(int32 tab_id,

@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -20,6 +21,10 @@
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 class GURL;
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace brave_ads {
 
@@ -42,6 +47,9 @@ class AdsClientNotifier final {
   void NotifyResourceComponentDidChange(const std::string& manifest_version,
                                         const std::string& id);
   void NotifyDidUnregisterResourceComponent(const std::string& id);
+  void NotifySponsoredContentComponentDidChange(
+      std::optional<base::DictValue> value);
+  void NotifyDidUnregisterSponsoredContentComponent();
   void NotifyRewardsWalletDidUpdate(const std::string& payment_id,
                                     const std::string& recovery_seed_base64);
   void NotifyTabTextContentDidChange(int32_t tab_id,

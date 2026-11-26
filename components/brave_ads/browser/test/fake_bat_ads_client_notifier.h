@@ -8,6 +8,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -16,6 +17,10 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "url/gurl.h"
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace mojo {
 template <typename T>
@@ -50,6 +55,9 @@ class FakeBatAdsClientNotifier : public bat_ads::mojom::BatAdsClientNotifier {
                                         const std::string& /*id*/) override {}
   void NotifyDidUnregisterResourceComponent(
       const std::string& /*id*/) override {}
+  void NotifySponsoredContentComponentDidChange(
+      std::optional<base::DictValue> /*value*/) override {}
+  void NotifyDidUnregisterSponsoredContentComponent() override {}
   void NotifyRewardsWalletDidUpdate(
       const std::string& /*payment_id*/,
       const std::string& /*recovery_seed_base64*/) override {}

@@ -23,6 +23,7 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/types/optional_ref.h"
 #include "base/values.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/application_state/application_state_monitor.h"
@@ -43,6 +44,8 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
+#include "brave/components/sponsored_content/sponsored_content_service.h"
+#include "brave/components/sponsored_content/sponsored_content_service_observer.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/content_settings/core/browser/content_settings_type_set.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -89,15 +92,17 @@ class ResourceComponent;
 class ApplicationStateMonitor;
 class HttpClient;
 
-class AdsServiceImpl : public AdsService,
-                       public bat_ads::mojom::BatAdsClient,
-                       public bat_ads::mojom::BatAdsObserver,
-                       public ApplicationStateObserver,
-                       public ResourceComponentObserver,
+class AdsServiceImpl
+    : public AdsService,
+      public bat_ads::mojom::BatAdsClient,
+      public bat_ads::mojom::BatAdsObserver,
+      public ApplicationStateObserver,
+      public ResourceComponentObserver,
+      public sponsored_content::SponsoredContentServiceObserver,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-                       public brave_rewards::RewardsServiceObserver,
+      public brave_rewards::RewardsServiceObserver,
 #endif
-                       public content_settings::Observer {
+      public content_settings::Observer {
  public:
   // `http_client`, `history_service`, and `host_content_settings` can be
   // `nullptr` in tests. `rewards_service` can be `nullptr` when Rewards is
@@ -121,6 +126,7 @@ class AdsServiceImpl : public AdsService,
       std::unique_ptr<ApplicationStateMonitor> application_state_monitor,
       std::unique_ptr<ShutdownMonitor> shutdown_monitor,
       ResourceComponent& resource_component,
+      sponsored_content::SponsoredContentService& sponsored_content_service,
       history::HistoryService* history_service,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       brave_rewards::RewardsService* rewards_service,
@@ -423,6 +429,12 @@ class AdsServiceImpl : public AdsService,
                                     const std::string& id) override;
   void OnDidUnregisterResourceComponent(const std::string& id) override;
 
+  // SponsoredContentServiceObserver:
+  void OnSponsoredConversionConfigContentDidUpdate(
+      const base::FilePath& installed_dir,
+      base::optional_ref<const base::DictValue> dict) override;
+  void OnSponsoredContentComponentDidUnregister() override;
+
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // RewardsServiceObserver:
   void OnRewardsWalletCreated() override;
@@ -475,6 +487,12 @@ class AdsServiceImpl : public AdsService,
   const raw_ref<ResourceComponent> resource_component_;
   base::ScopedObservation<ResourceComponent, ResourceComponentObserver>
       resource_component_observation_{this};
+
+  const raw_ref<sponsored_content::SponsoredContentService>
+      sponsored_content_service_;
+  base::ScopedObservation<sponsored_content::SponsoredContentService,
+                          sponsored_content::SponsoredContentServiceObserver>
+      sponsored_content_service_observation_{this};
 
   const raw_ptr<history::HistoryService> history_service_;  // Not owned.
 
