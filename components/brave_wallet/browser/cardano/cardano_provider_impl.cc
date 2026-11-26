@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_provider_impl.h"
 
+#include <algorithm>
 #include <utility>
 #include <vector>
 
@@ -12,6 +13,7 @@
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_api_impl.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_dapp_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -48,7 +50,7 @@ CardanoProviderImpl::~CardanoProviderImpl() = default;
 
 // mojom::CardanoProvider
 void CardanoProviderImpl::IsEnabled(IsEnabledCallback callback) {
-  std::vector<std::string> allowed_accounts;
+  std::vector<mojom::AccountIdPtr> allowed_accounts;
   auto result = EvaluatePermissionsState(allowed_accounts);
   std::move(callback).Run(result == PermissionCheckResult::kHasAllowedAccounts);
 }
@@ -60,7 +62,7 @@ void CardanoProviderImpl::Enable(EnableCallback callback) {
 }
 
 void CardanoProviderImpl::RequestCardanoPermissions(EnableCallback callback) {
-  std::vector<std::string> allowed_accounts;
+  std::vector<mojom::AccountIdPtr> allowed_accounts;
   auto state = EvaluatePermissionsState(allowed_accounts);
 
   switch (state) {
@@ -131,13 +133,13 @@ void CardanoProviderImpl::RequestCardanoPermissions(EnableCallback callback) {
     case PermissionCheckResult::kHasAllowedAccounts:
       return OnRequestCardanoPermissions(std::move(callback),
                                          mojom::RequestPermissionsError::kNone,
-                                         allowed_accounts);
+                                         std::move(allowed_accounts));
 
     case PermissionCheckResult::kNeedsPermissionRequest:
-      auto cardano_account_ids = GetCardanoAccountPermissionIdentifiers(
-          brave_wallet_service_->keyring_service());
+      auto cardano_account_ids =
+          GetCardanoAccountIds(brave_wallet_service_->keyring_service());
       return delegate_->RequestPermissions(
-          mojom::CoinType::ADA, cardano_account_ids, dapp_origin_,
+          cardano_account_ids, dapp_origin_,
           base::BindOnce(&CardanoProviderImpl::OnRequestCardanoPermissions,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   }
@@ -145,7 +147,7 @@ void CardanoProviderImpl::RequestCardanoPermissions(EnableCallback callback) {
 
 CardanoProviderImpl::PermissionCheckResult
 CardanoProviderImpl::EvaluatePermissionsState(
-    std::vector<std::string>& allowed_accounts) {
+    std::vector<mojom::AccountIdPtr>& allowed_accounts) {
   if (!delegate_->IsTabVisible()) {
     return PermissionCheckResult::kTabInactive;
   }
@@ -158,8 +160,8 @@ CardanoProviderImpl::EvaluatePermissionsState(
     return PermissionCheckResult::kWalletNotCreated;
   }
 
-  auto cardano_account_ids = GetCardanoAccountPermissionIdentifiers(
-      brave_wallet_service_->keyring_service());
+  auto cardano_account_ids =
+      GetCardanoAccountIds(brave_wallet_service_->keyring_service());
 
   if (cardano_account_ids.empty()) {
     return PermissionCheckResult::kNoAccounts;
@@ -169,18 +171,11 @@ CardanoProviderImpl::EvaluatePermissionsState(
     return PermissionCheckResult::kWalletLocked;
   }
 
-  auto allowed_accounts_value =
-      delegate_->GetAllowedAccounts(mojom::CoinType::ADA, cardano_account_ids);
+  allowed_accounts = delegate_->GetAllowedAccounts(cardano_account_ids);
 
-  if (!allowed_accounts_value) {
-    return PermissionCheckResult::kGetAllowedAccountsFailed;
-  }
-
-  if (allowed_accounts_value->empty()) {
+  if (allowed_accounts.empty()) {
     return PermissionCheckResult::kNeedsPermissionRequest;
   }
-
-  allowed_accounts = *allowed_accounts_value;
 
   return PermissionCheckResult::kHasAllowedAccounts;
 }
@@ -188,7 +183,7 @@ CardanoProviderImpl::EvaluatePermissionsState(
 void CardanoProviderImpl::OnRequestCardanoPermissions(
     EnableCallback callback,
     mojom::RequestPermissionsError error,
-    const std::optional<std::vector<std::string>>& allowed_accounts) {
+    std::vector<mojom::AccountIdPtr> allowed_accounts) {
   bool success = error == mojom::RequestPermissionsError::kNone;
 
   if (!success) {

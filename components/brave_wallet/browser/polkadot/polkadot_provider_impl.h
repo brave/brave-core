@@ -7,8 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_PROVIDER_IMPL_H_
 
 #include <memory>
-#include <optional>
-#include <string>
 #include <vector>
 
 #include "base/memory/raw_ref.h"
@@ -59,7 +57,7 @@ class PolkadotProviderImpl final : public mojom::PolkadotProvider,
   };
 
   PermissionCheckResult EvaluatePermissionsState(
-      std::vector<std::string>& allowed_accounts);
+      std::vector<mojom::AccountIdPtr>& allowed_accounts);
 
   void RequestPolkadotPermissions(EnableCallback callback,
                                   const url::Origin& origin);
@@ -67,7 +65,7 @@ class PolkadotProviderImpl final : public mojom::PolkadotProvider,
   void OnRequestPolkadotPermissions(
       EnableCallback callback,
       mojom::RequestPermissionsError error,
-      const std::optional<std::vector<std::string>>& allowed_accounts);
+      std::vector<mojom::AccountIdPtr> allowed_accounts);
 
   // KeyringServiceObserverBase:
   void Unlocked() override;

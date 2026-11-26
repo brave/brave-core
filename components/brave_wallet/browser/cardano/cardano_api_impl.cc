@@ -35,9 +35,9 @@ namespace {
 
 // APIErrorCode
 constexpr int kAPIErrorInvalidRequest = -1;
-[[maybe_unused]] constexpr int kAPIErrorInternalError = -2;
+constexpr int kAPIErrorInternalError = -2;
 constexpr int kAPIErrorRefused = -3;
-[[maybe_unused]] constexpr int kAPIErrorAccountChange = -4;
+constexpr int kAPIErrorAccountChange = -4;
 
 constexpr char kUnknownAddressError[] = "Address is unknown";
 constexpr char kAccountNotConnectedError[] = "Account not connected";

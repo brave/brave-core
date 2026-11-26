@@ -407,13 +407,12 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
   std::vector<std::string> GetAllowedAccounts(
       bool include_accounts_when_locked) {
-    const auto allowed_accounts =
-        provider()->GetAllowedAccounts(include_accounts_when_locked);
-    if (!allowed_accounts) {
-      ADD_FAILURE() << "GetAllowedAccounts returned no value";
-      return {};
+    std::vector<std::string> addresses;
+    for (const auto& account :
+         provider()->GetAllowedAccounts(include_accounts_when_locked)) {
+      addresses.push_back(base::ToLowerASCII(account->address));
     }
-    return *allowed_accounts;
+    return addresses;
   }
 
   std::pair<bool, base::Value> CommonRequestOrSendAsync(

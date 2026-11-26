@@ -27,6 +27,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -43,6 +44,8 @@
 
 using base::test::TestFuture;
 using testing::_;
+using testing::ByMove;
+using testing::Return;
 
 namespace brave_wallet {
 
@@ -82,17 +85,14 @@ class MockBraveWalletProviderDelegate : public BraveWalletProviderDelegate {
   MOCK_METHOD0(WalletInteractionDetected, void());
   MOCK_METHOD2(ShowAccountCreation,
                void(mojom::CoinType type, const url::Origin& origin));
-  MOCK_METHOD4(RequestPermissions,
-               void(mojom::CoinType type,
-                    const std::vector<std::string>& accounts,
+  MOCK_METHOD3(RequestPermissions,
+               void(const std::vector<mojom::AccountIdPtr>& accounts,
                     const url::Origin& origin,
                     RequestPermissionsCallback));
-  MOCK_METHOD2(IsAccountAllowed,
-               bool(mojom::CoinType type, const std::string& account));
-  MOCK_METHOD2(GetAllowedAccounts,
-               std::optional<std::vector<std::string>>(
-                   mojom::CoinType type,
-                   const std::vector<std::string>& accounts));
+  MOCK_METHOD1(IsAccountAllowed, bool(const mojom::AccountIdPtr& account));
+  MOCK_METHOD1(GetAllowedAccounts,
+               std::vector<mojom::AccountIdPtr>(
+                   const std::vector<mojom::AccountIdPtr>& accounts));
   MOCK_METHOD1(IsPermissionDenied, bool(mojom::CoinType type));
   MOCK_METHOD1(AddSolanaConnectedAccount, void(const std::string& account));
   MOCK_METHOD1(RemoveSolanaConnectedAccount, void(const std::string& account));
@@ -179,36 +179,35 @@ class PolkadotProviderImplUnitTest : public testing::Test {
     ASSERT_TRUE(future.Get());
   }
 
-  // Makes the permission layer report `accounts` as already granted, so
-  // `Enable` takes the kHasAllowedAccounts path without prompting.
-  void SetAllowedAccounts(std::vector<std::string> accounts) {
-    ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-        .WillByDefault([accounts = std::move(accounts)](
-                           mojom::CoinType coin,
-                           const std::vector<std::string>& candidates) {
-          EXPECT_EQ(coin, mojom::CoinType::DOT);
-          return accounts;
-        });
+  void SetAllowedAccounts(mojom::AccountIdPtr account) {
+    std::vector<mojom::AccountIdPtr> accounts;
+    if (account) {
+      accounts.push_back(std::move(account));
+    }
+    EXPECT_CALL(*delegate(), GetAllowedAccounts(_))
+        .WillOnce(Return(ByMove(std::move(accounts))));
+  }
+
+  static std::vector<mojom::AccountIdPtr> AccountIdVector(
+      const mojom::AccountIdPtr& id) {
+    std::vector<mojom::AccountIdPtr> result;
+    result.push_back(id.Clone());
+    return result;
   }
 
   // Makes the connect prompt resolve with `granted`.
   void SetPermissionRequestResult(mojom::RequestPermissionsError error,
-                                  std::vector<std::string> granted) {
-    ON_CALL(*delegate(), RequestPermissions(_, _, _, _))
-        .WillByDefault(
+                                  std::vector<mojom::AccountIdPtr> granted) {
+    EXPECT_CALL(*delegate(), RequestPermissions(
+                                 _, url::Origin::Create(GURL(kTestOrigin)), _))
+        .WillOnce(
             [error, granted = std::move(granted)](
-                mojom::CoinType coin, const std::vector<std::string>& accounts,
+                const std::vector<mojom::AccountIdPtr>& accounts,
                 const url::Origin& origin,
                 MockBraveWalletProviderDelegate::RequestPermissionsCallback
-                    callback) {
-              EXPECT_EQ(coin, mojom::CoinType::DOT);
-              EXPECT_EQ(origin, url::Origin::Create(GURL(kTestOrigin)));
-              std::move(callback).Run(error, granted);
+                    callback) mutable {
+              std::move(callback).Run(error, std::move(granted));
             });
-  }
-
-  std::string PermissionIdentifier(const mojom::AccountInfoPtr& account) {
-    return GetAccountPermissionIdentifier(account->account_id);
   }
 
   PolkadotProviderImpl* provider() { return provider_.get(); }
@@ -253,10 +252,10 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_AlreadyPermitted) {
 
   // Pre-seeding the allowed accounts puts us into a pre-approved state, so we
   // don't need to request permissions again.
-  SetAllowedAccounts({PermissionIdentifier(account)});
+  SetAllowedAccounts(account->account_id.Clone());
 
   EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-  EXPECT_CALL(*delegate(), RequestPermissions(_, _, _, _)).Times(0);
+  EXPECT_CALL(*delegate(), RequestPermissions(_, _, _)).Times(0);
 
   TestFuture<mojo::PendingRemote<mojom::PolkadotApi>,
              mojom::PolkadotProviderErrorBundlePtr>
@@ -267,8 +266,7 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_AlreadyPermitted) {
   ASSERT_TRUE(pending_api);
   ASSERT_FALSE(enable_error);
 
-  ON_CALL(*api_delegate(),
-          IsAccountAllowed(mojom::CoinType::DOT, PermissionIdentifier(account)))
+  ON_CALL(*api_delegate(), IsAccountAllowed(EqualsMojo(account->account_id)))
       .WillByDefault(testing::Return(true));
 
   ExpectSingleInjectedAccount(std::move(pending_api), account);
@@ -278,11 +276,11 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_PermissionRequestGranted) {
   CreateWallet();
   auto account = AddAccount();
   ASSERT_TRUE(account);
-  SetAllowedAccounts({});
+  SetAllowedAccounts(nullptr);
   SetPermissionRequestResult(mojom::RequestPermissionsError::kNone,
-                             {PermissionIdentifier(account)});
+                             AccountIdVector(account->account_id));
 
-  EXPECT_CALL(*delegate(), RequestPermissions(_, _, _, _)).Times(1);
+  EXPECT_CALL(*delegate(), RequestPermissions(_, _, _)).Times(1);
 
   TestFuture<mojo::PendingRemote<mojom::PolkadotApi>,
              mojom::PolkadotProviderErrorBundlePtr>
@@ -293,8 +291,7 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_PermissionRequestGranted) {
   ASSERT_TRUE(pending_api);
   ASSERT_FALSE(enable_error);
 
-  ON_CALL(*api_delegate(),
-          IsAccountAllowed(mojom::CoinType::DOT, PermissionIdentifier(account)))
+  ON_CALL(*api_delegate(), IsAccountAllowed(EqualsMojo(account->account_id)))
       .WillByDefault(testing::Return(true));
 
   ExpectSingleInjectedAccount(std::move(pending_api), account);
@@ -304,9 +301,9 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_ImportedAccountIsADappAccount) {
   CreateWallet();
   auto imported = AddAccount(mojom::KeyringId::kPolkadotImport);
   ASSERT_TRUE(imported);
-  SetAllowedAccounts({PermissionIdentifier(imported)});
+  SetAllowedAccounts(imported->account_id.Clone());
 
-  EXPECT_CALL(*delegate(), RequestPermissions(_, _, _, _)).Times(0);
+  EXPECT_CALL(*delegate(), RequestPermissions(_, _, _)).Times(0);
 
   TestFuture<mojo::PendingRemote<mojom::PolkadotApi>,
              mojom::PolkadotProviderErrorBundlePtr>
@@ -317,8 +314,7 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_ImportedAccountIsADappAccount) {
   ASSERT_TRUE(pending_api);
   ASSERT_FALSE(enable_error);
 
-  ON_CALL(*api_delegate(), IsAccountAllowed(mojom::CoinType::DOT,
-                                            PermissionIdentifier(imported)))
+  ON_CALL(*api_delegate(), IsAccountAllowed(EqualsMojo(imported->account_id)))
       .WillByDefault(testing::Return(true));
 
   ExpectSingleInjectedAccount(std::move(pending_api), imported);
@@ -363,7 +359,7 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_DeniedGlobally) {
 TEST_F(PolkadotProviderImplUnitTest, Enable_NoWallet) {
   EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
   EXPECT_CALL(*delegate(), ShowAccountCreation(_, _)).Times(0);
-  EXPECT_CALL(*delegate(), GetAllowedAccounts(_, _)).Times(0);
+  EXPECT_CALL(*delegate(), GetAllowedAccounts(_)).Times(0);
 
   TestFuture<mojo::PendingRemote<mojom::PolkadotApi>,
              mojom::PolkadotProviderErrorBundlePtr>
@@ -380,8 +376,8 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_NoWallet) {
 TEST_F(PolkadotProviderImplUnitTest, Enable_GetAllowedAccountsFailed) {
   CreateWallet();
   ASSERT_TRUE(AddAccount());
-  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(testing::Return(std::nullopt));
+  ON_CALL(*delegate(), GetAllowedAccounts(_))
+      .WillByDefault(Return(ByMove(std::vector<mojom::AccountIdPtr>{})));
 
   TestFuture<mojo::PendingRemote<mojom::PolkadotApi>,
              mojom::PolkadotProviderErrorBundlePtr>
@@ -400,7 +396,7 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_PermissionRequestDeclined) {
 
   CreateWallet();
   ASSERT_TRUE(AddAccount());
-  SetAllowedAccounts({});
+  SetAllowedAccounts(nullptr);
   SetPermissionRequestResult(mojom::RequestPermissionsError::kNone, {});
 
   TestFuture<mojo::PendingRemote<mojom::PolkadotApi>,
@@ -420,7 +416,7 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_PermissionRequestDeclined) {
 TEST_F(PolkadotProviderImplUnitTest, Enable_PermissionRequestInternalError) {
   CreateWallet();
   ASSERT_TRUE(AddAccount());
-  SetAllowedAccounts({});
+  SetAllowedAccounts(nullptr);
   SetPermissionRequestResult(mojom::RequestPermissionsError::kInternal, {});
 
   TestFuture<mojo::PendingRemote<mojom::PolkadotApi>,
@@ -437,7 +433,7 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_PermissionRequestInternalError) {
 TEST_F(PolkadotProviderImplUnitTest, Enable_PermissionRequestInProgress) {
   CreateWallet();
   ASSERT_TRUE(AddAccount());
-  SetAllowedAccounts({});
+  SetAllowedAccounts(nullptr);
   SetPermissionRequestResult(mojom::RequestPermissionsError::kRequestInProgress,
                              {});
 
@@ -457,7 +453,9 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_AllowedAccountIsUnknown) {
 
   CreateWallet();
   ASSERT_TRUE(AddAccount());
-  SetAllowedAccounts({"not-an-account-we-hold"});
+  SetAllowedAccounts(MakeIndexBasedAccountId(
+      mojom::CoinType::DOT, mojom::KeyringId::kPolkadotMainnet,
+      mojom::AccountKind::kDerived, 999));
 
   TestFuture<mojo::PendingRemote<mojom::PolkadotApi>,
              mojom::PolkadotProviderErrorBundlePtr>
@@ -509,7 +507,7 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_TestnetAccountIsNotADappAccount) {
   CreateWallet();
   ASSERT_TRUE(AddAccount(mojom::KeyringId::kPolkadotTestnet));
 
-  EXPECT_CALL(*delegate(), GetAllowedAccounts(_, _)).Times(0);
+  EXPECT_CALL(*delegate(), GetAllowedAccounts(_)).Times(0);
   EXPECT_CALL(*delegate(),
               ShowAccountCreation(mojom::CoinType::DOT,
                                   url::Origin::Create(GURL(kTestOrigin))))
@@ -541,28 +539,23 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_OffersEveryDappAccountAsCandidate) {
   ASSERT_TRUE(AddAccount(mojom::KeyringId::kPolkadotTestnet, 0));
   ASSERT_TRUE(AddAccount(mojom::KeyringId::kPolkadotImportTestnet, 0));
 
-  const std::string first_id = PermissionIdentifier(first);
-  const std::vector<std::string> dapp_accounts = {
-      first_id, PermissionIdentifier(second), PermissionIdentifier(imported)};
+  const auto dapp_accounts = testing::UnorderedElementsAre(
+      EqualsMojo(first->account_id), EqualsMojo(second->account_id),
+      EqualsMojo(imported->account_id));
 
-  EXPECT_CALL(
-      *delegate(),
-      GetAllowedAccounts(mojom::CoinType::DOT,
-                         testing::UnorderedElementsAreArray(dapp_accounts)))
-      .WillOnce(testing::Return(std::vector<std::string>()));
+  EXPECT_CALL(*delegate(), GetAllowedAccounts(dapp_accounts))
+      .WillOnce([](const std::vector<mojom::AccountIdPtr>&) {
+        return std::vector<mojom::AccountIdPtr>();
+      });
 
-  EXPECT_CALL(*delegate(),
-              RequestPermissions(
-                  mojom::CoinType::DOT,
-                  testing::UnorderedElementsAreArray(dapp_accounts), _, _))
-      .WillOnce(
-          [first_id](mojom::CoinType, const std::vector<std::string>&,
-                     const url::Origin&,
-                     MockBraveWalletProviderDelegate::RequestPermissionsCallback
-                         callback) {
-            std::move(callback).Run(mojom::RequestPermissionsError::kNone,
-                                    std::vector<std::string>{first_id});
-          });
+  EXPECT_CALL(*delegate(), RequestPermissions(dapp_accounts, _, _))
+      .WillOnce([first_id = first->account_id.Clone()](
+                    const std::vector<mojom::AccountIdPtr>&, const url::Origin&,
+                    MockBraveWalletProviderDelegate::RequestPermissionsCallback
+                        callback) mutable {
+        std::move(callback).Run(mojom::RequestPermissionsError::kNone,
+                                AccountIdVector(first_id));
+      });
 
   TestFuture<mojo::PendingRemote<mojom::PolkadotApi>,
              mojom::PolkadotProviderErrorBundlePtr>
@@ -623,7 +616,7 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_WalletLocked_ResolvesAfterUnlock) {
   CreateWallet();
   auto account = AddAccount();
   ASSERT_TRUE(account);
-  SetAllowedAccounts({PermissionIdentifier(account)});
+  SetAllowedAccounts(account->account_id.Clone());
   keyring_service()->Lock();
 
   base::test::TestFuture<::mojo::PendingRemote<mojom::PolkadotApi>,
@@ -647,8 +640,8 @@ TEST_F(PolkadotProviderImplUnitTest,
 
   CreateWallet();
   ASSERT_TRUE(AddAccount());
-  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(testing::Return(std::nullopt));
+  ON_CALL(*delegate(), GetAllowedAccounts(_))
+      .WillByDefault(Return(ByMove(std::vector<mojom::AccountIdPtr>{})));
   keyring_service()->Lock();
 
   base::test::TestFuture<::mojo::PendingRemote<mojom::PolkadotApi>,

@@ -5,11 +5,11 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_dapp_utils.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -142,14 +142,14 @@ base::DictValue FormatCardanoTxDetails(
   return result;
 }
 
-std::vector<std::string> GetCardanoAccountPermissionIdentifiers(
+std::vector<mojom::AccountIdPtr> GetCardanoAccountIds(
     KeyringService* keyring_service) {
-  std::vector<std::string> ids;
+  std::vector<mojom::AccountIdPtr> ids;
   auto accounts = keyring_service->GetAllAccountsSync();
   for (const auto& account : accounts->accounts) {
     if (account && account->account_id &&
         IsCardanoKeyring(account->account_id->keyring_id)) {
-      ids.push_back(GetAccountPermissionIdentifier(account->account_id));
+      ids.push_back(account->account_id.Clone());
     }
   }
   return ids;
@@ -158,26 +158,23 @@ std::vector<std::string> GetCardanoAccountPermissionIdentifiers(
 mojom::AccountIdPtr GetCardanoPreferredDappAccount(
     BraveWalletProviderDelegate* delegate,
     KeyringService* keyring_service) {
-  auto cardano_account_ids =
-      GetCardanoAccountPermissionIdentifiers(keyring_service);
+  auto cardano_account_ids = GetCardanoAccountIds(keyring_service);
 
   if (cardano_account_ids.empty()) {
     return nullptr;
   }
 
   const auto allowed_accounts =
-      delegate->GetAllowedAccounts(mojom::CoinType::ADA, cardano_account_ids);
+      delegate->GetAllowedAccounts(cardano_account_ids);
 
-  if (!allowed_accounts || allowed_accounts->empty()) {
+  if (allowed_accounts.empty()) {
     return nullptr;
   }
 
   auto selected_account = keyring_service->GetSelectedCardanoDappAccount();
   bool is_selected_account_allowed =
       selected_account &&
-      std::ranges::contains(
-          *allowed_accounts,
-          GetAccountPermissionIdentifier(selected_account->account_id));
+      std::ranges::contains(allowed_accounts, selected_account->account_id);
   if (is_selected_account_allowed) {
     return selected_account->account_id.Clone();
   }
@@ -186,9 +183,7 @@ mojom::AccountIdPtr GetCardanoPreferredDappAccount(
   // we use first allowed account.
   // Similar behavior implemented in EthereumProviderImpl.
   for (const auto& account : keyring_service->GetAllAccountInfos()) {
-    bool is_account_allowed = std::ranges::contains(
-        *allowed_accounts, GetAccountPermissionIdentifier(account->account_id));
-    if (is_account_allowed) {
+    if (std::ranges::contains(allowed_accounts, account->account_id)) {
       return account->account_id.Clone();
     }
   }
@@ -197,13 +192,12 @@ mojom::AccountIdPtr GetCardanoPreferredDappAccount(
 
 mojom::AccountIdPtr GetCardanoPreferredDappAccount(
     KeyringService* keyring_service,
-    const std::optional<std::vector<std::string>>& allowed_accounts) {
-  if (!allowed_accounts || allowed_accounts->empty()) {
+    const std::vector<mojom::AccountIdPtr>& allowed_accounts) {
+  if (allowed_accounts.empty()) {
     return nullptr;
   }
 
-  auto cardano_account_ids =
-      GetCardanoAccountPermissionIdentifiers(keyring_service);
+  auto cardano_account_ids = GetCardanoAccountIds(keyring_service);
 
   if (cardano_account_ids.empty()) {
     return nullptr;
@@ -212,9 +206,7 @@ mojom::AccountIdPtr GetCardanoPreferredDappAccount(
   auto selected_account = keyring_service->GetSelectedCardanoDappAccount();
   bool is_selected_account_allowed =
       selected_account &&
-      std::ranges::contains(
-          *allowed_accounts,
-          GetAccountPermissionIdentifier(selected_account->account_id));
+      std::ranges::contains(allowed_accounts, selected_account->account_id);
   if (is_selected_account_allowed) {
     return selected_account->account_id.Clone();
   }
@@ -223,9 +215,7 @@ mojom::AccountIdPtr GetCardanoPreferredDappAccount(
   // we use first allowed account.
   // Similar behavior implemented in EthereumProviderImpl.
   for (const auto& account : keyring_service->GetAllAccountInfos()) {
-    bool is_account_allowed = std::ranges::contains(
-        *allowed_accounts, GetAccountPermissionIdentifier(account->account_id));
-    if (is_account_allowed) {
+    if (std::ranges::contains(allowed_accounts, account->account_id)) {
       return account->account_id.Clone();
     }
   }

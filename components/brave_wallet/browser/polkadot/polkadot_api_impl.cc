@@ -68,8 +68,7 @@ PolkadotApiImpl::~PolkadotApiImpl() {
 }
 
 bool PolkadotApiImpl::IsGrantedAccountAllowed() {
-  return delegate_->IsAccountAllowed(
-      mojom::CoinType::DOT, GetAccountPermissionIdentifier(granted_account_));
+  return delegate_->IsAccountAllowed(granted_account_);
 }
 
 void PolkadotApiImpl::GetAccounts(bool any_type, GetAccountsCallback callback) {

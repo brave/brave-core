@@ -7,6 +7,8 @@
 
 #include "base/command_line.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -80,24 +82,36 @@ IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B",
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8C"};
 
+  // AccountIdPtr is move-only, so build a fresh vector each time it's needed
+  // rather than trying to reuse/clone one across calls.
+  auto build_accounts = [&] {
+    std::vector<brave_wallet::mojom::AccountIdPtr> accounts;
+    for (const auto& address : addresses) {
+      accounts.push_back(brave_wallet::MakeAccountId(
+          brave_wallet::mojom::CoinType::ETH,
+          brave_wallet::mojom::KeyringId::kDefault,
+          brave_wallet::mojom::AccountKind::kDerived, address));
+    }
+    return accounts;
+  };
+
   // Fail if rfh is null.
   auto allowed_accounts = BraveWalletPermissionContext::GetAllowedAccounts(
-      blink::PermissionType::BRAVE_ETHEREUM, nullptr /* rfh */, addresses);
-  EXPECT_FALSE(allowed_accounts);
+      blink::PermissionType::BRAVE_ETHEREUM, nullptr /* rfh */,
+      build_accounts());
+  EXPECT_TRUE(allowed_accounts.empty());
 
   const GURL& url = https_server()->GetURL("a.com", "/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   // No allowed accounts before setting permissions.
   allowed_accounts = BraveWalletPermissionContext::GetAllowedAccounts(
       blink::PermissionType::BRAVE_ETHEREUM,
-      web_contents()->GetPrimaryMainFrame(), addresses);
-  ASSERT_TRUE(allowed_accounts);
-  EXPECT_TRUE(allowed_accounts->empty());
+      web_contents()->GetPrimaryMainFrame(), build_accounts());
+  EXPECT_TRUE(allowed_accounts.empty());
 
   // Return allowed accounts after permissions are set.
-  std::vector<std::string> expected_allowed_accounts = {addresses[0],
-                                                        addresses[2]};
-  for (const auto& account : expected_allowed_accounts) {
+  std::vector<std::string> expected_addresses = {addresses[0], addresses[2]};
+  for (const auto& account : expected_addresses) {
     auto sub_request_origin = brave_wallet::GetSubRequestOrigin(
         permissions::RequestType::kBraveEthereum, GetLastCommitedOrigin(),
         account);
@@ -109,9 +123,16 @@ IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,
   }
   allowed_accounts = BraveWalletPermissionContext::GetAllowedAccounts(
       blink::PermissionType::BRAVE_ETHEREUM,
-      web_contents()->GetPrimaryMainFrame(), addresses);
-  ASSERT_TRUE(allowed_accounts);
-  EXPECT_EQ(*allowed_accounts, expected_allowed_accounts);
+      web_contents()->GetPrimaryMainFrame(), build_accounts());
+
+  std::vector<brave_wallet::mojom::AccountIdPtr> expected_allowed_accounts;
+  for (const auto& address : expected_addresses) {
+    expected_allowed_accounts.push_back(brave_wallet::MakeAccountId(
+        brave_wallet::mojom::CoinType::ETH,
+        brave_wallet::mojom::KeyringId::kDefault,
+        brave_wallet::mojom::AccountKind::kDerived, address));
+  }
+  EXPECT_EQ(allowed_accounts, expected_allowed_accounts);
 }
 
 }  // namespace permissions

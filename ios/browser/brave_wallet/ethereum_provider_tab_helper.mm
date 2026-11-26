@@ -253,16 +253,16 @@ void EthereumProviderTabHelper::OnGetChainIdForProperties(
           {"if (window.ethereum) { window.ethereum.networkVersion = ",
            ValueOrUndefined(std::move(network_version)), " }"})));
 
-  // `selectedAddress` is the first allowed account (quoted), or bare
-  // `undefined` when the keyring is locked / there are no allowed accounts.
-  // `GetAllowedAccounts(false)` already returns nullopt when the keyring is
-  // locked.
+  // `selectedAddress` is the first allowed account (quoted, lowercased), or
+  // bare `undefined` when the keyring is locked / there are no allowed
+  // accounts. `GetAllowedAccounts(false)` already returns an empty list when
+  // the keyring is locked.
   base::Value selected_address;
-  std::optional<std::vector<std::string>> allowed_accounts =
+  auto allowed_accounts =
       provider_->GetAllowedAccounts(/*include_accounts_when_locked=*/false);
-  if (allowed_accounts && !allowed_accounts->empty()) {
-    selected_address =
-        base::Value(base::StrCat({"\"", allowed_accounts->front(), "\""}));
+  if (!allowed_accounts.empty()) {
+    selected_address = base::Value(base::StrCat(
+        {"\"", base::ToLowerASCII(allowed_accounts.front()->address), "\""}));
   }
   ExecuteJavaScript(
       web_state_,
