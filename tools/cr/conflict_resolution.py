@@ -14,15 +14,23 @@ these answers:
   version, so `PLASTER` can't regenerate it, a plastered patch whose plaster
   merged cleanly, and that the base changed only in its context, takes the
   commit's version.
+* `UNCHANGED_FAILING_PLASTER` -- a plastered patch whose plaster fails on the
+  Chromium checked out, and is the same in the commit as rebased so far, takes
+  the commit's version.
 * `CODEHEALTH_TRACKER` -- a CodeHealth tracker the base doesn't have is the
   branch's own, so the branch's last version of it is taken.
 * `VERSION_BUMP` -- the version commit takes the newer Chromium tag and
   pinslist timestamp, when the base moved on to a newer minor version.
 * `CONTEXT_ONLY_PATCH` -- a raw patch that the base changed only in its context
   takes the commit's version.
+* `DELETED_BY_BASE` -- a patch that the base deleted, with its yaml if it had
+  one, and that the commit changed only in its context is deleted.
 * `PICKED_BY_BASE` -- a commit the base picked with what folds into it, so that
   the base has every file they touch as the branch ends it, is skipped along
   with them.
+* `EXTENDED_BY_BASE` -- a pinned tooling group (`Version lift updates`) that
+  the base picked and then changed again, so that taking the base's side of
+  every conflicting hunk leaves the group changing nothing, is skipped.
 
 `ConflictedStep.resolve` runs the file rules over the conflicted files of a
 stop, and writes each answer into the working tree. Staging the answers and
@@ -39,6 +47,7 @@ import logging
 from pathlib import Path
 import re
 import subprocess
+import tempfile
 from typing import Callable
 
 import patchfile
@@ -60,6 +69,10 @@ _CODEHEALTH_TRACKER_RE = re.compile(
 _CHROME_TAG_LINE_RE = re.compile(
     r' *"tag": "(?P<version>\d+\.\d+\.\d+\.\d+)",?\n'
 )
+
+# The pinned groups of tooling and its documentation, which the base picks from
+# the branch and then keeps changing.
+_BASE_EXTENDED_GROUPS = frozenset({'lift_updates'})
 
 # A conflicting hunk, as git writes it into the working tree. The section
 # opened by `|||||||` holds the ancestor's lines, and is only there with the
@@ -104,6 +117,10 @@ class Rule(enum.Enum):
         'Plastered patches taken from the commit, as the base only moved their '
         'context and Chromium is checked out on another version'
     )
+    UNCHANGED_FAILING_PLASTER = (
+        'Plastered patches taken from the commit, as their plaster fails on '
+        'this Chromium and neither side changed it'
+    )
     CODEHEALTH_TRACKER = (
         "CodeHealth trackers taken from the branch's last version"
     )
@@ -112,9 +129,17 @@ class Rule(enum.Enum):
         'Raw patches taken from the commit, as the base only moved their '
         'context (candidates for conversion to plaster)'
     )
+    DELETED_BY_BASE = (
+        'Patches deleted, as the base deleted them and the commit only moved '
+        'their context'
+    )
     PICKED_BY_BASE = (
         'Commits skipped with what folds into them, as the base has their '
         'files as the branch ends them'
+    )
+    EXTENDED_BY_BASE = (
+        'Tooling groups skipped, as the base picked them and changed them '
+        'again since'
     )
 
 
@@ -213,9 +238,13 @@ class ConflictedStep:
             Rule.CONTEXT_ONLY_PLASTERED_PATCH: (
                 self._take_commit_plastered_patch
             ),
+            Rule.UNCHANGED_FAILING_PLASTER: (
+                self._take_commit_patch_of_failing_plaster
+            ),
             Rule.CODEHEALTH_TRACKER: self._take_branch_codehealth_tracker,
             Rule.VERSION_BUMP: self._settle_version_bump,
             Rule.CONTEXT_ONLY_PATCH: self._take_commit_raw_patch,
+            Rule.DELETED_BY_BASE: self._take_base_deletion,
         }
         resolutions = []
         for path in self.paths:
@@ -255,6 +284,72 @@ class ConflictedStep:
             'diff', '--name-only', '--no-renames', self.onto, self.orig_head
         ).splitlines()
         return bool(touched) and touched.isdisjoint(differing)
+
+    def base_extends(self, last: str, start: str) -> bool:
+        """Whether the group from the commit to `last`, the last commit that
+        folds into it, is a pinned tooling group the base picked and then
+        changed again.
+
+        Then every line the group adds or removes, the base added or removed
+        too after `start`, the commit the rebase took the branch's commits
+        from, and merging the group's change onto the rebase so far, with the
+        base's side of every conflicting hunk, changes nothing. Only tooling
+        groups are judged so, as taking the base's side of a fix could drop
+        what the branch needs.
+        """
+        if (
+            pinned_commits.get_pinned_group_for_subject(self.subject)
+            not in _BASE_EXTENDED_GROUPS
+        ):
+            return False
+        brave = repository.brave
+        parent = f'{self.commit}^'
+        touched = brave.run_git(
+            'diff', '--name-only', '--no-renames', parent, last
+        ).splitlines()
+        if not touched:
+            return False
+        for path in touched:
+            changed = set(
+                _changed_lines(brave.run_git('diff', parent, last, '--', path))
+            )
+            picked = set(
+                _changed_lines(
+                    brave.run_git(
+                        'log',
+                        '-p',
+                        '--format=',
+                        f'{start}..{self.onto}',
+                        '--',
+                        path,
+                    )
+                )
+            )
+            if not changed <= picked:
+                return False
+        with tempfile.TemporaryDirectory() as scratch:
+            for path in touched:
+                rebased = _file_at('HEAD', path)
+                group = _file_at(last, path)
+                if (rebased is None) != (group is None):
+                    return False
+                if rebased is None:
+                    continue
+                sides = []
+                for name, text in (
+                    ('rebased', rebased),
+                    ('ancestor', _file_at(parent, path) or ''),
+                    ('group', group),
+                ):
+                    side = Path(scratch) / name
+                    side.write_text(text, encoding='utf-8', newline='')
+                    sides.append(str(side))
+                merged = brave.run_git(
+                    'merge-file', '-p', '--ours', *sides, no_trim=True
+                )
+                if merged != rebased:
+                    return False
+        return True
 
     def _regenerate_from_plaster(self, path: str) -> bool:
         """Regenerates a conflicted patch by rerunning its plaster.
@@ -359,6 +454,32 @@ class ConflictedStep:
             return False
         return self._take_commit_patch_if_context_only(path)
 
+    def _take_commit_patch_of_failing_plaster(self, path: str) -> bool:
+        """Takes the commit's version of a plastered patch whose plaster fails
+        on the Chromium checked out, when the commit has the same plaster as
+        the rebase so far.
+
+        Tried after `PLASTER`, so with Chromium on the version rebased so far
+        and the plaster not conflicted, it is only reached when the plaster
+        failed. The plaster is then not what conflicts, and the commit's patch
+        is its output for the commit's Chromium: a later commit fixing the
+        plaster for this Chromium regenerates the patch.
+        """
+        plaster_file = patchfile.plaster_path_for_patch(Path(path))
+        if plaster_file is None or not self._chromium_in_sync:
+            return False
+        plaster_path = repository.brave.to_repo_relative(plaster_file)
+        if plaster_path.as_posix() in self.paths:
+            return False
+        if self.read(path, Stage.COMMIT) is None:
+            return False
+        if _file_at('HEAD', plaster_path.as_posix()) != _file_at(
+            self.commit, plaster_path.as_posix()
+        ):
+            return False
+        repository.brave.run_git('checkout', '--theirs', '--', path)
+        return True
+
     def _take_commit_patch_if_context_only(self, path: str) -> bool:
         """Takes the commit's version of a patch whose lines the base left
         alone, changing only its context."""
@@ -373,6 +494,32 @@ class ConflictedStep:
 
         # In a rebase, `--theirs` is the commit being applied.
         repository.brave.run_git('checkout', '--theirs', '--', path)
+        return True
+
+    def _take_base_deletion(self, path: str) -> bool:
+        """Deletes a patch the base deleted, when the commit only refreshed it.
+
+        A commit whose version of the patch adds and removes the same lines as
+        the ancestor's only regenerated it for its Chromium version (its index
+        line, hunk headers and context), so the base's deletion stands. A yaml
+        left for the patch means the base kept its plaster, so the patch is
+        left alone.
+        """
+        if not path.startswith('patches/') or not path.endswith('.patch'):
+            return False
+        if patchfile.patch_has_plaster(Path(path)):
+            return False
+        if self.read(path, Stage.REBASED) is not None:
+            return False
+        ancestor = self.read(path, Stage.ANCESTOR)
+        commit = self.read(path, Stage.COMMIT)
+        if ancestor is None or commit is None:
+            return False
+        if _changed_lines(commit) != _changed_lines(ancestor):
+            return False
+
+        # Staging the path, as the caller does, then records the deletion.
+        (repository.brave.root / path).unlink(missing_ok=True)
         return True
 
 
@@ -459,6 +606,14 @@ def _changed_lines(patch: str) -> list[str]:
         elif in_hunk and line.startswith(('+', '-')):
             changed.append(line)
     return changed
+
+
+def _file_at(commit: str, path: str) -> str | None:
+    """`path` as `commit` has it, or None when it doesn't."""
+    try:
+        return repository.brave.read_file(path, commit=commit)
+    except subprocess.CalledProcessError:
+        return None
 
 
 def _has_file(commit: str, path: str) -> bool:

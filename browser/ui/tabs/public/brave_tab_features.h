@@ -108,57 +108,6 @@ class BraveTabFeatures : public TabFeatures {
 
   void Init(TabInterface& tab, Profile* profile) override;
 
-#if BUILDFLAG(ENABLE_PSST)
-  psst::PsstTabWebContentsObserver* psst_web_contents_observer() {
-    return psst_web_contents_observer_.get();
-  }
-  page_actions::PsstActionController* psst_page_action_controller() {
-    return psst_action_controller_.get();
-  }
-#endif
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-  page_actions::PartitionedStoragePageActionController*
-  partitioned_storage_page_action_controller() {
-    return partitioned_storage_page_action_controller_.get();
-  }
-#endif
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  page_actions::SpeedreaderPageActionController*
-  speedreader_page_action_controller() {
-    return speedreader_page_action_controller_.get();
-  }
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  page_actions::WaybackMachinePageActionController*
-  wayback_machine_page_action_controller() {
-    return wayback_machine_page_action_controller_.get();
-  }
-#endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  page_actions::PlaylistPageActionController*
-  playlist_page_action_controller() {
-    return playlist_page_action_controller_.get();
-  }
-#endif
-
-#if BUILDFLAG(ENABLE_TOR)
-  page_actions::OnionLocationPageActionController*
-  onion_location_page_action_controller() {
-    return onion_location_page_action_controller_.get();
-  }
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_NEWS)
-  page_actions::BraveNewsPageActionController*
-  brave_news_page_action_controller() {
-    return brave_news_page_action_controller_.get();
-  }
-#endif
-
  private:
   void OnWillDiscardContents(TabInterface* tab,
                              content::WebContents* old_contents,

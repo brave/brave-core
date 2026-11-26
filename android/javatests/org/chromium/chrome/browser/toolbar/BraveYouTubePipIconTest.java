@@ -23,6 +23,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.test.util.Batch;
 import org.chromium.base.test.util.CommandLineFlags;
 import org.chromium.base.test.util.Criteria;
@@ -61,8 +62,10 @@ public class BraveYouTubePipIconTest {
         // The icon stays hidden when the OS does not allow Picture-in-Picture, which would make
         // every assertion below vacuous.
         Assume.assumeTrue(
-                BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureEnabled(
-                        mActivityTestRule.getActivity()));
+                ThreadUtils.runOnUiThreadBlocking(
+                        () ->
+                                BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureEnabled(
+                                        mActivityTestRule.getActivity())));
     }
 
     @Test

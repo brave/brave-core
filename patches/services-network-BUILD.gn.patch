@@ -1,5 +1,5 @@
 diff --git a/services/network/BUILD.gn b/services/network/BUILD.gn
-index ebc6e1788b7a39f75e91842042778a6de4f87965..7f521ddd8c47b984f2df21bcbfa7e9445cc15c92 100644
+index 0305aa2c89164de9ab96f2490f24e5ef08437fbe..244c6668e350b6cd2860664a862b4b3d931e8d55 100644
 --- a/services/network/BUILD.gn
 +++ b/services/network/BUILD.gn
 @@ -2,6 +2,7 @@

@@ -14,10 +14,8 @@ std::string GetProfileId(const base::FilePath& profile_path) {
   if (profile_path_base_name.empty()) {
     profile_path_base_name = "Default";
   }
-  std::string profile_id;
-  base::Base64UrlEncode(profile_path_base_name,
-                        base::Base64UrlEncodePolicy::OMIT_PADDING, &profile_id);
-  return profile_id;
+  return base::Base64UrlEncode(profile_path_base_name,
+                               base::Base64UrlEncodePolicy::OMIT_PADDING);
 }
 
 }  // namespace brave_origin

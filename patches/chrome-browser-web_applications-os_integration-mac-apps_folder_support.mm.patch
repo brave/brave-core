@@ -1,12 +1,22 @@
 diff --git a/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm b/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm
-index d8cb9f66ac3b1fb1f6a2ca68a03dfe4b49028491..654096ca1c53ce8f0e43a6c8d8b2dd735c5afb72 100644
+index 3f165d664f374f3f4ee33e425a7bd1018b537ed9..8c440e490530fb359411d34b9e4ebb8b117e0358 100644
 --- a/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm
 +++ b/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm
-@@ -87,6 +87,7 @@ base::FilePath GetChromeAppsFolderImpl() {
-     return path;
+@@ -37,7 +37,7 @@ namespace {
+ // updated successfully, as this only needs to be done once.
+ std::atomic<bool> g_have_localized_app_dir_name{false};
+ 
+-base::FilePath GetLocalizableAppShortcutsSubdirName() {
++[[maybe_unused]] base::FilePath GetLocalizableAppShortcutsSubdirName() {
+   static const char kChromiumAppDirName[] = "Chromium Apps.localized";
+   static const char kChromeAppDirName[] = "Chrome Apps.localized";
+   static const char kChromeCanaryAppDirName[] = "Chrome Canary Apps.localized";
+@@ -141,7 +141,7 @@ base::FilePath GetChromeAppsFolderImpl(bool create_if_missing) {
+     if (applications_dir.empty()) {
+       return base::FilePath();
+     }
+-    path = applications_dir.Append(GetLocalizableAppShortcutsSubdirName());
++    path = applications_dir.Append(GetLocalizableBraveAppShortcutsSubdirName());
    }
  
-+  BRAVE_GET_CHROME_APPS_FOLDER_IMPL
-   return path.Append(GetLocalizableAppShortcutsSubdirName());
- }
- 
+   if (!create_if_missing) {

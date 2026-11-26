@@ -1,5 +1,5 @@
 diff --git a/extensions/common/url_pattern.cc b/extensions/common/url_pattern.cc
-index f2059c089cd315543121ca8623120aa2a621ce2f..82f28f07ee619529d7e8a801bb870f0a8df21909 100644
+index 2a51fc6fbe003150cf2ba6b4e427f1113e87b086..a8da4675862e9a9c477b9fbce0363961e2542ce2 100644
 --- a/extensions/common/url_pattern.cc
 +++ b/extensions/common/url_pattern.cc
 @@ -126,13 +126,15 @@ std::string_view StripTrailingWildcard(std::string_view path) {

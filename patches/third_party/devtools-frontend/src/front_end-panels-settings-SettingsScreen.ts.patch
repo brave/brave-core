@@ -1,5 +1,5 @@
 diff --git a/front_end/panels/settings/SettingsScreen.ts b/front_end/panels/settings/SettingsScreen.ts
-index f37824fd6c140d1e55790570fed21a23f3c6c24e..f7d593b8fa2cabe296c0eaeaf1f7673bae5b87fa 100644
+index 7525e60128031fc1c172b6ae7785bf5e07772c46..99925d07d09439fa123e98fb71aaf7410fccda1f 100644
 --- a/front_end/panels/settings/SettingsScreen.ts
 +++ b/front_end/panels/settings/SettingsScreen.ts
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index f37824fd6c140d1e55790570fed21a23f3c6c24e..f7d593b8fa2cabe296c0eaeaf1f7673b
  import '../../ui/kit/kit.js';
  
  import * as Common from '../../core/common/common.js';
-@@ -516,6 +517,9 @@ export class GenericSettingsTab extends UI.Widget.VBox implements SettingsTab {
+@@ -520,6 +521,9 @@ export class GenericSettingsTab extends UI.Widget.VBox implements SettingsTab {
    }
  
    static isSettingVisible(setting: SettingUIRegistration.SettingUIRegistration.RegisteredSettingUI): boolean {

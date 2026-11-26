@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 
+#include <algorithm>
 #include <optional>
 #include <utility>
 
@@ -116,13 +117,10 @@ Eip2930Transaction::ValueToAccessList(const base::ListValue& value) {
   AccessList access_list;
   for (const auto& item_value : value) {
     AccessListItem item;
-    std::vector<uint8_t> address = item_value.GetList()[0].GetBlob();
-    std::move(address.begin(), address.end(), item.address.begin());
+    std::ranges::copy(item_value.GetList()[0].GetBlob(), item.address.begin());
     for (const auto& storage_key_value : item_value.GetList()[1].GetList()) {
-      std::vector<uint8_t> storage_key_vec = storage_key_value.GetBlob();
       AccessedStorageKey storage_key;
-      std::move(storage_key_vec.begin(), storage_key_vec.end(),
-                storage_key.begin());
+      std::ranges::copy(storage_key_value.GetBlob(), storage_key.begin());
       item.storage_keys.push_back(storage_key);
     }
     access_list.push_back(item);

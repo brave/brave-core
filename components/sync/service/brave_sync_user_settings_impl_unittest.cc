@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/functional/callback.h"
 #include "base/test/task_environment.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -71,6 +72,10 @@ class MockDelegate : public SyncUserSettingsImpl::Delegate {
   ~MockDelegate() override = default;
 
   MOCK_METHOD(bool, IsCustomPassphraseAllowed, (), (const override));
+  MOCK_METHOD(void,
+              IsTrustedVaultEnrollmentPossible,
+              (base::OnceCallback<void(bool)>),
+              (const override));
   MOCK_METHOD(SyncPrefs::SyncAccountState,
               GetSyncAccountStateForPrefs,
               (),

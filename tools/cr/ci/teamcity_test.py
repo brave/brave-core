@@ -30,9 +30,11 @@ class FakeCli:
     def __init__(self, responses: dict[str, object]) -> None:
         self.responses = responses
         self.calls: list[tuple[list[str], dict]] = []
+        self.inputs: list[str | None] = []
 
     def __call__(self, cmd, **kwargs):
         self.calls.append((cmd, kwargs['env']))
+        self.inputs.append(kwargs.get('input'))
         if cmd[1] == 'api':
             path = cmd[-1]
             for prefix, response in self.responses.items():
@@ -412,6 +414,87 @@ class FailedBuildsTest(unittest.TestCase):
         self.assertEqual(build.name, 'Lint')
         self.assertEqual(build.kind, Kind.TESTS)
 
+    def test_reads_a_chain_that_failed_to_start(self):
+        """TeamCity's default filter hides builds that failed to start, and
+        with them a chain whose first build couldn't check out."""
+        cli = FakeCli(
+            {
+                '/app/rest/builds?locator=snapshotDependency:(to:(id:40)': (
+                    _builds(
+                        {
+                            'id': 41,
+                            'buildTypeId': 'Mac_Init',
+                            'statusText': 'Error while applying patch',
+                            'failedToStart': True,
+                        },
+                        {
+                            'id': 42,
+                            'buildTypeId': 'Mac_Build',
+                            'statusText': 'Snapshot dependency failed to start',
+                            'failedToStart': True,
+                        },
+                    )
+                ),
+                '/app/rest/problemOccurrences?locator=build:(id:41)': {
+                    'problemOccurrence': [
+                        {
+                            'type': 'UPDATE_SOURCES',
+                            'details': 'Failed to perform checkout on agent',
+                        }
+                    ]
+                },
+                '/app/rest/problemOccurrences?locator=build:(id:42)': {
+                    'problemOccurrence': [{'type': 'SNAPSHOT_DEPENDENCY_ERROR'}]
+                },
+                '/app/rest/testOccurrences': {},
+                **_log_messages(
+                    41, ['git checkout', 'Process exited with code 128']
+                ),
+            }
+        )
+        (build,) = teamcity.TeamCityCi(run=cli).failed_builds(_url(40))
+        self.assertEqual(build.name, 'Mac_Init')
+        self.assertEqual(build.kind, Kind.INFRA)
+        self.assertEqual(
+            build.problems, ('Failed to perform checkout on agent',)
+        )
+        (chain,) = [
+            cmd[-1] for cmd, _ in cli.calls if 'snapshotDependency' in cmd[-1]
+        ]
+        self.assertIn('defaultFilter:false', chain)
+
+    def test_an_aggregate_left_with_nothing_is_reported_itself(self):
+        cli = FakeCli(
+            {
+                '/app/rest/builds?locator=': {},
+                '/app/rest/builds/id:50': {
+                    'id': 50,
+                    'buildTypeId': 'Mac_Aggregate',
+                    'statusText': 'Build chain finished (failed: 4)',
+                    'failedToStart': True,
+                },
+                '/app/rest/problemOccurrences': {
+                    'problemOccurrence': [
+                        {
+                            'type': 'SNAPSHOT_DEPENDENCY_ERROR',
+                            'details': 'Snapshot dependency "build" failed',
+                        }
+                    ]
+                },
+                '/app/rest/testOccurrences': {},
+            }
+        )
+        (build,) = teamcity.TeamCityCi(run=cli).failed_builds(_url(50))
+        self.assertEqual(build.name, 'Mac_Aggregate')
+        self.assertEqual(build.summary, 'Build chain finished (failed: 4)')
+        self.assertEqual(
+            build.problems, ('Snapshot dependency "build" failed',)
+        )
+        self.assertEqual(build.kind, Kind.INFRA)
+        self.assertFalse(
+            any('/app/messages' in cmd[-1] for cmd, _ in cli.calls)
+        )
+
     def test_reads_a_failed_tests_history_on_the_branch(self):
         def run(config, revision, status):
             return {
@@ -597,6 +680,89 @@ class RerunTest(unittest.TestCase):
         self.assertEqual(len(cli.calls), 1)
         _, env = cli.calls[0]
         self.assertEqual(env['TEAMCITY_RO'], '1')
+
+    _REVISIONS = {
+        'revision': [
+            {
+                'version': 'abc',
+                'vcsBranchName': 'refs/heads/cr160',
+                'vcs-root-instance': {'id': '53'},
+            }
+        ]
+    }
+
+    def _rerun_with(self, **kwargs) -> tuple[FakeCli, str]:
+        cli = FakeCli(
+            {
+                '/app/rest/builds/id:10': {
+                    'buildTypeId': 'Linux_Aggregate',
+                    'branchName': 'cr160',
+                    'revisions': self._REVISIONS,
+                },
+                '/app/rest/buildQueue': {'webUrl': 'https://tc/b/11'},
+            }
+        )
+        with mock.patch.dict(os.environ):
+            os.environ.pop('TEAMCITY_RO', None)
+            said = teamcity.TeamCityCi(run=cli).rerun(_url(10), **kwargs)
+        return cli, said
+
+    def _queued(self, cli: FakeCli) -> dict:
+        (cmd, env), stdin = cli.calls[-1], cli.inputs[-1]
+        self.assertEqual(cmd[1], 'api')
+        self.assertIn('POST', cmd)
+        self.assertEqual(cmd[-1], '/app/rest/buildQueue')
+        self.assertNotIn('TEAMCITY_RO', env)
+        return json.loads(stdin)
+
+    def test_queues_a_new_workspace_for_wipe_workspace(self):
+        cli, said = self._rerun_with(wipe_workspace=True)
+        self.assertEqual(
+            self._queued(cli),
+            {
+                'buildType': {'id': 'Linux_Aggregate'},
+                'branchName': 'cr160',
+                'revisions': self._REVISIONS,
+                'properties': {
+                    'property': [
+                        {
+                            'name': 'reverse.dep.*_Init.env.new_workspace',
+                            'value': 'true',
+                        }
+                    ]
+                },
+            },
+        )
+        self.assertEqual(
+            said,
+            'Queued Linux_Aggregate again with new_workspace: https://tc/b/11',
+        )
+
+    def test_queues_rm_src_out_for_remove_src_out(self):
+        cli, _ = self._rerun_with(remove_src_out=True)
+        self.assertEqual(
+            self._queued(cli)['properties'],
+            {
+                'property': [
+                    {
+                        'name': 'reverse.dep.*_Init.env.rm_src_out',
+                        'value': 'true',
+                    }
+                ]
+            },
+        )
+
+    def test_sets_both_parameters_together(self):
+        cli, said = self._rerun_with(wipe_workspace=True, remove_src_out=True)
+        names = [p['name'] for p in self._queued(cli)['properties']['property']]
+        self.assertEqual(
+            names,
+            [
+                'reverse.dep.*_Init.env.new_workspace',
+                'reverse.dep.*_Init.env.rm_src_out',
+            ],
+        )
+        self.assertIn('new_workspace and rm_src_out', said)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Ignore component-updated key pins.
+
+      Brave enforces only its own compiled-in pins. The component's pins go to
+      both the network service and the cert verifier service, so they are
+      dropped here, before either gets them, still reporting the step done.
+    preempt_function_impl:
+      function_name: PKIMetadataComponentInstallerService::ProcessKeyPinsListOnUI
+      code: |-
+        if ((true)) {
+          std::move(done_callback).Run();
+          return;
+        }

@@ -122,6 +122,8 @@ def _advise(
         cmd.append('--autofix')
     if properties.resume:
         cmd.append('--resume')
+    for channel in properties.skip_channels:
+        cmd += ['--skip-channel', channel]
     result = api.step(
         'advise',
         [*cmd, '--json-output', api.json.output()],
@@ -165,6 +167,7 @@ def _sync_tooling(
             log_dir=run_dir,
             add_dirs=add_dirs,
             allowed_tools=allowed_tools,
+            model='opus',
         )
 
 
@@ -198,11 +201,13 @@ def RunSteps(
 ) -> result_pb.RawResult | None:
     tag = properties.chromium_version
     # A new run syncs its tooling with the newest branch, which a resumed run
-    # has done already. A channel bump's tooling comes from the newest branch
-    # as it is.
+    # has done already. A channel bump's tooling comes from master, or the
+    # milestone's branch when given, as it is.
     newest = None
     branches: set[int] = set()
-    if not properties.resume or not (properties.milestone or tag):
+    if not (properties.milestone or tag) or (
+        not properties.resume and properties.milestone
+    ):
         branches = _branch_milestones(api)
         newest = max(branches)
     milestone = properties.milestone or newest
@@ -218,6 +223,8 @@ def RunSteps(
     else:
         api.brave_core_checkout.set_brave_core_ref(
             _checkout_ref(milestone, branches)
+            if milestone
+            else 'refs/heads/master'
         )
         # Deprecated: the `.env` for the builds, with RBE when the module's
         # `use_remoteexec` property asks for it.
@@ -225,7 +232,15 @@ def RunSteps(
         # A lift builds Android too: every sync checks its deps out.
         api.brave_core_checkout.apply_config('deprecated_linux')
         api.brave_core_checkout.apply_config('deprecated_android')
-        root = api.brave_core_checkout.ensure_checkout()
+        # A channel bump's lift syncs to each channel's own version, so syncing
+        # to master's first is wasted, once a sync has checked out the
+        # depot_tools Brockit imports.
+        synced = api.path.exists(
+            api.path.abs(api.path.chromium_src) / 'third_party' / 'depot_tools'
+        )
+        root = api.brave_core_checkout.ensure_checkout(
+            sync=not (tag and synced)
+        )
         # The agent commits with `git cr commit`. A resumed run keeps the
         # checkout, hook included.
         api.brave_core_checkout.install_commit_hook()
@@ -286,6 +301,7 @@ def RunSteps(
                 log_dir=run_dir,
                 add_dirs=add_dirs,
                 allowed_tools=allowed_tools,
+                model='opus',
                 # The skill's files the prompt names; the report lists any the
                 # agent didn't read in full.
                 must_read=[root / path for path in advice['reads']],
@@ -592,17 +608,20 @@ def GenTests(api: TEST_DEPS):
         api.post_process(post_process.DropExpectation),
     )
 
-    # A channel bump runs from the newest branch's tooling, as it is, with
-    # its own run directory.
+    # A channel bump runs from master's tooling, as it is, with its own run
+    # directory.
     yield api.test(
         'channel bump',
         new_run(
             api.properties(chromium_version='157.0.8103.38'),
+            api.post_process(post_process.DoesNotRun, 'find latest cr branch'),
             api.post_process(
                 post_process.StepCommandContains,
                 'brave-core checkout branch',
-                ['checkout', '--force', '-B', 'cr159'],
+                ['checkout', '--force', '-B', 'master'],
             ),
+            # A fresh workspace has nothing for the lift's Brockit to run with.
+            api.post_process(post_process.MustRun, 'pnpm run sync'),
             advised(AUTOLIFT, 'advise', '157.0.8103.38'),
             api.post_process(post_process.DoesNotRun, 'sync tooling'),
             api.post_process(
@@ -611,6 +630,45 @@ def GenTests(api: TEST_DEPS):
                 ['cat', r'.*/b/src/brave/\.autolift/cr157\.x/report\.md'],
             ),
             api.post_process(post_process.StatusSuccess),
+        ),
+    )
+
+    # The channels a bump skips go to `advise`, which tells the agent.
+    yield api.test(
+        'channel bump skipping a channel',
+        new_run(
+            api.properties(
+                chromium_version='157.0.8103.38', skip_channels=['beta']
+            ),
+            advised(
+                AUTOLIFT, 'advise', '157.0.8103.38', '--skip-channel', 'beta'
+            ),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
+        ),
+    )
+
+    # In a workspace synced before, a channel bump leaves the sync to its lift.
+    yield api.test(
+        'channel bump in a synced workspace',
+        new_run(
+            api.properties(chromium_version='157.0.8103.38'),
+            api.path.dirs('b/src/third_party/depot_tools'),
+            api.post_process(post_process.DoesNotRun, 'pnpm run sync'),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
+        ),
+    )
+
+    # A cr<N> run syncs all the same: its lift starts from the branch's version.
+    yield api.test(
+        'lift in a synced workspace',
+        new_run(
+            api.properties(milestone=158),
+            api.path.dirs('b/src/third_party/depot_tools'),
+            api.post_process(post_process.MustRun, 'pnpm run sync'),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
         ),
     )
 

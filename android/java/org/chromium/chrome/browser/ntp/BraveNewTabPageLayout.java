@@ -573,7 +573,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                     keepPosition();
                 }
             } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "setNtpRecyclerView " + e);
+                Log.e(TAG, "setNtpRecyclerView", e);
             }
         } else {
             keepPosition();
@@ -617,7 +617,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                             Tab tab = BraveActivity.getBraveActivity().getActivityTab();
                             tabId = tab != null ? tab.getId() : -1;
                         } catch (BraveActivity.BraveActivityNotFoundException e) {
-                            Log.e(TAG, "onScrollStateChanged " + e);
+                            Log.e(TAG, "onScrollStateChanged", e);
                         }
                         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                             assertNonNull(mRecyclerView);
@@ -840,7 +840,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                 10);
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "keepPosition " + e);
+            Log.e(TAG, "keepPosition", e);
         }
     }
 
@@ -976,7 +976,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             try {
                 BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
             } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "onDetachedFromWindow " + e);
+                Log.e(TAG, "onDetachedFromWindow", e);
             }
         }
 
@@ -1155,7 +1155,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
             BraveActivity.getBraveActivity().setLoadedFeed(true);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "getFeed " + e);
+            Log.e(TAG, "getFeed", e);
         }
     }
 
@@ -1222,7 +1222,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                             try {
                                 BraveActivity.getBraveActivity().setComesFromNewTab(false);
                             } catch (BraveActivity.BraveActivityNotFoundException e) {
-                                Log.e(TAG, "processFeed " + e);
+                                Log.e(TAG, "processFeed", e);
                             }
                         });
     }

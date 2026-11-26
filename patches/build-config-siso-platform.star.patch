@@ -1,0 +1,13 @@
+diff --git a/build/config/siso/platform.star b/build/config/siso/platform.star
+index 39153dc25c6faf0275dbb6f188336c153cc3dfc7..560596744b0773ab9bf64e371c73d09e03e89c5d 100644
+--- a/build/config/siso/platform.star
++++ b/build/config/siso/platform.star
+@@ -8,7 +8,7 @@ load("@builtin//struct.star", "module")
+ 
+ # Python command prefix for host actions.
+ # LINT.IfChange(python_bin)
+-__python_bin = "../../third_party/cpython3/host/bin/python3 -ES"
++__python_bin = "../../third_party/cpython3/host/bin/python3 -S"
+ # LINT.ThenChange(
+ #     //.gn:script_executable,
+ #     //build/toolchain/apple/toolchain.gni:coverage_wrapper,

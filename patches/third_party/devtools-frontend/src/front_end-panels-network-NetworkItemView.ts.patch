@@ -1,9 +1,17 @@
 diff --git a/front_end/panels/network/NetworkItemView.ts b/front_end/panels/network/NetworkItemView.ts
-index 6cbbe64458820ae7de0002ee3265c9e8b9a63c73..faf5877238c6b2d9e9825484423d82d1c10c651f 100644
+index 82c3b0fab7281cbcf07c98ac3e3e0971b4a92959..8c55d8ccbbef09e6d1084d5bed2fce25b9cea101 100644
 --- a/front_end/panels/network/NetworkItemView.ts
 +++ b/front_end/panels/network/NetworkItemView.ts
-@@ -392,3 +392,4 @@ export class NetworkItemView extends UI.TabbedPane.TabbedPane {
-     return this.#headersViewComponent;
+@@ -459,6 +459,7 @@ export class NetworkItemView extends UI.Widget.VBox {
+       NetworkForward.UIRequestLocation.UIRequestTabs.INITIATOR,
+       NetworkForward.UIRequestLocation.UIRequestTabs.TIMING,
+     ]);
++    availableTabs.add(ADBLOCK_TAB_ID);
+     if (this.#hasPayload) {
+       availableTabs.add(NetworkForward.UIRequestLocation.UIRequestTabs.PAYLOAD);
+     }
+@@ -556,3 +557,4 @@ export class NetworkItemView extends UI.Widget.VBox {
+     this.#viewOutput.revealHeader?.(section, header);
    }
  }
-+import { PatchNetworkItemView } from './NetworkItemView.patch.js'; (NetworkItemView as any) = PatchNetworkItemView(NetworkItemView);
++import { ADBLOCK_TAB_ID, PatchNetworkItemView } from './NetworkItemView.patch.js'; (NetworkItemView as any) = PatchNetworkItemView(NetworkItemView, DEFAULT_VIEW);

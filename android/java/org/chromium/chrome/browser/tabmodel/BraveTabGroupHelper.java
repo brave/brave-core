@@ -5,9 +5,9 @@
 
 package org.chromium.chrome.browser.tabmodel;
 
-import org.chromium.base.Token;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
+import org.chromium.components.tab_groups.TabGroupId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +33,8 @@ public class BraveTabGroupHelper {
 
     private static void ungroupAllTabGroups(TabModel tabModel) {
         // Ungrouping mutates the model, so iterate over a copy of the group IDs.
-        List<Token> tabGroupIds = new ArrayList<>(tabModel.getAllTabGroupIds());
-        for (Token tabGroupId : tabGroupIds) {
+        List<TabGroupId> tabGroupIds = new ArrayList<>(tabModel.getAllTabGroupIds());
+        for (TabGroupId tabGroupId : tabGroupIds) {
             tabModel.getTabUngrouper()
                     .ungroupTabGroup(
                             tabGroupId,

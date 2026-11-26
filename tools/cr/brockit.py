@@ -94,6 +94,9 @@ The following steps will take place:
 9. *Updated strings for Chromium [to]* will be committed.
 10. `gnrt` will be rerun and the changes produced under `third_party/rust/` will
     be committed.
+11. `chromium_src` overrides whose upstream file the bump renamed or deleted are
+    listed by culprit. They fail nothing, so the lift still finishes, but they
+    need attention: `git cr follow-renames <culprit>` for a rename.
 
 Steps 3-7 may end up being skipped altogether if no failures take place, or in
 part if resolution is possible without manual intervention.
@@ -178,11 +181,16 @@ fixed answer are resolved as the rebase goes:
 * A raw patch (one without a plaster file) that the base changed only in its
   context takes the commit's version. These patches are listed at the end of the
   rebase, as candidates for conversion to plaster.
+* A patch the base deleted (with its plaster file, if it had one), which the
+  commit changed only in its context, is deleted.
 * A commit that comes out empty, its change already on the base, is skipped,
   and a `squash` or `fixup` that leaves its commit empty drops it. What would
   have folded into the commit that goes is picked instead: a pinned group
   carries on from its next commit, and an attached `fixup!` or `amend!` keeps
   its change, on its own, rather than folding into the commit before.
+
+Once the rebase ends, the plasters the base added or changed are reapplied to
+the branch's Chromium, and those that fail or change their patch are listed.
 
 Any other conflict stops the rebase, listing the commit and the files left.
 Resolve them, `git add` them, and carry on with:
@@ -522,6 +530,98 @@ def _ensure_chromium_tags(*refs: Version | str) -> None:
     for ref in missing:
         fetch_args += ['tag', ref]
     repository.chromium.run_git(*fetch_args)
+
+
+@dataclass(frozen=True)
+class OrphanedOverride:
+    """A `chromium_src` override whose upstream file a bump took away."""
+
+    # The override, relative to brave-core, e.g. `chromium_src/foo/bar.cc`.
+    override: Path
+    # The full hash of the upstream commit that renamed or deleted the file.
+    culprit: str
+    # Where the culprit moved the upstream file, relative to `src/`, or None
+    # when it deleted it.
+    renamed_to: str | None = None
+
+
+# A `git show --name-status` line: its status, then its path(s), tab-separated.
+_NAME_STATUS_LINE = re.compile(r'^[ACDMRTU]\d*\t')
+
+
+def find_orphaned_overrides(
+    old: Version | str, new: Version | str
+) -> dict[str, tuple[str, list[OrphanedOverride]]]:
+    """The `chromium_src` overrides of upstream files gone at `new` that
+    `old` had, grouped by culprit, each with its `git show` header and message.
+
+    A shadow with no patch fails nothing when its file goes: its `#define`s
+    just stop matching. A few git calls cover any bump: a tree diff with no
+    rename detection for what went, a log limited to those paths for their
+    culprits, and rename detection only within each culprit.
+    """
+    overridden = {
+        path.removeprefix('chromium_src/'): Path(path)
+        for path in repository.brave.run_git(
+            'ls-files', '-z', 'chromium_src'
+        ).split('\0')
+        if path
+    }
+    gone = repository.chromium.run_git(
+        'diff',
+        '-z',
+        '--name-only',
+        '--no-renames',
+        '--diff-filter=D',
+        str(old),
+        str(new),
+    ).split('\0')
+    orphaned = sorted(path for path in gone if path in overridden)
+    if not orphaned:
+        return {}
+
+    culprits: dict[str, str] = {}
+    commit = ''
+    for line in repository.chromium.run_git(
+        'log',
+        '--format=commit %H',
+        '--name-only',
+        '--no-renames',
+        '--diff-filter=D',
+        f'{old}..{new}',
+        '--',
+        *orphaned,
+    ).splitlines():
+        if line.startswith('commit '):
+            commit = line.removeprefix('commit ')
+        elif line in overridden:
+            # The log is newest first, so the last deletion is kept.
+            culprits.setdefault(line, commit)
+
+    groups: dict[str, tuple[str, list[OrphanedOverride]]] = {}
+    for culprit in dict.fromkeys(culprits[path] for path in orphaned):
+        shown = repository.chromium.run_git(
+            'show', '-M', '--name-status', '--format=medium', culprit
+        ).splitlines()
+        renames = {
+            fields[1]: fields[2]
+            for line in shown
+            if line.startswith('R')
+            and _NAME_STATUS_LINE.match(line)
+            and len(fields := line.split('\t')) == 3
+        }
+        details = '\n'.join(
+            line for line in shown if not _NAME_STATUS_LINE.match(line)
+        ).rstrip()
+        groups[culprit] = (
+            details,
+            [
+                OrphanedOverride(overridden[path], culprit, renames.get(path))
+                for path in orphaned
+                if culprits[path] == culprit
+            ],
+        )
+    return groups
 
 
 def _update_pinslist_timestamp() -> str:
@@ -1999,6 +2099,48 @@ class Upgrade(Versioned):
         except subprocess.CalledProcessError:
             terminal.log_task('[bold]❌[/] GNRT rerun. Please investigate it.')
 
+        self._report_orphaned_overrides()
+
+    def _report_orphaned_overrides(self):
+        """Lists the `chromium_src` overrides whose upstream file the bump
+        renamed or deleted, grouped by culprit as the files that cannot be
+        patched anymore are. The lift is done; they need attention after it."""
+        _ensure_chromium_tags(self.working_version, self.target_version)
+        groups = find_orphaned_overrides(
+            self.working_version, self.target_version
+        )
+        if not groups:
+            return
+
+        terminal.log_task(
+            '[bold]Overrides of renamed or deleted files '
+            f'{ACTION_NEEDED_DECORATOR}:[/]'
+        )
+        for culprit, (details, orphans) in groups.items():
+            for orphan in orphans:
+                if orphan.renamed_to is None:
+                    console.log(
+                        Padding(
+                            f'✘ {orphan.override} [red bold](deleted)', (0, 4)
+                        )
+                    )
+                    continue
+                console.log(
+                    Padding(
+                        f'✘ {orphan.override}\n    ([yellow bold]renamed to[/] '
+                        f'chromium_src/{orphan.renamed_to})',
+                        (0, 4),
+                    )
+                )
+            if any(orphan.renamed_to for orphan in orphans):
+                console.log(
+                    Padding(
+                        f'[bold cyan]git cr follow-renames {culprit}[/]',
+                        (0, 8),
+                    )
+                )
+            console.log(Padding(f'{details}\n', (0, 8), style='dim'))
+
 
 def _solve_brave_ref(from_ref: str | None) -> str:
     """Solves the git reference.
@@ -2091,6 +2233,7 @@ class RebasePlan:
                 pinned_squashed=pinned_squashed,
                 discard_recyclable=discard_recyclable,
                 changed_paths=Rebase.changed_paths,
+                added_paths=Rebase.added_paths,
             )
             rewritten_entries = cls._parse(rewritten)
             retagged = [
@@ -2217,6 +2360,12 @@ class RebaseState:
     # (`--squash-minor-bumps`).
     squash_minor_bumps: bool
 
+    # The commit the branch's commits were taken from (`from_ref`, resolved),
+    # and the one they are rebased onto (`to_ref`, resolved), or None in a
+    # state saved by a brockit that didn't record them.
+    start: str | None = None
+    onto: str | None = None
+
     # The conflicts resolved by rules so far, reported when the rebase
     # finishes.
     resolutions: list[conflict_resolution.Resolution] = field(
@@ -2248,6 +2397,8 @@ class RebaseState:
             data = json.loads(file.read_bytes().decode('utf-8'))
             return cls(
                 squash_minor_bumps=data['squash_minor_bumps'],
+                start=data.get('start'),
+                onto=data.get('onto'),
                 resolutions=[
                     conflict_resolution.Resolution(
                         path=resolution['path'], rule=rules[resolution['rule']]
@@ -2266,6 +2417,8 @@ class RebaseState:
         """Saves the state for the rebase in progress."""
         data = {
             'squash_minor_bumps': self.squash_minor_bumps,
+            'start': self.start,
+            'onto': self.onto,
             'resolutions': [
                 {'path': resolution.path, 'rule': resolution.rule.name}
                 for resolution in self.resolutions
@@ -2368,6 +2521,7 @@ class Rebase(Task):
         """
         if dry_run:
             self._dry_run(
+                from_ref=from_ref,
                 to_ref=to_ref,
                 recommit=recommit,
                 discard_regen_changes=discard_regen_changes,
@@ -2387,10 +2541,21 @@ class Rebase(Task):
             )
         self._continue(state, skip=skip, resuming=is_continuation or skip)
         self._report(state)
+        self._check_base_plasters(state)
+
+    @staticmethod
+    def _rebase_start(from_ref: str | None, to_ref: str) -> tuple[str, str]:
+        """Where a rebase onto `to_ref` takes the branch's commits from: the
+        reference, `from_ref` or the branch's start, and its commit."""
+        if from_ref is None:
+            from_ref = versioning.branch_start('HEAD', to_ref)
+        from_ref = _solve_brave_ref(from_ref)
+        return from_ref, repository.brave.run_git('rev-parse', from_ref)
 
     def _dry_run(
         self,
         *,
+        from_ref: str | None,
         to_ref: str | None,
         recommit: bool,
         discard_regen_changes: bool,
@@ -2398,7 +2563,7 @@ class Rebase(Task):
     ) -> None:
         """Checks whether a rebase with these arguments would change anything.
 
-        It would when `to_ref` has moved past the branch's fork point, or when
+        It would when the branch's commits don't start from `to_ref`, or when
         the plan's rewrites (autosquash, `squash_minor_bumps`,
         `discard_regen_changes`) change it. Unlike `merge --dry-run`, never-
         merge commits such as `[WIP]` don't count: a rebase keeps them.
@@ -2411,11 +2576,11 @@ class Rebase(Task):
             raise RebaseNeededException(
                 f'{branch} needs a rebase: --recommit always rewrites it.'
             )
-        base = repository.brave.run_git('merge-base', to_ref, 'HEAD')
+        _, base = self._rebase_start(from_ref, to_ref)
         if base != repository.brave.run_git('rev-parse', to_ref):
             raise RebaseNeededException(
-                f'{branch} needs a rebase: {to_ref} has moved on since '
-                f'{base[:12]}.'
+                f'{branch} needs a rebase: its commits start from '
+                f'{base[:12]}, not {to_ref}.'
             )
         plan = RebasePlan.capture(
             base,
@@ -2455,17 +2620,12 @@ class Rebase(Task):
             )
 
         to_ref = _solve_brave_ref(to_ref)
-
-        if from_ref is None:
-            from_ref = versioning.branch_start('HEAD', to_ref)
-
-        from_ref = _solve_brave_ref(from_ref)
+        from_ref, rebase_base = self._rebase_start(from_ref, to_ref)
 
         # Adding this check to see if `merge-base` differs at all in outcome
         # from the tree-walking type of resolution we have been doing with
         # `from_ref`.
         merge_base = repository.brave.run_git('merge-base', to_ref, 'HEAD')
-        rebase_base = repository.brave.run_git('rev-parse', from_ref)
         if rebase_base != merge_base:
             logging.warning(
                 'This rebase starts from %s (resolved from [bold cyan]%s[/]), '
@@ -2564,7 +2724,11 @@ class Rebase(Task):
             if not repository.brave.is_rebase_in_progress():
                 raise InvalidInputException('Rebase failed.') from e
 
-        return RebaseState(squash_minor_bumps=squash_minor_bumps)
+        return RebaseState(
+            squash_minor_bumps=squash_minor_bumps,
+            start=rebase_base,
+            onto=repository.brave.run_git('rev-parse', to_ref),
+        )
 
     def _continue(
         self, state: RebaseState, *, skip: bool = False, resuming: bool = False
@@ -2647,9 +2811,9 @@ class Rebase(Task):
         returns whether it was one.
 
         That is a `pick` which, with the `squash`/`fixup` lines folding into
-        it, touches only files the base has as the branch ends them. Those
-        lines are dropped from the todo, as there is nothing left for them to
-        fold into.
+        it, touches only files the base has as the branch ends them, or a
+        tooling group the base picked and then changed again. Those lines are
+        dropped from the todo, as there is nothing left for them to fold into.
         """
         done = cls._entries('done')
         if not done or done[-1][1].command != 'pick':
@@ -2661,7 +2825,19 @@ class Rebase(Task):
                 end = index
                 break
             folding.append((index, entry))
-        if not step.base_has([step.commit, *(e.hash for _, e in folding)]):
+        group = [step.commit, *(e.hash for _, e in folding)]
+        if step.base_has(group):
+            rule = conflict_resolution.Rule.PICKED_BY_BASE
+            outcome = 'is on the base already, with what folds into it'
+        elif state.start is not None and step.base_extends(
+            group[-1], state.start
+        ):
+            rule = conflict_resolution.Rule.EXTENDED_BY_BASE
+            outcome = (
+                'is on the base already, with what folds into it, and the base '
+                'changed it again since'
+            )
+        else:
             return False
 
         todo = repository.brave.rebase_merge_dir() / 'git-rebase-todo'
@@ -2681,14 +2857,11 @@ class Rebase(Task):
             newline='',
         )
         state.resolutions.extend(
-            conflict_resolution.Resolution(
-                path=path, rule=conflict_resolution.Rule.PICKED_BY_BASE
-            )
+            conflict_resolution.Resolution(path=path, rule=rule)
             for path in step.paths
         )
         terminal.log_task(
-            f'{cls._describe(step)} is on the base already, with what folds '
-            'into it: skipped.'
+            f'{cls._describe(step)} {outcome}: skipped.'
             + ''.join(f'\n    ✘ {escape(e.out)}' for _, e in folding)
         )
         return True
@@ -2846,6 +3019,20 @@ class Rebase(Task):
         ).splitlines()
 
     @staticmethod
+    def added_paths(commit: str) -> list[str]:
+        """The paths `commit` adds, for `rebase.rewrite_plan` to keep a pinned
+        group's fixups behind the commits adding their files."""
+        return repository.brave.run_git(
+            'diff-tree',
+            '--no-commit-id',
+            '--name-only',
+            '--diff-filter=A',
+            '-r',
+            '--root',
+            commit,
+        ).splitlines()
+
+    @staticmethod
     def carry_change_id(commits: list[str]) -> None:
         """Amends HEAD to carry the first Change-Id of `commits`, the ones
         folded into it, in place of whatever an `amend!` brought. With none
@@ -2941,6 +3128,75 @@ class Rebase(Task):
             f'then run [bold cyan]{self.resume_command} --continue[/], or '
             f'skip the commit with [bold cyan]{self.resume_command} --skip[/])'
         )
+
+    @staticmethod
+    def _check_base_plasters(state: RebaseState) -> None:
+        """Reapplies the plasters the base added or changed since the branch's
+        start, and lists those that fail or change their patch.
+
+        The base made their patches for its own Chromium, so a clean rebase
+        says nothing of whether they apply to the branch's. The changed patches
+        are left in the tree to commit.
+        """
+        if state.start is None or state.onto is None:
+            return
+        brave = repository.brave
+        plasters = [
+            path
+            for path in brave.run_git(
+                'diff',
+                '--name-only',
+                '--no-renames',
+                '--diff-filter=AM',
+                state.start,
+                state.onto,
+                '--',
+                'rewrite/',
+            ).splitlines()
+            if path.endswith(plaster.PLASTER_EXTENSION)
+            and (brave.root / path).exists()
+        ]
+        if not plasters:
+            return
+
+        rebased = Version.from_git('HEAD')
+        checkout = versioning.read_chromium_version_file()
+        if checkout != rebased:
+            terminal.log_task(
+                '[bold]Plasters the base added or changed, unchecked as '
+                f'Chromium is on {checkout}, not {rebased} '
+                f'{ACTION_NEEDED_DECORATOR}:[/]\n'
+                + '\n'.join(f'    ✘ {escape(path)}' for path in plasters)
+                + '\n    Sync, then [bold cyan]plaster apply[/] each of them.'
+            )
+            return
+
+        failed = []
+        changed = []
+        for path in plasters:
+            plaster_file = brave.root / path
+            patch = brave.to_repo_relative(
+                plaster.PlasterTarget.resolve(plaster_file).patch
+            ).as_posix()
+            try:
+                plaster.PlasterFile(plaster_file).apply()
+            except (plaster.PlasterError, ValueError) as e:
+                failed.append(f'{path}: {e}')
+                continue
+            if brave.run_git('status', '--porcelain', '--', patch):
+                changed.append(f'{path} ➜ {patch}')
+        if failed:
+            terminal.log_task(
+                '[bold]Plasters the base added or changed that fail on '
+                f'Chromium {rebased} {ACTION_NEEDED_DECORATOR}:[/]\n'
+                + '\n'.join(f'    ✘ {escape(item)}' for item in failed)
+            )
+        if changed:
+            terminal.log_task(
+                '[bold]Plasters the base added or changed whose patch changes '
+                f'on Chromium {rebased} {ACTION_NEEDED_DECORATOR}:[/]\n'
+                + '\n'.join(f'    ✘ {escape(item)}' for item in changed)
+            )
 
     @staticmethod
     def _report(state: RebaseState) -> None:
@@ -4308,6 +4564,7 @@ class RebaseHook:
                     pinned_squashed=args.internal_rebase_plan_squash_pinned,
                     carry_change_id=Rebase.carry_change_id_line,
                     changed_paths=Rebase.changed_paths,
+                    added_paths=Rebase.added_paths,
                     has_change_id=Rebase.has_change_id,
                     foreign_cr_tag=Rebase.foreign_cr_tag,
                 )

@@ -12,7 +12,7 @@
 <grit-part>
   <!-- kActionShowPasswordManager: "Brave Password Manager". -->
   <message name="IDS_ACTION_SYNONYMS_SHOW_PASSWORD_MANAGER" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Brave Password Manager') that users might type in the Brave menu search bar to find the 'Brave Password Manager' action. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
-    credentials, sign-in, passkey, lock, vault, keys
+    credentials, sign-in, passkey, lock, vault, keys, login, log in, sign in
   </message>
   <!-- kActionShowPaymentMethods: "Payments". -->
   <message name="IDS_ACTION_SYNONYMS_SHOW_PAYMENT_METHODS" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Payments') that users might type in the Brave menu search bar to find the 'Payments' action, which manages saved payment methods. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
@@ -24,7 +24,7 @@
   </message>
   <!-- kActionCustomizeBrave: "Customize your Brave". -->
   <message name="IDS_ACTION_SYNONYMS_CUSTOMIZE_CHROME" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Customize your Brave') that users might type in the Brave menu search bar to find the 'Customize your Brave' action in the profile menu. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
-    theme, color, avatar, name, background, account
+    avatar, picture, name, account, profile
   </message>
   <!-- kActionCloseProfile: "Close this profile". -->
   <message name="IDS_ACTION_SYNONYMS_CLOSE_PROFILE" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Close this profile') that users might type in the Brave menu search bar to find the 'Close this profile' action. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
@@ -86,6 +86,18 @@
   <message name="IDS_ACTION_SYNONYMS_VISIT_CHROME_WEB_STORE" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Visit Web Store') that users might type in the Brave menu search bar to find the 'Visit Web Store' action. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
     plugins, themes, install, extensions, customization, manage
   </message>
+  <!-- kActionZoomPlus: "Make text larger". -->
+  <message name="IDS_ACTION_SYNONYMS_ZOOM_PLUS" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Make text larger') that users might type in the Brave menu search bar to find the 'Make text larger' action, which zooms in on the current page. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
+    zoom in, magnify, enlarge, bigger, larger, increase, scale up, page zoom
+  </message>
+  <!-- kActionZoomMinus: "Make text smaller". -->
+  <message name="IDS_ACTION_SYNONYMS_ZOOM_MINUS" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Make text smaller') that users might type in the Brave menu search bar to find the 'Make text smaller' action, which zooms out on the current page. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
+    zoom out, shrink, smaller, reduce, decrease, scale down, page zoom
+  </message>
+  <!-- kActionFullscreen: "Full screen". -->
+  <message name="IDS_ACTION_SYNONYMS_FULLSCREEN" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Full screen') that users might type in the Brave menu search bar to find the 'Full screen' action, which expands the browser window to fill the entire screen. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
+    fullscreen, full-screen, maximize, maximise, immersive, hide toolbar, presentation, F11
+  </message>
   <!-- kActionFind: "Find...". -->
   <message name="IDS_ACTION_SYNONYMS_FIND" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Find') that users might type in the Brave menu search bar to find the 'Find' action, which searches for text on the current page. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
     search, look, page, text, string, replace, editor, locate
@@ -128,7 +140,7 @@
   </message>
   <!-- kActionSidePanelShowCustomizeBrave: "Customize Brave". -->
   <message name="IDS_ACTION_SYNONYMS_SIDE_PANEL_CUSTOMIZE_CHROME" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Customize Brave') that users might type in the Brave menu search bar to find the 'Customize Brave' action, which opens a side panel for changing the browser's theme, colors, and appearance. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
-    themes, backgrounds, wallpaper, colors, dark, mode, personal, styling, aesthetic
+    theme, color, background, wallpaper, light, dark, mode, light mode, dark mode, personal, styling, aesthetic
   </message>
   <!-- kActionShowReadingModeSidePanel: "Reading mode". -->
   <message name="IDS_ACTION_SYNONYMS_SHOW_READING_MODE" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Reading mode') that users might type in the Brave menu search bar to find the 'Reading mode' action, which opens a simplified, distraction-free view of the page's text in a side panel. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
@@ -136,7 +148,7 @@
   </message>
   <!-- kActionPerformance: "Performance". -->
   <message name="IDS_ACTION_SYNONYMS_PERFORMANCE" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Performance') that users might type in the Brave menu search bar to find the 'Performance' action, which opens settings for memory, power, and speed optimizations. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
-    speed, RAM, lag, freeze, crash, resource, usage, battery, optimizer, slow
+    speed, RAM, lag, freeze, crash, resource, usage, battery, optimizer, slow, memory, memory saver
   </message>
   <!-- kActionTaskManagerAppMenu: "Task Manager". -->
   <message name="IDS_ACTION_SYNONYMS_TASK_MANAGER" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Task Manager') that users might type in the Brave menu search bar to find the 'Task Manager' action, which shows the processes Brave is running and their resource usage. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
@@ -148,7 +160,7 @@
   </message>
   <!-- kActionNewPrivateWindow: "New Private window". -->
   <message name="IDS_ACTION_SYNONYMS_NEW_INCOGNITO_WINDOW" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'New Private window') that users might type in the Brave menu search bar to find the 'New Private window' action, which opens a private browsing window that does not save history, cookies, or site data. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
-    private, anonymous, stealth, secret, safety, tracking protection, cookies, clear, cache
+    private, anonymous, stealth, secret, safety, tracking protection, cookies, clear, cache, open private window
   </message>
   <!-- kActionShowLensOverlayFromAppMenu: "Search this tab with Google Lens". -->
   <message name="IDS_ACTION_SYNONYMS_SHOW_LENS_OVERLAY" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Search this tab with Google Lens') that users might type in the Brave menu search bar to find the 'Search this tab with Google Lens' action, which lets the user visually search, translate, or copy text from anything on the current page. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
@@ -160,11 +172,15 @@
   </message>
   <!-- kActionClearBrowsingData: "Delete browsing data". -->
   <message name="IDS_ACTION_SYNONYMS_CLEAR_BROWSING_DATA" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Delete browsing data') that users might type in the Brave menu search bar to find the 'Delete browsing data' action, which deletes history, cookies, cached files, and other browsing data. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
-    delete, remove, security, privacy, cleanup, storage, reset, cache, slow, speed
+    delete, remove, security, privacy, cleanup, storage, reset, cache, cookies, slow, speed, history
   </message>
   <!-- kActionOptions: "Settings". -->
   <message name="IDS_ACTION_SYNONYMS_OPTIONS" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Settings') that users might type in the Brave menu search bar to find the 'Settings' action, which opens the Brave settings page. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
     controls, customization, language, privacy, defaults, advanced
+  </message>
+  <!-- kActionAbout: "About Brave". -->
+  <message name="IDS_ACTION_SYNONYMS_ABOUT" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'About Brave') that users might type in the Brave menu search bar to find the 'About Brave' action, which shows the current Brave version and checks for updates. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
+    update, updates, upgrade, version, build, info, check for updates
   </message>
   <!-- kActionExit: "Exit". -->
   <message name="IDS_ACTION_SYNONYMS_EXIT" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Exit') that users might type in the Brave menu search bar to find the 'Exit' action, which closes all Brave windows and quits the browser. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">

@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tab_ui.TabSwitcher;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherBackPressHandlerManager;
 import org.chromium.chrome.browser.tasks.tab_management.vertical_tabs.VerticalTabsActionDelegate;
 import org.chromium.chrome.browser.toolbar.ToolbarHairlineView;
 import org.chromium.chrome.browser.toolbar.ToolbarIntentMetadata;
@@ -75,6 +76,7 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
+import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 
 public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
@@ -120,6 +122,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             SettableMonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
             TopInsetProvider topInsetProvider,
             OneshotSupplierImpl<SystemBarColorHelper> systemBarColorHelperSupplier,
+            OneshotSupplierImpl<SystemBarColorHelper> topScalpColorHelperSupplier,
             @ActivityType int activityType,
             Supplier<Boolean> isInOverviewModeSupplier,
             AppMenuDelegate appMenuDelegate,
@@ -132,6 +135,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             Callback<Tab> sendToBackground,
             boolean initializeUiWithIncognitoColors,
             BackPressManager backPressManager,
+            TabSwitcherBackPressHandlerManager dragHandlerManager,
             @Nullable Bundle savedInstanceState,
             @Nullable PersistableBundle persistentState,
             @Nullable MultiInstanceManager multiInstanceManager,
@@ -144,7 +148,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             VerticalTabsActionDelegate verticalTabsActionDelegate,
             Supplier<Boolean> urlBarVisibleSupplier,
             Runnable onTabLayoutAvailable,
-            BooleanSupplier isWarmOnResumeSupplier) {
+            BooleanSupplier isWarmOnResumeSupplier,
+            IntSupplier launchCauseSupplier) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -179,6 +184,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 edgeToEdgeSupplier,
                 topInsetProvider,
                 systemBarColorHelperSupplier,
+                topScalpColorHelperSupplier,
                 activityType,
                 isInOverviewModeSupplier,
                 appMenuDelegate,
@@ -190,6 +196,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 sendToBackground,
                 initializeUiWithIncognitoColors,
                 backPressManager,
+                dragHandlerManager,
                 savedInstanceState,
                 persistentState,
                 multiInstanceManager,
@@ -202,7 +209,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 verticalTabsActionDelegate,
                 urlBarVisibleSupplier,
                 onTabLayoutAvailable,
-                isWarmOnResumeSupplier);
+                isWarmOnResumeSupplier,
+                launchCauseSupplier);
 
         mBraveActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;

@@ -66,13 +66,22 @@ std::optional<containers::ContainerModel> GetContainerModelForWebContents(
 
 }  // namespace
 
+DEFINE_USER_DATA(PartitionedStoragePageActionController);
+
+// static
+PartitionedStoragePageActionController*
+PartitionedStoragePageActionController::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
 PartitionedStoragePageActionController::PartitionedStoragePageActionController(
     tabs::TabInterface& tab,
     page_actions::PageActionController& page_action_controller)
     : tab_(tab),
       page_action_controller_(
           static_cast<page_actions::PageActionControllerImpl&>(
-              page_action_controller)) {
+              page_action_controller)),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
   CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
 }
 

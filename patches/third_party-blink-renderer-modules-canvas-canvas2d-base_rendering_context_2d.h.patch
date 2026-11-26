@@ -1,0 +1,33 @@
+diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
+index d4a2d26ccfeecff953bbd2b863c3094e9511b24d..b5039c7e5283a191225250a456127127bddda89d 100644
+--- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
++++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
+@@ -34,6 +34,7 @@
+ #include "third_party/blink/renderer/modules/canvas/canvas2d/canvas_path.h"
+ #include "third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d_state.h"
+ #include "third_party/blink/renderer/modules/modules_export.h"
++#include "third_party/blink/renderer/platform/bindings/script_state.h"
+ #include "third_party/blink/renderer/platform/graphics/canvas_2d_color_params.h"
+ #include "third_party/blink/renderer/platform/graphics/color.h"
+ #include "third_party/blink/renderer/platform/graphics/flush_for_image_listener.h"
+@@ -357,6 +358,20 @@ class MODULES_EXPORT BaseRenderingContext2D
+   HeapTaskRunnerTimer<BaseRenderingContext2D> try_restore_context_event_timer_;
+   unsigned try_restore_context_attempt_count_ = 0;
+ 
++  ImageData* getImageData(ScriptState*,
++                          int sx,
++                          int sy,
++                          int sw,
++                          int sh,
++                          ExceptionState&);
++  ImageData* getImageData(ScriptState*,
++                          int sx,
++                          int sy,
++                          int sw,
++                          int sh,
++                          ImageDataSettings*,
++                          ExceptionState&);
++
+  protected:
+   std::optional<cc::PaintRecord> FlushCanvasInternal(FlushReason reason);
+ 

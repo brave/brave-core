@@ -12,6 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/page_action/page_action_controller.h"
 #include "components/tabs/public/tab_interface.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "ui/menus/simple_menu_model.h"
 #include "ui/views/controls/menu/menu_model_adapter.h"
 #include "ui/views/controls/menu/menu_runner.h"
@@ -30,6 +31,10 @@ class PsstActionController : public ui::SimpleMenuModel::Delegate {
     virtual void OnDontShowThisSiteSelected() = 0;
     virtual void OnDisablePrivacySettingsTuningSelected() = 0;
   };
+
+  DECLARE_USER_DATA(PsstActionController);
+
+  static PsstActionController* From(tabs::TabInterface* tab);
 
   PsstActionController(
       tabs::TabInterface& tab,
@@ -73,6 +78,8 @@ class PsstActionController : public ui::SimpleMenuModel::Delegate {
 
   // Clears if the page action `View` is destroyed while a menu is open
   views::ViewTracker menu_anchor_view_tracker_;
+
+  ui::ScopedUnownedUserData<PsstActionController> scoped_unowned_user_data_;
 
   base::WeakPtrFactory<PsstActionController> weak_ptr_factory_{this};
 };

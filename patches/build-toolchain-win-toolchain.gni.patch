@@ -1,0 +1,13 @@
+diff --git a/build/toolchain/win/toolchain.gni b/build/toolchain/win/toolchain.gni
+index bd6b8089de35647d2d9aefb9ff619cdaa8ca58bd..930292ddd7e8082ffc08150116cec2607b379edd 100644
+--- a/build/toolchain/win/toolchain.gni
++++ b/build/toolchain/win/toolchain.gni
+@@ -186,7 +186,7 @@ template("msvc_toolchain") {
+       }
+ 
+       # LINT.IfChange(coverage_wrapper)
+-      coverage_wrapper = "$python_path -ES " + coverage_wrapper + " "
++      coverage_wrapper = "$python_path -S " + coverage_wrapper + " "
+ 
+       # LINT.ThenChange(//build/config/siso/platform.star:python_bin)
+     } else {

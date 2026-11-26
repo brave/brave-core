@@ -31,6 +31,7 @@
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
 #include "chrome/browser/actor/actor_proto_conversion.h"
 #include "chrome/browser/actor/tab_observation_strategy.h"
+#include "chrome/browser/actor/tools/tool_result.h"
 #include "chrome/browser/actor/ui/actor_ui_state_manager.h"
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
@@ -289,7 +290,7 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
       Tool::UseToolCallback callback,
       actor::mojom::ActionResultCode result_code,
       std::optional<size_t> index_of_failed_action,
-      std::vector<actor::ActionResultWithLatencyInfo> action_results) {
+      std::vector<actor::ToolResultWithLatencyInfo> action_results) {
     tool_provider_->OnActionsFinished(std::move(callback),
                                       std::move(action_results),
                                       actor::TabObservationStrategy());
@@ -583,6 +584,35 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   EXPECT_THAT(button_line, testing::HasSubstr("<input"));
   EXPECT_THAT(button_line, testing::HasSubstr("dom_id="));
   EXPECT_THAT(button_line, testing::HasSubstr("clickable"));
+}
+
+// Runs with upstream's cross-origin navigation gating left on, as it ships.
+class ContentAgentToolProviderNavigationGatingBrowserTest
+    : public ContentAgentToolProviderBrowserTest {
+ public:
+  ContentAgentToolProviderNavigationGatingBrowserTest() {
+    gating_feature_list_.InitAndEnableFeature(
+        actor::kGlicCrossOriginNavigationGating);
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    ContentAgentToolProviderBrowserTest::SetUpCommandLine(command_line);
+    // Gating treats localhost as sensitive, so use a real-looking host.
+    embedded_https_test_server().SetCertHostnames({"example.com"});
+  }
+
+ private:
+  base::test::ScopedFeatureList gating_feature_list_;
+};
+
+// The navigation tool must be able to reach a new origin while gating is on.
+IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderNavigationGatingBrowserTest,
+                       NavigateToNewOrigin) {
+  const std::string structure =
+      NavigateAndGetPageStructure(embedded_https_test_server().GetURL(
+          "example.com", "/content_agent_form.html"));
+  SCOPED_TRACE(structure);
+  EXPECT_THAT(structure, testing::HasSubstr("placeholder=\"Title\""));
 }
 
 }  // namespace ai_chat

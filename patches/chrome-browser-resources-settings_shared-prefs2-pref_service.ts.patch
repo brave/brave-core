@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings_shared/prefs2/pref_service.ts b/chrome/browser/resources/settings_shared/prefs2/pref_service.ts
-index c6426284b07a88d2a7180977e39f8061a60af109..0da4498bdd001ddf3fb8544865b4b7776961d2d5 100644
+index 32db16fd4cf41c3b861f762683e4d41b9532e20d..df99767e59b4ef3f8688206e1c60746e8f848b94 100644
 --- a/chrome/browser/resources/settings_shared/prefs2/pref_service.ts
 +++ b/chrome/browser/resources/settings_shared/prefs2/pref_service.ts
 @@ -52,6 +52,12 @@ const CATEGORY_DEFAULT_SYNTHETIC_PREFS: string[] = [

@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Don't create the toolbar's sign-in button.
+
+      The button signs in to a Google account, which Brave doesn't offer.
+      Without its stub no SigninButtonCoordinator is created, and the toolbar
+      handles a null one.
+    regex:
+      re_pattern:
+        '(ViewStub
+        signinButtonStub\s*=\s*)mToolbarLayout\.findViewById\(R\.id\.signin_button_stub\);'
+      replace: '\1null;'

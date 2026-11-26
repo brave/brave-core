@@ -1,11 +1,11 @@
 diff --git a/components/tabs/public/tab_context_menu_command.h b/components/tabs/public/tab_context_menu_command.h
-index 2ea23723648d7254c0b591e6e311caf3c3b04637..693f3770c350008ca47b9e5f02887f4f53eac468 100644
+index 4a998a355e06426a0a89a49997346134aba8f065..725291eead04e64c6bc20500942c565c30da56a5 100644
 --- a/components/tabs/public/tab_context_menu_command.h
 +++ b/components/tabs/public/tab_context_menu_command.h
-@@ -42,6 +42,14 @@ enum TabContextMenuCommand {
-   CommandAiModeCreateNewThread,
+@@ -43,6 +43,14 @@ enum TabContextMenuCommand {
    CommandAiModeUnshare,
    CommandToggleFocusGroup,
+   CommandCopyLinks,
 +  CommandRestoreTab,
 +  CommandBookmarkAllTabs,
 +  CommandShowVerticalTabs,

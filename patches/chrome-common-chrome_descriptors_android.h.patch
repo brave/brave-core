@@ -1,8 +1,8 @@
 diff --git a/chrome/common/chrome_descriptors_android.h b/chrome/common/chrome_descriptors_android.h
-index defc4b163b2940ee4c77fa122640b150a5826291..d704e456664f9048468180a21de63a0e50d5214e 100644
+index ded6b495f0546e474550646e9e3cc5ee351002bf..fb73c15f8aab8ed70bd0c39c596e7418b8c3b4be 100644
 --- a/chrome/common/chrome_descriptors_android.h
 +++ b/chrome/common/chrome_descriptors_android.h
-@@ -33,6 +33,7 @@ enum {
+@@ -22,6 +22,7 @@ enum {
    // DFMs with native resources typically do not share file descriptors with
    // child processes. Hence no corresponding *PakDescriptor is defined.
    kAndroidMinidumpDescriptor,

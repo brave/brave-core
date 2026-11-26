@@ -44,7 +44,7 @@ void SigninViewControllerDelegateViews::RunFileChooser(
       render_frame_host->GetLastCommittedOrigin() ==
           url::Origin::Create(GURL(chrome::kChromeUIProfileCustomizationURL)) &&
       GetProfileCustomizationStyle(render_frame_host->GetLastCommittedURL()) ==
-          ProfileCustomizationStyle::kLocalProfileCreation) {
+          ProfileCustomizationStyle::kSignedOutProfileCreation) {
     FileSelectHelper::RunFileChooser(render_frame_host, std::move(listener),
                                      params);
     return;

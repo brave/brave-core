@@ -118,8 +118,7 @@ class AdBlockSubscriptionServiceManager {
   // subscription.
   base::FilePath GetSubscriptionPath(const GURL& subscription_url) const;
 
-  void OnUpdateTimer(
-      component_updater::TimerUpdateScheduler::OnFinishedCallback on_finished);
+  void OnUpdateTimer();
 
   void StartDownload(const GURL& sub_url, bool from_ui);
 

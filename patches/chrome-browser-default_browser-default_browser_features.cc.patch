@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/default_browser/default_browser_features.cc b/chrome/browser/default_browser/default_browser_features.cc
-index 287300b7095917fc66a2daccab2528fd50835528..63b24f3aa44794fe7715284a81235ca3a3969f36 100644
+index b2385c7a34d03fbedd78719c4dc58ddcf8ea8aee..b7e8fdd24109c9a0c230463909401fa2865734fd 100644
 --- a/chrome/browser/default_browser/default_browser_features.cc
 +++ b/chrome/browser/default_browser/default_browser_features.cc
-@@ -161,7 +161,7 @@ GURL GetDefaultBrowserVisualGuideURL() {
- 
- BASE_FEATURE(kDefaultBrowserFramework, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -178,7 +178,7 @@ GURL GetDefaultBrowserVisualGuideURL() {
+ #endif
+ }
  
 -BASE_FEATURE(kDefaultBrowserPromptSurfaces, base::FEATURE_ENABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kDefaultBrowserPromptSurfaces, base::FEATURE_DISABLED_BY_DEFAULT);

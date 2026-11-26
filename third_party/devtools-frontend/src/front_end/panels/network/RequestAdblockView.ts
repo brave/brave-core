@@ -10,17 +10,42 @@ import * as UI from '../../ui/legacy/legacy.js'
 const { render, html } = Lit
 
 export class RequestAdblockView extends UI.Widget.VBox {
-  readonly #request: SDK.NetworkRequest.NetworkRequest
-  #manager: SDK.NetworkManager.NetworkManager | null
+  #request?: SDK.NetworkRequest.NetworkRequest
+  #manager: SDK.NetworkManager.NetworkManager | null = null
 
-  constructor(request: SDK.NetworkRequest.NetworkRequest) {
-    super()
+  constructor(element?: HTMLElement) {
+    super(element)
+  }
+
+  get request(): SDK.NetworkRequest.NetworkRequest | undefined {
+    return this.#request
+  }
+
+  set request(request: SDK.NetworkRequest.NetworkRequest) {
+    if (this.#request === request) {
+      return
+    }
+    if (this.isShowing()) {
+      this.#request?.removeEventListener(
+        SDK.NetworkRequest.Events.FINISHED_LOADING,
+        this.#refresh,
+        this
+      )
+    }
     this.#request = request
-    this.#manager = SDK.NetworkManager.NetworkManager.forRequest(this.#request)
+    this.#manager = SDK.NetworkManager.NetworkManager.forRequest(request)
+    if (this.isShowing()) {
+      request.addEventListener(
+        SDK.NetworkRequest.Events.FINISHED_LOADING,
+        this.#refresh,
+        this
+      )
+      this.requestUpdate()
+    }
   }
 
   override performUpdate(): void {
-    if (!this.#manager) {
+    if (!this.#manager || !this.#request) {
       render(html``, this.contentElement, { host: this })
       return
     }
@@ -75,7 +100,7 @@ export class RequestAdblockView extends UI.Widget.VBox {
 
   override wasShown(): void {
     super.wasShown()
-    this.#request.addEventListener(
+    this.#request?.addEventListener(
       SDK.NetworkRequest.Events.FINISHED_LOADING,
       this.#refresh,
       this
@@ -84,7 +109,7 @@ export class RequestAdblockView extends UI.Widget.VBox {
 
   override willHide(): void {
     super.willHide()
-    this.#request.removeEventListener(
+    this.#request?.removeEventListener(
       SDK.NetworkRequest.Events.FINISHED_LOADING,
       this.#refresh,
       this

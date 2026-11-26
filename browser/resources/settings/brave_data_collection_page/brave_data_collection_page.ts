@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {WebUiListenerMixin} from '/shared/settings/web_ui_listener_mixin.js'
+import {WebUiListenerMixin} from '../web_ui_listener_mixin.js'
 import { assert } from 'chrome://resources/js/assert.js'
 import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
@@ -12,7 +12,7 @@ import { SettingsViewMixin } from '../settings_page/settings_view_mixin.js'
 import {BraveDataCollectionBrowserProxyImpl} from './brave_data_collection_browser_proxy.js'
 import {getTemplate} from './brave_data_collection_page.html.js'
 
-import {MetricsReporting} from '/shared/settings/privacy_page/privacy_page_browser_proxy.js'
+import {MetricsReporting} from '../privacy_page/privacy_page_browser_proxy.js'
 
 import {loadTimeData} from "../i18n_setup.js"
 

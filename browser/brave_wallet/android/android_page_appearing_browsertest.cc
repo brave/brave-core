@@ -200,7 +200,13 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   Profile* GetProfile() { return chrome_test_utils::GetProfile(this); }
 
   PrefService* GetPrefs() {
-    return TabModelList::models()[0]->GetProfile()->GetPrefs();
+    Profile* profile = nullptr;
+    TabModelList::ForEachAll([&](TabModel* model) {
+      profile = model->GetProfile();
+      return false;
+    });
+    CHECK(profile);
+    return profile->GetPrefs();
   }
 
   base::FilePath get_temp_path() const { return temp_dir_.GetPath(); }

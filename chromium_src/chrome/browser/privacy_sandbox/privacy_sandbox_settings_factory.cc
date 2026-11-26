@@ -15,9 +15,5 @@
 std::unique_ptr<KeyedService>
 PrivacySandboxSettingsFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  Profile* profile = Profile::FromBrowserContext(context);
-
-  return std::make_unique<BravePrivacySandboxSettings>(
-      nullptr /*host_content_settings_map*/, nullptr /*cookie_settings*/,
-      profile->GetPrefs());
+  return std::make_unique<BravePrivacySandboxSettings>();
 }

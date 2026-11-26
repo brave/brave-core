@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Title the save dialog with the origin that started the download.
+
+      `GetTitle()`, in the chromium_src override, builds Brave's title from the
+      initiating frame's origin and the download's caller.
+    regex:
+      re_pattern: '(select_file_dialog_->SelectFile\(\s*ui::SelectFileDialog::SELECT_SAVEAS_FILE,\s*)std::u16string\(\)'
+      replace: |-
+        \1GetTitle(
+                  content::DownloadItemUtils::GetRenderFrameHost(download_item_),
+                  std::u16string(), &caller)

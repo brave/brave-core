@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: Include what the overloads below take.
+    add_include:
+      header:
+        - third_party/blink/renderer/platform/bindings/script_state.h
+
+  - description: |-
+      Declare the `getImageData()` overloads that farble the image data.
+
+      The IDL calls these with the `ScriptState`, whose execution context keys
+      the farbling. They are defined in the `chromium_src` override.
+    add_to_public:
+      class_name: BaseRenderingContext2D
+      code: |-
+        ImageData* getImageData(ScriptState*,
+                                int sx,
+                                int sy,
+                                int sw,
+                                int sh,
+                                ExceptionState&);
+        ImageData* getImageData(ScriptState*,
+                                int sx,
+                                int sy,
+                                int sw,
+                                int sh,
+                                ImageDataSettings*,
+                                ExceptionState&);

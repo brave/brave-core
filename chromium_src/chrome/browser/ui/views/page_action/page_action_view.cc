@@ -11,7 +11,6 @@
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/views/layout/layout_types.h"
-#include "ui/views/layout/proposed_layout.h"
 #include "ui/views/style/platform_style.h"
 #include "ui/views/view_class_properties.h"
 
@@ -45,34 +44,25 @@ std::optional<SkColor> GetBraveForegroundColor(
   return std::nullopt;
 }
 
+// The caller's |size_bounds| (usually the parent's decision to stretch) are
+// ignored in favour of the model's override height.
+std::optional<views::SizeBounds> GetBraveSizeBounds(
+    const page_actions::PageActionView& view,
+    const views::SizeBounds& size_bounds) {
+  const std::optional<int> override_height = view.GetOverrideHeight();
+  if (!override_height || size_bounds.height() == *override_height) {
+    return std::nullopt;
+  }
+  views::SizeBounds new_size_bounds = size_bounds;
+  new_size_bounds.set_height(*override_height);
+  return new_size_bounds;
+}
+
 }  // namespace
 
 #include <chrome/browser/ui/views/page_action/page_action_view.cc>
 
 namespace page_actions {
-
-views::ProposedLayout PageActionView::CalculateProposedLayout(
-    const views::SizeBounds& size_bounds) const {
-  const PageActionModelInterface* source = observation_.GetSource();
-  if (source && source->GetOverrideHeight().has_value()) {
-    int override_height = source->GetOverrideHeight().value();
-    CHECK_EQ(GetMinimumSize().height(), override_height);
-
-    // Note that we're intentionally ignore |size_bounds| passed from the caller
-    // (usually the parent view's decision) so that we can force the height to
-    // be the override height. This could be not an optimal solution, but it's
-    // the efficient way to achieve the desired behavior.
-    auto new_size_bounds = size_bounds;
-    new_size_bounds.set_height(override_height);
-    auto proposed_layout =
-        IconLabelBubbleView::CalculateProposedLayout(new_size_bounds);
-    CHECK_EQ(proposed_layout.host_size.height(), override_height);
-
-    return proposed_layout;
-  }
-
-  return IconLabelBubbleView::CalculateProposedLayout(size_bounds);
-}
 
 void PageActionView::OnPageActionModelVisualRefresh(
     PageActionModelInterface* model) {

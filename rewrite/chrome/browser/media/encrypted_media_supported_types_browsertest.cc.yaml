@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Expect HEVC on Windows and Linux when FFmpeg decodes it.
+
+      Brave builds FFmpeg with HEVC, so HEVC support there doesn't depend on
+      the GPU capabilities the tests can't inject.
+    regex:
+      re_pattern:
+        '(CheckPlatformHevcSupport\(.*?#if BUILDFLAG\(IS_WIN\) \|\|
+        BUILDFLAG\(IS_LINUX\)\n(?:\s*//[^\n]*\n)*)(\s*)EXPECT_UNSUPPORTED\(hevc_supported\);'
+      re_flags: [DOTALL]
+      replace: |-
+        \1\2if (media::FFmpegSupportsHEVC()) {
+              EXPECT_ECK_PROPRIETARY(hevc_supported);
+            } else {
+              EXPECT_UNSUPPORTED(hevc_supported);
+            }

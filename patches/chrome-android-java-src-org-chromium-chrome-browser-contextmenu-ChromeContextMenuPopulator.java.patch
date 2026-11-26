@@ -1,30 +1,30 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-index 44274b0b8f1d1aab2ce06f0eead39287da8bc3b6..fd999276c1d50049c7ffa4a30b363168a9891287 100644
+index 6657973a58e2a7a59a9d17efb8f69c695065d859..2621ea9b285741a8e8936918af587dd5d293130b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-@@ -277,6 +277,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             Action.CREATE_QR_CODE,
-             Action.ASK_GEMINI,
+@@ -281,6 +281,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              Action.ASK_GEMINI_IMAGE,
+             Action.ASK_GOOGLE_ABOUT_PAGE,
+             Action.ASK_GOOGLE_ABOUT_IMAGE,
 +            Action.COPY_CLEAN_LINK,
          })
          @Retention(RetentionPolicy.SOURCE)
          public @interface Action {
-@@ -341,7 +342,8 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             int CREATE_QR_CODE = 58;
-             int ASK_GEMINI = 59;
+@@ -347,7 +348,8 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              int ASK_GEMINI_IMAGE = 60;
--            int NUM_ENTRIES = 61;
-+            int COPY_CLEAN_LINK = 61;
+             int ASK_GOOGLE_ABOUT_PAGE = 61;
+             int ASK_GOOGLE_ABOUT_IMAGE = 62;
+-            int NUM_ENTRIES = 63;
++            int COPY_CLEAN_LINK = 63;
 +            int NUM_ENTRIES = COPY_CLEAN_LINK + 1;
          }
  
-         // LINT.ThenChange(/tools/metrics/histograms/enums.xml:ContextMenuOptionAndroid)
-@@ -734,6 +736,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+         // LINT.ThenChange(//tools/metrics/histograms/metadata/android/enums.xml:ContextMenuOptionAndroid)
+@@ -751,6 +753,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              if (!MailTo.isMailTo(mParams.getLinkUrl().getSpec())
                      && !UrlUtilities.isTelScheme(mParams.getLinkUrl())) {
                  linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));
 +                linkGroup.add(createListItem(Item.COPY_CLEAN_LINK));
-                 if (!mParams.getLinkText().trim().isEmpty() && !mParams.isImage()) {
-                     linkGroup.add(createListItem(Item.COPY_LINK_TEXT));
-                 }
+                 if (!mParams.getLinkText().trim().isEmpty()
+                         && !mParams.isImage()
+                         && !mParams.isCanvas()) {

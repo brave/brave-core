@@ -65,12 +65,18 @@ regexes, compatible with the RE2 syntax upstream writes: write flags scoped,
 
 A repository's DIR_METADATA files scope `agentic_review` to their directory,
 inheriting from their ancestors, importing `mixins` and dropping
-`exclude_rules`, as `dirmd` computes them. Brave reviews its changes with two
-knowledge bases: its own, `docs/knowledge_base/rules`, which applies to every
-Brave file, and Chromium's, `agents/knowledge_base/rules`, which applies to
-each Brave file as `brave/<path>`, and to the upstream file it overrides
-(`chromium_src`, `rewrite/` plasters and `patches/`, through the lines the
-patch adds) under the upstream file's path and DIR_METADATA.
+`exclude_rules`, as `dirmd` computes them. Their rules can live beside the code
+they cover (`<dir>/knowledge_base/*.md`, as upstream's
+`net/device_bound_sessions` keeps them), outside any knowledge base.
+
+Brave reviews its changes with two knowledge bases: its own,
+`docs/knowledge_base/rules`, which applies to every Brave file, and Chromium's,
+`agents/knowledge_base/rules`, which applies to each Brave file as
+`brave/<path>`, and to the upstream file it overrides (`chromium_src`,
+`rewrite/` plasters and `patches/`, through the lines the patch adds) under the
+upstream file's path and DIR_METADATA. Brave scopes upstream rules for its own
+code in `docs/knowledge_base/upstream`, read as part of Chromium's knowledge
+base.
 
     vpython3 tools/cr/codehealth/scripts/knowledge_base.py match [DIFF]
         [--head REV]
@@ -97,6 +103,9 @@ import yaml
 # Each repository's own knowledge base, which applies to all of its files.
 _BRAVE_RULES = 'docs/knowledge_base/rules'
 _CHROMIUM_RULES = 'agents/knowledge_base/rules'
+# Brave's scopes for Chromium's rules, in brave-core: metadata read as part of
+# Chromium's knowledge base, its paths and rules relative to Chromium's `src`.
+_UPSTREAM_SCOPES = 'docs/knowledge_base/upstream'
 
 # Where a rule is read online, by the repository holding it.
 _BRAVE_URL = 'https://github.com/brave/brave-core/blob/master/'
@@ -596,6 +605,10 @@ class _File:
     change: FileChange
     # Reads the file as the change leaves it, or None when nothing can.
     read: Callable[[], str | None] | None = None
+    # Whether the file counts only for the lines it adds, as upstream's
+    # reviewer reads a change under review. A sweep of upstream changes
+    # counts removals as well: what upstream drops can be what Brave uses.
+    added_only: bool = False
 
 
 @dataclass(frozen=True)
@@ -706,6 +719,26 @@ class CapabilityGroup:
             self.content_patterns or self.diff_patterns or self.ast_patterns
         )
 
+    # A path naming whole top-level directories: `chrome/.*`,
+    # `(?:ios|base/apple)/.*`.
+    _TOP_LEVEL = re.compile(r'(?:\(\?:)?[\w-]+(?:\|[\w/-]+)*\)?/\.\*')
+
+    def directory_wide_for(self, path: str) -> bool:
+        """Whether the group reaches `path` only as anything in a whole
+        top-level directory, finding no lines: guidance for code written
+        there, which an override of one file in it rarely is. Its other
+        paths, Brave's own say, don't make it narrower for this one."""
+        if self.targeted:
+            return False
+        reaching = [
+            p.pattern
+            for p in self._compiled['path_expression']
+            if p.fullmatch(path)
+        ]
+        return bool(reaching) and all(
+            self._TOP_LEVEL.fullmatch(p) for p in reaching
+        )
+
     @property
     def unconditional(self) -> bool:
         """Whether the group applies to every change."""
@@ -764,6 +797,16 @@ class CapabilityGroup:
         # overrode before the rebase moved the override along.
         names = [file.path] + ([change.old_path] if change.old_path else [])
         if not any(self._names(name, brave) for name in names):
+            return None
+        # Only Brave's diff patterns look at a reviewed file's removals.
+        if (
+            file.added_only
+            and not change.added
+            and not (
+                self._compiled['diff_patterns']
+                or self._compiled['required_diff_patterns']
+            )
+        ):
             return None
         if not all(
             any(p.search(line) for line in change.lines)
@@ -1132,6 +1175,13 @@ class _Tree:
             if rules:
                 for path in sorted((root / rules).rglob('COMMON_METADATA')):
                     groups += self._read(path).groups
+            # Brave's scopes reach upstream rules only DIR_METADATA scopes,
+            # which a Brave file's own directories never read.
+            if rules == _CHROMIUM_RULES:
+                for path in sorted(
+                    (self._brave / _UPSTREAM_SCOPES).rglob('COMMON_METADATA')
+                ):
+                    groups += self._read(path).groups
             self._imported[root] = groups
         return self._imported[root]
 
@@ -1164,28 +1214,38 @@ def review(change: Change) -> list[Match]:
 
     Each file is matched as Brave's tree sees it, and as `brave/<path>` in
     Chromium's; a file overriding an upstream one also as that file, under
-    its DIR_METADATA, with the lines a patch adds to it. Matches name the
-    Brave file."""
+    its DIR_METADATA, with the code it adds there: a patch's added lines, or
+    a shadow's own code. A plaster counts through the patch it regenerates,
+    which the change carries. Matches name the Brave file."""
     tree = _Tree()
     brave = brave_tree()
     scopes: dict[tuple[int, Path], _Scope] = {}
     for path, fc in change.files.items():
         read = functools.partial(change.read, path)
-        views = [(f'{repository.BRAVE_DIR_NAME}/{path}', fc, read)]
+        views = [(f'{repository.BRAVE_DIR_NAME}/{path}', fc, read, False)]
         override = brave.override(path, fc.lines)
         if override:
             upstream, kind = override
             if kind == 'patch':
-                views.append((upstream, _patched(fc), None))
-            else:
-                # A plaster's lines are YAML: no AST to read.
-                views.append(
-                    (upstream, fc, None if kind == 'plaster' else read)
-                )
-        for view, view_change, view_read in views:
+                views.append((upstream, _patched(fc), None, True))
+            elif kind != 'plaster':
+                views.append((upstream, _shadowing(fc), read, True))
+        for view, view_change, view_read, overriding in views:
             groups, excluded, names = tree.scope(view)
             for scoped in groups:
-                file = _File(names[scoped.root], path, view_change, view_read)
+                # An override reaches the rules scoped to what it overrides,
+                # not those for anything written in its top-level directory.
+                if overriding and scoped.group.directory_wide_for(
+                    names[scoped.root]
+                ):
+                    continue
+                file = _File(
+                    names[scoped.root],
+                    path,
+                    view_change,
+                    view_read,
+                    added_only=True,
+                )
                 key = (id(scoped.group), scoped.root)
                 scopes.setdefault(key, (scoped, []))[1].append((file, excluded))
     matches = _apply(change, list(scopes.values()), brave)
@@ -1199,6 +1259,34 @@ def review(change: Change) -> list[Match]:
             m.rule.name,
         ),
     )
+
+
+# Lines of an override that are no code of its own: blank lines, comments
+# (licence headers included), include guards and the upstream file's
+# inclusion. Without anything else, the override adds nothing upstream.
+_BOILERPLATE = re.compile(
+    r'\s*(?:'
+    r'|//.*|/?\*.*|#(?!\s*(?:define|undef|include|if|el|endif|pragma)\b).*'
+    r'|#\s*(?:ifndef|endif)\b.*'
+    r'|#\s*define\s+BRAVE_CHROMIUM_SRC_\w+_H_\s*'
+    r'|#\s*include(?:_next)?\s*[<"][^>"]*[>"]\s*(?://.*)?'
+    r')'
+)
+
+
+def _shadowing(shadow: FileChange) -> FileChange:
+    """The change a `chromium_src` shadow or Lit mangler makes to the
+    upstream file: its added lines that are code of its own."""
+    kept = FileChange(old_path=shadow.old_path)
+    for number, text in shadow.added.items():
+        if not _BOILERPLATE.fullmatch(text):
+            kept.added[number] = text
+    kept.lines = [
+        line
+        for line in shadow.lines
+        if line.startswith('-') or line[1:] in kept.added.values()
+    ]
+    return kept
 
 
 def _patched(patch: FileChange) -> FileChange:
@@ -1241,6 +1329,9 @@ class _Lint:
         # with its COMMON_METADATA.
         roots: set[PurePosixPath] = set()
         for path in metadata:
+            if PurePosixPath(path).is_relative_to(_UPSTREAM_SCOPES):
+                self._metadata(self._brave, path, self._src)
+                continue
             named |= self._metadata(self._brave, path)
             if PurePosixPath(path).name == 'COMMON_METADATA':
                 roots.add(PurePosixPath(path).parent.parent)
@@ -1250,8 +1341,14 @@ class _Lint:
             self._metadata(self._src, path.relative_to(self._src).as_posix())
         names: dict[str, str] = {}
         for path in sorted(files):
-            if path.endswith('.md') and any(
-                PurePosixPath(path).is_relative_to(root) for root in roots
+            # A rule kept beside the code a DIR_METADATA scopes it to, as
+            # upstream's net/device_bound_sessions/knowledge_base, is outside
+            # any knowledge base.
+            if path.endswith('.md') and (
+                path in named
+                or any(
+                    PurePosixPath(path).is_relative_to(root) for root in roots
+                )
             ):
                 self._rule(path, named, names)
         return self.problems
@@ -1259,8 +1356,12 @@ class _Lint:
     def _problem(self, where: str, what: str) -> None:
         self.problems.append(f'{where}: {what}')
 
-    def _metadata(self, root: Path, path: str) -> set[str]:
-        """Checks one metadata file; returns the rules it names."""
+    def _metadata(
+        self, root: Path, path: str, rules_root: Path | None = None
+    ) -> set[str]:
+        """Checks one metadata file, in `root`, whose rules are relative to
+        `rules_root` (`root` by default); returns the rules it names."""
+        rules_root = rules_root or root
         try:
             parsed = _Metadata.read(root / path)
         except ValueError as e:
@@ -1292,11 +1393,11 @@ class _Lint:
                         self._problem(
                             where, f'{named_path}: not a {suffix} file'
                         )
-                    elif not (root / named_path).is_file():
+                    elif not (rules_root / named_path).is_file():
                         self._problem(where, f'{named_path}: no such file')
             named.update(group.rules)
         for rule in parsed.exclude_rules:
-            if not (root / rule).is_file():
+            if not (rules_root / rule).is_file():
                 self._problem(path, f'exclude_rules {rule}: no such file')
         return named
 

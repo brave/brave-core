@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/page_content_annotations/BUILD.gn b/chrome/browser/page_content_annotations/BUILD.gn
-index 64ff3172c9581a35a953f8bac8ada85eced360f7..ab4f7f6e27dde1b8d24529529b02e8e4cb7a41fa 100644
+index cfcd25d65e4d68cb3de9a142ae652500b37a01e2..5ca300d8d0b7d71bef25d787bea1059fbcf7cd51 100644
 --- a/chrome/browser/page_content_annotations/BUILD.gn
 +++ b/chrome/browser/page_content_annotations/BUILD.gn
 @@ -2,6 +2,7 @@

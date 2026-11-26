@@ -102,7 +102,7 @@
 # https://github.com/brave/brave-browser/issues/52572
 # https://github.com/brave/brave-browser/issues/52649
 # https://github.com/brave/brave-browser/issues/52569
--All/PDFPluginDisabledTest.DirectNavigationToPDF/*
+-PDFPluginDisabledTest.DirectNavigationToPDF
 -ChromeMojoProxyResolverFactoryBrowserTest.*
 -PluginResponseInterceptorURLLoaderThrottleBrowserTest.DownloadPdf
 
@@ -371,6 +371,16 @@
 # rather than fixed. Filters cannot target Origin builds, so it applies to all
 # Linux builds. Windows has its own entry in browser_tests-win.filter.
 -HorizontalTabStripViewLayoutBrowserTest.ScrollToFitViewsAccountsForPostScrollOverflowIndicator
+
+# These tests fail because Brave adds its P3A notice infobar to the active tab
+# at startup, which on Linux is the test's first tab now that activating a
+# browser window shows it. The tests expect no other infobars there, and
+# InfoBarUiTest keeps a dangling pointer to the notice once the tab closes.
+-AlternateNavInfoBarDelegateCentralizedInlineLinksTest.InvokeUi_CentralizedInlineLinks
+-AlternateNavInfoBarDelegateInlineLinksTest.InvokeUi_InlineLinks
+-All/InfoBarUiTest.*
+-All/TabSharingUIViewsTabDiscardBrowserTest.ReplaceNonSharedTabRemovesOldInfobar/*
+-All/TabSharingUIViewsTabDiscardBrowserTest.ReplaceSharedTabStopsSharing/*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*

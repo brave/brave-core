@@ -1,8 +1,17 @@
 diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
-index bf3fdc2ec5f581e4a0c21b5991180728895b655b..0917a3b2540f61e61f01dc295646fc4bbc2ad780 100644
+index 6c2281badd13d54bed7caa77a2b8b843d3b284a6..e3da9627ab81d2d770107e334be01e592ebe83a8 100644
 --- a/chrome/browser/ui/ui_features.cc
 +++ b/chrome/browser/ui/ui_features.cc
-@@ -232,7 +232,7 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -127,7 +127,7 @@ BASE_FEATURE_PARAM(int,
+                    kTabStripDeclutterMaxTabWidthForCloseHide,
+                    &kTabStripDeclutter,
+                    100);
+-BASE_FEATURE(kToolbarGlowUp, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kToolbarGlowUp, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE_PARAM(bool,
+                    kToolbarGlowUpReloadEnabled,
+                    &kToolbarGlowUp,
+@@ -254,7 +254,7 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_ENABLED_BY_DEFAULT);
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
  // Shows an infobar on PDFs offering to become the default PDF viewer if Chrome
  // isn't the default already.
@@ -11,7 +20,7 @@ index bf3fdc2ec5f581e4a0c21b5991180728895b655b..0917a3b2540f61e61f01dc295646fc4b
  
  BASE_FEATURE(kSeparateDefaultAndPinPrompt,
  #if BUILDFLAG(IS_WIN)
-@@ -348,13 +348,8 @@ BASE_FEATURE(kNewTabButtonContextMenu, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -372,13 +372,8 @@ BASE_FEATURE(kNewTabButtonContextMenu, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Enables preview images in tab-hover cards.
  // https://crbug.com/41439486
@@ -27,7 +36,7 @@ index bf3fdc2ec5f581e4a0c21b5991180728895b655b..0917a3b2540f61e61f01dc295646fc4b
  
  BASE_FEATURE(kTabModalUsesDesktopWidget, base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -429,7 +424,7 @@ BASE_FEATURE(kNonMilestoneUpdateToast, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -456,7 +451,7 @@ BASE_FEATURE(kNonMilestoneUpdateToast, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kRespectShouldTriggerSessionRestoreOnDesktop,
               base::FEATURE_ENABLED_BY_DEFAULT);
  

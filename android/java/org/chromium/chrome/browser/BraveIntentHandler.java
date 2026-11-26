@@ -198,7 +198,7 @@ public class BraveIntentHandler {
                         }
                     });
         } catch (Exception e) {
-            Log.e(TAG, "Could not retrieve search query: " + e);
+            Log.e(TAG, "Could not retrieve search query", e);
         }
         return null;
     }

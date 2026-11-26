@@ -8,16 +8,20 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <variant>
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/functional/callback_helpers.h"
 #include "base/location.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
+#include "base/threading/thread_restrictions.h"
 #include "base/uuid.h"
 #include "brave/browser/ai_chat/workspace_associated_content_browsertest_base.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
@@ -65,6 +69,11 @@ class WorkspaceAssociatedContentBrowserTest
   ~WorkspaceAssociatedContentBrowserTest() override = default;
 
  protected:
+  // Where a PRE_ test leaves what the test after the restart needs.
+  base::FilePath GetRestoreStatePath(std::string_view name) {
+    return browser()->GetProfile()->GetPath().AppendASCII(name);
+  }
+
   ContentSetting GetSetting(const GURL& url, ContentSettingsType type) {
     return HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile())
         ->GetContentSetting(url, url, type);
@@ -290,6 +299,64 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
   EXPECT_EQ(page_url, web_contents->GetLastCommittedURL());
   EXPECT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+}
+
+// The folder a PRE_ test leaves for the restart has to be under the system temp
+// directory, which on Windows is inside one File System Access blocks, and it
+// checks that blocklist when it reads a stored handle back.
+class WorkspaceAssociatedContentRestoreBrowserTest
+    : public WorkspaceAssociatedContentBrowserTest {
+ public:
+  WorkspaceAssociatedContentRestoreBrowserTest() {
+    deserialize_blocklist_feature_list_.InitFromCommandLine(
+        /*enable_features=*/"",
+        /*disable_features=*/"FileSystemAccessDeserializeBlocklistCheck");
+  }
+
+ private:
+  base::test::ScopedFeatureList deserialize_blocklist_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentRestoreBrowserTest,
+                       PRE_RestoredWorkspaceKeepsFolderAccess) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  // The folder must outlive this test, so it can't be in |temp_dir_|, and File
+  // System Access blocks the profile directory.
+  base::FilePath folder;
+  ASSERT_TRUE(
+      base::CreateNewTempDirectory(FILE_PATH_LITERAL("workspace"), &folder));
+  auto* content = CreateContent(folder);
+  ASSERT_TRUE(WaitForStoredHandle(content));
+  ASSERT_TRUE(base::WriteFile(GetRestoreStatePath("workspace_url"),
+                              content->url().spec()));
+  ASSERT_TRUE(base::WriteFile(GetRestoreStatePath("workspace_folder"),
+                              folder.AsUTF8Unsafe()));
+}
+
+// After a restart, the restored page reopens its folder from the handle it
+// saved, with the access it was granted when the workspace was created.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentRestoreBrowserTest,
+                       RestoredWorkspaceKeepsFolderAccess) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  std::string workspace_url;
+  std::string folder;
+  ASSERT_TRUE(base::ReadFileToString(GetRestoreStatePath("workspace_url"),
+                                     &workspace_url));
+  ASSERT_TRUE(
+      base::ReadFileToString(GetRestoreStatePath("workspace_folder"), &folder));
+
+  auto content = WorkspaceAssociatedContent::CreateFromUrl(
+      GURL(workspace_url), /*content_uuid=*/std::nullopt,
+      browser()->GetProfile(), base::DoNothing());
+  ASSERT_TRUE(content);
+  ASSERT_TRUE(content::WaitForLoadStop(content->GetWebContentsForTesting()));
+  EXPECT_EQ("granted", content::EvalJs(content->GetWebContentsForTesting(),
+                                       base::StrCat({kGetStoredHandleJs, R"JS(
+          .then(handle => handle.queryPermission({mode: 'readwrite'}))
+      )JS"})));
+
+  EXPECT_TRUE(
+      base::DeletePathRecursively(base::FilePath::FromUTF8Unsafe(folder)));
 }
 
 // Stored URLs are read back from the database, so anything that isn't exactly

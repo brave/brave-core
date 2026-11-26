@@ -341,6 +341,16 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessHtmlFile) {
   EXPECT_TRUE(result->extracted_text->find("<script>") != std::string::npos);
 }
 
+IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
+                       DoesNotShareProcessWithTopChromeWebUI) {
+  const auto leo_process_id =
+      web_contents()->GetPrimaryMainFrame()->GetProcess()->GetID();
+  ASSERT_TRUE(
+      NavigateToURL(web_contents(), GURL("chrome://wallet-panel.top-chrome")));
+  EXPECT_NE(leo_process_id,
+            web_contents()->GetPrimaryMainFrame()->GetProcess()->GetID());
+}
+
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,

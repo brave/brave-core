@@ -92,3 +92,14 @@ substitutions:
     regex:
       pattern: 'R.dimen.toolbar_edge_padding_ntp'
       replace: 'R.dimen.brave_toolbar_edge_padding_ntp'
+  - description: |
+      Keep the optional toolbar button on the NTP.
+
+      Upstream hides it there because its identity disc became a dedicated
+      sign-in button. Brave does not create that button and uses the slot for
+      the Toolbar shortcut (Leo, Wallet, Bookmarks, History, Downloads), which
+      the NTP showed until this gate was added.
+    regex:
+      re_pattern: |-
+        (return !mIsToolbarUiRefactorEnabled) && !isNtpVisualState\(mVisualState\);
+      replace: '\1;'

@@ -1,8 +1,8 @@
 diff --git a/net/url_request/url_request_http_job.cc b/net/url_request/url_request_http_job.cc
-index 3c8bd18bb51758d5ae7a2efa6f4c2a4b953650b3..6550b5efc0ceb8a9ea055a4456401dc5d24041db 100644
+index 8c551d16326a27012746d423793b30d29613affc..90ab57314565ba91855e4f3707cceee1213c71ba 100644
 --- a/net/url_request/url_request_http_job.cc
 +++ b/net/url_request/url_request_http_job.cc
-@@ -364,7 +364,7 @@ std::unique_ptr<URLRequestJob> URLRequestHttpJob::Create(URLRequest* request) {
+@@ -370,7 +370,7 @@ std::unique_ptr<URLRequestJob> URLRequestHttpJob::Create(URLRequest* request) {
    SSLUpgradeDecision upgrade_decision = SSLUpgradeDecision::kNoUpgrade;
    if (TransportSecurityState* hsts =
            request->context()->transport_security_state()) {
@@ -11,7 +11,7 @@ index 3c8bd18bb51758d5ae7a2efa6f4c2a4b953650b3..6550b5efc0ceb8a9ea055a4456401dc5
          url.GetHost(),
          /*is_top_level_nav=*/
          request->isolation_info().IsOutermostMainFrameRequest(),
-@@ -766,6 +766,7 @@ void URLRequestHttpJob::AddExtraHeaders() {
+@@ -795,6 +795,7 @@ void URLRequestHttpJob::AddExtraHeaders() {
        request()->context()->enable_brotli(),
        request()->context()->enable_zstd());
  
@@ -19,7 +19,7 @@ index 3c8bd18bb51758d5ae7a2efa6f4c2a4b953650b3..6550b5efc0ceb8a9ea055a4456401dc5
    if (http_user_agent_settings_) {
      // Only add default Accept-Language if the request didn't have it
      // specified.
-@@ -1205,7 +1206,7 @@ void URLRequestHttpJob::ProcessStrictTransportSecurityHeader() {
+@@ -1297,7 +1298,7 @@ void URLRequestHttpJob::ProcessStrictTransportSecurityHeader() {
    std::optional<std::string_view> value;
    if ((value =
             headers->EnumerateHeader(nullptr, "Strict-Transport-Security"))) {
@@ -28,7 +28,7 @@ index 3c8bd18bb51758d5ae7a2efa6f4c2a4b953650b3..6550b5efc0ceb8a9ea055a4456401dc5
    }
  }
  
-@@ -1285,7 +1286,7 @@ void URLRequestHttpJob::OnStartCompleted(int result) {
+@@ -1377,7 +1378,7 @@ void URLRequestHttpJob::OnStartCompleted(int result) {
      TransportSecurityState* state = context->transport_security_state();
      NotifySSLCertificateError(
          result, transaction_->GetResponseInfo()->ssl_info,

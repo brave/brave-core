@@ -11,7 +11,6 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_page_action_controller.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
@@ -79,14 +78,8 @@ class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
   }
 
   WaybackMachinePageActionController* GetController() {
-    auto* tab = browser()->GetActiveTabInterface();
-    if (!tab) {
-      return nullptr;
-    }
-    auto* tab_features =
-        tabs::BraveTabFeatures::FromTabFeatures(tab->GetTabFeatures());
-    return tab_features ? tab_features->wayback_machine_page_action_controller()
-                        : nullptr;
+    return WaybackMachinePageActionController::From(
+        browser()->GetActiveTabInterface());
   }
 
   WaybackMachineBubbleView* GetBubbleView() {

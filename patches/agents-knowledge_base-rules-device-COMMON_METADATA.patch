@@ -1,0 +1,12 @@
+diff --git a/agents/knowledge_base/rules/device/COMMON_METADATA b/agents/knowledge_base/rules/device/COMMON_METADATA
+index 5277a32ee1a63c56bf5acb89b24c79f12abb9f48..a311389bde07290f40a0c22801fac53dbe980f99 100644
+--- a/agents/knowledge_base/rules/device/COMMON_METADATA
++++ b/agents/knowledge_base/rules/device/COMMON_METADATA
+@@ -26,6 +26,7 @@ agentic_review {
+     path_expression: "(?:(?:chrome|content)/browser/(?:bluetooth|hid|serial|usb)|components/permissions/contexts)/.*\\.(?:cc|h|mm)"
+     path_expression_exclusion: ".*(?:_unittest|_browsertest|_interactive_uitest|_test_util)\\.(?:cc|h|mm)"
+     content_patterns: "\\b(?:ChooserContext|ObjectPermissionContextBase|IsValidObject|Grant\\w*Permission\\w*|Revoke\\w*Permission\\w*|StoragePartition|GetDefaultStoragePartition|ForEachLoadedStoragePartition|ephemeral_\\w*|UnguessableToken)\\b"
++    path_expression: "brave/components/permissions/contexts/.*\\.(?:cc|h|mm)"
+     rules: "agents/knowledge_base/rules/device/isolate-chooser-permissions-across-origins-and-storage-partitions.md"
+   }
+ 

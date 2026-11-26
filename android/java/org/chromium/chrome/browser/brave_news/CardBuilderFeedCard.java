@@ -108,7 +108,7 @@ public class CardBuilderFeedCard {
         try {
             createCard(mType, mPosition);
         } catch (Exception e) {
-            Log.e(TAG, "Exception createCard:" + e.getMessage());
+            Log.e(TAG, "Exception createCard", e);
         }
     }
 
@@ -428,7 +428,7 @@ public class CardBuilderFeedCard {
                     break;
             }
         } catch (Exception e) {
-            Log.e(TAG, "cardfeedbuilder crashinvestigation exception:" + e.getMessage());
+            Log.e(TAG, "cardfeedbuilder crashinvestigation exception", e);
         }
 
         return mLinearLayout;
@@ -463,7 +463,7 @@ public class CardBuilderFeedCard {
                             mPosition);
             TabUtils.openUrlInSameTab(myUrl);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "openUrlInSameTabAndSavePosition " + e);
+            Log.e(TAG, "openUrlInSameTabAndSavePosition", e);
         }
     }
 
@@ -915,7 +915,7 @@ public class CardBuilderFeedCard {
             });
 
         } catch (Exception e) {
-            Log.e(TAG, "Exception addElementsToSingleLayout: " + e.getMessage());
+            Log.e(TAG, "Exception addElementsToSingleLayout", e);
         }
     }
 
@@ -941,7 +941,7 @@ public class CardBuilderFeedCard {
             }
 
         } catch (Exception e) {
-            Log.e(TAG, " exceptionscaught e:" + e.getMessage());
+            Log.e(TAG, " exceptionscaught", e);
         }
     }
 
@@ -967,7 +967,7 @@ public class CardBuilderFeedCard {
                     break;
             }
         } catch (Exception e) {
-            Log.e(TAG, " exceptionscaught getItemData e:" + e.getMessage());
+            Log.e(TAG, " exceptionscaught getItemData", e);
         }
 
         final FeedItemMetadata itemDataFinal = itemData;

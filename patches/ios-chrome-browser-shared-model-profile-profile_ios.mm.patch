@@ -1,0 +1,13 @@
+diff --git a/ios/chrome/browser/shared/model/profile/profile_ios.mm b/ios/chrome/browser/shared/model/profile/profile_ios.mm
+index c55fbc61ed514371a3a3080e04870907f5bb2fbe..72748c0cf471ddaa428f39b9735400936a2b3d90 100644
+--- a/ios/chrome/browser/shared/model/profile/profile_ios.mm
++++ b/ios/chrome/browser/shared/model/profile/profile_ios.mm
+@@ -101,6 +101,8 @@ net::URLRequestContextGetter* ProfileIOS::GetRequestContext() {
+   if (!request_context_getter_) {
+     ProtocolHandlerMap protocol_handlers;
+     protocol_handlers[kChromeUIScheme] = web::CreateWebUIProtocolHandler(this);
++    protocol_handlers[kChromeUIUntrustedScheme] =
++        web::CreateWebUIProtocolHandler(this);
+     request_context_getter_ =
+         base::WrapRefCounted(CreateRequestContext(&protocol_handlers));
+   }

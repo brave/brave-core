@@ -165,6 +165,22 @@
     }
   },
   {
+    "cmd": [
+      "cat"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "review links",
+    "stdin": "New CLs (2):\n- [[cr160] Fix 3](https://gerrit.brave.com/c/brave-browser/brave-core/+/43)\n- [[cr160] A teammate fix](https://gerrit.brave.com/c/brave-browser/brave-core/+/49)\nTo review (1):\n- [[cr160] Fix 1](https://gerrit.brave.com/c/brave-browser/brave-core/+/41/2..3)\n"
+  },
+  {
     "name": "$result",
     "summaryMarkdown": "New CLs (2):\n- [[cr160] Fix 3](https://gerrit.brave.com/c/brave-browser/brave-core/+/43)\n- [[cr160] A teammate fix](https://gerrit.brave.com/c/brave-browser/brave-core/+/49)\nTo review (1):\n- [[cr160] Fix 1](https://gerrit.brave.com/c/brave-browser/brave-core/+/41/2..3)"
   }

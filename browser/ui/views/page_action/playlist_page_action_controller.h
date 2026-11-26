@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/page_action/page_action_controller.h"
 #include "components/prefs/pref_member.h"
 #include "components/tabs/public/tab_interface.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 namespace content {
 class WebContents;
@@ -28,6 +29,10 @@ namespace page_actions {
 class PlaylistPageActionController
     : public playlist::PlaylistTabHelperObserver {
  public:
+  DECLARE_USER_DATA(PlaylistPageActionController);
+
+  static PlaylistPageActionController* From(tabs::TabInterface* tab);
+
   PlaylistPageActionController(
       tabs::TabInterface& tab,
       page_actions::PageActionController& page_action_controller);
@@ -77,6 +82,9 @@ class PlaylistPageActionController
   base::ScopedObservation<playlist::PlaylistTabHelper,
                           playlist::PlaylistTabHelperObserver>
       tab_helper_observation_{this};
+
+  ui::ScopedUnownedUserData<PlaylistPageActionController>
+      scoped_unowned_user_data_;
 };
 
 }  // namespace page_actions

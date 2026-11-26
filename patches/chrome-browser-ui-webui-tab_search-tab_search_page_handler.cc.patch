@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
-index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883bf6d9d72 100644
+index 25589fd8278e8edf28f88f878c1e8257273b6170..6ce28650083915f262b85c77f3e38bf114d4340b 100644
 --- a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
 +++ b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
-@@ -171,7 +171,7 @@ tab_search::mojom::SplitTabLayout GetMojoSplitLayout(
+@@ -173,7 +173,7 @@ tab_search::mojom::SplitTabLayout GetMojoSplitLayout(
  
  }  // namespace
  
@@ -11,7 +11,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
      mojo::PendingReceiver<tab_search::mojom::PageHandler> receiver,
      mojo::PendingRemote<tab_search::mojom::Page> page,
      content::WebUI* web_ui,
-@@ -188,20 +188,20 @@ TabSearchPageHandler::TabSearchPageHandler(
+@@ -190,20 +190,20 @@ TabSearchPageHandler::TabSearchPageHandler(
        debounce_timer_(std::make_unique<base::RetainingOneShotTimer>(
            FROM_HERE,
            kTabsChangeDelay,
@@ -33,10 +33,15 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
 -          base::BindRepeating(&TabSearchPageHandler::OnTabEvents,
 +          base::BindRepeating(&TabSearchPageHandler_ChromiumImpl::OnTabEvents,
                                base::Unretained(this)))) {
-   if (IsWebContentsVisible()) {
-     bubble_showing_ = true;
-@@ -209,14 +209,14 @@ TabSearchPageHandler::TabSearchPageHandler(
-   BrowserWindowInterfaceChanged();
+   if (sessions::TabRestoreService* tab_restore_service =
+           TabRestoreServiceFactory::GetForProfile(profile_)) {
+@@ -219,18 +219,18 @@ TabSearchPageHandler::TabSearchPageHandler(
+   if (tabs::TabInterface* tab =
+           webui::GetTabInterface(web_ui_->GetWebContents())) {
+     split_changed_subscription_ = tab->RegisterSplitChanged(base::BindRepeating(
+-        &TabSearchPageHandler::OnSplitChanged, base::Unretained(this)));
++        &TabSearchPageHandler_ChromiumImpl::OnSplitChanged, base::Unretained(this)));
+   }
  }
  
 -TabSearchPageHandler::~TabSearchPageHandler() {
@@ -52,7 +57,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
    tabs::TabInterface* const tab = GetTabInterface(tab_id);
    if (!tab) {
      return;
-@@ -246,7 +246,7 @@ void TabSearchPageHandler::CloseTab(int32_t tab_id) {
+@@ -265,7 +265,7 @@ void TabSearchPageHandler::CloseTab(int32_t tab_id) {
    // Do not add code past this point.
  }
  
@@ -61,7 +66,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
    std::vector<tabs_api::NodeId> nodes;
    std::optional<split_tabs::SplitTabId> split_id;
    tabs::TabInterface* valid_tab = nullptr;
-@@ -294,7 +294,7 @@ void TabSearchPageHandler::CloseTabs(const std::vector<int32_t>& tab_ids) {
+@@ -318,7 +318,7 @@ void TabSearchPageHandler::CloseTabs(const std::vector<int32_t>& tab_ids) {
    CHECK(result.has_value(), base::NotFatalUntil::M162);
  }
  
@@ -70,7 +75,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
    tabs::TabInterface* const tab =
        tabs::TabInterface::GetFromContents(web_ui_->GetWebContents());
    if (tab) {
-@@ -305,12 +305,12 @@ void TabSearchPageHandler::CloseWebUiTab() {
+@@ -329,18 +329,18 @@ void TabSearchPageHandler::CloseWebUiTab() {
  
  // Tab Search UI can also hosted inside a tab and so we still need to
  // be able to handle browser window changes.
@@ -80,12 +85,19 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
    page_->HostWindowChanged();
  }
  
+-OrganizerPanelController* TabSearchPageHandler::GetOrganizerPanelController()
++OrganizerPanelController* TabSearchPageHandler_ChromiumImpl::GetOrganizerPanelController()
+     const {
+   return !log_metrics_ && browser_ ? OrganizerPanelController::From(browser_)
+                                    : nullptr;
+ }
+ 
 -void TabSearchPageHandler::GetProfileData(GetProfileDataCallback callback) {
 +void TabSearchPageHandler_ChromiumImpl::GetProfileData(GetProfileDataCallback callback) {
    TRACE_EVENT0("browser", "TabSearchPageHandler:GetProfileTabs");
    auto profile_tabs = CreateProfileData();
    // On first run record the number of windows and tabs open for the given
-@@ -336,7 +336,7 @@ void TabSearchPageHandler::GetProfileData(GetProfileDataCallback callback) {
+@@ -366,7 +366,7 @@ void TabSearchPageHandler::GetProfileData(GetProfileDataCallback callback) {
    std::move(callback).Run(std::move(profile_tabs));
  }
  
@@ -94,16 +106,16 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
    const tabs::TabHandle handle = tabs::TabHandle(tab_id);
    tabs::TabInterface* const tab = handle.Get();
    if (!tab) {
-@@ -349,7 +349,7 @@ tabs::TabInterface* TabSearchPageHandler::GetTabInterface(int32_t tab_id) {
+@@ -379,7 +379,7 @@ tabs::TabInterface* TabSearchPageHandler::GetTabInterface(int32_t tab_id) {
    return tab;
  }
  
 -void TabSearchPageHandler::GetIsSplit(GetIsSplitCallback callback) {
 +void TabSearchPageHandler_ChromiumImpl::GetIsSplit(GetIsSplitCallback callback) {
    bool is_split = false;
-   GURL url = web_ui_->GetWebContents()->GetURL();
+   const GURL& url = web_ui_->GetWebContents()->GetLastCommittedURL();
    if (search::IsSplitViewNewTabPage(url)) {
-@@ -359,7 +359,7 @@ void TabSearchPageHandler::GetIsSplit(GetIsSplitCallback callback) {
+@@ -389,7 +389,7 @@ void TabSearchPageHandler::GetIsSplit(GetIsSplitCallback callback) {
    std::move(callback).Run(is_split);
  }
  
@@ -112,7 +124,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
      tab_search::mojom::SwitchToTabInfoPtr switch_to_tab_info) {
    tabs::TabInterface* const tab = GetTabInterface(switch_to_tab_info->tab_id);
    if (!tab) {
-@@ -393,7 +393,7 @@ void TabSearchPageHandler::SwitchToTab(
+@@ -428,7 +428,7 @@ void TabSearchPageHandler::SwitchToTab(
    }
  }
  
@@ -121,7 +133,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
    sessions::TabRestoreService* tab_restore_service =
        TabRestoreServiceFactory::GetForProfile(profile_);
    if (!tab_restore_service) {
-@@ -411,7 +411,7 @@ void TabSearchPageHandler::OpenRecentlyClosedEntry(int32_t session_id) {
+@@ -451,7 +451,7 @@ void TabSearchPageHandler::OpenRecentlyClosedEntry(int32_t session_id) {
        ui::mojom::WindowOpenDisposition::kNewForegroundTab);
  }
  
@@ -130,7 +142,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
    tabs::TabInterface* const active_tab = browser_->GetActiveTabInterface();
    if (active_tab->GetSplit().has_value()) {
      const auto result = GetTabStripService(browser_)->ReplaceTabInSplit(
-@@ -421,7 +421,7 @@ void TabSearchPageHandler::ReplaceActiveSplitTab(int32_t replacement_tab_id) {
+@@ -463,7 +463,7 @@ void TabSearchPageHandler::ReplaceActiveSplitTab(int32_t replacement_tab_id) {
    }
  }
  
@@ -139,7 +151,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
    profile_->GetPrefs()->SetBoolean(
        tab_search_prefs::kTabSearchRecentlyClosedSectionExpanded, expanded);
  
-@@ -433,7 +433,7 @@ void TabSearchPageHandler::SaveRecentlyClosedExpandedPref(bool expanded) {
+@@ -475,7 +475,7 @@ void TabSearchPageHandler::SaveRecentlyClosedExpandedPref(bool expanded) {
    }
  }
  
@@ -148,7 +160,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
    // Close the tab search bubble if showing.
    auto embedder = webui_controller_->embedder();
    if (embedder) {
-@@ -455,14 +455,14 @@ void TabSearchPageHandler::StartTabGroupTutorial() {
+@@ -497,14 +497,14 @@ void TabSearchPageHandler::StartTabGroupTutorial() {
    tutorial_service->StartTutorial(tutorial_id, context);
  }
  
@@ -165,7 +177,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
    auto profile_data = tab_search::mojom::ProfileData::New();
  
    std::set<DedupKey> tab_dedup_keys;
-@@ -507,7 +507,7 @@ tab_search::mojom::ProfileDataPtr TabSearchPageHandler::CreateProfileData() {
+@@ -550,7 +550,7 @@ tab_search::mojom::ProfileDataPtr TabSearchPageHandler::CreateProfileData() {
    return profile_data;
  }
  
@@ -174,7 +186,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
      const tabs_api::mojom::ContainerPtr& container,
      tab_search::mojom::Window* window,
      tab_search::mojom::ProfileData* profile_data,
-@@ -552,7 +552,7 @@ void TabSearchPageHandler::WalkContainer(
+@@ -595,7 +595,7 @@ void TabSearchPageHandler::WalkContainer(
    }
  }
  
@@ -183,7 +195,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
      std::vector<tab_search::mojom::RecentlyClosedTabPtr>& recently_closed_tabs,
      std::vector<tab_search::mojom::RecentlyClosedTabGroupPtr>&
          recently_closed_tab_groups,
-@@ -708,7 +708,7 @@ void TabSearchPageHandler::AddRecentlyClosedEntries(
+@@ -751,7 +751,7 @@ void TabSearchPageHandler::AddRecentlyClosedEntries(
    }
  }
  
@@ -192,7 +204,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
      sessions::tab_restore::Tab* tab,
      const base::Time& close_time,
      std::vector<tab_search::mojom::RecentlyClosedTabPtr>& recently_closed_tabs,
-@@ -741,7 +741,7 @@ bool TabSearchPageHandler::AddRecentlyClosedTab(
+@@ -784,7 +784,7 @@ bool TabSearchPageHandler::AddRecentlyClosedTab(
    return true;
  }
  
@@ -201,7 +213,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
      tabs::TabInterface* tab) const {
    auto tab_mojom_data = tab_search::mojom::Tab::New();
    content::WebContents* contents = tab->GetContents();
-@@ -856,7 +856,7 @@ tab_search::mojom::TabPtr TabSearchPageHandler::GetTab(
+@@ -899,7 +899,7 @@ tab_search::mojom::TabPtr TabSearchPageHandler::GetTab(
  }
  
  tab_search::mojom::RecentlyClosedTabPtr
@@ -210,7 +222,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
                                             const base::Time& close_time) {
    auto recently_closed_tab = tab_search::mojom::RecentlyClosedTab::New();
    CHECK(tab->navigations.size() > 0, base::NotFatalUntil::M162);
-@@ -887,12 +887,12 @@ TabSearchPageHandler::GetRecentlyClosedTab(sessions::tab_restore::Tab* tab,
+@@ -930,12 +930,12 @@ TabSearchPageHandler::GetRecentlyClosedTab(sessions::tab_restore::Tab* tab,
    return recently_closed_tab;
  }
  
@@ -225,16 +237,31 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
      const std::vector<tabs_api::mojom::TabsEventPtr>& events) {
    const auto* preload_state =
        WebUIContentsPreloadState::FromWebContents(web_ui_->GetWebContents());
-@@ -915,7 +915,7 @@ void TabSearchPageHandler::OnTabEvents(
+@@ -958,7 +958,7 @@ void TabSearchPageHandler::OnTabEvents(
    }
+ }
+ 
+-void TabSearchPageHandler::TabRestoreServiceChanged(
++void TabSearchPageHandler_ChromiumImpl::TabRestoreServiceChanged(
+     sessions::TabRestoreService* service) {
+   std::set<SessionID> current_ids;
+   const auto* preload_state =
+@@ -977,12 +977,12 @@ void TabSearchPageHandler::TabRestoreServiceChanged(
+   existing_tab_restore_ids_ = std::move(current_ids);
+ }
+ 
+-void TabSearchPageHandler::TabRestoreServiceDestroyed(
++void TabSearchPageHandler_ChromiumImpl::TabRestoreServiceDestroyed(
+     sessions::TabRestoreService* service) {
+   tab_restore_service_observation_.Reset();
  }
  
 -void TabSearchPageHandler::OnNodesRemoved(
 +void TabSearchPageHandler_ChromiumImpl::OnNodesRemoved(
      const tabs_api::mojom::OnNodesClosedEventPtr& event) {
    std::vector<int> tab_ids;
-   std::set<SessionID> tab_restore_ids;
-@@ -943,7 +943,7 @@ void TabSearchPageHandler::OnNodesRemoved(
+ 
+@@ -1001,7 +1001,7 @@ void TabSearchPageHandler::OnNodesRemoved(
    }
  }
  
@@ -243,7 +270,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
                                           std::set<SessionID> tab_restore_ids) {
    auto tabs_removed_info = tab_search::mojom::TabsRemovedInfo::New();
    tabs_removed_info->tab_ids = std::move(tab_ids);
-@@ -970,7 +970,7 @@ void TabSearchPageHandler::OnTabsRemoved(std::vector<int> tab_ids,
+@@ -1028,7 +1028,7 @@ void TabSearchPageHandler::OnTabsRemoved(std::vector<int> tab_ids,
    page_->TabsRemoved(std::move(tabs_removed_info));
  }
  
@@ -252,16 +279,16 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
      const tabs_api::mojom::TabChange& event) {
    // Ignore if the UI is hidden or the event doesn't contain
    // relevant tab data changes.
-@@ -1000,7 +1000,7 @@ void TabSearchPageHandler::OnTabDataChanged(
+@@ -1058,7 +1058,7 @@ void TabSearchPageHandler::OnTabDataChanged(
    page_->TabUpdated(std::move(tab_update_info));
  }
  
--void TabSearchPageHandler::OnSplitTabRemoved() {
-+void TabSearchPageHandler_ChromiumImpl::OnSplitTabRemoved() {
-   GURL url = web_ui_->GetWebContents()->GetURL();
-   if (!search::IsSplitViewNewTabPage(url)) {
-     return;
-@@ -1011,13 +1011,13 @@ void TabSearchPageHandler::OnSplitTabRemoved() {
+-void TabSearchPageHandler::OnSplitChanged(
++void TabSearchPageHandler_ChromiumImpl::OnSplitChanged(
+     tabs::TabInterface* /*tab*/,
+     std::optional<split_tabs::SplitTabId> new_split) {
+   if (new_split.has_value()) {
+@@ -1070,13 +1070,13 @@ void TabSearchPageHandler::OnSplitChanged(
    }
  }
  
@@ -277,14 +304,16 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
    if (!IsWebContentsVisible()) {
      return;
    }
-@@ -1025,26 +1025,26 @@ void TabSearchPageHandler::NotifyTabsChanged() {
+@@ -1084,7 +1084,7 @@ void TabSearchPageHandler::NotifyTabsChanged() {
    debounce_timer_->Stop();
  }
  
 -void TabSearchPageHandler::OnVisibilityChanged(content::Visibility visibility) {
 +void TabSearchPageHandler_ChromiumImpl::OnVisibilityChanged(content::Visibility visibility) {
-   if (bubble_showing_ && visibility == content::Visibility::HIDDEN) {
-     LogCloseMetrics();
+   if (visibility == content::Visibility::HIDDEN) {
+     recently_closed_tab_restore_ids_.clear();
+     if (bubble_showing_) {
+@@ -1093,20 +1093,20 @@ void TabSearchPageHandler::OnVisibilityChanged(content::Visibility visibility) {
    }
  }
  
@@ -308,7 +337,7 @@ index 70cab54616a941c58ecc2839bbb321bff334816a..7ccba719f728d3cd230a85363ba5c883
    if (log_metrics_) {
      base::UmaHistogramCounts1000("Tabs.TabSearch.NumTabsClosedPerInstance",
                                   num_tabs_closed_);
-@@ -1053,11 +1053,11 @@ void TabSearchPageHandler::LogCloseMetrics() {
+@@ -1115,11 +1115,11 @@ void TabSearchPageHandler::LogCloseMetrics() {
    bubble_showing_ = false;
  }
  

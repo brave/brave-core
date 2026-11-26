@@ -1,0 +1,127 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Brave's scopes for Chromium's components, content and device rules, read as
+# part of Chromium's knowledge base: paths and rules are relative to Chromium's
+# `src`, Brave's own files are `brave/...`, and an override counts under the
+# path of the file it overrides.
+
+agentic_review {
+  capability_groups {
+    # CHANGE: AI Chat sync backend builds controllers/delegates; scope by
+    # content so other Brave code stays quiet.
+    path_expression: "brave/(?:browser/sync|components/ai_chat/core/browser/sync|components/brave_sync|components/sync)/(?:.*/)?[^/]*\\.(?:cc|h)"
+    content_patterns: "\\b\\w*(?:DataTypeController|ControllerDelegate|ControllerBuilder)\\w*\\b"
+    rules: "agents/knowledge_base/rules/components/sync/check-sync-delegate-non-null-before-controller-creation.md"
+  }
+  capability_groups {
+    # CHANGE: Brave's own sync engine (brave_data_type_worker,
+    # brave_commit_encryption_check) decrypts/encrypts updates.
+    path_expression: "brave/components/sync/engine/(?:.*/)?[^/]*\\.(?:cc|h)"
+    rules: "agents/knowledge_base/rules/components/sync/clear-unencrypted-proto-fields-before-decryption.md"
+  }
+  capability_groups {
+    # Brave adds syncable prefs through chromium_src shadows of
+    # chrome_syncable_prefs_database.cc and common_syncable_prefs_database.cc;
+    # upstream paths already cover those overrides, no Brave-own path needed.
+    path_expression: "components/sync_preferences/common_syncable_prefs_database\\.cc"
+    path_expression: "chrome/browser/sync/prefs/chrome_syncable_prefs_database\\.cc"
+    rules: "agents/knowledge_base/rules/components/sync/require-sensitive-requires-history-for-url-syncable-prefs.md"
+  }
+  capability_groups {
+    # CHANGE: Brave Wallet permission resets/revocations must drop pending
+    # provider requests and cached allowed accounts.
+    path_expression: "brave/(?:browser|components)/brave_wallet/(?:.*/)?[^/]*\\.(?:cc|h)"
+    path_expression: "brave/components/permissions/contexts/.*\\.(?:cc|h)"
+    content_patterns: "\\b(?:OnPermission\\w*|Revoke\\w*|ResetPermission\\w*|ResetAllPermissions\\w*)\\b"
+    rules: "agents/knowledge_base/rules/device/purge-cached-data-and-pending-queues-on-permission-downgrade.md"
+  }
+  capability_groups {
+    # CHANGE: Brave binds Wallet provider Mojo interfaces per frame
+    # (brave_content_browser_client.cc, brave_wallet tab helper); secure-
+    # context/fenced-frame checks belong at bind.
+    path_expression: "brave/browser/brave_content_browser_client\\.cc"
+    path_expression: "brave/browser/brave_wallet/(?:.*/)?[^/]*\\.(?:cc|h)"
+    path_expression: "brave/components/brave_wallet/browser/(?:.*/)?[^/]*provider[^/]*\\.(?:cc|h)"
+    content_patterns: "\\b(?:PendingReceiver|DocumentService|GetLastCommittedOrigin|IsNestedWithinFencedFrame|IsSecureContext|IsIsolatedContext|GetOutermostMainFrame)\\b"
+    rules: "agents/knowledge_base/rules/device/validate-frame-and-context-eligibility-at-bind.md"
+  }
+  capability_groups {
+    # Brave's own pref provider registers and migrates Shields settings;
+    # removing one must delete its prefs.
+    path_expression: "brave/components/content_settings/core/browser/brave_content_settings_(?:pref|default)_provider\\.cc"
+    path_expression: "brave/components/content_settings/core/(?:browser|common)/.*registry.*\\.(?:cc|h)"
+    rules: "components/content_settings/core/browser/knowledge_base/content-settings-clear-prefs-of-removed-settings.md"
+  }
+  capability_groups {
+    # Brave's pref provider carries dated migration code too.
+    path_expression: "brave/components/content_settings/core/browser/brave_content_settings_(?:pref|default)_provider\\.cc"
+    rules: "components/content_settings/core/browser/knowledge_base/content-settings-remove-expired-pref-cleanup.md"
+  }
+  capability_groups {
+    # Brave adds handlers through chromium_src
+    # configuration_policy_handler_list_factory.cc, which upstream
+    # chrome/browser/policy mixins already cover; Brave has no handlers of its
+    # own.
+    path_expression: "chrome/browser/policy/configuration_policy_handler_list_factory\\.cc"
+    rules: "components/enterprise/knowledge_base/avoid-duplicate-policy-handler-errors.md"
+  }
+  capability_groups {
+    # Holds for Brave's own knowledge-base rules and metadata (atomic rules,
+    # narrowest scope, real symbols).
+    path_expression: "brave/docs/knowledge_base/rules/.*\\.md"
+    path_expression: "brave/(?:.*/)?knowledge_base/[^/]*\\.md"
+    path_expression: "brave/(?:.*/)?(?:DIR|COMMON)_METADATA"
+    rules: "components/enterprise/knowledge_base/keep-knowledge-base-rules-atomic-and-scoped.md"
+  }
+  capability_groups {
+    # Brave policy services are KeyedServices; scope by content.
+    path_expression: "brave/(?:browser/policy|components/brave_policy|components/policy)/(?:.*/)?[^/]*\\.(?:cc|h)"
+    content_patterns: "\\bKeyedService\\b|\\bScopedObservation\\b|\\bShutdown\\(\\)"
+    rules: "components/enterprise/knowledge_base/respect-keyed-service-shutdown.md"
+  }
+  capability_groups {
+    # BraveBrowsingDataRemoverDelegate and Brave clear-on-exit add deletions of
+    # Brave data types; same invariants hold.
+    path_expression: "brave/browser/browsing_data/.*\\.(?:cc|h|mm)"
+    path_expression: "brave/components/content_settings/core/browser/brave_content_settings_browsing_data_utils\\.cc"
+    rules: "content/browser/browsing_data/knowledge_base/browsing-data-remover-content-vs-chrome-layer.md"
+  }
+  capability_groups {
+    # BraveBrowsingDataRemoverDelegate and Brave clear-on-exit add deletions of
+    # Brave data types; same invariants hold.
+    path_expression: "brave/browser/browsing_data/.*\\.(?:cc|h|mm)"
+    path_expression: "brave/components/content_settings/core/browser/brave_content_settings_browsing_data_utils\\.cc"
+    rules: "content/browser/browsing_data/knowledge_base/browsing-data-remover-datatype-selection.md"
+  }
+  capability_groups {
+    # BraveBrowsingDataRemoverDelegate and Brave clear-on-exit add deletions of
+    # Brave data types; same invariants hold.
+    path_expression: "brave/browser/browsing_data/.*\\.(?:cc|h|mm)"
+    path_expression: "brave/components/content_settings/core/browser/brave_content_settings_browsing_data_utils\\.cc"
+    rules: "content/browser/browsing_data/knowledge_base/browsing-data-remover-deletion-test-coverage.md"
+  }
+  capability_groups {
+    # BraveBrowsingDataRemoverDelegate and Brave clear-on-exit add deletions of
+    # Brave data types; same invariants hold.
+    path_expression: "brave/browser/browsing_data/.*\\.(?:cc|h|mm)"
+    path_expression: "brave/components/content_settings/core/browser/brave_content_settings_browsing_data_utils\\.cc"
+    rules: "content/browser/browsing_data/knowledge_base/browsing-data-remover-history-deletion-observation.md"
+  }
+  capability_groups {
+    # BraveBrowsingDataRemoverDelegate and Brave clear-on-exit add deletions of
+    # Brave data types; same invariants hold.
+    path_expression: "brave/browser/browsing_data/.*\\.(?:cc|h|mm)"
+    path_expression: "brave/components/content_settings/core/browser/brave_content_settings_browsing_data_utils\\.cc"
+    rules: "content/browser/browsing_data/knowledge_base/browsing-data-remover-origin-domain-filtering.md"
+  }
+  capability_groups {
+    # BraveBrowsingDataRemoverDelegate and Brave clear-on-exit add deletions of
+    # Brave data types; same invariants hold.
+    path_expression: "brave/browser/browsing_data/.*\\.(?:cc|h|mm)"
+    path_expression: "brave/components/content_settings/core/browser/brave_content_settings_browsing_data_utils\\.cc"
+    rules: "content/browser/browsing_data/knowledge_base/browsing-data-remover-time-range-filtering.md"
+  }
+}

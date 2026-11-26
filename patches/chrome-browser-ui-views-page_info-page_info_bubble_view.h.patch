@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_info/page_info_bubble_view.h b/chrome/browser/ui/views/page_info/page_info_bubble_view.h
-index fb8378179dd207639aacb361e805a31ea4786d50..193f9ef9e618786815c493d2f6cdbb41d2f694c1 100644
+index 35b6243c20641fc9bf5cad36a1e59b726d0336ef..7720d92d8b532cb9325b24bb8e619067dc3c10d5 100644
 --- a/chrome/browser/ui/views/page_info/page_info_bubble_view.h
 +++ b/chrome/browser/ui/views/page_info/page_info_bubble_view.h
 @@ -54,6 +54,7 @@ class PageInfoBubbleView : public PageInfoBubbleViewBase,
@@ -10,8 +10,8 @@ index fb8378179dd207639aacb361e805a31ea4786d50..193f9ef9e618786815c493d2f6cdbb41
    PageInfoBubbleView(
        views::BubbleAnchor anchor,
        const gfx::Rect& anchor_rect,
-@@ -75,7 +76,7 @@ class PageInfoBubbleView : public PageInfoBubbleViewBase,
-   void WebContentsDestroyed() override;
+@@ -74,7 +75,7 @@ class PageInfoBubbleView : public PageInfoBubbleViewBase,
+   void OnWidgetDestroying(views::Widget* widget) override;
    void ChildPreferredSizeChanged(views::View* child) override;
  
 -  void AnnouncePageOpened(std::u16string announcement);

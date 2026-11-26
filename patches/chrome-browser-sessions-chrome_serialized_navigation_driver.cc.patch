@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/chrome_serialized_navigation_driver.cc b/chrome/browser/sessions/chrome_serialized_navigation_driver.cc
-index 247c0069bfa0bc14dbd5403d33f56e4ba6abddc5..9e9d0169b8079b107d248e7f0ff4082a870e1527 100644
+index 516c0b3428b8096b90c2b9ad703ae73014b54a3c..f5da8fe22d81f992950668d1c585c20f9d41ca7e 100644
 --- a/chrome/browser/sessions/chrome_serialized_navigation_driver.cc
 +++ b/chrome/browser/sessions/chrome_serialized_navigation_driver.cc
 @@ -51,6 +51,7 @@ ChromeSerializedNavigationDriver::GetInstance() {

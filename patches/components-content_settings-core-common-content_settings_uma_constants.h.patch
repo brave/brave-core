@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings_uma_constants.h b/components/content_settings/core/common/content_settings_uma_constants.h
-index b078a2f16f95436014dbd5dbb9b2a68ce704523f..b2b4bb2a8653110de191c352b571b7fec7326c52 100644
+index 527af003452ed10e0c2b167751885f1868ca35db..a119faf85bd6502bf0d770873c75da2f6010b469 100644
 --- a/components/content_settings/core/common/content_settings_uma_constants.h
 +++ b/components/content_settings/core/common/content_settings_uma_constants.h
-@@ -171,6 +171,52 @@ inline constexpr auto kContentSettingsTypeToHistogramValue =
+@@ -173,6 +173,52 @@ inline constexpr auto kContentSettingsTypeToHistogramValue =
  
          // As mentioned at the top, please don't forget to update ContentType in
          // enums.xml when you add entries here!

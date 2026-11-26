@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Make `hasScreenReader_` private.
+
+      Brave's mangler removes the image labels toggle, the only markup that
+      reads it, and `@webui-eslint/lit-member-visibility` rejects protected
+      properties the template doesn't reference.
+    regex:
+      pattern: 'protected accessor hasScreenReader_:'
+      replace: 'private accessor hasScreenReader_:'
+
+  - description: |-
+      Exempt the handlers of the controls Brave removes from the lint.
+
+      Brave's mangler removes the image labels toggle and the captions row, so
+      `@webui-eslint/lit-member-visibility` rejects their handlers. Making them
+      private would leave them and their imports unused, which TypeScript
+      rejects.
+    count: 2
+    regex:
+      re_pattern:
+        '^( *)(protected (?:onA11yImageLabelsChange_|onCaptionsClick_)\()'
+      re_flags: [MULTILINE]
+      replace:
+        '\1// eslint-disable-next-line @webui-eslint/lit-member-visibility\n\1\2'

@@ -1153,6 +1153,7 @@ source_set("ui") {
       "//components/tabs:public",
       "//ui/actions",
       "//ui/base/metadata",
+      "//ui/base/unowned_user_data",
     ]
   }
 
@@ -1326,6 +1327,7 @@ source_set("ui") {
       "//brave/components/commands/common",
       "//brave/components/version_info",
       "//chrome/app:branded_strings",
+      "//chrome/browser/ui:tab_ui_helper",
       "//chrome/browser/ui/tabs:tab_enums",
       "//chrome/browser/ui/webui/top_chrome",
       "//components/input",
@@ -1540,6 +1542,7 @@ source_set("ui") {
       "//chrome/browser/ui/views/frame:toolbar_button_provider",
       "//components/tabs:public",
       "//components/user_prefs",
+      "//ui/base/unowned_user_data",
     ]
   }
 
@@ -1646,6 +1649,7 @@ source_set("unit_tests") {
       "//components/prefs:test_support",
       "//testing/gmock",
       "//testing/gtest",
+      "//ui/base:features",
       "//ui/base:test_support",
       "//ui/gfx",
     ]
@@ -1684,6 +1688,7 @@ source_set("browser_tests") {
 
     sources = [
       "brave_browser_browsertest.cc",
+      "download_file_picker_title_browsertest.cc",
       "relaunch_to_update_browsertest.cc",
       "views/frame/brave_system_menu_model_builder_browsertest.cc",
       "window_closing_confirm_browsertest.cc",
@@ -1711,13 +1716,21 @@ source_set("browser_tests") {
       "//chrome/browser/ui/webui_browser",
       "//chrome/common:chrome_features",
       "//chrome/test:test_support",
-      "//chrome/test:test_support_ui",
+      "//chrome/test/base:chrome_test_utils",
+      "//chrome/test/base:in_process_browser_test",
+      "//chrome/test/base:platform_browser_test",
+      "//chrome/test/base:ui_test_utils",
+      "//components/download/public/common:public",
       "//components/javascript_dialogs",
       "//components/optimization_guide/core:features",
       "//components/optimization_guide/optimization_guide_internals/webui:url_constants",
       "//components/prefs",
       "//content/test:test_support",
+      "//net:test_support",
       "//ui/actions",
+      "//ui/shell_dialogs",
+      "//ui/shell_dialogs:test_support",
+      "//url",
     ]
 
     if (enable_sparkle) {
@@ -1733,6 +1746,8 @@ source_set("browser_tests") {
         "//brave/components/playlist/core/common",
         "//chrome/browser/ui/browser_window",
         "//chrome/browser/ui/views/frame:browser_view_header",
+        "//chrome/browser/ui/web_applications:test_support",
+        "//chrome/browser/ui/web_applications/test:test_support_ui",
         "//chrome/browser/web_applications:web_applications_test_support",
       ]
     }

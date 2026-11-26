@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/profile/model/keyed_service_factories.mm b/ios/chrome/browser/profile/model/keyed_service_factories.mm
-index 6969eaf28747f7c6127a3f51c414d993e8c50e41..47459534397618f79fa1536c371cd4bb4a7f3f7e 100644
+index 82f9307b78d7b6f71567cdd68080d8a11175afd3..658a4b93db333af96e995b665bb31cee6bf7295c 100644
 --- a/ios/chrome/browser/profile/model/keyed_service_factories.mm
 +++ b/ios/chrome/browser/profile/model/keyed_service_factories.mm
 @@ -3,6 +3,7 @@
@@ -10,7 +10,7 @@ index 6969eaf28747f7c6127a3f51c414d993e8c50e41..47459534397618f79fa1536c371cd4bb
  
  #import "ios/chrome/browser/account_settings/model/ios_account_setting_service_factory.h"
  #import "ios/chrome/browser/affiliations/model/ios_chrome_affiliation_service_factory.h"
-@@ -258,6 +259,7 @@
+@@ -260,6 +261,7 @@
  // required to create services that uses ServiceCreation::kCreateWithProfile
  // can be created with the profile.
  void EnsureProfileKeyedServiceFactoriesBuilt() {
@@ -18,7 +18,7 @@ index 6969eaf28747f7c6127a3f51c414d993e8c50e41..47459534397618f79fa1536c371cd4bb
    // Keep this list alphabetized -- namespaced factories first, followed by
    // non-namespaced factories.
    actor::ActorServiceFactory::GetInstance();
-@@ -514,4 +516,6 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
+@@ -518,4 +520,6 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
    if (web::features::IsCobaltEnabled()) {
      ios::provider::EnsureCobaltProfileKeyedServiceFactoriesBuilt();
    }

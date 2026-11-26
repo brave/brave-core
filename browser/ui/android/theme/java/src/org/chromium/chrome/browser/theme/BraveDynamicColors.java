@@ -13,6 +13,8 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.view.View;
 
+import androidx.annotation.ChecksSdkIntAtLeast;
+
 import com.google.android.material.color.DynamicColors;
 import com.google.android.material.color.DynamicColorsOptions;
 
@@ -50,6 +52,7 @@ public final class BraveDynamicColors {
      * <p>Availability requires Android 12 or later. It does not include the user's preference;
      * {@link #isDynamicColorsEnabled()} is the preferred method for runtime behavior checks.
      */
+    @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)
     public static boolean isDynamicColorsAvailable() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
     }

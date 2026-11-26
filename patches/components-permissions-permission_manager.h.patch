@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_manager.h b/components/permissions/permission_manager.h
-index d112e7c2acb0a2c641c3780c572ae2c6a89f2b16..1037d27932fc10ed2a9af3573d8a14fdc0af23b9 100644
+index eedc3dc6023a4227d73802d71bfd0ec3afcd1838..93f2c24ed2a492c4847e9e94c3602a952b692788 100644
 --- a/components/permissions/permission_manager.h
 +++ b/components/permissions/permission_manager.h
 @@ -76,6 +76,11 @@ class PermissionManager : public KeyedService,

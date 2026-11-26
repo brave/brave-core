@@ -65,6 +65,7 @@ TEST(BraveRuntimeEnabledFeaturesTest, DisabledFlags) {
           RUNTIME_FLAG(LanguageDetectionAPI),
           RUNTIME_FLAG(Prerender2),
           RUNTIME_FLAG(ProfilerAPI),
+          RUNTIME_FLAG(ProfilerAPIForDedicatedWorker),
           RUNTIME_FLAG(TranslationAPI),
           RUNTIME_FLAG(UserMediaElement),
           RUNTIME_FLAG(WebAppInstallation),

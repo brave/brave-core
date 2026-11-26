@@ -358,7 +358,13 @@ class PrepareUnpushedTest(unittest.TestCase):
         brave = mock.MagicMock()
         brave.is_rebase_in_progress.return_value = False
         brave.run_git.side_effect = run_git
-        args = mock.Mock(target=158, no_rebase=True, force=False, dry_run=False)
+        args = mock.Mock(
+            target=158,
+            no_rebase=True,
+            force=False,
+            dry_run=False,
+            skip_channel=[],
+        )
         with mock.patch.object(autolift.repository, 'brave', brave):
             self.assertEqual(autolift._cmd_prepare(args), 1)
         self.assertIn(('rev-list', '--count', 'origin/cr158..cr158'), calls)
@@ -381,7 +387,13 @@ class MovesToMasterTest(unittest.TestCase):
 
 class PrepareTest(unittest.TestCase):
     def _prepare(self, brave: mock.MagicMock, **kwargs) -> int:
-        args = mock.Mock(target=158, no_rebase=True, force=False, dry_run=False)
+        args = mock.Mock(
+            target=158,
+            no_rebase=True,
+            force=False,
+            dry_run=False,
+            skip_channel=[],
+        )
         for key, value in kwargs.items():
             setattr(args, key, value)
         with mock.patch.object(autolift.repository, 'brave', brave):
@@ -833,6 +845,8 @@ class PrepareFlowTest(unittest.TestCase):
         command=autolift._cmd_prepare,
         branch: int | Exception | None = None,
         to_squash: bool | None = False,
+        stuck: tuple[str, ...] = (),
+        master: str = '156.0.8078.74',
     ):
         calls = []
         remotes = {f'cr{milestone}': remote_exists}
@@ -868,7 +882,7 @@ class PrepareFlowTest(unittest.TestCase):
         brave.is_rebase_in_progress.return_value = False
         brave.run_git.side_effect = run_git
         versions = {
-            'origin/master': autolift.Version('156.0.8078.74'),
+            'origin/master': autolift.Version(master),
             'origin/cr157': autolift.Version('157.0.8103.15'),
             'HEAD': autolift.Version('158.0.8127.2'),
         }
@@ -878,6 +892,7 @@ class PrepareFlowTest(unittest.TestCase):
             force=False,
             always=always,
             dry_run=False,
+            skip_channel=[],
         )
         run_root = self.run_root
         brave.root = run_root
@@ -909,6 +924,9 @@ class PrepareFlowTest(unittest.TestCase):
             mock.patch.object(
                 autolift, 'left_to_squash', return_value=to_squash
             ) as squash,
+            mock.patch.object(
+                autolift, 'unsquashable_fixups', return_value=list(stuck)
+            ),
             mock.patch.object(
                 autolift,
                 'milestone_branch',
@@ -1100,6 +1118,30 @@ class PrepareFlowTest(unittest.TestCase):
         )
         self.assertIn('left to squash, so it is rebased', report)
 
+    def test_a_fixup_of_a_cr_base_commit_belongs_there(self):
+        self._no_lift(base_commits=0, stuck=('abc1234 fixup! [cr157] Fix',))
+        report = (self.run_root / 'cr158' / 'report.md').read_text(
+            encoding='utf-8'
+        )
+        self.assertIn(
+            '1 fixup(s) on cr158 target commits only origin/cr157', report
+        )
+        self.assertIn('it belongs on origin/cr157', report)
+        self.assertIn('`abc1234 fixup! [cr157] Fix`', report)
+        self.assertNotIn('commit of its own', report)
+
+    def test_a_fixup_of_a_master_commit_becomes_its_own(self):
+        self._no_lift(
+            base_commits=0,
+            master='157.0.8103.40',
+            stuck=('abc1234 fixup! [cr157] Fix',),
+        )
+        report = (self.run_root / 'cr158' / 'report.md').read_text(
+            encoding='utf-8'
+        )
+        self.assertIn('target commits only origin/master', report)
+        self.assertIn('reword each into a commit of its own', report)
+
     def test_a_failed_squash_check_says_so(self):
         result, _, _, _ = self._no_lift(base_commits=0, to_squash=None)
         self.assertEqual(result, autolift.NOT_WORTH_A_RUN)
@@ -1271,6 +1313,7 @@ class PrepareFlowTest(unittest.TestCase):
 
         def command(args):
             args.autofix, args.resume, args.json_output = False, False, output
+            args.skip_channel = []
             return autolift._cmd_advise(args)
 
         with mock.patch.object(
@@ -1483,6 +1526,81 @@ class PrepareFlowTest(unittest.TestCase):
         run.assert_not_called()
 
 
+class SquashCheckTest(unittest.TestCase):
+    """What the rebase of the commits after `branch_start()` squashes."""
+
+    def setUp(self):
+        self.dir = Path(
+            self.enterContext(tempfile.TemporaryDirectory())  # pylint: disable=consider-using-with
+        )
+        self._git('init', '-q', '-b', 'master')
+        self._git('config', 'user.email', 'a@b.c')
+        self._git('config', 'user.name', 'A')
+        self._commit('[cr157] Base commit')
+        self.start = self._git('rev-parse', 'HEAD')
+        brave = mock.MagicMock(root=self.dir)
+        brave.run_git.side_effect = lambda *args, **_: self._git(*args)
+        self.enterContext(
+            mock.patch.object(autolift.repository, 'brave', brave)
+        )
+        self.enterContext(
+            mock.patch.object(autolift, 'branch_start', return_value=self.start)
+        )
+
+    def _git(self, *args: str) -> str:
+        return subprocess.run(
+            ['git', '-C', str(self.dir), *args],
+            check=True,
+            env=_git_env(),
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+
+    def _commit(self, subject: str) -> str:
+        self._git('commit', '-q', '--allow-empty', '-m', subject)
+        return self._git('rev-parse', 'HEAD')
+
+    def test_lists_fixups_whose_target_the_rebase_doesnt_replay(self):
+        own = self._commit('[cr158] Own change')
+        self._commit('fixup! [cr158] Own change')
+        stuck = self._commit('fixup! [cr157] Base commit')
+        self._commit(f'amend! {own[:10]}')
+        self._commit('fixup! fixup! [cr157] Base')
+        self.assertEqual(
+            [
+                line.split(' ', 1)[0]
+                for line in autolift.unsquashable_fixups('b')
+            ],
+            [stuck[:11], self._git('rev-parse', '--short=11', 'HEAD')],
+        )
+
+    def test_a_fixup_of_a_later_commit_counts_as_stuck(self):
+        """Autosquash only moves a fixup below its target, never above."""
+        fixup = self._commit('fixup! [cr158] Later change')
+        self._commit('[cr158] Later change')
+        self.assertEqual(
+            autolift.unsquashable_fixups('b'),
+            [f'{fixup[:11]} fixup! [cr158] Later change'],
+        )
+
+    def test_the_dry_run_replays_from_the_branch_start(self):
+        real_run = subprocess.run
+        commands = []
+
+        def run(command, *args, **kwargs):
+            if command[0] != autolift._BROCKIT:
+                return real_run(command, *args, **kwargs)  # pylint: disable=subprocess-run-check
+            commands.append(command)
+            return subprocess.CompletedProcess(command, 0)
+
+        with mock.patch.object(autolift.subprocess, 'run', side_effect=run):
+            self.assertFalse(autolift.left_to_squash('origin/cr157'))
+        self.assertEqual(len(commands), 1)
+        command = commands[0]
+        self.assertIn(f'--from-ref={self.start}', command)
+        self.assertIn(f'--to-ref={self.start}', command)
+
+
 class ReviewListTest(unittest.TestCase):
     """`Publish._note_for_review`, on a real repository."""
 
@@ -1537,6 +1655,46 @@ class ReviewListTest(unittest.TestCase):
             publish = autolift.Publish(autolift.Run.cr(158))
             publish._note_for_review(pushed_over)
         return publish._notes
+
+    def _session(self) -> list[str]:
+        brave = mock.MagicMock(root=self.dir)
+        brave.run_git.side_effect = lambda *args, no_trim=False: (
+            subprocess.run(
+                ['git', '-C', str(self.dir), *args],
+                check=True,
+                env=_git_env(),
+                capture_output=True,
+                text=True,
+            ).stdout
+            if no_trim
+            else self._git(*args)
+        )
+        with mock.patch.object(autolift.repository, 'brave', brave):
+            return [
+                subject
+                for _, subject, _ in autolift.Publish(
+                    autolift.Run.cr(158)
+                ).session_commits()
+            ]
+
+    def test_session_commits_are_what_the_run_wrote(self):
+        self._commit('kept', 'kept')
+        self._commit('changed', 'old')
+        start = self._git('rev-parse', 'HEAD')
+        autolift.Publish.record_start(autolift.Run.cr(158), start)
+        # A fixup of `changed`, squashed in, and a new fix.
+        self._git('reset', '-q', '--hard', 'HEAD~1')
+        self._commit('changed', 'new')
+        self._commit('fix', 'fix', '[cr158] Fix it')
+        self._commit(
+            'patches',
+            'p',
+            'Update patches from Chromium 158.0.8127.2 to Chromium '
+            '158.0.8127.4.',
+        )
+        self.assertEqual(
+            ['[cr158] Change changed', '[cr158] Fix it'], self._session()
+        )
 
     def test_lists_the_commits_whose_content_changed(self):
         update_patches = (
@@ -2171,7 +2329,9 @@ class AutofixTest(unittest.TestCase):
             mock.patch.object(autolift, '_synced_tooling', return_value=synced),
             contextlib.redirect_stdout(io.StringIO()),
         ):
-            result = autolift._cmd_autofix(mock.Mock(target=159, dry_run=False))
+            result = autolift._cmd_autofix(
+                mock.Mock(target=159, dry_run=False, skip_channel=[])
+            )
         return result, calls, sync
 
     def test_resets_to_github_without_a_rebase(self):
@@ -3865,6 +4025,7 @@ class FixListingTest(unittest.TestCase):
         ).stdout.strip()
 
     def _commit(self, repo: Path, name: str, content: str, message: str):
+        (repo / name).parent.mkdir(parents=True, exist_ok=True)
         (repo / name).write_text(content, encoding='utf-8')
         self._git(repo, 'add', name)
         self._git(repo, 'commit', '-q', '-m', message)
@@ -3942,7 +4103,108 @@ class FixListingTest(unittest.TestCase):
             autolift.FixSources(autolift.Run.bump(157, 'master')).listing(
                 '157.0.8103.30..157.0.8103.40'
             ),
-            "- No newer branch has a fix for this bump's cherry-picks.",
+            "- No newer branch has a fix for this bump's cherry-picks.\n"
+            '- For a failure no culprit explains (a crate, the toolchain), '
+            'search the newer branches by what failed: `next-fixes '
+            '157.0.8103.30..157.0.8103.40 <path>... [--text <name>]`.',
+        )
+
+    def _push_to_cr158(self, name: str, content: str, subject: str) -> str:
+        self._git(self.dir, 'checkout', '-q', 'cr158')
+        sha = self._commit(self.dir, name, content, subject)
+        self._git(self.dir, 'push', '-q', 'origin', 'cr158')
+        self._git(self.dir, 'fetch', '-q', 'origin')
+        self._git(self.dir, 'checkout', '-q', 'cr157.x')
+        return sha
+
+    def _search(self, paths: list[str], text: str | None = None):
+        return [
+            (hit.branch, hit.fix.sha, hit.done)
+            for hit in autolift._search_next_fixes(
+                autolift.Run.bump(157, 'master'), paths, text
+            )
+        ]
+
+    def test_a_fix_citing_no_culprit_found_by_path(self):
+        fix = self._push_to_cr158(
+            'vendor/crunchy/LICENSE', 'MIT\n', '[cr158] Vendor a licence'
+        )
+        # Without the newer branch's prefix, a commit isn't its own fix.
+        self._push_to_cr158('vendor/crunchy/other', 'x\n', 'Unprefixed')
+        self.assertEqual(
+            self._search(['vendor/crunchy']), [('origin/cr158', fix, False)]
+        )
+
+    def test_a_fix_citing_no_culprit_found_by_text(self):
+        fix = self._push_to_cr158(
+            'LICENSE', 'MIT\n', '[cr158] Vendor the `crunchy` licence'
+        )
+        self.assertEqual(
+            self._search([], 'Crunchy'), [('origin/cr158', fix, False)]
+        )
+
+    def test_a_chromium_path_finds_its_yaml(self):
+        fix = self._push_to_cr158(
+            'rewrite/net/http/x.cc.yaml', 'y\n', '[cr158] Re-anchor `x.cc`'
+        )
+        self.assertEqual(
+            self._search(['net/http/x.cc']), [('origin/cr158', fix, False)]
+        )
+
+    def test_a_fix_citing_a_culprit_is_left_to_the_culprit_match(self):
+        self.assertEqual(self._search(['device.yaml']), [])
+
+    def test_a_fix_citing_no_culprit_already_picked(self):
+        fix = self._push_to_cr158(
+            'vendor/crunchy/LICENSE', 'MIT\n', '[cr158] Vendor a licence'
+        )
+        self._commit(self.dir, 'version', 'lifted\n', 'Update from Chromium')
+        self._git(self.dir, 'cherry-pick', fix)
+        self.assertEqual(
+            self._search(['vendor/crunchy']), [('origin/cr158', fix, True)]
+        )
+
+
+class FixSourcesRefsTest(unittest.TestCase):
+    def _refs(self, run, master: str, higher: list[str] | None = None):
+        bump = mock.MagicMock(**{'higher_refs.return_value': higher or []})
+        with (
+            mock.patch.object(autolift.repository, 'brave'),
+            mock.patch.object(
+                autolift.Version,
+                'from_git',
+                return_value=autolift.Version(master),
+            ),
+            mock.patch.object(
+                autolift, '_newer_branches', return_value=['cr160']
+            ),
+            mock.patch.object(
+                autolift.ChannelBump, 'of_run', return_value=bump
+            ),
+        ):
+            return autolift.FixSources(run).refs()
+
+    def test_master_holds_the_newer_branches_merged_into_it(self):
+        # cr159 merged into master, and is gone from origin.
+        self.assertEqual(
+            self._refs(autolift.Run.cr(158), '159.0.8154.18'),
+            ['origin/master', 'origin/cr160'],
+        )
+
+    def test_master_on_the_run_milestone_has_no_newer_fixes(self):
+        self.assertEqual(
+            self._refs(autolift.Run.cr(159), '159.0.8154.18'),
+            ['origin/cr160'],
+        )
+
+    def test_a_channel_with_master_above_it_lists_it_once(self):
+        self.assertEqual(
+            self._refs(
+                autolift.Run.bump(158, '1.101.x'),
+                '159.0.8154.18',
+                ['origin/master'],
+            ),
+            ['origin/master', 'origin/cr160'],
         )
 
 
@@ -4005,16 +4267,17 @@ class ChannelStepsTest(unittest.TestCase):
         _channel('1.99.x', 'release'),
     ]
 
-    def test_highest_channel_first_with_the_review_after_it(self):
+    def test_highest_channel_first_with_the_review_after_its_lift(self):
         sequence = [
             (number, run.channel if run else None)
             for number, run in autolift.ChannelBump.sequence(self._CHANNELS)
         ]
         self.assertEqual(sequence[0], (1, None))
-        # No Android build: the pull requests' CI has it.
+        # The review's picks are built and checked with the rest. No Android
+        # build: the pull requests' CI has it.
         self.assertEqual(
             sequence[1:7],
-            [(n, 'master') for n in (2, 3, 4, 5, 7)] + [(9, None)],
+            [(2, 'master'), (9, None)] + [(n, 'master') for n in (3, 4, 5, 7)],
         )
         # The lower channels are only lifted, taking the highest's fixes.
         self.assertEqual(sequence[7:9], [(2, '1.100.x'), (2, '1.99.x')])
@@ -4155,9 +4418,16 @@ class ChannelBumpTest(unittest.TestCase):
         self._git('add', 'package.json')
         self._git('commit', '-q', '-m', f'Brave {version} on {tag}')
 
-    def _prepare(self, dry_run: bool = False, force: bool = False) -> int:
+    def _prepare(
+        self, dry_run: bool = False, force: bool = False, skip=()
+    ) -> int:
         return autolift._cmd_prepare(
-            mock.Mock(target=_TAG, force=force, dry_run=dry_run)
+            mock.Mock(
+                target=_TAG,
+                force=force,
+                dry_run=dry_run,
+                skip_channel=list(skip),
+            )
         )
 
     def _report(self, tag: autolift.Version = _TAG) -> str:
@@ -4211,6 +4481,64 @@ class ChannelBumpTest(unittest.TestCase):
         self.assertEqual(self._prepare(force=True), 0)
         self.assertEqual(
             exclude.read_text().splitlines().count('/.autolift/'), 1
+        )
+
+    def test_prepare_skips_a_channel_by_name_or_branch(self):
+        for skip in ('beta', '1.100.x'):
+            with self.subTest(skip=skip):
+                self._git('checkout', '-q', 'master')
+                self.assertEqual(self._prepare(force=True, skip=[skip]), 0)
+                self.assertEqual(
+                    [c.branch for c in autolift.ChannelBump(_TAG).recorded()],
+                    ['master'],
+                )
+                self.assertEqual(self._git('branch', '--list', _BETA), '')
+                self.assertIn(
+                    'beta (1.100.x) is on 157.0.8103.30: skipped '
+                    '(--skip-channel).',
+                    self._report(),
+                )
+
+    def test_prepare_refuses_a_skip_no_channel_answers_to(self):
+        self.assertEqual(self._prepare(skip=['betta']), 1)
+        self.assertEqual(self._git('branch', '--list', 'cr157.x*'), '')
+        self.assertIn(
+            '- No channel answers to --skip-channel betta: the channels are '
+            'nightly (master), beta (1.100.x), release (1.99.x).',
+            self._report(),
+        )
+
+    def test_advise_tells_the_agent_to_skip(self):
+        advice = autolift.Advice.of(
+            _TAG, autofix=False, resume=False, skip=['beta']
+        )
+        self.assertEqual(advice.action, 'lift')
+        self.assertIn(
+            'beta (1.100.x) is on 157.0.8103.30: skipped',
+            '\n'.join(advice.reasons),
+        )
+        self.assertIn(
+            'Leave the beta channel(s) out of it: pass `--skip-channel beta` '
+            f'to every `prepare {_TAG}` and `autofix {_TAG}`.',
+            advice.prompt,
+        )
+        resumed = autolift.Advice.of(
+            _TAG, autofix=False, resume=True, skip=['beta']
+        )
+        self.assertIn('`--skip-channel beta`', resumed.prompt)
+
+    def test_autofix_leaves_a_skipped_channels_bump_alone(self):
+        for channel in ('master', '1.100.x'):
+            self._push_bump(channel)
+        self.assertEqual(
+            autolift._cmd_autofix(
+                mock.Mock(target=_TAG, dry_run=False, skip_channel=['beta'])
+            ),
+            0,
+        )
+        self.assertEqual(
+            [c.branch for c in autolift.ChannelBump(_TAG).recorded()],
+            ['master'],
         )
 
     def _advise(self, autofix: bool = False, states: dict | None = None):
@@ -4454,7 +4782,7 @@ class ChannelBumpTest(unittest.TestCase):
     def test_prepare_without_a_channel_on_the_milestone(self):
         tag = autolift.Version('158.0.8127.4')
         result = autolift._cmd_prepare(
-            mock.Mock(target=tag, force=False, dry_run=False)
+            mock.Mock(target=tag, force=False, dry_run=False, skip_channel=[])
         )
         self.assertEqual(result, 1)
         self.assertIn('No channel is on M158', self._report(tag))
@@ -4653,7 +4981,10 @@ class ChannelBumpTest(unittest.TestCase):
     def test_autofix_resets_every_bump_on_github(self):
         self._push_bumps()
         self.assertEqual(
-            autolift._cmd_autofix(mock.Mock(target=_TAG, dry_run=False)), 0
+            autolift._cmd_autofix(
+                mock.Mock(target=_TAG, dry_run=False, skip_channel=[])
+            ),
+            0,
         )
         self.assertEqual(self._git('branch', '--show-current'), _MASTER)
         # Synced to the branch it checked out, whatever it was synced to.
@@ -4671,17 +5002,25 @@ class ChannelBumpTest(unittest.TestCase):
 
     def test_autofix_without_a_bump_on_github(self):
         self.assertEqual(
-            autolift._cmd_autofix(mock.Mock(target=_TAG, dry_run=False)), 1
+            autolift._cmd_autofix(
+                mock.Mock(target=_TAG, dry_run=False, skip_channel=[])
+            ),
+            1,
         )
         # An earlier bump's branch is not this bump's CI.
         self._push_bump('master', '157.0.8103.35')
         self.assertEqual(
-            autolift._cmd_autofix(mock.Mock(target=_TAG, dry_run=False)), 1
+            autolift._cmd_autofix(
+                mock.Mock(target=_TAG, dry_run=False, skip_channel=[])
+            ),
+            1,
         )
 
     def test_ci_failures_of_every_bump(self):
         self._push_bumps()
-        autolift._cmd_autofix(mock.Mock(target=_TAG, dry_run=False))
+        autolift._cmd_autofix(
+            mock.Mock(target=_TAG, dry_run=False, skip_channel=[])
+        )
         seen = []
 
         def report(failures, output):
@@ -4696,7 +5035,7 @@ class ChannelBumpTest(unittest.TestCase):
             side_effect=report,
         ):
             result = autolift._cmd_ci_failures(
-                mock.Mock(target=_TAG, dry_run=False)
+                mock.Mock(target=_TAG, dry_run=False, skip_channel=[])
             )
         self.assertEqual(result, autolift.CI_FAILED)
         self.assertEqual(
@@ -4770,7 +5109,9 @@ class ChannelBumpTest(unittest.TestCase):
         beta's bump on GitHub meanwhile: `publish` picks it, which changes
         beta, so whether it asks for a rebuild shows whether beta is built."""
         self._push_bumps()
-        autolift._cmd_autofix(mock.Mock(target=_TAG, dry_run=False))
+        autolift._cmd_autofix(
+            mock.Mock(target=_TAG, dry_run=False, skip_channel=[])
+        )
         self.fix = self._commit('fix', 'fixup! Fix the capability element')
         self._git('checkout', '-q', '-B', 'teammate', f'origin/{_BETA}')
         self._commit('teammate', 'IWYU fixes.')

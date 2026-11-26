@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/application_context/model/application_context_impl.h b/ios/chrome/browser/application_context/model/application_context_impl.h
-index dc4f00cc2b94c2a4d4803ea6525f0b45c971ecc7..db66b68a9eb21c75d79a1998f18e249764764c4a 100644
+index 109bc4a3da576b4c34cc6ee53c4087799cd34045..ce49cee84b41b988ba9a73819a550deac8a59cf0 100644
 --- a/ios/chrome/browser/application_context/model/application_context_impl.h
 +++ b/ios/chrome/browser/application_context/model/application_context_impl.h
-@@ -63,7 +63,7 @@ class ApplicationContextImpl : public ApplicationContext {
+@@ -62,7 +62,7 @@ class ApplicationContextImpl : public ApplicationContext {
    // Called after the threads have been created but before the message loops
    // starts running. Allows the ApplicationContext to do any initialization
    // that requres all threads running.

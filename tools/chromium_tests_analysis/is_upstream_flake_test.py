@@ -7,8 +7,10 @@
 
 from __future__ import annotations
 
+import io
 import sys
 import unittest
+from contextlib import redirect_stderr
 from pathlib import Path
 from typing import Any
 
@@ -16,9 +18,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 # pylint: disable=wrong-import-position
 import is_upstream_flake as flake
-from luci_analysis import LuciAnalysisError
+from luci_analysis import LuciAnalysisError, LuciAnalysisForbidden
 
-BRANCH = flake.Source("checkout", "abc", "refs/branch-heads/8103", 1035, 157)
+MAIN_COMMIT = "14a569dc1fe8add19880f2d6dcfccc28a4039054"
+BRANCH = flake.Source(
+    "checkout",
+    "abc",
+    "refs/branch-heads/8103",
+    1035,
+    157,
+    (MAIN_COMMIT, 1751670),
+)
 
 
 class TestNames(unittest.TestCase):
@@ -48,6 +58,25 @@ class TestSource(unittest.TestCase):
         )
         with self.assertRaises(LuciAnalysisError):
             flake.parse_commit_position("Subject\n")
+
+    def test_parse_branched_from(self):
+        message = (
+            "Subject\n\n"
+            "Cr-Commit-Position: refs/branch-heads/8179@{#2}\n"
+            f"Cr-Branched-From: {MAIN_COMMIT}-refs/heads/main@{{#1751670}}\n"
+        )
+        self.assertEqual(
+            flake.parse_branched_from(message), (MAIN_COMMIT, 1751670)
+        )
+        self.assertIsNone(flake.parse_branched_from("Subject\n"))
+
+    def test_branch_point(self):
+        point = BRANCH.branch_point()
+        self.assertEqual(point.ref, "refs/heads/main")
+        self.assertEqual(point.commit, MAIN_COMMIT)
+        self.assertEqual(point.position, 1751670)
+        self.assertEqual(point.project, "chromium")
+        self.assertIsNone(point.branch_point())
 
     def test_parse_milestone(self):
         self.assertEqual(flake.parse_milestone("MAJOR=157\nMINOR=0\n"), 157)
@@ -180,6 +209,40 @@ class TestQuery(unittest.TestCase):
         results, _ = flake.query(client, "S#T", flake.Filters(), BRANCH)
         self.assertEqual(len(results), flake.MAX_STABILITY_BATCH + 1)
         self.assertEqual(len(client.stability_bodies), 2)
+
+
+class ForbiddenClient(FakeClient):
+    def tests_matching(self, _substring: str) -> list[str]:
+        raise LuciAnalysisForbidden("403")
+
+
+class TestQueryWithFallback(unittest.TestCase):
+    def test_falls_back_to_branch_point(self):
+        main = FakeClient(
+            ["://x!gtest::S#T"], [{"variantHash": "a", "variant": {"def": {}}}]
+        )
+        clients = {"chromium-m157": ForbiddenClient([], []), "chromium": main}
+        with redirect_stderr(io.StringIO()) as stderr:
+            results, _, source = flake.query_with_fallback(
+                clients.__getitem__, "S#T", flake.Filters(), BRANCH
+            )
+        self.assertEqual(source.ref, "refs/heads/main")
+        self.assertTrue(results[0].confirmed)
+        (sent,) = main.stability_bodies[0]["testVariants"]
+        self.assertEqual(
+            sent["sources"]["gitilesCommit"]["position"], "1751670"
+        )
+        self.assertIn("chromium-m157", stderr.getvalue())
+
+    def test_no_branch_point_raises(self):
+        source = flake.Source("x", "abc", "refs/branch-heads/8103", 1, 157)
+        with self.assertRaises(LuciAnalysisForbidden):
+            flake.query_with_fallback(
+                lambda _: ForbiddenClient([], []),
+                "S#T",
+                flake.Filters(),
+                source,
+            )
 
 
 if __name__ == "__main__":

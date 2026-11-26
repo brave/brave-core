@@ -22,10 +22,10 @@ class BraveExtensionsAPIProvider : public ExtensionsAPIProvider {
   ~BraveExtensionsAPIProvider() override;
 
   // ExtensionsAPIProvider:
-  void AddAPIFeatures(FeatureProvider* provider) override;
-  void AddManifestFeatures(FeatureProvider* provider) override;
-  void AddPermissionFeatures(FeatureProvider* provider) override;
-  void AddBehaviorFeatures(FeatureProvider* provider) override;
+  StaticFeatureTable GetAPIFeatures() const override;
+  StaticFeatureTable GetManifestFeatures() const override;
+  StaticFeatureTable GetPermissionFeatures() const override;
+  StaticFeatureTable GetBehaviorFeatures() const override;
   void AddAPIJSONSources(JSONFeatureProviderSource* json_source) override;
   bool IsAPISchemaGenerated(const std::string& name) override;
   std::string_view GetAPISchema(const std::string& name) override;

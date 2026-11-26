@@ -10,3 +10,18 @@ substitutions:
       list_name: inputs
       literal: brave_lit_mangler_preprocess_if_expr_inputs
       import: //brave/tools/chromium_src/lit_mangler/sources.gni
+
+  - description: |-
+      List the `chromium_src` overrides and manglers applied in a depfile.
+
+      They aren't inputs GN knows of, so without it deleting one wouldn't rerun
+      the action, and the preprocessed output would keep what it overrode.
+    append_to_target:
+      target: target_name
+      type: python_action
+      code: |-
+        depfile = "$target_gen_dir/$target_name.d"
+        args += [
+          "--brave-depfile",
+          rebase_path(depfile, root_build_dir),
+        ]

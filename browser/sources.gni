@@ -766,7 +766,7 @@ if (is_mac) {
   if (enable_sparkle) {
     # This has to be a bundle_dep of the framework. A dep in the framework's
     # link graph would also be collected by nested bundles that link it, such
-    # as the aperitif helper apps, adding copies of Sparkle that nothing
+    # as the helper apps, adding copies of Sparkle that nothing
     # re-signs.
     if (build_sparkle) {
       brave_chrome_framework_bundle_deps +=

@@ -26,6 +26,10 @@ agentic_review {
     rules: "tools/cr/codehealth/rules/obsolete/replaced-headers-keep-deleted-names.md"
   }
   capability_groups {
+    tool: "vpython3 tools/cr/codehealth/scripts/obsolete.py shadowed-tests {old}..{new}"
+    rules: "tools/cr/codehealth/rules/obsolete/shadowed-upstream-tests.md"
+  }
+  capability_groups {
     subject_patterns: "(?i)\\b(?:remove|delete|drop|clean ?up)\\b.*\\b(?:workarounds?|hacks?)\\b"
     body_patterns: "(?i)\\b(?:workaround|hack)\\b.*\\bno longer (?:needed|necessary|required)\\b"
     rules: "tools/cr/codehealth/rules/obsolete/workarounds-upstream-removed.md"

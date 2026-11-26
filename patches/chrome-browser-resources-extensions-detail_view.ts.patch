@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/resources/extensions/detail_view.ts b/chrome/browser/resources/extensions/detail_view.ts
+index 12dce542387032cedb9d3b0c7bcfa24c2374b49d..04410aa85177a5e9e3fd2bbd51975c4fa93810f1 100644
+--- a/chrome/browser/resources/extensions/detail_view.ts
++++ b/chrome/browser/resources/extensions/detail_view.ts
+@@ -281,12 +281,6 @@ export class ExtensionsDetailViewElement extends
+                                     'itemAllowIncognito');
+   }
+ 
+-  protected getIncognitoInfoWarningString_(): string {
+-    return this.i18n(
+-        this.isolatedModeEnabled_ ? 'isolatedModeInfoWarning' :
+-                                    'incognitoInfoWarning');
+-  }
+-
+   protected showUserScriptSectionToggle_(): boolean {
+     return this.data.userScriptsAccess.isEnabled;
+   }

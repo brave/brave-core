@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_action/page_action_model.h b/chrome/browser/ui/page_action/page_action_model.h
-index a06a3ec124aff9160f524f5cd214632ee0d41319..b4b1c7fb5742ceb283a0ae469b45f272afa70f6a 100644
+index d1509b84123989f6aebfd82cb7abdbbcfc7bf992..5c78892271de9782a676956c161a247c098f9e13 100644
 --- a/chrome/browser/ui/page_action/page_action_model.h
 +++ b/chrome/browser/ui/page_action/page_action_model.h
-@@ -146,16 +146,34 @@ class PageActionModelInterface {
+@@ -153,16 +153,34 @@ class PageActionModelInterface {
    virtual std::optional<ui::ColorId> GetOverrideForegroundColorId() const = 0;
  
    virtual bool IsEphemeral() const = 0;
@@ -42,7 +42,7 @@ index a06a3ec124aff9160f524f5cd214632ee0d41319..b4b1c7fb5742ceb283a0ae469b45f272
  
    actions::ActionId GetActionId() const override;
  
-@@ -275,6 +293,7 @@ class PageActionModel : public PageActionModelInterface {
+@@ -287,6 +305,7 @@ class PageActionModel : public PageActionModelInterface {
    bool IsEphemeral() const override;
  
   private:
@@ -50,7 +50,7 @@ index a06a3ec124aff9160f524f5cd214632ee0d41319..b4b1c7fb5742ceb283a0ae469b45f272
    // Identifies which property triggered a NotifyChange call, used for
    // per-property reentrancy checks.
    enum class Property {
-@@ -303,7 +322,12 @@ class PageActionModel : public PageActionModelInterface {
+@@ -316,7 +335,12 @@ class PageActionModel : public PageActionModelInterface {
      kShowTrailingIcon,
      kOverrideBackgroundColor,
      kOverrideForegroundColor,

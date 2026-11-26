@@ -38,6 +38,7 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tasks.tab_management.TabListMediator.TabListLayoutType;
+import org.chromium.components.tab_groups.TabGroupId;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.ui.modelutil.SimpleRecyclerViewAdapter;
 
@@ -53,7 +54,7 @@ import java.util.function.Supplier;
 public class BraveTabGridItemTouchHelperCallbackTest {
     private static final int TAB1_ID = 1;
     private static final int TAB2_ID = 2;
-    private static final Token GROUP_ID = new Token(1L, 2L);
+    private static final Token TAB_GROUP_ID = new Token(1L, 2L);
 
     @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
 
@@ -75,7 +76,7 @@ public class BraveTabGridItemTouchHelperCallbackTest {
         mFromViewHolder.model = tabCardModel(TAB1_ID);
         mToViewHolder.model = tabCardModel(TAB2_ID);
         // The dragged tab is grouped, so grouping mode moves the whole group.
-        when(mTab1.getTabGroupId()).thenReturn(GROUP_ID);
+        when(mTab1.getTabGroupId()).thenReturn(TAB_GROUP_ID);
         when(mTabModel.getTabById(TAB1_ID)).thenReturn(mTab1);
         when(mTabModel.getTabById(TAB2_ID)).thenReturn(mTab2);
         when(mTabModel.indexOf(mTab2)).thenReturn(1);
@@ -104,7 +105,7 @@ public class BraveTabGridItemTouchHelperCallbackTest {
 
         createCallback().onMove(mRecyclerView, mFromViewHolder, mToViewHolder);
 
-        verify(mTabModel).moveGroupToIndex(GROUP_ID, 1);
+        verify(mTabModel).moveGroupToIndex(TabGroupId.fromRawToken(TAB_GROUP_ID), 1);
         verify(mTabModel, never()).moveTab(anyInt(), anyInt());
     }
 
@@ -127,7 +128,7 @@ public class BraveTabGridItemTouchHelperCallbackTest {
         startDrag(callback);
         callback.onMove(mRecyclerView, mFromViewHolder, mToViewHolder);
 
-        verify(mTabModel).moveGroupToIndex(GROUP_ID, 1);
+        verify(mTabModel).moveGroupToIndex(TabGroupId.fromRawToken(TAB_GROUP_ID), 1);
     }
 
     @Test

@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as BraveVPN from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m.js'
+import * as BraveVPN from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom-webui.js'
 // Provide access to all the generated types
-export * from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m.js'
+export * from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom-webui.js'
 
 export type SupportData = BraveVPN.ServiceHandler_GetSupportData_ResponseParams
 
@@ -16,28 +16,20 @@ interface API {
 }
 
 let panelBrowserAPIInstance: API
-class PanelBrowserAPI implements API {
-  pageCallbackRouter = new BraveVPN.PageCallbackRouter()
-  panelHandler = new BraveVPN.PanelHandlerRemote()
-  serviceHandler = new BraveVPN.ServiceHandlerRemote()
 
-  constructor () {
-    const factory = BraveVPN.PanelHandlerFactory.getRemote()
-    factory.createPanelHandler(
-      this.pageCallbackRouter.$.bindNewPipeAndPassRemote(),
-      this.panelHandler.$.bindNewPipeAndPassReceiver(),
-      this.serviceHandler.$.bindNewPipeAndPassReceiver()
-    )
-  }
-}
-
-export default function getPanelBrowserAPI () {
+export default function getPanelBrowserAPI(): API {
   if (!panelBrowserAPIInstance) {
-    panelBrowserAPIInstance = new PanelBrowserAPI()
+    const { handler, callbackRouter } =
+      BraveVPN.browserProxyFactory.getInstance()
+    panelBrowserAPIInstance = {
+      pageCallbackRouter: callbackRouter,
+      panelHandler: handler,
+      serviceHandler: BraveVPN.ServiceHandler.getRemote(),
+    }
   }
   return panelBrowserAPIInstance
 }
 
-export function setPanelBrowserApiForTesting (api: API) {
+export function setPanelBrowserApiForTesting(api: API) {
   panelBrowserAPIInstance = api
 }

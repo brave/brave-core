@@ -1,8 +1,8 @@
 diff --git a/build/BUILD.gn b/build/BUILD.gn
-index 3cddfa5da50a4128e7d8d51651019a88fc224a60..8cfbdaa02da77485b5e2658d4e674cd5fd84dd5b 100644
+index 3de2075933e75b919308c3c663da9e7ef97fe7bf..6375f7568b1d8884805c25bd7cd0a9cb73990eaf 100644
 --- a/build/BUILD.gn
 +++ b/build/BUILD.gn
-@@ -54,6 +54,7 @@ buildflag_header("branding_buildflags") {
+@@ -55,6 +55,7 @@ buildflag_header("branding_buildflags") {
    }
  
    flags += [ "ENABLE_BUILTIN_SEARCH_PROVIDER_ASSETS=$enable_builtin_search_provider_assets" ]

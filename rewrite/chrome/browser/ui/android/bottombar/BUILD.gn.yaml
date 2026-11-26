@@ -18,3 +18,11 @@ substitutions:
       target: config_java
       list_name: deps
       values: //brave/browser/ui/android/bottombar:prefs_java
+  - description: |-
+      Depend on Brave's bottom bar coordinator.
+
+      BottomBarContainerCoordinator constructs BraveBottomBarCoordinator.
+    insert_into_list:
+      target: container_java
+      list_name: deps
+      values: //brave/browser/ui/android/bottombar:java

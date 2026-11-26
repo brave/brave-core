@@ -42,29 +42,27 @@ std::unique_ptr<TemplateURLData> GetPrepopulatedFallbackSearch(
     PrefService& prefs,
     const std::vector<raw_ptr<const PrepopulatedEngine>>&
         regional_prepopulated_engines) {
-  std::vector<std::unique_ptr<TemplateURLData>> prepopulated_engines =
-      GetPrepopulatedEngines(prefs, regional_prepopulated_engines);
-  if (prepopulated_engines.empty()) {
+  if (regional_prepopulated_engines.empty()) {
     return nullptr;
   }
 
-  std::unique_ptr<TemplateURLData> brave_engine;
-  for (auto& engine : prepopulated_engines) {
-    if (engine->prepopulate_id == static_cast<int>(default_engine_id)) {
-      return std::move(engine);
-    } else if (engine->prepopulate_id ==
+  const PrepopulatedEngine* brave_engine = nullptr;
+  for (const PrepopulatedEngine* engine : regional_prepopulated_engines) {
+    if (engine->id == static_cast<int>(default_engine_id)) {
+      return PrepopulatedEngineToTemplateURLData(engine);
+    } else if (engine->id ==
                TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE) {
-      brave_engine = std::move(engine);
+      brave_engine = engine;
     }
   }
 
   // Default engine wasn't found, then return Brave, if found.
   if (brave_engine) {
-    return brave_engine;
+    return PrepopulatedEngineToTemplateURLData(brave_engine);
   }
 
   // If all else fails, return the first engine on the list.
-  return std::move(prepopulated_engines[0]);
+  return PrepopulatedEngineToTemplateURLData(regional_prepopulated_engines[0]);
 }
 
 std::unique_ptr<TemplateURLData> GetPrepopulatedEngine(
@@ -72,11 +70,9 @@ std::unique_ptr<TemplateURLData> GetPrepopulatedEngine(
     const std::vector<raw_ptr<const PrepopulatedEngine>>&
         regional_prepopulated_engines,
     int prepopulated_id) {
-  auto engines = TemplateURLPrepopulateData::GetPrepopulatedEngines(
-      prefs, regional_prepopulated_engines);
-  for (auto& engine : engines) {
-    if (engine->prepopulate_id == prepopulated_id) {
-      return std::move(engine);
+  for (const PrepopulatedEngine* engine : regional_prepopulated_engines) {
+    if (engine->id == prepopulated_id) {
+      return PrepopulatedEngineToTemplateURLData(engine);
     }
   }
   return nullptr;

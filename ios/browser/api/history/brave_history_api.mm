@@ -20,7 +20,9 @@
 #include "components/history/core/browser/browsing_history_service.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
+#include "components/history/core/common/pref_names.h"
 #include "components/keyed_service/core/service_access_type.h"
+#include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/history/model/web_history_service_factory.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -217,7 +219,8 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
     web_history_service_ =
         ios::WebHistoryServiceFactory::GetForProfile(_profile);
 
-    _browsingHistoryDriver = std::make_unique<HistoryDriverIOS>();
+    _browsingHistoryDriver =
+        std::make_unique<HistoryDriverIOS>(_profile->GetPrefs());
 
     _browsingHistoryService = std::make_unique<history::BrowsingHistoryService>(
         _browsingHistoryDriver.get(),
@@ -291,6 +294,11 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 }
 
 - (void)removeAllWithCompletion:(void (^)())completion {
+  if (!_profile->GetPrefs()->GetBoolean(prefs::kAllowDeletingBrowserHistory)) {
+    completion();
+    return;
+  }
+
   // Deletes entire History and from all synced devices
   __weak BraveHistoryAPI* weak_history_api = self;
   auto delete_history = ^(void (^callback)()) {

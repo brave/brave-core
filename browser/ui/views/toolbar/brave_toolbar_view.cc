@@ -447,8 +447,7 @@ void BraveToolbarView::Init() {
 #endif
 
   // Make sure that avatar button is located right before the app menu.
-  if (auto* avatar_button = static_cast<AvatarToolbarButton*>(
-          GetAvatarToolbarButtonInterface())) {
+  if (auto* avatar_button = avatar_toolbar_button()) {
     ReorderChildView(avatar_button, *GetIndexOf(app_menu_button_) - 1);
   }
 
@@ -518,8 +517,7 @@ void BraveToolbarView::Update(content::WebContents* tab) {
 
   // Remove avatar menu if only a single user profile exists.
   // Always show if private / tor / guest window, as an indicator.
-  auto* avatar_button =
-      static_cast<AvatarToolbarButton*>(GetAvatarToolbarButtonInterface());
+  auto* avatar_button = avatar_toolbar_button();
   if (avatar_button) {
     auto* profile = browser_->GetProfile();
     const bool should_show_profile =

@@ -1,13 +1,21 @@
 diff --git a/components/private_insights/private_insights_features.cc b/components/private_insights/private_insights_features.cc
-index d50946ac6ebf5239ec423d32d00908b1a4948474..b3ab80f5d487bc213320489e81fe6e7d10724fc4 100644
+index 688b30699e2a1847355a39d4a9b772a1e9433c90..4a46be6e338e336035ff055d3666331808f42592 100644
 --- a/components/private_insights/private_insights_features.cc
 +++ b/components/private_insights/private_insights_features.cc
-@@ -8,7 +8,7 @@
+@@ -9,14 +9,8 @@
  
  namespace private_insights {
  
--BASE_FEATURE(kPrivateInsightsFeature, base::FEATURE_DISABLED_BY_DEFAULT);
-+BASE_OVERRIDDEN_FEATURE(kPrivateInsightsFeature, base::FEATURE_DISABLED_BY_DEFAULT);
+-BASE_FEATURE(kPrivateInsightsFeature,
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS)
+-             base::FEATURE_ENABLED_BY_DEFAULT
+-#else
+-             base::FEATURE_DISABLED_BY_DEFAULT
+-#endif
+-);
++BASE_OVERRIDDEN_FEATURE(kPrivateInsightsFeature,
++base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kPrivateInsightsUploadTaskPipeline,
               base::FEATURE_DISABLED_BY_DEFAULT);

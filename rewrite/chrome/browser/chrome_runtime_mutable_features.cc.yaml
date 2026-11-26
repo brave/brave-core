@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Define EnableRuntimeMutableFeatures() on upstream's renamed class.
+
+      `chrome_browser_field_trials.h.yaml` renames it, so that Brave's subclass
+      can take its name, and Brave's subclass doesn't declare this method.
+    rename_class:
+      class_name: ChromeBrowserFieldTrials
+      rename: ChromeBrowserFieldTrials_ChromiumImpl

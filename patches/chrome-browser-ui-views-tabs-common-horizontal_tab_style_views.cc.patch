@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc b/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc
-index 3203af342d31777cc94b6340f88466c39c5ec92e..9defc51ff739b4465a31be0f62695f1cb855c7e3 100644
+index b5d5e1eea41394241b47feae94d6d0e77e9b73aa..8486d969b7672bf63f498d24eb8a76ca5b32c0c5 100644
 --- a/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc
 @@ -224,6 +224,7 @@ SkPath HorizontalTabStyleViews::GetPath(TabStyle::PathType path_type,
@@ -10,7 +10,7 @@ index 3203af342d31777cc94b6340f88466c39c5ec92e..9defc51ff739b4465a31be0f62695f1c
    float left_extension_corner_radius = extension_corner_radius;
    if (delegate_->IsLeftSplitTab()) {
      top_right_corner_radius = 0;
-@@ -877,18 +878,22 @@ void HorizontalTabStyleViews::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -893,18 +894,22 @@ void HorizontalTabStyleViews::PaintSeparators(
                                                     SK_AlphaOPAQUE));
    };
  
@@ -23,14 +23,14 @@ index 3203af342d31777cc94b6340f88466c39c5ec92e..9defc51ff739b4465a31be0f62695f1c
    if (separator_opacities.left > 0) {
      flags.setColor(separator_color(separator_opacities.left));
      canvas->DrawRoundRect(separator_bounds.leading,
--                          tab_style()->GetSeparatorCornerRadius() * scale,
+-                          TabStyle::Get()->GetSeparatorCornerRadius() * scale,
 +                          separator_radius,
                            flags);
    }
    if (separator_opacities.right > 0) {
      flags.setColor(separator_color(separator_opacities.right));
      canvas->DrawRoundRect(separator_bounds.trailing,
--                          tab_style()->GetSeparatorCornerRadius() * scale,
+-                          TabStyle::Get()->GetSeparatorCornerRadius() * scale,
 +                          separator_radius,
                            flags);
    }

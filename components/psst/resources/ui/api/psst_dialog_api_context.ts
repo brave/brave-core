@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import generateReactContextForAPI from '$web-common/api/react_api'
-import { SettingCardData, type PsstDialogAPI } from './psst_dialog_api'
+import { type SettingCardData, type PsstDialogAPI } from './psst_dialog_api'
 
 type PsstDialogContextProps = {
   api: PsstDialogAPI['api']

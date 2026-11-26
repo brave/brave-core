@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py b/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py
-index 8e338e315876a54ff52544ae07684b1c393fc224..5dff85ea03cf65618e01cb8376e733813c549497 100644
+index c1c4806d759fa65d5ef5375d75953cbe01a230a8..50c9d59b7dcdced24e5230994dc1b6ddfb10f4bb 100644
 --- a/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py
 +++ b/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py
-@@ -9662,3 +9662,4 @@ def generate_interfaces(task_queue):
+@@ -9743,3 +9743,4 @@ def generate_interfaces(task_queue):
          "init_idl_interfaces_for_testing",
          for_testing=True,
      )

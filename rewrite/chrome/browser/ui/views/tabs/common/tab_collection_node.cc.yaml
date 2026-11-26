@@ -32,13 +32,11 @@ substitutions:
               NOTREACHED();
 
   - description: |-
-      Walk the children without tree tab node collections
+      Walk the children without tree tab node collections in Initialize()
 
-      In TabCollectionNode::Initialize() and TabCollectionNode::Deinitialize(),
-      TabCollectionNode iterate all children. But we don't want for 
-      ViewModel(TabCollectionNode) to know about tree node. So we should iterate
-      skipping tree node.
-    count: 2
+      TabCollectionNode::Initialize() iterates the collection's children, but
+      the view model (TabCollectionNode) must not know about tree nodes, so it
+      iterates them with the tree nodes unwrapped.
     regex:
       pattern: 'const auto& child_data : collection->GetChildren()'
       replace: |-

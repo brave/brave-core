@@ -1,5 +1,5 @@
 diff --git a/components/lens/lens_features.cc b/components/lens/lens_features.cc
-index 16f3e102ffb975e809781e7e3d0bdfb56340881a..9bdbc3d95dc8b02cec5c7563b0c5c5496e303ce6 100644
+index e0cedb9e393f29b3cfe9c6830dc6a6cb585eb552..3cc29bfe5471f65d02f7d35bc6f453c32a852fed 100644
 --- a/components/lens/lens_features.cc
 +++ b/components/lens/lens_features.cc
 @@ -16,17 +16,12 @@
@@ -23,7 +23,7 @@ index 16f3e102ffb975e809781e7e3d0bdfb56340881a..9bdbc3d95dc8b02cec5c7563b0c5c549
  
  BASE_FEATURE(kLensOverlayAndroid, base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -65,7 +60,7 @@ BASE_FEATURE(kLensSearchSidePanelNewFeedback,
+@@ -56,7 +51,7 @@ BASE_FEATURE(kLensSearchSidePanelNewFeedback,
  // kLensOverlay so that the omnibox entry point can be disabled without a
  // dependency on the rest of the Lens Overlay features. This means if can be
  // experimented with independently.

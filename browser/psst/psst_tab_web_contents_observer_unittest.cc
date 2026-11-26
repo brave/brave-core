@@ -459,11 +459,14 @@ class PsstTabWebContentsObserverUnitTest
 };
 
 TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
-  EXPECT_NE(PsstTabWebContentsObserver::MaybeCreate(
-                mock_tab_interface(), browser_context(),
-                std::make_unique<MockUiDelegate>(), psst_settings_service(),
-                variations_service(), log_service(), 2),
-            nullptr);
+  // The fixture's tab already has an observer, and a tab holds only one.
+  tabs::MockTabInterface tab;
+  ON_CALL(tab, GetContents()).WillByDefault(testing::Return(web_contents()));
+  EXPECT_NE(
+      PsstTabWebContentsObserver::MaybeCreate(
+          tab, browser_context(), std::make_unique<MockUiDelegate>(),
+          psst_settings_service(), variations_service(), log_service(), 2),
+      nullptr);
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,

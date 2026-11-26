@@ -62,14 +62,16 @@ public class BraveSnackbarManager extends SnackbarManager {
             @Nullable WindowAndroid windowAndroid,
             @Nullable NonNullObservableSupplier<Integer> additionalBottomMarginPxSupplier,
             @Nullable ModalDialogManager modalDialogManager,
-            NonNullObservableSupplier<Boolean> persistentFullscreenModeSupplier) {
+            NonNullObservableSupplier<Boolean> persistentFullscreenModeSupplier,
+            NonNullObservableSupplier<Boolean> inPictureInPictureModeSupplier) {
         super(
                 activity,
                 snackbarParentView,
                 windowAndroid,
                 additionalBottomMarginPxSupplier,
                 modalDialogManager,
-                persistentFullscreenModeSupplier);
+                persistentFullscreenModeSupplier,
+                inPictureInPictureModeSupplier);
     }
 
     /**

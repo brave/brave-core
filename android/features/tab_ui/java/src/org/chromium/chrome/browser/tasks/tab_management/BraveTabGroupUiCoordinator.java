@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
 import org.chromium.chrome.tab_ui.R;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
+import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.Supplier;
@@ -45,6 +46,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
 
     public BraveTabGroupUiCoordinator(
             Activity activity,
+            WindowAndroid windowAndroid,
             ViewGroup parentView,
             BrowserControlsStateProvider browserControlsStateProvider,
             ScrimManager scrimManager,
@@ -62,6 +64,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             Supplier<@Nullable ShareDelegate> shareDelegateSupplier) {
         super(
                 activity,
+                windowAndroid,
                 parentView,
                 browserControlsStateProvider,
                 scrimManager,

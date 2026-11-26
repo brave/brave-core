@@ -104,12 +104,13 @@ void FinishSearchResultWithHistory(
 // the threshold if necessary while ensuring different users with different
 // models are all using the correct threshold for their model.
 float GetScoreThreshold(
-    const passage_embeddings::EmbedderMetadata& embedder_metadata) {
+    const std::optional<passage_embeddings::EmbedderMetadata>&
+        embedder_metadata) {
   if (GetFeatureParameters().search_score_threshold >= 0) {
     return GetFeatureParameters().search_score_threshold;
   }
-  if (embedder_metadata.search_score_threshold.has_value()) {
-    return *embedder_metadata.search_score_threshold;
+  if (embedder_metadata && embedder_metadata->search_score_threshold) {
+    return *embedder_metadata->search_score_threshold;
   }
   // 0.9 was the correct threshold for the original model before the threshold
   // was added to the metadata.
@@ -167,7 +168,7 @@ void HistoryEmbeddingsService::UpdateVisitMetadata(
 void HistoryEmbeddingsService::OnOsCryptAsyncReady(
     scoped_refptr<os_crypt_async::Encryptor> encryptor) {
   storage_.AsyncCall(&Storage::SetEmbedderMetadata)
-      .WithArgs(embedder_metadata_, std::move(encryptor));
+      .WithArgs(*embedder_metadata_, std::move(encryptor));
 
   if (GetFeatureParameters().rebuild_embeddings) {
     storage_.AsyncCall(&Storage::CollectPassagesWithoutEmbeddings)
@@ -349,7 +350,7 @@ void HistoryEmbeddingsService::OnPageEmbeddingsAvailable(content::Page& page) {
 
 void HistoryEmbeddingsService::EmbedderMetadataUpdated(
     passage_embeddings::EmbedderMetadata metadata) {
-  if (embedder_metadata_.IsValid()) {
+  if (embedder_metadata_.has_value()) {
     // TODO(https://github.com/brave/brave-browser/issues/61789): Handle runtime
     // model changes. For now the code expects them to remain constant and only
     // processes metadata once.

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/startup/BUILD.gn b/chrome/browser/ui/startup/BUILD.gn
-index 8318ebe4beafe71d27db917e70eb2029a162fa61..0de126a2038aa71a35afa3f4114eb779607c65e6 100644
+index d59cd5302b0f19d3636385246f47b05a48a9ece6..9ab1878b89cb53e42491702502a6659cd0fcabc9 100644
 --- a/chrome/browser/ui/startup/BUILD.gn
 +++ b/chrome/browser/ui/startup/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 8318ebe4beafe71d27db917e70eb2029a162fa61..0de126a2038aa71a35afa3f4114eb779
  import("//build/buildflag_header.gni")
  import("//build/config/chrome_build.gni")
  import("//build/config/ozone.gni")
-@@ -29,6 +30,7 @@ source_set("startup_tab") {
+@@ -30,6 +31,7 @@ source_set("startup_tab") {
    ]
  
    public_deps = [ "//url" ]

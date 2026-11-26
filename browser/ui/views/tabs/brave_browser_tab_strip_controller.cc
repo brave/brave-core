@@ -248,9 +248,9 @@ BraveBrowserTabStripController::CreateTabMenuModel(
     ui::SimpleMenuModel::Delegate* delegate,
     TabMenuModelDelegate* tab_menu_model_delegate,
     TabStripModel* tab_strip_model,
-    int index) {
+    tabs::TabHandle context_tab) {
   return std::make_unique<BraveTabMenuModel>(delegate, tab_menu_model_delegate,
-                                             tab_strip_model, index);
+                                             tab_strip_model, context_tab);
 }
 
 void BraveBrowserTabStripController::OnTabStripModelChanged(

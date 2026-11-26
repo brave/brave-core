@@ -13,9 +13,10 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 import config_types
+from PB.recipe_modules.brave.claude_cli.properties import EnvProperties
 from recipe_api import RecipeApi
 from step_data import StepData
 
@@ -27,9 +28,23 @@ STREAM_LOG = 'claude.jsonl'
 
 
 class ClaudeCliApi(RecipeApi):
-    """Runs Claude Code unattended, in auto permission mode."""
+    """Runs Claude Code unattended, in auto permission mode.
+
+    The `opus` and `sonnet` aliases resolve to the models the environment's
+    `ANTHROPIC_DEFAULT_OPUS_MODEL` and `ANTHROPIC_DEFAULT_SONNET_MODEL` name,
+    for the main agent and for the subagents it starts with either alias.
+    """
 
     m: claude_cli.DEPS
+
+    def __init__(self, env_properties: EnvProperties) -> None:
+        super().__init__()
+        # What the model aliases resolve to, kept in the machine's environment
+        # rather than committed here.
+        self._models = {
+            'opus': env_properties.ANTHROPIC_DEFAULT_OPUS_MODEL,
+            'sonnet': env_properties.ANTHROPIC_DEFAULT_SONNET_MODEL,
+        }
 
     def run(
         self,
@@ -41,6 +56,7 @@ class ClaudeCliApi(RecipeApi):
         allowed_tools: Iterable[str] = (),
         must_read: Iterable[str | Path | config_types.Path] = (),
         report: Path | config_types.Path | None = None,
+        model: Literal['opus', 'sonnet'] = 'opus',
     ) -> StepData:
         """Run Claude on *prompt* as the step named *name*, until it finishes.
 
@@ -60,6 +76,7 @@ class ClaudeCliApi(RecipeApi):
                 didn't read all of itself are named at the end, and in
                 *report*.
             report: Where to name them.
+            model: The alias of the model the main agent runs on.
 
         Returns:
             The step's `StepData`.
@@ -79,6 +96,8 @@ class ClaudeCliApi(RecipeApi):
         cmd += [
             '--',
             'claude',
+            '--model',
+            model,
             '--print',
             prompt,
             '--permission-mode',
@@ -109,5 +128,8 @@ class ClaudeCliApi(RecipeApi):
             # over to commands that assume they run there.
             'CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR': '1',
         }
+        for alias, resolved in self._models.items():
+            if resolved:
+                env[f'ANTHROPIC_DEFAULT_{alias.upper()}_MODEL'] = resolved
         with self.m.context(env=env):
             return self.m.step(name, cmd)

@@ -49,13 +49,19 @@ def RunSteps(api: DEPS):
         allowed_tools=[f'Edit(/{checkout}/**)', f'Write(/{checkout}/**)'],
         must_read=[checkout / 'brave/tools/cr/autolift/SKILL.md'],
         report=log_dir / 'report.md',
+        model='sonnet',
     )
 
 
 def GenTests(api: TEST_DEPS):
-    # Every option: extra dirs, pre-approved tools, and files to read in full.
+    # Every option: extra dirs, pre-approved tools, files to read in full, and
+    # the models.
     yield api.test(
         'full',
+        api.properties.environ(
+            ANTHROPIC_DEFAULT_OPUS_MODEL='opus-profile',
+            ANTHROPIC_DEFAULT_SONNET_MODEL='sonnet-profile',
+        ),
         api.claude_cli.prompt_matches('claude', r'Fix the build\..*`src`\.'),
         api.post_process(post_process.StatusSuccess),
     )

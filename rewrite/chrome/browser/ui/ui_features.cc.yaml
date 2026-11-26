@@ -29,3 +29,12 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kSessionRestoreInfobar
       value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kToolbarGlowUp disabled.
+
+      It plays upstream's Lottie animations on the toolbar buttons, drawing
+      upstream's shapes over our Leo icons.
+    set_feature_flag_default_state:
+      feature_name: kToolbarGlowUp
+      value: base::FEATURE_DISABLED_BY_DEFAULT

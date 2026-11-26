@@ -20,7 +20,7 @@
 #include "components/infobars/core/infobar_manager.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/gfx/font_list.h"
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
@@ -45,7 +45,7 @@ class FakeInfoBarManager : public infobars::InfoBarManager {
   // infobars::InfoBarManager:
   int GetActiveEntryID() override { return 0; }
   void OpenURL(const GURL& url,
-               WindowOpenDisposition disposition,
+               ui::mojom::WindowOpenDisposition disposition,
                const std::string& text_fragment) override {
     opened_url_ = url;
   }

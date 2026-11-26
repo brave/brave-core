@@ -1,0 +1,30 @@
+diff --git a/build/create_pyz.py b/build/create_pyz.py
+index f48c27e5ccb6151e384604260d1a906e71790d25..8409e31ac60c5f0b2a831b91d93dc2df9b562479 100755
+--- a/build/create_pyz.py
++++ b/build/create_pyz.py
+@@ -334,6 +334,9 @@ def main():
+                 parent_rel = posixpath.dirname(dir_rel)
+                 index[parent_rel][posixpath.basename(dir_rel)] = _KIND_PACKAGE
+ 
++        brave_overrides = _brave_add_chromium_src_overrides(
++            zf, sources_by_rel
++        )
+         output_dir_abs = os.path.dirname(os.path.abspath(options.output))
+         src_root_rel = os.path.relpath(_SRC_ROOT, output_dir_abs).replace(
+             os.sep, '/'
+@@ -362,7 +365,7 @@ def main():
+     # Record the build's Python interpreter in the depfile when it lives under
+     # `//` (e.g. `//third_party/cpython3`) so a Python version roll invalidates
+     # `.pyz` files whose embedded `MAGIC_NUMBER` changed.
+-    depfile_deps = []
++    depfile_deps = [os.path.relpath(p) for p in brave_overrides]
+     if sys.executable:
+         exe_abs = os.path.abspath(sys.executable)
+         if os.path.normcase(exe_abs).startswith(
+@@ -372,5 +375,6 @@ def main():
+     action_helpers.write_depfile(options.depfile, options.output, depfile_deps)
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+     sys.exit(main())

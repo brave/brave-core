@@ -39,15 +39,20 @@
 
 namespace {
 
-content::WebContents* GetActiveWebContents() {
-  const TabModelList::TabModelVector& tab_models = TabModelList::models();
-  const auto iter = std::ranges::find_if(
-      tab_models, [](const auto& model) { return model->IsActiveModel(); });
-  if (iter == tab_models.cend()) {
+content::WebContents* GetActiveWebContents(const Profile* profile) {
+  TabModel* active_model = nullptr;
+  TabModelList::ForEach(profile, [&](TabModel* model) {
+    if (!model->IsActiveModel()) {
+      return true;
+    }
+    active_model = model;
+    return false;
+  });
+  if (!active_model) {
     return nullptr;
   }
 
-  return (*iter)->GetActiveWebContents();
+  return active_model->GetActiveWebContents();
 }
 
 }  // namespace
@@ -162,7 +167,8 @@ void NewTabTakeoverUI::NavigateToUrl(const GURL& url) {
   // so it is not connected to the Android Tab, i.e. WebContents::GetDelegate()
   // returns nullptr. Therefore to do a Tab navigation, we need to locate
   // the current Android Tab and open the URL in it.
-  content::WebContents* web_contents = GetActiveWebContents();
+  content::WebContents* web_contents =
+      GetActiveWebContents(Profile::FromWebUI(web_ui()));
   if (!web_contents) {
     return;
   }

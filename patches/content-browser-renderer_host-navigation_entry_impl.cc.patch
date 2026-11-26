@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/navigation_entry_impl.cc b/content/browser/renderer_host/navigation_entry_impl.cc
-index 084b53c19856a7dd6c45dae9037db596725bcbf3..03b0ee35440b3a4d496c5a42bce8d48d1a22780b 100644
+index b6e9f9840096cdb6ce372e83d512cea5bf963129..68494e453a25cfcba6792711c5928032e961b3ef 100644
 --- a/content/browser/renderer_host/navigation_entry_impl.cc
 +++ b/content/browser/renderer_host/navigation_entry_impl.cc
-@@ -564,6 +564,8 @@ const Referrer& NavigationEntryImpl::GetReferrer() const {
+@@ -580,6 +580,8 @@ const Referrer& NavigationEntryImpl::GetReferrer() const {
  }
  
  void NavigationEntryImpl::SetVirtualURL(const GURL& url) {
@@ -11,7 +11,7 @@ index 084b53c19856a7dd6c45dae9037db596725bcbf3..03b0ee35440b3a4d496c5a42bce8d48d
    virtual_url_ = (url == GetURL()) ? GURL() : url;
    cached_display_title_.clear();
  }
-@@ -648,6 +650,7 @@ blink::PageState NavigationEntryImpl::GetPageState() const {
+@@ -664,6 +666,7 @@ blink::PageState NavigationEntryImpl::GetPageState() const {
  }
  
  const std::u16string& NavigationEntryImpl::GetTitleForDisplay() const {
@@ -19,7 +19,7 @@ index 084b53c19856a7dd6c45dae9037db596725bcbf3..03b0ee35440b3a4d496c5a42bce8d48d
    // Most pages have real titles. Don't even bother caching anything if this is
    // the case.
    if (!title_.empty()) {
-@@ -715,6 +718,11 @@ const std::u16string& NavigationEntryImpl::GetTitleForDisplay() const {
+@@ -731,6 +734,11 @@ const std::u16string& NavigationEntryImpl::GetTitleForDisplay() const {
  
    gfx::ElideString(title, blink::mojom::kMaxTitleChars, &cached_display_title_);
    return cached_display_title_;

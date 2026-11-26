@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as Mojom from 'gen/brave/components/psst/core/common/psst_ui_common.mojom.m.js'
+import * as Mojom from 'gen/brave/components/psst/core/common/psst_ui_common.mojom-webui.js'
 
 import {
   createInterfaceApi,
@@ -11,7 +11,14 @@ import {
   eventsFor,
   actionsFor,
 } from '$web-common/api'
-export * from 'gen/brave/components/psst/core/common/psst_ui_common.mojom.m.js'
+export * from 'gen/brave/components/psst/core/common/psst_ui_common.mojom-webui.js'
+
+// eventsFor() builds its observer from a class, and the TypeScript bindings
+// only declare the interface.
+class PsstConsentDialog implements Mojom.PsstConsentDialogInterface {
+  onSetRequestStatus(_uid: string, _error: string | null) {}
+  onPsstErrorsReportSent() {}
+}
 
 export function createPsstDialogApi(
   consentHelper: Mojom.PsstConsentHelperInterface,
@@ -32,9 +39,9 @@ export function createPsstDialogApi(
     },
     events: {
       ...eventsFor(
-        Mojom.PsstConsentDialogInterface,
+        PsstConsentDialog,
         {
-          onSetRequestStatus(uid: string, error: string) {},
+          onSetRequestStatus(uid: string, error: string | null) {},
           onPsstErrorsReportSent() {},
         },
         (observer) => {

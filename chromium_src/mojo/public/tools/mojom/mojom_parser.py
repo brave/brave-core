@@ -170,18 +170,20 @@ def _PatchInBraveMojomAst(mojom_abspath, parsed_ast, enabled_features):
         os.path.join(this_py_path, *[os.pardir] * 5)
     )
 
-    if len(chromium_original_dir) >= len(mojom_abspath) + 1:
-        raise RuntimeError("Could not get original chromium src dir")
+    # `normcase` makes this ignore the drive letter case on Windows.
+    if not os.path.normcase(mojom_abspath).startswith(
+        os.path.normcase(chromium_original_dir + os.sep)
+    ):
+        raise RuntimeError(
+            "Could not get original chromium src dir: %s is not under %s"
+            % (mojom_abspath, chromium_original_dir)
+        )
 
-    # Build brave/chromium_src path.
+    # Build brave/chromium_src path. It is only on disk where an override is,
+    # as this script's own override is bundled in its `.pyz`.
     chromium_src_abspath = os.path.join(
         chromium_original_dir, 'brave', 'chromium_src'
     )
-    if not os.path.isdir(chromium_src_abspath):
-        raise RuntimeError(
-            "Could not find brave/chromium_src. %s is not a dir"
-            % chromium_src_abspath
-        )
 
     # Relative path.
     mojom_relpath = mojom_abspath[len(chromium_original_dir) + 1 :]

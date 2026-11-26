@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_group_style_views.h b/chrome/browser/ui/views/tabs/tab_group_style_views.h
-index c17f9d0ced07248187d733f40063bc25abec3c73..fab6a33b73a815058965d56fdf4ba8f10e0baa5f 100644
+index d3e77f495be63595419473ed1102610ffd033d30..f587aa2f42fe8d152b248208dbb4850cdf521033 100644
 --- a/chrome/browser/ui/views/tabs/tab_group_style_views.h
 +++ b/chrome/browser/ui/views/tabs/tab_group_style_views.h
-@@ -22,12 +22,12 @@ class TabGroupHeader;
+@@ -23,12 +23,12 @@ class TabGroupHeader;
  class TabGroupViews;
  
  // Styling of tab groups that depends on views.

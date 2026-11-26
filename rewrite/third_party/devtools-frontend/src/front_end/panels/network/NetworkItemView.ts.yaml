@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Offer the Adblock tab among the request's tabs.
+
+      Upstream shows its first tab in place of a selected tab it doesn't
+      offer, and remembers the selection for the next request only through
+      the same check.
+    regex:
+      re_pattern: '(const availableTabs = new Set<[^>]*>\(\[.*?\]\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            availableTabs.add(ADBLOCK_TAB_ID);
+  - description: |-
+      Replace `NetworkItemView` with Brave's subclass.
+
+      The subclass adds the Adblock tab to a request's details, rendering it
+      next to the tabs of upstream's default view.
+    add_at_end_of_the_file:
+      code: |-
+        import { ADBLOCK_TAB_ID, PatchNetworkItemView } from './NetworkItemView.patch.js'; (NetworkItemView as any) = PatchNetworkItemView(NetworkItemView, DEFAULT_VIEW);

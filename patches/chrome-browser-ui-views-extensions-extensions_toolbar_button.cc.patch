@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_toolbar_button.cc b/chrome/browser/ui/views/extensions/extensions_toolbar_button.cc
-index 8fc27552d96c05d1a8ab60e5074bbc8c373fc10e..ea162b02a46ff93c194690159eca2551c0269eec 100644
+index 6c94225d9742ac8d45212b51e544dd8c832abf29..5b6a5ef7c315afd730e9397f7b9132d3d945b7da 100644
 --- a/chrome/browser/ui/views/extensions/extensions_toolbar_button.cc
 +++ b/chrome/browser/ui/views/extensions/extensions_toolbar_button.cc
 @@ -192,7 +192,7 @@ int ExtensionsToolbarButton::GetIconSize() const {

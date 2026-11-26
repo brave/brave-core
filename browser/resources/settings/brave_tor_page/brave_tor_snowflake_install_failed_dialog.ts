@@ -29,10 +29,6 @@ class TorSnowflakeInstallFailedDialog extends DialogBase {
     return getTemplate()
   }
 
-  static get properties() {
-    return {}
-  }
-
   cancelClicked_() {
     this.$.dialog.close()
   }

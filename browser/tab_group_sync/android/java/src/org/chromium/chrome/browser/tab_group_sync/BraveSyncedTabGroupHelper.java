@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.tab_group_sync;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ObserverList;
-import org.chromium.base.Token;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -19,6 +18,7 @@ import org.chromium.components.tab_group_sync.LocalTabGroupId;
 import org.chromium.components.tab_group_sync.SavedTabGroup;
 import org.chromium.components.tab_group_sync.TabGroupSyncService;
 import org.chromium.components.tab_group_sync.TabGroupUiActionHandler;
+import org.chromium.components.tab_groups.TabGroupId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,11 +88,13 @@ public class BraveSyncedTabGroupHelper {
     public static void hideSyncedTabGroups(
             TabModel tabModel, TabGroupSyncService tabGroupSyncService) {
         // Closing a group mutates the model, so iterate over a copy of the group IDs.
-        List<Token> tabGroupIds = new ArrayList<>(tabModel.getAllTabGroupIds());
-        for (Token tabGroupId : tabGroupIds) {
+        List<TabGroupId> tabGroupIds = new ArrayList<>(tabModel.getAllTabGroupIds());
+        for (TabGroupId tabGroupId : tabGroupIds) {
             // A group that sync doesn't know about cannot be brought back, and closing it would
             // delete it outright, so leave it open.
-            if (tabGroupSyncService.getGroup(new LocalTabGroupId(tabGroupId)) == null) continue;
+            if (tabGroupSyncService.getGroup(new LocalTabGroupId(tabGroupId.getToken())) == null) {
+                continue;
+            }
 
             var closeTabsBuilder = TabClosureParams.forCloseTabGroup(tabModel, tabGroupId);
             if (closeTabsBuilder == null) continue;

@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Review Brave's agent documents with the emphatic imperatives rule
+
+      Brave keeps instructions for agents in `agents/` and `.claude/`, and the
+      skills its CI agents follow, with the documents they read, in
+      `tools/cr/autolift`, `tools/cr/codehealth` and `commit_messages.md`. The
+      code health trackers there are run records, not instructions.
+    add_before_line:
+      line:
+        'rules:
+        "agents/knowledge_base/rules/agents/use-emphatic-imperatives-for-agent-constraints.md"'
+      code: |2-
+            path_expression: "brave/(?:agents|\\.claude)/.*\\.md"
+            path_expression: "brave/tools/cr/(?:autolift|codehealth)/.*\\.md"
+            path_expression: "brave/tools/cr/commit_messages\\.md"
+            path_expression_exclusion: "brave/tools/cr/codehealth/M[0-9]+\\.md"

@@ -21,11 +21,11 @@ substitutions:
   - description: |
       Add the Brave bindings generation inputs.
 
-      `collect_idl_files` declares an `action_with_pydeps(target_name)` too,
+      `collect_idl_files` declares a `python_action(target_name)` too,
       so the template is named to pick out the one meant here.
     add_literal_to_list:
       target: target_name
-      type: action_with_pydeps
+      type: python_action
       template: generate_bindings
       list_name: inputs
       literal: brave_third_party_blink_renderer_bindings_generate_bindings_inputs
@@ -34,7 +34,7 @@ substitutions:
   - description: Add the Brave bindings generation deps.
     add_literal_to_list:
       target: target_name
-      type: action_with_pydeps
+      type: python_action
       template: generate_bindings
       list_name: deps
       literal: brave_third_party_blink_renderer_bindings_generate_bindings_deps

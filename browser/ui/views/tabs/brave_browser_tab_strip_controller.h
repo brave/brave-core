@@ -79,7 +79,7 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
       ui::SimpleMenuModel::Delegate* delegate,
       TabMenuModelDelegate* tab_menu_model_delegate,
       TabStripModel* tab_strip_model,
-      int index) override;
+      tabs::TabHandle context_tab) override;
 
  private:
   bool ShouldShowTreeTabs();

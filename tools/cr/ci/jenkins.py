@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import contextlib
 from dataclasses import dataclass
+import fnmatch
 import html
 import json
 from pathlib import Path
@@ -37,6 +38,40 @@ from terminal import console, terminal
 # Configuration file holding the Jenkins credentials used to trigger toolchain
 # pipelines. See `JenkinsCi.from_config` for the expected schema.
 JENKINS_CONFIG_FILE = Path.home() / '.jenkins.json'
+
+
+class JenkinsCredentialsError(BadOutcomeException):
+    """Jenkins refused the credentials in `JENKINS_CONFIG_FILE`."""
+
+
+def _why_unread(error: requests.RequestException, url: str) -> str:
+    """Why a request to `url` failed: its HTTP status, or a timeout.
+
+    Raises:
+        JenkinsCredentialsError: for a 401 or 403, which every other request
+            would get too.
+    """
+    response = getattr(error, 'response', None)
+    status = getattr(response, 'status_code', None)
+    if status == 401:
+        raise JenkinsCredentialsError(
+            f'Jenkins refused the credentials in {JENKINS_CONFIG_FILE} '
+            f'(401 Unauthorized for {url}): the API token has likely expired '
+            'or been revoked. Generate a new one from your user\'s Security '
+            'page on Jenkins, and update the file.'
+        ) from error
+    if status == 403:
+        raise JenkinsCredentialsError(
+            f'Jenkins denied the user in {JENKINS_CONFIG_FILE} access '
+            f'(403 Forbidden for {url}): the token may be wrong for the '
+            'username, or the user may lack permission for the job.'
+        ) from error
+    if isinstance(error, requests.Timeout):
+        return 'timed out'
+    if status is not None:
+        return f'HTTP {status} {getattr(response, "reason", "")}'.rstrip()
+    return str(error)
+
 
 # How often `--watch` polls Jenkins for pipeline progress.
 WATCH_POLL_INTERVAL_SECONDS = 8
@@ -378,14 +413,28 @@ class JenkinsCi:
         return True
 
     @staticmethod
-    def _get_json(session: requests.Session, url: str) -> dict | None:
-        """GETs `url` and returns the parsed JSON, or None on any failure."""
+    def _fetch_json(
+        session: requests.Session, url: str
+    ) -> tuple[dict | None, str]:
+        """GETs `url` and returns the parsed JSON, or None and why not.
+
+        Raises:
+            JenkinsCredentialsError: if Jenkins refuses the credentials.
+        """
         try:
             response = session.get(url, timeout=15)
             response.raise_for_status()
-            return response.json()
-        except (requests.RequestException, ValueError):
-            return None
+            return response.json(), ''
+        except requests.RequestException as e:
+            return None, _why_unread(e, url)
+        except ValueError:
+            return None, 'not JSON'
+
+    @staticmethod
+    def _get_json(session: requests.Session, url: str) -> dict | None:
+        """GETs `url` and returns the parsed JSON, or None on any failure
+        but Jenkins refusing the credentials, which it raises."""
+        return JenkinsCi._fetch_json(session, url)[0]
 
     def failed_builds(self, build_url: str) -> list[FailedBuild]:
         """What failed in the pipeline run at `build_url`: the first stage
@@ -396,9 +445,11 @@ class JenkinsCi:
         """
         url = build_url.rstrip('/') + '/'
         session = self._session()
-        describe = self._get_json(session, f'{url}wfapi/describe')
+        describe, why = self._fetch_json(session, f'{url}wfapi/describe')
         if describe is None:
-            raise BadOutcomeException(f'Could not read {url}wfapi/describe')
+            raise BadOutcomeException(
+                f'Could not read {url}wfapi/describe: {why}'
+            )
         stages = describe.get('stages') or []
         builds = []
         failed = next((s for s in stages if s.get('status') == 'FAILED'), None)
@@ -515,7 +566,8 @@ class JenkinsCi:
             response.raise_for_status()
         except requests.RequestException as e:
             raise BadOutcomeException(
-                f'Could not read {url}consoleText: {e}'
+                f'Could not read {url}consoleText: '
+                f'{_why_unread(e, f"{url}consoleText")}'
             ) from e
         text = _CONSOLE_NOTE.sub('', response.text)
         return text if timestamps else _TIMESTAMP.sub('', text)
@@ -538,20 +590,62 @@ class JenkinsCi:
         text = html.unescape(_HTML_TAG.sub('', log.get('text') or ''))
         return _TIMESTAMP.sub('', text)
 
-    def _failed_tests(
-        self, session: requests.Session, url: str
-    ) -> tuple[FailedTest, ...]:
+    def _failed_cases(self, session: requests.Session, url: str) -> list[dict]:
+        """The `testReport` cases of the tests that failed in the run."""
         report = self._get_json(
             session,
             f'{url}testReport/api/json?tree=suites[cases[className,name,'
             'status,age,failedSince,errorDetails,errorStackTrace]]',
         )
-        cases = [
+        return [
             case
             for suite in (report or {}).get('suites') or []
             for case in suite.get('cases') or []
             if case.get('status') in _FAILED_TEST_STATUSES
         ]
+
+    @staticmethod
+    def _case_name(case: dict) -> str:
+        name = case.get('name', '')
+        class_name = case.get('className', '')
+        if class_name and class_name != name:
+            name = f'{class_name}.{name}'
+        return name
+
+    @staticmethod
+    def _case_output(case: dict) -> str:
+        return '\n'.join(
+            part
+            for part in (case.get('errorDetails'), case.get('errorStackTrace'))
+            if part
+        )
+
+    def test_log(self, build_url: str, pattern: str) -> str:
+        """The whole output of each test that failed in the run at
+        `build_url`, or of the run whose `testReport/` it is, whose name
+        matches the glob `pattern`.
+
+        Raises:
+            BadOutcomeException: when no failed test matches.
+        """
+        url = (build_url.rstrip('/') + '/').removesuffix('testReport/')
+        cases = self._failed_cases(self._session(), url)
+        found = [
+            f'{self._case_name(case)}:\n{self._case_output(case)}'.rstrip()
+            for case in cases
+            if fnmatch.fnmatchcase(self._case_name(case), pattern)
+        ]
+        if not found:
+            raise BadOutcomeException(
+                f'No failed test in {url} matches {pattern}; '
+                f'{len(cases)} failed.'
+            )
+        return '\n\n'.join(found)
+
+    def _failed_tests(
+        self, session: requests.Session, url: str
+    ) -> tuple[FailedTest, ...]:
+        cases = self._failed_cases(session, url)
         job_url, _, number = url.rstrip('/').rpartition('/')
         runs = (
             self._earlier_runs(session, job_url, int(number))
@@ -562,18 +656,6 @@ class JenkinsCi:
         classes: dict[tuple[int, str], dict[str, str] | None] = {}
         tests = []
         for index, case in enumerate(cases):
-            name = case.get('name', '')
-            class_name = case.get('className', '')
-            if class_name and class_name != name:
-                name = f'{class_name}.{name}'
-            details = '\n'.join(
-                part
-                for part in (
-                    case.get('errorDetails'),
-                    case.get('errorStackTrace'),
-                )
-                if part
-            )
             age = case.get('age') or 0
             known = ''
             if age > 1:
@@ -585,9 +667,9 @@ class JenkinsCi:
                 history = self._history(session, job_url, case, runs, classes)
             tests.append(
                 FailedTest(
-                    name=name,
+                    name=self._case_name(case),
                     status=case['status'],
-                    details=failures.test_output(details),
+                    details=failures.test_output(self._case_output(case)),
                     known=known,
                     history=history,
                 )
@@ -675,21 +757,38 @@ class JenkinsCi:
             return ()
         return (f'not in the job\'s {len(runs)} earlier runs',)
 
-    def rerun(self, build_url: str, *, wipe_workspace: bool = False) -> str:
-        """Queues the job of the run at `build_url` again, from scratch when
-        `wipe_workspace` is set (a PR job's `WIPE_WORKSPACE` parameter), and
-        says so."""
+    def rerun(
+        self,
+        build_url: str,
+        *,
+        wipe_workspace: bool = False,
+        remove_src_out: bool = False,
+    ) -> str:
+        """Queues the job of the run at `build_url` again, and says so: from
+        scratch when `wipe_workspace` is set (a PR job's `WIPE_WORKSPACE`
+        parameter), and without `src/out` when `remove_src_out` is (its
+        `RM_SRC_OUT` parameter)."""
         job_url = build_url.rstrip('/').rsplit('/', 1)[0] + '/'
         session = self._session()
         crumb = self._get_crumb(session, self._server_root((job_url,)))
-        params = {'WIPE_WORKSPACE': 'true'} if wipe_workspace else {}
+        params = {}
+        if wipe_workspace:
+            params['WIPE_WORKSPACE'] = 'true'
+        if remove_src_out:
+            params['RM_SRC_OUT'] = 'true'
         response = session.post(
             f'{job_url}buildWithParameters',
             params=params,
             headers=crumb,
             timeout=30,
         )
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as e:
+            raise BadOutcomeException(
+                f'Could not queue {job_url.rstrip("/")} again: '
+                f'{_why_unread(e, f"{job_url}buildWithParameters")}'
+            ) from e
         return f'Queued {job_url.rstrip("/")} again.'
 
     def _resolve_display_name(

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler_unittest.cc b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler_unittest.cc
-index bce57fa3fdb3c3d6d238fe318835940e6bb10023..19219823f785a069090b5ca40444c0626d64c2da 100644
+index e6c76d87172528d6c49cc3fb919dbed841da405d..a195b6c517a42bd02813bc077aff0a5631106791 100644
 --- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler_unittest.cc
 +++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler_unittest.cc
 @@ -193,6 +193,7 @@ class MockPage : public side_panel::mojom::CustomizeChromePage {

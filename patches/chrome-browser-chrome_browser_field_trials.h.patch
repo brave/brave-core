@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/chrome_browser_field_trials.h b/chrome/browser/chrome_browser_field_trials.h
+index 80c41d7c0f90aca68ba62081f66f236b435a74ba..61378dca16284c8724e7ffe77cc350ac33be48b9 100644
+--- a/chrome/browser/chrome_browser_field_trials.h
++++ b/chrome/browser/chrome_browser_field_trials.h
+@@ -15,14 +15,14 @@ namespace base {
+ class FeatureList;
+ }
+ 
+-class ChromeBrowserFieldTrials : public variations::PlatformFieldTrials {
++class ChromeBrowserFieldTrials_ChromiumImpl : public variations::PlatformFieldTrials {
+  public:
+-  ChromeBrowserFieldTrials();
++  ChromeBrowserFieldTrials_ChromiumImpl();
+ 
+-  ChromeBrowserFieldTrials(const ChromeBrowserFieldTrials&) = delete;
+-  ChromeBrowserFieldTrials& operator=(const ChromeBrowserFieldTrials&) = delete;
++  ChromeBrowserFieldTrials_ChromiumImpl(const ChromeBrowserFieldTrials_ChromiumImpl&) = delete;
++  ChromeBrowserFieldTrials_ChromiumImpl& operator=(const ChromeBrowserFieldTrials_ChromiumImpl&) = delete;
+ 
+-  ~ChromeBrowserFieldTrials() override;
++  ~ChromeBrowserFieldTrials_ChromiumImpl() override;
+ 
+   // Registers synthetic field trials. Call after `g_browser_process` exists.
+   static void RegisterSyntheticTrials();

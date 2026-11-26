@@ -76,8 +76,8 @@ aggregate_vector_icons("brave_vector_icons") {
 source_set("vector_icons") {
   sources = get_target_outputs(":brave_vector_icons")
 
+  public_deps = [ ":brave_vector_icons" ]
   deps = [
-    ":brave_vector_icons",
     "//base",
     "//skia",
     "//ui/gfx",

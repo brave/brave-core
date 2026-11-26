@@ -139,16 +139,17 @@ void EnsureWebContentsLoaded(
 content::WebContents* GetWebContentsFromTabId(int32_t tab_id) {
 #if BUILDFLAG(IS_ANDROID)
   TabAndroid* tab = nullptr;
-  for (TabModel* model : TabModelList::models()) {
+  TabModelList::ForEachAll([&](TabModel* model) {
     const size_t tab_count = model->GetTabCount();
     for (size_t index = 0; index < tab_count; index++) {
       auto* current_tab = model->GetTabAt(index);
       if (tab_id == current_tab->GetAndroidId()) {
         tab = current_tab;
-        break;
+        return false;
       }
     }
-  }
+    return true;
+  });
   if (!tab) {
     return nullptr;
   }

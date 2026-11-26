@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_actions.h b/chrome/browser/ui/browser_actions.h
-index 88a9ca8c1ad764ab699e3ad334d033763ca34248..b9b6b428935129886c0984c3fabfbbf6dc7bdda3 100644
+index dc578ea21079663040366e006b914e51cd67fd29..830704394a5d8840ce811481838c2399b4b71f12 100644
 --- a/chrome/browser/ui/browser_actions.h
 +++ b/chrome/browser/ui/browser_actions.h
-@@ -27,18 +27,19 @@ class BrowserActions {
+@@ -31,12 +31,12 @@ class BrowserActions {
    explicit BrowserActions(BrowserWindowInterface* bwi);
    BrowserActions(const BrowserActions&) = delete;
    BrowserActions& operator=(const BrowserActions&) = delete;
@@ -17,7 +17,8 @@ index 88a9ca8c1ad764ab699e3ad334d033763ca34248..b9b6b428935129886c0984c3fabfbbf6
  
    void set_root_action_item_for_testing(actions::ActionItem* item) {
      root_action_item_ = item;
-   }
+@@ -46,6 +46,7 @@ class BrowserActions {
+       std::u16string_view synonyms);
  
   private:
 +  friend class BraveBrowserActions;

@@ -5,13 +5,10 @@
 
 #include "services/network/network_service.h"
 
-#define UpdateKeyPinsList UpdateKeyPinsList_Unused
-#include <services/network/network_service.cc>
-#undef UpdateKeyPinsList
-
 #include "brave/net/dns/secure_dns_counter.h"
-#include "net/net_buildflags.h"
 #include "services/network/public/mojom/network_service.mojom.h"
+
+#include <services/network/network_service.cc>
 
 namespace network {
 
@@ -22,13 +19,5 @@ void NetworkService::GetDnsRequestCountsAndReset(
   std::move(callback).Run(
       mojom::DnsRequestCounts::New(counts.total_count, counts.upgraded_count));
 }
-
-#if BUILDFLAG(CHROME_KEY_PINNING_SUPPORTED)
-void NetworkService::UpdateKeyPinsList(mojom::PinListPtr pin_list,
-                                       base::Time update_time,
-                                       UpdateKeyPinsListCallback callback) {
-  std::move(callback).Run();
-}
-#endif  // BUILDFLAG(CHROME_KEY_PINNING_SUPPORTED)
 
 }  // namespace network

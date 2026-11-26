@@ -39,6 +39,7 @@ public class BraveHomeButton extends HomeButton implements TintObserver {
     public void onTintChanged(
             ColorStateList tint,
             ColorStateList activityFocusTint,
+            float unfocusedAlpha,
             @BrandedColorScheme int brandedColorScheme) {
         ImageViewCompat.setImageTintList(this, tint);
     }

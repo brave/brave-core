@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Instructions for agents: Brave's skills, prompts and commands, and the skills
+# its CI agents follow with the documents they read. The code health trackers
+# are run records, not instructions.
+agentic_review {
+  capability_groups {
+    path_expression: "(?:agents|\\.claude)/.*\\.md"
+    path_expression: "tools/cr/(?:autolift|codehealth)/.*\\.md"
+    path_expression: "tools/cr/commit_messages\\.md"
+    path_expression_exclusion: "tools/cr/codehealth/M[0-9]+\\.md"
+    rules: "docs/knowledge_base/rules/agent_docs/state-instructions-without-anecdotes.md"
+  }
+}

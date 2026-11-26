@@ -31,14 +31,13 @@ substitutions:
       method_name: MoveTabsRecursive
 
   - description: |-
-      Let BraveTabStripCollection override RemoveTabAtIndexRecursive.
+      Let BraveTabStripCollection override RemoveTab.
 
-      Needed so BraveTabStripCollection can delegate tab removal instead of
-      the tree-tab bypass preempted onto the body itself (see
-      rewrite/components/tabs/impl/tab_strip_collection.cc.yaml).
+      Tabs are removed through it, so BraveTabStripCollection delegates it to
+      the tree tabs delegate.
     make_virtual:
       class_name: TabStripCollection
-      method_name: RemoveTabAtIndexRecursive
+      method_name: RemoveTab
 
   - description: |-
       Add public hooks for Brave's tree-tab handling around collection

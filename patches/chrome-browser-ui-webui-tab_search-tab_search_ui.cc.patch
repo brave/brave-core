@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/tab_search/tab_search_ui.cc b/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
-index ee7a3475dc71925a26ee8824f134d81f4b73d9ec..883ca25767b2eba984662c6b8a18ff72f9f5156c 100644
+index d39ba029cfe11f34a8212d1b4457ab2fe00967fa..d53c4a55936bdfbda313f033e0ea6832291b0ad2 100644
 --- a/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
 +++ b/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
 @@ -56,7 +56,7 @@ std::optional<int> TabSearchUIConfig::GetCommandIdForTesting() {
@@ -8,9 +8,9 @@ index ee7a3475dc71925a26ee8824f134d81f4b73d9ec..883ca25767b2eba984662c6b8a18ff72
  
 -TabSearchUI::TabSearchUI(content::WebUI* web_ui)
 +TabSearchUI_ChromiumImpl::TabSearchUI_ChromiumImpl(content::WebUI* web_ui)
-     : TopChromeWebUIController(
-           web_ui,
-           /*enable_chrome_send=*/true /* Needed for webui browser tests */,
+     : TopChromeWebUIController(web_ui,
+                                true /* Needed for webui browser tests */),
+       webui_load_timer_(web_ui->GetWebContents(),
 @@ -153,22 +153,22 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
                      perfetto::Track::FromPointer(this));
  }

@@ -1,0 +1,21 @@
+diff --git a/ui/views/controls/menu/menu_config.cc b/ui/views/controls/menu/menu_config.cc
+index 3328ae0e476b9e37946dbdfe23f0ba60304edf47..82fbc108359a9445941c2301e3157c9e10fb53f0 100644
+--- a/ui/views/controls/menu/menu_config.cc
++++ b/ui/views/controls/menu/menu_config.cc
+@@ -29,8 +29,16 @@ MenuConfig& GetMutableInstance() {
+ }  // namespace
+ 
+ MenuConfig::MenuConfig() {
++  [&]() -> void {
+   InitCommon();
+   InitPlatform();
++  }();
++  item_horizontal_border_padding = 4;
++  item_horizontal_padding = 20;
++  corner_radius = 8;
++  auxiliary_corner_radius = 8;
++  touchable_corner_radius = 8;
++  use_bubble_border = true;
+ }
+ 
+ MenuConfig::~MenuConfig() = default;

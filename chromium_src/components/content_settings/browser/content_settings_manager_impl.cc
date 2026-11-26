@@ -18,6 +18,12 @@ void ContentSettingsManagerImpl::AllowEphemeralStorageAccess(
     const url::Origin& top_frame_origin,
     AllowEphemeralStorageAccessCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // A browser context without cookie settings gets no storage access, so
+  // nothing to make ephemeral either.
+  if (!cookie_settings_) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
   url::Origin storage_origin;
   const bool should_use = cookie_settings_->ShouldUseEphemeralStorage(
       origin, site_for_cookies, top_frame_origin, storage_origin);

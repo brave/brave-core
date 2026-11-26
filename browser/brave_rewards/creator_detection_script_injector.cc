@@ -45,7 +45,7 @@ constexpr auto kScriptMap = base::MakeFixedFlatMap<std::string_view, int>(
 
 std::string LoadScriptResource(int id) {
   auto& bundle = ui::ResourceBundle::GetSharedInstance();
-  if (bundle.IsGzipped(id)) {
+  if (bundle.IsCompressed(id)) {
     return bundle.LoadDataResourceString(id);
   }
   return std::string(bundle.GetRawDataResource(id));

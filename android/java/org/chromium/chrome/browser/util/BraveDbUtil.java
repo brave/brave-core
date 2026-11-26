@@ -141,7 +141,7 @@ public class BraveDbUtil {
             succeeded = true;
             in.close();
         } catch (IOException e) {
-            Log.e(TAG, "Error on copying database file (" + src + " -> " + dst +  "): " + e);
+            Log.e(TAG, "Error on copying database file (%s -> %s)", src, dst, e);
         }
         return succeeded;
     }

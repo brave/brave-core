@@ -110,7 +110,7 @@ class HistoryEmbeddingsServiceTest : public testing::Test {
         os_crypt_.get(), history_service_.get(), page_embeddings_service_.get(),
         passage_embeddings_test_env_.embedder_metadata_provider(),
         passage_embeddings_test_env_.embedder());
-    ASSERT_TRUE(service_->embedder_metadata_.IsValid());
+    ASSERT_TRUE(service_->embedder_metadata_.has_value());
   }
 
   void TearDown() override {
@@ -158,7 +158,7 @@ class HistoryEmbeddingsServiceTest : public testing::Test {
   }
 
   void SetMetadataScoreThreshold(double threshold) {
-    service_->embedder_metadata_.search_score_threshold = threshold;
+    service_->embedder_metadata_->search_score_threshold = threshold;
   }
 
  protected:

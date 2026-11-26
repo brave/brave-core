@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/bookmarks/BUILD.gn b/chrome/browser/ui/bookmarks/BUILD.gn
-index e438704ee79c1c24cdf4b1eacdf5a8b8c3cc68df..96ea0addba752a2590dbe0e9ae97a2308e5e3de4 100644
+index b830ac52d59ad9c4e6427163d1334226640081b3..85ac57f71d21506a4759b22f78b169c99825742f 100644
 --- a/chrome/browser/ui/bookmarks/BUILD.gn
 +++ b/chrome/browser/ui/bookmarks/BUILD.gn
 @@ -67,6 +67,7 @@ source_set("impl") {

@@ -129,6 +129,7 @@ source_set("browser_tests") {
       "//brave/components/brave_search/common",
       "//chrome/browser/ui/webui/searchbox",
       "//chrome/browser/ui/webui/searchbox:searchbox_test_utils",
+      "//chrome/test/base:browser_test_waiters",
       "//content/public/browser",
       "//third_party/blink/public/common",
       "//ui/webui",
@@ -141,11 +142,15 @@ source_set("browser_tests") {
   }
 
   if (enable_webui_history) {
-    sources += [ "history/brave_history_sync_promo_browsertest.cc" ]
+    sources += [
+      "history/brave_history_overrides_browsertest.cc",
+      "history/brave_history_sync_promo_browsertest.cc",
+    ]
     deps += [
       "//base/test:test_support",
       "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/common:constants",
+      "//chrome/test/base:web_ui_mocha_browser_test",
       "//components/sync/base",
     ]
   }

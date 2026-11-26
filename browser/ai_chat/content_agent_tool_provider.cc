@@ -30,6 +30,7 @@
 #include "chrome/browser/actor/actor_task.h"
 #include "chrome/browser/actor/actor_task_metadata.h"
 #include "chrome/browser/actor/tab_observation_strategy.h"
+#include "chrome/browser/actor/tools/tool_result.h"
 #include "chrome/browser/actor/ui/actor_ui_state_manager.h"
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
@@ -45,6 +46,8 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
@@ -106,7 +109,7 @@ ContentAgentToolProvider::ContentAgentToolProvider(
       actor::TaskSourceInfo(actor::TaskSourceInfo::Client::kExperimentalActor,
                             /*id=*/std::nullopt),
       AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker(),
-      /*options=*/nullptr, /*delegate=*/nullptr, &*ui_state_manager_);
+      &*ui_state_manager_);
 
   actor_task_state_changed_subscription_ =
       actor_service_->AddTaskStateChangedCallback(base::BindRepeating(
@@ -170,7 +173,7 @@ void ContentAgentToolProvider::StopAllTasks() {
         actor::TaskSourceInfo(actor::TaskSourceInfo::Client::kExperimentalActor,
                               /*id=*/std::nullopt),
         AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker(),
-        /*options=*/nullptr, /*delegate=*/nullptr, &*ui_state_manager_);
+        &*ui_state_manager_);
     actor_service_->StopTask(stopping_task_id,
                              actor::ActorTask::StoppedReason::kTaskComplete);
   }
@@ -253,9 +256,20 @@ void ContentAgentToolProvider::ExecuteActions(
     return;
   }
 
+  // Upstream doesn't implicitly grant a navigate target's origin anymore, and
+  // our tasks have no delegate to confirm new origins, so grant it explicitly.
+  for (const auto& action : actions.actions()) {
+    if (action.has_navigate()) {
+      actions.mutable_task_metadata()
+          ->mutable_security()
+          ->add_added_writable_mainframe_origins(
+              url::Origin::Create(GURL(action.navigate().url())).Serialize());
+    }
+  }
+
   actor_service_->PerformActions(
       actor::TaskId(actions.task_id()), std::move(requests.value()),
-      actor::ActorTaskMetadata(),
+      actor::ActorTaskMetadata(actions),
       base::BindOnce(&ContentAgentToolProvider::OnActionsFinished,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -303,12 +317,12 @@ const std::string& ContentAgentToolProvider::GetOrCreateContainerId() {
 
 void ContentAgentToolProvider::OnActionsFinished(
     Tool::UseToolCallback callback,
-    std::vector<actor::ActionResultWithLatencyInfo> action_results,
+    std::vector<actor::ToolResultWithLatencyInfo> action_results,
     actor::TabObservationStrategy observation_strategy) {
   actor::mojom::ActionResultCode result_code =
       actor::mojom::ActionResultCode::kOk;
   std::optional<size_t> index_of_failed_action;
-  ExtractErrorResult(action_results, &result_code, index_of_failed_action);
+  ExtractErrorResult(action_results, result_code, index_of_failed_action);
   if (result_code == actor::mojom::ActionResultCode::kOk) {
     // Send current page content for result
 

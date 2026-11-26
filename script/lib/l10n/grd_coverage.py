@@ -64,6 +64,10 @@ ALLOWLIST = {
         'Names Google as the content generator'
     ),
     (
+        'chrome/browser/readaloud/android/resources/'
+        'android_readaloud_strings.grd'
+    ): 'Names the Google Read Aloud service',
+    (
         'ui/accessibility/extensions/strings/'
         'accessibility_extensions_strings.grd'
     ): 'Web Store accessibility extensions, not shipped',

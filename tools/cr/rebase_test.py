@@ -37,6 +37,7 @@ from unittest.mock import patch
 import brockit
 import conflict_resolution
 import pinned_commits
+import plaster
 import rebase
 import repository
 from test.fake_chromium_repo import DEFAULT_BRANCH, FakeChromiumRepo
@@ -569,6 +570,59 @@ class RewritePlanTest(unittest.TestCase):
             'pick fff # [cr148][git-cr] Another tooling fix\n'
             'pick ddd # [cr148] IWYU fixes.\n'
             'pick aaa # [cr148] Feature A\n',
+        )
+
+    _TRACKER_GROUP = (
+        'pick aaa # [cr148] Version CodeHealth tracker\n'
+        'fixup bbb # fixup! [cr148] Version CodeHealth tracker\n'
+        'pick ccc # [cr148] Version CodeHealth tracker\n'
+        'pick ddd # [cr148] Version CodeHealth tracker\n'
+    )
+
+    def test_squashed_moves_a_group_fixup_behind_the_commit_adding_its_file(
+        self,
+    ):
+        """Git places the fixup right after the group's first commit, where a
+        file a later commit of the group adds isn't there yet."""
+        path = self._todo(self._TRACKER_GROUP)
+        changed = {'aaa': ['M160.md'], 'bbb': ['k_test.py'], 'ccc': ['k.py']}
+        changed['ddd'] = ['k_test.py']
+        added = {'aaa': [], 'bbb': [], 'ccc': ['k.py'], 'ddd': ['k_test.py']}
+
+        rebase.rewrite_plan(
+            todo_file=path,
+            pinned_squashed=True,
+            changed_paths=changed.get,
+            added_paths=added.get,
+        )
+
+        self.assertEqual(
+            path.read_text(),
+            'pick aaa # [cr148] Version CodeHealth tracker\n'
+            'squash ccc # [cr148] Version CodeHealth tracker\n'
+            'squash ddd # [cr148] Version CodeHealth tracker\n'
+            'fixup bbb # fixup! [cr148] Version CodeHealth tracker\n',
+        )
+
+    def test_squashed_leaves_a_group_fixup_of_files_already_there(self):
+        path = self._todo(self._TRACKER_GROUP)
+        changed = {'aaa': ['M160.md'], 'bbb': ['M160.md'], 'ccc': ['k.py']}
+        changed['ddd'] = ['k_test.py']
+        added = {'aaa': [], 'bbb': [], 'ccc': ['k.py'], 'ddd': ['k_test.py']}
+
+        rebase.rewrite_plan(
+            todo_file=path,
+            pinned_squashed=True,
+            changed_paths=changed.get,
+            added_paths=added.get,
+        )
+
+        self.assertEqual(
+            path.read_text(),
+            'pick aaa # [cr148] Version CodeHealth tracker\n'
+            'fixup bbb # fixup! [cr148] Version CodeHealth tracker\n'
+            'squash ccc # [cr148] Version CodeHealth tracker\n'
+            'squash ddd # [cr148] Version CodeHealth tracker\n',
         )
 
     def test_squashed_keeps_tooling_after_a_commit_it_builds_on(self):
@@ -2486,14 +2540,10 @@ def _raw_patch(context: str) -> str:
     )
 
 
-class RebaseStopTest(unittest.TestCase):
-    """End-to-end tests for the stops of `Rebase.execute()`.
-
-    A rebase resolves the conflicts that have a fixed answer as it goes, stops
-    on any other, and `--continue` carries on from the stop with the handling
-    the rebase started with. Each scenario rebases a `feature` branch onto the
-    default branch, which changed the same files after `feature` forked.
-    """
+class _RebaseTestCase(unittest.TestCase):
+    """Runs `Rebase.execute()` end to end. Each scenario rebases a `feature`
+    branch onto the default branch, which changed files after `feature`
+    forked."""
 
     def setUp(self):
         self.repo = FakeChromiumRepo()
@@ -2592,6 +2642,15 @@ class RebaseStopTest(unittest.TestCase):
     def changed(self, commit: str) -> list[str]:
         return self.git('show', '--format=', '--name-only', commit).splitlines()
 
+
+class RebaseStopTest(_RebaseTestCase):
+    """End-to-end tests for the stops of `Rebase.execute()`.
+
+    A rebase resolves the conflicts that have a fixed answer as it goes, stops
+    on any other, and `--continue` carries on from the stop with the handling
+    the rebase started with.
+    """
+
     # The base's own commit also changes `other`, so that none of the
     # branch's commits is patch-identical to it, which git would leave out of
     # the plan: they only come out empty.
@@ -2616,6 +2675,24 @@ class RebaseStopTest(unittest.TestCase):
         self.assertEqual(['tool'], self.changed('HEAD'))
         self.assertEqual(['tracker'], self.changed('HEAD~1'))
         self.assertEqual('x\ny\n', self.committed('tool'))
+
+    def test_a_group_fixup_of_a_file_a_later_commit_adds_applies(self):
+        tracker = 'Version CodeHealth tracker'
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'other': 'o\n'},
+            commits=[
+                (tracker, {'tracker': 't\n'}),
+                (tracker, {'script.py': 'a\n'}),
+                (f'fixup! {tracker}', {'script.py': 'a\nb\n'}),
+            ],
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual([tracker], self.subjects())
+        self.assertEqual('a\nb\n', self.committed('script.py'))
 
     def test_a_pinned_group_that_cancels_out_is_dropped(self):
         fork = self.build(
@@ -2710,6 +2787,82 @@ class RebaseStopTest(unittest.TestCase):
             f'{conflict_resolution.Rule.PICKED_BY_BASE.value}:\n    ✔ tool',
             self.console.text,
         )
+
+    # A document long enough for changes to its first and last lines to be
+    # separate hunks.
+    _DOC = ''.join(f'line {i}\n' for i in range(1, 11))
+
+    def _picked_and_reworded(
+        self, subject: str, *, also: str = '', picked: bool = True
+    ) -> str:
+        """A fork whose base picked `subject`'s change to the doc's second line
+        (unless not `picked`) and then reworded it, while the commit, with
+        `also` in place of its last line when given, still has the picked
+        wording."""
+        branch = self._DOC.replace('line 2\n', 'line 2, picked\n')
+        if also:
+            branch = branch.replace('line 10\n', also)
+        fork = self.build(
+            ancestor={'doc': self._DOC},
+            base={'doc': branch if picked else self._DOC, 'other': 'o\n'},
+            commits=[
+                (subject, {'doc': branch}),
+                ('Add a feature', {'f': 'f\n'}),
+            ],
+        )
+        self.git('checkout', '--quiet', DEFAULT_BRANCH)
+        self.commit(
+            'Reword the doc',
+            {'doc': self._DOC.replace('line 2\n', 'line 2, reworded\n')},
+        )
+        self.git('checkout', '--quiet', 'feature')
+        return fork
+
+    def test_a_tooling_group_the_base_picked_and_extended_is_skipped(self):
+        fork = self._picked_and_reworded('Version lift updates')
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(['Add a feature'], self.subjects())
+        self.assertEqual(
+            self._DOC.replace('line 2\n', 'line 2, reworded\n'),
+            self.committed('doc'),
+        )
+        self.assertIn(
+            f'{conflict_resolution.Rule.EXTENDED_BY_BASE.value}:\n    ✔ doc',
+            self.console.text,
+        )
+
+    def test_a_commit_the_base_picked_and_extended_still_stops(self):
+        """Only tooling is judged by the base's side: a fix could lose what
+        the branch needs."""
+        fork = self._picked_and_reworded('Track an item')
+
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork)
+
+        self.assertEqual(['doc'], self.conflicted())
+
+    def test_a_tooling_group_the_base_never_picked_still_stops(self):
+        """The base changing the same line differently says nothing of the
+        branch's change being on it."""
+        fork = self._picked_and_reworded('Version lift updates', picked=False)
+
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertEqual(['doc'], self.conflicted())
+
+    def test_a_tooling_group_with_more_than_the_base_has_still_stops(self):
+        fork = self._picked_and_reworded(
+            'Version lift updates', also='line 10, the branch only\n'
+        )
+
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertEqual(['doc'], self.conflicted())
 
     def test_a_commit_whose_fixup_the_base_lacks_still_stops(self):
         fork = self.build(
@@ -3190,6 +3343,16 @@ class RebaseStopTest(unittest.TestCase):
 
         self.assertTrue(state.squash_minor_bumps)
         self.assertEqual(
+            state.start,
+            self.git(
+                'log',
+                '-1',
+                '--format=%H',
+                '--grep=^Add the files$',
+                DEFAULT_BRANCH,
+            ),
+        )
+        self.assertEqual(
             state.resolutions,
             [
                 conflict_resolution.Resolution(
@@ -3221,6 +3384,17 @@ class RebaseStopTest(unittest.TestCase):
             ],
         )
 
+    def test_state_without_its_start_loads(self):
+        """A brockit that didn't record where the rebase started may have
+        saved it."""
+        self.stop_on_data()
+        file = brockit.RebaseState._path()
+        data = json.loads(file.read_bytes().decode('utf-8'))
+        del data['start']
+        file.write_text(json.dumps(data), encoding='utf-8', newline='')
+
+        self.assertIsNone(brockit.RebaseState.load().start)
+
     def test_unreadable_state_raises(self):
         self.stop_on_data()
         for contents in ('{not json', '{}', '{"squash_minor_bumps": true}'):
@@ -3231,6 +3405,109 @@ class RebaseStopTest(unittest.TestCase):
 
                 with self.assertRaises(brockit.InvalidInputException):
                     brockit.RebaseState.load()
+
+
+class BasePlasterCheckTest(_RebaseTestCase):
+    """A finished rebase reapplies the plasters the base added or changed."""
+
+    FOO = 'chrome/browser/foo.cc'
+    FOO_PLASTER = f'rewrite/{FOO}.yaml'
+    FOO_PATCH = 'patches/chrome-browser-foo.cc.patch'
+    VERSION = '158.0.8127.2'
+
+    def setUp(self):
+        super().setUp()
+        # `Repositories.load` memoises the `.repositories.cfg` it read.
+        plaster.Repositories._instance = None
+        self.addCleanup(setattr, plaster.Repositories, '_instance', None)
+        self.repo.write_and_stage_file(
+            self.FOO, '// foo.cc\n  ChromeThing thing;\n', self.repo.chromium
+        )
+        self.repo.commit('Add foo.cc', self.repo.chromium)
+        self.repo.add_tag(self.VERSION)
+        self.repo.update_brave_version(self.VERSION)
+
+    @staticmethod
+    def _yaml(pattern: str) -> str:
+        return (
+            'substitutions:\n'
+            '  - description: Rewrite the thing brave owns\n'
+            '    regex:\n'
+            f'      re_pattern: {pattern}\n'
+            '      replace: BraveThing\n'
+        )
+
+    def _good_patch(self) -> str:
+        """The patch the good plaster makes, left out of the tree."""
+        yaml = plaster.PLASTER_FILES_PATH / f'{self.FOO}.yaml'
+        self.repo.write_file(
+            self.FOO_PLASTER, self._yaml('ChromeThing'), self.repo.brave
+        )
+        plaster.PlasterFile(yaml).apply()
+        patch_text = self.read(self.FOO_PATCH)
+        yaml.unlink()
+        (self.repo.brave / self.FOO_PATCH).unlink()
+        return patch_text
+
+    def read(self, path: str) -> str:
+        return (self.repo.brave / path).read_bytes().decode('utf-8')
+
+    def _rebase_with_base_adding(self, yaml: str, patch_text: str) -> None:
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={self.FOO_PLASTER: yaml, self.FOO_PATCH: patch_text},
+            commits=[('Add a feature', {'feature': 'f\n'})],
+        )
+        self.rebase(fork)
+
+    def test_plasters_that_still_apply_are_not_reported(self):
+        good = self._good_patch()
+        self._rebase_with_base_adding(self._yaml('ChromeThing'), good)
+
+        self.assertNotIn('Plasters the base added', self.console.text)
+        self.assertEqual(self.git('status', '--porcelain', self.FOO_PATCH), '')
+
+    def test_a_plaster_whose_patch_changes_is_listed_and_regenerated(self):
+        good = self._good_patch()
+        self._rebase_with_base_adding(self._yaml('ChromeThing'), 'stale\n')
+
+        self.assertIn(
+            'Plasters the base added or changed whose patch changes on '
+            f'Chromium {self.VERSION} (action needed):\n'
+            f'    ✘ {self.FOO_PLASTER} ➜ {self.FOO_PATCH}',
+            self.console.text,
+        )
+        self.assertEqual(self.read(self.FOO_PATCH), good)
+
+    def test_a_plaster_that_fails_is_listed(self):
+        self._rebase_with_base_adding(self._yaml('MissingThing'), 'stale\n')
+
+        self.assertIn(
+            'Plasters the base added or changed that fail on Chromium '
+            f'{self.VERSION} (action needed):\n    ✘ {self.FOO_PLASTER}: ',
+            self.console.text,
+        )
+
+    def test_plasters_are_unchecked_when_chromium_is_on_another_version(self):
+        good = self._good_patch()
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={
+                self.FOO_PLASTER: self._yaml('ChromeThing'),
+                self.FOO_PATCH: good,
+            },
+            commits=[('Add a feature', {'feature': 'f\n'})],
+        )
+        self.repo.add_tag('158.0.8130.1')
+
+        self.rebase(fork)
+
+        self.assertIn(
+            'Plasters the base added or changed, unchecked as Chromium is on '
+            f'158.0.8130.1, not {self.VERSION} (action needed):\n'
+            f'    ✘ {self.FOO_PLASTER}',
+            self.console.text,
+        )
 
 
 class RebaseCommandLineTest(unittest.TestCase):

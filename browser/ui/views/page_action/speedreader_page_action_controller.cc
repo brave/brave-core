@@ -27,13 +27,22 @@
 
 namespace page_actions {
 
+DEFINE_USER_DATA(SpeedreaderPageActionController);
+
+// static
+SpeedreaderPageActionController* SpeedreaderPageActionController::From(
+    tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
 SpeedreaderPageActionController::SpeedreaderPageActionController(
     tabs::TabInterface& tab,
     page_actions::PageActionController& page_action_controller)
     : tab_(tab),
       page_action_controller_(
           static_cast<page_actions::PageActionControllerImpl&>(
-              page_action_controller)) {
+              page_action_controller)),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
   CHECK(
       base::FeatureList::IsEnabled(speedreader::features::kSpeedreaderFeature));
 }

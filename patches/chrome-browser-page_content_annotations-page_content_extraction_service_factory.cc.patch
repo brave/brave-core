@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/page_content_annotations/page_content_extraction_service_factory.cc b/chrome/browser/page_content_annotations/page_content_extraction_service_factory.cc
+index 2b7b8fd81bdfd8fc4b3a757b1536d384aadb3e10..d959d875936124f860f925ecf9b74e28038c9b27 100644
+--- a/chrome/browser/page_content_annotations/page_content_extraction_service_factory.cc
++++ b/chrome/browser/page_content_annotations/page_content_extraction_service_factory.cc
+@@ -67,7 +67,7 @@ std::unique_ptr<KeyedService>
+ PageContentExtractionServiceFactory::BuildServiceInstanceForBrowserContext(
+     content::BrowserContext* context) const {
+   if (!page_content_annotations::features::
+-          ShouldEnablePageContentAnnotations()) {
++          ShouldEnablePageContentAnnotations_Brave()) {
+     return nullptr;
+   }
+ 

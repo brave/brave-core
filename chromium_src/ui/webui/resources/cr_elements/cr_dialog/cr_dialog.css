@@ -1,0 +1,17 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=./cr_dialog-chromium.css.js
+ * #scheme=relative
+ * #include=cr-dialog-chromium
+ * #css_wrapper_metadata_end */
+
+@media (prefers-color-scheme: dark) {
+  :host-context([webui-refresh-2026]) dialog {
+    background-color: var(--cr-dialog-background-color, var(--google-grey-900));
+  }
+}

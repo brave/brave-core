@@ -1,8 +1,8 @@
 diff --git a/net/url_request/url_request_http_job.h b/net/url_request/url_request_http_job.h
-index fcf27dbe473b8a3b2a4ead3773c839df4401fd38..87a73bbd175a0255a285605d33d4eb22b1a4ab63 100644
+index 8a54682d7ab46c9d75aeb5bfcc0f92bac5e912a8..2dcd8d42bb33508054cd39213e5ebb5f54f278a4 100644
 --- a/net/url_request/url_request_http_job.h
 +++ b/net/url_request/url_request_http_job.h
-@@ -83,6 +83,8 @@ class NET_EXPORT_PRIVATE URLRequestHttpJob : public URLRequestJob {
+@@ -86,6 +86,8 @@ class NET_EXPORT_PRIVATE URLRequestHttpJob : public URLRequestJob {
    RequestPriority priority() const { return priority_; }
  
   private:

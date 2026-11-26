@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/extension_tab_util.cc b/chrome/browser/extensions/extension_tab_util.cc
-index 91501be296e23050499d3cdc332e6164c357b522..207e83b12e1fea6af9b0f6727c847649dda5f17f 100644
+index 263c9d4d7442d337c217310dc8f1c0bee843608d..6ccc39d8bc50acbdae0e96607b638013882c1f19 100644
 --- a/chrome/browser/extensions/extension_tab_util.cc
 +++ b/chrome/browser/extensions/extension_tab_util.cc
-@@ -946,7 +946,9 @@ std::optional<api::tab_groups::TabGroup> ExtensionTabUtil::CreateTabGroupObject(
+@@ -952,7 +952,9 @@ std::optional<api::tab_groups::TabGroup> ExtensionTabUtil::CreateTabGroupObject(
    if (!browser) {
      return std::nullopt;
    }

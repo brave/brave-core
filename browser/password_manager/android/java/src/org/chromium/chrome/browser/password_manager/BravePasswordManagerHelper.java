@@ -16,7 +16,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileKeyedMap;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
-import org.chromium.components.browser_ui.settings.SettingsCustomTabLauncher;
+import org.chromium.components.browser_ui.util.CustomTabLauncher;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 @NullMarked
@@ -40,7 +40,7 @@ public class BravePasswordManagerHelper extends PasswordManagerHelper {
             ModalDialogManager modalDialogManager,
             boolean managePasskeys,
             @Nullable String account,
-            SettingsCustomTabLauncher settingsCustomTabLauncher) {
+            CustomTabLauncher customTabLauncher) {
         Bundle fragmentArgs = new Bundle();
         fragmentArgs.putInt(MANAGE_PASSWORDS_REFERRER, referrer);
 

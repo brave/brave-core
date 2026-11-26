@@ -56,13 +56,12 @@ class DEPS(RecipeScriptApi):
 PROPERTIES = InputProperties
 
 
-def _summary(review: Review) -> str:
-    """The new CLs, then the other CLs to review, as links, as many as the
-    summary takes."""
+def _entries(review: Review) -> list[tuple[str, object]]:
+    """The lines listing the new CLs, then the other CLs to review, as links,
+    each with its change (None for a heading)."""
     created = {change.commit.sha for change in review.created}
     changed = [c for c in review.changes if c.commit.sha not in created]
-    lines: list[str] = []
-    entries = []
+    entries: list[tuple[str, object]] = []
     for title, changes in (('New CLs', review.created), ('To review', changed)):
         if changes:
             entries.append((f'{title} ({len(changes)}):', None))
@@ -70,8 +69,21 @@ def _summary(review: Review) -> str:
                 (f'- [{change.commit.subject}]({change.url})', change)
                 for change in changes
             ]
+    return entries
+
+
+def _links(review: Review) -> str:
+    """Every CL to review, as links: what the summary may cut short."""
+    return '\n'.join(line for line, _ in _entries(review)) + '\n'
+
+
+def _summary(review: Review) -> str:
+    """The new CLs, then the other CLs to review, as links, as many as the
+    summary takes."""
+    entries = _entries(review)
     if not entries:
         return 'Nothing to review.'
+    lines: list[str] = []
     left = sum(1 for _, change in entries if change)
     for line, change in entries:
         if len('\n'.join([*lines, line]).encode()) > _SUMMARY_BYTES:
@@ -161,6 +173,12 @@ def RunSteps(
         for link in output.get('created', []):
             json_format.ParseDict(link, review.created.add())
         result.presentation.properties['review'] = review
+        if _entries(review):
+            api.step(
+                'review links',
+                ['cat'],
+                stdin=api.raw_io.input_text(_links(review)),
+            )
         return result_pb.RawResult(
             status=result_pb.SUCCESS, summary_markdown=_summary(review)
         )
@@ -355,6 +373,10 @@ def GenTests(api: TEST_DEPS):
             r'(?s)^New CLs \(1\):\n.*\nTo review \(100\):\n.*\n- … and \d+ '
             r'more, in the `review` output property\.$',
         ),
+        # The step prints them all, which the summary cuts short.
+        api.post_process(
+            post_process.StepCommandContains, 'review links', ['cat']
+        ),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )
@@ -365,6 +387,7 @@ def GenTests(api: TEST_DEPS):
         checkout(),
         api.properties(outcome=outcome('cr160')),
         api.post_process(post_process.SummaryMarkdown, 'Nothing to review.'),
+        api.post_process(post_process.DoesNotRun, 'review links'),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )

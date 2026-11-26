@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
-index 17a0f042fe7ff038eb380869bb363c4efd8b3a65..6125f1b12c4082077939b31b42336aee7ee8eee6 100644
+index 5071c4698b925dc8935d40901afd3896bf84ec07..57a8d9b0d5a5a4840642e25d35494d51c2d3a079 100644
 --- a/chrome/browser/browser_process_impl.h
 +++ b/chrome/browser/browser_process_impl.h
-@@ -132,7 +132,7 @@ class BrowserProcessImpl : public BrowserProcess,
+@@ -131,7 +131,7 @@ class BrowserProcessImpl : public BrowserProcess,
    const ui::UnownedUserDataHost& GetUnownedUserDataHost() const override;
  
    // Called to complete initialization.
@@ -11,7 +11,7 @@ index 17a0f042fe7ff038eb380869bb363c4efd8b3a65..6125f1b12c4082077939b31b42336aee
  
  #if !BUILDFLAG(IS_ANDROID)
    // Sets a closure to be run to break out of a run loop on browser shutdown
-@@ -157,15 +157,15 @@ class BrowserProcessImpl : public BrowserProcess,
+@@ -156,15 +156,15 @@ class BrowserProcessImpl : public BrowserProcess,
    // Called after the threads have been created but before the message loops
    // starts running. Allows the browser process to do any initialization that
    // requires all threads running.
@@ -30,7 +30,7 @@ index 17a0f042fe7ff038eb380869bb363c4efd8b3a65..6125f1b12c4082077939b31b42336aee
  #endif
  
    // BrowserProcess implementation.
-@@ -264,6 +264,7 @@ class BrowserProcessImpl : public BrowserProcess,
+@@ -263,6 +263,7 @@ class BrowserProcessImpl : public BrowserProcess,
    GlobalFeatures* GetFeatures() override;
  
   private:

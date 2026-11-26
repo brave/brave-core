@@ -12,7 +12,6 @@
 #include "brave/browser/ui/brave_scheme_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
-#include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_outline.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -42,16 +41,6 @@ std::unique_ptr<MultiContentsViewMiniToolbar> CreateBraveMiniToolbar(
 // static
 const gfx::VectorIcon& MultiContentsViewMiniToolbar::GetMoreVerticalIcon() {
   return kLeoMoreVerticalIcon;
-}
-
-// static
-std::unique_ptr<SplitTabMenuModel>
-MultiContentsViewMiniToolbar::CreateBraveSplitTabMenuModel(
-    TabStripModel* tab_strip_model,
-    SplitTabMenuModel::MenuSource source,
-    int split_tab_index) {
-  return std::make_unique<BraveSplitTabMenuModel>(tab_strip_model, source,
-                                                  split_tab_index);
 }
 
 // static

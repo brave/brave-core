@@ -7,7 +7,11 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import type { Config } from './config.ts'
-import { getApplicableFilters, parseTestSuites } from './testUtils.ts'
+import {
+  getApplicableFilters,
+  getBraveDevtoolsFrontendTests,
+  parseTestSuites,
+} from './testUtils.ts'
 
 let srcDir: string
 let braveFilterDir: string
@@ -143,5 +147,31 @@ describe('parseTestSuites', () => {
         'brave_unit_tests, //brave/test:brave_browser_tests,,brave_unit_tests',
       ),
     ).toEqual(['brave_unit_tests', 'brave_browser_tests'])
+  })
+})
+
+describe('getBraveDevtoolsFrontendTests', () => {
+  it("lists Brave's tests as paths in the devtools-frontend checkout", () => {
+    const frontEnd = path.join(
+      srcDir,
+      'brave',
+      'third_party',
+      'devtools-frontend',
+      'src',
+      'front_end',
+    )
+    for (const file of [
+      'panels/network/Foo.test.ts',
+      'panels/network/Foo.ts',
+      'core/sdk/Bar.test.ts',
+    ]) {
+      fs.mkdirSync(path.dirname(path.join(frontEnd, file)), { recursive: true })
+      fs.writeFileSync(path.join(frontEnd, file), '')
+    }
+
+    expect(getBraveDevtoolsFrontendTests(makeConfig())).toEqual([
+      'front_end/core/sdk/Bar.test.ts',
+      'front_end/panels/network/Foo.test.ts',
+    ])
   })
 })

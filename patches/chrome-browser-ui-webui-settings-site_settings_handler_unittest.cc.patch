@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_handler_unittest.cc b/chrome/browser/ui/webui/settings/site_settings_handler_unittest.cc
-index b0f525068fda0dcc7b4d9839d3b895556bba56b2..cd80c99acceffaf45debc83af07ec7952e689c99 100644
+index 262df8c5006811a8a0a89a04eed7b52ab5ebf567..bdd5e33bb78eaf864224f865cd6e2ff0b3ec560b 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_handler_unittest.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_handler_unittest.cc
-@@ -190,7 +190,7 @@ using ::testing::NiceMock;
+@@ -189,7 +189,7 @@ using ::testing::NiceMock;
  using ::testing::Return;
  using ::testing::UnorderedElementsAre;
  
@@ -11,7 +11,7 @@ index b0f525068fda0dcc7b4d9839d3b895556bba56b2..cd80c99acceffaf45debc83af07ec795
  using PermissionStatus = blink::mojom::PermissionStatus;
  
  constexpr char kCallbackId[] = "test-callback-id";
-@@ -393,7 +393,7 @@ class SiteSettingsHandlerBaseTest : public testing::Test {
+@@ -341,7 +341,7 @@ class SiteSettingsHandlerBaseTest : public testing::Test {
  
      SetUpIsolatedWebApp();
  
@@ -20,16 +20,16 @@ index b0f525068fda0dcc7b4d9839d3b895556bba56b2..cd80c99acceffaf45debc83af07ec795
      handler()->set_web_ui(web_ui());
      handler()->AllowJavascript();
      // AllowJavascript() adds a callback to create leveldb_env::ChromiumEnv
-@@ -450,7 +450,7 @@ class SiteSettingsHandlerBaseTest : public testing::Test {
+@@ -397,7 +397,7 @@ class SiteSettingsHandlerBaseTest : public testing::Test {
    TestingProfile* profile() { return profile_.get(); }
    Profile* incognito_profile() { return incognito_profile_; }
    content::TestWebUI* web_ui() { return &web_ui_; }
 -  SiteSettingsHandler* handler() { return handler_.get(); }
 +  BraveSiteSettingsHandler* handler() { return handler_.get(); }
-   MockPrivacySandboxService* mock_privacy_sandbox_service() {
-     return mock_privacy_sandbox_service_.get();
-   }
-@@ -1215,7 +1215,7 @@ class SiteSettingsHandlerBaseTest : public testing::Test {
+ 
+   void ValidateBlockAutoplay(bool expected_value, bool expected_enabled) {
+     const content::TestWebUI::CallData& data = *web_ui()->call_data().back();
+@@ -1117,7 +1117,7 @@ class SiteSettingsHandlerBaseTest : public testing::Test {
    raw_ptr<TestingProfile> profile_ = nullptr;
    raw_ptr<Profile, DanglingUntriaged> incognito_profile_ = nullptr;
    content::TestWebUI web_ui_;

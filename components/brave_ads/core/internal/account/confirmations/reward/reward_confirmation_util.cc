@@ -94,11 +94,8 @@ std::optional<std::string> BuildRewardCredential(
     return std::nullopt;
   }
 
-  std::string reward_credential_base64url;
-  base::Base64UrlEncode(*reward_credential,
-                        base::Base64UrlEncodePolicy::INCLUDE_PADDING,
-                        &reward_credential_base64url);
-  return reward_credential_base64url;
+  return base::Base64UrlEncode(*reward_credential,
+                               base::Base64UrlEncodePolicy::INCLUDE_PADDING);
 }
 
 std::optional<ConfirmationInfo> BuildRewardConfirmation(

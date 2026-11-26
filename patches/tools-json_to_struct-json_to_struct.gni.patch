@@ -1,5 +1,5 @@
 diff --git a/tools/json_to_struct/json_to_struct.gni b/tools/json_to_struct/json_to_struct.gni
-index 9988b34bf347eaddd60fd78674fd590ed2b26584..f4f09e5b2c883ab86280d712e86e427c5056ad1a 100644
+index 121f2bd1ffb26c01b950d929a06e487aeffe2079..adedce0155cd3f0d40e4a8b69683dca9106da9d3 100644
 --- a/tools/json_to_struct/json_to_struct.gni
 +++ b/tools/json_to_struct/json_to_struct.gni
 @@ -70,6 +70,9 @@ template("json_to_struct") {
@@ -10,5 +10,5 @@ index 9988b34bf347eaddd60fd78674fd590ed2b26584..f4f09e5b2c883ab86280d712e86e427c
 +      sources += invoker.additional_sources
 +    }
  
-     deps = [
-       ":$action_name",
+     public_deps = [ ":$action_name" ]
+     deps = [ "//base" ]

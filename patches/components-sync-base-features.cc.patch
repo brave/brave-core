@@ -1,16 +1,19 @@
 diff --git a/components/sync/base/features.cc b/components/sync/base/features.cc
-index 1125b71dd947b3f5244e23f0768b202bd7ee353c..464a6d0e9787d3dbb82902eb7f863b49c183b6cf 100644
+index 134b76777595b55e7af29b3f547687d3881082ad..6d3985e7d58b1d31d336510ab41d7218fd94471e 100644
 --- a/components/sync/base/features.cc
 +++ b/components/sync/base/features.cc
-@@ -56,6 +56,7 @@ BASE_FEATURE(kSyncEnableContactInfoDataTypeForDasherUsers,
-              base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -35,9 +35,7 @@ BASE_FEATURE(kSyncNotebook, base::FEATURE_DISABLED_BY_DEFAULT);
  
- bool IsReplaceSyncPromosWithSignInPromosEnabled() {
-+  if ((true)) return false;
-   return true;
- }
+ BASE_FEATURE(kSyncJourney, base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -83,7 +84,7 @@ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAccountSettings);
+-BASE_FEATURE_WITH_COUNTRY_RESTRICTIONS(kSyncAutofillEntitySuppression,
+-                                       base::FEATURE_ENABLED_FOR_COUNTRIES,
+-                                       "us");
++BASE_OVERRIDDEN_FEATURE(kSyncAutofillEntitySuppression, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ #if !BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(IS_IOS)
+ BASE_FEATURE(kUnoPhase2FollowUp, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -84,7 +82,7 @@ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAccountSettings);
  DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuable);
  #endif
  

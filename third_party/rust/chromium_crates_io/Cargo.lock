@@ -527,7 +527,7 @@ dependencies = [
 
 [[package]]
 name = "crc32fast"
-version = "1.5.2"
+version = "1.5.4"
 dependencies = [
  "cfg-if",
 ]
@@ -1223,7 +1223,7 @@ dependencies = [
 
 [[package]]
 name = "itoa"
-version = "1.0.18"
+version = "1.0.19"
 
 [[package]]
 name = "json-cxx"
@@ -1307,7 +1307,7 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.4.34"
+version = "0.4.35"
 
 [[package]]
 name = "lol_html"
@@ -2344,7 +2344,7 @@ version = "1.0.27"
 
 [[package]]
 name = "unicode-width"
-version = "0.2.2"
+version = "0.2.3"
 
 [[package]]
 name = "unicode-xid"

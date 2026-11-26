@@ -54,6 +54,7 @@ public class BookmarksButton extends ChromeImageButton implements ThemeColorObse
     public void onTintChanged(
             ColorStateList tint,
             ColorStateList activityFocusTint,
+            float unfocusedAlpha,
             @BrandedColorScheme int brandedColorScheme) {
         mCurrentTint = tint;
         ImageViewCompat.setImageTintList(this, tint);

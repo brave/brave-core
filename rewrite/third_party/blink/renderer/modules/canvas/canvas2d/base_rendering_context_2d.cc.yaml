@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Shape no text when language fingerprinting protection is strict.
+
+      `shapeText()` serves `measureText()`, whose metrics reveal the fonts
+      installed. The check runs before the style is updated.
+    regex:
+      re_pattern:
+        '(ShapedText\* BaseRenderingContext2D::shapeText\(.*?\n)(
+        *canvas->GetDocument\(\)\.UpdateStyleAndLayoutTreeForElement\()'
+      re_flags: [DOTALL]
+      replace: |-
+        \1    if (brave::IsStrictFingerprintingEnabled(
+                    GetTopExecutionContext(),
+                    ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE)) {
+              return MakeGarbageCollected<ShapedText>();
+            }
+
+        \2

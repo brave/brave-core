@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Allow the `BraveAdd` and `BraveExtend` attributes.
+
+      Brave's mojom parser override merges definitions marked with them into
+      upstream's, so they can appear on any definition.
+    regex:
+      re_pattern: '(_COMMON_ATTRIBUTES = \{)([^}]*\})'
+      replace: |-
+        \1
+          'BraveAdd',
+          'BraveExtend',\2
+
+  - description: |-
+      Allow Brave's `[Native]` importer types.
+
+      `brave/common/importer/profile_import.mojom` declares `SourceProfile` and
+      `ImportItem` as native types, which the check otherwise rejects.
+    regex:
+      re_pattern: '(_NATIVE_ALLOWLIST = \{[^}]*?)(\s*\})'
+      replace: |-
+        \1
+          'brave.mojom.ImportItem',
+          'brave.mojom.SourceProfile',\2

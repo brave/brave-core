@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/rpmrepo.cron b/chrome/installer/linux/common/rpmrepo.cron
-index 90ff896ea5ede32b380e1b576c6e587badacfb6f..df5ac599fc59b41ab1602427002d48633e9597fe 100755
+index 3801e5ade70112b8f43981c244414fabfe92d5a1..eed51cd4c921985267224fcd6346b031d3bf3b60 100755
 --- a/chrome/installer/linux/common/rpmrepo.cron
 +++ b/chrome/installer/linux/common/rpmrepo.cron
 @@ -14,6 +14,9 @@

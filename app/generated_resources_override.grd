@@ -101,11 +101,6 @@ are declared in tools/grit/grit_args.gni.
 
       <part file="profiles_strings_override.grdp" />
 
-      <if expr="is_chromeos">
-        <part file="os_settings_strings_override.grdp" />
-        <part file="os_settings_search_tag_strings_override.grdp" />
-        </if>
-
       <part file="settings_strings_override.grdp" />
       <if expr="not is_android">
         <part file="shared_settings_strings_override.grdp" />
@@ -119,10 +114,6 @@ are declared in tools/grit/grit_args.gni.
 
       <if expr="enable_extensions_core">
         <part file="extensions_strings_override.grdp" />
-      </if>
-
-      <if expr="not is_android">
-        <part file="nearby_share_strings_override.grdp" />
       </if>
 
       <if expr="not is_android">
@@ -237,6 +228,8 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <if expr="not use_titlecase">
         </if>
+      <if expr="is_chromeos">
+        </if>
       <if expr="use_titlecase">
         </if>
 
@@ -254,6 +247,8 @@ are declared in tools/grit/grit_args.gni.
           Visit Web Store
         </message>
         </if>
+      <if expr="is_chromeos">
+        </if>
       <if expr="use_titlecase">
 
         <message name="IDS_EXTENSIONS_SUBMENU_CHROME_WEBSTORE_ITEM" desc="In Title Case: The text for the link in the extensions menu, in the app menu, to visit the Web Store to get more extensions.">
@@ -270,21 +265,10 @@ are declared in tools/grit/grit_args.gni.
       <if expr="use_titlecase">
         </if>
 
-      <if expr="is_chromeos">
-        </if>
       <if expr="is_android">
         </if>
       <if expr="not is_android">
         </if>
-      <if expr="is_chromeos">
-        </if>
-
-      <if expr="is_chromeos">
-        </if>
-
-      <if expr="is_chromeos">
-        </if>
-
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -463,8 +447,6 @@ are declared in tools/grit/grit_args.gni.
           </if>
       </if>
 
-      <if expr="is_chromeos">
-        </if>
       <if expr="is_chromeos">
         </if>
 
@@ -803,14 +785,13 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="is_win or is_macosx">
         </if>
+
       <if expr="is_macosx">
         </if>
       <if expr="not is_macosx">
         </if>
       <if expr="not use_titlecase">
-        <if expr="is_chromeos">
-          </if>
-      </if>
+        </if>
       <if expr="use_titlecase">
         </if>
 
@@ -861,10 +842,6 @@ are declared in tools/grit/grit_args.gni.
           </if>
         <if expr="not is_chromeos and not use_titlecase">
           </if>
-        <if expr="is_chromeos and use_titlecase">
-          </if>
-        <if expr="is_chromeos and not use_titlecase">
-          </if>
       </if> <if expr="(not is_android or enable_extensions_core) and not is_chromeos">
         </if>
 
@@ -897,6 +874,9 @@ are declared in tools/grit/grit_args.gni.
       <if expr="not is_android">
         </if>
 
+      <if expr="is_chromeos">
+        </if>
+
       <if expr="use_titlecase">
       </if>
       <if expr="toolkit_views">
@@ -914,17 +894,15 @@ are declared in tools/grit/grit_args.gni.
           </if>
         <if expr="not is_chromeos">
           </if>
+        <if expr="is_chromeos">
+          </if>
         </if>
 
       <if expr="not use_titlecase">
-        <if expr="is_chromeos">
-          </if>
-      </if>
+        </if>
 
       <if expr="use_titlecase">
-        <if expr="is_chromeos">
-          </if>
-      </if>
+        </if>
 
       <if expr="is_win or is_macosx or is_linux or is_chromeos">
         </if>
@@ -937,6 +915,12 @@ are declared in tools/grit/grit_args.gni.
             </else>
         </if>
 
+        <if expr="use_titlecase">
+          <then>
+            </then>
+          <else>
+            </else>
+        </if>
         </if>
 
       <if expr="not is_chromeos and not is_android">
@@ -965,9 +949,6 @@ are declared in tools/grit/grit_args.gni.
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
-        </if>
-
-      <if expr="is_chromeos">
         </if>
 
       <if expr="is_chromeos">
@@ -1054,33 +1035,18 @@ are declared in tools/grit/grit_args.gni.
       <if expr="use_titlecase">
         </if>
 
-      <if expr="not is_android">
-        <if expr="use_titlecase">
-          </if>
-        <if expr="not use_titlecase">
-          </if>
+      <if expr="is_chromeos">
         </if>
-
       <if expr="is_chromeos">
         </if>
       <if expr="is_macosx">
         </if>
       <if expr="not is_chromeos and not is_macosx and toolkit_views">
         </if>
-      <if expr="is_chromeos">
-        </if>
-
       <if expr="not is_android">
-      <if expr="is_chromeos">
-        <then>
-          </then>
-        <else>
-          </else>
-      </if>
+      <if expr="not is_chromeos">
+        </if>
     </if>
-
-    <if expr="is_chromeos">
-      </if>
 
     <if expr="is_win">
       </if>
@@ -1137,6 +1103,11 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_WEBAUTHN_CREATE_PASSKEY_EXTRA_INCOGNITO" desc="Additional body text on a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
          This passkey will only be saved on this device. It will remain on this device after you close all Private windows.
       </message>
+      <if expr="is_macosx">
+        </if>
+      <if expr="is_win or is_chromeos">
+        </if>
+
       </if>
 
    <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the Private version of profile menu.">
@@ -1149,13 +1120,13 @@ are declared in tools/grit/grit_args.gni.
     <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_SECONDARY_TEXT" desc="The secondary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how the clear browsing data action affects only the Private windows.">
       This only affects Private windows
     </message>
-    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode.">
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode." formatter_data="android_java">
       Sites you visit aren’t saved in Private
     </message>
-    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to delete Private browsing history from the device,">
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to delete Private browsing history from the device," formatter_data="android_java">
       To delete Private browsing history from your device, close all Private tabs
     </message>
-    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action.">
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action." formatter_data="android_java">
       Close Private
     </message>
     <if expr="not is_android or enable_extensions_core">
@@ -1168,9 +1139,6 @@ are declared in tools/grit/grit_args.gni.
       </if>
     <if expr="not use_titlecase">
       </if>
-    <if expr="is_chromeos">
-      </if>
-
     <if expr="not is_android">
       <if expr="use_titlecase">
         </if>
@@ -1223,13 +1191,11 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       </if>
-
-    <if expr="is_chromeos">
-        </if>
-
-    <if expr="is_chromeos">
-        </if>
 
     <if expr="is_android">
         </if>
@@ -1237,23 +1203,23 @@ are declared in tools/grit/grit_args.gni.
     <if expr="enable_smart_card">
       </if>
 
-    <if expr="is_chromeos">
-      </if>
-
-  <if expr="is_chromeos">
-      </if>
-
-    <if expr="enable_pdf">
+  <if expr="enable_pdf">
       </if>
 
     <if expr="is_win">
       </if>
 
     <if expr="enable_webui_ntp">
-      </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
+        </if>
+    </if>
 
     <if expr="is_linux or is_macosx or is_win">
       </if>
-    </messages>
+    <if expr="is_chromeos">
+      </if>
+  </messages>
 </release>
 </grit>

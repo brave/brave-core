@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor.java
-index de5d0bb9c8762b48a9fa2b7bb961ef066e65f548..07e48bf6aac9aa6f024d64c23d254e5a61f33a4e 100644
+index cc4878ef62cf71b07df98d76d58d260aca802a9d..49ad44c0a33bad2943d49733aa6c9683415e44da 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor.java
-@@ -250,7 +250,7 @@ public class AdaptiveToolbarStatePredictor {
+@@ -252,7 +252,7 @@ public class AdaptiveToolbarStatePredictor {
          return AdaptiveToolbarButtonVariant.UNKNOWN;
      }
  

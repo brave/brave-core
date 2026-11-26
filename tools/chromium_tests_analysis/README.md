@@ -108,9 +108,11 @@ position. For Chromium:
 
 `is_upstream_flake.py` makes the same call and reports the answer. Branch
 results are stored in a separate LUCI project per milestone: `chromium-m157`
-holds `refs/branch-heads/8103`, and `chromium` holds `refs/heads/main`. The
-14-day window is always counted back from today, so a branch position older than
-that has no data.
+holds `refs/branch-heads/8103`, and `chromium` holds `refs/heads/main`. A new
+branch's project refuses anonymous queries at first (403); the script then asks
+`chromium` at the branch's `Cr-Branched-From` position instead, and says so on
+stderr. The 14-day window is always counted back from today, so a branch
+position older than that has no data.
 
 ### Clusters
 

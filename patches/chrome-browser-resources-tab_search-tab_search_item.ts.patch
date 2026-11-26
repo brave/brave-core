@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/tab_search/tab_search_item.ts b/chrome/browser/resources/tab_search/tab_search_item.ts
-index e42896207d5ede943896689e887a9bfa256d5620..f3fcf3563457b5415d85fd7d77e3c8ce1cedbbb7 100644
+index 6aa623eadbbe6b2113c99f22ec8d9c02943d74f7..d6de24bd48dd5053c26173f30a31a4f7ec911fc8 100644
 --- a/chrome/browser/resources/tab_search/tab_search_item.ts
 +++ b/chrome/browser/resources/tab_search/tab_search_item.ts
-@@ -217,7 +217,7 @@ export class TabSearchItemElement extends TabSearchItemBase {
+@@ -214,7 +214,7 @@ export class TabSearchItemElement extends TabSearchItemBase {
      // Show chrome:// if it's a chrome internal url
      const protocol = new URL(normalizeURL(data.tab.url)).protocol;
      if (protocol === 'chrome:') {

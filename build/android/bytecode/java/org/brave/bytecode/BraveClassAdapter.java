@@ -16,7 +16,6 @@ public class BraveClassAdapter {
         chain = new BraveAdaptiveToolbarUiCoordinatorClassAdapter(chain);
         chain = new BraveAppHooksClassAdapter(chain);
         chain = new BraveAppMenuClassAdapter(chain);
-        chain = new BraveAppMenuHandlerImplClassAdapter(chain);
         chain = new BraveBaseCustomTabActivityClassAdapter(chain);
         chain = new BraveCustomTabActivityClassAdapter(chain);
         chain = new BraveCustomTabToolbarButtonsViewBinderClassAdapter(chain);
@@ -74,7 +73,6 @@ public class BraveClassAdapter {
         chain = new BraveHomepageManagerClassAdapter(chain);
         chain = new BraveHttpURLConnectionFactoryImplClassAdapter(chain);
         chain = new BraveHubManagerImplClassAdapter(chain);
-        chain = new BraveIdentityDiscControllerClassAdapter(chain);
         chain = new BraveIncognitoNewTabPageClassAdapter(chain);
         chain = new BraveIntentHandlerClassAdapter(chain);
         chain = new BraveLauncherActivityClassAdapter(chain);

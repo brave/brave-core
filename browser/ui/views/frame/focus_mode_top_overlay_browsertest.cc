@@ -42,7 +42,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "ui/base/hit_test.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/events/event.h"
 #include "ui/events/event_utils.h"
 #include "ui/events/types/event_type.h"
@@ -313,7 +313,8 @@ IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
     content::TestNavigationManager navigation(active_web_contents(),
                                               next_https_url);
     ui_test_utils::NavigateToURLWithDisposition(
-        browser(), next_https_url, WindowOpenDisposition::kCurrentTab,
+        browser(), next_https_url,
+        ui::mojom::WindowOpenDisposition::kCurrentTab,
         ui_test_utils::BROWSER_TEST_NO_WAIT);
     ASSERT_TRUE(navigation.WaitForRequestStart());
     ASSERT_TRUE(active_web_contents()->GetController().GetPendingEntry());
@@ -330,7 +331,7 @@ IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
     content::TestNavigationManager navigation(active_web_contents(),
                                               insecure_url);
     ui_test_utils::NavigateToURLWithDisposition(
-        browser(), insecure_url, WindowOpenDisposition::kCurrentTab,
+        browser(), insecure_url, ui::mojom::WindowOpenDisposition::kCurrentTab,
         ui_test_utils::BROWSER_TEST_NO_WAIT);
     ASSERT_TRUE(navigation.WaitForRequestStart());
     ASSERT_TRUE(active_web_contents()->GetController().GetPendingEntry());
@@ -346,7 +347,7 @@ IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
     content::TestNavigationManager navigation(active_web_contents(),
                                               secure_url);
     ui_test_utils::NavigateToURLWithDisposition(
-        browser(), secure_url, WindowOpenDisposition::kCurrentTab,
+        browser(), secure_url, ui::mojom::WindowOpenDisposition::kCurrentTab,
         ui_test_utils::BROWSER_TEST_NO_WAIT);
     ASSERT_TRUE(navigation.WaitForRequestStart());
     ASSERT_TRUE(active_web_contents()->GetController().GetPendingEntry());
@@ -374,7 +375,7 @@ IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
       browser(), https_server_.GetURL("/empty.html")));
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), embedded_test_server()->GetURL("insecure.test", "/empty.html"),
-      WindowOpenDisposition::kNewBackgroundTab,
+      ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   ASSERT_EQ(browser()->tab_strip_model()->active_index(), 0);
 

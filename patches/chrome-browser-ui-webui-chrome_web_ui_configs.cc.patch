@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/chrome_web_ui_configs.cc b/chrome/browser/ui/webui/chrome_web_ui_configs.cc
-index 4503ab6e3466f8ef43bbc21c151d2724cdb19ace..6b74a04ea88d6944d3df178721530a2222e8999d 100644
+index f661f7b1a8408d8d29a959dd4a9a726c5fb07b62..e71ad7e1bf36ed98c5ec962be20b6d110b80b0a3 100644
 --- a/chrome/browser/ui/webui/chrome_web_ui_configs.cc
 +++ b/chrome/browser/ui/webui/chrome_web_ui_configs.cc
-@@ -253,6 +253,7 @@
+@@ -247,6 +247,7 @@
          // BUILDFLAG(IS_CHROMEOS)
  
  void RegisterChromeWebUIConfigs() {
@@ -10,7 +10,7 @@ index 4503ab6e3466f8ef43bbc21c151d2724cdb19ace..6b74a04ea88d6944d3df178721530a22
    // Don't add calls to `AddWebUIConfig()` for Ash-specific WebUIs here. Add
    // them to `AshWebUIConfigManager::RegisterWebUIConfigs()` in
    // ash_web_ui_config_manager.cc.
-@@ -531,4 +532,6 @@ void RegisterChromeWebUIConfigs() {
+@@ -519,4 +520,6 @@ void RegisterChromeWebUIConfigs() {
    map.AddWebUIConfig(std::make_unique<skills::SkillsUIConfig>());
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
          // BUILDFLAG(IS_CHROMEOS)

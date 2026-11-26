@@ -1,11 +1,11 @@
 diff --git a/components/autofill/core/browser/foundations/autofill_client.h b/components/autofill/core/browser/foundations/autofill_client.h
-index 9df9256f5731965d48cadb428cf85b47c5c5f671..df28941959a81bd995e84294dce48960e4613bc9 100644
+index 1f6d85eb7df76435d400da774fcb001fee7bbdaa..6e28cbb8c719e51212791bcb027ea6d1a351494c 100644
 --- a/components/autofill/core/browser/foundations/autofill_client.h
 +++ b/components/autofill/core/browser/foundations/autofill_client.h
-@@ -1065,6 +1065,12 @@ class AutofillClient {
-   // Returns whether the client uses platform-native autofill rather than
-   // Chrome's built-in autofill UI/logic.
-   virtual bool UsesPlatformAutofill() const = 0;
+@@ -1117,6 +1117,12 @@ class AutofillClient {
+   // Returns the process-wide `CustomFormControlScriptIndex`, if available.
+   virtual const CustomFormControlScriptIndex* GetCustomFormControlScriptIndex()
+       const;
 +  virtual void BraveAddSuggestions(
 +      const PasswordFormClassification& form_classification,
 +      const FormFieldData& field,

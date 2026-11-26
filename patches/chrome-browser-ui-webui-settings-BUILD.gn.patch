@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/BUILD.gn b/chrome/browser/ui/webui/settings/BUILD.gn
-index 9b02231934cfaa23ec19db021c334e4ae6dbc89b..c2977c80901a4de48ed399a601ff2683c1dcf074 100644
+index 29aea2e12bdaa83bd7c2a7f906d6dc8b63268b54..265f49c28cd633a68036a726e4886a05b4607a9f 100644
 --- a/chrome/browser/ui/webui/settings/BUILD.gn
 +++ b/chrome/browser/ui/webui/settings/BUILD.gn
-@@ -203,6 +203,7 @@ source_set("impl") {
+@@ -204,6 +204,7 @@ source_set("impl") {
  
    deps = [
      ":settings",

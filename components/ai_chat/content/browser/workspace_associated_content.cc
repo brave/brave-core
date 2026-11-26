@@ -42,6 +42,7 @@
 #include "third_party/blink/public/mojom/file_system_access/file_system_access_directory_handle.mojom.h"
 #include "third_party/blink/public/mojom/web_launch/web_launch.mojom.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/webui/webui_allowlist.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 #include "url/url_constants.h"
@@ -81,6 +82,15 @@ std::optional<std::string> ParseWorkspaceUrl(const GURL& url) {
     return std::nullopt;
   }
   return uuid.AsLowercaseString();
+}
+
+// Auto-grants |origin| File System Access read/write for this session.
+void AllowFileSystemAccess(content::BrowserContext* browser_context,
+                           const url::Origin& origin) {
+  WebUIAllowlist::GetOrCreate(browser_context)
+      ->RegisterAutoGrantedPermissions(
+          origin, {ContentSettingsType::FILE_SYSTEM_READ_GUARD,
+                   ContentSettingsType::FILE_SYSTEM_WRITE_GUARD});
 }
 
 }  // namespace
@@ -212,6 +222,12 @@ void WorkspaceAssociatedContent::AttachWebContents(
   std::move(attach_tab_helpers).Run(web_contents_.get());
   content::WebContentsObserver::Observe(web_contents_.get());
 
+  // A restored workspace's page reopens its folder handle from IndexedDB as it
+  // loads, so its grant must be in place before the navigation.
+  if (HasFolderAccess()) {
+    AllowFileSystemAccess(browser_context, GetOrigin());
+  }
+
   // Load eagerly so the page can receive its handle and register tools before
   // the user sends a message.
   content::NavigationController::LoadURLParams load_params(page_url_);
@@ -274,11 +290,14 @@ void WorkspaceAssociatedContent::DeliverDirectoryHandle(
   const GURL origin_url = rfh->GetLastCommittedOrigin().GetURL();
   const GURL committed_url = rfh->GetLastCommittedURL();
 
-  // Auto-grant File System Access read/write for the workspace origin so the
-  // page can use the delivered handle without a permission prompt. The origin
-  // is our own system-owned chrome-untrusted://<uuid>.leo-workspace page, and
-  // access is scoped by the handle to the user-picked folder. Because the uuid
-  // is part of the origin, this grants nothing to any other workspace.
+  // Grant File System Access read/write for the workspace origin so the page
+  // can use the delivered handle without a permission prompt. The origin is our
+  // own system-owned chrome-untrusted://<uuid>.leo-workspace page, and access
+  // is scoped by the handle to the user-picked folder. Because the uuid is part
+  // of the origin, this grants nothing to any other workspace. The content
+  // settings persist the grant for HasFolderAccess() and restored workspaces;
+  // File System Access reads them as ASK, being user-set, so the page gets its
+  // access from the allowlist.
   auto* map = permissions::PermissionsClient::Get()->GetSettingsMap(
       web_contents_->GetBrowserContext());
   map->SetContentSettingDefaultScope(
@@ -287,6 +306,8 @@ void WorkspaceAssociatedContent::DeliverDirectoryHandle(
   map->SetContentSettingDefaultScope(
       origin_url, origin_url, ContentSettingsType::FILE_SYSTEM_WRITE_GUARD,
       CONTENT_SETTING_ALLOW);
+  AllowFileSystemAccess(web_contents_->GetBrowserContext(),
+                        rfh->GetLastCommittedOrigin());
 
   // Mint a directory handle for the picked folder, bound to the workspace
   // frame.

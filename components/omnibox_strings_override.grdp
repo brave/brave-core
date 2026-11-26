@@ -23,7 +23,7 @@
     <if expr="is_android or enable_vr">
       </if>
   </if>
-  <if expr="is_android">
+  <if expr="is_android or is_ios">
     </if>
   <if expr="not is_ios and not is_android">
     </if>

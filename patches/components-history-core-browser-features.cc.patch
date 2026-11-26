@@ -1,8 +1,8 @@
 diff --git a/components/history/core/browser/features.cc b/components/history/core/browser/features.cc
-index 6fa34ac465af25a2d4cfec1754c1e36473324303..bd4de36506d9f886035242693438af0917a10bda 100644
+index 082f3dc1ced7ed96c8564e259590f0122f1b4ba4..61791c9c39a68e9ef38dd74ba0f47844e90f636e 100644
 --- a/components/history/core/browser/features.cc
 +++ b/components/history/core/browser/features.cc
-@@ -26,7 +26,7 @@ constexpr int kMaxNumRepeatableQueriesDefaultValue =
+@@ -27,7 +27,7 @@ constexpr int kMaxNumRepeatableQueriesDefaultValue =
  
  // If enabled, the most repeated queries from the user browsing history are
  // shown in the Most Visited tiles.

@@ -66,16 +66,17 @@ public class BraveAdFreeCalloutDialogFragment extends BraveDialogFragment {
         mConfettiImageView = view.findViewById(R.id.confetti_imageview);
 
         Button btnVideos = view.findViewById(R.id.btn_videos);
-        btnVideos.setOnClickListener(button -> {
-            try {
-                BraveActivity braveActivity = BraveActivity.getBraveActivity();
-                braveActivity.focusSearchBox();
-            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "onViewCreated btnVideos click " + e);
-            }
+        btnVideos.setOnClickListener(
+                button -> {
+                    try {
+                        BraveActivity braveActivity = BraveActivity.getBraveActivity();
+                        braveActivity.focusSearchBox();
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
+                        Log.e(TAG, "onViewCreated btnVideos click", e);
+                    }
 
-            dismiss();
-        });
+                    dismiss();
+                });
 
         ImageView cancelImageView = view.findViewById(R.id.cancel_imageview);
         cancelImageView.setOnClickListener(button -> { dismiss(); });

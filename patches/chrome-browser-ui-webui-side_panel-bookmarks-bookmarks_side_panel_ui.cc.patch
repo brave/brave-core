@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.cc b/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.cc
-index d990aacdb08165bc5f3839dac804c43a6b5b25d4..033a521a3263aef96e0211c43f6560ecb7f3661a 100644
+index 41bc2a6d78900093dffb024d8bc86a3df95f8ea3..cb6f21318ec9ba9d83e0c3c4ef8b14957c379c99 100644
 --- a/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.cc
 +++ b/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.cc
 @@ -60,11 +60,11 @@ const char kSidePanelOtherBookmarksID[] = "SIDE_PANEL_OTHER_BOOKMARKS_ID";
@@ -30,7 +30,7 @@ index d990aacdb08165bc5f3839dac804c43a6b5b25d4..033a521a3263aef96e0211c43f6560ec
      : TopChromeWebUIController(web_ui, true) {
    Profile* const profile = Profile::FromWebUI(web_ui);
    content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
-@@ -238,25 +238,25 @@ BookmarksSidePanelUI::BookmarksSidePanelUI(content::WebUI* web_ui)
+@@ -235,25 +235,25 @@ BookmarksSidePanelUI::BookmarksSidePanelUI(content::WebUI* web_ui)
    content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
  }
  
@@ -61,7 +61,7 @@ index d990aacdb08165bc5f3839dac804c43a6b5b25d4..033a521a3263aef96e0211c43f6560ec
      mojo::PendingReceiver<
          commerce::price_tracking::mojom::PriceTrackingHandlerFactory>
          receiver) {
-@@ -264,7 +264,7 @@ void BookmarksSidePanelUI::BindInterface(
+@@ -261,7 +261,7 @@ void BookmarksSidePanelUI::BindInterface(
    price_tracking_factory_receiver_.Bind(std::move(receiver));
  }
  
@@ -70,7 +70,7 @@ index d990aacdb08165bc5f3839dac804c43a6b5b25d4..033a521a3263aef96e0211c43f6560ec
      mojo::PendingReceiver<page_image_service::mojom::PageImageServiceHandler>
          pending_image_handler) {
    base::WeakPtr<page_image_service::ImageService> image_service_weak;
-@@ -279,18 +279,18 @@ void BookmarksSidePanelUI::BindInterface(
+@@ -276,18 +276,18 @@ void BookmarksSidePanelUI::BindInterface(
  }
  
  commerce::ShoppingListContextMenuController*
@@ -92,7 +92,7 @@ index d990aacdb08165bc5f3839dac804c43a6b5b25d4..033a521a3263aef96e0211c43f6560ec
      mojo::PendingReceiver<shopping_service::mojom::ShoppingServiceHandler>
          receiver) {
    Profile* const profile = Profile::FromWebUI(web_ui());
-@@ -306,7 +306,7 @@ void BookmarksSidePanelUI::CreateShoppingServiceHandler(
+@@ -303,7 +303,7 @@ void BookmarksSidePanelUI::CreateShoppingServiceHandler(
            profile->GetPrefs(), tracker, nullptr, nullptr);
  }
  
@@ -101,7 +101,7 @@ index d990aacdb08165bc5f3839dac804c43a6b5b25d4..033a521a3263aef96e0211c43f6560ec
      mojo::PendingRemote<commerce::price_tracking::mojom::Page> page,
      mojo::PendingReceiver<commerce::price_tracking::mojom::PriceTrackingHandler>
          receiver) {
-@@ -325,7 +325,7 @@ void BookmarksSidePanelUI::CreatePriceTrackingHandler(
+@@ -322,7 +322,7 @@ void BookmarksSidePanelUI::CreatePriceTrackingHandler(
            bookmark_model, shopping_service, price_tracking_handler_.get());
  }
  

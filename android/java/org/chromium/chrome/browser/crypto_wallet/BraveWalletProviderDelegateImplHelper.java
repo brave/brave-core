@@ -66,7 +66,7 @@ public class BraveWalletProviderDelegateImplHelper {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.walletInteractionDetected(webContents);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "walletInteractionDetected " + e);
+            Log.e(TAG, "walletInteractionDetected", e);
         }
     }
 
@@ -81,7 +81,7 @@ public class BraveWalletProviderDelegateImplHelper {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.showAccountCreation(coinType);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showAccountCreation " + e);
+            Log.e(TAG, "showAccountCreation", e);
         }
     }
 }

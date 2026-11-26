@@ -9,6 +9,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "base/synchronization/lock.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
@@ -48,6 +49,8 @@ class CORE_EXPORT ResourcePoolLimiter {
       ResourceType resource_type);
 
  private:
+  friend class base::NoDestructor<ResourcePoolLimiter>;
+
   ResourcePoolLimiter();
 
   void DropResourceInUse(const ResourceInUseTracker* resource_in_use_tracker);

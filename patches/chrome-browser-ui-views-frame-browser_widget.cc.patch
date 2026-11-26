@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_widget.cc b/chrome/browser/ui/views/frame/browser_widget.cc
-index 73fdb2336955bb202a847f5798f67b98bb124dad..485e5d697e9f7c5d29f1aff236391af65990ddbf 100644
+index 9cf7eea938627887a2c8ee5c0fa064421aad062d..a4fd91f8237b17062f1c5a05730a8775b48d388a 100644
 --- a/chrome/browser/ui/views/frame/browser_widget.cc
 +++ b/chrome/browser/ui/views/frame/browser_widget.cc
-@@ -466,7 +466,7 @@ ui::MenuModel* BrowserWidget::GetSystemMenuModel() {
+@@ -487,7 +487,7 @@ ui::MenuModel* BrowserWidget::GetSystemMenuModel() {
    // TODO(b/271137301): Refactor this class to remove chromeos specific code to
    // subclasses.
    if (!menu_model_builder_.get()) {

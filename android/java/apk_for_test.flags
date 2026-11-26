@@ -116,10 +116,12 @@
 
 -keep class org.chromium.chrome.browser.ntp_customization.NtpCustomizationUtils {
     *** isNtpThemeCustomizationEnabled(...);
+    *** isNtpThemeCustomizationEnabledByPolicy(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp_customization.BraveNtpCustomizationUtils {
     *** isNtpThemeCustomizationEnabled(...);
+    *** isNtpThemeCustomizationEnabledByPolicy(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp_customization.theme.NtpCustomizationPromoManager {
@@ -867,15 +869,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.identity_disc.IdentityDiscController {
-    public <init>(...);
-    *** calculateButtonData(...);
-}
-
--keep class org.chromium.chrome.browser.identity_disc.BraveIdentityDiscController {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.password_manager.settings.PasswordsPreference {
     *** setUpPostDeprecationWarning(...);
 }
@@ -1143,17 +1136,6 @@
     *** mAutoButton;
     *** mNewTabButton;
     *** mShareButton;
-}
-
--keep class org.chromium.chrome.browser.ui.appmenu.AppMenuHandlerImpl {
-    public <init>(...);
-    *** mAppMenu;
-    *** mAppMenuDragHelper;
-    *** showAppMenu(...);
-}
-
--keep class org.chromium.chrome.browser.ui.appmenu.BraveAppMenuHandlerImpl {
-    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.ui.AdaptiveToolbarUiCoordinator {

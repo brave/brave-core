@@ -33,13 +33,13 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.sameInstance;
 
 import static org.chromium.base.test.transit.ViewFinder.waitForNoView;
+import static org.chromium.base.test.transit.ViewFinder.waitForView;
 import static org.chromium.chrome.browser.password_manager.settings.PasswordSettingsTestHelper.ARES_AT_OLYMP;
 import static org.chromium.chrome.browser.password_manager.settings.PasswordSettingsTestHelper.DEIMOS_AT_OLYMP;
 import static org.chromium.chrome.browser.password_manager.settings.PasswordSettingsTestHelper.GREEK_GODS;
 import static org.chromium.chrome.browser.password_manager.settings.PasswordSettingsTestHelper.HADES_AT_UNDERWORLD;
 import static org.chromium.chrome.browser.password_manager.settings.PasswordSettingsTestHelper.PHOBOS_AT_OLYMP;
 import static org.chromium.chrome.browser.password_manager.settings.PasswordSettingsTestHelper.ZEUS_ON_EARTH;
-import static org.chromium.ui.test.util.ViewUtils.onViewWaiting;
 
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
@@ -120,7 +120,7 @@ public class PasswordSettingsSearchTest {
         mTestHelper.setPasswordSource(null); // Initialize empty preferences.
         mTestHelper.startPasswordSettingsFromMainSettings(mSettingsActivityTestRule);
         // Use a more specific matcher that excludes section headers in LinearLayouts
-        onViewWaiting(
+        waitForView(
                 allOf(
                         withText(R.string.password_manager_settings_title),
                         not(withParent(isAssignableFrom(LinearLayout.class)))));
@@ -145,7 +145,7 @@ public class PasswordSettingsSearchTest {
         mTestHelper.setPasswordSource(null); // Initialize empty preferences.
         mTestHelper.startPasswordSettingsFromMainSettings(mSettingsActivityTestRule);
         // Use a more specific matcher that excludes section headers in LinearLayouts
-        onViewWaiting(
+        waitForView(
                 allOf(
                         withText(R.string.password_manager_settings_title),
                         not(withParent(isAssignableFrom(LinearLayout.class)))));
@@ -201,7 +201,7 @@ public class PasswordSettingsSearchTest {
         // "Zeu" matches only Zeus, so the result is shown exactly once.
         onView(withSearchMenuIdOrText()).perform(click());
         onView(withId(R.id.search_src_text)).perform(click(), typeText("Zeu"), closeSoftKeyboard());
-        onViewWaiting(allOf(withText(ZEUS_ON_EARTH.getUserName()), isDisplayed()));
+        waitForView(allOf(withText(ZEUS_ON_EARTH.getUserName()), isDisplayed()));
         assertViewCount(withText(ZEUS_ON_EARTH.getUserName()), 1);
 
         // Simulate a spontaneous password-store update while the search is open. This re-fires
@@ -280,7 +280,7 @@ public class PasswordSettingsSearchTest {
         onView(withText(R.string.section_saved_passwords_exceptions)).check(doesNotExist());
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        onViewWaiting(allOf(withText(R.string.section_saved_passwords_exceptions), isDisplayed()));
+        waitForView(allOf(withText(R.string.section_saved_passwords_exceptions), isDisplayed()));
 
         onView(withText(R.string.section_saved_passwords_exceptions)).check(matches(isDisplayed()));
     }
@@ -314,7 +314,7 @@ public class PasswordSettingsSearchTest {
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
         if (menuInitiallyVisible.get()) { // If the overflow menu was there, it should be restored.
-            onViewWaiting(withContentDescription(R.string.abc_action_menu_overflow_description));
+            waitForView(withContentDescription(R.string.abc_action_menu_overflow_description));
             onView(withContentDescription(R.string.abc_action_menu_overflow_description))
                     .check(matches(isDisplayed()));
         }
@@ -334,7 +334,7 @@ public class PasswordSettingsSearchTest {
         onView(withText(R.string.password_settings_save_passwords)).check(doesNotExist());
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        onViewWaiting(allOf(withText(R.string.password_settings_save_passwords), isDisplayed()));
+        waitForView(allOf(withText(R.string.password_settings_save_passwords), isDisplayed()));
 
         onView(withText(R.string.password_settings_save_passwords)).check(matches(isDisplayed()));
 
@@ -359,7 +359,7 @@ public class PasswordSettingsSearchTest {
         onView(withText(R.string.password_settings_save_passwords)).check(doesNotExist());
 
         Espresso.pressBack();
-        onViewWaiting(allOf(withText(R.string.password_settings_save_passwords), isDisplayed()));
+        waitForView(allOf(withText(R.string.password_settings_save_passwords), isDisplayed()));
 
         onView(withText(R.string.password_settings_save_passwords)).check(matches(isDisplayed()));
 
@@ -467,7 +467,7 @@ public class PasswordSettingsSearchTest {
 
         // Go back from search results to main passwords preferences
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        onViewWaiting(allOf(withText(R.string.password_settings_save_passwords), isDisplayed()));
+        waitForView(allOf(withText(R.string.password_settings_save_passwords), isDisplayed()));
 
         // Here at the test duplicates never appear, even without the original issue fix.
         // TODO(https://github.com/brave/brave-browser/issues/50538): AlexeyBarabash

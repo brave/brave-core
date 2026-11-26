@@ -1,0 +1,72 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Delegate Brave's web platform permissions in PrivilegedWebContents.
+
+      These are the Brave types `PermissionUtil::IsPermission()` accepts, which
+      upstream requires to be delegated. A delegate that doesn't grant them
+      leaves them denied.
+    regex:
+      re_pattern:
+        '(GetPwcContentSettingPolicy\([^)]*\)\s*\{.*?)(\n\s*return
+        PwcContentSettingPolicy::kDelegated;)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            case ContentSettingsType::BRAVE_ETHEREUM:
+            case ContentSettingsType::BRAVE_SOLANA:
+            case ContentSettingsType::BRAVE_CARDANO:
+            case ContentSettingsType::BRAVE_POLKADOT:
+            case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
+            case ContentSettingsType::BRAVE_OPEN_AI_CHAT:\2
+
+  - description: |-
+      Block Brave's other content settings in PrivilegedWebContents.
+
+      They are Shields, webcompat and other site settings rather than web
+      permissions, so none is queried through PermissionManager.
+    regex:
+      re_pattern:
+        '(GetPwcContentSettingPolicy\([^)]*\)\s*\{.*?)(\n\s*return
+        PwcContentSettingPolicy::kBlocked;)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            case ContentSettingsType::BRAVE_ADS:
+            case ContentSettingsType::BRAVE_COSMETIC_FILTERING:
+            case ContentSettingsType::BRAVE_TRACKERS:
+            case ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES:
+            case ContentSettingsType::BRAVE_FINGERPRINTING_V2:
+            case ContentSettingsType::BRAVE_SHIELDS:
+            case ContentSettingsType::BRAVE_REFERRERS:
+            case ContentSettingsType::BRAVE_COOKIES:
+            case ContentSettingsType::BRAVE_SPEEDREADER:
+            case ContentSettingsType::BRAVE_HTTPS_UPGRADE:
+            case ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE:
+            case ContentSettingsType::BRAVE_AUTO_SHRED:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_NONE:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_DEVICE_MEMORY:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_FONT:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_KEYBOARD:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_MEDIA_DEVICES:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_SPEECH_SYNTHESIS:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_WEBGPU:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL:
+            case ContentSettingsType::BRAVE_WEBCOMPAT_ALL:
+            case ContentSettingsType::BRAVE_SHIELDS_METADATA:
+            case ContentSettingsType::BRAVE_PSST:\2

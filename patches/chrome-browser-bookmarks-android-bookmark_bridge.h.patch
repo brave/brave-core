@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/bookmarks/android/bookmark_bridge.h b/chrome/browser/bookmarks/android/bookmark_bridge.h
-index 7b7395043de2a9833ed66505f268b7428edeac74..ff7f2624e3d7e34873c2d171d824ae5368551fb8 100644
+index 4aef16fe95b0168ccc950efbf17d527b39b4b5da..d6d5167e2cdca993232af84c1a3233357d5dbf3f 100644
 --- a/chrome/browser/bookmarks/android/bookmark_bridge.h
 +++ b/chrome/browser/bookmarks/android/bookmark_bridge.h
-@@ -278,6 +278,21 @@ class BookmarkBridge : public ProfileObserver,
+@@ -292,6 +292,21 @@ class BookmarkBridge : public ProfileObserver,
    reading_list::ReadingListManager*
    GetAccountReadingListManagerIfAvailableForTesting();
  

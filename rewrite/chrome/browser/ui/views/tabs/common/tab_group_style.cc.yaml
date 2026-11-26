@@ -7,7 +7,7 @@ substitutions:
   - description: |-
       Start the group header chip where a Brave horizontal tab's contents do.
     after_function_impl:
-      function_name: TabGroupStyle::GetTitleChipOffset
+      function_name: TabGroupStyle::GetHeaderOffset
       result_var: offset
       code: |-
         if (tabs::HorizontalTabsUpdateEnabled()) {

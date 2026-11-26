@@ -1,0 +1,13 @@
+diff --git a/ios/web/public/test/fakes/fake_browser_state.cc b/ios/web/public/test/fakes/fake_browser_state.cc
+index 5ee549d718f494c5f2f0ee87eefcdf1dc584046c..9f4ace5d679f2389eb84b0d9c329705b61a71bd9 100644
+--- a/ios/web/public/test/fakes/fake_browser_state.cc
++++ b/ios/web/public/test/fakes/fake_browser_state.cc
+@@ -34,6 +34,8 @@ class TestContextURLRequestContextGetter : public net::URLRequestContextGetter {
+     }
+     context_builder->SetProtocolHandler(
+         kTestWebUIScheme, web::CreateWebUIProtocolHandler(browser_state));
++    context_builder->SetProtocolHandler(
++        "chrome-untrusted", web::CreateWebUIProtocolHandler(browser_state));
+     context_ = context_builder->Build();
+   }
+ 

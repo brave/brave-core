@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Review rules: Brave's knowledge bases, rules kept beside the code a
+# DIR_METADATA scopes them to, and the code health sweeps' rules.
+agentic_review {
+  capability_groups {
+    path_expression: "docs/knowledge_base/rules/.*\\.md"
+    path_expression: "(?:.*/)?knowledge_base/[^/]*\\.md"
+    path_expression: "tools/cr/codehealth/rules/.*\\.md"
+    path_expression_exclusion: "(?:.*/)?README\\.md"
+    rules: "docs/knowledge_base/rules/rule_authoring/leave-mechanical-checks-to-tooling.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?(?:COMMON|DIR)_METADATA"
+    content_patterns: "^\\s*rules:"
+    rules: "docs/knowledge_base/rules/rule_authoring/leave-mechanical-checks-to-tooling.md"
+  }
+}

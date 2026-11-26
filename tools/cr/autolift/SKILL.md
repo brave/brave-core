@@ -172,18 +172,22 @@ commit body and in the report. Then carry on.
   changes, one renamed upstream), and
   `git commit -m 'Remove dead upstream tests from filters.'` for entries whose
   tests upstream deleted. No culprit or tags; say why each entry is needed in
-  the filter file's comment above it. Entries in `test/filters/` (not
-  `generated/`) are grouped by reason: a group is one comment giving the reason,
-  then its entries, with a blank line before the next group. Add an entry to the
-  group whose comment gives its reason, widening the comment if needed ("This
-  test" becomes "These tests"); with no such group, start a new one at a blank
-  line between groups. Never put a comment between a group's entries: it splits
-  the group, and the entries above it lose their reason. Nor add one under
-  "Tests below this point have not been diagnosed": find its reason first. The
-  exception is an entry added or removed because of a browser change in the same
-  commit (a fix that makes a filtered test pass again, a Brave change that makes
-  an upstream test fail by design): it stays in that change's commit, or its
-  fixup, so the two land and revert together.
+  the filter file's comment above it. When that reason is a Brave bug rather
+  than something Brave changes on purpose (cr160: an override missing a null
+  check upstream added), a small fix in Brave's code may serve better than the
+  entry; a filter is still the right call when a fix isn't a reasonable path.
+  Entries in `test/filters/` (not `generated/`) are grouped by reason: a group
+  is one comment giving the reason, then its entries, with a blank line before
+  the next group. Add an entry to the group whose comment gives its reason,
+  widening the comment if needed ("This test" becomes "These tests"); with no
+  such group, start a new one at a blank line between groups. Never put a
+  comment between a group's entries: it splits the group, and the entries above
+  it lose their reason. Nor add one under "Tests below this point have not been
+  diagnosed": find its reason first. The exception is an entry added or removed
+  because of a browser change in the same commit (a fix that makes a filtered
+  test pass again, a Brave change that makes an upstream test fail by design):
+  it stays in that change's commit, or its fixup, so the two land and revert
+  together.
 - A plastered patch regenerated from its unchanged yaml (`plaster apply <yaml>`
   putting a stale `.patch` back as the yaml makes it), at any step of a lift or
   an autofix run, is committed with the subject of the latest "Apply-fixed 🩹
@@ -300,13 +304,8 @@ commit body and in the report. Then carry on.
   and check the result against them before committing. No comment goes inside a
   GN list of files or deps, nor explains an `#include` (BS-059, CS-075): why an
   entry is there goes in the commit message.
-- Check each fix against Chromium's review rules in
-  `../agents/knowledge_base/rules/`, picked by each directory's
-  `COMMON_METADATA`, plus `general/` for the language. Its paths never name
-  `brave/`, so match the upstream path a Brave file stands for
-  (`chromium_src/<path>` and `rewrite/<path>.yaml` to `<path>`, a patch to its
-  file, `brave/browser/` to `chrome/browser/`). Treat `severity: should_fix`
-  rules as review findings.
+- The knowledge bases' review rules apply to every fix: step 7 checks the run's
+  commits against them.
 - If upstream code builds in Chromium but not in Brave, find the Brave
   discrepancy instead of plastering upstream. The usual leak is
   `-iquote //brave/chromium_src`: every quoted include of an upstream header
@@ -327,9 +326,9 @@ commit body and in the report. Then carry on.
   lifetime: where the pointer being valid is an invariant, it hides the bug.
 - Run `pnpm run format --base=HEAD` before every commit of Brave files: code,
   tooling, this document and the tracker alike. It formats only the changed
-  lines of Brave files. Revert what it reformats in lines the base has, but keep
-  its reflow of lines a branch commit added: the presubmit formats against the
-  base and flags them.
+  lines of Brave files, and skips untracked ones (`git add` new files first).
+  Revert what it reformats in lines the base has, but keep its reflow of lines a
+  branch commit added: the presubmit formats against the base and flags them.
 - In a `chromium_src` header that must include something before the upstream
   header, put a comment line between the two includes: clang-format otherwise
   sorts the `<upstream>` include first.
@@ -376,19 +375,16 @@ commit body and in the report. Then carry on.
 
 ## Tooling
 
-Rely on tools over inference wherever one exists or can be written: 🚀Brockit,
-🩹Plaster, `git cr` (`commit`, `follow-renames`), the `pnpm run` commands,
-`tools/recipes`, and `autolift.py` below. A tool's result is reproducible and
-reviewable; a judgement call has to be re-made on every run.
+Rely on tools over inference wherever one exists: 🚀Brockit, 🩹Plaster, `git cr`
+(`commit`, `follow-renames`), the `pnpm run` commands, `tools/recipes`, and
+`autolift.py` below.
 
 When a step needs work that a tool could do, or a tool gets something wrong or
 says too little, file a request under `## Tooling TODOs` at the end of
-`tools/cr/codehealth/M<N>.md` (create the section if it's missing). Write one
-`###` item per tool problem: what the tool does now, the cr<N> example that
-showed it, and checkboxes for the changes requested. Extend an existing item
-rather than duplicating it. These requests are reviewed separately, so don't
-implement missing features or improvements during a lift, and don't let one
-block the run.
+`tools/cr/codehealth/M<N>.md`. Write one `###` item per tool problem: what the
+tool does now, the cr<N> example that showed it, and checkboxes for the changes
+requested. Extend an existing item rather than duplicating it. Don't implement
+them during a lift, or let one block the run.
 
 Working around a tool is always such a request. Reaching a service by hand
 because `autolift.py` or `tools/cr/ci/cli.py` doesn't give what a step needs
@@ -399,17 +395,16 @@ The code health scripts and rules (`tools/cr/codehealth/scripts/`,
 `tools/cr/codehealth/rules/`) are the exception: improve them right away, as
 `tools/cr/codehealth/SKILL.md` asks, with tests, and commit them as
 `Version CodeHealth tracker`. File a Tooling TODO for one only when you aren't
-confident of the direction, and then write what needs input: the question and
-the options, not a task list.
+confident of the direction, as the question and its options.
 
 A hard bug is different: a tool that crashes, corrupts the tree or commits, or
 produces a wrong result the lift can't work around. Fix it in the tool, with a
 test in its `tools/cr/*_test.py` and the tool's tests passing (run them from
 their directory with `vpython3 -m unittest <module>`; vpython has no `pytest`).
 Commit the fix on its own with `git cr commit --tagged=<tool>` (e.g.
-`--tagged=brockit` for `brockit.py` or `rebase.py`), never mixed into a lift
-fix, and list it in the report. If the fix isn't small and safe, work around the
-bug, file it as a Tooling TODO, and carry on.
+`--tagged=brockit` for `rebase.py`), never mixed into a lift fix, and list it in
+the report. If the fix isn't small and safe, work around the bug, file it as a
+Tooling TODO, and carry on.
 
 `tools/cr/autolift/autolift.py` collects the checks done repeatedly by hand:
 
@@ -542,10 +537,10 @@ target: use that base wherever this document says `<base>`. If it refuses to run
 (a rebase in progress, changes to tracked files, local commits `origin/cr<N>`
 lacks), stop and report it rather than passing `--force`.
 
-Brockit only regenerates a conflicted patch from its plaster when the Chromium
-checkout is on the version rebased so far. Before a `brockit rebase` you start
-by hand, check the committed version, `git -C .. show HEAD:chrome/VERSION`, not
-the working copy, which Brave's patches rewrite with Brave's own version.
+Brockit only regenerates a conflicted patch from its plaster with the Chromium
+checkout on the version rebased so far. Before a `brockit rebase` you start by
+hand, check it with `git -C .. show HEAD:chrome/VERSION` (patches rewrite the
+working copy).
 
 For a new milestone, with no `origin/cr<N>` yet, it creates `cr<N>` from the
 base (for 159: from `origin/cr158`), sets the same upstream, and skips the
@@ -555,8 +550,8 @@ name. The new branch stays local until [step 12](#12-publish).
 
 The base is `origin/master` once master's Chromium version is on milestone
 `N-1`, which is when the previous milestone has landed, and `origin/cr<N-1>`
-before that. Brockit takes the branch's upstream as the base for both
-`brockit rebase` and `brockit lift` (`--from-ref` defaults to `@upstream`).
+before that. Brockit takes the branch's upstream as the base of `brockit rebase`
+and `brockit lift`.
 
 #### Lift target
 
@@ -580,10 +575,9 @@ and exits 3 without rebasing, and the run carries on as an autofix run: read
 [autofix.md](autofix.md) in full, then follow it from its step 1. The branch's
 CI is still worth checking and acting on.
 
-When `prepare` says "the base moved from … to …", the base had a bump of its
-own, so the rebase dropped the regen commits ("Update patches", "Updated
-strings", the `gnrt` run); without a lift, remake them with `brockit regen` once
-the rebase is done.
+When `prepare` says "the base moved from … to …", the rebase dropped the regen
+commits ("Update patches", "Updated strings", the `gnrt` run); without a lift,
+remake them with `brockit regen` after it.
 
 **When the previous milestone lands.** The first run after `cr<N-1>` merges into
 master moves `cr<N>` onto master. `prepare` picks `origin/master` by itself, and
@@ -605,14 +599,21 @@ rebase:
 The rebase also autosquashes `fixup!` and `amend!` commits. Brockit resolves the
 conflicts that have a fixed answer as it goes:
 
-- a patch with a yaml is regenerated from its plaster;
+- a patch with a yaml is regenerated from its plaster, or takes the commit's
+  version when the unchanged yaml fails;
 - a `tools/cr/codehealth/M<N>.md` the base doesn't have takes the branch's last
   version;
 - the "Update from Chromium" commit takes its own `projects.chrome.tag` and the
   newer `PinsListTimestamp`, when that is the file's single conflicting hunk;
 - a raw patch the base changed only in its context takes the commit's version;
+- a patch the base deleted (yaml and all) that the commit only re-anchored goes;
 - a commit the base picked with its `squash`/`fixup` lines (every file they
-  touch is the same on the base as at the branch's tip) is skipped with them.
+  touch is the same on the base as at the branch's tip) is skipped with them, as
+  is a `Version lift updates` group the base picked and then changed again.
+
+Then it reapplies the base's new or changed yamls: fix one that fails as
+"Plaster failed to fix patches"; commit a changed patch as [Commits](#commits)
+says.
 
 It stops on any other conflict, listing the commit and the files left. Resolve
 them with the recipes below, `git add` them, and carry on with:
@@ -643,25 +644,23 @@ rule. Recipes for what it leaves:
   may conflict again in a later "Update patches" commit; regenerate it again. A
   substitution that no longer matches because the source already has its change
   is usually a backport that has landed upstream: see
-  [Backports that landed upstream](#backports-that-landed-upstream). A yaml that
-  only a later branch commit fixes can't apply yet: take the commit's side. That
-  side drops the base's changes to the patch's other substitutions (cr160: a
-  class rename), so once the rebase ends, `plaster apply` each yaml that differs
-  from `origin/cr<N>`, and commit what it changes as [Commits](#commits) says.
+  [Backports that landed upstream](#backports-that-landed-upstream). A yaml the
+  base changed that only a later commit fixes can't apply yet: take the commit's
+  side, which drops the base's other substitutions (cr160: a class rename), and
+  once the rebase ends `plaster apply` each yaml differing from `origin/cr<N>`,
+  committing as [Commits](#commits) says.
 - **`tools/cr/codehealth/M<N>.md`**, when the base has a copy too: take
   `origin/cr<N>`'s version.
 - **A `chromium_src` shadow the base changed, in a commit that moves it to
   plaster:** take the commit's side, carry the base's change into the yaml, and
   regenerate the patches with `plaster apply`.
-- **A cr<N> fix that the base fixed itself**, or tooling the base picked from
-  cr<N> and then extended (check with `git diff origin/<base> -- <paths>`): take
-  the base's version. A commit left empty is dropped with
-  `brockit rebase --skip`; one left partly applied gets an `amend!` that rewords
-  it to what remains. Before a `--skip`, check the todo
-  (`$(git rev-parse --git-path rebase-merge)/git-rebase-todo`) for the skipped
-  commit's `fixup` lines, and a pinned group's `squash` lines, next: they would
-  fold into the commit before it. Delete those whose change the base has too.
-  Brockit does all of this itself for a group the base picked whole.
+- **A cr<N> fix that the base fixed itself**, or tooling the base picked and
+  then extended (`git diff origin/<base> -- <paths>`): take the base's version.
+  Drop a commit left empty with `brockit rebase --skip`, first deleting the
+  `fixup`/`squash` lines after it in the todo
+  (`$(git rev-parse --git-path rebase-merge)/git-rebase-todo`) whose change the
+  base has too, or they fold into the commit before. One left partly applied
+  gets an `amend!` rewording it to what remains.
 - **The "Update from Chromium" commit**, when Brockit leaves it because more
   than the version bump conflicts: in `package.json`, keep the commit's
   `projects.chrome.tag`. In
@@ -677,15 +676,18 @@ rule. Recipes for what it leaves:
 - **A `fixup!` of a pinned group that conflicts with the group's own later
   commits** (modify/delete on a file the group moves later, or content a later
   `squash` of the group writes; cr159: `Version lift updates`): Brockit places
-  such fixups right after the group's first commit. Keep HEAD's state for that
-  step (and undo anything git's rename detection applied to the old path), then
-  requeue the same `fixup <sha>` line after the group's last `squash` line in
-  `$(git rev-parse --git-path rebase-merge)/git-rebase-todo`, before running
-  `--continue`. Check afterwards that the squashed commit has the fixup's
-  change. A plain `fixup!` written on top of a later branch commit touching the
-  same files (cr159: the Gerrit upload recipe's) is requeued after that commit
-  the same way, then dropped from its first place with `brockit rebase --skip`;
-  check that the tip's files match the pre-rebase tip's.
+  such fixups right after the group's first commit, unless a later one adds the
+  file. Keep HEAD's state for that step (and undo anything git's rename
+  detection applied to the old path), then requeue the same `fixup <sha>` line
+  after the group's last `squash` line in the todo, before running `--continue`.
+  Check afterwards that the squashed commit has the fixup's change. A plain
+  `fixup!` written on top of a later branch commit touching the same files
+  (cr159: the Gerrit upload recipe's) is requeued after that commit the same
+  way, then dropped from its first place with `brockit rebase --skip`; check
+  that the tip's files match the pre-rebase tip's. Don't requeue an `amend!`: it
+  would reword the later commit. Resolve its step to the hunks it adds itself
+  (cr160: a `site-list` test suite beside one a later commit adds), and the
+  later commit's conflict to `origin/cr<N>`'s version.
 - **A `fixup!` or later commit of a pinned group that conflicts in a file a
   later branch commit outside the group also changes** (cr159:
   `Disable failing upstream tests.` ahead of
@@ -767,6 +769,8 @@ Then fix:
   subclass now matches nothing, and the build gives no error. Replace it with a
   plaster on the factory (`std::make_unique<TabContainer>(` →
   `std::make_unique<BraveTabContainer>(`). Delete the old patches and yamls.
+- **Overrides of renamed or deleted files** (shadows with no patch): as the two
+  items above, from the printed `git cr follow-renames`.
 - **Plaster failed to fix patches.** Read what the substitution targets and what
   the culprit did to it. In order of likelihood:
   - the target moved: move the yaml. A feature gone from its file may only have
@@ -803,6 +807,9 @@ After `--continue` (or the first `lift`, when nothing needed action):
   changed a raw patch beyond its context. Commit each listed patch on its own
   with its culprit (`git cr commit --culprit`), leaving the other refreshed
   patches unstaged, and run `lift --continue` again.
+- "🔥 Deleted patches detected": commit a generated `app/*.grdp` whose upstream
+  file is gone (cr160) as deleted, with its culprit. A patch whose upstream file
+  is unchanged was left unapplied: restore it and run `pnpm run apply_patches`.
 - "❌ GitHub issue update." The lift is done; run
   `brockit update-version-issue --infra-mode` into a log once `gh` works again.
 - "❌ Plaster check. Please investigate it." Run `plaster apply --all` (the one
@@ -815,7 +822,8 @@ After `--continue` (or the first `lift`, when nothing needed action):
   old patch still applied with fuzz.
 - "❌ GNRT rerun. Please investigate it." Brockit prints no error: rerun
   `vpython3 ./tools/crates/run_gnrt.py vendor` (then `gen`) from `src/` into a
-  log in `.autolift/cr<N>/`. A `[patch.crates-io]` entry in
+  log in `.autolift/cr<N>/`. On a minor bump, try
+  `next-fixes <bump range> --text <crate>` first. A `[patch.crates-io]` entry in
   `brave/third_party/rust/chromium_crates_io/Cargo.toml` whose upstream
   `vendor/` copy is gone ("does not contain packages matching") means upstream
   rolled a crate Brave's crates still need at the old version: drop the patch
@@ -837,20 +845,18 @@ often been fixed on `origin/cr<N+1>` (or a higher branch). Look there before
 fixing anything, in the lift and in every build and test step after it:
 
 ```sh
-vpython3 tools/cr/autolift/autolift.py next-fixes <bump range> [<path> ...]
+vpython3 tools/cr/autolift/autolift.py next-fixes <bump range> [<path> ...] \
+    [--text <name>]
 ```
 
-It fetches the newer `cr` branches and lists each cherry-pick in the bump range
-(touching `<path>`, when given) whose main commit a newer branch's commit cites
-as its culprit. A fix cites the main commit, or its own branch's cherry-pick, so
-the hashes differ from the ones in this branch's range; `next-fixes` matches
-them through the cherry-pick trailers, and through the `Change-Id` every
-cherry-pick of a change keeps, which a fix's "Chromium changes:" block quotes.
-`lift` prints the whole list for a minor bump, with the files each fix touches:
-match each action item and ❌ check against it first, and pick a fix that
-touches its file rather than working one out. Run `next-fixes` again with the
-paths of each build or test failure. A fix already on `cr<N>` (picked by an
-earlier run) is marked as such.
+It fetches the newer `cr` branches (and master, for those merged into it) and
+lists each cherry-pick in the bump range (touching `<path>`, when given) whose
+main commit a newer branch's commit cites as its culprit, matched through
+cherry-pick trailers and `Change-Id`s, as the hashes differ. `lift` prints the
+whole list for a minor bump, with the files each fix touches: match each action
+item and ❌ check against it first, and pick a fix that touches its file rather
+than working one out. Run `next-fixes` again with the paths of each build or
+test failure.
 
 Bring a fix over with:
 
@@ -859,20 +865,20 @@ vpython3 tools/cr/autolift/autolift.py pick-fix <fix commit> <cherry-pick hash>
 ```
 
 It checks that the fix cites the cherry-pick's main commit, and runs a plain
-`git cherry-pick` of it (an exception to committing with `git cr commit`). The
-message stays as it is: its `[cr<N+1>]` prefix and its culprit, the main commit,
-are fine on `cr<N>`, so don't reword them. On a conflict, it stops: resolve it,
-`git add` the files, and run `git cherry-pick --continue`. The newer branch's
-fix may rely on code `cr<N>` doesn't have (other upstream changes, or other
-Brave commits): keep only what this bump needs while resolving, and say in the
-report what was left out. A fix spread over several commits is picked one commit
-at a time, in order.
+`git cherry-pick` of it: don't reword its `[cr<N+1>]` prefix or its culprit, the
+main commit. On a conflict, it stops: resolve it, `git add` the files, and run
+`git cherry-pick --continue`. The newer branch's fix may rely on code `cr<N>`
+doesn't have (other upstream changes, or other Brave commits): keep only what
+this bump needs while resolving, and say in the report what was left out. A fix
+spread over several commits is picked one commit at a time, in order.
 
-Not every fix cites a culprit. Patch refreshes land in the newer branch's
-"Update patches" commits, so for a patch conflict, compare with
-`git show origin/cr<N+1>:<patch path>` before resolving it by hand. When no
-newer branch has a fix, fix it as usual, with the cherry-pick's hash as the
-culprit.
+Not every fix cites a culprit. With paths or `--text <name>`, `next-fixes` also
+lists `[cr<M>]` fixes citing none that touch the paths or name the text
+(cr158.x: a crate `gnrt` can't vendor); pick one with `pick-fix <fix commit>`
+alone. Patch refreshes land in the newer branch's "Update patches" commits, so
+for a patch conflict, compare with `git show origin/cr<N+1>:<patch path>` before
+resolving it by hand. When no newer branch has a fix, fix it as usual, with the
+cherry-pick's hash as the culprit.
 
 ### 3. Linux build
 
@@ -915,9 +921,10 @@ A green build doesn't show a `chromium_src` `#define` whose target upstream
 removed: it just matches nothing. Once the build is green, run
 `vpython3 tools/cr/codehealth/scripts/define_reach.py <bump range>` (the branch
 range, in a run without a lift) and treat a token whose reach fell to 0 as a
-failure. When it says a tag isn't in the checkout (the git cache can lack a
-base's newest tag), start from the newest older tag it has, and say so in the
-report.
+failure. Check a token whose reach rose: its new matches are rewritten too
+(cr160: `Verify`). When it says a tag isn't in the checkout (the git cache can
+lack a base's newest tag), start from the newest older tag it has, and say so in
+the report.
 
 ### 4. Linux tests
 
@@ -937,11 +944,10 @@ upstream's for the suite: a filtered test doesn't run. Pass `--no-test-filters`
 before the binary to run it anyway (after it, the flag goes to the binary).
 
 The binary is a name relative to `--build-dir` (`brave_unit_tests`,
-`brave_browser_tests`, `brave_cert_pinning_tests`, upstream `unit_tests`; tests
-of `brave/components/` are in `brave_components_unittests`). Check that the
-filter matched something: "Tests took 0 seconds" or `[0/0]` means it didn't
-(fixture names are case-sensitive: `SpeedReaderBrowserTest`, not
-`SpeedreaderBrowserTest`).
+`brave_browser_tests`, upstream `unit_tests`; tests of `brave/components/` are
+in `brave_components_unittests`). Check that the filter matched something
+(fixture names are case-sensitive): "Tests took 0 seconds" or `[0/0]` means it
+didn't.
 
 Finding coverage:
 
@@ -1005,8 +1011,8 @@ Only for a run that lifted. A run that only rebased builds Linux alone (see
 [Maintenance run without a lift](#maintenance-run-without-a-lift)), and an
 autofix run builds Android only for a failure in an Android check.
 
-The checkout has Android's deps already: the recipe's `.env` lists `android` in
-gclient's `target_os` for every sync, so build it without syncing again.
+The recipe's `.env` puts `android` in gclient's `target_os`, so build without
+syncing again.
 
 ```sh
 pnpm run build Static --target_os=android --target_arch=x64 \
@@ -1045,8 +1051,17 @@ in the report and list the tests as unverified.
 
 ### 7. Presubmit
 
-Once the Linux and Android builds pass, run the presubmit against the branch's
-upstream (the base):
+Once the Linux and Android builds pass and the last fix is committed, check the
+commits the run wrote against the knowledge bases' review rules:
+
+```sh
+vpython3 tools/cr/autolift/autolift.py rules > .autolift/cr<N>/rules.log 2>&1
+```
+
+It lists the rules each commit the run made or changed needs, with the lines
+concerned. Read each, and fix what a commit breaks as a fixup of it, or say in
+the report why the rule doesn't apply. Then run the presubmit against the
+branch's upstream (the base):
 
 ```sh
 pnpm run presubmit --base "$(git rev-parse --abbrev-ref '@{upstream}')" \
@@ -1148,8 +1163,8 @@ lift, `159.0.8135.1..159.0.8136.1` for a later bump). Write its dump to
 `.autolift/cr<N>/codehealth_<new tag>`, not the temp dir, so a resumed run can
 reuse it. It writes or updates `tools/cr/codehealth/M<N>.md` with what fails
 silently: overrides that stopped applying, re-enabled features, Brave copies
-that missed upstream fixes. Follow its own instructions (subagents, static
-verification only), and commit what changed under `tools/cr/codehealth/` as
+that missed upstream fixes. Follow its own instructions (subagents on `sonnet`,
+static verification only), and commit what changed under `tools/cr/codehealth/` as
 `Version CodeHealth tracker`.
 
 Its sweeps run for an hour or more each; start them, end your turn, and wait.
@@ -1339,7 +1354,8 @@ patch whose hunks upstream already has.
   `git show <backport>` adds to patches, yamls, `chromium_src` and anything else
   it touched, not only the file that conflicted, and nothing else in those
   files. Regenerate each affected patch with `plaster apply <yaml>`. If upstream
-  landed only part of the CL, revert only that part.
+  landed only part of the CL, revert only that part. Keep the Brave tests it
+  added.
 - Commit it with the landing commit as culprit:
   `git cr commit --culprit=<landing commit> -m 'Revert the <feature> backport'`,
   naming the backport's hash and PR in the body.
@@ -1460,6 +1476,9 @@ headers that lost the include
   last user add the path itself.
 - **"Dependency not allowed" from new `base_module_java__*` subtargets**
   (cr160): add them to `brave_third_party_android_deps_visibility`.
+- **A Brave resource ID undeclared after the lift** (cr160:
+  `IDR_WEBSTORE_ICON_32`): a patch is left unapplied; run
+  `pnpm run apply_patches`.
 - **"Unexpected failure during lint analysis"** (cr160): fix the finding lint
   printed before it (`AnnotateVersionCheck`: `@ChecksSdkIntAtLeast`).
 - **Upstream drops a library Brave uses** (Android-tools jars in the
@@ -1523,6 +1542,9 @@ headers that lost the include
   `@webui-eslint/no-re-exports` (cr159) rejects named re-exports outside barrel
   files: an override re-exports upstream with `export *` (its own exports still
   win), and Brave code imports from the original module.
+- **DevTools `(X as any) = PatchX(X)` subclasses**: the cast hides API changes,
+  so check the `chromium_src` subclass whenever that patch conflicts (cr160:
+  `NetworkItemView` lost `appendTab()`).
 
 ### Android bytecode redirects
 
@@ -1547,21 +1569,15 @@ say how far a run that stopped got. `autolift.py prepare`, `lift` and `publish`
 append their own sections to it; append yours as you go (decisions, fixes, what
 you couldn't verify), and print it at the end. Include:
 
-- A `## Step <n> done: <title>` heading as each step finishes, written by
-  `autolift.py step` (see [Procedure](#procedure)).
 - The bump range, and the branch range.
 - Each commit made, as `<sha> <subject> (culprit <short hash> | no culprit)`,
   with fixups listed under their target. For a fix picked from a newer branch,
-  add `(picked from origin/cr<M> <sha>)`. `publish` adds the links to review
-  once pushed (see [step 12](#12-publish)).
+  add `(picked from origin/cr<M> <sha>)`.
 - For a channel bump, the commits under each branch, the uplifts picked from
   master, and what step 9 would have added to a tracker.
-- Each `--tagged=WIP` commit: the concern and the alternatives.
 - Tracker items fixed because they failed a build or CI, and any test failures
   attributed to the environment or to flakiness.
-- Presubmit warnings left alone, and why.
 - Tooling TODOs filed or extended in `tools/cr/codehealth/M<N>.md`.
-- Tool bugs fixed during the run, with their commits.
 - What wasn't verified: platforms not built (iOS, Windows, macOS), tests that
   couldn't run (official-build-only code, Android without an emulator), and
   fixes verified only statically.

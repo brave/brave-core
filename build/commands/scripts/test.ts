@@ -19,6 +19,9 @@ import {
   getTestBinary,
   getTestsToRun,
   parseTestSuites,
+  devtoolsFrontendTestSuite,
+  getBrowserBinary,
+  getBraveDevtoolsFrontendTests,
 } from '../lib/testUtils.ts'
 import {
   applyEnvDefaults,
@@ -33,6 +36,65 @@ async function buildTests(testsToRun: string[]) {
   util.touchOverriddenFiles()
 
   await util.buildTargets(config.buildTargets, config.defaultOptions)
+}
+
+// Runs DevTools frontend unit tests with upstream's runner, against the Brave
+// build. Positional args name the tests to run, as for `dt test`, and default
+// to Brave's own; other args go to `dt test`.
+function runDevtoolsFrontendTests(
+  options: buildOptions.TestOptions,
+  passthroughArgs: string[],
+) {
+  if (options.output_xml) {
+    Log.error(`${devtoolsFrontendTestSuite} doesn't write XML results`)
+    process.exit(1)
+  }
+  const outDir = path.relative(
+    path.join(config.srcDir, 'out'),
+    config.outputDir,
+  )
+  if (outDir.startsWith('..') || path.isAbsolute(outDir)) {
+    Log.error(
+      `${devtoolsFrontendTestSuite} needs an out dir in ${config.srcDir}/out`,
+    )
+    process.exit(1)
+  }
+
+  let browserBinary = getBrowserBinary(config)
+  const dtArgs = passthroughArgs.filter((arg) => arg !== '--no-sandbox')
+  if (dtArgs.length !== passthroughArgs.length) {
+    // Upstream's Karma launcher takes no browser flags.
+    assert(process.platform !== 'win32', '--no-sandbox is for Linux hosts')
+    const wrapper = path.join(
+      config.outputDir,
+      'devtools_frontend_test_browser',
+    )
+    fs.writeFileSync(
+      wrapper,
+      `#!/bin/sh\nexec ${JSON.stringify(browserBinary)} --no-sandbox "$@"\n`,
+      { mode: 0o755 },
+    )
+    browserBinary = wrapper
+  }
+  if (!dtArgs.some((arg) => !arg.startsWith('-'))) {
+    dtArgs.push(...getBraveDevtoolsFrontendTests(config))
+  }
+
+  util.run(
+    'vpython3',
+    [
+      path.join('scripts', 'tools', 'dt.py'),
+      'test',
+      `--target=${outDir}`,
+      '--skip-ninja',
+      `--chrome-binary=${browserBinary}`,
+      ...dtArgs,
+    ],
+    {
+      ...config.defaultOptions,
+      cwd: path.join(config.srcDir, 'third_party', 'devtools-frontend', 'src'),
+    },
+  )
 }
 
 // Runs the tests of `mainTestSuite`. Returns whether to keep running tests:
@@ -51,6 +113,11 @@ async function runTests(
 
   // Run the tests
   return testSuitesToRun.every((testSuite) => {
+    if (testSuite === devtoolsFrontendTestSuite) {
+      runDevtoolsFrontendTests(options, passthroughArgs)
+      return true
+    }
+
     if (testSuite === 'brave_unit_tests' && isTeamcity && !config.isMobile()) {
       runChromiumTestLauncherTeamcityReporterIntegrationTests()
     }

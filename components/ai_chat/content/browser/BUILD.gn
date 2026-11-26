@@ -83,6 +83,7 @@ static_library("browser") {
     "//services/strings:strings_grit",
     "//third_party/abseil-cpp:absl",
     "//ui/base",
+    "//ui/webui",
     "//url",
   ]
 

@@ -140,7 +140,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                             transactionInfo.id,
                             success -> {
                                 if (!success) {
-                                    Log.e(TAG, "Transaction failed " + transactionInfo.id);
+                                    Log.e(TAG, "Transaction failed %s", transactionInfo.id);
                                 }
                             });
         }

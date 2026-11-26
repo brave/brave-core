@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Pass Safe Browsing requests through Brave's system request handler
+
+      The forwarded request gets the handler's changes before it reaches the
+      network service, as every other system request does.
+    regex:
+      re_pattern:
+        '(GetURLLoaderFactory\(\)->CreateLoaderAndStart\(\s*std::move\(loader\),
+        request_id, options, )request,'
+      re_flags: [DOTALL]
+      replace: '\1BRAVE_CREATE_LOADER_AND_START,'

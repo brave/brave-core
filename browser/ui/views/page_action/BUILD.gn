@@ -38,6 +38,7 @@ source_set("page_action") {
       "//chrome/browser/ui/views/frame:toolbar_button_provider",
       "//chrome/browser/ui/views/page_action",
       "//components/tabs:public",
+      "//ui/base/unowned_user_data",
       "//ui/views",
     ]
   }
@@ -56,6 +57,7 @@ source_set("page_action") {
       "//brave/components/vector_icons",
       "//chrome/browser/ui/color:mixers",
       "//ui/base",
+      "//ui/base/unowned_user_data",
       "//ui/menus",
     ]
   }
@@ -75,6 +77,7 @@ source_set("page_action") {
       "//chrome/browser/ui/color:mixers",
       "//components/prefs",
       "//ui/base",
+      "//ui/base/unowned_user_data",
     ]
   }
 
@@ -99,6 +102,7 @@ source_set("page_action") {
       "//components/prefs",
       "//content/public/browser",
       "//ui/base",
+      "//ui/base/unowned_user_data",
       "//ui/color",
       "//url",
     ]
@@ -123,6 +127,7 @@ source_set("page_action") {
       "//components/user_prefs",
       "//ui/actions",
       "//ui/base",
+      "//ui/base/unowned_user_data",
       "//ui/views",
     ]
   }

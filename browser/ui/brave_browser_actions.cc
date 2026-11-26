@@ -49,7 +49,6 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/playlist_page_action_controller.h"
 #endif
 
@@ -59,26 +58,22 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/speedreader_page_action_controller.h"
 #include "brave/components/speedreader/common/features.h"
 #include "components/tabs/public/tab_interface.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_page_action_controller.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "components/tabs/public/tab_interface.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/onion_location_page_action_controller.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/brave_news_page_action_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
@@ -144,13 +139,9 @@ void BraveBrowserActions::InitializeBrowserActions() {
             base::BindRepeating(
                 [](BrowserWindowInterface* bwi, actions::ActionItem* item,
                    actions::ActionInvocationContext context) {
-                  tabs::BraveTabFeatures* const brave_tab_features =
-                      tabs::BraveTabFeatures::FromTabFeatures(
-                          bwi->GetActiveTabInterface()->GetTabFeatures());
-                  CHECK(brave_tab_features);
-
                   page_actions::PlaylistPageActionController* const controller =
-                      brave_tab_features->playlist_page_action_controller();
+                      page_actions::PlaylistPageActionController::From(
+                          bwi->GetActiveTabInterface());
                   CHECK(controller);
                   controller->ExecuteAction();
                 },
@@ -233,14 +224,10 @@ void BraveBrowserActions::InitializeBrowserActions() {
             base::BindRepeating(
                 [](BrowserWindowInterface* bwi, actions::ActionItem* item,
                    actions::ActionInvocationContext context) {
-                  tabs::BraveTabFeatures* const brave_tab_features =
-                      tabs::BraveTabFeatures::FromTabFeatures(
-                          bwi->GetActiveTabInterface()->GetTabFeatures());
-                  CHECK(brave_tab_features);
-
                   page_actions::SpeedreaderPageActionController* const
-                      controller = brave_tab_features
-                                       ->speedreader_page_action_controller();
+                      controller =
+                          page_actions::SpeedreaderPageActionController::From(
+                              bwi->GetActiveTabInterface());
                   CHECK(controller);
                   controller->ExecuteAction(context.GetProperty(
                       page_actions::kBravePageActionEventFlagKey));
@@ -283,14 +270,10 @@ void BraveBrowserActions::InitializeBrowserActions() {
                   return;
                 }
 
-                tabs::BraveTabFeatures* const brave_tab_features =
-                    tabs::BraveTabFeatures::FromTabFeatures(
-                        tab->GetTabFeatures());
-                CHECK(brave_tab_features);
-
                 page_actions::WaybackMachinePageActionController* const
-                    controller = brave_tab_features
-                                     ->wayback_machine_page_action_controller();
+                    controller =
+                        page_actions::WaybackMachinePageActionController::From(
+                            tab);
                 if (!controller) {
                   return;
                 }
@@ -315,14 +298,10 @@ void BraveBrowserActions::InitializeBrowserActions() {
           base::BindRepeating(
               [](BrowserWindowInterface* bwi, actions::ActionItem* item,
                  actions::ActionInvocationContext context) {
-                tabs::BraveTabFeatures* const brave_tab_features =
-                    tabs::BraveTabFeatures::FromTabFeatures(
-                        bwi->GetActiveTabInterface()->GetTabFeatures());
-                CHECK(brave_tab_features);
-
                 page_actions::OnionLocationPageActionController* const
-                    controller = brave_tab_features
-                                     ->onion_location_page_action_controller();
+                    controller =
+                        page_actions::OnionLocationPageActionController::From(
+                            bwi->GetActiveTabInterface());
                 CHECK(controller);
                 controller->ExecuteAction();
               },
@@ -342,14 +321,10 @@ void BraveBrowserActions::InitializeBrowserActions() {
                   BrowserView& browser_view =
                       CHECK_DEREF(BrowserView::GetBrowserViewForBrowser(bwi));
 
-                  tabs::BraveTabFeatures* const brave_tab_features =
-                      tabs::BraveTabFeatures::FromTabFeatures(
-                          bwi->GetActiveTabInterface()->GetTabFeatures());
-                  CHECK(brave_tab_features);
-
                   page_actions::BraveNewsPageActionController* const
-                      controller = brave_tab_features
-                                       ->brave_news_page_action_controller();
+                      controller =
+                          page_actions::BraveNewsPageActionController::From(
+                              bwi->GetActiveTabInterface());
                   CHECK(controller);
                   controller->ExecuteAction(
                       browser_view.toolbar_button_provider(), item);

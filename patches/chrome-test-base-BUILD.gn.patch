@@ -1,0 +1,12 @@
+diff --git a/chrome/test/base/BUILD.gn b/chrome/test/base/BUILD.gn
+index de4f85a9372a82cf14120a9b84ad17b3bdacfd6a..f5f013f120d0190275f07f5d209bea8b519c39e9 100644
+--- a/chrome/test/base/BUILD.gn
++++ b/chrome/test/base/BUILD.gn
+@@ -749,6 +749,7 @@ source_set("chrome_test_suite") {
+     "//media",
+     "//testing/gtest",
+   ]
++  deps += [ "//brave/components/brave_shields/core/browser:test_support" ]
+   if (is_android) {
+     public_deps += [ "//components/gcm_driver/instance_id:test_support" ]
+ 

@@ -24,6 +24,9 @@ class BraveBrowserFrameViewLinuxNative : public BrowserFrameViewLinuxNative {
   void PaintRestoredFrameBorder(gfx::Canvas* canvas) const override;
   void MaybeUpdateCachedFrameButtonImages() override;
   void Layout(PassKey) override;
+
+  // OpaqueBrowserFrameViewLayoutDelegate:
+  bool ShouldShowBraveVerticalTabs() const override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_VIEW_LINUX_NATIVE_H_

@@ -69,8 +69,6 @@
       </if>
     <if expr="not use_titlecase">
       </if>
-    <if expr="is_chromeos">
-      </if>
   </if>
 
   <if expr="not is_android">
@@ -82,6 +80,10 @@
     </if>
 
   <if expr="not is_chromeos and not is_android">
+    <if expr="not use_titlecase">
+      </if>
+    <if expr="use_titlecase">
+      </if>
     <if expr="not use_titlecase">
       </if>
     <if expr="use_titlecase">

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/autocomplete/chrome_autocomplete_provider_client.h b/chrome/browser/autocomplete/chrome_autocomplete_provider_client.h
-index b62bb4a2d7cb8e9be9f5d7f9836bfb3703ed503b..41bdc75463b1371f8ca33582651e6bbd3e4032fb 100644
+index b04a4f4e18d005cb0ce73194bf2efb83b5eeae63..d2502546aaad1f8748de6db97310f6a2aab19f60 100644
 --- a/chrome/browser/autocomplete/chrome_autocomplete_provider_client.h
 +++ b/chrome/browser/autocomplete/chrome_autocomplete_provider_client.h
-@@ -171,6 +171,9 @@ class ChromeAutocompleteProviderClient : public AutocompleteProviderClient {
+@@ -173,6 +173,9 @@ class ChromeAutocompleteProviderClient : public AutocompleteProviderClient {
      storage_partition_ = storage_partition;
    }
  

@@ -84,7 +84,10 @@ class ProfileCustomizationFileChooserBrowserTest : public InProcessBrowserTest {
     SCOPED_TRACE(location.ToString());
     delegate_ =
         SigninViewControllerDelegate::CreateProfileCustomizationDelegate(
-            browser(), is_local_profile_creation);
+            browser(),
+            is_local_profile_creation
+                ? ProfileCustomizationStyle::kSignedOutProfileCreation
+                : ProfileCustomizationStyle::kSignedInProfileCreation);
     ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
   }
 
@@ -96,11 +99,12 @@ class ProfileCustomizationFileChooserBrowserTest : public InProcessBrowserTest {
     ASSERT_NO_FATAL_FAILURE(
         CreateProfileCustomizationDialog(/*is_local_profile_creation=*/true));
     ASSERT_TRUE(content::NavigateToURL(
-        web_contents(), AppendProfileCustomizationQueryParams(
-                            GURL(chrome::kChromeUIVersionURL),
-                            ProfileCustomizationStyle::kLocalProfileCreation)));
+        web_contents(),
+        AppendProfileCustomizationQueryParams(
+            GURL(chrome::kChromeUIVersionURL),
+            ProfileCustomizationStyle::kSignedOutProfileCreation)));
     ASSERT_EQ(
-        ProfileCustomizationStyle::kLocalProfileCreation,
+        ProfileCustomizationStyle::kSignedOutProfileCreation,
         GetProfileCustomizationStyle(web_contents()->GetLastCommittedURL()));
   }
 
@@ -261,7 +265,7 @@ IN_PROC_BROWSER_TEST_F(ProfileCustomizationFileChooserEnabledBrowserTest,
   // Keep origin and style eligible so only the primary-frame guard rejects it.
   ASSERT_EQ(web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin(),
             frame->GetLastCommittedOrigin());
-  ASSERT_EQ(ProfileCustomizationStyle::kLocalProfileCreation,
+  ASSERT_EQ(ProfileCustomizationStyle::kSignedOutProfileCreation,
             GetProfileCustomizationStyle(frame->GetLastCommittedURL()));
   ExpectFileChooserCanceled(frame);
 }

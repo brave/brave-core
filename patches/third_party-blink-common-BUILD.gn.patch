@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/common/BUILD.gn b/third_party/blink/common/BUILD.gn
-index debd85e08711c5eb377dbe01554f92cccc872792..fd39e836ca237d047731cf83e5a34da7ecf2a216 100644
+index 9173363a6df8c3a0e119f8d71d71feb9bcfcc35e..2feec54dc1403a2345d7954ff207c0cf6462c9ab 100644
 --- a/third_party/blink/common/BUILD.gn
 +++ b/third_party/blink/common/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index debd85e08711c5eb377dbe01554f92cccc872792..fd39e836ca237d047731cf83e5a34da7
  import("//build/config/features.gni")
  import("//build/config/rust.gni")
  import("//build/nocompile.gni")
-@@ -331,6 +332,7 @@ source_set("common") {
+@@ -332,6 +333,7 @@ source_set("common") {
      "//ui/events/mojom:event_latency_metadata_mojom",
      "//ui/latency/mojom:shared_mojom_traits",
    ]
@@ -18,7 +18,7 @@ index debd85e08711c5eb377dbe01554f92cccc872792..fd39e836ca237d047731cf83e5a34da7
  
    if (is_android) {
      sources += [
-@@ -464,6 +466,7 @@ source_set("common_unittests_sources") {
+@@ -466,6 +468,7 @@ source_set("common_unittests_sources") {
      "//v8",
      "//v8:v8_libplatform",
    ]

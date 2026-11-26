@@ -30,9 +30,7 @@
 #define GetSubscriptionPersistsUserVisibleOnlyFalse \
   DISABLED_GetSubscriptionPersistsUserVisibleOnlyFalse
 
-#define TestingProfile BraveTestingProfile
 #include <chrome/browser/push_messaging/push_messaging_service_unittest.cc>
-#undef TestingProfile
 #undef GetSubscriptionPersistsUserVisibleOnlyFalse
 #undef PushMessagingAPIPermission
 #undef ProfileDestructionTest

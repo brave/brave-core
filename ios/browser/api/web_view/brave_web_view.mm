@@ -827,7 +827,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
                       userInfo:@{NSURLErrorFailingURLErrorKey : URL}];
   GURL url = net::GURLWithNSURL(URL);
   NSString* html = GetErrorPage(url, error, /*is_post=*/false,
-                                webState->GetBrowserState()->IsOffTheRecord());
+                                webState->GetBrowserState()->IsOffTheRecord(),
+                                IsDinoEasterEggEnabled(webState));
   webState->LoadSimulatedRequest(url, html);
 }
 

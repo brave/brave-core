@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index df6966f61bb0045511ffb0dd267f7e09965df353..e792f0772de7013c0265d4f99975da7b5f051d3c 100644
+index b6afc911ba5adcb1e092be44aef38b5bb55ef416..30bca46177279170e4f04b4d48e1eea8ca18d1b7 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -18,7 +18,7 @@ index df6966f61bb0045511ffb0dd267f7e09965df353..e792f0772de7013c0265d4f99975da7b
      "//components/version_info",
      "//components/version_info:version_string",
    ]
-@@ -174,6 +176,7 @@ static_library("common_lib") {
+@@ -172,6 +174,7 @@ static_library("common_lib") {
      "webui_util.cc",
      "webui_util.h",
    ]
@@ -26,7 +26,7 @@ index df6966f61bb0045511ffb0dd267f7e09965df353..e792f0772de7013c0265d4f99975da7b
    defines = []
  
    configs += [ "//build/config:precompiled_headers" ]
-@@ -262,6 +265,7 @@ static_library("common_lib") {
+@@ -259,6 +262,7 @@ static_library("common_lib") {
      "//ui/resources",
      "//url",
    ]
@@ -34,7 +34,7 @@ index df6966f61bb0045511ffb0dd267f7e09965df353..e792f0772de7013c0265d4f99975da7b
  
    deps = [
      "//components/cdm/common:buildflags",
-@@ -277,6 +281,7 @@ static_library("common_lib") {
+@@ -274,6 +278,7 @@ static_library("common_lib") {
      "//components/pdf/common:constants",
      "//components/pdf/common:util",
    ]
@@ -42,7 +42,7 @@ index df6966f61bb0045511ffb0dd267f7e09965df353..e792f0772de7013c0265d4f99975da7b
  
    if (is_mac || is_win || is_linux || is_chromeos) {
      deps += [ "//components/webapps/isolated_web_apps:scheme" ]
-@@ -486,6 +491,7 @@ static_library("non_code_constants") {
+@@ -483,6 +488,7 @@ static_library("non_code_constants") {
    if (is_chromeos) {
      deps += [ "//ash/constants" ]
    }
@@ -50,7 +50,7 @@ index df6966f61bb0045511ffb0dd267f7e09965df353..e792f0772de7013c0265d4f99975da7b
  }
  
  component("chrome_features") {
-@@ -589,6 +595,7 @@ static_library("constants") {
+@@ -585,6 +591,7 @@ static_library("constants") {
      "//printing/buildflags",
      "//third_party/widevine/cdm:buildflags",
    ]

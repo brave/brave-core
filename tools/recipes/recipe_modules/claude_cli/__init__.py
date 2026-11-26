@@ -6,6 +6,7 @@
 
 from dataclasses import dataclass
 
+from PB.recipe_modules.brave.claude_cli.properties import EnvProperties
 from recipe_api import RecipeScriptApi
 from recipe_modules import (
     context,
@@ -24,3 +25,6 @@ class DEPS(RecipeScriptApi):
     depot_tools: depot_tools.API
     path: path.API
     step: step.API
+
+
+ENV_PROPERTIES = EnvProperties

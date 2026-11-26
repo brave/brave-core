@@ -651,7 +651,7 @@ public class BraveOriginSubscriptionPrefs {
                 (succeeded, errorCode) -> {
                     activationLimit.close();
                     if (!succeeded) {
-                        Log.e(TAG, "Failed to extend activation limit: " + errorCode);
+                        Log.e(TAG, "Failed to extend activation limit: %s", errorCode);
                         notifyCredentialsFetched(CredentialFetchResult.FAILED);
                         return;
                     }

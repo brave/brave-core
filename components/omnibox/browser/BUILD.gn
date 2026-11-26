@@ -39,6 +39,7 @@ source_set("unit_tests") {
     "//brave/components/omnibox/browser/brave_shortcuts_provider_unittest.cc",
     "//brave/components/omnibox/browser/omnibox_autocomplete_unittest.cc",
     "//brave/components/omnibox/browser/on_device_head_provider_unittest.cc",
+    "brave_autocomplete_match_unittest.cc",
     "brave_autocomplete_result_unittest.cc",
     "brave_on_device_head_provider_unittest.cc",
     "promotion_unittest.cc",
@@ -57,6 +58,7 @@ source_set("unit_tests") {
     "//brave/components/constants",
     "//brave/components/l10n/common:test_support",
     "//brave/components/omnibox/buildflags",
+    "//brave/components/resources:strings",
     "//brave/components/search_engines",
     "//components/bookmarks/browser",
     "//components/bookmarks/test",
@@ -70,6 +72,7 @@ source_set("unit_tests") {
     "//services/network:test_support",
     "//testing/gmock",
     "//testing/gtest",
+    "//ui/base",
   ]
 
   if (enable_ai_chat) {

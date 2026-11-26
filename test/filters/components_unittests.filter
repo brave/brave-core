@@ -114,8 +114,10 @@
 -ShoppingServiceTest.TestShoppingListEligible_CountryAndLocale_RegionLaunched
 
 # These tests fail because we override SyncAuthManager::DetermineAccountToUse.
+-All/SyncServiceImplTrustedVaultIneligiblePassphraseTest.*
 -SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithConsumerAccount
 -SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithManagedAccount
+-SyncServiceImplTrustedVaultEnrollmentTest.*
 
 # These tests fail because we force a resolved (non-managed) consumer status in
 # SyncAuthManager::ActiveAccount::StartDeterminingAccountType, skipping
@@ -326,31 +328,6 @@
 
 # This test fails because we disable kEmailVerificationProtocol feature.
 -EmailVerifierDelegateTestBase.ThirdPartyOriginTrialEnabled
-
-# These tests enable kReplaceSyncPromos* via ScopedFeatureList and assert
-# the sign-in-promo behavior that Brave unconditionally disables,
-# brave-browser#58511
--AccountCheckerTest.TestFetchPriceEmailPref
--AccountCheckerTest.TestSendPriceEmailPrefOnPrefChange
--All/PrimaryAccountManagerExplicitSigninNewFeatureTest.*
--All/ShoppingServiceReadyTest.TestServiceReadyDelaysForSync_TransportStartsInactive/*
--BrowsingDataUtilsTest.AutofillCounterResultWithReplaceSyncPromosWithSignInPromosEnabled
--CollaborationServiceImplTest.SyncDisabledByEnterprise
--CollaborationServiceImplTest.SyncTypeDisabledByEnterprise
--PasswordManagerFeaturesUtilTest.ShouldShowAccountStorageSettingToggle_SyncToSigninOn
--ShoppingBookmarkModelObserverTest.TestShoppingCollectionChangeMetrics/*
--SyncPrefsMigrationTest.GlobalPrefsAreUnchanged
--SyncPrefsMigrationTest.GlobalToAccount_HistoryDisabled
--SyncPrefsMigrationTest.GlobalToAccount_SavedTabGroupsEnabled
--SyncPrefsMigrationTest.GlobalToAccount_TabsDisabled
--SyncPrefsMigrationTest.Part2RunsOnSecondAttempt
--SyncPrefsMigrationTest.RunsAgainAfterFeatureReenabled
--SyncPrefsMigrationTest.TurnsAutofillOffForCustomPassphraseUser
--SyncToSigninMigrationDataTypesTest.*
--SyncToSigninMigrationMetricsTest.*
--SyncToSigninMigrationTest.*
--SyncToSigninMigrationUndoTest.*
--UnifiedConsentServiceTest.ReplaceSync_*
 
 # These tests fail because we override VariationsIdsProvider's method
 # GetClientDataHeaders to return nullptr, so the X-Client-Data header the tests

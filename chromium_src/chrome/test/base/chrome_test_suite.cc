@@ -52,17 +52,6 @@ class BraveChromeTestSetupHelper : public testing::EmptyTestEventListener {
                     },
                 .enable_features = {"FileSystemAccessAPI"},
             },
-            // Disable farbling in Fingerprint-sensitive Chromium tests.
-            {
-                .test_patterns =
-                    {
-                        "ThirdPartyReduceAcceptLanguageDeprecationOTBrowserTest"
-                        ".JavaScriptRequest",
-                        "WebAudioBrowserTest."
-                        "VerifyDynamicsCompressorFingerprint",
-                    },
-                .disable_features = {"BraveFarbling"},
-            },
         });
 
     const std::string& test_name =

@@ -512,6 +512,7 @@ def rewrite_plan(
     discard_recyclable: bool = False,
     carry_change_id: Callable[[list[str]], str] | None = None,
     changed_paths: Callable[[str], list[str]] | None = None,
+    added_paths: Callable[[str], list[str]] | None = None,
     has_change_id: Callable[[str], bool] | None = None,
     foreign_cr_tag: Callable[[str], bool] | None = None,
 ) -> None:
@@ -553,6 +554,11 @@ def rewrite_plan(
             ahead of the other pinned groups. A commit stays in place when it
             shares a path with an earlier one that does, which it would
             otherwise replay ahead of.
+        added_paths: The paths a commit adds. When set, with
+            `pinned_squashed` and `changed_paths`, a pinned group's `fixup`
+            that changes a path a later commit of the group adds moves to the
+            group's end: git places it right after the group's first commit,
+            where the path isn't there yet.
         foreign_cr_tag: Whether a subject has another branch's `[cr<N>]`
             tag, as a commit picked from another `cr` branch keeps. When
             set, with `pinned_squashed` and `carry_change_id`, a
@@ -702,6 +708,31 @@ def rewrite_plan(
                 continue
 
         all_others.append(entry_line)
+
+    def requeue_fixups(group: list[EntryLine]) -> None:
+        """Moves to the end of `group` each `fixup` changing a path that a
+        later commit of the group adds."""
+        added_later: set[str] = set()
+        kept: list[EntryLine] = []
+        moved: list[EntryLine] = []
+        for entry in reversed(group):
+            if entry.command == 'fixup' and not added_later.isdisjoint(
+                changed_paths(entry.hash)
+            ):
+                moved.append(entry)
+            else:
+                kept.append(entry)
+            added_later.update(added_paths(entry.hash))
+        group[:] = [*reversed(kept), *reversed(moved)]
+
+    if (
+        pinned_squashed
+        and changed_paths is not None
+        and added_paths is not None
+    ):
+        for group in pinned_groups.values():
+            if any(entry.command == 'fixup' for entry in group[1:]):
+                requeue_fixups(group)
 
     def hoist_tooling() -> list[EntryLine]:
         """Moves the units (a commit and the lines folding into it) whose

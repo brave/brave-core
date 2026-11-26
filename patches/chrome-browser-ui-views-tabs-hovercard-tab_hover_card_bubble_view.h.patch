@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h
-index 4091112541511dc4dcbd8568b5e8bf3078ffac2b..a3a4e822490b2974fbeb36a815f7b1f79a5dd457 100644
+index ffbb90e1ad8b2a4152dcffd10ac8157ce0f21047..ab5688bbb94c63a11a4b14f8f69a12a8a6ab285e 100644
 --- a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h
 +++ b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h
 @@ -36,8 +36,8 @@ class FadeLabelView;

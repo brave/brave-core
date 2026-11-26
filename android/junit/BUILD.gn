@@ -50,6 +50,7 @@ if (is_android) {
       "//chrome/browser/glic/android:java",
       "//chrome/browser/glic/android:jni_headers_java",
       "//chrome/browser/tab_group_suggestion:toolbar_java",
+      "//chrome/browser/ttc/android:entry_point_java",
       "//chrome/browser/ui/android/toolbar:adaptive_features_java",
       "//chrome/browser/ui/messages/android:java",
       "//components/browser_ui/accessibility/android:page_zoom_utils_java",
@@ -568,6 +569,7 @@ if (is_android) {
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/tabmodel:java",
       "//chrome/browser/tabwindow:java",
+      "//components/tab_groups:tab_groups_java",
     ]
   }
 

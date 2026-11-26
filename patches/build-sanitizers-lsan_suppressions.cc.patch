@@ -1,8 +1,8 @@
 diff --git a/build/sanitizers/lsan_suppressions.cc b/build/sanitizers/lsan_suppressions.cc
-index 7293f464a5ec46d3ea4faddf815fdeaf3259e965..8e8f6fd351eb9e79f02e5b924f76e19ce5f34a28 100644
+index 1713757e8c31511cb9fad63cc50459e2fb8e705d..d1bc09bb1c82e5d0ee69b9e31202c4bb9511f6c5 100644
 --- a/build/sanitizers/lsan_suppressions.cc
 +++ b/build/sanitizers/lsan_suppressions.cc
-@@ -110,6 +110,19 @@ char kLSanDefaultSuppressions[] =
+@@ -116,6 +116,19 @@ char kLSanDefaultSuppressions[] =
      "leak:cssmErrorString\n"
  #endif
  

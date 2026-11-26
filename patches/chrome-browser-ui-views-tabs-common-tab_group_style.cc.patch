@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_group_style.cc b/chrome/browser/ui/views/tabs/common/tab_group_style.cc
-index d1da139046c12d61ab53de2dc643eee450759d32..11d63c996a87d55b375c84383b415913fe32c3f1 100644
+index 4dad7420c3eeaaa31fab52f2266e95420d09e9b2..d7612f86c66851f8a022aabe340fe6ede7e6c932 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_group_style.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_group_style.cc
 @@ -8,6 +8,7 @@
@@ -8,16 +8,16 @@ index d1da139046c12d61ab53de2dc643eee450759d32..11d63c996a87d55b375c84383b415913
  #include "chrome/browser/ui/layout_constants.h"
 +#include "chrome/browser/ui/tabs/features.h"
  #include "chrome/browser/ui/tabs/tab_style.h"
- #include "chrome/browser/ui/views/tabs/shared/tab_strip_types.h"
- #include "ui/gfx/animation/tween.h"
-@@ -108,11 +109,17 @@ int TabGroupStyle::GetFocusedChipHeight() {
+ #include "chrome/browser/ui/ui_features.h"
+ #include "chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.h"
+@@ -102,11 +103,17 @@ int TabGroupStyle::GetHeaderHeight(bool in_focused_state) {
  
  // static
- gfx::Point TabGroupStyle::GetTitleChipOffset(std::optional<int> chip_height) {
+ gfx::Point TabGroupStyle::GetHeaderOffset(std::optional<int> header_height) {
 +  gfx::Point offset = [&]() -> gfx::Point {
    const int total_space =
        GetLayoutConstant(LayoutConstant::kTabStripHeight) -
-       chip_height.value_or(GetEmptyChipSize()) -
+       header_height.value_or(GetHeaderHeight(/*in_focused_state=*/false)) -
        GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap);
    return gfx::Point(GetLeadingGroupHeaderPadding(), total_space / 2);
 +  }();

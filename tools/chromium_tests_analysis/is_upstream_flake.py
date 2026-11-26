@@ -17,6 +17,7 @@ this script only picks the inputs and reports the answer.
 By default the branch and position are those of the Chromium checkout
 (`src/`), e.g. refs/branch-heads/8103@{#1035} for 157.0.8103.39. Branch
 results live in their own LUCI project (chromium-m157), main in `chromium`.
+While a new branch's project refuses access, the branch point on main is used.
 
 Usage:
     vpython3 tools/chromium_tests_analysis/is_upstream_flake.py \\
@@ -36,6 +37,7 @@ import re
 import subprocess
 import sys
 import urllib.request
+from collections.abc import Callable
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
@@ -46,7 +48,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.text import Text
 
-from luci_analysis import LuciAnalysis, LuciAnalysisError
+from luci_analysis import LuciAnalysis, LuciAnalysisError, LuciAnalysisForbidden
 
 CHROMIUM_SRC = Path(__file__).resolve().parents[3]
 GITILES = "https://chromium.googlesource.com/chromium/src"
@@ -81,6 +83,21 @@ class Source:
     ref: str
     position: int
     milestone: int
+    # The main commit and position a branch was cut from, if it is a branch.
+    branched_from: tuple[str, int] | None = None
+
+    def branch_point(self) -> Source | None:
+        """Where on main this branch was cut, if it is a branch."""
+        if self.branched_from is None:
+            return None
+        commit, position = self.branched_from
+        return Source(
+            f"{self.label}'s branch point",
+            commit,
+            "refs/heads/main",
+            position,
+            self.milestone,
+        )
 
     @property
     def project(self) -> str:
@@ -113,6 +130,18 @@ def parse_commit_position(message: str) -> tuple[str, int]:
     return match.group(1), int(match.group(2))
 
 
+def parse_branched_from(message: str) -> tuple[str, int] | None:
+    """The main commit and position of a Cr-Branched-From trailer, if any."""
+    match = re.search(
+        r"^Cr-Branched-From: ([0-9a-f]{40})-refs/heads/main@\{#(\d+)\}$",
+        message,
+        re.MULTILINE,
+    )
+    if not match:
+        return None
+    return match.group(1), int(match.group(2))
+
+
 def parse_milestone(version_file: str) -> int:
     """MAJOR from the contents of chrome/VERSION."""
     match = re.search(r"^MAJOR=(\d+)$", version_file, re.MULTILINE)
@@ -131,7 +160,14 @@ def source_from_checkout() -> Source:
     ).stdout.partition("\n")
     ref, position = parse_commit_position(message)
     version = (CHROMIUM_SRC / "chrome" / "VERSION").read_text()
-    return Source("checkout", commit, ref, position, parse_milestone(version))
+    return Source(
+        "checkout",
+        commit,
+        ref,
+        position,
+        parse_milestone(version),
+        parse_branched_from(message),
+    )
 
 
 def gitiles(path: str) -> bytes:
@@ -153,7 +189,12 @@ def source_from_gitiles(committish: str) -> Source:
         gitiles(f"/{commit['commit']}/chrome/VERSION?format=TEXT")
     ).decode()
     return Source(
-        committish, commit["commit"], ref, position, parse_milestone(version)
+        committish,
+        commit["commit"],
+        ref,
+        position,
+        parse_milestone(version),
+        parse_branched_from(commit["message"]),
     )
 
 
@@ -362,6 +403,34 @@ def query(
     return results, criteria
 
 
+def query_with_fallback(
+    client_for: Callable[[str], LuciAnalysis],
+    name: str,
+    filters: Filters,
+    source: Source,
+) -> tuple[list[Stability], dict[str, Any], Source]:
+    """`query`, at the branch point if the branch's project refuses access."""
+    try:
+        return (
+            *query(client_for(source.project), name, filters, source),
+            source,
+        )
+    except LuciAnalysisForbidden:
+        fallback = source.branch_point()
+        if fallback is None:
+            raise
+    print(
+        f"Warning: LUCI project {source.project} refused the query; using"
+        f" {fallback.ref}@{{#{fallback.position}}}, where {source.ref} was cut"
+        " from, instead.",
+        file=sys.stderr,
+    )
+    return (
+        *query(client_for(fallback.project), name, filters, fallback),
+        fallback,
+    )
+
+
 # -- Reporting ----------------------------------------------------------------
 
 
@@ -480,9 +549,8 @@ def main() -> int:
     source = (
         source_from_gitiles(args.ref) if args.ref else source_from_checkout()
     )
-    client = LuciAnalysis(project=source.project)
-    results, criteria = query(
-        client,
+    results, criteria, source = query_with_fallback(
+        lambda project: LuciAnalysis(project=project),
         gtest_name(args.test),
         Filters(args.builder, args.os, args.suite),
         source,

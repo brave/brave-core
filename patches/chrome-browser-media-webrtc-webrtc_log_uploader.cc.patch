@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/media/webrtc/webrtc_log_uploader.cc b/chrome/browser/media/webrtc/webrtc_log_uploader.cc
-index 6a0a901571b9a1e7467b9ca95e59aa7ba50611ae..45beb545efa30d7d7d534c667390996861459c69 100644
+index c95b7c28a78faf7dbf6f44fb8d2bf53928186658..8eb1f168be2e70772e01ddf5c1b15903012ea5ed 100644
 --- a/chrome/browser/media/webrtc/webrtc_log_uploader.cc
 +++ b/chrome/browser/media/webrtc/webrtc_log_uploader.cc
-@@ -176,6 +176,12 @@ void WebRtcLogUploader::OnLoggingStopped(
+@@ -206,6 +206,12 @@ void WebRtcLogUploader::OnLoggingStopped(
      std::unique_ptr<WebRtcLogMetaDataMap> meta_data,
      WebRtcLogUploader::UploadDoneData upload_done_data,
      bool is_text_log_upload_allowed) {
-+  DeleteRtpDumps(upload_done_data.paths);
++  DeleteRtpDumpFiles(upload_done_data.paths);
 +  main_task_runner_->PostTask(
 +      FROM_HERE, base::BindOnce(&WebRtcLogUploader::NotifyUploadDisabled,
 +                                base::Unretained(this),
@@ -15,25 +15,25 @@ index 6a0a901571b9a1e7467b9ca95e59aa7ba50611ae..45beb545efa30d7d7d534c6673909968
    CHECK(background_task_runner_->RunsTasksInCurrentSequence(),
          base::NotFatalUntil::M161);
    CHECK(log_buffer.get(), base::NotFatalUntil::M161);
-@@ -257,6 +263,17 @@ void WebRtcLogUploader::LoggingStoppedDoStore(
+@@ -290,6 +296,17 @@ void WebRtcLogUploader::LoggingStoppedDoStore(
      std::unique_ptr<WebRtcLogBuffer> log_buffer,
      std::unique_ptr<WebRtcLogMetaDataMap> meta_data,
      GenericDoneCallback done_callback) {
-+  DeleteRtpDumps(log_paths);
++  DeleteRtpDumpFiles(log_paths);
++  main_task_runner_->PostTask(
++      FROM_HERE, base::BindOnce(&WebRtcLogUploader::DecreaseLogCount,
++                                base::Unretained(this)));
 +  if (done_callback) {
 +    main_task_runner_->PostTask(
 +        FROM_HERE,
 +        base::BindOnce(std::move(done_callback), false,
 +                       std::string(kLogStorageDisabledMsg)));
 +  }
-+  main_task_runner_->PostTask(
-+      FROM_HERE, base::BindOnce(&WebRtcLogUploader::DecreaseLogCount,
-+                                base::Unretained(this)));
 +  return;
    CHECK(background_task_runner_->RunsTasksInCurrentSequence(),
          base::NotFatalUntil::M161);
    CHECK(!log_id.empty(), base::NotFatalUntil::M161);
-@@ -446,6 +463,8 @@ std::string WebRtcLogUploader::CompressLog(WebRtcLogBuffer* buffer) {
+@@ -524,6 +541,8 @@ std::string WebRtcLogUploader::CompressLog(WebRtcLogBuffer* buffer) {
  void WebRtcLogUploader::UploadCompressedLog(
      WebRtcLogUploader::UploadDoneData upload_done_data,
      std::unique_ptr<std::string> post_data) {

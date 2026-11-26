@@ -10,6 +10,21 @@
  * #include=folder-node-chromium
  * #css_wrapper_metadata_end */
 
+:host-context([webui-refresh-2026]) .cr-nav-menu-item {
+    color: var(--folder-inactive-color);
+    --cr-nav-menu-item-icon-color: var(--google-grey-700);
+}
+
+:host-context([webui-refresh-2026]) .cr-nav-menu-item:focus:not(:focus-visible) {
+    outline: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    :host-context([webui-refresh-2026]) .cr-nav-menu-item {
+        --cr-nav-menu-item-icon-color: var(--google-grey-500);
+    }
+}
+
 .cr-nav-menu-item {
     border-end-end-radius: 0 !important;
     border-start-end-radius: 0 !important;

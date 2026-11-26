@@ -28,6 +28,15 @@ agentic_review {
     required_diff_patterns: "^\\+(?:\\s*|.*BASE_FEATURE_PARAM\\(bool,.*)(?:true|false)\\);"
     rules: "tools/cr/codehealth/rules/defaults/feature-flips.md"
   }
+  # Brace-initialised bool `FeatureParam` defaults, `{&kFeature, "name",
+  # default}`, flipped in place or moved into an `#if`.
+  capability_groups {
+    path_expression: ".*\\.(?:cc|h|mm)"
+    path_expression_exclusion: ".*(?:_unittest|_browsertest|_test|_uitest|_test_util|_test_utils|_fuzzer|_perftest)\\.(?:cc|h|mm)|.*/test/.*|.*/testing/.*|.*about_flags\\.cc"
+    diff_patterns: "^-(?:.*&k\\w+,\\s*\"[^\"]*\",)?\\s*(?:true|false)\\s*\\};"
+    required_diff_patterns: "^\\+(?:.*,)?\\s*(?:true|false)\\s*(?:\\};)?\\s*$"
+    rules: "tools/cr/codehealth/rules/defaults/feature-flips.md"
+  }
   # New IPHs that ship enabled: Brave pins IPHs one by one, and a new feature
   # only adds a default, which the flips group above requires to be removed too.
   capability_groups {
@@ -101,7 +110,7 @@ agentic_review {
   # New consumers of the profile predicates Brave overrides.
   capability_groups {
     path_expression: ".*\\.(?:cc|h|mm)"
-    path_expression_exclusion: ".*(?:_unittest|_browsertest|_test|_uitest|_test_util|_test_utils|_fuzzer|_perftest)\\.(?:cc|h|mm)|.*/test/.*|.*/testing/.*"
+    path_expression_exclusion: ".*(?:_unittest|_browsertest|_apitest|_test|_uitest|_test_util|_test_utils|_fuzzer|_perftest)\\.(?:cc|h|mm)|.*/test/.*|.*/testing/.*"
     diff_patterns: "^\\+.*\\b(?:IsPrimaryOTRProfile|IsIncognitoProfile|GetPrimaryOTRProfile)\\("
     rules: "tools/cr/codehealth/rules/defaults/profile-types-and-predicates.md"
   }
@@ -166,7 +175,7 @@ agentic_review {
   # adds to wipe the feature's data on startup.
   capability_groups {
     path_expression: ".*\\.(?:cc|mm)"
-    path_expression_exclusion: ".*(?:_unittest|_browsertest|_test|_uitest|_test_util|_test_utils|_fuzzer|_perftest)\\.(?:cc|mm)|.*/test/.*|.*/testing/.*"
+    path_expression_exclusion: ".*(?:_unittest|_browsertest|_test|_uitest|_test_util|_test_utils|_fuzzer|_perftest)(?:_(?:win|mac|linux|android|ios|posix))?\\.(?:cc|mm)|.*/test/.*|.*/testing/.*"
     diff_patterns: "^\\+.*(?:sql::Database::Delete|DeletePathRecursively|ClearPref\\(|(?i:delete (?:the )?(?:residual|deprecated|obsolete)))"
     rules: "tools/cr/codehealth/rules/defaults/upstream-removes-feature-brave-keeps.md"
   }

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/frame/opaque_browser_frame_view_layout_delegate.h b/chrome/browser/ui/views/frame/opaque_browser_frame_view_layout_delegate.h
+index 70bba051f5ccae532f0e69f5c84d5aacdb7203c7..9e755220c8e107ba2568f02a373206c6fe6bf4b7 100644
+--- a/chrome/browser/ui/views/frame/opaque_browser_frame_view_layout_delegate.h
++++ b/chrome/browser/ui/views/frame/opaque_browser_frame_view_layout_delegate.h
+@@ -92,6 +92,8 @@ class OpaqueBrowserFrameViewLayoutDelegate {
+   // the toolbar isn't visible, this returns 0.
+   virtual int WebAppButtonHeight() const = 0;
+ 
++  virtual bool ShouldShowBraveVerticalTabs() const;
++
+  protected:
+   virtual ~OpaqueBrowserFrameViewLayoutDelegate() = default;
+ };

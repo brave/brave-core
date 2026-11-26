@@ -11,3 +11,10 @@ substitutions:
       list_name: sources
       literal: brave_devtools_front_end_panels_network_sources
       import: //brave/third_party/devtools-frontend/src/front_end/panels/network/sources.gni
+  - description: Add the Brave network panel unit tests.
+    add_literal_to_list:
+      target: unittests
+      type: devtools_ui_module
+      list_name: sources
+      literal: brave_devtools_front_end_panels_network_unittests_sources
+      import: //brave/third_party/devtools-frontend/src/front_end/panels/network/sources.gni

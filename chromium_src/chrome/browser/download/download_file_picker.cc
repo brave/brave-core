@@ -38,13 +38,4 @@ std::u16string GetTitle(content::RenderFrameHost* render_frame_host,
 
 }  // namespace
 
-// Override title of the file select dialog for downloads.
-#define SelectFile(type, title, default_path, file_types, file_type_index,   \
-                   default_extension, owning_window, caller)                 \
-  SelectFile(type, GetTitle(render_frame_host, title, caller), default_path, \
-             file_types, file_type_index, default_extension, owning_window,  \
-             caller)
-
 #include <chrome/browser/download/download_file_picker.cc>
-
-#undef SelectFile

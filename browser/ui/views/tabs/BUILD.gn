@@ -142,6 +142,7 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
     "//ui/base",
+    "//ui/display",
     "//ui/events",
   ]
 }

@@ -56,26 +56,15 @@ void BravePsstDialogUI::BindInterface(
 
 void BravePsstDialogUI::CreatePsstConsentHandler(
     ::mojo::PendingReceiver<psst::mojom::PsstConsentHelper> psst_consent_helper,
-    ::mojo::PendingRemote<psst::mojom::PsstConsentDialog> psst_consent_dialog,
-    psst::mojom::PsstConsentFactory::CreatePsstConsentHandlerCallback
-        callback) {
+    ::mojo::PendingRemote<psst::mojom::PsstConsentDialog> psst_consent_dialog) {
   desktop_dialog_delegate_ =
       PsstUiDesktopPresenter::PsstUiDesktopDelegate::GetDelegateFromWebContents(
           web_ui()->GetWebContents());
-  if (!desktop_dialog_delegate_) {
-    std::move(callback).Run(psst::mojom::SettingCardData::New());
-    return;
-  }
-  auto* initiator_contents =
-      desktop_dialog_delegate_->GetInitiatorWebContents();
-  if (!initiator_contents) {
-    std::move(callback).Run(psst::mojom::SettingCardData::New());
-    return;
-  }
-
   psst_consent_handler_ = std::make_unique<BravePsstDialogHandler>(
-      initiator_contents, this, std::move(psst_consent_helper),
-      std::move(psst_consent_dialog), std::move(callback));
+      desktop_dialog_delegate_
+          ? desktop_dialog_delegate_->GetInitiatorWebContents()
+          : nullptr,
+      this, std::move(psst_consent_helper), std::move(psst_consent_dialog));
 }
 
 void BravePsstDialogUI::Close() {

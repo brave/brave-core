@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_group_style_views.cc b/chrome/browser/ui/views/tabs/tab_group_style_views.cc
-index ea4158e0b13b37224dc80c44445d7e1fd4bc9e6b..b9e9e5bf4ed2d0ea58e5fcd2ad554069ce1fa7aa 100644
+index 3fc03150a14ddc51e156986ac73b76a5e63992d4..871060d881e392cc8f84830839b00b29fc9d7f35 100644
 --- a/chrome/browser/ui/views/tabs/tab_group_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_group_style_views.cc
 @@ -31,12 +31,12 @@ constexpr int kAttentionIndicatorWidth = 8;
@@ -44,24 +44,25 @@ index ea4158e0b13b37224dc80c44445d7e1fd4bc9e6b..b9e9e5bf4ed2d0ea58e5fcd2ad554069
 -gfx::Rect TabGroupStyleViews::GetEmptyTitleChipBounds(
 +gfx::Rect TabGroupStyleViews_ChromiumImpl::GetEmptyTitleChipBounds(
      const TabGroupHeader* const header) const {
-   return gfx::Rect(TabGroupStyle::GetTitleChipOffset(std::nullopt).x(),
-                    TabGroupStyle::GetTitleChipOffset(std::nullopt).y(),
-@@ -85,34 +85,34 @@ gfx::Rect TabGroupStyleViews::GetEmptyTitleChipBounds(
+   const gfx::Point offset = TabGroupStyle::GetHeaderOffset(std::nullopt);
+   const int size = TabGroupStyle::GetHeaderHeight(/*in_focused_state=*/false);
+@@ -84,35 +84,35 @@ gfx::Rect TabGroupStyleViews::GetEmptyTitleChipBounds(
  }
  
  std::unique_ptr<views::Background>
 -TabGroupStyleViews::GetEmptyTitleChipBackground(const SkColor color) const {
 +TabGroupStyleViews_ChromiumImpl::GetEmptyTitleChipBackground(const SkColor color) const {
    return views::CreateRoundedRectBackground(
-       color, TabGroupStyle::GetChipCornerRadius());
+       color, TabGroupStyle::GetHeaderCornerRadii(
+                  TabStripOrientation::kHorizontal, /*focus_progress=*/0.0f));
  }
  
--int TabGroupStyleViews::GetHighlightPathGeneratorCornerRadius(
-+int TabGroupStyleViews_ChromiumImpl::GetHighlightPathGeneratorCornerRadius(
+-gfx::RoundedCornersF TabGroupStyleViews::GetHighlightPathGeneratorCornerRadii(
++gfx::RoundedCornersF TabGroupStyleViews_ChromiumImpl::GetHighlightPathGeneratorCornerRadii(
      const views::View* const title) const {
-   return tab_group_views_->IsFocusModeActive()
-              ? TabGroupStyle::GetFocusedChipCornerRadius()
-              : TabGroupStyle::GetChipCornerRadius();
+   return TabGroupStyle::GetHeaderCornerRadii(
+       TabStripOrientation::kHorizontal,
+       tab_group_views_->IsFocusModeActive() ? 1.0f : 0.0f);
  }
  
 -int TabGroupStyleViews::GetTitleAdjustmentToTabGroupHeaderDesiredWidth(

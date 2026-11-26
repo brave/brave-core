@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator.cc b/chrome/browser/ui/navigator/browser_navigator.cc
-index 3dd21b8a25d8f5153d21d6cfe3bfbb9968b258f5..c17bb22b3a00479393893b1c33171061821c6048 100644
+index 985907de1a80e83bdbcc8a0561f101afd5c19ad1..2a9882734e03026478ded40a361d731e75172f75 100644
 --- a/chrome/browser/ui/navigator/browser_navigator.cc
 +++ b/chrome/browser/ui/navigator/browser_navigator.cc
 @@ -219,6 +219,7 @@ bool ShouldForceCaptivePortalSigninIntoCurrentTab(
@@ -10,7 +10,7 @@ index 3dd21b8a25d8f5153d21d6cfe3bfbb9968b258f5..c17bb22b3a00479393893b1c33171061
    // Check for some chrome:// pages which we always want to open in a
    // non-incognito window. Note that even though a ChromeOS guest session is
    // technically an incognito window, these URLs are allowed.
-@@ -583,7 +584,11 @@ std::unique_ptr<content::WebContents> CreateTargetContents(
+@@ -587,7 +588,11 @@ std::unique_ptr<content::WebContents> CreateTargetContents(
    scoped_refptr<content::SiteInstance> initial_site_instance_for_new_contents =
        params.opener ? params.opener->GetSiteInstance()
                      : tab_util::GetSiteInstanceForNewTab(
@@ -23,7 +23,7 @@ index 3dd21b8a25d8f5153d21d6cfe3bfbb9968b258f5..c17bb22b3a00479393893b1c33171061
  
    WebContents::CreateParams create_params(
        params.browser->GetProfile(), initial_site_instance_for_new_contents);
-@@ -1013,6 +1018,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
+@@ -1015,6 +1020,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
           params->user_gesture)) {
        tab_to_insert->set_opener(
            tabs::TabInterface::MaybeGetFromContents(params->source_contents));
@@ -33,7 +33,7 @@ index 3dd21b8a25d8f5153d21d6cfe3bfbb9968b258f5..c17bb22b3a00479393893b1c33171061
      }
    }
  
-@@ -1052,6 +1060,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
+@@ -1054,6 +1062,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
               params->user_gesture)) {
            tab_to_insert->set_opener(tabs::TabInterface::MaybeGetFromContents(
                params->source_contents));

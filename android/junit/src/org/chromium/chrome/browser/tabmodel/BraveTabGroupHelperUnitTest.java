@@ -23,6 +23,7 @@ import org.chromium.base.Token;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.tabwindow.TabWindowManager;
+import org.chromium.components.tab_groups.TabGroupId;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -73,11 +74,20 @@ public class BraveTabGroupHelperUnitTest {
 
         // The user already confirmed in settings, so no per group dialog is allowed.
         verify(mRegularTabUngrouper)
-                .ungroupTabGroup(TAB_GROUP_ID_1, /* trailing= */ true, /* allowDialog= */ false);
+                .ungroupTabGroup(
+                        TabGroupId.fromRawToken(TAB_GROUP_ID_1),
+                        /* trailing= */ true,
+                        /* allowDialog= */ false);
         verify(mIncognitoTabUngrouper)
-                .ungroupTabGroup(TAB_GROUP_ID_2, /* trailing= */ true, /* allowDialog= */ false);
+                .ungroupTabGroup(
+                        TabGroupId.fromRawToken(TAB_GROUP_ID_2),
+                        /* trailing= */ true,
+                        /* allowDialog= */ false);
         verify(mOtherWindowTabUngrouper)
-                .ungroupTabGroup(TAB_GROUP_ID_3, /* trailing= */ true, /* allowDialog= */ false);
+                .ungroupTabGroup(
+                        TabGroupId.fromRawToken(TAB_GROUP_ID_3),
+                        /* trailing= */ true,
+                        /* allowDialog= */ false);
         verifyNoMoreInteractions(
                 mRegularTabUngrouper, mIncognitoTabUngrouper, mOtherWindowTabUngrouper);
     }
@@ -96,9 +106,15 @@ public class BraveTabGroupHelperUnitTest {
         BraveTabGroupHelper.ungroupAllTabGroups();
 
         verify(mRegularTabUngrouper)
-                .ungroupTabGroup(TAB_GROUP_ID_1, /* trailing= */ true, /* allowDialog= */ false);
+                .ungroupTabGroup(
+                        TabGroupId.fromRawToken(TAB_GROUP_ID_1),
+                        /* trailing= */ true,
+                        /* allowDialog= */ false);
         verify(mRegularTabUngrouper)
-                .ungroupTabGroup(TAB_GROUP_ID_2, /* trailing= */ true, /* allowDialog= */ false);
+                .ungroupTabGroup(
+                        TabGroupId.fromRawToken(TAB_GROUP_ID_2),
+                        /* trailing= */ true,
+                        /* allowDialog= */ false);
         verifyNoMoreInteractions(mRegularTabUngrouper);
         verifyNoInteractions(mIncognitoTabUngrouper);
     }
@@ -112,7 +128,11 @@ public class BraveTabGroupHelperUnitTest {
         verifyNoInteractions(mRegularTabUngrouper);
     }
 
-    private static Set<Token> tabGroupIds(Token... tabGroupIds) {
-        return new LinkedHashSet<>(Arrays.asList(tabGroupIds));
+    private static Set<TabGroupId> tabGroupIds(Token... tokens) {
+        Set<TabGroupId> tabGroupIds = new LinkedHashSet<>();
+        for (Token token : tokens) {
+            tabGroupIds.add(TabGroupId.fromRawToken(token));
+        }
+        return tabGroupIds;
     }
 }

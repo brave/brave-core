@@ -74,6 +74,9 @@ class ForkIndex:
 
     # Forks nothing in the code points at. Brave path -> upstream original.
     KNOWN = {
+        'browser/importer/brave_external_process_importer_client.cc': (
+            'chrome/browser/importer/external_process_importer_client.cc'
+        ),
         'browser/net/brave_proxying_url_loader_factory.cc': (
             'extensions/browser/api/web_request/'
             'web_request_proxying_url_loader_factory.cc'
@@ -87,6 +90,9 @@ class ForkIndex:
         'ios/browser/api/history/history_driver_ios.mm': (
             'ios/chrome/browser/history/ui_bundled/'
             'ios_browsing_history_driver.mm'
+        ),
+        'utility/importer/brave_profile_import_impl.cc': (
+            'chrome/utility/importer/profile_import_impl.cc'
         ),
     }
 

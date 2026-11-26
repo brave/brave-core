@@ -9,6 +9,7 @@
 
 #include "base/containers/extend.h"
 #include "base/containers/span.h"
+#include "base/containers/to_vector.h"
 #include "base/numerics/checked_math.h"
 
 namespace {
@@ -60,9 +61,9 @@ std::vector<uint8_t> RLPEncode(const base::Value& val) {
   }
 
   if (val.is_blob()) {
-    base::Value::BlobStorage blob = val.GetBlob();
+    base::span<const uint8_t> blob = val.GetBlob();
     if (blob.size() == 1 && blob[0] < kStringOffset) {
-      return blob;
+      return base::ToVector(blob);
     }
     auto result = RLPEncodeLength(blob.size(), kStringOffset);
     base::Extend(result, blob);

@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Serve chrome-untrusted:// WebUI in the profile's request context.
+
+      `URLRequestJobFactory::CreateJob()` only handles the schemes in this
+      map, and Brave's untrusted WebUIs load from chrome-untrusted://.
+    regex:
+      re_pattern:
+        '(\n(\s*)protocol_handlers\[kChromeUIScheme\]
+        =\s*web::CreateWebUIProtocolHandler\(this\);)'
+      replace: |-
+        \1
+        \2protocol_handlers[kChromeUIUntrustedScheme] =
+        \2    web::CreateWebUIProtocolHandler(this);

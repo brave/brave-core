@@ -14,7 +14,8 @@ source_set("browser_tests") {
   deps = [
     "//chrome/browser",
     "//chrome/browser/sharing_hub",
-    "//chrome/test:test_support_ui",
+    "//chrome/test/base:in_process_browser_test",
+    "//chrome/test/base:ui_test_utils",
     "//content/test:test_support",
   ]
 }

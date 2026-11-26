@@ -96,6 +96,7 @@ android_library(
     "//base/test:public_transit_java",
     "//brave/browser/password_manager/android:test_support_java",
     "//chrome/android:chrome_app_java_resources",
+    "//chrome/browser/history:java",
     "//chrome/browser/password_manager/android:java",
     "//components/password_manager/core/browser:password_manager_java_enums",
     "//content/public/android:content_full_java",

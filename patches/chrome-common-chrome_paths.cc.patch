@@ -1,8 +1,8 @@
 diff --git a/chrome/common/chrome_paths.cc b/chrome/common/chrome_paths.cc
-index b2e5bf21e15c4ba9fb62825c8c0347aff7e0b35f..46c8e9197cd9d092379735b098969486ee879c39 100644
+index a7aa254e4e58ef3ca1ba697283a5da48424a5aef..f8bf05b22caeeb97234d55bba87d970f8b368d94 100644
 --- a/chrome/common/chrome_paths.cc
 +++ b/chrome/common/chrome_paths.cc
-@@ -571,7 +571,10 @@ void SetUsingDefaultUserDataDirectoryForTesting(
+@@ -661,7 +661,10 @@ void SetUsingDefaultUserDataDirectoryForTesting(
  // This cannot be done as a static initializer sadly since Visual Studio will
  // eliminate this object file if there is no direct entry point into it.
  void RegisterPathProvider() {

@@ -62,13 +62,21 @@ class PsstIconImageSource : public gfx::CanvasImageSource {
 
 namespace page_actions {
 
+DEFINE_USER_DATA(PsstActionController);
+
+// static
+PsstActionController* PsstActionController::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
 PsstActionController::PsstActionController(
     tabs::TabInterface& tab,
     page_actions::PageActionController& page_action_controller)
     : tab_(tab),
       page_action_controller_(
           static_cast<page_actions::PageActionControllerImpl&>(
-              page_action_controller)) {
+              page_action_controller)),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
   CHECK(base::FeatureList::IsEnabled(psst::features::kEnablePsst));
 }
 

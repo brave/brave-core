@@ -26,7 +26,11 @@ constexpr char kGoogleOauth2Url[] =
 }  // namespace
 
 BraveWebAuthFlow::BraveWebAuthFlow() {}
-BraveWebAuthFlow::~BraveWebAuthFlow() {}
+BraveWebAuthFlow::~BraveWebAuthFlow() {
+  if (web_auth_flow_) {
+    web_auth_flow_.release()->DetachDelegateAndDelete();
+  }
+}
 
 // static
 // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of

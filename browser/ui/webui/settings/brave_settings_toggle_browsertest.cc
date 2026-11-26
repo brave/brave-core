@@ -42,3 +42,18 @@ IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, SiteListEntryReset) {
   RunTest("settings/site_list_entry_test.js",
           "runMochaSuite('BraveSiteListEntryReset')");
 }
+
+IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, SiteListActionLabels) {
+  RunTest("settings/site_list_test.js",
+          "runMochaSuite('BraveSiteListActionLabels')");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, SiteListCookieType) {
+  RunTest("settings/site_list_test.js",
+          "runMochaSuite('BraveSiteListCookieType')");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, SiteListCookiesHeader) {
+  RunTest("settings/site_list_test.js",
+          "runMochaSuite('BraveSiteListCookiesHeader')");
+}

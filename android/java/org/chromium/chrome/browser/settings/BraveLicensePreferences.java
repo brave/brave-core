@@ -53,7 +53,7 @@ public class BraveLicensePreferences extends BravePreferenceFragment {
             in.close();
             licenseText.setSummary(BraveRewardsHelper.spannedFromHtmlString(summary));
         } catch (IOException e) {
-            Log.e(TAG, "Could not load license text: " + e);
+            Log.e(TAG, "Could not load license text", e);
         }
     }
 

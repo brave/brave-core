@@ -142,14 +142,12 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/playlist_page_action_controller.h"
 #include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/partitioned_storage_page_action_controller.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/browser/containers_service.h"
@@ -160,7 +158,6 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/psst_action_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #endif
@@ -614,8 +611,7 @@ void ShowPlaylistBubble(BrowserWindowInterface* browser) {
   }
 
   if (auto* controller =
-          tabs::BraveTabFeatures::FromTabFeatures(tab->GetTabFeatures())
-              ->playlist_page_action_controller()) {
+          page_actions::PlaylistPageActionController::From(tab)) {
     controller->ShowBubble(
         playlist::PlaylistBubblesController::BubbleType::kInfer);
   }
@@ -1429,13 +1425,9 @@ void OpenContainerMenuOnPageActionView(BrowserWindowInterface* bwi,
     return;
   }
 
-  tabs::BraveTabFeatures* brave_tab_features =
-      tabs::BraveTabFeatures::FromTabFeatures(
-          bwi->GetActiveTabInterface()->GetTabFeatures());
-  CHECK(brave_tab_features);
-
   page_actions::PartitionedStoragePageActionController* const controller =
-      brave_tab_features->partitioned_storage_page_action_controller();
+      page_actions::PartitionedStoragePageActionController::From(
+          bwi->GetActiveTabInterface());
   CHECK(controller);
   controller->ExecuteAction(browser_view->toolbar_button_provider(), item);
 #endif
@@ -1452,13 +1444,8 @@ void OpenPsstMenuOnPageActionView(BrowserWindowInterface* bwi,
     return;
   }
 
-  tabs::BraveTabFeatures* brave_tab_features =
-      tabs::BraveTabFeatures::FromTabFeatures(
-          bwi->GetActiveTabInterface()->GetTabFeatures());
-  CHECK(brave_tab_features);
-
   page_actions::PsstActionController* const controller =
-      brave_tab_features->psst_page_action_controller();
+      page_actions::PsstActionController::From(bwi->GetActiveTabInterface());
   CHECK(controller);
   controller->ExecuteAction(browser_view->toolbar_button_provider(), item,
                             event_flags);

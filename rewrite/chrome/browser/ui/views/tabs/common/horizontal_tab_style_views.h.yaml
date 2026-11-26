@@ -19,6 +19,16 @@ substitutions:
       method_name: GetSeparatorBounds
 
   - description: |-
+      Virtualise PaintSeparators for BraveVerticalTabStyle.
+
+      Upstream paints separators through a static overload that computes its
+      own bounds, so BraveVerticalTabStyle paints them itself to use its
+      separator bounds.
+    make_virtual:
+      class_name: HorizontalTabStyleViews
+      method_name: PaintSeparators
+
+  - description: |-
       Virtualise IsHovering for BraveVerticalTabStyle.
     make_virtual:
       class_name: HorizontalTabStyleViews

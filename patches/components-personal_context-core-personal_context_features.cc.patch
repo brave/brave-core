@@ -1,5 +1,5 @@
 diff --git a/components/personal_context/core/personal_context_features.cc b/components/personal_context/core/personal_context_features.cc
-index 70feea6e4ace22208315ed09a9444f7e4ade5408..3042a24e8b0ed826923141f1b24d3c40e62b84cc 100644
+index db801b4f60e1d19b04235805825b85670bab5662..dd65dfb2d36b084f0e59f575b5e503eae473a2fe 100644
 --- a/components/personal_context/core/personal_context_features.cc
 +++ b/components/personal_context/core/personal_context_features.cc
 @@ -8,7 +8,7 @@
@@ -9,5 +9,5 @@ index 70feea6e4ace22208315ed09a9444f7e4ade5408..3042a24e8b0ed826923141f1b24d3c40
 -BASE_FEATURE(kPersonalContext, base::FEATURE_ENABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kPersonalContext, base::FEATURE_DISABLED_BY_DEFAULT);
  
- BASE_FEATURE(kPersonalContextLogNonEligibilityUma,
-              base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE_WITH_COUNTRY_RESTRICTIONS(kPersonalContextLogNonEligibilityUma,
+                                        base::FEATURE_ENABLED_FOR_COUNTRIES,

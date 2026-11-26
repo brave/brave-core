@@ -1,8 +1,8 @@
 diff --git a/crypto/obsolete/md5.h b/crypto/obsolete/md5.h
-index 3c8cc67a081f04b4526e2b0e5a4984fa0f73ff9c..7a463946d2613dc5928ee279bcca74d84ed380e7 100644
+index b567052126aadad2e9f1bf5bc62eaf7c4429e584..f329a354f5e62a590c717fce6def0ba6758b5a7d 100644
 --- a/crypto/obsolete/md5.h
 +++ b/crypto/obsolete/md5.h
-@@ -152,6 +152,7 @@ namespace web_app::internals {
+@@ -148,6 +148,7 @@ namespace web_app::internals {
  crypto::obsolete::Md5 MakeMd5HasherForWebAppShortcutIcon();
  std::wstring Md5AsHexForUninstall(const std::wstring& data);
  }

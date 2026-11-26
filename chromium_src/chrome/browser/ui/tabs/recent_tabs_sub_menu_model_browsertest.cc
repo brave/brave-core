@@ -17,9 +17,8 @@ void RecentTabsSubMenuModelTest::VerifyModel(
   // We have to copy it over as we can not modify the input.
   auto data = base::ToVector(input);
 
-  // We replace the "Sign in to see tabs from other devices" menu command with
-  // the non-command string "No tabs from other devices" and need to adjust the
-  // data
+  // We replace the "See tabs from other devices" menu command with the disabled
+  // "No tabs from other devices" item, so we need to adjust the data.
   auto& item_data = data.back();
   if (item_data.type == ui::MenuModel::TYPE_COMMAND) {
     item_data.enabled = false;

@@ -99,6 +99,37 @@ def should_run_mangler(in_file):
     return in_file.endswith('.lit_mangler.ts')
 
 
+def get_override_folders(override_root_folder, in_files):
+    """The folders an override of `in_files` would be added to, or their
+    nearest existing ancestors: adding a file changes its folder's mtime."""
+    chromium_src = os.path.normpath(
+        brave_chromium_utils.wspath('//brave/chromium_src')
+    )
+    folders = set()
+    for file in in_files:
+        folder = os.path.dirname(
+            os.path.normpath(os.path.join(override_root_folder, file))
+        )
+        while folder != chromium_src and not os.path.isdir(folder):
+            folder = os.path.dirname(folder)
+        folders.add(folder)
+    return sorted(folders)
+
+
+def write_depfile(depfile, first_output, inputs):
+    """Writes a ninja depfile of `inputs`, paths relative to the build dir."""
+
+    def to_depfile_path(path):
+        return os.path.relpath(path).replace(os.sep, '/')
+
+    # The action's out folder can be outside its target gen dir.
+    os.makedirs(os.path.dirname(depfile), exist_ok=True)
+    with open(depfile, 'w', encoding='utf-8', newline='\n') as f:
+        f.write(f'{to_depfile_path(first_output)}: ')
+        f.write(' '.join(to_depfile_path(path) for path in inputs))
+        f.write('\n')
+
+
 # Used to indicate that there are no overrides, so we don't need to reprocess
 class NoOverridesException(Exception):
     pass
@@ -106,17 +137,23 @@ class NoOverridesException(Exception):
 
 @override_utils.override_function(globals())
 def main(original_function, argv):
+    depfile_parser = argparse.ArgumentParser(allow_abbrev=False)
+    depfile_parser.add_argument('--brave-depfile')
+    depfile_args, argv = depfile_parser.parse_known_args(argv)
+
     # Run the preprocessor as normal, to preprocess the upstream files.
     original_function(argv)
 
     manifest_data = {}
     manifest_path = None
+    first_output = None
+    depfile_inputs = []
 
     # When we rerun the processor, we detect files which should be overridden.
     @override_utils.override_method(argparse.ArgumentParser)
     # pylint: disable=unused-variable
     def parse_args(self, original_method, argv):
-        nonlocal manifest_path, manifest_data
+        nonlocal manifest_path, manifest_data, first_output
         args = original_method(self, argv)
 
         cwd = os.getcwd()
@@ -125,10 +162,28 @@ def main(original_function, argv):
         override_root_folder = brave_chromium_utils.get_chromium_src_override(
             in_folder
         )
+        # Matches the action's first output in preprocess_if_expr.gni: the
+        # manifest when there are no files to preprocess.
+        first_output = (
+            os.path.join(out_folder, args.in_files[0])
+            if args.in_files
+            else os.path.join(cwd, args.out_manifest)
+        )
 
         purge_overrides(out_folder, args.in_files)
         overrides, lit_mangler_files = get_chromium_src_files(
             in_folder, args.in_files
+        )
+        depfile_inputs.extend(
+            get_override_folders(override_root_folder, args.in_files)
+        )
+        depfile_inputs.extend(
+            os.path.join(override_root_folder, override)
+            for override in overrides
+        )
+        depfile_inputs.extend(
+            os.path.join(override_root_folder, lit_mangler_file)
+            for _, lit_mangler_file in lit_mangler_files
         )
 
         # Run the manglers - this doesn't need to happen in the second call to
@@ -176,3 +231,8 @@ def main(original_function, argv):
     except NoOverridesException:
         # we throw an exception when there are no overrides, so we don't reparse
         pass
+
+    # An added or deleted override or mangler then reruns the action, which
+    # applies it, or purges what it left in the preprocessed output.
+    if depfile_args.brave_depfile:
+        write_depfile(depfile_args.brave_depfile, first_output, depfile_inputs)

@@ -103,12 +103,13 @@ interface PsstConsentFactory {
     // The WebUI calls this method when the page is first initialized.
     CreatePsstConsentHandler(
         pending_receiver<PsstConsentHelper> psst_consent_helper,
-        pending_remote<PsstConsentDialog> psst_consent_dialog) =>
-            (SettingCardData current_site_data);
+        pending_remote<PsstConsentDialog> psst_consent_dialog);
 };
 
 // Handler for the UI to backend calls
 interface PsstConsentHelper {
+    // Returns the settings the dialog offers to tune for the current site
+    GetSettingCardData() => (SettingCardData current_site_data);
     // Performs privacy tuning for selected UIDs
     PerformPrivacyTuning(array<string> perform_for_uids);
     // Prepares a report detailing which settings could not be tuned and why

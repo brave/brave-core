@@ -1068,6 +1068,53 @@ class FailedBuildsTest(unittest.TestCase):
             jenkins.JenkinsCi('u', 't').full_log(f'{_RUN}/testReport/')
         session.get.assert_called_once_with(f'{_RUN}/consoleText', timeout=120)
 
+    def _test_log(self, pattern):
+        output = '\n'.join(f'line {i}' for i in range(100))
+        session = _json_session(
+            {
+                _TEST_REPORT: {
+                    'suites': [
+                        {
+                            'cases': [
+                                {
+                                    'className': 'Suite',
+                                    'name': 'A',
+                                    'status': 'FAILED',
+                                    'errorDetails': 'Expected 1',
+                                    'errorStackTrace': output,
+                                },
+                                {
+                                    'className': 'Other',
+                                    'name': 'B',
+                                    'status': 'REGRESSION',
+                                },
+                                {
+                                    'className': 'Suite',
+                                    'name': 'Fine',
+                                    'status': 'PASSED',
+                                },
+                            ]
+                        }
+                    ]
+                }
+            }
+        )
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            return jenkins.JenkinsCi('u', 't').test_log(
+                f'{_RUN}/testReport/', pattern
+            )
+
+    def test_test_log_is_the_matching_tests_whole_output(self):
+        output = '\n'.join(f'line {i}' for i in range(100))
+        self.assertEqual(
+            self._test_log('Suite.*'), f'Suite.A:\nExpected 1\n{output}'
+        )
+
+    def test_test_log_without_a_match_raises(self):
+        with self.assertRaises(jenkins.BadOutcomeException) as caught:
+            self._test_log('Suite.Fine')
+        self.assertIn('2 failed', str(caught.exception))
+
     def test_unreadable_full_log_raises(self):
         session = MagicMock()
         session.get.return_value.raise_for_status.side_effect = (
@@ -1190,6 +1237,78 @@ class RerunTest(unittest.TestCase):
         self.assertEqual(
             session.post.call_args.kwargs['params'], {'WIPE_WORKSPACE': 'true'}
         )
+
+    def test_removes_src_out_when_asked(self):
+        session, _ = self._rerun(remove_src_out=True)
+        self.assertEqual(
+            session.post.call_args.kwargs['params'], {'RM_SRC_OUT': 'true'}
+        )
+
+    def test_wipes_and_removes_src_out_together(self):
+        session, _ = self._rerun(wipe_workspace=True, remove_src_out=True)
+        self.assertEqual(
+            session.post.call_args.kwargs['params'],
+            {'WIPE_WORKSPACE': 'true', 'RM_SRC_OUT': 'true'},
+        )
+
+
+def _failing_response(status: int, reason: str) -> MagicMock:
+    """A response whose `raise_for_status` raises as a real one with
+    `status` does."""
+    response = MagicMock(status_code=status, reason=reason)
+    response.raise_for_status.side_effect = jenkins.requests.HTTPError(
+        f'{status} {reason}', response=response
+    )
+    return response
+
+
+class UnreadableTest(unittest.TestCase):
+    """What the client says when Jenkins won't answer."""
+
+    def _session(self, response=None, error=None) -> MagicMock:
+        session = MagicMock()
+        if error is not None:
+            session.get.side_effect = error
+        else:
+            session.get.return_value = response
+            session.post.return_value = response
+        return session
+
+    def _call(self, session, method, *args):
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            return getattr(jenkins.JenkinsCi('u', 't'), method)(*args)
+
+    def test_refused_credentials_name_the_config_file(self):
+        session = self._session(_failing_response(401, 'Unauthorized'))
+        for method in ('failed_builds', 'full_log', 'rerun'):
+            with self.subTest(method):
+                with self.assertRaisesRegex(
+                    jenkins.JenkinsCredentialsError,
+                    r'refused the credentials in .*\.jenkins\.json '
+                    r'\(401 Unauthorized.*expired or been revoked',
+                ):
+                    self._call(session, method, f'{_RUN}/')
+
+    def test_forbidden_is_a_credentials_problem_too(self):
+        session = self._session(_failing_response(403, 'Forbidden'))
+        with self.assertRaisesRegex(
+            jenkins.JenkinsCredentialsError, r'403 Forbidden.*permission'
+        ):
+            self._call(session, 'failed_builds', f'{_RUN}/')
+
+    def test_a_missing_build_says_its_status(self):
+        session = self._session(_failing_response(404, 'Not Found'))
+        with self.assertRaisesRegex(
+            jenkins.BadOutcomeException, r'wfapi/describe: HTTP 404 Not Found$'
+        ):
+            self._call(session, 'failed_builds', f'{_RUN}/')
+
+    def test_a_timeout_says_so(self):
+        session = self._session(error=jenkins.requests.Timeout('slow'))
+        with self.assertRaisesRegex(
+            jenkins.BadOutcomeException, r'wfapi/describe: timed out$'
+        ):
+            self._call(session, 'failed_builds', f'{_RUN}/')
 
 
 if __name__ == '__main__':

@@ -26,6 +26,8 @@
       "[WORKSPACE]/rc/claude",
       "--",
       "claude",
+      "--model",
+      "opus",
       "--print",
       "Say hello.",
       "--permission-mode",

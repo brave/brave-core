@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Bundle the bundled modules' chromium_src overrides into the archive.
+
+      A module run from a `.pyz` has neither its source nor its override on
+      disk on RBE, so `brave_chromium_utils` inlines the override from the
+      archive instead.
+    add_before_line:
+      line: 'output_dir_abs = os.path.dirname(os.path.abspath(options.output))'
+      code: |2-
+                brave_overrides = _brave_add_chromium_src_overrides(
+                    zf, sources_by_rel
+                )
+
+  - description: |-
+      Rebuild the archive when a bundled override changes.
+
+      The overrides aren't inputs of the action, which only lists the modules.
+    regex:
+      re_pattern: 'depfile_deps = \[\]'
+      replace: 'depfile_deps = [os.path.relpath(p) for p in brave_overrides]'
+
+  - description: Load the Brave chromium_src override before the script runs.
+    add_before_line:
+      line: "if __name__ == '__main__':"
+      code: |-
+        from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())

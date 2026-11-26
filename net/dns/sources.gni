@@ -13,5 +13,7 @@ brave_net_dns_sources = [
 
 brave_net_dns_deps = [ "//brave/components/tor/buildflags" ]
 
-brave_net_dns_unit_test_sources =
-    [ "//brave/net/dns/onion_hostname_resolution_unittest.cc" ]
+brave_net_dns_unit_test_sources = [
+  "//brave/net/dns/onion_hostname_resolution_unittest.cc",
+  "//brave/net/dns/secure_dns_counter_unittest.cc",
+]

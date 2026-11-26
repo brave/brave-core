@@ -7,7 +7,6 @@
 
 #include "base/base64url.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_util.h"
 #include "base/strings/string_view_util.h"
 #include "crypto/hash.h"
 #include "crypto/random.h"
@@ -17,14 +16,7 @@ namespace {
 constexpr size_t kLengthHexString = 32;
 
 std::string EncodeStringForPKCE(const std::string& data) {
-  std::string encoded_data;
-
-  base::Base64UrlEncode(data, base::Base64UrlEncodePolicy::OMIT_PADDING,
-                        &encoded_data);
-  base::ReplaceChars(encoded_data, "+", "-", &encoded_data);
-  base::ReplaceChars(encoded_data, "/", "_", &encoded_data);
-
-  return encoded_data;
+  return base::Base64UrlEncode(data, base::Base64UrlEncodePolicy::OMIT_PADDING);
 }
 
 }  // namespace

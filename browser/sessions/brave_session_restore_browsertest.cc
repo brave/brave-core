@@ -319,7 +319,7 @@ class BraveTreeTabSessionRestoreBrowserTest : public InProcessBrowserTest {
       base::OnceCallback<void(
           std::vector<std::unique_ptr<sessions::SessionWindow>>)> predicate,
       base::Location location = base::Location::Current()) {
-    session_service()->ResetFromCurrentBrowsers();
+    session_service()->ResetFromCurrentBrowsersForTesting();
     VerifyExtraData(std::move(predicate), location);
   }
 
@@ -696,7 +696,7 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreOnRelaunchBrowserTest,
   // (BuildCommandsForBrowser scans the live tree) regardless of any pending
   // deferred kNodeCreated notifications. The session is restored on the next
   // launch via the SessionStartupPref::LAST set in SetUpOnMainThread().
-  session_service()->ResetFromCurrentBrowsers();
+  session_service()->ResetFromCurrentBrowsersForTesting();
 }
 
 // On relaunch the previous session is restored. AddRestoredTab is called for
@@ -771,7 +771,7 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreOnRelaunchBrowserTest,
         << "group's tree_node must be a child of tree_node_A before relaunch";
   }
 
-  session_service()->ResetFromCurrentBrowsers();
+  session_service()->ResetFromCurrentBrowsersForTesting();
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreOnRelaunchBrowserTest,
@@ -843,7 +843,7 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreOnRelaunchBrowserTest,
         << "split's tree_node must be a child of tree_node_A before relaunch";
   }
 
-  session_service()->ResetFromCurrentBrowsers();
+  session_service()->ResetFromCurrentBrowsersForTesting();
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreOnRelaunchBrowserTest,
@@ -929,7 +929,7 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ(GetNearestTreeCollectionForTab(1), group_tree_node);
   ASSERT_EQ(GetNearestTreeCollectionForTab(2), group_tree_node);
 
-  session_service()->ResetFromCurrentBrowsers();
+  session_service()->ResetFromCurrentBrowsersForTesting();
 }
 
 IN_PROC_BROWSER_TEST_F(
