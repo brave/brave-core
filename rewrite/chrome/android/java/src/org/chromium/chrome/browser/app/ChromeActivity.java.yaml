@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Create Brave's snackbar manager.
+
+      `BraveSnackbarManager` carries the custom text, action and click
+      handling Brave's snackbars ask for across the views showing them.
+    regex:
+      pattern: 'new SnackbarManager('
+      replace:
+        'new
+        org.chromium.chrome.browser.ui.messages.snackbar.BraveSnackbarManager('
+
+  - description: |-
+      Add a hook for `BraveActivity` once the tab state is initialised.
+    add_before_line:
+      line: 'private void clearToolbarResourceCache() {'
+      code: |2-
+            public void onTabStateInitializedHandler() {}
