@@ -15,6 +15,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service_waiter.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/test/ntp_sponsored_content_source_test_util.h"
 #include "brave/components/ntp_background_images/browser/switches.h"
+#include "brave/components/sponsored_content/sponsored_content_service.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -38,8 +39,12 @@ class NTPStaticNewTabTakeoverSourceTest : public testing::Test {
     NTPBackgroundImagesService::RegisterLocalStatePrefsForMigration(
         pref_service_.registry());
 
+    sponsored_content_service_ =
+        std::make_unique<sponsored_content::SponsoredContentService>(
+            /*variations_service=*/nullptr,
+            /*component_update_service=*/nullptr);
     background_images_service_ = std::make_unique<NTPBackgroundImagesService>(
-        /*variations_service=*/nullptr, /*component_update_service=*/nullptr,
+        /*component_update_service=*/nullptr, *sponsored_content_service_,
         &pref_service_);
     url_data_source_ = std::make_unique<NTPStaticNewTabTakeoverSource>(
         background_images_service_.get());
@@ -64,6 +69,8 @@ class NTPStaticNewTabTakeoverSourceTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple pref_service_;
 
+  std::unique_ptr<sponsored_content::SponsoredContentService>
+      sponsored_content_service_;
   std::unique_ptr<NTPBackgroundImagesService> background_images_service_;
   std::unique_ptr<NTPStaticNewTabTakeoverSource> url_data_source_;
 };

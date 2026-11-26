@@ -9,6 +9,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service_waiter.h"
 #include "brave/components/ntp_background_images/browser/switches.h"
+#include "brave/components/sponsored_content/sponsored_content_service.h"
 
 namespace ntp_background_images::test {
 
@@ -22,8 +23,12 @@ void NTPDynamicNewTabTakeoverSourceTestBase::SetUp() {
   NTPBackgroundImagesService::RegisterLocalStatePrefsForMigration(
       pref_service_.registry());
 
+  sponsored_content_service_ =
+      std::make_unique<sponsored_content::SponsoredContentService>(
+          /*variations_service=*/nullptr,
+          /*component_update_service=*/nullptr);
   background_images_service_ = std::make_unique<NTPBackgroundImagesService>(
-      /*variations_service=*/nullptr, /*component_update_service=*/nullptr,
+      /*component_update_service=*/nullptr, *sponsored_content_service_,
       &pref_service_);
 }
 

@@ -19,6 +19,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_ad_event_handler.h"
 #include "brave/components/ntp_background_images/browser/test/fake_ntp_background_images_service.h"
+#include "brave/components/sponsored_content/test/fake_sponsored_content_service.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -99,10 +100,12 @@ class NewTabTakeoverUITest : public ChromeRenderViewHostTestHarness {
         base::BindRepeating(&TemplateURLServiceFactory::BuildInstanceFor));
     search_test_utils::WaitForTemplateURLServiceToLoad(template_url_service());
 
+    sponsored_content_service_ = std::make_unique<
+        sponsored_content::test::FakeSponsoredContentService>();
     ntp_background_images_service_ =
         std::make_unique<ntp_background_images::FakeNTPBackgroundImagesService>(
-            /*variations_service=*/nullptr,
-            /*component_update_service=*/nullptr, /*local_state=*/nullptr);
+            /*component_update_service=*/nullptr, *sponsored_content_service_,
+            /*pref_service=*/nullptr);
 
     web_ui_.set_web_contents(web_contents());
     new_tab_takeover_ui_ = std::make_unique<NewTabTakeoverUI>(
@@ -189,6 +192,8 @@ class NewTabTakeoverUITest : public ChromeRenderViewHostTestHarness {
   }
 
  private:
+  std::unique_ptr<sponsored_content::test::FakeSponsoredContentService>
+      sponsored_content_service_;
   std::unique_ptr<ntp_background_images::FakeNTPBackgroundImagesService>
       ntp_background_images_service_;
   content::TestWebUI web_ui_;

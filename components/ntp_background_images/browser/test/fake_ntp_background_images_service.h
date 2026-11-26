@@ -8,8 +8,6 @@
 
 #include <cstddef>
 #include <memory>
-#include <optional>
-#include <string>
 
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 
@@ -19,9 +17,9 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
-namespace variations {
-class VariationsService;
-}  // namespace variations
+namespace sponsored_content {
+class SponsoredContentService;
+}  // namespace sponsored_content
 
 namespace ntp_background_images {
 
@@ -31,8 +29,8 @@ struct NTPSponsoredSitesData;
 class FakeNTPBackgroundImagesService final : public NTPBackgroundImagesService {
  public:
   FakeNTPBackgroundImagesService(
-      variations::VariationsService* variations_service,
       component_updater::ComponentUpdateService* component_update_service,
+      sponsored_content::SponsoredContentService& sponsored_content_service,
       PrefService* pref_service);
 
   FakeNTPBackgroundImagesService(const FakeNTPBackgroundImagesService&) =
@@ -45,19 +43,15 @@ class FakeNTPBackgroundImagesService final : public NTPBackgroundImagesService {
   void RegisterSponsoredImagesComponent() override;
   void UnregisterSponsoredImagesComponent() override;
 
-  // Test-only entry point: parses `json` and injects it as if the component
-  // were ready. Passes `std::nullopt` to `OnHandledSponsoredComponentData` if
-  // `json` is malformed, exercising the failure path.
-  void OnGetSponsoredComponentJsonData(const std::string& json);
-
-  // Test-only entry point: injects `sites_data` as if the sponsored sites
-  // manifest had just been loaded, notifying observers.
-  void OnGetSponsoredSitesData(std::optional<NTPSponsoredSitesData> sites_data);
-
   // Test-only entry point: injects `data` as the current background images
   // data, as if the component had just been loaded.
   void SetBackgroundImagesData(
       std::unique_ptr<NTPBackgroundImagesData> data);
+
+  // Test-only entry point, injects `data` as the current sponsored sites
+  // data, as if the component had just been loaded.
+  void SetSponsoredSitesData(
+      std::unique_ptr<NTPSponsoredSitesData> sponsored_sites_data);
 
   size_t register_sponsored_images_component_call_count() const {
     return register_sponsored_images_component_call_count_;

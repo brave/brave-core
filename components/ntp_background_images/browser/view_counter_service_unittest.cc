@@ -8,9 +8,12 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/test/bind.h"
@@ -27,6 +30,7 @@
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_service_waiter.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h"
 #include "brave/components/ntp_background_images/browser/test/fake_ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
@@ -34,6 +38,7 @@
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
+#include "brave/components/sponsored_content/test/fake_sponsored_content_service.h"
 #include "build/build_config.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -166,10 +171,12 @@ class ViewCounterServiceTest : public testing::Test {
         &prefs_, /* is_off_the_record=*/false, /*store_last_modified=*/false,
         /*restore_session=*/false, /*should_record_metrics=*/false);
 
+    sponsored_content_service_ = std::make_unique<
+        sponsored_content::test::FakeSponsoredContentService>();
     background_images_service_ =
         std::make_unique<FakeNTPBackgroundImagesService>(
-            /*variations_service=*/nullptr,
-            /*component_updater_service=*/nullptr, &local_state_);
+            /*component_update_service=*/nullptr, *sponsored_content_service_,
+            &local_state_);
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
     auto custom_background_delegate =
@@ -247,9 +254,29 @@ class ViewCounterServiceTest : public testing::Test {
         std::move(sponsored_content_data);
   }
 
-  void SimulateMalformedSponsoredContentData() {
-    background_images_service_->OnGetSponsoredComponentJsonData(
-        "MALFORMED JSON");
+  void SimulateSponsoredContentData(std::string_view json) {
+    // Sponsored content only loads once something has subscribed to it.
+    background_images_service_->RegisterSponsoredImagesComponent();
+
+    // Filtering campaigns checks referenced creative files exist on disk, so
+    // `json`'s referenced files must exist here too.
+    CHECK(installed_dir_.IsValid() || installed_dir_.CreateUniqueTempDir());
+    for (const char* relative_path :
+         {"30244a36-561a-48f0-8d7a-780e9035c57a/background-1.jpg",
+          "30244a36-561a-48f0-8d7a-780e9035c57a/button-1.png",
+          "39d78863-327d-4b64-9952-cd0e5e330eb6/index.html"}) {
+      const base::FilePath file_path =
+          installed_dir_.GetPath().AppendASCII(relative_path);
+      CHECK(base::CreateDirectory(file_path.DirName()));
+      CHECK(base::WriteFile(file_path, ""));
+    }
+
+    // Filtering campaigns checks referenced creative files on disk, so it
+    // runs on the `ThreadPool`; wait for it to reply.
+    NTPBackgroundImagesServiceWaiter waiter(*background_images_service_);
+    sponsored_content_service_->NotifySponsoredNewTabTakeoverContent(
+        installed_dir_.GetPath(), base::test::ParseJsonDict(json));
+    waiter.WaitForOnSponsoredContentDidUpdate();
   }
 
   void InstallBackgroundImagesData() {
@@ -283,9 +310,10 @@ class ViewCounterServiceTest : public testing::Test {
   }
 
   std::optional<base::DictValue> GetNewTabTakeoverWallpaper() {
-    base::test::TestFuture<std::optional<base::DictValue>> future;
-    view_counter_service_->GetNewTabTakeoverWallpaper(future.GetCallback());
-    return future.Take();
+    base::test::TestFuture<std::optional<base::DictValue>> test_future;
+    view_counter_service_->GetNewTabTakeoverWallpaper(
+        test_future.GetCallback());
+    return test_future.Take();
   }
 
   void EnableSponsoredAndBackgroundImages() {
@@ -334,8 +362,12 @@ class ViewCounterServiceTest : public testing::Test {
   TestingPrefServiceSimple local_state_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
 
+  base::ScopedTempDir installed_dir_;
+
   scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
 
+  std::unique_ptr<sponsored_content::test::FakeSponsoredContentService>
+      sponsored_content_service_;
   std::unique_ptr<FakeNTPBackgroundImagesService> background_images_service_;
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
@@ -368,7 +400,13 @@ TEST_F(ViewCounterServiceTest, CannotShowSponsoredContentIfUninitialized) {
 
 TEST_F(ViewCounterServiceTest, CannotShowSponsoredContentIfMalformed) {
   SetNewTabTakeoverVisibility(true);
-  SimulateMalformedSponsoredContentData();
+  background_images_service_->RegisterSponsoredImagesComponent();
+  ASSERT_TRUE(installed_dir_.CreateUniqueTempDir());
+
+  // `std::nullopt` simulates a missing or unreadable `campaigns.json`.
+  sponsored_content_service_->NotifySponsoredNewTabTakeoverContent(
+      installed_dir_.GetPath(), std::nullopt);
+
   EXPECT_FALSE(view_counter_service_->CanShowNewTabTakeover());
 }
 
@@ -422,8 +460,7 @@ TEST_F(ViewCounterServiceTest, PrefsWithModelTest) {
   SetNewTabTakeoverVisibility(true);
   InstallBackgroundImagesData();
   // Notifies the service, which refreshes its model from the prefs and data.
-  background_images_service_->OnGetSponsoredComponentJsonData(
-      kSponsoredImageCampaignsJson);
+  SimulateSponsoredContentData(kSponsoredImageCampaignsJson);
 
   EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd).Times(0);
   for (int i = 0; i < GetInitialCountToNewTabTakeoverWallpaper(); ++i) {
@@ -530,8 +567,7 @@ TEST_F(
   host_content_settings_map_->SetDefaultContentSetting(
       ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_ALLOW);
 
-  background_images_service_->OnGetSponsoredComponentJsonData(
-      kSponsoredRichMediaCampaignsJson);
+  SimulateSponsoredContentData(kSponsoredRichMediaCampaignsJson);
   ASSERT_TRUE(view_counter_service_->CanShowNewTabTakeover());
 
   brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
@@ -548,8 +584,7 @@ TEST_F(
   host_content_settings_map_->SetDefaultContentSetting(
       ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
 
-  background_images_service_->OnGetSponsoredComponentJsonData(
-      kSponsoredRichMediaCampaignsJson);
+  SimulateSponsoredContentData(kSponsoredRichMediaCampaignsJson);
   ASSERT_FALSE(view_counter_service_->CanShowNewTabTakeover());
 
   EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd).Times(0);
@@ -563,8 +598,7 @@ TEST_F(ViewCounterServiceTest,
   host_content_settings_map_->SetDefaultContentSetting(
       ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_ALLOW);
 
-  background_images_service_->OnGetSponsoredComponentJsonData(
-      kSponsoredImageCampaignsJson);
+  SimulateSponsoredContentData(kSponsoredImageCampaignsJson);
   ASSERT_TRUE(view_counter_service_->CanShowNewTabTakeover());
 
   brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
@@ -580,8 +614,7 @@ TEST_F(ViewCounterServiceTest,
   host_content_settings_map_->SetDefaultContentSetting(
       ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
 
-  background_images_service_->OnGetSponsoredComponentJsonData(
-      kSponsoredImageCampaignsJson);
+  SimulateSponsoredContentData(kSponsoredImageCampaignsJson);
   ASSERT_TRUE(view_counter_service_->CanShowNewTabTakeover());
 
   brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();

@@ -50,6 +50,7 @@ test("brave_components_unittests") {
     "//brave/components/json:unit_tests",
     "//brave/components/oblivious_http:unit_tests",
     "//brave/components/screenshot/core/browser:unit_tests",
+    "//brave/components/sponsored_content:unit_tests",
     "//brave/components/static_redirect_helper:unit_tests",
     "//brave/components/time_period_storage:unit_tests",
     "//brave/components/translate/core/browser:unit_tests",

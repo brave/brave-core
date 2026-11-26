@@ -42,6 +42,7 @@ source_set("app") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",
     "//brave/components/skus/browser",
+    "//brave/components/sponsored_content",
     "//brave/components/update_client:buildflags",
     "//brave/components/variations",
     "//brave/ios/app/resources",

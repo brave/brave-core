@@ -150,11 +150,13 @@
     _otrDownloadManager = std::make_unique<BraveWebViewDownloadManager>(
         _profile->GetOffTheRecordProfile());
 
+    BraveApplicationContextImpl* braveApplicationContext =
+        static_cast<BraveApplicationContextImpl*>(GetApplicationContext());
     _backgroundImagesService = [[NTPBackgroundImagesService alloc]
         initWithBackgroundImagesService:
             std::make_unique<ntp_background_images::NTPBackgroundImagesService>(
-                GetApplicationContext()->GetVariationsService(),
                 GetApplicationContext()->GetComponentUpdateService(),
+                *braveApplicationContext->sponsored_content_service(),
                 GetApplicationContext()->GetLocalState())
                             ads_service:brave_ads::AdsServiceFactoryIOS::
                                             GetForProfile(_profile)];

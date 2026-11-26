@@ -78,6 +78,8 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() override;
+  sponsored_content::SponsoredContentService* sponsored_content_service()
+      override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;

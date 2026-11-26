@@ -83,6 +83,7 @@ include_rules += [
   "+brave/components/skus/browser",
   "+brave/components/skus/common",
   "+brave/components/speedreader",
+  "+brave/components/sponsored_content",
   "+brave/components/web_mcp/core/browser",
   "-brave/components/speedreader/renderer",
   "+brave/components/web_discovery/browser",
