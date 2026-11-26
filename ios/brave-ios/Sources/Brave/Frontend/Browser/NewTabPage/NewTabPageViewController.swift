@@ -6,6 +6,7 @@
 import BraveCore
 import BraveNews
 import BraveShared
+import BraveShields
 import BraveUI
 import Combine
 import CoreData
@@ -178,6 +179,7 @@ class NewTabPageViewController: UIViewController {
     dataSource: NTPDataSource,
     feedDataSource: FeedDataSource,
     rewards: BraveRewards,
+    shieldStats: BraveGlobalShieldStats,
     privateBrowsingManager: PrivateBrowsingManager
   ) {
     self.browserTab = tab
@@ -204,6 +206,7 @@ class NewTabPageViewController: UIViewController {
     sections = [
       StatsSectionProvider(
         isPrivateBrowsing: tab.isPrivate,
+        shieldStats: shieldStats,
         openPrivacyHubPressed: { [weak self] in
           guard let self, let tab = browserTab else { return }
           if privateBrowsingManager.isPrivateBrowsing == true {

@@ -583,7 +583,8 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
     case .shareStats:
       let activityController =
         ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(
-          isPrivateBrowsing: tab.isPrivate
+          isPrivateBrowsing: tab.isPrivate,
+          shieldStats: shieldStats
         )
       activityController.popoverPresentationController?.sourceView = topToolbar.shieldsButton
       presentingViewController.present(activityController, animated: true, completion: nil)

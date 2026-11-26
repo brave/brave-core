@@ -244,6 +244,7 @@ public class BrowserViewController: UIViewController {
   private var cancellables: Set<AnyCancellable> = []
 
   let rewards: BraveRewards
+  let shieldStats: BraveGlobalShieldStats
   var rewardsObserver: RewardsObserver?
   var promotionFetchTimer: Timer?
   private var notificationsHandler: AdsNotificationHandler?
@@ -260,8 +261,7 @@ public class BrowserViewController: UIViewController {
   /// Used to determine when to present benchmark pop-overs
   /// Current session ad count is compared with live ad count
   /// So user will not be introduced with a pop-over directly
-  let benchmarkCurrentSessionAdCount =
-    BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection
+  let benchmarkCurrentSessionAdCount: Int
 
   /// Navigation Helper used for Brave Widgets
   private(set) lazy var navigationHelper = BrowserNavigationHelper(self)
@@ -311,6 +311,7 @@ public class BrowserViewController: UIViewController {
     braveCore: BraveCoreMain,
     profileController: BraveProfileController,
     rewards: BraveRewards,
+    shieldStats: BraveGlobalShieldStats,
     crashedLastSession: Bool,
     newsFeedDataSource: FeedDataSource,
     privateBrowsingManager: PrivateBrowsingManager,
@@ -323,6 +324,8 @@ public class BrowserViewController: UIViewController {
     self.profileController = profileController
     self.bookmarkManager = BookmarkManager(bookmarksAPI: profileController.bookmarksAPI)
     self.rewards = rewards
+    self.shieldStats = shieldStats
+    self.benchmarkCurrentSessionAdCount = shieldStats.adsAndTrackersBlocked
     self.crashedLastSession = crashedLastSession
     self.privateBrowsingManager = privateBrowsingManager
     self.feedDataSource = newsFeedDataSource
@@ -1144,7 +1147,7 @@ public class BrowserViewController: UIViewController {
     }
 
     func observeAdblockChangeForDataSavedP3A(from oldValue: Int) {
-      let stats = BraveGlobalShieldStats.shared
+      let stats = shieldStats
       withObservationTracking {
         let newValue = stats.adblock
         let change = newValue - oldValue
@@ -1159,7 +1162,7 @@ public class BrowserViewController: UIViewController {
       }
     }
 
-    observeAdblockChangeForDataSavedP3A(from: BraveGlobalShieldStats.shared.adblock)
+    observeAdblockChangeForDataSavedP3A(from: shieldStats.adblock)
 
     KeyboardHelper.defaultHelper.addDelegate(self)
     UNUserNotificationCenter.current().delegate = self
@@ -1757,6 +1760,7 @@ public class BrowserViewController: UIViewController {
         dataSource: backgroundDataSource,
         feedDataSource: feedDataSource,
         rewards: rewards,
+        shieldStats: shieldStats,
         privateBrowsingManager: privateBrowsingManager
       )
       // Donate NewTabPage Activity For Custom Suggestions

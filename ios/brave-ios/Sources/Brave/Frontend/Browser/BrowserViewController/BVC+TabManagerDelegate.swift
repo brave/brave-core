@@ -49,9 +49,11 @@ extension BrowserViewController: TabManagerDelegate {
       braveTalkJavascript: braveTalkJitsiCoordinator,
       profileController: profileController
     )
-    tab.aiChatWebUIHelper?.attachPrivacySensitiveTabHelpers = { detachedTab, _ in
+    tab.aiChatWebUIHelper?.attachPrivacySensitiveTabHelpers = { [weak self] detachedTab, _ in
+      guard let self else { return }
       detachedTab.detachedPrivacyHelper = .init(
-        tab: detachedTab
+        tab: detachedTab,
+        shieldStats: self.shieldStats
       )
     }
     tab.aiChatWebUIHelper?.handler = { [weak self] tab, action in
@@ -123,7 +125,7 @@ extension BrowserViewController: TabManagerDelegate {
     }
     tab.cosmeticFilteringTabHelper = .init(tab: tab)
     tab.logins = .init(tab: tab, passwordAPI: profileController.passwordAPI)
-    tab.protectionStats = .init(tab: tab)
+    tab.protectionStats = .init(tab: tab, shieldStats: shieldStats)
     tab.nightMode = .init(tab: tab)
     // reader mode
     tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
@@ -142,7 +144,7 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     if FeatureList.kUseProfileWebViewConfiguration.enabled {
-      tab.requestBlockingTabHelper = .init(tab: tab)
+      tab.requestBlockingTabHelper = .init(tab: tab, shieldStats: shieldStats)
       tab.cosmeticFilteringTabHelper = .init(tab: tab)
       if FeatureList.kBraveShieldsElementPicker.enabled,
         // Block Elements unavailable in private mode.
@@ -191,6 +193,7 @@ extension BrowserViewController: TabManagerDelegate {
         sendTabAPI: profileController.sendTabAPI,
         historyAPI: profileController.historyAPI,
         httpsUpgradeExceptionsService: braveCore.httpsUpgradeExceptionsService,
+        shieldStats: shieldStats,
         onOpenInNewTab: { [weak self] request, isPrivateMode in
           guard let self else { return }
           self.tabManager.addTabAndSelect(

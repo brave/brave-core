@@ -23,19 +23,21 @@ extension TabDataValues {
 class DetachedTabPrivacyHelper: TabPolicyDecider {
   weak var tab: (any TabState)?
 
-  convenience init?(tab: some TabState) {
+  convenience init?(tab: some TabState, shieldStats: BraveGlobalShieldStats) {
     guard
       let shieldSettings = BraveShieldsSettingsServiceFactory.get(profile: tab.profile)
     else { return nil }
     self.init(
       tab: tab,
-      shieldsSettings: shieldSettings
+      shieldsSettings: shieldSettings,
+      shieldStats: shieldStats
     )
   }
 
   init(
     tab: some TabState,
-    shieldsSettings: any BraveShieldsSettings
+    shieldsSettings: any BraveShieldsSettings,
+    shieldStats: BraveGlobalShieldStats
   ) {
     self.tab = tab
 
@@ -46,7 +48,7 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
       tab.browserData = TabBrowserData(tab: tab)
     }
     var privacyRelatedScripts: [TabContentScript] = [
-      RequestBlockingContentScriptHandler(),
+      RequestBlockingContentScriptHandler(shieldStats: shieldStats),
       SiteStateListenerScriptHandler(),
       CosmeticFiltersScriptHandler(),
       URLPartinessScriptHandler(),

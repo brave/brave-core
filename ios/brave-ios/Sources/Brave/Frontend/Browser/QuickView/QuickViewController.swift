@@ -25,6 +25,7 @@ class QuickViewController: UIViewController {
   private let sendTabAPI: BraveSendTabAPI
   private let historyAPI: BraveHistoryAPI
   private let httpsUpgradeExceptionsService: HTTPSUpgradeExceptionsService
+  private let shieldStats: BraveGlobalShieldStats
   private let toolbarViewModel: QuickViewToolbarModel
   private lazy var toolbarHostingController = UIHostingController(
     rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
@@ -67,6 +68,7 @@ class QuickViewController: UIViewController {
     sendTabAPI: BraveSendTabAPI,
     historyAPI: BraveHistoryAPI,
     httpsUpgradeExceptionsService: HTTPSUpgradeExceptionsService,
+    shieldStats: BraveGlobalShieldStats,
     onOpenInNewTab: ((URLRequest, Bool) -> Void)?,
     onOpenInNewWindow: ((URL, Bool) -> Void)?,
     onAttachTab: ((any TabState) -> Void)?,
@@ -78,6 +80,7 @@ class QuickViewController: UIViewController {
     self.sendTabAPI = sendTabAPI
     self.historyAPI = historyAPI
     self.httpsUpgradeExceptionsService = httpsUpgradeExceptionsService
+    self.shieldStats = shieldStats
     self.toolbarViewModel = QuickViewToolbarModel(
       url: url,
       isPrivate: profile.isOffTheRecord
@@ -142,7 +145,7 @@ class QuickViewController: UIViewController {
       )
       tab.braveShieldsHelper = braveShieldsHelper
       tab.addPolicyDecider(braveShieldsHelper)
-      tab.requestBlockingTabHelper = .init(tab: tab)
+      tab.requestBlockingTabHelper = .init(tab: tab, shieldStats: shieldStats)
       tab.cosmeticFilteringTabHelper = .init(tab: tab)
       tab.scriptletsTabHelper = .init(tab: tab)
       tab.blockedDomainTabHelper = .init(tab: tab)
@@ -153,7 +156,7 @@ class QuickViewController: UIViewController {
         )
       }
     }
-    tab.protectionStats = .init(tab: tab)
+    tab.protectionStats = .init(tab: tab, shieldStats: shieldStats)
     tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
     tab.readerMode?.onStateChanged = { [weak self, weak tab] in
       self?.toolbarViewModel.readerModeState = tab?.readerMode?.state ?? .unavailable
@@ -364,7 +367,8 @@ class QuickViewController: UIViewController {
           weakShieldsPanelVC?.dismiss(animated: true) {
             let activityController =
               ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(
-                isPrivateBrowsing: tab.isPrivate
+                isPrivateBrowsing: tab.isPrivate,
+                shieldStats: self.shieldStats
               )
             self.present(activityController, animated: true, completion: nil)
           }
@@ -872,7 +876,7 @@ extension QuickViewController: TabDelegate {
 extension QuickViewController: TabObserver {
   func tabDidCreateWebView(_ tab: some TabState) {
     if !FeatureList.kUseProfileWebViewConfiguration.enabled,
-      let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(tab: tab)
+      let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(tab: tab, shieldStats: shieldStats)
     {
       tab.detachedPrivacyHelper = detachedTabPrivacyHelper
       tab.blockedDomainTabHelper = .init(tab: tab)

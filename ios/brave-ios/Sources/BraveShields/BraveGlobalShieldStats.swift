@@ -6,28 +6,36 @@ import Foundation
 import Preferences
 import Strings
 
+/// Shield stats for a profile, persisted in `Preferences.BlockStats`
 @Observable
 public class BraveGlobalShieldStats {
-  public static let shared = BraveGlobalShieldStats()
+  /// Bandwidth saved is estimated per blocked item
+  public static let averageBytesSavedPerItem = 30485
 
+  // Number of ads blocked
   public var adblock: Int = 0 {
     didSet {
       Preferences.BlockStats.adsCount.value = adblock
     }
   }
 
-  public var trackingProtection: Int = 0 {
-    didSet {
-      Preferences.BlockStats.trackersCount.value = trackingProtection
-    }
+  /// Number of trackers blocked. No longer incremented (all platforms),
+  /// legacy counts only.
+  private var trackingProtection: Int = 0
+
+  // Total number of ads and trackers blocked
+  public var adsAndTrackersBlocked: Int {
+    adblock + trackingProtection
   }
 
+  /// Number of scripts blocked
   public var scripts: Int = 0 {
     didSet {
       Preferences.BlockStats.scriptsCount.value = scripts
     }
   }
 
+  /// Number of images blocked
   public var images: Int = 0 {
     didSet {
       Preferences.BlockStats.imagesCount.value = images
@@ -46,7 +54,7 @@ public class BraveGlobalShieldStats {
     }
   }
 
-  fileprivate init() {
+  public init() {
     adblock = Preferences.BlockStats.adsCount.value
     trackingProtection = Preferences.BlockStats.trackersCount.value
     images = Preferences.BlockStats.imagesCount.value
@@ -55,11 +63,20 @@ public class BraveGlobalShieldStats {
     safeBrowsing = Preferences.BlockStats.phishingCount.value
   }
 
-  public let averageBytesSavedPerItem = 30485
-
+  // Formatted time saved from blocking
   public var timeSaved: String {
+    Self.timeSaved(blockedCount: adblock + trackingProtection)
+  }
+
+  // Formatted data saved from blocking
+  public var dataSaved: String {
+    Self.dataSaved(blockedCount: adblock + trackingProtection)
+  }
+
+  /// Formats the given `blockedCount` to time saved string
+  public static func timeSaved(blockedCount: Int) -> String {
     let millisecondsPerItem: Int = 50
-    let estimatedMillisecondsSaved = (adblock + trackingProtection) * millisecondsPerItem
+    let estimatedMillisecondsSaved = blockedCount * millisecondsPerItem
     let hours = estimatedMillisecondsSaved < 1000 * 60 * 60 * 24
     let minutes = estimatedMillisecondsSaved < 1000 * 60 * 60
     let seconds = estimatedMillisecondsSaved < 1000 * 60
@@ -88,10 +105,9 @@ public class BraveGlobalShieldStats {
     }
   }
 
-  public var dataSaved: String {
-    var estimatedDataSavedInBytes =
-      (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection)
-      * averageBytesSavedPerItem
+  /// Formats the given `blockedCount` to data saved string
+  public static func dataSaved(blockedCount: Int) -> String {
+    var estimatedDataSavedInBytes = blockedCount * averageBytesSavedPerItem
 
     if estimatedDataSavedInBytes <= 0 { return "0" }
     let _1MB = 1000 * 1000
