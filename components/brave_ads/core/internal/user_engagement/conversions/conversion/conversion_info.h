@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_ads/core/internal/tabs/extracted_order_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
@@ -36,6 +37,8 @@ struct ConversionInfo final {
   std::string advertiser_id;
   std::string segment;
   ConversionActionType action_type = ConversionActionType::kUndefined;
+
+  ExtractedOrderInfo extracted_order;
 };
 
 using ConversionList = std::vector<ConversionInfo>;
