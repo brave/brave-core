@@ -106,6 +106,28 @@ constexpr char kWaitForRowIndicatorScript[] = R"(
   }))
 )";
 
+// Called with kReadRowIndicatorFunction: records the row's indicator now and
+// each time it changes, in window.rowIndicators, so one the row shows only
+// briefly is still recorded. Returns the first value.
+constexpr char kRecordRowIndicatorsScript[] = R"(
+  ((read) => {
+    const recorded = [read()]
+    new MutationObserver(() => {
+      const value = read()
+      if (value !== recorded.at(-1)) {
+        recorded.push(value)
+      }
+    }).observe(document, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['data-testid'],
+    })
+    window.rowIndicators = recorded
+    return recorded[0]
+  })
+)";
+
 }  // namespace
 
 // Tests what the full page's conversation list and the completion notification
@@ -269,8 +291,8 @@ class AIChatGenerationStatusBrowserTest
 };
 
 // A page open before a background conversation starts gets its generation
-// state as events: the ring while it generates, then the response ready dot
-// once it finishes without having been viewed.
+// state as events: the spinner while it generates, then the response ready
+// dot once it finishes without having been viewed.
 IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
                        BackgroundConversationShowsGeneratingThenCompleted) {
   content::RenderFrameHost* page = OpenFullPageOnNewChat();
@@ -372,7 +394,7 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
       [&] { return conversation_handler_->IsAnyClientConnected(); }));
 
   CompleteResponse(std::move(response));
-  // The other page's ring goes once the service has decided the response
+  // The other page's spinner goes once the service has decided the response
   // finished while viewed, which is when it would show a notification.
   ASSERT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
   EXPECT_EQ(notifications_shown_, 0);
@@ -403,8 +425,8 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
       l10n_util::GetStringUTF16(IDS_AI_CHAT_NOTIFICATION_BODY_NEEDS_APPROVAL));
 }
 
-// Approving the challenge from the conversation brings the ring back while the
-// tool runs and the response continues, and the dot once that finishes with
+// Approving the challenge from the conversation brings the spinner back while
+// the tool runs and the response continues, and the dot once that finishes with
 // the conversation no longer open.
 IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
                        ApprovingPermissionShowsGeneratingThenCompleted) {
@@ -485,35 +507,9 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
   EXPECT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
 }
 
-namespace {
-
-// Called with kReadRowIndicatorFunction: records what the row shows now, and
-// again on every DOM change, in window.rowIndicators, skipping repeats. A
-// value the row shows only briefly is still recorded. Returns the first value.
-constexpr char kRecordRowIndicatorsScript[] = R"(
-  ((read) => {
-    const recorded = [read()]
-    new MutationObserver(() => {
-      const value = read()
-      if (value !== recorded.at(-1)) {
-        recorded.push(value)
-      }
-    }).observe(document, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['data-testid'],
-    })
-    window.rowIndicators = recorded
-    return recorded[0]
-  })
-)";
-
-}  // namespace
-
-// A background tool loop keeps the ring from the response that asks for tools,
-// through each tool and the response after them, and only shows the dot and
-// its notification once that last response ends the turn.
+// A background tool loop keeps the spinner from the response that asks for
+// tools, through each tool and the response after them, and only shows the dot
+// and its notification once that last response ends the turn.
 IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
                        ToolLoopShowsGeneratingUntilItEnds) {
   content::RenderFrameHost* page = OpenFullPageOnNewChat();
