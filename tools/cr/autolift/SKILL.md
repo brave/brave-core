@@ -1163,8 +1163,8 @@ lift, `159.0.8135.1..159.0.8136.1` for a later bump). Write its dump to
 `.autolift/cr<N>/codehealth_<new tag>`, not the temp dir, so a resumed run can
 reuse it. It writes or updates `tools/cr/codehealth/M<N>.md` with what fails
 silently: overrides that stopped applying, re-enabled features, Brave copies
-that missed upstream fixes. Follow its own instructions (subagents, static
-verification only), and commit what changed under `tools/cr/codehealth/` as
+that missed upstream fixes. Follow its own instructions (subagents on `sonnet`,
+static verification only), and commit what changed under `tools/cr/codehealth/` as
 `Version CodeHealth tracker`.
 
 Its sweeps run for an hour or more each; start them, end your turn, and wait.

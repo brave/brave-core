@@ -1,0 +1,16 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipe_modules.brave.claude_cli;
+
+message EnvProperties {
+  // What the `opus` and `sonnet` model aliases resolve to, as Claude reads
+  // them itself, e.g. Bedrock inference profile ARNs. Empty means Claude's
+  // default model for the alias.
+  string ANTHROPIC_DEFAULT_OPUS_MODEL = 1;
+  string ANTHROPIC_DEFAULT_SONNET_MODEL = 2;
+}

@@ -343,6 +343,8 @@
       "[WORKSPACE]/b/src/brave/.autolift/cr157.x/report.md",
       "--",
       "claude",
+      "--model",
+      "opus",
       "--print",
       "Lift.",
       "--permission-mode",

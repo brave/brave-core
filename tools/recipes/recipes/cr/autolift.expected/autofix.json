@@ -354,6 +354,8 @@
       "[WORKSPACE]/b/src/brave/.autolift/cr158/report.md",
       "--",
       "claude",
+      "--model",
+      "opus",
       "--print",
       "Fix the CI of cr158.",
       "--permission-mode",

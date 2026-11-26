@@ -167,6 +167,7 @@ def _sync_tooling(
             log_dir=run_dir,
             add_dirs=add_dirs,
             allowed_tools=allowed_tools,
+            model='opus',
         )
 
 
@@ -300,6 +301,7 @@ def RunSteps(
                 log_dir=run_dir,
                 add_dirs=add_dirs,
                 allowed_tools=allowed_tools,
+                model='opus',
                 # The skill's files the prompt names; the report lists any the
                 # agent didn't read in full.
                 must_read=[root / path for path in advice['reads']],

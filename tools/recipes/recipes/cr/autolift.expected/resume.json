@@ -90,6 +90,8 @@
       "[WORKSPACE]/b/src/brave/.autolift/cr159/report.md",
       "--",
       "claude",
+      "--model",
+      "opus",
       "--print",
       "Resume cr159.",
       "--permission-mode",

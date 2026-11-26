@@ -30,6 +30,8 @@
       "[WORKSPACE]/rc/claude/report.md",
       "--",
       "claude",
+      "--model",
+      "sonnet",
       "--print",
       "Fix the build.\n\nThe checkout is in `src`.",
       "--permission-mode",
@@ -48,6 +50,8 @@
       "Write(/[WORKSPACE]/rc/tmp/**)"
     ],
     "env": {
+      "ANTHROPIC_DEFAULT_OPUS_MODEL": "opus-profile",
+      "ANTHROPIC_DEFAULT_SONNET_MODEL": "sonnet-profile",
       "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
       "CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS": "0",
       "CLAUDE_CODE_TMPDIR": "[WORKSPACE]/rc/tmp"

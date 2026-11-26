@@ -373,6 +373,8 @@
       "[WORKSPACE]/b/src/brave/.autolift/cr158/report.md",
       "--",
       "claude",
+      "--model",
+      "opus",
       "--print",
       "Rebase cr158.",
       "--permission-mode",
