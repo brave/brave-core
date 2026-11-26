@@ -26,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -162,16 +163,16 @@ class SolanaTxManagerUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, account_owner_map](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-          std::string_view request_string(request.request_body->elements()
-                                              ->at(0)
-                                              .As<network::DataElementBytes>()
-                                              .AsStringPiece());
+          std::string_view request_string = GetRpcRequestBody(request);
           base::DictValue request_root =
               base::test::ParseJsonDict(request_string);
           auto* params = request_root.FindList("params");
-          ASSERT_TRUE(params && !params->empty() && (*params)[0].is_string());
-          std::string account_address = (*params)[0].GetString();
-          ASSERT_TRUE(account_owner_map.contains(account_address));
+          if (!params || params->empty() || !params->front().is_string() ||
+              !account_owner_map.contains(params->front().GetString())) {
+            RejectUnexpectedRpcRequest(url_loader_factory_, request);
+            return;
+          }
+          const auto& account_address = params->front().GetString();
 
           if (account_owner_map.at(account_address).empty()) {
             url_loader_factory_.AddResponse(request.url.spec(), R"(
@@ -216,7 +217,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
             url_loader_factory_.ClearResponses();
             url_loader_factory_.AddResponse(request.url.spec(), response);
           } else {
-            ADD_FAILURE() << "Unhandled request: " << request.url;
+            RejectUnexpectedRpcRequest(url_loader_factory_, request);
           }
         }));
   }
@@ -236,15 +237,15 @@ class SolanaTxManagerUnitTest : public testing::Test {
          last_valid_block_height, block_height, mock_signature_value,
          rpc_method_responses](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-          std::string_view request_string(request.request_body->elements()
-                                              ->at(0)
-                                              .As<network::DataElementBytes>()
-                                              .AsStringPiece());
+          std::string_view request_string = GetRpcRequestBody(request);
           base::DictValue request_root =
               base::test::ParseJsonDict(request_string);
 
           std::string* method = request_root.FindString("method");
-          ASSERT_TRUE(method);
+          if (!method) {
+            RejectUnexpectedRpcRequest(url_loader_factory_, request);
+            return;
+          }
 
           // Check if there's a custom response for the method
           if (rpc_method_responses && rpc_method_responses->contains(*method)) {
@@ -317,15 +318,20 @@ class SolanaTxManagerUnitTest : public testing::Test {
 
             const base::ListValue* params_list =
                 request_root.FindList("params");
-            ASSERT_TRUE(params_list && (*params_list)[0].is_list());
-            const std::string* hash =
-                (*params_list)[0].GetList()[0].GetIfString();
-            ASSERT_TRUE(hash);
+            if (!params_list || params_list->empty() ||
+                !params_list->front().is_list() ||
+                params_list->front().GetList().empty() ||
+                !params_list->front().GetList().front().is_string()) {
+              RejectUnexpectedRpcRequest(url_loader_factory_, request);
+              return;
+            }
+            const auto& hash =
+                params_list->front().GetList().front().GetString();
             std::string json;
 
             // The tx is stored as dict, so we can't gurantee the sequence of
             // hash in the request to be the same as submissions.
-            if (*hash == tx_hash1_) {
+            if (hash == tx_hash1_) {
               json = R"(
                 {"jsonrpc":2.0, "id":1, "result":
                   {
@@ -391,8 +397,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
               "id": 1
             })");
           } else {
-            ADD_FAILURE() << "Unhandled request: " << request.url
-                          << " body: " << request_string;
+            RejectUnexpectedRpcRequest(url_loader_factory_, request);
           }
         }));
   }

@@ -292,25 +292,8 @@ class TestJsonRpcServiceObserver
 
 std::optional<base::DictValue> ToValue(
     const network::ResourceRequest& request) {
-  std::string_view request_string(request.request_body->elements()
-                                      ->at(0)
-                                      .As<network::DataElementBytes>()
-                                      .AsStringPiece());
-  return base::JSONReader::ReadDict(request_string,
-                                    base::JSONParserOptions::JSON_PARSE_RFC);
-}
-
-// Returns request body for failure messages of unhandled requests.
-std::string GetRequestBodyForLog(const network::ResourceRequest& request) {
-  if (!request.request_body || !request.request_body->elements() ||
-      request.request_body->elements()->empty()) {
-    return "";
-  }
-  const auto& element = request.request_body->elements()->at(0);
-  if (element.type() != network::DataElement::Tag::kBytes) {
-    return "<non-bytes body>";
-  }
-  return std::string(element.As<network::DataElementBytes>().AsStringPiece());
+  return base::JSONReader::ReadDict(GetRpcRequestBody(request),
+                                    base::JSON_PARSE_RFC);
 }
 
 class EthCallHandler {
@@ -327,8 +310,12 @@ class EthCallHandler {
       return false;
     }
 
-    auto [selector, _] =
-        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    auto call = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    if (!call) {
+      ADD_FAILURE() << "Malformed ABI call: " << base::HexEncode(call_data);
+      return false;
+    }
+    auto [selector, _] = *call;
 
     for (const auto& s : selectors_) {
       if (std::ranges::equal(s, selector)) {
@@ -2796,8 +2783,12 @@ class UDGetManyCallHandler : public EthCallHandler {
   ~UDGetManyCallHandler() override = default;
 
   std::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
-    auto [_, args] =
-        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    auto call = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    if (!call) {
+      ADD_FAILURE() << "Malformed ABI call: " << base::HexEncode(call_data);
+      return std::nullopt;
+    }
+    auto [_, args] = *call;
     auto keys_array = eth_abi::ExtractStringArrayFromTuple(args, 0);
     auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple<32>(args, 1);
     if (!keys_array || !namehash_bytes) {
@@ -3014,10 +3005,7 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
         url_loader_factory_.AddResponse(request.url.spec(), *response);
       }
     } else {
-      ADD_FAILURE() << "Unhandled request: " << request.url
-                    << " body: " << GetRequestBodyForLog(request);
-      url_loader_factory_.AddResponse(request.url.spec(), "",
-                                      net::HTTP_INTERNAL_SERVER_ERROR);
+      RejectUnexpectedRpcRequest(url_loader_factory_, request);
     }
   }
 };
@@ -5255,8 +5243,12 @@ struct EnsTestRecord {
 std::vector<uint8_t> ResolveEnsTestRecord(
     eth_abi::Span resolver_call,
     const std::map<std::string, EnsTestRecord>& records) {
-  auto [selector, args] =
-      *eth_abi::ExtractFunctionSelectorAndArgsFromCall(resolver_call);
+  auto call = eth_abi::ExtractFunctionSelectorAndArgsFromCall(resolver_call);
+  if (!call) {
+    ADD_FAILURE() << "Malformed ABI call: " << base::HexEncode(resolver_call);
+    return {};
+  }
+  auto [selector, args] = *call;
   auto namehash = eth_abi::ExtractFixedBytesFromTuple<32>(args, 0);
   EXPECT_TRUE(namehash);
   if (!namehash) {
@@ -5301,8 +5293,12 @@ class EnsUniversalResolverHandler : public EthCallHandler {
   ~EnsUniversalResolverHandler() override = default;
 
   std::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
-    auto [selector, args] =
-        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    auto call = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    if (!call) {
+      ADD_FAILURE() << "Malformed ABI call: " << base::HexEncode(call_data);
+      return std::nullopt;
+    }
+    auto [selector, args] = *call;
 
     if (std::ranges::equal(selector, CallbackSelector())) {
       auto extra_data = eth_abi::ExtractBytesFromTuple(args, 1);
@@ -5413,8 +5409,12 @@ class OffchainGatewayHandler {
       return std::nullopt;
     }
 
-    auto [selector, args] =
-        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(*bytes);
+    auto call = eth_abi::ExtractFunctionSelectorAndArgsFromCall(*bytes);
+    if (!call) {
+      ADD_FAILURE() << "Malformed ABI call: " << base::HexEncode(*bytes);
+      return std::nullopt;
+    }
+    auto [selector, args] = *call;
     EXPECT_TRUE(std::ranges::equal(selector, kResolveBytesBytesSelector));
     auto resolver_call = eth_abi::ExtractBytesFromTuple(args, 1);
     EXPECT_TRUE(resolver_call);
@@ -5535,10 +5535,7 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
         url_loader_factory_.AddResponse(request.url.spec(), *offchain_response);
       }
     } else {
-      ADD_FAILURE() << "Unhandled request: " << request.url
-                    << " body: " << GetRequestBodyForLog(request);
-      url_loader_factory_.AddResponse(request.url.spec(), "",
-                                      net::HTTP_INTERNAL_SERVER_ERROR);
+      RejectUnexpectedRpcRequest(url_loader_factory_, request);
     }
   }
 
@@ -6019,10 +6016,7 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
         url_loader_factory_.AddResponse(request.url.spec(), *json_response);
       }
     } else {
-      ADD_FAILURE() << "Unhandled request: " << request.url
-                    << " body: " << GetRequestBodyForLog(request);
-      url_loader_factory_.AddResponse(request.url.spec(), "",
-                                      net::HTTP_INTERNAL_SERVER_ERROR);
+      RejectUnexpectedRpcRequest(url_loader_factory_, request);
     }
   }
 

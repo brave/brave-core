@@ -21,6 +21,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
+using base::test::IsJson;
 using base::test::ParseJsonDict;
 using base::test::ParseJsonList;
 using ::testing::Optional;
@@ -551,7 +552,7 @@ TEST(EthResponseHelperUnitTest, NormalizeEthRequest) {
       "[]}";
   std::string output_json;
   EXPECT_TRUE(NormalizeEthRequest(full_json, &output_json));
-  EXPECT_EQ(ParseJsonDict(full_json), ParseJsonDict(output_json));
+  EXPECT_THAT(output_json, IsJson(full_json));
 
   // Fills missing id and jsonrpc values
   std::string partial_json = "{\"method\":\"eth_blockNumber\",\"params\":[]}";
@@ -559,8 +560,7 @@ TEST(EthResponseHelperUnitTest, NormalizeEthRequest) {
       "{\"id\":\"1\",\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\","
       "\"params\":[]}";
   EXPECT_TRUE(NormalizeEthRequest(partial_json, &output_json));
-  EXPECT_EQ(ParseJsonDict(expected_full_json_no_id),
-            ParseJsonDict(output_json));
+  EXPECT_THAT(output_json, IsJson(expected_full_json_no_id));
 
   // Invalid input
   EXPECT_FALSE(NormalizeEthRequest(
@@ -664,11 +664,9 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
 
   EXPECT_EQ(eth_sign_typed_data->address_param,
             "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826");
-  EXPECT_EQ(ParseJsonDict(eth_sign_typed_data->message_json),
-            ParseJsonDict(expected_message));
+  EXPECT_THAT(eth_sign_typed_data->message_json, IsJson(expected_message));
 
-  EXPECT_EQ(ParseJsonDict(eth_sign_typed_data->domain_json),
-            ParseJsonDict(expected_domain));
+  EXPECT_THAT(eth_sign_typed_data->domain_json, IsJson(expected_domain));
 
   EXPECT_EQ(eth_sign_typed_data->chain_id, "0x1");
 
@@ -692,11 +690,9 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
 
   EXPECT_EQ(eth_sign_typed_data->address_param,
             "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826");
-  EXPECT_EQ(ParseJsonDict(eth_sign_typed_data->message_json),
-            ParseJsonDict(expected_message));
+  EXPECT_THAT(eth_sign_typed_data->message_json, IsJson(expected_message));
 
-  EXPECT_EQ(ParseJsonDict(eth_sign_typed_data->domain_json),
-            ParseJsonDict(expected_domain));
+  EXPECT_THAT(eth_sign_typed_data->domain_json, IsJson(expected_domain));
 
   EXPECT_EQ(eth_sign_typed_data->chain_id, "0x1");
 
@@ -728,8 +724,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
       params_list, EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(eth_sign_typed_data);
   // OK: extraneous message properties are sanitized.
-  EXPECT_EQ(ParseJsonDict(eth_sign_typed_data->message_json),
-            ParseJsonDict(expected_message));
+  EXPECT_THAT(eth_sign_typed_data->message_json, IsJson(expected_message));
 
   // OK: primary type message hash is unchanged.
   EXPECT_EQ(base::HexEncodeLower(eth_sign_typed_data->primary_hash),

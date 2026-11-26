@@ -45,6 +45,7 @@
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service_migrations.h"
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_import_keyring.h"
@@ -4797,6 +4798,7 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     auto mnemonic = CreateWallet(&service, "brave");
     ASSERT_TRUE(mnemonic);
+    ASSERT_FALSE(mnemonic->empty());
     saved_mnemonic_ = *mnemonic;
 
     saved_addresses_.clear();
@@ -4824,49 +4826,40 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
 
   void Interceptor(const network::ResourceRequest& request) {
     url_loader_factory().ClearResponses();
-    std::string_view request_string(request.request_body->elements()
-                                        ->at(0)
-                                        .As<network::DataElementBytes>()
-                                        .AsStringPiece());
-    base::DictValue dict = ParseJsonDict(request_string);
-    std::string* method = dict.FindString("method");
-    ASSERT_TRUE(method);
-    if (*method == "eth_getTransactionCount") {
-      base::ListValue* params = dict.FindList("params");
-      ASSERT_TRUE(params);
-      std::string* address = (*params)[0].GetIfString();
-      ASSERT_TRUE(address);
+    const auto dict = ParseJsonDict(GetRpcRequestBody(request));
+    const auto* method = dict.FindString("method");
+    if (!method) {
+      RejectUnexpectedRpcRequest(url_loader_factory(), request);
+      return;
+    }
+    if (*method == "getTokenAccountsByOwner") {
+      // Asset discovery also runs on wallet restore. Leave its request pending.
+      return;
+    }
 
+    const auto* params = dict.FindList("params");
+    if (!params || params->empty() || !params->front().is_string()) {
+      RejectUnexpectedRpcRequest(url_loader_factory(), request);
+      return;
+    }
+    const auto& address = params->front().GetString();
+    if (*method == "eth_getTransactionCount") {
       if (eth_transaction_count_callback_) {
         url_loader_factory().AddResponse(
-            request.url.spec(), eth_transaction_count_callback_.Run(*address));
+            request.url.spec(), eth_transaction_count_callback_.Run(address));
       }
     } else if (*method == "Filecoin.WalletBalance") {
-      base::ListValue* params = dict.FindList("params");
-      ASSERT_TRUE(params);
-      std::string* address = (*params)[0].GetIfString();
-      ASSERT_TRUE(address);
-
       if (fil_balance_callback_) {
         url_loader_factory().AddResponse(request.url.spec(),
-                                         fil_balance_callback_.Run(*address));
+                                         fil_balance_callback_.Run(address));
       }
     } else if (*method == "getBalance") {
-      base::ListValue* params = dict.FindList("params");
-      ASSERT_TRUE(params);
-      std::string* address = (*params)[0].GetIfString();
-      ASSERT_TRUE(address);
-
       if (sol_balance_callback_) {
         url_loader_factory().AddResponse(request.url.spec(),
-                                         sol_balance_callback_.Run(*address));
+                                         sol_balance_callback_.Run(address));
       }
-    } else if (*method == "getTokenAccountsByOwner") {
-      // Sent by asset discovery for the accounts added on wallet restore.
-      // Intentionally left unanswered.
     } else {
-      ADD_FAILURE() << "Unhandled request " << request.url
-                    << " body: " << request_string;
+      RejectUnexpectedRpcRequest(url_loader_factory(), request);
     }
   }
 
