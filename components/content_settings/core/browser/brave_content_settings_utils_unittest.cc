@@ -65,7 +65,7 @@ TEST_F(BraveContentSettingsUtilsTest,
   // Wildcard scheme, has port.
   auto pattern = ConvertPatternToWildcardSchemeAndPort(
       ContentSettingsPattern::FromString("*://brave.com:8080/*"));
-  EXPECT_NE(std::nullopt, pattern);
+  ASSERT_TRUE(pattern.has_value());
   EXPECT_EQ(pattern->ToString(), "brave.com");
   EXPECT_TRUE(pattern->Matches(GURL("http://brave.com:80/path1")));
   EXPECT_TRUE(pattern->Matches(GURL("https://brave.com/path2")));
@@ -75,7 +75,7 @@ TEST_F(BraveContentSettingsUtilsTest,
   // Scheme, no port.
   pattern = ConvertPatternToWildcardSchemeAndPort(
       ContentSettingsPattern::FromString("http://brave.com/"));
-  EXPECT_NE(std::nullopt, pattern);
+  ASSERT_TRUE(pattern.has_value());
   EXPECT_EQ(pattern->ToString(), "brave.com");
   EXPECT_TRUE(pattern->Matches(GURL("ftp://brave.com:80/path1")));
   EXPECT_TRUE(pattern->Matches(GURL("https://brave.com/path2")));
@@ -85,7 +85,7 @@ TEST_F(BraveContentSettingsUtilsTest,
   // Scheme and port.
   pattern = ConvertPatternToWildcardSchemeAndPort(
       ContentSettingsPattern::FromString("https://brave.com:56558/"));
-  EXPECT_NE(std::nullopt, pattern);
+  ASSERT_TRUE(pattern.has_value());
   EXPECT_EQ(pattern->ToString(), "brave.com");
   EXPECT_TRUE(pattern->Matches(GURL("wss://brave.com:80/path1")));
   EXPECT_TRUE(pattern->Matches(GURL("https://brave.com/path2")));
