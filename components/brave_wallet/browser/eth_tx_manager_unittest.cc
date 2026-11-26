@@ -33,6 +33,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -189,13 +190,13 @@ class EthTxManagerUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-          std::string_view request_string(request.request_body->elements()
-                                              ->at(0)
-                                              .As<network::DataElementBytes>()
-                                              .AsStringPiece());
+          std::string_view request_string = GetRpcRequestBody(request);
           base::DictValue request_value = ParseJsonDict(request_string);
           std::string* method = request_value.FindString("method");
-          ASSERT_TRUE(method);
+          if (!method) {
+            RejectUnexpectedRpcRequest(url_loader_factory_, request);
+            return;
+          }
 
           if (*method == "eth_estimateGas") {
             url_loader_factory_.AddResponse(
@@ -243,6 +244,8 @@ class EthTxManagerUnitTest : public testing::Test {
                     ]
                   }
                 })");
+          } else {
+            RejectUnexpectedRpcRequest(url_loader_factory_, request);
           }
         }));
 
@@ -1631,8 +1634,7 @@ TEST_F(EthTxManagerUnitTest,
       [this](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
         auto header_value = request.headers.GetHeader("X-Eth-Method");
-        ASSERT_TRUE(header_value);
-        if (*header_value == "eth_getBlockByNumber") {
+        if (header_value == "eth_getBlockByNumber") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1641,7 +1643,7 @@ TEST_F(EthTxManagerUnitTest,
               },
               "id": 1
             })");
-        } else if (*header_value == "eth_feeHistory") {
+        } else if (header_value == "eth_feeHistory") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1653,7 +1655,7 @@ TEST_F(EthTxManagerUnitTest,
             }
           )");
         } else {
-          ADD_FAILURE() << "Unhandled request: " << *header_value;
+          RejectUnexpectedRpcRequest(url_loader_factory_, request);
         }
       }));
 
@@ -1688,8 +1690,7 @@ TEST_F(EthTxManagerUnitTest,
       [this](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
         auto header_value = request.headers.GetHeader("X-Eth-Method");
-        ASSERT_TRUE(header_value);
-        if (*header_value == "eth_getBlockByNumber") {
+        if (header_value == "eth_getBlockByNumber") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1698,7 +1699,7 @@ TEST_F(EthTxManagerUnitTest,
               },
               "id": 1
             })");
-        } else if (*header_value == "eth_feeHistory") {
+        } else if (header_value == "eth_feeHistory") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1709,7 +1710,7 @@ TEST_F(EthTxManagerUnitTest,
               "id": 1
             }
           )");
-        } else if (*header_value == "eth_estimateGas") {
+        } else if (header_value == "eth_estimateGas") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1717,7 +1718,7 @@ TEST_F(EthTxManagerUnitTest,
               "id": 1
             })");
         } else {
-          ADD_FAILURE() << "Unhandled request: " << *header_value;
+          RejectUnexpectedRpcRequest(url_loader_factory_, request);
         }
       }));
 
@@ -1750,8 +1751,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionFeeHistoryFailed) {
       [this](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
         auto header_value = request.headers.GetHeader("X-Eth-Method");
-        ASSERT_TRUE(header_value);
-        if (*header_value == "eth_feeHistory") {
+        if (header_value == "eth_feeHistory") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1763,7 +1763,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionFeeHistoryFailed) {
             }
           )");
         } else {
-          ADD_FAILURE() << "Unhandled request: " << *header_value;
+          RejectUnexpectedRpcRequest(url_loader_factory_, request);
         }
       }));
 
@@ -2048,21 +2048,30 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
   meta.set_status(mojom::TransactionStatus::Submitted);
   ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
 
+  // Receipt requests sent by UpdatePendingTransactions() are intentionally left
+  // unanswered so nothing is confirmed before the block tracker fires.
+  url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+      [this](const network::ResourceRequest& request) {
+        auto header_value = request.headers.GetHeader("X-Eth-Method");
+        if (header_value != "eth_getTransactionReceipt") {
+          RejectUnexpectedRpcRequest(url_loader_factory_, request);
+        }
+      }));
+
   eth_tx_manager()->UpdatePendingTransactions(std::nullopt);
 
   url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
       [this](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
         auto header_value = request.headers.GetHeader("X-Eth-Method");
-        ASSERT_TRUE(header_value);
-        if (*header_value == "eth_blockNumber") {
+        if (header_value == "eth_blockNumber") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc":"2.0",
               "result":"0x65a8db",
               "id":1
             })");
-        } else if (*header_value == "eth_getTransactionReceipt") {
+        } else if (header_value == "eth_getTransactionReceipt") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -2081,7 +2090,7 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
               }
             })");
         } else {
-          ADD_FAILURE() << "Unhandled request: " << *header_value;
+          RejectUnexpectedRpcRequest(url_loader_factory_, request);
         }
       }));
 
@@ -2410,10 +2419,7 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
 
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-        std::string_view request_string(request.request_body->elements()
-                                            ->at(0)
-                                            .As<network::DataElementBytes>()
-                                            .AsStringPiece());
+        std::string_view request_string = GetRpcRequestBody(request);
         if (request_string.find(contract_safe_transfer_from) !=
             std::string::npos) {
           url_loader_factory_.AddResponse(
@@ -2429,7 +2435,7 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
               "\"0x0000000000000000000000000000000000000000000000000000000000"
               "000000\"}");
         } else {
-          ADD_FAILURE() << "Unhandled request: " << request_string;
+          RejectUnexpectedRpcRequest(url_loader_factory_, request);
         }
       }));
 

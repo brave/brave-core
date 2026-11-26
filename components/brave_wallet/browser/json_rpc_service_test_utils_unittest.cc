@@ -6,6 +6,8 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 
 #include <optional>
+#include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/test/values_test_util.h"
@@ -14,27 +16,29 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using base::test::IsJson;
 using base::test::ParseJson;
 
 namespace brave_wallet {
 
 namespace {
-std::string ParseRpcJsonResult(const std::string& json) {
+std::optional<std::string> ParseStringTuplePayload(const std::string& json) {
   base::DictValue value = base::test::ParseJsonDict(json);
   EXPECT_THAT(value,
               base::test::DictionaryHasValue("jsonrpc", base::Value("2.0")));
   EXPECT_THAT(value, base::test::DictionaryHasValue("id", base::Value(1)));
-  auto* result = value.FindString("result");
-  EXPECT_TRUE(result);
-  EXPECT_THAT(*result, testing::StartsWith("0x"));
-  return result->substr(2);
-}
-
-std::string DecodeTuple1(const std::string& data) {
-  std::string head =
-      "0000000000000000000000000000000000000000000000000000000000000020";
-  EXPECT_THAT(data, testing::StartsWith(head));
-  return data.substr(head.size());
+  const std::string* result = value.FindString("result");
+  if (!result) {
+    ADD_FAILURE() << "Missing string \"result\" in " << json;
+    return std::nullopt;
+  }
+  constexpr std::string_view kTuplePrefix =
+      "0x0000000000000000000000000000000000000000000000000000000000000020";
+  if (!result->starts_with(kTuplePrefix)) {
+    ADD_FAILURE() << "Expected a single-string tuple offset in " << *result;
+    return std::nullopt;
+  }
+  return result->substr(kTuplePrefix.size());
 }
 }  // namespace
 
@@ -54,7 +58,7 @@ TEST(JsonRpcServiceTestUtils, MakeJsonRpcStringArrayResponse) {
       R"(74776f0000000000000000000000000000000000000000000000000000000000)"
       R"(0000000000000000000000000000000000000000000000000000000000000005)"
       R"(7468726565000000000000000000000000000000000000000000000000000000"})";
-  EXPECT_EQ(expected, json);
+  EXPECT_THAT(json, IsJson(expected));
 
   auto decoded =
       eth::ParseUnstoppableDomainsProxyReaderGetMany(ParseJson(json));
@@ -71,7 +75,7 @@ TEST(JsonRpcServiceTestUtils, MakeJsonRpcStringArrayResponse_Empty) {
       R"(0000000000000000000000000000000000000000000000000000000000000020)"
       R"(0000000000000000000000000000000000000000000000000000000000000000)"
       R"(0000000000000000000000000000000000000000000000000000000000000000"})";
-  EXPECT_EQ(expected, json);
+  EXPECT_THAT(json, IsJson(expected));
 
   auto decoded =
       eth::ParseUnstoppableDomainsProxyReaderGetMany(ParseJson(json));
@@ -128,7 +132,7 @@ TEST(JsonRpcServiceTestUtils,
       // encoding for "https://fallback2.test.com"
       R"(68747470733a2f2f66616c6c6261636b322e746573742e636f6d000000000000"})";
 
-  EXPECT_EQ(expected, json);
+  EXPECT_THAT(json, IsJson(expected));
 
   auto decoded =
       eth::ParseUnstoppableDomainsProxyReaderGetMany(ParseJson(json));
@@ -145,11 +149,12 @@ TEST(JsonRpcServiceTestUtils, MakeJsonRpcStringResponse) {
       R"(0000000000000000000000000000000000000000000000000000000000000020)"
       R"(0000000000000000000000000000000000000000000000000000000000000001)"
       R"(6100000000000000000000000000000000000000000000000000000000000000"})";
-  EXPECT_EQ(expected, json);
+  EXPECT_THAT(json, IsJson(expected));
 
+  auto payload = ParseStringTuplePayload(json);
+  ASSERT_TRUE(payload);
   std::string decoded;
-  EXPECT_TRUE(
-      DecodeString(0, DecodeTuple1(ParseRpcJsonResult(json)), &decoded));
+  ASSERT_TRUE(DecodeString(0, *payload, &decoded));
   EXPECT_EQ(decoded, "a");
 }
 
@@ -164,11 +169,12 @@ TEST(JsonRpcServiceTestUtils,
       R"(000000000000000000000000000000000000000000000000000000000000002a)"
       R"(3078336132663366376161623832643639303336373633636664336637353539)"
       R"(3735663834343936653600000000000000000000000000000000000000000000"})";
-  EXPECT_EQ(expected, json);
+  EXPECT_THAT(json, IsJson(expected));
 
+  auto payload = ParseStringTuplePayload(json);
+  ASSERT_TRUE(payload);
   std::string decoded;
-  EXPECT_TRUE(
-      DecodeString(0, DecodeTuple1(ParseRpcJsonResult(json)), &decoded));
+  ASSERT_TRUE(DecodeString(0, *payload, &decoded));
   EXPECT_EQ(decoded, "0x3a2f3f7aab82d69036763cfd3f755975f84496e6");
 }
 
@@ -179,31 +185,33 @@ TEST(JsonRpcServiceTestUtils, MakeJsonRpcStringResponse_Empty) {
       R"({"jsonrpc":"2.0", "id":1, "result":"0x)"
       R"(0000000000000000000000000000000000000000000000000000000000000020)"
       R"(0000000000000000000000000000000000000000000000000000000000000000"})";
-  EXPECT_EQ(expected, json);
+  EXPECT_THAT(json, IsJson(expected));
 
+  auto payload = ParseStringTuplePayload(json);
+  ASSERT_TRUE(payload);
   std::string decoded;
-  EXPECT_TRUE(
-      DecodeString(0, DecodeTuple1(ParseRpcJsonResult(json)), &decoded));
+  ASSERT_TRUE(DecodeString(0, *payload, &decoded));
   EXPECT_EQ(decoded, "");
 }
 
 TEST(JsonRpcServiceTestUtils, MakeJsonRpcErrorResponse) {
   auto json = MakeJsonRpcErrorResponse(123, "Error!");
-  base::DictValue value = base::test::ParseJsonDict(json);
-  EXPECT_EQ("2.0", *value.FindString("jsonrpc"));
-  EXPECT_EQ(1, *value.FindInt("id"));
-  EXPECT_EQ(123, *value.FindIntByDottedPath("error.code"));
-  EXPECT_EQ("Error!", *value.FindStringByDottedPath("error.message"));
+  EXPECT_THAT(json, IsJson(R"({
+    "jsonrpc": "2.0",
+    "id": 1,
+    "error": {"code": 123, "message": "Error!"}
+  })"));
 }
 
 TEST(JsonRpcServiceTestUtils, MakeJsonRpcValueResponse) {
   base::DictValue payload;
   payload.Set("test", 555);
   auto json = MakeJsonRpcValueResponse(base::Value(std::move(payload)));
-  base::DictValue value = base::test::ParseJsonDict(json);
-  EXPECT_EQ("2.0", *value.FindString("jsonrpc"));
-  EXPECT_EQ(1, *value.FindInt("id"));
-  EXPECT_EQ(555, *value.FindIntByDottedPath("result.value.test"));
+  EXPECT_THAT(json, IsJson(R"({
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {"context": {"slot": 12345}, "value": {"test": 555}}
+  })"));
 }
 
 }  // namespace brave_wallet

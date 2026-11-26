@@ -10,10 +10,33 @@
 #include "base/json/json_writer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "net/http/http_status_code.h"
+#include "services/network/public/cpp/data_element.h"
+#include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/resource_request_body.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_wallet {
+
+std::string_view GetRpcRequestBody(const network::ResourceRequest& request) {
+  if (!request.request_body || request.request_body->elements()->size() != 1) {
+    return {};
+  }
+  const auto& element = request.request_body->elements()->front();
+  if (element.type() != network::DataElement::Tag::kBytes) {
+    return {};
+  }
+  return element.As<network::DataElementBytes>().AsStringPiece();
+}
+
+void RejectUnexpectedRpcRequest(network::TestURLLoaderFactory& factory,
+                                const network::ResourceRequest& request) {
+  ADD_FAILURE() << "Unhandled request: " << request.url
+                << " body: " << GetRpcRequestBody(request);
+  factory.AddResponse(request.url.spec(), "", net::HTTP_INTERNAL_SERVER_ERROR);
+}
 
 std::string MakeJsonRpcStringArrayResponse(
     const std::vector<std::string>& items) {

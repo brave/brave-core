@@ -71,6 +71,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
+#include "services/network/public/cpp/data_element.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -291,12 +292,8 @@ class TestJsonRpcServiceObserver
 
 std::optional<base::DictValue> ToValue(
     const network::ResourceRequest& request) {
-  std::string_view request_string(request.request_body->elements()
-                                      ->at(0)
-                                      .As<network::DataElementBytes>()
-                                      .AsStringPiece());
-  return base::JSONReader::ReadDict(request_string,
-                                    base::JSONParserOptions::JSON_PARSE_RFC);
+  return base::JSONReader::ReadDict(GetRpcRequestBody(request),
+                                    base::JSON_PARSE_RFC);
 }
 
 class EthCallHandler {
@@ -313,8 +310,12 @@ class EthCallHandler {
       return false;
     }
 
-    auto [selector, _] =
-        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    auto call = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    if (!call) {
+      ADD_FAILURE() << "Malformed ABI call: " << base::HexEncode(call_data);
+      return false;
+    }
+    auto [selector, _] = *call;
 
     for (const auto& s : selectors_) {
       if (std::ranges::equal(s, selector)) {
@@ -590,8 +591,16 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
       return "timeout";
     }
 
-    auto* filters = (*dict.FindList("params"))[1].GetDict().FindList("filters");
-    EXPECT_TRUE(filters);
+    auto* params = dict.FindList("params");
+    if (!params || params->size() < 2 || !(*params)[1].is_dict()) {
+      ADD_FAILURE() << "Unexpected getProgramAccounts params: " << dict;
+      return std::nullopt;
+    }
+    auto* filters = (*params)[1].GetDict().FindList("filters");
+    if (!filters) {
+      ADD_FAILURE() << "getProgramAccounts params have no filters: " << dict;
+      return std::nullopt;
+    }
 
     auto data_span = base::span(token_account_data_);
     base::ListValue expected_filters;
@@ -890,20 +899,22 @@ class JsonRpcServiceUnitTest : public testing::Test {
                       const std::string& expected_method,
                       const std::string& expected_cache_header,
                       const std::string& content) {
+    // An empty `expected_method` means the header must be absent.
+    std::optional<std::string> expected_method_header;
+    if (!expected_method.empty()) {
+      expected_method_header = expected_method;
+    }
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [=, this](const network::ResourceRequest& request) {
           EXPECT_EQ(request.url, expected_url);
-          std::string header_value =
-              request.headers.GetHeader("X-Eth-Method").value_or("");
-          EXPECT_EQ(expected_method, header_value);
+          EXPECT_EQ(expected_method_header,
+                    request.headers.GetHeader("X-Eth-Method"));
           if (expected_method == "eth_blockNumber") {
-            header_value =
-                request.headers.GetHeader("X-Eth-Block").value_or("");
-            EXPECT_EQ(expected_cache_header, header_value);
+            EXPECT_EQ(expected_cache_header,
+                      request.headers.GetHeader("X-Eth-Block"));
           } else if (expected_method == "eth_getBlockByNumber") {
-            header_value =
-                request.headers.GetHeader("X-eth-get-block").value_or("");
-            EXPECT_EQ(expected_cache_header, header_value);
+            EXPECT_EQ(expected_cache_header,
+                      request.headers.GetHeader("X-eth-get-block"));
           }
 
           if (IsEndpointUsingBraveWalletProxy(request.url)) {
@@ -1054,24 +1065,14 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   std::string GetChainId(mojom::CoinType coin,
                          const std::optional<::url::Origin>& origin) {
-    std::string chain_id_out;
-    base::RunLoop run_loop;
+    TestFuture<const std::string&> future;
     if (!origin) {
-      json_rpc_service_->GetDefaultChainId(
-          coin, base::BindLambdaForTesting([&](const std::string& chain_id) {
-            chain_id_out = chain_id;
-            run_loop.Quit();
-          }));
+      json_rpc_service_->GetDefaultChainId(coin, future.GetCallback());
     } else {
-      json_rpc_service_->GetChainIdForOrigin(
-          coin, *origin,
-          base::BindLambdaForTesting([&](const std::string& chain_id) {
-            chain_id_out = chain_id;
-            run_loop.Quit();
-          }));
+      json_rpc_service_->GetChainIdForOrigin(coin, *origin,
+                                             future.GetCallback());
     }
-    run_loop.Run();
-    return chain_id_out;
+    return future.Take();
   }
 
   void TestGetCode(const std::string& address,
@@ -1081,18 +1082,13 @@ class JsonRpcServiceUnitTest : public testing::Test {
                    mojom::ProviderError expected_error,
                    const std::string& expected_error_message) {
     std::optional<std::string> result;
-    base::RunLoop run_loop;
-    json_rpc_service_->GetCode(
-        address, coin, chain_id,
-        base::BindLambdaForTesting([&](const std::string& bytecode,
-                                       mojom::ProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          EXPECT_EQ(bytecode, expected_bytecode);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    TestFuture<const std::string&, mojom::ProviderError, const std::string&>
+        future;
+    json_rpc_service_->GetCode(address, coin, chain_id, future.GetCallback());
+    auto [bytecode, error, error_message] = future.Take();
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
+    EXPECT_EQ(bytecode, expected_bytecode);
   }
 
   void TestGetERC1155TokenBalance(const std::string& contract,
@@ -1102,18 +1098,14 @@ class JsonRpcServiceUnitTest : public testing::Test {
                                   const std::string& expected_response,
                                   mojom::ProviderError expected_error,
                                   const std::string& expected_error_message) {
-    base::RunLoop run_loop;
+    TestFuture<const std::string&, mojom::ProviderError, const std::string&>
+        future;
     json_rpc_service_->GetERC1155TokenBalance(
-        contract, token_id, account_address, chain_id,
-        base::BindLambdaForTesting([&](const std::string& response,
-                                       mojom::ProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(response, expected_response);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+        contract, token_id, account_address, chain_id, future.GetCallback());
+    auto [response, error, error_message] = future.Take();
+    EXPECT_EQ(response, expected_response);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestEthGetLogs(const std::string& chain_id,
@@ -1124,23 +1116,20 @@ class JsonRpcServiceUnitTest : public testing::Test {
                       const std::vector<Log>& expected_logs,
                       mojom::ProviderError expected_error,
                       const std::string& expected_error_message) {
-    base::RunLoop run_loop;
     base::DictValue params;
     params.Set("fromBlock", from_block);
     params.Set("toBlock", to_block);
     params.Set("address", std::move(contract_addresses));
     params.Set("topics", std::move(topics));
-    json_rpc_service_->EthGetLogs(
-        chain_id, std::move(params),
-        base::BindLambdaForTesting(
-            [&](const std::vector<Log>& logs, base::Value rawlogs,
-                mojom::ProviderError error, const std::string& error_message) {
-              EXPECT_EQ(logs, expected_logs);
-              EXPECT_EQ(error, expected_error);
-              EXPECT_EQ(error_message, expected_error_message);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    TestFuture<const std::vector<Log>&, base::Value, mojom::ProviderError,
+               const std::string&>
+        future;
+    json_rpc_service_->EthGetLogs(chain_id, std::move(params),
+                                  future.GetCallback());
+    auto [logs, rawlogs, error, error_message] = future.Take();
+    EXPECT_EQ(logs, expected_logs);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetERC20TokenBalances(
@@ -1150,23 +1139,20 @@ class JsonRpcServiceUnitTest : public testing::Test {
       std::vector<mojom::ERC20BalanceResultPtr> expected_results,
       mojom::ProviderError expected_error,
       const std::string& expected_error_message) {
-    base::RunLoop run_loop;
+    TestFuture<std::vector<mojom::ERC20BalanceResultPtr>, mojom::ProviderError,
+               const std::string&>
+        future;
     json_rpc_service_->GetERC20TokenBalances(
-        token_contract_addresses, user_address, chain_id,
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::ERC20BalanceResultPtr> results,
-                mojom::ProviderError error, const std::string& error_message) {
-              EXPECT_EQ(results.size(), expected_results.size());
-              for (size_t i = 0; i < results.size(); i++) {
-                EXPECT_EQ(results[i]->contract_address,
-                          expected_results[i]->contract_address);
-                EXPECT_EQ(results[i]->balance, expected_results[i]->balance);
-              }
-              EXPECT_EQ(error, expected_error);
-              EXPECT_EQ(error_message, expected_error_message);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        token_contract_addresses, user_address, chain_id, future.GetCallback());
+    auto [results, error, error_message] = future.Take();
+    ASSERT_EQ(results.size(), expected_results.size());
+    for (size_t i = 0; i < results.size(); i++) {
+      EXPECT_EQ(results[i]->contract_address,
+                expected_results[i]->contract_address);
+      EXPECT_EQ(results[i]->balance, expected_results[i]->balance);
+    }
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetEthNftStandard(
@@ -1176,18 +1162,15 @@ class JsonRpcServiceUnitTest : public testing::Test {
       const std::optional<std::string>& expected_standard,
       mojom::ProviderError expected_error,
       const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetEthNftStandard(
-        contract_address, chain_id, interfaces,
-        base::BindLambdaForTesting(
-            [&](const std::optional<std::string>& standard,
-                mojom::ProviderError error, const std::string& error_message) {
-              EXPECT_EQ(standard, expected_standard);
-              EXPECT_EQ(error, expected_error);
-              EXPECT_EQ(error_message, expected_error_message);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    TestFuture<const std::optional<std::string>&, mojom::ProviderError,
+               const std::string&>
+        future;
+    json_rpc_service_->GetEthNftStandard(contract_address, chain_id, interfaces,
+                                         future.GetCallback());
+    auto [standard, error, error_message] = future.Take();
+    EXPECT_EQ(standard, expected_standard);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetEthTokenSymbol(const std::string& contract_address,
@@ -1195,18 +1178,14 @@ class JsonRpcServiceUnitTest : public testing::Test {
                              const std::string& expected_symbol,
                              mojom::ProviderError expected_error,
                              const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetEthTokenSymbol(
-        contract_address, chain_id,
-        base::BindLambdaForTesting([&](const std::string& symbol,
-                                       mojom::ProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(symbol, expected_symbol);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    TestFuture<const std::string&, mojom::ProviderError, const std::string&>
+        future;
+    json_rpc_service_->GetEthTokenSymbol(contract_address, chain_id,
+                                         future.GetCallback());
+    auto [symbol, error, error_message] = future.Take();
+    EXPECT_EQ(symbol, expected_symbol);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetEthTokenDecimals(const std::string& contract_address,
@@ -1214,18 +1193,14 @@ class JsonRpcServiceUnitTest : public testing::Test {
                                const std::string& expected_decimals,
                                mojom::ProviderError expected_error,
                                const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetEthTokenDecimals(
-        contract_address, chain_id,
-        base::BindLambdaForTesting([&](const std::string& decimals,
-                                       mojom::ProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(decimals, expected_decimals);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    TestFuture<const std::string&, mojom::ProviderError, const std::string&>
+        future;
+    json_rpc_service_->GetEthTokenDecimals(contract_address, chain_id,
+                                           future.GetCallback());
+    auto [decimals, error, error_message] = future.Take();
+    EXPECT_EQ(decimals, expected_decimals);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetEthTokenInfo(const std::string& contract_address,
@@ -1233,54 +1208,39 @@ class JsonRpcServiceUnitTest : public testing::Test {
                            mojom::BlockchainTokenPtr expected_token,
                            mojom::ProviderError expected_error,
                            const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetEthTokenInfo(
-        contract_address, chain_id,
-        base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token,
-                                       mojom::ProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(token, expected_token);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    TestFuture<mojom::BlockchainTokenPtr, mojom::ProviderError,
+               const std::string&>
+        future;
+    json_rpc_service_->GetEthTokenInfo(contract_address, chain_id,
+                                       future.GetCallback());
+    auto [token, error, error_message] = future.Take();
+    EXPECT_EQ(token, expected_token);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetSolanaBalance(uint64_t expected_balance,
                             mojom::SolanaProviderError expected_error,
                             const std::string& expected_error_message) {
-    base::RunLoop run_loop;
+    TestFuture<uint64_t, mojom::SolanaProviderError, const std::string&> future;
     json_rpc_service_->GetSolanaBalance(
-        "test_public_key", mojom::kSolanaMainnet,
-        base::BindLambdaForTesting([&](uint64_t balance,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(balance, expected_balance);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+        "test_public_key", mojom::kSolanaMainnet, future.GetCallback());
+    auto [balance, error, error_message] = future.Take();
+    EXPECT_EQ(balance, expected_balance);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
   void GetFilBlockHeight(const std::string& chain_id,
                          uint64_t expected_height,
                          mojom::FilecoinProviderError expected_error,
                          const std::string& expected_error_message) {
-    bool callback_called = false;
-    base::RunLoop run_loop;
-    json_rpc_service_->GetFilBlockHeight(
-        chain_id, base::BindLambdaForTesting(
-                      [&](uint64_t height, mojom::FilecoinProviderError error,
-                          const std::string& error_message) {
-                        EXPECT_EQ(height, expected_height);
-                        EXPECT_EQ(error, expected_error);
-                        EXPECT_EQ(error_message, expected_error_message);
-                        callback_called = true;
-                        run_loop.Quit();
-                      }));
-    run_loop.Run();
-    EXPECT_TRUE(callback_called);
+    TestFuture<uint64_t, mojom::FilecoinProviderError, const std::string&>
+        future;
+    json_rpc_service_->GetFilBlockHeight(chain_id, future.GetCallback());
+    auto [height, error, error_message] = future.Take();
+    EXPECT_EQ(height, expected_height);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
   void GetFilStateSearchMsgLimited(const std::string& chain_id,
                                    const std::string& cid,
@@ -1288,40 +1248,30 @@ class JsonRpcServiceUnitTest : public testing::Test {
                                    std::optional<int64_t> expected_exit_code,
                                    mojom::FilecoinProviderError expected_error,
                                    const std::string& expected_error_message) {
-    bool callback_called = false;
-    base::RunLoop run_loop;
-    json_rpc_service_->GetFilStateSearchMsgLimited(
-        chain_id, cid, period,
-        base::BindLambdaForTesting([&](std::optional<int64_t> exit_code,
-                                       mojom::FilecoinProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(exit_code, expected_exit_code);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          callback_called = true;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    EXPECT_TRUE(callback_called);
+    TestFuture<std::optional<int64_t>, mojom::FilecoinProviderError,
+               const std::string&>
+        future;
+    json_rpc_service_->GetFilStateSearchMsgLimited(chain_id, cid, period,
+                                                   future.GetCallback());
+    auto [exit_code, error, error_message] = future.Take();
+    EXPECT_EQ(exit_code, expected_exit_code);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
   void GetSendFilecoinTransaction(const std::string& chain_id,
                                   const std::string& signed_tx,
                                   const std::string& expected_cid,
                                   mojom::FilecoinProviderError expected_error,
                                   const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->SendFilecoinTransaction(
-        chain_id, signed_tx,
-        base::BindLambdaForTesting([&](const std::string& cid,
-                                       mojom::FilecoinProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(cid, expected_cid);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    TestFuture<const std::string&, mojom::FilecoinProviderError,
+               const std::string&>
+        future;
+    json_rpc_service_->SendFilecoinTransaction(chain_id, signed_tx,
+                                               future.GetCallback());
+    auto [cid, error, error_message] = future.Take();
+    EXPECT_EQ(cid, expected_cid);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
   void TestGetSPLTokenAccountBalance(
       const std::string& expected_amount,
@@ -1329,23 +1279,20 @@ class JsonRpcServiceUnitTest : public testing::Test {
       const std::string& expected_ui_amount_string,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_error_message) {
-    base::RunLoop run_loop;
+    TestFuture<const std::string&, uint8_t, const std::string&,
+               mojom::SolanaProviderError, const std::string&>
+        future;
     json_rpc_service_->GetSPLTokenAccountBalance(
         "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
         "AQoKYV7tYpTrFZN6P5oUufbQKAUr9mNYGe1TTJC9wajM", mojom::kSolanaMainnet,
-        base::BindLambdaForTesting([&](const std::string& amount,
-                                       uint8_t decimals,
-                                       const std::string& ui_amount_string,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(amount, expected_amount);
-          EXPECT_EQ(decimals, expected_decimals);
-          EXPECT_EQ(ui_amount_string, expected_ui_amount_string);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+        future.GetCallback());
+    auto [amount, decimals, ui_amount_string, error, error_message] =
+        future.Take();
+    EXPECT_EQ(amount, expected_amount);
+    EXPECT_EQ(decimals, expected_decimals);
+    EXPECT_EQ(ui_amount_string, expected_ui_amount_string);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestSendSolanaTransaction(const std::string& chain_id,
@@ -1353,18 +1300,15 @@ class JsonRpcServiceUnitTest : public testing::Test {
                                  mojom::SolanaProviderError expected_error,
                                  const std::string& expected_error_message,
                                  const std::string& signed_tx = "signed_tx") {
-    base::RunLoop run_loop;
-    json_rpc_service_->SendSolanaTransaction(
-        chain_id, signed_tx, std::nullopt,
-        base::BindLambdaForTesting([&](const std::string& tx_id,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(tx_id, expected_tx_id);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    TestFuture<const std::string&, mojom::SolanaProviderError,
+               const std::string&>
+        future;
+    json_rpc_service_->SendSolanaTransaction(chain_id, signed_tx, std::nullopt,
+                                             future.GetCallback());
+    auto [tx_id, error, error_message] = future.Take();
+    EXPECT_EQ(tx_id, expected_tx_id);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestSimulateSolanaTransaction(
@@ -1373,18 +1317,13 @@ class JsonRpcServiceUnitTest : public testing::Test {
       mojom::SolanaProviderError expected_error,
       const std::string& expected_error_message,
       const std::string& unsigned_tx = "unsigned_tx") {
-    base::RunLoop run_loop;
-    json_rpc_service_->SimulateSolanaTransaction(
-        chain_id, unsigned_tx,
-        base::BindLambdaForTesting([&](uint64_t compute_units,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(compute_units, expected_compute_units);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    TestFuture<uint64_t, mojom::SolanaProviderError, const std::string&> future;
+    json_rpc_service_->SimulateSolanaTransaction(chain_id, unsigned_tx,
+                                                 future.GetCallback());
+    auto [compute_units, error, error_message] = future.Take();
+    EXPECT_EQ(compute_units, expected_compute_units);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetSolanaLatestBlockhash(const std::string& chain_id,
@@ -1392,20 +1331,15 @@ class JsonRpcServiceUnitTest : public testing::Test {
                                     uint64_t expected_last_valid_block_height,
                                     mojom::SolanaProviderError expected_error,
                                     const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetSolanaLatestBlockhash(
-        chain_id,
-        base::BindLambdaForTesting([&](const std::string& hash,
-                                       uint64_t last_valid_block_height,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(hash, expected_hash);
-          EXPECT_EQ(last_valid_block_height, expected_last_valid_block_height);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    TestFuture<const std::string&, uint64_t, mojom::SolanaProviderError,
+               const std::string&>
+        future;
+    json_rpc_service_->GetSolanaLatestBlockhash(chain_id, future.GetCallback());
+    auto [hash, last_valid_block_height, error, error_message] = future.Take();
+    EXPECT_EQ(hash, expected_hash);
+    EXPECT_EQ(last_valid_block_height, expected_last_valid_block_height);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetSolanaSignatureStatuses(
@@ -1414,19 +1348,15 @@ class JsonRpcServiceUnitTest : public testing::Test {
       const std::vector<std::optional<SolanaSignatureStatus>>& expected_stats,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetSolanaSignatureStatuses(
-        chain_id, tx_signatures,
-        base::BindLambdaForTesting(
-            [&](const std::vector<std::optional<SolanaSignatureStatus>>& stats,
-                mojom::SolanaProviderError error,
-                const std::string& error_message) {
-              EXPECT_EQ(stats, expected_stats);
-              EXPECT_EQ(error, expected_error);
-              EXPECT_EQ(error_message, expected_error_message);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    TestFuture<const std::vector<std::optional<SolanaSignatureStatus>>&,
+               mojom::SolanaProviderError, const std::string&>
+        future;
+    json_rpc_service_->GetSolanaSignatureStatuses(chain_id, tx_signatures,
+                                                  future.GetCallback());
+    auto [stats, error, error_message] = future.Take();
+    EXPECT_EQ(stats, expected_stats);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetSolanaAccountInfo(
@@ -1434,19 +1364,16 @@ class JsonRpcServiceUnitTest : public testing::Test {
       std::optional<SolanaAccountInfo> expected_account_info,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_error_message) {
-    base::RunLoop run_loop;
+    TestFuture<std::optional<SolanaAccountInfo>, mojom::SolanaProviderError,
+               const std::string&>
+        future;
     json_rpc_service_->GetSolanaAccountInfo(
         chain_id, "vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg",
-        base::BindLambdaForTesting(
-            [&](std::optional<SolanaAccountInfo> account_info,
-                mojom::SolanaProviderError error,
-                const std::string& error_message) {
-              EXPECT_EQ(account_info, expected_account_info);
-              EXPECT_EQ(error, expected_error);
-              EXPECT_EQ(error_message, expected_error_message);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        future.GetCallback());
+    auto [account_info, error, error_message] = future.Take();
+    EXPECT_EQ(account_info, expected_account_info);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetSolanaFeeForMessage(const std::string& chain_id,
@@ -1454,36 +1381,25 @@ class JsonRpcServiceUnitTest : public testing::Test {
                                   uint64_t expected_tx_fee,
                                   mojom::SolanaProviderError expected_error,
                                   const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetSolanaFeeForMessage(
-        chain_id, message,
-        base::BindLambdaForTesting([&](uint64_t tx_fee,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(tx_fee, expected_tx_fee);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    TestFuture<uint64_t, mojom::SolanaProviderError, const std::string&> future;
+    json_rpc_service_->GetSolanaFeeForMessage(chain_id, message,
+                                              future.GetCallback());
+    auto [tx_fee, error, error_message] = future.Take();
+    EXPECT_EQ(tx_fee, expected_tx_fee);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetSolanaBlockHeight(const std::string& chain_id,
                                 uint64_t expected_block_height,
                                 mojom::SolanaProviderError expected_error,
                                 const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetSolanaBlockHeight(
-        chain_id,
-        base::BindLambdaForTesting([&](uint64_t block_height,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(block_height, expected_block_height);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    TestFuture<uint64_t, mojom::SolanaProviderError, const std::string&> future;
+    json_rpc_service_->GetSolanaBlockHeight(chain_id, future.GetCallback());
+    auto [block_height, error, error_message] = future.Take();
+    EXPECT_EQ(block_height, expected_block_height);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetSolanaTokenAccountsByOwner(
@@ -1492,37 +1408,28 @@ class JsonRpcServiceUnitTest : public testing::Test {
       const std::vector<SolanaAccountInfo>& expected_token_accounts,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetSolanaTokenAccountsByOwner(
-        solana_address, chain_id,
-        base::BindLambdaForTesting(
-            [&](std::vector<SolanaAccountInfo> token_accounts,
-                mojom::SolanaProviderError error,
-                const std::string& error_message) {
-              EXPECT_EQ(token_accounts, expected_token_accounts);
-              EXPECT_EQ(error, expected_error);
-              EXPECT_EQ(error_message, expected_error_message);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    TestFuture<std::vector<SolanaAccountInfo>, mojom::SolanaProviderError,
+               const std::string&>
+        future;
+    json_rpc_service_->GetSolanaTokenAccountsByOwner(solana_address, chain_id,
+                                                     future.GetCallback());
+    auto [token_accounts, error, error_message] = future.Take();
+    EXPECT_EQ(token_accounts, expected_token_accounts);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestIsSolanaBlockhashValid(bool expected_is_valid,
                                   mojom::SolanaProviderError expected_error,
                                   const std::string& expected_error_message) {
-    base::RunLoop run_loop;
+    TestFuture<bool, mojom::SolanaProviderError, const std::string&> future;
     json_rpc_service_->IsSolanaBlockhashValid(
         mojom::kSolanaMainnet, "J7rBdM6AecPDEZp8aPq5iPSNKVkU5Q76F3oAV4eW5wsW",
-        std::nullopt,
-        base::BindLambdaForTesting([&](bool is_valid,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(is_valid, expected_is_valid);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+        std::nullopt, future.GetCallback());
+    auto [is_valid, error, error_message] = future.Take();
+    EXPECT_EQ(is_valid, expected_is_valid);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetSPLTokenBalances(
@@ -1531,26 +1438,21 @@ class JsonRpcServiceUnitTest : public testing::Test {
       std::vector<mojom::SPLTokenAmountPtr> expected_results,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetSPLTokenBalances(
-        pubkey, chain_id,
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::SPLTokenAmountPtr> results,
-                mojom::SolanaProviderError error,
-                const std::string& error_message) {
-              EXPECT_EQ(results.size(), expected_results.size());
-              for (size_t i = 0; i < results.size(); i++) {
-                EXPECT_EQ(results[i]->mint, expected_results[i]->mint);
-                EXPECT_EQ(results[i]->amount, expected_results[i]->amount);
-                EXPECT_EQ(results[i]->decimals, expected_results[i]->decimals);
-                EXPECT_EQ(results[i]->ui_amount,
-                          expected_results[i]->ui_amount);
-              }
-              EXPECT_EQ(error, expected_error);
-              EXPECT_EQ(error_message, expected_error_message);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    TestFuture<std::vector<mojom::SPLTokenAmountPtr>,
+               mojom::SolanaProviderError, const std::string&>
+        future;
+    json_rpc_service_->GetSPLTokenBalances(pubkey, chain_id,
+                                           future.GetCallback());
+    auto [results, error, error_message] = future.Take();
+    ASSERT_EQ(results.size(), expected_results.size());
+    for (size_t i = 0; i < results.size(); i++) {
+      EXPECT_EQ(results[i]->mint, expected_results[i]->mint);
+      EXPECT_EQ(results[i]->amount, expected_results[i]->amount);
+      EXPECT_EQ(results[i]->decimals, expected_results[i]->decimals);
+      EXPECT_EQ(results[i]->ui_amount, expected_results[i]->ui_amount);
+    }
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetSPLTokenProgramByMint(const base::Location& location,
@@ -1560,18 +1462,15 @@ class JsonRpcServiceUnitTest : public testing::Test {
                                     mojom::SolanaProviderError expected_error,
                                     const std::string& expected_error_message) {
     SCOPED_TRACE(testing::Message() << location.ToString());
-    base::RunLoop run_loop;
-    json_rpc_service_->GetSPLTokenProgramByMint(
-        chain_id, mint,
-        base::BindLambdaForTesting([&](mojom::SPLTokenProgram program,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(program, expected_program);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    TestFuture<mojom::SPLTokenProgram, mojom::SolanaProviderError,
+               const std::string&>
+        future;
+    json_rpc_service_->GetSPLTokenProgramByMint(chain_id, mint,
+                                                future.GetCallback());
+    auto [program, error, error_message] = future.Take();
+    EXPECT_EQ(program, expected_program);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetRecentSolanaPrioritizationFees(
@@ -1579,19 +1478,15 @@ class JsonRpcServiceUnitTest : public testing::Test {
       const std::vector<std::pair<uint64_t, uint64_t>>& expected_recent_fees,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetRecentSolanaPrioritizationFees(
-        chain_id,
-        base::BindLambdaForTesting(
-            [&](std::vector<std::pair<uint64_t, uint64_t>>& recent_fees,
-                mojom::SolanaProviderError error,
-                const std::string& error_message) {
-              EXPECT_EQ(error, expected_error);
-              EXPECT_EQ(error_message, expected_error_message);
-              EXPECT_EQ(expected_recent_fees, recent_fees);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    TestFuture<std::vector<std::pair<uint64_t, uint64_t>>&,
+               mojom::SolanaProviderError, const std::string&>
+        future;
+    json_rpc_service_->GetRecentSolanaPrioritizationFees(chain_id,
+                                                         future.GetCallback());
+    auto [recent_fees, error, error_message] = future.Take();
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
+    EXPECT_EQ(expected_recent_fees, recent_fees);
   }
 
   void GetFilEstimateGas(const std::string& chain_id,
@@ -1602,23 +1497,19 @@ class JsonRpcServiceUnitTest : public testing::Test {
                          const std::string& expected_gas_fee_cap,
                          int64_t expected_gas_limit,
                          mojom::FilecoinProviderError expected_error) {
-    base::RunLoop loop;
-    json_rpc_service_->GetFilEstimateGas(
-        chain_id, from, to, "", "", 0, 0, "", value,
-        base::BindLambdaForTesting(
-            [&](const std::string& gas_premium, const std::string& gas_fee_cap,
-                int64_t gas_limit, mojom::FilecoinProviderError error,
-                const std::string& error_message) {
-              EXPECT_EQ(gas_premium, expected_gas_premium);
-              EXPECT_EQ(gas_fee_cap, expected_gas_fee_cap);
-              EXPECT_EQ(gas_limit, expected_gas_limit);
-              EXPECT_EQ(error, expected_error);
-              bool success =
-                  mojom::FilecoinProviderError::kSuccess == expected_error;
-              EXPECT_EQ(error_message.empty(), success);
-              loop.Quit();
-            }));
-    loop.Run();
+    TestFuture<const std::string&, const std::string&, int64_t,
+               mojom::FilecoinProviderError, const std::string&>
+        future;
+    json_rpc_service_->GetFilEstimateGas(chain_id, from, to, "", "", 0, 0, "",
+                                         value, future.GetCallback());
+    auto [gas_premium, gas_fee_cap, gas_limit, error, error_message] =
+        future.Take();
+    EXPECT_EQ(gas_premium, expected_gas_premium);
+    EXPECT_EQ(gas_fee_cap, expected_gas_fee_cap);
+    EXPECT_EQ(gas_limit, expected_gas_limit);
+    EXPECT_EQ(error, expected_error);
+    bool success = mojom::FilecoinProviderError::kSuccess == expected_error;
+    EXPECT_EQ(error_message.empty(), success);
   }
 
   void AddEthereumChainForOrigin(mojom::NetworkInfoPtr chain,
@@ -1633,33 +1524,24 @@ class JsonRpcServiceUnitTest : public testing::Test {
       std::vector<mojom::NftIdentifierPtr> nft_identifiers,
       std::vector<mojom::NftMetadataPtr> expected_metadatas,
       const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetNftMetadatas(
-        std::move(nft_identifiers),
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::NftMetadataPtr> metadatas,
-                const std::string& error_message) {
-              EXPECT_EQ(metadatas, expected_metadatas);
-              EXPECT_EQ(error_message, expected_error_message);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    TestFuture<std::vector<mojom::NftMetadataPtr>, const std::string&> future;
+    json_rpc_service_->GetNftMetadatas(std::move(nft_identifiers),
+                                       future.GetCallback());
+    auto [metadatas, error_message] = future.Take();
+    EXPECT_EQ(metadatas, expected_metadatas);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   void TestGetNftBalances(const std::string& wallet_address,
                           std::vector<mojom::NftIdentifierPtr> nft_identifiers,
                           const std::vector<uint64_t>& expected_balances,
                           const std::string& expected_error_message) {
-    base::RunLoop run_loop;
+    TestFuture<const std::vector<uint64_t>&, const std::string&> future;
     json_rpc_service_->GetNftBalances(
-        wallet_address, std::move(nft_identifiers),
-        base::BindLambdaForTesting([&](const std::vector<uint64_t>& balances,
-                                       const std::string& error_message) {
-          EXPECT_EQ(balances, expected_balances);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+        wallet_address, std::move(nft_identifiers), future.GetCallback());
+    auto [balances, error_message] = future.Take();
+    EXPECT_EQ(balances, expected_balances);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
   // Action for a MockCallback expectation that signals WaitAndVerify().
@@ -2611,100 +2493,72 @@ TEST_F(JsonRpcServiceUnitTest, GetFeeHistory) {
 
   SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
                  "eth_feeHistory", "", json);
-  base::RunLoop run_loop;
-  json_rpc_service_->GetFeeHistory(
-      mojom::kMainnetChainId,
-      base::BindLambdaForTesting(
-          [&](const std::vector<std::string>& base_fee_per_gas,
-              const std::vector<double>& gas_used_ratio,
-              const std::string& oldest_block,
-              const std::vector<std::vector<std::string>>& reward,
-              mojom::ProviderError error, const std::string& error_message) {
-            EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-            EXPECT_TRUE(error_message.empty());
-            EXPECT_EQ(base_fee_per_gas, (std::vector<std::string>{
-                                            "0x215d00b8c8", "0x24beaded75"}));
-            EXPECT_EQ(gas_used_ratio,
-                      (std::vector<double>{0.020687709938714324}));
-            EXPECT_EQ(oldest_block, "0xd6b1b0");
-            EXPECT_EQ(reward,
-                      (std::vector<std::vector<std::string>>{
+  TestFuture<const std::vector<std::string>&, const std::vector<double>&,
+             const std::string&, const std::vector<std::vector<std::string>>&,
+             mojom::ProviderError, const std::string&>
+      future;
+  json_rpc_service_->GetFeeHistory(mojom::kMainnetChainId,
+                                   future.GetCallback());
+  {
+    auto [base_fee_per_gas, gas_used_ratio, oldest_block, reward, error,
+          error_message] = future.Take();
+    EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+    EXPECT_TRUE(error_message.empty());
+    EXPECT_EQ(base_fee_per_gas,
+              (std::vector<std::string>{"0x215d00b8c8", "0x24beaded75"}));
+    EXPECT_EQ(gas_used_ratio, (std::vector<double>{0.020687709938714324}));
+    EXPECT_EQ(oldest_block, "0xd6b1b0");
+    EXPECT_EQ(reward, (std::vector<std::vector<std::string>>{
                           {"0x77359400", "0x77359400", "0x2816a6cfb"}}));
-            run_loop.Quit();
-          }));
-  run_loop.Run();
+  }
 
   // OK: valid response
   SetHTTPRequestTimeoutInterceptor();
-  base::RunLoop run_loop2;
-  json_rpc_service_->GetFeeHistory(
-      mojom::kMainnetChainId,
-      base::BindLambdaForTesting(
-          [&](const std::vector<std::string>& base_fee_per_gas,
-              const std::vector<double>& gas_used_ratio,
-              const std::string& oldest_block,
-              const std::vector<std::vector<std::string>>& reward,
-              mojom::ProviderError error, const std::string& error_message) {
-            EXPECT_EQ(error, mojom::ProviderError::kInternalError);
-            EXPECT_EQ(error_message,
-                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-            run_loop2.Quit();
-          }));
-  run_loop2.Run();
+  json_rpc_service_->GetFeeHistory(mojom::kMainnetChainId,
+                                   future.GetCallback());
+  {
+    auto [base_fee_per_gas, gas_used_ratio, oldest_block, reward, error,
+          error_message] = future.Take();
+    EXPECT_EQ(error, mojom::ProviderError::kInternalError);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  }
 
   // KO: invalid JSON
   SetInvalidJsonInterceptor();
-  base::RunLoop run_loop3;
-  json_rpc_service_->GetFeeHistory(
-      mojom::kMainnetChainId,
-      base::BindLambdaForTesting(
-          [&](const std::vector<std::string>& base_fee_per_gas,
-              const std::vector<double>& gas_used_ratio,
-              const std::string& oldest_block,
-              const std::vector<std::vector<std::string>>& reward,
-              mojom::ProviderError error, const std::string& error_message) {
-            EXPECT_EQ(error, mojom::ProviderError::kInternalError);
-            EXPECT_EQ(error_message,
-                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-            run_loop3.Quit();
-          }));
-  run_loop3.Run();
+  json_rpc_service_->GetFeeHistory(mojom::kMainnetChainId,
+                                   future.GetCallback());
+  {
+    auto [base_fee_per_gas, gas_used_ratio, oldest_block, reward, error,
+          error_message] = future.Take();
+    EXPECT_EQ(error, mojom::ProviderError::kInternalError);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  }
 
   // KO: valid JSON but unexpected response
   SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
                  "eth_feeHistory", "", "{\"foo\":0}");
-  base::RunLoop run_loop4;
-  json_rpc_service_->GetFeeHistory(
-      mojom::kMainnetChainId,
-      base::BindLambdaForTesting(
-          [&](const std::vector<std::string>& base_fee_per_gas,
-              const std::vector<double>& gas_used_ratio,
-              const std::string& oldest_block,
-              const std::vector<std::vector<std::string>>& reward,
-              mojom::ProviderError error, const std::string& error_message) {
-            EXPECT_EQ(error, mojom::ProviderError::kParsingError);
-            EXPECT_EQ(error_message,
-                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-            run_loop4.Quit();
-          }));
-  run_loop4.Run();
+  json_rpc_service_->GetFeeHistory(mojom::kMainnetChainId,
+                                   future.GetCallback());
+  {
+    auto [base_fee_per_gas, gas_used_ratio, oldest_block, reward, error,
+          error_message] = future.Take();
+    EXPECT_EQ(error, mojom::ProviderError::kParsingError);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  }
 
   // KO: valid error response
   SetLimitExceededJsonErrorResponse();
-  base::RunLoop run_loop5;
-  json_rpc_service_->GetFeeHistory(
-      mojom::kMainnetChainId,
-      base::BindLambdaForTesting(
-          [&](const std::vector<std::string>& base_fee_per_gas,
-              const std::vector<double>& gas_used_ratio,
-              const std::string& oldest_block,
-              const std::vector<std::vector<std::string>>& reward,
-              mojom::ProviderError error, const std::string& error_message) {
-            EXPECT_EQ(error, mojom::ProviderError::kLimitExceeded);
-            EXPECT_EQ(error_message, "Request exceeds defined limit");
-            run_loop5.Quit();
-          }));
-  run_loop5.Run();
+  json_rpc_service_->GetFeeHistory(mojom::kMainnetChainId,
+                                   future.GetCallback());
+  {
+    auto [base_fee_per_gas, gas_used_ratio, oldest_block, reward, error,
+          error_message] = future.Take();
+    EXPECT_EQ(error, mojom::ProviderError::kLimitExceeded);
+    EXPECT_EQ(error_message, "Request exceeds defined limit");
+  }
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
@@ -2929,12 +2783,18 @@ class UDGetManyCallHandler : public EthCallHandler {
   ~UDGetManyCallHandler() override = default;
 
   std::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
-    auto [_, args] =
-        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    auto call = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    if (!call) {
+      ADD_FAILURE() << "Malformed ABI call: " << base::HexEncode(call_data);
+      return std::nullopt;
+    }
+    auto [_, args] = *call;
     auto keys_array = eth_abi::ExtractStringArrayFromTuple(args, 0);
     auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple<32>(args, 1);
-    EXPECT_TRUE(keys_array);
-    EXPECT_TRUE(namehash_bytes);
+    if (!keys_array || !namehash_bytes) {
+      ADD_FAILURE() << "Malformed getMany call: " << base::HexEncode(call_data);
+      return std::nullopt;
+    }
 
     calls_number_++;
 
@@ -3145,8 +3005,7 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
         url_loader_factory_.AddResponse(request.url.spec(), *response);
       }
     } else {
-      url_loader_factory_.AddResponse(request.url.spec(), "",
-                                      net::HTTP_INTERNAL_SERVER_ERROR);
+      RejectUnexpectedRpcRequest(url_loader_factory_, request);
     }
   }
 };
@@ -5384,8 +5243,12 @@ struct EnsTestRecord {
 std::vector<uint8_t> ResolveEnsTestRecord(
     eth_abi::Span resolver_call,
     const std::map<std::string, EnsTestRecord>& records) {
-  auto [selector, args] =
-      *eth_abi::ExtractFunctionSelectorAndArgsFromCall(resolver_call);
+  auto call = eth_abi::ExtractFunctionSelectorAndArgsFromCall(resolver_call);
+  if (!call) {
+    ADD_FAILURE() << "Malformed ABI call: " << base::HexEncode(resolver_call);
+    return {};
+  }
+  auto [selector, args] = *call;
   auto namehash = eth_abi::ExtractFixedBytesFromTuple<32>(args, 0);
   EXPECT_TRUE(namehash);
   if (!namehash) {
@@ -5430,8 +5293,12 @@ class EnsUniversalResolverHandler : public EthCallHandler {
   ~EnsUniversalResolverHandler() override = default;
 
   std::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
-    auto [selector, args] =
-        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    auto call = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    if (!call) {
+      ADD_FAILURE() << "Malformed ABI call: " << base::HexEncode(call_data);
+      return std::nullopt;
+    }
+    auto [selector, args] = *call;
 
     if (std::ranges::equal(selector, CallbackSelector())) {
       auto extra_data = eth_abi::ExtractBytesFromTuple(args, 1);
@@ -5528,18 +5395,26 @@ class OffchainGatewayHandler {
       return std::nullopt;
     }
     auto* sender = payload->FindString("sender");
+    auto* data = payload->FindString("data");
+    if (!sender || !data) {
+      ADD_FAILURE() << "Malformed offchain gateway payload: " << *payload;
+      return std::nullopt;
+    }
     EXPECT_EQ(EthAddress::From0xHex(*sender),
               EthAddress::From0xHex(kEnsUniversalResolverAddress));
 
-    auto* data = payload->FindString("data");
     auto bytes = PrefixedHexStringToBytes(*data);
     EXPECT_TRUE(bytes);
     if (!bytes) {
       return std::nullopt;
     }
 
-    auto [selector, args] =
-        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(*bytes);
+    auto call = eth_abi::ExtractFunctionSelectorAndArgsFromCall(*bytes);
+    if (!call) {
+      ADD_FAILURE() << "Malformed ABI call: " << base::HexEncode(*bytes);
+      return std::nullopt;
+    }
+    auto [selector, args] = *call;
     EXPECT_TRUE(std::ranges::equal(selector, kResolveBytesBytesSelector));
     auto resolver_call = eth_abi::ExtractBytesFromTuple(args, 1);
     EXPECT_TRUE(resolver_call);
@@ -5659,6 +5534,8 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
       } else {
         url_loader_factory_.AddResponse(request.url.spec(), *offchain_response);
       }
+    } else {
+      RejectUnexpectedRpcRequest(url_loader_factory_, request);
     }
   }
 
@@ -6138,6 +6015,8 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
       } else {
         url_loader_factory_.AddResponse(request.url.spec(), *json_response);
       }
+    } else {
+      RejectUnexpectedRpcRequest(url_loader_factory_, request);
     }
   }
 
@@ -6884,23 +6763,22 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTokenInfo) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
+  TestFuture<std::vector<mojom::AnkrAssetBalancePtr>, mojom::ProviderError,
+             const std::string&>
+      future;
   // Ensure MethodNotFound error is returned if feature is disabled
-  base::RunLoop run_loop_1;
   json_rpc_service_->AnkrGetAccountBalances(
       "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
       test::MakeVectorFromArgs(mojom::ChainId::New(
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId)),
-      base::BindLambdaForTesting(
-          [&](std::vector<mojom::AnkrAssetBalancePtr> response,
-              mojom::ProviderError error, const std::string& error_string) {
-            EXPECT_EQ(response.size(), 0u);
-            EXPECT_EQ(error, mojom::ProviderError::kMethodNotFound);
-            EXPECT_EQ(error_string, l10n_util::GetStringUTF8(
-                                        IDS_WALLET_REQUEST_PROCESSING_ERROR));
-
-            run_loop_1.Quit();
-          }));
-  run_loop_1.Run();
+      future.GetCallback());
+  {
+    auto [response, error, error_string] = future.Take();
+    EXPECT_EQ(response.size(), 0u);
+    EXPECT_EQ(error, mojom::ProviderError::kMethodNotFound);
+    EXPECT_EQ(error_string,
+              l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
+  }
 
   // Enable feature
   base::test::ScopedFeatureList feature_list;
@@ -6984,64 +6862,58 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
   BlockchainRegistry::GetInstance()->UpdateCoingeckoIdsMap(
       std::move(*coingecko_ids_map));
 
-  base::RunLoop run_loop_2;
   json_rpc_service_->AnkrGetAccountBalances(
       "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
       test::MakeVectorFromArgs(mojom::ChainId::New(
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId)),
-      base::BindLambdaForTesting(
-          [&](std::vector<mojom::AnkrAssetBalancePtr> response,
-              mojom::ProviderError error, const std::string& error_string) {
-            ASSERT_EQ(response.size(), 2u);
-            EXPECT_EQ(response.at(0)->asset->contract_address, "");
-            EXPECT_EQ(response.at(0)->asset->name, "Matic");
-            EXPECT_EQ(response.at(0)->asset->logo, "polygon.svg");
-            EXPECT_FALSE(response.at(0)->asset->is_erc20);
-            EXPECT_FALSE(response.at(0)->asset->is_erc721);
-            EXPECT_FALSE(response.at(0)->asset->is_erc1155);
-            EXPECT_FALSE(response.at(0)->asset->is_nft);
-            EXPECT_FALSE(response.at(0)->asset->is_spam);
-            EXPECT_EQ(response.at(0)->asset->symbol, "MATIC");
-            EXPECT_EQ(response.at(0)->asset->decimals, 18);
-            EXPECT_TRUE(response.at(0)->asset->visible);
-            EXPECT_EQ(response.at(0)->asset->token_id, "");
-            EXPECT_EQ(response.at(0)->asset->coingecko_id, "");
-            EXPECT_EQ(response.at(0)->asset->chain_id,
-                      mojom::kPolygonMainnetChainId);
-            EXPECT_EQ(response.at(0)->asset->coin, mojom::CoinType::ETH);
-            EXPECT_EQ(response.at(0)->balance, "120275036899888325666");
-            EXPECT_EQ(response.at(0)->formatted_balance,
-                      "120.275036899888325666");
-            EXPECT_EQ(response.at(0)->balance_usd, "66.534394147826631446");
-            EXPECT_EQ(response.at(0)->price_usd, "0.553185397924316979");
+      future.GetCallback());
+  {
+    auto [response, error, error_string] = future.Take();
+    ASSERT_EQ(response.size(), 2u);
+    EXPECT_EQ(response.at(0)->asset->contract_address, "");
+    EXPECT_EQ(response.at(0)->asset->name, "Matic");
+    EXPECT_EQ(response.at(0)->asset->logo, "polygon.svg");
+    EXPECT_FALSE(response.at(0)->asset->is_erc20);
+    EXPECT_FALSE(response.at(0)->asset->is_erc721);
+    EXPECT_FALSE(response.at(0)->asset->is_erc1155);
+    EXPECT_FALSE(response.at(0)->asset->is_nft);
+    EXPECT_FALSE(response.at(0)->asset->is_spam);
+    EXPECT_EQ(response.at(0)->asset->symbol, "MATIC");
+    EXPECT_EQ(response.at(0)->asset->decimals, 18);
+    EXPECT_TRUE(response.at(0)->asset->visible);
+    EXPECT_EQ(response.at(0)->asset->token_id, "");
+    EXPECT_EQ(response.at(0)->asset->coingecko_id, "");
+    EXPECT_EQ(response.at(0)->asset->chain_id, mojom::kPolygonMainnetChainId);
+    EXPECT_EQ(response.at(0)->asset->coin, mojom::CoinType::ETH);
+    EXPECT_EQ(response.at(0)->balance, "120275036899888325666");
+    EXPECT_EQ(response.at(0)->formatted_balance, "120.275036899888325666");
+    EXPECT_EQ(response.at(0)->balance_usd, "66.534394147826631446");
+    EXPECT_EQ(response.at(0)->price_usd, "0.553185397924316979");
 
-            EXPECT_EQ(response.at(1)->asset->contract_address,
-                      "0x2791bca1f2de4661ed88a30c99a7a9449aa84174");
-            EXPECT_EQ(response.at(1)->asset->name, "USD Coin");
-            EXPECT_EQ(response.at(1)->asset->logo, "usdc.png");
-            EXPECT_TRUE(response.at(1)->asset->is_erc20);
-            EXPECT_FALSE(response.at(1)->asset->is_erc721);
-            EXPECT_FALSE(response.at(1)->asset->is_erc1155);
-            EXPECT_FALSE(response.at(1)->asset->is_nft);
-            EXPECT_FALSE(response.at(1)->asset->is_spam);
-            EXPECT_EQ(response.at(1)->asset->symbol, "USDC");
-            EXPECT_EQ(response.at(1)->asset->decimals, 6);
-            EXPECT_TRUE(response.at(1)->asset->visible);
-            EXPECT_EQ(response.at(1)->asset->token_id, "");
-            EXPECT_EQ(response.at(1)->asset->coingecko_id, "usd-coin");
-            EXPECT_EQ(response.at(1)->asset->chain_id,
-                      mojom::kPolygonMainnetChainId);
-            EXPECT_EQ(response.at(1)->asset->coin, mojom::CoinType::ETH);
-            EXPECT_EQ(response.at(1)->balance, "8202765");
-            EXPECT_EQ(response.at(1)->formatted_balance, "8.202765");
-            EXPECT_EQ(response.at(1)->balance_usd, "8.202765");
-            EXPECT_EQ(response.at(1)->price_usd, "1");
+    EXPECT_EQ(response.at(1)->asset->contract_address,
+              "0x2791bca1f2de4661ed88a30c99a7a9449aa84174");
+    EXPECT_EQ(response.at(1)->asset->name, "USD Coin");
+    EXPECT_EQ(response.at(1)->asset->logo, "usdc.png");
+    EXPECT_TRUE(response.at(1)->asset->is_erc20);
+    EXPECT_FALSE(response.at(1)->asset->is_erc721);
+    EXPECT_FALSE(response.at(1)->asset->is_erc1155);
+    EXPECT_FALSE(response.at(1)->asset->is_nft);
+    EXPECT_FALSE(response.at(1)->asset->is_spam);
+    EXPECT_EQ(response.at(1)->asset->symbol, "USDC");
+    EXPECT_EQ(response.at(1)->asset->decimals, 6);
+    EXPECT_TRUE(response.at(1)->asset->visible);
+    EXPECT_EQ(response.at(1)->asset->token_id, "");
+    EXPECT_EQ(response.at(1)->asset->coingecko_id, "usd-coin");
+    EXPECT_EQ(response.at(1)->asset->chain_id, mojom::kPolygonMainnetChainId);
+    EXPECT_EQ(response.at(1)->asset->coin, mojom::CoinType::ETH);
+    EXPECT_EQ(response.at(1)->balance, "8202765");
+    EXPECT_EQ(response.at(1)->formatted_balance, "8.202765");
+    EXPECT_EQ(response.at(1)->balance_usd, "8.202765");
+    EXPECT_EQ(response.at(1)->price_usd, "1");
 
-            EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-            EXPECT_EQ(error_string, "");
-            run_loop_2.Quit();
-          }));
-  run_loop_2.Run();
+    EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+    EXPECT_EQ(error_string, "");
+  }
 
   // Handle known provider errors
   SetInterceptor(R"(
@@ -7054,21 +6926,17 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
       }
     }
   )");
-  base::RunLoop run_loop_3;
   json_rpc_service_->AnkrGetAccountBalances(
       "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
       test::MakeVectorFromArgs(mojom::ChainId::New(
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId)),
-      base::BindLambdaForTesting(
-          [&](std::vector<mojom::AnkrAssetBalancePtr> response,
-              mojom::ProviderError error, const std::string& error_string) {
-            EXPECT_EQ(response.size(), 0u);
-            EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
-            EXPECT_EQ(error_string, "invalid argument 0: invalid params");
-
-            run_loop_3.Quit();
-          }));
-  run_loop_3.Run();
+      future.GetCallback());
+  {
+    auto [response, error, error_string] = future.Take();
+    EXPECT_EQ(response.size(), 0u);
+    EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
+    EXPECT_EQ(error_string, "invalid argument 0: invalid params");
+  }
 
   // Invalid response yields parsing error
   SetInterceptor(R"(
@@ -7078,22 +6946,17 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
       "foo": "bar"
     }
   )");
-  base::RunLoop run_loop_4;
   json_rpc_service_->AnkrGetAccountBalances(
       "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
       test::MakeVectorFromArgs(mojom::ChainId::New(
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId)),
-      base::BindLambdaForTesting(
-          [&](std::vector<mojom::AnkrAssetBalancePtr> response,
-              mojom::ProviderError error, const std::string& error_string) {
-            EXPECT_EQ(response.size(), 0u);
-            EXPECT_EQ(error, mojom::ProviderError::kParsingError);
-            EXPECT_EQ(error_string,
-                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-
-            run_loop_4.Quit();
-          }));
-  run_loop_4.Run();
+      future.GetCallback());
+  {
+    auto [response, error, error_string] = future.Take();
+    EXPECT_EQ(response.size(), 0u);
+    EXPECT_EQ(error, mojom::ProviderError::kParsingError);
+    EXPECT_EQ(error_string, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  }
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {

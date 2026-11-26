@@ -11,9 +11,9 @@
 
 #include "base/base64.h"
 #include "base/containers/extend.h"
-#include "base/test/bind.h"
 #include "base/test/gtest_util.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -76,17 +76,13 @@ class SolanaTransactionUnitTest : public testing::Test {
   }
 
   void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
-    bool success = false;
-    base::RunLoop run_loop;
-    keyring_service()->SetSelectedAccount(
-        account_id.Clone(), base::BindLambdaForTesting([&](bool v) {
-          success = v;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    ASSERT_TRUE(success);
-    ASSERT_EQ(keyring_service()->GetSelectedSolanaDappAccount()->account_id,
-              account_id);
+    base::test::TestFuture<bool> future;
+    keyring_service()->SetSelectedAccount(account_id.Clone(),
+                                          future.GetCallback());
+    ASSERT_TRUE(future.Get());
+    auto selected_account = keyring_service()->GetSelectedSolanaDappAccount();
+    ASSERT_TRUE(selected_account);
+    ASSERT_EQ(selected_account->account_id, account_id);
   }
 
  private:
@@ -391,17 +387,24 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
        SolanaAccountMeta(kTestAccount, 2, false, true),
        SolanaAccountMeta(kTestAccount2, 3, false, false)},
       data);
+  auto test_address = SolanaAddress::FromBase58(kTestAccount);
+  ASSERT_TRUE(test_address);
+  auto test_address2 = SolanaAddress::FromBase58(kTestAccount2);
+  ASSERT_TRUE(test_address2);
+  auto from_address = SolanaAddress::FromBase58(from_account);
+  ASSERT_TRUE(from_address);
+  auto to_address = SolanaAddress::FromBase58(to_account);
+  ASSERT_TRUE(to_address);
+  auto system_program_address =
+      SolanaAddress::FromBase58(mojom::kSolanaSystemProgramId);
+  ASSERT_TRUE(system_program_address);
   std::vector<SolanaMessageAddressTableLookup> lookups;
-  lookups.emplace_back(*SolanaAddress::FromBase58(kTestAccount),
-                       std::vector<uint8_t>({0, 2}),
+  lookups.emplace_back(*test_address, std::vector<uint8_t>({0, 2}),
                        std::vector<uint8_t>({4, 6}));
-  lookups.emplace_back(*SolanaAddress::FromBase58(kTestAccount2),
-                       std::vector<uint8_t>({5, 7}),
+  lookups.emplace_back(*test_address2, std::vector<uint8_t>({5, 7}),
                        std::vector<uint8_t>({1, 3}));
-  std::vector<SolanaAddress> static_accounts = {
-      *SolanaAddress::FromBase58(from_account),
-      *SolanaAddress::FromBase58(to_account),
-      *SolanaAddress::FromBase58(mojom::kSolanaSystemProgramId)};
+  std::vector<SolanaAddress> static_accounts = {*from_address, *to_address,
+                                                *system_program_address};
 
   SolanaTransaction transaction(
       mojom::SolanaMessageVersion::kV0, recent_blockhash,
@@ -467,6 +470,9 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
             kTestAccount);
   EXPECT_FALSE(solana_tx_data->instructions[0]->account_metas[2]->is_signer);
   EXPECT_TRUE(solana_tx_data->instructions[0]->account_metas[2]->is_writable);
+  ASSERT_TRUE(solana_tx_data->instructions[0]
+                  ->account_metas[2]
+                  ->addr_table_lookup_index);
   EXPECT_EQ(solana_tx_data->instructions[0]
                 ->account_metas[2]
                 ->addr_table_lookup_index->val,
@@ -476,6 +482,9 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
             kTestAccount2);
   EXPECT_FALSE(solana_tx_data->instructions[0]->account_metas[3]->is_signer);
   EXPECT_FALSE(solana_tx_data->instructions[0]->account_metas[3]->is_writable);
+  ASSERT_TRUE(solana_tx_data->instructions[0]
+                  ->account_metas[3]
+                  ->addr_table_lookup_index);
   EXPECT_EQ(solana_tx_data->instructions[0]
                 ->account_metas[3]
                 ->addr_table_lookup_index->val,
@@ -503,17 +512,24 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
        SolanaAccountMeta(kTestAccount, 2, false, true),
        SolanaAccountMeta(kTestAccount2, 3, false, false)},
       data);
+  auto test_address = SolanaAddress::FromBase58(kTestAccount);
+  ASSERT_TRUE(test_address);
+  auto test_address2 = SolanaAddress::FromBase58(kTestAccount2);
+  ASSERT_TRUE(test_address2);
+  auto from_address = SolanaAddress::FromBase58(from_account);
+  ASSERT_TRUE(from_address);
+  auto to_address = SolanaAddress::FromBase58(to_account);
+  ASSERT_TRUE(to_address);
+  auto system_program_address =
+      SolanaAddress::FromBase58(mojom::kSolanaSystemProgramId);
+  ASSERT_TRUE(system_program_address);
   std::vector<SolanaMessageAddressTableLookup> lookups;
-  lookups.emplace_back(*SolanaAddress::FromBase58(kTestAccount),
-                       std::vector<uint8_t>({0, 2}),
+  lookups.emplace_back(*test_address, std::vector<uint8_t>({0, 2}),
                        std::vector<uint8_t>({4, 6}));
-  lookups.emplace_back(*SolanaAddress::FromBase58(kTestAccount2),
-                       std::vector<uint8_t>({5, 7}),
+  lookups.emplace_back(*test_address2, std::vector<uint8_t>({5, 7}),
                        std::vector<uint8_t>({1, 3}));
-  std::vector<SolanaAddress> static_accounts = {
-      *SolanaAddress::FromBase58(from_account),
-      *SolanaAddress::FromBase58(to_account),
-      *SolanaAddress::FromBase58(mojom::kSolanaSystemProgramId)};
+  std::vector<SolanaAddress> static_accounts = {*from_address, *to_address,
+                                                *system_program_address};
 
   SolanaTransaction transaction(
       mojom::SolanaMessageVersion::kV0, recent_blockhash,
@@ -649,6 +665,7 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
 
   EXPECT_EQ(value, expect_tx_value.GetDict());
   auto tx_from_value = SolanaTransaction::FromValue(value);
+  ASSERT_TRUE(tx_from_value);
   EXPECT_EQ(*tx_from_value, transaction);
 
   std::vector<std::string> invalid_value_strings = {"{}"};
@@ -722,24 +739,28 @@ TEST_F(SolanaTransactionUnitTest, SendOptionsFromValueMaxRetries) {
       base::test::ParseJson(R"({"maxRetries": "18446744073709551615"})");
   auto options =
       SolanaTransaction::SendOptions::FromValue(std::move(value.GetDict()));
+  ASSERT_TRUE(options.has_value());
   EXPECT_EQ(options->max_retries, UINT64_MAX);
   value = base::test::ParseJson(R"({"maxRetries": 9007199254740991})");
   options =
       SolanaTransaction::SendOptions::FromValue(std::move(value.GetDict()));
+  ASSERT_TRUE(options.has_value());
   EXPECT_EQ(options->max_retries, kMaxSafeIntegerUint64);
 
   // Unexpected type or no maxRetries.
   value = base::test::ParseJson(R"({"maxRetries": {}})");
   options =
       SolanaTransaction::SendOptions::FromValue(std::move(value.GetDict()));
+  ASSERT_TRUE(options.has_value());
   EXPECT_FALSE(options->max_retries);
   value = base::test::ParseJson(R"({})");
   options =
       SolanaTransaction::SendOptions::FromValue(std::move(value.GetDict()));
+  ASSERT_TRUE(options.has_value());
   EXPECT_FALSE(options->max_retries);
 }
 
-TEST_F(SolanaTransactionUnitTest, SetTxType) {
+TEST(SolanaTransactionDeathTest, SetTxType) {
   auto msg = SolanaMessage::CreateLegacyMessage(
       "", 0, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8", {});
   ASSERT_TRUE(msg);
@@ -866,10 +887,12 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   SetSelectedAccount(selected_dapp_account->account_id);
 
   // Empty message is invalid
-  auto signature_bytes = mojom::SolanaSignature::New(*Base58Decode(
+  auto decoded_signature = Base58Decode(
       "fJaHU9cDUoLsWLXJSPTgW3bAkhuZL319v2479igQtSp1ZyBjPi923jWkALg48uS75z5fp1JK"
       "1T4vdWi2D35fFEj",
-      kSolanaSignatureSize));
+      kSolanaSignatureSize);
+  ASSERT_TRUE(decoded_signature);
+  auto signature_bytes = mojom::SolanaSignature::New(*decoded_signature);
   SolanaTransaction transaction(mojom::SolanaMessageVersion::kLegacy, "", 0, "",
                                 SolanaMessageHeader(), {}, {}, {});
   EXPECT_EQ(transaction.GetSignedTransactionBytes(
@@ -937,12 +960,10 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   base::Extend(expect_signed_tx_bytes2,
                std::vector<uint8_t>(kSolanaSignatureSize * 2, 0));
   base::Extend(expect_signed_tx_bytes2, *serialized_msg);
-  EXPECT_EQ(
-      transaction3
-          .GetSignedTransactionBytes(keyring_service(),
-                                     from_account->account_id, signature_bytes)
-          .value(),
-      expect_signed_tx_bytes2);
+  auto signed_tx_bytes2 = transaction3.GetSignedTransactionBytes(
+      keyring_service(), from_account->account_id, signature_bytes);
+  ASSERT_TRUE(signed_tx_bytes2);
+  EXPECT_EQ(*signed_tx_bytes2, expect_signed_tx_bytes2);
 
   // Test selected account is not the fee payer.
   SolanaInstruction ins_not_fee_payer(
@@ -1018,6 +1039,7 @@ TEST_F(SolanaTransactionUnitTest, IsPartialSigned) {
 TEST_F(SolanaTransactionUnitTest, GetUnsignedTransaction) {
   auto msg1 =
       SolanaMessage::CreateLegacyMessage(kRecentBlockhash, 0, kFromAccount, {});
+  ASSERT_TRUE(msg1);
   auto tx1 = SolanaTransaction(std::move(*msg1));
   EXPECT_EQ(tx1.GetUnsignedTransaction(), "");
 

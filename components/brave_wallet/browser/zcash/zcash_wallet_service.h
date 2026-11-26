@@ -224,10 +224,10 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   friend class ZCashAutoSyncManagerTest;
   friend class ZCashShieldSyncServiceTest;
   friend class ZCashWalletServiceUnitTest;
-  FRIEND_TEST_ALL_PREFIXES(ZCashWalletServiceUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(ZCashWalletServiceDeathTest,
                            OnCompleteTransactionTaskDone_InvalidTransaction);
   FRIEND_TEST_ALL_PREFIXES(
-      ZCashWalletServiceUnitTest,
+      ZCashWalletServiceDeathTest,
       OnCompleteTransactionTaskDone_InvalidResultTransaction);
 
   /*KeyringServiceObserverBase*/

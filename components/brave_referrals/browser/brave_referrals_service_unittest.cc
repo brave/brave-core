@@ -12,6 +12,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/values_test_util.h"
@@ -75,15 +76,16 @@ class BraveReferralsServiceTest : public testing::Test {
           } else if (request.url.path() == "/promo/activity") {
             // Respond with a successful finalization check response
             response_body = "{\"finalized\":true}";
-          }
-
-          if (request.url.path() == kBraveConversionPath) {
+          } else if (request.url.path() == kBraveConversionPath) {
+            // Respond with an empty body.
             conversion_request_count_++;
             conversion_request_body_ =
                 std::string(request.request_body->elements()
                                 ->at(0)
                                 .As<network::DataElementBytes>()
                                 .AsStringPiece());
+          } else {
+            ADD_FAILURE() << "Unhandled request: " << request.url.spec();
           }
 
           url_loader_factory_.AddResponse(request.url.spec(), response_body);

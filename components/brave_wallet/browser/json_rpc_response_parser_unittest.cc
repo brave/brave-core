@@ -14,6 +14,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_responses.h"
 #include "components/grit/brave_components_strings.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -28,7 +29,9 @@ TEST(JsonRpcResponseParserUnitTest, ParseSingleStringResult) {
   EXPECT_EQ(ParseSingleStringResult(ParseJson(json)), "abc");
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"\"}";
-  EXPECT_TRUE(ParseSingleStringResult(ParseJson(json))->empty());
+  auto empty_result = ParseSingleStringResult(ParseJson(json));
+  ASSERT_TRUE(empty_result.has_value());
+  EXPECT_TRUE(empty_result->empty());
 }
 
 TEST(JsonRpcResponseParserUnitTest, ParseDecodedBytesResult) {
@@ -159,16 +162,19 @@ TEST(JsonRpcResponseParserUnitTest, ConvertUint64ToString) {
   std::string json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" +
                      base::NumberToString(UINT64_MAX) + "}";
 
+  auto converted = ConvertUint64ToString("/result", json);
+  ASSERT_TRUE(converted.has_value());
   EXPECT_EQ(
-      base::test::ParseJsonDict(ConvertUint64ToString("/result", json).value()),
+      base::test::ParseJsonDict(*converted),
       base::test::ParseJsonDict("{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
                                 base::NumberToString(UINT64_MAX) + "\"}"));
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":1}";
-  EXPECT_EQ(
-      base::test::ParseJsonDict(ConvertUint64ToString("/result", json).value()),
-      base::test::ParseJsonDict(
-          "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"1\"}"));
+  converted = ConvertUint64ToString("/result", json);
+  ASSERT_TRUE(converted.has_value());
+  EXPECT_EQ(base::test::ParseJsonDict(*converted),
+            base::test::ParseJsonDict(
+                "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"1\"}"));
 
   EXPECT_FALSE(ConvertUint64ToString("", json));
 
@@ -190,8 +196,10 @@ TEST(JsonRpcResponseParserUnitTest, ConvertUint64ToString) {
   EXPECT_FALSE(ConvertUint64ToString("/result", json));
 
   json = R"({"jsonrpc":"2.0","id":1,"result":{"value":18446744073709551615}})";
+  converted = ConvertUint64ToString("/result/value", json);
+  ASSERT_TRUE(converted.has_value());
   EXPECT_EQ(
-      base::test::ParseJsonDict(*ConvertUint64ToString("/result/value", json)),
+      base::test::ParseJsonDict(*converted),
       base::test::ParseJsonDict(
           R"({"id":1,"jsonrpc":"2.0","result":{"value":"18446744073709551615"}})"));
 
@@ -201,7 +209,9 @@ TEST(JsonRpcResponseParserUnitTest, ConvertUint64ToString) {
                "message":"method does not exist"
              }
             })";
-  EXPECT_EQ(base::test::ParseJsonDict(*ConvertUint64ToString("/result", json)),
+  converted = ConvertUint64ToString("/result", json);
+  ASSERT_TRUE(converted.has_value());
+  EXPECT_EQ(base::test::ParseJsonDict(*converted),
             base::test::ParseJsonDict(json));
 }
 
@@ -217,9 +227,10 @@ TEST(JsonRpcResponseParserUnitTest, ConvertMultiUint64ToString) {
             "a":{"b":"18446744073709551615"}
             }})";
 
-  EXPECT_EQ(ParseJson(*ConvertMultiUint64ToString(
-                {"/result/value", "/result/a/b"}, json)),
-            ParseJson(expected_json));
+  auto converted =
+      ConvertMultiUint64ToString({"/result/value", "/result/a/b"}, json);
+  ASSERT_TRUE(converted.has_value());
+  EXPECT_EQ(ParseJson(*converted), ParseJson(expected_json));
 
   EXPECT_FALSE(ConvertMultiUint64ToString({}, json));
   EXPECT_FALSE(ConvertMultiUint64ToString({"", "/result/value"}, json));
@@ -242,9 +253,10 @@ TEST(JsonRpcResponseParserUnitTest, ConvertMultiUint64InObjectArrayToString) {
            {"key1":"18446744073709551615","key2":"18446744073709551615"},
            {"key1":"18446744073709551615","key2":"18446744073709551615"}
            ]}})";
-  EXPECT_EQ(ParseJson(*ConvertMultiUint64InObjectArrayToString(
-                "/result/array", "", {"key1", "key2"}, json)),
-            ParseJson(expected_json));
+  auto converted = ConvertMultiUint64InObjectArrayToString(
+      "/result/array", "", {"key1", "key2"}, json);
+  ASSERT_TRUE(converted.has_value());
+  EXPECT_EQ(ParseJson(*converted), ParseJson(expected_json));
 
   EXPECT_FALSE(
       ConvertMultiUint64InObjectArrayToString("", "", {"key1", "key2"}, json));
@@ -274,33 +286,39 @@ TEST(JsonRpcResponseParserUnitTest, ConvertMultiUint64InObjectArrayToString) {
            {"sub_path": {"key1":"18446744073709551615","key2":"18446744073709551615"}},
            {"sub_path": {"key1":"18446744073709551615","key2":"18446744073709551615"}}
            ]}})";
-  EXPECT_EQ(ParseJson(*ConvertMultiUint64InObjectArrayToString(
-                "/result/array", "/sub_path", {"key1", "key2"}, json)),
-            ParseJson(expected_json));
+  converted = ConvertMultiUint64InObjectArrayToString(
+      "/result/array", "/sub_path", {"key1", "key2"}, json);
+  ASSERT_TRUE(converted.has_value());
+  EXPECT_EQ(ParseJson(*converted), ParseJson(expected_json));
 }
 
 TEST(JsonRpcResponseParserUnitTest, ConvertInt64ToString) {
   std::string json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" +
                      base::NumberToString(INT64_MAX) + "}";
 
+  auto converted = ConvertInt64ToString("/result", json);
+  ASSERT_TRUE(converted.has_value());
   EXPECT_EQ(
-      base::test::ParseJsonDict(ConvertInt64ToString("/result", json).value()),
+      base::test::ParseJsonDict(*converted),
       base::test::ParseJsonDict("{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
                                 base::NumberToString(INT64_MAX) + "\"}"));
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" +
          base::NumberToString(INT64_MIN) + "}";
 
+  converted = ConvertInt64ToString("/result", json);
+  ASSERT_TRUE(converted.has_value());
   EXPECT_EQ(
-      base::test::ParseJsonDict(ConvertInt64ToString("/result", json).value()),
+      base::test::ParseJsonDict(*converted),
       base::test::ParseJsonDict("{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
                                 base::NumberToString(INT64_MIN) + "\"}"));
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":1}";
-  EXPECT_EQ(
-      base::test::ParseJsonDict(ConvertInt64ToString("/result", json).value()),
-      base::test::ParseJsonDict(
-          "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"1\"}"));
+  converted = ConvertInt64ToString("/result", json);
+  ASSERT_TRUE(converted.has_value());
+  EXPECT_EQ(base::test::ParseJsonDict(*converted),
+            base::test::ParseJsonDict(
+                "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"1\"}"));
 
   EXPECT_FALSE(ConvertInt64ToString("", json));
 
@@ -324,7 +342,9 @@ TEST(JsonRpcResponseParserUnitTest, ConvertInt64ToString) {
                "message":"method does not exist"
              }
             })";
-  EXPECT_EQ(base::test::ParseJsonDict(*ConvertInt64ToString("/result", json)),
+  converted = ConvertInt64ToString("/result", json);
+  ASSERT_TRUE(converted.has_value());
+  EXPECT_EQ(base::test::ParseJsonDict(*converted),
             base::test::ParseJsonDict(json));
 }
 
@@ -550,50 +570,61 @@ TEST(JsonRpcResponseParserUnitTest, ConvertAllNumbersToString) {
   // OK: convert u64, f64, and i64 values to string
   std::string json(
       R"({"a":[{"key":18446744073709551615},{"key":-2},{"key":3.14}]})");
-  EXPECT_EQ(
-      ConvertAllNumbersToString("", json).value_or(""),
-      R"({"a":[{"key":"18446744073709551615"},{"key":"-2"},{"key":"3.14"}]})");
+  EXPECT_THAT(ConvertAllNumbersToString("", json),
+              testing::Optional(
+                  base::test::IsJson(R"({"a":[{"key":"18446744073709551615"},)"
+                                     R"({"key":"-2"},{"key":"3.14"}]})")));
 
   // OK: convert deeply nested value to string
   json = R"({"some":[{"deeply":{"nested":[{"path":123}]}}]})";
-  EXPECT_EQ(ConvertAllNumbersToString("", json).value_or(""),
-            R"({"some":[{"deeply":{"nested":[{"path":"123"}]}}]})");
+  EXPECT_THAT(ConvertAllNumbersToString("", json),
+              testing::Optional(base::test::IsJson(
+                  R"({"some":[{"deeply":{"nested":[{"path":"123"}]}}]})")));
 
   // OK: values other than u64/f64/i64 are unchanged
   json = R"({"a":[{"key":18446744073709551615},{"key":null},{"key":true}]})";
-  EXPECT_EQ(
-      ConvertAllNumbersToString("", json).value_or(""),
-      R"({"a":[{"key":"18446744073709551615"},{"key":null},{"key":true}]})");
+  EXPECT_THAT(ConvertAllNumbersToString("", json),
+              testing::Optional(
+                  base::test::IsJson(R"({"a":[{"key":"18446744073709551615"},)"
+                                     R"({"key":null},{"key":true}]})")));
 
   // OK: empty object array, nothing to convert
   json = R"({"a":[]})";
-  EXPECT_EQ(ConvertAllNumbersToString("", json).value_or(""), json);
+  EXPECT_THAT(ConvertAllNumbersToString("", json),
+              testing::Optional(base::test::IsJson(json)));
 
   // OK: empty array json, nothing to convert
   json = R"([])";
-  EXPECT_EQ(ConvertAllNumbersToString("", json).value_or(""), json);
+  EXPECT_THAT(ConvertAllNumbersToString("", json),
+              testing::Optional(base::test::IsJson(json)));
 
   // OK: floating point values in scientific notation are unchanged
   json = R"({"a": 1.196568750220778e-7})";
-  EXPECT_EQ(ConvertAllNumbersToString("", json).value_or(""),
-            R"({"a":"1.196568750220778e-7"})");
+  EXPECT_THAT(
+      ConvertAllNumbersToString("", json),
+      testing::Optional(base::test::IsJson(R"({"a":"1.196568750220778e-7"})")));
 
   // OK: convert under specified JSON path only
   json = R"({"a":1,"outer":{"inner": 2}})";
-  EXPECT_EQ(ConvertAllNumbersToString("/outer", json).value_or(""),
-            R"({"a":1,"outer":{"inner":"2"}})");
-  EXPECT_EQ(ConvertAllNumbersToString("/a", json).value_or(""),
-            R"({"a":"1","outer":{"inner":2}})");
+  EXPECT_THAT(ConvertAllNumbersToString("/outer", json),
+              testing::Optional(
+                  base::test::IsJson(R"({"a":1,"outer":{"inner":"2"}})")));
+  EXPECT_THAT(ConvertAllNumbersToString("/a", json),
+              testing::Optional(
+                  base::test::IsJson(R"({"a":"1","outer":{"inner":2}})")));
 
   // KO: invalid path has no effect on the JSON
   json = R"({"a":1,"outer":{"inner":2}})";
-  EXPECT_EQ(ConvertAllNumbersToString("/invalid", json).value_or(""), json);
-  EXPECT_EQ(ConvertAllNumbersToString("/", json).value_or(""), json);
+  EXPECT_THAT(ConvertAllNumbersToString("/invalid", json),
+              testing::Optional(base::test::IsJson(json)));
+  EXPECT_THAT(ConvertAllNumbersToString("/", json),
+              testing::Optional(base::test::IsJson(json)));
 
   // OK: INT64_MIN fits in an i64.
   json = R"({"a":[{"key":)" + base::NumberToString(INT64_MIN) + "}]}";
-  EXPECT_EQ(ConvertAllNumbersToString("", json).value_or(""),
-            R"({"a":[{"key":"-9223372036854775808"}]})");
+  EXPECT_THAT(ConvertAllNumbersToString("", json),
+              testing::Optional(base::test::IsJson(
+                  R"({"a":[{"key":"-9223372036854775808"}]})")));
 
   // OK: numbers that do not fit in u64/i64 are parsed as f64 and converted to
   // a string that still represents the same f64 value.
@@ -630,8 +661,7 @@ TEST(JsonRpcResponseParserUnitTest, ConvertAllNumbersToString) {
       R"("{a":[{"key":1}]})",
   };
   for (const auto& invalid_case : invalid_cases) {
-    EXPECT_EQ("", ConvertAllNumbersToString("", invalid_case).value_or(""))
-        << invalid_case;
+    EXPECT_FALSE(ConvertAllNumbersToString("", invalid_case)) << invalid_case;
   }
 }
 

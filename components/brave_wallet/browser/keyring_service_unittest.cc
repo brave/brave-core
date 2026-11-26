@@ -45,6 +45,7 @@
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service_migrations.h"
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_import_keyring.h"
@@ -724,9 +725,9 @@ TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     NiceMock<TestKeyringServiceObserver> observer(service);
-    AccountUtils(&service).CreateWallet(
-        *bip39::GenerateMnemonic(crypto::RandBytesAsVector(16)),
-        kPasswordBrave);
+    auto mnemonic = bip39::GenerateMnemonic(crypto::RandBytesAsVector(16));
+    ASSERT_TRUE(mnemonic);
+    AccountUtils(&service).CreateWallet(*mnemonic, kPasswordBrave);
     ASSERT_TRUE(AddAccount(&service, mojom::CoinType::ETH,
                            mojom::KeyringId::kDefault, "ETH Account 1"));
     EXPECT_FALSE(service.IsLockedSync());
@@ -766,8 +767,9 @@ TEST_F(KeyringServiceUnitTest, RecordsUsageMetrics) {
   histogram_tester.ExpectTotalCount(kWalletUsageWeeklyHistogramName, 0);
   histogram_tester.ExpectTotalCount(kWalletUsageMonthlyHistogramName, 0);
 
-  AccountUtils(&service).CreateWallet(
-      *bip39::GenerateMnemonic(crypto::RandBytesAsVector(16)), kPasswordBrave);
+  auto mnemonic = bip39::GenerateMnemonic(crypto::RandBytesAsVector(16));
+  ASSERT_TRUE(mnemonic);
+  AccountUtils(&service).CreateWallet(*mnemonic, kPasswordBrave);
   histogram_tester.ExpectUniqueSample(kWalletUsageDailyHistogramName, 1, 1);
   histogram_tester.ExpectUniqueSample(kWalletUsageWeeklyHistogramName, 1, 1);
   histogram_tester.ExpectUniqueSample(kWalletUsageMonthlyHistogramName, 1, 1);
@@ -1597,20 +1599,23 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
   // Imported accounts should also be restored in default keyring
   auto* default_keyring =
       service.GetKeyring<EthereumKeyring>(mojom::KeyringId::kDefault);
+  ASSERT_TRUE(default_keyring);
   EXPECT_EQ(default_keyring->GetImportedAccountsForTesting().size(), 2u);
 
   const base::Value* imported_accounts_value = GetPrefForKeyring(
       GetPrefs(), kImportedAccounts, mojom::KeyringId::kDefault);
   ASSERT_TRUE(imported_accounts_value);
+  ASSERT_FALSE(imported_accounts_value->GetList().empty());
   EXPECT_EQ(*imported_accounts_value->GetList()[0].GetDict().FindString(
                 kAccountAddress),
             imported_accounts[0].address);
   // private key is encrypted
+  const base::DictValue* encrypted_private_key_dict =
+      imported_accounts_value->GetList()[0].GetDict().FindDict(
+          "encrypted_private_key");
+  ASSERT_TRUE(encrypted_private_key_dict);
   const base::DictValue encrypted_private_key =
-      imported_accounts_value->GetList()[0]
-          .GetDict()
-          .FindDict("encrypted_private_key")
-          ->Clone();
+      encrypted_private_key_dict->Clone();
 
   std::vector<uint8_t> private_key0;
   ASSERT_TRUE(
@@ -1731,11 +1736,13 @@ TEST_F(KeyringServiceUnitTest, ImportedAccountFromJson) {
   const base::Value* imported_accounts_value = GetPrefForKeyring(
       GetPrefs(), kImportedAccounts, mojom::KeyringId::kDefault);
   ASSERT_TRUE(imported_accounts_value);
+  ASSERT_FALSE(imported_accounts_value->GetList().empty());
+  const base::DictValue* encrypted_private_key_dict =
+      imported_accounts_value->GetList()[0].GetDict().FindDict(
+          "encrypted_private_key");
+  ASSERT_TRUE(encrypted_private_key_dict);
   const base::DictValue encrypted_private_key =
-      imported_accounts_value->GetList()[0]
-          .GetDict()
-          .FindDict("encrypted_private_key")
-          ->Clone();
+      encrypted_private_key_dict->Clone();
 
   std::vector<uint8_t> private_key_bytes;
   ASSERT_TRUE(base::HexStringToBytes(expected_private_key, &private_key_bytes));
@@ -1818,6 +1825,7 @@ TEST_F(KeyringServiceUnitTest, EncodePrivateKeyForExport) {
     auto polkadot_account_2 =
         AddAccount(&keyring_service, mojom::CoinType::DOT,
                    mojom::KeyringId::kPolkadotMainnet, "Polkadot Account 2");
+    ASSERT_TRUE(polkadot_account_2);
     EXPECT_FALSE(EncodePrivateKeyForExport(
         &keyring_service, polkadot_account_2->account_id.Clone()));
   }
@@ -2561,6 +2569,7 @@ TEST_F(KeyringServiceUnitTest, SelectHardwareAccount) {
       mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kDefault));
 
   auto imported = service.AddHardwareAccountsSync(std::move(new_accounts));
+  ASSERT_FALSE(imported.empty());
 
   // First account gets selected.
   ASSERT_EQ(service.GetSelectedWalletAccount(), imported.front());
@@ -2644,7 +2653,7 @@ TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_RestrictedAddress) {
         valid_eth_address, "m/44'/60'/0'/0/0", "Valid ETH",
         mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kDefault));
     auto result = keyring_service.AddHardwareAccountsSync(std::move(accounts));
-    EXPECT_FALSE(result.empty()) << "Valid Ethereum address should be accepted";
+    ASSERT_FALSE(result.empty()) << "Valid Ethereum address should be accepted";
     EXPECT_EQ(result[0]->address, valid_eth_address);
   }
 
@@ -2947,6 +2956,7 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount_CardanoEnabled) {
 
   auto second_account = GetAccountUtils(&service).EnsureEthAccount(1);
 
+  ASSERT_TRUE(first_sol_account);
   ASSERT_TRUE(second_account);
 
   // This does not depend on being locked
@@ -3117,6 +3127,8 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount_CardanoDisabled) {
 
   auto second_account = GetAccountUtils(&service).EnsureEthAccount(1);
 
+  ASSERT_TRUE(first_account);
+  ASSERT_TRUE(first_sol_account);
   ASSERT_TRUE(second_account);
 
   // This does not depend on being locked
@@ -3221,8 +3233,9 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount_CardanoDisabled) {
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
       hardware_account, "m/44'/60'/1'/0/0", "name 1",
       mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kDefault));
-  auto hw_account =
-      service.AddHardwareAccountsSync(std::move(new_accounts))[0]->Clone();
+  auto hw_accounts = service.AddHardwareAccountsSync(std::move(new_accounts));
+  ASSERT_FALSE(hw_accounts.empty());
+  auto hw_account = hw_accounts[0]->Clone();
   EXPECT_EQ(hw_account, service.GetSelectedWalletAccount());
   EXPECT_EQ(hw_account, service.GetSelectedEthereumDappAccount());
   observer.WaitAndVerify();
@@ -3473,14 +3486,17 @@ TEST_F(KeyringServiceUnitTest, SetAccountName_HardwareAccounts) {
       "filecoin testnet 1 changed");
 
   auto account_infos = GetAccountUtils(&service).AllEthAccounts();
+  ASSERT_GE(account_infos.size(), 2u);
   EXPECT_FALSE(account_infos[1]->address.empty());
   EXPECT_EQ(account_infos[1]->name, "name 1 changed");
 
   account_infos = GetAccountUtils(&service).AllFilAccounts();
+  ASSERT_GE(account_infos.size(), 2u);
   EXPECT_FALSE(account_infos[1]->address.empty());
   EXPECT_EQ(account_infos[1]->name, "filecoin 1 changed");
 
   account_infos = GetAccountUtils(&service).AllFilTestAccounts();
+  ASSERT_GE(account_infos.size(), 1u);
   EXPECT_FALSE(account_infos[0]->address.empty());
   EXPECT_EQ(account_infos[0]->name, "filecoin testnet 1 changed");
 }
@@ -4035,6 +4051,7 @@ TEST_F(KeyringServiceUnitTest, SignTransactionByFilecoinKeyring) {
       false,
       mojom::FilTxData::New("1", "2", "3", "4", "5",
                             "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
+  ASSERT_TRUE(transaction);
 
   auto yet_unknown_account =
       MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoinTestnet,
@@ -4195,6 +4212,7 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
 
   auto* filecoin_testnet_keyring =
       service.GetKeyring<FilecoinKeyring>(mojom::KeyringId::kFilecoinTestnet);
+  ASSERT_TRUE(filecoin_testnet_keyring);
   EXPECT_EQ(filecoin_testnet_keyring->GetImportedAccountsForTesting().size(),
             imported_testnet_accounts.size());
 
@@ -4284,6 +4302,7 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
 
   auto* default_keyring =
       service.GetKeyring<EthereumKeyring>(mojom::KeyringId::kDefault);
+  ASSERT_TRUE(default_keyring);
   // Imported accounts should also be restored in filecoin keyring
   EXPECT_EQ(default_keyring->GetImportedAccountsForTesting().size(), 0u);
   EXPECT_EQ(
@@ -4777,12 +4796,16 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
 
   void PrepareAccounts(mojom::CoinType coin_type, mojom::KeyringId keyring_id) {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-    saved_mnemonic_ = CreateWallet(&service, "brave").value_or("");
-    EXPECT_FALSE(saved_mnemonic_.empty());
+    auto mnemonic = CreateWallet(&service, "brave");
+    ASSERT_TRUE(mnemonic);
+    ASSERT_FALSE(mnemonic->empty());
+    saved_mnemonic_ = *mnemonic;
 
     saved_addresses_.clear();
     for (size_t i = 0; i < 100u; ++i) {
-      saved_addresses_.push_back(*service.GetDiscoveryAddress(keyring_id, i));
+      auto address = service.GetDiscoveryAddress(keyring_id, i);
+      ASSERT_TRUE(address);
+      saved_addresses_.push_back(*address);
     }
   }
 
@@ -4803,47 +4826,40 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
 
   void Interceptor(const network::ResourceRequest& request) {
     url_loader_factory().ClearResponses();
-    std::string_view request_string(request.request_body->elements()
-                                        ->at(0)
-                                        .As<network::DataElementBytes>()
-                                        .AsStringPiece());
-    base::DictValue dict = ParseJsonDict(request_string);
-    std::string* method = dict.FindString("method");
-    ASSERT_TRUE(method);
-    if (*method == "eth_getTransactionCount") {
-      base::ListValue* params = dict.FindList("params");
-      ASSERT_TRUE(params);
-      std::string* address = (*params)[0].GetIfString();
-      ASSERT_TRUE(address);
+    const auto dict = ParseJsonDict(GetRpcRequestBody(request));
+    const auto* method = dict.FindString("method");
+    if (!method) {
+      RejectUnexpectedRpcRequest(url_loader_factory(), request);
+      return;
+    }
+    if (*method == "getTokenAccountsByOwner") {
+      // Asset discovery also runs on wallet restore. Leave its request pending.
+      return;
+    }
 
+    const auto* params = dict.FindList("params");
+    if (!params || params->empty() || !params->front().is_string()) {
+      RejectUnexpectedRpcRequest(url_loader_factory(), request);
+      return;
+    }
+    const auto& address = params->front().GetString();
+    if (*method == "eth_getTransactionCount") {
       if (eth_transaction_count_callback_) {
         url_loader_factory().AddResponse(
-            request.url.spec(), eth_transaction_count_callback_.Run(*address));
+            request.url.spec(), eth_transaction_count_callback_.Run(address));
       }
-    }
-
-    if (*method == "Filecoin.WalletBalance") {
-      base::ListValue* params = dict.FindList("params");
-      ASSERT_TRUE(params);
-      std::string* address = (*params)[0].GetIfString();
-      ASSERT_TRUE(address);
-
+    } else if (*method == "Filecoin.WalletBalance") {
       if (fil_balance_callback_) {
         url_loader_factory().AddResponse(request.url.spec(),
-                                         fil_balance_callback_.Run(*address));
+                                         fil_balance_callback_.Run(address));
       }
-    }
-
-    if (*method == "getBalance") {
-      base::ListValue* params = dict.FindList("params");
-      ASSERT_TRUE(params);
-      std::string* address = (*params)[0].GetIfString();
-      ASSERT_TRUE(address);
-
+    } else if (*method == "getBalance") {
       if (sol_balance_callback_) {
         url_loader_factory().AddResponse(request.url.spec(),
-                                         sol_balance_callback_.Run(*address));
+                                         sol_balance_callback_.Run(address));
       }
+    } else {
+      RejectUnexpectedRpcRequest(url_loader_factory(), request);
     }
   }
 
@@ -4857,7 +4873,8 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
 };
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
-  PrepareAccounts(mojom::CoinType::ETH, mojom::KeyringId::kDefault);
+  ASSERT_NO_FATAL_FAILURE(
+      PrepareAccounts(mojom::CoinType::ETH, mojom::KeyringId::kDefault));
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
@@ -4903,7 +4920,8 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
 }
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, SolAccountDiscovery) {
-  PrepareAccounts(mojom::CoinType::SOL, mojom::KeyringId::kSolana);
+  ASSERT_NO_FATAL_FAILURE(
+      PrepareAccounts(mojom::CoinType::SOL, mojom::KeyringId::kSolana));
 
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
@@ -4950,7 +4968,8 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, SolAccountDiscovery) {
 }
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, FilAccountDiscovery) {
-  PrepareAccounts(mojom::CoinType::FIL, mojom::KeyringId::kFilecoin);
+  ASSERT_NO_FATAL_FAILURE(
+      PrepareAccounts(mojom::CoinType::FIL, mojom::KeyringId::kFilecoin));
 
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
@@ -5011,13 +5030,13 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
       *brave_wallet_service.GetBitcoinWalletService());
 
   bitcoin_test_rpc_server.SetUpBitcoinRpc(std::nullopt, std::nullopt);
+  auto seed = bip39::MnemonicToSeed(kMnemonicAbandonAbandon);
+  ASSERT_TRUE(seed);
   BitcoinHDKeyring keyring_84(
-      *bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
-      mojom::KeyringId::kBitcoin84,
+      *seed, mojom::KeyringId::kBitcoin84,
       base::BindLambdaForTesting([](const std::string&) { return true; }));
   BitcoinHDKeyring keyring_84_test(
-      *bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
-      mojom::KeyringId::kBitcoin84Testnet,
+      *seed, mojom::KeyringId::kBitcoin84Testnet,
       base::BindLambdaForTesting([](const std::string&) { return true; }));
 
   // Account 0
@@ -5092,7 +5111,8 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
 }
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
-  PrepareAccounts(mojom::CoinType::ETH, mojom::KeyringId::kDefault);
+  ASSERT_NO_FATAL_FAILURE(
+      PrepareAccounts(mojom::CoinType::ETH, mojom::KeyringId::kDefault));
 
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
@@ -5140,7 +5160,8 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
 }
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
-  PrepareAccounts(mojom::CoinType::ETH, mojom::KeyringId::kDefault);
+  ASSERT_NO_FATAL_FAILURE(
+      PrepareAccounts(mojom::CoinType::ETH, mojom::KeyringId::kDefault));
 
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
@@ -5212,7 +5233,8 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
 }
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
-  PrepareAccounts(mojom::CoinType::ETH, mojom::KeyringId::kDefault);
+  ASSERT_NO_FATAL_FAILURE(
+      PrepareAccounts(mojom::CoinType::ETH, mojom::KeyringId::kDefault));
 
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
@@ -5462,7 +5484,7 @@ TEST_F(KeyringServiceUnitTest, GetBitcoinAddresses) {
   auto added_account = AddAccount(&service, mojom::CoinType::BTC,
                                   mojom::KeyringId::kBitcoin84, "Btc Acc");
 
-  EXPECT_THAT(GetAccountUtils(&service).AllBtcAccounts(), testing::SizeIs(1u));
+  ASSERT_THAT(GetAccountUtils(&service).AllBtcAccounts(), testing::SizeIs(1u));
   auto btc_acc = GetAccountUtils(&service).AllBtcAccounts()[0]->Clone();
   EXPECT_EQ(btc_acc, added_account);
   EXPECT_EQ(btc_acc->address, "");
@@ -5484,6 +5506,7 @@ TEST_F(KeyringServiceUnitTest, GetBitcoinAddresses) {
   service.UpdateNextUnusedAddressForBitcoinAccount(btc_acc->account_id, 1,
                                                    std::nullopt);
   addresses = service.GetBitcoinAddresses(btc_acc->account_id);
+  ASSERT_TRUE(addresses);
   ASSERT_EQ(addresses->size(), 3u);  // +1 receive .
   EXPECT_EQ(addresses->at(0), mojom::BitcoinAddress::New(
                                   "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu",
@@ -5498,6 +5521,7 @@ TEST_F(KeyringServiceUnitTest, GetBitcoinAddresses) {
   service.UpdateNextUnusedAddressForBitcoinAccount(btc_acc->account_id,
                                                    std::nullopt, 1);
   addresses = service.GetBitcoinAddresses(btc_acc->account_id);
+  ASSERT_TRUE(addresses);
   ASSERT_EQ(addresses->size(), 4u);  // + 1 change.
   EXPECT_EQ(addresses->at(0), mojom::BitcoinAddress::New(
                                   "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu",
@@ -5513,6 +5537,7 @@ TEST_F(KeyringServiceUnitTest, GetBitcoinAddresses) {
                                   mojom::BitcoinKeyId::New(1, 1)));
   service.UpdateNextUnusedAddressForBitcoinAccount(btc_acc->account_id, 5, 5);
   addresses = service.GetBitcoinAddresses(btc_acc->account_id);
+  ASSERT_TRUE(addresses);
   ASSERT_EQ(addresses->size(), 12u);  // 6 receive + 6 change.
   EXPECT_EQ(addresses->at(6), mojom::BitcoinAddress::New(
                                   "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el",
@@ -5527,6 +5552,7 @@ TEST_F(KeyringServiceUnitTest, UpdateNextUnusedAddressForBitcoinAccount) {
 
   ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
   auto btc_acc = GetAccountUtils(&service).EnsureBtcAccount(0);
+  ASSERT_TRUE(btc_acc);
   EXPECT_EQ(mojom::BitcoinKeyId::New(0, 0),
             service.GetBitcoinAccountInfo(btc_acc->account_id)
                 ->next_receive_address->key_id);
@@ -5565,6 +5591,7 @@ TEST_F(KeyringServiceUnitTest, GetBitcoinAccountInfo) {
 
   ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
   auto btc_acc = GetAccountUtils(&service).EnsureBtcAccount(0);
+  ASSERT_TRUE(btc_acc);
 
   service.UpdateNextUnusedAddressForBitcoinAccount(btc_acc->account_id, 7, 9);
   EXPECT_EQ(
@@ -5585,6 +5612,7 @@ TEST_F(KeyringServiceUnitTest, GetBitcoinAddress) {
 
   ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
   auto btc_acc = GetAccountUtils(&service).EnsureBtcAccount(0);
+  ASSERT_TRUE(btc_acc);
 
   EXPECT_EQ(
       mojom::BitcoinAddress::New("bc1qhxgzmkmwvrlwvlfn4qe57lx2qdfg8phycnsarn",
@@ -5728,20 +5756,19 @@ TEST_F(KeyringServiceUnitTest, SignCip30MessageByCardanoKeyring) {
   ASSERT_TRUE(cardano_acc);
   auto message = base::byte_span_from_cstring("brave");
 
-  base::DictValue expected_dict;
-  expected_dict.Set(
-      "key",
+  const base::DictValue expected_dict = ParseJsonDict(
+      R"({"key": ")"
       "a50101025839010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948efbf42e5"
       "57890352095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176032720062158207ea0"
-      "9a34aebb13c9841c71397b1cabfec5ddf950405293dee496cac2f437480a");
-  expected_dict.Set(
-      "signature",
+      "9a34aebb13c9841c71397b1cabfec5ddf950405293dee496cac2f437480a"
+      R"(", "signature": ")"
       "845882a30127045839010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948ef"
       "bf42e557890352095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176676164647265"
       "73735839010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948efbf42e55789"
       "0352095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176a166686173686564f44562"
       "7261766558404da2b7552a3be11b2f4369a7f8063622081ccbe664bf74b148d6469ade55"
-      "239fea08557bc17af95f29eef9067e1a0cc00de06b55b70727a1df3ab3556605550e");
+      "239fea08557bc17af95f29eef9067e1a0cc00de06b55b70727a1df3ab3556605550e"
+      R"("})");
 
   auto signed_message = service.SignCip30MessageByCardanoKeyring(
       cardano_acc->account_id,
@@ -5810,6 +5837,7 @@ TEST_F(KeyringServiceUnitTest, UpdateNextUnusedAddressForZCashAccount) {
 
   ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
   auto zec_acc = GetAccountUtils(&service).EnsureZecAccount(0);
+  ASSERT_TRUE(zec_acc);
   EXPECT_EQ(mojom::ZCashKeyId::New(0, 0, 0),
             service.GetZCashAccountInfo(zec_acc->account_id)
                 ->next_transparent_receive_address->key_id);
@@ -5857,6 +5885,7 @@ TEST_F(KeyringServiceUnitTest, ZCashIronwoodSyncStateResetPref) {
 
   ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
   auto zec_acc = GetAccountUtils(&service).EnsureZecAccount(0);
+  ASSERT_TRUE(zec_acc);
 
   EXPECT_FALSE(service.GetZCashIronwoodSyncStateReset(zec_acc->account_id));
 
@@ -6031,6 +6060,7 @@ TEST_F(KeyringServiceUnitTest, GetCardanoAccountInfo) {
 
   ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
   auto ada_acc = GetAccountUtils(&service).EnsureAdaAccount(0);
+  ASSERT_TRUE(ada_acc);
 
   service.UpdateNextUnusedAddressForCardanoAccount(ada_acc->account_id, 7, 9);
   EXPECT_EQ(
@@ -6067,7 +6097,7 @@ TEST_F(KeyringServiceUnitTest, GetCardanoAddresses) {
       AddAccount(&service, mojom::CoinType::ADA,
                  mojom::KeyringId::kCardanoMainnet, "Cadano Acc");
 
-  EXPECT_THAT(GetAccountUtils(&service).AllAdaAccounts(), testing::SizeIs(1u));
+  ASSERT_THAT(GetAccountUtils(&service).AllAdaAccounts(), testing::SizeIs(1u));
   auto cardano_acc = GetAccountUtils(&service).AllAdaAccounts()[0]->Clone();
   EXPECT_EQ(cardano_acc, added_account);
   EXPECT_EQ(cardano_acc->address, "");
@@ -6094,6 +6124,7 @@ TEST_F(KeyringServiceUnitTest, GetCardanoAddresses) {
   service.UpdateNextUnusedAddressForCardanoAccount(cardano_acc->account_id, 1,
                                                    std::nullopt);
   addresses = service.GetCardanoAddresses(cardano_acc->account_id);
+  ASSERT_TRUE(addresses);
   ASSERT_EQ(addresses->size(), 3u);  // +1 receive .
   EXPECT_EQ(
       addresses->at(0),
@@ -6114,6 +6145,7 @@ TEST_F(KeyringServiceUnitTest, GetCardanoAddresses) {
   service.UpdateNextUnusedAddressForCardanoAccount(cardano_acc->account_id,
                                                    std::nullopt, 1);
   addresses = service.GetCardanoAddresses(cardano_acc->account_id);
+  ASSERT_TRUE(addresses);
   ASSERT_EQ(addresses->size(), 4u);  // + 1 change.
   EXPECT_EQ(
       addresses->at(0),
@@ -6138,6 +6170,7 @@ TEST_F(KeyringServiceUnitTest, GetCardanoAddresses) {
   service.UpdateNextUnusedAddressForCardanoAccount(cardano_acc->account_id, 5,
                                                    5);
   addresses = service.GetCardanoAddresses(cardano_acc->account_id);
+  ASSERT_TRUE(addresses);
   ASSERT_EQ(addresses->size(), 12u);  // 6 receive + 6 change.
   EXPECT_EQ(
       addresses->at(6),
@@ -6159,6 +6192,7 @@ TEST_F(KeyringServiceUnitTest, GetCardanoAddress) {
 
   ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
   auto ada_acc = GetAccountUtils(&service).EnsureAdaAccount(0);
+  ASSERT_TRUE(ada_acc);
 
   EXPECT_EQ(
       CardanoAddress::New(

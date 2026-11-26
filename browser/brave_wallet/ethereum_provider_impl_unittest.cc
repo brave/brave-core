@@ -532,20 +532,14 @@ class EthereumProviderImplUnitTest : public testing::Test {
     if (!version || !error_out || !error_message_out) {
       return;
     }
-    base::RunLoop run_loop;
-    provider()->Web3ClientVersion(
-        base::BindLambdaForTesting(
-            [&](mojom::EthereumProviderResponsePtr response) {
-              if (response->formed_response.type() ==
-                  base::Value::Type::STRING) {
-                *version = response->formed_response.GetString();
-              }
-              GetErrorCodeMessage(std::move(response->formed_response),
-                                  error_out, error_message_out);
-              run_loop.Quit();
-            }),
-        base::Value());
-    run_loop.Run();
+    base::test::TestFuture<mojom::EthereumProviderResponsePtr> future;
+    provider()->Web3ClientVersion(future.GetCallback(), base::Value());
+    auto response = future.Take();
+    if (response->formed_response.type() == base::Value::Type::STRING) {
+      *version = response->formed_response.GetString();
+    }
+    GetErrorCodeMessage(std::move(response->formed_response), error_out,
+                        error_message_out);
   }
 
   std::string GetSIWEMessage(const std::string& domain,
@@ -576,32 +570,26 @@ class EthereumProviderImplUnitTest : public testing::Test {
       return;
     }
 
-    bool responded = false;
     const size_t previous_size = GetSignMessageQueueSize();
-    base::RunLoop run_loop;
-    provider()->SignMessage(
-        address, message,
-        base::BindLambdaForTesting(
-            [&](mojom::EthereumProviderResponsePtr response) {
-              signature_out->reset();
-              if (response->formed_response.type() ==
-                  base::Value::Type::STRING) {
-                *signature_out = mojom::EthereumSignatureBytes::New(
-                    *PrefixedHexStringToBytes(
-                        response->formed_response.GetString()));
-              }
-              GetErrorCodeMessage(std::move(response->formed_response),
-                                  error_out, error_message_out);
-              responded = true;
-              run_loop.Quit();
-            }),
-        base::Value());
+    base::test::TestFuture<mojom::EthereumProviderResponsePtr> future;
+    provider()->SignMessage(address, message, future.GetCallback(),
+                            base::Value());
     // Wait for EthereumProviderImpl::ContinueSignMessage
-    ASSERT_TRUE(WaitForSignMessageRequestOrResponse(previous_size, responded));
+    ASSERT_TRUE(WaitForSignMessageRequestOrResponse(previous_size, future));
     brave_wallet_service_->NotifySignMessageRequestProcessed(
         user_approved, brave_wallet_service_->sign_message_id_ - 1,
         hardware_signature.Clone(), error_in);
-    run_loop.Run();
+    auto response = future.Take();
+    signature_out->reset();
+    if (response->formed_response.type() == base::Value::Type::STRING) {
+      auto signature_bytes =
+          PrefixedHexStringToBytes(response->formed_response.GetString());
+      ASSERT_TRUE(signature_bytes);
+      *signature_out =
+          mojom::EthereumSignatureBytes::New(std::move(*signature_bytes));
+    }
+    GetErrorCodeMessage(std::move(response->formed_response), error_out,
+                        error_message_out);
   }
 
   void SignMessage(std::optional<bool> user_approved,
@@ -614,33 +602,24 @@ class EthereumProviderImplUnitTest : public testing::Test {
       return;
     }
 
-    bool responded = false;
     const size_t previous_size = GetSignMessageQueueSize();
-    base::RunLoop run_loop;
-    provider()->SignMessage(
-        address, message,
-        base::BindLambdaForTesting(
-            [&](mojom::EthereumProviderResponsePtr response) {
-              signature_out->clear();
-              if (response->formed_response.type() ==
-                  base::Value::Type::STRING) {
-                *signature_out = response->formed_response.GetString();
-              }
-              GetErrorCodeMessage(std::move(response->formed_response),
-                                  error_out, error_message_out);
-              responded = true;
-              run_loop.Quit();
-            }),
-        base::Value());
+    base::test::TestFuture<mojom::EthereumProviderResponsePtr> future;
+    provider()->SignMessage(address, message, future.GetCallback(),
+                            base::Value());
     if (user_approved) {
       // Wait for EthereumProviderImpl::ContinueSignMessage
-      ASSERT_TRUE(
-          WaitForSignMessageRequestOrResponse(previous_size, responded));
+      ASSERT_TRUE(WaitForSignMessageRequestOrResponse(previous_size, future));
       brave_wallet_service_->NotifySignMessageRequestProcessed(
           *user_approved, brave_wallet_service_->sign_message_id_ - 1, nullptr,
           std::nullopt);
     }
-    run_loop.Run();
+    auto response = future.Take();
+    signature_out->clear();
+    if (response->formed_response.type() == base::Value::Type::STRING) {
+      *signature_out = response->formed_response.GetString();
+    }
+    GetErrorCodeMessage(std::move(response->formed_response), error_out,
+                        error_message_out);
   }
 
   void RecoverAddress(const std::string& message,
@@ -652,22 +631,16 @@ class EthereumProviderImplUnitTest : public testing::Test {
       return;
     }
 
-    base::RunLoop run_loop;
-    provider()->RecoverAddress(
-        message, signature,
-        base::BindLambdaForTesting(
-            [&](mojom::EthereumProviderResponsePtr response) {
-              address_out->clear();
-              if (response->formed_response.type() ==
-                  base::Value::Type::STRING) {
-                *address_out = response->formed_response.GetString();
-              }
-              GetErrorCodeMessage(std::move(response->formed_response),
-                                  error_out, error_message_out);
-              run_loop.Quit();
-            }),
-        base::Value());
-    run_loop.Run();
+    base::test::TestFuture<mojom::EthereumProviderResponsePtr> future;
+    provider()->RecoverAddress(message, signature, future.GetCallback(),
+                               base::Value());
+    auto response = future.Take();
+    address_out->clear();
+    if (response->formed_response.type() == base::Value::Type::STRING) {
+      *address_out = response->formed_response.GetString();
+    }
+    GetErrorCodeMessage(std::move(response->formed_response), error_out,
+                        error_message_out);
   }
 
   void SignTypedMessage(std::optional<bool> user_approved,
@@ -693,33 +666,24 @@ class EthereumProviderImplUnitTest : public testing::Test {
     eth_sign_typed_data->primary_hash = primary_hash;
     eth_sign_typed_data->chain_id = chain_id;
 
-    bool responded = false;
     const size_t previous_size = GetSignMessageQueueSize();
-    base::RunLoop run_loop;
-    provider()->SignTypedMessage(
-        std::move(eth_sign_typed_data),
-        base::BindLambdaForTesting(
-            [&](mojom::EthereumProviderResponsePtr response) {
-              signature_out->clear();
-              if (response->formed_response.type() ==
-                  base::Value::Type::STRING) {
-                *signature_out = response->formed_response.GetString();
-              }
-              GetErrorCodeMessage(std::move(response->formed_response),
-                                  error_out, error_message_out);
-              responded = true;
-              run_loop.Quit();
-            }),
-        base::Value());
+    base::test::TestFuture<mojom::EthereumProviderResponsePtr> future;
+    provider()->SignTypedMessage(std::move(eth_sign_typed_data),
+                                 future.GetCallback(), base::Value());
     if (user_approved) {
       // Wait for EthereumProviderImpl::ContinueSignMessage
-      ASSERT_TRUE(
-          WaitForSignMessageRequestOrResponse(previous_size, responded));
+      ASSERT_TRUE(WaitForSignMessageRequestOrResponse(previous_size, future));
       brave_wallet_service_->NotifySignMessageRequestProcessed(
           *user_approved, brave_wallet_service_->sign_message_id_ - 1, nullptr,
           std::nullopt);
     }
-    run_loop.Run();
+    auto response = future.Take();
+    signature_out->clear();
+    if (response->formed_response.type() == base::Value::Type::STRING) {
+      *signature_out = response->formed_response.GetString();
+    }
+    GetErrorCodeMessage(std::move(response->formed_response), error_out,
+                        error_message_out);
   }
 
   void SignTypedMessageV4Request(std::optional<bool> user_approved,
@@ -751,8 +715,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     provider()->Request(base::Value(std::move(request)), future.GetCallback());
     if (user_approved) {
       // Wait for EthereumProviderImpl::ContinueSignMessage
-      ASSERT_TRUE(
-          WaitForSignMessageRequestOrResponse(previous_size, future.IsReady()));
+      ASSERT_TRUE(WaitForSignMessageRequestOrResponse(previous_size, future));
       brave_wallet_service_->NotifySignMessageRequestProcessed(
           *user_approved, brave_wallet_service_->sign_message_id_ - 1, nullptr,
           std::nullopt);
@@ -779,10 +742,13 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
   // Waits until a sign request is queued, or the provider has already answered
   // it (e.g. on an early error).
-  bool WaitForSignMessageRequestOrResponse(size_t previous_size,
-                                           const bool& responded) {
-    return base::test::RunUntil(
-        [&] { return responded || GetSignMessageQueueSize() > previous_size; });
+  bool WaitForSignMessageRequestOrResponse(
+      size_t previous_size,
+      const base::test::TestFuture<mojom::EthereumProviderResponsePtr>&
+          future) {
+    return base::test::RunUntil([&] {
+      return future.IsReady() || GetSignMessageQueueSize() > previous_size;
+    });
   }
 
   size_t GetSignMessageQueueSize() const {
@@ -841,7 +807,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     tx_service()->ApproveTransaction(mojom::CoinType::ETH, chain_id, tx_meta_id,
                                      future.GetCallback());
     auto [success, error, error_message] = future.Take();
-    if (!error->is_provider_error()) {
+    if (!error || !error->is_provider_error()) {
       ADD_FAILURE() << "Expected a provider error union";
       return false;
     }
@@ -854,21 +820,16 @@ class EthereumProviderImplUnitTest : public testing::Test {
                            std::optional<bool> user_approved,
                            mojom::ProviderError* error_out,
                            std::string* error_message_out) {
-    base::RunLoop run_loop;
-    provider_->SwitchEthereumChain(
-        chain_id,
-        base::BindLambdaForTesting(
-            [&](mojom::EthereumProviderResponsePtr response) {
-              GetErrorCodeMessage(std::move(response->formed_response),
-                                  error_out, error_message_out);
-              run_loop.Quit();
-            }),
-        base::Value());
+    base::test::TestFuture<mojom::EthereumProviderResponsePtr> future;
+    provider_->SwitchEthereumChain(chain_id, future.GetCallback(),
+                                   base::Value());
     if (user_approved) {
       json_rpc_service()->NotifySwitchChainRequestProcessed(
           GetPendingSwitchChainRequestId(), *user_approved);
     }
-    run_loop.Run();
+    auto response = future.Take();
+    GetErrorCodeMessage(std::move(response->formed_response), error_out,
+                        error_message_out);
   }
 
   void AddSuggestToken(mojom::BlockchainTokenPtr token,
@@ -879,20 +840,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
     if (token) {
       SetSuggestedTokenMetadataInterceptor(token->symbol, token->decimals);
     }
-    base::RunLoop run_loop;
-    provider_->AddSuggestToken(
-        token.Clone(),
-        base::BindLambdaForTesting(
-            [&](mojom::EthereumProviderResponsePtr response) {
-              if (response->formed_response.type() ==
-                  base::Value::Type::BOOLEAN) {
-                *approved_out = response->formed_response.GetBool();
-              }
-              GetErrorCodeMessage(std::move(response->formed_response),
-                                  error_out, error_message_out);
-              run_loop.Quit();
-            }),
-        base::Value());
+    base::test::TestFuture<mojom::EthereumProviderResponsePtr> future;
+    provider_->AddSuggestToken(token.Clone(), future.GetCallback(),
+                               base::Value());
     if (token) {
       // Decimals and symbol are read from the contract before the suggestion
       // is queued and the panel opens.
@@ -913,23 +863,21 @@ class EthereumProviderImplUnitTest : public testing::Test {
       brave_wallet_service_->NotifyAddSuggestTokenRequestsProcessed(
           approved, {token->contract_address});
     }
-    run_loop.Run();
+    auto response = future.Take();
+    if (response->formed_response.type() == base::Value::Type::BOOLEAN) {
+      *approved_out = response->formed_response.GetBool();
+    }
+    GetErrorCodeMessage(std::move(response->formed_response), error_out,
+                        error_message_out);
   }
 
   std::vector<mojom::AddSuggestTokenRequestPtr>
   GetPendingAddSuggestTokenRequests() const {
-    base::RunLoop run_loop;
-    std::vector<mojom::AddSuggestTokenRequestPtr> requests_out;
+    base::test::TestFuture<std::vector<mojom::AddSuggestTokenRequestPtr>>
+        future;
     brave_wallet_service_->GetPendingAddSuggestTokenRequests(
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::AddSuggestTokenRequestPtr> requests) {
-              for (const auto& request : requests) {
-                requests_out.push_back(request.Clone());
-              }
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-    return requests_out;
+        future.GetCallback());
+    return future.Take();
   }
 
   std::string GetPendingSwitchChainRequestId() {
@@ -1004,55 +952,44 @@ TEST_F(EthereumProviderImplUnitTest, EmptyDelegate) {
 TEST_F(EthereumProviderImplUnitTest, OnAddEthereumChain) {
   GURL url("https://brave.com");
   Navigate(url);
-  base::RunLoop run_loop;
 
   // Test missing valid rpc URLs.
-  base::RunLoop run_loop2;
-  provider()->AddEthereumChain(
-      ParamsListFromJson(R"({"params": [{
+  base::test::TestFuture<mojom::EthereumProviderResponsePtr> future;
+  provider()->AddEthereumChain(ParamsListFromJson(R"({"params": [{
         "chainId": "0x222",
         "chainName": "Bad Chain",
         "rpcUrls": ["ftp://bar"],
       },]})"),
-      base::BindLambdaForTesting(
-          [&run_loop2](mojom::EthereumProviderResponsePtr response) {
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(response->formed_response), &error,
-                                &error_message);
-            EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
-            EXPECT_EQ(error_message,
-                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-            run_loop2.Quit();
-          }),
-      base::Value());
-  run_loop2.Run();
+                               future.GetCallback(), base::Value());
+  auto response = future.Take();
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(response->formed_response), &error,
+                      &error_message);
+  EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 }
 
 TEST_F(EthereumProviderImplUnitTest, OnAddEthereumChainRequestCompletedError) {
   GURL url("https://brave.com");
   Navigate(url);
-  base::RunLoop run_loop;
-  provider()->AddEthereumChain(
-      ParamsListFromJson(R"({"params": [{
+  base::test::TestFuture<mojom::EthereumProviderResponsePtr> future;
+  provider()->AddEthereumChain(ParamsListFromJson(R"({"params": [{
         "chainId": "0x111",
         "chainName": "Binance1 Smart Chain",
         "rpcUrls": ["https://bsc-dataseed.binance.org/"]
       }]})"),
-      base::BindLambdaForTesting(
-          [&](mojom::EthereumProviderResponsePtr response) {
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(response->formed_response), &error,
-                                &error_message);
-            EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
-            EXPECT_EQ(error_message, "test message");
-            run_loop.Quit();
-          }),
-      base::Value());
+                               future.GetCallback(), base::Value());
   provider()->OnAddEthereumChainRequestCompleted("0x111", "test message");
   provider()->OnAddEthereumChainRequestCompleted("0x111", "test message");
-  run_loop.Run();
+  auto response = future.Take();
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(response->formed_response), &error,
+                      &error_message);
+  EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message, "test message");
 }
 
 TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
@@ -1431,20 +1368,16 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
   GURL url("https://brave.com");
   Navigate(url);
 
-  base::RunLoop run_loop;
-  provider()->RequestEthereumPermissions(
-      base::BindLambdaForTesting(
-          [&](mojom::EthereumProviderResponsePtr response) {
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(response->formed_response), &error,
-                                &error_message);
-            EXPECT_NE(error, mojom::ProviderError::kSuccess);
-            EXPECT_FALSE(error_message.empty());
-            run_loop.Quit();
-          }),
-      base::Value(), "");
-  run_loop.Run();
+  base::test::TestFuture<mojom::EthereumProviderResponsePtr> future;
+  provider()->RequestEthereumPermissions(future.GetCallback(), base::Value(),
+                                         "");
+  auto response = future.Take();
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(response->formed_response), &error,
+                      &error_message);
+  EXPECT_NE(error, mojom::ProviderError::kSuccess);
+  EXPECT_FALSE(error_message.empty());
 }
 
 TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
@@ -1483,21 +1416,17 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
   // CONTENT_SETTING_BLOCK will rule out previous granted permission.
   host_content_settings_map()->SetContentSettingDefaultScope(
       url, url, ContentSettingsType::BRAVE_ETHEREUM, CONTENT_SETTING_BLOCK);
-  base::RunLoop run_loop;
-  provider()->RequestEthereumPermissions(
-      base::BindLambdaForTesting(
-          [&](mojom::EthereumProviderResponsePtr response) {
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(response->formed_response), &error,
-                                &error_message);
-            EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
-            EXPECT_EQ(error_message, l10n_util::GetStringUTF8(
-                                         IDS_WALLET_USER_REJECTED_REQUEST));
-            run_loop.Quit();
-          }),
-      base::Value(), "");
-  run_loop.Run();
+  base::test::TestFuture<mojom::EthereumProviderResponsePtr> blocked_future;
+  provider()->RequestEthereumPermissions(blocked_future.GetCallback(),
+                                         base::Value(), "");
+  auto blocked_response = blocked_future.Take();
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(blocked_response->formed_response), &error,
+                      &error_message);
+  EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
   // When CONTENT_SETTING_BLOCK is removed, previously granted permission works
   // again.
   host_content_settings_map()->SetContentSettingDefaultScope(
@@ -1905,6 +1834,7 @@ TEST_F(EthereumProviderImplUnitTest, RecoverAddress) {
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
   const std::vector<std::string> addresses = GetAddresses();
+  ASSERT_FALSE(addresses.empty());
 
   std::string message = "0x68656c6c6f20776f726c64";
   GURL url("https://brave.com");
@@ -2734,23 +2664,18 @@ TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
       "0xaa36a7");
 
   // one request per origin
-  base::RunLoop run_loop;
-  provider()->SwitchEthereumChain(
-      "0x1",
-      base::BindLambdaForTesting(
-          [&](mojom::EthereumProviderResponsePtr response) {
-            GetErrorCodeMessage(std::move(response->formed_response), &error,
-                                &error_message);
-            run_loop.Quit();
-          }),
-      base::Value());
+  base::test::TestFuture<mojom::EthereumProviderResponsePtr> switch_future;
+  provider()->SwitchEthereumChain("0x1", switch_future.GetCallback(),
+                                  base::Value());
   SwitchEthereumChain("0x1", std::nullopt, &error, &error_message);
   EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
   json_rpc_service()->NotifySwitchChainRequestProcessed(
       GetPendingSwitchChainRequestId(), true);
-  run_loop.Run();
+  auto switch_response = switch_future.Take();
+  GetErrorCodeMessage(std::move(switch_response->formed_response), &error,
+                      &error_message);
   EXPECT_EQ(
       json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin()),
       "0x1");
@@ -2766,31 +2691,25 @@ TEST_F(EthereumProviderImplUnitTest,
   brave_wallet_service()->network_manager()->AddCustomNetwork(
       GetTestNetworkInfo1(chain_id));
 
-  base::RunLoop run_loop;
-  mojom::ProviderError error = mojom::ProviderError::kUnknown;
-  std::string error_message;
-  provider()->SwitchEthereumChain(
-      chain_id,
-      base::BindLambdaForTesting(
-          [&](mojom::EthereumProviderResponsePtr response) {
-            GetErrorCodeMessage(std::move(response->formed_response), &error,
-                                &error_message);
-            run_loop.Quit();
-          }),
-      base::Value());
+  base::test::TestFuture<mojom::EthereumProviderResponsePtr> switch_future;
+  provider()->SwitchEthereumChain(chain_id, switch_future.GetCallback(),
+                                  base::Value());
   ASSERT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
 
   // The custom network is removed while the switch request is still
   // pending, so SetNetwork fails when the switch is later approved.
   std::string request_id = GetPendingSwitchChainRequestId();
-  base::RunLoop remove_run_loop;
-  json_rpc_service()->RemoveChain(
-      chain_id, mojom::CoinType::ETH,
-      base::BindLambdaForTesting([&](bool) { remove_run_loop.Quit(); }));
-  remove_run_loop.Run();
+  base::test::TestFuture<bool> remove_future;
+  json_rpc_service()->RemoveChain(chain_id, mojom::CoinType::ETH,
+                                  remove_future.GetCallback());
+  EXPECT_TRUE(remove_future.Wait());
 
   json_rpc_service()->NotifySwitchChainRequestProcessed(request_id, true);
-  run_loop.Run();
+  auto switch_response = switch_future.Take();
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(switch_response->formed_response), &error,
+                      &error_message);
 
   EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
   EXPECT_EQ(error_message,
@@ -2811,24 +2730,19 @@ TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInactive) {
         "chainName": "Sepolia",
         "rpcUrls": ["https://ethereum-sepolia.wallet.brave.com"]
       }]})";
-  base::RunLoop run_loop;
-  provider()->AddEthereumChain(
-      ParamsListFromJson(params),
-      base::BindLambdaForTesting(
-          [&](mojom::EthereumProviderResponsePtr response) {
-            mojom::ProviderError error_code;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(response->formed_response),
-                                &error_code, &error_message);
-            EXPECT_EQ(error_code, mojom::ProviderError::kSuccess);
-            EXPECT_TRUE(error_message.empty());
-            run_loop.Quit();
-          }),
-      base::Value());
+  base::test::TestFuture<mojom::EthereumProviderResponsePtr> future;
+  provider()->AddEthereumChain(ParamsListFromJson(params), future.GetCallback(),
+                               base::Value());
   EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
   json_rpc_service()->NotifySwitchChainRequestProcessed(
       GetPendingSwitchChainRequestId(), true);
-  run_loop.Run();
+  auto response = future.Take();
+  mojom::ProviderError error_code;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(response->formed_response), &error_code,
+                      &error_message);
+  EXPECT_EQ(error_code, mojom::ProviderError::kSuccess);
+  EXPECT_TRUE(error_message.empty());
   brave_wallet_tab_helper()->CloseBubble();
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
   EXPECT_EQ(
