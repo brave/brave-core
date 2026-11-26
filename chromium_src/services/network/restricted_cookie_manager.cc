@@ -5,30 +5,12 @@
 
 #include "services/network/restricted_cookie_manager.h"
 
-#include "base/feature_list.h"
-#include "components/content_settings/core/common/cookie_settings_base.h"
-#include "net/base/features.h"
-#include "net/cookies/cookie_monster.h"
-#include "net/cookies/site_for_cookies.h"
+#include "net/cookies/cookie_options.h"
 #include "services/network/cookie_settings.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
-// IsEphemeralCookieAccessible and AnnotateAndMoveUserBlockedCookies declared &
-// defined via a chromium_src override for network/cookie_settings.{h,cc}.
-#define IsCookieAccessible IsEphemeralCookieAccessible
-#define AnnotateAndMoveUserBlockedCookies \
-  AnnotateAndMoveUserBlockedEphemeralCookies
-
-// IsEphemeralCookieAccessAllowed declared & defined via a chromium_src override
-// for components/content_settings/core/common/cookie_settings_base.{h,cc}.
-#define IsFullCookieAccessAllowed IsEphemeralCookieAccessAllowed
-
 #include <services/network/restricted_cookie_manager.cc>
-
-#undef IsFullCookieAccessAllowed
-#undef AnnotateAndMoveUserBlockedCookies
-#undef IsCookieAccessible
 
 namespace network {
 

@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use the ephemeral cookie-access check.
+
+      IsEphemeralCookieAccessible allows a cookie when the request is served
+      from ephemeral storage, which the upstream per-cookie check would block.
+    regex:
+      pattern: 'IsCookieAccessible('
+      replace: 'IsEphemeralCookieAccessible('
+
+  - description: |-
+      Use the ephemeral blocked-cookie annotation.
+
+      Third-party cookies kept in ephemeral storage must stay in the included
+      set instead of being reported as user-blocked.
+    regex:
+      pattern: 'AnnotateAndMoveUserBlockedCookies'
+      replace: 'AnnotateAndMoveUserBlockedEphemeralCookies'
+
+  - description: |-
+      Use the ephemeral full-access check.
+
+      CookiesEnabledFor has to answer from ephemeral-storage rules, not the
+      upstream third-party blocking rules.
+    regex:
+      pattern: 'IsFullCookieAccessAllowed'
+      replace: 'IsEphemeralCookieAccessAllowed'

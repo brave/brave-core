@@ -1,0 +1,32 @@
+diff --git a/services/network/restricted_cookie_manager.h b/services/network/restricted_cookie_manager.h
+index 1a222614342f17ace25a134ae657db8dc71ae5a4..a905ceed3942f0f92d9a1dbea288b1bdc43b1831 100644
+--- a/services/network/restricted_cookie_manager.h
++++ b/services/network/restricted_cookie_manager.h
+@@ -22,6 +22,7 @@
+ #include "mojo/public/cpp/bindings/receiver.h"
+ #include "mojo/public/cpp/bindings/remote.h"
+ #include "net/base/isolation_info.h"
++#include "net/cookies/cookie_options.h"
+ #include "net/cookies/cookie_partition_key_collection.h"
+ #include "net/cookies/cookie_setting_override.h"
+ #include "net/storage_access_api/status.h"
+@@ -187,6 +188,19 @@ class COMPONENT_EXPORT(NETWORK_SERVICE) RestrictedCookieManager
+   // reflect that.
+   void OnCookieSettingsChanged();
+ 
++  net::CookieOptions MakeOptionsForSet(
++      mojom::RestrictedCookieManagerRole role,
++      const GURL& url,
++      const net::SiteForCookies& site_for_cookies,
++      const url::Origin& top_frame_origin,
++      const CookieSettings& cookie_settings) const;
++  net::CookieOptions MakeOptionsForGet(
++      mojom::RestrictedCookieManagerRole role,
++      const GURL& url,
++      const net::SiteForCookies& site_for_cookies,
++      const url::Origin& top_frame_origin,
++      const CookieSettings& cookie_settings) const;
++
+  private:
+   using SharedVersionType = std::atomic<uint64_t>;
+ 
