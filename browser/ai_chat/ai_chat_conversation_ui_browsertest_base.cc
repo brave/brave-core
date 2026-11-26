@@ -162,7 +162,12 @@ bool AIChatConversationUIBrowserTestBase::VerifyElementState(
           resolve(expectsNotExist)
         }
       })
-      observer.observe(observeTarget, { childList: true, subtree: true })
+      observer.observe(observeTarget, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['data-testid']
+      })
 
       // Fallback timeout in case no mutations happen
       setTimeout(() => {

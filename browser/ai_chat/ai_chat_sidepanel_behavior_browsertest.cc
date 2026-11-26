@@ -324,10 +324,8 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(leo_contents);
 
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return VerifyElementState("standalone-main", true,
-                              leo_contents->GetPrimaryMainFrame(), FROM_HERE);
-  }));
+  ASSERT_TRUE(VerifyElementState(
+      "standalone-main", true, leo_contents->GetPrimaryMainFrame(), FROM_HERE));
 
   const int initial_tab_count = tab_strip->count();
 
@@ -356,14 +354,14 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   // The AI Chat side panel now shows and hosts the *same* live WebContents (no
   // reload / no fresh contents).
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return IsSidePanelOpen(browser()); }));
   content::WebContents* side_panel_contents =
       ai_chat::GetSidePanelWebContents(browser());
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return IsSidePanelOpen(browser()) &&
-           VerifyElementState("sidepanel-main", true,
-                              side_panel_contents->GetPrimaryMainFrame(),
-                              FROM_HERE);
-  }));
+  ASSERT_TRUE(side_panel_contents);
+  ASSERT_TRUE(VerifyElementState("sidepanel-main", true,
+                                 side_panel_contents->GetPrimaryMainFrame(),
+                                 FROM_HERE));
   EXPECT_EQ(side_panel_contents, leo_contents);
 }
 
@@ -722,16 +720,14 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
             TabStripModel::kNoTab);
 
   // The side panel has closed to avoid showing the same conversation twice.
-  // Unlike the wait above, the element check belongs inside the poll here: the
-  // conversation's contents is not renavigated by the move, it only swaps the
-  // `data-testid` on its existing root element, and `VerifyElementState`
-  // observes childList mutations rather than attribute changes. Re-running it
-  // is what re-queries for the new id.
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return !IsSidePanelOpen(browser()) &&
-           VerifyElementState("standalone-main", true,
-                              panel_contents->GetPrimaryMainFrame(), FROM_HERE);
-  }));
+  // The conversation's contents is not renavigated by the move, it only swaps
+  // the `data-testid` on its existing root element, which `VerifyElementState`
+  // observes as an attribute mutation.
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !IsSidePanelOpen(browser()); }));
+  ASSERT_TRUE(VerifyElementState("standalone-main", true,
+                                 panel_contents->GetPrimaryMainFrame(),
+                                 FROM_HERE));
 }
 
 // The reverse move only applies to a side-panel-hosted conversation. A
