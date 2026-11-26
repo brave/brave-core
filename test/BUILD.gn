@@ -1680,7 +1680,10 @@ test("brave_browser_tests") {
   }
 
   if (enable_commander) {
-    deps += [ "//brave/browser/ui/commander:browser_tests" ]
+    deps += [
+      "//brave/browser/ui/commander:browser_tests",
+      "//brave/components/commander/common",
+    ]
   }
 
   if (enable_request_otr) {
