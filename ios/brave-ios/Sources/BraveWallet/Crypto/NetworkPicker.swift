@@ -84,9 +84,8 @@ struct NetworkPicker: View {
     .background(
       Color.clear
         .sheet(
-          isPresented: $networkSelectionStore.isPresented
-        ) {
-          if let networkSelectionStore = networkSelectionStore {
+          item: $networkSelectionStore,
+          content: { networkSelectionStore in
             NavigationStack {
               NetworkSelectionView(
                 keyringStore: keyringStore,
@@ -96,7 +95,7 @@ struct NetworkPicker: View {
             }
             .accentColor(Color(braveSystemName: .primitivePrimary40))
           }
-        }
+        )
     )
   }
 }
