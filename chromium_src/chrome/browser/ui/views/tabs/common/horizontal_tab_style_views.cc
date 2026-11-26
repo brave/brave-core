@@ -648,7 +648,7 @@ gfx::Insets BraveVerticalTabStyle::GetInsetsInSplitTile() const {
   // Inset the inner edge so that the gap between split tabs matches the
   // padding.
   const bool is_pinned = tab()->data().pinned;
-  const int inner = (padding - tabs::kVerticalSplitTabsSpacing) / 2;
+  const int inner = padding / 2;
 
   // Pinned tabs are laid out in a grid, so split tabs can be placed side by
   // side or stacked when the grid has a single column.

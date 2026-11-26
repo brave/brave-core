@@ -31,6 +31,18 @@ namespace tabs {
 
 namespace {
 
+// Tabs in the same split have no spacing between them. Each of them takes half
+// of the spacing between tabs, so that the outer edges of the split stay the
+// same.
+constexpr int kSplitTabsSpacingPerTab = kVerticalTabsSpacing / 2;
+static_assert(kVerticalTabsSpacing % 2 == 0);
+
+bool AreAdjacentSplitTabs(const TabLayoutState& state,
+                          const TabLayoutState& next_state) {
+  return state.split().has_value() && state.split() == next_state.split() &&
+         state.open() == TabOpen::kOpen && next_state.open() == TabOpen::kOpen;
+}
+
 // Computes the horizontal offset to apply to a tab at |level| within a tree
 // whose height is |tree_height|, given |available_width_for_tab| and
 // |tab_minimum_width|. Shared between the static vertical layout and the
@@ -88,9 +100,10 @@ void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
              kPinnedUnpinnedSeparatorHeight;
   }
 
+  const size_t first_index = result->size();
   gfx::Rect rect;
   rect.set_y(start);
-  for (auto iter = tabs.begin() + result->size(); iter != tabs.end(); iter++) {
+  for (auto iter = tabs.begin() + first_index; iter != tabs.end(); iter++) {
     auto& tab = *iter;
 
     if (consider_separator_bounds &&
@@ -126,17 +139,24 @@ void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
                                                          : 0);
     result->push_back(rect);
 
-    // Update rect for the next tab. Tabs in the same split are closer to each
-    // other than other tabs.
+    // Update rect for the next tab.
     if (tab.state().open() == TabOpen::kOpen) {
-      const auto next = iter + 1;
-      const bool next_in_same_split =
-          next != tabs.end() && tab.state().split().has_value() &&
-          tab.state().split() == next->state().split() &&
-          next->state().open() == TabOpen::kOpen;
-      rect.set_y(rect.bottom() + (next_in_same_split ? kVerticalSplitTabsSpacing
-                                                     : kVerticalTabsSpacing));
+      rect.set_y(rect.bottom() + kVerticalTabsSpacing);
     }
+  }
+
+  // Tabs in the same split are stacked without spacing. They grow toward each
+  // other to keep the outer edges of the split.
+  for (size_t index = first_index; index + 1 < result->size(); ++index) {
+    if (!AreAdjacentSplitTabs(tabs[index].state(), tabs[index + 1].state())) {
+      continue;
+    }
+
+    gfx::Rect& first = (*result)[index];
+    gfx::Rect& second = (*result)[index + 1];
+    first.set_height(first.height() + kSplitTabsSpacingPerTab);
+    second.set_y(second.y() - kSplitTabsSpacingPerTab);
+    second.set_height(second.height() + kSplitTabsSpacingPerTab);
   }
 }
 
@@ -254,28 +274,23 @@ void CalculatePinnedTabsBoundsInGrid(
   }
 
   // Split tabs next to each other, in the same row or stacked in a single
-  // column, share the spacing between them.
-  constexpr int kSpacingToShare =
-      kVerticalTabsSpacing - kVerticalSplitTabsSpacing;
+  // column, have no spacing between them. They grow toward each other to keep
+  // the outer edges of the split.
   for (size_t index = first_index; index + 1 < result->size(); ++index) {
-    const TabLayoutState& state = tabs[index].state();
-    const TabLayoutState& next_state = tabs[index + 1].state();
-    if (!state.split().has_value() || state.split() != next_state.split() ||
-        state.open() != TabOpen::kOpen || next_state.open() != TabOpen::kOpen) {
+    if (!AreAdjacentSplitTabs(tabs[index].state(), tabs[index + 1].state())) {
       continue;
     }
 
     gfx::Rect& first = (*result)[index];
     gfx::Rect& second = (*result)[index + 1];
     if (first.y() == second.y()) {
-      first.set_width(first.width() + kSpacingToShare / 2);
-      second.SetByBounds(second.x() - (kSpacingToShare - kSpacingToShare / 2),
-                         second.y(), second.right(), second.bottom());
+      first.set_width(first.width() + kSplitTabsSpacingPerTab);
+      second.set_x(second.x() - kSplitTabsSpacingPerTab);
+      second.set_width(second.width() + kSplitTabsSpacingPerTab);
     } else if (first.x() == second.x()) {
-      first.set_height(first.height() + kSpacingToShare / 2);
-      second.SetByBounds(second.x(),
-                         second.y() - (kSpacingToShare - kSpacingToShare / 2),
-                         second.right(), second.bottom());
+      first.set_height(first.height() + kSplitTabsSpacingPerTab);
+      second.set_y(second.y() - kSplitTabsSpacingPerTab);
+      second.set_height(second.height() + kSplitTabsSpacingPerTab);
     }
   }
 }

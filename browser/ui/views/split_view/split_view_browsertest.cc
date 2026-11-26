@@ -810,8 +810,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitTabInsetsTest) {
   // Split tabs' contents are inset by the tile's padding on the outer edge, and
   // by half of the gap between the tabs on the inner edge.
   constexpr int kOuter = tabs::kSplitViewTilePadding;
-  constexpr int kInner =
-      (tabs::kSplitViewTilePadding - tabs::kVerticalSplitTabsSpacing) / 2;
+  constexpr int kInner = tabs::kSplitViewTilePadding / 2;
   EXPECT_EQ(tab_strip()->tab_at(2)->GetBorder()->GetInsets(),
             insets + gfx::Insets::TLBR(kOuter, 0, kInner, 0));
   EXPECT_EQ(tab_strip()->tab_at(3)->GetBorder()->GetInsets(),

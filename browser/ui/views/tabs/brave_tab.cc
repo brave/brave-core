@@ -41,10 +41,10 @@
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/favicon_size.h"
+#include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/point_f.h"
 #include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/geometry/skia_conversions.h"
-#include "ui/gfx/geometry/vector2d.h"
 #include "ui/gfx/scoped_canvas.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/bubble/bubble_border.h"
@@ -679,22 +679,16 @@ void BraveTab::CenterIconsInPinnedSplitTab() {
     return;
   }
 
-  const gfx::PointF shape_center = shape_bounds.CenterPoint();
-  gfx::Vector2d offset(base::ClampRound(shape_center.x() - width() / 2.0f),
-                       base::ClampRound(shape_center.y() - height() / 2.0f));
-  if (offset.IsZero()) {
-    return;
-  }
-
   // The shape is in physical coordinates while child bounds are mirrored.
-  if (GetMirrored()) {
-    offset.set_x(-offset.x());
-  }
-
+  const gfx::PointF shape_center = shape_bounds.CenterPoint();
+  const gfx::Point center(
+      GetMirroredXInView(base::ClampRound(shape_center.x())),
+      base::ClampRound(shape_center.y()));
   for (views::View* view : std::initializer_list<views::View*>{
            icon_.get(), alert_indicator_button_.get()}) {
     if (view->GetVisible()) {
-      view->SetPosition(view->origin() + offset);
+      view->SetPosition(gfx::Point(center.x() - view->width() / 2,
+                                   center.y() - view->height() / 2));
     }
   }
 }

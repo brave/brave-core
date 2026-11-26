@@ -35,11 +35,6 @@ inline constexpr int kVerticalTabsSpacing = 4;
 inline constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing;
 inline constexpr int kPinnedUnpinnedSeparatorHeight = 1;
 
-// The spacing between adjacent tabs in the same split in the vertical tab
-// strip. The tabs' shapes are inset instead so that the gap between them can
-// match the split view tile's padding.
-inline constexpr int kVerticalSplitTabsSpacing = 0;
-
 // The base offset per level for vertical tabs in tree tabs
 inline constexpr int kBaseOffsetPerLevel = 20;
 
