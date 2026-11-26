@@ -16,27 +16,6 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "Rastreadores de atividade & anúncios bloqueados";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "Anúncios \nbloqueados";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "O **Brave Player** é o seu passaporte para ver vídeos sem anúncios nem interrupções.";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "Ajustar proteções";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "Este site está a bloquear alguns bloqueadores de anúncios e poderá não funcionar como esperado.";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Para resolver o problema, o Brave pode ajustar as definições das proteções. Depois, pode tentar ver este conteúdo no Brave Player.";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "Manter definições atuais";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "Ajustar definições de bloqueio de anúncios deste site";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Redireccionamento automático para páginas AMP";
 
@@ -79,32 +58,11 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "Bloqueia JavaScript (alguns sites podem não funcionar corretamente).";
 
-/* Title for the brave player feature */
-"BravePlayer" = "Brave Player";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Abrir sempre vídeos deste site com o Brave Player";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "Experimentar";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "Não agora";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "O Brave Player permite ver vídeos sem interrupções.";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Ver antes no Brave Player";
-
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "Controles avançados";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Anúncios e outras coisas arrepiantes bloqueadas";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Aprenda mais";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "Alterar padrões globais do Shields";
@@ -182,7 +140,7 @@
 "DomainBlockedProceedAction" = "Continuar";
 
 /* A tab title for the warning page that appears when a page was blocked */
-"DomainBlockedTitle" = "Domínio bloqueado";
+"DomainBlockedTitle" = "Domínio Bloqueado";
 
 /* A placeholder when custom filter lists are empty */
 "EditCustomFiltersLabel" = "Editar filtros personalizados";
@@ -206,31 +164,25 @@
 "FilterListAddOnlyHTTPSAllowedError" = "Apenas são permitidos URL seguros (https) nas listas de filtros personalizados";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Add";
+"FilterListsAdd" = "Adicionar";
 
 /* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Outras listas populares da comunidade. Tenha em mente que a ativação de um número excessivo de filtros prejudicará a velocidade de navegação.";
+"FilterListsDescription" = "Listas comunitárias populares adicionais. Tenha em conta que demasiados filtros degradam a velocidade de navegação.";
 
 /* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Falha no download";
+"FilterListsDownloadFailed" = "Falha ao transferir";
 
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "Transferência pendente";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Editar";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Inserir URL da lista de filtros";
+"FilterListsEnterFilterListURL" = "Introduzir URL da lista de filtros";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "Última atualização: %@";
 
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Introduza o URL da lista de filtros aqui";
-
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Bloquear impressão digital";
+"FingerprintingProtection" = "Bloquear Impressão Digital";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Dificulta para os sites o reconhecimento das características específicas do seu dispositivo.";
@@ -245,7 +197,7 @@
 "ListsUpdated" = "Listas atualizadas";
 
 /* No comment provided by engineer. */
-"ReportABrokenSite" = "Relatar Site Quebrado";
+"ReportABrokenSite" = "Informar sobre um Site Danificado";
 
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "ReportBrokenAdditionalDetails" = "Detalhes adicionais (opcional)";
@@ -257,13 +209,13 @@
 "reportBrokenCategory" = "Qual é o principal problema com que se está a deparar?";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "Entre em contato comigo: (opcional)";
+"ReportBrokenContactMe" = "Entrem em contacto comigo: (opcional)";
 
 /* Contact info storing description */
 "ReportBrokenContactMeDescription" = "Se fornecer informações de contacto, as mesmas serão armazenadas para comunicar websites com problemas, futuramente.";
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "E-mail, Twitter etc.";
+"ReportBrokenContactMeSuggestions" = "E-mail, Twitter, etc.";
 
 /* A placeholder for a drop down where the user provides a category for a web-compatibility report */
 "ReportBrokenPlaceholder" = "Selecione uma opção";
@@ -275,7 +227,7 @@
 "ReportBrokenSiteBody2" = "Nota: o relatório enviado para os servidores do Brave inclui o endereço do site, a versão do Brave utilizada, as definições das proteções, o estado da VPN e as definições de idioma.";
 
 /* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "Enviar";
+"ReportBrokenSubmitButtonTitle" = "Submeter";
 
 /* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
 "shields.aggressiveLabel" = "Agressivo";
@@ -341,10 +293,10 @@
 "ShieldsDefaults" = "Padrões globais do Brave Shields";
 
 /* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Essas são as configurações padrão do Shields para novos sites. A alteração delas não afetará suas atuais configurações específicas por site.";
+"ShieldsDefaultsFooter" = "Estas são as definições predefinidas das proteções para os novos sites. Alterá-las não irá afetar as definições existentes para o site.";
 
 /* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Você está navegando neste site sem as proteções de privacidade do Brave. O site não funciona com as Proteções ativadas?";
+"ShieldsDownDisclaimer" = "Está a navegar neste ''site'' sem as proteções de privacidade do Brave. Não funciona direito com as «Proteções» ativadas?";
 
 /* Time Saved Days */
 "ShieldsTimeStatsDays" = "d";
@@ -401,7 +353,7 @@
 "SiteIsNotSecure" = "O site não é seguro";
 
 /* No comment provided by engineer. */
-"SiteReportedBody" = "Obrigado por informar aos desenvolvedores do Brave que há um problema com este site. Faremos o possível para corrigi-lo!";
+"SiteReportedBody" = "Obrigado por comunicar aos desenvolvedores da Brave que há algo de errado com o site. Daremos o nosso melhor para o consertar.";
 
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Obrigado";
@@ -411,9 +363,6 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Rastreadores de Atividade e Bloqueadores de Anúncios";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Rastreadores \nbloqueados";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Atualizar listas";

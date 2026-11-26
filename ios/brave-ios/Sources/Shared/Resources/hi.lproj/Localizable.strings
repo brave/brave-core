@@ -1,6 +1,3 @@
-/* Toast displayed to user after copy url pressed. */
-"AppMenuCopyURLConfirmMessage" = "URL को क्लिपबोर्ड पर कॉपी किया गया";
-
 /* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
 "AppMenuViewDesktopSiteTitleString" = "डेस्कटॉप साइट का अनुरोध करें";
 
@@ -49,9 +46,6 @@
 /* The button to open a new tab with the Downloads home panel */
 "DownloadsButtonTitle" = "डाउनलोड";
 
-/* Question shown to user when tapping a link that opens the App Store app */
-"ExternalLinkAppStoreConfirmationTitle" = "इस लिंक को App Store ऐप में खोलें?";
-
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "जाएँ";
 
@@ -76,17 +70,11 @@
 /* Accessibility label for button resetting font size in display settings of reader mode */
 "ReaderModeResetFontSizeAccessibilityLabel" = "टेक्स्ट का आकार रीसेट करें";
 
-/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
-"SaveLoginPrompt" = "%@ के लिए पासवर्ड रीसेट करें?";
-
 /* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
 "SaveLoginUsernamePrompt" = "%2$@ के लिए लॉगिन %1$@ सेव करें?";
 
 /* OK button to dismiss the error prompt. */
 "ScanQRCodeErrorOKButton" = "ठीक है";
-
-/* Text for the instructions label, displayed in the QR scanner view */
-"ScanQRCodeInstructionsLabel" = "स्कैन करने के लिए QR कोड को फ़ेम में रखें";
 
 /* Text of the prompt that is shown to the user when the data is invalid */
 "ScanQRCodeInvalidDataErrorMessage" = "डेटा अमान्य है";
@@ -123,9 +111,6 @@
 
 /* Title of the message shown when the user attempts to navigate to an invalid link. */
 "UnableToOpenURLErrorTitle" = "पेज नहीं खोला जा सकता";
-
-/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginPrompt" = "%2$@ के लिए लॉगिन %1$@ अपडेट करें?";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
 "UpdateLoginUsernamePrompt" = "%2$@ के लिए लॉगिन %1$@ अपडेट करें?";

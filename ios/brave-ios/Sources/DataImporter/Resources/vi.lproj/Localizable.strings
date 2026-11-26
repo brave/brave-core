@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "Đã xảy ra lỗi trong quá trình nhập Dấu trang.";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "Đã xảy ra lỗi trong quá trình nhập Lịch sử.";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "Đã xảy ra lỗi trong quá trình nhập Mật khẩu.\nKhông thể nhập một số mật khẩu do xung đột.";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "Đã xảy ra lỗi trong quá trình nhập Mật khẩu.";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "Đã xảy ra lỗi trong quá trình giải nén tệp.";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "Chọn tệp...";
 
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "Trong danh sách ứng dụng (sắp xếp theo thứ tự bảng chữ cái), tìm và nhấn vào **Safari**.";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "Tệp zip không chứa dữ liệu nhập.";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "Vui lòng chờ trong lúc chúng tôi chuyển dữ liệu của bạn một cách an toàn.\nQuá trình này có thể mất vài phút.";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "Phát hiện có nhiều hồ sơ";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "Cá nhân";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Dấu trang đã nhập";

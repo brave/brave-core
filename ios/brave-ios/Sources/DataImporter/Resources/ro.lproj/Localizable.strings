@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "A apărut o eroare în timpul importării marcajelor.";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "A apărut o eroare în timpul importării istoricului.";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "A apărut o eroare în timpul importării parolelor.\nUnele parole nu au putut fi importate din cauza unor conflicte.";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "A apărut o eroare în timpul importării parolelor.";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "A apărut o eroare în timpul dezarhivării fișierului.";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "Alege un fișier...";
 
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "Din lista de aplicații (sortate alfabetic), găsește și atinge **Safari**.";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "Fișierul zip nu conține date de import.";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "Te rugăm să aștepți până când transferăm datele tale în siguranță.\nAcest lucru ar putea dura câteva momente.";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "Mai multe profiluri detectate";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "Personal";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Marcaje importate";

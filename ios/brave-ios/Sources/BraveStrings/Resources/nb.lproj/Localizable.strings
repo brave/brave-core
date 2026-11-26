@@ -40,12 +40,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Ny fane";
 
-/* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "Åpne ny fane";
-
-/* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenSelectedTabFromTabTrayKeyCodeTitle" = "Åpne valgt fane";
-
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "har du allerede kjøpt på Brave.com?";
 

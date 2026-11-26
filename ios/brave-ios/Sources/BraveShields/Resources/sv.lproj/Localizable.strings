@@ -16,27 +16,6 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "Spårare & annonser har blockerats";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "Blockerade \nannonser";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** är din biljett till en reklamfri och oavbruten videoupplevelse.";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "Justera Shields åt mig";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "Den här webbplatsen har börjat blockera vissa annonsblockerare, vilket innebär att deras webbplats kanske inte fungerar som förväntat.";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "För att lösa det här problemet kan Brave justera dina Shields-inställningar åt dig. När du har justerat kan du prova att titta på det här innehållet i Brave Player istället.";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "Behåll nuvarande inställningar";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "Justera inställningarna för annonsblockering för den här webbplatsen";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Omdirigera AMP-sidor automatiskt";
 
@@ -79,32 +58,11 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "Blockerar Javascript (kan få webbplatser att sluta fungera).";
 
-/* Title for the brave player feature */
-"BravePlayer" = "Brave Player";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Öppna alltid videor från den här webbplatsen med Brave Player";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "Prova det";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "Inte nu";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Med Brave Player kan du titta på videor utan avbrott.";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Titta i Brave Player istället";
-
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "Avancerade kontroller";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Annonser och andra läskiga saker blockerade";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Läs mer";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "Ändra globala standardinställningar för Shields";
@@ -217,17 +175,11 @@
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "Väntande nedladdning";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Ändra";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "Ange filterlistans URL";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "Senast uppdaterad %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Ange filterlistans webbadress här";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Blockera fingeravtryck";
@@ -411,9 +363,6 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Blockning av spårare & annonser";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Blockerade\nspårare";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Uppdatera listor";

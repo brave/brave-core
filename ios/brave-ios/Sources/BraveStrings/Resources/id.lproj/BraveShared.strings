@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Tentang";
 
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertMessage" = "Ini mengizinkan kamu untuk simpan gambar ke rol kamera anda.";
-
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave ingin mengakses Foto Anda";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Tambahkan Markah";
 
@@ -63,9 +57,6 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Nama pengguna";
-
-/* Settings autofill section title */
-"Autofill" = "Isi-Otomatis";
 
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Akun";
@@ -133,9 +124,6 @@
 /* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
 "backgroundDownloadingTitleSingleDownload" = "Mendownload \"%@\"";
 
-/* cookie settings option */
-"Block3rdPartyCookies" = "Blokir kuki pihak ke-3";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blokir Semua Kuki";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Gagal mengatur preferensi. Coba lagi.";
 
-/* title for section showing page blocking statistics */
-"BlockingMonitor" = "Monitor Pemblokiran";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokir Pop-up";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Tambahkan Markah untuk Tab %lld";
-
-/* Bookmark Folder Section Title */
-"BookmarkFolder" = "Folder Markah";
-
-/* Bookmark Info Section Title */
-"BookmarkInfo" = "Info Markah";
 
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Markah";
@@ -225,9 +204,6 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Perisai & Privasi";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
 
 /* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
 "BraveTranslate.languageSelectionButtonTitle" = "Pilih Bahasa";
@@ -415,14 +391,8 @@
 /* Section title in settings panel */
 "ClearPrivateData" = "Hapus Data Privat";
 
-/* The cancel button when confirming clear private data. */
-"ClearPrivateDataAlertCancelButtonTitle" = "Batal";
-
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertMessage" = "Anda yakin?";
-
-/* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "Oke";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "Bersihkan Data";
@@ -441,9 +411,6 @@
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "Oke";
-
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "Kesalahan klien";
 
 /* Button title to close a menu. */
 "Close" = "Tutup";
@@ -481,17 +448,11 @@
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
 "CopyCleanLink" = "Salin Tautan yang Bersih";
 
-/* Context menu item for copying an image to the clipboard */
-"CopyImageActionTitle" = "Salin Gambar";
-
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Salin Tautan";
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Salin info Tab ke papan klip.";
-
-/* Copy rewards internals info for support */
-"CopyWalletSupportInfo" = "Salin Info Dukungan";
 
 /* Create PDF share action. */
 "CreatePDF" = "Buat PDF";
@@ -504,9 +465,6 @@
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Tuliskan url pencarian dan ubah kuerinya dengan %1$s.\nContoh: https://youtube.com/search?q=%2$s\n(Jika situs mendukung OpenSearch, pilihan untuk menambahkan secara otomatis akan tersedia saat menyunting bidang tersebut.)";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "Tambahkan Secara Otomatis";
 
 /* A title explaining that an error shown while adding custom search engine */
 "customSearchEngine.customSearchEngineAddErrorTitle" = "Eror Menambah Mesin Pencari Kustom";
@@ -590,12 +548,6 @@
 "defaultBrowserCallout.notificationTitle" = "Dapatkan perlindungan Brave, pada setiap tautan";
 
 /* No comment provided by engineer. */
-"defaultBrowserCalloutCloseAccesabilityLabel" = "Tutup penyorot peramban bawaan";
-
-/* Name for default Brave theme. */
-"defaultThemeName" = "Default Brave";
-
-/* No comment provided by engineer. */
 "Delete" = "Hapus";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
@@ -649,9 +601,6 @@
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Unduhan";
 
-/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
-"DownloadsPanelEmptyStateTitle" = " File yang diunduh akan muncul di sini.";
-
 /* Action item title of long press for Opening the existing - active Tab url in a new Tab */
 "DuplicateActiveTab" = "Duplikasikan Tab Aktif";
 
@@ -700,48 +649,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Masukkan nama folder";
 
-/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ biasanya menggunakan enkripsi untuk melindungi informasi Anda. Saat Brave coba menyambung ke %2$@ kali ini, situs web mengirimkan kembali kredensial yang tidak biasa dan salah. Hal ini bisa terjadi saat penyerang mencoba berpura-pura menjadi %3$@, atau layar sign-in Wi-Fi telah mengganggu sambungan. Informasi Anda masih aman karena Brave memutus koneksi sebelum terjadi pertukaran data apa pun.<br />Anda tidak dapat mengunjungi %4$@ sekarang karena situs web menggunakan penyematan sertifikat. Kesalahan dan serangan jaringan biasanya bersifat sementara, jadi halaman ini mungkin bisa berfungsi nanti.";
-
-/* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningDetails" = "Peladen ini tidak dapat membuktikan bahwa ini adalah %@; sertifikat keamanannya tidak dipercaya sistem pengoperasian perangkat Anda. Ini mungkin disebabkan karena kesalahan konfigurasi atau penyerang yang mencoba mencegat koneksi Anda.";
-
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningTitle" = "Penyerang mungkin mencoba mencuri informasi Anda dari %@ (contohnya, kata sandi, pesan, atau kartu kredit).";
-
-/* Label for button to go back from the error page */
-"ErrorPagesBackToSafetyButton" = "Kembali aman";
-
-/* Title on the certificate error page */
-"ErrorPagesCertErrorTitle" = "Situs ini tidak menyediakan koneksi aman";
-
-/* Title on the certificate error page */
-"ErrorPagesCertWarningTitle" = "Sambungan Anda tidak pribadi";
-
-/* Label for button to hide advanced actions on the error page */
-"ErrorPagesHideDetailsButton" = "Sembunyikan detail";
-
-/* Label for learn more link on error page */
-"ErrorPagesLearnMoreButton" = "Pelajari lebih lanjut";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesMoreDetailsButton" = "Detail lebih banyak";
-
-/* Title of the No Internet error page */
-"ErrorPagesNoInternetTitle" = "Tidak ada akses internet";
-
-/* Text telling the user to Try: The following list of things */
-"ErrorPagesNoInternetTry" = "Sepertinya Anda tidak sedang daring. Untuk memperbaikinya, coba";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem1" = "Memeriksa kabel jaringan, modem, dan perute";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem2" = "Menyambungkan ulang ke Wi-Fi";
-
-/* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesProceedAnywayButton" = "Melanjutkan ke %@ (tidak aman)";
-
 /* Button to exclude a topsite url from the most visited list */
 "ExcludeMostVisitedSite" = "Hapus";
 
@@ -775,29 +682,14 @@
 /* Share action title */
 "FindInPage" = "Temuka di Laman";
 
-/* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "Selesai";
-
 /* Find `search query` */
 "FindInPageFormat" = "Cari ";
-
-/* Accessibility label for next result button in Find in Page Toolbar. */
-"FindInPageNextResultButtonAccessibilityLabel" = "Hasil selanjutnya di laman";
-
-/* Accessibility label for previous result button in Find in Page Toolbar. */
-"FindInPagePreviousResultButtonAccessibilityLabel" = "Hasil sebelumnya";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findInPageTitle" = "Temuka di Laman";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findNextTitle" = "Temukan Selanjutnya";
-
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "Di Halaman Ini";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findPreviousTitle" = "Temukan Sebelumnya";
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Izinkan tautan universal membuka di aplikasi eksternal";
@@ -822,9 +714,6 @@
 
 /* Hides the rewards icon */
 "HideRewardsIcon" = "Sembunyikan Ikon Imbalan Brave";
-
-/* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Menyembunyikan ikon Brave Rewards saat Brave Rewards tidak diaktifkan";
 
 /* Title for history menu item */
 "HistortMenuItem" = "Histori";
@@ -867,12 +756,6 @@
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Impor Data Penelusuran";
-
-/* title for per-site shield toggles */
-"IndividualControls" = "Kontrol Individu";
-
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "Detail dalam permintaan pembayaran tidak valid";
 
 /* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
 "JavaScriptDialogEmbeddedPageTitle" = "Halaman yang disematkan pada halaman ini";
@@ -931,30 +814,6 @@
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Filter";
 
-/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
-"LoginDetailLastModifiedCellFormatTitle" = "Terakhir dimodifikasi %@";
-
-/* Label displayed above the password row in Login Detail View. */
-"LoginDetailPasswordCellTitle" = "sandi";
-
-/* Label displayed above the username row in Login Detail View. */
-"LoginDetailUsernameCellTitle" = "nama pengguna";
-
-/* Label displayed above the website row in Login Detail View. */
-"LoginDetailWebsiteCellTitle" = "situs";
-
-/* Label for the button used to deselect all logins. */
-"LoginListDeselectAllButtonTitle" = "Batal Pilih Semua";
-
-/* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "Info masuk tidak ditemukan";
-
-/* Title for Logins List View screen. */
-"LoginListScreenTitle" = "Info Masuk";
-
-/* Label for the button used to select all logins. */
-"LoginListSelectAllButtonTitle" = "Pilih Semua";
-
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "Aktifkan Audio Latar";
 
@@ -969,9 +828,6 @@
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Ungkap";
-
-/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
-"monthAbbreviation" = "bln.";
 
 /* Bookmark title / Device name */
 "Name" = "Nama";
@@ -1048,9 +904,6 @@
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Pelajari lebih lanjut tentang gambar bersponsor";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"ntp.settingsAutoOpenKeyboard" = "Papan Ketik Terbuka Otomatis";
-
 /* A setting to enable or disable background on the NTP screen. */
 "ntp.settingsBackgroundImages" = "Latar Belakang";
 
@@ -1087,53 +940,8 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Dengan mengaktifkan Rewards, berarti Anda setuju dengan %@.";
 
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "Dapatkan token dan beri reward pada pembuat konten atas konten hebat selagi Anda menjelajahi.";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "Dapatkan poin dan beri reward pada pembuat konten atas konten hebat selagi Anda menjelajahi";
-
-/* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Iklan Brave telah hadir!";
-
-/* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave akan menampilkan iklan pertama untuk Anda di";
-
-/* Title for when the user completes onboarding */
-"OBCompleteTitle" = "Sekarang Anda telah siap.";
-
-/* Button to show information on how to enable ads */
-"OBDidntSeeAdButton" = "Saya tidak melihat iklan";
-
-/* A generic error body for onboarding */
-"OBErrorDetails" = "Terjadi kesalahan saat membuat dompet Anda. Coba lagi.";
-
 /* No comment provided by engineer. */
 "OBErrorOkay" = "OK";
-
-/* A generic error title for onboarding */
-"OBErrorTitle" = "Maaf";
-
-/* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "Mulai menjelajah";
-
-/* Button to join Brave Rewards. */
-"OBJoinButton" = "Bergabung";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Izinkan Brave memeriksa clipboard saya atas kode rujukan yang cocok";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Anda mungkin telah mengunduh Brave untuk mendukung pemberi rujukan Anda. Untuk mendeteksi pemberi rujukan tersebut, Brave melakukan pemeriksaan satu kali di clipboard Anda atas kode rujukan yang cocok. Pemeriksaan ini terbatas hanya pada kode dan tidak ada data pribadi yang akan ditransfer. Jika Anda memilih untuk tidak ikut, pemberi rujukan Anda tidak akan menerima reward dari Brave.";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentNoButton" = "Jangan izinkan pemeriksaan ini";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentTitle" = "Pemeriksaan kode rujukan anonim";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentYesButton" = "Izinkan pemeriksaan clipboard satu kali";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "Dengan mengetuk Ya, Anda menyetujui";
@@ -1150,32 +958,8 @@
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Memilih untuk menggunakan Brave Private Ads akan mendukung penerbit dan pembuat konten melalui setiap iklan yang dilihat.";
 
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Dapatkan token dan beri reward pada pembuat konten atas konten hebat selagi Anda menjelajahi.";
-
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Kebijakan Privasi";
-
-/* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Brave Rewards";
-
-/* Save button to save current selection */
-"OBSaveButton" = "Simpan";
-
-/* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "Pilih mesin pencari baku Anda";
-
-/* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Selamat Datang di Peramban Brave";
-
-/* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "Blokir pelacak privasi yang menginvasi agar Anda dapat menjelajahi di web tanpa dikuntit.";
-
-/* Title for shields onboarding screen */
-"OBShieldsTitle" = "Brave Shields";
-
-/* Button to show the Brave Rewards Ads. */
-"OBShowMeButton" = "Tampilkan Kepada Saya";
 
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Mulai";
@@ -1210,20 +994,11 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Buka Semua (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Buka Pengaturan Brave Rewards";
-
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Terjadi kesalahan yang tidak diketahui saat membuka folder Unduhan di aplikasi Berkas.";
 
-/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
-"openExternalAppURLHost" = "%@ menyatakan:";
-
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "Izinkan %@ untuk mengganti aplikasi?";
-
-/* Context menu for opening image in new tab */
-"OpenImageInNewTab" = "Buka Gambar di Tab Baru";
 
 /* Context menu item for opening a link in a new private browsing window */
 "OpenInNewPrivateWindowTitle" = "Buka di Jendela Privat Baru";
@@ -1360,12 +1135,6 @@
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Pengaturan Privasi Lain";
 
-/* Section name for other settings. */
-"OtherSettingsSection" = " Pengaturan Lainnya";
-
-/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
-"p3a.continue" = "Lanjutkan";
-
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "Respons privat ini membantu Brave memperkirakan seluruh penggunaan fitur tertentu dan menjadikan fitur-fitur ini lebih baik bagi Anda.";
 
@@ -1396,12 +1165,6 @@
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Level Perbesar Halaman Web Bawaan";
 
-/* Description for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesDescription" = "Ketika Level-Perbesar sebuah situs web telah berubah, situs web akan menunjukkan daftarnya di sini. Saat ini tidak ada situs web yang memperbesar atau memperkecil.";
-
-/* Title for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesTitle" = "Tidak Ada Situs Web yang Ditambahkan";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Situs Web Lainnya";
 
@@ -1426,12 +1189,6 @@
 /* Setting to allow the app to restore private browsing tabs */
 "PersistentPrivateBrowsing" = "Perambanan Privat yang Gigih";
 
-/* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Izinkan Brave untuk memperbaiki tab peramban privat, bahkan jika Anda menutup/membuka ulang aplikasi";
-
-/* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "Pulihkan Tab Privat";
-
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Foto oleh %@";
 
@@ -1446,12 +1203,6 @@
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Opsi Putar Kembali";
-
-/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
-"playlist.carplayRestartPlaybackButtonStateDisabled" = "Non-aktif. Ketuk untuk mengaktifkan mulai kembali pemutar balik.";
-
-/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
-"playlist.carplayRestartPlaybackButtonStateEnabled" = "Aktif. Ketuk untuk menonaktifkan mulai kembali pemutar balik.";
 
 /* The description of the checkbox that allows the user to restart audio/video playback */
 "playlist.carplayRestartPlaybackOptionDetailsTitle" = "Putuskan apakah memilih hal yang telah diputar akan memulai kembali pemutar balik, atau melanjutkan pemutaran di bagian yang terakhir diputar";
@@ -1699,9 +1450,6 @@
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "Buka Hub Privasi";
 
-/* The title of the button action which open the privacy hub */
-"privacyHub.openPrivacyHubWidgetActionTitle" = "Buka Hub Privasi";
-
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Data Hub Privasi disimpan secara lokal dan tidak pernah dikirimkan ke mana pun.";
 
@@ -1771,23 +1519,11 @@
 /* Private button title */
 "Private" = "Pribadi";
 
-/* No comment provided by engineer. */
-"PrivateBrowsing" = "Penjelajahan Pribadi";
-
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Hanya Penjelajahan Pribadi";
 
 /* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
 "PrivateBrowsingOnlyWarning" = "Moda Hanya Peramban Pribadi akan menutup semua tab Anda saat ini dan mengeluarkan Anda dari semua situs.";
-
-/* Private tab details */
-"PrivateTabBody" = "Tab Pribadi tidak disimpan di Brave, tetapi tab tersebut tidak menjadikan Anda anonim secara online. Situs-situs yang Anda kunjungi di tab pribadi tidak akan muncul di riwayat Anda dan kukinya selalu terhapus saat Anda menutup situs, tidak akan ada jejak situs tersebut yang tertinggal di Brave. Namun unduhan Anda akan disimpan.\nOperator seluler Anda (atau pemilik jaringan WiFi atau VPN yang terhubung) dapat melihat situs apa yang Anda kunjungi dan situs tersebut akan mengetahui alamat IP publik Anda, bahkan dalam Tab Pribadi.";
-
-/* Private tab detail text */
-"PrivateTabDetails" = "Menggunakan Tab Pribadi hanya akan mengubah fungsi Brave di perangkat Anda, namun tidak mengubah perilaku orang lain.\n\nSitus selalu mengetahui alamat IP Anda saat mengunjunginya. Dari sini, mereka sering kali dapat selalu menebak lokasi Anda, terutama kota. Terkadang lokasi yang diketahui dapat lebih spesifik. Situs juga mengetahui semua yang Anda beri tahu secara spesifik kepada mereka seperti istilah pencarian. Jika masuk, situs akan mengetahui bahwa Anda adalah pemilik akun tersebut. Anda tetap akan keluar saat menutup Tab Pribadi karena Brave akan menghapus kuki yang Anda gunakan untuk masuk.\n\nSiapa pun yang menyambungkan Anda ke Internet (ISP Anda) dapat melihat semua aktivitas jaringan Anda. Sering kali, operator seluler Anda yang melihatnya. Jika Anda tersambung ke jaringan WiFi, maka pemilik jaringan tersebut yang dapat melihat aktivitas jaringan, dan jika Anda menggunakan VPN, maka siapa pun yang menjalankan VPN tersebut yang dapat melihat aktivitas jaringan. ISP Anda dapat melihat situs yang dikunjungi saat Anda mengunjunginya. Jika situs tersebut menggunakan HTTPS, situs tersebut hanya dapat menebak aktivitas Anda di situs tersebut. Namun jika situs hanya menggunakan HTTP, maka ISP dapat melihat semuanya: istilah pencarian Anda, halaman yang dibaca, dan tautan yang diikuti.\n\nJika perusahaan mengelola perangkat Anda, mereka juga dapat melacak aktivitas perangkat Anda. Menggunakan Tab Pribadi mungkin tidak akan menghentikan mereka untuk mengetahui situs yang Anda kunjungi. Orang lain yang memiliki akses ke perangkat Anda juga dapat memasang perangkat lunak yang memantau aktivitas Anda, dan Tab Pribadi tidak akan dapat melindungi Anda dari hal ini.";
-
-/* Private tab information link */
-"PrivateTabLink" = "Pelajari tentang Tab Pribadi.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Tab Pribadi";
@@ -1846,12 +1582,6 @@
 /* Accessibility label for brightness adjustment slider in Reader Mode display settings */
 "ReaderModeBrightSliderAccessibilityLabel" = "Kecerahan";
 
-/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
-"ReaderModeDisplaySettingsButtonTitle" = "Pengaturan Tampilan";
-
-/* Error displayed when reader mode cannot be enabled */
-"ReaderModeErrorConvertDisplayText" = "Terjadi kesalahan saat mengonversi laman";
-
 /* Font type setting in the reading view settings */
 "ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
 
@@ -1863,15 +1593,6 @@
 
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Ubah Tipe Huruf";
-
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "Memuat konten...";
-
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadOriginalLinkText" = "Muat laman asli";
-
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "Laman tidak dapat ditampilkan pada Tampilan Baca";
 
 /* Title of a bar that show up when you enter reader mode. */
 "readerModeSettingsButton" = "Mode Pembaca";
@@ -1894,14 +1615,8 @@
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "Tak Ada Tab yang Baru Ditutup.";
 
-/* Open Tab action title */
-"recently.closed.open" = "Buka";
-
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "Buka Kembali Tab yang Terakhir Ditutup";
-
-/* Description for alert to ask user for opening last closed tab in list */
-"recently.closed.shake.description" = "Apakah Anda ingin membuka tab yang terakhir ditutup?";
 
 /* Action item title of long press for Opening recently closed tab view */
 "recently.closed.title" = "Tab yang Baru Ditutup";
@@ -1987,12 +1702,6 @@
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "\"%@\" Ingin Mengakses Mikrofon";
 
-/* Name of folder where restored bookmarks are retrieved */
-"RestoredBookmarksFolderName" = "Penanda Halaman Dikembalikan";
-
-/* Name of folder where restored favorites are retrieved */
-"RestoredFavoritesFolderName" = "Pilihan Favorit Dikembalikan";
-
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "Ya";
 
@@ -2035,80 +1744,11 @@
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Kreator konten ini diverifikasi dengan Kreator Brave";
 
-/* Displayed next to a number representing the total number of publishers supported */
-"rewards.totalSupportedCount" = "Jumlah kreator konten yang Anda bantu dukung bulan ini.";
-
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Kreator ini belum diverifikasi dan tidak akan disertakan dalam dukungan kreator.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Jumlah";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAnonymous" = "Anonim";
-
-/* No comment provided by engineer. */
-"RewardsInternalsBalanceInfoHeader" = "Info Saldo";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "Anda yakin ingin menghapus semua log Rewards?";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsTitle" = "Hapus Log";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionAmount" = "Jumlah kontribusi";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Token Brave";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorNone" = "Tidak ada";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "Uphold";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUserFunds" = "Dana Pengguna";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepACOff" = "Kontribusi Otomatis Nonaktif";
-
-/* 'AC' refers to Auto-Contribute */
-"RewardsInternalsContributionsStepACTableEmpty" = "Tabel AC kosong";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCompleted" = "Selesai";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCreds" = "Kredensial";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepExternalTransaction" = "Transaksi Eksternal";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "Gagal";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepNotEnoughFunds" = "Dana tidak cukup";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepPrepare" = "Persiapkan";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepReserve" = "Cadangan";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "Reward Habis";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "Mulai";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsTitle" = "Kontribusi";
-
-/* No comment provided by engineer. */
-"RewardsInternalsCreatedAt" = "Dibuat di";
 
 /* No comment provided by engineer. */
 "RewardsInternalsDeviceInfoHeader" = "Info Perangkat";
@@ -2128,9 +1768,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Key Info Seed";
 
-/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
-"RewardsInternalsLogsCount" = "%d log ditampilkan";
-
 /* No comment provided by engineer. */
 "RewardsInternalsLogsTitle" = "Log";
 
@@ -2141,34 +1778,13 @@
 "RewardsInternalsNotSupported" = "Tidak didukung";
 
 /* No comment provided by engineer. */
-"RewardsInternalsProcessor" = "Pemroses";
-
-/* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Penerbit";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublishers" = "Penerbit";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRetryCount" = "Jumlah Coba Ulang";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeAutoContribute" = "Kontribusi Otomatis";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeOneTimeTip" = "Tip satu kali";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "Tip rutin";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "Profil reward, info perangkat & saldo (selalu dibagikan)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Info Dasar";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableContributionsDescription" = "Kontribusi apa pun yang dibuat untuk penerbit melalui tip atau kontribusi otomatis";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableDatabaseDescription" = "Penyimpanan data internal";
@@ -2204,9 +1820,6 @@
 "RewardsInternalsTitle" = "Reward Internal";
 
 /* No comment provided by engineer. */
-"RewardsInternalsTotalAmount" = "Nominal total";
-
-/* No comment provided by engineer. */
 "RewardsInternalsTotalBalance" = "Total Saldo";
 
 /* No comment provided by engineer. */
@@ -2233,17 +1846,11 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Simpan";
 
-/* Label for the button used to save changes in some text input. */
-"SaveChangesButtonTitle" = "Simpan perubahan";
-
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Info Masuk Tersimpan";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "Tab yang Disimpan";
-
-/* Context menu item for saving an image */
-"SaveImageActionTitle" = "Simpan Gambar";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Simpan Info Masuk";
@@ -2257,23 +1864,8 @@
 /* Search engines section of settings */
 "SearchEngines" = "Mesin Pencari";
 
-/* Accessibility hint describing the action performed when a search suggestion is clicked */
-"SearchesForSuggestionButtonAccessibilityText" = "Cari saran";
-
 /* Section header for history and bookmarks and open tabs option */
 "SearchHistorySectionHeader" = "Di Perangkat Anda";
-
-/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
-"SearchInputViewClearButtonTitle" = "Bersihkan Pencarian";
-
-/* Accessibility label for entering search mode for logins */
-"SearchInputViewOverlayAccessibilityLabel" = "Masuk ke Mode Pencarian";
-
-/* Accessibility label for the search input field in the Logins list */
-"SearchInputViewTextFieldAccessibilityLabel" = "Kolom Input Pencarian";
-
-/* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "Cari";
 
 /* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
 "searchQuickBarPrefix" = "Telusuri \"%@\"";
@@ -2287,9 +1879,6 @@
 /* Label for showing browser suggestion setting */
 "SearchSettingBrowserSuggestionCellTitle" = "Tampilkan Saran Peramban";
 
-/* Navigation title for search settings. */
-"SearchSettingNavTitle" = "Cari";
-
 /* Label for showing recent search setting. */
 "SearchSettingRecentSearchesCellTitle" = "Tampilkan Pencarian Terkini";
 
@@ -2299,23 +1888,11 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "Tampilkan Saran Pencarian";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
-"SearchSuggestionFromFormatText" = "Saran pencarian untuk %@";
-
 /* Action title for open a playlist item in Playlist. */
 "searchSuggestionOpenPlaylistActionTitle" = "Buka di Daftar Putar";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Alihkan ke tab ini";
-
-/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
-"SearchSuggestionSectionTitleFormat" = "Pencarian %@";
-
-/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "Cari";
-
-/* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "Saran Pencarian";
 
 /* Search suggestions optin subtitle when prompting to turn on suggestions */
 "searchSuggestionsSubtitle" = "Anda mau mengaktifkan Saran Penelusuran?";
@@ -2428,9 +2005,6 @@
 /* Row name for licenses. */
 "SettingsLicenses" = "Lisensi";
 
-/* Title for settings menu item */
-"SettingsMenuItem" = "Setelan";
-
 /* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
 "SettingsTabsOptionBottomBar" = "Bilah Bawah";
 
@@ -2442,9 +2016,6 @@
 
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Bagikan Tautan";
-
-/* Title for sharing url menu item */
-"ShareWithMenuItem" = "Bagikan kepada...";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "shareWithTitle" = "Bagikan kepada...";
@@ -2478,9 +2049,6 @@
 
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Bagikan berita";
-
-/* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Shield telah menjaga privasi online Anda.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Selamat. Anda cukup spesial.";
@@ -2665,14 +2233,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Jalan Pintas Siri";
 
-/* Button to show the bookmarks list */
-"ShowBookmarks" = "Tampilkan Markah";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Tampilkan Unduhan";
-
-/* Button to show the history list */
-"ShowHistory" = "Tampilkan Riwayat";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showHistoryTitle" = "Tampilkan Riwayat";
@@ -2800,9 +2362,6 @@
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.configurationInformationText" = "Kelola jenis informasi yang ingin Anda sinkronkan antarperangkat. Setelan ini hanya mempengaruhi perangkat ini.";
 
-/* Copied action complete title */
-"sync.copied" = "Disalin!";
-
 /* Copied codewords title */
 "sync.copiedToClipboard" = "Disalin ke papan klip!";
 
@@ -2845,14 +2404,8 @@
 /* Sync enter code words */
 "sync.enterCodeWords" = "Masukkan kata-kata kode";
 
-/* Enter sync code words below */
-"sync.enterCodeWordsBelow" = "Masukkan kode kata di bawah ini";
-
 /* Sync Error message for when the sync code is expired */
 "sync.expiredError" = "Kode sinkronisasi ini telah kedaluwarsa. Silakan menghasilkan kode sinkronisasi yang baru dan coba lagi.";
-
-/* Generic Sync Error Description */
-"sync.genericError" = "Maaf, sepertinya telah terjadi kesalahan";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "Aktifkan Kamera";
@@ -2896,9 +2449,6 @@
 /* Error title for when the sync code does not have the correct amount of words */
 "sync.notEnoughWordsTitle" = "Kode Kata Belum Cukup";
 
-/* Sync pair device settings section title */
-"sync.pair" = "Hubungkan";
-
 /* QR Code section title */
 "sync.qrCode" = "Kode QR";
 
@@ -2932,12 +2482,6 @@
 /* Title for removing other device from Sync */
 "sync.removeOtherDeviceTitle" = "Hapus %@ dari Rantai Sinkronisasi?";
 
-/* Sync remove device. */
-"sync.removeThisDevice" = "Hapus perangkat ini";
-
-/* Sync remove device? */
-"sync.removeThisDeviceQuestionDesc" = "Peranti ini akan terputus dari grup sinkronisasi dan tidak lagi menerima atau mengirim data sinkronisasi. Semua data yang ada akan tetap ada di peranti.";
-
 /* Scan sync code title */
 "sync.scan" = "Pindai";
 
@@ -2956,20 +2500,11 @@
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "Setelan Sinkronisasi";
 
-/* Show code words instead */
-"sync.showCodeWords" = "Sebaliknya, tampilkan kata-kata kode";
-
 /* Switch back to camera button */
 "sync.switchBackToCameraButton" = "Saya akan menggunakan kamera saya...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Penghapusan ini bersifat permanen dan data tidak akan mungkin dipulihkan. Jika Anda memutuskan untuk kembali menggunakan Sinkronisasi, Anda perlu membuat akun baru dan menambahkan ulang setiap perangkat satu per satu.";
-
-/* Sync you browser settings across devices. */
-"sync.Syncdevices" = "Perangkat & Pengaturan";
-
-/* Sync remove device? */
-"sync.syncRemoveThisDeviceQuestion" = "Hapus perangkat ini ?";
 
 /* Sync settings section title */
 "sync.syncTitle" = "Sync";
@@ -3006,9 +2541,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Jumlah kata:%i";
-
-/* Accessibility label for action denoting closing a tab in tab list (tray) */
-"TabAccessibilityCloseActionLabel" = "Tutup";
 
 /* Accessibility label for a close button that when tapped opens a new tab */
 "tabGrid.addTabAccessibilityLabel" = "Tab baru";
@@ -3049,17 +2581,11 @@
 /* A title shown when in private browsing mode with no tabs open */
 "tabGrid.privateBrowsingInfoTitle" = "Tab Pribadi";
 
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.privateBrowsingModeAccessibilityLabel" = "Penjelajahan Pribadi";
-
 /* A label in the tab tray mode switcher for private browsing mode */
 "tabGrid.privateBrowsingModeTitle" = "Pribadi";
 
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Pengaturan Tab Pribadi";
-
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.regularBrowsingModeAccessibilityLabel" = "Penelusuran Reguler";
 
 /* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
 "tabGrid.selectedTabs" = "Tab yang dipilih";
@@ -3090,18 +2616,6 @@
 
 /* Label for synced tabs menu item that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsMenuItemLabel" = "Sync";
-
-/* Accessiblity hint for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityHint" = "Menyalakan atau mematikan mode pribadi";
-
-/* Accessibility label for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityLabel" = "Mode Pribadi";
-
-/* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "Nonaktifkan";
-
-/* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "Aktifkan";
 
 /* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardDescription" = "Otomatis fokus pada bilah alamat saat membuat tab baru";
@@ -3163,9 +2677,6 @@
 /* Accessibility Label for the tab toolbar Forward button */
 "TabToolbarForwardButtonAccessibilityLabel" = "Maju";
 
-/* Accessibility label for the lock icon, which is only present if the connection is secure */
-"TabToolbarLockImageAccessibilityLabel" = "Sambungan aman";
-
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menu";
 
@@ -3180,9 +2691,6 @@
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Tampilan Pembaca";
-
-/* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "Tambahkan ke Daftar Baca";
 
 /* Accessibility Label for the tab toolbar Reload button */
 "TabToolbarReloadButtonAccessibilityLabel" = "Muat Ulang";
@@ -3199,47 +2707,14 @@
 /* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Pencarian Suara";
 
-/* Accessibility label for the lock icon, which is only present if the connection is insecure */
-"TabToolbarWarningImageAccessibilityLabel" = "Koneksi tidak aman";
-
-/* Accessibility label for the Tabs Tray view. */
-"TabTrayAccessibilityLabel" = "Baki Tab";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabTrayAddTabAccessibilityLabel" = "Tambahkan Tab";
-
-/* Accessibility hint for tab tray's displayed tab. */
-"TabTrayCellCloseAccessibilityHint" = "Geser ke kanan atau kiri dengan tiga jari untuk menutup tab.";
-
-/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
-"TabTrayClosingTabAccessibilityNotificationText" = "Menutup tab";
-
-/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
-"TabTrayEmptyVoiceOverText" = "Tidak ada tab";
-
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
-"TabTrayMultiTabPositionFormatVoiceOverText" = "Tab %1$@ sampai %2$@ dari %3$@";
-
-/* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "Tab baru";
-
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "Tab Pencarian";
-
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
-"TabTraySingleTabPositionFormatVoiceOverText" = "Tab %1$@ dari %2$@";
 
 /* No comment provided by engineer. */
 "TermsOfService" = "Ketentuan Layanan";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Persyaratan Penggunaan";
-
-/* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "Bagikan...";
-
-/* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Bagikan Brave ke teman-teman Anda!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Otomatis";
@@ -3252,9 +2727,6 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Terang";
-
-/* Name for app theme settings */
-"themesSettings" = "Tema";
 
 /* No comment provided by engineer. */
 "Title" = "Judul";
@@ -3385,9 +2857,6 @@
 /* A title at the top of the screen that shows a list of sources that are ranked the highest */
 "today.popularSourcesTitle" = "Sumber Populer";
 
-/* A button title that is placed on promoted cards */
-"today.promoted" = "Dipromosikan";
-
 /* Title for long press action sheet list which has item for rate / hide */
 "today.rateBraveCardActionSheetTitle" = "Nilai Brave di App Store";
 
@@ -3442,14 +2911,8 @@
 /* Title of an action that allows the user to translate the current web-page to another language */
 "TranslatePage" = "Terjemahkan Halaman";
 
-/* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "Aktifkan saran pencarian?";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Buka kunci";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "Instrumen pembayaran tidak didukung";
 
 /* Bookmark URL */
 "URL" = "URL";
@@ -3459,18 +2922,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "urlRedirectsSettings" = "Mengarahkan Ulang Situs Web";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "Pengguna telah membatalkan";
-
-/* No comment provided by engineer. */
-"UserWalletCloseButtonTitle" = "Tutup";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorMessage" = "Terjadi masalah saat Anda mencoba masuk ke akun Uphold Anda. Silakan coba lagi.";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "Maaf, sepertinya telah terjadi kesalahan";
 
 /* Message for error alert when a VCard contact file cannot be parsed or opened */
 "VCard.unableToOpenContactErrorMessage" = "File kontak tidak dapat dibaca. File mungkin rusak atau dalam format yang tidak didukung.";
@@ -3535,9 +2986,6 @@
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Tombol";
 
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "th.";
-
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ya";
 
@@ -3547,20 +2995,11 @@
 /* History tableview section header */
 "Yesterday" = "Kemarin";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Aktifkan Video-Video Youtube Berkualitas Tinggi";
-
-/* Description of setting to enable high quality youtube videos */
-"YoutubeMediaQualityDetails" = "Mengaktifkan fitur eksperimen ini akan menayangkan video pada kualitas maksimum yang tersedia serta akan menggunakan data tambahan.";
-
 /* Setting that disables highest quality video playback */
 "YoutubeMediaQualityOff" = "Nonaktifkan";
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Aktifkan";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "Kualitas Pemutaran Kembali Youtube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Izinkan lewat Wi-Fi";

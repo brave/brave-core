@@ -7,27 +7,6 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "利用可能なサービス";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "購入";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "1つのサブスクリプションで5台のデバイスを保護";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "あなたの位置/国を選択する";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Braveはブラウザ上のアクティビティを記録しません";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "すべてのアプリとデバイス全体を保護";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "ご自宅や公共Wi-Fiでの安全確保に";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "最高100 Mbps、超高速のパフォーマンス";
-
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
 "vpn.cityCountTitle" = "%ld 都市";
 
@@ -57,9 +36,6 @@
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "イシュー";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "接続信頼性の問題";
 
 /* Description used for specific issue field for customer support contact form. */
 "vpn.contactFormIssueDescription" = "問題に当てはまるカテゴリーを選択してください。";
@@ -111,9 +87,6 @@
 
 /* The button text that starts the trial action */
 "vpn.freeTrialPeriodAction" = "7日間無料でお試し";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "すべての定期購読は自動更新ですが、更新前に解約することができます。";
 
 /* Text explaining how the VPN works. */
 "vpn.installProfileBody" = "このプロファイルにより、VPNは自動的に接続され、デバイス上のすべてのアプリにおいて常にトラフィックが保護されます。VPN接続は暗号化され、Braveのインテリジェントファイアウォールを介してルーティングされ、広告やトラッカーをブロックします。";
@@ -172,20 +145,11 @@
 /* Message that we show after successfully changing tunnel protocol. */
 "vpn.protocolSwitchSuccessPopupText" = "VPNトンネルプロトコルを変更しました。";
 
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "あなたのシステムのタイムゾーンに基づいて、あなたに最も近接したサーバーリージョンが自動で選択されます。インターネットの速さを損なわないために推奨されています。";
-
 /* Message for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorMessage" = "サーバーの切り替えに失敗しました。後ほど再試行ください";
 
 /* Title for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorTitle" = "サーバーエラー";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "サーバーリージョン";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "VPNのリージョンが変更されました。";
 
 /* Yearly tier explaination. Subscription will be renewed annually. */
 "vpn.renewAnnually" = "年間更新";
@@ -229,9 +193,6 @@
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "テクニカルサポートへのお問い合わせ";
 
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "サーバーリストの取得に失敗しました。再試行してください";
-
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPNサポート";
 
@@ -249,12 +210,6 @@
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "設定をリセット";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "ホスト";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "位置";
 
 /* Header title for vpn settings server section. */
 "vpn.settingsServerSection" = "サーバー";
@@ -307,32 +262,17 @@
 /* Title for an alert when the VPN can't be configured */
 "vpn.vpnConfigGenericErrorTitle" = "エラー";
 
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPNを使用するには、お使いのデバイスにVPNプロファイルをインストールする必要があります。";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "パーミッションが拒否されました";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "オファーコードを使用できません。再試行するか、オファーコードの詳細を確認してからもう一度お試しください。";
-
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "購入を完了できません。再度お試しいただくか、Appleでお支払い内容をご確認の上、再度お試しください。";
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "エラー";
 
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "サブスクリプションはiTunesアカウントを通じて課金されます。\n無料トライアルが提供されている場合、未使用の部分は、サブスクリプションを購入した時点で無効になります。\nサブスクリプションは、現在の期間終了の少なくとも24時間前にキャンセルされない限り、自動的に更新されます。\nサブスクリプションは「設定」で管理できます。\nBraveを使用することで、利用規約とプライバシーポリシーに同意したことになります。";
-
 /* The title shown on the menu when the VPN connection is disconnected */
 "vpn.vpnOffMenuButtonTitle" = "VPNオフ";
 
 /* The title shown on the menu when the VPN connection is connected */
 "vpn.vpnOnMenuButtonTitle" = "VPNオン";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "コードを使用";
 
 /* The alert title showing vpn region is changed */
 "vpn.vpnRegionChangedTitle" = "VPNのリージョンが変更されました";
@@ -351,9 +291,6 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "定期購読(年払い)";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "年払いを選択すると%@お得です";
 
 /* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
 "vpn.yearlySubDisclaimer" = "一番お得";

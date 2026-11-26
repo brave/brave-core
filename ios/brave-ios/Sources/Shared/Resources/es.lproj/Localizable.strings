@@ -1,6 +1,3 @@
-/* Toast displayed to user after copy url pressed. */
-"AppMenuCopyURLConfirmMessage" = "URL copiada en el portapapeles";
-
 /* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
 "AppMenuViewDesktopSiteTitleString" = "Solicitar versión de escritorio";
 
@@ -49,9 +46,6 @@
 /* The button to open a new tab with the Downloads home panel */
 "DownloadsButtonTitle" = "Descargas";
 
-/* Question shown to user when tapping a link that opens the App Store app */
-"ExternalLinkAppStoreConfirmationTitle" = "¿Abrir este enlace en la aplicación de la App Store?";
-
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "Ir";
 
@@ -76,17 +70,11 @@
 /* Accessibility label for button resetting font size in display settings of reader mode */
 "ReaderModeResetFontSizeAccessibilityLabel" = "Restablecer el tamaño del texto";
 
-/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
-"SaveLoginPrompt" = "¿Guardar la contraseña para %@?";
-
 /* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
 "SaveLoginUsernamePrompt" = "¿Guardar el inicio de sesión %1$@ para %2$@?";
 
 /* OK button to dismiss the error prompt. */
 "ScanQRCodeErrorOKButton" = "Aceptar";
-
-/* Text for the instructions label, displayed in the QR scanner view */
-"ScanQRCodeInstructionsLabel" = "Centre el código QR en el recuadro para escanearlo";
 
 /* Text of the prompt that is shown to the user when the data is invalid */
 "ScanQRCodeInvalidDataErrorMessage" = "Los datos no son válidos";
@@ -123,9 +111,6 @@
 
 /* Title of the message shown when the user attempts to navigate to an invalid link. */
 "UnableToOpenURLErrorTitle" = "No se puede abrir la página";
-
-/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginPrompt" = "¿Actualizar el inicio de sesión %1$@ para %2$@?";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
 "UpdateLoginUsernamePrompt" = "¿Actualizar el inicio de sesión %1$@ para %2$@?";

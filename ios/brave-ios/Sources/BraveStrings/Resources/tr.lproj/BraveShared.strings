@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Hakkında";
 
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertMessage" = "Bu, görüntüyü Film Rulonuza kaydetmenizi sağlar.";
-
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave Fotoğraflarınıza erişmek istiyor";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Yer İşareti Ekle";
 
@@ -63,9 +57,6 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Kullanıcı adı";
-
-/* Settings autofill section title */
-"Autofill" = "Otomatik doldurma";
 
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Hesaplar";
@@ -133,9 +124,6 @@
 /* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
 "backgroundDownloadingTitleSingleDownload" = "\"%@\" indiriliyor";
 
-/* cookie settings option */
-"Block3rdPartyCookies" = "Üçüncü taraf çerezlerini engelle";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Tüm Çerezleri Engelle";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Tercih ayarlanamadı. Lütfen yeniden deneyin.";
 
-/* title for section showing page blocking statistics */
-"BlockingMonitor" = "Engelleme İzleyicisi";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Açılır Pencereleri Engelle";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "%lld Sekmeleri için Yer İşareti Ekle";
-
-/* Bookmark Folder Section Title */
-"BookmarkFolder" = "Yer İşareti Klasörü";
-
-/* Bookmark Info Section Title */
-"BookmarkInfo" = "Yer İşareti Bilgisi";
 
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Yer işaretleri";
@@ -225,9 +204,6 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Kalkanlar & Gizlilik";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Sohbet";
 
 /* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
 "BraveTranslate.languageSelectionButtonTitle" = "Dil Seçiniz";
@@ -415,14 +391,8 @@
 /* Section title in settings panel */
 "ClearPrivateData" = "Özel Verileri Temizle";
 
-/* The cancel button when confirming clear private data. */
-"ClearPrivateDataAlertCancelButtonTitle" = "İptal";
-
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertMessage" = "Emin misiniz?";
-
-/* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "Tamam";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "Verileri Temizle";
@@ -441,9 +411,6 @@
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "Tamam";
-
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "İstemci hatası";
 
 /* Button title to close a menu. */
 "Close" = "Kapat";
@@ -481,17 +448,11 @@
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
 "CopyCleanLink" = "Temiz Bağlantıyı Kopyala";
 
-/* Context menu item for copying an image to the clipboard */
-"CopyImageActionTitle" = "Resmi Kopyala";
-
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Bağlantıyı Kopyala";
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Sekmelerle ilgili bilgileri panoya kopyalayın.";
-
-/* Copy rewards internals info for support */
-"CopyWalletSupportInfo" = "Destek Bilgilerini Kopyala";
 
 /* Create PDF share action. */
 "CreatePDF" = "PDF Oluştur";
@@ -504,9 +465,6 @@
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Arama URL'sini yazın ve sorguyu %s ile değiştirin.\\nÖrneğin: https://youtube.com/search?q= %s \\n(Site OpenSearch'i destekliyorsa, bu alan düzenlenirken otomatik olarak ekleme seçeneği sağlanır.)";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "Otomatik Ekle";
 
 /* A title explaining that an error shown while adding custom search engine */
 "customSearchEngine.customSearchEngineAddErrorTitle" = "Özel Arama Motoru Eklenirken Hata";
@@ -590,12 +548,6 @@
 "defaultBrowserCallout.notificationTitle" = "Her bağlantıda Brave koruması elde edin";
 
 /* No comment provided by engineer. */
-"defaultBrowserCalloutCloseAccesabilityLabel" = "Varsayılan tarayıcı belirtecini kapat";
-
-/* Name for default Brave theme. */
-"defaultThemeName" = "Varsayılan Brave";
-
-/* No comment provided by engineer. */
 "Delete" = "Sil";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
@@ -649,9 +601,6 @@
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "İndirilenler";
 
-/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
-"DownloadsPanelEmptyStateTitle" = "İndirilen dosyalar burada görünecektir.";
-
 /* Action item title of long press for Opening the existing - active Tab url in a new Tab */
 "DuplicateActiveTab" = "Kullanılan Sekmeyi Kopyala";
 
@@ -700,48 +649,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Klasör adını girin";
 
-/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@, normalde verilerinizi korumak için şifreleme kullanır. Brave bu sefer %2$@ adresine bağlanmaya çalıştığında web sitesi beklenmedik ve yanlış kimlik bilgileri gönderdi. Bu durum, bir saldırgan %3$@ kimliğine bürünmeye çalıştığında veya Wi-Fi oturum açma ekranı bağlantıyı kesintiye uğrattığında yaşanabilir. Brave herhangi bir veri alışveriş yapılmadan önce bağlantıyı durdurduğu için bilgileriniz hala güvende.<br />Web sitesi sertifika sabitleme kullandığı için şu anda %4$@ adresini ziyaret edemezsiniz. Ağ hataları ve saldırılar genellikle geçicidir, o yüzden bu sayfa muhtemelen daha sonra çalışacaktır.";
-
-/* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningDetails" = "Bu sunucu, bunun %@ olduğunu kanıtlayamadı, cihazınızın işletim sistemi bunun güvenlik sertifikasına güvenmiyor. Bu durum hatalı yapılandırmadan veya bağlantınıza sızmaya çalışan bir saldırgandan kaynaklanıyor olabilir.";
-
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningTitle" = "Saldırganlar %@ hedefinden bilgilerinizi çalmaya çalışıyor olabilir (örneğin şifreler, mesajlar veya kredi kartları).";
-
-/* Label for button to go back from the error page */
-"ErrorPagesBackToSafetyButton" = "Güvenliğe geri dön";
-
-/* Title on the certificate error page */
-"ErrorPagesCertErrorTitle" = "Bu site güvenli bir bağlantı sağlayamıyor";
-
-/* Title on the certificate error page */
-"ErrorPagesCertWarningTitle" = "Bağlantınız gizli değil";
-
-/* Label for button to hide advanced actions on the error page */
-"ErrorPagesHideDetailsButton" = "Detayları gizle";
-
-/* Label for learn more link on error page */
-"ErrorPagesLearnMoreButton" = "Daha fazla bilgi edinin";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesMoreDetailsButton" = "Daha fazla detay";
-
-/* Title of the No Internet error page */
-"ErrorPagesNoInternetTitle" = "İnternet erişimi yok";
-
-/* Text telling the user to Try: The following list of things */
-"ErrorPagesNoInternetTry" = "Görünüşe göre çevrimiçi değilsiniz. Bu durumu düzeltmek için, şunları deneyin:";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem1" = "Ağ kablolarını, modemi ve yönlendiriciyi kontrol etmek";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem2" = "Wi-Fi'a yeniden bağlanmak";
-
-/* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesProceedAnywayButton" = "%@ sitesine devam et (güvenli değil)";
-
 /* Button to exclude a topsite url from the most visited list */
 "ExcludeMostVisitedSite" = "Kaldır";
 
@@ -775,29 +682,14 @@
 /* Share action title */
 "FindInPage" = "Sayfada Bul";
 
-/* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "Bitti";
-
 /* Find `search query` */
 "FindInPageFormat" = "Bul ";
-
-/* Accessibility label for next result button in Find in Page Toolbar. */
-"FindInPageNextResultButtonAccessibilityLabel" = "Sonraki sayfa içi sonuç";
-
-/* Accessibility label for previous result button in Find in Page Toolbar. */
-"FindInPagePreviousResultButtonAccessibilityLabel" = "Önceki sayfa içi sonuç";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findInPageTitle" = "Sayfada Bul";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findNextTitle" = "Sonrakini Bul";
-
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "Bu Sayfada";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findPreviousTitle" = "Öncekini Bul";
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Evrensel bağlantıların harici uygulamalarda açılmasına izin ver";
@@ -822,9 +714,6 @@
 
 /* Hides the rewards icon */
 "HideRewardsIcon" = "Brave Ödülleri Simgesini Gizle";
-
-/* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Brave Ödülleri etkinleştirilmediğinde Brave Ödülleri simgesini gizler";
 
 /* Title for history menu item */
 "HistortMenuItem" = "Geçmiş";
@@ -867,12 +756,6 @@
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Tarama Verilerini İçe Aktar";
-
-/* title for per-site shield toggles */
-"IndividualControls" = "Bireysel Denetimler";
-
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "Ödeme isteğinde geçersiz ayrıntılar";
 
 /* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
 "JavaScriptDialogEmbeddedPageTitle" = "Bu sayfadaki gömülü bir sayfa";
@@ -931,30 +814,6 @@
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Filtrele";
 
-/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
-"LoginDetailLastModifiedCellFormatTitle" = "Son değiştirilen %@";
-
-/* Label displayed above the password row in Login Detail View. */
-"LoginDetailPasswordCellTitle" = "parola";
-
-/* Label displayed above the username row in Login Detail View. */
-"LoginDetailUsernameCellTitle" = "kullanıcı adı";
-
-/* Label displayed above the website row in Login Detail View. */
-"LoginDetailWebsiteCellTitle" = "web sitesi";
-
-/* Label for the button used to deselect all logins. */
-"LoginListDeselectAllButtonTitle" = "Tüm Seçimleri Kaldır";
-
-/* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "Oturum açma bilgisi bulunamadı";
-
-/* Title for Logins List View screen. */
-"LoginListScreenTitle" = "Oturum açma bilgileri";
-
-/* Label for the button used to select all logins. */
-"LoginListSelectAllButtonTitle" = "Tümünü seç";
-
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "Arka Plan Sesini Etkinleştir";
 
@@ -969,9 +828,6 @@
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Göster";
-
-/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
-"monthAbbreviation" = "ay";
 
 /* Bookmark title / Device name */
 "Name" = "Ad";
@@ -1048,9 +904,6 @@
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Sponsorlu resimler hakkında daha fazla bilgi edinin";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"ntp.settingsAutoOpenKeyboard" = "Klavyeyi Otomatik Aç";
-
 /* A setting to enable or disable background on the NTP screen. */
 "ntp.settingsBackgroundImages" = "Arka Plan";
 
@@ -1087,53 +940,8 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Ödülleri açarak %@'nı kabul ediyorsunuz.";
 
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "Göz atarken harika içerikler için jetonlar kazanın ve içerik üreticilerini ödüllendirin.";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "Göz atarken harika içerikler için puan kazanın ve içerik üreticilerini ödüllendirin.";
-
-/* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Brave Ads geldi!";
-
-/* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave ilk reklamınızı";
-
-/* Title for when the user completes onboarding */
-"OBCompleteTitle" = "Şimdi gitmeye hazırsın.";
-
-/* Button to show information on how to enable ads */
-"OBDidntSeeAdButton" = "Bir reklam görmedim.";
-
-/* A generic error body for onboarding */
-"OBErrorDetails" = "Cüzdanınızı oluştururken bir şeyler ters gitti. Lütfen yeniden deneyin";
-
 /* No comment provided by engineer. */
 "OBErrorOkay" = "Tamam";
-
-/* A generic error title for onboarding */
-"OBErrorTitle" = "Özür dileriz";
-
-/* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "Göz atmaya başla";
-
-/* Button to join Brave Rewards. */
-"OBJoinButton" = "birleştirmek";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Brave'in panomda eşleşen bir başvuru kodu olup olmadığını denetlemesine izin ver";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Brave'i sizi yönlendiren kişiyi desteklemek için indirmiş olabilirsiniz. Sizi yönlendiren kişiyi algılamak için Brave, panonuzda bir kerelik eşleşen başvuru kodu denetimi gerçekleştirir. Bu kontrol yalnızca kodla sınırlıdır ve başka hiçbir kişisel veri iletilmeyecektir.  Eğer vazgeçerseniz, sizi yönlendiren kişi Brave'den ödül almaz.";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentNoButton" = "Bu denetime izin verme";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentTitle" = "Anonim yönlendirme kodu denetimi";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentYesButton" = "Tek seferlik pano denetimine izin ver";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "Evet'e dokunarak, şunları kabul etmiş olursunuz:";
@@ -1150,32 +958,8 @@
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Brave Özel Reklamlara abone olmak, görüntülenen her reklamla birlikte yayıncıları ve içerik üreticilerini destekler.";
 
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Göz atarken harika içerikler için jetonlar kazanın ve içerik üreticilerini ödüllendirin.";
-
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Gizlilik Politikası";
-
-/* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Brave Ödülleri";
-
-/* Save button to save current selection */
-"OBSaveButton" = "Kaydet";
-
-/* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "Varsayılan arama motorunuzu seçin";
-
-/* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Brave Tarayıcı'ya Hoş Geldiniz";
-
-/* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "Web'de takip edilmeden gezinebilmek için gizliliği ihlal eden izleyicileri engelleyin";
-
-/* Title for shields onboarding screen */
-"OBShieldsTitle" = "Brave Kalkanları";
-
-/* Button to show the Brave Rewards Ads. */
-"OBShowMeButton" = "Göster";
 
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Başla";
@@ -1210,20 +994,11 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Tümünü Aç (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Brave Ödülleri Ayarlarını Aç";
-
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Dosyalar uygulamasında İndirilenler klasörü açılırken bilinmeyen bir hata oluştu.";
 
-/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
-"openExternalAppURLHost" = "%@ diyor ki:";
-
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "%@ öğesinin uygulamaları değiştirmesine izin verilsin mi?";
-
-/* Context menu for opening image in new tab */
-"OpenImageInNewTab" = "Resmi Yeni Sekmede Aç";
 
 /* Context menu item for opening a link in a new private browsing window */
 "OpenInNewPrivateWindowTitle" = "Yeni Gizli Pencerede Aç";
@@ -1360,12 +1135,6 @@
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Diğer Gizlilik Ayarları";
 
-/* Section name for other settings. */
-"OtherSettingsSection" = "Diğer Ayarlar";
-
-/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
-"p3a.continue" = "Devam";
-
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "Bu gizli yanıtlar, Brave'in belirli özelliklerin genel kullanımını tahmin ederek sizin için daha iyi hale getirmesine yardımcı olur.";
 
@@ -1396,12 +1165,6 @@
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Varsayılan Web Sayfası Yakınlaştırma Seviyesi";
 
-/* Description for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesDescription" = "Bir web sitesinin Yakınlaştırma Seviyesi değiştiği zaman web sitesi buradaki listede görünür. Şu anda yakınlaştırılan veya uzaklaştırılan bir web sitesi yok.";
-
-/* Title for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesTitle" = "Eklenen Web Sitesi Yok";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Diğer Tüm Web Siteleri";
 
@@ -1426,12 +1189,6 @@
 /* Setting to allow the app to restore private browsing tabs */
 "PersistentPrivateBrowsing" = "Kalıcı Gizli Gezinti";
 
-/* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Brave'in, uygulamayı kapatsanız / yeniden açsanız bile özel gezinti sekmelerini geri yüklemesine olanak tanır";
-
-/* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "Özel Sekmeleri Geri Yükle";
-
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Fotoğraf : %@";
 
@@ -1446,12 +1203,6 @@
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Oynatma Seçenekleri";
-
-/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
-"playlist.carplayRestartPlaybackButtonStateDisabled" = "Devre dışı. Oynatmanın yeniden başlatılmasını etkinleştirmek için dokunun.";
-
-/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
-"playlist.carplayRestartPlaybackButtonStateEnabled" = "Etkinleştirilmiş. Oynatmanın yeniden başlatılmasını devre dışı bırakmak için dokunun.";
 
 /* The description of the checkbox that allows the user to restart audio/video playback */
 "playlist.carplayRestartPlaybackOptionDetailsTitle" = "Şu anda çalmakta olan bir öğeyi seçmenin oynatmayı yeniden başlatıp başlatmayacağını veya en son kaldığı yerden oynatmaya devam edip etmeyeceğine karar verin.";
@@ -1699,9 +1450,6 @@
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "Gizlilik Merkezini aç";
 
-/* The title of the button action which open the privacy hub */
-"privacyHub.openPrivacyHubWidgetActionTitle" = "Gizlilik Merkezini aç";
-
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Gizlilik Bilgisi verileri yerel olarak saklanır ve hiçbir yere gönderilmez.";
 
@@ -1771,23 +1519,11 @@
 /* Private button title */
 "Private" = "Gizli";
 
-/* No comment provided by engineer. */
-"PrivateBrowsing" = "Gizli Tarama";
-
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Yalnızca Gizli Tarama";
 
 /* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
 "PrivateBrowsingOnlyWarning" = "Yalnızca Gizli Tarama modu tüm mevcut sekmelerinizi ve tüm sitelerdeki oturumlarınızı kapatır.";
-
-/* Private tab details */
-"PrivateTabBody" = "Gizli Sekmeler Brave'e kaydedilmez, ancak bu sizi internette anonim hale getirmez. Gizli bir sekmede ziyaret ettiğiniz siteler geçmişinizde gösterilmez ve bunları kapattığınızda çerezleri her zaman kaybolur - Brave'de bunlardan hiçbir iz kalmaz. Ancak, indirmeler kaydedilir.\nMobil operatörünüz (veya bağlı olduğunuz Wi-Fi ağının veya VPN'in sahibi) hangi siteleri ziyaret ettiğinizi görebilir ve bu siteler Gizli Sekmelerde bile herkese açık IP adresinizi öğrenir.";
-
-/* Private tab detail text */
-"PrivateTabDetails" = "Gizli Sekmeleri kullanmak yalnızca Brave'in cihazınızda yaptıklarını değiştirir, başka hiç kimsenin davranışını değiştirmez.\n\nSiteler IP adresinizi onları her ziyaret ettiğinizde öğrenir. Bundan genellikle nerede olduğunuzu, tipik olarak bulunduğunuz şehri tahmin edebilir. Bazen bu konum tahmini çok daha spesifik olabilir. Siteler ayrıca arama terimleri gibi özel olarak onlara ilettiğiniz her şeyi bilir. Bir siteye giriş yaptığınızda, söz konusu hesabın sahibi olduğunuzu anlarlar. Gizli Sekmeleri kapattığınızda yine de oturumunuz kapatılacaktır, çünkü Brave oturumunuzun açık kalmasını sağlayan çerezi silecektir.\n\nSizi internete bağlayan taraf (İSS'niz) tüm ağ etkinliğinizi görebilir. Genellikle, bu mobil operatörünüzdür. Bir Wi-Fi ağına bağlıysanız, bu ağın sahibidir ve bir VPN kullanıyorsanız, o VPN'i işleten taraftır. İSS'niz hangi siteleri ziyaret ettiğinizi siz siteleri ziyaret ederken görebilir. Bu siteler HTTPS kullanıyorsa, bu sitelerde ne yaptığınız hakkında bilgiye dayalı bir tahminden daha fazlasını yapamazlar. Ancak bir site yalnızca HTTP kullanıyorsa İSS'niz her şeyi görebilir: arama terimleriniz, hangi sayfaları okuduğunuz ve hangi bağlantıları takip ettiğiniz.\n\nCihazınızı bir işveren yönetiyorsa, o da cihazınızla ne yaptığınızı takip edebilir. Gizli Sekmeleri kullanmak muhtemelen hangi siteleri ziyaret ettiğinizi bilmelerini engellemez. Cihazınıza erişimi olan başka biri de etkinliğinizi izleyen bir yazılım yüklemiş olabilir ve Gizli Sekmeler sizi bundan korumaz.";
-
-/* Private tab information link */
-"PrivateTabLink" = "Gizli Sekmeler hakkında bilgi edinin.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Gizli Sekme";
@@ -1846,12 +1582,6 @@
 /* Accessibility label for brightness adjustment slider in Reader Mode display settings */
 "ReaderModeBrightSliderAccessibilityLabel" = "Parlaklık";
 
-/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
-"ReaderModeDisplaySettingsButtonTitle" = "Görüntü Ayarları";
-
-/* Error displayed when reader mode cannot be enabled */
-"ReaderModeErrorConvertDisplayText" = "Sayfa dönüştürülürken bir hata oluştu";
-
 /* Font type setting in the reading view settings */
 "ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
 
@@ -1863,15 +1593,6 @@
 
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Yazı tipi türünü değiştirir.";
-
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "İçerik yükleniyor...";
-
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadOriginalLinkText" = "Özgün sayfayı yükle";
-
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "Sayfa Okuyucu Görünümü'nde görüntülenemedi.";
 
 /* Title of a bar that show up when you enter reader mode. */
 "readerModeSettingsButton" = "Okuyucu Modu";
@@ -1894,14 +1615,8 @@
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "Son Kapatılan Sekme Yok.";
 
-/* Open Tab action title */
-"recently.closed.open" = "Açık";
-
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "Kapatılan Son Sekmeyi Yeniden Aç";
-
-/* Description for alert to ask user for opening last closed tab in list */
-"recently.closed.shake.description" = "Son kapatılan sekmeyi açmak istiyor musunuz?";
 
 /* Action item title of long press for Opening recently closed tab view */
 "recently.closed.title" = "Son Kapatılan Sekmeler";
@@ -1987,12 +1702,6 @@
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "\"%@\", Mikrofona Erişmek İstiyor";
 
-/* Name of folder where restored bookmarks are retrieved */
-"RestoredBookmarksFolderName" = "Geri Yüklenen Yer İşaretleri";
-
-/* Name of folder where restored favorites are retrieved */
-"RestoredFavoritesFolderName" = "Geri Yüklenen Sık Kullanılanlar";
-
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "Evet";
 
@@ -2035,80 +1744,11 @@
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Bu içerik üreticisi, Brave Oluşturucuları üzerinden doğrulanmış";
 
-/* Displayed next to a number representing the total number of publishers supported */
-"rewards.totalSupportedCount" = "Bu ay desteklemeye yardımcı olduğunuz içerik oluşturucuların sayısı.";
-
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Bu içerik üretici, içerik üretici desteğini doğrulamadı ve desteğe dahil edilmeyecek";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Miktar";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAnonymous" = "Anonim";
-
-/* No comment provided by engineer. */
-"RewardsInternalsBalanceInfoHeader" = "Bakiye Bilgisi";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "Tüm Ödül günlüklerini temizlemek istediğinizden emin misiniz?";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsTitle" = "Günlükleri Temizle";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionAmount" = "Katkı tutarı";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Brave Jetonları";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorNone" = "Hiçbiri";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "Destekle";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUserFunds" = "Kullanıcı Fonları";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepACOff" = "Otomatik Katkıda Bulun Kapalı";
-
-/* 'AC' refers to Auto-Contribute */
-"RewardsInternalsContributionsStepACTableEmpty" = "AC tablosu boş";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCompleted" = "Tamamlandı";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCreds" = "Kimlik bilgileri";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepExternalTransaction" = "Harici İşlem";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "Başarısız";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepNotEnoughFunds" = "Yeterli fon yok";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepPrepare" = "Hazırla";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepReserve" = "Ayır";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "Ödüller Kapalı";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "Başla";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsTitle" = "Katkı";
-
-/* No comment provided by engineer. */
-"RewardsInternalsCreatedAt" = "Oluşturulduğu yer";
 
 /* No comment provided by engineer. */
 "RewardsInternalsDeviceInfoHeader" = "Aygıt Bilgisi";
@@ -2128,9 +1768,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Anahtar Bilgi Tohumu";
 
-/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
-"RewardsInternalsLogsCount" = "%d günlük gösterildi";
-
 /* No comment provided by engineer. */
 "RewardsInternalsLogsTitle" = "Günlükler";
 
@@ -2141,34 +1778,13 @@
 "RewardsInternalsNotSupported" = "Desteklenmiyor";
 
 /* No comment provided by engineer. */
-"RewardsInternalsProcessor" = "Işlemci";
-
-/* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Yayıncı";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublishers" = "Yayıncı";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRetryCount" = "Yeniden Deneme Sayısı";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeAutoContribute" = "Otomatik Katkıda Bulun";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeOneTimeTip" = "Tek seferlik ipucu";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "Yinelenen ipucu";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "Ödüller profili, cihaz & bakiye bilgileri (her zaman paylaşılan)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Temel Bilgi";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableContributionsDescription" = "Bahşiş verme veya otomatik katkıda bulunma yoluyla yayıncılara yapılan tüm katkılar";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableDatabaseDescription" = "Dahili veri deposu";
@@ -2204,9 +1820,6 @@
 "RewardsInternalsTitle" = "Dahili Ödüller";
 
 /* No comment provided by engineer. */
-"RewardsInternalsTotalAmount" = "Toplam tutar";
-
-/* No comment provided by engineer. */
 "RewardsInternalsTotalBalance" = "Toplam Bakiye";
 
 /* No comment provided by engineer. */
@@ -2233,17 +1846,11 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Kaydet";
 
-/* Label for the button used to save changes in some text input. */
-"SaveChangesButtonTitle" = "Değişiklikleri kaydet";
-
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Kaydedilen Oturumlar";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "Kayıtlı Sekmeler";
-
-/* Context menu item for saving an image */
-"SaveImageActionTitle" = "Resmi Kaydet";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Oturumları Kaydet";
@@ -2257,23 +1864,8 @@
 /* Search engines section of settings */
 "SearchEngines" = "Arama Motorları";
 
-/* Accessibility hint describing the action performed when a search suggestion is clicked */
-"SearchesForSuggestionButtonAccessibilityText" = "Öneriyi arar";
-
 /* Section header for history and bookmarks and open tabs option */
 "SearchHistorySectionHeader" = "Cihazınızda";
-
-/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
-"SearchInputViewClearButtonTitle" = "Aramayı Temizle";
-
-/* Accessibility label for entering search mode for logins */
-"SearchInputViewOverlayAccessibilityLabel" = "Arama Moduna Girin";
-
-/* Accessibility label for the search input field in the Logins list */
-"SearchInputViewTextFieldAccessibilityLabel" = "Arama Girişi Alanı";
-
-/* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "Ara";
 
 /* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
 "searchQuickBarPrefix" = "Ara: \"%@\"";
@@ -2287,9 +1879,6 @@
 /* Label for showing browser suggestion setting */
 "SearchSettingBrowserSuggestionCellTitle" = "Tarayıcı Önerilerini Göster";
 
-/* Navigation title for search settings. */
-"SearchSettingNavTitle" = "Ara";
-
 /* Label for showing recent search setting. */
 "SearchSettingRecentSearchesCellTitle" = "Son Aramaları Göster";
 
@@ -2299,23 +1888,11 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "Arama Önerilerini Göster";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
-"SearchSuggestionFromFormatText" = "%@ 'den arama önerileri";
-
 /* Action title for open a playlist item in Playlist. */
 "searchSuggestionOpenPlaylistActionTitle" = "Oynatma Listesinde Aç";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Bu sekmeye geç";
-
-/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
-"SearchSuggestionSectionTitleFormat" = "%@ Araması";
-
-/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "Ara";
-
-/* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "Arama Önerileri";
 
 /* Search suggestions optin subtitle when prompting to turn on suggestions */
 "searchSuggestionsSubtitle" = "Arama Önerisini etkinleştirmek ister misiniz?";
@@ -2428,9 +2005,6 @@
 /* Row name for licenses. */
 "SettingsLicenses" = "Lisans";
 
-/* Title for settings menu item */
-"SettingsMenuItem" = "Ayarlar";
-
 /* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
 "SettingsTabsOptionBottomBar" = "Alt Sekme Çubuğu";
 
@@ -2442,9 +2016,6 @@
 
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Bağlantıyı Paylaş";
-
-/* Title for sharing url menu item */
-"ShareWithMenuItem" = "Paylaş...";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "shareWithTitle" = "Paylaş...";
@@ -2478,9 +2049,6 @@
 
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Haberi paylaşın";
-
-/* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Kalkanları çevrimiçi gizliliğinizi korudu.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Tebrikler. Çok özelsin.";
@@ -2665,14 +2233,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri Kestirmeleri";
 
-/* Button to show the bookmarks list */
-"ShowBookmarks" = "Yer İşaretlerini Göster";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "İndirilenleri Göster";
-
-/* Button to show the history list */
-"ShowHistory" = "Geçmişi Göster";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showHistoryTitle" = "Geçmişi Göster";
@@ -2800,9 +2362,6 @@
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.configurationInformationText" = "Cihazlar arasında hangi bilgileri senkronize etmek istediğinizi yönetin. Bu ayarlar yalnızca bu cihazı etkiler.";
 
-/* Copied action complete title */
-"sync.copied" = "Kopyalandı";
-
 /* Copied codewords title */
 "sync.copiedToClipboard" = "Panoya kopyalandı!";
 
@@ -2845,14 +2404,8 @@
 /* Sync enter code words */
 "sync.enterCodeWords" = "Kod sözcüklerini girme";
 
-/* Enter sync code words below */
-"sync.enterCodeWordsBelow" = "Kod sözcüklerini aşağıya girin";
-
 /* Sync Error message for when the sync code is expired */
 "sync.expiredError" = "Bu senkronize kodunun süresi dolmuş, lütfen yeni bir senkronize kodu oluşturun ve tekrar deneyin.";
-
-/* Generic Sync Error Description */
-"sync.genericError" = "Özür dileriz, bir şeyler ters gitti.";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "Kamerayı Etkinleştir";
@@ -2896,9 +2449,6 @@
 /* Error title for when the sync code does not have the correct amount of words */
 "sync.notEnoughWordsTitle" = "Yeterli Sözcük Yok";
 
-/* Sync pair device settings section title */
-"sync.pair" = "Eşleştir";
-
 /* QR Code section title */
 "sync.qrCode" = "QR Kodu";
 
@@ -2932,12 +2482,6 @@
 /* Title for removing other device from Sync */
 "sync.removeOtherDeviceTitle" = "Eşitleme Zincirinden %@ kaldırılsın mı?";
 
-/* Sync remove device. */
-"sync.removeThisDevice" = "Bu aygıtı kaldır";
-
-/* Sync remove device? */
-"sync.removeThisDeviceQuestionDesc" = "Bu aygıtın eşitleme grubuyla bağlantısı kesilecek ve aygıt artık eşitleme verilerini almayacak veya göndermeyecek. Var olan tüm veriler cihazda kalacaktır.";
-
 /* Scan sync code title */
 "sync.scan" = "Tara";
 
@@ -2956,20 +2500,11 @@
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "Senkronizasyon Ayarları";
 
-/* Show code words instead */
-"sync.showCodeWords" = "Bunun yerine kod sözcüklerini göster";
-
 /* Switch back to camera button */
 "sync.switchBackToCameraButton" = "Kameramı kullanacağım...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Silme işlemi kalıcıdır ve verileri kurtarmanın hiçbir yolu yoktur. Senkronizasyonu tekrar kullanmaya karar verirseniz, yeni bir hesap oluşturmanız ve tüm cihazları tek tek yeniden eklemeniz gerekecektir.";
-
-/* Sync you browser settings across devices. */
-"sync.Syncdevices" = "Cihazlar & Ayarlar";
-
-/* Sync remove device? */
-"sync.syncRemoveThisDeviceQuestion" = "Bu cihaz kaldırılsın mı?";
 
 /* Sync settings section title */
 "sync.syncTitle" = "Eşitleme";
@@ -3006,9 +2541,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Sözcük sayısı: %i";
-
-/* Accessibility label for action denoting closing a tab in tab list (tray) */
-"TabAccessibilityCloseActionLabel" = "Kapat";
 
 /* Accessibility label for a close button that when tapped opens a new tab */
 "tabGrid.addTabAccessibilityLabel" = "Yeni Sekme";
@@ -3049,17 +2581,11 @@
 /* A title shown when in private browsing mode with no tabs open */
 "tabGrid.privateBrowsingInfoTitle" = "Gizli Sekme";
 
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.privateBrowsingModeAccessibilityLabel" = "Gizli Tarama";
-
 /* A label in the tab tray mode switcher for private browsing mode */
 "tabGrid.privateBrowsingModeTitle" = "Gizli";
 
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Gizli Sekme Ayarları";
-
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.regularBrowsingModeAccessibilityLabel" = "Normal Gezinme";
 
 /* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
 "tabGrid.selectedTabs" = "Seçilen sekmeler";
@@ -3090,18 +2616,6 @@
 
 /* Label for synced tabs menu item that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsMenuItemLabel" = "Eşitleme";
-
-/* Accessiblity hint for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityHint" = "Gizli modu açar veya kapatır";
-
-/* Accessibility label for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityLabel" = "Gizli Mod";
-
-/* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "Kapalı";
-
-/* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "Açık";
 
 /* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardDescription" = "Yeni bir sekme oluştururken adres çubuğuna otomatik olarak odaklan";
@@ -3163,9 +2677,6 @@
 /* Accessibility Label for the tab toolbar Forward button */
 "TabToolbarForwardButtonAccessibilityLabel" = "İleri";
 
-/* Accessibility label for the lock icon, which is only present if the connection is secure */
-"TabToolbarLockImageAccessibilityLabel" = "Güvenli bağlantı";
-
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menü";
 
@@ -3180,9 +2691,6 @@
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Okuyucu Görünümü";
-
-/* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "Okuma Listesine Ekle";
 
 /* Accessibility Label for the tab toolbar Reload button */
 "TabToolbarReloadButtonAccessibilityLabel" = "Yeniden Yükle";
@@ -3199,47 +2707,14 @@
 /* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Sesli Arama";
 
-/* Accessibility label for the lock icon, which is only present if the connection is insecure */
-"TabToolbarWarningImageAccessibilityLabel" = "Güvenli olmayan bağlantı";
-
-/* Accessibility label for the Tabs Tray view. */
-"TabTrayAccessibilityLabel" = "Sekme Tepsisi";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabTrayAddTabAccessibilityLabel" = "Sekme Ekle";
-
-/* Accessibility hint for tab tray's displayed tab. */
-"TabTrayCellCloseAccessibilityHint" = "Sekmeyi kapatmak için üç parmağınızla sağa veya sola kaydırın.";
-
-/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
-"TabTrayClosingTabAccessibilityNotificationText" = "Sekme kapatılıyor";
-
-/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
-"TabTrayEmptyVoiceOverText" = "Sekme yok";
-
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
-"TabTrayMultiTabPositionFormatVoiceOverText" = "Sekme %1$@'ten %2$@'a %3$@ içinde";
-
-/* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "Yeni Sekme";
-
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "Sekmeleri Ara";
-
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
-"TabTraySingleTabPositionFormatVoiceOverText" = "Sekme %1$ @ %2$ @";
 
 /* No comment provided by engineer. */
 "TermsOfService" = "Hizmet Şartları";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Kullanım Koşulları";
-
-/* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "Paylaş...";
-
-/* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Brave'i arkadaşlarınızla paylaşın!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Otomatik";
@@ -3252,9 +2727,6 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Açık";
-
-/* Name for app theme settings */
-"themesSettings" = "Temalar";
 
 /* No comment provided by engineer. */
 "Title" = "Başlık";
@@ -3385,9 +2857,6 @@
 /* A title at the top of the screen that shows a list of sources that are ranked the highest */
 "today.popularSourcesTitle" = "Popüler Kaynaklar";
 
-/* A button title that is placed on promoted cards */
-"today.promoted" = "Desteklenen";
-
 /* Title for long press action sheet list which has item for rate / hide */
 "today.rateBraveCardActionSheetTitle" = "App Store'da Brave'i Değerlendirin";
 
@@ -3442,14 +2911,8 @@
 /* Title of an action that allows the user to translate the current web-page to another language */
 "TranslatePage" = "Sayfayı Çevir";
 
-/* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "Arama önerileri açılsın mı?";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Kilidi aç";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "Desteklenmeyen ödeme araçları";
 
 /* Bookmark URL */
 "URL" = "URL";
@@ -3459,18 +2922,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "urlRedirectsSettings" = "Web Sitesi Yönlendirmeleri";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "Kullanıcı iptal etti";
-
-/* No comment provided by engineer. */
-"UserWalletCloseButtonTitle" = "Kapat";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorMessage" = "Destek hesabınıza giriş yaparken bir sorun meydana geldi. Lütfen yeniden deneyin";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "Özür dileriz, bir şeyler ters gitti.";
 
 /* Message for error alert when a VCard contact file cannot be parsed or opened */
 "VCard.unableToOpenContactErrorMessage" = "İletişim dosyası okunamadı. Dosya bozuk olabilir veya desteklenmeyen bir biçimde olabilir.";
@@ -3535,9 +2986,6 @@
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Widget'lar";
 
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "yıl";
-
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Evet";
 
@@ -3547,20 +2995,11 @@
 /* History tableview section header */
 "Yesterday" = "Dün";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Yüksek Kaliteli YouTube Videolarını Etkinleştirin";
-
-/* Description of setting to enable high quality youtube videos */
-"YoutubeMediaQualityDetails" = "Bu deneysel özelliği etkinleştirmek, videoyu kullanılabilecek maksimum kalitede oynatacak ve ilave veri kullanacaktır.";
-
 /* Setting that disables highest quality video playback */
 "YoutubeMediaQualityOff" = "Kapalı";
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Açık";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "YouTube Oynatma Kalitesi";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Wi-Fi Üzerinden İzin Ver";
