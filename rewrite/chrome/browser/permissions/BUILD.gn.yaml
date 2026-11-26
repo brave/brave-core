@@ -17,5 +17,8 @@ substitutions:
       code: |-
         deps += [ "//brave/components/brave_wallet/common/buildflags" ]
         if (enable_brave_wallet) {
-          deps += [ "//brave/browser/permissions" ]
+          deps += [
+            "//brave/components/brave_wallet/common",
+            "//brave/browser/permissions",
+          ]
         }
