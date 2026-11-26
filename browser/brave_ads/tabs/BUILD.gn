@@ -24,14 +24,19 @@ source_set("tabs") {
   deps = [
     "//brave/browser/brave_ads",
     "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/content/browser",
+    "//brave/components/brave_ads/content/common/mojom",
+    "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_rewards/core",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/translate",
     "//chrome/browser/ui/browser_window",
     "//chrome/common",
     "//components/prefs",
     "//components/sessions",
     "//components/tabs:public",
+    "//components/translate/core/browser",
     "//ui/base",
   ]
 }
@@ -45,6 +50,7 @@ source_set("browser_tests") {
     deps = [
       ":tabs",
       "//brave/browser/brave_ads",
+      "//brave/components/brave_ads/content/browser",
       "//brave/components/brave_ads/core/browser/service:test_support",
       "//brave/components/brave_ads/core/public:headers",
       "//brave/components/brave_rewards/core",

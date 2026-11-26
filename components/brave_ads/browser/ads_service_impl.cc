@@ -1351,6 +1351,21 @@ void AdsServiceImpl::TriggerSearchResultAdEvent(
                                                   /*success=*/false));
 }
 
+void AdsServiceImpl::MaybeGetOrderPatterns(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback) {
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*mojom_order_patterns=*/{});
+  }
+
+  bat_ads_associated_remote_->MaybeGetOrderPatterns(
+      tab_id, redirect_chain, detected_language,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  nullptr));
+}
+
 void AdsServiceImpl::PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
                                                   ResultCallback callback) {
   CHECK(mojom::IsKnownEnumValue(mojom_ad_type));

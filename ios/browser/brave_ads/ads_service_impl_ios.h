@@ -116,6 +116,11 @@ class AdsServiceImplIOS : public AdsService {
       mojom::SearchResultAdEventType mojom_ad_event_type,
       ResultCallback callback) override;
 
+  void MaybeGetOrderPatterns(int32_t tab_id,
+                             const std::vector<GURL>& redirect_chain,
+                             std::optional<std::string> detected_language,
+                             MaybeGetOrderPatternsCallback callback) override;
+
   void PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
                                     ResultCallback callback) override;
 

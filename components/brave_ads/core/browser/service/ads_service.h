@@ -174,6 +174,14 @@ class AdsService : public KeyedService {
       mojom::SearchResultAdEventType mojom_ad_event_type,
       ResultCallback callback) = 0;
 
+  // Called, possibly repeatedly, for a checkout/thank-you page eligible for
+  // order extraction; `callback` gets null patterns if none is pending.
+  virtual void MaybeGetOrderPatterns(
+      int32_t tab_id,
+      const std::vector<GURL>& redirect_chain,
+      std::optional<std::string> detected_language,
+      MaybeGetOrderPatternsCallback callback) = 0;
+
   // Called to purge orphaned served ad events for the specified `mojom_ad_type`
   // before calling `MaybeServe*Ad`. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
