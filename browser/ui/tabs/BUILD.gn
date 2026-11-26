@@ -89,6 +89,7 @@ if (!is_android) {
       ":tab_strip",
       ":tabs_public",
       "//brave/browser:tab_helpers_header",
+      "//brave/browser/brave_origin",
       "//brave/browser/brave_shields",
       "//brave/browser/drag_drop",
       "//brave/browser/image_metadata_stripper",
@@ -198,7 +199,6 @@ if (!is_android) {
 
     if (enable_psst) {
       deps += [
-        "//brave/browser/brave_origin",
         "//brave/browser/psst",
         "//brave/components/psst/core/common",
       ]
