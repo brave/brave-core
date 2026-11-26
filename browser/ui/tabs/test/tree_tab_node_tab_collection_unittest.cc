@@ -42,7 +42,9 @@ class TreeTabNodeTabCollectionUnitTest : public testing::Test {
   std::unique_ptr<TestingProfile> testing_profile_;
 };
 
-TEST_F(TreeTabNodeTabCollectionUnitTest, Constructor) {
+using TreeTabNodeTabCollectionDeathTest = TreeTabNodeTabCollectionUnitTest;
+
+TEST_F(TreeTabNodeTabCollectionDeathTest, ConstructorWithEmptyId) {
   // Constructing tabs::TreeTabNodeTabCollection with empty |tree_tab_node_id|
   // should fail.
   EXPECT_DEATH(tabs::TreeTabNodeTabCollection(
@@ -50,7 +52,9 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, Constructor) {
                    std::make_unique<MockTabInterfaceWithWeakPtr>(),
                    base::DoNothing(), base::DoNothing(), base::DoNothing()),
                "");
+}
 
+TEST_F(TreeTabNodeTabCollectionUnitTest, Constructor) {
   // Valid construction with a tab should succeed.
   auto tree_tab_node_id = tree_tab::TreeTabNodeId::GenerateNew();
   auto mock_tab_interface = std::make_unique<MockTabInterfaceWithWeakPtr>();
@@ -69,7 +73,7 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, Constructor) {
             tree_tab_node_tab_collection.GetIndexOfTab(mock_tab_interface_ptr));
 }
 
-TEST_F(TreeTabNodeTabCollectionUnitTest, CanNotBeAddedToPinnedCollection) {
+TEST_F(TreeTabNodeTabCollectionDeathTest, CanNotBeAddedToPinnedCollection) {
   // Create a tabs::TreeTabNodeTabCollection and try to add it to a
   // PinnedTabCollection.
   auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
