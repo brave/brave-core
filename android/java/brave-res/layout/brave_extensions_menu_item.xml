@@ -27,8 +27,7 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:paddingStart="@dimen/menu_item_text_padding_start"
-        android:paddingTop="@dimen/brave_extensions_menu_item_vertical_padding"
-        android:paddingBottom="@dimen/brave_extensions_menu_item_vertical_padding">
+        android:paddingVertical="@dimen/brave_extensions_menu_item_vertical_padding">
 
         <TextView
             android:id="@+id/menu_item_text"

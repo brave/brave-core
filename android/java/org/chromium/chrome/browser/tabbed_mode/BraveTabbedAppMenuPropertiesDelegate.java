@@ -80,6 +80,7 @@ import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.webapps.WebappsUtils;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.LayoutViewBuilder;
 import org.chromium.ui.modelutil.MVCListAdapter;
@@ -1365,7 +1366,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                         mContext, R.drawable.ic_browser_extensions))
                         .build();
         Tab tab = mActivityTabProvider.get();
-        if (tab == null || isInternalPage(tab.getUrl())) {
+        WebContents webContents = tab != null ? tab.getWebContents() : null;
+        if (webContents == null || isInternalPage(webContents.getLastCommittedUrl())) {
             model.set(
                     BraveExtensionsMenuItemViewBinder.SUBTITLE,
                     mContext.getString(

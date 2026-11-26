@@ -456,6 +456,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     public void testExtensionsItem_RegularPage_EnabledInOwnSection() {
         setUpMocksForPageMenu();
         setMenuOptions(new MenuOptions());
+        when(mWebContents.getLastCommittedUrl()).thenReturn(JUnitTestGURLs.SEARCH_URL);
 
         MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
 
@@ -478,7 +479,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     public void testExtensionsItem_InternalPage_DisabledWithSubtitle() {
         setUpMocksForPageMenu();
         setMenuOptions(new MenuOptions());
-        when(mTab.getUrl()).thenReturn(JUnitTestGURLs.CHROME_ABOUT);
+        // The visible URL is a regular site, but the committed page is internal.
+        when(mWebContents.getLastCommittedUrl()).thenReturn(JUnitTestGURLs.CHROME_ABOUT);
 
         MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
 
