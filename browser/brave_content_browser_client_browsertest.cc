@@ -500,6 +500,35 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
   ASSERT_TRUE(wait_for_force_dark(true));
 }
 
+// WebUI has its own dark theme, so Night Mode must not darken it.
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                       ForceDarkModeDoesNotApplyToWebUI) {
+  ThemeServiceFactory::GetForProfile(browser()->GetProfile())
+      ->SetBrowserColorScheme(ThemeService::BrowserColorScheme::kDark);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      prefs::kWebKitForceDarkModeEnabled, true);
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  auto wait_for_force_dark = [&](bool expected) {
+    return base::test::RunUntil([&] {
+      return web_contents->GetOrCreateWebPreferences()
+                 .force_dark_mode_enabled == expected;
+    });
+  };
+
+  const GURL web_url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), web_url));
+  ASSERT_TRUE(wait_for_force_dark(true));
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
+                                           GURL(chrome::kChromeUINewTabURL)));
+  ASSERT_TRUE(wait_for_force_dark(false));
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), web_url));
+  ASSERT_TRUE(wait_for_force_dark(true));
+}
+
 #if BUILDFLAG(IS_WIN)
 
 class WinBraveContentBrowserClientTest

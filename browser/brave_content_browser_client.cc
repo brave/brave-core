@@ -1786,17 +1786,20 @@ bool UpdateGlobalPrivacyControlWebPreference(WebContents* web_contents,
 }
 
 #if !BUILDFLAG(IS_ANDROID)
-// Night Mode only darkens pages while they're rendered with a dark color
-// scheme, i.e. the browser theme is dark or follows a dark OS theme. Returns
-// true if `force_dark_mode_enabled` changed.
-bool UpdateForceDarkModeWebPreference(WebContents* web_contents,
-                                      WebPreferences* web_prefs) {
+// Night Mode only darkens web pages while they're rendered with a dark color
+// scheme, i.e. the browser theme is dark or follows a dark OS theme. WebUI is
+// excluded since it already has its own dark theme. Returns true if
+// `force_dark_mode_enabled` changed.
+bool UpdateForceDarkModeWebPreference(
+    WebContents* web_contents,
+    const content::SiteInstance& main_frame_site,
+    WebPreferences* web_prefs) {
   // Like upstream, read the pref from the user profile: Top Chrome WebUIs may
   // live in a shared profile that doesn't register it.
   Profile* profile = webui::GetUserProfile(web_contents);
 
   const bool force_dark_mode_enabled =
-      profile &&
+      profile && !main_frame_site.GetSecurityPrincipal().IsWebUI() &&
       profile->GetPrefs()->GetBoolean(prefs::kWebKitForceDarkModeEnabled) &&
       web_prefs->preferred_color_scheme ==
           blink::mojom::PreferredColorScheme::kDark;
@@ -1840,7 +1843,8 @@ bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
       ChromeContentBrowserClient::OverrideWebPreferencesAfterNavigation(
           web_contents, main_frame_site, prefs);
 #if !BUILDFLAG(IS_ANDROID)
-  changed |= UpdateForceDarkModeWebPreference(web_contents, prefs);
+  changed |=
+      UpdateForceDarkModeWebPreference(web_contents, main_frame_site, prefs);
 #endif
 
   return UpdateGlobalPrivacyControlWebPreference(web_contents, prefs) ||
@@ -1855,7 +1859,7 @@ void BraveContentBrowserClient::OverrideWebPreferences(
       web_contents, main_frame_site, web_prefs);
   UpdateGlobalPrivacyControlWebPreference(web_contents, web_prefs);
 #if !BUILDFLAG(IS_ANDROID)
-  UpdateForceDarkModeWebPreference(web_contents, web_prefs);
+  UpdateForceDarkModeWebPreference(web_contents, main_frame_site, web_prefs);
 #endif
 
   // WebPreferences are rebuilt from defaults on every recompute (theme, font
