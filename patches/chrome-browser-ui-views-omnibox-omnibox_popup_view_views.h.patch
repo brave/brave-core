@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h b/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h
+index 8e806b04c97446a88adc102a1bdc4ccb3da59b64..8d9b7770a9672c63c3e2a8d2b447cb9dd960cf9e 100644
+--- a/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h
++++ b/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h
+@@ -112,7 +112,7 @@ class OmniboxPopupViewViews : public views::View,
+ 
+   // Returns the target popup bounds in screen coordinates based on the bounds
+   // of |location_bar_view_|.
+-  gfx::Rect GetTargetBounds() const;
++  virtual gfx::Rect GetTargetBounds() const;
+ 
+   // Gets the OmniboxHeaderView for match |i|.
+   OmniboxHeaderView* header_view_at(size_t i);
+@@ -133,6 +133,7 @@ class OmniboxPopupViewViews : public views::View,
+   size_t GetIndexForPoint(const gfx::Point& point) const;
+ 
+  private:
++  friend class BraveOmniboxPopupViewViews;
+   // Classes shouldn't observe multiple objects (to avoid inheriting
+   // `base::CheckedObserver` twice). Since `OmniboxPopupViewViews` already
+   // observes `OmniboxEditModel`, it needs `WidgetObserverHelper` to observe

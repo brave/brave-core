@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Use BraveOmniboxResultView instead of OmniboxResultView
+    rename_class:
+      class_name: OmniboxResultView
+      rename: BraveOmniboxResultView
+
+  - description: 'Remove the insets of OmniboxRowView.'
+    preempt_function_impl:
+      function_name: OmniboxRowView::GetInsets
+      code: if ((true)) return gfx::Insets();

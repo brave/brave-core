@@ -18,3 +18,20 @@ substitutions:
               kForegroundColorId,
               GetLayoutConstant(LayoutConstant::kLocationBarIconSize));
         }
+
+  - description: |-
+      Show the Ask Brave Search icon when its starter pack engine is active.
+
+      `GetAskBraveSearchStarterPackIcon` is declared in the chromium_src shadow
+      and defined in brave/browser/ui/views/location_bar. The new branch is
+      inserted into the starter pack `if` chain.
+    regex:
+      re_pattern: |-
+        (SelectedKeywordView::GetKeywordIcon\(.*?)(if \(template_url &&\s*?template_url->starter_pack_id\(\))
+      re_flags: [DOTALL]
+      replace: |-
+        \1if (template_url &&
+              template_url->starter_pack_id() ==
+                  template_url_starter_pack_data::StarterPackId::kAskBraveSearch) {
+              vector_icon = &GetAskBraveSearchStarterPackIcon();
+          } else \2

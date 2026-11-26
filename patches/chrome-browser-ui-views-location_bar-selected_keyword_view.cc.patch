@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/location_bar/selected_keyword_view.cc b/chrome/browser/ui/views/location_bar/selected_keyword_view.cc
-index 6249a0e19d7967864424f42e85fe62caf53d2e7e..bfa2e68b408b275e20aaf34dca542f8c5eb62722 100644
+index 6249a0e19d7967864424f42e85fe62caf53d2e7e..0537bd3db8c4bc14367848683874ff57faa7c941 100644
 --- a/chrome/browser/ui/views/location_bar/selected_keyword_view.cc
 +++ b/chrome/browser/ui/views/location_bar/selected_keyword_view.cc
 @@ -52,6 +52,13 @@ ui::ImageModel SelectedKeywordView::GetKeywordIcon(
@@ -16,3 +16,14 @@ index 6249a0e19d7967864424f42e85fe62caf53d2e7e..bfa2e68b408b275e20aaf34dca542f8c
    const int icon_size = GetLayoutConstant(LayoutConstant::kLocationBarIconSize);
  
    const TemplateURLService* service =
+@@ -88,6 +95,10 @@ ui::ImageModel SelectedKeywordView::GetKeywordIcon(
+                                           : vector_icons::kSearchOldIcon);
+ 
+   if (template_url &&
++      template_url->starter_pack_id() ==
++          template_url_starter_pack_data::StarterPackId::kAskBraveSearch) {
++      vector_icon = &GetAskBraveSearchStarterPackIcon();
++  } else if (template_url &&
+       template_url->starter_pack_id() ==
+           template_url_starter_pack_data::StarterPackId::kGemini) {
+     vector_icon = &omnibox::kSparkIcon;

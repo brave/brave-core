@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let BraveOmniboxViewViews reach private members.
+
+      `add_friend` fails with `Unexpected number of matches (0 vs 1)` here
+      because the `#if BUILDFLAG(IS_CHROMEOS)` inside the base class list
+      prevents the class from being parsed. Anchor on the last private member
+      the Brave subclass needs instead.
+    regex:
+      pattern: 'base::WeakPtrFactory<OmniboxViewViews> weak_factory_{this};'
+      replace: |-
+        base::WeakPtrFactory<OmniboxViewViews> weak_factory_{this};
+          friend class BraveOmniboxViewViews;

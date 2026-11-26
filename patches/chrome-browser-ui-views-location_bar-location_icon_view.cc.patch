@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_icon_view.cc b/chrome/browser/ui/views/location_bar/location_icon_view.cc
-index 035e8b5c14254c62a168f8d8309fa164d0b3e59f..a6d69944837689ca9a8182c82ba08c9d0f98cf55 100644
+index 035e8b5c14254c62a168f8d8309fa164d0b3e59f..e91ebde8a9bc8b293ac3f0bff4ee4caa19e5868c 100644
 --- a/chrome/browser/ui/views/location_bar/location_icon_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_icon_view.cc
-@@ -346,6 +346,7 @@ void LocationIconView::UpdateBackground() {
+@@ -345,6 +345,7 @@ void LocationIconView::UpdateBackground() {
+                             : kColorOmniboxIconBackground);
  
    SetBackgroundColor(GetColorProvider()->GetColor(id));
++  if ((true)) return;
  
-+  BRAVE_LOCATION_ICON_VIEW_UPDATE_BACKGROUND
    if (is_text_dangerous) {
      ConfigureInkDropForRefresh2023(this, kColorOmniboxSecurityChipInkDropHover,
-                                    kColorOmniboxSecurityChipInkDropRipple);

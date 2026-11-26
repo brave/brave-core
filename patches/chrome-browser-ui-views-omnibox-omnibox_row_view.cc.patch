@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/omnibox/omnibox_row_view.cc b/chrome/browser/ui/views/omnibox/omnibox_row_view.cc
+index e3590312f4f59809818842ae567118eeeae3ba53..d4ced1fc2d62541ba0a3f8f4e38a4a4ef7cd1b3f 100644
+--- a/chrome/browser/ui/views/omnibox/omnibox_row_view.cc
++++ b/chrome/browser/ui/views/omnibox/omnibox_row_view.cc
+@@ -71,7 +71,7 @@ OmniboxRowView::OmniboxRowView(size_t line, OmniboxPopupViewViews* popup_view)
+   SetLayoutManager(std::make_unique<views::BoxLayout>(
+       views::BoxLayout::Orientation::kVertical));
+   result_view_ =
+-      AddChildView(std::make_unique<OmniboxResultView>(popup_view, line));
++      AddChildView(std::make_unique<BraveOmniboxResultView>(popup_view, line));
+ }
+ 
+ void OmniboxRowView::ShowHeader(const std::u16string& header_text) {
+@@ -100,6 +100,7 @@ views::View* OmniboxRowView::GetActiveAuxiliaryButtonForAccessibility() const {
+ }
+ 
+ gfx::Insets OmniboxRowView::GetInsets() const {
++  if ((true)) return gfx::Insets();
+   if (result_view_->GetThemeState() == OmniboxPartState::IPH) {
+     int LRInsets = OmniboxMatchCellView::kIphOffset;
+     return gfx::Insets::TLBR(8, LRInsets, 8, LRInsets);
