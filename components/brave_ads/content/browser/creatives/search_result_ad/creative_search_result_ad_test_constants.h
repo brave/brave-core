@@ -34,6 +34,8 @@ inline constexpr double kCreativeAdRewardsValue = 0.5;
 inline constexpr char kCampaignConversionUrlPattern[] = "https://brave.com/*";
 inline constexpr base::TimeDelta kCampaignConversionObservationWindow =
     base::Days(1);
+inline constexpr char kCampaignConversionCheckoutUrlPattern[] =
+    "https://brave.com/checkout/*";
 
 }  // namespace brave_ads::test
 

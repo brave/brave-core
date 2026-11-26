@@ -9,6 +9,7 @@ assert(enable_brave_ads)
 
 static_library("browser") {
   sources = [
+    "creatives/search_result_ad/creative_search_result_ad_campaign_conversion_parse_result_type.h",
     "creatives/search_result_ad/creative_search_result_ad_constants.h",
     "creatives/search_result_ad/creative_search_result_ad_handler.cc",
     "creatives/search_result_ad/creative_search_result_ad_handler.h",
