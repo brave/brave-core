@@ -821,6 +821,33 @@ def CheckNoCommittedSecretsFiles(input_api, output_api):
     ]
 
 
+def CheckBotsSnapshotForFilterChanges(input_api, output_api):
+    """Verifies the builders' specs carry the test filter files changed."""
+    if not any(
+        f.LocalPath().startswith(input_api.os_path.join('test', 'filters', ''))
+        for f in input_api.AffectedFiles()
+    ):
+        return []
+    bots_py = input_api.os_path.join(
+        input_api.PresubmitLocalPath(), 'infra', 'bots', 'bots.py'
+    )
+    return input_api.RunTests(
+        [
+            input_api.Command(
+                name='bots.py snapshot --check',
+                cmd=[
+                    input_api.python3_executable,
+                    bots_py,
+                    'snapshot',
+                    '--check',
+                ],
+                kwargs={},
+                message=output_api.PresubmitError,
+            ),
+        ]
+    )
+
+
 # DON'T ADD NEW BRAVE CHECKS AFTER THIS LINE.
 #
 # This call inlines Chromium checks into current scope from src/PRESUBMIT.py. We

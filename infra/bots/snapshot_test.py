@@ -254,6 +254,41 @@ class ComputeFreshOutputTest(unittest.TestCase):
             },
         )
 
+    def test_tests_take_the_filter_files_that_apply_to_them(self):
+        src_dir = testing_support.use_src_dir(self)
+        for path in (
+            'brave/test/filters/a_test.filter',
+            'brave/test/filters/generated/a_test-linux.filter',
+            'brave/test/filters/a_test-linux-x64.filter',
+            'brave/test/filters/a_test-linux-asan.filter',
+            # Not this build's sanitiser, nor its suite.
+            'brave/test/filters/a_test-linux-msan.filter',
+            'brave/test/filters/other_test.filter',
+            'testing/buildbot/filters/linux.asan.a_test.filter',
+        ):
+            (src_dir / path).parent.mkdir(parents=True, exist_ok=True)
+            (src_dir / path).write_text('')
+        builders_registry, gn_args_registry = _make_registries()
+        fresh = snapshot.compute_fresh_output(
+            builders_registry, gn_args_registry
+        )
+        (test,) = json.loads(fresh['test-builder/targets/brave.test.json'])[
+            'test-builder'
+        ]['gtest_tests']
+        self.assertEqual(
+            test['args'],
+            [
+                '--a',
+                '--b',
+                '--test-launcher-filter-file='
+                '../../brave/test/filters/a_test.filter;'
+                '../../brave/test/filters/generated/a_test-linux.filter;'
+                '../../brave/test/filters/a_test-linux-x64.filter;'
+                '../../brave/test/filters/a_test-linux-asan.filter;'
+                '../../testing/buildbot/filters/linux.asan.a_test.filter',
+            ],
+        )
+
     def test_no_builders_means_no_output(self):
         builders_registry = BuildersRegistry(
             GnArgsRegistry(), TargetsRegistry()
