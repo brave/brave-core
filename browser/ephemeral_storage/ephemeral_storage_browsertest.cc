@@ -14,6 +14,7 @@
 #include "base/strings/strcat.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
@@ -671,7 +672,19 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, LocalStorageIsShared) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+class EphemeralStorageKeepAliveEnabledBrowserTest
+    : public EphemeralStorageBrowserTest {
+ public:
+  EphemeralStorageKeepAliveEnabledBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        net::features::kBraveEphemeralStorageKeepAlive);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveEnabledBrowserTest,
                        NavigatingClearsEphemeralStorageAfterKeepAlive) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), a_site_ephemeral_storage_with_network_cookies_url_));
@@ -734,7 +747,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("", after_timeout.iframe_2.cookies);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveEnabledBrowserTest,
                        ClosingTabClearsEphemeralStorage) {
   WebContents* site_a_tab =
       LoadURLInNewTab(a_site_ephemeral_storage_with_network_cookies_url_);
@@ -895,7 +908,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("", private_values.iframe_2.cookies);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveEnabledBrowserTest,
                        NetworkCookiesArePartitioned) {
   GURL a_site_set_cookie_url = https_server_.GetURL(
       "a.com", "/set-cookie?name=acom;path=/;SameSite=None;Secure");
@@ -1429,8 +1442,8 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
   EXPECT_TRUE(LoadURLInNewTab(a_site_ephemeral_storage_url_));
   WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
   EXPECT_EQ(browser()->tab_strip_model()->count(), 4);
-  EXPECT_TRUE(site_a_tab);
-  EXPECT_TRUE(site_b_tab);
+  ASSERT_TRUE(site_a_tab);
+  ASSERT_TRUE(site_b_tab);
 
   // Set first and third party storage values in both tabs.
   SetValuesInFrames(site_a_tab, "a.com", "from=a.com");
@@ -1512,8 +1525,8 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
   EXPECT_TRUE(LoadURLInNewTab(a_site_ephemeral_storage_url_));
   WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
   EXPECT_EQ(browser()->tab_strip_model()->count(), 4);
-  EXPECT_TRUE(site_a_tab);
-  EXPECT_TRUE(site_b_tab);
+  ASSERT_TRUE(site_a_tab);
+  ASSERT_TRUE(site_b_tab);
   // Make sure that both websites are in the history
   EXPECT_EQ(2, GetHistoryCount());
 
@@ -1583,10 +1596,10 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
   WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
 
   EXPECT_EQ(browser()->tab_strip_model()->count(), 5);
-  EXPECT_TRUE(site_a_tab);
-  EXPECT_TRUE(site_a_a_tab);
-  EXPECT_TRUE(site_b_a_tab);
-  EXPECT_TRUE(site_b_tab);
+  ASSERT_TRUE(site_a_tab);
+  ASSERT_TRUE(site_a_a_tab);
+  ASSERT_TRUE(site_b_a_tab);
+  ASSERT_TRUE(site_b_tab);
 
   // Set storage values in main frames only (to avoid iframe complexity)
   // We're primarily testing tab closure behavior, not iframe partitioning
@@ -1685,8 +1698,8 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
   WebContents* site_a_a_tab = LoadURLInNewTab(a_a_site_ephemeral_storage_url);
 
   EXPECT_EQ(browser()->tab_strip_model()->count(), 3);
-  EXPECT_TRUE(site_a_tab);
-  EXPECT_TRUE(site_a_a_tab);
+  ASSERT_TRUE(site_a_tab);
+  ASSERT_TRUE(site_a_a_tab);
 
   // Set storage values in main frames only (to avoid iframe complexity)
   // We're primarily testing tab closure behavior, not iframe partitioning
