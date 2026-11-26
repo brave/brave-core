@@ -59,7 +59,7 @@ function renderCaption(overrides: Partial<BackgroundState> = {}) {
       notifyNewTabTakeoverLoadError() {},
       notifyNewTabTakeoverLogoClicked() {},
       notifyNewTabTakeoverRichMediaEvent() {},
-      notifyNewTabTakeoverDisclosureLearnMoreClicked() {},
+      suppressNewTabTakeoverDisclosureAutoDisplay() {},
       notifyNewTabTakeoverDisclosureAutoDisplayed() {},
     },
     ...overrides,
