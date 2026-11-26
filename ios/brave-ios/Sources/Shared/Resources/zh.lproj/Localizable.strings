@@ -1,6 +1,3 @@
-/* Toast displayed to user after copy url pressed. */
-"AppMenuCopyURLConfirmMessage" = "網址已複製到剪貼簿";
-
 /* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
 "AppMenuViewDesktopSiteTitleString" = "要求存取桌面版網站";
 
@@ -49,9 +46,6 @@
 /* The button to open a new tab with the Downloads home panel */
 "DownloadsButtonTitle" = "下载";
 
-/* Question shown to user when tapping a link that opens the App Store app */
-"ExternalLinkAppStoreConfirmationTitle" = "使用 App Store 應用程式開啟此連結？";
-
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "立即前往";
 
@@ -76,17 +70,11 @@
 /* Accessibility label for button resetting font size in display settings of reader mode */
 "ReaderModeResetFontSizeAccessibilityLabel" = "重設字體大小";
 
-/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
-"SaveLoginPrompt" = "儲存 %@ 的密碼？";
-
 /* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
 "SaveLoginUsernamePrompt" = "儲存 %2$@ 的登入資訊 %1$@？";
 
 /* OK button to dismiss the error prompt. */
 "ScanQRCodeErrorOKButton" = "确定";
-
-/* Text for the instructions label, displayed in the QR scanner view */
-"ScanQRCodeInstructionsLabel" = "將 QR 碼對齊方框即可掃瞄";
 
 /* Text of the prompt that is shown to the user when the data is invalid */
 "ScanQRCodeInvalidDataErrorMessage" = "資料無效";
@@ -123,9 +111,6 @@
 
 /* Title of the message shown when the user attempts to navigate to an invalid link. */
 "UnableToOpenURLErrorTitle" = "無法開啟頁面";
-
-/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginPrompt" = "为%2$@更新登陆%1$@？";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
 "UpdateLoginUsernamePrompt" = "为%2$@更新登陆%1$@？";

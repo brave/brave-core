@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "企業情報";
 
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertMessage" = "カメラロールに画像を保存します。";
-
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave が写真にアクセスしようとしています";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "ブックマーク追加";
 
@@ -63,9 +57,6 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "ユーザー名";
-
-/* Settings autofill section title */
-"Autofill" = "自動入力";
 
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "アカウント";
@@ -133,9 +124,6 @@
 /* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
 "backgroundDownloadingTitleSingleDownload" = "「%@」をダウンロードしています";
 
-/* cookie settings option */
-"Block3rdPartyCookies" = "サードパーティの Cookie をブロック";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "すべてのクッキーをブロック";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "設定に失敗しました。もう一度やり直してください。";
 
-/* title for section showing page blocking statistics */
-"BlockingMonitor" = "ブロックモニター";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "ポップアップをブロック";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "%lld個のタブにブックマークを追加";
-
-/* Bookmark Folder Section Title */
-"BookmarkFolder" = "ブックマークフォルダ";
-
-/* Bookmark Info Section Title */
-"BookmarkInfo" = "ブックマーク情報";
 
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "ブックマーク";
@@ -225,9 +204,6 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shieldsとプライバシー";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
 
 /* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
 "BraveTranslate.languageSelectionButtonTitle" = "言語を選択";
@@ -415,14 +391,8 @@
 /* Section title in settings panel */
 "ClearPrivateData" = "プライベートデータを消去する";
 
-/* The cancel button when confirming clear private data. */
-"ClearPrivateDataAlertCancelButtonTitle" = "キャンセル";
-
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertMessage" = "よろしいですか？";
-
-/* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "はい";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "データを削除する";
@@ -441,9 +411,6 @@
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "はい";
-
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "クライアントエラー";
 
 /* Button title to close a menu. */
 "Close" = "閉じる";
@@ -481,17 +448,11 @@
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
 "CopyCleanLink" = "クリーンリンクをコピー";
 
-/* Context menu item for copying an image to the clipboard */
-"CopyImageActionTitle" = "画像をコピー";
-
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "リンクをコピー";
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "タブ情報をクリップボードにコピーします。";
-
-/* Copy rewards internals info for support */
-"CopyWalletSupportInfo" = "サポート情報をコピー";
 
 /* Create PDF share action. */
 "CreatePDF" = "PDFを作成する";
@@ -504,9 +465,6 @@
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "検索URLを入力しクエリを %1$s に置き換えてください。\n例: https://youtube.com/search?q=%2$s \n(サイトがOpenSearchをサポートしている場合、このフィールドを編集している際に、自動で追加する選択肢が与えられます)";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "自動で追加する";
 
 /* A title explaining that an error shown while adding custom search engine */
 "customSearchEngine.customSearchEngineAddErrorTitle" = "カスタム検索エンジンの追加中にエラーが発生しました";
@@ -590,12 +548,6 @@
 "defaultBrowserCallout.notificationTitle" = "Braveですべてのリンクを保護しましょう";
 
 /* No comment provided by engineer. */
-"defaultBrowserCalloutCloseAccesabilityLabel" = "デフォルトブラウザの設定メッセージを閉じる";
-
-/* Name for default Brave theme. */
-"defaultThemeName" = "Brave デフォルト";
-
-/* No comment provided by engineer. */
 "Delete" = "削除";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
@@ -649,9 +601,6 @@
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "ダウンロード";
 
-/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
-"DownloadsPanelEmptyStateTitle" = "ダウンロードしたファイルが表示されます。";
-
 /* Action item title of long press for Opening the existing - active Tab url in a new Tab */
 "DuplicateActiveTab" = "アクティブなタブを複製";
 
@@ -700,48 +649,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "フォルダ名を入力";
 
-/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@は通常、情報を保護するために暗号化を使用します。今回、Braveが%2$@に接続を試みた際、ウェブサイトから通常とは異なる不正な認証情報が返されました。これは、攻撃者が%3$@になりすまそうとしているときや、Wi-Fiサインイン画面により接続が中断したときに起こる可能性があります。Braveはデータが交換される前に接続を停止したため、お客様の情報はまだ安全です。<br />ウェブサイトは証明書のピン留めを使用しているため、現時点では%4$@にアクセスすることはできません。ネットワークエラーや攻撃は通常一時的なものなので、しばらくするとページの機能は回復します。";
-
-/* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningDetails" = "このサーバーは、%@ であることを証明できませんでした。セキュリティ証明書があなたのデバイスのオペレーションシステムによって信頼されていません。これは、設定の間違いか、あなたの接続に介入しようとする攻撃者によって生じている可能性があります。";
-
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningTitle" = "攻撃者があなたの情報（例えば、パスワード、メッセージ、クレジットカード情報など）を %@ から盗もうと試みている可能性があります。";
-
-/* Label for button to go back from the error page */
-"ErrorPagesBackToSafetyButton" = "安全のため戻る";
-
-/* Title on the certificate error page */
-"ErrorPagesCertErrorTitle" = "このサイトは安全な接続を提供することができません。";
-
-/* Title on the certificate error page */
-"ErrorPagesCertWarningTitle" = "接続はプライベートではありません";
-
-/* Label for button to hide advanced actions on the error page */
-"ErrorPagesHideDetailsButton" = "詳細を隠す";
-
-/* Label for learn more link on error page */
-"ErrorPagesLearnMoreButton" = "以下について詳しく";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesMoreDetailsButton" = "更に詳しく";
-
-/* Title of the No Internet error page */
-"ErrorPagesNoInternetTitle" = "インターネット接続がありません";
-
-/* Text telling the user to Try: The following list of things */
-"ErrorPagesNoInternetTry" = "あなたはオンラインではないようです。これらを試してみてください。";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem1" = "ネットワークケーブルとルーターを確認する";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem2" = "Wi-Fiに再接続する";
-
-/* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesProceedAnywayButton" = "%@ （安全ではありません）に進む";
-
 /* Button to exclude a topsite url from the most visited list */
 "ExcludeMostVisitedSite" = "削除する";
 
@@ -775,29 +682,14 @@
 /* Share action title */
 "FindInPage" = "ページ内で見つける";
 
-/* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "完了";
-
 /* Find `search query` */
 "FindInPageFormat" = " を検索";
-
-/* Accessibility label for next result button in Find in Page Toolbar. */
-"FindInPageNextResultButtonAccessibilityLabel" = "次のページ内検索結果";
-
-/* Accessibility label for previous result button in Find in Page Toolbar. */
-"FindInPagePreviousResultButtonAccessibilityLabel" = "前のページ内検索結果";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findInPageTitle" = "ページ内で見つける";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findNextTitle" = "次を検索";
-
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "ページ内検索";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findPreviousTitle" = "前を検索";
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "外部アプリを開くユニバーサルリンクを許可する";
@@ -822,9 +714,6 @@
 
 /* Hides the rewards icon */
 "HideRewardsIcon" = "Brave Rewardsのアイコンを非表示にする";
-
-/* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Brave Rewardsに参加していないページではBrave Rewardsのアイコンを非表示にする";
 
 /* Title for history menu item */
 "HistortMenuItem" = "履歴";
@@ -867,12 +756,6 @@
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "閲覧データをインポート";
-
-/* title for per-site shield toggles */
-"IndividualControls" = "個別コントロール";
-
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "不正な支払いリクエスト";
 
 /* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
 "JavaScriptDialogEmbeddedPageTitle" = "このページに埋め込まれたページ";
@@ -931,30 +814,6 @@
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "フィルター";
 
-/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
-"LoginDetailLastModifiedCellFormatTitle" = "最終変更 %@";
-
-/* Label displayed above the password row in Login Detail View. */
-"LoginDetailPasswordCellTitle" = "パスワード";
-
-/* Label displayed above the username row in Login Detail View. */
-"LoginDetailUsernameCellTitle" = "ユーザー名";
-
-/* Label displayed above the website row in Login Detail View. */
-"LoginDetailWebsiteCellTitle" = "ウェブサイト";
-
-/* Label for the button used to deselect all logins. */
-"LoginListDeselectAllButtonTitle" = "すべて選択解除";
-
-/* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "ログイン情報が見つかりません";
-
-/* Title for Logins List View screen. */
-"LoginListScreenTitle" = "ログイン情報";
-
-/* Label for the button used to select all logins. */
-"LoginListSelectAllButtonTitle" = "すべて選択";
-
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "音声のバックグラウンド再生を有効にする";
 
@@ -969,9 +828,6 @@
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "表示";
-
-/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
-"monthAbbreviation" = "月";
 
 /* Bookmark title / Device name */
 "Name" = "名前";
@@ -1048,9 +904,6 @@
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "スポンサーイメージについて詳しく知る";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"ntp.settingsAutoOpenKeyboard" = "自動的にキーボードを開く";
-
 /* A setting to enable or disable background on the NTP screen. */
 "ntp.settingsBackgroundImages" = "バックグラウンド";
 
@@ -1087,53 +940,8 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Rewardsを有効にすると、以下に同意したものとみなされます: %@";
 
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
-
-/* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Brave Adsが有効になりました！";
-
-/* Title for ads onboarding screen */
-"OBAdsTitle" = "この後、初めての広告を表示します";
-
-/* Title for when the user completes onboarding */
-"OBCompleteTitle" = "準備が完了しました。";
-
-/* Button to show information on how to enable ads */
-"OBDidntSeeAdButton" = "広告が表示されませんでした。";
-
-/* A generic error body for onboarding */
-"OBErrorDetails" = "ウォレット作成中にエラーが発生しました。もう一度お試しください。";
-
 /* No comment provided by engineer. */
 "OBErrorOkay" = "OK";
-
-/* A generic error title for onboarding */
-"OBErrorTitle" = "申し訳ございません";
-
-/* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "ブラウジングを開始する";
-
-/* Button to join Brave Rewards. */
-"OBJoinButton" = "参加する";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Braveはリファラルコードを確認するためにクリップポードの情報を使用します";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "誰かのリファラルリンクからBraveをダウンロードした可能性があります。その紹介者を確認するため、Braveはクリップボードにリファラルコードを存在するか一度だけ確認します。確認の対象はそのコードのみで、その他の個人データが外部に送信されることはありません。承認いただけなかった場合は、紹介者はBraveから報酬を受け取れなくなります。";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentNoButton" = "許可しない";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentTitle" = "匿名のリファラルコードチェック ";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentYesButton" = "一回限りのクリップボードチェックを許可する";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "「開始する」をタップすると、以下に同意したものとみなされます";
@@ -1150,32 +958,8 @@
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Braveプライベート広告を受け入れることで、広告を見るだけでウェブサイトやコンテンツクリエイターを支援することができます。";
 
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
-
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "プライバシーポリシー";
-
-/* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Braveリワード";
-
-/* Save button to save current selection */
-"OBSaveButton" = "保存";
-
-/* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "デフォルトの検索エンジンを設定する";
-
-/* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Braveブラウザにようこそ！";
-
-/* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "プライバシーを侵害するトラッカーをブロックすることで、インターネット上でつきまとわれずにブラウジングすることができます。";
-
-/* Title for shields onboarding screen */
-"OBShieldsTitle" = "Brave Shields";
-
-/* Button to show the Brave Rewards Ads. */
-"OBShowMeButton" = "表示する";
 
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "スタート";
@@ -1210,20 +994,11 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "すべて開く (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Brave Rewardsの設定を開く";
-
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "「ファイル」アプリの「ダウンロード」フォルダを開く際に不明なエラーが発生しました。";
 
-/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
-"openExternalAppURLHost" = "%@ からのお知らせ:";
-
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "%@にアプリの切り替えを許可しますか？";
-
-/* Context menu for opening image in new tab */
-"OpenImageInNewTab" = "画像を新しいタブで開く";
 
 /* Context menu item for opening a link in a new private browsing window */
 "OpenInNewPrivateWindowTitle" = "新しいプライベートウィンドウで開く";
@@ -1360,12 +1135,6 @@
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "その他のプライバシー設定";
 
-/* Section name for other settings. */
-"OtherSettingsSection" = "その他の設定";
-
-/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
-"p3a.continue" = "続ける";
-
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "これらの個人的な回答は、Braveが特定の機能の全体的な使用状況を推定し、お客様にとってより良いものにするために役立ちます。";
 
@@ -1396,12 +1165,6 @@
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "デフォルトのウェブページズームレベル";
 
-/* Description for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesDescription" = "ウェブサイトのズームレベルを変更すると、ウェブサイトがこのリストに表示されます。現在、拡大または縮小されたウェブサイトはありません。";
-
-/* Title for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesTitle" = "ウェブサイトが追加されていません";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "その他すべてのウェブサイト";
 
@@ -1426,12 +1189,6 @@
 /* Setting to allow the app to restore private browsing tabs */
 "PersistentPrivateBrowsing" = "プライベートブラウジングモードを継続";
 
-/* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "アプリを終了 / 再開した場合でも、Braveがプライベートブラウジングタブを復元できるようにします";
-
-/* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "プライベートタブを復元";
-
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Photo by %@";
 
@@ -1446,12 +1203,6 @@
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "再生オプション";
-
-/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
-"playlist.carplayRestartPlaybackButtonStateDisabled" = "無効になっています。始めからの再生を有効にするにはタップします。";
-
-/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
-"playlist.carplayRestartPlaybackButtonStateEnabled" = "有効になっています。始めからの再生を無効にするにはタップします。";
 
 /* The description of the checkbox that allows the user to restart audio/video playback */
 "playlist.carplayRestartPlaybackOptionDetailsTitle" = "すでに再生中のアイテムを始めから再生するか、最後に停止した場所から再生するかを選択します";
@@ -1699,9 +1450,6 @@
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "プライバシーハブを開く";
 
-/* The title of the button action which open the privacy hub */
-"privacyHub.openPrivacyHubWidgetActionTitle" = "プライバシーハブを開く";
-
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "プライバシーハブのデータはローカルで保存され、別の場所に送信されることはありません。";
 
@@ -1771,23 +1519,11 @@
 /* Private button title */
 "Private" = "プライベート";
 
-/* No comment provided by engineer. */
-"PrivateBrowsing" = "プライベートブラウジング";
-
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "常にプライベートモード";
 
 /* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
 "PrivateBrowsingOnlyWarning" = "プライベートブラウジングのみモードでは、現在のタブがすべて閉じられ、すべてのサイトからログアウトされます。";
-
-/* Private tab details */
-"PrivateTabBody" = "プライベートタブはBraveに保存されませんが、オンライン上で匿名になるわけではありません。プライベートタブで訪問したサイトは、履歴には表示されず、そのサイトを閉じるとCookieは常に消滅し、Braveにはその痕跡が残りません。ただし、ダウンロードは保存されます。\nプライベートタブを利用していても、携帯電話会社（または接続しているWi-FiネットワークやVPNの所有者）は、あなたがどのサイトを訪れたかを知ることができ、それらのサイトはあなたの公開IPアドレスを知ることができます。";
-
-/* Private tab detail text */
-"PrivateTabDetails" = "プライベートタブを使うと、Braveがあなたのデバイス上で行うことが変わるだけで、他の人の行動が変わることはありません。\n\nお客様がサイトにアクセスすると、サイトは常にお客様のIPアドレスを取得します。このIPアドレスから、多くの場合、あなたがどこにいるか（通常は都市）を推測することができます。推測される場所は、より具体的な場合もあります。また、サイトは、検索キーワードなど、あなたが具体的に伝えたこともすべて把握しています。サイトにログインすると、あなたがそのアカウントの所有者であることがわかります。プライベートタブを閉じても、ログイン状態を維持するCookieがBraveによって破棄されるため、ログアウトされたままになります。\n\nあなたがインターネットに接続することを可能にしている人（あなたのISP）は、お客様のネットワーク活動をすべて見ることができます。多くの場合、これはあなたの携帯電話会社です。Wi-Fiネットワークに接続している場合は、そのネットワークの所有者であり、VPNを使用している場合は、そのVPNを運営している会社となります。あなたのISPは、あなたがどのサイトを訪れたかを見ることができます。それらのサイトがHTTPSを使用している場合、ISPはあなたがそのサイトで何をしているかについて、経験則に基づく推測以上のことはできません。しかし、サイトが HTTP のみを使用している場合、ISP は、あなたの検索用語、どのページを読んだか、どのリンクを辿ったかなど、すべてを見ることができます。\n\n雇用主があなたのデバイスを管理している場合は、あなたがそのデバイスで何をしているかを追跡しているかもしれません。プライベートタブを使用しても、あなたがどのサイトにアクセスしたかを雇用主に知られないようにすることはできないかもしれません。また、あなたのデバイスにアクセスできる誰かが、あなたの行動を監視するソフトウェアをインストールしている可能性もあり、プライベートタブを使用してもそうしたソフトウェアからあなたを保護することはできません。\n\n";
-
-/* Private tab information link */
-"PrivateTabLink" = "プライベートタブについて";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "プライベートタブ";
@@ -1846,12 +1582,6 @@
 /* Accessibility label for brightness adjustment slider in Reader Mode display settings */
 "ReaderModeBrightSliderAccessibilityLabel" = "明るさ";
 
-/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
-"ReaderModeDisplaySettingsButtonTitle" = "表示設定";
-
-/* Error displayed when reader mode cannot be enabled */
-"ReaderModeErrorConvertDisplayText" = "ページの変換でエラーが発生しました";
-
 /* Font type setting in the reading view settings */
 "ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
 
@@ -1863,15 +1593,6 @@
 
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "フォントの種類を変更します。";
-
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "コンテンツの読み込み中…";
-
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadOriginalLinkText" = "元のページを読み込む";
-
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "ページをリーダービューで表示できませんでした。";
 
 /* Title of a bar that show up when you enter reader mode. */
 "readerModeSettingsButton" = "リーダーモード";
@@ -1894,14 +1615,8 @@
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "最近閉じたタブはありません。";
 
-/* Open Tab action title */
-"recently.closed.open" = "開く";
-
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "最後に閉じたタブを開く";
-
-/* Description for alert to ask user for opening last closed tab in list */
-"recently.closed.shake.description" = "最後に閉じたタブを開きますか？";
 
 /* Action item title of long press for Opening recently closed tab view */
 "recently.closed.title" = "最近閉じたタブ";
@@ -1987,12 +1702,6 @@
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "\"%@\" がマイクへのアクセスを要求しています";
 
-/* Name of folder where restored bookmarks are retrieved */
-"RestoredBookmarksFolderName" = "復元されたブックマーク";
-
-/* Name of folder where restored favorites are retrieved */
-"RestoredFavoritesFolderName" = "復元されたお気に入り";
-
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "はい";
 
@@ -2035,80 +1744,11 @@
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "このコンテンツクリエイターはBraveクリエイター認証済みです";
 
-/* Displayed next to a number representing the total number of publishers supported */
-"rewards.totalSupportedCount" = "今月支援中のコンテンツクリエイター数";
-
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "このクリエイターは認証が完了していないため、支援対象になりません";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "総額";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAnonymous" = "匿名";
-
-/* No comment provided by engineer. */
-"RewardsInternalsBalanceInfoHeader" = "口座情報";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "本当にRewardのログを全て削除しますか？";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsTitle" = "ログを削除する";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionAmount" = "支援総額";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "BTAポイント";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorNone" = "なし";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "Uphold";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUserFunds" = "所有額";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepACOff" = "自動支援オフ";
-
-/* 'AC' refers to Auto-Contribute */
-"RewardsInternalsContributionsStepACTableEmpty" = "自動支援テーブルは空です";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCompleted" = "完了";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCreds" = "クレデンシャル";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepExternalTransaction" = "外部トランザクション";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "失敗しました";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepNotEnoughFunds" = "ポイントがたりません";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepPrepare" = "準備";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepReserve" = "積立";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "Rewardsオフ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "スタート";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsTitle" = "支援";
-
-/* No comment provided by engineer. */
-"RewardsInternalsCreatedAt" = "作成日: ";
 
 /* No comment provided by engineer. */
 "RewardsInternalsDeviceInfoHeader" = "デバイス情報";
@@ -2128,9 +1768,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "キーインフォシード";
 
-/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
-"RewardsInternalsLogsCount" = "ログが%d 件表示中";
-
 /* No comment provided by engineer. */
 "RewardsInternalsLogsTitle" = "ログ";
 
@@ -2141,34 +1778,13 @@
 "RewardsInternalsNotSupported" = "未対応";
 
 /* No comment provided by engineer. */
-"RewardsInternalsProcessor" = "プロセッサー";
-
-/* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "パブリッシャー";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublishers" = "パブリッシャー";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRetryCount" = "リトライ回数";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeAutoContribute" = "自動支援";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeOneTimeTip" = "1回限りのチップ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "定期チップ";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "リワードプロフィール、デバイスおよび残高情報 (常に共有)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "基本情報";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableContributionsDescription" = "チップや自動支援を通じてパブリッシャーに貢献した履歴";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableDatabaseDescription" = "内部データ";
@@ -2204,9 +1820,6 @@
 "RewardsInternalsTitle" = "Rewards内部情報";
 
 /* No comment provided by engineer. */
-"RewardsInternalsTotalAmount" = "総額";
-
-/* No comment provided by engineer. */
 "RewardsInternalsTotalBalance" = "残高総額";
 
 /* No comment provided by engineer. */
@@ -2233,17 +1846,11 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "保存";
 
-/* Label for the button used to save changes in some text input. */
-"SaveChangesButtonTitle" = "変更を保存";
-
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "保存したログイン情報";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "保存されたタブ";
-
-/* Context menu item for saving an image */
-"SaveImageActionTitle" = "画像を保存";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "ログイン情報を保存";
@@ -2257,23 +1864,8 @@
 /* Search engines section of settings */
 "SearchEngines" = "検索エンジン";
 
-/* Accessibility hint describing the action performed when a search suggestion is clicked */
-"SearchesForSuggestionButtonAccessibilityText" = "候補の検索";
-
 /* Section header for history and bookmarks and open tabs option */
 "SearchHistorySectionHeader" = "お使いのデバイス";
-
-/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
-"SearchInputViewClearButtonTitle" = "検索を消去";
-
-/* Accessibility label for entering search mode for logins */
-"SearchInputViewOverlayAccessibilityLabel" = "検索モードを開始";
-
-/* Accessibility label for the search input field in the Logins list */
-"SearchInputViewTextFieldAccessibilityLabel" = "検索入力フィールド";
-
-/* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "検索";
 
 /* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
 "searchQuickBarPrefix" = "\"%@\"を検索";
@@ -2287,9 +1879,6 @@
 /* Label for showing browser suggestion setting */
 "SearchSettingBrowserSuggestionCellTitle" = "ブラウザのサジェスチョンを表示";
 
-/* Navigation title for search settings. */
-"SearchSettingNavTitle" = "検索";
-
 /* Label for showing recent search setting. */
 "SearchSettingRecentSearchesCellTitle" = "最近の検索を表示";
 
@@ -2299,23 +1888,11 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "検索候補を表示";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
-"SearchSuggestionFromFormatText" = "%@ からの検索候補";
-
 /* Action title for open a playlist item in Playlist. */
 "searchSuggestionOpenPlaylistActionTitle" = "プレイリストで開く";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "このタブに変更";
-
-/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
-"SearchSuggestionSectionTitleFormat" = "%@で検索";
-
-/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "検索";
-
-/* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "検索候補";
 
 /* Search suggestions optin subtitle when prompting to turn on suggestions */
 "searchSuggestionsSubtitle" = "検索候補を有効にしますか？";
@@ -2428,9 +2005,6 @@
 /* Row name for licenses. */
 "SettingsLicenses" = "ライセンス";
 
-/* Title for settings menu item */
-"SettingsMenuItem" = "設定";
-
 /* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
 "SettingsTabsOptionBottomBar" = "下部バー";
 
@@ -2442,9 +2016,6 @@
 
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "リンクを共有";
-
-/* Title for sharing url menu item */
-"ShareWithMenuItem" = "共有";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "shareWithTitle" = "共有";
@@ -2478,9 +2049,6 @@
 
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "お知らせをシェアする";
-
-/* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Shieldsがあなたのオンラインでのプライバシーを保護しました。";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "おめでとうございます。あなたは特別な存在です。いつもBraveをご利用いただきありがとうございます。";
@@ -2665,14 +2233,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri ショートカット";
 
-/* Button to show the bookmarks list */
-"ShowBookmarks" = "ブックマークを表示";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "ダウンロードを表示";
-
-/* Button to show the history list */
-"ShowHistory" = "履歴を表示";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showHistoryTitle" = "履歴を表示";
@@ -2800,9 +2362,6 @@
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.configurationInformationText" = "複数のデバイス間でどの情報を同期させるかを管理します。ここでの設定は、このデバイスにのみ適用されます。";
 
-/* Copied action complete title */
-"sync.copied" = "コピーしました！";
-
 /* Copied codewords title */
 "sync.copiedToClipboard" = "クリップボードにコピーしました！";
 
@@ -2845,14 +2404,8 @@
 /* Sync enter code words */
 "sync.enterCodeWords" = "コードを入力";
 
-/* Enter sync code words below */
-"sync.enterCodeWordsBelow" = "以下にコードを入力";
-
 /* Sync Error message for when the sync code is expired */
 "sync.expiredError" = "同期コードが期限切れです。新しい同期コードを生成してもう一度お試しください。";
-
-/* Generic Sync Error Description */
-"sync.genericError" = "申し訳ありません、エラーが発生しました";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "カメラを有効にする";
@@ -2896,9 +2449,6 @@
 /* Error title for when the sync code does not have the correct amount of words */
 "sync.notEnoughWordsTitle" = "ワードが足りません";
 
-/* Sync pair device settings section title */
-"sync.pair" = "ペア";
-
 /* QR Code section title */
 "sync.qrCode" = "QRコード";
 
@@ -2932,12 +2482,6 @@
 /* Title for removing other device from Sync */
 "sync.removeOtherDeviceTitle" = "%@を同期チェーンから削除しますか？";
 
-/* Sync remove device. */
-"sync.removeThisDevice" = "このデバイスを削除";
-
-/* Sync remove device? */
-"sync.removeThisDeviceQuestionDesc" = "このデバイスは同期グループから切断され、同期データを受信または送信しなくなります。既存のデータはすべてデバイスに維持されます。";
-
 /* Scan sync code title */
 "sync.scan" = "スキャン";
 
@@ -2956,20 +2500,11 @@
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "Sync設定";
 
-/* Show code words instead */
-"sync.showCodeWords" = "コードを表示する";
-
 /* Switch back to camera button */
 "sync.switchBackToCameraButton" = "自分のカメラを使用する...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "これによりデータが完全に削除されるため、復元はできません。同期を再度使用する場合は、新しいアカウントを作成して、デバイスごとに追加し直す必要があります。";
-
-/* Sync you browser settings across devices. */
-"sync.Syncdevices" = "デバイスと設定";
-
-/* Sync remove device? */
-"sync.syncRemoveThisDeviceQuestion" = "このデバイスを削除しますか？";
 
 /* Sync settings section title */
 "sync.syncTitle" = "Brave Sync";
@@ -3006,9 +2541,6 @@
 
 /* Word count title */
 "sync.wordCount" = "ワード数: %i";
-
-/* Accessibility label for action denoting closing a tab in tab list (tray) */
-"TabAccessibilityCloseActionLabel" = "閉じる";
 
 /* Accessibility label for a close button that when tapped opens a new tab */
 "tabGrid.addTabAccessibilityLabel" = "新しいタブ";
@@ -3049,17 +2581,11 @@
 /* A title shown when in private browsing mode with no tabs open */
 "tabGrid.privateBrowsingInfoTitle" = "プライベートタブ";
 
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.privateBrowsingModeAccessibilityLabel" = "プライベートブラウジング";
-
 /* A label in the tab tray mode switcher for private browsing mode */
 "tabGrid.privateBrowsingModeTitle" = "プライベート";
 
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "プライベートタブの設定";
-
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.regularBrowsingModeAccessibilityLabel" = "通常のブラウジング";
 
 /* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
 "tabGrid.selectedTabs" = "選択したタブ";
@@ -3090,18 +2616,6 @@
 
 /* Label for synced tabs menu item that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsMenuItemLabel" = "同期";
-
-/* Accessiblity hint for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityHint" = "プライベートモードのオンとオフを切り替えます";
-
-/* Accessibility label for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityLabel" = "プライベートモード";
-
-/* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "オフ";
-
-/* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "オン";
 
 /* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardDescription" = "新しいタブを作成するときにアドレスバーに自動的にフォーカスする";
@@ -3163,9 +2677,6 @@
 /* Accessibility Label for the tab toolbar Forward button */
 "TabToolbarForwardButtonAccessibilityLabel" = "進む";
 
-/* Accessibility label for the lock icon, which is only present if the connection is secure */
-"TabToolbarLockImageAccessibilityLabel" = "安全な接続";
-
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "メニュー";
 
@@ -3180,9 +2691,6 @@
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "リーダービュー";
-
-/* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "リーディングリストに追加";
 
 /* Accessibility Label for the tab toolbar Reload button */
 "TabToolbarReloadButtonAccessibilityLabel" = "再読み込み";
@@ -3199,47 +2707,14 @@
 /* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "音声検索";
 
-/* Accessibility label for the lock icon, which is only present if the connection is insecure */
-"TabToolbarWarningImageAccessibilityLabel" = "保護されていない接続";
-
-/* Accessibility label for the Tabs Tray view. */
-"TabTrayAccessibilityLabel" = "タブトレイ";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabTrayAddTabAccessibilityLabel" = "タブを追加";
-
-/* Accessibility hint for tab tray's displayed tab. */
-"TabTrayCellCloseAccessibilityHint" = "タブを閉じるには 3 本の指で右または左方向にスワイプします。";
-
-/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
-"TabTrayClosingTabAccessibilityNotificationText" = "タブを閉じています";
-
-/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
-"TabTrayEmptyVoiceOverText" = "タブがありません";
-
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
-"TabTrayMultiTabPositionFormatVoiceOverText" = "%3$@ 個のタブのうち %1$@〜%2$@ 番目";
-
-/* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "新しいタブ";
-
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "検索タブ";
-
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
-"TabTraySingleTabPositionFormatVoiceOverText" = "%2$@ 個のタブのうち %1$@ 番目";
 
 /* No comment provided by engineer. */
 "TermsOfService" = "利用規約";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "利用規約";
-
-/* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "共有";
-
-/* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Braveを友だちに教えてあげよう！";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "自動";
@@ -3252,9 +2727,6 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "ライト";
-
-/* Name for app theme settings */
-"themesSettings" = "テーマ";
 
 /* No comment provided by engineer. */
 "Title" = "タイトル";
@@ -3385,9 +2857,6 @@
 /* A title at the top of the screen that shows a list of sources that are ranked the highest */
 "today.popularSourcesTitle" = "人気のあるソース";
 
-/* A button title that is placed on promoted cards */
-"today.promoted" = "プロモーション";
-
 /* Title for long press action sheet list which has item for rate / hide */
 "today.rateBraveCardActionSheetTitle" = "App StoreでBraveを評価";
 
@@ -3442,14 +2911,8 @@
 /* Title of an action that allows the user to translate the current web-page to another language */
 "TranslatePage" = "ページを翻訳";
 
-/* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "検索候補をオンにしますか？";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "ロック解除";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "サポートされていない決済手段";
 
 /* Bookmark URL */
 "URL" = "URL";
@@ -3459,18 +2922,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "urlRedirectsSettings" = "ウェブサイトのリダイレクト";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "ユーザが購入をキャンセルしました";
-
-/* No comment provided by engineer. */
-"UserWalletCloseButtonTitle" = "閉じる";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorMessage" = "Upholdのアカウントにログインする際に問題が発生しました。後ほど再度お試しください。";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "申し訳ありません、エラーが発生しました";
 
 /* Message for error alert when a VCard contact file cannot be parsed or opened */
 "VCard.unableToOpenContactErrorMessage" = "連絡先ファイルを読み込むことができませんでした。ファイルが破損しているか、サポートされていない形式の可能性があります。";
@@ -3535,9 +2986,6 @@
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "ウィジェット";
 
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "年";
-
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "はい";
 
@@ -3547,20 +2995,11 @@
 /* History tableview section header */
 "Yesterday" = "昨日";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "YouTube動画の高画質再生を有効にする";
-
-/* Description of setting to enable high quality youtube videos */
-"YoutubeMediaQualityDetails" = "この機能は試験運用中です。有効にすると、利用可能な最大画質で動画を再生します。追加のデータ量を使用しますのでご了承ください。";
-
 /* Setting that disables highest quality video playback */
 "YoutubeMediaQualityOff" = "オフ";
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "オン";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "YouTube再生品質";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Wi-Fi経由で許可";

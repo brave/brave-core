@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "Yer İşaretleri içe aktarılırken bir hata oluştu.";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "Geçmiş içe aktarılırken bir hata oluştu.";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "Parolalar içe aktarılırken bir hata oluştu.\nBazı parolalar çakışmalar nedeniyle içe aktarılamadı.";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "Parolalar içe aktarılırken bir hata oluştu.";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "Dosya açılırken bir hata oluştu.";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "Bir dosya seçin...";
 
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "Uygulamalar listesinden (alfabetik olarak sıralanmıştır) **Safari** öğesini bulun ve dokunun.";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "Zip dosyası içe aktarma verilerini içermiyor.";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "Verileriniz güvenli bir şekilde aktarılırken lütfen bekleyin.\nBu işlem birkaç dakika sürebilir.";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "Birden fazla profil algılandı";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "Kişisel";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "İçe Aktarılan Yer İşaretleri";

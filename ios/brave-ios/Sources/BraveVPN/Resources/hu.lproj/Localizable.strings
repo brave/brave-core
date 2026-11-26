@@ -7,27 +7,6 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "ELÉRHETŐ SZERVEREK";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "Vétel";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "Védjen meg 5 eszközt 1 előfizetéssel";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "Válassza ki a földrajzi helyzetét/országát";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "A Brave sosem naplózza a tevékenységeit";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Védje meg az összes alkalmazást és az egész eszközét";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "Biztonságosabb otthoni vagy nyilvános Wi-Fi-hálózaton";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "Villámgyors, akár 100 Mbps";
-
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
 "vpn.cityCountTitle" = "%ld város";
 
@@ -57,9 +36,6 @@
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "Probléma";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Kapcsolat-folytonossági probléma";
 
 /* Description used for specific issue field for customer support contact form. */
 "vpn.contactFormIssueDescription" = "Válassza ki a problémát leíró kategóriát.";
@@ -111,9 +87,6 @@
 
 /* The button text that starts the trial action */
 "vpn.freeTrialPeriodAction" = "ingyenes kipróbálás 7 napig";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Minden előfizetés automatikusan megújul, de a megújítás előtt lemondható.";
 
 /* Text explaining how the VPN works. */
 "vpn.installProfileBody" = "Ez a profil lehetővé teszi a VPN számára, hogy automatikusan csatlakozzon és folyamatosan biztosítsa a forgalmat az eszközön. Ez a VPN-kapcsolat titkosított, és a Brave intelligens tűzfalán halad át, ezáltal blokkolva a potenciálisan káros és invazív kapcsolatokat.";
@@ -172,20 +145,11 @@
 /* Message that we show after successfully changing tunnel protocol. */
 "vpn.protocolSwitchSuccessPopupText" = "A VPN-alagútprotokoll módosult.";
 
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Az Önhöz legközelebb eső szerverrégió lesz automatikusan kiválasztva a rendszer időzónája alapján. Ez a gyors internetsebesség biztosítása érdekében javasolt.";
-
 /* Message for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorMessage" = "Nem sikerült szervert váltani, próbálkozzon újra később.";
 
 /* Title for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorTitle" = "Szerverhiba";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Szerverrégió";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "A VPN-régió módosult.";
 
 /* Yearly tier explaination. Subscription will be renewed annually. */
 "vpn.renewAnnually" = "Évente megújul";
@@ -229,9 +193,6 @@
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Lépjen kapcsolatba az ügyfélszolgálattal";
 
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Nem sikerült lekérni a szerverlistát, próbálkozzon újra később.";
-
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPN támogatás";
 
@@ -249,12 +210,6 @@
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "Konfiguráció visszaállítása";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Host";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Tartózkodási hely";
 
 /* Header title for vpn settings server section. */
 "vpn.settingsServerSection" = "Szerver";
@@ -307,32 +262,17 @@
 /* Title for an alert when the VPN can't be configured */
 "vpn.vpnConfigGenericErrorTitle" = "Hiba";
 
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "A Brave VPN használatához VPN-profilt kell telepíteni az eszközre. ";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Hozzáférés megtagadva";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Nem sikerült beváltani az ajánlatkódot. Kérjük, próbálja újra, vagy ellenőrizze az ajánlatkód részleteit.";
-
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "Nem sikerült befejezni a vásárlást. Kérjük, próbálja újra, vagy ellenőrizze fizetési adatait az Apple-nél, és próbálkozzon újra.";
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "Hiba";
 
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Az előfizetési díjak kiszabása az iTunes-fiókján keresztül történik.\n\nAz esetleges ingyenes próbaidőszak fel nem használt hányada elveszik az előfizetés megvásárlásakor.\n\nElőfizetése automatikusan megújul, hacsak nem mondja le legalább 24 órával az aktuális időszak vége előtt.\n\nElőfizetéseit a Beállításokban kezelheti.\n\nA Brave használatával Ön elfogadja a használati feltételeket és az adatvédelmi szabályzatot.";
-
 /* The title shown on the menu when the VPN connection is disconnected */
 "vpn.vpnOffMenuButtonTitle" = "VPN kikapcsolva";
 
 /* The title shown on the menu when the VPN connection is connected */
 "vpn.vpnOnMenuButtonTitle" = "VPN bekapcsolva";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Kód beváltása";
 
 /* The alert title showing vpn region is changed */
 "vpn.vpnRegionChangedTitle" = "A VPN-régió módosult";
@@ -351,9 +291,6 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "Éves előfizetés";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Takarítson meg %@-ot éves megújítással";
 
 /* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
 "vpn.yearlySubDisclaimer" = "A LEGJOBB ÉRTÉK";

@@ -47,13 +47,7 @@
 "vpn.infoCheckServers" = "Világszerte több száz szerver";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "Blokkolja a nemkívánatos hálózati kapcsolatokat";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxBlockAdsAlternate" = "Hirdetések& trackerek letiltása minden alkalmazásban ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "Akár 100 Mbps sebesség támogatása";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxFastAlternate" = "Gyors és 100 Mbps-ig korlátlan";
@@ -138,10 +132,4 @@
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Aktuális beállítás: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "VPN-régió";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "Kérjük, frissítse fizetési módját";
 

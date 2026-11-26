@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "बुकमार्क्स इंपोर्ट करते समय कोई गड़बड़ी हुई।";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "हिस्ट्री इंपोर्ट करते समय कोई गड़बड़ी हुई।";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "पासवर्ड इंपोर्ट करते समय कोई गड़बड़ी हुई।\nविवादों के कारण कुछ पासवर्ड्स को इंपोर्ट नहीं किया जा सका।";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "पासवर्ड इंपोर्ट करते समय कोई गड़बड़ी हुई।";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "फ़ाइल को अनज़िप करने में गड़बड़ी हुई।";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "फ़ाइल चुनें...";
 
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "ऐप्स की लिस्ट से (अंग्रेज़ी के अक्षरों के क्रम में सॉर्ट किए गए), *Safari* को ढूँढकर उस पर टैप करें।";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "ज़िप फ़ाइल में इंपोर्ट डेटा नहीं है।";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "कृपया इंतज़ार करें, हम आपका डेटा सुरक्षित रूप से ट्रांसफ़र कर रहे हैं।\nइसमें कुछ पल लग सकते हैं।";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "एक से ज़्यादा प्रोफ़ाइलों का पता लगा";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "व्यक्तिगत";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "इंपोर्ट किए गए बुकमार्क्स";

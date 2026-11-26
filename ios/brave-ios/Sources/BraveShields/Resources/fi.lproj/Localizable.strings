@@ -16,27 +16,6 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "Seurantaohjelmat ja mainosta estetty";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "mainosta\nestetty";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "**Brave-mediasoitin** takaa videokokemuksen ilman mainoksia ja keskeytyksiä.";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "Säädä suojausta";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "Tämä sivusto on alkanut estää joitain mainosten estokeinoja, mikä tarkoittaa, että kyseinen sivusto ei välttämättä toimi odotetulla tavalla.";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Tämän ongelman ratkaisemiseksi Brave voi säätää suojasi asetuksia puolestasi. Säätämisen jälkeen voit yrittää katsoa tätä sisältöä Brave-mediasoittimessa.";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "Säilytä nykyiset asetukset";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "Säädä tämän sivuston mainosestoasetuksia";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP-sivujen automaattinen uudelleenohjaus";
 
@@ -79,32 +58,11 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "Estää JavaScriptin (voi rikkoa sivustoja).";
 
-/* Title for the brave player feature */
-"BravePlayer" = "Brave Player";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Avaa aina tämän sivuston videot Brave-mediasoittimella";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "Kokeile";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "Ei nyt";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Brave-mediasoittimella voit katsella videoita ilman keskeytyksiä.";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Katso sen sijaan Brave-mediasoittimessa";
-
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "Edistyneet kontrollit";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Estetyt mainokset ja muut epäilyttävät kohteet";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Lisätietoa";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "Muuta suojauksen yleisiä oletuksia";
@@ -217,17 +175,11 @@
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "Odottaa latausta";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Muokkaa";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "Anna suodatinluettelon URL";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "Viimeksi päivitetty %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Kirjoita suodatinluettelon URL-osoite tähän";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Estä sormenjälkitunnistus";
@@ -411,9 +363,6 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Seurantaohjelmat ja mainostenesto";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "seurantaohjelmaa\nestetty";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Päivitä luettelot";
