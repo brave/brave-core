@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index fc3f512bac26f1c65c77c41a75908f7393051158..1da82709c041485f478424b405fd4f62a2294c35 100644
+index fc3f512bac26f1c65c77c41a75908f7393051158..1816bea3df6707822a510bbf67bb0f3f7c2cb4c9 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -285,8 +285,8 @@ public class ToolbarPhone extends ToolbarLayout
@@ -71,3 +71,11 @@ index fc3f512bac26f1c65c77c41a75908f7393051158..1da82709c041485f478424b405fd4f62
          StatusCoordinator statusCoordinator = mLocationBar.getStatusCoordinator();
          if (statusCoordinator == null) return 0;
  
+@@ -3833,6 +3838,6 @@ public class ToolbarPhone extends ToolbarLayout
+     private boolean shouldShowOptionalButtonInToolbar() {
+         // The identity disc is now a dedicated signin button, so the optional button is never shown
+         // in the toolbar on the NTP. In the new IA, the optional button lives in the location bar.
+-        return !mIsToolbarUiRefactorEnabled && !isNtpVisualState(mVisualState);
++        return !mIsToolbarUiRefactorEnabled;
+     }
+ }
