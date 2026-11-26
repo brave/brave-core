@@ -16,6 +16,10 @@ export interface UntrustedConversationContextProps {
 
 const IS_MOBILE = loadTimeData.getBoolean('isMobile')
 const IS_HISTORY_FEATURE_ENABLED = loadTimeData.getBoolean('isHistoryEnabled')
+const IS_THREADS_FEATURE_ENABLED = loadTimeData.getBoolean('isThreadsEnabled')
+const MAX_THREADS_PER_ORIGIN_ENTRY = Number(
+  loadTimeData.getString('maxThreadsPerOriginEntry'),
+)
 
 /**
  * Provides the untrusted conversation context with API hooks
@@ -35,6 +39,8 @@ export function useProvideUntrustedConversationContext(
   const serviceState = api.useServiceState().data
   const conversationHistory = api.useGetConversationHistoryData(null)
 
+  const threads = api.useGetConversationThreadsData()
+
   const associatedContent = api.useAssociatedContentData()
   const contentTaskTabId = api.useCurrentContentTaskStarted().data?.[0]
 
@@ -42,6 +48,8 @@ export function useProvideUntrustedConversationContext(
     api,
 
     isReadOnly: props.isReadOnly ?? false,
+
+    threads,
 
     showPremiumSuggestionForRegenerate,
     setShowPremiumSuggestionForRegenerate,
@@ -121,6 +129,9 @@ export function useProvideUntrustedConversationContext(
     // TODO(https://github.com/brave/brave-browser/issues/53878): Consider
     // using typed LoadTimeData.
     isHistoryFeatureEnabled: IS_HISTORY_FEATURE_ENABLED,
+
+    isThreadsFeatureEnabled: IS_THREADS_FEATURE_ENABLED,
+    maxThreadsPerOriginEntry: MAX_THREADS_PER_ORIGIN_ENTRY,
 
     /**
      * @deprecated Use `api.useAssociatedContentData()` instead

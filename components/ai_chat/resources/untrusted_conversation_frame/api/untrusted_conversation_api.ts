@@ -84,7 +84,9 @@ export default function createUntrustedConversationApi(
     actions: {
       conversationHandler: conversationHandler as Pick<
         Mojom.UntrustedConversationHandlerInterface,
-        VoidMethodKeys<Mojom.UntrustedConversationHandlerInterface>
+        | VoidMethodKeys<Mojom.UntrustedConversationHandlerInterface>
+        // Returns the new thread id; opted in so it can be awaited.
+        | 'createConversationThread'
       >,
       // The browser rejects anything sent here that didn't follow a user
       // gesture, and closes the pipe.
@@ -114,6 +116,9 @@ export default function createUntrustedConversationApi(
         searchForTabs: {
           response: (result) => result.tabs,
         },
+        getPluralString: {
+          response: (result) => result.pluralString,
+        },
       }),
 
       // Conversation data
@@ -122,6 +127,14 @@ export default function createUntrustedConversationApi(
           response: (result) => result.conversationHistory,
           prefetchWithArgs: [null],
           placeholderData: [] as Mojom.ConversationTurn[],
+        },
+
+        // Thread metadata for the conversation. Prefetched so the thread
+        // indicator can be rendered on entries with child threads.
+        getConversationThreads: {
+          response: (result) => result.threads,
+          prefetchWithArgs: [],
+          placeholderData: [] as Mojom.Thread[],
         },
       }),
 
@@ -206,6 +219,25 @@ export default function createUntrustedConversationApi(
                 updateConversationHistory(old, entry),
               )
             }
+          },
+
+          onConversationThreadUpdate(thread) {
+            api.getConversationThreads.update((old) => {
+              const threads = (old ?? []).slice()
+              const index = threads.findIndex((t) => t.uuid === thread.uuid)
+              if (index === -1) {
+                threads.push(thread)
+              } else {
+                threads[index] = thread
+              }
+              return threads
+            })
+          },
+
+          onConversationThreadRemoved(threadUuid) {
+            api.getConversationThreads.update((old) =>
+              (old ?? []).filter((thread) => thread.uuid !== threadUuid),
+            )
           },
 
           onToolUseEventOutput(entryUuid, toolUse) {

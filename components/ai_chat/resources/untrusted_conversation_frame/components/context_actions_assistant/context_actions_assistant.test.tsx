@@ -124,6 +124,7 @@ const assistantSummaryTurn: Mojom.ConversationTurn = {
 function renderAssistant(
   isSummaryResponse: boolean,
   overrides?: Partial<UntrustedConversationContext>,
+  childThreadCount?: number,
 ) {
   const conversationHistory: Mojom.ConversationTurn[] = isSummaryResponse
     ? [humanSummarizeTurn, assistantSummaryTurn]
@@ -140,7 +141,7 @@ function renderAssistant(
     <MockContext
       ref={mockRef}
       conversationHandler={{
-        getConversationHistory() {
+        getConversationHistory(_threadUuid: string | null) {
           return Promise.resolve({ conversationHistory })
         },
       }}
@@ -153,9 +154,11 @@ function renderAssistant(
       overrides={overrides}
     >
       <ContextActionsAssistant
-        turnUuid='turn-uuid'
-        turnModelKey='model-one'
+        firstTurnUuid='turn-uuid'
+        lastTurnUuid='turn-uuid'
+        firstTurnModelKey='model-one'
         onEditAnswerClicked={jest.fn()}
+        childThreadCount={childThreadCount}
       />
     </MockContext>,
   )
@@ -231,5 +234,53 @@ describe('ContextActionsAssistant', () => {
         'false',
       )
     })
+  })
+
+  it('hides thread button when threads feature is disabled', () => {
+    const renderResult = renderAssistant(false, {
+      isThreadsFeatureEnabled: false,
+    })
+
+    expect(
+      renderResult.queryByTitle(S.CHAT_UI_CREATE_THREAD_BUTTON_LABEL),
+    ).not.toBeInTheDocument()
+  })
+
+  it('shows thread button when threads feature is enabled', () => {
+    const renderResult = renderAssistant(false, {
+      isThreadsFeatureEnabled: true,
+    })
+
+    expect(
+      renderResult.getByTitle(S.CHAT_UI_CREATE_THREAD_BUTTON_LABEL),
+    ).toBeInTheDocument()
+  })
+
+  it('disables thread button when the max number of threads is reached', () => {
+    const renderResult = renderAssistant(
+      false,
+      { isThreadsFeatureEnabled: true, maxThreadsPerOriginEntry: 2 },
+      2,
+    )
+
+    expect(
+      renderResult
+        .getByTitle(S.CHAT_UI_CREATE_THREAD_BUTTON_LABEL)
+        .getAttribute('isdisabled'),
+    ).toBe('true')
+  })
+
+  it('enables thread button when below the max number of threads', () => {
+    const renderResult = renderAssistant(
+      false,
+      { isThreadsFeatureEnabled: true, maxThreadsPerOriginEntry: 2 },
+      1,
+    )
+
+    expect(
+      renderResult
+        .getByTitle(S.CHAT_UI_CREATE_THREAD_BUTTON_LABEL)
+        .getAttribute('isdisabled'),
+    ).not.toBe('true')
   })
 })

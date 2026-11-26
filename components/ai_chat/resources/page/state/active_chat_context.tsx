@@ -22,6 +22,7 @@ export interface SelectedChatDetails
   createNewConversationWithWorkspace: (workspaceUrl: Url) => void
   isMainConversation: boolean
   openMainConversation: () => void
+  openThread: (threadUuid: string) => void
 }
 
 /**
@@ -38,6 +39,7 @@ export const ActiveChatContext = React.createContext<SelectedChatDetails>({
   createNewConversationWithWorkspace: () => {},
   isMainConversation: false,
   openMainConversation: () => {},
+  openThread: () => {},
   // It's ok to stub undefined for now because we don't render children unless
   // we have a value. For convenience we don't need to have this as an optional
   // value.
@@ -134,6 +136,9 @@ export function ActiveChatProvider({
         }
       },
       isMainConversation,
+      openThread: (threadUuid: string) => {
+        // TODO(https://github.com/brave/brave-browser/issues/57705): Needs implementation
+      },
     }),
     [
       selectedConversationId,
@@ -147,6 +152,14 @@ export function ActiveChatProvider({
   aiChat.api.useRequestNewConversation(() => {
     details.createNewConversation()
   }, [aiChat.api])
+
+  // Handle child frame requests to open a thread in the side panel
+  aiChat.api.useOpenThread(
+    (threadUuid) => {
+      // TODO(https://github.com/brave/brave-browser/issues/57705): Needs implementation
+    },
+    [aiChat.api],
+  )
 
   // Only rebind the conversation when a new default is signalled in normal
   // sidebar mode. In global panel mode the conversation persists across tab

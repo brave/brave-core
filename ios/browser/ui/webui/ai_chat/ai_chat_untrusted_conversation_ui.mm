@@ -13,6 +13,7 @@
 #include "base/notimplemented.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
@@ -50,6 +51,7 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/url_constants.h"
 
@@ -110,6 +112,18 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
   void SearchForTabs(const std::string& query,
                      SearchForTabsCallback callback) override {
     std::move(callback).Run(std::nullopt);
+  }
+
+  void GetPluralString(const std::string& key,
+                       int32_t count,
+                       GetPluralStringCallback callback) override {
+    auto iter = std::ranges::find(webui::kAiChatStrings, key,
+                                  &webui::LocalizedString::name);
+    if (iter == webui::kAiChatStrings.end()) {
+      std::move(callback).Run("");
+      return;
+    }
+    std::move(callback).Run(l10n_util::GetPluralStringFUTF8(iter->id, count));
   }
 
   // No current thumbnail tracker need or support on iOS
@@ -254,6 +268,12 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->AddBoolean(
       "isMathRenderingEnabled",
       base::FeatureList::IsEnabled(ai_chat::features::kAIChatMathRendering));
+  source->AddBoolean(
+      "isThreadsEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatThreads));
+  source->AddString(
+      "maxThreadsPerOriginEntry",
+      base::NumberToString(ai_chat::features::kMaxThreadsPerOriginEntry.Get()));
 
   // If the feature is not enabled then don't add the origin to the CSP.
   if (base::FeatureList::IsEnabled(ai_chat::features::kRichSearchWidgets)) {
