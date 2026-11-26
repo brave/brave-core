@@ -42,7 +42,7 @@ substitutions:
       replace: '\1this.syncPrefs?.syncAllDataTypes;'
 
   - description: |-
-      Declare the AI Chat sync toggle's reactive properties.
+      Declare the AI Chat sync toggle's label as a reactive property.
     regex:
       re_pattern:
         '(static override get properties\(\) \{\n *return \{.*?\n)( *)(\};\n
@@ -50,7 +50,6 @@ substitutions:
       re_flags: [DOTALL]
       replace: |-
         \1
-              isAiChatSyncEnabled_: {type: Boolean},
               aiChatCheckboxLabel_: {type: String},
         \2\3
 
@@ -62,7 +61,7 @@ substitutions:
     regex:
       re_pattern: '(\n)( *)(override connectedCallback\(\) \{)'
       replace: |-
-        \1\2protected accessor isAiChatSyncEnabled_: boolean =
+        \1\2protected readonly isAiChatSyncEnabled_: boolean =
         \2    loadTimeData.valueExists('isBraveSyncAIChatEnabled') &&
         \2    loadTimeData.getBoolean('isBraveSyncAIChatEnabled');
         \2protected accessor aiChatCheckboxLabel_: string =

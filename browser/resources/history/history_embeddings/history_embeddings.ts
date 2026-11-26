@@ -62,27 +62,24 @@ export class BraveHistoryEmbeddingsElement extends BraveHistoryEmbeddingsElement
 
   static override get properties() {
     return {
-      enabled_: { type: Boolean },
       loadingResults_: { type: Boolean },
       searchResult_: { type: Object },
       searchResultDirty_: { type: Boolean },
       searchQuery: { type: String },
-
-      webuiRoundedIconsEnabled_: { type: Boolean },
     }
   }
 
   private actionMenuItem_: SearchResultItem | null = null
   // Whether the profile's HistoryEmbeddingsService was built. It is built
   // once at profile setup, so this holds for the whole session.
-  protected accessor enabled_: boolean =
+  protected readonly enabled_: boolean =
     loadTimeData.valueExists('enableBraveHistoryEmbeddings')
-      && loadTimeData.getBoolean('enableBraveHistoryEmbeddings')
+    && loadTimeData.getBoolean('enableBraveHistoryEmbeddings')
   protected accessor loadingResults_ = false
   private loadingStateMinimumMs_ = LOADING_STATE_MINIMUM_MS
   protected accessor searchResult_: SearchResult | null = null
   private accessor searchResultDirty_: boolean = false
-  protected accessor webuiRoundedIconsEnabled_: boolean =
+  protected readonly webuiRoundedIconsEnabled_: boolean =
     loadTimeData.getBoolean('webuiRoundedIconsEnabled')
   private searchTimestamp_: number = 0
   accessor searchQuery: string = ''
