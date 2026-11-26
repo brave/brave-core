@@ -44,4 +44,35 @@ TEST_F(BraveAdsConversionUserDataBuilderTest, BuildConversionUserData) {
             BuildConversionUserData(conversion));
 }
 
+TEST_F(BraveAdsConversionUserDataBuilderTest,
+       BuildConversionUserDataWithOrderIdAndValue) {
+  // Arrange
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/false);
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
+  ConversionInfo conversion = BuildConversion(ad_event);
+  conversion.extracted_order.id = "336121537";
+  conversion.extracted_order.value = "4,98";
+  conversion.extracted_order.currency = "EUR";
+
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"JSON(
+                    {
+                      "conversion": [
+                        {
+                          "action": "view",
+                          "order": {
+                            "id": "336121537",
+                            "value": "4,98",
+                            "currency": "EUR"
+                          }
+                        }
+                      ]
+                    })JSON"),
+            BuildConversionUserData(conversion));
+}
+
 }  // namespace brave_ads

@@ -21,4 +21,25 @@ base::DictValue BuildConversionActionTypeUserData(
                                ToString(conversion.action_type));
 }
 
+std::optional<base::DictValue> MaybeBuildConversionOrderUserData(
+    const ConversionInfo& conversion) {
+  if (!conversion.extracted_order.id && !conversion.extracted_order.value) {
+    return std::nullopt;
+  }
+
+  base::DictValue order;
+  if (conversion.extracted_order.id) {
+    order.Set(kConversionOrderIdKey, *conversion.extracted_order.id);
+  }
+  if (conversion.extracted_order.value) {
+    order.Set(kConversionOrderValueKey, *conversion.extracted_order.value);
+    if (conversion.extracted_order.currency) {
+      order.Set(kConversionOrderCurrencyKey,
+                *conversion.extracted_order.currency);
+    }
+  }
+
+  return base::DictValue().Set(kConversionOrderKey, std::move(order));
+}
+
 }  // namespace brave_ads
