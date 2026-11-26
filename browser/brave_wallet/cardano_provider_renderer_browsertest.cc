@@ -6,6 +6,7 @@
 #include <optional>
 
 #include "base/functional/callback_helpers.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
@@ -223,7 +224,9 @@ class CardanoProviderRendererTest : public InProcessBrowserTest {
     // the navigations below.
     ASSERT_TRUE(GetKeyringService()->RestoreWalletSync(
         kMnemonicScarePiece, kTestWalletPassword, false));
-    content::SetBrowserClientForTesting(&test_content_browser_client_);
+    // Restore this during teardown of the tests.
+    old_client_ =
+        content::SetBrowserClientForTesting(&test_content_browser_client_);
     base::FilePath test_data_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     https_server_.ServeFilesFromDirectory(test_data_dir);
@@ -240,6 +243,11 @@ class CardanoProviderRendererTest : public InProcessBrowserTest {
 
     GURL url = embedded_test_server()->GetURL("/empty.html");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  }
+
+  void TearDownOnMainThread() override {
+    content::SetBrowserClientForTesting(old_client_);
+    InProcessBrowserTest::TearDownOnMainThread();
   }
 
   content::WebContents* web_contents(BrowserWindowInterface* browser) const {
@@ -265,6 +273,7 @@ class CardanoProviderRendererTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServerHandle test_server_handle_;
+  raw_ptr<content::ContentBrowserClient> old_client_ = nullptr;
 };
 
 class CardanoProviderDisabledRendererTest : public CardanoProviderRendererTest {
@@ -822,7 +831,8 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
         .WillByDefault([&](const std::optional<std::string>& amount,
                            mojom::CardanoProviderPaginationPtr paginate,
                            TestCardanoApi::GetUtxosCallback callback) {
-          EXPECT_EQ("1", amount.value());
+          EXPECT_EQ("1", amount);
+          ASSERT_TRUE(paginate);
           EXPECT_EQ(2, paginate->page);
           EXPECT_EQ(3, paginate->limit);
           std::move(callback).Run(std::vector<std::string>({"1", "2"}),
@@ -891,6 +901,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
                            mojom::CardanoProviderPaginationPtr paginate,
                            TestCardanoApi::GetUtxosCallback callback) {
           EXPECT_FALSE(amount);
+          ASSERT_TRUE(paginate);
           EXPECT_EQ(2, paginate->page);
           EXPECT_EQ(3, paginate->limit);
           std::move(callback).Run(std::vector<std::string>({"1", "2"}),
