@@ -40,8 +40,9 @@ std::string GetServicesDomain(
 
 // Returns the origin URL for the services domain with the given prefix.
 //
-// If --origin-override-[prefix]=<url> is present and <url> is a valid http or
-// https URL, its origin is returned (any path, query or fragment is dropped).
+// If --brave-services-override-[prefix]=<url> is present and <url> is a valid
+// https URL, or an http URL whose host is localhost, its origin is returned
+// (any path, query or fragment is dropped).
 // This override takes precedence over all env switches.
 //
 // Otherwise, returns https://[GetServicesDomain(prefix, ...)].

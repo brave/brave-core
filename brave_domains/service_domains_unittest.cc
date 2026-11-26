@@ -127,16 +127,31 @@ TEST(BraveServiceDomains, OriginWithoutOverride) {
 
 TEST(BraveServiceDomains, OriginWithValidOverride) {
   base::CommandLine cl(base::CommandLine::NO_PROGRAM);
-  cl.AppendSwitchASCII("origin-override-test_prefix", "http://localhost:8080");
+  cl.AppendSwitchASCII("brave-services-override-test_prefix",
+                       "http://localhost:8080");
 
   EXPECT_EQ(GetServicesOrigin("test_prefix",
                               brave_domains::ServicesEnvironment::PROD, &cl),
             GURL("http://localhost:8080/"));
 }
 
+TEST(BraveServiceDomains, OriginOverrideAcceptsHttpsAndHttpLocalhost) {
+  for (const char* value :
+       {"https://example.com", "http://localhost:8080", "http://127.0.0.1:8080",
+        "http://[::1]:8080", "http://foo.localhost"}) {
+    SCOPED_TRACE(value);
+    base::CommandLine cl(base::CommandLine::NO_PROGRAM);
+    cl.AppendSwitchASCII("brave-services-override-test_prefix", value);
+
+    EXPECT_EQ(GetServicesOrigin("test_prefix",
+                                brave_domains::ServicesEnvironment::PROD, &cl),
+              GURL(value).GetWithEmptyPath());
+  }
+}
+
 TEST(BraveServiceDomains, OriginOverrideDropsPathQueryAndRef) {
   base::CommandLine cl(base::CommandLine::NO_PROGRAM);
-  cl.AppendSwitchASCII("origin-override-test_prefix",
+  cl.AppendSwitchASCII("brave-services-override-test_prefix",
                        "https://localhost:8080/base?q=1#f");
 
   EXPECT_EQ(GetServicesOrigin("test_prefix",
@@ -147,10 +162,11 @@ TEST(BraveServiceDomains, OriginOverrideDropsPathQueryAndRef) {
 TEST(BraveServiceDomains, OriginWithInvalidOverride) {
   const GURL expected(base::StrCat({"https://test_prefix.", kProductionValue}));
 
-  for (const char* value : {"ftp://foo", "not a url"}) {
+  for (const char* value :
+       {"ftp://foo", "not a url", "http://example.com", "http://10.0.0.1"}) {
     SCOPED_TRACE(value);
     base::CommandLine cl(base::CommandLine::NO_PROGRAM);
-    cl.AppendSwitchASCII("origin-override-test_prefix", value);
+    cl.AppendSwitchASCII("brave-services-override-test_prefix", value);
 
     EXPECT_EQ(GetServicesOrigin("test_prefix",
                                 brave_domains::ServicesEnvironment::PROD, &cl),
@@ -160,7 +176,8 @@ TEST(BraveServiceDomains, OriginWithInvalidOverride) {
 
 TEST(BraveServiceDomains, OriginOverrideForOtherPrefixIgnored) {
   base::CommandLine cl(base::CommandLine::NO_PROGRAM);
-  cl.AppendSwitchASCII("origin-override-other_prefix", "http://localhost:8080");
+  cl.AppendSwitchASCII("brave-services-override-other_prefix",
+                       "http://localhost:8080");
 
   EXPECT_EQ(GetServicesOrigin("test_prefix",
                               brave_domains::ServicesEnvironment::PROD, &cl),
@@ -171,7 +188,8 @@ TEST(BraveServiceDomains, OriginOverrideTakesPrecedenceOverEnvSwitches) {
   base::CommandLine cl(base::CommandLine::NO_PROGRAM);
   cl.AppendSwitchASCII("brave-services-env", "dev");
   cl.AppendSwitchASCII("env-test_prefix", "staging");
-  cl.AppendSwitchASCII("origin-override-test_prefix", "http://localhost:8080");
+  cl.AppendSwitchASCII("brave-services-override-test_prefix",
+                       "http://localhost:8080");
 
   EXPECT_EQ(GetServicesOrigin("test_prefix",
                               brave_domains::ServicesEnvironment::PROD, &cl),

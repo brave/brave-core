@@ -5,8 +5,10 @@
 
 import("//brave/components/containers/buildflags/buildflags.gni")
 
-brave_browser_ui_startup_public_deps =
-    [ "//brave/components/containers/buildflags" ]
+brave_browser_ui_startup_public_deps = [
+  "//brave/brave_domains:constants",
+  "//brave/components/containers/buildflags",
+]
 
 if (enable_containers) {
   brave_browser_ui_startup_public_deps +=

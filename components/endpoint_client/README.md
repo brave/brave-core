@@ -133,9 +133,9 @@ environment can be overridden per service domain prefix with
 `--brave-services-env={dev,staging,prod}`.
 
 To point a service at an arbitrary host (e.g. a local server), use
-`--origin-override-<prefix>=http://localhost:8080`. Only `http` and `https` URLs
-are accepted, any path in the override is dropped, and it takes precedence over
-the environment switches.
+`--brave-services-override-<prefix>=http://localhost:8080`. Only `https` URLs,
+or `http` URLs pointing at localhost, are accepted, any path in the override is
+dropped, and it takes precedence over the environment switches.
 
 For non-Brave services, you can define an endpoint manually:
 
