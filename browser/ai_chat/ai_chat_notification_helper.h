@@ -15,7 +15,7 @@ class Profile;
 
 namespace ai_chat {
 
-// Shows background completion notifications through the profile's
+// Shows background notifications through the profile's
 // NotificationDisplayService.
 class AIChatNotificationHelper : public AIChatService::NotificationDelegate {
  public:
@@ -25,9 +25,9 @@ class AIChatNotificationHelper : public AIChatService::NotificationDelegate {
   AIChatNotificationHelper& operator=(const AIChatNotificationHelper&) = delete;
 
   // AIChatService::NotificationDelegate:
-  void ShowCompletionNotification(
-      const std::string& conversation_uuid,
-      const std::u16string& conversation_title) override;
+  void ShowCompletionNotification(const std::string& conversation_uuid,
+                                  const std::u16string& conversation_title,
+                                  bool needs_approval) override;
   void CloseCompletionNotification(
       const std::string& conversation_uuid) override;
 
