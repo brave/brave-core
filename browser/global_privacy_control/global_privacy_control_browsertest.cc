@@ -7,6 +7,7 @@
 
 #include "base/feature_list.h"
 #include "base/path_service.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/thread_annotations.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/network_constants.h"
@@ -36,7 +37,9 @@ enum class GPCHeaderResult {
 class GlobalPrivacyControlBrowserTest : public PlatformBrowserTest {
  public:
   GlobalPrivacyControlBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    feature_list_.InitAndEnableFeature(kBraveGlobalPrivacyControl);
+  }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     PlatformBrowserTest::SetUpCommandLine(command_line);
@@ -95,10 +98,9 @@ class GlobalPrivacyControlBrowserTest : public PlatformBrowserTest {
     start_tracking_ = true;
   }
 
-  GPCHeaderResult header_result() {
+  std::optional<GPCHeaderResult> header_result() {
     base::AutoLock auto_lock(header_result_lock_);
-    EXPECT_TRUE(header_result_);
-    return *header_result_;
+    return header_result_;
   }
 
   content::EvalJsResult MessageServiceWorker(
@@ -116,6 +118,7 @@ class GlobalPrivacyControlBrowserTest : public PlatformBrowserTest {
   }
 
  private:
+  base::test::ScopedFeatureList feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   mutable base::Lock header_result_lock_;
@@ -130,7 +133,9 @@ IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlBrowserTest, IncludesSecGPCHeader) {
   StartTracking();
   ASSERT_TRUE(content::NavigateToURL(web_contents(), target));
 
-  EXPECT_EQ(header_result(), GPCHeaderResult::kOk);
+  const auto result = header_result();
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(*result, GPCHeaderResult::kOk);
 }
 
 // The Global Privacy Control spec also defines the
@@ -167,7 +172,9 @@ IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlBrowserTest,
 
   StartTracking();
   EXPECT_EQ(MessageServiceWorker(rfh, "fetch"), "LOADED");
-  EXPECT_EQ(header_result(), GPCHeaderResult::kOk);
+  const auto result = header_result();
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(*result, GPCHeaderResult::kOk);
 
   EXPECT_EQ(MessageServiceWorker(rfh, "hasGpc"), true);
   EXPECT_EQ(MessageServiceWorker(rfh, "checkGpc"), true);
@@ -190,7 +197,9 @@ IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlFlagDisabledTest, SecGPCHeaderNot1) {
   StartTracking();
   ASSERT_TRUE(content::NavigateToURL(web_contents(), target));
 
-  EXPECT_EQ(header_result(), GPCHeaderResult::kNoHeader);
+  const auto result = header_result();
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(*result, GPCHeaderResult::kNoHeader);
 }
 
 // When kGlobalPrivacyControl is disabled, the `navigator.globalPrivacyControl`
@@ -236,7 +245,9 @@ IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlPolicyTest,
 
   auto* rfh = web_contents()->GetPrimaryMainFrame();
 
-  EXPECT_EQ(header_result(), GPCHeaderResult::kNoHeader);
+  const auto result = header_result();
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(*result, GPCHeaderResult::kNoHeader);
   EXPECT_EQ(false, content::EvalJs(rfh, "navigator.globalPrivacyControl"));
 }
 
@@ -255,7 +266,9 @@ IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlPolicyTest,
 
   StartTracking();
   EXPECT_EQ(MessageServiceWorker(rfh, "fetch"), "LOADED");
-  EXPECT_EQ(header_result(), GPCHeaderResult::kNoHeader);
+  const auto result = header_result();
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(*result, GPCHeaderResult::kNoHeader);
 
   EXPECT_EQ(MessageServiceWorker(rfh, "hasGpc"), true);
   EXPECT_EQ(MessageServiceWorker(rfh, "checkGpc"), false);
