@@ -8,7 +8,6 @@
 #include <cstdint>
 #include <initializer_list>
 #include <memory>
-#include <optional>
 #include <utility>
 
 #include "base/supports_user_data.h"
@@ -31,6 +30,7 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/display/display.h"
 #include "ui/display/screen.h"
+#include "ui/display/types/display_constants.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/resize_utils.h"
@@ -50,42 +50,33 @@ namespace {
 
 constexpr int kTopControlIconSize = 20;
 
-constexpr char kPipWindowBoundsCacheKey[] = "BravePipWindowBoundsCache";
+constexpr char kSavedPipWindowBoundsKey[] = "BraveSavedPipWindowBounds";
 
-// Most recent PiP window bounds for a BrowserContext. Every profile, including
-// each off-the-record one, has its own instance, so private windows never share
-// bounds with regular ones and their bounds go away with the private session.
-// Nothing is persisted to disk.
-class PipWindowBoundsCache : public base::SupportsUserData::Data {
- public:
-  struct Entry {
-    // Display the window was on, and its bounds relative to the origin of that
-    // display's work area.
-    int64_t display_id;
-    gfx::Rect bounds_in_work_area;
-    // Used to find the closest display when `display_id` no longer exists.
-    gfx::Rect bounds_in_screen;
-  };
-
-  std::optional<Entry> entry;
+// Most recent PiP window bounds for a BrowserContext, present only once bounds
+// have been saved. Every profile, including each off-the-record one, has its
+// own copy, so private windows never share bounds with regular ones and their
+// bounds go away with the private session. Nothing is persisted to disk.
+struct SavedPipWindowBounds : public base::SupportsUserData::Data {
+  // Display the window was on, and its bounds relative to the origin of that
+  // display's work area.
+  int64_t display_id = display::kInvalidDisplayId;
+  gfx::Rect bounds_in_work_area;
+  // Used to find the closest display when `display_id` no longer exists.
+  gfx::Rect bounds_in_screen;
 };
 
-PipWindowBoundsCache* GetPipWindowBoundsCache(
+content::BrowserContext* GetBrowserContext(
     content::PictureInPictureWindowController* controller) {
   if (!controller || !controller->GetWebContents()) {
     return nullptr;
   }
+  return controller->GetWebContents()->GetBrowserContext();
+}
 
-  content::BrowserContext* context =
-      controller->GetWebContents()->GetBrowserContext();
-  auto* cache = static_cast<PipWindowBoundsCache*>(
-      context->GetUserData(kPipWindowBoundsCacheKey));
-  if (!cache) {
-    auto new_cache = std::make_unique<PipWindowBoundsCache>();
-    cache = new_cache.get();
-    context->SetUserData(kPipWindowBoundsCacheKey, std::move(new_cache));
-  }
-  return cache;
+SavedPipWindowBounds* GetSavedPipWindowBounds(
+    content::BrowserContext* context) {
+  return static_cast<SavedPipWindowBounds*>(
+      context->GetUserData(kSavedPipWindowBoundsKey));
 }
 
 // Picks the edge to resize from so that the corner closest to the edge of the
@@ -184,18 +175,25 @@ void BraveVideoOverlayWindowViews::MaybeCacheBounds() {
     return;
   }
 
-  auto* cache = GetPipWindowBoundsCache(GetController());
-  if (!cache) {
+  content::BrowserContext* context = GetBrowserContext(GetController());
+  if (!context) {
     return;
+  }
+
+  // This runs on every move while dragging, so update the saved bounds in
+  // place once they exist.
+  SavedPipWindowBounds* saved = GetSavedPipWindowBounds(context);
+  if (!saved) {
+    auto new_saved = std::make_unique<SavedPipWindowBounds>();
+    saved = new_saved.get();
+    context->SetUserData(kSavedPipWindowBoundsKey, std::move(new_saved));
   }
 
   const display::Display display =
       display::Screen::Get()->GetDisplayNearestWindow(GetNativeWindow());
-  cache->entry = PipWindowBoundsCache::Entry{
-      .display_id = display.id(),
-      .bounds_in_work_area = bounds - display.work_area().OffsetFromOrigin(),
-      .bounds_in_screen = bounds,
-  };
+  saved->display_id = display.id();
+  saved->bounds_in_work_area = bounds - display.work_area().OffsetFromOrigin();
+  saved->bounds_in_screen = bounds;
 }
 
 void BraveVideoOverlayWindowViews::MaybeRestoreCachedBounds() {
@@ -203,23 +201,25 @@ void BraveVideoOverlayWindowViews::MaybeRestoreCachedBounds() {
     return;
   }
 
-  auto* cache = GetPipWindowBoundsCache(GetController());
-  if (!cache || !cache->entry) {
+  content::BrowserContext* context = GetBrowserContext(GetController());
+  const SavedPipWindowBounds* saved =
+      context ? GetSavedPipWindowBounds(context) : nullptr;
+  if (!saved) {
     return;
   }
 
   // Restore relative to the display the window was last on, so it stays there
   // even if the display layout changed. If that display is gone, fall back to
   // the display closest to the old screen bounds.
-  const PipWindowBoundsCache::Entry& entry = *cache->entry;
   const display::Screen* screen = display::Screen::Get();
   display::Display display;
   gfx::Rect bounds;
-  if (screen->GetDisplayWithDisplayId(entry.display_id, &display)) {
-    bounds = entry.bounds_in_work_area + display.work_area().OffsetFromOrigin();
+  if (screen->GetDisplayWithDisplayId(saved->display_id, &display)) {
+    bounds =
+        saved->bounds_in_work_area + display.work_area().OffsetFromOrigin();
   } else {
-    display = screen->GetDisplayMatching(entry.bounds_in_screen);
-    bounds = entry.bounds_in_screen;
+    display = screen->GetDisplayMatching(saved->bounds_in_screen);
+    bounds = saved->bounds_in_screen;
   }
 
   const gfx::Rect work_area = display.work_area();
