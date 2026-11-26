@@ -76,6 +76,7 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
+import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 
 public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
@@ -147,7 +148,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             VerticalTabsActionDelegate verticalTabsActionDelegate,
             Supplier<Boolean> urlBarVisibleSupplier,
             Runnable onTabLayoutAvailable,
-            BooleanSupplier isWarmOnResumeSupplier) {
+            BooleanSupplier isWarmOnResumeSupplier,
+            IntSupplier launchCauseSupplier) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -207,7 +209,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 verticalTabsActionDelegate,
                 urlBarVisibleSupplier,
                 onTabLayoutAvailable,
-                isWarmOnResumeSupplier);
+                isWarmOnResumeSupplier,
+                launchCauseSupplier);
 
         mBraveActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;

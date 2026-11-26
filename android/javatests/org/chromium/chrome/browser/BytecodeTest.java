@@ -250,6 +250,7 @@ import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 
 /**
@@ -2037,7 +2038,8 @@ public class BytecodeTest {
                         VerticalTabsActionDelegate.class,
                         Supplier.class,
                         Runnable.class,
-                        BooleanSupplier.class));
+                        BooleanSupplier.class,
+                        IntSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
