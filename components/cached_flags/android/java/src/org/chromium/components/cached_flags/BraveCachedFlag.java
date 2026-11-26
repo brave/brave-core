@@ -62,4 +62,11 @@ public class BraveCachedFlag extends CachedFlag {
             mDefaultValue = defaultValue;
         }
     }
+
+    // Brave builds without fieldtrial_testing_config.json, so the defaults meant to match it in
+    // tests and development builds don't apply.
+    @Override
+    public boolean getDefaultValue() {
+        return mDefaultValue;
+    }
 }
