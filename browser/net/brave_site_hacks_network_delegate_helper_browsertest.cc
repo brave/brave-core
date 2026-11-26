@@ -90,6 +90,15 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
         https_server_.GetURL("foobar.onion", "/iframe_load.html");
   }
 
+  void TearDownOnMainThread() override {
+#if BUILDFLAG(ENABLE_TOR)
+    // Process-wide, so leave them as a fresh browser would have them.
+    net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(false);
+    tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(false);
+#endif
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
   void HandleRequest(const net::test_server::HttpRequest& request) {
     base::AutoLock auto_lock(last_headers_lock_);
 
