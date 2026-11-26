@@ -264,6 +264,7 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
               (base::RepeatingClosure cancel_callback),
               (override));
 
+  MOCK_METHOD(bool, IsPsstEnabled, (), (override));
 };
 
 class PsstTabWebContentsObserverUnitTestBase
@@ -282,6 +283,8 @@ class PsstTabWebContentsObserverUnitTestBase
 
     auto ui_delegate = std::make_unique<MockUiDelegate>();
     ui_delegate_ = ui_delegate.get();
+    ON_CALL(*ui_delegate_, IsPsstEnabled())
+        .WillByDefault(testing::Return(true));
 
     ON_CALL(mock_tab, GetContents())
         .WillByDefault(testing::Return(web_contents()));
@@ -838,7 +841,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, PrefDisabledDontProcess) {
-  psst_settings_service()->SetPsstEnabled(false);
+  EXPECT_CALL(ui_delegate(), IsPsstEnabled())
+      .WillRepeatedly(testing::Return(false));
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _)).Times(0);
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),

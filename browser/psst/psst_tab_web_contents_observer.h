@@ -72,6 +72,8 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
     // (dialog close, "don't show for this site", or feature disable).
     virtual void SetLogicalFlowCancelCallback(
         base::RepeatingClosure cancel_callback) = 0;
+    // Whether PSST is enabled, considering any BraveOrigin policy override.
+    virtual bool IsPsstEnabled() = 0;
   };
 
   // Creates an observer for `tab`'s web contents, or returns null for

@@ -7,7 +7,9 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
+#include "components/policy/policy_constants.h"
 
 namespace {
 
@@ -20,10 +22,12 @@ namespace psst {
 PsstUiDelegateImpl::PsstUiDelegateImpl(
     PsstSettingsService* psst_settings_service,
     PsstReporterService* psst_reporter_service,
-    std::unique_ptr<PsstUiPresenter> ui_presenter)
+    std::unique_ptr<PsstUiPresenter> ui_presenter,
+    brave_origin::BraveOriginService* brave_origin_service)
     : ui_presenter_(std::move(ui_presenter)),
       psst_settings_service_(psst_settings_service),
-      psst_reporter_service_(psst_reporter_service) {
+      psst_reporter_service_(psst_reporter_service),
+      brave_origin_service_(brave_origin_service) {
   CHECK(psst_settings_service_);
   CHECK(psst_reporter_service_);
   CHECK(ui_presenter_);
@@ -171,8 +175,8 @@ void PsstUiDelegateImpl::SubmitPsstErrorsReport() {
 void PsstUiDelegateImpl::OnDialogClose() {
   ui_presenter_->HideInfoBar();
   ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
-                                        base::NullCallback(),
-                                        base::NullCallback());
+                                          base::NullCallback(),
+                                          base::NullCallback());
   CancelLogicalFlow();
 }
 
@@ -214,8 +218,23 @@ void PsstUiDelegateImpl::OnDontShowForThisSite() {
 
 void PsstUiDelegateImpl::OnDisablePrivacySettingsTuning() {
   CancelLogicalFlow();
+  if (brave_origin_service_ &&
+      brave_origin_service_->IsPolicyControlledByBraveOrigin(
+          policy::key::kPsstEnabled)) {
+    brave_origin_service_->SetPolicyValue(policy::key::kPsstEnabled, false);
+  }
   psst_settings_service_->SetPsstEnabled(false);
   ui_presenter_->HideAll();
+}
+
+bool PsstUiDelegateImpl::IsPsstEnabled() {
+  if (brave_origin_service_ &&
+      brave_origin_service_->IsPolicyControlledByBraveOrigin(
+          policy::key::kPsstEnabled)) {
+    return brave_origin_service_->GetPolicyValue(policy::key::kPsstEnabled)
+        .value_or(false);
+  }
+  return psst_settings_service_->IsPsstEnabled();
 }
 
 void PsstUiDelegateImpl::OnPsstEnableChange(bool new_value) {
