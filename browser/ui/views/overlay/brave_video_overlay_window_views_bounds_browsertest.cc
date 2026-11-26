@@ -5,6 +5,7 @@
 
 #include <cstdlib>
 
+#include "base/location.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/overlay/video_overlay_window_views.h"
@@ -31,7 +32,11 @@ constexpr char kPipPage[] = "/media/picture-in-picture/window-size.html";
 // rounding differences.
 constexpr int kSizeTolerance = 2;
 
-void ExpectSizeNear(const gfx::Size& expected, const gfx::Size& actual) {
+void ExpectSizeNear(
+    const gfx::Size& expected,
+    const gfx::Size& actual,
+    const base::Location& location = base::Location::Current()) {
+  SCOPED_TRACE(location.ToString());
   EXPECT_LE(std::abs(expected.width() - actual.width()), kSizeTolerance)
       << "expected " << expected.ToString() << ", got " << actual.ToString();
   EXPECT_LE(std::abs(expected.height() - actual.height()), kSizeTolerance)

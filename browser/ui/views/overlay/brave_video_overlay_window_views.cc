@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/overlay/brave_video_overlay_window_views.h"
 
+#include <cstdint>
 #include <initializer_list>
 #include <memory>
 #include <optional>
@@ -33,6 +34,7 @@
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/resize_utils.h"
+#include "ui/gfx/geometry/vector2d.h"
 #include "ui/views/view_utils.h"
 
 #if BUILDFLAG(IS_LINUX)
@@ -56,7 +58,16 @@ constexpr char kPipWindowBoundsCacheKey[] = "BravePipWindowBoundsCache";
 // Nothing is persisted to disk.
 class PipWindowBoundsCache : public base::SupportsUserData::Data {
  public:
-  std::optional<gfx::Rect> bounds;
+  struct Entry {
+    // Display the window was on, and its bounds relative to the origin of that
+    // display's work area.
+    int64_t display_id;
+    gfx::Rect bounds_in_work_area;
+    // Used to find the closest display when `display_id` no longer exists.
+    gfx::Rect bounds_in_screen;
+  };
+
+  std::optional<Entry> entry;
 };
 
 PipWindowBoundsCache* GetPipWindowBoundsCache(
@@ -149,6 +160,18 @@ void BraveVideoOverlayWindowViews::OnNativeWidgetSizeChanged(
   MaybeCacheBounds();
 }
 
+void BraveVideoOverlayWindowViews::SetUpViews() {
+  VideoOverlayWindowViews::SetUpViews();
+  UpdateControlIcons();
+}
+
+void BraveVideoOverlayWindowViews::OnUpdateControlsBounds() {
+  VideoOverlayWindowViews::OnUpdateControlsBounds();
+
+  LayoutTopControls();
+  LayoutCenterControls();
+}
+
 void BraveVideoOverlayWindowViews::MaybeCacheBounds() {
   // Bounds set while the window is hidden are placeholders computed before it
   // is shown, and tucked bounds are mostly off-screen on purpose.
@@ -161,9 +184,18 @@ void BraveVideoOverlayWindowViews::MaybeCacheBounds() {
     return;
   }
 
-  if (auto* cache = GetPipWindowBoundsCache(GetController())) {
-    cache->bounds = bounds;
+  auto* cache = GetPipWindowBoundsCache(GetController());
+  if (!cache) {
+    return;
   }
+
+  const display::Display display =
+      display::Screen::Get()->GetDisplayNearestWindow(GetNativeWindow());
+  cache->entry = PipWindowBoundsCache::Entry{
+      .display_id = display.id(),
+      .bounds_in_work_area = bounds - display.work_area().OffsetFromOrigin(),
+      .bounds_in_screen = bounds,
+  };
 }
 
 void BraveVideoOverlayWindowViews::MaybeRestoreCachedBounds() {
@@ -172,15 +204,25 @@ void BraveVideoOverlayWindowViews::MaybeRestoreCachedBounds() {
   }
 
   auto* cache = GetPipWindowBoundsCache(GetController());
-  if (!cache || !cache->bounds) {
+  if (!cache || !cache->entry) {
     return;
   }
 
-  // Keep the window on the display it was last on. If that display is gone,
-  // this falls back to the closest one.
-  gfx::Rect bounds = *cache->bounds;
-  const gfx::Rect work_area =
-      display::Screen::Get()->GetDisplayMatching(bounds).work_area();
+  // Restore relative to the display the window was last on, so it stays there
+  // even if the display layout changed. If that display is gone, fall back to
+  // the display closest to the old screen bounds.
+  const PipWindowBoundsCache::Entry& entry = *cache->entry;
+  const display::Screen* screen = display::Screen::Get();
+  display::Display display;
+  gfx::Rect bounds;
+  if (screen->GetDisplayWithDisplayId(entry.display_id, &display)) {
+    bounds = entry.bounds_in_work_area + display.work_area().OffsetFromOrigin();
+  } else {
+    display = screen->GetDisplayMatching(entry.bounds_in_screen);
+    bounds = entry.bounds_in_screen;
+  }
+
+  const gfx::Rect work_area = display.work_area();
   if (work_area.IsEmpty()) {
     return;
   }
@@ -205,18 +247,6 @@ void BraveVideoOverlayWindowViews::MaybeRestoreCachedBounds() {
   // Makes later bounds updates, e.g. from UpdateNaturalSize(), keep the
   // restored size and position instead of resetting to the defaults.
   has_been_shown_ = true;
-}
-
-void BraveVideoOverlayWindowViews::SetUpViews() {
-  VideoOverlayWindowViews::SetUpViews();
-  UpdateControlIcons();
-}
-
-void BraveVideoOverlayWindowViews::OnUpdateControlsBounds() {
-  VideoOverlayWindowViews::OnUpdateControlsBounds();
-
-  LayoutTopControls();
-  LayoutCenterControls();
 }
 
 void BraveVideoOverlayWindowViews::UpdateControlIcons() {
