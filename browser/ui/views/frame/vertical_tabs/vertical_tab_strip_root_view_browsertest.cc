@@ -70,7 +70,7 @@ class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
                               gfx::PointF(location),
                               ui::DragDropTypes::DRAG_COPY);
     BrowserRootView* root_view = browser_root_view();
-    EXPECT_NE(nullptr, root_view);
+    ASSERT_NE(nullptr, root_view);
 
     base::test::TestFuture<void> filtering_done;
     root_view->SetOnFilteringCompleteClosureForTesting(
@@ -104,7 +104,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
       VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
 
   auto* tab_strip_model = browser()->tab_strip_model();
-  EXPECT_EQ(tab_strip_model->count(), 1);
+  ASSERT_EQ(tab_strip_model->count(), 1);
 
   ui::OSExchangeData data;
   GURL url("https://brave.com/");
@@ -117,10 +117,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
   // To drag after current tab.
   location.Offset(0, current_tab->height());
   ui::mojom::DragOperation output_drag_op = ui::mojom::DragOperation::kNone;
-  StartAndFinishDrag(data, location, output_drag_op);
+  ASSERT_NO_FATAL_FAILURE(StartAndFinishDrag(data, location, output_drag_op));
 
   EXPECT_EQ(output_drag_op, ui::mojom::DragOperation::kCopy);
-  EXPECT_EQ(tab_strip_model->count(), 2);
+  ASSERT_EQ(tab_strip_model->count(), 2);
   EXPECT_TRUE(browser()
                   ->tab_strip_model()
                   ->GetWebContentsAt(1)
@@ -140,7 +140,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
       VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
 
   auto* tab_strip_model = browser()->tab_strip_model();
-  EXPECT_EQ(tab_strip_model->count(), 1);
+  ASSERT_EQ(tab_strip_model->count(), 1);
 
   ui::OSExchangeData data;
   GURL url("https://brave.com/");
@@ -153,10 +153,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
   // To drag on the same tab.
   location.Offset(0, current_tab->height() / 2);
   ui::mojom::DragOperation output_drag_op = ui::mojom::DragOperation::kNone;
-  StartAndFinishDrag(data, location, output_drag_op);
+  ASSERT_NO_FATAL_FAILURE(StartAndFinishDrag(data, location, output_drag_op));
 
   EXPECT_EQ(output_drag_op, ui::mojom::DragOperation::kCopy);
-  EXPECT_EQ(tab_strip_model->count(), 1);
+  ASSERT_EQ(tab_strip_model->count(), 1);
   EXPECT_TRUE(browser()
                   ->tab_strip_model()
                   ->GetWebContentsAt(0)
