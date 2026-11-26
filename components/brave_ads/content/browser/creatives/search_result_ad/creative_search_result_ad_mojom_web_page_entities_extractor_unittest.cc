@@ -40,7 +40,7 @@ void VerifyRequiredMojomCreativeAdExpectations(
 void VerifyRequiredMojomCampaignConversionExpectations(
     const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad) {
   EXPECT_THAT(
-      mojom_creative_ad->campaign_conversion->url_pattern,
+      mojom_creative_ad->campaign_conversion->thank_you_url_pattern,
       ::testing::Optional(std::string(test::kCampaignConversionUrlPattern)));
   EXPECT_EQ(mojom_creative_ad->campaign_conversion->observation_window,
             test::kCampaignConversionObservationWindow);
@@ -330,7 +330,7 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
       creative_search_result_ads[0];
   ASSERT_TRUE(mojom_creative_ad);
   ASSERT_TRUE(mojom_creative_ad->campaign_conversion);
-  EXPECT_FALSE(mojom_creative_ad->campaign_conversion->url_pattern);
+  EXPECT_FALSE(mojom_creative_ad->campaign_conversion->thank_you_url_pattern);
 }
 
 TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,

@@ -166,8 +166,8 @@ std::optional<CatalogConversionList> ParseConversions(
       return std::nullopt;
     }
 
-    CatalogConversionInfo conversion;
-    conversion.creative_set_id = creative_set.id;
+    CatalogConversionInfo catalog_conversion;
+    catalog_conversion.creative_set_id = creative_set.id;
 
     const std::string* const url_pattern =
         conversion_dict->FindString("urlPattern");
@@ -176,15 +176,29 @@ std::optional<CatalogConversionList> ParseConversions(
       return std::nullopt;
     }
     // Invalid conversions are filtered later by `FilterInvalidConversions`.
-    conversion.url_pattern = *url_pattern;
+    catalog_conversion.thank_you_url_pattern = *url_pattern;
 
-    conversion.observation_window =
+    catalog_conversion.observation_window =
         base::Days(conversion_dict->FindInt("observationWindow")
                        .value_or(kDefaultConversionObservationWindow));
 
-    conversion.expire_at = campaign.end_at + conversion.observation_window;
+    if (const base::DictValue* const order_dict =
+            conversion_dict->FindDict("order")) {
+      catalog_conversion.extract_id =
+          order_dict->FindBool("extractId").value_or(false);
+      catalog_conversion.extract_value =
+          order_dict->FindBool("extractValue").value_or(false);
 
-    conversions.push_back(std::move(conversion));
+      if (const std::string* const checkout_url_pattern =
+              order_dict->FindString("checkoutUrlPattern")) {
+        catalog_conversion.checkout_url_pattern = *checkout_url_pattern;
+      }
+    }
+
+    catalog_conversion.expire_at =
+        campaign.end_at + catalog_conversion.observation_window;
+
+    conversions.push_back(std::move(catalog_conversion));
   }
 
   return conversions;
@@ -266,12 +280,13 @@ void FilterInvalidConversions(CatalogCreativeSetInfo& creative_set,
                               const GURL& target_url) {
   std::erase_if(
       creative_set.conversions,
-      [&creative_set, &target_url](const CatalogConversionInfo& conversion) {
-        if (conversion.creative_set_id != creative_set.id) {
+      [&creative_set,
+       &target_url](const CatalogConversionInfo& catalog_conversion) {
+        if (catalog_conversion.creative_set_id != creative_set.id) {
           return false;
         }
 
-        const GURL url_pattern(conversion.url_pattern);
+        const GURL url_pattern(catalog_conversion.thank_you_url_pattern);
 
         const bool is_valid = SameDomainOrHost(target_url, url_pattern) &&
                               ShouldSupportUrl(url_pattern);

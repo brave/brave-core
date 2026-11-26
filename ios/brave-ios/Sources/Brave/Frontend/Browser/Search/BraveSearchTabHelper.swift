@@ -314,7 +314,10 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
       {
         let timeInterval = TimeInterval(conversionObservationWindowValue) * 1.days
         conversion = .init(
-          urlPattern: conversionUrlPatternValue,
+          checkoutUrlPattern: nil,
+          thankYouUrlPattern: conversionUrlPatternValue,
+          shouldExtractId: false,
+          shouldExtractValue: false,
           observationWindow: Date(timeIntervalSince1970: timeInterval)
         )
       }

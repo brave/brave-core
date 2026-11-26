@@ -13,12 +13,12 @@ namespace brave_ads::test {
 
 CampaignConversionInfo BuildCampaignConversion(
     const std::string& campaign_id,
-    const std::string& url_pattern,
+    const std::string& thank_you_url_pattern,
     base::TimeDelta observation_window) {
   CampaignConversionInfo campaign_conversion;
 
   campaign_conversion.id = campaign_id;
-  campaign_conversion.url_pattern = url_pattern;
+  campaign_conversion.thank_you_url_pattern = thank_you_url_pattern;
   campaign_conversion.observation_window = observation_window;
   campaign_conversion.expire_at =
       Now() + campaign_conversion.observation_window;
@@ -27,12 +27,12 @@ CampaignConversionInfo BuildCampaignConversion(
 }
 
 void BuildAndSaveCampaignConversion(const std::string& campaign_id,
-                                    const std::string& url_pattern,
+                                    const std::string& thank_you_url_pattern,
                                     base::TimeDelta observation_window) {
   CampaignConversionList campaign_conversions;
 
-  campaign_conversions.push_back(
-      BuildCampaignConversion(campaign_id, url_pattern, observation_window));
+  campaign_conversions.push_back(BuildCampaignConversion(
+      campaign_id, thank_you_url_pattern, observation_window));
 
   database::SaveCampaignConversions(campaign_conversions);
 }
