@@ -146,7 +146,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     for (auto& address : addresses) {
       SCOPED_TRACE(testing::Message() << address);
       auto sub_request_origin = brave_wallet::GetSubRequestOrigin(
-          request_type, GetLastCommitedOrigin(), address);
+          test_case.type, GetLastCommitedOrigin(), address);
       ASSERT_TRUE(sub_request_origin) << address;
       sub_request_origins.push_back(*sub_request_origin);
     }
@@ -282,7 +282,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
     for (const auto& address : test_case.addresses) {
       url::Origin origin;
       auto sub_request_origin = brave_wallet::GetSubRequestOrigin(
-          request_type, GetLastCommitedOrigin(), address);
+          test_case.type, GetLastCommitedOrigin(), address);
       ASSERT_TRUE(sub_request_origin) << address;
       sub_request_origins.push_back(*sub_request_origin);
     }
@@ -347,8 +347,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, GetCanonicalOrigin) {
 
     for (auto& address : test_case.addresses) {
       auto origin = brave_wallet::GetSubRequestOrigin(
-          ContentSettingsTypeToRequestType(test_case.type),
-          GetLastCommitedOrigin(), address);
+          test_case.type, GetLastCommitedOrigin(), address);
       ASSERT_TRUE(origin);
 
       EXPECT_EQ(origin->GetURL(),
@@ -391,9 +390,8 @@ class PermissionManagerIncognitoBrowserTest : public InProcessBrowserTest {
     ContentSettingsType type = ContentSettingsType::BRAVE_ETHEREUM;
     blink::PermissionType permission = blink::PermissionType::BRAVE_ETHEREUM;
 
-    RequestType request_type = ContentSettingsTypeToRequestType(type);
     auto sub_request_origin =
-        brave_wallet::GetSubRequestOrigin(request_type, active_origin, address);
+        brave_wallet::GetSubRequestOrigin(type, active_origin, address);
     ASSERT_TRUE(sub_request_origin);
 
     auto observer = std::make_unique<PermissionRequestManagerObserver>(

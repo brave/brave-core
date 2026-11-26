@@ -934,8 +934,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
           [&url, &account_0](const ContentSettingsPattern& primary_pattern,
                              const ContentSettingsPattern& secondary_pattern) {
             if (auto new_origin = GetSubRequestOrigin(
-                    permissions::RequestType::kBraveSolana,
-                    url::Origin::Create(url), account_0->address)) {
+                    ContentSettingsType::BRAVE_SOLANA, url::Origin::Create(url),
+                    account_0->address)) {
               return primary_pattern.Matches(new_origin->GetURL());
             }
             return false;

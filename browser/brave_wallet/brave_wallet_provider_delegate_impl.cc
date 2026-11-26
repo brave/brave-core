@@ -94,7 +94,9 @@ BraveWalletProviderDelegateImpl::GetAllowedAccounts(
 
   auto content_settings_type =
       brave_wallet::CoinTypeToContentSettingsType(type);
-
+  if (!content_settings_type) {
+    return std::nullopt;
+  }
   return permissions::BraveWalletPermissionContext::GetAllowedAccounts(
       permissions::PermissionUtil::ContentSettingsTypeToPermissionType(
           *content_settings_type),

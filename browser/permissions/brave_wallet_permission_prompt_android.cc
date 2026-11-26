@@ -12,6 +12,7 @@
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "components/permissions/android/permission_prompt/permission_prompt_android.h"
 #include "components/permissions/permission_request.h"
+#include "components/permissions/request_type.h"
 #include "content/public/browser/web_contents.h"
 #include "url/origin.h"
 

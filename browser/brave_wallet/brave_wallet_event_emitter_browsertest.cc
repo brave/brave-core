@@ -179,7 +179,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
       browser()->tab_strip_model()->GetActiveWebContents();
 
   auto sub_request_origin = brave_wallet::GetSubRequestOrigin(
-      permissions::RequestType::kBraveEthereum, GetLastCommitedOrigin(),
+      ContentSettingsType::BRAVE_ETHEREUM, GetLastCommitedOrigin(),
       eth_account->address);
   ASSERT_TRUE(sub_request_origin);
   host_content_settings_map()->SetContentSettingDefaultScope(

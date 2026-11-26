@@ -42,8 +42,8 @@ bool ParseRequestingOriginFromSubRequest(ContentSettingsType type,
 
 /**
  * Given old_origin, adding account info to its host part and return as
- * new_origin. If type != kBraveEthereum, there would be separator like
- * https://origin__BrG4...
+ * new_origin. If type != ContentSettingsType::BRAVE_ETHEREUM, there would be
+ * separator like https://origin__BrG4...
  */
 std::optional<url::Origin> GetSubRequestOrigin(ContentSettingsType type,
                                                const url::Origin& old_origin,
