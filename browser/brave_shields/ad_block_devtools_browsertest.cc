@@ -19,7 +19,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
-#include "chrome/browser/devtools/devtools_window_testing.h"
+#include "chrome/browser/devtools/devtools_window_testing.h"  // nogncheck
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
 
