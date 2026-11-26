@@ -92,7 +92,7 @@ describe('with --builder', () => {
     buildTarget: { targetOS: 'android', targetArch: 'arm64' },
     isBraveOriginBranded: false,
     siso: {},
-    targets: { compile: [], tests: [] },
+    compileTargets: [],
   }
 
   afterEach(() => {
