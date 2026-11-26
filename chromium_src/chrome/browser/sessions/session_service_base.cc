@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "brave/browser/sessions/brave_session_keys.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
@@ -11,8 +13,31 @@
 #include "components/sessions/core/command_storage_manager.h"
 #include "components/sessions/core/session_id.h"
 #include "components/sessions/core/session_service_commands.h"
+#include "url/gurl.h"
+
+namespace pinned_tab_reset {
+
+std::optional<GURL> GetPinnedUrl(const content::WebContents* contents);
+
+}  // namespace pinned_tab_reset
 
 namespace {
+
+// Keeps the URL a pinned tab is reset to when the session file is rebuilt.
+void BuildCommandsForPinnedTabUrl(
+    const tabs::TabInterface* tab_interface,
+    sessions::CommandStorageManager* command_storage_manager) {
+  const content::WebContents* contents = tab_interface->GetContents();
+  if (!contents) {
+    return;
+  }
+  if (const auto url = pinned_tab_reset::GetPinnedUrl(contents)) {
+    command_storage_manager->AppendRebuildCommand(
+        sessions::CreateAddTabExtraDataCommand(
+            sessions::SessionTabHelper::IdForTab(contents),
+            kBravePinnedTabUrlKey, url->spec()));
+  }
+}
 
 // Constructs commands for tree tab metadata. We walk up the tab-collection
 // hierarchy to find an enclosing TREE_NODE collection and, if found, append
@@ -47,12 +72,13 @@ void BuildCommandsForTreeTab(
 }
 
 // This will be called in SessionTabBase::BuildCommandsForBrowser(). Plaster
-// will insert this function there.
+// will insert this function there. It also covers the other Brave per-tab data.
 void BuildCommandsForTreeTab(
     TabStripModel* tab_strip_model,
     sessions::CommandStorageManager* command_storage_manager) {
   for (const auto* tab : *tab_strip_model) {
     BuildCommandsForTreeTab(tab, command_storage_manager);
+    BuildCommandsForPinnedTabUrl(tab, command_storage_manager);
   }
 }
 

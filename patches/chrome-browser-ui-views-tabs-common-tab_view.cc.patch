@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_view.cc b/chrome/browser/ui/views/tabs/common/tab_view.cc
-index 954e9a517d9936bd5640e2cc8ebd53ec2f28612e..0b2d6e54f428638a056e26d083ea5ebf2a65a007 100644
+index 954e9a517d9936bd5640e2cc8ebd53ec2f28612e..1e6e1f812a3b57364845f1ecfc7716a2f49be36a 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_view.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_view.cc
 @@ -337,6 +337,7 @@ TabView::TabView(TabCollectionNode* collection_node)
@@ -10,7 +10,16 @@ index 954e9a517d9936bd5640e2cc8ebd53ec2f28612e..0b2d6e54f428638a056e26d083ea5ebf
    tabs::TabInterface* tab = const_cast<tabs::TabInterface*>(GetTabInterface());
    BrowserWindowInterface* browser_window = tab->GetBrowserWindowInterface();
  
-@@ -1310,6 +1311,7 @@ void TabView::UpdateBorder() {
+@@ -661,6 +662,8 @@ bool TabView::OnKeyReleased(const ui::KeyEvent& event) {
+ }
+ 
+ bool TabView::OnMousePressed(const ui::MouseEvent& event) {
++  pinned_tab_reset::MaybeResetOnMousePressed(
++      const_cast<tabs::TabInterface*>(GetTabInterface()), event);
+   CHECK(collection_node_);
+ 
+   auto* controller = collection_node_->GetController();
+@@ -1310,6 +1313,7 @@ void TabView::UpdateBorder() {
  }
  
  void TabView::UpdateColors() {

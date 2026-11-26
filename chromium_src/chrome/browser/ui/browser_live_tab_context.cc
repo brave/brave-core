@@ -11,15 +11,26 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
 
+namespace pinned_tab_reset {
+
+void MaybePopulateExtraData(BrowserWindowInterface& browser,
+                            int index,
+                            std::map<std::string, std::string>& extra_data);
+
+}  // namespace pinned_tab_reset
+
 namespace {
 
 // Called from BrowserLiveTabContext::GetExtraDataForTab to record the tree-tab
 // position of the tab being closed. Writes kBraveTreeNodeIdKey and
 // kBraveTreeParentNodeIdKey, and kBraveTreeNodeCollapsedKey into |extra_data|.
+// It also records the URL of a pinned tab.
 void MaybePopulateTreeTabExtraData(
     BrowserWindowInterface& browser,
     int index,
     std::map<std::string, std::string>& extra_data) {
+  pinned_tab_reset::MaybePopulateExtraData(browser, index, extra_data);
+
   if (!base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
     return;
   }

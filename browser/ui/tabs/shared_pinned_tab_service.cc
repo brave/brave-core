@@ -17,6 +17,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/pinned_tab_reset_controller.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_dummy_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -1026,6 +1027,8 @@ SharedPinnedTabService::CreateDummyWebContents(
   auto dummy_contents = content::WebContents::Create(create_params);
   DummyContentsData::CreateForWebContents(dummy_contents.get(),
                                           shared_contents);
+  pinned_tab_reset::ExcludeFromPinnedTabReset(dummy_contents.get(),
+                                              shared_contents);
   return dummy_contents;
 }
 

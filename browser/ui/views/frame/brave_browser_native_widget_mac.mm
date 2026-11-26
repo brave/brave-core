@@ -8,6 +8,7 @@
 #include "base/feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/pinned_tab_reset_controller.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -87,6 +88,19 @@ bool BraveBrowserNativeWidgetMac::ExecuteCommand(
     int32_t command,
     ui::mojom::WindowOpenDisposition window_open_disposition,
     bool is_before_first_responder) {
+  // is_before_first_responder is true for the Cmd+W shortcut and false for
+  // File -> Close Tab, so only the shortcut resets pinned tabs.
+  if (command == IDC_CLOSE_TAB && is_before_first_responder &&
+      base::FeatureList::IsEnabled(tabs::kBravePinnedTabReset)) {
+    if (BrowserView* browser_view = browser_view_.get()) {
+      auto* controller =
+          PinnedTabResetController::From(browser_view->browser());
+      if (controller && controller->HandleCloseTabShortcut()) {
+        return true;
+      }
+    }
+  }
+
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) {
     // is_before_first_responder tells whether or not the app/window was in
     // focus while the keyboard command was fired. In current method, it helps

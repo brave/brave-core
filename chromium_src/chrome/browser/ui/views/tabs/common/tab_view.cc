@@ -28,6 +28,16 @@ std::u16string GetTreeTabToggleButtonLabel(const tabs::TabInterface* tab);
 void ToggleTreeTabNodeCollapsed(tabs::TabInterface* tab);
 }  // namespace tree_tab_view_utils
 
+namespace ui {
+class MouseEvent;
+}  // namespace ui
+
+// Defined in brave/browser/ui/tabs/pinned_tab_reset_controller.cc.
+namespace pinned_tab_reset {
+void MaybeResetOnMousePressed(tabs::TabInterface* tab,
+                              const ui::MouseEvent& event);
+}  // namespace pinned_tab_reset
+
 #include <chrome/browser/ui/views/tabs/common/tab_view.cc>
 
 // This method is not reachable now as we don't use this class for our vertical

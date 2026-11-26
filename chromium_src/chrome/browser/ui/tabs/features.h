@@ -20,6 +20,8 @@ BASE_DECLARE_FEATURE(kBraveChangeActiveTabOnScrollEvent);
 
 BASE_DECLARE_FEATURE(kBraveSharedPinnedTabs);
 
+BASE_DECLARE_FEATURE(kBravePinnedTabReset);
+
 BASE_DECLARE_FEATURE(kBraveHorizontalTabsUpdate);
 
 BASE_DECLARE_FEATURE(kBraveVerticalTabScrollBar);

@@ -20,6 +20,8 @@ BASE_FEATURE(kBraveChangeActiveTabOnScrollEvent,
 
 BASE_FEATURE(kBraveSharedPinnedTabs, base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBravePinnedTabReset, base::FEATURE_DISABLED_BY_DEFAULT);
+
 BASE_FEATURE(kBraveHorizontalTabsUpdate, base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveVerticalTabScrollBar, base::FEATURE_DISABLED_BY_DEFAULT);
