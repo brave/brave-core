@@ -14,8 +14,20 @@ import {
   uniqueTableRows,
 } from '../lib/format_time'
 import { useCopyToClipboard } from './copy_toast'
+import { computeDateRange, DateRangeFilter } from './date_range_filter'
+import { AD_EVENT_COLUMNS, AdEventTable } from './events'
 import { TabHeader } from './tab_header'
 import { WildcardPattern } from './wildcard_pattern'
+
+// `ToString(mojom::ConfirmationType::kConversion)`; matches the "Event Type"
+// value `BuildAdsInternals` bakes into `adEvents` for a conversion event.
+const CONVERSION_EVENT_TYPE = 'conversion'
+
+// Every row here is already a conversion, so "Event Type" would just repeat
+// the section title rather than add information.
+const CONVERSION_EVENT_COLUMNS = AD_EVENT_COLUMNS.filter(
+  (column) => column !== 'Event Type',
+)
 
 type ColumnKey = keyof ConversionUrlPattern
 
@@ -119,10 +131,71 @@ function ConversionUrlPatternTable({ data }: { data: ConversionUrlPattern[] }) {
   )
 }
 
+// Plain sub-heading, not a second `TabHeader`, since the page-level
+// `TabHeader` in `Conversions` below already owns the refresh action.
+function ConversionEvents() {
+  const adEvents = useAppState((state) => state.adEvents)
+  const dateRangeFilter = useAppState(
+    (state) => state.conversionsDateRangeFilter,
+  )
+  const actions = useAppActions()
+  const { preset, fromDate, toDate } = dateRangeFilter
+  const { fromSeconds, toSeconds } = computeDateRange(preset, fromDate, toDate)
+
+  const rows = React.useMemo(() => {
+    return uniqueTableRows(adEvents)
+      .filter((row) => row['Event Type'] === CONVERSION_EVENT_TYPE)
+      .filter((row) => {
+        const createdAt = row['Created At']
+        if (fromSeconds !== null && createdAt < fromSeconds) {
+          return false
+        }
+        if (toSeconds !== null && createdAt > toSeconds) {
+          return false
+        }
+        return true
+      })
+      .sort((a, b) => b['Created At'] - a['Created At'])
+  }, [adEvents, fromSeconds, toSeconds])
+
+  return (
+    <div className='content-card'>
+      <section>
+        <h4>
+          <span className='title'>
+            Conversion events{' '}
+            <span className='diagnostic-muted'>({rows.length})</span>
+          </span>
+        </h4>
+        <p>
+          Conversion events across all ad formats within the selected time
+          range.
+        </p>
+        <DateRangeFilter
+          filter={dateRangeFilter}
+          setFilter={actions.setConversionsDateRangeFilter}
+          defaultPreset='day'
+        />
+        <AdEventTable
+          data={rows}
+          allRows={adEvents}
+          columns={CONVERSION_EVENT_COLUMNS}
+        />
+        {rows.length === 0 && (
+          <p>No conversions match the selected date range.</p>
+        )}
+      </section>
+    </div>
+  )
+}
+
 export function Conversions() {
   const actions = useAppActions()
   const conversionUrlPatterns = useAppState(
     (state) => state.conversionUrlPatterns,
+  )
+  const adsInternalsVerboseModeEnabled = useAppState(
+    (state) => state.adsInternalsVerboseModeEnabled,
   )
 
   React.useEffect(() => {
@@ -155,6 +228,8 @@ export function Conversions() {
             <ConversionUrlPatternTable data={conversionUrlPatterns} />
           </section>
         </div>
+
+        {adsInternalsVerboseModeEnabled && <ConversionEvents />}
       </div>
     </>
   )

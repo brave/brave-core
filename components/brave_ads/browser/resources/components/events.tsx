@@ -35,7 +35,7 @@ const VIEWED_IMPRESSION_EVENT_TYPE = 'view'
 // "Created At" is dropped in favor of one content-card per date (see `Events`
 // below); repeating the same date on every row for events created close
 // together just adds noise.
-const AD_EVENT_COLUMNS: Array<keyof AdEvent> = [
+export const AD_EVENT_COLUMNS: Array<keyof AdEvent> = [
   'Placement ID',
   'Creative Instance ID',
   'Target URL',
@@ -121,7 +121,15 @@ function downloadAdEvents(rows: AdEvent[]) {
   document.body.removeChild(element)
 }
 
-function AdEventTable({ data, allRows }: { data: AdEvent[], allRows: AdEvent[] }) {
+export function AdEventTable(
+  { data, allRows, columns = AD_EVENT_COLUMNS }: {
+    data: AdEvent[]
+    allRows: AdEvent[]
+    // Lets the Conversions tab drop "Event Type", every row there is a
+    // conversion, so the column would just repeat the section title.
+    columns?: Array<keyof AdEvent>
+  },
+) {
   const copy = useCopyToClipboard()
   const placementEventsMap = React.useMemo(
     () => buildPlacementEventsMap(allRows),
@@ -132,7 +140,7 @@ function AdEventTable({ data, allRows }: { data: AdEvent[], allRows: AdEvent[] }
     <table>
       <thead>
         <tr>
-          {AD_EVENT_COLUMNS.map((header) => (
+          {columns.map((header) => (
             <th
               key={header}
               className={[
@@ -149,7 +157,7 @@ function AdEventTable({ data, allRows }: { data: AdEvent[], allRows: AdEvent[] }
       <tbody>
         {data.map((row, index) => (
           <tr key={index}>
-            {AD_EVENT_COLUMNS.map((header) => {
+            {columns.map((header) => {
               const className = [
                 TRUNCATED_COLUMNS.has(header) ? 'truncate-cell' : '',
                 COLUMN_WIDTH_CLASSES[header] ?? '',
