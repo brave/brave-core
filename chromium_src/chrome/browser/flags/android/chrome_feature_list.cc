@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_origin/features.h"
+#include "brave/components/brave_recap/common/features.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -113,7 +114,7 @@
     &features::kBraveAndroidTabGroupsSettings,                                 \
     &features::kBraveAndroidMergeInstallPwaAndCreateShortcut,                  \
     &features::kBraveAndroidExtensions,                                        \
-    &features::kBraveRecap
+    &brave_recap::features::kBraveRecap
 
 // clang-format on
 

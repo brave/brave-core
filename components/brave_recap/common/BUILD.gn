@@ -4,5 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("common") {
-  sources = [ "webui_constants.h" ]
+  sources = [
+    "features.cc",
+    "features.h",
+    "webui_constants.h",
+  ]
+  deps = [ "//base" ]
 }

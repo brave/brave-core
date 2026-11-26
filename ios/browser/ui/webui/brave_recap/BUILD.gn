@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("brave_recap") {
+  sources = [
+    "brave_recap_ui_ios.h",
+    "brave_recap_ui_ios.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/resources/brave_recap:pack_js_resources",
+    "//brave/browser/resources/brave_recap:pack_static_resources",
+    "//brave/components/brave_ads/core",
+    "//brave/components/brave_perf_predictor/common",
+    "//brave/components/brave_shields/core/common",
+    "//brave/components/resources:strings_grit",
+    "//brave/ios/web/webui",
+    "//components/prefs",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public/webui",
+    "//services/network/public/mojom",
+    "//ui/webui/resources:resources_grit",
+    "//url",
+  ]
+}

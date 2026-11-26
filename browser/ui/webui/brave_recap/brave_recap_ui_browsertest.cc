@@ -10,8 +10,8 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
 #include "brave/browser/resources/brave_recap/grit/brave_recap_generated_map.h"
-#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
+#include "brave/components/brave_recap/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -85,7 +85,7 @@ constexpr char kWaitForShareCard[] = R"(
 class BraveRecapUIBrowserTest : public InProcessBrowserTest {
  public:
   BraveRecapUIBrowserTest() {
-    feature_list_.InitAndEnableFeature(features::kBraveRecap);
+    feature_list_.InitAndEnableFeature(brave_recap::features::kBraveRecap);
   }
 
  protected:
@@ -177,7 +177,7 @@ IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, LoadsAllImages) {
 class BraveRecapUIDisabledBrowserTest : public InProcessBrowserTest {
  public:
   BraveRecapUIDisabledBrowserTest() {
-    feature_list_.InitAndDisableFeature(features::kBraveRecap);
+    feature_list_.InitAndDisableFeature(brave_recap::features::kBraveRecap);
   }
 
  private:

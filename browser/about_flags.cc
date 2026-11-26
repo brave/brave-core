@@ -1269,7 +1269,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           "Enables brave://recap, a shareable summary of what Shields has "    \
           "blocked over the lifetime of the profile",                          \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(features::kBraveRecap),                           \
+          FEATURE_VALUE_TYPE(brave_recap::features::kBraveRecap),              \
       },                                                                       \
       {                                                                        \
           "brave-ntp-refresh-enabled",                                         \

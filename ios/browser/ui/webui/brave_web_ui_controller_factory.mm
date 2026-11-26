@@ -13,10 +13,13 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_recap/common/features.h"
+#include "brave/components/brave_recap/common/webui_constants.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui_ios.h"
+#include "brave/ios/browser/ui/webui/brave_recap/brave_recap_ui_ios.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
@@ -161,6 +164,9 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
     return &NewWebUIIOS<BraveAccountUIIOS>;
   } else if (url_host == kSkusInternalsHost) {
     return &NewWebUIIOS<SkusInternalsUI>;
+  } else if (url_host == kBraveRecapHost &&
+             base::FeatureList::IsEnabled(brave_recap::features::kBraveRecap)) {
+    return &NewWebUIIOS<BraveRecapUIIOS>;
 #if BUILDFLAG(ENABLE_AI_CHAT)
   } else if (url_host == kAIChatUIHost) {
     return &NewWebUIIOS<AIChatUI>;

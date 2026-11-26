@@ -1,0 +1,7 @@
+include_rules = [
+  "+brave/browser/resources/brave_recap/grit",
+  "+brave/components/brave_ads/core/public/prefs/pref_names.h",
+  "+brave/components/brave_perf_predictor/common/pref_names.h",
+  "+brave/components/brave_shields/core/common/pref_names.h",
+  "+services/network/public/mojom/content_security_policy.mojom.h",
+]

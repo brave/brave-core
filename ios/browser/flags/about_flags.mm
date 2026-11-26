@@ -9,6 +9,7 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_origin/features.h"
+#include "brave/components/brave_recap/common/features.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/features.h"
@@ -447,6 +448,14 @@ const flags_ui::FeatureEntry::FeatureVariation
           "Enables Brave Origin features and settings.",                       \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave_origin::features::kBraveOrigin),            \
+      },                                                                       \
+      {                                                                        \
+          "brave-recap",                                                       \
+          "Brave Recap",                                                       \
+          "Enables brave://recap, a shareable summary of what Shields has "    \
+          "blocked over the lifetime of the profile",                          \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave_recap::features::kBraveRecap),              \
       })                                                                       \
   BRAVE_SHIELDS_FEATURE_ENTRIES                                                \
   ADS_INTERNALS_VERBOSE_MODE_FEATURE_ENTRIES                                   \

@@ -7,7 +7,7 @@
 #include "base/strings/pattern.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/ui/brave_ui_features.h"
+#include "brave/components/brave_recap/common/features.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
@@ -325,7 +325,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 class BraveSchemeLoadRecapBrowserTest : public BraveSchemeLoadBrowserTest {
  public:
   BraveSchemeLoadRecapBrowserTest() {
-    feature_list_.InitAndEnableFeature(features::kBraveRecap);
+    feature_list_.InitAndEnableFeature(brave_recap::features::kBraveRecap);
   }
 
  private:

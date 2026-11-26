@@ -14,8 +14,8 @@
 #include "brave/browser/resources/brave_recap/grit/brave_recap_generated_map.h"
 #include "brave/browser/resources/brave_recap/grit/brave_recap_static_resources.h"
 #include "brave/browser/resources/brave_recap/grit/brave_recap_static_resources_map.h"
-#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
+#include "brave/components/brave_recap/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -76,5 +76,5 @@ WEB_UI_CONTROLLER_TYPE_IMPL(BraveRecapUI)
 
 bool BraveRecapUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  return base::FeatureList::IsEnabled(features::kBraveRecap);
+  return base::FeatureList::IsEnabled(brave_recap::features::kBraveRecap);
 }

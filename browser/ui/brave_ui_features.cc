@@ -26,7 +26,4 @@ BASE_FEATURE(kBraveWorkaroundNewWindowFlash,
 // https://github.com/brave/brave-browser/issues/40959
 BASE_FEATURE(kForcePopupToBeOpenedAsTab, base::FEATURE_DISABLED_BY_DEFAULT);
 
-// Enables brave://recap, a shareable summary of lifetime Shields stats.
-BASE_FEATURE(kBraveRecap, base::FEATURE_DISABLED_BY_DEFAULT);
-
 }  // namespace features

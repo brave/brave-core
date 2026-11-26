@@ -4,6 +4,7 @@ include_rules = [
   "+brave/components/brave_ads/core/public/ads_internals/ads_internals_verbose_mode_feature.h",
   "+brave/components/brave_component_updater/browser/features.h",
   "+brave/components/brave_origin/features.h",
+  "+brave/components/brave_recap/common/features.h",
   "+brave/components/brave_rewards/core/features.h",
   "+brave/components/brave_shields/core/common/features.h",
   "+brave/components/brave_sync/features.h",
