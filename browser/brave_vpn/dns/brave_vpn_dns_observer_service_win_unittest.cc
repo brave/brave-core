@@ -68,6 +68,8 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
     // BraveVpnDnsObserverService destructor must be called before the task
     // runner is destroyed.
     ResetDnsObserverService();
+    SystemNetworkContextManager::set_stub_resolver_config_reader_for_testing(
+        nullptr);
   }
   void EnableParentalControl(bool value) {
     StubResolverConfigReader* config_reader =
@@ -146,6 +148,8 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
   }
 
  private:
+  base::test::ScopedFeatureList feature_list_{
+      brave_vpn::features::kBraveVPNDnsProtection};
   std::unordered_map<std::string, std::string> policy_map_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<BraveVpnDnsObserverService> dns_observer_service_;
@@ -380,7 +384,7 @@ TEST_F(BraveVpnDnsObserverServiceUnitTest,
 
 TEST_F(BraveVpnDnsObserverServiceUnitTest, FeatureDisabledWhenVPNConnected) {
   // DNS mode was set to off by user and the vpn dns observer feature
-  // is enabled by default.
+  // is enabled by the fixture.
   SetDNSMode(SecureDnsConfig::kModeOff, "");
   FireBraveVPNStateChange(mojom::ConnectionState::CONNECTED);
   ExpectDNSMode(SecureDnsConfig::kModeSecure, kCloudflareDnsProviderURL);
@@ -396,7 +400,7 @@ TEST_F(BraveVpnDnsObserverServiceUnitTest, FeatureDisabledWhenVPNConnected) {
 TEST_F(BraveVpnDnsObserverServiceUnitTest, HelperServerLiveWhenVPNConnected) {
   SetDNSHelperLive(true);
   // DNS mode was set to off by user and the vpn dns observer feature
-  // is enabled by default.
+  // is enabled by the fixture.
   SetDNSMode(SecureDnsConfig::kModeOff, "");
   FireBraveVPNStateChange(mojom::ConnectionState::CONNECTED);
   // DNS mode was not overriden.
