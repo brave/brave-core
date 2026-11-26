@@ -35,6 +35,10 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
@@ -48,10 +52,15 @@
 class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
  public:
   BraveAppMenuModelBrowserTest() {
+    std::vector<base::test::FeatureRef> enabled_features;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-    scoped_feature_list_.InitWithFeatures(
-        {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN}, {});
+    enabled_features.push_back(skus::features::kSkusFeature);
+    enabled_features.push_back(brave_vpn::features::kBraveVPN);
 #endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    enabled_features.push_back(ai_chat::features::kAIChat);
+#endif
+    scoped_feature_list_.InitWithFeatures(enabled_features, {});
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -71,8 +80,6 @@ class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
         chrome::BrowserCommandController::From(browser))
         ->OnPurchasedStateChanged(target_state, std::nullopt);
   }
-
-  base::test::ScopedFeatureList scoped_feature_list_;
 #endif
 
   void RunCommandFromAppMenuModel(BrowserWindowInterface* browser,
@@ -82,6 +89,9 @@ class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
     model.Init();
     model.ExecuteCommand(command_id, /*event_flags=*/0);
   }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 void CheckCommandsAreDisabledInMenuModel(
@@ -107,8 +117,8 @@ void CheckCommandsAreInOrderInMenuModel(
   std::vector<size_t> commands_index;
   for (int id : commands_in_order) {
     std::optional<size_t> index = model->GetIndexOfCommandId(id);
-    EXPECT_TRUE(index.has_value());
-    commands_index.push_back(index.value());
+    ASSERT_TRUE(index.has_value()) << "Missing command id " << id;
+    commands_index.push_back(*index);
   }
   EXPECT_TRUE(
       std::is_sorted(std::begin(commands_index), std::end(commands_index)));
@@ -129,11 +139,11 @@ void CheckMoreToolsCommandsAreInOrderInMenuModel(
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   BraveAppMenuModel model(browser_view->toolbar(), browser);
   model.Init();
-  ui::SimpleMenuModel* more_tools_model =
-      static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
-          model
-              .GetIndexOfCommandId(BraveAppMenuModel::kMoreToolsMenuPlaceholder)
-              .value()));
+  std::optional<size_t> more_tools_index =
+      model.GetIndexOfCommandId(BraveAppMenuModel::kMoreToolsMenuPlaceholder);
+  ASSERT_TRUE(more_tools_index.has_value());
+  ui::SimpleMenuModel* more_tools_model = static_cast<ui::SimpleMenuModel*>(
+      model.GetSubmenuModelAt(*more_tools_index));
   CheckCommandsAreInOrderInMenuModel(more_tools_model,
                                      more_tools_commands_in_order);
 }
@@ -144,11 +154,11 @@ void CheckMoreToolsCommandsAreDisabledInMenuModel(
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   BraveAppMenuModel model(browser_view->toolbar(), browser);
   model.Init();
-  ui::SimpleMenuModel* more_tools_model =
-      static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
-          model
-              .GetIndexOfCommandId(BraveAppMenuModel::kMoreToolsMenuPlaceholder)
-              .value()));
+  std::optional<size_t> more_tools_index =
+      model.GetIndexOfCommandId(BraveAppMenuModel::kMoreToolsMenuPlaceholder);
+  ASSERT_TRUE(more_tools_index.has_value());
+  ui::SimpleMenuModel* more_tools_model = static_cast<ui::SimpleMenuModel*>(
+      model.GetSubmenuModelAt(*more_tools_index));
   CheckCommandsAreDisabledInMenuModel(more_tools_model,
                                       more_tools_disabled_commands);
 }
@@ -159,10 +169,11 @@ void CheckHelpCommandsAreInOrderInMenuModel(
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   BraveAppMenuModel model(browser_view->toolbar(), browser);
   model.Init();
+  std::optional<size_t> help_index =
+      model.GetIndexOfCommandId(BraveAppMenuModel::kHelpMenuPlaceholder);
+  ASSERT_TRUE(help_index.has_value());
   ui::SimpleMenuModel* help_model =
-      static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
-          model.GetIndexOfCommandId(BraveAppMenuModel::kHelpMenuPlaceholder)
-              .value()));
+      static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(*help_index));
   CheckCommandsAreInOrderInMenuModel(help_model, help_commands_in_order);
 }
 
@@ -213,8 +224,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
       IDC_NEW_TOR_CONNECTION_FOR_SITE,
       BraveAppMenuModel::kSavedTabGroupsMenuPlaceholder,
   };
-  CheckCommandsAreInOrderInMenuModel(browser(),
-                                     commands_in_order_for_normal_profile);
+  ASSERT_NO_FATAL_FAILURE(CheckCommandsAreInOrderInMenuModel(
+      browser(), commands_in_order_for_normal_profile));
   CheckCommandsAreDisabledInMenuModel(browser(),
                                       commands_disabled_for_normal_profile);
 
@@ -224,14 +235,16 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
       IDC_HELP_PAGE_VIA_MENU,
       IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER,
   };
-  CheckHelpCommandsAreInOrderInMenuModel(browser(), help_commands_in_order);
+  ASSERT_NO_FATAL_FAILURE(CheckHelpCommandsAreInOrderInMenuModel(
+      browser(), help_commands_in_order));
 
   std::vector<int> more_tools_in_order = {
       IDC_ADD_NEW_PROFILE, IDC_OPEN_GUEST_PROFILE, IDC_SHOW_BRAVE_SYNC,
       IDC_SHOW_APPS_PAGE,  IDC_DEV_TOOLS,          IDC_TASK_MANAGER_APP_MENU,
   };
 
-  CheckMoreToolsCommandsAreInOrderInMenuModel(browser(), more_tools_in_order);
+  ASSERT_NO_FATAL_FAILURE(CheckMoreToolsCommandsAreInOrderInMenuModel(
+      browser(), more_tools_in_order));
 
   auto* private_browser = CreateIncognitoBrowser();
   std::vector<int> commands_in_order_for_private_profile = {
@@ -267,17 +280,17 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 #endif
   };
 
-  CheckCommandsAreInOrderInMenuModel(private_browser,
-                                     commands_in_order_for_private_profile);
+  ASSERT_NO_FATAL_FAILURE(CheckCommandsAreInOrderInMenuModel(
+      private_browser, commands_in_order_for_private_profile));
   CheckCommandsAreDisabledInMenuModel(private_browser,
                                       commands_disabled_for_private_profile);
-  CheckHelpCommandsAreInOrderInMenuModel(private_browser,
-                                         help_commands_in_order);
+  ASSERT_NO_FATAL_FAILURE(CheckHelpCommandsAreInOrderInMenuModel(
+      private_browser, help_commands_in_order));
 
   // SHOW_APPS_PAGE isn't available in incognito
   std::erase(more_tools_in_order, IDC_SHOW_APPS_PAGE);
-  CheckMoreToolsCommandsAreInOrderInMenuModel(private_browser,
-                                              more_tools_in_order);
+  ASSERT_NO_FATAL_FAILURE(CheckMoreToolsCommandsAreInOrderInMenuModel(
+      private_browser, more_tools_in_order));
 
   ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
@@ -298,8 +311,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
       IDC_OPTIONS,
   };
 
-  CheckCommandsAreInOrderInMenuModel(guest_browser,
-                                     commands_in_order_for_guest_profile);
+  ASSERT_NO_FATAL_FAILURE(CheckCommandsAreInOrderInMenuModel(
+      guest_browser, commands_in_order_for_guest_profile));
   std::vector<int> commands_disabled_for_guest_profile = {
       IDC_NEW_INCOGNITO_WINDOW,
 #if BUILDFLAG(ENABLE_TOR)
@@ -318,22 +331,23 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 
   CheckCommandsAreDisabledInMenuModel(guest_browser,
                                       commands_disabled_for_guest_profile);
-  CheckHelpCommandsAreInOrderInMenuModel(guest_browser, help_commands_in_order);
+  ASSERT_NO_FATAL_FAILURE(CheckHelpCommandsAreInOrderInMenuModel(
+      guest_browser, help_commands_in_order));
 
   std::vector<int> more_tools_in_order_for_guest_profile = {
       IDC_DEV_TOOLS,
       IDC_TASK_MANAGER_APP_MENU,
   };
-  CheckMoreToolsCommandsAreInOrderInMenuModel(
-      guest_browser, more_tools_in_order_for_guest_profile);
+  ASSERT_NO_FATAL_FAILURE(CheckMoreToolsCommandsAreInOrderInMenuModel(
+      guest_browser, more_tools_in_order_for_guest_profile));
 
   std::vector<int> more_tools_disabled_for_guest_profile = {
       IDC_ADD_NEW_PROFILE,
       IDC_OPEN_GUEST_PROFILE,
       IDC_SHOW_BRAVE_SYNC,
   };
-  CheckMoreToolsCommandsAreDisabledInMenuModel(
-      guest_browser, more_tools_disabled_for_guest_profile);
+  ASSERT_NO_FATAL_FAILURE(CheckMoreToolsCommandsAreDisabledInMenuModel(
+      guest_browser, more_tools_disabled_for_guest_profile));
 
 #if BUILDFLAG(ENABLE_TOR)
   ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
@@ -368,12 +382,14 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
       IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
   };
-  CheckCommandsAreInOrderInMenuModel(tor_browser,
-                                     commands_in_order_for_tor_profile);
+  ASSERT_NO_FATAL_FAILURE(CheckCommandsAreInOrderInMenuModel(
+      tor_browser, commands_in_order_for_tor_profile));
   CheckCommandsAreDisabledInMenuModel(tor_browser,
                                       commands_disabled_for_tor_profile);
-  CheckHelpCommandsAreInOrderInMenuModel(tor_browser, help_commands_in_order);
-  CheckMoreToolsCommandsAreInOrderInMenuModel(tor_browser, more_tools_in_order);
+  ASSERT_NO_FATAL_FAILURE(CheckHelpCommandsAreInOrderInMenuModel(
+      tor_browser, help_commands_in_order));
+  ASSERT_NO_FATAL_FAILURE(CheckMoreToolsCommandsAreInOrderInMenuModel(
+      tor_browser, more_tools_in_order));
 
 #endif
 }
@@ -389,8 +405,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, BraveVPNMenuTest) {
   };
 
   SetPurchasedUserForBraveVPN(browser(), false);
-  CheckCommandsAreInOrderInMenuModel(browser(),
-                                     commands_enabled_for_non_purchased);
+  ASSERT_NO_FATAL_FAILURE(CheckCommandsAreInOrderInMenuModel(
+      browser(), commands_enabled_for_non_purchased));
   CheckCommandsAreDisabledInMenuModel(browser(),
                                       commands_disabled_for_non_purchased);
 
@@ -402,7 +418,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, BraveVPNMenuTest) {
   };
 
   SetPurchasedUserForBraveVPN(browser(), true);
-  CheckCommandsAreInOrderInMenuModel(browser(), commands_enabled_for_purchased);
+  ASSERT_NO_FATAL_FAILURE(CheckCommandsAreInOrderInMenuModel(
+      browser(), commands_enabled_for_purchased));
   CheckCommandsAreDisabledInMenuModel(browser(),
                                       commands_disabled_for_purchased);
 }
@@ -413,12 +430,11 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, ShareAndSaveSubmenuTest) {
   BraveAppMenuModel model(browser_view->toolbar(), browser());
   model.Init();
 
-  ui::SimpleMenuModel* save_and_share_model =
-      static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
-          model
-              .GetIndexOfCommandId(
-                  BraveAppMenuModel::kSaveAndShareMenuPlaceholder)
-              .value()));
+  std::optional<size_t> save_and_share_index = model.GetIndexOfCommandId(
+      BraveAppMenuModel::kSaveAndShareMenuPlaceholder);
+  ASSERT_TRUE(save_and_share_index.has_value());
+  ui::SimpleMenuModel* save_and_share_model = static_cast<ui::SimpleMenuModel*>(
+      model.GetSubmenuModelAt(*save_and_share_index));
   ASSERT_TRUE(save_and_share_model);
 
   // Check that the Screenshot menu item is present in the Save and Share
@@ -489,12 +505,9 @@ class BraveAppMenuModelBrowserTestForEmailAliases
       public testing::WithParamInterface<bool> {
  public:
   BraveAppMenuModelBrowserTestForEmailAliases() {
-    if (IsEmailAliasesEnabled()) {
-      scoped_feature_list_.InitWithFeatures(
-          {email_aliases::features::kEmailAliases,
-           brave_account::features::BraveAccountFeatureForTesting()},
-          {});
-    }
+    scoped_feature_list_.InitWithFeatureStates(
+        {{email_aliases::features::kEmailAliases, IsEmailAliasesEnabled()},
+         {brave_account::features::BraveAccountFeatureForTesting(), true}});
   }
 
   bool IsEmailAliasesEnabled() const { return GetParam(); }
@@ -509,12 +522,11 @@ IN_PROC_BROWSER_TEST_P(BraveAppMenuModelBrowserTestForEmailAliases,
   BraveAppMenuModel model(browser_view->toolbar(), browser());
   model.Init();
 
-  ui::SimpleMenuModel* autofill_menu_model =
-      static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
-          model
-              .GetIndexOfCommandId(
-                  BraveAppMenuModel::kPasswordsAndAutofillMenuPlaceholder)
-              .value()));
+  std::optional<size_t> autofill_index = model.GetIndexOfCommandId(
+      BraveAppMenuModel::kPasswordsAndAutofillMenuPlaceholder);
+  ASSERT_TRUE(autofill_index.has_value());
+  ui::SimpleMenuModel* autofill_menu_model = static_cast<ui::SimpleMenuModel*>(
+      model.GetSubmenuModelAt(*autofill_index));
   ASSERT_TRUE(autofill_menu_model);
 
   bool present =
