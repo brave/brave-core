@@ -1041,6 +1041,32 @@ enum TransactionParser {
           )
         )
       )
+    case .erc721SetApprovalForAll:
+      // txArgs[0] is the operator being granted / revoked access to the
+      // collection, txArgs[1] is `approved` encoded as "0x1" or "0x0".
+      guard let spenderAddress = transaction.txArgs[safe: 0],
+        transaction.txArgs[safe: 1] != nil
+      else {
+        return nil
+      }
+      return .init(
+        transaction: transaction,
+        fromAccountInfo: fromAccountInfo,
+        namedToAddress: "",
+        toAddress: spenderAddress,
+        network: txNetwork,
+        details: .erc721SetApprovalForAll(
+          .init(
+            spenderAddress: spenderAddress,
+            gasFee: gasFee(
+              from: transaction,
+              network: txNetwork,
+              assetRatios: assetRatios,
+              currencyFormatter: currencyFormatter
+            )
+          )
+        )
+      )
     @unknown default:
       return nil
     }
@@ -1141,6 +1167,7 @@ struct ParsedTransaction: Equatable {
     case ethSwap(EthSwapDetails)
     case ethErc20Approve(EthErc20ApproveDetails)
     case erc721Transfer(Eth721TransferDetails)
+    case erc721SetApprovalForAll(Eth721SetApprovalForAllDetails)
     case solSystemTransfer(SendDetails)
     case solSplTokenTransfer(SendDetails)
     case solDappTransaction(SolanaTxDetails)
@@ -1187,6 +1214,8 @@ struct ParsedTransaction: Equatable {
       .solSwapTransaction(let details):
       return details.gasFee
     case .erc721Transfer(let details):
+      return details.gasFee
+    case .erc721SetApprovalForAll(let details):
       return details.gasFee
     case .filSend(let details):
       return details.gasFee
@@ -1268,6 +1297,8 @@ struct ParsedTransaction: Equatable {
       return ethErc20ApproveDetails.token?.matches(query) == true
     case .erc721Transfer(let eth721TransferDetails):
       return eth721TransferDetails.fromToken?.matches(query) == true
+    case .erc721SetApprovalForAll(let details):
+      return details.spenderAddress.localizedCaseInsensitiveContains(query) == true
     case .solDappTransaction(let solanaTxDetails),
       .solSwapTransaction(let solanaTxDetails):
       return solanaTxDetails.symbol?.localizedCaseInsensitiveContains(query) == true
@@ -1364,6 +1395,13 @@ struct Eth721TransferDetails: Equatable {
   let owner: String
   /// The token id
   let tokenId: String
+  /// Gas fee for the transaction
+  let gasFee: GasFee?
+}
+
+struct Eth721SetApprovalForAllDetails: Equatable {
+  /// The operator being granted or revoked access to the collection
+  let spenderAddress: String
   /// Gas fee for the transaction
   let gasFee: GasFee?
 }
@@ -1488,7 +1526,10 @@ extension ParsedTransaction {
       if let token = details.fromToken {
         return [token]
       }
-    case .solDappTransaction, .solSwapTransaction, .other:
+    case .erc721SetApprovalForAll,
+      .solDappTransaction,
+      .solSwapTransaction,
+      .other:
       break
     }
     return []
@@ -1555,6 +1596,8 @@ extension BraveWallet.TransactionInfo {
     case .ethFilForwarderTransfer:
       break
     case .cardanoSendLovelace, .cardanoSendToken:
+      break
+    case .erc721SetApprovalForAll:
       break
     @unknown default:
       break

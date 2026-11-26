@@ -39,6 +39,11 @@ struct PendingTransactionView: View {
     if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
       return Strings.Wallet.transactionTypeApprove
     }
+    if confirmationStore.activeParsedTransaction.transaction
+      .isGrantingERC721SetApprovalForAll
+    {
+      return Strings.Wallet.transactionTypeApprove
+    }
     switch confirmationStore.activeParsedTransaction.transaction.txType {
     case .erc20Approve:
       return Strings.Wallet.transactionTypeApprove
@@ -186,6 +191,81 @@ struct PendingTransactionView: View {
     .padding(.bottom)
   }
 
+  /// The header displayed for an `erc721SetApprovalForAll` txType transaction
+  @ViewBuilder private var erc721SetApprovalForAllHeader: some View {
+    VStack(spacing: 8) {
+      faviconAndOrigin
+      VStack(spacing: 0) {
+        HStack(alignment: .top, spacing: 16) {
+          Image(braveSystemName: "leo.warning.circle-filled")
+            .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
+            .font(.headline)
+          VStack(alignment: .leading) {
+            Text(Strings.Wallet.erc721SetApprovalForAllWarningTitle)
+              .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
+              .font(.headline.weight(.semibold))
+            Text(Strings.Wallet.erc721SetApprovalForAllWarningDescription)
+              .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
+              .font(.subheadline)
+          }
+        }
+        .padding(16)
+        .background(
+          Color(braveSystemName: .systemfeedbackErrorBackground),
+          in: UnevenRoundedRectangle(
+            topLeadingRadius: 16,
+            bottomLeadingRadius: 0,
+            bottomTrailingRadius: 0,
+            topTrailingRadius: 16
+          )
+        )
+        HStack {
+          Image(braveSystemName: "leo.arrow.right")
+            .foregroundColor(Color(braveSystemName: .iconDefault))
+            .padding(12)
+            .background(Color(braveSystemName: .pageBackground), in: Circle())
+          VStack(alignment: .leading) {
+            Text(Strings.Wallet.txStatusTo.capitalizeFirstLetter)
+              .foregroundColor(Color(braveSystemName: .textSecondary))
+              .font(.footnote.weight(.semibold))
+            AddressView(address: confirmationStore.activeParsedTransaction.toAddress) {
+              HStack {
+                Text("\(confirmationStore.activeParsedTransaction.toAddress.truncatedAddress)")
+                Button {
+                  if let explorerURL = confirmationStore.activeParsedTransaction.network
+                    .contractAddressURL(confirmationStore.activeParsedTransaction.toAddress)
+                  {
+                    openWalletURL(explorerURL)
+                  }
+                } label: {
+                  Label(
+                    Strings.Wallet.viewOnBlockExplorer,
+                    braveSystemImage: "leo.launch"
+                  )
+                  .labelStyle(.iconOnly)
+                }
+              }
+              .foregroundColor(Color(braveSystemName: .textPrimary))
+              .font(.body.weight(.semibold))
+            }
+          }
+          Spacer()
+        }
+        .padding(16)
+        .background(
+          Color(braveSystemName: .containerBackground),
+          in: UnevenRoundedRectangle(
+            topLeadingRadius: 0,
+            bottomLeadingRadius: 16,
+            bottomTrailingRadius: 16,
+            topTrailingRadius: 0
+          )
+        )
+      }
+    }
+    .padding(.bottom, 4)
+  }
+
   @ViewBuilder private var editGasFeeButton: some View {
     let titleView = Text(Strings.Wallet.editButtonTitle)
       .fontWeight(.semibold)
@@ -240,6 +320,10 @@ struct PendingTransactionView: View {
     VStack {
       if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
         erc20ApproveHeader
+      } else if confirmationStore.activeParsedTransaction.transaction
+        .isGrantingERC721SetApprovalForAll
+      {
+        erc721SetApprovalForAllHeader
       } else {
         TransactionHeader(
           txCoinType: confirmationStore.activeParsedTransaction.transaction.coin,
@@ -420,9 +504,19 @@ struct PendingTransactionView: View {
                     )
                     .font(.footnote)
                     .foregroundColor(Color(braveSystemName: .textSecondary))
-                    Text(
-                      "\(confirmationStore.value) \(confirmationStore.symbol) + \(confirmationStore.gasValue) \(confirmationStore.gasSymbol)"
-                    )
+                    Group {
+                      if confirmationStore.activeParsedTransaction.transaction
+                        .isGrantingERC721SetApprovalForAll
+                      {
+                        Text(
+                          "\(confirmationStore.gasValue) \(confirmationStore.gasSymbol)"
+                        )
+                      } else {
+                        Text(
+                          "\(confirmationStore.value) \(confirmationStore.symbol) + \(confirmationStore.gasValue) \(confirmationStore.gasSymbol)"
+                        )
+                      }
+                    }
                     .foregroundColor(Color(braveSystemName: .textPrimary))
                     .multilineTextAlignment(.trailing)
                     HStack(spacing: 4) {
