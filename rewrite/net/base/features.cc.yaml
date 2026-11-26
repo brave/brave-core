@@ -4,11 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Ship kEnableWebTransportDraft07 disabled.'
-    set_feature_flag_default_state:
-      feature_name: kEnableWebTransportDraft07
-      value: base::FEATURE_DISABLED_BY_DEFAULT
-
   - description: |-
       Enable NIK-partitioning by default.
     set_feature_flag_default_state:

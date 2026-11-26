@@ -256,7 +256,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &metrics::private_metrics::kPrivateMetricsFeature,
       &metrics::structured::kPhoneHubStructuredMetrics,
       &multistep_filter::kMultistepFilter,
-      &net::features::kEnableWebTransportDraft07,
       &net::features::kTLSTrustAnchorIDs,
       &network::features::kBrowsingTopics,
       &network::features::kCacheSharingForPervasiveResources,
