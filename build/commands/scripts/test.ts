@@ -232,6 +232,7 @@ program
   .argument(
     '<suites>',
     'comma-separated test suites, test groups or gn labels to run',
+    parseTestSuites,
   )
   .apply(buildOptions.supportBuildConfigArg)
   .apply(buildOptions.supportBuildDir)
@@ -253,16 +254,23 @@ program
 
     // Each given suite runs like `test <suite>` would, with its own results
     // file, but all tests are built at once.
-    const suiteRuns: { suite: string; tests: string[] }[] = []
-    for (const suite of parseTestSuites(suites)) {
-      const tests = options.base
-        ? await getAffectedTests({ ...options, suite })
-        : getTestsToRun(config, suite)
-      suiteRuns.push({ suite, tests })
+    const getSuiteRuns = async () => {
+      const suiteRuns: { suite: string; tests: string[] }[] = []
+      for (const suite of suites) {
+        const tests = options.base
+          ? await getAffectedTests({ ...options, suite })
+          : getTestsToRun(config, suite)
+        suiteRuns.push({ suite, tests })
+      }
+      return suiteRuns
     }
-    const testsSuitesToRun = [...new Set(suiteRuns.flatMap((r) => r.tests))]
 
-    if (testsSuitesToRun.length === 0 && !options.quiet) {
+    // With --base, only the affected tests are built. Otherwise the given
+    // suites are built as is and test groups are expanded after the build,
+    // which regenerates their <out_dir>/<group>.json if BUILD.gn files changed.
+    let suiteRuns = options.base ? await getSuiteRuns() : undefined
+    const affectedTests = [...new Set(suiteRuns?.flatMap((r) => r.tests))]
+    if (suiteRuns && affectedTests.length === 0 && !options.quiet) {
       console.warn('SKIP: No tests need to run')
       return
     }
@@ -272,8 +280,9 @@ program
     // the signed binary. Used on macOS so Removable Volumes Allow sticks
     // across rebuilds.
     if (!options.skip_build) {
-      await buildTests(testsSuitesToRun)
+      await buildTests(suiteRuns ? affectedTests : suites)
     }
+    suiteRuns ??= await getSuiteRuns()
     if (!options.skip_run) {
       for (const { suite, tests } of suiteRuns) {
         if (!(await runTests(suite, tests, options, passthroughArgs))) {
