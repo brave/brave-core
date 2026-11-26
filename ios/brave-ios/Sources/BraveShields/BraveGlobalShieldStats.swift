@@ -42,25 +42,11 @@ public class BraveGlobalShieldStats {
     }
   }
 
-  public var safeBrowsing: Int = 0 {
-    didSet {
-      Preferences.BlockStats.phishingCount.value = safeBrowsing
-    }
-  }
-
-  public var fpProtection: Int = 0 {
-    didSet {
-      Preferences.BlockStats.fingerprintingCount.value = fpProtection
-    }
-  }
-
   public init() {
     adblock = Preferences.BlockStats.adsCount.value
     trackingProtection = Preferences.BlockStats.trackersCount.value
     images = Preferences.BlockStats.imagesCount.value
     scripts = Preferences.BlockStats.scriptsCount.value
-    fpProtection = Preferences.BlockStats.fingerprintingCount.value
-    safeBrowsing = Preferences.BlockStats.phishingCount.value
   }
 
   // Formatted time saved from blocking
