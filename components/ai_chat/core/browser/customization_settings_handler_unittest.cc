@@ -128,7 +128,7 @@ TEST_F(CustomizationSettingsHandlerTest, SetCustomizations_InvalidLength) {
   base::test::TestFuture<std::optional<mojom::CustomizationOperationError>>
       future;
   handler_->SetCustomizations(customizations.Clone(), future.GetCallback());
-  EXPECT_TRUE(future.Get().has_value());
+  ASSERT_TRUE(future.Get().has_value());
   EXPECT_EQ(future.Get().value(),
             mojom::CustomizationOperationError::kInvalidLength);
 }
@@ -180,7 +180,7 @@ TEST_F(CustomizationSettingsHandlerTest, AddMemory_Empty) {
   base::test::TestFuture<std::optional<mojom::CustomizationOperationError>>
       future;
   handler_->AddMemory("", future.GetCallback());  // Empty memory
-  EXPECT_TRUE(future.Get().has_value());
+  ASSERT_TRUE(future.Get().has_value());
   EXPECT_EQ(future.Get().value(),
             mojom::CustomizationOperationError::kInvalidLength);
   EXPECT_EQ(prefs::GetMemoriesFromPrefs(*pref_service_),
@@ -192,7 +192,7 @@ TEST_F(CustomizationSettingsHandlerTest, AddMemory_TooLong) {
       future;
   handler_->AddMemory(std::string(mojom::kMaxMemoryRecordLength + 1, 'a'),
                       future.GetCallback());
-  EXPECT_TRUE(future.Get().has_value());
+  ASSERT_TRUE(future.Get().has_value());
   EXPECT_EQ(future.Get().value(),
             mojom::CustomizationOperationError::kInvalidLength);
   EXPECT_EQ(prefs::GetMemoriesFromPrefs(*pref_service_),
@@ -250,7 +250,7 @@ TEST_F(CustomizationSettingsHandlerTest, EditMemory_NotFound) {
                        future.GetCallback());
 
   std::optional<mojom::CustomizationOperationError> error = future.Get();
-  EXPECT_TRUE(error.has_value());
+  ASSERT_TRUE(error.has_value());
   EXPECT_EQ(error.value(), mojom::CustomizationOperationError::kNotFound);
 }
 
@@ -267,7 +267,7 @@ TEST_F(CustomizationSettingsHandlerTest, EditMemory_EmptyNewMemory) {
                        future2.GetCallback());  // Empty new memory
 
   std::optional<mojom::CustomizationOperationError> error = future2.Get();
-  EXPECT_TRUE(error.has_value());
+  ASSERT_TRUE(error.has_value());
   EXPECT_EQ(error.value(), mojom::CustomizationOperationError::kInvalidLength);
 
   EXPECT_EQ(prefs::GetMemoriesFromPrefs(*pref_service_),
@@ -285,7 +285,7 @@ TEST_F(CustomizationSettingsHandlerTest, EditMemory_NewMemoryTooLong) {
   handler_->EditMemory("Old memory",
                        std::string(mojom::kMaxMemoryRecordLength + 1, 'a'),
                        future2.GetCallback());
-  EXPECT_TRUE(future2.Get().has_value());
+  ASSERT_TRUE(future2.Get().has_value());
   EXPECT_EQ(future2.Get().value(),
             mojom::CustomizationOperationError::kInvalidLength);
 
