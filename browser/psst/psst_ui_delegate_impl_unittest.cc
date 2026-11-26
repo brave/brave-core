@@ -71,9 +71,6 @@ class NoopUiPresenter : public PsstUiPresenter {
 
 }  // namespace
 
-// Covers the BraveOrigin-aware enable/disable logic that moved here from
-// PsstSettingsService (components/psst/core/browser is not allowed to depend
-// on components/brave_origin).
 class PsstUiDelegateImplUnitTest : public testing::Test {
  public:
   void SetUp() override {
@@ -142,9 +139,6 @@ class PsstUiDelegateImplUnitTest : public testing::Test {
  protected:
   PsstUiDelegateImpl* delegate() { return delegate_.get(); }
 
-  // OnDisablePrivacySettingsTuning() is private; this fixture is friended by
-  // PsstUiDelegateImpl so it can invoke it directly without going through
-  // the UI presenter's context-menu callback plumbing.
   void TriggerDisablePrivacySettingsTuning() {
     delegate_->OnDisablePrivacySettingsTuning();
   }
