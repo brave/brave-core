@@ -3197,7 +3197,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesPath) {
       "a.com##:matches-path(/c[aeiou]smetic\\_[a-z]{9}/) section "
       ".positive-regex-case p.odd\n"
       "a.com##section .negative-case:matches-path(/some-other-page.html)\n"
-      "a.com##:matches-path(😎) section .positive-unicode-case p.odd");
+      "a.com##:matches-path(😎) section .positive-unicode-case p.odd\n"
+      "a.com##:matches-path(/^\\/cosmetic_filtering\\.html/) section "
+      ".positive-regex-slash-case p.odd");
 
   GURL::Replacements replacements;
   replacements.SetQueryStr("😎");
