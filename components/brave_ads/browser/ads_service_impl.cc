@@ -1501,6 +1501,26 @@ void AdsServiceImpl::NotifyDidCloseTab(int32_t tab_id) {
   }
 }
 
+void AdsServiceImpl::NotifyOrderIdResolved(int32_t tab_id,
+                                           const GURL& extracted_for_url,
+                                           std::optional<std::string> id) {
+  if (bat_ads_client_notifier_remote_.is_bound()) {
+    bat_ads_client_notifier_remote_->NotifyOrderIdResolved(
+        tab_id, extracted_for_url, id);
+  }
+}
+
+void AdsServiceImpl::NotifyOrderValueResolved(
+    int32_t tab_id,
+    const GURL& extracted_for_url,
+    std::optional<std::string> value,
+    std::optional<std::string> currency) {
+  if (bat_ads_client_notifier_remote_.is_bound()) {
+    bat_ads_client_notifier_remote_->NotifyOrderValueResolved(
+        tab_id, extracted_for_url, value, currency);
+  }
+}
+
 void AdsServiceImpl::NotifyUserGestureEventTriggered(int32_t page_transition) {
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyUserGestureEventTriggered(

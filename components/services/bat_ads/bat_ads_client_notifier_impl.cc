@@ -117,6 +117,22 @@ void BatAdsClientNotifierImpl::NotifyDidCloseTab(int32_t tab_id) {
   ads_client_notifier_.NotifyDidCloseTab(tab_id);
 }
 
+void BatAdsClientNotifierImpl::NotifyOrderIdResolved(
+    int32_t tab_id,
+    const GURL& extracted_for_url,
+    const std::optional<std::string>& id) {
+  ads_client_notifier_.NotifyOrderIdResolved(tab_id, extracted_for_url, id);
+}
+
+void BatAdsClientNotifierImpl::NotifyOrderValueResolved(
+    int32_t tab_id,
+    const GURL& extracted_for_url,
+    const std::optional<std::string>& value,
+    const std::optional<std::string>& currency) {
+  ads_client_notifier_.NotifyOrderValueResolved(tab_id, extracted_for_url,
+                                                value, currency);
+}
+
 void BatAdsClientNotifierImpl::NotifyUserGestureEventTriggered(
     int32_t page_transition) {
   if (ui::IsValidPageTransitionType(page_transition)) {

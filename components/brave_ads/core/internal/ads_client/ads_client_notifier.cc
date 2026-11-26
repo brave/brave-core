@@ -209,6 +209,35 @@ void AdsClientNotifier::NotifyDidCloseTab(int32_t tab_id) {
   observers_.Notify(&AdsClientNotifierObserver::OnNotifyDidCloseTab, tab_id);
 }
 
+void AdsClientNotifier::NotifyOrderIdResolved(int32_t tab_id,
+                                              const GURL& extracted_for_url,
+                                              std::optional<std::string> id) {
+  if (task_queue_->should_queue()) {
+    return task_queue_->Add(base::BindOnce(
+        &AdsClientNotifier::NotifyOrderIdResolved, weak_factory_.GetWeakPtr(),
+        tab_id, extracted_for_url, std::move(id)));
+  }
+
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyOrderIdResolved, tab_id,
+                    extracted_for_url, id);
+}
+
+void AdsClientNotifier::NotifyOrderValueResolved(
+    int32_t tab_id,
+    const GURL& extracted_for_url,
+    std::optional<std::string> value,
+    std::optional<std::string> currency) {
+  if (task_queue_->should_queue()) {
+    return task_queue_->Add(
+        base::BindOnce(&AdsClientNotifier::NotifyOrderValueResolved,
+                       weak_factory_.GetWeakPtr(), tab_id, extracted_for_url,
+                       std::move(value), std::move(currency)));
+  }
+
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyOrderValueResolved,
+                    tab_id, extracted_for_url, value, currency);
+}
+
 void AdsClientNotifier::NotifyUserGestureEventTriggered(
     ui::PageTransition page_transition) {
   if (task_queue_->should_queue()) {

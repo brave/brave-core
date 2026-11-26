@@ -96,6 +96,21 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
   // Invoked when a browser tab with the specified `tab_id` is closed.
   virtual void OnNotifyDidCloseTab(int32_t tab_id) {}
 
+  // `extracted_for_url` lets an observer discard a stale post-navigation
+  // result.
+  virtual void OnNotifyOrderIdResolved(
+      int32_t tab_id,
+      const GURL& extracted_for_url,
+      base::optional_ref<const std::string> id) {}
+
+  // `value` and `currency` each independently have no value if not
+  // found/matched; see `OnNotifyOrderIdResolved` for `extracted_for_url`.
+  virtual void OnNotifyOrderValueResolved(
+      int32_t tab_id,
+      const GURL& extracted_for_url,
+      base::optional_ref<const std::string> value,
+      base::optional_ref<const std::string> currency) {}
+
   // Called when a page navigation was initiated by a user gesture.
   // `page_transition` containing the page transition type, see enums for
   // `ui::PageTransition`.

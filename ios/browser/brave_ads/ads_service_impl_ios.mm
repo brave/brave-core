@@ -429,6 +429,22 @@ void AdsServiceImplIOS::NotifyDidCloseTab(int32_t tab_id) {
   ads_client_notifier_->NotifyDidCloseTab(tab_id);
 }
 
+void AdsServiceImplIOS::NotifyOrderIdResolved(int32_t tab_id,
+                                              const GURL& extracted_for_url,
+                                              std::optional<std::string> id) {
+  ads_client_notifier_->NotifyOrderIdResolved(tab_id, extracted_for_url,
+                                              std::move(id));
+}
+
+void AdsServiceImplIOS::NotifyOrderValueResolved(
+    int32_t tab_id,
+    const GURL& extracted_for_url,
+    std::optional<std::string> value,
+    std::optional<std::string> currency) {
+  ads_client_notifier_->NotifyOrderValueResolved(
+      tab_id, extracted_for_url, std::move(value), std::move(currency));
+}
+
 void AdsServiceImplIOS::NotifyUserGestureEventTriggered(
     int32_t page_transition) {
   ads_client_notifier_->NotifyUserGestureEventTriggered(
