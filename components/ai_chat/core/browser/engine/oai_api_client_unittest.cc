@@ -264,11 +264,8 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithStopSequences) {
   run_loop.Run();
 
   auto dict = base::test::ParseJsonDict(request_body);
-  const base::ListValue* stop_list = dict.FindList("stop");
-  ASSERT_TRUE(stop_list);
-  ASSERT_EQ(stop_list->size(), 2u);
-  EXPECT_EQ((*stop_list)[0].GetString(), "/title");
-  EXPECT_EQ((*stop_list)[1].GetString(), "END");
+  EXPECT_THAT(dict, base::test::DictionaryHasValue(
+                        "stop", base::test::ParseJson(R"(["/title", "END"])")));
 }
 
 TEST_F(OAIAPIUnitTest, PerformRequest_WithEmptyStopSequences) {

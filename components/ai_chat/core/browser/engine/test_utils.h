@@ -6,10 +6,12 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_TEST_UTILS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_TEST_UTILS_H_
 
+#include <string>
 #include <string_view>
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/functional/callback_helpers.h"
 #include "base/location.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -19,6 +21,12 @@
 namespace ai_chat {
 
 struct Tab;
+
+// Deliver the mock response even when a fatal assertion returns from its
+// action.
+[[nodiscard]] base::ScopedClosureRunner CompleteRequestOnExit(
+    EngineConsumer::GenerationCompletedCallback callback,
+    std::string completion);
 
 // Returns the history with a modified server reply in edits.
 std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply();

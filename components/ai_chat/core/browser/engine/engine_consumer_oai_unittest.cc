@@ -431,6 +431,9 @@ TEST_F(EngineConsumerOAIUnitTest,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
+            auto reply = CompleteRequestOnExit(std::move(completed_callback),
+                                               assistant_response);
+
             ASSERT_EQ(messages.size(), 2u);
 
             // System message
@@ -445,12 +448,6 @@ TEST_F(EngineConsumerOAIUnitTest,
             VerifyPageTextBlock(FROM_HERE, messages[1].content[0],
                                 "Page content 1");
             VerifyTextBlock(FROM_HERE, messages[1].content.back(), human_input);
-
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New(assistant_response)),
-                    std::nullopt /* model_key */)));
           });
 
   // Initiate the test
@@ -507,34 +504,31 @@ TEST_F(EngineConsumerOAIUnitTest,
       std::vector<std::string>{} /* child_thread_uuids */));
 
   auto* client = GetClient();
-  auto run_loop = std::make_unique<base::RunLoop>();
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
-          [&expected_system_message, &run_loop](
+          [&expected_system_message](
               const mojom::ModelOptions&, std::vector<OAIMessage> messages,
               std::optional<base::ListValue>,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
+            auto reply = CompleteRequestOnExit(std::move(completed_callback),
+                                               "response");
+
             ASSERT_GE(messages.size(), 1u);
             EXPECT_EQ(messages[0].role, "system");
             ASSERT_EQ(messages[0].content.size(), 1u);
             VerifyTextBlock(FROM_HERE, messages[0].content[0],
                             expected_system_message);
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("response")),
-                    std::nullopt)));
-            run_loop->Quit();
           });
 
   engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
                                      false, {}, std::nullopt, {},
-                                     base::DoNothing(), base::DoNothing());
+                                     base::DoNothing(), future.GetCallback());
 
-  run_loop->Run();
+  EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
@@ -574,6 +568,9 @@ TEST_F(EngineConsumerOAIUnitTest,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
+            auto reply = CompleteRequestOnExit(std::move(completed_callback),
+                                               "I dont know");
+
             // system + human turn 1 + assistant turn + human turn 3
             ASSERT_EQ(messages.size(), 4u);
 
@@ -600,12 +597,6 @@ TEST_F(EngineConsumerOAIUnitTest,
             ASSERT_EQ(messages[3].content.size(), 1u);
             VerifyTextBlock(FROM_HERE, messages[3].content.back(),
                             "What's his name?");
-
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("I dont know")),
-                    std::nullopt /* model_key */)));
           });
 
   {
@@ -639,6 +630,9 @@ TEST_F(EngineConsumerOAIUnitTest,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
+            auto reply =
+                CompleteRequestOnExit(std::move(completed_callback), "");
+
             // system + human turn 1 + assistant turn + human turn 3
             ASSERT_EQ(messages.size(), 4u);
 
@@ -662,12 +656,6 @@ TEST_F(EngineConsumerOAIUnitTest,
             ASSERT_EQ(messages[3].content.size(), 1u);
             VerifyTextBlock(FROM_HERE, messages[3].content.back(),
                             "Is it related to a broader series?");
-
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("")),
-                    std::nullopt /* model_key */)));
           });
 
   engine_->GenerateAssistantResponse(
@@ -752,6 +740,9 @@ TEST_F(EngineConsumerOAIUnitTest,
              EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
+            auto reply =
+                CompleteRequestOnExit(std::move(completed_callback), "");
+
             ASSERT_EQ(messages.size(), 2u);
             EXPECT_EQ(messages[0].role, "system");
             ASSERT_EQ(messages[0].content.size(), 1u);
@@ -761,12 +752,6 @@ TEST_F(EngineConsumerOAIUnitTest,
             ASSERT_EQ(messages[1].content.size(), 1u);
             VerifyTextBlock(FROM_HERE, messages[1].content.back(),
                             "What is my name?");
-
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("")),
-                    std::nullopt /* model_key */)));
           });
 
   engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
@@ -831,6 +816,9 @@ TEST_F(EngineConsumerOAIUnitTest,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
+            auto reply =
+                CompleteRequestOnExit(std::move(completed_callback), "");
+
             ASSERT_EQ(messages.size(), 2u);
 
             // System message should include memory system prompt segment
@@ -852,12 +840,6 @@ TEST_F(EngineConsumerOAIUnitTest,
                        "&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;"}}}));
             VerifyTextBlock(FROM_HERE, messages[1].content[1],
                             "What is my name?");
-
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("")),
-                    std::nullopt /* model_key */)));
           });
 
   engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
@@ -913,6 +895,9 @@ TEST_F(EngineConsumerOAIUnitTest,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
+            auto reply =
+                CompleteRequestOnExit(std::move(completed_callback), "");
+
             // Should only have 2 messages: system prompt and user message
             // NO memory content block should be present
             ASSERT_EQ(messages.size(), 2u);
@@ -929,12 +914,6 @@ TEST_F(EngineConsumerOAIUnitTest,
             ASSERT_EQ(messages[1].content.size(), 1u);
             VerifyTextBlock(FROM_HERE, messages[1].content.back(),
                             "What is my name?");
-
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("")),
-                    std::nullopt /* model_key */)));
           });
 
   engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
@@ -979,6 +958,9 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_Success) {
              EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>& stop_sequences) {
+            auto reply = CompleteRequestOnExit(std::move(completed_callback),
+                                               "Understanding AI Basics");
+
             // Verify the stop sequences
             ASSERT_TRUE(stop_sequences.has_value());
             ASSERT_EQ(stop_sequences->size(), 1u);
@@ -1008,13 +990,6 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_Success) {
             VerifyTextBlock(FROM_HERE, messages[1].content[0],
                             "Here is the title for the above conversation "
                             "in <title> tags:\n<title>");
-
-            // Simulate successful title generation
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("Understanding AI Basics")),
-                    std::nullopt)));
           });
 
   engine_->GenerateConversationTitle(page_contents,
@@ -1076,6 +1051,9 @@ TEST_F(EngineConsumerOAIUnitTest,
              EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
+            auto reply = CompleteRequestOnExit(std::move(completed_callback),
+                                               "Content Analysis");
+
             // Should have 2 messages: user message + assistant seed
             ASSERT_EQ(messages.size(), 2u);
 
@@ -1112,12 +1090,6 @@ TEST_F(EngineConsumerOAIUnitTest,
 
             // Assistant seed message
             EXPECT_EQ(messages[1].role, "assistant");
-
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("Content Analysis")),
-                    std::nullopt)));
           });
 
   engine_->GenerateConversationTitle(page_contents,
@@ -1153,37 +1125,34 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithSelectedText) {
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
-      .WillOnce([](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
-                   std::optional<base::ListValue>,
-                   EngineConsumer::GenerationDataCallback,
-                   EngineConsumer::GenerationCompletedCallback
-                       completed_callback,
-                   const std::optional<std::vector<std::string>>&) {
-        // Should have 2 messages: user message + assistant seed
-        ASSERT_EQ(messages.size(), 2u);
+      .WillOnce(
+          [](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+             std::optional<base::ListValue>,
+             EngineConsumer::GenerationDataCallback,
+             EngineConsumer::GenerationCompletedCallback completed_callback,
+             const std::optional<std::vector<std::string>>&) {
+            auto reply = CompleteRequestOnExit(std::move(completed_callback),
+                                               "Machine Learning Explained");
 
-        // First message: user role with content blocks
-        // (page excerpt + title request)
-        EXPECT_EQ(messages[0].role, "user");
-        ASSERT_EQ(messages[0].content.size(), 2u);
+            // Should have 2 messages: user message + assistant seed
+            ASSERT_EQ(messages.size(), 2u);
 
-        // First block: page excerpt with selected text
-        VerifyPageExcerptBlock(FROM_HERE, messages[0].content[0],
-                               "Machine learning is a subset of AI");
+            // First message: user role with content blocks
+            // (page excerpt + title request)
+            EXPECT_EQ(messages[0].role, "user");
+            ASSERT_EQ(messages[0].content.size(), 2u);
 
-        // Second block: title request
-        VerifyRequestTitleBlock(FROM_HERE, messages[0].content[1],
-                                "Explain this concept");
+            // First block: page excerpt with selected text
+            VerifyPageExcerptBlock(FROM_HERE, messages[0].content[0],
+                                   "Machine learning is a subset of AI");
 
-        // Assistant seed message
-        EXPECT_EQ(messages[1].role, "assistant");
+            // Second block: title request
+            VerifyRequestTitleBlock(FROM_HERE, messages[0].content[1],
+                                    "Explain this concept");
 
-        std::move(completed_callback)
-            .Run(base::ok(EngineConsumer::GenerationResultData(
-                mojom::ConversationEntryEvent::NewCompletionEvent(
-                    mojom::CompletionEvent::New("Machine Learning Explained")),
-                std::nullopt)));
-      });
+            // Assistant seed message
+            EXPECT_EQ(messages[1].role, "assistant");
+          });
 
   engine_->GenerateConversationTitle(page_contents,
                                      EngineConsumer::ToHistoryView(history),
@@ -1229,6 +1198,9 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithUploadedFiles) {
              EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
+            auto reply = CompleteRequestOnExit(std::move(completed_callback),
+                                               "Sunset Mountain View");
+
             // Should have 2 messages: user message + assistant seed
             ASSERT_EQ(messages.size(), 2u);
 
@@ -1244,12 +1216,6 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithUploadedFiles) {
 
             // Assistant seed message
             EXPECT_EQ(messages[1].role, "assistant");
-
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("Sunset Mountain View")),
-                    std::nullopt)));
           });
 
   engine_->GenerateConversationTitle(page_contents,
@@ -1727,6 +1693,9 @@ TEST_P(EngineConsumerOAIUnitTest_GenerateRewrite, GenerateRewriteSuggestion) {
               EngineConsumer::GenerationDataCallback data_callback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>& stop_sequences) {
+            auto reply = CompleteRequestOnExit(std::move(completed_callback),
+                                               expected_response);
+
             // Verify the messages structure
             ASSERT_EQ(messages.size(), 2u);
 
@@ -1765,13 +1734,6 @@ TEST_P(EngineConsumerOAIUnitTest_GenerateRewrite, GenerateRewriteSuggestion) {
             // serialized messages.
             EXPECT_THAT(OAIAPIClient::SerializeOAIMessages(std::move(messages)),
                         base::test::IsJson(expected_messages));
-
-            // Return completion
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New(expected_response)),
-                    std::nullopt /* model_key*/)));
           });
 
   engine_->GenerateRewriteSuggestion(test_text, params.action_type,

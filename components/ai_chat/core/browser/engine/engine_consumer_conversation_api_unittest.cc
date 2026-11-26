@@ -179,6 +179,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(std::move(callback), "");
+
         // Should have 1 message with 2 content blocks
         ASSERT_EQ(messages.size(), 1u);
         EXPECT_EQ(messages[0].role, "user");
@@ -196,12 +198,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Verify JSON serialization matches expected format
         EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                     base::test::IsJson(expected_messages));
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   std::vector<mojom::ConversationTurnPtr> history;
@@ -260,6 +256,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(std::move(callback), "");
+
         // Should be 1 message with 3 content blocks (2 page texts + user
         // message)
         ASSERT_EQ(messages.size(), 1u);
@@ -279,12 +277,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Verify JSON serialization matches expected format
         EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                     base::test::IsJson(expected_messages));
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   std::vector<mojom::ConversationTurnPtr> history;
@@ -331,6 +323,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(std::move(callback), "");
+
         // Should be 1 message with 3 blocks (page, excerpt, text)
         ASSERT_EQ(messages.size(), 1u);
         EXPECT_EQ(messages[0].role, "user");
@@ -351,12 +345,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Verify JSON serialization matches expected format
         EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                     base::test::IsJson(expected_messages));
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   std::vector<mojom::ConversationTurnPtr> history;
@@ -438,6 +426,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(std::move(callback), "");
+
         // Should have 3 messages (user, assistant, user)
         ASSERT_EQ(messages.size(), 3u);
 
@@ -465,12 +455,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Verify JSON serialization matches expected format
         EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                     base::test::IsJson(expected_messages));
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   engine_->GenerateAssistantResponse(
@@ -565,6 +549,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(std::move(callback), "");
+
         // Should have 3 messages (user with page, assistant, user)
         ASSERT_EQ(messages.size(), 3u);
 
@@ -590,12 +576,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Verify JSON serialization matches expected format
         EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                     base::test::IsJson(expected_messages));
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   engine_->GenerateAssistantResponse(
@@ -629,6 +609,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(std::move(callback), "");
+
         // Should have 1 message with 2 blocks (page text, request summary)
         ASSERT_EQ(messages.size(), 1u);
         EXPECT_EQ(messages[0].role, "user");
@@ -645,12 +627,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Verify JSON serialization matches expected format
         EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                     base::test::IsJson(expected_messages));
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   std::vector<mojom::ConversationTurnPtr> history;
@@ -719,6 +695,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                 EngineConsumer::GenerationDataCallback data_callback,
                 EngineConsumer::GenerationCompletedCallback callback,
                 const std::optional<std::string>& model_name) {
+              auto reply =
+                  CompleteRequestOnExit(std::move(callback), "Test response");
+
               ASSERT_EQ(messages.size(), 1u);
               EXPECT_EQ(messages[0].role, "user");
               ASSERT_EQ(messages[0].content.size(), 3u);
@@ -738,12 +717,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
               EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                           base::test::IsJson(expected_messages));
-              auto completion_event =
-                  mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("Test response"));
-              std::move(callback).Run(
-                  base::ok(EngineConsumer::GenerationResultData(
-                      std::move(completion_event), std::nullopt)));
             });
 
     std::vector<mojom::ConversationTurnPtr> history;
@@ -803,6 +776,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                 EngineConsumer::GenerationDataCallback data_callback,
                 EngineConsumer::GenerationCompletedCallback callback,
                 const std::optional<std::string>& model_name) {
+              auto reply =
+                  CompleteRequestOnExit(std::move(callback), "Test response");
+
               ASSERT_EQ(messages.size(), 1u);
               EXPECT_EQ(messages[0].role, "user");
               ASSERT_EQ(messages[0].content.size(), 3u);
@@ -820,12 +796,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
               EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                           base::test::IsJson(expected_messages));
-              auto completion_event =
-                  mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("Test response"));
-              std::move(callback).Run(
-                  base::ok(EngineConsumer::GenerationResultData(
-                      std::move(completion_event), std::nullopt)));
             });
 
     std::vector<mojom::ConversationTurnPtr> history;
@@ -889,6 +859,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                 EngineConsumer::GenerationDataCallback data_callback,
                 EngineConsumer::GenerationCompletedCallback callback,
                 const std::optional<std::string>& model_name) {
+              auto reply =
+                  CompleteRequestOnExit(std::move(callback), "Test response");
+
               ASSERT_EQ(messages.size(), 1u);
               EXPECT_EQ(messages[0].role, "user");
               ASSERT_EQ(messages[0].content.size(), 3u);
@@ -905,12 +878,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
               EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                           base::test::IsJson(expected_messages));
-              auto completion_event =
-                  mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("Test response"));
-              std::move(callback).Run(
-                  base::ok(EngineConsumer::GenerationResultData(
-                      std::move(completion_event), std::nullopt)));
             });
 
     std::vector<mojom::ConversationTurnPtr> history;
@@ -956,6 +923,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                 EngineConsumer::GenerationDataCallback data_callback,
                 EngineConsumer::GenerationCompletedCallback callback,
                 const std::optional<std::string>& model_name) {
+              auto reply =
+                  CompleteRequestOnExit(std::move(callback), "Test response");
+
               ASSERT_EQ(messages.size(), 1u);
               EXPECT_EQ(messages[0].role, "user");
               ASSERT_EQ(messages[0].content.size(), 2u);
@@ -967,12 +937,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
               EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                           base::test::IsJson(expected_messages));
-              auto completion_event =
-                  mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("Test response"));
-              std::move(callback).Run(
-                  base::ok(EngineConsumer::GenerationResultData(
-                      std::move(completion_event), std::nullopt)));
             });
 
     std::vector<mojom::ConversationTurnPtr> history;
@@ -1023,6 +987,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                 EngineConsumer::GenerationDataCallback data_callback,
                 EngineConsumer::GenerationCompletedCallback callback,
                 const std::optional<std::string>& model_name) {
+              auto reply =
+                  CompleteRequestOnExit(std::move(callback), "Test response");
+
               ASSERT_EQ(messages.size(), 1u);
               EXPECT_EQ(messages[0].role, "user");
               ASSERT_EQ(messages[0].content.size(), 2u);
@@ -1034,12 +1001,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
               EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                           base::test::IsJson(expected_messages));
-              auto completion_event =
-                  mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("Test response"));
-              std::move(callback).Run(
-                  base::ok(EngineConsumer::GenerationResultData(
-                      std::move(completion_event), std::nullopt)));
             });
 
     std::vector<mojom::ConversationTurnPtr> history;
@@ -1089,6 +1050,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                 EngineConsumer::GenerationDataCallback data_callback,
                 EngineConsumer::GenerationCompletedCallback callback,
                 const std::optional<std::string>& model_name) {
+              auto reply =
+                  CompleteRequestOnExit(std::move(callback), "Test response");
+
               ASSERT_EQ(messages.size(), 1u);
               EXPECT_EQ(messages[0].role, "user");
               ASSERT_EQ(messages[0].content.size(), 2u);
@@ -1100,12 +1064,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
               EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                           base::test::IsJson(expected_messages));
-              auto completion_event =
-                  mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("Test response"));
-              std::move(callback).Run(
-                  base::ok(EngineConsumer::GenerationResultData(
-                      std::move(completion_event), std::nullopt)));
             });
 
     std::vector<mojom::ConversationTurnPtr> history;
@@ -1165,6 +1123,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply =
+            CompleteRequestOnExit(std::move(callback), "Test response");
+
         // Should only have 1 message with 2 content blocks
         // NO memory content block should be present
         ASSERT_EQ(messages.size(), 1u);
@@ -1178,11 +1139,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
         EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                     base::test::IsJson(expected_messages));
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New("Test response"));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   std::vector<mojom::ConversationTurnPtr> history;
@@ -1388,6 +1344,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(std::move(callback), "");
+
         // Should have 1 message with content blocks ordered (page content
         // before text)
         ASSERT_EQ(messages.size(), 1u);
@@ -1400,12 +1358,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
         // Second content block should be the user message
         VerifyTextBlock(FROM_HERE, messages[0].content[1], "Human message");
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   PageContent page_content("Test page content",
@@ -1441,18 +1393,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(std::move(callback), "");
+
         // Should only have user message, no page content for missing turn
         ASSERT_EQ(messages.size(), 1u);
         EXPECT_EQ(messages[0].role, "user");
         ASSERT_EQ(messages[0].content.size(), 1u);
 
         VerifyTextBlock(FROM_HERE, messages[0].content[0], "Human message");
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   // Create page content for a turn UUID that doesn't exist in conversation
@@ -1491,6 +1439,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(std::move(callback), "");
+
         // Should have 1 message with 3 content blocks (video, page, text)
         ASSERT_EQ(messages.size(), 1u);
         EXPECT_EQ(messages[0].role, "user");
@@ -1506,12 +1456,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
         // Third content block should be the user message
         VerifyTextBlock(FROM_HERE, messages[0].content[2], "Human message");
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   PageContent page_content1("First page content",
@@ -1550,6 +1494,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(std::move(callback), "");
+
         // Should have 3 messages: User, Assistant, User
         ASSERT_EQ(messages.size(), 3u);
 
@@ -1574,12 +1520,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                             "Content for second turn");
         VerifyTextBlock(FROM_HERE, messages[2].content[1],
                         "Second human message");
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   PageContent page_content1("Content for first turn",
@@ -1673,6 +1613,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+                  auto reply = CompleteRequestOnExit(std::move(callback), "");
+
                   // Extract all text content from all messages for verification
                   std::vector<std::string> actual_contents;
                   for (const auto& msg : messages) {
@@ -1698,13 +1640,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       EXPECT_EQ(actual_contents[i], expected_contents[i]);
                     }
                   }
-
-                  auto completion_event =
-                      mojom::ConversationEntryEvent::NewCompletionEvent(
-                          mojom::CompletionEvent::New(""));
-                  std::move(callback).Run(
-                      base::ok(EngineConsumer::GenerationResultData(
-                          std::move(completion_event), std::nullopt)));
                 });
 
         engine_->GenerateAssistantResponse(
@@ -1823,6 +1758,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply =
+            CompleteRequestOnExit(std::move(callback), kAssistantResponse);
+
         // Should have 1 message
         ASSERT_EQ(messages.size(), 1u);
         EXPECT_EQ(messages[0].role, "user");
@@ -1860,12 +1798,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Verify JSON serialization matches expected format
         EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                     base::test::IsJson(expected_messages));
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(kAssistantResponse));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   std::vector<mojom::ConversationTurnPtr> history;
@@ -1928,6 +1860,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(std::move(callback), "");
+
         // Should have 1 message
         ASSERT_EQ(messages.size(), 1u);
         EXPECT_EQ(messages[0].role, "user");
@@ -1961,12 +1895,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Verify JSON serialization matches expected format
         EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                     base::test::IsJson(expected_messages));
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   std::vector<mojom::ConversationTurnPtr> history;
@@ -2049,6 +1977,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(std::move(callback), "");
+
         // Should have 1 message
         ASSERT_EQ(messages.size(), 1u);
         EXPECT_EQ(messages[0].role, "user");
@@ -2104,12 +2034,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Verify JSON serialization matches expected format
         EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                     base::test::IsJson(expected_messages));
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   std::vector<mojom::ConversationTurnPtr> history;
@@ -2160,6 +2084,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(std::move(callback), "");
+
         // Should have 1 message
         ASSERT_EQ(messages.size(), 1u);
         EXPECT_EQ(messages[0].role, "user");
@@ -2183,12 +2109,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Verify JSON serialization matches expected format
         EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                     base::test::IsJson(expected_messages));
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   std::vector<mojom::ConversationTurnPtr> history;
@@ -2249,6 +2169,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(std::move(callback), "");
+
         // Verify we have one message
         ASSERT_EQ(messages.size(), 1u);
         EXPECT_EQ(messages[0].role, "user");
@@ -2281,12 +2203,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Verify JSON serialization matches expected format
         EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                     base::test::IsJson(expected_messages));
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   std::vector<mojom::ConversationTurnPtr> history;
@@ -2333,6 +2249,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply =
+            CompleteRequestOnExit(std::move(callback), "AI is a technology...");
+
         // Should have 1 message with 2 content blocks: skill
         // definition + query
         ASSERT_EQ(messages.size(), 1u);
@@ -2349,13 +2268,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Second content block should be the actual user message
         VerifyTextBlock(FROM_HERE, messages[0].content[1],
                         "/summarize What is artificial intelligence?");
-
-        // Mock successful response
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New("AI is a technology..."));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   engine_->GenerateAssistantResponse(
@@ -2939,6 +2851,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
+          auto reply = CompleteRequestOnExit(std::move(callback),
+                                             "question1|question2|question3");
+
           ASSERT_EQ(messages.size(), 1u);
           EXPECT_EQ(messages[0].role, "user");
           ASSERT_EQ(messages[0].content.size(), 3u);
@@ -2958,12 +2873,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
           // Verify JSON serialization matches expected format
           EXPECT_THAT(mock_api_client->GetMessages(std::move(messages)),
                       base::test::IsJson(expected_messages));
-
-          auto completion_event =
-              mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("question1|question2|question3"));
-          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-              std::move(completion_event), std::nullopt)));
         });
 
     engine_->GenerateQuestionSuggestions(
@@ -3132,6 +3041,9 @@ TEST_P(EngineConsumerConversationAPIUnitTest_GenerateRewrite,
               EngineConsumer::GenerationDataCallback data_callback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::string>& model_name) {
+            auto reply = CompleteRequestOnExit(std::move(completed_callback),
+                                               expected_response);
+
             // Verify no capability is sent for rewrite requests
             EXPECT_TRUE(conversation_capabilities.empty());
 
@@ -3174,13 +3086,6 @@ TEST_P(EngineConsumerConversationAPIUnitTest_GenerateRewrite,
             // Verify JSON serialization matches expected format
             EXPECT_THAT(client->GetMessages(std::move(messages)),
                         base::test::IsJson(expected_messages));
-
-            // Return completion
-            std::move(completed_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New(expected_response)),
-                    std::nullopt)));
           });
 
   engine_->GenerateRewriteSuggestion(test_text, params.action_type,
@@ -4188,15 +4093,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
+        auto reply = CompleteRequestOnExit(
+            std::move(callback), "Why did the chicken cross the road?");
+
         ASSERT_TRUE(model_name.has_value());
         EXPECT_EQ(*model_name, kClaudeSonnetModelName);
-
-        auto completion_event =
-            mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(
-                    "Why did the chicken cross the road?"));
-        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(completion_event), std::nullopt)));
       });
 
   engine_->GenerateAssistantResponse(

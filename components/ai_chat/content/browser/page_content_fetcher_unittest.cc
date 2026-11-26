@@ -328,8 +328,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPISuccess) {
 
   // Verify the request body
   ASSERT_EQ(request_bodies.size(), 1u);
-  EXPECT_EQ(base::test::ParseJsonDict(request_bodies[0]),
-            base::test::ParseJsonDict(absl::StrFormat(R"({
+  EXPECT_THAT(request_bodies[0], base::test::IsJson(absl::StrFormat(R"({
     "videoId": "%s",
     "context": {
       "client": {
@@ -338,7 +337,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPISuccess) {
       }
     }
   })",
-                                                      video_id)));
+                                                                    video_id)));
 
   // Check transcript request
   EXPECT_EQ(requests_made[1].url, transcript_url);
