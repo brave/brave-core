@@ -306,6 +306,15 @@ class TabGridViewModel {
     closeTabs(Set(tabManager.tabs(in: group).map(\.id)))
   }
 
+  /// The tabs a selection covers tabs, plus every tab inside a selected group
+  func tabIDs(in groups: Set<TabGroup.ID>, plus tabs: Set<TabState.ID>) -> Set<TabState.ID> {
+    var ids = tabs
+    for group in tabGroups where groups.contains(group.id) {
+      ids.formUnion(tabManager.tabs(in: group).map(\.id))
+    }
+    return ids
+  }
+
   func showGroup(_ group: TabGroup, from sourceFrame: CGRect? = nil) {
     openGroupSourceFrame = sourceFrame
     openGroup = group

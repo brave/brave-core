@@ -67,6 +67,21 @@ struct TabGridView: View {
 
   @State private var editMode: EditMode = .inactive
   @State private var selectedTabs: Set<TabState.ID> = []
+  @State private var selectedGroups: Set<TabGroup.ID> = []
+
+  /// Tabs the selection will close or shred. A selected group stands for every tab in it.
+  private var selectedTabIDs: Set<TabState.ID> {
+    viewModel.tabIDs(in: selectedGroups, plus: selectedTabs)
+  }
+
+  private var hasSelection: Bool {
+    !selectedTabs.isEmpty || !selectedGroups.isEmpty
+  }
+
+  /// Add to Group is only offered when every selected item is a tab
+  private var canAddSelectionToGroup: Bool {
+    viewModel.canGroupTabs && selectedGroups.isEmpty
+  }
 
   @ObservedObject private var privateBrowsingOnly = Preferences.Privacy.privateBrowsingOnly
 
@@ -150,7 +165,8 @@ struct TabGridView: View {
           contextMenuForGroup: { group in
             contextMenu(for: group)
           },
-          selectedTabList: $selectedTabs
+          selectedTabList: $selectedTabs,
+          selectedGroupList: $selectedGroups
         )
         .opacity(isGridHidden ? 0 : 1)
         .accessibilityHidden(isGridHidden)
@@ -312,7 +328,7 @@ struct TabGridView: View {
             case .selectedTab:
               viewModel.shredSelectedTab()
             case .selectedTabs:
-              let affectedTabsIDs = viewModel.shredSelectedTabs(Set(selectedTabs))
+              let affectedTabsIDs = viewModel.shredSelectedTabs(selectedTabIDs)
               if !dismissAfterShred {
                 dismissAfterShred = originalTabIDs.count == affectedTabsIDs.count
               }
@@ -324,6 +340,7 @@ struct TabGridView: View {
               activeShredMode = nil
               editMode = .inactive
               selectedTabs = []
+              selectedGroups = []
             }
             if dismissAfterShred {
               dismiss()
@@ -550,7 +567,7 @@ struct TabGridView: View {
       HStack {
         Text(Strings.TabGrid.selectedTabs)
           .foregroundStyle(Color(braveSystemName: .textPrimary))
-        Text(selectedTabs.count, format: .number)
+        Text(selectedTabs.count + selectedGroups.count, format: .number)
           .foregroundStyle(Color(braveSystemName: .textTertiary))
       }
       .accessibilityElement()
@@ -558,8 +575,7 @@ struct TabGridView: View {
       Spacer()
       Button {
         withAnimation {
-          selectedTabs = []
-          editMode = .inactive
+          clearSelection()
         }
       } label: {
         Label(Strings.CancelString, braveSystemImage: "leo.close")
@@ -580,15 +596,19 @@ struct TabGridView: View {
         Label(Strings.TabGrid.shredSelectedTabsButtonTitle, braveSystemImage: "leo.shred.data")
       }
       .plainToolbarIconButtonStyle()
-      .disabled(selectedTabs.isEmpty || !viewModel.isShredAvailableForSelectedTabs(selectedTabs))
+      .disabled(!hasSelection || !viewModel.isShredAvailableForSelectedTabs(selectedTabIDs))
       .frame(maxWidth: .infinity, alignment: .leading)
+
+      if viewModel.canGroupTabs {
+        addToGroupFooterMenu
+          .frame(maxWidth: .infinity, alignment: .center)
+      }
 
       Button {
         withAnimation {
-          let dismissAfterClose = selectedTabs.count == viewModel.tabs.count
-          editMode = .inactive
-          viewModel.closeTabs(selectedTabs)
-          selectedTabs = []
+          let dismissAfterClose = selectedTabIDs.count == viewModel.tabs.count
+          viewModel.closeTabs(selectedTabIDs)
+          clearSelection()
           if dismissAfterClose {
             dismiss()
           }
@@ -597,7 +617,7 @@ struct TabGridView: View {
         Label(Strings.close, braveSystemImage: "leo.close")
       }
       .filledToolbarIconButtonStyle()
-      .disabled(selectedTabs.isEmpty)
+      .disabled(!hasSelection)
       .frame(maxWidth: .infinity, alignment: .trailing)
     }
     .fontWeight(.medium)
@@ -609,9 +629,10 @@ struct TabGridView: View {
   private func contextMenu(for tabs: [any TabState]) -> UIMenu? {
     let tabIDs = Set(tabs.map(\.id))
     let isShredAvailable = viewModel.isShredAvailableForSelectedTabs(tabIDs)
-    let allTabsAreSelected = editMode == .active && selectedTabs == tabIDs
+    let allTabsAreSelected =
+      editMode == .active && selectedTabs == tabIDs && selectedGroups.isEmpty
     var selectAndShredChildren: [UIMenuElement] = []
-    if viewModel.canGroupTabs {
+    if canAddSelectionToGroup {
       selectAndShredChildren.append(addToGroupMenu(for: tabIDs))
     }
     selectAndShredChildren.append(contentsOf: [
@@ -655,6 +676,7 @@ struct TabGridView: View {
               viewModel.closeOtherTabs(tabIDs)
               editMode = .inactive
               selectedTabs = []
+              selectedGroups = []
             }
           }
         ),
@@ -668,6 +690,7 @@ struct TabGridView: View {
               editMode = .inactive
               viewModel.closeTabs(tabIDs)
               selectedTabs = []
+              selectedGroups = []
               if dismissAfterClose {
                 dismiss()
               }
@@ -682,11 +705,57 @@ struct TabGridView: View {
     ])
   }
 
+  /// A menu in the footer for adding the selected tabs to an existing group or a new one
+  private var addToGroupFooterMenu: some View {
+    Menu {
+      if viewModel.tabGroups.isEmpty {
+        Section(Strings.TabGrid.addTabToGroupMenuTitle) {
+          createNewGroupButton
+        }
+      } else {
+        Section(Strings.TabGrid.addTabToGroupMenuTitle) {
+          ForEach(viewModel.tabGroups) { group in
+            Button(group.title) {
+              addTabs(selectedTabs, to: group)
+            }
+          }
+        }
+        Section {
+          createNewGroupButton
+        }
+      }
+    } label: {
+      Label(Strings.TabGrid.addTabToGroupMenuTitle, braveSystemImage: "leo.plus.add")
+        .lineLimit(1)
+        .minimumScaleFactor(0.75)
+    }
+    .menuOrder(.fixed)
+    .plainToolbarIconButtonStyle()
+    .disabled(selectedTabs.isEmpty || !selectedGroups.isEmpty)
+  }
+
+  private var createNewGroupButton: some View {
+    Button(Strings.TabGrid.createNewGroupMenuTitle) {
+      createGroup(adding: selectedTabs)
+    }
+  }
+
+  private func addTabs(_ tabIDs: Set<TabState.ID>, to group: TabGroup) {
+    clearSelection()
+    viewModel.addTabs(tabIDs, to: group)
+  }
+
+  /// Creates a group of the tabs, which is then opened for the user to name
+  private func createGroup(adding tabIDs: Set<TabState.ID>) {
+    clearSelection()
+    viewModel.createGroup(adding: tabIDs)
+  }
+
   /// A submenu listing the existing groups, with an option to create a new one, which adds the tabs to the chosen group, or to a new group that is then named
   private func addToGroupMenu(for tabIDs: Set<TabState.ID>) -> UIMenu {
     let existingGroups = viewModel.tabGroups.map { group in
       UIAction(title: group.title) { _ in
-        resetEditMode()
+        clearSelection()
         viewModel.addTabs(tabIDs, to: group)
       }
     }
@@ -697,7 +766,7 @@ struct TabGridView: View {
           title: Strings.TabGrid.createNewGroupMenuTitle,
           image: UIImage(braveSystemNamed: "leo.group.new-tab")
         ) { _ in
-          resetEditMode()
+          clearSelection()
           viewModel.createGroup(adding: tabIDs)
         }
       ]
@@ -710,7 +779,22 @@ struct TabGridView: View {
   }
 
   private func contextMenu(for group: TabGroup) -> UIMenu? {
-    UIMenu(children: [
+    let groupIsSelected = selectedGroups.contains(group.id)
+    return UIMenu(children: [
+      UIAction(
+        title: groupIsSelected
+          ? Strings.TabGrid.deselectTabsButtonTitle : Strings.TabGrid.selectTabsButtonTitle,
+        image: UIImage(braveSystemNamed: "leo.check.circle-outline")
+      ) { _ in
+        withAnimation {
+          if groupIsSelected {
+            selectedGroups.remove(group.id)
+          } else {
+            selectedGroups.insert(group.id)
+          }
+          editMode = .active
+        }
+      },
       UIAction(
         title: Strings.TabGrid.ungroupMenuTitle,
         image: UIImage(braveSystemNamed: "leo.group.ungroup")
@@ -731,10 +815,11 @@ struct TabGridView: View {
     ])
   }
 
-  private func resetEditMode() {
+  private func clearSelection() {
     withAnimation {
       editMode = .inactive
       selectedTabs = []
+      selectedGroups = []
     }
   }
 }

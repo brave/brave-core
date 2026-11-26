@@ -20,7 +20,7 @@ protocol TabCollectionViewDelegate: AnyObject {
   func didSelectTab(_ tab: any TabState, source: TabCollectionViewSelectSource)
   func didRemoveTab(_ tab: any TabState)
   func didMoveTab(_ tabIDs: [TabState.ID], to index: Int)
-  func selectedTabListChanged(_ tabs: Set<TabState.ID>)
+  func selectedTabListChanged(_ tabs: Set<TabState.ID>, groups: Set<TabGroup.ID>)
   func contextMenuForTabs(_ tabs: [any TabState]) -> UIMenu?
   func contextMenuForGroup(_ group: TabGroup) -> UIMenu?
   func didSelectGroup(_ group: TabGroup)
@@ -381,8 +381,9 @@ extension TabGridContainerView: UICollectionViewDelegate {
     _ collectionView: UICollectionView,
     shouldSelectItemAt indexPath: IndexPath
   ) -> Bool {
-    // Only tabs can be multi-selected
-    return items[safe: indexPath.item]?.isGroup == false
+    guard let item = items[safe: indexPath.item] else { return false }
+    // A group can be selected only while choosing several items
+    return !item.isGroup || collectionView.isEditing
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -395,11 +396,19 @@ extension TabGridContainerView: UICollectionViewDelegate {
 
   private func notifySelectedTabsChanged() {
     let selectedIndexPaths = collectionView.indexPathsForSelectedItems ?? []
-    let selectedTabIDs = selectedIndexPaths.compactMap { indexPath -> TabState.ID? in
-      guard case .tab(let id) = dataSource.itemIdentifier(for: indexPath) else { return nil }
-      return id
+    var selectedTabIDs: Set<TabState.ID> = []
+    var selectedGroupIDs: Set<TabGroup.ID> = []
+    for indexPath in selectedIndexPaths {
+      switch dataSource.itemIdentifier(for: indexPath) {
+      case .tab(let id):
+        selectedTabIDs.insert(id)
+      case .group(let id):
+        selectedGroupIDs.insert(id)
+      case nil:
+        break
+      }
     }
-    delegate?.selectedTabListChanged(Set(selectedTabIDs))
+    delegate?.selectedTabListChanged(selectedTabIDs, groups: selectedGroupIDs)
   }
 
   func collectionView(
@@ -562,6 +571,7 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
   var isReorderingEnabled: Bool = true
   var isGroupDetail: Bool = false
   @Binding var selectedTabList: Set<TabState.ID>
+  @Binding var selectedGroupList: Set<TabGroup.ID>
 
   func makeUIView(context: Context) -> TabGridContainerView {
     let view =
@@ -582,7 +592,9 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
     uiView.isReorderingEnabled = isReorderingEnabled
     uiView.updateItems(items, transaction: context.transaction)
     if isEditing {
-      let indexPaths = selectedTabList.compactMap { uiView.dataSource.indexPath(for: .tab($0)) }
+      let indexPaths =
+        selectedTabList.compactMap { uiView.dataSource.indexPath(for: .tab($0)) }
+        + selectedGroupList.compactMap { uiView.dataSource.indexPath(for: .group($0)) }
       let indexPathsToDeselect = Set(uiView.collectionView.indexPathsForSelectedItems ?? [])
         .subtracting(indexPaths)
       for indexPath in indexPaths {
@@ -606,7 +618,8 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
       contextMenu: contextMenuForTabs,
       groupContextMenu: contextMenuForGroup,
       scrollsOnModeSwitch: scrollsOnModeSwitch,
-      selectedTabList: $selectedTabList
+      selectedTabList: $selectedTabList,
+      selectedGroupList: $selectedGroupList
     )
   }
 
@@ -618,18 +631,21 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
     var contextMenu: ([any TabState]) -> UIMenu?
     var groupContextMenu: (TabGroup) -> UIMenu?
     @Binding var selectedTabList: Set<TabState.ID>
+    @Binding var selectedGroupList: Set<TabGroup.ID>
 
     init(
       viewModel: TabGridViewModel,
       contextMenu: @escaping ([any TabState]) -> UIMenu?,
       groupContextMenu: @escaping (TabGroup) -> UIMenu?,
       scrollsOnModeSwitch: Bool,
-      selectedTabList: Binding<Set<TabState.ID>>
+      selectedTabList: Binding<Set<TabState.ID>>,
+      selectedGroupList: Binding<Set<TabGroup.ID>>
     ) {
       self.viewModel = viewModel
       self.contextMenu = contextMenu
       self.groupContextMenu = groupContextMenu
       self._selectedTabList = selectedTabList
+      self._selectedGroupList = selectedGroupList
 
       // Set up scroll handler to be called after mode switch completes
       if scrollsOnModeSwitch {
@@ -664,8 +680,9 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
       containerView?.updateItems(viewModel.items, transaction: .init(animation: .default))
     }
 
-    func selectedTabListChanged(_ tabs: Set<TabState.ID>) {
+    func selectedTabListChanged(_ tabs: Set<TabState.ID>, groups: Set<TabGroup.ID>) {
       selectedTabList = tabs
+      selectedGroupList = groups
     }
 
     func contextMenuForTabs(_ tabs: [any TabState]) -> UIMenu? {

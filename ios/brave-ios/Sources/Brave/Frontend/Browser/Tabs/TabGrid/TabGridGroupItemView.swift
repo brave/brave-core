@@ -19,6 +19,7 @@ class TabGridGroupItemViewModel {
   private(set) var tabCount: Int = 0
   private(set) var thumbnails: [UIImage?] = []
   private(set) var isVisible: Bool = false
+  var isSelectedInEditMode: Bool = false
   var isPrivateBrowsing: Bool = false
 
   func configure(with group: TabGroup, tabs: [any TabState]) {
@@ -33,6 +34,7 @@ class TabGridGroupItemViewModel {
     tabCount = 0
     thumbnails = []
     isVisible = false
+    isSelectedInEditMode = false
   }
 }
 
@@ -61,7 +63,12 @@ struct TabGridGroupItemView: View {
             String.localizedStringWithFormat(Strings.TabGrid.tabsCountFormat, viewModel.tabCount)
           )
         Spacer()
-        if editMode?.wrappedValue != .active {
+        if editMode?.wrappedValue == .active {
+          let isSelected = viewModel.isSelectedInEditMode
+          Image(braveSystemName: isSelected ? "leo.checkbox.checked" : "leo.checkbox.unchecked")
+            .foregroundStyle(Color(braveSystemName: isSelected ? .iconInteractive : .iconDefault))
+            .imageScale(.large)
+        } else {
           optionsMenu
         }
       }
@@ -176,7 +183,14 @@ class TabGridGroupCell: UICollectionViewCell {
     model.reset()
   }
 
+  override var isSelected: Bool {
+    didSet {
+      model.isSelectedInEditMode = isSelected
+    }
+  }
+
   func configure(with group: TabGroup, tabs: [any TabState]) {
     model.configure(with: group, tabs: tabs)
+    model.isSelectedInEditMode = isSelected
   }
 }

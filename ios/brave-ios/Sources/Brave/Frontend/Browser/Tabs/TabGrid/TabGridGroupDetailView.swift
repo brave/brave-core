@@ -38,7 +38,8 @@ struct TabGroupDetailView: View {
       scrollsOnModeSwitch: false,
       isReorderingEnabled: false,
       isGroupDetail: true,
-      selectedTabList: .constant([])
+      selectedTabList: .constant([]),
+      selectedGroupList: .constant([])
     )
     // The tab grid's edit mode doesn't apply to a group's tabs
     .environment(\.editMode, .constant(.inactive))
