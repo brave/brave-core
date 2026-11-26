@@ -30,8 +30,8 @@ class BraveVideoOverlayWindowViews : public VideoOverlayWindowViews {
   // VideoOverlayWindowViews:
   void ShowInactive() override;
   void Hide() override;
-  void OnNativeWidgetMove() override;
-  void OnNativeWidgetSizeChanged(const gfx::Size& new_size) override;
+  void Close() override;
+  void OnNativeWidgetDestroying() override;
   void SetUpViews() override;
   void OnUpdateControlsBounds() override;
   void OnKeyEvent(ui::KeyEvent* event) override;

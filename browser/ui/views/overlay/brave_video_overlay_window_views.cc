@@ -140,15 +140,16 @@ void BraveVideoOverlayWindowViews::Hide() {
   VideoOverlayWindowViews::Hide();
 }
 
-void BraveVideoOverlayWindowViews::OnNativeWidgetMove() {
-  VideoOverlayWindowViews::OnNativeWidgetMove();
+void BraveVideoOverlayWindowViews::Close() {
+  // Called when the tab is closed while the window is still showing.
   MaybeCacheBounds();
+  VideoOverlayWindowViews::Close();
 }
 
-void BraveVideoOverlayWindowViews::OnNativeWidgetSizeChanged(
-    const gfx::Size& new_size) {
-  VideoOverlayWindowViews::OnNativeWidgetSizeChanged(new_size);
+void BraveVideoOverlayWindowViews::OnNativeWidgetDestroying() {
+  // Covers the window being closed by the OS rather than by the controller.
   MaybeCacheBounds();
+  VideoOverlayWindowViews::OnNativeWidgetDestroying();
 }
 
 void BraveVideoOverlayWindowViews::SetUpViews() {
@@ -180,20 +181,13 @@ void BraveVideoOverlayWindowViews::MaybeCacheBounds() {
     return;
   }
 
-  // This runs on every move while dragging, so update the saved bounds in
-  // place once they exist.
-  SavedPipWindowBounds* saved = GetSavedPipWindowBounds(context);
-  if (!saved) {
-    auto new_saved = std::make_unique<SavedPipWindowBounds>();
-    saved = new_saved.get();
-    context->SetUserData(kSavedPipWindowBoundsKey, std::move(new_saved));
-  }
-
   const display::Display display =
       display::Screen::Get()->GetDisplayNearestWindow(GetNativeWindow());
+  auto saved = std::make_unique<SavedPipWindowBounds>();
   saved->display_id = display.id();
   saved->bounds_in_work_area = bounds - display.work_area().OffsetFromOrigin();
   saved->bounds_in_screen = bounds;
+  context->SetUserData(kSavedPipWindowBoundsKey, std::move(saved));
 }
 
 void BraveVideoOverlayWindowViews::MaybeRestoreCachedBounds() {

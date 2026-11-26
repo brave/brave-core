@@ -7,6 +7,7 @@
 
 #include "base/location.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/overlay/video_overlay_window_views.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -16,6 +17,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/mojom/window_open_disposition.mojom.h"
@@ -128,6 +130,27 @@ IN_PROC_BROWSER_TEST_F(BraveVideoOverlayWindowViewsBoundsBrowserTest,
   ASSERT_NE(first_window, second_window);
 
   const gfx::Rect restored_bounds = second_window->GetBounds();
+  EXPECT_EQ(custom_bounds.origin(), restored_bounds.origin());
+  ExpectSizeNear(custom_bounds.size(), restored_bounds.size());
+}
+
+// Closing the tab while Picture-in-Picture is showing still saves the bounds.
+IN_PROC_BROWSER_TEST_F(BraveVideoOverlayWindowViewsBoundsBrowserTest,
+                       BoundsAreSavedWhenTabIsClosed) {
+  content::WebContents* first_tab = OpenTab(browser());
+  ASSERT_TRUE(first_tab);
+  ASSERT_NO_FATAL_FAILURE(EnterPictureInPicture(first_tab));
+  const gfx::Rect custom_bounds = MoveAndResize(GetOverlayWindow(first_tab));
+
+  content::WebContentsDestroyedWatcher destroyed_watcher(first_tab);
+  browser()->GetTabStripModel()->CloseWebContents(first_tab,
+                                                  TabCloseTypes::CLOSE_NONE);
+  destroyed_watcher.Wait();
+
+  content::WebContents* second_tab = OpenTab(browser());
+  ASSERT_TRUE(second_tab);
+  ASSERT_NO_FATAL_FAILURE(EnterPictureInPicture(second_tab));
+  const gfx::Rect restored_bounds = GetOverlayWindow(second_tab)->GetBounds();
   EXPECT_EQ(custom_bounds.origin(), restored_bounds.origin());
   ExpectSizeNear(custom_bounds.size(), restored_bounds.size());
 }
