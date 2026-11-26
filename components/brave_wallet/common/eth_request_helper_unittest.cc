@@ -13,7 +13,6 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
@@ -255,7 +254,7 @@ TEST(EthResponseHelperUnitTest, ParseEthSignParams) {
         ]
       })");
   auto sign_params = ParseEthSignParams(ParseParamsList(json));
-  EXPECT_TRUE(sign_params);
+  ASSERT_TRUE(sign_params);
   EXPECT_EQ(sign_params->address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
   EXPECT_EQ(sign_params->message, "0xdeadbeaf");
 
@@ -327,35 +326,35 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
       })");
 
   auto sign_params = ParsePersonalSignParams(ParseParamsList(json));
-  EXPECT_TRUE(sign_params);
+  ASSERT_TRUE(sign_params);
   EXPECT_EQ(sign_params->address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
   EXPECT_EQ(sign_params->message, "0xdeadbeef");
 
   sign_params =
       ParsePersonalSignParams(ParseParamsList(json_missing_0x_prefix));
-  EXPECT_TRUE(sign_params);
+  ASSERT_TRUE(sign_params);
   EXPECT_EQ(sign_params->address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
   EXPECT_EQ(sign_params->message, "0xdeadbeef");
 
   sign_params = ParsePersonalSignParams(ParseParamsList(json_extra_entry));
-  EXPECT_TRUE(sign_params);
+  ASSERT_TRUE(sign_params);
   EXPECT_EQ(sign_params->address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
   EXPECT_EQ(sign_params->message, "0xdeadbeef");
 
   sign_params =
       ParsePersonalSignParams(ParseParamsList(json_with_message_string));
-  EXPECT_TRUE(sign_params);
+  ASSERT_TRUE(sign_params);
   EXPECT_EQ(sign_params->address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
   EXPECT_EQ(sign_params->message,
             "0x4861766520796f752074726965642042726176653f");
 
   sign_params = ParsePersonalSignParams(ParseParamsList(json_empty_message));
-  EXPECT_TRUE(sign_params);
+  ASSERT_TRUE(sign_params);
   EXPECT_EQ(sign_params->address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
   EXPECT_EQ(sign_params->message, "0x");
 
   sign_params = ParsePersonalSignParams(ParseParamsList(json_0x_message));
-  EXPECT_TRUE(sign_params);
+  ASSERT_TRUE(sign_params);
   EXPECT_EQ(sign_params->address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
   // To be consistent with MM :S
   EXPECT_EQ(ToHex("0x"), "0x3078");
@@ -364,14 +363,14 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
   // MM allows the wrong order and figures out the correct order if the first
   // order is an address by mistake.
   sign_params = ParsePersonalSignParams(ParseParamsList(wrong_order));
-  EXPECT_TRUE(sign_params);
+  ASSERT_TRUE(sign_params);
   EXPECT_EQ(sign_params->address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
   EXPECT_EQ(sign_params->message, "0xdeadbeef");
 
   // Make sure that 2 arguments of the same length doesn't re-order
   sign_params =
       ParsePersonalSignParams(ParseParamsList(two_address_looking_params));
-  EXPECT_TRUE(sign_params);
+  ASSERT_TRUE(sign_params);
   EXPECT_EQ(sign_params->address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
   EXPECT_EQ(sign_params->message, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf84");
   EXPECT_FALSE(ParsePersonalSignParams(ParseParamsList("{\"params\":[{}]}")));
@@ -405,7 +404,7 @@ TEST(EthResponseHelperUnitTest, ParsePersonalEcRecoverParams) {
         ]
       })");
   auto recover_params = ParsePersonalEcRecoverParams(ParseParamsList(json));
-  EXPECT_TRUE(recover_params);
+  ASSERT_TRUE(recover_params);
   EXPECT_EQ(recover_params->message, "0x68656c6c6f20776f726c64");
   EXPECT_EQ(
       recover_params->signature,
@@ -414,7 +413,7 @@ TEST(EthResponseHelperUnitTest, ParsePersonalEcRecoverParams) {
 
   recover_params =
       ParsePersonalEcRecoverParams(ParseParamsList(json_extra_entry));
-  EXPECT_TRUE(recover_params);
+  ASSERT_TRUE(recover_params);
   EXPECT_EQ(recover_params->message, "0x68656c6c6f20776f726c64");
   EXPECT_EQ(
       recover_params->signature,
@@ -423,7 +422,7 @@ TEST(EthResponseHelperUnitTest, ParsePersonalEcRecoverParams) {
 
   recover_params =
       ParsePersonalEcRecoverParams(ParseParamsList(json_with_message_string));
-  EXPECT_TRUE(recover_params);
+  ASSERT_TRUE(recover_params);
   EXPECT_EQ(recover_params->message, "0x68656c6c6f20776f726c64");
   EXPECT_EQ(
       recover_params->signature,
@@ -552,7 +551,7 @@ TEST(EthResponseHelperUnitTest, NormalizeEthRequest) {
       "[]}";
   std::string output_json;
   EXPECT_TRUE(NormalizeEthRequest(full_json, &output_json));
-  EXPECT_EQ(full_json, output_json);
+  EXPECT_EQ(ParseJsonDict(full_json), ParseJsonDict(output_json));
 
   // Fills missing id and jsonrpc values
   std::string partial_json = "{\"method\":\"eth_blockNumber\",\"params\":[]}";
@@ -560,7 +559,8 @@ TEST(EthResponseHelperUnitTest, NormalizeEthRequest) {
       "{\"id\":\"1\",\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\","
       "\"params\":[]}";
   EXPECT_TRUE(NormalizeEthRequest(partial_json, &output_json));
-  EXPECT_EQ(expected_full_json_no_id, output_json);
+  EXPECT_EQ(ParseJsonDict(expected_full_json_no_id),
+            ParseJsonDict(output_json));
 
   // Invalid input
   EXPECT_FALSE(NormalizeEthRequest(
@@ -664,7 +664,8 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
 
   EXPECT_EQ(eth_sign_typed_data->address_param,
             "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826");
-  EXPECT_EQ(eth_sign_typed_data->message_json, expected_message);
+  EXPECT_EQ(ParseJsonDict(eth_sign_typed_data->message_json),
+            ParseJsonDict(expected_message));
 
   EXPECT_EQ(ParseJsonDict(eth_sign_typed_data->domain_json),
             ParseJsonDict(expected_domain));
@@ -682,11 +683,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
 
   // Test that TypedData can also be a Dict, instead of a string
   auto str = params_list[1].GetString();
-  auto dict =
-      base::JSONReader::ReadDict(str, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                          base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(dict);
-  params_list[1] = base::Value(dict->Clone());
+  params_list[1] = base::Value(ParseJsonDict(str));
   EXPECT_TRUE(params_list[1].is_dict());
   eth_sign_typed_data = ParseEthSignTypedDataParams(
       params_list, EthSignTypedDataHelper::Version::kV4);
@@ -695,7 +692,8 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
 
   EXPECT_EQ(eth_sign_typed_data->address_param,
             "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826");
-  EXPECT_EQ(eth_sign_typed_data->message_json, expected_message);
+  EXPECT_EQ(ParseJsonDict(eth_sign_typed_data->message_json),
+            ParseJsonDict(expected_message));
 
   EXPECT_EQ(ParseJsonDict(eth_sign_typed_data->domain_json),
             ParseJsonDict(expected_domain));
@@ -730,7 +728,8 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
       params_list, EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(eth_sign_typed_data);
   // OK: extraneous message properties are sanitized.
-  EXPECT_EQ(eth_sign_typed_data->message_json, expected_message);
+  EXPECT_EQ(ParseJsonDict(eth_sign_typed_data->message_json),
+            ParseJsonDict(expected_message));
 
   // OK: primary type message hash is unchanged.
   EXPECT_EQ(base::HexEncodeLower(eth_sign_typed_data->primary_hash),
@@ -1039,7 +1038,7 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
   mojom::BlockchainTokenPtr token;
   std::string error_message;
   token = ParseWalletWatchAssetParams(ParseParamsList(json), error_message);
-  EXPECT_TRUE(token);
+  ASSERT_TRUE(token);
   token->chain_id = "0x1";
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
@@ -1061,7 +1060,7 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
     }]
   })";
   token = ParseWalletWatchAssetParams(ParseParamsList(json), error_message);
-  EXPECT_TRUE(token);
+  ASSERT_TRUE(token);
   token->chain_id = "0x1";
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
@@ -1081,7 +1080,7 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
     }]
   })";
   token = ParseWalletWatchAssetParams(ParseParamsList(json), error_message);
-  EXPECT_TRUE(token);
+  ASSERT_TRUE(token);
   token->chain_id = "0x1";
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
@@ -1241,7 +1240,7 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
   })";
 
   token = ParseWalletWatchAssetParams(ParseParamsList(json), error_message);
-  EXPECT_TRUE(token);
+  ASSERT_TRUE(token);
   token->chain_id = "0x1";
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
@@ -1263,7 +1262,7 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
   })";
   expected_token->logo = "http://test.com/test.png";
   token = ParseWalletWatchAssetParams(ParseParamsList(json), error_message);
-  EXPECT_TRUE(token);
+  ASSERT_TRUE(token);
   token->chain_id = "0x1";
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
@@ -1288,7 +1287,7 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
       "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR42mP4z8AAAAMBAQD3"
       "A0FDAAAAAElFTkSuQmCC";
   token = ParseWalletWatchAssetParams(ParseParamsList(json), error_message);
-  EXPECT_TRUE(token);
+  ASSERT_TRUE(token);
   token->chain_id = "0x1";
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
@@ -1310,7 +1309,7 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
   })";
   expected_token->logo = "";
   token = ParseWalletWatchAssetParams(ParseParamsList(json), error_message);
-  EXPECT_TRUE(token);
+  ASSERT_TRUE(token);
   token->chain_id = "0x1";
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
