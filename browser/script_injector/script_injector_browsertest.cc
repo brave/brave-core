@@ -6,15 +6,18 @@
 #include <string>
 
 #include "base/functional/bind.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/mock_callback.h"
 #include "base/test/test_future.h"
+#include "base/values.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "chrome/test/base/testing_browser_process.h"
+#include "content/public/browser/content_browser_client.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -70,9 +73,14 @@ class ScriptInjectorBrowserTest : public PlatformBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     https_server_.RegisterRequestHandler(base::BindRepeating(HandleRequest));
-    content::SetBrowserClientForTesting(&client_);
+    original_client_ = content::SetBrowserClientForTesting(&client_);
 
     ASSERT_TRUE(https_server_.Start());
+  }
+
+  void TearDownOnMainThread() override {
+    content::SetBrowserClientForTesting(original_client_);
+    PlatformBrowserTest::TearDownOnMainThread();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -100,6 +108,7 @@ class ScriptInjectorBrowserTest : public PlatformBrowserTest {
  private:
   BraveContentBrowserClient client_;
   content::ContentMockCertVerifier mock_cert_verifier_;
+  raw_ptr<content::ContentBrowserClient> original_client_ = nullptr;
 };
 
 // TESTS
@@ -132,9 +141,10 @@ IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, InjectedScriptReturnsDict) {
       blink::mojom::UserActivationOption::kDoNotActivate,
       blink::mojom::PromiseResultOption::kAwait, future.GetCallback());
   base::Value value = future.Take();
-  EXPECT_TRUE(value.is_dict());
+  ASSERT_TRUE(value.is_dict());
   const base::DictValue& dict = value.GetDict();
   auto val = dict.FindBool("ok");
+  ASSERT_TRUE(val.has_value());
   EXPECT_TRUE(*val);
   std::u16string expected_title(u"test");
   content::TitleWatcher watcher(web_contents(), expected_title);
