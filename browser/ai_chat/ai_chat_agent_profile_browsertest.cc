@@ -374,11 +374,11 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
 
   // The manager must not have written an AI Chat policy value for the regular
   // profile; it keeps Brave Origin's default (disabled).
-  EXPECT_FALSE(origin_manager
-                   ->GetPolicyValue(
-                       policy::key::kBraveAIChatEnabled,
-                       brave_origin::GetProfileId(regular_profile.GetPath()))
-                   .value_or(false));
+  auto policy_value = origin_manager->GetPolicyValue(
+      policy::key::kBraveAIChatEnabled,
+      brave_origin::GetProfileId(regular_profile.GetPath()));
+  ASSERT_TRUE(policy_value.has_value());
+  EXPECT_FALSE(*policy_value);
 }
 
 // The content agent is gated by two independent decisions: whether its tools
