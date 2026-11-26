@@ -9,6 +9,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -50,6 +51,7 @@ import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.appmenu.AppMenuPropertiesDelegateImpl.MenuGroup;
+import org.chromium.chrome.browser.app.appmenu.BraveExtensionsMenuItemViewBinder;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.PowerBookmarkUtils;
 import org.chromium.chrome.browser.commerce.ShoppingServiceFactory;
@@ -116,6 +118,7 @@ import org.chromium.google_apis.gaia.GoogleServiceAuthErrorState;
 import org.chromium.ui.accessibility.AccessibilityStateTestHelper;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter;
+import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.url.JUnitTestGURLs;
 
 import java.util.ArrayList;
@@ -445,6 +448,98 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         MVCListAdapter.ModelList modelList =
                 mTabbedAppMenuPropertiesDelegate.buildMainMenuModelListWithPolicy();
         assertFalse(menuContainsId(modelList, R.id.add_to_group_menu_id));
+    }
+
+    @Test
+    @Config(qualifiers = "sw320dp")
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_EXTENSIONS)
+    public void testExtensionsItem_RegularPage_EnabledInOwnSection() {
+        setUpMocksForPageMenu();
+        setMenuOptions(new MenuOptions());
+
+        MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
+
+        int index = indexOfMenuId(modelList, R.id.brave_extensions_menu_id);
+        assertTrue("Extensions item missing:" + getMenuTitles(modelList), index > 0);
+        assertEquals(
+                R.id.divider_line_id,
+                modelList.get(index - 1).model.get(AppMenuItemProperties.MENU_ITEM_ID));
+        assertEquals(
+                R.id.divider_line_id,
+                modelList.get(index + 1).model.get(AppMenuItemProperties.MENU_ITEM_ID));
+        PropertyModel model = modelList.get(index).model;
+        assertTrue(model.get(AppMenuItemProperties.ENABLED));
+        assertNull(model.get(BraveExtensionsMenuItemViewBinder.SUBTITLE));
+    }
+
+    @Test
+    @Config(qualifiers = "sw320dp")
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_EXTENSIONS)
+    public void testExtensionsItem_InternalPage_DisabledWithSubtitle() {
+        setUpMocksForPageMenu();
+        setMenuOptions(new MenuOptions());
+        when(mTab.getUrl()).thenReturn(JUnitTestGURLs.CHROME_ABOUT);
+
+        MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
+
+        int index = indexOfMenuId(modelList, R.id.brave_extensions_menu_id);
+        assertTrue("Extensions item missing:" + getMenuTitles(modelList), index >= 0);
+        PropertyModel model = modelList.get(index).model;
+        assertFalse(model.get(AppMenuItemProperties.ENABLED));
+        assertEquals(
+                ContextUtils.getApplicationContext()
+                        .getString(R.string.brave_menu_extensions_unavailable_on_internal_pages),
+                model.get(BraveExtensionsMenuItemViewBinder.SUBTITLE));
+    }
+
+    @Test
+    @Config(qualifiers = "sw600dp")
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_EXTENSIONS)
+    public void testExtensionsItem_Tablet_NotShown() {
+        // Tablets use the toolbar's extensions entry point instead.
+        setUpMocksForPageMenu();
+        setMenuOptions(new MenuOptions());
+
+        assertFalse(
+                menuContainsId(
+                        mTabbedAppMenuPropertiesDelegate.getMenuItems(),
+                        R.id.brave_extensions_menu_id));
+        assertFalse(
+                menuContainsId(
+                        mTabbedAppMenuPropertiesDelegate.buildMainMenuModelListWithPolicy(),
+                        R.id.brave_extensions_menu_id));
+    }
+
+    @Test
+    @Config(qualifiers = "sw320dp")
+    public void testExtensionsItem_FeatureDisabled_NotShown() {
+        setUpMocksForPageMenu();
+        setMenuOptions(new MenuOptions());
+
+        assertFalse(
+                menuContainsId(
+                        mTabbedAppMenuPropertiesDelegate.getMenuItems(),
+                        R.id.brave_extensions_menu_id));
+    }
+
+    @Test
+    @Config(qualifiers = "sw320dp")
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_EXTENSIONS)
+    public void testCustomizeMenu_IncludesExtensions() {
+        MVCListAdapter.ModelList modelList =
+                mTabbedAppMenuPropertiesDelegate.buildMainMenuModelListWithPolicy();
+        assertTrue(menuContainsId(modelList, R.id.brave_extensions_menu_id));
+    }
+
+    private static int indexOfMenuId(MVCListAdapter.ModelList modelList, int menuItemId) {
+        for (int i = 0; i < modelList.size(); i++) {
+            PropertyModel model = modelList.get(i).model;
+            if (model.containsKey(AppMenuItemProperties.MENU_ITEM_ID)
+                    && model.get(AppMenuItemProperties.MENU_ITEM_ID) == menuItemId) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private static boolean menuContainsId(MVCListAdapter.ModelList modelList, int menuItemId) {

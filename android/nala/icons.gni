@@ -396,6 +396,7 @@ nala_icons = [
   "ic_brave_icon_search.xml",
   "ic_browser_add.xml",
   "ic_browser_customizable_shortcut.xml",
+  "ic_browser_extensions.xml",
   "ic_browser_group.xml",
   "ic_browser_home.xml",
   "ic_browser_mobile_bottom_tab_groups.xml",

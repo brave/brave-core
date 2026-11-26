@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- App menu Extensions item: an icon, a title and an optional subtitle. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/OverflowMenuItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?attr/listItemHeight"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/menu_item_icon"
+        android:layout_width="?attr/listItemIconSize"
+        android:layout_height="?attr/listItemIconSize"
+        android:tint="@color/default_icon_color_secondary_tint_list"
+        android:tintMode="src_in"
+        android:importantForAccessibility="no" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/menu_item_text_padding_start"
+        android:paddingTop="@dimen/brave_extensions_menu_item_vertical_padding"
+        android:paddingBottom="@dimen/brave_extensions_menu_item_vertical_padding">
+
+        <TextView
+            android:id="@+id/menu_item_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.DensityAdaptive.TextLarge.Primary"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textAlignment="viewStart" />
+
+        <org.chromium.chrome.browser.app.appmenu.BraveExtensionsMenuItemSubtitleView
+            android:id="@+id/menu_item_subtitle"
+            style="@style/SmallRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_secondary"
+            android:textAlignment="viewStart"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

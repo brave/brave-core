@@ -81,6 +81,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.base.ui.KeyboardUtils;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
+import org.chromium.brave.browser.extensions.BraveExtensionsMenuCoordinator;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesCallback;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesFragment;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesModel;
@@ -238,6 +239,8 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.promo.SearchWidgetPromoPanel;
+import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
+import org.chromium.components.browser_ui.bottomsheet.BottomSheetControllerProvider;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.browser_ui.util.motion.MotionEventInfo;
 import org.chromium.components.embedder_support.util.UrlConstants;
@@ -586,10 +589,31 @@ public abstract class BraveActivity extends ChromeActivity
                     braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
         } else if (id == R.id.brave_shred_id) {
             shredData(currentTab);
+        } else if (id == R.id.brave_extensions_menu_id) {
+            openExtensionsMenu();
         } else {
             return false;
         }
         return true;
+    }
+
+    private void openExtensionsMenu() {
+        ChromeAndroidTask task = getChromeAndroidTaskSupplier().get();
+        Profile profile = getTabModelSelector().getCurrentModel().getProfile();
+        ActivityWindowAndroid windowAndroid = getWindowAndroid();
+        if (task == null || profile == null || windowAndroid == null) return;
+        BottomSheetController bottomSheetController =
+                BottomSheetControllerProvider.from(windowAndroid);
+        if (bottomSheetController == null) return;
+
+        BraveExtensionsMenuCoordinator.show(
+                this,
+                task,
+                profile,
+                windowAndroid,
+                bottomSheetController,
+                getBrowserControlsManager(),
+                this::getActivityTab);
     }
 
     // Handles only wallet related mojo failures. Don't add handlers for mojo connections that

@@ -1,0 +1,46 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+
+android_library("java") {
+  sources = [ "java/src/org/chromium/brave/browser/extensions/BraveExtensionsMenuCoordinator.java" ]
+
+  deps = [
+    ":java_resources",
+    "//brave/browser/ui/android/theme:dynamic_colors_java",
+    "//build/android:build_java",
+    "//chrome/browser/browser_controls/android:java",
+    "//chrome/browser/profiles/android:java",
+    "//chrome/browser/tab:java",
+    "//chrome/browser/ui/android/extensions:java",
+    "//chrome/browser/ui/browser_window/public/android:java",
+    "//components/browser_ui/bottomsheet/android:java",
+    "//components/browser_ui/widget/android:java",
+    "//content/public/android:content_java",
+    "//third_party/android_deps:material_design_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//ui/android:ui_no_recycler_view_java",
+  ]
+
+  resources_package = "org.chromium.brave.browser.extensions"
+}
+
+android_resources("java_resources") {
+  sources = [
+    "java/res/drawable/brave_extensions_menu_sheet_container.xml",
+    "java/res/drawable/brave_extensions_menu_sheet_divider.xml",
+    "java/res/layout/brave_extensions_menu_sheet.xml",
+    "java/res/layout/brave_extensions_menu_sheet_item.xml",
+    "java/res/values/dimens.xml",
+    "java/res/values/styles.xml",
+  ]
+
+  # Strings, Nala colors and icons, and the brave_styles.xml typography.
+  deps = [
+    "//chrome/android:chrome_app_java_resources",
+    "//third_party/android_deps:material_design_java",
+  ]
+}
