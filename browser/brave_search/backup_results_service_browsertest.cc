@@ -177,7 +177,7 @@ class BackupResultsServiceBrowserTest
            {features::kBackupResultsLanguagesHeader.name, languages_header},
            {features::kBackupResultsRendererLanguages.name,
             renderer_languages}}}},
-        {});
+        {features::kBackupResultsFullRender});
   }
 };
 
@@ -331,7 +331,7 @@ class BackupResultsServiceFeatureHeadersBrowserTest
           {{features::kBackupResultsHeaders.name,
             absl::StrFormat("{\"%s\":\"%s\"}", kTestCustomHeaderName,
                             kTestCustomHeaderValue)}}}},
-        {});
+        {features::kBackupResultsFullRender});
   }
 };
 
@@ -378,7 +378,7 @@ class BackupResultsServiceUAOverrideBrowserTest
     scoped_feature_list_.InitWithFeaturesAndParameters(
         {{features::kBackupResults,
           {{features::kBackupResultsUAOverride.name, kTestUAOverride}}}},
-        {});
+        {features::kBackupResultsFullRender});
   }
 };
 
@@ -418,7 +418,7 @@ class BackupResultsServiceUAOverrideWithMetadataBrowserTest
         {{features::kBackupResults,
           {{features::kBackupResultsUAOverride.name, kTestUAOverride},
            {features::kBackupResultsUAMetadata.name, encoded}}}},
-        {});
+        {features::kBackupResultsFullRender});
   }
 };
 
@@ -557,7 +557,7 @@ class BackupResultsServiceCleanUrlBrowserTest
     scoped_feature_list_.InitWithFeaturesAndParameters(
         {{features::kBackupResults,
           {{features::kBackupResultsCleanUrl.name, "true"}}}},
-        {});
+        {features::kBackupResultsFullRender});
   }
 };
 
