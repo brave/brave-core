@@ -34,6 +34,12 @@ class BrowserCollection;
 // pinned tabs to share a single web contents instance.
 // This service will be created when profile is created, so we don't have to
 // create this explicitly.
+//
+// Indices come in two flavors, named accordingly throughout this class:
+// "raw" indices are positions within one window's TabStripModel; "canonical"
+// indices are positions within |pinned_tab_data_|. The two only differ when
+// that window has an excluded pinned tab (see FindExcludedPinnedIndex());
+// ToCanonicalIndex()/ToRawIndex() convert between them.
 class SharedPinnedTabService : public KeyedService,
                                public BrowserCollectionObserver,
                                public TabStripModelObserver,
@@ -59,7 +65,7 @@ class SharedPinnedTabService : public KeyedService,
 
   // Returns nullptr if it's not dummy contents or the data isn't ready yet.
   const tabs::TabData* GetTabDataForDummyContents(
-      int index,
+      int raw_index,
       content::WebContents* maybe_dummy_contents);
 
   void TabDraggingEnded(BrowserWindowInterface* browser);
@@ -82,7 +88,7 @@ class SharedPinnedTabService : public KeyedService,
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
-  void OnTabPinnedStateChanged(tabs::TabInterface* tab, int index) override;
+  void OnTabPinnedStateChanged(tabs::TabInterface* tab, int raw_index) override;
   void OnTabChangedAt(tabs::TabInterface* tab,
                       TabChangeType change_type) override;
   void OnTabBlockedStateChanged(tabs::TabInterface* tab) override;
@@ -102,11 +108,11 @@ class SharedPinnedTabService : public KeyedService,
 
   void OnTabUnpinned(TabStripModel* tab_strip_model,
                      base::WeakPtr<content::WebContents> contents,
-                     int index);
+                     int raw_index);
 
-  void SynchronizeNewPinnedTab(int index);
-  void SynchronizeDeletedPinnedTab(int index);
-  void SynchronizeMovedPinnedTab(int from, int to);
+  void SynchronizeNewPinnedTab(int canonical_index);
+  void SynchronizeDeletedPinnedTab(int canonical_index);
+  void SynchronizeMovedPinnedTab(int canonical_from, int canonical_to);
   void SynchronizeNewBrowser(BrowserWindowInterface* browser);
 
   // Retries SynchronizeNewBrowser() for a browser whose synchronization was
@@ -114,9 +120,9 @@ class SharedPinnedTabService : public KeyedService,
   void SynchronizeDeferredBrowser(
       base::WeakPtr<BrowserWindowInterface> browser);
 
-  void MoveSharedWebContentsToActiveBrowser(int index);
+  void MoveSharedWebContentsToActiveBrowser(int canonical_index);
   void MoveSharedWebContentsToBrowser(BrowserWindowInterface* browser,
-                                      int index,
+                                      int canonical_index,
                                       bool is_last_closing_browser = false);
 
   void OnSharedPinnedTabPrefChanged();

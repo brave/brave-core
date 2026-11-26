@@ -228,7 +228,7 @@ bool SharedPinnedTabService::IsDummyContents(
 }
 
 const tabs::TabData* SharedPinnedTabService::GetTabDataForDummyContents(
-    int index,
+    int raw_index,
     content::WebContents* maybe_dummy_contents) {
   auto* dummy_contents_data =
       DummyContentsData::FromWebContents(maybe_dummy_contents);
@@ -396,7 +396,7 @@ void SharedPinnedTabService::OnTabStripModelChanged(
 }
 
 void SharedPinnedTabService::OnTabPinnedStateChanged(tabs::TabInterface* tab,
-                                                     int index) {
+                                                     int raw_index) {
   if (change_source_model_) {
     return;
   }
@@ -406,15 +406,15 @@ void SharedPinnedTabService::OnTabPinnedStateChanged(tabs::TabInterface* tab,
   }
 
   auto* tab_strip_model = tab->GetBrowserWindowInterface()->GetTabStripModel();
-  DVLOG(2) << __FUNCTION__ << " index: " << index << " pinned? "
-           << tab_strip_model->IsTabPinned(index);
+  DVLOG(2) << __FUNCTION__ << " raw_index: " << raw_index << " pinned? "
+           << tab_strip_model->IsTabPinned(raw_index);
   auto* contents = tab->GetContents();
-  if (tab_strip_model->IsTabPinned(index)) {
+  if (tab_strip_model->IsTabPinned(raw_index)) {
     LOCK_REENTRANCE(tab_strip_model);
     SharedContentsData::CreateForWebContents(contents);
-    auto tab_renderer_data =
-        tabs::TabData::FromTabInterface(tab_strip_model->GetTabAtIndex(index));
-    const int canonical_index = ToCanonicalIndex(tab_strip_model, index);
+    auto tab_renderer_data = tabs::TabData::FromTabInterface(
+        tab_strip_model->GetTabAtIndex(raw_index));
+    const int canonical_index = ToCanonicalIndex(tab_strip_model, raw_index);
     DCHECK_LE(canonical_index, static_cast<int>(pinned_tab_data_.size()));
     pinned_tab_data_.insert(pinned_tab_data_.begin() + canonical_index,
                             {.renderer_data = tab_renderer_data,
@@ -427,7 +427,7 @@ void SharedPinnedTabService::OnTabPinnedStateChanged(tabs::TabInterface* tab,
         FROM_HERE,
         base::BindOnce(&SharedPinnedTabService::OnTabUnpinned,
                        weak_ptr_factory_.GetWeakPtr(), tab_strip_model,
-                       contents->GetWeakPtr(), index));
+                       contents->GetWeakPtr(), raw_index));
   }
 }
 
@@ -448,18 +448,18 @@ void SharedPinnedTabService::OnTabChangedAt(tabs::TabInterface* tab,
     return;
   }
 
-  const int index = iter->contents_owner_model->GetIndexOfTab(tab);
+  const int raw_index = iter->contents_owner_model->GetIndexOfTab(tab);
   // Tree-tab moves can notify while the tab is temporarily detached.
-  if (!iter->contents_owner_model->ContainsIndex(index)) {
+  if (!iter->contents_owner_model->ContainsIndex(raw_index)) {
     return;
   }
 
   LOCK_REENTRANCE(iter->contents_owner_model);
 
   iter->renderer_data = tabs::TabData::FromTabInterface(
-      iter->contents_owner_model->GetTabAtIndex(index));
+      iter->contents_owner_model->GetTabAtIndex(raw_index));
   const int canonical_index =
-      ToCanonicalIndex(iter->contents_owner_model, index);
+      ToCanonicalIndex(iter->contents_owner_model, raw_index);
   for (BrowserWindowInterface* browser : browsers_) {
     auto* tab_strip_model = browser->GetTabStripModel();
     if (tab_strip_model == change_source_model_) {
@@ -691,7 +691,7 @@ void SharedPinnedTabService::OnActiveTabChanged(
 void SharedPinnedTabService::OnTabUnpinned(
     TabStripModel* tab_strip_model,
     base::WeakPtr<content::WebContents> contents,
-    int index) {
+    int raw_index) {
   if (auto pending = std::ranges::find(pending_unpin_models_, tab_strip_model);
       pending != pending_unpin_models_.end()) {
     pending_unpin_models_.erase(pending);
@@ -707,8 +707,8 @@ void SharedPinnedTabService::OnTabUnpinned(
     shared_contents = dummy_contents_data->shared_contents();
   }
 
-  // We shouldn't count on |index| in this case. The previous index could be
-  // different from |index|.
+  // We shouldn't count on |raw_index| in this case. The previous index could
+  // be different from |raw_index|.
   auto iter = std::ranges::find(pinned_tab_data_, shared_contents,
                                 &PinnedTabData::shared_contents);
   DCHECK(iter != pinned_tab_data_.end());
@@ -738,9 +738,9 @@ void SharedPinnedTabService::OnTabUnpinned(
   SynchronizeDeletedPinnedTab(previous_index);
 }
 
-void SharedPinnedTabService::SynchronizeNewPinnedTab(int index) {
+void SharedPinnedTabService::SynchronizeNewPinnedTab(int canonical_index) {
   DVLOG(2) << __FUNCTION__;
-  DCHECK_LT(index, static_cast<int>(pinned_tab_data_.size()));
+  DCHECK_LT(canonical_index, static_cast<int>(pinned_tab_data_.size()));
   DCHECK(change_source_model_);
 
   for (BrowserWindowInterface* browser : browsers_) {
@@ -750,13 +750,14 @@ void SharedPinnedTabService::SynchronizeNewPinnedTab(int index) {
     }
 
     model->InsertWebContentsAt(
-        ToRawIndex(model, index),
-        CreateDummyWebContents(pinned_tab_data_.at(index).shared_contents),
+        ToRawIndex(model, canonical_index),
+        CreateDummyWebContents(
+            pinned_tab_data_.at(canonical_index).shared_contents),
         ADD_PINNED | ADD_FORCE_INDEX);
   }
 }
 
-void SharedPinnedTabService::SynchronizeDeletedPinnedTab(int index) {
+void SharedPinnedTabService::SynchronizeDeletedPinnedTab(int canonical_index) {
   DVLOG(2) << __FUNCTION__;
   DCHECK(change_source_model_);
 
@@ -776,11 +777,13 @@ void SharedPinnedTabService::SynchronizeDeletedPinnedTab(int index) {
 
     // We may not want to keep history for dummy pinned tabs, so pass 0 for
     // |close_type|.
-    model->CloseWebContentsAt(ToRawIndex(model, index), /* close_type */ 0);
+    model->CloseWebContentsAt(ToRawIndex(model, canonical_index),
+                              /* close_type */ 0);
   }
 }
 
-void SharedPinnedTabService::SynchronizeMovedPinnedTab(int from, int to) {
+void SharedPinnedTabService::SynchronizeMovedPinnedTab(int canonical_from,
+                                                       int canonical_to) {
   DVLOG(2) << __FUNCTION__;
   DCHECK(change_source_model_);
 
@@ -790,7 +793,8 @@ void SharedPinnedTabService::SynchronizeMovedPinnedTab(int from, int to) {
       continue;
     }
 
-    model->MoveWebContentsAt(ToRawIndex(model, from), ToRawIndex(model, to),
+    model->MoveWebContentsAt(ToRawIndex(model, canonical_from),
+                             ToRawIndex(model, canonical_to),
                              /* select_after_move= */ false);
   }
 }
@@ -957,38 +961,40 @@ void SharedPinnedTabService::SynchronizeDeferredBrowser(
   SynchronizeNewBrowser(browser.get());
 }
 
-void SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser(int index) {
+void SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser(
+    int canonical_index) {
   if (!last_active_browser_) {
     DVLOG(2)
         << "Failed to attach contents to active browser: No active browser";
     return;
   }
 
-  MoveSharedWebContentsToBrowser(last_active_browser_, index);
+  MoveSharedWebContentsToBrowser(last_active_browser_, canonical_index);
 }
 
 void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
     BrowserWindowInterface* browser,
-    int index,
+    int canonical_index,
     bool is_last_closing_browser) {
   if (IsBrowserInTabDragging(browser)) {
     return;
   }
 
   auto* tab_strip_model = browser->GetTabStripModel();
-  const int raw_index = ToRawIndex(tab_strip_model, index);
+  const int raw_index = ToRawIndex(tab_strip_model, canonical_index);
   DCHECK_LT(raw_index, tab_strip_model->count());
 
   LOCK_REENTRANCE(tab_strip_model);
 
-  auto& pinned_tab_data = pinned_tab_data_.at(index);
+  auto& pinned_tab_data = pinned_tab_data_.at(canonical_index);
   if (pinned_tab_data.contents_owner_model) {
     // |pinned_tab_data.contents_owner_model| is the *old* owner here, which
     // may have its own, differently-positioned excluded tab, so it needs its
     // own raw index rather than reusing |raw_index| (computed for the new
     // owner, |tab_strip_model|).
     TabStripModel* old_owner_model = pinned_tab_data.contents_owner_model;
-    const int raw_index_in_old_owner = ToRawIndex(old_owner_model, index);
+    const int raw_index_in_old_owner =
+        ToRawIndex(old_owner_model, canonical_index);
 
     // Detach shared pinned tab from the current owner model.
     std::unique_ptr<content::WebContents> unique_shared_contents =
