@@ -108,6 +108,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/browser/psst/psst_log_service_factory.h"
 #include "brave/browser/psst/psst_reporter_service_factory.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
@@ -227,6 +228,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
             tab, page_action_controller);
     auto* psst_settings_service =
         PsstSettingsServiceFactory::GetForProfile(profile);
+    auto* brave_origin_service =
+        brave_origin::BraveOriginServiceFactory::GetForProfile(profile);
     auto* variations_service = g_browser_process->variations_service();
     psst_web_contents_observer_ = psst::PsstTabWebContentsObserver::MaybeCreate(
         tab, profile,
@@ -234,7 +237,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
             psst_settings_service,
             PsstReporterServiceFactory::GetForProfile(profile),
             std::make_unique<psst::PsstUiDesktopPresenter>(
-                tab, psst_action_controller_->AsWeakPtr())),
+                tab, psst_action_controller_->AsWeakPtr()),
+            brave_origin_service),
         psst_settings_service, variations_service,
         PsstLogServiceFactory::GetForBrowserContext(profile),
         ISOLATED_WORLD_ID_BRAVE_PSST);

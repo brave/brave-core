@@ -52,6 +52,7 @@ static_library("psst") {
     "//components/crx_file",
     "//components/infobars/core",
     "//components/permissions",
+    "//components/policy/core/common:common_constants",
     "//components/prefs",
     "//components/sessions:session_id",
     "//components/tabs:public",
@@ -64,24 +65,31 @@ static_library("psst") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "psst_tab_web_contents_observer_unittest.cc" ]
+  sources = [
+    "psst_tab_web_contents_observer_unittest.cc",
+    "psst_ui_delegate_impl_unittest.cc",
+  ]
   deps = [
     ":psst",
     "//base",
+    "//brave/components/brave_origin",
     "//brave/components/psst/core/browser",
     "//brave/components/psst/core/common",
+    "//brave/components/skus/browser",
     "//chrome/test:test_support",
     "//chrome/test/base:chrome_render_view_host_test_harness",
     "//components/content_settings/core/browser",
     "//components/metrics",
     "//components/metrics:test_support",
     "//components/permissions",
+    "//components/policy/core/common:test_support",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
     "//components/tabs:test_support",
     "//components/variations:test_support",
     "//content/public/browser",
     "//content/test:test_support",
+    "//testing/gmock",
     "//testing/gtest",
     "//url",
   ]

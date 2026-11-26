@@ -193,7 +193,7 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
       ui_delegate_(std::move(ui_delegate)) {
   ui_delegate_->SetLogicalFlowCancelCallback(
       base::BindRepeating(&PsstTabWebContentsObserver::CancelInFlightFlow,
-                     weak_factory_.GetWeakPtr()));
+                          weak_factory_.GetWeakPtr()));
 }
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
@@ -234,7 +234,7 @@ void PsstTabWebContentsObserver::DidFinishNavigation(
   should_process_current_page_ =
       handle->GetURL().SchemeIsHTTPOrHTTPS() &&
       handle->GetRestoreType() != content::RestoreType::kRestored &&
-      psst_settings_service_->IsPsstEnabled();
+      ui_delegate_->IsPsstEnabled();
 }
 
 void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {

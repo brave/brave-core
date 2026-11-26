@@ -21,10 +21,6 @@
 
 class PrefService;
 
-namespace brave_origin {
-class BraveOriginService;
-}  // namespace brave_origin
-
 namespace psst {
 
 class PsstSettingsService : public KeyedService {
@@ -40,12 +36,9 @@ class PsstSettingsService : public KeyedService {
     ~PrefObserver() override = default;
   };
 
-  // `brave_origin_service` may be null when BraveOrigin is not available,
-  // e.g. in unit tests.
   explicit PsstSettingsService(
       HostContentSettingsMap& host_content_settings_map,
-      PrefService* prefs,
-      brave_origin::BraveOriginService* brave_origin_service);
+      PrefService* prefs);
   ~PsstSettingsService() override;
 
   void AddObserver(PrefObserver* observer);
@@ -97,7 +90,6 @@ class PsstSettingsService : public KeyedService {
   const raw_ref<HostContentSettingsMap>
       host_content_settings_map_;         // NOT OWNED
   raw_ptr<PrefService> prefs_ = nullptr;  // NOT OWNED
-  raw_ptr<brave_origin::BraveOriginService> brave_origin_service_;
   base::ObserverList<PrefObserver> observers_;
   PrefChangeRegistrar pref_change_registrar_;
   base::WeakPtrFactory<PsstSettingsService> weak_ptr_factory_{this};
