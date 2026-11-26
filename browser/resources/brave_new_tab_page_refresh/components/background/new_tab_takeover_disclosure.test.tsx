@@ -35,6 +35,13 @@ function getLabel() {
   return screen.getByText('NEW_TAB_TAKEOVER_DISCLOSURE_LABEL')
 }
 
+function simulateTooltipClose() {
+  const tooltip = getTooltipElement() as HTMLElement & {
+    onVisibilityChange: (detail: { visible: boolean }) => void
+  }
+  act(() => tooltip.onVisibilityChange({ visible: false }))
+}
+
 function createBackground(
   overrides: Partial<NewTabTakeoverBackground> = {},
 ): NewTabTakeoverBackground {
@@ -81,7 +88,7 @@ function createBackgroundStore(
       notifyNewTabTakeoverLoadError() {},
       notifyNewTabTakeoverLogoClicked() {},
       notifyNewTabTakeoverRichMediaEvent() {},
-      notifyNewTabTakeoverDisclosureLearnMoreClicked() {},
+      suppressNewTabTakeoverDisclosureAutoDisplay() {},
       notifyNewTabTakeoverDisclosureAutoDisplayed() {},
       ...actions,
     },
@@ -131,15 +138,13 @@ describe('NewTabTakeoverDisclosure', () => {
     ).toBe('_self')
   })
 
-  it('should notify the browser when the learn more link is clicked', () => {
-    const notifyNewTabTakeoverDisclosureLearnMoreClicked = jest.fn()
+  it('should suppress tooltip auto-display when the learn more link is clicked', () => {
+    const suppressNewTabTakeoverDisclosureAutoDisplay = jest.fn()
     renderNewTabTakeoverDisclosure(createBackground(), {
-      notifyNewTabTakeoverDisclosureLearnMoreClicked,
+      suppressNewTabTakeoverDisclosureAutoDisplay,
     })
     fireEvent.click(screen.getByRole('link', { name: 'Learn more' }))
-    expect(
-      notifyNewTabTakeoverDisclosureLearnMoreClicked,
-    ).toHaveBeenCalledTimes(1)
+    expect(suppressNewTabTakeoverDisclosureAutoDisplay).toHaveBeenCalledTimes(1)
   })
 
   it('should not auto-display the tooltip when auto-display is disabled', () => {
@@ -223,13 +228,17 @@ describe('NewTabTakeoverDisclosure', () => {
     expect(getTooltipElement()?.visible).toBe(true)
   })
 
-  it('should close the tooltip when focus moves away from it entirely', () => {
-    renderNewTabTakeoverDisclosure(createBackground())
+  it('should close the tooltip and suppress its auto-display when the label loses focus', () => {
+    const suppressNewTabTakeoverDisclosureAutoDisplay = jest.fn()
+    renderNewTabTakeoverDisclosure(createBackground(), {
+      suppressNewTabTakeoverDisclosureAutoDisplay,
+    })
     act(() => getLabel().focus())
     const elsewhere = document.createElement('button')
     document.body.appendChild(elsewhere)
     act(() => elsewhere.focus())
     expect(getTooltipElement()?.visible).toBe(false)
+    expect(suppressNewTabTakeoverDisclosureAutoDisplay).toHaveBeenCalledTimes(1)
     elsewhere.remove()
   })
 
@@ -245,36 +254,129 @@ describe('NewTabTakeoverDisclosure', () => {
     expect(getTooltipElement()?.visible).toBe(true)
   })
 
-  it('should close the tooltip when the learn more link loses focus', () => {
-    renderNewTabTakeoverDisclosure(createBackground())
-    act(() => screen.getByRole('link', { name: 'Learn more' }).focus())
-    const elsewhere = document.createElement('button')
-    document.body.appendChild(elsewhere)
-    act(() => elsewhere.focus())
-    expect(getTooltipElement()?.visible).toBe(false)
-    elsewhere.remove()
-  })
-
-  it('should close the tooltip when Escape is pressed', () => {
+  it('should close the tooltip and suppress its auto-display when Escape is pressed', () => {
+    const suppressNewTabTakeoverDisclosureAutoDisplay = jest.fn()
     renderNewTabTakeoverDisclosure(
       createBackground({ shouldAutoDisplayNewTabTakeoverDisclosure: true }),
+      { suppressNewTabTakeoverDisclosureAutoDisplay },
     )
     act(() => {
       jest.advanceTimersByTime(500)
     })
     fireEvent.keyDown(document, { key: 'Escape' })
     expect(getTooltipElement()?.visible).toBe(false)
+    expect(suppressNewTabTakeoverDisclosureAutoDisplay).toHaveBeenCalledTimes(1)
   })
 
-  it('should close the auto-displayed tooltip when clicking outside it', () => {
+  it('should suppress tooltip auto-display when it closes after the pointer leaves the hovered label', () => {
+    const suppressNewTabTakeoverDisclosureAutoDisplay = jest.fn()
+    renderNewTabTakeoverDisclosure(createBackground(), {
+      suppressNewTabTakeoverDisclosureAutoDisplay,
+    })
+    fireEvent.mouseEnter(getLabel())
+    act(() => {
+      jest.advanceTimersByTime(500)
+    })
+    fireEvent.mouseLeave(getLabel())
+    simulateTooltipClose()
+    expect(getTooltipElement()?.visible).toBe(false)
+    expect(suppressNewTabTakeoverDisclosureAutoDisplay).toHaveBeenCalledTimes(1)
+  })
+
+  it('should suppress tooltip auto-display when it closes after the pointer leaves the hovered tooltip', () => {
+    const suppressNewTabTakeoverDisclosureAutoDisplay = jest.fn()
     renderNewTabTakeoverDisclosure(
       createBackground({ shouldAutoDisplayNewTabTakeoverDisclosure: true }),
+      { suppressNewTabTakeoverDisclosureAutoDisplay },
+    )
+    act(() => {
+      jest.advanceTimersByTime(500)
+    })
+    fireEvent.mouseOver(
+      screen.getByText(/New Tab Takeover Disclosure Tooltip Text/),
+    )
+    simulateTooltipClose()
+    expect(getTooltipElement()?.visible).toBe(false)
+    expect(suppressNewTabTakeoverDisclosureAutoDisplay).toHaveBeenCalledTimes(1)
+  })
+
+  it('should not suppress tooltip auto-display when the auto-displayed tooltip closes without engagement', () => {
+    const suppressNewTabTakeoverDisclosureAutoDisplay = jest.fn()
+    renderNewTabTakeoverDisclosure(
+      createBackground({ shouldAutoDisplayNewTabTakeoverDisclosure: true }),
+      { suppressNewTabTakeoverDisclosureAutoDisplay },
+    )
+    act(() => {
+      jest.advanceTimersByTime(500)
+    })
+    simulateTooltipClose()
+    expect(getTooltipElement()?.visible).toBe(false)
+    expect(suppressNewTabTakeoverDisclosureAutoDisplay).not.toHaveBeenCalled()
+  })
+
+  it('should suppress tooltip auto-display when clicking outside it after the label is clicked', () => {
+    const suppressNewTabTakeoverDisclosureAutoDisplay = jest.fn()
+    renderNewTabTakeoverDisclosure(createBackground(), {
+      suppressNewTabTakeoverDisclosureAutoDisplay,
+    })
+    fireEvent.click(getLabel())
+    fireEvent.pointerDown(document.body)
+    expect(getTooltipElement()?.visible).toBe(false)
+    expect(suppressNewTabTakeoverDisclosureAutoDisplay).toHaveBeenCalledTimes(1)
+  })
+
+  it('should close the tooltip and suppress its auto-display when the learn more link loses focus', () => {
+    const suppressNewTabTakeoverDisclosureAutoDisplay = jest.fn()
+    renderNewTabTakeoverDisclosure(createBackground(), {
+      suppressNewTabTakeoverDisclosureAutoDisplay,
+    })
+    act(() => screen.getByRole('link', { name: 'Learn more' }).focus())
+    const elsewhere = document.createElement('button')
+    document.body.appendChild(elsewhere)
+    act(() => elsewhere.focus())
+    expect(getTooltipElement()?.visible).toBe(false)
+    expect(suppressNewTabTakeoverDisclosureAutoDisplay).toHaveBeenCalledTimes(1)
+    elsewhere.remove()
+  })
+
+  it('should suppress tooltip auto-display when clicking outside it after the label is hovered', () => {
+    const suppressNewTabTakeoverDisclosureAutoDisplay = jest.fn()
+    renderNewTabTakeoverDisclosure(createBackground(), {
+      suppressNewTabTakeoverDisclosureAutoDisplay,
+    })
+    fireEvent.mouseEnter(getLabel())
+    act(() => {
+      jest.advanceTimersByTime(500)
+    })
+    fireEvent.mouseLeave(getLabel())
+    fireEvent.pointerDown(document.body)
+    expect(getTooltipElement()?.visible).toBe(false)
+    expect(suppressNewTabTakeoverDisclosureAutoDisplay).toHaveBeenCalledTimes(1)
+  })
+
+  it('should suppress tooltip auto-display when the window loses focus after the label is focused', () => {
+    const suppressNewTabTakeoverDisclosureAutoDisplay = jest.fn()
+    renderNewTabTakeoverDisclosure(createBackground(), {
+      suppressNewTabTakeoverDisclosureAutoDisplay,
+    })
+    act(() => getLabel().focus())
+    fireEvent.blur(window)
+    expect(getTooltipElement()?.visible).toBe(false)
+    expect(suppressNewTabTakeoverDisclosureAutoDisplay).toHaveBeenCalledTimes(1)
+  })
+
+  it('should close the auto-displayed tooltip without suppressing auto-display when clicking outside it', () => {
+    const suppressNewTabTakeoverDisclosureAutoDisplay = jest.fn()
+    renderNewTabTakeoverDisclosure(
+      createBackground({ shouldAutoDisplayNewTabTakeoverDisclosure: true }),
+      { suppressNewTabTakeoverDisclosureAutoDisplay },
     )
     act(() => {
       jest.advanceTimersByTime(500)
     })
     fireEvent.pointerDown(document.body)
     expect(getTooltipElement()?.visible).toBe(false)
+    expect(suppressNewTabTakeoverDisclosureAutoDisplay).not.toHaveBeenCalled()
   })
 
   it('should keep the tooltip open when clicking the label', () => {
@@ -329,27 +431,40 @@ describe('NewTabTakeoverDisclosure', () => {
     expect(getTooltipElement()?.visible).toBe(false)
   })
 
-  it('should close the focus opened tooltip when clicking outside it', () => {
-    renderNewTabTakeoverDisclosure(createBackground())
+  it('should close the focus opened tooltip and suppress its auto-display when clicking outside it', () => {
+    const suppressNewTabTakeoverDisclosureAutoDisplay = jest.fn()
+    renderNewTabTakeoverDisclosure(createBackground(), {
+      suppressNewTabTakeoverDisclosureAutoDisplay,
+    })
     act(() => getLabel().focus())
     fireEvent.pointerDown(document.body)
     expect(getTooltipElement()?.visible).toBe(false)
+    expect(suppressNewTabTakeoverDisclosureAutoDisplay).toHaveBeenCalledTimes(1)
   })
 
-  it('should close the tooltip when the window loses focus', () => {
+  it('should close the tooltip without suppressing auto-display when the window loses focus', () => {
+    const suppressNewTabTakeoverDisclosureAutoDisplay = jest.fn()
     renderNewTabTakeoverDisclosure(
       createBackground({ shouldAutoDisplayNewTabTakeoverDisclosure: true }),
+      { suppressNewTabTakeoverDisclosureAutoDisplay },
     )
     act(() => {
       jest.advanceTimersByTime(500)
     })
     fireEvent.blur(window)
     expect(getTooltipElement()?.visible).toBe(false)
+    expect(suppressNewTabTakeoverDisclosureAutoDisplay).not.toHaveBeenCalled()
   })
 
   it('should not show the tooltip when the label receives focus that is not focus-visible', () => {
     renderNewTabTakeoverDisclosure(createBackground())
     fireEvent.focus(getLabel())
+    expect(getTooltipElement()?.visible).toBe(false)
+  })
+
+  it('should not show the tooltip when the learn more link receives focus that is not focus-visible', () => {
+    renderNewTabTakeoverDisclosure(createBackground())
+    fireEvent.focus(screen.getByRole('link', { name: 'Learn more' }))
     expect(getTooltipElement()?.visible).toBe(false)
   })
 

@@ -27,7 +27,7 @@ function createMockNewTabPageProxy() {
       getNewTabTakeoverBackground: jest
         .fn()
         .mockResolvedValue({ background: null }),
-      notifyNewTabTakeoverDisclosureLearnMoreClicked: jest.fn(),
+      suppressNewTabTakeoverDisclosureTooltipAutoDisplay: jest.fn(),
       notifyNewTabTakeoverDisclosureTooltipAutoDisplayed: jest.fn(),
     },
     addListeners: jest.fn((newListeners: Partial<NewTabPageInterface>) => {
@@ -92,11 +92,12 @@ describe('createBackgroundStore', () => {
       await jest.runOnlyPendingTimersAsync()
     })
 
-    it('should stop auto-displaying the disclosure after learn more is clicked', () => {
-      store.getState().actions.notifyNewTabTakeoverDisclosureLearnMoreClicked()
+    it('should stop auto-displaying the disclosure when auto-display is suppressed', () => {
+      store.getState().actions.suppressNewTabTakeoverDisclosureAutoDisplay()
 
       expect(
-        newTabPageProxy.handler.notifyNewTabTakeoverDisclosureLearnMoreClicked,
+        newTabPageProxy.handler
+          .suppressNewTabTakeoverDisclosureTooltipAutoDisplay,
       ).toHaveBeenCalledTimes(1)
       expect(
         store.getState().newTabTakeoverBackground
