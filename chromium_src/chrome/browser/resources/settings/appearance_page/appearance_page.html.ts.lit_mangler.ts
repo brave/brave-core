@@ -6,9 +6,10 @@
 import { mangle } from 'lit_mangler'
 
 // Removes rows Brave either doesn't want, or already shows elsewhere (its own
-// toolbar settings, side panel section, or the Tabs settings page), and
-// appends <settings-brave-appearance-toolbar>, which holds the settings that
-// used to live inline here (e.g. "Use wide address bar").
+// toolbar settings, side panel section, or the Tabs settings page), adds the
+// Night Mode toggle below the Theme row, and appends
+// <settings-brave-appearance-toolbar>, which holds the settings that used to
+// live inline here (e.g. "Use wide address bar").
 mangle((root) => {
   const removeElementWithId = (id: string) => {
     const elem = root.getElementById(id)

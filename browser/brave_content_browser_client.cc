@@ -183,6 +183,7 @@
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_user_profile.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
@@ -1790,11 +1791,12 @@ bool UpdateGlobalPrivacyControlWebPreference(WebContents* web_contents,
 // true if `force_dark_mode_enabled` changed.
 bool UpdateForceDarkModeWebPreference(WebContents* web_contents,
                                       WebPreferences* web_prefs) {
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  CHECK(profile);
+  // Like upstream, read the pref from the user profile: Top Chrome WebUIs may
+  // live in a shared profile that doesn't register it.
+  Profile* profile = webui::GetUserProfile(web_contents);
 
   const bool force_dark_mode_enabled =
+      profile &&
       profile->GetPrefs()->GetBoolean(prefs::kWebKitForceDarkModeEnabled) &&
       web_prefs->preferred_color_scheme ==
           blink::mojom::PreferredColorScheme::kDark;

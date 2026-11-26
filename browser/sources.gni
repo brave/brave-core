@@ -460,6 +460,7 @@ if (!is_android) {
     "//chrome/browser/regional_capabilities",
     "//chrome/browser/ui/thumbnails",
     "//chrome/browser/ui/webui/bookmarks",
+    "//chrome/browser/ui/webui/top_chrome",
     "//components/feed:feature_list",
     "//components/feed/core/v2:feed_core_v2",
     "//components/regional_capabilities",
