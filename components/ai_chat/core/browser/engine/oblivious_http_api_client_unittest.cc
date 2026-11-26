@@ -17,6 +17,8 @@
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
@@ -394,12 +396,10 @@ TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_UsesUpstreamModelName) {
   ASSERT_FALSE(last_request_.is_null());
   ASSERT_TRUE(last_request_->request_body);
 
-  auto parsed = base::JSONReader::Read(last_request_->request_body->content,
-                                       base::JSON_PARSE_RFC);
-  ASSERT_TRUE(parsed.has_value() && parsed->is_dict());
-  const std::string* model = parsed->GetDict().FindString("model");
-  ASSERT_TRUE(model);
-  EXPECT_EQ(kTestUpstreamModelName, *model);
+  EXPECT_THAT(base::test::ParseJsonDict(last_request_->request_body->content,
+                                        base::JSON_PARSE_RFC),
+              base::test::DictionaryHasValue(
+                  "model", base::Value(kTestUpstreamModelName)));
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest,
