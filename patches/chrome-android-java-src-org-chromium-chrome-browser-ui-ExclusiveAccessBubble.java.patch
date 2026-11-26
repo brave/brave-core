@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ui/ExclusiveAccessBubble.java b/chrome/android/java/src/org/chromium/chrome/browser/ui/ExclusiveAccessBubble.java
-index 4f68c538219298d717284fb4af32a58d50c9e8b7..df9ceda64df487dade0ed1f48a7a2d4ec361c011 100644
+index 01472b82ad7fad9cd6eeb91cecd380dc8c624d07..3f4b505ba45c7de84c86afcb605805a38ae864a5 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ui/ExclusiveAccessBubble.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ui/ExclusiveAccessBubble.java
 @@ -24,6 +24,7 @@ import org.chromium.ui.base.DeviceInput;
@@ -10,15 +10,15 @@ index 4f68c538219298d717284fb4af32a58d50c9e8b7..df9ceda64df487dade0ed1f48a7a2d4e
      private static final int EXCLUSIVE_ACCESS_SNACKBAR_DURATION_MS = 3800;
  
      private final ExclusiveAccessContext mParentContext;
-@@ -39,6 +40,7 @@ public class ExclusiveAccessBubble {
-     private @Nullable String mText;
+@@ -40,6 +41,7 @@ public class ExclusiveAccessBubble {
+     private boolean mIsBrowserFullscreenSnackbar;
  
      private ExclusiveAccessBubble(ExclusiveAccessContext parentContext) {
 +        mBraveNotice = new BraveExclusiveAccessNotice(parentContext);
          mParentContext = parentContext;
      }
  
-@@ -49,6 +51,7 @@ public class ExclusiveAccessBubble {
+@@ -50,6 +52,7 @@ public class ExclusiveAccessBubble {
  
      @CalledByNative
      public void show() {
@@ -26,10 +26,10 @@ index 4f68c538219298d717284fb4af32a58d50c9e8b7..df9ceda64df487dade0ed1f48a7a2d4e
          if (mText == null || mSnackbar != null) {
              return;
          }
-@@ -77,6 +80,10 @@ public class ExclusiveAccessBubble {
- 
-     @CalledByNative
-     public void update(@JniType("std::u16string") String text) {
+@@ -85,6 +88,10 @@ public class ExclusiveAccessBubble {
+     public void update(
+             @JniType("std::u16string") String text, boolean isBrowserFullscreenSnackbar) {
+         mIsBrowserFullscreenSnackbar = isBrowserFullscreenSnackbar;
 +        if (mBraveNotice.update(text)) {
 +            mText = text;
 +            return;
@@ -37,7 +37,7 @@ index 4f68c538219298d717284fb4af32a58d50c9e8b7..df9ceda64df487dade0ed1f48a7a2d4e
          SnackbarManager snackbarManager = mParentContext.getSnackbarManager();
          if (snackbarManager == null || !snackbarManager.canShowSnackbar()) {
              mText = text;
-@@ -101,6 +108,7 @@ public class ExclusiveAccessBubble {
+@@ -112,6 +119,7 @@ public class ExclusiveAccessBubble {
  
      @CalledByNative
      public void hide() {
@@ -45,7 +45,7 @@ index 4f68c538219298d717284fb4af32a58d50c9e8b7..df9ceda64df487dade0ed1f48a7a2d4e
          SnackbarManager snackbarManager = mParentContext.getSnackbarManager();
          if (snackbarManager != null && mSnackbar != null) {
              snackbarManager.dismissSnackbars(mSnackbarController);
-@@ -110,6 +118,7 @@ public class ExclusiveAccessBubble {
+@@ -121,6 +129,7 @@ public class ExclusiveAccessBubble {
  
      @CalledByNative
      public boolean isVisible() {

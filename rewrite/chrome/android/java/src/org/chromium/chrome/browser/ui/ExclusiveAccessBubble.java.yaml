@@ -34,7 +34,7 @@ substitutions:
   - description: |-
       Update the Brave notice instead of the snackbar.
     add_after_line:
-      line: 'public void update(@JniType("std::u16string") String text) {'
+      line: 'mIsBrowserFullscreenSnackbar = isBrowserFullscreenSnackbar;'
       code: |2-
                 if (mBraveNotice.update(text)) {
                     mText = text;
