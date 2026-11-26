@@ -50,6 +50,7 @@ import org.chromium.chrome.browser.settings.BraveTextButtonPreference;
 import org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreference;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.shields.FilterListServiceFactory;
+import org.chromium.chrome.browser.ssl.HttpsFirstModeSettingsFragment;
 import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
@@ -57,6 +58,7 @@ import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
+import org.chromium.components.browser_ui.settings.search.PreferenceParser;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.gms.ChromiumPlayServicesAvailability;
@@ -1000,6 +1002,28 @@ public class BravePrivacySettings extends PrivacySettings {
         return "";
     }
 
+    // The HTTPS-First Mode prefs come from upstream's privacy_preferences.xml, which this provider
+    // doesn't parse.
+    private static void addHttpsFirstModeEntry(SettingsIndexData indexData, String frag) {
+        if (!ChromeFeatureList.isEnabled(ChromeFeatureList.HTTPS_FIRST_BALANCED_MODE)) {
+            indexData.addEntryForKey(
+                    frag,
+                    PREF_HTTPS_FIRST_MODE_LEGACY,
+                    R.string.settings_https_first_mode_title,
+                    R.string.settings_https_first_mode_summary);
+            return;
+        }
+        indexData.addEntryForKey(
+                frag,
+                PREF_HTTPS_FIRST_MODE,
+                R.string.settings_https_first_mode_title,
+                /* summaryId= */ 0,
+                HttpsFirstModeSettingsFragment.class.getName());
+        indexData.addChildParentLink(
+                HttpsFirstModeSettingsFragment.class.getName(),
+                PreferenceParser.createUniqueId(frag, PREF_HTTPS_FIRST_MODE));
+    }
+
     public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new ChromeBaseSearchIndexProvider(
                     BravePrivacySettings.class.getName(), R.xml.brave_privacy_preferences) {
@@ -1047,6 +1071,7 @@ public class BravePrivacySettings extends PrivacySettings {
                             ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT);
                     if (!httpsByDefault) {
                         indexData.removeEntryForKey(frag, PREF_HTTPS_UPGRADE);
+                        addHttpsFirstModeEntry(indexData, frag);
                     }
 
                     // Policy-based removals

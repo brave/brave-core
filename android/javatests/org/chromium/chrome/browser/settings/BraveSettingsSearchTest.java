@@ -46,6 +46,7 @@ import org.chromium.base.test.util.Restriction;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave.browser.customize_menu.MenuItemData;
 import org.chromium.chrome.browser.BraveRewardsPolicy;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.tracing.settings.DeveloperSettings;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
@@ -248,6 +249,30 @@ public class BraveSettingsSearchTest {
         // Brave Shields & privacy => Lock Private tabs when you leave Brave
         // clearAndTypeIntoSearch("Lock Private tabs");
         // assertSearchResult("Lock Private tabs");
+    }
+
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    @EnableFeatures(ChromeFeatureList.HTTPS_FIRST_BALANCED_MODE)
+    @DisableFeatures(BraveFeatureList.HTTPS_BY_DEFAULT)
+    public void testHttpsFirstModeSearchable() {
+        mSettingsActivityTestRule.startSettingsActivity();
+
+        // Matches both the sub-page entry and the switch on that sub-page.
+        typeIntoSearch("Always use secure connections");
+        assertOneOfSearchResultsIs("Always use secure connections", "Brave Shields & privacy");
+    }
+
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    @EnableFeatures(BraveFeatureList.HTTPS_BY_DEFAULT)
+    public void testHttpsFirstModeNotSearchable_HttpsByDefaultEnabled() {
+        mSettingsActivityTestRule.startSettingsActivity();
+
+        typeIntoSearch("Always use secure connections");
+        assertSearchResultEmpty();
     }
 
     /**
