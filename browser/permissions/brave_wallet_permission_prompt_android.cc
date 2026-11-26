@@ -5,6 +5,7 @@
 
 #include "brave/browser/permissions/brave_wallet_permission_prompt_android.h"
 
+#include <memory>
 #include <utility>
 
 #include "brave/browser/permissions/brave_dapp_permission_prompt_dialog_controller_android.h"
@@ -12,6 +13,7 @@
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "components/permissions/android/permission_prompt/permission_prompt_android.h"
 #include "components/permissions/permission_request.h"
+#include "components/permissions/request_type.h"
 #include "content/public/browser/web_contents.h"
 #include "url/origin.h"
 
@@ -32,6 +34,40 @@ url::Origin GetRequestingOrigin(const permissions::PermissionRequest& request) {
 }
 
 }  // namespace
+
+// static
+std::unique_ptr<permissions::PermissionsClient::PermissionMessageDelegate>
+BraveWalletPermissionPrompt::MaybeCreate(
+    content::WebContents* web_contents,
+    const base::WeakPtr<permissions::PermissionPromptAndroid>& prompt) {
+  const auto& requests = prompt->delegate_public()->Requests();
+  if (requests.empty()) {
+    return nullptr;
+  }
+
+  permissions::RequestType request_type = requests[0]->request_type();
+  if (request_type == permissions::RequestType::kBraveEthereum ||
+      request_type == permissions::RequestType::kBraveSolana ||
+      request_type == permissions::RequestType::kBraveCardano ||
+      request_type == permissions::RequestType::kBravePolkadot) {
+    auto coin_type = brave_wallet::mojom::CoinType::ETH;
+    if (request_type == permissions::RequestType::kBraveSolana) {
+      coin_type = brave_wallet::mojom::CoinType::SOL;
+    }
+    if (request_type == permissions::RequestType::kBraveCardano) {
+      coin_type = brave_wallet::mojom::CoinType::ADA;
+    }
+    if (request_type == permissions::RequestType::kBravePolkadot) {
+      coin_type = brave_wallet::mojom::CoinType::DOT;
+    }
+    auto delegate =
+        std::make_unique<BraveWalletPermissionPrompt::Delegate>(prompt);
+    return std::make_unique<BraveWalletPermissionPrompt>(
+        web_contents, std::move(delegate), coin_type, *requests[0]);
+  }
+
+  return nullptr;
+}
 
 BraveWalletPermissionPrompt::BraveWalletPermissionPrompt(
     content::WebContents* web_contents,

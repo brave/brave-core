@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/permissions/BUILD.gn b/chrome/browser/permissions/BUILD.gn
+index 85d417c5e25fb6e017a3c944b4c0fc16211f6372..c18951aaead05947121f5d9929593c14dbc6f35b 100644
+--- a/chrome/browser/permissions/BUILD.gn
++++ b/chrome/browser/permissions/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+ import("//build/config/ui.gni")
+ import("//components/safe_browsing/buildflags.gni")
+ import("//device/vr/buildflags/buildflags.gni")
+@@ -213,6 +214,10 @@ source_set("permissions") {
+       "prediction_service/contextual_notification_permission_ui_selector.h",
+     ]
+   }
++  deps += [ "//brave/components/brave_wallet/common/buildflags" ]
++  if (is_android && enable_brave_wallet) {
++    deps += [ "//brave/browser/permissions" ]
++  }
+ }
+ 
+ proto_library("permissions_proto") {
