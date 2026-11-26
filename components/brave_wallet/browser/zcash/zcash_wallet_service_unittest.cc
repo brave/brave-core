@@ -7211,7 +7211,9 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldSync_FeatureDisabled) {
 
 #endif
 
-TEST_F(ZCashWalletServiceUnitTest,
+using ZCashWalletServiceDeathTest = ZCashWalletServiceUnitTest;
+
+TEST_F(ZCashWalletServiceDeathTest,
        OnCompleteTransactionTaskDone_InvalidTransaction) {
   // Create an invalid transaction where inputs != outputs + fee
   ZCashTransaction invalid_tx;
@@ -7254,7 +7256,7 @@ TEST_F(ZCashWalletServiceUnitTest,
       "");
 }
 
-TEST_F(ZCashWalletServiceUnitTest,
+TEST_F(ZCashWalletServiceDeathTest,
        OnCompleteTransactionTaskDone_InvalidResultTransaction) {
   ZCashTransaction valid_tx;
   valid_tx.init_v5_part();
