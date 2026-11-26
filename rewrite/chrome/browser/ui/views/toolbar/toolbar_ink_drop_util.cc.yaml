@@ -7,23 +7,12 @@ substitutions:
   - description: |-
       Use Brave's ink drop configuration for toolbar buttons
 
-      Brave configures ink drop with its own hover and ripple callbacks
-      (CreateToolbarInkdropCallbacks) instead of the upstream opacity and
+      Delegate to ConfigureBraveInkDrop instead of the upstream opacity and
       base color settings.
     preempt_function_impl:
       function_name: ConfigureInkDrop
       code: |-
-        if (!highlight_generator) {
-          highlight_generator =
-              std::make_unique<ToolbarButtonHighlightPathGenerator>();
-        }
-
         if ((true)) {
-          host->SetHasInkDropActionOnClick(true);
-          views::HighlightPathGenerator::Install(host,
-                                                std::move(highlight_generator));
-          views::InkDrop::Get(host)->SetMode(views::InkDropHost::InkDropMode::ON);
-          CreateToolbarInkdropCallbacks(host, kColorToolbarInkDropHover,
-                                        kColorToolbarInkDropRipple);
+          ConfigureBraveInkDrop(host, std::move(highlight_generator));
           return;
         }

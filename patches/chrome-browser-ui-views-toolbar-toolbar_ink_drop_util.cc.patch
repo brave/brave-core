@@ -1,23 +1,13 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.cc b/chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.cc
-index 248c12416379d5f1bc92ddc53121b664bc7630b2..001bd61468d6309f8624e32bc7e19a5a66ae8c81 100644
+index 248c12416379d5f1bc92ddc53121b664bc7630b2..fd86da19332ca13096ae32992d36037a9294b612 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.cc
-@@ -80,6 +80,20 @@ SkColor GetToolbarInkDropBaseColor(const views::View* host_view) {
+@@ -80,6 +80,10 @@ SkColor GetToolbarInkDropBaseColor(const views::View* host_view) {
  void ConfigureInkDrop(
      views::Button* host,
      std::unique_ptr<views::HighlightPathGenerator> highlight_generator) {
-+  if (!highlight_generator) {
-+    highlight_generator =
-+        std::make_unique<ToolbarButtonHighlightPathGenerator>();
-+  }
-+
 +  if ((true)) {
-+    host->SetHasInkDropActionOnClick(true);
-+    views::HighlightPathGenerator::Install(host,
-+                                          std::move(highlight_generator));
-+    views::InkDrop::Get(host)->SetMode(views::InkDropHost::InkDropMode::ON);
-+    CreateToolbarInkdropCallbacks(host, kColorToolbarInkDropHover,
-+                                  kColorToolbarInkDropRipple);
++    ConfigureBraveInkDrop(host, std::move(highlight_generator));
 +    return;
 +  }
    host->SetHasInkDropActionOnClick(true);
