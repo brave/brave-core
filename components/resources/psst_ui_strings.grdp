@@ -114,6 +114,9 @@
     <message name="IDS_PSST_INTERNALS_TABLE_HEADER_INFOBAR_DECLINE_COUNT" formatter_data="webui=Psst" translateable="false" desc="Column header for the number of times the PSST infobar was declined for a site, on the PSST internals page">
         Infobar declined
     </message>
+    <message name="IDS_PSST_INTERNALS_TABLE_HEADER_INFOBAR_ACCEPTED_COUNT" formatter_data="webui=Psst" translateable="false" desc="Column header for the number of times the PSST infobar was accepted for a site, on the PSST internals page">
+        Infobar accepted
+    </message>
     <message name="IDS_PSST_INTERNALS_TABLE_HEADER_CONSENT" formatter_data="webui=Psst" translateable="false" desc="Column header for the consent status, on the PSST internals page">
         Consent
     </message>

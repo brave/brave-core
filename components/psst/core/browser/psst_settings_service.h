@@ -81,6 +81,14 @@ class PsstSettingsService : public KeyedService {
   // website setting.
   void IncrementInfobarDeclineCount(const url::Origin& origin);
 
+  bool IsPsstInfobarEnabled() const;
+  void SetPsstInfobarEnabled(bool enabled);
+
+  // Records that the PSST infobar was accepted for `origin`. No-op unless
+  // `origin` is https. The count is persisted in the origin's BRAVE_PSST
+  // website setting.
+  void IncrementInfobarReviewSuggestionsCount(const url::Origin& origin);
+
   bool IsPsstEnabled() const;
   void SetPsstEnabled(bool enabled);
 

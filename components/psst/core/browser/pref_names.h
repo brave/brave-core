@@ -20,6 +20,8 @@ inline constexpr char kPsstInfobarShownCounter[] =
 // Deprecated 11/2026
 inline constexpr char kPsstInfobarDeclineCounter[] =
     "brave.psst.settings.infobar_decline_counter";
+inline constexpr char kPsstInfobarEnabled[] =
+    "brave.psst.settings.infobar_enabled";
 }  // namespace prefs
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);

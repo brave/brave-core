@@ -69,6 +69,7 @@ struct PsstWebsiteSettingsEntry {
   string site;
   int32 infobar_shown_count;
   int32 infobar_decline_count;
+  int32 infobar_review_sugg_counter;
   ConsentStatus consent_status;
   int32 script_version;
   string user_id;

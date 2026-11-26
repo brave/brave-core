@@ -28,6 +28,7 @@ namespace psst {
     dictionary PsstWebsiteSettingsExtended {
         long infobar_shown_counter;
         long infobar_decline_counter;
+        long infobar_review_sugg_counter;
         PsstWebsiteSettings[] website_settings;
     };
 };
