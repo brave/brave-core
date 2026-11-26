@@ -217,7 +217,10 @@ class AIChatService : public KeyedService,
       int associated_content_id,
       base::WeakPtr<AssociatedContentDelegate> associated_content);
 
-  // Removes all in-memory and persisted data for all conversations
+  // Removes all in-memory and persisted data for the conversations updated
+  // between |begin_time| and |end_time|. A missing or null |begin_time|, and a
+  // missing, null or max |end_time|, leave that side of the range open, so
+  // with neither bounded every conversation is removed.
   void DeleteConversations(std::optional<base::Time> begin_time = std::nullopt,
                            std::optional<base::Time> end_time = std::nullopt);
 
