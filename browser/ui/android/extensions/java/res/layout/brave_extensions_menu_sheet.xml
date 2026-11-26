@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- Phone extensions menu sheet: installed extensions followed by the settings row. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
+
+    <TextView
+        style="@style/DefaultSemibold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:text="@string/brave_extensions_menu_installed_extensions"
+        android:textColor="?attr/colorPrimary" />
+
+    <!-- Shrinks so the settings row stays visible. The coordinator measures this layout with
+         an at-most height, so the weight never stretches a short list. -->
+    <ScrollView
+        android:id="@+id/extensions_menu_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/brave_extensions_menu_sheet_container">
+
+        <LinearLayout
+            android:id="@+id/extensions_menu_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/brave_extensions_menu_sheet_divider"
+            android:orientation="vertical"
+            android:showDividers="middle" />
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/extensions_menu_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/brave_extensions_menu_sheet_container"
+        android:gravity="center_vertical"
+        android:minHeight="56dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_settings"
+            android:tint="?attr/colorOnSurfaceVariant" />
+
+        <TextView
+            style="@style/LargeRegular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:text="@string/brave_extensions_menu_settings"
+            android:textColor="?attr/colorOnSurface" />
+    </LinearLayout>
+</LinearLayout>

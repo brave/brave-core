@@ -502,6 +502,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/brave_custom_tabs_toolbar.xml",
     "java/brave-res/layout/brave_dialog_preference.xml",
     "java/brave-res/layout/brave_exit_confirmation.xml",
+    "java/brave-res/layout/brave_extensions_menu_item.xml",
     "java/brave-res/layout/brave_homepage_mobile_bookmarks_button.xml",
     "java/brave-res/layout/brave_https_upgrade_panel.xml",
     "java/brave-res/layout/brave_leo_clear_history_dialog.xml",

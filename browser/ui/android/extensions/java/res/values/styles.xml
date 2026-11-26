@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<resources>
+    <!-- Phone extensions menu sheet. Its layouts use Material color roles, which come from the
+         activity's dynamic color overlay, or from these Nala tokens otherwise. -->
+    <style name="BraveExtensionsMenuSheetStaticColors" parent="">
+        <item name="colorPrimary">@color/schemes_primary</item>
+        <item name="colorOnSurface">@color/schemes_on_surface</item>
+        <item name="colorOnSurfaceVariant">@color/schemes_on_surface_variant</item>
+        <item name="colorSurfaceContainerLow">@color/schemes_surface_container_low</item>
+        <item name="colorSurfaceContainer">@color/schemes_surface_container</item>
+    </style>
+</resources>

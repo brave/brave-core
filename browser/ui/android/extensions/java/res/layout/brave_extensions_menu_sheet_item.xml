@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- An installed extension in the phone extensions menu sheet. The icon is set as the start
+     compound drawable. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LargeRegular"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:drawablePadding="12dp"
+    android:ellipsize="end"
+    android:gravity="center_vertical"
+    android:maxLines="1"
+    android:minHeight="56dp"
+    android:paddingHorizontal="12dp"
+    android:textColor="?attr/colorOnSurface" />

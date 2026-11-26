@@ -222,6 +222,7 @@ if (is_android) {
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.app") {
     sources = [
       "src/org/chromium/chrome/browser/app/BraveActivityInAppUpdateTest.java",
+      "src/org/chromium/chrome/browser/app/appmenu/BraveExtensionsMenuItemViewBinderUnitTest.java",
     ]
 
     deps = [

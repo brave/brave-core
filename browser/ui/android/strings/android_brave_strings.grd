@@ -3745,6 +3745,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_MENU_SHRED_TEXT" desc="Shred menu item text to delete browsing data securely.">
       Shred site data
     </message>
+    <message name="IDS_BRAVE_MENU_EXTENSIONS_UNAVAILABLE_ON_INTERNAL_PAGES" desc="Subtitle shown under the Extensions menu item when the current page is an internal browser page.">
+      Extensions are not available on internal pages
+    </message>
+    <message name="IDS_BRAVE_EXTENSIONS_MENU_INSTALLED_EXTENSIONS" desc="Header of the list of installed extensions in the extensions menu sheet.">
+      Installed extensions
+    </message>
+    <message name="IDS_BRAVE_EXTENSIONS_MENU_SETTINGS" desc="Row in the extensions menu sheet that opens the extensions settings.">
+      Extensions settings
+    </message>
     <message name="IDS_BRAVE_SHRED_DATA_DIALOG_OK_BUTTON_TEXT" desc="Shred data confirmation dialog OK button text">
       Shred data
     </message>
