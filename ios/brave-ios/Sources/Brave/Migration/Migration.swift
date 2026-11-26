@@ -37,6 +37,7 @@ public class BraveProfileMigrations {
     migrateTopSitesModePreference()
     migrateSponsoredAdsEnabledPreference()
     migrateHTTPSUpgradeLevelPreference()
+    migrateShieldStatsPreferences()
     pruneWalletDAppsPermissions()
   }
 
@@ -96,6 +97,31 @@ public class BraveProfileMigrations {
       forPath: kHttpsOnlyModeEnabled
     )
     Preferences.Migration.httpsOnlyModeCompleted.value = true
+  }
+
+  /// Migrates ads, trackers and bandwidth saved onto the Chromium prefs shared with desktop &
+  /// Android. Bandwidth saved was never stored, so it is seeded from the per-item estimate.
+  /// Writes absolute values since iOS never wrote these prefs before.
+  private func migrateShieldStatsPreferences() {
+    guard !Preferences.Migration.shieldStatsChromiumPrefsCompleted.value else { return }
+    let prefs = profileController.profile.prefs
+    prefs.set(
+      UInt64(max(Preferences.BlockStats.adsCount.value, 0)),
+      forPath: kAdsBlockedPrefName
+    )
+    prefs.set(
+      UInt64(max(Preferences.BlockStats.trackersCount.value, 0)),
+      forPath: kTrackersBlockedPrefName
+    )
+    prefs.set(
+      UInt64(max(Preferences.BlockStats.fingerprintingCount.value, 0)),
+      forPath: kFingerprintingBlockedPrefName
+    )
+    prefs.set(
+      UInt64(max(BraveGlobalShieldStats.storedBandwidthSavedBytes, 0)),
+      forPath: kBandwidthSavedBytesPrefName
+    )
+    Preferences.Migration.shieldStatsChromiumPrefsCompleted.value = true
   }
 
   /// Migrate sync passwords default value to enabled.
@@ -665,6 +691,12 @@ extension Preferences {
     /// Migrated sync passwords to enabled by default.
     static let syncPasswordsEnabledByDefault = Option<Bool>(
       key: "migration.sync-passwords-enabled-by-default",
+      default: false
+    )
+
+    /// Migrated ads/trackers/bandwidth saved stats into the profile `PrefService`
+    static let shieldStatsChromiumPrefsCompleted = Option<Bool>(
+      key: "migration.shield-stats-chromium-prefs-completed",
       default: false
     )
 

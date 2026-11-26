@@ -2,20 +2,42 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import Preferences
 import Strings
 
-/// Shield stats for a profile, persisted in `Preferences.BlockStats`
+/// Shield stats for a profile.
+///
+/// Ads, trackers and bandwidth saved are stored in the profile's Chromium prefs (shared with
+/// desktop & Android)
 @Observable
 public class BraveGlobalShieldStats {
   /// Bandwidth saved is estimated per blocked item
   public static let averageBytesSavedPerItem = 30485
 
+  /// Bandwidth saved in `Preferences.BlockStats`. Estimated from the blocked counts if never stored.
+  public static var storedBandwidthSavedBytes: Int {
+    Preferences.BlockStats.bandwidthSavedBytes.value
+      ?? (Preferences.BlockStats.adsCount.value + Preferences.BlockStats.trackersCount.value)
+      * averageBytesSavedPerItem
+  }
+
+  @ObservationIgnored private let prefs: any PrefService
+  @ObservationIgnored private var prefsChangeRegistrar: PrefChangeRegistrar?
+  @ObservationIgnored private var isUpdatingFromPrefs = false
+
   // Number of ads blocked
   public var adblock: Int = 0 {
     didSet {
-      Preferences.BlockStats.adsCount.value = adblock
+      guard !isUpdatingFromPrefs, adblock != oldValue else { return }
+      // Pref observers fire synchronously and reassign `adblock` from prefs, so capture the
+      // values before writing.
+      let newCount = UInt64(max(adblock, 0))
+      let addedBandwidth = UInt64(max(adblock - oldValue, 0) * Self.averageBytesSavedPerItem)
+      let bandwidth = prefs.uint64(forPath: kBandwidthSavedBytesPrefName) + addedBandwidth
+      prefs.set(newCount, forPath: kAdsBlockedPrefName)
+      prefs.set(bandwidth, forPath: kBandwidthSavedBytesPrefName)
     }
   }
 
@@ -27,6 +49,9 @@ public class BraveGlobalShieldStats {
   public var adsAndTrackersBlocked: Int {
     adblock + trackingProtection
   }
+
+  /// Estimated bandwidth saved in bytes
+  public private(set) var bandwidthSavedBytes: Int = 0
 
   /// Number of scripts blocked
   public var scripts: Int = 0 {
@@ -42,11 +67,32 @@ public class BraveGlobalShieldStats {
     }
   }
 
-  public init() {
-    adblock = Preferences.BlockStats.adsCount.value
-    trackingProtection = Preferences.BlockStats.trackersCount.value
+  public init(prefs: any PrefService) {
+    self.prefs = prefs
     images = Preferences.BlockStats.imagesCount.value
     scripts = Preferences.BlockStats.scriptsCount.value
+
+    // Observe changes core-side and keep `Preferences.BlockStats` in sync
+    let registrar = PrefChangeRegistrar(prefService: prefs)
+    for path in [kAdsBlockedPrefName, kTrackersBlockedPrefName, kBandwidthSavedBytesPrefName] {
+      registrar.addObserver(forPath: path) { [weak self] _ in
+        self?.updateFromPrefs()
+      }
+    }
+    prefsChangeRegistrar = registrar
+    updateFromPrefs()
+  }
+
+  private func updateFromPrefs() {
+    isUpdatingFromPrefs = true
+    defer { isUpdatingFromPrefs = false }
+    adblock = Int(clamping: prefs.uint64(forPath: kAdsBlockedPrefName))
+    trackingProtection = Int(clamping: prefs.uint64(forPath: kTrackersBlockedPrefName))
+    bandwidthSavedBytes = Int(clamping: prefs.uint64(forPath: kBandwidthSavedBytesPrefName))
+    // keep `Preferences.BlockStats` so extensions (without Profile access) can read stats
+    Preferences.BlockStats.adsCount.value = adblock
+    Preferences.BlockStats.trackersCount.value = trackingProtection
+    Preferences.BlockStats.bandwidthSavedBytes.value = bandwidthSavedBytes
   }
 
   // Formatted time saved from blocking
@@ -56,7 +102,7 @@ public class BraveGlobalShieldStats {
 
   // Formatted data saved from blocking
   public var dataSaved: String {
-    Self.dataSaved(blockedCount: adblock + trackingProtection)
+    Self.dataSaved(bytes: bandwidthSavedBytes)
   }
 
   /// Formats the given `blockedCount` to time saved string
@@ -91,9 +137,9 @@ public class BraveGlobalShieldStats {
     }
   }
 
-  /// Formats the given `blockedCount` to data saved string
-  public static func dataSaved(blockedCount: Int) -> String {
-    var estimatedDataSavedInBytes = blockedCount * averageBytesSavedPerItem
+  /// Formats the given `bytes` to data saved string
+  public static func dataSaved(bytes: Int) -> String {
+    var estimatedDataSavedInBytes = bytes
 
     if estimatedDataSavedInBytes <= 0 { return "0" }
     let _1MB = 1000 * 1000

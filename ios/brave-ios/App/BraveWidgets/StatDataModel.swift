@@ -58,7 +58,9 @@ extension StatKind {
     case .adsBlocked:
       return Preferences.BlockStats.adsCount.value.kFormattedNumber
     case .dataSaved:
-      return BraveGlobalShieldStats.dataSaved(blockedCount: blockedCount)
+      return BraveGlobalShieldStats.dataSaved(
+        bytes: BraveGlobalShieldStats.storedBandwidthSavedBytes
+      )
     case .timeSaved:
       return BraveGlobalShieldStats.timeSaved(blockedCount: blockedCount)
     case .unknown:
