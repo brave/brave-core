@@ -4,8 +4,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-from pathlib import PurePath
+from pathlib import Path, PurePath
+import json
 import sys
+import tempfile
 import unittest
 
 # Append paths needed to import presubmit modules and shared test mocks.
@@ -257,6 +259,101 @@ class CheckTodoBugReferencesTest(unittest.TestCase):
 
     def testIgnoresLinesWithoutTodo(self):
         self.assertEqual([], self._Check('// just a comment, no todo here'))
+
+
+def _PackageJson(chromium_tag, brave_version='1.0.0'):
+    """Returns package.json lines with the given Chromium tag."""
+    return json.dumps(
+        {
+            'version': brave_version,
+            'config': {'projects': {'chrome': {'tag': chromium_tag}}},
+        },
+        indent=2,
+    ).splitlines()
+
+
+class CheckSystemNetworkContextCallersTest(unittest.TestCase):
+    def setUp(self):
+        self._find_callers = PRESUBMIT._FindSystemNetworkContextCallers
+        self._callers = {'chrome/browser/a.cc', 'chrome/browser/b.cc'}
+        PRESUBMIT._FindSystemNetworkContextCallers = lambda _: self._callers
+        self._chromium_bump = MockAffectedFile(
+            'package.json',
+            _PackageJson('160.0.8181.0'),
+            old_contents=_PackageJson('159.0.8154.18'),
+            action='M',
+        )
+
+    def tearDown(self):
+        PRESUBMIT._FindSystemNetworkContextCallers = self._find_callers
+
+    def _Check(self, known, files=None, requested=False, all_brave=False):
+        input_api = MockInputApi()
+        input_api.PRESUBMIT_ALL_BRAVE = all_brave
+        input_api.PRESUBMIT_CHECK_SYSTEM_NETWORK_CONTEXT = requested
+        input_api.files = [self._chromium_bump] if files is None else files
+        with tempfile.TemporaryDirectory() as tmp:
+            input_api.presubmit_local_path = tmp
+            callers_file = (
+                Path(tmp) / PRESUBMIT._SYSTEM_NETWORK_CONTEXT_CALLERS_FILE
+            )
+            callers_file.parent.mkdir(parents=True)
+            callers_file.write_text(
+                '# A comment.\n' + ''.join(f'{c}\n' for c in known),
+                encoding='utf-8',
+                newline='',
+            )
+            return PRESUBMIT.CheckSystemNetworkContextCallers(
+                input_api, MockOutputApi()
+            )
+
+    def testAcceptsListedCallers(self):
+        self.assertEqual([], self._Check(self._callers))
+
+    def testWarnsAboutNewCallerOnChromiumBump(self):
+        results = self._Check({'chrome/browser/a.cc'})
+
+        self.assertEqual(1, len(results))
+        self.assertEqual('warning', results[0].type)
+        self.assertEqual(['chrome/browser/b.cc'], results[0].items)
+
+    def testNotesRemovedCaller(self):
+        results = self._Check(self._callers | {'chrome/browser/c.cc'})
+
+        self.assertEqual(1, len(results))
+        self.assertEqual('notify', results[0].type)
+        self.assertEqual(['chrome/browser/c.cc'], results[0].items)
+
+    def testRunsWhenRequested(self):
+        results = self._Check({'chrome/browser/a.cc'}, files=[], requested=True)
+
+        self.assertEqual(1, len(results))
+        self.assertEqual(['chrome/browser/b.cc'], results[0].items)
+
+    def testSkipsWithoutPackageJsonChange(self):
+        files = [MockAffectedFile('brave/foo.cc', ['int x;'])]
+
+        self.assertEqual([], self._Check(set(), files=files))
+
+    def testSkipsPackageJsonChangeWithoutChromiumBump(self):
+        files = [
+            MockAffectedFile(
+                'package.json',
+                _PackageJson('159.0.8154.18', brave_version='1.0.1'),
+                old_contents=_PackageJson('159.0.8154.18'),
+                action='M',
+            )
+        ]
+
+        self.assertEqual([], self._Check(set(), files=files))
+
+    def testSkipsOnFullPresubmit(self):
+        self.assertEqual([], self._Check(set(), files=[], all_brave=True))
+
+    def testSkipsWithoutUpstreamCheckout(self):
+        PRESUBMIT._FindSystemNetworkContextCallers = lambda _: None
+
+        self.assertEqual([], self._Check(set()))
 
 
 if __name__ == '__main__':

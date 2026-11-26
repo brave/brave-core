@@ -236,6 +236,9 @@ def modify_input_api(input_api):
     )
     input_api.PRESUBMIT_FIX = os.environ.get('PRESUBMIT_FIX') == '1'
     input_api.PRESUBMIT_ALL_BRAVE = os.environ.get('PRESUBMIT_ALL_BRAVE') == '1'
+    input_api.PRESUBMIT_CHECK_SYSTEM_NETWORK_CONTEXT = (
+        os.environ.get('PRESUBMIT_CHECK_SYSTEM_NETWORK_CONTEXT') == '1'
+    )
     input_api.DEFAULT_FILES_TO_CHECK += (
         *config['additional_default_files_to_check'],
     )
