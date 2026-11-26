@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <vector>
 
+#include "brave/components/brave_ads/core/internal/tabs/extracted_order_info.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -34,6 +35,8 @@ struct TabInfo final {
   bool is_visible = false;
   std::vector<GURL> redirect_chain;
   bool is_playing_media = false;
+
+  ExtractedOrderInfo extracted_order;
 };
 
 }  // namespace brave_ads

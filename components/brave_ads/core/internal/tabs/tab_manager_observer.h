@@ -11,6 +11,7 @@
 
 #include "base/containers/span.h"
 #include "base/observer_list_types.h"
+#include "brave/components/brave_ads/core/internal/tabs/extracted_order_field_type.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -33,6 +34,12 @@ class TabManagerObserver : public base::CheckedObserver {
 
   // Invoked when the `tab` is updated.
   virtual void OnTabDidChange(const TabInfo& tab) {}
+
+  // Invoked when order id or value extraction for the `tab` resolves;
+  // distinct from `OnTabDidChange`, which only fires for a new navigation.
+  virtual void OnTabExtractedOrder(
+      const TabInfo& tab,
+      ExtractedOrderFieldType extracted_order_field_type) {}
 
   // Invoked when the text content for the tab specified by `tab_id` did change.
   virtual void OnTextContentDidChange(int32_t tab_id,
