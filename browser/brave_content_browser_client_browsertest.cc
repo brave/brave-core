@@ -12,6 +12,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
@@ -40,7 +41,6 @@
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "content/public/test/test_utils.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
@@ -473,28 +473,31 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  auto is_force_dark_enabled = [&] {
-    content::RunAllTasksUntilIdle();
-    return web_contents->GetOrCreateWebPreferences().force_dark_mode_enabled;
+  // Each step below flips the value, so waiting for it can't pass on a stale
+  // WebPreferences.
+  auto wait_for_force_dark = [&](bool expected) {
+    return base::test::RunUntil([&] {
+      return web_contents->GetOrCreateWebPreferences()
+                 .force_dark_mode_enabled == expected;
+    });
   };
 
+  theme_service->SetBrowserColorScheme(ThemeService::BrowserColorScheme::kDark);
+  pref_service->SetBoolean(prefs::kWebKitForceDarkModeEnabled, true);
+  ASSERT_TRUE(wait_for_force_dark(true));
+
   theme_service->SetBrowserColorScheme(
       ThemeService::BrowserColorScheme::kLight);
-  pref_service->SetBoolean(prefs::kWebKitForceDarkModeEnabled, true);
-  EXPECT_FALSE(is_force_dark_enabled());
+  ASSERT_TRUE(wait_for_force_dark(false));
 
   theme_service->SetBrowserColorScheme(ThemeService::BrowserColorScheme::kDark);
-  EXPECT_TRUE(is_force_dark_enabled());
+  ASSERT_TRUE(wait_for_force_dark(true));
 
   pref_service->SetBoolean(prefs::kWebKitForceDarkModeEnabled, false);
-  EXPECT_FALSE(is_force_dark_enabled());
+  ASSERT_TRUE(wait_for_force_dark(false));
 
   pref_service->SetBoolean(prefs::kWebKitForceDarkModeEnabled, true);
-  EXPECT_TRUE(is_force_dark_enabled());
-
-  theme_service->SetBrowserColorScheme(
-      ThemeService::BrowserColorScheme::kLight);
-  EXPECT_FALSE(is_force_dark_enabled());
+  ASSERT_TRUE(wait_for_force_dark(true));
 }
 
 #if BUILDFLAG(IS_WIN)

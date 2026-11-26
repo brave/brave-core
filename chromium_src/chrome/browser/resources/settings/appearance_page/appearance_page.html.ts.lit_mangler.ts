@@ -92,7 +92,7 @@ mangle((root) => {
   }
   themeRow.insertAdjacentHTML(
     'afterend',
-    `<settings-toggle-button id="forceDarkMode"
+    `<settings-toggle-button id="forceDarkMode" class="hr"
         pref-key="webkit.webprefs.force_dark_mode_enabled"
         label="$i18n{forceDarkModeLabel}"
         sub-label="$i18n{forceDarkModeSubLabel}">

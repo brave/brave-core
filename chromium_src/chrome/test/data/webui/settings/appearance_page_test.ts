@@ -8,7 +8,7 @@ import './appearance_page_test-chromium.js'
 import {sendWithPromise} from 'chrome://resources/js/cr.js'
 import type {SettingsToggleButtonElement} from 'chrome://settings/settings.js'
 import {PrefService} from 'chrome://settings/settings.js'
-import {assertFalse, assertTrue} from 'chrome://webui-test/chai_assert.js'
+import {assertEquals, assertFalse, assertTrue} from 'chrome://webui-test/chai_assert.js'
 import {eventToPromise, microtasksFinished} from 'chrome://webui-test/test_util.js'
 
 // Brave removes upstream's Ctrl+Tab MRU toggle with a lit_mangler, since its own
@@ -24,6 +24,21 @@ suite('BraveAppearancePage', () => {
     assertTrue(
       !!page.shadowRoot.querySelector('settings-brave-appearance-toolbar'))
     assertFalse(!!page.shadowRoot.querySelector('#ctrlTabMru'))
+  })
+
+  test('night mode toggle sits below the theme row', async () => {
+    document.body.replaceChildren()
+    const page = document.createElement('settings-appearance-page')
+    document.body.appendChild(page)
+    await microtasksFinished()
+
+    const toggle = page.shadowRoot.querySelector<SettingsToggleButtonElement>(
+      '#forceDarkMode')
+    assertTrue(!!toggle)
+    assertEquals(
+      'webkit.webprefs.force_dark_mode_enabled', toggle.getAttribute('pref-key'))
+    assertEquals('themeRow', toggle.previousElementSibling?.id)
+    assertTrue(toggle.classList.contains('hr'))
   })
 })
 
