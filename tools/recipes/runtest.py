@@ -38,6 +38,7 @@ import tempfile
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import gtest_output
+import junit_report
 
 # Exit code used by the test launcher to signal a non-fatal warning.
 WARNING_EXIT_CODE = 88
@@ -146,6 +147,9 @@ class Options:
     # mirrors an upstream reference builder instead.
     builder: str | None = None
 
+    # Where to write a JUnit XML report of the run, from its JSON summary.
+    junit_xml_output: Path | None = None
+
 
 # -- Running the test -------------------------------------------------------
 
@@ -209,6 +213,20 @@ def create_log_processor(options: Options) -> gtest_output.GTestParser | None:
     if options.parse_gtest_output:
         return gtest_output.GTestLogParser()
     return None
+
+
+def process_summary(
+    options: Options, json_parser: gtest_output.GTestJSONParser, suite: str
+) -> None:
+    """Parses the run's JSON summary, and writes its JUnit XML report if one
+    was asked for."""
+    json_parser.process_json_file()
+    if options.junit_xml_output:
+        junit_report.write(
+            options.junit_xml_output,
+            json_parser.summary(),
+            options.test_type or suite,
+        )
 
 
 def report_outcome(
@@ -666,7 +684,7 @@ def run_test(options: Options, args: list[str]) -> int:
             )
     finally:
         if json_parser:
-            json_parser.process_json_file()
+            process_summary(options, json_parser, suite)
 
     if options.parse_gtest_output and parser is not None:
         report_outcome(options.test_type, result, parser)
@@ -831,7 +849,7 @@ def run_android_test(options: Options, args: list[str]) -> int:
             result = run_command(command, env=env, cwd=build_dir)
     finally:
         if json_parser:
-            json_parser.process_json_file()
+            process_summary(options, json_parser, suite)
 
     if json_parser:
         report_outcome(options.test_type or suite, result, json_parser)
@@ -915,6 +933,14 @@ def main() -> int:
         help='Path to the test launcher summary JSON file.',
     )
     parser.add_argument(
+        '--junit-xml-output',
+        type=Path,
+        default=None,
+        help='Also write a JUnit XML report of the run, as CI systems read '
+        'test results, from the gtest JSON summary; needs '
+        '--parse-gtest-output.',
+    )
+    parser.add_argument(
         '--test-platform',
         choices=['android'],
         default=None,
@@ -943,6 +969,10 @@ def main() -> int:
     parsed = parser.parse_args()
     if not parsed.test_command:
         parser.error('a test command is required')
+    if parsed.junit_xml_output and (
+        not parsed.parse_gtest_output or parsed.run_python_script
+    ):
+        parser.error('--junit-xml-output needs a gtest JSON summary')
     if parsed.builder and parsed.test_platform:
         parser.error('--builder runs desktop suites only')
 
@@ -966,6 +996,11 @@ def main() -> int:
         avd_config=parsed.avd_config,
         test_filters=parsed.test_filters,
         builder=parsed.builder,
+        junit_xml_output=(
+            parsed.junit_xml_output.resolve()
+            if parsed.junit_xml_output
+            else None
+        ),
     )
     args = list(parsed.test_command)
 
