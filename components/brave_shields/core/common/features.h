@@ -13,8 +13,7 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
 
-namespace brave_shields {
-namespace features {
+namespace brave_shields::features {
 BASE_DECLARE_FEATURE(kAdBlockDefaultResourceUpdateInterval);
 BASE_DECLARE_FEATURE(kBraveAdblockCnameUncloaking);
 BASE_DECLARE_FEATURE(kBraveAdblockCollapseBlockedElements);
@@ -22,6 +21,7 @@ BASE_DECLARE_FEATURE(kBraveAdblockCookieListDefault);
 BASE_DECLARE_FEATURE(kBraveAdblockCosmeticFiltering);
 BASE_DECLARE_FEATURE(kBraveAdblockProceduralFiltering);
 BASE_DECLARE_FEATURE(kBraveAdblockCspRules);
+BASE_DECLARE_FEATURE(kBraveAdblockReplaceRules);
 BASE_DECLARE_FEATURE(kBraveAdblockDefault1pBlocking);
 BASE_DECLARE_FEATURE(kBraveAdblockMobileNotificationsListDefault);
 BASE_DECLARE_FEATURE(kBraveAdblockExperimentalListDefault);
@@ -86,7 +86,6 @@ BASE_DECLARE_FEATURE(kShowUpdatedShieldsPanel);
 
 BASE_DECLARE_FEATURE(kAdblockDATCache);
 
-}  // namespace features
-}  // namespace brave_shields
+}  // namespace brave_shields::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_FEATURES_H_

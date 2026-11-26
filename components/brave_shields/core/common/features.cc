@@ -33,6 +33,7 @@ BASE_FEATURE(kBraveAdblockProceduralFiltering,
 BASE_FEATURE(kBraveAdblockScriptletDebugLogs,
              base::FEATURE_DISABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveAdblockCspRules, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveAdblockReplaceRules, base::FEATURE_DISABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveAdblockShowHiddenComponents,
              base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, Brave will enable "Fanboy's Mobile Notifications List" by

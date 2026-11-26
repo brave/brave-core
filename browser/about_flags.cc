@@ -1331,6 +1331,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveAdblockCspRules),  \
       },                                                                       \
       {                                                                        \
+          "brave-adblock-replace-rules",                                       \
+          "Enable support for replace rules",                                  \
+          "Applies additional replace rules to pages for which a $replace "    \
+          "rule has been loaded from a filter list",                           \
+          kOsDesktop | kOsAndroid,                                             \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockReplaceRules),             \
+      },                                                                       \
+      {                                                                        \
           "brave-adblock-default-1p-blocking",                                 \
           "Shields first-party network blocking",                              \
           "Allow Brave Shields to block first-party network requests in "      \
