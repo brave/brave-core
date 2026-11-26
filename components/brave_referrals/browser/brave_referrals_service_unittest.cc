@@ -85,7 +85,7 @@ class BraveReferralsServiceTest : public testing::Test {
                                 .As<network::DataElementBytes>()
                                 .AsStringPiece());
           } else {
-            NOTREACHED() << "Unhandled request: " << request.url.spec();
+            ADD_FAILURE() << "Unhandled request: " << request.url.spec();
           }
 
           url_loader_factory_.AddResponse(request.url.spec(), response_body);

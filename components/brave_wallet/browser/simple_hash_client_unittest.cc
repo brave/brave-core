@@ -47,7 +47,10 @@ class SimpleHashClientUnitTest : public testing::Test {
           // If the request url is in responses, add that response
           auto it = responses.find(request.url);
           if (it == responses.end()) {
-            NOTREACHED() << "Unexpected request: " << request.url.spec();
+            ADD_FAILURE() << "Unexpected request: " << request.url.spec();
+            url_loader_factory_.AddResponse(request.url.spec(), "",
+                                            net::HTTP_NOT_FOUND);
+            return;
           }
           // Get the response string
           std::string response = it->second;

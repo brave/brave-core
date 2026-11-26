@@ -760,9 +760,7 @@ TEST_F(SolanaTransactionUnitTest, SendOptionsFromValueMaxRetries) {
   EXPECT_FALSE(options->max_retries);
 }
 
-using SolanaTransactionDeathTest = testing::Test;
-
-TEST_F(SolanaTransactionDeathTest, SetTxType) {
+TEST(SolanaTransactionDeathTest, SetTxType) {
   auto msg = SolanaMessage::CreateLegacyMessage(
       "", 0, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8", {});
   ASSERT_TRUE(msg);
