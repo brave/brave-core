@@ -85,6 +85,19 @@ mangle((root) => {
 
   removeElementWithId('splitViewDragAndDrop')
 
+  // Night Mode (force dark web content) sits right below the Theme row.
+  const themeRow = root.getElementById('themeRow')
+  if (!themeRow) {
+    throw new Error(`[Settings] Appearance page: couldn't find #themeRow`)
+  }
+  themeRow.insertAdjacentHTML(
+    'afterend',
+    `<settings-toggle-button id="forceDarkMode"
+        pref-key="webkit.webprefs.force_dark_mode_enabled"
+        label="$i18n{forceDarkModeLabel}"
+        sub-label="$i18n{forceDarkModeSubLabel}">
+     </settings-toggle-button>`)
+
   // Note: #customize-fonts-subpage-trigger is hidden via CSS instead of
   // removed here (see the companion appearance_page.ts override), since
   // appearance_page.ts's getFocusConfig()/getAssociatedControlFor() still

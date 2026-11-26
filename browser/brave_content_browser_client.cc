@@ -116,6 +116,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/common/url_constants.h"
 #include "chrome/grit/branded_strings.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
@@ -160,6 +161,8 @@
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "third_party/blink/public/common/switches.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
+#include "third_party/blink/public/mojom/css/preferred_color_scheme.mojom-shared.h"
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -1781,6 +1784,29 @@ bool UpdateGlobalPrivacyControlWebPreference(WebContents* web_contents,
   return true;
 }
 
+#if !BUILDFLAG(IS_ANDROID)
+// Night Mode only darkens pages while they're rendered with a dark color
+// scheme, i.e. the browser theme is dark or follows a dark OS theme. Returns
+// true if `force_dark_mode_enabled` changed.
+bool UpdateForceDarkModeWebPreference(WebContents* web_contents,
+                                      WebPreferences* web_prefs) {
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  CHECK(profile);
+
+  const bool force_dark_mode_enabled =
+      profile->GetPrefs()->GetBoolean(prefs::kWebKitForceDarkModeEnabled) &&
+      web_prefs->preferred_color_scheme ==
+          blink::mojom::PreferredColorScheme::kDark;
+  if (web_prefs->force_dark_mode_enabled == force_dark_mode_enabled) {
+    return false;
+  }
+
+  web_prefs->force_dark_mode_enabled = force_dark_mode_enabled;
+  return true;
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 std::vector<url::Origin>
 BraveContentBrowserClient::GetOriginsRequiringDedicatedProcess() {
   std::vector<url::Origin> isolated_origin_list;
@@ -1811,6 +1837,9 @@ bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
   bool changed =
       ChromeContentBrowserClient::OverrideWebPreferencesAfterNavigation(
           web_contents, main_frame_site, prefs);
+#if !BUILDFLAG(IS_ANDROID)
+  changed |= UpdateForceDarkModeWebPreference(web_contents, prefs);
+#endif
 
   return UpdateGlobalPrivacyControlWebPreference(web_contents, prefs) ||
          changed;
@@ -1823,6 +1852,9 @@ void BraveContentBrowserClient::OverrideWebPreferences(
   ChromeContentBrowserClient::OverrideWebPreferences(
       web_contents, main_frame_site, web_prefs);
   UpdateGlobalPrivacyControlWebPreference(web_contents, web_prefs);
+#if !BUILDFLAG(IS_ANDROID)
+  UpdateForceDarkModeWebPreference(web_contents, web_prefs);
+#endif
 
   // WebPreferences are rebuilt from defaults on every recompute (theme, font
   // and other pref changes), so derive `is_tor_window` here. Otherwise the

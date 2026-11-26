@@ -269,6 +269,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kBraveWaybackMachineAutoCheckEnabled] =
       settings_api::PrefType::kBoolean;
 #endif
+  (*s_brave_allowlist)[prefs::kWebKitForceDarkModeEnabled] =
+      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kEnableWindowClosingConfirm] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kEnableClosingLastTab] =

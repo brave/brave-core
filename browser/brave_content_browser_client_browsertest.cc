@@ -22,9 +22,12 @@
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/common/buildflags.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -33,14 +36,17 @@
 #include "components/omnibox/browser/location_bar_model.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_utils.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/manifest_handlers/background_info.h"
 #include "net/dns/mock_host_resolver.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/origin.h"
 
@@ -455,6 +461,40 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CheckExpectedExtensions) {
 
   // Brave Extension background page should be disabled by default.
   EXPECT_FALSE(extensions::BackgroundInfo::HasBackgroundPage(brave_extension));
+}
+
+// Night Mode should only force dark web content while the browser is using a
+// dark color scheme.
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                       ForceDarkModeOnlyAppliesWithDarkColorScheme) {
+  ThemeService* theme_service =
+      ThemeServiceFactory::GetForProfile(browser()->GetProfile());
+  PrefService* pref_service = browser()->GetProfile()->GetPrefs();
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  auto is_force_dark_enabled = [&] {
+    content::RunAllTasksUntilIdle();
+    return web_contents->GetOrCreateWebPreferences().force_dark_mode_enabled;
+  };
+
+  theme_service->SetBrowserColorScheme(
+      ThemeService::BrowserColorScheme::kLight);
+  pref_service->SetBoolean(prefs::kWebKitForceDarkModeEnabled, true);
+  EXPECT_FALSE(is_force_dark_enabled());
+
+  theme_service->SetBrowserColorScheme(ThemeService::BrowserColorScheme::kDark);
+  EXPECT_TRUE(is_force_dark_enabled());
+
+  pref_service->SetBoolean(prefs::kWebKitForceDarkModeEnabled, false);
+  EXPECT_FALSE(is_force_dark_enabled());
+
+  pref_service->SetBoolean(prefs::kWebKitForceDarkModeEnabled, true);
+  EXPECT_TRUE(is_force_dark_enabled());
+
+  theme_service->SetBrowserColorScheme(
+      ThemeService::BrowserColorScheme::kLight);
+  EXPECT_FALSE(is_force_dark_enabled());
 }
 
 #if BUILDFLAG(IS_WIN)

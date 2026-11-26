@@ -76,6 +76,12 @@
       Always show toolbar in full screen
     </message>
   </if>
+  <message name="IDS_SETTINGS_BRAVE_FORCE_DARK_MODE_LABEL" desc="The label for the toggle that forces web content to render in dark mode">
+    Night Mode
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_FORCE_DARK_MODE_SUB_LABEL" desc="The sub-label for the toggle that forces web content to render in dark mode">
+    Force dark mode for web content when you're using dark mode in the browser
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_THEMES_GALLERY_URL" translateable="false">
     https://chrome.google.com/webstore?hl=[GRITLANGCODE]&amp;category=theme
   </message>
