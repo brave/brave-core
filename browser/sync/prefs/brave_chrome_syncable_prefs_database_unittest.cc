@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/sync/prefs/chrome_syncable_prefs_database.h"
-
 #include "components/sync/base/data_type.h"
 #include "components/sync_preferences/common_syncable_prefs_database.h"
 #include "components/sync_preferences/syncable_prefs_database.h"

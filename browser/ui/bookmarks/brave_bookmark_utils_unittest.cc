@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "chrome/browser/ui/bookmarks/bookmark_utils.h"
-
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 

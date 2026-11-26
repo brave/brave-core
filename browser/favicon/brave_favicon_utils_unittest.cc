@@ -3,9 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "chrome/browser/favicon/favicon_utils.h"
-
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "chrome/browser/favicon/favicon_utils.h"
 #include "content/public/browser/navigation_entry.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
