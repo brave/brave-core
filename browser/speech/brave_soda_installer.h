@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_SPEECH_BRAVE_SODA_INSTALLER_H_
 #define BRAVE_BROWSER_SPEECH_BRAVE_SODA_INSTALLER_H_
 
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -17,12 +18,16 @@
 
 class PrefService;
 
+namespace local_ai {
+struct OnDeviceSpeechLocale;
+}  // namespace local_ai
+
 namespace speech {
 
 // The global `SodaInstaller`, replaced so that `SpeechRecognition.install()`
-// installs Brave's own model rather than SODA. Availability is answered
-// elsewhere, by `GetBraveOnDeviceSpeechAvailability`, so nothing here is
-// consulted for it.
+// installs the Brave model that the user enabled rather than SODA. Availability
+// is answered elsewhere, by `GetBraveOnDeviceSpeechAvailability`, so nothing
+// here is consulted for it.
 //
 // `OnDeviceSpeechRecognitionImpl::Install` reads this class to decide whether
 // to act and whether the work is already done, then parks a reply settled by
@@ -67,9 +72,20 @@ class BraveSodaInstaller final
   void OnSpeechModelDirChanged(local_ai::OnDeviceSpeechModel model,
                                const base::FilePath& model_dir) override;
 
-  // Called when the install `InstallLanguage` asked for finishes. `success` is
-  // whether a model ended up installed.
-  void OnSpeechModelInstallFinished(bool success);
+  // Asks for the enabled model to install `locale`. Reports an install error
+  // for `locale` instead when the enabled model does not serve `locale`, or is
+  // `failed_model`, the model that the last request for `locale` did not
+  // install.
+  void RequestEnabledModel(
+      const local_ai::OnDeviceSpeechLocale& locale,
+      std::optional<local_ai::OnDeviceSpeechModel> failed_model);
+
+  // Called when the request of `RequestEnabledModel` for `model` and `locale`
+  // ends. `success` is whether `model` is installed.
+  void OnSpeechModelInstallFinished(
+      const local_ai::OnDeviceSpeechLocale& locale,
+      local_ai::OnDeviceSpeechModel model,
+      bool success);
 
   base::WeakPtrFactory<BraveSodaInstaller> weak_factory_{this};
 };
