@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
+#include <memory>
+
 #include "base/bit_cast.h"
 #include "base/check.h"
 #include "base/containers/extend.h"
@@ -464,8 +466,10 @@ PolkadotSubstrateRpc::PolkadotSubstrateRpc(
     PolkadotRpcUrlMapCallback rpc_url_callback)
     : rpc_url_callback_(std::move(rpc_url_callback)),
       network_manager_(network_manager),
-      api_request_helper_(GetNetworkTrafficAnnotationTag(),
-                          url_loader_factory) {
+      api_request_helper_(
+          std::make_unique<api_request_helper::APIRequestHelper>(
+              GetNetworkTrafficAnnotationTag(),
+              std::move(url_loader_factory))) {
   CHECK(rpc_url_callback_);
 }
 
@@ -1168,9 +1172,15 @@ void PolkadotSubstrateRpc::MakePostRequestInternal(
     const GURL& url,
     const std::string& payload,
     api_request_helper::APIRequestHelper::ResultCallback callback) {
-  api_request_helper_.Request(net::HttpRequestHeaders::kPostMethod, url,
-                              payload, "application/json", std::move(callback),
-                              MakePolkadotRpcHeaders(url));
+  api_request_helper_->Request(net::HttpRequestHeaders::kPostMethod, url,
+                               payload, "application/json", std::move(callback),
+                               MakePolkadotRpcHeaders(url));
+}
+
+void PolkadotSubstrateRpc::SetAPIRequestHelperForTesting(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetNetworkTrafficAnnotationTag(), std::move(url_loader_factory));
 }
 
 }  // namespace brave_wallet

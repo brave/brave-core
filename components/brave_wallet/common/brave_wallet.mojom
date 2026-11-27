@@ -503,6 +503,13 @@ interface PanelHandler {
   // and we need to call ConnectToSite or CancelConnectToSite based on user
   // decision.
   RequestPermission(AccountId account_id) => (bool success);
+
+  // Grabs the human-friendly description of the Polkadot transaction along with
+  // its estimated fee based on an RPC query. Returns null when either
+  // request_id cannot be found, decoding failed or the panel failed to bind the
+  // iframe before its timeout. The fee is null when the RPC query fails.
+  GetPolkadotSignRequestDetails(int32 request_id)
+      => (PolkadotSignRequestDetails? details);
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -2264,6 +2271,16 @@ struct PolkadotAccountInfo {
 
 struct PolkadotAssetAccountInfo {
   uint128 balance;
+};
+
+struct PolkadotFeeEstimate {
+  uint128 partial_fee;
+};
+
+struct PolkadotSignRequestDetails {
+  // The result of `.toHuman()` on the parsed Call.
+  string as_human;
+  PolkadotFeeEstimate? fee;
 };
 
 enum PolkadotValidationStatus {
