@@ -20,15 +20,12 @@ interface Props {
 
 function SettingsPanel(props: Props) {
   const [autoReconnectAvailable, setAutoReconnectAvailable] = React.useState(false)
+  const [allowLanTrafficAvailable, setAllowLanTrafficAvailable] = React.useState(false)
   const dispatch = useDispatch()
 
   const autoReconnectEnabled = useSelector((state) => state.autoReconnectEnabled)
   const smartProxyRoutingEnabled = useSelector((state) => state.smartProxyRoutingEnabled)
-
-  const [allowLanTraffic, setAllowLanTraffic] = React.useState({
-    available: false,
-    allowed: true
-  })
+  const allowLanTrafficEnabled = useSelector((state) => state.allowLanTrafficEnabled)
 
   React.useEffect(() => {
     getPanelBrowserAPI()
@@ -37,16 +34,16 @@ function SettingsPanel(props: Props) {
         setAutoReconnectAvailable(available)
         dispatch(Actions.autoReconnectStateChanged(enabled))
       })
-    getPanelBrowserAPI().serviceHandler.getAllowLanTraffic().then(setAllowLanTraffic)
+    getPanelBrowserAPI()
+      .serviceHandler.getAllowLanTraffic()
+      .then(({ available, allowed }) => {
+        setAllowLanTrafficAvailable(available)
+        dispatch(Actions.allowLanTrafficStateChanged(allowed))
+      })
   }, [dispatch])
 
   const handleClick = (entry: ManageURLType) => {
     getPanelBrowserAPI().panelHandler.openVpnUI(entry)
-  }
-
-  const handleAllowLanTrafficChange = ({ checked }: { checked: boolean }) => {
-    setAllowLanTraffic({ ...allowLanTraffic, allowed: checked })
-    getPanelBrowserAPI().serviceHandler.allowLanTraffic(checked)
   }
 
   function handleKeyDown(
@@ -70,6 +67,11 @@ function SettingsPanel(props: Props) {
 
   const handleSmartProxyRoutingChange = ({ checked }: { checked: boolean }) => {
     getPanelBrowserAPI().serviceHandler.enableSmartProxyRouting(checked)
+  }
+
+  const handleAllowLanTrafficChange = ({ checked }: { checked: boolean }) => {
+    dispatch(Actions.allowLanTrafficStateChanged(checked))
+    getPanelBrowserAPI().serviceHandler.allowLanTraffic(checked)
   }
 
   return (
@@ -106,12 +108,12 @@ function SettingsPanel(props: Props) {
               </Styles.Setting>
             </>
           )}
-          {allowLanTraffic.available && (
+          {allowLanTrafficAvailable && (
             <>
               <Styles.Setting
                 onClick={
                   e => handleAllowLanTrafficChange({
-                    checked: !allowLanTraffic.allowed
+                    checked: !allowLanTrafficEnabled
                   })
                 }
               >
@@ -120,12 +122,12 @@ function SettingsPanel(props: Props) {
                   <Styles.SettingLabel>
                     {getLocale(S.BRAVE_VPN_ALLOW_LAN_TRAFFIC)}
                   </Styles.SettingLabel>
-                <Styles.SettingDesc>
-                  {getLocale(S.BRAVE_VPN_ALLOW_LAN_TRAFFIC_DESC)}
-                </Styles.SettingDesc>
+                  <Styles.SettingDesc>
+                    {getLocale(S.BRAVE_VPN_ALLOW_LAN_TRAFFIC_DESC)}
+                  </Styles.SettingDesc>
                 </Styles.SettingLabelBox>
                 <Toggle
-                  checked={allowLanTraffic.allowed}
+                  checked={allowLanTrafficEnabled}
                   onChange={handleAllowLanTrafficChange}
                   size='small'
                   aria-label={getLocale(S.BRAVE_VPN_ALLOW_LAN_TRAFFIC)}

@@ -121,8 +121,8 @@ mojom::VpnRegionSelectionPtr MakeAutomaticSelection(
 }
 
 // Records the observer events the agent-driven flows depend on: connection
-// state changes, selected region changes, smart proxy routing changes and agent
-// failures.
+// state changes, selected region changes, smart proxy routing changes, allow
+// LAN traffic changes, and agent failures.
 class ConnectionStateRecorder : public mojom::ServiceObserver {
  public:
   void Observe(mojom::ServiceHandler* service) {
@@ -138,6 +138,9 @@ class ConnectionStateRecorder : public mojom::ServiceObserver {
   }
   const std::vector<bool>& smart_proxy_routing_states() const {
     return smart_proxy_routing_states_;
+  }
+  const std::vector<bool>& allow_lan_traffic_states() const {
+    return allow_lan_traffic_states_;
   }
 
   size_t agent_failures() const { return agent_failures_; }
@@ -164,6 +167,9 @@ class ConnectionStateRecorder : public mojom::ServiceObserver {
   void OnSmartProxyRoutingStateChanged(bool enabled) override {
     smart_proxy_routing_states_.push_back(enabled);
   }
+  void OnAllowLanTrafficStateChanged(bool enabled) override {
+    allow_lan_traffic_states_.push_back(enabled);
+  }
   void OnAgentFailure() override { ++agent_failures_; }
 
  private:
@@ -171,6 +177,7 @@ class ConnectionStateRecorder : public mojom::ServiceObserver {
   std::vector<std::string> selected_regions_;
   std::vector<bool> auto_reconnect_states_;
   std::vector<bool> smart_proxy_routing_states_;
+  std::vector<bool> allow_lan_traffic_states_;
   size_t agent_failures_ = 0;
   mojo::Receiver<mojom::ServiceObserver> receiver_{this};
 };
@@ -1086,6 +1093,21 @@ TEST_F(BraveVpnServiceImplTest, SmartProxyRoutingChangesNotifyObservers) {
   recorder.FlushForTesting();
 
   EXPECT_THAT(recorder.smart_proxy_routing_states(),
+              testing::ElementsAre(true, false));
+}
+
+TEST_F(BraveVpnServiceImplTest, AllowLanTrafficChangesNotifyObservers) {
+  CreateService();
+  ConnectionStateRecorder recorder;
+  recorder.Observe(service_.get());
+  NotifyAgentConnected();
+
+  ReportAgentAllowLanTrafficState(true);
+  ReportAgentAllowLanTrafficState(true);
+  ReportAgentAllowLanTrafficState(false);
+  recorder.FlushForTesting();
+
+  EXPECT_THAT(recorder.allow_lan_traffic_states(),
               testing::ElementsAre(true, false));
 }
 

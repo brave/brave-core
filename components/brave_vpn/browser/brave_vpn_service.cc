@@ -79,6 +79,13 @@ void BraveVpnService::NotifySmartProxyRoutingStateChanged(bool enabled) {
   }
 }
 
+void BraveVpnService::NotifyAllowLanTrafficStateChanged(bool enabled) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  for (const auto& obs : observers_) {
+    obs->OnAllowLanTrafficStateChanged(enabled);
+  }
+}
+
 void BraveVpnService::NotifyAgentFailure() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   for (const auto& obs : observers_) {

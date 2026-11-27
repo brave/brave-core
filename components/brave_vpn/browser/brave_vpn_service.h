@@ -125,6 +125,7 @@ class BraveVpnService : public mojom::ServiceHandler, public KeyedService {
   void NotifySelectedRegionChanged(mojom::RegionPtr region);
   void NotifyAutoReconnectStateChanged(bool enabled);
   void NotifySmartProxyRoutingStateChanged(bool enabled);
+  void NotifyAllowLanTrafficStateChanged(bool enabled);
   void NotifyAgentFailure();
 #endif  // !BUILDFLAG(IS_ANDROID)
 

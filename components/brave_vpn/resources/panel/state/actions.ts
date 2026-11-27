@@ -71,3 +71,4 @@ export const connectToNewRegion = createAction<ConnectToNewRegionPayload>('conne
 export const selectedRegionChanged = createAction<selectedRegionPayload>('selectedRegionChanged')
 export const autoReconnectStateChanged = createAction<boolean>('autoReconnectStateChanged')
 export const smartProxyRoutingStateChanged = createAction<boolean>('smartProxyRoutingStateChanged')
+export const allowLanTrafficStateChanged = createAction<boolean>('allowLanTrafficStateChanged')
