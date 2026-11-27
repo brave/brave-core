@@ -12,6 +12,10 @@
 #include "content/public/browser/storage_partition_config.h"
 #include "content/public/browser/web_contents.h"
 
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
+#endif  // defined(TOOLKIT_VIEWS)
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/browser/temporary_container.h"
@@ -50,6 +54,13 @@ bool IsInTemporaryContainer(content::WebContents* web_contents) {
 // without running upstream's checks; std::nullopt defers to upstream.
 std::optional<bool> BraveShouldSyncTab(
     [[maybe_unused]] content::WebContents* web_contents) {
+#if defined(TOOLKIT_VIEWS)
+  // Web panels are a local UI convenience backed by a pinned tab; they must
+  // not be published as a real open tab to other synced devices.
+  if (sidebar::IsWebPanelTab(web_contents)) {
+    return false;
+  }
+#endif  // defined(TOOLKIT_VIEWS)
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // Temporary containers are local-only and must not publish their tab state
   // to session sync.
