@@ -157,6 +157,25 @@ CWV_EXPORT
 /// specific paths.
 @property(readonly, nullable) WKWebView* internalWebView;
 
+/// Overrides the underlying WKWebView's layout viewport and CSS viewport unit
+/// sizes so that they account for the given insets.
+///
+/// - The layout viewport is the web view's bounds inset by `obscuredInsets`.
+/// - Small viewport units (`sv*`) are the bounds inset by `maxViewportInset`.
+/// - Default (`vw`/`vh`) and large viewport units (`lv*`) are the bounds inset
+///   by `minViewportInset`.
+///
+/// Uses WebKit SPI, does nothing if the SPI is unavailable.
+- (void)
+    overrideLayoutParametersWithObscuredInsets:(UIEdgeInsets)obscuredInsets
+                          minimumViewportInset:(UIEdgeInsets)minViewportInset
+                          maximumViewportInset:(UIEdgeInsets)maxViewportInset
+    NS_SWIFT_NAME(overrideLayoutParameters(obscuredInsets:minimumViewportInset:maximumViewportInset:));
+
+/// Clears any layout parameter overrides set by
+/// `overrideLayoutParametersWithObscuredInsets:minimumViewportInset:maximumViewportInset:`
+- (void)clearOverrideLayoutParameters;
+
 @end
 
 NS_ASSUME_NONNULL_END

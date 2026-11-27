@@ -434,4 +434,9 @@
       initWithFeature:&brave::features::kBraveSearchVerticalsEnabled];
 }
 
++ (Feature*)kOverrideWebViewLayoutParameters {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kOverrideWebViewLayoutParameters];
+}
+
 @end
