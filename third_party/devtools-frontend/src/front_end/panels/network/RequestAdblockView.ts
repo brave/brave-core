@@ -80,6 +80,8 @@ export class RequestAdblockView extends UI.Widget.VBox {
       this.#refresh,
       this
     )
+    // Widget doesn't render on show.
+    this.requestUpdate()
   }
 
   override willHide(): void {
