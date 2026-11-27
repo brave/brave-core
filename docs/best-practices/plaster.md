@@ -193,3 +193,19 @@ neighbouring tokens that are not changing — that is what reintroduces fragilit
 and calls for `re_pattern`.
 
 ---
+
+<a id="PLSTR-006"></a>
+
+## ✅ Keep Header Includes With the Code That Needs Them
+
+**Place new `#include` directives with the code that requires them. If that code
+is in both `chromium_src` and a plaster, add the includes only in
+`chromium_src`.**
+
+| Code requiring the header | Where to add the `#include`             |
+| ------------------------- | --------------------------------------- |
+| Only in `chromium_src`    | The `chromium_src` override             |
+| Only in a plaster         | The plaster configuration in `rewrite/` |
+| In both                   | The `chromium_src` override only        |
+
+---

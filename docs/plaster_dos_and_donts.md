@@ -293,12 +293,19 @@ subclassing:
 
 ## Don't use plaster for mere additions
 
-A `chromium_src` shadow file can introduce any file-scope code (headers,
-anonymous-namespace helpers, types, etc) before and after re-including the
-upstream source. They serve us well as hosts for code that does not need to be
-placed in a plaster to achieve the same effect.
+A `chromium_src` shadow file can introduce file-scope code (anonymous-namespace
+helpers, types, etc) before and after re-including the upstream source. They
+serve us well as hosts for code that does not need to be placed in a plaster to
+achieve the same effect.
 
-Do:
+For header includes, apply include-what-you-use (IWYU) to each file: the
+original Chromium source file and its `chromium_src` shadow file. When only the
+shadow file requires a header, add its `#include` in `chromium_src`. When only
+code added to the original Chromium file requires a header, add its `#include`
+through the plaster. If both files require the header, add its `#include` only
+in `chromium_src` ([PLSTR-006](./best-practices/plaster.md#PLSTR-006)).
+
+Do (when the header is needed by code in `chromium_src`):
 
 ```cpp
 // chromium_src/foo/foo.cc
@@ -315,7 +322,7 @@ bool IsBraveFoo(const Foo& foo) {
 #include <foo/foo.cc>
 ```
 
-Don't:
+Don't (for that same case):
 
 ```yaml
 # rewrite/foo/foo.cc.yaml
