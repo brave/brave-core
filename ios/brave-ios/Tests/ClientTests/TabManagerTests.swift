@@ -1297,6 +1297,27 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     )
   }
 
+  func testTabBarListsOnlyTheSelectedTabsGroup() {
+    let groupedTab = manager.addTestTab(isPrivate: false)
+    let looseTab = manager.addTestTab(isPrivate: false)
+    let otherGroupedTab = manager.addTestTab(isPrivate: false)
+    _ = manager.createTabGroup(title: "Group", adding: [groupedTab, otherGroupedTab])
+
+    manager.selectTab(looseTab)
+    XCTAssertEqual(
+      manager.tabsForTabBar.map(\.id),
+      [groupedTab.id, looseTab.id, otherGroupedTab.id]
+    )
+
+    manager.selectTab(otherGroupedTab)
+    XCTAssertEqual(manager.tabsForTabBar.map(\.id), [groupedTab.id, otherGroupedTab.id])
+    XCTAssertEqual(manager.currentDisplayedIndex, 1)
+
+    manager.isTabGroupsEnabled = false
+    XCTAssertEqual(manager.tabsForTabBar.map(\.id), manager.tabsForCurrentMode.map(\.id))
+    XCTAssertEqual(manager.currentDisplayedIndex, 2)
+  }
+
   func testCannotAddTabToUnknownGroup() {
     XCTAssertNil(manager.addTabAndSelect(in: TabGroup(id: UUID(), title: "Unknown")))
   }
