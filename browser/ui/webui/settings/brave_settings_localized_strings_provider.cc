@@ -649,6 +649,16 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_DISABLE_CLICKABLE_MUTE_INDICATORS},
       {"braveShowFullscreenReminder",
        IDS_SETTINGS_SHOW_FULLSCREEN_REMINDER_OPTION_LABEL},
+      {"braveScreenshotShortcutBehavior",
+       IDS_SETTINGS_SCREENSHOT_SHORTCUT_BEHAVIOR_LABEL},
+      {"braveScreenshotShortcutBehaviorShowOptions",
+       IDS_SETTINGS_SCREENSHOT_SHORTCUT_BEHAVIOR_SHOW_OPTIONS},
+      {"braveScreenshotShortcutBehaviorSelectedArea",
+       IDS_SETTINGS_SCREENSHOT_SHORTCUT_BEHAVIOR_SELECTED_AREA},
+      {"braveScreenshotShortcutBehaviorVisibleArea",
+       IDS_SETTINGS_SCREENSHOT_SHORTCUT_BEHAVIOR_VISIBLE_AREA},
+      {"braveScreenshotShortcutBehaviorFullPage",
+       IDS_SETTINGS_SCREENSHOT_SHORTCUT_BEHAVIOR_FULL_PAGE},
 
       // Referenced by the settings menu template in every build, thus added
       // outside of the BUILDFLAG(ENABLE_AI_CHAT)

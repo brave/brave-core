@@ -6,7 +6,8 @@
 import { mangle } from 'lit_mangler'
 
 // Adds a "Shortcuts" link row (hidden unless keyboard shortcut customization
-// is supported) and trailing tab/window/fullscreen behavior toggles. These
+// is supported), the screenshot shortcut dropdown, and trailing
+// tab/window/fullscreen behavior toggles. These
 // used to be added via a RegisterPolymerTemplateModifications override
 // (browser/resources/settings/br/system_page.ts) before settings-system-page
 // was migrated to Lit; that mechanism only works on Polymer elements, so it
@@ -31,7 +32,16 @@ mangle((root) => {
         label="$i18n{braveShortcutsPage}"
         role-description="$i18n{subpageArrowRoleDescription}"
         @click="\${this.onShortcutsClick_}">
-     </cr-link-row>`)
+     </cr-link-row>
+     \${this.isBraveScreenshotEnabled_ ? html\`
+       <div id="screenshotShortcutBehavior" class="cr-row">
+         <div class="flex cr-row-text">
+           $i18n{braveScreenshotShortcutBehavior}
+         </div>
+         \${this.renderScreenshotShortcutBehavior_()}
+       </div>
+       <div class="hr"></div>
+     \` : ''}`)
 
   // Note: browser.confirm_to_quit isn't registered as a pref outside of mac
   // (see chrome/browser/ui/cocoa/confirm_quit.cc), so the toggle for it must

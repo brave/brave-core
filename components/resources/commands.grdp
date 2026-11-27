@@ -433,6 +433,9 @@
   <message name="IDS_IDC_BLOCK_ELEMENTS" desc="Name of the command/shortcut that launches the element picker to block page elements">
     Block elements
   </message>
+  <message name="IDS_IDC_SCREENSHOT_SHORTCUT" desc="Name of the command/shortcut that takes a screenshot">
+    Take screenshot
+  </message>
   <message name="IDS_IDC_SHOW_PLAYLIST_BUBBLE">
     Show playlist bubble
   </message>
