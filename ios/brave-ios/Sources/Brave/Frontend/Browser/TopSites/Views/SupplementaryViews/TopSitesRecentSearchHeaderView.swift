@@ -81,10 +81,17 @@ class TopSitesRecentSearchHeaderView: UICollectionReusableView {
   }
 
   func setButtonVisibility(showClearButtonVisible: Bool) {
-    clearButton.alpha = showClearButtonVisible ? 1.0 : 0.0
+    clearButton.isHidden = !showClearButtonVisible
   }
 
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    guard !clearButton.isHidden,
+      clearButton.isUserInteractionEnabled,
+      clearButton.alpha > 0.0
+    else {
+      return super.hitTest(point, with: event)
+    }
+
     let adjustedBounds = clearButton.frame.inset(
       by: UIEdgeInsets(top: -25.0, left: -25.0, bottom: 0.0, right: -25.0)
     )
