@@ -5,8 +5,6 @@
 
 #include "brave/components/query_filter/browser/query_filter_data.h"
 
-#include "base/test/scoped_feature_list.h"
-#include "brave/components/query_filter/common/features.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -14,11 +12,6 @@ namespace query_filter {
 
 class QueryFilterDataTest : public testing::Test {
  public:
-  void SetUp() override {
-    feature_list_.InitWithFeatures(
-        {query_filter::features::kQueryFilterComponent}, {});
-  }
-
   void TearDown() override { instance()->ResetRulesForTesting(); }
 
   const std::vector<schema::Rule>& GetQueryFilterRules() const {
@@ -27,22 +20,7 @@ class QueryFilterDataTest : public testing::Test {
 
  protected:
   QueryFilterData* instance() const { return QueryFilterData::GetInstance(); }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
 };
-
-TEST(QueryFilterDataDisabledTest,
-     TestFeatureFlagDisabled_ReturnsEmptyInstance) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(
-      query_filter::features::kQueryFilterComponent);
-  EXPECT_EQ(QueryFilterData::GetInstance(), nullptr);
-}
-
-TEST_F(QueryFilterDataTest, TestFeatureFlagEnabled_ReturnsValidInstance) {
-  EXPECT_TRUE(instance() != nullptr);
-}
 
 TEST_F(QueryFilterDataTest, TestVersion) {
   instance()->UpdateVersion(base::Version("1.0.0"));

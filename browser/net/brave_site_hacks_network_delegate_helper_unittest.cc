@@ -15,7 +15,6 @@
 #include "brave/browser/net/url_context.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/query_filter/browser/test_support/query_filter_test_helper.h"
-#include "brave/components/query_filter/common/features.h"
 #include "brave/components/query_filter/common/pref_names.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -57,8 +56,7 @@ class BraveSiteHacksNetworkDelegateHelperTest : public testing::Test {
         typename PtrStrategy::template Ptr<brave::BraveRequestInfo>,
         base::WeakPtr<brave::BraveRequestInfo>>;
     scoped_feature_list_.InitWithFeatureStates(
-        {{features::kBraveRequestInfoUniquePtr, enable_flag},
-         {query_filter::features::kQueryFilterComponent, true}});
+        {{features::kBraveRequestInfoUniquePtr, enable_flag}});
     testing_filter_rules_.emplace();
   }
 

@@ -13,7 +13,6 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/query_filter/browser/test_support/query_filter_test_helper.h"
-#include "brave/components/query_filter/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -38,10 +37,7 @@
 class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
  public:
   BraveSiteHacksNetworkDelegateBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    scoped_feature_list_.InitAndEnableFeature(
-        query_filter::features::kQueryFilterComponent);
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -251,7 +247,6 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
   base::FilePath test_data_dir_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
-  base::test::ScopedFeatureList scoped_feature_list_;
   std::optional<query_filter::test::ScopedTestingQueryFilterRules>
       testing_filter_rules_;
 };
