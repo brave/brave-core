@@ -6,6 +6,7 @@
 #include "brave/ios/app/brave_profile_controller.h"
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -30,6 +31,7 @@
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
+#include "brave/ios/browser/saved_tab_groups/features.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
@@ -47,6 +49,7 @@
 #include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/history/model/web_history_service_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
+#include "ios/chrome/browser/saved_tab_groups/model/tab_group_sync_service_factory.h"
 #include "ios/chrome/browser/sessions/model/session_restoration_service.h"
 #include "ios/chrome/browser/sessions/model/session_restoration_service_factory.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -328,6 +331,14 @@
 // BrowserState must not be destroyed).
 - (BOOL)shouldDestroyAndRebuildIncognitoProfile {
   return _profile->HasOffTheRecordProfile();
+}
+
+- (void)requestTabGroupSyncService {
+  if (!_profile ||
+      !base::FeatureList::IsEnabled(brave::features::kTabGroupsEnabled)) {
+    return;
+  }
+  tab_groups::TabGroupSyncServiceFactory::GetForProfile(_profile);
 }
 
 // Matches lastIncognitoTabClosed from Chrome's SceneController

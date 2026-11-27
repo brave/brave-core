@@ -37,6 +37,7 @@ OBJC_EXPORT
 @property(readonly) WebImageDownloader* webImageDownloader;
 
 - (void)notifyLastPrivateTabClosed;
+- (void)requestTabGroupSyncService;
 
 @end
 

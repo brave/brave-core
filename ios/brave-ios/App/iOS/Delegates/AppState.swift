@@ -141,6 +141,18 @@ public class AppState {
 
     @MainActor
     public func profileController(braveCore: BraveCoreMain) async -> BraveProfileController {
+      // The factory reads this object once, the first time the service is created.
+      TabGroupSyncLocalModels.setSharedModel(TabGroupSyncSavedModel.shared)
+      let profileController = await loadProfileController(braveCore: braveCore)
+      // Creating the service is what starts sync. Skip it while the flag is off.
+      if FeatureList.kTabGroupsEnabled.enabled {
+        profileController.requestTabGroupSyncService()
+      }
+      return profileController
+    }
+
+    @MainActor
+    private func loadProfileController(braveCore: BraveCoreMain) async -> BraveProfileController {
       if let profileController = braveCore.profileController {
         return profileController
       }
