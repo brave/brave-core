@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/ui/views/permissions/chip/permission_dashboard_controller.cc b/chrome/browser/ui/views/permissions/chip/permission_dashboard_controller.cc
+index f8054e4f4c525255e2908df19e081019f4662a65..7fd49af1862d9ab812159bc42f5ea158b8ddab98 100644
+--- a/chrome/browser/ui/views/permissions/chip/permission_dashboard_controller.cc
++++ b/chrome/browser/ui/views/permissions/chip/permission_dashboard_controller.cc
+@@ -304,7 +304,12 @@ bool PermissionDashboardController::Update(
+   // Always update the icon and the message as they may change based on used
+   // permissions.
+   indicator_chip->SetChipIcon(indicator_model->icon());
+-  indicator_chip->SetMessage(GetIndicatorTitle(indicator_model));
++  indicator_chip->SetMessage(
++      IsAutoplay(content_settings::PageSpecificContentSettings::GetForFrame(
++                     location_bar_->GetWebContents()->GetPrimaryMainFrame()),
++                 indicator_model)
++          ? GetAutoplayIndicatorTitle()
++          : GetIndicatorTitle(indicator_model));
+ 
+   blocked_on_system_level_ = indicator_model->blocked_on_system_level();
+   if (indicator_model->is_blocked()) {

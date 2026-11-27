@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Show the autoplay title for the media stream indicator chip.
+
+      Upstream limits ImageType::kMediaStream to camera and microphone. Brave
+      adds autoplay to it, so the chip needs the matching title. IsAutoplay()
+      and GetAutoplayIndicatorTitle() are defined in the chromium_src shadow
+      above the upstream include. A regex is used because this is an
+      expression change at a single call site, so no dedicated rewriter
+      applies.
+    regex:
+      pattern: 'indicator_chip->SetMessage(GetIndicatorTitle(indicator_model));'
+      replace: |-
+        indicator_chip->SetMessage(
+              IsAutoplay(content_settings::PageSpecificContentSettings::GetForFrame(
+                             location_bar_->GetWebContents()->GetPrimaryMainFrame()),
+                         indicator_model)
+                  ? GetAutoplayIndicatorTitle()
+                  : GetIndicatorTitle(indicator_model));

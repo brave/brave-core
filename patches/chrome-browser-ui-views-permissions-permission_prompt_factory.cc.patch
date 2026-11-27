@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/permissions/permission_prompt_factory.cc b/chrome/browser/ui/views/permissions/permission_prompt_factory.cc
+index 45a6f3cc769b2bf79584a140d3486a4fb7268a24..617137410a05cc3f66278cfb40c93665ae8ca068 100644
+--- a/chrome/browser/ui/views/permissions/permission_prompt_factory.cc
++++ b/chrome/browser/ui/views/permissions/permission_prompt_factory.cc
+@@ -313,6 +313,9 @@ bool ShouldShowPermissionPromptEvenIfOmniboxEditedOrEmpty(
+ std::unique_ptr<permissions::PermissionPrompt> CreatePermissionPrompt(
+     content::WebContents* web_contents,
+     permissions::PermissionPrompt::Delegate* delegate) {
++  if (IsBraveWalletRequest(delegate)) {
++    return CreateBraveWalletPermissionPrompt(web_contents, delegate);
++  }
+   if (delegate->ShouldDropCurrentRequestIfCannotShowQuietly() &&
+       IsFullScreenMode(web_contents)) {
+     return nullptr;

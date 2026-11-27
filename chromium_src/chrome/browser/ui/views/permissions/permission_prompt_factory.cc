@@ -13,33 +13,38 @@
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #endif
 
-#define CreatePermissionPrompt CreatePermissionPrompt_ChromiumImpl
-#include <chrome/browser/ui/views/permissions/permission_prompt_factory.cc>
-#undef CreatePermissionPrompt
+namespace {
 
-std::unique_ptr<permissions::PermissionPrompt> CreatePermissionPrompt(
+bool IsBraveWalletRequest(permissions::PermissionPrompt::Delegate* delegate) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  const auto request_type = delegate->Requests()[0]->request_type();
+  return request_type == permissions::RequestType::kBraveEthereum ||
+         request_type == permissions::RequestType::kBraveSolana ||
+         request_type == permissions::RequestType::kBraveCardano ||
+         request_type == permissions::RequestType::kBravePolkadot;
+#else
+  return false;
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+}
+
+std::unique_ptr<permissions::PermissionPrompt>
+CreateBraveWalletPermissionPrompt(
     content::WebContents* web_contents,
     permissions::PermissionPrompt::Delegate* delegate) {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (delegate->Requests()[0]->request_type() ==
-          permissions::RequestType::kBraveEthereum ||
-      delegate->Requests()[0]->request_type() ==
-          permissions::RequestType::kBraveSolana ||
-      delegate->Requests()[0]->request_type() ==
-          permissions::RequestType::kBraveCardano ||
-      delegate->Requests()[0]->request_type() ==
-          permissions::RequestType::kBravePolkadot) {
-    if (!GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
-            web_contents)) {
-      DLOG(WARNING)
-          << "Permission prompt suppressed because the WebContents is "
-             "not attached to any Browser window.";
-      return nullptr;
-    }
-    return std::make_unique<BraveWalletPermissionPromptImpl>(web_contents,
-                                                             *delegate);
+  if (!GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
+          web_contents)) {
+    DLOG(WARNING) << "Permission prompt suppressed because the WebContents is "
+                     "not attached to any Browser window.";
+    return nullptr;
   }
-#endif
-
-  return CreatePermissionPrompt_ChromiumImpl(web_contents, delegate);
+  return std::make_unique<BraveWalletPermissionPromptImpl>(web_contents,
+                                                           *delegate);
+#else
+  return nullptr;
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 }
+
+}  // namespace
+
+#include <chrome/browser/ui/views/permissions/permission_prompt_factory.cc>

@@ -49,19 +49,6 @@ class PermissionPromptBubbleZOrderManager : public views::WidgetObserver {
       prompt_widget_observation_{this};
 };
 
-// Add PermissionPromptBubbleZOrderManager as member variable in order to manage
-// widget's z-order level.
-#define ShowWidget                                                       \
-  ShowWidget_Unused();                                                   \
-                                                                         \
- private:                                                                \
-  std::unique_ptr<PermissionPromptBubbleZOrderManager> z_order_manager_; \
-                                                                         \
- public:                                                                 \
-  void ShowWidget
-
 #include <chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.h>  // IWYU pragma: export
-
-#undef ShowWidget
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PERMISSIONS_PERMISSION_PROMPT_BUBBLE_BASE_VIEW_H_
