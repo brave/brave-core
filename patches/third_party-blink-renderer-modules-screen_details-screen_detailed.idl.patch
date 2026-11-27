@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/modules/screen_details/screen_detailed.idl b/third_party/blink/renderer/modules/screen_details/screen_detailed.idl
+index 548c29ece5af8a2ff572c2eb45280215ceb49d74..17831ed52dbc577b078e37b574419b5ac7f58109 100644
+--- a/third_party/blink/renderer/modules/screen_details/screen_detailed.idl
++++ b/third_party/blink/renderer/modules/screen_details/screen_detailed.idl
+@@ -6,7 +6,8 @@
+ // https://w3c.github.io/window-management/
+ [
+   Exposed=Window,
+-  SecureContext
++  SecureContext,
++  RuntimeEnabled=BraveWindowManagement
+ ] interface ScreenDetailed : Screen {
+   // Distance from a multi-screen origin (e.g. primary screen top left) to the
+   // left edge of the screen area.

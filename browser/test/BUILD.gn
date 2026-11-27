@@ -16,6 +16,7 @@ if (!is_android) {
       "disabled_features/navigator_battery_browsertest.cc",
       "disabled_features/navigator_bluetooth_browsertest.cc",
       "disabled_features/navigator_storage_browsertest.cc",
+      "disabled_features/window_management_browsertest.cc",
       "disabled_features/window_name_browsertest.cc",
       "document_location_browsertest.cc",
       "webui_subdomain_browsertest.cc",

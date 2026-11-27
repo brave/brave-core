@@ -2075,6 +2075,22 @@
 -DigitalIdentityIntegrationQrCodeTest.*
 -DigitalIdentityIntegrationTest.*
 
+# These tests fail because we hide the Window Management API (getScreenDetails,
+# Screen.isExtended, etc.) behind the BraveWindowManagement runtime flag, and
+# they call it. Run with --enable-blink-features=BraveWindowManagement to check
+# them. WindowManagementTest.WindowPlacementAliasFails is left enabled, since
+# it expects the legacy permission name to be rejected, which still holds.
+-All/PolicyTestWindowManagement.*
+-IsolatedWebAppsCloseWindowBrowserTest.GrantWMPermission
+-IsolatedWebAppsCloseWindowBrowserTest.PermissionRevoked
+-MultiscreenWindowManagementPermissionContextTest.*
+-ScreenDetailsTest.*
+-WindowManagementPermissionContextTest.*
+-WindowManagementTest.OnCurrentScreenChangeEvent
+-WindowManagementTest.OnScreensChangeEvent
+-WindowManagementTest.ScreenDetailedOnChange
+-WindowManagementTest.ScreenDetailedOnHdrHeadroomChange
+
 # These tests fail because we disable blink::features::kFileSystemAccessAPI and
 # they try to call showOpenFilePicker or showSaveFilePicker
 -All/GlicFilePickerBrowserTest.ShowOpenFilePickerInNarrowSidePanel/*

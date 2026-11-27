@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/modules/screen_details/screen_details.idl b/third_party/blink/renderer/modules/screen_details/screen_details.idl
+index 3e5981707a822a33f411f10e9194432ff500a649..71a4618b9abd8a230b367f1e00a15be4d9f4bd64 100644
+--- a/third_party/blink/renderer/modules/screen_details/screen_details.idl
++++ b/third_party/blink/renderer/modules/screen_details/screen_details.idl
+@@ -6,7 +6,8 @@
+ // https://w3c.github.io/window-management/
+ [
+   Exposed=Window,
+-  SecureContext
++  SecureContext,
++  RuntimeEnabled=BraveWindowManagement
+ ] interface ScreenDetails : EventTarget {
+   // The set of available screens with additional per-screen info.
+   readonly attribute FrozenArray<ScreenDetailed> screens;

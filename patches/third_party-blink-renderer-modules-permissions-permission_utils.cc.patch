@@ -1,0 +1,15 @@
+diff --git a/third_party/blink/renderer/modules/permissions/permission_utils.cc b/third_party/blink/renderer/modules/permissions/permission_utils.cc
+index 877e3525faf8909a36f2cc7017052fd9553a09fb..eef7cae1d69da4941196f8acf8dc861dbfe1202b 100644
+--- a/third_party/blink/renderer/modules/permissions/permission_utils.cc
++++ b/third_party/blink/renderer/modules/permissions/permission_utils.cc
+@@ -393,6 +393,10 @@ PermissionDescriptorPtr ParsePermissionDescriptor(
+       return CreatePermissionDescriptor(PermissionName::STORAGE_ACCESS);
+ 
+     case V8PermissionName::Enum::kWindowManagement:
++      if (!RuntimeEnabledFeatures::BraveWindowManagementEnabled()) {
++        exception_state.ThrowTypeError("Window Management is not enabled.");
++        return nullptr;
++      }
+       return CreatePermissionDescriptor(PermissionName::WINDOW_MANAGEMENT);
+ 
+     case V8PermissionName::Enum::kLocalFonts: {

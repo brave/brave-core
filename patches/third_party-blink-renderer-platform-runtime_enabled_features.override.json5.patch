@@ -1,11 +1,14 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.override.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.override.json5
-index 43cfe5a54118d60898fb4f6bfbcae7ec3a96c53d..2a8e6bec21911d81fd3b1bfb2633a3e6e9e33888 100644
+index 43cfe5a54118d60898fb4f6bfbcae7ec3a96c53d..1117892c4201df7ae297bc9595e4a8e015ba1950 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.override.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.override.json5
-@@ -46,5 +46,10 @@
+@@ -46,5 +46,13 @@
  
    data: [
      // Entries go here.
++    {
++      name: "BraveWindowManagement",
++    },
 +    {
 +      name: "BraveGlobalPrivacyControl",
 +      public: true,
