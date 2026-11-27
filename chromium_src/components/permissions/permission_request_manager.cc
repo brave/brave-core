@@ -64,12 +64,14 @@ bool PermissionRequestManager::ShouldGroupRequests(PermissionRequest* a,
       a->request_type() == RequestType::kBraveCardano ||
       a->request_type() == RequestType::kBravePolkadot) {
     if (a->request_type() == b->request_type() &&
+        RequestTypeToContentSettingsType(a->request_type()) &&
         brave_wallet::ParseRequestingOriginFromSubRequest(
-            a->request_type(), url::Origin::Create(a->requesting_origin()),
-            &origin_a, nullptr) &&
+            *RequestTypeToContentSettingsType(a->request_type()),
+            url::Origin::Create(a->requesting_origin()), &origin_a, nullptr) &&
+        RequestTypeToContentSettingsType(b->request_type()) &&
         brave_wallet::ParseRequestingOriginFromSubRequest(
-            b->request_type(), url::Origin::Create(b->requesting_origin()),
-            &origin_b, nullptr) &&
+            *RequestTypeToContentSettingsType(b->request_type()),
+            url::Origin::Create(b->requesting_origin()), &origin_b, nullptr) &&
         origin_a == origin_b) {
       return true;
     }

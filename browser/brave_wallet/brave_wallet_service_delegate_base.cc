@@ -34,13 +34,16 @@ bool BraveWalletServiceDelegateBase::HasPermission(mojom::CoinType coin,
                                                    const url::Origin& origin,
                                                    const std::string& account) {
   bool has_permission = false;
-  auto type = CoinTypeToPermissionType(coin);
-  if (!type) {
+  auto content_settings_type =
+      brave_wallet::CoinTypeToContentSettingsType(coin);
+  if (!content_settings_type) {
     return false;
   }
 
   bool success = permissions::BraveWalletPermissionContext::HasPermission(
-      *type, context_, origin, account, &has_permission);
+      permissions::PermissionUtil::ContentSettingsTypeToPermissionType(
+          *content_settings_type),
+      context_, origin, account, &has_permission);
   return success && has_permission;
 }
 
@@ -48,40 +51,44 @@ bool BraveWalletServiceDelegateBase::ResetPermission(
     mojom::CoinType coin,
     const url::Origin& origin,
     const std::string& account) {
-  auto type = CoinTypeToPermissionType(coin);
-  if (!type) {
+  auto content_settings_type =
+      brave_wallet::CoinTypeToContentSettingsType(coin);
+  if (!content_settings_type) {
     return false;
   }
 
   return permissions::BraveWalletPermissionContext::ResetPermission(
-      *type, context_, origin, account);
+      permissions::PermissionUtil::ContentSettingsTypeToPermissionType(
+          *content_settings_type),
+      context_, origin, account);
 }
 
 void BraveWalletServiceDelegateBase::ResetPermissionsForAccount(
     mojom::CoinType coin,
     const std::string& account) {
-  auto type = CoinTypeToPermissionType(coin);
-  if (!type) {
+  auto content_settings_type =
+      brave_wallet::CoinTypeToContentSettingsType(coin);
+  if (!content_settings_type) {
     return;
   }
 
-  const auto content_settings_type =
-      permissions::PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
-          *type);
   permissions::BraveWalletPermissionContext::ResetPermissionsForAccount(
-      context_, content_settings_type, account);
+      context_, *content_settings_type, account);
 }
 
 bool BraveWalletServiceDelegateBase::IsPermissionDenied(
     mojom::CoinType coin,
     const url::Origin& origin) {
-  auto type = CoinTypeToPermissionType(coin);
-  if (!type) {
+  auto content_settings_type =
+      brave_wallet::CoinTypeToContentSettingsType(coin);
+  if (!content_settings_type) {
     return false;
   }
 
   return permissions::BraveWalletPermissionContext::IsPermissionDenied(
-      *type, context_, origin);
+      permissions::PermissionUtil::ContentSettingsTypeToPermissionType(
+          *content_settings_type),
+      context_, origin);
 }
 
 void BraveWalletServiceDelegateBase::ResetAllPermissions() {

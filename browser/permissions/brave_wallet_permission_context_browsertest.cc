@@ -99,8 +99,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,
                                                         addresses[2]};
   for (const auto& account : expected_allowed_accounts) {
     auto sub_request_origin = brave_wallet::GetSubRequestOrigin(
-        permissions::RequestType::kBraveEthereum, GetLastCommitedOrigin(),
-        account);
+        ContentSettingsType::BRAVE_ETHEREUM, GetLastCommitedOrigin(), account);
     ASSERT_TRUE(sub_request_origin);
     host_content_settings_map()->SetContentSettingDefaultScope(
         sub_request_origin->GetURL(), GetLastCommitedOrigin().GetURL(),

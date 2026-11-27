@@ -13,9 +13,8 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "components/permissions/request_type.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
-#include "third_party/blink/public/common/permissions/permission_utils.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -49,14 +48,14 @@ std::optional<url::Origin> AddAccountToHost(const url::Origin& old_origin,
 
 // Parse requesting origin in either sub-request format (one address) or
 // non-sub-request format (all addresses).
-bool ParseRequestingOriginInternal(permissions::RequestType type,
+bool ParseRequestingOriginInternal(ContentSettingsType type,
                                    const url::Origin& origin,
                                    url::Origin* requesting_origin,
                                    std::string* account) {
-  if (origin.opaque() || (type != permissions::RequestType::kBraveEthereum &&
-                          type != permissions::RequestType::kBraveSolana &&
-                          type != permissions::RequestType::kBraveCardano &&
-                          type != permissions::RequestType::kBravePolkadot)) {
+  if (origin.opaque() || (type != ContentSettingsType::BRAVE_ETHEREUM &&
+                          type != ContentSettingsType::BRAVE_SOLANA &&
+                          type != ContentSettingsType::BRAVE_CARDANO &&
+                          type != ContentSettingsType::BRAVE_POLKADOT)) {
     return false;
   }
 
@@ -66,16 +65,16 @@ bool ParseRequestingOriginInternal(permissions::RequestType type,
   // Split host part in origin into original host and address parts.
   std::string pattern;
   switch (type) {
-    case permissions::RequestType::kBraveEthereum:
+    case ContentSettingsType::BRAVE_ETHEREUM:
       pattern = "(.*)(0x[[:xdigit:]]{40})";
       break;
-    case permissions::RequestType::kBraveCardano:
-    case permissions::RequestType::kBravePolkadot:
+    case ContentSettingsType::BRAVE_CARDANO:
+    case ContentSettingsType::BRAVE_POLKADOT:
       // AccountId->unique_key is used as account identifier for cardano and
       // polkadot.
       pattern = "(.*)__([0-9_]+)";
       break;
-    case permissions::RequestType::kBraveSolana:
+    case ContentSettingsType::BRAVE_SOLANA:
       pattern = "(.*)__([[:alnum:]]{1,128})";
       break;
     default:
@@ -101,7 +100,7 @@ bool ParseRequestingOriginInternal(permissions::RequestType type,
 
 namespace brave_wallet {
 
-bool ParseRequestingOriginFromSubRequest(permissions::RequestType type,
+bool ParseRequestingOriginFromSubRequest(ContentSettingsType type,
                                          const url::Origin& origin,
                                          url::Origin* requesting_origin,
                                          std::string* account) {
@@ -109,13 +108,13 @@ bool ParseRequestingOriginFromSubRequest(permissions::RequestType type,
                                        account);
 }
 
-std::optional<url::Origin> GetSubRequestOrigin(permissions::RequestType type,
+std::optional<url::Origin> GetSubRequestOrigin(ContentSettingsType type,
                                                const url::Origin& old_origin,
                                                std::string_view account) {
-  if (type != permissions::RequestType::kBraveEthereum &&
-      type != permissions::RequestType::kBraveSolana &&
-      type != permissions::RequestType::kBraveCardano &&
-      type != permissions::RequestType::kBravePolkadot) {
+  if (type != ContentSettingsType::BRAVE_ETHEREUM &&
+      type != ContentSettingsType::BRAVE_SOLANA &&
+      type != ContentSettingsType::BRAVE_CARDANO &&
+      type != ContentSettingsType::BRAVE_POLKADOT) {
     return std::nullopt;
   }
   if (account.empty()) {
@@ -123,7 +122,7 @@ std::optional<url::Origin> GetSubRequestOrigin(permissions::RequestType type,
   }
 
   std::string_view separator;
-  if (type != permissions::RequestType::kBraveEthereum) {
+  if (type != ContentSettingsType::BRAVE_ETHEREUM) {
     separator = "__";
   }
 
@@ -154,33 +153,17 @@ GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
   return webui_base_url.ReplaceComponents(replacements);
 }
 
-std::optional<blink::PermissionType> CoinTypeToPermissionType(
+std::optional<ContentSettingsType> CoinTypeToContentSettingsType(
     mojom::CoinType coin_type) {
   switch (coin_type) {
     case mojom::CoinType::ETH:
-      return blink::PermissionType::BRAVE_ETHEREUM;
+      return ContentSettingsType::BRAVE_ETHEREUM;
     case mojom::CoinType::SOL:
-      return blink::PermissionType::BRAVE_SOLANA;
+      return ContentSettingsType::BRAVE_SOLANA;
     case mojom::CoinType::ADA:
-      return blink::PermissionType::BRAVE_CARDANO;
+      return ContentSettingsType::BRAVE_CARDANO;
     case mojom::CoinType::DOT:
-      return blink::PermissionType::BRAVE_POLKADOT;
-    default:
-      return std::nullopt;
-  }
-}
-
-std::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
-    mojom::CoinType coin_type) {
-  switch (coin_type) {
-    case mojom::CoinType::ETH:
-      return permissions::RequestType::kBraveEthereum;
-    case mojom::CoinType::SOL:
-      return permissions::RequestType::kBraveSolana;
-    case mojom::CoinType::ADA:
-      return permissions::RequestType::kBraveCardano;
-    case mojom::CoinType::DOT:
-      return permissions::RequestType::kBravePolkadot;
+      return ContentSettingsType::BRAVE_POLKADOT;
     default:
       return std::nullopt;
   }

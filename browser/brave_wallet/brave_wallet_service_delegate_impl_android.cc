@@ -9,6 +9,8 @@
 
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "components/permissions/permission_util.h"
+#include "components/permissions/request_type.h"
 #include "content/public/browser/browser_context.h"
 
 namespace brave_wallet {
@@ -22,40 +24,49 @@ BraveWalletServiceDelegateImpl::~BraveWalletServiceDelegateImpl() = default;
 bool BraveWalletServiceDelegateImpl::AddPermission(mojom::CoinType coin,
                                                    const url::Origin& origin,
                                                    const std::string& account) {
-  auto type = CoinTypeToPermissionType(coin);
-  if (!type) {
+  auto content_settings_type =
+      brave_wallet::CoinTypeToContentSettingsType(coin);
+  if (!content_settings_type) {
     return false;
   }
 
   return permissions::BraveWalletPermissionContext::AddPermission(
-      *type, context_, origin, account);
+      permissions::PermissionUtil::ContentSettingsTypeToPermissionType(
+          *content_settings_type),
+      context_, origin, account);
 }
 
 void BraveWalletServiceDelegateImpl::GetWebSitesWithPermission(
     mojom::CoinType coin,
     GetWebSitesWithPermissionCallback callback) {
-  auto type = CoinTypeToPermissionType(coin);
-  if (!type) {
+  auto content_settings_type =
+      brave_wallet::CoinTypeToContentSettingsType(coin);
+  if (!content_settings_type) {
     std::move(callback).Run({});
     return;
   }
   std::move(callback).Run(
       permissions::BraveWalletPermissionContext::GetWebSitesWithPermission(
-          *type, context_));
+          permissions::PermissionUtil::ContentSettingsTypeToPermissionType(
+              *content_settings_type),
+          context_));
 }
 
 void BraveWalletServiceDelegateImpl::ResetWebSitePermission(
     mojom::CoinType coin,
     const std::string& formed_website,
     ResetWebSitePermissionCallback callback) {
-  auto type = CoinTypeToPermissionType(coin);
-  if (!type) {
+  auto content_settings_type =
+      brave_wallet::CoinTypeToContentSettingsType(coin);
+  if (!content_settings_type) {
     std::move(callback).Run(false);
     return;
   }
   std::move(callback).Run(
       permissions::BraveWalletPermissionContext::ResetWebSitePermission(
-          *type, context_, formed_website));
+          permissions::PermissionUtil::ContentSettingsTypeToPermissionType(
+              *content_settings_type),
+          context_, formed_website));
 }
 
 }  // namespace brave_wallet

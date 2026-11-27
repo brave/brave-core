@@ -25,8 +25,11 @@ namespace {
 url::Origin GetRequestingOrigin(const permissions::PermissionRequest& request) {
   const url::Origin origin = url::Origin::Create(request.requesting_origin());
   url::Origin requesting_origin;
-  if (brave_wallet::ParseRequestingOriginFromSubRequest(
-          request.request_type(), origin, &requesting_origin,
+  const auto content_settings_type =
+      permissions::RequestTypeToContentSettingsType(request.request_type());
+  if (content_settings_type &&
+      brave_wallet::ParseRequestingOriginFromSubRequest(
+          *content_settings_type, origin, &requesting_origin,
           /*account=*/nullptr)) {
     return requesting_origin;
   }

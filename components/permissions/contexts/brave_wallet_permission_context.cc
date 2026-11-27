@@ -72,24 +72,8 @@ void AggregatePermissionResults(
   std::move(callback).Run(std::move(allowed_accounts));
 }
 
-std::optional<RequestType> GetWalletRequestType(
-    ContentSettingsType content_settings_type) {
-  switch (content_settings_type) {
-    case ContentSettingsType::BRAVE_ETHEREUM:
-      return RequestType::kBraveEthereum;
-    case ContentSettingsType::BRAVE_SOLANA:
-      return RequestType::kBraveSolana;
-    case ContentSettingsType::BRAVE_CARDANO:
-      return RequestType::kBraveCardano;
-    case ContentSettingsType::BRAVE_POLKADOT:
-      return RequestType::kBravePolkadot;
-    default:
-      return std::nullopt;
-  }
-}
-
 bool IsWalletPermissionForAccount(const ContentSettingsPattern& pattern,
-                                  RequestType request_type,
+                                  ContentSettingsType type,
                                   const std::string& account) {
   if (!pattern.MatchesSingleOrigin()) {
     return false;
@@ -102,7 +86,7 @@ bool IsWalletPermissionForAccount(const ContentSettingsPattern& pattern,
 
   std::string stored_account;
   return brave_wallet::ParseRequestingOriginFromSubRequest(
-             request_type, url::Origin::Create(representative_url), nullptr,
+             type, url::Origin::Create(representative_url), nullptr,
              &stored_account) &&
          base::EqualsCaseInsensitiveASCII(stored_account, account);
 }
@@ -211,13 +195,11 @@ void BraveWalletPermissionContext::RequestWalletPermissions(
     return;
   }
 
-  RequestType request_type = ContentSettingsTypeToRequestType(
-      PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission));
-
   std::vector<url::Origin> addresses_with_origin;
   for (auto& address : addresses) {
     if (auto origin_with_address = brave_wallet::GetSubRequestOrigin(
-            request_type, requesting_origin, address)) {
+            PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission),
+            requesting_origin, address)) {
       addresses_with_origin.push_back(std::move(*origin_with_address));
     }
   }
@@ -278,8 +260,7 @@ BraveWalletPermissionContext::GetAllowedAccounts(
   url::Origin origin = url::Origin::Create(rfh->GetLastCommittedURL());
   for (const auto& address : addresses) {
     auto sub_request_origin = brave_wallet::GetSubRequestOrigin(
-        ContentSettingsTypeToRequestType(content_settings_type), origin,
-        address);
+        content_settings_type, origin, address);
     if (sub_request_origin) {
       // `GetPermissionResultForEmbeddedRequester` allows us to specify
       // `requesting_origin` instead of obtaining it from `rfh`.
@@ -336,8 +317,8 @@ bool BraveWalletPermissionContext::AddPermission(
   const ContentSettingsType content_settings_type =
       PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission);
 
-  auto origin_wallet_address = brave_wallet::GetSubRequestOrigin(
-      ContentSettingsTypeToRequestType(content_settings_type), origin, account);
+  auto origin_wallet_address =
+      brave_wallet::GetSubRequestOrigin(content_settings_type, origin, account);
   if (!origin_wallet_address) {
     return false;
   }
@@ -373,8 +354,8 @@ bool BraveWalletPermissionContext::HasPermission(
   const ContentSettingsType content_settings_type =
       PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission);
 
-  auto origin_wallet_address = brave_wallet::GetSubRequestOrigin(
-      ContentSettingsTypeToRequestType(content_settings_type), origin, account);
+  auto origin_wallet_address =
+      brave_wallet::GetSubRequestOrigin(content_settings_type, origin, account);
   if (!origin_wallet_address) {
     return false;
   }
@@ -403,8 +384,8 @@ bool BraveWalletPermissionContext::ResetPermission(
   const ContentSettingsType content_settings_type =
       PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission);
 
-  auto origin_wallet_address = brave_wallet::GetSubRequestOrigin(
-      ContentSettingsTypeToRequestType(content_settings_type), origin, account);
+  auto origin_wallet_address =
+      brave_wallet::GetSubRequestOrigin(content_settings_type, origin, account);
   if (!origin_wallet_address) {
     return false;
   }
@@ -459,18 +440,17 @@ void BraveWalletPermissionContext::ResetPermissionsForAccount(
     content::BrowserContext* context,
     ContentSettingsType content_settings_type,
     const std::string& account) {
-  auto request_type = GetWalletRequestType(content_settings_type);
-  if (!request_type || account.empty()) {
+  if (account.empty()) {
     return;
   }
 
   HostContentSettingsMap* map =
       PermissionsClient::Get()->GetSettingsMap(context);
   map->ClearSettingsForOneTypeWithPredicate(
-      content_settings_type, [request_type = *request_type, &account](
+      content_settings_type, [content_settings_type, &account](
                                  const ContentSettingPatternSource& setting) {
         return IsWalletPermissionForAccount(setting.primary_pattern,
-                                            request_type, account);
+                                            content_settings_type, account);
       });
 }
 

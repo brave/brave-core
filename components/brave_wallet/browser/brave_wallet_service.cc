@@ -1018,7 +1018,7 @@ bool BraveWalletService::HasPermissionForPendingRequest(
 #else
   // Coins without a site-permission concept (e.g. BTC, FIL) have nothing to
   // revoke, so pending requests/transactions for them are never drained.
-  if (!CoinTypeToPermissionType(account_id->coin)) {
+  if (!CoinTypeToContentSettingsType(account_id->coin)) {
     return true;
   }
 

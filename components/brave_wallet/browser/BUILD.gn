@@ -380,9 +380,7 @@ static_library("browser") {
     "//url",
   ]
 
-  if (use_blink) {
-    deps += [ ":permission_utils" ]
-  }
+  deps += [ ":permission_utils" ]
 
   public_deps = [
     ":utils",
@@ -436,24 +434,21 @@ static_library("browser") {
 
 # TODO(https://github.com/brave/brave-browser/issues/47669) this should be
 # in content/browser subfolder of a layered brave_wallet component.
-if (use_blink) {
-  static_library("permission_utils") {
-    sources = [
-      "permission_utils.cc",
-      "permission_utils.h",
-    ]
+static_library("permission_utils") {
+  sources = [
+    "permission_utils.cc",
+    "permission_utils.h",
+  ]
 
-    deps = [
-      ":utils",
-      "//base",
-      "//brave/components/brave_wallet/common:mojom",
-      "//brave/components/brave_wallet/common/buildflags",
-      "//components/permissions:permissions_common",
-      "//third_party/blink/public/common",
-      "//third_party/re2",
-      "//url",
-    ]
-  }
+  deps = [
+    ":utils",
+    "//base",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//components/content_settings/core/common",
+    "//third_party/re2",
+    "//url",
+  ]
 }
 
 source_set("constants") {
@@ -968,7 +963,6 @@ source_set("unit_tests") {
     deps += [
       ":permission_utils",
       "//components/permissions",
-      "//third_party/blink/public/common",
     ]
   }
 
