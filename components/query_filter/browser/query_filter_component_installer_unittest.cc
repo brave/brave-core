@@ -11,13 +11,11 @@
 
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
 #include "brave/components/query_filter/browser/query_filter_data.h"
 #include "brave/components/query_filter/common/constants.h"
-#include "brave/components/query_filter/common/features.h"
 #include "components/component_updater/mock_component_updater_service.h"
 #include "components/update_client/update_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -51,8 +49,6 @@ class QueryFilterComponentInstallerTest : public testing::Test {
 
   void SetUp() override {
     cus_ = std::make_unique<component_updater::MockComponentUpdateService>();
-    feature_list_.InitWithFeatures(
-        {query_filter::features::kQueryFilterComponent}, {});
 
     // Create a temporary directory to write the sample query filter JSON.
     ASSERT_TRUE(component_install_dir_.CreateUniqueTempDir());
@@ -86,7 +82,6 @@ class QueryFilterComponentInstallerTest : public testing::Test {
 
  private:
   base::ScopedTempDir component_install_dir_;
-  base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::MainThreadType::DEFAULT,
       base::test::TaskEnvironment::ThreadPoolExecutionMode::DEFAULT};
@@ -115,25 +110,6 @@ class ScopedFileLoadedCallbackForTesting {
   base::OnceClosure callback_;
 };
 
-// Tests covering disabled feature flag state.
-TEST(QueryFilterComponentInstallerFeatureOffTest,
-     TestNoRegisterWhenFeatureDisabled) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(
-      query_filter::features::kQueryFilterComponent);
-  auto cus = std::make_unique<component_updater::MockComponentUpdateService>();
-  brave_component_updater::MockOnDemandUpdater on_demand_updater;
-
-  EXPECT_CALL(*cus, RegisterComponent(testing::_)).Times(0);
-  EXPECT_CALL(
-      on_demand_updater,
-      EnsureInstalled(query_filter::kQueryFilterComponentId, testing::_))
-      .Times(0);
-
-  component_updater::RegisterQueryFilterComponent(cus.get());
-}
-
-// Tests covering enabled feature flag state.
 TEST_F(QueryFilterComponentInstallerTest,
        RegistersOnDemandInstallForComponentId) {
   base::test::TestFuture<void> future;

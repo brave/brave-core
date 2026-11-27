@@ -7,10 +7,8 @@
 
 #include <optional>
 
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/query_filter/browser/query_filter_data.h"
 #include "brave/components/query_filter/browser/test_support/query_filter_test_helper.h"
-#include "brave/components/query_filter/common/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -22,11 +20,7 @@ url::Origin CreateOrigin(std::string_view url) {
 
 class BraveQueryFilter_ComponentEnabled : public testing::Test {
  public:
-  void SetUp() override {
-    feature_list_.InitAndEnableFeature(
-        query_filter::features::kQueryFilterComponent);
-    filter_test_rules_.emplace();
-  }
+  void SetUp() override { filter_test_rules_.emplace(); }
 
   void TearDown() override { ResetRules(); }
 
@@ -48,7 +42,6 @@ class BraveQueryFilter_ComponentEnabled : public testing::Test {
  private:
   std::optional<query_filter::test::ScopedTestingQueryFilterRules>
       filter_test_rules_;
-  base::test::ScopedFeatureList feature_list_;
 };
 
 TEST_F(BraveQueryFilter_ComponentEnabled, FilterQueryTrackers) {
@@ -309,31 +302,4 @@ TEST_F(BraveQueryFilter_ComponentEnabled, ConditionalFilteringWithoutAnyRules) {
                 std::nullopt, GURL("https://brave.com"),
                 GURL("https://test.com/?mkt_tok=123"), "GET", false),
             GURL("https://test.com/"));
-}
-
-class BraveQueryFilter_ComponentDisabled : public testing::Test {
- public:
-  void SetUp() override {
-    feature_list_.InitAndDisableFeature(
-        query_filter::features::kQueryFilterComponent);
-    ASSERT_FALSE(instance());
-  }
-
-  query_filter::QueryFilterData* instance() const {
-    return query_filter::QueryFilterData::GetInstance();
-  }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
-};
-
-TEST_F(BraveQueryFilter_ComponentDisabled, NoStrippingOccurs) {
-  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-      CreateOrigin("https://brave.com"), GURL("https://brave.com"),
-      GURL("https://test.com/?gclid=123"), "GET", false));
-
-  // Conditional filtering also fails.
-  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-      std::nullopt, GURL("https://brave.com"),
-      GURL("https://test.com/?mkt_tok=123"), "GET", false));
 }
