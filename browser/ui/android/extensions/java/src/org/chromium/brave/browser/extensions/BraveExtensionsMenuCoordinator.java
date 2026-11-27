@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -84,6 +85,7 @@ public class BraveExtensionsMenuCoordinator implements ChromeAndroidTaskFeature 
 
     private @Nullable SheetContent mSheetContent;
     private @Nullable PropertyModel mScrimModel;
+    private @Nullable PropertyModel mTouchBlockerModel;
 
     /** Shows the sheet, creating the coordinator as a feature of {@code task} if needed. */
     public static void show(
@@ -213,14 +215,27 @@ public class BraveExtensionsMenuCoordinator implements ChromeAndroidTaskFeature 
                                         - mBrowserControls.getBottomControlOffset())
                         .build();
         scrimManager.showScrim(mScrimModel);
+
+        // Transparent and full height, so the bottom toolbar stays undimmed but a tap on it
+        // dismisses the sheet instead of opening other UI over it.
+        mTouchBlockerModel =
+                new PropertyModel.Builder(ScrimProperties.ALL_KEYS)
+                        .with(ScrimProperties.ANCHOR_VIEW, anchor)
+                        .with(ScrimProperties.AFFECTS_STATUS_BAR, false)
+                        .with(ScrimProperties.CLICK_DELEGATE, this::dismissSheet)
+                        .with(ScrimProperties.BACKGROUND_COLOR, Color.TRANSPARENT)
+                        .build();
+        scrimManager.showScrim(mTouchBlockerModel);
     }
 
     private void hideScrim(boolean animate) {
         ScrimManager scrimManager = mBottomSheetController.getScrimManager();
-        if (mScrimModel != null && scrimManager != null) {
-            scrimManager.hideScrim(mScrimModel, animate);
+        if (scrimManager != null) {
+            if (mScrimModel != null) scrimManager.hideScrim(mScrimModel, animate);
+            if (mTouchBlockerModel != null) scrimManager.hideScrim(mTouchBlockerModel, animate);
         }
         mScrimModel = null;
+        mTouchBlockerModel = null;
     }
 
     private void dismissSheet() {
