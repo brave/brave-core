@@ -36,6 +36,7 @@ class SearchContainerViewController: UIViewController {
   var isUsingBottomBar: Bool = false {
     didSet {
       searchController.isUsingBottomBar = isUsingBottomBar
+      inputBar.isUsingBottomBar = isUsingBottomBar
       updateInputBarLayout()
       updateChildInsets()
     }
@@ -126,6 +127,7 @@ class SearchContainerViewController: UIViewController {
     topSitesController.view.snp.makeConstraints { $0.edges.equalTo(view) }
     topSitesController.didMove(toParent: self)
 
+    inputBar.isUsingBottomBar = isUsingBottomBar
     view.addSubview(inputBar)
 
     // Favorites shows first; the search screen appears once the user types.
@@ -158,12 +160,22 @@ class SearchContainerViewController: UIViewController {
   /// in bottom-bar mode or sits at the top otherwise). The children handle keyboard avoidance for
   /// their own content.
   private func updateChildInsets() {
-    let inputBarHeight =
-      inputBar.bounds.height - inputBar.safeAreaInsets.top - inputBar.safeAreaInsets.bottom
-    let insets: UIEdgeInsets =
-      isUsingBottomBar
-      ? .init(top: 0, left: 0, bottom: inputBarHeight, right: 0)
-      : .init(top: inputBarHeight, left: 0, bottom: 0, right: 0)
+    let insets: UIEdgeInsets
+    if isUsingBottomBar {
+      let inputBarHeight =
+        inputBar.bounds.height - inputBar.safeAreaInsets.top - inputBar.safeAreaInsets.bottom
+      insets = .init(top: 0, left: 0, bottom: inputBarHeight, right: 0)
+    } else {
+      // The input bar's contents may be placed above or beside the top safe area (such as beside
+      // the status bar on an unfolded iPhone Duo), so use its bottom edge rather than its height
+      // without the safe area
+      insets = .init(
+        top: max(0, inputBar.frame.maxY - view.safeAreaInsets.top),
+        left: 0,
+        bottom: 0,
+        right: 0
+      )
+    }
     topSitesController.additionalSafeAreaInsets = insets
     searchController.additionalSafeAreaInsets = insets
   }
