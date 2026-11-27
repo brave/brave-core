@@ -72,15 +72,17 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_shields.BraveFirstPartyStorageCleanerUtils;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerAnimationFragment;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider.ControlsPosition;
 import org.chromium.chrome.browser.cosmetic_filters.BraveCosmeticFiltersUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
+import org.chromium.chrome.browser.fullscreen.BrowserControlsManagerSupplier;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabFavicon;
-import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
@@ -123,6 +125,7 @@ public class BraveUnifiedPanelHandler {
     private static final int ICON_OVERLAP_MARGIN_DP = -8;
     private static final int FAVICON_ELEVATION_DP = 1;
     private static final int PANEL_OVERLAP_OFFSET_DP = 7;
+    private static final int PANEL_SHADOW_SAFETY_GAP_DP = 12;
     private static final int SITE_FAVICON_CONTAINER_SIZE_DP = 32;
     private static final int SITE_FAVICON_SIZE_DP = 20;
     // The Leo ic_disable_outline icon draws its circle between viewport coordinates 2–22 inside a
@@ -448,45 +451,50 @@ public class BraveUnifiedPanelHandler {
         mPopupView.setClipToOutline(true);
 
         mAnchorView = anchorView;
-        if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
+
+        int[] anchorLocation = new int[2];
+        mAnchorView.getLocationInWindow(anchorLocation);
+        int decorViewHeight = ((Activity) mContext).getWindow().getDecorView().getHeight();
+        BrowserControlsManager controls =
+                mCurrentTab != null
+                        ? BrowserControlsManagerSupplier.getValueOrNullFrom(
+                                mCurrentTab.getWindowAndroidChecked())
+                        : null;
+
+        boolean toolbarAtBottom = isToolbarAtBottom(controls);
+
+        // Convert to window-relative, matching anchorLocation/decorViewHeight: screen-absolute
+        // and window-relative only agree when the window starts at the top of the screen, which
+        // isn't true in split-screen.
+        Rect visibleFrame = new Rect();
+        ((Activity) mContext).getWindow().getDecorView().getWindowVisibleDisplayFrame(visibleFrame);
+        int[] decorViewScreenLocation = new int[2];
+        ((Activity) mContext)
+                .getWindow()
+                .getDecorView()
+                .getLocationOnScreen(decorViewScreenLocation);
+        int windowTop = visibleFrame.top - decorViewScreenLocation[1];
+
+        if (toolbarAtBottom) {
             popupWindow.setAnimationStyle(R.style.AnchoredPopupAnimEndBottom);
         } else {
             popupWindow.setAnimationStyle(R.style.AnchoredPopupAnimEndTop);
         }
 
         try {
-            int[] anchorLocation = new int[2];
-            mAnchorView.getLocationInWindow(anchorLocation);
-            int decorViewHeight = ((Activity) mContext).getWindow().getDecorView().getHeight();
-            int overlapPx = (int) (PANEL_OVERLAP_OFFSET_DP * density);
+            PanelGeometry geometry =
+                    computePanelGeometry(
+                            toolbarAtBottom,
+                            anchorLocation[1],
+                            mAnchorView.getHeight(),
+                            windowTop,
+                            decorViewHeight,
+                            density);
 
-            if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
-                // Mirror the top-toolbar rule: end the panel 7 dp above the toolbar top so
-                // its bottom edge lands in the browser-chrome space adjacent to the URL bar,
-                // which a web page cannot render into.
-                int anchorTop = anchorLocation[1];
-                int yOffset = decorViewHeight - anchorTop - overlapPx;
-                int panelBottom = anchorTop + overlapPx;
+            ((MaxHeightFrameLayout) mPopupView).setMaxHeightPx(geometry.mMaxHeightPx);
 
-                ((MaxHeightFrameLayout) mPopupView)
-                        .setMaxHeightPx(panelBottom - marginPx);
-
-                popupWindow.showAtLocation(
-                        mAnchorView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, yOffset);
-            } else {
-                // Position the panel 7 dp above the bottom of the toolbar (anchorView is the
-                // full toolbar FrameLayout). Starting in the browser-chrome space just below
-                // the URL bar is a spoofing deterrent: a web page cannot render into that
-                // gap. On phones the panel width is screenWidth - 2 * marginPx; on tablets
-                // it is capped at POPUP_MAX_WIDTH_DP, right-aligned under the Shields icon.
-                int panelTop = anchorLocation[1] + mAnchorView.getHeight() - overlapPx;
-
-                ((MaxHeightFrameLayout) mPopupView)
-                        .setMaxHeightPx(decorViewHeight - panelTop - marginPx);
-
-                popupWindow.showAtLocation(
-                        mAnchorView, Gravity.TOP | Gravity.END, marginPx, panelTop);
-            }
+            popupWindow.showAtLocation(
+                    mAnchorView, geometry.mGravity, toolbarAtBottom ? 0 : marginPx, geometry.mY);
         } catch (Exception e) {
             Log.e(TAG, "Failed to show popup window", e);
             return null;
@@ -496,6 +504,68 @@ public class BraveUnifiedPanelHandler {
         mDecorView.addOnLayoutChangeListener(mDecorViewLayoutChangeListener);
 
         return popupWindow;
+    }
+
+    /** Whether the toolbar (and so the Shields panel's anchor) is currently bottom-anchored. */
+    @VisibleForTesting
+    static boolean isToolbarAtBottom(@Nullable BrowserControlsManager controls) {
+        return controls != null && controls.getControlsPosition() == ControlsPosition.BOTTOM;
+    }
+
+    /** Result of {@link #computePanelGeometry}. */
+    @VisibleForTesting
+    static final class PanelGeometry {
+        // Gravity to pass to PopupWindow#showAtLocation.
+        final int mGravity;
+        // Y to pass to PopupWindow#showAtLocation alongside gravity.
+        final int mY;
+        // Cap passed to MaxHeightFrameLayout#setMaxHeightPx.
+        final int mMaxHeightPx;
+
+        PanelGeometry(int gravity, int y, int maxHeightPx) {
+            mGravity = gravity;
+            mY = y;
+            mMaxHeightPx = maxHeightPx;
+        }
+    }
+
+    /**
+     * Computes the panel's position and height cap from plain geometry (brave/brave-browser#59894)
+     * -- no PopupWindow, Activity, or layout inflation.
+     *
+     * <p>anchorTop, windowTop, and windowBottom must share one coordinate space (window-relative or
+     * screen-absolute, either is fine); only their differences are used, so split-screen windows
+     * that don't start at the top of the physical screen still work.
+     *
+     * <p>Bottom-anchored: pins the panel's bottom edge just above the toolbar via Gravity.BOTTOM,
+     * so it grows upward as content changes with no repositioning code. Height is capped against
+     * windowTop (the status bar) so the panel can never need a top above it -- otherwise Android
+     * clamps the window down to windowTop while keeping the full height, pushing the panel into the
+     * toolbar.
+     *
+     * <p>Top-anchored: starts 7dp above the toolbar's bottom (a spoofing deterrent -- a web page
+     * can't render into that browser-chrome gap), capped against windowBottom.
+     */
+    @VisibleForTesting
+    static PanelGeometry computePanelGeometry(
+            boolean toolbarAtBottom,
+            int anchorTop,
+            int anchorHeightPx,
+            int windowTop,
+            int windowBottom,
+            float density) {
+        if (toolbarAtBottom) {
+            int toolbarBottom = anchorTop + anchorHeightPx;
+            int panelBottom = anchorTop - (int) (PANEL_SHADOW_SAFETY_GAP_DP * density);
+            int y = toolbarBottom - panelBottom;
+            int maxHeightPx = panelBottom - windowTop;
+            return new PanelGeometry(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, y, maxHeightPx);
+        }
+
+        int overlapPx = (int) (PANEL_OVERLAP_OFFSET_DP * density);
+        int y = anchorTop + anchorHeightPx - overlapPx;
+        int maxHeightPx = windowBottom - y - (int) (POPUP_MARGIN_DP * density);
+        return new PanelGeometry(Gravity.TOP | Gravity.END, y, maxHeightPx);
     }
 
     @Initializer
