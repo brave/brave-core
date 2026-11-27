@@ -127,6 +127,14 @@ DebounceNavigationThrottle::MaybeRedirect() {
     return NavigationThrottle::PROCEED;
   }
 
+  content::NavigationEntry* entry = navigation_handle()->GetNavigationEntry();
+
+  // Do not debounce view-source: navigations.
+  // See https://github.com/brave/brave-browser/issues/60349
+  if (entry && entry->IsViewSourceMode()) {
+    return NavigationThrottle::PROCEED;
+  }
+
   GURL debounced_url;
   GURL original_url = navigation_handle()->GetURL();
 
