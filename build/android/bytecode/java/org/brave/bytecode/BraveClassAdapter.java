@@ -55,7 +55,6 @@ public class BraveClassAdapter {
         chain = new BraveContentViewClassAdapter(chain);
         chain = new BraveMessageQueueMediatorClassAdapter(chain);
         chain = new BraveCustomizationProviderDelegateImplClassAdapter(chain);
-        chain = new BraveDefaultBrowserPromoUtilsClassAdapter(chain);
         chain = new BraveDownloadLocationDialogCoordinatorClassAdapter(chain);
         chain = new BraveDownloadMessageUiControllerImplClassAdapter(chain);
         chain = new BraveDropdownItemViewInfoListBuilderClassAdapter(chain);

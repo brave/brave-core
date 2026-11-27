@@ -646,10 +646,6 @@
     <init>(...);
 }
 
--keep class org.chromium.chrome.browser.ui.default_browser_promo.DefaultBrowserPromoUtils {
-    *** prepareLaunchPromoIfNeeded(...);
-}
-
 -keep class org.chromium.components.variations.firstrun.VariationsSeedFetcher {
     *** sLock;
     *** DEFAULT_VARIATIONS_SERVER_URL;
