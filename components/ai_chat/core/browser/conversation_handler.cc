@@ -459,20 +459,40 @@ void ConversationHandler::AssociateContentWithToolUseEntry(
   is_content_different_ = true;
 }
 
-void ConversationHandler::RemoveContentAssociatedWithAssistantEntries(
+void ConversationHandler::RemoveItemsAssociatedWithEntries(
     base::span<const mojom::ConversationTurnPtr> turns) {
+  auto is_assistant_entry = [](const mojom::ConversationTurnPtr& turn) {
+    return turn->character_type == CharacterType::ASSISTANT &&
+           turn->uuid.has_value();
+  };
+
   base::flat_set<std::string> assistant_entry_uuids;
+  base::flat_set<std::string> removed_thread_uuids;
   for (const auto& turn : turns) {
-    if (turn->character_type == CharacterType::ASSISTANT &&
-        turn->uuid.has_value()) {
+    if (is_assistant_entry(turn)) {
       assistant_entry_uuids.insert(turn->uuid.value());
     }
+    for (const std::string& thread_uuid : turn->child_thread_uuids) {
+      auto* container = base::FindOrNull(threads_, thread_uuid);
+      if (!container) {
+        continue;
+      }
+      for (const auto& entry : container->entries) {
+        if (is_assistant_entry(entry)) {
+          assistant_entry_uuids.insert(entry->uuid.value());
+        }
+      }
+      removed_thread_uuids.insert(thread_uuid);
+    }
   }
-  if (assistant_entry_uuids.empty()) {
-    return;
-  }
+
   associated_content_manager_->RemoveContentAssociatedWithTurns(
       assistant_entry_uuids);
+
+  for (const auto& thread_uuid : removed_thread_uuids) {
+    threads_.erase(thread_uuid);
+    OnConversationThreadRemoved(thread_uuid);
+  }
 }
 
 bool ConversationHandler::IsAnyClientConnected() {
@@ -1089,7 +1109,7 @@ void ConversationHandler::ModifyConversation(
       std::back_inserter(erased_turn_ids),
       [](mojom::ConversationTurnPtr& turn) { return turn->uuid; });
   turn->edits->emplace_back(std::move(edited_turn));
-  RemoveContentAssociatedWithAssistantEntries(
+  RemoveItemsAssociatedWithEntries(
       base::span(history).subspan(static_cast<size_t>(turn_index)));
   auto new_turn = std::move(history.at(turn_index));
   history.erase(history.begin() + turn_index, history.end());
@@ -1137,7 +1157,7 @@ void ConversationHandler::RegenerateAnswer(
       turns_to_erase, std::back_inserter(erased_turn_ids),
       [](const mojom::ConversationTurnPtr& turn) { return turn->uuid; });
 
-  RemoveContentAssociatedWithAssistantEntries(turns_to_erase);
+  RemoveItemsAssociatedWithEntries(turns_to_erase);
 
   auto question_turn = std::move(turns_to_erase.front());
   // Specify model key to be used for generating the answer.
@@ -2663,6 +2683,16 @@ void ConversationHandler::OnConversationThreadUpdate(
     const mojom::Thread& thread) {
   for (auto& client : untrusted_conversation_ui_handlers_) {
     client->OnConversationThreadUpdate(thread.Clone());
+  }
+}
+
+void ConversationHandler::OnConversationThreadRemoved(
+    const std::string& thread_uuid) {
+  for (auto& client : conversation_ui_handlers_) {
+    client->OnConversationThreadRemoved(thread_uuid);
+  }
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->OnConversationThreadRemoved(thread_uuid);
   }
 }
 

@@ -568,6 +568,10 @@ interface ConversationUI {
   OnContentAgentChanged(bool is_content_agent_chosen,
                         array<ConversationCapability> capabilities_enabled);
 
+  // Called when a thread is removed, e.g. because the root conversation entry
+  // it originated from was removed.
+  OnConversationThreadRemoved(string thread_uuid);
+
   OnConversationDeleted();
 };
 
