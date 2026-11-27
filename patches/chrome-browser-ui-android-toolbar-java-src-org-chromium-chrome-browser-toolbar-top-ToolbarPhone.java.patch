@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index fc3f512bac26f1c65c77c41a75908f7393051158..1816bea3df6707822a510bbf67bb0f3f7c2cb4c9 100644
+index fc3f512bac26f1c65c77c41a75908f7393051158..e6c72fee609c8fa8893d1327dbe3f25514d23643 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -285,8 +285,8 @@ public class ToolbarPhone extends ToolbarLayout
@@ -63,15 +63,7 @@ index fc3f512bac26f1c65c77c41a75908f7393051158..1816bea3df6707822a510bbf67bb0f3f
          List<Animator> animators = new ArrayList<>();
          if (hasFocus) {
              populateUrlExpansionAnimatorSet(animators);
-@@ -3679,6 +3683,7 @@ public class ToolbarPhone extends ToolbarLayout
-      * @return The offset for the location bar when showing the dse icon.
-      */
-     int getLocationBarOffsetForFocusAnimation(boolean hasFocus) {
-+        if (!urlHasFocus()) return 0;
-         StatusCoordinator statusCoordinator = mLocationBar.getStatusCoordinator();
-         if (statusCoordinator == null) return 0;
- 
-@@ -3833,6 +3838,6 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -3833,6 +3837,6 @@ public class ToolbarPhone extends ToolbarLayout
      private boolean shouldShowOptionalButtonInToolbar() {
          // The identity disc is now a dedicated signin button, so the optional button is never shown
          // in the toolbar on the NTP. In the new IA, the optional button lives in the location bar.
