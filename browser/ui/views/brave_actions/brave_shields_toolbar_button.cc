@@ -77,6 +77,8 @@ std::u16string BraveShieldsToolbarButton::GetRenderedTooltipText(
 
 void BraveShieldsToolbarButton::OnThemeChanged() {
   ToolbarButton::OnThemeChanged();
+  controller_->OnThemeChanged();
+
   // Bitmap icon already encodes state; re-resolve image from controller for
   // any color provider updates.
   Update();
