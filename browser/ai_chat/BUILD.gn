@@ -421,6 +421,7 @@ source_set("workspace_browser_test_support") {
     "//url",
   ]
   deps = [
+    "//brave/browser/ui/webui/ai_chat",
     "//brave/components/ai_chat/core/common",
     "//chrome/browser/profiles:profile",
     "//chrome/test/base:chrome_test_utils",
@@ -441,11 +442,15 @@ source_set("platform_browser_tests") {
     ":workspace_browser_test_support",
     "//base",
     "//base/test:test_support",
+    "//brave/browser/ui/webui/ai_chat",
     "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common/mojom",
     "//content/public/browser",
     "//content/test:test_support",
+    "//mojo/public/cpp/base",
+    "//mojo/public/cpp/bindings",
+    "//printing/buildflags",
     "//testing/gmock",
     "//testing/gtest",
     "//url",

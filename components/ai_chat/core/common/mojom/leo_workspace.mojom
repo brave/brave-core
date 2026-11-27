@@ -1,0 +1,26 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+import "mojo/public/mojom/base/big_buffer.mojom";
+
+// Implemented by the browser for the chrome-untrusted://<uuid>.leo-workspace
+// page, for the work it can't do itself. Only that page can bind it: its
+// `view.` sibling origin, which renders workspace files (including arbitrary
+// HTML), cannot.
+interface LeoWorkspaceHandler {
+  // Prints a workspace file to PDF. The page renders the file the same way it
+  // does for display: a viewer <iframe> on its `view.` origin, named
+  // `viewer_frame_name`, which shows the file in a child frame of its own. The
+  // browser prints that child frame, so the file is laid out by Blink with its
+  // relative resources served from the workspace by the viewer's service
+  // worker. Only a viewer frame directly inside the calling workspace frame is
+  // ever printed.
+  //
+  // Returns the PDF, or a message describing why it couldn't be produced.
+  PrintFileToPdf(string viewer_frame_name, bool landscape)
+      => result<mojo_base.mojom.BigBuffer, string>;
+};
