@@ -9,6 +9,7 @@ substitutions:
 
       IsEphemeralCookieAccessible allows a cookie when the request is served
       from ephemeral storage, which the upstream per-cookie check would block.
+    count: 2
     regex:
       pattern: 'IsCookieAccessible('
       replace: 'IsEphemeralCookieAccessible('
