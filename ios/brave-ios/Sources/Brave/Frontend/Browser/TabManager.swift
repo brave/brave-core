@@ -206,6 +206,11 @@ class TabManager: NSObject {
     return tabs(isPrivate: isPrivate)
   }
 
+  /// A `LocalTabID` for a regular tab. Private tabs are not synced, so they stay at 0.
+  private func syncTabID(isPrivate: Bool) -> Int32 {
+    isPrivate ? 0 : TabGroupSyncID.makeSyncTabID()
+  }
+
   /// Tabs listed in the tab bar. The selected tab's group replaces the full list
   var tabsForTabBar: [any TabState] {
     guard isTabGroupsEnabled,
@@ -703,7 +708,8 @@ class TabManager: NSObject {
         tabId: tab.id,
         title: Strings.newTab,
         tabURL: request?.url ?? TabManager.ntpInteralURL,
-        isPrivate: isPrivate
+        isPrivate: isPrivate,
+        syncTabId: syncTabID(isPrivate: isPrivate)
       )
     }
 
@@ -1526,6 +1532,15 @@ class TabManager: NSObject {
 
     savedTabs = savedTabs.filter({ $0.sessionWindow?.windowId == windowId })
     if savedTabs.isEmpty { return nil }
+
+    // Tabs saved before sync ids existed have 0. Assign one before anything can push the tab.
+    let missingSyncTabIDs = savedTabs.reduce(into: [UUID: Int32]()) { ids, savedTab in
+      guard !savedTab.isPrivate, savedTab.syncTabId == 0 else { return }
+      ids[savedTab.tabId] = syncTabID(isPrivate: false)
+    }
+    if !missingSyncTabIDs.isEmpty {
+      SessionTab.assignSyncTabIds(missingSyncTabIDs)
+    }
 
     /// Cache on if we should shred a given domain.
     var shouldShredDomainCache: [String: Bool] = [:]

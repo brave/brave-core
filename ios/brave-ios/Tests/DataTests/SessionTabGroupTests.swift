@@ -11,6 +11,7 @@ import XCTest
 
 class SessionTabGroupTests: CoreDataTestCase {
   private let windowId = UUID()
+  private var nextSyncTabID: Int32 = 1
 
   override func setUp() {
     super.setUp()
@@ -275,6 +276,72 @@ class SessionTabGroupTests: CoreDataTestCase {
     XCTAssertEqual(tabIds(inGroup: groupId), [groupedTab])
   }
 
+  func testRegularTabStoresItsSyncID() {
+    let tabId = createTab()
+    XCTAssertEqual(SessionTab.from(tabId: tabId)?.syncTabId, 1)
+  }
+
+  func testRegularTabWithoutSyncIDIsNotCreated() {
+    let tabId = UUID()
+    SessionTab.createIfNeeded(
+      windowId: windowId,
+      tabId: tabId,
+      title: "Tab",
+      tabURL: URL(string: "https://brave.com")!,
+      isPrivate: false,
+      syncTabId: 0
+    )
+    XCTAssertNil(SessionTab.from(tabId: tabId))
+  }
+
+  func testAssignSyncTabIDFillsOnlyAMissingRegularTab() {
+    let tabId = UUID()
+    let keptId = createTab()
+    backgroundSaveAndWaitForExpectation {
+      DataController.perform { context in
+        guard let window = SessionWindow.from(windowId: self.windowId, in: context) else {
+          return
+        }
+        _ = SessionTab(
+          context: context,
+          sessionWindow: window,
+          sessionTabGroup: nil,
+          index: 0,
+          interactionState: Data(),
+          isPrivate: false,
+          isSelected: false,
+          lastUpdated: .now,
+          screenshotData: Data(),
+          title: "Migrated",
+          url: URL(string: "https://brave.com"),
+          tabId: tabId,
+          syncTabId: 0
+        )
+      }
+    }
+
+    backgroundSaveAndWaitForExpectation {
+      SessionTab.assignSyncTabIds([tabId: 42, keptId: 99])
+    }
+
+    XCTAssertEqual(SessionTab.from(tabId: tabId)?.syncTabId, 42)
+    XCTAssertEqual(SessionTab.from(tabId: keptId)?.syncTabId, 1)
+  }
+
+  func testNewGroupIsGreyAndExpanded() {
+    createGroup(title: "Group", tabs: [createTab()])
+    let group = groups()[0]
+    XCTAssertEqual(group.color, 0)
+    XCTAssertEqual(group.resolvedColor, 0)
+    XCTAssertFalse(group.collapsed)
+
+    group.color = 4
+    XCTAssertEqual(group.resolvedColor, 4)
+    group.color = 9
+    XCTAssertEqual(group.resolvedColor, 0)
+    XCTAssertEqual(group.color, 9)
+  }
+
   // MARK: - Helpers
 
   private func groups() -> [SessionTabGroup] {
@@ -295,13 +362,21 @@ class SessionTabGroupTests: CoreDataTestCase {
   @discardableResult
   private func createTab(isPrivate: Bool = false, windowId: UUID? = nil) -> UUID {
     let tabId = UUID()
+    let syncTabID: Int32
+    if isPrivate {
+      syncTabID = 0
+    } else {
+      syncTabID = nextSyncTabID
+      nextSyncTabID += 1
+    }
     backgroundSaveAndWaitForExpectation {
       SessionTab.createIfNeeded(
         windowId: windowId ?? self.windowId,
         tabId: tabId,
         title: "Tab",
         tabURL: URL(string: "https://brave.com")!,
-        isPrivate: isPrivate
+        isPrivate: isPrivate,
+        syncTabId: syncTabID
       )
     }
     return tabId
