@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/notreached.h"
+#include "base/types/expected_macros.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -374,10 +375,9 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAndSendTransaction(
   }
 
   auto param = GetSignTransactionParam(transaction);
-  if (!param) {
-    arguments->ThrowTypeError(
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return v8::Local<v8::Promise>();
+  if (!param.has_value()) {
+    return HandleTransactionParamError(param.error(), arguments,
+                                       resolver.ToLocalChecked());
   }
 
   std::optional<base::DictValue> send_options = std::nullopt;
@@ -404,12 +404,36 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAndSendTransaction(
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->SignAndSendTransaction(
-      std::move(param), std::move(send_options),
+      std::move(*param), std::move(send_options),
       base::BindOnce(&JSSolanaProvider::OnSignAndSendTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
+}
+
+v8::Local<v8::Promise> JSSolanaProvider::HandleTransactionParamError(
+    TransactionParamError error,
+    gin::Arguments* arguments,
+    v8::Local<v8::Promise::Resolver> resolver) {
+  if (error == TransactionParamError::kConversionFailed) {
+    return RejectInvalidParams(arguments->isolate()->GetCurrentContext(),
+                               resolver);
+  }
+  arguments->ThrowTypeError(
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  return {};
+}
+
+v8::Local<v8::Promise> JSSolanaProvider::RejectInvalidParams(
+    v8::Local<v8::Context> context,
+    v8::Local<v8::Promise::Resolver> resolver) {
+  auto error = GetSolanaProviderErrorDictionary(
+      mojom::SolanaProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  std::ignore =
+      resolver->Reject(context, v8_value_converter_->ToV8Value(error, context));
+  return resolver->GetPromise();
 }
 
 v8::Local<v8::Promise> JSSolanaProvider::SignMessage(
@@ -432,6 +456,10 @@ v8::Local<v8::Promise> JSSolanaProvider::SignMessage(
 
   std::unique_ptr<base::Value> blob_msg =
       v8_value_converter_->FromV8Value(message, isolate->GetCurrentContext());
+  if (!blob_msg) {
+    return RejectInvalidParams(isolate->GetCurrentContext(),
+                               resolver.ToLocalChecked());
+  }
   if (!blob_msg->is_blob()) {
     arguments->ThrowTypeError(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -443,6 +471,10 @@ v8::Local<v8::Promise> JSSolanaProvider::SignMessage(
   if (arguments->GetNext(&display)) {
     std::unique_ptr<base::Value> display_value =
         v8_value_converter_->FromV8Value(display, isolate->GetCurrentContext());
+    if (!display_value) {
+      return RejectInvalidParams(isolate->GetCurrentContext(),
+                                 resolver.ToLocalChecked());
+    }
     if (display_value->is_string()) {
       display_str = display_value->GetString();
     }
@@ -480,6 +512,10 @@ v8::Local<v8::Promise> JSSolanaProvider::Request(gin::Arguments* arguments) {
 
   std::unique_ptr<base::Value> arg_value =
       v8_value_converter_->FromV8Value(arg, isolate->GetCurrentContext());
+  if (!arg_value) {
+    return RejectInvalidParams(isolate->GetCurrentContext(),
+                               resolver.ToLocalChecked());
+  }
   if (!arg_value->is_dict()) {
     arguments->ThrowTypeError(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -529,10 +565,9 @@ v8::Local<v8::Promise> JSSolanaProvider::SignTransaction(
   }
 
   auto param = GetSignTransactionParam(transaction);
-  if (!param) {
-    arguments->ThrowTypeError(
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return v8::Local<v8::Promise>();
+  if (!param.has_value()) {
+    return HandleTransactionParamError(param.error(), arguments,
+                                       resolver.ToLocalChecked());
   }
 
   auto global_context(
@@ -540,7 +575,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignTransaction(
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->SignTransaction(
-      std::move(param),
+      std::move(*param),
       base::BindOnce(&JSSolanaProvider::OnSignTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
@@ -576,12 +611,11 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAllTransactions(
   for (uint32_t i = 0; i < transactions_count; ++i) {
     auto param = GetSignTransactionParam(
         transactions_array->Get(context, i).ToLocalChecked());
-    if (!param) {
-      arguments->ThrowTypeError(
-          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-      return v8::Local<v8::Promise>();
+    if (!param.has_value()) {
+      return HandleTransactionParamError(param.error(), arguments,
+                                         resolver.ToLocalChecked());
     }
-    params.push_back(std::move(param));
+    params.push_back(std::move(*param));
   }
 
   auto global_context(v8::Global<v8::Context>(isolate, context));
@@ -871,10 +905,10 @@ void JSSolanaProvider::SendResponse(
   }
 }
 
-std::optional<std::string> JSSolanaProvider::GetSerializedMessage(
-    v8::Local<v8::Value> transaction) {
+base::expected<std::string, JSSolanaProvider::TransactionParamError>
+JSSolanaProvider::GetSerializedMessage(v8::Local<v8::Value> transaction) {
   if (!render_frame()) {
-    return std::nullopt;
+    return base::unexpected(TransactionParamError::kInvalidTransaction);
   }
   v8::Isolate* isolate =
       render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
@@ -895,13 +929,16 @@ std::optional<std::string> JSSolanaProvider::GetSerializedMessage(
   }
 
   if (serialized_msg.IsEmpty()) {
-    return std::nullopt;
+    return base::unexpected(TransactionParamError::kInvalidTransaction);
   }
 
   std::unique_ptr<base::Value> blob_value = v8_value_converter_->FromV8Value(
       serialized_msg.ToLocalChecked(), context);
+  if (!blob_value) {
+    return base::unexpected(TransactionParamError::kConversionFailed);
+  }
   if (!blob_value->is_blob()) {
-    return std::nullopt;
+    return base::unexpected(TransactionParamError::kInvalidTransaction);
   }
 
   return Base58Encode(blob_value->GetBlob());
@@ -1032,19 +1069,15 @@ JSSolanaProvider::GetSignatures(v8::Local<v8::Value> transaction) {
   return sig_pubkey_pairs;
 }
 
-mojom::SolanaSignTransactionParamPtr JSSolanaProvider::GetSignTransactionParam(
-    v8::Local<v8::Value> transaction) {
-  std::optional<std::string> serialized_message =
-      GetSerializedMessage(transaction);
-  if (!serialized_message) {
-    return nullptr;
-  }
-  std::optional<std::vector<mojom::SignaturePubkeyPairPtr>> signatures =
-      GetSignatures(transaction);
+base::expected<mojom::SolanaSignTransactionParamPtr,
+               JSSolanaProvider::TransactionParamError>
+JSSolanaProvider::GetSignTransactionParam(v8::Local<v8::Value> transaction) {
+  ASSIGN_OR_RETURN(auto serialized_message, GetSerializedMessage(transaction));
+  auto signatures = GetSignatures(transaction);
   if (!signatures) {
-    return nullptr;
+    return base::unexpected(TransactionParamError::kInvalidTransaction);
   }
-  return mojom::SolanaSignTransactionParam::New(*serialized_message,
+  return mojom::SolanaSignTransactionParam::New(std::move(serialized_message),
                                                 std::move(*signatures));
 }
 
