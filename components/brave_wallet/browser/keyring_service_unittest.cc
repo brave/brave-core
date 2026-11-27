@@ -61,7 +61,6 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"  // IWYU pragma: keep
-#include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -188,7 +187,14 @@ class TestKeyringServiceObserver : public mojom::KeyringServiceObserver {
 class KeyringServiceUnitTest : public testing::Test {
  public:
   KeyringServiceUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
+    // Bitcoin HD, import and hardware keyrings are used throughout.
+    scoped_btc_features_.InitWithFeatures(
+        {features::kBraveWalletBitcoinFeature,
+         features::kBraveWalletBitcoinImportFeature,
+         features::kBraveWalletBitcoinLedgerFeature},
+        {});
+  }
   ~KeyringServiceUnitTest() override = default;
 
  protected:
@@ -498,8 +504,7 @@ class KeyringServiceUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
 
  private:
-  base::test::ScopedFeatureList scoped_btc_ledger_feature_{
-      features::kBraveWalletBitcoinLedgerFeature};
+  base::test::ScopedFeatureList scoped_btc_features_;
 
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
@@ -5777,15 +5782,10 @@ TEST_F(KeyringServiceUnitTest, SignCip30MessageByCardanoKeyring) {
   EXPECT_EQ(expected_dict, *signed_message);
 }
 
-#if BUILDFLAG(IS_ANDROID)
-#define MAYBE_SignCip30MessageByCardanoKeyring_TestVectors \
-  DISABLED_SignCip30MessageByCardanoKeyring_TestVectors
-#else
-#define MAYBE_SignCip30MessageByCardanoKeyring_TestVectors \
-  SignCip30MessageByCardanoKeyring_TestVectors
-#endif  // BUILDFLAG(IS_ANDROID)
-TEST_F(KeyringServiceUnitTest,
-       MAYBE_SignCip30MessageByCardanoKeyring_TestVectors) {
+TEST_F(KeyringServiceUnitTest, SignCip30MessageByCardanoKeyring_TestVectors) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletCardanoFeature};
+
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   AccountUtils(&service).CreateWallet(kMnemonicAbandonAbandon,
                                       kTestWalletPassword);

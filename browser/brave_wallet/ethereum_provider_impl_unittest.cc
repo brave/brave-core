@@ -332,6 +332,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
         [=, this](const network::ResourceRequest& request) {
           if (!request.request_body ||
               request.request_body->elements()->empty()) {
+            ADD_FAILURE() << "Unexpected request without body: "
+                          << request.url.spec();
             return;
           }
           std::string_view request_string(request.request_body->elements()
@@ -824,8 +826,10 @@ class EthereumProviderImplUnitTest : public testing::Test {
     provider_->SwitchEthereumChain(chain_id, future.GetCallback(),
                                    base::Value());
     if (user_approved) {
-      json_rpc_service()->NotifySwitchChainRequestProcessed(
-          GetPendingSwitchChainRequestId(), *user_approved);
+      const auto request_id = GetPendingSwitchChainRequestId();
+      ASSERT_TRUE(request_id);
+      json_rpc_service()->NotifySwitchChainRequestProcessed(*request_id,
+                                                            *user_approved);
     }
     auto response = future.Take();
     GetErrorCodeMessage(std::move(response->formed_response), error_out,
@@ -880,12 +884,12 @@ class EthereumProviderImplUnitTest : public testing::Test {
     return future.Take();
   }
 
-  std::string GetPendingSwitchChainRequestId() {
+  // Returns the id of the only pending switch chain request, or std::nullopt
+  // when there is not exactly one.
+  std::optional<std::string> GetPendingSwitchChainRequestId() {
     auto requests = json_rpc_service()->GetPendingSwitchChainRequestsSync();
     if (requests.size() != 1u) {
-      ADD_FAILURE() << "Expected 1 pending switch chain request, got "
-                    << requests.size();
-      return std::string();
+      return std::nullopt;
     }
     return requests[0]->request_id;
   }
@@ -2644,7 +2648,8 @@ TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
 
   // user rejected
-  SwitchEthereumChain("0xaa36a7", false, &error, &error_message);
+  ASSERT_NO_FATAL_FAILURE(
+      SwitchEthereumChain("0xaa36a7", false, &error, &error_message));
   EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
@@ -2653,7 +2658,8 @@ TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
 
   // user approved
-  SwitchEthereumChain("0xaa36a7", true, &error, &error_message);
+  ASSERT_NO_FATAL_FAILURE(
+      SwitchEthereumChain("0xaa36a7", true, &error, &error_message));
   EXPECT_EQ(error, mojom::ProviderError::kSuccess);
   EXPECT_TRUE(error_message.empty());
   EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
@@ -2671,8 +2677,9 @@ TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
   EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
-  json_rpc_service()->NotifySwitchChainRequestProcessed(
-      GetPendingSwitchChainRequestId(), true);
+  const auto request_id = GetPendingSwitchChainRequestId();
+  ASSERT_TRUE(request_id);
+  json_rpc_service()->NotifySwitchChainRequestProcessed(*request_id, true);
   auto switch_response = switch_future.Take();
   GetErrorCodeMessage(std::move(switch_response->formed_response), &error,
                       &error_message);
@@ -2698,13 +2705,14 @@ TEST_F(EthereumProviderImplUnitTest,
 
   // The custom network is removed while the switch request is still
   // pending, so SetNetwork fails when the switch is later approved.
-  std::string request_id = GetPendingSwitchChainRequestId();
+  const auto request_id = GetPendingSwitchChainRequestId();
+  ASSERT_TRUE(request_id);
   base::test::TestFuture<bool> remove_future;
   json_rpc_service()->RemoveChain(chain_id, mojom::CoinType::ETH,
                                   remove_future.GetCallback());
   EXPECT_TRUE(remove_future.Wait());
 
-  json_rpc_service()->NotifySwitchChainRequestProcessed(request_id, true);
+  json_rpc_service()->NotifySwitchChainRequestProcessed(*request_id, true);
   auto switch_response = switch_future.Take();
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
@@ -2734,8 +2742,9 @@ TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInactive) {
   provider()->AddEthereumChain(ParamsListFromJson(params), future.GetCallback(),
                                base::Value());
   EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
-  json_rpc_service()->NotifySwitchChainRequestProcessed(
-      GetPendingSwitchChainRequestId(), true);
+  const auto request_id = GetPendingSwitchChainRequestId();
+  ASSERT_TRUE(request_id);
+  json_rpc_service()->NotifySwitchChainRequestProcessed(*request_id, true);
   auto response = future.Take();
   mojom::ProviderError error_code;
   std::string error_message;

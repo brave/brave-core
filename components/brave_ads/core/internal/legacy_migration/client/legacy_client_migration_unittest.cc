@@ -121,10 +121,14 @@ TEST_F(BraveAdsLegacyClientMigrationTest, MigrateWhenClientStateIsMalformed) {
 
   EXPECT_CALL(ads_client_mock_, Remove(kClientJsonFilename, ::testing::_));
 
-  // Act & Assert
+  // Act
   base::test::TestFuture<bool> test_future;
   MigrateClientState(test_future.GetCallback());
-  EXPECT_TRUE(test_future.Get());
+  ASSERT_TRUE(test_future.Get());
+
+  // Assert
+  EXPECT_EQ(0U, GetPurchaseIntentSignalHistorySegmentCount());
+  EXPECT_EQ(0U, GetTextClassificationProbabilitiesVisitCount());
 }
 
 TEST_F(BraveAdsLegacyClientMigrationTest, MigrateWhenClientStateDoesNotExist) {

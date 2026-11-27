@@ -131,6 +131,10 @@ TEST_F(CustomizationSettingsHandlerTest, SetCustomizations_InvalidLength) {
   ASSERT_TRUE(future.Get().has_value());
   EXPECT_EQ(future.Get().value(),
             mojom::CustomizationOperationError::kInvalidLength);
+
+  // Nothing should have been stored.
+  EXPECT_EQ(prefs::GetCustomizationsFromPrefs(*pref_service_),
+            mojom::Customizations::New());
 }
 
 TEST_F(CustomizationSettingsHandlerTest, AddMemory_Valid) {
@@ -244,6 +248,8 @@ TEST_F(CustomizationSettingsHandlerTest, EditMemory_Success) {
 }
 
 TEST_F(CustomizationSettingsHandlerTest, EditMemory_NotFound) {
+  prefs::AddMemoryToPrefs("Existing memory", *pref_service_);
+
   base::test::TestFuture<std::optional<mojom::CustomizationOperationError>>
       future;
   handler_->EditMemory("Non-existent memory", "New memory",
@@ -252,6 +258,10 @@ TEST_F(CustomizationSettingsHandlerTest, EditMemory_NotFound) {
   std::optional<mojom::CustomizationOperationError> error = future.Get();
   ASSERT_TRUE(error.has_value());
   EXPECT_EQ(error.value(), mojom::CustomizationOperationError::kNotFound);
+
+  // The new memory must not be inserted and existing ones left untouched.
+  EXPECT_EQ(prefs::GetMemoriesFromPrefs(*pref_service_),
+            std::vector<std::string>{"Existing memory"});
 }
 
 TEST_F(CustomizationSettingsHandlerTest, EditMemory_EmptyNewMemory) {

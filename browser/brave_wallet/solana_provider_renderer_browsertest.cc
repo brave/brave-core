@@ -1027,7 +1027,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Request) {
   const std::string request3 =
       base::StrCat({"(", GetRequestObject("signTransaction"), ", 123)"});
   auto result3 = EvalJs(web_contents(browser()), RequestScript(request3));
-  EXPECT_EQ(base::Value(true), result2);
+  EXPECT_EQ(base::Value(true), result3);
 
   // no arg
   auto result4 = EvalJs(web_contents(browser()), RequestScript("()"));

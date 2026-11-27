@@ -11,12 +11,17 @@
 #include <signal.h>
 #endif
 
+#include <utility>
+
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/process/kill.h"
-#include "base/run_loop.h"
+#include "base/process/process_handle.h"
 #include "base/task/sequenced_task_runner.h"
-#include "base/test/bind.h"
 #include "base/test/multiprocess_test.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/test_timeouts.h"
 #include "base/threading/platform_thread.h"
 #include "build/build_config.h"
@@ -33,12 +38,27 @@ void WaitForChildTermination(base::ProcessHandle handle) {
     base::PlatformThread::Sleep(base::Milliseconds(30));
   } while (status == base::TERMINATION_STATUS_STILL_RUNNING);
 }
+
+void ExpectSequenceAndForward(
+    scoped_refptr<base::SequencedTaskRunner> expected_runner,
+    base::OnceCallback<void(base::ProcessId)> callback,
+    base::ProcessId pid) {
+  EXPECT_TRUE(expected_runner->RunsTasksInCurrentSequence());
+  std::move(callback).Run(pid);
+}
 }  // namespace
 
 class ChildProcessMonitorTest : public base::MultiProcessTest {
  protected:
   void SetUp() override {
     callback_runner_ = base::SequencedTaskRunner::GetCurrentDefault();
+  }
+
+  // Checks that the monitor runs |callback| on |callback_runner_|.
+  base::OnceCallback<void(base::ProcessId)> OnCallbackSequence(
+      base::OnceCallback<void(base::ProcessId)> callback) {
+    return base::BindOnce(&ExpectSequenceAndForward, callback_runner_,
+                          std::move(callback));
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -56,16 +76,11 @@ TEST_F(ChildProcessMonitorTest, Terminate) {
       std::make_unique<ChildProcessMonitor>();
 
   base::Process process = SpawnChild("NeverDieChildProcess");
-  base::RunLoop run_loop;
-  monitor->Start(process.Duplicate(),
-                 base::BindLambdaForTesting([&](base::ProcessId pid) {
-                   EXPECT_TRUE(callback_runner_->RunsTasksInCurrentSequence());
-                   EXPECT_EQ(pid, process.Pid());
-                   run_loop.Quit();
-                 }));
+  base::test::TestFuture<base::ProcessId> future;
+  monitor->Start(process.Duplicate(), OnCallbackSequence(future.GetCallback()));
   process.Terminate(0, false);
   WaitForChildTermination(process.Handle());
-  run_loop.Run();
+  EXPECT_EQ(future.Get(), process.Pid());
 }
 
 TEST_F(ChildProcessMonitorTest, Kill) {
@@ -73,13 +88,8 @@ TEST_F(ChildProcessMonitorTest, Kill) {
       std::make_unique<ChildProcessMonitor>();
 
   base::Process process = SpawnChild("NeverDieChildProcess");
-  base::RunLoop run_loop;
-  monitor->Start(process.Duplicate(),
-                 base::BindLambdaForTesting([&](base::ProcessId pid) {
-                   EXPECT_TRUE(callback_runner_->RunsTasksInCurrentSequence());
-                   EXPECT_EQ(pid, process.Pid());
-                   run_loop.Quit();
-                 }));
+  base::test::TestFuture<base::ProcessId> future;
+  monitor->Start(process.Duplicate(), OnCallbackSequence(future.GetCallback()));
 #if BUILDFLAG(IS_WIN)
   HANDLE handle = ::OpenProcess(PROCESS_ALL_ACCESS, 0, process.Pid());
   ::TerminateProcess(handle, 1);
@@ -87,7 +97,7 @@ TEST_F(ChildProcessMonitorTest, Kill) {
   ::kill(process.Pid(), SIGKILL);
 #endif
   WaitForChildTermination(process.Handle());
-  run_loop.Run();
+  EXPECT_EQ(future.Get(), process.Pid());
 }
 
 MULTIPROCESS_TEST_MAIN(FastSleepyChildProcess) {
@@ -102,21 +112,9 @@ TEST_F(ChildProcessMonitorTest, ChildExit) {
   base::Process process = SpawnChild("FastSleepyChildProcess");
 
   // Set up monitor before the child process has a chance to exit
-  base::RunLoop run_loop;
-  monitor->Start(process.Duplicate(),
-                 base::BindLambdaForTesting([&](base::ProcessId pid) {
-                   EXPECT_TRUE(callback_runner_->RunsTasksInCurrentSequence());
-                   EXPECT_EQ(pid, process.Pid());
-                   run_loop.Quit();
-                 }));
-
-  // Wait for the callback with a reasonable timeout to prevent test hanging
-  base::RunLoop timeout_loop;
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, timeout_loop.QuitClosure(), TestTimeouts::action_timeout());
-
-  // Race the callback against the timeout
-  run_loop.Run();
+  base::test::TestFuture<base::ProcessId> future;
+  monitor->Start(process.Duplicate(), OnCallbackSequence(future.GetCallback()));
+  EXPECT_EQ(future.Get(), process.Pid());
 
   WaitForChildTermination(process.Handle());
 }
@@ -141,21 +139,9 @@ TEST_F(ChildProcessMonitorTest, ChildCrash) {
   base::Process process = SpawnChild("SleepyCrashChildProcess");
 
   // Set up monitor immediately after spawning to avoid race condition
-  base::RunLoop run_loop;
-  monitor->Start(process.Duplicate(),
-                 base::BindLambdaForTesting([&](base::ProcessId pid) {
-                   EXPECT_TRUE(callback_runner_->RunsTasksInCurrentSequence());
-                   EXPECT_EQ(pid, process.Pid());
-                   run_loop.Quit();
-                 }));
-
-  // Wait for the callback with a reasonable timeout to prevent test hanging
-  base::RunLoop timeout_loop;
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, timeout_loop.QuitClosure(), TestTimeouts::action_timeout());
-
-  // Race the callback against the timeout
-  run_loop.Run();
+  base::test::TestFuture<base::ProcessId> future;
+  monitor->Start(process.Duplicate(), OnCallbackSequence(future.GetCallback()));
+  EXPECT_EQ(future.Get(), process.Pid());
 
   WaitForChildTermination(process.Handle());
 }

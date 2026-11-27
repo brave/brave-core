@@ -17,6 +17,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/test/scoped_feature_list.h"
@@ -115,7 +116,10 @@ std::unique_ptr<net::test_server::HttpResponse> HandleDownloadRequest(
     test_file = &kPngExtAndJpegMimeFile;
     contents = kFakeJpegContents;
   } else {
-    return nullptr;
+    // Download navigations don't commit, so no favicon or other subresource
+    // requests are expected.
+    NOTREACHED() << "Unhandled request: " << request.relative_url
+                 << " body: " << request.content;
   }
 
   auto response = std::make_unique<net::test_server::BasicHttpResponse>();

@@ -18,16 +18,17 @@
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_builder.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
 
 constexpr char kSnowflakeExtensionId[] = "mafpmfcccpbjnhfhjnllmmalhifmlcie";
 
-bool ClickSnowflakeToggle(content::WebContents* web_contents) {
-  return EvalJs(web_contents,
-                "window.testing.torSubpage.getElementById('torSnowflake')."
-                "click()")
-      .is_ok();
+[[nodiscard]] testing::AssertionResult ClickSnowflakeToggle(
+    content::WebContents* web_contents) {
+  return content::ExecJs(
+      web_contents,
+      "window.testing.torSubpage.getElementById('torSnowflake').click()");
 }
 
 bool IsSnowflakeToggled(content::WebContents* web_contents) {
@@ -105,7 +106,7 @@ IN_PROC_BROWSER_TEST_F(TorSnowflakeExtensionBrowserTest, InstallFail) {
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   content::WebContentsConsoleObserver console_observer(web_contents);
   console_observer.SetPattern("Could not fetch data from the Chrome Web Store");
-  ClickSnowflakeToggle(web_contents);
+  ASSERT_TRUE(ClickSnowflakeToggle(web_contents));
   ASSERT_TRUE(console_observer.Wait());
   EXPECT_FALSE(IsSnowflakeToggled(web_contents));
   EXPECT_TRUE(IsSnowflakeToggleEnabled(web_contents));
@@ -135,12 +136,12 @@ IN_PROC_BROWSER_TEST_F(TorSnowflakeExtensionBrowserTest,
   }
 
   // enable from settings.
-  ClickSnowflakeToggle(web_contents);
+  ASSERT_TRUE(ClickSnowflakeToggle(web_contents));
   EXPECT_TRUE(IsSnowflakeToggled(web_contents));
   EXPECT_TRUE(IsSnowflakeInstalled());
 
   // disabled from settings -> uninstalled.
-  ClickSnowflakeToggle(web_contents);
+  ASSERT_TRUE(ClickSnowflakeToggle(web_contents));
   EXPECT_FALSE(IsSnowflakeToggled(web_contents));
   EXPECT_FALSE(IsSnowflakeInstalled());
 }

@@ -7,9 +7,11 @@
 #include <utility>
 
 #include "base/functional/callback_helpers.h"
+#include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/split_view/split_view_features.h"
@@ -1023,12 +1025,12 @@ class LoadObserver : public content::WebContentsObserver {
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
   NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  ASSERT_EQ(2, tab_strip_model->count());
   content::WaitForLoadStop(GetWebContentsAt(0));
   content::WaitForLoadStop(GetWebContentsAt(1));
 
-  auto* tab_strip_model = browser()->tab_strip_model();
   EXPECT_EQ(1, tab_strip_model->active_index());
-  EXPECT_EQ(2, tab_strip_model->count());
   EXPECT_TRUE(IsSplitTabAt(0));
   EXPECT_TRUE(IsSplitTabAt(1));
 
@@ -1047,9 +1049,9 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
 
   // Create another active tab.
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  ASSERT_EQ(3, tab_strip_model->count());
   content::WaitForLoadStop(GetWebContentsAt(2));
   EXPECT_EQ(2, tab_strip_model->active_index());
-  EXPECT_EQ(3, tab_strip_model->count());
   EXPECT_FALSE(IsSplitTabAt(2));
 
   // Check only non-split active tab is loaded.
@@ -1109,8 +1111,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewCloseTabTest) {
   NewSplitTab();
 
   auto* tab_strip_model = browser()->tab_strip_model();
+  ASSERT_EQ(2, tab_strip_model->count());
   EXPECT_EQ(1, tab_strip_model->active_index());
-  EXPECT_EQ(2, tab_strip_model->count());
   EXPECT_TRUE(IsSplitTabAt(0));
   EXPECT_TRUE(IsSplitTabAt(1));
 
@@ -1124,8 +1126,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewCloseTabTest) {
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
   NewSplitTab();
 
+  ASSERT_EQ(3, tab_strip_model->count());
   EXPECT_EQ(2, tab_strip_model->active_index());
-  EXPECT_EQ(3, tab_strip_model->count());
   EXPECT_TRUE(IsSplitTabAt(1));
   EXPECT_TRUE(IsSplitTabAt(2));
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
@@ -1188,8 +1190,12 @@ class SplitViewLinkTest : public SplitViewBrowserTest {
       response->set_code(net::HTTP_OK);
       response->set_content_type("text/html");
       response->set_content(BuildEchoRequestPage(request));
+    } else if (request.relative_url == "/favicon.ico") {
+      // Requested by the browser for every page; none is served.
+      response->set_code(net::HTTP_NOT_FOUND);
     } else {
-      return nullptr;
+      NOTREACHED() << "Unhandled request: " << request.relative_url
+                   << " body: " << request.content;
     }
     return response;
   }
@@ -1315,12 +1321,12 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
   // Set up split view
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
-  EXPECT_EQ(2, tab_strip_model->count());
+  ASSERT_EQ(2, tab_strip_model->count());
   EXPECT_TRUE(IsSplitTabAt(0));
   EXPECT_TRUE(IsSplitTabAt(1));
 
   // Link the split view
-  SetSplitViewLinked(true);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(true));
   EXPECT_TRUE(IsSplitViewLinked());
 
   // Navigate left pane to test page
@@ -1354,12 +1360,12 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
   // Set up split view
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
-  EXPECT_EQ(2, tab_strip_model->count());
+  ASSERT_EQ(2, tab_strip_model->count());
   EXPECT_TRUE(IsSplitTabAt(0));
   EXPECT_TRUE(IsSplitTabAt(1));
 
   // Don't link the split view
-  SetSplitViewLinked(false);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(false));
   EXPECT_FALSE(IsSplitViewLinked());
 
   // Navigate left pane to test page
@@ -1419,12 +1425,12 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
   // Set up split view
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
-  EXPECT_EQ(2, tab_strip_model->count());
+  ASSERT_EQ(2, tab_strip_model->count());
   EXPECT_TRUE(IsSplitTabAt(0));
   EXPECT_TRUE(IsSplitTabAt(1));
 
   // Link the split view
-  SetSplitViewLinked(true);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(true));
   EXPECT_TRUE(IsSplitViewLinked());
 
   // Navigate left pane to test page
@@ -1455,12 +1461,12 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
   // Set up split view
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
-  EXPECT_EQ(2, tab_strip_model->count());
+  ASSERT_EQ(2, tab_strip_model->count());
   EXPECT_TRUE(IsSplitTabAt(0));
   EXPECT_TRUE(IsSplitTabAt(1));
 
   // Don't link the split view
-  SetSplitViewLinked(false);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(false));
   EXPECT_FALSE(IsSplitViewLinked());
 
   // Navigate left pane to test page
@@ -1507,10 +1513,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, PostFormDoesNotRedirect) {
   // Set up split view
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
-  EXPECT_EQ(2, tab_strip_model->count());
+  ASSERT_EQ(2, tab_strip_model->count());
 
   // Link the split view
-  SetSplitViewLinked(true);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(true));
   EXPECT_TRUE(IsSplitViewLinked());
 
   // Navigate left pane to test page
@@ -1535,10 +1541,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
   // Set up split view
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
-  EXPECT_EQ(2, tab_strip_model->count());
+  ASSERT_EQ(2, tab_strip_model->count());
 
   // Link the split view
-  SetSplitViewLinked(true);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(true));
   EXPECT_TRUE(IsSplitViewLinked());
 
   // Navigate left pane to test page
@@ -1573,10 +1579,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, RightPaneNavigationDoesNotRedirect) {
   // Set up split view
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
-  EXPECT_EQ(2, tab_strip_model->count());
+  ASSERT_EQ(2, tab_strip_model->count());
 
   // Link the split view
-  SetSplitViewLinked(true);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(true));
   EXPECT_TRUE(IsSplitViewLinked());
 
   // Navigate right pane to test page
@@ -1601,12 +1607,12 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
   // Set up split view
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
-  EXPECT_EQ(2, tab_strip_model->count());
+  ASSERT_EQ(2, tab_strip_model->count());
   EXPECT_TRUE(IsSplitTabAt(0));
   EXPECT_TRUE(IsSplitTabAt(1));
 
   // Link the split view
-  SetSplitViewLinked(true);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(true));
   EXPECT_TRUE(IsSplitViewLinked());
 
   // Navigate left pane to test page
@@ -1669,12 +1675,12 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, WindowOpenVariationsWhenRedirected) {
   // Set up split view
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
-  EXPECT_EQ(2, tab_strip_model->count());
+  ASSERT_EQ(2, tab_strip_model->count());
   EXPECT_TRUE(IsSplitTabAt(0));
   EXPECT_TRUE(IsSplitTabAt(1));
 
   // Link the split view
-  SetSplitViewLinked(true);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(true));
   EXPECT_TRUE(IsSplitViewLinked());
 
   // Navigate left pane to test page
@@ -1763,12 +1769,12 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
   // Set up split view
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
-  EXPECT_EQ(2, tab_strip_model->count());
+  ASSERT_EQ(2, tab_strip_model->count());
   EXPECT_TRUE(IsSplitTabAt(0));
   EXPECT_TRUE(IsSplitTabAt(1));
 
   // Link the split view
-  SetSplitViewLinked(true);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(true));
   EXPECT_TRUE(IsSplitViewLinked());
 
   // Navigate left pane to test page
@@ -1887,11 +1893,11 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
 // split view a CSRF bypass.
 IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, CrossSiteLinkRedirectKeepsInitiator) {
   NewSplitTab();
-  SetSplitViewLinked(true);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(true));
   ASSERT_TRUE(IsSplitViewLinked());
 
   const GURL echo_url = GetSecureEchoRequestURL("b.com");
-  SetSameSiteCookies(echo_url);
+  ASSERT_NO_FATAL_FAILURE(SetSameSiteCookies(echo_url));
 
   content::WebContents* left_pane = GetLeftPaneContents();
   ASSERT_TRUE(left_pane);
@@ -1901,7 +1907,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, CrossSiteLinkRedirectKeepsInitiator) {
   content::WebContents* right_pane = GetRightPaneContents();
   ASSERT_TRUE(right_pane);
   content::TestNavigationObserver right_pane_observer(right_pane);
-  ClickLinkTo(left_pane, echo_url, /*target_blank=*/false);
+  ASSERT_NO_FATAL_FAILURE(
+      ClickLinkTo(left_pane, echo_url, /*target_blank=*/false));
   right_pane_observer.Wait();
 
   ASSERT_EQ(echo_url, right_pane->GetLastCommittedURL());
@@ -1915,11 +1922,11 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
                        CrossSiteTargetBlankLinkRedirectKeepsInitiator) {
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
-  SetSplitViewLinked(true);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(true));
   ASSERT_TRUE(IsSplitViewLinked());
 
   const GURL echo_url = GetSecureEchoRequestURL("b.com");
-  SetSameSiteCookies(echo_url);
+  ASSERT_NO_FATAL_FAILURE(SetSameSiteCookies(echo_url));
 
   content::WebContents* left_pane = GetLeftPaneContents();
   ASSERT_TRUE(left_pane);
@@ -1929,7 +1936,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
   content::WebContents* right_pane = GetRightPaneContents();
   ASSERT_TRUE(right_pane);
   content::TestNavigationObserver right_pane_observer(right_pane);
-  ClickLinkTo(left_pane, echo_url, /*target_blank=*/true);
+  ASSERT_NO_FATAL_FAILURE(
+      ClickLinkTo(left_pane, echo_url, /*target_blank=*/true));
   right_pane_observer.Wait();
 
   ASSERT_EQ(echo_url, right_pane->GetLastCommittedURL());
@@ -1944,11 +1952,11 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
 IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
                        SameOriginLinkRedirectStillSendsStrictCookies) {
   NewSplitTab();
-  SetSplitViewLinked(true);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(true));
   ASSERT_TRUE(IsSplitViewLinked());
 
   const GURL echo_url = GetSecureEchoRequestURL("example.com");
-  SetSameSiteCookies(echo_url);
+  ASSERT_NO_FATAL_FAILURE(SetSameSiteCookies(echo_url));
 
   content::WebContents* left_pane = GetLeftPaneContents();
   ASSERT_TRUE(left_pane);
@@ -1958,7 +1966,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
   content::WebContents* right_pane = GetRightPaneContents();
   ASSERT_TRUE(right_pane);
   content::TestNavigationObserver right_pane_observer(right_pane);
-  ClickLinkTo(left_pane, echo_url, /*target_blank=*/false);
+  ASSERT_NO_FATAL_FAILURE(
+      ClickLinkTo(left_pane, echo_url, /*target_blank=*/false));
   right_pane_observer.Wait();
 
   ASSERT_EQ(echo_url, right_pane->GetLastCommittedURL());
@@ -1972,9 +1981,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
 class SplitViewLinkDisabledTest : public SplitViewLinkTest {
  public:
   SplitViewLinkDisabledTest() {
-    // Override parent class to explicitly disable the split view link feature
-    // Reset as disabled is by default.
+    // Override parent class to explicitly disable the split view link feature.
     scoped_features_.Reset();
+    scoped_features_.InitAndDisableFeature(
+        split_view::features::kSplitViewLink);
   }
   ~SplitViewLinkDisabledTest() override = default;
 };
@@ -1986,12 +1996,12 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkDisabledTest,
   // Set up split view
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
-  EXPECT_EQ(2, tab_strip_model->count());
+  ASSERT_EQ(2, tab_strip_model->count());
   EXPECT_TRUE(IsSplitTabAt(0));
   EXPECT_TRUE(IsSplitTabAt(1));
 
   // Link the split view
-  SetSplitViewLinked(true);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(true));
 
   // Navigate left pane to test page
   content::WebContents* left_pane = GetLeftPaneContents();
@@ -2027,12 +2037,12 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkDisabledTest,
   // Set up split view
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
-  EXPECT_EQ(2, tab_strip_model->count());
+  ASSERT_EQ(2, tab_strip_model->count());
   EXPECT_TRUE(IsSplitTabAt(0));
   EXPECT_TRUE(IsSplitTabAt(1));
 
   // Link the split view
-  SetSplitViewLinked(true);
+  ASSERT_NO_FATAL_FAILURE(SetSplitViewLinked(true));
 
   // Navigate left pane to test page
   content::WebContents* left_pane = GetLeftPaneContents();

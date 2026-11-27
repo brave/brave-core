@@ -254,6 +254,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
   // necessity of extracting media from background web contents.
   auto* tab_helper = playlist::PlaylistTabHelper::From(
       tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
+  ASSERT_TRUE(tab_helper);
   ASSERT_EQ(tab_helper->found_items().size(), 1u);
   ASSERT_FALSE(tab_helper->found_items()[0]->is_blob_from_media_source);
 
@@ -273,15 +274,16 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
   EXPECT_TRUE(add_bubble->scroll_view_->GetVisible());
   auto selected_items = add_bubble->list_view_->GetSelected();
   EXPECT_EQ(selected_items.size(), tab_helper->found_items().size());
-  EXPECT_EQ(selected_items.size(), 1u);
+  ASSERT_EQ(selected_items.size(), 1u);
   EXPECT_EQ(selected_items.front()->media_source,
             tab_helper->found_items().front()->media_source);
 
   action_bubble->Accept();
 
   // Checks if the added items are shown on playlist web ui.
-  ActivatePlaylistSidePanel();
+  ASSERT_NO_FATAL_FAILURE(ActivatePlaylistSidePanel());
   auto* playlist_web_contents = GetPlaylistWebContents();
+  ASSERT_TRUE(playlist_web_contents);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return !playlist_web_contents->IsLoading(); }));
 
@@ -445,7 +447,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, UIHiddenWhenDisabled) {
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
   auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
       tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
-  EXPECT_TRUE(playlist_tab_helper);
+  ASSERT_TRUE(playlist_tab_helper);
   EXPECT_TRUE(playlist_tab_helper->found_items().empty());
 
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(),
@@ -541,6 +543,7 @@ IN_PROC_BROWSER_TEST_F(
   auto playlist_icon = GetPlaylistIcon();
   auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
       tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
+  ASSERT_TRUE(playlist_tab_helper);
 
   EXPECT_FALSE(playlist_icon.GetVisible());
   const GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
@@ -548,12 +551,12 @@ IN_PROC_BROWSER_TEST_F(
   WaitUntil(
       base::BindLambdaForTesting([&] { return playlist_icon.GetVisible(); }));
 
-  EXPECT_EQ(playlist_tab_helper->found_items().size(), 1u);
+  ASSERT_EQ(playlist_tab_helper->found_items().size(), 1u);
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
 
   location_bar_view->ShowPlaylistBubble();
   auto* add_bubble = views::AsViewClass<PlaylistAddBubbleView>(GetBubble());
-  EXPECT_TRUE(add_bubble);
+  ASSERT_TRUE(add_bubble);
   add_bubble->Accept();
 
   WaitUntil(base::BindLambdaForTesting([&] {
@@ -561,7 +564,7 @@ IN_PROC_BROWSER_TEST_F(
     return bubble && !views::IsViewClass<PlaylistAddBubbleView>(bubble);
   }));
 
-  EXPECT_EQ(playlist_tab_helper->saved_items().size(), 1u);
+  ASSERT_EQ(playlist_tab_helper->saved_items().size(), 1u);
   EXPECT_FALSE(
       playlist_tab_helper->saved_items()[0]->is_blob_from_media_source);
 }
@@ -589,6 +592,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
   auto playlist_icon = GetPlaylistIcon();
   auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
       tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
+  ASSERT_TRUE(playlist_tab_helper);
 
   EXPECT_FALSE(playlist_icon.GetVisible());
   const GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
@@ -596,12 +600,12 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
   WaitUntil(
       base::BindLambdaForTesting([&] { return playlist_icon.GetVisible(); }));
 
-  EXPECT_EQ(playlist_tab_helper->found_items().size(), 1u);
+  ASSERT_EQ(playlist_tab_helper->found_items().size(), 1u);
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
 
   location_bar_view->ShowPlaylistBubble();
   auto* add_bubble = views::AsViewClass<PlaylistAddBubbleView>(GetBubble());
-  EXPECT_TRUE(add_bubble);
+  ASSERT_TRUE(add_bubble);
   add_bubble->Accept();
   EXPECT_TRUE(add_bubble->loading_spinner_->GetVisible());
 
@@ -642,6 +646,7 @@ IN_PROC_BROWSER_TEST_F(
   auto playlist_icon = GetPlaylistIcon();
   auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
       tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
+  ASSERT_TRUE(playlist_tab_helper);
 
   EXPECT_FALSE(playlist_icon.GetVisible());
   const GURL url = https_server()->GetURL("www.ted.com", "/v12345");
@@ -649,12 +654,12 @@ IN_PROC_BROWSER_TEST_F(
   WaitUntil(
       base::BindLambdaForTesting([&] { return playlist_icon.GetVisible(); }));
 
-  EXPECT_EQ(playlist_tab_helper->found_items().size(), 1u);
+  ASSERT_EQ(playlist_tab_helper->found_items().size(), 1u);
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
 
   location_bar_view->ShowPlaylistBubble();
   auto* add_bubble = views::AsViewClass<PlaylistAddBubbleView>(GetBubble());
-  EXPECT_TRUE(add_bubble);
+  ASSERT_TRUE(add_bubble);
   add_bubble->Accept();
 
   WaitUntil(base::BindLambdaForTesting([&] {
@@ -662,7 +667,7 @@ IN_PROC_BROWSER_TEST_F(
     return bubble && !views::IsViewClass<PlaylistAddBubbleView>(bubble);
   }));
 
-  EXPECT_EQ(playlist_tab_helper->saved_items().size(), 1u);
+  ASSERT_EQ(playlist_tab_helper->saved_items().size(), 1u);
   EXPECT_FALSE(
       playlist_tab_helper->saved_items()[0]->is_blob_from_media_source);
 }
@@ -692,6 +697,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
 
   auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
       tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
+  ASSERT_TRUE(playlist_tab_helper);
   WaitUntil(base::BindLambdaForTesting(
       [&] { return playlist_tab_helper->found_items().size() == 1; }));
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
@@ -742,6 +748,7 @@ IN_PROC_BROWSER_TEST_F(
 
   auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
       tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
+  ASSERT_TRUE(playlist_tab_helper);
   WaitUntil(base::BindLambdaForTesting(
       [&] { return playlist_tab_helper->found_items().size() == 1; }));
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);

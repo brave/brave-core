@@ -130,14 +130,13 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
   std::unique_ptr<net::test_server::HttpResponse> HandleTestRequest(
       const net::test_server::HttpRequest& request) {
-    if (request.relative_url == "/test") {
-      ADD_FAILURE() << "Request should have been blocked";
-      auto response = std::make_unique<net::test_server::BasicHttpResponse>();
-      response->set_code(net::HTTP_OK);
-      response->set_content("test response");
-      return response;
-    }
-    return nullptr;
+    // The sandbox must block every request, so none should reach this server.
+    ADD_FAILURE() << "Request should have been blocked: "
+                  << request.relative_url << " body: " << request.content;
+    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+    response->set_code(net::HTTP_OK);
+    response->set_content("test response");
+    return response;
   }
 
   net::EmbeddedTestServer http_server_;

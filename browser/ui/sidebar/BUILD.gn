@@ -158,6 +158,7 @@ source_set("browser_tests") {
     ":test_support",
     "//base",
     "//base/i18n:test_support",
+    "//base/test:test_support",
     "//brave/app:command_ids",
     "//brave/browser/ui",
     "//brave/browser/ui:brave_tab_prefs",

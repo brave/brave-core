@@ -11,8 +11,9 @@
 #include <utility>
 #include <variant>
 
+#include "base/check.h"
 #include "base/command_line.h"
-#include "base/logging.h"
+#include "base/notreached.h"
 #include "base/test/bind.h"
 #include "base/test/test_future.h"
 #include "chrome/browser/browser_process.h"
@@ -89,7 +90,6 @@ class DirectFeedFetcherBrowserTest : public InProcessBrowserTest {
     auto feed_handler = base::BindLambdaForTesting(
         [](const net::test_server::HttpRequest& request)
             -> std::unique_ptr<net::test_server::HttpResponse> {
-          LOG(ERROR) << "request to https " << request.GetURL().path();
           if (request.GetURL().path() == "/feed") {
             auto response =
                 std::make_unique<net::test_server::BasicHttpResponse>();
@@ -104,7 +104,8 @@ class DirectFeedFetcherBrowserTest : public InProcessBrowserTest {
             response->AddCustomHeader("Location", "/feed");
             return response;
           }
-          return nullptr;
+          NOTREACHED() << "Unhandled request: " << request.relative_url
+                       << " body: " << request.content;
         });
     https_server_.RegisterRequestHandler(feed_handler);
     public_server_.RegisterRequestHandler(feed_handler);
