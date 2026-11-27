@@ -14,6 +14,7 @@
 #include "base/values.h"
 #include "build/build_config.h"
 #include "components/user_data_importer/common/importer_type.h"
+#include "components/version_info/channel.h"
 #include "extensions/buildflags/buildflags.h"
 
 // Chrome / Chromium paths
@@ -33,7 +34,41 @@ base::FilePath GetVivaldiUserDataFolder();
 base::FilePath GetOperaUserDataFolder();
 base::FilePath GetYandexUserDataFolder();
 base::FilePath GetWhaleUserDataFolder();
-base::FilePath GetBraveUserDataFolder();
+
+// The two Brave product families that install side-by-side with separate user
+// data directories: Brave Browser ("Brave-Browser") and Brave Origin
+// ("Brave-Origin"). Each ships the same set of release channels.
+enum class BraveImporterProduct {
+  kBraveBrowser,
+  kBraveOrigin,
+};
+
+// Returns the leaf user-data directory name for a Brave product/channel combo,
+// e.g. "Brave-Browser", "Brave-Browser-Beta", "Brave-Origin-Nightly". The
+// STABLE and UNKNOWN channels use the unsuffixed base name.
+std::string GetBraveUserDataDirName(BraveImporterProduct product,
+                                    version_info::Channel channel);
+
+// Returns the user data folder for the given Brave product and release channel.
+base::FilePath GetBraveUserDataFolder(
+    BraveImporterProduct product = BraveImporterProduct::kBraveBrowser,
+    version_info::Channel channel = version_info::Channel::STABLE);
+
+// A Brave install (product + channel) that can be offered as an import source,
+// paired with the display name to show for it.
+struct BraveImporterSource {
+  BraveImporterProduct product;
+  version_info::Channel channel;
+  const char* name;
+};
+
+// Returns the Brave installs that should be offered as import sources: every
+// product/channel combination except the one currently running
+// (`current_product` + `current_channel`). A local developer build passes
+// UNKNOWN, which matches no shipping channel and therefore excludes nothing.
+std::vector<BraveImporterSource> GetBraveImporterSources(
+    BraveImporterProduct current_product,
+    version_info::Channel current_channel);
 
 #if BUILDFLAG(IS_LINUX)
 base::FilePath GetOperaSnapUserDataFolder();
