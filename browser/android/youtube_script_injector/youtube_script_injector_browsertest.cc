@@ -87,31 +87,31 @@ class YouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
                                      content::ISOLATED_WORLD_ID_GLOBAL);
   }
 
-  // Waits until the document's fullscreen state matches `expected`. Resolves
-  // on the 'fullscreenchange' event within a single EvalJs, so no polling and
-  // no leftover timeout task.
-  bool WaitForFullscreenState(content::WebContents* web_contents,
-                              bool expected) {
-    return content::EvalJs(web_contents, content::JsReplace(
-                                             R"(new Promise(resolve => {
-                        const matches = () =>
-                            (document.fullscreenElement !== null) === $1;
-                        if (matches()) {
-                          resolve(true);
-                          return;
-                        }
-                        const listener = () => {
-                          if (matches()) {
-                            document.removeEventListener('fullscreenchange',
-                                                         listener);
-                            resolve(true);
-                          }
-                        };
-                        document.addEventListener('fullscreenchange',
-                                                  listener);
-                      }))",
-                                             expected))
-        .ExtractBool();
+  content::EvalJsResult WaitForFullscreenState(bool expected) {
+    constexpr char kWaitForFullscreenState[] = R"(
+      new Promise(resolve => {
+        const matches = () => (document.fullscreenElement !== null) === $1;
+        if (matches()) {
+          resolve(true);
+          return;
+        }
+
+        function finish(matched) {
+          document.removeEventListener('fullscreenchange', onChange);
+          clearTimeout(timeout);
+          resolve(matched);
+        }
+        function onChange() {
+          if (matches()) {
+            finish(true);
+          }
+        }
+        const timeout = setTimeout(() => finish(false), 10000);
+        document.addEventListener('fullscreenchange', onChange);
+      })
+    )";
+    return content::EvalJs(
+        web_contents(), content::JsReplace(kWaitForFullscreenState, expected));
   }
 
   bool IsVideoPlaying() {
@@ -152,7 +152,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   content::WaitForResizeComplete(web_contents());
 
   // Check the video is in fullscreen mode.
-  EXPECT_TRUE(WaitForFullscreenState(web_contents(), true));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 }
 
 IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
@@ -186,7 +186,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   EXPECT_TRUE(IsVideoPlaying());
 
   // Check the video is in fullscreen mode.
-  EXPECT_TRUE(WaitForFullscreenState(web_contents(), true));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 
   // Check again the video is still playing.
   EXPECT_TRUE(IsVideoPlaying());
@@ -207,7 +207,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   // Wait for the resize to complete triggered by fullscreen change.
   content::WaitForResizeComplete(web_contents());
   // Assert the video is in fullscreen mode.
-  ASSERT_TRUE(WaitForFullscreenState(web_contents(), true));
+  ASSERT_EQ(true, WaitForFullscreenState(true));
 
   YouTubeScriptInjectorTabHelper* helper = YouTubeScriptInjectorTabHelper::From(
       tabs::TabInterface::MaybeGetFromContents(web_contents()));
@@ -216,7 +216,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   helper->MaybeSetFullScreenAndPictureInPictureMode();
 
   // Verify that the video is still in fullscreen mode.
-  EXPECT_TRUE(WaitForFullscreenState(web_contents(), true));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 }
 
 IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
@@ -303,7 +303,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
                   .ExtractBool());
 
   // Wait for the mutation observer to complete and trigger fullscreen mode.
-  EXPECT_TRUE(WaitForFullscreenState(web_contents(), true));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 }
 
 // The test is flaky on CI, but succeed on local environment including physical
@@ -326,17 +326,17 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   helper->MaybeSetFullScreenAndPictureInPictureMode();
 
   // Wait for fullscreen to be triggered.
-  EXPECT_TRUE(WaitForFullscreenState(web_contents(), true));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 
   // Exit fullscreen to prepare for second test.
   ASSERT_TRUE(content::ExecJs(web_contents(), "document.exitFullscreen()"));
-  EXPECT_TRUE(WaitForFullscreenState(web_contents(), false));
+  EXPECT_EQ(true, WaitForFullscreenState(false));
 
   // Second call should work the same as first call.
   helper->MaybeSetFullScreenAndPictureInPictureMode();
 
   // Wait again for fullscreen to be triggered.
-  EXPECT_TRUE(WaitForFullscreenState(web_contents(), true));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 }
 
 // Watching one YouTube video and then opening another is an ordinary flow, not
@@ -360,12 +360,12 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
 
   // The user triggers fullscreen and PiP on the first video.
   helper->MaybeSetFullScreenAndPictureInPictureMode();
-  EXPECT_TRUE(WaitForFullscreenState(web_contents(), true));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 
   // Exit fullscreen explicitly so this test does not assert browser fullscreen
   // behavior across navigations.
   ASSERT_TRUE(content::ExecJs(web_contents(), "document.exitFullscreen()"));
-  EXPECT_TRUE(WaitForFullscreenState(web_contents(), false));
+  EXPECT_EQ(true, WaitForFullscreenState(false));
 
   // The user moves on to a second, different video.
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url2, 1,
@@ -373,5 +373,5 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
 
   // The entry point must work on the second video just as it did on the first.
   helper->MaybeSetFullScreenAndPictureInPictureMode();
-  EXPECT_TRUE(WaitForFullscreenState(web_contents(), true));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 }
