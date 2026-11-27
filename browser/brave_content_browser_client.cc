@@ -116,6 +116,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/common/url_constants.h"
 #include "chrome/grit/branded_strings.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
@@ -160,6 +161,8 @@
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "third_party/blink/public/common/switches.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
+#include "third_party/blink/public/mojom/css/preferred_color_scheme.mojom-shared.h"
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -180,6 +183,7 @@
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_user_profile.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
@@ -1781,6 +1785,33 @@ bool UpdateGlobalPrivacyControlWebPreference(WebContents* web_contents,
   return true;
 }
 
+#if !BUILDFLAG(IS_ANDROID)
+// Night Mode only darkens web pages while they're rendered with a dark color
+// scheme, i.e. the browser theme is dark or follows a dark OS theme. WebUI is
+// excluded since it already has its own dark theme. Returns true if
+// `force_dark_mode_enabled` changed.
+bool UpdateForceDarkModeWebPreference(
+    WebContents* web_contents,
+    const content::SiteInstance& main_frame_site,
+    WebPreferences* web_prefs) {
+  // Like upstream, read the pref from the user profile: Top Chrome WebUIs may
+  // live in a shared profile that doesn't register it.
+  Profile* profile = webui::GetUserProfile(web_contents);
+
+  const bool force_dark_mode_enabled =
+      profile && !main_frame_site.GetSecurityPrincipal().IsWebUI() &&
+      profile->GetPrefs()->GetBoolean(prefs::kWebKitForceDarkModeEnabled) &&
+      web_prefs->preferred_color_scheme ==
+          blink::mojom::PreferredColorScheme::kDark;
+  if (web_prefs->force_dark_mode_enabled == force_dark_mode_enabled) {
+    return false;
+  }
+
+  web_prefs->force_dark_mode_enabled = force_dark_mode_enabled;
+  return true;
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 std::vector<url::Origin>
 BraveContentBrowserClient::GetOriginsRequiringDedicatedProcess() {
   std::vector<url::Origin> isolated_origin_list;
@@ -1811,6 +1842,10 @@ bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
   bool changed =
       ChromeContentBrowserClient::OverrideWebPreferencesAfterNavigation(
           web_contents, main_frame_site, prefs);
+#if !BUILDFLAG(IS_ANDROID)
+  changed |=
+      UpdateForceDarkModeWebPreference(web_contents, main_frame_site, prefs);
+#endif
 
   return UpdateGlobalPrivacyControlWebPreference(web_contents, prefs) ||
          changed;
@@ -1823,6 +1858,9 @@ void BraveContentBrowserClient::OverrideWebPreferences(
   ChromeContentBrowserClient::OverrideWebPreferences(
       web_contents, main_frame_site, web_prefs);
   UpdateGlobalPrivacyControlWebPreference(web_contents, web_prefs);
+#if !BUILDFLAG(IS_ANDROID)
+  UpdateForceDarkModeWebPreference(web_contents, main_frame_site, web_prefs);
+#endif
 
   // WebPreferences are rebuilt from defaults on every recompute (theme, font
   // and other pref changes), so derive `is_tor_window` here. Otherwise the

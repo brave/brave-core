@@ -6,9 +6,10 @@
 import { mangle } from 'lit_mangler'
 
 // Removes rows Brave either doesn't want, or already shows elsewhere (its own
-// toolbar settings, side panel section, or the Tabs settings page), and
-// appends <settings-brave-appearance-toolbar>, which holds the settings that
-// used to live inline here (e.g. "Use wide address bar").
+// toolbar settings, side panel section, or the Tabs settings page), adds the
+// Night Mode toggle below the Theme row, and appends
+// <settings-brave-appearance-toolbar>, which holds the settings that used to
+// live inline here (e.g. "Use wide address bar").
 mangle((root) => {
   const removeElementWithId = (id: string) => {
     const elem = root.getElementById(id)
@@ -84,6 +85,19 @@ mangle((root) => {
   removeElementWithId('autoPinNewTabGroups')
 
   removeElementWithId('splitViewDragAndDrop')
+
+  // Night Mode (force dark web content) sits right below the Theme row.
+  const themeRow = root.getElementById('themeRow')
+  if (!themeRow) {
+    throw new Error(`[Settings] Appearance page: couldn't find #themeRow`)
+  }
+  themeRow.insertAdjacentHTML(
+    'afterend',
+    `<settings-toggle-button id="forceDarkMode" class="hr"
+        pref-key="webkit.webprefs.force_dark_mode_enabled"
+        label="$i18n{forceDarkModeLabel}"
+        sub-label="$i18n{forceDarkModeSubLabel}">
+     </settings-toggle-button>`)
 
   // Note: #customize-fonts-subpage-trigger is hidden via CSS instead of
   // removed here (see the companion appearance_page.ts override), since

@@ -12,6 +12,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
@@ -22,9 +23,12 @@
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/common/buildflags.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -33,6 +37,7 @@
 #include "components/omnibox/browser/location_bar_model.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -41,6 +46,7 @@
 #include "extensions/common/constants.h"
 #include "extensions/common/manifest_handlers/background_info.h"
 #include "net/dns/mock_host_resolver.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/origin.h"
 
@@ -455,6 +461,72 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CheckExpectedExtensions) {
 
   // Brave Extension background page should be disabled by default.
   EXPECT_FALSE(extensions::BackgroundInfo::HasBackgroundPage(brave_extension));
+}
+
+// Night Mode should only force dark web content while the browser is using a
+// dark color scheme.
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                       ForceDarkModeOnlyAppliesWithDarkColorScheme) {
+  ThemeService* theme_service =
+      ThemeServiceFactory::GetForProfile(browser()->GetProfile());
+  PrefService* pref_service = browser()->GetProfile()->GetPrefs();
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  // Each step below flips the value, so waiting for it can't pass on a stale
+  // WebPreferences.
+  auto wait_for_force_dark = [&](bool expected) {
+    return base::test::RunUntil([&] {
+      return web_contents->GetOrCreateWebPreferences()
+                 .force_dark_mode_enabled == expected;
+    });
+  };
+
+  theme_service->SetBrowserColorScheme(ThemeService::BrowserColorScheme::kDark);
+  pref_service->SetBoolean(prefs::kWebKitForceDarkModeEnabled, true);
+  ASSERT_TRUE(wait_for_force_dark(true));
+
+  theme_service->SetBrowserColorScheme(
+      ThemeService::BrowserColorScheme::kLight);
+  ASSERT_TRUE(wait_for_force_dark(false));
+
+  theme_service->SetBrowserColorScheme(ThemeService::BrowserColorScheme::kDark);
+  ASSERT_TRUE(wait_for_force_dark(true));
+
+  pref_service->SetBoolean(prefs::kWebKitForceDarkModeEnabled, false);
+  ASSERT_TRUE(wait_for_force_dark(false));
+
+  pref_service->SetBoolean(prefs::kWebKitForceDarkModeEnabled, true);
+  ASSERT_TRUE(wait_for_force_dark(true));
+}
+
+// WebUI has its own dark theme, so Night Mode must not darken it.
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                       ForceDarkModeDoesNotApplyToWebUI) {
+  ThemeServiceFactory::GetForProfile(browser()->GetProfile())
+      ->SetBrowserColorScheme(ThemeService::BrowserColorScheme::kDark);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      prefs::kWebKitForceDarkModeEnabled, true);
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  auto wait_for_force_dark = [&](bool expected) {
+    return base::test::RunUntil([&] {
+      return web_contents->GetOrCreateWebPreferences()
+                 .force_dark_mode_enabled == expected;
+    });
+  };
+
+  const GURL web_url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), web_url));
+  ASSERT_TRUE(wait_for_force_dark(true));
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
+                                           GURL(chrome::kChromeUINewTabURL)));
+  ASSERT_TRUE(wait_for_force_dark(false));
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), web_url));
+  ASSERT_TRUE(wait_for_force_dark(true));
 }
 
 #if BUILDFLAG(IS_WIN)
