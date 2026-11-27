@@ -24,6 +24,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/views/sidebar/sidebar_edit_item_bubble_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
@@ -200,30 +201,51 @@ void SidebarItemsContentsView::ShowContextMenuForViewImpl(
       kItemEdit, l10n_util::GetStringUTF16(IDS_SIDEBAR_ITEM_CONTEXT_MENU_EDIT),
       ui::ImageModel::FromVectorIcon(kSidebarEditIcon, icon_color, 14));
 
-  const auto& items = sidebar_model_->GetAllSidebarItems();
-  const auto index = GetIndexOf(source);
-  const bool currently_web_panel =
-      index && *index < items.size() &&
-      items[*index].panel_type == sidebar::SidebarItem::PanelType::kWebPanel;
-  context_menu_model_->AddItemWithIcon(
-      kItemToggleOpenInPanel,
-      l10n_util::GetStringUTF16(
-          currently_web_panel ? IDS_SIDEBAR_ITEM_CONTEXT_MENU_OPEN_IN_TAB
-                              : IDS_SIDEBAR_ITEM_CONTEXT_MENU_OPEN_IN_PANEL),
-      ui::ImageModel::FromVectorIcon(
-          currently_web_panel ? kLeoOpenInTabIcon : kLeoSidepanelOpenIcon,
-          icon_color, 14));
+  if (sidebar::IsWebPanelFeatureEnabled()) {
+    const auto& items = sidebar_model_->GetAllSidebarItems();
+    const auto index = GetIndexOf(source);
+    const bool currently_web_panel =
+        index && *index < items.size() &&
+        items[*index].panel_type == sidebar::SidebarItem::PanelType::kWebPanel;
+    context_menu_model_->AddItemWithIcon(
+        kItemToggleOpenInPanel,
+        l10n_util::GetStringUTF16(
+            currently_web_panel ? IDS_SIDEBAR_ITEM_CONTEXT_MENU_OPEN_IN_TAB
+                                : IDS_SIDEBAR_ITEM_CONTEXT_MENU_OPEN_IN_PANEL),
+        ui::ImageModel::FromVectorIcon(
+            currently_web_panel ? kLeoOpenInTabIcon : kLeoSidepanelOpenIcon,
+            icon_color, 14));
 
-  const bool currently_mobile =
-      index && *index < items.size() && items[*index].use_mobile_user_agent;
-  context_menu_model_->AddItemWithIcon(
-      kItemToggleMobileUserAgent,
-      l10n_util::GetStringUTF16(
-          currently_mobile ? IDS_SIDEBAR_ITEM_CONTEXT_MENU_SHOW_DESKTOP_VERSION
-                           : IDS_SIDEBAR_ITEM_CONTEXT_MENU_SHOW_MOBILE_VERSION),
-      ui::ImageModel::FromVectorIcon(
-          currently_mobile ? kLeoMonitorIcon : kLeoSmartphoneIcon, icon_color,
-          14));
+    const bool currently_mobile =
+        index && *index < items.size() && items[*index].use_mobile_user_agent;
+    context_menu_model_->AddItemWithIcon(
+        kItemToggleMobileUserAgent,
+        l10n_util::GetStringUTF16(
+            currently_mobile
+                ? IDS_SIDEBAR_ITEM_CONTEXT_MENU_SHOW_DESKTOP_VERSION
+                : IDS_SIDEBAR_ITEM_CONTEXT_MENU_SHOW_MOBILE_VERSION),
+        ui::ImageModel::FromVectorIcon(
+            currently_mobile ? kLeoMonitorIcon : kLeoSmartphoneIcon, icon_color,
+            14));
+
+    auto* web_panel_controller =
+        sidebar::SidebarController::From(browser_)->GetWebPanelController();
+    const bool item_has_open_panel = index &&
+                                     web_panel_controller->HasOpenPanel() &&
+                                     *index == sidebar_model_->active_index();
+    if (item_has_open_panel) {
+      const bool currently_muted = web_panel_controller->IsWebPanelMuted();
+      context_menu_model_->AddItemWithIcon(
+          kItemToggleMuteTab,
+          l10n_util::GetPluralStringFUTF16(currently_muted
+                                               ? IDS_TAB_CXMENU_SOUND_UNMUTE_TAB
+                                               : IDS_TAB_CXMENU_SOUND_MUTE_TAB,
+                                           /*number=*/1),
+          ui::ImageModel::FromVectorIcon(
+              currently_muted ? kLeoVolumeOnIcon : kLeoVolumeOffIcon,
+              icon_color, 14));
+    }
+  }
 
   context_menu_model_->AddItemWithIcon(
       kItemRemove,
@@ -282,6 +304,13 @@ void SidebarItemsContentsView::ExecuteCommand(int command_id, int event_flags) {
     GetSidebarService(browser_)->UpdateItem(old_item, new_item);
     return;
   }
+
+  if (command_id == kItemToggleMuteTab) {
+    sidebar::SidebarController::From(browser_)
+        ->GetWebPanelController()
+        ->ToggleWebPanelAudioMute();
+    return;
+  }
 }
 
 bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
@@ -302,7 +331,7 @@ bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
   if (command_id == kItemToggleOpenInPanel) {
     // Toggles between tab and panel, so it applies to editable web items
     // either way - not just ones that are already a panel.
-    return items[*index].is_web_type() && sidebar::IsWebPanelFeatureEnabled();
+    return items[*index].is_web_type();
   }
 
   if (command_id == kItemToggleMobileUserAgent) {
@@ -310,6 +339,15 @@ bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
     // require is_web_type(): a built-in item can be a panel too (e.g. Brave
     // Talk), but built-in items aren't editable.
     return items[*index].is_web_type() && items[*index].is_web_panel_type();
+  }
+
+  if (command_id == kItemToggleMuteTab) {
+    // Only applies while this item's panel is the one currently open - there's
+    // no tab to mute otherwise.
+    auto* web_panel_controller =
+        sidebar::SidebarController::From(browser_)->GetWebPanelController();
+    return web_panel_controller->HasOpenPanel() &&
+           *index == sidebar_model_->active_index();
   }
 
   NOTREACHED() << "No more commands now.";
@@ -680,18 +718,32 @@ bool SidebarItemsContentsView::IsBubbleVisible() const {
   return false;
 }
 
-bool SidebarItemsContentsView::IsMobileUserAgentMenuEntryVisibleForTesting(
-    views::View* item_view) {
-  view_for_context_menu_ = item_view;
-  const bool visible = IsCommandIdVisible(kItemToggleMobileUserAgent);
-  view_for_context_menu_ = nullptr;
-  return visible;
-}
+// bool SidebarItemsContentsView::IsMobileUserAgentMenuEntryVisibleForTesting(
+//     views::View* item_view) {
+//   view_for_context_menu_ = item_view;
+//   const bool visible = IsCommandIdVisible(kItemToggleMobileUserAgent);
+//   view_for_context_menu_ = nullptr;
+//   return visible;
+// }
 
-bool SidebarItemsContentsView::IsOpenInPanelMenuEntryVisibleForTesting(
-    views::View* item_view) {
+// bool SidebarItemsContentsView::IsOpenInPanelMenuEntryVisibleForTesting(
+//     views::View* item_view) {
+//   view_for_context_menu_ = item_view;
+//   const bool visible = IsCommandIdVisible(kItemToggleOpenInPanel);
+//   view_for_context_menu_ = nullptr;
+//   return visible;
+// }
+
+// bool SidebarItemsContentsView::IsMuteTabMenuEntryVisibleForTesting(
+//     views::View* item_view) {
+//   return IsMenuEntryVisibleForTesting(item_view, kItemToggleMuteTab);
+// }
+
+bool SidebarItemsContentsView::IsMenuEntryVisibleForTesting(
+    views::View* item_view,
+    ContextMenuIDs command_id) {
   view_for_context_menu_ = item_view;
-  const bool visible = IsCommandIdVisible(kItemToggleOpenInPanel);
+  const bool visible = IsCommandIdVisible(command_id);
   view_for_context_menu_ = nullptr;
   return visible;
 }

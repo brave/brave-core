@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
+#include "chrome/browser/ui/tabs/tab_muted_utils.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "components/embedder_support/user_agent_utils.h"
@@ -164,6 +165,19 @@ void SidebarWebPanelController::ReapplyUserAgent(const SidebarItem& item) {
                                             : blink::UserAgentOverride(),
                                         /*override_in_new_tabs=*/false);
   controller.LoadOriginalRequestURL();
+}
+
+void SidebarWebPanelController::ToggleWebPanelAudioMute() {
+  if (!panel_contents_) {
+    return;
+  }
+
+  SetTabAudioMuted(panel_contents_, !panel_contents_->IsAudioMuted(),
+                   TabMutedReason::kAudioIndicator, std::string());
+}
+
+bool SidebarWebPanelController::IsWebPanelMuted() const {
+  return panel_contents_ && panel_contents_->IsAudioMuted();
 }
 
 void SidebarWebPanelController::CloseWebPanel(bool suppress_animations) {

@@ -43,6 +43,12 @@ class SidebarWebPanelController : public TabStripModelObserver {
   // within the panel).
   void ReapplyUserAgent(const SidebarItem& item);
 
+  // Toggles whether the open panel's WebContents is playing audio muted.
+  void ToggleWebPanelAudioMute();
+
+  // True while the open panel's WebContents is muted.
+  bool IsWebPanelMuted() const;
+
   // True only while a panel is open and not animating closed. Callers asking
   // "is a panel on offer to the user" want this.
   bool HasOpenPanel() const;
