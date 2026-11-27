@@ -11,13 +11,14 @@ substitutions:
   - description: |-
       Add the dependencies of the Brave Wallet additions to
       `chrome_permissions_client.cc`.
-
-      The Brave Wallet prompt header is included only on Android.
     append_to_target:
       target: permissions
       type: source_set
       code: |-
         deps += [ "//brave/components/brave_wallet/common/buildflags" ]
-        if (is_android && enable_brave_wallet) {
-          deps += [ "//brave/browser/permissions" ]
+        if (enable_brave_wallet) {
+          deps += [
+            "//brave/components/brave_wallet/common",
+            "//brave/browser/permissions",
+          ]
         }

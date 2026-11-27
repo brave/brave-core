@@ -34,6 +34,19 @@ source_set("unit_tests") {
   if (is_android) {
     deps += [ "//components/messages/android" ]
   }
+
+  if (enable_brave_wallet) {
+    sources +=
+        [ "contexts/brave_wallet_account_permission_context_unittest.cc" ]
+    deps += [
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:test_support",
+      "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common:mojom",
+      "//services/network:test_support",
+      "//testing/gmock",
+    ]
+  }
 }
 
 # Registers its own TestPermissionsClient, so it must only be wired into

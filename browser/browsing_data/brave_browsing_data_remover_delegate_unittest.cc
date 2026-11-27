@@ -216,6 +216,7 @@ class DataTypeContentSettings_Clearing
       case ContentSettingsType::BRAVE_SOLANA:
       case ContentSettingsType::BRAVE_CARDANO:
       case ContentSettingsType::BRAVE_POLKADOT:
+      case ContentSettingsType::BRAVE_WALLET_ACCOUNTS:
         return !BUILDFLAG(ENABLE_BRAVE_WALLET);
       case ContentSettingsType::BRAVE_WEBCOMPAT_ALL:
         // This value is used to determine the last WebCompat content setting

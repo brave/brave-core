@@ -8,10 +8,29 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
+#include "chrome/browser/profiles/profile.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/permissions/brave_wallet_account_permission_context_factory.h"
+#include "brave/components/permissions/contexts/brave_wallet_account_permission_context.h"
 #endif
+
+// The upstream chooser table below refers to these, so they are declared first.
+namespace site_settings {
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+inline constexpr char kWalletAccountsChooserDataGroupType[] =
+    "wallet-accounts-data";
+
+permissions::ObjectPermissionContextBase* GetWalletAccountsChooserContext(
+    Profile* profile) {
+  return BraveWalletAccountPermissionContextFactory::GetForProfile(profile);
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+}  // namespace site_settings
 
 #include <chrome/browser/ui/webui/settings/site_settings_helper.cc>
 
