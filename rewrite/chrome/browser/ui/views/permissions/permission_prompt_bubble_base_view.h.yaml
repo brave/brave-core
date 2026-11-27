@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add the z-order manager member to the permission prompt bubble.
+
+      PermissionPromptBubbleZOrderManager is declared in the chromium_src
+      shadow header, which must be included before this header. The manager
+      is created in PermissionPromptBubbleBaseView::CreateWidget (see the
+      matching .cc yaml).
+    add_to_protected:
+      class_name: PermissionPromptBubbleBaseView
+      code: |-
+        std::unique_ptr<PermissionPromptBubbleZOrderManager> z_order_manager_;

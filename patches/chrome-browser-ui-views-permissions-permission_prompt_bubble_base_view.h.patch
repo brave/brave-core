@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.h b/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.h
+index dd4b7eb10b9cc80a4fac6451531b030bd95f8acd..5eb73128e165a49d4cc03de7a7d076e38baec50b 100644
+--- a/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.h
++++ b/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.h
+@@ -83,6 +83,7 @@ class PermissionPromptBubbleBaseView : public PermissionPromptBaseView {
+   std::u16string GetPermissionFragmentForTesting() const;
+ 
+  protected:
++  std::unique_ptr<PermissionPromptBubbleZOrderManager> z_order_manager_;
+   void CreatePermissionButtons(const std::u16string& allow_always_text,
+                                const std::u16string& block_text);
+   void CreateExtraTextLabel(const std::u16string& extra_text);

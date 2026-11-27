@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Create Brave Wallet permission prompts for wallet requests.
+
+      IsBraveWalletRequest() and CreateBraveWalletPermissionPrompt() are
+      defined in the chromium_src shadow above the upstream include, since
+      they need brave/browser headers.
+    preempt_function_impl:
+      function_name: CreatePermissionPrompt
+      code: |-
+        if (IsBraveWalletRequest(delegate)) {
+          return CreateBraveWalletPermissionPrompt(web_contents, delegate);
+        }
