@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/notreached.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -66,6 +67,16 @@ std::string GetUploadData(const network::ResourceRequest& request) {
   }
 
   return upload_data;
+}
+
+// Shields ignores sandboxing, so an opaque origin is replaced by the origin it
+// was derived from, when there is one.
+url::Origin GetPrecursorOriginIfOpaque(const url::Origin& origin) {
+  if (!origin.opaque()) {
+    return origin;
+  }
+  const GURL precursor_url = origin.GetTupleOrPrecursorTupleIfOpaque().GetURL();
+  return precursor_url.is_valid() ? url::Origin::Create(precursor_url) : origin;
 }
 
 }  // namespace
@@ -132,6 +143,33 @@ void BraveRequestInfo::set_request_initiator(
     const std::optional<url::Origin>& value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   request_initiator_ = value;
+}
+
+const std::optional<url::Origin>& BraveRequestInfo::top_frame_origin() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return top_frame_origin_;
+}
+
+void BraveRequestInfo::set_top_frame_origin(std::optional<url::Origin> value) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  top_frame_origin_ = std::move(value);
+}
+
+url::Origin BraveRequestInfo::first_party_origin_for_adblock_rules() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  url::Origin request_origin = url::Origin::Create(request_url_);
+  if (resource_type_ == blink::mojom::ResourceType::kMainFrame) {
+    return GetPrecursorOriginIfOpaque(
+        request_origin.opaque() && request_initiator_ ? *request_initiator_
+                                                      : request_origin);
+  }
+  // The initiator may be a subframe, but the first party is the top frame (or
+  // its precursor), so use the top frame origin when there is one.
+  if (top_frame_origin_) {
+    return GetPrecursorOriginIfOpaque(*top_frame_origin_);
+  }
+  return GetPrecursorOriginIfOpaque(request_initiator_ ? *request_initiator_
+                                                       : request_origin);
 }
 
 bool BraveRequestInfo::internal_redirect() const {
@@ -485,7 +523,6 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   ctx->set_render_frame_token(render_frame_token);
 
   // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
-  // ctx->set_tab_url(request.top_frame_origin);
   const net::IsolationInfo* isolation_info = nullptr;
   if (request.trusted_params) {
     isolation_info = &request.trusted_params->isolation_info;
@@ -504,6 +541,7 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
         isolation_info->network_anonymization_key());
     ctx->set_tab_origin(
         isolation_info->top_frame_origin().value_or(url::Origin()).GetURL());
+    ctx->set_top_frame_origin(isolation_info->top_frame_origin());
   }
   // TODO(iefremov): We still need this for WebSockets, currently
   // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
@@ -514,6 +552,13 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     if (contents) {
       ctx->set_tab_origin(
           url::Origin::Create(contents->GetLastCommittedURL()).GetURL());
+    }
+  }
+  if (!ctx->top_frame_origin()) {
+    if (auto* render_frame_host = content::RenderFrameHost::FromFrameToken(
+            ctx->render_frame_token())) {
+      ctx->set_top_frame_origin(
+          render_frame_host->GetOutermostMainFrame()->GetLastCommittedOrigin());
     }
   }
   // Shared and service worker WebSockets have no frame, so fall back to the

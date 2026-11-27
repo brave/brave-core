@@ -89,6 +89,26 @@ class BraveRequestInfo {
   const std::optional<url::Origin>& request_initiator() const;
   void set_request_initiator(const std::optional<url::Origin>& value);
 
+  // The origin of the top-level frame the request belongs to, when known. This
+  // is the frame's actual origin, so it is opaque when the top frame is
+  // sandboxed or has an opaque URL such as data:. Use it when a decision must
+  // respect sandboxing. To match adblock rules, use
+  // `first_party_origin_for_adblock_rules()` instead.
+  const std::optional<url::Origin>& top_frame_origin() const;
+  void set_top_frame_origin(std::optional<url::Origin> value);
+
+  // The origin to treat as first party when matching adblock rules against this
+  // request. Main frames use the request URL's origin, unless it is opaque, in
+  // which case the request initiator is used when there is one. Subframes and
+  // subresources use the top frame origin. When there is no top frame origin
+  // they use the request initiator, then the request URL's origin. Shields
+  // ignores sandboxing, so an opaque result is replaced by its precursor origin
+  // when it has one. An opaque top frame origin without a precursor stays
+  // opaque. Use it only for adblock rule matching, because it ignores
+  // sandboxing. If the result is opaque, `GetURL()` on it returns an empty
+  // GURL.
+  url::Origin first_party_origin_for_adblock_rules() const;
+
   bool internal_redirect() const;
   void set_internal_redirect(bool value);
 
@@ -223,6 +243,7 @@ class BraveRequestInfo {
   GURL tab_origin_;
   GURL tab_url_;
   std::optional<url::Origin> request_initiator_;
+  std::optional<url::Origin> top_frame_origin_;
 
   bool internal_redirect_ = false;
   GURL redirect_source_;
