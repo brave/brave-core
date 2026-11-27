@@ -5,8 +5,27 @@
 
 source_set("features") {
   sources = [
+    "brave_tab_group_id.h",
     "features.h",
     "features.mm",
+    "tab_group_id.h",
+    "tab_group_id.mm",
   ]
-  deps = [ "//base" ]
+  deps = [ "//ios/web/public" ]
+  public_deps = [
+    "//base",
+    "//components/tab_groups",
+  ]
+  frameworks = [ "Foundation.framework" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "tab_group_id_unittest.mm" ]
+  deps = [
+    ":features",
+    "//base",
+    "//base/test:test_support",
+    "//testing/gtest",
+  ]
 }
