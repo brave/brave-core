@@ -17,6 +17,7 @@
 #include <variant>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/containers/span.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
@@ -107,6 +108,8 @@ class ConversationHandler : public mojom::ConversationHandler,
 
     // Called when a mojo client connects or disconnects
     virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
+    // Called when IsAnyClientVisible() changes.
+    virtual void OnClientVisibilityChanged(ConversationHandler* handler) {}
     virtual void OnConversationTitleChanged(
         const std::string& conversation_uuid,
         const std::string& title) {}
@@ -182,6 +185,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnArchiveContentUpdated(mojom::ConversationArchivePtr conversation_data);
 
   bool IsAnyClientConnected();
+  // Hidden clients still count as connected.
+  bool IsAnyClientVisible() const;
   bool HasAnyHistory();
   bool IsRequestInProgress();
   // Whether a tool use loop is running, between generation requests.
@@ -212,6 +217,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void SetContentToolPermission(const std::string& content_uuid,
                                 mojom::ToolInfoPtr tool) override;
   void SetContentAgentChosen(bool chosen) override;
+  // Identifies the client by its receiver, so it must arrive over mojo.
+  void SetClientVisible(bool visible) override;
   void RateMessage(bool is_liked,
                    const std::string& turn_uuid,
                    const std::optional<std::string>& thread_uuid,
@@ -604,6 +611,8 @@ class ConversationHandler : public mojom::ConversationHandler,
       base::span<const mojom::ConversationTurnPtr> turns);
   void OnSuggestedQuestionsChanged();
   void OnClientConnectionChanged();
+  void OnReceiverDisconnected();
+  void SetReceiverVisible(mojo::ReceiverId id, bool visible);
   void OnConversationTitleChanged(std::string_view title);
   void OnConversationTokenInfoChanged(
       std::optional<std::string_view> thread_uuid,
@@ -769,6 +778,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   base::ObserverList<Observer> observers_;
   mojo::ReceiverSet<mojom::ConversationHandler> receivers_;
+  base::flat_set<mojo::ReceiverId> visible_receivers_;
   mojo::ReceiverSet<mojom::UntrustedConversationHandler> untrusted_receivers_;
   // std::monostate because ReceiverSet's MessageFilter overload of Add()
   // requires a non-void context type.
