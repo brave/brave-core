@@ -25,6 +25,7 @@ source_set("split_view") {
     "//brave/browser/ui/views:layout_provider",
     "//brave/browser/ui/views/animations",
     "//brave/browser/ui/views/frame",
+    "//brave/browser/ui/views/frame/edge_reveal",
     "//brave/components/vector_icons",
     "//chrome/browser/devtools",
     "//chrome/browser/profiles:profile",

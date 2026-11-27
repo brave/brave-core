@@ -17,9 +17,13 @@
 EdgeHoverDetector::EdgeHoverDetector(
     views::Widget* host,
     IsHoverPointCallback is_hover_point,
-    HoverStateChangedCallback hover_state_changed)
+    HoverStateChangedCallback hover_state_changed,
+    base::TimeDelta enter_delay,
+    base::TimeDelta exit_delay)
     : is_hover_point_(std::move(is_hover_point)),
-      hover_state_changed_(std::move(hover_state_changed)) {
+      hover_state_changed_(std::move(hover_state_changed)),
+      enter_delay_(enter_delay),
+      exit_delay_(exit_delay) {
   CHECK(host);
   CHECK(is_hover_point_);
   CHECK(hover_state_changed_);
@@ -75,7 +79,7 @@ void EdgeHoverDetector::ApplyWithDelay(bool hovering) {
     return;
   }
   // Start the toggle timer. When it fires, the hover state will be toggled.
-  timer_.Start(FROM_HERE, hovering ? kMouseEnterDelay : kMouseExitDelay,
+  timer_.Start(FROM_HERE, hovering ? enter_delay_ : exit_delay_,
                base::BindOnce(&EdgeHoverDetector::ToggleHoverState,
                               base::Unretained(this)));
 }

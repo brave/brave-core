@@ -82,6 +82,7 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
   mini_toolbar->SetStyle(for_web_panel_ ? ToolbarStyle::kWebPanel
                          : is_in_split  ? ToolbarStyle::kSplit
                                         : ToolbarStyle::kStandalone);
+  mini_toolbar->SetHideOnHover(show_domain && !is_in_split && !for_web_panel_);
 
   // We don't use highlighted state as we're always using thicker border
   // for highlighting active split tab.
