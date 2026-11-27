@@ -12,6 +12,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/common/features.h"
@@ -79,10 +80,14 @@ class PsstSettingsServiceUnitTest : public testing::Test {
   PsstSettingsService* settings_service() {
     return psst_settings_service_.get();
   }
+  void FastForwardTime(base::TimeDelta delta) {
+    task_environment_.FastForwardBy(delta);
+  }
 
  private:
   base::test::ScopedFeatureList feature_list_{psst::features::kEnablePsst};
-  base::test::TaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   sync_preferences::TestingPrefServiceSyncable prefs_;
   scoped_refptr<HostContentSettingsMap> map_;
   std::unique_ptr<PsstSettingsService> psst_settings_service_;
@@ -308,6 +313,19 @@ TEST_F(PsstSettingsServiceUnitTest,
   EXPECT_EQ(it_b->second.infobar_shown_counter, 1);
   EXPECT_EQ(it_b->second.infobar_decline_counter, 0);
   EXPECT_TRUE(it_b->second.website_settings.empty());
+}
+
+TEST_F(PsstSettingsServiceUnitTest, InfobarDismissalSuppressesForThirtyDays) {
+  EXPECT_FALSE(settings_service()->IsInfobarDismissalSuppressed());
+
+  settings_service()->RecordInfobarDismissed();
+  EXPECT_TRUE(settings_service()->IsInfobarDismissalSuppressed());
+
+  FastForwardTime(base::Days(29));
+  EXPECT_TRUE(settings_service()->IsInfobarDismissalSuppressed());
+
+  FastForwardTime(base::Days(2));
+  EXPECT_FALSE(settings_service()->IsInfobarDismissalSuppressed());
 }
 
 }  // namespace psst

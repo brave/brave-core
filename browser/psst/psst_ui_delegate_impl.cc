@@ -69,10 +69,14 @@ void PsstUiDelegateImpl::Show(
 
   const int infobar_shown_count =
       psst_settings_service_->GetInfobarShownCount(origin_.value());
-  // Show the infobar only if it is enabled globally and has been shown less
-  // than the max allowed times for this site.
-  if (psst_settings_service_->IsPsstInfobarEnabled() &&
-      infobar_shown_count < kMaxPsstInfobarShownCounter) {
+  const bool is_infobar_reviwed =
+      psst_settings_service_->GetInfobarReviewSuggestionsCount(origin_.value());
+  // Show the infobar only if it is enabled globally, has been shown less
+  // than the max allowed times for this site, hasn't been reviewed for this
+  // site, and wasn't recently dismissed for any site.
+  if (IsPsstEnabled() && infobar_shown_count < kMaxPsstInfobarShownCounter &&
+      !is_infobar_reviwed &&
+      !psst_settings_service_->IsInfobarDismissalSuppressed()) {
     psst_settings_service_->IncrementInfobarShownCount(origin_.value());
     ui_presenter_->ShowInfoBar(
         base::BindOnce(&PsstUiDelegateImpl::OnUserAcceptedInfobar,
@@ -196,13 +200,9 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
     ui_presenter_->ShowConsentDialog();
     psst_settings_service_->IncrementInfobarReviewSuggestionsCount(
         origin_.value());
-    // Disable infobar globally and do not show it again
-    psst_settings_service_->SetPsstInfobarEnabled(false);
   } else {
     psst_settings_service_->IncrementInfobarDeclineCount(origin_.value());
-
-    // TODO(https://github.com/brave/brave-browser/issues/58449): Handle infobar
-    // dismissal (e.g. close button, tab/navigation away).
+    psst_settings_service_->RecordInfobarDismissed();
   }
 }
 
