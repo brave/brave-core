@@ -676,8 +676,9 @@ extension BrowserViewController {
     createNewTabWithRequest request: URLRequest,
     isUserInitiated: Bool
   ) -> (any TabState)? {
-    guard !request.isInternalUnprivileged,
-      let navigationURL = request.url,
+    // Chromium already drops invalid non-empty URLs so this should only be nil if the URL is empty
+    // Treat a nil URL (e.g. `window.open("")`) as about:blank
+    guard let navigationURL = request.url ?? URL(string: "about:blank"),
       isUserInitiated || profileController.defaultHostContentSettings.popupsAllowed,
       navigationURL.shouldRequestBeOpenedAsPopup()
     else {
