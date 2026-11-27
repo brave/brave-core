@@ -65,6 +65,9 @@ void WaybackMachineInfoBarDelegate::Remove(content::WebContents* contents) {
   for (infobars::InfoBar* infobar : infobar_manager->infobars()) {
     if (infobar->delegate()->GetIdentifier() ==
         BRAVE_WAYBACK_MACHINE_INFOBAR_DELEGATE) {
+      // Stop the countdown synchronously so it cannot fire before removal runs.
+      static_cast<WaybackMachineInfoBarDelegate*>(infobar->delegate())
+          ->Cancel();
       base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
           FROM_HERE,
           base::BindOnce(&infobars::InfoBar::RemoveSelf, infobar->AsWeakPtr()));

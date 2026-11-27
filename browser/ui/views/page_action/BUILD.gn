@@ -140,6 +140,7 @@ source_set("impl") {
   if (enable_brave_wayback_machine) {
     sources += [ "wayback_machine_page_action_controller.cc" ]
     deps += [
+      "//brave/browser/infobars",
       "//brave/components/brave_wayback_machine",
       "//brave/components/vector_icons",
       "//chrome/browser/ui:browser_actions",
