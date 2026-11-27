@@ -60,6 +60,7 @@ class SidebarServiceFactory : public BrowserContextKeyedServiceFactory {
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
           SidebarItem::BuiltInItemType::kBraveNews,
 #endif
+          SidebarItem::BuiltInItemType::kNotes,
       });
 
   static_assert(SidebarItem::kBuiltInItemsCount ==

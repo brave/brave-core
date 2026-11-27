@@ -30,6 +30,8 @@ source_set("side_panel") {
 source_set("side_panel_impl") {
   sources = [
     "brave_side_panel_header_controller.cc",
+    "notes/notes_side_panel_web_view.cc",
+    "notes/notes_side_panel_web_view.h",
     "side_panel_utils.cc",
   ]
 
@@ -39,6 +41,7 @@ source_set("side_panel_impl") {
     "//brave/app:brave_generated_resources_grit_grit",
     "//brave/browser/ui:ui_features",
     "//brave/browser/ui/views:layout_provider",
+    "//brave/browser/ui/webui:notes_panel",
     "//brave/components/vector_icons",
     "//chrome/app:generated_resources",
     "//chrome/browser/profiles:profile",

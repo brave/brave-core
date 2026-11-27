@@ -696,6 +696,8 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
     case sidebar::SidebarItem::BuiltInItemType::kBraveNews:
       return get_image_model(kLeoProductBraveNewsIcon, state);
 #endif
+    case sidebar::SidebarItem::BuiltInItemType::kNotes:
+      return get_image_model(kLeoClipboardIcon, state);
     default:
       break;
   }

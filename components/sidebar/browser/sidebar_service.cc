@@ -28,6 +28,7 @@
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -69,6 +70,7 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
   // A previous version of prefs used the URL even for built-in items, and not
   // the |SidebarItem::BuiltInItemType|. Therefore, this list should not
   // need to be updated.
+
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
   if (url == "https://together.brave.com/" ||
       url == "https://talk.brave.com/") {
@@ -77,7 +79,7 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (url == "chrome://wallet/") {
+  e://wallet/") {
     return SidebarItem::BuiltInItemType::kWallet;
   }
 #endif
@@ -94,6 +96,11 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
   NOTREACHED() << url;
 }
 
+constexpr char kNoteIdKey[] = "id";
+constexpr char kNoteTitleKey[] = "title";
+constexpr char kNoteContentKey[] = "content";
+constexpr char kNoteTimestampKey[] = "timestamp";
+
 }  // namespace
 
 bool SidebarItemUpdate::operator==(const SidebarItemUpdate& update) const {
@@ -108,6 +115,7 @@ void SidebarService::RegisterProfilePrefs(
     PrefRegistrySimple* registry,
     ShowSidebarOption default_show_option) {
   registry->RegisterListPref(kSidebarItems);
+  registry->RegisterListPref(kSidebarNotes);
   registry->RegisterListPref(kSidebarHiddenBuiltInItems);
   registry->RegisterBooleanPref(kLeoPanelOneShotOpen, false);
   registry->RegisterIntegerPref(kSidebarShowOption,
@@ -135,6 +143,7 @@ SidebarService::SidebarService(
   MigratePrefSidebarBuiltInItemsToHidden();
 
   LoadSidebarItems();
+  LoadNotes();
 
   MigrateSidebarShowOptions();
 
@@ -482,6 +491,47 @@ void SidebarService::UpdateSidebarItemsToPrefStore() {
   }
   prefs_->SetList(kSidebarHiddenBuiltInItems, std::move(builtin_items));
 }
+void SidebarService::LoadNotes() {
+  notes_.clear();
+  const base::Value::List& list = prefs_->GetList(kSidebarNotes);
+  for (const auto& entry : list) {
+    const auto* dict = entry.GetIfDict();
+    if (!dict) {
+      continue;
+    }
+    const auto* id = dict->FindString(kNoteIdKey);
+    if (!id || id->empty()) {
+      continue;
+    }
+    Notes note;
+    note.id = *id;
+    if (const auto* title = dict->FindString(kNoteTitleKey)) {
+      note.title = *title;
+    }
+    if (const auto* content = dict->FindString(kNoteContentKey)) {
+      note.content = *content;
+    }
+    // base::Value::Dict doesn't store native int64_t, so timestamps are
+    // serialized as double (which safely represents integers up to 2^53).
+    if (const auto timestamp = dict->FindDouble(kNoteTimestampKey)) {
+      note.timestamp = static_cast<int64_t>(*timestamp);
+    }
+    notes_.push_back(std::move(note));
+  }
+}
+
+void SidebarService::UpdateNotesToPrefStore() {
+  base::Value::List list;
+  for (const auto& note : notes_) {
+    base::Value::Dict dict;
+    dict.Set(kNoteIdKey, note.id);
+    dict.Set(kNoteTitleKey, note.title);
+    dict.Set(kNoteContentKey, note.content);
+    dict.Set(kNoteTimestampKey, static_cast<double>(note.timestamp));
+    list.Append(std::move(dict));
+  }
+  prefs_->SetList(kSidebarNotes, std::move(list));
+}
 
 void SidebarService::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
@@ -489,6 +539,48 @@ void SidebarService::AddObserver(Observer* observer) {
 
 void SidebarService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
+}
+
+void SidebarService::AddNote(const Notes& note) {
+  notes_.push_back(note);
+  for (Observer& obs : observers_) {
+    obs.OnNoteAdded(note);
+  }
+  UpdateNotesToPrefStore();
+}
+
+void SidebarService::UpdateNote(const Notes& updated_note) {
+  const auto it =
+      std::find_if(notes_.begin(), notes_.end(),
+                   [&updated_note](const Notes& note) {
+                     return note.id == updated_note.id;
+                   });
+  if (it == notes_.end()) {
+    return;
+  }
+
+  it->title = updated_note.title;
+  it->content = updated_note.content;
+  it->timestamp = updated_note.timestamp;
+  for (Observer& obs : observers_) {
+    obs.OnNoteUpdated(*it);
+  }
+  UpdateNotesToPrefStore();
+}
+
+void SidebarService::DeleteNote(const std::string& id) {
+  const size_t erased = std::erase_if(
+      notes_, [&id](const Notes& note) { return note.id == id; });
+  if (erased > 0) {
+    for (Observer& obs : observers_) {
+      obs.OnNoteDeleted(id);
+    }
+    UpdateNotesToPrefStore();
+  }
+}
+
+const std::vector<Notes>& SidebarService::GetNotes() const {
+  return notes_;
 }
 
 std::vector<SidebarItem> SidebarService::GetHiddenDefaultSidebarItems() const {
@@ -780,6 +872,11 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       return SidebarItem();
     }
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
+    case SidebarItem::BuiltInItemType::kNotes:
+      return SidebarItem::CreateBuiltInItem(
+          SidebarItem::BuiltInItemType::kNotes,
+          l10n_util::GetStringUTF16(IDS_SIDEBAR_NOTES_ITEM_TITLE),
+          SidebarItem::PanelType::kSidePanel);
     case SidebarItem::BuiltInItemType::kNone:
       break;
   }

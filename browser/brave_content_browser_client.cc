@@ -178,6 +178,8 @@
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
+#include "brave/browser/ui/webui/side_panel/notes/notes.mojom.h"
+#include "brave/browser/ui/webui/side_panel/notes/notes_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -1136,6 +1138,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+  content::RegisterWebUIControllerInterfaceBinder<
+      notes::mojom::PageHandlerFactory, NotesUI>(map);
   content::RegisterWebUIControllerInterfaceBinder<
       brave_private_new_tab::mojom::PageHandler, BravePrivateNewTabUI>(map);
   content::RegisterWebUIControllerInterfaceBinder<

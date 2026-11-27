@@ -56,6 +56,7 @@ struct SidebarItem {
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
     kBraveNews = 8,
 #endif
+    kNotes = 9,
   };
 
   // Count of built-in items based on enabled features.
@@ -76,6 +77,7 @@ struct SidebarItem {
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
       + 1  // kBraveTalk
 #endif
+      + 1  // kNotes
       ;
 
   // `url` is empty for built-in items that have no page of their own.

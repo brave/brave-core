@@ -118,7 +118,11 @@ source_set("core") {
            "//brave/ui/webui/custom_profile_image/buildflags",
          ]
   if (!is_android) {
-    deps += [ "//chrome/browser/ui/webui/side_panel/bookmarks:mojo_bindings" ]
+    deps += [
+      "//brave/browser/ui/webui:notes_mojom",
+      "//brave/browser/ui/webui:notes_panel",
+      "//chrome/browser/ui/webui/side_panel/bookmarks:mojo_bindings",
+    ]
   }
   if (enable_brave_custom_profile_image_webui) {
     deps += [ "//brave/browser/ui/webui/custom_profile_image" ]
