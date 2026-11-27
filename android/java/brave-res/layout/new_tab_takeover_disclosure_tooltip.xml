@@ -4,14 +4,41 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this
      file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
-<TextView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/new_tab_takeover_disclosure_tooltip_text"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/new_tab_takeover_disclosure_tooltip"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/new_tab_takeover_disclosure_tooltip_background"
-    android:elevation="4dp"
-    android:textColor="@color/text_primary"
-    android:textColorLink="@color/text_primary"
-    android:textSize="12sp"
-    android:lineHeight="18sp"/>
+    android:elevation="2dp">
+
+    <TextView
+        android:id="@+id/new_tab_takeover_disclosure_tooltip_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/new_tab_takeover_disclosure_tooltip_close_button"
+        android:paddingStart="@dimen/new_tab_takeover_disclosure_tooltip_padding"
+        android:paddingVertical="@dimen/new_tab_takeover_disclosure_tooltip_padding"
+        android:textColor="@color/text_primary"
+        android:textColorLink="@color/text_primary"
+        android:textSize="12sp"
+        android:lineHeight="18sp"/>
+
+    <ImageButton
+        android:id="@+id/new_tab_takeover_disclosure_tooltip_close_button"
+        android:layout_width="@dimen/new_tab_takeover_disclosure_tooltip_close_button_width"
+        android:layout_height="@dimen/new_tab_takeover_disclosure_tooltip_close_button_height"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:paddingStart="@dimen/new_tab_takeover_disclosure_tooltip_close_button_padding_start"
+        android:paddingEnd="@dimen/new_tab_takeover_disclosure_tooltip_close_button_padding_end"
+        android:paddingVertical="@dimen/new_tab_takeover_disclosure_tooltip_close_button_padding_vertical"
+        android:src="@drawable/ic_close"
+        app:tint="@color/icon_default"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="centerInside"
+        android:alpha="0.75"
+        android:contentDescription="@string/close"/>
+
+</RelativeLayout>
