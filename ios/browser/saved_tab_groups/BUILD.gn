@@ -19,6 +19,13 @@ source_set("features") {
   frameworks = [ "Foundation.framework" ]
 }
 
+# The Chromium model target depends on this through the saved_tab_groups
+# BUILD.gn patch. The delegate sources land in the next change.
+source_set("sync_delegate") {
+  visibility = [ "//ios/chrome/browser/saved_tab_groups/model" ]
+  sources = []
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [ "tab_group_id_unittest.mm" ]
