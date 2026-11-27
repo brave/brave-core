@@ -212,7 +212,7 @@ bool ExtractCampaignConversionMojomProperty(
       return false;
     }
     if (!url_pattern.empty()) {
-      mojom_campaign_conversion->url_pattern = std::move(url_pattern);
+      mojom_campaign_conversion->thank_you_url_pattern = std::move(url_pattern);
     }
     return true;
   }
@@ -381,9 +381,9 @@ void Log(const std::vector<mojom::CreativeSearchResultAdInfoPtr>&
             << kCampaignConversionObservationWindowPropertyName << ": "
             << campaign_conversion.observation_window;
 
-    if (campaign_conversion.url_pattern) {
+    if (campaign_conversion.thank_you_url_pattern) {
       VLOG(6) << kCampaignConversionUrlPatternPropertyName << ": "
-              << *campaign_conversion.url_pattern;
+              << *campaign_conversion.thank_you_url_pattern;
     }
   }
 }

@@ -73,7 +73,7 @@ base::ListValue BuildCampaignConversions(
             .Set("Ad Type",
                  GetAdType(campaign_conversion.id, notification_ad_campaign_ids,
                            new_tab_page_ad_campaign_ids))
-            .Set("URL Pattern", campaign_conversion.url_pattern)
+            .Set("URL Pattern", campaign_conversion.thank_you_url_pattern)
             .Set("Expires At",
                  campaign_conversion.expire_at->InSecondsFSinceUnixEpoch())
             .Set("Observation Window",

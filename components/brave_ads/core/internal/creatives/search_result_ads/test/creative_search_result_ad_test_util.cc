@@ -49,7 +49,8 @@ mojom::CreativeSearchResultAdInfoPtr BuildCreativeSearchResultAdWithConversion(
   CHECK(mojom_creative_ad);
 
   mojom_creative_ad->campaign_conversion = mojom::CampaignConversionInfo::New();
-  mojom_creative_ad->campaign_conversion->url_pattern = kConversionUrlPattern;
+  mojom_creative_ad->campaign_conversion->thank_you_url_pattern =
+      kConversionUrlPattern;
   mojom_creative_ad->campaign_conversion->observation_window =
       kConversionObservationWindow;
 
