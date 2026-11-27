@@ -224,7 +224,6 @@ class CardanoProviderRendererTest : public InProcessBrowserTest {
     // the navigations below.
     ASSERT_TRUE(GetKeyringService()->RestoreWalletSync(
         kMnemonicScarePiece, kTestWalletPassword, false));
-    // Restore this during teardown of the tests.
     old_client_ =
         content::SetBrowserClientForTesting(&test_content_browser_client_);
     base::FilePath test_data_dir =
@@ -246,7 +245,9 @@ class CardanoProviderRendererTest : public InProcessBrowserTest {
   }
 
   void TearDownOnMainThread() override {
-    content::SetBrowserClientForTesting(old_client_);
+    if (old_client_) {
+      content::SetBrowserClientForTesting(old_client_);
+    }
     InProcessBrowserTest::TearDownOnMainThread();
   }
 
@@ -832,9 +833,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
                            mojom::CardanoProviderPaginationPtr paginate,
                            TestCardanoApi::GetUtxosCallback callback) {
           EXPECT_EQ("1", amount);
-          ASSERT_TRUE(paginate);
-          EXPECT_EQ(2, paginate->page);
-          EXPECT_EQ(3, paginate->limit);
+          EXPECT_EQ(mojom::CardanoProviderPagination::New(2, 3), paginate);
           std::move(callback).Run(std::vector<std::string>({"1", "2"}),
                                   nullptr);
         });
@@ -901,9 +900,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
                            mojom::CardanoProviderPaginationPtr paginate,
                            TestCardanoApi::GetUtxosCallback callback) {
           EXPECT_FALSE(amount);
-          ASSERT_TRUE(paginate);
-          EXPECT_EQ(2, paginate->page);
-          EXPECT_EQ(3, paginate->limit);
+          EXPECT_EQ(mojom::CardanoProviderPagination::New(2, 3), paginate);
           std::move(callback).Run(std::vector<std::string>({"1", "2"}),
                                   nullptr);
         });
