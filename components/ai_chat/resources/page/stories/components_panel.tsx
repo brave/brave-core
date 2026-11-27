@@ -347,6 +347,7 @@ const CONVERSATION_TYPES = [
   'CODE_EXECUTION',
   'MULTI_TOOL_MULTI_TURN',
   'MULTI_TOOL_MULTI_TURN_IN_PROGRESS',
+  'THREADS',
   'NONE',
 ] as const
 
@@ -569,6 +570,9 @@ async function getConversationContent(
         await import('./conversations/multi_tool_multi_turn_in_progress')
       ).default
       break
+    case 'THREADS':
+      serializedContent = (await import('./conversations/threads')).default
+      break
   }
 
   if (serializedContent) {
@@ -593,6 +597,13 @@ function getGenerationStates(args: CustomArgs) {
       Mojom.ConversationGenerationState.kAwaitingUserInput
   }
   return states
+}
+
+function getPluralStringForStory(key: string, count: number) {
+  if (key !== S.CHAT_UI_THREAD_REPLIES_LABEL) {
+    return ''
+  }
+  return count === 1 ? 'Thread (1 reply)' : `Thread (${count} replies)`
 }
 
 function StoryContext(
@@ -630,6 +641,7 @@ function StoryContext(
     createNewConversationWithWorkspace: () => {},
     isMainConversation: argsRef.current.isDefaultConversation,
     openMainConversation: () => {},
+    openThread: () => {},
   }
 
   const currentError = Mojom.APIError[args.currentErrorState]
@@ -638,6 +650,23 @@ function StoryContext(
 
   const getConversationHistory = () =>
     getConversationContent(argsRef.current.conversation_content)
+
+  const getConversationThreads = async (): Promise<Mojom.Thread[]> => {
+    const history = await getConversationHistory()
+    return history
+      .flatMap((turn) =>
+        turn.childThreadUuids.map((threadUuid) => ({ turn, threadUuid })),
+      )
+      .map(({ turn, threadUuid }, index) => ({
+        uuid: threadUuid,
+        conversationUuid: CONVERSATIONS[1].uuid,
+        originConversationEntryUuid: turn.uuid ?? '',
+        totalTokens: BigInt(0),
+        trimmedTokens: BigInt(0),
+        // Vary the reply count so each indicator label variant is shown.
+        entryCount: [0, 1, 4][index % 3],
+      }))
+  }
 
   return (
     <MockContext
@@ -740,6 +769,7 @@ function StoryContext(
         isAIChatAgentProfile: args.isAIChatAgentProfile,
         isMobile: args.isMobile,
         isHistoryFeatureEnabled: args.isHistoryEnabled,
+        isThreadsFeatureEnabled: true,
         isWorkspaceToolsEnabled: args.isWorkspaceToolsEnabled,
         isConversationShareEnabled: true,
         isAIChatExportJSONEnabled: true,
@@ -761,11 +791,18 @@ function StoryContext(
       <ActiveChatContext.Provider value={activeChatContext}>
         <UntrustedMockContext
           conversationHandler={{
-            getConversationHistory: async () => ({
+            getConversationHistory: async (_threadUuid: string | null) => ({
               conversationHistory: await getConversationHistory(),
+            }),
+            getConversationThreads: async () => ({
+              threads: await getConversationThreads(),
             }),
           }}
           uiHandler={{
+            getPluralString: (key: string, count: number) =>
+              Promise.resolve({
+                pluralString: getPluralStringForStory(key, count),
+              }),
             hasMemory: (memory: string) => {
               // Return false for the "undone" example to show undone state
               if (memory === 'Likes cats') {
@@ -813,6 +850,7 @@ function StoryContext(
           overrides={{
             isMobile: args.isMobile,
             isHistoryFeatureEnabled: args.isHistoryEnabled,
+            isThreadsFeatureEnabled: true,
             associatedContent: getAssociatedContent(),
           }}
           deps={[...Object.values(args)]}
@@ -884,6 +922,10 @@ export const _WithMultipleToolsMultipleTurnsInProgress = GetPanelStory({
 
 export const _WithWeather = GetPanelStory({
   conversation_content: 'WEATHER',
+})
+
+export const _WithThreads = GetPanelStory({
+  conversation_content: 'THREADS',
 })
 
 export const _FullPage = {

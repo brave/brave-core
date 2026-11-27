@@ -101,6 +101,9 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddBoolean("isMobile", kIsMobile);
   source->AddBoolean("isHistoryEnabled",
                      ai_chat::features::IsAIChatHistoryEnabled());
+  source->AddBoolean(
+      "isThreadsEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatThreads));
   source->AddBoolean("isAIChatAgentProfileFeatureEnabled",
                      ai_chat::features::IsAIChatAgentProfileEnabled());
   source->AddBoolean("isAIChatAgentProfile", profile_->IsAIChatAgent());

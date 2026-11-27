@@ -1095,6 +1095,59 @@ describe('ContextActionsAssistant rendering', () => {
   })
 })
 
+describe('ThreadIndicator rendering', () => {
+  const renderConversation = (
+    childThreadUuids: string[],
+    isThreadsFeatureEnabled: boolean,
+  ) =>
+    render(
+      <MockContext
+        overrides={{ isThreadsFeatureEnabled }}
+        initialState={{
+          conversationHistory: [
+            createConversationTurnWithDefaults({
+              characterType: Mojom.CharacterType.HUMAN,
+              text: 'Question',
+              uuid: '1',
+            }),
+            createConversationTurnWithDefaults({
+              characterType: Mojom.CharacterType.ASSISTANT,
+              events: [getCompletionEvent('Response')],
+              uuid: '2',
+              childThreadUuids,
+            }),
+          ],
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+  it('renders a thread indicator for each child thread', () => {
+    renderConversation(['thread-1', 'thread-2'], true)
+    const indicators = screen.getAllByText(S.CHAT_UI_THREAD_EMPTY_LABEL)
+    expect(indicators).toHaveLength(2)
+    const assistantTurn = screen.getByTestId('assistant-turn')
+    indicators.forEach((indicator) =>
+      expect(assistantTurn).toContainElement(indicator),
+    )
+  })
+
+  it('does not render a thread indicator when there are no child threads', () => {
+    renderConversation([], true)
+    expect(
+      screen.queryByText(S.CHAT_UI_THREAD_EMPTY_LABEL),
+    ).not.toBeInTheDocument()
+  })
+
+  it('does not render thread indicators when the threads feature is disabled', () => {
+    renderConversation(['thread-1', 'thread-2'], false)
+    expect(
+      screen.queryByText(S.CHAT_UI_THREAD_EMPTY_LABEL),
+    ).not.toBeInTheDocument()
+  })
+})
+
 describe('highlightRichText', () => {
   test('should highlight associated content mentions', () => {
     const associatedContent: Mojom.AssociatedContent[] = [

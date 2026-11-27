@@ -10,6 +10,8 @@ const boolValues: Record<string, boolean> = {
   isHistoryEnabled: false,
   // Matches the default state of `kAIChatMathRendering`.
   isMathRenderingEnabled: true,
+  // Matches the default state of `kAIChatThreads`.
+  isThreadsEnabled: false,
   isAIChatAgentProfileFeatureEnabled: false,
   isAIChatAgentProfile: false,
 }
@@ -25,6 +27,8 @@ global.loadTimeData = {
     switch (key) {
       case 'richSearchWidgetsOrigin':
         return 'https://prod.browser-ai-includes.s.brave.app'
+      case 'maxThreadsPerOriginEntry':
+        return '1'
       default:
         console.warn(`No loadTimeData.getString for key: ${key}`)
         return key

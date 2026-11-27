@@ -18,6 +18,7 @@
 #include "base/notimplemented.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
@@ -240,6 +241,18 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
       window->Activate();
     }
 #endif
+  }
+
+  void GetPluralString(const std::string& key,
+                       int32_t count,
+                       GetPluralStringCallback callback) override {
+    auto iter = std::ranges::find(webui::kAiChatStrings, key,
+                                  &webui::LocalizedString::name);
+    if (iter == webui::kAiChatStrings.end()) {
+      std::move(callback).Run("");
+      return;
+    }
+    std::move(callback).Run(l10n_util::GetPluralStringFUTF8(iter->id, count));
   }
 
   void AddTabToThumbnailTracker(int32_t tab_id) override {
@@ -505,6 +518,12 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->AddBoolean(
       "isMathRenderingEnabled",
       base::FeatureList::IsEnabled(ai_chat::features::kAIChatMathRendering));
+  source->AddBoolean(
+      "isThreadsEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatThreads));
+  source->AddString(
+      "maxThreadsPerOriginEntry",
+      base::NumberToString(ai_chat::features::kMaxThreadsPerOriginEntry.Get()));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,

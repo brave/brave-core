@@ -19,11 +19,14 @@ const statuses = ['liked', 'disliked', 'none'] as const
 type RatingStatus = (typeof statuses)[number]
 
 interface ContextActionsAssistantProps {
-  turnUuid?: string
-  turnModelKey?: string
+  firstTurnUuid?: string
+  lastTurnUuid?: string
+  firstTurnModelKey?: string
   turnNEARVerified?: boolean
   onEditAnswerClicked?: () => void
   onCopyTextClicked?: () => void
+  childThreadCount?: number
+  onThreadCreated?: (threadUuid: string) => void
 }
 
 export default function ContextActionsAssistant(
@@ -47,10 +50,10 @@ export default function ContextActionsAssistant(
   }, [isGenerating])
 
   function handleLikeOrDislikeAnswer(status: RatingStatus) {
-    if (!props.turnUuid) return
+    if (!props.firstTurnUuid) return
     setCurrentRatingStatus(status)
     conversationContext.parentUiFrame?.rateMessage(
-      props.turnUuid,
+      props.firstTurnUuid,
       status === 'liked',
       null,
     )
@@ -58,7 +61,7 @@ export default function ContextActionsAssistant(
 
   const handleRegenerateAnswer = React.useCallback(
     (selectedModelKey: string) => {
-      if (!props.turnUuid) {
+      if (!props.firstTurnUuid) {
         return
       }
       const modelToBeUsed = conversationContext.allModels.find(
@@ -79,18 +82,18 @@ export default function ContextActionsAssistant(
       // non-premium model.
       conversationContext.setShowPremiumSuggestionForRegenerate(false)
       conversationContext.conversationHandler?.regenerateAnswer(
-        props.turnUuid,
+        props.firstTurnUuid,
         selectedModelKey,
         null,
       )
     },
-    [conversationContext, props.turnUuid],
+    [conversationContext, props.firstTurnUuid],
   )
 
   const isSummaryResponseTurn = React.useMemo(() => {
-    if (!props.turnUuid) return false
+    if (!props.firstTurnUuid) return false
     const history = conversationContext.conversationHistory
-    const turnIndex = history.findIndex((t) => t.uuid === props.turnUuid)
+    const turnIndex = history.findIndex((t) => t.uuid === props.firstTurnUuid)
     if (turnIndex <= 0) return false
     const prev = history[turnIndex - 1]
     const curr = history[turnIndex]
@@ -100,7 +103,7 @@ export default function ContextActionsAssistant(
       && (prev.actionType === Mojom.ActionType.SUMMARIZE_PAGE
         || prev.actionType === Mojom.ActionType.SUMMARIZE_VIDEO)
     )
-  }, [props.turnUuid, conversationContext.conversationHistory])
+  }, [props.firstTurnUuid, conversationContext.conversationHistory])
 
   const leoModels = React.useMemo(
     () =>
@@ -128,6 +131,23 @@ export default function ContextActionsAssistant(
     setIsRegenerateAnswerMenuOpen(isOpen)
   }
 
+  const isMaxThreadsReached =
+    (props.childThreadCount ?? 0)
+    >= conversationContext.maxThreadsPerOriginEntry
+
+  // Create a new thread branching from this answer and notify the parent via
+  // onThreadCreated. If the entry already has an empty thread, the handler is a
+  // no-op (returns null) and we do nothing.
+  const handleCreateThread = React.useCallback(async () => {
+    if (!props.lastTurnUuid) return
+    const { threadUuid } =
+      await conversationContext.conversationHandler.createConversationThread(
+        props.lastTurnUuid,
+      )
+    if (!threadUuid) return
+    props.onThreadCreated?.(threadUuid)
+  }, [conversationContext, props.lastTurnUuid, props.onThreadCreated])
+
   return (
     <div className={styles.actionsWrapper}>
       {props.onCopyTextClicked && (
@@ -146,6 +166,21 @@ export default function ContextActionsAssistant(
           <Icon name='edit-pencil' />
         </Button>
       )}
+      {!conversationContext.isReadOnly
+        && conversationContext.isThreadsFeatureEnabled
+        && props.lastTurnUuid && (
+          <Button
+            onClick={handleCreateThread}
+            isDisabled={isMaxThreadsReached}
+            fab
+            size='small'
+            kind='plain-faint'
+            title={getLocale(S.CHAT_UI_CREATE_THREAD_BUTTON_LABEL)}
+            className={styles.button}
+          >
+            <Icon name='thread' />
+          </Button>
+        )}
       {!conversationContext.isReadOnly && (
         <Button
           onClick={() => handleLikeOrDislikeAnswer('liked')}
@@ -180,14 +215,14 @@ export default function ContextActionsAssistant(
           />
         </Button>
       )}
-      {!conversationContext.isReadOnly && props.turnModelKey && (
+      {!conversationContext.isReadOnly && props.firstTurnModelKey && (
         <RegenerateAnswerMenu
           isOpen={isRegenerateAnswerMenuOpen}
           onOpen={() => handleOpenCloseRegenerateAnswerMenu(true)}
           onClose={() => handleOpenCloseRegenerateAnswerMenu(false)}
           onRegenerate={handleRegenerateAnswer}
           leoModels={leoModels}
-          turnModelKey={props.turnModelKey}
+          turnModelKey={props.firstTurnModelKey}
           turnNEARVerified={props.turnNEARVerified}
           isPremiumUser={conversationContext.isPremiumUser}
           isDisabled={isGenerating}

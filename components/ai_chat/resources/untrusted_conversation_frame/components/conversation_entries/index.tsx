@@ -29,6 +29,7 @@ import {
 import AssistantResponse from '../assistant_response'
 import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
+import ThreadIndicator from '../thread_indicator'
 import {
   getGroupAllowedLinks,
   getReasoningText,
@@ -237,6 +238,7 @@ function ConversationEntries(props: {
     // Split this component up to make it more readable.
     const firstEntry = group[0]
     const firstEntryEdit = firstEntry.edits?.at(-1) ?? group[0]
+    const lastEntry = group.at(-1)
     const lastEditedTime = firstEntryEdit.createdTime
     const isAIAssistant =
       firstEntryEdit.characterType === Mojom.CharacterType.ASSISTANT
@@ -274,6 +276,10 @@ function ConversationEntries(props: {
           (m) => m.key === firstEntryEdit.modelKey,
         )?.key ?? undefined)
       : undefined
+
+    // A thread branches from a specific assistant entry. Show an indicator for
+    // each child thread on the group's last assistant entry.
+    const childThreadUuids = lastEntry?.childThreadUuids ?? []
 
     const turnClass = classnames({
       [styles.turn]: true,
@@ -510,17 +516,31 @@ function ConversationEntries(props: {
             && !firstEntryEdit.selectedText
             && !showEditInput && (
               <ContextActionsAssistant
-                turnUuid={firstEntryEdit.uuid}
-                turnModelKey={turnModelKey}
-                turnNEARVerified={
-                  group.at(-1)?.nearVerificationStatus?.verified
-                }
+                firstTurnUuid={firstEntryEdit.uuid}
+                lastTurnUuid={lastEntry?.uuid}
+                firstTurnModelKey={turnModelKey}
+                turnNEARVerified={lastEntry?.nearVerificationStatus?.verified}
                 onEditAnswerClicked={
                   canEditEntry ? () => setEditInputId(entryNumber) : undefined
                 }
                 onCopyTextClicked={handleCopyText}
+                childThreadCount={childThreadUuids.length}
+                onThreadCreated={(threadUuid) => {
+                  // Make the new thread indicator visible for the active group.
+                  if (isActiveGroup) {
+                    scrollToBottom?.()
+                  }
+                  conversationContext.parentUiFrame?.openThread(threadUuid)
+                }}
               />
             )}
+          {isAIAssistant
+            && childThreadUuids.map((threadUuid) => (
+              <ThreadIndicator
+                key={threadUuid}
+                threadUuid={threadUuid}
+              />
+            ))}
         </div>
       </div>
     )
