@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/values.h"
 #include "ui/base/page_transition_types.h"
 
 namespace bat_ads {
@@ -58,6 +59,16 @@ void BatAdsClientNotifierImpl::NotifyResourceComponentDidChange(
 void BatAdsClientNotifierImpl::NotifyDidUnregisterResourceComponent(
     const std::string& id) {
   ads_client_notifier_.NotifyDidUnregisterResourceComponent(id);
+}
+
+void BatAdsClientNotifierImpl::NotifySponsoredContentComponentDidChange(
+    std::optional<base::DictValue> value) {
+  ads_client_notifier_.NotifySponsoredContentComponentDidChange(
+      std::move(value));
+}
+
+void BatAdsClientNotifierImpl::NotifyDidUnregisterSponsoredContentComponent() {
+  ads_client_notifier_.NotifyDidUnregisterSponsoredContentComponent();
 }
 
 void BatAdsClientNotifierImpl::NotifyRewardsWalletDidUpdate(

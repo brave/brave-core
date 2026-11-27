@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_CLIENT_NOTIFIER_IMPL_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -15,6 +16,10 @@
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace bat_ads {
 
@@ -44,6 +49,9 @@ class BatAdsClientNotifierImpl final
   void NotifyResourceComponentDidChange(const std::string& manifest_version,
                                         const std::string& id) override;
   void NotifyDidUnregisterResourceComponent(const std::string& id) override;
+  void NotifySponsoredContentComponentDidChange(
+      std::optional<base::DictValue> value) override;
+  void NotifyDidUnregisterSponsoredContentComponent() override;
   void NotifyRewardsWalletDidUpdate(
       const std::string& payment_id,
       const std::string& recovery_seed_base64) override;

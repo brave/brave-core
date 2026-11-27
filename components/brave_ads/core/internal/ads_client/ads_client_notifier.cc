@@ -7,9 +7,11 @@
 
 #include <cstdint>
 #include <memory>
+#include <utility>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/common/functional/once_closure_task_queue.h"
 #include "ui/base/page_transition_types.h"
@@ -96,6 +98,30 @@ void AdsClientNotifier::NotifyDidUnregisterResourceComponent(
 
   observers_.Notify(
       &AdsClientNotifierObserver::OnNotifyDidUnregisterResourceComponent, id);
+}
+
+void AdsClientNotifier::NotifySponsoredContentComponentDidChange(
+    std::optional<base::DictValue> value) {
+  if (task_queue_->should_queue()) {
+    return task_queue_->Add(base::BindOnce(
+        &AdsClientNotifier::NotifySponsoredContentComponentDidChange,
+        weak_factory_.GetWeakPtr(), std::move(value)));
+  }
+
+  observers_.Notify(
+      &AdsClientNotifierObserver::OnNotifySponsoredContentComponentDidChange,
+      value);
+}
+
+void AdsClientNotifier::NotifyDidUnregisterSponsoredContentComponent() {
+  if (task_queue_->should_queue()) {
+    return task_queue_->Add(base::BindOnce(
+        &AdsClientNotifier::NotifyDidUnregisterSponsoredContentComponent,
+        weak_factory_.GetWeakPtr()));
+  }
+
+  observers_.Notify(&AdsClientNotifierObserver::
+                        OnNotifyDidUnregisterSponsoredContentComponent);
 }
 
 void AdsClientNotifier::NotifyTabTextContentDidChange(

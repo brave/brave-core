@@ -148,6 +148,7 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<ApplicationStateMonitor> application_state_monitor,
     std::unique_ptr<ShutdownMonitor> shutdown_monitor,
     ResourceComponent& resource_component,
+    sponsored_content::SponsoredContentService& sponsored_content_service,
     history::HistoryService* history_service,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
     brave_rewards::RewardsService* rewards_service,
@@ -163,6 +164,7 @@ AdsServiceImpl::AdsServiceImpl(
       http_client_(std::move(http_client)),
       channel_name_(channel_name),
       resource_component_(resource_component),
+      sponsored_content_service_(sponsored_content_service),
       history_service_(history_service),
       host_content_settings_map_(host_content_settings_map),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
@@ -485,6 +487,9 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
 
   resource_component_observation_.Observe(
       base::to_address(resource_component_));
+
+  sponsored_content_service_observation_.Observe(
+      base::to_address(sponsored_content_service_));
 
   if (host_content_settings_map_) {
     host_content_settings_map_observation_.Observe(
@@ -1115,6 +1120,8 @@ void AdsServiceImpl::ShutdownAdsService() {
   reminder_manager_.Shutdown();
 
   resource_component_observation_.Reset();
+
+  sponsored_content_service_observation_.Reset();
 
   host_content_settings_map_observation_.Reset();
 
@@ -1800,6 +1807,24 @@ void AdsServiceImpl::OnResourceComponentDidChange(
 void AdsServiceImpl::OnDidUnregisterResourceComponent(const std::string& id) {
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyDidUnregisterResourceComponent(id);
+  }
+}
+
+void AdsServiceImpl::OnSponsoredConversionConfigContentDidUpdate(
+    const base::FilePath& /*installed_dir*/,
+    base::optional_ref<const base::DictValue> dict) {
+  if (!bat_ads_client_notifier_remote_.is_bound()) {
+    return;
+  }
+
+  bat_ads_client_notifier_remote_->NotifySponsoredContentComponentDidChange(
+      dict ? std::make_optional(dict->Clone()) : std::nullopt);
+}
+
+void AdsServiceImpl::OnSponsoredContentComponentDidUnregister() {
+  if (bat_ads_client_notifier_remote_.is_bound()) {
+    bat_ads_client_notifier_remote_
+        ->NotifyDidUnregisterSponsoredContentComponent();
   }
 }
 

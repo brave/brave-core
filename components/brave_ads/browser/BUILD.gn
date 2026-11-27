@@ -58,6 +58,7 @@ static_library("browser") {
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core/mojom",
     "//brave/components/services/bat_ads/public/interfaces",
+    "//brave/components/sponsored_content",
     "//components/keyed_service/core",
     "//mojo/public/cpp/bindings",
   ]
@@ -169,6 +170,7 @@ source_set("unit_tests") {
     "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/ntp_background_images/common",
+    "//brave/components/sponsored_content:test_support",
     "//components/content_settings/core/browser",
     "//components/metrics:metrics_pref_names",
     "//components/prefs",

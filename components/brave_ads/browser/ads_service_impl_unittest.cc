@@ -34,6 +34,7 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/sponsored_content/test/fake_sponsored_content_service.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -105,6 +106,7 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
         std::move(bat_ads_service_factory),
         std::make_unique<ApplicationStateMonitor>(),
         std::move(shutdown_monitor), mock_resource_component_,
+        fake_sponsored_content_service_,
         /*history_service=*/nullptr,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
         &rewards_service_,
@@ -218,6 +220,8 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
   testing::NiceMock<test::MockResourceComponent> mock_resource_component_;
+  sponsored_content::test::FakeSponsoredContentService
+      fake_sponsored_content_service_;
 
   std::unique_ptr<AdsServiceImpl> ads_service_;
 };
@@ -241,6 +245,7 @@ TEST_F(BraveAdsAdsServiceImplTest, ConstructorDoesNotRunStartupLogic) {
       std::make_unique<test::FakeBatAdsServiceFactory>(),
       std::make_unique<ApplicationStateMonitor>(),
       std::make_unique<test::FakeShutdownMonitor>(), mock_resource_component_,
+      fake_sponsored_content_service_,
       /*history_service=*/nullptr,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       &rewards_service_,

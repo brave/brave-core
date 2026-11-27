@@ -163,6 +163,7 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       std::make_unique<BatAdsServiceFactoryImpl>(),
       ApplicationStateMonitor::Create(), CreateShutdownMonitor(),
       CHECK_DEREF(g_brave_browser_process->resource_component()),
+      CHECK_DEREF(g_brave_browser_process->sponsored_content_service()),
       history_service,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       rewards_service,
