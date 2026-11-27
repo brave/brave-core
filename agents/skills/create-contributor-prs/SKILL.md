@@ -2,21 +2,20 @@
 name: create-contributor-prs
 description:
   For an external contributor's open PRs to brave/brave-core, ensure the
-  `sync-and-rebase-pr-from-fork.yml` workflow has been dispatched for each PR's
-  latest commit SHA — so a `contributor-*` draft PR exists inside
-  brave/brave-core and CI can run. Invoke when the user says something like
-  "create contributor PRs for <user>", "sync contributor PRs <list>", "run the
-  rebase-from-fork workflow for these PRs", or passes a GitHub username / list
-  of PR URLs/numbers.
+  `sync-pr-from-fork.yml` workflow has been dispatched for each PR's latest
+  commit SHA — so a `contributor-*` draft PR exists inside brave/brave-core and
+  CI can run. Invoke when the user says something like "create contributor PRs
+  for <user>", "sync contributor PRs <list>", "run the sync-from-fork workflow
+  for these PRs", or passes a GitHub username / list of PR URLs/numbers.
 ---
 
 # create-contributor-prs
 
 External contributors fork brave/brave-core and open PRs from their fork. Most
 of Brave's CI doesn't run on fork PRs for security reasons. The
-`sync-and-rebase-pr-from-fork.yml` workflow exists to create an in-org mirror
-branch (`contributor-<owner>-<headRefName>`) and a draft PR in brave/brave-core
-that re-triggers full CI on the rebased commit.
+`sync-pr-from-fork.yml` workflow exists to create an in-org mirror branch
+(`contributor-<owner>-<headRefName>`) and a draft PR in brave/brave-core that
+re-triggers full CI on the contributor's commit.
 
 This skill dispatches that workflow for each open PR by a contributor (or each
 PR in an explicit list), but only when a dispatch hasn't already happened for
@@ -45,7 +44,7 @@ Pass `--repo brave/brave-core` to every `gh` call. Don't assume the cwd matters.
 
 ## Workflow facts (don't re-derive)
 
-`.github/workflows/sync-and-rebase-pr-from-fork.yml` inputs:
+`.github/workflows/sync-pr-from-fork.yml` inputs:
 
 - `PR_NUMBER` (optional) — number of the contributor PR
 - `COMMIT_HASH` (required, 40-char hex) — the contributor PR's HEAD commit SHA
@@ -54,10 +53,9 @@ The workflow:
 
 - Requires the PR to be cross-repo (`isCrossRepository: true`). It exits 1
   otherwise — so filter non-cross-repo PRs out client-side, don't dispatch them.
-- Checks out the given `COMMIT_HASH` from the contributor's fork, rebases onto
-  the PR's base branch, force-pushes to
-  `refs/heads/contributor-<headRepositoryOwner>-<headRefName>` inside
-  brave/brave-core.
+- Points `refs/heads/contributor-<headRepositoryOwner>-<headRefName>` inside
+  brave/brave-core at the given `COMMIT_HASH` (creating or force-updating the
+  ref). It does not check out or rebase the commit.
 - Creates a draft PR titled `CI run for contributor PR #<PR_NUMBER>` if one
   doesn't already exist for that contributor branch.
 
@@ -96,7 +94,7 @@ Pull a window of recent runs once, up front (don't refetch per-PR):
 
 ```bash
 gh run list --repo brave/brave-core \
-  --workflow=sync-and-rebase-pr-from-fork.yml \
+  --workflow=sync-pr-from-fork.yml \
   --limit 100 \
   --json databaseId,status,conclusion,createdAt,event
 ```
@@ -132,7 +130,7 @@ lookback early.
 For each PR whose `headRefOid` is NOT in `dispatched_shas`:
 
 ```bash
-gh workflow run sync-and-rebase-pr-from-fork.yml \
+gh workflow run sync-pr-from-fork.yml \
   --repo brave/brave-core \
   -f PR_NUMBER=<N> \
   -f COMMIT_HASH=<headRefOid>
