@@ -81,7 +81,8 @@ class TopSitesRecentSearchHeaderView: UICollectionReusableView {
   }
 
   func setButtonVisibility(showClearButtonVisible: Bool) {
-    clearButton.alpha = showClearButtonVisible ? 1.0 : 0.0
+    clearButton.isHidden = !showClearButtonVisible
+    clearButton.isEnabled = showClearButtonVisible
   }
 
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {

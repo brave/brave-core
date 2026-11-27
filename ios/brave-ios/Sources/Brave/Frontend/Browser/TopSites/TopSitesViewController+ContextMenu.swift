@@ -19,7 +19,6 @@ extension TopSitesViewController {
     guard let indexPath = indexPaths.first,
       let section = availableSections[safe: indexPath.section]
     else {
-      assertionFailure("Invalid Section")
       return nil
     }
 
