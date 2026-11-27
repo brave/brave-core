@@ -109,12 +109,12 @@ candidates (`obsolete.py cited-bugs`).
 Each sweep targets one way Brave gets exposed, and has its rules in
 `rules/<sweep>/`. They're independent, so give each sweep to a subagent, with
 the ground rules, its rule files and their `.candidates`. Start each with
-`model: "sonnet"`, whichever model you run on. An incremental range
-of a few hundred commits has short lists: sweeps can share a subagent, and a
-range that is only the `chrome/VERSION` bump needs none. For each rule, it reads
-the file, then checks the candidates as "How to check" says. Rules sharing a
-list say so ("Same as …"); read it once. A list that says "Read the whole range"
-belongs to a rule whose group asks nothing of a commit.
+`model: "sonnet"`, whichever model you run on. An incremental range of a few
+hundred commits has short lists: sweeps can share a subagent, and a range that
+is only the `chrome/VERSION` bump needs none. For each rule, it reads the file,
+then checks the candidates as "How to check" says. Rules sharing a list say so
+("Same as …"); read it once. A list that says "Read the whole range" belongs to
+a rule whose group asks nothing of a commit.
 
 Ask each subagent for method notes (which rules found verified items, which
 lists were noise, and any tooling problem it hit), and for the hashes of the
