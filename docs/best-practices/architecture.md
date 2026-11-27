@@ -1281,6 +1281,51 @@ feature's data and lifetime requirements. See
   declarations
 - Global features are rare; most features should be profile-scoped or narrower
 
+**Within a tab, scope data to the object whose lifetime matches it.** The tab
+itself is the `TabInterface`, which sits above the `WebContents`. On desktop, a
+tab can outlive its `WebContents`: discarding the tab replaces the `WebContents`
+(see [ARCH-075](#ARCH-075)), so tab-wide state stored in `WebContentsUserData`
+is lost while a tab feature owned through the `TabInterface` keeps it. A
+`WebContents` in turn typically outlives the `Page` and `RenderFrameHost` of
+each document it has replaced and each `NavigationHandle` that has finished.
+Storing per-navigation, per-page, or per-document state on the tab or the
+`WebContents` (in a tab feature member or `WebContentsUserData`) lets it outlive
+the navigation it describes. A later navigation, a page restored from the
+back/forward cache, or an activated prerender then sees state that belongs to a
+different page. Less often, concurrent navigations or subframes overwrite each
+other's state.
+
+A `WebContents` also doesn't outlive everything it starts. A `NavigationHandle`
+still in flight when the `WebContents` is destroyed ends without committing, and
+keepalive requests such as `fetchLater()` and `navigator.sendBeacon()` can be
+sent after their document and `WebContents` are gone. Code that handles them
+must not assume the `WebContents` or its user data still exists.
+
+| Data describes                           | Attach to                                                                    | Cleared when                                                        |
+| ---------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| The tab, across navigations and discards | `TabInterface` (a `BraveTabFeatures` member)                                 | The tab is closed                                                   |
+| The tab's current `WebContents`          | `WebContents` (`WebContentsUserData`, created in `BraveTabFeatures::Init()`) | The `WebContents` is destroyed, including when the tab is discarded |
+| One in-progress navigation               | `NavigationHandle` (`NavigationHandleUserData`)                              | The navigation finishes                                             |
+| One session history entry                | `NavigationEntry` (`SetUserData`)                                            | The entry is removed                                                |
+| The main-frame page                      | `Page` (`PageUserData`)                                                      | The page is destroyed (kept while in back/forward cache)            |
+| One document in any frame                | `RenderFrameHost` (`DocumentUserData`, or `DocumentService`)                 | The frame navigates to a new document or is destroyed               |
+
+```cpp
+// ❌ WRONG - per-page state on the WebContents survives later navigations
+void MyTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
+  if (ShouldBlock(handle->GetURL())) {
+    page_blocked_ = true;  // still true after navigating to another page
+  }
+}
+
+// ✅ CORRECT - state is destroyed with the page it describes
+void MyTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
+  if (ShouldBlock(handle->GetURL())) {
+    MyPageData::CreateForPage(handle->GetRenderFrameHost()->GetPage());
+  }
+}
+```
+
 <a id="ARCH-066"></a>
 
 ## ✅ Swap-and-Process for Reentrancy Protection
