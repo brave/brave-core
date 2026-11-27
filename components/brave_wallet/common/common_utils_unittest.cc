@@ -871,12 +871,34 @@ TEST(CommonUtilsDeathTest, MakeIndexBasedAccountId_ADA) {
 }
 
 TEST(CommonUtils, CoinSupportsDapps) {
-  for (auto coin : kAllCoins) {
-    if (coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL ||
-        coin == mojom::CoinType::ADA) {
-      EXPECT_TRUE(CoinSupportsDapps(coin));
-    } else {
-      EXPECT_FALSE(CoinSupportsDapps(coin));
+  // DOT needs both the Polkadot feature and its dapp support param.
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletPolkadotFeature,
+        {{"polkadot_dapp_support", "false"}});
+
+    for (auto coin : kAllCoins) {
+      if (coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL ||
+          coin == mojom::CoinType::ADA) {
+        EXPECT_TRUE(CoinSupportsDapps(coin));
+      } else {
+        EXPECT_FALSE(CoinSupportsDapps(coin));
+      }
+    }
+  }
+
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndDisableFeature(features::kBraveWalletPolkadotFeature);
+
+    for (auto coin : kAllCoins) {
+      if (coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL ||
+          coin == mojom::CoinType::ADA) {
+        EXPECT_TRUE(CoinSupportsDapps(coin));
+      } else {
+        EXPECT_FALSE(CoinSupportsDapps(coin));
+      }
     }
   }
 
