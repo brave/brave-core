@@ -26,6 +26,13 @@ class MediaBackgroundingJavaScriptFeature
   static MediaBackgroundingJavaScriptFeature* FromBrowserState(
       web::BrowserState* browser_state);
 
+  // Records which videos are still playing. Called while the scene is resigning
+  // active, before WebKit pauses them for backgrounding.
+  void MarkPlayingVideos(web::WebState* web_state);
+
+  // Resumes videos recorded by `MarkPlayingVideos`.
+  void ResumePlayingVideos(web::WebState* web_state);
+
   // web::JavaScriptFeature
   std::vector<web::JavaScriptFeature::FeatureScript> GetScripts()
       const override;
@@ -35,6 +42,9 @@ class MediaBackgroundingJavaScriptFeature
   raw_ptr<ProfileIOS> profile_;
 
   void OnPrefUpdated();
+
+  void CallPlaybackFunction(web::WebState* web_state,
+                            const std::string& function_name);
 
   explicit MediaBackgroundingJavaScriptFeature(ProfileIOS* profile);
 };

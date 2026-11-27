@@ -12,6 +12,7 @@ source_set("media") {
   ]
   deps = [
     ":media_backgrounding_js",
+    ":video_background_playback_js",
     "//brave/ios/browser/shared/prefs",
     "//components/prefs",
     "//ios/chrome/browser/shared/model/profile",
@@ -27,5 +28,11 @@ source_set("media") {
 optimize_ts("media_backgrounding_js") {
   visibility = [ ":media" ]
   sources = [ "resources/media_backgrounding.ts" ]
+  deps = [ "//ios/web/public/js_messaging:gcrweb" ]
+}
+
+optimize_ts("video_background_playback_js") {
+  visibility = [ ":media" ]
+  sources = [ "resources/video_background_playback.ts" ]
   deps = [ "//ios/web/public/js_messaging:gcrweb" ]
 }
