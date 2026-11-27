@@ -26,7 +26,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"  // nogncheck
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 namespace brave_ads {
