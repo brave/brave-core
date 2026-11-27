@@ -32,11 +32,6 @@ inline constexpr base::FeatureParam<int> kCountToNewTabTakeoverWallpaper{
 inline constexpr base::FeatureParam<base::TimeDelta> kResetCounterAfter{
     &kBraveNTPNewTabTakeoverWallpaper, "reset_counter_after", base::Days(1)};
 
-inline constexpr base::FeatureParam<base::TimeDelta>
-    kSponsoredImagesUpdateCheckAfter{&kBraveNTPNewTabTakeoverWallpaper,
-                                     "sponsored_images_update_check_after",
-                                     base::Minutes(15)};
-
 }  // namespace ntp_background_images::features
 
 #endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_FEATURES_H_

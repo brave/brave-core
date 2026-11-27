@@ -77,6 +77,10 @@ namespace speedreader {
 class SpeedreaderRewriterService;
 }
 
+namespace sponsored_content {
+class SponsoredContentService;
+}  // namespace sponsored_content
+
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 namespace brave_ads {
 class BraveStatsHelper;
@@ -138,6 +142,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() override;
+  sponsored_content::SponsoredContentService* sponsored_content_service()
+      override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
@@ -203,6 +209,10 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
   scoped_refptr<p3a::P3AService> p3a_service_;
   scoped_refptr<p3a::HistogramsBraveizer> histogram_braveizer_;
+  // Declared before, so destroyed after, `ntp_background_images_service_`,
+  // which observes it and must not outlive it.
+  std::unique_ptr<sponsored_content::SponsoredContentService>
+      sponsored_content_service_;
   std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>
       ntp_background_images_service_;
 

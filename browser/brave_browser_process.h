@@ -71,6 +71,10 @@ namespace p3a {
 class P3AService;
 }  // namespace p3a
 
+namespace sponsored_content {
+class SponsoredContentService;
+}  // namespace sponsored_content
+
 namespace tor {
 class BraveTorClientUpdater;
 class BraveTorPluggableTransportUpdater;
@@ -121,6 +125,8 @@ class BraveBrowserProcess {
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   virtual ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() = 0;
+  virtual sponsored_content::SponsoredContentService*
+  sponsored_content_service() = 0;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   virtual speedreader::SpeedreaderRewriterService*
   speedreader_rewriter_service() = 0;

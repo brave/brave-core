@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
+#include "brave/components/sponsored_content/sponsored_content_service.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_component_installer.h"
 #include "components/application_locale_storage/application_locale_storage.h"
 #include "ios/chrome/browser/application_context/model/application_context_impl.h"
@@ -55,6 +56,17 @@ void BraveApplicationContextImpl::PreMainMessageLoopRun() {
   brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
       GetNetworkTimeTracker(),
       base::SingleThreadTaskRunner::GetCurrentDefault());
+}
+
+void BraveApplicationContextImpl::StartTearDown() {
+  if (sponsored_content_service_) {
+    // Must run before `ApplicationContextImpl::StartTearDown()` destroys
+    // `VariationsService` and unloads profiles, removing the last observer,
+    // so neither can dangle in `SponsoredContentService`.
+    sponsored_content_service_->StartTearDown();
+  }
+
+  ApplicationContextImpl::StartTearDown();
 }
 
 // MARK: - BraveApplicationContextImpl
@@ -109,6 +121,16 @@ BraveApplicationContextImpl::https_upgrade_exceptions_service() {
             local_data_files_service());
   }
   return https_upgrade_exceptions_service_.get();
+}
+
+sponsored_content::SponsoredContentService*
+BraveApplicationContextImpl::sponsored_content_service() {
+  if (!sponsored_content_service_) {
+    sponsored_content_service_ =
+        std::make_unique<sponsored_content::SponsoredContentService>(
+            GetVariationsService(), GetComponentUpdateService());
+  }
+  return sponsored_content_service_.get();
 }
 
 void BraveApplicationContextImpl::StartBraveServices() {

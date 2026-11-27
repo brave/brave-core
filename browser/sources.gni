@@ -236,6 +236,7 @@ brave_chrome_browser_deps = [
   "//brave/components/speech_to_text",
   "//brave/components/speech_to_text:buildflags",
   "//brave/components/speedreader/common/buildflags",
+  "//brave/components/sponsored_content",
   "//brave/components/tor/buildflags",
   "//brave/components/traffic_control/buildflags",
   "//brave/components/v8/buildflags",

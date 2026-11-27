@@ -45,6 +45,7 @@
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
+#include "brave/components/sponsored_content/sponsored_content_service.h"
 #include "brave/components/webcompat/content/browser/webcompat_exceptions_service.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
@@ -265,6 +266,11 @@ void BraveBrowserProcessImpl::StartTearDown() {
   brave_stats_updater_.reset();
 #endif
   brave_referrals_service_.reset();
+  if (sponsored_content_service_) {
+    // Must run first, so `component_update_service_` is null before
+    // `ntp_background_images_service_` removes the last observer.
+    sponsored_content_service_->StartTearDown();
+  }
   if (ntp_background_images_service_) {
     ntp_background_images_service_->StartTearDown();
   }
@@ -382,11 +388,22 @@ BraveBrowserProcessImpl::ntp_background_images_service() {
   if (!ntp_background_images_service_) {
     ntp_background_images_service_ =
         std::make_unique<NTPBackgroundImagesService>(
-            variations_service(), component_updater(), local_state());
+            component_updater(), *sponsored_content_service(), local_state());
     ntp_background_images_service_->Init();
   }
 
   return ntp_background_images_service_.get();
+}
+
+sponsored_content::SponsoredContentService*
+BraveBrowserProcessImpl::sponsored_content_service() {
+  if (!sponsored_content_service_) {
+    sponsored_content_service_ =
+        std::make_unique<sponsored_content::SponsoredContentService>(
+            variations_service(), component_updater());
+  }
+
+  return sponsored_content_service_.get();
 }
 
 https_upgrade_exceptions::HttpsUpgradeExceptionsService*

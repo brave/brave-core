@@ -7,19 +7,17 @@
 
 #include <utility>
 
-#include "base/files/file_path.h"
-#include "base/json/json_reader.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/site/ntp_sponsored_sites_data.h"
 
 namespace ntp_background_images {
 
 FakeNTPBackgroundImagesService::FakeNTPBackgroundImagesService(
-    variations::VariationsService* variations_service,
     component_updater::ComponentUpdateService* component_update_service,
+    sponsored_content::SponsoredContentService& sponsored_content_service,
     PrefService* pref_service)
-    : NTPBackgroundImagesService(variations_service,
-                                 component_update_service,
+    : NTPBackgroundImagesService(component_update_service,
+                                 sponsored_content_service,
                                  pref_service) {}
 
 FakeNTPBackgroundImagesService::~FakeNTPBackgroundImagesService() = default;
@@ -34,23 +32,15 @@ void FakeNTPBackgroundImagesService::UnregisterSponsoredImagesComponent() {
   ++unregister_sponsored_images_component_call_count_;
 }
 
-void FakeNTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
-    const std::string& json) {
-  sponsored_content_installed_dir_ =
-      base::FilePath::FromASCII("fake_sponsored_images_installed_dir");
-  NTPBackgroundImagesService::OnHandledSponsoredComponentData(
-      base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS));
-}
-
-void FakeNTPBackgroundImagesService::OnGetSponsoredSitesData(
-    std::optional<NTPSponsoredSitesData> sites_data) {
-  NTPBackgroundImagesService::OnHandledSponsoredSitesData(
-      std::move(sites_data));
-}
-
 void FakeNTPBackgroundImagesService::SetBackgroundImagesData(
     std::unique_ptr<NTPBackgroundImagesData> data) {
   background_images_data_ = std::move(data);
+}
+
+void FakeNTPBackgroundImagesService::SetSponsoredSitesData(
+    std::unique_ptr<NTPSponsoredSitesData> sponsored_sites_data) {
+  sponsored_sites_data_ = std::move(sponsored_sites_data);
+  observers_.Notify(&Observer::OnSponsoredSitesDataDidUpdate);
 }
 
 }  // namespace ntp_background_images

@@ -27,6 +27,7 @@
 #include "brave/components/ntp_background_images/browser/test/fake_ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
+#include "brave/components/sponsored_content/test/fake_sponsored_content_service.h"
 #include "components/history/core/browser/history_database_params.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/test/history_service_test_util.h"
@@ -111,10 +112,12 @@ class SponsoredSitesFacadeTest : public testing::Test {
 
     ntp_background_images::NTPBackgroundImagesService::
         RegisterLocalStatePrefsForMigration(local_state_.registry());
+    sponsored_content_service_ = std::make_unique<
+        sponsored_content::test::FakeSponsoredContentService>();
     background_images_service_ =
         std::make_unique<ntp_background_images::FakeNTPBackgroundImagesService>(
-            /*variations_service=*/nullptr,
-            /*component_update_service=*/nullptr, &local_state_);
+            /*component_update_service=*/nullptr, *sponsored_content_service_,
+            &local_state_);
 
     ASSERT_TRUE(installed_dir_.CreateUniqueTempDir());
 
@@ -150,8 +153,10 @@ class SponsoredSitesFacadeTest : public testing::Test {
   // fail-closed default.
   bool GetHasGenuineVisit(SponsoredSitesFacade& facade,
                           const std::string& target_url) {
-    background_images_service_->OnGetSponsoredSitesData(
-        CreateSponsoredSitesData(installed_dir_.GetPath(), "foo", target_url));
+    background_images_service_->SetSponsoredSitesData(
+        std::make_unique<ntp_background_images::NTPSponsoredSitesData>(
+            CreateSponsoredSitesData(installed_dir_.GetPath(), "foo",
+                                     target_url)));
     GetSites(facade);
     EXPECT_TRUE(base::test::RunUntil(
         [&] { return !facade.HasPendingGenuineVisitQueriesForTesting(); }));
@@ -166,6 +171,8 @@ class SponsoredSitesFacadeTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable profile_prefs_;
   TestingPrefServiceSimple local_state_;
   base::ScopedTempDir installed_dir_;
+  std::unique_ptr<sponsored_content::test::FakeSponsoredContentService>
+      sponsored_content_service_;
   std::unique_ptr<ntp_background_images::FakeNTPBackgroundImagesService>
       background_images_service_;
   base::ScopedTempDir history_dir_;
@@ -176,8 +183,10 @@ TEST_F(SponsoredSitesFacadeTest, ReturnsNoSitesWhenSponsoredSitesDisabled) {
   profile_prefs_.SetBoolean(brave_ads::prefs::kSponsoredEnabled, false);
 
   auto facade = CreateFacade();
-  background_images_service_->OnGetSponsoredSitesData(CreateSponsoredSitesData(
-      installed_dir_.GetPath(), "foo", "https://foo.com"));
+  background_images_service_->SetSponsoredSitesData(
+      std::make_unique<ntp_background_images::NTPSponsoredSitesData>(
+          CreateSponsoredSitesData(installed_dir_.GetPath(), "foo",
+                                   "https://foo.com")));
 
   EXPECT_THAT(GetSites(*facade), testing::IsEmpty());
 }
@@ -190,10 +199,12 @@ TEST_F(SponsoredSitesFacadeTest, ReturnsNoSitesWhenNoSponsoredSitesData) {
 
 TEST_F(SponsoredSitesFacadeTest, ReturnsEligibleSites) {
   auto facade = CreateFacade();
-  background_images_service_->OnGetSponsoredSitesData(CreateSponsoredSitesData(
-      installed_dir_.GetPath(),
-      {SponsoredSiteTileSpec{"foo", "https://foo.com"},
-       SponsoredSiteTileSpec{"bar", "https://bar.com"}}));
+  background_images_service_->SetSponsoredSitesData(
+      std::make_unique<ntp_background_images::NTPSponsoredSitesData>(
+          CreateSponsoredSitesData(
+              installed_dir_.GetPath(),
+              {SponsoredSiteTileSpec{"foo", "https://foo.com"},
+               SponsoredSiteTileSpec{"bar", "https://bar.com"}})));
 
   EXPECT_THAT(GetSites(*facade),
               testing::ElementsAre(testing::Pointee(testing::Field(
@@ -207,8 +218,10 @@ TEST_F(SponsoredSitesFacadeTest, ReturnsNoSitesWhenRewardsWalletConnected) {
   profile_prefs_.SetString(brave_rewards::prefs::kExternalWalletType, "uphold");
 
   auto facade = CreateFacade();
-  background_images_service_->OnGetSponsoredSitesData(CreateSponsoredSitesData(
-      installed_dir_.GetPath(), "foo", "https://foo.com"));
+  background_images_service_->SetSponsoredSitesData(
+      std::make_unique<ntp_background_images::NTPSponsoredSitesData>(
+          CreateSponsoredSitesData(installed_dir_.GetPath(), "foo",
+                                   "https://foo.com")));
 
   EXPECT_THAT(GetSites(*facade), testing::IsEmpty());
 }
@@ -221,8 +234,10 @@ TEST_F(SponsoredSitesFacadeTest, InvokesCallbackWhenSponsoredSitesDataUpdates) {
   facade->SetSitesUpdatedCallback(base::BindLambdaForTesting(
       [&callback_invoked] { callback_invoked = true; }));
 
-  background_images_service_->OnGetSponsoredSitesData(CreateSponsoredSitesData(
-      installed_dir_.GetPath(), "foo", "https://foo.com"));
+  background_images_service_->SetSponsoredSitesData(
+      std::make_unique<ntp_background_images::NTPSponsoredSitesData>(
+          CreateSponsoredSitesData(installed_dir_.GetPath(), "foo",
+                                   "https://foo.com")));
 
   EXPECT_TRUE(callback_invoked);
 }
@@ -265,8 +280,10 @@ TEST_F(SponsoredSitesFacadeTest, PreservesGenuineVisitAcrossRoutineRefresh) {
   ASSERT_TRUE(GetHasGenuineVisit(*facade, "https://foo.com"));
 
   // A routine refresh re-fetches the same sponsored sites data.
-  background_images_service_->OnGetSponsoredSitesData(CreateSponsoredSitesData(
-      installed_dir_.GetPath(), "foo", "https://foo.com"));
+  background_images_service_->SetSponsoredSitesData(
+      std::make_unique<ntp_background_images::NTPSponsoredSitesData>(
+          CreateSponsoredSitesData(installed_dir_.GetPath(), "foo",
+                                   "https://foo.com")));
 
   auto sites = GetSites(*facade);
   ASSERT_EQ(sites.size(), 1u);

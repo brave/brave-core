@@ -314,7 +314,7 @@ export function Resources() {
         </div>
         <div className='content-card'>
           <h4>
-            <span className='title'>New tab page ads</span>
+            <span className='title'>Sponsored content</span>
           </h4>
 
           <section className='key-value-list'>
