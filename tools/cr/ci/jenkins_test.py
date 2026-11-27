@@ -1192,5 +1192,52 @@ class RerunTest(unittest.TestCase):
         )
 
 
+class BuildsTest(unittest.TestCase):
+    """Tests for `JenkinsCi.builds`."""
+
+    _JOB = 'https://ci.brave.com/job/brave-chromium-mirrors-sync/'
+
+    def _builds(self, url, payload):
+        session = _dispatching_session([('/api/json', payload)])
+        launcher = jenkins.JenkinsCi('alice', 'tok')
+        with patch.object(launcher, '_session', return_value=session):
+            found = launcher.builds(url, 2)
+        return found, session.get.call_args.args[0]
+
+    def test_lists_the_job_s_runs_from_a_run_s_link(self):
+        found, url = self._builds(
+            f'{self._JOB}8299/',
+            {
+                'allBuilds': [
+                    {
+                        'number': 8300,
+                        'url': f'{self._JOB}8300/',
+                        'result': None,
+                        'timestamp': 1763911260000,
+                        'duration': 0,
+                    },
+                    {
+                        'number': 8299,
+                        'url': f'{self._JOB}8299/',
+                        'result': 'ABORTED',
+                        'timestamp': 1763910000000,
+                        'duration': 1308000,
+                    },
+                ]
+            },
+        )
+        self.assertTrue(url.startswith(f'{self._JOB}api/json?'))
+        self.assertIn('{0,2}', url)
+        self.assertEqual(
+            [(b.number, b.result, b.duration) for b in found],
+            [(8300, '', ''), (8299, 'ABORTED', '21m48s')],
+        )
+        self.assertEqual(found[1].started.tzinfo, jenkins.datetime.timezone.utc)
+
+    def test_fails_when_the_job_cannot_be_read(self):
+        with self.assertRaises(jenkins.BadOutcomeException):
+            self._builds(self._JOB, jenkins.requests.RequestException('down'))
+
+
 if __name__ == '__main__':
     unittest.main()

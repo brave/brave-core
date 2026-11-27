@@ -5,6 +5,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import contextlib
+import datetime
 import io
 from pathlib import Path
 import tempfile
@@ -13,6 +14,7 @@ from unittest import mock
 
 import _boot  # noqa: F401  -- adds parent tools/cr to sys.path
 from ci import cli, systems  # noqa: E402  -- after _boot
+from ci.jenkins import JobBuild  # noqa: E402  -- after _boot
 
 _URL = 'https://ci.brave.com/job/brave-core-build-pr-linux-x64/job/PR-1/2/'
 
@@ -65,6 +67,87 @@ class RerunTest(unittest.TestCase):
             result, out = _main('rerun', _URL, '--wipe-workspace')
         rerun.assert_called_once_with(_URL, wipe_workspace=True)
         self.assertEqual((result, out), (0, 'Queued it again.\n'))
+
+
+_JOB = 'https://ci.brave.com/job/brave-chromium-mirrors-sync/'
+_STARTED = datetime.datetime(2026, 11, 23, 15, 0, tzinfo=datetime.timezone.utc)
+_RUNS = [
+    JobBuild(8301, f'{_JOB}8301/', '', _STARTED, 0),
+    JobBuild(8300, f'{_JOB}8300/', 'ABORTED', _STARTED, 606000),
+    JobBuild(8299, f'{_JOB}8299/', 'SUCCESS', _STARTED, 174000),
+]
+_LOGS = {
+    f'{_JOB}8300/': '\n'.join(
+        [
+            '[2026-11-23T15:22:00.000Z] >>> git push gerrit +a:refs/heads/main',
+            '[2026-11-23T15:29:00.000Z] >>> git fetch origin',
+            '[2026-11-23T15:29:05.000Z] done',
+        ]
+    ),
+    f'{_JOB}8299/': '\n'.join(
+        [
+            '[2026-11-23T15:02:00.000Z] >>> git push gerrit +b:refs/heads/main',
+            '[2026-11-23T15:03:20.000Z] >>> git fetch origin',
+            '[2026-11-23T15:03:21.000Z] done',
+        ]
+    ),
+}
+
+
+class BuildsTest(unittest.TestCase):
+    def test_lists_the_runs(self):
+        with mock.patch.object(
+            systems, 'builds', return_value=_RUNS[1:]
+        ) as builds:
+            result, out = _main('builds', _JOB, '--count', '2')
+        builds.assert_called_once_with(_JOB, 2)
+        self.assertEqual(result, 0)
+        self.assertEqual(
+            out.splitlines()[0],
+            f'#8300   Mon 23 Nov 15:00  ABORTED   10m06s  {_JOB}8300/',
+        )
+
+
+class TimingsTest(unittest.TestCase):
+    def _timings(self, *args: str) -> str:
+        with mock.patch.object(
+            systems, 'full_log', return_value=_LOGS[f'{_JOB}8300/']
+        ) as full_log:
+            _, out = _main('timings', f'{_JOB}8300/', *args)
+        full_log.assert_called_once_with(f'{_JOB}8300/', timestamps=True)
+        return out
+
+    def test_lists_the_commands_in_order(self):
+        self.assertEqual(
+            self._timings().splitlines(),
+            [
+                '15:22:00   7m00s  >>> git push gerrit +a:refs/heads/main',
+                '15:29:00      5s  >>> git fetch origin',
+            ],
+        )
+
+    def test_keeps_the_matching_or_longest_commands(self):
+        self.assertEqual(len(self._timings('--match', 'fetch').splitlines()), 1)
+        self.assertIn('push', self._timings('--longest', '1'))
+
+
+class TrendTest(unittest.TestCase):
+    def test_times_the_matching_commands_of_finished_runs_oldest_first(self):
+        with mock.patch.object(systems, 'builds', return_value=_RUNS):
+            with mock.patch.object(
+                systems,
+                'full_log',
+                side_effect=lambda url, timestamps: _LOGS[url],
+            ):
+                result, out = _main('trend', _JOB, '--match', ' push ')
+        self.assertEqual(result, 0)
+        self.assertEqual(
+            out.splitlines(),
+            [
+                '#8299   Mon 23 Nov 15:00  SUCCESS  1m20s',
+                '#8300   Mon 23 Nov 15:00  ABORTED  7m00s',
+            ],
+        )
 
 
 if __name__ == '__main__':

@@ -36,7 +36,9 @@ These are the user-facing scripts in this directory:
   channel bumps: a minor bump's branch and pull request for each release channel
   on its milestone.
 - `ci/cli.py` — Lists a pull request's checks, reports what failed behind them
-  on Jenkins and TeamCity, and reruns a check's build.
+  on Jenkins and TeamCity, and reruns a check's build. For a Jenkins job, it
+  also lists the recent runs, times the commands in a run's log, and follows how
+  long a command took across runs.
 
 ## Library modules
 
