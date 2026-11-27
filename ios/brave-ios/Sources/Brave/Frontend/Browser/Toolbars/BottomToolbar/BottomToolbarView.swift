@@ -54,7 +54,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     contentView.axis = .horizontal
     contentView.distribution = .fillEqually
     contentView.snp.makeConstraints { make in
-      make.leading.trailing.top.equalTo(self)
+      make.leading.trailing.top.equalTo(self.safeAreaLayoutGuide)
       make.bottom.equalTo(self.safeArea.bottom)
       make.height.equalTo(UIConstants.toolbarHeight)
     }
