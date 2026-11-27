@@ -33,7 +33,8 @@ export interface TestConditionMatcherFormState {
 export interface ConversionUrlPattern {
   'Campaign ID': string
   'Ad Type': string
-  'URL Pattern': string
+  'Checkout URL Pattern': string
+  'Thank You URL Pattern': string
   'Expires At': number
   'Observation Window': number
 }

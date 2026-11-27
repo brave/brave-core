@@ -44,7 +44,7 @@ TEST_F(BraveAdsAdsInternalsUtilTest,
   // Arrange
   test::BuildAndSaveCampaignConversion(
       /*campaign_id=*/"campaign-id",
-      /*url_pattern=*/"https://www.brave.com/*",
+      /*thank_you_url_pattern=*/"https://www.brave.com/*",
       /*observation_window=*/base::Days(7));
 
   AdInfo ad =
@@ -65,7 +65,7 @@ TEST_F(BraveAdsAdsInternalsUtilTest,
   ASSERT_EQ(1u, conversions->size());
   const base::DictValue* const conversion = (*conversions)[0].GetIfDict();
   ASSERT_TRUE(conversion);
-  EXPECT_TRUE(conversion->Find("URL Pattern"));
+  EXPECT_TRUE(conversion->Find("Thank You URL Pattern"));
   EXPECT_TRUE(conversion->Find("Expires At"));
 }
 

@@ -22,7 +22,8 @@ type ColumnKey = keyof ConversionUrlPattern
 const CONVERSION_URL_PATTERN_COLUMNS: ColumnKey[] = [
   'Campaign ID',
   'Ad Type',
-  'URL Pattern',
+  'Checkout URL Pattern',
+  'Thank You URL Pattern',
   'Observation Window',
   'Expires At',
 ]
@@ -31,21 +32,27 @@ const CONVERSION_URL_PATTERN_COLUMNS: ColumnKey[] = [
 // unclassed columns into whatever sliver is left over, which visibly
 // overflowed one column's content into the next on a narrow window; sums to
 // 100%. "Campaign ID" is already ellipsis-truncated with a copy tooltip,
-// so it can afford to give up room to "URL Pattern"/"Ad Type", which are
-// shown in full.
+// so it can afford to give up room to the URL pattern columns/"Ad Type",
+// which are shown in full.
 const COLUMN_WIDTH_CLASSES: Partial<Record<ColumnKey, string>> = {
   'Campaign ID': 'narrow-value-column',
-  'Ad Type': 'narrow-value-column',
-  'URL Pattern': 'rule-column',
-  'Observation Window': 'value-column',
+  'Ad Type': 'value-column',
+  'Checkout URL Pattern': 'rule-column',
+  'Thank You URL Pattern': 'rule-column',
+  'Observation Window': 'narrow-value-column',
   'Expires At': 'value-column',
 }
 
 const TRUNCATED_COLUMNS = new Set<ColumnKey>(['Campaign ID'])
 
+// Shown in full rather than truncated, but still kept to one line since the
+// widened column already gives it enough room.
+const NOWRAP_COLUMNS = new Set<ColumnKey>(['Ad Type'])
+
 function widthClassName(header: ColumnKey) {
   return [
     TRUNCATED_COLUMNS.has(header) ? 'truncate-cell nowrap-cell' : '',
+    NOWRAP_COLUMNS.has(header) ? 'nowrap-cell' : '',
     COLUMN_WIDTH_CLASSES[header] ?? '',
   ].join(' ').trim()
 }
@@ -83,13 +90,18 @@ function ConversionUrlPatternTable({ data }: { data: ConversionUrlPattern[] }) {
                       </>
                     : header === 'Observation Window'
                       ? formatObservationWindow(row[header])
-                      : header === 'URL Pattern'
+                      : header === 'Checkout URL Pattern' ||
+                          header === 'Thank You URL Pattern'
                         ? (
-                          <WildcardPattern
-                            pattern={row[header]}
-                            chars={['*']}
-                            onCopy={copy}
-                          />
+                          row[header]
+                            ? (
+                              <WildcardPattern
+                                pattern={row[header]}
+                                chars={['*']}
+                                onCopy={copy}
+                              />
+                            )
+                            : <span className='diagnostic-muted'>Not set</span>
                         )
                         : header === 'Campaign ID'
                           ? renderCopyableText(row[header], `${index}`, copy)
@@ -101,7 +113,7 @@ function ConversionUrlPatternTable({ data }: { data: ConversionUrlPattern[] }) {
         </tbody>
       </table>
       {data.length === 0 && (
-        <p>No conversion URL patterns are currently being matched.</p>
+        <p>No conversion URL patterns are being matched.</p>
       )}
     </>
   )
@@ -118,26 +130,32 @@ export function Conversions() {
   }, [])
 
   return (
-    <div className='card-group'>
+    <>
       <TabHeader
-        title={
-          <>
-            Active conversion URL patterns{' '}
-            <span className='diagnostic-muted'>
-              ({conversionUrlPatterns.length})
-            </span>
-          </>
-        }
-        description='URL patterns currently being matched against site
-          visits to record a conversion.'
+        title='Conversions'
+        description='Overview of active conversion URL patterns.'
         onRefresh={actions.loadAdsInternals}
       />
 
-      <div className='content-card'>
-        <section>
-          <ConversionUrlPatternTable data={conversionUrlPatterns} />
-        </section>
+      <div className='card-group'>
+        <div className='content-card'>
+          <section>
+            <h4>
+              <span className='title'>
+                Active conversion URL patterns{' '}
+                <span className='diagnostic-muted'>
+                  ({conversionUrlPatterns.length})
+                </span>
+              </span>
+            </h4>
+            <p>
+              URL patterns currently monitored to identify checkout and thank
+              you pages for conversion tracking.
+            </p>
+            <ConversionUrlPatternTable data={conversionUrlPatterns} />
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
