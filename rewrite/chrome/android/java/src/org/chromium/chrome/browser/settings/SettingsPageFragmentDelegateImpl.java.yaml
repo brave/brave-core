@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Import Brave's settings search coordinator next to upstream's, which is
+      still referenced as the field type.
+    add_before_line:
+      line: |-
+        import org.chromium.chrome.browser.settings.search.SettingsSearchCoordinator;
+      code: |-
+        import org.chromium.chrome.browser.settings.search.BraveSettingsSearchCoordinator;
+  - description: |-
+      Instantiate Brave's settings search coordinator for Settings in a tab,
+      matching SettingsActivity.
+    regex:
+      re_pattern: |-
+        new (SettingsSearchCoordinator\()
+      replace: |-
+        new Brave\1

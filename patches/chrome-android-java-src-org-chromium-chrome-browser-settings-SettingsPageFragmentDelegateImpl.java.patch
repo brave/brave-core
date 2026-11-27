@@ -1,0 +1,21 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/SettingsPageFragmentDelegateImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/SettingsPageFragmentDelegateImpl.java
+index 4d3751f3acf0451fa4c03532679daeae99aded77..75554396b2cc164cba8aadfa924b7823ee588292 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/SettingsPageFragmentDelegateImpl.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/SettingsPageFragmentDelegateImpl.java
+@@ -47,6 +47,7 @@ import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+ import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcherProvider;
+ import org.chromium.chrome.browser.lifecycle.SaveInstanceStateObserver;
+ import org.chromium.chrome.browser.profiles.Profile;
++import org.chromium.chrome.browser.settings.search.BraveSettingsSearchCoordinator;
+ import org.chromium.chrome.browser.settings.search.SettingsSearchCoordinator;
+ import org.chromium.chrome.browser.tab.Tab;
+ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+@@ -740,7 +741,7 @@ public class SettingsPageFragmentDelegateImpl
+         }
+ 
+         mSearchCoordinator =
+-                new SettingsSearchCoordinator(
++                new BraveSettingsSearchCoordinator(
+                         (FragmentActivity) mActivity,
+                         mToolbar,
+                         this::isTwoColumnSettingsVisible,

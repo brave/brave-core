@@ -1,0 +1,21 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/SettingsActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/SettingsActivity.java
+index b63756ead3cb0dbaf880f4d26ef0b6ca008cc032..946ef7da3c2878ea331d774cc313109f436f9c58 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/SettingsActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/SettingsActivity.java
+@@ -61,6 +61,7 @@ import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
+ import org.chromium.chrome.browser.profiles.Profile;
+ import org.chromium.chrome.browser.profiles.ProfileManager;
+ import org.chromium.chrome.browser.profiles.ProfileManagerUtils;
++import org.chromium.chrome.browser.settings.search.BraveSettingsSearchCoordinator;
+ import org.chromium.chrome.browser.settings.search.SettingsSearchCoordinator;
+ import org.chromium.chrome.browser.ui.desktop_windowing.AppHeaderCoordinator;
+ import org.chromium.chrome.browser.ui.device_lock.MissingDeviceLockLauncher;
+@@ -459,7 +460,7 @@ public class SettingsActivity extends ChromeBaseAppCompatActivity
+     private void createSearchCoordinator(@Nullable Bundle savedState) {
+         Toolbar actionBar = findViewById(R.id.action_bar);
+         mSearchCoordinator =
+-                new SettingsSearchCoordinator(
++                new BraveSettingsSearchCoordinator(
+                         this,
+                         actionBar,
+                         this::isTwoColumnSettingsVisible,
