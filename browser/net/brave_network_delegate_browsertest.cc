@@ -318,8 +318,9 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
   content::RenderFrameHost* child_frame =
       content::ChildFrameAt(web_contents->GetPrimaryMainFrame(), 0);
-  NavigateRenderFrameToURL(child_frame, "iframe_cookie",
-                           subdomain_first_party_cookie_url_);
+  ASSERT_TRUE(child_frame);
+  ASSERT_TRUE(NavigateRenderFrameToURL(child_frame, "iframe_cookie",
+                                       subdomain_first_party_cookie_url_));
 
   ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=subdomainacom");
 }
