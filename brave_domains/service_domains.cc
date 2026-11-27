@@ -15,6 +15,10 @@
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "brave/brave_domains/buildflags.h"
+#include "brave/brave_domains/constants.h"
+#include "net/base/url_util.h"
+#include "url/gurl.h"
+#include "url/url_constants.h"
 
 namespace brave_domains {
 
@@ -24,6 +28,16 @@ constexpr char kBraveServicesSwitchValueDev[] = "dev";
 constexpr char kBraveServicesSwitchValueStaging[] = "staging";
 constexpr char kBraveServicesSwitchValueProduction[] = "prod";
 constexpr char kBraveServicesEnvironmentSwitch[] = "brave-services-env";
+
+bool IsAllowedOverrideOrigin(const GURL& url) {
+  if (!url.is_valid()) {
+    return false;
+  }
+  if (url.SchemeIs(url::kHttpsScheme)) {
+    return true;
+  }
+  return url.SchemeIs(url::kHttpScheme) && net::IsLocalhost(url);
+}
 
 std::string GetServicesDomainForSwitchValue(std::string env_from_switch) {
   if (env_from_switch == kBraveServicesSwitchValueStaging) {
@@ -119,6 +133,35 @@ std::string GetServicesDomain(
 
   return base::StrCat(
       {prefix, ".", GetServicesDomainForSwitchValue(env_value)});
+}
+
+GURL GetServicesOrigin(
+    std::string prefix,
+    ServicesEnvironment env_value_default_override,
+    base::CommandLine*
+        command_line /* = base::CommandLine::ForCurrentProcess() */) {
+  if (!prefix.empty()) {
+    std::string override_key =
+        base::StrCat({kBraveServicesOverrideSwitchPrefix, prefix});
+    std::string override_value =
+        command_line->GetSwitchValueASCII(override_key);
+    if (!override_value.empty()) {
+      GURL override_url(override_value);
+      if (IsAllowedOverrideOrigin(override_url)) {
+        LOG(WARNING) << "Services origin was overridden with the parameter: --"
+                     << override_key << " and value \"" << override_value
+                     << "\"";
+        return override_url.GetWithEmptyPath();
+      }
+      LOG(ERROR) << "The switch value for --" << override_key << " is \""
+                 << override_value
+                 << "\" which is not a valid https URL or http localhost URL.";
+    }
+  }
+
+  return GURL(base::StrCat(
+      {url::kHttpsScheme, url::kStandardSchemeSeparator,
+       GetServicesDomain(prefix, env_value_default_override, command_line)}));
 }
 
 }  // namespace brave_domains

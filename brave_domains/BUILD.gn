@@ -14,13 +14,21 @@ source_set("brave_domains") {
 
   deps = [
     ":buildflags",
+    ":constants",
     "//base",
+    "//net",
   ]
+
+  public_deps = [ "//url" ]
 
   if (is_android) {
     sources += [ "android/brave_domains_utils_android.cc" ]
     deps += [ "//brave/brave_domains/android:jni_headers" ]
   }
+}
+
+source_set("constants") {
+  sources = [ "constants.h" ]
 }
 
 source_set("urls") {

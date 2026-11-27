@@ -121,7 +121,7 @@ using LoginInit = BraveEndpoint<
 ```
 
 The `BraveEndpoint<>` `template` simplifies defining endpoints for Brave
-services. It uses `brave_domains::GetServicesDomain()` under the hood to
+services. It uses `brave_domains::GetServicesOrigin()` under the hood to
 automatically resolve the service domain to the correct environment. It lives in
 its own `//brave/components/endpoint_client:brave_endpoint` target, so only
 endpoints that use it depend on `//brave/brave_domains`.
@@ -131,6 +131,11 @@ production. Official builds always resolve to production. Either way, the
 environment can be overridden per service domain prefix with
 `--env-<prefix>={dev,staging,prod}`, or globally with
 `--brave-services-env={dev,staging,prod}`.
+
+To point a service at an arbitrary host (e.g. a local server), use
+`--brave-services-override-<prefix>=http://localhost:8080`. Only `https` URLs,
+or `http` URLs pointing at localhost, are accepted, any path in the override is
+dropped, and it takes precedence over the environment switches.
 
 For non-Brave services, you can define an endpoint manually:
 
