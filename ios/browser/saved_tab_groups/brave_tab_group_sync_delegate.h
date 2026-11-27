@@ -57,6 +57,12 @@ class BraveTabGroupSyncDelegate : public tab_groups::TabGroupSyncDelegate {
   id<BraveTabGroupSyncLocalModel> model_;
 };
 
+// The saved group stored for `local_tab_group_id`, or null when it has no tab
+// with a sync id. Pauses local observation while the saved rows are read.
+std::unique_ptr<tab_groups::SavedTabGroup> SavedTabGroupFromLocalModel(
+    id<BraveTabGroupSyncLocalModel> model,
+    const tab_groups::LocalTabGroupID& local_tab_group_id);
+
 }  // namespace brave
 
 #endif  // BRAVE_IOS_BROWSER_SAVED_TAB_GROUPS_BRAVE_TAB_GROUP_SYNC_DELEGATE_H_

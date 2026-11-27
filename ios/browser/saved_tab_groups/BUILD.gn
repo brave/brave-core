@@ -25,11 +25,14 @@ source_set("sync_delegate") {
     "//ios/chrome/browser/saved_tab_groups/model",
   ]
   sources = [
+    "brave_tab_group_sync_bridge.h",
+    "brave_tab_group_sync_bridge.mm",
     "brave_tab_group_sync_delegate.h",
     "brave_tab_group_sync_delegate.mm",
     "brave_tab_group_sync_model.h",
     "saved_tab_url.cc",
     "saved_tab_url.h",
+    "tab_group_sync_bridge.h",
   ]
   deps = [
     "//components/tab_groups",

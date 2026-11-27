@@ -141,30 +141,30 @@ std::u16string BraveTabGroupSyncDelegate::GetTabTitle(
       [model_ titleForSyncTabID:static_cast<int32_t>(local_tab_id)]);
 }
 
-std::unique_ptr<tab_groups::SavedTabGroup>
-BraveTabGroupSyncDelegate::CreateSavedTabGroupFromLocalGroup(
+std::unique_ptr<tab_groups::SavedTabGroup> SavedTabGroupFromLocalModel(
+    id<BraveTabGroupSyncLocalModel> model,
     const tab_groups::LocalTabGroupID& local_tab_group_id) {
   NSUUID* group_uuid = UuidForGroup(local_tab_group_id);
   const std::vector<int> sync_tab_ids =
-      SyncTabIDs([model_ syncTabIDsForGroupID:group_uuid]);
+      SyncTabIDs([model syncTabIDsForGroupID:group_uuid]);
   if (sync_tab_ids.empty()) {
     return nullptr;
   }
 
   // Keeps the local-observation flag set while the saved group is built.
   std::unique_ptr<LocalObservationPauser> pauser =
-      std::make_unique<LocalObservationPauser>(model_);
+      std::make_unique<LocalObservationPauser>(model);
   (void)pauser;
   const base::Uuid saved_guid = base::Uuid::GenerateRandomV4();
   std::vector<tab_groups::SavedTabGroupTab> saved_tabs;
   saved_tabs.reserve(sync_tab_ids.size());
   for (size_t index = 0; index < sync_tab_ids.size(); ++index) {
     const int32_t sync_tab_id = static_cast<int32_t>(sync_tab_ids[index]);
-    NSURL* url = [model_ URLForSyncTabID:sync_tab_id];
+    NSURL* url = [model URLForSyncTabID:sync_tab_id];
     const GURL gurl =
         url ? GURL(base::SysNSStringToUTF8(url.absoluteString)) : GURL();
     const std::u16string title =
-        base::SysNSStringToUTF16([model_ titleForSyncTabID:sync_tab_id]);
+        base::SysNSStringToUTF16([model titleForSyncTabID:sync_tab_id]);
     const std::pair<GURL, std::u16string> saved =
         NormalizeURLForSavedTabGroup(gurl, title);
     saved_tabs.emplace_back(saved.first, saved.second, saved_guid,
@@ -173,9 +173,15 @@ BraveTabGroupSyncDelegate::CreateSavedTabGroupFromLocalGroup(
   }
 
   return std::make_unique<tab_groups::SavedTabGroup>(
-      base::SysNSStringToUTF16([model_ titleForGroupID:group_uuid]),
-      ColorFromModel([model_ colorForGroupID:group_uuid]), saved_tabs,
+      base::SysNSStringToUTF16([model titleForGroupID:group_uuid]),
+      ColorFromModel([model colorForGroupID:group_uuid]), saved_tabs,
       /*position=*/std::nullopt, saved_guid, local_tab_group_id);
+}
+
+std::unique_ptr<tab_groups::SavedTabGroup>
+BraveTabGroupSyncDelegate::CreateSavedTabGroupFromLocalGroup(
+    const tab_groups::LocalTabGroupID& local_tab_group_id) {
+  return SavedTabGroupFromLocalModel(model_, local_tab_group_id);
 }
 
 }  // namespace brave

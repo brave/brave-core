@@ -5,9 +5,7 @@
 
 // Replaces the upstream factory. There is no `TabGroupLocalUpdateObserver`:
 // its constructor CHECKs that no regular browser exists, and it watches a
-// `WebStateList` Brave does not use. The service exists only while
-// `kTabGroupsEnabled` is on, so startup cannot close groups before the
-// delegate can see them.
+// `WebStateList` Brave does not use.
 
 #import "ios/chrome/browser/saved_tab_groups/model/tab_group_sync_service_factory.h"
 
@@ -22,6 +20,7 @@
 #import "brave/ios/browser/saved_tab_groups/brave_tab_group_sync_delegate.h"
 #import "brave/ios/browser/saved_tab_groups/brave_tab_group_sync_model.h"
 #import "brave/ios/browser/saved_tab_groups/features.h"
+#import "brave/ios/browser/saved_tab_groups/tab_group_sync_bridge.h"
 #import "components/collaboration/internal/collaboration_finder_impl.h"
 #import "components/saved_tab_groups/public/synthetic_field_trial_helper.h"
 #import "components/saved_tab_groups/public/tab_group_sync_service.h"
@@ -81,9 +80,11 @@ std::unique_ptr<KeyedService> BuildService(
           personal_collaboration_data_service, std::move(collaboration_finder),
           synthetic_field_trial_helper, data_sharing_service->GetLogger());
 
+  id<BraveTabGroupSyncLocalModel> model =
+      [BraveTabGroupSyncLocalModels sharedModel];
+  brave::InstallTabGroupSyncBridge(tab_group_sync_service.get(), model);
   tab_group_sync_service->SetTabGroupSyncDelegate(
-      std::make_unique<brave::BraveTabGroupSyncDelegate>(
-          [BraveTabGroupSyncLocalModels sharedModel]));
+      std::make_unique<brave::BraveTabGroupSyncDelegate>(model));
   return tab_group_sync_service;
 }
 
