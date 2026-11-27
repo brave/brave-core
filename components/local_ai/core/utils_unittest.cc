@@ -6,10 +6,15 @@
 #include "brave/components/local_ai/core/utils.h"
 
 #include <optional>
+#include <string_view>
 
+#include "base/check.h"
+#include "base/files/file_path.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/local_ai/core/features.h"
+#include "brave/components/local_ai/core/on_device_speech_locales.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-shared.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -33,7 +38,28 @@ class OnDeviceSpeechUtilsUnitTest : public testing::Test {
     prefs::RegisterLocalStatePrefs(local_state_.registry());
   }
 
+  void TearDown() override {
+    // The state is a process-wide singleton, so clear it to avoid polluting
+    // other suites.
+    auto* state = OnDeviceSpeechModelsState::GetInstance();
+    state->SetInstallDir(kEnglish, base::FilePath());
+    state->SetInstallDir(kMultilingual, base::FilePath());
+  }
+
  protected:
+  // What the component installer publishes once `model` is on disk.
+  void InstallModel(OnDeviceSpeechModel model) {
+    OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
+        model, base::FilePath(FILE_PATH_LITERAL("/brave/speech/models")));
+  }
+
+  std::optional<OnDeviceSpeechModel> GetInstalledModelForLanguage(
+      std::string_view language) {
+    const OnDeviceSpeechLocale* locale = ResolveOnDeviceSpeechLocale(language);
+    CHECK(locale);
+    return GetInstalledOnDeviceSpeechModelForLocale(*locale);
+  }
+
   base::test::ScopedFeatureList feature_list_;
   TestingPrefServiceSimple local_state_;
 };
@@ -58,6 +84,23 @@ TEST_F(OnDeviceSpeechUtilsUnitTest, EnablingAModelReplacesTheOneBefore) {
 TEST_F(OnDeviceSpeechUtilsUnitTest, UnknownPrefValueEnablesNoModel) {
   local_state_.SetInteger(prefs::kOnDeviceSpeechModel, 3);
   EXPECT_EQ(std::nullopt, GetEnabledOnDeviceSpeechModel(&local_state_));
+}
+
+// The multilingual model on disk serves every locale, en-US too. The English
+// model serves only en-US.
+TEST_F(OnDeviceSpeechUtilsUnitTest, InstalledModelServesItsLocales) {
+  EXPECT_EQ(std::nullopt, GetInstalledModelForLanguage("en-US"));
+
+  InstallModel(kEnglish);
+  EXPECT_EQ(kEnglish, GetInstalledModelForLanguage("en-US"));
+  EXPECT_EQ(std::nullopt, GetInstalledModelForLanguage("de-DE"));
+
+  // The multilingual model replaces the English model on disk.
+  OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(kEnglish,
+                                                          base::FilePath());
+  InstallModel(kMultilingual);
+  EXPECT_EQ(kMultilingual, GetInstalledModelForLanguage("en-US"));
+  EXPECT_EQ(kMultilingual, GetInstalledModelForLanguage("de-DE"));
 }
 
 }  // namespace local_ai

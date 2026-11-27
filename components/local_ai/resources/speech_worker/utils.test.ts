@@ -8,14 +8,25 @@ import { describe, expect, it } from '@jest/globals'
 import { findLanguageTagTokenIds, getNemotronLocale } from './utils'
 
 describe('getNemotronLocale', () => {
-  it.each(['en-US'])('picks the English model for %s', (lang: string) => {
-    expect(getNemotronLocale(lang)).toEqual({
+  it('serves en-US on the English model with no prompt', () => {
+    expect(getNemotronLocale('english', 'en-US')).toEqual({
       model: 'english',
       promptId: null,
     })
   })
 
+  // The English model serves only en-US.
+  it.each(['de-DE', 'es-US'])(
+    'rejects %s on the English model',
+    (lang: string) => {
+      expect(() => getNemotronLocale('english', lang)).toThrow(
+        'Unsupported ASR language',
+      )
+    },
+  )
+
   it.each([
+    ['en-US', 0],
     ['ar', 7],
     ['de-DE', 9],
     ['es-ES', 2],
@@ -34,9 +45,9 @@ describe('getNemotronLocale', () => {
     ['uk-UA', 19],
     ['vi-VN', 33],
   ])(
-    'picks the multilingual model and prompt for %s',
+    'picks the prompt of %s on the multilingual model',
     (lang: string, promptId: number) => {
-      expect(getNemotronLocale(lang)).toEqual({
+      expect(getNemotronLocale('multilingual', lang)).toEqual({
         model: 'multilingual',
         promptId,
       })
@@ -48,7 +59,9 @@ describe('getNemotronLocale', () => {
   it.each(['es-MX', 'es', 'hi', 'ar-AR', 'zh-TW', 'th-TH', 'english', ''])(
     'rejects %s',
     (lang: string) => {
-      expect(() => getNemotronLocale(lang)).toThrow('Unsupported ASR language')
+      expect(() => getNemotronLocale('multilingual', lang)).toThrow(
+        'Unsupported ASR language',
+      )
     },
   )
 })

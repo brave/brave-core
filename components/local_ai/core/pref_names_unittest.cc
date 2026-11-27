@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-shared.h"
 #include "brave/components/local_ai/core/utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"

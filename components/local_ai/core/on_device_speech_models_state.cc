@@ -5,13 +5,16 @@
 
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 
+#include <optional>
 #include <string_view>
 #include <utility>
 
+#include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/sequence_checker.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-shared.h"
 
 namespace local_ai {
 
@@ -73,6 +76,22 @@ bool OnDeviceSpeechModelsState::IsModelInstalled(
     OnDeviceSpeechModel model) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return !GetModelDir(model).empty();
+}
+
+std::optional<OnDeviceSpeechModel>
+OnDeviceSpeechModelsState::GetInstalledModel() const {
+  const bool english = IsModelInstalled(OnDeviceSpeechModel::kEnglish);
+  const bool multilingual =
+      IsModelInstalled(OnDeviceSpeechModel::kMultilingual);
+  // The component registrars keep at most one model on disk.
+  CHECK(!(english && multilingual));
+  if (english) {
+    return OnDeviceSpeechModel::kEnglish;
+  }
+  if (multilingual) {
+    return OnDeviceSpeechModel::kMultilingual;
+  }
+  return std::nullopt;
 }
 
 const base::FilePath& OnDeviceSpeechModelsState::GetModelDir(

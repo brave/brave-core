@@ -10,6 +10,7 @@
 
 #include "base/containers/span.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-shared.h"
 
 namespace local_ai {
 
@@ -18,8 +19,10 @@ struct OnDeviceSpeechLocale {
   // The canonical BCP 47 tag. The speech worker gets it as the language of a
   // stream.
   std::string_view tag;
-  // The model that transcribes the locale. It does not tell whether Brave can
-  // offer the model.
+  // The model with the fewest locales that serves the locale: the English
+  // model for en-US, and the multilingual model for the other locales. The
+  // multilingual model serves every locale, en-US too. This field does not
+  // tell whether Brave can offer the model.
   OnDeviceSpeechModel model = OnDeviceSpeechModel::kEnglish;
 };
 
@@ -30,6 +33,11 @@ base::span<const OnDeviceSpeechLocale> GetOnDeviceSpeechLocales();
 // locale does. For example, "de-AT" gives "de-DE".
 const OnDeviceSpeechLocale* ResolveOnDeviceSpeechLocale(
     std::string_view language);
+
+// Whether `candidate` serves `locale`. The multilingual model serves every
+// locale. The English model serves only en-US.
+bool OnDeviceSpeechModelServesLocale(OnDeviceSpeechModel candidate,
+                                     const OnDeviceSpeechLocale& locale);
 
 }  // namespace local_ai
 

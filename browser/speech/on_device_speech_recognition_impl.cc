@@ -22,6 +22,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/speech/on_device_speech_model_permission_request.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-shared.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "brave/components/local_ai/core/utils.h"
 #include "chrome/browser/browser_process.h"

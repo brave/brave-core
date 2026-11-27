@@ -10,6 +10,15 @@ import "services/on_device_model/public/mojom/on_device_model.mojom";
 
 // ---------- On-device speech recognition (ORT-Web Nemotron) ----------
 
+// Brave's on-device speech recognition models. C++ uses this type as
+// `local_ai::OnDeviceSpeechModel`. `prefs::kOnDeviceSpeechModel` stores these
+// values, and the settings page uses them, so do not change them. The pref
+// stores 0 when the user enabled no model.
+enum OnDeviceSpeechModel {
+  kEnglish = 1,
+  kMultilingual = 2,
+};
+
 // Companion files plus the model weights for the onnxruntime-web (ORT-Web)
 // Nemotron 0.6B backend. The small graphs, tokens and filterbank
 // along with the two external-weight (.onnx.data) blobs are all delivered in
@@ -25,6 +34,10 @@ struct OrtModelFiles {
   mojo_base.mojom.BigBuffer decoder_data;  // decoder_joint.onnx.data weights
   mojo_base.mojom.BigBuffer tokens;        // tokens.txt
   mojo_base.mojom.BigBuffer mel_filters;   // filterbank.bin (128-mel)
+  // The model of these files. The multilingual model also transcribes en-US,
+  // with a prompt of its own, so the language of a stream does not tell the
+  // worker which model it holds.
+  OnDeviceSpeechModel model;
 };
 
 // Renderer-implemented backend, driven by the browser. Pairs with

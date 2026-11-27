@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_LOCAL_AI_CORE_ON_DEVICE_SPEECH_MODELS_STATE_H_
 #define BRAVE_COMPONENTS_LOCAL_AI_CORE_ON_DEVICE_SPEECH_MODELS_STATE_H_
 
+#include <optional>
 #include <string_view>
 
 #include "base/files/file_path.h"
@@ -13,16 +14,12 @@
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/sequence_checker.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-forward.h"
 
 namespace local_ai {
 
-// Brave's on-device speech recognition models. `prefs::kOnDeviceSpeechModel`
-// stores these values, and the settings page uses them, so do not change them.
-// The pref stores 0 when the user enabled no model.
-enum class OnDeviceSpeechModel {
-  kEnglish = 1,
-  kMultilingual = 2,
-};
+// Brave's on-device speech recognition models. The mojom defines the values.
+using OnDeviceSpeechModel = mojom::OnDeviceSpeechModel;
 
 // Subdirectory of `model`'s install dir holding its files. Shared so that the
 // installer policy verifies the directory this class hands out.
@@ -64,6 +61,10 @@ class OnDeviceSpeechModelsState {
   // Whether `model` is there to use, which is the same as the last directory
   // published for it to `OnSpeechModelDirChanged` not being empty.
   bool IsModelInstalled(OnDeviceSpeechModel model) const;
+
+  // The model on disk, or std::nullopt when no model is on disk. The component
+  // registrars keep at most one model on disk: the model that the user enabled.
+  std::optional<OnDeviceSpeechModel> GetInstalledModel() const;
 
   // Returns the subdirectory of `model` within its install dir, or an empty
   // path when its component is not installed.

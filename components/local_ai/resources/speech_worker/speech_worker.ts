@@ -11,6 +11,7 @@
 // ort_env.ts and the model/inference in nemotron_recognizer.ts.
 
 import {
+  OnDeviceSpeechModel,
   OrtModelFiles,
   SpeechRecognitionFactoryHost,
   SpeechRecognitionFactoryInterface,
@@ -29,7 +30,7 @@ import { installTrustedTypesPolicy } from './ort_env'
 import { NemotronStreamSession, OrtNemotronModel } from './nemotron_recognizer'
 
 import { parseTokens, readBigBuffer, getNemotronLocale } from './utils'
-import type { NemotronLocale } from './configs'
+import type { NemotronLocale, NemotronModelType } from './configs'
 
 // Thin mojo endpoint for one ASR stream: owns the receiver and responder
 // and bridges AsrStreamInput calls to a mojo-free NemotronStreamSession.
@@ -94,6 +95,7 @@ class SpeechRecognitionFactoryImpl
   private readonly receiver: SpeechRecognitionFactoryReceiver
   private readonly streams = new Set<AsrStreamInputAdapter>()
   private model: OrtNemotronModel | null = null
+  private modelType: NemotronModelType = 'english'
 
   constructor() {
     this.receiver = new SpeechRecognitionFactoryReceiver(this)
@@ -115,6 +117,12 @@ class SpeechRecognitionFactoryImpl
           readBigBuffer(files.melFilters, 'Filterbank').slice().buffer,
         ),
       )
+      // The multilingual model also serves en-US, so the language of a
+      // stream does not tell which model the files hold.
+      this.modelType =
+        files.model === OnDeviceSpeechModel.kMultilingual
+          ? 'multilingual'
+          : 'english'
       return { success: true }
     } catch (err) {
       console.error('[speech-worker] init failed:', err)
@@ -138,7 +146,7 @@ class SpeechRecognitionFactoryImpl
       // The browser falls back to en-US when a page sets no language, so a
       // missing one only comes from a caller that skips that.
       const language = options.language ?? 'en-US'
-      const locale = getNemotronLocale(language)
+      const locale = getNemotronLocale(this.modelType, language)
 
       adapter = new AsrStreamInputAdapter(
         this.model,

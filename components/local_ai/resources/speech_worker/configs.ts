@@ -113,32 +113,32 @@ export type NemotronLocale =
 
 // supported languages
 
-// The locales that the worker serves, with the model and the prompt ID of
-// each. One row for each row of `kLocales` in
+// The locales that the worker serves on the multilingual model, with the
+// prompt ID of each. One row for each row of `kLocales` in
 // components/local_ai/core/on_device_speech_locales.cc, in the same order. The
 // browser resolves each page tag to one of these tags, so the worker gets no
 // other tag. The prompt IDs come from `prompt_dictionary` in the multilingual
 // model's config.json.
 export const LOCALES = {
-  'en-US': { model: 'english', promptId: null },
-  'ar': { model: 'multilingual', promptId: 7 },
-  'de-DE': { model: 'multilingual', promptId: 9 },
-  'es-ES': { model: 'multilingual', promptId: 2 },
-  'es-US': { model: 'multilingual', promptId: 3 },
-  'fr-FR': { model: 'multilingual', promptId: 8 },
-  'fr-CA': { model: 'multilingual', promptId: 100 },
-  'hi-IN': { model: 'multilingual', promptId: 6 },
-  'it-IT': { model: 'multilingual', promptId: 15 },
-  'ja-JP': { model: 'multilingual', promptId: 10 },
-  'ko-KR': { model: 'multilingual', promptId: 14 },
-  'nl-NL': { model: 'multilingual', promptId: 16 },
-  'pt-BR': { model: 'multilingual', promptId: 12 },
-  'pt-PT': { model: 'multilingual', promptId: 13 },
-  'ru-RU': { model: 'multilingual', promptId: 11 },
-  'tr-TR': { model: 'multilingual', promptId: 18 },
-  'uk-UA': { model: 'multilingual', promptId: 19 },
-  'vi-VN': { model: 'multilingual', promptId: 33 },
-} as const satisfies Record<string, NemotronLocale>
+  'en-US': 0,
+  'ar': 7,
+  'de-DE': 9,
+  'es-ES': 2,
+  'es-US': 3,
+  'fr-FR': 8,
+  'fr-CA': 100,
+  'hi-IN': 6,
+  'it-IT': 15,
+  'ja-JP': 10,
+  'ko-KR': 14,
+  'nl-NL': 16,
+  'pt-BR': 12,
+  'pt-PT': 13,
+  'ru-RU': 11,
+  'tr-TR': 18,
+  'uk-UA': 19,
+  'vi-VN': 33,
+} as const satisfies Record<string, number>
 
 // A language tag token, such as <es-ES>. The multilingual model can emit one
 // after the terminal punctuation. The English vocab has no such tokens.
