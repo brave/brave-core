@@ -34,24 +34,25 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "services/network/public/cpp/network_switches.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
 
 constexpr char kExtensionId[] = "bgkmgpgeempochogfoddiobpbhdfgkdi";  // NoScript
 
-bool ClickExtensionToggle(content::WebContents* web_contents) {
-  return EvalJs(web_contents,
-                "window.testing.extensionsV2Subpage.getElementById('"
-                "bgkmgpgeempochogfoddiobpbhdfgkdi').click()")
-      .is_ok();
+[[nodiscard]] testing::AssertionResult ClickExtensionToggle(
+    content::WebContents* web_contents) {
+  return content::ExecJs(web_contents,
+                         "window.testing.extensionsV2Subpage.getElementById('"
+                         "bgkmgpgeempochogfoddiobpbhdfgkdi').click()");
 }
 
-bool ClickExtensionRemove(content::WebContents* web_contents) {
-  return EvalJs(web_contents,
-                "window.testing.extensionsV2Subpage.getElementById('"
-                "bgkmgpgeempochogfoddiobpbhdfgkdi').querySelector('#"
-                "bgkmgpgeempochogfoddiobpbhdfgkdi').click()")
-      .is_ok();
+[[nodiscard]] testing::AssertionResult ClickExtensionRemove(
+    content::WebContents* web_contents) {
+  return content::ExecJs(web_contents,
+                         "window.testing.extensionsV2Subpage.getElementById('"
+                         "bgkmgpgeempochogfoddiobpbhdfgkdi').querySelector('#"
+                         "bgkmgpgeempochogfoddiobpbhdfgkdi').click()");
 }
 
 bool IsExtensionToggled(content::WebContents* web_contents) {
@@ -161,7 +162,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2BrowserTest, InstallFail) {
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   content::WebContentsConsoleObserver console_observer(web_contents);
   console_observer.SetPattern("Failed to download extension manifest.");
-  ClickExtensionToggle(web_contents);
+  ASSERT_TRUE(ClickExtensionToggle(web_contents));
   ASSERT_TRUE(console_observer.Wait());
 
   while (IsExtensionToggled(web_contents)) {
@@ -196,19 +197,19 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2BrowserTest,
   }
 
   // enable from settings.
-  ClickExtensionToggle(web_contents);
+  ASSERT_TRUE(ClickExtensionToggle(web_contents));
   WaitExtensionToggled(true);
   EXPECT_TRUE(IsExtensionInstalled());
   EXPECT_TRUE(IsExtensionEnabled());
 
   // disabled from settings.
-  ClickExtensionToggle(web_contents);
+  ASSERT_TRUE(ClickExtensionToggle(web_contents));
   WaitExtensionToggled(false);
   EXPECT_TRUE(IsExtensionInstalled());
   EXPECT_FALSE(IsExtensionEnabled());
 
   // remove from settings.
-  ClickExtensionRemove(web_contents);
+  ASSERT_TRUE(ClickExtensionRemove(web_contents));
   EXPECT_FALSE(IsExtensionInstalled());
   EXPECT_FALSE(IsExtensionEnabled());
 }
@@ -288,7 +289,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
       extensions::ScopedTestDialogAutoConfirm::ACCEPT);
 
   // enable from settings.
-  ClickExtensionToggle(web_contents);
+  ASSERT_TRUE(ClickExtensionToggle(web_contents));
 
   WaitExtensionToggled(true);
   WaitExtensionInstalled();
@@ -312,7 +313,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
       extensions::ScopedTestDialogAutoConfirm::CANCEL);
 
   // enable from settings.
-  ClickExtensionToggle(web_contents);
+  ASSERT_TRUE(ClickExtensionToggle(web_contents));
 
   WaitExtensionToggled(false);
   EXPECT_FALSE(IsExtensionInstalled());
