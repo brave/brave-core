@@ -12,34 +12,15 @@ import java.util.HashMap;
 /** Class to override default cached values. */
 public class BraveCachedFlag extends CachedFlag {
     private static final String ANDROID_OPEN_INCOGNITO_AS_WINDOW = "AndroidOpenIncognitoAsWindow";
-    private static final String CLEAR_BROWSING_DATA_ANDROID_SURVEY =
-            "ClearBrowsingDataAndroidSurvey";
-    private static final String FEED_CONTAINMENT = "FeedContainment";
-    private static final String INCOGNITO_REAUTHENTICATION_FOR_ANDROID =
-            "IncognitoReauthenticationForAndroid";
-    private static final String MAGIC_STACK_ANDROID = "MagicStackAndroid";
-    private static final String PROFILE_DISC_ON_ALL_PAGES = "ProfileDiscOnAllPages";
-    private static final String RETAIN_OMNIBOX_ON_FOCUS = "RetainOmniboxOnFocus";
-    private static final String SIGNIN_LEVEL_UP_BUTTON = "SigninLevelUpButton";
-    private static final String SURFACE_POLISH = "SurfacePolish";
-    private static final String AUTOFILL_ENABLE_LOYALTY_CARDS_FILLING =
-            "AutofillEnableLoyaltyCardsFilling";
 
-    // Set of flags to override.
+    // Set of flags to override. An entry only takes effect while upstream still declares a
+    // CachedFlag with the same name, because maybeOverrideDefaultValue() is reached from the
+    // CachedFlag constructor.
     private static final HashMap<String, Boolean> sFlags;
 
     static {
         sFlags = new HashMap<String, Boolean>();
         sFlags.put(ANDROID_OPEN_INCOGNITO_AS_WINDOW, false);
-        sFlags.put(AUTOFILL_ENABLE_LOYALTY_CARDS_FILLING, false);
-        sFlags.put(CLEAR_BROWSING_DATA_ANDROID_SURVEY, false);
-        sFlags.put(FEED_CONTAINMENT, false);
-        sFlags.put(INCOGNITO_REAUTHENTICATION_FOR_ANDROID, true);
-        sFlags.put(MAGIC_STACK_ANDROID, false);
-        sFlags.put(PROFILE_DISC_ON_ALL_PAGES, false);
-        sFlags.put(RETAIN_OMNIBOX_ON_FOCUS, true);
-        sFlags.put(SIGNIN_LEVEL_UP_BUTTON, false);
-        sFlags.put(SURFACE_POLISH, false);
     }
 
     public BraveCachedFlag(
