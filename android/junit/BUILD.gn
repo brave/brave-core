@@ -207,6 +207,21 @@ if (is_android) {
     ]
   }
 
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.settings.search") {
+    sources = [ "src/org/chromium/chrome/browser/settings/search/BraveSettingsSearchCoordinatorTest.java" ]
+
+    deps = [
+      "//base:base_java",
+      "//base:base_junit_test_support",
+      "//chrome/android:chrome_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//components/browser_ui/settings/android:java",
+      "//third_party/androidx:androidx_slidingpanelayout_slidingpanelayout_java",
+      "//ui/android:ui_no_recycler_view_java",
+    ]
+  }
+
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.rate") {
     sources = [
       "src/org/chromium/chrome/browser/rate/BraveAskPlayStoreRatingDialogTest.java",
