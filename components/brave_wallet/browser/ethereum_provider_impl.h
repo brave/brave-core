@@ -65,7 +65,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                           RequestCallback callback,
                           base::Value id);
   void Web3ClientVersion(RequestCallback callback, base::Value id);
-  std::optional<std::vector<std::string>> GetAllowedAccounts(
+  std::vector<mojom::AccountIdPtr> GetAllowedAccounts(
       bool include_accounts_when_locked);
   void AddEthereumChain(base::ListValue params,
                         RequestCallback callback,
@@ -98,11 +98,6 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   void SignTypedMessage(mojom::EthSignTypedDataPtr eth_sign_typed_data,
                         RequestCallback callback,
                         base::Value id);
-  void GetAllowedAccountsInternal(RequestCallback callback,
-                                  base::Value id,
-                                  const std::string& method,
-                                  bool include_accounts_when_locked);
-
   // Used for wallet_watchAsset.
   // It will prompt an UI for user to confirm, and add the token into user's
   // visible asset list if user approves.
@@ -245,8 +240,6 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                            std::vector<uint8_t> message_to_sign,
                            RequestCallback callback,
                            base::Value id);
-  bool CheckAccountAllowed(const mojom::AccountIdPtr& account_id,
-                           const std::vector<std::string>& allowed_accounts);
   void UpdateKnownAccounts();
   void OnUpdateKnownAccounts(const std::vector<std::string>& allowed_accounts,
                              mojom::ProviderError error,
@@ -293,7 +286,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
       base::Value id,
       const std::string& method,
       RequestPermissionsError error,
-      const std::optional<std::vector<std::string>>& allowed_accounts);
+      std::vector<mojom::AccountIdPtr> allowed_accounts);
   void OnSendRawTransaction(RequestCallback callback,
                             base::Value id,
                             const std::string& tx_hash,
@@ -338,7 +331,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   mojo::Receiver<mojom::TxServiceObserver> tx_observer_receiver_{this};
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};
-  std::vector<std::string> known_allowed_accounts_;
+  std::vector<mojom::AccountIdPtr> known_allowed_accounts_;
   std::vector<std::string> eth_subscriptions_;
   std::vector<std::string> eth_log_subscriptions_;
   EthBlockTracker eth_block_tracker_;

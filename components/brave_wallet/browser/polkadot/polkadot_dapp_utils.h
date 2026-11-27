@@ -21,9 +21,8 @@ inline constexpr char kPolkadotObfuscatedAccountName[] = "Brave Wallet Account";
 
 class KeyringService;
 
-// Identifiers of every Polkadot account, in the form the permission layer
-// stores them. See `GetAccountPermissionIdentifier`.
-std::vector<std::string> GetPolkadotAccountPermissionIdentifiers(
+// Ids of every Polkadot account a dapp can be granted access to.
+std::vector<mojom::AccountIdPtr> GetPolkadotDappAccountIds(
     KeyringService* keyring_service);
 
 // The Polkadot account a dapp should be talking to, out of `allowed_accounts`.
@@ -32,7 +31,7 @@ std::vector<std::string> GetPolkadotAccountPermissionIdentifiers(
 // iOS front-end database has necessarily finished writing it.
 mojom::AccountIdPtr GetPolkadotPreferredDappAccount(
     KeyringService* keyring_service,
-    base::optional_ref<const std::vector<std::string>> allowed_accounts);
+    const std::vector<mojom::AccountIdPtr>& allowed_accounts);
 
 // Converts an account into the `InjectedAccount` shape dapps expect.
 mojom::PolkadotInjectedAccountPtr MakePolkadotInjectedAccount(

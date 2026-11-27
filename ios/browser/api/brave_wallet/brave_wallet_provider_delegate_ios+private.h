@@ -33,15 +33,12 @@ class BraveWalletProviderDelegateBridge
   void UnlockWallet() override;
   void ShowAccountCreation(mojom::CoinType type,
                            const url::Origin& origin) override;
-  void RequestPermissions(mojom::CoinType type,
-                          const std::vector<std::string>& accounts,
+  void RequestPermissions(const std::vector<mojom::AccountIdPtr>& accounts,
                           const url::Origin& origin,
                           RequestPermissionsCallback) override;
-  bool IsAccountAllowed(mojom::CoinType type,
-                        const std::string& account) override;
-  std::optional<std::vector<std::string>> GetAllowedAccounts(
-      mojom::CoinType type,
-      const std::vector<std::string>& accounts) override;
+  bool IsAccountAllowed(const mojom::AccountIdPtr& account) override;
+  std::vector<mojom::AccountIdPtr> GetAllowedAccounts(
+      const std::vector<mojom::AccountIdPtr>& accounts) override;
   bool IsPermissionDenied(mojom::CoinType type) override;
 };
 

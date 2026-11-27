@@ -169,17 +169,14 @@ class MockBraveWalletProviderDelegate : public BraveWalletProviderDelegate {
   MOCK_METHOD0(WalletInteractionDetected, void());
   MOCK_METHOD2(ShowAccountCreation,
                void(mojom::CoinType type, const url::Origin& origin));
-  MOCK_METHOD4(RequestPermissions,
-               void(mojom::CoinType type,
-                    const std::vector<std::string>& accounts,
+  MOCK_METHOD3(RequestPermissions,
+               void(const std::vector<mojom::AccountIdPtr>& accounts,
                     const url::Origin& origin,
                     RequestPermissionsCallback));
-  MOCK_METHOD2(IsAccountAllowed,
-               bool(mojom::CoinType type, const std::string& account));
-  MOCK_METHOD2(GetAllowedAccounts,
-               std::optional<std::vector<std::string>>(
-                   mojom::CoinType type,
-                   const std::vector<std::string>& accounts));
+  MOCK_METHOD1(IsAccountAllowed, bool(const mojom::AccountIdPtr& account));
+  MOCK_METHOD1(GetAllowedAccounts,
+               std::vector<mojom::AccountIdPtr>(
+                   const std::vector<mojom::AccountIdPtr>& accounts));
   MOCK_METHOD1(IsPermissionDenied, bool(mojom::CoinType type));
   MOCK_METHOD1(AddSolanaConnectedAccount, void(const std::string& account));
   MOCK_METHOD1(RemoveSolanaConnectedAccount, void(const std::string& account));
@@ -233,9 +230,7 @@ class PolkadotApiImplUnitTest : public testing::Test {
     auto delegate =
         std::make_unique<testing::NiceMock<MockBraveWalletProviderDelegate>>();
     delegate_ = delegate.get();
-    ON_CALL(*delegate_,
-            IsAccountAllowed(mojom::CoinType::DOT,
-                             GetAccountPermissionIdentifier(granted_account)))
+    ON_CALL(*delegate_, IsAccountAllowed(EqualsMojo(granted_account)))
         .WillByDefault(testing::Return(true));
 
     api_ = std::make_unique<PolkadotApiImpl>(
@@ -340,7 +335,7 @@ class PolkadotApiImplUnitTest : public testing::Test {
   }
 
   void RevokeGrantedAccount() {
-    ON_CALL(*delegate(), IsAccountAllowed(_, _))
+    ON_CALL(*delegate(), IsAccountAllowed(_))
         .WillByDefault(testing::Return(false));
   }
 
@@ -467,10 +462,7 @@ TEST_F(PolkadotApiImplUnitTest, GetAccounts_RechecksPermissionOnEveryCall) {
   ASSERT_TRUE(account);
   CreateApi(account->account_id);
 
-  EXPECT_CALL(
-      *delegate(),
-      IsAccountAllowed(mojom::CoinType::DOT,
-                       GetAccountPermissionIdentifier(account->account_id)))
+  EXPECT_CALL(*delegate(), IsAccountAllowed(EqualsMojo(account->account_id)))
       .Times(2)
       .WillOnce(testing::Return(true))
       .WillOnce(testing::Return(false));
@@ -488,7 +480,7 @@ TEST_F(PolkadotApiImplUnitTest, GetAccounts_PermissionRevoked) {
   ASSERT_TRUE(account);
   CreateApi(account->account_id);
 
-  ON_CALL(*delegate(), IsAccountAllowed(_, _))
+  ON_CALL(*delegate(), IsAccountAllowed(_))
       .WillByDefault(testing::Return(false));
 
   auto [accounts, error] = GetAccounts();
@@ -914,7 +906,7 @@ TEST_F(PolkadotApiImplUnitTest, SignPayload_PermissionRevokedDuringFetches) {
   polkadot_mock_rpc()->FinalizeSetup();
   ASSERT_TRUE(SetUpGrantedAccount());
 
-  EXPECT_CALL(*delegate(), IsAccountAllowed(mojom::CoinType::DOT, _))
+  EXPECT_CALL(*delegate(), IsAccountAllowed(_))
       .WillOnce(testing::Return(true))
       .WillRepeatedly(testing::Return(false));
   EXPECT_CALL(*delegate(), ShowPanel(_)).Times(0);

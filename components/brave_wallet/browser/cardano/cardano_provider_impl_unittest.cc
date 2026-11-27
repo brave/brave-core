@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_provider_impl.h"
 
 #include <memory>
-#include <optional>
 #include <utility>
 #include <vector>
 
@@ -20,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -32,6 +32,8 @@
 
 using base::test::TestFuture;
 using testing::_;
+using testing::ByMove;
+using testing::Return;
 
 namespace brave_wallet {
 
@@ -49,17 +51,14 @@ class MockBraveWalletProviderDelegate : public BraveWalletProviderDelegate {
   MOCK_METHOD0(WalletInteractionDetected, void());
   MOCK_METHOD2(ShowAccountCreation,
                void(mojom::CoinType type, const url::Origin& origin));
-  MOCK_METHOD4(RequestPermissions,
-               void(mojom::CoinType type,
-                    const std::vector<std::string>& accounts,
+  MOCK_METHOD3(RequestPermissions,
+               void(const std::vector<mojom::AccountIdPtr>& accounts,
                     const url::Origin& origin,
                     RequestPermissionsCallback));
-  MOCK_METHOD2(IsAccountAllowed,
-               bool(mojom::CoinType type, const std::string& account));
-  MOCK_METHOD2(GetAllowedAccounts,
-               std::optional<std::vector<std::string>>(
-                   mojom::CoinType type,
-                   const std::vector<std::string>& accounts));
+  MOCK_METHOD1(IsAccountAllowed, bool(const mojom::AccountIdPtr& account));
+  MOCK_METHOD1(GetAllowedAccounts,
+               std::vector<mojom::AccountIdPtr>(
+                   const std::vector<mojom::AccountIdPtr>& accounts));
   MOCK_METHOD1(IsPermissionDenied, bool(mojom::CoinType type));
   MOCK_METHOD1(AddSolanaConnectedAccount, void(const std::string& account));
   MOCK_METHOD1(RemoveSolanaConnectedAccount, void(const std::string& account));
@@ -98,6 +97,30 @@ class CardanoProviderImplUnitTest : public testing::Test {
   mojom::AccountInfoPtr AddAccount() {
     return keyring_service()->AddAccountSync(
         mojom::CoinType::ADA, mojom::KeyringId::kCardanoMainnet, "New Account");
+  }
+
+  // Adds a Cardano account and sets up the delegate's GetAllowedAccounts
+  // mock to expect a request for exactly `{account}` (every test in this
+  // file only ever has one Cardano account) and resolve it with `account`
+  // allowed.
+  mojom::AccountInfoPtr AddAndAllowAccount() {
+    auto account = AddAccount();
+    ON_CALL(*delegate(), GetAllowedAccounts(testing::ElementsAre(
+                             EqualsMojo(account->account_id))))
+        .WillByDefault([](const std::vector<mojom::AccountIdPtr>& accounts) {
+          return CloneVector(accounts);
+        });
+    return account;
+  }
+
+  // Sets up the delegate's GetAllowedAccounts mock to expect a request for
+  // exactly `{account}` and resolve it with no allowed accounts.
+  void SetNoAllowedAccounts(const mojom::AccountIdPtr& account) {
+    ON_CALL(*delegate(),
+            GetAllowedAccounts(testing::ElementsAre(EqualsMojo(account))))
+        .WillByDefault([](const std::vector<mojom::AccountIdPtr>&) {
+          return std::vector<mojom::AccountIdPtr>();
+        });
   }
 
   void UnlockWallet() {
@@ -142,32 +165,19 @@ class CardanoProviderImplUnitTest : public testing::Test {
 TEST_F(CardanoProviderImplUnitTest, Enable_PermissionApproved) {
   CreateWallet();
   UnlockWallet();
-  auto added_account = AddAccount();
+  auto added_account = AddAndAllowAccount();
 
-  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+  ON_CALL(*delegate(), RequestPermissions(_, _, _))
       .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>(
-                {added_account->account_id->unique_key});
-          });
-
-  ON_CALL(*delegate(), RequestPermissions(_, _, _, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts,
+          [&](const std::vector<mojom::AccountIdPtr>& accounts,
               const url::Origin& origin,
               MockBraveWalletProviderDelegate::RequestPermissionsCallback
                   callback) {
             EXPECT_EQ(origin.GetURL(), GURL("https://brave.com"));
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
             EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            std::move(callback).Run(
-                mojom::RequestPermissionsError::kNone,
-                std::vector<std::string>(
-                    {added_account->account_id->unique_key}));
+            EXPECT_EQ(accounts[0], added_account->account_id);
+            std::move(callback).Run(mojom::RequestPermissionsError::kNone,
+                                    CloneVector(accounts));
           });
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
@@ -185,17 +195,7 @@ TEST_F(CardanoProviderImplUnitTest, Enable_PermissionApproved) {
 TEST_F(CardanoProviderImplUnitTest, IsEnabled) {
   CreateWallet();
   UnlockWallet();
-  auto added_account = AddAccount();
-
-  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>(
-                {added_account->account_id->unique_key});
-          });
+  AddAndAllowAccount();
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
 
@@ -209,11 +209,8 @@ TEST_F(CardanoProviderImplUnitTest, IsEnabled_AllowedAccountsFailed) {
   UnlockWallet();
   auto added_account = AddAccount();
 
-  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            return std::nullopt;
-          });
+  ON_CALL(*delegate(), GetAllowedAccounts(_))
+      .WillByDefault(Return(ByMove(std::vector<mojom::AccountIdPtr>{})));
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
 
@@ -225,17 +222,7 @@ TEST_F(CardanoProviderImplUnitTest, IsEnabled_AllowedAccountsFailed) {
 TEST_F(CardanoProviderImplUnitTest, IsEnabled_TabNotVisible) {
   CreateWallet();
   UnlockWallet();
-  auto added_account = AddAccount();
-
-  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>(
-                {added_account->account_id->unique_key});
-          });
+  AddAndAllowAccount();
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return false; });
 
@@ -267,15 +254,7 @@ TEST_F(CardanoProviderImplUnitTest, IsEnabled_NoAllowedAccounts) {
   CreateWallet();
   UnlockWallet();
   auto added_account = AddAccount();
-
-  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>();
-          });
+  SetNoAllowedAccounts(added_account->account_id);
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
 
@@ -292,7 +271,7 @@ TEST_F(CardanoProviderImplUnitTest, IsEnabled_WalletLocked) {
   keyring_service()->Lock();
 
   // The lock check short-circuits before the permissions are queried.
-  EXPECT_CALL(*delegate(), GetAllowedAccounts(_, _)).Times(0);
+  EXPECT_CALL(*delegate(), GetAllowedAccounts(_)).Times(0);
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
 
@@ -303,17 +282,7 @@ TEST_F(CardanoProviderImplUnitTest, IsEnabled_WalletLocked) {
 
 TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
   CreateWallet();
-  auto added_account = AddAccount();
-
-  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>(
-                {added_account->account_id->unique_key});
-          });
+  auto added_account = AddAndAllowAccount();
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
 
@@ -334,20 +303,17 @@ TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
     EXPECT_TRUE(future.Get<1>());
   }
 
-  ON_CALL(*delegate(), RequestPermissions(_, _, _, _))
+  ON_CALL(*delegate(), RequestPermissions(_, _, _))
       .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts,
+          [&](const std::vector<mojom::AccountIdPtr>& accounts,
               const url::Origin& origin,
               MockBraveWalletProviderDelegate::RequestPermissionsCallback
                   callback) {
             EXPECT_EQ(origin.GetURL(), GURL("https://brave.com"));
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
             EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            std::move(callback).Run(
-                mojom::RequestPermissionsError::kNone,
-                std::vector<std::string>(
-                    {added_account->account_id->unique_key}));
+            EXPECT_EQ(accounts[0], added_account->account_id);
+            std::move(callback).Run(mojom::RequestPermissionsError::kNone,
+                                    CloneVector(accounts));
           });
 
   UnlockWallet();
@@ -364,7 +330,7 @@ TEST_F(CardanoProviderImplUnitTest, NoWallet) {
   // Without a wallet there is nothing to create an account in or to ask
   // permissions for.
   EXPECT_CALL(*delegate(), ShowAccountCreation(_, _)).Times(0);
-  EXPECT_CALL(*delegate(), RequestPermissions(_, _, _, _)).Times(0);
+  EXPECT_CALL(*delegate(), RequestPermissions(_, _, _)).Times(0);
 
   base::test::TestFuture<mojo::PendingRemote<mojom::CardanoApi>,
                          mojom::CardanoProviderErrorBundlePtr>
@@ -401,30 +367,21 @@ TEST_F(CardanoProviderImplUnitTest,
   CreateWallet();
   UnlockWallet();
   auto added_account = AddAccount();
-
-  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>();
-          });
+  SetNoAllowedAccounts(added_account->account_id);
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
 
-  ON_CALL(*delegate(), RequestPermissions(_, _, _, _))
+  ON_CALL(*delegate(), RequestPermissions(_, _, _))
       .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts,
+          [&](const std::vector<mojom::AccountIdPtr>& accounts,
               const url::Origin& origin,
               MockBraveWalletProviderDelegate::RequestPermissionsCallback
                   callback) {
             EXPECT_EQ(origin.GetURL(), GURL("https://brave.com"));
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
             EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            EXPECT_EQ(accounts[0], added_account->account_id);
             std::move(callback).Run(mojom::RequestPermissionsError::kInternal,
-                                    std::vector<std::string>());
+                                    {});
           });
 
   TestFuture<mojo::PendingRemote<mojom::CardanoApi>,
@@ -439,15 +396,7 @@ TEST_F(CardanoProviderImplUnitTest, EnableFails_OnWalletUnlock_TabNotActive) {
   CreateWallet();
   UnlockWallet();
   auto added_account = AddAccount();
-
-  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>();
-          });
+  SetNoAllowedAccounts(added_account->account_id);
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return false; });
 

@@ -135,28 +135,25 @@ base::DictValue GetJsonRpcRequest(const std::string& method,
 }
 
 // Common logic for filtering the list of accounts based on the selected account
-std::vector<std::string> FilterAccountsByPermissionIdentifier(
-    const std::vector<std::string>& identifiers,
+std::vector<mojom::AccountIdPtr> FilterAccounts(
+    const std::vector<mojom::AccountIdPtr>& allowed_accounts,
     const mojom::AccountInfoPtr& selected_account) {
   // If one of the accounts matches the selected account, then only
   // return that account.  This is for webcompat reasons.
   // Some Dapps select the first account in the list, and some the
   // last. So having only 1 item returned here makes it work for
   // all Dapps.
-  std::vector<std::string> filtered_identifiers;
-  for (const auto& identifier : identifiers) {
-    if (selected_account &&
-        base::EqualsCaseInsensitiveASCII(
-            identifier,
-            GetAccountPermissionIdentifier(selected_account->account_id))) {
-      filtered_identifiers.clear();
-      filtered_identifiers.push_back(identifier);
+  std::vector<mojom::AccountIdPtr> filtered_accounts;
+  for (const auto& allowed_account : allowed_accounts) {
+    if (selected_account && selected_account->account_id == allowed_account) {
+      filtered_accounts.clear();
+      filtered_accounts.push_back(allowed_account->Clone());
       break;
     } else {
-      filtered_identifiers.push_back(identifier);
+      filtered_accounts.push_back(allowed_account->Clone());
     }
   }
-  return filtered_identifiers;
+  return filtered_accounts;
 }
 
 }  // namespace
@@ -712,18 +709,6 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
       std::move(id), std::move(formed_response), reject, "", false));
 }
 
-bool EthereumProviderImpl::CheckAccountAllowed(
-    const mojom::AccountIdPtr& account_id,
-    const std::vector<std::string>& allowed_accounts) {
-  for (const auto& allowed_account : allowed_accounts) {
-    if (base::EqualsCaseInsensitiveASCII(account_id->address,
-                                         allowed_account)) {
-      return true;
-    }
-  }
-  return false;
-}
-
 void EthereumProviderImpl::OnAddEthereumChainRequestCompleted(
     const std::string& chain_id,
     const std::string& error) {
@@ -832,14 +817,32 @@ void EthereumProviderImpl::SetupMethodHandlers() {
 
 void EthereumProviderImpl::HandleEthAccountsMethod(JsonRpcRequest request,
                                                    RequestCallback callback) {
-  GetAllowedAccountsInternal(std::move(callback), std::move(request.id),
-                             kEthAccounts, false);
+  const auto accounts =
+      GetAllowedAccounts(/*include_accounts_when_locked=*/false);
+
+  base::ListValue list;
+  for (const auto& account : accounts) {
+    list.Append(base::ToLowerASCII(account->address));
+  }
+
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(request.id), base::Value(std::move(list)), /*reject=*/false, "",
+      /*update_bindings=*/false));
 }
 
 void EthereumProviderImpl::HandleEthCoinbaseMethod(JsonRpcRequest request,
                                                    RequestCallback callback) {
-  GetAllowedAccountsInternal(std::move(callback), std::move(request.id),
-                             kEthCoinbase, false);
+  const auto accounts =
+      GetAllowedAccounts(/*include_accounts_when_locked=*/false);
+
+  base::Value formed_response;
+  if (!accounts.empty()) {
+    formed_response = base::Value(base::ToLowerASCII(accounts[0]->address));
+  }
+
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(request.id), std::move(formed_response), /*reject=*/false, "",
+      /*update_bindings=*/false));
 }
 
 void EthereumProviderImpl::HandleEthRequestAccountsMethod(
@@ -1026,8 +1029,19 @@ void EthereumProviderImpl::HandleRequestPermissionsMethod(
 void EthereumProviderImpl::HandleGetPermissionsMethod(
     JsonRpcRequest request,
     RequestCallback callback) {
-  GetAllowedAccountsInternal(std::move(callback), std::move(request.id),
-                             kGetPermissionsMethod, true);
+  const auto accounts =
+      GetAllowedAccounts(/*include_accounts_when_locked=*/true);
+
+  std::vector<std::string> account_addresses;
+  for (const auto& account : accounts) {
+    account_addresses.push_back(base::ToLowerASCII(account->address));
+  }
+
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(request.id),
+      base::Value(
+          PermissionRequestResponseToValue(dapp_origin_, account_addresses)),
+      /*reject=*/false, "", /*update_bindings=*/true));
 }
 
 void EthereumProviderImpl::HandleWeb3ClientVersionMethod(
@@ -1110,23 +1124,20 @@ void EthereumProviderImpl::RequestEthereumPermissions(
   CHECK(delegate_);
   if (delegate_->IsPermissionDenied(mojom::CoinType::ETH)) {
     OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
-                                 RequestPermissionsError::kNone,
-                                 std::vector<std::string>());
+                                 RequestPermissionsError::kNone, {});
     return;
   }
 
-  std::vector<std::string> addresses;
+  std::vector<mojom::AccountIdPtr> account_ids;
   for (auto& account_info : keyring_service_->GetAllAccountInfos()) {
     if (account_info->account_id->coin == mojom::CoinType::ETH) {
-      addresses.push_back(
-          GetAccountPermissionIdentifier(account_info->account_id));
+      account_ids.push_back(account_info->account_id.Clone());
     }
   }
 
-  if (addresses.empty()) {
+  if (account_ids.empty()) {
     OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
-                                 RequestPermissionsError::kInternal,
-                                 std::nullopt);
+                                 RequestPermissionsError::kInternal, {});
     return;
   }
 
@@ -1134,7 +1145,7 @@ void EthereumProviderImpl::RequestEthereumPermissions(
     if (pending_request_ethereum_permissions_callback_) {
       OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
                                    RequestPermissionsError::kRequestInProgress,
-                                   std::nullopt);
+                                   {});
       return;
     }
     pending_request_ethereum_permissions_callback_ = std::move(callback);
@@ -1145,29 +1156,20 @@ void EthereumProviderImpl::RequestEthereumPermissions(
     return;
   }
 
-  const auto allowed_accounts =
-      delegate_->GetAllowedAccounts(mojom::CoinType::ETH, addresses);
-  const bool success = allowed_accounts.has_value();
-
-  if (!success) {
+  auto allowed_accounts = delegate_->GetAllowedAccounts(account_ids);
+  if (!allowed_accounts.empty()) {
     OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
-                                 RequestPermissionsError::kInternal,
-                                 std::nullopt);
+                                 RequestPermissionsError::kNone,
+                                 std::move(allowed_accounts));
     return;
   }
 
-  if (success && !allowed_accounts->empty()) {
-    OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
-                                 RequestPermissionsError::kNone,
-                                 allowed_accounts);
-  } else {
-    // Request accounts if no accounts are connected.
-    delegate_->RequestPermissions(
-        mojom::CoinType::ETH, addresses, dapp_origin_,
-        base::BindOnce(&EthereumProviderImpl::OnRequestEthereumPermissions,
-                       weak_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(id), method));
-  }
+  // Request accounts if no accounts are connected.
+  delegate_->RequestPermissions(
+      account_ids, dapp_origin_,
+      base::BindOnce(&EthereumProviderImpl::OnRequestEthereumPermissions,
+                     weak_factory_.GetWeakPtr(), std::move(callback),
+                     std::move(id), method));
 }
 
 void EthereumProviderImpl::Enable(EnableCallback callback) {
@@ -1187,23 +1189,23 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
     base::Value id,
     const std::string& method,
     RequestPermissionsError error,
-    const std::optional<std::vector<std::string>>&
-        allowed_accounts_identifiers) {
+    std::vector<mojom::AccountIdPtr> allowed_accounts) {
   base::Value formed_response;
 
   bool success = error == RequestPermissionsError::kNone;
-  std::vector<std::string> accounts;
-  if (success && allowed_accounts_identifiers) {
-    accounts = FilterAccountsByPermissionIdentifier(
-        *allowed_accounts_identifiers,
-        keyring_service_->GetSelectedEthereumDappAccount());
+  auto accounts = FilterAccounts(
+      allowed_accounts, keyring_service_->GetSelectedEthereumDappAccount());
+
+  std::vector<std::string> account_addresses;
+  for (const auto& account : accounts) {
+    account_addresses.push_back(base::ToLowerASCII(account->address));
   }
 
   std::string first_allowed_account;
-  if (accounts.size() > 0) {
-    first_allowed_account = base::ToLowerASCII(accounts[0]);
+  if (account_addresses.size() > 0) {
+    first_allowed_account = account_addresses[0];
   }
-  if (success && accounts.empty()) {
+  if (success && account_addresses.empty()) {
     formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
@@ -1223,100 +1225,57 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
         NOTREACHED() << error;
     }
   } else if (method == kRequestPermissionsMethod) {
-    formed_response =
-        base::Value(PermissionRequestResponseToValue(dapp_origin_, accounts));
+    formed_response = base::Value(
+        PermissionRequestResponseToValue(dapp_origin_, account_addresses));
   } else {
     base::ListValue list;
-    for (const auto& account : accounts) {
-      list.Append(base::ToLowerASCII(account));
+    for (const auto& account_address : account_addresses) {
+      list.Append(account_address);
     }
     formed_response = base::Value(std::move(list));
   }
-  bool reject = !success || accounts.empty();
+  bool reject = !success || account_addresses.empty();
 
   std::move(callback).Run(mojom::EthereumProviderResponse::New(
       std::move(id), std::move(formed_response), reject, first_allowed_account,
       true));
 }
 
-std::optional<std::vector<std::string>>
-EthereumProviderImpl::GetAllowedAccounts(bool include_accounts_when_locked) {
-  std::vector<std::string> addresses;
+std::vector<mojom::AccountIdPtr> EthereumProviderImpl::GetAllowedAccounts(
+    bool include_accounts_when_locked) {
+  if (keyring_service_->IsLockedSync() && !include_accounts_when_locked) {
+    return {};
+  }
+
+  std::vector<mojom::AccountIdPtr> account_ids;
   for (const auto& account_info : keyring_service_->GetAllAccountInfos()) {
     if (account_info->account_id->coin == mojom::CoinType::ETH) {
-      addresses.push_back(base::ToLowerASCII(
-          GetAccountPermissionIdentifier(account_info->account_id)));
+      account_ids.push_back(account_info->account_id.Clone());
     }
   }
+  if (account_ids.empty()) {
+    return {};
+  }
+
+  auto allowed_accounts = delegate_->GetAllowedAccounts(account_ids);
 
   const auto selected_account =
       keyring_service_->GetSelectedEthereumDappAccount();
 
-  DCHECK(delegate_);
-  const auto allowed_accounts =
-      delegate_->GetAllowedAccounts(mojom::CoinType::ETH, addresses);
-
-  if (!allowed_accounts) {
-    return std::nullopt;
-  }
-
-  std::vector<std::string> filtered_accounts;
-  if (!keyring_service_->IsLockedSync() || include_accounts_when_locked) {
-    filtered_accounts = FilterAccountsByPermissionIdentifier(*allowed_accounts,
-                                                             selected_account);
-  }
-
-  return filtered_accounts;
-}
-
-void EthereumProviderImpl::GetAllowedAccountsInternal(
-    RequestCallback callback,
-    base::Value id,
-    const std::string& method,
-    bool include_accounts_when_locked) {
-  const auto accounts_opt = GetAllowedAccounts(include_accounts_when_locked);
-  if (!accounts_opt) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
-  const auto& accounts = accounts_opt.value();
-
-  bool reject = false;
-  bool update_bindings = false;
-  base::Value formed_response;
-
-  if (method == kEthAccounts) {
-    base::ListValue list;
-    for (const auto& account : accounts) {
-      list.Append(base::ToLowerASCII(account));
-    }
-    formed_response = base::Value(std::move(list));
-    update_bindings = false;
-  } else if (method == kEthCoinbase) {
-    if (accounts.empty()) {
-      formed_response = base::Value();
-    } else {
-      formed_response = base::Value(base::ToLowerASCII(accounts[0]));
-    }
-    update_bindings = false;
-  } else {
-    formed_response =
-        base::Value(PermissionRequestResponseToValue(dapp_origin_, accounts));
-    update_bindings = true;
-  }
-  std::move(callback).Run(mojom::EthereumProviderResponse::New(
-      std::move(id), std::move(formed_response), reject, "", update_bindings));
+  return FilterAccounts(allowed_accounts, selected_account);
 }
 
 void EthereumProviderImpl::UpdateKnownAccounts() {
-  const auto allowed_accounts = GetAllowedAccounts(false);
-  if (!allowed_accounts) {
-    return;
-  }
+  auto allowed_accounts = GetAllowedAccounts(false);
   bool accounts_changed = allowed_accounts != known_allowed_accounts_;
-  known_allowed_accounts_ = *allowed_accounts;
+  known_allowed_accounts_ = std::move(allowed_accounts);
   if (!first_known_accounts_check_ && events_listener_.is_bound() &&
       accounts_changed) {
-    events_listener_->AccountsChangedEvent(known_allowed_accounts_);
+    std::vector<std::string> addresses;
+    for (const auto& account : known_allowed_accounts_) {
+      addresses.push_back(base::ToLowerASCII(account->address));
+    }
+    events_listener_->AccountsChangedEvent(addresses);
   }
   first_known_accounts_check_ = false;
 }
@@ -1345,11 +1304,7 @@ mojom::AccountIdPtr EthereumProviderImpl::FindAuthenticatedAccountByAddress(
     return nullptr;
   }
   const auto allowed_accounts = GetAllowedAccounts(false);
-  if (!allowed_accounts) {
-    RejectInvalidParams(std::move(id), std::move(callback));
-    return nullptr;
-  }
-  if (!CheckAccountAllowed(account_id, *allowed_accounts)) {
+  if (!std::ranges::contains(allowed_accounts, account_id)) {
     RejectAccountNotAuthed(std::move(id), std::move(callback));
     return nullptr;
   }

@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_provider_impl.h"
 
 #include <memory>
-#include <string>
 #include <utility>
 #include <vector>
 
@@ -67,7 +66,7 @@ void PolkadotProviderImpl::RequestPolkadotPermissions(
   // Basically copy-paste what the CardanoProviderImpl is doing for permission
   // requests.
 
-  std::vector<std::string> allowed_accounts;
+  std::vector<mojom::AccountIdPtr> allowed_accounts;
   auto state = EvaluatePermissionsState(allowed_accounts);
 
   switch (state) {
@@ -112,13 +111,12 @@ void PolkadotProviderImpl::RequestPolkadotPermissions(
     case PermissionCheckResult::kHasAllowedAccounts:
       return OnRequestPolkadotPermissions(std::move(callback),
                                           mojom::RequestPermissionsError::kNone,
-                                          allowed_accounts);
+                                          std::move(allowed_accounts));
 
     case PermissionCheckResult::kNeedsPermissionRequest:
-      auto polkadot_account_ids =
-          GetPolkadotAccountPermissionIdentifiers(keyring_service());
+      auto polkadot_account_ids = GetPolkadotDappAccountIds(keyring_service());
       return delegate_->RequestPermissions(
-          mojom::CoinType::DOT, polkadot_account_ids, origin,
+          polkadot_account_ids, origin,
           base::BindOnce(&PolkadotProviderImpl::OnRequestPolkadotPermissions,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   }
@@ -126,7 +124,7 @@ void PolkadotProviderImpl::RequestPolkadotPermissions(
 
 PolkadotProviderImpl::PermissionCheckResult
 PolkadotProviderImpl::EvaluatePermissionsState(
-    std::vector<std::string>& allowed_accounts) {
+    std::vector<mojom::AccountIdPtr>& allowed_accounts) {
   if (!delegate_->IsTabVisible()) {
     return PermissionCheckResult::kTabInactive;
   }
@@ -140,7 +138,7 @@ PolkadotProviderImpl::EvaluatePermissionsState(
     return PermissionCheckResult::kWalletNotCreated;
   }
 
-  auto polkadot_account_ids = GetPolkadotAccountPermissionIdentifiers(keyring);
+  auto polkadot_account_ids = GetPolkadotDappAccountIds(keyring);
   if (polkadot_account_ids.empty()) {
     return PermissionCheckResult::kNoAccounts;
   }
@@ -149,17 +147,11 @@ PolkadotProviderImpl::EvaluatePermissionsState(
     return PermissionCheckResult::kWalletLocked;
   }
 
-  auto allowed_accounts_value =
-      delegate_->GetAllowedAccounts(mojom::CoinType::DOT, polkadot_account_ids);
-  if (!allowed_accounts_value) {
-    return PermissionCheckResult::kGetAllowedAccountsFailed;
-  }
+  allowed_accounts = delegate_->GetAllowedAccounts(polkadot_account_ids);
 
-  if (allowed_accounts_value->empty()) {
+  if (allowed_accounts.empty()) {
     return PermissionCheckResult::kNeedsPermissionRequest;
   }
-
-  allowed_accounts = std::move(*allowed_accounts_value);
 
   return PermissionCheckResult::kHasAllowedAccounts;
 }
@@ -167,7 +159,7 @@ PolkadotProviderImpl::EvaluatePermissionsState(
 void PolkadotProviderImpl::OnRequestPolkadotPermissions(
     EnableCallback callback,
     mojom::RequestPermissionsError error,
-    const std::optional<std::vector<std::string>>& allowed_accounts) {
+    std::vector<mojom::AccountIdPtr> allowed_accounts) {
   if (error != mojom::RequestPermissionsError::kNone) {
     switch (error) {
       case mojom::RequestPermissionsError::kRequestInProgress:

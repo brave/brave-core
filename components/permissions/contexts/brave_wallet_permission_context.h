@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "components/permissions/content_setting_permission_context_base.h"
 #include "components/permissions/permission_request_id.h"
 #include "components/permissions/request_type.h"
@@ -56,10 +57,12 @@ class BraveWalletPermissionContext
       content::WebContents* web_contents);
   static void Cancel(content::WebContents* web_contents);
 
-  static std::optional<std::vector<std::string>> GetAllowedAccounts(
+  // All `accounts` must be of the same coin type. Returns the subset of
+  // `accounts` that currently have `permission` granted.
+  static std::vector<brave_wallet::mojom::AccountIdPtr> GetAllowedAccounts(
       blink::PermissionType permission,
       content::RenderFrameHost* rfh,
-      const std::vector<std::string>& addresses);
+      const std::vector<brave_wallet::mojom::AccountIdPtr>& accounts);
 
   // We will only check global setting and setting per origin since we won't
   // write block rule per address on an origin.

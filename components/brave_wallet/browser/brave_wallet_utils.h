@@ -156,6 +156,13 @@ std::string SPLTokenProgramToProgramID(mojom::SPLTokenProgram program);
 std::string GetAccountPermissionIdentifier(
     const mojom::AccountIdPtr& account_id);
 
+std::vector<std::string> GetAccountPermissionIdentifiers(
+    const std::vector<mojom::AccountIdPtr>& account_ids);
+
+// `accounts` must be non-empty and all of the same coin type.
+mojom::CoinType GetAccountsCoinType(
+    const std::vector<mojom::AccountIdPtr>& accounts);
+
 bool IsBraveWalletOrigin(const url::Origin& origin);
 
 std::optional<std::map<CardanoAddress, mojom::CardanoKeyIdPtr>>

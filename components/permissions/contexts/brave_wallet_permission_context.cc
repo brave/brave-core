@@ -12,6 +12,7 @@
 #include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
@@ -250,36 +251,36 @@ void BraveWalletPermissionContext::RequestWalletPermissions(
 }
 
 // static
-std::optional<std::vector<std::string>>
+std::vector<brave_wallet::mojom::AccountIdPtr>
 BraveWalletPermissionContext::GetAllowedAccounts(
     blink::PermissionType permission,
     content::RenderFrameHost* rfh,
-    const std::vector<std::string>& addresses) {
+    const std::vector<brave_wallet::mojom::AccountIdPtr>& accounts) {
   if (!rfh) {
-    return std::nullopt;
+    return {};
   }
 
   // Fail if there is no last committed URL yet
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
   if (web_contents->GetPrimaryMainFrame()->GetLastCommittedURL().is_empty()) {
-    return std::vector<std::string>();
+    return {};
   }
 
   content::PermissionControllerDelegate* delegate =
       web_contents->GetBrowserContext()->GetPermissionControllerDelegate();
   if (!delegate) {
-    return std::nullopt;
+    return {};
   }
 
   const ContentSettingsType content_settings_type =
       PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission);
 
-  std::vector<std::string> allowed_accounts;
+  std::vector<brave_wallet::mojom::AccountIdPtr> allowed_accounts;
   url::Origin origin = url::Origin::Create(rfh->GetLastCommittedURL());
-  for (const auto& address : addresses) {
+  for (const auto& account : accounts) {
     auto sub_request_origin = brave_wallet::GetSubRequestOrigin(
         ContentSettingsTypeToRequestType(content_settings_type), origin,
-        address);
+        brave_wallet::GetAccountPermissionIdentifier(account));
     if (sub_request_origin) {
       // `GetPermissionResultForEmbeddedRequester` allows us to specify
       // `requesting_origin` instead of obtaining it from `rfh`.
@@ -292,7 +293,7 @@ BraveWalletPermissionContext::GetAllowedAccounts(
               .status;
 
       if (status == blink::mojom::PermissionStatus::GRANTED) {
-        allowed_accounts.push_back(address);
+        allowed_accounts.push_back(account.Clone());
       }
     }
   }

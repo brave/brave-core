@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_DAPP_UTILS_H_
 
 #include <optional>
-#include <string>
 #include <vector>
 
 #include "base/values.h"
@@ -20,7 +19,7 @@ namespace brave_wallet {
 class BraveWalletProviderDelegate;
 class KeyringService;
 
-std::vector<std::string> GetCardanoAccountPermissionIdentifiers(
+std::vector<mojom::AccountIdPtr> GetCardanoAccountIds(
     KeyringService* keyring_service);
 
 mojom::AccountIdPtr GetCardanoPreferredDappAccount(
@@ -29,8 +28,7 @@ mojom::AccountIdPtr GetCardanoPreferredDappAccount(
 
 mojom::AccountIdPtr GetCardanoPreferredDappAccount(
     KeyringService* keyring_service,
-    const std::optional<std::vector<std::string>>&
-        allowed_accounts_from_request);
+    const std::vector<mojom::AccountIdPtr>& allowed_accounts_from_request);
 
 std::optional<cardano_rpc::UnspentOutput> FindUtxoByOutpoint(
     const cardano_rpc::UnspentOutputs& utxos,

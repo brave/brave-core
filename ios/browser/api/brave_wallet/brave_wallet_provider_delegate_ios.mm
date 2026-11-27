@@ -5,16 +5,56 @@
 
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios.h"
 
-#include <optional>
+#include <algorithm>
+#include <string>
+#include <utility>
+#include <vector>
 
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/apple/foundation_util.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
 #include "brave/ios/browser/api/url/url_origin_ios+private.h"
 #include "net/base/apple/url_conversions.h"
 
 namespace brave_wallet {
+
+namespace {
+
+// Returns the subset of `accounts` whose permission identifier appears in
+// `allowed_identifiers`, or an empty list if the bridge returned nil.
+std::vector<mojom::AccountIdPtr> FilterAllowedAccounts(
+    std::vector<mojom::AccountIdPtr> accounts,
+    NSArray<NSString*>* _Nullable allowed_identifiers) {
+  if (allowed_identifiers == nil) {
+    return {};
+  }
+  auto identifiers = brave::ns_to_vector<std::string>(allowed_identifiers);
+  std::vector<mojom::AccountIdPtr> allowed_accounts;
+  for (auto& account : accounts) {
+    if (std::ranges::contains(identifiers,
+                              GetAccountPermissionIdentifier(account))) {
+      allowed_accounts.push_back(std::move(account));
+    }
+  }
+  return allowed_accounts;
+}
+
+void OnRequestPermissionsResult(
+    std::vector<mojom::AccountIdPtr> queried_accounts,
+    BraveWalletProviderDelegate::RequestPermissionsCallback callback,
+    BraveWalletRequestPermissionsError error,
+    NSArray<NSString*>* _Nullable results) {
+  std::move(callback).Run(
+      static_cast<mojom::RequestPermissionsError>(error),
+      FilterAllowedAccounts(std::move(queried_accounts), results));
+}
+
+}  // namespace
 
 bool BraveWalletProviderDelegateBridge::IsTabVisible() {
   return [bridge_ isTabVisible];
@@ -46,54 +86,40 @@ void BraveWalletProviderDelegateBridge::ShowAccountCreation(
 }
 
 void BraveWalletProviderDelegateBridge::RequestPermissions(
-    mojom::CoinType type,
-    const std::vector<std::string>& accounts,
+    const std::vector<mojom::AccountIdPtr>& accounts,
     const url::Origin& origin,
     RequestPermissionsCallback callback) {
-  auto completion = [callback = std::make_shared<decltype(callback)>(std::move(
-                         callback))](BraveWalletRequestPermissionsError error,
-                                     NSArray<NSString*>* _Nullable results) {
-    if (!callback) {
-      return;
-    }
-    if (results == nil) {
-      std::move(*callback).Run(
-          static_cast<mojom::RequestPermissionsError>(error), std::nullopt);
-      return;
-    }
-    std::vector<std::string> v;
-    for (NSString* result in results) {
-      v.push_back(base::SysNSStringToUTF8(result));
-    }
-    std::move(*callback).Run(static_cast<mojom::RequestPermissionsError>(error),
-                             v);
-  };
+  auto type = GetAccountsCoinType(accounts);
+  auto completion = base::CallbackToBlock(base::BindOnce(
+      &OnRequestPermissionsResult, CloneVector(accounts), std::move(callback)));
   URLOriginIOS* origin_ios = [[URLOriginIOS alloc] initWithOrigin:origin];
+  NSArray* identifiers =
+      brave::vector_to_ns(GetAccountPermissionIdentifiers(accounts));
   [bridge_ requestPermissions:static_cast<BraveWalletCoinType>(type)
-                     accounts:brave::vector_to_ns(accounts)
+                     accounts:identifiers
                        origin:origin_ios
                    completion:completion];
 }
 
 bool BraveWalletProviderDelegateBridge::IsAccountAllowed(
-    mojom::CoinType type,
-    const std::string& account) {
-  return [bridge_ isAccountAllowed:static_cast<BraveWalletCoinType>(type)
-                           account:base::SysUTF8ToNSString(account)];
+    const mojom::AccountIdPtr& account) {
+  NSString* identifier =
+      base::SysUTF8ToNSString(GetAccountPermissionIdentifier(account));
+  return
+      [bridge_ isAccountAllowed:static_cast<BraveWalletCoinType>(account->coin)
+                        account:identifier];
 }
 
-std::optional<std::vector<std::string>>
+std::vector<mojom::AccountIdPtr>
 BraveWalletProviderDelegateBridge::GetAllowedAccounts(
-    mojom::CoinType type,
-    const std::vector<std::string>& accounts) {
+    const std::vector<mojom::AccountIdPtr>& accounts) {
+  auto type = GetAccountsCoinType(accounts);
+  NSArray* identifiers =
+      brave::vector_to_ns(GetAccountPermissionIdentifiers(accounts));
   NSArray<NSString*>* results =
       [bridge_ getAllowedAccounts:static_cast<BraveWalletCoinType>(type)
-                         accounts:brave::vector_to_ns(accounts)];
-  if (!results) {
-    return std::nullopt;
-  }
-
-  return brave::ns_to_vector<std::string>(results);
+                         accounts:identifiers];
+  return FilterAllowedAccounts(CloneVector(accounts), results);
 }
 
 bool BraveWalletProviderDelegateBridge::IsPermissionDenied(

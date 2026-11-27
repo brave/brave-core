@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_DELEGATE_H_
 
-#include <optional>
-#include <string>
 #include <vector>
 
 #include "base/functional/callback.h"
@@ -21,7 +19,7 @@ class BraveWalletProviderDelegate {
  public:
   using RequestPermissionsCallback = base::OnceCallback<void(
       mojom::RequestPermissionsError error,
-      const std::optional<std::vector<std::string>>& allowed_accounts)>;
+      std::vector<mojom::AccountIdPtr> allowed_accounts)>;
 
   BraveWalletProviderDelegate() = default;
   BraveWalletProviderDelegate(const BraveWalletProviderDelegate&) = delete;
@@ -36,15 +34,16 @@ class BraveWalletProviderDelegate {
   virtual void WalletInteractionDetected() = 0;
   virtual void ShowAccountCreation(mojom::CoinType type,
                                    const url::Origin& origin) = 0;
-  virtual void RequestPermissions(mojom::CoinType type,
-                                  const std::vector<std::string>& accounts,
-                                  const url::Origin& origin,
-                                  RequestPermissionsCallback) = 0;
-  virtual bool IsAccountAllowed(mojom::CoinType type,
-                                const std::string& account) = 0;
-  virtual std::optional<std::vector<std::string>> GetAllowedAccounts(
-      mojom::CoinType type,
-      const std::vector<std::string>& accounts) = 0;
+  // All `accounts` must be of the same coin type (inferred from AccountId).
+  virtual void RequestPermissions(
+      const std::vector<mojom::AccountIdPtr>& accounts,
+      const url::Origin& origin,
+      RequestPermissionsCallback) = 0;
+  virtual bool IsAccountAllowed(const mojom::AccountIdPtr& account) = 0;
+  // All `accounts` must be of the same coin type (inferred from AccountId).
+  // Returns the subset of `accounts` that are currently allowed.
+  virtual std::vector<mojom::AccountIdPtr> GetAllowedAccounts(
+      const std::vector<mojom::AccountIdPtr>& accounts) = 0;
   virtual bool IsPermissionDenied(mojom::CoinType type) = 0;
 };
 

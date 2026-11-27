@@ -7,8 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_PROVIDER_IMPL_H_
 
 #include <memory>
-#include <optional>
-#include <string>
 #include <vector>
 
 #include "base/memory/raw_ref.h"
@@ -54,7 +52,7 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
   friend class CardanoProviderImplUnitTest;
 
   PermissionCheckResult EvaluatePermissionsState(
-      std::vector<std::string>& allowed_accounts);
+      std::vector<mojom::AccountIdPtr>& allowed_accounts);
 
   mojom::AccountIdPtr GetAllowedSelectedAccount();
 
@@ -71,7 +69,7 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
   void OnRequestCardanoPermissions(
       EnableCallback callback,
       mojom::RequestPermissionsError error,
-      const std::optional<std::vector<std::string>>& allowed_accounts);
+      std::vector<mojom::AccountIdPtr> allowed_accounts);
 
   raw_ref<BraveWalletService> brave_wallet_service_;
   BraveWalletProviderDelegateFactory delegate_factory_;

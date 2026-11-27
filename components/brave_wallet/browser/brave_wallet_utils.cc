@@ -11,7 +11,9 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "base/containers/span.h"
+#include "base/containers/to_vector.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -1152,6 +1154,21 @@ std::string GetAccountPermissionIdentifier(
   } else {
     return account_id->address;
   }
+}
+
+std::vector<std::string> GetAccountPermissionIdentifiers(
+    const std::vector<mojom::AccountIdPtr>& account_ids) {
+  return base::ToVector(account_ids, &GetAccountPermissionIdentifier);
+}
+
+mojom::CoinType GetAccountsCoinType(
+    const std::vector<mojom::AccountIdPtr>& accounts) {
+  CHECK(!accounts.empty());
+  auto coin = accounts[0]->coin;
+  for (const auto& account : accounts) {
+    CHECK_EQ(coin, account->coin) << "Accounts must be of the same coin type";
+  }
+  return coin;
 }
 
 bool IsBraveWalletOrigin(const url::Origin& origin) {

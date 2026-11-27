@@ -9,7 +9,6 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 
 namespace brave_wallet {
@@ -28,13 +27,13 @@ bool IsPolkadotDappAccount(const mojom::AccountIdPtr& account_id) {
 
 }  // namespace
 
-std::vector<std::string> GetPolkadotAccountPermissionIdentifiers(
+std::vector<mojom::AccountIdPtr> GetPolkadotDappAccountIds(
     KeyringService* keyring_service) {
-  std::vector<std::string> ids;
+  std::vector<mojom::AccountIdPtr> ids;
   for (const auto& account : keyring_service->GetAllAccountInfos()) {
     if (account && account->account_id &&
         IsPolkadotDappAccount(account->account_id)) {
-      ids.push_back(GetAccountPermissionIdentifier(account->account_id));
+      ids.push_back(account->account_id.Clone());
     }
   }
   return ids;
@@ -42,16 +41,14 @@ std::vector<std::string> GetPolkadotAccountPermissionIdentifiers(
 
 mojom::AccountIdPtr GetPolkadotPreferredDappAccount(
     KeyringService* keyring_service,
-    base::optional_ref<const std::vector<std::string>> allowed_accounts) {
-  if (!allowed_accounts || allowed_accounts->empty()) {
+    const std::vector<mojom::AccountIdPtr>& allowed_accounts) {
+  if (allowed_accounts.empty()) {
     return nullptr;
   }
 
   auto selected_account = keyring_service->GetSelectedPolkadotDappAccount();
   if (selected_account &&
-      std::ranges::contains(
-          *allowed_accounts,
-          GetAccountPermissionIdentifier(selected_account->account_id))) {
+      std::ranges::contains(allowed_accounts, selected_account->account_id)) {
     return selected_account->account_id.Clone();
   }
 
@@ -60,8 +57,7 @@ mojom::AccountIdPtr GetPolkadotPreferredDappAccount(
       continue;
     }
 
-    if (std::ranges::contains(*allowed_accounts, GetAccountPermissionIdentifier(
-                                                     account->account_id))) {
+    if (std::ranges::contains(allowed_accounts, account->account_id)) {
       return account->account_id.Clone();
     }
   }

@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -65,6 +66,26 @@ class PolkadotDappUtilsUnitTest : public testing::Test {
         keyring_service()->SetSelectedAccountSync(account->account_id.Clone()));
   }
 
+  // Builds a single-element AccountId vector (AccountIdPtr is move-only, so
+  // braced-init-list syntax doesn't work).
+  static std::vector<mojom::AccountIdPtr> AccountIdVector(
+      const mojom::AccountIdPtr& id) {
+    std::vector<mojom::AccountIdPtr> result;
+    result.push_back(id.Clone());
+    return result;
+  }
+
+  static std::vector<mojom::AccountIdPtr> AccountIdVector(
+      const mojom::AccountIdPtr& first,
+      const mojom::AccountIdPtr& second) {
+    std::vector<mojom::AccountIdPtr> result;
+    result.push_back(first.Clone());
+    result.push_back(second.Clone());
+    return result;
+  }
+
+  // The permission layer still persists the selected account as this string
+  // identifier, so tests checking the pref value need it.
   std::string PermissionIdentifier(const mojom::AccountInfoPtr& account) {
     return GetAccountPermissionIdentifier(account->account_id);
   }
@@ -85,21 +106,19 @@ class PolkadotDappUtilsUnitTest : public testing::Test {
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
 };
 
-TEST_F(PolkadotDappUtilsUnitTest, PermissionIdentifiers_NoWallet) {
-  EXPECT_THAT(GetPolkadotAccountPermissionIdentifiers(keyring_service()),
-              testing::IsEmpty());
+TEST_F(PolkadotDappUtilsUnitTest, DappAccountIds_NoWallet) {
+  EXPECT_THAT(GetPolkadotDappAccountIds(keyring_service()), testing::IsEmpty());
 }
 
-TEST_F(PolkadotDappUtilsUnitTest, PermissionIdentifiers_NoPolkadotAccounts) {
+TEST_F(PolkadotDappUtilsUnitTest, DappAccountIds_NoPolkadotAccounts) {
   // DOT accounts aren't created by default.
 
   CreateWallet();
 
-  EXPECT_THAT(GetPolkadotAccountPermissionIdentifiers(keyring_service()),
-              testing::IsEmpty());
+  EXPECT_THAT(GetPolkadotDappAccountIds(keyring_service()), testing::IsEmpty());
 }
 
-TEST_F(PolkadotDappUtilsUnitTest, PermissionIdentifiers_MainnetAndImported) {
+TEST_F(PolkadotDappUtilsUnitTest, DappAccountIds_MainnetAndImported) {
   CreateWallet();
   auto derived = AddAccount(mojom::KeyringId::kPolkadotMainnet);
   auto imported = AddAccount(mojom::KeyringId::kPolkadotImport);
@@ -112,9 +131,9 @@ TEST_F(PolkadotDappUtilsUnitTest, PermissionIdentifiers_MainnetAndImported) {
   ASSERT_TRUE(AddAccount(mojom::KeyringId::kPolkadotTestnet));
   ASSERT_TRUE(AddAccount(mojom::KeyringId::kPolkadotImportTestnet));
 
-  EXPECT_THAT(GetPolkadotAccountPermissionIdentifiers(keyring_service()),
-              testing::UnorderedElementsAre(PermissionIdentifier(derived),
-                                            PermissionIdentifier(imported)));
+  EXPECT_THAT(GetPolkadotDappAccountIds(keyring_service()),
+              testing::UnorderedElementsAre(EqualsMojo(derived->account_id),
+                                            EqualsMojo(imported->account_id)));
 }
 
 TEST_F(PolkadotDappUtilsUnitTest, PreferredAccount_NoAllowedAccounts) {
@@ -122,10 +141,8 @@ TEST_F(PolkadotDappUtilsUnitTest, PreferredAccount_NoAllowedAccounts) {
   ASSERT_TRUE(AddAccount());
 
   EXPECT_FALSE(GetPolkadotPreferredDappAccount(
-      keyring_service(), /*allowed_accounts=*/std::nullopt));
-  EXPECT_FALSE(GetPolkadotPreferredDappAccount(
       keyring_service(),
-      /*allowed_accounts=*/std::vector<std::string>{}));
+      /*allowed_accounts=*/std::vector<mojom::AccountIdPtr>{}));
 }
 
 TEST_F(PolkadotDappUtilsUnitTest, PreferredAccount_SelectedAccountWins) {
@@ -144,8 +161,7 @@ TEST_F(PolkadotDappUtilsUnitTest, PreferredAccount_SelectedAccountWins) {
 
   EXPECT_THAT(GetPolkadotPreferredDappAccount(
                   keyring_service(),
-                  std::vector<std::string>{PermissionIdentifier(first),
-                                           PermissionIdentifier(second)}),
+                  AccountIdVector(first->account_id, second->account_id)),
               EqualsMojo(second->account_id));
 
   auto imported = AddAccount(mojom::KeyringId::kPolkadotImport);
@@ -159,8 +175,7 @@ TEST_F(PolkadotDappUtilsUnitTest, PreferredAccount_SelectedAccountWins) {
             PermissionIdentifier(imported));
 
   EXPECT_THAT(GetPolkadotPreferredDappAccount(
-                  keyring_service(),
-                  std::vector<std::string>{PermissionIdentifier(imported)}),
+                  keyring_service(), AccountIdVector(imported->account_id)),
               EqualsMojo(imported->account_id));
 }
 
@@ -174,8 +189,7 @@ TEST_F(PolkadotDappUtilsUnitTest,
   SelectAccount(second);
 
   EXPECT_THAT(GetPolkadotPreferredDappAccount(
-                  keyring_service(),
-                  std::vector<std::string>{PermissionIdentifier(first)}),
+                  keyring_service(), AccountIdVector(first->account_id)),
               EqualsMojo(first->account_id));
 }
 
@@ -192,8 +206,7 @@ TEST_F(PolkadotDappUtilsUnitTest, PreferredAccount_NoSelectionFallsBack) {
   ASSERT_FALSE(keyring_service()->GetSelectedPolkadotDappAccount());
 
   EXPECT_THAT(GetPolkadotPreferredDappAccount(
-                  keyring_service(),
-                  std::vector<std::string>{PermissionIdentifier(mainnet)}),
+                  keyring_service(), AccountIdVector(mainnet->account_id)),
               EqualsMojo(mainnet->account_id));
 }
 
@@ -202,7 +215,10 @@ TEST_F(PolkadotDappUtilsUnitTest, PreferredAccount_UnknownAllowedAccount) {
   ASSERT_TRUE(AddAccount());
 
   EXPECT_FALSE(GetPolkadotPreferredDappAccount(
-      keyring_service(), std::vector<std::string>{"not-an-account"}));
+      keyring_service(),
+      AccountIdVector(MakeIndexBasedAccountId(
+          mojom::CoinType::DOT, mojom::KeyringId::kPolkadotMainnet,
+          mojom::AccountKind::kDerived, 999))));
 }
 
 TEST_F(PolkadotDappUtilsUnitTest, PreferredAccount_TestnetAllowedAccount) {
@@ -216,8 +232,7 @@ TEST_F(PolkadotDappUtilsUnitTest, PreferredAccount_TestnetAllowedAccount) {
 
   EXPECT_FALSE(GetPolkadotPreferredDappAccount(
       keyring_service(),
-      std::vector<std::string>{PermissionIdentifier(testnet),
-                               PermissionIdentifier(imported_testnet)}));
+      AccountIdVector(testnet->account_id, imported_testnet->account_id)));
 }
 
 TEST_F(PolkadotDappUtilsUnitTest, MakeInjectedAccount) {

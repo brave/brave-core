@@ -5,7 +5,7 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 
-#include <memory>
+#include <algorithm>
 #include <optional>
 #include <string>
 #include <utility>
@@ -13,10 +13,12 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/strings/string_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/render_frame_host.h"
@@ -27,21 +29,19 @@ namespace brave_wallet {
 
 namespace {
 
-bool IsAccountInAllowedList(const std::vector<std::string>& allowed_accounts,
-                            const std::string& account) {
-  for (const auto& allowed_account : allowed_accounts) {
-    if (base::CompareCaseInsensitiveASCII(account, allowed_account) == 0) {
-      return true;
-    }
-  }
-  return false;
-}
-
 void OnRequestPermissions(
     BraveWalletProviderDelegate::RequestPermissionsCallback callback,
-    std::vector<std::string> allowed_addresses) {
+    std::vector<mojom::AccountIdPtr> queried_accounts,
+    std::vector<std::string> allowed_identifiers) {
+  std::vector<mojom::AccountIdPtr> allowed_accounts;
+  for (auto& account : queried_accounts) {
+    if (std::ranges::contains(allowed_identifiers,
+                              GetAccountPermissionIdentifier(account))) {
+      allowed_accounts.push_back(std::move(account));
+    }
+  }
   std::move(callback).Run(mojom::RequestPermissionsError::kNone,
-                          std::move(allowed_addresses));
+                          std::move(allowed_accounts));
 }
 
 }  // namespace
@@ -82,17 +82,17 @@ void BraveWalletProviderDelegateImpl::ShowAccountCreation(
   ::brave_wallet::ShowAccountCreation(web_contents(), type);
 }
 
-std::optional<std::vector<std::string>>
+std::vector<mojom::AccountIdPtr>
 BraveWalletProviderDelegateImpl::GetAllowedAccounts(
-    mojom::CoinType type,
-    const std::vector<std::string>& accounts) {
+    const std::vector<mojom::AccountIdPtr>& accounts) {
+  auto type = GetAccountsCoinType(accounts);
   if (IsPermissionDenied(type)) {
-    return std::vector<std::string>();
+    return std::vector<mojom::AccountIdPtr>();
   }
 
   auto permission = CoinTypeToPermissionType(type);
   if (!permission) {
-    return std::nullopt;
+    return std::vector<mojom::AccountIdPtr>();
   }
 
   return permissions::BraveWalletPermissionContext::GetAllowedAccounts(
@@ -100,20 +100,18 @@ BraveWalletProviderDelegateImpl::GetAllowedAccounts(
 }
 
 void BraveWalletProviderDelegateImpl::RequestPermissions(
-    mojom::CoinType type,
-    const std::vector<std::string>& accounts,
+    const std::vector<mojom::AccountIdPtr>& accounts,
     const url::Origin& origin,
     RequestPermissionsCallback callback) {
+  auto type = GetAccountsCoinType(accounts);
   if (!IsWeb3NotificationAllowed()) {
-    std::move(callback).Run(mojom::RequestPermissionsError::kNone,
-                            std::vector<std::string>());
+    std::move(callback).Run(mojom::RequestPermissionsError::kNone, {});
     return;
   }
   auto request_type = CoinTypeToPermissionRequestType(type);
   auto permission = CoinTypeToPermissionType(type);
   if (!request_type || !permission) {
-    std::move(callback).Run(mojom::RequestPermissionsError::kInternal,
-                            std::nullopt);
+    std::move(callback).Run(mojom::RequestPermissionsError::kInternal, {});
     return;
   }
   // Check if there's already a permission request in progress
@@ -121,28 +119,31 @@ void BraveWalletProviderDelegateImpl::RequestPermissions(
   if (rfh && permissions::BraveWalletPermissionContext::HasRequestsInProgress(
                  rfh, *request_type)) {
     std::move(callback).Run(mojom::RequestPermissionsError::kRequestInProgress,
-                            std::nullopt);
+                            {});
     return;
   }
 
   permissions::BraveWalletPermissionContext::RequestWalletPermissions(
-      accounts, *permission, origin, content::RenderFrameHost::FromID(host_id_),
-      base::BindOnce(&OnRequestPermissions, std::move(callback)));
+      GetAccountPermissionIdentifiers(accounts), *permission, origin,
+      content::RenderFrameHost::FromID(host_id_),
+      base::BindOnce(&OnRequestPermissions, std::move(callback),
+                     CloneVector(accounts)));
 }
 
 bool BraveWalletProviderDelegateImpl::IsAccountAllowed(
-    mojom::CoinType type,
-    const std::string& account) {
-  auto permission = CoinTypeToPermissionType(type);
+    const mojom::AccountIdPtr& account) {
+  auto permission = CoinTypeToPermissionType(account->coin);
   if (!permission) {
     return false;
   }
 
+  std::vector<mojom::AccountIdPtr> accounts;
+  accounts.push_back(account.Clone());
   const auto allowed_accounts =
       permissions::BraveWalletPermissionContext::GetAllowedAccounts(
-          *permission, content::RenderFrameHost::FromID(host_id_), {account});
+          *permission, content::RenderFrameHost::FromID(host_id_), accounts);
 
-  return allowed_accounts && IsAccountInAllowedList(*allowed_accounts, account);
+  return std::ranges::contains(allowed_accounts, account);
 }
 
 bool BraveWalletProviderDelegateImpl::IsPermissionDenied(mojom::CoinType type) {
