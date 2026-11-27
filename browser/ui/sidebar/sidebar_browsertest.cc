@@ -7,6 +7,7 @@
 #include <atomic>
 #include <optional>
 #include <string_view>
+#include <vector>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
@@ -248,7 +249,24 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
               Optional(browser_view->children().size() - 1));
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
+// Web and wallet items load in a tab only while the features that open them in
+// a panel are off.
+class SidebarBrowserTestWebTypeItems : public SidebarBrowserTest {
+ public:
+  SidebarBrowserTestWebTypeItems() {
+    std::vector<base::test::FeatureRef> disabled_features = {
+        features::kSidebarWebPanel};
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    disabled_features.push_back(brave_wallet::features::kBraveWalletSidePanel);
+#endif
+    scoped_features_.InitWithFeatures({}, disabled_features);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWebTypeItems, WebTypePanelTest) {
   auto expected_count = GetDefaultItemCount();
   EXPECT_EQ(expected_count, model()->GetAllSidebarItems().size());
 
