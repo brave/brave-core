@@ -28,6 +28,14 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
     return delegate.tab(tab, shouldBlockUniversalLinksForRequest: request)
   }
 
+  public func webView(
+    _ webView: CWVWebView,
+    alternateRequestFor request: URLRequest
+  ) -> URLRequest? {
+    guard let tab, let delegate = tab.delegate else { return nil }
+    return delegate.tab(tab, alternateRequestFor: request)
+  }
+
   func webView(
     _ webView: CWVWebView,
     userAgentForUserAgentType userAgentType: CWVUserAgentType,

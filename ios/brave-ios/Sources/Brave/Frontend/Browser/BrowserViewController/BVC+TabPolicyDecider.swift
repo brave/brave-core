@@ -209,24 +209,27 @@ extension BrowserViewController: TabPolicyDecider {
           considerAllShieldsOption: true
         ) ?? true
 
-      if let modifiedRequest = getInternalRedirect(
-        from: request,
-        isMainFrame: requestInfo.isMainFrame,
-        in: tab,
-        isAdBlockEnabled: isAdBlockEnabled
-      ) {
-        tab.isInternalRedirect = true
-        tab.loadRequest(modifiedRequest)
+      // On iOS 27+ this is applied in place via `tab(_:alternateRequestFor:request:)`
+      if #unavailable(iOS 27) {
+        if let modifiedRequest = getInternalRedirect(
+          from: request,
+          isMainFrame: requestInfo.isMainFrame,
+          in: tab,
+          isAdBlockEnabled: isAdBlockEnabled
+        ) {
+          tab.isInternalRedirect = true
+          tab.loadRequest(modifiedRequest)
 
-        if let url = modifiedRequest.url {
-          Logger.module.debug(
-            "Redirected to `\(url.absoluteString, privacy: .private)`"
-          )
+          if let url = modifiedRequest.url {
+            Logger.module.debug(
+              "Redirected to `\(url.absoluteString, privacy: .private)`"
+            )
+          }
+
+          return .cancel
+        } else {
+          tab.isInternalRedirect = false
         }
-
-        return .cancel
-      } else {
-        tab.isInternalRedirect = false
       }
 
       // Set some additional user scripts
@@ -307,6 +310,11 @@ extension BrowserViewController: TabPolicyDecider {
 
 extension BrowserViewController {
   /// Get a possible redirect request from debouncing or query param stripping
+  @available(
+    iOS,
+    obsoleted: 27.0,
+    message: "On iOS 27+ this is applied in place via `tab(_:alternateRequestFor:request:)`"
+  )
   func getInternalRedirect(
     from request: URLRequest,
     isMainFrame: Bool,
@@ -346,8 +354,29 @@ extension BrowserViewController {
       return modifiedRequest
     }
 
+    return debouncedOrStrippedRequest(from: request, in: tab, isAdBlockEnabled: isAdBlockEnabled)
+  }
+
+  public func tab(_ tab: some TabState, alternateRequestFor request: URLRequest) -> URLRequest? {
+    // Only called for main frame navigations
+    guard let mainDocumentURL = request.mainDocumentURL else { return nil }
+    let isAdBlockEnabled =
+      tab.braveShieldsHelper?.shieldLevel(
+        for: mainDocumentURL,
+        considerAllShieldsOption: true
+      ).isEnabled ?? true
+    return debouncedOrStrippedRequest(from: request, in: tab, isAdBlockEnabled: isAdBlockEnabled)
+  }
+
+  /// Get a possible redirect request from debouncing or query param stripping
+  private func debouncedOrStrippedRequest(
+    from request: URLRequest,
+    in tab: some TabState,
+    isAdBlockEnabled: Bool
+  ) -> URLRequest? {
     // Only if shields are enabled
-    guard requestURL.isWebPage(includeDataURIs: false),
+    guard let requestURL = request.url,
+      requestURL.isWebPage(includeDataURIs: false),
       isAdBlockEnabled
     else { return nil }
 
