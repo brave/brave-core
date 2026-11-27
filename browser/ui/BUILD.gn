@@ -1686,6 +1686,7 @@ source_set("browser_tests") {
       "brave_browser_browsertest.cc",
       "relaunch_to_update_browsertest.cc",
       "views/frame/brave_system_menu_model_builder_browsertest.cc",
+      "views/overlay/brave_video_overlay_window_views_bounds_browsertest.cc",
       "window_closing_confirm_browsertest.cc",
     ]
 
@@ -1706,7 +1707,9 @@ source_set("browser_tests") {
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/omnibox",
       "//chrome/browser/ui/startup",
+      "//chrome/browser/ui/tabs:tab_enums",
       "//chrome/browser/ui/views/frame:browser_view_header",
+      "//chrome/browser/ui/views/overlay",
       "//chrome/browser/ui/webui:profile_helper",
       "//chrome/browser/ui/webui_browser",
       "//chrome/common:chrome_features",
@@ -1717,7 +1720,11 @@ source_set("browser_tests") {
       "//components/optimization_guide/optimization_guide_internals/webui:url_constants",
       "//components/prefs",
       "//content/test:test_support",
+      "//net:test_support",
       "//ui/actions",
+      "//ui/base/mojom",
+      "//ui/display",
+      "//ui/gfx/geometry",
     ]
 
     if (enable_sparkle) {
@@ -1765,10 +1772,8 @@ source_set("browser_tests") {
           [ "views/overlay/brave_video_overlay_window_views_browsertest.cc" ]
 
       deps += [
-        "//chrome/browser/ui/views/overlay",
         "//chrome/browser/ui/web_applications/test:test_support_ui",
         "//chrome/browser/web_applications:web_applications_test_support",
-        "//net:test_support",
         "//ui/aura",
         "//ui/gfx/x",
         "//ui/ozone",

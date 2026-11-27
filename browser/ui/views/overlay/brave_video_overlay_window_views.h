@@ -28,11 +28,21 @@ class BraveVideoOverlayWindowViews : public VideoOverlayWindowViews {
 #endif  // BUILDFLAG(IS_LINUX)
 
   // VideoOverlayWindowViews:
+  void ShowInactive() override;
+  void Hide() override;
+  void Close() override;
+  void OnNativeWidgetDestroying() override;
   void SetUpViews() override;
   void OnUpdateControlsBounds() override;
   void OnKeyEvent(ui::KeyEvent* event) override;
 
  private:
+  // Upstream only remembers the window bounds per tab. These keep the most
+  // recent bounds per BrowserContext in memory, so a PiP window opened from any
+  // tab reuses them until the browser (or the private session) is closed.
+  void MaybeCacheBounds();
+  void MaybeRestoreCachedBounds();
+
   void UpdateControlIcons();
   void LayoutTopControls();
   void LayoutCenterControls();
