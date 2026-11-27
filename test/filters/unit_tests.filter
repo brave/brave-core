@@ -667,6 +667,17 @@
 -NavigationPredictorUserInteractionsTest.MLModelMaxHoverTime
 -NavigationPredictorUserInteractionsTest.ProcessPointerEventUsingMLModel
 
+# These tests fail because we disable network prediction (prefetch::prefs::
+# kNetworkPredictionOptions), so the search engine preconnector they exercise
+# never preconnects. Their browser test counterparts are filtered for the same
+# reason.
+-NavigationPredictorPreconnectClientTest.*
+
+# These tests fail because our incognito window title format is "(Private)"
+# instead of "(Incognito)" (IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT).
+-DocumentPipWidgetDelegateTest.AccessibleWindowTitleIncludesProfileAnnotation
+-ProfileViewUtilsTest.AccessibleWindowTitleIncognitoPrecedesProfileName
+
 # These tests fail because we do not record permissions UKM, see
 # brave/chromium_src/components/permissions/permission_uma_util.cc
 # GetUkmSourceId override.

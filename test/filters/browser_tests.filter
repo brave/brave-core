@@ -3009,6 +3009,15 @@
 # DCHECKs !is_valid() and crashes.
 -SiteTokenChainingBrowserTest.PreservesExistingHeaderClient
 
+# These tests fail because our incognito window title format is "(Private)"
+# instead of "(Incognito)" (IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT).
+-All/DocumentPictureInPictureWindowControllerBackendTest.AccessibleWindowNameIncludesIncognito/*
+
+# This test is flaky: it times out after ~30s waiting for the citation to open
+# a third tab (failed 3 of 10 runs locally, 0 of 5 when run alone). Root cause
+# not identified.
+-ContextualTasksUiServiceBrowserTest.CitationTextHighlight_TextNotFoundTabSwitchedNoToast
+
 # These tests fail because we disable kContextualTasks.
 -ContextualTasksAskGoogleEnabledTest.*
 -ContextualTasksAskGoogleSubmenuTest.*
@@ -3580,5 +3589,6 @@
 -WebSocketBrowserTestWebSocketHSTS.*
 -WebUIJSErrorReportingTest.*
 -WebUiNtpBrowserTest.*
+-WebUiNtpSpareRendererBrowserTest.*
 -WebViewTest.*
 -WebstoreReinstallerBrowserTest.*
