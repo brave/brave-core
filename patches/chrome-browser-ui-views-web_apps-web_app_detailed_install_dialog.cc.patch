@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/web_apps/web_app_detailed_install_dialog.cc b/chrome/browser/ui/views/web_apps/web_app_detailed_install_dialog.cc
+index 09797b53a86ffa97b700b45a1e4c2bbea76a1281..da95ca416e64e105325bf1182c59f3c285717e44 100644
+--- a/chrome/browser/ui/views/web_apps/web_app_detailed_install_dialog.cc
++++ b/chrome/browser/ui/views/web_apps/web_app_detailed_install_dialog.cc
+@@ -146,7 +146,7 @@ void ShowWebAppDetailedInstallDialog(
+               std::make_unique<views::BubbleDialogModelHost::CustomView>(
+                   std::make_unique<ImageCarouselView>(fetcher),
+                   views::BubbleDialogModelHost::FieldType::kControl))
+-          .OverrideDefaultButton(ui::mojom::DialogButton::kCancel)
++          .OverrideDefaultButton(ui::mojom::DialogButton::kNone)
+           .Build();
+   auto dialog = views::BubbleDialogModelHost::CreateModal(
+       std::move(dialog_model), ui::mojom::ModalType::kChild);

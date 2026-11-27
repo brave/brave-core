@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/web_apps/web_app_diy_install_dialog.cc b/chrome/browser/ui/views/web_apps/web_app_diy_install_dialog.cc
+index 68a426f2843c541292ff171eaa1e7a40a3cb4a2f..d97a8c0095e19ce9eea341b5d1c64b7bea5644e4 100644
+--- a/chrome/browser/ui/views/web_apps/web_app_diy_install_dialog.cc
++++ b/chrome/browser/ui/views/web_apps/web_app_diy_install_dialog.cc
+@@ -140,7 +140,7 @@ void ShowDiyAppInstallDialog(
+           &WebAppInstallDialogDelegate::OnClose, delegate_weak_ptr))
+       .SetDialogDestroyingCallback(base::BindOnce(
+           &WebAppInstallDialogDelegate::OnDestroyed, delegate_weak_ptr))
+-      .OverrideDefaultButton(ui::mojom::DialogButton::kCancel);
++      .OverrideDefaultButton(ui::mojom::DialogButton::kNone);
+ 
+   auto text_input_view = std::make_unique<SiteIconTextAndOriginView>(
+       icon_image, app_name,

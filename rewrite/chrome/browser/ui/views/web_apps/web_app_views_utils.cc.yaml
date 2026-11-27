@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Show the brave:// scheme instead of chrome:// in the origin label.
+
+      After upstream builds the origin label, rewrite a chrome:// scheme in its
+      text to brave://. brave_utils::ReplaceChromeToBraveScheme() is declared in
+      brave/browser/ui/brave_scheme_utils.h, which the chromium_src shadow
+      includes before the upstream file.
+    after_function_impl:
+      function_name: CreateOriginLabelFromStartUrl
+      result_var: origin_label
+      code: |-
+        CHECK(origin_label);
+        auto label_text = std::u16string(origin_label->GetText());
+        brave_utils::ReplaceChromeToBraveScheme(label_text);
+        origin_label->SetText(label_text);
+        return origin_label;

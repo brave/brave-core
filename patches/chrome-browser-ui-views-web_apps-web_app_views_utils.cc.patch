@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/ui/views/web_apps/web_app_views_utils.cc b/chrome/browser/ui/views/web_apps/web_app_views_utils.cc
+index d1f699c3a8a3966e139d4e4d8a8ec56495c9c103..e8ee9af5fe459a655e0cd2eb926196f89e7ed765 100644
+--- a/chrome/browser/ui/views/web_apps/web_app_views_utils.cc
++++ b/chrome/browser/ui/views/web_apps/web_app_views_utils.cc
+@@ -38,6 +38,7 @@ std::unique_ptr<views::Label> CreateNameLabel(const std::u16string& name) {
+ std::unique_ptr<views::Label> CreateOriginLabelFromStartUrl(
+     const GURL& start_url,
+     bool is_primary_text) {
++  std::unique_ptr<views::Label> origin_label = [&]() -> std::unique_ptr<views::Label> {
+   auto origin_label = std::make_unique<views::Label>(
+       url_formatter::FormatOriginForSecurityDisplay(
+           url::Origin::Create(start_url),
+@@ -55,6 +56,12 @@ std::unique_ptr<views::Label> CreateOriginLabelFromStartUrl(
+   origin_label->SetMultiLine(false);
+ 
+   return origin_label;
++  }();
++  CHECK(origin_label);
++  auto label_text = std::u16string(origin_label->GetText());
++  brave_utils::ReplaceChromeToBraveScheme(label_text);
++  origin_label->SetText(label_text);
++  return origin_label;
+ }
+ 
+ std::unique_ptr<views::Label> CreateVersionLabel(const base::Version& version) {

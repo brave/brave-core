@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/web_applications/pwa_install_page_action.cc b/chrome/browser/ui/web_applications/pwa_install_page_action.cc
+index a5285b3be3d78f3ea35a3a555fa7e6145787b5a3..95246ab1aa1332ec02ef72332e142e094b5fe00d 100644
+--- a/chrome/browser/ui/web_applications/pwa_install_page_action.cc
++++ b/chrome/browser/ui/web_applications/pwa_install_page_action.cc
+@@ -174,7 +174,7 @@ void PwaInstallPageActionController::UpdateVisibility() {
+     return;
+   }
+ 
+-  if (manager_->IsProbablyPromotableWebApp()) {
++  if (manager_->IsProbablyPromotableWebApp() && CheckPinPwaInstallButtonPref(web_contents)) {
+     Show(web_contents, manager_->MaybeConsumeInstallAnimation());
+   } else {
+     Hide();
