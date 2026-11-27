@@ -1,0 +1,39 @@
+diff --git a/chrome/browser/ui/views/toolbar/split_tabs_button.h b/chrome/browser/ui/views/toolbar/split_tabs_button.h
+index 18fa2791493f4eb35f5aa07faea108227b58762f..6f05645b8e5de2eea927a549520ca4606e4312ac 100644
+--- a/chrome/browser/ui/views/toolbar/split_tabs_button.h
++++ b/chrome/browser/ui/views/toolbar/split_tabs_button.h
+@@ -25,17 +25,17 @@ class MenuRunner;
+ 
+ // Pinnable toolbar button that allow users to create a split tab if the current
+ // tab is not in a split or alter the active split tab state.
+-class SplitTabsToolbarButton : public ToolbarButton,
++class SplitTabsToolbarButton_ChromiumImpl : public ToolbarButton,
+                                public TabStripModelObserver {
+-  METADATA_HEADER(SplitTabsToolbarButton, ToolbarButton)
++  METADATA_HEADER(SplitTabsToolbarButton_ChromiumImpl, ToolbarButton)
+ 
+  public:
+   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kUpdatePinStateMenu);
+ 
+-  explicit SplitTabsToolbarButton(BrowserWindowInterface* browser);
+-  SplitTabsToolbarButton(const SplitTabsToolbarButton&) = delete;
+-  SplitTabsToolbarButton& operator=(const SplitTabsToolbarButton&) = delete;
+-  ~SplitTabsToolbarButton() override;
++  explicit SplitTabsToolbarButton_ChromiumImpl(BrowserWindowInterface* browser);
++  SplitTabsToolbarButton_ChromiumImpl(const SplitTabsToolbarButton_ChromiumImpl&) = delete;
++  SplitTabsToolbarButton_ChromiumImpl& operator=(const SplitTabsToolbarButton_ChromiumImpl&) = delete;
++  ~SplitTabsToolbarButton_ChromiumImpl() override;
+ 
+   // TabStripModelObserver implementation:
+   void OnTabStripModelChanged(
+@@ -50,7 +50,10 @@ class SplitTabsToolbarButton : public ToolbarButton,
+ 
+   const std::optional<ToolbarButton::VectorIcons>& GetIconsForTesting();
+ 
++  FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, SplitTabsToolbarButtonTest);
++
+  private:
++  friend SplitTabsToolbarButton;
+   bool IsActiveTabInSplit();
+   void ButtonPressed(const ui::Event& event);
+   void UpdateButtonVisibility();

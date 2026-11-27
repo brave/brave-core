@@ -11,9 +11,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "ui/views/controls/highlight_path_generator.h"
 
-#define ToolbarButton ToolbarButton_ChromiumImpl
 #include <chrome/browser/ui/views/toolbar/toolbar_button.cc>
-#undef ToolbarButton
 
 void ToolbarButton_ChromiumImpl::SetMenuModel(
     std::unique_ptr<ui::MenuModel> model) {

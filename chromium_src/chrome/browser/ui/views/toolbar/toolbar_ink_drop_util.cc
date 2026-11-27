@@ -3,15 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include <memory>
 
-#define ConfigureInkDrop ConfigureInkDrop_UnUsed
+#include "ui/views/controls/button/button.h"
+#include "ui/views/controls/highlight_path_generator.h"
+
+namespace {
+void ConfigureBraveInkDrop(
+    views::Button* host,
+    std::unique_ptr<views::HighlightPathGenerator> highlight_generator);
+}  // namespace
 
 #include <chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.cc>
 
-#undef ConfigureInkDrop
-
-void ConfigureInkDrop(
+namespace {
+void ConfigureBraveInkDrop(
     views::Button* host,
     std::unique_ptr<views::HighlightPathGenerator> highlight_generator) {
   if (!highlight_generator) {
@@ -25,3 +31,5 @@ void ConfigureInkDrop(
   CreateToolbarInkdropCallbacks(host, kColorToolbarInkDropHover,
                                 kColorToolbarInkDropRipple);
 }
+
+}  // namespace

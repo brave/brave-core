@@ -1,0 +1,160 @@
+diff --git a/chrome/browser/ui/views/toolbar/split_tabs_button.cc b/chrome/browser/ui/views/toolbar/split_tabs_button.cc
+index 5a3641ba5d6bfa485bc457fd8d9e977a9058bbd0..e7e9db60674a47e80ac4f064f6217c73d178599c 100644
+--- a/chrome/browser/ui/views/toolbar/split_tabs_button.cc
++++ b/chrome/browser/ui/views/toolbar/split_tabs_button.cc
+@@ -53,7 +53,7 @@
+ #include "ui/views/controls/menu/menu_runner.h"
+ #include "ui/views/view_class_properties.h"
+ 
+-SplitTabsToolbarButton::SplitTabsToolbarButton(BrowserWindowInterface* browser)
++SplitTabsToolbarButton_ChromiumImpl::SplitTabsToolbarButton_ChromiumImpl(BrowserWindowInterface* browser)
+     : ToolbarButton(
+           views::Button::PressedCallback(),
+           std::make_unique<PinnedActionToolbarButtonMenuModel>(browser,
+@@ -66,12 +66,12 @@ SplitTabsToolbarButton::SplitTabsToolbarButton(BrowserWindowInterface* browser)
+   set_menu_identifier(kToolbarSplitTabsMenuElementId);
+   SetButtonController(std::make_unique<views::MenuButtonController>(
+       this,
+-      base::BindRepeating(&SplitTabsToolbarButton::ButtonPressed,
++      base::BindRepeating(&SplitTabsToolbarButton_ChromiumImpl::ButtonPressed,
+                           base::Unretained(this)),
+       std::make_unique<views::Button::DefaultButtonControllerDelegate>(this)));
+   pin_state_.Init(
+       prefs::kPinSplitTabButton, browser_->GetProfile()->GetPrefs(),
+-      base::BindRepeating(&SplitTabsToolbarButton::UpdateButtonVisibility,
++      base::BindRepeating(&SplitTabsToolbarButton_ChromiumImpl::UpdateButtonVisibility,
+                           base::Unretained(this)));
+   views::View* const image_container = image_container_view();
+   status_indicator_ =
+@@ -85,11 +85,11 @@ SplitTabsToolbarButton::SplitTabsToolbarButton(BrowserWindowInterface* browser)
+   browser->GetTabStripModel()->AddObserver(this);
+ }
+ 
+-SplitTabsToolbarButton::~SplitTabsToolbarButton() {
++SplitTabsToolbarButton_ChromiumImpl::~SplitTabsToolbarButton_ChromiumImpl() {
+   browser_->GetTabStripModel()->RemoveObserver(this);
+ }
+ 
+-void SplitTabsToolbarButton::OnTabStripModelChanged(
++void SplitTabsToolbarButton_ChromiumImpl::OnTabStripModelChanged(
+     TabStripModel* tab_strip_model,
+     const TabStripModelChange& change,
+     const TabStripSelectionChange& selection) {
+@@ -98,7 +98,7 @@ void SplitTabsToolbarButton::OnTabStripModelChanged(
+   }
+ }
+ 
+-void SplitTabsToolbarButton::OnSplitTabChanged(const SplitTabChange& change) {
++void SplitTabsToolbarButton_ChromiumImpl::OnSplitTabChanged(const SplitTabChange& change) {
+   if (change.type == SplitTabChange::Type::kAdded ||
+       change.type == SplitTabChange::Type::kRemoved ||
+       change.type == SplitTabChange::Type::kContentsChanged ||
+@@ -107,7 +107,7 @@ void SplitTabsToolbarButton::OnSplitTabChanged(const SplitTabChange& change) {
+   }
+ }
+ 
+-void SplitTabsToolbarButton::Layout(PassKey) {
++void SplitTabsToolbarButton_ChromiumImpl::Layout(PassKey) {
+   LayoutSuperclass<ToolbarButton>(this);
+   gfx::Rect status_rect(kSplitTabsStatusIndicatorWidth,
+                         kSplitTabsStatusIndicatorHeight);
+@@ -122,7 +122,7 @@ void SplitTabsToolbarButton::Layout(PassKey) {
+   status_indicator_->SetBoundsRect(status_rect);
+ }
+ 
+-void SplitTabsToolbarButton::UpdateIcon() {
++void SplitTabsToolbarButton_ChromiumImpl::UpdateIcon() {
+   const std::optional<VectorIcons>& icons = GetVectorIcons();
+   if (!icons.has_value() || !GetColorProvider()) {
+     return;
+@@ -142,17 +142,17 @@ void SplitTabsToolbarButton::UpdateIcon() {
+ }
+ 
+ const std::optional<ToolbarButton::VectorIcons>&
+-SplitTabsToolbarButton::GetIconsForTesting() {
++SplitTabsToolbarButton_ChromiumImpl::GetIconsForTesting() {
+   return GetVectorIcons();
+ }
+ 
+-bool SplitTabsToolbarButton::IsActiveTabInSplit() {
++bool SplitTabsToolbarButton_ChromiumImpl::IsActiveTabInSplit() {
+   TabStripModel* const tab_strip_model = browser_->GetTabStripModel();
+   return tab_strip_model && tab_strip_model->GetActiveTab() &&
+          tab_strip_model->GetActiveTab()->IsSplit();
+ }
+ 
+-void SplitTabsToolbarButton::ButtonPressed(const ui::Event& event) {
++void SplitTabsToolbarButton_ChromiumImpl::ButtonPressed(const ui::Event& event) {
+   if (IsActiveTabInSplit()) {
+     if (menu_runner_ && menu_runner_->IsRunning()) {
+       menu_runner_->Cancel();
+@@ -190,7 +190,7 @@ void SplitTabsToolbarButton::ButtonPressed(const ui::Event& event) {
+   }
+ }
+ 
+-void SplitTabsToolbarButton::UpdateButtonVisibility() {
++void SplitTabsToolbarButton_ChromiumImpl::UpdateButtonVisibility() {
+   // Force the menu to close if it's open because the active tab or split may
+   // have changed and invalidated the menu.
+   if (menu_runner_ && menu_runner_->IsRunning()) {
+@@ -205,7 +205,7 @@ void SplitTabsToolbarButton::UpdateButtonVisibility() {
+   MaybeAbortIndirectAccessIPH();
+ }
+ 
+-void SplitTabsToolbarButton::UpdateButtonIcon() {
++void SplitTabsToolbarButton_ChromiumImpl::UpdateButtonIcon() {
+   TabStripModel* const tab_strip_model = browser_->GetTabStripModel();
+   tabs::TabInterface* const active_tab = tab_strip_model->GetActiveTab();
+   if (active_tab && active_tab->IsSplit()) {
+@@ -238,7 +238,7 @@ void SplitTabsToolbarButton::UpdateButtonIcon() {
+   }
+ }
+ 
+-void SplitTabsToolbarButton::UpdateStatusIndicator(bool show_status_indicator) {
++void SplitTabsToolbarButton_ChromiumImpl::UpdateStatusIndicator(bool show_status_indicator) {
+   if (show_status_indicator) {
+     status_indicator_->Show();
+   } else {
+@@ -246,7 +246,7 @@ void SplitTabsToolbarButton::UpdateStatusIndicator(bool show_status_indicator) {
+   }
+ }
+ 
+-void SplitTabsToolbarButton::UpdateAccessibilityRole(bool has_menu) {
++void SplitTabsToolbarButton_ChromiumImpl::UpdateAccessibilityRole(bool has_menu) {
+   auto role =
+       has_menu ? ax::mojom::Role::kPopUpButton : ax::mojom::Role::kButton;
+ 
+@@ -259,7 +259,7 @@ void SplitTabsToolbarButton::UpdateAccessibilityRole(bool has_menu) {
+                                               : ax::mojom::HasPopup::kFalse);
+ }
+ 
+-void SplitTabsToolbarButton::UpdateAccessibilityLabel(bool is_enabled) {
++void SplitTabsToolbarButton_ChromiumImpl::UpdateAccessibilityLabel(bool is_enabled) {
+   auto string_id = IDS_ACCNAME_SPLIT_TABS_TOOLBAR_BUTTON_PINNED;
+   if (is_enabled) {
+     TabStripModel* const tab_strip_model = browser_->GetTabStripModel();
+@@ -295,7 +295,7 @@ void SplitTabsToolbarButton::UpdateAccessibilityLabel(bool is_enabled) {
+   SetTooltipText(l10n_util::GetStringUTF16(string_id));
+ }
+ 
+-void SplitTabsToolbarButton::MaybeNotifyIndirectAccessIPHUsed() {
++void SplitTabsToolbarButton_ChromiumImpl::MaybeNotifyIndirectAccessIPHUsed() {
+   if (auto* const user_ed = BrowserUserEducationInterface::From(browser_);
+       user_ed &&
+       user_ed->IsFeaturePromoActive(
+@@ -306,7 +306,7 @@ void SplitTabsToolbarButton::MaybeNotifyIndirectAccessIPHUsed() {
+   }
+ }
+ 
+-void SplitTabsToolbarButton::MaybeAbortIndirectAccessIPH() {
++void SplitTabsToolbarButton_ChromiumImpl::MaybeAbortIndirectAccessIPH() {
+   if (auto* const user_ed = BrowserUserEducationInterface::From(browser_)) {
+     TabStripModel* const tab_strip_model = browser_->GetTabStripModel();
+     tabs::TabInterface* const active_tab = tab_strip_model->GetActiveTab();
+@@ -320,5 +320,5 @@ void SplitTabsToolbarButton::MaybeAbortIndirectAccessIPH() {
+   }
+ }
+ 
+-BEGIN_METADATA(SplitTabsToolbarButton)
++BEGIN_METADATA(SplitTabsToolbarButton_ChromiumImpl)
+ END_METADATA

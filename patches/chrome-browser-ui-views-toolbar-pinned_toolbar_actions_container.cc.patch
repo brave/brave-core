@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/toolbar/pinned_toolbar_actions_container.cc b/chrome/browser/ui/views/toolbar/pinned_toolbar_actions_container.cc
+index 9fa8d0d6dcd69fbde137631dec65cfef3753b355..948fc3d05c2de665a298ef6bf99d66a3c5f9a35a 100644
+--- a/chrome/browser/ui/views/toolbar/pinned_toolbar_actions_container.cc
++++ b/chrome/browser/ui/views/toolbar/pinned_toolbar_actions_container.cc
+@@ -210,6 +210,7 @@ PinnedToolbarActionsContainer::~PinnedToolbarActionsContainer() = default;
+ 
+ void PinnedToolbarActionsContainer::UpdateActionState(actions::ActionId id,
+                                                       bool is_active) {
++  if ((true)) return;
+   auto* button = GetPinnedButtonFor(id);
+   bool pinned = button != nullptr;
+ 
+@@ -244,6 +245,7 @@ void PinnedToolbarActionsContainer::UpdateActionState(actions::ActionId id,
+ void PinnedToolbarActionsContainer::ShowActionEphemerallyInToolbar(
+     actions::ActionId id,
+     bool show) {
++  if (id != kActionShowDownloads && id != kActionSendTabToSelf) return;
+   auto* button = GetButtonFor(id);
+   // If the button doesn't exist and shouldn't be shown, do nothing.
+   if (!button && !show) {

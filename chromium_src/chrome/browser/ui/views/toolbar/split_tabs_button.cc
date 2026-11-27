@@ -5,11 +5,7 @@
 
 #include "chrome/browser/ui/views/toolbar/split_tabs_button.h"
 
-#define SplitTabsToolbarButton SplitTabsToolbarButton_ChromiumImpl
-
 #include <chrome/browser/ui/views/toolbar/split_tabs_button.cc>
-
-#undef SplitTabsToolbarButton
 
 // defined at brave_split_tab_menu_model.cc to avoid BraveSplitTabMenuModel
 // dependency here.

@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Rename SplitTabsToolbarButton to SplitTabsToolbarButton_ChromiumImpl
+
+      Brave's chromium_src split_tabs_button.h declares a
+      SplitTabsToolbarButton subclass that reuses the upstream name.
+    rename_class:
+      class_name: SplitTabsToolbarButton
+      rename: SplitTabsToolbarButton_ChromiumImpl
+
+  - description: |-
+      Friend BraveSplitTabsToolbarButton
+
+      BraveSplitTabsToolbarButton is an alias for the Brave subclass declared
+      in chromium_src split_tabs_button.h.
+    add_friend:
+      class_name: SplitTabsToolbarButton_ChromiumImpl
+      friend_type: SplitTabsToolbarButton
+
+  - description: |-
+      Friend the BraveToolbarViewTest SplitTabsToolbarButtonTest
+
+      Lets the test access GetIconsForTesting().
+    add_to_public:
+      class_name: SplitTabsToolbarButton_ChromiumImpl
+      code: |-
+        FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, SplitTabsToolbarButtonTest);
