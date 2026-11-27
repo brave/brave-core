@@ -18,6 +18,8 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
+#include "brave/components/gestures/renderer/gesture_text_selection_extractor.h"
+#include "brave/components/gestures/renderer/smart_gesture_content_extractor.h"
 #include "brave/components/misc_metrics/renderer/web3_metrics_render_frame_observer.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -196,6 +198,11 @@ void BraveContentRendererClient::RenderFrameCreated(
 
   new misc_metrics::Web3MetricsRenderFrameObserver(
       render_frame, std::make_unique<Web3MetricsDelegate>());
+
+  // Every frame, not just the main one, since the user can select text or
+  // capture content inside any subframe too.
+  new gestures::GestureTextSelectionExtractor(render_frame, registry);
+  new gestures::SmartGestureContentExtractor(render_frame, registry);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (IsBraveWalletAvailable()) {

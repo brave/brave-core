@@ -12,6 +12,7 @@
 #include "base/check_deref.h"
 #include "base/compiler_specific.h"
 #include "base/feature_list.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/strcat.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
@@ -46,6 +47,8 @@
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/gestures/core/browser/pref_names.h"
+#include "brave/components/gestures/core/common/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -215,6 +218,35 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isIdleDetectionFeatureEnabled",
       base::FeatureList::IsEnabled(features::kIdleDetection));
+  html_source->AddBoolean(
+      "isGesturesFeatureEnabled",
+      base::FeatureList::IsEnabled(gestures::features::kGesturesFeature));
+  html_source->AddInteger(
+      "customGestureDrawMinPointDistancePixels",
+      base::saturated_cast<int32_t>(
+          gestures::features::kCustomGestureDrawMinPointDistancePixels.Get()));
+  html_source->AddInteger(
+      "customGestureDrawMaxPointCount",
+      base::saturated_cast<int32_t>(
+          gestures::features::kCustomGestureDrawMaxPointCount.Get()));
+  html_source->AddDouble(
+      "directionalGestureSensitivityInPixels",
+      gestures::features::kDirectionalGestureSensitivityInPixels.Get());
+  html_source->AddInteger(
+      "maxDirectionalGestureStrokes",
+      base::saturated_cast<int32_t>(
+          gestures::features::kMaxDirectionalGestureStrokes.Get()));
+  html_source->AddDouble(
+      "directionalGestureMinStrokeStraightness",
+      gestures::features::kDirectionalGestureMinStrokeStraightness.Get());
+  html_source->AddDouble(
+      "mouseWheelSensitivityInPixels",
+      gestures::features::kMouseWheelSensitivityInPixels.Get());
+  html_source->AddInteger(
+      "mouseWheelModifierButtonDefault",
+      profile->GetPrefs()
+          ->GetDefaultPrefValue(gestures::prefs::kMouseWheelModifierButton)
+          ->GetInt());
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   html_source->AddBoolean("isBraveVPNEnabled",
                           brave_vpn::IsBraveVPNEnabled(profile));

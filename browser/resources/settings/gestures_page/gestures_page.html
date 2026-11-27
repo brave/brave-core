@@ -1,0 +1,847 @@
+<style include="settings-shared md-select">
+  .gestures-content {
+    box-sizing: border-box;
+    padding: var(--cr-section-vertical-margin, 12px) var(--cr-section-padding, 20px);
+    width: 100%;
+  }
+
+  .header {
+    padding: var(--leo-spacing-2xl);
+  }
+
+  .gestures-row {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding-block: 8px;
+    width: 100%;
+  }
+
+  .gestures-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-inline-end: 16px;
+  }
+
+  .gestures-site-origin {
+    overflow: hidden;
+    padding-inline-end: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .gestures-sublabel {
+    color: var(--leo-color-text-secondary);
+    font: var(--leo-font-small-regular);
+  }
+
+  .smart-gestures-subsection-label {
+    font: var(--leo-font-heading-h4);
+    margin: var(--leo-spacing-xl) 0 0;
+  }
+
+  /* Uses the raw yellow token directly; the semantic warning token flips
+     to near-black brown in dark mode. */
+  .gestures-sublabel.command-conflict-sublabel {
+    --leo-icon-color: var(--leo-color-primitive-yellow-70);
+    --leo-icon-size: 14px;
+
+    align-items: center;
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+  }
+
+  .gestures-sublabel.action-chain-group-help {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  .gestures-sublabel.directional-help {
+    display: block;
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  .gestures-sublabel.smart-gestures-help {
+    display: block;
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  .gestures-sublabel.custom-gestures-help {
+    display: block;
+  }
+
+  .gestures-sublabel.closed-shape-help {
+    display: block;
+    margin-top: var(--leo-spacing-l);
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  .gestures-sublabel.draw-custom-gesture-help {
+    display: block;
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  .gestures-sublabel.action-chain-group-help leo-icon {
+    --leo-icon-size: 16px;
+  }
+
+  /* Avoids stacking with this span's own `gap`, which would widen this
+     icon's trailing space versus every other icon's. */
+  .gestures-sublabel.action-chain-group-help .action-drag-handle {
+    margin-inline-end: 0;
+  }
+
+  #drawCustomGestureBox {
+    aspect-ratio: 4 / 3;
+    background: var(--leo-color-container-background);
+    border: 1px dashed var(--leo-color-divider-strong);
+    border-radius: var(--leo-radius-m);
+    cursor: crosshair;
+    margin: 8px 0;
+    position: relative;
+    width: 100%;
+  }
+
+  .draw-custom-gesture-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  #drawCustomGestureBox svg {
+    height: 100%;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .gesture-icons {
+    align-items: center;
+    display: flex;
+    gap: 4px;
+    --leo-icon-size: 24px;
+  }
+
+  .custom-gesture-preview {
+    aspect-ratio: 1 / 1;
+    background: var(--leo-color-container-background);
+    border-radius: var(--leo-radius-s);
+    flex-shrink: 0;
+    /* Fixed size so chained actions stacking taller doesn't balloon this
+       via aspect-ratio; centered to still line up with taller rows. */
+    align-self: center;
+    height: 40px;
+    width: 40px;
+  }
+
+  /* Replaying as a drawing animation on hover shows stroke direction/order
+     that a static icon can't. 500 exceeds any possible gesture_path length here. */
+  .custom-gesture-preview path {
+    stroke-dasharray: 500;
+    stroke-dashoffset: 0;
+  }
+
+  .custom-gesture-item:hover .custom-gesture-preview path {
+    animation: brave-gestures-draw-preview 10s linear infinite;
+  }
+
+  /* 95%/100% hold the finished shape for the last half second of each
+     10s loop, giving a brief pause before it redraws from scratch. */
+  @keyframes brave-gestures-draw-preview {
+    0% {
+      stroke-dashoffset: 500;
+    }
+    95% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .custom-gesture-actions {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+  }
+
+  .gestures-divider {
+    border: none;
+    border-top: 1px solid var(--leo-color-divider-subtle);
+    margin: 0;
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  /* Avoids stacking with `.gestures-content`'s own top padding, which
+     would make this gap bigger than any other divider's on this page. */
+  .gestures-divider:has(+ .gestures-content) {
+    margin-bottom: 0;
+  }
+
+  .gestures-mapping-item + .gestures-mapping-item,
+  .custom-gesture-item + .custom-gesture-item,
+  .gestures-row + .gestures-row,
+  .command-conflict-sublabel + .gestures-row {
+    border-top: 1px solid var(--leo-color-divider-subtle);
+    margin-top: var(--leo-spacing-m);
+    padding-top: var(--leo-spacing-m);
+  }
+
+  .action-chain-group {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-inline-start: auto;
+  }
+
+  .action-drag-handle {
+    --leo-icon-size: 16px;
+    color: var(--leo-color-icon-secondary);
+    cursor: grab;
+    margin-inline-end: 4px;
+  }
+
+  /* Narrows to fit the short "Left"/"Middle"/"Right" text, instead of
+     `md-select`'s wide default width. */
+  .mouse-wheel-modifier-button-select {
+    --md-select-width: auto;
+  }
+</style>
+
+<settings-section page-title="$i18n{braveGesturesPage}">
+  <settings-toggle-button
+      pref="{{prefs.brave.gestures.enabled}}"
+      label="$i18n{braveGesturesEnable}"
+      sub-label="$i18n{braveGesturesAboutDesc}">
+  </settings-toggle-button>
+
+  <template is="dom-if" if="[[prefs.brave.gestures.enabled.value]]">
+    <settings-toggle-button class="cr-row"
+        pref="{{prefs.brave.gestures.show_trail}}"
+        label="$i18n{braveGesturesShowTrail}"
+        sub-label="$i18n{braveGesturesShowTrailDesc}">
+    </settings-toggle-button>
+
+    <settings-toggle-button class="cr-row"
+        pref="{{prefs.brave.gestures.show_matched_gesture}}"
+        label="$i18n{braveGesturesShowMatchedGesture}"
+        sub-label="$i18n{braveGesturesShowMatchedGestureDesc}">
+    </settings-toggle-button>
+
+    <label class="gestures-row settings-box">
+      <div class="gestures-label">
+        <span>$i18n{braveGesturesSensitivity}</span>
+        <span class="gestures-sublabel">
+          $i18n{braveGesturesSensitivityDesc}
+        </span>
+      </div>
+      <input type="range" min="0" max="60"
+          value="[[prefs.brave.gestures.directional_gesture_sensitivity_in_pixels.value]]"
+          on-input="onSensitivityChanged_" on-change="onSensitivityChanged_">
+    </label>
+  </template>
+</settings-section>
+
+<template is="dom-if" if="[[prefs.brave.gestures.enabled.value]]">
+<settings-section page-title="$i18n{braveGesturesMappings}">
+  <div class="gestures-content">
+    <span class="gestures-sublabel directional-help">
+      $i18n{braveGesturesMappingsHelp}
+    </span>
+    <span class="gestures-sublabel action-chain-group-help">
+      $i18n{braveGesturesChainedActionsHelpDragPrefix}
+      <leo-icon name="drag" class="action-drag-handle"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpDragSuffix}
+      $i18n{braveGesturesChainedActionsHelpAddPrefix}
+      <leo-icon name="plus-add"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpAddSuffix}
+      $i18n{braveGesturesChainedActionsHelpRemovePrefix}
+      <leo-icon name="minus"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpRemoveSuffix}
+    </span>
+    <template is="dom-repeat" items="[[directionalGestureMappingActionRows_]]">
+      <div class="gestures-mapping-item">
+        <div class="gestures-row">
+          <div class="gesture-icons">
+            <template is="dom-repeat" items="[[item.icons]]" as="iconName">
+              <leo-icon name="[[iconName]]"></leo-icon>
+            </template>
+          </div>
+          <gesture-action-chain-group
+              action-rows="[[item.actionRows]]"
+              option-sets="[[optionSets_]]"
+              has-conflict="[[directionalGestureMappingHasConflict_(item, conflictsSignature_)]]"
+              on-action-rows-changed="onDirectionalGestureMappingActionRowsChanged_"
+              on-edit-url-click="onDirectionalGestureMappingEditUrlClick_">
+          </gesture-action-chain-group>
+        </div>
+        <span class="gestures-sublabel command-conflict-sublabel"
+            hidden$="[[!directionalGestureMappingConflictDescription_(item, conflictsSignature_)]]">
+          <leo-icon name="warning-triangle-filled"></leo-icon>
+          [[directionalGestureMappingConflictDescription_(item, conflictsSignature_)]]
+        </span>
+      </div>
+    </template>
+    <cr-button on-click="onResetDirectionalGestureMappingsClick_">
+      $i18n{braveGesturesReset}
+    </cr-button>
+  </div>
+</settings-section>
+
+<settings-section page-title="$i18n{braveGesturesCustomGestures}">
+  <div class="gestures-content">
+    <span class="gestures-sublabel custom-gestures-help">
+      $i18n{braveGesturesCustomGesturesHelp}
+    </span>
+    <span class="gestures-sublabel closed-shape-help"
+        hidden$="[[!customGestureActionRows_.length]]">
+      $i18n{braveGesturesClosedShapeHelp}
+    </span>
+    <span class="gestures-sublabel action-chain-group-help"
+        hidden$="[[!customGestureActionRows_.length]]">
+      $i18n{braveGesturesChainedActionsHelpDragPrefix}
+      <leo-icon name="drag" class="action-drag-handle"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpDragSuffix}
+      $i18n{braveGesturesChainedActionsHelpAddPrefix}
+      <leo-icon name="plus-add"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpAddSuffix}
+      $i18n{braveGesturesChainedActionsHelpRemovePrefix}
+      <leo-icon name="minus"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpRemoveSuffix}
+      $i18n{braveGesturesCustomGestureHelpRemovePrefix}
+      <leo-icon name="close"></leo-icon>
+      $i18n{braveGesturesCustomGestureHelpRemoveSuffix}
+    </span>
+    <template is="dom-repeat" items="[[customGestureActionRows_]]">
+      <div class="custom-gesture-item">
+      <div class="gestures-row">
+        <svg class="custom-gesture-preview" viewBox="0 0 32 32">
+          <path d$="[[item.previewSvgPathData]]"
+              fill="none"
+              stroke="var(--leo-color-icon-interactive)"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+          </path>
+        </svg>
+        <div class="action-chain-group">
+          <gesture-action-chain-group
+              action-rows="[[item.actionRows]]"
+              option-sets="[[optionSets_]]"
+              has-conflict="[[customGestureHasConflict_(item, conflictsSignature_)]]"
+              on-action-rows-changed="onCustomGestureActionRowsChanged_"
+              on-edit-url-click="onCustomGestureEditUrlClick_">
+          </gesture-action-chain-group>
+          <cr-icon-button iron-icon="close"
+              on-click="onRemoveCustomGestureClick_">
+          </cr-icon-button>
+        </div>
+      </div>
+      <span class="gestures-sublabel command-conflict-sublabel"
+          hidden$="[[!customGestureConflictDescription_(item, conflictsSignature_)]]">
+        <leo-icon name="warning-triangle-filled"></leo-icon>
+        [[customGestureConflictDescription_(item, conflictsSignature_)]]
+      </span>
+      </div>
+    </template>
+  </div>
+</settings-section>
+
+<settings-section page-title="$i18n{braveGesturesAddCustomGesture}">
+  <div class="gestures-content">
+    <span class="gestures-sublabel draw-custom-gesture-help">
+      $i18n{braveGesturesDrawCustomGestureHelp}
+    </span>
+    <span class="gestures-sublabel action-chain-group-help">
+      $i18n{braveGesturesChainedActionsHelpDragPrefix}
+      <leo-icon name="drag" class="action-drag-handle"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpDragSuffix}
+      $i18n{braveGesturesChainedActionsHelpAddPrefix}
+      <leo-icon name="plus-add"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpAddSuffix}
+      $i18n{braveGesturesChainedActionsHelpRemovePrefix}
+      <leo-icon name="minus"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpRemoveSuffix}
+    </span>
+    <div class="gestures-row">
+      <gesture-action-chain-group
+          action-rows="[[drawnCustomGestureActionRows_]]"
+          option-sets="[[optionSets_]]"
+          on-action-rows-changed="onDrawnCustomGestureActionRowsChanged_"
+          on-edit-url-click="onDrawnCustomGestureEditUrlClick_">
+      </gesture-action-chain-group>
+    </div>
+    <div id="drawCustomGestureBox"
+        on-mousedown="onDrawnCustomGestureMouseDown_"
+        on-mousemove="onDrawnCustomGestureMouseMove_"
+        on-mouseup="onDrawnCustomGestureMouseUp_"
+        on-mouseleave="onDrawnCustomGestureMouseLeave_">
+      <svg>
+        <path d$="[[drawnCustomGestureSvgPathData_]]"
+            fill="none"
+            stroke="var(--leo-color-icon-interactive)"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+        </path>
+      </svg>
+    </div>
+    <div class="draw-custom-gesture-actions">
+      <cr-button class="action-button"
+          disabled="[[!hasDrawnCustomGesture_]]"
+          on-click="onSaveDrawnCustomGestureClick_">
+        $i18n{braveGesturesSaveCustomGesture}
+      </cr-button>
+      <cr-button
+          hidden$="[[!hasDrawnCustomGesture_]]"
+          on-click="onClearDrawnCustomGestureClick_">
+        $i18n{braveGesturesClearCustomGesture}
+      </cr-button>
+    </div>
+  </div>
+</settings-section>
+
+<settings-section page-title="$i18n{braveGesturesSmartGestures}">
+  <div class="gestures-content">
+    <span class="gestures-sublabel smart-gestures-help">
+      $i18n{braveGesturesSmartGesturesHelp}
+    </span>
+    <span class="gestures-sublabel action-chain-group-help">
+      $i18n{braveGesturesChainedActionsHelpDragPrefix}
+      <leo-icon name="drag" class="action-drag-handle"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpDragSuffix}
+      $i18n{braveGesturesChainedActionsHelpAddPrefix}
+      <leo-icon name="plus-add"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpAddSuffix}
+      $i18n{braveGesturesChainedActionsHelpRemovePrefix}
+      <leo-icon name="minus"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpRemoveSuffix}
+    </span>
+
+    <div class="smart-gestures-subsection-label">
+      $i18n{braveGesturesSmartGesturesLink}
+    </div>
+    <template is="dom-repeat" items="[[smartGestureLinkActionRows_]]">
+      <div class="gestures-mapping-item">
+        <div class="gestures-row">
+          <div class="gesture-icons">
+            <leo-icon name="[[item.icon]]"></leo-icon>
+          </div>
+          <gesture-action-chain-group
+              action-rows="[[item.actionRows]]"
+              option-sets="[[optionSets_]]"
+              has-conflict="[[smartGestureMappingHasConflict_(item, conflictsSignature_)]]"
+              on-action-rows-changed="onSmartGestureMappingActionRowsChanged_"
+              on-edit-url-click="onSmartGestureMappingEditUrlClick_">
+          </gesture-action-chain-group>
+        </div>
+        <span class="gestures-sublabel command-conflict-sublabel"
+            hidden$="[[!smartGestureMappingConflictDescription_(item, conflictsSignature_)]]">
+          <leo-icon name="warning-triangle-filled"></leo-icon>
+          [[smartGestureMappingConflictDescription_(item, conflictsSignature_)]]
+        </span>
+      </div>
+    </template>
+
+    <div class="smart-gestures-subsection-label">
+      $i18n{braveGesturesSmartGesturesSelectedText}
+    </div>
+    <template is="dom-repeat" items="[[smartGestureSelectedTextActionRows_]]">
+      <div class="gestures-mapping-item">
+        <div class="gestures-row">
+          <div class="gesture-icons">
+            <leo-icon name="[[item.icon]]"></leo-icon>
+          </div>
+          <gesture-action-chain-group
+              action-rows="[[item.actionRows]]"
+              option-sets="[[optionSets_]]"
+              has-conflict="[[smartGestureMappingHasConflict_(item, conflictsSignature_)]]"
+              on-action-rows-changed="onSmartGestureMappingActionRowsChanged_"
+              on-edit-url-click="onSmartGestureMappingEditUrlClick_">
+          </gesture-action-chain-group>
+        </div>
+        <span class="gestures-sublabel command-conflict-sublabel"
+            hidden$="[[!smartGestureMappingConflictDescription_(item, conflictsSignature_)]]">
+          <leo-icon name="warning-triangle-filled"></leo-icon>
+          [[smartGestureMappingConflictDescription_(item, conflictsSignature_)]]
+        </span>
+      </div>
+    </template>
+
+    <div class="smart-gestures-subsection-label">
+      $i18n{braveGesturesSmartGesturesImage}
+    </div>
+    <template is="dom-repeat" items="[[smartGestureImageActionRows_]]">
+      <div class="gestures-mapping-item">
+        <div class="gestures-row">
+          <div class="gesture-icons">
+            <leo-icon name="[[item.icon]]"></leo-icon>
+          </div>
+          <gesture-action-chain-group
+              action-rows="[[item.actionRows]]"
+              option-sets="[[optionSets_]]"
+              has-conflict="[[smartGestureMappingHasConflict_(item, conflictsSignature_)]]"
+              on-action-rows-changed="onSmartGestureMappingActionRowsChanged_"
+              on-edit-url-click="onSmartGestureMappingEditUrlClick_">
+          </gesture-action-chain-group>
+        </div>
+        <span class="gestures-sublabel command-conflict-sublabel"
+            hidden$="[[!smartGestureMappingConflictDescription_(item, conflictsSignature_)]]">
+          <leo-icon name="warning-triangle-filled"></leo-icon>
+          [[smartGestureMappingConflictDescription_(item, conflictsSignature_)]]
+        </span>
+      </div>
+    </template>
+    <cr-button on-click="onResetSmartGesturesClick_">
+      $i18n{braveGesturesReset}
+    </cr-button>
+  </div>
+</settings-section>
+
+<settings-section page-title="$i18n{braveGesturesRocker}">
+  <settings-toggle-button
+      pref="{{prefs.brave.gestures.mouse_rocker_gestures_enabled}}"
+      label="$i18n{braveGesturesRockerEnable}"
+      sub-label="$i18n{braveGesturesRockerAboutDesc}">
+  </settings-toggle-button>
+
+  <template is="dom-if"
+      if="[[prefs.brave.gestures.mouse_rocker_gestures_enabled.value]]">
+  <hr class="gestures-divider">
+  <div class="gestures-content">
+    <span class="gestures-sublabel action-chain-group-help">
+      $i18n{braveGesturesChainedActionsHelpDragPrefix}
+      <leo-icon name="drag" class="action-drag-handle"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpDragSuffix}
+      $i18n{braveGesturesChainedActionsHelpAddPrefix}
+      <leo-icon name="plus-add"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpAddSuffix}
+      $i18n{braveGesturesChainedActionsHelpRemovePrefix}
+      <leo-icon name="minus"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpRemoveSuffix}
+    </span>
+
+    <label class="gestures-row"
+        data-pref$="[[mouseRockerLeftActionRow_.prefName]]">
+      <div class="gestures-label">
+        <span>$i18n{braveGesturesRockLeft}</span>
+      </div>
+      <gesture-action-chain-group
+          data-pref$="[[mouseRockerLeftActionRow_.prefName]]"
+          action-rows="[[mouseRockerLeftActionRow_.actionRows]]"
+          option-sets="[[optionSets_]]"
+          has-conflict="[[mouseRockerHasConflict_(mouseRockerLeftActionRow_, conflictsSignature_)]]"
+          on-action-rows-changed="onMouseActionRowsChanged_"
+          on-edit-url-click="onMouseEditUrlClick_">
+      </gesture-action-chain-group>
+    </label>
+    <span class="gestures-sublabel command-conflict-sublabel"
+        hidden$="[[!mouseRockerConflictDescription_(mouseRockerLeftActionRow_, conflictsSignature_)]]">
+      <leo-icon name="warning-triangle-filled"></leo-icon>
+      [[mouseRockerConflictDescription_(mouseRockerLeftActionRow_, conflictsSignature_)]]
+    </span>
+
+    <label class="gestures-row"
+        data-pref$="[[mouseRockerRightActionRow_.prefName]]">
+      <div class="gestures-label">
+        <span>$i18n{braveGesturesRockRight}</span>
+      </div>
+      <gesture-action-chain-group
+          data-pref$="[[mouseRockerRightActionRow_.prefName]]"
+          action-rows="[[mouseRockerRightActionRow_.actionRows]]"
+          option-sets="[[optionSets_]]"
+          has-conflict="[[mouseRockerHasConflict_(mouseRockerRightActionRow_, conflictsSignature_)]]"
+          on-action-rows-changed="onMouseActionRowsChanged_"
+          on-edit-url-click="onMouseEditUrlClick_">
+      </gesture-action-chain-group>
+    </label>
+    <span class="gestures-sublabel command-conflict-sublabel"
+        hidden$="[[!mouseRockerConflictDescription_(mouseRockerRightActionRow_, conflictsSignature_)]]">
+      <leo-icon name="warning-triangle-filled"></leo-icon>
+      [[mouseRockerConflictDescription_(mouseRockerRightActionRow_, conflictsSignature_)]]
+    </span>
+
+    <cr-button on-click="onResetMouseRockerClick_">
+      $i18n{braveGesturesReset}
+    </cr-button>
+  </div>
+  </template>
+</settings-section>
+
+<settings-section page-title="$i18n{braveGesturesWheel}">
+  <settings-toggle-button
+      pref="{{prefs.brave.gestures.mouse_wheel_gestures_enabled}}"
+      label="$i18n{braveGesturesWheelEnable}"
+      sub-label="$i18n{braveGesturesWheelAboutDesc}">
+  </settings-toggle-button>
+
+  <template is="dom-if"
+      if="[[prefs.brave.gestures.mouse_wheel_gestures_enabled.value]]">
+  <label class="gestures-row settings-box">
+    <div class="gestures-label">
+      <span>$i18n{braveGesturesWheelModifierButton}</span>
+    </div>
+    <select class="md-select mouse-wheel-modifier-button-select"
+        on-change="onMouseWheelModifierButtonChanged_">
+      <option value="0"
+          selected="[[optionMatchesCommand_(
+              0, prefs.brave.gestures.mouse_wheel_modifier_button.value)]]">
+        $i18n{braveGesturesWheelModifierLeft}
+      </option>
+      <option value="1"
+          selected="[[optionMatchesCommand_(
+              1, prefs.brave.gestures.mouse_wheel_modifier_button.value)]]">
+        $i18n{braveGesturesWheelModifierMiddle}
+      </option>
+      <option value="2"
+          selected="[[optionMatchesCommand_(
+              2, prefs.brave.gestures.mouse_wheel_modifier_button.value)]]">
+        $i18n{braveGesturesWheelModifierRight}
+      </option>
+    </select>
+  </label>
+
+  <label class="gestures-row settings-box">
+    <div class="gestures-label">
+      <span>$i18n{braveGesturesWheelSensitivity}</span>
+      <span class="gestures-sublabel">
+        $i18n{braveGesturesWheelSensitivityDesc}
+      </span>
+    </div>
+    <input type="range" min="0" max="60"
+        value="[[prefs.brave.gestures.mouse_wheel_sensitivity_in_pixels.value]]"
+        on-input="onMouseWheelSensitivityChanged_"
+        on-change="onMouseWheelSensitivityChanged_">
+  </label>
+  <hr class="gestures-divider">
+
+  <div class="gestures-content">
+    <span class="gestures-sublabel action-chain-group-help">
+      $i18n{braveGesturesChainedActionsHelpDragPrefix}
+      <leo-icon name="drag" class="action-drag-handle"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpDragSuffix}
+      $i18n{braveGesturesChainedActionsHelpAddPrefix}
+      <leo-icon name="plus-add"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpAddSuffix}
+      $i18n{braveGesturesChainedActionsHelpRemovePrefix}
+      <leo-icon name="minus"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpRemoveSuffix}
+    </span>
+
+    <label class="gestures-row"
+        data-pref$="[[mouseWheelUpActionRow_.prefName]]">
+      <div class="gestures-label">
+        <span>$i18n{braveGesturesWheelUp}</span>
+      </div>
+      <gesture-action-chain-group
+          data-pref$="[[mouseWheelUpActionRow_.prefName]]"
+          action-rows="[[mouseWheelUpActionRow_.actionRows]]"
+          option-sets="[[optionSets_]]"
+          has-conflict="[[mouseWheelHasConflict_(mouseWheelUpActionRow_, conflictsSignature_)]]"
+          on-action-rows-changed="onMouseActionRowsChanged_"
+          on-edit-url-click="onMouseEditUrlClick_">
+      </gesture-action-chain-group>
+    </label>
+    <span class="gestures-sublabel command-conflict-sublabel"
+        hidden$="[[!mouseWheelConflictDescription_(mouseWheelUpActionRow_, conflictsSignature_)]]">
+      <leo-icon name="warning-triangle-filled"></leo-icon>
+      [[mouseWheelConflictDescription_(mouseWheelUpActionRow_, conflictsSignature_)]]
+    </span>
+
+    <label class="gestures-row"
+        data-pref$="[[mouseWheelDownActionRow_.prefName]]">
+      <div class="gestures-label">
+        <span>$i18n{braveGesturesWheelDown}</span>
+      </div>
+      <gesture-action-chain-group
+          data-pref$="[[mouseWheelDownActionRow_.prefName]]"
+          action-rows="[[mouseWheelDownActionRow_.actionRows]]"
+          option-sets="[[optionSets_]]"
+          has-conflict="[[mouseWheelHasConflict_(mouseWheelDownActionRow_, conflictsSignature_)]]"
+          on-action-rows-changed="onMouseActionRowsChanged_"
+          on-edit-url-click="onMouseEditUrlClick_">
+      </gesture-action-chain-group>
+    </label>
+    <span class="gestures-sublabel command-conflict-sublabel"
+        hidden$="[[!mouseWheelConflictDescription_(mouseWheelDownActionRow_, conflictsSignature_)]]">
+      <leo-icon name="warning-triangle-filled"></leo-icon>
+      [[mouseWheelConflictDescription_(mouseWheelDownActionRow_, conflictsSignature_)]]
+    </span>
+
+    <cr-button on-click="onResetMouseWheelClick_">
+      $i18n{braveGesturesReset}
+    </cr-button>
+  </div>
+  </template>
+</settings-section>
+
+<template is="dom-if" if="[[showMouseRockerResetConfirmDialog_]]" restamp>
+  <cr-dialog id="rockerResetConfirmDialog" show-on-attach
+      on-close="onMouseRockerResetDialogClose_">
+    <div slot="title">$i18n{braveGesturesReset}</div>
+    <div slot="body">$i18n{braveGesturesRockerResetConfirm}</div>
+    <div slot="button-container">
+      <cr-button class="cancel-button"
+          on-click="onMouseRockerResetDialogClose_">
+        $i18n{cancel}
+      </cr-button>
+      <cr-button class="action-button"
+          on-click="onConfirmMouseRockerResetClick_">
+        $i18n{braveGesturesReset}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<template is="dom-if" if="[[showMouseWheelResetConfirmDialog_]]" restamp>
+  <cr-dialog id="wheelResetConfirmDialog" show-on-attach
+      on-close="onMouseWheelResetDialogClose_">
+    <div slot="title">$i18n{braveGesturesReset}</div>
+    <div slot="body">$i18n{braveGesturesWheelResetConfirm}</div>
+    <div slot="button-container">
+      <cr-button class="cancel-button"
+          on-click="onMouseWheelResetDialogClose_">
+        $i18n{cancel}
+      </cr-button>
+      <cr-button class="action-button"
+          on-click="onConfirmMouseWheelResetClick_">
+        $i18n{braveGesturesReset}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<template is="dom-if" if="[[showDirectionalGestureMappingsResetConfirmDialog_]]" restamp>
+  <cr-dialog id="resetConfirmDialog" show-on-attach
+      on-close="onDirectionalGestureMappingsResetDialogClose_">
+    <div slot="title">$i18n{braveGesturesReset}</div>
+    <div slot="body">$i18n{braveGesturesResetConfirm}</div>
+    <div slot="button-container">
+      <cr-button class="cancel-button" on-click="onDirectionalGestureMappingsResetDialogClose_">
+        $i18n{cancel}
+      </cr-button>
+      <cr-button class="action-button" on-click="onConfirmDirectionalGestureMappingsResetClick_">
+        $i18n{braveGesturesReset}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<template is="dom-if" if="[[showSmartGesturesResetConfirmDialog_]]" restamp>
+  <cr-dialog id="smartGesturesResetConfirmDialog" show-on-attach
+      on-close="onSmartGesturesResetDialogClose_">
+    <div slot="title">$i18n{braveGesturesReset}</div>
+    <div slot="body">$i18n{braveGesturesSmartGesturesResetConfirm}</div>
+    <div slot="button-container">
+      <cr-button class="cancel-button" on-click="onSmartGesturesResetDialogClose_">
+        $i18n{cancel}
+      </cr-button>
+      <cr-button class="action-button" on-click="onConfirmSmartGesturesResetClick_">
+        $i18n{braveGesturesReset}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<template is="dom-if" if="[[showClearCustomGestureConfirmDialog_]]" restamp>
+  <cr-dialog id="clearGestureConfirmDialog" show-on-attach
+      on-close="onClearCustomGestureDialogClose_">
+    <div slot="title">$i18n{braveGesturesClearCustomGesture}</div>
+    <div slot="body">$i18n{braveGesturesClearCustomGestureConfirm}</div>
+    <div slot="button-container">
+      <cr-button class="cancel-button" on-click="onClearCustomGestureDialogClose_">
+        $i18n{cancel}
+      </cr-button>
+      <cr-button class="action-button" on-click="onConfirmClearCustomGestureClick_">
+        $i18n{braveGesturesClearCustomGesture}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<template is="dom-if" if="[[showRemoveCustomGestureConfirmDialog_]]" restamp>
+  <cr-dialog id="removeGestureConfirmDialog" show-on-attach
+      on-close="onRemoveCustomGestureDialogClose_">
+    <div slot="title">$i18n{braveGesturesRemoveCustomGesture}</div>
+    <div slot="body">$i18n{braveGesturesRemoveCustomGestureConfirm}</div>
+    <div slot="button-container">
+      <cr-button class="cancel-button" on-click="onRemoveCustomGestureDialogClose_">
+        $i18n{cancel}
+      </cr-button>
+      <cr-button class="action-button" on-click="onConfirmRemoveCustomGestureClick_">
+        $i18n{braveGesturesRemoveCustomGesture}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<settings-section page-title="$i18n{braveGesturesDisallowedSites}">
+  <div class="gestures-content">
+    <template is="dom-repeat" items="[[disallowedSiteRows_]]">
+      <div class="gestures-row">
+        <span class="gestures-site-origin">[[item.origin]]</span>
+        <div class="custom-gesture-actions">
+          <cr-icon-button iron-icon="edit-pencil"
+              on-click="onEditDisallowedSiteClick_">
+          </cr-icon-button>
+          <cr-icon-button iron-icon="close"
+              on-click="onRemoveDisallowedSiteClick_">
+          </cr-icon-button>
+        </div>
+      </div>
+    </template>
+    <cr-button on-click="onAddDisallowedSiteClick_">
+      $i18n{braveGesturesAddSite}
+    </cr-button>
+  </div>
+</settings-section>
+
+<template is="dom-if" if="[[showAddDisallowedSiteDialog_]]" restamp>
+  <cr-dialog id="addSiteDialog" show-on-attach
+      on-close="onAddSiteDialogClose_">
+    <div slot="title">[[getAddDisallowedSiteDialogTitle_(editingDisallowedSiteOrigin_)]]</div>
+    <div slot="body">
+      <cr-input value="[[addDisallowedSiteInput_]]"
+          label="$i18n{braveGesturesAddSitePrompt}"
+          on-input="onAddSiteInputChanged_">
+      </cr-input>
+    </div>
+    <div slot="button-container">
+      <cr-button class="cancel-button" on-click="onAddSiteDialogClose_">
+        $i18n{cancel}
+      </cr-button>
+      <cr-button class="action-button" on-click="onConfirmAddSiteClick_">
+        [[getAddDisallowedSiteDialogTitle_(editingDisallowedSiteOrigin_)]]
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<template is="dom-if" if="[[urlDialogContext_]]" restamp>
+  <cr-dialog id="urlDialog" show-on-attach on-close="onUrlDialogClose_">
+    <div slot="title">[[urlDialogTitle_()]]</div>
+    <div slot="body">
+      <cr-input value="[[urlDialogInput_]]"
+          placeholder="[[urlDialogPlaceholder_()]]"
+          on-input="onUrlDialogInputChanged_">
+      </cr-input>
+    </div>
+    <div slot="button-container">
+      <cr-button class="cancel-button" on-click="onUrlDialogClose_">
+        $i18n{cancel}
+      </cr-button>
+      <cr-button class="action-button" on-click="onConfirmUrlDialogClick_">
+        $i18n{save}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+</template>

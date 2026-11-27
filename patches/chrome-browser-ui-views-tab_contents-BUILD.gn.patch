@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/tab_contents/BUILD.gn b/chrome/browser/ui/views/tab_contents/BUILD.gn
+index 268f1292fbbed7f59acd1c54919b1f9d6c9d66c1..fefa9c39b02becbf3b517551f7cbe10b69ca320f 100644
+--- a/chrome/browser/ui/views/tab_contents/BUILD.gn
++++ b/chrome/browser/ui/views/tab_contents/BUILD.gn
+@@ -65,6 +65,7 @@ source_set("tab_contents") {
+       "//components/remote_cocoa/browser",
+       "//content/public/common",
+     ]
++    deps += [ "//brave/browser/ui/views/renderer_context_menu:mac" ]
+   }
+   deps += [ "//chrome/browser/ui/views:sad_tab_view" ]
+ }
