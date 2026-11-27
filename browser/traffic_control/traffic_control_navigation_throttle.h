@@ -40,6 +40,7 @@ class TrafficControlNavigationThrottle : public content::NavigationThrottle {
   const char* GetNameForLogging() override;
 
  private:
+  bool IsSandboxedNavigationAllowed();
   ThrottleCheckResult MaybeReroute();
 
   // Returns the URL to reopen at |target|. On a server redirect this is the
