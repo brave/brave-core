@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/autofill/chrome_autofill_client.h"
 
+#include <algorithm>
 #include <optional>
 
 #include "base/check_is_test.h"
@@ -169,6 +170,13 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
       const PasswordFormClassification& form_classification,
       const FormFieldData& field,
       std::vector<Suggestion>& chrome_suggestions) {
+    // Do not mix Address-on-typing suggestions with other suggestion types.
+    if (std::ranges::any_of(chrome_suggestions, [](const Suggestion& s) {
+          return s.type == SuggestionType::kAddressEntryOnTyping;
+        })) {
+      return;
+    }
+
     email_aliases::EmailAliasesController* controller =
         GetEmailAliasesControllerFromWebContents(web_contents());
     if (controller) {

@@ -4,9 +4,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
+#include <memory>
+#include <optional>
+#include <string>
 #include <string_view>
 #include <vector>
 
+#include "base/command_line.h"
 #include "base/path_service.h"
 #include "base/test/run_until.h"
 #include "brave/components/constants/brave_paths.h"
@@ -19,6 +23,8 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/autofill/content/browser/test_autofill_client_injector.h"
 #include "components/autofill/content/browser/test_autofill_manager_injector.h"
+#include "components/autofill/core/browser/autofill_field.h"
+#include "components/autofill/core/browser/form_structure.h"
 #include "components/autofill/core/browser/foundations/autofill_manager.h"
 #include "components/autofill/core/browser/foundations/browser_autofill_manager.h"
 #include "components/autofill/core/browser/foundations/test_autofill_manager_waiter.h"
@@ -29,6 +35,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/compositor/compositor_switches.h"
 
 namespace email_aliases {
 
@@ -103,6 +110,19 @@ class TestAutofillManager : public autofill::BrowserAutofillManager {
 
   void WaitForAskForValuesToFill() {
     ASSERT_TRUE(ask_for_value_to_fill_waiter_.Wait());
+  }
+
+  std::optional<autofill::FieldGlobalId> FindFieldIdByName(
+      std::u16string_view name) const {
+    std::optional<autofill::FieldGlobalId> result;
+    ForEachCachedForm([&](const autofill::FormStructure& form) {
+      for (const std::unique_ptr<autofill::AutofillField>& field : form) {
+        if (field->name() == name) {
+          result = field->global_id();
+        }
+      }
+    });
+    return result;
   }
 
  private:
@@ -251,6 +271,63 @@ IN_PROC_BROWSER_TEST_P(EmailAliasesAutofillTest,
   content::SimulateMouseClickOrTapElementWithId(GetWebContents(), "email");
   autofill_manager()->WaitForAskForValuesToFill();
   EXPECT_TRUE(autofill_client()->suggestions().empty());
+
+  autofill_client()->ResetSuggestions();
+}
+
+#if BUILDFLAG(IS_MAC)
+// This test is flaky on Mac due to focus and input handling.
+#define MAYBE_NoNewEmailAliasSuggestionWithAddressOnTyping \
+  DISABLED_NoNewEmailAliasSuggestionWithAddressOnTyping
+#else
+#define MAYBE_NoNewEmailAliasSuggestionWithAddressOnTyping \
+  NoNewEmailAliasSuggestionWithAddressOnTyping
+#endif
+
+class EmailAliasesAutofillTypingTest : public EmailAliasesAutofillTest {
+ public:
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    EmailAliasesAutofillTest::SetUpCommandLine(command_line);
+    command_line->AppendSwitch(switches::kEnablePixelOutputInTests);
+  }
+};
+
+INSTANTIATE_TEST_SUITE_P(, EmailAliasesAutofillTypingTest, testing::Bool());
+
+IN_PROC_BROWSER_TEST_P(EmailAliasesAutofillTypingTest,
+                       MAYBE_NoNewEmailAliasSuggestionWithAddressOnTyping) {
+  ImportAddress();
+  NavigateToTestPage("/email_aliases/signup_form_username.html");
+  autofill_manager()->WaitForFormsSeen();
+
+  content::SimulateMouseClickOrTapElementWithId(GetWebContents(), "username");
+  autofill_manager()->WaitForAskForValuesToFill();
+  autofill_client()->ResetSuggestions();
+
+  ASSERT_TRUE(content::ExecJs(GetWebContents(),
+                              "document.getElementById('username').value = "
+                              "'johndo';"));
+  const std::optional<autofill::FieldGlobalId> username_field_id =
+      autofill_manager()->FindFieldIdByName(u"username");
+  ASSERT_TRUE(username_field_id);
+  autofill_manager()->driver().RendererShouldTriggerSuggestions(
+      *username_field_id,
+      autofill::AutofillSuggestionTriggerSource::kTextFieldValueChanged);
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return std::ranges::any_of(
+        autofill_client()->suggestions(), [](const autofill::Suggestion& s) {
+          return s.type == autofill::SuggestionType::kAddressEntryOnTyping;
+        });
+  }));
+
+  const auto& suggestions = autofill_client()->suggestions();
+  EXPECT_EQ(FindBraveEmailAliasSuggestion(suggestions), nullptr);
+  for (const autofill::Suggestion& suggestion : suggestions) {
+    EXPECT_NE(suggestion.type, autofill::SuggestionType::kAddressEntry);
+    EXPECT_NE(suggestion.type,
+              autofill::SuggestionType::kDevtoolsTestAddresses);
+  }
 
   autofill_client()->ResetSuggestions();
 }
