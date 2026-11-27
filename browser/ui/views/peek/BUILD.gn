@@ -1,0 +1,71 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/containers/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
+
+assert(toolkit_views)
+
+source_set("peek") {
+  public = [ "peek_view.h" ]
+
+  sources = [ "peek_view.cc" ]
+
+  public_deps = [
+    "//base",
+    "//ui/base/interaction",
+    "//ui/gfx",
+    "//ui/views",
+  ]
+
+  deps = [
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/ui/sidebar",
+    "//brave/browser/ui/views:view_shadow",
+    "//brave/components/containers/buildflags",
+    "//brave/components/resources:strings",
+    "//brave/components/vector_icons",
+    "//brave/ui/color:nala_color_id",
+    "//chrome/app:command_ids",
+    "//chrome/app:generated_resources",
+    "//chrome/browser/favicon",
+    "//chrome/browser/history",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/tab_contents",
+    "//chrome/browser/ui:browser_commands",
+    "//chrome/browser/ui/browser_web_contents_delegate",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/color:color_headers",
+    "//chrome/browser/ui/tabs",
+    "//chrome/browser/ui/tabs:tab_enums",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/frame:browser_view_header",
+    "//chrome/browser/ui/views/toolbar",
+    "//components/favicon/content",
+    "//components/input",
+    "//components/split_tabs",
+    "//components/tabs:public",
+    "//components/url_formatter",
+    "//content/public/browser",
+    "//third_party/blink/public/common",
+    "//ui/accessibility",
+    "//ui/base",
+    "//ui/base/cursor",
+    "//ui/base/cursor/mojom:cursor_type",
+    "//ui/color",
+    "//ui/compositor",
+    "//ui/content_accelerators",
+    "//ui/events",
+    "//ui/strings",
+    "//ui/views/controls/webview",
+  ]
+
+  if (enable_containers) {
+    deps += [
+      "//brave/components/containers/content/browser",
+      "//brave/components/containers/core/common:features",
+    ]
+  }
+}

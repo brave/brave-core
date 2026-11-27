@@ -1,0 +1,353 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/views/peek/peek_view.h"
+
+#include <algorithm>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "base/functional/bind.h"
+#include "base/time/time.h"
+#include "brave/browser/ui/views/view_shadow.h"
+#include "brave/components/vector_icons/vector_icons.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "chrome/grit/generated_resources.h"
+#include "components/favicon/content/content_favicon_driver.h"
+#include "components/url_formatter/elide_url.h"
+#include "content/public/browser/web_contents.h"
+#include "ui/accessibility/ax_enums.mojom.h"
+#include "ui/base/accelerators/accelerator.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/models/image_model.h"
+#include "ui/color/color_id.h"
+#include "ui/color/color_provider.h"
+#include "ui/compositor/layer.h"
+#include "ui/compositor/layer_animator.h"
+#include "ui/compositor/scoped_layer_animation_settings.h"
+#include "ui/events/event.h"
+#include "ui/events/keycodes/keyboard_codes.h"
+#include "ui/gfx/animation/animation.h"
+#include "ui/gfx/animation/tween.h"
+#include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/point_f.h"
+#include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
+#include "ui/gfx/geometry/size.h"
+#include "ui/gfx/geometry/transform.h"
+#include "ui/gfx/geometry/transform_util.h"
+#include "ui/gfx/image/image.h"
+#include "ui/strings/grit/ui_strings.h"
+#include "ui/views/accessibility/view_accessibility.h"
+#include "ui/views/background.h"
+#include "ui/views/controls/button/image_button.h"
+#include "ui/views/controls/button/image_button_factory.h"
+#include "ui/views/controls/image_view.h"
+#include "ui/views/controls/label.h"
+#include "ui/views/controls/webview/webview.h"
+#include "ui/views/layout/box_layout.h"
+#include "ui/views/layout/flex_layout_types.h"
+#include "ui/views/layout/flex_layout_view.h"
+#include "ui/views/style/typography.h"
+#include "ui/views/view_class_properties.h"
+#include "ui/views/widget/widget.h"
+#include "url/gurl.h"
+
+namespace {
+
+constexpr int kToolbarHeight = 40;
+constexpr int kToolbarHorizontalPadding = 12;
+constexpr int kToolbarSpacing = 8;
+constexpr int kFaviconSize = 16;
+constexpr int kButtonIconSize = 16;
+constexpr int kMinCardInset = 24;
+// Fraction of the covered area the card leaves on its left, right and bottom.
+// The top is flush with the browser toolbar so the card reads as browser UI
+// hanging from it rather than something drawn by the page.
+constexpr float kCardInsetRatio = 0.075f;
+constexpr float kOpenInitialScale = 0.9f;
+constexpr base::TimeDelta kOpenDuration = base::Milliseconds(200);
+
+constexpr int kCardShadowOffsetY = 4;
+constexpr int kCardShadowBlurRadius = 24;
+constexpr float kCardShadowOpacity = 0.16f;
+
+constexpr int kDividerThickness = 1;
+
+// The top corners stay small so the card still reads as hanging from the
+// browser toolbar.
+constexpr float kCardTopCornerRadius = 4.f;
+constexpr float kCardBottomCornerRadius = 16.f;
+
+gfx::RoundedCornersF GetCardCorners() {
+  return gfx::RoundedCornersF(kCardTopCornerRadius, kCardTopCornerRadius,
+                              kCardBottomCornerRadius, kCardBottomCornerRadius);
+}
+
+// The page sits below the card toolbar, so only its bottom corners are rounded.
+gfx::RoundedCornersF GetWebViewCorners() {
+  return gfx::RoundedCornersF(0, 0, kCardBottomCornerRadius,
+                              kCardBottomCornerRadius);
+}
+
+// Styled like the main toolbar's buttons: the same corner radius, icon colors
+// and hover and pressed highlights.
+std::unique_ptr<views::ImageButton> CreateToolbarButton(
+    views::Button::PressedCallback callback,
+    const gfx::VectorIcon& icon,
+    int message_id) {
+  auto button = views::CreateVectorImageButtonWithNativeTheme(
+      std::move(callback), icon, kButtonIconSize, kColorToolbarButtonIcon,
+      kColorToolbarButtonIconInactive, kColorToolbarButtonIconHovered);
+  ConfigureInkDrop(button.get());
+  const std::u16string text = l10n_util::GetStringUTF16(message_id);
+  button->SetTooltipText(text);
+  button->GetViewAccessibility().SetName(text);
+  return button;
+}
+
+}  // namespace
+
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kCardElementId);
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kCloseButtonElementId);
+
+PeekView::PeekView(Delegate& delegate, Profile& profile) : delegate_(delegate) {
+  GetViewAccessibility().SetRole(ax::mojom::Role::kDialog);
+  GetViewAccessibility().SetName(
+      l10n_util::GetStringUTF16(IDS_PEEK_ACCESSIBLE_NAME));
+  AddAccelerator(ui::Accelerator(ui::VKEY_ESCAPE, ui::EF_NONE));
+
+  // Added first so it sits behind the card. It only gets a layer if the open
+  // animation runs; see `AnimateOpen()`.
+  scrim_ = AddChildView(std::make_unique<views::View>());
+  scrim_->SetBackground(
+      views::CreateSolidBackground(nala::kColorDialogsScrimBackground));
+  // Clicks fall through to this view, which dismisses Peek.
+  scrim_->SetCanProcessEventsWithinSubtree(false);
+
+  card_ = AddChildView(std::make_unique<views::View>());
+  // The layer is animated on open and hosts the shadow.
+  card_->SetPaintToLayer();
+  card_->SetProperty(views::kElementIdentifierKey, kCardElementId);
+  card_->SetBackground(views::CreateRoundedRectBackground(
+      nala::kColorContainerBackground, GetCardCorners()));
+  auto* card_layout =
+      card_->SetLayoutManager(std::make_unique<views::BoxLayout>(
+          views::BoxLayout::Orientation::kVertical));
+  card_layout->set_cross_axis_alignment(
+      views::BoxLayout::CrossAxisAlignment::kStretch);
+
+  // A flex layout so the title and host can shrink below their preferred
+  // widths. The buttons keep their size, so they always stay reachable.
+  auto* toolbar =
+      card_->AddChildView(std::make_unique<views::FlexLayoutView>());
+  toolbar->SetOrientation(views::LayoutOrientation::kHorizontal);
+  toolbar->SetInteriorMargin(gfx::Insets::VH(0, kToolbarHorizontalPadding));
+  toolbar->SetCrossAxisAlignment(views::LayoutAlignment::kCenter);
+  toolbar->SetDefault(views::kMarginsKey,
+                      gfx::Insets::TLBR(0, 0, 0, kToolbarSpacing));
+  toolbar->SetPreferredSize(gfx::Size(0, kToolbarHeight));
+  toolbar->SetBackground(views::CreateRoundedRectBackground(
+      kColorToolbar, /*top_radius=*/kCardTopCornerRadius,
+      /*bottom_radius=*/0.f));
+
+  favicon_ = toolbar->AddChildView(std::make_unique<views::ImageView>());
+  favicon_->SetImageSize(gfx::Size(kFaviconSize, kFaviconSize));
+
+  title_ = toolbar->AddChildView(std::make_unique<views::Label>(
+      std::u16string(), views::style::CONTEXT_LABEL,
+      views::style::STYLE_BODY_3_MEDIUM));
+  title_->SetEnabledColor(nala::kColorTextPrimary);
+  title_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+  title_->SetElideBehavior(gfx::ELIDE_TAIL);
+  title_->SetAutoColorReadabilityEnabled(false);
+  // Labels shrink first, the page-controlled title before the host, which is
+  // the only trustworthy origin shown for the Peek page.
+  title_->SetProperty(
+      views::kFlexBehaviorKey,
+      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                               views::MaximumFlexSizeRule::kPreferred)
+          .WithOrder(2));
+
+  host_ = toolbar->AddChildView(std::make_unique<views::Label>(
+      std::u16string(), views::style::CONTEXT_LABEL,
+      views::style::STYLE_BODY_3));
+  host_->SetEnabledColor(nala::kColorTextTertiary);
+  host_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+  host_->SetElideBehavior(gfx::ELIDE_HEAD);
+  host_->SetAutoColorReadabilityEnabled(false);
+  host_->SetDirectionalityMode(gfx::DirectionalityMode::DIRECTIONALITY_AS_URL);
+  host_->SetProperty(
+      views::kFlexBehaviorKey,
+      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                               views::MaximumFlexSizeRule::kPreferred)
+          .WithOrder(1));
+
+  // Pushes the buttons to the trailing edge.
+  auto* spacer = toolbar->AddChildView(std::make_unique<views::View>());
+  spacer->SetProperty(
+      views::kFlexBehaviorKey,
+      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                               views::MaximumFlexSizeRule::kUnbounded)
+          .WithOrder(3));
+  spacer->SetProperty(views::kMarginsKey, gfx::Insets());
+
+  close_button_ = toolbar->AddChildView(CreateToolbarButton(
+      base::BindRepeating(&Delegate::OnPeekViewCloseRequested,
+                          base::Unretained(&delegate)),
+      kLeoCloseIcon, IDS_APP_CLOSE));
+  close_button_->SetProperty(views::kMarginsKey, gfx::Insets());
+  close_button_->SetProperty(views::kElementIdentifierKey,
+                             kCloseButtonElementId);
+
+  // Spans the full width of the card, between the toolbar and the page. Faint
+  // is almost white in the light theme, so it can't be seen against the toolbar
+  // and page; subtle is the lightest divider that still shows.
+  auto* divider = card_->AddChildView(std::make_unique<views::View>());
+  divider->SetPreferredSize(gfx::Size(0, kDividerThickness));
+  divider->SetBackground(
+      views::CreateSolidBackground(nala::kColorDividerSubtle));
+
+  web_view_ = card_->AddChildView(std::make_unique<views::WebView>(&profile));
+  card_layout->SetFlexForView(web_view_, 1);
+}
+
+PeekView::~PeekView() = default;
+
+void PeekView::SetWebContents(content::WebContents* contents) {
+  web_view_->SetWebContents(contents);
+  if (contents) {
+    web_view_->holder()->SetNativeViewCornerRadii(GetWebViewCorners());
+  }
+  UpdateToolbar();
+}
+
+void PeekView::UpdateToolbar() {
+  content::WebContents* contents = web_view_->web_contents();
+  if (!contents) {
+    favicon_->SetImage(ui::ImageModel());
+    title_->SetText(std::u16string());
+    host_->SetText(std::u16string());
+    return;
+  }
+
+  const GURL& url = contents->GetVisibleURL();
+  title_->SetText(contents->GetTitle());
+  host_->SetText(url_formatter::FormatUrlForSecurityDisplay(
+      url, url_formatter::SchemeDisplay::OMIT_HTTP_AND_HTTPS));
+
+  ui::ImageModel favicon;
+  if (auto* driver = favicon::ContentFaviconDriver::FromWebContents(contents)) {
+    if (gfx::Image image = driver->GetFavicon(); !image.IsEmpty()) {
+      favicon = ui::ImageModel::FromImage(image);
+    }
+  }
+  favicon_->SetImage(favicon);
+  favicon_->SetVisible(!favicon.IsEmpty());
+}
+
+void PeekView::FocusContents() {
+  web_view_->RequestFocus();
+}
+
+void PeekView::AnimateOpen() {
+  if (!gfx::Animation::ShouldRenderRichAnimation()) {
+    return;
+  }
+  // The layer is only needed to animate the opacity.
+  scrim_->SetPaintToLayer();
+  open_animation_pending_ = true;
+  InvalidateLayout();
+}
+
+void PeekView::Layout(PassKey) {
+  const gfx::Rect bounds = GetLocalBounds();
+  const gfx::Size size = GetCardSize(bounds);
+  scrim_->SetBoundsRect(bounds);
+  // Centered horizontally, with the top attached to the toolbar.
+  card_->SetBoundsRect(
+      gfx::Rect(bounds.x() + (bounds.width() - size.width()) / 2, bounds.y(),
+                size.width(), size.height()));
+
+  if (open_animation_pending_ && !size.IsEmpty()) {
+    open_animation_pending_ = false;
+    StartCardOpenAnimation();
+  }
+}
+
+bool PeekView::OnMousePressed(const ui::MouseEvent& event) {
+  if (!card_->bounds().Contains(event.location())) {
+    delegate_->OnPeekViewCloseRequested();
+  }
+  return true;
+}
+
+bool PeekView::AcceleratorPressed(const ui::Accelerator& accelerator) {
+  CHECK_EQ(accelerator.key_code(), ui::VKEY_ESCAPE);
+  delegate_->OnPeekViewCloseRequested();
+  return true;
+}
+
+void PeekView::OnThemeChanged() {
+  views::View::OnThemeChanged();
+
+  // `ViewShadow` takes its color at construction, so rebuild it.
+  card_shadow_.reset();
+  card_shadow_ = std::make_unique<ViewShadow>(
+      card_, GetCardCorners(),
+      ViewShadow::ShadowParameters{
+          .offset_x = 0,
+          .offset_y = kCardShadowOffsetY,
+          .blur_radius = kCardShadowBlurRadius,
+          .shadow_color = SkColorSetA(
+              GetColorProvider()->GetColor(nala::kColorSchemesShadow),
+              kCardShadowOpacity * SK_AlphaOPAQUE)});
+}
+
+gfx::Size PeekView::GetCardSize(const gfx::Rect& bounds) const {
+  const int inset_x = std::max(
+      kMinCardInset, static_cast<int>(bounds.width() * kCardInsetRatio));
+  const int inset_y = std::max(
+      kMinCardInset, static_cast<int>(bounds.height() * kCardInsetRatio));
+  return gfx::Size(std::max(0, bounds.width() - 2 * inset_x),
+                   std::max(0, bounds.height() - inset_y));
+}
+
+void PeekView::StartCardOpenAnimation() {
+  scrim_->layer()->SetOpacity(0);
+  {
+    ui::ScopedLayerAnimationSettings settings(scrim_->layer()->GetAnimator());
+    settings.SetTransitionDuration(kOpenDuration);
+    settings.SetTweenType(gfx::Tween::EASE_OUT);
+    scrim_->layer()->SetOpacity(1);
+  }
+
+  // Scale about the card's top center, keeping the top edge attached to the
+  // toolbar. The shadow is a sibling layer, so it needs the same transform.
+  const gfx::PointF pivot(card_->layer()->bounds().top_center());
+  std::vector<ui::Layer*> layers = {card_->layer()};
+  if (card_shadow_) {
+    layers.push_back(card_shadow_->layer());
+  }
+  for (ui::Layer* layer : layers) {
+    const gfx::PointF local_pivot =
+        pivot - layer->bounds().origin().OffsetFromOrigin();
+    layer->SetTransform(gfx::TransformAboutPivot(
+        local_pivot, gfx::Transform::MakeScale(kOpenInitialScale)));
+    ui::ScopedLayerAnimationSettings settings(layer->GetAnimator());
+    settings.SetTransitionDuration(kOpenDuration);
+    settings.SetTweenType(gfx::Tween::EASE_OUT);
+    layer->SetTransform(gfx::Transform());
+  }
+}
+
+BEGIN_METADATA(PeekView)
+END_METADATA
