@@ -27,8 +27,7 @@ BASE_FEATURE(kBraveCopyCleanLinkByDefault,
 #endif
 );
 
-BASE_FEATURE(kBraveCopyCleanLinkFromJs,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveCopyCleanLinkFromJs, base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables rounded corners on the main content areas by default (when the user
 // has not explicitly set the pref).
