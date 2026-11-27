@@ -50,6 +50,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
                                 kDefaultIssuerPingMilliseconds);
   registry->RegisterListPref(prefs::kIssuers);
 
+  registry->RegisterDictionaryPref(prefs::kOrderExtractionPatternsConfig);
+
   registry->RegisterListPref(prefs::kNotificationAds);
   registry->RegisterTimePref(prefs::kServeAdAt, base::Time());
 
