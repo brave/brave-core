@@ -10,9 +10,9 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/synchronization/lock.h"
 #import "brave/ios/browser/saved_tab_groups/brave_tab_group_sync_model.h"
+#include "brave/ios/browser/saved_tab_groups/saved_tab_url.h"
 #include "brave/ios/browser/saved_tab_groups/tab_group_id.h"
 #include "components/saved_tab_groups/public/saved_tab_group_tab.h"
-#include "components/saved_tab_groups/public/utils.h"
 #include "components/tab_groups/tab_group_color.h"
 #include "url/gurl.h"
 
@@ -161,17 +161,14 @@ BraveTabGroupSyncDelegate::CreateSavedTabGroupFromLocalGroup(
   for (size_t index = 0; index < sync_tab_ids.size(); ++index) {
     const int32_t sync_tab_id = static_cast<int32_t>(sync_tab_ids[index]);
     NSURL* url = [model_ URLForSyncTabID:sync_tab_id];
-    GURL gurl =
+    const GURL gurl =
         url ? GURL(base::SysNSStringToUTF8(url.absoluteString)) : GURL();
-    std::u16string title =
+    const std::u16string title =
         base::SysNSStringToUTF16([model_ titleForSyncTabID:sync_tab_id]);
-    if (!gurl.is_valid()) {
-      std::pair<GURL, std::u16string> fallback =
-          tab_groups::GetDefaultUrlAndTitle();
-      gurl = std::move(fallback.first);
-      title = std::move(fallback.second);
-    }
-    saved_tabs.emplace_back(gurl, title, saved_guid, std::make_optional(index),
+    const std::pair<GURL, std::u16string> saved =
+        NormalizeURLForSavedTabGroup(gurl, title);
+    saved_tabs.emplace_back(saved.first, saved.second, saved_guid,
+                            std::make_optional(index),
                             /*saved_tab_guid=*/std::nullopt, sync_tab_id);
   }
 

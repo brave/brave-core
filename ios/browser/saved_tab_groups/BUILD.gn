@@ -20,11 +20,16 @@ source_set("features") {
 }
 
 source_set("sync_delegate") {
-  visibility = [ "//ios/chrome/browser/saved_tab_groups/model" ]
+  visibility = [
+    ":unit_tests",
+    "//ios/chrome/browser/saved_tab_groups/model",
+  ]
   sources = [
     "brave_tab_group_sync_delegate.h",
     "brave_tab_group_sync_delegate.mm",
     "brave_tab_group_sync_model.h",
+    "saved_tab_url.cc",
+    "saved_tab_url.h",
   ]
   deps = [
     "//components/tab_groups",
@@ -41,9 +46,13 @@ source_set("sync_delegate") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "tab_group_id_unittest.mm" ]
+  sources = [
+    "saved_tab_url_unittest.cc",
+    "tab_group_id_unittest.mm",
+  ]
   deps = [
     ":features",
+    ":sync_delegate",
     "//base",
     "//base/test:test_support",
     "//testing/gtest",
