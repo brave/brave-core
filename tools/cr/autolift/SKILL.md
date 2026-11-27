@@ -1160,20 +1160,20 @@ Once step 8 is done, run `tools/cr/codehealth/SKILL.md` over the range the
 tracker doesn't cover yet: from the end of the range in its intro (or the base's
 tag, for a new tracker) to the new tag (`158.0.8127.2..159.0.8131.1` for a first
 lift, `159.0.8135.1..159.0.8136.1` for a later bump). Write its dump to
-`.autolift/cr<N>/codehealth_<new tag>`, not the temp dir, so a resumed run can
-reuse it. It writes or updates `tools/cr/codehealth/M<N>.md` with what fails
-silently: overrides that stopped applying, re-enabled features, Brave copies
-that missed upstream fixes. Follow its own instructions (subagents on `sonnet`,
-static verification only), and commit what changed under `tools/cr/codehealth/` as
+`.autolift/cr<N>/codehealth_<new tag>`, not the temp dir, so a resumed run
+reuses it. It writes or updates `tools/cr/codehealth/M<N>.md` with what fails
+silently: overrides that stopped applying, re-enabled features, our copies that
+missed upstream fixes. Follow its own instructions (`sonnet` subagents, static
+verification only), and commit what changed under `tools/cr/codehealth/` as
 `Version CodeHealth tracker`.
 
-Its sweeps run for an hour or more each; start them, end your turn, and wait.
-The review is finished only when every subagent has sent its final result (a
-notice that it still has background work is interim) and none is listed as
-running. Never stop a sweep or write the tracker without one to finish sooner,
-and don't publish before every result is in the tracker. Tell each sweep not to
-leave commands in the background, and check `pgrep -af 'git grep|rg |python'`
-for strays before writing the tracker.
+Its sweeps run an hour or more each; start them, end your turn, and wait. The
+review is finished only when every subagent has sent its final result (a notice
+that it still has background work is interim) and none is listed as running.
+Never stop a sweep or write the tracker without one to finish sooner, and don't
+publish before every result is in the tracker. Tell each sweep not to leave
+commands in the background, and check `pgrep -af 'git grep|rg |python'` for
+strays before writing the tracker.
 
 Don't fix what the review finds, regressions included: the tracker is where
 they're picked up, so list them in the report and carry on. A run that lifted
