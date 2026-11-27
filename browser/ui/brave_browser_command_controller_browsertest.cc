@@ -642,27 +642,20 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerElementPickerDisabledTest,
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-#if BUILDFLAG(ENABLE_COMMANDER)
 class BraveBrowserCommandControllerCommanderTest
     : public BraveBrowserCommandControllerTest {
- public:
-  BraveBrowserCommandControllerCommanderTest() {
-    commander_feature_list_.InitAndEnableFeature(features::kBraveCommander);
-  }
-  ~BraveBrowserCommandControllerCommanderTest() override = default;
-
+#if BUILDFLAG(ENABLE_COMMANDER)
  private:
-  base::test::ScopedFeatureList commander_feature_list_;
+  base::test::ScopedFeatureList commander_feature_list_{
+      features::kBraveCommander};
+#endif
 };
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerCommanderTest,
                        QuickCommandsDisabledForPopupWindow) {
-  // Positive control: Quick commands are enabled in a normal window, so the
-  // IDC_COMMANDER check on the popup window exercises the popup-specific
-  // logic.
-  EXPECT_TRUE(
-      chrome::BrowserCommandController::From(browser())->IsCommandEnabled(
-          IDC_COMMANDER));
+  EXPECT_EQ(BUILDFLAG(ENABLE_COMMANDER),
+            chrome::BrowserCommandController::From(browser())->IsCommandEnabled(
+                IDC_COMMANDER));
 
   auto* popup = CreateBrowserWindow(BrowserWindowCreateParams(
       BrowserWindowInterface::TYPE_POPUP, browser()->GetProfile(), true));
@@ -674,7 +667,6 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerCommanderTest,
   EXPECT_FALSE(chrome::BrowserCommandController::From(popup)->IsCommandEnabled(
       IDC_COMMANDER));
 }
-#endif  // BUILDFLAG(ENABLE_COMMANDER)
 
 // Closes every duplicate across the whole tab strip, keeping the first
 // occurrence of each URL.
