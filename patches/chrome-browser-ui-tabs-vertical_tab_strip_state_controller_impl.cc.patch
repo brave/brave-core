@@ -1,8 +1,29 @@
 diff --git a/chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.cc b/chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.cc
-index 4eb92203f69338bab1a918655d530660cc3117f3..5a797625dc37dba72457f5489b9e508f3df61189 100644
+index 4eb92203f69338bab1a918655d530660cc3117f3..ffd50224ddb8974ea7e554ca49a0f30df760ed36 100644
 --- a/chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.cc
 +++ b/chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.cc
-@@ -225,6 +225,7 @@ void VerticalTabStripStateControllerImpl::SetUncollapsedWidth(int width) {
+@@ -55,6 +55,7 @@ VerticalTabStripStateControllerImpl::VerticalTabStripStateControllerImpl(
+       session_service_(session_service),
+       session_id_(session_id),
+       browser_window_(browser_window) {
++  [&]() -> void {
+   pref_change_registrar_.Init(pref_service_);
+ 
+   is_vertical_tabs_enabled_ =
+@@ -117,6 +118,12 @@ VerticalTabStripStateControllerImpl::VerticalTabStripStateControllerImpl(
+             &VerticalTabStripStateControllerImpl::MaybeShowExpandOnHoverIPH,
+             base::Unretained(this)));
+   }
++  }();
++  pref_change_registrar_.Add(
++      prefs::kVerticalTabsCollapsedState,
++      base::BindRepeating(
++          &VerticalTabStripStateControllerImpl::OnCollapsedStatePrefChanged,
++          base::Unretained(this)));
+ }
+ 
+ VerticalTabStripStateControllerImpl::~VerticalTabStripStateControllerImpl() {
+@@ -225,6 +232,7 @@ void VerticalTabStripStateControllerImpl::SetUncollapsedWidth(int width) {
  }
  
  bool VerticalTabStripStateControllerImpl::IsExpandOnHoverEnabled() const {
@@ -10,3 +31,11 @@ index 4eb92203f69338bab1a918655d530660cc3117f3..5a797625dc37dba72457f5489b9e508f
    return is_expand_on_hover_enabled_;
  }
  
+@@ -334,6 +342,7 @@ void VerticalTabStripStateControllerImpl::UpdateSessionService() {
+ }
+ 
+ void VerticalTabStripStateControllerImpl::UpdatePrefService() {
++  if (delegate_ && delegate_->IsCollapsing() && !state_.collapsed) return;
+   if (pref_service_) {
+     pref_service_->SetBoolean(prefs::kVerticalTabsCollapsedState,
+                               state_.collapsed);

@@ -12,3 +12,23 @@ substitutions:
       function_name: 'VerticalTabStripStateControllerImpl::IsExpandOnHoverEnabled'
       return_if: 'ShouldHideCompletelyWhenCollapsed()'
       return_value: 'true'
+
+  - description: |
+      Observe the collapsed state pref so that the collapsed state can be shared
+      across windows.
+    after_function_impl:
+      function_name: 'VerticalTabStripStateControllerImpl::VerticalTabStripStateControllerImpl'
+      code: |-
+        pref_change_registrar_.Add(
+            prefs::kVerticalTabsCollapsedState,
+            base::BindRepeating(
+                &VerticalTabStripStateControllerImpl::OnCollapsedStatePrefChanged,
+                base::Unretained(this)));
+
+  - description: |
+      Don't write the collapsed state pref while starting to collapse. The
+      state isn't updated until the animation ends, so the stale value would be
+      written to the pref and propagated to the other windows sharing the state.
+    preempt_function_impl:
+      function_name: 'VerticalTabStripStateControllerImpl::UpdatePrefService'
+      return_if: 'delegate_ && delegate_->IsCollapsing() && !state_.collapsed'

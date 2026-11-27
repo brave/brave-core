@@ -2513,6 +2513,39 @@ IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsTest, NoCrashOnStartup) {
   EXPECT_EQ(1, new_browser->tab_strip_model()->count());
 }
 
+// The collapsed state is shared across windows by default, and kept per window
+// when kVerticalTabsExpandedStatePerWindow is on.
+IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsTest,
+                       CollapsedStateSharedAcrossWindows) {
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  state_controller()->SetVerticalTabsEnabled(true);
+  BrowserWindowInterface* new_browser = CreateBrowser(browser()->GetProfile());
+  ASSERT_TRUE(new_browser);
+  auto* new_controller =
+      tabs::VerticalTabStripStateController::From(new_browser);
+  ASSERT_TRUE(new_controller);
+  ASSERT_FALSE(
+      prefs->GetBoolean(brave_tabs::kVerticalTabsExpandedStatePerWindow));
+  ASSERT_FALSE(state_controller()->IsCollapsed());
+  ASSERT_FALSE(new_controller->IsCollapsed());
+
+  // Shared: collapsing in one window collapses the other.
+  state_controller()->RequestCollapse(true);
+  EXPECT_TRUE(state_controller()->IsCollapsed());
+  EXPECT_TRUE(new_controller->IsCollapsed());
+
+  // Expanding in the other window expands this one too.
+  new_controller->RequestCollapse(false);
+  EXPECT_FALSE(new_controller->IsCollapsed());
+  EXPECT_FALSE(state_controller()->IsCollapsed());
+
+  // Per window: states are independent.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsExpandedStatePerWindow, true);
+  state_controller()->RequestCollapse(true);
+  EXPECT_TRUE(state_controller()->IsCollapsed());
+  EXPECT_FALSE(new_controller->IsCollapsed());
+}
+
 // When "hide completely when collapsed" is on, the collapsed region view must
 // be hidden (otherwise its overflowing descendants, e.g. favicons, would paint
 // over the web contents) and must clip its descendants to its bounds so they
