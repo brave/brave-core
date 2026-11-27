@@ -122,7 +122,12 @@ base::expected<std::vector<std::string>, std::string> UnBlindCreds(
   DCHECK(signed_creds_base64.has_value());
   std::vector<SignedToken> signed_creds;
   for (auto& item : signed_creds_base64.value()) {
-    if (auto signed_cred = SignedToken::DecodeBase64(item.GetString());
+    // Signed creds come from the server and may not be strings.
+    const std::string* encoded = item.GetIfString();
+    if (!encoded) {
+      return base::unexpected("Signed cred is not a string");
+    }
+    if (auto signed_cred = SignedToken::DecodeBase64(*encoded);
         signed_cred.has_value()) {
       signed_creds.push_back(std::move(signed_cred).value());
     } else {
