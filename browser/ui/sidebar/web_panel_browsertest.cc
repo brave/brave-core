@@ -101,6 +101,8 @@
 #include "ui/views/view_utils.h"
 #include "url/gurl.h"
 
+using ContextMenuIDs = SidebarItemsContentsView::ContextMenuIDs;
+
 namespace sidebar {
 
 namespace {
@@ -808,19 +810,59 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
       SidebarItem::CreateWebTabItem(GURL(kRegularTabURL), u"title"));
   const size_t web_tab_index = model()->GetAllSidebarItems().size() - 1;
 
-  EXPECT_TRUE(items_contents_view->IsOpenInPanelMenuEntryVisibleForTesting(
-      items_contents_view->children()[web_panel_index].get()));
-  EXPECT_TRUE(items_contents_view->IsOpenInPanelMenuEntryVisibleForTesting(
-      items_contents_view->children()[web_tab_index].get()));
-  EXPECT_FALSE(items_contents_view->IsOpenInPanelMenuEntryVisibleForTesting(
-      items_contents_view->children()[*builtin_index].get()));
+  EXPECT_TRUE(items_contents_view->IsMenuEntryVisibleForTesting(
+      items_contents_view->children()[web_panel_index].get(),
+      ContextMenuIDs::kItemToggleOpenInPanel));
+  EXPECT_TRUE(items_contents_view->IsMenuEntryVisibleForTesting(
+      items_contents_view->children()[web_tab_index].get(),
+      ContextMenuIDs::kItemToggleOpenInPanel));
+  EXPECT_FALSE(items_contents_view->IsMenuEntryVisibleForTesting(
+      items_contents_view->children()[*builtin_index].get(),
+      ContextMenuIDs::kItemToggleOpenInPanel));
 
-  EXPECT_TRUE(items_contents_view->IsMobileUserAgentMenuEntryVisibleForTesting(
-      items_contents_view->children()[web_panel_index].get()));
-  EXPECT_FALSE(items_contents_view->IsMobileUserAgentMenuEntryVisibleForTesting(
-      items_contents_view->children()[web_tab_index].get()));
-  EXPECT_FALSE(items_contents_view->IsMobileUserAgentMenuEntryVisibleForTesting(
-      items_contents_view->children()[*builtin_index].get()));
+  EXPECT_TRUE(items_contents_view->IsMenuEntryVisibleForTesting(
+      items_contents_view->children()[web_panel_index].get(),
+      ContextMenuIDs::kItemToggleMobileUserAgent));
+  EXPECT_FALSE(items_contents_view->IsMenuEntryVisibleForTesting(
+      items_contents_view->children()[web_tab_index].get(),
+      ContextMenuIDs::kItemToggleMobileUserAgent));
+  EXPECT_FALSE(items_contents_view->IsMenuEntryVisibleForTesting(
+      items_contents_view->children()[*builtin_index].get(),
+      ContextMenuIDs::kItemToggleMobileUserAgent));
+}
+
+// The "Mute tab" entry only makes sense while there's an open tab to mute, so
+// it should only show for the item whose panel is currently open. Toggling it
+// is what the context menu's "Mute tab"/"Unmute tab" entry does.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, MuteTabMenuEntryTest) {
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+  service->AddItem(
+      SidebarItem::CreateWebPanelItem(GURL(kTestWebPanelURL), u"title"));
+  const size_t index = model()->GetAllSidebarItems().size() - 1;
+  auto items_contents_view = GetSidebarItemsContentsView(controller());
+
+  EXPECT_FALSE(items_contents_view->IsMenuEntryVisibleForTesting(
+      items_contents_view->children()[index].get(),
+      ContextMenuIDs::kItemToggleMuteTab));
+
+  controller()->OnItemPressed(index);
+  ASSERT_TRUE(web_panel_controller()->HasOpenPanel());
+  EXPECT_TRUE(items_contents_view->IsMenuEntryVisibleForTesting(
+      items_contents_view->children()[index].get(),
+      ContextMenuIDs::kItemToggleMuteTab));
+
+  auto* panel_contents = tab_model()->GetTabAtIndex(0)->GetContents();
+  ASSERT_EQ(panel_contents, web_panel_controller()->panel_contents());
+  ASSERT_FALSE(panel_contents->IsAudioMuted());
+  ASSERT_FALSE(web_panel_controller()->IsWebPanelMuted());
+
+  web_panel_controller()->ToggleWebPanelAudioMute();
+  EXPECT_TRUE(panel_contents->IsAudioMuted());
+  EXPECT_TRUE(web_panel_controller()->IsWebPanelMuted());
+
+  web_panel_controller()->ToggleWebPanelAudioMute();
+  EXPECT_FALSE(panel_contents->IsAudioMuted());
+  EXPECT_FALSE(web_panel_controller()->IsWebPanelMuted());
 }
 
 // The mini toolbar's close button has to dismiss the panel the same way the

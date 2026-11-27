@@ -42,6 +42,8 @@ aggregate_vector_icons("brave_vector_icons") {
                              "leo_open_in_tab.icon",
                              "leo_sidepanel_open.icon",
                              "leo_smartphone.icon",
+                             "leo_volume_off.icon",
+                             "leo_volume_on.icon",
                              "leo_window_tabs_vertical_collapsed.icon",
                              "leo_window_tabs_vertical_expanded.icon",
                            ],
