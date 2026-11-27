@@ -7,9 +7,9 @@
 #define BRAVE_BROWSER_BRAVE_ADS_CREATIVES_SEARCH_RESULT_AD_CREATIVE_SEARCH_RESULT_AD_TAB_HELPER_H_
 
 #include <memory>
-#include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
@@ -61,8 +61,7 @@ class CreativeSearchResultAdTabHelper final
   void MaybeExtractCreativeAdPlacementIdsFromWebPageAndHandleViewedEvents();
 
   void MaybeHandleCreativeAdViewedEvents(
-      std::vector<mojom::CreativeSearchResultAdInfoPtr>
-          creative_search_result_ads);
+      CreativeSearchResultAdList creative_search_result_ads);
   void MaybeHandleCreativeAdViewedEvent(
       mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad);
   void MaybeHandleCreativeAdViewedEventCallback(
