@@ -1,5 +1,5 @@
 diff --git a/components/tabs/public/tab_context_menu_command.h b/components/tabs/public/tab_context_menu_command.h
-index 2ea23723648d7254c0b591e6e311caf3c3b04637..693f3770c350008ca47b9e5f02887f4f53eac468 100644
+index 2ea23723648d7254c0b591e6e311caf3c3b04637..8847577dea9dafb64d6929da973b10f662321982 100644
 --- a/components/tabs/public/tab_context_menu_command.h
 +++ b/components/tabs/public/tab_context_menu_command.h
 @@ -42,6 +42,14 @@ enum TabContextMenuCommand {
@@ -7,7 +7,7 @@ index 2ea23723648d7254c0b591e6e311caf3c3b04637..693f3770c350008ca47b9e5f02887f4f
    CommandAiModeUnshare,
    CommandToggleFocusGroup,
 +  CommandRestoreTab,
-+  CommandBookmarkAllTabs,
++  CommandBookmarkTab,
 +  CommandShowVerticalTabs,
 +  CommandToggleTabMuted,
 +  CommandBringAllTabsToThisWindow,
