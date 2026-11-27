@@ -216,6 +216,7 @@ if (is_android) {
       "//base:base_junit_test_support",
       "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/settings:search_java",
       "//components/browser_ui/settings/android:java",
       "//third_party/androidx:androidx_slidingpanelayout_slidingpanelayout_java",
       "//ui/android:ui_no_recycler_view_java",
