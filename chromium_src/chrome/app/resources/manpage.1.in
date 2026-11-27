@@ -104,6 +104,17 @@ password store.  \fIgnome\fR selects Gnome keyring.  \fIkwallet\fR selects
 (KDE) KWallet.  (Note that KWallet may not work reliably outside KDE.)
 
 .TP
+\fB\-\-tor\fR
+Switching to Tor profile and starting Tor service.
+This switch is primarily used for testing and is not the same as using the
+Tor browser. In particular, you will see some profile-wide network traffic
+not going through the tor proxy (e.g. adblock list updates, P3A).
+.sp
+Note that if the \fB\-\-tor\fP switch is used together with \fB\-\-silent\-launch\fP, 
+Tor won't be launched.
+
+
+.TP
 \fB\-\-version\fR
 Show version information.
 
