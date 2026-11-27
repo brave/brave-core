@@ -10,3 +10,13 @@ substitutions:
       list_name: deps
       literal: brave_chrome_browser_prefs_impl_deps
       import: //brave/browser/sources.gni
+  - description: |-
+      Add the deps the Brave prefs util overrides need.
+
+      The `pref_service_incognito_allowlist.cc` override includes
+      `brave_pref_service_incognito_allowlist.h`.
+    insert_into_list:
+      target: util_impl
+      list_name: deps
+      values:
+        - //brave/browser/prefs
