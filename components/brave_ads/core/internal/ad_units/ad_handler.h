@@ -7,7 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_HANDLER_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
+#include <vector>
 
 #include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/ad_units/creative_ad_cache.h"
@@ -27,6 +29,8 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+
+class GURL;
 
 namespace brave_ads {
 
@@ -64,6 +68,12 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
       mojom::SearchResultAdEventType mojom_ad_event_type,
       ResultCallback callback);
 
+  void MaybeGetOrderPatterns(
+      int32_t tab_id,
+      const std::vector<GURL>& redirect_chain,
+      std::optional<std::string> detected_language,
+      Conversions::MaybeGetOrderPatternsCallback callback);
+
   const SubdivisionTargeting& GetSubdivisionTargeting() const {
     return subdivision_targeting_;
   }
@@ -78,6 +88,11 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
 
   const AntiTargetingResource& GetAntiTargetingResource() const {
     return anti_targeting_resource_;
+  }
+
+  const OrderExtractionPatternsResource& GetOrderExtractionPatternsResource()
+      const {
+    return conversions_.GetOrderExtractionPatternsResource();
   }
 
  private:

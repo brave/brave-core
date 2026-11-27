@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_IMPL_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -88,6 +89,11 @@ class AdsImpl final : public Ads {
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
       ResultCallback callback) override;
+
+  void MaybeGetOrderPatterns(int32_t tab_id,
+                             const std::vector<GURL>& redirect_chain,
+                             std::optional<std::string> detected_language,
+                             MaybeGetOrderPatternsCallback callback) override;
 
   void PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
                                     ResultCallback callback) override;

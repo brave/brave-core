@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -242,6 +243,38 @@ void AdsImpl::TriggerSearchResultAdEvent(
 
   GetAdHandler().TriggerSearchResultAdEvent(
       std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
+}
+
+void AdsImpl::MaybeGetOrderPatterns(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback) {
+  if (task_queue_.should_queue()) {
+    return task_queue_.Add(base::BindOnce(
+        &AdsImpl::MaybeGetOrderPatterns, weak_factory_.GetWeakPtr(), tab_id,
+        redirect_chain, std::move(detected_language), std::move(callback)));
+  }
+
+  GetAdHandler().MaybeGetOrderPatterns(
+      tab_id, redirect_chain, std::move(detected_language),
+      base::BindOnce(
+          [](MaybeGetOrderPatternsCallback callback, bool should_extract_id,
+             mojom::OrderIdExtractionPatternsInfoPtr id_extraction_patterns,
+             bool should_extract_value,
+             mojom::OrderValueExtractionPatternsInfoPtr
+                 value_extraction_patterns) {
+            mojom::OrderExtractionPatternsInfoPtr order_extraction_patterns =
+                mojom::OrderExtractionPatternsInfo::New();
+            order_extraction_patterns->id = std::move(id_extraction_patterns);
+            order_extraction_patterns->should_extract_id = should_extract_id;
+            order_extraction_patterns->value =
+                std::move(value_extraction_patterns);
+            order_extraction_patterns->should_extract_value =
+                should_extract_value;
+            std::move(callback).Run(std::move(order_extraction_patterns));
+          },
+          std::move(callback)));
 }
 
 void AdsImpl::PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,

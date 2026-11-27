@@ -17,6 +17,9 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/order_extraction_patterns_matcher.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/order_extraction_patterns_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/order/resource/order_extraction_patterns_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
@@ -28,6 +31,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
+#include "brave/components/brave_ads/core/public/common/url/url_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -276,6 +280,102 @@ void Conversions::NotifyFailedToConvertAd(
     const std::string& creative_instance_id) {
   observers_.Notify(&ConversionsObserver::OnFailedToConvertAd,
                     creative_instance_id);
+}
+
+void Conversions::MaybeGetOrderPatterns(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback) {
+  CHECK(!redirect_chain.empty());
+
+  campaign_conversions_database_table_.GetUnexpired(base::BindOnce(
+      &Conversions::MaybeGetOrderPatternsForCampaignConversionsCallback,
+      weak_factory_.GetWeakPtr(), tab_id, redirect_chain,
+      std::move(detected_language), std::move(callback)));
+}
+
+void Conversions::MaybeGetOrderPatternsForCampaignConversionsCallback(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback,
+    bool success,
+    const CampaignConversionList& campaign_conversions) {
+  if (!success || campaign_conversions.empty()) {
+    return std::move(callback).Run(
+        /*should_extract_id=*/false,
+        mojom::OrderIdExtractionPatternsInfo::New(),
+        /*should_extract_value=*/false,
+        mojom::OrderValueExtractionPatternsInfo::New());
+  }
+
+  ad_events_database_table_.GetUnexpired(
+      kAdEventsTimeWindow.Get(),
+      base::BindOnce(&Conversions::MaybeGetOrderPatternsForAdEventsCallback,
+                     weak_factory_.GetWeakPtr(), tab_id, redirect_chain,
+                     std::move(detected_language), std::move(callback),
+                     campaign_conversions));
+}
+
+void Conversions::MaybeGetOrderPatternsForAdEventsCallback(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback,
+    const CampaignConversionList& campaign_conversions,
+    bool success,
+    const AdEventList& ad_events) {
+  if (!success) {
+    return std::move(callback).Run(
+        /*should_extract_id=*/false,
+        mojom::OrderIdExtractionPatternsInfo::New(),
+        /*should_extract_value=*/false,
+        mojom::OrderValueExtractionPatternsInfo::New());
+  }
+
+  std::optional<CampaignConversionInfo> campaign_conversion =
+      MaybeGetCampaignConversionForOrderExtraction(campaign_conversions,
+                                                   ad_events, redirect_chain);
+  if (!campaign_conversion) {
+    return std::move(callback).Run(
+        /*should_extract_id=*/false,
+        mojom::OrderIdExtractionPatternsInfo::New(),
+        /*should_extract_value=*/false,
+        mojom::OrderValueExtractionPatternsInfo::New());
+  }
+
+  // Falls back to the compiled-in default patterns until the component
+  // delivers a real set, see `OrderExtractionPatternsResource`.
+  const OrderExtractionPatternsInfo& order_extraction_patterns =
+      order_extraction_patterns_resource_.GetPatterns();
+
+  const GURL& url = redirect_chain.back();
+  const std::vector<std::string> site_candidates = {
+      std::string(url.host()), GetRegistrableDomainOrHost(url)};
+
+  // With no value, tries every language in schema order; see
+  // `MaybeGetOrderPatterns`.
+  const std::string language = std::move(detected_language).value_or("");
+
+  // Flattening only runs for a requested field, so the renderer gets empty
+  // patterns, and so skips real extraction work, for the other one.
+  mojom::OrderIdExtractionPatternsInfoPtr order_id_extraction_patterns =
+      campaign_conversion->should_extract_id
+          ? ToOrderIdExtractionPatterns(order_extraction_patterns.id,
+                                        site_candidates, language)
+          : mojom::OrderIdExtractionPatternsInfo::New();
+
+  mojom::OrderValueExtractionPatternsInfoPtr order_value_extraction_patterns =
+      campaign_conversion->should_extract_value
+          ? ToOrderValueExtractionPatterns(order_extraction_patterns.value,
+                                           site_candidates, language)
+          : mojom::OrderValueExtractionPatternsInfo::New();
+
+  std::move(callback).Run(campaign_conversion->should_extract_id,
+                          std::move(order_id_extraction_patterns),
+                          campaign_conversion->should_extract_value,
+                          std::move(order_value_extraction_patterns));
 }
 
 void Conversions::OnTabDidChange(const TabInfo& tab) {

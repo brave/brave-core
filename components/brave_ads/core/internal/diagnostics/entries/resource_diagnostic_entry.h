@@ -15,10 +15,8 @@
 
 namespace brave_ads {
 
-// Reports whether a targeting resource (text classification, purchase
-// intent, anti targeting) is currently loaded. Every resource has the same
-// `GetLoadState`/`GetManifestVersion` shape, so one parameterized entry
-// backs all of them rather than a class per resource.
+// Reports whether a resource is loaded, using the same
+// `GetLoadState`/`GetManifestVersion` shape every resource shares.
 class ResourceDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
   ResourceDiagnosticEntry(
