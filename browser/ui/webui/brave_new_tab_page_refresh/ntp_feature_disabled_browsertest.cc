@@ -6,6 +6,8 @@
 #include <string>
 #include <string_view>
 
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
@@ -23,6 +25,13 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_search_conversion/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
+#endif
 
 namespace {
 
@@ -78,6 +87,12 @@ void WaitForStableLayout(content::WebContents* web_contents) {
 // helpers.
 class NTPFeatureDisabledTestBase : public InProcessBrowserTest {
  protected:
+  NTPFeatureDisabledTestBase() {
+    // The hidden elements exist only on the refreshed NTP.
+    scoped_feature_list_.InitAndEnableFeature(
+        features::kBraveNewTabPageRefreshEnabled);
+  }
+
   void SetUpInProcessBrowserTestFixture() override {
     InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
     EXPECT_CALL(policy_provider_, IsInitializationComplete(testing::_))
@@ -111,6 +126,7 @@ class NTPFeatureDisabledTestBase : public InProcessBrowserTest {
   }
 
  private:
+  base::test::ScopedFeatureList scoped_feature_list_;
   testing::NiceMock<policy::MockConfigurationPolicyProvider> policy_provider_;
 };
 
@@ -156,10 +172,27 @@ IN_PROC_BROWSER_TEST_F(NTPVPNDisabledByPolicyTest, PageLoadsAndWidgetHidden) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
 class NTPAIChatDisabledByPolicyTest : public NTPFeatureDisabledTestBase {
  protected:
+  // Enable everything that shows the chat input so only the policy hides it.
+  NTPAIChatDisabledByPolicyTest() {
+    ai_chat_feature_list_.InitWithFeatures(
+        {ai_chat::features::kAIChat,
+         ai_chat::features::kShowAIChatInputOnNewTabPage},
+        {});
+  }
+
   void SetUpInProcessBrowserTestFixture() override {
     NTPFeatureDisabledTestBase::SetUpInProcessBrowserTestFixture();
     SetPolicy(policy::key::kBraveAIChatEnabled, base::Value(false));
   }
+
+  void SetUpOnMainThread() override {
+    NTPFeatureDisabledTestBase::SetUpOnMainThread();
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
+        brave_search_conversion::prefs::kShowNTPChatInput, true);
+  }
+
+ private:
+  base::test::ScopedFeatureList ai_chat_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(NTPAIChatDisabledByPolicyTest, PageLoadsAndChatHidden) {
