@@ -58,8 +58,15 @@ class PullToRefreshTabHelper: TabObserver, PreferencesObserver {
   }
 
   func tabDidStopLoading(_ tab: some TabState) {
-    guard let refreshControl = tab.webViewProxy?.scrollView?.refreshControl else { return }
+    guard let scrollView = tab.webViewProxy?.scrollView,
+      let refreshControl = scrollView.refreshControl
+    else { return }
+    // Calling endRefreshing on the refresh control seems to alter the content inset of the web view
+    // so make sure we restore it to its original value after the call to avoid the top inset from
+    // being incorrect.
+    let originalInsets = scrollView.contentInset
     refreshControl.endRefreshing()
+    scrollView.contentInset = originalInsets
   }
 
   func tabWillBeDestroyed(_ tab: some TabState) {
