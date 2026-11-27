@@ -86,8 +86,15 @@ class PsstSettingsService : public KeyedService {
   // website setting.
   void IncrementInfobarDeclineCount(const url::Origin& origin);
 
-  bool IsPsstInfobarEnabled() const;
-  void SetPsstInfobarEnabled(bool enabled);
+  // Records that the user dismissed the PSST infobar (e.g. close button,
+  // navigating away, closing the tab) without reviewing suggestions. The
+  // infobar is suppressed for all origins for `kInfobarDismissalSuppression`
+  // from now.
+  void RecordInfobarDismissed();
+
+  // Returns true if the infobar was dismissed recently enough that it should
+  // stay suppressed for all origins.
+  bool IsInfobarDismissalSuppressed() const;
 
   // Records that the PSST infobar was accepted for `origin`. No-op unless
   // `origin` is https. The count is persisted in the origin's BRAVE_PSST

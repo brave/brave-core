@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/time/time.h"
 #include "brave/components/psst/core/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
@@ -14,6 +15,10 @@
 namespace psst {
 
 namespace {
+
+// How long the infobar stays suppressed for all origins after the user
+// dismisses it without reviewing suggestions.
+constexpr base::TimeDelta kInfobarDismissalSuppression = base::Days(30);
 
 constexpr char kUserIdSettingsKey[] = "user_id";
 constexpr char kConsentStatusSettingsKey[] = "consent_status";
@@ -249,12 +254,15 @@ void PsstSettingsService::IncrementInfobarDeclineCount(
                     GetAllPsstWebsitesSettings());
 }
 
-bool PsstSettingsService::IsPsstInfobarEnabled() const {
-  return prefs_->GetBoolean(prefs::kPsstInfobarEnabled);
+void PsstSettingsService::RecordInfobarDismissed() {
+  prefs_->SetTime(prefs::kPsstInfobarLastDismissedTime, base::Time::Now());
 }
 
-void PsstSettingsService::SetPsstInfobarEnabled(bool enabled) {
-  prefs_->SetBoolean(prefs::kPsstInfobarEnabled, enabled);
+bool PsstSettingsService::IsInfobarDismissalSuppressed() const {
+  const base::Time last_dismissed_time =
+      prefs_->GetTime(prefs::kPsstInfobarLastDismissedTime);
+  return !last_dismissed_time.is_null() &&
+         base::Time::Now() - last_dismissed_time < kInfobarDismissalSuppression;
 }
 
 void PsstSettingsService::IncrementInfobarReviewSuggestionsCount(

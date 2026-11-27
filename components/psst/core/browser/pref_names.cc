@@ -5,6 +5,7 @@
 
 #include "brave/components/psst/core/browser/pref_names.h"
 
+#include "base/time/time.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace psst {
@@ -13,7 +14,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kPsstEnabled, true);
   registry->RegisterIntegerPref(prefs::kPsstInfobarShownCounter, 0);
   registry->RegisterIntegerPref(prefs::kPsstInfobarDeclineCounter, 0);
-  registry->RegisterBooleanPref(prefs::kPsstInfobarEnabled, true);
+  registry->RegisterTimePref(prefs::kPsstInfobarLastDismissedTime,
+                             base::Time());
 }
 
 }  // namespace psst

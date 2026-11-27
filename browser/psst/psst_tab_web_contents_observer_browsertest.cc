@@ -17,6 +17,7 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
@@ -1049,6 +1050,70 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   ASSERT_TRUE(console_observer.Wait());
   EXPECT_TRUE(console_observer.CheckMessages());
   EXPECT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+}
+
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       DismissingInfobarSuppressesItForAllSitesForThirtyDays) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+
+  const GURL url_a = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+  const GURL url_b = GetEmbeddedTestServer().GetURL("b.test", "/b_test_0.html");
+
+  infobars::ContentInfoBarManager* manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents());
+  InfobarObserver infobar_observer(
+      manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
+
+  // 1. First visit to site a: the infobar is shown, then the user dismisses
+  // it via the close button.
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url_a));
+  ASSERT_TRUE(infobar_observer.WaitForInfobarAdded());
+  auto* psst_infobar = GetPsstInfobar(manager);
+  ASSERT_TRUE(psst_infobar);
+  ClickInfobarCloseButton(psst_infobar);
+  ASSERT_TRUE(infobar_observer.WaitForInfobarRemoved());
+  EXPECT_TRUE(GetPsstSettingsService()->IsInfobarDismissalSuppressed());
+
+  // 2. A different PSST-supported site's infobar is also suppressed right
+  // after the dismissal: the suppression applies globally, not just to the
+  // dismissed site.
+  {
+    PsstWebContentsConsoleObserver b_console_observer(
+        web_contents(),
+        {base::StrCat({kUserScriptLogPrefix,
+                       CreateTestUtf16URL(https_server_, "/b_test_0.html")})},
+        {});
+    ASSERT_TRUE(content::NavigateToURL(web_contents(), url_b));
+    ASSERT_TRUE(b_console_observer.Wait());
+    EXPECT_TRUE(b_console_observer.CheckMessages());
+    EXPECT_FALSE(GetPsstInfobar(manager));
+  }
+
+  // 3. Just shy of 30 days after the dismissal, the infobar is still
+  // suppressed for site b.
+  GetPrefs()->SetTime(prefs::kPsstInfobarLastDismissedTime,
+                      base::Time::Now() - base::Days(29));
+  ASSERT_TRUE(GetPsstSettingsService()->IsInfobarDismissalSuppressed());
+  {
+    PsstWebContentsConsoleObserver b_console_observer(
+        web_contents(),
+        {base::StrCat({kUserScriptLogPrefix,
+                       CreateTestUtf16URL(https_server_, "/b_test_0.html")})},
+        {});
+    ASSERT_TRUE(content::NavigateToURL(web_contents(), url_b));
+    ASSERT_TRUE(b_console_observer.Wait());
+    EXPECT_TRUE(b_console_observer.CheckMessages());
+    EXPECT_FALSE(GetPsstInfobar(manager));
+  }
+
+  // 4. Once 30 days have passed since the dismissal, the infobar is shown
+  // again for site b.
+  GetPrefs()->SetTime(prefs::kPsstInfobarLastDismissedTime,
+                      base::Time::Now() - base::Days(30));
+  ASSERT_FALSE(GetPsstSettingsService()->IsInfobarDismissalSuppressed());
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url_b));
+  ASSERT_TRUE(infobar_observer.WaitForInfobarAdded());
+  EXPECT_TRUE(GetPsstInfobar(manager));
 }
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
