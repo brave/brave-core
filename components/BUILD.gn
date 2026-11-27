@@ -161,10 +161,15 @@ test("brave_components_unittests") {
   }
 
   if (is_android) {
-    # Upstream runs these in //components:components_unittests, which is not
-    # built for Android.
-    deps +=
-        [ "//brave/components/password_manager/core/browser/sync:unit_tests" ]
+    deps += [
+      # Brave's IsAccountStorageActive override only changes behavior on
+      # Android.
+      "//brave/chromium_src/components/password_manager/core/browser/features:unit_tests",
+
+      # Upstream runs these in //components:components_unittests, which is not
+      # built for Android.
+      "//brave/components/password_manager/core/browser/sync:unit_tests",
+    ]
   }
 
   if (is_ios) {
