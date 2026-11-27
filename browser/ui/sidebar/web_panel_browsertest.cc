@@ -58,6 +58,7 @@
 #include "chrome/browser/ui/side_panel/side_panel_entry_scope.h"
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/sync/browser_synced_tab_delegate.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_menu_model_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -76,6 +77,9 @@
 #include "components/sessions/core/tab_restore_types.h"
 #include "components/split_tabs/split_tab_id.h"
 #include "components/split_tabs/split_tab_visual_data.h"
+#include "components/sync/protocol/sync_enums.pb.h"
+#include "components/sync_sessions/mock_sync_sessions_client.h"
+#include "components/sync_sessions/test_synced_window_delegates_getter.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/context_menu_params.h"
 #include "content/public/browser/navigation_controller.h"
@@ -85,6 +89,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_utils.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
 #include "ui/gfx/animation/animation.h"
@@ -2114,6 +2119,35 @@ IN_PROC_BROWSER_TEST_F(WebPanelSplitViewBrowserTest,
 
   EXPECT_FALSE(CreateLinkContextMenu(panel_contents)
                    ->IsItemPresent(IDC_CONTENT_CONTEXT_OPENLINKSPLITVIEW));
+}
+
+// The panel's tab is a local UI convenience, not a tab the user chose to keep
+// around across devices, so it must never be published to session sync - even
+// though it's a real pinned tab in the strip.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelTabIsExcludedFromSync) {
+  ASSERT_TRUE(embedded_test_server()->Start());
+  const GURL test_url = embedded_test_server()->GetURL("/title1.html");
+
+  sync_sessions::TestSyncedWindowDelegatesGetter window_getter;
+  testing::NiceMock<sync_sessions::MockSyncSessionsClient> mock_client;
+  ON_CALL(mock_client, GetSyncedWindowDelegatesGetter())
+      .WillByDefault(testing::Return(&window_getter));
+  ON_CALL(mock_client, ShouldSyncURL).WillByDefault(testing::Return(true));
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+  auto* normal_delegate =
+      BrowserSyncedTabDelegate::From(tab_model()->GetActiveTab());
+  ASSERT_TRUE(normal_delegate);
+  window_getter.AddWindow(sync_pb::SyncEnums_BrowserType_TYPE_TABBED,
+                          normal_delegate->GetWindowId());
+  EXPECT_TRUE(normal_delegate->ShouldSync(&mock_client));
+
+  OpenWebPanel(test_url);
+  auto* panel_tab = tab_model()->GetTabAtIndex(0);
+  ASSERT_TRUE(content::WaitForLoadStop(panel_tab->GetContents()));
+  auto* panel_delegate = BrowserSyncedTabDelegate::From(panel_tab);
+  ASSERT_TRUE(panel_delegate);
+  EXPECT_FALSE(panel_delegate->ShouldSync(&mock_client));
 }
 
 }  // namespace sidebar

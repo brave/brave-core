@@ -97,6 +97,9 @@ bool IsWebPanelTab(BrowserWindowInterface* browser,
 // Same, for callers that hold a tab rather than a browser window.
 bool IsWebPanelTab(tabs::TabInterface* tab);
 
+// Same, for callers that only hold a WebContents.
+bool IsWebPanelTab(content::WebContents* web_contents);
+
 // True when `browser`'s active tab is the open web panel. Split view creation
 // uses the active tab as the pivot, so the panel must not be active for it.
 bool IsWebPanelTabActive(BrowserWindowInterface* browser);

@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
 
 source_set("chromium_impl") {
   visibility = [ "//brave/browser:core" ]
@@ -22,5 +23,9 @@ source_set("chromium_impl") {
       "//brave/components/containers/core/browser",
       "//brave/components/containers/core/common",
     ]
+  }
+
+  if (toolkit_views) {
+    deps += [ "//brave/browser/ui/sidebar" ]
   }
 }

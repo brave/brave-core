@@ -437,6 +437,10 @@ bool IsWebPanelTab(tabs::TabInterface* tab) {
   return browser && IsWebPanelTab(browser, tab->GetContents());
 }
 
+bool IsWebPanelTab(content::WebContents* web_contents) {
+  return IsWebPanelTab(tabs::TabInterface::MaybeGetFromContents(web_contents));
+}
+
 bool IsWebPanelTabActive(BrowserWindowInterface* browser) {
   TabStripModel* tab_strip_model = browser->GetTabStripModel();
   if (!tab_strip_model) {
