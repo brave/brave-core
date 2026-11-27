@@ -103,7 +103,7 @@ public class BraveSyncedTabGroupHelperUnitTest {
         when(mTabModel.getTabsInGroup(TAB_GROUP_ID_1)).thenReturn(List.of(mSyncedGroupTab));
         when(mTabModel.getTabsInGroup(TAB_GROUP_ID_2)).thenReturn(List.of(mLocalOnlyGroupTab));
         when(mTabModel.getTabRemover()).thenReturn(mTabRemover);
-        when(mTabGroupSyncService.getGroup(new LocalTabGroupId(TAB_GROUP_ID_1.getToken())))
+        when(mTabGroupSyncService.getGroup(new LocalTabGroupId(TAB_GROUP_ID_1)))
                 .thenReturn(savedTabGroup(SYNC_ID_1));
 
         BraveSyncedTabGroupHelper.hideSyncedTabGroups(mTabModel, mTabGroupSyncService);
@@ -135,7 +135,7 @@ public class BraveSyncedTabGroupHelperUnitTest {
     @Test
     public void testOpensOnlyTheClosedGroups() {
         SavedTabGroup openGroup = savedTabGroup(SYNC_ID_2);
-        openGroup.localId = new LocalTabGroupId(TAB_GROUP_ID_2.getToken());
+        openGroup.localId = new LocalTabGroupId(TAB_GROUP_ID_2);
         when(mTabGroupSyncService.getAllGroupIds()).thenReturn(new String[] {SYNC_ID_1, SYNC_ID_2});
         when(mTabGroupSyncService.getGroup(SYNC_ID_1)).thenReturn(savedTabGroup(SYNC_ID_1));
         when(mTabGroupSyncService.getGroup(SYNC_ID_2)).thenReturn(openGroup);

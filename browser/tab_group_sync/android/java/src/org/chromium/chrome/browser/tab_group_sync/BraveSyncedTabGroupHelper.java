@@ -92,7 +92,7 @@ public class BraveSyncedTabGroupHelper {
         for (TabGroupId tabGroupId : tabGroupIds) {
             // A group that sync doesn't know about cannot be brought back, and closing it would
             // delete it outright, so leave it open.
-            if (tabGroupSyncService.getGroup(new LocalTabGroupId(tabGroupId.getToken())) == null) {
+            if (tabGroupSyncService.getGroup(new LocalTabGroupId(tabGroupId)) == null) {
                 continue;
             }
 

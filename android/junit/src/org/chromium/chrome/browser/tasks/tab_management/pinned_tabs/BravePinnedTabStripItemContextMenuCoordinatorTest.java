@@ -99,7 +99,7 @@ public class BravePinnedTabStripItemContextMenuCoordinatorTest {
         when(mTabModel.containsTabGroup(TabGroupId.fromRawToken(mTabGroupId))).thenReturn(true);
         SavedTabGroup savedGroup = new SavedTabGroup();
         savedGroup.syncId = SYNC_GROUP_ID;
-        savedGroup.localId = new LocalTabGroupId(mTabGroupId);
+        savedGroup.localId = new LocalTabGroupId(TabGroupId.fromRawToken(mTabGroupId));
         savedGroup.savedTabs.add(new SavedTabGroupTab());
         when(mTabGroupSyncService.getAllGroupIds()).thenReturn(new String[] {SYNC_GROUP_ID});
         when(mTabGroupSyncService.getGroup(SYNC_GROUP_ID)).thenReturn(savedGroup);
