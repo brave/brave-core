@@ -718,27 +718,6 @@ bool SidebarItemsContentsView::IsBubbleVisible() const {
   return false;
 }
 
-// bool SidebarItemsContentsView::IsMobileUserAgentMenuEntryVisibleForTesting(
-//     views::View* item_view) {
-//   view_for_context_menu_ = item_view;
-//   const bool visible = IsCommandIdVisible(kItemToggleMobileUserAgent);
-//   view_for_context_menu_ = nullptr;
-//   return visible;
-// }
-
-// bool SidebarItemsContentsView::IsOpenInPanelMenuEntryVisibleForTesting(
-//     views::View* item_view) {
-//   view_for_context_menu_ = item_view;
-//   const bool visible = IsCommandIdVisible(kItemToggleOpenInPanel);
-//   view_for_context_menu_ = nullptr;
-//   return visible;
-// }
-
-// bool SidebarItemsContentsView::IsMuteTabMenuEntryVisibleForTesting(
-//     views::View* item_view) {
-//   return IsMenuEntryVisibleForTesting(item_view, kItemToggleMuteTab);
-// }
-
 bool SidebarItemsContentsView::IsMenuEntryVisibleForTesting(
     views::View* item_view,
     ContextMenuIDs command_id) {
