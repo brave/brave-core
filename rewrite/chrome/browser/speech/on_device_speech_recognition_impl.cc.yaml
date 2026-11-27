@@ -9,45 +9,26 @@ blank_macros_for_ast_parsing: true
 
 substitutions:
   - description: |-
-      Take upstream's SODA branch for `kDictation` in `available()`.
+      Let a Brave hook answer `available()` first.
 
-      Upstream otherwise refuses `kDictation` before it asks Brave's policy,
-      unless `kOnDeviceWebSpeechSmallExpertModel` is enabled. The SODA branch
-      also reads the same language names that `install()` records for the
-      origin. The mapping only selects the branch: Brave's policy answers
-      `kCommand` and `kDictation` alike.
+      Brave serves on-device speech recognition with its own models and
+      rules. `MaybeHandleBraveOnDeviceSpeechAvailable` is declared in this
+      file's chromium_src override and defined in //brave/browser/speech.
     preempt_function_impl:
       function_name: OnDeviceSpeechRecognitionImpl::Available
-      code: |-
-        quality = ToBraveOnDeviceSpeechQuality(quality);
+      return_if: |-
+        MaybeHandleBraveOnDeviceSpeechAvailable(
+                weak_ptr_factory_.GetWeakPtr(), languages, quality, callback)
 
   - description: |-
-      Take upstream's SODA branch for `kDictation` in `install()`.
+      Let a Brave hook handle `install()` first.
 
-      The SODA branch is where `BraveSodaInstaller` installs Brave's model.
-      Upstream otherwise uses the optimization guide branch, which asks for a
-      model Brave does not ship. The mapping only selects the branch: Brave's
-      model is the same for `kCommand` and `kDictation`.
-    preempt_function_impl:
-      function_name: OnDeviceSpeechRecognitionImpl::Install
-      code: |-
-        quality = ToBraveOnDeviceSpeechQuality(quality);
-
-  - description: |-
-      Cancel `install()` in Private, Tor and Guest profiles, and otherwise ask
-      before it downloads Brave's model.
-
-      The prompt comes before upstream can start a download. Once the user
-      allows it, `Install` runs again from the top, so every upstream check
-      runs again.
-
-      Each preempt lands at the top of the body, so this one runs before the
-      `ToBraveOnDeviceSpeechQuality` mapping. That is safe, because the mapping
-      only selects upstream's branch. The prompt asks Brave's policy directly,
-      and `Install` maps the quality again when it runs again.
+      Brave serves on-device speech recognition with its own models and
+      rules. `MaybeHandleBraveOnDeviceSpeechInstall` is declared in this
+      file's chromium_src override and defined in //brave/browser/speech.
     preempt_function_impl:
       function_name: OnDeviceSpeechRecognitionImpl::Install
       return_if: |-
-        MaybePromptOrCancelBraveOnDeviceSpeechInstall(
+        MaybeHandleBraveOnDeviceSpeechInstall(
                 CanRenderFrameHostUseOnDeviceSpeechRecognition(),
                 weak_ptr_factory_.GetWeakPtr(), languages, quality, callback)

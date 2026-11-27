@@ -101,8 +101,6 @@ void PromptForBraveOnDeviceSpeechModel(
                                std::move(callback))));
 }
 
-}  // namespace
-
 // Sends `kDictation` down upstream's SODA branch, as `kCommand`, in both
 // `Available` and `Install`. That branch is where `BraveSodaInstaller` installs
 // Brave's model, and both functions must take it, so that `available()` reads
@@ -120,22 +118,36 @@ media::mojom::SpeechRecognitionQuality ToBraveOnDeviceSpeechQuality(
              : quality;
 }
 
-// Cancels `Install` in a Private, Tor or Guest profile. Otherwise prompts
-// before `Install` starts a download of Brave's model, and runs `Install` again
-// once the user allows it. Returns true when it cancels or prompts, and only
-// then takes `callback`.
+}  // namespace
+
+// Runs first in `Available`. Maps `quality` for upstream's SODA branch, and
+// lets upstream answer. Returns true only when it takes `callback`.
+bool MaybeHandleBraveOnDeviceSpeechAvailable(
+    base::WeakPtr<OnDeviceSpeechRecognitionImpl> impl,
+    const std::vector<std::string>& languages,
+    media::mojom::SpeechRecognitionQuality& quality,
+    OnDeviceSpeechRecognitionImpl::AvailableCallback& callback) {
+  quality = ToBraveOnDeviceSpeechQuality(quality);
+  return false;
+}
+
+// Runs first in `Install`. Cancels `Install` in a Private, Tor or Guest
+// profile. Otherwise prompts before `Install` starts a download of Brave's
+// model, and runs `Install` again once the user allows it. Returns true when it
+// cancels or prompts, and only then takes `callback`. Otherwise maps `quality`
+// for upstream's SODA branch, and lets upstream answer.
 // `frame_can_use_on_device_speech` is what the private
 // `CanRenderFrameHostUseOnDeviceSpeechRecognition` says, so there is no prompt
 // for a frame that upstream refuses.
 //
-// `quality` comes before `ToBraveOnDeviceSpeechQuality`. That is fine, because
-// this asks Brave's policy, not upstream's branches, and `Install` maps the
-// quality again when it runs again.
-bool MaybePromptOrCancelBraveOnDeviceSpeechInstall(
+// The prompt reads `quality` before the mapping. That is fine, because it asks
+// Brave's policy, not upstream's branches, and `Install` maps the quality again
+// when it runs again.
+bool MaybeHandleBraveOnDeviceSpeechInstall(
     bool frame_can_use_on_device_speech,
     base::WeakPtr<OnDeviceSpeechRecognitionImpl> impl,
     const std::vector<std::string>& languages,
-    media::mojom::SpeechRecognitionQuality quality,
+    media::mojom::SpeechRecognitionQuality& quality,
     OnDeviceSpeechRecognitionImpl::InstallCallback& callback) {
   content::RenderFrameHost& rfh = impl->render_frame_host();
   content::BrowserContext* context = rfh.GetBrowserContext();
@@ -144,16 +156,17 @@ bool MaybePromptOrCancelBraveOnDeviceSpeechInstall(
     std::move(callback).Run(false);
     return true;
   }
-  if (!frame_can_use_on_device_speech ||
-      !ShouldPromptForBraveOnDeviceSpeechModel(context, languages, quality)) {
-    return false;
+  if (frame_can_use_on_device_speech &&
+      ShouldPromptForBraveOnDeviceSpeechModel(context, languages, quality)) {
+    PromptForBraveOnDeviceSpeechModel(
+        rfh,
+        base::BindOnce(&OnDeviceSpeechRecognitionImpl::Install, std::move(impl),
+                       languages, quality),
+        std::move(callback));
+    return true;
   }
-  PromptForBraveOnDeviceSpeechModel(
-      rfh,
-      base::BindOnce(&OnDeviceSpeechRecognitionImpl::Install, std::move(impl),
-                     languages, quality),
-      std::move(callback));
-  return true;
+  quality = ToBraveOnDeviceSpeechQuality(quality);
+  return false;
 }
 
 }  // namespace speech
