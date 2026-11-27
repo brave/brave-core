@@ -1,0 +1,40 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
+
+assert(enable_brave_news && toolkit_views)
+
+source_set("brave_news") {
+  sources = [
+    "brave_news_bubble_controller.cc",
+    "brave_news_bubble_controller.h",
+    "brave_news_bubble_view.cc",
+    "brave_news_bubble_view.h",
+    "brave_news_feed_item_view.cc",
+    "brave_news_feed_item_view.h",
+    "brave_news_feeds_container_view.cc",
+    "brave_news_feeds_container_view.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//ui/base/metadata",
+    "//ui/gfx/geometry",
+    "//ui/views",
+    "//url",
+  ]
+
+  deps = [
+    "//brave/browser/brave_news:tab_helper",
+    "//brave/components/brave_news/common",
+    "//brave/components/resources:strings",
+    "//brave/components/vector_icons",
+    "//brave/ui/color:nala_color_id",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
+  ]
+}
