@@ -1051,14 +1051,9 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 }
 
-// Regression test for https://github.com/brave/brave-browser/issues/62143:
-// accepting the PSST infobar on one site disables it globally, so it must not
-// show again on a different PSST-supported site even though that site's own
-// per-origin shown count hasn't reached the max.
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
-                       AcceptingInfobarDisablesItGlobally) {
+                       ReviewingSuggestionsSuppressesInfobarForThatOriginOnly) {
   GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
-  ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstInfobarEnabled));
 
   const GURL url_a = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
   const GURL url_b = GetEmbeddedTestServer().GetURL("b.test", "/b_test_0.html");
@@ -1069,45 +1064,48 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
       manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
   content::CreateAndLoadWebContentsObserver new_web_contents_observer;
 
+  // 1. First visit to site a: the infobar is shown.
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url_a));
   ASSERT_TRUE(infobar_observer.WaitForInfobarAdded());
 
+  // 2. Click "Review suggestions" to open the consent dialog, then cancel it
+  // without applying any changes.
   auto* psst_infobar = GetPsstInfobar(manager);
   ASSERT_TRUE(psst_infobar);
   ClickInfobarOkButton(psst_infobar);
   ASSERT_TRUE(infobar_observer.WaitForInfobarRemoved());
 
-  // Accepting the infobar disables it globally and records the review
-  // suggestion for the accepted site.
-  EXPECT_FALSE(GetPrefs()->GetBoolean(prefs::kPsstInfobarEnabled));
-  const auto all_settings =
-      GetPsstSettingsService()->GetAllPsstWebsitesSettings();
-  const auto it_a = all_settings.find("a.test");
-  ASSERT_NE(it_a, all_settings.end());
-  EXPECT_EQ(it_a->second.infobar_review_sugg_counter, 1);
-
   auto* dialog_wc = WaitForAndGetDialogWebContents(new_web_contents_observer);
   ASSERT_TRUE(dialog_wc);
   WaitForPsstDialogUIReady(dialog_wc);
   DialogCloseObserver dialog_close_observer(dialog_wc);
-  ASSERT_TRUE(CloseModalDialog(dialog_wc));
+  ASSERT_TRUE(CancelModalDialog(dialog_wc));
   dialog_close_observer.Wait();
+  ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
 
-  // Site b's infobar has never been shown, so its own per-origin count alone
-  // would allow it, but the global pref must still suppress it.
-  EXPECT_EQ(GetPsstSettingsService()->GetInfobarShownCount(
-                url::Origin::Create(url_b)),
-            0);
+  // Opening the dialog records the review suggestion for site a, regardless
+  // of the later cancellation.
+  EXPECT_EQ(GetPsstSettingsService()->GetInfobarReviewSuggestionsCount(
+                url::Origin::Create(url_a)),
+            1);
 
-  IconLabelBubbleView* const psst_view = GetPsstPageActionView();
-  ASSERT_TRUE(psst_view);
-  ASSERT_TRUE(content::NavigateToURL(web_contents(), url_b));
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    views::test::RunScheduledLayout(psst_view);
-    return psst_view->GetVisible();
-  }));
-
+  // 3. Visiting site a again does not show the infobar: reviewing the
+  // suggestions once is enough to suppress it for that origin.
+  PsstWebContentsConsoleObserver a_revisit_console_observer(
+      web_contents(),
+      {base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_0.html")})},
+      {});
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url_a));
+  ASSERT_TRUE(a_revisit_console_observer.Wait());
+  EXPECT_TRUE(a_revisit_console_observer.CheckMessages());
   EXPECT_FALSE(GetPsstInfobar(manager));
+
+  // 4. A different PSST-supported site is unaffected and still shows the
+  // infobar on its first visit.
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url_b));
+  ASSERT_TRUE(infobar_observer.WaitForInfobarAdded());
+  EXPECT_TRUE(GetPsstInfobar(manager));
 }
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
