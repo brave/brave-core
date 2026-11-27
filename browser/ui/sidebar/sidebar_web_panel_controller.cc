@@ -13,6 +13,7 @@
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/public/shared_pinned_tab_exclusion_marker.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -115,24 +116,29 @@ void SidebarWebPanelController::OpenWebPanel(const SidebarItem& item,
   nav_params.tabstrip_index = 0;
   nav_params.tabstrip_add_types = AddTabTypes::ADD_PINNED;
 
+  // Always pre-create the WebContents, so the exclusion marker is attached
+  // before Navigate() inserts it into the tab strip. That insertion notifies
+  // TabStripModelObservers (e.g. SharedPinnedTabService) synchronously, so
+  // attaching the marker only afterwards would already be too late.
+  content::WebContents::CreateParams create_params(
+      browser_view_->browser()->GetProfile());
+  std::unique_ptr<content::WebContents> web_contents =
+      content::WebContents::Create(create_params);
+  SharedPinnedTabExclusionMarker::CreateForWebContents(web_contents.get());
+
+  content::NavigationController::LoadURLParams load_url_params(item.url);
+  load_url_params.transition_type = ui::PAGE_TRANSITION_TYPED;
   if (item.use_mobile_user_agent) {
-    content::WebContents::CreateParams create_params(
-        browser_view_->browser()->GetProfile());
-    std::unique_ptr<content::WebContents> web_contents =
-        content::WebContents::Create(create_params);
     web_contents->SetUserAgentOverride(BuildMobileUserAgentOverride(),
                                        /*override_in_new_tabs=*/false);
-
-    // Pre-create the WebContents so the mobile User-Agent override is applied
-    // before the initial navigation starts. Navigate() skips loading `url`
-    // when `contents_to_insert` is set, so start the load here.
-    content::NavigationController::LoadURLParams load_url_params(item.url);
-    load_url_params.transition_type = ui::PAGE_TRANSITION_TYPED;
     load_url_params.override_user_agent =
         content::NavigationController::UA_OVERRIDE_TRUE;
-    web_contents->GetController().LoadURLWithParams(load_url_params);
-    nav_params.contents_to_insert = std::move(web_contents);
   }
+
+  // Navigate() skips loading `url` when `contents_to_insert` is set, so start
+  // the load here.
+  web_contents->GetController().LoadURLWithParams(load_url_params);
+  nav_params.contents_to_insert = std::move(web_contents);
 
   Navigate(&nav_params);
   panel_contents_ = nav_params.navigated_or_inserted_contents.get();

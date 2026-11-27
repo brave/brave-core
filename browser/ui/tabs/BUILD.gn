@@ -62,10 +62,12 @@ source_set("tabs_public") {
     sources += [
       "public/before_unload_ignore_controller.h",
       "public/closing_last_tab_controller.h",
+      "public/shared_pinned_tab_exclusion_marker.h",
       "public/tab_cycling_controller.h",
     ]
     public_deps += [
       "//chrome/browser/ui/tabs:tab_strip_model_observer",
+      "//content/public/browser",
       "//ui/events",
       "//ui/views",
     ]
@@ -80,6 +82,7 @@ if (!is_android) {
       "before_unload_ignore_controller.cc",
       "brave_tab_features.cc",
       "closing_last_tab_controller.cc",
+      "shared_pinned_tab_exclusion_marker.cc",
       "shared_pinned_tab_utils.cc",
       "tab_cycling_controller.cc",
       "vertical_tab_controller.cc",
