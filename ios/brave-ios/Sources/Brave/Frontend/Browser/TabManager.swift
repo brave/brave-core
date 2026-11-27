@@ -85,6 +85,8 @@ class TabManager: NSObject {
   /// persisted group is left untouched, so tabs are shown ungrouped.
   var isTabGroupsEnabled = FeatureList.kTabGroupsEnabled.enabled
   private var groupIDsByTabID: [TabState.ID: TabGroup.ID] = [:]
+  /// Sync ids for regular tabs in this window. An id already recorded is left as it is.
+  private var syncTabIDsByTabID: [TabState.ID: Int32] = [:]
 
   private var _selectedIndex = -1
   private(set) var isRestoring = false
@@ -209,6 +211,22 @@ class TabManager: NSObject {
   /// A `LocalTabID` for a regular tab. Private tabs are not synced, so they stay at 0.
   private func syncTabID(isPrivate: Bool) -> Int32 {
     isPrivate ? 0 : TabGroupSyncID.makeSyncTabID()
+  }
+
+  /// The sync id to store for `tab`. A private tab stays at 0. An id already recorded, or already
+  /// saved on the `SessionTab`, is reused.
+  private func syncTabID(for tab: some TabState) -> Int32 {
+    guard !tab.isPrivate else { return 0 }
+    if let syncTabID = syncTabIDsByTabID[tab.id], syncTabID > 0 {
+      return syncTabID
+    }
+    if let saved = SessionTab.from(tabId: tab.id), !saved.isPrivate, saved.syncTabId > 0 {
+      syncTabIDsByTabID[tab.id] = saved.syncTabId
+      return saved.syncTabId
+    }
+    let created = syncTabID(isPrivate: false)
+    syncTabIDsByTabID[tab.id] = created
+    return created
   }
 
   /// Tabs listed in the tab bar. The selected tab's group replaces the full list
@@ -602,6 +620,8 @@ class TabManager: NSObject {
       return
     }
 
+    let previousGroupOrder = syncedGroupOrders(containing: [tab])
+
     // Make sure to save the selected tab before updating the tabs list
     let previouslySelectedTab = selectedTab
 
@@ -615,6 +635,7 @@ class TabManager: NSObject {
     }
 
     saveTabOrder()
+    pushGroupReorders(from: previousGroupOrder)
   }
 
   func moveTabs(_ tabs: [TabState.ID], toIndex index: Int) {
@@ -626,6 +647,8 @@ class TabManager: NSObject {
     let isPrivate = tabsToMove.first?.isPrivate ?? false
 
     guard !tabsToMove.isEmpty, tabsToMove.allSatisfy({ $0.isPrivate == isPrivate }) else { return }
+
+    let previousGroupOrder = syncedGroupOrders(containing: tabsToMove)
 
     // Save the selected tab before updating the tabs list
     let previouslySelectedTab = selectedTab
@@ -665,6 +688,7 @@ class TabManager: NSObject {
     }
 
     saveTabOrder()
+    pushGroupReorders(from: previousGroupOrder)
   }
 
   private func saveTabOrder() {
@@ -709,7 +733,7 @@ class TabManager: NSObject {
         title: Strings.newTab,
         tabURL: request?.url ?? TabManager.ntpInteralURL,
         isPrivate: isPrivate,
-        syncTabId: syncTabID(isPrivate: isPrivate)
+        syncTabId: syncTabID(for: tab)
       )
     }
 
@@ -1565,6 +1589,13 @@ class TabManager: NSObject {
 
     var tabToSelect: (any TabState)?
     for savedTab in savedTabs {
+      if !savedTab.isPrivate {
+        let assignedSyncTabID =
+          savedTab.syncTabId > 0 ? savedTab.syncTabId : (missingSyncTabIDs[savedTab.tabId] ?? 0)
+        if assignedSyncTabID > 0 {
+          syncTabIDsByTabID[savedTab.tabId] = assignedSyncTabID
+        }
+      }
       if let tabURL = savedTab.url {
         // Provide an empty request to prevent a new tab from loading the home screen
         let request =
@@ -1854,7 +1885,9 @@ extension TabManager {
 
     let group = TabGroup(id: UUID(), title: title)
     tabGroups.append(group)
-    assign(tabs, to: group)
+    let departures = assign(tabs, to: group)
+    pushDepartures(departures)
+    pushAddedGroup(group)
     SessionTabGroup.create(
       groupId: group.id,
       windowId: windowId,
@@ -1870,7 +1903,13 @@ extension TabManager {
     let tabs = groupableTabs(from: tabs)
     guard !tabs.isEmpty, tabGroups.contains(group) else { return }
 
-    assign(tabs, to: group)
+    let newcomerIDs = Set(tabs.map(\.id)).subtracting(self.tabs(in: group).map(\.id))
+    let departures = assign(tabs, to: group)
+    pushDepartures(departures)
+    for (index, member) in syncMembers(of: group.id).enumerated()
+    where newcomerIDs.contains(member.tab.id) {
+      pushAddedTab(member, to: group.id, at: index)
+    }
     SessionTabGroup.add(tabIds: tabs.map(\.id), toGroup: group.id)
     delegates.forEach { $0.get()?.tabManagerDidChangeTabGroups(self) }
   }
@@ -1884,6 +1923,13 @@ extension TabManager {
 
     tabGroups[index].title = title
     SessionTabGroup.rename(groupId: group.id, title: title)
+    let visual = storedGroupVisualData(group.id)
+    TabGroupSyncPush.updateVisualData(
+      forGroupID: group.id,
+      title: title,
+      color: visual.color,
+      collapsed: visual.collapsed
+    )
     delegates.forEach { $0.get()?.tabManagerDidChangeTabGroups(self) }
   }
 
@@ -1896,6 +1942,10 @@ extension TabManager {
     let tabID = UUID()
     groupIDsByTabID[tabID] = group.id
     let tab = addTab(afterTab: tabs(in: group).last, id: tabID, isPrivate: false)
+    let members = syncMembers(of: group.id)
+    if let index = members.firstIndex(where: { $0.tab.id == tab.id }) {
+      pushAddedTab(members[index], to: group.id, at: index)
+    }
     SessionTabGroup.add(tabIds: [tab.id], toGroup: group.id)
     selectTab(tab)
     delegates.forEach { $0.get()?.tabManagerDidChangeTabGroups(self) }
@@ -1906,18 +1956,31 @@ extension TabManager {
   func ungroupTabs(in group: TabGroup) {
     guard tabGroups.contains(group) else { return }
 
+    let members = syncMembers(of: group.id)
     groupIDsByTabID = groupIDsByTabID.filter { $0.value != group.id }
     tabGroups.removeAll(where: { $0.id == group.id })
+    for member in members {
+      TabGroupSyncPush.removeTab(withSyncTabID: member.syncTabID, groupID: group.id)
+    }
+    TabGroupSyncPush.removeGroup(withID: group.id)
     SessionTabGroup.delete(groupId: group.id)
     delegates.forEach { $0.get()?.tabManagerDidChangeTabGroups(self) }
   }
 
   /// Drops a closed tab's membership, and its group if it was the last tab. Persisted state is
-  /// handled when the `SessionTab` is deleted.
+  /// handled when the `SessionTab` is deleted. A tab that moves to another window leaves its group
+  /// through here as well.
   func removeFromTabGroup(_ tab: some TabState) {
     guard let groupID = groupIDsByTabID.removeValue(forKey: tab.id) else { return }
-    if !groupIDsByTabID.values.contains(groupID) {
+    let groupIsEmpty = !groupIDsByTabID.values.contains(groupID)
+    if groupIsEmpty {
       tabGroups.removeAll(where: { $0.id == groupID })
+    }
+    if let syncTabID = syncTabIDsByTabID[tab.id], syncTabID > 0, !tab.isPrivate {
+      TabGroupSyncPush.removeTab(withSyncTabID: syncTabID, groupID: groupID)
+    }
+    if groupIsEmpty {
+      TabGroupSyncPush.removeGroup(withID: groupID)
     }
   }
 
@@ -1949,9 +2012,18 @@ extension TabManager {
     return tabs.filter { tab in !tab.isPrivate && allTabs.contains(where: { $0 === tab }) }
   }
 
-  private func assign(_ tabs: [any TabState], to group: TabGroup) {
+  private func assign(
+    _ tabs: [any TabState],
+    to group: TabGroup
+  ) -> [(
+    tab: any TabState, groupID: TabGroup.ID
+  )] {
     let previousGroupIDs = Set(tabs.compactMap { groupIDsByTabID[$0.id] })
+    var departures: [(tab: any TabState, groupID: TabGroup.ID)] = []
     for tab in tabs {
+      if let previous = groupIDsByTabID[tab.id], previous != group.id {
+        departures.append((tab, previous))
+      }
       groupIDsByTabID[tab.id] = group.id
     }
     // A group emptied by moving its tabs out goes away
@@ -1959,6 +2031,95 @@ extension TabManager {
     tabGroups.removeAll(where: {
       previousGroupIDs.contains($0.id) && !remainingGroupIDs.contains($0.id)
     })
+    return departures
+  }
+
+  /// Tabs with a sync id, in window order. Private tabs and `0` are omitted.
+  private func syncMembers(of groupID: TabGroup.ID) -> [(tab: any TabState, syncTabID: Int32)] {
+    allTabs.compactMap { tab in
+      guard groupIDsByTabID[tab.id] == groupID, !tab.isPrivate else { return nil }
+      let syncTabID = syncTabIDsByTabID[tab.id] ?? 0
+      guard syncTabID > 0 else { return nil }
+      return (tab, syncTabID)
+    }
+  }
+
+  private func storedGroupVisualData(_ groupID: TabGroup.ID) -> (color: Int16, collapsed: Bool) {
+    guard
+      let saved = SessionTabGroup.all(windowId: windowId).first(where: { $0.groupId == groupID })
+    else { return (0, false) }
+    return (saved.resolvedColor, saved.collapsed)
+  }
+
+  private func pushAddedGroup(_ group: TabGroup) {
+    let members = syncMembers(of: group.id)
+    guard !members.isEmpty else { return }
+    let visual = storedGroupVisualData(group.id)
+    let tabs = members.enumerated().map { index, member in
+      TabGroupSyncTab(
+        syncTabID: member.syncTabID,
+        title: member.tab.displayTitle,
+        url: member.tab.visibleURL ?? TabManager.ntpInteralURL,
+        index: index
+      )
+    }
+    TabGroupSyncPush.addGroup(withID: group.id, title: group.title, color: visual.color, tabs: tabs)
+  }
+
+  private func pushAddedTab(
+    _ member: (tab: any TabState, syncTabID: Int32),
+    to groupID: TabGroup.ID,
+    at index: Int
+  ) {
+    TabGroupSyncPush.addTab(
+      withSyncTabID: member.syncTabID,
+      groupID: groupID,
+      title: member.tab.displayTitle,
+      url: member.tab.visibleURL ?? TabManager.ntpInteralURL,
+      index: index
+    )
+  }
+
+  /// `RemoveTab` for each tab that left a group, then `RemoveGroup` when that group has no tabs left.
+  /// Removing the last tab does not delete the saved group on its own.
+  private func pushDepartures(_ departures: [(tab: any TabState, groupID: TabGroup.ID)]) {
+    for departure in departures {
+      guard let syncTabID = syncTabIDsByTabID[departure.tab.id], syncTabID > 0,
+        !departure.tab.isPrivate
+      else { continue }
+      TabGroupSyncPush.removeTab(withSyncTabID: syncTabID, groupID: departure.groupID)
+    }
+    let emptied = Set(departures.map(\.groupID)).filter { groupID in
+      !groupIDsByTabID.values.contains(groupID)
+    }
+    for groupID in emptied {
+      TabGroupSyncPush.removeGroup(withID: groupID)
+    }
+  }
+
+  private func syncedGroupOrders(containing tabs: [any TabState]) -> [TabGroup.ID: [Int32]] {
+    var orders: [TabGroup.ID: [Int32]] = [:]
+    for tab in tabs {
+      guard let groupID = groupIDsByTabID[tab.id], orders[groupID] == nil else { continue }
+      orders[groupID] = syncMembers(of: groupID).map(\.syncTabID)
+    }
+    return orders
+  }
+
+  private func pushGroupReorders(from previousOrders: [TabGroup.ID: [Int32]]) {
+    for (groupID, before) in previousOrders {
+      let after = syncMembers(of: groupID).map(\.syncTabID)
+      guard before.count == after.count, before != after else { continue }
+      var current = before
+      for index in after.indices {
+        if current[index] == after[index] { continue }
+        let syncTabID = after[index]
+        guard let from = current.firstIndex(of: syncTabID) else { continue }
+        current.remove(at: from)
+        current.insert(syncTabID, at: index)
+        TabGroupSyncPush.moveTab(withSyncTabID: syncTabID, groupID: groupID, toIndex: index)
+      }
+    }
   }
 }
 

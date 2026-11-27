@@ -19,6 +19,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/uuid.h"
 #include "brave/ios/browser/saved_tab_groups/brave_tab_group_sync_delegate.h"
+#include "brave/ios/browser/saved_tab_groups/brave_tab_group_sync_model.h"
 #include "brave/ios/browser/saved_tab_groups/saved_tab_url.h"
 #include "brave/ios/browser/saved_tab_groups/tab_group_id.h"
 #include "brave/ios/browser/saved_tab_groups/tab_group_sync_bridge.h"
