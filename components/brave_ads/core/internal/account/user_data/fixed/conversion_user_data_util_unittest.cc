@@ -40,4 +40,68 @@ TEST_F(BraveAdsConversionUserDataUtilTest, BuildConversionActionTypeUserData) {
             BuildConversionActionTypeUserData(conversion));
 }
 
+TEST_F(BraveAdsConversionUserDataUtilTest,
+       BuildConversionOrderUserDataWithIdValueAndCurrency) {
+  // Arrange
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/false);
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
+  ConversionInfo conversion = BuildConversion(ad_event);
+  conversion.extracted_order.id = "336121537";
+  conversion.extracted_order.value = "4,98";
+  conversion.extracted_order.currency = "EUR";
+
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"JSON(
+                    {
+                      "order": {
+                        "id": "336121537",
+                        "value": "4,98",
+                        "currency": "EUR"
+                      }
+                    })JSON"),
+            MaybeBuildConversionOrderUserData(conversion));
+}
+
+// A value selector can resolve to a bare total with no currency marker nearby,
+// leaving `order.currency` with no value despite a found `order.value`.
+TEST_F(BraveAdsConversionUserDataUtilTest,
+       BuildConversionOrderUserDataWithValueButNoCurrency) {
+  // Arrange
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/false);
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
+  ConversionInfo conversion = BuildConversion(ad_event);
+  conversion.extracted_order.value = "42,42";
+
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"JSON(
+                    {
+                      "order": {
+                        "value": "42,42"
+                      }
+                    })JSON"),
+            MaybeBuildConversionOrderUserData(conversion));
+}
+
+TEST_F(BraveAdsConversionUserDataUtilTest,
+       DoesNotBuildConversionOrderUserDataIfNeitherIdNorValueSet) {
+  // Arrange
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/false);
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
+  const ConversionInfo conversion = BuildConversion(ad_event);
+
+  // Act & Assert
+  EXPECT_FALSE(MaybeBuildConversionOrderUserData(conversion));
+}
+
 }  // namespace brave_ads
