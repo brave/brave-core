@@ -125,10 +125,13 @@ function ConversationEntries(props: ConversationEntriesProps) {
     if (!state.conversationUuid) {
       return
     }
-    setIframeSrc(
-      `chrome-untrusted://leo-ai-conversation-entries/${state.conversationUuid}`,
-    )
-  }, [state.conversationUuid])
+    // A thread frame uses the /<conversationUuid>/<threadUuid> path so the
+    // untrusted frame knows to render just the thread's history.
+    const path = props.threadUuid
+      ? `${state.conversationUuid}/${props.threadUuid}`
+      : state.conversationUuid
+    setIframeSrc(`chrome-untrusted://leo-ai-conversation-entries/${path}`)
+  }, [state.conversationUuid, props.threadUuid])
 
   return (
     <div className={props.className}>

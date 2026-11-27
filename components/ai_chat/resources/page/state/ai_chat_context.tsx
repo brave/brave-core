@@ -14,6 +14,9 @@ import { initiallyTabAssociated } from './active_chat_context'
 export interface ConversationEntriesProps {
   /* Class to put on the element in order to customize scroll */
   className: string
+  /* When set, render a single thread's entries rather than the whole
+   * conversation. */
+  threadUuid?: string
 }
 
 type AIChatContextProps = {

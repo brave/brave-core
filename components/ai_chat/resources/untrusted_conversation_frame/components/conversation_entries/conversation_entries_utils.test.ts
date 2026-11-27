@@ -7,6 +7,7 @@ import * as Mojom from '../../../common/mojom'
 import {
   getGroupAllowedLinks,
   getReasoningText,
+  getThreadOriginConversationGroup,
   removeReasoning,
   removeCitationsWithMissingLinks,
   normalizeCitationSpacing,
@@ -119,6 +120,62 @@ describe('groupConversationEntries', () => {
     expect(groupedEntries[0]).toEqual([assistantTurn1])
     expect(groupedEntries[1]).toEqual([humanTurn1])
     expect(groupedEntries[2]).toEqual([assistantTurn2])
+  })
+})
+
+describe('getThreadOriginConversationGroup', () => {
+  const human = (uuid: string) =>
+    createConversationTurnWithDefaults({
+      uuid,
+      characterType: Mojom.CharacterType.HUMAN,
+    })
+  const assistant = (uuid: string) =>
+    createConversationTurnWithDefaults({
+      uuid,
+      characterType: Mojom.CharacterType.ASSISTANT,
+    })
+
+  const makeThread = (originConversationEntryUuid: string): Mojom.Thread => ({
+    uuid: 'thread-1',
+    conversationUuid: 'conversation-1',
+    originConversationEntryUuid,
+    totalTokens: BigInt(0),
+    trimmedTokens: BigInt(0),
+    entryCount: 0,
+  })
+
+  const history = [
+    human('h1'),
+    assistant('a1'),
+    human('h2'),
+    assistant('a2'),
+    assistant('a3'),
+  ]
+
+  it('returns null without root history', () => {
+    expect(getThreadOriginConversationGroup(null, makeThread('a1'))).toBeNull()
+  })
+
+  it('returns null without a thread', () => {
+    expect(getThreadOriginConversationGroup(history, undefined)).toBeNull()
+  })
+
+  it('returns null when the origin entry is not in the history', () => {
+    expect(
+      getThreadOriginConversationGroup(history, makeThread('missing')),
+    ).toBeNull()
+  })
+
+  it('returns only the assistant group containing the origin entry', () => {
+    expect(getThreadOriginConversationGroup(history, makeThread('a1'))).toEqual(
+      [history[1]],
+    )
+  })
+
+  it('returns the whole group when the origin is its last entry', () => {
+    expect(getThreadOriginConversationGroup(history, makeThread('a3'))).toEqual(
+      [history[3], history[4]],
+    )
   })
 })
 

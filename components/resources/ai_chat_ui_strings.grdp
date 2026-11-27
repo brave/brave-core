@@ -60,8 +60,14 @@
   <message name="IDS_CHAT_UI_THREAD_EMPTY_LABEL" desc="Label for a button that opens a conversation thread that has no replies yet" formatter_data="webui=AiChat">
     New thread
   </message>
+  <message name="IDS_CHAT_UI_THREAD_TITLE" desc="Title of the conversation thread side panel" formatter_data="webui=AiChat">
+    Thread
+  </message>
   <message name="IDS_CHAT_UI_CREATE_THREAD_BUTTON_LABEL" desc="Button title to start a new conversation thread branching from an answer" formatter_data="webui=AiChat">
     Start thread
+  </message>
+  <message name="IDS_CHAT_UI_CLOSE_BUTTON_LABEL" desc="Button title to close a panel" formatter_data="webui=AiChat">
+    Close
   </message>
   <message name="IDS_CHAT_UI_SUMMARIZE_VIDEO" desc="Button to summarize the video on the current page" formatter_data="webui=AiChat">
     Summarize this video

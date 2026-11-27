@@ -452,6 +452,47 @@ describe('ActiveChatProvider when the bound conversation is deleted', () => {
   })
 })
 
+describe('ActiveChatProvider when a thread is removed', () => {
+  it('closes the thread panel if the removed thread is open', async () => {
+    const { detailsRef } = await renderProvider({
+      isGlobalPanel: false,
+      selectedConversationId: 'standalone-uuid',
+    })
+
+    act(() => {
+      detailsRef.current!.openThread('thread-1')
+    })
+    expect(detailsRef.current!.openThreadUuid).toBe('thread-1')
+
+    act(() => {
+      uiObservers
+        .get('standalone-uuid')!
+        .onConversationThreadRemoved('thread-1')
+    })
+
+    expect(detailsRef.current!.openThreadUuid).toBeUndefined()
+  })
+
+  it('leaves the thread panel open when another thread is removed', async () => {
+    const { detailsRef } = await renderProvider({
+      isGlobalPanel: false,
+      selectedConversationId: 'standalone-uuid',
+    })
+
+    act(() => {
+      detailsRef.current!.openThread('thread-1')
+    })
+
+    act(() => {
+      uiObservers
+        .get('standalone-uuid')!
+        .onConversationThreadRemoved('thread-2')
+    })
+
+    expect(detailsRef.current!.openThreadUuid).toBe('thread-1')
+  })
+})
+
 describe('ActiveChatProvider createNewConversationWithWorkspace', () => {
   const workspaceUrl = {
     url: 'workspace://1b4e28ba-2fa1-41d2-883f-0016d3cca427',
