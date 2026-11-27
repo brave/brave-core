@@ -312,6 +312,20 @@ void AdsServiceImplIOS::TriggerSearchResultAdEvent(
                                    mojom_ad_event_type, std::move(callback));
 }
 
+void AdsServiceImplIOS::MaybeGetOrderPatterns(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    std::optional<std::string> detected_language,
+    MaybeGetOrderPatternsCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*mojom_order_patterns=*/{});
+  }
+
+  ads_->MaybeGetOrderPatterns(tab_id, redirect_chain,
+                              std::move(detected_language),
+                              std::move(callback));
+}
+
 void AdsServiceImplIOS::PurgeOrphanedAdEventsForType(
     mojom::AdType mojom_ad_type,
     ResultCallback callback) {

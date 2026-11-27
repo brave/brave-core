@@ -191,6 +191,11 @@ interface BatAds {
       brave_ads.mojom.SearchResultAdEventType mojom_ad_event_type) =>
           (bool success);
 
+  MaybeGetOrderPatterns(int32 tab_id,
+                        array<url.mojom.Url> redirect_chain,
+                        string? detected_language) =>
+      (brave_ads.mojom.OrderExtractionPatternsInfo? order_patterns);
+
   PurgeOrphanedAdEventsForType(brave_ads.mojom.AdType mojom_ad_type) =>
       (bool success);
 
