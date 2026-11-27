@@ -33,6 +33,10 @@ const observer = {
     store.dispatch(Actions.smartProxyRoutingStateChanged(enabled))
   },
 
+  onAllowLanTrafficStateChanged: (enabled: boolean) => {
+    store.dispatch(Actions.allowLanTrafficStateChanged(enabled))
+  },
+
   onPurchasedStateChanged: (state: PurchasedState, description: string) => {
     switch (state) {
       case PurchasedState.PURCHASED:

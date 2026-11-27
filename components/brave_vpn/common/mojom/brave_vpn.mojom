@@ -38,6 +38,9 @@ interface ServiceObserver {
   [EnableIfNot=is_android]
   OnSmartProxyRoutingStateChanged(bool enabled);
 
+  [EnableIfNot=is_android]
+  OnAllowLanTrafficStateChanged(bool enabled);
+
   OnPurchasedStateChanged(PurchasedState state, string? description);
 
   // V2-specific: fired on every agent connection or launch failure, including

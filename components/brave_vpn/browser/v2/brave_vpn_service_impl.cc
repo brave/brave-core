@@ -351,7 +351,10 @@ void BraveVpnServiceImpl::OnSmartProxyRoutingStateChanged(bool enabled) {
 void BraveVpnServiceImpl::OnAllowLanTrafficStateChanged(bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(agent_state_);
-  agent_state_->allow_lan_traffic_enabled = enabled;
+  if (agent_state_->allow_lan_traffic_enabled != enabled) {
+    agent_state_->allow_lan_traffic_enabled = enabled;
+    NotifyAllowLanTrafficStateChanged(enabled);
+  }
 }
 
 void BraveVpnServiceImpl::OnLastHostnameChanged(const std::string& hostname) {

@@ -69,6 +69,7 @@ export function createVpnStore() {
     onPurchasedStateChanged: updateConnectionInfo,
     onAutoReconnectStateChanged: (enabled: boolean) => {},
     onSmartProxyRoutingStateChanged: (enabled: boolean) => {},
+    onAllowLanTrafficStateChanged: (enabled: boolean) => {},
     onAgentFailure: () => {},
   })
 

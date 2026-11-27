@@ -16,6 +16,7 @@ type RootState = {
   outOfCredentials: boolean
   autoReconnectEnabled: boolean
   smartProxyRoutingEnabled: boolean
+  allowLanTrafficEnabled: boolean
   isReconnectingToAgent: boolean
   connectionStatus: ConnectionState
   regions: Region[]
@@ -32,6 +33,7 @@ const defaultState: RootState = {
   outOfCredentials: false,
   autoReconnectEnabled: false,
   smartProxyRoutingEnabled: false,
+  allowLanTrafficEnabled: false,
   isReconnectingToAgent: false,
   connectionStatus: ConnectionState.DISCONNECTED,
   regions: [],
@@ -124,6 +126,13 @@ reducer.on(Actions.smartProxyRoutingStateChanged, (state, payload): RootState =>
   return {
     ...state,
     smartProxyRoutingEnabled: payload
+  }
+})
+
+reducer.on(Actions.allowLanTrafficStateChanged, (state, payload): RootState => {
+  return {
+    ...state,
+    allowLanTrafficEnabled: payload
   }
 })
 

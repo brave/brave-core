@@ -72,6 +72,7 @@ class FakeBraveVpnService : public BraveVpnService {
 
   // Re-expose the protected notification helpers and Shutdown for tests.
   using BraveVpnService::NotifyAgentFailure;
+  using BraveVpnService::NotifyAllowLanTrafficStateChanged;
   using BraveVpnService::NotifyAutoReconnectStateChanged;
   using BraveVpnService::NotifyConnectionStateChanged;
   using BraveVpnService::NotifySelectedRegionChanged;

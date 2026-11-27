@@ -32,6 +32,8 @@ const observer = {
 
   onSmartProxyRoutingStateChanged: (enabled: boolean) => {},
 
+  onAllowLanTrafficStateChanged: (enabled: boolean) => {},
+
   onAgentFailure: () => {},
 }
 

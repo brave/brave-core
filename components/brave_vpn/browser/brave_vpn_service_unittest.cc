@@ -77,6 +77,11 @@ class TestServiceObserver : public mojom::ServiceObserver {
     MaybeQuit(smart_proxy_quit_);
   }
 
+  void OnAllowLanTrafficStateChanged(bool enabled) override {
+    allow_lan_traffic_calls_.push_back(enabled);
+    MaybeQuit(allow_lan_traffic_quit_);
+  }
+
   void OnAgentFailure() override {}
 #endif
 
@@ -103,6 +108,9 @@ class TestServiceObserver : public mojom::ServiceObserver {
   const std::vector<bool>& smart_proxy_calls() const {
     return smart_proxy_calls_;
   }
+  const std::vector<bool>& allow_lan_traffic_calls() const {
+    return allow_lan_traffic_calls_;
+  }
 
   void WaitForNextConnectionStateCall() {
     base::RunLoop loop;
@@ -124,6 +132,11 @@ class TestServiceObserver : public mojom::ServiceObserver {
     smart_proxy_quit_ = loop.QuitClosure();
     loop.Run();
   }
+  void WaitForNextAllowLanTrafficCall() {
+    base::RunLoop loop;
+    allow_lan_traffic_quit_ = loop.QuitClosure();
+    loop.Run();
+  }
 #endif
 
  private:
@@ -143,10 +156,12 @@ class TestServiceObserver : public mojom::ServiceObserver {
   std::vector<mojom::RegionPtr> selected_region_calls_;
   std::vector<bool> auto_reconnect_calls_;
   std::vector<bool> smart_proxy_calls_;
+  std::vector<bool> allow_lan_traffic_calls_;
   base::OnceClosure connection_state_quit_;
   base::OnceClosure selected_region_quit_;
   base::OnceClosure auto_reconnect_quit_;
   base::OnceClosure smart_proxy_quit_;
+  base::OnceClosure allow_lan_traffic_quit_;
 #endif
 };
 
@@ -386,6 +401,23 @@ TEST_F(BraveVpnServiceTest,
   ASSERT_EQ(observer.smart_proxy_calls().size(), 2u);
   EXPECT_TRUE(observer.smart_proxy_calls()[0]);
   EXPECT_FALSE(observer.smart_proxy_calls()[1]);
+}
+
+// Allow LAN traffic state changes should propagate the boolean unchanged in
+// both directions.
+TEST_F(BraveVpnServiceTest,
+       NotifyAllowLanTrafficStateChangedDeliversBothStates) {
+  TestServiceObserver observer;
+  service()->AddObserver(observer.BindAndGetRemote());
+
+  service()->NotifyAllowLanTrafficStateChanged(true);
+  observer.WaitForNextAllowLanTrafficCall();
+  service()->NotifyAllowLanTrafficStateChanged(false);
+  observer.WaitForNextAllowLanTrafficCall();
+
+  ASSERT_EQ(observer.allow_lan_traffic_calls().size(), 2u);
+  EXPECT_TRUE(observer.allow_lan_traffic_calls()[0]);
+  EXPECT_FALSE(observer.allow_lan_traffic_calls()[1]);
 }
 
 // On desktop, Shutdown clears bound receivers, which must disconnect the
