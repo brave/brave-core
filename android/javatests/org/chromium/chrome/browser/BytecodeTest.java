@@ -207,7 +207,6 @@ import org.chromium.components.embedder_support.contextmenu.ContextMenuItemDeleg
 import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
-import org.chromium.components.feature_engagement.Tracker;
 import org.chromium.components.messages.ManagedMessageDispatcher;
 import org.chromium.components.offline_items_collection.OfflineItem;
 import org.chromium.components.omnibox.AutocompleteMatch;
@@ -637,16 +636,6 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         boolean.class,
                         Tab.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/ui/default_browser_promo/DefaultBrowserPromoUtils", // presubmit: ignore-long-line
-                        "prepareLaunchPromoIfNeeded",
-                        MethodModifier.REGULAR,
-                        boolean.class,
-                        Activity.class,
-                        WindowAndroid.class,
-                        Tracker.class,
-                        int.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
