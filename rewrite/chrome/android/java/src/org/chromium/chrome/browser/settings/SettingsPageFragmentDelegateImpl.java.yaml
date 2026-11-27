@@ -8,11 +8,11 @@ substitutions:
       Import Brave's settings search coordinator next to upstream's, which is
       still referenced as the field type.
     regex:
-      re_pattern: |-
-        (import org\.chromium\.chrome\.browser\.settings\.search\.)(SettingsSearchCoordinator;)
+      pattern: |-
+        import org.chromium.chrome.browser.settings.search.SettingsSearchCoordinator;
       replace: |-
-        \1Brave\2
-        \1\2
+        import org.chromium.chrome.browser.settings.search.BraveSettingsSearchCoordinator;
+        import org.chromium.chrome.browser.settings.search.SettingsSearchCoordinator;
   - description: |-
       Instantiate Brave's settings search coordinator for Settings in a tab,
       matching SettingsActivity.
