@@ -553,12 +553,11 @@ ContentsContainerView* BraveMultiContentsView::GetContentsContainerViewFor(
   return MultiContentsView::GetContentsContainerViewFor(web_contents);
 }
 
-base::AutoReset<bool> BraveMultiContentsView::IgnoreWebPanelActiveForScope()
-    const {
+base::AutoReset<bool> BraveMultiContentsView::IgnoreWebPanelActiveForScope() {
   return base::AutoReset<bool>(&ignore_web_panel_active_, true);
 }
 
-ContentsWebView* BraveMultiContentsView::GetMainContentsView() const {
+ContentsWebView* BraveMultiContentsView::GetMainContentsView() {
   auto ignore_web_panel = IgnoreWebPanelActiveForScope();
   return GetActiveContentsView();
 }

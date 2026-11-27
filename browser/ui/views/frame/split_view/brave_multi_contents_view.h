@@ -106,10 +106,10 @@ class BraveMultiContentsView : public MultiContentsView {
   // the web panel weren't active, i.e. they resolve to the real split/single
   // pane instead of the panel. Lets callers that need the non-panel pane
   // reuse the normal accessors.
-  base::AutoReset<bool> IgnoreWebPanelActiveForScope() const;
+  base::AutoReset<bool> IgnoreWebPanelActiveForScope();
 
   // The non-panel pane.
-  ContentsWebView* GetMainContentsView() const;
+  ContentsWebView* GetMainContentsView();
 
   // Makes the split's other pane the main one. SidebarWebPanelController
   // calls this when the main slot's tab is closing while the panel's tab
@@ -189,9 +189,8 @@ class BraveMultiContentsView : public MultiContentsView {
   bool is_web_panel_active_ = false;
 
   // Set by IgnoreWebPanelActiveForScope() to make the active-view accessors
-  // ignore |is_web_panel_active_| for the duration of the scope. Mutable
-  // because the accessors it affects are const.
-  mutable bool ignore_web_panel_active_ = false;
+  // ignore |is_web_panel_active_| for the duration of the scope.
+  bool ignore_web_panel_active_ = false;
   raw_ptr<BraveContentsContainerView> contents_container_view_for_web_panel_ =
       nullptr;
   raw_ptr<views::ResizeArea> web_panel_resize_area_ = nullptr;
