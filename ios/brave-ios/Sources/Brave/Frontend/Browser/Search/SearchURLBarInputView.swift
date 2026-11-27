@@ -31,10 +31,18 @@ class SearchURLBarInputView: UIView {
 
   weak var actionDelegate: SearchURLBarInputViewDelegate?
 
+  var isUsingBottomBar: Bool = false {
+    didSet {
+      updateContentViewLayout()
+    }
+  }
+
   private let privateBrowsingManager: PrivateBrowsingManager
   private let speechRecognizer: SpeechRecognizer
 
   let textField: AutocompleteTextField
+
+  private let contentView: UIView = .init()
 
   private lazy var searchImageView = UIImageView().then {
     $0.image = UIImage(braveSystemNamed: "leo.search", compatibleWith: nil)
@@ -187,31 +195,13 @@ class SearchURLBarInputView: UIView {
 
     locationContainer.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
-    // We need to create a small container view here to avoid corner adaption on iOS 26 from basing
-    // its required horizontal spacing based on the SearchURLBarInputView itself being constrained
-    // in the safe area (so that the background can render all the way to the edge). We then use
-    // this containers layout guide instead of the main views.
-    let contentView = UIView()
-    contentView.layoutMargins = .init(vertical: 8, horizontal: 12)
+    // The contents are placed in a container view inset from this view's edges so that the
+    // background can render all the way to the edges of the screen.
     addSubview(contentView)
     contentView.addSubview(mainStackView)
     mainStackView.addArrangedSubview(locationContainer)
     mainStackView.addArrangedSubview(cancelButton)
 
-    contentView.snp.makeConstraints {
-      $0.edges.equalTo(safeAreaLayoutGuide)
-    }
-
-    mainStackView.snp.makeConstraints {
-      if #available(iOS 26.0, *) {
-        $0.leading.trailing.equalTo(
-          contentView.layoutGuide(for: .margins(cornerAdaptation: .horizontal))
-        )
-      } else {
-        $0.leading.trailing.equalTo(contentView.layoutMarginsGuide)
-      }
-      $0.top.bottom.equalTo(contentView.layoutMarginsGuide)
-    }
     locationContainer.snp.makeConstraints {
       $0.height.greaterThanOrEqualTo(UX.locationHeight)
     }
@@ -228,6 +218,42 @@ class SearchURLBarInputView: UIView {
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
+  }
+
+  /// The insets applied to the contents when using a top bar
+  private var contentInsets: NSDirectionalEdgeInsets = .zero {
+    didSet {
+      if oldValue != contentInsets {
+        updateContentViewLayout()
+      }
+    }
+  }
+
+  override func updateConstraints() {
+    super.updateConstraints()
+    if !isUsingBottomBar {
+      contentInsets = topBarContentInsets
+    }
+  }
+
+  private func updateContentViewLayout() {
+    contentView.snp.remakeConstraints {
+      if !isUsingBottomBar {
+        $0.top.equalToSuperview().inset(contentInsets.top)
+        $0.leading.equalToSuperview().inset(contentInsets.leading)
+        $0.bottom.equalToSuperview().inset(contentInsets.bottom)
+        $0.trailing.equalToSuperview().inset(contentInsets.trailing)
+      } else if #available(iOS 26.0, *) {
+        $0.edges.equalTo(layoutGuide(for: .safeArea(cornerAdaptation: .horizontal)))
+      } else {
+        $0.edges.equalTo(safeAreaLayoutGuide)
+      }
+    }
+    mainStackView.snp.remakeConstraints {
+      $0.edges.equalToSuperview().inset(
+        UIEdgeInsets(top: isUsingBottomBar ? 8 : 0, left: 12, bottom: 8, right: 12)
+      )
+    }
   }
 
   private func updateForTraitCollection() {

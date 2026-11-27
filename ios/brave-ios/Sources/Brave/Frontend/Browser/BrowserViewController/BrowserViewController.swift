@@ -466,6 +466,9 @@ public class BrowserViewController: UIViewController {
     coordinator.animate(
       alongsideTransition: { context in
         self.braveTalkJitsiCoordinator.resetPictureInPictureBounds(.init(size: size))
+        if #available(iOS 27.1, *) {
+          self.setNeedsUpdateOfVerticalBarConfiguration()
+        }
       }
     )
   }
@@ -712,7 +715,7 @@ public class BrowserViewController: UIViewController {
     if #unavailable(iOS 26.0) {
       return view.safeAreaInsets.top.isZero
     }
-    return isUsingBottomBar || view.safeAreaInsets.top.isZero
+    return true
   }
 
   @available(iOS 26.0, *)
@@ -730,8 +733,10 @@ public class BrowserViewController: UIViewController {
       minViewportInset.bottom = footer.bounds.height + collapsedURLBarView.bounds.height
       maxViewportInset.bottom = footer.bounds.height + header.expandedBarStackView.bounds.height
     } else {
-      minViewportInset.top = view.safeAreaInsets.top + collapsedURLBarView.bounds.height
-      maxViewportInset.top = view.safeAreaInsets.top + header.expandedBarStackView.bounds.height
+      // The header extends to the top edge of the screen and insets its own contents, which may not
+      // match the top safe area inset
+      minViewportInset.top = header.contentInsets.top + collapsedURLBarView.bounds.height
+      maxViewportInset.top = header.contentInsets.top + header.expandedBarStackView.bounds.height
       minViewportInset.bottom = footer.bounds.height
       maxViewportInset.bottom = footer.bounds.height
     }
@@ -839,6 +844,9 @@ public class BrowserViewController: UIViewController {
           self.bottomBarKeyboardBackground.backgroundColor =
             self.privateBrowsingManager.browserColors.chromeBackground
           self.setNeedsStatusBarAppearanceUpdate()
+          if #available(iOS 27.1, *) {
+            self.setNeedsUpdateOfVerticalBarConfiguration()
+          }
         }
       }
     )
@@ -1046,6 +1054,19 @@ public class BrowserViewController: UIViewController {
     }
   }
 
+  @available(iOS 27.1, *)
+  public override var preferredVerticalBarBehavior: UIVerticalBarBehavior {
+    guard let effectiveGeometry = view.window?.windowScene?.effectiveGeometry else {
+      return .automatic
+    }
+    if view.traitCollection.horizontalSizeClass == .regular
+      || effectiveGeometry.interfaceOrientation.isLandscape
+    {
+      return .disabled
+    }
+    return .automatic
+  }
+
   override public func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = UIColor(braveSystemName: .containerBackground)
@@ -1058,7 +1079,7 @@ public class BrowserViewController: UIViewController {
     // Add views
     view.addSubview(webViewContainerBackdrop)
     view.addSubview(webViewContainer)
-    header.expandedBarStackView.addArrangedSubview(topToolbar)
+    header.barContentView = topToolbar
     header.collapsedBarContainerView.addSubview(collapsedURLBarView)
 
     addChild(tabsBar)
@@ -1399,7 +1420,7 @@ public class BrowserViewController: UIViewController {
 
   private func setupConstraints() {
     toolbarLayoutGuide.snp.makeConstraints {
-      self.toolbarTopConstraint = $0.top.equalTo(view.safeArea.top).constraint
+      self.toolbarTopConstraint = $0.top.equalTo(view).constraint
       self.toolbarBottomConstraint = $0.bottom.equalTo(view).constraint
       $0.leading.trailing.equalTo(view)
     }
@@ -1456,6 +1477,12 @@ public class BrowserViewController: UIViewController {
       )
     }
 
+    // The header is moved upwards while collapsing which alters its safe area and layout regions, so
+    // only update the insets of its contents while it is fully expanded
+    if !isUsingBottomBar, header.frame.minY == view.bounds.minY {
+      header.updateContentInsets()
+    }
+
     toolbarVisibilityViewModel.transitionDistance =
       header.expandedBarStackView.bounds.height - header.collapsedBarContainerView.bounds.height
     // Since the height of the WKWebView changes while collapsing we need to use a stable value to determine
@@ -1463,8 +1490,11 @@ public class BrowserViewController: UIViewController {
     // that safe area
     toolbarVisibilityViewModel.minimumCollapsableContentHeight =
       view.bounds.height - view.safeAreaInsets.top
+    // When using a top bar the header extends to the top edge of the screen, so exclude the space
+    // above its contents
     toolbarVisibilityViewModel.minimumCollapsableTransitionDistance =
-      header.bounds.height + footer.bounds.height
+      header.bounds.height - (isUsingBottomBar ? 0 : header.contentInsets.top)
+      + footer.bounds.height
 
     if #available(iOS 26.0, *) {
       updateWebViewObscuredInsets()
@@ -1637,7 +1667,7 @@ public class BrowserViewController: UIViewController {
         make.left.right.equalTo(self.view)
 
         if self.isUsingBottomBar {
-          make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.toolbarLayoutGuide.snp.top)
+          make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.view.safeArea.top)
         } else {
           make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.header.snp.bottom)
         }
@@ -1704,7 +1734,7 @@ public class BrowserViewController: UIViewController {
     // The home controller may change sizes if we tap the URL bar while on about:home.
     pageOverlayLayoutGuide.snp.remakeConstraints { make in
       if self.isUsingBottomBar {
-        make.top.equalTo(readerModeBar?.snp.bottom ?? self.toolbarLayoutGuide)
+        make.top.equalTo(readerModeBar?.snp.bottom ?? self.view.safeArea.top)
       } else {
         make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom)
       }
