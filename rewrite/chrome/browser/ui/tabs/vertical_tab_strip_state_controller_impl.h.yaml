@@ -13,3 +13,4 @@ substitutions:
       code: |-
         bool ShouldHideCompletelyWhenCollapsed() const override;
         bool IsVerticalTabOnRight() const override;
+        bool IsToggleButtonHidden() const;

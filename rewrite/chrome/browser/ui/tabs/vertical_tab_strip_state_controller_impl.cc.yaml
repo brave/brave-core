@@ -5,10 +5,11 @@
 
 substitutions:
   - description: |
-      Consider `ShouldHideCompletelyWhenCollapsed()` when determining if expand
-      on hover is enabled.
+      Consider `ShouldHideCompletelyWhenCollapsed()` and
+      `IsToggleButtonHidden()` when determining if expand on hover is enabled.
+      Without the toggle button there is no other way to expand the strip.
 
     preempt_function_impl:
       function_name: 'VerticalTabStripStateControllerImpl::IsExpandOnHoverEnabled'
-      return_if: 'ShouldHideCompletelyWhenCollapsed()'
+      return_if: 'ShouldHideCompletelyWhenCollapsed() || IsToggleButtonHidden()'
       return_value: 'true'

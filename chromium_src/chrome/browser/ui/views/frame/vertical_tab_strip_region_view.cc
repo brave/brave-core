@@ -10,12 +10,14 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/vertical_tab_strip_state.h"
 #include "chrome/browser/ui/tabs/vertical_tab_strip_state_controller.h"
 #include "chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "ui/actions/actions.h"
 #include "ui/compositor/layer.h"
 #include "ui/display/screen.h"
 #include "ui/gfx/geometry/rect_f.h"
@@ -55,6 +57,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
                                               browser_view) {
   ObserveHideCompletelyPref();
   ObserveVerticalTabOnRightPref();
+  ObserveShowToggleButtonPref();
 }
 
 VerticalTabStripRegionView::~VerticalTabStripRegionView() {}
@@ -185,6 +188,38 @@ void VerticalTabStripRegionView::ObserveVerticalTabOnRightPref() {
 // Relayouts the region, as the strip moves to the other side when the pref
 // changes.
 void VerticalTabStripRegionView::OnVerticalTabOnRightPrefChanged() {
+  InvalidateLayout();
+  PreferredSizeChanged();
+}
+
+// Upstream always shows the collapse button. Hide its action item when the user
+// turns off kVerticalTabsShowToggleButton. The state controller forces expand
+// on hover in that case, as there's no other way to expand the strip.
+void VerticalTabStripRegionView::ObserveShowToggleButtonPref() {
+  show_toggle_button_pref_registrar_.Init(
+      browser_view()->GetProfile()->GetPrefs());
+  show_toggle_button_pref_registrar_.Add(
+      brave_tabs::kVerticalTabsShowToggleButton,
+      base::BindRepeating(
+          &VerticalTabStripRegionView::OnShowToggleButtonPrefChanged,
+          base::Unretained(this)));
+  OnShowToggleButtonPrefChanged();
+}
+
+void VerticalTabStripRegionView::OnShowToggleButtonPrefChanged() {
+  const bool show_toggle_button =
+      browser_view()->GetProfile()->GetPrefs()->GetBoolean(
+          brave_tabs::kVerticalTabsShowToggleButton);
+  if (auto* collapse_action = actions::ActionManager::Get().FindAction(
+          kActionToggleCollapseVertical, root_action_item())) {
+    collapse_action->SetVisible(show_toggle_button);
+  }
+  // Start the automatic hide/expand mode: collapse the strip, so that it's
+  // expanded on hover from now on.
+  if (!show_toggle_button && !state_controller_->IsCollapsed()) {
+    RequestCollapse(true);
+  }
+  OnExpandOnHoverEnabledChanged(state_controller_->IsExpandOnHoverEnabled());
   InvalidateLayout();
   PreferredSizeChanged();
 }

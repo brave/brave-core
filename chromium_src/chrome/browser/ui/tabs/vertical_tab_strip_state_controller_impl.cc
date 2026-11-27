@@ -7,6 +7,7 @@
 
 #include "base/feature_list.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
 #include <chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.cc>
@@ -26,6 +27,12 @@ bool VerticalTabStripStateControllerImpl::ShouldHideCompletelyWhenCollapsed()
 bool VerticalTabStripStateControllerImpl::IsVerticalTabOnRight() const {
   return pref_service_->FindPreference(brave_tabs::kVerticalTabsOnRight) &&
          pref_service_->GetBoolean(brave_tabs::kVerticalTabsOnRight);
+}
+
+bool VerticalTabStripStateControllerImpl::IsToggleButtonHidden() const {
+  return pref_service_->FindPreference(
+             brave_tabs::kVerticalTabsShowToggleButton) &&
+         !pref_service_->GetBoolean(brave_tabs::kVerticalTabsShowToggleButton);
 }
 
 }  // namespace tabs

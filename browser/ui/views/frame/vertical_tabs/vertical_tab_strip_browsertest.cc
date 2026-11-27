@@ -2513,6 +2513,25 @@ IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsTest, NoCrashOnStartup) {
   EXPECT_EQ(1, new_browser->tab_strip_model()->count());
 }
 
+// Hiding the toggle button hides upstream's collapse button and forces
+// expand-on-hover.
+IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsTest, ShowToggleButtonPref) {
+  state_controller()->SetVerticalTabsEnabled(true);
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  auto* collapse_button = region_view()->GetTopContainer()->GetCollapseButton();
+  ASSERT_TRUE(collapse_button);
+
+  EXPECT_TRUE(prefs->GetBoolean(brave_tabs::kVerticalTabsShowToggleButton));
+  EXPECT_TRUE(collapse_button->GetVisible());
+
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowToggleButton, false);
+  EXPECT_FALSE(collapse_button->GetVisible());
+  EXPECT_TRUE(state_controller()->IsExpandOnHoverEnabled());
+
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowToggleButton, true);
+  EXPECT_TRUE(collapse_button->GetVisible());
+}
+
 // When "hide completely when collapsed" is on, the collapsed region view must
 // be hidden (otherwise its overflowing descendants, e.g. favicons, would paint
 // over the web contents) and must clip its descendants to its bounds so they

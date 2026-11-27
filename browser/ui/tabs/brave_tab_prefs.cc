@@ -20,8 +20,7 @@ namespace brave_tabs {
 
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kTabHoverMode, TabHoverMode::CARD);
-  registry->RegisterBooleanPref(kVerticalTabsCollapsed, false);
-  registry->RegisterBooleanPref(kVerticalTabsExpandedStatePerWindow, false);
+#if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(IS_WIN)
   // On Windows, we show window title by default
   // https://github.com/brave/brave-browser/issues/30027
@@ -30,18 +29,19 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kVerticalTabsShowTitleOnWindow, false);
 #endif
 
-#if !BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely)) {
     registry->RegisterBooleanPref(kVerticalTabsHideCompletelyWhenCollapsed,
                                   false);
   }
+  registry->RegisterBooleanPref(kVerticalTabsCollapsed, false);
+  registry->RegisterBooleanPref(kVerticalTabsExpandedStatePerWindow, false);
   registry->RegisterBooleanPref(kVerticalTabsOnRight, false);
+  registry->RegisterBooleanPref(kVerticalTabsShowToggleButton, true);
+  registry->RegisterBooleanPref(kVerticalTabsShowScrollbar, false);
+  registry->RegisterBooleanPref(kVerticalTabsFloatingEnabled, true);
+  registry->RegisterIntegerPref(kVerticalTabsExpandedWidth, 220);
 #endif
 
-  registry->RegisterBooleanPref(kVerticalTabsFloatingEnabled, true);
-  registry->RegisterBooleanPref(kVerticalTabsShowToggleButton, true);
-  registry->RegisterIntegerPref(kVerticalTabsExpandedWidth, 220);
-  registry->RegisterBooleanPref(kVerticalTabsShowScrollbar, false);
   registry->RegisterBooleanPref(kShowHorizontalTabScrollButtons, false);
 
   registry->RegisterBooleanPref(kSharedPinnedTab, false);
@@ -59,12 +59,6 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
 }
 
 void MigrateBraveProfilePrefs(PrefService* prefs) {
-  if (auto* pref = prefs->FindPreference(kVerticalTabsShowScrollbar);
-      pref && pref->IsDefaultValue() &&
-      base::FeatureList::IsEnabled(tabs::kBraveVerticalTabScrollBar)) {
-    prefs->SetBoolean(kVerticalTabsShowScrollbar, true);
-  }
-
   // Added 10/2026.
   if (auto* pref = prefs->FindPreference(kMRUCyclingEnabled);
       pref && !pref->IsDefaultValue()) {
@@ -73,6 +67,12 @@ void MigrateBraveProfilePrefs(PrefService* prefs) {
   }
 
 #if !BUILDFLAG(IS_ANDROID)
+  if (auto* pref = prefs->FindPreference(kVerticalTabsShowScrollbar);
+      pref && pref->IsDefaultValue() &&
+      base::FeatureList::IsEnabled(tabs::kBraveVerticalTabScrollBar)) {
+    prefs->SetBoolean(kVerticalTabsShowScrollbar, true);
+  }
+
   // When upstream vertical tabs are forced, move Brave's vertical tabs pref to
   // upstream's one and clear it.
   if (tabs::IsUpstreamVerticalTabsForceEnabled()) {
