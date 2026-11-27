@@ -54,7 +54,7 @@ void BraveStatsHelper::OnProfileAdded(Profile* profile) {
       local_state_->GetFilePath(::prefs::kProfileLastUsed);
   if ((!last_used_path.empty() && profile->GetBaseName() == last_used_path) ||
       (last_used_path.empty() &&
-       profile == ProfileManager::GetLastUsedProfile())) {
+       profile->GetPath() == profile_manager_->GetLastUsedProfileDir())) {
 #endif
     OnLastUsedProfileChanged();
   }
@@ -93,13 +93,13 @@ PrefService* BraveStatsHelper::GetLastUsedProfilePrefs() {
 
   base::FilePath last_used_profile_path =
       local_state_->GetFilePath(::prefs::kProfileLastUsed);
-  Profile* profile;
-  if (last_used_profile_path.empty()) {
-    profile = profile_manager_->GetLastUsedProfile();
-  } else {
-    profile = profile_manager_->GetProfileByPath(
-        profile_manager_->user_data_dir().Append(last_used_profile_path));
-  }
+  // Profiles unload when their last window closes. Look up only loaded
+  // profiles, so reading stats never loads a closed profile again.
+  // OnProfileAdded() retries once the profile loads.
+  Profile* profile = profile_manager_->GetProfileByPath(
+      last_used_profile_path.empty()
+          ? profile_manager_->GetLastUsedProfileDir()
+          : profile_manager_->user_data_dir().Append(last_used_profile_path));
   if (profile == nullptr || profile->IsOffTheRecord()) {
     return nullptr;
   }

@@ -43,6 +43,7 @@
 #include "brave/components/webcompat/core/common/features.h"
 #include "brave/ui/webui/custom_profile_image/buildflags/buildflags.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_features.h"
 #include "chrome/browser/buildflags.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -1215,6 +1216,17 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
 
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                      \
   EXPAND_FEATURE_ENTRIES(                                                      \
+      {                                                                        \
+          "destroy-profile-on-browser-close",                                  \
+          "Unload profiles when their last window closes",                     \
+          "Frees a profile's memory, extensions, and background activity "     \
+          "when its last window closes, instead of when Brave quits. A "       \
+          "profile set to clear browsing data on exit is cleared when its "    \
+          "last window closes, and stays loaded until Brave quits if "         \
+          "something still uses it.",                                          \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(features::kDestroyProfileOnBrowserClose),         \
+      },                                                                       \
       {                                                                        \
           "brave-v8-jitless-mode",                                             \
           "V8 Jitless mode",                                                   \

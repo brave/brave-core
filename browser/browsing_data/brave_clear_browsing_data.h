@@ -8,6 +8,8 @@
 
 #include <cstdint>
 
+#include "build/build_config.h"
+
 namespace content {
 class BrowsingDataRemover;
 }
@@ -25,6 +27,21 @@ class BraveClearBrowsingData {
   // Profile's *OnExit preferences determine what gets cleared.
   // Note: this method will wait until browsing data has been cleared.
   static void ClearOnExit();
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Makes sure a profile whose *OnExit preferences select data is cleared
+  // before it unloads. Such a profile stays loaded until its last window
+  // closes and its data is cleared, including while the application quits.
+  // It unloads then only if nothing else uses it; otherwise ClearOnExit()
+  // clears it again at exit. ClearOnExit() skips profiles released this way.
+  // Does nothing when features::kDestroyProfileOnBrowserClose is off, because
+  // profiles then stay loaded until exit.
+  static void StartClearingOnProfileClose();
+
+  // Stops the clearing that StartClearingOnProfileClose() started. Call it
+  // after ClearOnExit(), before profiles are torn down.
+  static void StopClearingOnProfileClose();
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   static bool IsClearOnExitEnabledForAnyType(Profile* profile);
 
