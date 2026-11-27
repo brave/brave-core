@@ -13,6 +13,7 @@
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/test/metrics/histogram_tester.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
@@ -34,6 +35,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/metrics/content/subprocess_metrics_provider.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/security_principal.h"
@@ -964,6 +966,146 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveEnabledBrowserTest,
   EXPECT_EQ("name=acom", values_after.main_frame.cookies);
   EXPECT_EQ("", values_after.iframe_1.cookies);
   EXPECT_EQ("", values_after.iframe_2.cookies);
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       DocumentCookieSwitchesBackendWhenCookieSettingChanges) {
+  GURL b_site_set_cookie_url = https_server_.GetURL(
+      "b.com", "/set-cookie?name=bcom;path=/;SameSite=None;Secure");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), b_site_set_cookie_url));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
+
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  RenderFrameHost* main_frame = web_contents->GetPrimaryMainFrame();
+  RenderFrameHost* iframe_b = content::ChildFrameAt(main_frame, 1);
+
+  // Third-party iframe uses ephemeral storage; the persistent b.com cookie is
+  // hidden. Prime the renderer cache with the ephemeral value.
+  ASSERT_EQ("", GetCookiesInFrame(iframe_b));
+  SetCookieInFrame(iframe_b, "name=bcom_ephemeral");
+  ASSERT_EQ("name=bcom_ephemeral", GetCookiesInFrame(iframe_b));
+
+  brave_shields::SetCookieControlType(
+      content_settings(), browser()->GetProfile()->GetPrefs(),
+      brave_shields::ControlType::ALLOW, a_site_ephemeral_storage_url_);
+  browser()
+      ->GetProfile()
+      ->GetDefaultStoragePartition()
+      ->FlushNetworkInterfaceForTesting();
+
+  EXPECT_EQ("name=bcom", GetCookiesInFrame(iframe_b));
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       DocumentCookieWarmCacheSwitchesToEphemeralBackend) {
+  GURL b_site_set_cookie_url = https_server_.GetURL(
+      "b.com", "/set-cookie?name=bcom;path=/;SameSite=None;Secure");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), b_site_set_cookie_url));
+  auto* storage_partition =
+      browser()->GetProfile()->GetDefaultStoragePartition();
+  brave_shields::SetCookieControlType(
+      content_settings(), browser()->GetProfile()->GetPrefs(),
+      brave_shields::ControlType::ALLOW, a_site_ephemeral_storage_url_);
+  storage_partition->FlushNetworkInterfaceForTesting();
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
+
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  RenderFrameHost* iframe_b =
+      content::ChildFrameAt(web_contents->GetPrimaryMainFrame(), 1);
+
+  // Persistent storage: the second read is served from the renderer cache.
+  ASSERT_EQ("name=bcom", GetCookiesInFrame(iframe_b));
+  base::HistogramTester histogram_tester;
+  ASSERT_EQ("name=bcom", GetCookiesInFrame(iframe_b));
+  content::FetchHistogramsFromChildProcesses();
+  metrics::SubprocessMetricsProvider::MergeHistogramDeltasForTesting();
+  ASSERT_EQ(1, histogram_tester.GetBucketCount(
+                   "Blink.Experimental.Cookies.IpcNeeded", false));
+
+  brave_shields::SetCookieControlType(
+      content_settings(), browser()->GetProfile()->GetPrefs(),
+      brave_shields::ControlType::BLOCK_THIRD_PARTY,
+      a_site_ephemeral_storage_url_);
+  storage_partition->FlushNetworkInterfaceForTesting();
+
+  // Cookie-settings changes must bump the shared version so the cached
+  // persistent value is not returned from the now-ephemeral context.
+  EXPECT_EQ("", GetCookiesInFrame(iframe_b));
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       DocumentCookieReadTakesSharedMemoryFastPath) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("a.com", "/simple.html")));
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  RenderFrameHost* main_frame = web_contents->GetPrimaryMainFrame();
+
+  // First read populates the renderer cache and shared-memory client.
+  EXPECT_EQ("", GetCookiesInFrame(main_frame));
+
+  base::HistogramTester histogram_tester;
+  EXPECT_EQ("", GetCookiesInFrame(main_frame));
+  EXPECT_EQ("", GetCookiesInFrame(main_frame));
+  content::FetchHistogramsFromChildProcesses();
+  metrics::SubprocessMetricsProvider::MergeHistogramDeltasForTesting();
+  EXPECT_GE(histogram_tester.GetBucketCount(
+                "Blink.Experimental.Cookies.IpcNeeded", false),
+            1);
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       DocumentCookieInEphemeralFrameSeesNetworkSetCookie) {
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  RenderFrameHost* iframe_b =
+      content::ChildFrameAt(web_contents->GetPrimaryMainFrame(), 1);
+
+  // Prime the renderer cache.
+  ASSERT_EQ("", GetCookiesInFrame(iframe_b));
+  ASSERT_EQ("", GetCookiesInFrame(iframe_b));
+
+  ASSERT_TRUE(content::ExecJs(
+      iframe_b,
+      "fetch('/set-cookie?net=1;SameSite=None;Secure').then(r => r.text())"));
+  EXPECT_EQ("net=1", GetCookiesInFrame(iframe_b));
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       CookieStoreChangeEventsDoNotCrossEphemeralPartitions) {
+  WebContents* b_tab =
+      LoadURLInNewTab(https_server_.GetURL("b.com", "/simple.html"));
+  ASSERT_TRUE(content::ExecJs(b_tab, R"(
+      window.cookieChanges = [];
+      cookieStore.addEventListener('change', e => {
+        for (const c of e.changed) {
+          window.cookieChanges.push(c.name + '=' + c.value);
+        }
+      });
+  )"));
+
+  WebContents* a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  RenderFrameHost* iframe_b =
+      content::ChildFrameAt(a_tab->GetPrimaryMainFrame(), 1);
+  SetCookieInFrame(iframe_b, "leak=ephemeral");
+  ASSERT_EQ("leak=ephemeral", GetCookiesInFrame(iframe_b));
+
+  // A first-party write is delivered after any event queued by
+  // SetCookieInFrame(iframe_b, "leak=ephemeral"), so it is the only change the
+  // b.com tab may observe.
+  EXPECT_EQ(base::Value(base::ListValue().Append("own=persistent")),
+            content::EvalJs(b_tab, R"(
+      new Promise(resolve => {
+        cookieStore.addEventListener('change', e => {
+          if (e.changed.some(c => c.name === 'own')) {
+            resolve(window.cookieChanges);
+          }
+        });
+        cookieStore.set({name: 'own', value: 'persistent', sameSite: 'none'});
+      });
+  )"));
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, NetworkCookiesAreSentIn3p) {

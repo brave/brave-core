@@ -101,6 +101,7 @@ source_set("browser_tests") {
       "//components/content_settings/core/browser",
       "//components/content_settings/core/common",
       "//components/keep_alive_registry",
+      "//components/metrics:content",
       "//components/policy/core/browser",
       "//components/policy/core/common",
       "//content/test:test_support",
