@@ -1001,6 +1001,10 @@ void ConversationHandler::ModifyConversation(
     const std::string& new_text,
     const std::optional<std::string>& skill_shortcut,
     const std::optional<std::string>& thread_uuid) {
+  if (is_request_in_progress_) {
+    return;
+  }
+
   if (!MaybeCheckValidThread(thread_uuid)) {
     return;
   }
@@ -1126,6 +1130,10 @@ void ConversationHandler::RegenerateAnswer(
     const std::string& turn_uuid,
     const std::string& model_key,
     const std::optional<std::string>& thread_uuid) {
+  if (is_request_in_progress_) {
+    return;
+  }
+
   if (!MaybeCheckValidThread(thread_uuid)) {
     return;
   }

@@ -36,6 +36,16 @@ export default function ContextActionsAssistant(
   const [isRegenerateAnswerMenuOpen, setIsRegenerateAnswerMenuOpen] =
     React.useState<boolean>(false)
 
+  // Regenerating and editing are disabled for the whole conversation while a
+  // request is in progress, including for entries that aren't the active one.
+  const isGenerating = conversationContext.isGenerating
+
+  React.useEffect(() => {
+    if (isGenerating) {
+      setIsRegenerateAnswerMenuOpen(false)
+    }
+  }, [isGenerating])
+
   function handleLikeOrDislikeAnswer(status: RatingStatus) {
     if (!props.turnUuid) return
     setCurrentRatingStatus(status)
@@ -112,6 +122,9 @@ export default function ContextActionsAssistant(
   )
 
   const handleOpenCloseRegenerateAnswerMenu = (isOpen: boolean) => {
+    if (isOpen && isGenerating) {
+      return
+    }
     setIsRegenerateAnswerMenuOpen(isOpen)
   }
 
@@ -123,6 +136,7 @@ export default function ContextActionsAssistant(
       {!conversationContext.isReadOnly && props.onEditAnswerClicked && (
         <Button
           onClick={props.onEditAnswerClicked}
+          isDisabled={isGenerating}
           fab
           size='small'
           kind='plain-faint'
@@ -176,6 +190,7 @@ export default function ContextActionsAssistant(
           turnModelKey={props.turnModelKey}
           turnNEARVerified={props.turnNEARVerified}
           isPremiumUser={conversationContext.isPremiumUser}
+          isDisabled={isGenerating}
         />
       )}
     </div>
