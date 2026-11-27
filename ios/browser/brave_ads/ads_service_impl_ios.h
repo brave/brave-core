@@ -150,6 +150,14 @@ class AdsServiceImplIOS : public AdsService {
   void NotifyTabDidFailToLoad(int32_t tab_id) override;
   void NotifyDidCloseTab(int32_t tab_id) override;
 
+  void NotifyOrderIdResolved(int32_t tab_id,
+                             const GURL& extracted_for_url,
+                             std::optional<std::string> id) override;
+  void NotifyOrderValueResolved(int32_t tab_id,
+                                const GURL& extracted_for_url,
+                                std::optional<std::string> value,
+                                std::optional<std::string> currency) override;
+
   void NotifyUserGestureEventTriggered(int32_t page_transition) override;
 
   void NotifyBrowserDidBecomeActive() override;

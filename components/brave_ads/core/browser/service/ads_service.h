@@ -265,6 +265,20 @@ class AdsService : public KeyedService {
   // Called when a browser tab with the specified `tab_id` is closed.
   virtual void NotifyDidCloseTab(int32_t tab_id) = 0;
 
+  // `id` has no value if not found. `extracted_for_url` must be the URL
+  // extraction ran against, not the tab's current URL.
+  virtual void NotifyOrderIdResolved(int32_t tab_id,
+                                     const GURL& extracted_for_url,
+                                     std::optional<std::string> id) = 0;
+
+  // `value`/`currency` independently have no value if unmatched; see
+  // `NotifyOrderIdResolved` for `extracted_for_url`.
+  virtual void NotifyOrderValueResolved(
+      int32_t tab_id,
+      const GURL& extracted_for_url,
+      std::optional<std::string> value,
+      std::optional<std::string> currency) = 0;
+
   // Called when a page navigation was initiated by a user gesture.
   // `page_transition` containing the page transition type, see enums for
   // `ui::PageTransition`.

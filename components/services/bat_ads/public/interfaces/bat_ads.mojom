@@ -52,6 +52,13 @@ interface BatAdsClientNotifier {
                    int32 http_status_code);
   NotifyTabDidFailToLoad(int32 tab_id);
   NotifyDidCloseTab(int32 tab_id);
+  NotifyOrderIdResolved(int32 tab_id,
+                         url.mojom.Url extracted_for_url,
+                         string? id);
+  NotifyOrderValueResolved(int32 tab_id,
+                            url.mojom.Url extracted_for_url,
+                            string? value,
+                            string? currency);
 
   NotifyUserGestureEventTriggered(int32 page_transition);
 
