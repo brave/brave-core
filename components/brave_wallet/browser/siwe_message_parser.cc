@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <optional>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -16,6 +17,7 @@
 #include "base/strings/string_tokenizer.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 #include "url/url_constants.h"
@@ -26,7 +28,7 @@ namespace brave_wallet {
 
 namespace {
 constexpr size_t kMinNonceLength = 8;
-constexpr char kStartingToken[] =
+constexpr std::string_view kStartingToken =
     " wants you to sign in with your Ethereum account:";
 constexpr char kURIToken[] = "URI: ";
 constexpr char kVersionToken[] = "Version: ";
@@ -122,9 +124,14 @@ ExtractOptionalValue(std::string_view input,
                      bool is_resources = false) {
   auto effective_field = base::StrCat({"\n", field});
   auto field_end = effective_field.length();
-  if (field_end == input.length()) {
+
+  // Every field but Resources requires a value after its token. The ABNF has
+  // `resources = *( LF resource )`, so a bare "Resources:" ending the message
+  // is a valid empty list.
+  if (field_end == input.length() && !is_resources) {
     return std::nullopt;
   }
+
   auto field_pos = input.rfind(effective_field);
   if (field_pos == std::string::npos) {
     return std::make_pair(std::string::npos, input);
@@ -147,6 +154,29 @@ ExtractOptionalValue(std::string_view input,
   }
 
   return std::make_pair(n, input.substr(field_end, n - field_end));
+}
+
+std::optional<std::string_view> GetSIWEHeaderDomain(std::string_view message,
+                                                    bool tolerate_cr = false) {
+  auto n = message.find(base::StrCat({kStartingToken, "\n"}));
+  if (n == std::string_view::npos && tolerate_cr) {
+    n = message.find(base::StrCat({kStartingToken, "\r\n"}));
+  }
+
+  if (n == 0 || n == std::string_view::npos) {
+    return std::nullopt;
+  }
+
+  const auto domain = message.substr(0, n);
+  // The header has to be the message's first line. Leading whitespace is
+  // tolerated because a verifier may trim before parsing, but any other
+  // content in front of the header means this is a plain message that merely
+  // quotes it, not an attempted sign-in.
+  if (base::TrimWhitespaceASCII(domain, base::TRIM_LEADING).contains('\n')) {
+    return std::nullopt;
+  }
+
+  return domain;
 }
 
 bool ShrinkMessage(std::string_view& msg_view, std::string_view::size_type n) {
@@ -224,27 +254,30 @@ mojom::SIWEMessagePtr SIWEMessageParser::Parse(const std::string& message) {
   return result;
 }
 
+// static
+bool SIWEMessageParser::HasSIWEHeader(std::string_view message) {
+  return GetSIWEHeaderDomain(message, /*tolerate_cr=*/true).has_value();
+}
+
 bool SIWEMessageParser::ParseSchemeAndDomain(std::string_view& msg_view,
                                              url::Origin& origin) {
-  std::string::size_type n =
-      msg_view.find(base::StrCat({kStartingToken, "\n"}));
-  if (!n || n == std::string::npos) {
+  const auto domain = GetSIWEHeaderDomain(msg_view);
+  if (!domain) {
     return false;
   }
-  std::string_view old_origin_str(msg_view.begin(), msg_view.begin() + n);
-  std::string new_origin_str(old_origin_str);
+  std::string origin_str(*domain);
   // If scheme is not specified, https will be used by default.
-  if (!old_origin_str.contains(url::kStandardSchemeSeparator)) {
-    new_origin_str = base::StrCat(
-        {url::kHttpsScheme, url::kStandardSchemeSeparator, old_origin_str});
+  if (!domain->contains(url::kStandardSchemeSeparator)) {
+    origin_str = base::StrCat(
+        {url::kHttpsScheme, url::kStandardSchemeSeparator, *domain});
   }
-  GURL url(new_origin_str);
+  GURL url(origin_str);
   if (!url.is_valid()) {
     return false;
   }
 
   origin = url::Origin::Create(url);
-  CHECK(ShrinkMessage(msg_view, n + strlen(kStartingToken) + 1));
+  CHECK(ShrinkMessage(msg_view, domain->size() + kStartingToken.size() + 1));
   state_ = State::kAddress;
   return true;
 }
@@ -256,7 +289,9 @@ bool SIWEMessageParser::ParseAddress(std::string_view& msg_view,
     return false;
   }
   const std::string address(msg_view.begin(), msg_view.begin() + n);
-  if (!EthAddress::IsValidAddress(address)) {
+  // Deliberately skip EIP-55 checksumming.
+  if (!IsValidHexString(address) ||
+      address.size() - 2 != kEthAddressLength * 2) {
     return false;
   }
   address_out = address;
@@ -425,17 +460,14 @@ bool SIWEMessageParser::ParseOptionalResources(
     }
     urls.push_back(url);
   }
-  if (!urls.size()) {
-    return false;
-  }
-  resources = urls;
+  resources = std::move(urls);
   CHECK(ShrinkMessage(msg_view, value->first));
   return true;
 }
 
 // static
 std::string SIWEMessageParser::GetStartingTokenForTesting() {
-  return kStartingToken;
+  return std::string(kStartingToken);
 }
 
 // static

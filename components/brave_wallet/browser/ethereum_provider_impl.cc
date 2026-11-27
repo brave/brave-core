@@ -435,8 +435,9 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
               base::ASCIIToUTF16(incorrect_chain_id)),
           std::move(callback));
     }
-    if (EthAddress::From0xHex(address) !=
-        EthAddress::From0xHex(siwe_message->address)) {
+    // Deliberately eschew EIP-55 address checksumming and do case-insensitive
+    // comparison instead.
+    if (!base::EqualsCaseInsensitiveASCII(address, siwe_message->address)) {
       brave_wallet_service_->AddSignMessageError(mojom::SignMessageError::New(
           GenerateRandomHexString(), MakeDappOriginInfo(dapp_origin_),
           mojom::SignMessageErrorType::kAccountMismatched,
@@ -473,6 +474,22 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
     }
 
     sign_data = mojom::SignDataUnion::NewEthSiweData(std::move(siwe_message));
+  } else if (SIWEMessageParser::HasSIWEHeader(message_str)) {
+    // The message claims to be a sign-in request but didn't parse successfully.
+    // The verifiers that dapps use are more lenient than our own routines, and
+    // a plain eip-191 signature over the message would still be accepted as a
+    // sign-in. We opt into explicitly failing in this case.
+    brave_wallet_service_->AddSignMessageError(mojom::SignMessageError::New(
+        GenerateRandomHexString(), MakeDappOriginInfo(dapp_origin_),
+        mojom::SignMessageErrorType::kSIWEMessageMalformed,
+        l10n_util::GetStringUTF8(
+            IDS_BRAVE_WALLET_SIGN_MESSAGE_SIWE_MALFORMED_ERR),
+        std::nullopt));
+    delegate_->ShowPanel(dapp_origin_);
+    return RejectMismatchError(
+        std::move(id),
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_SIWE_MALFORMED),
+        std::move(callback));
   } else {
     if (!base::IsStringUTF8(message_str)) {
       message_str = ToHex(message_str);

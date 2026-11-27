@@ -42,6 +42,7 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
@@ -79,6 +80,30 @@ namespace {
 
 base::ListValue ParamsListFromJson(std::string_view json) {
   return std::move(*ParseJsonDict(json).FindList("params"));
+}
+
+// Returns `address` with the case of its first hex letter flipped, breaking
+// checksumming.
+std::string BreakAddressChecksum(std::string_view address) {
+  if (address.size() < 2) {
+    ADD_FAILURE() << address << " must be a valid hex string.";
+    return "";
+  }
+
+  std::string result(address);
+  auto pos = std::ranges::find_if(result.begin() + 2, result.end(),
+                                  [](char c) { return base::IsAsciiAlpha(c); });
+  if (pos == result.end()) {
+    ADD_FAILURE() << address << " must contain an non-numeric hex digit.";
+    return "";
+  }
+
+  auto& c = *pos;
+  c = base::IsAsciiUpper(c) ? base::ToLowerASCII(c) : base::ToUpperASCII(c);
+  if (EthAddress::IsValidAddress(result)) {
+    ADD_FAILURE() << result;
+  }
+  return result;
 }
 
 // Extracts the signature (when present) and provider error info from a
@@ -1792,7 +1817,26 @@ TEST_F(EthereumProviderImplUnitTest, SigninWithEthereumError) {
        std::nullopt, mojom::ProviderError::kInternalError,
        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_ACCOUNT_MISMATCH,
                                  base::ASCIIToUTF16(account_1->address))},
+      {"https://example.com", BreakAddressChecksum(account_0->address),
+       "https://brave.com/login", "1",
+       mojom::SignMessageErrorType::kDomainMismatched,
+       l10n_util::GetStringFUTF8(
+           IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+           l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_DOMAIN),
+           u"https://example.com"),
+       std::nullopt, mojom::ProviderError::kInternalError,
+       l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_DOMAIN_MISMATCH,
+                                 u"https://example.com")},
       {"https://example.com", account_0->address, "https://brave.com/login",
+       "1", mojom::SignMessageErrorType::kDomainMismatched,
+       l10n_util::GetStringFUTF8(
+           IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+           l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_DOMAIN),
+           u"https://example.com"),
+       std::nullopt, mojom::ProviderError::kInternalError,
+       l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_DOMAIN_MISMATCH,
+                                 u"https://example.com")},
+      {"\nhttps://example.com", account_0->address, "https://brave.com/login",
        "1", mojom::SignMessageErrorType::kDomainMismatched,
        l10n_util::GetStringFUTF8(
            IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
@@ -1821,6 +1865,83 @@ TEST_F(EthereumProviderImplUnitTest, SigninWithEthereumError) {
     EXPECT_TRUE(signature.empty());
     EXPECT_EQ(error, invalid_case.provider_err);
     EXPECT_EQ(error_message, invalid_case.provider_err_msg);
+
+    brave_wallet_service_->NotifySignMessageErrorProcessed(errors.front()->id);
+  }
+}
+
+TEST_F(EthereumProviderImplUnitTest, SigninWithEthereumMalformedIsRejected) {
+  CreateWallet();
+  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  CreateBraveWalletTabHelper();
+  brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
+  Navigate(GURL("https://brave.com"));
+  AddEthereumPermission(account_0->account_id);
+
+  // `statement_block` is everything between the address line and "URI: ";
+  // "\n\n" means no statement.
+  auto make_siwe_message = [&](std::string_view statement_block,
+                               std::string_view chain_id,
+                               std::string_view suffix) {
+    return absl::StrFormat(
+        "app.example wants you to sign in with your Ethereum account:\n"
+        "%s\n"
+        "%s"
+        "URI: https://app.example\n"
+        "Version: 1\n"
+        "Chain ID: %s\n"
+        "Nonce: abcdefgh12345678\n"
+        "Issued At: 2026-11-19T00:00:00.000Z%s",
+        account_0->address, statement_block, chain_id, suffix);
+  };
+
+  // Each test case uses the foreign domain app.example and is rejected by our
+  // parser, but the verifiers that dapps use (viem, as the canonical example)
+  // still validate it as SIWE. We must prove that we catch these instead of
+  // having them fallback to plain EIP-191 signatures.
+  const std::string malformed_cases[] = {
+      // Trailing newline after the last field.
+      make_siwe_message("\n\n", "1", "\n"),
+      // Chain ID overflows uint64.
+      make_siwe_message("\n\n", "18446744073709551616", ""),
+      // Non-ASCII statement.
+      make_siwe_message("\nSign in to app.example \xe2\x80\x94 caf\xc3\xa9\n\n",
+                        "1", ""),
+      // Extra blank line before URI:.
+      make_siwe_message("\n\n\n", "1", ""),
+      // Resources entry missing the "- " prefix.
+      make_siwe_message("\n\n", "1", "\nResources:\nhttps://a.com"),
+      // Trailing bare "-" after a Resources entry.
+      make_siwe_message("\n\n", "1", "\nResources:\n- https://a.com\n-"),
+      // Newline before the header, which GURL strips when it reads the domain.
+      base::StrCat({"\n", make_siwe_message("\n\n", "1", "\n")}),
+  };
+
+  std::string signature;
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
+  std::string error_message;
+  for (const auto& malformed : malformed_cases) {
+    SCOPED_TRACE(malformed);
+    SignMessage(true, account_0->address, ToHex(malformed), &signature, &error,
+                &error_message);
+
+    EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
+
+    auto errors = GetPendingSignMessageErrors();
+    ASSERT_EQ(errors.size(), 1u);
+    EXPECT_EQ(errors.front()->dapp_origin_info,
+              MakeDappOriginInfo(GetOrigin()));
+    EXPECT_EQ(errors.front()->type,
+              mojom::SignMessageErrorType::kSIWEMessageMalformed);
+    EXPECT_EQ(errors.front()->localized_err_msg,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SIGN_MESSAGE_SIWE_MALFORMED_ERR));
+    EXPECT_FALSE(errors.front()->chain_id);
+
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kInternalError);
+    EXPECT_EQ(error_message, l10n_util::GetStringUTF8(
+                                 IDS_BRAVE_WALLET_SIGN_MESSAGE_SIWE_MALFORMED));
 
     brave_wallet_service_->NotifySignMessageErrorProcessed(errors.front()->id);
   }

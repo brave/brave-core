@@ -121,6 +121,10 @@ TEST_F(SIWEMessageParserTest, Start) {
            base::StrCat({"://example.com", starting_token(), "\n"}),
            base::StrCat({"example.com:abc", starting_token(), "\n"}),
            base::StrCat({"example.com::3388", starting_token(), "\n"}),
+           // A line in front of the header. Newline stripping would otherwise
+           // canonicalize the whole prefix into the valid host
+           // https://noteexample.com and report a domain mismatch.
+           base::StrCat({"Note\nexample.com", valid_start_suffix()}),
        }) {
     SCOPED_TRACE(testing::Message() << "\"" << invalid_case << "\"");
     EXPECT_FALSE(parser_.Parse(invalid_case));
@@ -134,6 +138,10 @@ TEST_F(SIWEMessageParserTest, Start) {
       {"example.com:3388", "https://example.com:3388"},
       {"http://example.com:3388", "http://example.com:3388"},
       {"https://example.com", "https://example.com"},
+      // GURL strips newlines, so a newline-prefixed header still names a
+      // domain that has to be checked against the requesting origin.
+      {"\nexample.com", "https://example.com"},
+      {"\nhttps://example.com", "https://example.com"},
   };
   for (const auto& valid_case : valid_cases) {
     const std::string message =
@@ -160,7 +168,8 @@ TEST_F(SIWEMessageParserTest, Start) {
 
 TEST_F(SIWEMessageParserTest, AddressError) {
   for (const std::string& invalid_case : {
-           "", "\n",
+           "",
+           "\n",
            "C02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2\n",        // without 0x
            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2abcd\n",  // extra 4 bytes
            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C75\n",          // 2 bytes short
@@ -174,9 +183,88 @@ TEST_F(SIWEMessageParserTest, AddressError) {
   }
 }
 
+TEST_F(SIWEMessageParserTest, AddressChecksumNotEnforced) {
+  // Prove that we don't use EIP-55 checksumming for SIWE messages.
+
+  for (const std::string& address : {
+           std::string("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"),
+           std::string("0xC02AAA39B223FE8D0A0E5C4F27EAD9083C756CC2"),
+           // kExampleAddress with one letter's case flipped.
+           std::string("0xC02AaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"),
+       }) {
+    const std::string message =
+        base::StrCat({"example.com", starting_token(), "\n", address, "\n\n\n",
+                      valid_statement_suffix()});
+    SCOPED_TRACE(testing::Message() << "\"" << message << "\"");
+    auto result = parser_.Parse(message);
+    ASSERT_TRUE(result);
+    EXPECT_EQ(parser_.state(), State::kEnd);
+    EXPECT_EQ(result->address, address);
+  }
+}
+
+TEST_F(SIWEMessageParserTest, HasSIWEHeader) {
+  EXPECT_TRUE(SIWEMessageParser::HasSIWEHeader(
+      base::StrCat({"example.com", starting_token(), "\n"})));
+  EXPECT_TRUE(SIWEMessageParser::HasSIWEHeader(
+      base::StrCat({"\nexample.com", starting_token(), "\n"})));
+
+  // Prove that even malformed input still returns true when the header is
+  // included.
+  const std::string malformed = base::StrCat({valid_issued_at_prefix(), "\n"});
+  EXPECT_FALSE(parser_.Parse(malformed));
+  EXPECT_TRUE(SIWEMessageParser::HasSIWEHeader(malformed));
+
+  // Header lines that Parse() refuses but a dapp's more lenient verifier would
+  // still read as a sign-in. These have to be reported as SIWE so that they
+  // get rejected outright instead of falling through to a plain EIP-191
+  // signature.
+  for (const std::string& near_miss : {
+           // The ABNF only allows LF, not CRLF.
+           base::StrCat({"example.com", starting_token(), "\r\n"}),
+           // Verifiers match the domain greedily, so the operative domain here
+           // is everything up to the last occurrence of the token.
+           base::StrCat({"example.com", starting_token(), "evil.com",
+                         starting_token(), "\n"}),
+       }) {
+    SCOPED_TRACE(testing::Message() << "\"" << near_miss << "\"");
+    EXPECT_TRUE(SIWEMessageParser::HasSIWEHeader(near_miss));
+    EXPECT_FALSE(parser_.Parse(near_miss));
+    EXPECT_EQ(parser_.state(), State::kStart);
+  }
+
+  for (const std::string& not_siwe : {
+           std::string(""),
+           std::string("hello world"),
+           // Empty domain.
+           base::StrCat({starting_token(), "\n"}),
+           // Header line not terminated.
+           base::StrCat({"example.com", starting_token()}),
+           // A plain EIP-191 message that quotes the header mid-sentence is
+           // not an attempted sign-in; the header has to end its own line.
+           base::StrCat({"Reporting a phishing site: a popup claiming "
+                         "example.com",
+                         starting_token(),
+                         " went on to ask for my recovery phrase.\n"
+                         "The real site never does that."}),
+           // A plain EIP-191 message that quotes the header on its own line.
+           base::StrCat({"Reporting a phishing site. A popup said:\n",
+                         "example.com", starting_token(),
+                         "\nand then asked for my recovery phrase."}),
+           base::StrCat({"Note\nexample.com", valid_start_suffix()}),
+       }) {
+    SCOPED_TRACE(testing::Message() << "\"" << not_siwe << "\"");
+    EXPECT_FALSE(SIWEMessageParser::HasSIWEHeader(not_siwe));
+  }
+}
+
 TEST_F(SIWEMessageParserTest, Statement) {
   for (const std::string& invalid_case : {
-           "", "\n", "statement", "\nstatement", "\nstatement\n",
+           "",
+           "\n",
+           "statement",
+           "\nstatement",
+           "\nstatement\n",
            "\n\x80statement\n\n",  // non-ASCII char
        }) {
     const std::string message =
@@ -239,7 +327,9 @@ TEST_F(SIWEMessageParserTest, CommonErrors) {
   };
   for (const auto& state_info : state_infos) {
     for (const auto& invalid_case : {
-             std::string(""), std::string("\n"), state_info.token,
+             std::string(""),
+             std::string("\n"),
+             state_info.token,
              state_info.value,
              base::StrCat({state_info.token, state_info.value}),
              base::StrCat({state_info.token, "\n"}),
@@ -261,6 +351,10 @@ TEST_F(SIWEMessageParserTest, CommonErrors) {
         // This is valid for optional field
         if (invalid_case ==
                 base::StrCat({state_info.token, state_info.value}) ||
+            // A bare "Resources:" is a valid empty list, see
+            // OptionalResourcesEmpty.
+            (state_info.token == resources_token() &&
+             invalid_case == state_info.token) ||
             // This has been tested in invalid issued_at
             invalid_case.empty()) {
           continue;
@@ -429,6 +523,58 @@ TEST_F(SIWEMessageParserTest, OptionalResources) {
   EXPECT_FALSE(result->expiration_time);
   EXPECT_FALSE(result->not_before);
   EXPECT_FALSE(result->request_id);
+}
+
+TEST_F(SIWEMessageParserTest, OptionalResourcesEmpty) {
+  // `resources = *( LF resource )` permits zero entries, so a message ending at
+  // "Resources:" has to parse instead of falling back to EIP-191.
+
+  const std::string message =
+      base::StrCat({valid_issued_at_prefix(), "\n", resources_token()});
+  auto result = parser_.Parse(message);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(parser_.state(), State::kEnd);
+  // The field is present, it just has no entries.
+  ASSERT_TRUE(result->resources);
+  EXPECT_TRUE(result->resources->empty());
+  // rest of the fields
+  EXPECT_EQ(result->origin, url::Origin::Create(GURL("https://example.com")));
+  EXPECT_EQ(result->address, kExampleAddress);
+  EXPECT_FALSE(result->statement);
+  EXPECT_EQ(result->uri, GURL(kExampleUri));
+  EXPECT_EQ(result->version, 1u);
+  EXPECT_EQ(result->chain_id, 5u);
+  EXPECT_EQ(result->nonce, kExampleNonce);
+  EXPECT_EQ(result->issued_at, kExampleISO8601Time);
+  EXPECT_FALSE(result->expiration_time);
+  EXPECT_FALSE(result->not_before);
+  EXPECT_FALSE(result->request_id);
+
+  // An empty list is also valid after each of the preceding optional fields.
+  for (const auto& preceding : {
+           base::StrCat({expiration_time_token(), kExampleISO8601Time}),
+           base::StrCat({not_before_token(), kExampleISO8601Time}),
+           base::StrCat({request_id_token(), kExampleRequestId}),
+           base::StrCat({expiration_time_token(), kExampleISO8601Time, "\n",
+                         not_before_token(), kExampleISO8601Time, "\n",
+                         request_id_token(), kExampleRequestId}),
+       }) {
+    const std::string message_with_preceding = base::StrCat(
+        {valid_issued_at_prefix(), "\n", preceding, "\n", resources_token()});
+    SCOPED_TRACE(testing::Message() << "\"" << message_with_preceding << "\"");
+    auto preceding_result = parser_.Parse(message_with_preceding);
+    ASSERT_TRUE(preceding_result);
+    EXPECT_EQ(parser_.state(), State::kEnd);
+    ASSERT_TRUE(preceding_result->resources);
+    EXPECT_TRUE(preceding_result->resources->empty());
+  }
+
+  // Trailing LF is still considered invalid.
+  const std::string dangling_lf =
+      base::StrCat({valid_issued_at_prefix(), "\n", resources_token(), "\n"});
+  SCOPED_TRACE(testing::Message() << "\"" << dangling_lf << "\"");
+  EXPECT_FALSE(parser_.Parse(dangling_lf));
+  EXPECT_EQ(parser_.state(), State::kOptionalFields);
 }
 
 TEST_F(SIWEMessageParserTest, OptionalFieldsOrder) {
