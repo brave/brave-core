@@ -165,13 +165,13 @@ impl CreateOptions {
             // FIXME
             let path_name = CString::new(path_name).unwrap();
 
-            let (password, password_len) = match self.password {
-                Some(ref password) => (password.as_ptr().cast::<c_void>(), password.len() as u32),
+            let (password, password_len) = match &self.password {
+                Some(password) => (password.as_ptr().cast::<c_void>(), password.len() as u32),
                 None => (ptr::null(), 0),
             };
 
-            let access = match self.access {
-                Some(ref access) => access.as_concrete_TypeRef(),
+            let access = match &self.access {
+                Some(access) => access.as_concrete_TypeRef(),
                 None => ptr::null_mut(),
             };
 

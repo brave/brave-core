@@ -1,23 +1,33 @@
-use std::borrow::Cow;
-
 use crate::{
-    bstr::BStr,
+    bstr::{BString, ByteSlice},
     config::tree::{Remote, Section},
     remote,
 };
 
 /// Query configuration related to remotes.
 impl crate::Repository {
-    /// Returns a sorted list unique of symbolic names of remotes that
-    /// we deem [trustworthy][crate::open::Options::filter_config_section()].
-    pub fn remote_names(&self) -> remote::Names<'_> {
+    /// Returns the unique symbolic names of remotes that we deem
+    /// [trustworthy][crate::open::Options::filter_config_section()], in ascending bytewise lexicographic order.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    /// # mod doctest { include!(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/doctest.rs")); }
+    /// # let repo = doctest::open_repo(doctest::remote_repo_dir("clone")?)?;
+    /// let remote_names: Vec<_> = repo.remote_names().into_iter().map(|name| name.to_string()).collect();
+    ///
+    /// assert_eq!(remote_names, vec!["myself".to_owned(), "origin".to_owned()]);
+    /// # Ok(()) }
+    /// ```
+    pub fn remote_names(&self) -> remote::Names {
         self.config
             .resolved
             .sections_by_name(Remote.name())
             .map(|it| {
                 let filter = self.filter_config_section();
                 it.filter(move |s| filter(s.meta()))
-                    .filter_map(|section| section.header().subsection_name().map(Cow::Borrowed))
+                    .filter_map(|section| section.header().subsection_name().map(ToOwned::to_owned))
                     .collect()
             })
             .unwrap_or_default()
@@ -31,7 +41,27 @@ impl crate::Repository {
     /// # Notes
     ///
     /// It's up to the caller to determine what to do if the current `head` is unborn or detached.
-    pub fn remote_default_name(&self, direction: remote::Direction) -> Option<Cow<'_, BStr>> {
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    /// # use gix::bstr::ByteSlice;
+    /// # mod doctest { include!(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/doctest.rs")); }
+    /// # let repo = doctest::open_repo(doctest::remote_repo_dir("clone")?)?;
+    /// assert_eq!(
+    ///     repo.remote_default_name(gix::remote::Direction::Fetch)
+    ///         .expect("configured"),
+    ///     "origin"
+    /// );
+    /// assert_eq!(
+    ///     repo.remote_default_name(gix::remote::Direction::Push)
+    ///         .expect("configured"),
+    ///     "origin"
+    /// );
+    /// # Ok(()) }
+    /// ```
+    pub fn remote_default_name(&self, direction: remote::Direction) -> Option<BString> {
         let name = (direction == remote::Direction::Push)
             .then(|| {
                 self.config
@@ -44,10 +74,10 @@ impl crate::Repository {
             match names.len() {
                 0 => None,
                 1 => names.into_iter().next(),
-                _more_than_one => {
-                    let origin = Cow::Borrowed("origin".into());
-                    names.contains(&origin).then_some(origin)
-                }
+                _more_than_one => names
+                    .iter()
+                    .any(|name| name.as_bstr() == "origin")
+                    .then(|| "origin".into()),
             }
         })
     }

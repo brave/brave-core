@@ -4,6 +4,7 @@ use futures::future::Future;
 use futures::sink::SinkExt;
 use futures::stream::StreamExt;
 use futures::task::{Context, Poll};
+use futures_channel::mpsc::TryRecvError;
 use std::pin::Pin;
 use std::sync::{Arc, Weak};
 use std::thread;
@@ -147,10 +148,9 @@ fn single_receiver_drop_closes_channel_and_drains() {
 
 // Stress test that `try_send()`s occurring concurrently with receiver
 // close/drops don't appear as successful sends.
-#[cfg_attr(miri, ignore)] // Miri is too slow
 #[test]
 fn stress_try_send_as_receiver_closes() {
-    const AMT: usize = 10000;
+    const AMT: usize = if cfg!(miri) { 100 } else { 10000 };
     // To provide variable timing characteristics (in the hopes of
     // reproducing the collision that leads to a race), we busy-re-poll
     // the test MPSC receiver a variable number of times before actually
@@ -278,6 +278,7 @@ fn stress_try_send_as_receiver_closes() {
 
 #[test]
 fn unbounded_try_next_after_none() {
+    #![allow(deprecated)]
     let (tx, mut rx) = mpsc::unbounded::<String>();
     // Drop the sender, close the channel.
     drop(tx);
@@ -289,6 +290,7 @@ fn unbounded_try_next_after_none() {
 
 #[test]
 fn bounded_try_next_after_none() {
+    #![allow(deprecated)]
     let (tx, mut rx) = mpsc::channel::<String>(17);
     // Drop the sender, close the channel.
     drop(tx);
@@ -296,4 +298,34 @@ fn bounded_try_next_after_none() {
     assert_eq!(Ok(None), rx.try_next().map_err(|_| ()));
     // None received, check we can call `try_next` again.
     assert_eq!(Ok(None), rx.try_next().map_err(|_| ()));
+}
+
+#[test]
+fn unbounded_try_recv_after_none() {
+    let (tx, mut rx) = mpsc::unbounded::<String>();
+
+    // Channel is empty initially.
+    assert_eq!(Err(TryRecvError::Empty), rx.try_recv());
+
+    // Drop the sender, close the channel.
+    drop(tx);
+    // Receive the end of channel.
+    assert_eq!(Err(TryRecvError::Closed), rx.try_recv());
+    // Closed received, check we can call `try_next` again.
+    assert_eq!(Err(TryRecvError::Closed), rx.try_recv());
+}
+
+#[test]
+fn bounded_try_recv_after_none() {
+    let (tx, mut rx) = mpsc::channel::<String>(17);
+
+    // Channel is empty initially.
+    assert_eq!(Err(TryRecvError::Empty), rx.try_recv());
+
+    // Drop the sender, close the channel.
+    drop(tx);
+    // Receive the end of channel.
+    assert_eq!(Err(TryRecvError::Closed), rx.try_recv());
+    // Closed received, check we can call `try_next` again.
+    assert_eq!(Err(TryRecvError::Closed), rx.try_recv());
 }

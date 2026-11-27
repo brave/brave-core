@@ -1,5 +1,3 @@
-#[cfg(all(feature = "aws-lc-rs-unstable", not(feature = "aws-lc-rs-fips")))]
-use aws_lc_rs::unstable;
 use aws_lc_rs::{signature, try_fips_mode};
 use pki_types::{AlgorithmIdentifier, InvalidSignature, SignatureVerificationAlgorithm, alg_id};
 
@@ -12,7 +10,6 @@ struct AwsLcRsAlgorithm {
     public_key_alg_id: AlgorithmIdentifier,
     signature_alg_id: AlgorithmIdentifier,
     verification_alg: &'static dyn signature::VerificationAlgorithm,
-    in_fips_submission: bool,
 }
 
 impl SignatureVerificationAlgorithm for AwsLcRsAlgorithm {
@@ -53,38 +50,29 @@ impl SignatureVerificationAlgorithm for AwsLcRsAlgorithm {
     }
 
     fn fips(&self) -> bool {
-        self.in_fips_submission && try_fips_mode().is_ok()
+        try_fips_mode().is_ok()
     }
 }
 
 /// ML-DSA signatures using the [4, 4] matrix (security strength category 2).
-#[cfg(all(feature = "aws-lc-rs-unstable", not(feature = "aws-lc-rs-fips")))]
 pub static ML_DSA_44: &dyn SignatureVerificationAlgorithm = &AwsLcRsAlgorithm {
     public_key_alg_id: alg_id::ML_DSA_44,
     signature_alg_id: alg_id::ML_DSA_44,
-    verification_alg: &unstable::signature::ML_DSA_44,
-    // Not included in AWS-LC-FIPS 3.0 FIPS scope
-    in_fips_submission: false,
+    verification_alg: &signature::ML_DSA_44,
 };
 
 /// ML-DSA signatures using the [6, 5] matrix (security strength category 3).
-#[cfg(all(feature = "aws-lc-rs-unstable", not(feature = "aws-lc-rs-fips")))]
 pub static ML_DSA_65: &dyn SignatureVerificationAlgorithm = &AwsLcRsAlgorithm {
     public_key_alg_id: alg_id::ML_DSA_65,
     signature_alg_id: alg_id::ML_DSA_65,
-    verification_alg: &unstable::signature::ML_DSA_65,
-    // Not included in AWS-LC-FIPS 3.0 FIPS scope
-    in_fips_submission: false,
+    verification_alg: &signature::ML_DSA_65,
 };
 
 /// ML-DSA signatures using the [8. 7] matrix (security strength category 5).
-#[cfg(all(feature = "aws-lc-rs-unstable", not(feature = "aws-lc-rs-fips")))]
 pub static ML_DSA_87: &dyn SignatureVerificationAlgorithm = &AwsLcRsAlgorithm {
     public_key_alg_id: alg_id::ML_DSA_87,
     signature_alg_id: alg_id::ML_DSA_87,
-    verification_alg: &unstable::signature::ML_DSA_87,
-    // Not included in AWS-LC-FIPS 3.0 FIPS scope
-    in_fips_submission: false,
+    verification_alg: &signature::ML_DSA_87,
 };
 
 /// ECDSA signatures using the P-256 curve and SHA-256.
@@ -92,7 +80,6 @@ pub static ECDSA_P256_SHA256: &dyn SignatureVerificationAlgorithm = &AwsLcRsAlgo
     public_key_alg_id: alg_id::ECDSA_P256,
     signature_alg_id: alg_id::ECDSA_SHA256,
     verification_alg: &signature::ECDSA_P256_SHA256_ASN1,
-    in_fips_submission: true,
 };
 
 /// ECDSA signatures using the P-256 curve and SHA-384. Deprecated.
@@ -100,7 +87,6 @@ pub static ECDSA_P256_SHA384: &dyn SignatureVerificationAlgorithm = &AwsLcRsAlgo
     public_key_alg_id: alg_id::ECDSA_P256,
     signature_alg_id: alg_id::ECDSA_SHA384,
     verification_alg: &signature::ECDSA_P256_SHA384_ASN1,
-    in_fips_submission: true,
 };
 
 /// ECDSA signatures using the P-256 curve and SHA-512. Deprecated.
@@ -108,7 +94,6 @@ pub static ECDSA_P256_SHA512: &dyn SignatureVerificationAlgorithm = &AwsLcRsAlgo
     public_key_alg_id: alg_id::ECDSA_P256,
     signature_alg_id: alg_id::ECDSA_SHA512,
     verification_alg: &signature::ECDSA_P256_SHA512_ASN1,
-    in_fips_submission: true,
 };
 
 /// ECDSA signatures using the P-384 curve and SHA-256. Deprecated.
@@ -116,7 +101,6 @@ pub static ECDSA_P384_SHA256: &dyn SignatureVerificationAlgorithm = &AwsLcRsAlgo
     public_key_alg_id: alg_id::ECDSA_P384,
     signature_alg_id: alg_id::ECDSA_SHA256,
     verification_alg: &signature::ECDSA_P384_SHA256_ASN1,
-    in_fips_submission: true,
 };
 
 /// ECDSA signatures using the P-384 curve and SHA-384.
@@ -124,7 +108,6 @@ pub static ECDSA_P384_SHA384: &dyn SignatureVerificationAlgorithm = &AwsLcRsAlgo
     public_key_alg_id: alg_id::ECDSA_P384,
     signature_alg_id: alg_id::ECDSA_SHA384,
     verification_alg: &signature::ECDSA_P384_SHA384_ASN1,
-    in_fips_submission: true,
 };
 
 /// ECDSA signatures using the P-384 curve and SHA-512. Deprecated.
@@ -132,7 +115,6 @@ pub static ECDSA_P384_SHA512: &dyn SignatureVerificationAlgorithm = &AwsLcRsAlgo
     public_key_alg_id: alg_id::ECDSA_P384,
     signature_alg_id: alg_id::ECDSA_SHA512,
     verification_alg: &signature::ECDSA_P384_SHA512_ASN1,
-    in_fips_submission: true,
 };
 
 /// ECDSA signatures using the P-521 curve and SHA-256.
@@ -140,7 +122,6 @@ pub static ECDSA_P521_SHA256: &dyn SignatureVerificationAlgorithm = &AwsLcRsAlgo
     public_key_alg_id: alg_id::ECDSA_P521,
     signature_alg_id: alg_id::ECDSA_SHA256,
     verification_alg: &signature::ECDSA_P521_SHA256_ASN1,
-    in_fips_submission: true,
 };
 
 /// ECDSA signatures using the P-521 curve and SHA-384.
@@ -148,7 +129,6 @@ pub static ECDSA_P521_SHA384: &dyn SignatureVerificationAlgorithm = &AwsLcRsAlgo
     public_key_alg_id: alg_id::ECDSA_P521,
     signature_alg_id: alg_id::ECDSA_SHA384,
     verification_alg: &signature::ECDSA_P521_SHA384_ASN1,
-    in_fips_submission: true,
 };
 
 /// ECDSA signatures using the P-521 curve and SHA-512.
@@ -156,7 +136,6 @@ pub static ECDSA_P521_SHA512: &dyn SignatureVerificationAlgorithm = &AwsLcRsAlgo
     public_key_alg_id: alg_id::ECDSA_P521,
     signature_alg_id: alg_id::ECDSA_SHA512,
     verification_alg: &signature::ECDSA_P521_SHA512_ASN1,
-    in_fips_submission: true,
 };
 
 /// RSA PKCS#1 1.5 signatures using SHA-256 for keys of 2048-8192 bits.
@@ -164,7 +143,6 @@ pub static RSA_PKCS1_2048_8192_SHA256: &dyn SignatureVerificationAlgorithm = &Aw
     public_key_alg_id: alg_id::RSA_ENCRYPTION,
     signature_alg_id: alg_id::RSA_PKCS1_SHA256,
     verification_alg: &signature::RSA_PKCS1_2048_8192_SHA256,
-    in_fips_submission: true,
 };
 
 /// RSA PKCS#1 1.5 signatures using SHA-384 for keys of 2048-8192 bits.
@@ -172,7 +150,6 @@ pub static RSA_PKCS1_2048_8192_SHA384: &dyn SignatureVerificationAlgorithm = &Aw
     public_key_alg_id: alg_id::RSA_ENCRYPTION,
     signature_alg_id: alg_id::RSA_PKCS1_SHA384,
     verification_alg: &signature::RSA_PKCS1_2048_8192_SHA384,
-    in_fips_submission: true,
 };
 
 /// RSA PKCS#1 1.5 signatures using SHA-512 for keys of 2048-8192 bits.
@@ -180,7 +157,6 @@ pub static RSA_PKCS1_2048_8192_SHA512: &dyn SignatureVerificationAlgorithm = &Aw
     public_key_alg_id: alg_id::RSA_ENCRYPTION,
     signature_alg_id: alg_id::RSA_PKCS1_SHA512,
     verification_alg: &signature::RSA_PKCS1_2048_8192_SHA512,
-    in_fips_submission: true,
 };
 
 /// RSA PKCS#1 1.5 signatures using SHA-256 for keys of 2048-8192 bits,
@@ -201,7 +177,6 @@ pub static RSA_PKCS1_2048_8192_SHA256_ABSENT_PARAMS: &dyn SignatureVerificationA
             "data/alg-rsa-pkcs1-sha256-absent-params.der"
         )),
         verification_alg: &signature::RSA_PKCS1_2048_8192_SHA256,
-        in_fips_submission: true,
     };
 
 /// RSA PKCS#1 1.5 signatures using SHA-384 for keys of 2048-8192 bits,
@@ -222,7 +197,6 @@ pub static RSA_PKCS1_2048_8192_SHA384_ABSENT_PARAMS: &dyn SignatureVerificationA
             "data/alg-rsa-pkcs1-sha384-absent-params.der"
         )),
         verification_alg: &signature::RSA_PKCS1_2048_8192_SHA384,
-        in_fips_submission: true,
     };
 
 /// RSA PKCS#1 1.5 signatures using SHA-512 for keys of 2048-8192 bits,
@@ -243,7 +217,6 @@ pub static RSA_PKCS1_2048_8192_SHA512_ABSENT_PARAMS: &dyn SignatureVerificationA
             "data/alg-rsa-pkcs1-sha512-absent-params.der"
         )),
         verification_alg: &signature::RSA_PKCS1_2048_8192_SHA512,
-        in_fips_submission: true,
     };
 
 /// RSA PKCS#1 1.5 signatures using SHA-384 for keys of 3072-8192 bits.
@@ -251,7 +224,6 @@ pub static RSA_PKCS1_3072_8192_SHA384: &dyn SignatureVerificationAlgorithm = &Aw
     public_key_alg_id: alg_id::RSA_ENCRYPTION,
     signature_alg_id: alg_id::RSA_PKCS1_SHA384,
     verification_alg: &signature::RSA_PKCS1_3072_8192_SHA384,
-    in_fips_submission: true,
 };
 
 /// RSA PSS signatures using SHA-256 for keys of 2048-8192 bits and of
@@ -263,7 +235,6 @@ pub static RSA_PSS_2048_8192_SHA256_LEGACY_KEY: &dyn SignatureVerificationAlgori
         public_key_alg_id: alg_id::RSA_ENCRYPTION,
         signature_alg_id: alg_id::RSA_PSS_SHA256,
         verification_alg: &signature::RSA_PSS_2048_8192_SHA256,
-        in_fips_submission: true,
     };
 
 /// RSA PSS signatures using SHA-384 for keys of 2048-8192 bits and of
@@ -275,7 +246,6 @@ pub static RSA_PSS_2048_8192_SHA384_LEGACY_KEY: &dyn SignatureVerificationAlgori
         public_key_alg_id: alg_id::RSA_ENCRYPTION,
         signature_alg_id: alg_id::RSA_PSS_SHA384,
         verification_alg: &signature::RSA_PSS_2048_8192_SHA384,
-        in_fips_submission: true,
     };
 
 /// RSA PSS signatures using SHA-512 for keys of 2048-8192 bits and of
@@ -287,7 +257,6 @@ pub static RSA_PSS_2048_8192_SHA512_LEGACY_KEY: &dyn SignatureVerificationAlgori
         public_key_alg_id: alg_id::RSA_ENCRYPTION,
         signature_alg_id: alg_id::RSA_PSS_SHA512,
         verification_alg: &signature::RSA_PSS_2048_8192_SHA512,
-        in_fips_submission: true,
     };
 
 /// ED25519 signatures according to RFC 8410
@@ -295,7 +264,6 @@ pub static ED25519: &dyn SignatureVerificationAlgorithm = &AwsLcRsAlgorithm {
     public_key_alg_id: alg_id::ED25519,
     signature_alg_id: alg_id::ED25519,
     verification_alg: &signature::ED25519,
-    in_fips_submission: true,
 };
 
 #[cfg(test)]
@@ -324,11 +292,8 @@ mod tests {
         // Algorithms deprecated because they are nonsensical combinations.
         super::ECDSA_P256_SHA384, // Truncates digest.
         super::ECDSA_P384_SHA256, // Digest is unnecessarily short.
-        #[cfg(all(feature = "aws-lc-rs-unstable", not(feature = "aws-lc-rs-fips")))]
         super::ML_DSA_44,
-        #[cfg(all(feature = "aws-lc-rs-unstable", not(feature = "aws-lc-rs-fips")))]
         super::ML_DSA_65,
-        #[cfg(all(feature = "aws-lc-rs-unstable", not(feature = "aws-lc-rs-fips")))]
         super::ML_DSA_87,
     ];
 

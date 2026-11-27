@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/people_handler.cc b/chrome/browser/ui/webui/settings/people_handler.cc
-index 954fdc451e90a1d26278fc71bae22ed57052a215..6420e4cbed617bba1b90d9a4567794e3c71cd0ca 100644
+index 954fdc451e90a1d26278fc71bae22ed57052a215..53bbc83356509a1da02a2c69db6606a995fc819a 100644
 --- a/chrome/browser/ui/webui/settings/people_handler.cc
 +++ b/chrome/browser/ui/webui/settings/people_handler.cc
 @@ -1154,6 +1154,7 @@ void PeopleHandler::OnSyncShutdown(syncer::SyncService* sync_service) {
@@ -10,14 +10,14 @@ index 954fdc451e90a1d26278fc71bae22ed57052a215..6420e4cbed617bba1b90d9a4567794e3
    CHECK(IdentityManagerFactory::GetForProfile(profile_)->HasPrimaryAccount(
              signin::ConsentLevel::kSync),
          base::NotFatalUntil::M162);
-@@ -1205,6 +1206,7 @@ base::DictValue PeopleHandler::GetSyncStatusDictionary() const {
-       service && !disallowed_by_policy && service->IsSetupInProgress() &&
+@@ -1206,6 +1207,7 @@ base::DictValue PeopleHandler::GetSyncStatusDictionary() const {
            !service->GetUserSettings()->IsInitialSyncFeatureSetupComplete() &&
            identity_manager->HasPrimaryAccount(signin::ConsentLevel::kSync));
-+  BRAVE_GET_SYNC_STATUS_DICTIONARY
  
++  AddBraveSyncStatus(sync_status, service, disallowed_by_policy);
    SyncStatusLabels status_labels = GetSyncStatusLabelsForSettings(
        SyncServiceFactory::GetForProfile(profile_));
+ 
 @@ -1410,6 +1412,7 @@ void PeopleHandler::MaybeMarkSyncConfiguring() {
  }
  

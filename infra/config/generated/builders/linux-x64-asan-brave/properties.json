@@ -1,4 +1,7 @@
 {
+  "$brave_siso": {
+    "remote_jobs": 1440
+  },
   "$brave_tests_builder_config": {
     "builder_config": {
       "builder_db": {
@@ -17,6 +20,8 @@
                 "target_platform": "linux"
               },
               "gclient_config": {
+                "custom_deps": {},
+                "custom_vars": {},
                 "target_cpu": [],
                 "target_os": []
               }

@@ -95,19 +95,9 @@ impl<R: Read> Archive<R> {
     ///
     /// # Security
     ///
-    /// A best-effort is made to prevent writing files outside `dst` (paths
-    /// containing `..` are skipped, symlinks are validated). However, there
-    /// have been historical bugs in this area, and more may exist. For this
-    /// reason, when processing untrusted archives, stronger sandboxing is
-    /// encouraged: e.g. the [`cap-std`] crate and/or OS-level
-    /// containerization/virtualization.
-    ///
-    /// If `dst` does not exist, it is created. Unpacking into an existing
-    /// directory merges content. This function assumes `dst` is not
-    /// concurrently modified by untrusted processes. Protecting against
-    /// TOCTOU races is out of scope for this crate.
-    ///
-    /// [`cap-std`]: https://docs.rs/cap-std/
+    /// See the [crate-level security documentation][crate#security]. If `dst`
+    /// does not exist, it is created. Unpacking into an existing directory
+    /// merges content.
     ///
     /// # Examples
     ///
@@ -334,8 +324,16 @@ impl<'a> EntriesFields<'a> {
             return Err(other("archive header checksum mismatch"));
         }
 
+        // PAX extensions describe the *next file entry*, not intermediary
+        // extension headers (GNU LongName `L`, GNU LongLink `K`, PAX `x`/`g`).
+        let entry_type = header.entry_type();
+        let is_extension_header = entry_type.is_gnu_longname()
+            || entry_type.is_gnu_longlink()
+            || entry_type.is_pax_local_extensions()
+            || entry_type.is_pax_global_extensions();
+
         let mut pax_size: Option<u64> = None;
-        if let Some(pax_extensions_ref) = &pax_extensions {
+        if let Some(pax_extensions_ref) = pax_extensions.filter(|_| !is_extension_header) {
             pax_size = pax_extensions_value(pax_extensions_ref, PAX_SIZE);
 
             if let Some(pax_uid) = pax_extensions_value(pax_extensions_ref, PAX_UID) {

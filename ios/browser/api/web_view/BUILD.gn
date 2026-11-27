@@ -47,6 +47,7 @@ source_set("web_view") {
     "//brave/ios/browser/brave_search",
     "//brave/ios/browser/brave_shields",
     "//brave/ios/browser/brave_shields/cosmetic_filtering",
+    "//brave/ios/browser/brave_shields/element_picker",
     "//brave/ios/browser/brave_shields/request_blocking",
     "//brave/ios/browser/brave_shields/scriptlets",
     "//brave/ios/browser/brave_wallet",

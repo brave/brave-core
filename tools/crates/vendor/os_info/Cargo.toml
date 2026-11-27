@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.60"
 name = "os_info"
-version = "3.14.0"
+version = "3.15.0"
 authors = [
     "Jan Schulte <hello@unexpected-co.de>",
     "Stanislav Tkach <stanislav.tkach@gmail.com>",
@@ -69,8 +69,8 @@ version = "0.3"
 [dev-dependencies.pretty_assertions]
 version = "1"
 
-[target.'cfg(any(target_os = "aix", target_os = "dragonfly", target_os = "freebsd", target_os = "illumos", target_os = "linux", target_os = "macos", target_os = "netbsd", target_os = "openbsd", target_os = "cygwin"))'.dependencies.nix]
-version = "0.30"
+[target.'cfg(any(target_os = "aix", target_os = "dragonfly", target_os = "freebsd", target_os = "illumos", target_os = "linux", target_os = "macos", target_os = "netbsd", target_os = "openbsd", target_os = "cygwin", target_os = "hurd"))'.dependencies.nix]
+version = "0.31"
 features = ["feature"]
 
 [target.'cfg(target_os = "android")'.dependencies.android_system_properties]

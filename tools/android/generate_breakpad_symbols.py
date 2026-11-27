@@ -78,7 +78,7 @@ def GetRequiredLibsPaths(args, extension):
         # Cut out 'crazy.' if exists
         # see //chrome/android/chrome_public_apk_tmpl.gni
         lib_name = os.path.basename(lib).replace('crazy.', '')
-        if not lib_name in ignored_libs:
+        if lib_name not in ignored_libs:
             libs_only_names.add(lib_name)
 
     libs_result = []
@@ -242,7 +242,7 @@ def main():
     if args.clear:
         try:
             shutil.rmtree(args.symbols_dir)
-        except:  # pylint: disable=bare-except
+        except OSError:
             pass
 
     InvokeChromiumGenerateSymbols(args, libs_result)

@@ -1,3 +1,5 @@
+use gix_error::{Result, ResultExt, message};
+
 use std::path::PathBuf;
 
 use crate::store_impl::{file, packed};
@@ -5,11 +7,9 @@ use crate::store_impl::{file, packed};
 impl file::Store {
     /// Return a packed transaction ready to receive updates. Use this to create or update `packed-refs`.
     /// Note that if you already have a [`packed::Buffer`] then use its [`packed::Buffer::into_transaction()`] method instead.
-    pub(crate) fn packed_transaction(
-        &self,
-        lock_mode: gix_lock::acquire::Fail,
-    ) -> Result<packed::Transaction, transaction::Error> {
-        let lock = gix_lock::File::acquire_to_update_resource(self.packed_refs_path(), lock_mode, None)?;
+    pub(crate) fn packed_transaction(&self, lock_mode: gix_lock::acquire::Fail) -> Result<packed::Transaction> {
+        let lock = gix_lock::File::acquire_to_update_resource(self.packed_refs_path(), lock_mode, None, 0)
+            .or_raise(|| message("Could not lock packed refs"))?;
         // We 'steal' the possibly existing packed buffer which may safe time if it's already there and fresh.
         // If nothing else is happening, nobody will get to see the soon stale buffer either, but if so, they will pay
         // for reloading it. That seems preferred over always loading up a new one.
@@ -25,10 +25,14 @@ impl file::Store {
     ///
     /// Note that it will automatically be memory mapped if it exceeds the default threshold of 32KB.
     /// Change the threshold with [file::Store::set_packed_buffer_mmap_threshold()].
-    pub fn open_packed_buffer(&self) -> Result<Option<packed::Buffer>, packed::buffer::open::Error> {
-        match packed::Buffer::open(self.packed_refs_path(), self.packed_buffer_mmap_threshold) {
+    pub fn open_packed_buffer(&self) -> Result<Option<packed::Buffer>> {
+        match packed::Buffer::open(
+            self.packed_refs_path(),
+            self.packed_buffer_mmap_threshold,
+            self.object_hash,
+        ) {
             Ok(buf) => Ok(Some(buf)),
-            Err(packed::buffer::open::Error::Io(err)) if err.kind() == std::io::ErrorKind::NotFound => Ok(None),
+            Err(err) if err.is_not_found() => Ok(None),
             Err(err) => Err(err),
         }
     }
@@ -38,9 +42,7 @@ impl file::Store {
     ///
     /// Use this to make successive calls to [`file::Store::try_find_packed()`]
     /// or obtain iterators using [`file::Store::iter_packed()`] in a way that assures the packed-refs content won't change.
-    pub fn cached_packed_buffer(
-        &self,
-    ) -> Result<Option<file::packed::SharedBufferSnapshot>, packed::buffer::open::Error> {
+    pub fn cached_packed_buffer(&self) -> Result<Option<file::packed::SharedBufferSnapshot>> {
         self.assure_packed_refs_uptodate()
     }
 
@@ -56,27 +58,12 @@ impl file::Store {
     }
 }
 
-///
-pub mod transaction {
-
-    use crate::store_impl::packed;
-
-    /// The error returned by [`file::Transaction::prepare()`][crate::file::Transaction::prepare()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("An existing pack couldn't be opened or read when preparing a transaction")]
-        BufferOpen(#[from] packed::buffer::open::Error),
-        #[error("The lock for a packed transaction could not be obtained")]
-        TransactionLock(#[from] gix_lock::acquire::Error),
-    }
-}
-
 /// An up-to-date snapshot of the packed refs buffer.
 pub type SharedBufferSnapshot = gix_fs::SharedFileSnapshot<packed::Buffer>;
 
 pub(crate) mod modifiable {
-    use gix_features::threading::OwnShared;
+    use gix_error::{Message, Result, ResultExt};
+    use gix_parallel::OwnShared;
 
     use crate::{file, packed};
 
@@ -90,15 +77,20 @@ pub(crate) mod modifiable {
         ///
         /// As some filesystems don't have nanosecond granularity, changes are likely to be missed
         /// if they happen within one second otherwise.
-        pub fn force_refresh_packed_buffer(&self) -> Result<(), packed::buffer::open::Error> {
+        ///
+        /// [Metadata](gix_error::Error::metadata()) `path` (native path) identifies a packed-refs file whose modification
+        /// time could not be read.
+        pub fn force_refresh_packed_buffer(&self) -> Result {
             self.packed.force_refresh(|| {
-                let modified = self.packed_refs_path().metadata()?.modified()?;
+                let path = self.packed_refs_path();
+                let modified = path
+                    .metadata()
+                    .and_then(|metadata| metadata.modified())
+                    .or_raise(|| Message::new("Could not read packed refs modification time").with("path", path))?;
                 self.open_packed_buffer().map(|packed| Some(modified).zip(packed))
             })
         }
-        pub(crate) fn assure_packed_refs_uptodate(
-            &self,
-        ) -> Result<Option<super::SharedBufferSnapshot>, packed::buffer::open::Error> {
+        pub(crate) fn assure_packed_refs_uptodate(&self) -> Result<Option<super::SharedBufferSnapshot>> {
             self.packed.recent_snapshot(
                 || self.packed_refs_path().metadata().and_then(|m| m.modified()).ok(),
                 || self.open_packed_buffer(),

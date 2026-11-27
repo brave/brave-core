@@ -14,6 +14,7 @@
 #include "base/functional/callback.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
+#include "base/power_monitor/power_observer.h"
 #include "base/sequence_checker.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -44,17 +45,30 @@ namespace brave_vpn::v2 {
 // with the VPN server (ConnectionApi::FailureReason::kInternalError); such a
 // failure is never retried. The user's intent is cleared.
 //
-// Network changes never change the intent on their own. While connected they
-// trigger a check of the tunnel; while waiting to retry they bring the retry
-// forward. The intent is cleared only by Disconnect(), or when the tunnel is
-// lost and the manager is not going to restore it.
+// The intent is set by Connect() and cleared by Disconnect(). The manager
+// clears it on its own only when the tunnel is lost and it is not going to
+// restore it. What it does without being asked:
+// - Retries: with auto-reconnect on, a failed attempt or a lost tunnel is
+//   retried with a growing backoff, up to kMaxReconnectAttempts times. The
+//   backoff starts over once a tunnel has stayed up for
+//   kStableConnectionPeriod;
+// - Timeouts: a connect or disconnect that ConnectionApi doesn't answer within
+//   kTransitionTimeout is treated as failed, and the API instance is discarded;
+// - Network changes: they never change the intent. While connected they trigger
+//   a check of the tunnel. While waiting to retry they bring the retry
+//   forward, and no retry is made while the network is down;
+// - Suspend and resume: the manager's timers are stopped while the system
+//   sleeps, so time asleep counts neither against a request in progress nor
+//   towards a stable connection. After resume the tunnel is checked, and a
+//   pending retry starts over with a fresh backoff.
 //
 // Observers are notified synchronously, so a state change caused by Connect(),
 // Disconnect() or a ConnectionApi::Delegate callback may be reported before
 // that call returns.
 class ConnectionManager
     : public ConnectionApi::Delegate,
-      public net::NetworkChangeNotifier::NetworkChangeObserver {
+      public net::NetworkChangeNotifier::NetworkChangeObserver,
+      public base::PowerSuspendObserver {
  public:
   // Observers must not call back into the manager from a notification: the
   // manager may be in the middle of handling the event that caused it.
@@ -63,7 +77,8 @@ class ConnectionManager
     virtual void OnConnectionStateChanged(
         mojom::VpnConnectionState state,
         std::optional<std::string> error_message) = 0;
-    virtual void OnSelectedRegionChanged(const mojom::VpnRegion& region) = 0;
+    virtual void OnRegionSelectionChanged(
+        const mojom::VpnRegionSelection& selection) = 0;
     virtual void OnAutoReconnectStateChanged(bool enabled) = 0;
     virtual void OnSmartProxyRoutingStateChanged(bool enabled) = 0;
     virtual void OnAllowLanTrafficStateChanged(bool available,
@@ -93,7 +108,7 @@ class ConnectionManager
 
   mojom::VpnConnectionState connection_state() const;
   const std::optional<std::string>& error_message() const;
-  const mojom::VpnRegion& current_region() const;
+  const mojom::VpnRegionSelection& region_selection() const;
   bool auto_reconnect_enabled() const;
   bool smart_proxy_routing_enabled() const;
   bool allow_lan_traffic_available() const;
@@ -115,8 +130,15 @@ class ConnectionManager
   // is fetched from the VPN provider. |callback| always runs asynchronously,
   // and runs with an empty list if they can't be fetched.
   virtual void GetAllRegions(GetAllRegionsCallback callback);
-  // Sets the desired region which is currently selected in the UI.
-  virtual void SetSelectedRegion(mojom::VpnRegionPtr region);
+  // Selects the region by name and persists the choice. Once the region list
+  // is available, the name is checked against it: if no region has that name,
+  // the manager falls back to automatic selection. Any resulting change is
+  // reported through observer's OnRegionSelectionChanged; nothing is reported
+  // before the region list is available.
+  virtual void SelectRegion(const std::string& name);
+  // Returns to automatic selection and persists that. Any resulting change is
+  // reported through observer's OnRegionSelectionChanged.
+  virtual void SelectRegionAutomatically();
   // Sets the desired auto-reconnect state; this is a suggestion for the
   // agent and can be rejected; if the actual state gets changed, an update
   // will be dispatched via the corresponding observer callback.
@@ -135,7 +157,7 @@ class ConnectionManager
   // value didn't change.
   void UpdateConnectionState(mojom::VpnConnectionState state,
                              std::optional<std::string> error_message);
-  void UpdateSelectedRegion(mojom::VpnRegionPtr region);
+  void UpdateRegionSelection(mojom::VpnRegionSelectionPtr selection);
   void UpdateAutoReconnectState(bool enabled);
   void UpdateSmartProxyRoutingState(bool enabled);
   void UpdateAllowLanTrafficState(bool available, bool enabled);
@@ -147,6 +169,8 @@ class ConnectionManager
   // Quiet period after the last network change before checking the tunnel or
   // retrying.
   static constexpr base::TimeDelta kNetworkSettleDelay = base::Seconds(2);
+  // Interfaces and routes take longer to come back after resume.
+  static constexpr base::TimeDelta kResumeSettleDelay = base::Seconds(4);
   // Network changes this soon after our own tunnel came up or went down are
   // attributed to the tunnel itself. NetworkChangeNotifier holds a change back
   // for up to 2 seconds before reporting it, so this has to be well above that.
@@ -182,6 +206,10 @@ class ConnectionManager
   void OnNetworkChanged(
       net::NetworkChangeNotifier::ConnectionType type) override;
 
+  // base::PowerSuspendObserver:
+  void OnSuspend() override;
+  void OnResume() override;
+
   // Creates the ConnectionApi on first use. The API reports to the delegate it
   // is given, must stop everything it is doing when destroyed, and must not
   // call the delegate from its destructor.
@@ -192,6 +220,10 @@ class ConnectionManager
   // Moves to |state| (must be either kConnecting or kDisconnecting) and starts
   // the watchdog that bounds how long the API may take to report the result.
   void BeginTransition(mojom::VpnConnectionState state);
+  // Start the transition watchdog and the stable connection timer. OnResume()
+  // uses them to restart the timers that OnSuspend() stopped.
+  void StartTransitionWatchdog();
+  void StartConnectionStableTimer();
   // True shortly after our own tunnel came up or went down, when network change
   // notifications are most likely caused by the tunnel itself.
   bool IsTransitionSettling() const;
@@ -216,7 +248,8 @@ class ConnectionManager
   mojom::VpnConnectionState connection_state_ =
       mojom::VpnConnectionState::kDisconnected;
   std::optional<std::string> error_message_;
-  mojom::VpnRegionPtr current_region_ = mojom::VpnRegion::New();
+  mojom::VpnRegionSelectionPtr region_selection_ =
+      mojom::VpnRegionSelection::New(/*is_automatic=*/true, /*region=*/nullptr);
   bool auto_reconnect_enabled_ = false;
   bool smart_proxy_routing_enabled_ = false;
   bool allow_lan_traffic_available_ = false;

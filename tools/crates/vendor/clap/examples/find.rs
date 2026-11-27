@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use clap::{command, value_parser, Arg, ArgAction, ArgGroup, ArgMatches, Command};
+use clap::{Arg, ArgAction, ArgGroup, ArgMatches, Command, command, value_parser};
 
 fn main() {
     let matches = cli().get_matches();
@@ -83,7 +83,7 @@ impl Value {
         values.into_values().collect::<Vec<_>>()
     }
 
-    fn extract<T: Clone + Into<Value> + Send + Sync + 'static>(
+    fn extract<T: Clone + Into<Self> + Send + Sync + 'static>(
         matches: &ArgMatches,
         id: &clap::Id,
         output: &mut BTreeMap<usize, (clap::Id, Self)>,

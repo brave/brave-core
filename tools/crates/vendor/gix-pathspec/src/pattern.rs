@@ -1,8 +1,9 @@
+use gix_error::{Result, bail, validation};
 use std::path::{Component, Path, PathBuf};
 
 use bstr::{BStr, BString, ByteSlice, ByteVec};
 
-use crate::{normalize, MagicSignature, Pattern, SearchMode};
+use crate::{MagicSignature, Pattern, SearchMode};
 
 /// Access
 impl Pattern {
@@ -40,7 +41,9 @@ impl Pattern {
     /// `prefix` can be empty, we will still normalize this pathspec to resolve relative path components, and
     /// it is assumed not to contain any relative path components, e.g. '', 'a', 'a/b' are valid.
     /// `root` is the absolute path to the root of either the worktree or the repository's `git_dir`.
-    pub fn normalize(&mut self, prefix: &Path, root: &Path) -> Result<&mut Self, normalize::Error> {
+    /// Errors store the path bytes as `input` in [`gix_error::Message::values`].
+    /// After [wrapping](gix_error::Error::from_error()), inspect them with [metadata](gix_error::Error::metadata()).
+    pub fn normalize(&mut self, prefix: &Path, root: &Path) -> Result<&mut Self> {
         fn prefix_components_to_subtract(path: &Path) -> usize {
             let parent_component_end_bound = path.components().enumerate().fold(None::<usize>, |acc, (idx, c)| {
                 matches!(c, Component::ParentDir).then_some(idx + 1).or(acc)
@@ -54,14 +57,10 @@ impl Pattern {
                     _ => 0,
                 })
                 .sum::<isize>();
-            if count > 0 {
-                count as usize
-            } else {
-                Default::default()
-            }
+            if count > 0 { count as usize } else { Default::default() }
         }
 
-        let mut path = gix_path::from_bstr(self.path.as_bstr());
+        let mut path = gix_path::from_bstr(self.path.as_bstr())?;
         let mut num_prefix_components = 0;
         let mut was_absolute = false;
         if gix_path::is_absolute(path.as_ref()) {
@@ -69,10 +68,10 @@ impl Pattern {
             let rela_path = match path.strip_prefix(root) {
                 Ok(path) => path,
                 Err(_) => {
-                    return Err(normalize::Error::AbsolutePathOutsideOfWorktree {
-                        path: path.into_owned(),
-                        worktree_path: root.into(),
-                    })
+                    bail!(
+                        validation(format!("The path is not inside of the worktree \"{}\"", root.display()))
+                            .with_input(gix_path::into_bstr(path.into_owned())?.into_owned())
+                    );
                 }
             };
             path = rela_path.to_owned().into();
@@ -107,9 +106,10 @@ impl Pattern {
                 path
             }
             None => {
-                return Err(normalize::Error::OutsideOfWorktree {
-                    path: path.into_owned(),
-                })
+                bail!(
+                    validation("The path leaves the repository")
+                        .with_input(gix_path::into_bstr(path.into_owned())?.into_owned())
+                );
             }
         };
 
@@ -118,7 +118,7 @@ impl Pattern {
             BString::from(".")
         } else {
             let cleaned = PathBuf::from_iter(path.components().filter(|c| !matches!(c, Component::CurDir)));
-            let mut out = gix_path::to_unix_separators_on_windows(gix_path::into_bstr(cleaned)).into_owned();
+            let mut out = gix_path::to_unix_separators_on_windows(gix_path::into_bstr(cleaned)?).into_owned();
             self.prefix_len = {
                 if self.signature.contains(MagicSignature::MUST_BE_DIR) {
                     out.push(b'/');

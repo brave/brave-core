@@ -7,27 +7,41 @@
 //! table below gives a brief explanation of all offerings, loosely in order
 //! from the highest to lowest abstraction.
 //!
-//! | Offering      | Description                                         | Zero-copy?        |
-//! | ------------- | --------------------------------------------------- | ----------------- |
-//! | [`File`] | Accelerated wrapper for reading and writing values. | On some reads[^1] |
-//! | [`parse::State`]    | Syntactic events for `git-config` files.     | Yes               |
-//! | value wrappers | Wrappers for `git-config` value types.            | Yes               |
+//! | Offering         | Description                                      |
+//! | ---------------- | ------------------------------------------------ |
+//! | [`File`]         | Accelerated wrapper for reading and writing values. |
+//! | [`parse::Events`] | Syntactic events for `git-config` files.        |
+//! | value wrappers   | Wrappers for `git-config` value types.           |
 //!
-//! This crate also exposes efficient value normalization which unescapes
-//! characters and removes quotes through the `normalize_*` family of functions,
-//! located in the [`value`] module.
+//! This crate also exposes value normalization which unescapes characters and
+//! removes quotes through [`value::normalize()`].
+//!
+//! # Examples
+//!
+//! ## Read And Update Values
+//!
+//! ```
+//! use bstr::ByteSlice;
+//! use std::str::FromStr;
+//!
+//! const SAMPLE: &str = "[core]\neditor = vim\nbare = false\n[remote \"origin\"]\nurl = https://example.com/gitoxide.git\n";
+//! let mut config = gix_config::File::from_str(SAMPLE).unwrap();
+//! assert_eq!(config.string_by("core", None, "editor").unwrap(), "vim");
+//! assert_eq!(config.boolean_by("core", None, "bare").unwrap().unwrap(), false);
+//!
+//! let previous = config.set_raw_value(&"core.editor", "nvim").unwrap().unwrap();
+//! assert_eq!(previous, "vim");
+//! assert_eq!(config.raw_value("core.editor").unwrap(), "nvim");
+//! assert!(config.to_bstring().find(b"nvim").is_some());
+//! ```
 //!
 //! # Known differences to the `git config` specification
 //!
 //! - Legacy headers like `[section.subsection]` are supposed to be turned into to lower case and compared
 //!   case-sensitively. We keep its case and compare case-insensitively.
 //!
-//! [^1]: When read values do not need normalization and it wasn't parsed in 'owned' mode.
-//!
 //! [`git-config` files]: https://git-scm.com/docs/git-config#_configuration_file
 //! [`File`]: crate::File
-//! [`parse::State`]: crate::parse::Events
-//! [`nom`]: https://github.com/Geal/nom
 //!
 //! ## Feature Flags
 #![cfg_attr(
@@ -35,17 +49,21 @@
     doc = ::document_features::document_features!()
 )]
 #![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
-#![deny(missing_docs, rust_2018_idioms, unsafe_code)]
+#![deny(missing_docs, unsafe_code)]
+#![allow(rustdoc::redundant_explicit_links)] // Rust 1.99 flags links in re-exported documentation.
 
 pub mod file;
 
+/// Reformat a git-config file with normalized, sanitized whitespace.
+pub mod format;
 ///
 pub mod lookup;
 pub mod parse;
 ///
 pub mod value;
-pub use gix_config_value::{color, integer, path, Boolean, Color, Integer, Path};
+pub use gix_config_value::{Boolean, Color, Integer, Path, color, integer, path};
 
+pub use gix_utils::{AsBStr, AsBStrOpt};
 mod key;
 pub use key::{AsKey, KeyRef};
 mod types;

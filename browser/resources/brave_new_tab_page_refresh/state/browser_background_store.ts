@@ -158,8 +158,8 @@ export function createBackgroundStore() {
       )
     },
 
-    notifyNewTabTakeoverDisclosureLearnMoreClicked() {
-      handler.notifyNewTabTakeoverDisclosureLearnMoreClicked()
+    suppressNewTabTakeoverDisclosureAutoDisplay() {
+      handler.suppressNewTabTakeoverDisclosureTooltipAutoDisplay()
       disableNewTabTakeoverDisclosureAutoDisplay()
     },
 

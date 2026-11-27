@@ -19,7 +19,7 @@ AboutSigninInternalsFactory::AboutSigninInternalsFactory(PassKey key)
 
 std::unique_ptr<KeyedService>
 AboutSigninInternalsFactory::BuildServiceInstanceFor(
-    ProfileIOS* profile) const {
+    ProfileIOS& profile) const {
   return nullptr;
 }
 

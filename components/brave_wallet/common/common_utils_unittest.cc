@@ -646,7 +646,7 @@ TEST(CommonUtils, GetSupportedKeyringsForKnownNetwork) {
   static_assert(AllKeyringsTested<18>());
 }
 
-TEST(CommonUtils, MakeAccountId) {
+TEST(CommonUtilsDeathTest, MakeAccountId) {
   auto id = *MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
                            mojom::AccountKind::kDerived,
                            "0xA0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
@@ -734,7 +734,7 @@ TEST(CommonUtils, MakeAccountId) {
   static_assert(AllKeyringsTested<18>());
 }
 
-TEST(CommonUtils, MakeIndexBasedAccountId) {
+TEST(CommonUtilsDeathTest, MakeIndexBasedAccountId) {
   // Coin differs
   for (const auto& coin : kAllCoins) {
     if (!IsDeprecatedAddressBasedCoin(coin)) {
@@ -804,7 +804,7 @@ TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
   static_assert(AllKeyringsTested<18>());
 }
 
-TEST(CommonUtils, MakeIndexBasedAccountId_ZEC) {
+TEST(CommonUtilsDeathTest, MakeIndexBasedAccountId_ZEC) {
   auto id = *MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                      mojom::KeyringId::kZCashMainnet,
                                      mojom::AccountKind::kDerived, 123);
@@ -837,7 +837,7 @@ TEST(CommonUtils, MakeIndexBasedAccountId_ZEC) {
       mojom::AccountKind::kHardware, 123));
 }
 
-TEST(CommonUtils, MakeIndexBasedAccountId_ADA) {
+TEST(CommonUtilsDeathTest, MakeIndexBasedAccountId_ADA) {
   auto id = *MakeIndexBasedAccountId(mojom::CoinType::ADA,
                                      mojom::KeyringId::kCardanoMainnet,
                                      mojom::AccountKind::kDerived, 123);

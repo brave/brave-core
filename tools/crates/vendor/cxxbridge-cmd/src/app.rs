@@ -3,8 +3,8 @@
 mod test;
 
 use super::{Opt, Output};
+use crate::bridge::include::Include;
 use crate::cfg::{self, CfgValue};
-use crate::gen::include::Include;
 use crate::syntax::IncludeKind;
 use clap::builder::{ArgAction, ValueParser};
 use clap::{Arg, Command};
@@ -140,10 +140,10 @@ the Rust side of the bridge.";
             Ok((_, CfgValue::Str(_))) => Ok(arg.to_owned()),
             Ok((name, CfgValue::Bool(value))) => {
                 let mut bool_cfgs = bool_cfgs.lock().unwrap_or_else(PoisonError::into_inner);
-                if let Some(&prev) = bool_cfgs.get(&name) {
-                    if prev != value {
-                        return Err(format!("cannot have both {0}=false and {0}=true", name));
-                    }
+                if let Some(&prev) = bool_cfgs.get(&name)
+                    && prev != value
+                {
+                    return Err(format!("cannot have both {0}=false and {0}=true", name));
                 }
                 bool_cfgs.insert(name, value);
                 Ok(arg.to_owned())

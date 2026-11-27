@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Informació";
 
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertMessage" = "Això et permet desar la imatge al carret de la càmera.";
-
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave voldria accedir a les teves fotos";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Afegeix adreça d'interès";
 
@@ -63,9 +57,6 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Nom d'usuari";
-
-/* Settings autofill section title */
-"Autofill" = "Emplenament automàtic";
 
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Comptes";
@@ -133,9 +124,6 @@
 /* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
 "backgroundDownloadingTitleSingleDownload" = "S'està baixant \"%@\"";
 
-/* cookie settings option */
-"Block3rdPartyCookies" = "Bloqueja galetes de tercers";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Bloquejar totes les cookies";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "No s'ha pogut establir la preferència. Siusplau torna-ho a provar.";
 
-/* title for section showing page blocking statistics */
-"BlockingMonitor" = "Control de bloqueig";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Bloqueja les finestres emergents";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Afegeix adreça d'interès per a %lld pestanyes";
-
-/* Bookmark Folder Section Title */
-"BookmarkFolder" = "Carpeta d'adreces d'interès";
-
-/* Bookmark Info Section Title */
-"BookmarkInfo" = "Informació d'adreces d'interès";
 
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Adreces d'interès";
@@ -225,9 +204,6 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Escuts & Privacitat";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "Conversa de Brave";
 
 /* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
 "BraveTranslate.languageSelectionButtonTitle" = "Seleccionar idioma";
@@ -415,14 +391,8 @@
 /* Section title in settings panel */
 "ClearPrivateData" = "Esborra dades privades";
 
-/* The cancel button when confirming clear private data. */
-"ClearPrivateDataAlertCancelButtonTitle" = "Cancel·la";
-
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertMessage" = "Estàs segur?";
-
-/* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "D'acord";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "Esborra les dades";
@@ -441,9 +411,6 @@
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "D'acord";
-
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "Error del client";
 
 /* Button title to close a menu. */
 "Close" = "Tanca";
@@ -481,17 +448,11 @@
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
 "CopyCleanLink" = "Copia l'enllaç net";
 
-/* Context menu item for copying an image to the clipboard */
-"CopyImageActionTitle" = "Copia la imatge";
-
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Copia l'enllaç";
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Copieu la informació de les pestanyes al porta-retalls.";
-
-/* Copy rewards internals info for support */
-"CopyWalletSupportInfo" = "Copia la informació de suport";
 
 /* Create PDF share action. */
 "CreatePDF" = "Crea PDF";
@@ -504,9 +465,6 @@
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Escriu l'URL de cerca i substitueix la consulta per %1$s.\nPer exemple: https://youtube.com/search?q=%2$s\n(Si el lloc admet OpenSearch, es proporcionarà una opció per afegir automàticament mentre edites aquest camp.)";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "Afegeix automàticament";
 
 /* A title explaining that an error shown while adding custom search engine */
 "customSearchEngine.customSearchEngineAddErrorTitle" = "S'ha produït un error en afegir el motor de cerca personalitzat";
@@ -590,12 +548,6 @@
 "defaultBrowserCallout.notificationTitle" = "Aconsegueix la protecció de Brave a cada enllaç";
 
 /* No comment provided by engineer. */
-"defaultBrowserCalloutCloseAccesabilityLabel" = "Tanca les crides del navegador predeterminat";
-
-/* Name for default Brave theme. */
-"defaultThemeName" = "Brave predeterminat";
-
-/* No comment provided by engineer. */
 "Delete" = "Suprimeix";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
@@ -649,9 +601,6 @@
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Descàrregues";
 
-/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
-"DownloadsPanelEmptyStateTitle" = "Els fitxers descarregats es mostraran aquí.";
-
 /* Action item title of long press for Opening the existing - active Tab url in a new Tab */
 "DuplicateActiveTab" = "Pestanya activa duplicada";
 
@@ -700,47 +649,14 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Introdueix el nom de la carpeta";
 
-/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ normalment utilitza el xifratge per protegir la teva informació. Quan Brave va intentar connectar-se a %2$@ aquesta vegada, el lloc web va enviar credencials inusuals i incorrectes. Això pot passar quan un atacant intenta fingir ser %3$@ o una pantalla d'inici de sessió per Wi-Fi ha interromput la connexió. La teva informació encara està segura perquè Brave va aturar la connexió abans que s'intercanviés cap dada.<br /> No pots visitar %4$@ ara mateix perquè el lloc web utilitza la fixació de certificats. Els errors i els atacs de xarxa solen ser temporals, de manera que probablement aquesta pàgina funcionarà més tard.";
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Suprimeix";
 
-/* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningDetails" = "Aquest servidor no ha pogut demostrar que és %@; el seu certificat de seguretat no és de confiança pel sistema operatiu del teu dispositiu. Això pot ser causat per una configuració incorrecta o per un atacant que intenta interceptar la teva connexió.";
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Aquest lloc no apareixerà a la teva llista dels més visitats, però no se suprimirà de l'historial.";
 
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningTitle" = "És possible que els atacants estiguin intentant robar la teva informació de %@ (per exemple, contrasenyes, missatges o targetes de crèdit).";
-
-/* Label for button to go back from the error page */
-"ErrorPagesBackToSafetyButton" = "Retorn a la seguretat";
-
-/* Title on the certificate error page */
-"ErrorPagesCertErrorTitle" = "Aquest lloc no pot proporcionar una connexió segura";
-
-/* Title on the certificate error page */
-"ErrorPagesCertWarningTitle" = "La connexió no és privada";
-
-/* Label for button to hide advanced actions on the error page */
-"ErrorPagesHideDetailsButton" = "Oculta els detalls";
-
-/* Label for learn more link on error page */
-"ErrorPagesLearnMoreButton" = "Saber més";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesMoreDetailsButton" = "Més detalls";
-
-/* Title of the No Internet error page */
-"ErrorPagesNoInternetTitle" = "Sense accés a internet";
-
-/* Text telling the user to Try: The following list of things */
-"ErrorPagesNoInternetTry" = "Sembla que no estàs en línia. Per solucionar-ho, prova";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem1" = "Comprovant els cables de xarxa, mòdem i rúter";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem2" = "Reconnectant-se al Wi-Fi";
-
-/* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesProceedAnywayButton" = "Passeu a %@ (no segur)";
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Voleu suprimir-lo dels més visitats?";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ activarà una aplicació externa";
@@ -766,29 +682,14 @@
 /* Share action title */
 "FindInPage" = "Troba a la pàgina";
 
-/* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "Fet";
-
 /* Find `search query` */
 "FindInPageFormat" = "Buscar ";
-
-/* Accessibility label for next result button in Find in Page Toolbar. */
-"FindInPageNextResultButtonAccessibilityLabel" = "Següent resultat a la pàgina";
-
-/* Accessibility label for previous result button in Find in Page Toolbar. */
-"FindInPagePreviousResultButtonAccessibilityLabel" = "Resultat anterior a la pàgina";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findInPageTitle" = "Troba a la pàgina";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findNextTitle" = "Troba el següent";
-
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "En aquesta pàgina";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findPreviousTitle" = "Troba l'anterior";
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Permet que s'obrin enllaços universals en aplicacions externes";
@@ -813,9 +714,6 @@
 
 /* Hides the rewards icon */
 "HideRewardsIcon" = "Amaga la icona de Recompenses de Brave";
-
-/* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Amaga la icona de Recompenses de Brave quan Recompenses de Brave no estigui activat";
 
 /* Title for history menu item */
 "HistortMenuItem" = "Historial";
@@ -859,11 +757,8 @@
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Importar dades de navegació";
 
-/* title for per-site shield toggles */
-"IndividualControls" = "Controls individuals";
-
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "Les dades de la sol·licitud de pagament no són vàlides";
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Una pàgina incrustada en aquesta pàgina";
 
 /* History tableview section header */
 "LastMonth" = "Darrer mes";
@@ -919,30 +814,6 @@
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Filtre";
 
-/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
-"LoginDetailLastModifiedCellFormatTitle" = "Darrera modificació %@";
-
-/* Label displayed above the password row in Login Detail View. */
-"LoginDetailPasswordCellTitle" = "contrasenya";
-
-/* Label displayed above the username row in Login Detail View. */
-"LoginDetailUsernameCellTitle" = "nom d'usuari";
-
-/* Label displayed above the website row in Login Detail View. */
-"LoginDetailWebsiteCellTitle" = "lloc web";
-
-/* Label for the button used to deselect all logins. */
-"LoginListDeselectAllButtonTitle" = "Desselecciona-ho tot";
-
-/* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "No s'han trobat inicis de sessió";
-
-/* Title for Logins List View screen. */
-"LoginListScreenTitle" = "Inicis de sessió";
-
-/* Label for the button used to select all logins. */
-"LoginListSelectAllButtonTitle" = "Selecciona-ho tot";
-
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "Activa l'àudio de fons";
 
@@ -957,9 +828,6 @@
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Revela";
-
-/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
-"monthAbbreviation" = "mo.";
 
 /* Bookmark title / Device name */
 "Name" = "Nom";
@@ -1036,9 +904,6 @@
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Obté més informació sobre les imatges patrocinades";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"ntp.settingsAutoOpenKeyboard" = "Obertura automàtica del teclat";
-
 /* A setting to enable or disable background on the NTP screen. */
 "ntp.settingsBackgroundImages" = "Fons";
 
@@ -1075,53 +940,8 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Activant Recompenses, estàs d'acord en %@.";
 
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "Guanya tokens i premia els creadors per contingut fantàstic mentre navegues.";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "Guanya punts i premia els creadors per contingut fantàstic mentre navegues.";
-
-/* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Anuncis de Brave està aquí!";
-
-/* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave et mostrarà el teu primer anunci a";
-
-/* Title for when the user completes onboarding */
-"OBCompleteTitle" = "Ara ja estàs llest per començar.";
-
-/* Button to show information on how to enable ads */
-"OBDidntSeeAdButton" = "No vaig veure un anunci";
-
-/* A generic error body for onboarding */
-"OBErrorDetails" = "S'ha produït un error en crear la cartera. Siusplau torna-ho a provar";
-
 /* No comment provided by engineer. */
 "OBErrorOkay" = "D'acord";
-
-/* A generic error title for onboarding */
-"OBErrorTitle" = "Disculpa";
-
-/* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "Inicia la navegació";
-
-/* Button to join Brave Rewards. */
-"OBJoinButton" = "Uneix-te";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Permet que Brave comprovi el meu porta-retalls per trobar un codi de referència coincident";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "És possible que hagis descarregat Brave per donar suport al teu referent. Per detectar el teu remitent, Brave fa una comprovació única del porta-retalls per trobar el codi de referència coincident. Aquesta comprovació es limita només al codi i no es transmetrà cap altra dada personal. Si ho desactives, el teu referent no rebrà recompenses de Brave.";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentNoButton" = "No permetis aquesta comprovació";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentTitle" = "Comprovació anònima del codi de referència";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentYesButton" = "Permet una comprovació única del porta-retalls";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "En prémer Sí, acceptes les";
@@ -1138,32 +958,8 @@
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "L'opció dels anuncis privats de Brave admet els editors i els creadors de contingut amb cada anunci visualitzat.";
 
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Guanya tokens i premia els creadors per contingut fantàstic mentre navegues.";
-
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Política de privacitat";
-
-/* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Recompenses de Brave";
-
-/* Save button to save current selection */
-"OBSaveButton" = "Desa";
-
-/* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "Selecciona el teu motor de cerca predeterminat";
-
-/* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Et donem la benvinguda al navegador de Brave";
-
-/* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "Bloqueja els rastrejadors que envaeixen la privacitat perquè puguis navegar sense ser perseguit per la web";
-
-/* Title for shields onboarding screen */
-"OBShieldsTitle" = "Escuts de Brave";
-
-/* Button to show the Brave Rewards Ads. */
-"OBShowMeButton" = "Mostra-m'ho";
 
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Comença";
@@ -1198,20 +994,11 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Obre-ho tot (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Obre la configuració de Recompenses de Brave";
-
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "S'ha produït un error desconegut en obrir la carpeta de Descàrregues a l'aplicació de Fitxers.";
 
-/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
-"openExternalAppURLHost" = "%@ diu:";
-
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "Vols permetre que %@ canviï d'aplicació?";
-
-/* Context menu for opening image in new tab */
-"OpenImageInNewTab" = "Obre la imatge en una pestanya nova";
 
 /* Context menu item for opening a link in a new private browsing window */
 "OpenInNewPrivateWindowTitle" = "Obre en una finestra d'incògnit nova";
@@ -1348,12 +1135,6 @@
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Altres configuracions de privacitat";
 
-/* Section name for other settings. */
-"OtherSettingsSection" = "Altres configuracions";
-
-/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
-"p3a.continue" = "Continua";
-
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "Aquestes respostes privades ajuden Brave a fer una estimació de l'ús total de determinades funcions i a millorar-les.";
 
@@ -1384,12 +1165,6 @@
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Nivell de zoom predeterminat de la pàgina web";
 
-/* Description for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesDescription" = "Quan el nivell de zoom d'un lloc web hagi canviat, el lloc web apareixerà en aquesta llista. Actualment, no hi ha llocs web amb el zoom ampliat o allunyat.";
-
-/* Title for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesTitle" = "No s'han afegit llocs web";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Tots els altres llocs web";
 
@@ -1414,12 +1189,6 @@
 /* Setting to allow the app to restore private browsing tabs */
 "PersistentPrivateBrowsing" = "Navegació d'incògnit persistent";
 
-/* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Permet a Brave restablir les pestanyes de navegació d'incògnit, fins i tot si tanques/tornes a obrir l'aplicació";
-
-/* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "Restaura les pestanyes d'incògnit";
-
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Foto de %@";
 
@@ -1434,12 +1203,6 @@
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Opcions de reproducció";
-
-/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
-"playlist.carplayRestartPlaybackButtonStateDisabled" = "Inhabilitat. Toca per activar el reinici de la reproducció.";
-
-/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
-"playlist.carplayRestartPlaybackButtonStateEnabled" = "Habilitat. Toca per desactivar el reinici de la reproducció.";
 
 /* The description of the checkbox that allows the user to restart audio/video playback */
 "playlist.carplayRestartPlaybackOptionDetailsTitle" = "Decideix si selecciones o no un element que ja s'està reproduint, per reiniciar la reproducció o continuar jugant on es va deixar l'última vegada";
@@ -1687,9 +1450,6 @@
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "Obre el centre de privacitat";
 
-/* The title of the button action which open the privacy hub */
-"privacyHub.openPrivacyHubWidgetActionTitle" = "Obre el centre de privacitat";
-
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Les dades del centre de privacitat s'emmagatzemen localment i mai s'envien enlloc.";
 
@@ -1759,23 +1519,11 @@
 /* Private button title */
 "Private" = "Incògnit";
 
-/* No comment provided by engineer. */
-"PrivateBrowsing" = "Navegació d'incògnit";
-
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Només navegació d'incògnit";
 
 /* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
 "PrivateBrowsingOnlyWarning" = "El mode Només navegació d'incògnit tancarà totes les pestanyes actuals i tancarà la sessió de tots els llocs.";
-
-/* Private tab details */
-"PrivateTabBody" = "Les pestanyes d'incògnit no es guarden a Brave, però no et fan anònim en línia. Els llocs que visites en una pestanya d'incògnit no apareixeran a l'historial i les teves galetes sempre s'esvaeixen quan les tanques; no en quedarà cap rastre a Brave. Tanmateix, les descàrregues es desaran.\nEl teu operador de telefonia mòbil (o el propietari de la xarxa Wi-Fi o VPN a la qual estàs connectat) pot veure quins llocs visites i aquests llocs aprendran la teva adreça IP pública, fins i tot a les pestanyes d'incògnit.";
-
-/* Private tab detail text */
-"PrivateTabDetails" = "L'ús de les pestanyes d'incògnit només canvia el que fa Brave al teu dispositiu, no canvia el comportament de ningú més.\n\nEls llocs sempre aprenen la teva adreça IP quan els visites. A partir d'això, sovint poden endevinar aproximadament on ets, normalment la teva ciutat. De vegades, aquesta estimació de la ubicació pot ser molt més específica. Els llocs també saben tot el que els dius específicament, com ara els termes de cerca. Si inicies sessió en un lloc, sabran que sou el propietari d'aquell compte. Encara estaràs fora de sessió quan tanquis les pestanyes d'incògnit perquè Brave llençarà la galeta que et manté connectat.\n\nQui et connecti a Internet (el teu ISP) pot veure tota l'activitat de la teva xarxa. Sovint, aquest és el teu operador de telefonia mòbil. Si estàs connectat a una xarxa Wi-Fi, aquest és el propietari d'aquesta xarxa i, si fas servir una VPN, és qui la dirigeix. El teu ISP pot veure quins llocs visites mentre els visites. Si aquests llocs utilitzen HTTPS, no poden fer molt més que una conjectura educada sobre el que fas en aquests llocs. Però si un lloc només utilitza HTTP, el teu ISP pot veure-ho tot: els termes de cerca, quines pàgines llegeixes i quins enllaços segueixes.\n\nSi un ocupador gestiona el teu dispositiu, també pots fer un rastrejament d'allò que fas amb ell. Probablement, l'ús de pestanyes d'incògnit no els impedirà saber quins llocs has visitat. Una altra persona amb accés al teu dispositiu també podria tenir instal·lat programari que supervisa la teva activitat, i les pestanyes d'incògnit tampoc et protegiran d'això.";
-
-/* Private tab information link */
-"PrivateTabLink" = "Saber més sobre pestanyes d'incògnit";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Pestanya d'incògnit";
@@ -1834,12 +1582,6 @@
 /* Accessibility label for brightness adjustment slider in Reader Mode display settings */
 "ReaderModeBrightSliderAccessibilityLabel" = "Brillantor";
 
-/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
-"ReaderModeDisplaySettingsButtonTitle" = "Configuració de la pantalla";
-
-/* Error displayed when reader mode cannot be enabled */
-"ReaderModeErrorConvertDisplayText" = "S'ha produït un error en convertir la pàgina";
-
 /* Font type setting in the reading view settings */
 "ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
 
@@ -1851,15 +1593,6 @@
 
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Canvia el tipus de la lletra.";
-
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "Carregant contingut…";
-
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadOriginalLinkText" = "Carrega la pàgina original";
-
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "La pàgina no s'ha pogut mostrar al visor del lector.";
 
 /* Title of a bar that show up when you enter reader mode. */
 "readerModeSettingsButton" = "Mode lector";
@@ -1882,14 +1615,8 @@
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "No hi ha pestanyes tancades recentment.";
 
-/* Open Tab action title */
-"recently.closed.open" = "Obre";
-
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "Torna a obrir la darrera pestanya tancada";
-
-/* Description for alert to ask user for opening last closed tab in list */
-"recently.closed.shake.description" = "Vols obrir la darrera pestanya tancada?";
 
 /* Action item title of long press for Opening recently closed tab view */
 "recently.closed.title" = "Pestanyes tancades recentment";
@@ -1975,12 +1702,6 @@
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "\"%@\" vol accedir al micròfon";
 
-/* Name of folder where restored bookmarks are retrieved */
-"RestoredBookmarksFolderName" = "Adreces d'interès restaurades";
-
-/* Name of folder where restored favorites are retrieved */
-"RestoredFavoritesFolderName" = "Preferits restaurats";
-
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "Sí";
 
@@ -2023,80 +1744,11 @@
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Aquest creador de contingut està verificat amb Creadors de Brave";
 
-/* Displayed next to a number representing the total number of publishers supported */
-"rewards.totalSupportedCount" = "Nombre de creadors de contingut als quals ajudes a donar suport aquest mes.";
-
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Aquest creador no s'ha verificat i no s'inclourà a l'assistència per a creadors";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Quantitat";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAnonymous" = "Anònim";
-
-/* No comment provided by engineer. */
-"RewardsInternalsBalanceInfoHeader" = "Informació del balanç";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "Estàs segur que vols esborrar tots els registres de Recompenses?";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsTitle" = "Esborra els registres";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionAmount" = "Quantitat de la contribució";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Tokens de Brave";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorNone" = "Cap";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "Uphold";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUserFunds" = "Fons d'usuari";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepACOff" = "Desactivació de la contribució automàtica";
-
-/* 'AC' refers to Auto-Contribute */
-"RewardsInternalsContributionsStepACTableEmpty" = "Taula AC buida";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCompleted" = "Completat";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCreds" = "Credencials";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepExternalTransaction" = "Transacció externa";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "Fallit";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepNotEnoughFunds" = "Fons insuficients";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepPrepare" = "Prepara";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepReserve" = "Reserva";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "Recompenses desactivades";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "Comença";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsTitle" = "Contribucions";
-
-/* No comment provided by engineer. */
-"RewardsInternalsCreatedAt" = "Creat a";
 
 /* No comment provided by engineer. */
 "RewardsInternalsDeviceInfoHeader" = "Informació del dispositiu";
@@ -2116,9 +1768,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Informació clau ";
 
-/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
-"RewardsInternalsLogsCount" = "%d registres mostrats";
-
 /* No comment provided by engineer. */
 "RewardsInternalsLogsTitle" = "Registres";
 
@@ -2129,34 +1778,13 @@
 "RewardsInternalsNotSupported" = "No compatible";
 
 /* No comment provided by engineer. */
-"RewardsInternalsProcessor" = "Processador";
-
-/* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Editor";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublishers" = "Editors";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRetryCount" = "Recompte de proves";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeAutoContribute" = "Autocontribueix";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeOneTimeTip" = "Propina d'una sola vegada";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "Propina recurrent";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "Perfil de recompenses, aparell & informació de saldo (es comparteix sempre)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Informació bàsica";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableContributionsDescription" = "Qualsevol contribució feta als editors mitjançant propina o contribució automàtica";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableDatabaseDescription" = "El magatzem de dades intern";
@@ -2192,9 +1820,6 @@
 "RewardsInternalsTitle" = "Recompenses internes";
 
 /* No comment provided by engineer. */
-"RewardsInternalsTotalAmount" = "Quantitat total";
-
-/* No comment provided by engineer. */
 "RewardsInternalsTotalBalance" = "Balanç total";
 
 /* No comment provided by engineer. */
@@ -2221,17 +1846,11 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Desa";
 
-/* Label for the button used to save changes in some text input. */
-"SaveChangesButtonTitle" = "Desa els canvis";
-
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Registres desats";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "Pestanyes desades";
-
-/* Context menu item for saving an image */
-"SaveImageActionTitle" = "Desa imatge";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Desa registres";
@@ -2245,23 +1864,8 @@
 /* Search engines section of settings */
 "SearchEngines" = "Motors de cerca";
 
-/* Accessibility hint describing the action performed when a search suggestion is clicked */
-"SearchesForSuggestionButtonAccessibilityText" = "Cerques del suggeriment";
-
 /* Section header for history and bookmarks and open tabs option */
 "SearchHistorySectionHeader" = "Al teu dispositiu";
-
-/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
-"SearchInputViewClearButtonTitle" = "Esborra la cerca";
-
-/* Accessibility label for entering search mode for logins */
-"SearchInputViewOverlayAccessibilityLabel" = "Introdueix el mode de cerca";
-
-/* Accessibility label for the search input field in the Logins list */
-"SearchInputViewTextFieldAccessibilityLabel" = "Camp d'entrada de cerca";
-
-/* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "Cerca";
 
 /* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
 "searchQuickBarPrefix" = "Cercar \"%@\"";
@@ -2275,9 +1879,6 @@
 /* Label for showing browser suggestion setting */
 "SearchSettingBrowserSuggestionCellTitle" = "Mostra suggeriments de cerca";
 
-/* Navigation title for search settings. */
-"SearchSettingNavTitle" = "Cerca";
-
 /* Label for showing recent search setting. */
 "SearchSettingRecentSearchesCellTitle" = "Mostra cerques recents";
 
@@ -2287,23 +1888,11 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "Mostra suggeriments de cerca";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
-"SearchSuggestionFromFormatText" = "Cerca suggeriments de %@";
-
 /* Action title for open a playlist item in Playlist. */
 "searchSuggestionOpenPlaylistActionTitle" = "Obre a la llista de reproducció";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Canvia a aquesta pestanya";
-
-/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
-"SearchSuggestionSectionTitleFormat" = "%@ Cerca";
-
-/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "Cerca";
-
-/* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "Suggeriments de cerca";
 
 /* Search suggestions optin subtitle when prompting to turn on suggestions */
 "searchSuggestionsSubtitle" = "T'agradaria activar els suggeriments de cerca?";
@@ -2416,9 +2005,6 @@
 /* Row name for licenses. */
 "SettingsLicenses" = "Llicències";
 
-/* Title for settings menu item */
-"SettingsMenuItem" = "Configuració";
-
 /* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
 "SettingsTabsOptionBottomBar" = "Barra inferior";
 
@@ -2430,9 +2016,6 @@
 
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Comparteix enllaç";
-
-/* Title for sharing url menu item */
-"ShareWithMenuItem" = "Comparteix amb...";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "shareWithTitle" = "Comparteix amb...";
@@ -2467,9 +2050,6 @@
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Comparteix les notícies";
 
-/* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Escuts de Brave acaba de protegir la teva privacitat en línia.";
-
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Enhorabona. Ets força especial.";
 
@@ -2481,6 +2061,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Els anuncis es bloquegen mentre es visualitzen els vídeos d'aquest lloc web.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Cartera de Brave";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Pestanya d'incògnit";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "Codi QR";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Cerca";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Nova pestanya d'incògnit";
@@ -2641,14 +2233,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Dreceres de Siri";
 
-/* Button to show the bookmarks list */
-"ShowBookmarks" = "Mostra les adreces d'interès";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Mostra descàrregues";
-
-/* Button to show the history list */
-"ShowHistory" = "Mostra l'historial";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showHistoryTitle" = "Mostra l'historial";
@@ -2776,9 +2362,6 @@
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.configurationInformationText" = "Gestiona la informació que vols sincronitzar entre els dispositius. Aquesta configuració només tindrà efecte en aquest dispositiu.";
 
-/* Copied action complete title */
-"sync.copied" = "Copiat!";
-
 /* Copied codewords title */
 "sync.copiedToClipboard" = "Copiat al porta-retalls!";
 
@@ -2821,14 +2404,8 @@
 /* Sync enter code words */
 "sync.enterCodeWords" = "Introdueix paraules del codi";
 
-/* Enter sync code words below */
-"sync.enterCodeWordsBelow" = "Introdueix paraules de codi a continuació";
-
 /* Sync Error message for when the sync code is expired */
 "sync.expiredError" = "Aquest codi de sincronització ha caducat; genera un codi de sincronització nou i torna-ho a provar.";
-
-/* Generic Sync Error Description */
-"sync.genericError" = "Ho sento, s'ha produït un error";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "Activa la càmera";
@@ -2872,9 +2449,6 @@
 /* Error title for when the sync code does not have the correct amount of words */
 "sync.notEnoughWordsTitle" = "Calen més paraules";
 
-/* Sync pair device settings section title */
-"sync.pair" = "Vincula";
-
 /* QR Code section title */
 "sync.qrCode" = "Codi QR";
 
@@ -2908,12 +2482,6 @@
 /* Title for removing other device from Sync */
 "sync.removeOtherDeviceTitle" = "Vols suprimir %@ de la cadena de sincronització?";
 
-/* Sync remove device. */
-"sync.removeThisDevice" = "Elimina aquest dispositiu";
-
-/* Sync remove device? */
-"sync.removeThisDeviceQuestionDesc" = "Aquest dispositiu es desconnectarà del grup de sincronització i ja no rebrà ni enviarà dades de sincronització. Totes les dades existents romandran al dispositiu.";
-
 /* Scan sync code title */
 "sync.scan" = "Escaneja";
 
@@ -2932,20 +2500,11 @@
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "Configuració de sincronització";
 
-/* Show code words instead */
-"sync.showCodeWords" = "En lloc d'això, mostra paraules en codi";
-
 /* Switch back to camera button */
 "sync.switchBackToCameraButton" = "Utilitzaré la meva càmera...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Aquesta supressió és permanent i no hi ha manera de recuperar les dades. Si decideixes començar a utilitzar de nou la sincronització, hauràs de crear un compte nou i tornar a afegir cada dispositiu un per un.";
-
-/* Sync you browser settings across devices. */
-"sync.Syncdevices" = "Aparells & Configuracions";
-
-/* Sync remove device? */
-"sync.syncRemoveThisDeviceQuestion" = "Vols eliminar aquest dispositiu?";
 
 /* Sync settings section title */
 "sync.syncTitle" = "Sincronització";
@@ -2982,9 +2541,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Nombre de paraules: %i";
-
-/* Accessibility label for action denoting closing a tab in tab list (tray) */
-"TabAccessibilityCloseActionLabel" = "Tanca";
 
 /* Accessibility label for a close button that when tapped opens a new tab */
 "tabGrid.addTabAccessibilityLabel" = "Pestanya nova";
@@ -3025,17 +2581,11 @@
 /* A title shown when in private browsing mode with no tabs open */
 "tabGrid.privateBrowsingInfoTitle" = "Pestanya d'incògnit";
 
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.privateBrowsingModeAccessibilityLabel" = "Navegació d'incògnit";
-
 /* A label in the tab tray mode switcher for private browsing mode */
 "tabGrid.privateBrowsingModeTitle" = "Incògnit";
 
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Ajustos de les Pestanyes d'incògnit";
-
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.regularBrowsingModeAccessibilityLabel" = "Navegació normal";
 
 /* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
 "tabGrid.selectedTabs" = "Pestanyes seleccionades";
@@ -3066,18 +2616,6 @@
 
 /* Label for synced tabs menu item that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsMenuItemLabel" = "Sincronització";
-
-/* Accessiblity hint for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityHint" = "Activa o desactiva el mode d'incògnit";
-
-/* Accessibility label for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityLabel" = "Mode d'incògnit";
-
-/* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "Desactivat";
-
-/* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "Activat";
 
 /* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardDescription" = "Enfoca automàticament la barra d'adreces en crear una pestanya nova";
@@ -3139,9 +2677,6 @@
 /* Accessibility Label for the tab toolbar Forward button */
 "TabToolbarForwardButtonAccessibilityLabel" = "Endavant";
 
-/* Accessibility label for the lock icon, which is only present if the connection is secure */
-"TabToolbarLockImageAccessibilityLabel" = "Connexió segura";
-
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menú";
 
@@ -3156,9 +2691,6 @@
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Vista del lector";
-
-/* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "Afegeix a la llista de lectura";
 
 /* Accessibility Label for the tab toolbar Reload button */
 "TabToolbarReloadButtonAccessibilityLabel" = "Recarrega";
@@ -3175,47 +2707,14 @@
 /* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Cerca per veu";
 
-/* Accessibility label for the lock icon, which is only present if the connection is insecure */
-"TabToolbarWarningImageAccessibilityLabel" = "Connexió insegura";
-
-/* Accessibility label for the Tabs Tray view. */
-"TabTrayAccessibilityLabel" = "Safata de pestanyes";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabTrayAddTabAccessibilityLabel" = "Afegeix pestanya";
-
-/* Accessibility hint for tab tray's displayed tab. */
-"TabTrayCellCloseAccessibilityHint" = "Fes lliscar tres dits cap a l'esquerra o cap a la dreta per tancar la pestanya.";
-
-/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
-"TabTrayClosingTabAccessibilityNotificationText" = "Pestanya de tancament";
-
-/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
-"TabTrayEmptyVoiceOverText" = "Sense pestanyes";
-
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
-"TabTrayMultiTabPositionFormatVoiceOverText" = "Pestanyes %1$@ a %2$@ de %3$@";
-
-/* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "Pestanya nova";
-
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "Pestanyes de cerca";
-
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
-"TabTraySingleTabPositionFormatVoiceOverText" = "Pestanya %1$@ de %2$@";
 
 /* No comment provided by engineer. */
 "TermsOfService" = "Condicions del servei";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Condicions d'ús";
-
-/* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "Comparteix...";
-
-/* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Comparteix Brave amb els amics!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Automàtic";
@@ -3228,9 +2727,6 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Clar";
-
-/* Name for app theme settings */
-"themesSettings" = "Temes";
 
 /* No comment provided by engineer. */
 "Title" = "Títol";
@@ -3361,9 +2857,6 @@
 /* A title at the top of the screen that shows a list of sources that are ranked the highest */
 "today.popularSourcesTitle" = "Fonts populars";
 
-/* A button title that is placed on promoted cards */
-"today.promoted" = "Promocionat";
-
 /* Title for long press action sheet list which has item for rate / hide */
 "today.rateBraveCardActionSheetTitle" = "Valora Brave a l'App Store";
 
@@ -3418,14 +2911,8 @@
 /* Title of an action that allows the user to translate the current web-page to another language */
 "TranslatePage" = "Traduir pàgina";
 
-/* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "Vols activar els suggeriments de cerca?";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Desbloqueja";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "Instruments de pagament no admesos";
 
 /* Bookmark URL */
 "URL" = "URL";
@@ -3435,18 +2922,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "urlRedirectsSettings" = "Redireccions de llocs web";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "Usuari cancel·lat";
-
-/* No comment provided by engineer. */
-"UserWalletCloseButtonTitle" = "Tanca";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorMessage" = "S'ha produït un problema en iniciar sessió al teu compte d'Uphold. Siusplau torna-ho a provar";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "Ho sento, s'ha produït un error";
 
 /* Message for error alert when a VCard contact file cannot be parsed or opened */
 "VCard.unableToOpenContactErrorMessage" = "No s'ha pogut llegir l'arxiu de contacte. Pot estar corrupte o en un format no compatible.";
@@ -3511,9 +2986,6 @@
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Ginys";
 
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "any";
-
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Sí";
 
@@ -3523,20 +2995,11 @@
 /* History tableview section header */
 "Yesterday" = "Ahir";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Habilita vídeos d'alta qualitat de YouTube";
-
-/* Description of setting to enable high quality youtube videos */
-"YoutubeMediaQualityDetails" = "Si actives aquesta funció experimental, es reproduirà el vídeo amb la màxima qualitat disponible i s'utilitzaran dades addicionals.";
-
 /* Setting that disables highest quality video playback */
 "YoutubeMediaQualityOff" = "Desactivat";
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Activat";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "Qualitat de reproducció de YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Permet mitjançant Wi-Fi";

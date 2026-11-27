@@ -21,9 +21,9 @@ mod convert {
     use gix_hash::ObjectId;
 
     use crate::{
+        Target,
         raw::Reference,
         store_impl::{file::loose, packed},
-        Target,
     };
 
     impl From<Reference> for loose::Reference {
@@ -61,7 +61,7 @@ mod convert {
 mod access {
     use gix_object::bstr::ByteSlice;
 
-    use crate::{raw::Reference, FullNameRef, Namespace, Target};
+    use crate::{FullNameRef, Namespace, Target, raw::Reference};
 
     impl Reference {
         /// Returns the kind of reference based on its target
@@ -100,7 +100,9 @@ mod tests {
     #[test]
     fn size_of_reference() {
         let actual = std::mem::size_of::<Reference>();
-        let expected = 80;
+        let sha1 = 80;
+        let sha256_extra = 24;
+        let expected = sha1 + sha256_extra;
         assert!(
             size_ok(actual, expected),
             "let's not let it change size undetected: {actual} <~ {expected}"

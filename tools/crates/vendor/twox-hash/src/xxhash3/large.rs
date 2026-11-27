@@ -1,11 +1,12 @@
 use super::{
-    assert_input_range, avalanche, primes::*, stripes_with_tail, Halves, Secret, SliceBackport as _,
+    assert_input_range, avalanche, primes::*, stripes_with_tail, Halves as _, Secret,
+    SliceBackport as _,
 };
 
 #[cfg(feature = "xxhash3_128")]
 use super::X128;
 
-use crate::{IntoU128, IntoU64};
+use crate::{IntoU128 as _, IntoU64 as _};
 
 // This module is not `cfg`-gated because it is used by some of the
 // SIMD implementations.

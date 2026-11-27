@@ -165,7 +165,16 @@ where
     #[cfg(feature = "std")]
     fn chunks_vectored<'a>(&'a self, dst: &mut [IoSlice<'a>]) -> usize {
         let mut n = self.a.chunks_vectored(dst);
-        n += self.b.chunks_vectored(&mut dst[n..]);
+        if n == dst.len() {
+            return n;
+        }
+
+        // Only add b's chunks once a's chunks cover all of a,
+        // otherwise bytes would come out of order.
+        let a_len = dst[..n].iter().map(|slice| slice.len()).sum::<usize>();
+        if a_len == self.a.remaining() {
+            n += self.b.chunks_vectored(&mut dst[n..]);
+        }
         n
     }
 

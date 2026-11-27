@@ -1,11 +1,12 @@
+use std::ops::ControlFlow;
+
 use gix_hash::ObjectId;
 pub use gix_object::tree::{EntryKind, EntryMode};
-use gix_object::{bstr::BStr, FindExt, TreeRefIter};
+use gix_object::{FindExt, TreeRefIter, bstr::BStr, tree::next_entry};
 
-use crate::{object::find, Id, ObjectDetached, Repository, Tree};
+use crate::{Id, ObjectDetached, Repository, Result, Tree};
 
 /// All state needed to conveniently edit a tree, using only [update-or-insert](Editor::upsert()) and [removals](Editor::remove()).
-#[cfg(feature = "tree-editor")]
 #[derive(Clone)]
 pub struct Editor<'repo> {
     pub(crate) inner: gix_object::tree::Editor<'repo>,
@@ -34,14 +35,27 @@ impl<'repo> Tree<'repo> {
     }
 
     /// Parse our tree data and return the parse tree for direct access to its entries.
-    pub fn decode(&self) -> Result<gix_object::TreeRef<'_>, gix_object::decode::Error> {
-        gix_object::TreeRef::from_bytes(&self.data)
+    pub fn decode(&self) -> Result<gix_object::TreeRef<'_>> {
+        gix_object::TreeRef::from_bytes(&self.data, self.id.kind())
     }
 
     /// Find the entry named `name` by iteration, or return `None` if it wasn't found.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    /// # mod doctest { include!(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/doctest.rs")); }
+    /// # let repo = doctest::open_repo(doctest::basic_repo_dir()?)?;
+    /// let tree = repo.head_tree()?;
+    ///
+    /// assert_eq!(tree.find_entry("this").expect("present").filename(), "this");
+    /// assert!(tree.find_entry("does-not-exist").is_none());
+    /// # Ok(()) }
+    /// ```
     pub fn find_entry(&self, name: impl PartialEq<BStr>) -> Option<EntryRef<'repo, '_>> {
-        TreeRefIter::from_bytes(&self.data)
-            .filter_map(Result::ok)
+        TreeRefIter::from_bytes(&self.data, self.id.kind())
+            .filter_map(std::result::Result::ok)
             .find(|entry| name.eq(entry.filename))
             .map(|entry| EntryRef {
                 inner: entry,
@@ -58,82 +72,84 @@ impl<'repo> Tree<'repo> {
     /// to reuse a vector and use a binary search instead, which might be able to improve performance over all.
     /// However, a benchmark should be created first to have some data and see which trade-off to choose here.
     ///
-    pub fn lookup_entry<I, P>(&self, path: I) -> Result<Option<Entry<'repo>>, find::existing::Error>
+    pub fn lookup_entry<I, P>(&self, path: I) -> Result<Option<Entry<'repo>>>
     where
         I: IntoIterator<Item = P>,
         P: PartialEq<BStr>,
     {
-        let mut buf = self.repo.empty_reusable_buffer();
-        buf.clear();
-
-        let mut path = path.into_iter().peekable();
+        let buf = &mut self.repo.empty_reusable_buffer();
         buf.extend_from_slice(&self.data);
-        while let Some(component) = path.next() {
-            match TreeRefIter::from_bytes(&buf)
-                .filter_map(Result::ok)
-                .find(|entry| component.eq(entry.filename))
-            {
-                Some(entry) => {
-                    if path.peek().is_none() {
-                        return Ok(Some(Entry {
-                            inner: entry.into(),
-                            repo: self.repo,
-                        }));
-                    } else {
-                        let next_id = entry.oid.to_owned();
-                        let obj = self.repo.objects.find(&next_id, &mut buf)?;
-                        if !obj.kind.is_tree() {
-                            return Ok(None);
-                        }
-                    }
+
+        let mut iter = path.into_iter().peekable();
+        let mut data = gix_object::Data::new(buf, gix_object::Kind::Tree, self.id.kind());
+
+        loop {
+            data = match next_entry(&mut iter, data) {
+                ControlFlow::Continue(oid) => self.repo.find(&oid, buf)?,
+                ControlFlow::Break(entry) => {
+                    let mapped = entry.map(|e| Entry {
+                        inner: e.into(),
+                        repo: self.repo,
+                    });
+
+                    break Ok(mapped);
                 }
-                None => return Ok(None),
             }
         }
-        Ok(None)
     }
 
     /// Follow a sequence of `path` components starting from this instance, and look them up one by one until the last component
     /// is looked up and its tree entry is returned, while changing this instance to point to the last seen tree.
-    /// Note that if the lookup fails, it may be impossible to continue making lookups through this tree.
+    /// If the returned entry itself is a tree, this instance is updated to point to it as well.
     /// It's useful to have this function to be able to reuse the internal buffer of the tree.
     ///
     /// # Performance Notes
     ///
-    /// Searching tree entries is currently done in sequence, which allows to the search to be allocation free. It would be possible
-    /// to reuse a vector and use a binary search instead, which might be able to improve performance over all.
-    /// However, a benchmark should be created first to have some data and see which trade-off to choose here.
-    ///
-    pub fn peel_to_entry<I, P>(&mut self, path: I) -> Result<Option<Entry<'repo>>, find::existing::Error>
+    /// Searching tree entries is currently done in sequence, which allows to the search to be allocation free.
+    /// This is beneficial for most 'common' repositiries, but for other cases an allocation might be preferable
+    /// to allow a bisect.
+    pub fn peel_to_entry<I, P>(&mut self, path: I) -> Result<Option<Entry<'repo>>>
     where
         I: IntoIterator<Item = P>,
         P: PartialEq<BStr>,
     {
-        let mut path = path.into_iter().peekable();
-        while let Some(component) = path.next() {
-            match TreeRefIter::from_bytes(&self.data)
-                .filter_map(Result::ok)
-                .find(|entry| component.eq(entry.filename))
-            {
-                Some(entry) => {
-                    if path.peek().is_none() {
-                        return Ok(Some(Entry {
-                            inner: entry.into(),
-                            repo: self.repo,
-                        }));
-                    } else {
-                        let next_id = entry.oid.to_owned();
-                        let obj = self.repo.objects.find(&next_id, &mut self.data)?;
-                        self.id = next_id;
-                        if !obj.kind.is_tree() {
-                            return Ok(None);
-                        }
+        let mut iter = path.into_iter().peekable();
+        let mut data = gix_object::Data::new(&self.data, gix_object::Kind::Tree, self.id.kind());
+        let mut data_id = self.id;
+
+        loop {
+            data = match next_entry(&mut iter, data) {
+                ControlFlow::Continue(id) => {
+                    let res = self.repo.find(&id, &mut self.data)?;
+                    data_id = id;
+                    if res.kind.is_tree() {
+                        self.id = data_id;
                     }
+                    res
                 }
-                None => return Ok(None),
+                ControlFlow::Break(entry) => {
+                    let entry = if let Some(e) = entry {
+                        let inner = e.into();
+                        if e.mode.is_tree() {
+                            data_id = e.oid.to_owned();
+                            self.repo.find(&data_id, &mut self.data)?;
+                            self.id = data_id;
+                        }
+
+                        Some(Entry { inner, repo: self.repo })
+                    } else {
+                        None
+                    };
+
+                    if data_id != self.id {
+                        // Ensure that our data always matches our id, even if this means an extra lookup.
+                        self.repo.find(&self.id, &mut self.data)?;
+                    }
+
+                    break Ok(entry);
+                }
             }
         }
-        Ok(None)
     }
 
     /// Like [`Self::lookup_entry()`], but takes a `Path` directly via `relative_path`, a path relative to this tree.
@@ -142,16 +158,26 @@ impl<'repo> Tree<'repo> {
     ///
     /// If any path component contains illformed UTF-8 and thus can't be converted to bytes on platforms which can't do so natively,
     /// the returned component will be empty which makes the lookup fail.
-    pub fn lookup_entry_by_path(
-        &self,
-        relative_path: impl AsRef<std::path::Path>,
-    ) -> Result<Option<Entry<'repo>>, find::existing::Error> {
-        use crate::bstr::ByteSlice;
-        self.lookup_entry(relative_path.as_ref().components().map(|c: std::path::Component<'_>| {
-            gix_path::os_str_into_bstr(c.as_os_str())
-                .unwrap_or_else(|_| "".into())
-                .as_bytes()
-        }))
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    /// # mod doctest { include!(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/doctest.rs")); }
+    /// # let repo = doctest::open_repo(doctest::worktree_repo_dir()?)?;
+    /// let tree = repo.head_commit()?.tree()?;
+    /// let entry = tree.lookup_entry_by_path("dir/c")?.expect("present");
+    ///
+    /// assert_eq!(entry.filename(), "c");
+    /// # Ok(()) }
+    /// ```
+    pub fn lookup_entry_by_path(&self, relative_path: impl AsRef<std::path::Path>) -> Result<Option<Entry<'repo>>> {
+        self.lookup_entry(
+            relative_path
+                .as_ref()
+                .components()
+                .map(|c| c.as_os_str().as_encoded_bytes()),
+        )
     }
 
     /// Like [`Self::peel_to_entry()`], but takes a `Path` directly via `relative_path`, a path relative to this tree.
@@ -163,18 +189,17 @@ impl<'repo> Tree<'repo> {
     pub fn peel_to_entry_by_path(
         &mut self,
         relative_path: impl AsRef<std::path::Path>,
-    ) -> Result<Option<Entry<'repo>>, find::existing::Error> {
-        use crate::bstr::ByteSlice;
-        self.peel_to_entry(relative_path.as_ref().components().map(|c: std::path::Component<'_>| {
-            gix_path::os_str_into_bstr(c.as_os_str())
-                .unwrap_or_else(|_| "".into())
-                .as_bytes()
-        }))
+    ) -> Result<Option<Entry<'repo>>> {
+        self.peel_to_entry(
+            relative_path
+                .as_ref()
+                .components()
+                .map(|c| c.as_os_str().as_encoded_bytes()),
+        )
     }
 }
 
 ///
-#[cfg(feature = "tree-editor")]
 pub mod editor;
 
 ///
@@ -187,12 +212,14 @@ pub mod traverse;
 ///
 mod iter {
     use super::{EntryRef, Tree};
+    use crate::Result;
 
     impl<'repo> Tree<'repo> {
         /// Return an iterator over tree entries to obtain information about files and directories this tree contains.
-        pub fn iter(&self) -> impl Iterator<Item = Result<EntryRef<'repo, '_>, gix_object::decode::Error>> {
+        pub fn iter(&self) -> impl Iterator<Item = Result<EntryRef<'repo, '_>>> {
             let repo = self.repo;
-            gix_object::TreeRefIter::from_bytes(&self.data).map(move |e| e.map(|entry| EntryRef { inner: entry, repo }))
+            gix_object::TreeRefIter::from_bytes(&self.data, self.id.kind())
+                .map(move |e| e.map(|entry| EntryRef { inner: entry, repo }))
         }
     }
 }
@@ -222,12 +249,12 @@ pub struct Entry<'repo> {
 mod entry;
 
 mod _impls {
-    use crate::Tree;
+    use crate::{Error, Result, Tree};
 
     impl TryFrom<Tree<'_>> for gix_object::Tree {
-        type Error = gix_object::decode::Error;
+        type Error = Error;
 
-        fn try_from(t: Tree<'_>) -> Result<Self, Self::Error> {
+        fn try_from(t: Tree<'_>) -> Result<Self> {
             t.decode().map(Into::into)
         }
     }

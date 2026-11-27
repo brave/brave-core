@@ -44,24 +44,7 @@ extern crate proc_macro;
 use proc_macro::TokenStream;
 use quote::quote;
 
-use self::shared::{
-    util::array_str::Abbreviation, PosixDay, PosixDayTime, PosixDst,
-    PosixOffset, PosixRule, PosixTime, PosixTimeZone, TzifDateTime, TzifFixed,
-    TzifIndicator, TzifLocalTimeType, TzifOwned, TzifTransitionInfo,
-    TzifTransitionKind, TzifTransitionsOwned,
-};
-
-/// A bundle of code copied from `src/shared`.
-///
-/// The main thing we use in here is the parsing routine for TZif data and
-/// shared data types for representing TZif data.
-///
-/// We also squash dead code warnings. This is somewhat precarious since
-/// ideally we wouldn't compile what we don't need. But in practice, it's
-/// annoying to get rid of everything we don't need in this context, and it
-/// should be pretty small anyway.
-#[allow(dead_code)]
-mod shared;
+use jcore::tz::{TimeZoneId, posix, tzif};
 
 // Public API docs are in Jiff.
 #[proc_macro]
@@ -81,7 +64,7 @@ pub fn get(input: TokenStream) -> TokenStream {
 /// The entry point for the `include!` macro.
 #[derive(Debug)]
 struct Include {
-    tzif: TzifOwned,
+    tzif: tzif::MaybeNamedTimeZone,
 }
 
 impl Include {
@@ -103,12 +86,14 @@ impl Include {
     }
 
     fn from_path_with_id(id: &str, path: &str) -> Result<Include, String> {
-        let id = id.to_string();
+        let id = TimeZoneId::new_or_heap(id);
         let data = std::fs::read(path)
             .map_err(|e| format!("failed to read {path}: {e}"))?;
-        let tzif = TzifOwned::parse(Some(id.clone()), &data).map_err(|e| {
-            format!("failed to parse TZif data from {path}: {e}")
-        })?;
+        let tzif = tzif::TimeZone::parse(&data)
+            .map_err(|e| {
+                format!("failed to parse TZif data from {path}: {e}")
+            })?
+            .into_named(id);
         Ok(Include { tzif })
     }
 
@@ -145,7 +130,7 @@ impl syn::parse::Parse for Include {
 #[cfg(feature = "tzdb")]
 #[derive(Debug)]
 struct Get {
-    tzif: TzifOwned,
+    tzif: tzif::MaybeNamedTimeZone,
 }
 
 #[cfg(feature = "tzdb")]
@@ -154,10 +139,12 @@ impl Get {
         let (id, data) = jiff_tzdb::get(id).ok_or_else(|| {
             format!("could not find time zone `{id}` in bundled tzdb")
         })?;
-        let id = id.to_string();
-        let tzif = TzifOwned::parse(Some(id.clone()), &data).map_err(|e| {
-            format!("failed to parse TZif data from bundled `{id}`: {e}")
-        })?;
+        let id = TimeZoneId::statik(id);
+        let tzif = tzif::TimeZone::parse(&data)
+            .map_err(|e| {
+                format!("failed to parse TZif data from bundled `{id}`: {e}")
+            })?
+            .into_named(id);
         Ok(Get { tzif })
     }
 
@@ -180,58 +167,24 @@ impl syn::parse::Parse for Get {
 // Everything below at this point is quasi-quoting the `shared` data type
 // values into `static` data structures as Rust source code.
 
-impl TzifOwned {
-    fn quote(&self) -> proc_macro2::TokenStream {
-        let TzifOwned { ref fixed, ref types, ref transitions } = *self;
-        let fixed = fixed.quote();
-        let types = types.iter().map(TzifLocalTimeType::quote);
-        let transitions = transitions.quote();
-        quote! {
-            {
-                static TZ: jiff::tz::TimeZone =
-                    jiff::tz::TimeZone::__internal_from_tzif(
-                        &jiff::shared::TzifStatic {
-                            fixed: #fixed,
-                            types: &[#(#types),*],
-                            transitions: #transitions,
-                        }.into_jiff()
-                    );
-                // SAFETY: Since we are guaranteed that the `TimeZone` is
-                // constructed above as a static TZif time zone, it follows
-                // that it is safe to memcpy's its internal representation.
-                //
-                // NOTE: We arrange things this way so that `jiff::tz::get!`
-                // can be used "by value" in most contexts. Basically, we
-                // "pin" the time zone to a static so that it has a guaranteed
-                // static lifetime. Otherwise, since `TimeZone` has a `Drop`
-                // impl, it's easy to run afoul of this and have it be dropped
-                // earlier than you like. Since this particular variant of
-                // `TimeZone` can always be memcpy'd internally, we just do
-                // this dance here to save the user from having to write out
-                // their own `static`.
-                //
-                // NOTE: It would be nice if we could make this `copy` routine
-                // safe, or at least panic if it's misused. But to do that, you
-                // need to know the time zone variant. And to know the time
-                // zone variant, you need to "look" at the tag in the pointer.
-                // And looking at the address of a pointer in a `const` context
-                // is precarious.
-                unsafe { TZ.copy() }
-            }
-        }
-    }
+trait Quote {
+    fn quote(&self) -> proc_macro2::TokenStream;
 }
 
-impl TzifFixed<String, Abbreviation> {
+impl Quote for tzif::MaybeNamedTimeZone {
     fn quote(&self) -> proc_macro2::TokenStream {
-        let TzifFixed {
-            ref name,
+        let tzif::MaybeNamedTimeZone { ref name, ref tz } = *self;
+        let tzif::TimeZone {
             version,
             checksum,
             ref designations,
             ref posix_tz,
-        } = *self;
-        let name = name.as_ref().unwrap();
+            ref types,
+            ref transitions,
+        } = *tz;
+        // We are guaranteed to always have a name in this context.
+        let name = name.as_ref().unwrap().quote();
+        let designations = designations.iter().map(Quote::quote);
         let posix_tz = posix_tz
             .as_ref()
             .map(|tz| {
@@ -239,87 +192,112 @@ impl TzifFixed<String, Abbreviation> {
                 quote!(Some(#tz))
             })
             .unwrap_or_else(|| quote!(None));
-        quote! {
-            jiff::shared::TzifFixed {
-                name: Some(#name),
-                version: #version,
-                checksum: #checksum,
-                designations: #designations,
-                posix_tz: #posix_tz,
-            }
-        }
+        let types = types.iter().map(tzif::LocalTimeType::quote);
+        let transitions = transitions.quote();
+        quote! {{
+            static __TZ_DESIGNATIONS: &[jiff::__jcore::tz::Abbreviation] = &[#(#designations),*];
+            static __TZ_INTERNAL: jiff::__jcore::tz::tzif::MaybeNamedTimeZone =
+                jiff::__jcore::tz::tzif::MaybeNamedTimeZone {
+                    name: Some(#name),
+                    tz: jiff::__jcore::tz::tzif::TimeZone {
+                        version: #version,
+                        checksum: #checksum,
+                        designations: jiff::__jcore::util::MaybeStaticSlice::statik(__TZ_DESIGNATIONS),
+                        posix_tz: #posix_tz,
+                        types: jiff::__jcore::util::MaybeStaticSlice::statik(&[#(#types),*]),
+                        transitions: #transitions,
+                    },
+                };
+            static TZ: jiff::tz::TimeZone =
+                jiff::tz::TimeZone::__internal_from_tzif(&__TZ_INTERNAL);
+            // SAFETY: Since we are guaranteed that the `TimeZone` is
+            // constructed above as a static TZif time zone, it follows
+            // that it is safe to memcpy's its internal representation.
+            //
+            // NOTE: We arrange things this way so that `jiff::tz::get!`
+            // can be used "by value" in most contexts. Basically, we
+            // "pin" the time zone to a static so that it has a guaranteed
+            // static lifetime. Otherwise, since `TimeZone` has a `Drop`
+            // impl, it's easy to run afoul of this and have it be dropped
+            // earlier than you like. Since this particular variant of
+            // `TimeZone` can always be memcpy'd internally, we just do
+            // this dance here to save the user from having to write out
+            // their own `static`.
+            //
+            // NOTE: It would be nice if we could make this `copy` routine
+            // safe, or at least panic if it's misused. But to do that, you
+            // need to know the time zone variant. And to know the time
+            // zone variant, you need to "look" at the tag in the pointer.
+            // And looking at the address of a pointer in a `const` context
+            // is precarious.
+            unsafe { TZ.copy() }
+        }}
     }
 }
 
-impl TzifTransitionsOwned {
+impl Quote for tzif::Transitions {
     fn quote(&self) -> proc_macro2::TokenStream {
-        let TzifTransitionsOwned {
+        let tzif::Transitions {
             ref timestamps,
             ref civil_starts,
             ref civil_ends,
             ref infos,
         } = *self;
-        let civil_starts: Vec<_> =
-            civil_starts.iter().map(TzifDateTime::quote).collect();
-        let civil_ends: Vec<_> =
-            civil_ends.iter().map(TzifDateTime::quote).collect();
-        let infos: Vec<_> =
-            infos.iter().map(TzifTransitionInfo::quote).collect();
+        let timestamps = timestamps.iter().map(tzif::Timestamp::quote);
+        let civil_starts = civil_starts.iter().map(tzif::DateTime::quote);
+        let civil_ends = civil_ends.iter().map(tzif::DateTime::quote);
+        let infos = infos.iter().map(tzif::TransitionInfo::quote);
         quote! {
-            jiff::shared::TzifTransitions {
-                timestamps: &[#(#timestamps),*],
-                civil_starts: &[#(#civil_starts),*],
-                civil_ends: &[#(#civil_ends),*],
-                infos: &[#(#infos),*],
+            jiff::__jcore::tz::tzif::Transitions {
+                timestamps: jiff::__jcore::util::MaybeStaticSlice::statik(&[#(#timestamps),*]),
+                civil_starts: jiff::__jcore::util::MaybeStaticSlice::statik(&[#(#civil_starts),*]),
+                civil_ends: jiff::__jcore::util::MaybeStaticSlice::statik(&[#(#civil_ends),*]),
+                infos: jiff::__jcore::util::MaybeStaticSlice::statik(&[#(#infos),*]),
             }
         }
     }
 }
 
-impl TzifLocalTimeType {
+impl Quote for tzif::LocalTimeType {
     fn quote(&self) -> proc_macro2::TokenStream {
-        let TzifLocalTimeType {
-            offset,
-            is_dst,
-            ref designation,
-            ref indicator,
-        } = *self;
-        let desig_start = designation.0;
-        let desig_end = designation.1;
+        let tzif::LocalTimeType { offset, dst, designation, indicator } =
+            *self;
+        let offset = offset.quote();
+        let dst = dst.quote();
         let indicator = indicator.quote();
         quote! {
-            jiff::shared::TzifLocalTimeType {
+            jiff::__jcore::tz::tzif::LocalTimeType {
                 offset: #offset,
-                is_dst: #is_dst,
-                designation: (#desig_start, #desig_end),
+                dst: #dst,
+                designation: #designation,
                 indicator: #indicator,
             }
         }
     }
 }
 
-impl TzifIndicator {
+impl Quote for tzif::Indicator {
     fn quote(&self) -> proc_macro2::TokenStream {
         match *self {
-            TzifIndicator::LocalWall => quote! {
-                jiff::shared::TzifIndicator::LocalWall
+            tzif::Indicator::LocalWall => quote! {
+                jiff::__jcore::tz::tzif::Indicator::LocalWall
             },
-            TzifIndicator::LocalStandard => quote! {
-                jiff::shared::TzifIndicator::LocalStandard
+            tzif::Indicator::LocalStandard => quote! {
+                jiff::__jcore::tz::tzif::Indicator::LocalStandard
             },
-            TzifIndicator::UTStandard => quote! {
-                jiff::shared::TzifIndicator::UTStandard
+            tzif::Indicator::UTStandard => quote! {
+                jiff::__jcore::tz::tzif::Indicator::UTStandard
             },
         }
     }
 }
 
-impl TzifTransitionInfo {
+impl Quote for tzif::TransitionInfo {
     fn quote(&self) -> proc_macro2::TokenStream {
-        let TzifTransitionInfo { type_index, kind } = *self;
+        let tzif::TransitionInfo { type_index, kind } = *self;
         let kind = kind.quote();
         quote! {
-            jiff::shared::TzifTransitionInfo {
+            jiff::__jcore::tz::tzif::TransitionInfo {
                 type_index: #type_index,
                 kind: #kind,
             }
@@ -327,23 +305,23 @@ impl TzifTransitionInfo {
     }
 }
 
-impl TzifTransitionKind {
+impl Quote for tzif::TransitionKind {
     fn quote(&self) -> proc_macro2::TokenStream {
         match *self {
-            TzifTransitionKind::Unambiguous => quote! {
-                jiff::shared::TzifTransitionKind::Unambiguous
+            tzif::TransitionKind::Unambiguous => quote! {
+                jiff::__jcore::tz::tzif::TransitionKind::Unambiguous
             },
-            TzifTransitionKind::Gap => quote! {
-                jiff::shared::TzifTransitionKind::Gap
+            tzif::TransitionKind::Gap => quote! {
+                jiff::__jcore::tz::tzif::TransitionKind::Gap
             },
-            TzifTransitionKind::Fold => quote! {
-                jiff::shared::TzifTransitionKind::Fold
+            tzif::TransitionKind::Fold => quote! {
+                jiff::__jcore::tz::tzif::TransitionKind::Fold
             },
         }
     }
 }
 
-impl TzifDateTime {
+impl Quote for tzif::DateTime {
     fn quote(&self) -> proc_macro2::TokenStream {
         let year = self.year();
         let month = self.month();
@@ -352,22 +330,24 @@ impl TzifDateTime {
         let minute = self.minute();
         let second = self.second();
         quote! {
-            jiff::shared::TzifDateTime::new(
+            jiff::__jcore::tz::tzif::DateTime::new(jiff::__jcore::civil::datetime(
                 #year,
                 #month,
                 #day,
                 #hour,
                 #minute,
                 #second,
-            )
+                0
+            ))
         }
     }
 }
 
-impl PosixTimeZone<Abbreviation> {
+impl Quote for posix::TimeZone {
     fn quote(&self) -> proc_macro2::TokenStream {
-        let PosixTimeZone { ref std_abbrev, ref std_offset, ref dst } = *self;
-        let std_abbrev = std_abbrev.as_str();
+        let posix::TimeZone { ref std_abbrev, ref std_offset, ref dst } =
+            *self;
+        let std_abbrev = std_abbrev.quote();
         let std_offset = std_offset.quote();
         let dst = dst
             .as_ref()
@@ -377,7 +357,7 @@ impl PosixTimeZone<Abbreviation> {
             })
             .unwrap_or_else(|| quote!(None));
         quote! {
-            jiff::shared::PosixTimeZone {
+            jiff::__jcore::tz::posix::TimeZone {
                 std_abbrev: #std_abbrev,
                 std_offset: #std_offset,
                 dst: #dst,
@@ -386,14 +366,14 @@ impl PosixTimeZone<Abbreviation> {
     }
 }
 
-impl PosixDst<Abbreviation> {
+impl Quote for posix::Dst {
     fn quote(&self) -> proc_macro2::TokenStream {
-        let PosixDst { ref abbrev, ref offset, ref rule } = *self;
-        let abbrev = abbrev.as_str();
+        let posix::Dst { ref abbrev, ref offset, ref rule } = *self;
+        let abbrev = abbrev.quote();
         let offset = offset.quote();
         let rule = rule.quote();
         quote! {
-            jiff::shared::PosixDst {
+            jiff::__jcore::tz::posix::Dst {
                 abbrev: #abbrev,
                 offset: #offset,
                 rule: #rule,
@@ -402,61 +382,117 @@ impl PosixDst<Abbreviation> {
     }
 }
 
-impl PosixRule {
+impl Quote for posix::Rule {
     fn quote(&self) -> proc_macro2::TokenStream {
         let start = self.start.quote();
         let end = self.end.quote();
         quote! {
-            jiff::shared::PosixRule { start: #start, end: #end }
+            jiff::__jcore::tz::posix::Rule { start: #start, end: #end }
         }
     }
 }
 
-impl PosixDayTime {
+impl Quote for posix::DayTime {
     fn quote(&self) -> proc_macro2::TokenStream {
-        let PosixDayTime { ref date, ref time } = *self;
+        let posix::DayTime { ref date, ref time } = *self;
         let date = date.quote();
         let time = time.quote();
         quote! {
-            jiff::shared::PosixDayTime { date: #date, time: #time }
+            jiff::__jcore::tz::posix::DayTime { date: #date, time: #time }
         }
     }
 }
 
-impl PosixDay {
+impl Quote for posix::Day {
     fn quote(&self) -> proc_macro2::TokenStream {
         match *self {
-            PosixDay::JulianOne(day) => quote! {
-                jiff::shared::PosixDay::JulianOne(#day)
+            posix::Day::JulianOne(day) => quote! {
+                jiff::__jcore::tz::posix::Day::JulianOne(#day)
             },
-            PosixDay::JulianZero(day) => quote! {
-                jiff::shared::PosixDay::JulianZero(#day)
+            posix::Day::JulianZero(day) => quote! {
+                jiff::__jcore::tz::posix::Day::JulianZero(#day)
             },
-            PosixDay::WeekdayOfMonth { month, week, weekday } => quote! {
-                jiff::shared::PosixDay::WeekdayOfMonth {
-                    month: #month,
-                    week: #week,
-                    weekday: #weekday,
+            posix::Day::WeekdayOfMonth { month, week, weekday } => {
+                let weekday = weekday.quote();
+                quote! {
+                    jiff::__jcore::tz::posix::Day::WeekdayOfMonth {
+                        month: #month,
+                        week: #week,
+                        weekday: #weekday,
+                    }
                 }
-            },
+            }
         }
     }
 }
 
-impl PosixTime {
+impl Quote for jcore::civil::Weekday {
     fn quote(&self) -> proc_macro2::TokenStream {
-        let PosixTime { second } = *self;
-        quote! {
-            jiff::shared::PosixTime { second: #second }
+        use jcore::civil::Weekday::*;
+        match *self {
+            Sunday => quote!(jiff::__jcore::civil::Weekday::Sunday),
+            Monday => quote!(jiff::__jcore::civil::Weekday::Monday),
+            Tuesday => quote!(jiff::__jcore::civil::Weekday::Tuesday),
+            Wednesday => quote!(jiff::__jcore::civil::Weekday::Wednesday),
+            Thursday => quote!(jiff::__jcore::civil::Weekday::Thursday),
+            Friday => quote!(jiff::__jcore::civil::Weekday::Friday),
+            Saturday => quote!(jiff::__jcore::civil::Weekday::Saturday),
         }
     }
 }
 
-impl PosixOffset {
+impl Quote for jcore::tz::posix::TransitionCivilTime {
     fn quote(&self) -> proc_macro2::TokenStream {
-        let PosixOffset { second } = *self;
+        let posix::TransitionCivilTime { second } = *self;
         quote! {
-            jiff::shared::PosixOffset { second: #second }
+            jiff::__jcore::tz::posix::TransitionCivilTime { second: #second }
         }
+    }
+}
+
+impl Quote for tzif::Timestamp {
+    fn quote(&self) -> proc_macro2::TokenStream {
+        let second = self.as_second();
+        quote! {
+            jiff::__jcore::tz::tzif::Timestamp::new(
+                jiff::__jcore::Timestamp::constant(#second, 0),
+            )
+        }
+    }
+}
+
+impl Quote for jcore::tz::Offset {
+    fn quote(&self) -> proc_macro2::TokenStream {
+        let seconds = self.seconds();
+        quote! {
+            jiff::__jcore::tz::Offset::constant_seconds(#seconds)
+        }
+    }
+}
+
+impl Quote for jcore::tz::Dst {
+    fn quote(&self) -> proc_macro2::TokenStream {
+        match *self {
+            jcore::tz::Dst::Yes => quote! { jiff::__jcore::tz::Dst::Yes },
+            jcore::tz::Dst::No => quote! { jiff::__jcore::tz::Dst::No },
+        }
+    }
+}
+
+impl<const N: usize> Quote for jcore::util::SmallStr<N> {
+    fn quote(&self) -> proc_macro2::TokenStream {
+        let s = self.as_str();
+        quote! {
+            jiff::__jcore::util::SmallStr::statik(#s)
+        }
+    }
+}
+
+impl<T: Quote + 'static> Quote for jcore::util::MaybeStaticSlice<T> {
+    fn quote(&self) -> proc_macro2::TokenStream {
+        let slice = self.as_slice().iter().map(Quote::quote);
+        quote! {{
+            jiff::__jcore::util::MaybeStaticSlice::statik(&[#(#slice),*])
+        }}
     }
 }

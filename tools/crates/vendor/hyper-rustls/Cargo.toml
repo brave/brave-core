@@ -11,10 +11,18 @@
 
 [package]
 edition = "2021"
-rust-version = "1.71"
+rust-version = "1.85"
 name = "hyper-rustls"
-version = "0.27.7"
+version = "0.27.10"
 build = false
+include = [
+    "Cargo.toml",
+    "LICENSE-MIT",
+    "LICENSE-APACHE",
+    "LICENSE-ISC",
+    "README.md",
+    "src/**/*.rs",
+]
 autolib = false
 autobins = false
 autoexamples = false
@@ -28,6 +36,7 @@ license = "Apache-2.0 OR ISC OR MIT"
 repository = "https://github.com/rustls/hyper-rustls"
 
 [package.metadata.docs.rs]
+no-default-features = true
 features = [
     "http1",
     "http2",
@@ -38,10 +47,9 @@ features = [
     "tls12",
     "webpki-tokio",
 ]
-no-default-features = true
 rustdoc-args = [
     "--cfg",
-    "docsrs",
+    "hyper_rustls_docsrs",
 ]
 
 [features]
@@ -76,23 +84,6 @@ webpki-tokio = ["webpki-roots"]
 name = "hyper_rustls"
 path = "src/lib.rs"
 
-[[example]]
-name = "client"
-path = "examples/client.rs"
-required-features = [
-    "native-tokio",
-    "http1",
-]
-
-[[example]]
-name = "server"
-path = "examples/server.rs"
-required-features = ["aws-lc-rs"]
-
-[[test]]
-name = "tests"
-path = "tests/tests.rs"
-
 [dependencies.http]
 version = "1"
 
@@ -112,10 +103,6 @@ default-features = false
 version = "0.4.4"
 optional = true
 
-[dependencies.pki-types]
-version = "1"
-package = "rustls-pki-types"
-
 [dependencies.rustls]
 version = "0.23"
 default-features = false
@@ -125,7 +112,7 @@ version = "0.8"
 optional = true
 
 [dependencies.rustls-platform-verifier]
-version = "0.6"
+version = "0.7"
 optional = true
 
 [dependencies.tokio]
@@ -158,9 +145,6 @@ version = "0.23"
 features = ["tls12"]
 default-features = false
 
-[dev-dependencies.rustls-pemfile]
-version = "2"
-
 [dev-dependencies.tokio]
 version = "1.0"
 features = [
@@ -169,3 +153,27 @@ features = [
     "net",
     "rt-multi-thread",
 ]
+
+[lints.clippy]
+cloned_instead_of_copied = "warn"
+manual_let_else = "warn"
+needless_collect = "warn"
+needless_pass_by_ref_mut = "warn"
+or_fun_call = "warn"
+redundant_clone = "warn"
+upper_case_acronyms = "warn"
+use_self = "warn"
+
+[lints.rust]
+elided_lifetimes_in_paths = "warn"
+trivial_numeric_casts = "warn"
+unnameable_types = "warn"
+unreachable_pub = "warn"
+unused_extern_crates = "warn"
+unused_import_braces = "warn"
+unused_qualifications = "warn"
+
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = ["cfg(hyper_rustls_docsrs)"]

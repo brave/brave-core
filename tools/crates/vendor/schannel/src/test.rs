@@ -948,3 +948,125 @@ fn test_alpn_list() {
         &full_alpn_list as &[u8]
     );
 }
+
+/// This should reproduce renegotiation error on TLS1.3.
+/// It also verifies the same works on TLS1.2 because why not.
+#[test]
+fn test_renegotiation_corruption() {
+    // This did not reproduce with 2 MB so not sure how reliant this test is.
+    let payload_size = 4 * 1024 * 1024;
+    
+    let mut protos = vec![Protocol::Tls12];
+    if std::env::var("SCHANNEL_SKIP_TLS_13_TEST") != Ok("1".to_owned()) {
+        protos.push(Protocol::Tls13);
+    }
+
+    for proto in protos {
+        let mut data_to_send = vec![0u8; payload_size];
+        let pattern = [0,1,2,3,4];
+        for (i, byte) in data_to_send.iter_mut().enumerate() {
+            *byte = pattern[i % pattern.len()];
+        }
+
+        let cert = match localhost_cert() {
+            Some(cert) => cert,
+            None => return,
+        };
+
+        // 1. Setup TCP on random port
+        let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+        let addr = listener.local_addr().unwrap();
+
+        // 2. Server Thread
+        let server_handle = thread::spawn(move || {
+            let (tcp_stream, _) = listener.accept().unwrap();
+            tcp_stream.set_nonblocking(true).unwrap();
+
+            let creds = SchannelCred::builder()
+                .cert(cert)
+                .enabled_protocols(&[proto])
+                .acquire(Direction::Inbound)
+                .unwrap();
+
+            // Drive Handshake
+            let mut res = tls_stream::Builder::new().accept(creds, tcp_stream);
+            let mut stream = loop {
+                match res {
+                    Ok(s) => break s,
+                    Err(crate::tls_stream::HandshakeError::Interrupted(mid)) => {
+                        res = mid.handshake();
+                    }
+                    Err(e) => panic!("Server handshake failed: {:?}", e),
+                }
+            };
+
+            // Server Read Loop
+            let mut received = Vec::with_capacity(payload_size);
+            let mut buf = [0u8; 16384];
+            while received.len() < payload_size {
+                match stream.read(&mut buf) {
+                    Ok(0) => break,
+                    Ok(n) => received.extend_from_slice(&buf[..n]),
+                    Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock => thread::yield_now(),
+                    Err(e) => panic!("Server read error: {:?}", e),
+                }
+            }
+            received
+        });
+
+        // 3. Client Logic
+        let tcp_stream = TcpStream::connect(addr).unwrap();
+        tcp_stream.set_nonblocking(true).unwrap();
+
+        let creds = SchannelCred::builder()
+            .enabled_protocols(&[proto])
+            .acquire(Direction::Outbound)
+            .unwrap();
+
+        // Drive Handshake
+        let mut res = tls_stream::Builder::new()
+            .domain("localhost")
+            .connect(creds, tcp_stream);
+        
+        let mut client_tls = loop {
+            match res {
+                Ok(s) => break s,
+                Err(crate::tls_stream::HandshakeError::Interrupted(mid)) => {
+                    res = mid.handshake();
+                }
+                Err(e) => panic!("Client handshake failed: {:?}", e),
+            }
+        };
+
+        // 4. The Interleaved Write/Read Loop
+        let mut total_sent = 0;
+        while total_sent < payload_size {
+            let chunk = &data_to_send[total_sent..];
+            match client_tls.write(chunk) {
+                Ok(n) => total_sent += n,
+                Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock => {
+                    // FORCE THE ISSUE: 
+                    // While waiting for buffer space, try to read.
+                    // This pulls in the NewSessionTicket and triggers SEC_I_RENEGOTIATE.
+                    let mut dummy = [0u8; 1];
+                    let _ = client_tls.read(&mut dummy);
+                }
+                Err(e) => panic!("Client write error: {:?}", e),
+            }
+        }
+
+        let received_data = server_handle.join().expect("Server thread panicked");
+
+        // 5. Validation
+        assert_eq!(received_data.len(), payload_size, "{:?} Data length mismatch!", proto);
+        let mismatch_count = received_data.iter()
+            .zip(data_to_send.iter())
+            .filter(|(a, b)| a != b)
+            .count();
+
+        // Calculate any difference in length as well
+        let length_diff = (received_data.len() as i128 - data_to_send.len() as i128).abs();
+
+        assert_eq!(mismatch_count, 0, "{:?} DATA CORRUPTION DETECTED: {} bytes do not match (Length diff: {})", proto, mismatch_count, length_diff);
+    }
+}

@@ -139,7 +139,7 @@ impl Uuid {
             Ok(bytes) => Ok(Uuid::from_bytes(bytes)),
             // If parsing fails then we don't know exactly what went wrong
             // In this case, we just return a generic error
-            Err(_) => Err(Error(ErrorKind::ParseOther)),
+            Err(_) => Err(Error(ErrorKind::ParseOther("failed to parse a UUID"))),
         }
     }
 }
@@ -147,18 +147,23 @@ impl Uuid {
 const fn try_parse(input: &'_ [u8]) -> Result<[u8; 16], InvalidUuid<'_>> {
     match (input.len(), input) {
         // Inputs of 32 bytes must be a non-hyphenated UUID
-        (32, s) => parse_simple(s),
+        (32, s) => parse_simple(s, true),
         // Hyphenated UUIDs may be wrapped in various ways:
         // - `{UUID}` for braced UUIDs
         // - `urn:uuid:UUID` for URNs
         // - `UUID` for a regular hyphenated UUID
-        (36, s)
-        | (38, [b'{', s @ .., b'}'])
-        | (45, [b'u', b'r', b'n', b':', b'u', b'u', b'i', b'd', b':', s @ ..]) => {
-            parse_hyphenated(s)
+        (36, s) | (38, [b'{', s @ .., b'}']) => parse_hyphenated(s),
+        (45, s) => {
+            let (prefix, s) = s.split_at(9);
+
+            if prefix.eq_ignore_ascii_case(b"urn:uuid:") {
+                parse_hyphenated(s)
+            } else {
+                Err(InvalidUuid(input, RequestedUuid::Any))
+            }
         }
         // Any other shaped input is immediately invalid
-        _ => Err(InvalidUuid(input)),
+        _ => Err(InvalidUuid(input, RequestedUuid::Any)),
     }
 }
 
@@ -168,52 +173,58 @@ pub(crate) const fn parse_braced(input: &'_ [u8]) -> Result<[u8; 16], InvalidUui
     if let (38, [b'{', s @ .., b'}']) = (input.len(), input) {
         parse_hyphenated(s)
     } else {
-        Err(InvalidUuid(input))
+        Err(InvalidUuid(input, RequestedUuid::Braced))
     }
 }
 
 #[inline]
 #[allow(dead_code)]
 pub(crate) const fn parse_urn(input: &'_ [u8]) -> Result<[u8; 16], InvalidUuid<'_>> {
-    if let (45, [b'u', b'r', b'n', b':', b'u', b'u', b'i', b'd', b':', s @ ..]) =
-        (input.len(), input)
-    {
-        parse_hyphenated(s)
+    if input.len() == 45 && input.split_at(9).0.eq_ignore_ascii_case(b"urn:uuid:") {
+        parse_hyphenated(input.split_at(9).1)
     } else {
-        Err(InvalidUuid(input))
+        Err(InvalidUuid(input, RequestedUuid::Urn))
     }
 }
 
 #[inline]
-pub(crate) const fn parse_simple(s: &'_ [u8]) -> Result<[u8; 16], InvalidUuid<'_>> {
+pub(crate) const fn parse_simple(
+    s: &'_ [u8],
+    speculative: bool,
+) -> Result<[u8; 16], InvalidUuid<'_>> {
     // This length check here removes all other bounds
     // checks in this function
     if s.len() != 32 {
-        return Err(InvalidUuid(s));
+        return Err(InvalidUuid(
+            s,
+            if speculative {
+                RequestedUuid::Any
+            } else {
+                RequestedUuid::Simple
+            },
+        ));
     }
 
-    let mut buf: [u8; 16] = [0; 16];
+    // Copy the hex characters into a fixed-size array so the decoder's
+    // bounds are statically known.
+    let mut hex = [0u8; 32];
     let mut i = 0;
-
-    while i < 16 {
-        // Convert a two-char hex value (like `A8`)
-        // into a byte (like `10101000`)
-        let h1 = HEX_TABLE[s[i * 2] as usize];
-        let h2 = HEX_TABLE[s[i * 2 + 1] as usize];
-
-        // We use `0xff` as a sentinel value to indicate
-        // an invalid hex character sequence (like the letter `G`)
-        if h1 | h2 == 0xff {
-            return Err(InvalidUuid(s));
-        }
-
-        // The upper nibble needs to be shifted into position
-        // to produce the final byte value
-        buf[i] = SHL4_TABLE[h1 as usize] | h2;
+    while i < 32 {
+        hex[i] = s[i];
         i += 1;
     }
 
-    Ok(buf)
+    match decode_hex32(&hex) {
+        Some(buf) => Ok(buf),
+        None => Err(InvalidUuid(
+            s,
+            if speculative {
+                RequestedUuid::Any
+            } else {
+                RequestedUuid::Simple
+            },
+        )),
+    }
 }
 
 #[inline]
@@ -221,11 +232,10 @@ pub(crate) const fn parse_hyphenated(s: &'_ [u8]) -> Result<[u8; 16], InvalidUui
     // This length check here removes all other bounds
     // checks in this function
     if s.len() != 36 {
-        return Err(InvalidUuid(s));
+        return Err(InvalidUuid(s, RequestedUuid::Hyphenated));
     }
 
-    // We look at two hex-encoded values (4 chars) at a time because
-    // that's the size of the smallest group in a hyphenated UUID.
+    // The hex characters are split into five groups separated by hyphens.
     // The indexes we're interested in are:
     //
     // uuid     : 936da01f-9abd-4d9d-80c7-02af85c822a8
@@ -236,77 +246,95 @@ pub(crate) const fn parse_hyphenated(s: &'_ [u8]) -> Result<[u8; 16], InvalidUui
     // First, ensure the hyphens appear in the right places
     match [s[8], s[13], s[18], s[23]] {
         [b'-', b'-', b'-', b'-'] => {}
-        _ => return Err(InvalidUuid(s)),
+        _ => return Err(InvalidUuid(s, RequestedUuid::Hyphenated)),
     }
 
-    let positions: [u8; 8] = [0, 4, 9, 14, 19, 24, 28, 32];
-    let mut buf: [u8; 16] = [0; 16];
-    let mut j = 0;
-
-    while j < 8 {
-        let i = positions[j];
-
-        // The decoding here is the same as the simple case
-        // We're just dealing with two values instead of one
-        let h1 = HEX_TABLE[s[i as usize] as usize];
-        let h2 = HEX_TABLE[s[(i + 1) as usize] as usize];
-        let h3 = HEX_TABLE[s[(i + 2) as usize] as usize];
-        let h4 = HEX_TABLE[s[(i + 3) as usize] as usize];
-
-        if h1 | h2 | h3 | h4 == 0xff {
-            return Err(InvalidUuid(s));
-        }
-
-        buf[j * 2] = SHL4_TABLE[h1 as usize] | h2;
-        buf[j * 2 + 1] = SHL4_TABLE[h3 as usize] | h4;
-        j += 1;
+    // Gather the hex characters, skipping the four hyphens, so they're
+    // contiguous for the decoder.
+    let mut hex = [0u8; 32];
+    let mut i = 0;
+    while i < 8 {
+        hex[i] = s[i];
+        i += 1;
+    }
+    while i < 12 {
+        hex[i] = s[i + 1];
+        i += 1;
+    }
+    while i < 16 {
+        hex[i] = s[i + 2];
+        i += 1;
+    }
+    while i < 20 {
+        hex[i] = s[i + 3];
+        i += 1;
+    }
+    while i < 32 {
+        hex[i] = s[i + 4];
+        i += 1;
     }
 
-    Ok(buf)
+    match decode_hex32(&hex) {
+        Some(buf) => Ok(buf),
+        None => Err(InvalidUuid(s, RequestedUuid::Hyphenated)),
+    }
 }
 
-const HEX_TABLE: &[u8; 256] = &{
-    let mut buf = [0; 256];
-    let mut i: u8 = 0;
+/// Decodes 32 hexadecimal ASCII characters into 16 bytes, returning `None` if
+/// any character is not a valid hexadecimal digit.
+#[inline]
+const fn decode_hex32(hex: &[u8; 32]) -> Option<[u8; 16]> {
+    let mut nibbles = [0u8; 32];
+    let mut bad = 0u8;
 
-    loop {
-        buf[i as usize] = match i {
-            b'0'..=b'9' => i - b'0',
-            b'a'..=b'f' => i - b'a' + 10,
-            b'A'..=b'F' => i - b'A' + 10,
-            _ => 0xff,
+    let mut i = 0;
+    while i < 32 {
+        let c = hex[i];
+
+        // '0'..='9' map to 0..=9; 'a'..='f' and 'A'..='F' (via `| 0x20`) map to
+        // 0..=5, offset by 10 to land in 10..=15.
+        let digit = c.wrapping_sub(b'0');
+        let alpha = (c | 0x20).wrapping_sub(b'a');
+
+        let is_digit = digit < 10;
+        let is_alpha = alpha < 6;
+
+        nibbles[i] = if is_digit {
+            digit
+        } else {
+            alpha.wrapping_add(10)
         };
 
-        if i == 255 {
-            break buf;
-        }
-
-        i += 1
-    }
-};
-
-const SHL4_TABLE: &[u8; 256] = &{
-    let mut buf = [0; 256];
-    let mut i: u8 = 0;
-
-    loop {
-        buf[i as usize] = i.wrapping_shl(4);
-
-        if i == 255 {
-            break buf;
-        }
+        bad |= if is_digit | is_alpha { 0 } else { 1 };
 
         i += 1;
     }
-};
+
+    if bad != 0 {
+        return None;
+    }
+
+    let mut buf = [0u8; 16];
+    let mut j = 0;
+    while j < 16 {
+        buf[j] = (nibbles[j * 2] << 4) | nibbles[j * 2 + 1];
+        j += 1;
+    }
+
+    Some(buf)
+}
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{std::string::ToString, tests::new};
+    use crate::{
+        fmt::*,
+        std::{str::FromStr, string::ToString},
+        tests::some_uuid_iter,
+    };
 
     #[test]
-    fn test_parse_uuid_v4_valid() {
+    fn test_parse_valid() {
         let from_hyphenated = Uuid::parse_str("67e55044-10b1-426f-9247-bb680e5fe0c8").unwrap();
         let from_simple = Uuid::parse_str("67e5504410b1426f9247bb680e5fe0c8").unwrap();
         let from_urn = Uuid::parse_str("urn:uuid:67e55044-10b1-426f-9247-bb680e5fe0c8").unwrap();
@@ -322,7 +350,18 @@ mod tests {
         assert!(Uuid::parse_str("67e5504410b1426f9247bb680e5fe0c8").is_ok());
         assert!(Uuid::parse_str("01020304-1112-2122-3132-414243444546").is_ok());
         assert!(Uuid::parse_str("urn:uuid:67e55044-10b1-426f-9247-bb680e5fe0c8").is_ok());
+        assert!(Uuid::parse_str("URN:UUID:67e55044-10b1-426f-9247-bb680e5fe0c8").is_ok());
+        assert!(Uuid::parse_str("Urn:Uuid:67e55044-10b1-426f-9247-bb680e5fe0c8").is_ok());
         assert!(Uuid::parse_str("{6d93bade-bd9f-4e13-8914-9474e1e3567b}").is_ok());
+
+        assert_eq!(
+            from_urn,
+            Uuid::parse_str("URN:UUID:67e55044-10b1-426f-9247-bb680e5fe0c8").unwrap()
+        );
+        assert_eq!(
+            from_urn,
+            Uuid::parse_str("urn:UUID:67e55044-10b1-426f-9247-bb680e5fe0c8").unwrap()
+        );
 
         // Nil
         let nil = Uuid::nil();
@@ -337,18 +376,23 @@ mod tests {
     }
 
     #[test]
-    fn test_parse_uuid_v4_invalid() {
+    fn test_parse_invalid() {
         // Invalid
         assert_eq!(
             Uuid::parse_str(""),
-            Err(Error(ErrorKind::ParseSimpleLength { len: 0 }))
+            Err(Error(ErrorKind::ParseLength { len: 0 }))
+        );
+
+        assert_eq!(
+            Uuid::parse_str("{}"),
+            Err(Error(ErrorKind::ParseGroupCount { count: 1 }))
         );
 
         assert_eq!(
             Uuid::parse_str("!"),
             Err(Error(ErrorKind::ParseChar {
                 character: '!',
-                index: 1,
+                index: 0,
             }))
         );
 
@@ -374,7 +418,7 @@ mod tests {
             Uuid::parse_str("F9168C5E-CEB2-4faa-BGBF-329BF39FA1E4"),
             Err(Error(ErrorKind::ParseChar {
                 character: 'G',
-                index: 21,
+                index: 20,
             }))
         );
 
@@ -402,7 +446,7 @@ mod tests {
             Uuid::parse_str("F9168C5E-CEB2-4faaXB6BFF329BF39FA1E4"),
             Err(Error(ErrorKind::ParseChar {
                 character: 'X',
-                index: 19,
+                index: 18,
             }))
         );
 
@@ -410,7 +454,7 @@ mod tests {
             Uuid::parse_str("{F9168C5E-CEB2-4faa9B6BFF329BF39FA1E41"),
             Err(Error(ErrorKind::ParseChar {
                 character: '{',
-                index: 1,
+                index: 0,
             }))
         );
 
@@ -429,7 +473,6 @@ mod tests {
         );
 
         // // (group, found, expecting)
-        // //
         assert_eq!(
             Uuid::parse_str("01020304-1112-2122-3132-41424344"),
             Err(Error(ErrorKind::ParseGroupLength {
@@ -441,19 +484,19 @@ mod tests {
 
         assert_eq!(
             Uuid::parse_str("67e5504410b1426f9247bb680e5fe0c"),
-            Err(Error(ErrorKind::ParseSimpleLength { len: 31 }))
+            Err(Error(ErrorKind::ParseLength { len: 31 }))
         );
 
         assert_eq!(
             Uuid::parse_str("67e5504410b1426f9247bb680e5fe0c88"),
-            Err(Error(ErrorKind::ParseSimpleLength { len: 33 }))
+            Err(Error(ErrorKind::ParseLength { len: 33 }))
         );
 
         assert_eq!(
             Uuid::parse_str("67e5504410b1426f9247bb680e5fe0cg8"),
             Err(Error(ErrorKind::ParseChar {
                 character: 'g',
-                index: 32,
+                index: 31,
             }))
         );
 
@@ -461,13 +504,13 @@ mod tests {
             Uuid::parse_str("67e5504410b1426%9247bb680e5fe0c8"),
             Err(Error(ErrorKind::ParseChar {
                 character: '%',
-                index: 16,
+                index: 15,
             }))
         );
 
         assert_eq!(
             Uuid::parse_str("231231212212423424324323477343246663"),
-            Err(Error(ErrorKind::ParseSimpleLength { len: 36 }))
+            Err(Error(ErrorKind::ParseGroupCount { count: 1 }))
         );
 
         assert_eq!(
@@ -477,14 +520,14 @@ mod tests {
 
         assert_eq!(
             Uuid::parse_str("67e5504410b1426f9247bb680e5fe0c"),
-            Err(Error(ErrorKind::ParseSimpleLength { len: 31 }))
+            Err(Error(ErrorKind::ParseLength { len: 31 }))
         );
 
         assert_eq!(
             Uuid::parse_str("67e550X410b1426f9247bb680e5fe0cd"),
             Err(Error(ErrorKind::ParseChar {
                 character: 'X',
-                index: 7,
+                index: 6,
             }))
         );
 
@@ -506,65 +549,151 @@ mod tests {
             Uuid::parse_str("\u{bcf3c}"),
             Err(Error(ErrorKind::ParseChar {
                 character: '\u{bcf3c}',
+                index: 0,
+            }))
+        );
+
+        assert_eq!(
+            Uuid::parse_str("\u{130}"),
+            Err(Error(ErrorKind::ParseChar {
+                character: '\u{130}',
+                index: 0,
+            }))
+        );
+
+        assert_eq!(
+            Err(Error(ErrorKind::ParseLength { len: 0 })),
+            Hyphenated::from_str("")
+        );
+
+        assert_eq!(
+            Err(Error(ErrorKind::ParseGroupCount { count: 1 })),
+            Hyphenated::from_str("550e8400e29b41d4a716446655440000")
+        );
+
+        assert_eq!(
+            Err(Error(ErrorKind::ParseChar {
+                character: '-',
+                index: 8
+            })),
+            Simple::from_str("550e8400-e29b-41d4-a716-446655440000")
+        );
+
+        assert_eq!(
+            Err(Error(ErrorKind::ParseChar {
+                character: '5',
+                index: 0
+            })),
+            Urn::from_str("550e8400-e29b-41d4-a716-446655440000")
+        );
+        assert_eq!(
+            Err(Error(ErrorKind::ParseChar {
+                character: ':',
+                index: 0
+            })),
+            Urn::from_str(":550e8400-e29b-41d4-a716-446655440000")
+        );
+        assert_eq!(
+            Uuid::parse_str("urn:uuid:67e55044-10b1-426f-9247-bb680e5fe0c8").unwrap(),
+            Urn::from_str("URN:UUID:67e55044-10b1-426f-9247-bb680e5fe0c8")
+                .unwrap()
+                .into_uuid()
+        );
+
+        assert_eq!(
+            Err(Error(ErrorKind::ParseChar {
+                character: '5',
+                index: 0
+            })),
+            Braced::from_str("550e8400-e29b-41d4-a716-446655440000")
+        );
+        assert_eq!(
+            Err(Error(ErrorKind::ParseChar {
+                character: '{',
                 index: 1
+            })),
+            Braced::from_str("{{550e8400-e29b-41d4-a716-446655440000}}")
+        );
+
+        // Unicode
+        assert_eq!(
+            Uuid::from_str("{6e0----------9=4O-0e5\u{14}e0c4\u{ec2f}8}"),
+            Err(Error(ErrorKind::ParseChar {
+                character: '=',
+                index: 15,
+            }))
+        );
+
+        assert_eq!(
+            Uuid::from_str("urn:uuid:urae0c8"),
+            Err(Error(ErrorKind::ParseChar {
+                character: 'u',
+                index: 9,
             }))
         );
     }
 
     #[test]
     fn test_roundtrip_default() {
-        let uuid_orig = new();
-        let orig_str = uuid_orig.to_string();
-        let uuid_out = Uuid::parse_str(&orig_str).unwrap();
-        assert_eq!(uuid_orig, uuid_out);
+        for uuid_orig in some_uuid_iter() {
+            let orig_str = uuid_orig.to_string();
+            let uuid_out = Uuid::parse_str(&orig_str).unwrap();
+            assert_eq!(uuid_orig, uuid_out);
+        }
     }
 
     #[test]
     fn test_roundtrip_hyphenated() {
-        let uuid_orig = new();
-        let orig_str = uuid_orig.hyphenated().to_string();
-        let uuid_out = Uuid::parse_str(&orig_str).unwrap();
-        assert_eq!(uuid_orig, uuid_out);
+        for uuid_orig in some_uuid_iter() {
+            let orig_str = uuid_orig.hyphenated().to_string();
+            let uuid_out = Uuid::parse_str(&orig_str).unwrap();
+            assert_eq!(uuid_orig, uuid_out);
+        }
     }
 
     #[test]
     fn test_roundtrip_simple() {
-        let uuid_orig = new();
-        let orig_str = uuid_orig.simple().to_string();
-        let uuid_out = Uuid::parse_str(&orig_str).unwrap();
-        assert_eq!(uuid_orig, uuid_out);
+        for uuid_orig in some_uuid_iter() {
+            let orig_str = uuid_orig.simple().to_string();
+            let uuid_out = Uuid::parse_str(&orig_str).unwrap();
+            assert_eq!(uuid_orig, uuid_out);
+        }
     }
 
     #[test]
     fn test_roundtrip_urn() {
-        let uuid_orig = new();
-        let orig_str = uuid_orig.urn().to_string();
-        let uuid_out = Uuid::parse_str(&orig_str).unwrap();
-        assert_eq!(uuid_orig, uuid_out);
+        for uuid_orig in some_uuid_iter() {
+            let orig_str = uuid_orig.urn().to_string();
+            let uuid_out = Uuid::parse_str(&orig_str).unwrap();
+            assert_eq!(uuid_orig, uuid_out);
+        }
     }
 
     #[test]
     fn test_roundtrip_braced() {
-        let uuid_orig = new();
-        let orig_str = uuid_orig.braced().to_string();
-        let uuid_out = Uuid::parse_str(&orig_str).unwrap();
-        assert_eq!(uuid_orig, uuid_out);
+        for uuid_orig in some_uuid_iter() {
+            let orig_str = uuid_orig.braced().to_string();
+            let uuid_out = Uuid::parse_str(&orig_str).unwrap();
+            assert_eq!(uuid_orig, uuid_out);
+        }
     }
 
     #[test]
     fn test_roundtrip_parse_urn() {
-        let uuid_orig = new();
-        let orig_str = uuid_orig.urn().to_string();
-        let uuid_out = Uuid::from_bytes(parse_urn(orig_str.as_bytes()).unwrap());
-        assert_eq!(uuid_orig, uuid_out);
+        for uuid_orig in some_uuid_iter() {
+            let orig_str = uuid_orig.urn().to_string();
+            let uuid_out = Uuid::from_bytes(parse_urn(orig_str.as_bytes()).unwrap());
+            assert_eq!(uuid_orig, uuid_out);
+        }
     }
 
     #[test]
     fn test_roundtrip_parse_braced() {
-        let uuid_orig = new();
-        let orig_str = uuid_orig.braced().to_string();
-        let uuid_out = Uuid::from_bytes(parse_braced(orig_str.as_bytes()).unwrap());
-        assert_eq!(uuid_orig, uuid_out);
+        for uuid_orig in some_uuid_iter() {
+            let orig_str = uuid_orig.braced().to_string();
+            let uuid_out = Uuid::from_bytes(parse_braced(orig_str.as_bytes()).unwrap());
+            assert_eq!(uuid_orig, uuid_out);
+        }
     }
 
     #[test]

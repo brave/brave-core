@@ -31,6 +31,8 @@
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/notreached.h"
+#include "base/numerics/clamped_math.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/numerics/safe_math.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
@@ -496,6 +498,30 @@ bool ConversationHandler::IsToolUseInProgress() const {
   return is_tool_use_in_progress_;
 }
 
+bool ConversationHandler::IsAwaitingUserInput() const {
+  // A stopped task won't run its tools even if the challenge is answered.
+  if (tool_use_task_state_ == mojom::TaskState::kStopped) {
+    return false;
+  }
+  const auto& history = GetConversationHistory();
+  if (history.empty()) {
+    return false;
+  }
+  const auto& last_entry = history.back();
+  if (last_entry->character_type != mojom::CharacterType::ASSISTANT ||
+      !last_entry->events) {
+    return false;
+  }
+  // Only a live permission challenge counts; challenges aren't persisted.
+  return std::ranges::any_of(*last_entry->events, [](const auto& event) {
+    if (!event->is_tool_use_event()) {
+      return false;
+    }
+    const auto& tool_use = event->get_tool_use_event();
+    return !tool_use->output.has_value() && tool_use->permission_challenge;
+  });
+}
+
 void ConversationHandler::OnConversationDeleted() {
   for (auto& client : conversation_ui_handlers_) {
     client->OnConversationDeleted();
@@ -567,17 +593,14 @@ void ConversationHandler::GetConversationHistory(
     const std::optional<std::string>& thread_uuid,
     mojom::UntrustedConversationHandler::GetConversationHistoryCallback
         callback) {
-  if (thread_uuid) {
-    if (!base::FeatureList::IsEnabled(features::kAIChatThreads)) {
-      std::move(callback).Run({});
-      return;
-    }
+  if (!MaybeCheckValidThread(thread_uuid)) {
+    std::move(callback).Run({});
+    return;
+  }
 
+  if (thread_uuid) {
     auto* container = base::FindOrNull(threads_, *thread_uuid);
-    if (!container) {
-      std::move(callback).Run({});
-      return;
-    }
+    CHECK(container);
     if (container->entries.empty()) {
       ai_chat_service_->GetConversationThreadEntries(
           *thread_uuid,
@@ -656,12 +679,20 @@ void ConversationHandler::GetState(GetStateCallback callback) {
   std::move(callback).Run(std::move(state));
 }
 
-void ConversationHandler::RateMessage(bool is_liked,
-                                      const std::string& turn_uuid,
-                                      RateMessageCallback callback) {
+void ConversationHandler::RateMessage(
+    bool is_liked,
+    const std::string& turn_uuid,
+    const std::optional<std::string>& thread_uuid,
+    RateMessageCallback callback) {
   DVLOG(2) << __func__ << ": " << is_liked << ", " << turn_uuid;
 
-  const std::vector<mojom::ConversationTurnPtr>& history = chat_history_;
+  if (!MaybeCheckValidThread(thread_uuid)) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  EngineConsumer::ConversationHistoryView history =
+      BuildConversationHistoryViewForRequest(thread_uuid);
 
   auto entry_it =
       std::ranges::find(history, turn_uuid, &mojom::ConversationTurn::uuid);
@@ -680,13 +711,11 @@ void ConversationHandler::RateMessage(bool is_liked,
     return;
   }
 
-  const size_t count = std::distance(history.begin(), entry_it) + 1;
-
-  base::span<const mojom::ConversationTurnPtr> history_slice =
-      base::span(history).first(count);
+  // The feedback API is given the history up to and including the rated turn.
+  history.erase(entry_it + 1, history.end());
 
   feedback_api_->SendRating(
-      is_liked, ai_chat_service_->IsPremiumStatus(), history_slice,
+      is_liked, ai_chat_service_->IsPremiumStatus(), history,
       model->options->get_leo_model_options()->name,
       base::BindOnce(
           [](RateMessageCallback callback, APIRequestResult result) {
@@ -810,9 +839,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
   VLOG(1) << __func__;
   DVLOG(4) << __func__ << ": " << turn->text;
 
-  if (turn->thread_uuid &&
-      (!base::FeatureList::IsEnabled(features::kAIChatThreads) ||
-       !threads_.contains(*turn->thread_uuid))) {
+  if (!MaybeCheckValidThread(turn->thread_uuid)) {
     return;
   }
 
@@ -952,12 +979,18 @@ void ConversationHandler::SubmitHumanConversationEntryWithSkill(
 void ConversationHandler::ModifyConversation(
     const std::string& entry_uuid,
     const std::string& new_text,
-    const std::optional<std::string>& skill_shortcut) {
+    const std::optional<std::string>& skill_shortcut,
+    const std::optional<std::string>& thread_uuid) {
+  if (!MaybeCheckValidThread(thread_uuid)) {
+    return;
+  }
+
   CHECK(!entry_uuid.empty()) << "Entry UUID is empty";
-  auto turn_it = std::ranges::find_if(
-      chat_history_,
-      [&entry_uuid](const auto& turn) { return turn->uuid == entry_uuid; });
-  if (turn_it == chat_history_.end()) {
+  auto& history = GetMutableConversationHistory(thread_uuid);
+  auto turn_it = std::ranges::find_if(history, [&entry_uuid](const auto& turn) {
+    return turn->uuid == entry_uuid;
+  });
+  if (turn_it == history.end()) {
     return;
   }
 
@@ -1049,17 +1082,18 @@ void ConversationHandler::ModifyConversation(
     turn->edits.emplace();
   }
   // Erase all turns after the edited turn (turn_it) and notify observers
-  auto turn_index = std::distance(chat_history_.begin(), turn_it);
+  auto turn_index = std::distance(history.begin(), turn_it);
   std::vector<std::optional<std::string>> erased_turn_ids;
   std::ranges::transform(
-      chat_history_.begin() + turn_index, chat_history_.end(),
+      history.begin() + turn_index, history.end(),
       std::back_inserter(erased_turn_ids),
       [](mojom::ConversationTurnPtr& turn) { return turn->uuid; });
   turn->edits->emplace_back(std::move(edited_turn));
   RemoveContentAssociatedWithAssistantEntries(
-      base::span(chat_history_).subspan(static_cast<size_t>(turn_index)));
-  auto new_turn = std::move(chat_history_.at(turn_index));
-  chat_history_.erase(chat_history_.begin() + turn_index, chat_history_.end());
+      base::span(history).subspan(static_cast<size_t>(turn_index)));
+  auto new_turn = std::move(history.at(turn_index));
+  history.erase(history.begin() + turn_index, history.end());
+  MaybeHandleRemovedThreadEntries(thread_uuid, erased_turn_ids.size());
 
   for (auto& uuid : erased_turn_ids) {
     OnConversationEntryRemoved(uuid);
@@ -1068,17 +1102,25 @@ void ConversationHandler::ModifyConversation(
   SubmitHumanConversationEntry(std::move(new_turn));
 }
 
-void ConversationHandler::RegenerateAnswer(const std::string& turn_uuid,
-                                           const std::string& model_key) {
+void ConversationHandler::RegenerateAnswer(
+    const std::string& turn_uuid,
+    const std::string& model_key,
+    const std::optional<std::string>& thread_uuid) {
+  if (!MaybeCheckValidThread(thread_uuid)) {
+    return;
+  }
+
+  auto& history = GetMutableConversationHistory(thread_uuid);
+
   // Find the turn with the given UUID.
-  auto turn_it = std::ranges::find_if(
-      chat_history_,
-      [&turn_uuid](const auto& turn) { return turn->uuid == turn_uuid; });
-  auto turn_pos = std::distance(chat_history_.begin(), turn_it);
+  auto turn_it = std::ranges::find_if(history, [&turn_uuid](const auto& turn) {
+    return turn->uuid == turn_uuid;
+  });
+  auto turn_pos = std::distance(history.begin(), turn_it);
 
   // Validate that we found a valid position, it's not the first turn, and it's
   // an assistant turn.
-  if (turn_it == chat_history_.end() || turn_pos == 0 ||
+  if (turn_it == history.end() || turn_pos == 0 ||
       (*turn_it)->character_type != CharacterType::ASSISTANT) {
     return;
   }
@@ -1087,7 +1129,7 @@ void ConversationHandler::RegenerateAnswer(const std::string& turn_uuid,
   size_t question_pos = turn_pos - 1;
 
   // Create a span from the question turn to the end.
-  auto turns_to_erase = base::span(chat_history_).subspan(question_pos);
+  auto turns_to_erase = base::span(history).subspan(question_pos);
 
   // Collect the UUIDs of turns that will be erased.
   std::vector<std::optional<std::string>> erased_turn_ids;
@@ -1102,8 +1144,8 @@ void ConversationHandler::RegenerateAnswer(const std::string& turn_uuid,
   question_turn->model_key = model_key;
 
   // Erase the question turn in history and everything after it.
-  chat_history_.erase(chat_history_.begin() + question_pos,
-                      chat_history_.end());
+  history.erase(history.begin() + question_pos, history.end());
+  MaybeHandleRemovedThreadEntries(thread_uuid, erased_turn_ids.size());
   for (const auto& uuid : erased_turn_ids) {
     OnConversationEntryRemoved(uuid);
   }
@@ -1242,8 +1284,7 @@ void ConversationHandler::GetAssociatedContentInfo(
 
 void ConversationHandler::RetryAPIRequest(
     const std::optional<std::string>& thread_uuid) {
-  if (thread_uuid && (!base::FeatureList::IsEnabled(features::kAIChatThreads) ||
-                      !threads_.contains(*thread_uuid))) {
+  if (!MaybeCheckValidThread(thread_uuid)) {
     return;
   }
 
@@ -1257,7 +1298,10 @@ void ConversationHandler::RetryAPIRequest(
     if (rit->get()->character_type == CharacterType::HUMAN) {
       auto turn = *std::make_move_iterator(rit);
       auto human_turn_iter = rit.base() - 1;
+      const size_t removed_entry_count =
+          std::distance(human_turn_iter, history.end());
       history.erase(human_turn_iter, history.end());
+      MaybeHandleRemovedThreadEntries(thread_uuid, removed_entry_count);
       SubmitHumanConversationEntry(std::move(turn));
       return;
     }
@@ -1268,7 +1312,10 @@ void ConversationHandler::RetryAPIRequest(
           return event->is_tool_use_event() &&
                  event->get_tool_use_event()->output.has_value();
         })) {
+      const size_t removed_entry_count =
+          std::distance(rit.base(), history.end());
       history.erase(rit.base(), history.end());
+      MaybeHandleRemovedThreadEntries(thread_uuid, removed_entry_count);
       OnHistoryUpdate(nullptr);
       // The failed generation stopped the task, which would otherwise prevent
       // the post-tool generation from running.
@@ -1695,6 +1742,16 @@ ConversationHandler::GetMutableConversationHistory(
     return container->entries;
   }
   return chat_history_;
+}
+
+bool ConversationHandler::MaybeCheckValidThread(
+    const std::optional<std::string>& thread_uuid) const {
+  if (!thread_uuid.has_value()) {
+    // Nothing to check since there is no thread.
+    return true;
+  }
+  return base::FeatureList::IsEnabled(features::kAIChatThreads) &&
+         threads_.contains(*thread_uuid);
 }
 
 void ConversationHandler::InitToolsForNewGenerationLoop(
@@ -2552,10 +2609,9 @@ void ConversationHandler::GetContentTools(const std::string& content_uuid,
 
 void ConversationHandler::SetContentToolPermission(
     const std::string& content_uuid,
-    const std::string& tool_name,
-    mojom::ToolPermission permission) {
-  associated_content_manager_->SetToolPermission(content_uuid, tool_name,
-                                                 permission);
+    mojom::ToolInfoPtr tool) {
+  associated_content_manager_->SetToolPermission(
+      content_uuid, tool->name, tool->description, tool->permission);
 }
 
 void ConversationHandler::OnTaskStateChanged(ToolProvider* tool_provider) {
@@ -2628,6 +2684,23 @@ void ConversationHandler::MaybeHandleNewThreadEntry(
     // (and can be persisted) before any of its entries do.
     observers_.Notify(&Observer::OnNewConversationThread, this, *thread);
   }
+  OnConversationThreadUpdate(*thread);
+}
+
+void ConversationHandler::MaybeHandleRemovedThreadEntries(
+    const std::optional<std::string>& thread_uuid,
+    size_t removed_entry_count) {
+  if (!thread_uuid.has_value() || removed_entry_count == 0) {
+    return;
+  }
+  CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
+  auto* container = base::FindOrNull(threads_, thread_uuid.value());
+  if (!container) {
+    return;
+  }
+  mojom::Thread* thread = container->thread.get();
+  thread->entry_count = base::ClampSub(
+      thread->entry_count, base::saturated_cast<uint32_t>(removed_entry_count));
   OnConversationThreadUpdate(*thread);
 }
 

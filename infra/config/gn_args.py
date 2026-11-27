@@ -47,7 +47,6 @@ gn_args.config(
     args={
         'use_remoteexec': True,
         'use_siso': True,
-        'use_reclient': False,
     },
 )
 
@@ -136,20 +135,53 @@ gn_args.config(
     },
 )
 
+# What buildArgs.ts derives for any sanitiser build.
 gn_args.config(
-    name='asan',
+    name='sanitiser_defaults',
     configs=[
         'brave_desktop_defaults',
         'ci_desktop_defaults',
         'brave_service_keys',
     ],
     args={
+        'is_official_build': False,
+        'enable_update_notifications': False,
+        'dcheck_always_on': False,
+    },
+)
+
+gn_args.config(
+    name='asan',
+    configs=[
+        'sanitiser_defaults',
+    ],
+    args={
         'is_asan': True,
         'is_lsan': True,
         'enable_full_stack_frames_for_profiling': True,
         'v8_enable_verify_heap': True,
-        'is_official_build': False,
-        'enable_update_notifications': False,
-        'dcheck_always_on': False,
+    },
+)
+
+gn_args.config(
+    name='msan',
+    configs=[
+        'sanitiser_defaults',
+    ],
+    args={
+        'is_msan': True,
+        'msan_track_origins': 0,
+    },
+)
+
+gn_args.config(
+    name='ubsan',
+    configs=[
+        'sanitiser_defaults',
+    ],
+    args={
+        'is_ubsan': True,
+        'is_ubsan_vptr': True,
+        'is_ubsan_no_recover': True,
     },
 )

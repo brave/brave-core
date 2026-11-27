@@ -71,6 +71,8 @@ const uint32 MAX_DOCUMENT_SIZE_BYTES = 4718592; // 4.5MB
 enum ConversationGenerationState {
   kGenerating,
   kCompletedNotViewed,
+  // Stopped on a permission challenge.
+  kAwaitingUserInput,
 };
 
 
@@ -469,8 +471,9 @@ interface ConversationHandler {
 
   // Send a user-rating for a chat
   // message. |turn_id| is the index of the message in the
-  // specified conversation.
-  RateMessage(bool is_liked, string turn_uuid)
+  // specified conversation. |thread_uuid| is the thread the turn belongs to,
+  // or null for the root conversation.
+  RateMessage(bool is_liked, string turn_uuid, string? thread_uuid)
       => (string? rating_id);
   SendFeedback(
       string category,
@@ -507,10 +510,11 @@ interface ConversationHandler {
   // exposes, for the tools pill's dialog. Empty if it's no longer associated.
   GetContentTools(string content_uuid) => (array<ToolInfo> tools);
 
-  // Applies to every tool of that name from the content's origin, for the
-  // lifetime of this conversation.
-  SetContentToolPermission(string content_uuid, string tool_name,
-                           ToolPermission permission);
+  // Records |tool.permission| for every tool named |tool.name| from the
+  // content's origin, for the lifetime of this conversation. |tool| is the
+  // tool as the user was shown it: an allow choice stops applying if the site
+  // changes the tool's description.
+  SetContentToolPermission(string content_uuid, ToolInfo tool);
 
   // Records whether the user wants the content agent for this conversation.
   // A no-op unless |ServiceState.is_content_agent_user_selectable|. The

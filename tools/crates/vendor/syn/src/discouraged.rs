@@ -3,14 +3,14 @@
 use crate::buffer::Cursor;
 use crate::error::Result;
 use crate::parse::{inner_unexpected, ParseBuffer, Unexpected};
+use alloc::rc::Rc;
+use core::cell::Cell;
+use core::mem;
 use proc_macro2::extra::DelimSpan;
 use proc_macro2::Delimiter;
-use std::cell::Cell;
-use std::mem;
-use std::rc::Rc;
 
 /// Extensions to the `ParseStream` API to support speculative parsing.
-pub trait Speculative {
+pub trait Speculative: private::Sealed {
     /// Advance this parse stream to the position of a forked parse stream.
     ///
     /// This is the opposite operation to [`ParseStream::fork`]. You can fork a
@@ -202,7 +202,7 @@ impl<'a> Speculative for ParseBuffer<'a> {
 
 /// Extensions to the `ParseStream` API to support manipulating invisible
 /// delimiters the same as if they were visible.
-pub trait AnyDelimiter {
+pub trait AnyDelimiter: private::Sealed {
     /// Returns the delimiter, the span of the delimiter token, and the nested
     /// contents for further parsing.
     fn parse_any_delimiter(&self) -> Result<(Delimiter, DelimSpan, ParseBuffer)>;
@@ -222,4 +222,12 @@ impl<'a> AnyDelimiter for ParseBuffer<'a> {
             }
         })
     }
+}
+
+mod private {
+    use crate::parse::ParseBuffer;
+
+    pub trait Sealed {}
+
+    impl<'a> Sealed for ParseBuffer<'a> {}
 }

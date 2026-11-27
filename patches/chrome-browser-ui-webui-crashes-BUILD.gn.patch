@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/crashes/BUILD.gn b/chrome/browser/ui/webui/crashes/BUILD.gn
+index a53c50b5adfa821186bdb0f6c40182eedff34265..e6a0a45fd947e9521924d9110cf78e9feb8ec175 100644
+--- a/chrome/browser/ui/webui/crashes/BUILD.gn
++++ b/chrome/browser/ui/webui/crashes/BUILD.gn
+@@ -11,6 +11,7 @@ source_set("crashes") {
+   ]
+   deps = [
+     "//base",
++    "//brave/components/version_info",
+     "//chrome/browser/crash_upload_list",
+     "//chrome/browser/metrics",
+     "//chrome/browser/profiles:profile",

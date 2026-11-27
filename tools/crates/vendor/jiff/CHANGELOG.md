@@ -1,8 +1,600 @@
 # CHANGELOG
 
-0.2.16 (TBD)
-============
-TODO
+1.0.2 (2026-11-21)
+==================
+Bug fixes:
+
+* [#718](https://github.com/BurntSushi/jiff/issues/718):
+`ZonedDateTime::strptime` could panic on inputs near boundaries.
+* [#720](https://github.com/BurntSushi/jiff/issues/720):
+Tweak how we handle folds in offset conflict resolution.
+
+
+1.0.1 (2026-11-17)
+==================
+Bug fixes:
+
+* [#713](https://github.com/BurntSushi/jiff/issues/713):
+`%Z` in `Timestamp::strftime` should format as `UTC`.
+* [#714](https://github.com/BurntSushi/jiff/issues/714):
+Parsing a timestamp could produce an out of bounds value.
+
+
+1.0.0 (2026-11-15)
+==================
+This marks the Jiff 1.0 release. Barring some unforeseen major problem with the
+API, this release marks an indefinite commitment to 1.x.y. Consumers of this
+library should feel confident about putting Jiff types into their public API.
+New major versions of Jiff will not be made lightly.
+
+The most significant breaking change in this release large but simple: the
+`Zoned` type has been renamed to `ZonedDateTime`. This also impacts APIs like
+`Timestamp::to_zoned`, which are now called `Timestamp::to_zoned_datetime`. The
+remaining breaking changes are pretty minor and shouldn't impact most users.
+
+Enhancements:
+
+* [3211f23](https://github.com/BurntSushi/jiff/commit/3211f23a7f87eceffda70031c2954a2359cb370c):
+Bump MSRV to Rust 1.85.
+* [#262](https://github.com/BurntSushi/jiff/issues/262):
+Use `core::error::Error` in lieu of `std::error::Error`.
+* [#314](https://github.com/BurntSushi/jiff/issues/314):
+**BREAKING**: Make `Zoned::iso_week_date` take `&self` instead of `self`.
+* [#624](https://github.com/BurntSushi/jiff/issues/624):
+Make more methods take `&self`.
+* [#471](https://github.com/BurntSushi/jiff/issues/471):
+Turn `Custom` into a trait object.
+* [#499](https://github.com/BurntSushi/jiff/issues/499):
+**BREAKING**: Make `Offset::saturating_add` fallible.
+* [#629](https://github.com/BurntSushi/jiff/issues/629), [#626](https://github.com/BurntSushi/jiff/issues/626):
+**BREAKING**: Make `impl Sub for Timestamp` return a `SignedDuration`.
+* [#436](https://github.com/BurntSushi/jiff/issues/436):
+**BREAKING**: Seal the `ToSpan` trait.
+* [#463](https://github.com/BurntSushi/jiff/issues/463):
+Provide an accessor for an underlying `std::io::Error`.
+* [#467](https://github.com/BurntSushi/jiff/issues/467):
+**BREAKING**: Make conversions from `Timestamp` to `SystemTime` fallible.
+* [#374](https://github.com/BurntSushi/jiff/issues/374):
+**BREAKING**: Rename `Zoned` to `ZonedDateTime`.
+* [#618](https://github.com/BurntSushi/jiff/issues/618):
+**BREAKING**: Make `jiff_tzdb::VERSION` required.
+* [c03581f](https://github.com/BurntSushi/jiff/commit/c03581f405955ed4bbebfda0ae28e03120c289fa):
+Add `Span::to_friendly` routine as a convenience for `format("{:#}", span)`.
+
+Documentation:
+
+* [#545](https://github.com/BurntSushi/jiff/issues/545):
+Clarify specification labeling in formatting table.
+* [#630](https://github.com/BurntSushi/jiff/issues/630):
+Clarify the use of the propleptic Gregorian calendar.
+
+Performance:
+
+* [4d66e92](https://github.com/BurntSushi/jiff/commit/4d66e92ecdd6a012c952f7a5c0f628d0ecde662d):
+Add `inline(never)` to `strtime` routine.
+
+0.2.46 (2026-11-15)
+===================
+Bug fixes:
+
+* [#707](https://github.com/BurntSushi/jiff/issues/707):
+`jiff_core::util::ArrayStr` has an unsound API.
+
+Documentation:
+
+* [#709](https://github.com/BurntSushi/jiff/issues/709):
+Fix documentation inconsistencies.
+
+Performance:
+
+* [#708](https://github.com/BurntSushi/jiff/issues/708):
+Skip extension parsing for plain directives in strptime.
+
+
+0.2.45 (2026-11-14)
+===================
+Enhancements:
+
+* [#483](https://github.com/BurntSushi/jiff/issues/483):
+Support ECMAScript's "primary" time zone identifiers.
+
+Bug fixes:
+
+* [#701](https://github.com/BurntSushi/jiff/issues/701):
+Handle zero span multiplication.
+* [#702](https://github.com/BurntSushi/jiff/issues/702):
+Constrain ISO week numbers to the year's last week.
+* [#703](https://github.com/BurntSushi/jiff/issues/703):
+`Timestamp::checked_add_seconds` produces incorrect results across the Unix epoch.
+
+
+0.2.44 (2026-11-14)
+===================
+Enhancements:
+
+* [#697](https://github.com/BurntSushi/jiff/issues/697):
+Upgrade Jiff's bundled IANA Time Zone Database to tzdb `2026f`.
+* [#694](https://github.com/BurntSushi/jiff/issues/694):
+Make `jiff::civil::Weekday` methods `const` where possible.
+
+Bug fixes:
+
+* [#695](https://github.com/BurntSushi/jiff/issues/695):
+Timestamp subtraction assignment.
+* [#696](https://github.com/BurntSushi/jiff/issues/696):
+Correct some boundary conditions on `Timestamp`.
+
+
+0.2.43 (2026-11-11)
+===================
+This release includes a few new minor API additions.
+
+Enhancements:
+
+* [#651](https://github.com/BurntSushi/jiff/issues/651):
+Add `jiff::tz::reset_system_time_zone_cache`.
+* [#653](https://github.com/BurntSushi/jiff/issues/653):
+Expose `relative` builder option on `Span*` types.
+* [#689](https://github.com/BurntSushi/jiff/issues/689):
+Add `jiff_core::tz::posix::ParseError::is_missing_dst_transition_rule`
+predicate.
+
+
+0.2.42 (2026-11-09)
+===================
+This release includes a couple of bug fixes where panics could occur when they
+should not have been. Specifically in `Span::total` and `Span::checked_add`.
+
+Bug fixes:
+
+* [#683](https://github.com/BurntSushi/jiff/issues/683):
+Fix a panic in `Span::checked_add` when an internal addition would overflow
+a `SignedDuration`'s minimum/maximum values.
+* [#685](https://github.com/BurntSushi/jiff/issues/685):
+Fix a panic in `Span::total` when a time zone transition boundary was crossed.
+
+
+0.2.41 (2026-11-08)
+===================
+This release includes a bug fix for time zone transition lookups for timestamps
+before the Unix epoch with a non-zero nanosecond component.
+
+Bug fixes:
+
+* [#678](https://github.com/BurntSushi/jiff/issues/678):
+Fix timezone transition lookup in TZif data for negative timestamps with a
+non-zero nanosecond component.
+
+
+0.2.40 (2026-11-07)
+===================
+This release should help reduce the number of entries Jiff adds to `Cargo.lock`
+by default. This also improves performance for datetime<->timestamp
+conversions.
+
+Enhancements:
+
+* [#643](https://github.com/BurntSushi/jiff/issues/643):
+Don't add `defmt` and its dependencies to `Cargo.lock` when the `defmt`
+feature isn't enabled.
+
+Performance:
+
+* [#640](https://github.com/BurntSushi/jiff/pull/640):
+Add branch-free implementation for part of datetime <-> timestamp conversions.
+
+
+0.2.39 (2026-11-02)
+===================
+This release gathers a smattering of performance improvements and bug fixes.
+
+Enhancements:
+
+* [#646](https://github.com/BurntSushi/jiff/pull/646):
+Added optional `serde` support to `jiff-sqlx`.
+* [#659](https://github.com/BurntSushi/jiff/pull/659):
+Update the Windows time zone names.
+* [#665](https://github.com/BurntSushi/jiff/pull/665):
+Avoid allocating IANA name during a `Zoned::strftime` call.
+* [#666](https://github.com/BurntSushi/jiff/pull/666):
+Avoid a second offset lookup when adding calendar units.
+
+Bug fixes:
+
+* [#645](https://github.com/BurntSushi/jiff/issues/645):
+Fix `Timestamp::from_nanosecond` panic on out-of-range input.
+* [#649](https://github.com/BurntSushi/jiff/issues/649):
+Fix optional deserializers dropping null under `#[serde(flatten)]`.
+* [#652](https://github.com/BurntSushi/jiff/issues/652):
+Tweak "lossless" wording for round-tripping `Zoned` values.
+* [#654](https://github.com/BurntSushi/jiff/issues/654):
+Fixes a panic when printing some very large durations.
+* [#660](https://github.com/BurntSushi/jiff/issues/660):
+Fixes a bug where parsing some very large spans gave an incorrect result.
+* [#668](https://github.com/BurntSushi/jiff/issues/668):
+Fixes a panic in `Span::total` for a zero span with a calendar unit.
+
+
+0.2.38 (2026-10-06)
+===================
+This release updates Jiff's bundled copy of the [IANA Time Zone Database]
+to `2026e`. See the [`2026e` release announcement] for more details.
+
+[`2026e` release announcement]: https://lists.iana.org/hyperkitty/list/tz-announce@iana.org/thread/VXIA4AU73OQL3OZ3ZBZHWIASIIVBGUJV/
+
+
+0.2.37 (2026-09-12)
+===================
+This is a redux release of `0.2.36` that fixes a compilation bug.
+
+Bug fixes:
+
+* [#647](https://github.com/BurntSushi/jiff/issues/647):
+Fixes a compilation bug due to incorrect include paths.
+
+
+0.2.36 (2026-09-12)
+===================
+This release has a couple bug fixes and adds opt-in integration with the
+`arbitrary` crate.
+
+Enhancements:
+
+* [#631](https://github.com/BurntSushi/jiff/issues/631):
+Add optional `Arbitrary` trait implementations from the `arbitrary` crate.
+
+Bug fixes:
+
+* [#617](https://github.com/BurntSushi/jiff/pull/617):
+Fixes a bug in `jiff_core::tz::Offset` checked subtraction routine.
+* [#627](https://github.com/BurntSushi/jiff/issues/627):
+Use `serialize_some` for optional Serde helpers in `jiff::fmt::serde`.
+
+
+0.2.35 (2026-07-25)
+===================
+This release fixes a bug in duration parsing where, e.g., `-PT0.5S` would be
+parsed as if the `-` sign didn't exist. This bug also affects friendly
+durations such as `-0.5s`.
+
+Bug fixes:
+
+* [#613](https://github.com/BurntSushi/jiff/issues/613):
+Fixes a bug where the sign in a duration could be ignored while parsing.
+
+
+0.2.34 (2026-07-19)
+===================
+This release contains a few small enhancements. Namely, some error messages
+for parsing datetime values have been improved by removing some redundant
+messaging. Additionally, the `strftime` APIs on datetime values can no longer
+panic. Instead, they'll silently pass through invalid formatting directives.
+
+Enhancements:
+
+* [#519](https://github.com/BurntSushi/jiff/issues/519):
+Improve some parsing error messages by removing redundancy.
+* [#585](https://github.com/BurntSushi/jiff/issues/585):
+Change `Timestamp::strftime` (and similar methods) so that they will never
+panic.
+
+
+0.2.33 (2026-07-18)
+===================
+This release permits the use of a global time zone database in `alloc`-only
+environments. It also contains a massive internal refactor that introduces a
+new `jiff-core` crate for better code sharing.
+
+Enhancements:
+
+* [#285](https://github.com/BurntSushi/jiff/issues/285):
+Decouple naming of time zones from their TZif data.
+* [#373](https://github.com/BurntSushi/jiff/issues/373):
+Add a new `jiff-core` crate for better code sharing.
+* [#533](https://github.com/BurntSushi/jiff/issues/533):
+A bundled `TimeZoneDatabase` is now available when only `alloc` is enabled.
+
+
+0.2.32 (2026-07-08)
+===================
+This release updates Jiff's bundled copy of the [IANA Time Zone Database]
+to `2026c`. See the [`2026c` release announcement] for more details.
+
+[`2026c` release announcement]: https://lists.iana.org//hyperkitty/list/tz-announce@iana.org/thread/NVHSX2PAQIT44U5FCCEVNJJYXQMMTJSA/
+
+
+0.2.31 (2026-06-29)
+===================
+This release fixes a minor bug in tests that prevents the crate from running
+through standard build processes in Linux distributions downstream.
+
+* [#594](https://github.com/BurntSushi/jiff/pull/591):
+Fix imports in recently added tests.
+
+
+0.2.30 (2026-06-29)
+===================
+This release fixes a safety soundness bug in Jiff's lower level printing
+APIs. There is also a nice performance improvement to `civil::Date::weekday`,
+which also improves downstread routines like `civil::Date::nth_weekday` and
+datetime<-->timestamp conversions in some cases.
+
+Enhancements:
+
+* [#591](https://github.com/BurntSushi/jiff/pull/591):
+Improve the performance of weekday calculations from Gregorian dates by 30-50%.
+
+Bug fixes:
+
+* [#592](https://github.com/BurntSushi/jiff/issues/592):
+Fix safety soundness bug when using a non-empty `String` destination buffer
+with lower level printing APIs inside of `jiff::fmt`.
+
+
+0.2.29 (2026-06-20)
+===================
+This release adds support for [`defmt`], which is a highly efficient logging
+framework that targets resource-constrained devices, like microcontrollers.
+
+Enhancements:
+
+* [#505](https://github.com/BurntSushi/jiff/issues/505):
+Add support for the `defmt` crate by implementing `defmt::Format` on the
+principle public types in Jiff.
+* [#584](https://github.com/BurntSushi/jiff/pull/584):
+Add `Zoned::UNIX_EPOCH` as a constant.
+* [#587](https://github.com/BurntSushi/jiff/pull/587):
+Change the `Debug` output for `civil::ISOWeekDate` to match the `Debug` output
+style of other primitive datetime types.
+
+Bug fixes:
+
+* [#525](https://github.com/BurntSushi/jiff/issues/525):
+Fix a bug that prevented time zone lookups when using an on-disk time zone
+database on Windows.
+* [#539](https://github.com/BurntSushi/jiff/issues/539):
+Fix a bug where rendering a datetime in an error message would omit a `T`
+separator.
+
+
+0.2.28 (2026-05-28)
+===================
+This is a small release with a fix for test failures on 32-bit targets in
+`no-alloc` environments.
+
+Bug fixes:
+
+* [#573](https://github.com/BurntSushi/jiff/issues/573):
+Fix test failure on 32-bit targets in `no-alloc` environments.
+
+
+0.2.27 (2026-05-26)
+===================
+This is a small release with a bug fix for build errors on Windows for very old
+versions of Rust.
+
+Bug fixes:
+
+* [#566](https://github.com/BurntSushi/jiff/issues/566):
+Fix build error on Windows for very old versions of Rust (e.g., 1.71).
+
+
+0.2.26 (2026-05-25)
+===================
+This release has a couple enhancements.
+
+Firstly, Jiff now uses `windows-link` for calling FFI routines on Windows
+instead of `windows-sys`. Using `windows-link` means less churn and fewer
+duplicates in the dependency graph.
+
+Secondly, a new `jiff-sqlx 0.2.0` release has been put out to support
+`sqlx 0.9.0`.
+
+Enhancements:
+
+* [#538](https://github.com/BurntSushi/jiff/pull/538):
+Replace use of `windows-sys` with `windows-link` and inline bindings.
+* [#561](https://github.com/BurntSushi/jiff/pull/561):
+Update `jiff-sqlx` to use `sqlx 0.9.0` and release `jiff-sqlx 0.2.0`.
+
+Bug fixes:
+
+* [#548](https://github.com/BurntSushi/jiff/pull/548):
+Absolutetize incorrect relative size terms in the documentation of `RoundMode`.
+
+
+0.2.25 (2026-05-24)
+===================
+This release updates Jiff's bundled copy of the [IANA Time Zone Database]
+to `2026b`. See the [`2026b` release announcement] for more details.
+
+[`2026b` release announcement]: https://lists.iana.org//hyperkitty/list/tz-announce@iana.org/thread/VX2Z3CBO6KHTYZNBBKFFWM7ZCI6TVCXP/
+
+
+0.2.24 (2026-04-23)
+===================
+This release primarily adds a new `memory_usage` routine for reporting
+heap allocation sizes for the `TimeZone` and `Zoned` types. This
+release also acknowledges and updates the timeline expectations for a
+Jiff 1.0 release in `README.md`.
+
+Enhancements:
+
+* [#520](https://github.com/BurntSushi/jiff/issues/520):
+Add `memory_usage` to the `TimeZone` and `Zoned` types.
+* [#535](https://github.com/BurntSushi/jiff/pull/535):
+Improve comment in `Span::checked_add` example.
+
+Bug fixes:
+
+* [#541](https://github.com/BurntSushi/jiff/pull/541):
+Update Jiff 1.0 timeline.
+
+
+0.2.23 (2026-03-03)
+===================
+This release updates Jiff's bundled copy of the [IANA Time Zone Database]
+to `2026a`. See the [`2026a` release announcement] for more details.
+
+[`2026a` release announcement]: https://lists.iana.org/hyperkitty/list/tz-announce@iana.org/thread/ASPLBE3A4BAEXIOQ3KZ6EJSJWBU6L53G/
+
+0.2.22 (2026-02-28)
+===================
+This release includes a bug fix where fallible conversions from signed
+durations to unsigned durations could panic in some cases.
+
+Bug fixes:
+
+* [#526](https://github.com/BurntSushi/jiff/issues/526):
+Fix a panicking bug that occurs for
+`std::time::Duration::try_from(SignedDuration::new(0, -1))`.
+
+
+0.2.21 (2026-02-22)
+===================
+This release contains a performance improvement and a bug fix for
+`civil::Date::new` where it could panic on some inputs.
+
+Bug fixes:
+
+* [#523](https://github.com/BurntSushi/jiff/issues/523):
+Fix a bug where `Date::new` could panic. This was a regression introduced in
+`jiff 0.2.20`.
+
+Performance:
+
+* [#518](https://github.com/BurntSushi/jiff/pull/518):
+Improve `Timestamp` to `civil::DateTime` conversion performance by ~15%.
+
+
+0.2.20 (2026-02-11)
+===================
+This release contains a major internal refactor that moves off of using ranged
+integers internally. There are also some small bug fixes and added support for
+finding the system time zone on emscripten targets.
+
+Enhancements:
+
+* [#11](https://github.com/BurntSushi/jiff/issues/11):
+Stop using ranged integers internally.
+* [#490](https://github.com/BurntSushi/jiff/issues/490):
+Add support for retrieving the system time zone on emscripten targets.
+* [#500](https://github.com/BurntSushi/jiff/issues/500):
+Update comparison with the `time` crate in the Jiff documentation.
+* [#502](https://github.com/BurntSushi/jiff/issues/502):
+Enable some non-default features for the Rust Playground deployment.
+
+Bug fixes:
+
+* [#485](https://github.com/BurntSushi/jiff/issues/485):
+Fix bug with padding for negative integers in `strftime`.
+* [#486](https://github.com/BurntSushi/jiff/issues/486):
+Make `%^c` result in uppercase strings where appropriate.
+
+
+0.2.19 (2026-02-05)
+===================
+This is a small release with a performance optimization (with respect to doing
+heavily contended arithmetic on `Zoned` values) and a bug fix for a panic
+that can occur when using `%2s` in `strftime`.
+
+Enhancements:
+
+* [#491](https://github.com/BurntSushi/jiff/issues/491):
+Avoid cloning `TimeZone` for consuming operations on `Zoned`.
+
+Bug fixes:
+
+* [#497](https://github.com/BurntSushi/jiff/issues/497):
+Fix a panic in `timestamp.strftime("%2s")`.
+
+
+0.2.18 (2026-01-05)
+===================
+This release ships a sizeable refactor to the RFC 2822, RFC 9110, RC
+3339, RFC 9557, ISO 8601 and friendly format printers. Specifically,
+they are now all monomorphic internally (instead of being generic over
+`jiff::fmt::Write`) and write to uninitialized buffers. This improves
+runtime performance (sometimes dramatically so), and to a more modest
+degree, decreases binary size and improves compile times.
+
+This release also includes a bug fix where `DateTime::MIN.to_zoned(..)`
+could panic.
+
+Enhancements:
+
+* [#460](https://github.com/BurntSushi/jiff/pull/460):
+Improve runtime performance and binary size of RFC 2822 printer.
+* [#461](https://github.com/BurntSushi/jiff/pull/461):
+Tweak behavior of printing min/max offsets in RFC 2822 and Temporal printers.
+* [#462](https://github.com/BurntSushi/jiff/pull/462):
+Export fallible constructors for `jiff::SignedDuration`.
+* [#465](https://github.com/BurntSushi/jiff/pull/465):
+Improve runtime performance and binary size of the "friendly" duration printer.
+* [#468](https://github.com/BurntSushi/jiff/pull/468):
+Improve runtime performance and binary size of the Temporal ISO 8601 duration
+printer.
+* [#470](https://github.com/BurntSushi/jiff/pull/470):
+Improve runtime performance and binary size of the Temporal ISO 8601 datetime
+printer.
+* [#474](https://github.com/BurntSushi/jiff/pull/474):
+Improve runtime performance and binary size of Jiff's `strftime`
+implementation.
+* [#477](https://github.com/BurntSushi/jiff/pull/477):
+Fix a bug where time zone lookups for `civil::DateTime::MIN` could panic.
+
+
+0.2.17 (2025-12-24)
+===================
+This release contains binary size improvements to Jiff, more succinct error
+messages and some new minor APIs.
+
+While Jiff 1.0 is overdue, I've been doing a lot of experimenting with
+improving Jiff's binary size and compile times. In particular, I want to spend
+time doing this before Jiff 1.0 so that we don't box ourselves into a corner.
+(For example, some binary size improvements may require minor API breaking
+changes.)
+
+In this release, Jiff has switched to structured error handling internally
+in an effort to provide error predicates and also hopefully improve binary
+sizes and compile times. Overall this didn't have as big of an impact on
+binary sizes or compile times as I was hoping. I did take this opportunity to
+make Jiff's error messages a bit more succinct. In many cases, this involved
+de-duplicating some aspects of error messages and omitting user provided input
+in the messages. If you feel like there is a significant decrease in error
+message quality that isn't easily amended by callers providing additional
+context themselves, please open an issue.
+
+This release also updates Jiff's bundled copy of the [IANA Time Zone Database]
+to `2025c`. See the [`2025c` release announcement] for more details.
+
+Enhancements:
+
+* [#412](https://github.com/BurntSushi/jiff/issues/412):
+Add `Display`, `FromStr`, `Serialize` and `Deserialize` trait implementations
+for `jiff::civil::ISOWeekDate`. These all use the ISO 8601 week date format.
+* [#418](https://github.com/BurntSushi/jiff/issues/418):
+Add some basic predicates to `jiff::Error` for basic error introspection.
+* [#453](https://github.com/BurntSushi/jiff/pull/453),
+  [#454](https://github.com/BurntSushi/jiff/pull/454):
+Switch to structured error handling internally.
+* [#456](https://github.com/BurntSushi/jiff/pull/456),
+  [#457](https://github.com/BurntSushi/jiff/pull/457),
+  [#458](https://github.com/BurntSushi/jiff/pull/458):
+Various improvements to binary size.
+
+[`2025c` release announcement]: https://lists.iana.org/hyperkitty/list/tz-announce@iana.org/thread/TAGXKYLMAQRZRFTERQ33CEKOW7KRJVAK/
+
+
+0.2.16 (2025-11-07)
+===================
+This release contains a number of enhancements and bug fixes that have accrued
+over the last few months. Most are small polishes. A couple of the bug fixes
+apply to panics that could occur when parsing invalid `TZ` strings or invalid
+`strptime` format strings.
+
+Also, parsing into a `Span` should now be much faster (for both the ISO 8601
+and "friendly" duration formats).
 
 Enhancements:
 
@@ -325,7 +917,7 @@ This release of Jiff includes a new opt-in proc macro for embedding a
 `TimeZone` into your binary. Just enable Jiff's `static` feature, and this will
 print the current time in the `America/New_York` time zone:
 
-```rust
+```rust,ignore
 use jiff::{
     tz::{self, TimeZone},
     Timestamp,
@@ -981,7 +1573,7 @@ This release introduces some new minor APIs that support formatting
 Previously, using the standard formatting routines that Jiff provides, it was
 only possible to format a `Timestamp` using Zulu time. For example:
 
-```rust
+```rust,ignore
 use jiff::Timestamp;
 
 assert_eq!(
@@ -997,7 +1589,7 @@ zone identifier), it may be useful in contexts where you just want to
 "hint" at what a user's local time is. To that end, there is a new
 `Timestamp::display_with_offset` method that makes this possible:
 
-```rust
+```rust,ignore
 use jiff::{tz, Timestamp};
 
 assert_eq!(
@@ -1013,7 +1605,7 @@ Moreover, this release also includes new convenience APIs on the Temporal and
 RFC 2822 printer types for returning strings. For example, previously, if you
 were using the RFC 2822 printer to format a `Timestamp`, you had to do this:
 
-```rust
+```rust,ignore
 use jiff::{fmt::rfc2822::DateTimePrinter, Timestamp};
 
 let mut buf = String::new();
@@ -1023,7 +1615,7 @@ assert_eq!(buf, "Thu, 1 Jan 1970 00:00:00 -0000");
 
 But now you can just do this:
 
-```rust
+```rust,ignore
 use jiff::{fmt::rfc2822::DateTimePrinter, Timestamp};
 
 assert_eq!(
@@ -1047,7 +1639,7 @@ sub-module. It provides convenience routines similar to Chrono's
 `jiff::Timestamp` and an integer number of seconds, milliseconds, microseconds
 or nanoseconds. For example:
 
-```rust
+```rust,ignore
 use jiff::Timestamp;
 
 #[derive(serde::Serialize, serde::Deserialize)]
@@ -1315,3 +1907,4 @@ The initial release of Jiff.
 [SQLx]: https://github.com/launchbadge/sqlx
 [Diesel]: https://github.com/diesel-rs/diesel
 [Discussions on GitHub]: https://github.com/BurntSushi/jiff/discussions
+[`defmt`]: https://github.com/BurntSushi/jiff/issues/587

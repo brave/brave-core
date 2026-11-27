@@ -40,8 +40,11 @@
 //!
 //! The available features are described in the [`features`] module.
 
-#[cfg(all(target_family = "wasm", not(target_os = "wasi")))]
-compile_error!("This wasm target is unsupported by mio. If using Tokio, disable the net feature.");
+#[cfg(all(
+    target_family = "wasm",
+    not(any(target_os = "wasi", target_os = "emscripten"))
+))]
+compile_error!("This wasm target is unsupported by mio (only the WASI and Emscripten wasm targets are supported). If using Tokio, disable the net feature.");
 
 // macros used internally
 #[macro_use]
@@ -51,7 +54,7 @@ mod interest;
 mod poll;
 mod sys;
 mod token;
-#[cfg(not(target_os = "wasi"))]
+#[cfg(not(any(target_os = "horizon", target_os = "wasi")))]
 mod waker;
 
 pub mod event;
@@ -69,7 +72,7 @@ pub use event::Events;
 pub use interest::Interest;
 pub use poll::{Poll, Registry};
 pub use token::Token;
-#[cfg(not(target_os = "wasi"))]
+#[cfg(not(any(target_os = "horizon", target_os = "wasi")))]
 pub use waker::Waker;
 
 #[cfg(all(unix, feature = "os-ext"))]
@@ -92,6 +95,14 @@ pub mod unix {
 #[cfg_attr(docsrs, doc(cfg(all(target_os = "hermit", feature = "os-ext"))))]
 pub mod hermit {
     //! Hermit only extensions.
+
+    pub use crate::sys::SourceFd;
+}
+
+#[cfg(all(target_os = "wasi", not(target_env = "p1"), feature = "os-ext"))]
+#[cfg_attr(docsrs, doc(cfg(all(target_os = "wasi", feature = "os-ext"))))]
+pub mod wasi {
+    //! WASI-only extensions.
 
     pub use crate::sys::SourceFd;
 }

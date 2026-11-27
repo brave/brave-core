@@ -180,9 +180,19 @@ impl DerefMut for EnvRegisters {
 #[derive(Clone, Copy, Debug, Default)]
 #[repr(C, packed)]
 pub struct Exception {
-    pub kind: usize,
-    // TODO
+    pub code: usize,
+    pub address: usize,
 }
+
+impl Exception {
+    pub fn pack(&self) -> (usize, usize) {
+        (self.code, self.address)
+    }
+    pub fn unpack(code: usize, address: usize) -> Self {
+        Exception { code, address }
+    }
+}
+
 impl Deref for Exception {
     type Target = [u8];
     fn deref(&self) -> &[u8] {

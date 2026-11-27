@@ -19,6 +19,18 @@ The format is based on [Keep a Changelog].
 
 ### Security
 
+## [0.1.12] - 2026-03-23
+### Fixed
+- Unexpected errors with long window size [`#46`](https://github.com/anatawa12/deflate64-rs/pull/46)
+
+## [0.1.11] - 2026-02-26
+### Added
+- Checkpoint feature for partial-progress restoration [`#40`](https://github.com/anatawa12/deflate64-rs/pull/40)
+- test: `cargo bench` simple benchmark
+
+### Changed
+- perf: optimize decoder inner loop for 2x performance [`#41`](https://github.com/anatawa12/deflate64-rs/pull/41)
+
 ## [0.1.10] - 2025-10-01
 ## [0.1.9] - 2024-07-16
 ### Fixed
@@ -71,7 +83,9 @@ The format is based on [Keep a Changelog].
 ### Added
 - Initial Deflate64 implementation
 
-[Unreleased]: https://github.com/anatawa12/deflate64-rs/compare/v0.1.10...HEAD
+[Unreleased]: https://github.com/anatawa12/deflate64-rs/compare/v0.1.12...HEAD
+[0.1.12]: https://github.com/anatawa12/deflate64-rs/compare/v0.1.11...v0.1.12
+[0.1.11]: https://github.com/anatawa12/deflate64-rs/compare/v0.1.10...v0.1.11
 [0.1.10]: https://github.com/anatawa12/deflate64-rs/compare/v0.1.9...v0.1.10
 [0.1.9]: https://github.com/anatawa12/deflate64-rs/compare/v0.1.8...v0.1.9
 [0.1.8]: https://github.com/anatawa12/deflate64-rs/compare/v0.1.7...v0.1.8

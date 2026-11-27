@@ -499,11 +499,15 @@ impl<'de> de::Deserialize<'de> for Value {
                 let mut map = Table::new();
                 map.insert(key.into_owned(), visitor.next_value()?);
                 while let Some(key) = visitor.next_key::<String>()? {
-                    if let crate::map::Entry::Vacant(vacant) = map.entry(&key) {
-                        vacant.insert(visitor.next_value()?);
-                    } else {
-                        let msg = format!("duplicate key: `{key}`");
-                        return Err(de::Error::custom(msg));
+                    match map.entry(key) {
+                        crate::map::Entry::Vacant(vacant) => {
+                            vacant.insert(visitor.next_value()?);
+                        }
+                        crate::map::Entry::Occupied(occupied) => {
+                            let key = occupied.key();
+                            let msg = format!("duplicate key: `{key}`");
+                            return Err(de::Error::custom(msg));
+                        }
                     }
                 }
                 Ok(Value::Table(map))
@@ -608,9 +612,26 @@ impl<'de> de::Deserializer<'de> for Value {
         visitor.visit_newtype_struct(self)
     }
 
+    fn deserialize_struct<V>(
+        self,
+        name: &'static str,
+        _fields: &'static [&'static str],
+        visitor: V,
+    ) -> Result<V::Value, crate::de::Error>
+    where
+        V: de::Visitor<'de>,
+    {
+        match (toml_datetime::de::is_datetime(name), self) {
+            (true, Self::Datetime(v)) => {
+                visitor.visit_map(toml_datetime::de::DatetimeDeserializer::new(v))
+            }
+            (_, value) => value.deserialize_any(visitor),
+        }
+    }
+
     serde_core::forward_to_deserialize_any! {
         bool u8 u16 u32 u64 i8 i16 i32 i64 f32 f64 char str string unit seq
-        bytes byte_buf map unit_struct tuple_struct struct
+        bytes byte_buf map unit_struct tuple_struct
         tuple ignored_any identifier
     }
 }
@@ -1115,6 +1136,14 @@ impl ser::SerializeMap for ValueSerializeMap {
         self.ser.serialize_value(value)
     }
 
+    fn serialize_entry<K, V>(&mut self, key: &K, value: &V) -> Result<(), Self::Error>
+    where
+        K: ser::Serialize + ?Sized,
+        V: ser::Serialize + ?Sized,
+    {
+        self.ser.serialize_entry(key, value)
+    }
+
     fn end(self) -> Result<Value, crate::ser::Error> {
         self.ser.end().map(Value::Table)
     }
@@ -1128,8 +1157,7 @@ impl ser::SerializeStruct for ValueSerializeMap {
     where
         T: ser::Serialize + ?Sized,
     {
-        ser::SerializeMap::serialize_key(self, key)?;
-        ser::SerializeMap::serialize_value(self, value)
+        ser::SerializeMap::serialize_entry(self, key, value)
     }
 
     fn end(self) -> Result<Value, crate::ser::Error> {

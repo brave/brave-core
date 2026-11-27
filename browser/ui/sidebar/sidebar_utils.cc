@@ -35,11 +35,10 @@
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
-#include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
-#include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
@@ -71,7 +70,7 @@ bool IsActiveTabNTP(content::WebContents* active_web_contents) {
     return false;
   }
   const GURL url = entry->GetURL();
-  return NewTabUI::IsNewTab(url) || NewTabPageUI::IsNewTabPageOrigin(url) ||
+  return search::IsNewTabOrigin(url) || search::IsNewTabPageOrigin(url) ||
          search::NavEntryIsInstantNTP(active_web_contents, entry);
 }
 
@@ -426,6 +425,32 @@ bool IsWebPanelTab(BrowserWindowInterface* browser,
     return sidebar_controller->IsWebPanelTab(contents);
   }
   return false;
+}
+
+bool IsWebPanelTab(tabs::TabInterface* tab) {
+  if (!tab) {
+    return false;
+  }
+
+  // A detached tab has no window, and a panel never outlives its own window.
+  BrowserWindowInterface* browser = tab->GetBrowserWindowInterface();
+  return browser && IsWebPanelTab(browser, tab->GetContents());
+}
+
+bool IsWebPanelTabActive(BrowserWindowInterface* browser) {
+  TabStripModel* tab_strip_model = browser->GetTabStripModel();
+  if (!tab_strip_model) {
+    // Browser always has one; only MockBrowserWindowInterface doesn't, and
+    // upstream's context menu unit tests reach here through it.
+    CHECK_IS_TEST();
+    return false;
+  }
+
+  // An empty strip has no active contents, and IsWebPanelTab() would match a
+  // null query against the null panel_contents_ of a panel-less controller.
+  content::WebContents* active_contents =
+      tab_strip_model->GetActiveWebContents();
+  return active_contents && IsWebPanelTab(browser, active_contents);
 }
 
 bool IsWebPanelOnlyTab(BrowserWindowInterface* browser) {

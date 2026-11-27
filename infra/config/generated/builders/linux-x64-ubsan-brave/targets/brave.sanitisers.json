@@ -1,0 +1,45 @@
+{
+  "linux-x64-ubsan-brave": {
+    "additional_compile_targets": [
+      "brave"
+    ],
+    "gtest_tests": [
+      {
+        "name": "brave_components_unittests",
+        "test": "brave_components_unittests"
+      },
+      {
+        "name": "brave_unit_tests",
+        "test": "brave_unit_tests"
+      },
+      {
+        "name": "brave_installer_unittests",
+        "test": "brave_installer_unittests"
+      },
+      {
+        "name": "brave_updater_unittests",
+        "test": "brave_updater_unittests"
+      },
+      {
+        "name": "brave_browser_tests",
+        "test": "brave_browser_tests"
+      },
+      {
+        "name": "brave_interactive_ui_tests",
+        "test": "brave_interactive_ui_tests"
+      },
+      {
+        "name": "brave_cert_pinning_tests",
+        "test": "brave_cert_pinning_tests"
+      },
+      {
+        "args": [
+          "--ui-test-action-timeout=320000",
+          "--test-launcher-timeout=2200000"
+        ],
+        "name": "brave_network_audit_tests",
+        "test": "brave_network_audit_tests"
+      }
+    ]
+  }
+}

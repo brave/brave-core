@@ -192,7 +192,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed the experimental check for the presence of a signature on the advisory-db repository. It only verified the presence of a signature without checking for any particular key, so it provided no additional security. ([#816])
 - Fixed a build failure with certain dependency versions on recent compilers due to failing type inference ([#836])
 
-[CVE-2023-22742]: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-22742
+[CVE-2023-22742]: https://www.cve.org/CVERecord?id=CVE-2023-22742
 [#816]: https://github.com/rustsec/rustsec/pull/816
 [#831]: https://github.com/rustsec/rustsec/pull/831
 [#836]: https://github.com/rustsec/rustsec/pull/836

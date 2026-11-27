@@ -1,10 +1,3 @@
-// Copyright 2016 Amanieu d'Antras
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 use crate::thread_parker;
 use core::hint::spin_loop;
 
@@ -26,20 +19,20 @@ pub struct SpinWait {
 impl SpinWait {
     /// Creates a new `SpinWait`.
     #[inline]
-    pub fn new() -> Self {
-        Self::default()
+    pub const fn new() -> Self {
+        Self { counter: 0 }
     }
 
     /// Resets a `SpinWait` to its initial state.
     #[inline]
-    pub fn reset(&mut self) {
+    pub const fn reset(&mut self) {
         self.counter = 0;
     }
 
     /// Spins until the sleep threshold has been reached.
     ///
-    /// This function returns whether the sleep threshold has been reached, at
-    /// which point further spinning has diminishing returns and the thread
+    /// This function returns `false` if the sleep threshold has been reached,
+    /// at which point further spinning has diminishing returns and the thread
     /// should be parked instead.
     ///
     /// The spin strategy will initially use a CPU-bound loop but will fall back
@@ -51,7 +44,7 @@ impl SpinWait {
         }
         self.counter += 1;
         if self.counter <= 3 {
-            cpu_relax(1 << self.counter);
+            cpu_relax(1 << (self.counter - 1));
         } else {
             thread_parker::thread_yield();
         }
@@ -69,6 +62,6 @@ impl SpinWait {
         if self.counter > 10 {
             self.counter = 10;
         }
-        cpu_relax(1 << self.counter);
+        cpu_relax(1 << (self.counter - 1));
     }
 }

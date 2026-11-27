@@ -8,6 +8,7 @@
 
 #include "base/system/sys_info.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #define ShouldReuploadOnceAfterLocalDeviceInfoTombstone \
@@ -39,18 +40,10 @@ TEST_F(DeviceInfoSyncBridgeTest, LocalDelete) {
       .WillByDefault(Return(false));
   EXPECT_CALL(*processor(), Delete(kLocalGuid, _, _)).Times(1);
 
-  bool deleted_device_info_sent = false;
-  base::RunLoop loop;
-  bridge()->DeleteDeviceInfo(
-      kLocalGuid, base::BindOnce(
-                      [](base::RunLoop* loop, bool* deleted_device_info_sent) {
-                        *deleted_device_info_sent = true;
-                        loop->Quit();
-                      },
-                      &loop, &deleted_device_info_sent));
-  loop.Run();
+  base::test::TestFuture<void> future;
+  bridge()->DeleteDeviceInfo(kLocalGuid, future.GetCallback());
+  ASSERT_TRUE(future.Wait());
 
-  EXPECT_TRUE(deleted_device_info_sent);
   EXPECT_EQ(1u, bridge()->GetAllDeviceInfo().size());
   ASSERT_EQ(3, change_count());
   EXPECT_THAT(ReadAllFromStore(),
@@ -76,19 +69,10 @@ TEST_F(DeviceInfoSyncBridgeTest, RemoteDelete) {
       .WillByDefault(Return(false));
   EXPECT_CALL(*processor(), Delete(specifics.cache_guid(), _, _)).Times(1);
 
-  bool deleted_device_info_sent = false;
-  base::RunLoop loop;
-  bridge()->DeleteDeviceInfo(
-      specifics.cache_guid(),
-      base::BindOnce(
-          [](base::RunLoop* loop, bool* deleted_device_info_sent) {
-            *deleted_device_info_sent = true;
-            loop->Quit();
-          },
-          &loop, &deleted_device_info_sent));
-  loop.Run();
+  base::test::TestFuture<void> future;
+  bridge()->DeleteDeviceInfo(specifics.cache_guid(), future.GetCallback());
+  ASSERT_TRUE(future.Wait());
 
-  EXPECT_TRUE(deleted_device_info_sent);
   EXPECT_EQ(1u, bridge()->GetAllDeviceInfo().size());
   ASSERT_EQ(3, change_count());
   EXPECT_THAT(ReadAllFromStore(), UnorderedElementsAre(Pair(kLocalGuid, _)));
@@ -116,19 +100,10 @@ TEST_F(DeviceInfoSyncBridgeTest, LocalDeleteWhenOffline) {
   EXPECT_CALL(*processor(), IsEntityUnsynced).Times(5);
   EXPECT_CALL(*processor(), Delete(kLocalGuid, _, _)).Times(1);
 
-  bool deleted_device_info_sent = false;
-  base::RunLoop loop;
-  bridge()->DeleteDeviceInfo(
-      kLocalGuid, base::BindOnce(
-                      [](base::RunLoop* loop, bool* deleted_device_info_sent) {
-                        *deleted_device_info_sent = true;
-                        loop->Quit();
-                      },
-                      &loop, &deleted_device_info_sent));
+  base::test::TestFuture<void> future;
+  bridge()->DeleteDeviceInfo(kLocalGuid, future.GetCallback());
+  ASSERT_TRUE(future.Wait());
 
-  loop.Run();
-
-  EXPECT_TRUE(deleted_device_info_sent);
   EXPECT_EQ(1u, bridge()->GetAllDeviceInfo().size());
   ASSERT_EQ(3, change_count());
   EXPECT_THAT(ReadAllFromStore(),

@@ -337,6 +337,19 @@ impl Taker {
         self.signal(State::Want)
     }
 
+    /// Mark the state as idle, if the `Taker` is currently wanting.
+    ///
+    /// This withdraws a `want()` that is no longer true, such as one signaled
+    /// just before a value arrived.
+    #[inline]
+    pub fn unwant(&mut self) {
+        let _ = self.inner.state.compare_exchange(
+            State::Want.into(),
+            State::Idle.into(),
+            SeqCst,
+            SeqCst);
+    }
+
     #[inline]
     fn signal(&mut self, state: State) {
         let old_state = self.inner.state.swap(state.into(), SeqCst).into();
@@ -524,6 +537,23 @@ mod tests {
         });
 
         block_on(gv.want()).unwrap_err();
+    }
+
+    #[test]
+    fn unwant() {
+        let (gv, mut tk) = new();
+
+        tk.want();
+        assert!(gv.is_wanting());
+
+        tk.unwant();
+        assert!(!gv.is_wanting());
+        assert!(!gv.give());
+
+        // Only a want is withdrawn: a canceled Taker stays canceled.
+        tk.cancel();
+        tk.unwant();
+        assert!(gv.is_canceled());
     }
 
     /*

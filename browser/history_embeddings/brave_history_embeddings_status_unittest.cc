@@ -10,11 +10,11 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
@@ -29,8 +29,10 @@ namespace history_embeddings {
 
 // The setting is captured at profile setup, so each test picks the value the
 // embedding services would have been built with before building `profile_`.
-// `feature_list_` is a member so the feature is already on by then — otherwise
-// the status would read off for two reasons at once.
+// The feature lists are members so the features are already on by then —
+// otherwise the status would read off for two reasons at once. AI Chat is
+// pinned on too, as it decides whether the send page content pref is
+// registered at all.
 class BraveHistoryEmbeddingsStatusTest : public testing::Test {
  protected:
   void BuildProfileWithSetting(bool enabled) {
@@ -68,12 +70,22 @@ class BraveHistoryEmbeddingsStatusTest : public testing::Test {
     local_state()->SetBoolean(local_ai::prefs::kBraveLocalAIEnabled, enabled);
   }
 
+  bool IsProfileRecordedForLocalModels() {
+    return local_state()
+        ->GetList(local_ai::prefs::kHistoryEmbeddingsEnabledProfiles)
+        .contains(profile_->GetBaseName().AsUTF8Unsafe());
+  }
+
   BraveHistoryEmbeddingsStatus* status() {
     return BraveHistoryEmbeddingsStatus::GetForProfile(profile_.get());
   }
 
   bool seed_send_page_content_ = false;
   base::test::ScopedFeatureList feature_list_{kHistoryEmbeddings};
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  base::test::ScopedFeatureList ai_chat_feature_list_{
+      ai_chat::features::kAIChat};
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
 };
@@ -86,6 +98,26 @@ TEST_F(BraveHistoryEmbeddingsStatusTest, CapturesTheSettingAtProfileSetup) {
   BuildProfileWithSetting(true);
 
   EXPECT_TRUE(status()->IsEnabled());
+}
+
+// The model is shared by every profile, so each records its own need for it in
+// local state, where the model's registration reads it.
+TEST_F(BraveHistoryEmbeddingsStatusTest,
+       RecordsTheProfileWhileSemanticHistorySearchIsOn) {
+  BuildProfileWithSetting(false);
+  EXPECT_FALSE(IsProfileRecordedForLocalModels());
+  SetSemanticHistorySearchEnabled(true);
+  EXPECT_TRUE(IsProfileRecordedForLocalModels());
+  SetSemanticHistorySearchEnabled(false);
+  EXPECT_FALSE(IsProfileRecordedForLocalModels());
+}
+
+// A profile that turned the setting on before the list existed still keeps the
+// model once it loads.
+TEST_F(BraveHistoryEmbeddingsStatusTest,
+       RecordsTheProfileAtProfileSetupWhenAlreadyOn) {
+  BuildProfileWithSetting(true);
+  EXPECT_TRUE(IsProfileRecordedForLocalModels());
 }
 
 TEST_F(BraveHistoryEmbeddingsStatusTest, HoldsTheSettingWhenThePrefTurnsOn) {

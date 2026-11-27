@@ -48,7 +48,7 @@ namespace os_crypt_async {
 class OSCryptAsync;
 }
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 using UrlDataCallback = base::OnceCallback<void(std::optional<UrlData>)>;
 
@@ -306,6 +306,6 @@ class HistoryEmbeddingsService
   base::WeakPtrFactory<HistoryEmbeddingsService> weak_ptr_factory_;
 };
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings
 
 #endif  // BRAVE_COMPONENTS_HISTORY_EMBEDDINGS_CONTENT_HISTORY_EMBEDDINGS_SERVICE_H_

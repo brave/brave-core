@@ -17,6 +17,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/variations/service/variations_service.h"
 #include "components/variations/service/variations_service_utils.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_types.h"
 #include "ui/message_center/public/cpp/notifier_id.h"
@@ -54,9 +55,10 @@ AdsServiceDelegate::~AdsServiceDelegate() {}
 void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
 #if BUILDFLAG(IS_ANDROID)
   // ServiceTabLauncher can currently only launch new tabs
-  const content::OpenURLParams params(url, content::Referrer(),
-                                      WindowOpenDisposition::kNewForegroundTab,
-                                      ui::PAGE_TRANSITION_LINK, true);
+  const content::OpenURLParams params(
+      url, content::Referrer(),
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
+      ui::PAGE_TRANSITION_LINK, true);
   ServiceTabLauncher::GetInstance()->LaunchTab(
       base::to_address(profile_), params,
       base::BindOnce([](content::WebContents*) {}));
@@ -71,7 +73,7 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
 
   NavigateParams nav_params(base::to_address(profile_), url,
                             ui::PAGE_TRANSITION_LINK);
-  nav_params.disposition = WindowOpenDisposition::kSingletonTab;
+  nav_params.disposition = ui::mojom::WindowOpenDisposition::kSingletonTab;
   nav_params.window_action = NavigateParams::WindowAction::kShowWindow;
   nav_params.path_behavior = NavigateParams::RESPECT;
   Navigate(&nav_params);

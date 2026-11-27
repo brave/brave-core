@@ -93,6 +93,16 @@ TEST(BraveAdsReactionsValueUtilTest, ReactionSetFromList) {
   EXPECT_EQ(expected_reactions, ReactionSetFromList(list));
 }
 
+TEST(BraveAdsReactionsValueUtilTest, ReactionSetFromListSkipsNonStringEntries) {
+  // Arrange
+  const base::ListValue list =
+      base::test::ParseJsonList(R"JSON(["id", 1])JSON");
+
+  // Act & Assert
+  const ReactionSet expected_reactions = {"id"};
+  EXPECT_EQ(expected_reactions, ReactionSetFromList(list));
+}
+
 TEST(BraveAdsReactionsValueUtilTest, ReactionSetFromEmptyList) {
   // Act & Assert
   EXPECT_THAT(ReactionSetFromList({}), ::testing::IsEmpty());

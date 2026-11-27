@@ -5,10 +5,7 @@
 
 #include "brave/components/brave_account/endpoints/verify_delete.h"
 
-#include <optional>
-
 #include "base/no_destructor.h"
-#include "base/types/expected.h"
 #include "brave/components/brave_account/endpoints/endpoint_test.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
@@ -26,8 +23,7 @@ const VerifyDeleteTestCase* Success() {
        .http_status_code = net::HTTP_NO_CONTENT,
        .raw_response_body = "",
        .expected_response = {.net_error = net::OK,
-                             .status_code = net::HTTP_NO_CONTENT,
-                             .body = std::nullopt}});
+                             .status_code = net::HTTP_NO_CONTENT}});
   return kSuccess.get();
 }
 
@@ -41,52 +37,21 @@ const VerifyDeleteTestCase* Success() {
 //   - { "code": null, "error": "Unauthorized", "status": 401 }
 // - HTTP 5XX:
 //   - { "code": null, "error": "Internal Server Error", "status": <5xx> }
-// clang-format on
-const VerifyDeleteTestCase* ApplicationJsonErrorCodeIsNull() {
-  static const base::NoDestructor<VerifyDeleteTestCase>
-      kApplicationJsonErrorCodeIsNull(
-          {.test_name = "application_json_error_code_is_null",
-           .http_status_code = net::HTTP_BAD_REQUEST,
-           .raw_response_body =
-               R"({ "code": null,
-                    "error": "Bad Request",
-                    "status": 400 })",
-           .expected_response = {
-               .net_error = net::OK,
-               .status_code = net::HTTP_BAD_REQUEST,
-               .body = base::unexpected(VerifyDelete::Response::ErrorBody())}});
-  return kApplicationJsonErrorCodeIsNull.get();
-}
-
-const VerifyDeleteTestCase* ApplicationJsonErrorCodeIsNotNull() {
-  static const base::NoDestructor<VerifyDeleteTestCase>
-      kApplicationJsonErrorCodeIsNotNull(
-          {.test_name = "application_json_error_code_is_not_null",
-           .http_status_code = net::HTTP_BAD_REQUEST,
-           .raw_response_body =
-               R"({ "code": 13003,
-                    "error": "intent not allowed",
-                    "status": 400 })",
-           .expected_response = {
-               .net_error = net::OK,
-               .status_code = net::HTTP_BAD_REQUEST,
-               .body = base::unexpected(VerifyDelete::Response::ErrorBody())}});
-  return kApplicationJsonErrorCodeIsNotNull.get();
-}
-
 // non-application/json errors:
 // - HTTP 5XX:
 //   - plain text errors returned by AWS/load balancer
-const VerifyDeleteTestCase* NonApplicationJsonError() {
-  static const base::NoDestructor<VerifyDeleteTestCase>
-      kNonApplicationJsonError(
-          {.test_name = "non_application_json_error",
-           .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-           .raw_response_body = "non-application/json error",
-           .expected_response = {.net_error = net::OK,
-                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                                 .body = std::nullopt}});
-  return kNonApplicationJsonError.get();
+// clang-format on
+const VerifyDeleteTestCase* Error() {
+  static const base::NoDestructor<VerifyDeleteTestCase> kError(
+      {.test_name = "error",
+       .http_status_code = net::HTTP_BAD_REQUEST,
+       .raw_response_body =
+           R"({ "code": null,
+                "error": "Bad Request",
+                "status": 400 })",
+       .expected_response = {.net_error = net::OK,
+                             .status_code = net::HTTP_BAD_REQUEST}});
+  return kError.get();
 }
 
 using VerifyDeleteTest = EndpointTest<VerifyDelete>;
@@ -99,10 +64,7 @@ TEST_P(VerifyDeleteTest, HandlesReplies) {
 
 INSTANTIATE_TEST_SUITE_P(VerifyDeleteTestCases,
                          VerifyDeleteTest,
-                         testing::Values(Success(),
-                                         ApplicationJsonErrorCodeIsNull(),
-                                         ApplicationJsonErrorCodeIsNotNull(),
-                                         NonApplicationJsonError()),
+                         testing::Values(Success(), Error()),
                          VerifyDeleteTest::kNameGenerator);
 
 }  // namespace brave_account::endpoints

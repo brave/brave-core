@@ -14,12 +14,19 @@ use std::os::fd::{AsFd, BorrowedFd};
 use std::os::unix::io::{AsRawFd, FromRawFd, OwnedFd};
 use std::ptr;
 
-/// A kernel event queue.  Used to notify a process of various asynchronous
-/// events.
+/// An event for use with [`Kqueue::kevent`].
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct KEvent {
     kevent: libc::kevent,
+}
+
+/// An event for use with [`Kqueue::kevent64`].
+#[cfg(apple_targets)]
+#[repr(transparent)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+pub struct KEvent64 {
+    kevent: libc::kevent64_s,
 }
 
 /// A kernel event queue.
@@ -89,12 +96,34 @@ impl Kqueue {
         };
         Errno::result(res).map(|r| r as usize)
     }
-}
 
-#[cfg(any(freebsdlike, apple_targets, target_os = "openbsd"))]
-type type_of_udata = *mut libc::c_void;
-#[cfg(target_os = "netbsd")]
-type type_of_udata = intptr_t;
+    /// Like [`kevent`](Kqueue::kevent), but uses [`KEvent64`].
+    #[cfg(apple_targets)]
+    pub fn kevent64(
+        &self,
+        changelist: &[KEvent64],
+        eventlist: &mut [KEvent64],
+        flags: Kevent64Flags,
+        timeout_opt: Option<timespec>,
+    ) -> Result<usize> {
+        let res = unsafe {
+            libc::kevent64(
+                self.0.as_raw_fd(),
+                changelist.as_ptr().cast(),
+                changelist.len() as c_int,
+                eventlist.as_mut_ptr().cast(),
+                eventlist.len() as c_int,
+                flags.bits(),
+                if let Some(ref timeout) = timeout_opt {
+                    timeout as *const timespec
+                } else {
+                    ptr::null()
+                },
+            )
+        };
+        Errno::result(res).map(|r| r as usize)
+    }
+}
 
 #[cfg(target_os = "netbsd")]
 type type_of_event_filter = u32;
@@ -255,9 +284,17 @@ libc_bitflags!(
         NOTE_FFCOPY;
         #[cfg(any(apple_targets, freebsdlike))]
         #[allow(missing_docs)]
+        #[deprecated(
+            since = "0.31.4",
+            note = "mask constants are unnecessary"
+        )]
         NOTE_FFCTRLMASK;
         #[cfg(any(apple_targets, freebsdlike))]
         #[allow(missing_docs)]
+        #[deprecated(
+            since = "0.31.4",
+            note = "mask constants are unnecessary"
+        )]
         NOTE_FFLAGSMASK;
         #[cfg(any(apple_targets, freebsdlike))]
         #[allow(missing_docs)]
@@ -286,8 +323,16 @@ libc_bitflags!(
         #[allow(missing_docs)]
         NOTE_OOB;
         #[allow(missing_docs)]
+        #[deprecated(
+            since = "0.31.4",
+            note = "mask constants are unnecessary"
+        )]
         NOTE_PCTRLMASK;
         #[allow(missing_docs)]
+        #[deprecated(
+            since = "0.31.4",
+            note = "mask constants are unnecessary"
+        )]
         NOTE_PDATAMASK;
         #[allow(missing_docs)]
         NOTE_RENAME;
@@ -333,6 +378,17 @@ libc_bitflags!(
     }
 );
 
+#[cfg(apple_targets)]
+libc_bitflags! {
+    /// Flags for [`Kqueue::kevent64`].
+    pub struct Kevent64Flags: libc::c_uint {
+        /// Return immediately even if there are no events to return.
+        KEVENT_FLAG_IMMEDIATE;
+        /// Only return error events from the changelist.
+        KEVENT_FLAG_ERROR_EVENTS;
+    }
+}
+
 #[allow(missing_docs)]
 #[deprecated(since = "0.27.0", note = "Use KEvent::new instead")]
 pub fn kqueue() -> Result<Kqueue> {
@@ -364,7 +420,7 @@ impl KEvent {
                 fflags: fflags.bits(),
                 // data can be either i64 or intptr_t, depending on platform
                 data: data as _,
-                udata: udata as type_of_udata,
+                udata: udata as *mut libc::c_void,
                 ..unsafe { mem::zeroed() }
             },
         }
@@ -387,12 +443,12 @@ impl KEvent {
     /// Flags control what the kernel will do when this event is added with
     /// [`Kqueue::kevent`].
     pub fn flags(&self) -> EvFlags {
-        EvFlags::from_bits(self.kevent.flags).unwrap()
+        EvFlags::from_bits_retain(self.kevent.flags)
     }
 
     /// Filter-specific flags.
     pub fn fflags(&self) -> FilterFlag {
-        FilterFlag::from_bits(self.kevent.fflags).unwrap()
+        FilterFlag::from_bits_retain(self.kevent.fflags)
     }
 
     /// Filter-specific data value.
@@ -403,6 +459,75 @@ impl KEvent {
     /// Opaque user-defined value passed through the kernel unchanged.
     pub fn udata(&self) -> intptr_t {
         self.kevent.udata as intptr_t
+    }
+}
+
+#[cfg(apple_targets)]
+const _: () = {
+    fn _assert_send<T: Send>() {}
+    fn _assert() {
+        _assert_send::<KEvent64>();
+    }
+};
+
+#[cfg(apple_targets)]
+impl KEvent64 {
+    /// Construct a new `KEvent64`.
+    pub fn new(
+        ident: u64,
+        filter: EventFilter,
+        flags: EvFlags,
+        fflags: FilterFlag,
+        data: i64,
+        udata: u64,
+        ext: [u64; 2],
+    ) -> KEvent64 {
+        KEvent64 {
+            kevent: libc::kevent64_s {
+                ident,
+                filter: filter as type_of_event_filter,
+                flags: flags.bits(),
+                fflags: fflags.bits(),
+                data,
+                udata,
+                ext,
+            },
+        }
+    }
+
+    /// Value used to identify this event.
+    pub fn ident(&self) -> u64 {
+        self.kevent.ident
+    }
+
+    /// Identifies the kernel filter used to process this event.
+    pub fn filter(&self) -> Result<EventFilter> {
+        self.kevent.filter.try_into()
+    }
+
+    /// Event flags.
+    pub fn flags(&self) -> EvFlags {
+        EvFlags::from_bits_retain(self.kevent.flags)
+    }
+
+    /// Filter-specific flags.
+    pub fn fflags(&self) -> FilterFlag {
+        FilterFlag::from_bits_retain(self.kevent.fflags)
+    }
+
+    /// Filter-specific data value.
+    pub fn data(&self) -> i64 {
+        self.kevent.data
+    }
+
+    /// Opaque user-defined value passed through the kernel unchanged.
+    pub fn udata(&self) -> u64 {
+        self.kevent.udata
+    }
+
+    /// Filter-specific extension data.
+    pub fn ext(&self) -> [u64; 2] {
+        self.kevent.ext
     }
 }
 
@@ -456,5 +581,5 @@ pub fn ev_set(
     ev.kevent.flags = flags.bits();
     ev.kevent.fflags = fflags.bits();
     ev.kevent.data = 0;
-    ev.kevent.udata = udata as type_of_udata;
+    ev.kevent.udata = udata as *mut libc::c_void;
 }

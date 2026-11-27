@@ -99,11 +99,7 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
       mini_toolbar_->SetVisible(false);
     }
   } else if (for_web_panel_) {
-    // Hide toolbar when active.
-    // When web panel is active, there is no UI in toolbar as
-    // web panel's toolbar doesn't have menu button.
     mini_toolbar_->UpdateState(IsActive(), /*is_highlighted*/ false);
-    mini_toolbar_->SetVisible(!IsActive());
   }
 
   using OutlineStyle = BraveContentsContainerOutline::Style;

@@ -1,4 +1,5 @@
 include_rules = [
   "+components/named_mojo_ipc_server",
+  "+components/power_monitor",
   "+mojo/core/embedder",
 ]

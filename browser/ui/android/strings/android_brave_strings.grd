@@ -839,6 +839,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BOTTOM_TOOLBAR_SUMMARY" desc="Summary for preference that enables the bottom navigation toolbar.">
         Show a bottom bar for quick access to home, bookmarks, and search
       </message>
+      <message name="IDS_BRAVE_BOTTOM_BAR_SETTING_TITLE" desc="Title of the switch in the Appearance settings page that shows or hides the bottom toolbar (a bar at the bottom of the screen with buttons such as new tab, tab switcher and menu). [CHAR_LIMIT=32]">
+        Bottom toolbar
+      </message>
       <message name="IDS_BRAVE_BOTTOM_NAVIGATION_TOOLBAR_DISABLED_SUMMARY" desc="Summary for disabled state of the bottom navigation toolbar.">
         This setting is disabled when the bottom address bar position is selected
       </message>
@@ -1614,9 +1617,6 @@ Are you sure you want to do this?
       <message name="IDS_TURN_ON_PRIVACY_STATS" desc="Button text for onboading bottomsheet.">
         Turn on privacy reports
       </message>
-      <message name="IDS_VISIBILITY" desc="Text for visibility.">
-        Visibility
-      </message>
       <message name="IDS_WEEK" desc="Tab title text">
         Week
       </message>
@@ -1733,6 +1733,24 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_PRIVACY_STATS" desc="Private stats title text.">
         Privacy Stats
+      </message>
+      <message name="IDS_NTP_STATS_MENU_MORE_OPTIONS" desc="Accessibility label of the button that opens the options menu of the privacy stats widget on the new tab page.">
+        More options
+      </message>
+      <message name="IDS_NTP_STATS_MENU_PRIVACY_REPORT" desc="Privacy stats widget menu item that opens the privacy report.">
+        Privacy report
+      </message>
+      <message name="IDS_NTP_STATS_MENU_LAUNCH_RECAP" desc="Privacy stats widget menu item that opens the Brave Recap page, a summary of what Shields has blocked.">
+        Launch Brave recap
+      </message>
+      <message name="IDS_NTP_STATS_MENU_HIDE" desc="Privacy stats widget menu item that hides the widget from the new tab page.">
+        Hide privacy stats
+      </message>
+      <message name="IDS_NTP_RECAP_BANNER_TITLE" desc="Title of the new tab page banner announcing that the Shields recap page is available.">
+        Your Shields recap is ready
+      </message>
+      <message name="IDS_NTP_RECAP_BANNER_TEXT" desc="Body of the new tab page banner announcing the Shields recap page. The text between the link tags is underlined; tapping the banner opens the recap.">
+        Brave has been busy blocking the bad stuff for you! <ph name="BEGIN_LINK">&lt;link&gt;</ph>See your recap<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
       <message name="IDS_PRIVACY_POLICY" desc="Brave rewards tos text">
         Privacy Policy
@@ -2622,15 +2640,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_DAPP_WALLET_PANEL_CONNECTIVITY_STATUS" desc="Brave wallet Dapp wallet connectivity status">
       Connect
     </message>
-    <message name="IDS_DAPP_WALLET_PANEL_DISCONNECT_STATUS" desc="Brave wallet Dapp wallet disconnect status">
-      Disconnected
-    </message>
-    <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_TRUST" desc="Site Permissions panel trust account for connected site">
-      Trust
-    </message>
-    <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_REVOKE" desc="Site Permissions panel revoke account for connected site">
-      Revoke
-    </message>
     <message name="IDS_DAPP_WALLET_PANEL_CONNECTIVITY_STATUS_CONNECTED" desc="Brave wallet Dapp wallet connectivity status">
       Connected
     </message>
@@ -3177,8 +3186,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_USE_BRAVE_TRANSLATE" desc="The label of the check-box that enables the prompt to translate a page.">
       Use Brave Translate
     </message>
-    <message name="IDS_WALLET_NON_ASCII_CHARACTERS" desc="A warning about Non-ASCII characters detected in a message">
-      NON-ASCII characters detected!
+    <message name="IDS_WALLET_SIGN_MESSAGE_UNEXPECTED_CHARACTERS" desc="Warning title when a wallet sign message contains null bytes, newlines, other non-printable characters, or non-ASCII characters">
+      Unexpected characters detected
     </message>
     <message name="IDS_WALLET_NON_ASCII_CHARACTERS_ORIGINAL" desc="A title to view an original message if Unicode characters detected">
       View original message
@@ -3735,6 +3744,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_MENU_SHRED_TEXT" desc="Shred menu item text to delete browsing data securely.">
       Shred site data
+    </message>
+    <message name="IDS_BRAVE_MENU_EXTENSIONS_UNAVAILABLE_ON_INTERNAL_PAGES" desc="Subtitle shown under the Extensions menu item when the current page is an internal browser page.">
+      Extensions are not available on internal pages
+    </message>
+    <message name="IDS_BRAVE_EXTENSIONS_MENU_INSTALLED_EXTENSIONS" desc="Header of the list of installed extensions in the extensions menu sheet.">
+      Installed extensions
+    </message>
+    <message name="IDS_BRAVE_EXTENSIONS_MENU_SETTINGS" desc="Row in the extensions menu sheet that opens the extensions settings.">
+      Extensions settings
     </message>
     <message name="IDS_BRAVE_SHRED_DATA_DIALOG_OK_BUTTON_TEXT" desc="Shred data confirmation dialog OK button text">
       Shred data

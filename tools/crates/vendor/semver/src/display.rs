@@ -122,9 +122,8 @@ fn pad(
     do_display: impl FnOnce(&mut fmt::Formatter) -> fmt::Result,
     do_len: impl FnOnce() -> usize,
 ) -> fmt::Result {
-    let min_width = match formatter.width() {
-        Some(min_width) => min_width,
-        None => return do_display(formatter),
+    let Some(min_width) = formatter.width() else {
+        return do_display(formatter);
     };
 
     let len = do_len();

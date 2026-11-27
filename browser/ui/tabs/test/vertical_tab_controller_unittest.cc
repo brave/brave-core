@@ -21,9 +21,16 @@
 
 class VerticalTabControllerUnitTest : public testing::Test {
  public:
+  VerticalTabControllerUnitTest() {
+    // Brave vertical tabs are unsupported when kTabStripUnification is on.
+    feature_list_.InitAndDisableFeature(tabs::kTabStripUnification);
+  }
+
   void SetUp() override {
     tabs::RegisterProfilePrefs(pref_service_.registry());
     brave_tabs::RegisterBraveProfilePrefs(pref_service_.registry());
+    pref_service_.registry()->RegisterBooleanPref(
+        brave_tabs::kVerticalTabsEnabled, false);
     focus_mode::RegisterProfilePrefs(pref_service_.registry());
   }
 
@@ -35,6 +42,7 @@ class VerticalTabControllerUnitTest : public testing::Test {
         user_data_host_, type, &pref_service_, focus_mode_controller);
   }
 
+  base::test::ScopedFeatureList feature_list_;
   sync_preferences::TestingPrefServiceSyncable pref_service_;
   // Each test creates at most one controller of each type, which registers
   // itself here.
@@ -44,6 +52,16 @@ class VerticalTabControllerUnitTest : public testing::Test {
 TEST_F(VerticalTabControllerUnitTest, SupportsBraveVerticalTabsNormalWindow) {
   auto controller = MakeController(BrowserWindowInterface::TYPE_NORMAL);
   EXPECT_TRUE(controller->SupportsBraveVerticalTabs());
+}
+
+TEST_F(VerticalTabControllerUnitTest,
+       SupportsBraveVerticalTabsFalseWhenTabStripUnificationEnabled) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeature(tabs::kTabStripUnification);
+  pref_service_.SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  auto controller = MakeController(BrowserWindowInterface::TYPE_NORMAL);
+  EXPECT_FALSE(controller->SupportsBraveVerticalTabs());
+  EXPECT_FALSE(controller->ShouldShowBraveVerticalTabs());
 }
 
 TEST_F(VerticalTabControllerUnitTest, SupportsBraveVerticalTabsPopupWindow) {

@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
@@ -33,6 +34,12 @@ class BrowserCollection;
 // pinned tabs to share a single web contents instance.
 // This service will be created when profile is created, so we don't have to
 // create this explicitly.
+//
+// Indices come in two flavors, named accordingly throughout this class:
+// "raw" indices are positions within one window's TabStripModel; "canonical"
+// indices are positions within |pinned_tab_data_|. The two only differ when
+// that window has an excluded pinned tab (see FindExcludedPinnedIndex());
+// ToCanonicalIndex()/ToRawIndex() convert between them.
 class SharedPinnedTabService : public KeyedService,
                                public BrowserCollectionObserver,
                                public TabStripModelObserver,
@@ -58,7 +65,7 @@ class SharedPinnedTabService : public KeyedService,
 
   // Returns nullptr if it's not dummy contents or the data isn't ready yet.
   const tabs::TabData* GetTabDataForDummyContents(
-      int index,
+      int raw_index,
       content::WebContents* maybe_dummy_contents);
 
   void TabDraggingEnded(BrowserWindowInterface* browser);
@@ -81,7 +88,7 @@ class SharedPinnedTabService : public KeyedService,
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
-  void OnTabPinnedStateChanged(tabs::TabInterface* tab, int index) override;
+  void OnTabPinnedStateChanged(tabs::TabInterface* tab, int raw_index) override;
   void OnTabChangedAt(tabs::TabInterface* tab,
                       TabChangeType change_type) override;
   void OnTabBlockedStateChanged(tabs::TabInterface* tab) override;
@@ -101,11 +108,11 @@ class SharedPinnedTabService : public KeyedService,
 
   void OnTabUnpinned(TabStripModel* tab_strip_model,
                      base::WeakPtr<content::WebContents> contents,
-                     int index);
+                     int raw_index);
 
-  void SynchronizeNewPinnedTab(int index);
-  void SynchronizeDeletedPinnedTab(int index);
-  void SynchronizeMovedPinnedTab(int from, int to);
+  void SynchronizeNewPinnedTab(int canonical_index);
+  void SynchronizeDeletedPinnedTab(int canonical_index);
+  void SynchronizeMovedPinnedTab(int canonical_from, int canonical_to);
   void SynchronizeNewBrowser(BrowserWindowInterface* browser);
 
   // Retries SynchronizeNewBrowser() for a browser whose synchronization was
@@ -116,7 +123,7 @@ class SharedPinnedTabService : public KeyedService,
   void MoveSharedWebContentsToActiveBrowser(
       base::WeakPtr<content::WebContents> contents);
   void MoveSharedWebContentsToBrowser(BrowserWindowInterface* browser,
-                                      int index,
+                                      int canonical_index,
                                       bool is_last_closing_browser = false);
 
   void OnSharedPinnedTabPrefChanged();
@@ -127,6 +134,27 @@ class SharedPinnedTabService : public KeyedService,
       content::WebContents* shared_contents);
 
   bool IsBrowserInTabDragging(BrowserWindowInterface* browser) const;
+
+  // Whether |contents| is |shared_contents| itself or a dummy for it.
+  bool IsTrackedContentsFor(content::WebContents* contents,
+                            content::WebContents* shared_contents) const;
+
+  // A window may contain one pinned tab that must never be tracked in
+  // |pinned_tab_data_| (see SharedPinnedTabExclusionMarker), which offsets
+  // every raw pinned-tab index in that window relative to |pinned_tab_data_|.
+  // These three helpers translate between the two index spaces.
+
+  // Raw pinned-tab index of |model|'s excluded tab, or std::nullopt if it has
+  // none. Assume at most one excluded pinned tab in the tab strip model.
+  std::optional<int> FindExcludedPinnedIndex(TabStripModel* model) const;
+
+  // Raw pinned-tab index in |model| (must not be the excluded tab's own
+  // index) -> the corresponding index into |pinned_tab_data_|.
+  int ToCanonicalIndex(TabStripModel* model, int raw_index) const;
+
+  // Index into |pinned_tab_data_| -> the raw pinned-tab index to use in
+  // |model|, accounting for |model|'s own excluded tab (if any).
+  int ToRawIndex(TabStripModel* model, int canonical_index) const;
 
   raw_ptr<Profile> profile_;
 

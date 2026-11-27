@@ -9,34 +9,35 @@ use std::{fs::FileTimes, time::SystemTime};
 use crate::errors::{Error, ErrorKind};
 use crate::OpenOptions;
 
-/// Wrapper around [`std::fs::File`][std::fs::File] which adds more helpful
-/// information to all errors.
-///
-/// [std::fs::File]: https://doc.rust-lang.org/stable/std/fs/struct.File.html
+#[allow(unused_imports)]
+use crate as fs_err; // for docs
+
+/// Wrapper around [`std::fs::File`] which adds more helpful information to all
+/// errors.
 #[derive(Debug)]
 pub struct File {
     file: fs::File,
     path: PathBuf,
 }
 
-// Opens a std File and returns it or an error generator which only needs the path to produce the error.
-// Exists for the `crate::read*` functions so they don't unconditionally build a PathBuf.
+/// Opens a [`std::fs::File`] and returns it or an error generator which only
+/// needs the path to produce the error.
+/// Exists for the `crate::read*` functions so they don't unconditionally build
+/// a [`PathBuf`].
 pub(crate) fn open(path: &Path) -> Result<std::fs::File, impl FnOnce(PathBuf) -> io::Error> {
     fs::File::open(path).map_err(|err| |path| Error::build(err, ErrorKind::OpenFile, path))
 }
 
-// like `open()` but for `crate::write`
+/// like [`open()`] but for [`crate::write`].
 pub(crate) fn create(path: &Path) -> Result<std::fs::File, impl FnOnce(PathBuf) -> io::Error> {
     fs::File::create(path).map_err(|err| |path| Error::build(err, ErrorKind::CreateFile, path))
 }
 
-/// Wrappers for methods from [`std::fs::File`][std::fs::File].
-///
-/// [std::fs::File]: https://doc.rust-lang.org/stable/std/fs/struct.File.html
+/// Wrappers for methods from [`std::fs::File`].
 impl File {
     /// Attempts to open a file in read-only mode.
     ///
-    /// Wrapper for [`File::open`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.open).
+    /// Wrapper for [`std::fs::File::open`].
     pub fn open<P>(path: P) -> Result<Self, io::Error>
     where
         P: Into<PathBuf>,
@@ -50,7 +51,7 @@ impl File {
 
     /// Opens a file in write-only mode.
     ///
-    /// Wrapper for [`File::create`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.create).
+    /// Wrapper for [`std::fs::File::create`].
     pub fn create<P>(path: P) -> Result<Self, io::Error>
     where
         P: Into<PathBuf>,
@@ -64,7 +65,7 @@ impl File {
 
     /// Opens a file in read-write mode.
     ///
-    /// Wrapper for [`File::create_new`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.create_new).
+    /// Wrapper for [`std::fs::File::create_new`].
     pub fn create_new<P>(path: P) -> Result<Self, io::Error>
     where
         P: Into<PathBuf>,
@@ -84,23 +85,26 @@ impl File {
 
     /// Returns a new `OpenOptions` object.
     ///
-    /// Wrapper for [`File::options`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.options).
+    /// Wrapper for [`std::fs::File::options`].
     pub fn options() -> OpenOptions {
         OpenOptions::new()
     }
 
     /// Attempts to sync all OS-internal metadata to disk.
     ///
-    /// Wrapper for [`File::sync_all`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.sync_all).
+    /// Wrapper for [`std::fs::File::sync_all`].
     pub fn sync_all(&self) -> Result<(), io::Error> {
         self.file
             .sync_all()
             .map_err(|source| self.error(source, ErrorKind::SyncFile))
     }
 
-    /// This function is similar to [`sync_all`], except that it might not synchronize file metadata to the filesystem.
+    /// This function is similar to [`sync_all`], except that it might not
+    /// synchronize file metadata to the filesystem.
     ///
-    /// Wrapper for [`File::sync_data`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.sync_data).
+    /// Wrapper for [`std::fs::File::sync_data`].
+    ///
+    /// [`sync_all`]: File::sync_all
     pub fn sync_data(&self) -> Result<(), io::Error> {
         self.file
             .sync_data()
@@ -109,7 +113,7 @@ impl File {
 
     /// Truncates or extends the underlying file, updating the size of this file to become `size`.
     ///
-    /// Wrapper for [`File::set_len`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.set_len).
+    /// Wrapper for [`std::fs::File::set_len`].
     pub fn set_len(&self, size: u64) -> Result<(), io::Error> {
         self.file
             .set_len(size)
@@ -118,7 +122,7 @@ impl File {
 
     /// Queries metadata about the underlying file.
     ///
-    /// Wrapper for [`File::metadata`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.metadata).
+    /// Wrapper for [`std::fs::File::metadata`].
     pub fn metadata(&self) -> Result<fs::Metadata, io::Error> {
         self.file
             .metadata()
@@ -129,7 +133,7 @@ impl File {
     /// existing `File` instance. Reads, writes, and seeks will affect both `File`
     /// instances simultaneously.
     ///
-    /// Wrapper for [`File::try_clone`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.try_clone).
+    /// Wrapper for [`std::fs::File::try_clone`].
     pub fn try_clone(&self) -> Result<Self, io::Error> {
         self.file
             .try_clone()
@@ -142,7 +146,7 @@ impl File {
 
     /// Changes the permissions on the underlying file.
     ///
-    /// Wrapper for [`File::set_permissions`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.set_permissions).
+    /// Wrapper for [`std::fs::File::set_permissions`].
     pub fn set_permissions(&self, perm: fs::Permissions) -> Result<(), io::Error> {
         self.file
             .set_permissions(perm)
@@ -155,7 +159,7 @@ impl File {
 impl File {
     /// Changes the timestamps of the underlying file.
     ///
-    /// Wrapper for [`File::set_times`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.set_times).
+    /// Wrapper for [`std::fs::File::set_times`].
     pub fn set_times(&self, times: FileTimes) -> Result<(), io::Error> {
         self.file
             .set_times(times)
@@ -164,7 +168,7 @@ impl File {
 
     /// Changes the modification time of the underlying file.
     ///
-    /// Wrapper for [`File::set_modified`](https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.set_modified).
+    /// Wrapper for [`std::fs::File::set_modified`].
     pub fn set_modified(&self, time: SystemTime) -> Result<(), io::Error> {
         self.file
             .set_modified(time)
@@ -177,7 +181,7 @@ impl File {
 impl File {
     /// Acquire an exclusive lock on the file. Blocks until the lock can be acquired.
     ///
-    /// Wrapper for [`File::lock()`](https://doc.rust-lang.org/nightly/std/fs/struct.File.html#method.lock).
+    /// Wrapper for [`std::fs::File::lock`].
     pub fn lock(&self) -> Result<(), io::Error> {
         self.file
             .lock()
@@ -186,7 +190,7 @@ impl File {
 
     /// Acquire a shared (non-exclusive) lock on the file. Blocks until the lock can be acquired.
     ///
-    /// Wrapper for [`File::lock_shared()`](https://doc.rust-lang.org/nightly/std/fs/struct.File.html#method.lock_shared).
+    /// Wrapper for [`std::fs::File::lock_shared`].
     pub fn lock_shared(&self) -> Result<(), io::Error> {
         self.file
             .lock_shared()
@@ -195,21 +199,21 @@ impl File {
 
     /// Try to acquire an exclusive lock on the file.
     ///
-    /// Wrapper for [`File::try_lock()`](https://doc.rust-lang.org/nightly/std/fs/struct.File.html#method.try_lock).
+    /// Wrapper for [`std::fs::File::try_lock`].
     pub fn try_lock(&self) -> Result<(), fs::TryLockError> {
         self.file.try_lock()
     }
 
     /// Try to acquire a shared (non-exclusive) lock on the file.
     ///
-    /// Wrapper for [`File::try_lock_shared()`](https://doc.rust-lang.org/nightly/std/fs/struct.File.html#method.try_lock_shared).
+    /// Wrapper for [`std::fs::File::try_lock_shared`].
     pub fn try_lock_shared(&self) -> Result<(), fs::TryLockError> {
         self.file.try_lock_shared()
     }
 
     /// Release all locks on the file.
     ///
-    /// Wrapper for [`File::unlock()`](https://doc.rust-lang.org/nightly/std/fs/struct.File.html#method.unlock).
+    /// Wrapper for [`std::fs::File::unlock`].
     pub fn unlock(&self) -> Result<(), io::Error> {
         self.file
             .unlock()
@@ -217,12 +221,9 @@ impl File {
     }
 }
 
-/// Methods added by fs-err that are not available on
-/// [`std::fs::File`][std::fs::File].
-///
-/// [std::fs::File]: https://doc.rust-lang.org/stable/std/fs/struct.File.html
+/// Methods added by fs-err that are not available on [`std::fs::File`].
 impl File {
-    /// Creates a [`File`](struct.File.html) from a raw file and its path.
+    /// Creates a [`fs_err::File`] from a file and its path.
     pub fn from_parts<P>(file: fs::File, path: P) -> Self
     where
         P: Into<PathBuf>,
@@ -233,33 +234,27 @@ impl File {
         }
     }
 
-    /// Extract the raw file and its path from this [`File`](struct.File.html)
+    /// Extract the raw file and its path from this [`fs_err::File`].
     pub fn into_parts(self) -> (fs::File, PathBuf) {
         (self.file, self.path)
     }
 
-    /// Consumes this [`File`](struct.File.html) and returns the underlying
-    /// [`std::fs::File`][std::fs::File].
+    /// Consumes this `File` and returns the underlying [`std::fs::File`].
     pub fn into_file(self) -> fs::File {
         self.file
     }
 
-    /// Consumes this [`File`](struct.File.html) and returns the underlying
-    /// path as a [`PathBuf`].
+    /// Consumes this `File` and returns the underlying path as a [`PathBuf`].
     pub fn into_path(self) -> PathBuf {
         self.path
     }
 
-    /// Returns a reference to the underlying [`std::fs::File`][std::fs::File].
-    ///
-    /// [std::fs::File]: https://doc.rust-lang.org/stable/std/fs/struct.File.html
+    /// Returns a reference to the underlying [`std::fs::File`].
     pub fn file(&self) -> &fs::File {
         &self.file
     }
 
-    /// Returns a mutable reference to the underlying [`std::fs::File`][std::fs::File].
-    ///
-    /// [std::fs::File]: https://doc.rust-lang.org/stable/std/fs/struct.File.html
+    /// Returns a mutable reference to the underlying [`std::fs::File`].
     pub fn file_mut(&mut self) -> &mut fs::File {
         &mut self.file
     }
@@ -391,10 +386,20 @@ mod unix {
                 .read_at(buf, offset)
                 .map_err(|err| self.error(err, ErrorKind::ReadAt))
         }
+        fn read_exact_at(&self, buf: &mut [u8], offset: u64) -> io::Result<()> {
+            self.file()
+                .read_exact_at(buf, offset)
+                .map_err(|err| self.error(err, ErrorKind::ReadExactAt))
+        }
         fn write_at(&self, buf: &[u8], offset: u64) -> io::Result<usize> {
             self.file()
                 .write_at(buf, offset)
                 .map_err(|err| self.error(err, ErrorKind::WriteAt))
+        }
+        fn write_all_at(&self, buf: &[u8], offset: u64) -> io::Result<()> {
+            self.file()
+                .write_all_at(buf, offset)
+                .map_err(|err| self.error(err, ErrorKind::WriteAllAt))
         }
     }
 

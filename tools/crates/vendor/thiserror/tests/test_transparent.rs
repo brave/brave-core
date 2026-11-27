@@ -1,3 +1,5 @@
+#![allow(clippy::items_after_statements)]
+
 use anyhow::anyhow;
 use std::error::Error as _;
 use std::io;
@@ -21,7 +23,7 @@ fn test_transparent_struct() {
     assert_eq!("E0", error.to_string());
     assert!(error.source().is_none());
 
-    let io = io::Error::new(io::ErrorKind::Other, "oh no!");
+    let io = io::Error::other("oh no!");
     let error = Error(ErrorKind::from(io));
     assert_eq!("E1", error.to_string());
     error.source().unwrap().downcast_ref::<io::Error>().unwrap();
@@ -61,6 +63,37 @@ fn test_transparent_enum_with_default_message() {
     let error = Error::Other(anyhow!("inner").context("outer"));
     assert_eq!("outer", error.to_string());
     assert_eq!("inner", error.source().unwrap().to_string());
+}
+
+#[test]
+fn test_transparent_enum_generic() {
+    #[derive(Error, Debug)]
+    enum Error<E> {
+        #[error("this failed")]
+        This,
+        #[error(transparent)]
+        Other(E),
+    }
+
+    #[derive(Error, Debug)]
+    #[error("inner error")]
+    struct Inner;
+
+    let error = Error::<Inner>::This;
+    assert_eq!("this failed", error.to_string());
+
+    let error = Error::Other(Inner);
+    assert_eq!("inner error", error.to_string());
+    assert!(error.source().is_none());
+
+    #[derive(Error, Debug)]
+    #[error("wrapped")]
+    struct WithSource(#[source] io::Error);
+
+    let io = io::Error::other("oh no!");
+    let error = Error::Other(WithSource(io));
+    assert_eq!("wrapped", error.to_string());
+    assert_eq!("oh no!", error.source().unwrap().to_string());
 }
 
 #[test]

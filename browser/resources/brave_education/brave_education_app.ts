@@ -7,15 +7,17 @@
 
 import '/strings.m.js'
 
-import { Command } from 'chrome://resources/brave/brave_browser_command.mojom-webui.js'
-import { BrowserCommandProxy } from 'chrome://resources/brave/js/brave_browser_command/brave_browser_command_proxy.js'
+import {
+  browserProxyFactory as browserCommandProxyFactory,
+  Command,
+} from 'chrome://resources/brave/brave_browser_command.mojom-webui.js'
 import { EventTracker } from 'chrome://resources/js/event_tracker.js'
 import { CrLitElement } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 import type { Url } from 'chrome://resources/mojo/url/mojom/url.mojom-webui.js'
 
 import { getCss } from './brave_education_app.css.js'
 import { getHtml } from './brave_education_app.html.js'
-import { BraveEducationProxyImpl } from './brave_education_proxy.js'
+import { browserProxyFactory } from './brave_education.mojom-webui.js'
 
 enum EventType {
   BROWSER_COMMAND = 'browser-command',
@@ -28,7 +30,7 @@ interface BrowserCommand {
 }
 
 function handleBrowserCommand(commandId: number) {
-  const handler = BrowserCommandProxy.getInstance().handler
+  const handler = browserCommandProxyFactory.getInstance().handler
   handler.canExecuteCommand(commandId).then(({ canExecute }) => {
     if (canExecute) {
       handler.executeCommand(commandId)
@@ -72,7 +74,8 @@ export class BraveEducationAppElement extends CrLitElement {
   override connectedCallback() {
     super.connectedCallback()
 
-    BraveEducationProxyImpl.getInstance()
+    browserProxyFactory
+      .getInstance()
       .handler.getServerUrl()
       .then(({ url }: { url: Url }) => this.handleUrlResult_(url))
   }

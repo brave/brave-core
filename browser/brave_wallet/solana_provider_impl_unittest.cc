@@ -114,10 +114,11 @@ class MockEventsListener : public mojom::SolanaEventsListener {
     testing::Mock::VerifyAndClearExpectations(this);
   }
 
-  // For expectations with Times(0). There is no completion signal for an event
-  // that must not happen, so drain the queue to let any stray event arrive.
-  void VerifyNoEvents() {
-    base::RunLoop().RunUntilIdle();
+  void VerifyNoEvents(SolanaProviderImpl& provider) {
+    // First deliver account changes to the provider, then deliver any events
+    // it emitted while processing those changes.
+    provider.FlushKeyringObserverForTesting();
+    observer_receiver_.FlushForTesting();
     testing::Mock::VerifyAndClearExpectations(this);
   }
 
@@ -475,11 +476,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
     return std::move(result);
   }
 
-  bool IsConnected() {
-    base::test::TestFuture<bool> future;
-    provider_->IsConnected(future.GetCallback());
-    return future.Get();
-  }
+  bool IsConnected() { return !!provider_->GetAndVerifyConnectedAccount(); }
 
  protected:
   std::unique_ptr<SolanaProviderImpl> provider_;
@@ -697,19 +694,33 @@ TEST_F(SolanaProviderImplUnitTest, Disconnect) {
   observer_->WaitAndVerify();
 }
 
+TEST_F(SolanaProviderImplUnitTest, SelectedDappAccountChanged_NotConnected) {
+  CreateWallet();
+  auto added_account = AddAccount();
+  ASSERT_FALSE(IsConnected());
+
+  // Switching the selected dapp account while not connected must not emit
+  // AccountChangedEvent or DisconnectEvent: there is nothing to reconcile.
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
+  EXPECT_CALL(*observer_, DisconnectEvent()).Times(0);
+  SetSelectedAccount(added_account->account_id);
+  observer_->VerifyNoEvents(*provider_);
+  EXPECT_FALSE(IsConnected());
+}
+
 TEST_F(SolanaProviderImplUnitTest,
        AccountChangedEvent_RemoveSelectedHardwareAccount) {
-  observer_->ExpectAccountChangedEvent(std::nullopt);
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   CreateWallet();
-  observer_->WaitAndVerify();
+  observer_->VerifyNoEvents(*provider_);
 
-  observer_->ExpectAccountChangedEvent(std::nullopt);
   auto added_hw_account = AddHardwareAccount(kHardwareAccountAddr);
-  observer_->WaitAndVerify();
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
+  observer_->VerifyNoEvents(*provider_);
 
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_hw_account->account_id);
-  observer_->VerifyNoEvents();
+  observer_->VerifyNoEvents(*provider_);
 
   // Connect the account.
   Navigate(GURL("https://brave.com"));
@@ -726,19 +737,20 @@ TEST_F(SolanaProviderImplUnitTest,
 }
 
 TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
-  observer_->ExpectAccountChangedEvent(std::nullopt);
+  // No events should be triggered before wallet creation.
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   CreateWallet();
-  observer_->WaitAndVerify();
+  observer_->VerifyNoEvents(*provider_);
 
-  // since it is not connected, account is empty
-  observer_->ExpectAccountChangedEvent(std::nullopt);
+  // Since it is not connected, account change does not happen.
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   auto added_account = AddAccount();
-  observer_->WaitAndVerify();
+  observer_->VerifyNoEvents(*provider_);
 
-  // selecting same account does not trigger any notifications.
+  // Selecting same account does not trigger any notifications.
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_account->account_id);
-  observer_->VerifyNoEvents();
+  observer_->VerifyNoEvents(*provider_);
 
   // connect the account
   Navigate(GURL("https://brave.com"));
@@ -747,26 +759,41 @@ TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
   ASSERT_TRUE(!account.empty());
   ASSERT_TRUE(IsConnected());
 
-  // add another account selects it, since it is not connected, account is empty
+  // add another account selects it; since it is not permitted for this page,
+  // the page disconnects.
   observer_->ExpectAccountChangedEvent(std::nullopt);
   auto added_another_account = AddAccount();
   observer_->WaitAndVerify();
+  EXPECT_FALSE(IsConnected());
 
   // selecting same account does not trigger any notifications.
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_another_account->account_id);
-  observer_->VerifyNoEvents();
+  observer_->VerifyNoEvents(*provider_);
 
-  // now switch back to the account just connected
-  observer_->ExpectAccountChangedEvent(added_account->account_id->address);
+  // Once disconnected, switching selection back to a permitted account must
+  // not silently reconnect the page - that requires an explicit connect().
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_account->account_id);
+  observer_->VerifyNoEvents(*provider_);
+  EXPECT_FALSE(IsConnected());
+
+  // Explicitly reconnect, then confirm account-change notifications resume
+  // now that the page is connected again.
+  account = Connect(std::nullopt, nullptr, nullptr);
+  ASSERT_TRUE(!account.empty());
+  ASSERT_TRUE(IsConnected());
+
+  observer_->ExpectAccountChangedEvent(std::nullopt);
+  SetSelectedAccount(added_another_account->account_id);
   observer_->WaitAndVerify();
+  EXPECT_FALSE(IsConnected());
 
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   // select non SOL account
   auto eth_account = GetAccountByIndex(0, mojom::KeyringId::kDefault);
   SetSelectedAccount(eth_account->account_id);
-  observer_->VerifyNoEvents();
+  observer_->VerifyNoEvents(*provider_);
 }
 
 TEST_F(SolanaProviderImplUnitTest, NoSelectedAccount) {
@@ -793,8 +820,8 @@ TEST_F(SolanaProviderImplUnitTest, NoSelectedAccount) {
   const std::string signature =
       SignMessage({1, 2, 3, 4}, std::nullopt, &error, &error_message);
   EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
-  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  EXPECT_EQ(error, mojom::SolanaProviderError::kUnauthorized);
+  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
 }
 
 TEST_F(SolanaProviderImplUnitTest, SignMessage) {
@@ -1263,21 +1290,21 @@ TEST_F(SolanaProviderImplUnitTest, Request) {
       l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
   EXPECT_TRUE(result.empty());
 
-  // errors should be propagated; no wallet or selected account exists here.
+  // errors should be propagated; no connected account exists here.
   for (const std::string& method :
        {"signTransaction", "signAndSendTransaction"}) {
     result = Request(absl::StrFormat(R"({"method": "%s",
                                          "params": {"message": "%s"}})",
                                      method, kEncodedSerializedMsg),
-                     mojom::SolanaProviderError::kInternalError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+                     mojom::SolanaProviderError::kUnauthorized,
+                     l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
     EXPECT_TRUE(result.empty());
   }
   result = Request(absl::StrFormat(R"({"method": "signAllTransactions",
                                        "params": {"message": ["%s"]}})",
                                    kEncodedSerializedMsg),
-                   mojom::SolanaProviderError::kInternalError,
-                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+                   mojom::SolanaProviderError::kUnauthorized,
+                   l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   EXPECT_TRUE(result.empty());
 
   // signMessage requires a blob message, a string is a parsing error.

@@ -608,11 +608,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     }
   }, [inputText, selectedSkill, selectedActionType])
 
-  // TODO(https://github.com/brave/brave-browser/issues/52542): Handle this conversation's deletion:
-  // Disable everything and show undismissable dialog when
-  // the conversation is deleted on the backend.
-  // const isDeleted = api.useCurrentOnConversationDeleted().hasEmitted
-
   const [previewUploadedFile, setPreviewUploadedFile] =
     React.useState<Mojom.UploadedFile | null>(null)
 

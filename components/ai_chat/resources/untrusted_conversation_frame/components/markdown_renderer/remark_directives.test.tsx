@@ -3,9 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { render, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import * as Mojom from '../../../common/mojom'
 import AssistantResponseContextProvider from '../assistant_response/assistant_response_context'
 import MockContext from '../../mock_untrusted_conversation_context'
+import MarkdownRenderer from '.'
 import {
   remarkDirectives,
   ALLOWED_DIRECTIVES,
@@ -228,4 +230,52 @@ test('tabSearch directive renders nothing without a query', () => {
 
   expect(container).toBeEmptyDOMElement()
   expect(searchForTabs).not.toHaveBeenCalled()
+})
+
+describe('workspace directive', () => {
+  const workspaceContent: Mojom.AssociatedContent = {
+    uuid: 'workspace-1',
+    contentType: Mojom.ContentType.Workspace,
+    contentId: 1,
+    title: 'my-project',
+    url: { url: 'workspace://0b5c3e2a-8f4d-4c1e-9a7b-2d6f8e1c3a5b' },
+    contentUsedPercentage: 100,
+    conversationTurnUuid: undefined,
+    toolsAttached: true,
+  }
+
+  const renderMarkdown = (text: string) =>
+    render(
+      <MockContext overrides={{ associatedContent: [workspaceContent] }}>
+        <MarkdownRenderer
+          text={text}
+          shouldShowTextCursor={false}
+        />
+      </MockContext>,
+    )
+
+  test('renders a button that opens the lightbox by default', () => {
+    renderMarkdown('::workspace[src/app.tsx]')
+    expect(
+      screen.queryByTestId('workspace-file-viewer'),
+    ).not.toBeInTheDocument()
+    expect(screen.queryByTitle('app.tsx')).not.toBeInTheDocument()
+    expect(screen.getByText('src/app.tsx')).toBeInTheDocument()
+  })
+
+  test('embeds the file with {inline}', () => {
+    renderMarkdown('::workspace[src/app.tsx]{inline}')
+    expect(screen.getByTestId('workspace-file-viewer')).toBeInTheDocument()
+    expect(screen.getByTitle('app.tsx')).toHaveAttribute(
+      'src',
+      expect.stringContaining('#file=src%2Fapp.tsx'),
+    )
+  })
+
+  test('ignores attributes other than inline', () => {
+    renderMarkdown('::workspace[src/app.tsx]{foo=bar}')
+    expect(
+      screen.queryByTestId('workspace-file-viewer'),
+    ).not.toBeInTheDocument()
+  })
 })

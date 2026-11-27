@@ -40,9 +40,11 @@ test("brave_components_unittests") {
     "//brave/components/brave_private_cdn:unit_tests",
     "//brave/components/brave_shields/core/browser:unit_tests",
     "//brave/components/brave_shields/core/common:unit_tests",
+    "//brave/components/brave_stats/browser:unit_tests",
     "//brave/components/brave_sync:unit_tests",
     "//brave/components/component_updater:unit_tests",
     "//brave/components/endpoint_client:unit_tests",
+    "//brave/components/global_privacy_control:unit_tests",
     "//brave/components/https_upgrade_exceptions/browser:unit_tests",
     "//brave/components/image_metadata_stripper/internal:unit_tests",
     "//brave/components/json:unit_tests",
@@ -60,6 +62,7 @@ test("brave_components_unittests") {
     deps += [
       "//brave/components/brave_wallet/browser:unit_tests",
       "//brave/components/brave_wallet/common:unit_tests",
+      "//brave/components/decentralized_dns/core:unit_tests",
     ]
   }
 
@@ -146,10 +149,13 @@ test("brave_components_unittests") {
     if (enable_playlist) {
       deps += [ "//brave/components/playlist/content/browser:unit_tests" ]
     }
+    deps += [ "//brave/components/ephemeral_storage:unit_tests" ]
+    deps += [ "//brave/components/permissions:content_unit_tests" ]
     if (enable_brave_wallet) {
       deps += [
         "//brave/components/brave_wallet/browser:unit_tests",
         "//brave/components/brave_wallet/renderer/test:unit_tests",
+        "//brave/components/decentralized_dns/content:unit_tests",
       ]
     }
   }

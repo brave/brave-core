@@ -1,6 +1,8 @@
 use crate::builder::IntoResettable;
 use crate::builder::Str;
 use crate::builder::StyledStr;
+#[cfg(feature = "help")]
+use crate::util::Escape;
 use crate::util::eq_ignore_case;
 
 /// A possible value of an argument.
@@ -68,7 +70,7 @@ impl PossibleValue {
     /// [possible value]: crate::builder::PossibleValuesParser
     /// [`Arg::hide_possible_values(true)`]: crate::Arg::hide_possible_values()
     pub fn new(name: impl Into<Str>) -> Self {
-        PossibleValue {
+        Self {
             name: name.into(),
             ..Default::default()
         }
@@ -186,11 +188,7 @@ impl PossibleValue {
     #[cfg(feature = "help")]
     pub(crate) fn get_visible_quoted_name(&self) -> Option<std::borrow::Cow<'_, str>> {
         if !self.hide {
-            Some(if self.name.contains(char::is_whitespace) {
-                format!("{:?}", self.name).into()
-            } else {
-                self.name.as_str().into()
-            })
+            Some(Escape(self.name.as_str()).to_cow())
         } else {
             None
         }

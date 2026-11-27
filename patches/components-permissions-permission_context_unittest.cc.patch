@@ -1,0 +1,13 @@
+diff --git a/components/permissions/permission_context_unittest.cc b/components/permissions/permission_context_unittest.cc
+index 51ff4a01897e6b6634726028d24a72ddc14018f8..43cb5dc86bd2079f65093a4f225cfea197bef8c5 100644
+--- a/components/permissions/permission_context_unittest.cc
++++ b/components/permissions/permission_context_unittest.cc
+@@ -263,7 +263,7 @@ class TestSecureOriginRestrictedPermissionContext
+ 
+ class PermissionContextBaseTestClient : public TestPermissionsClient {
+  public:
+-  bool CanBypassEmbeddingOriginCheck(const GURL& requesting_origin,
++  bool CanBypassEmbeddingOriginCheck(ContentSettingsType type, const GURL& requesting_origin,
+                                      const GURL& embedding_origin) override {
+     return requesting_origin.SchemeIs("chrome-extension");
+   }

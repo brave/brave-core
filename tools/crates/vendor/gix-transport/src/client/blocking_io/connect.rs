@@ -1,66 +1,90 @@
-pub use crate::client::non_io_types::connect::{Error, Options};
+pub use crate::client::non_io_types::connect::Options;
 
 pub(crate) mod function {
-    use crate::client::{non_io_types::connect::Error, Transport};
+    use crate::client::blocking_io::Transport;
+    #[cfg(feature = "http-client-curl")]
+    use crate::client::blocking_io::http::curl::Curl;
+    #[cfg(all(feature = "http-client-reqwest", not(feature = "http-client-curl")))]
+    use crate::client::blocking_io::http::reqwest::Remote as Reqwest;
+
+    use gix_error::Result;
+    use gix_error::{ResultExt, bail, message};
 
     /// A general purpose connector connecting to a repository identified by the given `url`.
     ///
     /// This includes connections to
-    /// [local repositories][crate::client::file::connect()],
-    /// [repositories over ssh][crate::client::ssh::connect()],
-    /// [git daemons][crate::client::git::connect()],
-    /// and if compiled in connections to [git repositories over https][crate::client::http::connect()].
+    /// [local repositories](crate::client::blocking_io::file::connect()),
+    /// [repositories over ssh](crate::client::blocking_io::ssh::connect()),
+    /// [git daemons](crate::client::blocking_io::connect::connect()),
+    /// and if compiled in connections to [git repositories over https](crate::client::blocking_io::http::connect()).
     ///
     /// Use `options` to further control specifics of the transport resulting from the connection.
-    pub fn connect<Url, E>(url: Url, options: super::Options) -> Result<Box<dyn Transport + Send>, Error>
+    pub fn connect<Url, E>(url: Url, options: super::Options) -> Result<Box<dyn Transport + Send>>
     where
         Url: TryInto<gix_url::Url, Error = E>,
-        gix_url::parse::Error: From<E>,
+        E: std::error::Error + Send + Sync + 'static,
     {
-        let mut url = url.try_into().map_err(gix_url::parse::Error::from)?;
+        let mut url = url.try_into().or_raise(|| message("Could not parse URL"))?;
         Ok(match url.scheme {
-            gix_url::Scheme::Ext(_) => return Err(Error::UnsupportedScheme(url.scheme)),
+            gix_url::Scheme::Ext | gix_url::Scheme::Helper(_) | gix_url::Scheme::HelperUrl(_) => {
+                bail!("The '{}' protocol is currently unsupported".unsupported(), url.scheme);
+            }
             gix_url::Scheme::File => {
                 if url.user().is_some() || url.password().is_some() || url.host().is_some() || url.port.is_some() {
-                    return Err(Error::UnsupportedUrlTokens {
-                        url: url.to_bstring(),
-                        scheme: url.scheme,
-                    });
+                    bail!(
+                        "The url {:?} contains information that would not be used by the {} protocol".validation(),
+                        url.to_bstring(),
+                        url.scheme
+                    );
                 }
                 Box::new(
                     crate::client::blocking_io::file::connect(url.path, options.version, options.trace)
-                        .map_err(|e| Box::new(e) as Box<dyn std::error::Error + Send + Sync>)?,
+                        .or_raise(|| message("connection failed"))?,
                 )
             }
             gix_url::Scheme::Ssh => Box::new({
                 crate::client::blocking_io::ssh::connect(url, options.version, options.ssh, options.trace)
-                    .map_err(|e| Box::new(e) as Box<dyn std::error::Error + Send + Sync>)?
+                    .or_raise(|| message("connection failed"))?
             }),
             gix_url::Scheme::Git => {
                 if url.user().is_some() {
-                    return Err(Error::UnsupportedUrlTokens {
-                        url: url.to_bstring(),
-                        scheme: url.scheme,
-                    });
+                    bail!(
+                        "The url {:?} contains information that would not be used by the {} protocol".validation(),
+                        url.to_bstring(),
+                        url.scheme
+                    );
                 }
                 Box::new({
                     let path = std::mem::take(&mut url.path);
-                    crate::client::git::connect(
+                    crate::client::git::blocking_io::connect(
                         url.host().expect("host is present in url"),
                         path,
                         options.version,
                         url.port,
                         options.trace,
                     )
-                    .map_err(|e| Box::new(e) as Box<dyn std::error::Error + Send + Sync>)?
+                    .or_raise(|| message("connection failed"))?
                 })
             }
             #[cfg(not(any(feature = "http-client-curl", feature = "http-client-reqwest")))]
-            gix_url::Scheme::Https | gix_url::Scheme::Http => return Err(Error::CompiledWithoutHttp(url.scheme)),
-            #[cfg(any(feature = "http-client-curl", feature = "http-client-reqwest"))]
             gix_url::Scheme::Https | gix_url::Scheme::Http => {
-                Box::new(crate::client::http::connect(url, options.version, options.trace))
+                bail!(
+                    "'{}' is not compiled in. Compile with the 'http-client-curl' or 'http-client-reqwest' cargo feature".unsupported(),
+                    url.scheme
+                );
             }
+            #[cfg(feature = "http-client-curl")]
+            gix_url::Scheme::Https | gix_url::Scheme::Http => Box::new(
+                crate::client::blocking_io::http::connect::<Curl>(url, options.version, options.trace),
+            ),
+            #[cfg(all(feature = "http-client-reqwest", not(feature = "http-client-curl")))]
+            gix_url::Scheme::Https | gix_url::Scheme::Http => Box::new(crate::client::blocking_io::http::connect::<
+                Reqwest,
+            >(
+                url, options.version, options.trace
+            )),
         })
     }
 }
+
+pub use function::connect;

@@ -1,3 +1,18 @@
+# 0.23.1
+
+- Make the tests build again on non-SIMD architectures
+
+# 0.23.0
+
+- Added more consts for preconfigured configs and engines
+- Make DecodeError::InvalidLastSymbol more clear by including the decoded value
+- Added SIMD-accelerated engines behind the default-on `simd-unsafe` feature: `Simd` picks the best
+  instruction set at runtime (AVX2 on `x86_64`, NEON on `aarch64`) and falls back to the scalar
+  `GeneralPurpose` engine, while `Avx2` and `Neon` target one instruction set with no runtime
+  detection and work in `no_std`. The engines support the standard and URL-safe alphabets.
+- Update MSRV to 1.71.0
+- Add support for custom padding symbols
+
 # 0.22.1
 
 - Correct the symbols used for the predefined `alphabet::BIN_HEX`.

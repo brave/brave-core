@@ -52,6 +52,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   EXPECT_EQ(prices[0]->vs_currency, "USD");
   EXPECT_EQ(prices[0]->percentage_change_24h, "8.021672460190562");
   EXPECT_EQ(prices[0]->source, mojom::AssetPriceSource::kCoingecko);
+  EXPECT_EQ(prices[0]->cache_status, mojom::Gate3CacheStatus::kHit);
 
   // Check LINK token (ETH chain with contract address)
   EXPECT_EQ(prices[1]->coin, mojom::CoinType::ETH);
@@ -61,6 +62,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   EXPECT_EQ(prices[1]->vs_currency, "USD");
   EXPECT_EQ(prices[1]->percentage_change_24h, "0.5871625385632929");
   EXPECT_EQ(prices[1]->source, mojom::AssetPriceSource::kJupiter);
+  EXPECT_EQ(prices[1]->cache_status, mojom::Gate3CacheStatus::kHit);
 
   // Test with native tokens
   prices.clear();
@@ -80,7 +82,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
       "price": "2800.0",
       "percentage_change_24h": "-1.2",
       "vs_currency": "USD",
-      "cache_status": "HIT",
+      "cache_status": "MISS",
       "source": "coingecko"
     }
   ])";
@@ -93,6 +95,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   EXPECT_EQ(prices[0]->vs_currency, "USD");
   EXPECT_EQ(prices[0]->percentage_change_24h, "2.5");
   EXPECT_EQ(prices[0]->source, mojom::AssetPriceSource::kCoingecko);
+  EXPECT_EQ(prices[0]->cache_status, mojom::Gate3CacheStatus::kHit);
 
   // Check ETH native token
   EXPECT_EQ(prices[1]->coin, mojom::CoinType::ETH);
@@ -101,6 +104,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   EXPECT_EQ(prices[1]->vs_currency, "USD");
   EXPECT_EQ(prices[1]->percentage_change_24h, "-1.2");
   EXPECT_EQ(prices[1]->source, mojom::AssetPriceSource::kCoingecko);
+  EXPECT_EQ(prices[1]->cache_status, mojom::Gate3CacheStatus::kMiss);
 
   // Test with EUR currency
   prices.clear();
@@ -122,6 +126,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   EXPECT_EQ(prices[0]->vs_currency, "EUR");
   EXPECT_EQ(prices[0]->percentage_change_24h, "0.1");
   EXPECT_EQ(prices[0]->source, mojom::AssetPriceSource::kCoingecko);
+  EXPECT_EQ(prices[0]->cache_status, mojom::Gate3CacheStatus::kHit);
 
   // Test with empty percentage change 24h
   prices.clear();
@@ -160,6 +165,33 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   prices = ParseAssetPrices(ParseJson(json));
   ASSERT_EQ(prices.size(), 1UL);
   EXPECT_EQ(prices[0]->source, mojom::AssetPriceSource::kUnknown);
+
+  // Test with unrecognized cache status: only that entry is skipped
+  prices.clear();
+  json = R"([
+    {
+      "coin": "BTC",
+      "chain_id": "bitcoin_mainnet",
+      "price": "42000.0",
+      "percentage_change_24h": "0.1",
+      "vs_currency": "EUR",
+      "cache_status": "STALE",
+      "source": "coingecko"
+    },
+    {
+      "coin": "BTC",
+      "chain_id": "bitcoin_mainnet",
+      "price": "43000.0",
+      "percentage_change_24h": "0.2",
+      "vs_currency": "EUR",
+      "cache_status": "miss",
+      "source": "coingecko"
+    }
+  ])";
+  prices = ParseAssetPrices(ParseJson(json));
+  ASSERT_EQ(prices.size(), 1UL);
+  EXPECT_EQ(prices[0]->price, "43000.0");
+  EXPECT_EQ(prices[0]->cache_status, mojom::Gate3CacheStatus::kMiss);
 
   // Invalid json input
   prices = ParseAssetPrices(ParseJson("{\"result\": \"not an array\"}"));

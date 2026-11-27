@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_browser_features.h"
 
+#include "brave/components/v8/buildflags/buildflags.h"
 #include "build/build_config.h"
 
 namespace features {
@@ -86,6 +87,9 @@ BASE_FEATURE(kBraveAndroidTabGroupsSettings, base::FEATURE_ENABLED_BY_DEFAULT);
 // "Add to Home screen" action on Android.
 BASE_FEATURE(kBraveAndroidMergeInstallPwaAndCreateShortcut,
              base::FEATURE_DISABLED_BY_DEFAULT);
+
+// Enable browser extensions on Android.
+BASE_FEATURE(kBraveAndroidExtensions, base::FEATURE_DISABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_ANDROID)
 
 // The variant of the "day zero" experiment. i.e. A, B, C, D, etc.

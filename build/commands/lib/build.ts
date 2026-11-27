@@ -6,6 +6,8 @@
 import config from './config.ts'
 import util from './util.ts'
 import branding from './branding.js'
+import { runBotsGen } from './builder.ts'
+import type { Builder } from './builderTypes.ts'
 import type * as buildOptions from './buildOptions.ts'
 import * as buildUtils from './buildUtils.ts'
 
@@ -15,9 +17,12 @@ export async function build(
     & buildOptions.TargetConfigOptions
     & buildOptions.GnArgsOptions
     & buildOptions.GnGenOptions
-    & buildOptions.NinjaOptions,
+    & buildOptions.NinjaOptions & { builder?: Builder | undefined },
 ) {
-  config.buildConfig = buildConfig
+  // A builder's config already builds its own build config.
+  if (!options.builder) {
+    config.buildConfig = buildConfig
+  }
   config.update(options)
   buildUtils.checkVersionsMatch()
 
@@ -26,6 +31,15 @@ export async function build(
   buildUtils.ensureVsFilesMount()
 
   if (options.prepare_only) {
+    return
+  }
+
+  // TODO(http://brave.dev/b/56449): Experimental implementation for integration
+  // with our bots generator.
+  if (options.builder) {
+    // `bots gen` writes the builder's `args.gn` and runs `gn gen` itself.
+    await runBotsGen(options.builder)
+    await util.buildTargets(options.builder.compileTargets)
     return
   }
 

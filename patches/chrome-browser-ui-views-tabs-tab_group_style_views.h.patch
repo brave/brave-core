@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_group_style_views.h b/chrome/browser/ui/views/tabs/tab_group_style_views.h
+index c17f9d0ced07248187d733f40063bc25abec3c73..fab6a33b73a815058965d56fdf4ba8f10e0baa5f 100644
+--- a/chrome/browser/ui/views/tabs/tab_group_style_views.h
++++ b/chrome/browser/ui/views/tabs/tab_group_style_views.h
+@@ -22,12 +22,12 @@ class TabGroupHeader;
+ class TabGroupViews;
+ 
+ // Styling of tab groups that depends on views.
+-class TabGroupStyleViews {
++class TabGroupStyleViews_ChromiumImpl {
+  public:
+-  explicit TabGroupStyleViews(const TabGroupViews& tab_group_views);
+-  TabGroupStyleViews(const TabGroupStyleViews&) = delete;
+-  TabGroupStyleViews& operator=(const TabGroupStyleViews&) = delete;
+-  virtual ~TabGroupStyleViews();
++  explicit TabGroupStyleViews_ChromiumImpl(const TabGroupViews& tab_group_views);
++  TabGroupStyleViews_ChromiumImpl(const TabGroupStyleViews_ChromiumImpl&) = delete;
++  TabGroupStyleViews_ChromiumImpl& operator=(const TabGroupStyleViews_ChromiumImpl&) = delete;
++  virtual ~TabGroupStyleViews_ChromiumImpl();
+ 
+   // returns whether the underline for the group should be hidden
+   virtual bool TabGroupUnderlineShouldBeHidden() const;

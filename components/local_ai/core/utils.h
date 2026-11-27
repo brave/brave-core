@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_LOCAL_AI_CORE_UTILS_H_
 
 #include <optional>
-#include <string_view>
 
 #include "mojo/public/cpp/base/big_buffer.h"
 
@@ -25,10 +24,14 @@ enum class OnDeviceSpeechModel;
 // speech recognition. A null `local_state` reads as the switch's default, on.
 bool CanOfferOnDeviceSpeech(const PrefService* local_state);
 
-// The local-state pref that says whether the user enabled `model`:
-// `prefs::kOnDeviceSpeechEnglishModelEnabled` for English and
-// `prefs::kOnDeviceSpeechMultilingualModelEnabled` for multilingual.
-std::string_view GetOnDeviceSpeechModelEnabledPref(OnDeviceSpeechModel model);
+// The model that the user enabled (`prefs::kOnDeviceSpeechModel`), or
+// std::nullopt when the user enabled none. A null `local_state` reads as none.
+std::optional<OnDeviceSpeechModel> GetEnabledOnDeviceSpeechModel(
+    const PrefService* local_state);
+
+// Enables `model`, in place of the model that the user enabled before.
+void EnableOnDeviceSpeechModel(PrefService& local_state,
+                               OnDeviceSpeechModel model);
 
 // Whether `model` is to be on disk. True when `CanOfferOnDeviceSpeech` is true,
 // `kBraveOnDeviceSpeechMultilingual` is enabled for the multilingual model, and

@@ -105,10 +105,6 @@ package = "autocfg"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/aho-corasick-v1"
 package = "aho-corasick"
 
-[patch.crates-io.base64_v0_22]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/base64-v0_22"
-package = "base64"
-
 [patch.crates-io.bytes_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/bytes-v1"
 package = "bytes"
@@ -120,6 +116,10 @@ package = "zeroize"
 [patch.crates-io.zeroize_derive_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/zeroize_derive-v1"
 package = "zeroize_derive"
+
+[patch.crates-io.base64_v0_23]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/base64-v0_23"
+package = "base64"
 
 [patch.crates-io.bitflags_v2]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/bitflags-v2"
@@ -188,6 +188,10 @@ package = "hex"
 [patch.crates-io.indexmap_v2]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/indexmap-v2"
 package = "indexmap"
+
+[patch.crates-io.itertools_v0_14]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/itertools-v0_14"
+package = "itertools"
 
 [patch.crates-io.itoa_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/itoa-v1"

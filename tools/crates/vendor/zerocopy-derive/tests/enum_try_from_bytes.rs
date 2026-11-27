@@ -12,7 +12,30 @@
 
 include!("include.rs");
 
+#[derive(imp::TryFromBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
+#[repr(u8)]
+enum FieldBindings {
+    Named { candidate: bool, candidate_: bool, field: bool, r#type: bool },
+    Tuple(bool, bool, bool, bool),
+}
+
+#[test]
+fn field_bindings() {
+    for tag in 0..2 {
+        util::test_is_safe::<FieldBindings, _>([tag, 0u8, 0, 0, 0], true);
+        util::test_is_safe::<FieldBindings, _>([tag, 1u8, 1, 1, 1], true);
+        for idx in 1..5 {
+            let mut bytes = [tag, 0u8, 0, 0, 0];
+            bytes[idx] = 2;
+            util::test_is_safe::<FieldBindings, _>(bytes, false);
+        }
+    }
+    util::test_is_safe::<FieldBindings, _>([2u8, 0, 0, 0, 0], false);
+}
+
 #[derive(Eq, PartialEq, Debug, imp::Immutable, imp::KnownLayout, imp::TryFromBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u8)]
 enum Foo {
     A,
@@ -29,6 +52,7 @@ fn test_foo() {
 }
 
 #[derive(Eq, PartialEq, Debug, imp::KnownLayout, imp::Immutable, imp::TryFromBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u16)]
 enum Bar {
     A = 0,
@@ -46,6 +70,7 @@ fn test_bar() {
 }
 
 #[derive(Eq, PartialEq, Debug, imp::KnownLayout, imp::Immutable, imp::TryFromBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u32)]
 enum Baz {
     A = 1,
@@ -78,6 +103,7 @@ type i8 = bool;
 const THREE: ::core::primitive::i8 = 3;
 
 #[derive(Eq, PartialEq, Debug, imp::KnownLayout, imp::Immutable, imp::TryFromBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(i8)]
 enum Blah {
     A = 1,
@@ -114,6 +140,7 @@ fn test_blah() {
 #[derive(
     Eq, PartialEq, Debug, imp::KnownLayout, imp::Immutable, imp::TryFromBytes, imp::IntoBytes,
 )]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(C)]
 enum FieldlessButNotUnitOnly {
     A,
@@ -124,17 +151,17 @@ enum FieldlessButNotUnitOnly {
 #[test]
 fn test_fieldless_but_not_unit_only() {
     const SIZE: usize = ::core::mem::size_of::<FieldlessButNotUnitOnly>();
-    let disc: [u8; SIZE] = ::zerocopy::transmute!(FieldlessButNotUnitOnly::A);
+    let disc: [u8; SIZE] = ::zerocopy_renamed::transmute!(FieldlessButNotUnitOnly::A);
     imp::assert_eq!(
         <FieldlessButNotUnitOnly as imp::TryFromBytes>::try_read_from_bytes(&disc[..]),
         imp::Ok(FieldlessButNotUnitOnly::A)
     );
-    let disc: [u8; SIZE] = ::zerocopy::transmute!(FieldlessButNotUnitOnly::B());
+    let disc: [u8; SIZE] = ::zerocopy_renamed::transmute!(FieldlessButNotUnitOnly::B());
     imp::assert_eq!(
         <FieldlessButNotUnitOnly as imp::TryFromBytes>::try_read_from_bytes(&disc[..]),
         imp::Ok(FieldlessButNotUnitOnly::B())
     );
-    let disc: [u8; SIZE] = ::zerocopy::transmute!(FieldlessButNotUnitOnly::C {});
+    let disc: [u8; SIZE] = ::zerocopy_renamed::transmute!(FieldlessButNotUnitOnly::C {});
     imp::assert_eq!(
         <FieldlessButNotUnitOnly as imp::TryFromBytes>::try_read_from_bytes(&disc[..]),
         imp::Ok(FieldlessButNotUnitOnly::C {})
@@ -148,6 +175,7 @@ fn test_fieldless_but_not_unit_only() {
 #[derive(
     Eq, PartialEq, Debug, imp::KnownLayout, imp::Immutable, imp::TryFromBytes, imp::IntoBytes,
 )]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(C)]
 enum WeirdDiscriminants {
     A = -7,
@@ -158,17 +186,17 @@ enum WeirdDiscriminants {
 #[test]
 fn test_weird_discriminants() {
     const SIZE: usize = ::core::mem::size_of::<WeirdDiscriminants>();
-    let disc: [u8; SIZE] = ::zerocopy::transmute!(WeirdDiscriminants::A);
+    let disc: [u8; SIZE] = ::zerocopy_renamed::transmute!(WeirdDiscriminants::A);
     imp::assert_eq!(
         <WeirdDiscriminants as imp::TryFromBytes>::try_read_from_bytes(&disc[..]),
         imp::Ok(WeirdDiscriminants::A)
     );
-    let disc: [u8; SIZE] = ::zerocopy::transmute!(WeirdDiscriminants::B);
+    let disc: [u8; SIZE] = ::zerocopy_renamed::transmute!(WeirdDiscriminants::B);
     imp::assert_eq!(
         <WeirdDiscriminants as imp::TryFromBytes>::try_read_from_bytes(&disc[..]),
         imp::Ok(WeirdDiscriminants::B)
     );
-    let disc: [u8; SIZE] = ::zerocopy::transmute!(WeirdDiscriminants::C);
+    let disc: [u8; SIZE] = ::zerocopy_renamed::transmute!(WeirdDiscriminants::C);
     imp::assert_eq!(
         <WeirdDiscriminants as imp::TryFromBytes>::try_read_from_bytes(&disc[..]),
         imp::Ok(WeirdDiscriminants::C)
@@ -183,6 +211,7 @@ fn test_weird_discriminants() {
 #[derive(
     Eq, PartialEq, Debug, imp::KnownLayout, imp::Immutable, imp::TryFromBytes, imp::IntoBytes,
 )]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(C)]
 enum HasFields {
     A(u32),
@@ -193,14 +222,15 @@ enum HasFields {
 fn test_has_fields() {
     const SIZE: usize = ::core::mem::size_of::<HasFields>();
 
-    let bytes: [u8; SIZE] = ::zerocopy::transmute!(HasFields::A(10));
+    let bytes: [u8; SIZE] = ::zerocopy_renamed::transmute!(HasFields::A(10));
     imp::assert_eq!(
         <HasFields as imp::TryFromBytes>::try_read_from_bytes(&bytes[..]),
         imp::Ok(HasFields::A(10)),
     );
 
-    let bytes: [u8; SIZE] =
-        ::zerocopy::transmute!(HasFields::B { foo: ::core::num::NonZeroU32::new(123456).unwrap() });
+    let bytes: [u8; SIZE] = ::zerocopy_renamed::transmute!(HasFields::B {
+        foo: ::core::num::NonZeroU32::new(123456).unwrap()
+    });
     imp::assert_eq!(
         <HasFields as imp::TryFromBytes>::try_read_from_bytes(&bytes[..]),
         imp::Ok(HasFields::B { foo: ::core::num::NonZeroU32::new(123456).unwrap() }),
@@ -208,6 +238,7 @@ fn test_has_fields() {
 }
 
 #[derive(Eq, PartialEq, Debug, imp::KnownLayout, imp::Immutable, imp::TryFromBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(C, align(16))]
 enum HasFieldsAligned {
     A(u32),
@@ -221,6 +252,7 @@ fn test_has_fields_aligned() {
     const SIZE: usize = ::core::mem::size_of::<HasFieldsAligned>();
 
     #[derive(imp::IntoBytes)]
+    #[zerocopy(crate = "zerocopy_renamed")]
     #[repr(C)]
     struct BytesOfHasFieldsAligned {
         has_fields: HasFields,
@@ -229,13 +261,13 @@ fn test_has_fields_aligned() {
 
     let wrap = |has_fields| BytesOfHasFieldsAligned { has_fields, padding: [0; 8] };
 
-    let bytes: [u8; SIZE] = ::zerocopy::transmute!(wrap(HasFields::A(10)));
+    let bytes: [u8; SIZE] = ::zerocopy_renamed::transmute!(wrap(HasFields::A(10)));
     imp::assert_eq!(
         <HasFieldsAligned as imp::TryFromBytes>::try_read_from_bytes(&bytes[..]),
         imp::Ok(HasFieldsAligned::A(10)),
     );
 
-    let bytes: [u8; SIZE] = ::zerocopy::transmute!(wrap(HasFields::B {
+    let bytes: [u8; SIZE] = ::zerocopy_renamed::transmute!(wrap(HasFields::B {
         foo: ::core::num::NonZeroU32::new(123456).unwrap()
     }));
     imp::assert_eq!(
@@ -247,6 +279,7 @@ fn test_has_fields_aligned() {
 #[derive(
     Eq, PartialEq, Debug, imp::KnownLayout, imp::Immutable, imp::TryFromBytes, imp::IntoBytes,
 )]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u32)]
 enum HasFieldsPrimitive {
     A(u32),
@@ -257,13 +290,13 @@ enum HasFieldsPrimitive {
 fn test_has_fields_primitive() {
     const SIZE: usize = ::core::mem::size_of::<HasFieldsPrimitive>();
 
-    let bytes: [u8; SIZE] = ::zerocopy::transmute!(HasFieldsPrimitive::A(10));
+    let bytes: [u8; SIZE] = ::zerocopy_renamed::transmute!(HasFieldsPrimitive::A(10));
     imp::assert_eq!(
         <HasFieldsPrimitive as imp::TryFromBytes>::try_read_from_bytes(&bytes[..]),
         imp::Ok(HasFieldsPrimitive::A(10)),
     );
 
-    let bytes: [u8; SIZE] = ::zerocopy::transmute!(HasFieldsPrimitive::B {
+    let bytes: [u8; SIZE] = ::zerocopy_renamed::transmute!(HasFieldsPrimitive::B {
         foo: ::core::num::NonZeroU32::new(123456).unwrap(),
     });
     imp::assert_eq!(
@@ -273,6 +306,7 @@ fn test_has_fields_primitive() {
 }
 
 #[derive(Eq, PartialEq, Debug, imp::KnownLayout, imp::Immutable, imp::TryFromBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u32, align(16))]
 enum HasFieldsPrimitiveAligned {
     A(u32),
@@ -286,6 +320,7 @@ fn test_has_fields_primitive_aligned() {
     const SIZE: usize = ::core::mem::size_of::<HasFieldsPrimitiveAligned>();
 
     #[derive(imp::IntoBytes)]
+    #[zerocopy(crate = "zerocopy_renamed")]
     #[repr(C)]
     struct BytesOfHasFieldsPrimitiveAligned {
         has_fields: HasFieldsPrimitive,
@@ -294,13 +329,13 @@ fn test_has_fields_primitive_aligned() {
 
     let wrap = |has_fields| BytesOfHasFieldsPrimitiveAligned { has_fields, padding: [0; 8] };
 
-    let bytes: [u8; SIZE] = ::zerocopy::transmute!(wrap(HasFieldsPrimitive::A(10)));
+    let bytes: [u8; SIZE] = ::zerocopy_renamed::transmute!(wrap(HasFieldsPrimitive::A(10)));
     imp::assert_eq!(
         <HasFieldsPrimitiveAligned as imp::TryFromBytes>::try_read_from_bytes(&bytes[..]),
         imp::Ok(HasFieldsPrimitiveAligned::A(10)),
     );
 
-    let bytes: [u8; SIZE] = ::zerocopy::transmute!(wrap(HasFieldsPrimitive::B {
+    let bytes: [u8; SIZE] = ::zerocopy_renamed::transmute!(wrap(HasFieldsPrimitive::B {
         foo: ::core::num::NonZeroU32::new(123456).unwrap()
     }));
     imp::assert_eq!(
@@ -312,6 +347,7 @@ fn test_has_fields_primitive_aligned() {
 }
 
 #[derive(imp::TryFromBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(align(4), u32)]
 enum HasReprAlignFirst {
     A,
@@ -321,6 +357,7 @@ enum HasReprAlignFirst {
 util_assert_impl_all!(HasReprAlignFirst: imp::TryFromBytes);
 
 #[derive(imp::KnownLayout, imp::TryFromBytes, imp::Immutable)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u8)]
 enum Complex {
     UnitLike,
@@ -331,6 +368,7 @@ enum Complex {
 util_assert_impl_all!(Complex: imp::TryFromBytes);
 
 #[derive(imp::KnownLayout, imp::TryFromBytes, imp::Immutable)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u8)]
 enum ComplexWithGenerics<X, Y> {
     UnitLike,
@@ -341,6 +379,7 @@ enum ComplexWithGenerics<X, Y> {
 util_assert_impl_all!(ComplexWithGenerics<u16, char>: imp::TryFromBytes);
 
 #[derive(imp::KnownLayout, imp::TryFromBytes, imp::Immutable)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(C)]
 enum GenericWithLifetimes<'a, 'b, X: 'a, Y: 'b> {
     Foo(::core::marker::PhantomData<&'a X>),
@@ -348,9 +387,11 @@ enum GenericWithLifetimes<'a, 'b, X: 'a, Y: 'b> {
 }
 
 #[derive(Clone, Copy, imp::TryFromBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 struct A;
 
 #[derive(imp::TryFromBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(C)]
 enum B {
     A(A),
@@ -358,6 +399,7 @@ enum B {
 }
 
 #[derive(imp::TryFromBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u8)]
 enum FooU8 {
     Variant0,
@@ -619,12 +661,12 @@ enum FooU8 {
 }
 
 #[test]
-fn test_trivial_is_bit_valid() {
+fn test_trivial_is_safe() {
     // Though we don't derive `FromBytes`, `FooU8` *could* soundly implement
-    // `FromBytes`. Therefore, `TryFromBytes` derive's `is_bit_valid` impl is
-    // trivial - it unconditionally returns `true`.
+    // `FromBytes`. Therefore, `TryFromBytes` derive's `is_safe` impl is trivial
+    // - it unconditionally returns `true`.
     util_assert_not_impl_any!(FooU8: imp::FromBytes);
-    util::test_trivial_is_bit_valid::<FooU8>();
+    util::test_trivial_is_safe::<FooU8>();
 }
 
 #[deny(non_camel_case_types)]
@@ -636,6 +678,7 @@ mod issue_2051 {
     // Prevents regressions of #2051.
     #[repr(u32)]
     #[derive(imp::TryFromBytes)]
+    #[zerocopy(crate = "zerocopy_renamed")]
     #[allow(non_camel_case_types)]
     pub enum Code {
         I32_ADD,
@@ -645,6 +688,7 @@ mod issue_2051 {
 }
 
 #[derive(imp::TryFromBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u8)]
 enum RawIdentifierVariant {
     r#type,

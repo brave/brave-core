@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Disable the primary account CHECK in BeforeUnloadDialogCancelled
+
+      Brave sync does not use a Google primary account, so this CHECK would
+      always fail.
+    regex:
+      pattern: |-
+        CHECK(IdentityManagerFactory::GetForProfile(profile_)->HasPrimaryAccount(
+      replace: |-
+        if (false)
+          CHECK(IdentityManagerFactory::GetForProfile(profile_)->HasPrimaryAccount(
+
+  - description: |-
+      Add Brave sync fields to the sync status dictionary
+
+      IsSetupInProgress isn't accurate in the Brave sync flow, especially for
+      the first time setup, so firstSetupInProgress is overridden and extra
+      Brave sync status fields are added.
+    add_before_line:
+      line: 'SyncStatusLabels status_labels = GetSyncStatusLabelsForSettings('
+      code: '  AddBraveSyncStatus(sync_status, service, disallowed_by_policy);'
+
+  - description: |-
+      Never report that the profile needs auth
+
+      Brave sync does not require a Google account sign-in.
+    preempt_function_impl:
+      function_name: PeopleHandler::IsProfileAuthNeededOrHasErrors
+      code: |-
+        return false;

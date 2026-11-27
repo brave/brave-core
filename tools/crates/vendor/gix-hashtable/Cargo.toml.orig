@@ -2,19 +2,31 @@ lints.workspace = true
 
 [package]
 name = "gix-hashtable"
-version = "0.10.0"
+version = "0.18.1"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate that provides hashtable based data structures optimized to utilize ObjectId keys"
 authors = ["Pascal Kuthe <pascal.kuthe@semimod.de>"]
-edition = "2021"
-include = ["src/**/*", "LICENSE-*"]
-rust-version = "1.82"
+edition = "2024"
+include = ["/src/**/*", "/LICENSE-*"]
+rust-version = "1.88"
 
 [lib]
-doctest = false
+doctest = true
+
+[features]
+## Enable support for the SHA-1 hash by enabling the respective feature in the `gix-hash` crate.
+sha1 = ["gix-hash/sha1"]
+## Enable support for the SHA-256 hash by enabling the respective feature in the `gix-hash` crate.
+sha256 = ["gix-hash/sha256"]
 
 [dependencies]
 parking_lot = "0.12.4"
-hashbrown = { version = "0.16.0", default-features = false, features = ["inline-more"] }
-gix-hash = { version = "^0.20.0", path = "../gix-hash" }
+hashbrown = { version = "0.17.1", default-features = false, features = ["inline-more"] }
+gix-hash = { version = "^0.28.1", path = "../gix-hash" }
+
+[dev-dependencies]
+gix-hash = { path = "../gix-hash", features = ["sha1"] }
+
+[package.metadata.docs.rs]
+features = ["sha1"]

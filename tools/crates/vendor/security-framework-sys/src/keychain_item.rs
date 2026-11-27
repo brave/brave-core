@@ -1,11 +1,16 @@
+#[cfg(target_os = "macos")]
 use crate::base::{SecKeychainAttributeList, SecKeychainItemRef};
-use core_foundation_sys::base::{CFTypeID, CFTypeRef, OSStatus};
+#[cfg(target_os = "macos")]
+use core_foundation_sys::base::CFTypeID;
+use core_foundation_sys::base::{CFTypeRef, OSStatus};
 use core_foundation_sys::dictionary::CFDictionaryRef;
+#[cfg(target_os = "macos")]
 use std::os::raw::c_void;
 
 extern "C" {
 
     /// Returns the unique identifier of the opaque type to which a keychain item object belongs.
+    #[cfg(target_os = "macos")]
     pub fn SecKeychainItemGetTypeID() -> CFTypeID;
 
     /// Adds one or more items to a keychain.
@@ -21,6 +26,7 @@ extern "C" {
     pub fn SecItemDelete(query: CFDictionaryRef) -> OSStatus;
 
     /// # Legacy API
+    #[cfg(target_os = "macos")]
     pub fn SecKeychainItemModifyAttributesAndData(
         itemRef: SecKeychainItemRef,
         attrList: *const SecKeychainAttributeList,
@@ -28,10 +34,12 @@ extern "C" {
         data: *const c_void,
     ) -> OSStatus;
 
+    #[cfg(target_os = "macos")]
     pub fn SecKeychainItemFreeContent(
         attrList: *mut SecKeychainAttributeList,
         data: *mut c_void,
     ) -> OSStatus;
 
+    #[cfg(target_os = "macos")]
     pub fn SecKeychainItemDelete(itemRef: SecKeychainItemRef) -> OSStatus;
 }

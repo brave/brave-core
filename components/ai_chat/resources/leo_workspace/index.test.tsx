@@ -133,6 +133,7 @@ describe('leo workspace entry point', () => {
       'grep',
       'glob',
       'append_file',
+      'delete_file',
     ])
     expect(getDirectory).not.toHaveBeenCalled()
   })

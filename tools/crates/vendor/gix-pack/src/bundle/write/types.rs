@@ -1,3 +1,4 @@
+use gix_error::Result;
 use std::{hash::Hash, io, io::SeekFrom, path::PathBuf, sync::Arc};
 
 use gix_tempfile::handle::Writable;
@@ -12,8 +13,16 @@ pub struct Options {
     pub iteration_mode: crate::data::input::Mode,
     /// The version of pack index to write, should be [`crate::index::Version::default()`]
     pub index_version: crate::index::Version,
-    /// The kind of hash to use when writing the bundle.
-    pub object_hash: gix_hash::Kind,
+    /// If `Some`, rejects individual allocations above the given number of bytes while building the delta tree or resolving
+    /// streamed pack entries into decoded object and delta result buffers to write the index.
+    /// `Some(0)` rejects all non-empty allocations.
+    pub alloc_limit_bytes: Option<usize>,
+    /// The compression level to use when deflating base objects that are added to the pack to complete a thin pack.
+    ///
+    /// Defaults to [`Compression::BEST_SPEED`](gix_zlib::Compression::BEST_SPEED) - `git` compresses
+    /// these with the same level it uses for loose objects, which is `core.looseCompression` or
+    /// `core.compression`, or level 1 if neither is set.
+    pub compression: gix_zlib::Compression,
 }
 
 impl Default for Options {
@@ -23,7 +32,8 @@ impl Default for Options {
             thread_limit: None,
             iteration_mode: crate::data::input::Mode::Verify,
             index_version: Default::default(),
-            object_hash: Default::default(),
+            alloc_limit_bytes: None,
+            compression: gix_zlib::Compression::BEST_SPEED,
         }
     }
 }
@@ -55,7 +65,7 @@ pub struct Outcome {
 
 impl Outcome {
     /// Instantiate a bundle from the newly written index and data file that are represented by this `Outcome`
-    pub fn to_bundle(&self) -> Option<Result<crate::Bundle, crate::bundle::init::Error>> {
+    pub fn to_bundle(&self) -> Option<Result<crate::Bundle>> {
         self.index_path
             .as_ref()
             .map(|path| crate::Bundle::at(path, self.object_hash))

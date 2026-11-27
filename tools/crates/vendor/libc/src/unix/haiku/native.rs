@@ -422,10 +422,10 @@ s! {
         pub model: u32,
         pub family: u32,
         pub tpe: u32,
-        __reserved_0: u32,
+        __reserved_0: Padding<u32>,
         pub extended_model: u32,
         pub extended_family: u32,
-        __reserved_1: u32,
+        __reserved_1: Padding<u32>,
         pub brand_index: u32,
         pub clflush: u32,
         pub logical_cpus: u32,
@@ -519,7 +519,7 @@ cfg_if! {
 // kernel/OS.h
 pub const B_OS_NAME_LENGTH: usize = 32;
 pub const B_PAGE_SIZE: usize = 4096;
-pub const B_INFINITE_TIMEOUT: usize = 9223372036854775807;
+pub const B_INFINITE_TIMEOUT: c_longlong = 0x7FFFFFFFFFFFFFFF;
 
 pub const B_RELATIVE_TIMEOUT: u32 = 0x8;
 pub const B_ABSOLUTE_TIMEOUT: u32 = 0x10;
@@ -650,7 +650,7 @@ pub const B_DIRECTORY_NODE: u32 = 0x04;
 pub const B_ANY_NODE: u32 = 0x07;
 
 // support/Errors.h
-pub const B_GENERAL_ERROR_BASE: status_t = core::i32::MIN;
+pub const B_GENERAL_ERROR_BASE: status_t = i32::MIN;
 pub const B_OS_ERROR_BASE: status_t = B_GENERAL_ERROR_BASE + 0x1000;
 pub const B_APP_ERROR_BASE: status_t = B_GENERAL_ERROR_BASE + 0x2000;
 pub const B_INTERFACE_ERROR_BASE: status_t = B_GENERAL_ERROR_BASE + 0x3000;
@@ -905,7 +905,7 @@ pub const B_XATTR_TYPE: u32 = haiku_constant!('X', 'A', 'T', 'R');
 pub const B_NETWORK_ADDRESS_TYPE: u32 = haiku_constant!('N', 'W', 'A', 'D');
 pub const B_MIME_STRING_TYPE: u32 = haiku_constant!('M', 'I', 'M', 'S');
 pub const B_ASCII_TYPE: u32 = haiku_constant!('T', 'E', 'X', 'T');
-pub const B_APP_IMAGE_SYMBOL: *const c_void = core::ptr::null();
+pub const B_APP_IMAGE_SYMBOL: *const c_void = ptr::null();
 
 extern "C" {
     // kernel/OS.h

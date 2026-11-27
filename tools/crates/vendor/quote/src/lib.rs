@@ -88,8 +88,8 @@
 //!
 //! [prettyplease]: https://github.com/dtolnay/prettyplease
 
-// Quote types in rustdoc of other crates get linked to here.
-#![doc(html_root_url = "https://docs.rs/quote/1.0.42")]
+#![no_std]
+#![doc(html_root_url = "https://docs.rs/quote/1.0.47")]
 #![allow(
     clippy::doc_markdown,
     clippy::elidable_lifetime_names,
@@ -103,6 +103,7 @@
 )]
 
 extern crate alloc;
+extern crate std;
 
 #[cfg(feature = "proc-macro")]
 extern crate proc_macro;
@@ -273,7 +274,7 @@ macro_rules! __quote {
         /// behavior of concatenating them. The underscore and the identifier will
         /// continue to be two separate tokens as if you had written `_ x`.
         ///
-        /// ```
+        /// ```edition2018
         /// # use proc_macro2::{self as syn, Span};
         /// # use quote::quote;
         /// #
@@ -423,7 +424,7 @@ macro_rules! __quote {
         /// appears suffixed as integer literals by interpolating them as [`syn::Index`]
         /// instead.
         ///
-        /// [`syn::Index`]: https://docs.rs/syn/2.0/syn/struct.Index.html
+        /// [`syn::Index`]: https://docs.rs/syn/3/syn/struct.Index.html
         ///
         /// ```compile_fail
         /// let i = 0usize..self.fields.len();
@@ -524,157 +525,145 @@ __quote![
     }
 ];
 
-macro_rules! __quote_spanned {
-    ($quote_spanned:item) => {
-        /// Same as `quote!`, but applies a given span to all tokens originating within
-        /// the macro invocation.
-        ///
-        /// <br>
-        ///
-        /// # Syntax
-        ///
-        /// A span expression of type [`Span`], followed by `=>`, followed by the tokens
-        /// to quote. The span expression should be brief &mdash; use a variable for
-        /// anything more than a few characters. There should be no space before the
-        /// `=>` token.
-        ///
-        /// [`Span`]: proc_macro2::Span
-        ///
-        /// ```
-        /// # use proc_macro2::Span;
-        /// # use quote::quote_spanned;
-        /// #
-        /// # const IGNORE_TOKENS: &'static str = stringify! {
-        /// let span = /* ... */;
-        /// # };
-        /// # let span = Span::call_site();
-        /// # let init = 0;
-        ///
-        /// // On one line, use parentheses.
-        /// let tokens = quote_spanned!(span=> Box::into_raw(Box::new(#init)));
-        ///
-        /// // On multiple lines, place the span at the top and use braces.
-        /// let tokens = quote_spanned! {span=>
-        ///     Box::into_raw(Box::new(#init))
-        /// };
-        /// ```
-        ///
-        /// The lack of space before the `=>` should look jarring to Rust programmers
-        /// and this is intentional. The formatting is designed to be visibly
-        /// off-balance and draw the eye a particular way, due to the span expression
-        /// being evaluated in the context of the procedural macro and the remaining
-        /// tokens being evaluated in the generated code.
-        ///
-        /// <br>
-        ///
-        /// # Hygiene
-        ///
-        /// Any interpolated tokens preserve the `Span` information provided by their
-        /// `ToTokens` implementation. Tokens that originate within the `quote_spanned!`
-        /// invocation are spanned with the given span argument.
-        ///
-        /// <br>
-        ///
-        /// # Example
-        ///
-        /// The following procedural macro code uses `quote_spanned!` to assert that a
-        /// particular Rust type implements the [`Sync`] trait so that references can be
-        /// safely shared between threads.
-        ///
-        /// ```
-        /// # use quote::{quote_spanned, TokenStreamExt, ToTokens};
-        /// # use proc_macro2::{Span, TokenStream};
-        /// #
-        /// # struct Type;
-        /// #
-        /// # impl Type {
-        /// #     fn span(&self) -> Span {
-        /// #         Span::call_site()
-        /// #     }
-        /// # }
-        /// #
-        /// # impl ToTokens for Type {
-        /// #     fn to_tokens(&self, _tokens: &mut TokenStream) {}
-        /// # }
-        /// #
-        /// # let ty = Type;
-        /// # let call_site = Span::call_site();
-        /// #
-        /// let ty_span = ty.span();
-        /// let assert_sync = quote_spanned! {ty_span=>
-        ///     struct _AssertSync where #ty: Sync;
-        /// };
-        /// ```
-        ///
-        /// If the assertion fails, the user will see an error like the following. The
-        /// input span of their type is highlighted in the error.
-        ///
-        /// ```text
-        /// error[E0277]: the trait bound `*const (): std::marker::Sync` is not satisfied
-        ///   --> src/main.rs:10:21
-        ///    |
-        /// 10 |     static ref PTR: *const () = &();
-        ///    |                     ^^^^^^^^^ `*const ()` cannot be shared between threads safely
-        /// ```
-        ///
-        /// In this example it is important for the where-clause to be spanned with the
-        /// line/column information of the user's input type so that error messages are
-        /// placed appropriately by the compiler.
-        $quote_spanned
-    };
+/// Same as `quote!`, but applies a given span to all tokens originating within
+/// the macro invocation.
+///
+/// <br>
+///
+/// # Syntax
+///
+/// A span expression of type [`Span`], followed by `=>`, followed by the tokens
+/// to quote. The span expression should be brief &mdash; use a variable for
+/// anything more than a few characters. There should be no space before the
+/// `=>` token.
+///
+/// [`Span`]: proc_macro2::Span
+///
+/// ```
+/// # use proc_macro2::Span;
+/// # use quote::quote_spanned;
+/// #
+/// # const IGNORE_TOKENS: &'static str = stringify! {
+/// let span = /* ... */;
+/// # };
+/// # let span = Span::call_site();
+/// # let init = 0;
+///
+/// // On one line, use parentheses.
+/// let tokens = quote_spanned!(span=> Box::into_raw(Box::new(#init)));
+///
+/// // On multiple lines, place the span at the top and use braces.
+/// let tokens = quote_spanned! {span=>
+///     Box::into_raw(Box::new(#init))
+/// };
+/// ```
+///
+/// The lack of space before the `=>` should look jarring to Rust programmers
+/// and this is intentional. The formatting is designed to be visibly
+/// off-balance and draw the eye a particular way, due to the span expression
+/// being evaluated in the context of the procedural macro and the remaining
+/// tokens being evaluated in the generated code.
+///
+/// <br>
+///
+/// # Hygiene
+///
+/// Any interpolated tokens preserve the `Span` information provided by their
+/// `ToTokens` implementation. Tokens that originate within the `quote_spanned!`
+/// invocation are spanned with the given span argument.
+///
+/// <br>
+///
+/// # Example
+///
+/// The following procedural macro code uses `quote_spanned!` to assert that a
+/// particular Rust type implements the [`Sync`] trait so that references can be
+/// safely shared between threads.
+///
+/// ```
+/// # use quote::{quote_spanned, TokenStreamExt, ToTokens};
+/// # use proc_macro2::{Span, TokenStream};
+/// #
+/// # struct Type;
+/// #
+/// # impl Type {
+/// #     fn span(&self) -> Span {
+/// #         Span::call_site()
+/// #     }
+/// # }
+/// #
+/// # impl ToTokens for Type {
+/// #     fn to_tokens(&self, _tokens: &mut TokenStream) {}
+/// # }
+/// #
+/// # let ty = Type;
+/// # let call_site = Span::call_site();
+/// #
+/// let ty_span = ty.span();
+/// let assert_sync = quote_spanned! {ty_span=>
+///     struct _AssertSync where #ty: Sync;
+/// };
+/// ```
+///
+/// If the assertion fails, the user will see an error like the following. The
+/// input span of their type is highlighted in the error.
+///
+/// ```text
+/// error[E0277]: the trait bound `*const (): std::marker::Sync` is not satisfied
+///   --> src/main.rs:10:21
+///    |
+/// 10 |     static ref PTR: *const () = &();
+///    |                     ^^^^^^^^^ `*const ()` cannot be shared between threads safely
+/// ```
+///
+/// In this example it is important for the where-clause to be spanned with the
+/// line/column information of the user's input type so that error messages are
+/// placed appropriately by the compiler.
+#[macro_export]
+macro_rules! quote_spanned {
+    ($span:expr=> $($tt:tt)*) => {{
+        let _span: $crate::__private::Span = $crate::__private::get_span($span).__into_span();
+        $crate::quote_spanned_with_expanded_span!{_span $($tt)*}
+    }};
 }
 
-#[cfg(doc)]
-__quote_spanned![
-    #[macro_export]
-    macro_rules! quote_spanned {
-        ($span:expr=> $($tt:tt)*) => {
-            ...
-        };
-    }
-];
+// We want to ensure that `get_span` only gets called for the actual user
+// invocation and not for recursive calls from groups, which will call this
+// inner macro instead.
+#[macro_export]
+#[doc(hidden)]
+macro_rules! quote_spanned_with_expanded_span {
+    ($span:ident) => {
+        $crate::__private::TokenStream::new()
+    };
 
-#[cfg(not(doc))]
-__quote_spanned![
-    #[macro_export]
-    macro_rules! quote_spanned {
-        ($span:expr=>) => {{
-            let _: $crate::__private::Span = $crate::__private::get_span($span).__into_span();
-            $crate::__private::TokenStream::new()
-        }};
+    // Special case rule for a single tt, for performance.
+    ($span:ident $tt:tt) => {
+        let mut _s = $crate::__private::TokenStream::new();
+        $crate::quote_token_spanned!{$tt _s $span}
+        _s
+    };
 
-        // Special case rule for a single tt, for performance.
-        ($span:expr=> $tt:tt) => {{
-            let mut _s = $crate::__private::TokenStream::new();
-            let _span: $crate::__private::Span = $crate::__private::get_span($span).__into_span();
-            $crate::quote_token_spanned!{$tt _s _span}
-            _s
-        }};
+    // Special case rules for two tts, for performance.
+    ($span:ident # $var:ident) => {
+        let mut _s = $crate::__private::TokenStream::new();
+        $crate::ToTokens::to_tokens(&$var, &mut _s);
+        _s
+    };
+    ($span:ident $tt1:tt $tt2:tt) => {
+        let mut _s = $crate::__private::TokenStream::new();
+        $crate::quote_token_spanned!{$tt1 _s $span}
+        $crate::quote_token_spanned!{$tt2 _s $span}
+        _s
+    };
 
-        // Special case rules for two tts, for performance.
-        ($span:expr=> # $var:ident) => {{
-            let mut _s = $crate::__private::TokenStream::new();
-            let _: $crate::__private::Span = $crate::__private::get_span($span).__into_span();
-            $crate::ToTokens::to_tokens(&$var, &mut _s);
-            _s
-        }};
-        ($span:expr=> $tt1:tt $tt2:tt) => {{
-            let mut _s = $crate::__private::TokenStream::new();
-            let _span: $crate::__private::Span = $crate::__private::get_span($span).__into_span();
-            $crate::quote_token_spanned!{$tt1 _s _span}
-            $crate::quote_token_spanned!{$tt2 _s _span}
-            _s
-        }};
-
-        // Rule for any other number of tokens.
-        ($span:expr=> $($tt:tt)*) => {{
-            let mut _s = $crate::__private::TokenStream::new();
-            let _span: $crate::__private::Span = $crate::__private::get_span($span).__into_span();
-            $crate::quote_each_token_spanned!{_s _span $($tt)*}
-            _s
-        }};
-    }
-];
+    // Rule for any other number of tokens.
+    ($span:ident $($tt:tt)*) => {
+        let mut _s = $crate::__private::TokenStream::new();
+        $crate::quote_each_token_spanned!{_s $span $($tt)*}
+        _s
+    };
+}
 
 // Extract the names of all #metavariables and pass them to the $call macro.
 //
@@ -911,16 +900,16 @@ macro_rules! quote_token_with_context {
     // A repetition with separator.
     ($tokens:ident $b3:tt $b2:tt $b1:tt (#) ( $($inner:tt)* ) $sep:tt *) => {{
         use $crate::__private::ext::*;
-        let mut _i = 0usize;
+        let mut _first = true;
         let has_iter = $crate::__private::HasIterator::<false>;
         $crate::pounded_var_names!{quote_bind_into_iter!(has_iter) () $($inner)*}
         <_ as $crate::__private::CheckHasIterator<true>>::check(has_iter);
         while true {
             $crate::pounded_var_names!{quote_bind_next_or_break!() () $($inner)*}
-            if _i > 0 {
+            if !_first {
                 $crate::quote_token!{$sep $tokens}
             }
-            _i += 1;
+            _first = false;
             $crate::quote_each_token!{$tokens $($inner)*}
         }
     }};
@@ -972,16 +961,16 @@ macro_rules! quote_token_with_context_spanned {
 
     ($tokens:ident $span:ident $b3:tt $b2:tt $b1:tt (#) ( $($inner:tt)* ) $sep:tt *) => {{
         use $crate::__private::ext::*;
-        let mut _i = 0usize;
+        let mut _first = true;
         let has_iter = $crate::__private::HasIterator::<false>;
         $crate::pounded_var_names!{quote_bind_into_iter!(has_iter) () $($inner)*}
         <_ as $crate::__private::CheckHasIterator<true>>::check(has_iter);
         while true {
             $crate::pounded_var_names!{quote_bind_next_or_break!() () $($inner)*}
-            if _i > 0 {
+            if !_first {
                 $crate::quote_token_spanned!{$sep $tokens $span}
             }
-            _i += 1;
+            _first = false;
             $crate::quote_each_token_spanned!{$tokens $span $($inner)*}
         }
     }};
@@ -1014,7 +1003,10 @@ macro_rules! quote_token_with_context_spanned {
 #[doc(hidden)]
 macro_rules! quote_token {
     ($ident:ident $tokens:ident) => {
-        $crate::__private::push_ident(&mut $tokens, stringify!($ident));
+        $crate::__private::push_ident(
+            &mut $tokens,
+            $crate::__private::stringify!($ident),
+        );
     };
 
     (:: $tokens:ident) => {
@@ -1218,7 +1210,10 @@ macro_rules! quote_token {
     };
 
     ($lifetime:lifetime $tokens:ident) => {
-        $crate::__private::push_lifetime(&mut $tokens, stringify!($lifetime));
+        $crate::__private::push_lifetime(
+            &mut $tokens,
+            $crate::__private::stringify!($lifetime),
+        );
     };
 
     (_ $tokens:ident) => {
@@ -1226,7 +1221,10 @@ macro_rules! quote_token {
     };
 
     ($other:tt $tokens:ident) => {
-        $crate::__private::parse(&mut $tokens, stringify!($other));
+        $crate::__private::parse(
+            &mut $tokens,
+            $crate::__private::stringify!($other),
+        );
     };
 }
 
@@ -1235,7 +1233,11 @@ macro_rules! quote_token {
 #[doc(hidden)]
 macro_rules! quote_token_spanned {
     ($ident:ident $tokens:ident $span:ident) => {
-        $crate::__private::push_ident_spanned(&mut $tokens, $span, stringify!($ident));
+        $crate::__private::push_ident_spanned(
+            &mut $tokens,
+            $span,
+            $crate::__private::stringify!($ident),
+        );
     };
 
     (:: $tokens:ident $span:ident) => {
@@ -1247,7 +1249,9 @@ macro_rules! quote_token_spanned {
             &mut $tokens,
             $span,
             $crate::__private::Delimiter::Parenthesis,
-            $crate::quote_spanned!($span=> $($inner)*),
+            {
+                $crate::quote_spanned_with_expanded_span!{$span $($inner)*}
+            },
         );
     };
 
@@ -1256,7 +1260,9 @@ macro_rules! quote_token_spanned {
             &mut $tokens,
             $span,
             $crate::__private::Delimiter::Bracket,
-            $crate::quote_spanned!($span=> $($inner)*),
+            {
+                $crate::quote_spanned_with_expanded_span!{$span $($inner)*}
+            },
         );
     };
 
@@ -1265,7 +1271,9 @@ macro_rules! quote_token_spanned {
             &mut $tokens,
             $span,
             $crate::__private::Delimiter::Brace,
-            $crate::quote_spanned!($span=> $($inner)*),
+            {
+                $crate::quote_spanned_with_expanded_span!{$span $($inner)*}
+            },
         );
     };
 
@@ -1442,7 +1450,11 @@ macro_rules! quote_token_spanned {
     };
 
     ($lifetime:lifetime $tokens:ident $span:ident) => {
-        $crate::__private::push_lifetime_spanned(&mut $tokens, $span, stringify!($lifetime));
+        $crate::__private::push_lifetime_spanned(
+            &mut $tokens,
+            $span,
+            $crate::__private::stringify!($lifetime),
+        );
     };
 
     (_ $tokens:ident $span:ident) => {
@@ -1450,6 +1462,10 @@ macro_rules! quote_token_spanned {
     };
 
     ($other:tt $tokens:ident $span:ident) => {
-        $crate::__private::parse_spanned(&mut $tokens, $span, stringify!($other));
+        $crate::__private::parse_spanned(
+            &mut $tokens,
+            $span,
+            $crate::__private::stringify!($other),
+        );
     };
 }

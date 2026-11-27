@@ -10,19 +10,25 @@ It is generally a good idea to refer to the [README of the latest version](https
 
 ## ICU4X as the default
 
-If you take no action, Cargo will choose the 1.2.x version stream i.e. latest ICU4X (2.0 as of writing).
+If you take no action, Cargo will choose the 1.2.x version stream i.e. latest ICU4X (2.2 as of writing).
+
+### Opting to use ICU4X 2.0 or 2.1
+
+To choose ICU4X 2.0 or 2.1 (as opposed to 2.2 or later), run `cargo update -p idna_adapter --precise 1.2.1` in the top-level directory of your application. Since `idna_adapter` 1.2.1 is also compatible with ICU4X 2.2 (but `idna_adapter` 1.2.2 allows for smaller binary size with ICU4X 2.2), this will not automatically downgrade ICU4X, but this will allow you to downgrade ICU4X to 2.1 or 2.0.
+
+This may make sense if your application has other reasons to use ICU4X 2.0 or 2.1, and you are not ready to update those dependencies to ICU4X 2.2 just yet.
 
 ### Opting to use ICU4X 1.x
 
 To choose ICU4X 1.x, run `cargo update -p idna_adapter --precise 1.2.0` in the top-level directory of your application.
 
-This may make sense if your application has other ways of depending on ICU4X 1.x, and you are not ready to update those dependencies to ICU4X 2.0 just yet.
+This may make sense if your application has other ways of depending on ICU4X 1.x, and you are not ready to update those dependencies to ICU4X 2.x just yet.
 
 ## Opting to use unicode-rs
 
 To choose unicode-rs, run `cargo update -p idna_adapter --precise 1.1.0` in the top-level directory of your application.
 
-Compared to ICU4X, this makes build times faster, MSRV lower, binary size larger, and run-time performance slower.
+Compared to ICU4X, this makes build times faster, MSRV lower, binary size larger, and run-time performance slower. Depending on point in time, this may also result in different Unicode version for the data.
 
 ## Turning off IDNA support
 

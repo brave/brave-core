@@ -4,8 +4,9 @@ Support for printing and parsing instants using the [RFC 2822] datetime format.
 RFC 2822 is most commonly found when dealing with email messages.
 
 Since RFC 2822 only supports specifying a complete instant in time, the parser
-and printer in this module only use [`Zoned`] and [`Timestamp`]. If you need
-inexact time, you can get it from [`Zoned`] via [`Zoned::datetime`].
+and printer in this module only use [`ZonedDateTime`] and [`Timestamp`]. If you
+need inexact time, you can get it from [`ZonedDateTime`] via
+[`ZonedDateTime::datetime`].
 
 [RFC 2822]: https://datatracker.ietf.org/doc/html/rfc2822
 
@@ -41,17 +42,15 @@ example, when dealing with email). But you should not choose it as a
 general interchange format for new applications.
 */
 
+use jcore::bounds::Sign;
+
 use crate::{
+    Error, Timestamp, ZonedDateTime,
     civil::{Date, DateTime, Time, Weekday},
-    error::{err, ErrorContext},
-    fmt::{util::DecimalFormatter, Parsed, Write, WriteExt},
+    error::{ErrorContext, fmt::rfc2822::Error as E},
+    fmt::{Parsed, Write, buffer::BorrowedBuffer},
     tz::{Offset, TimeZone},
-    util::{
-        escape, parse,
-        rangeint::{ri8, RFrom},
-        t::{self, C},
-    },
-    Error, Timestamp, Zoned,
+    util::{b, parse},
 };
 
 /// The default date time parser that we use throughout Jiff.
@@ -62,7 +61,18 @@ pub(crate) static DEFAULT_DATETIME_PARSER: DateTimeParser =
 pub(crate) static DEFAULT_DATETIME_PRINTER: DateTimePrinter =
     DateTimePrinter::new();
 
-/// Convert a [`Zoned`] to an [RFC 2822] datetime string.
+/// The maximum number bytes that can be written by the RFC 2822 printer.
+///
+/// We reserve a heap or stack buffer up front before printing, and we want to
+/// ensure we have enough space to write the longest possible RFC 2822 string.
+const PRINTER_MAX_BYTES_RFC2822: usize = 31;
+
+/// Same idea, but for RFC 9110.
+///
+/// The difference comes from always using `GMT` instead of, e.g., `-0400`.
+const PRINTER_MAX_BYTES_RFC9110: usize = 29;
+
+/// Convert a [`ZonedDateTime`] to an [RFC 2822] datetime string.
 ///
 /// This is a convenience function for using [`DateTimePrinter`]. In
 /// particular, this always creates and allocates a new `String`. For writing
@@ -97,20 +107,20 @@ pub(crate) static DEFAULT_DATETIME_PRINTER: DateTimePrinter =
 /// ```
 /// use jiff::{civil::date, fmt::rfc2822};
 ///
-/// let zdt = date(2024, 6, 15).at(7, 0, 0, 0).in_tz("Australia/Tasmania")?;
+/// let zdt = date(2024, 6, 15).at(7, 0, 0, 0).in_tz("Australia/Hobart")?;
 /// assert_eq!(rfc2822::to_string(&zdt)?, "Sat, 15 Jun 2024 07:00:00 +1000");
 ///
 /// # Ok::<(), Box<dyn std::error::Error>>(())
 /// ```
 #[cfg(feature = "alloc")]
 #[inline]
-pub fn to_string(zdt: &Zoned) -> Result<alloc::string::String, Error> {
+pub fn to_string(zdt: &ZonedDateTime) -> Result<alloc::string::String, Error> {
     let mut buf = alloc::string::String::new();
-    DEFAULT_DATETIME_PRINTER.print_zoned(zdt, &mut buf)?;
+    DEFAULT_DATETIME_PRINTER.print_zoned_datetime(zdt, &mut buf)?;
     Ok(buf)
 }
 
-/// Parse an [RFC 2822] datetime string into a [`Zoned`].
+/// Parse an [RFC 2822] datetime string into a [`ZonedDateTime`].
 ///
 /// This is a convenience function for using [`DateTimeParser`]. In particular,
 /// this takes a `&str` while the `DateTimeParser` accepts a `&[u8]`.
@@ -168,8 +178,8 @@ pub fn to_string(zdt: &Zoned) -> Result<alloc::string::String, Error> {
 /// # Ok::<(), Box<dyn std::error::Error>>(())
 /// ```
 #[inline]
-pub fn parse(string: &str) -> Result<Zoned, Error> {
-    DEFAULT_DATETIME_PARSER.parse_zoned(string)
+pub fn parse(string: &str) -> Result<ZonedDateTime, Error> {
+    DEFAULT_DATETIME_PARSER.parse_zoned_datetime(string)
 }
 
 /// A parser for [RFC 2822] datetimes.
@@ -251,12 +261,15 @@ impl DateTimeParser {
     /// static P: rfc2822::DateTimeParser = rfc2822::DateTimeParser::new()
     ///     .relaxed_weekday(true);
     /// assert_eq!(
-    ///     P.parse_zoned(string)?,
+    ///     P.parse_zoned_datetime(string)?,
     ///     date(2024, 7, 13).at(15, 9, 59, 0).in_tz("America/New_York")?,
     /// );
     /// // But note that something that isn't recognized as a valid weekday
     /// // will still result in an error:
-    /// assert!(P.parse_zoned("Wat, 13 Jul 2024 15:09:59 -0400").is_err());
+    /// assert!(
+    ///     P.parse_zoned_datetime("Wat, 13 Jul 2024 15:09:59 -0400")
+    ///         .is_err()
+    /// );
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
@@ -265,7 +278,7 @@ impl DateTimeParser {
         DateTimeParser { relaxed_weekday: yes, ..self }
     }
 
-    /// Parse a datetime string into a [`Zoned`] value.
+    /// Parse a datetime string into a [`ZonedDateTime`] value.
     ///
     /// Note that RFC 2822 does not support time zone annotations. The zoned
     /// datetime returned will therefore always have a fixed offset time zone.
@@ -301,21 +314,20 @@ impl DateTimeParser {
     ///
     /// static PARSER: DateTimeParser = DateTimeParser::new();
     ///
-    /// let zdt = PARSER.parse_zoned("Thu, 29 Feb 2024 05:34 -0500")?;
+    /// let zdt =
+    ///     PARSER.parse_zoned_datetime("Thu, 29 Feb 2024 05:34 -0500")?;
     /// assert_eq!(zdt.to_string(), "2024-02-29T05:34:00-05:00[-05:00]");
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
-    pub fn parse_zoned<I: AsRef<[u8]>>(
+    pub fn parse_zoned_datetime<I: AsRef<[u8]>>(
         &self,
         input: I,
-    ) -> Result<Zoned, Error> {
+    ) -> Result<ZonedDateTime, Error> {
         let input = input.as_ref();
         let zdt = self
-            .parse_zoned_internal(input)
-            .context(
-                "failed to parse RFC 2822 datetime into Jiff zoned datetime",
-            )?
+            .parse_zoned_datetime_internal(input)
+            .context(E::FailedZonedDateTime)?
             .into_full()?;
         Ok(zdt)
     }
@@ -351,7 +363,7 @@ impl DateTimeParser {
         let input = input.as_ref();
         let ts = self
             .parse_timestamp_internal(input)
-            .context("failed to parse RFC 2822 datetime into Jiff timestamp")?
+            .context(E::FailedTimestamp)?
             .into_full()?;
         Ok(ts)
     }
@@ -361,16 +373,14 @@ impl DateTimeParser {
     /// Note that this doesn't check that the input has been completely
     /// consumed.
     #[cfg_attr(feature = "perf-inline", inline(always))]
-    fn parse_zoned_internal<'i>(
+    fn parse_zoned_datetime_internal<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, Zoned>, Error> {
+    ) -> Result<Parsed<'i, ZonedDateTime>, Error> {
         let Parsed { value: (dt, offset), input } =
             self.parse_datetime_offset(input)?;
-        let ts = offset
-            .to_timestamp(dt)
-            .context("RFC 2822 datetime out of Jiff's range")?;
-        let zdt = ts.to_zoned(TimeZone::fixed(offset));
+        let ts = offset.to_timestamp(dt)?;
+        let zdt = ts.to_zoned_datetime(TimeZone::fixed(offset));
         Ok(Parsed { value: zdt, input })
     }
 
@@ -385,9 +395,7 @@ impl DateTimeParser {
     ) -> Result<Parsed<'i, Timestamp>, Error> {
         let Parsed { value: (dt, offset), input } =
             self.parse_datetime_offset(input)?;
-        let ts = offset
-            .to_timestamp(dt)
-            .context("RFC 2822 datetime out of Jiff's range")?;
+        let ts = offset.to_timestamp(dt)?;
         Ok(Parsed { value: ts, input })
     }
 
@@ -425,16 +433,11 @@ impl DateTimeParser {
         input: &'i [u8],
     ) -> Result<Parsed<'i, DateTime>, Error> {
         if input.is_empty() {
-            return Err(err!(
-                "expected RFC 2822 datetime, but got empty string"
-            ));
+            return Err(Error::from(E::Empty));
         }
         let Parsed { input, .. } = self.skip_whitespace(input);
         if input.is_empty() {
-            return Err(err!(
-                "expected RFC 2822 datetime, but got empty string after \
-                 trimming whitespace",
-            ));
+            return Err(Error::from(E::EmptyAfterWhitespace));
         }
         let Parsed { value: wd, input } = self.parse_weekday(input)?;
         let Parsed { value: day, input } = self.parse_day(input)?;
@@ -451,42 +454,29 @@ impl DateTimeParser {
             self.skip_whitespace(input);
         let (second, input) = if !input.starts_with(b":") {
             if !whitespace_after_minute {
-                return Err(err!(
-                    "expected whitespace after parsing time: \
-                     expected at least one whitespace character \
-                     (space or tab), but found none",
-                ));
+                return Err(Error::from(E::WhitespaceAfterTime));
             }
-            (t::Second::N::<0>(), input)
+            (0, input)
         } else {
             let Parsed { input, .. } = self.parse_time_separator(input)?;
             let Parsed { input, .. } = self.skip_whitespace(input);
             let Parsed { value: second, input } = self.parse_second(input)?;
-            let Parsed { input, .. } =
-                self.parse_whitespace(input).with_context(|| {
-                    err!("expected whitespace after parsing time")
-                })?;
+            let Parsed { input, .. } = self.parse_whitespace(input)?;
             (second, input)
         };
 
-        let date =
-            Date::new_ranged(year, month, day).context("invalid date")?;
-        let time = Time::new_ranged(
-            hour,
-            minute,
-            second,
-            t::SubsecNanosecond::N::<0>(),
-        );
+        let date = Date::new(year, month, day).context(E::InvalidDate)?;
+        // OK because hour, minute and second have been verified as being
+        // in bounds. And all combinations of such in-bound values are also
+        // valid `Time` values.
+        let time = Time::new(hour, minute, second, 0).unwrap();
         let dt = DateTime::from_parts(date, time);
         if let Some(wd) = wd {
             if !self.relaxed_weekday && wd != dt.weekday() {
-                return Err(err!(
-                    "found parsed weekday of {parsed}, \
-                     but parsed datetime of {dt} has weekday \
-                     {has}",
-                    parsed = weekday_abbrev(wd),
-                    has = weekday_abbrev(dt.weekday()),
-                ));
+                return Err(Error::from(E::InconsistentWeekday {
+                    parsed: wd,
+                    from_date: dt.weekday(),
+                }));
             }
         }
         Ok(Parsed { value: dt, input })
@@ -517,15 +507,13 @@ impl DateTimeParser {
         if matches!(input[0], b'0'..=b'9') {
             return Ok(Parsed { value: None, input });
         }
-        if input.len() < 4 {
-            return Err(err!(
-                "expected day at beginning of RFC 2822 datetime \
-                 since first non-whitespace byte, {first:?}, \
-                 is not a digit, but given string is too short \
-                 (length is {length})",
-                first = escape::Byte(input[0]),
-                length = input.len(),
-            ));
+        if let Ok(len) = u8::try_from(input.len()) {
+            if len < 4 {
+                return Err(Error::from(E::TooShortWeekday {
+                    got_non_digit: input[0],
+                    len,
+                }));
+            }
         }
         let b1 = input[0];
         let b2 = input[1];
@@ -543,31 +531,19 @@ impl DateTimeParser {
             b"fri" => Weekday::Friday,
             b"sat" => Weekday::Saturday,
             _ => {
-                return Err(err!(
-                    "expected day at beginning of RFC 2822 datetime \
-                     since first non-whitespace byte, {first:?}, \
-                     is not a digit, but did not recognize {got:?} \
-                     as a valid weekday abbreviation",
-                    first = escape::Byte(input[0]),
-                    got = escape::Bytes(&input[..3]),
-                ));
+                return Err(Error::from(E::InvalidWeekday {
+                    got_non_digit: input[0],
+                }));
             }
         };
         let Parsed { input, .. } = self.skip_whitespace(&input[3..]);
         let Some(should_be_comma) = input.get(0).copied() else {
-            return Err(err!(
-                "expected comma after parsed weekday `{weekday}` in \
-                 RFC 2822 datetime, but found end of string instead",
-                weekday = escape::Bytes(&[b1, b2, b3]),
-            ));
+            return Err(Error::from(E::EndOfInputComma));
         };
         if should_be_comma != b',' {
-            return Err(err!(
-                "expected comma after parsed weekday `{weekday}` in \
-                 RFC 2822 datetime, but found `{got:?}` instead",
-                weekday = escape::Bytes(&[b1, b2, b3]),
-                got = escape::Byte(should_be_comma),
-            ));
+            return Err(Error::from(E::UnexpectedByteComma {
+                byte: should_be_comma,
+            }));
         }
         let Parsed { input, .. } = self.skip_whitespace(&input[1..]);
         Ok(Parsed { value: Some(wd), input })
@@ -581,26 +557,18 @@ impl DateTimeParser {
     /// This also parses at least one mandatory whitespace character after the
     /// day.
     #[cfg_attr(feature = "perf-inline", inline(always))]
-    fn parse_day<'i>(
-        &self,
-        input: &'i [u8],
-    ) -> Result<Parsed<'i, t::Day>, Error> {
+    fn parse_day<'i>(&self, input: &'i [u8]) -> Result<Parsed<'i, i8>, Error> {
         if input.is_empty() {
-            return Err(err!("expected day, but found end of input"));
+            return Err(Error::from(E::EndOfInputDay));
         }
         let mut digits = 1;
         if input.len() >= 2 && matches!(input[1], b'0'..=b'9') {
             digits = 2;
         }
         let (day, input) = input.split_at(digits);
-        let day = parse::i64(day).with_context(|| {
-            err!("failed to parse {day:?} as day", day = escape::Bytes(day))
-        })?;
-        let day = t::Day::try_new("day", day).context("day is not valid")?;
+        let day = parse::bi64::<b::Day>(day).context(E::ParseDay)?;
         let Parsed { input, .. } =
-            self.parse_whitespace(input).with_context(|| {
-                err!("expected whitespace after parsing day {day}")
-            })?;
+            self.parse_whitespace(input).context(E::WhitespaceAfterDay)?;
         Ok(Parsed { value: day, input })
     }
 
@@ -615,18 +583,14 @@ impl DateTimeParser {
     fn parse_month<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, t::Month>, Error> {
+    ) -> Result<Parsed<'i, i8>, Error> {
         if input.is_empty() {
-            return Err(err!(
-                "expected abbreviated month name, but found end of input"
-            ));
+            return Err(Error::from(E::EndOfInputMonth));
         }
-        if input.len() < 3 {
-            return Err(err!(
-                "expected abbreviated month name, but remaining input \
-                 is too short (remaining bytes is {length})",
-                length = input.len(),
-            ));
+        if let Ok(len) = u8::try_from(input.len()) {
+            if len < 3 {
+                return Err(Error::from(E::TooShortMonth { len }));
+            }
         }
         let b1 = input[0].to_ascii_lowercase();
         let b2 = input[1].to_ascii_lowercase();
@@ -644,22 +608,11 @@ impl DateTimeParser {
             b"oct" => 10,
             b"nov" => 11,
             b"dec" => 12,
-            _ => {
-                return Err(err!(
-                    "expected abbreviated month name, \
-                     but did not recognize {got:?} \
-                     as a valid month",
-                    got = escape::Bytes(&input[..3]),
-                ));
-            }
+            _ => return Err(Error::from(E::InvalidMonth)),
         };
-        // OK because we just assigned a numeric value ourselves
-        // above, and all values are valid months.
-        let month = t::Month::new(month).unwrap();
-        let Parsed { input, .. } =
-            self.parse_whitespace(&input[3..]).with_context(|| {
-                err!("expected whitespace after parsing month name")
-            })?;
+        let Parsed { input, .. } = self
+            .parse_whitespace(&input[3..])
+            .context(E::WhitespaceAfterMonth)?;
         Ok(Parsed { value: month, input })
     }
 
@@ -684,7 +637,7 @@ impl DateTimeParser {
     fn parse_year<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, t::Year>, Error> {
+    ) -> Result<Parsed<'i, i16>, Error> {
         let mut digits = 0;
         while digits <= 3
             && !input[digits..].is_empty()
@@ -692,31 +645,21 @@ impl DateTimeParser {
         {
             digits += 1;
         }
-        if digits <= 1 {
-            return Err(err!(
-                "expected at least two ASCII digits for parsing \
-                 a year, but only found {digits}",
-            ));
+        if let Ok(len) = u8::try_from(digits) {
+            if len <= 1 {
+                return Err(Error::from(E::TooShortYear { len }));
+            }
         }
         let (year, input) = input.split_at(digits);
-        let year = parse::i64(year).with_context(|| {
-            err!(
-                "failed to parse {year:?} as year \
-                 (a two, three or four digit integer)",
-                year = escape::Bytes(year),
-            )
-        })?;
+        let year = parse::bi64::<b::Year>(year).context(E::ParseYear)?;
         let year = match digits {
             2 if year <= 49 => year + 2000,
             2 | 3 => year + 1900,
             4 => year,
             _ => unreachable!("digits={digits} must be 2, 3 or 4"),
         };
-        let year =
-            t::Year::try_new("year", year).context("year is not valid")?;
-        let Parsed { input, .. } = self
-            .parse_whitespace(input)
-            .with_context(|| err!("expected whitespace after parsing year"))?;
+        let Parsed { input, .. } =
+            self.parse_whitespace(input).context(E::WhitespaceAfterYear)?;
         Ok(Parsed { value: year, input })
     }
 
@@ -729,18 +672,9 @@ impl DateTimeParser {
     fn parse_hour<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, t::Hour>, Error> {
-        let (hour, input) = parse::split(input, 2).ok_or_else(|| {
-            err!("expected two digit hour, but found end of input")
-        })?;
-        let hour = parse::i64(hour).with_context(|| {
-            err!(
-                "failed to parse {hour:?} as hour (a two digit integer)",
-                hour = escape::Bytes(hour),
-            )
-        })?;
-        let hour =
-            t::Hour::try_new("hour", hour).context("hour is not valid")?;
+    ) -> Result<Parsed<'i, i8>, Error> {
+        let (hour, input) = parse::split(input, 2).ok_or(E::EndOfInputHour)?;
+        let hour = parse::bi64::<b::Hour>(hour).context(E::ParseHour)?;
         Ok(Parsed { value: hour, input })
     }
 
@@ -750,18 +684,11 @@ impl DateTimeParser {
     fn parse_minute<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, t::Minute>, Error> {
-        let (minute, input) = parse::split(input, 2).ok_or_else(|| {
-            err!("expected two digit minute, but found end of input")
-        })?;
-        let minute = parse::i64(minute).with_context(|| {
-            err!(
-                "failed to parse {minute:?} as minute (a two digit integer)",
-                minute = escape::Bytes(minute),
-            )
-        })?;
-        let minute = t::Minute::try_new("minute", minute)
-            .context("minute is not valid")?;
+    ) -> Result<Parsed<'i, i8>, Error> {
+        let (minute, input) =
+            parse::split(input, 2).ok_or(E::EndOfInputMinute)?;
+        let minute =
+            parse::bi64::<b::Minute>(minute).context(E::ParseMinute)?;
         Ok(Parsed { value: minute, input })
     }
 
@@ -771,21 +698,14 @@ impl DateTimeParser {
     fn parse_second<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, t::Second>, Error> {
-        let (second, input) = parse::split(input, 2).ok_or_else(|| {
-            err!("expected two digit second, but found end of input")
-        })?;
-        let mut second = parse::i64(second).with_context(|| {
-            err!(
-                "failed to parse {second:?} as second (a two digit integer)",
-                second = escape::Bytes(second),
-            )
-        })?;
+    ) -> Result<Parsed<'i, i8>, Error> {
+        let (second, input) =
+            parse::split(input, 2).ok_or(E::EndOfInputSecond)?;
+        let mut second =
+            parse::bi64::<b::LeapSecond>(second).context(E::ParseSecond)?;
         if second == 60 {
             second = 59;
         }
-        let second = t::Second::try_new("second", second)
-            .context("second is not valid")?;
         Ok(Parsed { value: second, input })
     }
 
@@ -798,54 +718,25 @@ impl DateTimeParser {
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, Offset>, Error> {
-        type ParsedOffsetHours = ri8<0, { t::SpanZoneOffsetHours::MAX }>;
-        type ParsedOffsetMinutes = ri8<0, { t::SpanZoneOffsetMinutes::MAX }>;
-
-        let sign = input.get(0).copied().ok_or_else(|| {
-            err!(
-                "expected sign for time zone offset, \
-                 (or a legacy time zone name abbreviation), \
-                 but found end of input",
-            )
-        })?;
+        let sign = input.get(0).copied().ok_or(E::EndOfInputOffset)?;
         let sign = if sign == b'+' {
-            t::Sign::N::<1>()
+            Sign::Positive
         } else if sign == b'-' {
-            t::Sign::N::<-1>()
+            Sign::Negative
         } else {
             return self.parse_offset_obsolete(input);
         };
         let input = &input[1..];
-        let (hhmm, input) = parse::split(input, 4).ok_or_else(|| {
-            err!(
-                "expected at least 4 digits for time zone offset \
-                 after sign, but found only {len} bytes remaining",
-                len = input.len(),
-            )
-        })?;
+        let (hhmm, input) = parse::split(input, 4).ok_or(E::TooShortOffset)?;
 
-        let hh = parse::i64(&hhmm[0..2]).with_context(|| {
-            err!(
-                "failed to parse hours from time zone offset {hhmm}",
-                hhmm = escape::Bytes(hhmm)
-            )
-        })?;
-        let hh = ParsedOffsetHours::try_new("zone-offset-hours", hh)
-            .context("time zone offset hours are not valid")?;
-        let hh = t::SpanZoneOffset::rfrom(hh);
+        let hh = parse::bi64::<b::OffsetHours>(&hhmm[0..2])
+            .context(E::ParseOffsetHour)?;
+        let mm = parse::bi64::<b::OffsetMinutes>(&hhmm[2..4])
+            .context(E::ParseOffsetMinute)?;
 
-        let mm = parse::i64(&hhmm[2..4]).with_context(|| {
-            err!(
-                "failed to parse minutes from time zone offset {hhmm}",
-                hhmm = escape::Bytes(hhmm)
-            )
-        })?;
-        let mm = ParsedOffsetMinutes::try_new("zone-offset-minutes", mm)
-            .context("time zone offset minutes are not valid")?;
-        let mm = t::SpanZoneOffset::rfrom(mm);
-
-        let seconds = hh * C(3_600) + mm * C(60);
-        let offset = Offset::from_seconds_ranged(seconds * sign);
+        let seconds = sign * (i32::from(hh) * 3_600 + i32::from(mm) * 60);
+        // OK because we check the bounds of both hours and minutes.
+        let offset = Offset::from_seconds(seconds).unwrap();
         Ok(Parsed { value: offset, input })
     }
 
@@ -865,11 +756,7 @@ impl DateTimeParser {
             len += 1;
         }
         if len == 0 {
-            return Err(err!(
-                "expected obsolete RFC 2822 time zone abbreviation, \
-                 but found no remaining non-whitespace characters \
-                 after time",
-            ));
+            return Err(Error::from(E::WhitespaceAfterTimeForObsoleteOffset));
         }
         let offset = match &letters[..len] {
             b"ut" | b"gmt" | b"z" => Offset::UTC,
@@ -917,11 +804,7 @@ impl DateTimeParser {
                     Offset::UTC
                 } else {
                     // But anything else we throw our hands up I guess.
-                    return Err(err!(
-                        "expected obsolete RFC 2822 time zone abbreviation, \
-                         but found {found:?}",
-                        found = escape::Bytes(&input[..len]),
-                    ));
+                    return Err(Error::from(E::InvalidObsoleteOffset));
                 }
             }
         };
@@ -936,15 +819,12 @@ impl DateTimeParser {
         input: &'i [u8],
     ) -> Result<Parsed<'i, ()>, Error> {
         if input.is_empty() {
-            return Err(err!(
-                "expected time separator of ':', but found end of input",
-            ));
+            return Err(Error::from(E::EndOfInputTimeSeparator));
         }
         if input[0] != b':' {
-            return Err(err!(
-                "expected time separator of ':', but found {got}",
-                got = escape::Byte(input[0]),
-            ));
+            return Err(Error::from(E::UnexpectedByteTimeSeparator {
+                byte: input[0],
+            }));
         }
         Ok(Parsed { value: (), input: &input[1..] })
     }
@@ -959,10 +839,7 @@ impl DateTimeParser {
         let Parsed { input, value: had_whitespace } =
             self.skip_whitespace(input);
         if !had_whitespace {
-            return Err(err!(
-                "expected at least one whitespace character (space or tab), \
-                 but found none",
-            ));
+            return Err(Error::from(E::WhitespaceAfterTime));
         }
         Ok(Parsed { value: (), input })
     }
@@ -1012,26 +889,20 @@ impl DateTimeParser {
                 // I believe this error case is actually impossible, since as
                 // soon as we hit 0, we break out. If there is more "comment,"
                 // then it will flag an error as unparsed input.
-                depth = depth.checked_sub(1).ok_or_else(|| {
-                    err!(
-                        "found closing parenthesis in comment with \
-                         no matching opening parenthesis"
-                    )
-                })?;
+                depth = depth
+                    .checked_sub(1)
+                    .ok_or(E::CommentClosingParenWithoutOpen)?;
                 if depth == 0 {
                     break;
                 }
             } else if byte == b'(' {
-                depth = depth.checked_add(1).ok_or_else(|| {
-                    err!("found too many nested parenthesis in comment")
-                })?;
+                depth = depth
+                    .checked_add(1)
+                    .ok_or(E::CommentTooManyNestedParens)?;
             }
         }
         if depth > 0 {
-            return Err(err!(
-                "found opening parenthesis in comment with \
-                 no matching closing parenthesis"
-            ));
+            return Err(Error::from(E::CommentOpeningParenWithoutClose));
         }
         let Parsed { input, .. } = self.skip_whitespace(input);
         Ok(Parsed { value: (), input })
@@ -1041,8 +912,8 @@ impl DateTimeParser {
 /// A printer for [RFC 2822] datetimes.
 ///
 /// This printer converts an in memory representation of a precise instant in
-/// time to an RFC 2822 formatted string. That is, [`Zoned`] or [`Timestamp`],
-/// since all other datetime types in Jiff are inexact.
+/// time to an RFC 2822 formatted string. That is, [`ZonedDateTime`] or
+/// [`Timestamp`], since all other datetime types in Jiff are inexact.
 ///
 /// [RFC 2822]: https://datatracker.ietf.org/doc/html/rfc2822
 ///
@@ -1069,10 +940,10 @@ impl DateTimeParser {
 ///
 /// const PRINTER: DateTimePrinter = DateTimePrinter::new();
 ///
-/// let zdt = date(2024, 6, 15).at(7, 0, 0, 0).in_tz("Australia/Tasmania")?;
+/// let zdt = date(2024, 6, 15).at(7, 0, 0, 0).in_tz("Australia/Hobart")?;
 ///
 /// let mut buf = String::new();
-/// PRINTER.print_zoned(&zdt, &mut buf)?;
+/// PRINTER.print_zoned_datetime(&zdt, &mut buf)?;
 /// assert_eq!(buf, "Sat, 15 Jun 2024 07:00:00 +1000");
 ///
 /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -1096,7 +967,9 @@ impl DateTimeParser {
 ///
 /// let path = Path::new("/tmp/output");
 /// let mut file = BufWriter::new(File::create(path)?);
-/// DateTimePrinter::new().print_zoned(&zdt, StdIoWrite(&mut file)).unwrap();
+/// DateTimePrinter::new()
+///     .print_zoned_datetime(&zdt, StdIoWrite(&mut file))
+///     .unwrap();
 /// file.flush()?;
 /// assert_eq!(
 ///     std::fs::read_to_string(path)?,
@@ -1118,18 +991,18 @@ impl DateTimePrinter {
         DateTimePrinter { _private: () }
     }
 
-    /// Format a `Zoned` datetime into a string.
+    /// Format a `ZonedDateTime` datetime into a string.
     ///
     /// This never emits `-0000` as the offset in the RFC 2822 format. If you
     /// desire a `-0000` offset, use [`DateTimePrinter::print_timestamp`] via
-    /// [`Zoned::timestamp`].
+    /// [`ZonedDateTime::timestamp`].
     ///
     /// Moreover, since RFC 2822 does not support fractional seconds, this
     /// routine prints the zoned datetime as if truncating any fractional
     /// seconds.
     ///
-    /// This is a convenience routine for [`DateTimePrinter::print_zoned`]
-    /// with a `String`.
+    /// This is a convenience routine for
+    /// [`DateTimePrinter::print_zoned_datetime`] with a `String`.
     ///
     /// # Warning
     ///
@@ -1160,27 +1033,31 @@ impl DateTimePrinter {
     ///
     /// let zdt = date(2024, 6, 15).at(7, 0, 0, 0).in_tz("America/New_York")?;
     /// assert_eq!(
-    ///     PRINTER.zoned_to_string(&zdt)?,
+    ///     PRINTER.zoned_datetime_to_string(&zdt)?,
     ///     "Sat, 15 Jun 2024 07:00:00 -0400",
     /// );
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     #[cfg(feature = "alloc")]
-    pub fn zoned_to_string(
+    pub fn zoned_datetime_to_string(
         &self,
-        zdt: &Zoned,
+        zdt: &ZonedDateTime,
     ) -> Result<alloc::string::String, Error> {
-        let mut buf = alloc::string::String::with_capacity(4);
-        self.print_zoned(zdt, &mut buf)?;
+        // Writing directly into the unused capacity of a `String` saves about
+        // 40% on a micro-benchmark compared to just passing a `&mut String`
+        // to `print_zoned_datetime`.
+        let mut buf =
+            alloc::string::String::with_capacity(PRINTER_MAX_BYTES_RFC2822);
+        self.print_zoned_datetime(zdt, &mut buf)?;
         Ok(buf)
     }
 
     /// Format a `Timestamp` datetime into a string.
     ///
     /// This always emits `-0000` as the offset in the RFC 2822 format. If you
-    /// desire a `+0000` offset, use [`DateTimePrinter::print_zoned`] with a
-    /// zoned datetime with [`TimeZone::UTC`].
+    /// desire a `+0000` offset, use [`DateTimePrinter::print_zoned_datetime`]
+    /// with a zoned datetime with [`TimeZone::UTC`].
     ///
     /// Moreover, since RFC 2822 does not support fractional seconds, this
     /// routine prints the timestamp as if truncating any fractional seconds.
@@ -1213,7 +1090,8 @@ impl DateTimePrinter {
         &self,
         timestamp: &Timestamp,
     ) -> Result<alloc::string::String, Error> {
-        let mut buf = alloc::string::String::with_capacity(4);
+        let mut buf =
+            alloc::string::String::with_capacity(PRINTER_MAX_BYTES_RFC2822);
         self.print_timestamp(timestamp, &mut buf)?;
         Ok(buf)
     }
@@ -1259,16 +1137,17 @@ impl DateTimePrinter {
         &self,
         timestamp: &Timestamp,
     ) -> Result<alloc::string::String, Error> {
-        let mut buf = alloc::string::String::with_capacity(29);
+        let mut buf =
+            alloc::string::String::with_capacity(PRINTER_MAX_BYTES_RFC9110);
         self.print_timestamp_rfc9110(timestamp, &mut buf)?;
         Ok(buf)
     }
 
-    /// Print a `Zoned` datetime to the given writer.
+    /// Print a `ZonedDateTime` datetime to the given writer.
     ///
     /// This never emits `-0000` as the offset in the RFC 2822 format. If you
     /// desire a `-0000` offset, use [`DateTimePrinter::print_timestamp`] via
-    /// [`Zoned::timestamp`].
+    /// [`ZonedDateTime::timestamp`].
     ///
     /// Moreover, since RFC 2822 does not support fractional seconds, this
     /// routine prints the zoned datetime as if truncating any fractional
@@ -1308,24 +1187,34 @@ impl DateTimePrinter {
     /// let zdt = date(2024, 6, 15).at(7, 0, 0, 0).in_tz("America/New_York")?;
     ///
     /// let mut buf = String::new();
-    /// PRINTER.print_zoned(&zdt, &mut buf)?;
+    /// PRINTER.print_zoned_datetime(&zdt, &mut buf)?;
     /// assert_eq!(buf, "Sat, 15 Jun 2024 07:00:00 -0400");
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
-    pub fn print_zoned<W: Write>(
+    pub fn print_zoned_datetime<W: Write>(
         &self,
-        zdt: &Zoned,
-        wtr: W,
+        zdt: &ZonedDateTime,
+        mut wtr: W,
     ) -> Result<(), Error> {
-        self.print_civil_with_offset(zdt.datetime(), Some(zdt.offset()), wtr)
+        BorrowedBuffer::with_writer::<PRINTER_MAX_BYTES_RFC2822>(
+            &mut wtr,
+            PRINTER_MAX_BYTES_RFC2822,
+            |bbuf| {
+                self.print_civil_with_offset(
+                    zdt.datetime(),
+                    Some(zdt.offset()),
+                    bbuf,
+                )
+            },
+        )
     }
 
     /// Print a `Timestamp` datetime to the given writer.
     ///
     /// This always emits `-0000` as the offset in the RFC 2822 format. If you
-    /// desire a `+0000` offset, use [`DateTimePrinter::print_zoned`] with a
-    /// zoned datetime with [`TimeZone::UTC`].
+    /// desire a `+0000` offset, use [`DateTimePrinter::print_zoned_datetime`]
+    /// with a zoned datetime with [`TimeZone::UTC`].
     ///
     /// Moreover, since RFC 2822 does not support fractional seconds, this
     /// routine prints the timestamp as if truncating any fractional seconds.
@@ -1357,10 +1246,14 @@ impl DateTimePrinter {
     pub fn print_timestamp<W: Write>(
         &self,
         timestamp: &Timestamp,
-        wtr: W,
+        mut wtr: W,
     ) -> Result<(), Error> {
         let dt = TimeZone::UTC.to_datetime(*timestamp);
-        self.print_civil_with_offset(dt, None, wtr)
+        BorrowedBuffer::with_writer::<PRINTER_MAX_BYTES_RFC2822>(
+            &mut wtr,
+            PRINTER_MAX_BYTES_RFC2822,
+            |bbuf| self.print_civil_with_offset(dt, None, bbuf),
+        )
     }
 
     /// Print a `Timestamp` datetime to the given writer in a way that is
@@ -1403,108 +1296,85 @@ impl DateTimePrinter {
     pub fn print_timestamp_rfc9110<W: Write>(
         &self,
         timestamp: &Timestamp,
-        wtr: W,
+        mut wtr: W,
     ) -> Result<(), Error> {
-        self.print_civil_always_utc(timestamp, wtr)
+        let dt = TimeZone::UTC.to_datetime(*timestamp);
+        BorrowedBuffer::with_writer::<PRINTER_MAX_BYTES_RFC9110>(
+            &mut wtr,
+            PRINTER_MAX_BYTES_RFC9110,
+            |bbuf| self.print_civil_always_utc(dt, bbuf),
+        )
     }
 
-    fn print_civil_with_offset<W: Write>(
+    #[inline(never)]
+    fn print_civil_with_offset(
         &self,
         dt: DateTime,
         offset: Option<Offset>,
-        mut wtr: W,
+        buf: &mut BorrowedBuffer<'_>,
     ) -> Result<(), Error> {
-        static FMT_DAY: DecimalFormatter = DecimalFormatter::new();
-        static FMT_YEAR: DecimalFormatter = DecimalFormatter::new().padding(4);
-        static FMT_TIME_UNIT: DecimalFormatter =
-            DecimalFormatter::new().padding(2);
-
         if dt.year() < 0 {
             // RFC 2822 actually says the year must be at least 1900, but
             // other implementations (like Chrono) allow any positive 4-digit
             // year.
-            return Err(err!(
-                "datetime {dt} has negative year, \
-                 which cannot be formatted with RFC 2822",
-            ));
+            return Err(Error::from(E::NegativeYear));
         }
 
-        wtr.write_str(weekday_abbrev(dt.weekday()))?;
-        wtr.write_str(", ")?;
-        wtr.write_int(&FMT_DAY, dt.day())?;
-        wtr.write_str(" ")?;
-        wtr.write_str(month_name(dt.month()))?;
-        wtr.write_str(" ")?;
-        wtr.write_int(&FMT_YEAR, dt.year())?;
-        wtr.write_str(" ")?;
-        wtr.write_int(&FMT_TIME_UNIT, dt.hour())?;
-        wtr.write_str(":")?;
-        wtr.write_int(&FMT_TIME_UNIT, dt.minute())?;
-        wtr.write_str(":")?;
-        wtr.write_int(&FMT_TIME_UNIT, dt.second())?;
-        wtr.write_str(" ")?;
+        buf.write_str(weekday_abbrev(dt.weekday()));
+        buf.write_str(", ");
+        buf.write_int(dt.day().unsigned_abs());
+        buf.write_ascii_char(b' ');
+        buf.write_str(month_name(dt.month()));
+        buf.write_ascii_char(b' ');
+        buf.write_int_pad4(dt.year().unsigned_abs());
+        buf.write_ascii_char(b' ');
+        buf.write_int_pad2(dt.hour().unsigned_abs());
+        buf.write_ascii_char(b':');
+        buf.write_int_pad2(dt.minute().unsigned_abs());
+        buf.write_ascii_char(b':');
+        buf.write_int_pad2(dt.second().unsigned_abs());
+        buf.write_ascii_char(b' ');
 
         let Some(offset) = offset else {
-            wtr.write_str("-0000")?;
+            buf.write_str("-0000");
             return Ok(());
         };
-        wtr.write_str(if offset.is_negative() { "-" } else { "+" })?;
-        let mut hours = offset.part_hours_ranged().abs().get();
-        let mut minutes = offset.part_minutes_ranged().abs().get();
-        // RFC 2822, like RFC 3339, requires that time zone offsets are an
-        // integral number of minutes. While rounding based on seconds doesn't
-        // seem clearly indicated, we choose to do that here. An alternative
-        // would be to return an error. It isn't clear how important this is in
-        // practice though.
-        if offset.part_seconds_ranged().abs() >= C(30) {
-            if minutes == 59 {
-                hours = hours.saturating_add(1);
-                minutes = 0;
-            } else {
-                minutes = minutes.saturating_add(1);
-            }
-        }
-        wtr.write_int(&FMT_TIME_UNIT, hours)?;
-        wtr.write_int(&FMT_TIME_UNIT, minutes)?;
+        buf.write_ascii_char(if offset.is_negative() { b'-' } else { b'+' });
+        let (offset_hours, offset_minutes) = offset.round_to_nearest_minute();
+        buf.write_int_pad2(offset_hours);
+        buf.write_int_pad2(offset_minutes);
+
         Ok(())
     }
 
-    fn print_civil_always_utc<W: Write>(
+    #[inline(never)]
+    fn print_civil_always_utc(
         &self,
-        timestamp: &Timestamp,
-        mut wtr: W,
+        dt: DateTime,
+        buf: &mut BorrowedBuffer<'_>,
     ) -> Result<(), Error> {
-        static FMT_DAY: DecimalFormatter = DecimalFormatter::new().padding(2);
-        static FMT_YEAR: DecimalFormatter = DecimalFormatter::new().padding(4);
-        static FMT_TIME_UNIT: DecimalFormatter =
-            DecimalFormatter::new().padding(2);
-
-        let dt = TimeZone::UTC.to_datetime(*timestamp);
         if dt.year() < 0 {
             // RFC 2822 actually says the year must be at least 1900, but
             // other implementations (like Chrono) allow any positive 4-digit
             // year.
-            return Err(err!(
-                "datetime {dt} has negative year, \
-                 which cannot be formatted with RFC 2822",
-            ));
+            return Err(Error::from(E::NegativeYear));
         }
 
-        wtr.write_str(weekday_abbrev(dt.weekday()))?;
-        wtr.write_str(", ")?;
-        wtr.write_int(&FMT_DAY, dt.day())?;
-        wtr.write_str(" ")?;
-        wtr.write_str(month_name(dt.month()))?;
-        wtr.write_str(" ")?;
-        wtr.write_int(&FMT_YEAR, dt.year())?;
-        wtr.write_str(" ")?;
-        wtr.write_int(&FMT_TIME_UNIT, dt.hour())?;
-        wtr.write_str(":")?;
-        wtr.write_int(&FMT_TIME_UNIT, dt.minute())?;
-        wtr.write_str(":")?;
-        wtr.write_int(&FMT_TIME_UNIT, dt.second())?;
-        wtr.write_str(" ")?;
-        wtr.write_str("GMT")?;
+        buf.write_str(weekday_abbrev(dt.weekday()));
+        buf.write_str(", ");
+        buf.write_int_pad2(dt.day().unsigned_abs());
+        buf.write_str(" ");
+        buf.write_str(month_name(dt.month()));
+        buf.write_str(" ");
+        buf.write_int_pad4(dt.year().unsigned_abs());
+        buf.write_str(" ");
+        buf.write_int_pad2(dt.hour().unsigned_abs());
+        buf.write_str(":");
+        buf.write_int_pad2(dt.minute().unsigned_abs());
+        buf.write_str(":");
+        buf.write_int_pad2(dt.second().unsigned_abs());
+        buf.write_str(" ");
+        buf.write_str("GMT");
         Ok(())
     }
 }
@@ -1571,7 +1441,8 @@ mod tests {
 
     #[test]
     fn ok_parse_basic() {
-        let p = |input| DateTimeParser::new().parse_zoned(input).unwrap();
+        let p =
+            |input| DateTimeParser::new().parse_zoned_datetime(input).unwrap();
 
         insta::assert_debug_snapshot!(
             p("Wed, 10 Jan 2024 05:34:45 -0500"),
@@ -1611,7 +1482,8 @@ mod tests {
 
     #[test]
     fn ok_parse_obsolete_zone() {
-        let p = |input| DateTimeParser::new().parse_zoned(input).unwrap();
+        let p =
+            |input| DateTimeParser::new().parse_zoned_datetime(input).unwrap();
 
         insta::assert_debug_snapshot!(
             p("Wed, 10 Jan 2024 05:34:45 EST"),
@@ -1679,7 +1551,8 @@ mod tests {
     // whyyyyyyyyyyyyy
     #[test]
     fn ok_parse_comment() {
-        let p = |input| DateTimeParser::new().parse_zoned(input).unwrap();
+        let p =
+            |input| DateTimeParser::new().parse_zoned_datetime(input).unwrap();
 
         insta::assert_debug_snapshot!(
             p("Wed, 10 Jan 2024 05:34:45 -0500 (wat)"),
@@ -1697,7 +1570,8 @@ mod tests {
 
     #[test]
     fn ok_parse_whitespace() {
-        let p = |input| DateTimeParser::new().parse_zoned(input).unwrap();
+        let p =
+            |input| DateTimeParser::new().parse_zoned_datetime(input).unwrap();
 
         insta::assert_debug_snapshot!(
             p("Wed, 10 \t   Jan \n\r\n\n 2024       05:34:45    -0500"),
@@ -1738,28 +1612,31 @@ mod tests {
     #[test]
     fn err_parse_invalid() {
         let p = |input| {
-            DateTimeParser::new().parse_zoned(input).unwrap_err().to_string()
+            DateTimeParser::new()
+                .parse_zoned_datetime(input)
+                .unwrap_err()
+                .to_string()
         };
 
         insta::assert_snapshot!(
             p("Thu, 10 Jan 2024 05:34:45 -0500"),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: found parsed weekday of Thu, but parsed datetime of 2024-01-10T05:34:45 has weekday Wed",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: found parsed weekday of `Thursday`, but parsed datetime has weekday `Wednesday`",
         );
         insta::assert_snapshot!(
             p("Wed, 29 Feb 2023 05:34:45 -0500"),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: invalid date: parameter 'day' with value 29 is not in the required range of 1..=28",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: invalid date: parameter 'day' for `2023-02` is invalid, must be in range `1..=28`",
         );
         insta::assert_snapshot!(
             p("Mon, 31 Jun 2024 05:34:45 -0500"),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: invalid date: parameter 'day' with value 31 is not in the required range of 1..=30",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: invalid date: parameter 'day' for `2024-06` is invalid, must be in range `1..=30`",
         );
         insta::assert_snapshot!(
             p("Tue, 32 Jun 2024 05:34:45 -0500"),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: day is not valid: parameter 'day' with value 32 is not in the required range of 1..=31",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: failed to parse day: parameter 'day' is not in the required range of 1..=31",
         );
         insta::assert_snapshot!(
             p("Sun, 30 Jun 2024 24:00:00 -0500"),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: hour is not valid: parameter 'hour' with value 24 is not in the required range of 0..=23",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: failed to parse hour (expects a two digit integer): parameter 'hour' is not in the required range of 0..=23",
         );
         // No whitespace after time
         insta::assert_snapshot!(
@@ -1771,7 +1648,10 @@ mod tests {
     #[test]
     fn err_parse_incomplete() {
         let p = |input| {
-            DateTimeParser::new().parse_zoned(input).unwrap_err().to_string()
+            DateTimeParser::new()
+                .parse_zoned_datetime(input)
+                .unwrap_err()
+                .to_string()
         };
 
         insta::assert_snapshot!(
@@ -1780,43 +1660,43 @@ mod tests {
         );
         insta::assert_snapshot!(
             p(" "),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected RFC 2822 datetime, but got empty string after trimming whitespace",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected RFC 2822 datetime, but got empty string after trimming leading whitespace",
         );
         insta::assert_snapshot!(
             p("Wat"),
-            @r###"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected day at beginning of RFC 2822 datetime since first non-whitespace byte, "W", is not a digit, but given string is too short (length is 3)"###,
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected day at beginning of RFC 2822 datetime since first non-whitespace byte, `W`, is not a digit, but given string is too short (length is 3)",
         );
         insta::assert_snapshot!(
             p("Wed"),
-            @r###"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected day at beginning of RFC 2822 datetime since first non-whitespace byte, "W", is not a digit, but given string is too short (length is 3)"###,
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected day at beginning of RFC 2822 datetime since first non-whitespace byte, `W`, is not a digit, but given string is too short (length is 3)",
         );
         insta::assert_snapshot!(
             p("Wed "),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected comma after parsed weekday `Wed` in RFC 2822 datetime, but found end of string instead",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected comma after parsed weekday in RFC 2822 datetime, but found end of input instead",
         );
         insta::assert_snapshot!(
             p("Wed   ,"),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected day, but found end of input",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected numeric day, but found end of input",
         );
         insta::assert_snapshot!(
             p("Wed   ,   "),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected day, but found end of input",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected numeric day, but found end of input",
         );
         insta::assert_snapshot!(
             p("Wat, "),
-            @r###"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected day at beginning of RFC 2822 datetime since first non-whitespace byte, "W", is not a digit, but did not recognize "Wat" as a valid weekday abbreviation"###,
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected day at beginning of RFC 2822 datetime since first non-whitespace byte, `W`, is not a digit, but did not recognize a valid weekday abbreviation",
         );
         insta::assert_snapshot!(
             p("Wed, "),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected day, but found end of input",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected numeric day, but found end of input",
         );
         insta::assert_snapshot!(
             p("Wed, 1"),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected whitespace after parsing day 1: expected at least one whitespace character (space or tab), but found none",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected whitespace after parsing day: expected whitespace after parsing time: expected at least one whitespace character (space or tab), but found none",
         );
         insta::assert_snapshot!(
             p("Wed, 10"),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected whitespace after parsing day 10: expected at least one whitespace character (space or tab), but found none",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected whitespace after parsing day: expected whitespace after parsing time: expected at least one whitespace character (space or tab), but found none",
         );
         insta::assert_snapshot!(
             p("Wed, 10 J"),
@@ -1824,11 +1704,11 @@ mod tests {
         );
         insta::assert_snapshot!(
             p("Wed, 10 Wat"),
-            @r###"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected abbreviated month name, but did not recognize "Wat" as a valid month"###,
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected abbreviated month name, but did not recognize a valid abbreviated month name",
         );
         insta::assert_snapshot!(
             p("Wed, 10 Jan"),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected whitespace after parsing month name: expected at least one whitespace character (space or tab), but found none",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected whitespace after parsing abbreviated month name: expected whitespace after parsing time: expected at least one whitespace character (space or tab), but found none",
         );
         insta::assert_snapshot!(
             p("Wed, 10 Jan 2"),
@@ -1836,15 +1716,15 @@ mod tests {
         );
         insta::assert_snapshot!(
             p("Wed, 10 Jan 2024"),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected whitespace after parsing year: expected at least one whitespace character (space or tab), but found none",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected whitespace after parsing year: expected whitespace after parsing time: expected at least one whitespace character (space or tab), but found none",
         );
         insta::assert_snapshot!(
             p("Wed, 10 Jan 2024 05"),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected time separator of ':', but found end of input",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected time separator of `:`, but found end of input",
         );
         insta::assert_snapshot!(
             p("Wed, 10 Jan 2024 053"),
-            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected time separator of ':', but found 3",
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected time separator of `:`, but found `3`",
         );
         insta::assert_snapshot!(
             p("Wed, 10 Jan 2024 05:34"),
@@ -1860,14 +1740,17 @@ mod tests {
         );
         insta::assert_snapshot!(
             p("Wed, 10 Jan 2024 05:34:45 J"),
-            @r###"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected obsolete RFC 2822 time zone abbreviation, but found "J""###,
+            @"failed to parse RFC 2822 datetime into Jiff zoned datetime: expected obsolete RFC 2822 time zone abbreviation, but did not recognize a valid abbreviation",
         );
     }
 
     #[test]
     fn err_parse_comment() {
         let p = |input| {
-            DateTimeParser::new().parse_zoned(input).unwrap_err().to_string()
+            DateTimeParser::new()
+                .parse_zoned_datetime(input)
+                .unwrap_err()
+                .to_string()
         };
 
         insta::assert_snapshot!(
@@ -1893,14 +1776,16 @@ mod tests {
     }
 
     #[test]
-    fn ok_print_zoned() {
+    fn ok_print_zoned_datetime() {
         if crate::tz::db().is_definitively_empty() {
             return;
         }
 
-        let p = |zdt: &Zoned| -> String {
+        let p = |zdt: &ZonedDateTime| -> String {
             let mut buf = String::new();
-            DateTimePrinter::new().print_zoned(&zdt, &mut buf).unwrap();
+            DateTimePrinter::new()
+                .print_zoned_datetime(&zdt, &mut buf)
+                .unwrap();
             buf
         };
 
@@ -1976,6 +1861,56 @@ mod tests {
     }
 
     #[test]
+    fn ok_minimum_offset_roundtrip() {
+        let zdt = date(2025, 12, 25)
+            .at(17, 0, 0, 0)
+            .to_zoned_datetime(TimeZone::fixed(Offset::MIN))
+            .unwrap();
+        let string =
+            DateTimePrinter::new().zoned_datetime_to_string(&zdt).unwrap();
+        assert_eq!(string, "Thu, 25 Dec 2025 17:00:00 -2559");
+
+        let got: ZonedDateTime =
+            DateTimeParser::new().parse_zoned_datetime(&string).unwrap();
+        // Since we started with a zoned datetime with a minimal offset
+        // (to second precision) and RFC 2822 only supports minute precision
+        // in time zone offsets, printing the zoned datetime rounds the offset.
+        // But this would normally result in an offset beyond Jiff's limits,
+        // so in this case, the offset truncates to the minimum supported
+        // value by both Jiff and RFC 2822. That's what we test for here.
+        let expected = date(2025, 12, 25)
+            .at(17, 0, 0, 0)
+            .to_zoned_datetime(TimeZone::fixed(-Offset::hms(25, 59, 0)))
+            .unwrap();
+        assert_eq!(expected, got);
+    }
+
+    #[test]
+    fn ok_maximum_offset_roundtrip() {
+        let zdt = date(2025, 12, 25)
+            .at(17, 0, 0, 0)
+            .to_zoned_datetime(TimeZone::fixed(Offset::MAX))
+            .unwrap();
+        let string =
+            DateTimePrinter::new().zoned_datetime_to_string(&zdt).unwrap();
+        assert_eq!(string, "Thu, 25 Dec 2025 17:00:00 +2559");
+
+        let got: ZonedDateTime =
+            DateTimeParser::new().parse_zoned_datetime(&string).unwrap();
+        // Since we started with a zoned datetime with a maximal offset
+        // (to second precision) and RFC 2822 only supports minute precision
+        // in time zone offsets, printing the zoned datetime rounds the offset.
+        // But this would normally result in an offset beyond Jiff's limits,
+        // so in this case, the offset truncates to the maximum supported
+        // value by both Jiff and RFC 2822. That's what we test for here.
+        let expected = date(2025, 12, 25)
+            .at(17, 0, 0, 0)
+            .to_zoned_datetime(TimeZone::fixed(Offset::hms(25, 59, 0)))
+            .unwrap();
+        assert_eq!(expected, got);
+    }
+
+    #[test]
     fn ok_print_rfc9110_timestamp() {
         if crate::tz::db().is_definitively_empty() {
             return;
@@ -2023,15 +1958,15 @@ mod tests {
     }
 
     #[test]
-    fn err_print_zoned() {
+    fn err_print_zoned_datetime() {
         if crate::tz::db().is_definitively_empty() {
             return;
         }
 
-        let p = |zdt: &Zoned| -> String {
+        let p = |zdt: &ZonedDateTime| -> String {
             let mut buf = String::new();
             DateTimePrinter::new()
-                .print_zoned(&zdt, &mut buf)
+                .print_zoned_datetime(&zdt, &mut buf)
                 .unwrap_err()
                 .to_string()
         };
@@ -2040,7 +1975,7 @@ mod tests {
             .at(5, 34, 45, 0)
             .in_tz("America/New_York")
             .unwrap();
-        insta::assert_snapshot!(p(&zdt), @"datetime -000001-01-10T05:34:45 has negative year, which cannot be formatted with RFC 2822");
+        insta::assert_snapshot!(p(&zdt), @"datetime has negative year, which cannot be formatted with RFC 2822");
     }
 
     #[test]
@@ -2062,6 +1997,6 @@ mod tests {
             .in_tz("America/New_York")
             .unwrap()
             .timestamp();
-        insta::assert_snapshot!(p(ts), @"datetime -000001-01-10T10:30:47 has negative year, which cannot be formatted with RFC 2822");
+        insta::assert_snapshot!(p(ts), @"datetime has negative year, which cannot be formatted with RFC 2822");
     }
 }

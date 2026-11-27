@@ -1,21 +1,23 @@
 use std::{ops::DerefMut, path::PathBuf, sync::atomic::AtomicBool};
 
+use gix_error::{ResultExt, bail, message};
 use gix_odb::store::RefreshMode;
-use gix_protocol::{
-    fetch::{negotiate, Arguments},
-    transport::client::Transport,
-};
+use gix_protocol::fetch::{Arguments, negotiate};
+#[cfg(feature = "async-network-client")]
+use gix_transport::client::async_io::Transport;
+#[cfg(feature = "blocking-network-client")]
+use gix_transport::client::blocking_io::Transport;
 
 use crate::{
+    Result,
     config::{
         cache::util::ApplyLeniency,
         tree::{Clone, Fetch},
     },
-    remote,
     remote::{
-        connection::fetch::config,
+        connection::fetch::{PrepareDetached, config},
         fetch,
-        fetch::{negotiate::Algorithm, outcome, refs, Error, Outcome, Prepare, RefLogMessage, Status},
+        fetch::{Outcome, Prepare, RefLogMessage, Status, negotiate::Algorithm, outcome, refs},
     },
 };
 
@@ -53,8 +55,8 @@ where
     /// When **updating refs**, the `git-fetch` docs state the following:
     ///
     /// > Unlike when pushing with git-push, any updates outside of refs/{tags,heads}/* will be accepted without + in the refspec (or --force),
-    /// whether that’s swapping e.g. a tree object for a blob, or a commit for another commit that’s doesn’t have the previous commit
-    /// as an ancestor etc.
+    /// > whether that’s swapping e.g. a tree object for a blob, or a commit for another commit that’s doesn’t have the previous commit
+    /// > as an ancestor etc.
     ///
     /// We explicitly don't special case those refs and expect the caller to take control. Note that by its nature,
     /// force only applies to refs pointing to commits and if they don't, they will be updated either way in our
@@ -69,44 +71,69 @@ where
     ///
     /// - `gitoxide.userAgent` is read to obtain the application user agent for git servers and for HTTP servers as well.
     ///
-    #[gix_protocol::maybe_async::maybe_async]
-    pub async fn receive<P>(mut self, progress: P, should_interrupt: &AtomicBool) -> Result<Outcome, Error>
+    #[gix_protocol::bisync::bisync]
+    pub async fn receive<P>(self, progress: P, should_interrupt: &AtomicBool) -> Result<Outcome>
     where
-        P: gix_features::progress::NestedProgress,
+        P: gix_utils::progress::NestedProgress,
+        P::SubProgress: 'static,
+    {
+        let Prepare { inner, repo } = self;
+        inner.receive(repo, progress, should_interrupt).await
+    }
+}
+
+impl<T> PrepareDetached<'_, T>
+where
+    T: Transport,
+{
+    #[gix_protocol::bisync::bisync]
+    pub(crate) async fn receive<P>(
+        mut self,
+        repo: &crate::Repository,
+        progress: P,
+        should_interrupt: &AtomicBool,
+    ) -> Result<Outcome>
+    where
+        P: gix_utils::progress::NestedProgress,
         P::SubProgress: 'static,
     {
         let ref_map = &self.ref_map;
-        if ref_map.mappings.is_empty() && !ref_map.remote_refs.is_empty() {
+        if ref_map.is_missing_required_mapping() {
             let mut specs = ref_map.refspecs.clone();
             specs.extend(ref_map.extra_refspecs.clone());
-            return Err(Error::NoMapping {
-                refspecs: specs,
-                num_remote_refs: ref_map.remote_refs.len(),
-            });
+            bail!(gix_error::validation(format!(
+                "None of the refspec(s) {} matched any of the {} refs on the remote",
+                specs
+                    .iter()
+                    .map(|spec| spec.to_ref().instruction().to_bstring().to_string())
+                    .collect::<Vec<_>>()
+                    .join(", "),
+                ref_map.remote_refs.len()
+            )));
         }
 
         let mut con = self.con.take().expect("receive() can only be called once");
         let mut handshake = con.handshake.take().expect("receive() can only be called once");
-        let repo = con.remote.repo;
 
         let expected_object_hash = repo.object_hash();
         if ref_map.object_hash != expected_object_hash {
-            return Err(Error::IncompatibleObjectHash {
-                local: expected_object_hash,
-                remote: ref_map.object_hash,
-            });
+            bail!(
+                "Cannot fetch from a remote that uses {} while local repository uses {expected_object_hash} for object hashes".unsupported(),
+                ref_map.object_hash
+            );
         }
 
         let fetch_options = gix_protocol::fetch::Options {
-            shallow_file: repo.shallow_file(),
+            shallow_file: repo.shallow_file()?,
             shallow: &self.shallow,
             tags: con.remote.fetch_tags,
-            reject_shallow_remote: repo
-                .config
-                .resolved
-                .boolean_filter("clone.rejectShallow", &mut repo.filter_config_section())
-                .map(|val| Clone::REJECT_SHALLOW.enrich_error(val))
-                .transpose()?
+            reject_shallow_remote: Clone::REJECT_SHALLOW
+                .enrich_error(
+                    repo.config
+                        .resolved
+                        .boolean_filter("clone.rejectShallow", &mut repo.filter_config_section()),
+                )
+                .or_raise(|| message("Could not obtain configuration to learn if shallow remotes should be rejected"))?
                 .unwrap_or(false),
         };
         let context = gix_protocol::fetch::Context {
@@ -152,13 +179,14 @@ where
             thread_limit: config::index_threads(repo)?,
             index_version: config::pack_index_version(repo)?,
             iteration_mode: gix_pack::data::input::Mode::Verify,
-            object_hash: con.remote.repo.object_hash(),
+            alloc_limit_bytes: repo.config.alloc_limit_bytes,
+            compression: repo.config.loose_compression,
         };
         let mut write_pack_bundle = None;
 
         let res = gix_protocol::fetch(
             &mut negotiate,
-            |reader, progress, should_interrupt| -> Result<bool, gix_pack::bundle::write::Error> {
+            |reader, progress, should_interrupt| -> Result<bool> {
                 let mut may_read_to_end = false;
                 write_pack_bundle = if matches!(self.dry_run, fetch::DryRun::No) {
                     let res = gix_pack::Bundle::write_to_directory(
@@ -170,8 +198,10 @@ where
                             let repo = repo.clone();
                             repo.objects
                         })),
+                        repo.object_hash(),
                         write_pack_options,
-                    )?;
+                    )
+                    .or_raise(|| message("Failed to write the received pack"))?;
                     may_read_to_end = true;
                     Some(res)
                 } else {
@@ -202,19 +232,18 @@ where
                 .take()
                 .unwrap_or_else(|| RefLogMessage::Prefixed { action: "fetch".into() }),
             &self.ref_map.mappings,
-            con.remote.refspecs(remote::Direction::Fetch),
+            con.remote.fetch_refspecs(),
             &self.ref_map.extra_refspecs,
             con.remote.fetch_tags,
             self.dry_run,
             self.write_packed_refs,
         )?;
 
-        if let Some(bundle) = write_pack_bundle.as_mut() {
-            if !update_refs.edits.is_empty() || bundle.index.num_objects == 0 {
-                if let Some(path) = bundle.keep_path.take() {
-                    std::fs::remove_file(&path).map_err(|err| Error::RemovePackKeepFile { path, source: err })?;
-                }
-            }
+        if let Some(bundle) = write_pack_bundle.as_mut()
+            && (!update_refs.edits.is_empty() || bundle.index.num_objects == 0)
+            && let Some(path) = bundle.keep_path.take()
+        {
+            std::fs::remove_file(&path).or_raise(|| message!("Failed to remove .keep file at {:?}", path.display()))?;
         }
 
         let out = Outcome {
@@ -250,14 +279,14 @@ struct Negotiate<'a, 'b, 'c> {
 }
 
 impl gix_protocol::fetch::Negotiate for Negotiate<'_, '_, '_> {
-    fn mark_complete_and_common_ref(&mut self) -> Result<negotiate::Action, negotiate::Error> {
+    fn mark_complete_and_common_ref(&mut self) -> Result<gix_protocol::fetch::negotiate::Action> {
         negotiate::mark_complete_and_common_ref(
             &self.objects,
             self.refs,
             {
                 let alternates = std::mem::take(&mut self.alternates);
                 let open_options = self.open_options.clone();
-                move || -> Result<_, std::convert::Infallible> {
+                move || {
                     Ok(alternates
                         .into_iter()
                         .filter_map(move |path| {
@@ -292,7 +321,7 @@ impl gix_protocol::fetch::Negotiate for Negotiate<'_, '_, '_> {
         state: &mut negotiate::one_round::State,
         arguments: &mut Arguments,
         previous_response: Option<&gix_protocol::fetch::Response>,
-    ) -> Result<(negotiate::Round, bool), negotiate::Error> {
+    ) -> Result<(negotiate::Round, bool)> {
         negotiate::one_round(
             self.negotiator.deref_mut(),
             &mut *self.graph,

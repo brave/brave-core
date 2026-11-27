@@ -12,6 +12,8 @@ namespace psst {
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kPsstEnabled, true);
   registry->RegisterIntegerPref(prefs::kPsstInfobarShownCounter, 0);
+  registry->RegisterIntegerPref(prefs::kPsstInfobarDeclineCounter, 0);
+  registry->RegisterBooleanPref(prefs::kPsstInfobarEnabled, true);
 }
 
 }  // namespace psst

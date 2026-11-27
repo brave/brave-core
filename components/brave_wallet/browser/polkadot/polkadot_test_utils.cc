@@ -985,6 +985,11 @@ void PolkadotMockRpc::FinalizeSetup() {
       &PolkadotMockRpc::RequestInterceptor, base::Unretained(this)));
 }
 
+size_t PolkadotMockRpc::GetRequestCount(std::string_view method) const {
+  const size_t* count = base::FindOrNull(request_counts_, method);
+  return count ? *count : 0u;
+}
+
 void PolkadotMockRpc::RequestInterceptor(const network::ResourceRequest& req) {
   url_loader_factory_->ClearResponses();
 
@@ -994,6 +999,10 @@ void PolkadotMockRpc::RequestInterceptor(const network::ResourceRequest& req) {
       << "Incorrect URL supplied to PolkadotMockRpc: " << req.url;
 
   auto req_body = RequestBodyToJsonDict(req);
+
+  if (const auto* method = req_body.FindString("method")) {
+    ++request_counts_[*method];
+  }
 
   if (HandleMetadataRequest(req, req_body)) {
     return;

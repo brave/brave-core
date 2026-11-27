@@ -1,11 +1,18 @@
-use std::{borrow::Cow, path::PathBuf};
+use std::path::PathBuf;
 
-use crate::{config::tree::gitoxide, Repository};
+use crate::{
+    Repository, Result,
+    config::tree::{Key, gitoxide},
+};
 
 impl Repository {
     /// Return `true` if the repository is a shallow clone, i.e. contains history only up to a certain depth.
-    pub fn is_shallow(&self) -> bool {
-        self.shallow_file().metadata().is_ok_and(|m| m.is_file() && m.len() > 0)
+    /// Return an error if the configured shallow-file path cannot be represented natively.
+    pub fn is_shallow(&self) -> Result<bool> {
+        Ok(self
+            .shallow_file()?
+            .metadata()
+            .is_ok_and(|m| m.is_file() && m.len() > 0))
     }
 
     /// Return a shared list of shallow commits which is updated automatically if the in-memory snapshot has become stale
@@ -16,10 +23,11 @@ impl Repository {
     /// isn't a shallow clone.
     ///
     /// The shared list is shared across all clones of this repository.
-    pub fn shallow_commits(&self) -> Result<Option<crate::shallow::Commits>, crate::shallow::read::Error> {
+    pub fn shallow_commits(&self) -> Result<Option<crate::shallow::Commits>> {
+        let shallow_file = self.shallow_file()?;
         self.shallow_commits.recent_snapshot(
-            || self.shallow_file().metadata().ok().and_then(|m| m.modified().ok()),
-            || gix_shallow::read(&self.shallow_file()),
+            || shallow_file.metadata().ok().and_then(|m| m.modified().ok()),
+            || gix_shallow::read(&shallow_file),
         )
     }
 
@@ -27,12 +35,13 @@ impl Repository {
     /// parents within this repository.
     ///
     /// Note that it may not exist if the repository isn't actually shallow.
-    pub fn shallow_file(&self) -> PathBuf {
+    /// Return an error if the configured path cannot be represented natively.
+    pub fn shallow_file(&self) -> Result<PathBuf> {
         let shallow_name = self
             .config
             .resolved
             .string_filter(gitoxide::Core::SHALLOW_FILE, &mut self.filter_config_section())
-            .unwrap_or_else(|| Cow::Borrowed("shallow".into()));
-        self.common_dir().join(gix_path::from_bstr(shallow_name))
+            .unwrap_or_else(|| gitoxide::Core::SHALLOW_FILE.default_value_or_panic().into());
+        Ok(self.common_dir().join(gix_path::from_bstr(shallow_name)?))
     }
 }

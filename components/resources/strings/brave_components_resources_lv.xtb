@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">Atjaunojiet primāros kriptovalūtas kontus</translation>
 <translation id="3038077262567136741">Ievadiet atkopšanas frāzi, lai atjaunotu Brave maka kriptovalūtas kontu.</translation>
 <translation id="955918646509748368">Ievadītā atkopšanas frāze nav derīga.</translation>
+<translation id="7496330898672236908">Šī atkopšanas frāze neatbilst jūsu makam. Pārbaudiet frāzi un mēģiniet vēlreiz.</translation>
+<translation id="3798792138617904098">Vai noņemt importētos kontus?</translation>
+<translation id="2960631345291747230">Importētie konti nav dublēti ar jūsu atkopšanas frāzi. Tie tiks noņemti no Brave maka, un jūs varat neatgriezeniski zaudēt piekļuvi to līdzekļiem, ja neesat dublējis to privātās atslēgas.</translation>
+<translation id="8898583604592472741">Noņemt kontus</translation>
+<translation id="1577629163207045190">Ierakstiet "<ph name="CONFIRMATION_PHRASE"/>", lai apstiprinātu.</translation>
 <translation id="8107437138787377150">Ielīmējiet atkopšanas frāzi no starpliktuves.</translation>
 <translation id="4811736040444856406">Rādīt atkopšanas frāzi</translation>
 <translation id="4359319875297001084">Vai importēt no mantotajiem Brave kriptovalūtas makiem?</translation>
@@ -2241,13 +2246,12 @@
 <translation id="3934503473603661122">Sveiki! Mani sauc Leo. Es esmu Brave mākslīgā intelekta asistents. Mani darbina Grok 4.7 – xAI progresīvais spriešanas modelis platformā Amazon Bedrock. Grok 4.7 tiek piedāvāts, izmantojot Brave drošo AWS infrastruktūru.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Sveiki! Mani sauc Leo. Es esmu Brave mākslīgā intelekta asistents. Mani darbina GPT Luna – OpenAI ātrais, zemas aizkaves modelis platformā Amazon Bedrock. GPT Luna tiek piedāvāts, izmantojot Brave drošo AWS infrastruktūru.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Sveiki! Mani sauc Leo. Es esmu Brave mākslīgā intelekta asistents. Mani darbina GPT 5.6 Terra – OpenAI līdzsvarotais ražošanas modelis platformā Amazon Bedrock Mantle. GPT 5.6 Terra tiek piedāvāts, izmantojot Brave drošo AWS infrastruktūru.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Mistral Large – Mistral izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Mistral Large modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Anthropic izstrādātais modelis "Claude Haiku" sarunu un teksta apstrādes uzdevumu risināšanai. Brave mitina modeli "Claude Haiku" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Sveiki! Mani sauc Leo. Es esmu Brave mākslīgā intelekta asistents. Mani darbina Alibaba Cloud izstrādātais modelis "Qwen 3.8 Flash Next" dažādu uzdevumu risināšanai. Brave mitina modeli "Qwen 3.8 Flash Next" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Deepseek V3.2 – Deepseek izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Deepseek V3.2 modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Sveiki! Mani sauc Leo. Es esmu Brave mākslīgā intelekta asistents. Mani darbina GLM 5.3 – Z.ai izstrādāts modelis, kas ir veiktspējīgs un piemērots daudziem lietojuma gadījumiem. Brave mitina GLM 5.3 savā drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Anthropic izstrādātais modelis "Claude Opus" sarunu un teksta apstrādes uzdevumu risināšanai. Brave mitina modeli "Claude Opus" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina GLM-4-7-Flash – Zhipu AI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina GLM-4-7-Flash modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Kimi K2.5 – Moonshot AI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Kimi K2.5 modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Nemotron Nano 3 30B – NVIDIA izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Nemotron Nano 3 30B modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Brave Ocelot – Brave izstrādāts modelis tīmekļa lapu kopsavilkumam. Brave mitina Brave Ocelot modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokāls</translation>
@@ -2387,8 +2391,8 @@
 <translation id="7465032796278724624">Pārbaudīta konfidencialitāte ar NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modelis dinamiski mainās, lai izmantotu labāko modeli uzdevumam</translation>
 <translation id="7348809809749151120">Ātri • Meklēt</translation>
+<translation id="7711013627639951065">Ātrais • Meklēšana • Redze • Rīki</translation>
 <translation id="3213834013136637671">Meklēšana • Redze</translation>
-<translation id="2793458212460902934">Ātri • Meklēt • Rīki</translation>
 <translation id="5276681919620506371">Meklēt • Rīki</translation>
 <translation id="7434375176361995333">Kopsavilkumi • Ātri</translation>
 <translation id="3965507912994218570">Leo iestatījumi</translation>
@@ -2461,6 +2465,8 @@
 <translation id="6287023598025162715">Jauna saruna</translation>
 <translation id="7230502562132448519">Filtrēt sarunas</translation>
 <translation id="821070843380699990">Lūdzu, mēģiniet citu vaicājumu</translation>
+<translation id="241415280196701326">Nesenās darbvietas</translation>
+<translation id="5388053981690151266">Jauna saruna šajā darbvietā</translation>
 <translation id="7097822247923237815">Pagaidu tērzēšana</translation>
 <translation id="7481750859362986254">Šī saruna netiks saglabāta jūsu vēsturē un neizmantos Leo pielāgojumus vai atmiņu.</translation>
 <translation id="4238305333951712482">Atmiņa atjaunināta: <ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@
 <translation id="5103625298494362646">MI pārlūkošanas režīms darbojas ar modeļiem, kas atbalsta rīku izmantošanu. Ar šo režīmu nesavietojamie modeļi šeit netiks parādīti.</translation>
 <translation id="3397808797783614750">Automātiska pārlūkošana ar AI var radīt neparedzētas un kaitīgas sekas jūsu privātumam, finanšu drošībai un tiešsaistes saziņai. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Drošības brīdinājums</translation>
+<translation id="717245811623757038">Rīka atļaujas pieprasījums</translation>
 <translation id="6077070599873946984">Brave AI nepieciešama jūsu atļauja darbībai: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI vēlas izpildīt **<ph name="TOOL_NAME"/>** vietnē **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Šī darbība tika atzīta kā iespējami neatbilstoša jūsu pieprasījumam:</translation>

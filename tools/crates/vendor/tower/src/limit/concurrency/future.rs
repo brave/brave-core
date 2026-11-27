@@ -1,7 +1,6 @@
 //! [`Future`] types
 //!
 //! [`Future`]: std::future::Future
-use futures_core::ready;
 use pin_project_lite::pin_project;
 use std::{
     future::Future,
@@ -36,6 +35,6 @@ where
     type Output = Result<T, E>;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        Poll::Ready(ready!(self.project().inner.poll(cx)))
+        self.project().inner.poll(cx)
     }
 }

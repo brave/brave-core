@@ -28,6 +28,7 @@
 #include "base/values.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/components/psst/core/browser/pref_names.h"
+#include "brave/components/psst/core/browser/psst_log_service.h"
 #include "brave/components/psst/core/browser/psst_rule_registry.h"
 #include "brave/components/psst/core/common/features.h"
 #include "brave/components/psst/core/common/psst_script_responses.h"
@@ -263,6 +264,7 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
               (base::RepeatingClosure cancel_callback),
               (override));
 
+  MOCK_METHOD(bool, IsPsstEnabled, (), (override));
 };
 
 class PsstTabWebContentsObserverUnitTestBase
@@ -281,6 +283,8 @@ class PsstTabWebContentsObserverUnitTestBase
 
     auto ui_delegate = std::make_unique<MockUiDelegate>();
     ui_delegate_ = ui_delegate.get();
+    ON_CALL(*ui_delegate_, IsPsstEnabled())
+        .WillByDefault(testing::Return(true));
 
     ON_CALL(mock_tab, GetContents())
         .WillByDefault(testing::Return(web_contents()));
@@ -297,10 +301,13 @@ class PsstTabWebContentsObserverUnitTestBase
     variations_service_ = std::make_unique<variations::TestVariationsService>(
         &variations_local_state_, metrics_state_manager_.get());
 
+    log_service_ = std::make_unique<PsstLogService>();
+
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
         new PsstTabWebContentsObserver(
             mock_tab, rule_registry_.get(), psst_settings_service_,
-            variations_service_.get(), std::move(ui_delegate)));
+            variations_service_.get(), log_service_.get(),
+            std::move(ui_delegate)));
     psst_web_contents_observer_->SetInjectScriptCallback(
         inject_script_callback_.Get());
     psst_web_contents_observer_->SetInjectAsyncScriptCallback(
@@ -310,6 +317,7 @@ class PsstTabWebContentsObserverUnitTestBase
   void TearDown() override {
     ui_delegate_ = nullptr;
     psst_web_contents_observer_.reset();
+    log_service_.reset();
     psst_settings_service_ = nullptr;
     ChromeRenderViewHostTestHarness::TearDown();
   }
@@ -354,6 +362,8 @@ class PsstTabWebContentsObserverUnitTestBase
     return variations_service_.get();
   }
 
+  PsstLogService* log_service() { return log_service_.get(); }
+
   PsstTabWebContentsObserver* observer() {
     return psst_web_contents_observer_.get();
   }
@@ -368,6 +378,8 @@ class PsstTabWebContentsObserverUnitTestBase
   base::MockCallback<PsstTabWebContentsObserver::InjectScriptAsyncCallback>
       inject_async_script_callback_;
   std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
+  // Declared before the observer, which holds a raw pointer to it.
+  std::unique_ptr<PsstLogService> log_service_;
   std::unique_ptr<PsstTabWebContentsObserver> psst_web_contents_observer_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   raw_ptr<PsstSettingsService> psst_settings_service_;
@@ -450,7 +462,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
   EXPECT_NE(PsstTabWebContentsObserver::MaybeCreate(
                 mock_tab_interface(), browser_context(),
                 std::make_unique<MockUiDelegate>(), psst_settings_service(),
-                variations_service(), 2),
+                variations_service(), log_service(), 2),
             nullptr);
 }
 
@@ -462,11 +474,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto web_contents = content::WebContentsTester::CreateTestWebContents(
       otr_profile, site_instance);
 
-  EXPECT_EQ(
-      PsstTabWebContentsObserver::MaybeCreate(
-          mock_tab_interface(), otr_profile, std::make_unique<MockUiDelegate>(),
-          psst_settings_service(), variations_service(), 2),
-      nullptr);
+  EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreate(
+                mock_tab_interface(), otr_profile,
+                std::make_unique<MockUiDelegate>(), psst_settings_service(),
+                variations_service(), /*log_service=*/nullptr, 2),
+            nullptr);
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -829,7 +841,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, PrefDisabledDontProcess) {
-  psst_settings_service()->SetPsstEnabled(false);
+  EXPECT_CALL(ui_delegate(), IsPsstEnabled())
+      .WillRepeatedly(testing::Return(false));
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _)).Times(0);
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -1642,7 +1655,7 @@ TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, DontCreate) {
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreate(
                 mock_tab_interface(), browser_context(),
                 std::make_unique<MockUiDelegate>(), psst_settings_service(),
-                variations_service(), 2),
+                variations_service(), /*log_service=*/nullptr, 2),
             nullptr);
 }
 

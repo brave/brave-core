@@ -7,9 +7,9 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "brave/components/psst/core/browser/pref_names.h"
+#include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
-#include "components/prefs/pref_service.h"
+#include "components/policy/policy_constants.h"
 
 namespace {
 
@@ -22,16 +22,15 @@ namespace psst {
 PsstUiDelegateImpl::PsstUiDelegateImpl(
     PsstSettingsService* psst_settings_service,
     PsstReporterService* psst_reporter_service,
-    PrefService* prefs,
-    std::unique_ptr<PsstUiPresenter> ui_presenter)
+    std::unique_ptr<PsstUiPresenter> ui_presenter,
+    brave_origin::BraveOriginService* brave_origin_service)
     : ui_presenter_(std::move(ui_presenter)),
       psst_settings_service_(psst_settings_service),
       psst_reporter_service_(psst_reporter_service),
-      prefs_(prefs) {
+      brave_origin_service_(brave_origin_service) {
   CHECK(psst_settings_service_);
   CHECK(psst_reporter_service_);
   CHECK(ui_presenter_);
-  CHECK(prefs_);
   psst_settings_service_->AddObserver(this);
 }
 PsstUiDelegateImpl::~PsstUiDelegateImpl() {
@@ -69,11 +68,12 @@ void PsstUiDelegateImpl::Show(
                      weak_ptr_factory_.GetWeakPtr()));
 
   const int infobar_shown_count =
-      prefs_->GetInteger(prefs::kPsstInfobarShownCounter);
-  // Show the infobar only if it has been shown less than the max allowed times.
-  if (infobar_shown_count < kMaxPsstInfobarShownCounter) {
-    prefs_->SetInteger(prefs::kPsstInfobarShownCounter,
-                       infobar_shown_count + 1);
+      psst_settings_service_->GetInfobarShownCount(origin_.value());
+  // Show the infobar only if it is enabled globally and has been shown less
+  // than the max allowed times for this site.
+  if (psst_settings_service_->IsPsstInfobarEnabled() &&
+      infobar_shown_count < kMaxPsstInfobarShownCounter) {
+    psst_settings_service_->IncrementInfobarShownCount(origin_.value());
     ui_presenter_->ShowInfoBar(
         base::BindOnce(&PsstUiDelegateImpl::OnUserAcceptedInfobar,
                        weak_ptr_factory_.GetWeakPtr()));
@@ -175,12 +175,13 @@ void PsstUiDelegateImpl::SubmitPsstErrorsReport() {
 void PsstUiDelegateImpl::OnDialogClose() {
   ui_presenter_->HideInfoBar();
   ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
-                                        base::NullCallback(),
-                                        base::NullCallback());
+                                          base::NullCallback(),
+                                          base::NullCallback());
   CancelLogicalFlow();
 }
 
 void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
+  CHECK(origin_);
   // Handle the user's response to the infobar
   if (is_accepted) {
     // Hide notification badge on the icon after the user interacts with the
@@ -193,7 +194,13 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
                        weak_ptr_factory_.GetWeakPtr()));
 
     ui_presenter_->ShowConsentDialog();
+    psst_settings_service_->IncrementInfobarReviewSuggestionsCount(
+        origin_.value());
+    // Disable infobar globally and do not show it again
+    psst_settings_service_->SetPsstInfobarEnabled(false);
   } else {
+    psst_settings_service_->IncrementInfobarDeclineCount(origin_.value());
+
     // TODO(https://github.com/brave/brave-browser/issues/58449): Handle infobar
     // dismissal (e.g. close button, tab/navigation away).
   }
@@ -211,8 +218,23 @@ void PsstUiDelegateImpl::OnDontShowForThisSite() {
 
 void PsstUiDelegateImpl::OnDisablePrivacySettingsTuning() {
   CancelLogicalFlow();
+  if (brave_origin_service_ &&
+      brave_origin_service_->IsPolicyControlledByBraveOrigin(
+          policy::key::kPsstEnabled)) {
+    brave_origin_service_->SetPolicyValue(policy::key::kPsstEnabled, false);
+  }
   psst_settings_service_->SetPsstEnabled(false);
   ui_presenter_->HideAll();
+}
+
+bool PsstUiDelegateImpl::IsPsstEnabled() {
+  if (brave_origin_service_ &&
+      brave_origin_service_->IsPolicyControlledByBraveOrigin(
+          policy::key::kPsstEnabled)) {
+    return brave_origin_service_->GetPolicyValue(policy::key::kPsstEnabled)
+        .value_or(false);
+  }
+  return psst_settings_service_->IsPsstEnabled();
 }
 
 void PsstUiDelegateImpl::OnPsstEnableChange(bool new_value) {

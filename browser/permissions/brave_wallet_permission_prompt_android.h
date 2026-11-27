@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/browser/permissions/brave_dapp_permission_prompt_dialog_controller_android.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/permissions/permissions_client.h"
@@ -39,6 +40,13 @@ class BraveWalletPermissionPrompt
    private:
     base::WeakPtr<permissions::PermissionPromptAndroid> permission_prompt_;
   };
+
+  // Returns the prompt for a Brave Wallet request, or null for any other.
+  static std::unique_ptr<
+      permissions::PermissionsClient::PermissionMessageDelegate>
+  MaybeCreate(
+      content::WebContents* web_contents,
+      const base::WeakPtr<permissions::PermissionPromptAndroid>& prompt);
 
   BraveWalletPermissionPrompt(content::WebContents* web_contents,
                               std::unique_ptr<Delegate> delegate,

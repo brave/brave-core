@@ -17,15 +17,13 @@
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_helper.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_region_data_parser.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_vpn {
-
-using v1::endpoints::kRegionCountryIsoCodeKey;
 
 BraveVPNRegionDataManager::BraveVPNRegionDataManager(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,

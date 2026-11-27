@@ -46,6 +46,7 @@
 #include "content/public/browser/web_contents.h"
 #include "third_party/metrics_proto/omnibox_event.pb.h"
 #include "third_party/metrics_proto/omnibox_input_type.pb.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "url/gurl.h"
 
@@ -193,7 +194,8 @@ void NewTabPageHandler::GetNewTabTakeoverBackground(
 void NewTabPageHandler::OnGetNewTabTakeoverBackground(
     GetNewTabTakeoverBackgroundCallback callback,
     mojom::NewTabTakeoverBackgroundPtr new_tab_takeover_background) {
-  if (new_tab_takeover_background) {
+  if (new_tab_takeover_background &&
+      new_tab_takeover_background->should_display_new_tab_takeover_disclosure) {
     new_tab_takeover_background
         ->should_auto_display_new_tab_takeover_disclosure =
         ntp_background_images::ShouldAutoDisplayNewTabTakeoverDisclosureTooltip(
@@ -235,8 +237,8 @@ void NewTabPageHandler::NotifyNewTabTakeoverLogoClicked(
   std::move(callback).Run();
 }
 
-void NewTabPageHandler::NotifyNewTabTakeoverDisclosureLearnMoreClicked(
-    NotifyNewTabTakeoverDisclosureLearnMoreClickedCallback callback) {
+void NewTabPageHandler::SuppressNewTabTakeoverDisclosureTooltipAutoDisplay(
+    SuppressNewTabTakeoverDisclosureTooltipAutoDisplayCallback callback) {
   ntp_background_images::SuppressNewTabTakeoverDisclosureTooltip(
       *pref_service_);
   std::move(callback).Run();
@@ -719,7 +721,7 @@ void NewTabPageHandler::OnSponsoredSitesUpdate() {
 }
 
 void NewTabPageHandler::OpenGURL(const GURL& gurl,
-                                 WindowOpenDisposition disposition) {
+                                 ui::mojom::WindowOpenDisposition disposition) {
   if (auto* tab = tabs::TabInterface::MaybeGetFromContents(
           base::to_address(web_contents_))) {
     tab->GetBrowserWindowInterface()->OpenGURL(gurl, disposition);

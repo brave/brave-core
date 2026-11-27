@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.60"
 name = "rustls-pki-types"
-version = "1.13.2"
+version = "1.16.0"
 build = false
 include = [
     "Cargo.toml",
@@ -64,12 +64,24 @@ path = "src/lib.rs"
 version = "1"
 optional = true
 
+[dev-dependencies.criterion]
+version = "0.8"
+
 [target.'cfg(all(target_family = "wasm", target_os = "unknown"))'.dependencies.web-time]
 version = "1"
 optional = true
 
 [target.'cfg(all(target_os = "linux", target_arch = "x86_64"))'.dev-dependencies.crabgrind]
 version = "=0.1.9"
+
+[lints.rust]
+elided_lifetimes_in_paths = "warn"
+trivial_numeric_casts = "warn"
+unnameable_types = "warn"
+unreachable_pub = "warn"
+unused_extern_crates = "warn"
+unused_import_braces = "warn"
+unused_qualifications = "warn"
 
 [lints.rust.unexpected_cfgs]
 level = "warn"

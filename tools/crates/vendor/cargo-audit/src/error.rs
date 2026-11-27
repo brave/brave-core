@@ -1,12 +1,6 @@
 //! Error types
 
-use abscissa_core::error::{BoxError, Context};
-use std::{
-    error::Error as ErrorTrait,
-    fmt::{self, Display},
-    io,
-    ops::Deref,
-};
+use std::{error::Error as ErrorTrait, io};
 use thiserror::Error;
 
 /// Kinds of errors
@@ -38,46 +32,36 @@ pub enum ErrorKind {
 }
 
 impl ErrorKind {
-    /// Create an error context from this error
-    pub fn context(self, source: impl Into<BoxError>) -> Context<ErrorKind> {
-        Context::new(self, Some(source.into()))
+    /// Create an error from this kind with the given source
+    pub fn context(self, source: impl Into<BoxError>) -> Error {
+        Error {
+            kind: self,
+            source: source.into(),
+        }
     }
 }
 
 /// Error type
-#[derive(Debug)]
-pub struct Error(Box<Context<ErrorKind>>);
+#[derive(Debug, Error)]
+#[error("{kind}: {source}")]
+pub struct Error {
+    /// Kind of error
+    kind: ErrorKind,
+
+    /// Source of the error
+    source: BoxError,
+}
 
 impl Error {
     /// Get the kind of error that occurred
     pub fn kind(&self) -> ErrorKind {
-        *self.0.kind()
-    }
-}
-
-impl Deref for Error {
-    type Target = Context<ErrorKind>;
-
-    fn deref(&self) -> &Context<ErrorKind> {
-        &self.0
-    }
-}
-
-impl Display for Error {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.0.fmt(f)
-    }
-}
-
-impl From<Context<ErrorKind>> for Error {
-    fn from(context: Context<ErrorKind>) -> Self {
-        Error(Box::new(context))
+        self.kind
     }
 }
 
 impl From<io::Error> for Error {
     fn from(other: io::Error) -> Self {
-        ErrorKind::Io.context(other).into()
+        ErrorKind::Io.context(other)
     }
 }
 
@@ -91,7 +75,6 @@ impl From<rustsec::Error> for Error {
             _ => ErrorKind::Other,
         }
         .context(err)
-        .into()
     }
 }
 
@@ -104,13 +87,6 @@ impl From<cargo_lock::Error> for Error {
             _ => ErrorKind::Other,
         }
         .context(err)
-        .into()
-    }
-}
-
-impl std::error::Error for Error {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        self.0.source()
     }
 }
 
@@ -122,3 +98,6 @@ impl std::error::Error for Error {
 pub fn display_err_with_source<E: ErrorTrait>(error: &E) -> String {
     display_error_chain::DisplayErrorChain::new(error).to_string()
 }
+
+/// Box containing a thread-safe + `'static` error suitable for use as a source
+pub type BoxError = Box<dyn ErrorTrait + Send + Sync + 'static>;

@@ -6,26 +6,29 @@
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 
 #include <algorithm>
+#include <memory>
 #include <optional>
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/split_tab_util.h"
+#include "chrome/browser/ui/tabs/tab_menu_model_delegate.h"
 #include "chrome/browser/ui/tabs/tab_muted_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
@@ -144,9 +147,10 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
   }
 
   if (command_id == TabStripModel::CommandShowVerticalTabs) {
-    brave::ToggleVerticalTabStrip(GetBrowserWindowInterface());
-    BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())
-        ->InvalidateLayout();
+    // Go through the command so that a toggle in fullscreen is handled the
+    // same way as the keyboard shortcut (see BraveBrowserCommandController).
+    chrome::ExecuteCommand(GetBrowserWindowInterface(),
+                           IDC_TOGGLE_VERTICAL_TABS);
     return;
   }
 
@@ -226,7 +230,8 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
   }
 
   if (command_id == TabStripModel::CommandShowVerticalTabs) {
-    return tabs::utils::IsVerticalTabToggleEnabled(GetBrowserWindowInterface());
+    return chrome::IsCommandEnabled(GetBrowserWindowInterface(),
+                                    IDC_TOGGLE_VERTICAL_TABS);
   }
 
   if (command_id == TabStripModel::CommandBringAllTabsToThisWindow ||
@@ -236,6 +241,16 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
 
   return BrowserTabStripController::IsContextMenuCommandEnabled(tab,
                                                                 command_id);
+}
+
+std::unique_ptr<TabMenuModel>
+BraveBrowserTabStripController::CreateTabMenuModel(
+    ui::SimpleMenuModel::Delegate* delegate,
+    TabMenuModelDelegate* tab_menu_model_delegate,
+    TabStripModel* tab_strip_model,
+    int index) {
+  return std::make_unique<BraveTabMenuModel>(delegate, tab_menu_model_delegate,
+                                             tab_strip_model, index);
 }
 
 void BraveBrowserTabStripController::OnTabStripModelChanged(
@@ -347,6 +362,10 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
           ->InvalidateTabContainerLayout();
       break;
     }
+    case TreeTabChange::Type::kTreeInitialized:
+    case TreeTabChange::Type::kTreeDestroyed:
+      // Handled by RootTabCollectionNode.
+      break;
   }
 }
 

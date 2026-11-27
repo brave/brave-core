@@ -29,9 +29,7 @@ Refs:
 - atomic-maybe-uninit
   https://github.com/taiki-e/atomic-maybe-uninit
 
-Generated asm:
-- powerpc64 (pwr8) https://godbolt.org/z/TjKsPbWc6
-- powerpc64le https://godbolt.org/z/5WqPGhb3Y
+See tests/asm-test/asm/portable-atomic for generated assembly.
 */
 
 include!("macros.rs");
@@ -96,6 +94,8 @@ mod detect;
 
 use core::{arch::asm, sync::atomic::Ordering};
 
+#[cfg(portable_atomic_no_strict_provenance)]
+use crate::utils::ptr::PtrExt as _;
 use crate::utils::{Pair, U128};
 
 macro_rules! debug_assert_pwr8 {
@@ -240,7 +240,7 @@ unsafe fn atomic_load(src: *mut u128, order: Ordering) -> u128 {
 }
 #[inline]
 unsafe fn atomic_load_pwr8(src: *mut u128, order: Ordering) -> u128 {
-    debug_assert!(src as usize % 16 == 0);
+    debug_assert!(src.addr() % 16 == 0);
     debug_assert_pwr8!();
     let (out_hi, out_lo);
 
@@ -350,7 +350,7 @@ unsafe fn atomic_store(dst: *mut u128, val: u128, order: Ordering) {
 }
 #[inline]
 unsafe fn atomic_store_pwr8(dst: *mut u128, val: u128, order: Ordering) {
-    debug_assert!(dst as usize % 16 == 0);
+    debug_assert!(dst.addr() % 16 == 0);
     debug_assert_pwr8!();
     let val = U128 { whole: val };
 
@@ -479,7 +479,7 @@ unsafe fn atomic_compare_exchange_pwr8(
     success: Ordering,
     failure: Ordering,
 ) -> (u128, bool) {
-    debug_assert!(dst as usize % 16 == 0);
+    debug_assert!(dst.addr() % 16 == 0);
     debug_assert_pwr8!();
     let old = U128 { whole: old };
     let new = U128 { whole: new };
@@ -565,7 +565,7 @@ unsafe fn atomic_compare_exchange_weak_pwr8(
     success: Ordering,
     failure: Ordering,
 ) -> (u128, bool) {
-    debug_assert!(dst as usize % 16 == 0);
+    debug_assert!(dst.addr() % 16 == 0);
     debug_assert_pwr8!();
     let old = U128 { whole: old };
     let new = U128 { whole: new };
@@ -617,7 +617,7 @@ unsafe fn atomic_compare_exchange_weak_pwr8(
 // Do not use atomic_rmw_ll_sc_3 because it needs extra MR to implement swap.
 #[inline]
 unsafe fn atomic_swap_pwr8(dst: *mut u128, val: u128, order: Ordering) -> u128 {
-    debug_assert!(dst as usize % 16 == 0);
+    debug_assert!(dst.addr() % 16 == 0);
     debug_assert_pwr8!();
     let val = U128 { whole: val };
     let (mut prev_hi, mut prev_lo);
@@ -663,7 +663,7 @@ macro_rules! atomic_rmw_ll_sc_3 {
     ($name:ident, [$($reg:tt)*], $($op:tt)*) => {
         #[inline]
         unsafe fn $name(dst: *mut u128, val: u128, order: Ordering) -> u128 {
-            debug_assert!(dst as usize % 16 == 0);
+            debug_assert!(dst.addr() % 16 == 0);
             debug_assert_pwr8!();
             let val = U128 { whole: val };
             let (mut prev_hi, mut prev_lo);
@@ -713,7 +713,7 @@ macro_rules! atomic_rmw_ll_sc_2 {
     ($name:ident, [$($reg:tt)*], $($op:tt)*) => {
         #[inline]
         unsafe fn $name(dst: *mut u128, order: Ordering) -> u128 {
-            debug_assert!(dst as usize % 16 == 0);
+            debug_assert!(dst.addr() % 16 == 0);
             debug_assert_pwr8!();
             let (mut prev_hi, mut prev_lo);
 
@@ -1032,7 +1032,7 @@ const IS_ALWAYS_LOCK_FREE: bool = cfg!(any(
 atomic128!(AtomicI128, i128, atomic_max, atomic_min);
 atomic128!(AtomicU128, u128, atomic_umax, atomic_umin);
 
-#[cfg(not(all(valgrind, target_arch = "powerpc64")))] // TODO: Hang (as of Valgrind 3.25)
+#[cfg(not(valgrind))] // TODO(powerpc64): Hang (as of Valgrind 3.26)
 #[cfg(test)]
 mod tests {
     use super::*;

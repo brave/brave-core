@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Zaloguj się, aby móc łatwo kontynuować zadania na wszystkich swoich urządzeniach</translation>
 <translation id="2713106313042589954">Wyłącz kamerę</translation>
 <translation id="2717722538473713889">Adresy e-mail</translation>
-<translation id="8181634240306014548">Uruchamiaj Brave z zaznaczonym paskiem adresu, aby skrócić czas uruchamiania na mało wydajnych urządzeniach.</translation>
 <translation id="2750481671343847896">Witryny mogą wyświetlać prośby o zalogowanie się pochodzące od usług tożsamości.</translation>
-<translation id="2787357173144933081">Szybki start omniboksa</translation>
 <translation id="2789132527330338807">Strony mogą prosić o utworzenie mapy 3D otoczenia lub śledzenie pozycji kamery</translation>
 <translation id="2790501146643349491">Gdy ta opcja jest włączona, ostatnio zamknięte strony internetowe mogą dokończyć wysyłanie i odbieranie danych. Gdy jest wyłączona, nie mogą tego zrobić.</translation>
 <translation id="2795716239552913152">Strony zwykle używają lokalizacji w celu dobierania funkcji lub informacji, na przykład wiadomości lokalnych lub sklepów w pobliżu</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Dostosuj Brave za pomocą spersonalizowanych kolorów i obrazów na stronie głównej</translation>
 <translation id="389521680295183045">Witryny mogą prosić o pozwolenie na sprawdzanie, kiedy używasz urządzenia</translation>
 <translation id="3895926599014793903">Wymuś powiększenie</translation>
-<translation id="3905475044299942653">Zatrzymaj wiele powiadomień</translation>
 <translation id="3922092564198021702">Na telefonie otwórz Ustawienia.</translation>
 <translation id="3924858949939391676">Pokaż linki po włączeniu Trybu czytania</translation>
 <translation id="3933121352599513978">Zwiń niechciane żądania (zalecane)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Grupy znajdziesz w sekcji grup kart na wszystkich swoich urządzeniach</translation>
 <translation id="4945443401464700059">Witryna <ph name="SITE"/> nie może używać Twoich danych na</translation>
 <translation id="4953688446973710931">Gdy ta opcja jest włączona, strony internetowe mogą prosić o zgodę na automatyczne pobieranie kilku plików. Gdy jest wyłączona, strony nie mogą automatycznie pobierać kilku plików.</translation>
-<translation id="4962975101802056554">Anuluj wszystkie uprawnienia urządzenia</translation>
 <translation id="4972737347717125191">Strony mogą prosić o zgodę na używanie urządzeń i danych rzeczywistości wirtualnej</translation>
 <translation id="1275242979020712923">Plansza dolna Kolory Brave</translation>
 <translation id="497421865427891073">Dalej</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Nie zezwalaj stronom na korzystanie z urządzenia ani danych rzeczywistości wirtualnej</translation>
 <translation id="6447842834002726250">Pliki cookie</translation>
 <translation id="6452138246455930388">Obniżka ceny na otwartej karcie. Poprzednio: <ph name="OLD_PRICE"/>, teraz: <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Anuluj uprawnienia urządzenia dla: <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Jeśli okno jest wąskie, poproś o wersję na urządzenia mobilne</translation>
 <translation id="6527303717912515753">Udostępnij</translation>
 <translation id="6530703012083415527">Gdy ta opcja jest włączona, strony internetowe mogą używać wyskakujących okienek i przekierowań. Gdy jest wyłączona, nie mają tej możliwości.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Dane witryn na urządzeniu</translation>
 <translation id="7201549776650881587">Spowoduje to usunięcie wszystkich danych i plików cookie zapisanych przez strony internetowe w grupie <ph name="ORIGIN"/> lub jej aplikację na ekranie głównym</translation>
 <translation id="7219254577985949841">Usunąć dane witryny?</translation>
+<translation id="7225256190577194089">Anuluj wszystkie uprawnienia urządzenia <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Wybierz zdjęcia</translation>
 <translation id="7243246278722455312">Plansza dolna Dostosuj stronę nowej karty</translation>
 <translation id="7243308994586599757">Opcje dostępne u dołu ekranu</translation>
@@ -702,7 +700,6 @@ Ochrona zaawansowana kontroluje te ustawienia Brave:</translation>
 <translation id="8428213095426709021">Ustawienia</translation>
 <translation id="8441146129660941386">Przewiń do tyłu</translation>
 <translation id="8444433999583714703">Aby zezwolić aplikacji <ph name="APP_NAME"/> na dostęp do lokalizacji, musisz ją też włączyć w <ph name="BEGIN_LINK"/>ustawieniach Androida<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Cofnij zgodę na dostęp do urządzenia</translation>
 <translation id="8463843545738141778">To ustawienie jest wyłączone, ponieważ w ustawieniach Androida włączono Ochronę zaawansowaną.</translation>
 <translation id="8467359479529706065">Plansza dolna wyglądu strony nowej karty otwarta do połowy wysokości</translation>
 <translation id="8471525937465764768">Strony zwykle łączą się z urządzeniami USB na przykład w celu drukowania dokumentów lub zapisywania plików na urządzeniu pamięci masowej</translation>

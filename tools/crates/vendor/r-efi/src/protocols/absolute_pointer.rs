@@ -50,15 +50,15 @@ pub struct State {
     pub active_buttons: u32,
 }
 
-pub type Reset = eficall! {fn(
+pub type Reset = unsafe extern "efiapi" fn(
     this: *mut Protocol,
     extended_verification: bool,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type GetState = eficall! {fn(
+pub type GetState = unsafe extern "efiapi" fn(
     this: *mut Protocol,
     state: *mut State,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
 #[repr(C)]
 pub struct Protocol {

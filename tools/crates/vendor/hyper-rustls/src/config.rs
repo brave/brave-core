@@ -93,16 +93,14 @@ impl ConfigBuilderExt for ConfigBuilder<ClientConfig, WantsVerifier> {
             match roots.add(cert) {
                 Ok(_) => valid_count += 1,
                 Err(err) => {
-                    crate::log::debug!("certificate parsing failed: {:?}", err);
+                    crate::log::debug!("certificate parsing failed: {err:?}");
                     invalid_count += 1
                 }
             }
         }
 
         crate::log::debug!(
-            "with_native_roots processed {} valid and {} invalid certs",
-            valid_count,
-            invalid_count
+            "with_native_roots processed {valid_count} valid and {invalid_count} invalid certs"
         );
         if roots.is_empty() {
             crate::log::debug!("no valid native root CA certificates found");
@@ -130,6 +128,7 @@ impl ConfigBuilderExt for ConfigBuilder<ClientConfig, WantsVerifier> {
 mod sealed {
     use super::*;
 
+    #[expect(unnameable_types)]
     pub trait Sealed {}
 
     impl Sealed for ConfigBuilder<ClientConfig, WantsVerifier> {}

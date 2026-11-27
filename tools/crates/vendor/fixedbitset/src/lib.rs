@@ -2,7 +2,7 @@
 //!
 //! ### Crate features
 //!
-//! - `std` (default feature)  
+//! - `std` (default feature)
 //!   Disabling this feature disables using std and instead uses crate alloc.
 //!
 //! ### SIMD Acceleration
@@ -14,7 +14,13 @@
 //!
 //! Currently only SSE2/AVX/AVX2 on x86/x86_64 and wasm32 SIMD are supported as this is what stable Rust supports.
 #![no_std]
+// TODO: Remove once MSRV supports undocumented_unsafe_blocks
+#![allow(unknown_lints)]
 #![deny(clippy::undocumented_unsafe_blocks)]
+// TODO our MSRV supports older versions of Cargo that do not know the following are unsafe:
+// - Vec::from_raw_parts
+// - get_unchecked_mut
+#![allow(unused_unsafe)]
 
 extern crate alloc;
 use alloc::{vec, vec::Vec};
@@ -126,7 +132,7 @@ impl FixedBitSet {
     /// ```
     pub fn with_capacity_and_blocks<I: IntoIterator<Item = Block>>(bits: usize, blocks: I) -> Self {
         let mut bitset = Self::with_capacity(bits);
-        for (subblock, value) in bitset.as_mut_slice().iter_mut().zip(blocks.into_iter()) {
+        for (subblock, value) in bitset.as_mut_slice().iter_mut().zip(blocks) {
             *subblock = value;
         }
         bitset
@@ -226,12 +232,16 @@ impl FixedBitSet {
 
     /// Grows the internal size of the bitset before inserting a bit
     ///
-    /// Unlike `insert`, this cannot panic, but may allocate if the bit is outside of the existing buffer's range.
+    /// Unlike `insert`, this grows the bitset if the bit is outside of the existing buffer's range.
     ///
     /// This is faster than calling `grow` then `insert` in succession.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `bits` is `usize::MAX`, because the required length cannot be represented.
     #[inline]
     pub fn grow_and_insert(&mut self, bits: usize) {
-        self.grow(bits + 1);
+        self.grow(bits.checked_add(1).expect("bitset capacity overflow"));
 
         let (blocks, rem) = div_rem(bits, BITS);
         // SAFETY: The above grow ensures that the block is inside the Vec's allocation.
@@ -390,10 +400,12 @@ impl FixedBitSet {
     /// Note: Also available with index syntax: `bitset[bit]`.
     #[inline]
     pub fn contains(&self, bit: usize) -> bool {
-        (bit < self.length)
+        if bit < self.length {
             // SAFETY: The above check ensures that the block and bit are within bounds.
-            .then(|| unsafe { self.contains_unchecked(bit) })
-            .unwrap_or(false)
+            unsafe { self.contains_unchecked(bit) }
+        } else {
+            false
+        }
     }
 
     /// Return **true** if the bit is enabled in the **FixedBitSet**,
@@ -750,7 +762,7 @@ impl FixedBitSet {
     ///
     /// Iterator element is the index of the `1` bit, type `usize`.
     #[inline]
-    pub fn ones(&self) -> Ones {
+    pub fn ones(&self) -> Ones<'_> {
         match self.as_slice().split_first() {
             Some((&first_block, rem)) => {
                 let (&last_block, rem) = rem.split_last().unwrap_or((&0, rem));
@@ -813,7 +825,7 @@ impl FixedBitSet {
     ///
     /// Iterator element is the index of the `0` bit, type `usize`.
     #[inline]
-    pub fn zeroes(&self) -> Zeroes {
+    pub fn zeroes(&self) -> Zeroes<'_> {
         match self.as_slice().split_first() {
             Some((&block, rem)) => Zeroes {
                 bitset: !block,
@@ -933,7 +945,7 @@ impl FixedBitSet {
     pub fn union_count(&self, other: &FixedBitSet) -> usize {
         let me = self.as_slice();
         let other = other.as_slice();
-        let count = Self::batch_count_ones(me.iter().zip(other.iter()).map(|(x, y)| (*x | *y)));
+        let count = Self::batch_count_ones(me.iter().zip(other.iter()).map(|(x, y)| *x | *y));
         match other.len().cmp(&me.len()) {
             Ordering::Greater => count + Self::batch_count_ones(other[me.len()..].iter().copied()),
             Ordering::Less => count + Self::batch_count_ones(me[other.len()..].iter().copied()),
@@ -952,7 +964,7 @@ impl FixedBitSet {
             self.as_slice()
                 .iter()
                 .zip(other.as_slice())
-                .map(|(x, y)| (*x & *y)),
+                .map(|(x, y)| *x & *y),
         )
     }
 
@@ -967,8 +979,8 @@ impl FixedBitSet {
             self.as_slice()
                 .iter()
                 .zip(other.as_slice().iter())
-                .map(|(x, y)| (*x & !*y)),
-        )
+                .map(|(x, y)| *x & !*y),
+        ) + Self::batch_count_ones(self.as_slice().iter().skip(other.as_slice().len()).copied())
     }
 
     /// Computes how many bits would be set in the symmetric difference between two bitsets.
@@ -980,7 +992,7 @@ impl FixedBitSet {
     pub fn symmetric_difference_count(&self, other: &FixedBitSet) -> usize {
         let me = self.as_slice();
         let other = other.as_slice();
-        let count = Self::batch_count_ones(me.iter().zip(other.iter()).map(|(x, y)| (*x ^ *y)));
+        let count = Self::batch_count_ones(me.iter().zip(other.iter()).map(|(x, y)| *x ^ *y));
         match other.len().cmp(&me.len()) {
             Ordering::Greater => count + Self::batch_count_ones(other[me.len()..].iter().copied()),
             Ordering::Less => count + Self::batch_count_ones(me[other.len()..].iter().copied()),
@@ -1285,6 +1297,7 @@ impl ExactSizeIterator for Masks {}
 /// An  iterator producing the indices of the set bit in a set.
 ///
 /// This struct is created by the [`FixedBitSet::ones`] method.
+#[derive(Clone)]
 pub struct Ones<'a> {
     bitset_front: usize,
     bitset_back: usize,
@@ -1294,6 +1307,9 @@ pub struct Ones<'a> {
 }
 
 impl<'a> Ones<'a> {
+    /// Clears the least significant set bit and returns its index.
+    ///
+    /// If `n` is zero, returns the number of bits in a block and leaves it unchanged.
     #[inline]
     pub fn last_positive_bit_and_unset(n: &mut usize) -> usize {
         // Find the last set bit using x & -x
@@ -1303,7 +1319,7 @@ impl<'a> Ones<'a> {
         let position = last_bit.trailing_zeros();
 
         // Unset the last set bit
-        *n &= *n - 1;
+        *n &= n.wrapping_sub(1);
 
         position as usize
     }
@@ -1395,9 +1411,9 @@ impl<'a> Iterator for Ones<'a> {
 // Ones will continue to return None once it first returns None.
 impl<'a> FusedIterator for Ones<'a> {}
 
-/// An  iterator producing the indices of the set bit in a set.
+/// An  iterator producing the indices of the unset bit in a set.
 ///
-/// This struct is created by the [`FixedBitSet::ones`] method.
+/// This struct is created by the [`FixedBitSet::zeroes`] method.
 pub struct Zeroes<'a> {
     bitset: usize,
     block_idx: usize,
@@ -1516,6 +1532,9 @@ pub struct IntoOnes {
 }
 
 impl IntoOnes {
+    /// Clears the least significant set bit and returns its index.
+    ///
+    /// If `n` is zero, returns the number of bits in a block and leaves it unchanged.
     #[inline]
     pub fn last_positive_bit_and_unset(n: &mut Block) -> usize {
         // Find the last set bit using x & -x
@@ -1525,7 +1544,7 @@ impl IntoOnes {
         let position = last_bit.trailing_zeros();
 
         // Unset the last set bit
-        *n &= *n - 1;
+        *n &= n.wrapping_sub(1);
 
         position as usize
     }
@@ -1617,7 +1636,7 @@ impl Iterator for IntoOnes {
 // Ones will continue to return None once it first returns None.
 impl FusedIterator for IntoOnes {}
 
-impl<'a> BitAnd for &'a FixedBitSet {
+impl BitAnd for &FixedBitSet {
     type Output = FixedBitSet;
     fn bitand(self, other: &FixedBitSet) -> FixedBitSet {
         let (short, long) = {
@@ -1648,7 +1667,7 @@ impl BitAndAssign<&Self> for FixedBitSet {
     }
 }
 
-impl<'a> BitOr for &'a FixedBitSet {
+impl BitOr for &FixedBitSet {
     type Output = FixedBitSet;
     fn bitor(self, other: &FixedBitSet) -> FixedBitSet {
         let (short, long) = {
@@ -1679,7 +1698,7 @@ impl BitOrAssign<&Self> for FixedBitSet {
     }
 }
 
-impl<'a> BitXor for &'a FixedBitSet {
+impl BitXor for &FixedBitSet {
     type Output = FixedBitSet;
     fn bitxor(self, other: &FixedBitSet) -> FixedBitSet {
         let (short, long) = {

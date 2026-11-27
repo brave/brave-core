@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Или направете промени по-късно в <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Научете повече за Widevine</translation>
+<translation id="3318169548229684688">да изтегли модел за разпознаване на реч (<ph name="DOWNLOAD_SIZE"/>), за да обработва реч на това устройство</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> ви моли да</translation>
 <translation id="3218385319396786393">Autoplay беше блокиран на тази страница</translation>
 <translation id="4988333904713528597">Винаги разрешавайте автоматичното възпроизвеждане на <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@
 <translation id="3540231253392253941">Използвайте услугите на Google за насочени съобщения</translation>
 <translation id="2224032129673914306">Семантично търсене в историята</translation>
 <translation id="6045998903985162478">Индексирайте страниците, които посещавате, за да ги намирате лесно в историята, отворените раздели и Лио.</translation>
+<translation id="3962946446120925966">Разпознаване на реч на устройството</translation>
+<translation id="6408242130028978631">Изтеглете модел за разпознаване на реч (<ph name="DOWNLOAD_SIZE"/>), за да могат сайтовете да обработват речта на това устройство. Изключете тази опция, за да премахнете модела.</translation>
 <translation id="5813105074916486721">Локално задържане на историята</translation>
 <translation id="5671611745062206644">Колко дълго Brave съхранява локално историята ви на сърфиране</translation>
 <translation id="7184510058087008090">1 ден</translation>

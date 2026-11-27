@@ -4,6 +4,7 @@ include_rules = [
   "+brave/components/brave_vpn/common",
   "+brave/components/brave_wallet/common/buildflags",
   "+brave/components/content_settings/core/browser",
+  "+brave/components/permissions/contexts/brave_wallet_account_permission_context.h",
   "+brave/components/sync/service",
   "+brave/net/dns",
 ]

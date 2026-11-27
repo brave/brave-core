@@ -163,6 +163,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // autofill prefs
   (*s_brave_allowlist)[kBraveAutofillPrivateWindows] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kBravePasswordManagerFillEnabled] =
+      settings_api::PrefType::kBoolean;
 
   // appearance prefs
   (*s_brave_allowlist)[kShowBookmarksButton] = settings_api::PrefType::kBoolean;
@@ -336,8 +338,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // On-device AI pref
   (*s_brave_allowlist)[local_ai::prefs::kBraveHistoryEmbeddingsEnabled] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled] =
-      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[local_ai::prefs::kOnDeviceSpeechModel] =
+      settings_api::PrefType::kNumber;
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)

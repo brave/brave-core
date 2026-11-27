@@ -59,7 +59,8 @@ SidebarItem::~SidebarItem() = default;
 bool SidebarItem::operator==(const SidebarItem& item) const {
   return url == item.url && title == item.title && type == item.type &&
          built_in_item_type == item.built_in_item_type &&
-         panel_type == item.panel_type;
+         panel_type == item.panel_type &&
+         use_mobile_user_agent == item.use_mobile_user_agent;
 }
 
 bool SidebarItem::IsValidItem() const {

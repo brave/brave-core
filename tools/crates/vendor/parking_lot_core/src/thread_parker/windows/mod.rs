@@ -1,14 +1,5 @@
-// Copyright 2016 Amanieu d'Antras
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
-use core::{
-    ptr,
-    sync::atomic::{AtomicPtr, AtomicUsize, Ordering},
-};
+use core::sync::atomic::AtomicUsize;
+use std::sync::LazyLock;
 use std::time::Instant;
 
 mod bindings;
@@ -20,52 +11,23 @@ enum Backend {
     WaitAddress(waitaddress::WaitAddress),
 }
 
-static BACKEND: AtomicPtr<Backend> = AtomicPtr::new(ptr::null_mut());
+static BACKEND: LazyLock<Backend> = LazyLock::new(|| {
+    if let Some(waitaddress) = waitaddress::WaitAddress::create() {
+        Backend::WaitAddress(waitaddress)
+    } else if let Some(keyed_event) = keyed_event::KeyedEvent::create() {
+        Backend::KeyedEvent(keyed_event)
+    } else {
+        panic!(
+            "parking_lot requires either NT Keyed Events (WinXP+) or \
+             WaitOnAddress/WakeByAddress (Win8+)"
+        );
+    }
+});
 
 impl Backend {
     #[inline]
     fn get() -> &'static Backend {
-        // Fast path: use the existing object
-        let backend_ptr = BACKEND.load(Ordering::Acquire);
-        if !backend_ptr.is_null() {
-            return unsafe { &*backend_ptr };
-        };
-
-        Backend::create()
-    }
-
-    #[cold]
-    fn create() -> &'static Backend {
-        // Try to create a new Backend
-        let backend;
-        if let Some(waitaddress) = waitaddress::WaitAddress::create() {
-            backend = Backend::WaitAddress(waitaddress);
-        } else if let Some(keyed_event) = keyed_event::KeyedEvent::create() {
-            backend = Backend::KeyedEvent(keyed_event);
-        } else {
-            panic!(
-                "parking_lot requires either NT Keyed Events (WinXP+) or \
-                 WaitOnAddress/WakeByAddress (Win8+)"
-            );
-        }
-
-        // Try to set our new Backend as the global one
-        let backend_ptr = Box::into_raw(Box::new(backend));
-        match BACKEND.compare_exchange(
-            ptr::null_mut(),
-            backend_ptr,
-            Ordering::Release,
-            Ordering::Acquire,
-        ) {
-            Ok(_) => unsafe { &*backend_ptr },
-            Err(global_backend_ptr) => {
-                unsafe {
-                    // We lost the race, free our object and return the global one
-                    let _ = Box::from_raw(backend_ptr);
-                    &*global_backend_ptr
-                }
-            }
-        }
+        &BACKEND
     }
 }
 
@@ -115,7 +77,7 @@ impl super::ThreadParkerT for ThreadParker {
     #[inline]
     unsafe fn park(&self) {
         match *self.backend {
-            Backend::KeyedEvent(ref x) => x.park(&self.key),
+            Backend::KeyedEvent(ref x) => unsafe { x.park(&self.key) },
             Backend::WaitAddress(ref x) => x.park(&self.key),
         }
     }
@@ -126,18 +88,19 @@ impl super::ThreadParkerT for ThreadParker {
     #[inline]
     unsafe fn park_until(&self, timeout: Instant) -> bool {
         match *self.backend {
-            Backend::KeyedEvent(ref x) => x.park_until(&self.key, timeout),
+            Backend::KeyedEvent(ref x) => unsafe { x.park_until(&self.key, timeout) },
             Backend::WaitAddress(ref x) => x.park_until(&self.key, timeout),
         }
     }
 
-    // Locks the parker to prevent the target thread from exiting. This is
-    // necessary to ensure that thread-local ThreadData objects remain valid.
-    // This should be called while holding the queue lock.
+    // Marks the thread as unparked while holding the queue lock and returns a
+    // backend-specific handle for the delayed wake.
     #[inline]
     unsafe fn unpark_lock(&self) -> UnparkHandle {
         match *self.backend {
-            Backend::KeyedEvent(ref x) => UnparkHandle::KeyedEvent(x.unpark_lock(&self.key)),
+            Backend::KeyedEvent(ref x) => {
+                UnparkHandle::KeyedEvent(unsafe { x.unpark_lock(&self.key) })
+            }
             Backend::WaitAddress(ref x) => UnparkHandle::WaitAddress(x.unpark_lock(&self.key)),
         }
     }
@@ -157,7 +120,7 @@ impl super::UnparkHandleT for UnparkHandle {
     #[inline]
     unsafe fn unpark(self) {
         match self {
-            UnparkHandle::KeyedEvent(x) => x.unpark(),
+            UnparkHandle::KeyedEvent(x) => unsafe { x.unpark() },
             UnparkHandle::WaitAddress(x) => x.unpark(),
         }
     }

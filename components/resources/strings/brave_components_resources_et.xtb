@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">Põhikrüptokontode taastamine</translation>
 <translation id="3038077262567136741">Brave'i rahakoti krüptokonto taastamiseks sisestage oma taastefraas.</translation>
 <translation id="955918646509748368">Sisestatud taastefraas on kehtetu.</translation>
+<translation id="7496330898672236908">See taastefraas ei ühti sinu rahakotiga. Kontrolli fraasi ja proovi uuesti.</translation>
+<translation id="3798792138617904098">Kas eemaldada imporditud kontod?</translation>
+<translation id="2960631345291747230">Imporditud kontodest ei ole sinu taastefraasiga varukoopiat tehtud. Need eemaldatakse Brave'i rahakotist ja sa võid nende vahenditele juurdepääsu jäädavalt kaotada, kui sa pole nende privaatvõtmetest varukoopiat teinud.</translation>
+<translation id="8898583604592472741">Eemalda kontod</translation>
+<translation id="1577629163207045190">Kinnitamiseks sisesta „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
 <translation id="8107437138787377150">Kleepige lõikelaualt võetud taastefraas</translation>
 <translation id="4811736040444856406">Näita taastamise lauset</translation>
 <translation id="4359319875297001084">Kas importida Brave'i pärand-krüptokontodelt?</translation>
@@ -2241,13 +2246,12 @@
 <translation id="3934503473603661122">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil Grok 4.7, xAI tipptasemel arutlusmudelil Amazon Bedrockis. Grok 4.7 teenindatakse Brave'i turvalise AWS-i infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil GPT Luna, OpenAI kiirel, madala latentsusega mudelil Amazon Bedrockis. GPT Luna teenindatakse Brave'i turvalise AWS-i infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil GPT 5.6 Terra, OpenAI tasakaalustatud tootmismudel Amazon Bedrock Mantle'il. GPT 5.6 Terra teenindatakse Brave'i turvalise AWS-infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil Mistral Large. See on Mistral'i loodud mudel, mis võimaldab toimimist ja kohaldamist paljude kasutusmallide korral. Mistral Large on Brave'i poolt majutatud meie enda turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Tere, ma olen Leo. Olen Brave'i poolt proxy'd ja kasutan Claude Haiku'd, mis on Anthropic'i poolt loodud mudel, mis on loodud vestlus- ja tekstitöötlusülesannete täitmiseks. Claude Haiku on Brave'i majutatud meie enda turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil Qwen 3.8 Flash Next. See on Alibaba Cloud'i loodud mudel, mis võimaldab toimimist ja kohaldamist paljude kasutusmallide korral. Qwen 3.8 Flash Next on Brave'i poolt majutatud meie enda turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen Deepseek V3.2 mudelil, mis on Deepseek'i loodud, mõeldud toimima paljude kasutusmallide korral. Deepseek V3.2 on Brave'i poolt majutatud meie enda turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Tere, olen Leo. Olen Brave'i tehisintellektist abiline. Põhinen mudelil GLM 5.3, mille on loonud Z.ai ning mis on jõudlusrikas ja sobib paljudeks kasutusjuhtudeks. GLM 5.3 on Brave'i poolt majutatud meie enda turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Tere, ma olen Leo. Olen Brave'i poolt proxy'd ja kasutan Claude Opus'e mudelit, mis on Anthropic'i loodud vestlus- ja tekstitöötluste ülesannete täitmiseks. Claude Opus on Brave'i majutatud meie enda turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil GLM-4-7-Flash. See on Zhipu AI loodud mudel, mis võimaldab toimimist ja kohaldamist paljude kasutusmallide korral. GLM-4-7-Flash on Brave'i poolt majutatud meie enda turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil Kimi K2.5. See on Moonshot AI loodud mudel, mis võimaldab toimimist ja kohaldamist paljude kasutusmallide korral. Kimi K2.5 on Brave'i poolt majutatud meie enda turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil Nemotron Nano 3 30B. See on NVIDIA loodud mudel, mis võimaldab toimimist ja kohaldamist paljude kasutusmallide korral. Nemotron Nano 3 30B on Brave'i poolt majutatud meie enda turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen Brave Ocelot mudelil, mis on loodud Brave'i poolt veebilehtede kokkuvõtete tegemiseks. Brave Ocelot on Brave'i majutatud meie enda turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Kohalik</translation>
@@ -2387,8 +2391,8 @@
 <translation id="7465032796278724624">NEAR AI TEE abil eraelu puutumatust säilitav</translation>
 <translation id="8782867266498869301">Mudel muutub dünaamiliselt, et kasutada ülesande jaoks sobivaimat</translation>
 <translation id="7348809809749151120">Kiire • Otsing</translation>
+<translation id="7711013627639951065">Kiire • Otsing • Nägemine • Tööriistad</translation>
 <translation id="3213834013136637671">Otsing • Nägemine</translation>
-<translation id="2793458212460902934">Kiire • Otsing • Tööriistad</translation>
 <translation id="5276681919620506371">Otsing • Tööriistad</translation>
 <translation id="7434375176361995333">Kokkuvõtted • Kiire</translation>
 <translation id="3965507912994218570">Leo seaded</translation>
@@ -2461,6 +2465,8 @@
 <translation id="6287023598025162715">Uus vestlus</translation>
 <translation id="7230502562132448519">Filtreeri vestlusi</translation>
 <translation id="821070843380699990">Proovige muud otsingut</translation>
+<translation id="241415280196701326">Hiljutised tööruumid</translation>
+<translation id="5388053981690151266">Uus vestlus selles tööruumis</translation>
 <translation id="7097822247923237815">Ajutine vestlus</translation>
 <translation id="7481750859362986254">Seda vestlust ei salvestata teie ajalukku ega kasutata ühtegi Leo kohandamist või mälestust.</translation>
 <translation id="4238305333951712482">Mälu värskendatud: <ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@
 <translation id="5103625298494362646">Agentrežiim töötab mudelitega, millel on tööriistatoe võimalus. Mitteühilduvad mudelid on sellest loendist peidetud.</translation>
 <translation id="3397808797783614750">AI automaatne sirvimine sinu eest võib tuua kahjulikke, soovimatuid tagajärgi sinu privaatsusele, rahalistele vahenditele ja veebisuhtlusele. <ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Turvahoiatus</translation>
+<translation id="717245811623757038">Tööriista loa taotlus</translation>
 <translation id="6077070599873946984">Brave AI vajab sinu luba järgmiseks toiminguks: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI soovib käivitada tööriista **<ph name="TOOL_NAME"/>** saidil **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Toiming tuvastati kui võimalik, et ei vasta sinu soovile:</translation>

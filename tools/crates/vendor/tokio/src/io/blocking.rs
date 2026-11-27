@@ -16,6 +16,8 @@ pub(crate) struct Blocking<T> {
     state: State<T>,
     /// `true` if the lower IO layer needs flushing.
     need_flush: bool,
+    /// `true` if operations are spawned with `spawn_mandatory_blocking`.
+    mandatory: bool,
 }
 
 #[derive(Debug)]
@@ -28,6 +30,9 @@ pub(crate) const DEFAULT_MAX_BUF_SIZE: usize = 2 * 1024 * 1024;
 
 #[derive(Debug)]
 enum State<T> {
+    /// Holds `None` if an operation could not be spawned, normally because the
+    /// runtime is shutting down. `inner` is gone in that case, so all further
+    /// operations fail.
     Idle(Option<Buf>),
     Busy(sys::Blocking<(io::Result<usize>, Buf, T)>),
 }
@@ -45,8 +50,42 @@ cfg_io_blocking! {
                 inner: Some(inner),
                 state: State::Idle(Some(Buf::with_capacity(0))),
                 need_flush: false,
+                mandatory: false,
             }
         }
+
+        /// Like `new`, but operations are spawned with
+        /// `spawn_mandatory_blocking`, so an operation that was started before
+        /// the runtime began shutting down still runs.
+        ///
+        /// # Safety
+        ///
+        /// Same as `new`.
+        #[cfg_attr(not(feature = "io-std"), allow(dead_code))]
+        pub(crate) unsafe fn new_mandatory(inner: T) -> Blocking<T> {
+            Blocking {
+                inner: Some(inner),
+                state: State::Idle(Some(Buf::with_capacity(0))),
+                need_flush: false,
+                mandatory: true,
+            }
+        }
+    }
+}
+
+/// Runs `f` on the blocking pool.
+///
+/// Returns `None` if `mandatory` is set and the operation could not be
+/// spawned, normally because the runtime is shutting down.
+fn spawn<F, R>(mandatory: bool, f: F) -> Option<sys::Blocking<R>>
+where
+    F: FnOnce() -> R + Send + 'static,
+    R: Send + 'static,
+{
+    if mandatory {
+        sys::spawn_mandatory_blocking(f)
+    } else {
+        Some(sys::run(f))
     }
 }
 
@@ -62,7 +101,9 @@ where
         loop {
             match self.state {
                 State::Idle(ref mut buf_cell) => {
-                    let mut buf = buf_cell.take().unwrap();
+                    let Some(mut buf) = buf_cell.take() else {
+                        return Poll::Ready(Err(gone()));
+                    };
 
                     if !buf.is_empty() {
                         buf.copy_to(dst);
@@ -73,11 +114,17 @@ where
                     let mut inner = self.inner.take().unwrap();
 
                     let max_buf_size = cmp::min(dst.remaining(), DEFAULT_MAX_BUF_SIZE);
-                    self.state = State::Busy(sys::run(move || {
-                        // SAFETY: the requirements are satisfied by `Blocking::new`.
+                    let rx = spawn(self.mandatory, move || {
+                        // SAFETY: the caller of `Blocking::new` or `Blocking::new_mandatory`
+                        // promised that `inner` meets the requirements of `read_from`.
                         let res = unsafe { buf.read_from(&mut inner, max_buf_size) };
                         (res, buf, inner)
-                    }));
+                    });
+
+                    let Some(rx) = rx else {
+                        return Poll::Ready(Err(gone()));
+                    };
+                    self.state = State::Busy(rx);
                 }
                 State::Busy(ref mut rx) => {
                     let (res, mut buf, inner) = ready!(Pin::new(rx).poll(cx))?;
@@ -114,19 +161,26 @@ where
         loop {
             match self.state {
                 State::Idle(ref mut buf_cell) => {
-                    let mut buf = buf_cell.take().unwrap();
+                    let Some(mut buf) = buf_cell.take() else {
+                        return Poll::Ready(Err(gone()));
+                    };
 
                     assert!(buf.is_empty());
 
                     let n = buf.copy_from(src, DEFAULT_MAX_BUF_SIZE);
                     let mut inner = self.inner.take().unwrap();
 
-                    self.state = State::Busy(sys::run(move || {
+                    let rx = spawn(self.mandatory, move || {
                         let n = buf.len();
                         let res = buf.write_to(&mut inner).map(|()| n);
 
                         (res, buf, inner)
-                    }));
+                    });
+
+                    let Some(rx) = rx else {
+                        return Poll::Ready(Err(gone()));
+                    };
+                    self.state = State::Busy(rx);
                     self.need_flush = true;
 
                     return Poll::Ready(Ok(n));
@@ -150,13 +204,20 @@ where
                 // The buffer is not used here
                 State::Idle(ref mut buf_cell) => {
                     if need_flush {
-                        let buf = buf_cell.take().unwrap();
+                        let Some(buf) = buf_cell.take() else {
+                            return Poll::Ready(Err(gone()));
+                        };
                         let mut inner = self.inner.take().unwrap();
 
-                        self.state = State::Busy(sys::run(move || {
+                        let rx = spawn(self.mandatory, move || {
                             let res = inner.flush().map(|()| 0);
                             (res, buf, inner)
-                        }));
+                        });
+
+                        let Some(rx) = rx else {
+                            return Poll::Ready(Err(gone()));
+                        };
+                        self.state = State::Busy(rx);
 
                         self.need_flush = false;
                     } else {
@@ -214,7 +275,7 @@ impl Buf {
         self.pos += n;
 
         if self.pos == self.buf.len() {
-            self.buf.truncate(0);
+            self.buf.clear();
             self.pos = 0;
         }
 
@@ -277,12 +338,46 @@ impl Buf {
     }
 }
 
+cfg_io_uring! {
+    impl Buf {
+        /// Prepare the internal buffer for an io-uring read operation.
+        ///
+        /// Returns a pointer to the spare capacity and the length available
+        /// for the kernel to write into.
+        pub(crate) fn prepare_uring_read(&mut self, max_buf_size: usize) -> (*mut u8, u32) {
+            assert!(self.is_empty());
+            let max_buf_size = cmp::min(max_buf_size, u32::MAX as usize);
+            self.buf.reserve(max_buf_size);
+            let spare = self.buf.spare_capacity_mut();
+            let len = cmp::min(spare.len(), max_buf_size);
+            let ptr = spare.as_mut_ptr().cast::<u8>();
+            (ptr, len as u32)
+        }
+
+        /// Complete an io-uring read operation.
+        ///
+        /// # Safety
+        ///
+        /// The caller must ensure that the kernel wrote exactly `n` bytes
+        /// into the buffer that was returned by `prepare_uring_read`.
+        pub(crate) unsafe fn complete_uring_read(&mut self, n: usize) {
+            assert_eq!(self.pos, 0);
+            // SAFETY: `prepare_uring_read` handed out a pointer to
+            // `self.buf.spare_capacity_mut()` after asserting it's empty.
+            // The caller guarantees the kernel initialised exactly `n` bytes
+            // starting at that pointer, so bytes `0..n` are now initialised and
+            // it is sound to set the Vec length to `n`.
+            unsafe { self.buf.set_len(n) };
+        }
+    }
+}
+
 cfg_fs! {
     impl Buf {
         pub(crate) fn discard_read(&mut self) -> i64 {
             let ret = -(self.bytes().len() as i64);
             self.pos = 0;
-            self.buf.truncate(0);
+            self.buf.clear();
             ret
         }
 
@@ -303,4 +398,8 @@ cfg_fs! {
             max_buf_size - rem
         }
     }
+}
+
+fn gone() -> io::Error {
+    io::Error::other(crate::util::error::RUNTIME_SHUTTING_DOWN_ERROR)
 }

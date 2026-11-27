@@ -6,9 +6,18 @@
 import config from '../lib/config.ts'
 import path from 'node:path'
 import util from '../lib/util.ts'
+import { program } from '../lib/program.ts'
 
-const args = [
-  path.join(config.srcDir, 'brave', 'tools', 'crates', 'update.py'),
-  ...process.argv.slice(2),
-]
-util.run('vpython3', args, config.defaultOptions)
+// Every argument, --help included, is update.py's.
+program
+  .helpOption(false)
+  .allowUnknownOption()
+  .allowExcessArguments()
+  .action(() => {
+    const args = [
+      path.join(config.srcDir, 'brave', 'tools', 'crates', 'update.py'),
+      ...process.argv.slice(2),
+    ]
+    util.run('vpython3', args, config.defaultOptions)
+  })
+  .parse()

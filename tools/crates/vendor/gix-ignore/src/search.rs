@@ -4,7 +4,7 @@ use std::{
 };
 
 use bstr::{BStr, ByteSlice};
-use gix_glob::search::{pattern, Pattern};
+use gix_glob::search::{Pattern, pattern};
 
 use crate::Search;
 
@@ -89,7 +89,7 @@ impl Search {
                 patterns: patterns
                     .enumerate()
                     .filter_map(|(seq_id, pattern)| {
-                        let pattern = gix_path::try_into_bstr(PathBuf::from(pattern)).ok()?;
+                        let pattern = gix_path::into_bstr(PathBuf::from(pattern)).ok()?;
                         crate::parse(pattern.as_ref(), parse.support_precious)
                             .next()
                             .map(|(p, _seq_id, kind)| pattern::Mapping {
@@ -117,9 +117,10 @@ impl Search {
         source: impl Into<PathBuf>,
         root: Option<&Path>,
         parse: Ignore,
-    ) {
+    ) -> std::io::Result<()> {
         self.patterns
-            .push(pattern::List::from_bytes(bytes, source.into(), root, parse));
+            .push(pattern::List::from_bytes(bytes, source.into(), root, parse)?);
+        Ok(())
     }
 }
 

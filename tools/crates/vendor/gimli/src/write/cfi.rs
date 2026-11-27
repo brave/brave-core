@@ -1,10 +1,9 @@
 use alloc::vec::Vec;
-use indexmap::IndexSet;
-use std::ops::{Deref, DerefMut};
+use core::ops::{Deref, DerefMut};
 
 use crate::common::{DebugFrameOffset, EhFrameOffset, Encoding, Format, Register, SectionId};
 use crate::constants;
-use crate::write::{Address, BaseId, Error, Expression, Result, Section, Writer};
+use crate::write::{Address, BaseId, Error, Expression, FnvIndexSet, Result, Section, Writer};
 
 define_section!(
     DebugFrame,
@@ -22,7 +21,7 @@ pub struct FrameTable {
     /// Base id for CIEs.
     base_id: BaseId,
     /// The common information entries.
-    cies: IndexSet<CommonInformationEntry>,
+    cies: FnvIndexSet<CommonInformationEntry>,
     /// The frame description entries.
     fdes: Vec<(CieId, FrameDescriptionEntry)>,
 }
@@ -596,8 +595,10 @@ fn factored_data_offset(offset: i32, factor: i8) -> Result<i32> {
 pub(crate) mod convert {
     use super::*;
     use crate::read::{self, Reader};
-    use crate::write::{ConvertError, ConvertResult};
-    use std::collections::{hash_map, HashMap};
+    use crate::write::{ConvertError, ConvertResult, NoConvertDebugInfoRef};
+    use hashbrown::hash_map;
+
+    type FnvHashMap<K, V> = hashbrown::HashMap<K, V, fnv::FnvBuildHasher>;
 
     impl FrameTable {
         /// Create a frame table by reading the data in the given section.
@@ -620,7 +621,7 @@ pub(crate) mod convert {
 
             let mut frame_table = FrameTable::default();
 
-            let mut cie_ids = HashMap::new();
+            let mut cie_ids = FnvHashMap::default();
             let mut entries = frame.entries(&bases);
             while let Some(entry) = entries.next()? {
                 let partial = match entry {
@@ -760,8 +761,15 @@ pub(crate) mod convert {
             R: Reader<Offset = usize>,
             Section: read::UnwindSection<R>,
         {
-            let convert_expression =
-                |x| Expression::from(x, from_cie.encoding(), None, None, None, convert_address);
+            let convert_expression = |x| {
+                Expression::from(
+                    x,
+                    from_cie.encoding(),
+                    None,
+                    convert_address,
+                    &NoConvertDebugInfoRef,
+                )
+            };
             // TODO: validate integer type conversions
             Ok(Some(match from_instruction {
                 read::CallFrameInstruction::SetLoc { .. } => {

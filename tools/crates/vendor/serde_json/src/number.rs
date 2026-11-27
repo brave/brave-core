@@ -120,7 +120,7 @@ impl Number {
         {
             for c in self.n.chars() {
                 if c == '.' || c == 'e' || c == 'E' {
-                    return self.n.parse::<f64>().ok().map_or(false, f64::is_finite);
+                    return self.n.parse::<f64>().is_ok_and(f64::is_finite);
                 }
             }
             false
@@ -279,8 +279,11 @@ impl Number {
         Some(Number { n })
     }
 
-    /// Returns the exact original JSON representation that this Number was
-    /// parsed from.
+    /// Returns the JSON representation that this Number was parsed from.
+    ///
+    /// When parsing with serde_json's `arbitrary_precision` feature enabled,
+    /// positive exponents are normalized to include an explicit `+` sign so
+    /// that `1e140` becomes `1e+140`.
     ///
     /// For numbers constructed not via parsing, such as by `From<i32>`, returns
     /// the JSON representation that serde\_json would serialize for this
@@ -311,7 +314,7 @@ impl Number {
         match self.n {
             N::PosInt(n) => Some(n as f32),
             N::NegInt(n) => Some(n as f32),
-            N::Float(n) => Some(n as f32),
+            N::Float(n) => Some(n as f32).filter(|float| float.is_finite()),
         }
         #[cfg(feature = "arbitrary_precision")]
         self.n.parse::<f32>().ok().filter(|float| float.is_finite())

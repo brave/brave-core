@@ -39,6 +39,7 @@ use crate::bstr::BStr;
 /// That is, it is made up of three word sized components: a pointer to a
 /// region of memory containing the bytes, a length and a capacity.
 #[derive(Clone)]
+#[repr(transparent)]
 pub struct BString {
     bytes: Vec<u8>,
 }
@@ -99,5 +100,23 @@ impl BString {
     #[inline]
     pub(crate) fn into_vec(self) -> Vec<u8> {
         self.bytes
+    }
+
+    #[inline]
+    pub(crate) fn from_vec_ref(v: &Vec<u8>) -> &BString {
+        // SAFETY: `BString` is a `repr(transparent)` wrapper around `Vec<u8>`, and accepts any
+        // `Vec<u8>` without validation.
+        //
+        // MSRV: Switch this to use `ptr::from_ref` once bstr can require at least Rust 1.72.
+        unsafe { &*(v as *const Vec<u8> as *const BString) }
+    }
+
+    #[inline]
+    pub(crate) fn from_vec_mut(v: &mut Vec<u8>) -> &mut BString {
+        // SAFETY: `BString` is a `repr(transparent)` wrapper around `Vec<u8>`, and accepts any
+        // `Vec<u8>` without validation.
+        //
+        // MSRV: Switch this to use `ptr::from_mut` once bstr can require at least Rust 1.72.
+        unsafe { &mut *(v as *mut Vec<u8> as *mut BString) }
     }
 }

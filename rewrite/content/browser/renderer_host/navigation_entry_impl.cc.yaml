@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Never store a brave:// virtual URL.
+
+      brave:// is a display-only alias of chrome://, so virtual URLs are always
+      stored with the chrome:// scheme.
+    preempt_function_impl:
+      function_name: NavigationEntryImpl::SetVirtualURL
+      code: |-
+        DCHECK(!url.SchemeIs(kBraveUIScheme))
+            << "Virtual URL should not use brave:// scheme";
+
+  - description: |-
+      Show brave:// rather than chrome:// in URL-derived display titles.
+
+      When the page title is empty, the display title falls back to the
+      formatted virtual URL, which is stored as chrome://.
+    after_function_impl:
+      function_name: NavigationEntryImpl::GetTitleForDisplay
+      result_var: display_title
+      code: |-
+        if (title_.empty()) {
+          ReplaceChromeSchemeWithBraveForDisplay(cached_display_title_);
+        }
+        return display_title;

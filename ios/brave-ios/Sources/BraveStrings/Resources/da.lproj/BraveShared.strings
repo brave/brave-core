@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Om";
 
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertMessage" = "Dette giver dig mulighed for at gemme billedet på din kamerarulle.";
-
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave vil gerne have adgang til dine billeder";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Tilføj bogmærke";
 
@@ -63,9 +57,6 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Brugernavn";
-
-/* Settings autofill section title */
-"Autofill" = "AutoFyld";
 
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Konti";
@@ -133,9 +124,6 @@
 /* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
 "backgroundDownloadingTitleSingleDownload" = "Downloader \"%@\"";
 
-/* cookie settings option */
-"Block3rdPartyCookies" = "Bloker cookies fra tredjeparter";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Bloker alle cookies";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Præferencen kunne ikke indstilles. Prøv igen.";
 
-/* title for section showing page blocking statistics */
-"BlockingMonitor" = "Blokeringsmonitor";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Bloker popups";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Tilføj bogmærke til %lld faner";
-
-/* Bookmark Folder Section Title */
-"BookmarkFolder" = "Bogmærkemappe";
-
-/* Bookmark Info Section Title */
-"BookmarkInfo" = "Bogmærke-info";
 
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Bogmærker";
@@ -225,9 +204,6 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields og privatliv";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
 
 /* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
 "BraveTranslate.languageSelectionButtonTitle" = "Vælg sprog";
@@ -415,14 +391,8 @@
 /* Section title in settings panel */
 "ClearPrivateData" = "Ryd private data";
 
-/* The cancel button when confirming clear private data. */
-"ClearPrivateDataAlertCancelButtonTitle" = "Annuller";
-
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertMessage" = "Er du sikker?";
-
-/* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "OK ";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "Ryd data";
@@ -441,9 +411,6 @@
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "OK ";
-
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "Klientfejl";
 
 /* Button title to close a menu. */
 "Close" = "Luk";
@@ -481,17 +448,11 @@
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
 "CopyCleanLink" = "Kopiér rent link";
 
-/* Context menu item for copying an image to the clipboard */
-"CopyImageActionTitle" = "Kopiér billede";
-
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Kopiér link";
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Kopiér faneoplysninger til udklipsholder.";
-
-/* Copy rewards internals info for support */
-"CopyWalletSupportInfo" = "Kopiér supportoplysninger";
 
 /* Create PDF share action. */
 "CreatePDF" = "Opret PDF";
@@ -504,9 +465,6 @@
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Skriv søge-url'en og erstat forespørgslen med %1$s.\nFor eksempel: https://youtube.com/search?q=%2$s \n(Hvis webstedet understøtter OpenSearch, vil der blive givet en mulighed for at tilføje automatisk, mens du redigerer dette felt.)";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "Tilføj automatisk";
 
 /* A title explaining that an error shown while adding custom search engine */
 "customSearchEngine.customSearchEngineAddErrorTitle" = "Fejl under tilføjelse af tilpasset søgemaskine";
@@ -590,12 +548,6 @@
 "defaultBrowserCallout.notificationTitle" = "Få Brave-beskyttelse på alle links";
 
 /* No comment provided by engineer. */
-"defaultBrowserCalloutCloseAccesabilityLabel" = "Luk opfordring til standardbrowser";
-
-/* Name for default Brave theme. */
-"defaultThemeName" = "Brave standard";
-
-/* No comment provided by engineer. */
 "Delete" = "Slet";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
@@ -649,9 +601,6 @@
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Downloads";
 
-/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
-"DownloadsPanelEmptyStateTitle" = "Downloadede filer vises her.";
-
 /* Action item title of long press for Opening the existing - active Tab url in a new Tab */
 "DuplicateActiveTab" = "Dupliker aktiv fane";
 
@@ -700,47 +649,14 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Indtast mappenavn";
 
-/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ bruger normalt kryptering til at beskytte dine oplysninger. Da Brave forsøgte at oprette forbindelse til %2$@ denne gang, sendte hjemmesiden usædvanlige og forkerte legitimationsoplysninger tilbage. Dette kan ske, når en angriber forsøger at foregive at være %3$@, eller en wi-fi-loginskærm har afbrudt forbindelsen. Dine oplysninger er stadig sikre, fordi Brave stoppede forbindelsen, før nogen data blev udvekslet.<br />Du kan ikke besøge %4$@ lige nu, fordi webstedet bruger certifikatfastgørelse. Netværksfejl og angreb er normalt midlertidige, så denne side vil sandsynligvis fungere senere.";
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Fjern";
 
-/* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningDetails" = "Denne server kunne ikke bevise, at den er %@. Din enheds operativsystem har ikke tillid til dens sikkerhedscertifikat.. Dette kan være forårsaget af en fejlkonfiguration eller en hacker, der forsøger at opsnappe din forbindelse.";
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Denne side vil ikke optræde på din liste over mest besøgte, men den vil ikke blive fjernet fra din historik.";
 
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningTitle" = "Angribere forsøger muligvis at stjæle dine oplysninger fra %@ (for eksempel adgangskoder, beskeder eller kreditkort).";
-
-/* Label for button to go back from the error page */
-"ErrorPagesBackToSafetyButton" = "Tilbage i sikkerhed";
-
-/* Title on the certificate error page */
-"ErrorPagesCertErrorTitle" = "Dette websted kan ikke levere en sikker forbindelse";
-
-/* Title on the certificate error page */
-"ErrorPagesCertWarningTitle" = "Din forbindelse er ikke privat";
-
-/* Label for button to hide advanced actions on the error page */
-"ErrorPagesHideDetailsButton" = "Skjul oplysninger";
-
-/* Label for learn more link on error page */
-"ErrorPagesLearnMoreButton" = "Flere oplysninger";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesMoreDetailsButton" = "Flere oplysninger";
-
-/* Title of the No Internet error page */
-"ErrorPagesNoInternetTitle" = "Ingen internetadgang";
-
-/* Text telling the user to Try: The following list of things */
-"ErrorPagesNoInternetTry" = "Det ser ud til, at du ikke er online. Prøv at gøre følgende for at rette op på dette";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem1" = "Kontrollér netværkskabler, modem og router";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem2" = "Genopretter forbindelse til wi-fi";
-
-/* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesProceedAnywayButton" = "Fortsæt til %@ (usikker)";
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Fjern fra mest besøgte?";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ starter en ekstern applikation";
@@ -766,29 +682,14 @@
 /* Share action title */
 "FindInPage" = "Find på side";
 
-/* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "Færdig";
-
 /* Find `search query` */
 "FindInPageFormat" = "Find ";
-
-/* Accessibility label for next result button in Find in Page Toolbar. */
-"FindInPageNextResultButtonAccessibilityLabel" = "Næste resultat på siden";
-
-/* Accessibility label for previous result button in Find in Page Toolbar. */
-"FindInPagePreviousResultButtonAccessibilityLabel" = "Forrige resultat på siden";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findInPageTitle" = "Find på side";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findNextTitle" = "Find næste";
-
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "På denne side";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findPreviousTitle" = "Find forrige";
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Tillad, at universelle links åbnes i eksterne apps";
@@ -813,9 +714,6 @@
 
 /* Hides the rewards icon */
 "HideRewardsIcon" = "Skjul Braves Belønningsikon";
-
-/* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Skjuler ikonet Brave Rewards, når Brave Rewards ikke er aktiveret";
 
 /* Title for history menu item */
 "HistortMenuItem" = "Historik";
@@ -859,11 +757,8 @@
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Importér browserdata";
 
-/* title for per-site shield toggles */
-"IndividualControls" = "Individuelle Kontroller";
-
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "Ugyldige oplysninger i betalingsanmodningen";
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "En indlejret side på denne side";
 
 /* History tableview section header */
 "LastMonth" = "Sidste måned";
@@ -919,30 +814,6 @@
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Filter";
 
-/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
-"LoginDetailLastModifiedCellFormatTitle" = "Sidst ændret %@";
-
-/* Label displayed above the password row in Login Detail View. */
-"LoginDetailPasswordCellTitle" = "adgangskode";
-
-/* Label displayed above the username row in Login Detail View. */
-"LoginDetailUsernameCellTitle" = "brugernavn";
-
-/* Label displayed above the website row in Login Detail View. */
-"LoginDetailWebsiteCellTitle" = "websted";
-
-/* Label for the button used to deselect all logins. */
-"LoginListDeselectAllButtonTitle" = "Fravælg alle";
-
-/* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "Ingen login fundet";
-
-/* Title for Logins List View screen. */
-"LoginListScreenTitle" = "Login";
-
-/* Label for the button used to select all logins. */
-"LoginListSelectAllButtonTitle" = "Vælg alle";
-
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "Aktiver baggrundslyd";
 
@@ -957,9 +828,6 @@
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Afslør";
-
-/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
-"monthAbbreviation" = "md.";
 
 /* Bookmark title / Device name */
 "Name" = "Navn";
@@ -1036,9 +904,6 @@
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Lær mere om sponsorerede billeder ";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"ntp.settingsAutoOpenKeyboard" = "Åben automatisk tastatur";
-
 /* A setting to enable or disable background on the NTP screen. */
 "ntp.settingsBackgroundImages" = "Baggrund";
 
@@ -1075,53 +940,8 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Ved at slå belønninger til, accepterer du %@.";
 
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "Optjen tokens, og beløn skabere for fantastisk indhold, mens du browser.";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "Optjen point, og beløn skabere for fantastisk indhold, mens du browser.";
-
-/* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Brave Ads er her!";
-
-/* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave viser din første annonce i";
-
-/* Title for when the user completes onboarding */
-"OBCompleteTitle" = "Nu er du klar til at komme i gang.";
-
-/* Button to show information on how to enable ads */
-"OBDidntSeeAdButton" = "Jeg så ikke en annonce";
-
-/* A generic error body for onboarding */
-"OBErrorDetails" = "Noget gik galt under oprettelsen af ​​din wallet. Prøv igen";
-
 /* No comment provided by engineer. */
 "OBErrorOkay" = "Okay";
-
-/* A generic error title for onboarding */
-"OBErrorTitle" = "Beklager";
-
-/* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "Begynd at browse";
-
-/* Button to join Brave Rewards. */
-"OBJoinButton" = "Tilmeld dig";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Tillad Brave at tjekke min udklipsholder for en tilhørende henvisningskode";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Du har muligvis downloadet Brave for at støtte din henviser. For at finde ud af, hvem din henviser er, udfører Brave en engangskontrol af din udklipsholder for at tjekke den tilhørende henvisningskode. Denne kontrol er udelukkende begrænset til koden, og ingen andre personlige data vil blive overført. Hvis du fravælger, vil din henviser ikke modtage belønninger fra Brave.";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentNoButton" = "Tillad ikke denne kontrol";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentTitle" = "Kontrol af anonym henvisningskode";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentYesButton" = "Tillad engangskontrol af udklipsholder";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "Ved at trykke på Ja, accepterer du";
@@ -1138,32 +958,8 @@
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Tilvalg af Brave Private Ads understøtter udgivere og indholdsskabere for hver annonce, der vises.";
 
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Optjen tokens, og beløn skabere for fantastisk indhold, mens du browser.";
-
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Privatlivspolitik";
-
-/* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Brave-belønninger";
-
-/* Save button to save current selection */
-"OBSaveButton" = "Gem";
-
-/* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "Vælg din standardsøgemaskine";
-
-/* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Velkommen til Brave Browser";
-
-/* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "Bloker privatlivsinvaderende trackere, så du kan browse uden at blive fulgt rundt på nettet";
-
-/* Title for shields onboarding screen */
-"OBShieldsTitle" = "Brave-Skjolde";
-
-/* Button to show the Brave Rewards Ads. */
-"OBShowMeButton" = "Vis mig";
 
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Start ";
@@ -1198,20 +994,11 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Åbn alle (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Åbn Brave Rewards-indstillinger";
-
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Der opstod en ukendt fejl under åbning af mappen Downloads i appen Filer.";
 
-/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
-"openExternalAppURLHost" = "%@ siger:";
-
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "Vil du tillade %@ at skifte apps?";
-
-/* Context menu for opening image in new tab */
-"OpenImageInNewTab" = "Åbn billede i ny fane";
 
 /* Context menu item for opening a link in a new private browsing window */
 "OpenInNewPrivateWindowTitle" = "Åbn i nyt privat vindue";
@@ -1348,12 +1135,6 @@
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Andre privatlivsindstillinger";
 
-/* Section name for other settings. */
-"OtherSettingsSection" = "Andre indstillinger";
-
-/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
-"p3a.continue" = "Fortsæt";
-
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "Disse private svar hjælper kun Brave med at anslå det generelle forbrug af visse funktioner og gøre servicen endnu bedre.";
 
@@ -1384,12 +1165,6 @@
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Standard zoomniveau for webside";
 
-/* Description for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesDescription" = "Når et websteds zoomniveau er ændret, vil webstedet blive vist på listen her. I øjeblikket er der ingen websteder, der er zoomet ind eller ud.";
-
-/* Title for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesTitle" = "Ingen hjemmesider tilføjet";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Alle andre websteder";
 
@@ -1414,12 +1189,6 @@
 /* Setting to allow the app to restore private browsing tabs */
 "PersistentPrivateBrowsing" = "Vedvarende privat browsing";
 
-/* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Tillader Brave at gendanne private browsing-faner, selvom du lukker/genåbner appen";
-
-/* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "Gendan private faner";
-
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Foto af %@";
 
@@ -1434,12 +1203,6 @@
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Afspilningsmuligheder";
-
-/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
-"playlist.carplayRestartPlaybackButtonStateDisabled" = "Deaktiveret. Tryk for at aktivere genstart af afspilning.";
-
-/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
-"playlist.carplayRestartPlaybackButtonStateEnabled" = "Aktiveret. Tryk for at deaktivere genstart af afspilning.";
 
 /* The description of the checkbox that allows the user to restart audio/video playback */
 "playlist.carplayRestartPlaybackOptionDetailsTitle" = "Beslut om valg af et element, der allerede afspilles, vil genstarte afspilningen eller fortsætte med at spille, hvor sidst slap";
@@ -1687,9 +1450,6 @@
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "Åbn Privacy Hub";
 
-/* The title of the button action which open the privacy hub */
-"privacyHub.openPrivacyHubWidgetActionTitle" = "Åbn Privacy Hub";
-
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Privacy Hub-data gemmes lokalt og sendes aldrig nogen steder.";
 
@@ -1759,23 +1519,11 @@
 /* Private button title */
 "Private" = "Inkognito";
 
-/* No comment provided by engineer. */
-"PrivateBrowsing" = "Privat browsing";
-
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Kun privat browsing";
 
 /* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
 "PrivateBrowsingOnlyWarning" = "Tilstanden Kun privat browsing lukker alle dine nuværende faner og logger dig ud af alle websteder.";
-
-/* Private tab details */
-"PrivateTabBody" = "Private faner gemmes ikke i Brave, men de gør dig ikke anonym online. Sider, du besøger i en privat fane, vises ikke i din historik, og deres cookies forsvinder altid, når du lukker dem - der vil ikke være noget spor af dem tilbage i Brave. Downloads vil dog blive gemt.\nDin mobiloperatør (eller ejeren af det wi-fi-netværk eller den VPN, du er forbundet til) kan se, hvilke sider du besøger, og disse sider vil have adgang til din offentlige IP-adresse, selv i private faner.";
-
-/* Private tab detail text */
-"PrivateTabDetails" = "Brug af Private faner ændrer kun, hvad Brave gør på din enhed. Det ændrer ikke andres adfærd.\n\nWebsteder har altid adgang din IP-adresse, når du besøger dem. Ud fra den kan de ofte gætte, nogenlunde hvor du befinder dig - typisk din by. Nogle gange kan det gæt på din placering være meget mere specifikt. Websteder ved også alt, hvad du specifikt fortæller dem, såsom søgetermer. Hvis du logger ind på et websted, ved de, at du er ejer af den konto. Du vil stadig blive logget ud, når du lukker de private faner, fordi Brave sletter den cookie, som bevarer dig logget ind.\n\nDen, der forbinder dig til internettet (din internetudbyder), kan se al din netværksaktivitet. Ofte er det din mobiloperatør. Hvis du er forbundet til et wi-fi-netværk, er det ejeren af netværket, og hvis du bruger en VPN, er det den, der driver VPN'en. Din internetudbyder kan se, hvilke sider du besøger, når du besøger dem. Hvis disse sider bruger HTTPS, kan de allerhøjest lave et kvalificeret gæt på, hvad du laver på disse websteder. Men hvis en side kun bruger HTTP, kan din internetudbyder se alt: dine søgetermer, hvilke sider du læser, og hvilke links du følger.\n\nHvis en arbejdsgiver administrerer din enhed, kan de muligvis også holde øje med, hvad du gør med den. Brug af private faner vil sandsynligvis ikke forhindre dem i at vide, hvilke sider du har besøgt. En anden person med adgang til din enhed kan også have installeret software, der overvåger din aktivitet, og Private faner vil heller ikke beskytte dig mod dette.";
-
-/* Private tab information link */
-"PrivateTabLink" = "Læs mere om Private faner.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Privat Fane";
@@ -1834,12 +1582,6 @@
 /* Accessibility label for brightness adjustment slider in Reader Mode display settings */
 "ReaderModeBrightSliderAccessibilityLabel" = "Lysstyrke";
 
-/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
-"ReaderModeDisplaySettingsButtonTitle" = "Skærmindstillinger";
-
-/* Error displayed when reader mode cannot be enabled */
-"ReaderModeErrorConvertDisplayText" = "Der opstod en fejl under konvertering af siden";
-
 /* Font type setting in the reading view settings */
 "ReaderModeFontButtonSansSerifTitle" = "Sans serif";
 
@@ -1851,15 +1593,6 @@
 
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Ændrer skrifttype.";
-
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "Indlæser indhold...";
-
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadOriginalLinkText" = "Indlæs original side";
-
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "Siden kunne ikke vises i Læservisning.";
 
 /* Title of a bar that show up when you enter reader mode. */
 "readerModeSettingsButton" = "Læsertilstand";
@@ -1882,14 +1615,8 @@
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "Ingen seneste lukkede faner.";
 
-/* Open Tab action title */
-"recently.closed.open" = "Åbn";
-
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "Genåbn seneste lukkede fane";
-
-/* Description for alert to ask user for opening last closed tab in list */
-"recently.closed.shake.description" = "Vil du åbne den seneste lukkede fane?";
 
 /* Action item title of long press for Opening recently closed tab view */
 "recently.closed.title" = "Seneste lukkede faner";
@@ -1975,12 +1702,6 @@
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "\"%@\" vil gerne have adgang til mikrofonen";
 
-/* Name of folder where restored bookmarks are retrieved */
-"RestoredBookmarksFolderName" = "Gendannede bogmærker";
-
-/* Name of folder where restored favorites are retrieved */
-"RestoredFavoritesFolderName" = "Gendannede favoritter";
-
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "Ja";
 
@@ -2023,80 +1744,11 @@
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Denne indholdsskaber er verificeret hos Brave Creators";
 
-/* Displayed next to a number representing the total number of publishers supported */
-"rewards.totalSupportedCount" = "Antal indholdsskabere, du hjælper med at støtte denne måned.";
-
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Denne skaber har ikke foretaget verificering og vil ikke blive inkluderet i skabersupport";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Beløb";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAnonymous" = "Anonym";
-
-/* No comment provided by engineer. */
-"RewardsInternalsBalanceInfoHeader" = "Saldo-oplysninger ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "Er du sikker på, at du vil rydde alle belønningslogfiler?";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsTitle" = "Ryd logfiler";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionAmount" = "Bidragsmængde";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Brave-tokens";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorNone" = "Ingen";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "Behold ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUserFunds" = "Brugermidler";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepACOff" = "Auto-bidrag fra";
-
-/* 'AC' refers to Auto-Contribute */
-"RewardsInternalsContributionsStepACTableEmpty" = "AC-tabel er tom";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCompleted" = "Gennemført ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCreds" = "Legitimationsoplysninger";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepExternalTransaction" = "Ekstern transaktion";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "Mislykkedes";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepNotEnoughFunds" = "Saldo ikke tilstrækkelig ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepPrepare" = "Forbered";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepReserve" = "Reservér ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "Belønninger fra";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "Start ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsTitle" = "Bidrag ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsCreatedAt" = "Oprettet kl";
 
 /* No comment provided by engineer. */
 "RewardsInternalsDeviceInfoHeader" = "Enhedsoplysninger";
@@ -2116,9 +1768,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Nøgleinformations-seed";
 
-/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
-"RewardsInternalsLogsCount" = "%d logfiler vises";
-
 /* No comment provided by engineer. */
 "RewardsInternalsLogsTitle" = "Logbog ";
 
@@ -2129,34 +1778,13 @@
 "RewardsInternalsNotSupported" = "Ikke understøttet";
 
 /* No comment provided by engineer. */
-"RewardsInternalsProcessor" = "Processor";
-
-/* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Udgiver";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublishers" = "Udgivere";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRetryCount" = "Antal genforsøg";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeAutoContribute" = "Auto-Contribute";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeOneTimeTip" = "Engangsdrikkepenge";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "Tilbagevendende drikkepenge";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "Belønningsprofil, enhed og saldooplysninger (altid delt)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Grundlæggende info";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableContributionsDescription" = "Eventuelle bidrag til udgivere gennem drikkepenge eller automatisk bidrag";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableDatabaseDescription" = "Det interne datalager";
@@ -2192,9 +1820,6 @@
 "RewardsInternalsTitle" = "Belønninger internt ";
 
 /* No comment provided by engineer. */
-"RewardsInternalsTotalAmount" = "Totalt beløb";
-
-/* No comment provided by engineer. */
 "RewardsInternalsTotalBalance" = "Total saldo ";
 
 /* No comment provided by engineer. */
@@ -2221,17 +1846,11 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Gem";
 
-/* Label for the button used to save changes in some text input. */
-"SaveChangesButtonTitle" = "Gem ændringer";
-
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Gemte login";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "Gemte faner";
-
-/* Context menu item for saving an image */
-"SaveImageActionTitle" = "Gem billede";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Gem login";
@@ -2245,23 +1864,8 @@
 /* Search engines section of settings */
 "SearchEngines" = "Søgemaskiner";
 
-/* Accessibility hint describing the action performed when a search suggestion is clicked */
-"SearchesForSuggestionButtonAccessibilityText" = "Søger efter forslaget";
-
 /* Section header for history and bookmarks and open tabs option */
 "SearchHistorySectionHeader" = "På din enhed";
-
-/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
-"SearchInputViewClearButtonTitle" = "Ryd søgning";
-
-/* Accessibility label for entering search mode for logins */
-"SearchInputViewOverlayAccessibilityLabel" = "Gå ind i søgetilstand";
-
-/* Accessibility label for the search input field in the Logins list */
-"SearchInputViewTextFieldAccessibilityLabel" = "Søgeinputfelt";
-
-/* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "Søg";
 
 /* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
 "searchQuickBarPrefix" = "Søg efter \"%@\"";
@@ -2275,9 +1879,6 @@
 /* Label for showing browser suggestion setting */
 "SearchSettingBrowserSuggestionCellTitle" = "Vis browserforslag";
 
-/* Navigation title for search settings. */
-"SearchSettingNavTitle" = "Søg";
-
 /* Label for showing recent search setting. */
 "SearchSettingRecentSearchesCellTitle" = "Vis seneste søgninger";
 
@@ -2287,23 +1888,11 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "Vis søgeforslag";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
-"SearchSuggestionFromFormatText" = "Søgeforslag fra %@";
-
 /* Action title for open a playlist item in Playlist. */
 "searchSuggestionOpenPlaylistActionTitle" = "Åbn i spillelisten";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Skift til denne fane";
-
-/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
-"SearchSuggestionSectionTitleFormat" = "%@-søgning";
-
-/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "Søg";
-
-/* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "Søgeforslag";
 
 /* Search suggestions optin subtitle when prompting to turn on suggestions */
 "searchSuggestionsSubtitle" = "Vil du gerne aktivere søgeforslag?";
@@ -2416,9 +2005,6 @@
 /* Row name for licenses. */
 "SettingsLicenses" = "Licenser";
 
-/* Title for settings menu item */
-"SettingsMenuItem" = "Indstillinger ";
-
 /* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
 "SettingsTabsOptionBottomBar" = "Nederste bjælke";
 
@@ -2430,9 +2016,6 @@
 
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Del link";
-
-/* Title for sharing url menu item */
-"ShareWithMenuItem" = "Del med ...";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "shareWithTitle" = "Del med ...";
@@ -2467,9 +2050,6 @@
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Del nyheden";
 
-/* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields har netop beskyttet dit online privatliv.";
-
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Tillykke. Du er ret speciel.";
 
@@ -2481,6 +2061,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Annoncer blokeres, mens du ser videoer på denne hjemmeside.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Brave-wallet";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Privat Fane";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR-kode";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Søg";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Ny privat fane";
@@ -2641,14 +2233,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri-genveje";
 
-/* Button to show the bookmarks list */
-"ShowBookmarks" = "Vis bogmærker";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Vis downloads";
-
-/* Button to show the history list */
-"ShowHistory" = "Vis historik";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showHistoryTitle" = "Vis historik";
@@ -2776,9 +2362,6 @@
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.configurationInformationText" = "Administrer hvilke oplysninger du vil synkronisere mellem enheder. Disse indstillinger påvirker kun denne enhed.";
 
-/* Copied action complete title */
-"sync.copied" = "Kopieret!";
-
 /* Copied codewords title */
 "sync.copiedToClipboard" = "Kopieret til udklipsholder!";
 
@@ -2821,14 +2404,8 @@
 /* Sync enter code words */
 "sync.enterCodeWords" = "Indtast kodeord";
 
-/* Enter sync code words below */
-"sync.enterCodeWordsBelow" = "Indtast kodeord nedenfor";
-
 /* Sync Error message for when the sync code is expired */
 "sync.expiredError" = "Denne synkroniseringskode er udløbet. Generer en ny synkroniseringskode, og prøv igen.";
-
-/* Generic Sync Error Description */
-"sync.genericError" = "Beklager, men noget gik galt";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "Aktiver kamera";
@@ -2872,9 +2449,6 @@
 /* Error title for when the sync code does not have the correct amount of words */
 "sync.notEnoughWordsTitle" = "Ikke nok ord";
 
-/* Sync pair device settings section title */
-"sync.pair" = "Start parring";
-
 /* QR Code section title */
 "sync.qrCode" = "QR-kode";
 
@@ -2908,12 +2482,6 @@
 /* Title for removing other device from Sync */
 "sync.removeOtherDeviceTitle" = "Vil du fjerne %@ fra synkroniseringskæden?";
 
-/* Sync remove device. */
-"sync.removeThisDevice" = "Vil du fjerne denne enhed";
-
-/* Sync remove device? */
-"sync.removeThisDeviceQuestionDesc" = "Denne enhed vil blive afbrudt fra synkroniseringsgruppen og vil ikke længere modtage eller sende synkroniseringsdata. Alle eksisterende data forbliver på enheden.";
-
 /* Scan sync code title */
 "sync.scan" = "Scan";
 
@@ -2932,20 +2500,11 @@
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "Synkroniseringsindstillinger ";
 
-/* Show code words instead */
-"sync.showCodeWords" = "Vis kodeord i stedet";
-
 /* Switch back to camera button */
 "sync.switchBackToCameraButton" = "Jeg bruger mit kamera...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Denne sletning er permanent, og dataene kan på ingen måde gendannes. Hvis du beslutter dig for at begynde at bruge Sync igen, skal du oprette en ny konto og tilføje hver enhed igen en efter en.";
-
-/* Sync you browser settings across devices. */
-"sync.Syncdevices" = "Enheder og indstillinger";
-
-/* Sync remove device? */
-"sync.syncRemoveThisDeviceQuestion" = "Vil du fjerne denne enhed?";
 
 /* Sync settings section title */
 "sync.syncTitle" = "Synkroniser ";
@@ -2982,9 +2541,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Ordantal: %i";
-
-/* Accessibility label for action denoting closing a tab in tab list (tray) */
-"TabAccessibilityCloseActionLabel" = "Luk";
 
 /* Accessibility label for a close button that when tapped opens a new tab */
 "tabGrid.addTabAccessibilityLabel" = "Ny fane";
@@ -3025,17 +2581,11 @@
 /* A title shown when in private browsing mode with no tabs open */
 "tabGrid.privateBrowsingInfoTitle" = "Privat Fane";
 
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.privateBrowsingModeAccessibilityLabel" = "Privat browsing";
-
 /* A label in the tab tray mode switcher for private browsing mode */
 "tabGrid.privateBrowsingModeTitle" = "Inkognito";
 
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Indstillinger for private faner";
-
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.regularBrowsingModeAccessibilityLabel" = "Almindelig browsing";
 
 /* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
 "tabGrid.selectedTabs" = "Valgte faner";
@@ -3066,18 +2616,6 @@
 
 /* Label for synced tabs menu item that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsMenuItemLabel" = "Synkroniser ";
-
-/* Accessiblity hint for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityHint" = "Slår privat tilstand til eller fra";
-
-/* Accessibility label for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityLabel" = "Privat tilstand";
-
-/* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "Fra";
-
-/* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "Til";
 
 /* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardDescription" = "Fokuser automatisk på adresselinjen når du opretter en ny fane";
@@ -3139,9 +2677,6 @@
 /* Accessibility Label for the tab toolbar Forward button */
 "TabToolbarForwardButtonAccessibilityLabel" = "Frem";
 
-/* Accessibility label for the lock icon, which is only present if the connection is secure */
-"TabToolbarLockImageAccessibilityLabel" = "Sikker forbindelse";
-
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menu";
 
@@ -3156,9 +2691,6 @@
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Læservisning";
-
-/* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "Tilføj til læseliste";
 
 /* Accessibility Label for the tab toolbar Reload button */
 "TabToolbarReloadButtonAccessibilityLabel" = "Genindlæs";
@@ -3175,47 +2707,14 @@
 /* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Stemmesøgning";
 
-/* Accessibility label for the lock icon, which is only present if the connection is insecure */
-"TabToolbarWarningImageAccessibilityLabel" = "Usikker forbindelse";
-
-/* Accessibility label for the Tabs Tray view. */
-"TabTrayAccessibilityLabel" = "Fanebakke";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabTrayAddTabAccessibilityLabel" = "Tilføj fane";
-
-/* Accessibility hint for tab tray's displayed tab. */
-"TabTrayCellCloseAccessibilityHint" = "Stryg til højre eller venstre med tre fingre for at lukke fanen.";
-
-/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
-"TabTrayClosingTabAccessibilityNotificationText" = "Afsluttende fane";
-
-/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
-"TabTrayEmptyVoiceOverText" = "Ingen faner";
-
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
-"TabTrayMultiTabPositionFormatVoiceOverText" = "Faner %1$@ til %2$@ af %3$@";
-
-/* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "Ny fane";
-
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "Søg faner";
-
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
-"TabTraySingleTabPositionFormatVoiceOverText" = "fane %1$@ af %2$@";
 
 /* No comment provided by engineer. */
 "TermsOfService" = "Servicevilkår";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Brugsbetingelser";
-
-/* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "Del...";
-
-/* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Del Brave med dine venner! ";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Automatisk";
@@ -3228,9 +2727,6 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Lys";
-
-/* Name for app theme settings */
-"themesSettings" = "Temaer";
 
 /* No comment provided by engineer. */
 "Title" = "Titel";
@@ -3361,9 +2857,6 @@
 /* A title at the top of the screen that shows a list of sources that are ranked the highest */
 "today.popularSourcesTitle" = "Populære kilder";
 
-/* A button title that is placed on promoted cards */
-"today.promoted" = "Promoveret";
-
 /* Title for long press action sheet list which has item for rate / hide */
 "today.rateBraveCardActionSheetTitle" = "Bedøm Brave i AppStore";
 
@@ -3418,14 +2911,8 @@
 /* Title of an action that allows the user to translate the current web-page to another language */
 "TranslatePage" = "Oversæt side";
 
-/* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "Vil du aktivere søgeforslag?";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Lås op";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "Ikke-understøttede betalingsinstrumenter";
 
 /* Bookmark URL */
 "URL" = "Webadresse";
@@ -3435,18 +2922,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "urlRedirectsSettings" = "Webstedsomdirigeringer";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "Bruger annulleret";
-
-/* No comment provided by engineer. */
-"UserWalletCloseButtonTitle" = "Luk";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorMessage" = "Der opstod et problem med at logge ind på din Uphold-konto. Prøv igen";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "Beklager, men noget gik galt";
 
 /* Message for error alert when a VCard contact file cannot be parsed or opened */
 "VCard.unableToOpenContactErrorMessage" = "Kontaktfilen kunne ikke læses. Den kan være beskadiget eller i et format, der ikke understøttes.";
@@ -3511,9 +2986,6 @@
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Widgets";
 
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "år.";
-
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ja";
 
@@ -3523,20 +2995,11 @@
 /* History tableview section header */
 "Yesterday" = "I går";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Aktivér Youtube-videoer af høj kvalitet";
-
-/* Description of setting to enable high quality youtube videos */
-"YoutubeMediaQualityDetails" = "Aktivering af denne eksperimentelle funktion vil afspille video i den maksimale kvalitet, der er tilgængelig, og vil bruge ekstra data.";
-
 /* Setting that disables highest quality video playback */
 "YoutubeMediaQualityOff" = "Fra";
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Til";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "Youtube-afspilningskvalitet";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Tillad over Wi-Fi";

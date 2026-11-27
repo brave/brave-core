@@ -136,7 +136,7 @@ impl PathData {
         }
     }
 
-    /// Resets RTT, congestion control and MTU states.
+    /// Resets RTT, congestion control, pacing and MTU states.
     ///
     /// This is useful when it is known the underlying path has changed.
     pub(super) fn reset(&mut self, now: Instant, config: &TransportConfig) {
@@ -146,6 +146,12 @@ impl PathData {
             .clone()
             .build(now, config.get_initial_mtu());
         self.mtud.reset(config.get_initial_mtu(), config.min_mtu);
+        self.pacing = Pacer::new(
+            self.rtt.get(),
+            self.congestion.initial_window(),
+            self.current_mtu(),
+            now,
+        );
     }
 
     /// Indicates whether we're a server that hasn't validated the peer's address and hasn't
@@ -294,7 +300,7 @@ pub struct RttEstimator {
 }
 
 impl RttEstimator {
-    fn new(initial_rtt: Duration) -> Self {
+    pub(crate) fn new(initial_rtt: Duration) -> Self {
         Self {
             latest: initial_rtt,
             smoothed: None,
@@ -337,11 +343,7 @@ impl RttEstimator {
             } else {
                 self.latest
             };
-            let var_sample = if smoothed > adjusted_rtt {
-                smoothed - adjusted_rtt
-            } else {
-                adjusted_rtt - smoothed
-            };
+            let var_sample = smoothed.abs_diff(adjusted_rtt);
             self.var = (3 * self.var + var_sample) / 4;
             self.smoothed = Some((7 * smoothed + adjusted_rtt) / 8);
         } else {
@@ -452,5 +454,49 @@ impl InFlight {
     fn remove(&mut self, packet: &SentPacket) {
         self.bytes -= u64::from(packet.size);
         self.ack_eliciting -= u64::from(packet.ack_eliciting);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn reset_refreshes_pacer_budget() {
+        let now = Instant::now();
+        let config = TransportConfig::default();
+        let remote = "203.0.113.1:4433".parse().unwrap();
+        let mut path = PathData::new(remote, true, None, 0, now, &config);
+        let mtu = path.current_mtu();
+        let window = path.congestion.window();
+
+        for _ in 0..1000 {
+            if path
+                .pacing
+                .delay(path.rtt.get(), mtu.into(), mtu, window, now)
+                .is_some()
+            {
+                break;
+            }
+            path.pacing.on_transmit(mtu);
+        }
+        assert!(
+            path.pacing
+                .delay(path.rtt.get(), mtu.into(), mtu, window, now)
+                .is_some()
+        );
+
+        path.reset(now, &config);
+
+        assert_eq!(
+            path.pacing.delay(
+                path.rtt.get(),
+                path.current_mtu().into(),
+                path.current_mtu(),
+                path.congestion.window(),
+                now
+            ),
+            None
+        );
     }
 }

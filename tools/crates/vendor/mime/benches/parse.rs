@@ -6,7 +6,6 @@ extern crate test;
 use mime::Mime;
 use test::Bencher;
 
-
 #[bench]
 fn bench_from_str(b: &mut Bencher) {
     let s = "text/plain";

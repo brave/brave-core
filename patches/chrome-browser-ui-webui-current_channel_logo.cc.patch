@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/current_channel_logo.cc b/chrome/browser/ui/webui/current_channel_logo.cc
+index 70f983e5c683eece6224751679d7b58e2cc13ac3..69aade4651a14ddead87f6ed5cc87ec2636145ec 100644
+--- a/chrome/browser/ui/webui/current_channel_logo.cc
++++ b/chrome/browser/ui/webui/current_channel_logo.cc
+@@ -14,6 +14,7 @@
+ namespace webui {
+ 
+ int CurrentChannelLogoResourceId() {
++  return CurrentChannelBraveLogoResourceId();
+   switch (chrome::GetChannel()) {
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+     case version_info::Channel::CANARY:

@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.63"
 name = "linux-raw-sys"
-version = "0.11.0"
+version = "0.12.1"
 authors = ["Dan Gohman <dev@sunfishcode.online>"]
 build = false
 exclude = [
@@ -81,6 +81,7 @@ general = []
 if_arp = []
 if_ether = []
 if_packet = []
+if_tun = []
 image = []
 io_uring = []
 ioctl = []
@@ -98,6 +99,7 @@ rustc-dep-of-std = [
 ]
 std = []
 system = []
+vm_sockets = []
 xdp = []
 
 [lib]

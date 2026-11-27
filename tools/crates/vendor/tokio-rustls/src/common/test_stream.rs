@@ -1,3 +1,5 @@
+#![cfg(any(feature = "aws_lc_rs", feature = "ring"))]
+
 use std::io::{self, Cursor, Read, Write};
 use std::pin::Pin;
 use std::sync::Arc;

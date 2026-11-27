@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.56"
 name = "errno"
-version = "0.3.14"
+version = "0.3.15"
 authors = [
     "Chris Wong <lambda.fairy@gmail.com>",
     "Dan Gohman <dev@sunfishcode.online>",

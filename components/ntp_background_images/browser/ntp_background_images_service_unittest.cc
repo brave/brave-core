@@ -645,6 +645,7 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   EXPECT_FALSE(
       service_->GetNewTabTakeover(/*supports_dynamic_new_tab_takeover=*/true));
   EXPECT_TRUE(observer_.on_sponsored_content_updated);
+  ASSERT_TRUE(observer_.sponsored_content_data);
   EXPECT_THAT(observer_.sponsored_content_data->campaigns,
               ::testing::IsEmpty());
   observer_.background_images_data = nullptr;
@@ -655,6 +656,7 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
       service_->GetBackgroundImagesData();
   EXPECT_FALSE(background_images_data);
   EXPECT_TRUE(observer_.on_background_images_updated);
+  ASSERT_TRUE(observer_.background_images_data);
   EXPECT_FALSE(observer_.background_images_data->IsValid());
 
   observer_.sponsored_content_data = nullptr;
@@ -663,33 +665,40 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   service_->HandleSponsoredComponentData(install_dir_, kTestSponsoredImages);
   NTPSponsoredContentData* const sponsored_content_data =
       service_->GetNewTabTakeover(/*supports_dynamic_new_tab_takeover=*/true);
-  EXPECT_TRUE(sponsored_content_data);
+  ASSERT_TRUE(sponsored_content_data);
   EXPECT_TRUE(sponsored_content_data->IsValid());
   // Above json data has 3 wallpapers.
-  EXPECT_THAT(sponsored_content_data->campaigns, ::testing::SizeIs(1));
+  ASSERT_THAT(sponsored_content_data->campaigns, ::testing::SizeIs(1));
   const Campaign campaign = sponsored_content_data->campaigns[0];
-  EXPECT_THAT(campaign.campaign_id, ::testing::Not(::testing::IsEmpty()));
-  EXPECT_THAT(campaign.creatives, ::testing::SizeIs(1));
+  EXPECT_THAT(campaign.id, ::testing::Not(::testing::IsEmpty()));
+  ASSERT_THAT(campaign.creatives, ::testing::SizeIs(1));
   EXPECT_EQ(25, campaign.creatives[0].focal_point.x());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background.jpg"),
             campaign.creatives[0].file_path.BaseName());
   EXPECT_EQ(campaign.creatives[0].creative_instance_id,
             "3b36d1b7-5c9b-4625-9227-7c8e9fe6e0b4");
   EXPECT_TRUE(observer_.on_sponsored_content_updated);
+  ASSERT_TRUE(observer_.sponsored_content_data);
+  ASSERT_THAT(observer_.sponsored_content_data->campaigns,
+              ::testing::SizeIs(1));
+  ASSERT_THAT(observer_.sponsored_content_data->campaigns[0].creatives,
+              ::testing::SizeIs(1));
   EXPECT_THAT(
       observer_.sponsored_content_data->campaigns[0].creatives[0].logo.alt_text,
       ::testing::Not(::testing::IsEmpty()));
-  EXPECT_TRUE(sponsored_content_data->MaybeGetBackgroundAt(0, 0)->FindBool(
-      kIsSponsoredKey));
-  EXPECT_FALSE(sponsored_content_data->MaybeGetBackgroundAt(0, 0)
-                   ->FindBool(kIsBackgroundKey)
-                   .value());
+  const std::optional<base::DictValue> sponsored_background =
+      sponsored_content_data->MaybeGetBackgroundAt(0, 0);
+  ASSERT_TRUE(sponsored_background);
+  EXPECT_EQ(sponsored_background->FindBool(kIsSponsoredKey), true);
+  EXPECT_EQ(sponsored_background->FindBool(kIsBackgroundKey), false);
 
+  const std::string* const logo_image_path =
+      sponsored_background->FindStringByDottedPath(kLogoImagePath);
+  ASSERT_TRUE(logo_image_path);
   EXPECT_EQ(install_dir_.AppendASCII("3b36d1b7-5c9b-4625-9227-7c8e9fe6e0b4")
                 .AppendASCII("button.png")
                 .AsUTF8Unsafe(),
-            *sponsored_content_data->MaybeGetBackgroundAt(0, 0)
-                 ->FindStringByDottedPath(kLogoImagePath));
+            *logo_image_path);
 
   // Test sponsored backgrounds data loading.
   observer_.background_images_data = nullptr;
@@ -697,28 +706,33 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   observer_.on_background_images_updated = false;
   service_->OnGetComponentJsonData(kTestBackgroundImages);
   background_images_data = service_->GetBackgroundImagesData();
-  EXPECT_TRUE(background_images_data);
+  ASSERT_TRUE(background_images_data);
   EXPECT_TRUE(background_images_data->IsValid());
   // Above json data has 2 wallpapers.
-  EXPECT_THAT(background_images_data->backgrounds, ::testing::SizeIs(2));
+  ASSERT_THAT(background_images_data->backgrounds, ::testing::SizeIs(2));
   // Check values are loaded correctly
   EXPECT_EQ("Brave Software", background_images_data->backgrounds[0].author);
   EXPECT_EQ("https://brave.com/", background_images_data->backgrounds[0].link);
   EXPECT_TRUE(observer_.on_background_images_updated);
-  EXPECT_TRUE(
-      *background_images_data->GetBackgroundAt(0).FindBool(kIsBackgroundKey));
-  EXPECT_EQ(
-      "chrome://background-wallpaper/background-image-source.webp",
-      *background_images_data->GetBackgroundAt(0).FindString(kWallpaperURLKey));
-  EXPECT_EQ("background-image-source.webp",
-            *background_images_data->GetBackgroundAt(0).FindString(
-                kWallpaperFilePathKey));
-  EXPECT_EQ(
-      "chrome://background-wallpaper/background-image-source.avif",
-      *background_images_data->GetBackgroundAt(1).FindString(kWallpaperURLKey));
-  EXPECT_EQ("background-image-source.avif",
-            *background_images_data->GetBackgroundAt(1).FindString(
-                kWallpaperFilePathKey));
+  const base::DictValue background_0 =
+      background_images_data->GetBackgroundAt(0);
+  EXPECT_EQ(background_0.FindBool(kIsBackgroundKey), true);
+  EXPECT_THAT(background_0, base::test::DictionaryHasValue(
+                                kWallpaperURLKey,
+                                base::Value("chrome://background-wallpaper/"
+                                            "background-image-source.webp")));
+  EXPECT_THAT(background_0, base::test::DictionaryHasValue(
+                                kWallpaperFilePathKey,
+                                base::Value("background-image-source.webp")));
+  const base::DictValue background_1 =
+      background_images_data->GetBackgroundAt(1);
+  EXPECT_THAT(background_1, base::test::DictionaryHasValue(
+                                kWallpaperURLKey,
+                                base::Value("chrome://background-wallpaper/"
+                                            "background-image-source.avif")));
+  EXPECT_THAT(background_1, base::test::DictionaryHasValue(
+                                kWallpaperFilePathKey,
+                                base::Value("background-image-source.avif")));
 
   // Invalid schema version
   const std::string test_json_string_higher_schema = R"(
@@ -798,12 +812,12 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
       install_dir_, kTestSponsoredImagesWithMultipleCampaigns);
   const NTPSponsoredContentData* const sponsored_content_data =
       service_->GetNewTabTakeover(/*supports_dynamic_new_tab_takeover=*/true);
-  EXPECT_TRUE(sponsored_content_data);
+  ASSERT_TRUE(sponsored_content_data);
   EXPECT_TRUE(sponsored_content_data->IsValid());
-  EXPECT_THAT(sponsored_content_data->campaigns, ::testing::SizeIs(2));
+  ASSERT_THAT(sponsored_content_data->campaigns, ::testing::SizeIs(2));
   const Campaign campaign_0 = sponsored_content_data->campaigns[0];
-  EXPECT_THAT(campaign_0.campaign_id, ::testing::Not(::testing::IsEmpty()));
-  EXPECT_THAT(campaign_0.creatives, ::testing::SizeIs(1));
+  EXPECT_THAT(campaign_0.id, ::testing::Not(::testing::IsEmpty()));
+  ASSERT_THAT(campaign_0.creatives, ::testing::SizeIs(1));
   EXPECT_THAT(campaign_0.creatives[0].creative_instance_id,
               ::testing::Not(::testing::IsEmpty()));
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background.jpg"),
@@ -812,8 +826,8 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
             campaign_0.creatives[0].logo.image_file.BaseName());
 
   const Campaign campaign_1 = sponsored_content_data->campaigns[1];
-  EXPECT_THAT(campaign_1.campaign_id, ::testing::Not(::testing::IsEmpty()));
-  EXPECT_THAT(campaign_1.creatives, ::testing::SizeIs(1));
+  EXPECT_THAT(campaign_1.id, ::testing::Not(::testing::IsEmpty()));
+  ASSERT_THAT(campaign_1.creatives, ::testing::SizeIs(1));
   EXPECT_THAT(campaign_1.creatives[0].creative_instance_id,
               ::testing::Not(::testing::IsEmpty()));
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("index.html"),
@@ -826,7 +840,6 @@ TEST_F(NTPBackgroundImagesServiceTest,
   Init();
 
   observer_.sponsored_content_data = nullptr;
-  service_->sponsored_content_data_.reset();
   observer_.on_sponsored_content_updated = false;
   service_->RegisterSponsoredImagesComponent();
   service_->SetSponsoredImagesLoadedForTesting(
@@ -835,9 +848,8 @@ TEST_F(NTPBackgroundImagesServiceTest,
   EXPECT_FALSE(
       service_->GetNewTabTakeover(/*supports_dynamic_new_tab_takeover=*/true));
   EXPECT_TRUE(observer_.on_sponsored_content_updated);
+  ASSERT_TRUE(observer_.sponsored_content_data);
   EXPECT_THAT(observer_.sponsored_content_data->campaigns,
-              ::testing::IsEmpty());
-  EXPECT_THAT(service_->sponsored_content_data_->campaigns,
               ::testing::IsEmpty());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -847,7 +859,6 @@ TEST_F(NTPBackgroundImagesServiceTest,
   Init();
 
   observer_.sponsored_content_data = nullptr;
-  service_->sponsored_content_data_.reset();
   observer_.on_sponsored_content_updated = false;
   service_->RegisterSponsoredImagesComponent();
   service_->HandleSponsoredComponentData(
@@ -857,9 +868,8 @@ TEST_F(NTPBackgroundImagesServiceTest,
   EXPECT_FALSE(
       service_->GetNewTabTakeover(/*supports_dynamic_new_tab_takeover=*/true));
   EXPECT_TRUE(observer_.on_sponsored_content_updated);
+  ASSERT_TRUE(observer_.sponsored_content_data);
   EXPECT_THAT(observer_.sponsored_content_data->campaigns,
-              ::testing::IsEmpty());
-  EXPECT_THAT(service_->sponsored_content_data_->campaigns,
               ::testing::IsEmpty());
 }
 
@@ -869,7 +879,6 @@ TEST_F(
   Init();
 
   observer_.sponsored_content_data = nullptr;
-  service_->sponsored_content_data_.reset();
   observer_.on_sponsored_content_updated = false;
   service_->RegisterSponsoredImagesComponent();
   service_->HandleSponsoredComponentData(
@@ -879,9 +888,8 @@ TEST_F(
   EXPECT_FALSE(
       service_->GetNewTabTakeover(/*supports_dynamic_new_tab_takeover=*/true));
   EXPECT_TRUE(observer_.on_sponsored_content_updated);
+  ASSERT_TRUE(observer_.sponsored_content_data);
   EXPECT_THAT(observer_.sponsored_content_data->campaigns,
-              ::testing::IsEmpty());
-  EXPECT_THAT(service_->sponsored_content_data_->campaigns,
               ::testing::IsEmpty());
 }
 
@@ -891,7 +899,6 @@ TEST_F(
   Init();
 
   observer_.sponsored_content_data = nullptr;
-  service_->sponsored_content_data_.reset();
   observer_.on_sponsored_content_updated = false;
   service_->RegisterSponsoredImagesComponent();
   service_->HandleSponsoredComponentData(
@@ -901,9 +908,8 @@ TEST_F(
   EXPECT_FALSE(
       service_->GetNewTabTakeover(/*supports_dynamic_new_tab_takeover=*/true));
   EXPECT_TRUE(observer_.on_sponsored_content_updated);
+  ASSERT_TRUE(observer_.sponsored_content_data);
   EXPECT_THAT(observer_.sponsored_content_data->campaigns,
-              ::testing::IsEmpty());
-  EXPECT_THAT(service_->sponsored_content_data_->campaigns,
               ::testing::IsEmpty());
 }
 
@@ -911,7 +917,6 @@ TEST_F(NTPBackgroundImagesServiceTest, SponsoredImageWithMissingImageUrlTest) {
   Init();
 
   observer_.sponsored_content_data = nullptr;
-  service_->sponsored_content_data_.reset();
   observer_.on_sponsored_content_updated = false;
   service_->RegisterSponsoredImagesComponent();
   service_->HandleSponsoredComponentData(
@@ -920,9 +925,8 @@ TEST_F(NTPBackgroundImagesServiceTest, SponsoredImageWithMissingImageUrlTest) {
   EXPECT_FALSE(
       service_->GetNewTabTakeover(/*supports_dynamic_new_tab_takeover=*/true));
   EXPECT_TRUE(observer_.on_sponsored_content_updated);
+  ASSERT_TRUE(observer_.sponsored_content_data);
   EXPECT_THAT(observer_.sponsored_content_data->campaigns,
-              ::testing::IsEmpty());
-  EXPECT_THAT(service_->sponsored_content_data_->campaigns,
               ::testing::IsEmpty());
 }
 
@@ -1152,9 +1156,9 @@ TEST_F(NTPBackgroundImagesServiceTest,
       service_->GetNewTabTakeover(/*supports_dynamic_new_tab_takeover=*/true));
   EXPECT_TRUE(observer_.on_sponsored_content_updated);
   EXPECT_TRUE(observer_.sponsored_content_data);
-  EXPECT_EQ(observer_.sponsored_content_dict(),
-            base::JSONReader::ReadDict(kTestRichMedia,
-                                       base::JSON_PARSE_CHROMIUM_EXTENSIONS));
+  EXPECT_THAT(observer_.sponsored_content_dict(),
+              ::testing::Optional(base::test::IsJson(
+                  base::test::ParseJsonDict(kTestRichMedia))));
 }
 
 TEST_F(NTPBackgroundImagesServiceTest,
@@ -1250,9 +1254,9 @@ TEST_F(NTPBackgroundImagesServiceTest,
       service_->GetNewTabTakeover(/*supports_dynamic_new_tab_takeover=*/true));
   EXPECT_TRUE(observer_.on_sponsored_content_updated);
   EXPECT_TRUE(observer_.sponsored_content_data);
-  EXPECT_EQ(observer_.sponsored_content_dict(),
-            base::JSONReader::ReadDict(kTestRichMedia,
-                                       base::JSON_PARSE_CHROMIUM_EXTENSIONS));
+  EXPECT_THAT(observer_.sponsored_content_dict(),
+              ::testing::Optional(base::test::IsJson(
+                  base::test::ParseJsonDict(kTestRichMedia))));
 }
 
 TEST_F(
@@ -1281,9 +1285,9 @@ TEST_F(
       service_->GetNewTabTakeover(/*supports_dynamic_new_tab_takeover=*/true));
   EXPECT_TRUE(observer_.on_sponsored_content_updated);
   EXPECT_TRUE(observer_.sponsored_content_data);
-  EXPECT_EQ(observer_.sponsored_content_dict(),
-            base::JSONReader::ReadDict(kTestSponsoredImages,
-                                       base::JSON_PARSE_CHROMIUM_EXTENSIONS));
+  EXPECT_THAT(observer_.sponsored_content_dict(),
+              ::testing::Optional(base::test::IsJson(
+                  base::test::ParseJsonDict(kTestSponsoredImages))));
 }
 
 TEST_F(NTPBackgroundImagesServiceTest,

@@ -13,7 +13,7 @@ struct CheckboxToggleStyle: ToggleStyle {
     Button {
       configuration.isOn.toggle()
     } label: {
-      HStack {
+      HStack(alignment: .firstTextBaseline) {
         Image(
           braveSystemName: configuration.isOn ? "leo.checkbox.checked" : "leo.checkbox.unchecked"
         )

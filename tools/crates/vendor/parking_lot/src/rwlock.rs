@@ -1,66 +1,47 @@
-// Copyright 2016 Amanieu d'Antras
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 use crate::raw_rwlock::RawRwLock;
 
-/// A reader-writer lock
+/// A reader-writer lock.
 ///
 /// This type of lock allows a number of readers or at most one writer at any
 /// point in time. The write portion of this lock typically allows modification
 /// of the underlying data (exclusive access) and the read portion of this lock
 /// typically allows for read-only access (shared access).
 ///
-/// This lock uses a task-fair locking policy which avoids both reader and
-/// writer starvation. This means that readers trying to acquire the lock will
-/// block even if the lock is unlocked when there are writers waiting to acquire
-/// the lock. Because of this, attempts to recursively acquire a read lock
-/// within a single thread may result in a deadlock.
+/// This lock uses a task-fair locking policy which generally gives waiting
+/// writers priority over new readers. This means that readers trying to acquire
+/// the lock will block even if the lock is unlocked when there are writers
+/// waiting to acquire the lock. Because of this, attempts to recursively acquire
+/// a read lock within a single thread may result in a deadlock.
+///
+/// Use [`RecursiveRwLock`](crate::RecursiveRwLock) instead if recursive read
+/// locking is required.
 ///
 /// The type parameter `T` represents the data that this lock protects. It is
 /// required that `T` satisfies `Send` to be shared across threads and `Sync` to
 /// allow concurrent access through readers. The RAII guards returned from the
 /// locking methods implement `Deref` (and `DerefMut` for the `write` methods)
-/// to allow access to the contained of the lock.
+/// to allow access to the contents of the lock.
 ///
 /// # Fairness
 ///
-/// A typical unfair lock can often end up in a situation where a single thread
-/// quickly acquires and releases the same lock in succession, which can starve
-/// other threads waiting to acquire the rwlock. While this improves throughput
-/// because it doesn't force a context switch when a thread tries to re-acquire
-/// a rwlock it has just released, this can starve other threads.
+/// This rwlock uses unfair unlocking by default, which allows newly arriving
+/// threads to acquire the lock before a waiting thread and generally improves
+/// throughput. This can starve waiting threads.
 ///
-/// This rwlock uses [eventual fairness](https://trac.webkit.org/changeset/203350)
-/// to ensure that the lock will be fair on average without sacrificing
-/// throughput. This is done by forcing a fair unlock on average every 0.5ms,
-/// which will force the lock to go to the next thread waiting for the rwlock.
-///
-/// Additionally, any critical section longer than 1ms will always use a fair
-/// unlock, which has a negligible impact on throughput considering the length
-/// of the critical section.
-///
-/// You can also force a fair unlock by calling `RwLockReadGuard::unlock_fair`
-/// or `RwLockWriteGuard::unlock_fair` when unlocking a mutex instead of simply
-/// dropping the guard.
+/// Fair unlocking can be requested explicitly by calling
+/// `RwLockReadGuard::unlock_fair` or `RwLockWriteGuard::unlock_fair` instead of
+/// simply dropping the guard. A fair unlock gives waiting threads priority over
+/// newly arriving threads.
 ///
 /// # Differences from the standard library `RwLock`
 ///
-/// - Supports atomically downgrading a write lock into a read lock.
 /// - Task-fair locking policy instead of an unspecified platform default.
 /// - No poisoning, the lock is released normally on panic.
-/// - Only requires 1 word of space, whereas the standard library boxes the
-///   `RwLock` due to platform limitations.
-/// - Can be statically constructed.
-/// - Does not require any drop glue when dropped.
-/// - Inline fast path for the uncontended case.
-/// - Efficient handling of micro-contention using adaptive spinning.
+/// - Only requires one word of lock state.
+/// - Supports upgradable read locks and atomic upgrades to write locks.
+/// - Supports locking with a timeout.
 /// - Allows raw locking & unlocking without a guard.
-/// - Supports eventual fairness so that the rwlock is fair on average.
-/// - Optionally allows making the rwlock fair by calling
+/// - Supports explicit fair unlocking by calling
 ///   `RwLockReadGuard::unlock_fair` and `RwLockWriteGuard::unlock_fair`.
 ///
 /// # Examples
@@ -70,39 +51,32 @@ use crate::raw_rwlock::RawRwLock;
 ///
 /// let lock = RwLock::new(5);
 ///
-/// // many reader locks can be held at once
-/// {
-///     let r1 = lock.read();
-///     let r2 = lock.read();
-///     assert_eq!(*r1, 5);
-///     assert_eq!(*r2, 5);
-/// } // read locks are dropped at this point
+/// // Multiple readers can access the data concurrently.
+/// std::thread::scope(|scope| {
+///     for _ in 0..3 {
+///         scope.spawn(|| {
+///             let reader = lock.read();
+///             assert_eq!(*reader, 5);
+///         });
+///     }
+/// });
 ///
-/// // only one write lock may be held, however
+/// // All reader threads have finished. Only one write lock may be held.
 /// {
-///     let mut w = lock.write();
-///     *w += 1;
-///     assert_eq!(*w, 6);
-/// } // write lock is dropped here
+///     let mut writer = lock.write();
+///     *writer += 1;
+///     assert_eq!(*writer, 6);
+/// } // Write lock is released.
 /// ```
 pub type RwLock<T> = lock_api::RwLock<RawRwLock, T>;
 
-/// Creates a new instance of an `RwLock<T>` which is unlocked.
-///
-/// This allows creating a `RwLock<T>` in a constant context on stable Rust.
-pub const fn const_rwlock<T>(val: T) -> RwLock<T> {
-    RwLock::const_new(<RawRwLock as lock_api::RawRwLock>::INIT, val)
-}
-
-/// RAII structure used to release the shared read access of a lock when
-/// dropped.
+/// An RAII guard which releases shared read access when dropped.
 pub type RwLockReadGuard<'a, T> = lock_api::RwLockReadGuard<'a, RawRwLock, T>;
 
-/// RAII structure used to release the exclusive write access of a lock when
-/// dropped.
+/// An RAII guard which releases exclusive write access when dropped.
 pub type RwLockWriteGuard<'a, T> = lock_api::RwLockWriteGuard<'a, RawRwLock, T>;
 
-/// An RAII read lock guard returned by `RwLockReadGuard::map`, which can point to a
+/// An RAII read lock guard returned by [`RwLockReadGuard::map`], which can point to a
 /// subfield of the protected data.
 ///
 /// The main difference between `MappedRwLockReadGuard` and `RwLockReadGuard` is that the
@@ -111,7 +85,7 @@ pub type RwLockWriteGuard<'a, T> = lock_api::RwLockWriteGuard<'a, RawRwLock, T>;
 /// thread.
 pub type MappedRwLockReadGuard<'a, T> = lock_api::MappedRwLockReadGuard<'a, RawRwLock, T>;
 
-/// An RAII write lock guard returned by `RwLockWriteGuard::map`, which can point to a
+/// An RAII write lock guard returned by [`RwLockWriteGuard::map`], which can point to a
 /// subfield of the protected data.
 ///
 /// The main difference between `MappedRwLockWriteGuard` and `RwLockWriteGuard` is that the
@@ -120,22 +94,19 @@ pub type MappedRwLockReadGuard<'a, T> = lock_api::MappedRwLockReadGuard<'a, RawR
 /// thread.
 pub type MappedRwLockWriteGuard<'a, T> = lock_api::MappedRwLockWriteGuard<'a, RawRwLock, T>;
 
-/// RAII structure used to release the upgradable read access of a lock when
-/// dropped.
+/// An RAII guard which releases upgradable read access when dropped.
 pub type RwLockUpgradableReadGuard<'a, T> = lock_api::RwLockUpgradableReadGuard<'a, RawRwLock, T>;
 
 #[cfg(test)]
 mod tests {
     use crate::{RwLock, RwLockUpgradableReadGuard, RwLockWriteGuard};
-    use rand::Rng;
-    use std::sync::atomic::{AtomicUsize, Ordering};
-    use std::sync::mpsc::channel;
+    use rand::RngExt;
     use std::sync::Arc;
+    use std::sync::atomic::{AtomicUsize, Ordering};
     use std::thread;
-    use std::time::Duration;
 
     #[cfg(feature = "serde")]
-    use bincode::{deserialize, serialize};
+    use postcard::{from_bytes, to_stdvec};
 
     #[derive(Eq, PartialEq, Debug)]
     struct NonCopy(i32);
@@ -154,28 +125,27 @@ mod tests {
     #[test]
     fn frob() {
         const N: u32 = 10;
-        const M: u32 = 1000;
+        const M: u32 = if cfg!(miri) { 100 } else { 1000 };
 
         let r = Arc::new(RwLock::new(()));
 
-        let (tx, rx) = channel::<()>();
+        let mut threads = Vec::new();
         for _ in 0..N {
-            let tx = tx.clone();
             let r = r.clone();
-            thread::spawn(move || {
-                let mut rng = rand::thread_rng();
+            threads.push(thread::spawn(move || {
+                let mut rng = rand::rng();
                 for _ in 0..M {
-                    if rng.gen_bool(1.0 / N as f64) {
+                    if rng.random_bool(1.0 / N as f64) {
                         drop(r.write());
                     } else {
                         drop(r.read());
                     }
                 }
-                drop(tx);
-            });
+            }));
         }
-        drop(tx);
-        let _ = rx.recv();
+        for thread in threads {
+            thread.join().unwrap();
+        }
     }
 
     #[test]
@@ -234,9 +204,8 @@ mod tests {
     fn test_ruw_arc() {
         let arc = Arc::new(RwLock::new(0));
         let arc2 = arc.clone();
-        let (tx, rx) = channel();
 
-        thread::spawn(move || {
+        let writer = thread::spawn(move || {
             for _ in 0..10 {
                 let mut lock = arc2.write();
                 let tmp = *lock;
@@ -244,7 +213,6 @@ mod tests {
                 thread::yield_now();
                 *lock = tmp + 1;
             }
-            tx.send(()).unwrap();
         });
 
         let mut children = Vec::new();
@@ -281,7 +249,7 @@ mod tests {
         }
 
         // Wait for writer to finish
-        rx.recv().unwrap();
+        writer.join().unwrap();
         let lock = arc.read();
         assert_eq!(*lock, 15);
     }
@@ -290,9 +258,8 @@ mod tests {
     fn test_rw_arc() {
         let arc = Arc::new(RwLock::new(0));
         let arc2 = arc.clone();
-        let (tx, rx) = channel();
 
-        thread::spawn(move || {
+        let writer = thread::spawn(move || {
             let mut lock = arc2.write();
             for _ in 0..10 {
                 let tmp = *lock;
@@ -300,7 +267,6 @@ mod tests {
                 thread::yield_now();
                 *lock = tmp + 1;
             }
-            tx.send(()).unwrap();
         });
 
         // Readers try to catch the writer in the act
@@ -319,7 +285,7 @@ mod tests {
         }
 
         // Wait for writer to finish
-        rx.recv().unwrap();
+        writer.join().unwrap();
         let lock = arc.read();
         assert_eq!(*lock, 10);
     }
@@ -356,6 +322,24 @@ mod tests {
         }
         let comp: &[i32] = &[4, 2, 5];
         assert_eq!(&*rw.read(), comp);
+    }
+
+    #[test]
+    fn test_read_with_waiting_writer() {
+        let lock = Arc::new(RwLock::new(()));
+        let reader = lock.read();
+
+        let lock2 = Arc::clone(&lock);
+        let writer = thread::spawn(move || drop(lock2.write()));
+        while !unsafe { lock.raw() }.has_parked_threads() {
+            thread::yield_now();
+        }
+
+        // A waiting writer blocks new readers even though no writer holds the lock.
+        assert!(lock.try_read().is_none());
+
+        drop(reader);
+        writer.join().unwrap();
     }
 
     #[test]
@@ -541,33 +525,6 @@ mod tests {
     }
 
     #[test]
-    fn test_rwlock_recursive() {
-        let arc = Arc::new(RwLock::new(1));
-        let arc2 = arc.clone();
-        let lock1 = arc.read();
-        let t = thread::spawn(move || {
-            let _lock = arc2.write();
-        });
-
-        if cfg!(not(all(target_env = "sgx", target_vendor = "fortanix"))) {
-            thread::sleep(Duration::from_millis(100));
-        } else {
-            // FIXME: https://github.com/fortanix/rust-sgx/issues/31
-            for _ in 0..100 {
-                thread::yield_now();
-            }
-        }
-
-        // A normal read would block here since there is a pending writer
-        let lock2 = arc.read_recursive();
-
-        // Unblock the thread and join it.
-        drop(lock1);
-        drop(lock2);
-        t.join().unwrap();
-    }
-
-    #[test]
     fn test_rwlock_debug() {
         let x = RwLock::new(vec![0u8, 10]);
 
@@ -577,9 +534,10 @@ mod tests {
     }
 
     #[test]
-    fn test_clone() {
+    fn test_clone_through_guard() {
         let rwlock = RwLock::new(Arc::new(1));
-        let a = rwlock.read_recursive();
+        let a = rwlock.read();
+        // This must clone the protected Arc, not the read guard.
         let b = a.clone();
         assert_eq!(Arc::strong_count(&b), 2);
     }
@@ -590,8 +548,8 @@ mod tests {
         let contents: Vec<u8> = vec![0, 1, 2];
         let mutex = RwLock::new(contents.clone());
 
-        let serialized = serialize(&mutex).unwrap();
-        let deserialized: RwLock<Vec<u8>> = deserialize(&serialized).unwrap();
+        let serialized = to_stdvec(&mutex).unwrap();
+        let deserialized: RwLock<Vec<u8>> = from_bytes(&serialized).unwrap();
 
         assert_eq!(*(mutex.read()), *(deserialized.read()));
         assert_eq!(contents, *(deserialized.read()));
@@ -608,7 +566,7 @@ mod tests {
         }
 
         thread_local! {
-            static B: Bar = Bar(RwLock::new(()));
+            static B: Bar = const { Bar(RwLock::new(())) };
         }
 
         thread::spawn(|| {

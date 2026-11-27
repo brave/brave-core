@@ -6,10 +6,21 @@
 //!
 //! [zstd]: https://facebook.github.io/zstd/
 
-#[cfg(target_arch = "wasm32")]
+#[cfg(target_family = "wasm")]
 extern crate alloc;
 
-#[cfg(target_arch = "wasm32")]
+// Linked for the `ZSTD_*` symbols it exports, which our bindings call.
+#[cfg(feature = "rust-backend")]
+extern crate libzstd_rs_sys;
+
+// Otherwise the seekable functions would only fail at link time.
+#[cfg(all(feature = "rust-backend", feature = "seekable"))]
+compile_error!(
+    "the `seekable` feature is not supported with `rust-backend`: \
+     libzstd-rs-sys does not include zstd's seekable format"
+);
+
+#[cfg(target_family = "wasm")]
 mod wasm_shim;
 
 // If running bindgen, we'll end up with the correct bindings anyway.

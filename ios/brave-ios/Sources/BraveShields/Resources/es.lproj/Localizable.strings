@@ -16,27 +16,6 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "Rastreadores y anuncios bloqueados";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "Anuncios \nbloqueados";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "**Reproductor de Brave** es tu pase de oro para disfrutar de vídeos de forma ininterrumpida y sin anuncios.";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "Ajustar Protecciones";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "Este sitio ha comenzado a bloquear algunos bloqueadores de anuncios, lo que significa que es posible que no funcione como debería.";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Para corregir este problema, Brave puede ajustar la configuración de tus protecciones. Una vez que lo haga, prueba a ver este contenido en Reproductor de Brave.";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "Mantener la configuración actual";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "Ajusta la configuración del bloqueador de anuncios en este sitio";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Redirigir automáticamente las páginas AMP";
 
@@ -79,32 +58,11 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "Bloquea JavaScript (puede causar errores en los sitios).";
 
-/* Title for the brave player feature */
-"BravePlayer" = "Reproductor de Brave";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Abrir siempre los vídeos de este sitio con Reproductor de Brave";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "Probar";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "Ahora No";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Reproductor de Brave te permite ver vídeos sin interrupciones.";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Utiliza Reproductor de Brave";
-
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "Controles avanzados";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Anuncios y demás cosas desagradables bloqueados";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Más información";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "Cambiar los valores predeterminados globales de Protecciones";
@@ -113,7 +71,7 @@
 "BraveShieldsGlobalControls" = "Controles globales";
 
 /* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Guardar información de contacto para futuros informes de sitios rotos";
+"BraveShieldsSaveContactInfo" = "Almacena la información de contacto para futuros informes sobre sitios rotos";
 
 /* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
 "BraveShieldsSaveContactInfoDescription" = "Si proporcionas información de contacto, se almacenará para futuros informes";
@@ -217,17 +175,11 @@
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "Descarga pendiente";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Editar";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "Introduce la URL de la lista de filtros";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "Última actualización %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Introduce la URL de la lista de filtros aquí";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Bloquear huella dactilar";
@@ -411,9 +363,6 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Bloqueo de rastreadores y anuncios";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Rastreadores \nbloqueados";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Actualizar listas";

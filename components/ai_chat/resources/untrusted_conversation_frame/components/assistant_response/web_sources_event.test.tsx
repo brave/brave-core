@@ -56,6 +56,62 @@ test('WebSourcesEvent sanitizes non-chrome-untrusted favicon URL', () => {
   )
 })
 
+test('WebSourcesEvent links https sources like citations', () => {
+  render(
+    <MockContext>
+      <WebSourcesEvent
+        sources={[
+          {
+            faviconUrl: {
+              url: 'chrome-untrusted://resources/brave-icons/globe.svg',
+            },
+            url: { url: 'https://example.com/path?q=1' },
+            title: 'Example Site',
+          },
+        ]}
+      />
+    </MockContext>,
+  )
+
+  // A real link, so the browser opens it as a link from the conversation
+  // frame rather than as a browser-initiated navigation.
+  const link = screen.getByRole('link', { name: '1 - example.com' })
+  expect(link).toHaveAttribute('href', 'https://example.com/path?q=1')
+  expect(link).toHaveAttribute('target', '_blank')
+  expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+  expect(link).toHaveAttribute('title', 'Example Site')
+})
+
+test('WebSourcesEvent does not link non-https sources', () => {
+  render(
+    <MockContext>
+      <WebSourcesEvent
+        sources={[
+          {
+            faviconUrl: {
+              url: 'chrome-untrusted://resources/brave-icons/globe.svg',
+            },
+            url: { url: 'http://example.com' },
+            title: 'Insecure Site',
+          },
+          {
+            faviconUrl: {
+              url: 'chrome-untrusted://resources/brave-icons/globe.svg',
+            },
+            // eslint-disable-next-line no-script-url
+            url: { url: 'javascript:alert(1)' },
+            title: 'Script',
+          },
+        ]}
+      />
+    </MockContext>,
+  )
+
+  expect(screen.queryAllByRole('link')).toHaveLength(0)
+  expect(screen.getByText('1 - example.com')).toBeInTheDocument()
+  expect(screen.getByTitle('Script')).toBeInTheDocument()
+})
+
 test('Unhidden WebSourcesEvent has index citation number', () => {
   render(
     <MockContext>

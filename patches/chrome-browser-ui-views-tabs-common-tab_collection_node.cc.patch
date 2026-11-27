@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_collection_node.cc b/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
-index 30479cd6255027baeb168f2c07e277f1f3d4eedb..8b9ec95dc8f20509b31af44bc16497cf4d8c427e 100644
+index 0d651c18cf0a348fe63eb4ce322a2ceb8125e065..53e507e505502eb4d35ac9144b3d4615d87671c8 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
-@@ -27,6 +27,8 @@ TabCollectionNode::Type GetTypeFromNode(tabs::ConstChildPtr node_data_) {
+@@ -28,6 +28,8 @@ TabCollectionNode::Type GetTypeFromNode(tabs::ConstChildPtr node_data_) {
            node_data_)) {
      switch (std::get<tabs::ConstDanglingUntriagedTabCollection>(node_data_)
                  ->type()) {
@@ -11,7 +11,7 @@ index 30479cd6255027baeb168f2c07e277f1f3d4eedb..8b9ec95dc8f20509b31af44bc16497cf
        case tabs::TabCollection::Type::TABSTRIP:
          return TabCollectionNode::Type::TABSTRIP;
        case tabs::TabCollection::Type::PINNED:
-@@ -98,6 +100,8 @@ void TabCollectionNode::SetController(
+@@ -76,6 +78,8 @@ tabs::TabCollectionNodeHandle GetHandleFromNode(tabs::ConstChildPtr node_data) {
  std::unique_ptr<views::View> TabCollectionNode::CreateViewForNode(
      TabCollectionNode* node_for_view) {
    switch (node_for_view->type()) {
@@ -20,7 +20,7 @@ index 30479cd6255027baeb168f2c07e277f1f3d4eedb..8b9ec95dc8f20509b31af44bc16497cf
      case Type::TABSTRIP:
        return std::make_unique<TabStripView>(node_for_view);
      case Type::PINNED:
-@@ -137,7 +141,7 @@ std::unique_ptr<views::View> TabCollectionNode::Initialize() {
+@@ -115,7 +119,7 @@ std::unique_ptr<views::View> TabCollectionNode::Initialize() {
            node_data_)) {
      const tabs::TabCollection* collection =
          std::get<tabs::ConstDanglingUntriagedTabCollection>(node_data_);
@@ -29,7 +29,7 @@ index 30479cd6255027baeb168f2c07e277f1f3d4eedb..8b9ec95dc8f20509b31af44bc16497cf
        tabs::ConstChildPtr child_ptr;
        if (std::holds_alternative<std::unique_ptr<tabs::TabCollection>>(
                child_data)) {
-@@ -163,7 +167,7 @@ void TabCollectionNode::Deinitialize() {
+@@ -141,7 +145,7 @@ void TabCollectionNode::Deinitialize() {
            node_data_)) {
      const tabs::TabCollection* collection =
          std::get<tabs::ConstDanglingUntriagedTabCollection>(node_data_);

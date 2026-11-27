@@ -343,17 +343,25 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
         connection_manager_->connection_api_impl_.get());
   }
 
-  SystemVPNConnectionAPIImplBase* GetSystemVPNConnectionAPI() {
-    return static_cast<SystemVPNConnectionAPIImplBase*>(
-        connection_manager_->connection_api_impl_.get());
-  }
-
   BraveVPNConnectionInfo connection_info() {
-    return GetSystemVPNConnectionAPI()->connection_info_;
+    return GetConnectionAPI()->GetConnectionInfoForTesting();
   }
 
-  void ResetConnectionInfo() {
-    return GetSystemVPNConnectionAPI()->ResetConnectionInfo();
+  // Starts connecting and reaches the point where no hostname/credential
+  // request is in flight, so Disconnect() can't be cancelled quickly. Call it
+  // with ASSERT_NO_FATAL_FAILURE so a failure here stops the calling test.
+  void StartConnectingWithoutPendingRequest() {
+    auto* test_api = GetConnectionAPI();
+    test_api->ResetConnectionState();
+    // Selecting a region clears the cached connection info.
+    test_api->SetSelectedRegion("eu-be");
+    test_api->Connect();
+    ASSERT_EQ(mojom::ConnectionState::CONNECTING,
+              test_api->GetConnectionState());
+    test_api->OnFetchHostnames("eu-be", kHostNamesTestData, true);
+    test_api->OnGetProfileCredentials(kProfileCredentialData, true);
+    ASSERT_EQ(mojom::ConnectionState::CONNECTING,
+              test_api->GetConnectionState());
   }
 
  protected:
@@ -436,11 +444,14 @@ TEST_F(SystemVPNConnectionAPIUnitTest, CreateOSVPNEntryWithInvalidInfoTest) {
   test_api->OnFetchHostnames("eu-be", kHostNamesTestData, true);
   test_api->SetPreventCreationForTesting(true);
   test_api->OnGetProfileCredentials(kProfileCredentialData, true);
-  ResetConnectionInfo();
+  // Selecting a region clears the cached connection info.
+  test_api->SetSelectedRegion("eu-be");
   // W/o valid connection info, connect will not try to create
   // os vpn entry at the beginning.
   EXPECT_FALSE(connection_info().IsValid());
   test_api->Connect();
+  // Nothing is posted in this case, so there is no completion to wait for;
+  // drain the queue to verify that no entry creation was scheduled.
   base::RunLoop().RunUntilIdle();
   EXPECT_FALSE(test_api->IsConnectionCreated());
 }
@@ -455,39 +466,39 @@ TEST_F(SystemVPNConnectionAPIUnitTest, NeedsConnectTest) {
   // Check ignore Connect() request while connecting or disconnecting is
   // in-progress.
   local_state()->SetString(prefs::kBraveVPNSelectedRegionV2, "eu-be");
-  test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
+  test_api->UpdateAndNotifyConnectionStateChange(
+      mojom::ConnectionState::CONNECTING);
   test_api->Connect();
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 
-  test_api->connection_state_ = mojom::ConnectionState::DISCONNECTING;
+  test_api->UpdateAndNotifyConnectionStateChange(
+      mojom::ConnectionState::DISCONNECTING);
   test_api->Connect();
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
 
   // Handle connect after disconnect current connection.
-  test_api->connection_state_ = mojom::ConnectionState::CONNECTED;
+  test_api->UpdateAndNotifyConnectionStateChange(
+      mojom::ConnectionState::CONNECTED);
   test_api->Connect();
-  EXPECT_TRUE(test_api->needs_connect_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
-  GetSystemVPNConnectionAPI()->OnDisconnected();
-  EXPECT_FALSE(test_api->needs_connect_);
+  test_api->OnDisconnected(std::string(), true);
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 
-  test_api->connection_state_ = mojom::ConnectionState::CONNECTED;
+  test_api->UpdateAndNotifyConnectionStateChange(
+      mojom::ConnectionState::CONNECTED);
   test_api->Connect();
-  EXPECT_TRUE(test_api->needs_connect_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
   test_api->SetNetworkAvailableForTesting(false);
-  GetSystemVPNConnectionAPI()->OnDisconnected();
-  EXPECT_TRUE(test_api->needs_connect_);
+  test_api->OnDisconnected(std::string(), true);
   // Reconnect is postponed while the network is down.
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
             test_api->GetConnectionState());
   test_api->SetNetworkAvailableForTesting(true);
+  // The postponed reconnect starts once the network is back.
   test_api->OnNetworkChanged(net::NetworkChangeNotifier::CONNECTION_ETHERNET);
-  EXPECT_FALSE(test_api->needs_connect_);
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 }
 
@@ -518,7 +529,8 @@ TEST_F(SystemVPNConnectionAPIUnitTest, ConnectionInfoTest) {
 
   // Check valid connection info is set when valid hostname and profile
   // credential are fetched.
-  test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
+  test_api->UpdateAndNotifyConnectionStateChange(
+      mojom::ConnectionState::CONNECTING);
   test_api->OnFetchHostnames("eu-be", kHostNamesTestData, true);
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 
@@ -528,67 +540,70 @@ TEST_F(SystemVPNConnectionAPIUnitTest, ConnectionInfoTest) {
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
   EXPECT_TRUE(connection_info().IsValid());
 
-  // Check cached connection info is cleared when user set new selected region.
-  test_api->connection_state_ = mojom::ConnectionState::DISCONNECTED;
-  ResetConnectionInfo();
+  // Check cached connection info is cleared when connect failed.
+  test_api->OnConnected(std::string(), false);
   EXPECT_FALSE(connection_info().IsValid());
+  EXPECT_EQ(mojom::ConnectionState::CONNECT_FAILED,
+            test_api->GetConnectionState());
 
   // Fill connection info again.
   test_api->OnGetProfileCredentials(kProfileCredentialData, true);
   EXPECT_TRUE(connection_info().IsValid());
 
-  // Check cached connection info is cleared when connect failed.
-  test_api->OnConnectFailed();
+  // Check cached connection info is cleared when user set new selected region.
+  test_api->SetSelectedRegion("eu-be");
   EXPECT_FALSE(connection_info().IsValid());
 }
 
 TEST_F(SystemVPNConnectionAPIUnitTest, CancelConnectingTest) {
+  // Prepare region data before asking connect.
+  OnFetchRegionList(GetRegionsData(), true);
+
   auto* test_api = GetConnectionAPI();
-
-  GetConnectionAPI()->CheckConnection();
-
-  test_api->cancel_connecting_ = true;
-  test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
-  GetSystemVPNConnectionAPI()->OnCreated();
-  EXPECT_FALSE(test_api->cancel_connecting_);
-  EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
-            test_api->GetConnectionState());
+  test_api->CheckConnection();
+  // To prevent real os vpn entry creation.
+  test_api->SetPreventCreationForTesting(true);
 
   // Start disconnect() when connect is done for cancelling.
-  test_api->cancel_connecting_ = false;
-  test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
+  ASSERT_NO_FATAL_FAILURE(StartConnectingWithoutPendingRequest());
   test_api->Disconnect();
-  EXPECT_TRUE(test_api->cancel_connecting_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
-  GetSystemVPNConnectionAPI()->OnConnected();
-  EXPECT_FALSE(test_api->cancel_connecting_);
+  test_api->OnConnected(std::string(), true);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return test_api->GetConnectionState() ==
+           mojom::ConnectionState::DISCONNECTED;
+  }));
+  // The cancel request is consumed: Connect() is not ignored anymore.
+  test_api->Connect();
+  EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 
-  test_api->cancel_connecting_ = false;
-  test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
+  // Connecting is cancelled when os vpn entry creation is done.
+  ASSERT_NO_FATAL_FAILURE(StartConnectingWithoutPendingRequest());
   test_api->Disconnect();
-  EXPECT_TRUE(test_api->cancel_connecting_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
-
-  // Test quick cancelled when |api_request_| is not null.
-  // See the comment of ConnectionAPIImpl::api_request_.
-  test_api->cancel_connecting_ = false;
-  test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
-  // Explicitely create |api_request_|.
-  test_api->GetAPIRequest();
-  test_api->Disconnect();
-  EXPECT_FALSE(test_api->cancel_connecting_);
+  test_api->OnCreated(std::string(), true);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
             test_api->GetConnectionState());
+  // The cancel request is consumed: Connect() is not ignored anymore.
+  test_api->Connect();
+  EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 
-  test_api->cancel_connecting_ = true;
-  test_api->CreateVPNConnection();
-  EXPECT_FALSE(test_api->cancel_connecting_);
+  // Test quick cancelled when |api_request_| is not null (hostnames are being
+  // fetched). See the comment of ConnectionAPIImpl::api_request_.
+  test_api->ResetConnectionState();
+  test_api->SetSelectedRegion("eu-be");
+  test_api->Connect();
+  EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
+  test_api->Disconnect();
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
             test_api->GetConnectionState());
+  // Quick cancel doesn't leave a cancel request behind.
+  test_api->Connect();
+  EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 }
 
 // Ignore disconnected state change while connected. See the comment at

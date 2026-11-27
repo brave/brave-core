@@ -2,28 +2,35 @@ lints.workspace = true
 
 [package]
 name = "gix-pathspec"
-version = "0.13.0"
+version = "0.22.1"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate of the gitoxide project dealing magical pathspecs"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-rust-version = "1.82"
-include = ["src/**/*", "LICENSE-*", "README.md"]
+edition = "2024"
+rust-version = "1.88"
+include = ["/src/**/*", "/LICENSE-*", "/README.md"]
 
 [lib]
-doctest = false
+doctest = true
+
+[[test]]
+name = "threaded"
+path = "tests/threaded.rs"
+required-features = ["gix-parallel/parallel"]
 
 [dependencies]
-gix-glob = { version = "^0.22.0", path = "../gix-glob" }
-gix-path = { version = "^0.10.21", path = "../gix-path" }
-gix-attributes = { version = "^0.28.0", path = "../gix-attributes" }
-gix-config-value = { version = "^0.15.2", path = "../gix-config-value" }
+gix-glob = { version = "^0.29.1", path = "../gix-glob" }
+gix-path = { version = "^0.14.1", path = "../gix-path" }
+gix-attributes = { version = "^0.37.1", path = "../gix-attributes" }
+gix-config-value = { version = "^0.21.1", path = "../gix-config-value" }
+gix-error = { version = "^0.5.2", path = "../gix-error", features = ["bstr"] }
 
 bstr = { version = "1.12.0", default-features = false, features = ["std"] }
 bitflags = "2"
-thiserror = "2.0.17"
 
 [dev-dependencies]
-gix-testtools = { path = "../tests/tools" }
-serial_test = "3.1.1"
+insta = "1.46.3"
+gix-parallel = { path = "../gix-parallel" }
+gix-testtools = { path = "../tests/tools", default-features = false, features = ["repo-snapshot", "sha1"] }
+serial_test = "3.4.0"

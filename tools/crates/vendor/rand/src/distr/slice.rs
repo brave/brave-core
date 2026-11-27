@@ -10,8 +10,9 @@
 
 use core::num::NonZeroUsize;
 
-use crate::distr::uniform::{UniformSampler, UniformUsize};
+use crate::Rng;
 use crate::distr::Distribution;
+use crate::distr::uniform::{UniformSampler, UniformUsize};
 #[cfg(feature = "alloc")]
 use alloc::string::String;
 
@@ -54,7 +55,7 @@ use alloc::string::String;
 /// ```
 ///
 /// [`IndexedRandom::choose`]: crate::seq::IndexedRandom::choose
-/// [`Rng::sample_iter`]: crate::Rng::sample_iter
+/// [`Rng::sample_iter`]: crate::RngExt::sample_iter
 #[derive(Debug, Clone, Copy)]
 pub struct Choose<'a, T> {
     slice: &'a [T],
@@ -83,20 +84,11 @@ impl<'a, T> Choose<'a, T> {
 }
 
 impl<'a, T> Distribution<&'a T> for Choose<'a, T> {
-    fn sample<R: crate::Rng + ?Sized>(&self, rng: &mut R) -> &'a T {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> &'a T {
         let idx = self.range.sample(rng);
-
-        debug_assert!(
-            idx < self.slice.len(),
-            "Uniform::new(0, {}) somehow returned {}",
-            self.slice.len(),
-            idx
-        );
-
-        // Safety: at construction time, it was ensured that the slice was
-        // non-empty, and that the `Uniform` range produces values in range
-        // for the slice
-        unsafe { self.slice.get_unchecked(idx) }
+        self.slice
+            .get(idx)
+            .expect("rand::distr::slice::Choose: index out-of-range (likely memory corruption)")
     }
 }
 
@@ -115,12 +107,11 @@ impl core::fmt::Display for Empty {
     }
 }
 
-#[cfg(feature = "std")]
-impl std::error::Error for Empty {}
+impl core::error::Error for Empty {}
 
 #[cfg(feature = "alloc")]
 impl super::SampleString for Choose<'_, char> {
-    fn append_string<R: crate::Rng + ?Sized>(&self, rng: &mut R, string: &mut String, len: usize) {
+    fn append_string<R: Rng + ?Sized>(&self, rng: &mut R, string: &mut String, len: usize) {
         // Get the max char length to minimize extra space.
         // Limit this check to avoid searching for long slice.
         let max_char_len = if self.slice.len() < 200 {

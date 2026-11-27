@@ -1,12 +1,13 @@
 use alloc::string::String;
 use alloc::vec::Vec;
-use core::iter;
 
 use crate::error::InvalidFormatDescription;
+use crate::format_description::modifier::Padding;
 use crate::format_description::parse::{
-    attach_location, unused, Error, ErrorInner, Location, Spanned, SpannedValue, Unused,
+    Error, ErrorInner, Location, Spanned, SpannedValue, unused,
 };
-use crate::format_description::{self, modifier, BorrowedFormatItem, Component};
+use crate::format_description::{BorrowedFormatItem, Component, OwnedFormatItem, modifier};
+use crate::internal_macros::try_likely_ok;
 
 /// Parse a sequence of items from the [`strftime` format description][strftime docs].
 ///
@@ -19,8 +20,10 @@ use crate::format_description::{self, modifier, BorrowedFormatItem, Component};
 pub fn parse_strftime_borrowed(
     s: &str,
 ) -> Result<Vec<BorrowedFormatItem<'_>>, InvalidFormatDescription> {
-    let tokens = lex(s.as_bytes());
-    let items = into_items(tokens).collect::<Result<_, _>>()?;
+    let mut items = Vec::with_capacity(s.bytes().filter(|&b| b == b'%').count().saturating_add(2));
+    for item in Tokenizer::new(s.as_bytes()) {
+        items.push(try_likely_ok!(item));
+    }
     Ok(items)
 }
 
@@ -31,125 +34,149 @@ pub fn parse_strftime_borrowed(
 /// [strftime docs]: https://man7.org/linux/man-pages/man3/strftime.3.html
 #[doc(alias = "parse_strptime_owned")]
 #[inline]
-pub fn parse_strftime_owned(
-    s: &str,
-) -> Result<format_description::OwnedFormatItem, InvalidFormatDescription> {
+pub fn parse_strftime_owned(s: &str) -> Result<OwnedFormatItem, InvalidFormatDescription> {
     parse_strftime_borrowed(s).map(Into::into)
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum Padding {
-    /// The default padding for a numeric component. Indicated by no character.
-    Default,
-    /// Pad a numeric component with spaces. Indicated by an underscore.
-    Spaces,
-    /// Do not pad a numeric component. Indicated by a hyphen.
-    None,
-    /// Pad a numeric component with zeroes. Indicated by a zero.
-    Zeroes,
+struct Tokenizer<'input> {
+    input: &'input [u8],
+    byte_pos: u32,
 }
 
-enum Token<'a> {
-    Literal(Spanned<&'a [u8]>),
-    Component {
-        _percent: Unused<Location>,
-        padding: Spanned<Padding>,
-        component: Spanned<u8>,
-    },
+impl Tokenizer<'_> {
+    #[inline]
+    const fn new(input: &[u8]) -> Tokenizer<'_> {
+        Tokenizer { input, byte_pos: 0 }
+    }
 }
 
-#[inline]
-fn lex(mut input: &[u8]) -> iter::Peekable<impl Iterator<Item = Result<Token<'_>, Error>>> {
-    let mut iter = attach_location(input.iter()).peekable();
+impl<'input> Iterator for Tokenizer<'input> {
+    type Item = Result<BorrowedFormatItem<'input>, Error>;
 
-    iter::from_fn(move || {
-        Some(Ok(match iter.next()? {
-            (b'%', percent_loc) => match iter.next() {
-                Some((padding @ (b'_' | b'-' | b'0'), padding_loc)) => {
-                    let padding = match padding {
-                        b'_' => Padding::Spaces,
-                        b'-' => Padding::None,
-                        b'0' => Padding::Zeroes,
-                        _ => unreachable!(),
-                    };
-                    let (&component, component_loc) = iter.next()?;
-                    input = &input[3..];
-                    Token::Component {
-                        _percent: unused(percent_loc),
-                        padding: padding.spanned(padding_loc.to_self()),
-                        component: component.spanned(component_loc.to_self()),
-                    }
-                }
-                Some((&component, component_loc)) => {
-                    input = &input[2..];
-                    let span = component_loc.to_self();
-                    Token::Component {
-                        _percent: unused(percent_loc),
-                        padding: Padding::Default.spanned(span),
-                        component: component.spanned(span),
-                    }
-                }
-                None => {
-                    return Some(Err(Error {
-                        _inner: unused(percent_loc.error("unexpected end of input")),
-                        public: InvalidFormatDescription::Expected {
-                            what: "valid escape sequence",
-                            index: percent_loc.byte as usize,
-                        },
-                    }));
-                }
-            },
-            (_, start_location) => {
-                let mut bytes = 1;
-                let mut end_location = start_location;
+    #[inline]
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.input.is_empty() {
+            return None;
+        }
 
-                while let Some((_, location)) = iter.next_if(|&(&byte, _)| byte != b'%') {
-                    end_location = location;
-                    bytes += 1;
-                }
+        if self.input[0] != b'%' {
+            let bytes = self
+                .input
+                .iter()
+                .position(|&b| b == b'%')
+                .unwrap_or(self.input.len()) as u32;
 
-                let value = &input[..bytes];
-                input = &input[bytes..];
+            // Safety: `parse_strftime` functions only accept strings and only UTF-8 is consumed, so
+            // UTF-8 validation is unnecessary.
+            let value = unsafe { str::from_utf8_unchecked(&self.input[..bytes as usize]) };
+            self.input = &self.input[bytes as usize..];
+            self.byte_pos += bytes;
 
-                Token::Literal(value.spanned(start_location.to(end_location)))
+            return Some(Ok(BorrowedFormatItem::StringLiteral(value)));
+        }
+
+        let padding = match self.input.get(1) {
+            Some(&b'_') => Some(Padding::Space),
+            Some(&b'-') => Some(Padding::None),
+            Some(&b'0') => Some(Padding::Zero),
+            Some(_) => None,
+            None => {
+                return Some(Err(error_expected_end(Location {
+                    byte: self.byte_pos,
+                })));
             }
-        }))
-    })
-    .peekable()
-}
-
-#[inline]
-fn into_items<'iter, 'token: 'iter>(
-    mut tokens: iter::Peekable<impl Iterator<Item = Result<Token<'token>, Error>> + 'iter>,
-) -> impl Iterator<Item = Result<BorrowedFormatItem<'token>, Error>> + 'iter {
-    iter::from_fn(move || {
-        let next = match tokens.next()? {
-            Ok(token) => token,
-            Err(err) => return Some(Err(err)),
         };
 
-        Some(match next {
-            Token::Literal(spanned) => Ok(BorrowedFormatItem::Literal(*spanned)),
-            Token::Component {
-                _percent,
-                padding,
-                component,
-            } => parse_component(padding, component),
-        })
-    })
+        let (component, advance) = match (padding, self.input.get(2)) {
+            (Some(_), Some(&component)) => (component, 3),
+            (Some(_), None) => {
+                return Some(Err(error_expected_end(Location {
+                    byte: self.byte_pos + 2,
+                })));
+            }
+            (None, _) => (self.input[1], 2),
+        };
+
+        let component_loc = Location {
+            byte: self.byte_pos + (advance - 1) as u32,
+        };
+        self.input = &self.input[advance..];
+        self.byte_pos += advance as u32;
+        Some(parse_component(
+            padding,
+            component.spanned(component_loc.to_self()),
+        ))
+    }
 }
 
-fn parse_component(
-    padding: Spanned<Padding>,
-    component: Spanned<u8>,
-) -> Result<BorrowedFormatItem<'static>, Error> {
-    let padding_or_default = |padding: Padding, default| match padding {
-        Padding::Default => default,
-        Padding::Spaces => modifier::Padding::Space,
-        Padding::None => modifier::Padding::None,
-        Padding::Zeroes => modifier::Padding::Zero,
+#[cold]
+fn error_expected_end(location: Location) -> Error {
+    Error {
+        _inner: unused(location.error("unexpected end of input")),
+        public: InvalidFormatDescription::Expected {
+            what: "valid escape sequence",
+            index: location.byte as usize,
+        },
+    }
+}
+
+#[cold]
+fn error_unsupported_modifier(component: Spanned<u8>) -> Error {
+    Error {
+        _inner: unused(ErrorInner {
+            _message: "unsupported modifier",
+            _span: component.span,
+        }),
+        public: InvalidFormatDescription::NotSupported {
+            what: "modifier",
+            context: "",
+            index: component.span.start.byte as usize,
+        },
+    }
+}
+
+#[cold]
+fn error_unsupported_component(component: Spanned<u8>) -> Error {
+    Error {
+        _inner: unused(ErrorInner {
+            _message: "unsupported component",
+            _span: component.span,
+        }),
+        public: InvalidFormatDescription::NotSupported {
+            what: "component",
+            context: "",
+            index: component.span.start.byte as usize,
+        },
+    }
+}
+
+#[cold]
+fn error_invalid_component(component: Spanned<u8>) -> Error {
+    let name = if component.is_ascii() {
+        // Safety: The byte is a single ASCII character, which is guaranteed to be valid
+        // UTF-8.
+        unsafe { String::from_utf8_unchecked(Vec::from([*component])) }
+    } else {
+        String::from(char::REPLACEMENT_CHARACTER)
     };
 
+    Error {
+        _inner: unused(ErrorInner {
+            _message: "invalid component",
+            _span: component.span,
+        }),
+        public: InvalidFormatDescription::InvalidComponentName {
+            name,
+            index: component.span.start.byte as usize,
+        },
+    }
+}
+
+#[inline]
+fn parse_component(
+    padding: Option<Padding>,
+    component: Spanned<u8>,
+) -> Result<BorrowedFormatItem<'static>, Error> {
     /// Helper macro to create a component.
     macro_rules! component {
         ($name:ident { $($inner:tt)* }) => {
@@ -160,171 +187,140 @@ fn parse_component(
     }
 
     Ok(match *component {
-        b'%' => BorrowedFormatItem::Literal(b"%"),
-        b'a' => component!(Weekday {
-            repr: modifier::WeekdayRepr::Short,
-            one_indexed: true,
+        b'%' => BorrowedFormatItem::StringLiteral("%"),
+        b'a' => component!(WeekdayShort {
+            case_sensitive: true
+        }),
+        b'A' => component!(WeekdayLong {
             case_sensitive: true,
         }),
-        b'A' => component!(Weekday {
-            repr: modifier::WeekdayRepr::Long,
-            one_indexed: true,
+        b'b' | b'h' => component!(MonthShort {
             case_sensitive: true,
         }),
-        b'b' | b'h' => component!(Month {
-            repr: modifier::MonthRepr::Short,
-            padding: modifier::Padding::Zero,
-            case_sensitive: true,
-        }),
-        b'B' => component!(Month {
-            repr: modifier::MonthRepr::Long,
-            padding: modifier::Padding::Zero,
+        b'B' => component!(MonthLong {
             case_sensitive: true,
         }),
         b'c' => BorrowedFormatItem::Compound(&[
-            component!(Weekday {
-                repr: modifier::WeekdayRepr::Short,
-                one_indexed: true,
+            component!(WeekdayShort {
                 case_sensitive: true,
             }),
-            BorrowedFormatItem::Literal(b" "),
-            component!(Month {
-                repr: modifier::MonthRepr::Short,
-                padding: modifier::Padding::Zero,
+            BorrowedFormatItem::StringLiteral(" "),
+            component!(MonthShort {
                 case_sensitive: true,
             }),
-            BorrowedFormatItem::Literal(b" "),
+            BorrowedFormatItem::StringLiteral(" "),
             component!(Day {
-                padding: modifier::Padding::Space
+                padding: Padding::Space
             }),
-            BorrowedFormatItem::Literal(b" "),
-            component!(Hour {
-                padding: modifier::Padding::Zero,
-                is_12_hour_clock: false,
+            BorrowedFormatItem::StringLiteral(" "),
+            component!(Hour24 {
+                padding: Padding::Zero,
             }),
-            BorrowedFormatItem::Literal(b":"),
+            BorrowedFormatItem::StringLiteral(":"),
             component!(Minute {
-                padding: modifier::Padding::Zero,
+                padding: Padding::Zero,
             }),
-            BorrowedFormatItem::Literal(b":"),
+            BorrowedFormatItem::StringLiteral(":"),
             component!(Second {
-                padding: modifier::Padding::Zero,
+                padding: Padding::Zero,
             }),
-            BorrowedFormatItem::Literal(b" "),
-            component!(Year {
-                padding: modifier::Padding::Zero,
-                repr: modifier::YearRepr::Full,
-                range: modifier::YearRange::Extended,
-                iso_week_based: false,
+            BorrowedFormatItem::StringLiteral(" "),
+            #[cfg(feature = "large-dates")]
+            component!(CalendarYearFullExtendedRange {
+                padding: Padding::Zero,
+                sign_is_mandatory: false,
+            }),
+            #[cfg(not(feature = "large-dates"))]
+            component!(CalendarYearFullStandardRange {
+                padding: Padding::Zero,
                 sign_is_mandatory: false,
             }),
         ]),
-        b'C' => component!(Year {
-            padding: padding_or_default(*padding, modifier::Padding::Zero),
-            repr: modifier::YearRepr::Century,
-            range: modifier::YearRange::Extended,
-            iso_week_based: false,
+        #[cfg(feature = "large-dates")]
+        b'C' => component!(CalendarYearCenturyExtendedRange {
+            padding: padding.unwrap_or(Padding::Zero),
+            sign_is_mandatory: false,
+        }),
+        #[cfg(not(feature = "large-dates"))]
+        b'C' => component!(CalendarYearCenturyStandardRange {
+            padding: padding.unwrap_or(Padding::Zero),
             sign_is_mandatory: false,
         }),
         b'd' => component!(Day {
-            padding: padding_or_default(*padding, modifier::Padding::Zero),
+            padding: padding.unwrap_or(Padding::Zero),
         }),
         b'D' => BorrowedFormatItem::Compound(&[
-            component!(Month {
-                repr: modifier::MonthRepr::Numerical,
-                padding: modifier::Padding::Zero,
-                case_sensitive: true,
+            component!(MonthNumerical {
+                padding: Padding::Zero,
             }),
-            BorrowedFormatItem::Literal(b"/"),
+            BorrowedFormatItem::StringLiteral("/"),
             component!(Day {
-                padding: modifier::Padding::Zero,
+                padding: Padding::Zero,
             }),
-            BorrowedFormatItem::Literal(b"/"),
-            component!(Year {
-                padding: modifier::Padding::Zero,
-                repr: modifier::YearRepr::LastTwo,
-                range: modifier::YearRange::Extended,
-                iso_week_based: false,
-                sign_is_mandatory: false,
+            BorrowedFormatItem::StringLiteral("/"),
+            component!(CalendarYearLastTwo {
+                padding: Padding::Zero,
             }),
         ]),
         b'e' => component!(Day {
-            padding: padding_or_default(*padding, modifier::Padding::Space),
+            padding: padding.unwrap_or(Padding::Space),
         }),
         b'F' => BorrowedFormatItem::Compound(&[
-            component!(Year {
-                padding: modifier::Padding::Zero,
-                repr: modifier::YearRepr::Full,
-                range: modifier::YearRange::Extended,
-                iso_week_based: false,
+            #[cfg(feature = "large-dates")]
+            component!(CalendarYearFullExtendedRange {
+                padding: Padding::Zero,
                 sign_is_mandatory: false,
             }),
-            BorrowedFormatItem::Literal(b"-"),
-            component!(Month {
-                padding: modifier::Padding::Zero,
-                repr: modifier::MonthRepr::Numerical,
-                case_sensitive: true,
+            #[cfg(not(feature = "large-dates"))]
+            component!(CalendarYearFullStandardRange {
+                padding: Padding::Zero,
+                sign_is_mandatory: false,
             }),
-            BorrowedFormatItem::Literal(b"-"),
+            BorrowedFormatItem::StringLiteral("-"),
+            component!(MonthNumerical {
+                padding: Padding::Zero,
+            }),
+            BorrowedFormatItem::StringLiteral("-"),
             component!(Day {
-                padding: modifier::Padding::Zero,
+                padding: Padding::Zero,
             }),
         ]),
-        b'g' => component!(Year {
-            padding: padding_or_default(*padding, modifier::Padding::Zero),
-            repr: modifier::YearRepr::LastTwo,
-            range: modifier::YearRange::Extended,
-            iso_week_based: true,
+        b'g' => component!(IsoYearLastTwo {
+            padding: padding.unwrap_or(Padding::Zero),
+        }),
+        #[cfg(feature = "large-dates")]
+        b'G' => component!(IsoYearFullExtendedRange {
+            padding: Padding::Zero,
             sign_is_mandatory: false,
         }),
-        b'G' => component!(Year {
-            padding: modifier::Padding::Zero,
-            repr: modifier::YearRepr::Full,
-            range: modifier::YearRange::Extended,
-            iso_week_based: true,
+        #[cfg(not(feature = "large-dates"))]
+        b'G' => component!(IsoYearFullStandardRange {
+            padding: Padding::Zero,
             sign_is_mandatory: false,
         }),
-        b'H' => component!(Hour {
-            padding: padding_or_default(*padding, modifier::Padding::Zero),
-            is_12_hour_clock: false,
+        b'H' => component!(Hour24 {
+            padding: padding.unwrap_or(Padding::Zero),
         }),
-        b'I' => component!(Hour {
-            padding: padding_or_default(*padding, modifier::Padding::Zero),
-            is_12_hour_clock: true,
+        b'I' => component!(Hour12 {
+            padding: padding.unwrap_or(Padding::Zero),
         }),
         b'j' => component!(Ordinal {
-            padding: padding_or_default(*padding, modifier::Padding::Zero),
+            padding: padding.unwrap_or(Padding::Zero),
         }),
-        b'k' => component!(Hour {
-            padding: padding_or_default(*padding, modifier::Padding::Space),
-            is_12_hour_clock: false,
+        b'k' => component!(Hour24 {
+            padding: padding.unwrap_or(Padding::Space),
         }),
-        b'l' => component!(Hour {
-            padding: padding_or_default(*padding, modifier::Padding::Space),
-            is_12_hour_clock: true,
+        b'l' => component!(Hour12 {
+            padding: padding.unwrap_or(Padding::Space),
         }),
-        b'm' => component!(Month {
-            padding: padding_or_default(*padding, modifier::Padding::Zero),
-            repr: modifier::MonthRepr::Numerical,
-            case_sensitive: true,
+        b'm' => component!(MonthNumerical {
+            padding: padding.unwrap_or(Padding::Zero),
         }),
         b'M' => component!(Minute {
-            padding: padding_or_default(*padding, modifier::Padding::Zero),
+            padding: padding.unwrap_or(Padding::Zero),
         }),
-        b'n' => BorrowedFormatItem::Literal(b"\n"),
-        b'O' => {
-            return Err(Error {
-                _inner: unused(ErrorInner {
-                    _message: "unsupported modifier",
-                    _span: component.span,
-                }),
-                public: InvalidFormatDescription::NotSupported {
-                    what: "modifier",
-                    context: "",
-                    index: component.span.start.byte as usize,
-                },
-            })
-        }
+        b'n' => BorrowedFormatItem::StringLiteral("\n"),
+        b'O' => return Err(error_unsupported_modifier(component)),
         b'p' => component!(Period {
             is_uppercase: true,
             case_sensitive: true
@@ -334,158 +330,112 @@ fn parse_component(
             case_sensitive: true
         }),
         b'r' => BorrowedFormatItem::Compound(&[
-            component!(Hour {
-                padding: modifier::Padding::Zero,
-                is_12_hour_clock: true,
+            component!(Hour12 {
+                padding: Padding::Zero,
             }),
-            BorrowedFormatItem::Literal(b":"),
+            BorrowedFormatItem::StringLiteral(":"),
             component!(Minute {
-                padding: modifier::Padding::Zero,
+                padding: Padding::Zero,
             }),
-            BorrowedFormatItem::Literal(b":"),
+            BorrowedFormatItem::StringLiteral(":"),
             component!(Second {
-                padding: modifier::Padding::Zero,
+                padding: Padding::Zero,
             }),
-            BorrowedFormatItem::Literal(b" "),
+            BorrowedFormatItem::StringLiteral(" "),
             component!(Period {
                 is_uppercase: true,
                 case_sensitive: true,
             }),
         ]),
         b'R' => BorrowedFormatItem::Compound(&[
-            component!(Hour {
-                padding: modifier::Padding::Zero,
-                is_12_hour_clock: false,
+            component!(Hour24 {
+                padding: Padding::Zero,
             }),
-            BorrowedFormatItem::Literal(b":"),
+            BorrowedFormatItem::StringLiteral(":"),
             component!(Minute {
-                padding: modifier::Padding::Zero,
+                padding: Padding::Zero,
             }),
         ]),
-        b's' => component!(UnixTimestamp {
-            precision: modifier::UnixTimestampPrecision::Second,
+        b's' => component!(UnixTimestampSecond {
             sign_is_mandatory: false,
         }),
         b'S' => component!(Second {
-            padding: padding_or_default(*padding, modifier::Padding::Zero),
+            padding: padding.unwrap_or(Padding::Zero),
         }),
-        b't' => BorrowedFormatItem::Literal(b"\t"),
+        b't' => BorrowedFormatItem::StringLiteral("\t"),
         b'T' => BorrowedFormatItem::Compound(&[
-            component!(Hour {
-                padding: modifier::Padding::Zero,
-                is_12_hour_clock: false,
+            component!(Hour24 {
+                padding: Padding::Zero,
             }),
-            BorrowedFormatItem::Literal(b":"),
+            BorrowedFormatItem::StringLiteral(":"),
             component!(Minute {
-                padding: modifier::Padding::Zero,
+                padding: Padding::Zero,
             }),
-            BorrowedFormatItem::Literal(b":"),
+            BorrowedFormatItem::StringLiteral(":"),
             component!(Second {
-                padding: modifier::Padding::Zero,
+                padding: Padding::Zero,
             }),
         ]),
-        b'u' => component!(Weekday {
-            repr: modifier::WeekdayRepr::Monday,
-            one_indexed: true,
-            case_sensitive: true,
+        b'u' => component!(WeekdayMonday { one_indexed: true }),
+        b'U' => component!(WeekNumberSunday {
+            padding: padding.unwrap_or(Padding::Zero),
         }),
-        b'U' => component!(WeekNumber {
-            padding: padding_or_default(*padding, modifier::Padding::Zero),
-            repr: modifier::WeekNumberRepr::Sunday,
+        b'V' => component!(WeekNumberIso {
+            padding: padding.unwrap_or(Padding::Zero),
         }),
-        b'V' => component!(WeekNumber {
-            padding: padding_or_default(*padding, modifier::Padding::Zero),
-            repr: modifier::WeekNumberRepr::Iso,
-        }),
-        b'w' => component!(Weekday {
-            repr: modifier::WeekdayRepr::Sunday,
-            one_indexed: true,
-            case_sensitive: true,
-        }),
-        b'W' => component!(WeekNumber {
-            padding: padding_or_default(*padding, modifier::Padding::Zero),
-            repr: modifier::WeekNumberRepr::Monday,
+        b'w' => component!(WeekdaySunday { one_indexed: true }),
+        b'W' => component!(WeekNumberMonday {
+            padding: padding.unwrap_or(Padding::Zero),
         }),
         b'x' => BorrowedFormatItem::Compound(&[
-            component!(Month {
-                repr: modifier::MonthRepr::Numerical,
-                padding: modifier::Padding::Zero,
-                case_sensitive: true,
+            component!(MonthNumerical {
+                padding: Padding::Zero,
             }),
-            BorrowedFormatItem::Literal(b"/"),
+            BorrowedFormatItem::StringLiteral("/"),
             component!(Day {
-                padding: modifier::Padding::Zero
+                padding: Padding::Zero
             }),
-            BorrowedFormatItem::Literal(b"/"),
-            component!(Year {
-                padding: modifier::Padding::Zero,
-                repr: modifier::YearRepr::LastTwo,
-                range: modifier::YearRange::Extended,
-                iso_week_based: false,
-                sign_is_mandatory: false,
+            BorrowedFormatItem::StringLiteral("/"),
+            component!(CalendarYearLastTwo {
+                padding: Padding::Zero,
             }),
         ]),
         b'X' => BorrowedFormatItem::Compound(&[
-            component!(Hour {
-                padding: modifier::Padding::Zero,
-                is_12_hour_clock: false,
+            component!(Hour24 {
+                padding: Padding::Zero,
             }),
-            BorrowedFormatItem::Literal(b":"),
+            BorrowedFormatItem::StringLiteral(":"),
             component!(Minute {
-                padding: modifier::Padding::Zero,
+                padding: Padding::Zero,
             }),
-            BorrowedFormatItem::Literal(b":"),
+            BorrowedFormatItem::StringLiteral(":"),
             component!(Second {
-                padding: modifier::Padding::Zero,
+                padding: Padding::Zero,
             }),
         ]),
-        b'y' => component!(Year {
-            padding: padding_or_default(*padding, modifier::Padding::Zero),
-            repr: modifier::YearRepr::LastTwo,
-            range: modifier::YearRange::Extended,
-            iso_week_based: false,
+        b'y' => component!(CalendarYearLastTwo {
+            padding: padding.unwrap_or(Padding::Zero),
+        }),
+        #[cfg(feature = "large-dates")]
+        b'Y' => component!(CalendarYearFullExtendedRange {
+            padding: Padding::Zero,
             sign_is_mandatory: false,
         }),
-        b'Y' => component!(Year {
-            padding: modifier::Padding::Zero,
-            repr: modifier::YearRepr::Full,
-            range: modifier::YearRange::Extended,
-            iso_week_based: false,
+        #[cfg(not(feature = "large-dates"))]
+        b'Y' => component!(CalendarYearFullStandardRange {
+            padding: Padding::Zero,
             sign_is_mandatory: false,
         }),
         b'z' => BorrowedFormatItem::Compound(&[
             component!(OffsetHour {
                 sign_is_mandatory: true,
-                padding: modifier::Padding::Zero,
+                padding: Padding::Zero,
             }),
             component!(OffsetMinute {
-                padding: modifier::Padding::Zero,
+                padding: Padding::Zero,
             }),
         ]),
-        b'Z' => {
-            return Err(Error {
-                _inner: unused(ErrorInner {
-                    _message: "unsupported component",
-                    _span: component.span,
-                }),
-                public: InvalidFormatDescription::NotSupported {
-                    what: "component",
-                    context: "",
-                    index: component.span.start.byte as usize,
-                },
-            })
-        }
-        _ => {
-            return Err(Error {
-                _inner: unused(ErrorInner {
-                    _message: "invalid component",
-                    _span: component.span,
-                }),
-                public: InvalidFormatDescription::InvalidComponentName {
-                    name: String::from_utf8_lossy(&[*component]).into_owned(),
-                    index: component.span.start.byte as usize,
-                },
-            })
-        }
+        b'Z' => return Err(error_unsupported_component(component)),
+        _ => return Err(error_invalid_component(component)),
     })
 }

@@ -44,10 +44,13 @@ jobs:
           fetch-depth: 0
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
+      - name: Configure semver checks
+        run: echo "$GITHUB_WORKSPACE/.github/semver-checks" >> "$GITHUB_PATH"
       - name: Run release-plz
         uses: release-plz/action@v0.5
         with:
           command: release-pr
         env:
+          CARGO_SEMVER_CHECKS_REAL: ${{ env.CARGO_HOME }}/bin/cargo-semver-checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}

@@ -1,4 +1,3 @@
-#![allow(clippy::comparison_chain)]
 //! A pure-Rust library to manage extended attributes.
 //!
 //! It provides support for manipulating extended attributes

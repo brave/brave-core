@@ -15,7 +15,6 @@ pub fn without_defaults(generics: &syn::Generics) -> syn::Generics {
             .iter()
             .map(|param| match param {
                 syn::GenericParam::Type(param) => syn::GenericParam::Type(syn::TypeParam {
-                    eq_token: None,
                     default: None,
                     ..param.clone()
                 }),
@@ -31,10 +30,11 @@ pub fn with_where_predicates(
     predicates: &[syn::WherePredicate],
 ) -> syn::Generics {
     let mut generics = generics.clone();
-    generics
-        .make_where_clause()
-        .predicates
-        .extend(predicates.iter().cloned());
+    let dst_predicates = &mut generics.make_where_clause().predicates;
+
+    for predicate in predicates {
+        dst_predicates.push(predicate.clone());
+    }
     generics
 }
 
@@ -43,14 +43,17 @@ pub fn with_where_predicates_from_fields(
     generics: &syn::Generics,
     from_field: fn(&attr::Field) -> Option<&[syn::WherePredicate]>,
 ) -> syn::Generics {
-    let predicates = cont
-        .data
-        .all_fields()
-        .filter_map(|field| from_field(&field.attrs))
-        .flat_map(<[syn::WherePredicate]>::to_vec);
-
     let mut generics = generics.clone();
-    generics.make_where_clause().predicates.extend(predicates);
+    let dst_predicates = &mut generics.make_where_clause().predicates;
+
+    for field in cont.data.all_fields() {
+        let Some(predicate_slice) = from_field(&field.attrs) else {
+            continue;
+        };
+        for inner_predicate in predicate_slice {
+            dst_predicates.push(inner_predicate.clone());
+        }
+    }
     generics
 }
 
@@ -65,14 +68,17 @@ pub fn with_where_predicates_from_variants(
             return generics.clone();
         }
     };
-
-    let predicates = variants
-        .iter()
-        .filter_map(|variant| from_variant(&variant.attrs))
-        .flat_map(<[syn::WherePredicate]>::to_vec);
-
     let mut generics = generics.clone();
-    generics.make_where_clause().predicates.extend(predicates);
+    let dst_predicates = &mut generics.make_where_clause().predicates;
+
+    for variant in variants {
+        let Some(predicate_slice) = from_variant(&variant.attrs) else {
+            continue;
+        };
+        for inner_predicate in predicate_slice {
+            dst_predicates.push(inner_predicate.clone());
+        }
+    }
     generics
 }
 
@@ -146,7 +152,7 @@ pub fn with_bound(
             match ty {
                 #![cfg_attr(all(test, exhaustive), deny(non_exhaustive_omitted_patterns))]
                 syn::Type::Array(ty) => self.visit_type(&ty.elem),
-                syn::Type::BareFn(ty) => {
+                syn::Type::FnPtr(ty) => {
                     for arg in &ty.inputs {
                         self.visit_type(&arg.ty);
                     }
@@ -209,7 +215,7 @@ pub fn with_bound(
                 }
                 syn::PathArguments::Parenthesized(arguments) => {
                     for argument in &arguments.inputs {
-                        self.visit_type(argument);
+                        self.visit_type(&argument.ty);
                     }
                     self.visit_return_type(&arguments.output);
                 }
@@ -256,57 +262,68 @@ pub fn with_bound(
     match &cont.data {
         Data::Enum(variants) => {
             for variant in variants {
-                let relevant_fields = variant
-                    .fields
-                    .iter()
-                    .filter(|field| filter(&field.attrs, Some(&variant.attrs)));
-                for field in relevant_fields {
-                    visitor.visit_field(field.original);
+                for field in &variant.fields {
+                    if filter(&field.attrs, Some(&variant.attrs)) {
+                        visitor.visit_field(field.original);
+                    }
                 }
             }
         }
         Data::Struct(_, fields) => {
-            for field in fields.iter().filter(|field| filter(&field.attrs, None)) {
-                visitor.visit_field(field.original);
+            for field in fields {
+                if filter(&field.attrs, None) {
+                    visitor.visit_field(field.original);
+                }
             }
         }
     }
 
     let relevant_type_params = visitor.relevant_type_params;
     let associated_type_usage = visitor.associated_type_usage;
-    let new_predicates = generics
-        .type_params()
-        .map(|param| param.ident.clone())
-        .filter(|id| relevant_type_params.contains(id))
-        .map(|id| syn::TypePath {
-            qself: None,
-            path: id.into(),
-        })
-        .chain(associated_type_usage.into_iter().cloned())
-        .map(|bounded_ty| {
-            syn::WherePredicate::Type(syn::PredicateType {
-                lifetimes: None,
-                // the type parameter that is being bounded e.g. T
-                bounded_ty: syn::Type::Path(bounded_ty),
-                colon_token: <Token![:]>::default(),
-                // the bound e.g. Serialize
-                bounds: vec![syn::TypeParamBound::Trait(syn::TraitBound {
-                    paren_token: None,
-                    modifier: syn::TraitBoundModifier::None,
-                    lifetimes: None,
-                    path: bound.clone(),
-                })]
-                .into_iter()
-                .collect(),
-            })
-        });
 
-    let mut generics = generics.clone();
-    generics
-        .make_where_clause()
-        .predicates
-        .extend(new_predicates);
-    generics
+    fn make_where_bounded_type(
+        bounded_ty: syn::TypePath,
+        bound: &syn::Path,
+    ) -> syn::WherePredicate {
+        syn::WherePredicate::Type(syn::PredicateType {
+            attrs: Vec::new(),
+            lifetimes: None,
+            // the type parameter that is being bounded e.g. T
+            bounded_ty: syn::Type::Path(bounded_ty),
+            colon_token: <Token![:]>::default(),
+            // the bound e.g. Serialize
+            bounds: {
+                let mut punct = Punctuated::new();
+                punct.push(syn::TypeParamBound::Trait(syn::TraitBound {
+                    paren_token: None,
+                    lifetimes: None,
+                    modifiers: syn::TraitBoundModifiers::default(),
+                    maybe: None,
+                    path: bound.clone(),
+                }));
+                punct
+            },
+        })
+    }
+
+    let mut dst_generics = generics.clone();
+    let dst_predicates = &mut dst_generics.make_where_clause().predicates;
+    for param in generics.type_params() {
+        let id = &param.ident;
+        if !relevant_type_params.contains(id) {
+            continue;
+        }
+        let bounded_ty = syn::TypePath {
+            attrs: Vec::new(),
+            qself: None,
+            path: id.clone().into(),
+        };
+        dst_predicates.push(make_where_bounded_type(bounded_ty, bound));
+    }
+    for bounded_ty in associated_type_usage {
+        dst_predicates.push(make_where_bounded_type(bounded_ty.clone(), bound));
+    }
+    dst_generics
 }
 
 pub fn with_self_bound(
@@ -319,6 +336,7 @@ pub fn with_self_bound(
         .make_where_clause()
         .predicates
         .push(syn::WherePredicate::Type(syn::PredicateType {
+            attrs: Vec::new(),
             lifetimes: None,
             // the type that is being bounded e.g. MyStruct<'a, T>
             bounded_ty: type_of_item(cont),
@@ -326,8 +344,9 @@ pub fn with_self_bound(
             // the bound e.g. Default
             bounds: vec![syn::TypeParamBound::Trait(syn::TraitBound {
                 paren_token: None,
-                modifier: syn::TraitBoundModifier::None,
                 lifetimes: None,
+                modifiers: syn::TraitBoundModifiers::default(),
+                maybe: None,
                 path: bound.clone(),
             })]
             .into_iter()
@@ -371,6 +390,7 @@ pub fn with_lifetime_bound(generics: &syn::Generics, lifetime: &str) -> syn::Gen
 
 fn type_of_item(cont: &Container) -> syn::Type {
     syn::Type::Path(syn::TypePath {
+        attrs: Vec::new(),
         qself: None,
         path: syn::Path {
             leading_colon: None,
@@ -387,6 +407,7 @@ fn type_of_item(cont: &Container) -> syn::Type {
                             .map(|param| match param {
                                 syn::GenericParam::Type(param) => {
                                     syn::GenericArgument::Type(syn::Type::Path(syn::TypePath {
+                                        attrs: Vec::new(),
                                         qself: None,
                                         path: param.ident.clone().into(),
                                     }))

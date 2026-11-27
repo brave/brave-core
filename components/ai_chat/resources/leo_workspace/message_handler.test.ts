@@ -14,6 +14,7 @@ import {
   kReadFileRequest,
   kReadFileResponse,
   viewOrigin,
+  workspaceOrigin,
 } from './message_handler'
 import { createFakeWorkspace } from './test_file_system'
 
@@ -124,6 +125,27 @@ describe('viewOrigin', () => {
     ['chrome://leo-workspace'],
   ])('returns empty for %p, which must not be trusted', (origin) => {
     expect(viewOrigin(origin)).toBe('')
+  })
+})
+
+describe('workspaceOrigin', () => {
+  it('strips the view. prefix from the viewer origin', () => {
+    expect(workspaceOrigin(kSenderOrigin)).toBe(kWorkspaceOrigin)
+  })
+
+  it('round-trips with viewOrigin', () => {
+    expect(workspaceOrigin(viewOrigin(kWorkspaceOrigin))).toBe(kWorkspaceOrigin)
+  })
+
+  it.each([
+    ['null'],
+    [''],
+    ['not a url'],
+    [kWorkspaceOrigin],
+    ['https://view.a-uuid.leo-workspace'],
+    ['chrome://view.a-uuid.leo-workspace'],
+  ])('returns empty for %p, which is not a viewer origin', (origin) => {
+    expect(workspaceOrigin(origin)).toBe('')
   })
 })
 

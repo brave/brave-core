@@ -32,8 +32,8 @@
 //! # fn main() {}
 //! ```
 
-#![warn(missing_docs, unreachable_pub, clippy::use_self)]
-#![cfg_attr(docsrs, feature(doc_cfg, doc_auto_cfg))]
+#![warn(missing_docs)]
+#![cfg_attr(hyper_rustls_docsrs, feature(doc_cfg))]
 
 mod config;
 mod connector;

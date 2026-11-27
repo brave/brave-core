@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<resources>
+    <!-- Matches the toolbar's extension_action_icon_canvas_width/height. -->
+    <dimen name="brave_extensions_menu_sheet_icon_canvas_size">30dp</dimen>
+</resources>

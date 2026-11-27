@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-chunk"
-version = "0.4.12"
+version = "0.10.2"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -30,17 +30,27 @@ documentation = "https://github.com/git/git/blob/seen/Documentation/technical/ch
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
+
+[package.metadata.qa.wasm]
+targets = [
+    "wasm32-unknown-unknown",
+    "wasm32-wasip1",
+    "wasm32-wasip2",
+]
 
 [lib]
 name = "gix_chunk"
 path = "src/lib.rs"
 test = false
-doctest = false
+doctest = true
 
-[dependencies.thiserror]
-version = "2.0.17"
+[dependencies.gix-error]
+version = "^0.5.3"
+features = ["bstr"]
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -59,7 +69,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"
@@ -118,3 +127,4 @@ level = "warn"
 priority = -1
 
 [lints.rust]
+unnameable_types = "warn"

@@ -3,7 +3,8 @@ use crate::loom::sync::Arc;
 use crate::runtime::driver::{self, Driver};
 use crate::runtime::scheduler::{self, Defer, Inject};
 use crate::runtime::task::{
-    self, JoinHandle, OwnedTasks, Schedule, SpawnLocation, Task, TaskHarnessScheduleHooks,
+    self, JoinHandle, LocalNotified, OwnedTasks, Schedule, SpawnLocation, Task,
+    TaskHarnessScheduleHooks,
 };
 use crate::runtime::{
     blocking, context, Config, MetricsBatch, SchedulerMetrics, TaskHooks, TaskMeta, WorkerMetrics,
@@ -15,11 +16,13 @@ use crate::util::{waker_ref, RngSeedGenerator, Wake, WakerRef};
 use std::cell::RefCell;
 use std::collections::VecDeque;
 use std::future::{poll_fn, Future};
-use std::sync::atomic::Ordering::{AcqRel, Release};
+use std::pin::Pin;
+use std::sync::atomic::Ordering::{AcqRel, Acquire, Release};
 use std::task::Poll::{Pending, Ready};
 use std::task::Waker;
 use std::thread::ThreadId;
 use std::time::Duration;
+use std::time::Instant;
 use std::{fmt, thread};
 
 /// Executes tasks on the current thread
@@ -34,6 +37,9 @@ pub(crate) struct CurrentThread {
 
 /// Handle to the current thread scheduler
 pub(crate) struct Handle {
+    /// The name of the runtime
+    name: Option<String>,
+
     /// Scheduler state shared across threads
     shared: Shared,
 
@@ -97,6 +103,11 @@ struct Shared {
 
     /// This scheduler only has one worker.
     worker_metrics: WorkerMetrics,
+
+    /// Startup time of this scheduler.
+    ///
+    /// This instant is used as the basis of task `scheduled_at` measurements.
+    schedule_latency_start: Option<Instant>,
 }
 
 /// Thread-local context.
@@ -132,6 +143,7 @@ impl CurrentThread {
         seed_generator: RngSeedGenerator,
         config: Config,
         local_tid: Option<ThreadId>,
+        name: Option<String>,
     ) -> (CurrentThread, Arc<Handle>) {
         let worker_metrics = WorkerMetrics::from_config(&config);
         worker_metrics.set_thread_id(thread::current().id());
@@ -141,7 +153,10 @@ impl CurrentThread {
             .global_queue_interval
             .unwrap_or(DEFAULT_GLOBAL_QUEUE_INTERVAL);
 
+        let schedule_latency_start = config.track_task_schedule_latency.then(Instant::now);
+
         let handle = Arc::new(Handle {
+            name,
             task_hooks: TaskHooks {
                 task_spawn_callback: config.before_spawn.clone(),
                 task_terminate_callback: config.after_termination.clone(),
@@ -157,6 +172,7 @@ impl CurrentThread {
                 config,
                 scheduler_metrics: SchedulerMetrics::new(),
                 worker_metrics,
+                schedule_latency_start,
             },
             driver: driver_handle,
             blocking_spawner,
@@ -350,7 +366,7 @@ impl Core {
     }
 }
 
-#[cfg(feature = "taskdump")]
+#[cfg(all(tokio_unstable, feature = "taskdump"))]
 fn wake_deferred_tasks_and_free(context: &Context) {
     let wakers = context.defer.take_deferred();
     for waker in wakers {
@@ -363,11 +379,28 @@ fn wake_deferred_tasks_and_free(context: &Context) {
 impl Context {
     /// Execute the closure with the given scheduler core stored in the
     /// thread-local context.
-    fn run_task<R>(&self, mut core: Box<Core>, f: impl FnOnce() -> R) -> (Box<Core>, R) {
-        core.metrics.start_poll();
-        let mut ret = self.enter(core, || crate::task::coop::budget(f));
-        ret.0.metrics.end_poll();
-        ret
+    fn run_task(&self, task: LocalNotified<Arc<Handle>>, mut core: Box<Core>) -> Box<Core> {
+        let schedule_latency_context = task
+            .get_scheduled_at()
+            .prepare(self.handle.shared.schedule_latency_start);
+        let _task_schedule_latency = core.metrics.start_poll(schedule_latency_context);
+
+        #[cfg(tokio_unstable)]
+        let task_meta = task.task_meta(_task_schedule_latency);
+
+        let (mut c, ()) = self.enter(core, || {
+            crate::task::coop::budget(|| {
+                #[cfg(tokio_unstable)]
+                self.handle.task_hooks.poll_start_callback(&task_meta);
+
+                task.run();
+
+                #[cfg(tokio_unstable)]
+                self.handle.task_hooks.poll_stop_callback(&task_meta);
+            })
+        });
+        c.metrics.end_poll();
+        c
     }
 
     /// Blocks the current thread until an event is received by the driver,
@@ -380,22 +413,24 @@ impl Context {
             core = c;
         }
 
-        // This check will fail if `before_park` spawns a task for us to run
-        // instead of parking the thread
-        if core.tasks.is_empty() {
+        if !self.has_pending_work(&core) {
             // Park until the thread is signaled
             core.metrics.about_to_park();
             core.submit_metrics(handle);
 
-            let (c, ()) = self.enter(core, || {
-                driver.park(&handle.driver);
-                self.defer.wake();
-            });
-
-            core = c;
+            core = self.park_internal(core, handle, &mut driver, None);
 
             core.metrics.unparked();
             core.submit_metrics(handle);
+        } else {
+            // `before_park` scheduled work (e.g. an `on_thread_park` hook that woke the
+            // `block_on` future), so we don't block. We must still poll the driver once
+            // without blocking, or timer and I/O events would stall under a runtime driven
+            // by repeated short `block_on` calls. See
+            // <https://github.com/tokio-rs/tokio/issues/8212>.
+            core.submit_metrics(handle);
+
+            core = self.park_internal(core, handle, &mut driver, Some(Duration::from_millis(0)));
         }
 
         if let Some(f) = &handle.shared.config.after_unpark {
@@ -413,12 +448,31 @@ impl Context {
 
         core.submit_metrics(handle);
 
-        let (mut core, ()) = self.enter(core, || {
-            driver.park_timeout(&handle.driver, Duration::from_millis(0));
+        core = self.park_internal(core, handle, &mut driver, Some(Duration::from_millis(0)));
+
+        core.driver = Some(driver);
+        core
+    }
+
+    fn has_pending_work(&self, core: &Core) -> bool {
+        !core.tasks.is_empty() || !self.defer.is_empty() || self.handle.shared.woken.load(Acquire)
+    }
+
+    fn park_internal(
+        &self,
+        core: Box<Core>,
+        handle: &Handle,
+        driver: &mut Driver,
+        duration: Option<Duration>,
+    ) -> Box<Core> {
+        let (core, ()) = self.enter(core, || {
+            match duration {
+                Some(dur) => driver.park_timeout(&handle.driver, dur),
+                None => driver.park(&handle.driver),
+            }
             self.defer.wake();
         });
 
-        core.driver = Some(driver);
         core
     }
 
@@ -461,6 +515,8 @@ impl Handle {
         me.task_hooks.spawn(&TaskMeta {
             id,
             spawned_at,
+            #[cfg(all(tokio_unstable, feature = "schedule-latency"))]
+            schedule_latency: None,
             _phantom: Default::default(),
         });
 
@@ -474,6 +530,7 @@ impl Handle {
     /// Spawn a task which isn't safe to send across thread boundaries onto the runtime.
     ///
     /// # Safety
+    ///
     /// This should only be used when this is a `LocalRuntime` or in another case where the runtime
     /// provably cannot be driven from or moved to different threads from the one on which the task
     /// is spawned.
@@ -488,14 +545,18 @@ impl Handle {
         F: crate::future::Future + 'static,
         F::Output: 'static,
     {
-        let (handle, notified) = me
-            .shared
-            .owned
-            .bind_local(future, me.clone(), id, spawned_at);
+        // Safety: the caller guarantees that this is only called on a `LocalRuntime`.
+        let (handle, notified) = unsafe {
+            me.shared
+                .owned
+                .bind_local(future, me.clone(), id, spawned_at)
+        };
 
         me.task_hooks.spawn(&TaskMeta {
             id,
             spawned_at,
+            #[cfg(all(tokio_unstable, feature = "schedule-latency"))]
+            schedule_latency: None,
             _phantom: Default::default(),
         });
 
@@ -511,10 +572,16 @@ impl Handle {
         tokio_unstable,
         feature = "taskdump",
         target_os = "linux",
-        any(target_arch = "aarch64", target_arch = "x86", target_arch = "x86_64")
+        any(
+            target_arch = "aarch64",
+            target_arch = "x86",
+            target_arch = "x86_64",
+            target_arch = "s390x"
+        )
     ))]
-    pub(crate) fn dump(&self) -> crate::runtime::Dump {
+    pub(crate) fn dump(self: &Arc<Self>) -> crate::runtime::Dump {
         use crate::runtime::dump;
+        use scheduler::Context::CurrentThread;
         use task::trace::trace_current_thread;
 
         let mut traces = vec![];
@@ -522,10 +589,9 @@ impl Handle {
         // todo: how to make this work outside of a runtime context?
         context::with_scheduler(|maybe_context| {
             // drain the local queue
-            let context = if let Some(context) = maybe_context {
-                context.expect_current_thread()
-            } else {
-                return;
+            let context = match maybe_context {
+                Some(CurrentThread(context)) if Arc::ptr_eq(self, &context.handle) => context,
+                _ => return,
             };
             let mut maybe_core = context.core.borrow_mut();
             let core = if let Some(core) = maybe_core.as_mut() {
@@ -597,7 +663,7 @@ cfg_unstable_metrics! {
         }
 
         pub(crate) fn num_blocking_threads(&self) -> usize {
-            self.blocking_spawner.num_threads()
+            self.blocking_spawner.num_blocking_threads()
         }
 
         pub(crate) fn num_idle_blocking_threads(&self) -> usize {
@@ -616,13 +682,16 @@ cfg_unstable_metrics! {
     }
 }
 
-cfg_unstable! {
-    use std::num::NonZeroU64;
+use crate::runtime::metrics::ScheduleLatencyInstant;
+use std::num::NonZeroU64;
 
-    impl Handle {
-        pub(crate) fn owned_id(&self) -> NonZeroU64 {
-            self.shared.owned.id
-        }
+impl Handle {
+    pub(crate) fn owned_id(&self) -> NonZeroU64 {
+        self.shared.owned.id
+    }
+
+    pub(crate) fn name(&self) -> Option<&str> {
+        self.name.as_deref()
     }
 }
 
@@ -642,6 +711,12 @@ impl Schedule for Arc<Handle> {
     fn schedule(&self, task: task::Notified<Self>) {
         use scheduler::Context::CurrentThread;
 
+        if self.shared.schedule_latency_start.is_some() {
+            task.set_scheduled_at(ScheduleLatencyInstant::new(
+                self.shared.schedule_latency_start,
+            ));
+        }
+
         context::with_scheduler(|maybe_cx| match maybe_cx {
             Some(CurrentThread(cx)) if Arc::ptr_eq(self, &cx.handle) => {
                 let mut core = cx.core.borrow_mut();
@@ -651,6 +726,7 @@ impl Schedule for Arc<Handle> {
                 if let Some(core) = core.as_mut() {
                     core.push_task(self, task);
                 }
+                self.driver.unpark_self();
             }
             _ => {
                 // Track that a task was scheduled from **outside** of the runtime.
@@ -709,8 +785,22 @@ impl Wake for Handle {
 
     /// Wake by reference
     fn wake_by_ref(arc_self: &Arc<Self>) {
-        arc_self.shared.woken.store(true, Release);
-        arc_self.driver.unpark();
+        let already_woken = arc_self.shared.woken.swap(true, Release);
+
+        if !already_woken {
+            use scheduler::Context::CurrentThread;
+
+            // If we are already running on the runtime, then it's not required to wake up the
+            // runtime.
+            context::with_scheduler(|maybe_cx| match maybe_cx {
+                Some(CurrentThread(cx)) if Arc::ptr_eq(arc_self, &cx.handle) => {
+                    arc_self.driver.unpark_self();
+                }
+                _ => {
+                    arc_self.driver.unpark();
+                }
+            });
+        }
     }
 }
 
@@ -725,12 +815,10 @@ struct CoreGuard<'a> {
 
 impl CoreGuard<'_> {
     #[track_caller]
-    fn block_on<F: Future>(self, future: F) -> F::Output {
+    fn block_on<F: Future>(self, mut future: Pin<&mut F>) -> F::Output {
         let ret = self.enter(|mut core, context| {
             let waker = Handle::waker_ref(&context.handle);
             let mut cx = std::task::Context::from_waker(&waker);
-
-            pin!(future);
 
             core.metrics.start_processing_scheduled_tasks();
 
@@ -764,7 +852,7 @@ impl CoreGuard<'_> {
                         None => {
                             core.metrics.end_processing_scheduled_tasks();
 
-                            core = if !context.defer.is_empty() {
+                            core = if context.has_pending_work(&core) {
                                 context.park_yield(core, handle)
                             } else {
                                 context.park(core, handle)
@@ -779,18 +867,7 @@ impl CoreGuard<'_> {
 
                     let task = context.handle.shared.owned.assert_owner(task);
 
-                    #[cfg(tokio_unstable)]
-                    let task_meta = task.task_meta();
-
-                    let (c, ()) = context.run_task(core, || {
-                        #[cfg(tokio_unstable)]
-                        context.handle.task_hooks.poll_start_callback(&task_meta);
-
-                        task.run();
-
-                        #[cfg(tokio_unstable)]
-                        context.handle.task_hooks.poll_stop_callback(&task_meta);
-                    });
+                    let c = context.run_task(task, core);
 
                     core = c;
                 }

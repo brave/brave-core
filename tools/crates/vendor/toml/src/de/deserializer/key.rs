@@ -128,6 +128,16 @@ impl<'de> serde_core::de::Deserializer<'de> for KeyDeserializer<'de> {
         key.into_deserializer().deserialize_char(visitor)
     }
 
+    fn deserialize_str<V>(self, visitor: V) -> Result<V::Value, Self::Error>
+    where
+        V: serde_core::de::Visitor<'de>,
+    {
+        match self.key {
+            DeString::Borrowed(s) => visitor.visit_borrowed_str(s),
+            DeString::Owned(s) => visitor.visit_string(s),
+        }
+    }
+
     fn deserialize_enum<V>(
         self,
         name: &str,
@@ -173,7 +183,7 @@ impl<'de> serde_core::de::Deserializer<'de> for KeyDeserializer<'de> {
     }
 
     serde_core::forward_to_deserialize_any! {
-        f32 f64 str string seq
+        f32 f64 seq string
         bytes byte_buf map option unit
         ignored_any unit_struct tuple_struct tuple identifier
     }

@@ -172,6 +172,13 @@ class BraveCoreCheckoutApi(RecipeApi):
         )
 
     @property
+    def build_dir(self) -> str | Path | config_types.Path:
+        """Where `pnpm run build` builds the configured builder:
+        `<chromium_src>/out/<builder>`."""
+        assert self.c is not None and self.c.BUILDER, 'see configure_build()'
+        return self.m.path.chromium_src / 'out' / self.c.BUILDER
+
+    @property
     def _builder_args(self) -> list[str]:
         """The `pnpm` arguments that make it run as the configured builder,
         none for the deprecated mode."""
@@ -250,10 +257,9 @@ class BraveCoreCheckoutApi(RecipeApi):
         """
         # `git cache` comes from depot_tools.
         self.m.depot_tools.ensure_on_path()
-        self.m.git_cache.populate(
+        return self.m.git_cache.populate(
             CACHE_REPO_URL, ref=ref.populate_ref, commit=ref.populate_commit
         )
-        return self.m.git_cache.mirror_dir(CACHE_REPO_URL)
 
     def _checkout_from_mirror(self, ref: GitRef, mirror_dir: str) -> None:
         """Clone or update the brave-core checkout from the populated mirror."""
@@ -322,8 +328,22 @@ class BraveCoreCheckoutApi(RecipeApi):
         self._checkout_from_mirror(ref, mirror_dir)
         # Before `pnpm run sync`, which already needs the RBE settings.
         self._write_dotenv()
+        self._install_secrets()
         self._pnpm_sync()
         return self._root
+
+    def _install_secrets(self) -> None:
+        """Copy the `secrets_dotenv` file, if any, to the checkout's
+        `.internal/.env`, where `bots gen` reads the builder's secrets."""
+        if not self._properties.secrets_dotenv:
+            return
+        internal = self._root / '.internal'
+        self.m.file.ensure_directory('ensure .internal', internal, mode=0o700)
+        secrets = internal / '.env'
+        self.m.file.copy(
+            'install secrets', self._properties.secrets_dotenv, secrets
+        )
+        self.m.file.chmod('restrict secrets', secrets, 0o600)
 
     def _deploy_chromium(
         self, chromium_src: str | Path | None, mirror_dir: str, rev: str

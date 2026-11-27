@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_vpn/browser/v2/api/device_endpoints.h"
 
-#include "base/values.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_vpn/browser/v2/api/transport_protocol.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -29,10 +29,10 @@ TEST(DeviceEndpointsTest, GetProfileCredentialsRequestBodyToValueIkev2) {
       .subscriber_credential = kTestSubscriberCredential,
       .transport_protocol = TransportProtocol::kIKEv2,
       .public_key = kTestPublicKey};
-  EXPECT_EQ(body.ToValue(),
-            base::DictValue()
-                .Set("subscriber-credential", kTestSubscriberCredential)
-                .Set("transport-protocol", "ikev2"));
+  EXPECT_EQ(body.ToValue(), base::test::ParseJsonDict(R"({
+    "subscriber-credential": "test-subscriber-credential",
+    "transport-protocol": "ikev2"
+  })"));
 }
 
 TEST(DeviceEndpointsTest, GetProfileCredentialsRequestBodyToValueWireguard) {
@@ -40,11 +40,11 @@ TEST(DeviceEndpointsTest, GetProfileCredentialsRequestBodyToValueWireguard) {
       .subscriber_credential = kTestSubscriberCredential,
       .transport_protocol = TransportProtocol::kWireguard,
       .public_key = kTestPublicKey};
-  EXPECT_EQ(body.ToValue(),
-            base::DictValue()
-                .Set("subscriber-credential", kTestSubscriberCredential)
-                .Set("transport-protocol", "wireguard")
-                .Set("public-key", kTestPublicKey));
+  EXPECT_EQ(body.ToValue(), base::test::ParseJsonDict(R"({
+    "subscriber-credential": "test-subscriber-credential",
+    "transport-protocol": "wireguard",
+    "public-key": "test-public-key"
+  })"));
 }
 
 TEST(DeviceEndpointsTest,
@@ -53,31 +53,31 @@ TEST(DeviceEndpointsTest,
       .subscriber_credential = kTestSubscriberCredential,
       .transport_protocol = TransportProtocol::kIKEv2,
       .multihop_exit_region = kTestMultihopExitRegion};
-  EXPECT_EQ(body.ToValue(),
-            base::DictValue()
-                .Set("subscriber-credential", kTestSubscriberCredential)
-                .Set("transport-protocol", "ikev2")
-                .Set("multihop-exit-region", kTestMultihopExitRegion));
+  EXPECT_EQ(body.ToValue(), base::test::ParseJsonDict(R"({
+    "subscriber-credential": "test-subscriber-credential",
+    "transport-protocol": "ikev2",
+    "multihop-exit-region": "us-west"
+  })"));
 }
 
 TEST(DeviceEndpointsTest, InvalidateCredentialsRequestBodyToValue) {
   const InvalidateCredentialsRequestBody body{
       .api_auth_token = kTestApiAuthToken,
       .subscriber_credential = kTestSubscriberCredential};
-  EXPECT_EQ(body.ToValue(),
-            base::DictValue()
-                .Set("api-auth-token", kTestApiAuthToken)
-                .Set("subscriber-credential", kTestSubscriberCredential));
+  EXPECT_EQ(body.ToValue(), base::test::ParseJsonDict(R"({
+    "api-auth-token": "test-api-auth-token",
+    "subscriber-credential": "test-subscriber-credential"
+  })"));
 }
 
 TEST(DeviceEndpointsTest, SetMultihopExitRegionRequestBodyToValue) {
   const SetMultihopExitRegionRequestBody body{
       .api_auth_token = kTestApiAuthToken,
       .multihop_exit_region = kTestMultihopExitRegion};
-  EXPECT_EQ(body.ToValue(),
-            base::DictValue()
-                .Set("api-auth-token", kTestApiAuthToken)
-                .Set("multihop-exit-region", kTestMultihopExitRegion));
+  EXPECT_EQ(body.ToValue(), base::test::ParseJsonDict(R"({
+    "api-auth-token": "test-api-auth-token",
+    "multihop-exit-region": "us-west"
+  })"));
 }
 
 }  // namespace brave_vpn::v2::endpoints

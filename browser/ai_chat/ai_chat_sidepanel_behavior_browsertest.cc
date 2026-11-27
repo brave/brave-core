@@ -64,6 +64,7 @@
 #include "printing/buildflags/buildflags.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/gfx/animation/animation_container.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/controls/webview/webview.h"
@@ -144,7 +145,7 @@ class AIChatGlobalSidePanelBrowserTest
     // Create a new tab
     GURL test_url("chrome://version/");
     ui_test_utils::NavigateToURLWithDisposition(
-        browser, test_url, WindowOpenDisposition::kNewForegroundTab,
+        browser, test_url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
     // Wait for tab to be active
@@ -183,6 +184,18 @@ class AIChatGlobalSidePanelBrowserTest
       return std::string();
     }
     return conversation->get_conversation_uuid();
+  }
+
+  // Returns the uuid of the conversation shown by the AI Chat UI whose main
+  // frame is |conversation_rfh_|, or an empty string until it shows one. The
+  // UI loads its conversation entries frame from a URL ending in that uuid.
+  std::string ShownConversationUuid() {
+    content::RenderFrameHost* entries_frame = GetConversationEntriesFrame();
+    if (!entries_frame) {
+      return std::string();
+    }
+    std::string path(entries_frame->GetLastCommittedURL().path());
+    return path.empty() ? path : path.substr(1);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -305,7 +318,8 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // Open the full-page AI Chat conversation in a new tab, keeping the original
   // tab so the tab strip stays valid after AI Chat is detached.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::kNewForegroundTab,
+      browser(), GURL(kAIChatUIURL),
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(leo_contents);
@@ -388,7 +402,8 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // tab so the tab strip stays valid after AI Chat is detached.
   auto* tab_strip = browser()->tab_strip_model();
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::kNewForegroundTab,
+      browser(), GURL(kAIChatUIURL),
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(leo_contents);
@@ -431,7 +446,8 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // Open the full-page AI Chat conversation in a new tab, keeping the original
   // tab so the tab strip stays valid after AI Chat is detached.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::kNewForegroundTab,
+      browser(), GURL(kAIChatUIURL),
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   content::WebContents* ai_chat_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(ai_chat_contents);
@@ -514,7 +530,8 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   // Open a separate full-page AI Chat conversation in a new tab.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::kNewForegroundTab,
+      browser(), GURL(kAIChatUIURL),
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   content::WebContents* full_page_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(full_page_contents);
@@ -556,7 +573,8 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   auto* tab_strip = browser()->tab_strip_model();
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::kNewForegroundTab,
+      browser(), GURL(kAIChatUIURL),
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(leo_contents);
@@ -573,7 +591,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // the conversation: it survives as a full-page tab.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("chrome://version/"),
-      WindowOpenDisposition::kNewForegroundTab,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   EXPECT_NE(tab_strip->GetIndexOfWebContents(leo_contents),
             TabStripModel::kNoTab);
@@ -724,7 +742,8 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
                        ReverseMoveIsNoOpForFullPageChat) {
   auto* tab_strip = browser()->tab_strip_model();
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::kNewForegroundTab,
+      browser(), GURL(kAIChatUIURL),
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(leo_contents);
@@ -749,7 +768,8 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   auto* tab_strip = browser()->tab_strip_model();
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::kNewForegroundTab,
+      browser(), GURL(kAIChatUIURL),
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(leo_contents);
@@ -908,6 +928,54 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   EXPECT_FALSE(ai_chat::GetSidePanelWebContents(browser()));
 }
 
+// The side panel's main conversation isn't selected by id, whether the panel
+// is global or tied to the tab, so the UI only learns of its deletion from the
+// conversation itself. It then moves to a new conversation.
+IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
+                       DeletingShownConversationShowsNewOne) {
+  auto* coordinator = SidePanelCoordinator::From(browser());
+  ASSERT_TRUE(coordinator);
+  coordinator->Show(SidePanelEntry::Id::kChatUI);
+
+  content::WebContents* panel_contents = nullptr;
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    panel_contents = ai_chat::GetSidePanelWebContents(browser());
+    return IsSidePanelOpen(browser()) && panel_contents != nullptr &&
+           panel_contents->GetWebUI() != nullptr &&
+           !panel_contents->IsLoading();
+  }));
+  conversation_rfh_ = panel_contents->GetPrimaryMainFrame();
+
+  std::string deleted_uuid;
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    deleted_uuid = ShownConversationUuid();
+    return !deleted_uuid.empty();
+  }));
+
+  ai_chat::AIChatService* service =
+      ai_chat::AIChatServiceFactory::GetForBrowserContext(
+          browser()->GetProfile());
+  ASSERT_TRUE(service);
+  // Check the panel is still on that conversation, or deleting it would show
+  // nothing about the panel.
+  ai_chat::ConversationHandler* shown_conversation =
+      service->GetConversation(deleted_uuid);
+  ASSERT_TRUE(shown_conversation);
+  ASSERT_TRUE(shown_conversation->IsAnyClientConnected());
+  shown_conversation = nullptr;
+  service->DeleteConversation(deleted_uuid);
+
+  std::string new_uuid;
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    new_uuid = ShownConversationUuid();
+    return !new_uuid.empty() && new_uuid != deleted_uuid;
+  }));
+  ai_chat::ConversationHandler* new_conversation =
+      service->GetConversation(new_uuid);
+  ASSERT_TRUE(new_conversation);
+  EXPECT_TRUE(new_conversation->IsAnyClientConnected());
+}
+
 INSTANTIATE_TEST_SUITE_P(
     ,
     AIChatGlobalSidePanelBrowserTest,
@@ -952,6 +1020,12 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
   GURL GetSiteBEchoURL() {
     return embedded_https_test_server().GetURL(
         "b.com", "/echoheader?Cookie&Sec-Fetch-Site");
+  }
+
+  // Site C: redirects to `url`.
+  GURL GetRedirectURL(const GURL& url) {
+    return embedded_https_test_server().GetURL(
+        "c.com", base::StrCat({"/server-redirect?", url.spec()}));
   }
 
   void SetSameSiteCookies(const GURL& url) {
@@ -1007,18 +1081,37 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
     EXPECT_TRUE(content::NavigateToURL(
         panel_contents, ai_chat::ConversationUrl(
                             conversation_handler_->get_conversation_uuid())));
+    return WaitForEntriesFrame(panel_contents);
+  }
 
+  // Shows a mock-engine conversation as a full page in a tab after site A and
+  // returns its conversation entries frame.
+  content::RenderFrameHost* ShowConversationFullPage() {
+    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), GetSiteAURL()));
+
+    CreateConversationWithMockEngine();
+    EXPECT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+        browser(),
+        ai_chat::ConversationUrl(
+            conversation_handler_->get_conversation_uuid()),
+        WindowOpenDisposition::kNewForegroundTab,
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+    return WaitForEntriesFrame(
+        browser()->tab_strip_model()->GetActiveWebContents());
+  }
+
+  // Waits for `contents` to embed the conversation entries frame.
+  static content::RenderFrameHost* WaitForEntriesFrame(
+      content::WebContents* contents) {
     content::RenderFrameHost* entries_frame = nullptr;
     EXPECT_TRUE(base::test::RunUntil([&]() {
-      panel_contents->ForEachRenderFrameHost(
-          [&](content::RenderFrameHost* frame) {
-            if (frame->GetWebUI() &&
-                frame->GetWebUI()
-                    ->GetController()
-                    ->GetAs<AIChatUntrustedConversationUI>()) {
-              entries_frame = frame;
-            }
-          });
+      contents->ForEachRenderFrameHost([&](content::RenderFrameHost* frame) {
+        if (frame->GetWebUI() && frame->GetWebUI()
+                                     ->GetController()
+                                     ->GetAs<AIChatUntrustedConversationUI>()) {
+          entries_frame = frame;
+        }
+      });
       return entries_frame != nullptr;
     }));
     return entries_frame;
@@ -1088,19 +1181,22 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
     return result == true;
   }
 
-  // Clicks the link and returns the tab it loaded in.
+  // Clicks the link and returns the tab it loaded in, once it reaches
+  // `final_url` (the link's own URL unless it redirects).
   content::WebContents* FollowLink(
       content::RenderFrameHost* frame,
       const GURL& url,
       std::string_view text,
+      std::optional<GURL> final_url = std::nullopt,
       base::Location location = base::Location::Current()) {
     SCOPED_TRACE(location.ToString());
+    const GURL& expected_url = final_url.value_or(url);
     constexpr char kClickLinkScript[] = R"(
       [...document.querySelectorAll('a[target=_blank]')]
           .find((a) => a.href === $1 && a.textContent.trim() === $2)
           .click()
     )";
-    content::TestNavigationObserver observer(url);
+    content::TestNavigationObserver observer(expected_url);
     observer.StartWatchingNewWebContents();
     observer.WatchExistingWebContents();
     EXPECT_TRUE(content::ExecJs(frame,
@@ -1110,7 +1206,7 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
     observer.Wait();
     content::WebContents* active =
         browser()->tab_strip_model()->GetActiveWebContents();
-    EXPECT_EQ(active->GetLastCommittedURL(), url);
+    EXPECT_EQ(active->GetLastCommittedURL(), expected_url);
     return active;
   }
 
@@ -1130,7 +1226,14 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
       EXPECT_NE(opened, site_a_tab);
       EXPECT_EQ(tab_strip->count(), initial_tab_count + 1);
     }
+    ExpectCrossSiteHeaders(opened);
+  }
 
+  // Checks that B saw a cross-site request in `opened`.
+  void ExpectCrossSiteHeaders(
+      content::WebContents* opened,
+      base::Location location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
     const EchoedHeaders headers = GetEchoedHeaders(opened);
     const std::string context =
         base::StrCat({"Cookie: ", headers.cookie,
@@ -1195,6 +1298,53 @@ IN_PROC_BROWSER_TEST_P(AIChatSidePanelLinkBrowserTest,
 
   ExpectCrossSiteNavigation(site_a_tab, initial_tab_count,
                             FollowLink(entries_frame, echo_url, "1"));
+}
+
+// Web sources are links too, and must reach B as a cross-site navigation even
+// via a redirect.
+IN_PROC_BROWSER_TEST_P(AIChatSidePanelLinkBrowserTest,
+                       CrossSiteSourceLinkRedirectKeepsInitiator) {
+  const GURL echo_url = GetSiteBEchoURL();
+  SetSameSiteCookies(echo_url);
+
+  content::RenderFrameHost* entries_frame = ShowConversationInSidePanel();
+  ASSERT_TRUE(entries_frame);
+  content::WebContents* site_a_tab =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  const int initial_tab_count = browser()->tab_strip_model()->count();
+
+  // No citation in the text, so the source is only reachable via its link.
+  const GURL source_url = GetRedirectURL(echo_url);
+  constexpr char kSourceText[] = "1 - c.com";
+  Respond("An answer.", /*sources=*/{source_url});
+  ASSERT_TRUE(WaitForLink(entries_frame, source_url, kSourceText));
+
+  ExpectCrossSiteNavigation(
+      site_a_tab, initial_tab_count,
+      FollowLink(entries_frame, source_url, kSourceText, echo_url));
+}
+
+IN_PROC_BROWSER_TEST_P(AIChatSidePanelLinkBrowserTest,
+                       CrossSiteSourceLinkRedirectKeepsInitiatorFullPage) {
+  const GURL echo_url = GetSiteBEchoURL();
+  SetSameSiteCookies(echo_url);
+
+  content::RenderFrameHost* entries_frame = ShowConversationFullPage();
+  ASSERT_TRUE(entries_frame);
+  content::WebContents* ai_chat_tab =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  const GURL source_url = GetRedirectURL(echo_url);
+  constexpr char kSourceText[] = "1 - c.com";
+  Respond("An answer.", /*sources=*/{source_url});
+  ASSERT_TRUE(WaitForLink(entries_frame, source_url, kSourceText));
+
+  // The source opens in a tab of its own, which the conversation may then
+  // move out of the way of (with the move-to-side-panel feature).
+  content::WebContents* opened =
+      FollowLink(entries_frame, source_url, kSourceText, echo_url);
+  EXPECT_NE(opened, ai_chat_tab);
+  ExpectCrossSiteHeaders(opened);
 }
 
 INSTANTIATE_TEST_SUITE_P(

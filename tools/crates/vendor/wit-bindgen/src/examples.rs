@@ -53,3 +53,12 @@ pub mod _3_world_exports;
 #[doc = include_str!("./examples/_4_exported_resources.rs")]
 /// ```
 pub mod _4_exported_resources;
+
+/// An example of importing a compile-time directory of wit files.
+///
+/// The code used to generate this module is:
+///
+/// ```rust
+#[doc = include_str!("./examples/_5_import_directory.rs")]
+/// ```
+pub mod _5_import_directory;

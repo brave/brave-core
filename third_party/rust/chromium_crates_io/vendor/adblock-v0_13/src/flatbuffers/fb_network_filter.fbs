@@ -47,6 +47,10 @@ table NetworkFilterList {
   /// `$domain=` / `$from=` token buckets.
   opt_domains_map_index: [uint32] (required);
   opt_domains_map_values: [NetworkFilter] (required);
+
+  /// `$to=` token buckets.
+  opt_to_domains_map_index: [uint32] (required);
+  opt_to_domains_map_values: [NetworkFilter] (required);
 }
 
 /// A table to store the most host-specific cosmetic rules.

@@ -9,6 +9,7 @@ exercised in bots_test.py instead. _load_config()/cmd_snapshot() are
 exercised manually, not here, since they mutate real process-global state
 (sys.path, sys.modules, the shared lib.config registries)."""
 
+import ast
 import contextlib
 import json
 import os
@@ -25,9 +26,12 @@ sys.path.insert(
     ),
 )
 
+import generated_output
 import snapshot
+import testing_support
 from lib.config import (
     BuildersRegistry,
+    TargetsRegistry,
     ConfigError,
     GnArgsRegistry,
     builder_config,
@@ -38,14 +42,25 @@ def _make_registries():
     gn_args_registry = GnArgsRegistry()
     gn_args_registry.config(name='linux', args={'target_os': 'linux'})
     gn_args_registry.config(name='x64', args={'target_cpu': 'x64'})
-    builders_registry = BuildersRegistry(gn_args_registry)
+    targets_registry = TargetsRegistry()
+    targets_registry.binaries.console_test_launcher(
+        name='a_test', label='//a:a_test'
+    )
+    targets_registry.tests.gtest_test(name='a_test', args=['--a'])
+    targets_registry.compile_target(name='chrome', label='//chrome:chrome')
+    targets_registry.mixin(name='b', args=['--b'])
+    builders_registry = BuildersRegistry(gn_args_registry, targets_registry)
     builders_registry.builder(
         name='test-builder',
         builder_group='brave.test',
         recipe='brave_builder',
+        siso_remote_jobs=500,
+        siso_reapi_priority=2,
         builder_spec=builder_config.builder_spec(
             gclient_config=builder_config.gclient_config(
-                target_os=['linux', 'android']
+                target_os=['linux', 'android'],
+                custom_deps={'src/b': None, 'src/a': 'https://a.example/a.git'},
+                custom_vars={'checkout_x': True},
             ),
             chromium_config=builder_config.chromium_config(
                 target_platform=builder_config.target_platform.LINUX,
@@ -56,15 +71,17 @@ def _make_registries():
         gn_args=gn_args_registry.config(
             configs=['linux', 'x64'], args={'is_asan': True}
         ),
-        targets=builders_registry.targets(
-            compile=['brave:all'], tests=['a_test']
+        targets=targets_registry.bundle(
+            targets=['a_test'],
+            additional_compile_targets=['chrome'],
+            mixins=['b'],
         ),
     )
     return builders_registry, gn_args_registry
 
 
 class ComputeFreshOutputTest(unittest.TestCase):
-    def test_produces_four_files_per_builder(self):
+    def test_produces_five_files_per_builder(self):
         builders_registry, gn_args_registry = _make_registries()
         fresh = snapshot.compute_fresh_output(
             builders_registry, gn_args_registry
@@ -76,6 +93,7 @@ class ComputeFreshOutputTest(unittest.TestCase):
                 'test-builder/properties.json',
                 'test-builder/sync.json',
                 'test-builder/targets.json',
+                'test-builder/targets/brave.test.json',
             },
         )
 
@@ -91,9 +109,12 @@ class ComputeFreshOutputTest(unittest.TestCase):
 
     def test_spec_disagreeing_with_gn_args_is_an_error(self):
         gn_args_registry = GnArgsRegistry()
-        builders_registry = BuildersRegistry(gn_args_registry)
+        builders_registry = BuildersRegistry(
+            gn_args_registry, TargetsRegistry()
+        )
         builders_registry.builder(
             name='mismatched',
+            builder_group='brave.test',
             builder_spec=builder_config.builder_spec(
                 gclient_config=builder_config.gclient_config(),
                 chromium_config=builder_config.chromium_config(
@@ -103,54 +124,63 @@ class ComputeFreshOutputTest(unittest.TestCase):
             gn_args=gn_args_registry.config(
                 args={'target_os': 'linux', 'target_cpu': 'x64'}
             ),
-            targets=builders_registry.targets(compile=[], tests=[]),
+            targets=TargetsRegistry().bundle(),
         )
         with self.assertRaisesRegex(ConfigError, 'does not match'):
             snapshot.compute_fresh_output(builders_registry, gn_args_registry)
 
+    def test_output_reads_back(self):
+        builders_registry, gn_args_registry = _make_registries()
+        output_dir = testing_support.use_output_dir(self)
+        snapshot.write_snapshot(builders_registry, gn_args_registry, output_dir)
+        output = generated_output.GeneratedBuilder('test-builder').read()
+        self.assertEqual(
+            output.builder_spec,
+            {
+                'builder_group': 'brave.test',
+                # Unset fields (build_config, host_platform) are left out.
+                'chromium_config': {
+                    'target_arch': 'intel',
+                    'target_bits': 64,
+                    'target_platform': 'linux',
+                },
+                'gclient_config': {
+                    'target_os': ['android', 'linux'],
+                    'target_cpu': [],
+                    # Sorted by path.
+                    'custom_deps': {
+                        'src/a': 'https://a.example/a.git',
+                        'src/b': None,
+                    },
+                    'custom_vars': {'checkout_x': True},
+                },
+            },
+        )
+        self.assertEqual(
+            output.gn_args, gn_args_registry.resolve('test-builder')
+        )
+
     def test_properties_json_is_the_builds_input_properties(self):
         builders_registry, gn_args_registry = _make_registries()
-        fresh = snapshot.compute_fresh_output(
-            builders_registry, gn_args_registry
+        properties = json.loads(
+            snapshot.compute_fresh_output(builders_registry, gn_args_registry)[
+                'test-builder/properties.json'
+            ]
         )
-        builder_id = {'builder': 'test-builder'}
+        self.assertEqual(properties['builder_group'], 'brave.test')
+        self.assertEqual(properties['recipe'], 'brave_builder')
+        self.assertIn(
+            'builder_config', properties['$brave_tests_builder_config']
+        )
         self.assertEqual(
-            json.loads(fresh['test-builder/properties.json']),
-            {
-                '$brave_tests_builder_config': {
-                    'builder_config': {
-                        'builder_db': {
-                            'entries': [
-                                {
-                                    'builder_id': builder_id,
-                                    'builder_spec': {
-                                        'builder_group': 'brave.test',
-                                        # Unset fields (build_config,
-                                        # host_platform) are left out.
-                                        'chromium_config': {
-                                            'target_arch': 'intel',
-                                            'target_bits': 64,
-                                            'target_platform': 'linux',
-                                        },
-                                        'gclient_config': {
-                                            'target_os': ['android', 'linux'],
-                                            'target_cpu': [],
-                                        },
-                                    },
-                                }
-                            ]
-                        },
-                        'builder_ids': [builder_id],
-                    },
-                },
-                'builder_group': 'brave.test',
-                'recipe': 'brave_builder',
-            },
+            properties['$brave_siso'], {'remote_jobs': 500, 'reapi_priority': 2}
         )
 
     def test_properties_json_needs_a_builder_group(self):
         gn_args_registry = GnArgsRegistry()
-        builders_registry = BuildersRegistry(gn_args_registry)
+        builders_registry = BuildersRegistry(
+            gn_args_registry, TargetsRegistry()
+        )
         builders_registry.builder(
             name='ungrouped',
             builder_spec=builder_config.builder_spec(
@@ -162,7 +192,7 @@ class ComputeFreshOutputTest(unittest.TestCase):
             gn_args=gn_args_registry.config(
                 args={'target_os': 'linux', 'target_cpu': 'x64'}
             ),
-            targets=builders_registry.targets(compile=[], tests=[]),
+            targets=TargetsRegistry().bundle(),
         )
         with self.assertRaisesRegex(ConfigError, 'builder_group must be set'):
             snapshot.compute_fresh_output(builders_registry, gn_args_registry)
@@ -179,7 +209,7 @@ class ComputeFreshOutputTest(unittest.TestCase):
                 ),
             ),
             gn_args=gn_args_registry.config(configs=['linux', 'x64']),
-            targets=builders_registry.targets(compile=[], tests=[]),
+            targets=TargetsRegistry().bundle(),
         )
         fresh = snapshot.compute_fresh_output(
             builders_registry, gn_args_registry
@@ -203,16 +233,89 @@ class ComputeFreshOutputTest(unittest.TestCase):
         self.assertEqual(
             json.loads(fresh['test-builder/targets.json']),
             {
-                'compile': ['brave:all'],
+                'compile': ['chrome', 'a_test'],
                 'tests': ['a_test'],
             },
         )
+        # The test's arguments, then its bundle's mixin's.
+        self.assertEqual(
+            json.loads(fresh['test-builder/targets/brave.test.json']),
+            {
+                'test-builder': {
+                    'additional_compile_targets': ['chrome'],
+                    'gtest_tests': [
+                        {
+                            'name': 'a_test',
+                            'test': 'a_test',
+                            'args': ['--a', '--b'],
+                        }
+                    ],
+                }
+            },
+        )
+
+    def test_tests_take_the_filter_files_that_apply_to_them(self):
+        src_dir = testing_support.use_src_dir(self)
+        for path in (
+            'brave/test/filters/a_test.filter',
+            'brave/test/filters/generated/a_test-linux.filter',
+            'brave/test/filters/a_test-linux-x64.filter',
+            'brave/test/filters/a_test-linux-asan.filter',
+            # Not this build's sanitiser, nor its suite.
+            'brave/test/filters/a_test-linux-msan.filter',
+            'brave/test/filters/other_test.filter',
+            'testing/buildbot/filters/linux.asan.a_test.filter',
+        ):
+            (src_dir / path).parent.mkdir(parents=True, exist_ok=True)
+            (src_dir / path).write_text('')
+        builders_registry, gn_args_registry = _make_registries()
+        fresh = snapshot.compute_fresh_output(
+            builders_registry, gn_args_registry
+        )
+        (test,) = json.loads(fresh['test-builder/targets/brave.test.json'])[
+            'test-builder'
+        ]['gtest_tests']
+        self.assertEqual(
+            test['args'],
+            [
+                '--a',
+                '--b',
+                '--test-launcher-filter-file='
+                '../../brave/test/filters/a_test.filter;'
+                '../../brave/test/filters/generated/a_test-linux.filter;'
+                '../../brave/test/filters/a_test-linux-x64.filter;'
+                '../../brave/test/filters/a_test-linux-asan.filter;'
+                '../../testing/buildbot/filters/linux.asan.a_test.filter',
+            ],
+        )
 
     def test_no_builders_means_no_output(self):
-        builders_registry = BuildersRegistry(GnArgsRegistry())
+        builders_registry = BuildersRegistry(
+            GnArgsRegistry(), TargetsRegistry()
+        )
         self.assertEqual(
             snapshot.compute_fresh_output(builders_registry, GnArgsRegistry()),
             {},
+        )
+
+
+class RenderIsolateMapTest(unittest.TestCase):
+    def test_lists_every_binary_as_runtest_reads_it(self):
+        targets_registry = TargetsRegistry()
+        targets_registry.binaries.windowed_test_launcher(
+            name='w', label='//t:w'
+        )
+        targets_registry.binaries.console_test_launcher(name='c', label='//t:c')
+        rendered = generated_output.render_isolate_map(targets_registry)
+        self.assertTrue(
+            rendered.startswith('# Generated by `bots.py snapshot`')
+        )
+        self.assertEqual(
+            ast.literal_eval(rendered),
+            {
+                'c': {'label': '//t:c', 'type': 'console_test_launcher'},
+                'w': {'label': '//t:w', 'type': 'windowed_test_launcher'},
+            },
         )
 
 
@@ -236,6 +339,7 @@ class WriteSnapshotTest(unittest.TestCase):
                     'test-builder/properties.json',
                     'test-builder/sync.json',
                     'test-builder/targets.json',
+                    'test-builder/targets/brave.test.json',
                 ],
             )
             self.assertEqual(
@@ -264,6 +368,7 @@ class WriteSnapshotTest(unittest.TestCase):
                     'test-builder/properties.json',
                     'test-builder/sync.json',
                     'test-builder/targets.json',
+                    'test-builder/targets/brave.test.json',
                 ],
             )
 

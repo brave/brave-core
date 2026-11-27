@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.71"
 name = "rustls"
-version = "0.23.35"
+version = "0.23.46"
 build = "build.rs"
 exclude = [
     "src/testdata",
@@ -112,7 +112,7 @@ harness = false
 required-features = ["ring"]
 
 [dependencies.aws-lc-rs]
-version = "1.14"
+version = "1.18"
 optional = true
 default-features = false
 
@@ -161,7 +161,7 @@ version = "2.5.0"
 default-features = false
 
 [dependencies.webpki]
-version = "0.103.5"
+version = "0.103.14"
 features = ["alloc"]
 default-features = false
 package = "rustls-webpki"
@@ -170,7 +170,7 @@ package = "rustls-webpki"
 version = "1.8"
 
 [dependencies.zlib-rs]
-version = "0.5"
+version = "0.6"
 optional = true
 
 [dev-dependencies.base64]

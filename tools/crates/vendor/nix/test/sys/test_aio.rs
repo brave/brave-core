@@ -2,7 +2,7 @@ use std::{
     io::{Read, Seek, Write},
     ops::Deref,
     os::unix::io::{AsFd, AsRawFd, BorrowedFd},
-    pin::Pin,
+    pin::{pin, Pin},
     sync::atomic::{AtomicBool, Ordering},
     thread, time,
 };
@@ -70,15 +70,10 @@ mod aio_fsync {
     #[test]
     #[cfg_attr(any(target_os = "android", target_os = "linux"), ignore)]
     fn error() {
-        use std::mem;
-
-        const INITIAL: &[u8] = b"abcdef123456";
-        // Create an invalid AioFsyncMode
-        let mode = unsafe { mem::transmute::<i32, AioFsyncMode>(666) };
-        let mut f = tempfile().unwrap();
-        f.write_all(INITIAL).unwrap();
-        let mut aiof =
-            Box::pin(AioFsync::new(f.as_fd(), mode, 0, SigevNotify::SigevNone));
+        let mode = AioFsyncMode::O_SYNC;
+        // Operate on an invalid file descriptor.  Should get EBADF
+        let fd = unsafe { BorrowedFd::borrow_raw(i32::MAX) };
+        let mut aiof = pin!(AioFsync::new(fd, mode, 0, SigevNotify::SigevNone));
         let err = aiof.as_mut().submit();
         err.expect_err("assertion failed");
     }
@@ -89,7 +84,7 @@ mod aio_fsync {
         const INITIAL: &[u8] = b"abcdef123456";
         let mut f = tempfile().unwrap();
         f.write_all(INITIAL).unwrap();
-        let mut aiof = Box::pin(AioFsync::new(
+        let mut aiof = pin!(AioFsync::new(
             f.as_fd(),
             AioFsyncMode::O_SYNC,
             0,
@@ -139,7 +134,7 @@ mod aio_read {
         f.write_all(INITIAL).unwrap();
         let fd = f.as_fd();
         let mut aior =
-            Box::pin(AioRead::new(fd, 2, &mut rbuf, 0, SigevNotify::SigevNone));
+            pin!(AioRead::new(fd, 2, &mut rbuf, 0, SigevNotify::SigevNone));
         aior.as_mut().submit().unwrap();
 
         aior.as_mut().cancel().unwrap();
@@ -160,7 +155,7 @@ mod aio_read {
         let mut rbuf = vec![0; 4];
         let mut f = tempfile().unwrap();
         f.write_all(INITIAL).unwrap();
-        let mut aior = Box::pin(AioRead::new(
+        let mut aior = pin!(AioRead::new(
             f.as_fd(),
             -1, //an invalid offset
             &mut rbuf,
@@ -182,13 +177,10 @@ mod aio_read {
         f.write_all(INITIAL).unwrap();
         {
             let fd = f.as_fd();
-            let mut aior = Box::pin(AioRead::new(
-                fd,
-                2,
-                &mut rbuf,
-                0,
-                SigevNotify::SigevNone,
-            ));
+            let mut aior =
+                pin!(
+                    AioRead::new(fd, 2, &mut rbuf, 0, SigevNotify::SigevNone,)
+                );
             aior.as_mut().submit().unwrap();
 
             let err = poll_aio!(&mut aior);
@@ -269,7 +261,7 @@ mod aio_readv {
         f.write_all(INITIAL).unwrap();
         {
             let fd = f.as_fd();
-            let mut aior = Box::pin(AioReadv::new(
+            let mut aior = pin!(AioReadv::new(
                 fd,
                 2,
                 &mut rbufs,
@@ -325,13 +317,8 @@ mod aio_write {
         let wbuf: &[u8] = b"CDEF";
 
         let f = tempfile().unwrap();
-        let mut aiow = Box::pin(AioWrite::new(
-            f.as_fd(),
-            0,
-            wbuf,
-            0,
-            SigevNotify::SigevNone,
-        ));
+        let mut aiow =
+            pin!(AioWrite::new(f.as_fd(), 0, wbuf, 0, SigevNotify::SigevNone,));
         aiow.as_mut().submit().unwrap();
         let err = aiow.as_mut().error();
         assert!(err == Ok(()) || err == Err(Errno::EINPROGRESS));
@@ -356,7 +343,7 @@ mod aio_write {
         let mut f = tempfile().unwrap();
         f.write_all(INITIAL).unwrap();
         {
-            let mut aiow = Box::pin(AioWrite::new(
+            let mut aiow = pin!(AioWrite::new(
                 f.as_fd(),
                 2,
                 &wbuf,
@@ -419,7 +406,7 @@ mod aio_write {
         // Not I/O safe!  Deliberately create an invalid fd.
         let fd = unsafe { BorrowedFd::borrow_raw(666) };
         let wbuf = "CDEF".to_string().into_bytes();
-        let mut aiow = Box::pin(AioWrite::new(
+        let mut aiow = pin!(AioWrite::new(
             fd,
             0, //offset
             &wbuf,
@@ -479,7 +466,7 @@ mod aio_writev {
         let mut f = tempfile().unwrap();
         f.write_all(INITIAL).unwrap();
         {
-            let mut aiow = Box::pin(AioWritev::new(
+            let mut aiow = pin!(AioWritev::new(
                 f.as_fd(),
                 1,
                 &wbufs,
@@ -530,7 +517,7 @@ fn sigev_signal() {
     let mut f = tempfile().unwrap();
     f.write_all(INITIAL).unwrap();
     {
-        let mut aiow = Box::pin(AioWrite::new(
+        let mut aiow = pin!(AioWrite::new(
             f.as_fd(),
             2, //offset
             WBUF,
@@ -561,7 +548,7 @@ fn test_aio_cancel_all() {
     let wbuf: &[u8] = b"CDEF";
 
     let f = tempfile().unwrap();
-    let mut aiocb = Box::pin(AioWrite::new(
+    let mut aiocb = pin!(AioWrite::new(
         f.as_fd(),
         0, //offset
         wbuf,
@@ -589,7 +576,7 @@ fn test_aio_suspend() {
     let mut f = tempfile().unwrap();
     f.write_all(INITIAL).unwrap();
 
-    let mut wcb = Box::pin(AioWrite::new(
+    let mut wcb = pin!(AioWrite::new(
         f.as_fd(),
         2, //offset
         WBUF,
@@ -597,7 +584,7 @@ fn test_aio_suspend() {
         SigevNotify::SigevNone,
     ));
 
-    let mut rcb = Box::pin(AioRead::new(
+    let mut rcb = pin!(AioRead::new(
         f.as_fd(),
         8, //offset
         &mut rbuf,

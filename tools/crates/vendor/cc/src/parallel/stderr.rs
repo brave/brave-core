@@ -1,4 +1,6 @@
 #![cfg_attr(target_family = "wasm", allow(unused))]
+#[cfg(unix)]
+use std::os::unix::io::AsRawFd;
 /// Helpers functions for [`ChildStderr`].
 use std::{convert::TryInto, process::ChildStderr};
 
@@ -8,14 +10,14 @@ use crate::{Error, ErrorKind};
 compile_error!("Only unix and windows support non-blocking pipes! For other OSes, disable the parallel feature.");
 
 #[cfg(unix)]
-fn get_flags(fd: std::os::unix::io::RawFd) -> Result<i32, Error> {
-    let flags = unsafe { libc::fcntl(fd, libc::F_GETFL, 0) };
+fn get_flags(fd: std::os::unix::io::BorrowedFd<'_>) -> Result<i32, Error> {
+    let flags = unsafe { libc::fcntl(fd.as_raw_fd(), libc::F_GETFL, 0) };
     if flags == -1 {
         Err(Error::new(
             ErrorKind::IOError,
             format!(
                 "Failed to get flags for pipe {}: {}",
-                fd,
+                fd.as_raw_fd(),
                 std::io::Error::last_os_error()
             ),
         ))
@@ -25,13 +27,13 @@ fn get_flags(fd: std::os::unix::io::RawFd) -> Result<i32, Error> {
 }
 
 #[cfg(unix)]
-fn set_flags(fd: std::os::unix::io::RawFd, flags: std::os::raw::c_int) -> Result<(), Error> {
-    if unsafe { libc::fcntl(fd, libc::F_SETFL, flags) } == -1 {
+fn set_flags(fd: std::os::unix::io::BorrowedFd<'_>, flags: core::ffi::c_int) -> Result<(), Error> {
+    if unsafe { libc::fcntl(fd.as_raw_fd(), libc::F_SETFL, flags) } == -1 {
         Err(Error::new(
             ErrorKind::IOError,
             format!(
                 "Failed to set flags for pipe {}: {}",
-                fd,
+                fd.as_raw_fd(),
                 std::io::Error::last_os_error()
             ),
         ))
@@ -41,10 +43,10 @@ fn set_flags(fd: std::os::unix::io::RawFd, flags: std::os::raw::c_int) -> Result
 }
 
 #[cfg(unix)]
-pub fn set_non_blocking(pipe: &impl std::os::unix::io::AsRawFd) -> Result<(), Error> {
+pub fn set_non_blocking(pipe: &impl std::os::unix::io::AsFd) -> Result<(), Error> {
     // On Unix, switch the pipe to non-blocking mode.
     // On Windows, we have a different way to be non-blocking.
-    let fd = pipe.as_raw_fd();
+    let fd = pipe.as_fd();
 
     let flags = get_flags(fd)?;
     set_flags(fd, flags | libc::O_NONBLOCK)
@@ -79,7 +81,6 @@ pub fn bytes_available(stderr: &mut ChildStderr) -> Result<usize, Error> {
     }
     #[cfg(unix)]
     {
-        use std::os::unix::io::AsRawFd;
         if unsafe { libc::ioctl(stderr.as_raw_fd(), libc::FIONREAD, &mut bytes_available) } != 0 {
             return Err(Error::new(
                 ErrorKind::IOError,

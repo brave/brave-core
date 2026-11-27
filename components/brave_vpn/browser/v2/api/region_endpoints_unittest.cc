@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_vpn/browser/v2/api/region_endpoints.h"
 
-#include "base/values.h"
+#include "base/test/values_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_vpn::v2::endpoints {
@@ -17,9 +17,10 @@ constexpr char kTestRegionPrecision[] = "city-by-country";
 TEST(RegionEndpointsTest, GetHostnamesForRegionRequestBodyToValue) {
   const GetHostnamesForRegionRequestBody body{
       .region = kTestRegion, .region_precision = kTestRegionPrecision};
-  EXPECT_EQ(body.ToValue(), base::DictValue()
-                                .Set("region", kTestRegion)
-                                .Set("region-precision", kTestRegionPrecision));
+  EXPECT_EQ(body.ToValue(), base::test::ParseJsonDict(R"({
+    "region": "us-east",
+    "region-precision": "city-by-country"
+  })"));
 }
 
 }  // namespace brave_vpn::v2::endpoints

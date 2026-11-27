@@ -92,7 +92,7 @@ impl<'data> Iterator for RelocationIterator<'data> {
             if reloc != 0 {
                 return Some(Relocation {
                     virtual_address: self.virtual_address.wrapping_add((reloc & 0xfff) as u32),
-                    typ: reloc >> 12,
+                    typ: pe::BaseRelocationType(reloc >> 12),
                 });
             }
         }
@@ -105,5 +105,5 @@ pub struct Relocation {
     /// The virtual address of the relocation.
     pub virtual_address: u32,
     /// One of the `pe::IMAGE_REL_BASED_*` constants.
-    pub typ: u16,
+    pub typ: pe::BaseRelocationType,
 }

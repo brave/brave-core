@@ -91,7 +91,7 @@ TEST_F(ShieldsSettingsValuesTest, ControlTypeSettingTypeSuccess) {
 }
 
 #if !BUILDFLAG(IS_IOS)  // iOS doesn't support EXPECT_DEATH
-TEST_F(ShieldsSettingsValuesTest, ControlTypeSettingTypeFailure) {
+TEST(ShieldsSettingsValuesDeathTest, ControlTypeSettingTypeFailure) {
   using ControlTypeTrait = traits::SettingTraits<ControlType>;
   EXPECT_DEATH(ControlTypeTrait::To(static_cast<ControlType>(-1)), "");
 

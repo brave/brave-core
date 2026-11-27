@@ -1,7 +1,7 @@
 use bstr::{BStr, ByteSlice};
 
 /// Parse parts of a Git configuration key, like `remote.origin.url` or `core.bare`.
-pub trait AsKey {
+pub trait AsKey: Copy {
     /// Return a parsed key reference, containing all relevant parts of a key.
     /// For instance, `remote.origin.url` such key would yield access to `("remote", Some("origin"), "url")`
     /// while `user.name` would yield `("user", None, "name")`.
@@ -22,7 +22,7 @@ mod impls {
 
     use crate::key::{AsKey, KeyRef};
 
-    impl AsKey for String {
+    impl AsKey for &String {
         fn as_key(&self) -> KeyRef<'_> {
             self.try_as_key()
                 .unwrap_or_else(|| panic!("'{self}' is not a valid configuration key"))
@@ -44,7 +44,7 @@ mod impls {
         }
     }
 
-    impl AsKey for BString {
+    impl AsKey for &BString {
         fn as_key(&self) -> KeyRef<'_> {
             self.try_as_key()
                 .unwrap_or_else(|| panic!("'{self}' is not a valid configuration key"))

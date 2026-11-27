@@ -5,13 +5,14 @@
 
 package org.chromium.chrome.browser;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.clearInvocations;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import android.app.Activity;
+import android.content.Context;
 
 import androidx.test.filters.SmallTest;
 
@@ -22,7 +23,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -35,9 +35,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
+import org.chromium.components.embedder_support.view.ContentView;
 import org.chromium.third_party.android.swiperefresh.SwipeRefreshLayout;
-import org.chromium.third_party.android.swiperefresh.SwipeRefreshLayout.OnRefreshListener;
-import org.chromium.third_party.android.swiperefresh.SwipeRefreshLayout.OnResetListener;
 import org.chromium.ui.OverscrollAction;
 import org.chromium.ui.base.BackGestureEventSwipeEdge;
 import org.chromium.ui.test.util.BlankUiTestActivity;
@@ -46,10 +45,6 @@ import org.chromium.ui.test.util.BlankUiTestActivity;
 @RunWith(ChromeJUnit4ClassRunner.class)
 @CommandLineFlags.Add({ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE})
 @Batch(Batch.PER_CLASS)
-// TODO(https://github.com/brave/brave-browser/issues/59632): Remove mocking of Views/Activities.
-// Tests verify start() calls on SwipeRefreshLayout and capture its listeners, and a real
-// ContentView requires live WebContents. Upstream SwipeRefreshHandlerTest suppresses this too.
-@SuppressWarnings("DoNotMock")
 public class BraveSwipeRefreshHandlerTest {
     private static final int ACCESSIBILITY_SWIPE_REFRESH_STRING_ID =
             R.string.accessibility_swipe_refresh;
@@ -63,20 +58,26 @@ public class BraveSwipeRefreshHandlerTest {
 
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Mock private Tab mTab;
-    private OnRefreshListener mOnRefreshListener;
-    private OnResetListener mOnResetListener;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private StartCountingSwipeRefreshLayout mSwipeRefreshLayout;
     private final SwipeRefreshHandler.SwipeRefreshLayoutCreator mSwipeRefreshLayoutCreator =
             context -> {
-                mSwipeRefreshLayout = mock();
-                doAnswer((invocation) -> mOnRefreshListener = invocation.getArgument(0))
-                        .when(mSwipeRefreshLayout)
-                        .setOnRefreshListener(any());
-                doAnswer((invocation) -> mOnResetListener = invocation.getArgument(0))
-                        .when(mSwipeRefreshLayout)
-                        .setOnResetListener(any());
+                mSwipeRefreshLayout = new StartCountingSwipeRefreshLayout(context);
                 return mSwipeRefreshLayout;
             };
+
+    private static class StartCountingSwipeRefreshLayout extends SwipeRefreshLayout {
+        int mStartCount;
+
+        StartCountingSwipeRefreshLayout(Context context) {
+            super(context);
+        }
+
+        @Override
+        public boolean start() {
+            mStartCount++;
+            return super.start();
+        }
+    }
 
     @BeforeClass
     public static void setUpSuite() {
@@ -87,9 +88,19 @@ public class BraveSwipeRefreshHandlerTest {
 
     @Before
     public void setup() {
-        when(mTab.getContext()).thenReturn(activityTestRule.getActivity());
+        Activity activity = activityTestRule.getActivity();
+        when(mTab.getContext()).thenReturn(activity);
         when(mTab.getUserDataHost()).thenReturn(new UserDataHost());
-        when(mTab.getContentView()).thenReturn(mock());
+        ContentView contentView =
+                ThreadUtils.runOnUiThreadBlocking(
+                        () -> {
+                            ContentView view =
+                                    ContentView.createContentView(
+                                            activity, /* webContents= */ null);
+                            activity.setContentView(view);
+                            return view;
+                        });
+        when(mTab.getContentView()).thenReturn(contentView);
     }
 
     @Test
@@ -113,7 +124,7 @@ public class BraveSwipeRefreshHandlerTest {
         triggerRefresh(braveHandler);
 
         assertNotNull(mSwipeRefreshLayout);
-        Mockito.verify(mSwipeRefreshLayout, Mockito.times(1)).start();
+        assertEquals(1, mSwipeRefreshLayout.mStartCount);
     }
 
     @Test
@@ -125,13 +136,11 @@ public class BraveSwipeRefreshHandlerTest {
         triggerRefresh(braveHandler);
 
         assertNotNull(mSwipeRefreshLayout);
-        Mockito.verify(mSwipeRefreshLayout, Mockito.times(1)).start();
-
-        clearInvocations(mSwipeRefreshLayout);
+        assertEquals(1, mSwipeRefreshLayout.mStartCount);
 
         braveHandler.setIgnorePullToRefresh(true);
         triggerRefresh(braveHandler);
-        Mockito.verify(mSwipeRefreshLayout, Mockito.never()).start();
+        assertEquals(1, mSwipeRefreshLayout.mStartCount);
     }
 
     /**
@@ -153,7 +162,6 @@ public class BraveSwipeRefreshHandlerTest {
         for (int numPullSteps = 0; numPullSteps < 10; numPullSteps++) {
             ThreadUtils.runOnUiThreadBlocking(() -> handler.pull(0, distancePx));
         }
-        if (mOnRefreshListener != null) mOnRefreshListener.onRefresh();
     }
 
     private BraveSwipeRefreshHandler createBraveHandler() {

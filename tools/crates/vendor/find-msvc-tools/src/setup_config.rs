@@ -167,7 +167,7 @@ impl SetupConfiguration {
             CoCreateInstance(
                 &CLSID_SetupConfiguration,
                 null_mut(),
-                CLSCTX_ALL,
+                CLSCTX_ALL.try_into().unwrap(),
                 &ISetupConfiguration::uuidof(),
                 &mut obj,
             )
@@ -175,7 +175,7 @@ impl SetupConfiguration {
         if err < 0 {
             return Err(err);
         }
-        let obj = unsafe { ComPtr::from_raw(obj as *mut ISetupConfiguration) };
+        let obj = unsafe { ComPtr::from_raw(obj.cast()) };
         Ok(SetupConfiguration(obj))
     }
     pub fn get_instance_for_current_process(&self) -> Result<SetupInstance, i32> {

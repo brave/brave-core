@@ -9,9 +9,11 @@ use core::ops;
 pub use alloc_stdlib::{HeapAlloc, StandardAlloc};
 use alloc_stdlib::HeapPrealloc;
 mod tests;
+#[cfg(feature="unsafe")]
 extern {
   fn calloc(n_elem : usize, el_size : usize) -> *mut u8;
 }
+#[cfg(feature="unsafe")]
 extern {
   fn free(ptr : *mut u8);
 }
@@ -25,6 +27,7 @@ use alloc_no_stdlib::Allocator;
 use alloc_no_stdlib::StackAllocator;
 
 use alloc_no_stdlib::bzero;
+#[cfg(feature="unsafe")]
 declare_stack_allocator_struct!(CallocAllocatedFreelist4, 4, calloc);
 declare_stack_allocator_struct!(StackAllocatedFreelist16, 16, stack);
 
@@ -54,7 +57,8 @@ fn show_heap_prealloc() {
   }
 }
 
-fn main() {
+#[cfg(feature="unsafe")]
+fn show_calloc() {
   let mut global_buffer = unsafe {define_allocator_memory_pool!(4, u8, [0; 1024 * 1024 * 200], calloc)};
   {
   let gbref = &mut global_buffer;
@@ -82,7 +86,13 @@ fn main() {
   }
   }
   }
+}
 
+#[cfg(not(feature="unsafe"))]
+fn show_calloc() {}
+
+fn main() {
+  show_calloc();
 
   let mut stack_global_buffer = define_allocator_memory_pool!(16, u8, [0; 1024 * 1024], stack);
   let mut stackallocator = StackAllocatedFreelist16::<u8>::new_allocator(&mut stack_global_buffer, bzero);

@@ -90,6 +90,11 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   ~WalletDataFilesInstallerUnitTest() override = default;
 
   void SetUp() override {
+    // Other wallet tests can unlock the process-wide installer or populate the
+    // registry before this fixture runs.
+    installer().Reset();
+    registry()->ResetForTesting();
+
     RegisterProfilePrefs(prefs_.registry());
     RegisterLocalStatePrefs(local_state_.registry());
     RegisterProfilePrefsForMigration(prefs_.registry());

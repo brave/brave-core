@@ -1,33 +1,8 @@
 //!
 #![allow(clippy::empty_docs)]
-use crate::{
-    object,
-    object::{peel, Kind},
-    Commit, Object, Tree,
-};
+use gix_error::bail;
 
-///
-pub mod to_kind {
-    mod error {
-
-        use crate::object;
-
-        /// The error returned by [`Object::peel_to_kind()`][crate::Object::peel_to_kind()].
-        #[derive(Debug, thiserror::Error)]
-        #[allow(missing_docs)]
-        pub enum Error {
-            #[error(transparent)]
-            FindExistingObject(#[from] object::find::existing::Error),
-            #[error("Last encountered object {oid} was {actual} while trying to peel to {expected}")]
-            NotFound {
-                oid: gix_hash::Prefix,
-                actual: object::Kind,
-                expected: object::Kind,
-            },
-        }
-    }
-    pub use error::Error;
-}
+use crate::{Commit, Object, Result, Tree, object::Kind};
 
 impl<'repo> Object<'repo> {
     // TODO: tests
@@ -35,7 +10,7 @@ impl<'repo> Object<'repo> {
     ///
     /// Note that this object doesn't necessarily have to be the end of the chain.
     /// Typical values are [`Kind::Commit`] or [`Kind::Tree`].
-    pub fn peel_to_kind(mut self, kind: Kind) -> Result<Self, peel::to_kind::Error> {
+    pub fn peel_to_kind(mut self, kind: Kind) -> Result<Self> {
         loop {
             match self.kind {
                 our_kind if kind == our_kind => {
@@ -58,11 +33,11 @@ impl<'repo> Object<'repo> {
                     self = repo.find_object(target_id)?;
                 }
                 Kind::Tree | Kind::Blob => {
-                    return Err(peel::to_kind::Error::NotFound {
-                        oid: self.id().shorten().unwrap_or_else(|_| self.id.into()),
-                        actual: self.kind,
-                        expected: kind,
-                    })
+                    bail!(gix_error::validation(format!(
+                        "Last encountered object {} was {} while trying to peel to {kind}",
+                        self.id().shorten().unwrap_or_else(|_| self.id.into()),
+                        self.kind,
+                    )));
                 }
             }
         }
@@ -71,14 +46,14 @@ impl<'repo> Object<'repo> {
     /// Peel this object into a tree and return it, if this is possible.
     ///
     /// This will follow tag objects and commits until their tree is reached.
-    pub fn peel_to_tree(self) -> Result<Tree<'repo>, peel::to_kind::Error> {
+    pub fn peel_to_tree(self) -> Result<Tree<'repo>> {
         Ok(self.peel_to_kind(gix_object::Kind::Tree)?.into_tree())
     }
 
     /// Peel this object into a commit and return it, if this is possible.
     ///
     /// This will follow tag objects until a commit is reached.
-    pub fn peel_to_commit(self) -> Result<Commit<'repo>, peel::to_kind::Error> {
+    pub fn peel_to_commit(self) -> Result<Commit<'repo>> {
         Ok(self.peel_to_kind(gix_object::Kind::Commit)?.into_commit())
     }
 
@@ -87,7 +62,7 @@ impl<'repo> Object<'repo> {
     ///
     /// Note that this method is different from [`peel_to_kind(…)`][Object::peel_to_kind()] as it won't
     /// peel commits to their tree, but handles tags only.
-    pub fn peel_tags_to_end(mut self) -> Result<Self, object::find::existing::Error> {
+    pub fn peel_tags_to_end(mut self) -> Result<Self> {
         loop {
             match self.kind {
                 Kind::Commit | Kind::Tree | Kind::Blob => break Ok(self),

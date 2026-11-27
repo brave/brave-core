@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_strip_view.cc b/chrome/browser/ui/views/tabs/common/tab_strip_view.cc
-index 50da31fe97cf843b61498fa9ed2e78ef95c42e50..7438237d5c5ca655a5e757edeb56bbf788c5431f 100644
+index 1d9433d570defd35c52f9b9c57b1b300af887bcd..fb8887e4bfd3669d7dd4942379049039a529f329 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_strip_view.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_strip_view.cc
-@@ -303,6 +303,8 @@ void TabStripView::OnChildMoved(TabCollectionNode* moved_node) {
+@@ -469,6 +469,8 @@ void TabStripView::OnChildMoved(TabCollectionNode* moved_node) {
  
    if (is_active_tab || has_focus) {
      switch (moved_node->type()) {
@@ -11,3 +11,29 @@ index 50da31fe97cf843b61498fa9ed2e78ef95c42e50..7438237d5c5ca655a5e757edeb56bbf7
        case TabCollectionNode::Type::TAB: {
          const tabs::TabInterface* tab =
              std::get<tabs::ConstDanglingUntriagedTabInterface>(
+@@ -781,8 +783,14 @@ void TabStripView::SetScrollViewProperties(views::ScrollView* scroll_view) {
+     scroll_view->SetOverflowGradientMask(
+         views::ScrollView::GradientDirection::kVertical);
+     scroll_view->SetVerticalScrollBar(
+-        std::make_unique<VerticalTabStripScrollBar>(
+-            collection_node_->GetController()->GetStateController()));
++        CreateBraveVerticalTabStripScrollBar(
++        collection_node_->GetController()->GetStateController(),
++        collection_node_->GetController()
++            ->GetBrowserView()
++            ->GetProfile()
++            ->GetPrefs()));
++    scroll_view->SetVerticalScrollBarMode(
++        GetBraveVerticalTabStripScrollBarMode(scroll_view));
+   } else {
+     scroll_view->SetHorizontalScrollBarMode(
+         views::ScrollView::ScrollBarMode::kHiddenButEnabled);
+@@ -991,7 +999,7 @@ void TabStripView::EnableOverflowVisuals(views::ScrollView* scroll_view) {
+   if (orientation_ == TabStripOrientation::kVertical) {
+     scroll_view->SetDrawOverflowIndicator(true);
+     scroll_view->SetVerticalScrollBarMode(
+-        views::ScrollView::ScrollBarMode::kEnabled);
++        GetBraveVerticalTabStripScrollBarMode(scroll_view));
+ 
+     // Restore normal VerticalTabStripScrollBar scrollbar behavior.
+     if (auto* scroll_bar = views::AsViewClass<VerticalTabStripScrollBar>(

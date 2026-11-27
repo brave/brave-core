@@ -3,7 +3,7 @@
 [![](https://img.shields.io/crates/v/gimli.svg) ![](https://img.shields.io/crates/d/gimli.svg)](https://crates.io/crates/gimli)
 [![](https://docs.rs/gimli/badge.svg)](https://docs.rs/gimli/)
 [![Build Status](https://github.com/gimli-rs/gimli/workflows/Rust/badge.svg)](https://github.com/gimli-rs/gimli/actions)
-[![Coverage Status](https://coveralls.io/repos/github/gimli-rs/gimli/badge.svg?branch=master)](https://coveralls.io/github/gimli-rs/gimli?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/gimli-rs/gimli/badge.svg?branch=main)](https://coveralls.io/github/gimli-rs/gimli?branch=main)
 
 `gimli` is a library for reading and writing the
 [DWARF debugging format](https://dwarfstd.org/).
@@ -31,10 +31,7 @@ To add a `gimli` dependency to your `Cargo.toml`, run:
 $ cargo add gimli
 ```
 
-The minimum supported Rust version is:
-
-* 1.60.0 for the `read` feature and its dependencies.
-* 1.65.0 for other features.
+The minimum supported Rust version is 1.88.
 
 ## Documentation
 
@@ -51,20 +48,12 @@ The minimum supported Rust version is:
   * [A simple DWARF converter](./crates/examples/src/bin/simple_convert.rs)
     to read DWARF sections then write them back out again.
 
+  * [A DWARF converter](./crates/examples/src/bin/convert.rs) that modifies
+    the DWARF by removing entries for dead code.
+
   * [A `dwarfdump` clone](./crates/examples/src/bin/dwarfdump.rs)
 
   * [An `addr2line` clone](https://github.com/gimli-rs/addr2line)
-
-  * [`ddbug`](https://github.com/gimli-rs/ddbug), a utility giving insight into
-    code generation by making debugging information readable.
-
-  * [`dwprod`](https://github.com/fitzgen/dwprod), a tiny utility to list the
-    compilers used to create each compilation unit within a shared library or
-    executable (via `DW_AT_producer`).
-
-  * [`dwarf-validate`](./crates/examples/src/bin/dwarf-validate.rs), a program to validate the
-    integrity of some DWARF and its references between sections and compilation
-    units.
 
 ## License
 

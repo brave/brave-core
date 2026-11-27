@@ -111,21 +111,54 @@
 //! alive until that write completes but otherwise shouldn't hinder anything
 //! else.
 
-use {
-    crate::rt::async_support::waitable::{WaitableOp, WaitableOperation},
-    crate::rt::async_support::ReturnCode,
-    crate::rt::Cleanup,
-    std::{
-        alloc::Layout,
-        fmt,
-        future::{Future, IntoFuture},
-        marker,
-        pin::Pin,
-        ptr,
-        sync::atomic::{AtomicU32, Ordering::Relaxed},
-        task::{Context, Poll},
-    },
-};
+use crate::rt::Cleanup;
+use crate::rt::async_support::ReturnCode;
+use crate::rt::async_support::try_lock::TryLock;
+use crate::rt::async_support::waitable::{WaitableOp, WaitableOperation};
+use alloc::sync::Arc;
+use alloc::task::Wake;
+use core::alloc::Layout;
+use core::fmt;
+use core::future::{Future, IntoFuture};
+use core::marker;
+use core::mem::{self, ManuallyDrop};
+use core::pin::Pin;
+use core::ptr;
+use core::sync::atomic::{AtomicU32, Ordering::Relaxed};
+use core::task::{Context, Poll, Waker};
+
+/// Helper trait which encapsulates the various operations which can happen
+/// with a future.
+pub trait FutureOps {
+    /// The Rust type that's sent or received on this future.
+    type Payload;
+
+    /// The `future.new` intrinsic.
+    fn new(&mut self) -> u64;
+    /// The canonical ABI layout of the type that this future is
+    /// sending/receiving.
+    fn elem_layout(&mut self) -> Layout;
+    /// Converts a Rust type to its canonical ABI representation.
+    unsafe fn lower(&mut self, payload: Self::Payload, dst: *mut u8);
+    /// Used to deallocate any Rust-owned lists in the canonical ABI
+    /// representation for when a value is successfully sent but needs to be
+    /// cleaned up.
+    unsafe fn dealloc_lists(&mut self, dst: *mut u8);
+    /// Converts from the canonical ABI representation to a Rust value.
+    unsafe fn lift(&mut self, dst: *mut u8) -> Self::Payload;
+    /// The `future.write` intrinsic
+    unsafe fn start_write(&mut self, future: u32, val: *const u8) -> u32;
+    /// The `future.read` intrinsic
+    unsafe fn start_read(&mut self, future: u32, val: *mut u8) -> u32;
+    /// The `future.cancel-read` intrinsic
+    unsafe fn cancel_read(&mut self, future: u32) -> u32;
+    /// The `future.cancel-write` intrinsic
+    unsafe fn cancel_write(&mut self, future: u32) -> u32;
+    /// The `future.drop-readable` intrinsic
+    unsafe fn drop_readable(&mut self, future: u32);
+    /// The `future.drop-writable` intrinsic
+    unsafe fn drop_writable(&mut self, future: u32);
+}
 
 /// Function table used for [`FutureWriter`] and [`FutureReader`]
 ///
@@ -178,6 +211,44 @@ pub struct FutureVtable<T> {
     pub new: unsafe extern "C" fn() -> u64,
 }
 
+impl<T> FutureOps for &FutureVtable<T> {
+    type Payload = T;
+
+    fn new(&mut self) -> u64 {
+        unsafe { (self.new)() }
+    }
+    fn elem_layout(&mut self) -> Layout {
+        self.layout
+    }
+    unsafe fn lower(&mut self, payload: Self::Payload, dst: *mut u8) {
+        unsafe { (self.lower)(payload, dst) }
+    }
+    unsafe fn dealloc_lists(&mut self, dst: *mut u8) {
+        unsafe { (self.dealloc_lists)(dst) }
+    }
+    unsafe fn lift(&mut self, dst: *mut u8) -> Self::Payload {
+        unsafe { (self.lift)(dst) }
+    }
+    unsafe fn start_write(&mut self, future: u32, val: *const u8) -> u32 {
+        unsafe { (self.start_write)(future, val) }
+    }
+    unsafe fn start_read(&mut self, future: u32, val: *mut u8) -> u32 {
+        unsafe { (self.start_read)(future, val) }
+    }
+    unsafe fn cancel_read(&mut self, future: u32) -> u32 {
+        unsafe { (self.cancel_read)(future) }
+    }
+    unsafe fn cancel_write(&mut self, future: u32) -> u32 {
+        unsafe { (self.cancel_write)(future) }
+    }
+    unsafe fn drop_readable(&mut self, future: u32) {
+        unsafe { (self.drop_readable)(future) }
+    }
+    unsafe fn drop_writable(&mut self, future: u32) {
+        unsafe { (self.drop_writable)(future) }
+    }
+}
+
 /// Helper function to create a new read/write pair for a component model
 /// future.
 ///
@@ -189,14 +260,29 @@ pub unsafe fn future_new<T>(
     default: fn() -> T,
     vtable: &'static FutureVtable<T>,
 ) -> (FutureWriter<T>, FutureReader<T>) {
+    let (tx, rx) = unsafe { raw_future_new(vtable) };
+    (unsafe { FutureWriter::new(tx, default) }, rx)
+}
+
+/// Helper function to create a new read/write pair for a component model
+/// future.
+///
+/// # Unsafety
+///
+/// This function is unsafe as it requires the functions within `vtable` to
+/// correctly uphold the contracts of the component model.
+pub unsafe fn raw_future_new<O>(mut ops: O) -> (RawFutureWriter<O>, RawFutureReader<O>)
+where
+    O: FutureOps + Clone,
+{
     unsafe {
-        let handles = (vtable.new)();
+        let handles = ops.new();
         let reader = handles as u32;
         let writer = (handles >> 32) as u32;
         rtdebug!("future.new() = [{writer}, {reader}]");
         (
-            FutureWriter::new(writer, default, vtable),
-            FutureReader::new(reader, vtable),
+            RawFutureWriter::new(writer, ops.clone()),
+            RawFutureReader::new(reader, ops),
         )
     }
 }
@@ -206,8 +292,7 @@ pub unsafe fn future_new<T>(
 /// A [`FutureWriter`] can be used to send a single value of `T` to the other
 /// end of a `future`. In a sense this is similar to a oneshot channel in Rust.
 pub struct FutureWriter<T: 'static> {
-    handle: u32,
-    vtable: &'static FutureVtable<T>,
+    raw: ManuallyDrop<RawFutureWriter<&'static FutureVtable<T>>>,
 
     /// Whether or not a value should be written during `drop`.
     ///
@@ -230,13 +315,11 @@ impl<T> FutureWriter<T> {
     ///
     /// This function is unsafe as it requires the functions within `vtable` to
     /// correctly uphold the contracts of the component model.
-    #[doc(hidden)]
-    pub unsafe fn new(handle: u32, default: fn() -> T, vtable: &'static FutureVtable<T>) -> Self {
+    unsafe fn new(raw: RawFutureWriter<&'static FutureVtable<T>>, default: fn() -> T) -> Self {
         Self {
-            handle,
+            raw: ManuallyDrop::new(raw),
             default,
             should_write_default_value: true,
-            vtable,
         }
     }
 
@@ -267,17 +350,18 @@ impl<T> FutureWriter<T> {
     /// will be lost. There is also [`FutureWrite::cancel`] which can be used to
     /// possibly re-acquire `value` and `self` if the operation was cancelled.
     /// In such a situation the operation can be retried at a future date.
-    pub fn write(self, value: T) -> FutureWrite<T> {
-        FutureWrite {
-            op: WaitableOperation::new((self, value)),
-        }
+    pub fn write(mut self, value: T) -> FutureWrite<T> {
+        let raw = unsafe { ManuallyDrop::take(&mut self.raw).write(value) };
+        let default = self.default;
+        mem::forget(self);
+        FutureWrite { raw, default }
     }
 }
 
 impl<T> fmt::Debug for FutureWriter<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("FutureWriter")
-            .field("handle", &self.handle)
+            .field("handle", &self.raw.handle)
             .finish()
     }
 }
@@ -285,32 +369,18 @@ impl<T> fmt::Debug for FutureWriter<T> {
 impl<T> Drop for FutureWriter<T> {
     fn drop(&mut self) {
         // If a value has not yet been written into this writer than that must
-        // be done so now. Perform a "clone" of `self` by moving our data into a
-        // subtask, but ensure that `should_write_default_value` is set to
-        // `false` to avoid infinite loops by accident. Once the task is spawned
-        // we're done and the subtask's destructor of the closed-over
-        // `FutureWriter` will be responsible for performing the
-        // `drop-writable` call below.
+        // be done so now. Take the `raw` writer and perform the write via a
+        // waker that drives the future.
         //
-        // Note, though, that if `should_write_default_value` is `false` then a
-        // write has already happened and we can go ahead and just synchronously
-        // drop this writer as we would any other handle.
+        // If `should_write_default_value` is `false` then a write has already
+        // happened and we can go ahead and just synchronously drop this writer
+        // as we would any other handle.
         if self.should_write_default_value {
-            let clone = FutureWriter {
-                handle: self.handle,
-                default: self.default,
-                should_write_default_value: false,
-                vtable: self.vtable,
-            };
-            crate::rt::async_support::spawn(async move {
-                let value = (clone.default)();
-                let _ = clone.write(value).await;
-            });
+            let raw = unsafe { ManuallyDrop::take(&mut self.raw) };
+            let value = (self.default)();
+            raw.write_and_forget(value);
         } else {
-            unsafe {
-                rtdebug!("future.drop-writable({})", self.handle);
-                (self.vtable.drop_writable)(self.handle);
-            }
+            unsafe { ManuallyDrop::drop(&mut self.raw) }
         }
     }
 }
@@ -319,10 +389,208 @@ impl<T> Drop for FutureWriter<T> {
 ///
 /// This is returned by [`FutureWriter::write`].
 pub struct FutureWrite<T: 'static> {
-    op: WaitableOperation<FutureWriteOp<T>>,
+    raw: RawFutureWrite<&'static FutureVtable<T>>,
+    default: fn() -> T,
 }
 
-struct FutureWriteOp<T>(marker::PhantomData<T>);
+/// Result of [`FutureWrite::cancel`].
+#[derive(Debug)]
+pub enum FutureWriteCancel<T: 'static> {
+    /// The cancel request raced with the receipt of the sent value, and the
+    /// value was actually sent. Neither the value nor the writer are made
+    /// available here as both are gone.
+    AlreadySent,
+
+    /// The other end was dropped before cancellation happened.
+    ///
+    /// In this case the original value is returned back to the caller but the
+    /// writer itself is not longer accessible as it's no longer usable.
+    Dropped(T),
+
+    /// The pending write was successfully cancelled and the value being written
+    /// is returned along with the writer to resume again in the future if
+    /// necessary.
+    Cancelled(T, FutureWriter<T>),
+}
+
+impl<T: 'static> Future for FutureWrite<T> {
+    type Output = Result<(), FutureWriteError<T>>;
+
+    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
+        self.pin_project().poll(cx)
+    }
+}
+
+impl<T: 'static> FutureWrite<T> {
+    fn pin_project(self: Pin<&mut Self>) -> Pin<&mut RawFutureWrite<&'static FutureVtable<T>>> {
+        // SAFETY: we've chosen that when `Self` is pinned that it translates to
+        // always pinning the inner field, so that's codified here.
+        unsafe { Pin::new_unchecked(&mut self.get_unchecked_mut().raw) }
+    }
+
+    /// Cancel this write if it hasn't already completed.
+    ///
+    /// This method can be used to cancel a write-in-progress and re-acquire
+    /// the writer and the value being sent. Note that the write operation may
+    /// succeed racily or the other end may also drop racily, and these
+    /// outcomes are reflected in the returned value here.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the operation has already been completed via `Future::poll`,
+    /// or if this method is called twice.
+    pub fn cancel(self: Pin<&mut Self>) -> FutureWriteCancel<T> {
+        let default = self.default;
+        match self.pin_project().cancel() {
+            RawFutureWriteCancel::AlreadySent => FutureWriteCancel::AlreadySent,
+            RawFutureWriteCancel::Dropped(val) => FutureWriteCancel::Dropped(val),
+            RawFutureWriteCancel::Cancelled(val, raw) => FutureWriteCancel::Cancelled(
+                val,
+                FutureWriter {
+                    raw: ManuallyDrop::new(raw),
+                    default,
+                    should_write_default_value: true,
+                },
+            ),
+        }
+    }
+}
+
+impl<T: 'static> Drop for FutureWrite<T> {
+    fn drop(&mut self) {
+        if self.raw.op.is_done() {
+            return;
+        }
+
+        // Although the underlying `WaitableOperation` will already
+        // auto-cancel-on-drop we need to specially handle that here because if
+        // the cancellation goes through then it means that no value will have
+        // been written to this future which will cause a trap. By using
+        // `Self::cancel` it's ensured that if cancellation succeeds a
+        // `FutureWriter` is created. In `Drop for FutureWriter` that'll handle
+        // the last-ditch write-default logic.
+        //
+        // SAFETY: we're in the destructor here so the value `self` is about
+        // to go away and we can guarantee we're not moving out of it.
+        let pin = unsafe { Pin::new_unchecked(self) };
+        pin.cancel();
+    }
+}
+
+/// Raw version of [`FutureWriter`].
+pub struct RawFutureWriter<O: FutureOps> {
+    handle: u32,
+    ops: O,
+}
+
+impl<O: FutureOps> RawFutureWriter<O> {
+    unsafe fn new(handle: u32, ops: O) -> Self {
+        Self { handle, ops }
+    }
+
+    /// Same as [`FutureWriter::write`], but the raw version.
+    pub fn write(self, value: O::Payload) -> RawFutureWrite<O> {
+        RawFutureWrite {
+            op: WaitableOperation::new(FutureWriteOp(marker::PhantomData), (self, value)),
+        }
+    }
+
+    /// Writes `value` in the background.
+    ///
+    /// This does not block and is not cancellable.
+    pub fn write_and_forget(self, value: O::Payload)
+    where
+        O: 'static,
+    {
+        return Arc::new(DeferredWrite {
+            write: TryLock::new(self.write(value)),
+        })
+        .wake();
+
+        /// Helper structure which behaves both as a future of sorts and an
+        /// executor of sorts.
+        ///
+        /// This type is constructed in `Drop for FutureWriter<T>` to send out a
+        /// default value when no other has been written. This manages the
+        /// `FutureWrite` operation happening internally through a `Wake`
+        /// implementation. That means that this is a sort of cyclical future
+        /// which, when woken, will complete the write operation.
+        ///
+        /// The purpose of this is to be a "lightweight" way of "spawn"-ing a
+        /// future write to happen in the background. Crucially, however, this
+        /// doesn't require the `async-spawn` feature and instead works with the
+        /// `wasip3_task` C ABI structures (which spawn doesn't support).
+        struct DeferredWrite<O: FutureOps> {
+            write: TryLock<RawFutureWrite<O>>,
+        }
+
+        // SAFETY: Needed to satisfy `Waker::from` but otherwise should be ok
+        // because wasm doesn't have threads anyway right now.
+        unsafe impl<O: FutureOps> Send for DeferredWrite<O> {}
+        unsafe impl<O: FutureOps> Sync for DeferredWrite<O> {}
+
+        impl<O: FutureOps + 'static> Wake for DeferredWrite<O> {
+            fn wake(self: Arc<Self>) {
+                // When a `wake` signal comes in that should happen in two
+                // locations:
+                //
+                // 1. When `DeferredWrite` is initially constructed.
+                // 2. When an event comes in indicating that the internal write
+                //    has completed.
+                //
+                // The implementation here is the same in both cases. A clone of
+                // `self` is converted to a `Waker`, and this `Waker` notably
+                // owns the internal future itself. The internal write operation
+                // is then pushed forward (e.g. it's issued in (1) or checked up
+                // on in (2)).
+                //
+                // If `Pending` is returned then `waker` should have been stored
+                // away within the `wasip3_task` C ABI structure. Otherwise it
+                // should not have been stored away and `self` should be the
+                // sole reference which means everything will get cleaned up
+                // when this function returns.
+                let poll = {
+                    let waker = Waker::from(self.clone());
+                    let mut cx = Context::from_waker(&waker);
+                    let mut write = self.write.try_lock().unwrap();
+                    unsafe { Pin::new_unchecked(&mut *write).poll(&mut cx) }
+                };
+                if poll.is_ready() {
+                    assert_eq!(Arc::strong_count(&self), 1);
+                } else {
+                    assert!(Arc::strong_count(&self) > 1);
+                }
+                assert_eq!(Arc::weak_count(&self), 0);
+            }
+        }
+    }
+}
+
+impl<O: FutureOps> fmt::Debug for RawFutureWriter<O> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("RawFutureWriter")
+            .field("handle", &self.handle)
+            .finish()
+    }
+}
+
+impl<O: FutureOps> Drop for RawFutureWriter<O> {
+    fn drop(&mut self) {
+        unsafe {
+            rtdebug!("future.drop-writable({})", self.handle);
+            self.ops.drop_writable(self.handle);
+        }
+    }
+}
+
+/// Represents a write operation which may be cancelled prior to completion.
+///
+/// This is returned by [`FutureWriter::write`].
+pub struct RawFutureWrite<O: FutureOps> {
+    op: WaitableOperation<FutureWriteOp<O>>,
+}
+
+struct FutureWriteOp<O>(marker::PhantomData<O>);
 
 enum WriteComplete<T> {
     Written,
@@ -330,16 +598,13 @@ enum WriteComplete<T> {
     Cancelled(T),
 }
 
-unsafe impl<T> WaitableOp for FutureWriteOp<T>
-where
-    T: 'static,
-{
-    type Start = (FutureWriter<T>, T);
-    type InProgress = (FutureWriter<T>, Option<Cleanup>);
-    type Result = (WriteComplete<T>, FutureWriter<T>);
-    type Cancel = FutureWriteCancel<T>;
+unsafe impl<O: FutureOps> WaitableOp for FutureWriteOp<O> {
+    type Start = (RawFutureWriter<O>, O::Payload);
+    type InProgress = (RawFutureWriter<O>, Option<Cleanup>);
+    type Result = (WriteComplete<O::Payload>, RawFutureWriter<O>);
+    type Cancel = RawFutureWriteCancel<O>;
 
-    fn start((writer, value): Self::Start) -> (u32, Self::InProgress) {
+    fn start(&mut self, (mut writer, value): Self::Start) -> (u32, Self::InProgress) {
         // TODO: it should be safe to store the lower-destination in
         // `WaitableOperation` using `Pin` memory and such, but that would
         // require some type-level trickery to get a correctly-sized value
@@ -350,22 +615,23 @@ where
         // In lieu of that a dedicated location on the heap is created for the
         // lowering, and then `value`, as an owned value, is lowered into this
         // pointer to initialize it.
-        let (ptr, cleanup) = Cleanup::new(writer.vtable.layout);
-        // SAFETY: `ptr` is allocated with `vtable.layout` and should be
+        let (ptr, cleanup) = Cleanup::new(writer.ops.elem_layout());
+        // SAFETY: `ptr` is allocated with `ops.layout` and should be
         // safe to use here.
         let code = unsafe {
-            (writer.vtable.lower)(value, ptr);
-            (writer.vtable.start_write)(writer.handle, ptr)
+            writer.ops.lower(value, ptr);
+            writer.ops.start_write(writer.handle, ptr)
         };
         rtdebug!("future.write({}, {ptr:?}) = {code:#x}", writer.handle);
         (code, (writer, cleanup))
     }
 
-    fn start_cancelled((writer, value): Self::Start) -> Self::Cancel {
-        FutureWriteCancel::Cancelled(value, writer)
+    fn start_cancelled(&mut self, (writer, value): Self::Start) -> Self::Cancel {
+        RawFutureWriteCancel::Cancelled(value, writer)
     }
 
     fn in_progress_update(
+        &mut self,
         (mut writer, cleanup): Self::InProgress,
         code: u32,
     ) -> Result<Self::Result, Self::InProgress> {
@@ -386,13 +652,8 @@ where
             super::DROPPED | super::CANCELLED => {
                 // SAFETY: we're the ones managing `ptr` so we know it's safe to
                 // pass here.
-                let value = unsafe { (writer.vtable.lift)(ptr) };
+                let value = unsafe { writer.ops.lift(ptr) };
                 let status = if code == super::DROPPED {
-                    // This writer has been witnessed to be dropped, meaning that
-                    // `writer` is going to get destroyed soon as this return
-                    // value propagates up the stack. There's no need to write
-                    // the default value, so set this to `false`.
-                    writer.should_write_default_value = false;
                     WriteComplete::Dropped(value)
                 } else {
                     WriteComplete::Cancelled(value)
@@ -410,13 +671,10 @@ where
             // Afterwards the `cleanup` itself is naturally dropped and cleaned
             // up.
             super::COMPLETED => {
-                // A value was written, so no need to write the default value.
-                writer.should_write_default_value = false;
-
                 // SAFETY: we're the ones managing `ptr` so we know it's safe to
                 // pass here.
                 unsafe {
-                    (writer.vtable.dealloc_lists)(ptr);
+                    writer.ops.dealloc_lists(ptr);
                 }
                 Ok((WriteComplete::Written, writer))
             }
@@ -425,35 +683,35 @@ where
         }
     }
 
-    fn in_progress_waitable((writer, _): &Self::InProgress) -> u32 {
+    fn in_progress_waitable(&mut self, (writer, _): &Self::InProgress) -> u32 {
         writer.handle
     }
 
-    fn in_progress_cancel((writer, _): &Self::InProgress) -> u32 {
+    fn in_progress_cancel(&mut self, (writer, _): &mut Self::InProgress) -> u32 {
         // SAFETY: we're managing `writer` and all the various operational bits,
         // so this relies on `WaitableOperation` being safe.
-        let code = unsafe { (writer.vtable.cancel_write)(writer.handle) };
+        let code = unsafe { writer.ops.cancel_write(writer.handle) };
         rtdebug!("future.cancel-write({}) = {code:#x}", writer.handle);
         code
     }
 
-    fn result_into_cancel((result, writer): Self::Result) -> Self::Cancel {
+    fn result_into_cancel(&mut self, (result, writer): Self::Result) -> Self::Cancel {
         match result {
             // The value was actually sent, meaning we can't yield back the
             // future nor the value.
-            WriteComplete::Written => FutureWriteCancel::AlreadySent,
+            WriteComplete::Written => RawFutureWriteCancel::AlreadySent,
 
             // The value was not sent because the other end either hung up or we
             // successfully cancelled. In both cases return back the value here
             // with the writer.
-            WriteComplete::Dropped(val) => FutureWriteCancel::Dropped(val),
-            WriteComplete::Cancelled(val) => FutureWriteCancel::Cancelled(val, writer),
+            WriteComplete::Dropped(val) => RawFutureWriteCancel::Dropped(val),
+            WriteComplete::Cancelled(val) => RawFutureWriteCancel::Cancelled(val, writer),
         }
     }
 }
 
-impl<T: 'static> Future for FutureWrite<T> {
-    type Output = Result<(), FutureWriteError<T>>;
+impl<O: FutureOps> Future for RawFutureWrite<O> {
+    type Output = Result<(), FutureWriteError<O::Payload>>;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         self.pin_project()
@@ -467,25 +725,16 @@ impl<T: 'static> Future for FutureWrite<T> {
     }
 }
 
-impl<T: 'static> FutureWrite<T> {
-    fn pin_project(self: Pin<&mut Self>) -> Pin<&mut WaitableOperation<FutureWriteOp<T>>> {
+impl<O: FutureOps> RawFutureWrite<O> {
+    fn pin_project(self: Pin<&mut Self>) -> Pin<&mut WaitableOperation<FutureWriteOp<O>>> {
         // SAFETY: we've chosen that when `Self` is pinned that it translates to
         // always pinning the inner field, so that's codified here.
         unsafe { Pin::new_unchecked(&mut self.get_unchecked_mut().op) }
     }
 
-    /// Cancel this write if it hasn't already completed.
-    ///
-    /// This method can be used to cancel a write-in-progress and re-acquire
-    /// the writer and the value being sent. Note that the write operation may
-    /// succeed racily or the other end may also drop racily, and these
-    /// outcomes are reflected in the returned value here.
-    ///
-    /// # Panics
-    ///
-    /// Panics if the operation has already been completed via `Future::poll`,
-    /// or if this method is called twice.
-    pub fn cancel(self: Pin<&mut Self>) -> FutureWriteCancel<T> {
+    /// Same as [`FutureWrite::cancel`], but returns a [`RawFutureWriteCancel`]
+    /// instead.
+    pub fn cancel(self: Pin<&mut Self>) -> RawFutureWriteCancel<O> {
         self.pin_project().cancel()
     }
 }
@@ -509,11 +758,11 @@ impl<T> fmt::Display for FutureWriteError<T> {
     }
 }
 
-impl<T> std::error::Error for FutureWriteError<T> {}
+impl<T> core::error::Error for FutureWriteError<T> {}
 
 /// Result of [`FutureWrite::cancel`].
 #[derive(Debug)]
-pub enum FutureWriteCancel<T: 'static> {
+pub enum RawFutureWriteCancel<O: FutureOps> {
     /// The cancel request raced with the receipt of the sent value, and the
     /// value was actually sent. Neither the value nor the writer are made
     /// available here as both are gone.
@@ -523,34 +772,43 @@ pub enum FutureWriteCancel<T: 'static> {
     ///
     /// In this case the original value is returned back to the caller but the
     /// writer itself is not longer accessible as it's no longer usable.
-    Dropped(T),
+    Dropped(O::Payload),
 
     /// The pending write was successfully cancelled and the value being written
     /// is returned along with the writer to resume again in the future if
     /// necessary.
-    Cancelled(T, FutureWriter<T>),
+    Cancelled(O::Payload, RawFutureWriter<O>),
 }
 
 /// Represents the readable end of a Component Model `future<T>`.
-pub struct FutureReader<T: 'static> {
+pub type FutureReader<T> = RawFutureReader<&'static FutureVtable<T>>;
+
+/// Represents the readable end of a Component Model `future<T>`.
+pub struct RawFutureReader<O: FutureOps> {
     handle: AtomicU32,
-    vtable: &'static FutureVtable<T>,
+    ops: O,
 }
 
-impl<T> fmt::Debug for FutureReader<T> {
+impl<O: FutureOps> fmt::Debug for RawFutureReader<O> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("FutureReader")
+        f.debug_struct("RawFutureReader")
             .field("handle", &self.handle)
             .finish()
     }
 }
 
-impl<T> FutureReader<T> {
-    #[doc(hidden)]
-    pub fn new(handle: u32, vtable: &'static FutureVtable<T>) -> Self {
+impl<O: FutureOps> RawFutureReader<O> {
+    /// Raw constructor for a future reader.
+    ///
+    /// Takes ownership of the `handle` provided.
+    ///
+    /// # Safety
+    ///
+    /// The `ops` specified must be both valid and well-typed for `handle`.
+    pub unsafe fn new(handle: u32, ops: O) -> Self {
         Self {
             handle: AtomicU32::new(handle),
-            vtable,
+            ops,
         }
     }
 
@@ -573,27 +831,27 @@ impl<T> FutureReader<T> {
     }
 }
 
-impl<T> IntoFuture for FutureReader<T> {
-    type Output = T;
-    type IntoFuture = FutureRead<T>;
+impl<O: FutureOps> IntoFuture for RawFutureReader<O> {
+    type Output = O::Payload;
+    type IntoFuture = RawFutureRead<O>;
 
     /// Convert this object into a `Future` which will resolve when a value is
     /// written to the writable end of this `future`.
     fn into_future(self) -> Self::IntoFuture {
-        FutureRead {
-            op: WaitableOperation::new(self),
+        RawFutureRead {
+            op: WaitableOperation::new(FutureReadOp(marker::PhantomData), self),
         }
     }
 }
 
-impl<T> Drop for FutureReader<T> {
+impl<O: FutureOps> Drop for RawFutureReader<O> {
     fn drop(&mut self) {
         let Some(handle) = self.opt_handle() else {
             return;
         };
         unsafe {
             rtdebug!("future.drop-readable({handle})");
-            (self.vtable.drop_readable)(handle);
+            self.ops.drop_readable(handle);
         }
     }
 }
@@ -602,42 +860,46 @@ impl<T> Drop for FutureReader<T> {
 ///
 /// This represents a read operation on a [`FutureReader`] and is created via
 /// `IntoFuture`.
-pub struct FutureRead<T: 'static> {
-    op: WaitableOperation<FutureReadOp<T>>,
+pub type FutureRead<T> = RawFutureRead<&'static FutureVtable<T>>;
+
+/// Represents a read operation which may be cancelled prior to completion.
+///
+/// This represents a read operation on a [`FutureReader`] and is created via
+/// `IntoFuture`.
+pub struct RawFutureRead<O: FutureOps> {
+    op: WaitableOperation<FutureReadOp<O>>,
 }
 
-struct FutureReadOp<T>(marker::PhantomData<T>);
+struct FutureReadOp<O>(marker::PhantomData<O>);
 
 enum ReadComplete<T> {
     Value(T),
     Cancelled,
 }
 
-unsafe impl<T> WaitableOp for FutureReadOp<T>
-where
-    T: 'static,
-{
-    type Start = FutureReader<T>;
-    type InProgress = (FutureReader<T>, Option<Cleanup>);
-    type Result = (ReadComplete<T>, FutureReader<T>);
-    type Cancel = Result<T, FutureReader<T>>;
+unsafe impl<O: FutureOps> WaitableOp for FutureReadOp<O> {
+    type Start = RawFutureReader<O>;
+    type InProgress = (RawFutureReader<O>, Option<Cleanup>);
+    type Result = (ReadComplete<O::Payload>, RawFutureReader<O>);
+    type Cancel = Result<O::Payload, RawFutureReader<O>>;
 
-    fn start(reader: Self::Start) -> (u32, Self::InProgress) {
-        let (ptr, cleanup) = Cleanup::new(reader.vtable.layout);
+    fn start(&mut self, mut reader: Self::Start) -> (u32, Self::InProgress) {
+        let (ptr, cleanup) = Cleanup::new(reader.ops.elem_layout());
         // SAFETY: `ptr` is allocated with `vtable.layout` and should be
         // safe to use here. Its lifetime for the async operation is hinged on
         // `WaitableOperation` being safe.
-        let code = unsafe { (reader.vtable.start_read)(reader.handle(), ptr) };
+        let code = unsafe { reader.ops.start_read(reader.handle(), ptr) };
         rtdebug!("future.read({}, {ptr:?}) = {code:#x}", reader.handle());
         (code, (reader, cleanup))
     }
 
-    fn start_cancelled(state: Self::Start) -> Self::Cancel {
+    fn start_cancelled(&mut self, state: Self::Start) -> Self::Cancel {
         Err(state)
     }
 
     fn in_progress_update(
-        (reader, cleanup): Self::InProgress,
+        &mut self,
+        (mut reader, cleanup): Self::InProgress,
         code: u32,
     ) -> Result<Self::Result, Self::InProgress> {
         match ReturnCode::decode(code) {
@@ -659,7 +921,7 @@ where
 
                 // SAFETY: we're the ones managing `ptr` so we know it's safe to
                 // pass here.
-                let value = unsafe { (reader.vtable.lift)(ptr) };
+                let value = unsafe { reader.ops.lift(ptr) };
                 Ok((ReadComplete::Value(value), reader))
             }
 
@@ -667,19 +929,19 @@ where
         }
     }
 
-    fn in_progress_waitable((reader, _): &Self::InProgress) -> u32 {
+    fn in_progress_waitable(&mut self, (reader, _): &Self::InProgress) -> u32 {
         reader.handle()
     }
 
-    fn in_progress_cancel((reader, _): &Self::InProgress) -> u32 {
+    fn in_progress_cancel(&mut self, (reader, _): &mut Self::InProgress) -> u32 {
         // SAFETY: we're managing `reader` and all the various operational bits,
         // so this relies on `WaitableOperation` being safe.
-        let code = unsafe { (reader.vtable.cancel_read)(reader.handle()) };
+        let code = unsafe { reader.ops.cancel_read(reader.handle()) };
         rtdebug!("future.cancel-read({}) = {code:#x}", reader.handle());
         code
     }
 
-    fn result_into_cancel((value, reader): Self::Result) -> Self::Cancel {
+    fn result_into_cancel(&mut self, (value, reader): Self::Result) -> Self::Cancel {
         match value {
             // The value was actually read, so thread that through here.
             ReadComplete::Value(value) => Ok(value),
@@ -691,8 +953,8 @@ where
     }
 }
 
-impl<T: 'static> Future for FutureRead<T> {
-    type Output = T;
+impl<O: FutureOps> Future for RawFutureRead<O> {
+    type Output = O::Payload;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         self.pin_project()
@@ -707,8 +969,8 @@ impl<T: 'static> Future for FutureRead<T> {
     }
 }
 
-impl<T> FutureRead<T> {
-    fn pin_project(self: Pin<&mut Self>) -> Pin<&mut WaitableOperation<FutureReadOp<T>>> {
+impl<O: FutureOps> RawFutureRead<O> {
+    fn pin_project(self: Pin<&mut Self>) -> Pin<&mut WaitableOperation<FutureReadOp<O>>> {
         // SAFETY: we've chosen that when `Self` is pinned that it translates to
         // always pinning the inner field, so that's codified here.
         unsafe { Pin::new_unchecked(&mut self.get_unchecked_mut().op) }
@@ -728,7 +990,7 @@ impl<T> FutureRead<T> {
     /// Panics if the operation has already been completed via `Future::poll`,
     /// or if this method is called twice. Additionally if this method completes
     /// then calling `poll` again on `self` will panic.
-    pub fn cancel(self: Pin<&mut Self>) -> Result<T, FutureReader<T>> {
+    pub fn cancel(self: Pin<&mut Self>) -> Result<O::Payload, RawFutureReader<O>> {
         self.pin_project().cancel()
     }
 }

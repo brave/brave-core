@@ -1469,6 +1469,49 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
             expected_contents[0]);
 }
 
+TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContentKeepsWorkspaceContent) {
+  auto history = CreateSampleChatHistory(1u, -1);
+  const std::string entry_uuid = history.front()->uuid.value();
+
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  associated_content.push_back(mojom::AssociatedContent::New(
+      "page-content", mojom::ContentType::PageContent, "page title", 1,
+      GURL("https://example.com/page"), 62, entry_uuid, false));
+  associated_content.push_back(mojom::AssociatedContent::New(
+      "workspace-content", mojom::ContentType::Workspace, "Workspace", 2,
+      GURL("workspace://abc"), 100, entry_uuid, false));
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      "conv", "title", base::Time::Now() - base::Hours(1), true, std::nullopt,
+      0, 0, false, std::move(associated_content));
+  ASSERT_TRUE(db_->AddConversation(
+      metadata->Clone(), {"page text", "workspace text"}, history[0]->Clone()));
+
+  auto cleared = db_->DeleteAssociatedWebContent(std::nullopt, std::nullopt);
+  // Only the page content's entry is reported as cleared; the workspace
+  // content is untouched, so it has nothing to propagate.
+  ASSERT_TRUE(cleared.has_value());
+  ASSERT_EQ(cleared->size(), 1u);
+  EXPECT_EQ((*cleared)[0].conversation_uuid, "conv");
+  EXPECT_EQ((*cleared)[0].entry_uuid, entry_uuid);
+
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  metadata->associated_content[0]->url = GURL();
+  metadata->associated_content[0]->title = "";
+  ExpectConversationEquals(FROM_HERE, conversations[0], metadata);
+
+  auto archive = db_->GetConversationData("conv");
+  ASSERT_TRUE(archive);
+  ASSERT_EQ(archive->associated_content.size(), 1u);
+  EXPECT_EQ(archive->associated_content[0]->content_uuid, "workspace-content");
+  EXPECT_EQ(archive->associated_content[0]->content, "workspace text");
+
+  // Clearing again finds nothing left to clear.
+  cleared = db_->DeleteAssociatedWebContent(std::nullopt, std::nullopt);
+  ASSERT_TRUE(cleared.has_value());
+  EXPECT_TRUE(cleared->empty());
+}
+
 TEST_P(AIChatDatabaseTest, DeleteConversationEntryWithAssociatedContent) {
   const std::string uuid = "test_conversation";
   const GURL page_url = GURL("https://example.com/page");

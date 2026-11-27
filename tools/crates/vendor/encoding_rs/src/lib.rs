@@ -38,9 +38,11 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#![cfg_attr(
-    feature = "cargo-clippy",
-    allow(doc_markdown, inline_always, new_ret_no_self)
+#![allow(
+    clippy::doc_markdown,
+    clippy::inline_always,
+    clippy::new_ret_no_self,
+    clippy::redundant_static_lifetimes
 )]
 
 //! encoding_rs is a Gecko-oriented Free Software / Open Source implementation
@@ -67,7 +69,7 @@
 //! [Apache license, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 //! or the [MIT license](https://opensource.org/licenses/MIT), at your option.
 //! See the
-//! [`COPYRIGHT`](https://github.com/hsivonen/encoding_rs/blob/master/COPYRIGHT)
+//! [`COPYRIGHT`](https://github.com/hsivonen/encoding_rs/blob/main/COPYRIGHT)
 //! file for details.
 //! The [repository is on GitHub](https://github.com/hsivonen/encoding_rs). The
 //! [crate is available on crates.io](https://crates.io/crates/encoding_rs).
@@ -103,7 +105,7 @@
 //! }
 //! ```
 //!
-//! Decode using the streaming API with minimal `unsafe`:
+//! Decode using the streaming API:
 //!
 //! ```
 //! use encoding_rs::*;
@@ -333,7 +335,7 @@
 //! and `Encoder` objects are not used at all.
 //!
 //! [1]: https://github.com/hsivonen/encoding_c
-//! [2]: https://github.com/hsivonen/encoding_c/blob/master/include/encoding_rs_cpp.h
+//! [2]: https://github.com/hsivonen/encoding_c/blob/main/include/encoding_rs_cpp.h
 //! [3]: https://github.com/Microsoft/GSL/
 //! [4]: https://searchfox.org/mozilla-central/source/intl/Encoding.h
 //!
@@ -719,8 +721,29 @@
 //! See the section [_UTF-16LE, UTF-16BE and Unicode Encoding Schemes_](#utf-16le-utf-16be-and-unicode-encoding-schemes)
 //! for discussion about the UTF-16 family.
 
-#![no_std]
-#![cfg_attr(feature = "simd-accel", feature(core_intrinsics, portable_simd))]
+#![cfg_attr(not(feature = "std"), no_std)]
+#![cfg_attr(feature = "simd-accel", allow(internal_features))]
+#![cfg_attr(feature = "simd-accel", feature(core_intrinsics))]
+#![cfg_attr(
+    all(feature = "simd-accel", target_endian = "little"),
+    feature(portable_simd)
+)]
+// These are for working around
+// https://github.com/rust-lang/stdarch/issues/2208
+// https://github.com/rust-lang/rust/issues/159464
+// https://github.com/rust-lang/rust/pull/161558
+#![cfg_attr(
+    all(slow_mm_packus_epi16, feature = "simd-accel", target_feature = "sse2"),
+    feature(link_llvm_intrinsics)
+)]
+#![cfg_attr(
+    all(slow_mm_packus_epi16, feature = "simd-accel", target_feature = "sse2"),
+    feature(abi_unadjusted)
+)]
+#![cfg_attr(
+    all(slow_mm_packus_epi16, feature = "simd-accel", target_feature = "sse2"),
+    feature(simd_ffi)
+)]
 
 #[cfg(feature = "alloc")]
 #[cfg_attr(test, macro_use)]
@@ -741,17 +764,19 @@ extern crate serde_derive;
 #[cfg(all(test, feature = "serde"))]
 extern crate serde_json;
 
+// Build time optimization.
+cfg_if! {
+    if #[cfg(all(feature = "simd-accel", feature = "std", any(target_arch = "x86_64", target_arch = "x86"), not(all(target_feature = "avx2", target_feature = "bmi1"))))] {
+        use multiversion::multiversion;
+    } else {
+        use multiversion_no_op::multiversion;
+    }
+}
+
 #[macro_use]
 mod macros;
 
-#[cfg(all(
-    feature = "simd-accel",
-    any(
-        target_feature = "sse2",
-        all(target_endian = "little", target_arch = "aarch64"),
-        all(target_endian = "little", target_feature = "neon")
-    )
-))]
+#[cfg(all(feature = "simd-accel", target_endian = "little",))]
 mod simd_funcs;
 
 #[cfg(all(test, feature = "alloc"))]
@@ -788,6 +813,9 @@ use alloc::borrow::Cow;
 use alloc::string::String;
 #[cfg(feature = "alloc")]
 use alloc::vec::Vec;
+#[cfg(feature = "alloc")]
+use core::mem::MaybeUninit;
+
 use core::cmp::Ordering;
 use core::hash::Hash;
 use core::hash::Hasher;
@@ -876,8 +904,10 @@ pub static EUC_JP_INIT: Encoding = Encoding {
 /// in form submissions, the encoder doesn't generate three-byte sequences.
 /// That is, the JIS X 0212 support is decode-only.
 ///
-/// [Index visualization](https://encoding.spec.whatwg.org/euc-jp.html),
-/// [Visualization of BMP coverage](https://encoding.spec.whatwg.org/euc-jp-bmp.html)
+/// [Index visualization](https://encoding.spec.whatwg.org/jis0208.html),
+/// [Visualization of BMP coverage](https://encoding.spec.whatwg.org/jis0208-bmp.html)
+/// [Index visualization for decode-only JIS X 0212](https://encoding.spec.whatwg.org/jis0212.html),
+/// [Visualization of BMP coverage for decode-only JIS X 0212](https://encoding.spec.whatwg.org/jis0212-bmp.html)
 ///
 /// This encoding roughly matches the Windows code page 20932. There are error
 /// handling differences and a handful of 2-byte sequences that decode differently.
@@ -1660,7 +1690,7 @@ pub static UTF_8_INIT: Encoding = Encoding {
 
 /// The UTF-8 encoding.
 ///
-/// This is the encoding that should be used for all new development it can
+/// This is the encoding that should be used for all new development as it can
 /// represent all of Unicode.
 ///
 /// This encoding matches the Windows code page 65001, except Windows differs
@@ -2660,7 +2690,7 @@ static ENCODINGS_IN_LABEL_SORT: [&'static Encoding; 228] = [
 /// # Streaming vs. Non-Streaming
 ///
 /// When you have the entire input in a single buffer, you can use the
-/// methods [`decode()`][3], [`decode_with_bom_removal()`][3],
+/// methods [`decode()`][3], [`decode_with_bom_removal()`][4],
 /// [`decode_without_bom_handling()`][5],
 /// [`decode_without_bom_handling_and_without_replacement()`][6] and
 /// [`encode()`][7]. (These methods are available to Rust callers only and are
@@ -2744,7 +2774,7 @@ impl Encoding {
     pub fn for_label(label: &[u8]) -> Option<&'static Encoding> {
         let mut trimmed = [0u8; LONGEST_LABEL_LENGTH];
         let mut trimmed_pos = 0usize;
-        let mut iter = label.into_iter();
+        let mut iter = label.iter();
         // before
         loop {
             match iter.next() {
@@ -3127,11 +3157,11 @@ impl Encoding {
             let mut string = String::with_capacity(
                 checked_min(rounded_without_replacement, with_replacement).unwrap(),
             );
-            unsafe {
-                let vec = string.as_mut_vec();
-                vec.set_len(valid_up_to);
-                core::ptr::copy_nonoverlapping(bytes.as_ptr(), vec.as_mut_ptr(), valid_up_to);
-            }
+
+            // SAFETY: We have validated that `bytes[..valid_up_to]` is valid UTF-8,
+            // so it's OK to write that into `String` via `Vec`.
+            let vec = unsafe { string.as_mut_vec() };
+            vec.extend_from_slice(&bytes[..valid_up_to]);
             (decoder, string, valid_up_to)
         } else {
             let decoder = self.new_decoder_without_bom_handling();
@@ -3228,11 +3258,10 @@ impl Encoding {
                 )
                 .unwrap(),
             );
-            unsafe {
-                let vec = string.as_mut_vec();
-                vec.set_len(valid_up_to);
-                core::ptr::copy_nonoverlapping(bytes.as_ptr(), vec.as_mut_ptr(), valid_up_to);
-            }
+            // SAFETY: We have validated that `bytes[..valid_up_to]` is valid UTF-8,
+            // so it's OK to write that into `String` via `Vec`.
+            let vec = unsafe { string.as_mut_vec() };
+            vec.extend_from_slice(&bytes[..valid_up_to]);
             (decoder, string, &bytes[valid_up_to..])
         } else {
             let decoder = self.new_decoder_without_bom_handling();
@@ -3320,10 +3349,7 @@ impl Encoding {
             .unwrap()
             .next_power_of_two(),
         );
-        unsafe {
-            vec.set_len(valid_up_to);
-            core::ptr::copy_nonoverlapping(bytes.as_ptr(), vec.as_mut_ptr(), valid_up_to);
-        }
+        vec.extend_from_slice(&bytes[..valid_up_to]);
         let mut total_read = valid_up_to;
         let mut total_had_errors = false;
         loop {
@@ -3450,7 +3476,7 @@ impl Encoding {
 impl PartialEq for Encoding {
     #[inline]
     fn eq(&self, other: &Encoding) -> bool {
-        (self as *const Encoding) == (other as *const Encoding)
+        ::core::ptr::eq(self, other)
     }
 }
 
@@ -3458,6 +3484,7 @@ impl Eq for Encoding {}
 
 #[cfg(test)]
 impl PartialOrd for Encoding {
+    #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         (self as *const Encoding as usize).partial_cmp(&(other as *const Encoding as usize))
     }
@@ -3465,6 +3492,7 @@ impl PartialOrd for Encoding {
 
 #[cfg(test)]
 impl Ord for Encoding {
+    #[inline]
     fn cmp(&self, other: &Self) -> Ordering {
         (self as *const Encoding as usize).cmp(&(other as *const Encoding as usize))
     }
@@ -3478,9 +3506,10 @@ impl Hash for Encoding {
 }
 
 impl core::fmt::Debug for Encoding {
-    #[inline]
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        write!(f, "Encoding {{ {} }}", self.name)
+        f.debug_struct("Encoding")
+            .field("name", &self.name)
+            .finish_non_exhaustive()
     }
 }
 
@@ -3513,10 +3542,16 @@ impl<'de> Visitor<'de> for EncodingVisitor {
         if let Some(enc) = Encoding::for_label(value.as_bytes()) {
             Ok(enc)
         } else {
-            Err(E::custom(alloc::format!(
-                "invalid encoding label: {}",
-                value
-            )))
+            cfg_if! {
+                if #[cfg(feature = "alloc")] {
+                    Err(E::custom(alloc::format!(
+                        "invalid encoding label: {}",
+                        value
+                    )))
+                } else {
+                    Err(E::custom("invalid encoding label"))
+                }
+            }
         }
     }
 }
@@ -3721,10 +3756,9 @@ pub enum DecoderResult {
 /// # Infinite loops
 ///
 /// When converting with a fixed-size output buffer whose size is too small to
-/// accommodate one character or (when applicable) one numeric character
-/// reference of output, an infinite loop ensues. When converting with a
-/// fixed-size output buffer, it generally makes sense to make the buffer
-/// fairly large (e.g. couple of kilobytes).
+/// accommodate one character of output, an infinite loop ensues. When
+/// converting with a fixed-size output buffer, it generally makes sense to
+/// make the buffer fairly large (e.g. couple of kilobytes).
 pub struct Decoder {
     encoding: &'static Encoding,
     variant: VariantDecoder,
@@ -3785,22 +3819,20 @@ impl Decoder {
                 return self.variant.max_utf8_buffer_length(byte_length);
             }
             DecoderLifeCycle::AtStart => {
-                if let Some(utf8_bom) = checked_add(3, byte_length.checked_mul(3)) {
-                    if let Some(utf16_bom) = checked_add(
+                if let Some(utf8_bom) = checked_add(3, byte_length.checked_mul(3))
+                    && let Some(utf16_bom) = checked_add(
                         1,
                         checked_mul(3, checked_div(byte_length.checked_add(1), 2)),
-                    ) {
-                        let utf_bom = core::cmp::max(utf8_bom, utf16_bom);
-                        let encoding = self.encoding();
-                        if encoding == UTF_8 || encoding == UTF_16LE || encoding == UTF_16BE {
-                            // No need to consider the internal state of the underlying decoder,
-                            // because it is at start, because no data has reached it yet.
-                            return Some(utf_bom);
-                        } else if let Some(non_bom) =
-                            self.variant.max_utf8_buffer_length(byte_length)
-                        {
-                            return Some(core::cmp::max(utf_bom, non_bom));
-                        }
+                    )
+                {
+                    let utf_bom = core::cmp::max(utf8_bom, utf16_bom);
+                    let encoding = self.encoding();
+                    if encoding == UTF_8 || encoding == UTF_16LE || encoding == UTF_16BE {
+                        // No need to consider the internal state of the underlying decoder,
+                        // because it is at start, because no data has reached it yet.
+                        return Some(utf_bom);
+                    } else if let Some(non_bom) = self.variant.max_utf8_buffer_length(byte_length) {
+                        return Some(core::cmp::max(utf_bom, non_bom));
                     }
                 }
             }
@@ -3810,15 +3842,15 @@ impl Decoder {
                 // decoders, but only after the decoder has been queried
                 // for max length, so the decoder's own logic for adding
                 // one for a pending lead cannot work.
-                if let Some(sum) = byte_length.checked_add(2) {
-                    if let Some(utf8_bom) = checked_add(3, sum.checked_mul(3)) {
-                        if self.encoding() == UTF_8 {
-                            // No need to consider the internal state of the underlying decoder,
-                            // because it is at start, because no data has reached it yet.
-                            return Some(utf8_bom);
-                        } else if let Some(non_bom) = self.variant.max_utf8_buffer_length(sum) {
-                            return Some(core::cmp::max(utf8_bom, non_bom));
-                        }
+                if let Some(sum) = byte_length.checked_add(2)
+                    && let Some(utf8_bom) = checked_add(3, sum.checked_mul(3))
+                {
+                    if self.encoding() == UTF_8 {
+                        // No need to consider the internal state of the underlying decoder,
+                        // because it is at start, because no data has reached it yet.
+                        return Some(utf8_bom);
+                    } else if let Some(non_bom) = self.variant.max_utf8_buffer_length(sum) {
+                        return Some(core::cmp::max(utf8_bom, non_bom));
                     }
                 }
             }
@@ -3833,18 +3865,17 @@ impl Decoder {
                 // decoders, but only after the decoder has been queried
                 // for max length, so the decoder's own logic for adding
                 // one for a pending lead cannot work.
-                if let Some(sum) = byte_length.checked_add(2) {
-                    if let Some(utf16_bom) =
+                if let Some(sum) = byte_length.checked_add(2)
+                    && let Some(utf16_bom) =
                         checked_add(1, checked_mul(3, checked_div(sum.checked_add(1), 2)))
-                    {
-                        let encoding = self.encoding();
-                        if encoding == UTF_16LE || encoding == UTF_16BE {
-                            // No need to consider the internal state of the underlying decoder,
-                            // because it is at start, because no data has reached it yet.
-                            return Some(utf16_bom);
-                        } else if let Some(non_bom) = self.variant.max_utf8_buffer_length(sum) {
-                            return Some(core::cmp::max(utf16_bom, non_bom));
-                        }
+                {
+                    let encoding = self.encoding();
+                    if encoding == UTF_16LE || encoding == UTF_16BE {
+                        // No need to consider the internal state of the underlying decoder,
+                        // because it is at start, because no data has reached it yet.
+                        return Some(utf16_bom);
+                    } else if let Some(non_bom) = self.variant.max_utf8_buffer_length(sum) {
+                        return Some(core::cmp::max(utf16_bom, non_bom));
                     }
                 }
             }
@@ -3877,23 +3908,23 @@ impl Decoder {
                     .max_utf8_buffer_length_without_replacement(byte_length);
             }
             DecoderLifeCycle::AtStart => {
-                if let Some(utf8_bom) = byte_length.checked_add(3) {
-                    if let Some(utf16_bom) = checked_add(
+                if let Some(utf8_bom) = byte_length.checked_add(3)
+                    && let Some(utf16_bom) = checked_add(
                         1,
                         checked_mul(3, checked_div(byte_length.checked_add(1), 2)),
-                    ) {
-                        let utf_bom = core::cmp::max(utf8_bom, utf16_bom);
-                        let encoding = self.encoding();
-                        if encoding == UTF_8 || encoding == UTF_16LE || encoding == UTF_16BE {
-                            // No need to consider the internal state of the underlying decoder,
-                            // because it is at start, because no data has reached it yet.
-                            return Some(utf_bom);
-                        } else if let Some(non_bom) = self
-                            .variant
-                            .max_utf8_buffer_length_without_replacement(byte_length)
-                        {
-                            return Some(core::cmp::max(utf_bom, non_bom));
-                        }
+                    )
+                {
+                    let utf_bom = core::cmp::max(utf8_bom, utf16_bom);
+                    let encoding = self.encoding();
+                    if encoding == UTF_8 || encoding == UTF_16LE || encoding == UTF_16BE {
+                        // No need to consider the internal state of the underlying decoder,
+                        // because it is at start, because no data has reached it yet.
+                        return Some(utf_bom);
+                    } else if let Some(non_bom) = self
+                        .variant
+                        .max_utf8_buffer_length_without_replacement(byte_length)
+                    {
+                        return Some(core::cmp::max(utf_bom, non_bom));
                     }
                 }
             }
@@ -3903,17 +3934,17 @@ impl Decoder {
                 // decoders, but only after the decoder has been queried
                 // for max length, so the decoder's own logic for adding
                 // one for a pending lead cannot work.
-                if let Some(sum) = byte_length.checked_add(2) {
-                    if let Some(utf8_bom) = sum.checked_add(3) {
-                        if self.encoding() == UTF_8 {
-                            // No need to consider the internal state of the underlying decoder,
-                            // because it is at start, because no data has reached it yet.
-                            return Some(utf8_bom);
-                        } else if let Some(non_bom) =
-                            self.variant.max_utf8_buffer_length_without_replacement(sum)
-                        {
-                            return Some(core::cmp::max(utf8_bom, non_bom));
-                        }
+                if let Some(sum) = byte_length.checked_add(2)
+                    && let Some(utf8_bom) = sum.checked_add(3)
+                {
+                    if self.encoding() == UTF_8 {
+                        // No need to consider the internal state of the underlying decoder,
+                        // because it is at start, because no data has reached it yet.
+                        return Some(utf8_bom);
+                    } else if let Some(non_bom) =
+                        self.variant.max_utf8_buffer_length_without_replacement(sum)
+                    {
+                        return Some(core::cmp::max(utf8_bom, non_bom));
                     }
                 }
             }
@@ -3928,20 +3959,19 @@ impl Decoder {
                 // decoders, but only after the decoder has been queried
                 // for max length, so the decoder's own logic for adding
                 // one for a pending lead cannot work.
-                if let Some(sum) = byte_length.checked_add(2) {
-                    if let Some(utf16_bom) =
+                if let Some(sum) = byte_length.checked_add(2)
+                    && let Some(utf16_bom) =
                         checked_add(1, checked_mul(3, checked_div(sum.checked_add(1), 2)))
+                {
+                    let encoding = self.encoding();
+                    if encoding == UTF_16LE || encoding == UTF_16BE {
+                        // No need to consider the internal state of the underlying decoder,
+                        // because it is at start, because no data has reached it yet.
+                        return Some(utf16_bom);
+                    } else if let Some(non_bom) =
+                        self.variant.max_utf8_buffer_length_without_replacement(sum)
                     {
-                        let encoding = self.encoding();
-                        if encoding == UTF_16LE || encoding == UTF_16BE {
-                            // No need to consider the internal state of the underlying decoder,
-                            // because it is at start, because no data has reached it yet.
-                            return Some(utf16_bom);
-                        } else if let Some(non_bom) =
-                            self.variant.max_utf8_buffer_length_without_replacement(sum)
-                        {
-                            return Some(core::cmp::max(utf16_bom, non_bom));
-                        }
+                        return Some(core::cmp::max(utf16_bom, non_bom));
                     }
                 }
             }
@@ -4012,9 +4042,8 @@ impl Decoder {
     /// replaced with the REPLACEMENT CHARACTER with type system signaling
     /// of UTF-8 validity.
     ///
-    /// This methods calls `decode_to_utf8` and then zeroes
-    /// out up to three bytes that aren't logically part of the write in order
-    /// to retain the UTF-8 validity even for the unwritten part of the buffer.
+    /// This methods calls `decode_to_utf8` and then zeroes enough subsequent
+    /// bytes to maintain the invariant of `str`.
     ///
     /// See the documentation of the struct for documentation for `decode_*`
     /// methods collectively.
@@ -4026,8 +4055,21 @@ impl Decoder {
         dst: &mut str,
         last: bool,
     ) -> (CoderResult, usize, usize, bool) {
-        let bytes: &mut [u8] = unsafe { dst.as_bytes_mut() };
-        let (result, read, written, replaced) = self.decode_to_utf8(src, bytes, last);
+        // SAFETY: We trust that `decode_to_utf8` writes
+        // valid UTF-8. To make the part of the slice after what was reported
+        // as logically written by that funtion, we use knowledge of the internals
+        // to overwrite trailing garbage that may have been written. Then we also
+        // overwrite a possible partial UTF-8 byte sequence after that. Then the
+        // rest must be valid on the assumption that `dst` was valid to begin with.
+        // In case of a panic, the `ScopeGuard` zeros the whole slice, which ensures
+        // it's valid UTF-8 in an use-after-panic scenario when unwinding is enabled.
+        // (Relevant only if there's a panic due to a crate-internal bug. Panics
+        // arising from misuse of the public API don't need this guard and end up
+        // zeroing the slice unnecessarily.)
+        let mut bytes = scopeguard::guard(unsafe { dst.as_bytes_mut() }, |bytes| {
+            bytes.iter_mut().for_each(|b| *b = 0)
+        });
+        let (result, read, written, replaced) = self.decode_to_utf8(src, &mut bytes, last);
         let len = bytes.len();
         let mut trail = written;
         // Non-UTF-8 ASCII-compatible decoders may write up to `MAX_STRIDE_SIZE`
@@ -4044,6 +4086,8 @@ impl Decoder {
             bytes[trail] = 0;
             trail += 1;
         }
+        // Defuse the zeroing guard.
+        let _ = scopeguard::ScopeGuard::<&mut [u8], _>::into_inner(bytes);
         (result, read, written, replaced)
     }
 
@@ -4072,16 +4116,32 @@ impl Decoder {
         dst: &mut String,
         last: bool,
     ) -> (CoderResult, usize, bool) {
+        // SAFETY: Writing to `String` by using it as `Vec` is safe
+        // iff the result is valid UTF-8 afterwards. We trust
+        // `decode_to_utf8` below to write valid UTF-8 and
+        // we trust that we update the length correctly below.
+        // Furthermore, the length update is the last operation, so
+        // if an earlier step panics, the logically exposed part of the
+        // `Vec`/`String` remains unchanged.
+        let vec = unsafe { dst.as_mut_vec() };
+        let old_len = vec.len();
+        let spare_capacity = minimally_init(vec.spare_capacity_mut());
+        let (result, read, written, replaced) = self.decode_to_utf8(src, spare_capacity, last);
+        debug_assert!(written <= spare_capacity.len());
+        let new_len = old_len + written;
+        assert!(new_len <= vec.capacity());
+        // SAFETY: We trust that `decode_to_utf8` wrote valid UTF-8
+        // to `spare_capacity[..written]`. Also, regarding the information
+        // disclosure risk of `minimally_init`, this also means trusting
+        // that every byte of `spare_capacity[..written]` got overwritten.
+        // (We're no worse off than before regarding
+        // `spare_capacity[written..]`) which remains not logically exposed.)
+        // We (non-debug )asserted immediately above that `new_len` conforms
+        // to the invariant that it must not exceed `vec.capacity()`.
         unsafe {
-            let vec = dst.as_mut_vec();
-            let old_len = vec.len();
-            let capacity = vec.capacity();
-            vec.set_len(capacity);
-            let (result, read, written, replaced) =
-                self.decode_to_utf8(src, &mut vec[old_len..], last);
-            vec.set_len(old_len + written);
-            (result, read, replaced)
+            vec.set_len(new_len);
         }
+        (result, read, replaced)
     }
 
     public_decode_function!(/// Incrementally decode a byte stream into UTF-8
@@ -4104,9 +4164,8 @@ impl Decoder {
     /// Incrementally decode a byte stream into UTF-8 with type system signaling
     /// of UTF-8 validity.
     ///
-    /// This methods calls `decode_to_utf8` and then zeroes out up to three
-    /// bytes that aren't logically part of the write in order to retain the
-    /// UTF-8 validity even for the unwritten part of the buffer.
+    /// This methods calls `decode_to_utf8_without_replacement` and then zeroes enough subsequent
+    /// bytes to maintain the invariant of `str`.
     ///
     /// See the documentation of the struct for documentation for `decode_*`
     /// methods collectively.
@@ -4118,8 +4177,22 @@ impl Decoder {
         dst: &mut str,
         last: bool,
     ) -> (DecoderResult, usize, usize) {
-        let bytes: &mut [u8] = unsafe { dst.as_bytes_mut() };
-        let (result, read, written) = self.decode_to_utf8_without_replacement(src, bytes, last);
+        // SAFETY: We trust that `decode_to_utf8_without_replacement` writes
+        // valid UTF-8. To make the part of the slice after what was reported
+        // as logically written by that funtion, we use knowledge of the internals
+        // to overwrite trailing garbage that may have been written. Then we also
+        // overwrite a possible partial UTF-8 byte sequence after that. Then the
+        // rest must be valid on the assumption that `dst` was valid to begin with.
+        // In case of a panic, the `ScopeGuard` zeros the whole slice, which ensures
+        // it's valid UTF-8 in an use-after-panic scenario when unwinding is enabled.
+        // (Relevant only if there's a panic due to a crate-internal bug. Panics
+        // arising from misuse of the public API don't need this guard and end up
+        // zeroing the slice unnecessarily.)
+        let mut bytes = scopeguard::guard(unsafe { dst.as_bytes_mut() }, |bytes| {
+            bytes.iter_mut().for_each(|b| *b = 0)
+        });
+        let (result, read, written) =
+            self.decode_to_utf8_without_replacement(src, &mut bytes, last);
         let len = bytes.len();
         let mut trail = written;
         // Non-UTF-8 ASCII-compatible decoders may write up to `MAX_STRIDE_SIZE`
@@ -4136,6 +4209,8 @@ impl Decoder {
             bytes[trail] = 0;
             trail += 1;
         }
+        // Defuse the zeroing guard.
+        let _ = scopeguard::ScopeGuard::<&mut [u8], _>::into_inner(bytes);
         (result, read, written)
     }
 
@@ -4162,16 +4237,33 @@ impl Decoder {
         dst: &mut String,
         last: bool,
     ) -> (DecoderResult, usize) {
+        // SAFETY: Writing to `String` by using it as `Vec` is safe
+        // iff the result is valid UTF-8 afterwards. We trust
+        // `decode_to_utf8_without_replacement` below to write valid UTF-8 and
+        // we trust that we update the length correctly below.
+        // Furthermore, the length update is the last operation, so
+        // if an earlier step panics, the logically exposed part of the
+        // `Vec`/`String` remains unchanged.
+        let vec = unsafe { dst.as_mut_vec() };
+        let old_len = vec.len();
+        let spare_capacity = minimally_init(vec.spare_capacity_mut());
+        let (result, read, written) =
+            self.decode_to_utf8_without_replacement(src, spare_capacity, last);
+        debug_assert!(written <= spare_capacity.len());
+        let new_len = old_len + written;
+        assert!(new_len <= vec.capacity());
+        // SAFETY: We trust that `decode_to_utf8_without_replacement` wrote valid UTF-8
+        // to `spare_capacity[..written]`. Also, regarding the information
+        // disclosure risk of `minimally_init`, this also means trusting
+        // that every byte of `spare_capacity[..written]` got overwritten.
+        // (We're no worse off than before regarding
+        // `spare_capacity[written..]`) which remains not logically exposed.)
+        // We (non-debug )asserted immediately above that `new_len` conforms
+        // to the invariant that it must not exceed `vec.capacity()`.
         unsafe {
-            let vec = dst.as_mut_vec();
-            let old_len = vec.len();
-            let capacity = vec.capacity();
-            vec.set_len(capacity);
-            let (result, read, written) =
-                self.decode_to_utf8_without_replacement(src, &mut vec[old_len..], last);
-            vec.set_len(old_len + written);
-            (result, read)
+            vec.set_len(new_len);
         }
+        (result, read)
     }
 
     /// Query the worst-case UTF-16 output size (with or without replacement).
@@ -4197,21 +4289,19 @@ impl Decoder {
                 return self.variant.max_utf16_buffer_length(byte_length);
             }
             DecoderLifeCycle::AtStart => {
-                if let Some(utf8_bom) = byte_length.checked_add(1) {
-                    if let Some(utf16_bom) =
+                if let Some(utf8_bom) = byte_length.checked_add(1)
+                    && let Some(utf16_bom) =
                         checked_add(1, checked_div(byte_length.checked_add(1), 2))
+                {
+                    let utf_bom = core::cmp::max(utf8_bom, utf16_bom);
+                    let encoding = self.encoding();
+                    if encoding == UTF_8 || encoding == UTF_16LE || encoding == UTF_16BE {
+                        // No need to consider the internal state of the underlying decoder,
+                        // because it is at start, because no data has reached it yet.
+                        return Some(utf_bom);
+                    } else if let Some(non_bom) = self.variant.max_utf16_buffer_length(byte_length)
                     {
-                        let utf_bom = core::cmp::max(utf8_bom, utf16_bom);
-                        let encoding = self.encoding();
-                        if encoding == UTF_8 || encoding == UTF_16LE || encoding == UTF_16BE {
-                            // No need to consider the internal state of the underlying decoder,
-                            // because it is at start, because no data has reached it yet.
-                            return Some(utf_bom);
-                        } else if let Some(non_bom) =
-                            self.variant.max_utf16_buffer_length(byte_length)
-                        {
-                            return Some(core::cmp::max(utf_bom, non_bom));
-                        }
+                        return Some(core::cmp::max(utf_bom, non_bom));
                     }
                 }
             }
@@ -4221,15 +4311,15 @@ impl Decoder {
                 // decoders, but only after the decoder has been queried
                 // for max length, so the decoder's own logic for adding
                 // one for a pending lead cannot work.
-                if let Some(sum) = byte_length.checked_add(2) {
-                    if let Some(utf8_bom) = sum.checked_add(1) {
-                        if self.encoding() == UTF_8 {
-                            // No need to consider the internal state of the underlying decoder,
-                            // because it is at start, because no data has reached it yet.
-                            return Some(utf8_bom);
-                        } else if let Some(non_bom) = self.variant.max_utf16_buffer_length(sum) {
-                            return Some(core::cmp::max(utf8_bom, non_bom));
-                        }
+                if let Some(sum) = byte_length.checked_add(2)
+                    && let Some(utf8_bom) = sum.checked_add(1)
+                {
+                    if self.encoding() == UTF_8 {
+                        // No need to consider the internal state of the underlying decoder,
+                        // because it is at start, because no data has reached it yet.
+                        return Some(utf8_bom);
+                    } else if let Some(non_bom) = self.variant.max_utf16_buffer_length(sum) {
+                        return Some(core::cmp::max(utf8_bom, non_bom));
                     }
                 }
             }
@@ -4244,16 +4334,16 @@ impl Decoder {
                 // decoders, but only after the decoder has been queried
                 // for max length, so the decoder's own logic for adding
                 // one for a pending lead cannot work.
-                if let Some(sum) = byte_length.checked_add(2) {
-                    if let Some(utf16_bom) = checked_add(1, checked_div(sum.checked_add(1), 2)) {
-                        let encoding = self.encoding();
-                        if encoding == UTF_16LE || encoding == UTF_16BE {
-                            // No need to consider the internal state of the underlying decoder,
-                            // because it is at start, because no data has reached it yet.
-                            return Some(utf16_bom);
-                        } else if let Some(non_bom) = self.variant.max_utf16_buffer_length(sum) {
-                            return Some(core::cmp::max(utf16_bom, non_bom));
-                        }
+                if let Some(sum) = byte_length.checked_add(2)
+                    && let Some(utf16_bom) = checked_add(1, checked_div(sum.checked_add(1), 2))
+                {
+                    let encoding = self.encoding();
+                    if encoding == UTF_16LE || encoding == UTF_16BE {
+                        // No need to consider the internal state of the underlying decoder,
+                        // because it is at start, because no data has reached it yet.
+                        return Some(utf16_bom);
+                    } else if let Some(non_bom) = self.variant.max_utf16_buffer_length(sum) {
+                        return Some(core::cmp::max(utf16_bom, non_bom));
                     }
                 }
             }
@@ -4350,12 +4440,19 @@ impl Decoder {
     /// Available via the C wrapper.
     pub fn latin1_byte_compatible_up_to(&self, bytes: &[u8]) -> Option<usize> {
         match self.life_cycle {
-            DecoderLifeCycle::Converting => {
-                return self.variant.latin1_byte_compatible_up_to(bytes);
-            }
+            DecoderLifeCycle::Converting => self.variant.latin1_byte_compatible_up_to(bytes),
             DecoderLifeCycle::Finished => panic!("Must not use a decoder that has finished."),
             _ => None,
         }
+    }
+}
+
+impl core::fmt::Debug for Decoder {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("Decoder")
+            .field("encoding", self.encoding)
+            .field("life_cycle", &self.life_cycle)
+            .finish_non_exhaustive()
     }
 }
 
@@ -4498,9 +4595,10 @@ impl EncoderResult {
 /// # Infinite loops
 ///
 /// When converting with a fixed-size output buffer whose size is too small to
-/// accommodate one character of output, an infinite loop ensues. When
-/// converting with a fixed-size output buffer, it generally makes sense to
-/// make the buffer fairly large (e.g. couple of kilobytes).
+/// accommodate one character or (when applicable) one numeric character
+/// reference of output, an infinite loop ensues. When converting with a
+/// fixed-size output buffer, it generally makes sense to make the buffer
+/// fairly large (e.g. couple of kilobytes).
 pub struct Encoder {
     encoding: &'static Encoding,
     variant: VariantEncoder,
@@ -4663,15 +4761,24 @@ impl Encoder {
         dst: &mut Vec<u8>,
         last: bool,
     ) -> (CoderResult, usize, bool) {
+        let old_len = dst.len();
+        let spare_capacity = minimally_init(dst.spare_capacity_mut());
+        let (result, read, written, replaced) = self.encode_from_utf8(src, spare_capacity, last);
+        debug_assert!(written <= spare_capacity.len());
+        let new_len = old_len + written;
+        assert!(new_len <= dst.capacity());
+        // SAFETY: We trust that `encode_from_utf8` wrote to every byte of
+        // to `spare_capacity[..written]`. Also, regarding the information
+        // disclosure risk of `minimally_init`, this also means trusting
+        // that every byte of `spare_capacity[..written]` got overwritten.
+        // (We're no worse off than before regarding
+        // `spare_capacity[written..]`) which remains not logically exposed.)
+        // We (non-debug )asserted immediately above that `new_len` conforms
+        // to the invariant that it must not exceed `dst.capacity()`.
         unsafe {
-            let old_len = dst.len();
-            let capacity = dst.capacity();
-            dst.set_len(capacity);
-            let (result, read, written, replaced) =
-                self.encode_from_utf8(src, &mut dst[old_len..], last);
-            dst.set_len(old_len + written);
-            (result, read, replaced)
+            dst.set_len(new_len);
         }
+        (result, read, replaced)
     }
 
     /// Incrementally encode into byte stream from UTF-8 _without replacement_.
@@ -4703,15 +4810,25 @@ impl Encoder {
         dst: &mut Vec<u8>,
         last: bool,
     ) -> (EncoderResult, usize) {
+        let old_len = dst.len();
+        let spare_capacity = minimally_init(dst.spare_capacity_mut());
+        let (result, read, written) =
+            self.encode_from_utf8_without_replacement(src, spare_capacity, last);
+        debug_assert!(written <= spare_capacity.len());
+        let new_len = old_len + written;
+        assert!(new_len <= dst.capacity());
+        // SAFETY: We trust that `encode_from_utf8_without_replacement` wrote to every byte of
+        // to `spare_capacity[..written]`. Also, regarding the information
+        // disclosure risk of `minimally_init`, this also means trusting
+        // that every byte of `spare_capacity[..written]` got overwritten.
+        // (We're no worse off than before regarding
+        // `spare_capacity[written..]`) which remains not logically exposed.)
+        // We (non-debug )asserted immediately above that `new_len` conforms
+        // to the invariant that it must not exceed `dst.capacity()`.
         unsafe {
-            let old_len = dst.len();
-            let capacity = dst.capacity();
-            dst.set_len(capacity);
-            let (result, read, written) =
-                self.encode_from_utf8_without_replacement(src, &mut dst[old_len..], last);
-            dst.set_len(old_len + written);
-            (result, read)
+            dst.set_len(new_len);
         }
+        (result, read)
     }
 
     /// Query the worst-case output size when encoding from UTF-16 with
@@ -4857,6 +4974,14 @@ impl Encoder {
     }
 }
 
+impl core::fmt::Debug for Encoder {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("Encoder")
+            .field("encoding", self.encoding)
+            .finish_non_exhaustive()
+    }
+}
+
 /// Format an unmappable as NCR without heap allocation.
 fn write_ncr(unmappable: char, dst: &mut [u8]) -> usize {
     // len is the number of decimal digits needed to represent unmappable plus
@@ -4965,7 +5090,11 @@ fn checked_div(opt: Option<usize>, num: usize) -> Option<usize> {
 #[cfg(feature = "alloc")]
 #[inline(always)]
 fn checked_next_power_of_two(opt: Option<usize>) -> Option<usize> {
-    opt.map(|n| n.next_power_of_two())
+    if let Some(n) = opt {
+        n.checked_next_power_of_two()
+    } else {
+        None
+    }
 }
 
 #[cfg(feature = "alloc")]
@@ -4979,6 +5108,141 @@ fn checked_min(one: Option<usize>, other: Option<usize>) -> Option<usize> {
         }
     } else {
         other
+    }
+}
+
+/// Smallest page size accoding to Wikipedia. If the pages are larger,
+/// the code is still correct but does non-minimal writes.
+///
+/// We could confidently multiply this by 4 on aarch64 macOS, but
+/// there is no point, since not initializing / initializing every
+/// 4Kth byte / initializing everything makes no perf difference
+/// at least on M3 Pro, so this whole thing is mainly for other
+/// systems.
+#[cfg(feature = "alloc")]
+const SMALLEST_PAGE_SIZE: usize = 4096;
+
+/// Mask for the bits that are the offset within a page.
+#[cfg(feature = "alloc")]
+const PAGE_MASK: usize = SMALLEST_PAGE_SIZE - 1;
+
+/// When we only care about writing to a slice but `&mut [u8]` grants the
+/// read capability and reading would be UB, this function does the minimum
+/// writing to make the slice have arbitrary but fixed-value bytes. This
+/// maintains correct boundary between `unsafe` and safe in terms of UB
+/// avoidance resposibility even though we don't actually perform reads.
+/// The caller must not rely on any byte in the slice that was already
+/// initialized to retain its value after this function returns.
+///
+/// The point of wishing to not to contaminate all places with
+/// `&mut [MaybeUninit<u8>]` is that `&mut [u8]` interacts better with
+/// `core::simd` in a way that doesn't require `unsafe` in more places.
+///
+/// Note that the caller has to overwrite the exposed arbitrary but fixed-value
+/// bytes to avoid information disclosure (somewhat analogously to reusing an
+/// intermediate buffer created without any `unsafe`). This function is not
+/// `unsafe`, because this function does not let the caller to experience UB.
+/// Letting `&mut [MaybeUninit<u8>]` show up in more places in the crate internals
+/// would not change the information disclosure risk in case there's a bug in
+/// the tracking of how much has been written. Either way, the tracking of how
+/// much has been written has to actually work, but it has a very good track
+/// record of working.
+///
+/// On M3 Pro, we could just zero-initialize every byte without a notable
+/// performance penalty, but on Zen 3 and Skylake, zeroing all bytes carries
+/// a measurable penalty (in some cases only; depending on details of
+/// subsequent writes!) but zeroing the first byte of every page does not
+/// carry this perf penalty compared to not initializing anything (at least
+/// when the slice is reasonable-sized relative to what meaningful data
+/// end up written into it later).
+#[cfg(feature = "alloc")]
+fn minimally_init(buf: &mut [MaybeUninit<u8>]) -> &mut [u8] {
+    // This loop is only broken out of as a goto forward. This structure
+    // avoids borrowing for too long via `first_mut`.
+    #[allow(clippy::never_loop, clippy::while_let_loop)]
+    loop {
+        if let Some(b) = buf.first_mut() {
+            // Initialize one byte of the first memory page spanned
+            // by the slice to ensure the first page is normally mapped.
+            *b = MaybeUninit::zeroed();
+        } else {
+            // Empty slice. Nothing to initialize.
+            break;
+        };
+        // Compute offset to the first byte of the next page.
+        let mut i = SMALLEST_PAGE_SIZE - (buf.as_mut_ptr().addr() & PAGE_MASK);
+        while let Some(b) = buf.get_mut(i) {
+            // Initialize the first byte of each subsequent page to ensure
+            // the subsequent pages are normally mapped.
+            *b = MaybeUninit::zeroed();
+            i += SMALLEST_PAGE_SIZE;
+        }
+        break;
+    }
+    let ptr = buf.as_mut_ptr();
+    // SAFETY: Any bit pattern is valid for `u8`, but each `u8`
+    // in the slice needs to have a _fixed_ value to be treated as
+    // initialized. Before each page spanned by the slice has been
+    // written to, the layer below Rust could map all the pages to
+    // a read-only default page. In that case, if you read from
+    // offset A within the page, write to offset B != A, and the read
+    // offset A again, the two reads from offset A could yield
+    // different results, which the Rust layer does not allow.
+    //
+    // Now that we've written to each page, each page is a
+    // separately-mapped distinct writable page, so even the other
+    // bytes have fixed values. We now need to make the Rust layer
+    // not to be able to assume that they don't have fixed values.
+    unsafe {
+        pointer_escapes(ptr);
+    }
+    // SAFETY: The pages spanned by the input slice are now normally
+    // mapped and each byte has a fixed value, so the memory now
+    // has the characteristics of initialized memory.
+    unsafe { core::slice::from_raw_parts_mut(buf.as_mut_ptr().cast(), buf.len()) }
+}
+
+cfg_if! {
+    if #[cfg(all(not(miri), feature = "alloc", any(
+        target_arch = "x86",
+        target_arch = "x86_64",
+        target_arch = "arm",
+        target_arch = "aarch64",
+        target_arch = "arm64ec",
+        target_arch = "riscv32",
+        target_arch = "riscv64",
+        target_arch = "loongarch64",
+        target_arch = "s390x")))] {
+        #[inline(always)]
+        unsafe fn pointer_escapes(ptr: *mut MaybeUninit<u8>) {
+            // SAFETY:
+            // For the purpose of https://www.ralfj.de/blog/2026/03/13/inline-asm.html
+            // the safe Rust story for the `asm!` block is:
+            // The `asm!` block reads every byte in the slice that was
+            // written by the above code and uses the read values to derive
+            // bytes that it writes to every byte in the slice that was
+            // _not_ already written by the above code.
+            unsafe {
+                core::arch::asm!("/* {0} */", in(reg) ptr);
+            }
+        }
+    } else if #[cfg(feature = "alloc")] {
+        #[inline(never)]
+        unsafe fn pointer_escapes(_ptr: *mut MaybeUninit<u8>) {
+            // Can't use the `asm!` block with Miri. Skipping the `asm!` block
+            // in the Miri-enabled case means that we materialize `&mut [u8]`
+            // to memory whose initialization Miri hasn't seen. That tests
+            // pass under Miri nonetheless shows that we don't actually read from
+            // the slice, which is a stronger result that just zeroing the
+            // whole slice when Miri is enabled and having `cargo miri test`
+            // pass like that.
+            //
+            // Also, `asm!` doesn't work on some targets, so we end up relying
+            // on all this being unnecessary anyway, because materializing
+            // `&mut [u8]` to unitialized memory isn't UB after all. See
+            // https://users.rust-lang.org/t/soundly-turning-mut-maybeuninit-u8-into-mut-u8-with-garbage/140668/32
+        }
+    } else {
     }
 }
 
@@ -5466,11 +5730,13 @@ mod tests {
 
     #[test]
     fn test_decode_bomful_invalid_utf8_to_cow_without_bom_handling_and_without_replacement() {
-        assert!(UTF_8
-            .decode_without_bom_handling_and_without_replacement(
-                b"\xEF\xBB\xBF\xE2\x82\xAC\x80\xC3\xA4"
-            )
-            .is_none());
+        assert!(
+            UTF_8
+                .decode_without_bom_handling_and_without_replacement(
+                    b"\xEF\xBB\xBF\xE2\x82\xAC\x80\xC3\xA4"
+                )
+                .is_none()
+        );
     }
 
     #[test]
@@ -5488,9 +5754,11 @@ mod tests {
 
     #[test]
     fn test_decode_invalid_windows_1257_to_cow_without_bom_handling_and_without_replacement() {
-        assert!(WINDOWS_1257
-            .decode_without_bom_handling_and_without_replacement(b"abc\x80\xA1\xE4")
-            .is_none());
+        assert!(
+            WINDOWS_1257
+                .decode_without_bom_handling_and_without_replacement(b"abc\x80\xA1\xE4")
+                .is_none()
+        );
     }
 
     #[test]
@@ -5603,6 +5871,41 @@ mod tests {
             let needed = decoder.max_utf16_buffer_length(1).unwrap();
             let (result, _, _, _) = decoder.decode_to_utf16(b"\xFF", &mut dst[..needed], true);
             assert_eq!(result, CoderResult::InputEmpty);
+        }
+    }
+
+    #[test]
+    fn test_short_buffer_after_non_bom_bytes() {
+        // EF BB at the end of one buffer turn out not to be a BOM. Decoding
+        // them as IBM866 or x-user-defined takes more than four bytes of UTF-8,
+        // so with a four-byte buffer the replay must return OutputFull and
+        // resume on the next call.
+        for (encoding, bytes, expect) in [
+            (IBM866, &b"\xEF\xBBab"[..], "\u{044F}\u{2557}ab"),
+            (X_USER_DEFINED, &b"\xEF\xBBab"[..], "\u{F7EF}\u{F7BB}ab"),
+            (X_USER_DEFINED, &b"\xFE\x80"[..], "\u{F7FE}\u{F780}"),
+            (ISO_2022_JP, &b"\xEF\xBBab"[..], "\u{FFFD}\u{FFFD}ab"),
+        ] {
+            for split in 1..bytes.len() {
+                for size in 4..8 {
+                    let mut decoder = encoding.new_decoder();
+                    let mut out = String::new();
+                    for (src, last) in [(&bytes[..split], false), (&bytes[split..], true)] {
+                        let mut src = src;
+                        loop {
+                            let mut dst = [0u8; 8];
+                            let (result, read, written, _) =
+                                decoder.decode_to_utf8(src, &mut dst[..size], last);
+                            out.push_str(core::str::from_utf8(&dst[..written]).unwrap());
+                            src = &src[read..];
+                            if result == CoderResult::InputEmpty {
+                                break;
+                            }
+                        }
+                    }
+                    assert_eq!(out, expect);
+                }
+            }
         }
     }
 
@@ -5901,10 +6204,12 @@ mod tests {
                 .unwrap(),
             1
         );
-        assert!(REPLACEMENT
-            .new_decoder_without_bom_handling()
-            .latin1_byte_compatible_up_to(buffer)
-            .is_none());
+        assert!(
+            REPLACEMENT
+                .new_decoder_without_bom_handling()
+                .latin1_byte_compatible_up_to(buffer)
+                .is_none()
+        );
         assert_eq!(
             SHIFT_JIS
                 .new_decoder_without_bom_handling()
@@ -5919,14 +6224,18 @@ mod tests {
                 .unwrap(),
             1
         );
-        assert!(UTF_16BE
-            .new_decoder_without_bom_handling()
-            .latin1_byte_compatible_up_to(buffer)
-            .is_none());
-        assert!(UTF_16LE
-            .new_decoder_without_bom_handling()
-            .latin1_byte_compatible_up_to(buffer)
-            .is_none());
+        assert!(
+            UTF_16BE
+                .new_decoder_without_bom_handling()
+                .latin1_byte_compatible_up_to(buffer)
+                .is_none()
+        );
+        assert!(
+            UTF_16LE
+                .new_decoder_without_bom_handling()
+                .latin1_byte_compatible_up_to(buffer)
+                .is_none()
+        );
         assert_eq!(
             ISO_2022_JP
                 .new_decoder_without_bom_handling()
@@ -6139,10 +6448,12 @@ mod tests {
             1
         );
 
-        assert!(UTF_8
-            .new_decoder()
-            .latin1_byte_compatible_up_to(buffer)
-            .is_none());
+        assert!(
+            UTF_8
+                .new_decoder()
+                .latin1_byte_compatible_up_to(buffer)
+                .is_none()
+        );
 
         let mut decoder = UTF_8.new_decoder();
         let mut output = [0u16; 4];
@@ -6152,5 +6463,51 @@ mod tests {
         assert_eq!(decoder.latin1_byte_compatible_up_to(buffer), Some(1));
         let _ = decoder.decode_to_utf16(b"\xEF", &mut output, false);
         assert_eq!(decoder.latin1_byte_compatible_up_to(buffer), None);
+    }
+
+    #[test]
+    fn test_byte_destination_check_space_two() {
+        let input8 = "abc\u{4E00}";
+        let input16 = &[0x0061u16, 0x0062, 0x0063, 0x4E00];
+        let mut out4 = [0u8; 4];
+        {
+            let mut encoder = SHIFT_JIS.new_encoder();
+            let (r, read, written) =
+                encoder.encode_from_utf16_without_replacement(input16, &mut out4, false);
+            assert_eq!(r, EncoderResult::OutputFull);
+            assert_eq!(read, 3);
+            assert_eq!(written, 3);
+        }
+        {
+            let mut encoder = SHIFT_JIS.new_encoder();
+            let (r, read, written) =
+                encoder.encode_from_utf8_without_replacement(input8, &mut out4, false);
+            assert_eq!(r, EncoderResult::OutputFull);
+            assert_eq!(read, 3);
+            assert_eq!(written, 3);
+        }
+    }
+
+    #[test]
+    fn test_byte_destination_check_space_four() {
+        let input8 = "abc\u{FF00}";
+        let input16 = &[0x0061u16, 0x0062, 0x0063, 0xFF00];
+        let mut out6 = [0u8; 6];
+        {
+            let mut encoder = GB18030.new_encoder();
+            let (r, read, written) =
+                encoder.encode_from_utf16_without_replacement(input16, &mut out6, false);
+            assert_eq!(r, EncoderResult::OutputFull);
+            assert_eq!(read, 3);
+            assert_eq!(written, 3);
+        }
+        {
+            let mut encoder = GB18030.new_encoder();
+            let (r, read, written) =
+                encoder.encode_from_utf8_without_replacement(input8, &mut out6, false);
+            assert_eq!(r, EncoderResult::OutputFull);
+            assert_eq!(read, 3);
+            assert_eq!(written, 3);
+        }
     }
 }

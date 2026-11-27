@@ -276,6 +276,21 @@ impl Deref for Exception {
     }
 }
 
+impl Exception {
+    pub fn pack(&self) -> (usize, usize) {
+        // In x86 error code for last 15 bits are reserved, so we can use it
+        let code = ((self.kind & 0xFF) << 24) | (self.code & 0x00FF_FFFF);
+        (code, self.address)
+    }
+    pub fn unpack(code: usize, address: usize) -> Self {
+        Exception {
+            kind: code >> 24,
+            code: code & 0x00FF_FFFF,
+            address,
+        }
+    }
+}
+
 impl DerefMut for Exception {
     fn deref_mut(&mut self) -> &mut [u8] {
         unsafe {

@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/webui/signin/signin_url_utils.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/common/chrome_paths.h"
+#include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/render_frame_host.h"
@@ -34,6 +35,7 @@
 #include "ui/events/keycodes/keyboard_codes.h"
 #include "ui/shell_dialogs/fake_select_file_dialog.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -86,14 +88,17 @@ class ProfileCustomizationFileChooserBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
   }
 
-  void CreateSyncConfirmationDialog(
+  // Opens the dialog on another WebUI origin, with the eligible style so the
+  // origin guard is what rejects the chooser.
+  void CreateDialogOnOtherOrigin(
       base::Location location = base::Location::Current()) {
     SCOPED_TRACE(location.ToString());
-    delegate_ = SigninViewControllerDelegate::CreateSyncConfirmationDelegate(
-        browser(), SyncConfirmationStyle::kSigninInterceptModal,
-        /*is_sync_promo=*/false);
-    ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
-    // Keep the style eligible so this case isolates the origin guard.
+    ASSERT_NO_FATAL_FAILURE(
+        CreateProfileCustomizationDialog(/*is_local_profile_creation=*/true));
+    ASSERT_TRUE(content::NavigateToURL(
+        web_contents(), AppendProfileCustomizationQueryParams(
+                            GURL(chrome::kChromeUIVersionURL),
+                            ProfileCustomizationStyle::kLocalProfileCreation)));
     ASSERT_EQ(
         ProfileCustomizationStyle::kLocalProfileCreation,
         GetProfileCustomizationStyle(web_contents()->GetLastCommittedURL()));
@@ -285,22 +290,22 @@ IN_PROC_BROWSER_TEST_F(ProfileCustomizationFileChooserDisabledBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(ProfileCustomizationFileChooserEnabledBrowserTest,
                        CancelsFileChooserOutsideProfileCustomization) {
-  ASSERT_NO_FATAL_FAILURE(CreateSyncConfirmationDialog());
+  ASSERT_NO_FATAL_FAILURE(CreateDialogOnOtherOrigin());
   ExpectFileChooserCanceled(web_contents()->GetPrimaryMainFrame());
 }
 
 IN_PROC_BROWSER_TEST_F(ProfileCustomizationFileChooserEnabledBrowserTest,
-                       CancelsFileInputFromSyncConfirmation) {
-  ASSERT_NO_FATAL_FAILURE(CreateSyncConfirmationDialog());
+                       CancelsFileInputFromOtherOrigin) {
+  ASSERT_NO_FATAL_FAILURE(CreateDialogOnOtherOrigin());
   content::SimulateEndOfPaintHoldingOnPrimaryMainFrame(web_contents());
   auto* factory = ui::FakeSelectFileDialog::RegisterFactory();
   factory->SetOpenCallback(base::BindLambdaForTesting([factory] {
-    ADD_FAILURE() << "Sync confirmation opened a native chooser";
+    ADD_FAILURE() << "Another origin opened a native chooser";
     scoped_refptr<ui::FakeSelectFileDialog> dialog = factory->GetLastDialog();
     dialog->CallFileSelectionCanceled();
   }));
 
-  // Exercise the renderer-to-browser path from another dialog's origin.
+  // Exercise the renderer-to-browser path from another origin.
   ASSERT_EQ(true, content::EvalJs(web_contents(), R"(
     (() => {
       const input = document.createElement('input');
@@ -326,7 +331,7 @@ IN_PROC_BROWSER_TEST_F(ProfileCustomizationFileChooserEnabledBrowserTest,
                                   content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                   ISOLATED_WORLD_ID_BRAVE_INTERNAL));
   EXPECT_EQ(nullptr, factory->GetLastDialog())
-      << "Sync confirmation opened a native chooser";
+      << "Another origin opened a native chooser";
 }
 
 IN_PROC_BROWSER_TEST_F(ProfileCustomizationFileChooserEnabledBrowserTest,

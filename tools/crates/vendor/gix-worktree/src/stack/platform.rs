@@ -45,9 +45,7 @@ impl<'a> Platform<'a> {
     /// If the cache was configured without exclude patterns.
     pub fn matching_exclude_pattern(&self) -> Option<gix_ignore::search::Match<'_>> {
         let ignore = self.parent.state.ignore_or_panic();
-        let relative_path =
-            gix_path::to_unix_separators_on_windows(gix_path::into_bstr(self.parent.stack.current_relative()));
-        ignore.matching_exclude_pattern(relative_path.as_bstr(), self.is_dir, self.parent.case)
+        ignore.matching_exclude_pattern(self.relative_path.as_bstr(), self.is_dir, self.parent.case)
     }
 
     /// Match all attributes at the current path and store the result in `out`, returning `true` if at least one attribute was found.
@@ -58,9 +56,7 @@ impl<'a> Platform<'a> {
     #[cfg(feature = "attributes")]
     pub fn matching_attributes(&self, out: &mut gix_attributes::search::Outcome) -> bool {
         let attrs = self.parent.state.attributes_or_panic();
-        let relative_path =
-            gix_path::to_unix_separators_on_windows(gix_path::into_bstr(self.parent.stack.current_relative()));
-        attrs.matching_attributes(relative_path.as_bstr(), self.parent.case, self.is_dir, out)
+        attrs.matching_attributes(self.relative_path.as_bstr(), self.parent.case, self.is_dir, out)
     }
 }
 

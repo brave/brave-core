@@ -3,7 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {Model, OLLAMA_ENDPOINT} from './brave_leo_assistant_browser_proxy.js'
+import {Model} from './brave_leo_assistant_browser_proxy.js'
+import {OLLAMA_ENDPOINT} from '../ollama.mojom-webui.js'
 import {modelIcons, fallbackModelIcon} from '../model_icon_map.js'
 
 export function getModelIcon(model: Model): string {

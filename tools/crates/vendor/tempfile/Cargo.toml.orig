@@ -1,6 +1,6 @@
 [package]
 name = "tempfile"
-version = "3.24.0"
+version = "3.27.0"
 authors = [
   "Steven Allen <steven@stebalien.com>",
   "The Rust Project Developers",
@@ -24,10 +24,10 @@ fastrand = "2.1.1"
 once_cell = { version = "1.19.0", default-features = false, features = ["std"] }
 
 [target.'cfg(any(unix, windows, target_os = "wasi"))'.dependencies]
-getrandom = { version = "0.3.0", default-features = false, optional = true }
+getrandom = { version = ">=0.3.0, <0.5", default-features = false, optional = true }
 
 [target.'cfg(any(unix, target_os = "wasi"))'.dependencies]
-rustix = { version = "1.1.3", features = ["fs"] }
+rustix = { version = "1.1.4", features = ["fs"] }
 
 [target.'cfg(windows)'.dependencies.windows-sys]
 version = ">=0.52, <0.62"

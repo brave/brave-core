@@ -196,6 +196,11 @@ class BraveStatsUpdaterReferralCodeBrowserTest
     BraveStatsUpdaterBrowserTest::SetUp();
   }
 
+  void TearDown() override {
+    BraveStatsUpdaterBrowserTest::TearDown();
+    brave::BraveReferralsService::SetPromoFilePathForTesting(base::FilePath());
+  }
+
   void WritePromoCodeFile(const base::FilePath& promo_code_file,
                           const std::string& referral_code) {
     base::ScopedAllowBlockingForTesting allow_blocking;

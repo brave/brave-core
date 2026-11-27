@@ -4,6 +4,7 @@ use crate::prelude::*;
 // but may be wrong for mips64
 
 pub type mode_t = u32;
+// FIXME(1.0,deprecate): lfs binding to be removed
 pub type off64_t = i64;
 pub type socklen_t = u32;
 
@@ -21,6 +22,7 @@ s! {
         pub sa_restorer: Option<extern "C" fn()>,
     }
 
+    // FIXME(1.0,deprecate): lfs binding to be removed
     pub struct rlimit64 {
         pub rlim_cur: c_ulonglong,
         pub rlim_max: c_ulonglong,
@@ -78,6 +80,7 @@ s! {
         pub _f: [c_char; 0],
     }
 
+    // FIXME(1.0,deprecate): lfs binding to be removed
     pub struct statfs64 {
         pub f_type: u64,
         pub f_bsize: u64,
@@ -93,6 +96,7 @@ s! {
         pub f_spare: [u64; 4],
     }
 
+    // FIXME(1.0,deprecate): lfs binding to be removed
     pub struct statvfs64 {
         pub f_bsize: c_ulong,
         pub f_frsize: c_ulong,
@@ -105,7 +109,7 @@ s! {
         pub f_fsid: c_ulong,
         pub f_flag: c_ulong,
         pub f_namemax: c_ulong,
-        __f_spare: [c_int; 6],
+        __f_spare: Padding<[c_int; 6]>,
     }
 
     pub struct pthread_barrier_t {
@@ -118,12 +122,12 @@ s! {
 
     pub struct pthread_mutex_t {
         value: c_int,
-        __reserved: [c_char; 36],
+        __reserved: Padding<[c_char; 36]>,
     }
 
     pub struct pthread_cond_t {
         value: c_int,
-        __reserved: [c_char; 44],
+        __reserved: Padding<[c_char; 44]>,
     }
 
     pub struct pthread_rwlock_t {
@@ -132,9 +136,10 @@ s! {
         pendingReaders: c_int,
         pendingWriters: c_int,
         attr: i32,
-        __reserved: [c_char; 36],
+        __reserved: Padding<[c_char; 36]>,
     }
 
+    // FIXME(1.0,deprecate): lfs binding to be removed
     pub struct sigset64_t {
         __bits: [c_ulong; 1],
     }
@@ -145,21 +150,22 @@ pub const SA_NOCLDSTOP: c_int = 0x00000001;
 pub const SA_NOCLDWAIT: c_int = 0x00000002;
 pub const SA_NODEFER: c_int = 0x40000000;
 pub const SA_ONSTACK: c_int = 0x08000000;
-pub const SA_RESETHAND: c_int = 0x80000000;
+pub const SA_RESETHAND: c_int = u32_cast_int(0x80000000);
 pub const SA_RESTART: c_int = 0x10000000;
 pub const SA_SIGINFO: c_int = 0x00000004;
 
 pub const RTLD_GLOBAL: c_int = 0x00100;
 pub const RTLD_NOW: c_int = 2;
 pub const RTLD_DEFAULT: *mut c_void = ptr::null_mut();
+pub const RTLD_NEXT: *mut c_void = -1isize as *mut c_void;
 
 pub const PTHREAD_MUTEX_INITIALIZER: pthread_mutex_t = pthread_mutex_t {
     value: 0,
-    __reserved: [0; 36],
+    __reserved: Padding::new([0; 36]),
 };
 pub const PTHREAD_COND_INITIALIZER: pthread_cond_t = pthread_cond_t {
     value: 0,
-    __reserved: [0; 44],
+    __reserved: Padding::new([0; 44]),
 };
 pub const PTHREAD_RWLOCK_INITIALIZER: pthread_rwlock_t = pthread_rwlock_t {
     numLocks: 0,
@@ -167,7 +173,7 @@ pub const PTHREAD_RWLOCK_INITIALIZER: pthread_rwlock_t = pthread_rwlock_t {
     pendingReaders: 0,
     pendingWriters: 0,
     attr: 0,
-    __reserved: [0; 36],
+    __reserved: Padding::new([0; 36]),
 };
 pub const PTHREAD_STACK_MIN: size_t = 4096 * 4;
 pub const CPU_SETSIZE: size_t = 1024;
@@ -183,7 +189,7 @@ f! {
     // directly. This workaround can be removed if the minimum version of
     // Android is bumped. When the workaround is removed, `accept4` can be
     // moved back to `linux_like/mod.rs`
-    pub fn accept4(
+    pub unsafe fn accept4(
         fd: c_int,
         addr: *mut crate::sockaddr,
         len: *mut crate::socklen_t,

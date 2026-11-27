@@ -1,3 +1,71 @@
+# 2.13.2
+
+## What's Changed
+* Flags: adjust order of elements in manual implementation example by @DanielEScherzer in https://github.com/bitflags/bitflags/pull/494
+* Re-pull const declarations outside of nested const by @KodrAus in https://github.com/bitflags/bitflags/pull/496
+
+**Full Changelog**: https://github.com/bitflags/bitflags/compare/2.13.1...2.13.2
+
+# 2.13.1
+
+## What's Changed
+* Lower the LLVM IR output of the generated output by @bolshoytoster in https://github.com/bitflags/bitflags/pull/492
+
+## New Contributors
+* @bolshoytoster made their first contribution in https://github.com/bitflags/bitflags/pull/492
+
+**Full Changelog**: https://github.com/bitflags/bitflags/compare/2.13.0...2.13.1
+
+# 2.13.0
+
+## What's Changed
+* add `MyFlags::Abc::iter_equal_names()` method by @ssrlive in https://github.com/bitflags/bitflags/pull/489
+
+**Full Changelog**: https://github.com/bitflags/bitflags/compare/2.12.1...2.13.0
+
+# 2.12.1
+
+## What's Changed
+* Rework the `#[flag_name]` feature and re-stabilize as `#[bitflags(flag_name)]` by @KodrAus in https://github.com/bitflags/bitflags/pull/487
+
+**Full Changelog**: https://github.com/bitflags/bitflags/compare/2.12.0...2.12.1
+
+# 2.12.0
+
+## Yanked
+
+This release has been yanked because the `#[flag_name]` processing noticeably increases macro recursion, hitting the default limit in cases that are already close to it.
+
+## What's Changed
+* Add a custom `#[flag_name]` attribute by @KodrAus in https://github.com/bitflags/bitflags/pull/483
+* Add an all_named ctor for filtering out catch-all flags by @KodrAus in https://github.com/bitflags/bitflags/pull/484
+
+**Full Changelog**: https://github.com/bitflags/bitflags/compare/2.11.1...2.12.0
+
+# 2.11.1
+
+## What's Changed
+* Bless compile-fail tests for current beta by @DanielEScherzer in https://github.com/bitflags/bitflags/pull/478
+* example_generated.rs: add missing third slash for doc comment by @DanielEScherzer in https://github.com/bitflags/bitflags/pull/477
+* Clarify self and other in method docs by @KodrAus in https://github.com/bitflags/bitflags/pull/481
+
+## New Contributors
+* @DanielEScherzer made their first contribution in https://github.com/bitflags/bitflags/pull/478
+
+**Full Changelog**: https://github.com/bitflags/bitflags/compare/2.11.0...2.11.1
+
+# 2.11.0
+
+## What's Changed
+* Fix use of Result in macro output by @james7132 in https://github.com/bitflags/bitflags/pull/462
+* Add methods to get the known/unknown bits from a flags value by @WaterWhisperer in https://github.com/bitflags/bitflags/pull/473
+
+## New Contributors
+* @james7132 made their first contribution in https://github.com/bitflags/bitflags/pull/462
+* @WaterWhisperer made their first contribution in https://github.com/bitflags/bitflags/pull/473
+
+**Full Changelog**: https://github.com/bitflags/bitflags/compare/2.10.0...2.11.0
+
 # 2.10.0
 
 ## What's Changed

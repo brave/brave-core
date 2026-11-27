@@ -29,9 +29,10 @@ interface and enforces correctness guarantees through C++ `concept`s and
 
 ## Usage
 
-Request and response bodies are either JSON or Protobuf, and an endpoint uses
-one format for both. A request can also have no body, in which case the response
-alone determines the format.
+Request and response bodies are either JSON or Protobuf, and each one chooses
+its format independently: an endpoint can, for example, send JSON and receive
+Protobuf, or receive Protobuf on success and JSON on error. A request or a
+response can also have no body.
 
 - JSON request bodies implement `ToValue()`, and JSON response bodies implement
   `FromValue()`. The JSON schema/IDL compiler generates such types; hand-written
@@ -39,8 +40,8 @@ alone determines the format.
 - Protobuf request and response bodies are message types derived from
   `google::protobuf::MessageLite`.
 
-The examples below use JSON; Protobuf endpoints work the same way, with
-generated message types in place of the IDL ones.
+The examples below use JSON; Protobuf bodies work the same way, with generated
+message types in place of the IDL ones.
 
 ---
 
@@ -149,10 +150,10 @@ optional `template` argument: `Post<MyRequestBody>` sends a body, and `Post<>`
 doesn't. `Get` and `Head` never take a body, since RFC 9110 gives one no defined
 meaning for them, so they're plain types rather than `template` aliases. A body
 is sent even if it serializes empty (`{}` or zero bytes), so a request without
-one should use a body-less alias rather than an empty body type.
+one should use an alias without a body rather than an empty body type.
 
 ```cpp
-struct MyBodylessEndpoint {
+struct MyRequestWithoutBodyEndpoint {
   using Request = Get;
   using Response = Response<MySuccessBody, MyErrorBody>;
 
@@ -161,6 +162,11 @@ struct MyBodylessEndpoint {
   }
 };
 ```
+
+Likewise, `Response<>` takes either both a success and an error body type, or
+neither. Without them, it's for endpoints whose response body you don't need: it
+exposes only `net_error` and `status_code`, and discards any body the server
+sends as it's received, so `max_body_size` doesn't apply.
 
 ---
 
@@ -217,7 +223,8 @@ Requests also have:
   to `SimpleURLLoader::kMaxBoundedStringDownloadSize` (5 MiB), which
   `DownloadToString()` `DCHECK`s it does not exceed. Larger responses fail with
   `net::ERR_INSUFFICIENT_RESOURCES`. `std::nullopt` lifts the limit via
-  `SimpleURLLoader::DownloadToStringOfUnboundedSizeUntilCrashAndDie()`.
+  `SimpleURLLoader::DownloadToStringOfUnboundedSizeUntilCrashAndDie()`. Doesn't
+  apply to `Response<>` without body types, whose body is discarded.
 - `redirect_mode`: forwarded to `network::ResourceRequest::redirect_mode`;
   defaults to `kError`, so the network service fails a redirect with
   `net::ERR_FAILED`. With `kFollow`, the headers set on the request (e.g. bearer
@@ -227,7 +234,7 @@ Requests also have:
   to no retries.
 - `timeout_duration`: forwarded to `SimpleURLLoader::SetTimeoutDuration()`;
   defaults to zero, i.e. no timeout.
-- `url_replacements`: overrides the host, path, and/or query of
+- `url_replacements`: overrides the scheme, host, port, path, and/or query of
   `Endpoint::URL()` for this request.
 
 ```cpp
@@ -357,8 +364,9 @@ Like `MockResponseFor<>()`, `MatchesEndpoint<>()` takes the request's
 
 Use the `ResponseEq()` gmock matcher to compare a received response against an
 expected one, without defining `operator==()` for your body types. It compares
-`net_error`, `status_code`, and the `body` field by field (and the `headers`,
-for `WithHeaders<>` responses), and reports which one differs on failure.
+`net_error`, `status_code`, and the `body` (if any) field by field (and the
+`headers`, for `WithHeaders<>` responses), and reports which one differs on
+failure.
 
 ```cpp
 base::test::TestFuture<LoginInit::Response> future;

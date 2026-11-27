@@ -9,12 +9,12 @@
 #include <memory>
 #include <string>
 
-#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJson;
+using base::test::ParseJsonDict;
 
 namespace brave_wallet {
 
@@ -289,6 +289,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodedData) {
   EXPECT_EQ(encoded_mail_v4, encoded_mail_v3);
   auto encoded_person_v3 =
       helper->EncodeData("Person", *(data_dict.FindDict("to")));
+  ASSERT_TRUE(encoded_person_v3);
   EXPECT_EQ(encoded_person_v4->first, encoded_person_v3->first);
 
   // Invalid primary type name
@@ -301,14 +302,17 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodedData) {
   EXPECT_EQ(base::HexEncodeLower(data_mail_hash_v4->first),
             "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
 
-  std::string sanitized_data_mail_v4;
-  base::JSONWriter::Write(data_mail_hash_v4->second, &sanitized_data_mail_v4);
-  EXPECT_EQ(
-      sanitized_data_mail_v4,
-      "{\"contents\":\"Hello, "
-      "Bob!\",\"from\":{\"name\":\"Cow\",\"wallet\":"
-      "\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"},\"to\":{\"name\":"
-      "\"Bob\",\"wallet\":\"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB\"}}");
+  EXPECT_EQ(data_mail_hash_v4->second, ParseJsonDict(R"({
+    "contents": "Hello, Bob!",
+    "from": {
+      "name": "Cow",
+      "wallet": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"
+    },
+    "to": {
+      "name": "Bob",
+      "wallet": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+    }
+  })"));
 }
 
 TEST(EthSignedTypedDataHelperUnitTest, InvalidEncodedData) {

@@ -137,7 +137,7 @@ fn refuses_server_ext_with_unparsed_bytes() {
 #[test]
 fn refuses_certificate_ext_with_unparsed_bytes() {
     let bytes = [
-        0x00u8, 0x09, 0x00, 0x05, 0x00, 0x05, 0x01, 0x00, 0x00, 0x00, 0x01,
+        0x00u8, 0x0a, 0x00, 0x05, 0x00, 0x06, 0x01, 0x00, 0x00, 0x01, 0xcc, 0x01,
     ];
     assert_eq!(
         CertificateExtensions::read_bytes(&bytes).unwrap_err(),
@@ -831,6 +831,7 @@ fn sample_server_hello_payload() -> ServerHelloPayload {
             key_share: Some(KeyShareEntry::new(NamedGroup::X25519, &[1, 2, 3][..])),
             preshared_key: Some(3),
             early_data_ack: Some(()),
+            ticket_request: None,
             encrypted_client_hello_ack: Some(ServerEncryptedClientHello {
                 retry_configs: vec![],
             }),
@@ -959,7 +960,7 @@ fn sample_certificate_payload_tls13() -> CertificatePayloadTls13<'static> {
             cert: CertificateDer::from(vec![3, 4, 5]),
             extensions: CertificateExtensions {
                 status: Some(CertificateStatus {
-                    ocsp_response: PayloadU24(Payload::new(vec![1, 2, 3])),
+                    ocsp_response: PayloadU24::from(Payload::new(vec![1, 2, 3])),
                 }),
             },
         }],
@@ -970,7 +971,7 @@ fn sample_compressed_certificate() -> CompressedCertificatePayload<'static> {
     CompressedCertificatePayload {
         alg: CertificateCompressionAlgorithm::Brotli,
         uncompressed_len: 123,
-        compressed: PayloadU24(Payload::new(vec![1, 2, 3])),
+        compressed: PayloadU24::from(Payload::new(vec![1, 2, 3])),
     }
 }
 
@@ -1046,6 +1047,6 @@ fn sample_encrypted_extensions() -> Box<ServerExtensions<'static>> {
 
 fn sample_certificate_status() -> CertificateStatus<'static> {
     CertificateStatus {
-        ocsp_response: PayloadU24(Payload::new(vec![1, 2, 3])),
+        ocsp_response: PayloadU24::from(Payload::new(vec![1, 2, 3])),
     }
 }

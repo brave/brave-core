@@ -35,6 +35,8 @@ struct CreativeAdInfo {
   std::string creative_set_id;
   std::string campaign_id;
   std::string advertiser_id;
+  mojom::NewTabPageAdCampaignType campaign_type =
+      mojom::NewTabPageAdCampaignType::kUndefined;
   mojom::NewTabPageAdMetricType metric_type =
       mojom::NewTabPageAdMetricType::kUndefined;
   base::Time start_at;

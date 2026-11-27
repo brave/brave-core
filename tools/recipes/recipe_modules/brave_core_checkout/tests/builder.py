@@ -89,6 +89,26 @@ def GenTests(api: TEST_DEPS):
             ['--builder', 'linux-x64-asan-brave'],
         ),
     )
+    # The builder's secrets are copied, never read, into `.internal/.env`.
+    yield builder_test(
+        'secrets',
+        api.brave_tests_builder_config.ci_build(),
+        api.brave_core_checkout.secrets_dotenv('/b/secrets.env'),
+        api.post_process(
+            post_process.StepCommandContains,
+            'install secrets',
+            ['copy', '/b/secrets.env'],
+        ),
+        api.post_process(post_process.MustRun, 'restrict secrets'),
+        api.post_process(post_process.DropExpectation),
+    )
+    # Without them, nothing is installed.
+    yield builder_test(
+        'no secrets',
+        api.brave_tests_builder_config.ci_build(),
+        api.post_process(post_process.DoesNotRun, 'install secrets'),
+        api.post_process(post_process.DropExpectation),
+    )
     # Cross-compiling, with the host set explicitly.
     yield builder_test(
         'android builder',

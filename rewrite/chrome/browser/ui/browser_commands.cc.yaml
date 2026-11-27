@@ -15,6 +15,16 @@ substitutions:
       function_name: ReloadBypassingCache
       return_if: 'BraveMaybeHandleReloadBypassingCache(browser)'
 
+  - description: |-
+      Refuse NewSplitTab() when the web panel tab is active
+
+      The web panel's tab must never join a split. Return early so none of
+      NewSplitTab()'s many callers (toolbar button, WebUI control, tab
+      context menu, etc.) need their own guard.
+    preempt_function_impl:
+      function_name: NewSplitTab
+      return_if: 'sidebar::IsWebPanelTabActive(browser)'
+
   - description:
       Replace chrome::kChromeUISplitViewNewTabPageURL to kChromeUINewTabURL in
       NewSplitTab(). We don't want to have a separate NTP URL for split view.

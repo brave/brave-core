@@ -15,7 +15,7 @@ namespace permissions {
 using PermissionsClientUnitTest = testing::Test;
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-TEST_F(PermissionsClientUnitTest, BraveCanBypassEmbeddingOriginCheck) {
+TEST_F(PermissionsClientUnitTest, CanBypassEmbeddingOriginCheck) {
   auto* client = PermissionsClient::Get();
   ASSERT_TRUE(client);
 
@@ -47,17 +47,17 @@ TEST_F(PermissionsClientUnitTest, BraveCanBypassEmbeddingOriginCheck) {
   size_t i = 0;
   for (const auto& test_case : cases) {
     GURL embedding_origin("https://test.com");
-    EXPECT_TRUE(client->BraveCanBypassEmbeddingOriginCheck(
+    EXPECT_TRUE(client->CanBypassEmbeddingOriginCheck(
         test_case.type, test_case.requesting_origin, embedding_origin))
         << "case: " << i;
 
     GURL embedding_origin_with_port("https://test.com:123");
-    EXPECT_TRUE(client->BraveCanBypassEmbeddingOriginCheck(
+    EXPECT_TRUE(client->CanBypassEmbeddingOriginCheck(
         test_case.type, test_case.requesting_origin_with_port,
         embedding_origin_with_port))
         << "case: " << i;
 
-    EXPECT_FALSE(client->BraveCanBypassEmbeddingOriginCheck(
+    EXPECT_FALSE(client->CanBypassEmbeddingOriginCheck(
         ContentSettingsType::GEOLOCATION, test_case.requesting_origin,
         embedding_origin))
         << "case: " << i;

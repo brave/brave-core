@@ -19,6 +19,7 @@ import {
   SendZecTransactionParams,
   SendCardanoTransactionParams,
   SendPolkadotTransactionParams,
+  PanelState,
   SerializableTransactionInfo,
   SPLTransferFromParams,
   TransactionInfoLookup,
@@ -494,7 +495,11 @@ export const transactionEndpoints = ({
           }
 
           if (panelHandler) {
-            navigateToConnectHardwareWallet(store)
+            navigateToConnectHardwareWallet(store, {
+              type: 'signSolTransactions',
+              id: arg.request.id,
+              accountUniqueKey: arg.request.fromAccountId.uniqueKey,
+            })
           }
 
           // Send serialized requests to hardware keyring to sign.
@@ -527,6 +532,26 @@ export const transactionEndpoints = ({
             payload,
             panelHandler,
           )
+
+          // The request is finished, and retry will not run a signSolTransactions
+          // operation. Leave the hardware panel when another request is still
+          // queued so its own confirmation can show. Skip this when the queue
+          // is empty: processSignSolTransactionsRequest already closed the
+          // panel, and navigateToMain would open it again. Read the bound
+          // operation after the pending-request lookup so a cancel that opens
+          // a newer hardware operation is not cleared by this completion.
+          const hasPendingRequests = await getHasPendingRequests()
+          const { panel } = store.getState() as { panel: PanelState }
+          const operation = panel.hardwareWalletOperation
+          if (
+            hasPendingRequests
+            && operation?.type === 'signSolTransactions'
+            && operation.id === arg.request.id
+            && operation.accountUniqueKey
+              === arg.request.fromAccountId.uniqueKey
+          ) {
+            store.dispatch(PanelActions.navigateToMain())
+          }
 
           return {
             data: {
@@ -1210,7 +1235,11 @@ export const transactionEndpoints = ({
             foundAccount.hardware
 
           if (apiProxy.panelHandler) {
-            navigateToConnectHardwareWallet(store)
+            navigateToConnectHardwareWallet(store, {
+              type: 'transaction',
+              id: txInfo.id,
+              accountUniqueKey: txInfo.fromAccountId.uniqueKey,
+            })
           }
 
           if (hardwareAccount.vendor === BraveWallet.HardwareVendor.kLedger) {

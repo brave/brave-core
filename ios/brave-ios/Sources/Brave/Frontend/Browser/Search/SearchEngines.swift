@@ -37,19 +37,18 @@ enum DefaultEngineType: String {
 
 /// Manage a set of Open Search engines.
 ///
-/// The search engines are ordered.  Individual search engines can be enabled and disabled.  The
-/// first search engine is distinguished and labeled the "default" search engine; it can never be
-/// disabled.  Search suggestions should always be sourced from the default search engine.
+/// The search engines are ordered.  The first search engine is distinguished and labeled the
+/// "default" search engine.  Search suggestions should always be sourced from the default search
+/// engine.
 ///
 /// Two additional bits of information are maintained: whether the user should be shown "opt-in to
 /// search suggestions" UI, and whether search suggestions are enabled.
 ///
 /// Users can set standard tab default search engine and private tab search engine.
 ///
-/// Consumers will almost always use `defaultEngine` if they want a single search engine, and
-/// `quickSearchEngines()` if they want a list of enabled quick search engines (possibly empty,
-/// since the default engine is never included in the list of enabled quick search engines, and
-/// it is possible to disable every non-default quick search engine).
+/// Consumers will almost always use `defaultEngine` if they want a single search engine.  Which
+/// engines appear in the quick search row, in what order, is not modelled here — see
+/// `QuickSearchItem.quickSearchCatalog(from:excludingDefault:)`.
 ///
 /// The search engines are backed by a write-through cache into a ProfilePrefs instance.  This class
 /// is not thread-safe -- you should only access it on a single thread (usually, the main thread)!
@@ -65,7 +64,6 @@ public class SearchEngines {
     initialSearchEngines = InitialSearchEngines(locale: locale)
 
     self.locale = locale
-    self.disabledEngineNames = getDisabledEngineNames()
   }
 
   public func searchEngineSetup() {
@@ -196,8 +194,7 @@ public class SearchEngines {
     guard let newDefaultEngine = defaultEngine(forType: type) else {
       return
     }
-
-    enableEngine(newDefaultEngine)
+    QuickSearchItemID(engine: newDefaultEngine).setQuickSearchEnabled(true)
 
     // When re-sorting engines only look at default search for standard browsing.
     if type == .standard {
@@ -228,21 +225,13 @@ public class SearchEngines {
     return defaultEngine(forType: type)?.shortName == engine.shortName
   }
 
-  // The keys of this dictionary are used as a set.
-  fileprivate var disabledEngineNames: [String: Bool]! {
-    didSet {
-      Preferences.Search.disabledEngines.value = Array(self.disabledEngineNames.keys)
-    }
-  }
-
+  /// Every available engine, default engine first — `defaultEngine(forType:)` falls back to
+  /// `first`, and `updateDefaultEngine` maintains that. The remaining order is the display order
+  /// for search settings; quick search keeps its own order in `quick-search.order`.
   var orderedEngines: [OpenSearchEngine] = [] {
     didSet {
       Preferences.Search.orderedEngines.value = self.orderedEngines.map { $0.shortName }
     }
-  }
-
-  var quickSearchEngines: [OpenSearchEngine] {
-    return self.orderedEngines.filter({ (engine) in self.isEngineEnabled(engine) })
   }
 
   var shouldShowSearchSuggestionsOptIn: Bool {
@@ -270,22 +259,6 @@ public class SearchEngines {
     set { Preferences.Search.showBrowserSuggestions.value = newValue }
   }
 
-  func isEngineEnabled(_ engine: OpenSearchEngine) -> Bool {
-    return disabledEngineNames.index(forKey: engine.shortName) == nil
-  }
-
-  func enableEngine(_ engine: OpenSearchEngine) {
-    disabledEngineNames.removeValue(forKey: engine.shortName)
-  }
-
-  func disableEngine(_ engine: OpenSearchEngine, type: DefaultEngineType) {
-    if isEngineDefault(engine, type: type) {
-      // Can't disable default engine.
-      return
-    }
-    disabledEngineNames[engine.shortName] = true
-  }
-
   func deleteCustomEngine(_ engine: OpenSearchEngine) async throws {
     // We can't delete a preinstalled engine
     if !engine.isCustomEngine {
@@ -300,6 +273,7 @@ public class SearchEngines {
     }
 
     orderedEngines = await getOrderedEngines()
+    QuickSearchItemID(engine: engine).removeQuickSearchState()
   }
 
   /// Adds an engine to the front of the search engines list.
@@ -316,6 +290,8 @@ public class SearchEngines {
     } catch {
       throw SearchEngineError.failedToSave
     }
+
+    QuickSearchItemID(engine: engine).moveToFrontOfQuickSearchOrder()
   }
 
   /// Edits an engine which was already in the list
@@ -339,22 +315,13 @@ public class SearchEngines {
     } catch {
       throw SearchEngineError.failedToSave
     }
+    QuickSearchItemID(engine: engine).rekeyQuickSearchState(
+      to: QuickSearchItemID(engine: newEngine)
+    )
   }
 
   func queryForSearchURL(_ url: URL?, forType engineType: DefaultEngineType) -> String? {
     return defaultEngine(forType: engineType)?.queryForSearchURL(url)
-  }
-
-  fileprivate func getDisabledEngineNames() -> [String: Bool] {
-    if let disabledEngineNames = Preferences.Search.disabledEngines.value {
-      var disabledEngineDict = [String: Bool]()
-      for engineName in disabledEngineNames {
-        disabledEngineDict[engineName] = true
-      }
-      return disabledEngineDict
-    } else {
-      return [String: Bool]()
-    }
   }
 
   fileprivate func customEngineFilePath() -> String {

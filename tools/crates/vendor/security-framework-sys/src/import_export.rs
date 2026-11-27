@@ -12,6 +12,7 @@ use std::os::raw::c_uint;
 use crate::base::{SecAccessRef, SecKeychainRef};
 
 #[cfg(target_os = "macos")]
+/// <https://developer.apple.com/documentation/security/secexternalformat>
 pub type SecExternalFormat = u32;
 #[cfg(target_os = "macos")]
 pub type SecExternalItemType = u32;
@@ -29,6 +30,40 @@ pub const kSecKeyNoAccessControl: SecKeyImportExportFlags = 4;
 
 #[cfg(target_os = "macos")]
 pub const SEC_KEY_IMPORT_EXPORT_PARAMS_VERSION: c_uint = 0;
+
+#[cfg(target_os = "macos")]
+mod sec_external_format {
+    use super::SecExternalFormat;
+    pub const kSecFormatUnknown: SecExternalFormat = 0;
+    /// a.k.a. X509 for public keys
+    pub const kSecFormatOpenSSL: SecExternalFormat = 1;
+    /// OpenSSH v.1
+    pub const kSecFormatSSH: SecExternalFormat = 2;
+    pub const kSecFormatBSAFE: SecExternalFormat = 3;
+    /// raw unformatted key bits
+    pub const kSecFormatRawKey: SecExternalFormat = 4;
+    pub const kSecFormatWrappedPKCS8: SecExternalFormat = 5;
+    /// traditional openssl
+    pub const kSecFormatWrappedOpenSSL: SecExternalFormat = 6;
+    /// OpenSSH v.1
+    pub const kSecFormatWrappedSSH: SecExternalFormat = 7;
+    pub const kSecFormatWrappedLSH: SecExternalFormat = 8;
+    /// DER encoded
+    pub const kSecFormatX509Cert: SecExternalFormat = 9;
+    /// sequence of certs and/or keys, implies PEM
+    pub const kSecFormatPEMSequence: SecExternalFormat = 10;
+    /// sequence of certs
+    pub const kSecFormatPKCS7: SecExternalFormat = 11;
+    /// set of certs and private keys
+    pub const kSecFormatPKCS12: SecExternalFormat = 12;
+    /// sequence of certs, form netscape-cert-sequence
+    pub const kSecFormatNetscapeCertSequence: SecExternalFormat = 13;
+    /// OpenSSH v.2
+    pub const kSecFormatSSHv2: SecExternalFormat = 14;
+}
+
+#[cfg(target_os = "macos")]
+pub use sec_external_format::*;
 
 #[repr(C)]
 #[derive(Copy, Clone)]

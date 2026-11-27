@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/test/test_future.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -11,6 +12,7 @@
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/features.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 namespace {
 
@@ -43,7 +45,7 @@ class EphemeralStorageBlinkMemoryCacheBrowserTestBase
     )";
 
     auto* rfh = ui_test_utils::NavigateToURLWithDisposition(
-        browser, url, WindowOpenDisposition::kNewForegroundTab,
+        browser, url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     EXPECT_TRUE(
         content::ExecJs(content::ChildFrameAt(rfh, 0),
@@ -51,14 +53,14 @@ class EphemeralStorageBlinkMemoryCacheBrowserTestBase
   }
 
   void ClearHttpCache() {
-    base::RunLoop run_loop;
+    base::test::TestFuture<void> future;
     browser()
         ->GetProfile()
         ->GetDefaultStoragePartition()
         ->GetNetworkContext()
         ->ClearHttpCache(base::Time(), base::Time(), nullptr,
-                         run_loop.QuitClosure());
-    run_loop.Run();
+                         future.GetCallback());
+    ASSERT_TRUE(future.Wait());
   }
 };
 

@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.toolbar.top;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 
@@ -26,6 +25,7 @@ import org.chromium.chrome.browser.download.DownloadToolbarButtonState;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.omnibox.OmniboxStub;
+import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
@@ -123,7 +123,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             Runnable onSigninTapped,
             NonNullObservableSupplier<DownloadToolbarButtonState> downloadButtonStateSupplier,
             Runnable onDownloadButtonClicked,
-            boolean suppressTabStripAtStart) {
+            boolean suppressTabStripAtStart,
+            OmniboxResourceProvider omniboxResourceProvider) {
         super(
                 controlContainer,
                 toolbarLayout,
@@ -172,7 +173,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 onSigninTapped,
                 downloadButtonStateSupplier,
                 onDownloadButtonClicked,
-                suppressTabStripAtStart);
+                suppressTabStripAtStart,
+                omniboxResourceProvider);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
@@ -225,11 +227,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 toolbarPhone.mToolbarBackgroundColorForNtp =
                         BottomBarUtils.getBottomBarBackgroundColor(
                                 toolbarContext, /* isIncognito= */ false);
-                // The default light location bar color is too close to the bottom bar's.
-                if (!BraveDynamicColors.isDynamicColorsEnabled()
-                        && !ColorUtils.inNightMode(toolbarContext)) {
-                    toolbarPhone.mLocationBarBackgroundColorForNtp = Color.WHITE;
-                }
             }
         }
     }

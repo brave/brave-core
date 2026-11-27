@@ -29,7 +29,8 @@ class FakeConnectionManager : public ConnectionManager {
   void Disconnect() override;
   void ResetConnectionState() override;
   void GetAllRegions(GetAllRegionsCallback callback) override;
-  void SetSelectedRegion(mojom::VpnRegionPtr region) override;
+  void SelectRegion(const std::string& name) override;
+  void SelectRegionAutomatically() override;
   void SetAutoReconnectState(bool enable) override;
   void SetSmartProxyRoutingState(bool enable) override;
   void SetAllowLanTrafficState(bool enable) override;
@@ -42,7 +43,7 @@ class FakeConnectionManager : public ConnectionManager {
   using ConnectionManager::UpdateAutoReconnectState;
   using ConnectionManager::UpdateConnectionState;
   using ConnectionManager::UpdateLastHostname;
-  using ConnectionManager::UpdateSelectedRegion;
+  using ConnectionManager::UpdateRegionSelection;
   using ConnectionManager::UpdateSmartProxyRoutingState;
 
   int connect_calls() const { return connect_calls_; }
@@ -50,11 +51,14 @@ class FakeConnectionManager : public ConnectionManager {
   int reset_connection_state_calls() const {
     return reset_connection_state_calls_;
   }
+  int select_region_automatically_calls() const {
+    return select_region_automatically_calls_;
+  }
   void set_regions(std::vector<mojom::VpnRegionPtr> regions) {
     regions_ = std::move(regions);
   }
-  const mojom::VpnRegionPtr& last_selected_region() const {
-    return last_selected_region_;
+  const std::optional<std::string>& last_selected_region_name() const {
+    return last_selected_region_name_;
   }
   std::optional<bool> last_auto_reconnect_request() const {
     return last_auto_reconnect_request_;
@@ -70,8 +74,9 @@ class FakeConnectionManager : public ConnectionManager {
   int connect_calls_ = 0;
   int disconnect_calls_ = 0;
   int reset_connection_state_calls_ = 0;
+  int select_region_automatically_calls_ = 0;
   std::vector<mojom::VpnRegionPtr> regions_;
-  mojom::VpnRegionPtr last_selected_region_;
+  std::optional<std::string> last_selected_region_name_;
   std::optional<bool> last_auto_reconnect_request_;
   std::optional<bool> last_smart_proxy_routing_request_;
   std::optional<bool> last_allow_lan_traffic_request_;

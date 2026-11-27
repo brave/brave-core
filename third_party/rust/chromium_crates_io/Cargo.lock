@@ -4,11 +4,11 @@ version = 4
 
 [[package]]
 name = "adblock"
-version = "0.13.3"
+version = "0.13.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "arrayvec",
- "base64",
+ "base64 0.23.1",
  "bitflags 2.13.2",
  "cssparser",
  "flatbuffers",
@@ -24,7 +24,6 @@ dependencies = [
  "serde",
  "serde_json",
  "thiserror 1.0.69",
- "url",
 ]
 
 [[package]]
@@ -137,6 +136,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "base64"
 version = "0.22.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "base64"
+version = "0.23.1"
 
 [[package]]
 name = "bech32"
@@ -339,7 +343,7 @@ name = "challenge-bypass-ristretto"
 version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "base64",
+ "base64 0.22.1",
  "curve25519-dalek",
  "digest 0.10.7",
  "hmac 0.12.1",
@@ -602,7 +606,7 @@ dependencies = [
 
 [[package]]
 name = "cxx"
-version = "1.0.202"
+version = "1.0.205"
 dependencies = [
  "cc",
  "cxx-build",
@@ -615,7 +619,7 @@ dependencies = [
 
 [[package]]
 name = "cxx-build"
-version = "1.0.202"
+version = "1.0.205"
 dependencies = [
  "cc",
  "codespan-reporting",
@@ -623,33 +627,33 @@ dependencies = [
  "proc-macro2",
  "quote",
  "scratch",
- "syn 3.0.6",
+ "syn 3.0.9",
 ]
 
 [[package]]
 name = "cxxbridge-cmd"
-version = "1.0.202"
+version = "1.0.205"
 dependencies = [
  "clap",
  "codespan-reporting",
  "indexmap 2.14.2",
  "proc-macro2",
  "quote",
- "syn 3.0.6",
+ "syn 3.0.9",
 ]
 
 [[package]]
 name = "cxxbridge-flags"
-version = "1.0.202"
+version = "1.0.205"
 
 [[package]]
 name = "cxxbridge-macro"
-version = "1.0.202"
+version = "1.0.205"
 dependencies = [
  "indexmap 2.14.2",
  "proc-macro2",
  "quote",
- "syn 3.0.6",
+ "syn 3.0.9",
 ]
 
 [[package]]
@@ -765,7 +769,7 @@ dependencies = [
 
 [[package]]
 name = "equivalent"
-version = "1.0.2"
+version = "1.0.3"
 
 [[package]]
 name = "feed-rs"
@@ -1213,7 +1217,6 @@ dependencies = [
 [[package]]
 name = "itertools"
 version = "0.14.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "either",
 ]
@@ -1274,7 +1277,7 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.190"
+version = "0.2.191"
 
 [[package]]
 name = "libm"
@@ -1649,7 +1652,7 @@ name = "ppoprf"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "base64",
+ "base64 0.22.1",
  "bincode",
  "bitvec",
  "curve25519-dalek",
@@ -1790,7 +1793,7 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.12.3"
+version = "1.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "aho-corasick",
@@ -1946,12 +1949,12 @@ version = "1.0.229"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 3.0.6",
+ "syn 3.0.9",
 ]
 
 [[package]]
 name = "serde_json"
-version = "1.0.151"
+version = "1.0.154"
 dependencies = [
  "itoa",
  "memchr",
@@ -2031,7 +2034,7 @@ name = "skus"
 version = "1.0.0"
 dependencies = [
  "async-trait",
- "base64",
+ "base64 0.22.1",
  "bigdecimal",
  "challenge-bypass-ristretto",
  "chrono",
@@ -2217,7 +2220,7 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "3.0.6"
+version = "3.0.9"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2277,7 +2280,7 @@ version = "2.0.21"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 3.0.6",
+ "syn 3.0.9",
 ]
 
 [[package]]
@@ -2337,7 +2340,7 @@ dependencies = [
 
 [[package]]
 name = "unicode-ident"
-version = "1.0.26"
+version = "1.0.27"
 
 [[package]]
 name = "unicode-width"
@@ -2585,7 +2588,7 @@ dependencies = [
 
 [[package]]
 name = "zeroize"
-version = "1.9.0"
+version = "1.9.1"
 dependencies = [
  "zeroize_derive",
 ]

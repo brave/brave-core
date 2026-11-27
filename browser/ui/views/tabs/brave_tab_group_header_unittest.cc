@@ -8,11 +8,11 @@
 #include <memory>
 #include <utility>
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/mock_browser_window_interface_with_vertical_tab_controller.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/tabs/test_tab_strip_model_delegate.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/fake_base_tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/fake_tab_slot_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_group_header.h"
@@ -26,6 +26,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/views/bubble/bubble_border.h"
+#include "ui/views/test/views_test_utils.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
 
@@ -46,6 +47,11 @@ class MockTabSlotController : public FakeTabSlotController {
 
 class BraveTabGroupHeaderTest : public ChromeViewsTestBase {
  public:
+  BraveTabGroupHeaderTest() {
+    // Brave vertical tabs are unsupported when kTabStripUnification is on.
+    feature_list_.InitAndDisableFeature(tabs::kTabStripUnification);
+  }
+
   void SetUp() override {
     ChromeViewsTestBase::SetUp();
 
@@ -86,8 +92,11 @@ class BraveTabGroupHeaderTest : public ChromeViewsTestBase {
     group_views_->OnGroupVisualsChanged();
   }
 
-  views::View* title_chip() { return group_views_->header()->children()[0]; }
+  views::View* title_chip() {
+    return group_views_->header()->title_chip_for_testing();
+  }
 
+  base::test::ScopedFeatureList feature_list_;
   std::unique_ptr<views::Widget> widget_;
   raw_ptr<views::View> tab_container_;
   raw_ptr<views::View> drag_context_;
@@ -108,12 +117,6 @@ TEST_F(BraveTabGroupHeaderTest, TitleChipClipPathClearedInVerticalTabs) {
   TestingProfile profile;
   profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
 
-  // BraveTabGroupHeader::GetGroupColor() dereferences
-  // GetTabStripModel()->group_model(), so the mock browser window needs a
-  // real (can be empty) TabStripModel to avoid crashing.
-  TestTabStripModelDelegate tab_strip_model_delegate;
-  TabStripModel tab_strip_model(&tab_strip_model_delegate, &profile);
-
   testing::NiceMock<MockBrowserWindowInterfaceWithVerticalTabController>
       mock_browser_window(profile.GetPrefs());
   EXPECT_CALL(mock_browser_window, GetProfile())
@@ -122,8 +125,6 @@ TEST_F(BraveTabGroupHeaderTest, TitleChipClipPathClearedInVerticalTabs) {
       .WillRepeatedly(testing::Return(&profile));
   EXPECT_CALL(mock_browser_window, GetType())
       .WillRepeatedly(testing::Return(BrowserWindowInterface::TYPE_NORMAL));
-  EXPECT_CALL(mock_browser_window, GetTabStripModel())
-      .WillRepeatedly(testing::Return(&tab_strip_model));
 
   EXPECT_CALL(*tab_slot_controller_, GetBrowserWindowInterface())
       .WillRepeatedly(testing::Return(&mock_browser_window));
@@ -135,6 +136,75 @@ TEST_F(BraveTabGroupHeaderTest, TitleChipClipPathClearedInVerticalTabs) {
   SetGroupTitle(u"A very long tab group title that needs lots of space");
 
   EXPECT_TRUE(title_chip()->clip_path().isEmpty());
+}
+
+// In vertical tabs, |title_chip_| should span the entire width of the header
+// (minus padding), regardless of the group title's length.
+TEST_F(BraveTabGroupHeaderTest, TitleChipSpansFullWidthInVerticalTabs) {
+  TestingProfile profile;
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+
+  testing::NiceMock<MockBrowserWindowInterfaceWithVerticalTabController>
+      mock_browser_window(profile.GetPrefs());
+  EXPECT_CALL(mock_browser_window, GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(testing::Const(mock_browser_window), GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(mock_browser_window, GetType())
+      .WillRepeatedly(testing::Return(BrowserWindowInterface::TYPE_NORMAL));
+
+  EXPECT_CALL(*tab_slot_controller_, GetBrowserWindowInterface())
+      .WillRepeatedly(testing::Return(&mock_browser_window));
+
+  constexpr int kHeaderWidth = 300;
+  constexpr int kAvailableWidth =
+      kHeaderWidth - 2 * BraveTabGroupHeader::kPaddingForGroup;
+  group_views_->header()->SetBounds(0, 0, kHeaderWidth, 40);
+
+  SetGroupTitle(u"Hola");
+  EXPECT_EQ(kAvailableWidth, title_chip()->width());
+  EXPECT_EQ(BraveTabGroupHeader::kPaddingForGroup, title_chip()->x());
+
+  // Re-running layout must not change the chip size.
+  group_views_->header()->InvalidateLayout();
+  views::test::RunScheduledLayout(group_views_->header());
+  EXPECT_EQ(kAvailableWidth, title_chip()->width());
+
+  SetGroupTitle(
+      u"A very long tab group title that needs much more space than is "
+      u"available in the vertical tab strip");
+  EXPECT_EQ(kAvailableWidth, title_chip()->width());
+}
+
+// In vertical tabs, an empty-title |title_chip_| must not keep a width from
+// a taller layout, e.g. one done with horizontal tab bounds before switching.
+TEST_F(BraveTabGroupHeaderTest, EmptyTitleChipDoesNotGrowInVerticalTabs) {
+  TestingProfile profile;
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+
+  testing::NiceMock<MockBrowserWindowInterfaceWithVerticalTabController>
+      mock_browser_window(profile.GetPrefs());
+  EXPECT_CALL(mock_browser_window, GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(testing::Const(mock_browser_window), GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(mock_browser_window, GetType())
+      .WillRepeatedly(testing::Return(BrowserWindowInterface::TYPE_NORMAL));
+
+  EXPECT_CALL(*tab_slot_controller_, GetBrowserWindowInterface())
+      .WillRepeatedly(testing::Return(&mock_browser_window));
+
+  group_views_->header()->SetBounds(0, 0, 300, 100);
+  SetGroupTitle(u"");
+  group_views_->header()->SetBounds(0, 0, 300, 30);
+  group_views_->header()->InvalidateLayout();
+  views::test::RunScheduledLayout(group_views_->header());
+  const int width_after_shrink = title_chip()->width();
+
+  SetGroupTitle(u"");
+  EXPECT_EQ(title_chip()->width(), width_after_shrink);
+  EXPECT_LT(width_after_shrink,
+            100 - 2 * BraveTabGroupHeader::kPaddingForGroup);
 }
 
 // BraveTabGroupHeader::GetAnchorPosition() must return LEFT_TOP in vertical

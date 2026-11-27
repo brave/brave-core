@@ -1,3 +1,12 @@
 include_rules = [
   "+components/variations",
 ]
+
+specific_include_rules = {
+  "variations_seed_store_unittest\\.cc": [
+    "+components/prefs/testing_pref_service.h",
+    "+components/version_info/channel.h",
+    "+crypto",
+    "+third_party/boringssl/src/include/openssl/mldsa.h",
+  ],
+}

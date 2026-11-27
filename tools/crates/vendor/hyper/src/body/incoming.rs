@@ -1,37 +1,24 @@
 use std::fmt;
-#[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
-use std::future::Future;
 use std::pin::Pin;
 use std::task::{Context, Poll};
 
 use bytes::Bytes;
-#[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
-use futures_channel::{mpsc, oneshot};
 #[cfg(all(
     any(feature = "http1", feature = "http2"),
     any(feature = "client", feature = "server")
 ))]
 use futures_core::ready;
-#[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
-use futures_core::{stream::FusedStream, Stream}; // for mpsc::Receiver
-#[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
-use http::HeaderMap;
 use http_body::{Body, Frame, SizeHint};
 
+#[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
+use super::chan;
 #[cfg(all(
     any(feature = "http1", feature = "http2"),
     any(feature = "client", feature = "server")
 ))]
 use super::DecodedLength;
-#[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
-use crate::common::watch;
 #[cfg(all(feature = "http2", any(feature = "client", feature = "server")))]
 use crate::proto::h2::ping;
-
-#[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
-type BodySender = mpsc::Sender<Result<Bytes, crate::Error>>;
-#[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
-type TrailersSender = oneshot::Sender<HeaderMap>;
 
 /// A stream of `Bytes`, used when receiving bodies from the network.
 ///
@@ -58,9 +45,7 @@ enum Kind {
     #[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
     Chan {
         content_length: DecodedLength,
-        want_tx: watch::Sender,
-        data_rx: mpsc::Receiver<Result<Bytes, crate::Error>>,
-        trailers_rx: oneshot::Receiver<HeaderMap>,
+        rx: chan::Receiver,
     },
     #[cfg(all(feature = "http2", any(feature = "client", feature = "server")))]
     H2 {
@@ -86,18 +71,8 @@ enum Kind {
 ///
 /// [`Body::channel()`]: struct.Body.html#method.channel
 /// [`Sender::abort()`]: struct.Sender.html#method.abort
-#[must_use = "Sender does nothing unless sent on"]
 #[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
-pub(crate) struct Sender {
-    want_rx: watch::Receiver,
-    data_tx: BodySender,
-    trailers_tx: Option<TrailersSender>,
-}
-
-#[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
-const WANT_PENDING: usize = 1;
-#[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
-const WANT_READY: usize = 2;
+pub(crate) use super::chan::Sender;
 
 impl Incoming {
     /// Create a `Body` stream with an associated sender half.
@@ -112,26 +87,8 @@ impl Incoming {
 
     #[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
     pub(crate) fn new_channel(content_length: DecodedLength, wanter: bool) -> (Sender, Incoming) {
-        let (data_tx, data_rx) = mpsc::channel(0);
-        let (trailers_tx, trailers_rx) = oneshot::channel();
-
-        // If wanter is true, `Sender::poll_ready()` won't becoming ready
-        // until the `Body` has been polled for data once.
-        let want = if wanter { WANT_PENDING } else { WANT_READY };
-
-        let (want_tx, want_rx) = watch::channel(want);
-
-        let tx = Sender {
-            want_rx,
-            data_tx,
-            trailers_tx: Some(trailers_tx),
-        };
-        let rx = Incoming::new(Kind::Chan {
-            content_length,
-            want_tx,
-            data_rx,
-            trailers_rx,
-        });
+        let (tx, rx) = chan::channel(wanter);
+        let rx = Incoming::new(Kind::Chan { content_length, rx });
 
         (tx, rx)
     }
@@ -172,15 +129,12 @@ impl Incoming {
 
     #[cfg(feature = "ffi")]
     pub(crate) fn as_ffi_mut(&mut self) -> &mut crate::ffi::UserBody {
-        match self.kind {
-            Kind::Ffi(ref mut body) => return body,
-            _ => {
-                self.kind = Kind::Ffi(crate::ffi::UserBody::new());
-            }
+        if !matches!(self.kind, Kind::Ffi(_)) {
+            self.kind = Kind::Ffi(crate::ffi::UserBody::new());
         }
 
-        match self.kind {
-            Kind::Ffi(ref mut body) => body,
+        match &mut self.kind {
+            Kind::Ffi(body) => body,
             _ => unreachable!(),
         }
     }
@@ -208,36 +162,25 @@ impl Body for Incoming {
         )]
         cx: &mut Context<'_>,
     ) -> Poll<Option<Result<Frame<Self::Data>, Self::Error>>> {
-        match self.kind {
+        match &mut self.kind {
             Kind::Empty => Poll::Ready(None),
             #[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
             Kind::Chan {
-                content_length: ref mut len,
-                ref mut data_rx,
-                ref mut want_tx,
-                ref mut trailers_rx,
+                content_length: len,
+                rx,
             } => {
-                want_tx.send(WANT_READY);
-
-                if !data_rx.is_terminated() {
-                    if let Some(chunk) = ready!(Pin::new(data_rx).poll_next(cx)?) {
-                        len.sub_if(chunk.len() as u64);
-                        return Poll::Ready(Some(Ok(Frame::data(chunk))));
-                    }
+                if let Some(chunk) = ready!(rx.poll_next(cx)?) {
+                    len.sub_if(chunk.len() as u64);
+                    return Poll::Ready(Some(Ok(Frame::data(chunk))));
                 }
-
-                // check trailers after data is terminated
-                match ready!(Pin::new(trailers_rx).poll(cx)) {
-                    Ok(t) => Poll::Ready(Some(Ok(Frame::trailers(t)))),
-                    Err(_) => Poll::Ready(None),
-                }
+                Poll::Ready(rx.take_trailers().map(Frame::trailers).map(Ok))
             }
             #[cfg(all(feature = "http2", any(feature = "client", feature = "server")))]
             Kind::H2 {
-                ref mut data_done,
-                ref ping,
-                recv: ref mut h2,
-                content_length: ref mut len,
+                data_done,
+                ping,
+                recv: h2,
+                content_length: len,
             } => {
                 if !*data_done {
                     match ready!(h2.poll_data(cx)) {
@@ -248,14 +191,14 @@ impl Body for Incoming {
                             return Poll::Ready(Some(Ok(Frame::data(bytes))));
                         }
                         Some(Err(e)) => {
-                            return match e.reason() {
-                                // These reasons should cause the body reading to stop, but not fail it.
-                                // The same logic as for `Read for H2Upgraded` is applied here.
-                                Some(h2::Reason::NO_ERROR) | Some(h2::Reason::CANCEL) => {
-                                    Poll::Ready(None)
-                                }
-                                _ => Poll::Ready(Some(Err(crate::Error::new_body(e)))),
-                            };
+                            if let Some(h2::Reason::NO_ERROR) = e.reason() {
+                                // As mentioned in RFC 7540 Section 8.1, a RST_STREAM with NO_ERROR
+                                // indicates an early response, and should cause the body reading
+                                // to stop, but not fail it:
+                                return Poll::Ready(None);
+                            } else {
+                                return Poll::Ready(Some(Err(crate::Error::new_body(e))));
+                            }
                         }
                         None => {
                             *data_done = true;
@@ -270,22 +213,31 @@ impl Body for Incoming {
                         ping.record_non_data();
                         Poll::Ready(Ok(t.map(Frame::trailers)).transpose())
                     }
-                    Err(e) => Poll::Ready(Some(Err(crate::Error::new_h2(e)))),
+                    Err(e) => {
+                        if let Some(h2::Reason::NO_ERROR) = e.reason() {
+                            // Same as above, a RST_STREAM with NO_ERROR indicates an early
+                            // response, and should cause reading the trailers to stop, but
+                            // not fail it:
+                            Poll::Ready(None)
+                        } else {
+                            Poll::Ready(Some(Err(crate::Error::new_h2(e))))
+                        }
+                    }
                 }
             }
 
             #[cfg(feature = "ffi")]
-            Kind::Ffi(ref mut body) => body.poll_data(cx),
+            Kind::Ffi(body) => body.poll_data(cx),
         }
     }
 
     fn is_end_stream(&self) -> bool {
-        match self.kind {
+        match &self.kind {
             Kind::Empty => true,
             #[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
-            Kind::Chan { content_length, .. } => content_length == DecodedLength::ZERO,
+            Kind::Chan { content_length, .. } => *content_length == DecodedLength::ZERO,
             #[cfg(all(feature = "http2", any(feature = "client", feature = "server")))]
-            Kind::H2 { recv: ref h2, .. } => h2.is_end_stream(),
+            Kind::H2 { recv: h2, .. } => h2.is_end_stream(),
             #[cfg(feature = "ffi")]
             Kind::Ffi(..) => false,
         }
@@ -347,123 +299,22 @@ impl fmt::Debug for Incoming {
     }
 }
 
-#[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
-impl Sender {
-    /// Check to see if this `Sender` can send more data.
-    pub(crate) fn poll_ready(&mut self, cx: &mut Context<'_>) -> Poll<crate::Result<()>> {
-        // Check if the receiver end has tried polling for the body yet
-        ready!(self.poll_want(cx)?);
-        self.data_tx
-            .poll_ready(cx)
-            .map_err(|_| crate::Error::new_closed())
-    }
-
-    fn poll_want(&mut self, cx: &mut Context<'_>) -> Poll<crate::Result<()>> {
-        match self.want_rx.load(cx) {
-            WANT_READY => Poll::Ready(Ok(())),
-            WANT_PENDING => Poll::Pending,
-            watch::CLOSED => Poll::Ready(Err(crate::Error::new_closed())),
-            unexpected => unreachable!("want_rx value: {}", unexpected),
-        }
-    }
-
-    #[cfg(test)]
-    async fn ready(&mut self) -> crate::Result<()> {
-        futures_util::future::poll_fn(|cx| self.poll_ready(cx)).await
-    }
-
-    /// Send data on data channel when it is ready.
-    #[cfg(test)]
-    #[allow(unused)]
-    pub(crate) async fn send_data(&mut self, chunk: Bytes) -> crate::Result<()> {
-        self.ready().await?;
-        self.data_tx
-            .try_send(Ok(chunk))
-            .map_err(|_| crate::Error::new_closed())
-    }
-
-    /// Send trailers on trailers channel.
-    #[allow(unused)]
-    pub(crate) async fn send_trailers(&mut self, trailers: HeaderMap) -> crate::Result<()> {
-        let tx = match self.trailers_tx.take() {
-            Some(tx) => tx,
-            None => return Err(crate::Error::new_closed()),
-        };
-        tx.send(trailers).map_err(|_| crate::Error::new_closed())
-    }
-
-    /// Try to send data on this channel.
-    ///
-    /// # Errors
-    ///
-    /// Returns `Err(Bytes)` if the channel could not (currently) accept
-    /// another `Bytes`.
-    ///
-    /// # Note
-    ///
-    /// This is mostly useful for when trying to send from some other thread
-    /// that doesn't have an async context. If in an async context, prefer
-    /// `send_data()` instead.
-    #[cfg(feature = "http1")]
-    pub(crate) fn try_send_data(&mut self, chunk: Bytes) -> Result<(), Bytes> {
-        self.data_tx
-            .try_send(Ok(chunk))
-            .map_err(|err| err.into_inner().expect("just sent Ok"))
-    }
-
-    #[cfg(feature = "http1")]
-    pub(crate) fn try_send_trailers(
-        &mut self,
-        trailers: HeaderMap,
-    ) -> Result<(), Option<HeaderMap>> {
-        let tx = match self.trailers_tx.take() {
-            Some(tx) => tx,
-            None => return Err(None),
-        };
-
-        tx.send(trailers).map_err(Some)
-    }
-
-    #[cfg(test)]
-    pub(crate) fn abort(mut self) {
-        self.send_error(crate::Error::new_body_write_aborted());
-    }
-
-    pub(crate) fn send_error(&mut self, err: crate::Error) {
-        let _ = self
-            .data_tx
-            // clone so the send works even if buffer is full
-            .clone()
-            .try_send(Err(err));
-    }
-}
-
-#[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
-impl fmt::Debug for Sender {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        #[derive(Debug)]
-        struct Open;
-        #[derive(Debug)]
-        struct Closed;
-
-        let mut builder = f.debug_tuple("Sender");
-        match self.want_rx.peek() {
-            watch::CLOSED => builder.field(&Closed),
-            _ => builder.field(&Open),
-        };
-
-        builder.finish()
-    }
-}
-
 #[cfg(test)]
 mod tests {
+    #[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
     use std::mem;
+    #[cfg(all(feature = "nightly", not(miri)))]
+    use std::pin::Pin;
+    #[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
     use std::task::Poll;
 
+    #[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
     use super::{Body, Incoming, SizeHint};
     #[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
     use super::{DecodedLength, Sender};
+    #[cfg(all(feature = "nightly", not(miri)))]
+    use bytes::Bytes;
+    #[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
     use http_body_util::BodyExt;
 
     #[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
@@ -481,11 +332,9 @@ mod tests {
             body_expected_size,
         );
 
-        //assert_eq!(body_size, mem::size_of::<Option<Incoming>>(), "Option<Incoming>");
-
         assert_eq!(
             mem::size_of::<Sender>(),
-            mem::size_of::<usize>() * 5,
+            mem::size_of::<usize>() * 2,
             "Sender"
         );
 
@@ -494,6 +343,51 @@ mod tests {
             mem::size_of::<Option<Sender>>(),
             "Option<Sender>"
         );
+    }
+
+    #[cfg(all(feature = "nightly", not(miri)))]
+    #[bench]
+    fn bench_channel_create_and_drop(b: &mut test::Bencher) {
+        b.iter(|| {
+            let _ = test::black_box(Incoming::new_channel(
+                DecodedLength::CHUNKED,
+                /* wanter = */ false,
+            ));
+        });
+    }
+
+    #[cfg(all(feature = "nightly", not(miri)))]
+    #[bench]
+    fn bench_channel_data_handoff(b: &mut test::Bencher) {
+        let (mut tx, mut body) =
+            Incoming::new_channel(DecodedLength::CHUNKED, /* wanter = */ false);
+        let mut cx = std::task::Context::from_waker(std::task::Waker::noop());
+
+        b.iter(|| {
+            assert!(tx.poll_ready(&mut cx).is_ready());
+            tx.try_send_data(Bytes::from_static(b"hello world"))
+                .unwrap();
+            let frame = match Pin::new(&mut body).poll_frame(&mut cx) {
+                Poll::Ready(Some(Ok(frame))) => frame,
+                unexpected => panic!("unexpected body poll: {unexpected:?}"),
+            };
+            test::black_box(frame);
+        });
+    }
+
+    #[cfg(all(feature = "nightly", not(miri)))]
+    #[bench]
+    fn bench_channel_want_transition(b: &mut test::Bencher) {
+        let mut cx = std::task::Context::from_waker(std::task::Waker::noop());
+
+        b.iter(|| {
+            let (mut tx, mut body) =
+                Incoming::new_channel(DecodedLength::CHUNKED, /* wanter = */ true);
+            assert!(tx.poll_ready(&mut cx).is_pending());
+            assert!(Pin::new(&mut body).poll_frame(&mut cx).is_pending());
+            assert!(tx.poll_ready(&mut cx).is_ready());
+            let _ = test::black_box((tx, body));
+        });
     }
 
     #[cfg(all(feature = "http1", any(feature = "client", feature = "server")))]
@@ -620,8 +514,8 @@ mod tests {
         drop(rx);
         assert!(tx_ready.is_woken(), "dropping rx wakes tx");
 
-        match tx_ready.poll() {
-            Poll::Ready(Err(ref e)) if e.is_closed() => (),
+        match &tx_ready.poll() {
+            Poll::Ready(Err(e)) if e.is_closed() => (),
             unexpected => panic!("tx poll ready unexpected: {:?}", unexpected),
         }
     }

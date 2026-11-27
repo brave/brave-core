@@ -4,17 +4,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.9.0] - 2025-01-27
-### Dependencies and features
-- Update to `rand_core` v0.9.0 (#1558)
-- Feature `std` now implies feature `rand_core/std` (#1153)
-- Rename feature `serde1` to `serde` (#1477)
-- Rename feature `getrandom` to `os_rng` (#1537)
-
-### Other changes
-- Remove usage of `unsafe` in `fn generate` (#1181) then optimise for AVX2 (~4-7%) (#1192)
-- Revise crate docs (#1454)
-
 ## [0.3.1] - 2021-06-09
 - add getters corresponding to existing setters: `get_seed`, `get_stream` (#1124)
 - add serde support, gated by the `serde1` feature (#1124)

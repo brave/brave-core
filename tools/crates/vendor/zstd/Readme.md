@@ -1,7 +1,7 @@
 # zstd
 
 [![crates.io](https://img.shields.io/crates/v/zstd.svg)](https://crates.io/crates/zstd)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![BSD-3-Clause licensed](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](./LICENSE)
 
 [![Build on Linux](https://github.com/gyscos/zstd-rs/actions/workflows/linux.yml/badge.svg)](https://github.com/gyscos/zstd-rs/actions/workflows/linux.yml)
 [![Build on Windows](https://github.com/gyscos/zstd-rs/actions/workflows/windows.yml/badge.svg)](https://github.com/gyscos/zstd-rs/actions/workflows/windows.yml)
@@ -98,7 +98,7 @@ This implementation is largely inspired by bozaro's [lz4-rs].
 # License
 
 * The zstd C library is under a dual BSD/GPLv2 license.
-* This zstd-rs binding library is under a [MIT](LICENSE) license.
+* This zstd-rs binding library is under a [BSD-3-Clause](LICENSE) license.
 
 [zstd]: https://github.com/facebook/zstd
 [lz4-rs]: https://github.com/bozaro/lz4-rs

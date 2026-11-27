@@ -1,7 +1,7 @@
 [package]
 name = "alloc-stdlib"
 description = "A dynamic allocator example that may be used with the stdlib"
-version = "0.2.2"
+version = "0.2.4"
 authors = ["Daniel Reiter Horn <danielrh@dropbox.com>"]
 documentation = "https://raw.githubusercontent.com/dropbox/rust-alloc-no-stdlib/master/alloc-stdlib/tests/lib.rs"
 homepage = "https://github.com/dropbox/rust-alloc-no-stdlib"
@@ -15,7 +15,7 @@ autobins = false
 name = "example"
 
 [dependencies]
-"alloc-no-stdlib" = { version="2.0.4", path="../"}
+"alloc-no-stdlib" = { version=">=2.0.4, <3.0.0", path="../"}
 
 [features]
-unsafe = []
+unsafe = ["alloc-no-stdlib/unsafe"]

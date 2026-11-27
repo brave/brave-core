@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-2-Clause OR Apache-2.0 OR MIT
+//
 // Copyright 2024 The Fuchsia Authors
 //
 // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
@@ -211,7 +213,7 @@ unsafe impl SplitByteSlice for &[u8] {
     #[inline]
     unsafe fn split_at_unchecked(self, mid: usize) -> (Self, Self) {
         // SAFETY: By contract on caller, `mid` is not greater than
-        // `bytes.len()`.
+        // `self.len()`.
         #[allow(clippy::multiple_unsafe_ops_per_block)]
         unsafe {
             (<[u8]>::get_unchecked(self, ..mid), <[u8]>::get_unchecked(self, mid..))
@@ -365,7 +367,7 @@ mod proofs {
 
     fn any_vec() -> Vec<u8> {
         let len = kani::any();
-        kani::assume(len <= isize::MAX as usize);
+        kani::assume(len <= crate::DstLayout::MAX_SIZE);
         vec![0u8; len]
     }
 
@@ -399,5 +401,38 @@ mod proofs {
 
         assert_eq!(slc.cast::<u8>(), l.cast::<u8>());
         assert_eq!(unsafe { slc.cast::<u8>().add(mid) }, r.cast::<u8>());
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use core::cell::RefCell;
+
+    use super::*;
+
+    #[test]
+    fn test_ref_split_at_unchecked() {
+        let cell = RefCell::new([1, 2, 3, 4]);
+        let borrow = cell.borrow();
+        let slice_ref: cell::Ref<'_, [u8]> = cell::Ref::map(borrow, |a| &a[..]);
+        // SAFETY: 2 is within bounds of [1, 2, 3, 4]
+        let (l, r) = unsafe { slice_ref.split_at_unchecked(2) };
+        assert_eq!(*l, [1, 2]);
+        assert_eq!(*r, [3, 4]);
+    }
+
+    #[test]
+    fn test_ref_mut_split_at_unchecked() {
+        let cell = RefCell::new([1, 2, 3, 4]);
+        let borrow_mut = cell.borrow_mut();
+        let slice_ref_mut: cell::RefMut<'_, [u8]> = cell::RefMut::map(borrow_mut, |a| &mut a[..]);
+        // SAFETY: 2 is within bounds of [1, 2, 3, 4]
+        let (mut l, mut r) = unsafe { slice_ref_mut.split_at_unchecked(2) };
+        assert_eq!(*l, [1, 2]);
+        assert_eq!(*r, [3, 4]);
+        l[0] = 5;
+        r[0] = 6;
+        drop((l, r));
+        assert_eq!(*cell.borrow(), [5, 2, 6, 4]);
     }
 }

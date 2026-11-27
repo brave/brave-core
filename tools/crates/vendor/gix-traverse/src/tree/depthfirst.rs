@@ -1,5 +1,3 @@
-pub use super::breadthfirst::Error;
-
 /// The state used and potentially shared by multiple tree traversals, reusing memory.
 #[derive(Default, Clone)]
 pub struct State {
@@ -25,24 +23,21 @@ impl State {
 }
 
 pub(super) mod function {
+    use gix_error::{Result, corruption};
     use std::borrow::BorrowMut;
 
+    use gix_error::ResultExt;
     use gix_hash::ObjectId;
     use gix_object::{FindExt, TreeRefIter};
 
-    use super::{Error, State};
-    use crate::tree::{visit::Action, Visit};
+    use super::State;
+    use crate::tree::Visit;
 
     /// A depth-first traversal of the `root` tree, that preserves the natural order of a tree while immediately descending
     /// into sub-trees.
     ///
     /// `state` can be passed to re-use memory during multiple invocations.
-    pub fn depthfirst<StateMut, Find, V>(
-        root: ObjectId,
-        mut state: StateMut,
-        objects: Find,
-        delegate: &mut V,
-    ) -> Result<(), Error>
+    pub fn depthfirst<StateMut, Find, V>(root: ObjectId, mut state: StateMut, objects: Find, delegate: &mut V) -> Result
     where
         Find: gix_object::Find,
         StateMut: BorrowMut<State>,
@@ -72,18 +67,18 @@ pub(super) mod function {
                     tree_buf: buf,
                     byte_offset_to_next_entry,
                 } => {
-                    let mut iter = TreeRefIter::from_bytes(&buf[byte_offset_to_next_entry..]);
+                    let mut iter = TreeRefIter::from_bytes(&buf[byte_offset_to_next_entry..], root.kind());
                     delegate.pop_back_tracked_path_and_set_current();
                     while let Some(entry) = iter.next() {
-                        let entry = entry?;
+                        let entry = entry.or_raise(|| corruption("A tree could not be decoded during traversal"))?;
                         if entry.mode.is_tree() {
                             delegate.push_path_component(entry.filename);
                             let res = delegate.visit_tree(&entry);
                             delegate.pop_path_component();
                             match res {
-                                Action::Continue => {}
-                                Action::Cancel => break 'outer,
-                                Action::Skip => continue,
+                                std::ops::ControlFlow::Continue(true) => {}
+                                std::ops::ControlFlow::Break(()) => break 'outer,
+                                std::ops::ControlFlow::Continue(false) => continue,
                             }
 
                             delegate.push_back_tracked_path_component("".into());
@@ -98,7 +93,7 @@ pub(super) mod function {
                             continue 'outer;
                         } else {
                             delegate.push_path_component(entry.filename);
-                            if let Action::Cancel = delegate.visit_nontree(&entry) {
+                            if let std::ops::ControlFlow::Break(()) = delegate.visit_nontree(&entry) {
                                 break 'outer;
                             }
                             delegate.pop_path_component();

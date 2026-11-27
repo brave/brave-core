@@ -4,7 +4,7 @@ use core::mem::MaybeUninit;
 
 use num_conv::prelude::*;
 
-use crate::convert::*;
+use crate::unit::*;
 use crate::{OffsetDateTime, UtcOffset};
 
 // ffi: WINAPI FILETIME struct
@@ -32,7 +32,7 @@ struct SystemTime {
 }
 
 #[link(name = "kernel32")]
-extern "system" {
+unsafe extern "system" {
     // https://docs.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-systemtimetofiletime
     fn SystemTimeToFileTime(lpSystemTime: *const SystemTime, lpFileTime: *mut FileTime) -> i32;
 
@@ -64,8 +64,9 @@ fn systemtime_to_filetime(systime: &SystemTime) -> Option<FileTime> {
 fn filetime_to_secs(filetime: &FileTime) -> i64 {
     /// FILETIME represents 100-nanosecond intervals
     const FT_TO_SECS: u64 = Nanosecond::per_t::<u64>(Second) / 100;
-    ((filetime.dwHighDateTime.extend::<u64>() << 32 | filetime.dwLowDateTime.extend::<u64>())
-        / FT_TO_SECS) as i64
+    ((filetime.dwHighDateTime.widen::<u64>() << 32 | filetime.dwLowDateTime.widen::<u64>())
+        / FT_TO_SECS)
+        .cast_signed()
 }
 
 /// Convert an [`OffsetDateTime`] to a `SYSTEMTIME`.
@@ -74,12 +75,12 @@ fn offset_to_systemtime(datetime: OffsetDateTime) -> SystemTime {
     let (_, month, day_of_month) = datetime.to_offset(UtcOffset::UTC).date().to_calendar_date();
     SystemTime {
         wYear: datetime.year().cast_unsigned().truncate(),
-        wMonth: u8::from(month).extend(),
-        wDay: day_of_month.extend(),
+        wMonth: u8::from(month).widen(),
+        wDay: day_of_month.widen(),
         wDayOfWeek: 0, // ignored
-        wHour: datetime.hour().extend(),
-        wMinute: datetime.minute().extend(),
-        wSecond: datetime.second().extend(),
+        wHour: datetime.hour().widen(),
+        wMinute: datetime.minute().widen(),
+        wSecond: datetime.second().widen(),
         wMilliseconds: datetime.millisecond(),
     }
 }

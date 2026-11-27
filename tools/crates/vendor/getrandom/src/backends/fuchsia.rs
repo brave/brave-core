@@ -5,7 +5,7 @@ use core::mem::MaybeUninit;
 pub use crate::util::{inner_u32, inner_u64};
 
 #[link(name = "zircon")]
-extern "C" {
+unsafe extern "C" {
     fn zx_cprng_draw(buffer: *mut u8, length: usize);
 }
 

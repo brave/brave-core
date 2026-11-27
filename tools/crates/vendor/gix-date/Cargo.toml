@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-date"
-version = "0.10.7"
+version = "0.18.1"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,6 +29,7 @@ description = "A crate of the gitoxide project parsing dates the way git does"
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -43,7 +44,7 @@ serde = [
 [lib]
 name = "gix_date"
 path = "src/lib.rs"
-doctest = false
+doctest = true
 
 [dependencies.bstr]
 version = "1.12.0"
@@ -54,11 +55,14 @@ default-features = false
 version = "0.2.0"
 optional = true
 
+[dependencies.gix-error]
+version = "^0.5.2"
+
 [dependencies.itoa]
-version = "1.0.1"
+version = "1.0.17"
 
 [dependencies.jiff]
-version = "0.2.15"
+version = "0.2.25"
 
 [dependencies.serde]
 version = "1.0.114"
@@ -66,17 +70,14 @@ features = ["derive"]
 optional = true
 default-features = false
 
-[dependencies.smallvec]
-version = "1.15.1"
-features = ["write"]
-
-[dependencies.thiserror]
-version = "2.0.17"
+[dev-dependencies.insta]
+version = "1.46.3"
 
 [dev-dependencies.pretty_assertions]
 version = "1.4.1"
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -95,7 +96,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

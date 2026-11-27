@@ -19,6 +19,10 @@ constexpr char kUserIdSettingsKey[] = "user_id";
 constexpr char kConsentStatusSettingsKey[] = "consent_status";
 constexpr char kScriptVersionSettingsKey[] = "script_version";
 constexpr char kUidsToPerformSettingsKey[] = "uids_to_perform";
+constexpr char kInfobarShownCounterSettingsKey[] = "infobar_shown_counter";
+constexpr char kInfobarDeclineCounterSettingsKey[] = "infobar_decline_counter";
+constexpr char kInfobarReviewSuggCounterSettingsKey[] =
+    "infobar_review_sugg_counter";
 
 base::ListValue VectorToList(std::vector<std::string> values) {
   base::ListValue list;
@@ -37,6 +41,40 @@ base::DictValue CreatePsstSettingsObject(PsstWebsiteSettings psst_metadata) {
   object.Set(kUidsToPerformSettingsKey,
              VectorToList(std::move(psst_metadata.uids_to_perform)));
   return object;
+}
+
+int GetInfobarCounterValue(const url::Origin& origin,
+                           std::string_view setting_key,
+                           HostContentSettingsMap& host_content_settings_map) {
+  auto metadata_objects = host_content_settings_map.GetWebsiteSetting(
+      origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST);
+  const auto* metadata_objects_dict = metadata_objects.GetIfDict();
+  if (!metadata_objects_dict) {
+    return 0;
+  }
+
+  return metadata_objects_dict->FindInt(setting_key).value_or(0);
+}
+
+void IncrementInfobarCounter(
+    const url::Origin& origin,
+    std::string_view setting_key,
+    HostContentSettingsMap& host_content_settings_map) {
+  if (origin.scheme() != url::kHttpsScheme) {
+    return;
+  }
+
+  auto metadata_objects = host_content_settings_map.GetWebsiteSetting(
+      origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST);
+  auto* metadata_objects_dict = metadata_objects.GetIfDict();
+  base::DictValue updated_dict = metadata_objects_dict
+                                     ? std::move(*metadata_objects_dict)
+                                     : base::DictValue();
+  const int count = updated_dict.FindInt(setting_key).value_or(0);
+  updated_dict.Set(setting_key, count + 1);
+  host_content_settings_map.SetWebsiteSettingDefaultScope(
+      origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST,
+      base::Value(std::move(updated_dict)));
 }
 
 }  // namespace
@@ -82,6 +120,57 @@ std::optional<PsstWebsiteSettings> PsstSettingsService::GetPsstWebsiteSettings(
   return PsstWebsiteSettings::FromValue(*user_id_metadata_dict);
 }
 
+base::flat_map<std::string, PsstWebsiteSettingsExtended>
+PsstSettingsService::GetAllPsstWebsitesSettings() {
+  ContentSettingsForOneType settings =
+      host_content_settings_map_->GetSettingsForOneType(
+          ContentSettingsType::BRAVE_PSST);
+
+  base::flat_map<std::string, PsstWebsiteSettingsExtended> result;
+  for (const auto& setting : settings) {
+    const auto url = GURL(setting.primary_pattern.ToString());
+    if (!url.is_valid()) {
+      continue;
+    }
+
+    const auto* website_settings_dict = setting.setting_value.GetIfDict();
+    if (!website_settings_dict) {
+      continue;
+    }
+
+    PsstWebsiteSettingsExtended extended;
+    extended.infobar_shown_counter =
+        website_settings_dict->FindInt(kInfobarShownCounterSettingsKey)
+            .value_or(0);
+    extended.infobar_decline_counter =
+        website_settings_dict->FindInt(kInfobarDeclineCounterSettingsKey)
+            .value_or(0);
+    extended.infobar_review_sugg_counter =
+        website_settings_dict->FindInt(kInfobarReviewSuggCounterSettingsKey)
+            .value_or(0);
+
+    for (const auto [key, value] : *website_settings_dict) {
+      if (key == kInfobarShownCounterSettingsKey ||
+          key == kInfobarDeclineCounterSettingsKey) {
+        continue;
+      }
+
+      const auto* user_id_metadata_dict = value.GetIfDict();
+      if (!user_id_metadata_dict) {
+        continue;
+      }
+
+      if (auto psst_metadata =
+              PsstWebsiteSettings::FromValue(*user_id_metadata_dict)) {
+        extended.website_settings.push_back(std::move(*psst_metadata));
+      }
+    }
+
+    result.emplace(url.host(), std::move(extended));
+  }
+  return result;
+}
+
 void PsstSettingsService::SetPsstWebsiteSettings(
     const url::Origin& origin,
     ConsentStatus consent_status,
@@ -125,6 +214,50 @@ void PsstSettingsService::SetPsstWebsiteSettings(
         base::Value(base::DictValue().Set(
             user_id, CreatePsstSettingsObject(std::move(psst_metadata)))));
   }
+  observers_.Notify(&PsstSettingsService::PrefObserver::OnPsstPrefsChange,
+                    GetAllPsstWebsitesSettings());
+}
+
+int PsstSettingsService::GetInfobarShownCount(const url::Origin& origin) {
+  return GetInfobarCounterValue(origin, kInfobarShownCounterSettingsKey,
+                                *host_content_settings_map_);
+}
+
+int PsstSettingsService::GetInfobarDeclinedCount(const url::Origin& origin) {
+  return GetInfobarCounterValue(origin, kInfobarDeclineCounterSettingsKey,
+                                *host_content_settings_map_);
+}
+
+void PsstSettingsService::IncrementInfobarShownCount(
+    const url::Origin& origin) {
+  IncrementInfobarCounter(origin, kInfobarShownCounterSettingsKey,
+                          *host_content_settings_map_);
+  observers_.Notify(&PsstSettingsService::PrefObserver::OnPsstPrefsChange,
+                    GetAllPsstWebsitesSettings());
+}
+
+void PsstSettingsService::IncrementInfobarDeclineCount(
+    const url::Origin& origin) {
+  IncrementInfobarCounter(origin, kInfobarDeclineCounterSettingsKey,
+                          *host_content_settings_map_);
+  observers_.Notify(&PsstSettingsService::PrefObserver::OnPsstPrefsChange,
+                    GetAllPsstWebsitesSettings());
+}
+
+bool PsstSettingsService::IsPsstInfobarEnabled() const {
+  return prefs_->GetBoolean(prefs::kPsstInfobarEnabled);
+}
+
+void PsstSettingsService::SetPsstInfobarEnabled(bool enabled) {
+  prefs_->SetBoolean(prefs::kPsstInfobarEnabled, enabled);
+}
+
+void PsstSettingsService::IncrementInfobarReviewSuggestionsCount(
+    const url::Origin& origin) {
+  IncrementInfobarCounter(origin, kInfobarReviewSuggCounterSettingsKey,
+                          *host_content_settings_map_);
+  observers_.Notify(&PsstSettingsService::PrefObserver::OnPsstPrefsChange,
+                    GetAllPsstWebsitesSettings());
 }
 
 bool PsstSettingsService::IsPsstEnabled() const {

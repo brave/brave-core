@@ -36,6 +36,7 @@
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
+#include "ui/gfx/geometry/size.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
@@ -113,6 +114,7 @@ class BraveBrowserView : public BrowserView,
 #endif
   bool GetTabStripVisible() const override;
   bool ShouldShowWindowTitle() const override;
+  gfx::Size GetContentsSize() const override;
   void OnActiveTabChanged(content::WebContents* old_contents,
                           content::WebContents* new_contents,
                           int index,
@@ -120,7 +122,6 @@ class BraveBrowserView : public BrowserView,
   void UpdateToolbar(content::WebContents* contents) override;
   bool UpdateToolbarSecurityState() override;
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
-  void ReadyToListenFullscreenChanges() override;
   ClientFrameElementInfo GetFrameElementInfo() const override;
 
   void OnImmersiveFullscreenExited() override;
@@ -130,7 +131,6 @@ class BraveBrowserView : public BrowserView,
   views::View* sidebar_host_view() { return sidebar_host_view_; }
 #endif
 
-  void StopListeningFullscreenChanges();
   bool IsSidebarVisible() const;
 
   // Web panel state the layout needs for its corner radii calculations. It is
@@ -139,13 +139,21 @@ class BraveBrowserView : public BrowserView,
   bool IsWebPanelVisible() const;
   bool IsWebPanelOnLeft() const;
 
+  // Sidebar state the layout needs for its corner radii calculations. The side
+  // panel is a separate view sharing the sidebar's edge, and can be visible
+  // while the sidebar control view is not, so the layout asks about both.
+  bool IsSidePanelVisible() const;
+  // Reports the unmirrored visual side; RTL mirroring is the layout's job.
+  bool IsSidebarOnLeft() const;
+
   BraveVerticalTabStripContainerView* vertical_tab_strip_container_view() {
     return vertical_tab_strip_container_view_;
   }
 
   // BookmarkTabHelperObserver:
   void URLStarredChanged(content::WebContents* web_contents,
-                         bool starred) override;
+                         bool starred,
+                         bool is_bookmark_added_or_removed) override;
 
   // commands::AcceleratorService:
   void OnAcceleratorsChanged(
@@ -184,10 +192,6 @@ class BraveBrowserView : public BrowserView,
 
   SidebarContainerView* sidebar_container_view() {
     return sidebar_container_view_;
-  }
-
-  TabStripPlacementCoordinator* tab_strip_placement_coordinator() {
-    return tab_strip_placement_.get();
   }
 
   FocusModeTopOverlay* focus_mode_top_overlay() {
@@ -288,6 +292,7 @@ class BraveBrowserView : public BrowserView,
   void OnPreferenceChanged(const std::string& pref_name);
   void UpdateFocusModeState();
   bool ShouldDisableFocusModeForActiveTab() const;
+  bool HasVisiblePendingNavigation();
 
   // We need to observe BookmarkTabHelper to update the starred state of the
   // star button in the toolbar when the active tab changes.

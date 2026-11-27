@@ -50,6 +50,7 @@ import {
 } from '../../../stories/mock-data/mock-asset-options'
 import {
   mockETHSwapTransaction,
+  mockETHTokenSwapWithNativeValueTransaction,
   mockETHNativeTokenSendTransaction,
   mockFilSendTransaction,
   mockTransactionInfo,
@@ -190,6 +191,7 @@ export class MockedWalletApiProxy {
     deserializeTransaction(mockedErc20ApprovalTransaction),
     deserializeTransaction(mockETHNativeTokenSendTransaction),
     mockETHSwapTransaction,
+    mockETHTokenSwapWithNativeValueTransaction,
   ]
 
   // name service lookups
@@ -202,6 +204,10 @@ export class MockedWalletApiProxy {
 
   private signSolTransactionsRequests =
     [] as BraveWallet.SignSolTransactionsRequest[]
+
+  signMessageRequests: BraveWallet.SignMessageRequest[] = [
+    mockSignMessageRequest,
+  ]
 
   private signCardanoTransactionRequests =
     [] as BraveWallet.SignCardanoTransactionRequest[]
@@ -234,6 +240,8 @@ export class MockedWalletApiProxy {
     this.signCardanoTransactionRequests =
       overrides.signCardanoTransactionRequests
       ?? this.signCardanoTransactionRequests
+    this.signMessageRequests =
+      overrides.signMessageRequests ?? this.signMessageRequests
     this.isWalletCreated = overrides.isWalletCreated ?? this.isWalletCreated
   }
 
@@ -381,7 +389,7 @@ export class MockedWalletApiProxy {
     },
     getPendingSignMessageRequests: async () => {
       return {
-        requests: [mockSignMessageRequest],
+        requests: this.signMessageRequests,
       }
     },
     getPendingSignMessageErrors: async () => {

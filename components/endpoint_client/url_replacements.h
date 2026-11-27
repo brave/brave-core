@@ -6,9 +6,10 @@
 #ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_URL_REPLACEMENTS_H_
 #define BRAVE_COMPONENTS_ENDPOINT_CLIENT_URL_REPLACEMENTS_H_
 
-#include <optional>
 #include <string>
-#include <utility>
+#include <string_view>
+#include <variant>
+#include <vector>
 
 #include "url/gurl.h"
 
@@ -21,15 +22,18 @@ namespace endpoint_client {
 // never stored. Storing one as a member would make the enclosing object
 // non-self-contained and prone to dangling views.
 //
-// UrlReplacements instead owns its replacement strings (setters take
-// std::string by value), so it is self-contained and safe to store, copy, and
+// UrlReplacements instead records each Set*() or Clear*() call together with
+// the string it owns, so it is self-contained and safe to store, copy, and
 // move. It never hands out a GURL::Replacements; Apply() builds one
-// transiently, uses it to rewrite the given base URL, and discards it - the
-// string_views never outlive the expression.
+// transiently by replaying the calls, uses it to rewrite the given base URL,
+// and discards it - the string_views never outlive the expression.
 //
-// This exposes only the components current callers need (host, path, query);
-// it is not a 1:1 mirror of GURL::Replacements. Others (scheme, port, etc.)
-// can be added if and when a caller needs them.
+// As with GURL::Replacements, Set*() replaces a component (an empty value
+// leaves it empty, e.g. a trailing "?" for the query) and Clear*() removes it.
+// There's no ClearScheme(), since a URL can't have no scheme.
+//
+// Set*() and Clear*() for the remaining components (username, password, ref)
+// can be added when a caller needs them.
 class UrlReplacements {
  public:
   UrlReplacements();
@@ -42,45 +46,43 @@ class UrlReplacements {
 
   ~UrlReplacements();
 
-  UrlReplacements& SetHost(std::string host) {
-    host_ = std::move(host);
-    return *this;
-  }
+  UrlReplacements& SetScheme(std::string scheme);
 
-  UrlReplacements& SetPath(std::string path) {
-    path_ = std::move(path);
-    return *this;
-  }
+  UrlReplacements& SetHost(std::string host);
+  UrlReplacements& ClearHost();
 
-  UrlReplacements& SetQuery(std::string query) {
-    query_ = std::move(query);
-    return *this;
-  }
+  UrlReplacements& SetPort(std::string port);
+  UrlReplacements& ClearPort();
 
-  // Returns |url| with the set components replaced.
+  UrlReplacements& SetPath(std::string path);
+  UrlReplacements& ClearPath();
+
+  UrlReplacements& SetQuery(std::string query);
+  UrlReplacements& ClearQuery();
+
+  // Returns |url| with the replacements applied, in the order they were made.
   // A default-constructed UrlReplacements leaves |url| unchanged.
-  GURL Apply(const GURL& url) const {
-    GURL::Replacements replacements;
-
-    if (host_) {
-      replacements.SetHostStr(*host_);
-    }
-
-    if (path_) {
-      replacements.SetPathStr(*path_);
-    }
-
-    if (query_) {
-      replacements.SetQueryStr(*query_);
-    }
-
-    return url.ReplaceComponents(replacements);
-  }
+  GURL Apply(const GURL& url) const;
 
  private:
-  std::optional<std::string> host_;
-  std::optional<std::string> path_;
-  std::optional<std::string> query_;
+  struct Set {
+    using Function = void (GURL::Replacements::*)(std::string_view);
+
+    Function function;
+    std::string value;
+  };
+
+  struct Clear {
+    using Function = void (GURL::Replacements::*)();
+
+    Function function;
+  };
+
+  using Replacement = std::variant<Set, Clear>;
+
+  UrlReplacements& Add(Replacement replacement);
+
+  std::vector<Replacement> replacements_;
 };
 
 }  // namespace endpoint_client

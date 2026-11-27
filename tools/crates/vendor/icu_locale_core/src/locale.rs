@@ -4,7 +4,7 @@
 
 use crate::parser::*;
 use crate::subtags::Subtag;
-use crate::{extensions, subtags, LanguageIdentifier};
+use crate::{LanguageIdentifier, extensions, subtags};
 #[cfg(feature = "alloc")]
 use alloc::borrow::Cow;
 use core::cmp::Ordering;
@@ -26,7 +26,7 @@ use core::str::FromStr;
 /// multiple possible orderings. Depending on your use case, two orderings are available:
 ///
 /// 1. A string ordering, suitable for stable serialization: [`Locale::strict_cmp`]
-/// 2. A struct ordering, suitable for use with a BTreeSet: [`Locale::total_cmp`]
+/// 2. A struct ordering, suitable for use with a `BTreeSet`: [`Locale::total_cmp`]
 ///
 /// See issue: <https://github.com/unicode-org/icu4x/issues/1215>
 ///
@@ -80,7 +80,7 @@ use core::str::FromStr;
 /// More complex example:
 ///
 /// ```
-/// use icu::locale::{subtags::*, Locale};
+/// use icu::locale::{Locale, subtags::*};
 ///
 /// let loc: Locale = "eN-latn-Us-Valencia-u-hC-H12"
 ///     .parse()
@@ -110,24 +110,24 @@ pub struct Locale {
 // Expected sizes are based on a 64-bit architecture
 #[cfg(target_pointer_width = "64")]
 fn test_sizes() {
-    assert_eq!(core::mem::size_of::<subtags::Language>(), 3);
-    assert_eq!(core::mem::size_of::<subtags::Script>(), 4);
-    assert_eq!(core::mem::size_of::<subtags::Region>(), 3);
-    assert_eq!(core::mem::size_of::<subtags::Variant>(), 8);
-    assert_eq!(core::mem::size_of::<subtags::Variants>(), 16);
-    assert_eq!(core::mem::size_of::<LanguageIdentifier>(), 32);
+    assert_eq!(size_of::<subtags::Language>(), 3);
+    assert_eq!(size_of::<subtags::Script>(), 4);
+    assert_eq!(size_of::<subtags::Region>(), 3);
+    assert_eq!(size_of::<subtags::Variant>(), 8);
+    assert_eq!(size_of::<subtags::Variants>(), 16);
+    assert_eq!(size_of::<LanguageIdentifier>(), 32);
 
-    assert_eq!(core::mem::size_of::<extensions::transform::Transform>(), 56);
-    assert_eq!(core::mem::size_of::<Option<LanguageIdentifier>>(), 32);
-    assert_eq!(core::mem::size_of::<extensions::transform::Fields>(), 24);
+    assert_eq!(size_of::<extensions::transform::Transform>(), 56);
+    assert_eq!(size_of::<Option<LanguageIdentifier>>(), 32);
+    assert_eq!(size_of::<extensions::transform::Fields>(), 24);
 
-    assert_eq!(core::mem::size_of::<extensions::unicode::Attributes>(), 16);
-    assert_eq!(core::mem::size_of::<extensions::unicode::Keywords>(), 24);
-    assert_eq!(core::mem::size_of::<Vec<extensions::other::Other>>(), 24);
-    assert_eq!(core::mem::size_of::<extensions::private::Private>(), 16);
-    assert_eq!(core::mem::size_of::<extensions::Extensions>(), 136);
+    assert_eq!(size_of::<extensions::unicode::Attributes>(), 16);
+    assert_eq!(size_of::<extensions::unicode::Keywords>(), 24);
+    assert_eq!(size_of::<Vec<extensions::other::Other>>(), 24);
+    assert_eq!(size_of::<extensions::private::Private>(), 16);
+    assert_eq!(size_of::<extensions::Extensions>(), 136);
 
-    assert_eq!(core::mem::size_of::<Locale>(), 168);
+    assert_eq!(size_of::<Locale>(), 168);
 }
 
 impl Locale {
@@ -138,6 +138,10 @@ impl Locale {
     /// produces a well-formed [`Locale`].
     ///
     /// ✨ *Enabled with the `alloc` Cargo feature.*
+    ///
+    /// Note: Support for the legacy `_` separator has been dropped since 2.0.0.
+    /// Users of ICU4X need to convert the `_` to `-` before calling the
+    /// function.
     ///
     /// # Examples
     ///
@@ -162,7 +166,7 @@ impl Locale {
 
     /// Normalize the locale (operating on UTF-8 formatted byte slices)
     ///
-    /// This operation will normalize casing and the separator.
+    /// This operation will normalize casing.
     ///
     /// ✨ *Enabled with the `alloc` Cargo feature.*
     ///
@@ -184,7 +188,7 @@ impl Locale {
 
     /// Normalize the locale (operating on strings)
     ///
-    /// This operation will normalize casing and the separator.
+    /// This operation will normalize casing.
     ///
     /// ✨ *Enabled with the `alloc` Cargo feature.*
     ///
@@ -363,7 +367,7 @@ impl Locale {
     ///     }
     /// }
     ///
-    /// let _: BTreeSet<LocaleTotalOrd> = unimplemented!();
+    /// BTreeSet::<LocaleTotalOrd>::new();
     /// ```
     ///
     /// [`BTreeSet`]: alloc::collections::BTreeSet
@@ -411,15 +415,15 @@ impl Locale {
         if !subtag_matches!(subtags::Language, iter, self.id.language) {
             return false;
         }
-        if let Some(ref script) = self.id.script {
-            if !subtag_matches!(subtags::Script, iter, *script) {
-                return false;
-            }
+        if let Some(ref script) = self.id.script
+            && !subtag_matches!(subtags::Script, iter, *script)
+        {
+            return false;
         }
-        if let Some(ref region) = self.id.region {
-            if !subtag_matches!(subtags::Region, iter, *region) {
-                return false;
-            }
+        if let Some(ref region) = self.id.region
+            && !subtag_matches!(subtags::Region, iter, *region)
+        {
+            return false;
         }
         for variant in self.id.variants.iter() {
             if !subtag_matches!(subtags::Variant, iter, *variant) {
@@ -468,6 +472,12 @@ impl Locale {
         self.id.for_each_subtag_str(f)?;
         self.extensions.for_each_subtag_str(f)?;
         Ok(())
+    }
+}
+
+impl AsRef<LanguageIdentifier> for Locale {
+    fn as_ref(&self) -> &LanguageIdentifier {
+        &self.id
     }
 }
 

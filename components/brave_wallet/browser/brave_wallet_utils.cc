@@ -11,7 +11,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/check_op.h"
 #include "base/containers/span.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
@@ -54,9 +53,6 @@ bool IsDisabledByPolicy(PrefService* prefs) {
   return prefs->IsManagedPreference(kBraveWalletDisabledByPolicy) &&
          prefs->GetBoolean(kBraveWalletDisabledByPolicy);
 }
-
-constexpr const char kEnsRegistryContractAddress[] =
-    "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
 
 mojom::BlockchainTokenPtr NetworkToNativeToken(
     const mojom::NetworkInfo& network) {
@@ -118,14 +114,25 @@ bool ShouldCheckTokenId(const brave_wallet::mojom::BlockchainTokenPtr& token) {
   return token->is_erc721 || token->is_erc1155;
 }
 
+// Prefs written before `zcash_token_type` stored `is_shielded` instead.
+mojom::ZCashTokenType ZCashTokenTypeFromAssetDict(const base::DictValue& dict) {
+  if (auto type_int = dict.FindInt("zcash_token_type")) {
+    auto type = static_cast<mojom::ZCashTokenType>(*type_int);
+    return mojom::IsKnownEnumValue(type) ? type : mojom::ZCashTokenType::kNone;
+  }
+  if (dict.FindBool("is_shielded").value_or(false)) {
+    return mojom::ZCashTokenType::kOrchard;
+  }
+  std::optional<int> coin = dict.FindInt("coin");
+  if (coin && *coin == static_cast<int>(mojom::CoinType::ZEC)) {
+    return mojom::ZCashTokenType::kTransparent;
+  }
+  return mojom::ZCashTokenType::kNone;
+}
+
 bool TokenMatchesDict(const brave_wallet::mojom::BlockchainTokenPtr& token,
                       const base::DictValue* dict) {
   if (!dict) {
-    return false;
-  }
-
-  // ZCash shielded tokens are hardcoded, so they don't appear in the prefs
-  if (IsShieldedTokenType(token->zcash_token_type)) {
     return false;
   }
 
@@ -148,9 +155,16 @@ bool TokenMatchesDict(const brave_wallet::mojom::BlockchainTokenPtr& token,
   if (ShouldCheckTokenId(token)) {
     const std::string* token_id_ptr = dict->FindString("token_id");
     return token_id_ptr && *token_id_ptr == token->token_id;
-  } else {
-    return true;
   }
+
+  // Transparent, Orchard (Shielded Legacy), and Ironwood ZEC are all native
+  // assets and share an empty address.
+  if (token->coin == mojom::CoinType::ZEC &&
+      ZCashTokenTypeFromAssetDict(*dict) != token->zcash_token_type) {
+    return false;
+  }
+
+  return true;
 }
 
 bool ValidateAndFixAssetAddress(mojom::BlockchainTokenPtr& token) {
@@ -652,12 +666,6 @@ std::string GetDefaultBaseCurrency(PrefService* prefs) {
   return prefs->GetString(kDefaultBaseCurrency);
 }
 
-std::string GetEnsRegistryContractAddress(std::string_view chain_id) {
-  std::string chain_id_lower = base::ToLowerASCII(chain_id);
-  DCHECK_EQ(chain_id_lower, mojom::kMainnetChainId);
-  return kEnsRegistryContractAddress;
-}
-
 std::vector<mojom::BlockchainTokenPtr> GetAllUserAssets(PrefService* prefs) {
   std::vector<mojom::BlockchainTokenPtr> result;
   const auto& user_assets_list = prefs->GetList(kBraveWalletUserAssetsList);
@@ -691,15 +699,6 @@ mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
   token->is_erc1155 = is_erc1155;
   token->zcash_token_type = zcash_token_type;
 
-  if (token->coin == mojom::CoinType::ZEC) {
-    if (zcash_token_type == mojom::ZCashTokenType::kOrchard) {
-      return GetZcashNativeShieldedToken(token->chain_id);
-    }
-    if (zcash_token_type == mojom::ZCashTokenType::kIronwood) {
-      return GetZcashNativeIronwoodToken(token->chain_id);
-    }
-  }
-
   const auto& user_assets_list = prefs->GetList(kBraveWalletUserAssetsList);
   for (auto& asset : user_assets_list) {
     auto* token_dict = asset.GetIfDict();
@@ -709,6 +708,17 @@ mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
 
     if (TokenMatchesDict(token, token_dict)) {
       return ValueToBlockchainToken(*token_dict);
+    }
+  }
+
+  // Shielded ZEC is not in the default list. Callers still receive the
+  // canonical token until the user hides or shows it.
+  if (token->coin == mojom::CoinType::ZEC) {
+    if (zcash_token_type == mojom::ZCashTokenType::kOrchard) {
+      return GetZcashNativeShieldedToken(token->chain_id);
+    }
+    if (zcash_token_type == mojom::ZCashTokenType::kIronwood) {
+      return GetZcashNativeIronwoodToken(token->chain_id);
     }
   }
 
@@ -764,13 +774,23 @@ bool RemoveUserAsset(PrefService* prefs,
 bool SetUserAssetVisible(PrefService* prefs,
                          const mojom::BlockchainTokenPtr& token,
                          bool visible) {
-  ScopedListPrefUpdate update(prefs, kBraveWalletUserAssetsList);
+  {
+    ScopedListPrefUpdate update(prefs, kBraveWalletUserAssetsList);
 
-  for (auto& token_value : *update) {
-    if (TokenMatchesDict(token, token_value.GetIfDict())) {
-      token_value.GetDict().Set("visible", visible);
-      return true;
+    for (auto& token_value : *update) {
+      if (TokenMatchesDict(token, token_value.GetIfDict())) {
+        token_value.GetDict().Set("visible", visible);
+        return true;
+      }
     }
+  }
+
+  // Shielded ZEC is omitted from the default asset list. GetUserAssets
+  // re-injects a visible copy unless this visibility is persisted.
+  if (IsShieldedTokenType(token->zcash_token_type)) {
+    auto token_to_add = token.Clone();
+    token_to_add->visible = visible;
+    return !AddUserAsset(prefs, std::move(token_to_add)).is_null();
   }
 
   return false;

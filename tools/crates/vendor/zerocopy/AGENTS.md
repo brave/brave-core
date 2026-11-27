@@ -6,100 +6,59 @@ license <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your option.
 This file may not be copied, modified, or distributed except according to
 those terms. -->
 
-# Development Instructions
+# Instructions for AI Agents
 
-This repository uses a wrapper script around Cargo to ensure consistent toolchain usage and configuration.
+These instructions apply to work in the `zerocopy/` subtree.
 
-## Build and Test
+## Standing Rules
 
-**IMPORTANT:** You must **NEVER** run `cargo` directly. Instead, you must **ALWAYS** use `yes | ./cargo.sh` for all `cargo` sub-commands (e.g., `check`, `test`, `build`). Using `yes |` is required to bypass interactive prompts for toolchain installation.
+- **Cargo:** For zerocopy crate build, test, and lint commands, never run
+  `cargo` directly. Use `./cargo.sh`. Repository tools outside this crate may
+  have their own invocation commands. See the
+  [toolchain reference](../skills/zerocopy-development/references/toolchains.md)
+  for toolchain selection and version gating.
+- **README generation:** Do not edit `README.md` directly. It is generated from
+  the top-level documentation in `src/lib.rs`. Regenerate it with:
 
-### Syntax
-`yes | ./cargo.sh +<toolchain> <command> [args]`
+  ```bash
+  (cd .. && cargo -q run --manifest-path tools/Cargo.toml \
+    -p generate-readme) > README.md
+  ```
 
-### Toolchains
-The `<toolchain>` argument is mandatory and can be one of the following:
+<!-- TODO-check-disable -->
+- **TODOs:** Do not use `TODO` unless you intend to block the PR; CI rejects
+  `TODO`. Use `FIXME` for non-blocking follow-up work.
+<!-- TODO-check-enable -->
 
-- `msrv`: Runs with the Minimum Supported Rust Version.
-- `stable`: Runs with the stable toolchain.
-- `nightly`: Runs with the nightly toolchain.
-- `all`: Runs the command on `msrv`, `stable`, and `nightly` sequentially.
-- Version-gated toolchains: You can also pass specific version-gated toolchains defined in `Cargo.toml`, such as `zerocopy-core-error-1-81-0`.
+- **Documentation:** Keep documentation and instruction references synchronized
+  when moving, renaming, or changing the behavior of referenced code or files.
+- **File headers:** New files must use the repository copyright header with the
+  file's creation year. Preserve an existing file's original creation year.
+- **Formatting:** Follow `ci/check_fmt.sh`.
+- **Comments and Markdown:** Wrap prose at 80 columns from the left margin when
+  practical, including the comment prefix. Do not wrap tables, diagrams, long
+  URLs, code blocks, or other content when wrapping would impair readability.
+  In Markdown, indent wrapped bullet continuation lines by two spaces and put a
+  blank line after each section heading.
 
-### Linting
+- **Derived traits in tests:** For traits whose documentation requires
+  derive-only implementation, test fixture types **MUST** use Zerocopy's
+  derives. Do not bypass a derive rejection with a manual implementation;
+  instead, test the lower-level internal primitive or extend the derive.
+  Generated derive-output snapshots and crate-owned built-in implementations
+  are exempt.
 
-Clippy should **always** be run on the `nightly` toolchain.
+## Task-Specific Skills
 
-```bash
-yes | ./cargo.sh +nightly clippy
-yes | ./cargo.sh +nightly clippy --tests
-```
+Use the applicable skills in addition to these standing rules. Skills compose;
+when more than one applies, use all of them.
 
-### Examples
-
-```bash
-# Check the code using the nightly toolchain
-# DO NOT RUN: cargo check
-yes | ./cargo.sh +nightly check
-
-# Run tests on all supported toolchains
-# DO NOT RUN: cargo test
-yes | ./cargo.sh +all test
-
-# Run a specific test on stable
-yes | ./cargo.sh +stable test -- test_name
-```
-
-## Workflow
-
-### Pre-submission Checks
-
-Before submitting code, run `./githooks/pre-push` to confirm that all pre-push hooks succeed.
-
-### UI Tests
-
-When updating UI test files (in `tests/ui*` or `zerocopy-derive/tests/ui*`), run `./tools/update-ui-test-files.sh` to update the corresponding stderr files.
-
-### Pull Requests and Commit Messages
-
-When a PR resolves an issue, the PR description and commit message should include a line like `Closes #123`.
-When a PR makes progress on, but does not close, an issue, the PR description and commit message should include a line like `Makes progress on #123`.
-
-## Safety
-
-### Pointer Casts
-
-- **Avoid `&slice[0] as *const T` or `&slice[0] as *mut T`.**
-  Instead, use `slice.as_ptr()` or `slice.as_mut_ptr()`. Casting a reference to
-  a single element creates a raw pointer that is only valid for that element.
-  Accessing subsequent elements via pointer arithmetic is Undefined Behavior.
-  See [unsafe-code-guidelines#134](https://github.com/rust-lang/unsafe-code-guidelines/issues/134).
-
-- **Avoid converting `&mut T` to `*const T` (or `*const U`)**.
-  This advice applies if you intend to later cast the pointer to `*mut T` and
-  mutate the data. This conversion reborrows `&mut T` as a shared reference
-  `&T`, which may restrict permissions under Stacked Borrows. Instead, cast
-  `&mut T` directly to `*mut T` first, then to `*const T` if necessary. See
-  [rust#56604](https://github.com/rust-lang/rust/issues/56604).
-
-## Code Style
-
-### File Headers
-
-Each file should contain a copyright header (excluding auto-generated files such as `.stderr` files). The header should follow the format found in existing files (e.g. `src/lib.rs`), using the appropriate comment syntax for the file type.
-
-### Formatting
-
-To determine how to format code, read the formatting checker script in `ci/check_fmt.sh`.
-
-### Comments
-
-All comments (including `//`, `///`, and `//!`) should be wrapped at 80 columns.
-
-**Exceptions:**
-- Markdown tables
-- Inline ASCII diagrams
-- Long URLs
-- Comments inside of code blocks
-- Comments which trail non-comment code
-- Other cases where wrapping would significantly degrade readability (use your judgment).
+- For authoring, modifying, building, testing, or validating zerocopy code, use
+  the [`zerocopy-development`](../skills/zerocopy-development/SKILL.md) skill.
+- For reviewing zerocopy changes, use the
+  [`zerocopy-review`](../skills/zerocopy-review/SKILL.md) skill.
+- For unsafe Rust, unsafe APIs or traits, raw pointers, FFI, layout or validity
+  reasoning, safety comments or `# Safety` documentation, soundness analysis,
+  or invariant-bearing abstractions, use the
+  [`unsafe-rust`](../skills/unsafe-rust/SKILL.md) skill. That skill is the
+  source of truth for unsafe-code authoring and review methodology.

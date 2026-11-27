@@ -13,6 +13,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
@@ -20,10 +21,12 @@
 #include "base/types/is_instantiation.h"
 #include "brave/components/endpoint_client/is_endpoint.h"
 #include "brave/components/endpoint_client/is_request.h"
+#include "brave/components/endpoint_client/is_response.h"
 #include "brave/components/endpoint_client/maybe_strip_with_headers.h"
 #include "brave/components/endpoint_client/request_handle.h"
 #include "brave/components/endpoint_client/request_options.h"
 #include "brave/components/endpoint_client/with_headers.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -48,7 +51,8 @@ using OnResponseCallback =
 // `RequestCancelability::kCancelable`, returns the loader, and destroying it
 // cancels the request. Otherwise, the loader is owned by its own completion
 // callback, which destroys it once the response has been handled, and this
-// returns `nullptr`.
+// returns `nullptr`. For `download_headers_only`, the response body is
+// discarded as it's received, and `max_body_size` doesn't apply.
 std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
     network::mojom::URLLoaderFactory& url_loader_factory,
     std::string_view method,
@@ -58,6 +62,7 @@ std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
     std::string_view content_type,
     RequestOptions options,
     RequestCancelability cancelability,
+    bool download_headers_only,
     OnResponseCallback on_response_callback);
 
 }  // namespace internal
@@ -94,11 +99,11 @@ class Client {
       }
     }();
 
-    constexpr bool kIsBodylessRequest =
-        internal::IsBodylessRequest<typename Endpoint::Request>;
+    constexpr bool kIsRequestWithoutBody =
+        internal::IsRequestWithoutBody<typename Endpoint::Request>;
 
     auto upload_data = [&]() -> std::optional<std::string> {
-      if constexpr (kIsBodylessRequest) {
+      if constexpr (kIsRequestWithoutBody) {
         return std::nullopt;
       } else {
         return request.Serialize();
@@ -106,7 +111,7 @@ class Client {
     }();
 
     constexpr auto kContentType = [] {
-      if constexpr (kIsBodylessRequest) {
+      if constexpr (kIsRequestWithoutBody) {
         return std::string_view();
       } else {
         return Request::ContentType();
@@ -117,6 +122,8 @@ class Client {
         url_loader_factory, Request::Method(), Endpoint::URL(),
         std::move(headers), std::move(upload_data), kContentType,
         std::move(static_cast<internal::RequestOptions&>(request)), C,
+        /*download_headers_only=*/
+        internal::IsResponseWithoutBodies<typename Endpoint::Response>,
         base::BindOnce(MakeResponse<Response>).Then(std::move(callback)));
 
     if constexpr (C == RequestCancelability::kCancelable) {
@@ -130,12 +137,24 @@ class Client {
   static Response MakeResponse(int net_error,
                                scoped_refptr<net::HttpResponseHeaders> headers,
                                std::optional<std::string> response_body) {
-    Response response(Response::Deserialize(net_error, headers.get(),
-                                            std::move(response_body)));
+    Response response;
+    response.net_error = net_error;
+    if (net_error != net::OK || !headers) {
+      return response;
+    }
+
+    response.status_code = headers->response_code();
+
+    if constexpr (internal::IsResponseWithBodies<typename Endpoint::Response>) {
+      // response_body is std::nullopt only if SimpleURLLoader failed or if
+      // only headers were downloaded (Response<> without body types).
+      // Neither case reaches this point.
+      response.body = Response::Deserialize(*response.status_code,
+                                            CHECK_DEREF(response_body));
+    }
+
     if constexpr (base::is_instantiation<Response, WithHeaders>) {
-      if (response.status_code) {
-        response.headers = std::move(headers);
-      }
+      response.headers = std::move(headers);
     }
 
     return response;

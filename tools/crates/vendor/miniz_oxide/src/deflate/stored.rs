@@ -1,15 +1,24 @@
-use crate::deflate::buffer::{update_hash, LZ_HASH_SHIFT, LZ_HASH_SIZE};
 use crate::deflate::core::{
     flush_block, CallbackOxide, CompressorOxide, TDEFLFlush, TDEFLStatus, LZ_DICT_SIZE,
     LZ_DICT_SIZE_MASK, MAX_MATCH_LEN, MIN_MATCH_LEN,
 };
 use core::cmp;
 
+/// Compression function for stored blocks, split out from the main compression function.
 pub(crate) fn compress_stored(d: &mut CompressorOxide, callback: &mut CallbackOxide) -> bool {
     let in_buf = match callback.buf() {
         None => return true,
         Some(in_buf) => in_buf,
     };
+
+    // Right now there isn't any code for re-adding previous data to the hash chain if compression is switched
+    // from stored mode to level 1 or higher after first starting compression at level 0
+    // which causes a slight deviation from oroginal miniz behaviour but much faster
+    // stored compression since original miniz does this by being super inefficient
+    // and adds data to hash table when doing stored and rle compression.
+    // Ideally we would handle it like zlib which keeps track of previous data and
+    // only adds to hash table when switching over to actual compression but that
+    // would need a bunch of more work.
 
     // Make sure this is cleared in case compression level is switched later.
     // TODO: It's possible we don't need this or could do this elsewhere later
@@ -20,6 +29,8 @@ pub(crate) fn compress_stored(d: &mut CompressorOxide, callback: &mut CallbackOx
     let mut lookahead_size = d.dict.lookahead_size;
     let mut lookahead_pos = d.dict.lookahead_pos;
 
+    // TODO: This mostly copied from the existing miniz code that was part of the main compression function
+    // but could be much simplified and optimized further to a simple copy.
     while src_pos < in_buf.len() || (d.params.flush != TDEFLFlush::None && lookahead_size != 0) {
         let src_buf_left = in_buf.len() - src_pos;
         let num_bytes_to_process = cmp::min(src_buf_left, MAX_MATCH_LEN - lookahead_size);
@@ -30,12 +41,6 @@ pub(crate) fn compress_stored(d: &mut CompressorOxide, callback: &mut CallbackOx
             let dictb = &mut d.dict.b;
 
             let mut dst_pos = (lookahead_pos + lookahead_size) & LZ_DICT_SIZE_MASK;
-            let mut ins_pos = lookahead_pos + lookahead_size - 2;
-            // Start the hash value from the first two bytes
-            let mut hash = update_hash(
-                u16::from(dictb.dict[ins_pos & LZ_DICT_SIZE_MASK]),
-                dictb.dict[(ins_pos + 1) & LZ_DICT_SIZE_MASK],
-            );
 
             lookahead_size += num_bytes_to_process;
 
@@ -46,15 +51,8 @@ pub(crate) fn compress_stored(d: &mut CompressorOxide, callback: &mut CallbackOx
                     dictb.dict[LZ_DICT_SIZE + dst_pos] = c;
                 }
 
-                // Generate hash from the current byte,
-                hash = update_hash(hash, c);
-                dictb.next[ins_pos & LZ_DICT_SIZE_MASK] = dictb.hash[hash as usize];
-                // and insert it into the hash chain.
-                dictb.hash[hash as usize] = ins_pos as u16;
                 dst_pos = (dst_pos + 1) & LZ_DICT_SIZE_MASK;
-                ins_pos += 1;
             }
-            src_pos += num_bytes_to_process;
         } else {
             let dictb = &mut d.dict.b;
             for &c in &in_buf[src_pos..src_pos + num_bytes_to_process] {
@@ -65,22 +63,10 @@ pub(crate) fn compress_stored(d: &mut CompressorOxide, callback: &mut CallbackOx
                 }
 
                 lookahead_size += 1;
-                if lookahead_size + d.dict.size >= MIN_MATCH_LEN.into() {
-                    let ins_pos = lookahead_pos + lookahead_size - 3;
-                    let hash = ((u32::from(dictb.dict[ins_pos & LZ_DICT_SIZE_MASK])
-                        << (LZ_HASH_SHIFT * 2))
-                        ^ ((u32::from(dictb.dict[(ins_pos + 1) & LZ_DICT_SIZE_MASK])
-                            << LZ_HASH_SHIFT)
-                            ^ u32::from(c)))
-                        & (LZ_HASH_SIZE as u32 - 1);
-
-                    dictb.next[ins_pos & LZ_DICT_SIZE_MASK] = dictb.hash[hash as usize];
-                    dictb.hash[hash as usize] = ins_pos as u16;
-                }
             }
-
-            src_pos += num_bytes_to_process;
         }
+
+        src_pos += num_bytes_to_process;
 
         d.dict.size = cmp::min(LZ_DICT_SIZE - lookahead_size, d.dict.size);
         if d.params.flush == TDEFLFlush::None && lookahead_size < MAX_MATCH_LEN {
@@ -92,7 +78,6 @@ pub(crate) fn compress_stored(d: &mut CompressorOxide, callback: &mut CallbackOx
         bytes_written += 1;
 
         lookahead_pos += len_to_move;
-        assert!(lookahead_size >= len_to_move);
         lookahead_size -= len_to_move;
         d.dict.size = cmp::min(d.dict.size + len_to_move, LZ_DICT_SIZE);
 

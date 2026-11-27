@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "เกี่ยวกับ";
 
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertMessage" = "การดำเนินการนี้จะทำให้คุณสามารถบันทึกภาพไปยังคลังภาพของคุณได้";
-
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave ต้องการเข้าถึงรูปภาพของคุณ";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "เพิ่มบุ๊กมาร์ก";
 
@@ -63,9 +57,6 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "ชื่อผู้ใช้";
-
-/* Settings autofill section title */
-"Autofill" = "ป้อนอัตโนมัติ";
 
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "บัญชี";
@@ -133,9 +124,6 @@
 /* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
 "backgroundDownloadingTitleSingleDownload" = "กำลังดาวน์โหลด \"%@\"";
 
-/* cookie settings option */
-"Block3rdPartyCookies" = "บล็อกคุกกี้จากบุคคลที่ 3";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "บล็อกคุกกี้ทั้งหมด";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "ตั้งค่าไม่สำเร็จ โปรดลองอีกครั้ง";
 
-/* title for section showing page blocking statistics */
-"BlockingMonitor" = "การบล็อกตัวติดตาม";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "บล็อกป๊อปอัป";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "เพิ่มบุ๊กมาร์กให้กับ %lld แท็บ";
-
-/* Bookmark Folder Section Title */
-"BookmarkFolder" = "บุ๊กมาร์กโฟลเดอร์";
-
-/* Bookmark Info Section Title */
-"BookmarkInfo" = "บุ๊กมาร์กข้อมูล";
 
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "บุ๊กมาร์ก";
@@ -225,9 +204,6 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields & ความเป็นส่วนตัว";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
 
 /* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
 "BraveTranslate.languageSelectionButtonTitle" = "เลือกภาษา";
@@ -415,14 +391,8 @@
 /* Section title in settings panel */
 "ClearPrivateData" = "ล้างข้อมูลส่วนตัว";
 
-/* The cancel button when confirming clear private data. */
-"ClearPrivateDataAlertCancelButtonTitle" = "ยกเลิก";
-
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertMessage" = "คุณแน่ใจหรือไม่";
-
-/* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "ตกลง";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "เคลียร์ข้อมูล";
@@ -441,9 +411,6 @@
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "ตกลง";
-
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "ข้อผิดพลาดของลูกค้า";
 
 /* Button title to close a menu. */
 "Close" = "ปิด";
@@ -481,17 +448,11 @@
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
 "CopyCleanLink" = "คัดลอกคลีนลิงก์";
 
-/* Context menu item for copying an image to the clipboard */
-"CopyImageActionTitle" = "คัดลอกรูปภาพ";
-
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "คัดลอกลิงก์";
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "คัดลอกข้อมูลแท็บไปยังคลิปบอร์ด";
-
-/* Copy rewards internals info for support */
-"CopyWalletSupportInfo" = "คัดลอกข้อมูลการสนับสนุน";
 
 /* Create PDF share action. */
 "CreatePDF" = "สร้างไฟล์ PDF";
@@ -504,9 +465,6 @@
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "เขียน URL การค้นหาและแทนที่คำค้นหาด้วย %1$s\nตัวอย่างเช่น: https://youtube.com/search?q=%2$s\n(หากไซต์รองรับ OpenSearch จะเพิ่มตัวเลือกให้โดยอัตโนมัติขณะแก้ไขฟิลด์นี้)";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "เพิ่มอัตโนมัติ";
 
 /* A title explaining that an error shown while adding custom search engine */
 "customSearchEngine.customSearchEngineAddErrorTitle" = "เกิดข้อผิดพลาดขณะเพิ่มเครื่องมือค้นหาแบบกำหนดเอง";
@@ -590,12 +548,6 @@
 "defaultBrowserCallout.notificationTitle" = "รับการป้องกันของ Brave ในทุกๆ ลิงก์";
 
 /* No comment provided by engineer. */
-"defaultBrowserCalloutCloseAccesabilityLabel" = "ปิดคำอธิบายของเบราว์เซอร์เริ่มต้น";
-
-/* Name for default Brave theme. */
-"defaultThemeName" = "ค่าเริ่มต้นของ Brave";
-
-/* No comment provided by engineer. */
 "Delete" = "ลบ";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
@@ -649,9 +601,6 @@
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "ดาวน์โหลด";
 
-/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
-"DownloadsPanelEmptyStateTitle" = "ไฟล์ที่ดาวน์โหลดจะแสดงที่นี่";
-
 /* Action item title of long press for Opening the existing - active Tab url in a new Tab */
 "DuplicateActiveTab" = "ทำซ้ำแท็บที่ใช้งาน";
 
@@ -700,47 +649,14 @@
 /* Description for new folder popup */
 "EnterFolderName" = "ใส่ชื่อโฟลเดอร์";
 
-/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "โดยปกติแล้ว %1$@ จะใช้การเข้ารหัสเพื่อปกป้องข้อมูลของคุณ เมื่อ Brave พยายามเชื่อมต่อกับ %2$@ ในครั้งนี้ เว็บไซต์จะส่งข้อมูลประจำตัวที่ผิดปกติและไม่ถูกต้องกลับมา ซึ่งอาจเกิดขึ้นเมื่อผู้โจมตีพยายามแสร้งทำเป็น %3$@ หรือหน้าจอลงชื่อเข้าใช้ Wi-Fi ขัดจังหวะการเชื่อมต่อ ข้อมูลของคุณยังคงปลอดภัยเนื่องจาก Brave หยุดการเชื่อมต่อก่อนที่จะมีการแลกเปลี่ยนข้อมูลใดๆ <br />คุณไม่สามารถเยี่ยมชม %4$@ ได้ในขณะนี้เนื่องจากเว็บไซต์ใช้การปักหมุดใบรับรอง ข้อผิดพลาดและการโจมตีเครือข่ายมักเกิดขึ้นชั่วคราว ดังนั้นหน้าเว็บนี้อาจใช้งานได้ในภายหลัง";
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "นำออก";
 
-/* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningDetails" = "เซิร์ฟเวอร์นี้ไม่สามารถพิสูจน์ได้ว่าเป็น %@ เนื่องจากระบบปฏิบัติการของอุปกรณ์ของคุณไม่เชื่อถือใบรับรองความปลอดภัย ซึ่งอาจเกิดจากการกำหนดค่าผิดพลาดหรือผู้โจมตีพยายามดักจับการเชื่อมต่อของคุณ";
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "เว็บไซต์นี้จะไม่ปรากฏในรายการที่เข้าชมบ่อยที่สุดของคุณ แต่จะไม่ถูกลบออกจากประวัติของคุณ";
 
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningTitle" = "ผู้โจมตีอาจพยายามขโมยข้อมูลของคุณจาก %@ (เช่น รหัสผ่าน ข้อความ หรือบัตรเครดิต)";
-
-/* Label for button to go back from the error page */
-"ErrorPagesBackToSafetyButton" = "กลับไปยังการท่องเว็บแบบปลอดภัย";
-
-/* Title on the certificate error page */
-"ErrorPagesCertErrorTitle" = "เว็บไซต์นี้ไม่สามารถให้การเชื่อมต่อที่ปลอดภัยได้";
-
-/* Title on the certificate error page */
-"ErrorPagesCertWarningTitle" = "การเชื่อมต่อของคุณไม่เป็นส่วนตัว";
-
-/* Label for button to hide advanced actions on the error page */
-"ErrorPagesHideDetailsButton" = "ซ่อนรายละเอียด";
-
-/* Label for learn more link on error page */
-"ErrorPagesLearnMoreButton" = "ดูข้อมูลเพิ่มเติม";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesMoreDetailsButton" = "รายละเอียดเพิ่มเติม";
-
-/* Title of the No Internet error page */
-"ErrorPagesNoInternetTitle" = "ไม่มีการเข้าถึงอินเตอร์เน็ต";
-
-/* Text telling the user to Try: The following list of things */
-"ErrorPagesNoInternetTry" = "ดูเหมือนว่าคุณจะยังไม่ได้ออนไลน์อยู่ หากต้องการแก้ปัญหานี้ให้ลอง";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem1" = "ตรวจสอบที่สายเคเบิลของเครือข่าย โมเด็ม หรือเราท์เตอร์";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem2" = "เชื่อมต่อกับ Wi-Fi";
-
-/* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesProceedAnywayButton" = "ไปยัง %@ (ไม่ปลอดภัย)";
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "ลบออกจากที่เข้าชมบ่อยที่สุด?";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ จะเปิดแอปพลิเคชันภายนอก";
@@ -766,29 +682,14 @@
 /* Share action title */
 "FindInPage" = "ค้นหาในหน้าเว็บ";
 
-/* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "เสร็จแล้ว";
-
 /* Find `search query` */
 "FindInPageFormat" = "ค้นหา ";
-
-/* Accessibility label for next result button in Find in Page Toolbar. */
-"FindInPageNextResultButtonAccessibilityLabel" = "ผลลัพธ์ภายในหน้าถัดไป";
-
-/* Accessibility label for previous result button in Find in Page Toolbar. */
-"FindInPagePreviousResultButtonAccessibilityLabel" = "ผลลัพธ์ภายในหน้าก่อนหน้า";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findInPageTitle" = "ค้นหาในหน้าเว็บ";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findNextTitle" = "ค้นหาถัดไป";
-
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "ในหน้านี้";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findPreviousTitle" = "ค้นหาก่อนหน้า";
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "อนุญาตให้เปิด Universal Links ในแอปภายนอกได้";
@@ -813,9 +714,6 @@
 
 /* Hides the rewards icon */
 "HideRewardsIcon" = "ซ่อนไอคอน Brave Rewards";
-
-/* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "ซ่อนไอคอน Brave Rewards เมื่อไม่ได้เปิดใช้งาน Brave Rewards";
 
 /* Title for history menu item */
 "HistortMenuItem" = "ประวัติการเข้าชม";
@@ -859,11 +757,8 @@
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "นำเข้าข้อมูลการเรียกดู";
 
-/* title for per-site shield toggles */
-"IndividualControls" = "ตัวควบคุมแบบแยกรายการ";
-
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "รายละเอียดในคำขอชำระเงินไม่ถูกต้อง";
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "หน้าที่ฝังตัวอยู่ในหน้านี้";
 
 /* History tableview section header */
 "LastMonth" = "เดือนที่แล้ว";
@@ -919,30 +814,6 @@
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "ตัวกรอง";
 
-/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
-"LoginDetailLastModifiedCellFormatTitle" = "ปรับปรุงล่าสุด %@";
-
-/* Label displayed above the password row in Login Detail View. */
-"LoginDetailPasswordCellTitle" = "รหัสผ่าน";
-
-/* Label displayed above the username row in Login Detail View. */
-"LoginDetailUsernameCellTitle" = "ชื่อผู้ใช้";
-
-/* Label displayed above the website row in Login Detail View. */
-"LoginDetailWebsiteCellTitle" = "เว็บไซต์";
-
-/* Label for the button used to deselect all logins. */
-"LoginListDeselectAllButtonTitle" = "ยกเลิกการเลือกทั้งหมด";
-
-/* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "ไม่พบการลงชื่อเข้าใช้";
-
-/* Title for Logins List View screen. */
-"LoginListScreenTitle" = "การลงชื่อเข้าใช้";
-
-/* Label for the button used to select all logins. */
-"LoginListSelectAllButtonTitle" = "เลือกทั้งหมด";
-
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "เปิดใช้เสียงในพื้นหลัง";
 
@@ -957,9 +828,6 @@
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "เปิดเผย";
-
-/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
-"monthAbbreviation" = "เดือน";
 
 /* Bookmark title / Device name */
 "Name" = "ชื่อ";
@@ -1036,9 +904,6 @@
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "ดูข้อมูลเพิ่มเติมเกี่ยวกับภาพสปอนเซอร์";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"ntp.settingsAutoOpenKeyboard" = "เปิดคีย์บอร์ดโดยอัตโนมัติ";
-
 /* A setting to enable or disable background on the NTP screen. */
 "ntp.settingsBackgroundImages" = "พื้นหลัง";
 
@@ -1075,53 +940,8 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "เมื่อเปิดใช้งาน Rewards จะถือว่าคุณยอมรับ %@";
 
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "รับโทเค็นและให้รางวัลกับผู้สร้างเนื้อหาที่ยอดเยี่ยมขณะที่คุณท่องเว็บ";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "รับคะแนนและให้รางวัลกับผู้สร้างเนื้อหาที่ยอดเยี่ยมขณะที่คุณท่องเว็บ";
-
-/* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Brave Ads อยู่นี่แล้ว!";
-
-/* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave จะแสดงโฆษณาแรกของคุณใน";
-
-/* Title for when the user completes onboarding */
-"OBCompleteTitle" = "ตอนนี้คุณพร้อมที่จะใช้งานต่อแล้ว";
-
-/* Button to show information on how to enable ads */
-"OBDidntSeeAdButton" = "ฉันไม่เห็นโฆษณาเลย";
-
-/* A generic error body for onboarding */
-"OBErrorDetails" = "เกิดข้อผิดพลาดบางอย่างขึ้นขณะสร้างวอลเล็ทของคุณ โปรดลองอีกครั้ง";
-
 /* No comment provided by engineer. */
 "OBErrorOkay" = "ตกลง";
-
-/* A generic error title for onboarding */
-"OBErrorTitle" = "ขออภัย";
-
-/* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "เริ่มท่องเว็บ";
-
-/* Button to join Brave Rewards. */
-"OBJoinButton" = "เข้าร่วม";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "อนุญาตให้ Brave ตรวจสอบคลิปบอร์ดของฉันเพื่อหารหัสอ้างอิงที่ตรงกัน";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "คุณอาจดาวน์โหลด Brave เพื่อสนับสนุนผู้แนะนำของคุณ เพื่อเป็นการตรวจจับผู้แนะนำของคุณ Brave จะทำการตรวจสอบคลิปบอร์ดของคุณหนึ่งครั้งเพื่อหารหัสอ้างอิงที่ตรงกัน การตรวจสอบนี้จะจำกัดเฉพาะรหัสเท่านั้น และจะไม่มีการส่งข้อมูลส่วนตัวอื่นๆ หากคุณเลือกไม่รับ ผู้แนะนำของคุณจะไม่ได้รับรางวัลจาก Brave";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentNoButton" = "ไม่อนุญาตการตรวจสอบครั้งนี้";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentTitle" = "ตรวจสอบรหัสอ้างอิงแบบไม่เปิดเผยตัวตน";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentYesButton" = "อนุญาตการตรวจสอบคลิปบอร์ดแบบครั้งเดียว";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "เมื่อแตะที่คำว่า ใช่ จะถือว่าคุณยอมรับ";
@@ -1138,32 +958,8 @@
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "การเลือกใช้งาน Brave Private Ads ที่จะช่วยสนับสนุนให้ผู้เผยแพร่และผู้สร้างเนื้อหาในการดูโฆษณาทุกตัว";
 
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "รับโทเค็นและให้รางวัลกับผู้สร้างเนื้อหาที่ยอดเยี่ยมขณะที่คุณท่องเว็บ";
-
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "นโยบายสความเป็นส่วนตัว";
-
-/* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Brave Rewards";
-
-/* Save button to save current selection */
-"OBSaveButton" = "บันทึก";
-
-/* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "เลือกเครื่องมือค้นหาเริ่มต้นของคุณ";
-
-/* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "ยินดีต้อนรับสู่ Brave Browser";
-
-/* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "บล็อกตัวติดตามที่บุกรุกความเป็นส่วนตัว เพื่อให้คุณสามารถท่องเว็บได้โดยไม่มีอะไรคอยตาม";
-
-/* Title for shields onboarding screen */
-"OBShieldsTitle" = "Brave Shields";
-
-/* Button to show the Brave Rewards Ads. */
-"OBShowMeButton" = "แสดงให้ฉันดู";
 
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "เริ่ม";
@@ -1198,20 +994,11 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "เปิดทั้งหมด (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "เปิดการตั้งค่า Brave Rewards";
-
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "เกิดข้อผิดพลาดที่ไม่รู้จักขึ้นขณะเปิดโฟลเดอร์ดาวน์โหลดในแอป Files";
 
-/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
-"openExternalAppURLHost" = "%@ กล่าวว่า:";
-
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "ต้องการอนุญาตให้ %@ สลับแอปหรือไม่";
-
-/* Context menu for opening image in new tab */
-"OpenImageInNewTab" = "เปิดภาพในแท็บใหม่";
 
 /* Context menu item for opening a link in a new private browsing window */
 "OpenInNewPrivateWindowTitle" = "เปิดในหน้าต่างส่วนตัวใหม่";
@@ -1348,12 +1135,6 @@
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "การตั้งค่าความเป็นส่วนตัวอื่นๆ";
 
-/* Section name for other settings. */
-"OtherSettingsSection" = "การตั้งค่าอื่นๆ";
-
-/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
-"p3a.continue" = "ดำเนินการต่อ";
-
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "การตอบกลับแบบส่วนตัวเหล่านี้จะช่วยให้ Brave ประเมินการใช้งานโดยรวมของบางฟีเจอร์และปรับให้เหมาะกับคุณมากยิ่งขึ้น";
 
@@ -1384,12 +1165,6 @@
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "ระดับการซูมเริ่มต้นของหน้าเว็บ";
 
-/* Description for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesDescription" = "เมื่อระดับการซูมของเว็บไซต์เปลี่ยนแปลง เว็บไซต์นั้นจะปรากฏอยู่ในรายการที่นี่ โดยในขณะนี้ ไม่มีการซูมเข้าหรือซูมออกของเว็บไซต์";
-
-/* Title for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesTitle" = "ไม่มีการเพิ่มเว็บไซต์";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "เว็บไซต์อื่นๆ ทั้งหมด";
 
@@ -1414,12 +1189,6 @@
 /* Setting to allow the app to restore private browsing tabs */
 "PersistentPrivateBrowsing" = "การท่องเว็บส่วนตัวแบบถาวร";
 
-/* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "อนุญาตให้ Brave กู้คืนแท็บการท่องเว็บส่วนตัว แม้ว่าคุณจะปิด/เปิดแอปอีกครั้ง";
-
-/* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "กู้คืนแท็บส่วนตัว";
-
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "ภาพถ่ายโดย %@";
 
@@ -1434,12 +1203,6 @@
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "ตัวเลือกการเล่น";
-
-/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
-"playlist.carplayRestartPlaybackButtonStateDisabled" = "ปิดใช้งาน แตะเพื่อเปิดใช้งานการรีสตาร์ทการเล่น";
-
-/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
-"playlist.carplayRestartPlaybackButtonStateEnabled" = "เปิดใช้งาน แตะเพื่อปิดใช้งานการรีสตาร์ทการเล่น";
 
 /* The description of the checkbox that allows the user to restart audio/video playback */
 "playlist.carplayRestartPlaybackOptionDetailsTitle" = "ตัดสินใจว่าจะเลือกรายการที่เล่นอยู่แล้วหรือไม่ และจะเริ่มเล่นใหม่อีกครั้งหรือเล่นต่อจากจุดที่ค้างไว้";
@@ -1687,9 +1450,6 @@
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "เปิดฮับความเป็นส่วนตัว";
 
-/* The title of the button action which open the privacy hub */
-"privacyHub.openPrivacyHubWidgetActionTitle" = "เปิดฮับความเป็นส่วนตัว";
-
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "ข้อมูลของฮับความเป็นส่วนตัวจะถูกจัดเก็บไว้ในเครื่องและไม่ถูกส่งไปไหน";
 
@@ -1759,23 +1519,11 @@
 /* Private button title */
 "Private" = "ส่วนตัว";
 
-/* No comment provided by engineer. */
-"PrivateBrowsing" = "การท่องเว็บส่วนตัว";
-
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "การท่องเว็บส่วนตัวเท่านั้น";
 
 /* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
 "PrivateBrowsingOnlyWarning" = "โหมดการท่องเว็บส่วนตัวเท่านั้นจะปิดแท็บในขณะนี้ขอวคุณทั้งหมดและนำคุณออกจากระบบจากเว็บไซต์ทั้งหมด";
-
-/* Private tab details */
-"PrivateTabBody" = "แท็บส่วนตัวจะไม่ถูกบันทึกไว้ใน Brave แต่จะไม่ทำให้คุณไม่เปิดเผยตัวตนทางออนไลน์ เว็บไซต์ที่คุณเยี่ยมชมในแท็บส่วนตัวจะไม่ปรากฏในประวัติของคุณ และคุกกี้ของเว็บไซต์เหล่านั้นจะหายไปเสมอเมื่อคุณปิดแท็บเหล่านั้น — จะไม่มีร่องรอยของเว็บไซต์เหล่านั้นเหลืออยู่ใน Brave อย่างไรก็ตาม การดาวน์โหลดจะถูกบันทึกไว้\nผู้ให้บริการโทรศัพท์มือถือของคุณ (หรือเจ้าของเครือข่าย Wi-Fi หรือ VPN ที่คุณเชื่อมต่ออยู่) สามารถดูว่าคุณเยี่ยมชมเว็บไซต์ใด และเว็บไซต์เหล่านั้นจะเรียนรู้ IP แอดเดรสสาธารณะของคุณ แม้แต่ในแท็บส่วนตัว";
-
-/* Private tab detail text */
-"PrivateTabDetails" = "การใช้แท็บส่วนตัวจะเปลี่ยนแปลงเฉพาะสิ่งที่ Brave ทำบนอุปกรณ์ของคุณเท่านั้น ไม่ได้เปลี่ยนแปลงพฤติกรรมของผู้อื่น\n\nเว็บไซต์จะเรียนรู้ IP แอดเดรสของคุณเสมอเมื่อคุณเยี่ยมชม จากข้อมูลนี้ พวกเขาสามารถเดาได้คร่าวๆ ว่าคุณอยู่ที่ไหน โดยทั่วไปคือเมืองของคุณ บางครั้งการคาดเดาตำแหน่งอาจเจาะจงกว่านั้นมาก เว็บไซต์ยังรู้ทุกอย่างที่คุณแจ้งให้พวกเขาทราบโดยเฉพาะ เช่น เงื่อนไขการค้นหา หากคุณเข้าสู่ระบบเว็บไซต์ใดเว็บไซต์หนึ่ง พวกเขาจะรู้ว่าคุณเป็นเจ้าของบัญชีนั้น คุณจะยังคงออกจากระบบเมื่อปิดแท็บส่วนตัว เนื่องจาก Brave จะทิ้งคุกกี้ที่ทำให้คุณเข้าสู่ระบบต่อไป\nใครก็ตามที่เชื่อมต่อคุณกับอินเทอร์เน็ต (ISP ของคุณ) จะสามารถเห็นกิจกรรมเครือข่ายทั้งหมดของคุณได้ บ่อยครั้งนี่คือผู้ให้บริการมือถือของคุณ หากคุณเชื่อมต่อกับเครือข่าย Wi-Fi นี่คือเจ้าของเครือข่ายนั้น และหากคุณใช้ VPN ก็จะเป็นผู้ที่ดำเนินการ VPN นั้น ISP ของคุณสามารถดูว่าคุณเยี่ยมชมเว็บไซต์ใดบ้างขณะที่คุณเยี่ยมชม หากเว็บไซต์เหล่านั้นใช้ HTTPS พวกเขาจะไม่สามารถเดาได้มากไปกว่าการเดาอย่างมีการศึกษาว่าคุณทำอะไรบนเว็บไซต์เหล่านั้น แต่ถ้าไซต์ใช้เฉพาะ HTTP ผู้ให้บริการอินเทอร์เน็ตของคุณก็จะสามารถดูข้อมูลทั้งหมดได้ ไม่ว่าจะเป็นเงื่อนไขการค้นหา หน้าเว็บที่คุณอ่าน และลิงก์ที่คุณติดตาม\n\nหากนายจ้างเป็นผู้ดูแลอุปกรณ์ของคุณ พวกเขาอาจติดตามสิ่งที่คุณทำกับอุปกรณ์ด้วย การใช้แท็บส่วนตัวอาจไม่ทำให้นายจ้างไม่สามารถทราบได้ว่าคุณเยี่ยมชมไซต์ใดบ้าง บุคคลอื่นที่สามารถเข้าถึงอุปกรณ์ของคุณได้อาจติดตั้งซอฟต์แวร์ที่ตรวจสอบกิจกรรมของคุณ และแท็บส่วนตัวก็ไม่สามารถปกป้องคุณจากสิ่งนี้ได้เช่นกัน";
-
-/* Private tab information link */
-"PrivateTabLink" = "เรียนรู้เกี่ยวกับแท็บส่วนตัว";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "แท็บส่วนตัว";
@@ -1834,12 +1582,6 @@
 /* Accessibility label for brightness adjustment slider in Reader Mode display settings */
 "ReaderModeBrightSliderAccessibilityLabel" = "ความสว่าง";
 
-/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
-"ReaderModeDisplaySettingsButtonTitle" = "การตั้งค่าการแสดงผล";
-
-/* Error displayed when reader mode cannot be enabled */
-"ReaderModeErrorConvertDisplayText" = "มีข้อผิดพลาดในการแปลงหน้า";
-
 /* Font type setting in the reading view settings */
 "ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
 
@@ -1851,15 +1593,6 @@
 
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "เปลี่ยนประเภทฟอนต์";
-
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "กำลังโหลดเนื้อหา...";
-
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadOriginalLinkText" = "โหลดหน้าเดิม";
-
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "ไม่สามารถแสดงหน้าในมุมมองผู้อ่านได้";
 
 /* Title of a bar that show up when you enter reader mode. */
 "readerModeSettingsButton" = "โหมดผู้อ่าน";
@@ -1882,14 +1615,8 @@
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "ไม่มีแท็บที่เพิ่งปิด";
 
-/* Open Tab action title */
-"recently.closed.open" = "เปิด";
-
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "เปิดแท็บที่ปิดครั้งล่าสุดอีกครั้ง";
-
-/* Description for alert to ask user for opening last closed tab in list */
-"recently.closed.shake.description" = "คุณต้องการเปิดแท็บที่ปิดล่าสุดหรือไม่";
 
 /* Action item title of long press for Opening recently closed tab view */
 "recently.closed.title" = "แท็บที่เพิ่งปิด";
@@ -1975,12 +1702,6 @@
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "\"%@\" ต้องการเข้าถึงไมโครโฟน";
 
-/* Name of folder where restored bookmarks are retrieved */
-"RestoredBookmarksFolderName" = "กู้คืนบุ๊กมาร์กแล้ว";
-
-/* Name of folder where restored favorites are retrieved */
-"RestoredFavoritesFolderName" = "กู้คืนรายการโปรดแล้ว";
-
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "ใช่";
 
@@ -2023,80 +1744,11 @@
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "ผู้สร้างเนื้อหานี้ได้รับการตรวจสอบจาก Brave Creators แล้ว";
 
-/* Displayed next to a number representing the total number of publishers supported */
-"rewards.totalSupportedCount" = "จำนวนผู้สร้างเนื้อหาที่คุณช่วยสนับสนุนในเดือนนี้";
-
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "ผู้สร้างรายนี้ไม่ได้ผ่านการตรวจสอบและจะไม่รวมอยู่ในการสนับสนุนผู้สร้าง";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "จำนวน";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAnonymous" = "ไม่ระบุตัวตน";
-
-/* No comment provided by engineer. */
-"RewardsInternalsBalanceInfoHeader" = "ข้อมูลยอดคงเหลือ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "คุณแน่ใจหรือไม่ว่าต้องการล้างบันทึก Rewards ทั้งหมด";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsTitle" = "ล้างบันทึก";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionAmount" = "จำนวนการสนับสนุน";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "โทเค็นของ Brave";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorNone" = "ไม่มี";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "ส่งเสริม";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUserFunds" = "เงินทุนผู้ใช้";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepACOff" = "ปิดการมีส่วนร่วมอัตโนมัติ";
-
-/* 'AC' refers to Auto-Contribute */
-"RewardsInternalsContributionsStepACTableEmpty" = "ตาราง AC ว่างเปล่า";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCompleted" = "เสร็จสมบูรณ์";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCreds" = "ข้อมูลประจำตัว";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepExternalTransaction" = "ธุรกรรมภายนอก";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "ล้มเหลว";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepNotEnoughFunds" = "เงินไม่เพียงพอ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepPrepare" = "จัดเตรียม";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepReserve" = "สำรอง";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "ปิด Rewards";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "เริ่ม";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsTitle" = "การสนับสนุน";
-
-/* No comment provided by engineer. */
-"RewardsInternalsCreatedAt" = "สร้างเมื่อ";
 
 /* No comment provided by engineer. */
 "RewardsInternalsDeviceInfoHeader" = "ข้อมูลอุปกรณ์";
@@ -2116,9 +1768,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Seed ข้อมูลคีย์";
 
-/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
-"RewardsInternalsLogsCount" = "แสดงบันทึกแล้ว %d รายการ";
-
 /* No comment provided by engineer. */
 "RewardsInternalsLogsTitle" = "บันทึก";
 
@@ -2129,34 +1778,13 @@
 "RewardsInternalsNotSupported" = "ไม่รองรับ";
 
 /* No comment provided by engineer. */
-"RewardsInternalsProcessor" = "Processor";
-
-/* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "ผู้เผยแพร่";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublishers" = "ผู้เผยแพร่";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRetryCount" = "จำนวนการทำใหม่";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeAutoContribute" = "มีส่วนร่วมอัตโนมัติ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeOneTimeTip" = "ทิปครั้งเดียว";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "ทิปที่ให้ประจำ";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "ข้อมูลโปรไฟล์รางวัล อุปกรณ์ &ยอดคงเหลือ (แชร์เสมอ)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "ข้อมูลเบื้องต้น";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableContributionsDescription" = "การสนับสนุนให้กับผู้เผยแพร่ใดๆ ผ่านการทิปหรือการสนับสนุนอัตโนมัติ";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableDatabaseDescription" = "การเก็บข้อมูลภายใน";
@@ -2192,9 +1820,6 @@
 "RewardsInternalsTitle" = "Rewards ภายใน";
 
 /* No comment provided by engineer. */
-"RewardsInternalsTotalAmount" = "จำนวนสุทธิ";
-
-/* No comment provided by engineer. */
 "RewardsInternalsTotalBalance" = "ยอดสุทธิ";
 
 /* No comment provided by engineer. */
@@ -2221,17 +1846,11 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "บันทึก";
 
-/* Label for the button used to save changes in some text input. */
-"SaveChangesButtonTitle" = "บันทึกการเปลี่ยนแปลง";
-
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "การลงชื่อเข้าใช้ที่บันทึก";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "แท็บที่บันทึก";
-
-/* Context menu item for saving an image */
-"SaveImageActionTitle" = "บันทึกรูปภาพ";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "บันทึกการลงชื่อเข้าใช้";
@@ -2245,23 +1864,8 @@
 /* Search engines section of settings */
 "SearchEngines" = "เครื่องมือค้นหา";
 
-/* Accessibility hint describing the action performed when a search suggestion is clicked */
-"SearchesForSuggestionButtonAccessibilityText" = "ค้นหาคำแนะนำ";
-
 /* Section header for history and bookmarks and open tabs option */
 "SearchHistorySectionHeader" = "บนอุปกรณ์ของคุณ";
-
-/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
-"SearchInputViewClearButtonTitle" = "ล้างการค้นหา";
-
-/* Accessibility label for entering search mode for logins */
-"SearchInputViewOverlayAccessibilityLabel" = "เข้าโหมดการค้นหา";
-
-/* Accessibility label for the search input field in the Logins list */
-"SearchInputViewTextFieldAccessibilityLabel" = "ค้นหาฟิลด์ป้อนข้อมูล";
-
-/* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "ค้นหา";
 
 /* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
 "searchQuickBarPrefix" = "ค้นหา \"%@\"";
@@ -2275,9 +1879,6 @@
 /* Label for showing browser suggestion setting */
 "SearchSettingBrowserSuggestionCellTitle" = "แสดงคำแนะนำของเบราว์เซอร์";
 
-/* Navigation title for search settings. */
-"SearchSettingNavTitle" = "ค้นหา";
-
 /* Label for showing recent search setting. */
 "SearchSettingRecentSearchesCellTitle" = "แสดงการค้นหาล่าสุด";
 
@@ -2287,23 +1888,11 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "แสดงคำแนะนำในการค้นหา";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
-"SearchSuggestionFromFormatText" = "คำแนะนำในการค้นหาจาก %@";
-
 /* Action title for open a playlist item in Playlist. */
 "searchSuggestionOpenPlaylistActionTitle" = "เปิดในเพลย์ลิสต์";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "สลับเป็นแท็บนี้";
-
-/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
-"SearchSuggestionSectionTitleFormat" = "ค้นหาด้วย %@";
-
-/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "ค้นหา";
-
-/* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "คำแนะนำในการค้นหา";
 
 /* Search suggestions optin subtitle when prompting to turn on suggestions */
 "searchSuggestionsSubtitle" = "คุณต้องการเปิดใช้งานคำแนะนำการค้นหาหรือไม่";
@@ -2416,9 +2005,6 @@
 /* Row name for licenses. */
 "SettingsLicenses" = "ใบอนุญาต";
 
-/* Title for settings menu item */
-"SettingsMenuItem" = "การตั้งค่า";
-
 /* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
 "SettingsTabsOptionBottomBar" = "แถบด้านล่างสุด";
 
@@ -2430,9 +2016,6 @@
 
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "แชร์ลิงก์";
-
-/* Title for sharing url menu item */
-"ShareWithMenuItem" = "แชร์กับ...";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "shareWithTitle" = "แชร์กับ...";
@@ -2467,9 +2050,6 @@
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "แบ่งปันข่าวสาร";
 
-/* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields ปกป้องความเป็นส่วนตัวของคุณทางออนไลน์";
-
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "ยินดีด้วย คุณเป็นคนพิเศษเลยทีเดียว";
 
@@ -2481,6 +2061,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "โฆษณาถูกบล็อกขณะดูวิดีโอบนเว็บไซต์นี้";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Brave Wallet";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "แท็บส่วนตัว";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR Code";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "ค้นหา";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "แท็บส่วนตัวใหม่";
@@ -2641,14 +2233,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "ทางลัด Siri";
 
-/* Button to show the bookmarks list */
-"ShowBookmarks" = "แสดงบุ๊กมาร์ก";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "แสดงการดาวน์โหลด";
-
-/* Button to show the history list */
-"ShowHistory" = "แสดงประวัติการเข้าชม";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showHistoryTitle" = "แสดงประวัติการเข้าชม";
@@ -2776,9 +2362,6 @@
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.configurationInformationText" = "จัดการข้อมูลที่ต้องการซิงก์ระหว่างอุปกรณ์ การตั้งค่าเหล่านี้จะมีผลกับอุปกรณ์นี้เท่านั้น";
 
-/* Copied action complete title */
-"sync.copied" = "คัดลอกแล้ว!";
-
 /* Copied codewords title */
 "sync.copiedToClipboard" = "คัดลอกไปยังคลิปบอร์ดแล้ว";
 
@@ -2821,14 +2404,8 @@
 /* Sync enter code words */
 "sync.enterCodeWords" = "ข้อความรหัส";
 
-/* Enter sync code words below */
-"sync.enterCodeWordsBelow" = "ใส่ข้อความรหัสด้านล่าง";
-
 /* Sync Error message for when the sync code is expired */
 "sync.expiredError" = "โค้ดสำหรับซิงค์หมดอายุแล้ว ให้สร้างโค้ดใหม่แล้วลองอีกครั้ง";
-
-/* Generic Sync Error Description */
-"sync.genericError" = "ขออภัย มีบางอย่างผิดพลาดขึ้น";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "เปิดใช้งานกล้อง";
@@ -2872,9 +2449,6 @@
 /* Error title for when the sync code does not have the correct amount of words */
 "sync.notEnoughWordsTitle" = "จำนวนคำไม่พอ";
 
-/* Sync pair device settings section title */
-"sync.pair" = "จับคู่";
-
 /* QR Code section title */
 "sync.qrCode" = "QR Code";
 
@@ -2908,12 +2482,6 @@
 /* Title for removing other device from Sync */
 "sync.removeOtherDeviceTitle" = "ลบ %@ จากซิงค์เชนหรือไม่";
 
-/* Sync remove device. */
-"sync.removeThisDevice" = "ลบอุปกรณ์นี้";
-
-/* Sync remove device? */
-"sync.removeThisDeviceQuestionDesc" = "อุปกรณ์นี้จะถูกตัดการเชื่อมต่อจากกลุ่มซิงค์และจะไม่รับหรือส่งข้อมูลซิงค์อีกต่อไป ข้อมูลทั้งหมดที่มีอยู่จะยังคงอยู่ในอุปกรณ์";
-
 /* Scan sync code title */
 "sync.scan" = "สแกน";
 
@@ -2932,20 +2500,11 @@
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "การตั้งค่าการซิงค์";
 
-/* Show code words instead */
-"sync.showCodeWords" = "แสดงข้อความรหัสแทน";
-
 /* Switch back to camera button */
 "sync.switchBackToCameraButton" = "ฉันจะใช้กล้องของตัวเอง...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "การลบนั้นเป็นถาวรและจะไม่สามารถกู้คืนข้อมูลได้ ถ้าคุณตัดสินใจที่จะเริ่มใช้การซิงค์อีกครั้ง คุณจะต้องสร้างบัญชีใหม่และเพิ่มอุปกรณ์ใหม่ทีละเครื่อง";
-
-/* Sync you browser settings across devices. */
-"sync.Syncdevices" = "อุปกรณ์ & การตั้งค่า";
-
-/* Sync remove device? */
-"sync.syncRemoveThisDeviceQuestion" = "ลบอุปกรณ์นี้หรือไม่";
 
 /* Sync settings section title */
 "sync.syncTitle" = "การซิงค์ข้อมูล";
@@ -2982,9 +2541,6 @@
 
 /* Word count title */
 "sync.wordCount" = "จำนวนคำ: %i";
-
-/* Accessibility label for action denoting closing a tab in tab list (tray) */
-"TabAccessibilityCloseActionLabel" = "ปิด";
 
 /* Accessibility label for a close button that when tapped opens a new tab */
 "tabGrid.addTabAccessibilityLabel" = "แท็บใหม่";
@@ -3025,17 +2581,11 @@
 /* A title shown when in private browsing mode with no tabs open */
 "tabGrid.privateBrowsingInfoTitle" = "แท็บส่วนตัว";
 
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.privateBrowsingModeAccessibilityLabel" = "การท่องเว็บส่วนตัว";
-
 /* A label in the tab tray mode switcher for private browsing mode */
 "tabGrid.privateBrowsingModeTitle" = "ส่วนตัว";
 
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "การตั้งค่าแท็บส่วนตัว";
-
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.regularBrowsingModeAccessibilityLabel" = "การท่องเว็บปกติ";
 
 /* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
 "tabGrid.selectedTabs" = "แท็บที่เลือก";
@@ -3066,18 +2616,6 @@
 
 /* Label for synced tabs menu item that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsMenuItemLabel" = "การซิงค์ข้อมูล";
-
-/* Accessiblity hint for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityHint" = "เปิดหรือปิดโหมดส่วนตัว";
-
-/* Accessibility label for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityLabel" = "โหมดส่วนตัว";
-
-/* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "ปิด";
-
-/* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "เปิด";
 
 /* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardDescription" = "โฟกัสแอดเดรสบาร์โดยอัตโนมัติเมื่อสร้างแท็บใหม่";
@@ -3139,9 +2677,6 @@
 /* Accessibility Label for the tab toolbar Forward button */
 "TabToolbarForwardButtonAccessibilityLabel" = "ส่งต่อ";
 
-/* Accessibility label for the lock icon, which is only present if the connection is secure */
-"TabToolbarLockImageAccessibilityLabel" = "การเชื่อมต่อที่ปลอดภัย";
-
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menu";
 
@@ -3156,9 +2691,6 @@
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "มุมมองผู้อ่าน";
-
-/* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "เพิ่มไปยังรายการรออ่าน";
 
 /* Accessibility Label for the tab toolbar Reload button */
 "TabToolbarReloadButtonAccessibilityLabel" = "โหลดใหม่";
@@ -3175,47 +2707,14 @@
 /* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "การค้นหาด้วยเสียง";
 
-/* Accessibility label for the lock icon, which is only present if the connection is insecure */
-"TabToolbarWarningImageAccessibilityLabel" = "การเชื่อมต่อที่ไม่ปลอดภัย";
-
-/* Accessibility label for the Tabs Tray view. */
-"TabTrayAccessibilityLabel" = "แถบแท็บ";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabTrayAddTabAccessibilityLabel" = "เพิ่มแท็บ";
-
-/* Accessibility hint for tab tray's displayed tab. */
-"TabTrayCellCloseAccessibilityHint" = "ปัดไปทางซ้ายหรือขวาด้วยสามนิ้วเพื่อปิดแท็บ";
-
-/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
-"TabTrayClosingTabAccessibilityNotificationText" = "กำลังปิดแท็บ";
-
-/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
-"TabTrayEmptyVoiceOverText" = "ไม่มีแท็บ";
-
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
-"TabTrayMultiTabPositionFormatVoiceOverText" = "แท็บ %1$@ ถึงแท็บ %2$@ จาก %3$@ แท็บ";
-
-/* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "แท็บใหม่";
-
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "ค้นหาแท็บ";
-
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
-"TabTraySingleTabPositionFormatVoiceOverText" = "%1$@ แท็บจาก %2$@ แท็บ";
 
 /* No comment provided by engineer. */
 "TermsOfService" = "ข้อตกลงการใช้บริการ";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "ข้อตกลงในการใช้งาน";
-
-/* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "แชร์...";
-
-/* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "แชร์ Brave กับเพื่อนของคุณ!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "อัตโนมัติ";
@@ -3228,9 +2727,6 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "สว่าง";
-
-/* Name for app theme settings */
-"themesSettings" = "ธีม";
 
 /* No comment provided by engineer. */
 "Title" = "ชื่อ";
@@ -3361,9 +2857,6 @@
 /* A title at the top of the screen that shows a list of sources that are ranked the highest */
 "today.popularSourcesTitle" = "แหล่งที่มาที่ได้รับความนิยม";
 
-/* A button title that is placed on promoted cards */
-"today.promoted" = "โปรโมทแล้ว";
-
 /* Title for long press action sheet list which has item for rate / hide */
 "today.rateBraveCardActionSheetTitle" = "ให้คะแนน Brave ใน App Store";
 
@@ -3418,14 +2911,8 @@
 /* Title of an action that allows the user to translate the current web-page to another language */
 "TranslatePage" = "แปลหน้านี้";
 
-/* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "ต้องการเปิดคำแนะนำในการค้นหาหรือไม่";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "ปลดล็อก";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "เครื่องมือการชำระเงินที่ไม่รองรับ";
 
 /* Bookmark URL */
 "URL" = "URL";
@@ -3435,18 +2922,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "urlRedirectsSettings" = "การเปลี่ยนเส้นทางเว็บไซต์";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "ยกเลิกโดยผู้ใช้";
-
-/* No comment provided by engineer. */
-"UserWalletCloseButtonTitle" = "ปิด";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorMessage" = "มีปัญหาเกิดขึ้นขณะเข้าสู่ระบบของบัญชี Uphold ของคุณ โปรดลองใหม่อีกครั้ง";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "ขออภัย มีบางอย่างผิดพลาดขึ้น";
 
 /* Message for error alert when a VCard contact file cannot be parsed or opened */
 "VCard.unableToOpenContactErrorMessage" = "ไม่สามารถอ่านไฟล์ผู้ติดต่อได้ อาจเสียหายหรืออยู่ในรูปแบบที่ไม่รองรับ";
@@ -3511,9 +2986,6 @@
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "วิดเจ็ต";
 
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "ปี";
-
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "ใช่";
 
@@ -3523,20 +2995,11 @@
 /* History tableview section header */
 "Yesterday" = "เมื่อวานนี้";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "เปืดใช้วิดีโอคุณภาพสูงบน YouTube";
-
-/* Description of setting to enable high quality youtube videos */
-"YoutubeMediaQualityDetails" = "การเปิดใช้ฟีเจอร์ทดลองนี้จะเป็นการเล่นวิดีโอด้วยความคมชัดสูงสุดเท่าที่สามารถคมชัดได้ซึ่งจะใช้ข้อมูลเพิ่มเติม";
-
 /* Setting that disables highest quality video playback */
 "YoutubeMediaQualityOff" = "ปิด";
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "เปิด";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "คุณภาพการเล่นวิดีโอบน YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "อนุญาตให้ใช้ได้ขณะใช้ Wi-Fi";

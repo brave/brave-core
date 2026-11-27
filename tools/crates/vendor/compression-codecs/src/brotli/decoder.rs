@@ -42,7 +42,7 @@ impl BrotliDecoder {
         let mut input_len = 0;
         let mut output_len = 0;
 
-        let result = match BrotliDecompressStream(
+        let status = match BrotliDecompressStream(
             &mut in_buf.len(),
             &mut input_len,
             in_buf,
@@ -52,14 +52,14 @@ impl BrotliDecoder {
             &mut 0,
             &mut self.state,
         ) {
-            BrotliResult::ResultFailure => Err(io::Error::other("brotli error")),
-            status => Ok(status),
+            BrotliResult::ResultFailure => return Err(io::Error::other("brotli error")),
+            status => status,
         };
 
         input.advance(input_len);
         output.advance(output_len);
 
-        result
+        Ok(status)
     }
 }
 

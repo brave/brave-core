@@ -13,11 +13,9 @@ cfg_if! {
         pub use custom::*;
     } else if #[cfg(getrandom_backend = "linux_getrandom")] {
         mod getrandom;
-        mod sanitizer;
         pub use getrandom::*;
     } else if #[cfg(getrandom_backend = "linux_raw")] {
         mod linux_raw;
-        mod sanitizer;
         pub use linux_raw::*;
     } else if #[cfg(getrandom_backend = "rdrand")] {
         mod rdrand;
@@ -31,25 +29,14 @@ cfg_if! {
     } else if #[cfg(getrandom_backend = "windows_legacy")] {
         mod windows_legacy;
         pub use windows_legacy::*;
-    } else if #[cfg(getrandom_backend = "wasm_js")] {
-        cfg_if! {
-            if #[cfg(feature = "wasm_js")] {
-                mod wasm_js;
-                pub use wasm_js::*;
-            } else {
-                compile_error!(concat!(
-                    "The \"wasm_js\" backend requires the `wasm_js` feature \
-                    for `getrandom`. For more information see: \
-                    https://docs.rs/getrandom/", env!("CARGO_PKG_VERSION"), "/#webassembly-support"
-                ));
-            }
-        }
     } else if #[cfg(getrandom_backend = "unsupported")] {
         mod unsupported;
         pub use unsupported::*;
+    } else if #[cfg(getrandom_backend = "extern_impl")] {
+        pub(crate) mod extern_impl;
+        pub use extern_impl::*;
     } else if #[cfg(all(target_os = "linux", target_env = ""))] {
         mod linux_raw;
-        mod sanitizer;
         pub use linux_raw::*;
     } else if #[cfg(target_os = "espidf")] {
         mod esp_idf;
@@ -117,7 +104,6 @@ cfg_if! {
     ))] {
         mod use_file;
         mod linux_android_with_fallback;
-        mod sanitizer;
         pub use linux_android_with_fallback::*;
     } else if #[cfg(any(
         target_os = "android",
@@ -132,8 +118,6 @@ cfg_if! {
         all(target_os = "horizon", target_arch = "arm"),
     ))] {
         mod getrandom;
-        #[cfg(any(target_os = "android", target_os = "linux"))]
-        mod sanitizer;
         pub use getrandom::*;
     } else if #[cfg(target_os = "solaris")] {
         mod solaris;
@@ -157,19 +141,17 @@ cfg_if! {
             if #[cfg(target_env = "p1")] {
                 mod wasi_p1;
                 pub use wasi_p1::*;
-            } else if #[cfg(target_env = "p2")] {
-                mod wasi_p2;
-                pub use wasi_p2::*;
             } else {
-                compile_error!(
-                    "Unknown version of WASI (only previews 1 and 2 are supported) \
-                    or Rust version older than 1.80 was used"
-                );
+                mod wasi_p2_3;
+                pub use wasi_p2_3::*;
             }
         }
     } else if #[cfg(target_os = "hermit")] {
         mod hermit;
         pub use hermit::*;
+    } else if #[cfg(all(target_arch = "x86_64", target_os = "motor"))] {
+        mod rdrand;
+        pub use rdrand::*;
     } else if #[cfg(target_os = "vxworks")] {
         mod vxworks;
         pub use vxworks::*;
@@ -185,16 +167,15 @@ cfg_if! {
     } else if #[cfg(all(target_arch = "x86_64", target_env = "sgx"))] {
         mod rdrand;
         pub use rdrand::*;
-    } else if #[cfg(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")))] {
+    } else if #[cfg(all(target_family = "wasm", any(target_os = "unknown", target_os = "none")))] {
         cfg_if! {
             if #[cfg(feature = "wasm_js")] {
                 mod wasm_js;
                 pub use wasm_js::*;
             } else {
                 compile_error!(concat!(
-                    "The wasm32-unknown-unknown targets are not supported by default; \
-                    you may need to enable the \"wasm_js\" configuration flag. Note \
-                    that enabling the `wasm_js` feature flag alone is insufficient. \
+                    "The wasm32/64-unknown-unknown are not supported by default; \
+                    you may need to enable the \"wasm_js\" crate feature. \
                     For more information see: \
                     https://docs.rs/getrandom/", env!("CARGO_PKG_VERSION"), "/#webassembly-support"
                 ));

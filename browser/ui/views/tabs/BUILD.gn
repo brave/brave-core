@@ -18,7 +18,40 @@ if (enable_brave_tree_tabs) {
     ]
 
     public_deps = [ "//components/tabs:public" ]
+    deps = [
+      "//base",
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/ui/tabs:tab_strip",
+      "//brave/browser/ui/tabs:tree_tab",
+      "//brave/components/tabs",
+      "//chrome/browser/ui:layout_constants",
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/tabs:tab_strip",
+      "//chrome/browser/ui/views/tabs/common",
+      "//chrome/browser/ui/views/tabs/common:impl",
+      "//ui/views",
+    ]
   }
+}
+
+# Vertical tab strip scroll bar which follows the "show scroll bar" pref. The
+# chromium_src override of
+# //chrome/browser/ui/views/tabs/common/tab_strip_view.cc forward-declares the
+# hooks, and //brave/browser/ui links them.
+source_set("brave_vertical_tab_strip_scrollbar") {
+  sources = [
+    "brave_vertical_tab_strip_scrollbar.cc",
+    "brave_vertical_tab_strip_scrollbar.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/ui:brave_tab_prefs",
+    "//chrome/browser/ui/views/tabs/vertical",
+    "//components/prefs",
+    "//ui/base/metadata",
+    "//ui/views",
+  ]
 }
 
 source_set("browser_tests") {
@@ -48,6 +81,7 @@ source_set("browser_tests") {
     "//chrome/browser/ui/views/frame:browser_view_header",
     "//chrome/browser/ui/views/frame:horizontal_tab_strip_region_view",
     "//chrome/browser/ui/views/tabs:tab_strip_button",
+    "//chrome/browser/ui/views/tabs/hovercard:hovercard_helpers",
     "//chrome/common",
     "//chrome/test",
     "//chrome/test:test_support",

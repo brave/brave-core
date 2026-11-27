@@ -1,4 +1,5 @@
-use std::path::{Path, PathBuf};
+use gix_error::Result;
+use std::path::Path;
 
 /// Additional context for use with [`convert_to_git`][super::convert_to_git()].
 #[derive(Default, Copy, Clone)]
@@ -26,30 +27,19 @@ pub enum RoundTripCheck<'a> {
     },
 }
 
-/// The error returned by [convert_to_git()][super::convert_to_git()].
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("{msg} in '{}'", path.display())]
-    RoundTrip { msg: &'static str, path: PathBuf },
-    #[error("Could not obtain index object to check line endings for")]
-    FetchObjectFromIndex(#[source] Box<dyn std::error::Error + Send + Sync + 'static>),
-    #[error("Could not allocate buffer")]
-    OutOfMemory(#[from] std::collections::TryReserveError),
-}
-
 /// A function that writes a buffer like `fn(&mut buf)` with by tes of an object in the index that is the one that should be converted.
-pub type IndexObjectFn<'a> =
-    dyn FnMut(&mut Vec<u8>) -> Result<Option<()>, Box<dyn std::error::Error + Send + Sync>> + 'a;
+pub type IndexObjectFn<'a> = dyn FnMut(&mut Vec<u8>) -> Result<Option<()>> + 'a;
 
 pub(crate) mod function {
     use bstr::ByteSlice;
 
+    use gix_error::{Result, bail};
+
     use crate::{
         clear_and_set_capacity,
         eol::{
-            convert_to_git::{Error, IndexObjectFn, Options, RoundTripCheck},
             AttributesDigest, Stats,
+            convert_to_git::{IndexObjectFn, Options, RoundTripCheck},
         },
     };
 
@@ -71,7 +61,9 @@ pub(crate) mod function {
             round_trip_check,
             config,
         }: Options<'_>,
-    ) -> Result<bool, Error> {
+    ) -> Result<bool> {
+        use gix_error::{ResultExt, message};
+
         if digest == AttributesDigest::Binary || src.is_empty() {
             return Ok(false);
         }
@@ -84,7 +76,13 @@ pub(crate) mod function {
                 return Ok(false);
             }
 
-            if let Some(()) = index_object(buf).map_err(Error::FetchObjectFromIndex)? {
+            // A CRLF in the index can only prevent a conversion, so don't read the object
+            // if there is nothing to convert. Git reads it anyway, but it rarely gets here
+            // for unchanged files as its status refreshes the index.
+            if convert_crlf_to_lf
+                && let Some(()) =
+                    index_object(buf).or_raise(|| message("Could not obtain index object to check line endings for"))?
+            {
                 let has_crlf_in_index = buf
                     .find_byte(b'\r')
                     .map(|_| Stats::from_bytes(buf))
@@ -112,15 +110,15 @@ pub(crate) mod function {
                 // CRLF would not be restored by checkout
                 match round_trip_check {
                     RoundTripCheck::Fail { rela_path } => {
-                        return Err(Error::RoundTrip {
-                            msg: "CRLF would be replaced by LF",
-                            path: rela_path.to_owned(),
-                        })
+                        bail!(
+                            "CRLF would be replaced by LF in \"{}\"".validation(),
+                            rela_path.display()
+                        );
                     }
-                    #[allow(unused_variables)]
+                    #[allow(unused_variables, reason = "Used when tracing is enabled at compile time.")]
                     RoundTripCheck::Warn { rela_path } => {
                         gix_trace::warn!(
-                            "in the working copy of '{}', CRLF will be replaced by LF next time git touches it",
+                            "in the working copy of \"{}\", CRLF will be replaced by LF next time git touches it",
                             rela_path.display()
                         );
                     }
@@ -129,15 +127,15 @@ pub(crate) mod function {
                 // CRLF would be added by checkout
                 match round_trip_check {
                     RoundTripCheck::Fail { rela_path } => {
-                        return Err(Error::RoundTrip {
-                            msg: "LF would be replaced by CRLF",
-                            path: rela_path.to_owned(),
-                        })
+                        bail!(
+                            "LF would be replaced by CRLF in \"{}\"".validation(),
+                            rela_path.display()
+                        );
                     }
-                    #[allow(unused_variables)]
+                    #[allow(unused_variables, reason = "Used when tracing is enabled at compile time.")]
                     RoundTripCheck::Warn { rela_path } => {
                         gix_trace::warn!(
-                            "in the working copy of '{}', LF will be replaced by CRLF next time git touches it",
+                            "in the working copy of \"{}\", LF will be replaced by CRLF next time git touches it",
                             rela_path.display()
                         );
                     }
@@ -149,7 +147,7 @@ pub(crate) mod function {
             return Ok(false);
         }
 
-        clear_and_set_capacity(buf, src.len() - stats.crlf)?;
+        clear_and_set_capacity(buf, src.len() - stats.crlf).or_raise(|| message("Could not allocate buffer"))?;
         if stats.lone_cr == 0 {
             buf.extend(src.iter().filter(|b| **b != b'\r'));
         } else {

@@ -4,11 +4,11 @@ use core::convert::{TryFrom, TryInto};
 #[cfg(feature = "serde")]
 use core::marker::PhantomData;
 #[cfg(feature = "serde")]
-use serde::de::{
+use serde_core::de::{
   Deserialize, Deserializer, Error as DeserializeError, SeqAccess, Visitor,
 };
 #[cfg(feature = "serde")]
-use serde::ser::{Serialize, SerializeSeq, Serializer};
+use serde_core::ser::{Serialize, SerializeSeq, Serializer};
 
 /// Helper to make an `ArrayVec`.
 ///
@@ -57,7 +57,7 @@ macro_rules! array_vec {
 /// * `ArrayVec` has a variable length, as you add and remove elements. Attempts
 ///   to fill the vec beyond its capacity will cause a panic.
 /// * All of the vec's array slots are always initialized in terms of Rust's
-///   memory model. When you remove a element from a location, the old value at
+///   memory model. When you remove an element from a location, the old value at
 ///   that location is replaced with the type's default value.
 ///
 /// The overall API of this type is intended to, as much as possible, emulate
@@ -87,7 +87,7 @@ macro_rules! array_vec {
 /// assert_eq!(some_ints, more_ints);
 /// ```
 ///
-/// If you have an array and want the _whole thing_ so count as being "in" the
+/// If you have an array and want the _whole thing_ to count as being "in" the
 /// new `ArrayVec` you can use one of the `from` implementations. If you want
 /// _part of_ the array then you can use
 /// [`from_array_len`](ArrayVec::from_array_len):
@@ -287,6 +287,108 @@ where
   }
 }
 
+#[cfg(feature = "bin-proto")]
+#[cfg_attr(docs_rs, doc(cfg(feature = "bin-proto")))]
+impl<Ctx, A> bin_proto::BitEncode<Ctx, bin_proto::Untagged> for ArrayVec<A>
+where
+  A: Array,
+  <A as Array>::Item: bin_proto::BitEncode<Ctx>,
+{
+  fn encode<W, E>(
+    &self, write: &mut W, ctx: &mut Ctx, tag: bin_proto::Untagged,
+  ) -> bin_proto::Result<()>
+  where
+    W: bin_proto::BitWrite,
+    E: bin_proto::Endianness,
+  {
+    <[<A as Array>::Item] as bin_proto::BitEncode<_, _>>::encode::<_, E>(
+      self.as_slice(),
+      write,
+      ctx,
+      tag,
+    )
+  }
+}
+
+#[cfg(feature = "bin-proto")]
+#[cfg_attr(docs_rs, doc(cfg(feature = "bin-proto")))]
+impl<Tag, Ctx, A> bin_proto::BitDecode<Ctx, bin_proto::Tag<Tag>> for ArrayVec<A>
+where
+  A: Array,
+  <A as Array>::Item: bin_proto::BitDecode<Ctx>,
+  Tag: ::core::convert::TryInto<usize>,
+{
+  fn decode<R, E>(
+    read: &mut R, ctx: &mut Ctx, tag: bin_proto::Tag<Tag>,
+  ) -> bin_proto::Result<Self>
+  where
+    R: bin_proto::BitRead,
+    E: bin_proto::Endianness,
+  {
+    let item_count =
+      tag.0.try_into().map_err(|_| bin_proto::Error::TagConvert)?;
+    if item_count > A::CAPACITY {
+      return Err(bin_proto::Error::Other("insufficient capacity"));
+    }
+    let mut values = Self::default();
+    for _ in 0..item_count {
+      values.push(bin_proto::BitDecode::<_, _>::decode::<_, E>(read, ctx, ())?);
+    }
+    Ok(values)
+  }
+}
+
+#[cfg(feature = "bin-proto")]
+#[cfg_attr(docs_rs, doc(cfg(feature = "bin-proto")))]
+impl<Ctx, A> bin_proto::BitDecode<Ctx, bin_proto::Untagged> for ArrayVec<A>
+where
+  A: Array,
+  <A as Array>::Item: bin_proto::BitDecode<Ctx>,
+{
+  fn decode<R, E>(
+    read: &mut R, ctx: &mut Ctx, _tag: bin_proto::Untagged,
+  ) -> bin_proto::Result<Self>
+  where
+    R: bin_proto::BitRead,
+    E: bin_proto::Endianness,
+  {
+    let mut values = Self::default();
+    for item in bin_proto::util::decode_items_to_eof::<_, E, _, _>(read, ctx) {
+      if values.try_push(item?).is_some() {
+        return Err(bin_proto::Error::Other("insufficient capacity"));
+      }
+    }
+    Ok(values)
+  }
+}
+
+#[cfg(feature = "schemars")]
+#[cfg_attr(docs_rs, doc(cfg(feature = "schemars")))]
+impl<A> schemars::JsonSchema for ArrayVec<A>
+where
+  A: Array,
+  <A as Array>::Item: schemars::JsonSchema,
+{
+  fn schema_name() -> alloc::borrow::Cow<'static, str> {
+    alloc::format!(
+      "Array_up_to_size_{}_of_{}",
+      A::CAPACITY,
+      <A as Array>::Item::schema_name()
+    )
+    .into()
+  }
+
+  fn json_schema(
+    generator: &mut schemars::SchemaGenerator,
+  ) -> schemars::Schema {
+    schemars::json_schema!({
+        "type": "array",
+        "items": generator.subschema_for::<<A as Array>::Item>(),
+        "maxItems": A::CAPACITY
+    })
+  }
+}
+
 impl<A: Array> ArrayVec<A> {
   /// Move all values from `other` into this vec.
   ///
@@ -418,7 +520,7 @@ impl<A: Array> ArrayVec<A> {
   /// assert_eq!(av2.as_slice(), &[2, 3][..]);
   ///
   /// av.drain(..);
-  /// assert_eq!(av.as_slice(), &[]);
+  /// assert_eq!(av.as_slice(), &[] as &[i32]);
   /// ```
   #[inline]
   pub fn drain<R>(&mut self, range: R) -> ArrayVecDrain<'_, A::Item>
@@ -628,6 +730,13 @@ impl<A: Array> ArrayVec<A> {
     self.len == 0
   }
 
+  /// Checks if the length is equal to capacity.
+  #[inline(always)]
+  #[must_use]
+  pub fn is_full(&self) -> bool {
+    self.len() == self.capacity()
+  }
+
   /// The length of the `ArrayVec` (in elements).
   #[inline(always)]
   #[must_use]
@@ -676,7 +785,7 @@ impl<A: Array> ArrayVec<A> {
   /// ```rust
   /// # use tinyvec::*;
   /// let mut av = array_vec!([i32; 2]);
-  /// assert_eq!(&av[..], []);
+  /// assert_eq!(&av[..], [] as [i32; 0]);
   /// av.push(1);
   /// assert_eq!(&av[..], [1]);
   /// av.push(2);
@@ -695,7 +804,7 @@ impl<A: Array> ArrayVec<A> {
   /// ```rust
   /// # use tinyvec::*;
   /// let mut av = array_vec!([i32; 2]);
-  /// assert_eq!(av.as_slice(), []);
+  /// assert_eq!(av.as_slice(), [] as [i32; 0]);
   /// assert_eq!(av.try_push(1), None);
   /// assert_eq!(&av[..], [1]);
   /// assert_eq!(av.try_push(2), None);
@@ -1008,7 +1117,7 @@ impl<A: Array> ArrayVec<A> {
   /// assert_eq!(av2.as_slice(), &[2, 3][..]);
   ///
   /// av.splice(.., None);
-  /// assert_eq!(av.as_slice(), &[]);
+  /// assert_eq!(av.as_slice(), &[] as &[i32]);
   /// ```
   #[inline]
   pub fn splice<R, I>(
@@ -1164,7 +1273,7 @@ impl<A> ArrayVec<A> {
   /// ```rust
   /// # use tinyvec::ArrayVec;
   /// let mut data = ArrayVec::from_array_empty([1, 2, 3, 4]);
-  /// assert_eq!(&data[..], &[]);
+  /// assert_eq!(&data[..], &[] as &[i32]);
   /// data.push(42);
   /// assert_eq!(&data[..], &[42]);
   /// ```
@@ -1256,6 +1365,17 @@ impl<A> ArrayVec<A> {
   #[must_use]
   pub const fn as_inner(&self) -> &A {
     &self.data
+  }
+
+  /// Returns a mutable reference to the inner array of the `ArrayVec`.
+  ///
+  /// This returns the full array, even if the `ArrayVec` length is currently
+  /// less than that.
+  #[inline(always)]
+  #[must_use]
+  #[cfg(feature = "latest_stable_rust")]
+  pub const fn as_mut_inner(&mut self) -> &mut A {
+    &mut self.data
   }
 }
 
@@ -1422,6 +1542,7 @@ impl<A: Array> From<A> for ArrayVec<A> {
 /// The error type returned when a conversion from a slice to an [`ArrayVec`]
 /// fails.
 #[derive(Debug, Copy, Clone)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct TryFromSliceError(());
 
 impl core::fmt::Display for TryFromSliceError {
@@ -1576,6 +1697,17 @@ where
   }
 }
 
+#[cfg(feature = "defmt")]
+#[cfg_attr(docs_rs, doc(cfg(feature = "defmt")))]
+impl<A: Array> defmt::Format for ArrayVecIterator<A>
+where
+  A::Item: defmt::Format,
+{
+  fn format(&self, fmt: defmt::Formatter<'_>) {
+    defmt::write!(fmt, "ArrayVecIterator({:?})", self.as_slice())
+  }
+}
+
 impl<A: Array> IntoIterator for ArrayVec<A> {
   type Item = A::Item;
   type IntoIter = ArrayVecIterator<A>;
@@ -1665,13 +1797,15 @@ where
 
 #[cfg(feature = "experimental_write_impl")]
 impl<A: Array<Item = u8>> core::fmt::Write for ArrayVec<A> {
+  #[allow(clippy::missing_inline_in_public_items)]
   fn write_str(&mut self, s: &str) -> core::fmt::Result {
     let my_len = self.len();
-    let str_len = s.as_bytes().len();
+    let str_len = s.len();
     if my_len + str_len <= A::CAPACITY {
       let remainder = &mut self.data.as_slice_mut()[my_len..];
       let target = &mut remainder[..str_len];
       target.copy_from_slice(s.as_bytes());
+      self.len += str_len as u16;
       Ok(())
     } else {
       Err(core::fmt::Error)
@@ -1712,20 +1846,18 @@ where
 {
   #[allow(clippy::missing_inline_in_public_items)]
   fn fmt(&self, f: &mut Formatter) -> core::fmt::Result {
-    write!(f, "[")?;
-    if f.alternate() && !self.is_empty() {
-      write!(f, "\n    ")?;
-    }
-    for (i, elem) in self.iter().enumerate() {
-      if i > 0 {
-        write!(f, ",{}", if f.alternate() { "\n    " } else { " " })?;
-      }
-      Debug::fmt(elem, f)?;
-    }
-    if f.alternate() && !self.is_empty() {
-      write!(f, ",\n")?;
-    }
-    write!(f, "]")
+    <[A::Item] as Debug>::fmt(self.as_slice(), f)
+  }
+}
+
+#[cfg(feature = "defmt")]
+#[cfg_attr(docs_rs, doc(cfg(feature = "defmt")))]
+impl<A: Array> defmt::Format for ArrayVec<A>
+where
+  A::Item: defmt::Format,
+{
+  fn format(&self, fmt: defmt::Formatter<'_>) {
+    defmt::Format::format(self.as_slice(), fmt)
   }
 }
 
@@ -2055,5 +2187,39 @@ mod test {
     let mut av: ArrayVec<[i32; 0]> = ArrayVec::new();
     av.retain_mut(|&mut x| x % 2 == 0);
     assert_eq!(av.len(), 0);
+  }
+
+  #[cfg(feature = "alloc")]
+  #[test]
+  fn array_like_debug() {
+    #[derive(Debug, Default, Copy, Clone)]
+    #[allow(unused)]
+    struct S {
+      x: u8,
+      y: u8,
+    }
+
+    use core::fmt::Write;
+
+    let mut ar: [S; 2] = [S { x: 1, y: 2 }, S { x: 3, y: 4 }];
+    let mut buf_ar = alloc::string::String::new();
+    write!(&mut buf_ar, "{ar:#?}").unwrap();
+
+    let av: ArrayVec<[S; 2]> = ArrayVec::from(ar);
+    let mut buf_av = alloc::string::String::new();
+    write!(&mut buf_av, "{av:#?}").unwrap();
+
+    assert_eq!(buf_av, buf_ar)
+  }
+
+  #[cfg(feature = "experimental_write_impl")]
+  #[test]
+  #[allow(non_snake_case)]
+  fn test_ArrayVec_experimental_write_impl() {
+    let mut buffer: ArrayVec<[u8; 10]> = ArrayVec::default();
+    assert_eq!(buffer.len(), 0);
+    use core::fmt::Write;
+    write!(buffer, "abc").unwrap();
+    assert_eq!(buffer.as_slice(), b"abc");
   }
 }

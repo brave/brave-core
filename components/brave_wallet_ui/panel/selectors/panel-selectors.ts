@@ -28,6 +28,10 @@ export const hardwareWalletCode = createSelector(
   [selectPanelState],
   (panel) => panel.hardwareWalletCode,
 )
+export const hardwareWalletOperation = createSelector(
+  [selectPanelState],
+  (panel) => panel.hardwareWalletOperation,
+)
 
 // Re-exported from UI selectors — confirm/status state is shared with Desktop.
 export {

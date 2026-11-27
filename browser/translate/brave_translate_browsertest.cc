@@ -101,7 +101,11 @@ constexpr char kXhrPromiseTemplate[] = R"(
 class BraveTranslateBrowserTest : public InProcessBrowserTest {
  public:
   BraveTranslateBrowserTest()
-      : https_server_(net::test_server::EmbeddedTestServer::TYPE_HTTPS) {}
+      : https_server_(net::test_server::EmbeddedTestServer::TYPE_HTTPS) {
+    scoped_feature_list_.InitWithFeaturesAndParameters(
+        {{kUseBraveTranslateGo, {{kUpdateLanguageListParam.name, "false"}}}},
+        {kBraveEnableAutoTranslate});
+  }
 
   void SetUp() override {
     ASSERT_TRUE(https_server_.InitializeAndListen());
@@ -257,6 +261,7 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
       backend_request_;
 
  private:
+  base::test::ScopedFeatureList scoped_feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<TranslateWaiter> language_determined_waiter_;
   std::string script_;

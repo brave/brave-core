@@ -70,7 +70,7 @@ static UNQUOTED_FIELD_RE: LazyLock<Regex> =
 static TRAILING_BLOCK_COMMENT_RE: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r#"\s*/\*[^'"]*\*/\s*$"#).unwrap());
 
-/// Reads data from a a file in the format of uBlock Origin's `redirect-resources.js` file to
+/// Reads data from a file in the format of uBlock Origin's `redirect-resources.js` file to
 /// determine the files in the `web_accessible_resources` directory, as well as any of their
 /// aliases.
 ///

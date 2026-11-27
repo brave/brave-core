@@ -1,33 +1,3 @@
-/// The error returned by the [`parse()`][crate::parse()] function.
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("Empty refspecs are invalid")]
-    Empty,
-    #[error("Negative refspecs cannot have destinations as they exclude sources")]
-    NegativeWithDestination,
-    #[error("Negative specs must not be empty")]
-    NegativeEmpty,
-    #[error("Negative specs must be object hashes")]
-    NegativeObjectHash,
-    #[error("Negative specs must be full ref names, starting with \"refs/\"")]
-    NegativePartialName,
-    #[error("Negative glob patterns are not allowed")]
-    NegativeGlobPattern,
-    #[error("Fetch destinations must be ref-names, like 'HEAD:refs/heads/branch'")]
-    InvalidFetchDestination,
-    #[error("Cannot push into an empty destination")]
-    PushToEmpty,
-    #[error("glob patterns may only involved a single '*' character, found {pattern:?}")]
-    PatternUnsupported { pattern: bstr::BString },
-    #[error("Both sides of the specification need a pattern, like 'a/*:b/*'")]
-    PatternUnbalanced,
-    #[error(transparent)]
-    ReferenceName(#[from] gix_validate::reference::name::Error),
-    #[error(transparent)]
-    RevSpec(#[from] gix_revision::spec::parse::Error),
-}
-
 /// Define how the parsed refspec should be used.
 #[derive(PartialOrd, Ord, PartialEq, Eq, Copy, Clone, Hash, Debug)]
 pub enum Operation {
@@ -38,16 +8,14 @@ pub enum Operation {
 }
 
 pub(crate) mod function {
+    use crate::{RefSpecRef, parse::Operation, types::Mode};
     use bstr::{BStr, ByteSlice};
-
-    use crate::{
-        parse::{Error, Operation},
-        types::Mode,
-        RefSpecRef,
-    };
+    use gix_error::{Result, ResultExt, bail, message, validation};
 
     /// Parse `spec` for use in `operation` and return it if it is valid.
-    pub fn parse(mut spec: &BStr, operation: Operation) -> Result<RefSpecRef<'_>, Error> {
+    /// Patterns with more than one `*` include the offending source or destination bytes as `input`
+    /// [metadata](gix_error::Error::metadata()).
+    pub fn parse(mut spec: &BStr, operation: Operation) -> Result<RefSpecRef<'_>> {
         fn fetch_head_only(mode: Mode) -> RefSpecRef<'static> {
             RefSpecRef {
                 mode,
@@ -69,16 +37,21 @@ pub(crate) mod function {
             Some(_) => Mode::Normal,
             None => {
                 return match operation {
-                    Operation::Push => Err(Error::Empty),
+                    Operation::Push => Err(message("Empty refspecs are invalid").validation_error()),
                     Operation::Fetch => Ok(fetch_head_only(Mode::Normal)),
-                }
+                };
             }
         };
 
-        let (mut src, dst) = match spec.find_byte(b':') {
+        // Split on the last colon like `strrchr()` in Git's `parse_refspec()` does, so that a
+        // push source may itself contain one - `:/message` and `<rev>:<path>` are both valid
+        // revisions. With a single colon this is the same position as the first one.
+        let (mut src, dst) = match spec.rfind_byte(b':') {
             Some(pos) => {
                 if mode == Mode::Negative {
-                    return Err(Error::NegativeWithDestination);
+                    bail!(validation(
+                        "Negative refspecs cannot have destinations as they exclude sources"
+                    ));
                 }
 
                 let (src, dst) = spec.split_at(pos);
@@ -95,7 +68,9 @@ pub(crate) mod function {
                         Operation::Fetch => (Some("HEAD".into()), Some(dst)),
                     },
                     (Some(src), None) => match operation {
-                        Operation::Push => return Err(Error::PushToEmpty),
+                        Operation::Push => {
+                            bail!(validation("Cannot push into an empty destination"));
+                        }
                         Operation::Fetch => (Some(src), None),
                     },
                     (Some(src), Some(dst)) => (Some(src), Some(dst)),
@@ -111,29 +86,30 @@ pub(crate) mod function {
             }
         };
 
-        if let Some(spec) = src.as_mut() {
-            if *spec == "@" {
-                *spec = "HEAD".into();
-            }
+        if let Some(spec) = src.as_mut()
+            && *spec == "@"
+        {
+            *spec = "HEAD".into();
         }
         let (src, src_had_pattern) = validated(src, operation == Operation::Push && dst.is_some())?;
         let (dst, dst_had_pattern) = validated(dst, false)?;
-        if mode != Mode::Negative && src_had_pattern != dst_had_pattern {
-            return Err(Error::PatternUnbalanced);
+        if mode != Mode::Negative
+            && src_had_pattern != dst_had_pattern
+            && !(operation == Operation::Push && dst.is_none())
+        {
+            bail!(validation(
+                "Both sides of a two-sided specification need a pattern, like 'a/*:b/*'"
+            ));
         }
 
         if mode == Mode::Negative {
             match src {
                 Some(spec) => {
-                    if src_had_pattern {
-                        return Err(Error::NegativeGlobPattern);
-                    } else if looks_like_object_hash(spec) {
-                        return Err(Error::NegativeObjectHash);
-                    } else if !spec.starts_with(b"refs/") && spec != "HEAD" {
-                        return Err(Error::NegativePartialName);
+                    if looks_like_object_hash(spec) {
+                        bail!(validation("Negative specs must not be object hashes"));
                     }
                 }
-                None => return Err(Error::NegativeEmpty),
+                None => bail!(validation("Negative specs must not be empty")),
             }
         }
 
@@ -149,94 +125,36 @@ pub(crate) mod function {
         spec.len() >= gix_hash::Kind::shortest().len_in_hex() && spec.iter().all(u8::is_ascii_hexdigit)
     }
 
-    fn validated(spec: Option<&BStr>, allow_revspecs: bool) -> Result<(Option<&BStr>, bool), Error> {
+    fn validate_partial_name_with_single_glob(
+        spec: &BStr,
+    ) -> std::result::Result<(), gix_validate::reference::name::Error> {
+        let mut buf = smallvec::SmallVec::<[u8; 256]>::with_capacity(spec.len());
+        buf.extend_from_slice(spec);
+        let glob_pos = buf.find_byte(b'*').expect("glob present");
+        buf[glob_pos] = b'a';
+        gix_validate::reference::name_partial(buf.as_bstr())?;
+        Ok(())
+    }
+
+    /// Validate `spec`, and return it along with whether it holds a glob.
+    ///
+    /// `any_name` skips the check entirely, for the one side Git leaves unchecked.
+    fn validated(spec: Option<&BStr>, any_name: bool) -> Result<(Option<&BStr>, bool)> {
         match spec {
             Some(spec) => {
                 let glob_count = spec.iter().filter(|b| **b == b'*').take(2).count();
                 if glob_count > 1 {
-                    return Err(Error::PatternUnsupported { pattern: spec.into() });
+                    bail!(validation("refspec patterns may only contain a single '*' character").with_input(spec));
                 }
-                let has_globs = glob_count == 1;
+                let has_globs = glob_count > 0;
                 if has_globs {
-                    let mut buf = smallvec::SmallVec::<[u8; 256]>::with_capacity(spec.len());
-                    buf.extend_from_slice(spec);
-                    let glob_pos = buf.find_byte(b'*').expect("glob present");
-                    buf[glob_pos] = b'a';
-                    gix_validate::reference::name_partial(buf.as_bstr())?;
-                } else {
-                    gix_validate::reference::name_partial(spec)
-                        .map_err(Error::from)
-                        .or_else(|err| {
-                            if allow_revspecs {
-                                gix_revision::spec::parse(spec, &mut super::revparse::Noop)?;
-                                Ok(spec)
-                            } else {
-                                Err(err)
-                            }
-                        })?;
+                    validate_partial_name_with_single_glob(spec).or_error()?;
+                } else if !any_name {
+                    gix_validate::reference::name_partial(spec).or_error()?;
                 }
                 Ok((Some(spec), has_globs))
             }
             None => Ok((None, false)),
         }
-    }
-}
-
-mod revparse {
-    use bstr::BStr;
-    use gix_revision::spec::parse::delegate::{
-        Kind, Navigate, PeelTo, PrefixHint, ReflogLookup, Revision, SiblingBranch, Traversal,
-    };
-
-    pub(crate) struct Noop;
-
-    impl Revision for Noop {
-        fn find_ref(&mut self, _name: &BStr) -> Option<()> {
-            Some(())
-        }
-
-        fn disambiguate_prefix(&mut self, _prefix: gix_hash::Prefix, _hint: Option<PrefixHint<'_>>) -> Option<()> {
-            Some(())
-        }
-
-        fn reflog(&mut self, _query: ReflogLookup) -> Option<()> {
-            Some(())
-        }
-
-        fn nth_checked_out_branch(&mut self, _branch_no: usize) -> Option<()> {
-            Some(())
-        }
-
-        fn sibling_branch(&mut self, _kind: SiblingBranch) -> Option<()> {
-            Some(())
-        }
-    }
-
-    impl Navigate for Noop {
-        fn traverse(&mut self, _kind: Traversal) -> Option<()> {
-            Some(())
-        }
-
-        fn peel_until(&mut self, _kind: PeelTo<'_>) -> Option<()> {
-            Some(())
-        }
-
-        fn find(&mut self, _regex: &BStr, _negated: bool) -> Option<()> {
-            Some(())
-        }
-
-        fn index_lookup(&mut self, _path: &BStr, _stage: u8) -> Option<()> {
-            Some(())
-        }
-    }
-
-    impl Kind for Noop {
-        fn kind(&mut self, _kind: gix_revision::spec::Kind) -> Option<()> {
-            Some(())
-        }
-    }
-
-    impl gix_revision::spec::parse::Delegate for Noop {
-        fn done(&mut self) {}
     }
 }

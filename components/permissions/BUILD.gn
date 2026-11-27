@@ -3,11 +3,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
 source_set("unit_tests") {
   testonly = true
 
   sources = [
     "permission_expirations_unittest.cc",
+    "permission_lifetime_manager_unittest.cc",
     "permissions_client_unittest.cc",
   ]
 
@@ -23,11 +26,53 @@ source_set("unit_tests") {
     "//components/pref_registry",
     "//components/prefs",
     "//components/sync_preferences:test_support",
+    "//testing/gmock",
     "//testing/gtest",
     "//url",
   ]
 
   if (is_android) {
     deps += [ "//components/messages/android" ]
+  }
+
+  if (enable_brave_wallet) {
+    sources +=
+        [ "contexts/brave_wallet_account_permission_context_unittest.cc" ]
+    deps += [
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:test_support",
+      "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common:mojom",
+      "//services/network:test_support",
+      "//testing/gmock",
+    ]
+  }
+}
+
+# Registers its own TestPermissionsClient, so it must only be wired into
+# //brave/components:brave_components_unittests: a test binary that already
+# installs a PermissionsClient (e.g. //chrome's) would hit a DCHECK.
+source_set("content_unit_tests") {
+  testonly = true
+
+  sources = [ "contexts/brave_open_ai_chat_permission_context_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
+    "//components/permissions",
+    "//components/permissions:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//third_party/blink/public/common",
+    "//url",
+  ]
+
+  if (enable_brave_wallet) {
+    sources += [ "contexts/brave_wallet_permission_context_unittest.cc" ]
+    deps += [ "//brave/components/brave_wallet/browser:permission_utils" ]
   }
 }

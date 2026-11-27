@@ -25,7 +25,6 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_helper.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
@@ -331,8 +330,6 @@ class BraveVpnServiceImplV1Test : public testing::Test {
   }
 
 #if !BUILDFLAG(IS_ANDROID)
-  bool& wait_region_data_ready() { return service_->wait_region_data_ready_; }
-
   skus::mojom::SkusResultPtr MakeSkusResult(const std::string& result) {
     return skus::mojom::SkusResult::New(skus::mojom::SkusResultCode::Ok,
                                         result);
@@ -758,10 +755,11 @@ TEST_F(BraveVpnServiceImplV1Test, LoadPurchasedStateTest) {
   // Reached to purchased state when valid credential, region data
   // and timezone info.
   SetPurchasedState(env, PurchasedState::LOADING);
-  // We can set purchased state after getting region data.
-  wait_region_data_ready() = true;
+  // We can set purchased state after getting region data. Receiving a valid
+  // subscriber credential without region data makes the service wait for it.
   OnCredentialSummary(
       domain, R"({ "active": true, "remaining_credential_count": 1 } )");
+  OnGetSubscriberCredentialV12("valid-subs-credentials", true);
   EXPECT_TRUE(regions().empty());
   EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
   OnPrepareCredentialsPresentation(
@@ -772,13 +770,6 @@ TEST_F(BraveVpnServiceImplV1Test, LoadPurchasedStateTest) {
   EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
   SetTestTimezone("Asia/Seoul");
   OnFetchTimezones(GetTimeZonesData(), true);
-  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedInfoSync());
-
-  // Check purchased is set when fetching timezone is failed.
-  SetPurchasedState(env, PurchasedState::LOADING);
-  wait_region_data_ready() = true;
-  OnFetchTimezones("", false);
-
   EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedInfoSync());
 
   // Treat not purchased when empty.
@@ -802,6 +793,24 @@ TEST_F(BraveVpnServiceImplV1Test, LoadPurchasedStateTest) {
   OnPrepareCredentialsPresentation(
       domain, "credential=abcdefghijk; Expires=Wed, 21 Oct 2000 07:28:00 GMT");
   EXPECT_EQ(GetPurchasedInfoSync(), PurchasedState::FAILED);
+}
+
+TEST_F(BraveVpnServiceImplV1Test, LoadPurchasedStateTimezoneFetchFailedTest) {
+  std::string env = skus::GetDefaultEnvironment();
+  SetPurchasedState(env, PurchasedState::LOADING);
+  // A valid subscriber credential without region data makes the service wait
+  // for it.
+  OnGetSubscriberCredentialV12("valid-subs-credentials", true);
+  EXPECT_TRUE(regions().empty());
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
+
+  // Region list is loaded but fetching timezone is failed. Purchased is set
+  // regardless of the timezone result.
+  OnFetchRegionList(GetRegionsData(), true);
+  EXPECT_FALSE(regions().empty());
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
+  OnFetchTimezones("", false);
+  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedInfoSync());
 }
 
 TEST_F(BraveVpnServiceImplV1Test, ResetConnectionStateTest) {
@@ -975,6 +984,8 @@ TEST_F(BraveVpnServiceImplV1Test, LoadPurchasedStateForAnotherEnvFailed) {
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   // no order found for staging.
   LoadPurchasedState(staging);
+  // Absence check: a load for another env that finds nothing produces no
+  // notification or completion signal to wait on, so drain pending tasks.
   task_environment_.RunUntilIdle();
   // The purchased state was not changed from dev env.
   EXPECT_FALSE(observer.GetPurchasedState().has_value());

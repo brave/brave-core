@@ -38,6 +38,7 @@ constexpr std::string_view kNewTabPageAdsJson = R"JSON(
             "dailyCap": 20,
             "priority": 10,
             "ptr": 1,
+            "type": "paid",
             "metrics": "confirmation",
             "geoTargets": [
               "US"
@@ -130,6 +131,7 @@ constexpr std::string_view kNewTabPageAdsJson = R"JSON(
             "dailyCap": 10,
             "priority": 20,
             "ptr": 0.5,
+            "type": "barter",
             "metrics": "disabled",
             "geoTargets": [
               "KY"
@@ -223,6 +225,7 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds() {
     CreativeNewTabPageAdInfo creative_ad;
     creative_ad.campaign_id = "65933e82-6b21-440b-9956-c0f675ca7435";
     creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
+    creative_ad.campaign_type = mojom::NewTabPageAdCampaignType::kPaid;
     creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
     creative_ad.start_at = test::TimeFromString("2025-01-01T00:00:00Z");
     creative_ad.end_at = test::TimeFromString("2025-12-31T23:59:59Z");
@@ -255,6 +258,7 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds() {
     CreativeNewTabPageAdInfo creative_ad;
     creative_ad.campaign_id = "65933e82-6b21-440b-9956-c0f675ca7435";
     creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
+    creative_ad.campaign_type = mojom::NewTabPageAdCampaignType::kPaid;
     creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
     creative_ad.start_at = test::TimeFromString("2025-01-01T00:00:00Z");
     creative_ad.end_at = test::TimeFromString("2025-12-31T23:59:59Z");
@@ -287,6 +291,7 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds() {
     creative_ad.creative_set_id = "0c2f239c-1230-43f9-8759-9b17532c2749";
     creative_ad.campaign_id = "5a5e9915-128e-41af-9d56-b7c0db1ba6fa";
     creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
+    creative_ad.campaign_type = mojom::NewTabPageAdCampaignType::kBarter;
     creative_ad.metric_type = mojom::NewTabPageAdMetricType::kDisabled;
     creative_ad.start_at = test::TimeFromString("2025-03-01T00:00:00Z");
     creative_ad.end_at = test::TimeFromString("2025-09-31T23:59:59Z");
@@ -317,6 +322,7 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds() {
     CreativeNewTabPageAdInfo creative_ad;
     creative_ad.campaign_id = "5a5e9915-128e-41af-9d56-b7c0db1ba6fa";
     creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
+    creative_ad.campaign_type = mojom::NewTabPageAdCampaignType::kBarter;
     creative_ad.metric_type = mojom::NewTabPageAdMetricType::kDisabled;
     creative_ad.start_at = test::TimeFromString("2025-03-01T00:00:00Z");
     creative_ad.end_at = test::TimeFromString("2025-09-31T23:59:59Z");
@@ -602,6 +608,81 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
   base::test::TestFuture<bool> test_future;
   ParseAndSaveNewTabPageAds(std::move(dict), test_future.GetCallback());
   EXPECT_FALSE(test_future.Get());
+}
+
+TEST(BraveAdsNewTabPageAdCampaignTypeUtilTest,
+     ToMojomNewTabPageAdCampaignType) {
+  // Act & Assert
+  EXPECT_EQ(ToMojomNewTabPageAdCampaignType(""),
+            mojom::NewTabPageAdCampaignType::kUndefined);
+
+  EXPECT_EQ(ToMojomNewTabPageAdCampaignType("free"),
+            mojom::NewTabPageAdCampaignType::kFree);
+
+  EXPECT_EQ(ToMojomNewTabPageAdCampaignType("paid"),
+            mojom::NewTabPageAdCampaignType::kPaid);
+
+  EXPECT_EQ(ToMojomNewTabPageAdCampaignType("barter"),
+            mojom::NewTabPageAdCampaignType::kBarter);
+
+  EXPECT_EQ(ToMojomNewTabPageAdCampaignType("make_good"),
+            mojom::NewTabPageAdCampaignType::kMakeGood);
+
+  EXPECT_EQ(ToMojomNewTabPageAdCampaignType("house"),
+            mojom::NewTabPageAdCampaignType::kHouse);
+
+  EXPECT_EQ(ToMojomNewTabPageAdCampaignType("cause"),
+            mojom::NewTabPageAdCampaignType::kCause);
+
+  EXPECT_EQ(ToMojomNewTabPageAdCampaignType("fixed"),
+            mojom::NewTabPageAdCampaignType::kFixed);
+
+  EXPECT_EQ(ToMojomNewTabPageAdCampaignType("trial"),
+            mojom::NewTabPageAdCampaignType::kTrial);
+
+  EXPECT_EQ(ToMojomNewTabPageAdCampaignType("preemptive"),
+            mojom::NewTabPageAdCampaignType::kPreemptive);
+
+  EXPECT_EQ(ToMojomNewTabPageAdCampaignType("affiliate"),
+            mojom::NewTabPageAdCampaignType::kAffiliate);
+
+  EXPECT_EQ(ToMojomNewTabPageAdCampaignType("survey"),
+            mojom::NewTabPageAdCampaignType::kSurvey);
+
+  EXPECT_EQ(ToMojomNewTabPageAdCampaignType("product"),
+            mojom::NewTabPageAdCampaignType::kProduct);
+
+  EXPECT_FALSE(ToMojomNewTabPageAdCampaignType("foobar"));
+}
+
+TEST(BraveAdsNewTabPageAdCampaignTypeUtilTest, ToString) {
+  // Act & Assert
+  EXPECT_EQ(ToString(mojom::NewTabPageAdCampaignType::kUndefined), "");
+
+  EXPECT_EQ(ToString(mojom::NewTabPageAdCampaignType::kFree), "free");
+
+  EXPECT_EQ(ToString(mojom::NewTabPageAdCampaignType::kPaid), "paid");
+
+  EXPECT_EQ(ToString(mojom::NewTabPageAdCampaignType::kBarter), "barter");
+
+  EXPECT_EQ(ToString(mojom::NewTabPageAdCampaignType::kMakeGood), "make_good");
+
+  EXPECT_EQ(ToString(mojom::NewTabPageAdCampaignType::kHouse), "house");
+
+  EXPECT_EQ(ToString(mojom::NewTabPageAdCampaignType::kCause), "cause");
+
+  EXPECT_EQ(ToString(mojom::NewTabPageAdCampaignType::kFixed), "fixed");
+
+  EXPECT_EQ(ToString(mojom::NewTabPageAdCampaignType::kTrial), "trial");
+
+  EXPECT_EQ(ToString(mojom::NewTabPageAdCampaignType::kPreemptive),
+            "preemptive");
+
+  EXPECT_EQ(ToString(mojom::NewTabPageAdCampaignType::kAffiliate), "affiliate");
+
+  EXPECT_EQ(ToString(mojom::NewTabPageAdCampaignType::kSurvey), "survey");
+
+  EXPECT_EQ(ToString(mojom::NewTabPageAdCampaignType::kProduct), "product");
 }
 
 TEST(BraveAdsNewTabPageAdMetricTypeUtilTest, ToMojomNewTabPageAdMetricType) {

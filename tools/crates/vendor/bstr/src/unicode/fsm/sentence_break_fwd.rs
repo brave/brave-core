@@ -2,7 +2,7 @@
 //
 //     regex-cli generate serialize sparse dfa --minimize --start-kind anchored --shrink --rustfmt --safe SENTENCE_BREAK_FWD src/unicode/fsm/ <snip: arg too long>
 //
-// regex-cli 0.0.1 is available on crates.io.
+// regex-cli 0.2.3 is available on crates.io.
 
 use regex_automata::{dfa::sparse::DFA, util::lazy::Lazy};
 

@@ -13,6 +13,7 @@ import * as Log from './log.ts'
 import util from './util.ts'
 import { isCI, isTeamcity } from './ciDetect.ts'
 import type * as buildOptions from './buildOptions.ts'
+import type { Builder } from './builderTypes.ts'
 
 type ExecOptions = {
   env: NodeJS.ProcessEnv
@@ -38,90 +39,54 @@ type TargetOS = (typeof validTargetOSValues)[number]
 
 const braveCoreDir = path.join(rootDir, 'src', 'brave')
 
-const envConfig = new EnvConfig(braveCoreDir)
+// TODO(http://brave.dev/b/56449): Experimental implementation for integration
+// with our bots generator.
+// The only .env keys read with `--builder`, which takes everything else from
+// the builder: what stays local to the machine, its remote execution, caches
+// and output. Keep this short and audited.
+const BUILDER_ALLOWED_DOTENV_KEYS: readonly string[] = [
+  'cache_dir',
+  'gclient_verbose',
+  'git_cache_path',
+  'lean_sync',
+  'offline',
+  'quiet',
+  'rbe_readonly',
+  'rbe_service',
+  'rbe_tls_client_auth_cert',
+  'rbe_tls_client_auth_key',
+  'siso_cache_dir',
+  'use_remoteexec',
+]
 
 export class Config {
   internalDepsUrl: string
-  defaultBuildConfig: string
-  buildConfig: string
   buildTargets: string[]
   rootDir: string
   isUniversalBinary: boolean = false
   isChromium: boolean = false
   scriptDir: string
   srcDir: string
-  chromeVersion: string | undefined
-  chromiumRepo: string
   braveCoreDir: string
   buildToolsDir: string
   resourcesDir: string
-  depotToolsDir: string
-  depotToolsRepo: string
   gclientFile: string
-  gclientVerbose: boolean
-  disableGclientConfigUpdate: boolean
   gerritMirrorsUser: string | undefined
   gerritMirrorGitConfig: string
-  leanSync: boolean
-  // `quiet` in .env: the `--quiet`/`--no-quiet` default, AI agent or not.
-  quiet: boolean | undefined
-  gclientGlobalVars: Record<string, any>
-  targetArch: string
-  targetEnvironment: string | undefined
   gypTargetArch: string
-  ignorePatchVersionNumber: boolean
-  useDummyLastchange: boolean
-  braveVersion: string
-  braveIOSMarketingPatchVersion: string | undefined
-  androidOverrideVersionName: string
-  releaseTag: string | undefined
-  mac_signing_identifier: string | undefined
-  mac_installer_signing_identifier: string
-  mac_signing_keychain: string
-  notary_user: string | undefined
-  notary_password: string | undefined
   channel: string
-  isBraveOriginBranded: boolean | undefined
-  // Parent cache directory for all internal caches (git, siso, vpython).
-  readonly cacheDir: string | undefined
-  gitCachePath: string | undefined
-  rbeService: string
-  rbeTlsClientAuthCert: string | undefined
-  rbeTlsClientAuthKey: string | undefined
   ignore_compile_failure: boolean
   enable_hangout_services_extension: boolean
   sign_widevine_cert: string
   sign_widevine_key: string
   sign_widevine_passwd: string
   signature_generator: string
-  extraGnArgs: Record<string, any>
-  extraGnGenOpts: string
   extraNinjaOpts: string[]
-  sisoLimits: Record<string, any>
   sisoJobsLimit: number | undefined
-  sisoCacheDir: string | undefined
-  braveAndroidSafeBrowsingApiKey: string | undefined
-  braveAndroidDeveloperOptionsCode: string | undefined
-  braveAndroidKeystorePath: string | undefined
-  braveAndroidKeystoreName: string | undefined
-  braveAndroidKeystorePassword: string | undefined
-  braveAndroidKeyPassword: string | undefined
   braveAndroidPkcs11Provider: string
   braveAndroidPkcs11Alias: string
-  useRemoteExec: boolean
-  offline: boolean
-  readonly rbeReadOnly: boolean
   use_libfuzzer: boolean
   androidAabToApk: boolean
-  useBraveHermeticToolchain: boolean
-  braveIOSDeveloperOptionsCode: string | undefined
-  is_asan: boolean | undefined
-  is_msan: boolean | undefined
-  is_ubsan: boolean | undefined
-  use_no_gn_gen?: boolean | undefined
-
-  chromiumCustomDeps: Record<string, any>
-  chromiumCustomVars: Record<string, any>
 
   skip_signing: boolean | undefined
   targetAndroidOutputFormat: string | undefined
@@ -134,102 +99,58 @@ export class Config {
   notarize: boolean | undefined
   xcode_gen_target: string | undefined
 
-  constructor() {
+  #envConfig: EnvConfig
+  // TODO(http://brave.dev/b/56449): Experimental implementation for integration
+  // with our bots generator.
+  // The `--builder` the config is for, which provides what .env otherwise
+  // does: the builder's values, and fixed ones for what a builder does not
+  // configure.
+  #builder: Builder | undefined
+
+  // The values of the properties that can be set, once read or set.
+  #values = new Map<keyof Config, unknown>()
+
+  // The checkout's config, read from its package.json and `dotenvConfig`, or
+  // its .env files without it. With a builder, .env may only have
+  // BUILDER_ALLOWED_DOTENV_KEYS, and reading any other value package.json does not
+  // provide throws.
+  static load(builder?: Builder, dotenvConfig?: NodeJS.Dict<string>): Config {
+    return new Config(
+      new EnvConfig(
+        braveCoreDir,
+        dotenvConfig,
+        builder ? BUILDER_ALLOWED_DOTENV_KEYS : undefined,
+      ),
+      builder,
+    )
+  }
+
+  constructor(envConfig: EnvConfig, builder?: Builder) {
+    if (builder && !builder.spec.chromium_config.build_config) {
+      throw new Error(`builder ${builder.name}: its spec has no build_config`)
+    }
+    this.#envConfig = envConfig
+    this.#builder = builder
     this.internalDepsUrl =
       'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
-    this.defaultBuildConfig = envConfig.getString(
-      ['default_build_config'],
-      'Component',
-    )
-    this.buildConfig = this.defaultBuildConfig
     this.buildTargets = ['brave']
     this.rootDir = rootDir
     this.isUniversalBinary = false
     this.isChromium = false
     this.scriptDir = path.join(this.rootDir, 'scripts')
     this.srcDir = path.join(this.rootDir, 'src')
-    this.chromeVersion = this.getProjectVersion('chrome')
-    this.chromiumRepo = envConfig.requireString([
-      'projects',
-      'chrome',
-      'repository',
-      'url',
-    ])
     this.braveCoreDir = braveCoreDir
     this.buildToolsDir = path.join(this.srcDir, 'build')
     this.resourcesDir = path.join(this.rootDir, 'resources')
-    this.depotToolsDir = envConfig.requirePath([
-      'projects',
-      'depot_tools',
-      'dir',
-    ])
-    this.depotToolsRepo = envConfig.requireString([
-      'projects',
-      'depot_tools',
-      'repository',
-      'url',
-    ])
     this.gclientFile = path.join(this.rootDir, '.gclient')
-    this.gclientVerbose = envConfig.getBoolean(['gclient_verbose'], false)
-    this.disableGclientConfigUpdate = envConfig.getBoolean(
-      ['disable_gclient_config_update'],
-      false,
-    )
     this.gerritMirrorsUser =
       process.env.BRAVE_USE_GERRIT_MIRRORS_USER || undefined
     this.gerritMirrorGitConfig = path.join(
       this.braveCoreDir,
       '.gitconfig_gerrit_mirror_redirect',
     )
-    this.leanSync = envConfig.getBoolean(['lean_sync'], false)
-    this.quiet = envConfig.getBoolean(['quiet'])
-    this.gclientGlobalVars = envConfig.getMergedObject([
-      'gclient',
-      'global_vars',
-    ])
-    this.targetOS = envConfig.getString(['target_os'], this.hostOS)
-    this.targetArch = envConfig.getString(['target_arch'], process.arch)
-    this.targetEnvironment = envConfig.getString(['target_environment'])
     this.gypTargetArch = 'x64'
-    this.ignorePatchVersionNumber =
-      !this.isBraveReleaseBuild()
-      && envConfig.getBoolean(['ignore_patch_version_number'], !isCI)
-    this.useDummyLastchange = envConfig.getBoolean(
-      ['use_dummy_lastchange'],
-      true,
-    )
-    this.braveVersion = this.#getBraveVersion()
-    this.braveIOSMarketingPatchVersion = envConfig.getString(
-      ['brave_ios_marketing_version_patch'],
-      '',
-    )
-    this.androidOverrideVersionName = this.braveVersion
-    this.releaseTag = this.braveVersion.split('+')[0]
-    this.mac_signing_identifier = envConfig.getString([
-      'mac_signing_identifier',
-    ])
-    this.mac_installer_signing_identifier = envConfig.getString(
-      ['mac_installer_signing_identifier'],
-      '',
-    )
-    this.mac_signing_keychain = envConfig.getString(
-      ['mac_signing_keychain'],
-      'login',
-    )
-    this.notary_user = envConfig.getString(['notary_user'])
-    this.notary_password = envConfig.getString(['notary_password'])
     this.channel = 'development'
-    this.isBraveOriginBranded = envConfig.getBoolean([
-      'is_brave_origin_branded',
-    ])
-    this.cacheDir = envConfig.getPath(['cache_dir'])
-    this.gitCachePath =
-      envConfig.getPath(['git_cache_path'])
-      || this.resolveCacheDir('git')
-      || process.env.GIT_CACHE_PATH
-    this.rbeService = envConfig.getString(['rbe_service'], '')
-    this.rbeTlsClientAuthCert = envConfig.getPath(['rbe_tls_client_auth_cert'])
-    this.rbeTlsClientAuthKey = envConfig.getPath(['rbe_tls_client_auth_key'])
     this.ignore_compile_failure = false
     this.enable_hangout_services_extension = false
     this.sign_widevine_cert = process.env.SIGN_WIDEVINE_CERT || ''
@@ -243,71 +164,480 @@ export class Config {
         'scripts',
         'signature_generator.py',
       ) || ''
-    this.extraGnArgs = envConfig.getMergedObject(['gn', 'args'])
-    this.extraGnGenOpts = envConfig.getString(['brave_extra_gn_gen_opts'], '')
     this.extraNinjaOpts = []
-    this.sisoLimits = envConfig.getMergedObject(['siso_limits'])
     this.sisoJobsLimit = undefined
-    this.sisoCacheDir =
-      envConfig.getPath(['siso_cache_dir']) || this.resolveCacheDir('siso')
-    this.braveAndroidSafeBrowsingApiKey = envConfig.getString([
-      'brave_safebrowsing_api_key',
-    ])
-    this.braveAndroidDeveloperOptionsCode = envConfig.getString([
-      'brave_android_developer_options_code',
-    ])
-    this.braveAndroidKeystorePath = envConfig.getString([
-      'brave_android_keystore_path',
-    ])
-    this.braveAndroidKeystoreName = envConfig.getString([
-      'brave_android_keystore_name',
-    ])
-    this.braveAndroidKeystorePassword = envConfig.getString([
-      'brave_android_keystore_password',
-    ])
-    this.braveAndroidKeyPassword = envConfig.getString([
-      'brave_android_key_password',
-    ])
     this.braveAndroidPkcs11Provider = ''
     this.braveAndroidPkcs11Alias = ''
-    this.useRemoteExec = envConfig.getBoolean(['use_remoteexec'], false)
-    this.offline = envConfig.getBoolean(['offline'], false)
-    this.rbeReadOnly = envConfig.getBoolean(['rbe_readonly'], false)
     this.use_libfuzzer = false
     this.androidAabToApk = false
-    this.useBraveHermeticToolchain = envConfig.getBoolean(
-      ['use_brave_hermetic_toolchain'],
-      this.rbeService.includes('.brave.com:'),
-    )
-    this.braveIOSDeveloperOptionsCode = envConfig.getString([
-      'brave_ios_developer_options_code',
-    ])
-    this.is_asan = envConfig.getBoolean(['is_asan'])
-    this.is_msan = envConfig.getBoolean(['is_msan'])
-    this.is_ubsan = envConfig.getBoolean(['is_ubsan'])
-    this.use_no_gn_gen = envConfig.getBoolean(['use_no_gn_gen'])
 
-    this.chromiumCustomDeps = envConfig.getMergedObject([
+    if (this.cacheDir && !fs.existsSync(this.cacheDir)) {
+      fs.mkdirSync(this.cacheDir, { recursive: true })
+    }
+  }
+
+  // The value of the property `key` that can be set: what was last set, else
+  // what `read` returns, read once.
+  #value<K extends keyof Config>(key: K, read: () => Config[K]): Config[K] {
+    if (!this.#values.has(key)) {
+      this.#values.set(key, read())
+    }
+    return this.#values.get(key) as Config[K]
+  }
+
+  // Sets the property `key`, which only the builder sets with `--builder`.
+  #set<K extends keyof Config>(key: K, value: Config[K]): void {
+    assert(
+      !this.#builder,
+      `${key} is set, but with --builder only the builder sets it`,
+    )
+    this.#values.set(key, value)
+  }
+
+  // Whether the config is for a `--builder`.
+  isBuilderSet(): boolean {
+    return this.#builder !== undefined
+  }
+
+  get defaultBuildConfig(): string {
+    return (
+      this.#builder?.spec.chromium_config.build_config
+      ?? this.#envConfig.getString(['default_build_config'], 'Component')
+    )
+  }
+
+  get buildConfig(): string {
+    return this.#value('buildConfig', () => this.defaultBuildConfig)
+  }
+
+  set buildConfig(value: string) {
+    this.#set('buildConfig', value)
+  }
+
+  get chromeVersion(): string | undefined {
+    return this.getProjectVersion('chrome')
+  }
+
+  get chromiumRepo(): string {
+    return this.#value('chromiumRepo', () =>
+      this.#envConfig.requireString([
+        'projects',
+        'chrome',
+        'repository',
+        'url',
+      ]),
+    )
+  }
+
+  set chromiumRepo(value: string) {
+    this.#set('chromiumRepo', value)
+  }
+
+  get depotToolsDir(): string {
+    return this.#envConfig.requirePath(['projects', 'depot_tools', 'dir'])
+  }
+
+  get depotToolsRepo(): string {
+    return this.#envConfig.requireString([
       'projects',
-      'chrome',
-      'custom_deps',
+      'depot_tools',
+      'repository',
+      'url',
     ])
-    this.chromiumCustomVars = {
-      'checkout_pgo_profiles': this.isBraveReleaseBuild(),
-      ...(this.rbeService
+  }
+
+  get gclientVerbose(): boolean {
+    return this.#value('gclientVerbose', () =>
+      this.#envConfig.getBoolean(['gclient_verbose'], false),
+    )
+  }
+
+  set gclientVerbose(value: boolean) {
+    this.#set('gclientVerbose', value)
+  }
+
+  get disableGclientConfigUpdate(): boolean {
+    return (
+      !this.#builder
+      && this.#envConfig.getBoolean(['disable_gclient_config_update'], false)
+    )
+  }
+
+  get leanSync(): boolean {
+    return this.#value('leanSync', () =>
+      this.#envConfig.getBoolean(['lean_sync'], false),
+    )
+  }
+
+  set leanSync(value: boolean) {
+    this.#set('leanSync', value)
+  }
+
+  // `quiet` in .env: the `--quiet`/`--no-quiet` default, AI agent or not.
+  get quiet(): boolean | undefined {
+    return this.#value('quiet', () => this.#envConfig.getBoolean(['quiet']))
+  }
+
+  set quiet(value: boolean | undefined) {
+    this.#set('quiet', value)
+  }
+
+  get gclientGlobalVars(): Record<string, any> {
+    return this.#value('gclientGlobalVars', () =>
+      this.#builder
+        ? { ...this.#builder.spec.gclient_config.global_vars }
+        : this.#envConfig.getMergedObject(['gclient', 'global_vars']),
+    )
+  }
+
+  set gclientGlobalVars(value: Record<string, any>) {
+    this.#set('gclientGlobalVars', value)
+  }
+
+  get targetArch(): string {
+    return this.#value(
+      'targetArch',
+      () =>
+        this.#builder?.buildTarget.targetArch
+        ?? this.#envConfig.getString(['target_arch'], process.arch),
+    )
+  }
+
+  set targetArch(value: string) {
+    this.#set('targetArch', value)
+  }
+
+  get targetEnvironment(): string | undefined {
+    return this.#value('targetEnvironment', () =>
+      this.#envConfig.getString(['target_environment']),
+    )
+  }
+
+  set targetEnvironment(value: string | undefined) {
+    this.#set('targetEnvironment', value)
+  }
+
+  get ignorePatchVersionNumber(): boolean {
+    if (this.#builder) {
+      return (
+        this.#builder.spec.brave_config?.ignore_patch_version_number ?? false
+      )
+    }
+    return (
+      !this.isBraveReleaseBuild()
+      && this.#envConfig.getBoolean(['ignore_patch_version_number'], !isCI)
+    )
+  }
+
+  get useDummyLastchange(): boolean {
+    return this.#envConfig.getBoolean(['use_dummy_lastchange'], true)
+  }
+
+  get braveVersion(): string {
+    return this.#getBraveVersion()
+  }
+
+  get braveIOSMarketingPatchVersion(): string | undefined {
+    return this.#envConfig.getString(['brave_ios_marketing_version_patch'], '')
+  }
+
+  get releaseTag(): string | undefined {
+    return this.braveVersion.split('+')[0]
+  }
+
+  get mac_signing_identifier(): string | undefined {
+    return this.#value('mac_signing_identifier', () =>
+      this.#envConfig.getString(['mac_signing_identifier']),
+    )
+  }
+
+  set mac_signing_identifier(value: string | undefined) {
+    this.#set('mac_signing_identifier', value)
+  }
+
+  get mac_installer_signing_identifier(): string {
+    return this.#value('mac_installer_signing_identifier', () =>
+      this.#envConfig.getString(['mac_installer_signing_identifier'], ''),
+    )
+  }
+
+  set mac_installer_signing_identifier(value: string) {
+    this.#set('mac_installer_signing_identifier', value)
+  }
+
+  get mac_signing_keychain(): string {
+    return this.#value('mac_signing_keychain', () =>
+      this.#envConfig.getString(['mac_signing_keychain'], 'login'),
+    )
+  }
+
+  set mac_signing_keychain(value: string) {
+    this.#set('mac_signing_keychain', value)
+  }
+
+  get notary_user(): string | undefined {
+    return this.#envConfig.getString(['notary_user'])
+  }
+
+  get notary_password(): string | undefined {
+    return this.#envConfig.getString(['notary_password'])
+  }
+
+  get isBraveOriginBranded(): boolean | undefined {
+    if (this.#builder) {
+      return this.#builder.isBraveOriginBranded
+    }
+    return this.#envConfig.getBoolean(['is_brave_origin_branded'])
+  }
+
+  // Parent cache directory for all internal caches (git, siso, vpython).
+  get cacheDir(): string | undefined {
+    return this.#envConfig.getPath(['cache_dir'])
+  }
+
+  get gitCachePath(): string | undefined {
+    return this.#value(
+      'gitCachePath',
+      () =>
+        this.#envConfig.getPath(['git_cache_path'])
+        || this.resolveCacheDir('git')
+        || process.env.GIT_CACHE_PATH,
+    )
+  }
+
+  set gitCachePath(value: string | undefined) {
+    this.#set('gitCachePath', value)
+  }
+
+  get rbeService(): string {
+    return this.#value('rbeService', () =>
+      this.#envConfig.getString(['rbe_service'], ''),
+    )
+  }
+
+  set rbeService(value: string) {
+    this.#set('rbeService', value)
+  }
+
+  get rbeTlsClientAuthCert(): string | undefined {
+    return this.#envConfig.getPath(['rbe_tls_client_auth_cert'])
+  }
+
+  get rbeTlsClientAuthKey(): string | undefined {
+    return this.#envConfig.getPath(['rbe_tls_client_auth_key'])
+  }
+
+  get extraGnArgs(): Record<string, any> {
+    return this.#value('extraGnArgs', () =>
+      this.#envConfig.getMergedObject(['gn', 'args']),
+    )
+  }
+
+  set extraGnArgs(value: Record<string, any>) {
+    this.#set('extraGnArgs', value)
+  }
+
+  get extraGnGenOpts(): string {
+    return this.#value('extraGnGenOpts', () =>
+      this.#envConfig.getString(['brave_extra_gn_gen_opts'], ''),
+    )
+  }
+
+  set extraGnGenOpts(value: string) {
+    this.#set('extraGnGenOpts', value)
+  }
+
+  get sisoLimits(): Record<string, any> {
+    return this.#builder ? {} : this.#envConfig.getMergedObject(['siso_limits'])
+  }
+
+  // How many jobs siso runs remotely at once, Brave's own limit when unset.
+  get remoteJobsLimit(): number | undefined {
+    return this.#builder
+      ? this.#builder.siso.remoteJobs
+      : this.#envConfig.getNumber(['rbe_jobs_limit'])
+  }
+
+  // The remote execution priority of the build's actions, the service's
+  // default when unset.
+  get reapiPriority(): number | undefined {
+    return this.#value('reapiPriority', () => {
+      if (this.#builder) {
+        return this.#builder.siso.reapiPriority
+      }
+      // Priority 4 for interactive builds, after EngFlow's recommended
+      // priority system:
+      // https://blog.engflow.com/2025/04/07/not-all-builds-are-made-equal-using-priorities-to-expedite-remote-execution-of-the-builds-and-tests-that-matter-most/#from-workflow-to-priorities
+      return isCI ? undefined : 4
+    })
+  }
+
+  set reapiPriority(value: number | undefined) {
+    this.#set('reapiPriority', value)
+  }
+
+  get sisoCacheDir(): string | undefined {
+    return this.#value(
+      'sisoCacheDir',
+      () =>
+        this.#envConfig.getPath(['siso_cache_dir'])
+        || this.resolveCacheDir('siso'),
+    )
+  }
+
+  set sisoCacheDir(value: string | undefined) {
+    this.#set('sisoCacheDir', value)
+  }
+
+  get braveAndroidSafeBrowsingApiKey(): string | undefined {
+    return this.#envConfig.getString(['brave_safebrowsing_api_key'])
+  }
+
+  get braveAndroidDeveloperOptionsCode(): string | undefined {
+    return this.#envConfig.getString(['brave_android_developer_options_code'])
+  }
+
+  get braveAndroidKeystorePath(): string | undefined {
+    return this.#envConfig.getString(['brave_android_keystore_path'])
+  }
+
+  get braveAndroidKeystoreName(): string | undefined {
+    return this.#envConfig.getString(['brave_android_keystore_name'])
+  }
+
+  get braveAndroidKeystorePassword(): string | undefined {
+    return this.#envConfig.getString(['brave_android_keystore_password'])
+  }
+
+  get braveAndroidKeyPassword(): string | undefined {
+    return this.#envConfig.getString(['brave_android_key_password'])
+  }
+
+  get useRemoteExec(): boolean {
+    return this.#value('useRemoteExec', () =>
+      this.#envConfig.getBoolean(['use_remoteexec'], false),
+    )
+  }
+
+  set useRemoteExec(value: boolean) {
+    this.#set('useRemoteExec', value)
+  }
+
+  get offline(): boolean {
+    return this.#value('offline', () =>
+      this.#envConfig.getBoolean(['offline'], false),
+    )
+  }
+
+  set offline(value: boolean) {
+    this.#set('offline', value)
+  }
+
+  get rbeReadOnly(): boolean {
+    return this.#envConfig.getBoolean(['rbe_readonly'], false)
+  }
+
+  get useBraveHermeticToolchain(): boolean {
+    return this.#value('useBraveHermeticToolchain', () =>
+      this.#builder
+        ? (this.#builder.spec.brave_config?.use_brave_hermetic_toolchain
+          ?? false)
+        : this.#envConfig.getBoolean(
+            ['use_brave_hermetic_toolchain'],
+            this.rbeService.includes('.brave.com:'),
+          ),
+    )
+  }
+
+  set useBraveHermeticToolchain(value: boolean) {
+    this.#set('useBraveHermeticToolchain', value)
+  }
+
+  get braveIOSDeveloperOptionsCode(): string | undefined {
+    return this.#envConfig.getString(['brave_ios_developer_options_code'])
+  }
+
+  get is_asan(): boolean | undefined {
+    return this.#value('is_asan', () => this.#envConfig.getBoolean(['is_asan']))
+  }
+
+  set is_asan(value: boolean | undefined) {
+    this.#set('is_asan', value)
+  }
+
+  get is_msan(): boolean | undefined {
+    return this.#envConfig.getBoolean(['is_msan'])
+  }
+
+  get is_ubsan(): boolean | undefined {
+    return this.#value('is_ubsan', () =>
+      this.#envConfig.getBoolean(['is_ubsan']),
+    )
+  }
+
+  set is_ubsan(value: boolean | undefined) {
+    this.#set('is_ubsan', value)
+  }
+
+  get use_no_gn_gen(): boolean | undefined {
+    return this.#value(
+      'use_no_gn_gen',
+      () => !this.#builder && this.#envConfig.getBoolean(['use_no_gn_gen']),
+    )
+  }
+
+  set use_no_gn_gen(value: boolean | undefined) {
+    this.#set('use_no_gn_gen', value)
+  }
+
+  // The custom deps of the chromium solution of the .gclient file. A builder
+  // adds its own to package.json's.
+  get chromiumCustomDeps(): Record<string, any> {
+    return this.#value('chromiumCustomDeps', () => ({
+      ...this.#envConfig.getMergedObject(['projects', 'chrome', 'custom_deps']),
+      ...this.#builder?.spec.gclient_config.custom_deps,
+    }))
+  }
+
+  set chromiumCustomDeps(value: Record<string, any>) {
+    this.#set('chromiumCustomDeps', value)
+  }
+
+  // The custom vars of the chromium solution of the .gclient file. A builder
+  // adds its own to package.json's, and the remote execution vars from .env.
+  get chromiumCustomVars(): Record<string, any> {
+    return this.#value('chromiumCustomVars', () => {
+      const packageVars = this.#envConfig.getMergedObject([
+        'projects',
+        'chrome',
+        'custom_vars',
+      ])
+      // For remote execution through `rbe_service`.
+      const reapiVars = this.rbeService
         ? {
             'reapi_address': this.rbeService,
             'reapi_backend_config_path': 'google.star',
             'reapi_instance': 'default',
           }
-        : {}),
-      ...(this.is_msan ? { 'checkout_instrumented_libraries': true } : {}),
-      ...envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
-    }
+        : {}
+      if (this.#builder) {
+        return {
+          ...packageVars,
+          ...this.#builder.spec.gclient_config.custom_vars,
+          ...reapiVars,
+        }
+      }
+      return {
+        'checkout_pgo_profiles': this.isBraveReleaseBuild(),
+        ...reapiVars,
+        ...(this.is_msan ? { 'checkout_instrumented_libraries': true } : {}),
+        ...packageVars,
+      }
+    })
+  }
 
-    if (this.cacheDir && !fs.existsSync(this.cacheDir)) {
-      fs.mkdirSync(this.cacheDir, { recursive: true })
-    }
+  set chromiumCustomVars(value: Record<string, any>) {
+    this.#set('chromiumCustomVars', value)
   }
 
   isReleaseBuild() {
@@ -315,7 +645,10 @@ export class Config {
   }
 
   isBraveReleaseBuild() {
-    const isBraveReleaseBuildValue = envConfig.getNumber([
+    if (this.#builder) {
+      return this.#builder.spec.brave_config?.is_brave_release_build ?? false
+    }
+    const isBraveReleaseBuildValue = this.#envConfig.getNumber([
       'is_brave_release_build',
     ])
     if (isBraveReleaseBuildValue !== undefined) {
@@ -446,24 +779,28 @@ export class Config {
 
   getProjectVersion(projectName) {
     return (
-      envConfig.getString(['projects', projectName, 'revision'])
-      || envConfig.getString(['projects', projectName, 'tag'])
-      || envConfig.getString(['projects', projectName, 'branch'])
+      this.#envConfig.getString(['projects', projectName, 'revision'])
+      || this.#envConfig.getString(['projects', projectName, 'tag'])
+      || this.#envConfig.getString(['projects', projectName, 'branch'])
     )
   }
 
   getProjectRef(projectName, defaultValue = 'origin/master') {
-    const revision = envConfig.getString(['projects', projectName, 'revision'])
+    const revision = this.#envConfig.getString([
+      'projects',
+      projectName,
+      'revision',
+    ])
     if (revision) {
       return revision
     }
 
-    const tag = envConfig.getString(['projects', projectName, 'tag'])
+    const tag = this.#envConfig.getString(['projects', projectName, 'tag'])
     if (tag) {
       return `refs/tags/${tag}`
     }
 
-    let branch = envConfig.getString(['projects', projectName, 'branch'])
+    let branch = this.#envConfig.getString(['projects', projectName, 'branch'])
     if (branch) {
       return `origin/${branch}`
     }
@@ -508,9 +845,6 @@ export class Config {
     if (this.targetOS === 'android') {
       if (options.target_android_output_format) {
         this.targetAndroidOutputFormat = options.target_android_output_format
-      }
-      if (options.android_override_version_name) {
-        this.androidOverrideVersionName = options.android_override_version_name
       }
       if (options.android_aab_to_apk) {
         this.androidAabToApk = options.android_aab_to_apk
@@ -694,7 +1028,7 @@ export class Config {
   }
 
   fromGnArgs(options) {
-    const gnArgs = readArgsGn(this.srcDir, options.C)
+    const gnArgs = readArgsGn(this.srcDir, options.C, this.defaultOptions)
     Log.warn(
       '--no-gn-gen is experimental and only gn args that match command '
         + 'line options will be processed',
@@ -734,12 +1068,12 @@ export class Config {
 
   forwardEnvConfigVarsToObject(vars, obj) {
     for (const v of vars) {
-      obj[v] = envConfig.getAny([v])
+      obj[v] = this.#envConfig.getAny([v])
     }
   }
 
   #getBraveVersion() {
-    const braveVersion = envConfig.getPackageVersion()
+    const braveVersion = this.#envConfig.getPackageVersion()
     if (!this.ignorePatchVersionNumber) {
       return braveVersion
     }
@@ -841,14 +1175,9 @@ export class Config {
       // low-CPU machines.
       const kExecutorCount = 1200
       const kRemoteLimit = Math.min(
-        envConfig.getNumber(['rbe_jobs_limit'], kExecutorCount * 1.2),
+        this.remoteJobsLimit ?? kExecutorCount * 1.2,
         getSisoBuiltinRemoteLimit(),
       )
-
-      // Prevent depot_tools from setting lower timeouts.
-      const kRbeTimeout = '10m'
-      env.RBE_exec_timeout = env.RBE_exec_timeout || kRbeTimeout
-      env.RBE_reclient_timeout = env.RBE_reclient_timeout || kRbeTimeout
 
       // Autoninja generates -j value when RBE is enabled, adjust limits for
       // Brave-specific setup.
@@ -895,13 +1224,6 @@ export class Config {
       env.SISO_LIMITS = Array.from(envSisoLimits.entries())
         .map(([key, value]) => `${key}=${value}`)
         .join(',')
-
-      if (this.offline) {
-        // Use all local resources in offline mode. RBE_local_resource_fraction
-        // can be set to a lower value for racing mode, but in offline mode we
-        // want to use all cores.
-        env.RBE_local_resource_fraction = '1.0'
-      }
     }
 
     if (isCI) {
@@ -941,6 +1263,10 @@ export class Config {
     }
 
     const baseDir = path.join(this.srcDir, 'out')
+    // Where `bots gen` writes the builder's build directory.
+    if (this.#builder) {
+      return path.join(baseDir, this.#builder.name)
+    }
     if (this.#outputDir) {
       if (path.isAbsolute(this.#outputDir)) {
         return this.#outputDir
@@ -986,20 +1312,17 @@ export class Config {
     }
   }
 
-  #targetOS: TargetOS | undefined
-
-  get targetOS() {
-    return this.#targetOS ?? this.hostOS
+  get targetOS(): TargetOS {
+    return this.#value('targetOS', () =>
+      validTargetOS(
+        this.#builder?.buildTarget.targetOS
+          ?? this.#envConfig.getString(['target_os'], this.hostOS),
+      ),
+    )
   }
 
   set targetOS(value: string) {
-    if (!isValidTargetOSValue(value)) {
-      Log.error(
-        `Invalid target_os: ${value} (must be one of: ${validTargetOSValues.join(', ')})`,
-      )
-      process.exit(1)
-    }
-    this.#targetOS = value
+    this.#set('targetOS', validTargetOS(value))
   }
 
   static #capEnvNumber(env: NodeJS.ProcessEnv, name: string, max: number) {
@@ -1008,11 +1331,18 @@ export class Config {
   }
 }
 
-function isValidTargetOSValue(value: string): value is TargetOS {
-  return validTargetOSValues.some((os) => value === os)
+function validTargetOS(value: string): TargetOS {
+  const targetOS = validTargetOSValues.find((os) => value === os)
+  if (targetOS === undefined) {
+    Log.error(
+      `Invalid target_os: ${value} (must be one of: ${validTargetOSValues.join(', ')})`,
+    )
+    process.exit(1)
+  }
+  return targetOS
 }
 
-function readArgsGn(srcDir, outputDir) {
+function readArgsGn(srcDir, outputDir, defaultOptions: ExecOptions) {
   const gnHelpersPath = path.join(srcDir, 'build', 'gn_helpers.py')
 
   const script = `
@@ -1025,16 +1355,13 @@ import json
 print(json.dumps(result))
 `
 
-  const result = util.run(
-    'python3',
-    ['-'],
-    util.mergeWithDefault({
-      skipLogging: true,
-      stdio: 'pipe',
-      input: script,
-      encoding: 'utf8',
-    }),
-  )
+  const result = util.run('python3', ['-'], {
+    ...defaultOptions,
+    skipLogging: true,
+    stdio: 'pipe',
+    input: script,
+    encoding: 'utf8',
+  })
 
   return JSON.parse(result.stdout.toString().trim())
 }
@@ -1064,4 +1391,47 @@ function getSisoBuiltinRemoteLimit() {
   return Math.min(kReproxyLimitCap, limit)
 }
 
-export default new Config()
+let configInstance: Config | undefined
+
+// Sets the config that `config` stands for. Only program.ts's
+// installConfig(), with the checkout's config, and configMock.ts, with a
+// test's, call it.
+export function setConfigInstance(instance: Config): void {
+  configInstance = instance
+}
+
+function getConfigInstance(): Config {
+  if (!configInstance) {
+    throw new Error(
+      'config is read before a config is installed. Read it only from the '
+        + 'actions of a command with installConfig() applied, never while a '
+        + 'module loads.',
+    )
+  }
+  return configInstance
+}
+
+// Stands for whichever config is installed, so that modules can import it
+// before one is. Methods are bound to the installed config, as they read
+// private fields, which cannot be reached through a proxy. Functions set on
+// the config itself, such as jest spies, are returned unbound so that jest
+// still recognises them.
+export default new Proxy({} as Config, {
+  get(_, key) {
+    const target = getConfigInstance()
+    const value = Reflect.get(target, key, target)
+    return typeof value === 'function' && !Object.hasOwn(target, key)
+      ? value.bind(target)
+      : value
+  },
+  set: (_, key, value) =>
+    Reflect.set(getConfigInstance(), key, value, getConfigInstance()),
+  has: (_, key) => Reflect.has(getConfigInstance(), key),
+  ownKeys: () => Reflect.ownKeys(getConfigInstance()),
+  getOwnPropertyDescriptor: (_, key) =>
+    Reflect.getOwnPropertyDescriptor(getConfigInstance(), key),
+  defineProperty: (_, key, descriptor) =>
+    Reflect.defineProperty(getConfigInstance(), key, descriptor),
+  deleteProperty: (_, key) => Reflect.deleteProperty(getConfigInstance(), key),
+  getPrototypeOf: () => Reflect.getPrototypeOf(getConfigInstance()),
+})

@@ -1,0 +1,13 @@
+error: Transparent format can only be applied when all variants have exactly one field (got 2)
+ --> tests/ui/derive-transparent-multiple-fields.rs:4:13
+  |
+4 |     Invalid { foo: u8, bar: i8 },
+  |             ^^^^^^^^^^^^^^^^^^^^
+
+error: Transparent format can only be applied to structs with one field (got 2)
+ --> tests/ui/derive-transparent-multiple-fields.rs:7:10
+  |
+7 | #[derive(defmt::Format)]
+  |          ^^^^^^^^^^^^^
+  |
+  = note: this error originates in the derive macro `defmt::Format` (in Nightly builds, run with -Z macro-backtrace for more info)

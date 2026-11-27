@@ -22,8 +22,9 @@ void FakeBrowserEndpoint::OnConnectionStateChanged(
       ConnectionStateUpdate{.state = state, .error_message = error_message});
 }
 
-void FakeBrowserEndpoint::OnSelectedRegionChanged(mojom::VpnRegionPtr region) {
-  selected_region_updates_.push_back(std::move(region));
+void FakeBrowserEndpoint::OnRegionSelectionChanged(
+    mojom::VpnRegionSelectionPtr selection) {
+  region_selection_updates_.push_back(std::move(selection));
 }
 
 void FakeBrowserEndpoint::OnAutoReconnectStateChanged(bool enabled) {

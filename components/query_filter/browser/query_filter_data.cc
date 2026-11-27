@@ -5,21 +5,16 @@
 
 #include "brave/components/query_filter/browser/query_filter_data.h"
 
-#include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/values.h"
-#include "brave/components/query_filter/common/features.h"
 
 namespace query_filter {
 
 // QueryFilterData implementation.
 // static
 QueryFilterData* QueryFilterData::GetInstance() {
-  if (!base::FeatureList::IsEnabled(features::kQueryFilterComponent)) {
-    return nullptr;
-  }
   static base::NoDestructor<QueryFilterData> instance;
   return instance.get();
 }

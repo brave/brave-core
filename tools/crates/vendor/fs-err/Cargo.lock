@@ -69,7 +69,7 @@ dependencies = [
 
 [[package]]
 name = "fs-err"
-version = "3.2.2"
+version = "3.3.2"
 dependencies = [
  "autocfg",
  "path_facts",

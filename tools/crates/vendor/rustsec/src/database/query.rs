@@ -6,7 +6,6 @@ use crate::{
     collection::Collection,
     package::{self, Package},
 };
-use platforms::target::{Arch, OS};
 use semver::Version;
 
 /// Queries against the RustSec database
@@ -28,10 +27,10 @@ pub struct Query {
     severity: Option<Severity>,
 
     /// Target architecture
-    target_arch: Vec<Arch>,
+    target_arch: Vec<String>,
 
     /// Target operating system
-    target_os: Vec<OS>,
+    target_os: Vec<String>,
 
     /// Year associated with the advisory ID
     year: Option<u32>,
@@ -126,13 +125,13 @@ impl Query {
     }
 
     /// Set target architectures
-    pub fn target_arch(mut self, arch: Vec<Arch>) -> Self {
+    pub fn target_arch(mut self, arch: Vec<String>) -> Self {
         self.target_arch = arch;
         self
     }
 
     /// Set target operating systems
-    pub fn target_os(mut self, os: Vec<OS>) -> Self {
+    pub fn target_os(mut self, os: Vec<String>) -> Self {
         self.target_os = os;
         self
     }
@@ -160,22 +159,22 @@ impl Query {
 
     /// Does this query match a given advisory?
     pub fn matches(&self, advisory: &Advisory) -> bool {
-        if let Some(collection) = self.collection {
-            if Some(collection) != advisory.metadata.collection {
-                return false;
-            }
+        if let Some(collection) = self.collection
+            && Some(collection) != advisory.metadata.collection
+        {
+            return false;
         }
 
-        if let Some(package_name) = &self.package_name {
-            if package_name != &advisory.metadata.package {
-                return false;
-            }
+        if let Some(package_name) = &self.package_name
+            && package_name != &advisory.metadata.package
+        {
+            return false;
         }
 
-        if let Some(package_version) = &self.package_version {
-            if !advisory.versions.is_vulnerable(package_version) {
-                return false;
-            }
+        if let Some(package_version) = &self.package_version
+            && !advisory.versions.is_vulnerable(package_version)
+        {
+            return false;
         }
 
         if let Some(package_source) = &self.package_source {
@@ -194,12 +193,11 @@ impl Query {
             }
         }
 
-        if let Some(severity_threshold) = self.severity {
-            if let Some(advisory_severity) = advisory.severity() {
-                if advisory_severity < severity_threshold {
-                    return false;
-                }
-            }
+        if let Some(severity_threshold) = self.severity
+            && let Some(advisory_severity) = advisory.severity()
+            && advisory_severity < severity_threshold
+        {
+            return false;
         }
 
         if let Some(affected) = &advisory.affected {
@@ -224,24 +222,23 @@ impl Query {
             }
         }
 
-        if let Some(query_year) = self.year {
-            if let Some(advisory_year) = advisory.metadata.id.year() {
-                if query_year != advisory_year {
-                    return false;
-                }
-            }
+        if let Some(query_year) = self.year
+            && let Some(advisory_year) = advisory.metadata.id.year()
+            && query_year != advisory_year
+        {
+            return false;
         }
 
-        if let Some(withdrawn) = self.withdrawn {
-            if withdrawn != advisory.metadata.withdrawn.is_some() {
-                return false;
-            }
+        if let Some(withdrawn) = self.withdrawn
+            && withdrawn != advisory.metadata.withdrawn.is_some()
+        {
+            return false;
         }
 
-        if let Some(informational) = self.informational {
-            if informational != advisory.metadata.informational.is_some() {
-                return false;
-            }
+        if let Some(informational) = self.informational
+            && informational != advisory.metadata.informational.is_some()
+        {
+            return false;
         }
 
         true
@@ -249,7 +246,7 @@ impl Query {
 }
 
 impl Default for Query {
-    fn default() -> Query {
-        Query::crate_scope()
+    fn default() -> Self {
+        Self::crate_scope()
     }
 }

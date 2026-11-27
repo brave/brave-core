@@ -4,9 +4,10 @@ use std::{
     time::Duration,
 };
 
+use gix_error::{Class, ClassificationMarker, ErrorExt, Result, message};
 use gix_tempfile::{AutoRemove, ContainingDirectory};
 
-use crate::{backoff, File, Marker, DOT_LOCK_SUFFIX};
+use crate::{DOT_LOCK_SUFFIX, File, Marker, backoff};
 
 /// Describe what to do if a lock cannot be obtained as it's already held elsewhere.
 #[derive(Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
@@ -40,65 +41,64 @@ impl From<Duration> for Fail {
     }
 }
 
-/// The error returned when acquiring a [`File`] or [`Marker`].
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("Another IO error occurred while obtaining the lock")]
-    Io(#[from] std::io::Error),
-    #[error("The lock for resource '{resource_path}' could not be obtained {mode} after {attempts} attempt(s). The lockfile at '{resource_path}{}' might need manual deletion.", super::DOT_LOCK_SUFFIX)]
-    PermanentlyLocked {
-        resource_path: PathBuf,
-        mode: Fail,
-        attempts: usize,
-    },
-}
-
 impl File {
     /// Create a writable lock file with failure `mode` whose content will eventually overwrite the given resource `at_path`.
     ///
-    /// If `boundary_directory` is given, non-existing directories will be created automatically and removed in the case of
-    /// a rollback. Otherwise the containing directory is expected to exist, even though the resource doesn't have to.
+    /// If `boundary_directory` is given, missing directories will be created and removed up to that boundary on rollback.
+    /// Otherwise the containing directory is expected to exist, even though the resource doesn't have to.
     ///
-    /// Note that permissions will be set to `0o666`, which usually results in `0o644` after passing a default umask, on Unix systems.
+    /// If `resolve_resource` is set, it is called before each lock attempt and its returned path becomes both the lock
+    /// target and the eventual commit target. With `None`, `at_path` is used unchanged. [`resolve_symlink()`] provides the
+    /// resolver used by Git-style callers that must update a symlink's target instead of replacing the link itself.
+    ///
+    /// Apply `shared_repository_permissions`, Git's parsed sharing policy, to the lock file and newly created directories
+    /// after the process umask. Pass `0` to keep the umask permissions without reading or rewriting permission metadata.
+    /// See [`gix_fs::adjust_shared_repository_permissions()`] for the encoding.
+    ///
+    /// On Unix, lock files start with `0o666` before the umask and sharing policy are applied.
     ///
     /// ### Warning of potential resource leak
     ///
     /// Please note that the underlying file will remain if destructors don't run, as is the case when interrupting the application.
     /// This results in the resource being locked permanently unless the lock file is removed by other means.
     /// See [the crate documentation](crate) for more information.
+    pub fn acquire(
+        at_path: impl AsRef<Path>,
+        mode: Fail,
+        boundary_directory: Option<PathBuf>,
+        shared_repository_permissions: i32,
+        resolve_resource: Option<&dyn Fn(&Path) -> PathBuf>,
+    ) -> Result<File> {
+        let resolve_resource = resolve_resource.unwrap_or(&keep_resource);
+        let (resource_path, lock_path, handle) = lock_with_mode(
+            at_path.as_ref(),
+            mode,
+            boundary_directory,
+            shared_repository_permissions,
+            resolve_resource,
+            &|p, d, c| {
+                if let Some(permissions) = default_permissions() {
+                    gix_tempfile::writable_at_with_permissions(p, d, c, permissions)
+                } else {
+                    gix_tempfile::writable_at(p, d, c)
+                }
+            },
+        )?;
+        Ok(File {
+            inner: handle,
+            lock_path,
+            resource_path,
+        })
+    }
+
+    /// Like [`acquire()`](Self::acquire) without resolving the resource.
     pub fn acquire_to_update_resource(
         at_path: impl AsRef<Path>,
         mode: Fail,
         boundary_directory: Option<PathBuf>,
-    ) -> Result<File, Error> {
-        let (lock_path, handle) = lock_with_mode(at_path.as_ref(), mode, boundary_directory, &|p, d, c| {
-            if let Some(permissions) = default_permissions() {
-                gix_tempfile::writable_at_with_permissions(p, d, c, permissions)
-            } else {
-                gix_tempfile::writable_at(p, d, c)
-            }
-        })?;
-        Ok(File {
-            inner: handle,
-            lock_path,
-        })
-    }
-
-    /// Like [`acquire_to_update_resource()`](File::acquire_to_update_resource), but allows to set filesystem permissions using `make_permissions`.
-    pub fn acquire_to_update_resource_with_permissions(
-        at_path: impl AsRef<Path>,
-        mode: Fail,
-        boundary_directory: Option<PathBuf>,
-        make_permissions: impl Fn() -> std::fs::Permissions,
-    ) -> Result<File, Error> {
-        let (lock_path, handle) = lock_with_mode(at_path.as_ref(), mode, boundary_directory, &|p, d, c| {
-            gix_tempfile::writable_at_with_permissions(p, d, c, make_permissions())
-        })?;
-        Ok(File {
-            inner: handle,
-            lock_path,
-        })
+        shared_repository_permissions: i32,
+    ) -> Result<File> {
+        Self::acquire(at_path, mode, boundary_directory, shared_repository_permissions, None)
     }
 }
 
@@ -106,10 +106,10 @@ impl Marker {
     /// Like [`acquire_to_update_resource()`](File::acquire_to_update_resource()) but _without_ the possibility to make changes
     /// and commit them.
     ///
-    /// If `boundary_directory` is given, non-existing directories will be created automatically and removed in the case of
-    /// a rollback.
+    /// If `boundary_directory` is given, missing directories will be created and removed up to that boundary on rollback.
     ///
-    /// Note that permissions will be set to `0o666`, which usually results in `0o644` after passing a default umask, on Unix systems.
+    /// The sharing policy applies to both the marker and newly created directories; `0` keeps the umask permissions.
+    /// On Unix, marker files start with `0o666` before the umask and sharing policy are applied.
     ///
     /// ### Warning of potential resource leak
     ///
@@ -120,98 +120,128 @@ impl Marker {
         at_path: impl AsRef<Path>,
         mode: Fail,
         boundary_directory: Option<PathBuf>,
-    ) -> Result<Marker, Error> {
-        let (lock_path, handle) = lock_with_mode(at_path.as_ref(), mode, boundary_directory, &|p, d, c| {
-            if let Some(permissions) = default_permissions() {
-                gix_tempfile::mark_at_with_permissions(p, d, c, permissions)
-            } else {
-                gix_tempfile::mark_at(p, d, c)
-            }
-        })?;
+        shared_repository_permissions: i32,
+    ) -> Result<Marker> {
+        let (resource_path, lock_path, handle) = lock_with_mode(
+            at_path.as_ref(),
+            mode,
+            boundary_directory,
+            shared_repository_permissions,
+            &keep_resource,
+            &|p, d, c| {
+                if let Some(permissions) = default_permissions() {
+                    gix_tempfile::mark_at_with_permissions(p, d, c, permissions)
+                } else {
+                    gix_tempfile::mark_at(p, d, c)
+                }
+            },
+        )?;
         Ok(Marker {
             created_from_file: false,
             inner: handle,
             lock_path,
-        })
-    }
-
-    /// Like [`acquire_to_hold_resource()`](Marker::acquire_to_hold_resource), but allows to set filesystem permissions using `make_permissions`.
-    pub fn acquire_to_hold_resource_with_permissions(
-        at_path: impl AsRef<Path>,
-        mode: Fail,
-        boundary_directory: Option<PathBuf>,
-        make_permissions: impl Fn() -> std::fs::Permissions,
-    ) -> Result<Marker, Error> {
-        let (lock_path, handle) = lock_with_mode(at_path.as_ref(), mode, boundary_directory, &|p, d, c| {
-            gix_tempfile::mark_at_with_permissions(p, d, c, make_permissions())
-        })?;
-        Ok(Marker {
-            created_from_file: false,
-            inner: handle,
-            lock_path,
+            resource_path,
         })
     }
 }
 
-fn dir_cleanup(boundary: Option<PathBuf>) -> (ContainingDirectory, AutoRemove) {
+fn dir_cleanup(boundary: Option<PathBuf>, shared_repository_permissions: i32) -> (ContainingDirectory, AutoRemove) {
     match boundary {
         None => (ContainingDirectory::Exists, AutoRemove::Tempfile),
         Some(boundary_directory) => (
-            ContainingDirectory::CreateAllRaceProof(Default::default()),
+            ContainingDirectory::CreateAllRaceProof {
+                retries: Default::default(),
+                shared_repository_permissions,
+            },
             AutoRemove::TempfileAndEmptyParentDirectoriesUntil { boundary_directory },
         ),
     }
+}
+
+/// Resolve up to five consecutive symbolic links at `path`, returning the last target reached.
+///
+/// Relative link targets are resolved against the directory containing their link. If `path` isn't a symbolic link, or
+/// if a link can't be read, the current path is returned unchanged.
+pub fn resolve_symlink(path: &Path) -> PathBuf {
+    let mut path = path.to_owned();
+    for _ in 0..5 {
+        let Ok(destination) = std::fs::read_link(&path) else {
+            break;
+        };
+        path = if destination.is_absolute() {
+            destination
+        } else {
+            path.parent().unwrap_or_else(|| Path::new("")).join(destination)
+        };
+    }
+    path
+}
+
+fn keep_resource(path: &Path) -> PathBuf {
+    path.to_owned()
 }
 
 fn lock_with_mode<T>(
     resource: &Path,
     mode: Fail,
     boundary_directory: Option<PathBuf>,
+    shared_repository_permissions: i32,
+    resolve_resource: &dyn Fn(&Path) -> PathBuf,
     try_lock: &dyn Fn(&Path, ContainingDirectory, AutoRemove) -> std::io::Result<T>,
-) -> Result<(PathBuf, T), Error> {
+) -> Result<(PathBuf, PathBuf, T)> {
     use std::io::ErrorKind::*;
-    let (directory, cleanup) = dir_cleanup(boundary_directory);
-    let lock_path = add_lock_suffix(resource);
+    let io_error = |err: std::io::Error| err.and_raise(message("Another IO error occurred while obtaining the lock"));
+    let (directory, cleanup) = dir_cleanup(boundary_directory, shared_repository_permissions);
+    let try_once = |cleanup| {
+        let resource_path = resolve_resource(resource);
+        let lock_path = add_lock_suffix(&resource_path);
+        match try_lock(&lock_path, directory, cleanup).and_then(|value| {
+            gix_fs::set_shared_repository_permissions(&lock_path, shared_repository_permissions)?;
+            Ok(value)
+        }) {
+            Ok(value) => Ok((resource_path, lock_path, value)),
+            Err(err) => Err((err, resource_path)),
+        }
+    };
     let mut attempts = 1;
     match mode {
-        Fail::Immediately => try_lock(&lock_path, directory, cleanup),
+        Fail::Immediately => try_once(cleanup),
         Fail::AfterDurationWithBackoff(time) => {
             for wait in backoff::Quadratic::default_with_random().until_no_remaining(time) {
                 attempts += 1;
-                match try_lock(&lock_path, directory, cleanup.clone()) {
-                    Ok(v) => return Ok((lock_path, v)),
+                match try_once(cleanup.clone()) {
+                    Ok(value) => return Ok(value),
                     #[cfg(windows)]
-                    Err(err) if err.kind() == AlreadyExists || err.kind() == PermissionDenied => {
+                    Err((err, _)) if err.kind() == AlreadyExists || err.kind() == PermissionDenied => {
                         std::thread::sleep(wait);
                         continue;
                     }
                     #[cfg(not(windows))]
-                    Err(err) if err.kind() == AlreadyExists => {
+                    Err((err, _)) if err.kind() == AlreadyExists => {
                         std::thread::sleep(wait);
                         continue;
                     }
-                    Err(err) => return Err(Error::from(err)),
+                    Err((err, _)) => return Err(io_error(err)),
                 }
             }
-            try_lock(&lock_path, directory, cleanup)
+            try_once(cleanup)
         }
     }
-    .map(|v| (lock_path, v))
-    .map_err(|err| match err.kind() {
-        AlreadyExists => Error::PermanentlyLocked {
-            resource_path: resource.into(),
-            mode,
-            attempts,
-        },
-        _ => Error::Io(err),
+    .map_err(|(err, resource_path)| match err.kind() {
+        AlreadyExists => ClassificationMarker::with_source(Class::Retryable, err)
+            .and_raise(message!(
+                "The lock for resource \"{resource}\" could not be obtained {mode} after {attempts} attempt(s). The lockfile at \"{resource}{suffix}\" might need manual deletion.",
+                resource = resource_path.display(),
+                suffix = super::DOT_LOCK_SUFFIX,
+            )),
+        _ => io_error(err),
     })
 }
 
 fn add_lock_suffix(resource_path: &Path) -> PathBuf {
-    resource_path.with_extension(resource_path.extension().map_or_else(
-        || DOT_LOCK_SUFFIX.chars().skip(1).collect(),
-        |ext| format!("{}{}", ext.to_string_lossy(), DOT_LOCK_SUFFIX),
-    ))
+    let mut lock_path = resource_path.as_os_str().to_owned();
+    lock_path.push(DOT_LOCK_SUFFIX);
+    lock_path.into()
 }
 
 fn default_permissions() -> Option<std::fs::Permissions> {
@@ -238,5 +268,67 @@ mod tests {
     #[test]
     fn add_lock_suffix_to_file_without_extension() {
         assert_eq!(add_lock_suffix(Path::new("hello")), Path::new("hello.lock"));
+    }
+
+    #[test]
+    #[cfg(unix)]
+    fn add_lock_suffix_preserves_non_utf8_bytes() {
+        use std::os::unix::ffi::OsStrExt;
+
+        let path = Path::new(std::ffi::OsStr::from_bytes(b"hello.\xff"));
+        assert_eq!(add_lock_suffix(path).as_os_str().as_bytes(), b"hello.\xff.lock");
+    }
+
+    #[test]
+    fn permission_denied_preserves_the_io_source() {
+        for mode in [Fail::Immediately, Fail::AfterDurationWithBackoff(Duration::ZERO)] {
+            let err = lock_with_mode::<()>(Path::new("resource"), mode, None, 0, &keep_resource, &|_, _, _| {
+                Err(std::io::Error::new(
+                    std::io::ErrorKind::PermissionDenied,
+                    "access denied",
+                ))
+            })
+            .expect_err("authorization is required to obtain the lock");
+            assert!(err.is_permission_denied(), "authorization failure is classified");
+            assert!(!err.is_retryable(), "authorization is not ordinary lock contention");
+            let source = err
+                .downcast_any_ref::<std::io::Error>()
+                .expect("the original I/O error survives");
+            assert_eq!(
+                source.kind(),
+                std::io::ErrorKind::PermissionDenied,
+                "the I/O kind survives"
+            );
+            assert_eq!(source.to_string(), "access denied", "the I/O diagnostic survives");
+        }
+    }
+
+    #[test]
+    fn resource_is_resolved_on_each_lock_attempt() -> gix_testtools::TestResult {
+        let resolutions = std::cell::Cell::new(0);
+        let resolve = |_: &Path| {
+            let current = resolutions.get();
+            resolutions.set(current + 1);
+            PathBuf::from(if current == 0 { "first" } else { "second" })
+        };
+        let (resource_path, lock_path, ()) = lock_with_mode(
+            Path::new("link"),
+            Fail::AfterDurationWithBackoff(Duration::ZERO),
+            None,
+            0,
+            &resolve,
+            &|path, _, _| {
+                if path == Path::new("first.lock") {
+                    Err(std::io::ErrorKind::AlreadyExists.into())
+                } else {
+                    Ok(())
+                }
+            },
+        )?;
+
+        assert_eq!(resolutions.get(), 2, "the resource is resolved before every attempt");
+        assert_eq!(resource_path, Path::new("second"), "the locked target is retained");
+        assert_eq!(lock_path, Path::new("second.lock"), "the lock follows that target");
+        Ok(())
     }
 }

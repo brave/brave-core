@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+assert(!is_android)
+
+source_set("hid") {
+  sources = [
+    "brave_hid_delegate.cc",
+    "brave_hid_delegate.h",
+  ]
+
+  public_deps = [
+    "//chrome/browser/hid",
+    "//content/public/browser",
+    "//content/public/common",
+  ]
+
+  deps = [ "//brave/components/brave_wallet/common/buildflags" ]
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/browser/brave_wallet:brave_wallet_hid_chooser" ]
+  }
+}

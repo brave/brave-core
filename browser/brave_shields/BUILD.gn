@@ -19,6 +19,7 @@ source_set("brave_shields") {
   public_deps = [
     "//base",
     "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common:mojom",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/tabs:tabs_public",
@@ -113,11 +114,12 @@ source_set("test_support") {
     "//base/test:test_support",
     "//brave/browser:browser_process",
     "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/browser",
     "//components/keyed_service/content",
     "//content/public/browser",
   ]
 
-  public_deps = [ "//brave/components/brave_shields/content/test:test_support" ]
+  public_deps = [ "//brave/components/brave_shields/core/test:test_support" ]
 }
 
 source_set("unit_tests") {

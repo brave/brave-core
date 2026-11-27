@@ -1,49 +1,16 @@
-use std::convert::Infallible;
-
 use bstr::{BStr, BString, ByteSlice};
-use percent_encoding::percent_decode_str;
+use gix_error::{Result, ResultExt, bail, validation};
 
 use crate::Scheme;
 
-/// The error returned by [parse()](crate::parse()).
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("{} \"{url}\" is not valid UTF-8", kind.as_str())]
-    Utf8 {
-        url: BString,
-        kind: UrlKind,
-        source: std::str::Utf8Error,
-    },
-    #[error("{} {url:?} can not be parsed as valid URL", kind.as_str())]
-    Url {
-        url: String,
-        kind: UrlKind,
-        source: crate::simple_url::UrlParseError,
-    },
-
-    #[error("The host portion of the following URL is too long ({} bytes, {len} bytes total): {truncated_url:?}", truncated_url.len())]
-    TooLong { truncated_url: BString, len: usize },
-    #[error("{} \"{url}\" does not specify a path to a repository", kind.as_str())]
-    MissingRepositoryPath { url: BString, kind: UrlKind },
-    #[error("URL {url:?} is relative which is not allowed in this context")]
-    RelativeUrl { url: String },
-}
-
-impl From<Infallible> for Error {
-    fn from(_: Infallible) -> Self {
-        unreachable!("Cannot actually happen, but it seems there can't be a blanket impl for this")
-    }
-}
-
-///
+/// The syntax used to interpret an input location.
 #[derive(Debug, Clone, Copy)]
 pub enum UrlKind {
-    ///
+    /// A URL containing a `scheme://` separator.
     Url,
-    ///
+    /// An SCP-like SSH location such as `user@host:path`.
     Scp,
-    ///
+    /// A local filesystem path.
     Local,
 }
 
@@ -61,22 +28,61 @@ pub(crate) enum InputScheme {
     Url { protocol_end: usize },
     Scp { colon: usize },
     Local,
+    RemoteHelper { helper_end: usize },
+}
+
+/// Return the length of the leading remote-helper name if `input` uses the `<helper>::<address>` syntax
+/// of [`gitremote-helpers`](https://git-scm.com/docs/gitremote-helpers).
+pub(crate) fn is_valid_remote_helper_name(input: &[u8]) -> bool {
+    input.first().is_some_and(u8::is_ascii_alphanumeric)
+        && input[1..]
+            .iter()
+            .all(|b| b.is_ascii_alphanumeric() || matches!(b, b'+' | b'-' | b'.'))
+}
+
+fn find_remote_helper_end(input: &BStr) -> Option<usize> {
+    let helper_end = input.find("::")?;
+    // Unlike Git, empty helper names are not accepted.
+    is_valid_remote_helper_name(&input[..helper_end]).then_some(helper_end)
 }
 
 pub(crate) fn find_scheme(input: &BStr) -> InputScheme {
+    // Git looks for the `<helper>::<address>` form, which happens before the location is examined as a URL.
+    // Hence this has to be checked first as well, as the address of a helper may itself contain `://`.
+    if let Some(helper_end) = find_remote_helper_end(input) {
+        return InputScheme::RemoteHelper { helper_end };
+    }
+
     // TODO: url's may only contain `:/`, we should additionally check if the characters used for
     //       protocol are all valid
     if let Some(protocol_end) = input.find("://") {
         return InputScheme::Url { protocol_end };
     }
 
-    if let Some(colon) = input.find_byte(b':') {
+    // Find colon, but skip over IPv6 brackets if present
+    let colon = if input.starts_with(b"[") {
+        // IPv6 address, find the closing bracket first
+        if let Some(bracket_end) = input.find_byte(b']') {
+            // Look for colon after the bracket
+            input[bracket_end + 1..]
+                .find_byte(b':')
+                .map(|pos| bracket_end + 1 + pos)
+        } else {
+            // No closing bracket, treat as regular search
+            input.find_byte(b':')
+        }
+    } else {
+        input.find_byte(b':')
+    };
+
+    if let Some(colon) = colon {
         // allow user to select files containing a `:` by passing them as absolute or relative path
         // this is behavior explicitly mentioned by the scp and git manuals
         let explicitly_local = &input[..colon].contains(&b'/');
-        let dos_driver_letter = cfg!(windows) && input[..colon].len() == 1;
+        let has_drive =
+            cfg!(windows) && gix_path::windows_drive_prefix(input).is_some_and(|prefix| prefix.len() == colon + 1);
 
-        if !explicitly_local && !dos_driver_letter {
+        if !explicitly_local && !has_drive {
             return InputScheme::Scp { colon };
         }
     }
@@ -84,63 +90,137 @@ pub(crate) fn find_scheme(input: &BStr) -> InputScheme {
     InputScheme::Local
 }
 
-pub(crate) fn url(input: &BStr, protocol_end: usize) -> Result<crate::Url, Error> {
+/// Parse remote-helper syntax like `codecommit::eu-central-1://repository`, with `helper_end` pointing at the first
+/// colon. This is only for the `<helper>::<address>` form; `<helper>://<address>` is parsed as a URL instead.
+pub(crate) fn remote_helper(input: &BStr, helper_end: usize) -> crate::Url {
+    let helper = input[..helper_end]
+        .to_str()
+        .expect("remote helper names consist of ASCII characters only");
+    crate::Url {
+        serialize_alternative_form: true,
+        path_with_percent_escapes: None,
+        // `ext` is special because callers need to know that its address is an executable command line.
+        scheme: if helper == "ext" {
+            Scheme::Ext
+        } else {
+            Scheme::Helper(helper.to_owned())
+        },
+        user: None,
+        password: None,
+        host: None,
+        port: None,
+        // The address is only meaningful to the helper program, so it's kept verbatim.
+        path: input[helper_end + "::".len()..].into(),
+    }
+}
+
+pub(crate) fn url(input: &BStr, protocol_end: usize) -> Result<crate::Url> {
     const MAX_LEN: usize = 1024;
-    let bytes_to_path = input[protocol_end + "://".len()..]
+    let input_after_protocol = &input[protocol_end + "://".len()..];
+    let scheme = &input[..protocol_end];
+    let is_http = scheme == "http" || scheme == "https";
+    let bytes_to_path = input_after_protocol
         .iter()
         .filter(|b| !b.is_ascii_whitespace())
         .skip_while(|b| **b == b'/' || **b == b'\\')
-        .position(|b| *b == b'/')
-        .unwrap_or(input.len() - protocol_end);
+        .position(|b| *b == b'/' || is_http && matches!(*b, b'?' | b'#'))
+        .unwrap_or(input_after_protocol.len());
     if bytes_to_path > MAX_LEN || protocol_end > MAX_LEN {
-        return Err(Error::TooLong {
-            truncated_url: input[..(protocol_end + "://".len() + MAX_LEN).min(input.len())].into(),
-            len: input.len(),
-        });
+        let truncated_url = &input[..(protocol_end + "://".len() + MAX_LEN).min(input.len())];
+        bail!(
+            validation(format!(
+                "The host portion of the URL is too long ({} bytes shown, {} bytes total)",
+                truncated_url.len(),
+                input.len()
+            ))
+            .with_input(truncated_url)
+        );
     }
     let (input, url) = input_to_utf8_and_url(input, UrlKind::Url)?;
+    if url.scheme == "ext" {
+        return Ok(crate::Url {
+            serialize_alternative_form: true,
+            path_with_percent_escapes: None,
+            scheme: Scheme::Ext,
+            user: None,
+            password: None,
+            host: None,
+            port: None,
+            // Git passes the entire URL where git-remote-ext expects its command line. Keeping it verbatim makes
+            // `ext::ext://...` serialization preserve that argument while normalizing all uses to `Scheme::Ext`.
+            path: input.into(),
+        });
+    }
     let scheme = Scheme::from(url.scheme.as_str());
 
     if matches!(scheme, Scheme::Git | Scheme::Ssh) && url.path.is_empty() {
-        return Err(Error::MissingRepositoryPath {
-            url: input.into(),
-            kind: UrlKind::Url,
-        });
+        bail!(
+            "{} does not specify a path to a repository"
+                .validation()
+                .with_input(input.as_bytes()),
+            UrlKind::Url.as_str()
+        );
     }
 
     // Normalize empty path to "/" for http/https URLs only
-    let path = if url.path.is_empty() && matches!(scheme, Scheme::Http | Scheme::Https) {
+    let path: BString = if url.path.is_empty() && matches!(scheme, Scheme::Http | Scheme::Https) {
         "/".into()
+    } else if matches!(scheme, Scheme::Ssh | Scheme::Git) && url.path.starts_with("/~") {
+        // For SSH and Git protocols, strip leading '/' from paths starting with '~'
+        // e.g., "ssh://host/~repo" -> path is "~repo", not "/~repo"
+        url.path[1..].into()
     } else {
         url.path.into()
     };
 
+    let user = if url.username.is_empty() && url.password.is_none() {
+        None
+    } else {
+        Some(url.username)
+    };
+    let password = url.password;
+    let port = url.port;
+
+    // For SSH URLs, strip brackets from IPv6 addresses
+    let host = if scheme == Scheme::Ssh {
+        url.host.map(|mut h| {
+            // Bracketed IPv6 forms
+            if let Some(h2) = h.strip_prefix('[') {
+                if let Some(inner) = h2.strip_suffix("]:") {
+                    // "[::1]:" → "::1"
+                    h = inner.to_owned();
+                } else if let Some(inner) = h2.strip_suffix(']') {
+                    // "[::1]" → "::1"
+                    h = inner.to_owned();
+                }
+            } else {
+                // Non-bracketed host: strip a single trailing colon
+                let colon_count = h.chars().filter(|&c| c == ':').take(2).count();
+                if colon_count == 1
+                    && let Some(inner) = h.strip_suffix(':')
+                {
+                    h = inner.to_string();
+                }
+            }
+            h
+        })
+    } else {
+        url.host
+    };
+    let path_with_percent_escapes = url.path_with_percent_escapes.map(Into::into);
     Ok(crate::Url {
         serialize_alternative_form: false,
+        path_with_percent_escapes,
         scheme,
-        user: url_user(&url, UrlKind::Url)?,
-        password: url
-            .password
-            .map(|s| percent_decoded_utf8(s, UrlKind::Url))
-            .transpose()?,
-        host: url.host,
-        port: url.port,
+        user,
+        password,
+        host,
+        port,
         path,
     })
 }
 
-fn percent_decoded_utf8(s: &str, kind: UrlKind) -> Result<String, Error> {
-    Ok(percent_decode_str(s)
-        .decode_utf8()
-        .map_err(|err| Error::Utf8 {
-            url: s.into(),
-            kind,
-            source: err,
-        })?
-        .into_owned())
-}
-
-pub(crate) fn scp(input: &BStr, colon: usize) -> Result<crate::Url, Error> {
+pub(crate) fn scp(input: &BStr, colon: usize) -> Result<crate::Url> {
     let input = input_to_utf8(input, UrlKind::Scp)?;
 
     // TODO: this incorrectly splits at IPv6 addresses, check for `[]` before splitting
@@ -149,46 +229,57 @@ pub(crate) fn scp(input: &BStr, colon: usize) -> Result<crate::Url, Error> {
     let path = &path[1..];
 
     if path.is_empty() {
-        return Err(Error::MissingRepositoryPath {
-            url: input.to_owned().into(),
-            kind: UrlKind::Scp,
-        });
+        bail!(
+            "{} does not specify a path to a repository"
+                .validation()
+                .with_input(input.as_bytes()),
+            UrlKind::Scp.as_str()
+        );
     }
 
     // The path returned by the parsed url often has the wrong number of leading `/` characters but
     // should never differ in any other way (ssh URLs should not contain a query or fragment part).
     // To avoid the various off-by-one errors caused by the `/` characters, we keep using the path
     // determined above and can therefore skip parsing it here as well.
-    let url_string = format!("ssh://{host}");
-    let url = crate::simple_url::ParsedUrl::parse(&url_string).map_err(|source| Error::Url {
-        url: input.to_owned(),
-        kind: UrlKind::Scp,
-        source,
+    // Split at the last `@`, just as OpenSSH does. Feeding the user through URL parsing would mistake `:` for a
+    // password delimiter even though SCP-like syntax cannot represent passwords.
+    let (user, host) = host
+        .rsplit_once('@')
+        .map_or((None, host), |(user, host)| (Some(user.to_owned()), host));
+    // In SCP-like syntax `%` is literal host data, but the synthesized URL parser treats it as an escape introducer.
+    let url_string = format!("ssh://{}", host.replace('%', "%25"));
+    let url = crate::simple_url::ParsedUrl::parse(&url_string).or_raise(|| {
+        validation(format!("{} can not be parsed as valid URL", UrlKind::Scp.as_str())).with_input(input.as_bytes())
     })?;
+
+    // For SCP-like SSH URLs, strip leading '/' from paths starting with '/~'
+    // e.g., "user@host:/~repo" -> path is "~repo", not "/~repo"
+    let path = if path.starts_with("/~") { &path[1..] } else { path };
+
+    let port = url.port;
+
+    // For SCP-like SSH URLs, strip brackets from IPv6 addresses
+    let host = url.host.map(|h| {
+        if let Some(h) = h.strip_prefix("[").and_then(|h| h.strip_suffix("]")) {
+            h.to_string()
+        } else {
+            h
+        }
+    });
 
     Ok(crate::Url {
         serialize_alternative_form: true,
+        path_with_percent_escapes: None,
         scheme: Scheme::from(url.scheme.as_str()),
-        user: url_user(&url, UrlKind::Scp)?,
-        password: url
-            .password
-            .map(|s| percent_decoded_utf8(s, UrlKind::Scp))
-            .transpose()?,
-        host: url.host,
-        port: url.port,
+        user,
+        password: None,
+        host,
+        port,
         path: path.into(),
     })
 }
 
-fn url_user(url: &crate::simple_url::ParsedUrl<'_>, kind: UrlKind) -> Result<Option<String>, Error> {
-    if url.username.is_empty() && url.password.is_none() {
-        Ok(None)
-    } else {
-        Ok(Some(percent_decoded_utf8(url.username, kind)?))
-    }
-}
-
-pub(crate) fn file_url(input: &BStr, protocol_colon: usize) -> Result<crate::Url, Error> {
+pub(crate) fn file_url(input: &BStr, protocol_colon: usize) -> Result<crate::Url> {
     let input = input_to_utf8(input, UrlKind::Url)?;
     let input_after_protocol = &input[protocol_colon + "://".len()..];
 
@@ -196,10 +287,12 @@ pub(crate) fn file_url(input: &BStr, protocol_colon: usize) -> Result<crate::Url
         .find('/')
         .or_else(|| cfg!(windows).then(|| input_after_protocol.find('\\')).flatten())
     else {
-        return Err(Error::MissingRepositoryPath {
-            url: input.to_owned().into(),
-            kind: UrlKind::Url,
-        });
+        bail!(
+            "{} does not specify a path to a repository"
+                .validation()
+                .with_input(input.as_bytes()),
+            UrlKind::Url.as_str()
+        );
     };
 
     // We cannot use the url crate to parse host and path because it special cases Windows
@@ -219,7 +312,7 @@ pub(crate) fn file_url(input: &BStr, protocol_colon: usize) -> Result<crate::Url
             input_after_protocol
         };
         // parse `file://x:/path/to/git` as explained above
-        if input_after_protocol.chars().nth(1) == Some(':') {
+        if gix_path::windows_drive_prefix(input_after_protocol.as_bytes().as_bstr()).is_some() {
             Some(input_after_protocol)
         } else {
             None
@@ -246,16 +339,20 @@ pub(crate) fn file_url(input: &BStr, protocol_colon: usize) -> Result<crate::Url
     })
 }
 
-pub(crate) fn local(input: &BStr) -> Result<crate::Url, Error> {
+pub(crate) fn local(input: &BStr) -> Result<crate::Url> {
     if input.is_empty() {
-        return Err(Error::MissingRepositoryPath {
-            url: input.to_owned(),
-            kind: UrlKind::Local,
-        });
+        bail!(
+            validation(format!(
+                "{} is empty and does not specify a path to a repository",
+                UrlKind::Local.as_str()
+            ))
+            .with_input(input.as_bytes())
+        );
     }
 
     Ok(crate::Url {
         serialize_alternative_form: true,
+        path_with_percent_escapes: None,
         scheme: Scheme::File,
         password: None,
         user: None,
@@ -265,30 +362,17 @@ pub(crate) fn local(input: &BStr) -> Result<crate::Url, Error> {
     })
 }
 
-fn input_to_utf8(input: &BStr, kind: UrlKind) -> Result<&str, Error> {
-    std::str::from_utf8(input).map_err(|source| Error::Utf8 {
-        url: input.to_owned(),
-        kind,
-        source,
-    })
+fn input_to_utf8(input: &BStr, kind: UrlKind) -> Result<&str> {
+    let kind = kind.as_str();
+    std::str::from_utf8(input)
+        .or_raise(|| validation(format!("{kind} is not valid UTF-8")).with_input(input.as_bytes()))
 }
 
-fn input_to_utf8_and_url(input: &BStr, kind: UrlKind) -> Result<(&str, crate::simple_url::ParsedUrl<'_>), Error> {
+fn input_to_utf8_and_url(input: &BStr, kind: UrlKind) -> Result<(&str, crate::simple_url::ParsedUrl)> {
     let input = input_to_utf8(input, kind)?;
     crate::simple_url::ParsedUrl::parse(input)
         .map(|url| (input, url))
-        .map_err(|source| {
-            // If the parser rejected it as RelativeUrlWithoutBase, map to Error::RelativeUrl
-            // to match the expected error type for malformed URLs like "invalid:://"
-            match source {
-                crate::simple_url::UrlParseError::RelativeUrlWithoutBase => {
-                    Error::RelativeUrl { url: input.to_owned() }
-                }
-                _ => Error::Url {
-                    url: input.to_owned(),
-                    kind,
-                    source,
-                },
-            }
+        .or_raise(|| {
+            validation(format!("{} can not be parsed as valid URL", kind.as_str())).with_input(input.as_bytes())
         })
 }

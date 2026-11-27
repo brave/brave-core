@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/renderer/content_settings_agent_impl.h b/components/content_settings/renderer/content_settings_agent_impl.h
-index 3ced460d08410b479f0c3656088b8ada5c3125b1..8de32f03b8cb59cda1b4f3f024190fbf94704208 100644
+index effecef5f3363d57c1c2ea8389b54863e6dfe64f..381a0e1ec15cc161df389f2b44454f08097b2bbb 100644
 --- a/components/content_settings/renderer/content_settings_agent_impl.h
 +++ b/components/content_settings/renderer/content_settings_agent_impl.h
-@@ -97,6 +97,7 @@ class ContentSettingsAgentImpl
+@@ -98,6 +98,7 @@ class ContentSettingsAgentImpl
    void SetRendererContentSettingRulesForTest(
        const RendererContentSettingRules& rules);
  

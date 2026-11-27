@@ -14,6 +14,8 @@ fn bench_fmt(b: &mut Bencher) {
     b.iter(|| {
         let _ = write!(s, "{}", mime);
         ::test::black_box(&s);
-        unsafe { s.as_mut_vec().set_len(0); }
+        unsafe {
+            s.as_mut_vec().set_len(0);
+        }
     })
 }

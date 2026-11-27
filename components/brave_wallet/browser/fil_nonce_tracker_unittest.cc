@@ -7,8 +7,8 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_tx_meta.h"
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
@@ -78,15 +78,12 @@ class FilNonceTrackerUnitTest : public testing::Test {
                     bool expected_success,
                     uint64_t expected_nonce) {
     SCOPED_TRACE(testing::Message() << location.ToString());
-    base::RunLoop run_loop;
-    tracker->GetNextNonce(
-        chain_id, from,
-        base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
-          EXPECT_EQ(expected_success, success);
-          EXPECT_EQ(expected_nonce, nonce);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<bool, uint256_t> future;
+    tracker->GetNextNonce(chain_id, from, future.GetCallback());
+    ASSERT_TRUE(future.Wait());
+    auto [success, nonce] = future.Take();
+    EXPECT_EQ(expected_success, success);
+    EXPECT_EQ(expected_nonce, nonce);
   }
 
   JsonRpcService* json_rpc_service() { return json_rpc_service_.get(); }

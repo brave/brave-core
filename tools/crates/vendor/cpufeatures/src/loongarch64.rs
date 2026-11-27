@@ -24,8 +24,22 @@ macro_rules! __unless_target_features {
 #[doc(hidden)]
 macro_rules! __detect_target_features {
     ($($tf:tt),+) => {{
+        let cpucfg1: usize;
+        let cpucfg2: usize;
+        let cpucfg3: usize;
+        unsafe {
+            std::arch::asm!(
+                "cpucfg {}, {}",
+                "cpucfg {}, {}",
+                "cpucfg {}, {}",
+                out(reg) cpucfg1, in(reg) 1,
+                out(reg) cpucfg2, in(reg) 2,
+                out(reg) cpucfg3, in(reg) 3,
+                options(pure, nomem, preserves_flags, nostack)
+            );
+        }
         let hwcaps = $crate::loongarch64::getauxval_hwcap();
-        $($crate::check!(hwcaps, $tf) & )+ true
+        $($crate::check!(cpucfg1, cpucfg2, cpucfg3, hwcaps, $tf) & )+ true
     }};
 }
 
@@ -35,39 +49,53 @@ pub fn getauxval_hwcap() -> u64 {
     unsafe { libc::getauxval(libc::AT_HWCAP) }
 }
 
-// Linux `expand_check_macro`
-#[cfg(target_os = "linux")]
-macro_rules! __expand_check_macro {
-    ($(($name:tt, $hwcap:ident)),* $(,)?) => {
-        #[macro_export]
-        #[doc(hidden)]
-        macro_rules! check {
-            $(
-                ($hwcaps:expr, $name) => {
-                    (($hwcaps & $crate::loongarch64::hwcaps::$hwcap) != 0)
-                };
-            )*
-        }
+#[macro_export]
+#[doc(hidden)]
+macro_rules! check {
+    ($cpucfg1:expr, $cpucfg2:expr, $cpucfg3:expr, $hwcaps:expr, "32s") => {
+        (($cpucfg1 & 1) != 0 || ($cpucfg1 & 2) != 0)
     };
-}
-
-// Linux `expand_check_macro`
-#[cfg(target_os = "linux")]
-__expand_check_macro! {
-    ("cpucfg",   CPUCFG),   // Enable CPUCFG support.
-    ("lam",      LAM),      // Enable LAM support.
-    ("ual",      UAL),      // Enable UAL support.
-    ("fpu",      FPU),      // Enable FPU support.
-    ("lsx",      LSX),      // Enable LSX support.
-    ("lasx",     LASX),     // Enable LASX support.
-    ("crc32",    CRC32),    // Enable CRC32 support.
-    ("complex",  COMPLEX),  // Enable COMPLEX support.
-    ("crypto",   CRYPTO),   // Enable CRYPTO support.
-    ("lvz",      LVZ),      // Enable LVZ support.
-    ("lbt.x86",  LBT_X86),  // Enable LBT_X86 support.
-    ("lbt.arm",  LBT_ARM),  // Enable LBT_ARM support.
-    ("lbt.mips", LBT_MIPS), // Enable LBT_MIPS support.
-    ("ptw",      PTW),      // Enable PTW support.
+    ($cpucfg1:expr, $cpucfg2:expr, $cpucfg3:expr, $hwcaps:expr, "f") => {
+        (($cpucfg2 & 2) != 0 && ($hwcaps & $crate::loongarch64::hwcaps::FPU) != 0)
+    };
+    ($cpucfg1:expr, $cpucfg2:expr, $cpucfg3:expr, $hwcaps:expr, "d") => {
+        (($cpucfg2 & 4) != 0 && ($hwcaps & $crate::loongarch64::hwcaps::FPU) != 0)
+    };
+    ($cpucfg1:expr, $cpucfg2:expr, $cpucfg3:expr, $hwcaps:expr, "frecipe") => {
+        (($cpucfg2 & (1 << 25)) != 0)
+    };
+    ($cpucfg1:expr, $cpucfg2:expr, $cpucfg3:expr, $hwcaps:expr, "div32") => {
+        (($cpucfg2 & (1 << 26)) != 0)
+    };
+    ($cpucfg1:expr, $cpucfg2:expr, $cpucfg3:expr, $hwcaps:expr, "lsx") => {
+        (($hwcaps & $crate::loongarch64::hwcaps::LSX) != 0)
+    };
+    ($cpucfg1:expr, $cpucfg2:expr, $cpucfg3:expr, $hwcaps:expr, "lasx") => {
+        (($hwcaps & $crate::loongarch64::hwcaps::LASX) != 0)
+    };
+    ($cpucfg1:expr, $cpucfg2:expr, $cpucfg3:expr, $hwcaps:expr, "lam-bh") => {
+        (($cpucfg2 & (1 << 27)) != 0)
+    };
+    ($cpucfg1:expr, $cpucfg2:expr, $cpucfg3:expr, $hwcaps:expr, "lamcas") => {
+        (($cpucfg2 & (1 << 28)) != 0)
+    };
+    ($cpucfg1:expr, $cpucfg2:expr, $cpucfg3:expr, $hwcaps:expr, "ld-seq-sa") => {
+        (($cpucfg3 & (1 << 23)) != 0)
+    };
+    ($cpucfg1:expr, $cpucfg2:expr, $cpucfg3:expr, $hwcaps:expr, "scq") => {
+        (($cpucfg2 & (1 << 30)) != 0)
+    };
+    ($cpucfg1:expr, $cpucfg2:expr, $cpucfg3:expr, $hwcaps:expr, "lbt") => {
+        (($hwcaps & $crate::loongarch64::hwcaps::LBT_X86) != 0
+            && ($hwcaps & $crate::loongarch64::hwcaps::LBT_ARM) != 0
+            && ($hwcaps & $crate::loongarch64::hwcaps::LBT_MIPS) != 0)
+    };
+    ($cpucfg1:expr, $cpucfg2:expr, $cpucfg3:expr, $hwcaps:expr, "lvz") => {
+        (($hwcaps & $crate::loongarch64::hwcaps::LVZ) != 0)
+    };
+    ($cpucfg1:expr, $cpucfg2:expr, $cpucfg3:expr, $hwcaps:expr, "ual") => {
+        (($hwcaps & $crate::loongarch64::hwcaps::UAL) != 0)
+    };
 }
 
 /// Linux hardware capabilities mapped to target features.
@@ -79,20 +107,14 @@ __expand_check_macro! {
 pub mod hwcaps {
     use libc::c_ulong;
 
-    pub const CPUCFG: c_ulong = libc::HWCAP_LOONGARCH_CPUCFG;
-    pub const LAM: c_ulong = libc::HWCAP_LOONGARCH_LAM;
     pub const UAL: c_ulong = libc::HWCAP_LOONGARCH_UAL;
     pub const FPU: c_ulong = libc::HWCAP_LOONGARCH_FPU;
     pub const LSX: c_ulong = libc::HWCAP_LOONGARCH_LSX;
     pub const LASX: c_ulong = libc::HWCAP_LOONGARCH_LASX;
-    pub const CRC32: c_ulong = libc::HWCAP_LOONGARCH_CRC32;
-    pub const COMPLEX: c_ulong = libc::HWCAP_LOONGARCH_COMPLEX;
-    pub const CRYPTO: c_ulong = libc::HWCAP_LOONGARCH_CRYPTO;
     pub const LVZ: c_ulong = libc::HWCAP_LOONGARCH_LVZ;
     pub const LBT_X86: c_ulong = libc::HWCAP_LOONGARCH_LBT_X86;
     pub const LBT_ARM: c_ulong = libc::HWCAP_LOONGARCH_LBT_ARM;
     pub const LBT_MIPS: c_ulong = libc::HWCAP_LOONGARCH_LBT_MIPS;
-    pub const PTW: c_ulong = libc::HWCAP_LOONGARCH_PTW;
 }
 
 // On other targets, runtime CPU feature detection is unavailable

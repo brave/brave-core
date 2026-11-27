@@ -18,14 +18,15 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_multi_source_observation.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/threading/sequence_bound.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
@@ -87,6 +88,23 @@ class AIChatService : public KeyedService,
       base::expected<std::vector<std::string>, mojom::APIError>)>;
   using GetFocusTabsCallback = base::OnceCallback<void(
       base::expected<std::vector<std::string>, mojom::APIError>)>;
+
+  // Tells the user when a response finishes in the background.
+  class NotificationDelegate {
+   public:
+    virtual ~NotificationDelegate() = default;
+
+    // |needs_approval| if it stopped on a tool use permission request rather
+    // than finishing. |conversation_title| is empty if it has none.
+    virtual void ShowCompletionNotification(
+        const std::string& conversation_uuid,
+        const std::u16string& conversation_title,
+        bool needs_approval) = 0;
+
+    // The conversation was viewed or removed.
+    virtual void CloseCompletionNotification(
+        const std::string& conversation_uuid) = 0;
+  };
 
   AIChatService(
       ModelService* model_service,
@@ -275,6 +293,8 @@ class AIChatService : public KeyedService,
   RestoreWorkspaceAssociatedContentFromUrl(const GURL& url,
                                            const std::string& content_uuid);
 
+  void SetNotificationDelegate(std::unique_ptr<NotificationDelegate> delegate);
+
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
   std::unique_ptr<EngineConsumer> GetEngineForModel(
       const std::string& model_key);
@@ -316,6 +336,12 @@ class AIChatService : public KeyedService,
   void SetDatabaseForTesting(base::SequenceBound<AIChatDatabase> db) {
     ai_chat_db_ = std::move(db);
   }
+  bool HasDatabaseForTesting() const { return !ai_chat_db_.is_null(); }
+  // Null until storage has been initialized.
+  scoped_refptr<base::SequencedTaskRunner> GetDatabaseTaskRunnerForTesting()
+      const {
+    return db_task_runner_;
+  }
 
   void SetWorkspaceContentRestorer(
       base::RepeatingCallback<
@@ -325,10 +351,6 @@ class AIChatService : public KeyedService,
   }
 
  private:
-  friend class AIChatServiceUnitTest;
-  FRIEND_TEST_ALL_PREFIXES(AIChatServiceUnitTest,
-                           CreateTabOrganizationEngineIfNeeded_InvalidModelKey);
-
   // Key is uuid
   using ConversationMap =
       std::map<std::string, mojom::ConversationPtr, std::less<>>;
@@ -438,18 +460,21 @@ class AIChatService : public KeyedService,
       base::expected<std::vector<std::string>, mojom::APIError> result);
   // Creates the tool providers for |conversation| and adds them to it.
   void AddToolProvidersToConversation(ConversationHandler* conversation);
-  // Sends |conversation_generation_state_| to all |observer_remotes_|.
+  // Sends |conversation_generation_state_| to all |observer_remotes_| and
+  // closes out-of-date notifications.
   void NotifyConversationGenerationStateChanged();
   // Whether |uuid| has a loaded ConversationHandler with a connected client.
   // This doesn't mean the conversation is on screen.
   bool IsConversationClientConnected(const std::string& uuid) const;
   // Marks |conversation_uuid| as no longer generating once its handler is
-  // neither generating nor running tools: kCompletedNotViewed, or idle if a
-  // client is connected.
+  // neither generating nor running tools: idle if a client is connected,
+  // otherwise kAwaitingUserInput if it stopped on a permission challenge, or
+  // else kCompletedNotViewed.
   void MaybeMarkGenerationComplete(const std::string& conversation_uuid);
   // DeleteConversation() without OnConversationListChanged(), for callers that
   // delete several conversations and then send the list once.
   void DeleteConversationWithoutNotifyingList(const std::string& id);
+  void ShowCompletionNotification(const std::string& uuid, bool needs_approval);
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
@@ -566,6 +591,10 @@ class AIChatService : public KeyedService,
   // can hand out a proxy delegate before the bridge itself exists; the bridge
   // is owned, accessed, and destroyed only on |db_task_runner_|.
   scoped_refptr<AIChatSyncBackend> sync_backend_;
+
+  std::unique_ptr<NotificationDelegate> notification_delegate_;
+  // Conversations we've shown a notification for.
+  base::flat_set<std::string> notified_conversations_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };

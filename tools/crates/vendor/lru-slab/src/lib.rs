@@ -122,15 +122,16 @@ impl<T> LruSlab<T> {
 
     /// Remove the element stored in `slot`, returning it
     pub fn remove(&mut self, slot: u32) -> T {
+        let value = self.slots[slot as usize]
+            .value
+            .take()
+            .expect("removing empty slot");
         self.unlink(slot);
         self.slots[slot as usize].next = self.free;
         self.slots[slot as usize].prev = NONE;
         self.free = slot;
         self.len -= 1;
-        self.slots[slot as usize]
-            .value
-            .take()
-            .expect("removing empty slot")
+        value
     }
 
     /// Mark `slot` as the most recently used and access it uniquely
@@ -407,9 +408,22 @@ impl IterState {
 
 #[cfg(test)]
 mod tests {
+    extern crate std;
+
     use alloc::{format, string::String, vec::Vec};
+    use self::std::panic::{catch_unwind, AssertUnwindSafe};
 
     use super::*;
+
+    #[test]
+    fn removing_vacant_slot_preserves_state() {
+        let mut slab = [42].into_iter().collect::<LruSlab<_>>();
+        let vacant = slab.insert(0);
+        slab.remove(vacant);
+        let before = (slab.len, slab.head, slab.tail, slab.free);
+        assert!(catch_unwind(AssertUnwindSafe(|| slab.remove(vacant))).is_err());
+        assert_eq!((slab.len, slab.head, slab.tail, slab.free), before);
+    }
 
     #[test]
     fn lru_order() {

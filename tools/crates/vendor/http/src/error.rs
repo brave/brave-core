@@ -47,6 +47,13 @@ impl fmt::Display for Error {
 }
 
 impl Error {
+    pub(crate) fn is_empty_uri(&self) -> bool {
+        match self.inner {
+            ErrorKind::Uri(ref err) => err.is_empty(),
+            _ => false,
+        }
+    }
+
     /// Return true if the underlying error has the same type as T.
     pub fn is<T: error::Error + 'static>(&self) -> bool {
         self.get_ref().is::<T>()

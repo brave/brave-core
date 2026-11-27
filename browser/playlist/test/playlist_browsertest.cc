@@ -11,9 +11,9 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
-#include "base/test/mock_callback.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -696,17 +696,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
       [&] { return playlist_tab_helper->found_items().size() == 1; }));
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
 
-  base::RunLoop run_loop;
-  base::MockCallback<playlist::PlaylistService::AddMediaFilesCallback> callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillOnce([&](std::vector<playlist::mojom::PlaylistItemPtr> items) {
-        EXPECT_EQ(items.size(), 1u);
-        EXPECT_FALSE(items[0]->is_blob_from_media_source);
-        EXPECT_EQ(items[0]->parents.size(), 1u);
-        EXPECT_EQ(items[0]->parents[0], playlist::kDefaultPlaylistID);
-        run_loop.Quit();
-      });
+  base::test::TestFuture<std::vector<playlist::mojom::PlaylistItemPtr>> future;
 
   std::vector<playlist::mojom::PlaylistItemPtr> items;
   std::ranges::transform(playlist_tab_helper->found_items(),
@@ -717,9 +707,13 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
   ASSERT_TRUE(playlist_service);
   playlist_service->AddMediaFiles(std::move(items),
                                   playlist::kDefaultPlaylistID,
-                                  /* can_cache= */ false, callback.Get());
+                                  /* can_cache= */ false, future.GetCallback());
 
-  run_loop.Run();
+  auto added_items = future.Take();
+  ASSERT_EQ(added_items.size(), 1u);
+  EXPECT_FALSE(added_items[0]->is_blob_from_media_source);
+  ASSERT_EQ(added_items[0]->parents.size(), 1u);
+  EXPECT_EQ(added_items[0]->parents[0], playlist::kDefaultPlaylistID);
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -752,26 +746,18 @@ IN_PROC_BROWSER_TEST_F(
       [&] { return playlist_tab_helper->found_items().size() == 1; }));
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
 
-  base::RunLoop run_loop;
-  base::MockCallback<
-      playlist::PlaylistService::AddMediaFilesFromActiveTabToPlaylistCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillOnce([&](std::vector<playlist::mojom::PlaylistItemPtr> items) {
-        EXPECT_EQ(items.size(), 1u);
-        EXPECT_FALSE(items[0]->is_blob_from_media_source);
-        EXPECT_EQ(items[0]->parents.size(), 1u);
-        EXPECT_EQ(items[0]->parents[0], playlist::kDefaultPlaylistID);
-        run_loop.Quit();
-      });
+  base::test::TestFuture<std::vector<playlist::mojom::PlaylistItemPtr>> future;
 
   auto* playlist_service = GetService();
   ASSERT_TRUE(playlist_service);
   playlist_service->AddMediaFilesFromActiveTabToPlaylist(
-      playlist::kDefaultPlaylistID, false, callback.Get());
+      playlist::kDefaultPlaylistID, false, future.GetCallback());
 
-  run_loop.Run();
+  auto items = future.Take();
+  ASSERT_EQ(items.size(), 1u);
+  EXPECT_FALSE(items[0]->is_blob_from_media_source);
+  ASSERT_EQ(items[0]->parents.size(), 1u);
+  EXPECT_EQ(items[0]->parents[0], playlist::kDefaultPlaylistID);
 }
 
 }  // namespace playlist

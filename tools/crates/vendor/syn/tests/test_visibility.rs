@@ -133,6 +133,7 @@ fn test_inherited_vis_named_field() {
                 named: [
                     Field {
                         vis: Visibility::Inherited,
+                        modifiers: FieldModifiers,
                         ident: Some("f"),
                         colon_token: Some,
                         ty: Type::Tuple,
@@ -170,6 +171,7 @@ fn test_inherited_vis_unnamed_field() {
                 unnamed: [
                     Field {
                         vis: Visibility::Inherited,
+                        modifiers: FieldModifiers,
                         ty: Type::Group {
                             elem: Type::Path {
                                 path: Path {

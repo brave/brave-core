@@ -8,7 +8,6 @@
 
 #include <string_view>
 
-#include "base/byte_size.h"
 #include "base/files/file_path.h"
 #include "base/no_destructor.h"
 #include "base/observer_list.h"
@@ -17,19 +16,17 @@
 
 namespace local_ai {
 
-// Brave's on-device speech recognition models.
+// Brave's on-device speech recognition models. `prefs::kOnDeviceSpeechModel`
+// stores these values, and the settings page uses them, so do not change them.
+// The pref stores 0 when the user enabled no model.
 enum class OnDeviceSpeechModel {
-  kEnglish,
-  kMultilingual,
+  kEnglish = 1,
+  kMultilingual = 2,
 };
 
 // Subdirectory of `model`'s install dir holding its files. Shared so that the
 // installer policy verifies the directory this class hands out.
 std::string_view GetModelDirName(OnDeviceSpeechModel model);
-
-// About how much the model takes on disk, for telling a user what they would
-// download. Only has to be close, so it need not follow every model update.
-inline constexpr base::ByteSize kApproxModelSize = base::MiB(636);
 
 // Singleton holding the install directory of each of Brave's on-device speech
 // recognition models. The component installer of each model populates its

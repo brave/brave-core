@@ -1,0 +1,77 @@
+lints.workspace = true
+
+[package]
+name = "gix-parallel"
+description = "Serial and parallel computation helpers and shared ownership primitives for gitoxide"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+version = "0.50.2"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+license = "MIT OR Apache-2.0"
+edition = "2024"
+rust-version = "1.95"
+include = ["/src/**/*", "/LICENSE-*"]
+
+[lib]
+doctest = false
+test = false
+
+[features]
+default = []
+## Use scoped threads and channels to parallelize computations, and thread-safe primitives for shared ownership and mutation.
+## Without this feature, computation helpers run serially and shared ownership uses `Rc` and `RefCell`.
+parallel = ["dep:crossbeam-channel", "dep:parking_lot"]
+## Provide `OnceCell` in synchronized or unsynchronized form, selected by `parallel`.
+## The external crate is needed for `get_or_try_init()` at the minimum supported Rust version.
+once_cell = ["dep:once_cell"]
+
+[[test]]
+name = "parallel"
+path = "tests/parallel_threaded.rs"
+required-features = ["parallel"]
+
+[[test]]
+name = "multi-threaded"
+path = "tests/parallel_shared_threaded.rs"
+required-features = ["parallel"]
+
+[[test]]
+name = "single-threaded"
+path = "tests/parallel_shared.rs"
+
+[dependencies]
+gix-trace = { version = "^0.3.2", path = "../gix-trace" }
+crossbeam-channel = { version = "0.5.15", optional = true }
+parking_lot = { version = "0.13.0", default-features = false, optional = true }
+once_cell = { version = "1.21.3", optional = true }
+document-features = { version = "0.2.0", optional = true }
+
+[package.metadata.docs.rs]
+all-features = true
+features = ["document-features"]
+
+[dev-dependencies]
+gix-testtools = { path = "../tests/tools", default-features = false, features = ["sha1"] }
+gix-trace = { path = "../gix-trace", features = ["tracing"] }
+insta = "1.46.3"
+tracing-subscriber = { version = "0.3.22", default-features = false, features = ["registry"] }
+
+[package.metadata.qa]
+checks = [
+    { args = ["--no-default-features"] },
+    { args = ["--all-features"] },
+    { args = ["--features", "parallel"] },
+    { args = ["--features", "once_cell"] },
+]
+tests = [
+    { args = ["--no-default-features"] },
+    { args = ["--all-features"] },
+]
+
+[package.metadata.qa.wasm]
+targets = ["wasm32-unknown-unknown", "wasm32-wasip1", "wasm32-wasip2"]
+checks = [
+    { args = ["--no-default-features", "--features", ""] },
+    { args = ["--no-default-features", "--features", "parallel"] },
+    { args = ["--no-default-features", "--features", "once_cell"] },
+    { args = ["--no-default-features", "--features", "parallel,once_cell"] },
+]

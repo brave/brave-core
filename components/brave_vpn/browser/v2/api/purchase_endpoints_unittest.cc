@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_vpn/browser/v2/api/purchase_endpoints.h"
 
-#include "base/values.h"
+#include "base/test/values_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_vpn::v2::endpoints {
@@ -25,21 +25,22 @@ TEST(PurchaseEndpointsTest, GetSubscriberCredentialRequestBodyToValue) {
       .validation_method = kTestValidationMethod,
       .purchase_token = kTestPurchaseToken,
       .bundle_id = kTestBundleId};
-  EXPECT_EQ(body.ToValue(), base::DictValue()
-                                .Set("product-type", kTestProductType)
-                                .Set("product-id", kTestProductId)
-                                .Set("validation-method", kTestValidationMethod)
-                                .Set("purchase-token", kTestPurchaseToken)
-                                .Set("bundle-id", kTestBundleId));
+  EXPECT_EQ(body.ToValue(), base::test::ParseJsonDict(R"({
+    "product-type": "test-product-type",
+    "product-id": "test-product-id",
+    "validation-method": "test-validation-method",
+    "purchase-token": "test-purchase-token",
+    "bundle-id": "test-bundle-id"
+  })"));
 }
 
 TEST(PurchaseEndpointsTest, GetSubscriberCredentialV12RequestBodyToValue) {
   const GetSubscriberCredentialV12RequestBody body{.skus_credential =
                                                        kTestSkusCredential};
-  EXPECT_EQ(body.ToValue(),
-            base::DictValue()
-                .Set("validation-method", "brave-premium")
-                .Set("brave-vpn-premium-monthly-pass", kTestSkusCredential));
+  EXPECT_EQ(body.ToValue(), base::test::ParseJsonDict(R"({
+    "validation-method": "brave-premium",
+    "brave-vpn-premium-monthly-pass": "test-skus-credential"
+  })"));
 }
 
 TEST(PurchaseEndpointsTest, VerifyPurchaseTokenRequestBodyToValue) {
@@ -48,11 +49,12 @@ TEST(PurchaseEndpointsTest, VerifyPurchaseTokenRequestBodyToValue) {
       .product_id = kTestProductId,
       .product_type = kTestProductType,
       .bundle_id = kTestBundleId};
-  EXPECT_EQ(body.ToValue(), base::DictValue()
-                                .Set("purchase-token", kTestPurchaseToken)
-                                .Set("product-id", kTestProductId)
-                                .Set("product-type", kTestProductType)
-                                .Set("bundle-id", kTestBundleId));
+  EXPECT_EQ(body.ToValue(), base::test::ParseJsonDict(R"({
+    "purchase-token": "test-purchase-token",
+    "product-id": "test-product-id",
+    "product-type": "test-product-type",
+    "bundle-id": "test-bundle-id"
+  })"));
 }
 
 }  // namespace brave_vpn::v2::endpoints

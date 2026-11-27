@@ -1,0 +1,27 @@
+diff --git a/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h b/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h
+index 21ab66fc6388d7c0bb6bc548c2197f182da47f6b..b1f5d7ea9b3e7941579fb4fce1bb91ba3e68d432 100644
+--- a/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h
++++ b/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h
+@@ -13,6 +13,7 @@
+ #include "base/scoped_observation.h"
+ #include "chrome/browser/profiles/profile.h"
+ #include "chrome/browser/profiles/profile_observer.h"
++#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+ #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
+ #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
+ #include "chrome/browser/ui/webui_name_variants.h"
+@@ -185,6 +186,14 @@ class WebUIContentsWrapper
+   void SetWebContentsForTesting(
+       std::unique_ptr<content::WebContents> web_contents);
+ 
++  void SetWebContentsAddNewContentsBrowser(
++      base::WeakPtr<BrowserWindowInterface> browser);
++  void CloseTrackedPopups();
++
++ protected:
++  std::vector<base::WeakPtr<content::WebContents>> tracked_popups_;
++  base::WeakPtr<BrowserWindowInterface> browser_;
++
+  private:
+   // If true will allow the wrapped WebContents to automatically resize its
+   // RenderWidgetHostView and send back updates to `Host` for the new size.

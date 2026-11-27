@@ -1,4 +1,3 @@
-use crate::error::Needed;
 use crate::stream::AsBStr;
 use crate::stream::AsBytes;
 use crate::stream::Checkpoint;
@@ -6,6 +5,7 @@ use crate::stream::Compare;
 use crate::stream::CompareResult;
 use crate::stream::FindSlice;
 use crate::stream::Location;
+use crate::stream::Needed;
 use crate::stream::Offset;
 #[cfg(feature = "unstable-recover")]
 #[cfg(feature = "std")]
@@ -25,6 +25,7 @@ use crate::stream::UpdateSlice;
 /// # Example
 ///
 /// ```
+/// # #[cfg(feature = "ascii")] {
 /// # use std::cell::Cell;
 /// # use winnow::prelude::*;
 /// # use winnow::stream::Stateful;
@@ -52,6 +53,7 @@ use crate::stream::UpdateSlice;
 /// let input = Stream { input: data, state: State(&mut state) };
 /// let output = word.parse(input).unwrap();
 /// assert_eq!(state, 1);
+/// # }
 /// ```
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 #[doc(alias = "LocatingSliceSpan")]
@@ -160,12 +162,6 @@ impl<I: Stream, S: core::fmt::Debug> Stream for Stateful<I, S> {
         self.input.reset(&checkpoint.inner);
     }
 
-    #[inline(always)]
-    fn raw(&self) -> &dyn core::fmt::Debug {
-        #![allow(deprecated)]
-        self.input.raw()
-    }
-
     fn trace(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         self.input.trace(f)
     }
@@ -248,13 +244,13 @@ where
     }
 }
 
-impl<I, S> Offset<<Stateful<I, S> as Stream>::Checkpoint> for Stateful<I, S>
+impl<I, S> Offset<<Self as Stream>::Checkpoint> for Stateful<I, S>
 where
     I: Stream,
     S: core::fmt::Debug,
 {
     #[inline(always)]
-    fn offset_from(&self, other: &<Stateful<I, S> as Stream>::Checkpoint) -> usize {
+    fn offset_from(&self, other: &<Self as Stream>::Checkpoint) -> usize {
         self.checkpoint().offset_from(other)
     }
 }

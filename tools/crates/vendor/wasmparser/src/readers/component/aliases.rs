@@ -14,7 +14,7 @@ pub enum ComponentOuterAliasKind {
 }
 
 /// Represents an alias in a WebAssembly component.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub enum ComponentAlias<'a> {
     /// The alias is to an export of a component instance.
     InstanceExport {
@@ -103,7 +103,7 @@ fn component_outer_alias_kind_from_bytes(
                     x,
                     "component outer alias kind",
                     offset + 1,
-                ))
+                ));
             }
         },
         0x03 => ComponentOuterAliasKind::Type,
@@ -113,7 +113,7 @@ fn component_outer_alias_kind_from_bytes(
                 x,
                 "component outer alias kind",
                 offset,
-            ))
+            ));
         }
     })
 }

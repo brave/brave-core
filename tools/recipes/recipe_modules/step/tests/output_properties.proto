@@ -1,0 +1,19 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipe_modules.brave.step.tests.output_properties;
+
+message Artefact {
+  string url = 1;
+  string sha256 = 2;
+  repeated string platforms = 3;
+}
+
+message InputProperties {
+  // An artefact exported by an earlier run, fed back in as input.
+  Artefact artefact = 1;
+}

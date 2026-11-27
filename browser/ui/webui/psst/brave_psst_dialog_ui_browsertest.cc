@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/psst/core/common/constants.h"
+#include "brave/components/psst/core/common/features.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "content/public/test/browser_test.h"
@@ -36,9 +38,16 @@ namespace psst {
 
 class BravePsstDialogUIBrowserTest : public PlatformBrowserTest {
  public:
+  BravePsstDialogUIBrowserTest() {
+    feature_list_.InitAndEnableFeature(features::kEnablePsst);
+  }
+
   content::WebContents* web_contents() {
     return chrome_test_utils::GetActiveWebContents(this);
   }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(BravePsstDialogUIBrowserTest,

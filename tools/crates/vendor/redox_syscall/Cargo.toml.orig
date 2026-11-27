@@ -1,10 +1,17 @@
 [package]
 name = "redox_syscall"
-version = "0.6.0"
+# NOTE: Now that redox_syscall is mostly an internal interface between the
+# kernel and relibc, the majority of changes will not need new crates.io
+# versions. The exception is of course when adding new flags/structs etc that
+# are used by redox-scheme and/or libredox.
+
+# When publishing to crates.io, bump the version in its own commit, that
+# doesn't change anything else.
+version = "0.9.5"
 description = "A Rust library to access raw Redox system calls"
 license = "MIT"
 authors = ["Jeremy Soller <jackpot51@gmail.com>"]
-repository = "https://gitlab.redox-os.org/redox-os/syscall"
+repository = "https://gitlab.redox-os.org/redox-os/kernel"
 documentation = "https://docs.rs/redox_syscall"
 edition = "2021"
 

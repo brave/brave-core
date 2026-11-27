@@ -49,9 +49,10 @@ macro_rules! io_algo {
 }
 
 macro_rules! algos {
-    ($(pub mod $name:ident($feat:literal, $encoder:ident, $decoder:ident) { pub mod sync { $($tt:tt)* } })*) => {
+    ($($(#[$attr:meta])* pub mod $name:ident($feat:literal, $encoder:ident, $decoder:ident) { pub mod sync { $($tt:tt)* } })*) => {
         $(
             #[cfg(feature = $feat)]
+            $(#[$attr])*
             pub mod $name {
                 pub mod sync { $($tt)* }
 
@@ -67,6 +68,26 @@ macro_rules! algos {
 
 algos! {
     pub mod brotli("brotli", BrotliEncoder, BrotliDecoder) {
+        pub mod sync {
+            pub use crate::utils::impls::sync::to_vec;
+
+            pub fn compress(bytes: &[u8]) -> Vec<u8> {
+                use brotli::{enc::backward_references::BrotliEncoderParams, CompressorReader};
+                let params = BrotliEncoderParams { quality: 1, ..Default::default() };
+                to_vec(CompressorReader::with_params(bytes, 0, &params))
+            }
+
+            pub fn decompress(bytes: &[u8]) -> Vec<u8> {
+                use brotli::Decompressor;
+                to_vec(Decompressor::new(bytes, 0))
+            }
+        }
+    }
+
+    // Uses the `brotli` crate as the reference implementation, so these tests also check that the
+    // two backends interoperate.
+    #[cfg(async_compression_unstable)]
+    pub mod mbrotli("brotli-mbrotli", MbrotliEncoder, MbrotliDecoder) {
         pub mod sync {
             pub use crate::utils::impls::sync::to_vec;
 
@@ -148,6 +169,26 @@ algos! {
     }
 
     pub mod zstd("zstd", ZstdEncoder, ZstdDecoder) {
+        pub mod sync {
+            pub use crate::utils::impls::sync::to_vec;
+
+            pub fn compress(bytes: &[u8]) -> Vec<u8> {
+                use libzstd::stream::read::Encoder;
+                use libzstd::DEFAULT_COMPRESSION_LEVEL;
+                to_vec(Encoder::new(bytes, DEFAULT_COMPRESSION_LEVEL).unwrap())
+            }
+
+            pub fn decompress(bytes: &[u8]) -> Vec<u8> {
+                use libzstd::stream::read::Decoder;
+                to_vec(Decoder::new(bytes).unwrap())
+            }
+        }
+    }
+
+    // Uses the `zstd` crate as the reference implementation, so these tests also check that the
+    // two backends interoperate.
+    #[cfg(async_compression_unstable)]
+    pub mod mzstd("zstd-mzstd", MzstdEncoder, MzstdDecoder) {
         pub mod sync {
             pub use crate::utils::impls::sync::to_vec;
 

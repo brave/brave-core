@@ -1,7 +1,7 @@
 //! Attack Requirements (MAT)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -19,11 +19,12 @@ use core::{fmt, str::FromStr};
 /// > of the deployment and execution of the vulnerable system. If the attacker
 /// > does not take action to overcome these conditions, the attack may succeed
 /// > only occasionally or not succeed at all.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ModifiedAttackRequirements {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
 
     /// Present (P)
@@ -49,20 +50,14 @@ pub enum ModifiedAttackRequirements {
     None,
 }
 
-impl Default for ModifiedAttackRequirements {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for ModifiedAttackRequirements {
     const TYPE: MetricType = MetricType::MAT;
 
     fn as_str(self) -> &'static str {
         match self {
-            ModifiedAttackRequirements::NotDefined => "X",
-            ModifiedAttackRequirements::Present => "P",
-            ModifiedAttackRequirements::None => "N",
+            Self::NotDefined => "X",
+            Self::Present => "P",
+            Self::None => "N",
         }
     }
 }
@@ -76,11 +71,11 @@ impl fmt::Display for ModifiedAttackRequirements {
 impl FromStr for ModifiedAttackRequirements {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(ModifiedAttackRequirements::NotDefined),
-            "P" => Ok(ModifiedAttackRequirements::Present),
-            "N" => Ok(ModifiedAttackRequirements::None),
+            "X" => Ok(Self::NotDefined),
+            "P" => Ok(Self::Present),
+            "N" => Ok(Self::None),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

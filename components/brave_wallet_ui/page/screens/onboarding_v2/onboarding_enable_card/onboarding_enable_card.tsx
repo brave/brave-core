@@ -15,7 +15,7 @@ import {
 } from '../components/onboarding_content_layout/onboarding_content_layout'
 
 // Assets
-import MastercardMark from './mastercard.svg'
+import MastercardMark from '$wallet/assets/svg-icons/mastercard.svg'
 
 // Styled Components
 import { Column, Row, Text } from '$wallet/components/shared/style'

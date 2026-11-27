@@ -40,6 +40,8 @@
 * **bytes** -
   Gates implementation of [BorshSerialize] and [BorshDeserialize]
   for [Bytes](https://docs.rs/bytes/1.5.0/bytes/struct.Bytes.html) and [BytesMut](https://docs.rs/bytes/1.5.0/bytes/struct.BytesMut.html).
+  In `no_std` builds this keeps `bytes` in `no_std` mode; when **std** is enabled,
+  `bytes/std` is enabled as well.
 * **bson** -
   Gates implementation of [BorshSerialize] and [BorshDeserialize]
   for [ObjectId](https://docs.rs/bson/2.9.0/bson/oid/struct.ObjectId.html).

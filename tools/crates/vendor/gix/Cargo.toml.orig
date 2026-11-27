@@ -5,16 +5,16 @@ name = "gix"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 description = "Interact with git repositories just like git would"
 license = "MIT OR Apache-2.0"
-version = "0.74.1"
+version = "0.90.0"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-include = ["src/**/*", "LICENSE-*"]
-# This MSRV is dictated by `firefox` to support the `helix` editor, but is now probably
-# effectively controlled by `jiff`, which also aligns with `regex`.
-rust-version = "1.82"
+edition = "2024"
+include = ["/src/**/*", "/LICENSE-*"]
+# Rust 1.88 is required so hash-related dependencies can use Rust 2024 crates,
+# notably `sha2` 0.11 and `hashbrown` 0.17.
+rust-version = "1.88"
 
 [lib]
-doctest = false
+doctest = true
 test = true
 
 [[example]]
@@ -22,9 +22,14 @@ name = "clone"
 path = "examples/clone.rs"
 required-features = ["blocking-network-client"]
 
+[[example]]
+name = "gix-notes-bench"
+path = "examples/gix-notes-bench.rs"
+required-features = ["notes"]
+
 [features]
 
-default = ["max-performance-safe", "comfort", "basic", "extras"]
+default = ["max-performance", "comfort", "basic", "extras", "auto-chain-error", "sha1"]
 
 #! There are various categories of features which help to optimize performance and build times. `gix` comes with 'batteries included' and everything is
 #! enabled as long as it doesn't sacrifice compatibility. Most users will be fine with that but will pay with higher compile times than necessary as they
@@ -44,7 +49,7 @@ default = ["max-performance-safe", "comfort", "basic", "extras"]
 #! #### Library Developers
 #!
 #! As a developer of a library, you should start out with `gix = { version = "X.Y.Z", default-features = false }` and add components as you see fit.
-#! For best compatibility, **do not activate `max-performance-safe`** or any other performance options.
+#! Leave performance features to the application so it can choose its threading and cache configuration.
 #!
 #! #### Bundles
 #!
@@ -67,17 +72,41 @@ extras = [
     "interrupt",
     "status",
     "dirwalk",
-    "blame"
+    "blame",
+    "merge",
+    "notes",
 ]
 
-## A collection of features that need a larger MSRV, and thus are disabled by default.
-## * `blob-merge` should be in extras, but needs `tree-editor` for convenience.
-need-more-recent-msrv = ["merge", "tree-editor"]
-
 ## Various progress-related features that improve the look of progress message units.
-comfort = [
-    "gix-features/progress-unit-bytes",
-    "gix-features/progress-unit-human-numbers",
+comfort = ["progress-unit-bytes", "progress-unit-human-numbers"]
+## Display progress counts with human-readable number units.
+progress-unit-human-numbers = ["gix-utils/progress-unit-human-numbers"]
+## Display byte sizes and progress with human-readable byte units.
+progress-unit-bytes = ["gix-utils/progress-unit-bytes"]
+
+#! #### Hashes
+#!
+#! Support for various hash algorithms is controlled here. The idea is to allow applications to
+#! compile in only the ones they need, which is why within the entire `gix` stack there is no
+#! crate that sets an algorithm, except for the top-level `gix` crate for convenience.
+#!
+#! At least one hash algorithm must be enabled for compilation to succeed.
+
+## Enable support for the SHA-1 hash throughout the `gix` stack.
+sha1 = [
+    "gix-hash/sha1",
+    "gix-pack/sha1",
+    "gix-note?/sha1",
+    "gix-worktree-stream?/sha1",
+]
+
+## Enable support for the SHA-256 hash throughout the `gix` stack.
+sha256 = [
+    "gix-hash/sha256",
+    "gix-object/sha256",
+    "gix-pack/sha256",
+    "gix-note?/sha256",
+    "gix-worktree-stream?/sha256",
 ]
 
 #! #### Components
@@ -86,7 +115,7 @@ comfort = [
 #! Providers of libraries should only activate the components they need.
 
 ## Provide a top-level `command` module that helps with spawning commands similarly to `git`.
-command = ["dep:gix-command"]
+command = ["dep:gix-command", "gix-object/signature"]
 
 ## Obtain information similar to `git status`.
 status = ["gix-status", "dirwalk", "index", "blob-diff", "gix-diff/index"]
@@ -104,17 +133,11 @@ dirwalk = ["dep:gix-dir", "attributes", "excludes"]
 # Note that `gix-negotiate` just piggibacks here, as 'credentials' is equivalent to 'fetch & push' right now.
 credentials = ["dep:gix-credentials", "dep:gix-prompt", "dep:gix-negotiate"]
 
-## Various ways to alter the worktree makeup by checkout and reset.
-worktree-mutation = ["attributes", "dep:gix-worktree-state"]
+## Add, inspect, update, and remove worktrees.
+worktree-mutation = ["status", "dep:gix-worktree-state", "gix-worktree/add", "gix-worktree/remove"]
 
 ## Retrieve a worktree stack for querying exclude information
 excludes = ["dep:gix-ignore", "dep:gix-worktree", "index"]
-
-## Provide facilities to edit trees conveniently.
-##
-## Not that currently, this requires [Rust 1.75](https://caniuse.rs/features/return_position_impl_trait_in_trait).
-## This feature toggle is likely going away then.
-tree-editor = []
 
 ## Query attributes and excludes. Enables access to pathspecs, worktree checkouts, filter-pipelines and submodules.
 attributes = [
@@ -130,6 +153,9 @@ attributes = [
 ## Add support for mailmaps, as way of determining the final name of commmiters and authors.
 mailmap = ["dep:gix-mailmap", "revision"]
 
+## Read and mutate Git notes.
+notes = ["dep:gix-note"]
+
 ## Make revspec parsing possible, as well describing revision.
 revision = ["gix-revision/describe", "gix-revision/merge_base", "index"]
 
@@ -142,13 +168,16 @@ revparse-regex = ["regex", "revision"]
 blob-diff = ["gix-diff/blob", "attributes"]
 
 ## Add functions to specifically merge files, using the standard three-way merge that git offers.
-merge = ["tree-editor", "blob-diff", "dep:gix-merge", "attributes"]
+merge = ["blob-diff", "dep:gix-merge", "attributes"]
 
 ## Add blame command similar to `git blame`.
-blame = ["dep:gix-blame"]
+blame = ["dep:gix-blame", "blob-diff"]
 
 ## Make it possible to turn a tree into a stream of bytes, which can be decoded to entries and turned into various other formats.
-worktree-stream = ["gix-worktree-stream", "attributes"]
+##
+## Tree streaming always uses a background producer thread. This feature therefore enables `parallel`, also when
+## activated through `worktree-archive`, keeping thread-safe shared types and locally gated parallel code paths consistent.
+worktree-stream = ["gix-worktree-stream", "attributes", "parallel"]
 
 ## Create archives from a tree in the repository, similar to what `git archive` does.
 ##
@@ -190,11 +219,18 @@ blocking-http-transport-curl = [
     "gix-transport/http-client-curl",
 ]
 ## Stacks with `blocking-http-transport-curl` and also enables the `rustls` backend to avoid `openssl`.
+## This feature takes precedence over `http-client-curl-rust-ssl`.
 blocking-http-transport-curl-rustls = [
     "blocking-http-transport-curl",
     "gix-transport/http-client-curl-rust-tls",
 ]
+## Stacks with `blocking-http-transport-curl` and also enables the `openssl` backend.
+blocking-http-transport-curl-openssl = [
+    "blocking-http-transport-curl",
+    "gix-transport/http-client-curl-openssl",
+]
 ## Stacks with `blocking-network-client` to provide support for HTTP/S using **reqwest**, and implies blocking networking as a whole, making the `https://` transport available.
+## Note that `reqwest`'s default features are not enabled, allowing custom configuration of e.g. the TLS backend by adding it as explicit dependency.
 blocking-http-transport-reqwest = [
     "blocking-network-client",
     "gix-transport/http-client-reqwest",
@@ -227,9 +263,6 @@ blocking-http-transport-reqwest-native-tls = [
 ## No C toolchain is involved.
 max-control = ["parallel", "pack-cache-lru-static", "pack-cache-lru-dynamic"]
 
-## Deprecated: gix always uses zlib-rs, so this is equivalent to `max-performance`
-max-performance-safe = ["max-control"]
-
 ## The tempfile registry uses a better implementation of a thread-safe hashmap, relying on an external crate.
 ## This may be useful when tempfiles are created and accessed in a massively parallel fashion and you know that this is indeed faster than
 ## the simpler implementation that is the default.
@@ -238,7 +271,7 @@ hp-tempfile-registry = ["gix-tempfile/hp-hashmap"]
 ## Make certain data structure threadsafe (or `Sync`) to facilitate multithreading. Further, many algorithms will now use multiple threads by default.
 ##
 ## If unset, most of `gix` can only be used in a single thread as data structures won't be `Send` anymore.
-parallel = ["gix-features/parallel"]
+parallel = ["gix-parallel/parallel", "gix-pack/parallel"]
 
 ## Provide a fixed-size allocation-free LRU cache for packs. It's useful if caching is desired while keeping the memory footprint
 ## for the LRU-cache itself low.
@@ -248,35 +281,35 @@ pack-cache-lru-static = ["gix-pack/pack-cache-lru-static"]
 pack-cache-lru-dynamic = ["gix-pack/pack-cache-lru-dynamic"]
 
 ## Enable all features required for performance.
-max-performance = ["max-performance-safe"]
+max-performance = ["max-control"]
 
-## Deprecated: gix always uses zlib-rs.
-zlib-ng = ["gix-features/zlib"]
-
-## Deprecated: gix always uses zlib-rs.
-zlib-rs = ["gix-features/zlib"]
-
-## Deprecated: gix always uses zlib-rs.
-zlib-ng-compat = ["gix-features/zlib"]
-
-## Deprecated: gix always uses zlib-rs.
-zlib-stock = ["gix-features/zlib"]
+## Decompress objects with [`sirocco`](https://docs.rs/sirocco), which is faster than the default `zlib-rs` at it.
+## `zlib-rs` is still used for compression.
+## This requires Rust 1.89 or newer.
+zlib-sirocco = ["gix-zlib/sirocco"]
 
 #! #### Other
 #!
 #! The catch-all of feature toggles.
 
+## Print captured caller locations in error diagnostics, including errors returned from `main()`.
+## Alternate formatting continues to omit locations. Locations are always available for inspection.
+error-print-location = ["gix-error/error-print-location"]
+
+## All [`gix::Error`](crate::Error) trees are flattened into chains for simple error-source chaining.
+auto-chain-error = ["gix-error/auto-chain-error"]
+
+## Allow [`gix::Exn`](crate::Exn) to convert directly into `anyhow::Error`.
+anyhow = ["gix-error/anyhow"]
+
+## The opposite of `auto-chain-error`. Use it to override `auto-chain-error`.
+tree-error = ["gix-error/tree-error"]
+
 ## Enable tracing using the `tracing` crate for coarse tracing.
-tracing = ["gix-features/tracing"]
+tracing = ["gix-trace/tracing"]
 
 ## Enable tracing using the `tracing` crate for detailed tracing. Also enables coarse tracing.
-tracing-detail = ["gix-features/tracing-detail", "tracing"]
-
-## When parsing objects by default errors will only be available on the granularity of success or failure, and with the above flag enabled
-## details information about the error location will be collected.
-## Use it in applications which expect broken or invalid objects or for debugging purposes.
-## Incorrectly formatted objects aren't very common otherwise.
-verbose-object-parsing-errors = ["gix-object/verbose-object-parsing-errors"]
+tracing-detail = ["gix-trace/tracing-detail", "tracing"]
 
 ## Data structures implement `serde::Serialize` and `serde::Deserialize`.
 serde = [
@@ -303,77 +336,77 @@ serde = [
 progress-tree = ["prodash/progress-tree"]
 
 ## Print debugging information about usage of object database caches, useful for tuning cache sizes.
-cache-efficiency-debug = ["gix-features/cache-efficiency-debug"]
-
+cache-efficiency-debug = ["gix-utils/cache-efficiency-debug"]
 
 [dependencies]
-gix-utils = { version = "^0.3.1", path = "../gix-utils" }
-gix-fs = { version = "^0.17.0", path = "../gix-fs" }
-gix-ref = { version = "^0.54.1", path = "../gix-ref" }
-gix-discover = { version = "^0.42.0", path = "../gix-discover" }
-gix-tempfile = { version = "^19.0.0", path = "../gix-tempfile", default-features = false }
-gix-lock = { version = "^19.0.0", path = "../gix-lock" }
-gix-validate = { version = "^0.10.1", path = "../gix-validate" }
-gix-sec = { version = "^0.12.2", path = "../gix-sec" }
-gix-date = { version = "^0.10.7", path = "../gix-date" }
-gix-refspec = { version = "^0.32.0", path = "../gix-refspec" }
-gix-filter = { version = "^0.21.0", path = "../gix-filter", optional = true }
-gix-dir = { version = "^0.16.0", path = "../gix-dir", optional = true }
+gix-parallel = { version = "^0.50.0", path = "../gix-parallel", features = ["once_cell"] }
+gix-error = { version = "^0.5.2", path = "../gix-error", features = ["bstr"] }
+gix-utils = { version = "^0.5.1", path = "../gix-utils", features = ["bstr", "interrupt", "progress"] }
+gix-fs = { version = "^0.24.1", path = "../gix-fs" }
+gix-ref = { version = "^0.69.1", path = "../gix-ref" }
+gix-discover = { version = "^0.57.1", path = "../gix-discover" }
+gix-tempfile = { version = "^26.0.0", path = "../gix-tempfile", default-features = false }
+gix-lock = { version = "^26.0.0", path = "../gix-lock" }
+gix-validate = { version = "^0.13.1", path = "../gix-validate" }
+gix-sec = { version = "^0.16.0", path = "../gix-sec" }
+gix-date = { version = "^0.18.1", path = "../gix-date" }
+gix-refspec = { version = "^0.47.1", path = "../gix-refspec" }
+gix-filter = { version = "^0.36.1", path = "../gix-filter", optional = true }
+gix-dir = { version = "^0.32.0", path = "../gix-dir", optional = true }
 
-gix-config = { version = "^0.47.1", path = "../gix-config" }
-gix-odb = { version = "^0.71.1", path = "../gix-odb" }
-gix-hash = { version = "^0.20.1", path = "../gix-hash" }
-gix-shallow = { version = "^0.6.0", path = "../gix-shallow" }
-gix-object = { version = "^0.51.1", path = "../gix-object" }
-gix-actor = { version = "^0.35.6", path = "../gix-actor" }
-gix-pack = { version = "^0.61.1", path = "../gix-pack", default-features = false, features = [
+gix-config = { version = "^0.62.1", path = "../gix-config" }
+gix-odb = { version = "^0.87.0", path = "../gix-odb" }
+gix-zlib = { version = "^0.4.0", path = "../gix-zlib" }
+gix-hash = { version = "^0.28.1", path = "../gix-hash" }
+gix-shallow = { version = "^0.15.1", path = "../gix-shallow" }
+gix-object = { version = "^0.66.1", path = "../gix-object" }
+gix-actor = { version = "^0.44.1", path = "../gix-actor" }
+gix-pack = { version = "^0.77.0", path = "../gix-pack", default-features = false, features = [
     "object-cache-dynamic",
 ] }
-gix-revision = { version = "^0.36.1", path = "../gix-revision", default-features = false }
-gix-revwalk = { version = "^0.22.0", path = "../gix-revwalk" }
-gix-negotiate = { version = "^0.22.0", path = "../gix-negotiate", optional = true }
+gix-revision = { version = "^0.52.0", path = "../gix-revision", default-features = false }
+gix-revwalk = { version = "^0.38.0", path = "../gix-revwalk" }
+gix-negotiate = { version = "^0.38.0", path = "../gix-negotiate", optional = true }
 
-gix-path = { version = "^0.10.21", path = "../gix-path" }
-gix-url = { version = "^0.33.1", path = "../gix-url" }
-gix-traverse = { version = "^0.48.0", path = "../gix-traverse" }
-gix-diff = { version = "^0.54.1", path = "../gix-diff", default-features = false }
-gix-merge = { version = "^0.7.0", path = "../gix-merge", default-features = false, optional = true }
-gix-mailmap = { version = "^0.27.4", path = "../gix-mailmap", optional = true }
-gix-features = { version = "^0.44.1", path = "../gix-features", features = [
-    "progress",
-    "once_cell",
-] }
-gix-trace = { version = "^0.1.15", path = "../gix-trace" }
+gix-path = { version = "^0.14.1", path = "../gix-path" }
+gix-quote = { version = "^0.10.1", path = "../gix-quote" }
+gix-url = { version = "^0.40.1", path = "../gix-url" }
+gix-traverse = { version = "^0.64.0", path = "../gix-traverse" }
+gix-diff = { version = "^0.70.0", path = "../gix-diff", default-features = false }
+gix-merge = { version = "^0.23.0", path = "../gix-merge", default-features = false, optional = true }
+gix-mailmap = { version = "^0.36.1", path = "../gix-mailmap", optional = true }
+gix-note = { version = "^0.3.1", path = "../gix-note", optional = true }
+gix-trace = { version = "^0.3.1", path = "../gix-trace" }
 
-gix-glob = { version = "^0.22.1", path = "../gix-glob" }
-gix-credentials = { version = "^0.31.1", path = "../gix-credentials", optional = true }
-gix-prompt = { version = "^0.11.2", path = "../gix-prompt", optional = true }
-gix-index = { version = "^0.42.1", path = "../gix-index", optional = true }
-gix-attributes = { version = "^0.28.1", path = "../gix-attributes", optional = true }
-gix-ignore = { version = "^0.17.1", path = "../gix-ignore", optional = true }
-gix-worktree = { version = "^0.43.1", path = "../gix-worktree", optional = true, default-features = false }
-gix-worktree-state = { version = "^0.21.0", path = "../gix-worktree-state", optional = true }
-gix-hashtable = { version = "^0.10.0", path = "../gix-hashtable" }
-gix-commitgraph = { version = "^0.30.1", path = "../gix-commitgraph" }
-gix-pathspec = { version = "^0.13.0", path = "../gix-pathspec", optional = true }
-gix-submodule = { version = "^0.21.0", path = "../gix-submodule", optional = true }
-gix-status = { version = "^0.21.1", path = "../gix-status", optional = true, features = [
+gix-glob = { version = "^0.29.1", path = "../gix-glob" }
+gix-credentials = { version = "^0.42.1", path = "../gix-credentials", optional = true }
+gix-prompt = { version = "^0.19.1", path = "../gix-prompt", optional = true }
+gix-index = { version = "^0.58.0", path = "../gix-index", optional = true }
+gix-attributes = { version = "^0.37.1", path = "../gix-attributes", optional = true }
+gix-ignore = { version = "^0.24.0", path = "../gix-ignore", optional = true }
+gix-worktree = { version = "^0.59.0", path = "../gix-worktree", optional = true, default-features = false }
+gix-worktree-state = { version = "^0.37.0", path = "../gix-worktree-state", optional = true }
+gix-hashtable = { version = "^0.18.0", path = "../gix-hashtable" }
+gix-commitgraph = { version = "^0.42.0", path = "../gix-commitgraph" }
+gix-pathspec = { version = "^0.22.1", path = "../gix-pathspec", optional = true }
+gix-submodule = { version = "^0.36.1", path = "../gix-submodule", optional = true }
+gix-status = { version = "^0.37.0", path = "../gix-status", optional = true, features = [
     "worktree-rewrites",
 ] }
-gix-command = { version = "^0.6.3", path = "../gix-command", optional = true }
+gix-command = { version = "^0.12.1", path = "../gix-command", optional = true }
 
-gix-worktree-stream = { version = "^0.23.0", path = "../gix-worktree-stream", optional = true }
-gix-archive = { version = "^0.23.1", path = "../gix-archive", default-features = false, optional = true }
-gix-blame = { version = "^0.4.0", path = "../gix-blame", optional = true }
+gix-worktree-stream = { version = "^0.39.0", path = "../gix-worktree-stream", optional = true }
+gix-archive = { version = "^0.39.0", path = "../gix-archive", default-features = false, optional = true }
+gix-blame = { version = "^0.20.0", path = "../gix-blame", optional = true }
 
 # For communication with remotes
-gix-protocol = { version = "^0.52.1", path = "../gix-protocol" }
-gix-transport = { version = "^0.49.1", path = "../gix-transport", optional = true }
+gix-protocol = { version = "^0.68.0", path = "../gix-protocol" }
+gix-transport = { version = "^0.62.0", path = "../gix-transport", optional = true }
 
 # Just to get the progress-tree feature
-prodash = { version = "30.0.1", optional = true, features = ["progress-tree"] }
-signal-hook = { version = "0.3.18", default-features = false, optional = true }
-thiserror = "2.0.17"
+prodash = { version = "31.0.1", optional = true, features = ["progress-tree"] }
+signal-hook = { version = "0.4.3", default-features = false, optional = true }
+nonempty = "0.12.0"
 serde = { version = "1.0.114", optional = true, default-features = false, features = [
     "derive",
 ] }
@@ -384,7 +417,7 @@ async-std = { version = "1.12.0", optional = true }
 ##
 ## If disabled, the text will be search verbatim in any portion of the commit message, similar to
 ## how a simple unanchored regex of only 'normal' characters would work.
-regex = { version = "1.11.3", optional = true, default-features = false, features = [
+regex = { version = "1.12.3", optional = true, default-features = false, features = [
     "std",
 ] }
 
@@ -394,26 +427,34 @@ parking_lot = { version = "0.12.4", optional = true }
 document-features = { version = "0.2.0", optional = true }
 
 [dev-dependencies]
-# For additional features that aren't enabled by default due to MSRV
 gix = { path = ".", default-features = false, features = [
-    "need-more-recent-msrv",
+    "merge", "tree-error"
+] }
+gix-hash = { version = "^0.28.1", path = "../gix-hash" }
+gix-pack = { version = "^0.77.0", path = "../gix-pack", default-features = false, features = [
+    "generate",
+    "streaming-input",
 ] }
 pretty_assertions = "1.4.0"
-gix-testtools = { path = "../tests/tools" }
+gix-testtools = { path = "../tests/tools", features = ["sha1", "sha256"] }
 is_ci = "1.1.1"
-anyhow = "1"
-walkdir = "2.3.2"
-serial_test = { version = "3.1.0", default-features = false }
+serial_test = { version = "3.4.0", default-features = false }
 async-std = { version = "1.12.0", features = ["attributes"] }
-termtree = "0.5.1"
-insta = "1.43.2"
+termtree = "1.0.0"
+insta = { version = "1.46.3", features = ["filters"] }
 
 [package.metadata.docs.rs]
 features = [
+    "sha1",
     "document-features",
     "max-performance",
     "blocking-network-client",
     "blocking-http-transport-curl",
-    "need-more-recent-msrv",
     "serde",
+]
+
+[package.metadata.cargo-machete]
+ignored = [
+    # Feature forwarding uses `prodash/*` in Cargo feature wiring without direct crate references.
+    "prodash",
 ]

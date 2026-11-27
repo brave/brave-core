@@ -1,5 +1,3 @@
-extern crate libc;
-
 use std::num::NonZeroUsize;
 use std::{mem, ptr};
 

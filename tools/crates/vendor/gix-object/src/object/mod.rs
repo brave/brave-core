@@ -1,4 +1,5 @@
 use crate::{Blob, Commit, Object, Tag, Tree};
+use gix_error::Result;
 
 mod convert;
 
@@ -95,8 +96,11 @@ impl Object {
         }
     }
     /// Turns this instance into a [`Blob`] if it is one.
-    #[allow(clippy::result_large_err)]
-    pub fn try_into_blob(self) -> Result<Blob, Self> {
+    #[expect(
+        clippy::result_large_err,
+        reason = "will be removed once `gix-error` is used consistently"
+    )]
+    pub fn try_into_blob(self) -> std::result::Result<Blob, Self> {
         match self {
             Object::Blob(v) => Ok(v),
             _ => Err(self),
@@ -110,24 +114,33 @@ impl Object {
         }
     }
     /// Turns this instance into a [`Commit`] if it is one.
-    #[allow(clippy::result_large_err)]
-    pub fn try_into_commit(self) -> Result<Commit, Self> {
+    #[expect(
+        clippy::result_large_err,
+        reason = "will be removed once `gix-error` is used consistently"
+    )]
+    pub fn try_into_commit(self) -> std::result::Result<Commit, Self> {
         match self {
             Object::Commit(v) => Ok(v),
             _ => Err(self),
         }
     }
     /// Turns this instance into a [`Tree`] if it is one.
-    #[allow(clippy::result_large_err)]
-    pub fn try_into_tree(self) -> Result<Tree, Self> {
+    #[expect(
+        clippy::result_large_err,
+        reason = "will be removed once `gix-error` is used consistently"
+    )]
+    pub fn try_into_tree(self) -> std::result::Result<Tree, Self> {
         match self {
             Object::Tree(v) => Ok(v),
             _ => Err(self),
         }
     }
     /// Turns this instance into a [`Tag`] if it is one.
-    #[allow(clippy::result_large_err)]
-    pub fn try_into_tag(self) -> Result<Tag, Self> {
+    #[expect(
+        clippy::result_large_err,
+        reason = "will be removed once `gix-error` is used consistently"
+    )]
+    pub fn try_into_tag(self) -> std::result::Result<Tag, Self> {
         match self {
             Object::Tag(v) => Ok(v),
             _ => Err(self),
@@ -173,58 +186,46 @@ impl Object {
     }
 }
 
-use crate::{
-    decode::{loose_header, Error as DecodeError, LooseHeaderDecodeError},
-    BlobRef, CommitRef, Kind, ObjectRef, TagRef, TreeRef,
-};
-
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum LooseDecodeError {
-    #[error(transparent)]
-    InvalidHeader(#[from] LooseHeaderDecodeError),
-    #[error(transparent)]
-    InvalidContent(#[from] DecodeError),
-    #[error("Object sized {size} does not fit into memory - this can happen on 32 bit systems")]
-    OutOfMemory { size: u64 },
-}
+use crate::{BlobRef, CommitRef, Kind, ObjectRef, TagRef, TreeRef, decode::loose_header};
+use gix_error::{OptionExt, ResultExt, message, validation};
 
 impl<'a> ObjectRef<'a> {
-    /// Deserialize an object from a loose serialisation
-    pub fn from_loose(data: &'a [u8]) -> Result<ObjectRef<'a>, LooseDecodeError> {
+    /// Deserialize an object from a loose serialisation given `data`, parsing with the provided `object_hash`.
+    pub fn from_loose(data: &'a [u8], hash_kind: gix_hash::Kind) -> Result<ObjectRef<'a>> {
         let (kind, size, offset) = loose_header(data)?;
 
+        let size = usize::try_from(size).or_raise(|| {
+            message!("Object sized {size} does not fit into memory - this can happen on 32 bit systems").validation()
+        })?;
         let body = &data[offset..]
-            .get(..size.try_into().map_err(|_| LooseDecodeError::OutOfMemory { size })?)
-            .ok_or(LooseHeaderDecodeError::InvalidHeader {
-                message: "object data was shorter than its size declared in the header",
-            })?;
+            .get(..size)
+            .ok_or_raise(|| validation("object data was shorter than its size declared in the header"))?;
 
-        Ok(Self::from_bytes(kind, body)?)
+        Self::from_bytes(body, kind, hash_kind)
     }
 
-    /// Deserialize an object of `kind` from the given `data`.
-    pub fn from_bytes(kind: Kind, data: &'a [u8]) -> Result<ObjectRef<'a>, crate::decode::Error> {
+    /// Deserialize an object of `kind` from the given `data`, using `object_hash`.
+    pub fn from_bytes(data: &'a [u8], kind: Kind, hash_kind: gix_hash::Kind) -> Result<ObjectRef<'a>> {
         Ok(match kind {
-            Kind::Tree => ObjectRef::Tree(TreeRef::from_bytes(data)?),
+            Kind::Tree => ObjectRef::Tree(TreeRef::from_bytes(data, hash_kind)?),
             Kind::Blob => ObjectRef::Blob(BlobRef { data }),
-            Kind::Commit => ObjectRef::Commit(CommitRef::from_bytes(data)?),
-            Kind::Tag => ObjectRef::Tag(TagRef::from_bytes(data)?),
+            Kind::Commit => ObjectRef::Commit(CommitRef::from_bytes(data, hash_kind)?),
+            Kind::Tag => ObjectRef::Tag(TagRef::from_bytes(data, hash_kind)?),
         })
     }
 
     /// Convert the immutable object into a mutable version, consuming the source in the process.
     ///
     /// Note that this is an expensive operation.
-    pub fn into_owned(self) -> Object {
-        self.into()
+    pub fn into_owned(self) -> Result<Object> {
+        self.try_into()
     }
 
     /// Convert this immutable object into its mutable counterpart.
     ///
     /// Note that this is an expensive operation.
-    pub fn to_owned(&self) -> Object {
-        self.clone().into()
+    pub fn to_owned(&self) -> Result<Object> {
+        self.clone().try_into()
     }
 }
 

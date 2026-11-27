@@ -8,13 +8,13 @@ import {
   AccountState,
   Authentication,
   AuthenticationObserverCallbackRouter,
-} from 'gen/brave/components/brave_account/mojom/brave_account.mojom.m'
+} from 'gen/brave/components/brave_account/mojom/brave_account.mojom-webui.js'
 import {
   AliasesUpdate,
   AliasesAccountUpdate,
   DEFAULT_MAX_ALIASES,
   EmailAliasesServiceObserverInterface,
-} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+} from 'gen/brave/components/email_aliases/email_aliases.mojom-webui.js'
 
 const emptyAliasesUpdate = {
   aliases: [],

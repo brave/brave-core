@@ -1,3 +1,0 @@
-include_rules = [
-  "+brave/components/history_embeddings",
-]

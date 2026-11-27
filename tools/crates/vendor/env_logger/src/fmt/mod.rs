@@ -71,7 +71,6 @@ use log::Record;
 mod humantime;
 #[cfg(feature = "kv")]
 mod kv;
-pub(crate) mod writer;
 
 #[cfg(feature = "color")]
 pub use anstyle as style;
@@ -80,17 +79,17 @@ pub use anstyle as style;
 pub use self::humantime::Timestamp;
 #[cfg(feature = "kv")]
 pub use self::kv::*;
-pub use self::writer::Target;
-pub use self::writer::WriteStyle;
+pub use crate::writer::Target;
+pub use crate::writer::WriteStyle;
 
-use self::writer::{Buffer, Writer};
+use crate::writer::{Buffer, Writer};
 
 /// Formatting precision of timestamps.
 ///
 /// Seconds give precision of full seconds, milliseconds give thousands of a
 /// second (3 decimal digits), microseconds are millionth of a second (6 decimal
 /// digits) and nanoseconds are billionth of a second (9 decimal digits).
-#[allow(clippy::exhaustive_enums)] // compatibility
+#[allow(clippy::exhaustive_enums, reason = "compatibility")]
 #[derive(Copy, Clone, Debug)]
 pub enum TimestampPrecision {
     /// Full second precision (0 decimal digits)
@@ -106,7 +105,7 @@ pub enum TimestampPrecision {
 /// The default timestamp precision is seconds.
 impl Default for TimestampPrecision {
     fn default() -> Self {
-        TimestampPrecision::Seconds
+        Self::Seconds
     }
 }
 
@@ -137,7 +136,7 @@ pub struct Formatter {
 
 impl Formatter {
     pub(crate) fn new(writer: &Writer) -> Self {
-        Formatter {
+        Self {
             buf: Rc::new(RefCell::new(writer.buffer())),
             write_style: writer.write_style(),
         }
@@ -233,7 +232,7 @@ impl Builder {
 
         let built = mem::replace(
             self,
-            Builder {
+            Self {
                 built: true,
                 ..Default::default()
             },
@@ -650,7 +649,7 @@ mod tests {
     }
 
     fn formatter() -> Formatter {
-        let writer = writer::Builder::new()
+        let writer = crate::writer::Builder::new()
             .write_style(WriteStyle::Never)
             .build();
 
@@ -930,7 +929,7 @@ mod tests {
     #[cfg(feature = "kv")]
     #[test]
     fn format_kv_default() {
-        let kvs = &[("a", 1u32), ("b", 2u32)][..];
+        let kvs = &[("a", 1_u32), ("b", 2_u32)][..];
         let mut f = formatter();
         let record = Record::builder()
             .args(format_args!("log message"))
@@ -964,7 +963,7 @@ mod tests {
     #[cfg(feature = "kv")]
     #[test]
     fn format_kv_default_full() {
-        let kvs = &[("a", 1u32), ("b", 2u32)][..];
+        let kvs = &[("a", 1_u32), ("b", 2_u32)][..];
         let mut f = formatter();
         let record = Record::builder()
             .args(format_args!("log\nmessage"))

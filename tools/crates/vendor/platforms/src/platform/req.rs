@@ -1,11 +1,12 @@
 //! Platform requirements
 
-use crate::error::Error;
-use crate::platform::Platform;
 use std::{fmt, str::FromStr, string::String};
 
 #[cfg(feature = "serde")]
 use serde::{de, ser, Deserialize, Serialize};
+
+use crate::error::Error;
+use crate::platform::Platform;
 
 /// Platform requirements: glob-like expressions for matching Rust platforms
 /// as identified by a "target triple", e.g. `i686-apple-darwin`.
@@ -23,7 +24,7 @@ use serde::{de, ser, Deserialize, Serialize};
 pub struct PlatformReq(String);
 
 /// Wildcard character used for globbing
-pub const WILDCARD: char = '*';
+const WILDCARD: char = '*';
 
 impl PlatformReq {
     /// Borrow this platform requirement as a string slice
@@ -94,8 +95,8 @@ impl FromStr for PlatformReq {
     ///
     /// Must match at least one known Rust platform "target triple"
     /// (e.g. `x86_64-unknown-linux-gnu`) to be considered valid.
-    fn from_str(req_str: &str) -> Result<PlatformReq, Error> {
-        let platform_req = PlatformReq(req_str.into());
+    fn from_str(req_str: &str) -> Result<Self, Error> {
+        let platform_req = Self(req_str.into());
 
         if platform_req.0.is_empty() || platform_req.matching_platforms().next().is_none() {
             Err(Error)

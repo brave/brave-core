@@ -10,6 +10,8 @@ use std::task::{Context, Poll};
 
 use futures_util::stream::{FuturesUnordered, Stream};
 
+use crate::common::lock::LockResultExt;
+
 use super::error::hyper_code;
 use super::UserDataPointer;
 
@@ -126,7 +128,7 @@ struct TaskFuture {
 /// its only purpose is to provide access to the waker. See `hyper_waker`.
 ///
 /// Corresponding Rust type: <https://doc.rust-lang.org/std/task/struct.Context.html>
-pub struct hyper_context<'a>(Context<'a>);
+pub struct hyper_context<'ctx>(Context<'ctx>);
 
 /// A waker that is saved and used to waken a pending task.
 ///
@@ -196,7 +198,7 @@ impl hyper_executor {
     fn spawn(&self, task: Box<hyper_task>) {
         self.spawn_queue
             .lock()
-            .unwrap()
+            .panic_if_poisoned()
             .push(TaskFuture { task: Some(task) });
     }
 
@@ -211,7 +213,7 @@ impl hyper_executor {
             {
                 // Scope the lock on the driver to ensure it is dropped before
                 // calling drain_queue below.
-                let mut driver = self.driver.lock().unwrap();
+                let mut driver = self.driver.lock().panic_if_poisoned();
                 match Pin::new(&mut *driver).poll_next(&mut cx) {
                     Poll::Ready(val) => return val,
                     Poll::Pending => {}
@@ -238,12 +240,12 @@ impl hyper_executor {
     /// drain_queue locks both self.spawn_queue and self.driver, so it requires
     /// that neither of them be locked already.
     fn drain_queue(&self) -> bool {
-        let mut queue = self.spawn_queue.lock().unwrap();
+        let mut queue = self.spawn_queue.lock().panic_if_poisoned();
         if queue.is_empty() {
             return false;
         }
 
-        let driver = self.driver.lock().unwrap();
+        let driver = self.driver.lock().panic_if_poisoned();
 
         for task in queue.drain(..) {
             driver.push(task);
@@ -353,9 +355,9 @@ impl hyper_task {
     }
 
     fn output_type(&self) -> hyper_task_return_type {
-        match self.output {
+        match &self.output {
             None => hyper_task_return_type::HYPER_TASK_EMPTY,
-            Some(ref val) => val.as_task_type(),
+            Some(val) => val.as_task_type(),
         }
     }
 }
@@ -364,9 +366,20 @@ impl Future for TaskFuture {
     type Output = Box<hyper_task>;
 
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        match Pin::new(&mut self.task.as_mut().unwrap().future).poll(cx) {
+        match Pin::new(
+            &mut self
+                .task
+                .as_mut()
+                .expect("ffi task future polled after completion")
+                .future,
+        )
+        .poll(cx)
+        {
             Poll::Ready(val) => {
-                let mut task = self.task.take().unwrap();
+                let mut task = self
+                    .task
+                    .take()
+                    .expect("ffi task future missing task after completion");
                 task.output = Some(val);
                 Poll::Ready(task)
             }
@@ -402,7 +415,7 @@ ffi_fn! {
         let task = non_null!(&mut *task ?= ptr::null_mut());
 
         if let Some(val) = task.output.take() {
-            let p = Box::into_raw(val) as *mut c_void;
+            let p = Box::into_raw(val).cast();
             // protect from returning fake pointers to empty types
             if p == std::ptr::NonNull::<c_void>::dangling().as_ptr() {
                 ptr::null_mut()
@@ -498,7 +511,9 @@ where
 // ===== impl hyper_context =====
 
 impl hyper_context<'_> {
-    pub(crate) fn wrap<'a, 'b>(cx: &'a mut Context<'b>) -> &'a mut hyper_context<'b> {
+    pub(crate) fn wrap<'borrow, 'ctx>(
+        cx: &'borrow mut Context<'ctx>,
+    ) -> &'borrow mut hyper_context<'ctx> {
         // A struct with only one field has the same layout as that field.
         unsafe { std::mem::transmute::<&mut Context<'_>, &mut hyper_context<'_>>(cx) }
     }

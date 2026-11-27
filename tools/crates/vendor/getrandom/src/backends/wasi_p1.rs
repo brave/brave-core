@@ -7,7 +7,7 @@ pub use crate::util::{inner_u32, inner_u64};
 // This linking is vendored from the wasi crate:
 // https://docs.rs/wasi/0.11.0+wasi-snapshot-preview1/src/wasi/lib_generated.rs.html#2344-2350
 #[link(wasm_import_module = "wasi_snapshot_preview1")]
-extern "C" {
+unsafe extern "C" {
     fn random_get(arg0: i32, arg1: i32) -> i32;
 }
 

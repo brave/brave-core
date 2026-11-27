@@ -6,6 +6,26 @@ use std::io::{self, Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 use tempfile::{env, tempdir, Builder, NamedTempFile, TempPath};
 
+struct CWDGuard {
+    #[allow(unused)]
+    guard: std::sync::MutexGuard<'static, ()>,
+    old_cwd: PathBuf,
+}
+
+impl Drop for CWDGuard {
+    fn drop(&mut self) {
+        let _ = std::env::set_current_dir(&self.old_cwd);
+    }
+}
+
+static CWD_LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
+
+fn cwd_lock() -> CWDGuard {
+    let guard = CWD_LOCK.lock().unwrap();
+    let old_cwd = std::env::current_dir().unwrap();
+    CWDGuard { guard, old_cwd }
+}
+
 fn exists<P: AsRef<Path>>(path: P) -> bool {
     std::fs::metadata(path.as_ref()).is_ok()
 }
@@ -280,7 +300,7 @@ fn temp_path_from_existing() {
     File::create(&tmp_file_path_2).unwrap();
     assert!(tmp_file_path_2.exists(), "Test file 2 hasn't been created");
 
-    let tmp_path = TempPath::from_path(&tmp_file_path_1);
+    let tmp_path = TempPath::try_from_path(&tmp_file_path_1).unwrap();
     assert!(
         tmp_file_path_1.exists(),
         "Test file has been deleted before dropping TempPath"
@@ -303,13 +323,60 @@ fn temp_path_from_argument_types() {
     // This just has to compile
     return;
 
-    TempPath::from_path("");
-    TempPath::from_path(String::new());
-    TempPath::from_path(OsStr::new(""));
-    TempPath::from_path(OsString::new());
-    TempPath::from_path(Path::new(""));
-    TempPath::from_path(PathBuf::new());
-    TempPath::from_path(PathBuf::new().into_boxed_path());
+    TempPath::try_from_path("").unwrap();
+    TempPath::try_from_path(String::new()).unwrap();
+    TempPath::try_from_path(OsStr::new("")).unwrap();
+    TempPath::try_from_path(OsString::new()).unwrap();
+    TempPath::try_from_path(Path::new("")).unwrap();
+    TempPath::try_from_path(PathBuf::new()).unwrap();
+    TempPath::try_from_path(PathBuf::new().into_boxed_path()).unwrap();
+}
+
+// This test only works on platforms where we can safely delete the current
+// working directory.
+#[test]
+#[cfg(not(any(target_os = "redox", target_os = "wasi", windows)))]
+fn test_temp_path_resolve_missing_cwd() {
+    configure_wasi_temp_dir();
+    let _guard = cwd_lock();
+
+    // Intentionally delete the current working directory
+    let tmpdir = tempdir().unwrap();
+    std::env::set_current_dir(&tmpdir).expect("failed to change to the temporary directory");
+    tmpdir.close().unwrap();
+
+    #[allow(deprecated)]
+    let path = TempPath::from_path("foo");
+    assert_eq!(&*path, Path::new("foo"));
+
+    TempPath::try_from_path("foo").expect_err("should have failed to make path absolute file");
+}
+
+#[test]
+fn test_temp_path_resolve_existing_cwd() {
+    configure_wasi_temp_dir();
+    let _guard = cwd_lock();
+
+    let tmpdir = tempdir().unwrap();
+    std::env::set_current_dir(&tmpdir).expect("failed to change to directory");
+
+    let cwd = if cfg!(target_os = "macos") {
+        // MacOS has absolute paths and ABSOLUTE paths. `cd /var/tmp/...` actually changes to
+        // /private/var/tmp...
+        std::env::current_dir().expect("failed to get the current directory")
+    } else {
+        tmpdir.path().to_owned()
+    };
+
+    #[allow(deprecated)]
+    let path = TempPath::from_path("foo");
+    assert_eq!(&*path, cwd.join("foo"));
+
+    #[allow(deprecated)]
+    let path = TempPath::from_path("");
+    assert_eq!(&*path, Path::new(""));
+
+    TempPath::try_from_path("").expect_err("empty paths should fail");
 }
 
 #[test]
@@ -323,11 +390,12 @@ fn test_write_after_close() {
 #[test]
 fn test_change_dir() {
     configure_wasi_temp_dir();
+    let _guard = cwd_lock();
 
     let dir_a = tempdir().unwrap();
     let dir_b = tempdir().unwrap();
 
-    std::env::set_current_dir(&dir_a).expect("failed to change to directory ~");
+    std::env::set_current_dir(&dir_a).expect("failed to change to directory A");
     let tmpfile = NamedTempFile::new_in(".").unwrap();
     let path = std::env::current_dir().unwrap().join(tmpfile.path());
     std::env::set_current_dir(&dir_b).expect("failed to change to directory B");
@@ -341,6 +409,7 @@ fn test_change_dir() {
 #[test]
 fn test_change_dir_make() {
     configure_wasi_temp_dir();
+    let _guard = cwd_lock();
 
     let dir_a = tempdir().unwrap();
     let dir_b = tempdir().unwrap();
@@ -516,7 +585,8 @@ fn test_make_uds() {
     assert!(temp_sock.path().exists());
 }
 
-#[cfg(unix)]
+// This works(ish) on redox, but it's really slow.
+#[cfg(all(unix, not(target_os = "redox")))]
 #[test]
 fn test_make_uds_conflict() {
     use std::io::ErrorKind;
@@ -574,7 +644,10 @@ fn test_reseed() {
             .open(path)
             .unwrap();
 
-        files.push(NamedTempFile::from_parts(f, TempPath::from_path(path)));
+        files.push(NamedTempFile::from_parts(
+            f,
+            TempPath::try_from_path(path).unwrap(),
+        ));
         Err(io::Error::new(io::ErrorKind::AlreadyExists, "fake!"))
     });
 

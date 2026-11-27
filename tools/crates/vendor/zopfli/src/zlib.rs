@@ -91,9 +91,8 @@ impl<W: Write> Write for ZlibEncoder<W> {
             .as_mut()
             .unwrap()
             .write(buf)
-            .map(|bytes_written| {
+            .inspect(|&bytes_written| {
                 self.adler_hasher.write(&buf[..bytes_written]);
-                bytes_written
             })
     }
 

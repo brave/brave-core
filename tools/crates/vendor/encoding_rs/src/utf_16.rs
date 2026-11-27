@@ -29,8 +29,13 @@ impl Utf16Decoder {
     }
 
     pub fn additional_from_state(&self) -> usize {
+        // A pending BMP code unit is stored in `lead_surrogate` and may be zero.
         1 + if self.lead_byte.is_some() { 1 } else { 0 }
-            + if self.lead_surrogate == 0 { 0 } else { 2 }
+            + if self.lead_surrogate == 0 && !self.pending_bmp {
+                0
+            } else {
+                2
+            }
     }
 
     pub fn max_utf16_buffer_length(&self, byte_length: usize) -> Option<usize> {
@@ -61,7 +66,7 @@ impl Utf16Decoder {
     }
 
     decoder_functions!(
-        {
+        preamble = {
             if self.pending_bmp {
                 match dest.check_space_bmp() {
                     Space::Full(_) => {
@@ -75,20 +80,21 @@ impl Utf16Decoder {
                 }
             }
         },
-        {
+        loop_preamble = {
             // This is the fast path. The rest runs only at the
             // start and end for partial sequences.
-            if self.lead_byte.is_none() && self.lead_surrogate == 0 {
-                if let Some((read, written)) = if self.be {
+            if self.lead_byte.is_none()
+                && self.lead_surrogate == 0
+                && let Some((read, written)) = if self.be {
                     dest.copy_utf16_from::<BigEndian>(&mut source)
                 } else {
                     dest.copy_utf16_from::<LittleEndian>(&mut source)
-                } {
-                    return (DecoderResult::Malformed(2, 0), read, written);
                 }
+            {
+                return (DecoderResult::Malformed(2, 0), read, written);
             }
         },
-        {
+        eof = {
             debug_assert!(!self.pending_bmp);
             if self.lead_surrogate != 0 || self.lead_byte.is_some() {
                 // We need to check space without intent to write in order to
@@ -125,7 +131,7 @@ impl Utf16Decoder {
                 }
             }
         },
-        {
+        body = {
             match self.lead_byte {
                 None => {
                     self.lead_byte = Some(b);
@@ -145,7 +151,7 @@ impl Utf16Decoder {
                             // The previous high surrogate was in
                             // error and this one becomes the new
                             // pending one.
-                            self.lead_surrogate = code_unit as u16;
+                            self.lead_surrogate = code_unit;
                             return (
                                 DecoderResult::Malformed(2, 2),
                                 unread_handle.consumed(),
@@ -186,14 +192,14 @@ impl Utf16Decoder {
                 }
             }
         },
-        self,
-        src_consumed,
-        dest,
-        source,
-        b,
-        destination_handle,
-        unread_handle,
-        check_space_astral
+        self = self,
+        src_consumed = src_consumed,
+        dest = dest,
+        source = source,
+        byte = b,
+        destination_handle = destination_handle,
+        unread_handle = unread_handle,
+        destination_check = check_space_astral
     );
 }
 
@@ -441,6 +447,34 @@ mod tests {
             assert_eq!(output[2], 0x83);
             assert_eq!(output[3], 0x00);
         }
+    }
+
+    #[test]
+    fn test_utf_16le_pending_nul_max_length() {
+        // An unpaired high surrogate followed by U+0000 leaves U+0000 pending.
+        // The max length queries must count it like any other pending code unit.
+        let mut decoder = UTF_16LE.new_decoder_without_bom_handling();
+        let mut output = [0u8; 16];
+        let (result, _, _) =
+            decoder.decode_to_utf8_without_replacement(&[0x00, 0xD8], &mut output[..], false);
+        assert_eq!(result, DecoderResult::InputEmpty);
+        let (result, read, _) = decoder.decode_to_utf8_without_replacement(
+            &[0x00, 0x00, 0x00, 0x4E, 0x00, 0x4E],
+            &mut output[..],
+            false,
+        );
+        assert_eq!(result, DecoderResult::Malformed(2, 2));
+        assert_eq!(read, 2);
+        let rest = [0x00, 0x4E, 0x00, 0x4E];
+        let max = decoder
+            .max_utf8_buffer_length_without_replacement(rest.len())
+            .unwrap();
+        let mut output = vec![0u8; max];
+        let (result, read, written) =
+            decoder.decode_to_utf8_without_replacement(&rest, &mut output[..], true);
+        assert_eq!(result, DecoderResult::InputEmpty);
+        assert_eq!(read, 4);
+        assert_eq!(&output[..written], "\u{0000}\u{4E00}\u{4E00}".as_bytes());
     }
 
     #[test]

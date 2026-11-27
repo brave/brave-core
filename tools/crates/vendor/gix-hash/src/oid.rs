@@ -1,6 +1,13 @@
-use std::hash;
+use gix_error::{Result, message};
+use std::{hash, ops::Range};
 
-use crate::{Kind, ObjectId, SIZE_OF_SHA1_DIGEST};
+use crate::{Kind, ObjectId, Prefix};
+
+#[cfg(feature = "sha1")]
+use crate::{EMPTY_BLOB_SHA1, EMPTY_TREE_SHA1, SIZE_OF_SHA1_DIGEST};
+
+#[cfg(feature = "sha256")]
+use crate::{EMPTY_BLOB_SHA256, EMPTY_TREE_SHA256, SIZE_OF_SHA256_DIGEST};
 
 /// A borrowed reference to a hash identifying objects.
 ///
@@ -16,7 +23,7 @@ use crate::{Kind, ObjectId, SIZE_OF_SHA1_DIGEST};
 /// than 64 bytes.
 #[derive(PartialEq, Eq, Ord, PartialOrd)]
 #[repr(transparent)]
-#[allow(non_camel_case_types)]
+#[expect(non_camel_case_types, reason = "the name mirrors 'str'")]
 #[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct oid {
     bytes: [u8],
@@ -27,7 +34,6 @@ pub struct oid {
 // it attempting to hash the length of the slice first. On 32 bit systems
 // this can lead to issues with the custom `gix_hashtable` `Hasher` implementation,
 // and it currently ends up being discarded there anyway.
-#[allow(clippy::derived_hash_with_manual_eq)]
 impl hash::Hash for oid {
     fn hash<H: hash::Hasher>(&self, state: &mut H) {
         state.write(self.as_bytes());
@@ -50,52 +56,66 @@ impl std::fmt::Display for HexDisplay<'_> {
     }
 }
 
+impl HexDisplay<'_> {
+    pub(crate) fn eq_str(&self, other: &str) -> bool {
+        let mut hex = Kind::hex_buf();
+        let hex = self.inner.hex_to_buf(hex.as_mut());
+        hex[..self.hex_len.min(hex.len())] == *other
+    }
+}
+
+// Keep this directional as truncated displays aren't uniquely identified by their text.
+impl_partial_eq_str_one_way!(HexDisplay<'_>);
+
 impl std::fmt::Debug for oid {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
             "{}({})",
             match self.kind() {
+                #[cfg(feature = "sha1")]
                 Kind::Sha1 => "Sha1",
+                #[cfg(feature = "sha256")]
+                Kind::Sha256 => "Sha256",
             },
             self.to_hex(),
         )
     }
 }
 
-/// The error returned when trying to convert a byte slice to an [`oid`] or [`ObjectId`]
-#[allow(missing_docs)]
-#[derive(Debug, thiserror::Error)]
-pub enum Error {
-    #[error("Cannot instantiate git hash from a digest of length {0}")]
-    InvalidByteSliceLength(usize),
-}
-
 /// Conversion
 impl oid {
     /// Try to create a shared object id from a slice of bytes representing a hash `digest`
     #[inline]
-    pub fn try_from_bytes(digest: &[u8]) -> Result<&Self, Error> {
+    pub fn try_from_bytes(digest: &[u8]) -> Result<&Self> {
         match digest.len() {
-            20 => Ok(
-                #[allow(unsafe_code)]
+            #[cfg(feature = "sha1")]
+            SIZE_OF_SHA1_DIGEST => Ok(
+                #[expect(unsafe_code)]
                 unsafe {
                     &*(std::ptr::from_ref::<[u8]>(digest) as *const oid)
                 },
             ),
-            len => Err(Error::InvalidByteSliceLength(len)),
+            #[cfg(feature = "sha256")]
+            SIZE_OF_SHA256_DIGEST => Ok(
+                #[expect(unsafe_code)]
+                unsafe {
+                    &*(std::ptr::from_ref::<[u8]>(digest) as *const oid)
+                },
+            ),
+            len => Err(message!("Cannot instantiate git hash from a digest of length {len}").validation_error()),
         }
     }
 
-    /// Create an OID from the input `value` slice without performing any safety check.
-    /// Use only once sure that `value` is a hash of valid length.
+    /// Create an `oid` from the input `value` slice without performing any length check.
+    /// Use only once you are sure that `value` is a hash of valid length, or panics will occur on most uses.
     pub fn from_bytes_unchecked(value: &[u8]) -> &Self {
         Self::from_bytes(value)
     }
 
     /// Only from code that statically assures correct sizes using array conversions.
     pub(crate) fn from_bytes(value: &[u8]) -> &Self {
-        #[allow(unsafe_code)]
+        #[expect(unsafe_code)]
         unsafe {
             &*(std::ptr::from_ref::<[u8]>(value) as *const oid)
         }
@@ -131,7 +151,7 @@ impl oid {
         }
     }
 
-    /// Return a type which displays this oid as hex in full.
+    /// Return a type which displays this `oid` as hex in full.
     #[inline]
     pub fn to_hex(&self) -> HexDisplay<'_> {
         HexDisplay {
@@ -140,42 +160,37 @@ impl oid {
         }
     }
 
-    /// Returns `true` if this hash consists of all null bytes.
+    /// Return the bytes in `range` as a standalone, byte-aligned [`Prefix`].
+    ///
+    /// The range addresses raw hash bytes, not hexadecimal digits. Thus, each selected byte contributes two hexadecimal
+    /// digits to the returned prefix. The selected bytes become the beginning of the prefix, independently of where they
+    /// occurred in this object ID.
+    ///
+    /// # Panics
+    ///
+    /// If `range` is out of bounds or has its start after its end.
     #[inline]
-    #[doc(alias = "is_zero", alias = "git2")]
-    pub fn is_null(&self) -> bool {
-        match self.kind() {
-            Kind::Sha1 => &self.bytes == oid::null_sha1().as_bytes(),
+    pub fn to_prefix(&self, range: Range<usize>) -> Prefix {
+        let selected = &self.bytes[range];
+        let mut bytes = ObjectId::null(self.kind());
+        bytes.as_mut_slice()[..selected.len()].copy_from_slice(selected);
+        Prefix {
+            bytes,
+            hex_len: selected.len() * 2,
         }
     }
 
-    /// Returns `true` if this hash is equal to an empty blob.
-    #[inline]
-    pub fn is_empty_blob(&self) -> bool {
-        match self.kind() {
-            Kind::Sha1 => &self.bytes == oid::empty_blob_sha1().as_bytes(),
-        }
-    }
-
-    /// Returns `true` if this hash is equal to an empty tree.
-    #[inline]
-    pub fn is_empty_tree(&self) -> bool {
-        match self.kind() {
-            Kind::Sha1 => &self.bytes == oid::empty_tree_sha1().as_bytes(),
-        }
-    }
-}
-
-/// Sha1 specific methods
-impl oid {
     /// Write ourselves to the `out` in hexadecimal notation, returning the hex-string ready for display.
     ///
-    /// **Panics** if the buffer isn't big enough to hold twice as many bytes as the current binary size.
+    /// # Panics
+    ///
+    /// If the buffer isn't big enough to hold twice as many bytes as the current binary size.
     #[inline]
     #[must_use]
     pub fn hex_to_buf<'a>(&self, buf: &'a mut [u8]) -> &'a mut str {
         let num_hex_bytes = self.bytes.len() * 2;
-        faster_hex::hex_encode(&self.bytes, &mut buf[..num_hex_bytes]).expect("to count correctly")
+        faster_hex::hex_encode(&self.bytes, &mut buf[..num_hex_bytes])
+            .expect("buffer size must be at least twice the hash digest size in bytes")
     }
 
     /// Write ourselves to `out` in hexadecimal notation.
@@ -186,22 +201,87 @@ impl oid {
         out.write_all(&hex[..hex_len])
     }
 
-    /// Returns a Sha1 digest with all bytes being initialized to zero.
+    pub(crate) fn eq_str(&self, other: &str) -> bool {
+        self.to_hex().eq_str(other)
+    }
+
+    /// Returns `true` if this hash consists of all null bytes.
     #[inline]
+    #[doc(alias = "is_zero", alias = "git2")]
+    pub fn is_null(&self) -> bool {
+        match self.kind() {
+            #[cfg(feature = "sha1")]
+            Kind::Sha1 => &self.bytes == oid::null_sha1().as_bytes(),
+            #[cfg(feature = "sha256")]
+            Kind::Sha256 => &self.bytes == oid::null_sha256().as_bytes(),
+        }
+    }
+
+    /// Returns `true` if this hash is equal to an empty blob.
+    #[inline]
+    pub fn is_empty_blob(&self) -> bool {
+        match self.kind() {
+            #[cfg(feature = "sha1")]
+            Kind::Sha1 => &self.bytes == oid::empty_blob_sha1().as_bytes(),
+            #[cfg(feature = "sha256")]
+            Kind::Sha256 => &self.bytes == oid::empty_blob_sha256().as_bytes(),
+        }
+    }
+
+    /// Returns `true` if this hash is equal to an empty tree.
+    #[inline]
+    pub fn is_empty_tree(&self) -> bool {
+        match self.kind() {
+            #[cfg(feature = "sha1")]
+            Kind::Sha1 => &self.bytes == oid::empty_tree_sha1().as_bytes(),
+            #[cfg(feature = "sha256")]
+            Kind::Sha256 => &self.bytes == oid::empty_tree_sha256().as_bytes(),
+        }
+    }
+}
+
+/// Methods for creating special-case `oid`s (null, empty blob, empty tree)
+impl oid {
+    /// Returns a SHA1 digest with all bytes being initialized to zero.
+    #[inline]
+    #[cfg(feature = "sha1")]
     pub(crate) fn null_sha1() -> &'static Self {
         oid::from_bytes([0u8; SIZE_OF_SHA1_DIGEST].as_ref())
     }
 
-    /// Returns an oid representing the hash of an empty blob.
+    /// Returns a SHA256 digest with all bytes being initialized to zero.
     #[inline]
-    pub(crate) fn empty_blob_sha1() -> &'static Self {
-        oid::from_bytes(b"\xe6\x9d\xe2\x9b\xb2\xd1\xd6\x43\x4b\x8b\x29\xae\x77\x5a\xd8\xc2\xe4\x8c\x53\x91")
+    #[cfg(feature = "sha256")]
+    pub(crate) fn null_sha256() -> &'static Self {
+        oid::from_bytes([0u8; SIZE_OF_SHA256_DIGEST].as_ref())
     }
 
-    /// Returns an oid representing the hash of an empty tree.
+    /// Returns an `oid` representing the SHA1 hash of an empty blob.
     #[inline]
+    #[cfg(feature = "sha1")]
+    pub(crate) fn empty_blob_sha1() -> &'static Self {
+        oid::from_bytes(EMPTY_BLOB_SHA1)
+    }
+
+    /// Returns an `oid` representing the SHA256 hash of an empty blob.
+    #[inline]
+    #[cfg(feature = "sha256")]
+    pub(crate) fn empty_blob_sha256() -> &'static Self {
+        oid::from_bytes(EMPTY_BLOB_SHA256)
+    }
+
+    /// Returns an `oid` representing the SHA1 hash of an empty tree.
+    #[inline]
+    #[cfg(feature = "sha1")]
     pub(crate) fn empty_tree_sha1() -> &'static Self {
-        oid::from_bytes(b"\x4b\x82\x5d\xc6\x42\xcb\x6e\xb9\xa0\x60\xe5\x4b\xf8\xd6\x92\x88\xfb\xee\x49\x04")
+        oid::from_bytes(EMPTY_TREE_SHA1)
+    }
+
+    /// Returns an `oid` representing the SHA256 hash of an empty tree.
+    #[inline]
+    #[cfg(feature = "sha256")]
+    pub(crate) fn empty_tree_sha256() -> &'static Self {
+        oid::from_bytes(EMPTY_TREE_SHA256)
     }
 }
 
@@ -212,9 +292,9 @@ impl AsRef<oid> for &oid {
 }
 
 impl<'a> TryFrom<&'a [u8]> for &'a oid {
-    type Error = Error;
+    type Error = gix_error::Error;
 
-    fn try_from(value: &'a [u8]) -> Result<Self, Self::Error> {
+    fn try_from(value: &'a [u8]) -> Result<Self> {
         oid::try_from_bytes(value)
     }
 }
@@ -224,13 +304,24 @@ impl ToOwned for oid {
 
     fn to_owned(&self) -> Self::Owned {
         match self.kind() {
+            #[cfg(feature = "sha1")]
             Kind::Sha1 => ObjectId::Sha1(self.bytes.try_into().expect("no bug in hash detection")),
+            #[cfg(feature = "sha256")]
+            Kind::Sha256 => ObjectId::Sha256(self.bytes.try_into().expect("no bug in hash detection")),
         }
     }
 }
 
+#[cfg(feature = "sha1")]
 impl<'a> From<&'a [u8; SIZE_OF_SHA1_DIGEST]> for &'a oid {
     fn from(v: &'a [u8; SIZE_OF_SHA1_DIGEST]) -> Self {
+        oid::from_bytes(v.as_ref())
+    }
+}
+
+#[cfg(feature = "sha256")]
+impl<'a> From<&'a [u8; SIZE_OF_SHA256_DIGEST]> for &'a oid {
+    fn from(v: &'a [u8; SIZE_OF_SHA256_DIGEST]) -> Self {
         oid::from_bytes(v.as_ref())
     }
 }
@@ -248,12 +339,26 @@ impl PartialEq<ObjectId> for &oid {
     }
 }
 
+impl PartialEq<String> for &oid {
+    fn eq(&self, other: &String) -> bool {
+        self.eq_str(other)
+    }
+}
+
+impl PartialEq<&oid> for String {
+    fn eq(&self, other: &&oid) -> bool {
+        other.eq_str(self)
+    }
+}
+
+impl_partial_eq_str!(oid);
+
 /// Manually created from a version that uses a slice, and we forcefully try to convert it into a borrowed array of the desired size
 /// Could be improved by fitting this into serde.
 /// Unfortunately the `serde::Deserialize` derive wouldn't work for borrowed arrays.
 #[cfg(feature = "serde")]
 impl<'de: 'a, 'a> serde::Deserialize<'de> for &'a oid {
-    fn deserialize<D>(deserializer: D) -> Result<Self, <D as serde::Deserializer<'de>>::Error>
+    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, <D as serde::Deserializer<'de>>::Error>
     where
         D: serde::Deserializer<'de>,
     {

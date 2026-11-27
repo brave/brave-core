@@ -20,6 +20,7 @@
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 #include "brave/components/misc_metrics/renderer/web3_metrics_render_frame_observer.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/script_injector/renderer/script_injector_render_frame_observer.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/renderer/skus_render_frame_observer.h"
@@ -52,6 +53,11 @@
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/content/renderer/playlist_render_frame_observer.h"
 #include "brave/components/playlist/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/core/common/features.h"
+#include "brave/components/psst/renderer/psst_render_frame_observer.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -126,7 +132,6 @@ void BraveContentRendererClient::
   ChromeContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
-  blink::WebRuntimeFeatures::EnableFledge(false);
   // Disable the fenced frames API; kFencedFrames is disabled browser-side.
   blink::WebRuntimeFeatures::EnableFencedFrames(false);
   // Disable topics APIs because kBrowsingTopics feature is disabled
@@ -146,12 +151,6 @@ void BraveContentRendererClient::
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("AIDecisionModelAPI",
-                                                     false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString(
-      "AIDecisionModelAPIForWorkers", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString(
-      "ApproximateGeolocationPermissionAccuracyMode", true);
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
   if (!base::FeatureList::IsEnabled(blink::features::kFileSystemAccessAPI)) {
     blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccessLocal",
@@ -159,21 +158,8 @@ void BraveContentRendererClient::
     blink::WebRuntimeFeatures::EnableFeatureFromString(
         "FileSystemAccessAPIExperimental", false);
   }
-  blink::WebRuntimeFeatures::EnableFeatureFromString("FledgeMultiBid", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("LanguageDetectionAPI",
-                                                     false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("PrivateStateTokens",
                                                      false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("ProfilerAPI", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("TranslationAPI", false);
-
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-  if (base::FeatureList::IsEnabled(
-          blink::features::kMiddleButtonClickAutoscroll)) {
-    blink::WebRuntimeFeatures::EnableFeatureFromString("MiddleClickAutoscroll",
-                                                       true);
-  }
-#endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 }
 
 BraveContentRendererClient::~BraveContentRendererClient() = default;
@@ -266,6 +252,15 @@ void BraveContentRendererClient::RenderFrameCreated(
         ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+#if BUILDFLAG(ENABLE_PSST)
+  // Installs the script logging API in PSST's isolated world.
+  if (base::FeatureList::IsEnabled(psst::features::kEnablePsst) &&
+      !process_state::IsIncognitoProcess()) {
+    new psst::PsstRenderFrameObserver(render_frame,
+                                      ISOLATED_WORLD_ID_BRAVE_PSST);
+  }
+#endif  // BUILDFLAG(ENABLE_PSST)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled() &&

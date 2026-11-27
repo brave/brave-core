@@ -3,8 +3,8 @@
 use super::spanned::Sp;
 
 use syn::{
-    spanned::Spanned, GenericArgument, Path, PathArguments, PathArguments::AngleBracketed,
-    PathSegment, Type, TypePath,
+    GenericArgument, Path, PathArguments, PathArguments::AngleBracketed, PathSegment, Type,
+    TypePath, spanned::Spanned,
 };
 
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
@@ -86,6 +86,7 @@ fn only_last_segment(mut ty: &Type) -> Option<&PathSegment> {
                     leading_colon: None,
                     segments,
                 },
+            attrs: _,
         }) => only_one(segments.iter()),
 
         _ => None,

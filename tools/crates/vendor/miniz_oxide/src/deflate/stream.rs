@@ -112,8 +112,11 @@ mod test {
         let mut compressor = Box::<CompressorOxide>::default();
         let res = deflate(&mut compressor, data, &mut compressed, MZFlush::Finish);
         let status = res.status.expect("Failed to compress!");
-        let decomp =
-            decompress_to_vec_zlib(&compressed).expect("Failed to decompress compressed data");
+        let result = decompress_to_vec_zlib(&compressed);
+        let decomp = result
+            .map_err(|err| panic!("Decompress failed with {:}", err))
+            .unwrap();
+
         assert_eq!(status, MZStatus::StreamEnd);
         assert_eq!(decomp[..], data[..]);
         assert_eq!(res.bytes_consumed, data.len());

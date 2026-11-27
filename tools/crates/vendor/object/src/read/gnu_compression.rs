@@ -1,5 +1,5 @@
 use crate::read::{self, Error, ReadError as _};
-use crate::{endian, CompressedFileRange, CompressionFormat, ReadRef, U32Bytes};
+use crate::{CompressedFileRange, CompressionFormat, ReadRef, U32, endian};
 
 // Attempt to parse the the CompressedFileRange for a section using the GNU-style
 // inline compression header format. This is used by the Go compiler in Mach-O files
@@ -20,7 +20,7 @@ pub(super) fn compressed_file_range<'data, R: ReadRef<'data>>(
         return Err(Error("Invalid GNU compressed section header"));
     }
     let uncompressed_size = file_data
-        .read::<U32Bytes<_>>(&mut offset)
+        .read::<U32<_>>(&mut offset)
         .read_error("GNU compressed section is too short")?
         .get(endian::BigEndian)
         .into();

@@ -12,7 +12,7 @@
 [package]
 edition = "2024"
 name = "adblock"
-version = "0.13.3"
+version = "0.13.6"
 authors = [
     "Anton Lazarev <alazarev@brave.com>",
     "Andrius Aucinas",
@@ -45,6 +45,7 @@ content-blocking = []
 css-validation = [
     "cssparser",
     "selectors",
+    "precomputed-hash",
 ]
 debug-info = []
 default = [
@@ -112,10 +113,10 @@ default-features = false
 version = "0.7"
 
 [dependencies.base64]
-version = "0.22"
+version = "0.23"
 
 [dependencies.bitflags]
-version = "2.10.0"
+version = "2.13.2"
 features = ["serde"]
 
 [dependencies.cssparser]
@@ -132,16 +133,17 @@ version = "1.0.3"
 version = "0.14"
 
 [dependencies.memchr]
-version = "2.8"
+version = "2.8.3"
 
 [dependencies.percent-encoding]
 version = "2.1"
 
 [dependencies.precomputed-hash]
 version = "0.1"
+optional = true
 
 [dependencies.regex]
-version = "1.12.3"
+version = "1.13.1"
 
 [dependencies.rustc-hash]
 version = "2.1"
@@ -155,20 +157,14 @@ version = "0.32"
 optional = true
 
 [dependencies.serde]
-version = "1.0.228"
-features = [
-    "derive",
-    "rc",
-]
+version = "1.0.229"
+features = ["derive"]
 
 [dependencies.serde_json]
-version = "1.0.149"
+version = "1.0.154"
 
 [dependencies.thiserror]
 version = "1.0"
-
-[dependencies.url]
-version = "2.5"
 
 [dev-dependencies.criterion]
 version = "=0.8.2"
@@ -176,21 +172,14 @@ version = "=0.8.2"
 [dev-dependencies.csv]
 version = "=1.3.0"
 
-[dev-dependencies.futures]
-version = "=0.3.31"
-
 [dev-dependencies.mock_instant]
 version = "=0.5.1"
-
-[dev-dependencies.reqwest]
-version = "=0.13.3"
 
 [dev-dependencies.sha2]
 version = "=0.9.9"
 
-[dev-dependencies.tokio]
-version = "=1.47.4"
-features = ["rt-multi-thread"]
+[dev-dependencies.url]
+version = "^2.5"
 
 [lints.clippy]
 len_zero = "allow"

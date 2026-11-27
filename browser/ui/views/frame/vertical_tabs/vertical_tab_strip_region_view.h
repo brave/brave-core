@@ -98,9 +98,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   void ResetExpandedWidth();
   bool IsMenuShowing() const;
 
-  void ListenFullscreenChanges();
-  void StopListeningFullscreenChanges();
-
   // Handles a mouse move event from the browser-wide mouse move monitor.
   // Shows the vertical tab strip when the mouse moves around the hot corner
   // while it's completely hidden, and collapses it when the mouse moves out

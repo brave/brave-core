@@ -5,7 +5,7 @@
 
 substitutions:
   - description:
-      'Insert kActionShowPartitionedStorage and kActionShowPsstIcon before
+      'Insert Brave page actions, with chip priorities, before
       kActionVirtualCardEnroll'
     regex:
       pattern: 'kActionVirtualCardEnroll,'
@@ -13,49 +13,60 @@ substitutions:
         kActionShowPartitionedStorage,
                 {
                     .histogram_name = "PartitionedStorage",
-                    .type = brave::kPartitionedStorageActionIconType,
+                    .type = PageActionIconType::kBravePartitionedStorage,
+                    .priority = page_actions::PageActionPriorityCategory::
+                        kSecurityTrustAndPermissions,
                 },
             },
             {
                 kActionShowPsstIcon,
                 {
                    .histogram_name = "PsstIcon",
-                   .type = brave::kPsstIconActionIconType,
+                   .type = PageActionIconType::kBravePsst,
+                   .priority = page_actions::PageActionPriorityCategory::
+                       kProactiveSuggestion,
                 },
             },
             {
                 kActionShowSpeedreader,
                 {
                     .histogram_name = "Speedreader",
-                    .type = brave::kSpeedreaderPageActionIconType,
+                    .type = PageActionIconType::kBraveSpeedreader,
+                    .priority = page_actions::PageActionPriorityCategory::kQuietUtility,
                 },
             },
             {
                 kActionShowWaybackMachine,
                 {
                     .histogram_name = "WaybackMachine",
-                    .type = brave::kWaybackMachineActionIconType,
+                    .type = PageActionIconType::kBraveWaybackMachine,
+                    .priority = page_actions::PageActionPriorityCategory::
+                        kProactiveSuggestion,
                 },
             },
             {
                 kActionShowPlaylistPageAction,
                 {
                     .histogram_name = "Playlist",
-                    .type = brave::kPlaylistPageActionIconType,
+                    .type = PageActionIconType::kBravePlaylist,
+                    .priority = page_actions::PageActionPriorityCategory::kQuietUtility,
                 },
             },
             {
                 kActionShowOnionLocation,
                 {
                     .histogram_name = "OnionLocation",
-                    .type = brave::kOnionLocationPageActionIconType,
+                    .type = PageActionIconType::kBraveOnionLocation,
+                    .priority = page_actions::PageActionPriorityCategory::
+                        kSecurityTrustAndPermissions,
                 },
             },
             {
                 kActionShowBraveNews,
                 {
                     .histogram_name = "BraveNews",
-                    .type = brave::kBraveNewsPageActionIconType,
+                    .type = PageActionIconType::kBraveNews,
+                    .priority = page_actions::PageActionPriorityCategory::kQuietUtility,
                 },
             },
             {

@@ -146,6 +146,204 @@ constexpr char16_t kYoutubeFullscreenVideoFitWorkaround[] =
 }());
 )";
 
+// On m.youtube.com, Next in the media notification or on the lock screen plays
+// a recommended video and drops the playlist, while the page's own Next works.
+// Previous goes back in history, so repeated presses can leave the playlist.
+// Those controls call the page's navigator.mediaSession 'nexttrack' and
+// 'previoustrack' handlers, so wrap the handlers YouTube registers: when a
+// playlist is playing, follow the URL of the page's own Next or Previous video
+// button, taken from YouTube's watch data, through a link click so YouTube
+// navigates in-page as it would for a tap. Click the playlist panel's link for
+// that item when the panel has rendered it: after a click on a link of our own
+// while the device is locked, the page reverts to the previous item on unlock
+// while the new video plays. The panel renders only some items, so otherwise
+// click a link of our own. While the watch data is unreadable or lacks the
+// button, click the link of the panel item next to the one playing. As in
+// music players, Previous first restarts the item if it's more than a few
+// seconds in, and on the first item always restarts it. On the last item
+// YouTube disables the Next button, so Next is removed. Ignore both while the
+// watch data still describes the previous video. Otherwise (no playlist, or
+// unreadable watch data and no neighbouring panel item), call YouTube's
+// handler unchanged.
+// YouTube registers its handlers only after an in-page navigation, so the
+// first playlist item played had no controls. Register Next whenever the
+// playlist has a next item, and Previous whenever a playlist is playing,
+// rechecking as playback progresses because the watch data can load after a
+// video starts playing.
+// See https://github.com/brave/brave-browser/issues/61748.
+constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
+    uR"(
+(function() {
+  const mediaSession = navigator.mediaSession;
+  if (!mediaSession) {
+    return;
+  }
+  const buttonKeys = {
+    nexttrack: 'nextButtonVideo',
+    previoustrack: 'previousButtonVideo',
+  };
+  // After a navigation the URL names the new video a second or two before the
+  // watch data does; following the old data's button would replay that video,
+  // and if the old video wasn't in this playlist, YouTube's handler would leave
+  // it. Unreadable watch data is 'unknown' so YouTube's handlers still run.
+  function readPlaylist() {
+    const params = new URLSearchParams(location.search);
+    const list = params.get('list');
+    const videoId = params.get('v');
+    if (!list || !videoId) {
+      return {state: 'none'};
+    }
+    const player = document.getElementById('movie_player');
+    const response = player?.getWatchNextResponse?.();
+    const responseVideoId =
+        response?.currentVideoEndpoint?.watchEndpoint?.videoId;
+    if (!responseVideoId) {
+      return {state: 'unknown'};
+    }
+    if (responseVideoId !== videoId) {
+      return {state: 'stale'};
+    }
+    const playlist =
+        response.contents?.singleColumnWatchNextResults?.playlist?.playlist;
+    if (playlist?.playlistId !== list) {
+      return {state: 'none'};
+    }
+    return {state: 'ready', playlist};
+  }
+  function playlistButton(playlist, action) {
+    if (playlist.state !== 'ready') {
+      return null;
+    }
+    return playlist.playlist[buttonKeys[action]]?.buttonRenderer ?? null;
+  }
+  function buttonUrl(button) {
+    if (!button || button.isDisabled) {
+      return null;
+    }
+    return button.command?.commandMetadata?.webCommandMetadata?.url ?? null;
+  }
+  function playlistPanelLink(url) {
+    const target = new URL(url, location.href).searchParams;
+    for (const link of document.querySelectorAll(
+             'ytm-playlist-panel-video-renderer a[href]')) {
+      const params = new URL(link.href).searchParams;
+      if (['v', 'list', 'index'].every(
+              key => params.get(key) === target.get(key))) {
+        return link;
+      }
+    }
+    return null;
+  }
+  // The panel item for the URL's video, if exactly one is rendered, and the
+  // link of the item before or after it, if rendered.
+  function playlistPanelNeighbour(action) {
+    const params = new URLSearchParams(location.search);
+    const items = [...document.querySelectorAll(
+        'ytm-playlist-panel-video-renderer')];
+    const itemLink = item => item?.querySelector('a[href]') ?? null;
+    const current = items.filter(item => {
+      const link = itemLink(item);
+      if (!link) {
+        return false;
+      }
+      const linkParams = new URL(link.href).searchParams;
+      return linkParams.get('v') === params.get('v') &&
+          linkParams.get('list') === params.get('list');
+    });
+    if (current.length !== 1) {
+      return null;
+    }
+    const offset = action === 'nexttrack' ? 1 : -1;
+    return {link: itemLink(items[items.indexOf(current[0]) + offset])};
+  }
+  const restartThresholdSeconds = 3;
+  const youtubeHandlers = {};
+  const setActionHandler = mediaSession.setActionHandler.bind(mediaSession);
+  function handleTrack(details) {
+    const action = details.action;
+    const playlist = readPlaylist();
+    if (playlist.state === 'stale') {
+      return;
+    }
+    if (playlist.state === 'none') {
+      return youtubeHandlers[action]?.call(this, details);
+    }
+    // After a navigation while the device is locked, the watch data can be
+    // unreadable or lack the buttons for several seconds, while the panel
+    // still lists the items.
+    const url = buttonUrl(playlistButton(playlist, action));
+    const neighbour = url ? null : playlistPanelNeighbour(action);
+    if (playlist.state === 'unknown' && !neighbour?.link) {
+      return youtubeHandlers[action]?.call(this, details);
+    }
+    // In a playlist, don't fall through to YouTube's handlers: Previous goes
+    // back in history and Next plays a recommendation, both leaving it.
+    const player = document.getElementById('movie_player');
+    if (action === 'previoustrack' &&
+        (player?.getCurrentTime?.() > restartThresholdSeconds ||
+         !(url || neighbour?.link))) {
+      player?.seekTo?.(0);
+      return;
+    }
+    if (neighbour?.link) {
+      neighbour.link.click();
+      return;
+    }
+    if (url) {
+      const panelLink = playlistPanelLink(url);
+      if (panelLink) {
+        panelLink.click();
+        return;
+      }
+      const link = document.createElement('a');
+      link.href = url;
+      link.hidden = true;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+  }
+  const trackHandlerEnabled = {};
+  function updateTrackHandler(action) {
+    const playlist = readPlaylist();
+    // Wait for readable, current watch data before disabling a control.
+    if ((playlist.state === 'stale' || playlist.state === 'unknown') &&
+        !youtubeHandlers[action]) {
+      return;
+    }
+    // In a playlist the watch data decides: Previous can always restart the
+    // current item, and Next is removed on the last item, where YouTube
+    // disables the button and pressing it would do nothing. After a navigation
+    // the watch data can lack the buttons for several seconds while locked, so
+    // don't remove Next until the button is present.
+    const button = playlistButton(playlist, action);
+    if (playlist.state === 'ready' && action === 'nexttrack' && !button) {
+      return;
+    }
+    const enabled = playlist.state === 'ready' ?
+        (action === 'previoustrack' || Boolean(buttonUrl(button))) :
+        Boolean(youtubeHandlers[action]);
+    if (trackHandlerEnabled[action] === enabled) {
+      return;
+    }
+    trackHandlerEnabled[action] = enabled;
+    setActionHandler(action, enabled ? handleTrack : null);
+  }
+  function updateTrackHandlers() {
+    Object.keys(buttonKeys).forEach(updateTrackHandler);
+  }
+  mediaSession.setActionHandler = function(action, handler) {
+    if (Object.hasOwn(buttonKeys, action)) {
+      youtubeHandlers[action] = handler;
+      updateTrackHandler(action);
+      return;
+    }
+    return setActionHandler(action, handler);
+  };
+  document.addEventListener('timeupdate', updateTrackHandlers, true);
+}());
+)";
+
 // m.youtube.com has no manifest, so Add to Home screen would generate a
 // monogram icon. Declare one mirroring www.youtube.com's; that one can't be
 // linked directly as it isn't served with CORS headers.
@@ -489,22 +687,27 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubePictureInPictureSupport, base::NullCallback());
   }
-  if (IsYouTubeDomain(/*mobileOnly=*/true) &&
-      base::FeatureList::IsEnabled(
+  if (!IsYouTubeDomain(/*mobileOnly=*/true)) {
+    return;
+  }
+  if (base::FeatureList::IsEnabled(
           preferences::features::kBraveYoutubeFullscreenSettingsWorkaround)) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubeFullscreenSettingsWorkaround, base::NullCallback());
   }
-  if (IsYouTubeDomain(/*mobileOnly=*/true) &&
-      base::FeatureList::IsEnabled(
+  if (base::FeatureList::IsEnabled(
           preferences::features::kBraveYoutubeFullscreenVideoFitWorkaround)) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubeFullscreenVideoFitWorkaround, base::NullCallback());
   }
-  if (IsYouTubeDomain(/*mobileOnly=*/true)) {
-    contents->GetPrimaryMainFrame()->ExecuteJavaScript(kYoutubeManifest,
-                                                       base::NullCallback());
+  if (base::FeatureList::IsEnabled(
+          preferences::features::
+              kBraveYoutubePlaylistMediaControlsWorkaround)) {
+    contents->GetPrimaryMainFrame()->ExecuteJavaScript(
+        kYoutubePlaylistMediaControlsWorkaround, base::NullCallback());
   }
+  contents->GetPrimaryMainFrame()->ExecuteJavaScript(kYoutubeManifest,
+                                                     base::NullCallback());
 }
 
 void YouTubeScriptInjectorTabHelper::

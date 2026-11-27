@@ -11,12 +11,13 @@
 
 [package]
 edition = "2021"
-rust-version = "1.63"
+rust-version = "1.65"
 name = "memmap2"
-version = "0.9.9"
+version = "0.9.12"
 authors = [
     "Dan Burkert <dan@danburkert.com>",
     "Yevhenii Reizner <razrfalcon@gmail.com>",
+    "The Contributors",
 ]
 build = false
 autolib = false

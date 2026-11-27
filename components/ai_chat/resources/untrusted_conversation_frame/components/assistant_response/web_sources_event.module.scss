@@ -29,7 +29,7 @@
     display: contents;
   }
 
-  button {
+  .source {
     appearance: none;
     background: transparent;
     cursor: pointer;
@@ -45,11 +45,15 @@
     gap: 4px;
   }
 
-  button[name='expand'] {
+  span.source {
+    cursor: default;
+  }
+
+  .expand {
     color: var(--leo-color-text-secondary);
   }
 
-  span {
+  .favicon {
     display: flex;
     align-items: center;
     justify-content: center;

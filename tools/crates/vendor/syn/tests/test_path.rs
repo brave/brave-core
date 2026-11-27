@@ -97,6 +97,7 @@ fn parse_parenthesized_path_arguments_with_disambiguator() {
         dyn_token: Some,
         bounds: [
             TypeParamBound::Trait(TraitBound {
+                modifiers: TraitBoundModifiers,
                 path: Path {
                     segments: [
                         PathSegment {

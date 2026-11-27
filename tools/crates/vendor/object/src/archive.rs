@@ -19,6 +19,16 @@ pub const THIN_MAGIC: [u8; 8] = *b"!<thin>\n";
 /// The terminator for each archive member header.
 pub const TERMINATOR: [u8; 2] = *b"`\n";
 
+/// File identification bytes at the beginning of a z/OS archive.
+///
+/// This is [`MAGIC`] in EBCDIC.
+pub const ZOS_MAGIC: [u8; 8] = *b"\x5A\x4C\x81\x99\x83\x88\x6E\x15";
+
+/// The terminator for each z/OS archive member header.
+///
+/// This is [`TERMINATOR`] in EBCDIC.
+pub const ZOS_TERMINATOR: [u8; 2] = *b"\x79\x15";
+
 /// The header at the start of an archive member.
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]

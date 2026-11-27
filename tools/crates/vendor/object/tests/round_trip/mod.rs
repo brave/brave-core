@@ -1,11 +1,11 @@
 #![cfg(all(feature = "read", feature = "write"))]
 
 use object::read::{Object, ObjectSection, ObjectSymbol};
-use object::{read, write, SectionIndex, SubArchitecture};
 use object::{
     Architecture, BinaryFormat, Endianness, RelocationEncoding, RelocationFlags, RelocationKind,
-    SectionKind, SymbolFlags, SymbolKind, SymbolScope, SymbolSection,
+    SectionFlags, SectionKind, SymbolFlags, SymbolKind, SymbolScope, SymbolSection,
 };
+use object::{SectionIndex, SubArchitecture, read, write};
 
 mod bss;
 mod coff;
@@ -13,6 +13,7 @@ mod comdat;
 mod common;
 mod elf;
 mod macho;
+mod reloc;
 mod section_flags;
 mod tls;
 
@@ -150,10 +151,10 @@ fn coff_any() {
         assert_eq!(relocation.addend(), 0);
 
         let map = object.symbol_map();
-        let symbol = map.get(func1_offset + 1).unwrap();
+        let symbol = map.containing(func1_offset + 1).unwrap();
         assert_eq!(symbol.address(), func1_offset);
         assert_eq!(symbol.name(), decorated_name("func1"));
-        assert_eq!(map.get(func1_offset - 1), None);
+        assert_eq!(map.containing(func1_offset - 1), None);
     }
 }
 
@@ -195,6 +196,9 @@ fn elf_x86_64() {
         )
         .unwrap();
 
+    let eh_frame = object.section_id(write::StandardSection::EhFrame);
+    object.append_section_data(eh_frame, &[1; 30], 4);
+
     let bytes = object.write().unwrap();
     let object = read::File::parse(&*bytes).unwrap();
     assert_eq!(object.format(), BinaryFormat::Elf);
@@ -210,8 +214,32 @@ fn elf_x86_64() {
     assert_eq!(text.kind(), SectionKind::Text);
     assert_eq!(text.address(), 0);
     assert_eq!(text.size(), 62);
+    assert_eq!(
+        text.flags(),
+        SectionFlags::Elf {
+            sh_type: object::elf::SHT_PROGBITS,
+            sh_flags: object::elf::SHF_ALLOC | object::elf::SHF_EXECINSTR,
+        }
+    );
     assert_eq!(&text.data().unwrap()[..30], &[1; 30]);
     assert_eq!(&text.data().unwrap()[32..62], &[1; 30]);
+
+    let section = sections.next().unwrap();
+    println!("{:?}", section);
+    assert_eq!(section.name(), Ok(".rela.text"));
+    assert_eq!(section.kind(), SectionKind::Metadata);
+
+    let section = sections.next().unwrap();
+    println!("{:?}", section);
+    assert_eq!(section.name(), Ok(".eh_frame"));
+    assert_eq!(section.kind(), SectionKind::Unknown);
+    assert_eq!(
+        section.flags(),
+        SectionFlags::Elf {
+            sh_type: object::elf::SHT_X86_64_UNWIND,
+            sh_flags: object::elf::SHF_ALLOC,
+        }
+    );
 
     let mut symbols = object.symbols();
 
@@ -250,10 +278,10 @@ fn elf_x86_64() {
     assert_eq!(relocation.addend(), 0);
 
     let map = object.symbol_map();
-    let symbol = map.get(func1_offset + 1).unwrap();
+    let symbol = map.containing(func1_offset + 1).unwrap();
     assert_eq!(symbol.address(), func1_offset);
     assert_eq!(symbol.name(), "func1");
-    assert_eq!(map.get(func1_offset - 1), None);
+    assert_eq!(map.containing(func1_offset - 1), None);
 }
 
 #[test]
@@ -273,6 +301,8 @@ fn elf_any() {
         (Architecture::X86_64_X32, Endianness::Little),
         (Architecture::Hppa, Endianness::Big),
         (Architecture::Hexagon, Endianness::Little),
+        (Architecture::Ia64, Endianness::Little),
+        (Architecture::Ia64, Endianness::Big),
         (Architecture::LoongArch32, Endianness::Little),
         (Architecture::LoongArch64, Endianness::Little),
         (Architecture::M68k, Endianness::Big),
@@ -333,6 +363,21 @@ fn elf_any() {
                 )
                 .unwrap();
         }
+        object
+            .add_relocation(
+                section,
+                write::Relocation {
+                    offset: 24,
+                    symbol,
+                    addend: 0,
+                    flags: RelocationFlags::Generic {
+                        kind: RelocationKind::None,
+                        encoding: RelocationEncoding::Generic,
+                        size: 0,
+                    },
+                },
+            )
+            .unwrap();
 
         let bytes = object.write().unwrap();
         let object = read::File::parse(&*bytes).unwrap();
@@ -367,6 +412,14 @@ fn elf_any() {
             assert_eq!(relocation.size(), 64);
             assert_eq!(relocation.addend(), 0);
         }
+
+        let (offset, relocation) = relocations.next().unwrap();
+        println!("{:?}", relocation);
+        assert_eq!(offset, 24);
+        assert_eq!(relocation.kind(), RelocationKind::None);
+        assert_eq!(relocation.encoding(), RelocationEncoding::Generic);
+        assert_eq!(relocation.size(), 0);
+        assert_eq!(relocation.addend(), 0);
     }
 }
 
@@ -485,10 +538,10 @@ fn macho_x86_64() {
     assert_eq!(relocation.addend(), 0);
 
     let map = object.symbol_map();
-    let symbol = map.get(func1_offset + 1).unwrap();
+    let symbol = map.containing(func1_offset + 1).unwrap();
     assert_eq!(symbol.address(), func1_offset);
     assert_eq!(symbol.name(), "_func1");
-    assert_eq!(map.get(func1_offset - 1), None);
+    assert_eq!(map.containing(func1_offset - 1), None);
 }
 
 #[test]
@@ -501,15 +554,11 @@ fn macho_any() {
             Endianness::Little,
         ),
         (Architecture::Aarch64_Ilp32, None, Endianness::Little),
-        /* TODO:
         (Architecture::Arm, None, Endianness::Little),
-        */
         (Architecture::I386, None, Endianness::Little),
         (Architecture::X86_64, None, Endianness::Little),
-        /* TODO:
         (Architecture::PowerPc, None, Endianness::Big),
         (Architecture::PowerPc64, None, Endianness::Big),
-        */
     ]
     .iter()
     .copied()

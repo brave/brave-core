@@ -128,7 +128,7 @@ back_to_enum! {
         MemoryAddrRelSleb = 11,
 
         /// A function address (table index) relative to the __table_base wasm
-        /// global. Used in position indepenent code (-fPIC) where absolute
+        /// global. Used in position independent code (-fPIC) where absolute
         /// function addresses are not known at link time.
         TableIndexRelSleb = 12,
 
@@ -229,7 +229,7 @@ pub struct RelocationEntry {
     /// Relocation entry type.
     pub ty: RelocationType,
     /// Offset in bytes from the start of the section indicated by
-    /// `RelocSectionReader::section` targetted by this relocation.
+    /// `RelocSectionReader::section` targeted by this relocation.
     pub offset: u32,
     /// Index in the symbol table contained in the linking section that
     /// corresponds to the value at `offset`.
@@ -241,9 +241,13 @@ pub struct RelocationEntry {
 
 impl RelocationEntry {
     /// Byte range relative to the start of the section indicated by
-    /// `RelocSectionReader::section` targetted by this relocation.
-    pub fn relocation_range(&self) -> Range<usize> {
-        (self.offset as usize)..(self.offset as usize + self.ty.extent())
+    /// `RelocSectionReader::section` targeted by this relocation.
+    pub fn relocation_range(&self) -> Result<Range<usize>> {
+        let start = self.offset as usize;
+        let end = start
+            .checked_add(self.ty.extent())
+            .ok_or_else(|| crate::Error::new("relocation range end overflow", start))?;
+        Ok(start..end)
     }
 }
 
@@ -296,5 +300,23 @@ impl<'a> FromReader<'a> for RelocationEntry {
             index,
             addend,
         })
+    }
+}
+
+// Assert that `relocation_range` does not wrap when `offset + extent` exceeds `usize::MAX`.
+#[test]
+fn relocation_range_does_not_overflow() {
+    let entry = RelocationEntry {
+        ty: RelocationType::FunctionIndexLeb,
+        offset: 0xFFFF_FFFC,
+        index: 0,
+        addend: 0,
+    };
+    if cfg!(target_pointer_width = "32") {
+        assert!(entry.relocation_range().is_err());
+    } else {
+        let range = entry.relocation_range().unwrap();
+        assert_eq!(range.start, 0xFFFF_FFFC);
+        assert_eq!(range.end, 0xFFFF_FFFC + 5);
     }
 }

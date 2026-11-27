@@ -8,6 +8,11 @@ import Shared
 import WidgetKit
 import os.log
 
+/// Control Center kind for the configurable shortcut control.
+public enum ShortcutControlWidgetKind {
+  public static let kind = "ShortcutControlWidget"
+}
+
 /// Shared storage describing which `WidgetShortcut`s are currently unavailable, for example when
 /// disabled by Brave Origin or enterprise policies.
 public class DisabledShortcutsWidgetData {
@@ -64,6 +69,7 @@ public class DisabledShortcutsWidgetData {
       WidgetCenter.shared.reloadTimelines(ofKind: "LockScreenShortcutWidget")
       WidgetCenter.shared.reloadTimelines(ofKind: "TopNewsWidget")
       WidgetCenter.shared.reloadTimelines(ofKind: "TopNewsListWidget")
+      ControlCenter.shared.reloadControls(ofKind: ShortcutControlWidgetKind.kind)
     } catch {
       Logger.module.error("updateDisabledShortcuts error: \(error.localizedDescription)")
     }

@@ -39,16 +39,16 @@ impl DispatchTime {
 impl TryFrom<Duration> for DispatchTime {
     type Error = ();
 
+    #[inline]
     fn try_from(value: Duration) -> Result<Self, Self::Error> {
         let secs = value.as_secs() as i64;
 
-        secs.checked_mul(1_000_000_000)
+        let delta = secs
+            .checked_mul(1_000_000_000)
             .and_then(|x| x.checked_add(i64::from(value.subsec_nanos())))
-            .map(|delta| {
-                // delta cannot overflow
-                Self::NOW.time(delta)
-            })
-            .ok_or(())
+            .ok_or(())?;
+        // delta cannot overflow
+        Ok(Self::NOW.time(delta))
     }
 }
 

@@ -31,21 +31,7 @@ class HistoryEmbeddingsSearch;
 
 class SessionID;
 
-class TabSearchPageHandler;
-using TabSearchPageHandler_BraveImpl = TabSearchPageHandler;
-
-#define TabSearchPageHandler TabSearchPageHandler_ChromiumImpl
-// Inject friend declaration via CreateProfileData (private method) so our
-// Brave subclass can access private members like page_, web_ui_, etc.
-#define CreateProfileData                \
-  NotUsed();                             \
-  friend TabSearchPageHandler_BraveImpl; \
-  tab_search::mojom::ProfileDataPtr CreateProfileData
-
 #include <chrome/browser/ui/webui/tab_search/tab_search_page_handler.h>  // IWYU pragma: export
-
-#undef TabSearchPageHandler
-#undef CreateProfileData
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 namespace ai_chat {
@@ -72,7 +58,8 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
       mojo::PendingRemote<tab_search::mojom::Page> page,
       content::WebUI* web_ui,
       TopChromeWebUIController* webui_controller,
-      MetricsReporter* metrics_reporter);
+      MetricsReporter* metrics_reporter,
+      bool log_metrics);
   ~TabSearchPageHandler() override;
   TabSearchPageHandler(const TabSearchPageHandler&) = delete;
   TabSearchPageHandler& operator=(const TabSearchPageHandler&) = delete;

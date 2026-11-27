@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>。
 または後で<ph name="SETTINGS_EXTENIONS_LINK"/>から変更できます。</translation>
 <translation id="6229752134959014186">Widevineの詳細について</translation>
+<translation id="3318169548229684688">このデバイスで音声を処理するために、音声認識モデル(<ph name="DOWNLOAD_SIZE"/>)をダウンロードする</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/>が次の許可を求めています:</translation>
 <translation id="3218385319396786393">このページで自動再生がブロックされました</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> で自動再生を常に許可する。</translation>
@@ -610,6 +611,8 @@
 <translation id="3540231253392253941">プッシュメッセージングにGoogleサービスを使用</translation>
 <translation id="2224032129673914306">セマンティック履歴検索</translation>
 <translation id="6045998903985162478">アクセスしたページにインデックスを付けて、履歴、開いているタブ、Leoで簡単に見つけられるようにします。</translation>
+<translation id="3962946446120925966">デバイス上の音声認識</translation>
+<translation id="6408242130028978631">音声認識モデル(<ph name="DOWNLOAD_SIZE"/>)をダウンロードして、サイトがこのデバイス上で音声を処理できるようにします。モデルを削除するには、この設定をオフにしてください。</translation>
 <translation id="5813105074916486721">ローカル履歴の保持期間</translation>
 <translation id="5671611745062206644">Braveが閲覧履歴をローカルに保存する期間</translation>
 <translation id="7184510058087008090">1日</translation>

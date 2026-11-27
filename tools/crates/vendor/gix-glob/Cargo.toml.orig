@@ -2,25 +2,32 @@ lints.workspace = true
 
 [package]
 name = "gix-glob"
-version = "0.22.1"
+version = "0.29.1"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate of the gitoxide project dealing with pattern matching"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-rust-version = "1.82"
-include = ["src/**/*", "LICENSE-*"]
+edition = "2024"
+rust-version = "1.88"
+include = ["/src/**/*", "/LICENSE-*"]
 
 [lib]
-doctest = false
+doctest = true
+
+[[bench]]
+name = "wildmatch"
+harness = false
+path = "./benches/wildmatch.rs"
 
 [features]
 ## Data structures implement `serde::Serialize` and `serde::Deserialize`.
 serde = ["dep:serde", "bstr/serde", "bitflags/serde"]
 
 [dependencies]
-gix-path = { version = "^0.10.21", path = "../gix-path" }
-gix-features = { version = "^0.44.1", path = "../gix-features" }
+gix-trace = { version = "^0.3.1", path = "../gix-trace" }
+gix-utils = { version = "^0.5.1", path = "../gix-utils" }
+gix-path = { version = "^0.14.1", path = "../gix-path" }
+gix-fs = { version = "^0.24.1", path = "../gix-fs" }
 bstr = { version = "1.12.0", default-features = false, features = ["std"] }
 bitflags = "2"
 serde = { version = "1.0.114", optional = true, default-features = false, features = ["derive"] }
@@ -28,7 +35,8 @@ serde = { version = "1.0.114", optional = true, default-features = false, featur
 document-features = { version = "0.2.0", optional = true }
 
 [dev-dependencies]
-gix-testtools = { path = "../tests/tools" }
+criterion = "0.8.2"
+gix-testtools = { path = "../tests/tools", features = ["sha1"] }
 
 [package.metadata.docs.rs]
 all-features = true

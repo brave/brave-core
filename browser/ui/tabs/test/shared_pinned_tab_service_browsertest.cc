@@ -16,14 +16,23 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/test/shared_pinned_tab_service_browsertest.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
+#include "brave/components/sidebar/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_tabrestore.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_web_contents_delegate/browser_web_contents_delegate.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -32,12 +41,13 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_service.h"
+#include "components/sessions/core/serialized_navigation_entry.h"
+#include "components/sessions/core/serialized_user_agent_override.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
-#include "ui/base/window_open_disposition.h"
 
 SharedPinnedTabServiceBrowserTest::SharedPinnedTabServiceBrowserTest()
     : feature_list_(tabs::kBraveSharedPinnedTabs) {}
@@ -49,8 +59,13 @@ BrowserWindowInterface* SharedPinnedTabServiceBrowserTest::CreateNewBrowser() {
   auto* new_browser =
       chrome::OpenEmptyWindow(browser()->GetProfile(),
                               /*should_trigger_session_restore= */ false);
-  browsers_.push_back(new_browser->GetWeakPtr());
+  TrackBrowser(new_browser);
   return new_browser;
+}
+
+void SharedPinnedTabServiceBrowserTest::TrackBrowser(
+    BrowserWindowInterface* browser) {
+  browsers_.push_back(browser->GetWeakPtr());
 }
 
 SharedPinnedTabService* SharedPinnedTabServiceBrowserTest::GetForBrowser(
@@ -542,6 +557,52 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, PreferenceChanged) {
   EXPECT_TRUE(browser_2->tab_strip_model()->IsTabPinned(1));
 }
 
+// On session restore, each shared contents comes back in the window that last
+// owned it. Activating such a window must only add the shared pinned tabs it's
+// missing, not duplicate the ones it already holds.
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
+                       RestoredWindowOwningSharedTab_DoesNotDuplicate) {
+  auto* service = GetForBrowser(browser());
+  auto* model_1 = browser()->tab_strip_model();
+  ASSERT_TRUE(
+      content::NavigateToURL(model_1->GetActiveWebContents(),
+                             https_server()->GetURL("a.com", "/index.html")));
+  model_1->SetTabPinned(0, /* pinned= */ true);
+  ASSERT_TRUE(service->IsSharedContents(model_1->GetWebContentsAt(0)));
+
+  // Restore a window like session restore does: tabs are added before the
+  // window is shown and activated.
+  auto* browser_2 = CreateBrowserWindow(BrowserWindowCreateParams(
+      browser()->GetProfile(), /*from_user_gesture=*/true));
+  TrackBrowser(browser_2);
+  sessions::SerializedNavigationEntry navigation;
+  navigation.set_index(0);
+  navigation.set_virtual_url(https_server()->GetURL("b.com", "/index.html"));
+  navigation.set_transition_type(ui::PAGE_TRANSITION_TYPED);
+  chrome::AddRestoredTab(browser_2, base::span_from_ref(navigation),
+                         /*tab_index=*/0,
+                         /*selected_navigation=*/0, /*extension_app_id=*/"",
+                         /*group=*/std::nullopt, /*select=*/false, /*pin=*/true,
+                         base::TimeTicks(), base::Time(), nullptr,
+                         sessions::SerializedUserAgentOverride(), {},
+                         /*from_session_restore=*/true,
+                         /*is_active_browser=*/true);
+  auto* model_2 = browser_2->tab_strip_model();
+  auto* restored_contents = model_2->GetWebContentsAt(0);
+  ASSERT_TRUE(service->IsSharedContents(restored_contents));
+  ASSERT_EQ(2, model_1->IndexOfFirstNonPinnedTab());
+
+  service->OnBrowserActivated(browser_2);
+
+  // Both windows have exactly the two shared pinned tabs, in the same order.
+  EXPECT_EQ(2, model_1->IndexOfFirstNonPinnedTab());
+  EXPECT_EQ(2, model_2->IndexOfFirstNonPinnedTab());
+  EXPECT_EQ(restored_contents, model_2->GetWebContentsAt(0));
+  EXPECT_TRUE(service->IsDummyContents(model_2->GetWebContentsAt(1)));
+  EXPECT_TRUE(service->IsDummyContents(model_1->GetWebContentsAt(0)));
+  EXPECT_TRUE(service->IsSharedContents(model_1->GetWebContentsAt(1)));
+}
+
 #if !BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, BringAllTabs) {
   // Given that there're multiple windows with shared pinned tabs
@@ -610,3 +671,311 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
   EXPECT_EQ(browser->tab_strip_model()->count(), 1);
 }
 #endif  // !BUILDFLAG(IS_MAC)
+
+// The sidebar web panel is backed by an ordinary pinned tab, but it's
+// window-local UI, not one of the user's pinned tabs - it must never be
+// tracked or mirrored by SharedPinnedTabService.
+class SharedPinnedTabServiceWithWebPanelBrowserTest
+    : public SharedPinnedTabServiceBrowserTest {
+ public:
+  SharedPinnedTabServiceWithWebPanelBrowserTest() {
+    web_panel_feature_list_.InitAndEnableFeature(
+        sidebar::features::kSidebarWebPanel);
+  }
+
+ protected:
+  // Opens `url` as a web panel in `browser` and returns its pinned tab's
+  // contents.
+  content::WebContents* OpenWebPanel(BrowserWindowInterface* browser,
+                                     const GURL& url) {
+    auto* service =
+        sidebar::SidebarServiceFactory::GetForProfile(browser->GetProfile());
+    service->AddItem(sidebar::SidebarItem::CreateWebPanelItem(url, u"title"));
+    auto* controller = sidebar::SidebarController::From(browser);
+    controller->OnItemPressed(controller->model()->GetAllSidebarItems().size() -
+                              1);
+    return const_cast<content::WebContents*>(
+        controller->GetWebPanelController()->panel_contents());
+  }
+
+ private:
+  base::test::ScopedFeatureList web_panel_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceWithWebPanelBrowserTest,
+                       MoveSelectedPinnedTabAfterEarlierUnpinWithWebPanel) {
+  auto* model = browser()->tab_strip_model();
+  auto* other_browser = CreateNewBrowser();
+  auto* other_model = other_browser->GetTabStripModel();
+  auto* service = GetForBrowser(browser());
+
+  chrome::AddTabAt(browser(), GURL(), /*index=*/-1, /*foreground=*/true);
+  ASSERT_EQ(2, model->count());
+  auto* selected_contents = model->GetWebContentsAt(1);
+  model->SetTabPinned(0, /*pinned=*/true);
+  model->SetTabPinned(1, /*pinned=*/true);
+  ASSERT_EQ(2, other_model->IndexOfFirstNonPinnedTab());
+
+  auto* panel_contents = OpenWebPanel(
+      other_browser, https_server()->GetURL("a.com", "/index.html"));
+  ASSERT_TRUE(panel_contents);
+  ASSERT_EQ(0, other_model->GetIndexOfWebContents(panel_contents));
+  ASSERT_EQ(3, other_model->IndexOfFirstNonPinnedTab());
+  auto* selected_dummy = other_model->GetWebContentsAt(2);
+  ASSERT_TRUE(service->IsDummyContents(selected_dummy));
+
+  service->OnBrowserActivated(other_browser);
+  other_model->ActivateTabAt(2);
+  other_model->SetTabPinned(1, /*pinned=*/false);
+  ASSERT_EQ(selected_dummy, other_model->GetActiveWebContents());
+  ASSERT_EQ(1, other_model->active_index());
+
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return other_model->GetActiveWebContents() == selected_contents;
+  }));
+  EXPECT_TRUE(other_model->IsTabPinned(other_model->active_index()));
+  EXPECT_EQ(0, other_model->GetIndexOfWebContents(panel_contents));
+  EXPECT_FALSE(service->IsSharedContents(panel_contents));
+}
+
+IN_PROC_BROWSER_TEST_F(
+    SharedPinnedTabServiceWithWebPanelBrowserTest,
+    OpenWebPanel_AlongsideRealSharedPinnedTab_OnlyRealTabIsMirrored) {
+  auto* browser_1 = browser();
+  auto* tab_strip_model_1 = browser_1->tab_strip_model();
+  auto* shared_pinned_tab_service = GetForBrowser(browser_1);
+  ASSERT_TRUE(shared_pinned_tab_service);
+
+  tab_strip_model_1->SetTabPinned(0, /* pinned= */ true);
+  ASSERT_TRUE(shared_pinned_tab_service->IsSharedContents(
+      tab_strip_model_1->GetWebContentsAt(0)));
+
+  // The panel is inserted at index 0, pushing the real pinned tab to index 1.
+  auto* panel_contents = OpenWebPanel(browser_1, GURL("https://brave.com/"));
+  ASSERT_TRUE(panel_contents);
+  ASSERT_EQ(2, tab_strip_model_1->IndexOfFirstNonPinnedTab())
+      << "the real pinned tab and the panel's own pinned tab";
+
+  auto* browser_2 = CreateNewBrowser();
+  shared_pinned_tab_service->OnBrowserActivated(browser_2);
+  auto* tab_strip_model_2 = browser_2->tab_strip_model();
+
+  // Exactly one dummy - for the real shared tab - never the panel.
+  EXPECT_EQ(2, tab_strip_model_2->count());
+  EXPECT_EQ(1, tab_strip_model_2->IndexOfFirstNonPinnedTab());
+  EXPECT_TRUE(shared_pinned_tab_service->IsDummyContents(
+      tab_strip_model_2->GetWebContentsAt(0)));
+}
+
+IN_PROC_BROWSER_TEST_F(
+    SharedPinnedTabServiceWithWebPanelBrowserTest,
+    SynchronizeNewBrowser_ActivatingExistingWindowWithPanelOpen) {
+  auto* browser_1 = browser();
+  auto* tab_strip_model_1 = browser_1->tab_strip_model();
+  auto* shared_pinned_tab_service = GetForBrowser(browser_1);
+  ASSERT_TRUE(shared_pinned_tab_service);
+
+  tab_strip_model_1->SetTabPinned(0, /* pinned= */ true);
+  OpenWebPanel(browser_1, GURL("https://brave.com/"));
+  ASSERT_EQ(2, tab_strip_model_1->IndexOfFirstNonPinnedTab());
+
+  auto* browser_2 = CreateNewBrowser();
+  shared_pinned_tab_service->OnBrowserActivated(browser_2);
+  auto* tab_strip_model_2 = browser_2->tab_strip_model();
+  ASSERT_EQ(2, tab_strip_model_2->count());
+
+  // Reactivating browser_1 - the window that itself has the panel
+  // interleaved with a real pinned tab - must not be mistaken for "out of
+  // sync": without filtering the panel out, the comparison against
+  // pinned_tab_data_ would see a phantom size mismatch and spuriously
+  // re-run the repair path, corrupting browser_1's own strip.
+  shared_pinned_tab_service->OnBrowserActivated(browser_1);
+  shared_pinned_tab_service->OnBrowserActivated(browser_1);
+
+  EXPECT_EQ(2, tab_strip_model_1->IndexOfFirstNonPinnedTab());
+  EXPECT_EQ(2, tab_strip_model_2->count())
+      << "reactivating browser_1 must not have inserted a duplicate dummy "
+         "into browser_2";
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceWithWebPanelBrowserTest,
+                       CloseWebPanel_DoesNotAffectPinnedTabData) {
+  auto* browser_1 = browser();
+  auto* tab_strip_model_1 = browser_1->tab_strip_model();
+  auto* shared_pinned_tab_service = GetForBrowser(browser_1);
+  ASSERT_TRUE(shared_pinned_tab_service);
+
+  tab_strip_model_1->SetTabPinned(0, /* pinned= */ true);
+  // Keep an ordinary tab around - without one, browser_1 ends up with every
+  // remaining tab pinned once CloseWebPanel() closes the panel, which triggers
+  // the unrelated, already-deferred MaybeCloseWindowWithOnlySharedPinnedTabs()
+  // policy and silently closes the window out from under this test.
+  chrome::AddTabAt(browser_1, GURL(), /*index=*/-1, /*foreground=*/false);
+  OpenWebPanel(browser_1, GURL("https://brave.com/"));
+  ASSERT_EQ(2, tab_strip_model_1->IndexOfFirstNonPinnedTab());
+
+  auto* browser_2 = CreateNewBrowser();
+  shared_pinned_tab_service->OnBrowserActivated(browser_2);
+  auto* tab_strip_model_2 = browser_2->tab_strip_model();
+  ASSERT_EQ(2, tab_strip_model_2->count());
+
+  auto* controller = sidebar::SidebarController::From(browser_1);
+  controller->GetWebPanelController()->CloseWebPanel(
+      /* suppress_animations= */ true);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !controller->GetWebPanelController()->HasPanelTab(); }));
+
+  EXPECT_EQ(1, tab_strip_model_1->IndexOfFirstNonPinnedTab())
+      << "only the real pinned tab should remain";
+  EXPECT_EQ(2, tab_strip_model_2->count())
+      << "closing the panel must not have touched pinned_tab_data_";
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceWithWebPanelBrowserTest,
+                       ActivatingWebPanelTab_DoesNotMoveUnrelatedSharedTab) {
+  auto* browser_1 = browser();
+  auto* tab_strip_model_1 = browser_1->tab_strip_model();
+  auto* shared_pinned_tab_service = GetForBrowser(browser_1);
+  ASSERT_TRUE(shared_pinned_tab_service);
+
+  tab_strip_model_1->SetTabPinned(0, /* pinned= */ true);
+  auto* real_pinned_contents = tab_strip_model_1->GetWebContentsAt(0);
+  ASSERT_TRUE(
+      shared_pinned_tab_service->IsSharedContents(real_pinned_contents));
+
+  auto* panel_contents = OpenWebPanel(browser_1, GURL("https://brave.com/"));
+  ASSERT_TRUE(panel_contents);
+  ASSERT_EQ(0, tab_strip_model_1->GetIndexOfWebContents(panel_contents));
+  ASSERT_EQ(1, tab_strip_model_1->GetIndexOfWebContents(real_pinned_contents));
+
+  auto* browser_2 = CreateNewBrowser();
+  shared_pinned_tab_service->OnBrowserActivated(browser_2);
+  ASSERT_TRUE(shared_pinned_tab_service->IsDummyContents(
+      browser_2->tab_strip_model()->GetWebContentsAt(0)));
+
+  // Make browser_1 the service's "active browser" again, so activating a tab
+  // in it exercises OnActiveTabChanged() instead of short-circuiting on a
+  // mismatched last-active-browser check.
+  shared_pinned_tab_service->OnBrowserActivated(browser_1);
+
+  // Activating the panel's tab must be a no-op for the sharing machinery.
+  tab_strip_model_1->ActivateTabAt(0);
+
+  EXPECT_TRUE(
+      shared_pinned_tab_service->IsSharedContents(real_pinned_contents));
+  EXPECT_EQ(real_pinned_contents, tab_strip_model_1->GetWebContentsAt(1))
+      << "the real pinned tab's ownership should not have moved";
+  EXPECT_TRUE(shared_pinned_tab_service->IsDummyContents(
+      browser_2->tab_strip_model()->GetWebContentsAt(0)));
+}
+
+// Reordering real pinned tabs around the panel's own pinned tab has to
+// translate correctly between the source window's raw strip indices (which
+// include the panel) and pinned_tab_data_'s canonical indices (which never
+// do), then propagate to a window with no panel of its own.
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceWithWebPanelBrowserTest,
+                       MovingPinnedTabWithPanelOpenUpdatesOtherWindowsDummies) {
+  auto* browser_1 = browser();
+  auto* tab_strip_model_1 = browser_1->tab_strip_model();
+  auto* shared_pinned_tab_service = GetForBrowser(browser_1);
+  ASSERT_TRUE(shared_pinned_tab_service);
+
+  // Two real pinned tabs in browser_1, distinguishable by URL.
+  ASSERT_TRUE(
+      content::NavigateToURL(tab_strip_model_1->GetActiveWebContents(),
+                             https_server()->GetURL("a.com", "/index.html")));
+  tab_strip_model_1->SetTabPinned(0, /* pinned= */ true);
+  chrome::AddTabAt(browser_1, https_server()->GetURL("b.com", "/index.html"),
+                   /*index=*/1, /*foreground=*/false);
+  tab_strip_model_1->SetTabPinned(1, /* pinned= */ true);
+  ASSERT_EQ(2, tab_strip_model_1->IndexOfFirstNonPinnedTab());
+
+  auto* tab_a = tab_strip_model_1->GetWebContentsAt(0);
+  auto* tab_b = tab_strip_model_1->GetWebContentsAt(1);
+
+  // The panel is inserted at index 0, pushing both real pinned tabs over.
+  auto* panel_contents = OpenWebPanel(browser_1, GURL("https://brave.com/"));
+  ASSERT_TRUE(panel_contents);
+  EXPECT_EQ(0, tab_strip_model_1->GetIndexOfWebContents(panel_contents));
+  EXPECT_EQ(1, tab_strip_model_1->GetIndexOfWebContents(tab_a));
+  EXPECT_EQ(2, tab_strip_model_1->GetIndexOfWebContents(tab_b));
+
+  auto* browser_2 = CreateNewBrowser();
+  shared_pinned_tab_service->OnBrowserActivated(browser_2);
+  auto* tab_strip_model_2 = browser_2->tab_strip_model();
+  ASSERT_EQ(2, tab_strip_model_2->IndexOfFirstNonPinnedTab());
+  EXPECT_EQ(tab_a->GetVisibleURL(), tab_strip_model_2->GetWebContentsAt(0)
+                                        ->GetController()
+                                        .GetVisibleEntry()
+                                        ->GetVirtualURL());
+  EXPECT_EQ(tab_b->GetVisibleURL(), tab_strip_model_2->GetWebContentsAt(1)
+                                        ->GetController()
+                                        .GetVisibleEntry()
+                                        ->GetVirtualURL());
+
+  // Move tab_b in front of tab_a within browser_1, past the panel's own slot
+  // at index 0.
+  tab_strip_model_1->MoveWebContentsAt(2, 1, /* select_after_move= */ false);
+  EXPECT_EQ(0, tab_strip_model_1->GetIndexOfWebContents(panel_contents));
+  EXPECT_EQ(1, tab_strip_model_1->GetIndexOfWebContents(tab_b));
+  EXPECT_EQ(2, tab_strip_model_1->GetIndexOfWebContents(tab_a));
+
+  // browser_2's dummies must reorder to match, with no dummy inserted for
+  // the panel.
+  EXPECT_EQ(2, tab_strip_model_2->IndexOfFirstNonPinnedTab());
+  EXPECT_EQ(tab_b->GetVisibleURL(), tab_strip_model_2->GetWebContentsAt(0)
+                                        ->GetController()
+                                        .GetVisibleEntry()
+                                        ->GetVirtualURL());
+  EXPECT_EQ(tab_a->GetVisibleURL(), tab_strip_model_2->GetWebContentsAt(1)
+                                        ->GetController()
+                                        .GetVisibleEntry()
+                                        ->GetVirtualURL());
+
+  // Move tab_a in front of panel's tab within browser_1.
+  tab_strip_model_1->MoveWebContentsAt(2, 0, /* select_after_move= */ false);
+  EXPECT_EQ(0, tab_strip_model_1->GetIndexOfWebContents(tab_a));
+  EXPECT_EQ(1, tab_strip_model_1->GetIndexOfWebContents(panel_contents));
+  EXPECT_EQ(2, tab_strip_model_1->GetIndexOfWebContents(tab_b));
+
+  EXPECT_EQ(2, tab_strip_model_2->IndexOfFirstNonPinnedTab());
+  EXPECT_EQ(tab_a->GetVisibleURL(), tab_strip_model_2->GetWebContentsAt(0)
+                                        ->GetController()
+                                        .GetVisibleEntry()
+                                        ->GetVirtualURL());
+  EXPECT_EQ(tab_b->GetVisibleURL(), tab_strip_model_2->GetWebContentsAt(1)
+                                        ->GetController()
+                                        .GetVisibleEntry()
+                                        ->GetVirtualURL());
+
+  // Move dummy tab_b in front of tab_1 within browser_2.
+  tab_strip_model_2->MoveWebContentsAt(1, 0, /* select_after_move= */ false);
+  EXPECT_EQ(tab_b->GetVisibleURL(), tab_strip_model_2->GetWebContentsAt(0)
+                                        ->GetController()
+                                        .GetVisibleEntry()
+                                        ->GetVirtualURL());
+  EXPECT_EQ(tab_a->GetVisibleURL(), tab_strip_model_2->GetWebContentsAt(1)
+                                        ->GetController()
+                                        .GetVisibleEntry()
+                                        ->GetVirtualURL());
+
+  EXPECT_EQ(0, tab_strip_model_1->GetIndexOfWebContents(tab_b));
+  EXPECT_EQ(1, tab_strip_model_1->GetIndexOfWebContents(tab_a));
+  EXPECT_EQ(2, tab_strip_model_1->GetIndexOfWebContents(panel_contents));
+
+  // Move tab_a across the panel's tab within browser_1 and check dummy tabs
+  // are not changed.
+  tab_strip_model_1->MoveWebContentsAt(1, 2, /* select_after_move= */ false);
+  EXPECT_EQ(0, tab_strip_model_1->GetIndexOfWebContents(tab_b));
+  EXPECT_EQ(1, tab_strip_model_1->GetIndexOfWebContents(panel_contents));
+  EXPECT_EQ(2, tab_strip_model_1->GetIndexOfWebContents(tab_a));
+
+  EXPECT_EQ(tab_b->GetVisibleURL(), tab_strip_model_2->GetWebContentsAt(0)
+                                        ->GetController()
+                                        .GetVisibleEntry()
+                                        ->GetVirtualURL());
+  EXPECT_EQ(tab_a->GetVisibleURL(), tab_strip_model_2->GetWebContentsAt(1)
+                                        ->GetController()
+                                        .GetVisibleEntry()
+                                        ->GetVirtualURL());
+}

@@ -56,7 +56,6 @@ class EmailAliasesController {
  private:
   void OnBubbleClosed(const std::string&);
   void ShowPromoBubble(content::WebContents* initiator);
-  void OnPromoBubbleClosed(const std::string&);
 
   const raw_ref<BrowserWindowInterface> browser_;
   raw_ptr<EmailAliasesService> email_aliases_service_ = nullptr;

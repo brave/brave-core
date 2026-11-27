@@ -44,6 +44,58 @@ namespace brave_ads {
 
 namespace {
 
+constexpr char kUndefinedAdCampaignType[] = "";
+constexpr char kFreeAdCampaignType[] = "free";
+constexpr char kPaidAdCampaignType[] = "paid";
+constexpr char kBarterAdCampaignType[] = "barter";
+constexpr char kMakeGoodAdCampaignType[] = "make_good";
+constexpr char kHouseAdCampaignType[] = "house";
+constexpr char kCauseAdCampaignType[] = "cause";
+constexpr char kFixedAdCampaignType[] = "fixed";
+constexpr char kTrialAdCampaignType[] = "trial";
+constexpr char kPreemptiveAdCampaignType[] = "preemptive";
+constexpr char kAffiliateAdCampaignType[] = "affiliate";
+constexpr char kSurveyAdCampaignType[] = "survey";
+constexpr char kProductAdCampaignType[] = "product";
+
+constexpr auto kStringToMojomCampaignTypeMap =
+    base::MakeFixedFlatMap<std::string_view, mojom::NewTabPageAdCampaignType>(
+        {{kUndefinedAdCampaignType,
+          mojom::NewTabPageAdCampaignType::kUndefined},
+         {kFreeAdCampaignType, mojom::NewTabPageAdCampaignType::kFree},
+         {kPaidAdCampaignType, mojom::NewTabPageAdCampaignType::kPaid},
+         {kBarterAdCampaignType, mojom::NewTabPageAdCampaignType::kBarter},
+         {kMakeGoodAdCampaignType, mojom::NewTabPageAdCampaignType::kMakeGood},
+         {kHouseAdCampaignType, mojom::NewTabPageAdCampaignType::kHouse},
+         {kCauseAdCampaignType, mojom::NewTabPageAdCampaignType::kCause},
+         {kFixedAdCampaignType, mojom::NewTabPageAdCampaignType::kFixed},
+         {kTrialAdCampaignType, mojom::NewTabPageAdCampaignType::kTrial},
+         {kPreemptiveAdCampaignType,
+          mojom::NewTabPageAdCampaignType::kPreemptive},
+         {kAffiliateAdCampaignType,
+          mojom::NewTabPageAdCampaignType::kAffiliate},
+         {kSurveyAdCampaignType, mojom::NewTabPageAdCampaignType::kSurvey},
+         {kProductAdCampaignType, mojom::NewTabPageAdCampaignType::kProduct}});
+
+constexpr auto kMojomCampaignTypeToStringMap =
+    base::MakeFixedFlatMap<mojom::NewTabPageAdCampaignType, std::string_view>(
+        {{mojom::NewTabPageAdCampaignType::kUndefined,
+          kUndefinedAdCampaignType},
+         {mojom::NewTabPageAdCampaignType::kFree, kFreeAdCampaignType},
+         {mojom::NewTabPageAdCampaignType::kPaid, kPaidAdCampaignType},
+         {mojom::NewTabPageAdCampaignType::kBarter, kBarterAdCampaignType},
+         {mojom::NewTabPageAdCampaignType::kMakeGood, kMakeGoodAdCampaignType},
+         {mojom::NewTabPageAdCampaignType::kHouse, kHouseAdCampaignType},
+         {mojom::NewTabPageAdCampaignType::kCause, kCauseAdCampaignType},
+         {mojom::NewTabPageAdCampaignType::kFixed, kFixedAdCampaignType},
+         {mojom::NewTabPageAdCampaignType::kTrial, kTrialAdCampaignType},
+         {mojom::NewTabPageAdCampaignType::kPreemptive,
+          kPreemptiveAdCampaignType},
+         {mojom::NewTabPageAdCampaignType::kAffiliate,
+          kAffiliateAdCampaignType},
+         {mojom::NewTabPageAdCampaignType::kSurvey, kSurveyAdCampaignType},
+         {mojom::NewTabPageAdCampaignType::kProduct, kProductAdCampaignType}});
+
 constexpr char kUndefinedAdMetricType[] = "";
 constexpr char kDisabledAdMetricType[] = "disabled";
 constexpr char kConfirmationAdMetricType[] = "confirmation";
@@ -80,6 +132,8 @@ constexpr char kCampaignVersionKey[] = "version";
 constexpr char kCampaignIdKey[] = "campaignId";
 
 constexpr char kCampaignAdvertiserIdKey[] = "advertiserId";
+
+constexpr char kCampaignTypeKey[] = "type";
 
 constexpr char kCampaignMetricsKey[] = "metrics";
 
@@ -222,6 +276,16 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
       continue;
     }
 
+    // Campaigns predating this field, or carrying a type this browser
+    // version does not yet recognize, are treated as paid.
+    mojom::NewTabPageAdCampaignType mojom_ad_campaign_type =
+        mojom::NewTabPageAdCampaignType::kPaid;
+    if (const std::string* const value =
+            campaign_dict->FindString(kCampaignTypeKey)) {
+      mojom_ad_campaign_type = ToMojomNewTabPageAdCampaignType(*value).value_or(
+          mojom::NewTabPageAdCampaignType::kPaid);
+    }
+
     mojom::NewTabPageAdMetricType mojom_ad_metric_type =
         mojom::NewTabPageAdMetricType::kConfirmation;
     if (const std::string* const value =
@@ -347,6 +411,7 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
       CreativeNewTabPageAdInfo creative_ad;
       creative_ad.campaign_id = *campaign_id;
       creative_ad.advertiser_id = *advertiser_id;
+      creative_ad.campaign_type = mojom_ad_campaign_type;
       creative_ad.metric_type = mojom_ad_metric_type;
       creative_ad.start_at = start_at;
       creative_ad.end_at = end_at;
@@ -576,6 +641,22 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
   database_table.Save(
       creative_ads, base::BindOnce(&SaveCreativeNewTabPageAdsCallback,
                                    campaign_conversions, std::move(callback)));
+}
+
+std::optional<mojom::NewTabPageAdCampaignType> ToMojomNewTabPageAdCampaignType(
+    std::string_view value) {
+  return base::OptionalFromPtr(
+      base::FindOrNull(kStringToMojomCampaignTypeMap, value));
+}
+
+std::string_view ToString(mojom::NewTabPageAdCampaignType value) {
+  if (const auto* const string =
+          base::FindOrNull(kMojomCampaignTypeToStringMap, value)) {
+    return *string;
+  }
+
+  NOTREACHED() << "Unexpected value for mojom::NewTabPageAdCampaignType: "
+               << std::to_underlying(value);
 }
 
 std::optional<mojom::NewTabPageAdMetricType> ToMojomNewTabPageAdMetricType(

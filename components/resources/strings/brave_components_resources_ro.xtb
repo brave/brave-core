@@ -949,6 +949,11 @@
 <translation id="4362717653795263052">Restabiliți principalele conturi de criptomonede</translation>
 <translation id="3038077262567136741">Introduceți expresia de recuperare, pentru a restabili contul dvs. de criptomonede Brave Wallet.</translation>
 <translation id="955918646509748368">Expresia de recuperare introdusă este incorectă.</translation>
+<translation id="7496330898672236908">Această frază de recuperare nu se potrivește cu portofelul tău. Verifică fraza și încearcă din nou.</translation>
+<translation id="3798792138617904098">Elimini conturile importate?</translation>
+<translation id="2960631345291747230">Conturile importate nu au backup prin fraza ta de recuperare. Vor fi eliminate din Brave Wallet și este posibil să pierzi definitiv accesul la fondurile lor, cu excepția cazului în care ai făcut backup cheilor lor private.</translation>
+<translation id="8898583604592472741">Elimină conturile</translation>
+<translation id="1577629163207045190">Tastează „<ph name="CONFIRMATION_PHRASE"/>” pentru a confirma.</translation>
 <translation id="8107437138787377150">Inserați expresia de recuperare din clipboard</translation>
 <translation id="4811736040444856406">Afișați expresia pentru recuperare</translation>
 <translation id="4359319875297001084">Importați din vechile portofele de criptomonede Brave?</translation>
@@ -2243,13 +2248,12 @@ other {# surse}
 <translation id="3934503473603661122">Salut, eu sunt Leo. Sunt un asistent IA de la Brave. Sunt structurat pe baza Grok 4.7, modelul de raționament de ultimă generație al xAI de pe Amazon Bedrock. Grok 4.7 este furnizat prin infrastructura securizată AWS a Brave.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Salut, eu sunt Leo. Sunt un asistent IA de la Brave. Sunt structurat pe baza GPT Luna, modelul rapid, cu latență redusă al OpenAI de pe Amazon Bedrock. GPT Luna este furnizat prin infrastructura securizată AWS a Brave.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Salut, eu sunt Leo. Sunt un asistent IA de la Brave. Sunt structurat pe baza GPT 5.6 Terra, modelul de producție echilibrat al OpenAI de pe Amazon Bedrock Mantle. GPT 5.6 Terra este furnizat prin infrastructura securizată AWS a Brave.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Mistral Large, un model creat de Mistral pentru a fi performant și aplicabil la multe cazuri de utilizare. Mistral Large este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Claude Haiku, un model creat de Anthropic pentru sarcini conversaționale și de procesare de text. Claude Haiku este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Salut, eu sunt Leo. Sunt un asistent IA de la Brave. Sunt structurat pe baza Qwen 3.8 Flash Next, un model creat de Alibaba Cloud pentru a fi performant și aplicabil la multe cazuri de utilizare. Qwen 3.8 Flash Next este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Deepseek V3.2, un model creat de Deepseek pentru a fi performant și aplicabil la multe cazuri de utilizare. Deepseek V3.2 este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Salut, eu sunt Leo. Sunt un asistent IA de la Brave. Funcționez pe baza GLM 5.3, un model creat de Z.ai pentru a fi performant și aplicabil la multe cazuri de utilizare. GLM 5.3 este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Claude Opus, un model creat de Anthropic pentru sarcini conversaționale și de procesare de text. Claude Opus este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza GLM-4-7-Flash, un model creat de Zhipu AI pentru a fi performant și aplicabil la multe cazuri de utilizare. GLM-4-7-Flash este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Kimi K2.5, un model creat de Moonshot AI pentru a fi performant și aplicabil la multe cazuri de utilizare. Kimi K2.5 este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Nemotron Nano 3 30B, un model creat de NVIDIA pentru a fi performant și aplicabil la multe cazuri de utilizare. Nemotron Nano 3 30B este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Brave Ocelot, un model creat de Brave pentru a rezuma paginile web. Brave Ocelot este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Local</translation>
@@ -2389,8 +2393,8 @@ other {# surse}
 <translation id="7465032796278724624">Privacy verificabilă cu NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modelul se schimbă dinamic pentru a folosi cel mai bun pentru sarcină</translation>
 <translation id="7348809809749151120">Rapid • Căutare</translation>
+<translation id="7711013627639951065">Rapid • Căutare • Viziune • Instrumente</translation>
 <translation id="3213834013136637671">Căutare • Viziune</translation>
-<translation id="2793458212460902934">Rapid • Căutare • Instrumente</translation>
 <translation id="5276681919620506371">Căutare • Instrumente</translation>
 <translation id="7434375176361995333">Rezumate • Rapid</translation>
 <translation id="3965507912994218570">Setări Leo</translation>
@@ -2463,6 +2467,8 @@ other {# surse}
 <translation id="6287023598025162715">Conversație nouă</translation>
 <translation id="7230502562132448519">Filtrați conversațiile</translation>
 <translation id="821070843380699990">Încercați o altă interogare</translation>
+<translation id="241415280196701326">Spații de lucru recente</translation>
+<translation id="5388053981690151266">Conversație nouă în acest spațiu de lucru</translation>
 <translation id="7097822247923237815">Chat temporar</translation>
 <translation id="7481750859362986254">Acest chat nu va fi salvat în istoricul tău sau nu va folosi nici o personalizare sau memorie a lui Leo.</translation>
 <translation id="4238305333951712482">Memoria a fost actualizată: <ph name="MEMORY_CONTENT"/></translation>
@@ -2488,6 +2494,7 @@ other {# surse}
 <translation id="5103625298494362646">Modul Agent funcționează cu modele care au suport pentru instrumente. Modelele non-compatibile sunt ascunse din această listă.</translation>
 <translation id="3397808797783614750">Activarea navigării automate AI poate duce la consecințe dăunătoare, neintenționate pentru confidențialitatea, finanțele și comunicările dvs. online. <ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Avertisment de securitate</translation>
+<translation id="717245811623757038">Solicitare de permisiune pentru instrument</translation>
 <translation id="6077070599873946984">Brave IA are nevoie de permisiunea ta pentru: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI dorește să execute **<ph name="TOOL_NAME"/>** pe **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Operațiunea a fost detectată ca fiind potențial aliniată greșit cu cererea ta:</translation>

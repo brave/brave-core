@@ -5,7 +5,7 @@
 use crate::parser::ParseError;
 use crate::parser::SubtagIterator;
 use crate::shortvec::{ShortBoxSlice, ShortBoxSliceIntoIter};
-use crate::subtags::{subtag, Subtag};
+use crate::subtags::{Subtag, subtag};
 #[cfg(feature = "alloc")]
 use alloc::vec::Vec;
 #[cfg(feature = "alloc")]
@@ -22,7 +22,7 @@ use core::str::FromStr;
 /// # Examples
 ///
 /// ```
-/// use icu::locale::extensions::unicode::{value, Value};
+/// use icu::locale::extensions::unicode::{Value, value};
 /// use writeable::assert_writeable_eq;
 ///
 /// assert_writeable_eq!(value!("gregory"), "gregory");
@@ -139,12 +139,16 @@ impl Value {
     ///
     /// let mut v = Value::default();
     /// v.push_subtag(subtag!("foo"));
+    /// // The `true` subtag is ignored
+    /// v.push_subtag(subtag!("true"));
     /// v.push_subtag(subtag!("bar"));
     /// assert_eq!(v, "foo-bar");
     /// ```
     #[cfg(feature = "alloc")]
     pub fn push_subtag(&mut self, subtag: Subtag) {
-        self.0.push(subtag);
+        if subtag != TRUE_VALUE {
+            self.0.push(subtag);
+        }
     }
 
     /// Returns the number of subtags in the [`Value`].
@@ -168,7 +172,7 @@ impl Value {
     /// # Examples
     ///
     /// ```
-    /// use icu::locale::extensions::unicode::{value, Value};
+    /// use icu::locale::extensions::unicode::{Value, value};
     ///
     /// assert_eq!(value!("true"), Value::new_empty());
     /// ```
@@ -347,8 +351,8 @@ impl_writeable_for_subtag_list!(Value, "islamic", "civil");
 /// # Examples
 ///
 /// ```
-/// use icu::locale::extensions::unicode::{key, value};
 /// use icu::locale::Locale;
+/// use icu::locale::extensions::unicode::{key, value};
 ///
 /// let loc: Locale = "de-u-ca-buddhist".parse().unwrap();
 ///

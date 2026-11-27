@@ -6,7 +6,8 @@
 
 For each file rename found in the Chromium git log for the given revision
 reference or range, updates every brave-core artefact that references the old
-path: chromium_src/ shadow files (move + shadow include + include guard),
+path: chromium_src/ shadow files (move + shadow include + include guard) and
+copies in Brave-only subdirectories, with the GN strings naming them,
 rewrite/ plaster files (move + patch deletion), and all cross-brave-core
 #include/#import/comment/BUILD.gn references.
 
@@ -31,6 +32,7 @@ from __future__ import annotations
 import argparse
 import logging
 from pathlib import Path
+import posixpath
 import re
 import subprocess
 
@@ -50,6 +52,7 @@ from alias.source_rewrite import (
     rewrite_guard_in_file,
     update_references,
     update_shadow_include,
+    walk_brave_core,
 )
 
 _RenamePair = tuple[Path, Path]
@@ -97,9 +100,18 @@ def cmd_follow_renames(args: list[str]) -> int:
     renames = _get_chromium_renames(parsed.ref_or_range)
     changed = ChangedFiles() if renames and not parsed.no_format else None
 
+    renamed_dirs = {old.parent for old, _ in renames}
     moved: list[Path] = []
     for old_chromium, new_chromium in renames:
-        moved += _repair_chromium_src(old_chromium, new_chromium, parsed.no_git)
+        replaced = _repair_chromium_src(
+            old_chromium, new_chromium, parsed.no_git
+        )
+        replaced += _repair_chromium_src_copies(
+            old_chromium, new_chromium, renamed_dirs, parsed.no_git
+        )
+        if replaced:
+            _rewrite_gn_strings(old_chromium, new_chromium)
+        moved += replaced
         moved += _repair_plaster_files(
             old_chromium, new_chromium, parsed.no_git, not parsed.no_run_plaster
         )
@@ -304,6 +316,90 @@ def _repair_chromium_src(
         else:
             insert_guard(new_shadow, new_guard)
     return moved
+
+
+def _repair_chromium_src_copies(
+    old_chromium: Path,
+    new_chromium: Path,
+    renamed_dirs: set[Path],
+    no_git: bool,
+) -> list[Path]:
+    """Moves the `chromium_src` copies of a renamed file that sit in
+    Brave-only subdirectories of its directory, and returns them at their new
+    paths.
+
+    Brave keeps one replacement per branding there (e.g.
+    `chromium_src/chrome/installer/linux/common/brave-browser/`). A
+    subdirectory upstream has, or renamed files out of, holds shadows of other
+    upstream files instead, which their own renames move.
+    """
+    chromium_src = repository.brave.root / 'chromium_src'
+    old_dir = chromium_src / old_chromium.parent
+    if not old_dir.is_dir():
+        return []
+    moved = []
+    for copy in sorted(old_dir.rglob(old_chromium.name)):
+        sub = copy.parent.relative_to(old_dir)
+        upstream_dir = old_chromium.parent / sub
+        if (
+            sub == Path('.')
+            or not copy.is_file()
+            or (repository.chromium.root / upstream_dir).exists()
+            or any(d.is_relative_to(upstream_dir) for d in renamed_dirs)
+        ):
+            continue
+        new_copy = chromium_src / new_chromium.parent / sub / new_chromium.name
+        new_copy.parent.mkdir(parents=True, exist_ok=True)
+        if no_git:
+            copy.rename(new_copy)
+        else:
+            terminal.run_git('mv', str(copy), str(new_copy))
+        moved.append(new_copy)
+    return moved
+
+
+_GN_STRING = re.compile(r'"([^"\n]*)"')
+
+
+def _rewrite_gn_strings(old_chromium: Path, new_chromium: Path) -> None:
+    """Rewrites the strings in Brave's GN files that name a renamed file
+    Brave replaces: its `chromium_src` copies, whatever lies between
+    (`//brave/chromium_src/<dir>/$branding/<name>`), and the file itself, from
+    the source root or relative to one of its directories (`common/<name>`, in
+    a list excluding upstream's copy)."""
+    old_name, new_name = old_chromium.name, new_chromium.name
+    old_parent = old_chromium.parent.as_posix()
+    new_parent = new_chromium.parent.as_posix()
+    old_copies = f'//brave/chromium_src/{old_parent}/'
+    new_copies = f'//brave/chromium_src/{new_parent}/'
+
+    def rewrite(match: re.Match[str]) -> str:
+        text = match[1]
+        head, sep, name = text.rpartition('/')
+        if not sep or name != old_name:
+            return match[0]
+        if text.startswith(old_copies):
+            between = text[len(old_copies) : -len(old_name)]
+            return f'"{new_copies}{between}{new_name}"'
+        if text == f'//{old_chromium.as_posix()}':
+            return f'"//{new_chromium.as_posix()}"'
+        if head != old_parent and not old_parent.endswith(f'/{head}'):
+            return match[0]
+        # The directory the path is relative to, which the new path has to
+        # be under too.
+        base = old_parent[: -len(head)].rstrip('/')
+        if base and not (new_parent + '/').startswith(base + '/'):
+            return match[0]
+        relative = posixpath.relpath(new_chromium.as_posix(), base or '.')
+        return f'"{relative}"'
+
+    for path in walk_brave_core():
+        if path.suffix not in ('.gn', '.gni'):
+            continue
+        content = path.read_bytes().decode('utf-8')
+        new_content = _GN_STRING.sub(rewrite, content)
+        if new_content != content:
+            path.write_text(new_content, encoding='utf-8', newline='\n')
 
 
 def _repair_plaster_files(

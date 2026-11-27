@@ -10,14 +10,22 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
+edition = "2018"
 name = "num_threads"
-version = "0.1.7"
+version = "0.1.8"
 authors = ["Jacob Pratt <open-source@jhpratt.dev>"]
+build = false
 include = [
     "src/**/*",
     "LICENSE-*",
 ]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "A minimal library that determines the number of running threads for the current process."
+readme = false
 categories = [
     "api-bindings",
     "hardware-support",
@@ -30,12 +38,11 @@ repository = "https://github.com/jhpratt/num_threads"
 all-features = true
 targets = ["x86_64-unknown-linux-gnu"]
 
-[[test]]
-name = "tests"
-path = "tests.rs"
-harness = false
+[lib]
+name = "num_threads"
+path = "src/lib.rs"
 
 [dependencies]
 
-[target."cfg(any(target_os = \"macos\", target_os = \"ios\", target_os = \"freebsd\"))".dependencies.libc]
-version = "0.2.107"
+[target.'cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))'.dependencies.libc]
+version = "0.2.127"

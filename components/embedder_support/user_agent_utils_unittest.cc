@@ -4,9 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "components/embedder_support/user_agent_utils.h"
+
 #include "base/command_line.h"
-#include "base/feature_list.h"
 #include "base/test/scoped_command_line.h"
+#include "base/test/scoped_feature_list.h"
 #include "components/embedder_support/switches.h"
 #include "components/version_info/version_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -45,8 +46,8 @@ TEST(UserAgentUtilsTest, UserAgentFromCommandLine) {
   base::test::ScopedCommandLine command_line;
   command_line.GetProcessCommandLine()->AppendSwitchASCII(kUserAgent,
                                                           kCmdUserAgentValue);
-  ASSERT_TRUE(
-      base::FeatureList::IsEnabled(blink::features::kUACHOverrideBlank));
+  base::test::ScopedFeatureList feature_list(
+      blink::features::kUACHOverrideBlank);
   const auto brave_metadata = GetUserAgentMetadata();
   const blink::UserAgentMetadata empty_metadata;
 

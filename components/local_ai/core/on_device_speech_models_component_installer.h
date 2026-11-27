@@ -79,13 +79,13 @@ class OnDeviceSpeechModelsComponentInstallerPolicy
 
 // Called once, while components are registered at startup. Sets up a
 // registrar per model, which from then on follows the `kBraveLocalAIEnabled`
-// master switch, `kBraveOnDeviceSpeechRecognition` and the model's own enabled
-// pref (`GetOnDeviceSpeechModelEnabledPref`) for the rest of the session. The
+// master switch, `kBraveOnDeviceSpeechRecognition` and the model that the user
+// enabled (`prefs::kOnDeviceSpeechModel`) for the rest of the session. The
 // multilingual registrar also follows `kBraveOnDeviceSpeechMultilingual`. Each
 // registers its model only while that model is enabled, and otherwise takes
 // it back off disk. Turning the switch or `kBraveOnDeviceSpeechRecognition` off
-// also clears both enabled prefs. `kBraveOnDeviceSpeechMultilingual` off clears
-// only the multilingual pref.
+// also clears the enabled model. `kBraveOnDeviceSpeechMultilingual` off clears
+// it only when it is the multilingual model.
 //
 // Brave Origin manages the switch and verifies the purchase asynchronously, so
 // its value can land after components are registered, which is why the switch
@@ -110,7 +110,7 @@ void ShutdownOnDeviceSpeechModelsComponentRegistration();
 // installed, even when nothing is registered, which is the case while the
 // feature or the master switch is off, while `kBraveOnDeviceSpeechMultilingual`
 // is off for the multilingual model, while `model` is not enabled
-// (`GetOnDeviceSpeechModelEnabledPref`), or before
+// (`GetEnabledOnDeviceSpeechModel`), or before
 // `ManageOnDeviceSpeechModelsComponentRegistration` has run.
 void MaybeRegisterOnDeviceSpeechModelsComponent(
     OnDeviceSpeechModel model,

@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Lisateave Widevine'i kohta</translation>
+<translation id="3318169548229684688">laadida alla kõnetuvastusmudel (<ph name="DOWNLOAD_SIZE"/>), et töödelda kõnet selles seadmes</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> palub teil</translation>
 <translation id="3218385319396786393">Automaatesitus blokeeriti sellel lehel</translation>
 <translation id="4988333904713528597">Luba alati automaatesitust saidil <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="3540231253392253941">Kasuta tõukesõnumite saatmiseks Google’i teenuseid</translation>
 <translation id="2224032129673914306">Semantiline ajaloo otsing</translation>
 <translation id="6045998903985162478">Indekseeri külastatud lehed, et leiaksid need hõlpsalt ajaloost, avatud kaartidelt ja Leolt.</translation>
+<translation id="3962946446120925966">Seadmes toimuv kõnetuvastus</translation>
+<translation id="6408242130028978631">Laadige alla kõnetuvastusmudel (<ph name="DOWNLOAD_SIZE"/>), et saidid saaksid kõnet selles seadmes töödelda. Mudeli eemaldamiseks lülitage see säte välja.</translation>
 <translation id="5813105074916486721">Lokaalse ajaloo säilitamine</translation>
 <translation id="5671611745062206644">Kui kaua Brave sinu sirvimisajalugu lokaalselt säilitab</translation>
 <translation id="7184510058087008090">1 päev</translation>

@@ -1,22 +1,29 @@
 //! Implementation of [`Distribution`] for various structs.
 
-use rand08::distributions::{Distribution, Standard};
 use rand08::Rng;
+use rand08::distributions::{Distribution, Standard};
 
 use crate::{
-    Date, Duration, Month, OffsetDateTime, PrimitiveDateTime, Time, UtcDateTime, UtcOffset, Weekday,
+    Date, Month, OffsetDateTime, PlainDateTime, SignedDuration, Time, Timestamp, UtcDateTime,
+    UtcOffset, Weekday,
 };
 
 impl Distribution<Time> for Standard {
     #[inline]
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Time {
+    fn sample<R>(&self, rng: &mut R) -> Time
+    where
+        R: Rng + ?Sized,
+    {
         Time::from_hms_nanos_ranged(rng.r#gen(), rng.r#gen(), rng.r#gen(), rng.r#gen())
     }
 }
 
 impl Distribution<Date> for Standard {
     #[inline]
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Date {
+    fn sample<R>(&self, rng: &mut R) -> Date
+    where
+        R: Rng + ?Sized,
+    {
         // Safety: The Julian day number is in range.
         unsafe {
             Date::from_julian_day_unchecked(
@@ -28,43 +35,68 @@ impl Distribution<Date> for Standard {
 
 impl Distribution<UtcOffset> for Standard {
     #[inline]
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> UtcOffset {
+    fn sample<R>(&self, rng: &mut R) -> UtcOffset
+    where
+        R: Rng + ?Sized,
+    {
         UtcOffset::from_hms_ranged(rng.r#gen(), rng.r#gen(), rng.r#gen())
     }
 }
 
-impl Distribution<PrimitiveDateTime> for Standard {
+impl Distribution<PlainDateTime> for Standard {
     #[inline]
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> PrimitiveDateTime {
-        PrimitiveDateTime::new(Self.sample(rng), Self.sample(rng))
+    fn sample<R>(&self, rng: &mut R) -> PlainDateTime
+    where
+        R: Rng + ?Sized,
+    {
+        PlainDateTime::new(Self.sample(rng), Self.sample(rng))
     }
 }
 
 impl Distribution<UtcDateTime> for Standard {
     #[inline]
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> UtcDateTime {
+    fn sample<R>(&self, rng: &mut R) -> UtcDateTime
+    where
+        R: Rng + ?Sized,
+    {
         UtcDateTime::new(Self.sample(rng), Self.sample(rng))
     }
 }
 
 impl Distribution<OffsetDateTime> for Standard {
     #[inline]
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> OffsetDateTime {
-        let date_time: PrimitiveDateTime = Self.sample(rng);
+    fn sample<R>(&self, rng: &mut R) -> OffsetDateTime
+    where
+        R: Rng + ?Sized,
+    {
+        let date_time: PlainDateTime = Self.sample(rng);
         date_time.assume_offset(Self.sample(rng))
     }
 }
 
-impl Distribution<Duration> for Standard {
+impl Distribution<Timestamp> for Standard {
     #[inline]
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Duration {
-        Duration::new_ranged(rng.r#gen(), rng.r#gen())
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Timestamp {
+        Timestamp::new_ranged(rng.r#gen(), rng.r#gen())
+    }
+}
+
+impl Distribution<SignedDuration> for Standard {
+    #[inline]
+    fn sample<R>(&self, rng: &mut R) -> SignedDuration
+    where
+        R: Rng + ?Sized,
+    {
+        SignedDuration::new_ranged(rng.r#gen(), rng.r#gen())
     }
 }
 
 impl Distribution<Weekday> for Standard {
     #[inline]
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Weekday {
+    fn sample<R>(&self, rng: &mut R) -> Weekday
+    where
+        R: Rng + ?Sized,
+    {
         use Weekday::*;
 
         match rng.gen_range(0u8..7) {
@@ -84,7 +116,10 @@ impl Distribution<Weekday> for Standard {
 
 impl Distribution<Month> for Standard {
     #[inline]
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Month {
+    fn sample<R>(&self, rng: &mut R) -> Month
+    where
+        R: Rng + ?Sized,
+    {
         use Month::*;
         match rng.gen_range(1u8..=12) {
             1 => January,

@@ -77,14 +77,14 @@ impl DecodeV2 for Lz4Decoder {
                 input.unwritten().as_ptr(),
                 &mut input_size,
                 core::ptr::null(),
-            ));
+            ))?;
             output.assume_init_and_advance(output_size);
 
             result
         };
         input.advance(input_size);
 
-        let finished = result? == 0;
+        let finished = result == 0;
         if finished {
             self.stream_ended = true;
         }

@@ -5,8 +5,8 @@ use gix_glob::pattern::Case;
 use gix_object::FindExt;
 
 use crate::{
-    stack::state::{Ignore, IgnoreMatchGroup},
     PathIdMapping,
+    stack::state::{Ignore, IgnoreMatchGroup},
 };
 
 /// Specify how to parse ignore patterns.
@@ -24,7 +24,8 @@ pub enum Source {
     /// Use this when no worktree checkout is available, like in bare repositories or when accessing blobs from other parts
     /// of the history which aren't checked out.
     IdMapping,
-    /// Read from the worktree and if not present, read them from the id mappings *if* these don't have the skip-worktree bit set.
+    /// Read from the worktree without following symlinks, falling back to id mappings
+    /// for entries with the skip-worktree bit set.
     #[default]
     WorktreeThenIdMappingIfNotSkipped,
 }
@@ -32,11 +33,7 @@ pub enum Source {
 impl Source {
     /// Returns non-worktree variants of `self` if `is_bare` is true.
     pub fn adjust_for_bare(self, is_bare: bool) -> Self {
-        if is_bare {
-            Source::IdMapping
-        } else {
-            self
-        }
+        if is_bare { Source::IdMapping } else { self }
     }
 }
 
@@ -98,7 +95,7 @@ impl Ignore {
     ) -> Option<gix_ignore::search::Match<'_>> {
         let groups = self.match_groups();
         let mut dir_match = None;
-        if let Some((source, mapping)) = self
+        for (source, mapping) in self
             .matched_directory_patterns_stack
             .iter()
             .rev()
@@ -107,7 +104,6 @@ impl Ignore {
                 let list = &groups[gidx].patterns[plidx];
                 (list.source.as_deref(), &list.patterns[pidx])
             })
-            .next()
         {
             let match_ = gix_ignore::search::Match {
                 pattern: &mapping.pattern,
@@ -116,14 +112,12 @@ impl Ignore {
                 source,
             };
             if mapping.pattern.is_negative() {
-                dir_match = Some(match_);
+                dir_match.get_or_insert(match_);
             } else {
-                // Note that returning here is wrong if this pattern _was_ preceded by a negative pattern that
-                // didn't match the directory, but would match now.
-                // Git does it similarly so we do too even though it's incorrect.
-                // To fix this, one would probably keep track of whether there was a preceding negative pattern, and
-                // if so we check the path in full and only use the dir match if there was no match, similar to the negative
-                // case above whose fix fortunately won't change the overall result.
+                // An excluded ancestor excludes all descendants, even if a nearer directory matches a negation.
+                // For example, `tld/` in the root `.gitignore` still excludes `tld/sd/file` when
+                // `tld/.gitignore` contains `!sd/`. Our stack records that negation for `tld/sd`,
+                // but Git doesn't consult ignore files inside the excluded `tld` directory.
                 return match_.into();
             }
         }
@@ -164,7 +158,7 @@ impl Ignore {
         })
     }
 
-    #[allow(clippy::too_many_arguments)]
+    #[expect(clippy::too_many_arguments)]
     pub(crate) fn push_directory(
         &mut self,
         root: &Path,
@@ -188,9 +182,14 @@ impl Ignore {
                         let ignore_blob = objects
                             .find_blob(&id_mappings[idx].1, buf)
                             .map_err(std::io::Error::other)?;
-                        let ignore_path = gix_path::from_bstring(ignore_path_relative.into_owned());
-                        self.stack
-                            .add_patterns_buffer(ignore_blob.data, ignore_path, Some(Path::new("")), self.parse);
+                        let ignore_path =
+                            gix_path::from_bstring(ignore_path_relative.into_owned()).map_err(std::io::Error::other)?;
+                        self.stack.add_patterns_buffer(
+                            ignore_blob.data,
+                            ignore_path,
+                            Some(Path::new("")),
+                            self.parse,
+                        )?;
                         stats.patterns_buffers += 1;
                     }
                     Err(_) => {
@@ -200,11 +199,10 @@ impl Ignore {
                 }
             }
             Source::WorktreeThenIdMappingIfNotSkipped => {
-                let follow_symlinks = ignore_file_in_index.is_err();
                 let added = gix_glob::search::add_patterns_file(
                     &mut self.stack.patterns,
                     dir.join(".gitignore"),
-                    follow_symlinks,
+                    false,
                     Some(root),
                     buf,
                     self.parse,
@@ -217,13 +215,14 @@ impl Ignore {
                             let ignore_blob = objects
                                 .find_blob(&id_mappings[idx].1, buf)
                                 .map_err(std::io::Error::other)?;
-                            let ignore_path = gix_path::from_bstring(ignore_path_relative.into_owned());
+                            let ignore_path = gix_path::from_bstring(ignore_path_relative.into_owned())
+                                .map_err(std::io::Error::other)?;
                             self.stack.add_patterns_buffer(
                                 ignore_blob.data,
                                 ignore_path,
                                 Some(Path::new("")),
                                 self.parse,
-                            );
+                            )?;
                             stats.patterns_buffers += 1;
                         }
                         Err(_) => {

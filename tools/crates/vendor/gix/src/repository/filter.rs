@@ -1,25 +1,6 @@
-use crate::{filter, worktree::IndexPersistedOrInMemory, Id, Repository};
+use gix_error::ResultExt;
 
-///
-pub mod pipeline {
-    /// The error returned by [Repository::filter_pipeline()](super::Repository::filter_pipeline()).
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("Could not obtain head commit of bare repository")]
-        HeadCommit(#[from] crate::reference::head_commit::Error),
-        #[error(transparent)]
-        DecodeCommit(#[from] gix_object::decode::Error),
-        #[error("Could not create index from tree at HEAD^{{tree}}")]
-        TreeTraverse(#[from] crate::repository::index_from_tree::Error),
-        #[error(transparent)]
-        BareAttributes(#[from] crate::config::attribute_stack::Error),
-        #[error(transparent)]
-        WorktreeIndex(#[from] crate::worktree::open_index::Error),
-        #[error(transparent)]
-        Init(#[from] crate::filter::pipeline::options::Error),
-    }
-}
+use crate::{Repository, Result, filter, worktree::IndexPersistedOrInMemory};
 
 impl Repository {
     /// Configure a pipeline for converting byte buffers to the worktree representation, and byte streams to the git-internal
@@ -39,16 +20,18 @@ impl Repository {
     pub fn filter_pipeline(
         &self,
         tree_if_bare: Option<gix_hash::ObjectId>,
-    ) -> Result<(filter::Pipeline<'_>, IndexPersistedOrInMemory), pipeline::Error> {
+    ) -> Result<(filter::Pipeline<'_>, IndexPersistedOrInMemory)> {
         let (cache, index) = if self.is_bare() {
-            let index = self.index_from_tree(&tree_if_bare.map_or_else(
-                || {
-                    self.head_commit()
-                        .map_err(pipeline::Error::from)
-                        .and_then(|c| c.tree_id().map(Id::detach).map_err(Into::into))
+            let tree = tree_if_bare.map_or_else(
+                || -> Result<_> {
+                    let commit = self
+                        .head_commit()
+                        .or_raise(|| gix_error::message("Could not obtain head commit of bare repository"))?;
+                    Ok(commit.tree_id()?.detach())
                 },
                 Ok,
-            )?)?;
+            )?;
+            let index = self.index_from_tree(&tree)?;
             let cache = self.attributes_only(&index, gix_worktree::stack::state::attributes::Source::IdMapping)?;
             (cache, IndexPersistedOrInMemory::InMemory(index))
         } else {

@@ -543,8 +543,8 @@ fn test_ecdsa_prime256v1_sha256_spki_inside_spki() {
     );
 }
 
-#[cfg(all(feature = "aws-lc-rs-unstable", not(feature = "aws-lc-rs-fips")))]
-mod aws_lc_rs_unstable {
+#[cfg(all(feature = "aws-lc-rs", not(feature = "aws-lc-rs-fips")))]
+mod ml_dsa {
     use pki_types::CertificateDer;
     use pki_types::pem::PemObject;
     use untrusted::Input;

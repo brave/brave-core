@@ -114,7 +114,6 @@ brave_core_public_headers = [
   "//brave/ios/browser/api/bookmarks/exporter/brave_bookmarks_exporter.h",
   "//brave/ios/browser/api/history/brave_history_api.h",
   "//brave/ios/browser/api/history/brave_history_observer.h",
-  "//brave/ios/browser/api/net/certificate_utility.h",
   "//brave/ios/browser/api/password/brave_password_api.h",
   "//brave/ios/browser/api/password/brave_password_observer.h",
   "//brave/ios/browser/api/sync/brave_sync_api.h",
@@ -155,6 +154,8 @@ brave_core_public_headers = [
   "//brave/ios/browser/shared/prefs/shared_pref_names_bridge.h",
   "//brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_tab_helper_bridge.h",
   "//brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_args.h",
+  "//brave/ios/browser/brave_shields/element_picker/element_picker_tab_helper_bridge.h",
+  "//brave/ios/browser/brave_shields/element_picker/element_picker_localized_texts.h",
   "//brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper_bridge.h",
   "//brave/ios/browser/brave_shields/scriptlets/scriptlets_tab_helper_bridge.h",
 ]
@@ -331,7 +332,7 @@ generated_file("generated_xcconfig") {
 
   # If absolute paths are stripped from debug symbols ensure that SPM/Xcode
   # also maps debug symbols the same way to allow proper debugging with LLDB
-  if (strip_absolute_paths_from_debug_symbols) {
+  if (enable_dsyms && strip_absolute_paths_from_debug_symbols) {
     ios_dir = rebase_path("//brave/ios/brave-ios")
     ios_dir_build_relative =
         rebase_path("//brave/ios/brave-ios", root_build_dir)

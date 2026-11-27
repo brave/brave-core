@@ -85,17 +85,67 @@
   {
     "cmd": [
       "git",
-      "cache",
-      "exists",
-      "--quiet",
-      "--cache-dir",
-      "/b/cache",
-      "https://chromium.googlesource.com/chromium/src.git"
+      "config",
+      "gc.auto",
+      "0"
     ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "git cache exists for ref"
+    "name": "git cache populate for ref disable (after): gc.auto=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autodetach",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate for ref disable (after): gc.autodetach=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autopacklimit",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate for ref disable (after): gc.autopacklimit=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate for ref disable (after): maintenance.gc.enabled=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate for ref disable (after): maintenance.auto=false"
   },
   {
     "cmd": [

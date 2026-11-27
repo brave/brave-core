@@ -4,17 +4,15 @@ use std::collections::{HashMap, HashSet, VecDeque};
 use std::convert::Infallible;
 use std::error::Error as StdError;
 use std::fmt::{self, Debug};
-use std::future::Future;
 use std::hash::Hash;
 use std::ops::{Deref, DerefMut};
 use std::pin::Pin;
 use std::sync::{Arc, Mutex, Weak};
-use std::task::{self, Poll};
+use std::task::{self, Poll, ready};
 
 use std::time::{Duration, Instant};
 
 use futures_channel::oneshot;
-use futures_core::ready;
 use tracing::{debug, trace};
 
 use hyper::rt::Timer as _;
@@ -806,6 +804,11 @@ impl<T: Poolable + 'static, K: Key> IdleTask<T, K> {
                         if let Ok(mut inner) = inner.lock() {
                             trace!("idle interval checking for expired");
                             inner.clear_expired();
+                            if inner.idle.is_empty() {
+                                inner.idle_interval_ref = None;
+                                trace!("pool empty, canceling idle interval");
+                                return;
+                            }
                         }
                     }
 
@@ -837,7 +840,6 @@ impl<T> WeakOpt<T> {
 #[cfg(test)]
 mod tests {
     use std::fmt::Debug;
-    use std::future::Future;
     use std::hash::Hash;
     use std::pin::Pin;
     use std::task::{self, Poll};
@@ -1013,6 +1015,7 @@ mod tests {
             pool.locked().idle.get(&key).map(|entries| entries.len()),
             Some(3)
         );
+        assert!(pool.locked().idle_interval_ref.is_some());
 
         // Let the timer tick passed the expiration...
         tokio::time::sleep(Duration::from_millis(30)).await;
@@ -1022,6 +1025,7 @@ mod tests {
             pool.locked().idle.get(&key).map(|entries| entries.len()),
             Some(3)
         );
+        assert!(pool.locked().idle_interval_ref.is_some());
 
         // Now wait passed the minimum interval more
         tokio::time::sleep(Duration::from_millis(70)).await;
@@ -1029,12 +1033,17 @@ mod tests {
         tokio::task::yield_now().await;
 
         assert!(!pool.locked().idle.contains_key(&key));
+        assert!(pool.locked().idle_interval_ref.is_none());
+
+        // Insert new key and check timer is recreated
+        pool.pooled(c(key.clone()), Uniq(7));
+        assert!(pool.locked().idle_interval_ref.is_some());
     }
 
     #[tokio::test]
     async fn test_pool_checkout_task_unparked() {
-        use futures_util::future::join;
         use futures_util::FutureExt;
+        use futures_util::future::join;
 
         let pool = pool_no_timer();
         let key = host_key("foo");

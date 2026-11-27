@@ -26,6 +26,7 @@ from config import (
     Defaults,
     FrozenDict,
     GnArgsRegistry,
+    TargetsRegistry,
     _UNSET,
     freeze,
     thaw,
@@ -353,12 +354,11 @@ class DefaultsTest(unittest.TestCase):
 class BuildersRegistryTest(unittest.TestCase):
     def setUp(self):
         self.gn_args = GnArgsRegistry()
-        self.builders = BuildersRegistry(self.gn_args)
+        self.targets = TargetsRegistry()
+        self.builders = BuildersRegistry(self.gn_args, self.targets)
 
     def _targets(self):
-        return self.builders.targets(
-            compile=['brave:all'], tests=['brave_all_unit_tests']
-        )
+        return self.targets.bundle()
 
     def _spec(self):
         return builder_config.builder_spec(
@@ -379,10 +379,19 @@ class BuildersRegistryTest(unittest.TestCase):
                 targets=self._targets(),
             )
 
-    def test_targets_fields_become_tuples(self):
-        targets = self.builders.targets(compile=['brave:all'], tests=['a', 'b'])
-        self.assertEqual(targets.compile, ('brave:all',))
-        self.assertEqual(targets.tests, ('a', 'b'))
+    def test_builder_bundle_is_expanded(self):
+        self.targets.binaries.console_test_launcher(name='t', label='//t:t')
+        self.targets.tests.gtest_test(name='t')
+        self.targets.bundle(name='suite', targets=['t'])
+        builder = self._builder_with(targets='suite')
+        self.assertEqual(builder.targets.tests, ('t',))
+        self.assertEqual(builder.targets.compile, ('t',))
+
+    def test_builder_bundle_errors_name_the_builder(self):
+        with self.assertRaisesRegex(
+            ConfigError, "builder 'b': 'nope' is neither a defined test"
+        ):
+            self._builder_with(targets='nope')
 
     def test_builder_with_named_gn_args_config(self):
         self.gn_args.config(
@@ -463,6 +472,36 @@ class BuildersRegistryTest(unittest.TestCase):
                 targets=self._targets(),
             )
 
+    def _builder_with(self, name='b', **kwargs):
+        kwargs.setdefault('targets', self._targets())
+        return self.builders.builder(
+            name=name,
+            builder_spec=self._spec(),
+            gn_args=self.gn_args.config(
+                args={'target_os': 'linux', 'target_cpu': 'x64'}
+            ),
+            **kwargs,
+        )
+
+    def test_siso_settings_default_to_siso_and_the_service(self):
+        builder = self._builder_with()
+        self.assertIsNone(builder.siso_remote_jobs)
+        self.assertIsNone(builder.siso_reapi_priority)
+
+    def test_siso_settings_take_defaults(self):
+        self.builders.defaults.set(siso_remote_jobs=1440)
+        builder = self._builder_with(siso_reapi_priority=2)
+        self.assertEqual(builder.siso_remote_jobs, 1440)
+        self.assertEqual(builder.siso_reapi_priority, 2)
+
+    def test_siso_settings_must_be_positive_integers(self):
+        for index, value in enumerate((0, -1, True, '500', 1.5)):
+            with self.subTest(value=value):
+                with self.assertRaisesRegex(
+                    ConfigError, 'siso_remote_jobs must be a positive integer'
+                ):
+                    self._builder_with('b%d' % index, siso_remote_jobs=value)
+
     def test_defaults_are_applied_and_overridable(self):
         self.builders.defaults.set(
             builder_group='brave.sanitizers',
@@ -524,7 +563,7 @@ class BuildersRegistryTest(unittest.TestCase):
 
     def test_registries_are_isolated_per_instance(self):
         other_gn_args = GnArgsRegistry()
-        other_builders = BuildersRegistry(other_gn_args)
+        other_builders = BuildersRegistry(other_gn_args, TargetsRegistry())
         other_builders.builder(
             name='b',
             builder_spec=self._spec(),
@@ -590,6 +629,38 @@ class BuilderConfigTest(unittest.TestCase):
         gclient_config = builder_config.gclient_config()
         self.assertEqual(gclient_config.target_os, ())
         self.assertEqual(gclient_config.target_cpu, ())
+        self.assertEqual(gclient_config.custom_deps, {})
+        self.assertEqual(gclient_config.custom_vars, {})
+
+    def test_gclient_config_custom_deps_and_vars_are_sorted_and_frozen(self):
+        gclient_config = builder_config.gclient_config(
+            custom_deps={'src/b': None, 'src/a': 'https://a.example/a.git'},
+            custom_vars={'checkout_y': 'value', 'checkout_x': True},
+        )
+        self.assertEqual(list(gclient_config.custom_deps), ['src/a', 'src/b'])
+        self.assertEqual(
+            list(gclient_config.custom_vars.items()),
+            [('checkout_x', True), ('checkout_y', 'value')],
+        )
+        with self.assertRaises(TypeError):
+            gclient_config.custom_vars['checkout_x'] = False
+
+    def test_gclient_config_rejects_invalid_custom_deps_and_vars(self):
+        for kwargs, message in (
+            ({'custom_deps': ['src/a']}, 'custom_deps must be a mapping'),
+            (
+                {'custom_deps': {'src/a': True}},
+                "invalid custom_deps entry: 'src/a'",
+            ),
+            (
+                {'custom_vars': {'checkout_x': None}},
+                'invalid custom_vars entry',
+            ),
+            ({'custom_vars': {1: True}}, 'invalid custom_vars entry: 1'),
+        ):
+            with self.subTest(kwargs=kwargs):
+                with self.assertRaisesRegex(ConfigError, message):
+                    builder_config.gclient_config(**kwargs)
 
     def test_gclient_config_rejects_a_bare_string(self):
         with self.assertRaisesRegex(ConfigError, 'target_os must be a list'):
@@ -665,14 +736,14 @@ class BuilderConfigTest(unittest.TestCase):
 
 
 class CheckBuilderSpecTest(unittest.TestCase):
-    def _builder(self, *, target_os=(), **chromium_config):
+    def _builder(self, *, target_os=(), custom_vars=None, **chromium_config):
         gn_args = GnArgsRegistry()
-        builders = BuildersRegistry(gn_args)
+        builders = BuildersRegistry(gn_args, TargetsRegistry())
         return builders.builder(
             name='b',
             builder_spec=builder_config.builder_spec(
                 gclient_config=builder_config.gclient_config(
-                    target_os=target_os
+                    target_os=target_os, custom_vars=custom_vars
                 ),
                 chromium_config=builder_config.chromium_config(
                     **chromium_config
@@ -681,7 +752,7 @@ class CheckBuilderSpecTest(unittest.TestCase):
             gn_args=gn_args.config(
                 args={'target_os': 'unused', 'target_cpu': 'unused'}
             ),
-            targets=builders.targets(compile=[], tests=[]),
+            targets=TargetsRegistry().bundle(),
         )
 
     def test_matching_spec_passes(self):
@@ -731,6 +802,132 @@ class CheckBuilderSpecTest(unittest.TestCase):
             ),
             {'target_os': 'android', 'target_cpu': 'arm64'},
         )
+
+    def test_msan_must_check_out_the_instrumented_libraries(self):
+        gn_args = {'target_os': 'linux', 'target_cpu': 'x64', 'is_msan': True}
+        with self.assertRaisesRegex(
+            ConfigError,
+            'builds with is_msan, but gclient_config custom_vars does not set '
+            'checkout_instrumented_libraries',
+        ):
+            check_builder_spec(self._builder(target_platform='linux'), gn_args)
+        check_builder_spec(
+            self._builder(
+                target_platform='linux',
+                custom_vars={'checkout_instrumented_libraries': True},
+            ),
+            gn_args,
+        )
+
+
+class TargetsRegistryTest(unittest.TestCase):
+    def setUp(self):
+        self.targets = TargetsRegistry()
+        for name in ('a', 'b', 'c'):
+            self.targets.binaries.console_test_launcher(
+                name=name, label='//t:' + name
+            )
+        self.targets.binaries.windowed_test_launcher(name='w', label='//t:w')
+        self.targets.tests.gtest_test(name='a', args=['--a'])
+        self.targets.tests.gtest_test(name='b')
+        self.targets.tests.gtest_test(name='b_too', binary='b')
+        self.targets.tests.gtest_test(name='c', mixins=['m1'])
+        self.targets.tests.gtest_test(name='w')
+        self.targets.mixin(name='m1', args=['--m1'])
+        self.targets.mixin(name='m2', args=['--m2'])
+        self.targets.compile_target(name='chrome', label='//chrome:chrome')
+
+    def test_all_binaries_are_listed_by_name(self):
+        self.assertEqual(
+            [
+                (binary.name, binary.label, binary.type)
+                for binary in self.targets.all_binaries()
+            ],
+            [
+                ('a', '//t:a', 'console_test_launcher'),
+                ('b', '//t:b', 'console_test_launcher'),
+                ('c', '//t:c', 'console_test_launcher'),
+                ('w', '//t:w', 'windowed_test_launcher'),
+            ],
+        )
+
+    def test_tests_get_their_binary_and_args(self):
+        expanded = self.targets.expand(
+            self.targets.bundle(targets=['a', 'b_too'])
+        )
+        self.assertEqual(
+            expanded.gtest_tests,
+            (
+                {'name': 'a', 'test': 'a', 'args': ['--a']},
+                {'name': 'b_too', 'test': 'b'},
+            ),
+        )
+
+    def test_mixins_apply_after_the_tests_own_inner_bundles_first(self):
+        self.targets.bundle(name='inner', targets=['a', 'c'], mixins=['m2'])
+        expanded = self.targets.expand(
+            self.targets.bundle(
+                targets=['inner'],
+                mixins=[self.targets.mixin(args=['--outer'])],
+            )
+        )
+        self.assertEqual(
+            [test['args'] for test in expanded.gtest_tests],
+            [['--a', '--m2', '--outer'], ['--m1', '--m2', '--outer']],
+        )
+
+    def test_compile_targets_are_the_additional_ones_then_the_binaries(self):
+        expanded = self.targets.expand(
+            self.targets.bundle(
+                targets=['b', 'b_too', 'w'],
+                additional_compile_targets=['chrome'],
+            )
+        )
+        self.assertEqual(expanded.additional_compile_targets, ('chrome',))
+        self.assertEqual(expanded.compile, ('chrome', 'b', 'w'))
+        self.assertEqual(expanded.tests, ('b', 'b_too', 'w'))
+
+    def test_a_test_included_twice_is_an_error(self):
+        self.targets.bundle(name='first', targets=['a'])
+        with self.assertRaisesRegex(ConfigError, "test 'a' is included twice"):
+            self.targets.expand(self.targets.bundle(targets=['first', 'a']))
+
+    def test_bundle_cycles_are_errors(self):
+        self.targets.bundle(name='x', targets=['y'])
+        self.targets.bundle(name='y', targets=['x'])
+        with self.assertRaisesRegex(ConfigError, 'bundle cycle: x -> y -> x'):
+            self.targets.expand('x')
+
+    def test_undefined_names_are_errors(self):
+        self.targets.tests.gtest_test(name='orphan')
+        for bundle, message in (
+            (self.targets.bundle(targets=['nope']), "'nope' is neither"),
+            (self.targets.bundle(targets=['orphan']), "binary 'orphan' is not"),
+            (
+                self.targets.bundle(targets=['a'], mixins=['nope']),
+                "mixin 'nope' is not defined",
+            ),
+            (
+                self.targets.bundle(additional_compile_targets=['nope']),
+                "compile target 'nope' is not defined",
+            ),
+        ):
+            with self.subTest(message=message):
+                with self.assertRaisesRegex(ConfigError, message):
+                    self.targets.expand(bundle)
+
+    def test_names_are_defined_once(self):
+        for define in (
+            lambda: self.targets.binaries.console_test_launcher(
+                name='a', label='//t:a'
+            ),
+            lambda: self.targets.tests.gtest_test(name='a'),
+            lambda: self.targets.mixin(name='m1'),
+            lambda: self.targets.compile_target(name='chrome', label='//c:c'),
+            lambda: [self.targets.bundle(name='z') for _ in range(2)],
+        ):
+            with self.assertRaisesRegex(ConfigError, 'is already defined'):
+                define()
 
 
 if __name__ == '__main__':

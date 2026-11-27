@@ -1,6 +1,6 @@
 [package]
 name = "jiff"
-version = "0.2.16"  #:version
+version = "1.0.2"  #:version
 authors = ["Andrew Gallant <jamslam@gmail.com>"]
 license = "Unlicense OR MIT"
 repository = "https://github.com/BurntSushi/jiff"
@@ -12,13 +12,15 @@ This library is heavily inspired by the Temporal project.
 '''
 categories = ["date-and-time", "no-std"]
 keywords = ["date", "time", "calendar", "zone", "duration"]
-edition = "2021"
 autotests = false
 autoexamples = false
-rust-version = "1.70"
 # We include `/tests/lib.rs` to squash a `cargo package` warning that the
 # `integration` test target is being ignored. We don't include anything else
 # so tests obviously won't work, but it makes `cargo package` quiet.
+#
+# The Markdown files at this package root are symlinks to the canonical files
+# at the workspace root. Cargo flattens them when creating the package archive,
+# which lets `include_str!` use the same path in a checkout and in a package.
 include = [
   "/src/**/*.rs",
   "/tests/lib.rs",
@@ -27,14 +29,8 @@ include = [
   "LICENSE-MIT",
   "UNLICENSE",
 ]
-
-[workspace]
-members = [
-  "crates/jiff-cli",
-  "crates/jiff-static",
-  "crates/jiff-tzdb",
-  "crates/jiff-tzdb-platform",
-]
+edition.workspace = true
+rust-version.workspace = true
 
 # Features are documented in the "Crate features" section of the crate docs:
 # https://docs.rs/jiff/*/#crate-features
@@ -48,17 +44,37 @@ default = [
   "tzdb-concatenated",
   "perf-inline",
 ]
-std = ["alloc", "log?/std", "serde_core?/std"]
-alloc = ["serde_core?/alloc", "portable-atomic-util/alloc"]
+std = ["alloc", "jcore/std", "log?/std", "serde_core?/std"]
+alloc = [
+  "jcore/alloc",
+  "serde_core?/alloc",
+  "portable-atomic-util/alloc",
+]
+
+# Enables integration with the `arbitray` crate. This provides implemetations
+# of the `arbitrary::Arbitrary` trait on many of Jiff's core primitives.
+arbitrary = ["dep:arbitrary", "jcore/arbitrary", "std"]
+
+# Enables integration with `serde`. This provides implementations of
+# `Serialize` and `Deserialize` for many of Jiff's core primitives.
 serde = ["dep:serde_core"]
-logging = ["dep:log"]
+
+# Enables integration with the `log` crate. Without this enabled, Jiff will
+# never emit any logs.
+logging = ["dep:log", "jcore/logging"]
+
+# Enables support for formatting Jiff types with `defmt` by providing
+# `defmt::Format` trait implementations for many of Jiff's core primitives.
+# (`defmt` is a compact logging framework commonly used in embedded
+# environments.)
+defmt = ["dep:defmt", "jcore/defmt"]
 
 # When enabled, Jiff will include code that attempts to determine the "system"
 # time zone. For example, on Unix systems, this is usually determined by
 # looking at the symlink information on /etc/localtime. But in general, it's
 # very platform specific and heuristic oriented. On some platforms, this may
-# require extra dependencies. (For example, `windows-sys` on Windows.)
-tz-system = ["std", "dep:windows-sys"]
+# require extra dependencies. (For example, `windows-link` on Windows.)
+tz-system = ["std", "dep:windows-link"]
 
 # When enabled, Jiff will "fatten" time zone data so that it contains more
 # transitions. This uses a little extra heap memory (or binary size, when
@@ -79,9 +95,9 @@ tz-system = ["std", "dep:windows-sys"]
 # find the offset for a timestamp in a particular time zone before 2037, you
 # just need to do one very fast binary search on the explicit transitions.
 #
-# However, these explicit transitions up through 2037 aren't, strictly speaking,
-# required. For example, the DST transition rule in the United States is
-# perfectly described by a single POSIX time zone string:
+# However, these explicit transitions up through 2037 aren't, strictly
+# speaking, required. For example, the DST transition rule in the United States
+# (as of 2026-02-07) is perfectly described by a single POSIX time zone string:
 #
 #     EST5EDT,M3.2.0,M11.1.0
 #
@@ -91,7 +107,7 @@ tz-system = ["std", "dep:windows-sys"]
 #
 # Thus, the TZif data files for the IANA Time Zone Database can _also_ be
 # generated in a "slim" fashion, where only the historical transitions are
-# included. Some platforms use the slim data by default, while others uses
+# included. Some platforms use the slim data by default, while others use
 # the fat data.
 #
 # The problem is that determining the offset from a POSIX time zone can
@@ -104,7 +120,7 @@ tz-system = ["std", "dep:windows-sys"]
 # Users may want to disable this if they are sensitive to the extra memory
 # used. But generally speaking, the extra memory used is no more than what
 # would be used by "fat" TZif data files from `/usr/share/zoneinfo`.
-tz-fat = ["jiff-static?/tz-fat"]
+tz-fat = ["jcore/tz-fat", "jiff-static?/tz-fat"]
 
 # When enabled, the `jiff::tz::get` and `jiff::tz::include` proc-macros
 # become available. These proc macros enable creating `TimeZone` values in a
@@ -178,8 +194,17 @@ js = ["dep:wasm-bindgen", "dep:js-sys"]
 perf-inline = []
 
 [dependencies]
-jiff-static = { version = "0.2", path = "crates/jiff-static", optional = true }
-jiff-tzdb = { version = "0.1.4", path = "crates/jiff-tzdb", optional = true }
+arbitrary = { version = "1.4.2", optional = true, features = ["derive"] }
+defmt = { version = "1.0.0", optional = true }
+# Jiff's only required dependency. The `jiff-core` crate just contains stuff
+# that used to be inside `jiff`, so while it shows up as an additional
+# dependency, it's not extra code that Jiff otherwise wouldn't have. Moreover,
+# splitting this out into a separate crate lets `jiff` and `jiff-static` share
+# it. (Previously, I was essentially vendoring a small part of `jiff` into
+# `jiff-static`.)
+jcore = { version = "1.0.1", package = "jiff-core", path = "../jiff-core", default-features = false }
+jiff-static = { version = "1.0", path = "../jiff-static", optional = true }
+jiff-tzdb = { version = "1.0.0", path = "../jiff-tzdb", optional = true }
 log = { version = "0.4.21", optional = true, default-features = false }
 serde_core = { version = "1.0.221", optional = true, default-features = false }
 
@@ -196,20 +221,18 @@ serde_core = { version = "1.0.221", optional = true, default-features = false }
 #
 # See: https://github.com/matklad/macro-dep-test
 [target.'cfg(any())'.dependencies]
-jiff-static = { version = "=0.2.16", path = "crates/jiff-static" }
+jiff-static = { version = "=1.0.2", path = "../jiff-static" }
 
 # Note that the `cfg` gate for the `tzdb-bundle-platform` must repeat the
 # target gate on this dependency. The intent is that `tzdb-bundle-platform`
 # is enabled by default, but that the `tzdb-bundle-platform` crate is only
 # actually used on platforms without a system tzdb (i.e., Windows and wasm).
 [target.'cfg(any(windows, target_family = "wasm"))'.dependencies]
-jiff-tzdb-platform = { version = "0.1.3", path = "crates/jiff-tzdb-platform", optional = true }
+jiff-tzdb-platform = { version = "1.0.0", path = "../jiff-tzdb-platform", optional = true }
 
-[target.'cfg(windows)'.dependencies.windows-sys]
-version = ">=0.52.0, <=0.61.*"
-default-features = false
-features = ["Win32_Foundation", "Win32_System_Time"]
-optional = true
+# Provides a helper macro for binding Win32 functions
+[target.'cfg(windows)'.dependencies]
+windows-link = { version = "0.2.1", optional = true }
 
 [target.'cfg(all(any(target_arch = "wasm32", target_arch = "wasm64"), target_os = "unknown"))'.dependencies]
 js-sys = { version = "0.3.50", optional = true }
@@ -234,40 +257,32 @@ insta = "1.39.0"
 log = "0.4.21"
 # We force `serde` to be enabled in dev mode so that the docs render and test
 # correctly. We also enable `static` so that we can test our proc macros.
-jiff = { path = "./", default-features = false, features = ["serde", "static"] }
+jiff = { path = ".", default-features = false, features = ["serde", "static"] }
+postcard = {version = "1.1.3", default-features = false, features = ["use-std"] }
 quickcheck = { version = "1.0.3", default-features = false }
 serde = { version = "1.0.203", features = ["derive"] }
 serde_json = "1.0.117"
 serde_yaml = "0.9.34"
 tabwriter = "1.4.0"
 time = { version = "0.3.36", features = ["local-offset", "macros", "parsing"] }
+time-tz = "2.0.0"
 tzfile = "0.1.3"
 walkdir = "2.5.0"
+tempfile = "3.27.0"
 
 # Uncomment if you want to activate doc tests that import from `jiff_icu`
 # (currently only in `COMPARE.md`). Otherwise, this creates a circular
 # dependency and causes `jiff-icu` to get re-compiled all the time.
 # icu = { version = "1.5.0", features = ["std"] }
-# jiff-icu = { path = "./crates/jiff-icu" }
+# jiff-icu = { path = "../jiff-icu" }
 
 # hifitime doesn't build on wasm for some reason, so exclude it there.
 [target.'cfg(not(target_family = "wasm"))'.dev-dependencies.hifitime]
-version = "3.9.0"
+version = "4.3.0"
 
 [[test]]
 path = "tests/lib.rs"
 name = "integration"
-
-# This is just like the default 'test' profile, but debug_assertions are
-# disabled. This is important to cover for Jiff because we do a lot of extra
-# work in our internal ranged integer types when debug_assertions are enabled.
-# It also makes types fatter. It's very useful for catching overflow bugs.
-# But since there's a fair bit of logic there, it's also worth running tests
-# without debug_assertions enabled to exercise the *actual* code paths used
-# in production.
-[profile.testrelease]
-inherits = "test"
-debug-assertions = false
 
 [package.metadata.docs.rs]
 # We want to document all features.
@@ -286,6 +301,11 @@ all-features = true
 # feature, they sometimes break. By using our "own" `cfg` knob, we are closer
 # to being masters of our own destiny.
 rustdoc-args = ["--cfg", "docsrs_jiff"]
+
+# Ref: https://github.com/BurntSushi/jiff/issues/502
+[package.metadata.playground]
+default-features = true
+features = ["logging", "serde", "static", "tzdb-bundle-always"]
 
 # This squashes the (AFAIK) erroneous warning that `docsrs_jiff` is not a
 # valid `cfg` knob.

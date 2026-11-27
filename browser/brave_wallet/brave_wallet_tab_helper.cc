@@ -210,6 +210,10 @@ void BraveWalletTabHelper::BindPolkadotProvider(
   }
 
   url::Origin origin = frame_host->GetLastCommittedOrigin();
+  if (!IsValidDappOrigin(origin)) {
+    return;
+  }
+
   tab_helper->polkadot_provider_receivers_.Add(
       std::make_unique<PolkadotProviderImpl>(
           *brave_wallet_service->keyring_service(),
@@ -235,38 +239,8 @@ void BraveWalletTabHelper::OnDiscardContents(
   solana_provider_receivers_.Clear();
   cardano_provider_receivers_.Clear();
   polkadot_provider_receivers_.Clear();
-  solana_connected_accounts_.clear();
   tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
                                                        new_contents);
-}
-
-void BraveWalletTabHelper::AddSolanaConnectedAccount(
-    const content::GlobalRenderFrameHostId& id,
-    const std::string& account) {
-  solana_connected_accounts_[id].insert(account);
-}
-
-void BraveWalletTabHelper::RemoveSolanaConnectedAccount(
-    const content::GlobalRenderFrameHostId& id,
-    const std::string& account) {
-  auto it = solana_connected_accounts_.find(id);
-  if (it == solana_connected_accounts_.end()) {
-    return;
-  }
-  it->second.erase(account);
-}
-
-bool BraveWalletTabHelper::IsSolanaAccountConnected(
-    const content::GlobalRenderFrameHostId& id,
-    const std::string& account) {
-  auto it = solana_connected_accounts_.find(id);
-  return it == solana_connected_accounts_.end() ? false
-                                                : it->second.contains(account);
-}
-
-void BraveWalletTabHelper::ClearSolanaConnectedAccounts(
-    const content::GlobalRenderFrameHostId& id) {
-  solana_connected_accounts_.erase(id);
 }
 
 #if !BUILDFLAG(IS_ANDROID)

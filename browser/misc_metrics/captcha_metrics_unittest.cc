@@ -10,6 +10,7 @@
 
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_command_line.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/misc_metrics/pref_names.h"
@@ -191,29 +192,15 @@ TEST_F(CaptchaMetricsTest, StoresCountsInNestedProviderDict) {
 
   // Counts are stored nested per-provider, keyed by provider with inner
   // "total" / "user_activated" fields, rather than as flat dotted keys.
-  const base::DictValue& counts =
-      pref_service_.GetDict(kMiscMetricsCaptchaDictionaryPref);
-
-  // "all": total counts every non-activated load (google + cloudflare = 2);
-  // user_activated counts the single interacted-with load.
-  const base::DictValue* all = counts.FindDict("all");
-  ASSERT_TRUE(all);
-  EXPECT_EQ(all->FindInt("total"), 2);
-  EXPECT_EQ(all->FindInt("user_activated"), 1);
-
-  const base::DictValue* google = counts.FindDict("google");
-  ASSERT_TRUE(google);
-  EXPECT_EQ(google->FindInt("total"), 1);
-  EXPECT_EQ(google->FindInt("user_activated"), 1);
-
-  // Cloudflare was never interacted with, so it has no user_activated field.
-  const base::DictValue* cloudflare = counts.FindDict("cloudflare");
-  ASSERT_TRUE(cloudflare);
-  EXPECT_EQ(cloudflare->FindInt("total"), 1);
-  EXPECT_FALSE(cloudflare->FindInt("user_activated").has_value());
-
-  // Providers with no captchas seen have no entry at all.
-  EXPECT_FALSE(counts.FindDict("hcaptcha"));
+  // "all" total counts every non-activated load (google + cloudflare = 2).
+  // Cloudflare was never interacted with, so it has no user_activated field,
+  // and hcaptcha has no entry at all.
+  EXPECT_EQ(pref_service_.GetDict(kMiscMetricsCaptchaDictionaryPref),
+            base::test::ParseJsonDict(R"({
+              "all": {"total": 2, "user_activated": 1},
+              "google": {"total": 1, "user_activated": 1},
+              "cloudflare": {"total": 1}
+            })"));
 }
 
 TEST_F(CaptchaMetricsTest, ExpiresAfterOneDay) {

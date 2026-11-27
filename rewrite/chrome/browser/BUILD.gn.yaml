@@ -15,3 +15,11 @@ substitutions:
     regex:
       pattern: 'if (enable_desktop_android_extensions) {'
       replace: 'if (is_android && enable_extensions_core) {'
+
+  - description: >-
+      Our about_flags.cc override includes brave/browser/about_flags.cc, which
+      directly includes the v8 buildflags header.
+    add_literal_to_list:
+      target: core
+      list_name: deps
+      literal: '[ "//brave/components/v8/buildflags" ]'

@@ -7,6 +7,7 @@ pub type __rlimit_resource_t = c_uint;
 pub type Lmid_t = c_long;
 pub type regoff_t = c_int;
 pub type __kernel_rwf_t = c_int;
+pub type __be16 = crate::__u16;
 
 cfg_if! {
     if #[cfg(doc)] {
@@ -38,7 +39,7 @@ s! {
             target_pointer_width = "32"
         ))]
         __unused1: Padding<[c_char; 4]>,
-        __glibc_reserved: [c_char; 32],
+        __glibc_reserved: Padding<[c_char; 32]>,
     }
 
     pub struct __exit_status {
@@ -133,26 +134,6 @@ s! {
         pub keepcost: size_t,
     }
 
-    pub struct nl_pktinfo {
-        pub group: u32,
-    }
-
-    pub struct nl_mmap_req {
-        pub nm_block_size: c_uint,
-        pub nm_block_nr: c_uint,
-        pub nm_frame_size: c_uint,
-        pub nm_frame_nr: c_uint,
-    }
-
-    pub struct nl_mmap_hdr {
-        pub nm_status: c_uint,
-        pub nm_len: c_uint,
-        pub nm_group: u32,
-        pub nm_pid: u32,
-        pub nm_uid: u32,
-        pub nm_gid: u32,
-    }
-
     pub struct ntptimeval {
         pub time: crate::timeval,
         pub maxerror: c_long,
@@ -221,11 +202,13 @@ s! {
         pub nr: crate::__u64,
         pub args: [crate::__u64; 6],
         pub ret_data: crate::__u32,
+        reserved2: Padding<crate::__u32>,
     }
 
     pub struct ptrace_syscall_info {
         pub op: crate::__u8,
-        pub pad: [crate::__u8; 3],
+        reserved: Padding<crate::__u8>,
+        pub flags: crate::__u16,
         pub arch: crate::__u32,
         pub instruction_pointer: crate::__u64,
         pub stack_pointer: crate::__u64,
@@ -255,7 +238,7 @@ s! {
         pub aio_buf: crate::__u64,
         pub aio_nbytes: crate::__u64,
         pub aio_offset: crate::__s64,
-        aio_reserved2: crate::__u64,
+        aio_reserved2: Padding<crate::__u64>,
         pub aio_flags: crate::__u32,
         pub aio_resfd: crate::__u32,
     }
@@ -272,19 +255,23 @@ s! {
         /// This contains the bitfields `tcpi_snd_wscale` and `tcpi_rcv_wscale`.
         /// Each is 4 bits.
         pub tcpi_snd_rcv_wscale: u8,
+
         pub tcpi_rto: u32,
         pub tcpi_ato: u32,
         pub tcpi_snd_mss: u32,
         pub tcpi_rcv_mss: u32,
+
         pub tcpi_unacked: u32,
         pub tcpi_sacked: u32,
         pub tcpi_lost: u32,
         pub tcpi_retrans: u32,
         pub tcpi_fackets: u32,
+
         pub tcpi_last_data_sent: u32,
         pub tcpi_last_ack_sent: u32,
         pub tcpi_last_data_recv: u32,
         pub tcpi_last_ack_recv: u32,
+
         pub tcpi_pmtu: u32,
         pub tcpi_rcv_ssthresh: u32,
         pub tcpi_rtt: u32,
@@ -293,9 +280,55 @@ s! {
         pub tcpi_snd_cwnd: u32,
         pub tcpi_advmss: u32,
         pub tcpi_reordering: u32,
+
         pub tcpi_rcv_rtt: u32,
         pub tcpi_rcv_space: u32,
+
         pub tcpi_total_retrans: u32,
+
+        pub tcpi_pacing_rate: u64,
+        pub tcpi_max_pacing_rate: u64,
+        pub tcpi_bytes_acked: u64,
+        pub tcpi_bytes_received: u64,
+        pub tcpi_segs_out: u32,
+        pub tcpi_segs_in: u32,
+
+        pub tcpi_notsent_bytes: u32,
+        pub tcpi_min_rtt: u32,
+        pub tcpi_data_segs_in: u32,
+        pub tcpi_data_segs_out: u32,
+
+        pub tcpi_delivery_rate: u64,
+
+        pub tcpi_busy_time: u64,
+        pub tcpi_rwnd_limited: u64,
+        pub tcpi_sndbuf_limited: u64,
+
+        pub tcpi_delivered: u32,
+        pub tcpi_delivered_ce: u32,
+
+        pub tcpi_bytes_sent: u64,
+        pub tcpi_bytes_retrans: u64,
+        pub tcpi_dsack_dups: u32,
+        pub tcpi_reord_seen: u32,
+
+        pub tcpi_rcv_ooopack: u32,
+        pub tcpi_snd_wnd: u32,
+        pub tcpi_rcv_wnd: u32,
+
+        pub tcpi_rehash: u32,
+        pub tcpi_total_rto: u16,
+        pub tcpi_total_rto_recoveries: u16,
+        pub tcpi_total_rto_time: u32,
+        pub tcpi_received_ce: u32,
+        pub tcpi_delivered_e1_bytes: u32,
+        pub tcpi_delivered_e0_bytes: u32,
+        pub tcpi_delivered_ce_bytes: u32,
+        pub tcpi_received_e1_bytes: u32,
+        pub tcpi_received_e0_bytes: u32,
+        pub tcpi_received_ce_bytes: u32,
+        pub tcpi_accecn_fail_mode: u16,
+        pub tcpi_accecn_opt_seen: u16,
     }
 
     pub struct fanotify_event_info_pidfd {
@@ -339,6 +372,7 @@ s! {
 
     // linux x32 compatibility
     // See https://sourceware.org/bugzilla/show_bug.cgi?id=16437
+    #[derive(Default)]
     pub struct timespec {
         pub tv_sec: time_t,
         #[cfg(all(gnu_time_bits64, target_endian = "big"))]
@@ -392,84 +426,18 @@ s! {
         pub ut_tv: __timeval,
 
         pub ut_addr_v6: [i32; 4],
-        __glibc_reserved: [c_char; 20],
-    }
-}
-
-impl siginfo_t {
-    pub unsafe fn si_addr(&self) -> *mut c_void {
-        #[repr(C)]
-        struct siginfo_sigfault {
-            _si_signo: c_int,
-            _si_errno: c_int,
-            _si_code: c_int,
-            si_addr: *mut c_void,
-        }
-        (*(self as *const siginfo_t).cast::<siginfo_sigfault>()).si_addr
-    }
-
-    pub unsafe fn si_value(&self) -> crate::sigval {
-        #[repr(C)]
-        struct siginfo_timer {
-            _si_signo: c_int,
-            _si_errno: c_int,
-            _si_code: c_int,
-            _si_tid: c_int,
-            _si_overrun: c_int,
-            si_sigval: crate::sigval,
-        }
-        (*(self as *const siginfo_t).cast::<siginfo_timer>()).si_sigval
+        __glibc_reserved: Padding<[c_char; 20]>,
     }
 }
 
 s_no_extra_traits! {
-    // Internal, for casts to access union fields
-    struct sifields_sigchld {
-        si_pid: crate::pid_t,
-        si_uid: crate::uid_t,
-        si_status: c_int,
-        si_utime: c_long,
-        si_stime: c_long,
-    }
+    // linux/if_ether.h
 
-    // Internal, for casts to access union fields
-    union sifields {
-        _align_pointer: *mut c_void,
-        sigchld: sifields_sigchld,
-    }
-
-    // Internal, for casts to access union fields. Note that some variants
-    // of sifields start with a pointer, which makes the alignment of
-    // sifields vary on 32-bit and 64-bit architectures.
-    struct siginfo_f {
-        _siginfo_base: [c_int; 3],
-        sifields: sifields,
-    }
-}
-
-impl siginfo_t {
-    unsafe fn sifields(&self) -> &sifields {
-        &(*(self as *const siginfo_t).cast::<siginfo_f>()).sifields
-    }
-
-    pub unsafe fn si_pid(&self) -> crate::pid_t {
-        self.sifields().sigchld.si_pid
-    }
-
-    pub unsafe fn si_uid(&self) -> crate::uid_t {
-        self.sifields().sigchld.si_uid
-    }
-
-    pub unsafe fn si_status(&self) -> c_int {
-        self.sifields().sigchld.si_status
-    }
-
-    pub unsafe fn si_utime(&self) -> c_long {
-        self.sifields().sigchld.si_utime
-    }
-
-    pub unsafe fn si_stime(&self) -> c_long {
-        self.sifields().sigchld.si_stime
+    #[repr(packed)]
+    pub struct ethhdr {
+        pub h_dest: [c_uchar; crate::ETH_ALEN as usize],
+        pub h_source: [c_uchar; crate::ETH_ALEN as usize],
+        pub h_proto: crate::__be16,
     }
 }
 
@@ -552,8 +520,6 @@ pub const PRIO_PROCESS: crate::__priority_which_t = 0;
 pub const PRIO_PGRP: crate::__priority_which_t = 1;
 pub const PRIO_USER: crate::__priority_which_t = 2;
 
-pub const MS_RMT_MASK: c_ulong = 0x02800051;
-
 pub const __UT_LINESIZE: usize = 32;
 pub const __UT_NAMESIZE: usize = 32;
 pub const __UT_HOSTSIZE: usize = 256;
@@ -582,8 +548,6 @@ pub const RTLD_DI_PROFILENAME: c_int = 7;
 pub const RTLD_DI_PROFILEOUT: c_int = 8;
 pub const RTLD_DI_TLS_MODID: c_int = 9;
 pub const RTLD_DI_TLS_DATA: c_int = 10;
-
-pub const SOCK_NONBLOCK: c_int = O_NONBLOCK;
 
 pub const SOL_RXRPC: c_int = 272;
 pub const SOL_PPPOL2TP: c_int = 273;
@@ -622,11 +586,6 @@ pub const LC_ALL_MASK: c_int = crate::LC_CTYPE_MASK
 
 pub const ENOTSUP: c_int = EOPNOTSUPP;
 
-pub const SOCK_SEQPACKET: c_int = 5;
-pub const SOCK_DCCP: c_int = 6;
-#[deprecated(since = "0.2.70", note = "AF_PACKET must be used instead")]
-pub const SOCK_PACKET: c_int = 10;
-
 pub const AF_IB: c_int = 27;
 pub const AF_MPLS: c_int = 28;
 pub const AF_NFC: c_int = 39;
@@ -638,13 +597,11 @@ pub const PF_NFC: c_int = AF_NFC;
 pub const PF_VSOCK: c_int = AF_VSOCK;
 pub const PF_XDP: c_int = AF_XDP;
 
-pub const SIGEV_THREAD_ID: c_int = 4;
-
 pub const BUFSIZ: c_uint = 8192;
 pub const TMP_MAX: c_uint = 238328;
 pub const FOPEN_MAX: c_uint = 16;
 pub const FILENAME_MAX: c_uint = 4096;
-pub const POSIX_MADV_DONTNEED: c_int = 4;
+pub const HOST_NAME_MAX: c_int = 64;
 pub const _CS_GNU_LIBC_VERSION: c_int = 2;
 pub const _CS_GNU_LIBPTHREAD_VERSION: c_int = 3;
 pub const _CS_V6_ENV: c_int = 1148;
@@ -728,19 +685,6 @@ pub const O_ACCMODE: c_int = 3;
 pub const ST_RELATIME: c_ulong = 4096;
 pub const NI_MAXHOST: crate::socklen_t = 1025;
 
-// Most `*_SUPER_MAGIC` constants are defined at the `linux_like` level; the
-// following are only available on newer Linux versions than the versions
-// currently used in CI in some configurations, so we define them here.
-cfg_if! {
-    if #[cfg(not(target_arch = "s390x"))] {
-        pub const BINDERFS_SUPER_MAGIC: c_long = 0x6c6f6f70;
-        pub const XFS_SUPER_MAGIC: c_long = 0x58465342;
-    } else if #[cfg(target_arch = "s390x")] {
-        pub const BINDERFS_SUPER_MAGIC: c_uint = 0x6c6f6f70;
-        pub const XFS_SUPER_MAGIC: c_uint = 0x58465342;
-    }
-}
-
 pub const CPU_SETSIZE: c_int = 0x400;
 
 pub const PTRACE_TRACEME: c_uint = 0;
@@ -768,12 +712,13 @@ pub const PTRACE_PEEKSIGINFO: c_uint = 0x4209;
 pub const PTRACE_GETSIGMASK: c_uint = 0x420a;
 pub const PTRACE_SETSIGMASK: c_uint = 0x420b;
 pub const PTRACE_GET_SYSCALL_INFO: c_uint = 0x420e;
+pub const PTRACE_SET_SYSCALL_INFO: c_uint = 0x4212;
 pub const PTRACE_SYSCALL_INFO_NONE: crate::__u8 = 0;
 pub const PTRACE_SYSCALL_INFO_ENTRY: crate::__u8 = 1;
 pub const PTRACE_SYSCALL_INFO_EXIT: crate::__u8 = 2;
 pub const PTRACE_SYSCALL_INFO_SECCOMP: crate::__u8 = 3;
-pub const PTRACE_SET_SYSCALL_USER_DISPATCH_CONFIG: crate::__u8 = 0x4210;
-pub const PTRACE_GET_SYSCALL_USER_DISPATCH_CONFIG: crate::__u8 = 0x4211;
+pub const PTRACE_SET_SYSCALL_USER_DISPATCH_CONFIG: c_uint = 0x4210;
+pub const PTRACE_GET_SYSCALL_USER_DISPATCH_CONFIG: c_uint = 0x4211;
 
 // linux/rtnetlink.h
 pub const TCA_PAD: c_ushort = 9;
@@ -811,8 +756,6 @@ pub const NDA_SRC_VNI: c_ushort = 11;
 pub const UNAME26: c_int = 0x0020000;
 pub const FDPIC_FUNCPTRS: c_int = 0x0080000;
 
-pub const MAX_LINKS: c_int = 32;
-
 pub const GENL_UNS_ADMIN_PERM: c_int = 0x10;
 
 pub const GENL_ID_VFS_DQUOT: c_int = crate::NLMSG_MIN_TYPE + 1;
@@ -822,8 +765,18 @@ pub const ELFOSABI_ARM_AEABI: u8 = 64;
 
 // linux/sched.h
 pub const CLONE_NEWTIME: c_int = 0x80;
-// DIFF(main): changed to `c_ulonglong` in e9abac9ac2
+// DIFF(main): changed to `c_ulonglong` in e9abac9ac2. This is broken so should be fixed.
+#[allow(overflowing_literals)]
+#[deprecated(
+    since = "0.2.188",
+    note = "This constant overflows. In the near future, `libc` will change to a wider type, see #3584."
+)]
 pub const CLONE_CLEAR_SIGHAND: c_int = 0x100000000;
+#[allow(overflowing_literals)]
+#[deprecated(
+    since = "0.2.188",
+    note = "This constant overflows. In the near future, `libc` will change to a wider type, see #3584."
+)]
 pub const CLONE_INTO_CGROUP: c_int = 0x200000000;
 
 pub const M_MXFAST: c_int = 1;
@@ -840,16 +793,6 @@ pub const M_ARENA_TEST: c_int = -7;
 pub const M_ARENA_MAX: c_int = -8;
 
 pub const SOMAXCONN: c_int = 4096;
-
-// linux/mount.h
-pub const MOVE_MOUNT_F_SYMLINKS: c_uint = 0x00000001;
-pub const MOVE_MOUNT_F_AUTOMOUNTS: c_uint = 0x00000002;
-pub const MOVE_MOUNT_F_EMPTY_PATH: c_uint = 0x00000004;
-pub const MOVE_MOUNT_T_SYMLINKS: c_uint = 0x00000010;
-pub const MOVE_MOUNT_T_AUTOMOUNTS: c_uint = 0x00000020;
-pub const MOVE_MOUNT_T_EMPTY_PATH: c_uint = 0x00000040;
-pub const MOVE_MOUNT_SET_GROUP: c_uint = 0x00000100;
-pub const MOVE_MOUNT_BENEATH: c_uint = 0x00000200;
 
 // sys/timex.h
 pub const ADJ_OFFSET: c_uint = 0x0001;
@@ -922,6 +865,10 @@ pub const GLOB_TILDE_CHECK: c_int = 1 << 14;
 
 pub const MADV_COLLAPSE: c_int = 25;
 
+// include/paths.h
+pub const _PATH_DEFPATH: *const c_char = cstr(b"/usr/bin:/bin\0");
+pub const _PATH_BSHELL: *const c_char = cstr(b"/bin/sh\0");
+
 cfg_if! {
     if #[cfg(any(
         target_arch = "arm",
@@ -938,7 +885,6 @@ cfg_if! {
         pub const PTHREAD_STACK_MIN: size_t = 131072;
     }
 }
-pub const PTHREAD_MUTEX_ADAPTIVE_NP: c_int = 3;
 
 pub const REG_STARTEND: c_int = 4;
 
@@ -1121,6 +1067,16 @@ extern "C" {
         val: c_int,
     ) -> c_int;
     pub fn pthread_sigqueue(thread: crate::pthread_t, sig: c_int, value: crate::sigval) -> c_int;
+    pub fn pthread_tryjoin_np(thread: crate::pthread_t, retval: *mut *mut c_void) -> c_int;
+    #[cfg_attr(
+        all(target_pointer_width = "32", gnu_time_bits64),
+        link_name = "__pthread_timedjoin_np64"
+    )]
+    pub fn pthread_timedjoin_np(
+        thread: crate::pthread_t,
+        retval: *mut *mut c_void,
+        abstime: *const crate::timespec,
+    ) -> c_int;
     pub fn mallinfo() -> crate::mallinfo;
     pub fn mallinfo2() -> crate::mallinfo2;
     pub fn malloc_stats();
@@ -1151,6 +1107,30 @@ extern "C" {
         buf: *mut c_char,
         buflen: size_t,
         result: *mut *mut crate::group,
+    ) -> c_int;
+    pub fn getnetent_r(
+        result_buf: *mut crate::netent,
+        buf: *mut c_char,
+        buflen: size_t,
+        result: *mut *mut crate::netent,
+        h_errnop: *mut c_int,
+    ) -> c_int;
+    pub fn getnetbyname_r(
+        name: *const c_char,
+        result_buf: *mut crate::netent,
+        buf: *mut c_char,
+        buflen: size_t,
+        result: *mut *mut crate::netent,
+        h_errnop: *mut c_int,
+    ) -> c_int;
+    pub fn getnetbyaddr_r(
+        net: u32,
+        type_: c_int,
+        result_buf: *mut crate::netent,
+        buf: *mut c_char,
+        buflen: size_t,
+        result: *mut *mut crate::netent,
+        h_errnop: *mut c_int,
     ) -> c_int;
 
     pub fn putpwent(p: *const crate::passwd, stream: *mut crate::FILE) -> c_int;
@@ -1245,6 +1225,11 @@ extern "C" {
     ) -> c_int;
 
     pub fn mempcpy(dest: *mut c_void, src: *const c_void, n: size_t) -> *mut c_void;
+
+    pub fn tgkill(tgid: crate::pid_t, tid: crate::pid_t, sig: c_int) -> c_int;
+
+    // glibc provides this in <unistd.h> with _GNU_SOURCE
+    pub static mut environ: *mut *mut c_char;
 }
 
 cfg_if! {

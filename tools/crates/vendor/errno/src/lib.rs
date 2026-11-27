@@ -37,8 +37,8 @@ use std::io;
 /// calls [`strerror_r`][1] under POSIX, and [`FormatMessageW`][2] on
 /// Windows.
 ///
-/// [1]: http://pubs.opengroup.org/onlinepubs/009695399/functions/strerror.html
-/// [2]: https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351%28v=vs.85%29.aspx
+/// [1]: https://pubs.opengroup.org/onlinepubs/009695399/functions/strerror.html
+/// [2]: https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-formatmessage
 #[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd, Hash)]
 pub struct Errno(pub i32);
 

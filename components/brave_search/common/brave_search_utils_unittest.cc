@@ -22,6 +22,16 @@
 namespace brave_search {
 
 class BraveSearchUtilsUnitTest : public testing::Test {
+ public:
+  BraveSearchUtilsUnitTest() {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    // Pin off so newtab_v1* expectations don't depend on the flag's default.
+    // Tests needing it enabled override it via `feature_list_`.
+    default_feature_list_.InitAndDisableFeature(
+        ai_chat::features::kShowAIChatInputOnNewTabPage);
+#endif
+  }
+
  protected:
   void SetUp() override {
     local_state_.registry()->RegisterBooleanPref(
@@ -37,6 +47,10 @@ class BraveSearchUtilsUnitTest : public testing::Test {
   }
 
   TestingPrefServiceSimple local_state_;
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // Declared before `feature_list_` so it is destroyed after it.
+  base::test::ScopedFeatureList default_feature_list_;
+#endif
   base::test::ScopedFeatureList feature_list_;
 };
 

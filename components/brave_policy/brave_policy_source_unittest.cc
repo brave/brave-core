@@ -17,18 +17,6 @@ class BravePolicySourceTest : public ::testing::Test {
   void SetUp() override {}
 };
 
-// Test that POLICY_SOURCE_BRAVE enum value exists and is unique
-TEST_F(BravePolicySourceTest, BraveEnumExists) {
-  // Verify the enum value exists and is different from other sources
-  EXPECT_NE(POLICY_SOURCE_BRAVE, POLICY_SOURCE_ENTERPRISE_DEFAULT);
-  EXPECT_NE(POLICY_SOURCE_BRAVE, POLICY_SOURCE_CLOUD);
-  EXPECT_NE(POLICY_SOURCE_BRAVE, POLICY_SOURCE_ACTIVE_DIRECTORY);
-  EXPECT_NE(POLICY_SOURCE_BRAVE, POLICY_SOURCE_PLATFORM);
-
-  // Verify it's included in the count
-  EXPECT_LT(POLICY_SOURCE_BRAVE, POLICY_SOURCE_COUNT);
-}
-
 // Test that POLICY_SOURCE_BRAVE has lower priority than
 // POLICY_SOURCE_ENTERPRISE_DEFAULT
 TEST_F(BravePolicySourceTest, BraveHasLowerPriority) {

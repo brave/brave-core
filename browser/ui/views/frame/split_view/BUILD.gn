@@ -23,11 +23,13 @@ source_set("split_view") {
     "//brave/browser/ui/sidebar",
     "//brave/browser/ui/tabs:tab_model",
     "//brave/browser/ui/views:layout_provider",
+    "//brave/browser/ui/views/animations",
     "//brave/browser/ui/views/frame",
     "//brave/components/vector_icons",
     "//chrome/browser/devtools",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui:ui_features",
+    "//chrome/browser/ui/animation",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/exclusive_access",
@@ -43,6 +45,7 @@ source_set("split_view") {
     "//chrome/browser/ui/views/frame:scrim_view",
     "//ui/base/metadata",
     "//ui/compositor",
+    "//ui/gfx/animation",
     "//ui/views",
   ]
 

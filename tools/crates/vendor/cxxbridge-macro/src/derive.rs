@@ -1,6 +1,6 @@
-use crate::syntax::{derive, Enum, Struct};
+use crate::syntax::{Enum, Struct, derive};
 use proc_macro2::{Ident, Span, TokenStream};
-use quote::{quote, quote_spanned, ToTokens};
+use quote::{ToTokens, quote, quote_spanned};
 
 pub(crate) use crate::syntax::derive::*;
 
@@ -138,7 +138,7 @@ fn struct_clone(strct: &Struct, span: Span) -> TokenStream {
     quote_spanned! {span=>
         #cfg_and_lint_attrs
         #[automatically_derived]
-        #[allow(clippy::expl_impl_clone_on_copy)]
+        #[allow(clippy::clone_on_copy, clippy::expl_impl_clone_on_copy)]
         impl #generics ::cxx::core::clone::Clone for #ident #generics {
             fn clone(&self) -> Self {
                 #body

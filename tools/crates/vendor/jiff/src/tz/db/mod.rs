@@ -1,20 +1,23 @@
+use jcore::util::ArrayStr;
+
 use crate::{
-    error::{err, Error},
+    error::{Error, tz::db::Error as E},
     tz::TimeZone,
     util::{sync::Arc, utf8},
 };
 
 mod bundled;
 mod concatenated;
+mod metadata;
 mod zoneinfo;
 
 /// Returns a copy of the global [`TimeZoneDatabase`].
 ///
 /// This is the same database used for convenience routines like
-/// [`Timestamp::in_tz`](crate::Timestamp::in_tz) and parsing routines
-/// for [`Zoned`](crate::Zoned) that need to do IANA time zone identifier
-/// lookups. Basically, whenever an implicit time zone database is needed,
-/// it is *this* copy of the time zone database that is used.
+/// [`Timestamp::in_tz`](crate::Timestamp::in_tz) and parsing routines for
+/// [`ZonedDateTime`](crate::ZonedDateTime) that need to do IANA time zone
+/// identifier lookups. Basically, whenever an implicit time zone database is
+/// needed, it is *this* copy of the time zone database that is used.
 ///
 /// In feature configurations where a time zone database cannot interact with
 /// the file system (like when `std` is not enabled), this returns a database
@@ -29,12 +32,39 @@ mod zoneinfo;
 /// assert!(tz::db().get("does-not-exist").is_err());
 /// ```
 pub fn db() -> &'static TimeZoneDatabase {
-    #[cfg(any(not(feature = "std"), miri))]
+    // #[cfg(any(not(feature = "std"), miri))]
+    #[cfg(not(feature = "std"))]
     {
-        static NONE: TimeZoneDatabase = TimeZoneDatabase::none();
-        &NONE
+        // Without `std` there's no lazily initialized global state. But when
+        // the tzdb is bundled into the binary, we can still hand out a usable
+        // database: the bundled database needs no allocation, so it can be
+        // constructed in a `const`. (Without `std`, the zoneinfo and
+        // concatenated databases are both unavailable, so there's nothing to
+        // prefer over the bundle.)
+        //
+        // Ref: https://github.com/BurntSushi/jiff/issues/533
+        #[cfg(any(
+            feature = "tzdb-bundle-always",
+            all(
+                feature = "tzdb-bundle-platform",
+                any(windows, target_family = "wasm"),
+            ),
+        ))]
+        static DB: TimeZoneDatabase = TimeZoneDatabase {
+            inner: Repr::Bundled(bundled::Database::new()),
+        };
+        #[cfg(not(any(
+            feature = "tzdb-bundle-always",
+            all(
+                feature = "tzdb-bundle-platform",
+                any(windows, target_family = "wasm"),
+            ),
+        )))]
+        static DB: TimeZoneDatabase = TimeZoneDatabase::none();
+        &DB
     }
-    #[cfg(all(feature = "std", not(miri)))]
+    // #[cfg(all(feature = "std", not(miri)))]
+    #[cfg(feature = "std")]
     {
         use std::sync::OnceLock;
 
@@ -53,16 +83,15 @@ pub fn db() -> &'static TimeZoneDatabase {
 /// human readable identifiers, such as `America/Los_Angeles` and
 /// `Europe/Warsaw`.
 ///
-/// It is rare to need to create or use this type directly. Routines
-/// like zoned datetime parsing and time zone conversion provide
-/// convenience routines for using an implicit global time zone database
-/// by default. This global time zone database is available via
-/// [`jiff::tz::db`](crate::tz::db()`). But lower level parsing routines
-/// such as
-/// [`fmt::temporal::DateTimeParser::parse_zoned_with`](crate::fmt::temporal::DateTimeParser::parse_zoned_with)
+/// It is rare to need to create or use this type directly. Routines like zoned
+/// datetime parsing and time zone conversion provide convenience routines for
+/// using an implicit global time zone database by default. This global time
+/// zone database is available via [`jiff::tz::db`](crate::tz::db()`). But
+/// lower level parsing routines such as
+/// [`fmt::temporal::DateTimeParser::parse_zoned_datetime_with`](crate::fmt::temporal::DateTimeParser::parse_zoned_datetime_with)
 /// and
-/// [`civil::DateTime::to_zoned`](crate::civil::DateTime::to_zoned) provide a
-/// means to use a custom copy of a `TimeZoneDatabase`.
+/// [`civil::DateTime::to_zoned_datetime`](crate::civil::DateTime::to_zoned_datetime)
+/// provide a means to use a custom copy of a `TimeZoneDatabase`.
 ///
 /// # Platform behavior
 ///
@@ -163,8 +192,8 @@ pub fn db() -> &'static TimeZoneDatabase {
 /// // Parse the same datetime string with the same parser, but using two
 /// // different versions of tzdb.
 /// let dt = "2020-01-15T12:00[America/Sao_Paulo]";
-/// let zdt2018 = PARSER.parse_zoned_with(&tzdb2018, dt)?;
-/// let zdt = PARSER.parse_zoned_with(tzdb, dt)?;
+/// let zdt2018 = PARSER.parse_zoned_datetime_with(&tzdb2018, dt)?;
+/// let zdt = PARSER.parse_zoned_datetime_with(tzdb, dt)?;
 ///
 /// // Before DST was abolished, 2020-01-15 was in DST, which corresponded
 /// // to UTC offset -02. Since DST rules applied to datetimes in the
@@ -180,13 +209,34 @@ pub fn db() -> &'static TimeZoneDatabase {
 /// // tzdb, you'll get an error under the default configuration because
 /// // of `OffsetConflict::Reject`. This would succeed if you parsed it
 /// // using tzdb2018!
-/// assert!(PARSER.parse_zoned_with(tzdb, zdt2018.to_string()).is_err());
+/// assert!(
+///     PARSER.parse_zoned_datetime_with(tzdb, zdt2018.to_string()).is_err()
+/// );
 ///
 /// # Ok::<(), Box<dyn std::error::Error>>(())
 /// ```
 #[derive(Clone)]
 pub struct TimeZoneDatabase {
-    inner: Option<Arc<Kind>>,
+    inner: Repr,
+}
+
+/// The internal representation of a `TimeZoneDatabase`.
+///
+/// The bundled database is kept out of the `Arc` because it carries no data
+/// of its own (the tzdb is compiled into the binary and any parsed zones are
+/// cached in a global). This lets it be constructed in a `const`, which is
+/// what makes it possible for `db()` to return the bundled database even when
+/// `std` is unavailable (and so there is no lazily initialized global state).
+///
+/// Ref: https://github.com/BurntSushi/jiff/issues/533
+#[derive(Clone)]
+enum Repr {
+    /// A database for which all lookups fail.
+    Empty,
+    /// The bundled database. Needs no allocation, so no `Arc`.
+    Bundled(bundled::Database),
+    /// A database backed by an `Arc` so that clones share its cache.
+    Arc(Arc<Kind>),
 }
 
 #[derive(Debug)]
@@ -195,7 +245,6 @@ pub struct TimeZoneDatabase {
 enum Kind {
     ZoneInfo(zoneinfo::Database),
     Concatenated(concatenated::Database),
-    Bundled(bundled::Database),
 }
 
 impl TimeZoneDatabase {
@@ -210,7 +259,7 @@ impl TimeZoneDatabase {
     /// assert_eq!(db.available().count(), 0);
     /// ```
     pub const fn none() -> TimeZoneDatabase {
-        TimeZoneDatabase { inner: None }
+        TimeZoneDatabase { inner: Repr::Empty }
     }
 
     /// Returns a time zone database initialized from the current environment.
@@ -254,31 +303,34 @@ impl TimeZoneDatabase {
         // platforms? Probably not to be honest. But these should only be
         // executed ~once generally, so it doesn't seem like a big deal to try.
         // And trying makes things a little more flexible I think.
-        if cfg!(target_os = "android") {
-            let db = concatenated::Database::from_env();
-            if !db.is_definitively_empty() {
-                return TimeZoneDatabase::new(Kind::Concatenated(db));
-            }
+        #[cfg(not(miri))]
+        {
+            if cfg!(target_os = "android") {
+                let db = concatenated::Database::from_env();
+                if !db.is_definitively_empty() {
+                    return TimeZoneDatabase::new(Kind::Concatenated(db));
+                }
 
-            let db = zoneinfo::Database::from_env();
-            if !db.is_definitively_empty() {
-                return TimeZoneDatabase::new(Kind::ZoneInfo(db));
-            }
-        } else {
-            let db = zoneinfo::Database::from_env();
-            if !db.is_definitively_empty() {
-                return TimeZoneDatabase::new(Kind::ZoneInfo(db));
-            }
+                let db = zoneinfo::Database::from_env();
+                if !db.is_definitively_empty() {
+                    return TimeZoneDatabase::new(Kind::ZoneInfo(db));
+                }
+            } else {
+                let db = zoneinfo::Database::from_env();
+                if !db.is_definitively_empty() {
+                    return TimeZoneDatabase::new(Kind::ZoneInfo(db));
+                }
 
-            let db = concatenated::Database::from_env();
-            if !db.is_definitively_empty() {
-                return TimeZoneDatabase::new(Kind::Concatenated(db));
+                let db = concatenated::Database::from_env();
+                if !db.is_definitively_empty() {
+                    return TimeZoneDatabase::new(Kind::Concatenated(db));
+                }
             }
         }
 
         let db = bundled::Database::new();
         if !db.is_definitively_empty() {
-            return TimeZoneDatabase::new(Kind::Bundled(db));
+            return TimeZoneDatabase { inner: Repr::Bundled(db) };
         }
 
         warn!(
@@ -426,12 +478,12 @@ impl TimeZoneDatabase {
         if db.is_definitively_empty() {
             warn!("could not find embedded/bundled zoneinfo");
         }
-        TimeZoneDatabase::new(Kind::Bundled(db))
+        TimeZoneDatabase { inner: Repr::Bundled(db) }
     }
 
     /// Creates a new DB from the internal kind.
     fn new(kind: Kind) -> TimeZoneDatabase {
-        TimeZoneDatabase { inner: Some(Arc::new(kind)) }
+        TimeZoneDatabase { inner: Repr::Arc(Arc::new(kind)) }
     }
 
     /// Returns a [`TimeZone`] corresponding to the IANA time zone identifier
@@ -457,43 +509,23 @@ impl TimeZoneDatabase {
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn get(&self, name: &str) -> Result<TimeZone, Error> {
-        let inner = self.inner.as_deref().ok_or_else(|| {
-            if cfg!(feature = "std") {
-                err!(
-                    "failed to find time zone `{name}` since there is no \
-                     time zone database configured",
-                )
-            } else {
-                err!(
-                    "failed to find time zone `{name}`, there is no \
-                     global time zone database configured (and is currently \
-                     impossible to do so without Jiff's `std` feature \
-                     enabled, if you need this functionality, please file \
-                     an issue on Jiff's tracker with your use case)",
-                )
+        let found = match self.inner {
+            Repr::Empty => {
+                return Err(Error::from(
+                    E::failed_time_zone_no_database_configured(name),
+                ));
             }
-        })?;
-        match *inner {
-            Kind::ZoneInfo(ref db) => {
-                if let Some(tz) = db.get(name) {
-                    trace!("found time zone `{name}` in {db:?}", db = self);
-                    return Ok(tz);
-                }
-            }
-            Kind::Concatenated(ref db) => {
-                if let Some(tz) = db.get(name) {
-                    trace!("found time zone `{name}` in {db:?}", db = self);
-                    return Ok(tz);
-                }
-            }
-            Kind::Bundled(ref db) => {
-                if let Some(tz) = db.get(name) {
-                    trace!("found time zone `{name}` in {db:?}", db = self);
-                    return Ok(tz);
-                }
-            }
+            Repr::Bundled(ref db) => db.get(name),
+            Repr::Arc(ref kind) => match **kind {
+                Kind::ZoneInfo(ref db) => db.get(name),
+                Kind::Concatenated(ref db) => db.get(name),
+            },
+        };
+        if let Some(tz) = found {
+            trace!("found time zone `{name}` in {db:?}", db = self);
+            return Ok(tz);
         }
-        Err(err!("failed to find time zone `{name}` in time zone database"))
+        Err(Error::from(E::failed_time_zone(name)))
     }
 
     /// Returns a list of all available time zone identifiers from this
@@ -515,13 +547,13 @@ impl TimeZoneDatabase {
     /// }
     /// ```
     pub fn available<'d>(&'d self) -> TimeZoneNameIter<'d> {
-        let Some(inner) = self.inner.as_deref() else {
-            return TimeZoneNameIter::empty();
-        };
-        match *inner {
-            Kind::ZoneInfo(ref db) => db.available(),
-            Kind::Concatenated(ref db) => db.available(),
-            Kind::Bundled(ref db) => db.available(),
+        match self.inner {
+            Repr::Empty => TimeZoneNameIter::empty(),
+            Repr::Bundled(ref db) => db.available(),
+            Repr::Arc(ref kind) => match **kind {
+                Kind::ZoneInfo(ref db) => db.available(),
+                Kind::Concatenated(ref db) => db.available(),
+            },
         }
     }
 
@@ -535,11 +567,13 @@ impl TimeZoneDatabase {
     /// without spawning a new process or waiting for Jiff's internal cache
     /// invalidation heuristics to kick in.
     pub fn reset(&self) {
-        let Some(inner) = self.inner.as_deref() else { return };
-        match *inner {
-            Kind::ZoneInfo(ref db) => db.reset(),
-            Kind::Concatenated(ref db) => db.reset(),
-            Kind::Bundled(ref db) => db.reset(),
+        match self.inner {
+            Repr::Empty => {}
+            Repr::Bundled(ref db) => db.reset(),
+            Repr::Arc(ref kind) => match **kind {
+                Kind::ZoneInfo(ref db) => db.reset(),
+                Kind::Concatenated(ref db) => db.reset(),
+            },
         }
     }
 
@@ -561,27 +595,39 @@ impl TimeZoneDatabase {
     /// assert!(db.is_definitively_empty());
     /// ```
     pub fn is_definitively_empty(&self) -> bool {
-        let Some(inner) = self.inner.as_deref() else { return true };
-        match *inner {
-            Kind::ZoneInfo(ref db) => db.is_definitively_empty(),
-            Kind::Concatenated(ref db) => db.is_definitively_empty(),
-            Kind::Bundled(ref db) => db.is_definitively_empty(),
+        match self.inner {
+            Repr::Empty => true,
+            Repr::Bundled(ref db) => db.is_definitively_empty(),
+            Repr::Arc(ref kind) => match **kind {
+                Kind::ZoneInfo(ref db) => db.is_definitively_empty(),
+                Kind::Concatenated(ref db) => db.is_definitively_empty(),
+            },
         }
     }
 }
 
 impl core::fmt::Debug for TimeZoneDatabase {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        write!(f, "TimeZoneDatabase(")?;
-        let Some(inner) = self.inner.as_deref() else {
-            return write!(f, "unavailable)");
-        };
-        match *inner {
-            Kind::ZoneInfo(ref db) => write!(f, "{db:?}")?,
-            Kind::Concatenated(ref db) => write!(f, "{db:?}")?,
-            Kind::Bundled(ref db) => write!(f, "{db:?}")?,
+        f.write_str("TimeZoneDatabase(")?;
+        match self.inner {
+            Repr::Empty => return f.write_str("unavailable)"),
+            Repr::Bundled(ref db) => core::fmt::Debug::fmt(db, f)?,
+            Repr::Arc(ref kind) => match **kind {
+                Kind::ZoneInfo(ref db) => core::fmt::Debug::fmt(db, f)?,
+                Kind::Concatenated(ref db) => core::fmt::Debug::fmt(db, f)?,
+            },
         }
-        write!(f, ")")
+        f.write_str(")")
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for TimeZoneDatabase {
+    fn format(&self, f: defmt::Formatter) {
+        // `Kind` doesn't implement `defmt::Format`, so we only emit the type
+        // name. On embedded targets the database is usually bundled or unused,
+        // so the internal backend probably isn't meaningful to log either way.
+        defmt::write!(f, "TimeZoneDatabase(unavailable)");
     }
 }
 
@@ -595,6 +641,7 @@ impl core::fmt::Debug for TimeZoneDatabase {
 /// The lifetime parameter corresponds to the lifetime of the
 /// `TimeZoneDatabase` from which this iterator was created.
 #[derive(Clone, Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct TimeZoneNameIter<'d> {
     #[cfg(feature = "alloc")]
     it: alloc::vec::IntoIter<TimeZoneName<'d>>,
@@ -642,6 +689,7 @@ impl<'d> Iterator for TimeZoneNameIter<'d> {
 /// The lifetime parameter corresponds to the lifetime of the
 /// `TimeZoneDatabase` from which this name was created.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, PartialOrd, Ord)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct TimeZoneName<'d> {
     /// The lifetime of the tzdb.
     ///
@@ -651,6 +699,7 @@ pub struct TimeZoneName<'d> {
     /// time" TZif or some such.
     lifetime: core::marker::PhantomData<&'d str>,
     #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "defmt", defmt(Debug2Format))]
     name: alloc::string::String,
     #[cfg(not(feature = "alloc"))]
     name: core::convert::Infallible,
@@ -687,8 +736,119 @@ impl<'d> TimeZoneName<'d> {
 
 impl<'d> core::fmt::Display for TimeZoneName<'d> {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        write!(f, "{}", self.as_str())
+        f.write_str(self.as_str())
     }
+}
+
+/// The geographical location corresponding to a primary time zone identifier.
+///
+/// This can be retrieved for a time zone via [`TimeZone::location`].
+///
+/// # Example
+///
+/// ```
+/// use jiff::tz::TimeZone;
+/// # if TimeZone::get("Asia/Calcutta").is_err() { return Ok(()) };
+///
+/// let tz = TimeZone::get("Europe/Copenhagen")?;
+/// let loc = tz.location().unwrap();
+/// assert_eq!(loc.country(), "DK");
+///
+/// let tz = TimeZone::get("EuRoPe/BeRlIn")?;
+/// let loc = tz.location().unwrap();
+/// assert_eq!(loc.country(), "DE");
+///
+/// let tz = TimeZone::get("asia/calcutta")?;
+/// let loc = tz.location().unwrap();
+/// assert_eq!(loc.country(), "IN");
+///
+/// # Ok::<(), Box<dyn std::error::Error>>(())
+/// ```
+#[derive(Clone, Copy, Debug)]
+pub struct TimeZoneLocation {
+    /// The ISO 3166 code corresponding to the country for the primary time
+    /// zone identifier.
+    country: ArrayStr<2>,
+    /// The latitude coordinate.
+    latitude: f64,
+    /// The longitude coordinate.
+    longitude: f64,
+}
+
+impl TimeZoneLocation {
+    /// Returns the ISO 3166 country code for the corresponding time zone.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use jiff::tz::TimeZone;
+    /// # if TimeZone::get("Asia/Calcutta").is_err() { return Ok(()) };
+    ///
+    /// let tz = TimeZone::get("Asia/Calcutta")?;
+    /// let loc = tz.location().unwrap();
+    /// assert_eq!(loc.country(), "IN");
+    ///
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    pub const fn country(&self) -> &str {
+        self.country.as_str()
+    }
+
+    /// Returns the latitude coordinate for the corresponding time zone.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use jiff::tz::TimeZone;
+    /// # if TimeZone::get("Asia/Calcutta").is_err() { return Ok(()) };
+    ///
+    /// let tz = TimeZone::get("Asia/Calcutta")?;
+    /// let loc = tz.location().unwrap();
+    /// assert_eq!(loc.latitude(), 22.533333333333335);
+    ///
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    pub const fn latitude(&self) -> f64 {
+        self.latitude
+    }
+
+    /// Returns the longitude coordinate for the corresponding time zone.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use jiff::tz::TimeZone;
+    /// # if TimeZone::get("Asia/Calcutta").is_err() { return Ok(()) };
+    ///
+    /// let tz = TimeZone::get("Asia/Calcutta")?;
+    /// let loc = tz.location().unwrap();
+    /// assert_eq!(loc.longitude(), 88.36666666666666);
+    ///
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    pub const fn longitude(&self) -> f64 {
+        self.longitude
+    }
+}
+
+pub(crate) fn find_primary_iana_name(iana_name: &str) -> Option<&'static str> {
+    let index = metadata::TIME_ZONE_PRIMARY_IDENTIFIER
+        .binary_search_by(|&(key, _)| key.cmp(iana_name))
+        .ok()?;
+    let primary = metadata::TIME_ZONE_PRIMARY_IDENTIFIER[index].1;
+    Some(primary)
+}
+
+pub(crate) fn find_tz_location(iana_name: &str) -> Option<TimeZoneLocation> {
+    let index = metadata::TIME_ZONE_PRIMARY_IDENTIFIER
+        .binary_search_by(|&(key, _)| key.cmp(iana_name))
+        .ok()?;
+    let primary = metadata::TIME_ZONE_PRIMARY_IDENTIFIER[index].1;
+    let location = metadata::TIME_ZONE_METADATA
+        .binary_search_by(|&(key, _)| key.cmp(primary))
+        .ok()
+        .map(|index| metadata::TIME_ZONE_METADATA[index].1);
+    location
 }
 
 /// Checks if `name` is a "special" time zone and returns one if so.
@@ -709,8 +869,40 @@ fn special_time_zone(name: &str) -> Option<TimeZone> {
 mod tests {
     use super::*;
 
-    /// This tests that the size of a time zone database is kept at a single
-    /// word.
+    /// Tests that the global database returns the bundled tzdb when the bundle
+    /// is enabled but neither the zoneinfo nor concatenated databases are.
+    ///
+    /// This configuration doesn't have `std` (since both `tzdb-zoneinfo` and
+    /// `tzdb-concatenated` imply it), and so without special handling `db()`
+    /// used to return an empty database despite the tzdb being compiled in.
+    ///
+    /// Regression test for: https://github.com/BurntSushi/jiff/issues/533
+    #[cfg(all(
+        feature = "tzdb-bundle-always",
+        not(feature = "tzdb-zoneinfo"),
+        not(feature = "tzdb-concatenated"),
+    ))]
+    #[test]
+    fn bundled_db_when_only_bundle_enabled() {
+        let db = db();
+        assert!(!db.is_definitively_empty());
+        assert!(db.get("America/New_York").is_ok());
+        // The convenience APIs route through the global `db()`, so this is
+        // the symptom originally reported in #533.
+        assert!(
+            crate::civil::date(2024, 7, 4)
+                .at(12, 0, 0, 0)
+                .in_tz("America/New_York")
+                .is_ok()
+        );
+    }
+
+    /// This tests that the size of a time zone database is kept small.
+    ///
+    /// It's two words because the bundled database is stored outside the
+    /// `Arc` (so it can be constructed in a `const`, see `db()` and #533),
+    /// which means the representation needs a tag to distinguish it from the
+    /// empty and `Arc`-backed variants.
     ///
     /// I think it would probably be okay to make this bigger if we had a
     /// good reason to, but it seems sensible to put a road-block to avoid
@@ -720,7 +912,7 @@ mod tests {
         #[cfg(feature = "alloc")]
         {
             let word = core::mem::size_of::<usize>();
-            assert_eq!(word, core::mem::size_of::<TimeZoneDatabase>());
+            assert_eq!(2 * word, core::mem::size_of::<TimeZoneDatabase>());
         }
         // A `TimeZoneDatabase` in core-only is vapid.
         #[cfg(not(feature = "alloc"))]

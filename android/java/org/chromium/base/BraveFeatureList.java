@@ -50,4 +50,6 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_ANDROID_TAB_GROUPS_SETTINGS = "BraveAndroidTabGroupsSettings";
     public static final String BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT =
             "BraveAndroidMergeInstallPwaAndCreateShortcut";
+    public static final String BRAVE_ANDROID_EXTENSIONS = "BraveAndroidExtensions";
+    public static final String BRAVE_RECAP = "BraveRecap";
 }

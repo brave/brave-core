@@ -7,11 +7,13 @@ substitutions:
   - description: |-
       Create the password favicon loader through a Brave factory.
 
-      Upstream's loader fetches favicons through the system network context or
-      the original profile, outside an off-the-record profile's network
-      context, and in a Tor window outside Tor. `CreatePasswordFaviconLoader`,
-      defined in chromium_src, gives off-the-record profiles a loader that
-      never fetches.
+      Upstream's loader can request favicons from the Google favicon server
+      through LargeIconService, which off-the-record profiles share with the
+      original profile, so the request would leave an off-the-record profile's
+      network context, and in a Tor window bypass Tor.
+      `CreatePasswordFaviconLoader`, defined in chromium_src, gives
+      off-the-record profiles a loader that only fetches the site's own favicon,
+      through the profile's ImageFetcherService.
     regex:
       pattern: 'std::make_unique<PasswordFaviconLoaderImpl>('
       replace: 'CreatePasswordFaviconLoader(profile,'

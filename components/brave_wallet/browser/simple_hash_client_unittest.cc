@@ -9,9 +9,11 @@
 #include <optional>
 
 #include "base/containers/to_vector.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -39,27 +41,21 @@ class SimpleHashClientUnitTest : public testing::Test {
         url_loader_factory_.GetSafeWeakWrapper());
   }
 
-  void SetInterceptor(const GURL& intended_url, const std::string& content) {
-    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, intended_url, content](const network::ResourceRequest& request) {
-          if (request.url.spec() == intended_url) {
-            url_loader_factory_.ClearResponses();
-            url_loader_factory_.AddResponse(request.url.spec(), content);
-          }
-        }));
-  }
-
   void SetInterceptors(std::map<GURL, std::string> responses) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, responses](const network::ResourceRequest& request) {
           // If the request url is in responses, add that response
           auto it = responses.find(request.url);
-          if (it != responses.end()) {
-            // Get the response string
-            std::string response = it->second;
-            url_loader_factory_.ClearResponses();
-            url_loader_factory_.AddResponse(request.url.spec(), response);
+          if (it == responses.end()) {
+            ADD_FAILURE() << "Unexpected request: " << request.url.spec();
+            url_loader_factory_.AddResponse(request.url.spec(), "",
+                                            net::HTTP_NOT_FOUND);
+            return;
           }
+          // Get the response string
+          std::string response = it->second;
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), response);
         }));
   }
 
@@ -80,16 +76,12 @@ class SimpleHashClientUnitTest : public testing::Test {
     auto chain_ids = base::ToVector(chain_ids_str, [&](auto& item) {
       return mojom::ChainId::New(coin, item);
     });
-    base::RunLoop run_loop;
+    base::test::TestFuture<std::vector<mojom::BlockchainTokenPtr>> future;
     simple_hash_client_->FetchAllNFTsFromSimpleHash(
-        account_address, std::move(chain_ids),
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::BlockchainTokenPtr> nfts) {
-              ASSERT_EQ(nfts.size(), expected_nfts.size());
-              EXPECT_EQ(nfts, expected_nfts);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        account_address, std::move(chain_ids), future.GetCallback());
+    auto nfts = future.Take();
+    ASSERT_EQ(nfts.size(), expected_nfts.size());
+    EXPECT_EQ(nfts, expected_nfts);
   }
 
   void TestFetchNFTsFromSimpleHash(
@@ -103,77 +95,59 @@ class SimpleHashClientUnitTest : public testing::Test {
     auto chain_ids = base::ToVector(chain_ids_str, [&](auto& item) {
       return mojom::ChainId::New(coin, item);
     });
-    base::RunLoop run_loop;
+    base::test::TestFuture<std::vector<mojom::BlockchainTokenPtr>,
+                           const std::optional<std::string>&>
+        future;
     simple_hash_client_->FetchNFTsFromSimpleHash(
         account_address, std::move(chain_ids), cursor, spam_filter,
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::BlockchainTokenPtr> nfts,
-                const std::optional<std::string>& returned_cursor) {
-              ASSERT_EQ(nfts.size(), expected_nfts.size());
-              EXPECT_EQ(returned_cursor, expected_cursor);
-              EXPECT_EQ(nfts, expected_nfts);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        future.GetCallback());
+    auto [nfts, returned_cursor] = future.Take();
+    ASSERT_EQ(nfts.size(), expected_nfts.size());
+    EXPECT_EQ(returned_cursor, expected_cursor);
+    EXPECT_EQ(nfts, expected_nfts);
   }
 
   void TestFetchSolCompressedNftProofData(
       const std::string& token_address,
       const std::optional<SolCompressedNftProofData>& expected_proof_data) {
-    base::RunLoop run_loop;
-    simple_hash_client_->FetchSolCompressedNftProofData(
-        token_address, base::BindLambdaForTesting(
-                           [&](std::optional<SolCompressedNftProofData> proof) {
-                             EXPECT_EQ(proof, expected_proof_data);
-                             run_loop.Quit();
-                           }));
-    run_loop.Run();
+    base::test::TestFuture<std::optional<SolCompressedNftProofData>> future;
+    simple_hash_client_->FetchSolCompressedNftProofData(token_address,
+                                                        future.GetCallback());
+    EXPECT_EQ(future.Take(), expected_proof_data);
   }
 
   void TestGetNfts(
       std::vector<mojom::NftIdentifierPtr> nft_identifiers,
       const std::vector<mojom::BlockchainTokenPtr>& expected_nfts) {
-    base::RunLoop run_loop;
-    simple_hash_client_->GetNfts(
-        std::move(nft_identifiers),
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::BlockchainTokenPtr> nfts) {
-              ASSERT_EQ(nfts.size(), expected_nfts.size());
-              EXPECT_EQ(nfts, expected_nfts);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<std::vector<mojom::BlockchainTokenPtr>> future;
+    simple_hash_client_->GetNfts(std::move(nft_identifiers),
+                                 future.GetCallback());
+    auto nfts = future.Take();
+    ASSERT_EQ(nfts.size(), expected_nfts.size());
+    EXPECT_EQ(nfts, expected_nfts);
   }
 
   void TestGetNftMetadatas(
       std::vector<mojom::NftIdentifierPtr> nft_identifiers,
       const base::expected<std::vector<mojom::NftMetadataPtr>, std::string>&
           expected) {
-    base::RunLoop run_loop;
-    simple_hash_client_->GetNftMetadatas(
-        std::move(nft_identifiers),
-        base::BindLambdaForTesting(
-            [&](base::expected<std::vector<mojom::NftMetadataPtr>, std::string>
-                    metadatas) {
-              ASSERT_EQ(metadatas, expected);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<
+        base::expected<std::vector<mojom::NftMetadataPtr>, std::string>>
+        future;
+    simple_hash_client_->GetNftMetadatas(std::move(nft_identifiers),
+                                         future.GetCallback());
+    EXPECT_EQ(future.Take(), expected);
   }
 
   void TestGetNftBalances(
       const std::string& wallet_address,
       std::vector<mojom::NftIdentifierPtr> nft_identifiers,
       const base::expected<std::vector<uint64_t>, std::string>& expected) {
-    base::RunLoop run_loop;
+    base::test::TestFuture<base::expected<std::vector<uint64_t>, std::string>>
+        future;
     simple_hash_client_->GetNftBalances(
-        wallet_address, std::move(nft_identifiers),
-        base::BindLambdaForTesting(
-            [&](base::expected<std::vector<uint64_t>, std::string> balances) {
-              ASSERT_EQ(balances, expected);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        wallet_address, std::move(nft_identifiers), future.GetCallback());
+    EXPECT_EQ(future.Take(), expected);
   }
 
   network::TestURLLoaderFactory url_loader_factory_;
@@ -365,7 +339,7 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   ASSERT_TRUE(result);
   ASSERT_TRUE(result->first);
   EXPECT_EQ(result->first, "abc123");
-  EXPECT_EQ(result->second.size(), 1u);
+  ASSERT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
             "0x1111111111111111111111111111111111111111");
   EXPECT_EQ(result->second[0]->name, "Token #1");
@@ -425,7 +399,7 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   ASSERT_TRUE(result);
   ASSERT_TRUE(result->first);
   EXPECT_EQ(result->first, "abc123");
-  EXPECT_EQ(result->second.size(), 2u);
+  ASSERT_EQ(result->second.size(), 2u);
   EXPECT_EQ(result->second[0]->contract_address,
             "0x1111111111111111111111111111111111111111");
   EXPECT_EQ(result->second[0]->name, "Token #1");
@@ -582,7 +556,7 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   result = simple_hash_client_->ParseNFTsFromSimpleHash(
       base::test::ParseJsonDict(json), SpamFilter::kExclude);
   ASSERT_TRUE(result);
-  EXPECT_EQ(result->second.size(), 1u);
+  ASSERT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
             "AvdAUsR4qgsT5HgyKCVeGjimmyu8xrG3RudFqm5txDDE");
   EXPECT_EQ(result->second[0]->name, "y00t #2623");
@@ -631,7 +605,7 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   result = simple_hash_client_->ParseNFTsFromSimpleHash(
       base::test::ParseJsonDict(json), SpamFilter::kExclude);
   ASSERT_TRUE(result);
-  EXPECT_EQ(result->second.size(), 1u);
+  ASSERT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
             "g9qugQPwCsw6JEUEXSJ2ngQ7TTqzdv69pDGfDaQ2oCe");
   EXPECT_EQ(result->second[0]->name, "Boba Guys @ Solana Clubhouse");
@@ -682,7 +656,7 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   result = simple_hash_client_->ParseNFTsFromSimpleHash(
       base::test::ParseJsonDict(json), SpamFilter::kExclude);
   ASSERT_TRUE(result);
-  EXPECT_EQ(result->second.size(), 1u);
+  ASSERT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
             "BHWBJ7XtBqJJbg9SrAUH4moeF8VpJo3WXyDh6vc1qqLG");
   EXPECT_EQ(result->second[0]->name, "Mad Lads #8752");
@@ -764,7 +738,7 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   result = simple_hash_client_->ParseNFTsFromSimpleHash(
       base::test::ParseJsonDict(json), SpamFilter::kOnly);
   ASSERT_TRUE(result);
-  EXPECT_EQ(result->second.size(), 1u);
+  ASSERT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
             "AvdAUsR4qgsT5HgyKCVeGjimmyu8xrG3RudFqm5txDDE");
   EXPECT_FALSE(result->second[0]->is_spam);
@@ -773,7 +747,7 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   result = simple_hash_client_->ParseNFTsFromSimpleHash(
       base::test::ParseJsonDict(json), SpamFilter::kAll);
   ASSERT_TRUE(result);
-  EXPECT_EQ(result->second.size(), 2u);
+  ASSERT_EQ(result->second.size(), 2u);
   EXPECT_EQ(result->second[0]->contract_address,
             "AvdAUsR4qgsT5HgyKCVeGjimmyu8xrG3RudFqm5txDDE");
   EXPECT_FALSE(result->second[0]->is_spam);
@@ -838,7 +812,7 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   result = simple_hash_client_->ParseNFTsFromSimpleHash(
       base::test::ParseJsonDict(json), SpamFilter::kAll);
   ASSERT_TRUE(result);
-  EXPECT_EQ(result->second.size(), 1u);
+  ASSERT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
             "6FoSmkL9Z6yoFtTrhsC8Zq4w4PDpsMfGRXSgiR3ri66n");
   EXPECT_EQ(result->second[0]->is_compressed, true);

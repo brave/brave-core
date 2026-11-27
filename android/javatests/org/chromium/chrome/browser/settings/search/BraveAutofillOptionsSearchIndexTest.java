@@ -118,6 +118,18 @@ public class BraveAutofillOptionsSearchIndexTest {
         assertEquals(homeAutofillOptionsEntry.id, breadcrumbEntries.get(1).id);
     }
 
+    @Test
+    @SmallTest
+    public void testMainAutofillAndPasswordsEntryUsesDisplayHeader() {
+        buildIndex();
+
+        SettingsIndexData.Entry entry =
+                mIndexData.getEntryForKey(
+                        MainSettings.class.getName(), MainSettings.PREF_AUTOFILL_AND_PASSWORDS);
+        assertNotNull(entry);
+        assertEquals(mContext.getString(R.string.prefs_section_display), entry.header);
+    }
+
     private void buildIndex() {
         ThreadUtils.runOnUiThreadBlocking(
                 () -> SettingsSearchCoordinator.buildIndexInternal(mContext, mProfile, mIndexData));

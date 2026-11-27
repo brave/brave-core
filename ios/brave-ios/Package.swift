@@ -252,7 +252,6 @@ var package = Package(
         "CertificateUtilities", "BraveShared", "BraveCore",
         "PartitionAllocSupport",
       ],
-      exclude: ["Certificates/self-signed.conf"],
       resources: [
         .copy("Certificates/certviewer/brave.com.cer"),
         .copy("Certificates/certviewer/github.com.cer"),
@@ -379,7 +378,8 @@ var package = Package(
       sources: [
         "BraveWidgets.intentdefinition", "LockScreenFavoriteIntentHandler.swift",
         "FavoritesWidgetData.swift", "DisabledShortcutsWidgetData.swift",
-        "OpenControlWidgetShortcutIntent.swift", "WidgetShortcut+Appearance.swift",
+        "OpenControlWidgetShortcutIntent.swift",
+        "ShortcutOption.swift", "WidgetShortcut+Appearance.swift",
       ],
       plugins: ["IntentBuilderPlugin", "LoggerPlugin"]
     ),
@@ -627,10 +627,13 @@ var package = Package(
 let iosRootDirectory = URL(string: PackageDescription.Context.packageDirectory)!.absoluteString
 let isStripAbsolutePathsFromDebugSymbolsEnabled = {
   do {
-    let env = try String(contentsOfFile: "\(iosRootDirectory)/../../.env", encoding: .utf8)
-      .split(separator: "\n")
-      .map { $0.split(separator: "=").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) } }
-    return env.contains(where: { $0.first == "use_remoteexec" && $0.last == "true" })
+    let env = try String(
+      contentsOfFile: "\(iosRootDirectory)/../../../out/ios_current_link/args.xcconfig",
+      encoding: .utf8
+    )
+    .split(separator: "\n")
+    .map { $0.split(separator: "=").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) } }
+    return env.contains(where: { $0.first == "brave_ios_debug_prefix_map_flag" })
   } catch {
     return false
   }

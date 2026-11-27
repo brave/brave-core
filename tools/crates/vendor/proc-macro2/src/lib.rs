@@ -53,7 +53,7 @@
 //! If parsing with [Syn], you'll use [`parse_macro_input!`] instead to
 //! propagate parse errors correctly back to the compiler when parsing fails.
 //!
-//! [`parse_macro_input!`]: https://docs.rs/syn/2.0/syn/macro.parse_macro_input.html
+//! [`parse_macro_input!`]: https://docs.rs/syn/3/syn/macro.parse_macro_input.html
 //!
 //! # Unstable features
 //!
@@ -63,7 +63,7 @@
 //!
 //! To opt into the additional APIs available in the most recent nightly
 //! compiler, the `procmacro2_semver_exempt` config flag must be passed to
-//! rustc. We will polyfill those nightly-only APIs back to Rust 1.60.0. As
+//! rustc. We will polyfill those nightly-only APIs back to Rust 1.71.0. As
 //! these are unstable APIs that track the nightly compiler, minor versions of
 //! proc-macro2 may make breaking changes to them at any time.
 //!
@@ -83,8 +83,8 @@
 //! types make use of thread-local memory, meaning they cannot be accessed from
 //! a different thread.
 
-// Proc-macro2 types in rustdoc of other crates get linked to here.
-#![doc(html_root_url = "https://docs.rs/proc-macro2/1.0.103")]
+#![no_std]
+#![doc(html_root_url = "https://docs.rs/proc-macro2/1.0.107")]
 #![cfg_attr(any(proc_macro_span, super_unstable), feature(proc_macro_span))]
 #![cfg_attr(super_unstable, feature(proc_macro_def_site))]
 #![cfg_attr(docsrs, feature(doc_cfg))]
@@ -136,6 +136,7 @@ compile_error! {"\
 "}
 
 extern crate alloc;
+extern crate std;
 
 #[cfg(feature = "proc-macro")]
 extern crate proc_macro;
@@ -174,7 +175,13 @@ use crate::extra::DelimSpan;
 use crate::marker::{ProcMacroAutoTraits, MARKER};
 #[cfg(procmacro2_semver_exempt)]
 use crate::rustc_literal_escaper::MixedUnit;
+#[cfg(procmacro2_semver_exempt)]
+use alloc::borrow::ToOwned as _;
+use alloc::string::{String, ToString as _};
+#[cfg(procmacro2_semver_exempt)]
+use alloc::vec::Vec;
 use core::cmp::Ordering;
+use core::ffi::CStr;
 use core::fmt::{self, Debug, Display};
 use core::hash::{Hash, Hasher};
 #[cfg(span_locations)]
@@ -182,7 +189,6 @@ use core::ops::Range;
 use core::ops::RangeBounds;
 use core::str::FromStr;
 use std::error::Error;
-use std::ffi::CStr;
 #[cfg(span_locations)]
 use std::path::PathBuf;
 
@@ -292,8 +298,8 @@ impl From<TokenTree> for TokenStream {
 }
 
 impl Extend<TokenTree> for TokenStream {
-    fn extend<I: IntoIterator<Item = TokenTree>>(&mut self, streams: I) {
-        self.inner.extend(streams);
+    fn extend<I: IntoIterator<Item = TokenTree>>(&mut self, tokens: I) {
+        self.inner.extend(tokens);
     }
 }
 
@@ -304,12 +310,38 @@ impl Extend<TokenStream> for TokenStream {
     }
 }
 
-/// Collects a number of token trees into a single stream.
-impl FromIterator<TokenTree> for TokenStream {
-    fn from_iter<I: IntoIterator<Item = TokenTree>>(streams: I) -> Self {
-        TokenStream::_new(streams.into_iter().collect())
+impl Extend<Group> for TokenStream {
+    fn extend<I: IntoIterator<Item = Group>>(&mut self, tokens: I) {
+        self.inner.extend(tokens.into_iter().map(TokenTree::Group));
     }
 }
+
+impl Extend<Ident> for TokenStream {
+    fn extend<I: IntoIterator<Item = Ident>>(&mut self, tokens: I) {
+        self.inner.extend(tokens.into_iter().map(TokenTree::Ident));
+    }
+}
+
+impl Extend<Punct> for TokenStream {
+    fn extend<I: IntoIterator<Item = Punct>>(&mut self, tokens: I) {
+        self.inner.extend(tokens.into_iter().map(TokenTree::Punct));
+    }
+}
+
+impl Extend<Literal> for TokenStream {
+    fn extend<I: IntoIterator<Item = Literal>>(&mut self, tokens: I) {
+        self.inner
+            .extend(tokens.into_iter().map(TokenTree::Literal));
+    }
+}
+
+/// Collects a number of token trees into a single stream.
+impl FromIterator<TokenTree> for TokenStream {
+    fn from_iter<I: IntoIterator<Item = TokenTree>>(tokens: I) -> Self {
+        TokenStream::_new(tokens.into_iter().collect())
+    }
+}
+
 impl FromIterator<TokenStream> for TokenStream {
     fn from_iter<I: IntoIterator<Item = TokenStream>>(streams: I) -> Self {
         TokenStream::_new(streams.into_iter().map(|i| i.inner).collect())
@@ -882,7 +914,7 @@ impl Debug for Punct {
 /// Rust keywords. Use `input.call(Ident::parse_any)` when parsing to match the
 /// behaviour of `Ident::new`.
 ///
-/// [`Parse`]: https://docs.rs/syn/2.0/syn/parse/trait.Parse.html
+/// [`Parse`]: https://docs.rs/syn/3/syn/parse/trait.Parse.html
 ///
 /// # Examples
 ///
@@ -980,7 +1012,7 @@ impl Ident {
     /// Panics if the input string is neither a keyword nor a legal variable
     /// name. If you are not sure whether the string contains an identifier and
     /// need to handle an error case, use
-    /// <a href="https://docs.rs/syn/2.0/syn/fn.parse_str.html"><code
+    /// <a href="https://docs.rs/syn/3/syn/fn.parse_str.html"><code
     ///   style="padding-right:0;">syn::parse_str</code></a><code
     ///   style="padding-left:0;">::&lt;Ident&gt;</code>
     /// rather than `Ident::new`.

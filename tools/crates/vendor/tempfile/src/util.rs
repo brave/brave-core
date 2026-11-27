@@ -27,7 +27,7 @@ pub fn create_helper<R>(
     mut f: impl FnMut(PathBuf) -> io::Result<R>,
 ) -> io::Result<R> {
     // Make the path absolute. Otherwise, changing the current directory can invalidate a stored
-    // path (causing issues when cleaning up temporary files.
+    // path (causing issues when cleaning up temporary files).
     let mut base = base; // re-borrow to shrink lifetime
     let base_path_storage; // slot to store the absolute path, if necessary.
     if !base.is_absolute() {

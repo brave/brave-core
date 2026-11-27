@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let a request name the origin it is made for.
+
+      Brave Wallet keys its account permissions on a per-account origin
+      derived from the requesting frame's, so its requests must be made, and
+      remembered, for that origin rather than the frame's. Empty means the
+      requesting frame's origin.
+    regex:
+      re_pattern: '(\n  bool user_gesture;\n)'
+      replace: |
+        \1
+          // The origin on whose behalf this permission request is being made.
+          GURL requesting_origin;

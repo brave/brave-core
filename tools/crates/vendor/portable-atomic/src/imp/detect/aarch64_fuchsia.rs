@@ -3,8 +3,8 @@
 /*
 Run-time CPU feature detection on AArch64 Fuchsia by using zx_system_get_features.
 
-As of nightly-2024-09-07, is_aarch64_feature_detected doesn't support run-time detection on Fuchsia.
-https://github.com/rust-lang/stdarch/blob/d9466edb4c53cece8686ee6e17b028436ddf4151/crates/std_detect/src/detect/mod.rs
+As of Rust 1.94, is_aarch64_feature_detected doesn't support run-time detection on Fuchsia.
+https://github.com/rust-lang/rust/blob/1.94.0/library/std_detect/src/detect/mod.rs
 
 Refs:
 - https://fuchsia.dev/reference/syscalls/system_get_features
@@ -48,7 +48,8 @@ fn zx_system_get_features(kind: u32) -> u32 {
 }
 
 #[cold]
-fn _detect(info: &mut CpuInfo) {
+#[must_use]
+fn _detect(mut info: CpuInfo) -> CpuInfo {
     let features = zx_system_get_features(ffi::ZX_FEATURE_KIND_CPU);
     macro_rules! check {
         ($flag:ident, $bit:ident) => {
@@ -58,6 +59,7 @@ fn _detect(info: &mut CpuInfo) {
         };
     }
     check!(lse, ZX_ARM64_FEATURE_ISA_ATOMICS);
+    info
 }
 
 #[allow(

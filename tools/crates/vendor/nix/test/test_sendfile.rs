@@ -159,10 +159,10 @@ fn test_sendfile_dragonfly() {
 fn test_sendfile_darwin() {
     // Declare the content
     let header_strings =
-        vec!["HTTP/1.1 200 OK\n", "Content-Type: text/plain\n", "\n"];
+        ["HTTP/1.1 200 OK\n", "Content-Type: text/plain\n", "\n"];
     let body = "Xabcdef123456";
     let body_offset = 1;
-    let trailer_strings = vec!["\n", "Served by Make Believe\n"];
+    let trailer_strings = ["\n", "Served by Make Believe\n"];
 
     // Write the body to a file
     let mut tmp = tempfile().unwrap();
@@ -195,7 +195,7 @@ fn test_sendfile_darwin() {
         + &trailer_strings.concat();
 
     // Verify the message that was sent
-    assert_eq!(bytes_written as usize, expected_string.as_bytes().len());
+    assert_eq!(bytes_written as usize, expected_string.len());
 
     let mut read_string = String::new();
     let bytes_read = rd.read_to_string(&mut read_string).unwrap();
@@ -258,7 +258,7 @@ fn test_sendfilev() {
         + &trailer_strings.concat();
 
     // Verify the message that was sent
-    assert_eq!(bytes_written, expected_string.as_bytes().len());
+    assert_eq!(bytes_written, expected_string.len());
 
     let mut read_string = String::new();
     let bytes_read = rd.read_to_string(&mut read_string).unwrap();

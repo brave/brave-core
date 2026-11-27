@@ -7,6 +7,7 @@
 
 #include <array>
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include "base/containers/span.h"
@@ -315,16 +316,16 @@ TEST(ZCashV6SerializerTest, RealOrchardToTransparentTransaction) {
     ZCashTransaction::TxOutput tx_output;
     tx_output.address = "t1Xgp6z3tPYgsAtC6aA87ntNeTTGtKgUJvB";
     tx_output.amount = 10000u;
-    tx_output.script_pubkey =
-        PrefixedHexStringToBytes(
-            "0x76a914978748a668db7815805585c56f981a316e220b0b88ac")
-            .value();
+    auto script_pubkey = PrefixedHexStringToBytes(
+        "0x76a914978748a668db7815805585c56f981a316e220b0b88ac");
+    ASSERT_TRUE(script_pubkey.has_value());
+    tx_output.script_pubkey = std::move(*script_pubkey);
     tx.transparent_part().outputs.push_back(std::move(tx_output));
   }
 
   auto& legacy_orchard = tx.v6_part().legacy_orchard;
   legacy_orchard.anchor_block_height = 3447688u;
-  EXPECT_TRUE(PrefixedHexStringToFixed(
+  ASSERT_TRUE(PrefixedHexStringToFixed(
       "0x0bf9f62bce9e60fe3808e53e15eb341d13378f3491935c78c41d55994a279baa",
       legacy_orchard.digest.emplace()));
   legacy_orchard.raw_tx = PrefixedHexStringToBytes(
@@ -810,6 +811,7 @@ TEST(ZCashV6SerializerTest, RealOrchardToTransparentTransaction) {
       "e3e4"
       "2caf255ad4918593ed6700a920991ae14e432a5222");
 
+  ASSERT_TRUE(legacy_orchard.raw_tx.has_value());
   EXPECT_EQ(legacy_orchard.raw_tx->size(), 9141u);
 
   EXPECT_EQ(

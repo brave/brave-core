@@ -10,7 +10,8 @@ use std::fmt::{self, Display, Formatter};
     target_os = "macos",
     target_os = "netbsd",
     target_os = "openbsd",
-    target_os = "cygwin"
+    target_os = "cygwin",
+    target_os = "hurd",
 ))]
 use std::process::{Command, Output};
 
@@ -44,6 +45,7 @@ impl Display for Bitness {
     target_os = "linux",
     target_os = "cygwin",
     target_os = "macos",
+    target_os = "hurd",
 ))]
 pub fn get() -> Bitness {
     match &Command::new("getconf").arg("LONG_BIT").output() {
@@ -111,7 +113,8 @@ pub fn get() -> Bitness {
         target_os = "macos",
         target_os = "netbsd",
         target_os = "openbsd",
-        target_os = "cygwin"
+        target_os = "cygwin",
+        target_os = "hurd",
     )
 ))]
 mod tests {

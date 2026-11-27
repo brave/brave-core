@@ -9,6 +9,7 @@
 
 #include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -21,21 +22,31 @@ constexpr char kBlockhash[] = "J7rBdM6AecPDEZp8aPq5iPSNKVkU5Q76F3oAV4eW5wsW";
 namespace brave_wallet::solana {
 
 TEST(SolanaRequestsUnitTest, getBalance) {
-  ASSERT_EQ(
-      getBalance("key"),
-      R"({"id":1,"jsonrpc":"2.0","method":"getBalance","params":["key"]})");
+  EXPECT_THAT(getBalance("key"), base::test::IsJson(R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "getBalance",
+        "params": ["key"]
+      })"));
 }
 
 TEST(SolanaRequestsUnitTest, getTokenAccountBalance) {
-  ASSERT_EQ(
-      getTokenAccountBalance("key"),
-      R"({"id":1,"jsonrpc":"2.0","method":"getTokenAccountBalance","params":["key"]})");
+  EXPECT_THAT(getTokenAccountBalance("key"), base::test::IsJson(R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "getTokenAccountBalance",
+        "params": ["key"]
+      })"));
 }
 
 TEST(SolanaRequestsUnitTest, sendTransaction) {
-  ASSERT_EQ(
-      sendTransaction("signed_tx", std::nullopt),
-      R"({"id":1,"jsonrpc":"2.0","method":"sendTransaction","params":["signed_tx",{"encoding":"base64"}]})");
+  EXPECT_THAT(sendTransaction("signed_tx", std::nullopt),
+              base::test::IsJson(R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "sendTransaction",
+        "params": ["signed_tx", {"encoding": "base64"}]
+      })"));
 
   std::string expected_json_string = R"(
       {
@@ -57,9 +68,12 @@ TEST(SolanaRequestsUnitTest, sendTransaction) {
 }
 
 TEST(SolanaRequestsUnitTest, getLatestBlockhash) {
-  ASSERT_EQ(
-      getLatestBlockhash(),
-      R"({"id":1,"jsonrpc":"2.0","method":"getLatestBlockhash","params":[]})");
+  EXPECT_THAT(getLatestBlockhash(), base::test::IsJson(R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "getLatestBlockhash",
+        "params": []
+      })"));
 }
 
 TEST(SolanaRequestsUnitTest, getSignatureStatuses) {
@@ -87,21 +101,30 @@ TEST(SolanaRequestsUnitTest, getSignatureStatuses) {
 }
 
 TEST(SolanaRequestsUnitTest, getAccountInfo) {
-  ASSERT_EQ(
-      getAccountInfo("pubkey"),
-      R"({"id":1,"jsonrpc":"2.0","method":"getAccountInfo","params":["pubkey",{"encoding":"base64"}]})");
+  EXPECT_THAT(getAccountInfo("pubkey"), base::test::IsJson(R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "getAccountInfo",
+        "params": ["pubkey", {"encoding": "base64"}]
+      })"));
 }
 
 TEST(SolanaRequestsUnitTest, getFeeForMessage) {
-  ASSERT_EQ(
-      getFeeForMessage("message"),
-      R"({"id":1,"jsonrpc":"2.0","method":"getFeeForMessage","params":["message",{"commitment":"confirmed"}]})");
+  EXPECT_THAT(getFeeForMessage("message"), base::test::IsJson(R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "getFeeForMessage",
+        "params": ["message", {"commitment": "confirmed"}]
+      })"));
 }
 
 TEST(SolanaRequestsUnitTest, getBlockHeight) {
-  ASSERT_EQ(
-      getBlockHeight(),
-      R"({"id":1,"jsonrpc":"2.0","method":"getBlockHeight","params":[]})");
+  EXPECT_THAT(getBlockHeight(), base::test::IsJson(R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "getBlockHeight",
+        "params": []
+      })"));
 }
 
 TEST(SolanaRequestsUnitTest, getTokenAccountsByOwner) {
@@ -135,7 +158,9 @@ TEST(SolanaRequestsUnitTest, getTokenAccountsByOwner) {
                 getTokenAccountsByOwner("pubkey", "jsonParsed", "program")),
             base::test::ParseJsonDict(
                 absl::StrFormat(kExpectedJsonStringFormat, "jsonParsed")));
+}
 
+TEST(SolanaRequestsDeathTest, getTokenAccountsByOwnerInvalidEncoding) {
   EXPECT_CHECK_DEATH(
       getTokenAccountsByOwner("pubkey", "invalid encoding", "program"));
 }
@@ -162,7 +187,9 @@ TEST(SolanaRequestsUnitTest, isBlockhashValid) {
                 "J7rBdM6AecPDEZp8aPq5iPSNKVkU5Q76F3oAV4eW5wsW",
                 {"commitment": "finalized"}
               ]})"));
+}
 
+TEST(SolanaRequestsDeathTest, isBlockhashValidInvalidCommitment) {
   EXPECT_CHECK_DEATH(isBlockhashValid(kBlockhash, "invalid_commitment"));
 }
 

@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "정보";
 
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertMessage" = "이는 카메라 롤에 이미지를 저장하도록 허용합니다.";
-
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave 브라우저가 내 사진에 액세스하려고 합니다.";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "북마크 추가";
 
@@ -63,9 +57,6 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "사용자 이름";
-
-/* Settings autofill section title */
-"Autofill" = "자동 완성";
 
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "계정";
@@ -133,9 +124,6 @@
 /* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
 "backgroundDownloadingTitleSingleDownload" = "\"%@\" 다운로드 중";
 
-/* cookie settings option */
-"Block3rdPartyCookies" = "제3자 쿠키 차단";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "모든 쿠키 차단";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "환경 설정을 설정하는 데 실패했습니다. 다시 시도하십시오.";
 
-/* title for section showing page blocking statistics */
-"BlockingMonitor" = "차단 모니터";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "팝업 차단";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "%lld개 탭에 북마크 추가";
-
-/* Bookmark Folder Section Title */
-"BookmarkFolder" = "북마크 폴더";
-
-/* Bookmark Info Section Title */
-"BookmarkInfo" = "북마크 정보";
 
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "북마크";
@@ -225,9 +204,6 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields 및 프라이버시";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
 
 /* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
 "BraveTranslate.languageSelectionButtonTitle" = "언어 선택";
@@ -415,14 +391,8 @@
 /* Section title in settings panel */
 "ClearPrivateData" = "개인 정보 지우기";
 
-/* The cancel button when confirming clear private data. */
-"ClearPrivateDataAlertCancelButtonTitle" = "취소하기";
-
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertMessage" = "계속하시겠습니까?";
-
-/* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "확인";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "데이터 지우기";
@@ -441,9 +411,6 @@
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "확인";
-
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "클라이언트 오류";
 
 /* Button title to close a menu. */
 "Close" = "닫기";
@@ -481,17 +448,11 @@
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
 "CopyCleanLink" = "클린 링크 복사";
 
-/* Context menu item for copying an image to the clipboard */
-"CopyImageActionTitle" = "이미지 복사";
-
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "링크 복사";
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "탭 정보를 클립보드에 복사합니다.";
-
-/* Copy rewards internals info for support */
-"CopyWalletSupportInfo" = "후원 정보 복사";
 
 /* Create PDF share action. */
 "CreatePDF" = "PDF 만들기";
@@ -504,9 +465,6 @@
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "검색 URL을 기입하고 검색어를 %1$s(으)로 대체하세요.\n예: https://youtube.com/search?q=%2$s \n(사이트에서 OpenSearch를 지원하는 경우 이 필드를 편집할 때 자동 추가 옵션이 제공됩니다.)";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "자동 추가";
 
 /* A title explaining that an error shown while adding custom search engine */
 "customSearchEngine.customSearchEngineAddErrorTitle" = "맞춤 검색 엔진 추가 중 오류";
@@ -590,12 +548,6 @@
 "defaultBrowserCallout.notificationTitle" = "Brave의 든든한 보호를 모든 링크에서";
 
 /* No comment provided by engineer. */
-"defaultBrowserCalloutCloseAccesabilityLabel" = "기본 브라우저 설정 안내 닫기";
-
-/* Name for default Brave theme. */
-"defaultThemeName" = "Brave 기본값";
-
-/* No comment provided by engineer. */
 "Delete" = "삭제";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
@@ -649,9 +601,6 @@
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "다운로드";
 
-/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
-"DownloadsPanelEmptyStateTitle" = "다운로드한 파일이 여기에 표시됩니다.";
-
 /* Action item title of long press for Opening the existing - active Tab url in a new Tab */
 "DuplicateActiveTab" = "활성 탭 복제";
 
@@ -689,7 +638,7 @@
 "EnableCrashReporterAlertTitle" = "자동 충돌 보고서 사용";
 
 /* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
-"EnableCrashReporterConfirmButtonTitle" = "사용";
+"EnableCrashReporterConfirmButtonTitle" = "허용";
 
 /* The button title on an alert presented to the user after the app crashes that ignores the alert */
 "EnableCrashReporterDenyButtonTitle" = "나중에";
@@ -700,47 +649,14 @@
 /* Description for new folder popup */
 "EnterFolderName" = "폴더 이름 입력";
 
-/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@에서는 보통 암호화를 사용하여 사용자의 정보를 보호합니다. 이번에 Brave가 %2$@에 연결을 시도할 때 웹사이트가 비정상적이고 정확하지 않은 자격증명을 보냈습니다. 이는 공격자가 %3$@임을 가장하려고 시도하거나 Wi-Fi 로그인 화면이 연결을 방해할 때 주로 발생합니다. 정보 교환이 시작되기 전에 Brave가 연결을 중단했으므로 귀하의 정보는 안전합니다.<br />%4$@ 웹사이트가 인증서 피닝을 사용하기 때문에 지금은 이 사이트를 방문하실 수 없습니다. 이는 네트워크 오류나 공격에 의한 일시적 상태일 수 있으며, 일반적으로 잠시 후에는 이 페이지가 다시 작동할 수 있습니다.";
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "제거";
 
-/* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningDetails" = "이 서버는 %@인지 입증할 수 없습니다. 서버의 보안 인증서를 귀하의 기기 운영체제에서 신뢰하고 있지 않습니다. 오구성 또는 공격자의 연결 탈취 시도가 원인일 수 있습니다.";
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "이 사이트는 자주 방문한 사이트 목록에 표시되지 않지만 기록에서는 제거되지 않습니다.";
 
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningTitle" = "공격자가 %@에서 귀하의 정보(비밀번호, 메시지, 신용카드 등) 탈취 시도를 하는 중일 수 있습니다.";
-
-/* Label for button to go back from the error page */
-"ErrorPagesBackToSafetyButton" = "안전을 위해 돌아가기";
-
-/* Title on the certificate error page */
-"ErrorPagesCertErrorTitle" = "이 사이트는 보안 연결을 제공할 수 없습니다.";
-
-/* Title on the certificate error page */
-"ErrorPagesCertWarningTitle" = "연결 상태는 비공개가 아닙니다.";
-
-/* Label for button to hide advanced actions on the error page */
-"ErrorPagesHideDetailsButton" = "세부정보 숨기기";
-
-/* Label for learn more link on error page */
-"ErrorPagesLearnMoreButton" = "자세히 알아보기";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesMoreDetailsButton" = "세부정보 더보기";
-
-/* Title of the No Internet error page */
-"ErrorPagesNoInternetTitle" = "인터넷 액세스 없음";
-
-/* Text telling the user to Try: The following list of things */
-"ErrorPagesNoInternetTry" = "온라인 상태가 아닌 것 같습니다. 해결하려면 다음을 시도하세요.";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem1" = "네트워크 케이블, 모뎀, 공유기 확인";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem2" = "Wi-Fi에 다시 연결";
-
-/* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesProceedAnywayButton" = "%@ 계속(안전하지 않음)";
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "자주 방문한 사이트에서 제거하시겠습니까?";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@에서 외부 프로그램을 실행합니다.";
@@ -766,29 +682,14 @@
 /* Share action title */
 "FindInPage" = "페이지에서 찾기";
 
-/* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "완료";
-
 /* Find `search query` */
 "FindInPageFormat" = "찾기 ";
-
-/* Accessibility label for next result button in Find in Page Toolbar. */
-"FindInPageNextResultButtonAccessibilityLabel" = "다음 페이지 결과";
-
-/* Accessibility label for previous result button in Find in Page Toolbar. */
-"FindInPagePreviousResultButtonAccessibilityLabel" = "이전 페이지 결과";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findInPageTitle" = "페이지에서 찾기";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findNextTitle" = "다음 찾기";
-
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "이 페이지 내";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findPreviousTitle" = "이전 찾기";
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "유니버설 링크로 외부 앱을 열 수 있게 허용";
@@ -813,9 +714,6 @@
 
 /* Hides the rewards icon */
 "HideRewardsIcon" = "Brave Rewards 아이콘 숨기기";
-
-/* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Brave Rewards가 활성화되지 않았을 때 Brave Rewards 아이콘 숨김";
 
 /* Title for history menu item */
 "HistortMenuItem" = "방문 기록";
@@ -859,11 +757,8 @@
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "브라우징 데이터 가져오기";
 
-/* title for per-site shield toggles */
-"IndividualControls" = "개별 제어";
-
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "결제 요청 내 세부정보가 유효하지 않음";
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "이 페이지에 임베드된 페이지";
 
 /* History tableview section header */
 "LastMonth" = "지난달";
@@ -919,30 +814,6 @@
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "필터";
 
-/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
-"LoginDetailLastModifiedCellFormatTitle" = "최종 수정 %@";
-
-/* Label displayed above the password row in Login Detail View. */
-"LoginDetailPasswordCellTitle" = "비밀번호";
-
-/* Label displayed above the username row in Login Detail View. */
-"LoginDetailUsernameCellTitle" = "사용자 이름";
-
-/* Label displayed above the website row in Login Detail View. */
-"LoginDetailWebsiteCellTitle" = "웹사이트";
-
-/* Label for the button used to deselect all logins. */
-"LoginListDeselectAllButtonTitle" = "모두 선택 취소";
-
-/* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "로그인 정보를 찾을 수 없음";
-
-/* Title for Logins List View screen. */
-"LoginListScreenTitle" = "로그인";
-
-/* Label for the button used to select all logins. */
-"LoginListSelectAllButtonTitle" = "모두 선택";
-
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "백그라운드 오디오 활성화";
 
@@ -957,9 +828,6 @@
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "공개";
-
-/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
-"monthAbbreviation" = "월";
 
 /* Bookmark title / Device name */
 "Name" = "이름";
@@ -1036,9 +904,6 @@
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "스폰서 이미지 자세히 알아보기";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"ntp.settingsAutoOpenKeyboard" = "키보드 자동으로 열기";
-
 /* A setting to enable or disable background on the NTP screen. */
 "ntp.settingsBackgroundImages" = "백그라운드";
 
@@ -1075,53 +940,8 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Rewards를 켜면 %@에 동의하는 것으로 간주됩니다.";
 
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "브라우징하면서 토큰을 얻어 좋은 콘텐츠를 만들어준 제작자에게 보답하세요.";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "브라우징하면서 포인트를 얻어 좋은 콘텐츠를 만들어준 제작자에게 보답하세요.";
-
-/* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Brave Ads 이용 가능!";
-
-/* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave가 당신의 첫 광고를 다음에 표시합니다";
-
-/* Title for when the user completes onboarding */
-"OBCompleteTitle" = "이제 준비를 마쳤습니다.";
-
-/* Button to show information on how to enable ads */
-"OBDidntSeeAdButton" = "광고를 보지 못했어요";
-
-/* A generic error body for onboarding */
-"OBErrorDetails" = "월렛을 만드는 중에 문제가 발생했습니다. 다시 시도하세요.";
-
 /* No comment provided by engineer. */
 "OBErrorOkay" = "네";
-
-/* A generic error title for onboarding */
-"OBErrorTitle" = "죄송합니다";
-
-/* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "브라우징 시작";
-
-/* Button to join Brave Rewards. */
-"OBJoinButton" = "가입";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Brave가 내 클립보드에서 일치하는 추천 코드를 확인할 수 있도록 허용";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "추천인에게 도움이 되시려고 Brave를 다운로드하신 것 같습니다. 귀하의 추천인을 확인하려는 목적으로 Brave가 귀하의 클립보드에서 일치하는 추천 코드 일회성 확인을 수행합니다. 이 확인은 코드 확인 목적으로만 사용되며 어떤 개인 데이터도 전송되지 않습니다. 거부하시면 Brave에서 제공하는 리워드를 추천인에게 보내드릴 수 없습니다.";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentNoButton" = "확인 허용하지 않음";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentTitle" = "익명 추천 코드 확인";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentYesButton" = "일회성 클립보드 확인 허용";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "예를 탭하면 다음에 동의하는 것으로 간주됩니다.";
@@ -1138,32 +958,8 @@
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Brave Private Ads를 선택하면 광고를 보고 게시자와 콘텐츠 제작자를 지원할 수 있습니다.";
 
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "브라우징하면서 토큰을 얻어 좋은 콘텐츠를 만들어준 제작자에게 보답하세요.";
-
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "개인정보 보호 정책";
-
-/* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Brave Rewards";
-
-/* Save button to save current selection */
-"OBSaveButton" = "저장";
-
-/* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "기본 검색 엔진 선택";
-
-/* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Brave 브라우저에 오신 것을 환영합니다.";
-
-/* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "프라이버시를 침해하는 트래커를 차단하여 웹에서 불필요한 사이트 방문 없이 브라우징 가능";
-
-/* Title for shields onboarding screen */
-"OBShieldsTitle" = "Brave Shields";
-
-/* Button to show the Brave Rewards Ads. */
-"OBShowMeButton" = "표시";
 
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "시작";
@@ -1198,20 +994,11 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "모두 열기(%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Brave Rewards 설정 열기";
-
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "파일 앱에서 다운로드 폴더를 여는 중 알 수 없는 오류가 발생했습니다.";
 
-/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
-"openExternalAppURLHost" = "%@의 메시지:";
-
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "%@에 앱 전환을 허용하시겠습니까?";
-
-/* Context menu for opening image in new tab */
-"OpenImageInNewTab" = "새 탭에서 이미지 열기";
 
 /* Context menu item for opening a link in a new private browsing window */
 "OpenInNewPrivateWindowTitle" = "새 비공개 창에서 열기";
@@ -1348,12 +1135,6 @@
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "기타 프라이버시 설정";
 
-/* Section name for other settings. */
-"OtherSettingsSection" = "기타 설정";
-
-/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
-"p3a.continue" = "계속";
-
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "이 비공개 답변은 Brave가 특정 기능의 총 사용량을 산정하고 기능을 개선하는 용도로 사용됩니다.";
 
@@ -1384,12 +1165,6 @@
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "기본 웹페이지 확대 수준";
 
-/* Description for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesDescription" = "확대 수준을 변경한 웹사이트가 여기 목록에 표시됩니다. 현재 확대/축소 비율을 지정한 웹사이트가 없습니다.";
-
-/* Title for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesTitle" = "추가된 웹사이트 없음";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "다른 모든 웹사이트";
 
@@ -1414,12 +1189,6 @@
 /* Setting to allow the app to restore private browsing tabs */
 "PersistentPrivateBrowsing" = "비공개 브라우징 자동 복원";
 
-/* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "앱을 닫고 새로 열었을 때 Brave가 비공개 브라우징 탭을 복원합니다.";
-
-/* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "비공개 탭 복원";
-
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "사진 제공: %@";
 
@@ -1434,12 +1203,6 @@
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "재생 옵션";
-
-/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
-"playlist.carplayRestartPlaybackButtonStateDisabled" = "비활성화되었습니다. 재생 처음부터 시작을 활성화하려면 탭합니다.";
-
-/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
-"playlist.carplayRestartPlaybackButtonStateEnabled" = "활성화되었습니다. 재생 처음부터 시작을 비활성화하려면 탭합니다.";
 
 /* The description of the checkbox that allows the user to restart audio/video playback */
 "playlist.carplayRestartPlaybackOptionDetailsTitle" = "이미 재생한 적이 있는 항목을 선택하면 재생이 처음부터 시작될지, 최근에 종료한 지점부터 계속할지를 결정합니다.";
@@ -1493,7 +1256,7 @@
 "playlist.playlistAutoPlaySettingsOptionTitle" = "자동 재생";
 
 /* Auto Cache turn Off Option */
-"playlist.playlistAutoSaveOptionOff" = "끔";
+"playlist.playlistAutoSaveOptionOff" = "끄기";
 
 /* Auto Save turn On Option */
 "playlist.playlistAutoSaveOptionOn" = "켬";
@@ -1547,7 +1310,7 @@
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "파일 재생 위치 기억";
 
 /* Title for removing cached media from the playlist */
-"playList.removeActionButtonTitle" = "삭제";
+"playList.removeActionButtonTitle" = "제거";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
 "playList.removedFromPlaylistMessage" = "%@에서 제거됨";
@@ -1687,9 +1450,6 @@
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "프라이버시 허브 열기";
 
-/* The title of the button action which open the privacy hub */
-"privacyHub.openPrivacyHubWidgetActionTitle" = "프라이버시 허브 열기";
-
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "프라이버시 허브 데이터는 로컬에 저장되어 다른 어디로도 전송되지 않습니다.";
 
@@ -1759,23 +1519,11 @@
 /* Private button title */
 "Private" = "비공개";
 
-/* No comment provided by engineer. */
-"PrivateBrowsing" = "비공개 브라우징";
-
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "비공개 브라우징으로만 열기";
 
 /* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
 "PrivateBrowsingOnlyWarning" = "비공개 브라우징으로만 열기 모드를 사용하면 현재 탭을 모두 닫고 모든 사이트에서 로그아웃됩니다.";
-
-/* Private tab details */
-"PrivateTabBody" = "비공개 탭은 Brave에 저장되지 않지만 이를 통해 온라인에서 익명으로 활동할 수 있는 것은 아닙니다. 비공개 탭에서 방문한 사이트는 방문 기록에 표시되지 않으며, 탭을 닫으면 항상 해당 쿠키가 사라집니다. 즉, Brave에는 해당 사이트에 대한 어떤 흔적도 남지 않게 됩니다. 하지만 다운로드는 저장됩니다.\n비공개 탭에서 방문했더라도 귀하의 이동통신 사업자(또는 귀하가 접속하고 있는 Wi-Fi 네트워크나 VPN의 소유자)는 귀하가 어느 사이트를 방문했는지 볼 수 있으며, 해당 사이트에서는 귀하의 공용 IP 주소를 확인할 수 있습니다.";
-
-/* Private tab detail text */
-"PrivateTabDetails" = "비공개 탭을 사용할 경우 귀하의 기기에서 수행된 Brave 작업만이 변경되며, 다른 사용자의 동작은 변경되지 않습니다.\n\n사이트를 방문하면 사이트에서 항상 귀하의 IP 주소를 학습합니다. 즉, 사이트에서 귀하의 위치(주로 도시)를 대략적으로 추측할 수 있습니다. 경우에 따라서는 위치가 훨씬 구체적으로 추측되기도 합니다. 또한 귀하가 사이트에서 수행한 모든 작업(검색어 등)이 해당 사이트에 기록됩니다. 귀하가 사이트에 로그인하면 해당 사이트에서 귀하가 해당 계정의 소유자임을 인식합니다. 비공개 탭을 닫으면 Brave에서 로그인 상태를 유지하는 쿠키를 지우기 때문에 로그아웃 상태가 됩니다.\n\n인터넷 연결을 위해 귀하가 이용하는 ISP에서는 귀하의 네트워크 활동을 모두 확인할 수 있습니다. 대부분의 경우 이러한 ISP는 이동통신 사업자입니다. Wi-Fi 네트워크에 연결한 경우 ISP는 해당 네트워크의 소유자이며, VPN을 사용하는 경우에는 해당 VPN의 운영자입니다. 귀하가 이용하는 ISP에서는 귀하가 사이트를 방문하면 귀하가 방문한 사이트를 알 수 있습니다. 해당 사이트에서 HTTPS를 사용하는 경우 ISP에서는 귀하가 해당 사이트에서 수행하는 작업을 기록에 따라 추측만 할 수 있습니다. 그러나 사이트에서 HTTP만을 사용한다면 ISP에서 귀하가 사용한 검색어, 귀하가 읽은 페이지와 따라 간 링크 등 모든 것을 알 수 있습니다.\n\n고용주가 귀하의 기기를 관리하는 경우 고용주는 귀하가 해당 기기로 무엇을 하는지 추적할 수도 있습니다. 비공개 탭을 사용한다고 해도 귀하가 방문한 사이트를 고용주가 알지 못하도록 차단하지는 못할 것입니다. 귀하의 기기에 액세스할 수 있는 권한을 가진 다른 사람도 귀하의 활동을 모니터링하는 소프트웨어를 설치할 수 있으며, 이것 또한 비공개 탭으로는 차단하지 못합니다.";
-
-/* Private tab information link */
-"PrivateTabLink" = "비공개 탭에 대해 자세히 알아보기";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "비공개 탭";
@@ -1834,12 +1582,6 @@
 /* Accessibility label for brightness adjustment slider in Reader Mode display settings */
 "ReaderModeBrightSliderAccessibilityLabel" = "밝기";
 
-/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
-"ReaderModeDisplaySettingsButtonTitle" = "화면 설정";
-
-/* Error displayed when reader mode cannot be enabled */
-"ReaderModeErrorConvertDisplayText" = "페이지를 변환하는 중에 오류가 발생했습니다.";
-
 /* Font type setting in the reading view settings */
 "ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
 
@@ -1851,15 +1593,6 @@
 
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "글꼴 유형을 변경합니다.";
-
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "콘텐츠 로드 중…";
-
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadOriginalLinkText" = "원래 페이지 로드";
-
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "읽기 전용 뷰에서 페이지를 표시할 수 없습니다.";
 
 /* Title of a bar that show up when you enter reader mode. */
 "readerModeSettingsButton" = "리더 모드";
@@ -1882,14 +1615,8 @@
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "최근에 닫은 탭이 없습니다.";
 
-/* Open Tab action title */
-"recently.closed.open" = "열기";
-
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "마지막으로 닫은 탭 다시 열기";
-
-/* Description for alert to ask user for opening last closed tab in list */
-"recently.closed.shake.description" = "최근에 닫은 탭을 여시겠습니까?";
 
 /* Action item title of long press for Opening recently closed tab view */
 "recently.closed.title" = "최근에 닫은 탭";
@@ -1975,12 +1702,6 @@
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "\"%@\"에서 마이크 액세스를 요청함";
 
-/* Name of folder where restored bookmarks are retrieved */
-"RestoredBookmarksFolderName" = "복원된 북마크";
-
-/* Name of folder where restored favorites are retrieved */
-"RestoredFavoritesFolderName" = "복원된 즐겨찾기";
-
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "예";
 
@@ -2023,80 +1744,11 @@
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "이 콘텐츠 제작자는 Brave 크리에이터로 인증받았습니다.";
 
-/* Displayed next to a number representing the total number of publishers supported */
-"rewards.totalSupportedCount" = "이번 달 여러 콘텐츠 제작자를 지원하고 계십니다.";
-
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "확인되지 않은 제작자이기 때문에 제작자 지원에 포함되지 않습니다.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "금액";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAnonymous" = "익명";
-
-/* No comment provided by engineer. */
-"RewardsInternalsBalanceInfoHeader" = "잔액 정보";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "모든 Rewards 로그를 지우시겠습니까?";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsTitle" = "로그 지우기";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionAmount" = "기부 금액";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Brave 토큰";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorNone" = "없음";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "유지";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUserFunds" = "사용자 잔액";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepACOff" = "자동 후원 끔";
-
-/* 'AC' refers to Auto-Contribute */
-"RewardsInternalsContributionsStepACTableEmpty" = "자동 후원 테이블 비어 있음";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCompleted" = "완료됨";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCreds" = "인증 정보";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepExternalTransaction" = "외부 거래";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "실패";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepNotEnoughFunds" = "자금 부족";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepPrepare" = "준비";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepReserve" = "리저브";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "Rewards 끔";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "시작";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsTitle" = "기부";
-
-/* No comment provided by engineer. */
-"RewardsInternalsCreatedAt" = "생성 위치";
 
 /* No comment provided by engineer. */
 "RewardsInternalsDeviceInfoHeader" = "기기 정보";
@@ -2116,9 +1768,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "핵심 정보 시드";
 
-/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
-"RewardsInternalsLogsCount" = "로그 %d개 표시됨 ";
-
 /* No comment provided by engineer. */
 "RewardsInternalsLogsTitle" = "로그";
 
@@ -2129,34 +1778,13 @@
 "RewardsInternalsNotSupported" = "지원되지 않음";
 
 /* No comment provided by engineer. */
-"RewardsInternalsProcessor" = "프로세서";
-
-/* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "게시자";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublishers" = "게시자";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRetryCount" = "재시도 횟수";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeAutoContribute" = "자동 기부";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeOneTimeTip" = "일회성 팁";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "정기 팁";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "Rewards 프로필, 기기 및 잔액 정보(항상 공유됨)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "기본 정보";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableContributionsDescription" = "팁 또는 자동 후원을 통해 게시자에게 제공한 모든 후원";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableDatabaseDescription" = "내부 데이터 저장소";
@@ -2192,9 +1820,6 @@
 "RewardsInternalsTitle" = "Rewards 내부";
 
 /* No comment provided by engineer. */
-"RewardsInternalsTotalAmount" = "총액";
-
-/* No comment provided by engineer. */
 "RewardsInternalsTotalBalance" = "총 잔액";
 
 /* No comment provided by engineer. */
@@ -2221,17 +1846,11 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "저장";
 
-/* Label for the button used to save changes in some text input. */
-"SaveChangesButtonTitle" = "변경사항 저장";
-
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "저장된 로그인 정보";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "탭 저장됨";
-
-/* Context menu item for saving an image */
-"SaveImageActionTitle" = "이미지 저장";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "로그인 정보 저장";
@@ -2245,23 +1864,8 @@
 /* Search engines section of settings */
 "SearchEngines" = "검색 엔진";
 
-/* Accessibility hint describing the action performed when a search suggestion is clicked */
-"SearchesForSuggestionButtonAccessibilityText" = "추천 검색어 검색";
-
 /* Section header for history and bookmarks and open tabs option */
 "SearchHistorySectionHeader" = "내 기기";
-
-/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
-"SearchInputViewClearButtonTitle" = "검색어 지우기";
-
-/* Accessibility label for entering search mode for logins */
-"SearchInputViewOverlayAccessibilityLabel" = "검색 모드 시작";
-
-/* Accessibility label for the search input field in the Logins list */
-"SearchInputViewTextFieldAccessibilityLabel" = "검색어 입력란";
-
-/* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "검색";
 
 /* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
 "searchQuickBarPrefix" = "\"%@\" 검색";
@@ -2275,9 +1879,6 @@
 /* Label for showing browser suggestion setting */
 "SearchSettingBrowserSuggestionCellTitle" = "브라우저 추천 항목 표시";
 
-/* Navigation title for search settings. */
-"SearchSettingNavTitle" = "검색";
-
 /* Label for showing recent search setting. */
 "SearchSettingRecentSearchesCellTitle" = "최근 검색어 표시";
 
@@ -2287,23 +1888,11 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "추천 검색어 표시";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
-"SearchSuggestionFromFormatText" = "%@의 추천 검색어";
-
 /* Action title for open a playlist item in Playlist. */
 "searchSuggestionOpenPlaylistActionTitle" = "재생목록에서 열기";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "이 탭으로 전환";
-
-/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
-"SearchSuggestionSectionTitleFormat" = "%@ 검색";
-
-/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "검색";
-
-/* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "추천 검색어";
 
 /* Search suggestions optin subtitle when prompting to turn on suggestions */
 "searchSuggestionsSubtitle" = "추천 검색어를 사용하시겠습니까?";
@@ -2354,7 +1943,7 @@
 "settings.blockYouTubeDistractingElementsDesc" = "유튜브의 방해 요소를 차단합니다";
 
 /* Title beside the toggle for blocking YouTube distracting elements */
-"settings.blockYouTubeDistractingElementsTitle" = "유튜브의 방해 요소를 차단합니다";
+"settings.blockYouTubeDistractingElementsTitle" = "유튜브 방해 요소 차단";
 
 /* Description beside the toggle for blocking YouTube recommendations */
 "settings.blockYoutubeRecommendationsDesc" = "Youtube.com에서 다음 동영상과 엔드카드 요소를 차단합니다";
@@ -2416,9 +2005,6 @@
 /* Row name for licenses. */
 "SettingsLicenses" = "라이선스";
 
-/* Title for settings menu item */
-"SettingsMenuItem" = "설정";
-
 /* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
 "SettingsTabsOptionBottomBar" = "하단 바";
 
@@ -2430,9 +2016,6 @@
 
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "링크 공유";
-
-/* Title for sharing url menu item */
-"ShareWithMenuItem" = "공유 대상...";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "shareWithTitle" = "공유 대상...";
@@ -2467,9 +2050,6 @@
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "뉴스 공유";
 
-/* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields가 방금 온라인 프라이버시를 보호해드렸습니다.";
-
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "축하합니다. 정말 특별하십니다.";
 
@@ -2481,6 +2061,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "이 웹사이트에서 동영상을 시청하는 동안 광고가 차단되었습니다.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Brave 월렛";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "비공개 탭";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR 코드";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "검색";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "새 비공개 탭";
@@ -2641,14 +2233,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri 바로가기";
 
-/* Button to show the bookmarks list */
-"ShowBookmarks" = "북마크 표시";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "다운로드 표시";
-
-/* Button to show the history list */
-"ShowHistory" = "방문 기록 표시";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showHistoryTitle" = "방문 기록 표시";
@@ -2776,9 +2362,6 @@
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.configurationInformationText" = "장치 간 동기화하고 싶은 정보를 관리합니다. 이 설정은 이 장치에만 영향을 끼칩니다.";
 
-/* Copied action complete title */
-"sync.copied" = "복사되었습니다!";
-
 /* Copied codewords title */
 "sync.copiedToClipboard" = "클립보드에 복사되었습니다!";
 
@@ -2821,14 +2404,8 @@
 /* Sync enter code words */
 "sync.enterCodeWords" = "코드 낱말 입력";
 
-/* Enter sync code words below */
-"sync.enterCodeWordsBelow" = "아래에 코드 단어 입력";
-
 /* Sync Error message for when the sync code is expired */
 "sync.expiredError" = "동기화 코드가 만료되었습니다. 새 코드를 생성하고 다시 시도하세요.";
-
-/* Generic Sync Error Description */
-"sync.genericError" = "문제가 발생했습니다.";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "카메라 활성화";
@@ -2872,9 +2449,6 @@
 /* Error title for when the sync code does not have the correct amount of words */
 "sync.notEnoughWordsTitle" = "단어가 충분하지 않음";
 
-/* Sync pair device settings section title */
-"sync.pair" = "페어링";
-
 /* QR Code section title */
 "sync.qrCode" = "QR 코드";
 
@@ -2908,12 +2482,6 @@
 /* Title for removing other device from Sync */
 "sync.removeOtherDeviceTitle" = "동기화 체인에서 %@을(를) 제거하시겠습니까?";
 
-/* Sync remove device. */
-"sync.removeThisDevice" = "이 기기 제거";
-
-/* Sync remove device? */
-"sync.removeThisDeviceQuestionDesc" = "이 기기가 동기화 그룹에서 연결이 해제되며, 해당 기기에서 더 이상 동기화 데이터를 수신하거나 전송하지 않습니다. 기존의 모든 데이터는 기기에 남아 있습니다.";
-
 /* Scan sync code title */
 "sync.scan" = "스캔";
 
@@ -2932,20 +2500,11 @@
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "동기화 설정";
 
-/* Show code words instead */
-"sync.showCodeWords" = "대신 코드 단어 표시";
-
 /* Switch back to camera button */
 "sync.switchBackToCameraButton" = "내 카메라를 사용하겠습니다...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "삭제는 영구적이며 데이터를 복구할 수 있는 방법이 없습니다. 동기화를 다시 시작하려면 새 계정을 만들고 디바이스 하나씩 다시 추가해야 합니다.";
-
-/* Sync you browser settings across devices. */
-"sync.Syncdevices" = "기기 및 설정";
-
-/* Sync remove device? */
-"sync.syncRemoveThisDeviceQuestion" = "이 기기를 제거하시겠습니까?";
 
 /* Sync settings section title */
 "sync.syncTitle" = "동기화";
@@ -2982,9 +2541,6 @@
 
 /* Word count title */
 "sync.wordCount" = "단어 수: %i";
-
-/* Accessibility label for action denoting closing a tab in tab list (tray) */
-"TabAccessibilityCloseActionLabel" = "닫기";
 
 /* Accessibility label for a close button that when tapped opens a new tab */
 "tabGrid.addTabAccessibilityLabel" = "새 탭";
@@ -3025,17 +2581,11 @@
 /* A title shown when in private browsing mode with no tabs open */
 "tabGrid.privateBrowsingInfoTitle" = "비공개 탭";
 
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.privateBrowsingModeAccessibilityLabel" = "비공개 브라우징";
-
 /* A label in the tab tray mode switcher for private browsing mode */
 "tabGrid.privateBrowsingModeTitle" = "비공개";
 
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "비공개 탭 설정";
-
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.regularBrowsingModeAccessibilityLabel" = "일반 브라우징";
 
 /* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
 "tabGrid.selectedTabs" = "선택된 탭";
@@ -3059,25 +2609,13 @@
 "tabGrid.viewHistoryAccessibilityLabel" = "방문 기록 보기";
 
 /* Label for history menu item button that when tapped presents the users history & recently closed tabs */
-"tabGrid.viewHistoryMenuItemLabel" = "방문 기록";
+"tabGrid.viewHistoryMenuItemLabel" = "방문기록";
 
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "동기화된 탭 보기";
 
 /* Label for synced tabs menu item that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsMenuItemLabel" = "동기화";
-
-/* Accessiblity hint for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityHint" = "비공개 모드 사용 켜기 또는 끄기";
-
-/* Accessibility label for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityLabel" = "비공개 모드";
-
-/* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "끔";
-
-/* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "켬";
 
 /* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardDescription" = "새 탭을 만들 때 주소 표시줄에 자동으로 포커스";
@@ -3139,9 +2677,6 @@
 /* Accessibility Label for the tab toolbar Forward button */
 "TabToolbarForwardButtonAccessibilityLabel" = "앞으로";
 
-/* Accessibility label for the lock icon, which is only present if the connection is secure */
-"TabToolbarLockImageAccessibilityLabel" = "보안 연결";
-
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "메뉴";
 
@@ -3156,9 +2691,6 @@
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "읽기 전용 뷰";
-
-/* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "읽기 목록에 추가";
 
 /* Accessibility Label for the tab toolbar Reload button */
 "TabToolbarReloadButtonAccessibilityLabel" = "다시 로드";
@@ -3175,47 +2707,14 @@
 /* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "음성 검색";
 
-/* Accessibility label for the lock icon, which is only present if the connection is insecure */
-"TabToolbarWarningImageAccessibilityLabel" = "비보안 연결";
-
-/* Accessibility label for the Tabs Tray view. */
-"TabTrayAccessibilityLabel" = "탭 트레이";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabTrayAddTabAccessibilityLabel" = "탭 추가";
-
-/* Accessibility hint for tab tray's displayed tab. */
-"TabTrayCellCloseAccessibilityHint" = "세 손가락으로 오른쪽이나 왼쪽으로 스와이프하여 탭을 닫습니다.";
-
-/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
-"TabTrayClosingTabAccessibilityNotificationText" = "탭 닫기";
-
-/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
-"TabTrayEmptyVoiceOverText" = "탭 없음";
-
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
-"TabTrayMultiTabPositionFormatVoiceOverText" = "탭 %1$@ - %2$@ / %3$@";
-
-/* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "새 탭";
-
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "검색 탭";
-
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
-"TabTraySingleTabPositionFormatVoiceOverText" = "탭 %1$@ / %2$@";
 
 /* No comment provided by engineer. */
 "TermsOfService" = "서비스 약관";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "이용 약관";
-
-/* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "공유...";
-
-/* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "친구들과 Brave를 공유하세요!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "자동";
@@ -3228,9 +2727,6 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "라이트";
-
-/* Name for app theme settings */
-"themesSettings" = "테마";
 
 /* No comment provided by engineer. */
 "Title" = "제목";
@@ -3361,9 +2857,6 @@
 /* A title at the top of the screen that shows a list of sources that are ranked the highest */
 "today.popularSourcesTitle" = "인기 소스";
 
-/* A button title that is placed on promoted cards */
-"today.promoted" = "촉진됨";
-
 /* Title for long press action sheet list which has item for rate / hide */
 "today.rateBraveCardActionSheetTitle" = "App Store에서 Brave 평가하기";
 
@@ -3418,14 +2911,8 @@
 /* Title of an action that allows the user to translate the current web-page to another language */
 "TranslatePage" = "페이지 번역";
 
-/* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "추천 검색어를 사용하시겠습니까?";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "잠금 해제";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "지원되지 않는 결제 수단";
 
 /* Bookmark URL */
 "URL" = "URL";
@@ -3435,18 +2922,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "urlRedirectsSettings" = "웹사이트 리디렉션";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "사용자가 취소함";
-
-/* No comment provided by engineer. */
-"UserWalletCloseButtonTitle" = "닫기";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorMessage" = "Uphold 계정에 로그인하는 중에 문제가 발생했습니다. 다시 시도하세요.";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "문제가 발생했습니다.";
 
 /* Message for error alert when a VCard contact file cannot be parsed or opened */
 "VCard.unableToOpenContactErrorMessage" = "연락처 파일을 읽을 수 없습니다. 파일이 손상되었거나 지원되지 않는 형식일 수 있습니다.";
@@ -3511,9 +2986,6 @@
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "위젯";
 
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "년";
-
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "예";
 
@@ -3523,20 +2995,11 @@
 /* History tableview section header */
 "Yesterday" = "어제";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "고품질 YouTube 동영상 활성화";
-
-/* Description of setting to enable high quality youtube videos */
-"YoutubeMediaQualityDetails" = "이 실험 기능을 활성화하면 동영상을 가능한 최대 품질로 재생하고 더 많은 데이터를 사용합니다.";
-
 /* Setting that disables highest quality video playback */
 "YoutubeMediaQualityOff" = "끔";
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "켬";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "YouTube 재생 품질";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Wi-Fi 연결 시 허용";

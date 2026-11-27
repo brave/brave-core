@@ -3,23 +3,21 @@ use core::{
     time::Duration as UnsignedDuration,
 };
 
+use jcore::{constants as c, tz::Offset as JOffset};
+
 use crate::{
-    civil,
+    RoundMode, SignedDuration, Unit, civil,
     duration::{Duration, SDuration},
-    error::{err, Error, ErrorContext},
-    shared::util::itime::IOffset,
+    error::{Error, ErrorContext, tz::offset::Error as E},
     span::Span,
     timestamp::Timestamp,
-    tz::{AmbiguousOffset, AmbiguousTimestamp, AmbiguousZoned, TimeZone},
-    util::{
-        array_str::ArrayStr,
-        rangeint::{self, Composite, RFrom, RInto, TryRFrom},
-        t::{self, C},
+    tz::{
+        AmbiguousOffset, AmbiguousTimestamp, AmbiguousZonedDateTime, TimeZone,
     },
-    RoundMode, SignedDuration, SignedDurationRound, Unit,
+    util::{b, constant, round::Increment},
 };
 
-/// An enum indicating whether a particular datetime  is in DST or not.
+/// An enum indicating whether a particular datetime is in DST or not.
 ///
 /// DST stands for "daylight saving time." It is a label used to apply to
 /// points in time as a way to contrast it with "standard time." DST is
@@ -37,6 +35,7 @@ use crate::{
 /// This type has a `From<bool>` trait implementation, where the bool is
 /// interpreted as being `true` when DST is active.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, PartialOrd, Ord)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Dst {
     /// DST is not in effect. In other words, standard time is in effect.
     No,
@@ -57,15 +56,18 @@ impl Dst {
     pub fn is_std(self) -> bool {
         matches!(self, Dst::No)
     }
+
+    pub(crate) fn from_jcore(dst: jcore::tz::Dst) -> Dst {
+        match dst {
+            jcore::tz::Dst::Yes => Dst::Yes,
+            jcore::tz::Dst::No => Dst::No,
+        }
+    }
 }
 
 impl From<bool> for Dst {
     fn from(is_dst: bool) -> Dst {
-        if is_dst {
-            Dst::Yes
-        } else {
-            Dst::No
-        }
+        if is_dst { Dst::Yes } else { Dst::No }
     }
 }
 
@@ -111,10 +113,10 @@ impl From<bool> for Dst {
 /// offset:
 ///
 /// ```
-/// use jiff::{civil::date, tz, Zoned};
+/// use jiff::{civil::date, tz, ZonedDateTime};
 ///
 /// let offset = tz::offset(-4).to_time_zone();
-/// let zdt = date(2024, 7, 8).at(15, 20, 0, 0).to_zoned(offset)?;
+/// let zdt = date(2024, 7, 8).at(15, 20, 0, 0).to_zoned_datetime(offset)?;
 /// assert_eq!(zdt.to_string(), "2024-07-08T15:20:00-04:00[-04:00]");
 ///
 /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -124,20 +126,21 @@ impl From<bool> for Dst {
 /// since there is no time zone identifier, the offset instead is repeated as
 /// an additional assertion that a fixed offset datetime was intended.
 #[derive(Clone, Copy, Eq, Hash, PartialEq, PartialOrd, Ord)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 pub struct Offset {
-    span: t::SpanZoneOffset,
+    inner: JOffset,
 }
 
 impl Offset {
     /// The minimum possible time zone offset.
     ///
     /// This corresponds to the offset `-25:59:59`.
-    pub const MIN: Offset = Offset { span: t::SpanZoneOffset::MIN_SELF };
+    pub const MIN: Offset = Offset { inner: JOffset::MIN };
 
     /// The maximum possible time zone offset.
     ///
     /// This corresponds to the offset `25:59:59`.
-    pub const MAX: Offset = Offset { span: t::SpanZoneOffset::MAX_SELF };
+    pub const MAX: Offset = Offset { inner: JOffset::MAX };
 
     /// The offset corresponding to UTC. That is, no offset at all.
     ///
@@ -146,7 +149,7 @@ impl Offset {
     /// specifically, while `Offset::ZERO` ought to be used when one wants to
     /// express "no offset." For example, when adding offsets, `Offset::ZERO`
     /// corresponds to the identity.
-    pub const UTC: Offset = Offset::ZERO;
+    pub const UTC: Offset = Offset { inner: JOffset::UTC };
 
     /// The offset corresponding to no offset at all.
     ///
@@ -155,7 +158,7 @@ impl Offset {
     /// desired specifically, while `Offset::UTC` ought to be used when one
     /// wants to express UTC. For example, when adding offsets, `Offset::ZERO`
     /// corresponds to the identity.
-    pub const ZERO: Offset = Offset::constant(0);
+    pub const ZERO: Offset = Offset { inner: JOffset::UTC };
 
     /// Creates a new time zone offset in a `const` context from a given number
     /// of hours.
@@ -195,9 +198,10 @@ impl Offset {
     /// ```
     #[inline]
     pub const fn constant(hours: i8) -> Offset {
-        if !t::SpanZoneOffsetHours::contains(hours) {
-            panic!("invalid time zone offset hours")
-        }
+        let hours = constant::unwrapr!(
+            b::OffsetHours::checkc(hours as i64),
+            "invalid time zone offset hours",
+        );
         Offset::constant_seconds((hours as i32) * 60 * 60)
     }
 
@@ -233,10 +237,11 @@ impl Offset {
     // exported instead of this monstrosity.
     #[inline]
     pub(crate) const fn constant_seconds(seconds: i32) -> Offset {
-        if !t::SpanZoneOffset::contains(seconds) {
-            panic!("invalid time zone offset seconds")
-        }
-        Offset { span: t::SpanZoneOffset::new_unchecked(seconds) }
+        let inner = constant::unwrapr!(
+            JOffset::from_seconds(seconds),
+            "invalid time zone offset seconds",
+        );
+        Offset { inner }
     }
 
     /// Creates a new time zone offset from a given number of hours.
@@ -264,8 +269,8 @@ impl Offset {
     /// ```
     #[inline]
     pub fn from_hours(hours: i8) -> Result<Offset, Error> {
-        let hours = t::SpanZoneOffsetHours::try_new("offset-hours", hours)?;
-        Ok(Offset::from_hours_ranged(hours))
+        let inner = JOffset::from_hours(hours).map_err(Error::jcore_range)?;
+        Ok(Offset { inner })
     }
 
     /// Creates a new time zone offset in a `const` context from a given number
@@ -295,8 +300,9 @@ impl Offset {
     /// ```
     #[inline]
     pub fn from_seconds(seconds: i32) -> Result<Offset, Error> {
-        let seconds = t::SpanZoneOffset::try_new("offset-seconds", seconds)?;
-        Ok(Offset::from_seconds_ranged(seconds))
+        let inner =
+            JOffset::from_seconds(seconds).map_err(Error::jcore_range)?;
+        Ok(Offset { inner })
     }
 
     /// Returns the total number of seconds in this offset.
@@ -320,8 +326,8 @@ impl Offset {
     /// assert_eq!(o.seconds(), 18_000);
     /// ```
     #[inline]
-    pub fn seconds(self) -> i32 {
-        self.seconds_ranged().get()
+    pub const fn seconds(self) -> i32 {
+        self.inner.seconds()
     }
 
     /// Returns the negation of this offset.
@@ -341,7 +347,8 @@ impl Offset {
     /// assert_eq!(-tz::offset(-5), tz::offset(5));
     /// ```
     pub fn negate(self) -> Offset {
-        Offset { span: -self.span }
+        let inner = self.inner.negate();
+        Offset { inner }
     }
 
     /// Returns the "sign number" or "signum" of this offset.
@@ -360,7 +367,7 @@ impl Offset {
     /// ```
     #[inline]
     pub fn signum(self) -> i8 {
-        t::Sign::rfrom(self.span.signum()).get()
+        self.inner.signum()
     }
 
     /// Returns true if and only if this offset is positive.
@@ -377,7 +384,7 @@ impl Offset {
     /// assert!(!tz::offset(-5).is_positive());
     /// ```
     pub fn is_positive(self) -> bool {
-        self.seconds_ranged() > C(0)
+        self.inner.is_positive()
     }
 
     /// Returns true if and only if this offset is less than zero.
@@ -392,7 +399,7 @@ impl Offset {
     /// assert!(tz::offset(-5).is_negative());
     /// ```
     pub fn is_negative(self) -> bool {
-        self.seconds_ranged() < C(0)
+        self.inner.is_negative()
     }
 
     /// Returns true if and only if this offset is zero.
@@ -409,7 +416,7 @@ impl Offset {
     /// assert!(!tz::offset(-5).is_zero());
     /// ```
     pub fn is_zero(self) -> bool {
-        self.seconds_ranged() == C(0)
+        self.inner.is_zero()
     }
 
     /// Converts this offset into a [`TimeZone`].
@@ -446,21 +453,9 @@ impl Offset {
     /// ```
     #[inline]
     pub fn to_datetime(self, timestamp: Timestamp) -> civil::DateTime {
-        let idt = timestamp.to_itimestamp().zip2(self.to_ioffset()).map(
-            #[allow(unused_mut)]
-            |(mut its, ioff)| {
-                // This is tricky, but if we have a minimal number of seconds,
-                // then the minimum possible nanosecond value is actually 0.
-                // So we clamp it in this case. (This encodes the invariant
-                // enforced by `Timestamp::new`.)
-                #[cfg(debug_assertions)]
-                if its.second == t::UnixSeconds::MIN_REPR {
-                    its.nanosecond = 0;
-                }
-                its.to_datetime(ioff)
-            },
-        );
-        civil::DateTime::from_idatetime(idt)
+        civil::DateTime::from_jcore(
+            self.inner.to_datetime(timestamp.to_jcore()),
+        )
     }
 
     /// Converts the given civil datetime to a timestamp using this offset.
@@ -522,16 +517,11 @@ impl Offset {
         self,
         dt: civil::DateTime,
     ) -> Result<Timestamp, Error> {
-        let its = dt
-            .to_idatetime()
-            .zip2(self.to_ioffset())
-            .map(|(idt, ioff)| idt.to_timestamp(ioff));
-        Timestamp::from_itimestamp(its).with_context(|| {
-            err!(
-                "converting {dt} with offset {offset} to timestamp overflowed",
-                offset = self,
-            )
-        })
+        Ok(Timestamp::from_jcore(
+            self.inner
+                .to_timestamp(dt.to_jcore())
+                .context(E::ConvertDateTimeToTimestamp { offset: self })?,
+        ))
     }
 
     /// Adds the given span of time to this offset.
@@ -639,18 +629,18 @@ impl Offset {
     }
 
     #[inline]
-    fn checked_add_span(self, span: Span) -> Result<Offset, Error> {
+    fn checked_add_span(self, span: &Span) -> Result<Offset, Error> {
         if let Some(err) = span.smallest_non_time_non_zero_unit_error() {
             return Err(err);
         }
-        let span_seconds = t::SpanZoneOffset::try_rfrom(
-            "span-seconds",
-            span.to_invariant_nanoseconds().div_ceil(t::NANOS_PER_SECOND),
+
+        let span = b::OffsetTotalSeconds::check(
+            span.to_invariant_duration().as_secs(),
         )?;
-        let offset_seconds = self.seconds_ranged();
-        let seconds =
-            offset_seconds.try_checked_add("offset-seconds", span_seconds)?;
-        Ok(Offset::from_seconds_ranged(seconds))
+        // No overflow is possible here because even `Offset::MIN +
+        // Offset::MIN` fits into an `i32`. And note that the number of seconds
+        // in the span is limited to the range supported by `Offset`.
+        Offset::from_seconds(span + self.seconds())
     }
 
     #[inline]
@@ -658,24 +648,9 @@ impl Offset {
         self,
         duration: SignedDuration,
     ) -> Result<Offset, Error> {
-        let duration =
-            t::SpanZoneOffset::try_new("duration-seconds", duration.as_secs())
-                .with_context(|| {
-                    err!(
-                        "adding signed duration {duration:?} \
-                         to offset {self} overflowed maximum offset seconds"
-                    )
-                })?;
-        let offset_seconds = self.seconds_ranged();
-        let seconds = offset_seconds
-            .try_checked_add("offset-seconds", duration)
-            .with_context(|| {
-                err!(
-                    "adding signed duration {duration:?} \
-                     to offset {self} overflowed"
-                )
-            })?;
-        Ok(Offset::from_seconds_ranged(seconds))
+        let duration = b::OffsetTotalSeconds::check(duration.as_secs())
+            .context(E::OverflowAddSignedDuration)?;
+        Offset::from_seconds(duration + self.seconds())
     }
 
     /// This routine is identical to [`Offset::checked_add`] with the duration
@@ -721,6 +696,11 @@ impl Offset {
     /// result saturates on overflow. That is, instead of overflow, either
     /// [`Offset::MIN`] or [`Offset::MAX`] is returned.
     ///
+    /// # Errors
+    ///
+    /// This returns an error if the given `Span` contains any non-zero units
+    /// greater than hours.
+    ///
     /// # Example
     ///
     /// This example shows some cases where saturation will occur.
@@ -728,38 +708,39 @@ impl Offset {
     /// ```
     /// use jiff::{tz::Offset, SignedDuration, ToSpan};
     ///
-    /// // Adding units above 'day' always results in saturation.
-    /// assert_eq!(Offset::UTC.saturating_add(1.weeks()), Offset::MAX);
-    /// assert_eq!(Offset::UTC.saturating_add(1.months()), Offset::MAX);
-    /// assert_eq!(Offset::UTC.saturating_add(1.years()), Offset::MAX);
+    /// // Spans with non-zero calendar units return an error.
+    /// assert!(Offset::UTC.saturating_add(1.weeks()).is_err());
+    /// assert!(Offset::UTC.saturating_add(1.months()).is_err());
+    /// assert!(Offset::UTC.saturating_add(1.years()).is_err());
     ///
     /// // Adding even 1 second to the max, or subtracting 1 from the min,
-    /// // will result in saturationg.
-    /// assert_eq!(Offset::MIN.saturating_add(-1.seconds()), Offset::MIN);
-    /// assert_eq!(Offset::MAX.saturating_add(1.seconds()), Offset::MAX);
+    /// // will result in saturation.
+    /// assert_eq!(Offset::MIN.saturating_add(-1.seconds())?, Offset::MIN);
+    /// assert_eq!(Offset::MAX.saturating_add(1.seconds())?, Offset::MAX);
     ///
     /// // Adding absolute durations also saturates as expected.
-    /// assert_eq!(Offset::UTC.saturating_add(SignedDuration::MAX), Offset::MAX);
-    /// assert_eq!(Offset::UTC.saturating_add(SignedDuration::MIN), Offset::MIN);
-    /// assert_eq!(Offset::UTC.saturating_add(std::time::Duration::MAX), Offset::MAX);
+    /// assert_eq!(Offset::UTC.saturating_add(SignedDuration::MAX)?, Offset::MAX);
+    /// assert_eq!(Offset::UTC.saturating_add(SignedDuration::MIN)?, Offset::MIN);
+    /// assert_eq!(Offset::UTC.saturating_add(std::time::Duration::MAX)?, Offset::MAX);
+    ///
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     #[inline]
     pub fn saturating_add<A: Into<OffsetArithmetic>>(
         self,
         duration: A,
-    ) -> Offset {
+    ) -> Result<Offset, Error> {
         let duration: OffsetArithmetic = duration.into();
-        self.checked_add(duration).unwrap_or_else(|_| {
-            if duration.is_negative() {
-                Offset::MIN
-            } else {
-                Offset::MAX
-            }
-        })
+        duration.saturating_add(self)
     }
 
-    /// This routine is identical to [`Offset::saturating_add`] with the span
-    /// parameter negated.
+    /// This routine is identical to [`Offset::saturating_add`] with the
+    /// duration parameter negated.
+    ///
+    /// # Errors
+    ///
+    /// This returns an error if the given `Span` contains any non-zero units
+    /// greater than hours.
     ///
     /// # Example
     ///
@@ -768,28 +749,32 @@ impl Offset {
     /// ```
     /// use jiff::{tz::Offset, SignedDuration, ToSpan};
     ///
-    /// // Adding units above 'day' always results in saturation.
-    /// assert_eq!(Offset::UTC.saturating_sub(1.weeks()), Offset::MIN);
-    /// assert_eq!(Offset::UTC.saturating_sub(1.months()), Offset::MIN);
-    /// assert_eq!(Offset::UTC.saturating_sub(1.years()), Offset::MIN);
+    /// // Spans with non-zero calendar units return an error.
+    /// assert!(Offset::UTC.saturating_sub(1.weeks()).is_err());
+    /// assert!(Offset::UTC.saturating_sub(1.months()).is_err());
+    /// assert!(Offset::UTC.saturating_sub(1.years()).is_err());
     ///
-    /// // Adding even 1 second to the max, or subtracting 1 from the min,
-    /// // will result in saturationg.
-    /// assert_eq!(Offset::MIN.saturating_sub(1.seconds()), Offset::MIN);
-    /// assert_eq!(Offset::MAX.saturating_sub(-1.seconds()), Offset::MAX);
+    /// // Subtracting even 1 second from the min, or adding 1 to the max,
+    /// // will result in saturation.
+    /// assert_eq!(Offset::MIN.saturating_sub(1.seconds())?, Offset::MIN);
+    /// assert_eq!(Offset::MAX.saturating_sub(-1.seconds())?, Offset::MAX);
     ///
     /// // Adding absolute durations also saturates as expected.
-    /// assert_eq!(Offset::UTC.saturating_sub(SignedDuration::MAX), Offset::MIN);
-    /// assert_eq!(Offset::UTC.saturating_sub(SignedDuration::MIN), Offset::MAX);
-    /// assert_eq!(Offset::UTC.saturating_sub(std::time::Duration::MAX), Offset::MIN);
+    /// assert_eq!(Offset::UTC.saturating_sub(SignedDuration::MAX)?, Offset::MIN);
+    /// assert_eq!(Offset::UTC.saturating_sub(SignedDuration::MIN)?, Offset::MAX);
+    /// assert_eq!(Offset::UTC.saturating_sub(std::time::Duration::MAX)?, Offset::MIN);
+    ///
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     #[inline]
     pub fn saturating_sub<A: Into<OffsetArithmetic>>(
         self,
         duration: A,
-    ) -> Offset {
+    ) -> Result<Offset, Error> {
         let duration: OffsetArithmetic = duration.into();
-        let Ok(duration) = duration.checked_neg() else { return Offset::MIN };
+        let Ok(duration) = duration.checked_neg() else {
+            return Ok(Offset::MIN);
+        };
         self.saturating_add(duration)
     }
 
@@ -817,11 +802,18 @@ impl Offset {
     ///     tz::Offset::UTC.until(tz::offset(-5)),
     ///     -(5 * 60 * 60).seconds().fieldwise(),
     /// );
+    /// // The maximum span you can get:
+    /// assert_eq!(
+    ///     tz::Offset::MIN.until(tz::Offset::MAX),
+    ///     187_198.seconds().fieldwise(),
+    /// );
     /// ```
     #[inline]
     pub fn until(self, other: Offset) -> Span {
-        let diff = other.seconds_ranged() - self.seconds_ranged();
-        Span::new().seconds_ranged(diff.rinto())
+        // OK because `Offset::MIN - Offset::MAX` will
+        // never overflow `i32`.
+        let diff = other.seconds() - self.seconds();
+        Span::new().seconds(diff)
     }
 
     /// Returns the span of time since the other offset given from this offset.
@@ -975,8 +967,9 @@ impl Offset {
     /// assert_eq!(Offset::MAX.to_string(), "+25:59:59");
     /// assert_eq!(
     ///     Offset::MAX.round(Unit::Minute).unwrap_err().to_string(),
-    ///     "rounding offset `+25:59:59` resulted in a duration of 26h, \
-    ///      which overflows `Offset`",
+    ///     "rounding time zone offset resulted in a duration that overflows: \
+    ///      parameter 'time zone offset total seconds' is not \
+    ///      in the required range of -93599..=93599",
     /// );
     /// ```
     #[inline]
@@ -1014,118 +1007,148 @@ impl Offset {
     #[cfg(test)]
     #[inline]
     pub(crate) const fn hms(hours: i8, minutes: i8, seconds: i8) -> Offset {
-        let total = (hours as i32 * 60 * 60)
-            + (minutes as i32 * 60)
+        let hours = constant::unwrapr!(
+            b::OffsetHours::checkc(hours as i64),
+            "invalid time zone offset hours",
+        );
+        let minutes = constant::unwrapr!(
+            b::OffsetMinutes::checkc(minutes as i64),
+            "invalid time zone offset minutes",
+        );
+        let seconds = constant::unwrapr!(
+            b::OffsetSeconds::checkc(seconds as i64),
+            "invalid time zone offset seconds",
+        );
+        let seconds = (hours as i32 * c::SECS_PER_HOUR_32)
+            + (minutes as i32 * c::SECS_PER_MIN_32)
             + (seconds as i32);
-        Offset { span: t::SpanZoneOffset::new_unchecked(total) }
+        let inner =
+            constant::unwrapr!(JOffset::from_seconds(seconds), "valid offset");
+        Offset { inner }
     }
 
     #[inline]
-    pub(crate) fn from_hours_ranged(
-        hours: impl RInto<t::SpanZoneOffsetHours>,
-    ) -> Offset {
-        let hours: t::SpanZoneOffset = hours.rinto().rinto();
-        Offset::from_seconds_ranged(hours * t::SECONDS_PER_HOUR)
+    pub(crate) fn part_hours(self) -> i8 {
+        (self.seconds() / c::SECS_PER_HOUR_32) as i8
     }
 
     #[inline]
-    pub(crate) fn from_seconds_ranged(
-        seconds: impl RInto<t::SpanZoneOffset>,
-    ) -> Offset {
-        Offset { span: seconds.rinto() }
-    }
-
-    /*
-    #[inline]
-    pub(crate) fn from_ioffset(ioff: Composite<IOffset>) -> Offset {
-        let span = rangeint::uncomposite!(ioff, c => (c.second));
-        Offset { span: span.to_rint() }
-    }
-    */
-
-    #[inline]
-    pub(crate) fn to_ioffset(self) -> Composite<IOffset> {
-        rangeint::composite! {
-            (second = self.span) => {
-                IOffset { second }
-            }
-        }
+    pub(crate) fn part_minutes(self) -> i8 {
+        ((self.seconds() / c::SECS_PER_MIN_32) % c::MINS_PER_HOUR_32) as i8
     }
 
     #[inline]
-    pub(crate) const fn from_ioffset_const(ioff: IOffset) -> Offset {
-        Offset::from_seconds_unchecked(ioff.second)
+    pub(crate) fn part_seconds(self) -> i8 {
+        (self.seconds() % c::SECS_PER_MIN_32) as i8
     }
 
     #[inline]
-    pub(crate) const fn from_seconds_unchecked(second: i32) -> Offset {
-        Offset { span: t::SpanZoneOffset::new_unchecked(second) }
-    }
-
-    /*
-    #[inline]
-    pub(crate) const fn to_ioffset_const(self) -> IOffset {
-        IOffset { second: self.span.get_unchecked() }
-    }
-    */
-
-    #[inline]
-    pub(crate) const fn seconds_ranged(self) -> t::SpanZoneOffset {
-        self.span
+    pub(crate) const fn from_jcore(offset: JOffset) -> Offset {
+        Offset { inner: offset }
     }
 
     #[inline]
-    pub(crate) fn part_hours_ranged(self) -> t::SpanZoneOffsetHours {
-        self.span.div_ceil(t::SECONDS_PER_HOUR).rinto()
+    pub(crate) const fn from_seconds_unchecked(seconds: i32) -> Offset {
+        // TODO: Benchmark whether the check here is hurting us. If it is,
+        // then we'll need a safety boundary in jiff-core to support this
+        // operation.
+        let inner =
+            constant::unwrapr!(JOffset::from_seconds(seconds), "valid offset");
+        Offset { inner }
     }
 
     #[inline]
-    pub(crate) fn part_minutes_ranged(self) -> t::SpanZoneOffsetMinutes {
-        self.span
-            .div_ceil(t::SECONDS_PER_MINUTE)
-            .rem_ceil(t::MINUTES_PER_HOUR)
-            .rinto()
-    }
-
-    #[inline]
-    pub(crate) fn part_seconds_ranged(self) -> t::SpanZoneOffsetSeconds {
-        self.span.rem_ceil(t::SECONDS_PER_MINUTE).rinto()
-    }
-
-    #[inline]
-    pub(crate) fn to_array_str(&self) -> ArrayStr<9> {
+    pub(crate) fn to_abbreviation(&self) -> jcore::tz::Abbreviation {
         use core::fmt::Write;
 
-        let mut dst = ArrayStr::new("").unwrap();
+        let mut dst = jcore::util::ArrayStr::<9>::new("").unwrap();
         // OK because the string representation of an offset
         // can never exceed 9 bytes. The longest possible, e.g.,
         // is `-25:59:59`.
         write!(&mut dst, "{}", self).unwrap();
-        dst
+        // The correctness argument here is unfortunately convuleted. In
+        // environments with `alloc`, this will always succeed because the
+        // heap is used as a fallback. But in core-only environments, the
+        // abbreviation capacity is specifically set to `9` in jiff-core to
+        // accommodate this use case. Thus, this can never fail.
+        jcore::tz::Abbreviation::new(dst.as_str())
+            .expect("`Abbreviation` capacity is big enough")
+    }
+
+    /// Round this offset to the nearest minute and returns the hour/minute
+    /// components as unsigned integers.
+    ///
+    /// Generally speaking, the second component on an offset is always zero.
+    /// There are _some_ cases in the tzdb where this isn't true (like
+    /// `Africa/Monrovia` before `1972-01-07`), but virtually all time zones
+    /// use offsets with whole hours. Some go to whole minutes. The only other
+    /// way to get non-zero seconds is to explicitly use a fixed offset.
+    ///
+    /// A pathological case is the minimum or maximum offset. In this case,
+    /// truncation is used instead of rounding to the nearest whole minute.
+    #[inline]
+    pub(crate) fn round_to_nearest_minute(self) -> (u8, u8) {
+        #[inline(never)]
+        #[cold]
+        fn round(mut hours: u8, mut minutes: u8) -> (u8, u8) {
+            const MAX_HOURS: u8 = b::OffsetHours::MAX.unsigned_abs();
+            const MAX_MINS: u8 = b::OffsetMinutes::MAX.unsigned_abs();
+
+            if minutes == 59 {
+                hours += 1;
+                minutes = 0;
+                // An edge case: if rounding results in an offset beyond
+                // Jiff's boundaries, then we truncate to the max (or min)
+                // offset supported.
+                if hours > MAX_HOURS {
+                    hours = MAX_HOURS;
+                    minutes = MAX_MINS;
+                }
+            } else {
+                minutes += 1;
+            }
+            (hours, minutes)
+        }
+
+        let total_seconds = self.seconds().unsigned_abs();
+        let hours = (total_seconds / (60 * 60)) as u8;
+        let minutes = ((total_seconds / 60) % 60) as u8;
+        let seconds = (total_seconds % 60) as u8;
+
+        // RFCs 2822, 3339 and 9557 require that time zone offsets are an
+        // integral number of minutes. While rounding based on seconds doesn't
+        // seem clearly indicated, the `1937-01-01T12:00:27.87+00:20` example
+        // in RFC 3339 seems to suggest that the number of minutes should be
+        // "as close as possible" to the actual offset. So we just do basic
+        // rounding here.
+        if seconds >= 30 {
+            return round(hours, minutes);
+        }
+        (hours, minutes)
     }
 }
 
 impl core::fmt::Debug for Offset {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        let sign = if self.seconds_ranged() < C(0) { "-" } else { "" };
+        let sign = if self.is_negative() { "-" } else { "" };
         write!(
             f,
             "{sign}{:02}:{:02}:{:02}",
-            self.part_hours_ranged().abs(),
-            self.part_minutes_ranged().abs(),
-            self.part_seconds_ranged().abs(),
+            self.part_hours().unsigned_abs(),
+            self.part_minutes().unsigned_abs(),
+            self.part_seconds().unsigned_abs(),
         )
     }
 }
 
 impl core::fmt::Display for Offset {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        let sign = if self.span < C(0) { "-" } else { "+" };
-        let hours = self.part_hours_ranged().abs().get();
-        let minutes = self.part_minutes_ranged().abs().get();
-        let seconds = self.part_seconds_ranged().abs().get();
+        let sign = if self.is_negative() { "-" } else { "+" };
+        let hours = self.part_hours().unsigned_abs();
+        let minutes = self.part_minutes().unsigned_abs();
+        let seconds = self.part_seconds().unsigned_abs();
         if hours == 0 && minutes == 0 && seconds == 0 {
-            write!(f, "+00")
+            f.write_str("+00")
         } else if hours != 0 && minutes == 0 && seconds == 0 {
             write!(f, "{sign}{hours:02}")
         } else if minutes != 0 && seconds == 0 {
@@ -1347,11 +1370,25 @@ impl TryFrom<SignedDuration> for Offset {
         } else if subsec <= -500_000_000 {
             seconds = seconds.saturating_sub(1);
         }
-        let seconds = i32::try_from(seconds).map_err(|_| {
-            err!("`SignedDuration` of {sdur} overflows `Offset`")
-        })?;
+        let seconds =
+            i32::try_from(seconds).map_err(|_| E::OverflowSignedDuration)?;
         Offset::from_seconds(seconds)
-            .map_err(|_| err!("`SignedDuration` of {sdur} overflows `Offset`"))
+            .map_err(|_| Error::from(E::OverflowSignedDuration))
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for Offset {
+    fn format(&self, f: defmt::Formatter) {
+        let sign = if self.is_negative() { "-" } else { "" };
+        defmt::write!(
+            f,
+            "{=str}{=u8:02}:{=u8:02}:{=u8:02}",
+            sign,
+            self.part_hours().unsigned_abs(),
+            self.part_minutes().unsigned_abs(),
+            self.part_seconds().unsigned_abs(),
+        )
     }
 }
 
@@ -1396,6 +1433,26 @@ impl OffsetArithmetic {
             SDuration::Span(span) => offset.checked_add_span(span),
             SDuration::Absolute(sdur) => offset.checked_add_duration(sdur),
         }
+    }
+
+    #[inline]
+    fn saturating_add(self, offset: Offset) -> Result<Offset, Error> {
+        let Ok(signed) = self.duration.to_signed() else {
+            return Ok(Offset::MAX);
+        };
+        let result = match signed {
+            SDuration::Span(span) => {
+                if let Some(err) = span.smallest_non_time_non_zero_unit_error()
+                {
+                    return Err(err);
+                }
+                offset.checked_add_span(span)
+            }
+            SDuration::Absolute(sdur) => offset.checked_add_duration(sdur),
+        };
+        Ok(result.unwrap_or_else(|_| {
+            if self.is_negative() { Offset::MIN } else { Offset::MAX }
+        }))
     }
 
     #[inline]
@@ -1487,7 +1544,11 @@ impl<'a> From<&'a UnsignedDuration> for OffsetArithmetic {
 /// # Ok::<(), Box<dyn std::error::Error>>(())
 /// ```
 #[derive(Clone, Copy, Debug)]
-pub struct OffsetRound(SignedDurationRound);
+pub struct OffsetRound {
+    smallest: Unit,
+    mode: RoundMode,
+    increment: i64,
+}
 
 impl OffsetRound {
     /// Create a new default configuration for rounding a time zone offset via
@@ -1496,7 +1557,11 @@ impl OffsetRound {
     /// The default configuration does no rounding.
     #[inline]
     pub fn new() -> OffsetRound {
-        OffsetRound(SignedDurationRound::new().smallest(Unit::Second))
+        OffsetRound {
+            smallest: Unit::Second,
+            mode: RoundMode::HalfExpand,
+            increment: 1,
+        }
     }
 
     /// Set the smallest units allowed in the offset returned. These are the
@@ -1520,7 +1585,7 @@ impl OffsetRound {
     /// ```
     #[inline]
     pub fn smallest(self, unit: Unit) -> OffsetRound {
-        OffsetRound(self.0.smallest(unit))
+        OffsetRound { smallest: unit, ..self }
     }
 
     /// Set the rounding mode.
@@ -1554,7 +1619,7 @@ impl OffsetRound {
     /// ```
     #[inline]
     pub fn mode(self, mode: RoundMode) -> OffsetRound {
-        OffsetRound(self.0.mode(mode))
+        OffsetRound { mode, ..self }
     }
 
     /// Set the rounding increment for the smallest unit.
@@ -1567,13 +1632,10 @@ impl OffsetRound {
     ///
     /// # Errors
     ///
-    /// The rounding increment must divide evenly into the next highest unit
-    /// after the smallest unit configured (and must not be equivalent to
-    /// it). For example, if the smallest unit is [`Unit::Second`], then
-    /// *some* of the valid values for the rounding increment are `1`, `2`,
-    /// `4`, `5`, `15` and `30`. Namely, any integer that divides evenly into
-    /// `60` seconds since there are `60` seconds in the next highest unit
-    /// (minutes).
+    /// Unlike rounding a [`Span`](crate::Span), the increment does not need to
+    /// divide evenly into the next largest unit. Callers can round an offset
+    /// to any increment value so long as it is greater than zero and less than
+    /// or equal to `1_000_000_000`.
     ///
     /// # Example
     ///
@@ -1592,27 +1654,19 @@ impl OffsetRound {
     /// ```
     #[inline]
     pub fn increment(self, increment: i64) -> OffsetRound {
-        OffsetRound(self.0.increment(increment))
+        OffsetRound { increment, ..self }
     }
 
     /// Does the actual offset rounding.
     fn round(&self, offset: Offset) -> Result<Offset, Error> {
-        let smallest = self.0.get_smallest();
-        if !(Unit::Second <= smallest && smallest <= Unit::Hour) {
-            return Err(err!(
-                "rounding `Offset` failed because \
-                 a unit of {plural} was provided, but offset rounding \
-                 can only use hours, minutes or seconds",
-                plural = smallest.plural(),
-            ));
-        }
-        let rounded_sdur = SignedDuration::from(offset).round(self.0)?;
-        Offset::try_from(rounded_sdur).map_err(|_| {
-            err!(
-                "rounding offset `{offset}` resulted in a duration \
-                 of {rounded_sdur:?}, which overflows `Offset`",
-            )
-        })
+        let increment = Increment::for_offset(self.smallest, self.increment)?;
+        // let rounded_sdur = SignedDuration::from(offset).round(self.0)?;
+        let rounded = increment
+            .round(self.mode, SignedDuration::from(offset))
+            .context(E::RoundOverflow)?;
+        Offset::try_from(rounded)
+            .map_err(|_| b::OffsetTotalSeconds::error())
+            .context(E::RoundOverflow)
     }
 }
 
@@ -1651,18 +1705,19 @@ impl From<(Unit, i64)> for OffsetRound {
 ///
 /// For this reason, this crate exposes a few ways of resolving these
 /// conflicts. It is most commonly used as configuration for parsing
-/// [`Zoned`](crate::Zoned) values via
-/// [`fmt::temporal::DateTimeParser::offset_conflict`](crate::fmt::temporal::DateTimeParser::offset_conflict). But this configuration can also be used directly via
+/// [`ZonedDateTime`](crate::ZonedDateTime) values via
+/// [`fmt::temporal::DateTimeParser::offset_conflict`](crate::fmt::temporal::DateTimeParser::offset_conflict).
+/// But this configuration can also be used directly via
 /// [`OffsetConflict::resolve`].
 ///
-/// The default value is `OffsetConflict::Reject`, which results in an
-/// error being returned if the offset and a time zone are not in agreement.
-/// This is the default so that Jiff does not automatically make silent choices
-/// about whether to prefer the time zone or the offset. The
-/// [`fmt::temporal::DateTimeParser::parse_zoned_with`](crate::fmt::temporal::DateTimeParser::parse_zoned_with)
-/// documentation shows an example demonstrating its utility in the face
-/// of changes in the law, such as the abolition of daylight saving time.
-/// By rejecting such things, one can ensure that the original timestamp is
+/// The default value is `OffsetConflict::Reject`, which results in an error
+/// being returned if the offset and a time zone are not in agreement. This is
+/// the default so that Jiff does not automatically make silent choices about
+/// whether to prefer the time zone or the offset. The
+/// [`fmt::temporal::DateTimeParser::parse_zoned_datetime_with`](crate::fmt::temporal::DateTimeParser::parse_zoned_datetime_with)
+/// documentation shows an example demonstrating its utility in the face of
+/// changes in the law, such as the abolition of daylight saving time. By
+/// rejecting such things, one can ensure that the original timestamp is
 /// preserved or else an error occurs.
 ///
 /// This enum is non-exhaustive so that other forms of offset conflicts may be
@@ -1699,8 +1754,9 @@ impl From<(Unit, i64)> for OffsetRound {
 /// # Example: parsing
 ///
 /// This example shows how to set the offset conflict resolution configuration
-/// while parsing a [`Zoned`](crate::Zoned) datetime. In this example, we
-/// always prefer the offset, even if it conflicts with the time zone.
+/// while parsing a [`ZonedDateTime`](crate::ZonedDateTime) datetime. In this
+/// example, we always prefer the offset, even if it conflicts with the time
+/// zone.
 ///
 /// ```
 /// use jiff::{civil::date, fmt::temporal::DateTimeParser, tz};
@@ -1708,7 +1764,8 @@ impl From<(Unit, i64)> for OffsetRound {
 /// static PARSER: DateTimeParser = DateTimeParser::new()
 ///     .offset_conflict(tz::OffsetConflict::AlwaysOffset);
 ///
-/// let zdt = PARSER.parse_zoned("2024-06-14T17:30-05[America/New_York]")?;
+/// let zdt = PARSER
+///     .parse_zoned_datetime("2024-06-14T17:30-05[America/New_York]")?;
 /// // The time *and* offset have been corrected. The offset given was invalid,
 /// // so it cannot be kept, but the timestamp returned is equivalent to
 /// // `2024-06-14T17:30-05`. It is just adjusted automatically to be correct
@@ -1724,7 +1781,7 @@ pub enum OffsetConflict {
     /// When the offset and time zone are in conflict, this will always use
     /// the offset to interpret the date time.
     ///
-    /// When resolving to a [`AmbiguousZoned`], the time zone attached
+    /// When resolving to a [`AmbiguousZonedDateTime`], the time zone attached
     /// to the timestamp will still be the same as the time zone given. The
     /// difference here is that the offset will be adjusted such that it is
     /// correct for the given time zone. However, the timestamp itself will
@@ -1738,11 +1795,11 @@ pub enum OffsetConflict {
     /// When the offset and time zone are in conflict, this will always use
     /// the time zone to interpret the date time.
     ///
-    /// When resolving to an [`AmbiguousZoned`], the offset attached to the
-    /// timestamp will always be determined by only looking at the time zone.
-    /// This in turn implies that the timestamp returned could be ambiguous,
-    /// since this conflict resolution strategy specifically ignores the
-    /// offset. (And, we're only at this point because the offset is not
+    /// When resolving to an [`AmbiguousZonedDateTime`], the offset attached to
+    /// the timestamp will always be determined by only looking at the time
+    /// zone. This in turn implies that the timestamp returned could be
+    /// ambiguous, since this conflict resolution strategy specifically ignores
+    /// the offset. (And, we're only at this point because the offset is not
     /// possible for the given time zone, so it can't be used in concert with
     /// the time zone anyway.) This is unlike the `AlwaysOffset` strategy where
     /// the timestamp returned is guaranteed to be unambiguous.
@@ -1755,7 +1812,8 @@ pub enum OffsetConflict {
     /// use the time zone. When the time zone is used, it's possible for an
     /// ambiguous datetime to be returned.
     ///
-    /// See [`ZonedWith::offset_conflict`](crate::ZonedWith::offset_conflict)
+    /// See
+    /// [`ZonedDateTimeWith::offset_conflict`](crate::ZonedDateTimeWith::offset_conflict)
     /// for an example of when this strategy is useful.
     PreferOffset,
     /// When the offset and time zone are in conflict, this strategy always
@@ -1797,7 +1855,7 @@ impl OffsetConflict {
     ///     .resolve(dt, offset, newyork.clone())?
     ///     .unambiguous()?;
     /// // The datetime (and offset) have been corrected automatically
-    /// // and the resulting Zoned instant corresponds precisely to
+    /// // and the resulting ZonedDateTime instant corresponds precisely to
     /// // `2024-06-14T17:30-05[UTC]`.
     /// assert_eq!(zdt.to_string(), "2024-06-14T18:30:00-04:00[America/New_York]");
     ///
@@ -1806,9 +1864,9 @@ impl OffsetConflict {
     ///     .resolve(dt, offset, newyork.clone())?
     ///     .unambiguous()?;
     /// // The offset has been corrected automatically and the resulting
-    /// // Zoned instant corresponds precisely to `2024-06-14T17:30-04[UTC]`.
-    /// // Notice how the civil time remains the same, but the exact instant
-    /// // has changed!
+    /// // ZonedDateTime instant corresponds precisely to
+    /// // `2024-06-14T17:30-04[UTC]`. Notice how the civil time remains the
+    /// // same, but the exact instant has changed!
     /// assert_eq!(zdt.to_string(), "2024-06-14T17:30:00-04:00[America/New_York]");
     ///
     /// // Here, we prefer the offset, but fall back to the time zone.
@@ -1830,7 +1888,7 @@ impl OffsetConflict {
         dt: civil::DateTime,
         offset: Offset,
         tz: TimeZone,
-    ) -> Result<AmbiguousZoned, Error> {
+    ) -> Result<AmbiguousZonedDateTime, Error> {
         self.resolve_with(dt, offset, tz, |off1, off2| off1 == off2)
     }
 
@@ -1840,6 +1898,11 @@ impl OffsetConflict {
     /// The equality predicate is always given a pair of offsets where the
     /// first is the offset given to `resolve_with` and the second is the
     /// offset found in the `TimeZone`.
+    ///
+    /// With [`OffsetConflict::Reject`] or [`OffsetConflict::PreferOffset`],
+    /// matching the offset to a fold checks the earlier candidate first. The
+    /// timestamp is computed using the matching candidate's actual offset,
+    /// which may differ from the offset given to this routine.
     ///
     /// # Errors
     ///
@@ -1888,10 +1951,10 @@ impl OffsetConflict {
     /// let result = OffsetConflict::Reject.resolve(dt, offset, tz.clone());
     /// assert_eq!(
     ///     result.unwrap_err().to_string(),
-    ///     "datetime 1968-02-01T23:15:00 could not resolve to a timestamp \
-    ///      since 'reject' conflict resolution was chosen, and because \
-    ///      datetime has offset -00:45, but the time zone Africa/Monrovia \
-    ///      for the given datetime unambiguously has offset -00:44:30",
+    ///     "datetime could not resolve to a timestamp since `reject` \
+    ///      conflict resolution was chosen, and because datetime has offset \
+    ///      `-00:45`, but the time zone `Africa/Monrovia` for the given \
+    ///      datetime unambiguously has offset `-00:44:30`",
     /// );
     /// let is_equal = |parsed: Offset, candidate: Offset| {
     ///     parsed == candidate || candidate.round(Unit::Minute).map_or(
@@ -1921,9 +1984,10 @@ impl OffsetConflict {
     /// rounding:
     ///
     /// ```
-    /// use jiff::{tz::Offset, Zoned};
+    /// use jiff::{ZonedDateTime, tz::Offset};
     ///
-    /// let zdt: Zoned = "1968-02-01T23:15:00-00:45[Africa/Monrovia]".parse()?;
+    /// let zdt: ZonedDateTime =
+    ///     "1968-02-01T23:15:00-00:45[Africa/Monrovia]".parse()?;
     /// // As above, notice that even though we parsed `-00:45` as the
     /// // offset, the actual offset of our zoned datetime is the correct
     /// // one from the time zone.
@@ -1934,7 +1998,8 @@ impl OffsetConflict {
     ///
     /// // And we also support parsing the actual fractional minute offset
     /// // as well:
-    /// let zdt: Zoned = "1968-02-01T23:15:00-00:44:30[Africa/Monrovia]".parse()?;
+    /// let zdt: ZonedDateTime =
+    ///     "1968-02-01T23:15:00-00:44:30[Africa/Monrovia]".parse()?;
     /// assert_eq!(zdt.offset(), Offset::from_seconds(-(44 * 60 + 30)).unwrap());
     /// assert_eq!(zdt.to_string(), "1968-02-01T23:15:00-00:45[Africa/Monrovia]");
     ///
@@ -1945,16 +2010,16 @@ impl OffsetConflict {
     /// sub-minute precision. In that case, exact equality is used:
     ///
     /// ```
-    /// use jiff::Zoned;
+    /// use jiff::ZonedDateTime;
     ///
-    /// let result = "1970-06-01T00-00:45:00[Africa/Monrovia]".parse::<Zoned>();
+    /// let result =
+    ///     "1970-06-01T00-00:45:00[Africa/Monrovia]".parse::<ZonedDateTime>();
     /// assert_eq!(
     ///     result.unwrap_err().to_string(),
-    ///     "parsing \"1970-06-01T00-00:45:00[Africa/Monrovia]\" failed: \
-    ///      datetime 1970-06-01T00:00:00 could not resolve to a timestamp \
-    ///      since 'reject' conflict resolution was chosen, and because \
-    ///      datetime has offset -00:45, but the time zone Africa/Monrovia \
-    ///      for the given datetime unambiguously has offset -00:44:30",
+    ///     "datetime could not resolve to a timestamp since `reject` \
+    ///      conflict resolution was chosen, and because datetime has offset \
+    ///      `-00:45`, but the time zone `Africa/Monrovia` for the given \
+    ///      datetime unambiguously has offset `-00:44:30`",
     /// );
     /// ```
     pub fn resolve_with<F>(
@@ -1963,7 +2028,7 @@ impl OffsetConflict {
         offset: Offset,
         tz: TimeZone,
         is_equal: F,
-    ) -> Result<AmbiguousZoned, Error>
+    ) -> Result<AmbiguousZonedDateTime, Error>
     where
         F: FnMut(Offset, Offset) -> bool,
     {
@@ -1972,11 +2037,14 @@ impl OffsetConflict {
             // require that it exists) and always use the provided offset.
             OffsetConflict::AlwaysOffset => {
                 let kind = AmbiguousOffset::Unambiguous { offset };
-                Ok(AmbiguousTimestamp::new(dt, kind).into_ambiguous_zoned(tz))
+                Ok(AmbiguousTimestamp::new(dt, kind)
+                    .into_ambiguous_zoned_datetime(tz))
             }
             // In this case, we ignore any provided offset and always use the
             // time zone annotation.
-            OffsetConflict::AlwaysTimeZone => Ok(tz.into_ambiguous_zoned(dt)),
+            OffsetConflict::AlwaysTimeZone => {
+                Ok(tz.into_ambiguous_zoned_datetime(dt))
+            }
             // In this case, we use the offset if it's correct, but otherwise
             // fall back to the time zone annotation if it's not.
             OffsetConflict::PreferOffset => Ok(
@@ -1994,34 +2062,38 @@ impl OffsetConflict {
     /// attempts to resolve the datetime to a particular instant based on the
     /// 'prefer' strategy.
     ///
-    /// In the 'prefer' strategy, we prefer to use the parsed offset to resolve
-    /// any ambiguity in the parsed datetime and time zone, but only if the
-    /// parsed offset is valid for the parsed datetime and time zone. If the
-    /// parsed offset isn't valid, then it is ignored. In the case where it is
-    /// ignored, it is possible for an ambiguous instant to be returned.
+    /// In a fold, we check the earlier candidate first using `is_equal`. The
+    /// first match resolves the fold using the candidate's actual offset,
+    /// which may differ from the parsed offset.
+    ///
+    /// If neither candidate matches, or if the datetime falls in a gap, then
+    /// the parsed offset is ignored and disambiguation is left to the caller.
     fn resolve_via_prefer(
         dt: civil::DateTime,
         given: Offset,
         tz: TimeZone,
         mut is_equal: impl FnMut(Offset, Offset) -> bool,
-    ) -> AmbiguousZoned {
+    ) -> AmbiguousZonedDateTime {
         use crate::tz::AmbiguousOffset::*;
 
         let amb = tz.to_ambiguous_timestamp(dt);
         match amb.offset() {
-            // We only look for folds because we consider all offsets for gaps
-            // to be invalid. Which is consistent with how they're treated as
-            // `OffsetConflict::Reject`. Thus, like any other invalid offset,
-            // we fallback to disambiguation (which is handled by the caller).
-            Fold { before, after }
-                if is_equal(given, before) || is_equal(given, after) =>
-            {
-                let kind = Unambiguous { offset: given };
+            // Only folds can be resolved by matching an offset. Gaps are left
+            // for the caller to disambiguate because all offsets are invalid.
+            Fold { before, after } => {
+                let offset = if is_equal(given, before) {
+                    before
+                } else if is_equal(given, after) {
+                    after
+                } else {
+                    return amb.into_ambiguous_zoned_datetime(tz);
+                };
+                let kind = Unambiguous { offset };
                 AmbiguousTimestamp::new(dt, kind)
             }
             _ => amb,
         }
-        .into_ambiguous_zoned(tz)
+        .into_ambiguous_zoned_datetime(tz)
     }
 
     /// Given a parsed datetime, a parsed offset and a parsed time zone, this
@@ -2041,19 +2113,19 @@ impl OffsetConflict {
         given: Offset,
         tz: TimeZone,
         mut is_equal: impl FnMut(Offset, Offset) -> bool,
-    ) -> Result<AmbiguousZoned, Error> {
+    ) -> Result<AmbiguousZonedDateTime, Error> {
         use crate::tz::AmbiguousOffset::*;
 
         let amb = tz.to_ambiguous_timestamp(dt);
         match amb.offset() {
-            Unambiguous { offset } if !is_equal(given, offset) => Err(err!(
-                "datetime {dt} could not resolve to a timestamp since \
-                 'reject' conflict resolution was chosen, and because \
-                 datetime has offset {given}, but the time zone {tzname} for \
-                 the given datetime unambiguously has offset {offset}",
-                tzname = tz.diagnostic_name(),
-            )),
-            Unambiguous { .. } => Ok(amb.into_ambiguous_zoned(tz)),
+            Unambiguous { offset } if !is_equal(given, offset) => {
+                Err(Error::from(E::ResolveRejectUnambiguous {
+                    given,
+                    offset,
+                    tz,
+                }))
+            }
+            Unambiguous { .. } => Ok(amb.into_ambiguous_zoned_datetime(tz)),
             Gap { before, after } => {
                 // In `jiff 0.1`, we reported an error when we found a gap
                 // where neither offset matched what was given. But now we
@@ -2065,32 +2137,29 @@ impl OffsetConflict {
                 // changed to treat all offsets in a gap as invalid).
                 //
                 // Ref: https://github.com/tc39/proposal-temporal/issues/2892
-                Err(err!(
-                    "datetime {dt} could not resolve to timestamp \
-                     since 'reject' conflict resolution was chosen, and \
-                     because datetime has offset {given}, but the time \
-                     zone {tzname} for the given datetime falls in a gap \
-                     (between offsets {before} and {after}), and all \
-                     offsets for a gap are regarded as invalid",
-                    tzname = tz.diagnostic_name(),
-                ))
+                Err(Error::from(E::ResolveRejectGap {
+                    given,
+                    before,
+                    after,
+                    tz,
+                }))
             }
-            Fold { before, after }
-                if !is_equal(given, before) && !is_equal(given, after) =>
-            {
-                Err(err!(
-                    "datetime {dt} could not resolve to timestamp \
-                     since 'reject' conflict resolution was chosen, and \
-                     because datetime has offset {given}, but the time \
-                     zone {tzname} for the given datetime falls in a fold \
-                     between offsets {before} and {after}, neither of which \
-                     match the offset",
-                    tzname = tz.diagnostic_name(),
-                ))
-            }
-            Fold { .. } => {
-                let kind = Unambiguous { offset: given };
-                Ok(AmbiguousTimestamp::new(dt, kind).into_ambiguous_zoned(tz))
+            Fold { before, after } => {
+                let offset = if is_equal(given, before) {
+                    before
+                } else if is_equal(given, after) {
+                    after
+                } else {
+                    return Err(Error::from(E::ResolveRejectFold {
+                        given,
+                        before,
+                        after,
+                        tz,
+                    }));
+                };
+                let kind = Unambiguous { offset };
+                Ok(AmbiguousTimestamp::new(dt, kind)
+                    .into_ambiguous_zoned_datetime(tz))
             }
         }
     }

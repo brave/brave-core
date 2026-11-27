@@ -2,39 +2,47 @@ lints.workspace = true
 
 [package]
 name = "gix-attributes"
-version = "0.28.1"
+version = "0.37.1"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate of the gitoxide project dealing .gitattributes files"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-include = ["src/**/*", "LICENSE-*"]
-rust-version = "1.82"
+edition = "2024"
+include = ["/src/**/*", "/LICENSE-*"]
+rust-version = "1.88"
 
 [lib]
-doctest = false
+doctest = true
+
+[[bench]]
+name = "lookup"
+harness = false
+path = "./benches/lookup.rs"
 
 [features]
 ## Data structures implement `serde::Serialize` and `serde::Deserialize`.
-serde = ["dep:serde", "bstr/serde", "gix-glob/serde", "kstring/serde"]
+serde = ["dep:serde", "bstr/serde", "gix-glob/serde"]
+
 
 [dependencies]
-gix-path = { version = "^0.10.21", path = "../gix-path" }
-gix-quote = { version = "^0.6.1", path = "../gix-quote" }
-gix-glob = { version = "^0.22.1", path = "../gix-glob" }
-gix-trace = { version = "^0.1.15", path = "../gix-trace" }
+gix-parallel = { version = "^0.50.0", path = "../gix-parallel" }
+gix-error = { version = "^0.5.2", path = "../gix-error", features = ["bstr"] }
+gix-path = { version = "^0.14.1", path = "../gix-path" }
+gix-quote = { version = "^0.10.1", path = "../gix-quote" }
+gix-glob = { version = "^0.29.1", path = "../gix-glob" }
+gix-trace = { version = "^0.3.1", path = "../gix-trace" }
 
 bstr = { version = "1.12.0", default-features = false, features = ["std", "unicode"] }
 smallvec = "1.15.1"
-kstring = "2.0.0"
 unicode-bom = { version = "2.0.3" }
-thiserror = "2.0.17"
 serde = { version = "1.0.114", optional = true, default-features = false, features = ["derive"] }
 
 document-features = { version = "0.2.1", optional = true }
 
 [dev-dependencies]
-gix-testtools = { path = "../tests/tools" }
+insta = "1.46.3"
+criterion = "0.8.2"
+gix-testtools = { path = "../tests/tools", default-features = false, features = ["sha1"] }
 gix-fs = { path = "../gix-fs" }
 
 [package.metadata.docs.rs]

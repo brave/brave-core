@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.63.0"
+rust-version = "1.71.0"
 name = "arbitrary"
-version = "1.4.2"
+version = "1.5.0"
 authors = [
     "The Rust-Fuzz Project Developers",
     "Nick Fitzgerald <fitzgen@gmail.com>",
@@ -23,6 +23,16 @@ authors = [
     "Corey Farwell <coreyf@rwell.org>",
 ]
 build = false
+include = [
+    "Cargo.toml",
+    "CHANGELOG.md",
+    "LICENSE-MIT",
+    "LICENSE-APACHE",
+    "README.md",
+    "src/**/*.rs",
+    "tests/**/*.rs",
+    "examples/**/*.rs",
+]
 autolib = false
 autobins = false
 autoexamples = false
@@ -65,7 +75,7 @@ name = "path"
 path = "tests/path.rs"
 
 [dependencies.derive_arbitrary]
-version = "~1.4.0"
+version = "~1.5.0"
 optional = true
 
 [dev-dependencies.exhaustigen]

@@ -32,7 +32,6 @@ pub mod registry {
 
 pub use cargo_lock::{self, Lockfile, SourceId, package};
 use fs_err as fs;
-pub use platforms;
 pub use semver::{self, Version, VersionReq};
 
 pub use crate::{

@@ -48,8 +48,9 @@ fn main() {
     // solutions:
     // - we can work with a normal iterator like `from_fn`
     // - we can get the remaining input afterwards, like with the `try_fold` trick
+    let mut i = data;
     let mut winnow_it = iterator(
-        data,
+        &mut i,
         terminated(separated_pair(alphanumeric1, ":", alphanumeric1), ","),
     );
 
@@ -57,9 +58,9 @@ fn main() {
         .map(|(k, v)| (k.to_uppercase(), v))
         .collect::<HashMap<_, _>>();
 
-    let parser_result: ModalResult<(_, _), ()> = winnow_it.finish();
-    let (remaining_input, ()) = parser_result.unwrap();
+    let parser_result: Result<_, ()> = winnow_it.finish();
+    parser_result.unwrap();
 
     // will print "iterator returned {"key1": "value1", "key3": "value3", "key2": "value2"}, remaining input is ';'"
-    println!("iterator returned {res:?}, remaining input is '{remaining_input}'");
+    println!("iterator returned {res:?}, remaining input is '{i}'");
 }

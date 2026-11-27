@@ -64,15 +64,12 @@
 #![allow(clippy::while_let_loop)]
 
 #[cfg(test)]
-#[macro_use]
-extern crate doc_comment;
-
-#[cfg(test)]
-doctest!("../README.md");
+doc_comment::doctest!("../README.md");
 
 use std::cmp;
 use std::cmp::Ordering;
 use std::error::Error;
+use std::ffi::OsString;
 use std::fmt;
 use std::fs;
 use std::fs::DirEntry;
@@ -299,8 +296,15 @@ impl GlobError {
     }
 
     /// Consumes self, returning the _raw_ underlying `io::Error`
+    #[deprecated(note = "use `.into` instead")]
     pub fn into_error(self) -> io::Error {
         self.error
+    }
+}
+
+impl From<GlobError> for io::Error {
+    fn from(value: GlobError) -> Self {
+        value.error
     }
 }
 
@@ -311,7 +315,7 @@ impl Error for GlobError {
     }
 
     #[allow(unknown_lints, bare_trait_objects)]
-    fn cause(&self) -> Option<&Error> {
+    fn cause(&self) -> Option<&dyn Error> {
         Some(&self.error)
     }
 }
@@ -938,24 +942,29 @@ fn fill_todo(
             let dirs = fs::read_dir(path).and_then(|d| {
                 d.map(|e| {
                     e.map(|e| {
-                        let path = if curdir {
-                            PathBuf::from(e.path().file_name().unwrap())
+                        // We sort by filename a few lines below. However, it is actually quite
+                        // expensive to extract the filename from PathBuf. Since we already know the
+                        // filename from `DirEntry` here, we store it proactively (we still
+                        // have to heap allocate it).
+                        // Then we use this cached filename for sorting, and further on work only
+                        // with the full path.
+                        let (path, filename) = if curdir {
+                            (PathBuf::from(e.path().file_name().unwrap()), e.file_name())
                         } else {
-                            e.path()
+                            (e.path(), e.file_name())
                         };
-                        PathWrapper::from_dir_entry(path, e)
+                        (PathWrapper::from_dir_entry(path, e), filename)
                     })
                 })
-                .collect::<Result<Vec<_>, _>>()
+                .collect::<Result<Vec<(PathWrapper, OsString)>, _>>()
             });
             match dirs {
                 Ok(mut children) => {
                     if options.require_literal_leading_dot {
-                        children
-                            .retain(|x| !x.file_name().unwrap().to_str().unwrap().starts_with('.'));
+                        children.retain(|x| !x.1.to_str().unwrap().starts_with('.'));
                     }
-                    children.sort_by(|p1, p2| p2.file_name().cmp(&p1.file_name()));
-                    todo.extend(children.into_iter().map(|x| Ok((x, idx))));
+                    children.sort_by(|p1, p2| p2.1.cmp(&p1.1));
+                    todo.extend(children.into_iter().map(|x| Ok((x.0, idx))));
 
                     // Matching the special directory entries . and .. that
                     // refer to the current and parent directory respectively

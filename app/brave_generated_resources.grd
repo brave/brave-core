@@ -183,6 +183,9 @@
       <!-- Custom profile image strings -->
       <part file="custom_profile_image_strings.grdp" />
 
+      <!-- brave://history semantic search strings -->
+      <part file="brave_history_embeddings_strings.grdp" />
+
       <!--Add new items to the appropriate sections below -->
 
       <!-- Profile menu -->
@@ -393,8 +396,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         brave://settings/extensions
       </message>
       <!-- On-device speech recognition -->
-      <message name="IDS_ON_DEVICE_SPEECH_MODEL_PERMISSION_FRAGMENT" desc="Text fragment of the permission prompt that asks to download Brave's on-device speech recognition model. It follows 'example.com wants to'.">
-        Download a speech recognition model (<ph name="DOWNLOAD_SIZE">$1<ex>636 MB</ex></ph>) to process speech on this device
+      <message name="IDS_ON_DEVICE_SPEECH_MODEL_PERMISSION_FRAGMENT" desc="Text fragment of the permission prompt that asks to download Brave's on-device speech recognition model. The size is the approximate download size of the model. It follows 'example.com wants to'.">
+        Download a speech recognition model (about 700 MB) to process speech on this device
       </message>
       <message name="IDS_BRAVE_PERMISSIONS_BUBBLE_PROMPT" desc="The label that is used to introduce permission request details to the user in a popup.">
         <ph name="SITE_NAME">$1<ex>google.com</ex></ph> is asking you to
@@ -546,6 +549,19 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_MUTE_TAB_MAC" desc="The Mac menu item to toogle active tab's mute state">
           Mute Tab
+        </message>
+      </if>
+
+      <!-- Mac updater -->
+      <if expr="is_macosx">
+        <message name="IDS_PROMOTE_PREFLIGHT_LAUNCH_ERROR" desc="Status label shown when an administrator user requested automatic updates for all users, but the OS failed to start the pre-flight process.  Mac-only.">
+          Failed to set up automatic updates for all users (preflight launch error: <ph name="ERROR_NUMBER">$1<ex>1</ex></ph>)
+        </message>
+        <message name="IDS_PROMOTE_PREFLIGHT_SCRIPT_ERROR" desc="Status label shown when an administrator user requested automatic updates for all users, but the pre-flight process reported an error.  Mac-only.">
+          Failed to set up automatic updates for all users (preflight execution error: <ph name="ERROR_NUMBER">$1<ex>1</ex></ph>)
+        </message>
+        <message name="IDS_UPGRADE_ERROR_DETAILS" desc="Status label optionally shown when an error occurred during upgrade. The upgrade daemon may optionally send supplemental error messages; if they're available, we append them after this message in an HTML pre block.">
+          Error details:
         </message>
       </if>
 
@@ -881,6 +897,18 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           <message name="IDS_TOOLTIP_SIDEBAR_SHOW" desc="The tooltip for the sidebar button, when closed">
             Show sidebar
           </message>
+          <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_SHOW_MOBILE_VERSION" desc="Menu item to switch a sidebar web panel to load the mobile version of the site">
+            Show mobile version
+          </message>
+          <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_SHOW_DESKTOP_VERSION" desc="Menu item to switch a sidebar web panel to load the desktop version of the site">
+            Show desktop version
+          </message>
+          <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_OPEN_IN_PANEL" desc="Menu item to switch a sidebar item to open in the panel instead of a tab">
+            Open in panel
+          </message>
+          <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_OPEN_IN_TAB" desc="Menu item to switch a sidebar item to open in a tab instead of the panel">
+            Open in tab
+          </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_HIDE_SIDE_PANEL_TOOLBAR_BUTTON" desc="The menu item to hide the side panel icon on the toolbar">
@@ -891,6 +919,18 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           </message>
           <message name="IDS_TOOLTIP_SIDEBAR_SHOW" desc="The tooltip for the sidebar button, when closed">
             Show Sidebar
+          </message>
+          <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_SHOW_MOBILE_VERSION" desc="Menu item to switch a sidebar web panel to load the mobile version of the site">
+            Show Mobile Version
+          </message>
+          <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_SHOW_DESKTOP_VERSION" desc="Menu item to switch a sidebar web panel to load the desktop version of the site">
+            Show Desktop Version
+          </message>
+          <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_OPEN_IN_PANEL" desc="Menu item to switch a sidebar item to open in the panel instead of a tab">
+            Open in Panel
+          </message>
+          <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_OPEN_IN_TAB" desc="Menu item to switch a sidebar item to open in a tab instead of the panel">
+            Open in Tab
           </message>
         </if>
         <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_EDIT" desc="Menu for editing an existing item from sidebar">
@@ -1063,6 +1103,18 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECKING_ACCESSIBLE_NAME" desc="Screen reader announcement while the Wayback Machine bubble is searching the Internet Archive">
         Looking in the Archive
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_TITLE" desc="Heading on the infobar shown when the Internet Archive has an archived version of a missing page">
+        This page is missing, but an archived version is available
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_DESCRIPTION" desc="Body text on the infobar shown before automatically loading the archived version of a missing page from the Internet Archive">
+        Taking you to the archived version from <ph name="DATE">$1<ex>Feb 26, 2024</ex></ph> (<ph name="TIME_AGO">$2<ex>1 year ago</ex></ph>).
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_DESCRIPTION_NO_DATE" desc="Body text on the infobar shown before automatically loading the archived version of a missing page from the Internet Archive, when the date of the archived version is unknown">
+        Taking you to the archived version.
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_REDIRECT_BUTTON" desc="Label of the infobar button that counts down the seconds until the archived version of the missing page is loaded, or loads it immediately when clicked">
+        Redirecting in <ph name="SECONDS">$1<ex>5</ex></ph>…
       </message>
 
       <!-- Brave's copyright statement -->
@@ -1347,6 +1399,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
             Minimize tabs
           </message>
         </if>
+        <message name="IDS_TREE_TAB_EXPAND_BUTTON" desc="The tooltip and accessible name of the button on a tab that shows the tabs opened from it in the tab tree">
+          Expand tab tree
+        </message>
+        <message name="IDS_TREE_TAB_COLLAPSE_BUTTON" desc="The tooltip and accessible name of the button on a tab that hides the tabs opened from it in the tab tree">
+          Collapse tab tree
+        </message>
       </if>
 
       <message name="IDS_BOOKMARKS_SORT_CUSTOM" desc="Label for the custom order sort type">
@@ -1624,6 +1682,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_PSST_INFOBAR_MESSAGE" desc="Infobar message body informing the user that Brave's Privacy Settings Suggestion Tool (PSST) can optimize their privacy settings on this site.">
         Brave can help you optimize this site's privacy settings. Would you like to review Brave's suggestions?
       </message>
+      <message name="IDS_BRAVE_PSST_INFOBAR_SUBTITLE" desc="Infobar subtitle text shown below the title, explaining that Brave's Privacy Settings Suggestion Tool (PSST) can automatically adjust privacy settings on supported sites.">
+        Brave can auto-adjust privacy settings on compatible sites for maximum protection.
+      </message>
+      <message name="IDS_BRAVE_PSST_INFOBAR_LEARN_MORE" desc="Text of the clickable 'Learn more' link shown at the end of the Privacy Settings Suggestion Tool (PSST) infobar's subtitle text.">
+        Learn more
+      </message>
       <message name="IDS_BRAVE_PSST_INFO_BAR_REVIEW_SUGGESTIONS" desc="Button label for the infobar action that starts the review of Privacy Settings Suggestion Tool (PSST) recommendations.">
         Review Suggestions
       </message>
@@ -1656,6 +1720,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_BRAVE_PASSWORD_MANAGER_UI_IMPORT_DESCRIPTION_SIGNEDOUT_USERS" desc="The description for the password import banner in Password Manager settings.">
         To import passwords to <ph name="BRAND">$1<ex>Brave Password Manager</ex></ph> on this device, select a CSV file
+      </message>
+      <message name="IDS_BRAVE_PASSWORD_MANAGER_UI_FILL_LABEL" desc="Label for the toggle in Password Manager settings that enables or disables Brave's built-in password autofill.">
+        Autofill passwords using Brave
+      </message>
+      <message name="IDS_BRAVE_PASSWORD_MANAGER_UI_FILL_SUB_LABEL" desc="Sub-label explaining what the built-in password autofill toggle does. Shown beneath the toggle label.">
+        Turn this off to stop Brave from filling and saving passwords (for example when you use a third-party password manager).
       </message>
       <message name="IDS_LOCAL_AI_TASK_MANAGER_TITLE" desc="The label for the on-device AI background process in the Task Manager.">
         On-Device AI

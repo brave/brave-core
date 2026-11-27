@@ -11,22 +11,18 @@
 
 [package]
 edition = "2021"
-rust-version = "1.68"
+rust-version = "1.71"
 name = "zmij"
-version = "0.1.7"
+version = "1.0.23"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
-build = false
-exclude = [
-    "build.rs",
-    "performance.png",
-    "chart/**",
-]
+build = "build.rs"
+exclude = ["*.png"]
 autolib = false
 autobins = false
 autoexamples = false
 autotests = false
 autobenches = false
-description = "A double-to-string conversion algorithm based on Schubfach and yy"
+description = "A double-to-string conversion algorithm based on Schubfach and xjb"
 documentation = "https://docs.rs/zmij"
 readme = "README.md"
 keywords = ["float"]
@@ -68,8 +64,14 @@ path = "benches/bench.rs"
 harness = false
 
 [dependencies.no-panic]
-version = "0.1"
+version = "0.1.36"
 optional = true
+
+[dev-dependencies.num-bigint]
+version = "0.5"
+
+[dev-dependencies.num-integer]
+version = "0.1"
 
 [dev-dependencies.num_cpus]
 version = "1.8"
@@ -78,7 +80,7 @@ version = "1.8"
 version = "1"
 
 [dev-dependencies.rand]
-version = "0.9"
+version = "0.10"
 
 [dev-dependencies.ryu]
 version = "1"

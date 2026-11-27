@@ -1,12 +1,6 @@
-// Copyright 2016 Amanieu d'Antras
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 use core::{
     mem,
+    ptr::NonNull,
     sync::atomic::{AtomicUsize, Ordering},
 };
 use std::{ffi, time::Instant};
@@ -23,7 +17,7 @@ impl WaitAddress {
     #[allow(non_snake_case)]
     pub fn create() -> Option<WaitAddress> {
         let synch_dll = unsafe { GetModuleHandleA(b"api-ms-win-core-synch-l1-2-0.dll\0".as_ptr()) };
-        if synch_dll == 0 {
+        if synch_dll.is_null() {
             return None;
         }
 
@@ -51,7 +45,7 @@ impl WaitAddress {
     pub fn park(&'static self, key: &AtomicUsize) {
         while key.load(Ordering::Acquire) != 0 {
             let r = self.wait_on_address(key, INFINITE);
-            debug_assert!(r == true.into());
+            assert_ne!(r, false.into());
         }
     }
 
@@ -64,19 +58,11 @@ impl WaitAddress {
             }
             let diff = timeout - now;
             let timeout = diff
-                .as_secs()
-                .checked_mul(1000)
-                .and_then(|x| x.checked_add((diff.subsec_nanos() as u64 + 999999) / 1000000))
-                .map(|ms| {
-                    if ms > std::u32::MAX as u64 {
-                        INFINITE
-                    } else {
-                        ms as u32
-                    }
-                })
-                .unwrap_or(INFINITE);
+                .as_nanos()
+                .div_ceil(1_000_000)
+                .min((INFINITE - 1) as u128) as u32;
             if self.wait_on_address(key, timeout) == false.into() {
-                debug_assert_eq!(unsafe { GetLastError() }, ERROR_TIMEOUT);
+                assert_eq!(unsafe { GetLastError() }, ERROR_TIMEOUT);
             }
         }
         true
@@ -84,13 +70,16 @@ impl WaitAddress {
 
     #[inline]
     pub fn unpark_lock(&'static self, key: &AtomicUsize) -> UnparkHandle {
+        // The target may destroy the parker as soon as the store below is
+        // observed, so construct the handle first.
+        let handle = UnparkHandle {
+            key: NonNull::from(key),
+            waitaddress: self,
+        };
+
         // We don't need to lock anything, just clear the state
         key.store(0, Ordering::Release);
-
-        UnparkHandle {
-            key: key,
-            waitaddress: self,
-        }
+        handle
     }
 
     #[inline]
@@ -111,7 +100,7 @@ impl WaitAddress {
 // as unparked while holding the queue lock, but we delay the actual unparking
 // until after the queue lock is released.
 pub struct UnparkHandle {
-    key: *const AtomicUsize,
+    key: NonNull<AtomicUsize>,
     waitaddress: &'static WaitAddress,
 }
 
@@ -120,6 +109,6 @@ impl UnparkHandle {
     // released to avoid blocking the queue for too long.
     #[inline]
     pub fn unpark(self) {
-        unsafe { (self.waitaddress.WakeByAddressSingle)(self.key as *mut ffi::c_void) };
+        unsafe { (self.waitaddress.WakeByAddressSingle)(self.key.as_ptr().cast::<ffi::c_void>()) };
     }
 }

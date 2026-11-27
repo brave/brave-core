@@ -2,28 +2,25 @@ lints.workspace = true
 
 [package]
 name = "gix-packetline"
-version = "0.19.3"
+version = "0.24.2"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate of the gitoxide project implementing the pkt-line serialization format"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-include = ["src/**/*", "LICENSE-*"]
-rust-version = "1.82"
+edition = "2024"
+include = ["/src/**/*", "/LICENSE-*"]
+rust-version = "1.95"
 
 [lib]
-doctest = false
+doctest = true
 
 [features]
 #! By default, all IO related capabilities will be missing unless one of the following is chosen.
 default = []
 
-#! ### _Mutually exclusive_
-#! Specifying both causes a compile error, preventing the use of `--all-features`.
-
-## If set, all IO will become blocking. The same types will be used preventing side-by-side usage of blocking and non-blocking IO.
+## Enable blocking I/O API.
 blocking-io = []
-## Implement IO traits from `futures-io`.
+## Enable async I/O API using IO traits from `futures-io`.
 # no `dep:` for futures-lite (https://github.com/rust-secure-code/cargo-auditable/issues/124)
 async-io = ["dep:futures-io", "futures-lite", "dep:pin-project-lite"]
 
@@ -33,34 +30,54 @@ serde = ["dep:serde", "bstr/serde", "faster-hex/serde"]
 
 [[test]]
 name = "async-packetline"
-path = "tests/async-packetline.rs"
+path = "tests/packetline/main-async.rs"
 required-features = ["async-io"]
 
 [[test]]
 name = "blocking-packetline"
-path = "tests/blocking-packetline.rs"
-required-features = ["blocking-io", "maybe-async/is_sync"]
+path = "tests/packetline/main-blocking.rs"
+required-features = ["blocking-io"]
 
 [dependencies]
-gix-trace = { version = "^0.1.15", path = "../gix-trace" }
+gix-trace = { version = "^0.3.2", path = "../gix-trace" }
+gix-error = { version = "^0.5.3", path = "../gix-error" }
 
 serde = { version = "1.0.114", optional = true, default-features = false, features = ["std", "derive"] }
-thiserror = "2.0.17"
-faster-hex = { version = "0.10.0", default-features = false, features = ["std"] }
+faster-hex = { version = "2.0.0", default-features = false, features = ["std"] }
 bstr = { version = "1.12.0", default-features = false, features = ["std"] }
 # async support
-futures-io = { version = "0.3.16", optional = true }
+futures-io = { version = "0.3.32", optional = true }
 futures-lite = { version = "2.1.0", optional = true }
 pin-project-lite = { version = "0.2.6", optional = true }
 
 document-features = { version = "0.2.0", optional = true }
 
 [dev-dependencies]
+gix-testtools = { path = "../tests/tools", default-features = false, features = ["sha1"] }
+insta = "1.46.3"
 gix-odb = { path = "../gix-odb" }
 gix-pack-for-configuration = { package = "gix-pack", path = "../gix-pack", default-features = false, features = ["streaming-input"] }
-gix-hash = { path = "../gix-hash" }
+gix-hash = { path = "../gix-hash", features = ["sha1"] }
 async-std = { version = "1.9.0", features = ["attributes"] }
-maybe-async = "0.2.6"
+gix-macros = { path = "../gix-macros" }
 
 [package.metadata.docs.rs]
 features = ["document-features", "blocking-io", "serde"]
+
+[package.metadata.qa]
+checks = [
+    { args = ["--all-features"] },
+    { args = ["--features", "blocking-io"] },
+    { args = ["--features", "async-io"] },
+]
+tests = [
+    { args = ["--features", "blocking-io", "--test", "blocking-packetline"] },
+    { args = ["--features", "async-io", "--test", "async-packetline"] },
+]
+doctests = [
+    # `cargo nextest` doesn't run doctests, so cover feature-gated examples explicitly here.
+    { args = ["--features", "blocking-io"] },
+]
+
+[package.metadata.qa.wasm]
+targets = ["wasm32-unknown-unknown", "wasm32-wasip1", "wasm32-wasip2"]

@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.71.0"
+edition = "2024"
+rust-version = "1.95"
 name = "lock_api"
-version = "0.4.14"
+version = "0.5.0"
 authors = ["Amanieu d'Antras <amanieu@gmail.com>"]
 build = false
 autolib = false
@@ -48,21 +48,31 @@ rustdoc-args = [
 arc_lock = []
 atomic_usize = []
 default = ["atomic_usize"]
-nightly = []
 
 [lib]
 name = "lock_api"
 path = "src/lib.rs"
+
+[[test]]
+name = "guard_traits"
+path = "tests/guard_traits.rs"
+
+[[test]]
+name = "stateful_guards"
+path = "tests/stateful_guards.rs"
 
 [dependencies.owning_ref]
 version = "0.4.1"
 optional = true
 
 [dependencies.scopeguard]
-version = "1.1.0"
+version = "1.2.0"
 default-features = false
 
 [dependencies.serde]
-version = "1.0.126"
+version = "1.0.229"
 optional = true
 default-features = false
+
+[dev-dependencies.static_assertions]
+version = "1.1.0"

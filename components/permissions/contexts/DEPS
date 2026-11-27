@@ -4,3 +4,10 @@ include_rules = [
   "+third_party/blink/public/common",
   "+third_party/blink/public/mojom",
 ]
+
+specific_include_rules = {
+  "brave_wallet_account_permission_context_unittest\\.cc": [
+    "+services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h",
+    "+services/network/test/test_url_loader_factory.h",
+  ],
+}

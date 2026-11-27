@@ -7,14 +7,25 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_TEST_UTILS_H_
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
+namespace network {
+struct ResourceRequest;
+class TestURLLoaderFactory;
+}  // namespace network
+
 namespace brave_wallet {
 class EthAddress;
+
+// Returns an empty view for requests without a single byte body.
+std::string_view GetRpcRequestBody(const network::ResourceRequest& request);
+void RejectUnexpectedRpcRequest(network::TestURLLoaderFactory& factory,
+                                const network::ResourceRequest& request);
 
 std::string MakeJsonRpcStringArrayResponse(
     const std::vector<std::string>& items);

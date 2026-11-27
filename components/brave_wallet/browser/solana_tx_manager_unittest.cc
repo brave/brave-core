@@ -15,7 +15,6 @@
 #include "base/callback_list.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/location.h"
-#include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -27,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -163,16 +163,16 @@ class SolanaTxManagerUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, account_owner_map](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-          std::string_view request_string(request.request_body->elements()
-                                              ->at(0)
-                                              .As<network::DataElementBytes>()
-                                              .AsStringPiece());
+          std::string_view request_string = GetRpcRequestBody(request);
           base::DictValue request_root =
               base::test::ParseJsonDict(request_string);
           auto* params = request_root.FindList("params");
-          ASSERT_TRUE(params && !params->empty() && (*params)[0].is_string());
-          std::string account_address = (*params)[0].GetString();
-          ASSERT_TRUE(account_owner_map.contains(account_address));
+          if (!params || params->empty() || !params->front().is_string() ||
+              !account_owner_map.contains(params->front().GetString())) {
+            RejectUnexpectedRpcRequest(url_loader_factory_, request);
+            return;
+          }
+          const auto& account_address = params->front().GetString();
 
           if (account_owner_map.at(account_address).empty()) {
             url_loader_factory_.AddResponse(request.url.spec(), R"(
@@ -216,6 +216,8 @@ class SolanaTxManagerUnitTest : public testing::Test {
             std::string response = it->second;
             url_loader_factory_.ClearResponses();
             url_loader_factory_.AddResponse(request.url.spec(), response);
+          } else {
+            RejectUnexpectedRpcRequest(url_loader_factory_, request);
           }
         }));
   }
@@ -235,15 +237,15 @@ class SolanaTxManagerUnitTest : public testing::Test {
          last_valid_block_height, block_height, mock_signature_value,
          rpc_method_responses](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-          std::string_view request_string(request.request_body->elements()
-                                              ->at(0)
-                                              .As<network::DataElementBytes>()
-                                              .AsStringPiece());
+          std::string_view request_string = GetRpcRequestBody(request);
           base::DictValue request_root =
               base::test::ParseJsonDict(request_string);
 
           std::string* method = request_root.FindString("method");
-          ASSERT_TRUE(method);
+          if (!method) {
+            RejectUnexpectedRpcRequest(url_loader_factory_, request);
+            return;
+          }
 
           // Check if there's a custom response for the method
           if (rpc_method_responses && rpc_method_responses->contains(*method)) {
@@ -316,15 +318,20 @@ class SolanaTxManagerUnitTest : public testing::Test {
 
             const base::ListValue* params_list =
                 request_root.FindList("params");
-            ASSERT_TRUE(params_list && (*params_list)[0].is_list());
-            const std::string* hash =
-                (*params_list)[0].GetList()[0].GetIfString();
-            ASSERT_TRUE(hash);
+            if (!params_list || params_list->empty() ||
+                !params_list->front().is_list() ||
+                params_list->front().GetList().empty() ||
+                !params_list->front().GetList().front().is_string()) {
+              RejectUnexpectedRpcRequest(url_loader_factory_, request);
+              return;
+            }
+            const auto& hash =
+                params_list->front().GetList().front().GetString();
             std::string json;
 
             // The tx is stored as dict, so we can't gurantee the sequence of
             // hash in the request to be the same as submissions.
-            if (*hash == tx_hash1_) {
+            if (hash == tx_hash1_) {
               json = R"(
                 {"jsonrpc":2.0, "id":1, "result":
                   {
@@ -389,6 +396,8 @@ class SolanaTxManagerUnitTest : public testing::Test {
               ],
               "id": 1
             })");
+          } else {
+            RejectUnexpectedRpcRequest(url_loader_factory_, request);
           }
         }));
   }
@@ -416,34 +425,28 @@ class SolanaTxManagerUnitTest : public testing::Test {
                                 const mojom::AccountIdPtr& from,
                                 const std::optional<url::Origin>& origin,
                                 std::string* meta_id) {
-    base::RunLoop run_loop;
+    base::test::TestFuture<bool, const std::string&, const std::string&> future;
     solana_tx_manager()->AddUnapprovedSolanaTransaction(
         chain_id, std::move(solana_tx_data), from, origin, nullptr,
-        base::BindLambdaForTesting([&](bool success, const std::string& id,
-                                       const std::string& err_message) {
-          ASSERT_TRUE(success);
-          ASSERT_FALSE(id.empty());
-          ASSERT_TRUE(err_message.empty());
-          *meta_id = id;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+        future.GetCallback());
+    const auto& [success, id, err_message] = future.Take();
+    ASSERT_TRUE(success);
+    ASSERT_FALSE(id.empty());
+    ASSERT_TRUE(err_message.empty());
+    *meta_id = id;
   }
 
   void ApproveTransaction(const std::string& meta_id) {
-    base::RunLoop run_loop;
-    solana_tx_manager()->ApproveTransaction(
-        meta_id, base::BindLambdaForTesting(
-                     [&](bool success, mojom::ProviderErrorUnionPtr error_union,
-                         const std::string& err_message) {
-                       ASSERT_TRUE(success);
-                       ASSERT_TRUE(error_union->is_solana_provider_error());
-                       ASSERT_EQ(error_union->get_solana_provider_error(),
-                                 mojom::SolanaProviderError::kSuccess);
-                       ASSERT_TRUE(err_message.empty());
-                       run_loop.Quit();
-                     }));
-    run_loop.Run();
+    base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr,
+                           const std::string&>
+        future;
+    solana_tx_manager()->ApproveTransaction(meta_id, future.GetCallback());
+    auto [success, error_union, err_message] = future.Take();
+    ASSERT_TRUE(success);
+    ASSERT_TRUE(error_union->is_solana_provider_error());
+    ASSERT_EQ(error_union->get_solana_provider_error(),
+              mojom::SolanaProviderError::kSuccess);
+    ASSERT_TRUE(err_message.empty());
   }
 
   // Idle polling can fast-forward the block tracker while requests are in
@@ -517,22 +520,19 @@ class SolanaTxManagerUnitTest : public testing::Test {
       mojom::SolanaProviderError expected_error,
       const std::string& expected_err_message,
       mojom::SolanaTxDataPtr* tx_data_out = nullptr) {
-    base::RunLoop run_loop;
-    solana_tx_manager()->MakeSystemProgramTransferTxData(
-        from, to, lamports,
-        base::BindLambdaForTesting([&](mojom::SolanaTxDataPtr tx_data,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& err_message) {
-          if (tx_data_out) {
-            *tx_data_out = std::move(tx_data);
-          } else {
-            EXPECT_EQ(expected_tx_data, tx_data);
-          }
-          EXPECT_EQ(expected_error, error);
-          EXPECT_EQ(expected_err_message, err_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<mojom::SolanaTxDataPtr, mojom::SolanaProviderError,
+                           const std::string&>
+        future;
+    solana_tx_manager()->MakeSystemProgramTransferTxData(from, to, lamports,
+                                                         future.GetCallback());
+    auto [tx_data, error, err_message] = future.Take();
+    if (tx_data_out) {
+      *tx_data_out = std::move(tx_data);
+    } else {
+      EXPECT_EQ(expected_tx_data, tx_data);
+    }
+    EXPECT_EQ(expected_error, error);
+    EXPECT_EQ(expected_err_message, err_message);
   }
 
   void TestMakeSystemProgramTransferTxData(
@@ -557,18 +557,16 @@ class SolanaTxManagerUnitTest : public testing::Test {
       mojom::SolanaTxDataPtr expected_tx_data,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_err_message) {
-    base::RunLoop run_loop;
+    base::test::TestFuture<mojom::SolanaTxDataPtr, mojom::SolanaProviderError,
+                           const std::string&>
+        future;
     solana_tx_manager()->MakeBubbleGumProgramTransferTxData(
         chain_id, token_address, from_wallet_address, to_wallet_address,
-        base::BindLambdaForTesting([&](mojom::SolanaTxDataPtr tx_data,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& err_message) {
-          EXPECT_EQ(expected_tx_data, tx_data);
-          EXPECT_EQ(expected_error, error);
-          EXPECT_EQ(expected_err_message, err_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+        future.GetCallback());
+    auto [tx_data, error, err_message] = future.Take();
+    EXPECT_EQ(expected_tx_data, tx_data);
+    EXPECT_EQ(expected_error, error);
+    EXPECT_EQ(expected_err_message, err_message);
   }
 
   mojom::SolanaTxDataPtr GetSystemProgramTransferTxData(
@@ -592,28 +590,24 @@ class SolanaTxManagerUnitTest : public testing::Test {
       mojom::SolanaTxDataPtr expected_tx_data,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_err_message) {
-    base::RunLoop run_loop;
     SCOPED_TRACE(testing::Message() << location.ToString());
+    base::test::TestFuture<mojom::SolanaTxDataPtr, mojom::SolanaProviderError,
+                           const std::string&>
+        future;
     solana_tx_manager()->MakeTokenProgramTransferTxData(
         chain_id, spl_token_mint_address, from_wallet_address,
-        to_wallet_address, amount, 8 /* decimals */,
-        base::BindLambdaForTesting([&](mojom::SolanaTxDataPtr tx_data,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& err_message) {
-          EXPECT_EQ(expected_tx_data, tx_data);
-          if (expected_tx_data && tx_data) {
-            EXPECT_EQ(expected_tx_data->tx_type, tx_data->tx_type);
-            EXPECT_EQ(expected_tx_data->instructions, tx_data->instructions);
-            EXPECT_EQ(expected_tx_data->message_header,
-                      tx_data->message_header);
-            EXPECT_EQ(expected_tx_data->static_account_keys,
-                      tx_data->static_account_keys);
-          }
-          EXPECT_EQ(expected_error, error);
-          EXPECT_EQ(expected_err_message, err_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+        to_wallet_address, amount, 8 /* decimals */, future.GetCallback());
+    auto [tx_data, error, err_message] = future.Take();
+    EXPECT_EQ(expected_tx_data, tx_data);
+    if (expected_tx_data && tx_data) {
+      EXPECT_EQ(expected_tx_data->tx_type, tx_data->tx_type);
+      EXPECT_EQ(expected_tx_data->instructions, tx_data->instructions);
+      EXPECT_EQ(expected_tx_data->message_header, tx_data->message_header);
+      EXPECT_EQ(expected_tx_data->static_account_keys,
+                tx_data->static_account_keys);
+    }
+    EXPECT_EQ(expected_error, error);
+    EXPECT_EQ(expected_err_message, err_message);
   }
 
   void TestMakeTxDataFromBase64EncodedTransaction(
@@ -623,32 +617,25 @@ class SolanaTxManagerUnitTest : public testing::Test {
       mojom::SolanaTxDataPtr expected_tx_data,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_err_message) {
-    base::RunLoop run_loop;
+    base::test::TestFuture<mojom::SolanaTxDataPtr, mojom::SolanaProviderError,
+                           const std::string&>
+        future;
     solana_tx_manager()->MakeTxDataFromBase64EncodedTransaction(
         encoded_transaction, tx_type, std::move(send_options),
-        base::BindLambdaForTesting([&](mojom::SolanaTxDataPtr tx_data,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& err_message) {
-          EXPECT_EQ(expected_tx_data, tx_data);
-          EXPECT_EQ(expected_error, error);
-          EXPECT_EQ(expected_err_message, err_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+        future.GetCallback());
+    auto [tx_data, error, err_message] = future.Take();
+    EXPECT_EQ(expected_tx_data, tx_data);
+    EXPECT_EQ(expected_error, error);
+    EXPECT_EQ(expected_err_message, err_message);
   }
 
   void TestGetSolTransactionMessageToSign(
       const std::string& tx_meta_id,
       std::optional<std::vector<std::uint8_t>> expected_tx_message) {
-    base::RunLoop run_loop;
-    solana_tx_manager()->GetSolTransactionMessageToSign(
-        tx_meta_id,
-        base::BindLambdaForTesting(
-            [&](const std::optional<std::vector<uint8_t>>& tx_message) {
-              EXPECT_EQ(tx_message, expected_tx_message);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<const std::optional<std::vector<uint8_t>>&> future;
+    solana_tx_manager()->GetSolTransactionMessageToSign(tx_meta_id,
+                                                        future.GetCallback());
+    EXPECT_EQ(future.Take(), expected_tx_message);
   }
 
   void TestProcessSolanaHardwareSignature(
@@ -657,19 +644,17 @@ class SolanaTxManagerUnitTest : public testing::Test {
       bool expected_result,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_error_message) {
-    base::RunLoop run_loop;
+    base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr,
+                           const std::string&>
+        future;
     solana_tx_manager()->ProcessSolanaHardwareSignature(
         tx_meta_id, mojom::SolanaSignature::New(signature),
-        base::BindLambdaForTesting([&](bool result,
-                                       mojom::ProviderErrorUnionPtr error_union,
-                                       const std::string& error_message) {
-          EXPECT_EQ(expected_result, result);
-          ASSERT_TRUE(error_union->is_solana_provider_error());
-          EXPECT_EQ(error_union->get_solana_provider_error(), expected_error);
-          EXPECT_EQ(expected_error_message, error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+        future.GetCallback());
+    auto [result, error_union, error_message] = future.Take();
+    EXPECT_EQ(expected_result, result);
+    ASSERT_TRUE(error_union->is_solana_provider_error());
+    EXPECT_EQ(error_union->get_solana_provider_error(), expected_error);
+    EXPECT_EQ(expected_error_message, error_message);
   }
 
   void TestRetryTransaction(const base::Location& location,
@@ -684,31 +669,26 @@ class SolanaTxManagerUnitTest : public testing::Test {
       EXPECT_CALL(observer, OnNewUnapprovedTx(testing::_)).Times(1);
     }
 
-    base::RunLoop run_loop;
-    solana_tx_manager()->RetryTransaction(
-        tx_meta_id,
-        base::BindLambdaForTesting([&](bool success, const std::string& id,
-                                       const std::string& err_message) {
-          EXPECT_EQ(expected_err_message, err_message);
-          EXPECT_EQ(expected_result, success);
-          if (expected_result) {
-            EXPECT_NE(tx_meta_id, id);
-            EXPECT_FALSE(id.empty());
+    base::test::TestFuture<bool, const std::string&, const std::string&> future;
+    solana_tx_manager()->RetryTransaction(tx_meta_id, future.GetCallback());
+    const auto& [success, id, err_message] = future.Take();
+    EXPECT_EQ(expected_err_message, err_message);
+    EXPECT_EQ(expected_result, success);
+    if (expected_result) {
+      EXPECT_NE(tx_meta_id, id);
+      EXPECT_FALSE(id.empty());
 
-            // Get the new tx and check some fields.
-            auto tx_meta = solana_tx_manager()->GetTxForTesting(id);
-            ASSERT_TRUE(tx_meta);
-            EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
-            EXPECT_TRUE(tx_meta->tx()->raw_signatures().empty());
-            EXPECT_EQ(tx_meta->tx()->message()->recent_blockhash(),
-                      expected_blockhash);
-            EXPECT_EQ(tx_meta->tx()->message()->last_valid_block_height(), 0u);
-          } else {
-            EXPECT_TRUE(id.empty());
-          }
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+      // Get the new tx and check some fields.
+      auto tx_meta = solana_tx_manager()->GetTxForTesting(id);
+      ASSERT_TRUE(tx_meta);
+      EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
+      EXPECT_TRUE(tx_meta->tx()->raw_signatures().empty());
+      EXPECT_EQ(tx_meta->tx()->message()->recent_blockhash(),
+                expected_blockhash);
+      EXPECT_EQ(tx_meta->tx()->message()->last_valid_block_height(), 0u);
+    } else {
+      EXPECT_TRUE(id.empty());
+    }
     testing::Mock::VerifyAndClearExpectations(&observer);
   }
 
@@ -718,18 +698,15 @@ class SolanaTxManagerUnitTest : public testing::Test {
       mojom::SolanaFeeEstimationPtr expected_estimation,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    solana_tx_manager()->GetSolanaTxFeeEstimation(
-        chain_id, tx_meta_id,
-        base::BindLambdaForTesting([&](mojom::SolanaFeeEstimationPtr estimation,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(expected_error, expected_error);
-          EXPECT_EQ(expected_error_message, error_message);
-          EXPECT_EQ(expected_estimation, estimation);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<mojom::SolanaFeeEstimationPtr,
+                           mojom::SolanaProviderError, const std::string&>
+        future;
+    solana_tx_manager()->GetSolanaTxFeeEstimation(chain_id, tx_meta_id,
+                                                  future.GetCallback());
+    auto [estimation, error, error_message] = future.Take();
+    EXPECT_EQ(expected_error, error);
+    EXPECT_EQ(expected_error_message, error_message);
+    EXPECT_EQ(expected_estimation, estimation);
   }
 
  protected:
@@ -1871,6 +1848,7 @@ TEST_F(SolanaTxManagerUnitTest, ProcessSolanaHardwareSignature) {
   EXPECT_TRUE(Base58Decode(signature, &signature_bytes, kSolanaSignatureSize));
 
   auto meta = solana_tx_manager()->GetTxForTesting(system_transfer_meta_id);
+  ASSERT_TRUE(meta);
   meta->tx()->message()->set_recent_blockhash(latest_blockhash1_);
   meta->tx()->message()->set_last_valid_block_height(last_valid_block_height1_);
   ASSERT_TRUE(
@@ -1880,6 +1858,66 @@ TEST_F(SolanaTxManagerUnitTest, ProcessSolanaHardwareSignature) {
   TestProcessSolanaHardwareSignature(system_transfer_meta_id, signature_bytes,
                                      true, mojom::SolanaProviderError::kSuccess,
                                      "");
+}
+
+// Regression test: a hardware signature that arrives after the user has
+// already rejected the transaction must not resurrect and broadcast it.
+TEST_F(SolanaTxManagerUnitTest, ProcessSolanaHardwareSignatureAfterRejected) {
+  std::vector<mojom::HardwareWalletAccountPtr> hw_infos;
+  hw_infos.push_back(mojom::HardwareWalletAccount::New(
+      "89DzXVKJ79xf9MkzTxatQESh5fcvsqBo9fCsbAXkCaZE", "path", "name 1",
+      mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kSolana));
+  auto from = keyring_service_->AddHardwareAccountsSync(std::move(hw_infos))[0]
+                  ->account_id.Clone();
+  const std::string to = "148FvZU6e67eSB12wv7fXCH5FsTDW8tsxXo3nFuZhfCF";
+  mojom::SolanaTxDataPtr system_transfer_data = nullptr;
+  TestMakeSystemProgramTransferTxData(from, to, 1, nullptr,
+                                      mojom::SolanaProviderError::kSuccess, "",
+                                      &system_transfer_data);
+  ASSERT_TRUE(system_transfer_data);
+  SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_,
+                 kMockGetFeeForMessageResponse, false,
+                 last_valid_block_height1_);
+  std::string system_transfer_meta_id;
+  AddUnapprovedTransaction(mojom::kSolanaMainnet,
+                           std::move(system_transfer_data), from,
+                           &system_transfer_meta_id);
+  ASSERT_FALSE(system_transfer_meta_id.empty());
+
+  std::string signature =
+      "fJaHU9cDUoLsWLXJSPTgW3bAkhuZL319v2479igQtSp1ZyBjPi923jWkALg48uS75z5fp1JK"
+      "1T4vdWi2D35fFEj";
+  std::vector<uint8_t> signature_bytes;
+  EXPECT_TRUE(Base58Decode(signature, &signature_bytes, kSolanaSignatureSize));
+
+  auto meta = solana_tx_manager()->GetTxForTesting(system_transfer_meta_id);
+  ASSERT_TRUE(meta);
+  meta->tx()->message()->set_recent_blockhash(latest_blockhash1_);
+  meta->tx()->message()->set_last_valid_block_height(last_valid_block_height1_);
+  ASSERT_TRUE(
+      solana_tx_manager()->GetSolanaTxStateManager().AddOrUpdateTx(*meta));
+
+  // User rejects the transaction while the hardware device is still
+  // producing a signature for it.
+  base::test::TestFuture<bool> reject_future;
+  solana_tx_manager()->RejectTransaction(system_transfer_meta_id,
+                                         reject_future.GetCallback());
+  EXPECT_TRUE(reject_future.Get());
+  auto rejected_meta =
+      solana_tx_manager()->GetTxForTesting(system_transfer_meta_id);
+  ASSERT_TRUE(rejected_meta);
+  EXPECT_EQ(rejected_meta->status(), mojom::TransactionStatus::Rejected);
+
+  // The late-arriving hardware signature must be rejected and must not
+  // publish/broadcast the transaction or move it off Rejected.
+  TestProcessSolanaHardwareSignature(
+      system_transfer_meta_id, signature_bytes, false,
+      mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+  auto final_meta =
+      solana_tx_manager()->GetTxForTesting(system_transfer_meta_id);
+  ASSERT_TRUE(final_meta);
+  EXPECT_EQ(final_meta->status(), mojom::TransactionStatus::Rejected);
 }
 
 TEST_F(SolanaTxManagerUnitTest, RebroadcastTransaction) {

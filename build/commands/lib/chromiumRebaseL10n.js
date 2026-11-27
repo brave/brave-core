@@ -7,9 +7,10 @@ import path from 'node:path'
 import fs from 'node:fs'
 import config from './config.ts'
 import util from './util.ts'
-import l10nUtil from './l10nUtil.js'
+import l10nUtil from './l10nUtil.ts'
+import rootDir from './rootDir.cjs'
 
-const srcDir = config.srcDir
+const srcDir = path.join(rootDir, 'src')
 
 const resetChromeStringFiles = () => {
   // Revert to originals before string replacement because original grd(p)s are

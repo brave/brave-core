@@ -5,7 +5,7 @@ Facilities for dealing with inexact dates and times.
 
 The essential types in this module are:
 
-* [`Date`] is a specific day in the Gregorian calendar.
+* [`Date`] is a specific day in the proleptic Gregorian calendar.
 * [`Time`] is a specific wall clock time.
 * [`DateTime`] is a combination of a day and a time.
 
@@ -29,12 +29,12 @@ assert_eq!(
 
 # What is "civil" time?
 
-A civil datetime is a calendar date and a clock time. It also goes by the
-names "naive," "local" or "plain." The most important thing to understand
-about civil time is that it does not correspond to a precise instant in
-time. This is in contrast to types like [`Timestamp`](crate::Timestamp) and
-[`Zoned`](crate::Zoned), which _do_ correspond to a precise instant in time (to
-nanosecond precision).
+A civil datetime is a calendar date and a clock time. It also goes by the names
+"naive," "local" or "plain." The most important thing to understand about civil
+time is that it does not correspond to a precise instant in time. This is in
+contrast to types like [`Timestamp`](crate::Timestamp) and
+[`ZonedDateTime`](crate::ZonedDateTime), which _do_ correspond to a precise
+instant in time (to nanosecond precision).
 
 Because a civil datetime _never_ has a time zone associated with it, and
 because some time zones have transitions that skip or repeat clock times, it
@@ -46,10 +46,10 @@ for daylight saving time. Conversely, `2024-11-03 01:30` occurred twice in
 "moved backward" for daylight saving time. (When time is skipped, it's called a
 "gap." When time is repeated, it's called a "fold.")
 
-In contrast, an instant in time (that is, `Timestamp` or `Zoned`) can _always_
-be converted to a civil datetime. And, when a civil datetime is combined
-with its time zone identifier _and_ its offset, the resulting machine readable
-string is unambiguous 100% of the time:
+In contrast, an instant in time (that is, `Timestamp` or `ZonedDateTime`) can
+_always_ be converted to a civil datetime. And, when a civil datetime is
+combined with its time zone identifier _and_ its offset, the resulting machine
+readable string is unambiguous 100% of the time:
 
 ```
 use jiff::{civil::date, tz::TimeZone};
@@ -57,21 +57,21 @@ use jiff::{civil::date, tz::TimeZone};
 let tz = TimeZone::get("America/New_York")?;
 let dt = date(2024, 11, 3).at(1, 30, 0, 0);
 // It's ambiguous, so asking for an unambiguous instant presents an error!
-assert!(tz.to_ambiguous_zoned(dt).unambiguous().is_err());
+assert!(tz.to_ambiguous_zoned_datetime(dt).unambiguous().is_err());
 // Gives you the earlier time in a fold, i.e., before DST ends:
 assert_eq!(
-    tz.to_ambiguous_zoned(dt).earlier()?.to_string(),
+    tz.to_ambiguous_zoned_datetime(dt).earlier()?.to_string(),
     "2024-11-03T01:30:00-04:00[America/New_York]",
 );
 // Gives you the later time in a fold, i.e., after DST ends.
 // Notice the offset change from the previous example!
 assert_eq!(
-    tz.to_ambiguous_zoned(dt).later()?.to_string(),
+    tz.to_ambiguous_zoned_datetime(dt).later()?.to_string(),
     "2024-11-03T01:30:00-05:00[America/New_York]",
 );
 // "Just give me something reasonable"
 assert_eq!(
-    tz.to_ambiguous_zoned(dt).compatible()?.to_string(),
+    tz.to_ambiguous_zoned_datetime(dt).compatible()?.to_string(),
     "2024-11-03T01:30:00-04:00[America/New_York]",
 );
 
@@ -95,6 +95,23 @@ you're in.
 saving time.
 * When interacting with legacy systems or systems that specifically do not
 support time zones.
+
+# What about dates preceding the introduction of the Gregorian calendar?
+
+Jiff uses what is called the _proleptic_ Gregorian calendar. This means that
+Jiff behaves _as if_ the Gregorian calendar has been used for all of time.
+
+In reality, the Gregorian calendar wasn't introduced until October 1582.
+However, not all places in the world adopted the Gregorian calendar at that
+time. For example, Russia didn't convert from the Julian calendar to the
+Gregorian calendar until 1917.
+
+By using the proleptic calendar---where by we pretend the Gregorian calendar
+has always been in use---we are sacrificing contextually and historically
+accurate dates in favor of a massive simplification in datetime handling. In
+general, the process of determining the correct calendar used by a given locale
+and at a given time is a research task that is outside the scope of what Jiff
+offers.
 */
 
 pub use self::{
@@ -130,6 +147,7 @@ mod weekday;
 ///
 /// To get the year in its era format, use [`Date::era_year`].
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Era {
     /// The "before common era" era.
     ///
@@ -174,18 +192,18 @@ pub enum Era {
 /// # Example
 ///
 /// ```
-/// use jiff::civil::DateTime;
+/// use jiff::civil::datetime;
 ///
-/// let d = DateTime::constant(2024, 2, 29, 21, 30, 5, 123_456_789);
-/// assert_eq!(d.date().year(), 2024);
-/// assert_eq!(d.date().month(), 2);
-/// assert_eq!(d.date().day(), 29);
-/// assert_eq!(d.time().hour(), 21);
-/// assert_eq!(d.time().minute(), 30);
-/// assert_eq!(d.time().second(), 5);
-/// assert_eq!(d.time().millisecond(), 123);
-/// assert_eq!(d.time().microsecond(), 456);
-/// assert_eq!(d.time().nanosecond(), 789);
+/// let dt = datetime(2024, 2, 29, 21, 30, 5, 123_456_789);
+/// assert_eq!(dt.date().year(), 2024);
+/// assert_eq!(dt.date().month(), 2);
+/// assert_eq!(dt.date().day(), 29);
+/// assert_eq!(dt.time().hour(), 21);
+/// assert_eq!(dt.time().minute(), 30);
+/// assert_eq!(dt.time().second(), 5);
+/// assert_eq!(dt.time().millisecond(), 123);
+/// assert_eq!(dt.time().microsecond(), 456);
+/// assert_eq!(dt.time().nanosecond(), 789);
 /// ```
 #[inline]
 pub const fn datetime(
@@ -268,16 +286,16 @@ pub const fn date(year: i16, month: i8, day: i8) -> Date {
 /// This shows an example of a valid time in a `const` context:
 ///
 /// ```
-/// use jiff::civil::Time;
+/// use jiff::civil::time;
 ///
-/// const BEDTIME: Time = Time::constant(21, 30, 5, 123_456_789);
-/// assert_eq!(BEDTIME.hour(), 21);
-/// assert_eq!(BEDTIME.minute(), 30);
-/// assert_eq!(BEDTIME.second(), 5);
-/// assert_eq!(BEDTIME.millisecond(), 123);
-/// assert_eq!(BEDTIME.microsecond(), 456);
-/// assert_eq!(BEDTIME.nanosecond(), 789);
-/// assert_eq!(BEDTIME.subsec_nanosecond(), 123_456_789);
+/// let t = time(21, 30, 5, 123_456_789);
+/// assert_eq!(t.hour(), 21);
+/// assert_eq!(t.minute(), 30);
+/// assert_eq!(t.second(), 5);
+/// assert_eq!(t.millisecond(), 123);
+/// assert_eq!(t.microsecond(), 456);
+/// assert_eq!(t.nanosecond(), 789);
+/// assert_eq!(t.subsec_nanosecond(), 123_456_789);
 /// ```
 #[inline]
 pub const fn time(

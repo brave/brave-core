@@ -31,8 +31,8 @@ s! {
 
     pub struct __c_anonymous_uc_sigmask_with_padding {
         pub uc_sigmask: crate::sigset_t,
-        /* Android has a wrong (smaller) sigset_t on x86. */
-        __padding_rt_sigset: u32,
+        /* Android has a wrong (smaller) sigset_t on ARM. */
+        __padding_rt_sigset: Padding<u32>,
     }
 
     pub struct ucontext_t {
@@ -483,7 +483,7 @@ f! {
     // directly. This workaround can be removed if the minimum version of
     // Android is bumped. When the workaround is removed, `accept4` can be
     // moved back to `linux_like/mod.rs`
-    pub fn accept4(
+    pub unsafe fn accept4(
         fd: c_int,
         addr: *mut crate::sockaddr,
         len: *mut crate::socklen_t,

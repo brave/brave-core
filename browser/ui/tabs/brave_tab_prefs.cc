@@ -20,7 +20,6 @@ namespace brave_tabs {
 
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kTabHoverMode, TabHoverMode::CARD);
-  registry->RegisterBooleanPref(kVerticalTabsEnabled, false);
   registry->RegisterBooleanPref(kVerticalTabsCollapsed, false);
   registry->RegisterBooleanPref(kVerticalTabsExpandedStatePerWindow, false);
 #if BUILDFLAG(IS_WIN)
@@ -72,6 +71,19 @@ void MigrateBraveProfilePrefs(PrefService* prefs) {
     prefs->SetBoolean(prefs::kCtrlTabMru, pref->GetValue()->GetBool());
     prefs->ClearPref(kMRUCyclingEnabled);
   }
+
+#if !BUILDFLAG(IS_ANDROID)
+  // When upstream vertical tabs are forced, move Brave's vertical tabs pref to
+  // upstream's one and clear it.
+  if (tabs::IsUpstreamVerticalTabsForceEnabled()) {
+    if (auto* pref = prefs->FindPreference(kVerticalTabsEnabled);
+        pref && !pref->IsDefaultValue()) {
+      prefs->SetBoolean(prefs::kVerticalTabsEnabled,
+                        pref->GetValue()->GetBool());
+      prefs->ClearPref(kVerticalTabsEnabled);
+    }
+  }
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 #if !BUILDFLAG(IS_ANDROID)

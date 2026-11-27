@@ -7,7 +7,7 @@ use hyper::rt::{Read, ReadBufCursor, Write};
 use hyper_util::client::legacy::connect::{Connected, Connection};
 #[cfg(any(feature = "socks", feature = "__tls", unix, target_os = "windows"))]
 use hyper_util::rt::TokioIo;
-#[cfg(feature = "default-tls")]
+#[cfg(feature = "__native-tls")]
 use native_tls_crate::{TlsConnector, TlsConnectorBuilder};
 use pin_project_lite::pin_project;
 use tower::util::{BoxCloneSyncServiceLayer, MapRequestLayer};
@@ -22,7 +22,7 @@ use std::sync::Arc;
 use std::task::{Context, Poll};
 use std::time::Duration;
 
-#[cfg(feature = "default-tls")]
+#[cfg(feature = "__native-tls")]
 use self::native_tls_conn::NativeTlsConn;
 #[cfg(feature = "__rustls")]
 use self::rustls_tls_conn::RustlsTlsConn;
@@ -222,8 +222,8 @@ where {
         }
     }
 
-    #[cfg(feature = "default-tls")]
-    pub(crate) fn new_default_tls<T>(
+    #[cfg(feature = "__native-tls")]
+    pub(crate) fn new_native_tls<T>(
         http: HttpConnector,
         tls: TlsConnectorBuilder,
         proxies: Arc<Vec<ProxyMatcher>>,
@@ -249,7 +249,7 @@ where {
         T: Into<Option<IpAddr>>,
     {
         let tls = tls.build().map_err(crate::error::builder)?;
-        Ok(Self::from_built_default_tls(
+        Ok(Self::from_built_native_tls(
             http,
             tls,
             proxies,
@@ -273,8 +273,8 @@ where {
         ))
     }
 
-    #[cfg(feature = "default-tls")]
-    pub(crate) fn from_built_default_tls<T>(
+    #[cfg(feature = "__native-tls")]
+    pub(crate) fn from_built_native_tls<T>(
         mut http: HttpConnector,
         tls: TlsConnector,
         proxies: Arc<Vec<ProxyMatcher>>,
@@ -319,7 +319,7 @@ where {
         http.enforce_http(false);
 
         ConnectorBuilder {
-            inner: Inner::DefaultTls(http, tls),
+            inner: Inner::NativeTls(http, tls),
             proxies,
             verbose: verbose::OFF,
             nodelay,
@@ -420,8 +420,8 @@ where {
 
     pub(crate) fn set_keepalive(&mut self, dur: Option<Duration>) {
         match &mut self.inner {
-            #[cfg(feature = "default-tls")]
-            Inner::DefaultTls(http, _tls) => http.set_keepalive(dur),
+            #[cfg(feature = "__native-tls")]
+            Inner::NativeTls(http, _tls) => http.set_keepalive(dur),
             #[cfg(feature = "__rustls")]
             Inner::RustlsTls { http, .. } => http.set_keepalive(dur),
             #[cfg(not(feature = "__tls"))]
@@ -431,8 +431,8 @@ where {
 
     pub(crate) fn set_keepalive_interval(&mut self, dur: Option<Duration>) {
         match &mut self.inner {
-            #[cfg(feature = "default-tls")]
-            Inner::DefaultTls(http, _tls) => http.set_keepalive_interval(dur),
+            #[cfg(feature = "__native-tls")]
+            Inner::NativeTls(http, _tls) => http.set_keepalive_interval(dur),
             #[cfg(feature = "__rustls")]
             Inner::RustlsTls { http, .. } => http.set_keepalive_interval(dur),
             #[cfg(not(feature = "__tls"))]
@@ -442,8 +442,8 @@ where {
 
     pub(crate) fn set_keepalive_retries(&mut self, retries: Option<u32>) {
         match &mut self.inner {
-            #[cfg(feature = "default-tls")]
-            Inner::DefaultTls(http, _tls) => http.set_keepalive_retries(retries),
+            #[cfg(feature = "__native-tls")]
+            Inner::NativeTls(http, _tls) => http.set_keepalive_retries(retries),
             #[cfg(feature = "__rustls")]
             Inner::RustlsTls { http, .. } => http.set_keepalive_retries(retries),
             #[cfg(not(feature = "__tls"))]
@@ -459,8 +459,8 @@ where {
     #[cfg(any(target_os = "android", target_os = "fuchsia", target_os = "linux"))]
     pub(crate) fn set_tcp_user_timeout(&mut self, dur: Option<Duration>) {
         match &mut self.inner {
-            #[cfg(feature = "default-tls")]
-            Inner::DefaultTls(http, _tls) => http.set_tcp_user_timeout(dur),
+            #[cfg(feature = "__native-tls")]
+            Inner::NativeTls(http, _tls) => http.set_tcp_user_timeout(dur),
             #[cfg(feature = "__rustls")]
             Inner::RustlsTls { http, .. } => http.set_tcp_user_timeout(dur),
             #[cfg(not(feature = "__tls"))]
@@ -509,9 +509,9 @@ pub(crate) struct ConnectorService {
 enum Inner {
     #[cfg(not(feature = "__tls"))]
     Http(HttpConnector),
-    #[cfg(feature = "default-tls")]
-    DefaultTls(HttpConnector, TlsConnector),
-    #[cfg(feature = "__rustls")]
+    #[cfg(feature = "__native-tls")]
+    NativeTls(HttpConnector, TlsConnector),
+    #[cfg(any(feature = "__rustls"))]
     RustlsTls {
         http: HttpConnector,
         tls: Arc<rustls::ClientConfig>,
@@ -523,8 +523,8 @@ impl Inner {
     #[cfg(feature = "socks")]
     fn get_http_connector(&mut self) -> &mut crate::connect::HttpConnector {
         match self {
-            #[cfg(feature = "default-tls")]
-            Inner::DefaultTls(http, _) => http,
+            #[cfg(feature = "__native-tls")]
+            Inner::NativeTls(http, _) => http,
             #[cfg(feature = "__rustls")]
             Inner::RustlsTls { http, .. } => http,
             #[cfg(not(feature = "__tls"))]
@@ -545,8 +545,8 @@ impl ConnectorService {
         };
 
         match &mut self.inner {
-            #[cfg(feature = "default-tls")]
-            Inner::DefaultTls(http, tls) => {
+            #[cfg(feature = "__native-tls")]
+            Inner::NativeTls(http, tls) => {
                 if dst.scheme() == Some(&Scheme::HTTPS) {
                     let host = dst.host().ok_or("no host in url")?.to_string();
                     let conn = socks::connect(proxy, dst, dns, &self.resolver, http).await?;
@@ -621,8 +621,8 @@ impl ConnectorService {
                     tls_info: false,
                 })
             }
-            #[cfg(feature = "default-tls")]
-            Inner::DefaultTls(http, tls) => {
+            #[cfg(feature = "__native-tls")]
+            Inner::NativeTls(http, tls) => {
                 let mut http = http.clone();
 
                 // Disable Nagle's algorithm for TLS handshake
@@ -662,7 +662,7 @@ impl ConnectorService {
             }
             #[cfg(feature = "__rustls")]
             Inner::RustlsTls { http, tls, .. } => {
-                let mut http = http.clone();
+                let mut http = http;
 
                 // Disable Nagle's algorithm for TLS handshake
                 //
@@ -671,7 +671,7 @@ impl ConnectorService {
                     http.set_nodelay(true);
                 }
 
-                let mut http = hyper_rustls::HttpsConnector::from((http, tls.clone()));
+                let mut http = hyper_rustls::HttpsConnector::from((http, tls));
                 let io = http.call(dst).await?;
 
                 if let hyper_rustls::MaybeHttpsStream::Https(stream) = io {
@@ -738,8 +738,8 @@ impl ConnectorService {
                     tls_info: false,
                 })
             }
-            #[cfg(feature = "default-tls")]
-            Inner::DefaultTls(_, tls) => {
+            #[cfg(feature = "__native-tls")]
+            Inner::NativeTls(_, tls) => {
                 let tls_connector = tokio_native_tls::TlsConnector::from(tls.clone());
                 let mut http = hyper_tls::HttpsConnector::from((svc, tls_connector));
                 let io = http.call(dst).await?;
@@ -760,7 +760,7 @@ impl ConnectorService {
             }
             #[cfg(feature = "__rustls")]
             Inner::RustlsTls { tls, .. } => {
-                let mut http = hyper_rustls::HttpsConnector::from((svc, tls.clone()));
+                let mut http = hyper_rustls::HttpsConnector::from((svc, tls));
                 let io = http.call(dst).await?;
 
                 if let hyper_rustls::MaybeHttpsStream::Https(stream) = io {
@@ -781,7 +781,7 @@ impl ConnectorService {
     }
 
     async fn connect_via_proxy(self, dst: Uri, proxy: Intercepted) -> Result<Conn, BoxError> {
-        log::debug!("proxy({proxy:?}) intercepts '{dst:?}'");
+        log::debug!("proxy({proxy:?}) intercepts '{:?}'", dst.host());
 
         #[cfg(feature = "socks")]
         match proxy.uri().scheme_str().ok_or("proxy scheme expected")? {
@@ -796,11 +796,11 @@ impl ConnectorService {
         let auth = proxy.basic_auth().cloned();
 
         #[cfg(feature = "__tls")]
-        let misc = proxy.custom_headers().clone();
+        let misc = proxy.custom_headers();
 
         match &self.inner {
-            #[cfg(feature = "default-tls")]
-            Inner::DefaultTls(http, tls) => {
+            #[cfg(feature = "__native-tls")]
+            Inner::NativeTls(http, tls) => {
                 if dst.scheme() == Some(&Scheme::HTTPS) {
                     log::trace!("tunneling HTTPS over proxy");
                     let tls_connector = tokio_native_tls::TlsConnector::from(tls.clone());
@@ -926,7 +926,7 @@ impl Service<Uri> for ConnectorService {
     }
 
     fn call(&mut self, dst: Uri) -> Self::Future {
-        log::debug!("starting new connection: {dst:?}");
+        log::debug!("starting new connection '{:?}'", dst.host());
         let timeout = self.simple_timeout;
 
         // Local transports (UDS, Windows Named Pipes) skip proxies
@@ -975,7 +975,7 @@ impl TlsInfoFactory for tokio::net::TcpStream {
     }
 }
 
-#[cfg(feature = "default-tls")]
+#[cfg(feature = "__native-tls")]
 impl TlsInfoFactory for tokio_native_tls::TlsStream<TokioIo<TokioIo<tokio::net::TcpStream>>> {
     fn tls_info(&self) -> Option<crate::tls::TlsInfo> {
         let peer_certificate = self
@@ -984,11 +984,14 @@ impl TlsInfoFactory for tokio_native_tls::TlsStream<TokioIo<TokioIo<tokio::net::
             .ok()
             .flatten()
             .and_then(|c| c.to_der().ok());
-        Some(crate::tls::TlsInfo { peer_certificate })
+        Some(crate::tls::TlsInfo {
+            peer_certificate,
+            version: None,
+        })
     }
 }
 
-#[cfg(feature = "default-tls")]
+#[cfg(feature = "__native-tls")]
 impl TlsInfoFactory
     for tokio_native_tls::TlsStream<
         TokioIo<hyper_tls::MaybeHttpsStream<TokioIo<tokio::net::TcpStream>>>,
@@ -1001,11 +1004,14 @@ impl TlsInfoFactory
             .ok()
             .flatten()
             .and_then(|c| c.to_der().ok());
-        Some(crate::tls::TlsInfo { peer_certificate })
+        Some(crate::tls::TlsInfo {
+            peer_certificate,
+            version: None,
+        })
     }
 }
 
-#[cfg(feature = "default-tls")]
+#[cfg(feature = "__native-tls")]
 impl TlsInfoFactory for hyper_tls::MaybeHttpsStream<TokioIo<tokio::net::TcpStream>> {
     fn tls_info(&self) -> Option<crate::tls::TlsInfo> {
         match self {
@@ -1018,13 +1024,18 @@ impl TlsInfoFactory for hyper_tls::MaybeHttpsStream<TokioIo<tokio::net::TcpStrea
 #[cfg(feature = "__rustls")]
 impl TlsInfoFactory for tokio_rustls::client::TlsStream<TokioIo<TokioIo<tokio::net::TcpStream>>> {
     fn tls_info(&self) -> Option<crate::tls::TlsInfo> {
-        let peer_certificate = self
-            .get_ref()
-            .1
+        let conn = &self.get_ref().1;
+        let peer_certificate = conn
             .peer_certificates()
             .and_then(|certs| certs.first())
             .map(|c| c.to_vec());
-        Some(crate::tls::TlsInfo { peer_certificate })
+        let version = conn
+            .protocol_version()
+            .and_then(crate::tls::Version::from_rustls);
+        Some(crate::tls::TlsInfo {
+            peer_certificate,
+            version,
+        })
     }
 }
 
@@ -1035,13 +1046,18 @@ impl TlsInfoFactory
     >
 {
     fn tls_info(&self) -> Option<crate::tls::TlsInfo> {
-        let peer_certificate = self
-            .get_ref()
-            .1
+        let conn = &self.get_ref().1;
+        let peer_certificate = conn
             .peer_certificates()
             .and_then(|certs| certs.first())
             .map(|c| c.to_vec());
-        Some(crate::tls::TlsInfo { peer_certificate })
+        let version = conn
+            .protocol_version()
+            .and_then(crate::tls::Version::from_rustls);
+        Some(crate::tls::TlsInfo {
+            peer_certificate,
+            version,
+        })
     }
 }
 
@@ -1065,7 +1081,7 @@ impl TlsInfoFactory for tokio::net::UnixStream {
     }
 }
 
-#[cfg(feature = "default-tls")]
+#[cfg(feature = "__native-tls")]
 #[cfg(unix)]
 impl TlsInfoFactory for tokio_native_tls::TlsStream<TokioIo<TokioIo<tokio::net::UnixStream>>> {
     fn tls_info(&self) -> Option<crate::tls::TlsInfo> {
@@ -1075,11 +1091,14 @@ impl TlsInfoFactory for tokio_native_tls::TlsStream<TokioIo<TokioIo<tokio::net::
             .ok()
             .flatten()
             .and_then(|c| c.to_der().ok());
-        Some(crate::tls::TlsInfo { peer_certificate })
+        Some(crate::tls::TlsInfo {
+            peer_certificate,
+            version: None,
+        })
     }
 }
 
-#[cfg(feature = "default-tls")]
+#[cfg(feature = "__native-tls")]
 #[cfg(unix)]
 impl TlsInfoFactory
     for tokio_native_tls::TlsStream<
@@ -1093,11 +1112,14 @@ impl TlsInfoFactory
             .ok()
             .flatten()
             .and_then(|c| c.to_der().ok());
-        Some(crate::tls::TlsInfo { peer_certificate })
+        Some(crate::tls::TlsInfo {
+            peer_certificate,
+            version: None,
+        })
     }
 }
 
-#[cfg(feature = "default-tls")]
+#[cfg(feature = "__native-tls")]
 #[cfg(unix)]
 impl TlsInfoFactory for hyper_tls::MaybeHttpsStream<TokioIo<tokio::net::UnixStream>> {
     fn tls_info(&self) -> Option<crate::tls::TlsInfo> {
@@ -1112,13 +1134,18 @@ impl TlsInfoFactory for hyper_tls::MaybeHttpsStream<TokioIo<tokio::net::UnixStre
 #[cfg(unix)]
 impl TlsInfoFactory for tokio_rustls::client::TlsStream<TokioIo<TokioIo<tokio::net::UnixStream>>> {
     fn tls_info(&self) -> Option<crate::tls::TlsInfo> {
-        let peer_certificate = self
-            .get_ref()
-            .1
+        let conn = &self.get_ref().1;
+        let peer_certificate = conn
             .peer_certificates()
             .and_then(|certs| certs.first())
             .map(|c| c.to_vec());
-        Some(crate::tls::TlsInfo { peer_certificate })
+        let version = conn
+            .protocol_version()
+            .and_then(crate::tls::Version::from_rustls);
+        Some(crate::tls::TlsInfo {
+            peer_certificate,
+            version,
+        })
     }
 }
 
@@ -1130,13 +1157,18 @@ impl TlsInfoFactory
     >
 {
     fn tls_info(&self) -> Option<crate::tls::TlsInfo> {
-        let peer_certificate = self
-            .get_ref()
-            .1
+        let conn = &self.get_ref().1;
+        let peer_certificate = conn
             .peer_certificates()
             .and_then(|certs| certs.first())
             .map(|c| c.to_vec());
-        Some(crate::tls::TlsInfo { peer_certificate })
+        let version = conn
+            .protocol_version()
+            .and_then(crate::tls::Version::from_rustls);
+        Some(crate::tls::TlsInfo {
+            peer_certificate,
+            version,
+        })
     }
 }
 
@@ -1161,7 +1193,7 @@ impl TlsInfoFactory for tokio::net::windows::named_pipe::NamedPipeClient {
     }
 }
 
-#[cfg(feature = "default-tls")]
+#[cfg(feature = "__native-tls")]
 #[cfg(target_os = "windows")]
 impl TlsInfoFactory
     for tokio_native_tls::TlsStream<
@@ -1175,11 +1207,14 @@ impl TlsInfoFactory
             .ok()
             .flatten()
             .and_then(|c| c.to_der().ok());
-        Some(crate::tls::TlsInfo { peer_certificate })
+        Some(crate::tls::TlsInfo {
+            peer_certificate,
+            version: None,
+        })
     }
 }
 
-#[cfg(feature = "default-tls")]
+#[cfg(feature = "__native-tls")]
 #[cfg(target_os = "windows")]
 impl TlsInfoFactory
     for tokio_native_tls::TlsStream<
@@ -1195,11 +1230,14 @@ impl TlsInfoFactory
             .ok()
             .flatten()
             .and_then(|c| c.to_der().ok());
-        Some(crate::tls::TlsInfo { peer_certificate })
+        Some(crate::tls::TlsInfo {
+            peer_certificate,
+            version: None,
+        })
     }
 }
 
-#[cfg(feature = "default-tls")]
+#[cfg(feature = "__native-tls")]
 #[cfg(target_os = "windows")]
 impl TlsInfoFactory
     for hyper_tls::MaybeHttpsStream<TokioIo<tokio::net::windows::named_pipe::NamedPipeClient>>
@@ -1220,13 +1258,18 @@ impl TlsInfoFactory
     >
 {
     fn tls_info(&self) -> Option<crate::tls::TlsInfo> {
-        let peer_certificate = self
-            .get_ref()
-            .1
+        let conn = &self.get_ref().1;
+        let peer_certificate = conn
             .peer_certificates()
             .and_then(|certs| certs.first())
             .map(|c| c.to_vec());
-        Some(crate::tls::TlsInfo { peer_certificate })
+        let version = conn
+            .protocol_version()
+            .and_then(crate::tls::Version::from_rustls);
+        Some(crate::tls::TlsInfo {
+            peer_certificate,
+            version,
+        })
     }
 }
 
@@ -1242,13 +1285,18 @@ impl TlsInfoFactory
     >
 {
     fn tls_info(&self) -> Option<crate::tls::TlsInfo> {
-        let peer_certificate = self
-            .get_ref()
-            .1
+        let conn = &self.get_ref().1;
+        let peer_certificate = conn
             .peer_certificates()
             .and_then(|certs| certs.first())
             .map(|c| c.to_vec());
-        Some(crate::tls::TlsInfo { peer_certificate })
+        let version = conn
+            .protocol_version()
+            .and_then(crate::tls::Version::from_rustls);
+        Some(crate::tls::TlsInfo {
+            peer_certificate,
+            version,
+        })
     }
 }
 
@@ -1452,7 +1500,7 @@ pub(crate) mod windows_named_pipe {
 
 pub(crate) type Connecting = Pin<Box<dyn Future<Output = Result<Conn, BoxError>> + Send>>;
 
-#[cfg(feature = "default-tls")]
+#[cfg(feature = "__native-tls")]
 mod native_tls_conn {
     use super::TlsInfoFactory;
     use hyper::rt::{Read, ReadBufCursor, Write};
@@ -1485,12 +1533,12 @@ mod native_tls_conn {
                 .get_ref()
                 .inner()
                 .connected();
-            #[cfg(feature = "native-tls-alpn")]
+            #[cfg(feature = "__native-tls-alpn")]
             match self.inner.inner().get_ref().negotiated_alpn().ok() {
                 Some(Some(alpn_protocol)) if alpn_protocol == b"h2" => connected.negotiated_h2(),
                 _ => connected,
             }
-            #[cfg(not(feature = "native-tls-alpn"))]
+            #[cfg(not(feature = "__native-tls-alpn"))]
             connected
         }
     }
@@ -1505,12 +1553,12 @@ mod native_tls_conn {
                 .get_ref()
                 .inner()
                 .connected();
-            #[cfg(feature = "native-tls-alpn")]
+            #[cfg(feature = "__native-tls-alpn")]
             match self.inner.inner().get_ref().negotiated_alpn().ok() {
                 Some(Some(alpn_protocol)) if alpn_protocol == b"h2" => connected.negotiated_h2(),
                 _ => connected,
             }
-            #[cfg(not(feature = "native-tls-alpn"))]
+            #[cfg(not(feature = "__native-tls-alpn"))]
             connected
         }
     }
@@ -1519,12 +1567,12 @@ mod native_tls_conn {
     impl Connection for NativeTlsConn<TokioIo<TokioIo<tokio::net::UnixStream>>> {
         fn connected(&self) -> Connected {
             let connected = Connected::new();
-            #[cfg(feature = "native-tls-alpn")]
+            #[cfg(feature = "__native-tls-alpn")]
             match self.inner.inner().get_ref().negotiated_alpn().ok() {
                 Some(Some(alpn_protocol)) if alpn_protocol == b"h2" => connected.negotiated_h2(),
                 _ => connected,
             }
-            #[cfg(not(feature = "native-tls-alpn"))]
+            #[cfg(not(feature = "__native-tls-alpn"))]
             connected
         }
     }
@@ -1533,12 +1581,12 @@ mod native_tls_conn {
     impl Connection for NativeTlsConn<TokioIo<MaybeHttpsStream<TokioIo<tokio::net::UnixStream>>>> {
         fn connected(&self) -> Connected {
             let connected = Connected::new();
-            #[cfg(feature = "native-tls-alpn")]
+            #[cfg(feature = "__native-tls-alpn")]
             match self.inner.inner().get_ref().negotiated_alpn().ok() {
                 Some(Some(alpn_protocol)) if alpn_protocol == b"h2" => connected.negotiated_h2(),
                 _ => connected,
             }
-            #[cfg(not(feature = "native-tls-alpn"))]
+            #[cfg(not(feature = "__native-tls-alpn"))]
             connected
         }
     }
@@ -1549,12 +1597,12 @@ mod native_tls_conn {
     {
         fn connected(&self) -> Connected {
             let connected = Connected::new();
-            #[cfg(feature = "native-tls-alpn")]
+            #[cfg(feature = "__native-tls-alpn")]
             match self.inner.inner().get_ref().negotiated_alpn().ok() {
                 Some(Some(alpn_protocol)) if alpn_protocol == b"h2" => connected.negotiated_h2(),
                 _ => connected,
             }
-            #[cfg(not(feature = "native-tls-alpn"))]
+            #[cfg(not(feature = "__native-tls-alpn"))]
             connected
         }
     }
@@ -1567,12 +1615,12 @@ mod native_tls_conn {
     {
         fn connected(&self) -> Connected {
             let connected = Connected::new();
-            #[cfg(feature = "native-tls-alpn")]
+            #[cfg(feature = "__native-tls-alpn")]
             match self.inner.inner().get_ref().negotiated_alpn().ok() {
                 Some(Some(alpn_protocol)) if alpn_protocol == b"h2" => connected.negotiated_h2(),
                 _ => connected,
             }
-            #[cfg(not(feature = "native-tls-alpn"))]
+            #[cfg(not(feature = "__native-tls-alpn"))]
             connected
         }
     }

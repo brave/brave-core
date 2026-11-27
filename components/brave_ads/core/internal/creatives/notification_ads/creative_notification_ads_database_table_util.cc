@@ -19,37 +19,40 @@ namespace brave_ads::database::table {
 CreativeNotificationAdInfo CreativeNotificationAdFromMojomRow(
     const mojom::DBRowInfoPtr& mojom_db_row) {
   CHECK(mojom_db_row);
-  CHECK_EQ(23U, mojom_db_row->column_values_union.size());
+  CHECK_EQ(24U, mojom_db_row->column_values_union.size());
 
   CreativeNotificationAdInfo creative_ad;
 
   creative_ad.creative_instance_id = ColumnString(mojom_db_row, 0);
   creative_ad.creative_set_id = ColumnString(mojom_db_row, 1);
   creative_ad.campaign_id = ColumnString(mojom_db_row, 2);
+  creative_ad.campaign_type =
+      ToMojomNewTabPageAdCampaignType(ColumnString(mojom_db_row, 3))
+          .value_or(mojom::NewTabPageAdCampaignType::kUndefined);
   creative_ad.metric_type =
-      ToMojomNewTabPageAdMetricType(ColumnString(mojom_db_row, 3))
+      ToMojomNewTabPageAdMetricType(ColumnString(mojom_db_row, 4))
           .value_or(mojom::NewTabPageAdMetricType::kUndefined);
-  creative_ad.start_at = ColumnTime(mojom_db_row, 4);
-  creative_ad.end_at = ColumnTime(mojom_db_row, 5);
-  creative_ad.daily_cap = ColumnInt(mojom_db_row, 6);
-  creative_ad.advertiser_id = ColumnString(mojom_db_row, 7);
-  creative_ad.priority = ColumnInt(mojom_db_row, 8);
-  creative_ad.per_day = ColumnInt(mojom_db_row, 9);
-  creative_ad.per_week = ColumnInt(mojom_db_row, 10);
-  creative_ad.per_month = ColumnInt(mojom_db_row, 11);
-  creative_ad.total_max = ColumnInt(mojom_db_row, 12);
-  creative_ad.value = ColumnDouble(mojom_db_row, 13);
-  creative_ad.segment = ColumnString(mojom_db_row, 14);
-  creative_ad.geo_targets.insert(ColumnString(mojom_db_row, 15));
-  creative_ad.target_url = GURL(ColumnString(mojom_db_row, 16));
-  creative_ad.title = ColumnString(mojom_db_row, 17);
-  creative_ad.body = ColumnString(mojom_db_row, 18);
-  creative_ad.pass_through_rate = ColumnDouble(mojom_db_row, 19);
+  creative_ad.start_at = ColumnTime(mojom_db_row, 5);
+  creative_ad.end_at = ColumnTime(mojom_db_row, 6);
+  creative_ad.daily_cap = ColumnInt(mojom_db_row, 7);
+  creative_ad.advertiser_id = ColumnString(mojom_db_row, 8);
+  creative_ad.priority = ColumnInt(mojom_db_row, 9);
+  creative_ad.per_day = ColumnInt(mojom_db_row, 10);
+  creative_ad.per_week = ColumnInt(mojom_db_row, 11);
+  creative_ad.per_month = ColumnInt(mojom_db_row, 12);
+  creative_ad.total_max = ColumnInt(mojom_db_row, 13);
+  creative_ad.value = ColumnDouble(mojom_db_row, 14);
+  creative_ad.segment = ColumnString(mojom_db_row, 15);
+  creative_ad.geo_targets.insert(ColumnString(mojom_db_row, 16));
+  creative_ad.target_url = GURL(ColumnString(mojom_db_row, 17));
+  creative_ad.title = ColumnString(mojom_db_row, 18);
+  creative_ad.body = ColumnString(mojom_db_row, 19);
+  creative_ad.pass_through_rate = ColumnDouble(mojom_db_row, 20);
 
   CreativeDaypartInfo daypart;
-  daypart.days_of_week = ColumnString(mojom_db_row, 20);
-  daypart.start_minute = ColumnInt(mojom_db_row, 21);
-  daypart.end_minute = ColumnInt(mojom_db_row, 22);
+  daypart.days_of_week = ColumnString(mojom_db_row, 21);
+  daypart.start_minute = ColumnInt(mojom_db_row, 22);
+  daypart.end_minute = ColumnInt(mojom_db_row, 23);
   creative_ad.dayparts.insert(daypart);
 
   return creative_ad;

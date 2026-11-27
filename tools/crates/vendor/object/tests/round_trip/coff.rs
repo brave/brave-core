@@ -1,9 +1,9 @@
 use object::read::{Object, ObjectSection};
-use object::{read, write};
 use object::{
     Architecture, BinaryFormat, Endianness, RelocationEncoding, RelocationFlags, RelocationKind,
     SymbolFlags, SymbolKind, SymbolScope,
 };
+use object::{read, write};
 
 #[test]
 fn reloc_overflow() {

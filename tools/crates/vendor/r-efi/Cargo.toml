@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.68"
 name = "r-efi"
-version = "5.3.0"
+version = "6.0.0"
 build = false
 autolib = false
 autobins = false
@@ -40,8 +40,6 @@ license = "MIT OR Apache-2.0 OR LGPL-2.1-or-later"
 repository = "https://github.com/r-efi/r-efi"
 
 [features]
-efiapi = []
-examples = ["native"]
 native = []
 rustc-dep-of-std = ["core"]
 

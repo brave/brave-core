@@ -19,6 +19,7 @@ cfg_if! {
         bsd,
         target_os = "android",
         target_os = "aix",
+        target_os = "illumos",
         all(target_os = "linux", not(target_env = "gnu")),
         target_os = "cygwin"
     ))]{
@@ -50,6 +51,7 @@ libc_enum! {
             bsd,
             target_os = "android",
             target_os = "aix",
+            target_os = "illumos",
             all(target_os = "linux", not(any(target_env = "gnu", target_env = "uclibc"))),
             target_os = "cygwin"
         ), repr(i32))]

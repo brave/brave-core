@@ -1,39 +1,60 @@
-use std::{borrow::Cow, error::Error};
+use gix_error::Result;
+use std::borrow::Cow;
 
 use async_trait::async_trait;
 use bstr::{BStr, BString, ByteVec};
 use futures_io::{AsyncRead, AsyncWrite};
 use futures_lite::AsyncWriteExt;
-use gix_packetline::PacketLineRef;
 
 use crate::{
-    client::{self, capabilities, git, Capabilities, SetServiceResponse},
     Protocol, Service,
+    client::{
+        self,
+        async_io::{RequestWriter, SetServiceResponse},
+        capabilities::async_recv::Handshake,
+        git::{self, ConnectionState},
+    },
+    packetline::{
+        PacketLineRef,
+        async_io::{StreamingPeekableIter, Writer},
+    },
 };
 
-impl<R, W> client::TransportWithoutIO for git::Connection<R, W>
+/// A TCP connection to either a `git` daemon or a spawned `git` process.
+///
+/// When connecting to a daemon, additional context information is sent with the first line of the handshake.
+pub struct Connection<R, W> {
+    pub(in crate::client) writer: W,
+    pub(in crate::client) line_provider: StreamingPeekableIter<R>,
+    pub(in crate::client) state: ConnectionState,
+}
+
+impl<R, W> Connection<R, W> {
+    /// Optionally set the URL to be returned when asked for it if `Some` or calculate a default for `None`.
+    ///
+    /// The URL is required as parameter for authentication helpers which are called in transports
+    /// that support authentication. Even though plain git transports don't support that, this
+    /// may well be the case in custom transports.
+    pub fn custom_url(mut self, url: Option<BString>) -> Self {
+        self.state.custom_url = url;
+        self
+    }
+
+    /// Return the inner reader and writer
+    pub fn into_inner(self) -> (R, W) {
+        (self.line_provider.into_inner(), self.writer)
+    }
+}
+
+impl<R, W> client::TransportWithoutIO for Connection<R, W>
 where
     R: AsyncRead + Unpin,
     W: AsyncWrite + Unpin,
 {
-    fn request(
-        &mut self,
-        write_mode: client::WriteMode,
-        on_into_read: client::MessageKind,
-        trace: bool,
-    ) -> Result<client::RequestWriter<'_>, client::Error> {
-        Ok(client::RequestWriter::new_from_bufread(
-            &mut self.writer,
-            Box::new(self.line_provider.as_read_without_sidebands()),
-            write_mode,
-            on_into_read,
-            trace,
-        ))
-    }
     fn to_url(&self) -> Cow<'_, BStr> {
-        self.custom_url.as_ref().map_or_else(
+        self.state.custom_url.as_ref().map_or_else(
             || {
-                let mut possibly_lossy_url = self.path.clone();
+                let mut possibly_lossy_url = self.state.path.clone();
                 possibly_lossy_url.insert_str(0, "file://");
                 Cow::Owned(possibly_lossy_url)
             },
@@ -45,13 +66,13 @@ where
         true
     }
 
-    fn configure(&mut self, _config: &dyn std::any::Any) -> Result<(), Box<dyn Error + Send + Sync + 'static>> {
+    fn configure(&mut self, _config: &dyn std::any::Any) -> Result {
         Ok(())
     }
 }
 
 #[async_trait(?Send)]
-impl<R, W> client::Transport for git::Connection<R, W>
+impl<R, W> client::async_io::Transport for Connection<R, W>
 where
     R: AsyncRead + Unpin,
     W: AsyncWrite + Unpin,
@@ -60,35 +81,51 @@ where
         &mut self,
         service: Service,
         extra_parameters: &'a [(&'a str, Option<&'a str>)],
-    ) -> Result<SetServiceResponse<'_>, client::Error> {
-        if self.mode == git::ConnectMode::Daemon {
-            let mut line_writer = gix_packetline::Writer::new(&mut self.writer).binary_mode();
+    ) -> std::result::Result<SetServiceResponse<'_>, client::Error> {
+        if self.state.mode == git::ConnectMode::Daemon {
+            let mut line_writer = Writer::new(&mut self.writer);
+            line_writer.enable_binary_mode();
             line_writer
                 .write_all(&git::message::connect(
                     service,
-                    self.desired_version,
-                    &self.path,
-                    self.virtual_host.as_ref(),
+                    self.state.desired_version,
+                    &self.state.path,
+                    self.state.virtual_host.as_ref(),
                     extra_parameters,
-                ))
+                )?)
                 .await?;
             line_writer.flush().await?;
         }
 
-        let capabilities::recv::Outcome {
+        let Handshake {
             capabilities,
             refs,
             protocol: actual_protocol,
-        } = Capabilities::from_lines_with_version_detection(&mut self.line_provider).await?;
+        } = Handshake::from_lines_with_version_detection(&mut self.line_provider).await?;
         Ok(SetServiceResponse {
             actual_protocol,
             capabilities,
             refs,
         })
     }
+
+    fn request(
+        &mut self,
+        write_mode: client::WriteMode,
+        on_into_read: client::MessageKind,
+        trace: bool,
+    ) -> std::result::Result<RequestWriter<'_>, client::Error> {
+        Ok(RequestWriter::new_from_bufread(
+            &mut self.writer,
+            Box::new(self.line_provider.as_read_without_sidebands()),
+            write_mode,
+            on_into_read,
+            trace,
+        ))
+    }
 }
 
-impl<R, W> git::Connection<R, W>
+impl<R, W> Connection<R, W>
 where
     R: AsyncRead + Unpin,
     W: AsyncWrite + Unpin,
@@ -107,14 +144,16 @@ where
         mode: git::ConnectMode,
         trace: bool,
     ) -> Self {
-        git::Connection {
+        Connection {
             writer: write,
-            line_provider: gix_packetline::StreamingPeekableIter::new(read, &[PacketLineRef::Flush], trace),
-            path: repository_path.into(),
-            virtual_host: virtual_host.map(|(h, p)| (h.into(), p)),
-            desired_version,
-            custom_url: None,
-            mode,
+            line_provider: StreamingPeekableIter::new(read, &[PacketLineRef::Flush], trace),
+            state: ConnectionState {
+                path: repository_path.into(),
+                virtual_host: virtual_host.map(|(h, p)| (h.into(), p)),
+                desired_version,
+                custom_url: None,
+                mode,
+            },
         }
     }
 }
@@ -125,9 +164,12 @@ mod async_net {
 
     use async_std::net::TcpStream;
 
-    use crate::client::{git, Error};
+    use crate::client::{
+        Error,
+        git::{ConnectMode, async_io::Connection},
+    };
 
-    impl git::Connection<TcpStream, TcpStream> {
+    impl Connection<TcpStream, TcpStream> {
         /// Create a new TCP connection using the `git` protocol of `desired_version`, and make a connection to `host`
         /// at `port` for accessing the repository at `path` on the server side.
         /// If `trace` is `true`, all packetlines received or sent will be passed to the facilities of the `gix-trace` crate.
@@ -137,20 +179,20 @@ mod async_net {
             path: bstr::BString,
             desired_version: crate::Protocol,
             trace: bool,
-        ) -> Result<git::Connection<TcpStream, TcpStream>, Error> {
+        ) -> Result<Self, Error> {
             let read = async_std::io::timeout(
                 Duration::from_secs(5),
                 TcpStream::connect(&(host, port.unwrap_or(9418))),
             )
             .await?;
             let write = read.clone();
-            Ok(git::Connection::new(
+            Ok(Self::new(
                 read,
                 write,
                 desired_version,
                 path,
                 None::<(String, _)>,
-                git::ConnectMode::Daemon,
+                ConnectMode::Daemon,
                 trace,
             ))
         }

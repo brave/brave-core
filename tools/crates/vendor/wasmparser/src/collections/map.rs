@@ -3,7 +3,10 @@
 use core::fmt::Debug;
 use core::{borrow::Borrow, hash::Hash, iter::FusedIterator, ops::Index};
 
-#[cfg(not(feature = "no-hash-maps"))]
+#[cfg(all(
+    feature = "hash-collections",
+    not(feature = "prefer-btree-collections")
+))]
 mod detail {
     use crate::collections::hash;
     use hashbrown::hash_map;
@@ -22,7 +25,10 @@ mod detail {
     pub type IntoValuesImpl<K, V> = hash_map::IntoValues<K, V>;
 }
 
-#[cfg(feature = "no-hash-maps")]
+#[cfg(any(
+    not(feature = "hash-collections"),
+    feature = "prefer-btree-collections"
+))]
 mod detail {
     use alloc::collections::btree_map;
 
@@ -155,9 +161,15 @@ where
     /// Reserves capacity for at least `additional` more elements to be inserted in the [`Map`].
     #[inline]
     pub fn reserve(&mut self, additional: usize) {
-        #[cfg(not(feature = "no-hash-maps"))]
+        #[cfg(all(
+            feature = "hash-collections",
+            not(feature = "prefer-btree-collections")
+        ))]
         self.inner.reserve(additional);
-        #[cfg(feature = "no-hash-maps")]
+        #[cfg(any(
+            not(feature = "hash-collections"),
+            feature = "prefer-btree-collections"
+        ))]
         let _ = additional;
     }
 

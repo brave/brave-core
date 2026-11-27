@@ -26,13 +26,33 @@
 //!
 //! [`signal-hook`]: https://docs.rs/signal-hook
 //!
+//! ## Examples
+//!
+//! ```
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! use std::io::Write;
+//!
+//! # let dir = tempfile::tempdir()?;
+//! # let destination = dir.path().join("config");
+//! let mut tempfile = gix_tempfile::writable_at(
+//!     dir.path().join("config.lock"),
+//!     gix_tempfile::ContainingDirectory::Exists,
+//!     gix_tempfile::AutoRemove::Tempfile,
+//! )?;
+//! tempfile.write_all(b"new = value\n")?;
+//! tempfile.persist(&destination)?;
+//!
+//! assert_eq!(std::fs::read_to_string(&destination)?, "new = value\n");
+//! # Ok(()) }
+//! ```
+//!
 //! ## Feature Flags
 #![cfg_attr(
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
 #![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
-#![deny(missing_docs, rust_2018_idioms, unsafe_code)]
+#![deny(missing_docs, unsafe_code)]
 
 use std::{
     io,
@@ -116,7 +136,7 @@ static REGISTRY: LazyLock<HashMap<usize, Option<ForksafeTempfile>>> = LazyLock::
     if signal::handler::MODE.load(std::sync::atomic::Ordering::SeqCst) != signal::handler::Mode::None as usize {
         for sig in signal_hook::consts::TERM_SIGNALS {
             // SAFETY: handlers are considered unsafe because a lot can go wrong. See `cleanup_tempfiles()` for details on safety.
-            #[allow(unsafe_code)]
+            #[expect(unsafe_code)]
             unsafe {
                 #[cfg(not(windows))]
                 {
@@ -140,7 +160,13 @@ pub enum ContainingDirectory {
     Exists,
     /// Create the directory recursively with the given number of retries in a way that is somewhat race resistant
     /// depending on the amount of retries.
-    CreateAllRaceProof(create_dir::Retries),
+    CreateAllRaceProof {
+        /// How often to retry directory creation when other processes interfere.
+        retries: create_dir::Retries,
+        /// Git's parsed sharing policy for newly created directories; `0` keeps the umask permissions.
+        /// See [`gix_fs::adjust_shared_repository_permissions()`] for the encoding.
+        shared_repository_permissions: i32,
+    },
 }
 
 /// A type expressing the ways we cleanup after ourselves to remove resources we created.

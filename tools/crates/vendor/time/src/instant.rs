@@ -4,14 +4,14 @@
 
 use core::borrow::Borrow;
 use core::cmp::{Ord, Ordering, PartialEq, PartialOrd};
-use core::ops::{Add, Sub};
+use core::ops::{Add, AddAssign, Sub, SubAssign};
 use core::time::Duration as StdDuration;
 use std::time::Instant as StdInstant;
 
-use crate::internal_macros::{impl_add_assign, impl_sub_assign};
-use crate::Duration;
+use crate::SignedDuration;
 
-/// A measurement of a monotonically non-decreasing clock. Opaque and useful only with [`Duration`].
+/// A measurement of a monotonically non-decreasing clock. Opaque and useful only with
+/// [`SignedDuration`].
 ///
 /// Instants are always guaranteed to be no less than any previously measured instant when created,
 /// and are often useful for tasks such as measuring benchmarks or timing how long an operation
@@ -26,8 +26,8 @@ use crate::Duration;
 /// "the number of seconds" from an instant. Instead, it only allows measuring the duration between
 /// two instants (or comparing two instants).
 ///
-/// This implementation allows for operations with signed [`Duration`]s, but is otherwise identical
-/// to [`std::time::Instant`].
+/// This implementation allows for operations with signed [`SignedDuration`]s, but is otherwise
+/// identical to [`std::time::Instant`].
 #[doc(hidden)]
 #[deprecated(
     since = "0.3.35",
@@ -62,7 +62,7 @@ impl Instant {
     /// assert!(instant.elapsed() >= 1.milliseconds());
     /// ```
     #[inline]
-    pub fn elapsed(self) -> Duration {
+    pub fn elapsed(self) -> SignedDuration {
         Self::now() - self
     }
 
@@ -78,7 +78,7 @@ impl Instant {
     /// assert_eq!(now.checked_add((-5).seconds()), Some(now + (-5).seconds()));
     /// ```
     #[inline]
-    pub fn checked_add(self, duration: Duration) -> Option<Self> {
+    pub fn checked_add(self, duration: SignedDuration) -> Option<Self> {
         if duration.is_zero() {
             Some(self)
         } else if duration.is_positive() {
@@ -101,7 +101,7 @@ impl Instant {
     /// assert_eq!(now.checked_sub((-5).seconds()), Some(now - (-5).seconds()));
     /// ```
     #[inline]
-    pub fn checked_sub(self, duration: Duration) -> Option<Self> {
+    pub fn checked_sub(self, duration: SignedDuration) -> Option<Self> {
         if duration.is_zero() {
             Some(self)
         } else if duration.is_positive() {
@@ -141,7 +141,7 @@ impl From<Instant> for StdInstant {
 }
 
 impl Sub for Instant {
-    type Output = Duration;
+    type Output = SignedDuration;
 
     /// # Panics
     ///
@@ -149,18 +149,18 @@ impl Sub for Instant {
     #[inline]
     fn sub(self, other: Self) -> Self::Output {
         match self.0.cmp(&other.0) {
-            Ordering::Equal => Duration::ZERO,
+            Ordering::Equal => SignedDuration::ZERO,
             Ordering::Greater => (self.0 - other.0)
                 .try_into()
-                .expect("overflow converting `std::time::Duration` to `time::Duration`"),
-            Ordering::Less => -Duration::try_from(other.0 - self.0)
-                .expect("overflow converting `std::time::Duration` to `time::Duration`"),
+                .expect("overflow converting `std::time::Duration` to `time::SignedDuration`"),
+            Ordering::Less => -SignedDuration::try_from(other.0 - self.0)
+                .expect("overflow converting `std::time::Duration` to `time::SignedDuration`"),
         }
     }
 }
 
 impl Sub<StdInstant> for Instant {
-    type Output = Duration;
+    type Output = SignedDuration;
 
     #[inline]
     fn sub(self, other: StdInstant) -> Self::Output {
@@ -169,7 +169,7 @@ impl Sub<StdInstant> for Instant {
 }
 
 impl Sub<Instant> for StdInstant {
-    type Output = Duration;
+    type Output = SignedDuration;
 
     #[inline]
     fn sub(self, other: Instant) -> Self::Output {
@@ -177,7 +177,7 @@ impl Sub<Instant> for StdInstant {
     }
 }
 
-impl Add<Duration> for Instant {
+impl Add<SignedDuration> for Instant {
     type Output = Self;
 
     /// # Panics
@@ -185,11 +185,11 @@ impl Add<Duration> for Instant {
     /// This function may panic if the resulting point in time cannot be represented by the
     /// underlying data structure.
     #[inline]
-    fn add(self, duration: Duration) -> Self::Output {
+    fn add(self, duration: SignedDuration) -> Self::Output {
         if duration.is_positive() {
             Self(self.0 + duration.unsigned_abs())
         } else if duration.is_negative() {
-            #[expect(clippy::unchecked_duration_subtraction)]
+            #[expect(clippy::unchecked_time_subtraction)]
             Self(self.0 - duration.unsigned_abs())
         } else {
             debug_assert!(duration.is_zero());
@@ -198,11 +198,15 @@ impl Add<Duration> for Instant {
     }
 }
 
-impl Add<Duration> for StdInstant {
+impl Add<SignedDuration> for StdInstant {
     type Output = Self;
 
+    /// # Panics
+    ///
+    /// This function may panic if the resulting point in time cannot be represented by the
+    /// underlying data structure.
     #[inline]
-    fn add(self, duration: Duration) -> Self::Output {
+    fn add(self, duration: SignedDuration) -> Self::Output {
         (Instant(self) + duration).0
     }
 }
@@ -210,16 +214,50 @@ impl Add<Duration> for StdInstant {
 impl Add<StdDuration> for Instant {
     type Output = Self;
 
+    /// # Panics
+    ///
+    /// This function may panic if the resulting point in time cannot be represented by the
+    /// underlying data structure.
     #[inline]
     fn add(self, duration: StdDuration) -> Self::Output {
         Self(self.0 + duration)
     }
 }
 
-impl_add_assign!(Instant: Duration, StdDuration);
-impl_add_assign!(StdInstant: Duration);
+impl AddAssign<SignedDuration> for Instant {
+    /// # Panics
+    ///
+    /// This function may panic if the resulting point in time cannot be represented by the
+    /// underlying data structure.
+    #[inline]
+    fn add_assign(&mut self, rhs: SignedDuration) {
+        *self = *self + rhs;
+    }
+}
 
-impl Sub<Duration> for Instant {
+impl AddAssign<StdDuration> for Instant {
+    /// # Panics
+    ///
+    /// This function may panic if the resulting point in time cannot be represented by the
+    /// underlying data structure.
+    #[inline]
+    fn add_assign(&mut self, rhs: StdDuration) {
+        *self = *self + rhs;
+    }
+}
+
+impl AddAssign<SignedDuration> for StdInstant {
+    /// # Panics
+    ///
+    /// This function may panic if the resulting point in time cannot be represented by the
+    /// underlying data structure.
+    #[inline]
+    fn add_assign(&mut self, rhs: SignedDuration) {
+        *self = *self + rhs;
+    }
+}
+
+impl Sub<SignedDuration> for Instant {
     type Output = Self;
 
     /// # Panics
@@ -227,9 +265,9 @@ impl Sub<Duration> for Instant {
     /// This function may panic if the resulting point in time cannot be represented by the
     /// underlying data structure.
     #[inline]
-    fn sub(self, duration: Duration) -> Self::Output {
+    fn sub(self, duration: SignedDuration) -> Self::Output {
         if duration.is_positive() {
-            #[expect(clippy::unchecked_duration_subtraction)]
+            #[expect(clippy::unchecked_time_subtraction)]
             Self(self.0 - duration.unsigned_abs())
         } else if duration.is_negative() {
             Self(self.0 + duration.unsigned_abs())
@@ -240,11 +278,15 @@ impl Sub<Duration> for Instant {
     }
 }
 
-impl Sub<Duration> for StdInstant {
+impl Sub<SignedDuration> for StdInstant {
     type Output = Self;
 
+    /// # Panics
+    ///
+    /// This function may panic if the resulting point in time cannot be represented by the
+    /// underlying data structure.
     #[inline]
-    fn sub(self, duration: Duration) -> Self::Output {
+    fn sub(self, duration: SignedDuration) -> Self::Output {
         (Instant(self) - duration).0
     }
 }
@@ -258,13 +300,43 @@ impl Sub<StdDuration> for Instant {
     /// underlying data structure.
     #[inline]
     fn sub(self, duration: StdDuration) -> Self::Output {
-        #[expect(clippy::unchecked_duration_subtraction)]
+        #[expect(clippy::unchecked_time_subtraction)]
         Self(self.0 - duration)
     }
 }
 
-impl_sub_assign!(Instant: Duration, StdDuration);
-impl_sub_assign!(StdInstant: Duration);
+impl SubAssign<SignedDuration> for Instant {
+    /// # Panics
+    ///
+    /// This function may panic if the resulting point in time cannot be represented by the
+    /// underlying data structure.
+    #[inline]
+    fn sub_assign(&mut self, rhs: SignedDuration) {
+        *self = *self - rhs;
+    }
+}
+
+impl SubAssign<StdDuration> for Instant {
+    /// # Panics
+    ///
+    /// This function may panic if the resulting point in time cannot be represented by the
+    /// underlying data structure.
+    #[inline]
+    fn sub_assign(&mut self, rhs: StdDuration) {
+        *self = *self - rhs;
+    }
+}
+
+impl SubAssign<SignedDuration> for StdInstant {
+    /// # Panics
+    ///
+    /// This function may panic if the resulting point in time cannot be represented by the
+    /// underlying data structure.
+    #[inline]
+    fn sub_assign(&mut self, rhs: SignedDuration) {
+        *self = *self - rhs;
+    }
+}
 
 impl PartialEq<StdInstant> for Instant {
     #[inline]

@@ -3,17 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { kReadFileRequest, kReadFileResponse } from './message_handler'
-
-const kScheme = 'chrome-untrusted://'
-
-// chrome-untrusted://view.<uuid>.leo-workspace -> chrome-untrusted://<uuid>.leo-workspace
-export function workspaceOrigin(viewerOrigin: string): string {
-  const viewPrefix = `${kScheme}view.`
-  return viewerOrigin.startsWith(viewPrefix)
-    ? viewerOrigin.replace(viewPrefix, kScheme)
-    : ''
-}
+import {
+  kReadFileRequest,
+  kReadFileResponse,
+  workspaceOrigin,
+} from './message_handler'
 
 // Parses the #file=<filename> fragment from the URL.
 export function parseFileFragment(hash: string): string | null {
@@ -22,6 +16,13 @@ export function parseFileFragment(hash: string): string | null {
   }
   const params = new URLSearchParams(hash.slice(1))
   return params.get('file')
+}
+
+// The URL path the service worker serves |filename| from. Each segment is
+// escaped so that a name containing e.g. a space, '#' or '?' reaches the
+// service worker intact; it unescapes them again.
+export function filePathToUrlPath(filename: string): string {
+  return '/' + filename.split('/').map(encodeURIComponent).join('/')
 }
 
 function setupParentBridge(
@@ -111,7 +112,7 @@ function displayFileInIframe(filename: string) {
     contentIframe = document.createElement('iframe')
   }
 
-  contentIframe.src = `/${filename}`
+  contentIframe.src = filePathToUrlPath(filename)
   root.appendChild(contentIframe)
 
   console.debug('[leo-workspace-view] displaying file:', filename)

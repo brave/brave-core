@@ -109,7 +109,7 @@ impl ValueType {
     /// Construct a `ValueType` from a base type DIE.
     #[cfg(feature = "read")]
     pub fn from_entry<R: Reader>(
-        entry: &DebuggingInformationEntry<'_, '_, R>,
+        entry: &DebuggingInformationEntry<R>,
     ) -> Result<Option<ValueType>> {
         if entry.tag() != constants::DW_TAG_base_type {
             return Ok(None);
@@ -117,8 +117,7 @@ impl ValueType {
         let mut encoding = None;
         let mut byte_size = None;
         let mut endianity = constants::DW_END_default;
-        let mut attrs = entry.attrs();
-        while let Some(attr) = attrs.next()? {
+        for attr in entry.attrs() {
             match attr.name() {
                 constants::DW_AT_byte_size => byte_size = attr.udata_value(),
                 constants::DW_AT_encoding => {
@@ -691,49 +690,29 @@ impl Value {
             Value::Generic(v1) => {
                 let v1 = sign_extend(v1, addr_mask);
                 let value = if v2 >= u64::from(mask_bit_size(addr_mask)) {
-                    if v1 < 0 {
-                        !0
-                    } else {
-                        0
-                    }
+                    if v1 < 0 { !0 } else { 0 }
                 } else {
                     (v1 >> v2) as u64
                 };
                 Value::Generic(value)
             }
             Value::I8(v1) => Value::I8(if v2 >= 8 {
-                if v1 < 0 {
-                    !0
-                } else {
-                    0
-                }
+                if v1 < 0 { !0 } else { 0 }
             } else {
                 v1 >> v2
             }),
             Value::I16(v1) => Value::I16(if v2 >= 16 {
-                if v1 < 0 {
-                    !0
-                } else {
-                    0
-                }
+                if v1 < 0 { !0 } else { 0 }
             } else {
                 v1 >> v2
             }),
             Value::I32(v1) => Value::I32(if v2 >= 32 {
-                if v1 < 0 {
-                    !0
-                } else {
-                    0
-                }
+                if v1 < 0 { !0 } else { 0 }
             } else {
                 v1 >> v2
             }),
             Value::I64(v1) => Value::I64(if v2 >= 64 {
-                if v1 < 0 {
-                    !0
-                } else {
-                    0
-                }
+                if v1 < 0 { !0 } else { 0 }
             } else {
                 v1 >> v2
             }),
@@ -907,30 +886,23 @@ impl Value {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::common::{DebugAbbrevOffset, DebugInfoOffset, Encoding, Format};
+    use crate::common::{Encoding, Format};
     use crate::endianity::LittleEndian;
     use crate::read::{
-        Abbreviation, AttributeSpecification, DebuggingInformationEntry, EndianSlice, UnitHeader,
-        UnitOffset, UnitType,
+        Abbreviation, Abbreviations, AttributeSpecification, DebuggingInformationEntry,
+        EndianSlice, EntriesRaw, UnitOffset,
     };
+    use alloc::vec::Vec;
 
     #[test]
-    #[rustfmt::skip]
     fn valuetype_from_encoding() {
         let encoding = Encoding {
             format: Format::Dwarf32,
             version: 4,
             address_size: 4,
         };
-        let unit = UnitHeader::new(
-            encoding,
-            7,
-            UnitType::Compilation,
-            DebugAbbrevOffset(0),
-            DebugInfoOffset(0).into(),
-            EndianSlice::new(&[], LittleEndian),
-        );
 
+        let abbrevs = Abbreviations::default();
         let abbrev = Abbreviation::new(
             42,
             constants::DW_TAG_base_type,
@@ -951,41 +923,46 @@ mod tests {
                     constants::DW_FORM_udata,
                     None,
                 ),
-            ].into(),
+            ]
+            .into(),
         );
 
-        for &(attrs, result) in &[
-            ([0x01, constants::DW_ATE_signed.0, constants::DW_END_default.0], ValueType::I8),
-            ([0x02, constants::DW_ATE_signed.0, constants::DW_END_default.0], ValueType::I16),
-            ([0x04, constants::DW_ATE_signed.0, constants::DW_END_default.0], ValueType::I32),
-            ([0x08, constants::DW_ATE_signed.0, constants::DW_END_default.0], ValueType::I64),
-            ([0x01, constants::DW_ATE_unsigned.0, constants::DW_END_default.0], ValueType::U8),
-            ([0x02, constants::DW_ATE_unsigned.0, constants::DW_END_default.0], ValueType::U16),
-            ([0x04, constants::DW_ATE_unsigned.0, constants::DW_END_default.0], ValueType::U32),
-            ([0x08, constants::DW_ATE_unsigned.0, constants::DW_END_default.0], ValueType::U64),
-            ([0x04, constants::DW_ATE_float.0, constants::DW_END_default.0], ValueType::F32),
-            ([0x08, constants::DW_ATE_float.0, constants::DW_END_default.0], ValueType::F64),
-        ] {
-            let entry = DebuggingInformationEntry::new(
-                UnitOffset(0),
-                EndianSlice::new(&attrs, LittleEndian),
-                &abbrev,
-                &unit,
-            );
-            assert_eq!(ValueType::from_entry(&entry), Ok(Some(result)));
-        }
+        #[rustfmt::skip]
+        let tests = [
+            ([0x01, constants::DW_ATE_signed.0, constants::DW_END_default.0], Some(ValueType::I8)),
+            ([0x02, constants::DW_ATE_signed.0, constants::DW_END_default.0], Some(ValueType::I16)),
+            ([0x04, constants::DW_ATE_signed.0, constants::DW_END_default.0], Some(ValueType::I32)),
+            ([0x08, constants::DW_ATE_signed.0, constants::DW_END_default.0], Some(ValueType::I64)),
+            ([0x01, constants::DW_ATE_unsigned.0, constants::DW_END_default.0], Some(ValueType::U8)),
+            ([0x02, constants::DW_ATE_unsigned.0, constants::DW_END_default.0], Some(ValueType::U16)),
+            ([0x04, constants::DW_ATE_unsigned.0, constants::DW_END_default.0], Some(ValueType::U32)),
+            ([0x08, constants::DW_ATE_unsigned.0, constants::DW_END_default.0], Some(ValueType::U64)),
+            ([0x04, constants::DW_ATE_float.0, constants::DW_END_default.0], Some(ValueType::F32)),
+            ([0x08, constants::DW_ATE_float.0, constants::DW_END_default.0], Some(ValueType::F64)),
+            ([0x03, constants::DW_ATE_signed.0, constants::DW_END_default.0], None),
+            ([0x02, constants::DW_ATE_signed.0, constants::DW_END_big.0], None),
+        ];
 
-        for attrs in &[
-            [0x03, constants::DW_ATE_signed.0, constants::DW_END_default.0],
-            [0x02, constants::DW_ATE_signed.0, constants::DW_END_big.0],
-        ] {
-            let entry = DebuggingInformationEntry::new(
-                UnitOffset(0),
+        for (attrs, result) in &tests {
+            let mut input = EntriesRaw::new(
                 EndianSlice::new(attrs, LittleEndian),
-                &abbrev,
-                &unit,
+                encoding,
+                &abbrevs,
+                UnitOffset(0),
             );
-            assert_eq!(ValueType::from_entry(&entry), Ok(None));
+            let attrs = abbrev
+                .attributes()
+                .iter()
+                .map(|spec| input.read_attribute(*spec))
+                .collect::<Result<Vec<_>>>()
+                .unwrap();
+            let entry = DebuggingInformationEntry::new(
+                abbrev.tag(),
+                abbrev.has_children(),
+                attrs,
+                UnitOffset(0),
+            );
+            assert_eq!(ValueType::from_entry(&entry), Ok(*result));
         }
     }
 

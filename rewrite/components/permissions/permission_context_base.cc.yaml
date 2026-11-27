@@ -10,9 +10,11 @@ substitutions:
       class_name: PermissionContextBase
       rename: PermissionContextBase_ChromiumImpl
 
-  - description: 'Calls BraveCanBypassEmbeddingOriginCheck for wallet handling'
+  - description: |
+      Pass the content settings type to `CanBypassEmbeddingOriginCheck`, so
+      Brave Wallet permissions can bypass the check.
     regex:
       pattern: 'CanBypassEmbeddingOriginCheck('
-      replace: 'BraveCanBypassEmbeddingOriginCheck(content_settings_type_, '
+      replace: 'CanBypassEmbeddingOriginCheck(content_settings_type_,'
 
     count: 2

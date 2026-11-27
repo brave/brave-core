@@ -3,15 +3,13 @@
 pub mod upgrade;
 
 use hyper::service::HttpService;
-use std::future::Future;
 use std::marker::PhantomPinned;
 use std::mem::MaybeUninit;
 use std::pin::Pin;
-use std::task::{Context, Poll};
+use std::task::{Context, Poll, ready};
 use std::{error::Error as StdError, io, time::Duration};
 
 use bytes::Bytes;
-use futures_core::ready;
 use http::{Request, Response};
 use http_body::Body;
 use hyper::{
@@ -81,12 +79,15 @@ impl<E> Builder<E> {
     /// # Example
     ///
     /// ```
+    /// # #[cfg(feature = "tokio")]
+    /// # {
     /// use hyper_util::{
     ///     rt::TokioExecutor,
     ///     server::conn::auto,
     /// };
     ///
     /// auto::Builder::new(TokioExecutor::new());
+    /// # }
     /// ```
     pub fn new(executor: E) -> Self {
         Self {
@@ -172,6 +173,8 @@ impl<E> Builder<E> {
     /// # Example
     ///
     /// ```
+    /// # #[cfg(feature = "tokio")]
+    /// # {
     /// use hyper_util::{
     ///     rt::TokioExecutor,
     ///     server::conn::auto,
@@ -179,6 +182,7 @@ impl<E> Builder<E> {
     ///
     /// auto::Builder::new(TokioExecutor::new())
     ///     .title_case_headers(true);
+    /// # }
     /// ```
     #[cfg(feature = "http1")]
     pub fn title_case_headers(mut self, enabled: bool) -> Self {
@@ -196,6 +200,8 @@ impl<E> Builder<E> {
     /// # Example
     ///
     /// ```
+    /// # #[cfg(feature = "tokio")]
+    /// # {
     /// use hyper_util::{
     ///     rt::TokioExecutor,
     ///     server::conn::auto,
@@ -203,6 +209,7 @@ impl<E> Builder<E> {
     ///
     /// auto::Builder::new(TokioExecutor::new())
     ///     .preserve_header_case(true);
+    /// # }
     /// ```
     #[cfg(feature = "http1")]
     pub fn preserve_header_case(mut self, enabled: bool) -> Self {
@@ -399,7 +406,7 @@ impl<T> std::ops::Deref for Cow<'_, T> {
     fn deref(&self) -> &T {
         match self {
             Cow::Borrowed(t) => &*t,
-            Cow::Owned(ref t) => t,
+            Cow::Owned(t) => t,
         }
     }
 }
@@ -1125,7 +1132,7 @@ impl<E> Http2Builder<'_, E> {
     }
 }
 
-#[cfg(test)]
+#[cfg(all(feature = "tokio", test))]
 mod tests {
     use crate::{
         rt::{TokioExecutor, TokioIo},

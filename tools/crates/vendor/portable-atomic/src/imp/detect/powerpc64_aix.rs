@@ -4,10 +4,10 @@
 Run-time CPU feature detection on PowerPC64 AIX by using getsystemcfg.
 
 Refs:
-- https://github.com/golang/go/blob/go1.25.0/src/internal/cpu/cpu_ppc64x_aix.go
+- https://github.com/golang/go/blob/go1.26.0/src/internal/cpu/cpu_ppc64x_aix.go
 
-As of nightly-2024-09-07, is_powerpc_feature_detected doesn't support run-time detection on AIX.
-https://github.com/rust-lang/stdarch/blob/d9466edb4c53cece8686ee6e17b028436ddf4151/crates/std_detect/src/detect/mod.rs
+As of Rust 1.94, is_powerpc_feature_detected doesn't support run-time detection on AIX.
+https://github.com/rust-lang/rust/blob/1.94.0/library/std_detect/src/detect/mod.rs
 
 Run-time detection on PowerPC64 AIX is currently disabled by default as experimental
 because we cannot run tests on the VM or real machine.
@@ -21,7 +21,7 @@ mod ffi {
 
     sys_const!({
         // https://github.com/rust-lang/libc/blob/0.2.158/src/unix/aix/mod.rs#L2058
-        // https://github.com/golang/go/blob/go1.25.0/src/internal/cpu/cpu_ppc64x_aix.go
+        // https://github.com/golang/go/blob/go1.26.0/src/internal/cpu/cpu_ppc64x_aix.go
         pub(crate) const SC_IMPL: c_int = 2;
         pub(crate) const POWER_8: c_ulong = 0x10000;
         pub(crate) const POWER_9: c_ulong = 0x20000;
@@ -39,11 +39,12 @@ mod ffi {
 }
 
 #[cold]
-fn _detect(info: &mut CpuInfo) {
+#[must_use]
+fn _detect(mut info: CpuInfo) -> CpuInfo {
     // SAFETY: calling getsystemcfg is safe.
     let impl_ = unsafe { ffi::getsystemcfg(ffi::SC_IMPL) };
     if impl_ == ffi::c_ulong::MAX {
-        return;
+        return info;
     }
     // Check both POWER_8 and later ISAs (which are superset of POWER_8) because
     // AIX currently doesn't set POWER_8 when POWER_9 is set.
@@ -51,4 +52,5 @@ fn _detect(info: &mut CpuInfo) {
     if impl_ & (ffi::POWER_8 | ffi::POWER_9 | ffi::POWER_10) != 0 {
         info.set(CpuInfoFlag::quadword_atomics);
     }
+    info
 }

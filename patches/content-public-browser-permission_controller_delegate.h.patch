@@ -1,0 +1,19 @@
+diff --git a/content/public/browser/permission_controller_delegate.h b/content/public/browser/permission_controller_delegate.h
+index eb16bd6ba6a95f47a91c439c097daabfe3071393..e30b13a79e4a72738f651d4529d52d7a5acacedc 100644
+--- a/content/public/browser/permission_controller_delegate.h
++++ b/content/public/browser/permission_controller_delegate.h
+@@ -87,6 +87,14 @@ class CONTENT_EXPORT PermissionControllerDelegate {
+       RenderProcessHost* render_process_host,
+       const GURL& worker_origin) = 0;
+ 
++  // Returns the permission result for `requesting_origin` in
++  // `render_frame_host`, for a `requesting_origin` that isn't the frame's
++  // last committed origin.
++  virtual PermissionResult GetPermissionResultForEmbeddedRequester(
++      const blink::mojom::PermissionDescriptorPtr& permission_descriptor,
++      RenderFrameHost* render_frame_host,
++      const url::Origin& requesting_origin);
++
+   // Sets the permission back to its default for the requesting_origin/
+   // embedding_origin tuple.
+   virtual void ResetPermission(blink::PermissionType permission,

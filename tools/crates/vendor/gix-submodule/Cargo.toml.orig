@@ -2,28 +2,38 @@ lints.workspace = true
 
 [package]
 name = "gix-submodule"
-version = "0.21.0"
+version = "0.36.1"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate of the gitoxide project dealing git submodules"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-rust-version = "1.82"
-include = ["src/**/*", "LICENSE-*"]
+edition = "2024"
+rust-version = "1.88"
+include = ["/src/**/*", "/LICENSE-*"]
 
 [lib]
 doctest = false
 
+[features]
+## Enable support for the SHA-1 hash by forwarding the feature to dependencies.
+sha1 = ["gix-refspec/sha1"]
+## Enable support for the SHA-256 hash by forwarding the feature to dependencies.
+sha256 = ["gix-refspec/sha256"]
+
 [dependencies]
-gix-pathspec = { version = "^0.13.0", path = "../gix-pathspec" }
-gix-refspec = { version = "^0.32.0", path = "../gix-refspec" }
-gix-config = { version = "^0.47.0", path = "../gix-config" }
-gix-path = { version = "^0.10.21", path = "../gix-path" }
-gix-url = { version = "^0.33.0", path = "../gix-url" }
+gix-pathspec = { version = "^0.22.1", path = "../gix-pathspec" }
+gix-error = { version = "^0.5.2", path = "../gix-error", features = ["bstr"] }
+gix-refspec = { version = "^0.47.1", path = "../gix-refspec" }
+gix-config = { version = "^0.62.1", path = "../gix-config" }
+gix-path = { version = "^0.14.1", path = "../gix-path" }
+gix-url = { version = "^0.40.1", path = "../gix-url" }
 
 bstr = { version = "1.12.0", default-features = false }
-thiserror = "2.0.17"
 
 [dev-dependencies]
+insta = "1.46.3"
 gix-testtools = { path = "../tests/tools" }
-gix-features = { path = "../gix-features", features = ["walkdir"] }
+gix-fs = { path = "../gix-fs", features = ["walkdir"] }
+
+[package.metadata.docs.rs]
+features = ["sha1"]

@@ -2,30 +2,30 @@ lints.workspace = true
 
 [package]
 name = "gix-protocol"
-version = "0.52.1"
+version = "0.68.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate of the gitoxide project for implementing git protocols"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-include = ["src/**/*", "LICENSE-*", "!**/tests/**/*"]
-rust-version = "1.82"
+edition = "2024"
+include = ["/src/**/*", "/LICENSE-*", "!/tests/**/*"]
+rust-version = "1.88"
 
 [lib]
 doctest = false
 
 [features]
 
-#! ### _Mutually exclusive client _
+#! ### Client I/O modes
 #! The _client_ portion of the protocol uses `gix-transport` to communicate to a server. For it to be available, one of the following features must
 #! be selected.
 #!
-#! Specifying both causes a compile error, preventing the use of `--all-features`.
+#! Both client features can be enabled together. Existing mode-specific `_blocking` and `_async` methods are then both available,
+#! while APIs shared by both modes select the blocking implementation.
 
 ## If set, blocking command implementations are available and will use the blocking version of the `gix-transport` crate.
 blocking-client = [
     "gix-transport/blocking-client",
-    "maybe-async/is_sync",
     "handshake",
     "fetch"
 ]
@@ -54,6 +54,10 @@ fetch = [
 ]
 
 #! ### Other
+## Enable support for the SHA-1 hash by enabling the respective feature in the `gix-hash` crate.
+sha1 = ["gix-hash/sha1"]
+## Enable support for the SHA-256 hash by enabling the respective feature in the `gix-hash` crate.
+sha256 = ["gix-hash/sha256"]
 ## Data structures implement `serde::Serialize` and `serde::Deserialize`.
 serde = ["dep:serde", "bstr/serde", "gix-transport/serde", "gix-hash/serde", "gix-shallow/serde"]
 
@@ -68,25 +72,24 @@ path = "tests/async-protocol.rs"
 required-features = ["async-client"]
 
 [dependencies]
-gix-features = { version = "^0.44.1", path = "../gix-features", features = [
-    "progress",
-] }
-gix-transport = { version = "^0.49.1", path = "../gix-transport" }
-gix-hash = { version = "^0.20.1", path = "../gix-hash" }
-gix-shallow = { version = "^0.6.0", path = "../gix-shallow" }
-gix-date = { version = "^0.10.7", path = "../gix-date" }
-gix-utils = { version = "^0.3.1", path = "../gix-utils" }
-gix-ref = { version = "^0.54.1", path = "../gix-ref" }
+gix-error = { version = "^0.5.2", path = "../gix-error" }
+gix-transport = { version = "^0.62.0", path = "../gix-transport" }
+gix-hash = { version = "^0.28.1", path = "../gix-hash" }
+gix-shallow = { version = "^0.15.1", path = "../gix-shallow" }
+gix-date = { version = "^0.18.1", path = "../gix-date" }
+gix-utils = { version = "^0.5.1", path = "../gix-utils", features = ["progress"] }
+gix-ref = { version = "^0.69.1", path = "../gix-ref" }
+gix-macros = { version = "^0.2.0", path = "../gix-macros" }
 
-gix-trace = { version = "^0.1.15", path = "../gix-trace", optional = true }
-gix-negotiate = { version = "^0.22.0", path = "../gix-negotiate", optional = true }
-gix-object = { version = "^0.51.1", path = "../gix-object", optional = true }
-gix-revwalk = { version = "^0.22.0", path = "../gix-revwalk", optional = true }
-gix-credentials = { version = "^0.31.1", path = "../gix-credentials", optional = true }
-gix-refspec = { version = "^0.32.0", path = "../gix-refspec", optional = true }
-gix-lock = { version = "^19.0.0", path = "../gix-lock", optional = true }
+gix-trace = { version = "^0.3.1", path = "../gix-trace", optional = true }
+gix-negotiate = { version = "^0.38.0", path = "../gix-negotiate", optional = true }
+gix-object = { version = "^0.66.1", path = "../gix-object", optional = true }
+gix-revwalk = { version = "^0.38.0", path = "../gix-revwalk", optional = true }
+gix-credentials = { version = "^0.42.1", path = "../gix-credentials", optional = true }
+gix-refspec = { version = "^0.47.1", path = "../gix-refspec", optional = true }
+gix-lock = { version = "^26.0.0", path = "../gix-lock", optional = true }
 
-thiserror = "2.0.17"
+nonempty = "0.12.0"
 serde = { version = "1.0.114", optional = true, default-features = false, features = [
     "derive",
 ] }
@@ -94,19 +97,20 @@ bstr = { version = "1.12.0", default-features = false, features = [
     "std",
     "unicode",
 ] }
-winnow = { version = "0.7.12", features = ["simd"] }
 
 # for async-client
 async-trait = { version = "0.1.51", optional = true }
-futures-io = { version = "0.3.16", optional = true }
+futures-io = { version = "0.3.32", optional = true }
 futures-lite = { version = "2.1.0", optional = true }
-maybe-async = "0.2.6"
 
 document-features = { version = "0.2.0", optional = true }
 
 [dev-dependencies]
+gix-testtools = { path = "../tests/tools", default-features = false, features = ["sha1"] }
+insta = "1.46.3"
 async-std = { version = "1.9.0", features = ["attributes"] }
-gix-packetline = { path = "../gix-packetline", version = "^0.19.3" }
+gix-packetline = { path = "../gix-packetline", version = "^0.24.1" }
+gix-protocol = { path = "../gix-protocol", features = ["sha1"] }
 
 [package.metadata.docs.rs]
-features = ["blocking-client", "document-features", "serde"]
+features = ["sha1", "blocking-client", "document-features", "serde"]

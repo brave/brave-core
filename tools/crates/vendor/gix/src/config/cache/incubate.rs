@@ -1,18 +1,22 @@
-#![allow(clippy::result_large_err)]
+use super::util;
 
-use super::{util, Error};
-use crate::config::{
-    cache::util::{ApplyLeniency, ApplyLeniencyDefaultValue},
-    tree::{gitoxide, Core, Extensions},
+use crate::error::{ErrorExt, bail, message, validation};
+use crate::{
+    Result,
+    config::{
+        cache::util::{ApplyLeniency, ApplyLeniencyDefaultValue},
+        tree::{Core, Extensions, gitoxide},
+    },
+    repository::FormatVersion,
 };
 
 /// A utility to deal with the cyclic dependency between the ref store and the configuration. The ref-store needs the
 /// object hash kind, and the configuration needs the current branch name to resolve conditional includes with `onbranch`.
 pub(crate) struct StageOne {
-    pub git_dir_config: gix_config::File<'static>,
+    pub git_dir_config: gix_config::File,
     pub buf: Vec<u8>,
 
-    pub is_bare: bool,
+    pub is_bare: Option<bool>,
     pub lossy: bool,
     pub object_hash: gix_hash::Kind,
     pub reflog: Option<gix_ref::store::WriteReflog>,
@@ -28,7 +32,8 @@ impl StageOne {
         git_dir_trust: gix_sec::Trust,
         lossy: bool,
         lenient: bool,
-    ) -> Result<Self, Error> {
+        mut filter_config_section: fn(&gix_config::file::Metadata) -> bool,
+    ) -> Result<Self> {
         let mut buf = Vec::with_capacity(512);
         let mut config = load_config(
             common_dir.join("config"),
@@ -39,24 +44,29 @@ impl StageOne {
             lenient,
         )?;
 
-        // Note that we assume the repo is bare by default unless we are told otherwise. This is relevant if
-        // the repo doesn't have a configuration file.
-        let is_bare = util::config_bool(&config, &Core::BARE, "core.bare", true, lenient)?;
-        let repo_format_version = config
-            .integer("core.repositoryFormatVersion")
-            .map(|version| Core::REPOSITORY_FORMAT_VERSION.try_into_usize(version))
-            .transpose()?
+        let is_bare = util::config_bool_opt(&config, &Core::BARE, "core.bare", lenient)?;
+        let repo_format_version = Core::REPOSITORY_FORMAT_VERSION
+            .try_into_repository_format_version(config.integer(Core::REPOSITORY_FORMAT_VERSION))?
             .unwrap_or_default();
-        let object_hash = (repo_format_version != 1)
-            .then_some(Ok(gix_hash::Kind::Sha1))
-            .or_else(|| {
-                config
-                    .string(Extensions::OBJECT_FORMAT)
-                    .map(|format| Extensions::OBJECT_FORMAT.try_into_object_format(format))
-            })
-            .transpose()?
-            .unwrap_or(gix_hash::Kind::Sha1);
+        let object_hash = match (repo_format_version, config.string(Extensions::OBJECT_FORMAT)) {
+            // objectFormat is a repository format version 1 extension.
+            (FormatVersion::V1, Some(format)) => Extensions::OBJECT_FORMAT.try_into_object_format(format)?,
+            (FormatVersion::V0, Some(_)) => {
+                bail!(validation(
+                    "extensions.objectFormat is a v1-only extension, but the repository format version is 0; set core.repositoryFormatVersion=1 to use it, or remove extensions.objectFormat to fall back to the default Sha1 format (if supported by this build)"
+                ));
+            }
+            (FormatVersion::V0 | FormatVersion::V1, None) => legacy_object_hash()?,
+        };
 
+        // Relative links are resolved by discovery regardless of this compatibility marker.
+        let relative_worktrees =
+            Extensions::RELATIVE_WORKTREES.enrich_error(config.boolean(Extensions::RELATIVE_WORKTREES))?;
+        if repo_format_version == FormatVersion::V0 && relative_worktrees.is_some() {
+            bail!(validation(
+                "extensions.relativeWorktrees requires core.repositoryFormatVersion=1",
+            ));
+        }
         let extension_worktree = util::config_bool(
             &config,
             &Extensions::WORKTREE_CONFIG,
@@ -73,24 +83,18 @@ impl StageOne {
                 lossy,
                 lenient,
             )?;
-            config.append(worktree_config);
+            config.append(worktree_config)?;
         }
-        let precompose_unicode = config
-            .boolean(&Core::PRECOMPOSE_UNICODE)
-            .map(|v| Core::PRECOMPOSE_UNICODE.enrich_error(v))
-            .transpose()
-            .with_leniency(lenient)
-            .map_err(Error::ConfigBoolean)?
+        let precompose_unicode = Core::PRECOMPOSE_UNICODE
+            .enrich_error(config.boolean(Core::PRECOMPOSE_UNICODE))
+            .with_leniency(lenient)?
             .unwrap_or_default();
 
         const IS_WINDOWS: bool = cfg!(windows);
         let protect_windows = gitoxide::Core::PROTECT_WINDOWS
-            .enrich_error(
-                config
-                    .boolean(gitoxide::Core::PROTECT_WINDOWS)
-                    .unwrap_or(Ok(IS_WINDOWS)),
-            )
-            .with_lenient_default_value(lenient, IS_WINDOWS)?;
+            .enrich_error(config.boolean_filter(gitoxide::Core::PROTECT_WINDOWS, &mut filter_config_section))
+            .with_lenient_default_value(lenient, Some(IS_WINDOWS))?
+            .unwrap_or(IS_WINDOWS);
 
         let reflog = util::query_refupdates(&config, lenient)?;
         Ok(StageOne {
@@ -106,6 +110,22 @@ impl StageOne {
     }
 }
 
+/// Return the object hash for a repository that does not set `extensions.objectFormat`.
+///
+/// Git interprets a missing objectFormat as the original Sha1 layout, so we return
+/// gix_hash::Kind::Sha1 whenever this build can handle it.
+/// In Sha256-only builds we cannot open such a repository, so return an error instead.
+fn legacy_object_hash() -> Result<gix_hash::Kind> {
+    #[cfg(feature = "sha1")]
+    {
+        Ok(gix_hash::Kind::Sha1)
+    }
+    #[cfg(not(feature = "sha1"))]
+    {
+        Err(message("Cannot handle objects formatted as \"sha1\"").unsupported_error())
+    }
+}
+
 fn load_config(
     config_path: std::path::PathBuf,
     buf: &mut Vec<u8>,
@@ -113,7 +133,7 @@ fn load_config(
     git_dir_trust: gix_sec::Trust,
     lossy: bool,
     lenient: bool,
-) -> Result<gix_config::File<'static>, Error> {
+) -> Result<gix_config::File> {
     let metadata = gix_config::file::Metadata::from(source)
         .at(&config_path)
         .with(git_dir_trust);
@@ -121,10 +141,10 @@ fn load_config(
         Ok(f) => f,
         Err(err) if err.kind() == std::io::ErrorKind::NotFound => return Ok(gix_config::File::new(metadata)),
         Err(err) => {
-            let err = Error::Io {
-                source: err,
-                path: config_path,
-            };
+            let err = err.and_raise(message!(
+                "Could not read configuration file at \"{}\"",
+                config_path.display()
+            ));
             if lenient {
                 gix_trace::warn!("ignoring: {err:#?}");
                 return Ok(gix_config::File::new(metadata));
@@ -136,10 +156,10 @@ fn load_config(
 
     buf.clear();
     if let Err(err) = std::io::copy(&mut file, buf) {
-        let err = Error::Io {
-            source: err,
-            path: config_path,
-        };
+        let err = err.and_raise(message!(
+            "Could not read configuration file at \"{}\"",
+            config_path.display()
+        ));
         if lenient {
             gix_trace::warn!("ignoring: {err:#?}");
             buf.clear();

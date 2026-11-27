@@ -46,6 +46,7 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -599,7 +600,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
   }
 
   void ReloadAndWaitForLoadStop(BrowserWindowInterface* browser) {
-    chrome::Reload(browser, WindowOpenDisposition::kCurrentTab);
+    chrome::Reload(browser, ui::mojom::WindowOpenDisposition::kCurrentTab);
     ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
   }
 
@@ -1302,25 +1303,46 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, AccountChangedEventAndReload) {
   SetSelectedAccount(account_1->account_id);
   WaitForResultReady();
   EXPECT_EQ(GetAccountChangedResult(), "");
-  // switch to connected account 1
+  // switch back to account 1: now disconnected, so reselecting it must not
+  // silently reconnect the page - `accountChanged` stays silent and the page
+  // needs an explicit connect() call to reconnect.
   SetSelectedAccount(account_0->account_id);
+  EXPECT_FALSE(IsSolanaConnected(web_contents()));
+  EXPECT_EQ(GetAccountChangedResult(), "");
+
+  // Explicitly reconnect, then confirm `accountChanged` fires again now that
+  // the page is connected.
+  ASSERT_TRUE(EvalJs(web_contents(),
+                     "window.braveSolana.connect({onlyIfTrusted: true})"
+                     ".then(() => true)")
+                  .ExtractBool());
+  ASSERT_TRUE(IsSolanaConnected(web_contents()));
+  SetSelectedAccount(account_1->account_id);
   WaitForResultReady();
-  EXPECT_EQ(GetAccountChangedResult(), account_0->address);
+  EXPECT_EQ(GetAccountChangedResult(), "");
+
+  // Restore selection to account 1 and reconnect so the reload step below
+  // starts from the same connected state as before.
+  SetSelectedAccount(account_0->account_id);
+  ASSERT_FALSE(IsSolanaConnected(web_contents()));
+  ASSERT_TRUE(EvalJs(web_contents(),
+                     "window.braveSolana.connect({onlyIfTrusted: true})"
+                     ".then(() => true)")
+                  .ExtractBool());
+  ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   ReloadAndWaitForLoadStop(browser());
   // Make sure SolanaProviderImpl for reloaded page is created so it is
   // subscribed to `accountChanged` event.
   ASSERT_TRUE(browser_content_client_->WaitForSolanaProviderBinding(
       web_contents()->GetPrimaryMainFrame()));
-  // Ensure Init() has been processed by making a sync mojo call through
-  // SolanaProvider. The race is on the browser side: GetInterface() and Init()
-  // are separate IPC messages. WaitForSolanaProviderBinding returns after
-  // GetInterface() creates SolanaProviderImpl, but Init() (which binds
-  // events_listener_) may not have been processed yet. If
-  // SelectedDappAccountChanged fires before Init(), the event is silently
-  // dropped because events_listener_ is not bound. Since mojo processes
-  // messages in order, completing this sync call guarantees Init() ran.
-  EXPECT_EQ(false, EvalJs(web_contents(), "window.braveSolana.isConnected"));
+  // Connect again after reload so the page is connected to account 1 as before.
+  // The awaited call also guarantees Init() (which binds events_listener_) has
+  // been processed before the account switches below.
+  ASSERT_TRUE(EvalJs(web_contents(),
+                     "window.braveSolana.connect({onlyIfTrusted: true})"
+                     ".then(() => true)")
+                  .ExtractBool());
 
   content::DOMMessageQueue message_queue;
   RegisterSolAccountChanged();
@@ -1328,8 +1350,21 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, AccountChangedEventAndReload) {
   SetSelectedAccount(account_1->account_id);
   WaitForResultReady(message_queue);
   EXPECT_EQ(GetAccountChangedResult(), "");
-  // switch to disconnected account 1
+  // switch back to account 1: now disconnected, so reselecting it must not
+  // silently reconnect the page - `accountChanged` stays silent and the page
+  // needs an explicit connect() call to reconnect.
   SetSelectedAccount(account_0->account_id);
+  EXPECT_FALSE(IsSolanaConnected(web_contents()));
+  EXPECT_EQ(GetAccountChangedResult(), "");
+
+  // Explicitly reconnect, then confirm `accountChanged` fires again now that
+  // the page is connected.
+  ASSERT_TRUE(EvalJs(web_contents(),
+                     "window.braveSolana.connect({onlyIfTrusted: true})"
+                     ".then(() => true)")
+                  .ExtractBool());
+  ASSERT_TRUE(IsSolanaConnected(web_contents()));
+  SetSelectedAccount(account_1->account_id);
   WaitForResultReady();
   EXPECT_EQ(GetAccountChangedResult(), "");
 }

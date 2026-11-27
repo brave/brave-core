@@ -11,6 +11,7 @@
 #include "base/scoped_observation.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -160,18 +161,13 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
     SCOPED_TRACE(chain_id);
     EXPECT_CALL(observer, OnLatestBlock(_, _)).Times(0);
     EXPECT_CALL(observer, OnNewBlock(_, _)).Times(0);
-    base::RunLoop run_loop;
-    tracker.CheckForLatestBlock(
-        chain_id,
-        base::BindLambdaForTesting([&](uint256_t block_num,
-                                       brave_wallet::mojom::ProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-          EXPECT_TRUE(error_message.empty());
-          EXPECT_EQ(block_num, uint256_t(4));
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<uint256_t, mojom::ProviderError, const std::string&>
+        future;
+    tracker.CheckForLatestBlock(chain_id, future.GetCallback());
+    auto [block_num, error, error_message] = future.Take();
+    EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+    EXPECT_TRUE(error_message.empty());
+    EXPECT_EQ(block_num, uint256_t(4));
     EXPECT_EQ(tracker.GetCurrentBlock(chain_id), uint256_t(3));
     EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
   }
@@ -201,19 +197,14 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberInvalidResponseJSON) {
   for (const std::string& chain_id :
        {mojom::kMainnetChainId, mojom::kSepoliaChainId}) {
     SCOPED_TRACE(chain_id);
-    base::RunLoop run_loop;
-    tracker.CheckForLatestBlock(
-        chain_id,
-        base::BindLambdaForTesting([&](uint256_t block_num,
-                                       brave_wallet::mojom::ProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(error, mojom::ProviderError::kParsingError);
-          EXPECT_EQ(error_message,
-                    l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-          EXPECT_EQ(block_num, uint256_t(0));
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<uint256_t, mojom::ProviderError, const std::string&>
+        future;
+    tracker.CheckForLatestBlock(chain_id, future.GetCallback());
+    auto [block_num, error, error_message] = future.Take();
+    EXPECT_EQ(error, mojom::ProviderError::kParsingError);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    EXPECT_EQ(block_num, uint256_t(0));
   }
 }
 
@@ -248,18 +239,13 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberLimitExceeded) {
   for (const std::string& chain_id :
        {mojom::kMainnetChainId, mojom::kSepoliaChainId}) {
     SCOPED_TRACE(chain_id);
-    base::RunLoop run_loop;
-    tracker.CheckForLatestBlock(
-        chain_id,
-        base::BindLambdaForTesting([&](uint256_t block_num,
-                                       brave_wallet::mojom::ProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(error, mojom::ProviderError::kLimitExceeded);
-          EXPECT_EQ(error_message, "Request exceeds defined limit");
-          EXPECT_EQ(block_num, uint256_t(0));
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<uint256_t, mojom::ProviderError, const std::string&>
+        future;
+    tracker.CheckForLatestBlock(chain_id, future.GetCallback());
+    auto [block_num, error, error_message] = future.Take();
+    EXPECT_EQ(error, mojom::ProviderError::kLimitExceeded);
+    EXPECT_EQ(error_message, "Request exceeds defined limit");
+    EXPECT_EQ(block_num, uint256_t(0));
   }
 }
 
@@ -287,19 +273,14 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberRequestTimeout) {
   for (const std::string& chain_id :
        {mojom::kMainnetChainId, mojom::kSepoliaChainId}) {
     SCOPED_TRACE(chain_id);
-    base::RunLoop run_loop;
-    tracker.CheckForLatestBlock(
-        chain_id,
-        base::BindLambdaForTesting([&](uint256_t block_num,
-                                       brave_wallet::mojom::ProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(error, mojom::ProviderError::kInternalError);
-          EXPECT_EQ(error_message,
-                    l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-          EXPECT_EQ(block_num, uint256_t(0));
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<uint256_t, mojom::ProviderError, const std::string&>
+        future;
+    tracker.CheckForLatestBlock(chain_id, future.GetCallback());
+    auto [block_num, error, error_message] = future.Take();
+    EXPECT_EQ(error, mojom::ProviderError::kInternalError);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    EXPECT_EQ(block_num, uint256_t(0));
   }
 }
 

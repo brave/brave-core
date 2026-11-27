@@ -81,6 +81,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.base.ui.KeyboardUtils;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
+import org.chromium.brave.browser.extensions.BraveExtensionsMenuCoordinator;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesCallback;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesFragment;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesModel;
@@ -155,6 +156,7 @@ import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
 import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifetime.ApplicationLifetime;
 import org.chromium.chrome.browser.media.BraveYouTubePictureInPictureController;
+import org.chromium.chrome.browser.media.YouTubePictureInPictureHost;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsConnectionErrorHandler;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsFactory;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
@@ -212,6 +214,10 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
+import org.chromium.chrome.browser.ui.browser_window.ChromeAndroidTask;
+import org.chromium.chrome.browser.ui.browser_window.ChromeAndroidTaskFeatureKey;
+import org.chromium.chrome.browser.ui.extensions.windowing.ExtensionWindowControllerBridge;
+import org.chromium.chrome.browser.ui.extensions.windowing.ExtensionWindowControllerBridgeFactory;
 import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
@@ -233,6 +239,8 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.promo.SearchWidgetPromoPanel;
+import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
+import org.chromium.components.browser_ui.bottomsheet.BottomSheetControllerProvider;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.browser_ui.util.motion.MotionEventInfo;
 import org.chromium.components.embedder_support.util.UrlConstants;
@@ -250,6 +258,7 @@ import org.chromium.content_public.browser.WebContents;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
 
@@ -277,7 +286,8 @@ public abstract class BraveActivity extends ChromeActivity
                 QuickSearchEnginesCallback,
                 KeyboardVisibilityHelper.KeyboardVisibilityListener,
                 OnSharedPreferenceChangeListener,
-                FirstPartyStorageCleanerInterface {
+                FirstPartyStorageCleanerInterface,
+                YouTubePictureInPictureHost {
     public static final String BRAVE_WALLET_HOST = "wallet";
     public static final String BRAVE_WALLET_ORIGIN = "brave://wallet/";
     public static final String BRAVE_WALLET_URL = "brave://wallet/crypto/portfolio/assets";
@@ -579,10 +589,31 @@ public abstract class BraveActivity extends ChromeActivity
                     braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
         } else if (id == R.id.brave_shred_id) {
             shredData(currentTab);
+        } else if (id == R.id.brave_extensions_menu_id) {
+            openExtensionsMenu();
         } else {
             return false;
         }
         return true;
+    }
+
+    private void openExtensionsMenu() {
+        ChromeAndroidTask task = getChromeAndroidTaskSupplier().get();
+        Profile profile = getTabModelSelector().getCurrentModel().getProfile();
+        ActivityWindowAndroid windowAndroid = getWindowAndroid();
+        if (task == null || profile == null || windowAndroid == null) return;
+        BottomSheetController bottomSheetController =
+                BottomSheetControllerProvider.from(windowAndroid);
+        if (bottomSheetController == null) return;
+
+        BraveExtensionsMenuCoordinator.show(
+                this,
+                task,
+                profile,
+                windowAndroid,
+                bottomSheetController,
+                getBrowserControlsManager(),
+                this::getActivityTab);
     }
 
     // Handles only wallet related mojo failures. Don't add handlers for mojo connections that
@@ -1561,7 +1592,7 @@ public abstract class BraveActivity extends ChromeActivity
                                 removeQuickActionSearchEnginesView();
                             } else {
                                 if (getBraveToolbarLayout().isUrlBarFocused()
-                                        && KeyboardUtils.isAndroidSoftKeyboardShowing(urlBar)) {
+                                        && KeyboardUtils.isAndroidSoftKeyboardVisible(urlBar)) {
                                     View rootView = findViewById(android.R.id.content);
                                     Rect r = new Rect();
                                     rootView.getWindowVisibleDisplayFrame(r);
@@ -2511,6 +2542,7 @@ public abstract class BraveActivity extends ChromeActivity
     /**
      * @see BraveYouTubePictureInPictureController#onSessionRequested
      */
+    @Override
     public void onYouTubePictureInPictureRequested(final WebContents webContents) {
         getYouTubePictureInPictureController().onSessionRequested(webContents);
     }
@@ -2518,6 +2550,7 @@ public abstract class BraveActivity extends ChromeActivity
     /**
      * @see BraveYouTubePictureInPictureController#onSessionEnterFailed
      */
+    @Override
     public void onYouTubePictureInPictureEnterFailed() {
         getYouTubePictureInPictureController().onSessionEnterFailed();
     }
@@ -2525,6 +2558,7 @@ public abstract class BraveActivity extends ChromeActivity
     /**
      * @see BraveYouTubePictureInPictureController#isActive
      */
+    @Override
     public boolean isYouTubePictureInPictureActive() {
         return getYouTubePictureInPictureController().isActive();
     }
@@ -2532,6 +2566,7 @@ public abstract class BraveActivity extends ChromeActivity
     /**
      * @see BraveYouTubePictureInPictureController#onFullscreenInterrupted
      */
+    @Override
     public void onYouTubePictureInPictureFullscreenInterrupted() {
         getYouTubePictureInPictureController().onFullscreenInterrupted();
     }
@@ -2539,6 +2574,7 @@ public abstract class BraveActivity extends ChromeActivity
     /**
      * @see BraveYouTubePictureInPictureController#onNewTabDuringPictureInPicture
      */
+    @Override
     public void onYouTubePictureInPictureNewTab() {
         getYouTubePictureInPictureController().onNewTabDuringPictureInPicture();
     }
@@ -3370,5 +3406,21 @@ public abstract class BraveActivity extends ChromeActivity
             mAppCloseShredTriggered = true;
             BraveFirstPartyStorageCleanerUtils.triggerCurrentAppStateNotification(profile);
         }
+    }
+
+    // Upstream binds the bridge to the current model's profile. When recreated in incognito that
+    // is the incognito browser window, which closing the incognito tabs destroys under the bridge.
+    // The regular window lives as long as the activity.
+    @Override
+    protected void addWindowingFeatures(
+            ChromeAndroidTask chromeAndroidTask,
+            Profile profile,
+            ActivityWindowAndroid activityWindowAndroid) {
+        chromeAndroidTask.addFeature(
+                new ChromeAndroidTaskFeatureKey(
+                        ExtensionWindowControllerBridge.class,
+                        getTabModelSelector().getModel(/* incognito= */ false).getProfile(),
+                        activityWindowAndroid),
+                ExtensionWindowControllerBridgeFactory::create);
     }
 }

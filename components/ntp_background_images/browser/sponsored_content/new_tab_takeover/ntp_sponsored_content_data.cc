@@ -6,12 +6,15 @@
 #include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h"
 
 #include "base/check.h"
+#include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/debug/crash_logging.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
+#include "base/types/optional_util.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -78,6 +81,32 @@ std::optional<std::string> ToString(WallpaperType wallpaper_type) {
   return std::nullopt;
 }
 
+constexpr auto kStringToCampaignTypeMap =
+    base::MakeFixedFlatMap<std::string_view,
+                           brave_ads::mojom::NewTabPageAdCampaignType>(
+        {{"free", brave_ads::mojom::NewTabPageAdCampaignType::kFree},
+         {"paid", brave_ads::mojom::NewTabPageAdCampaignType::kPaid},
+         {"barter", brave_ads::mojom::NewTabPageAdCampaignType::kBarter},
+         {"make_good", brave_ads::mojom::NewTabPageAdCampaignType::kMakeGood},
+         {"house", brave_ads::mojom::NewTabPageAdCampaignType::kHouse},
+         {"cause", brave_ads::mojom::NewTabPageAdCampaignType::kCause},
+         {"fixed", brave_ads::mojom::NewTabPageAdCampaignType::kFixed},
+         {"trial", brave_ads::mojom::NewTabPageAdCampaignType::kTrial},
+         {"preemptive",
+          brave_ads::mojom::NewTabPageAdCampaignType::kPreemptive},
+         {"affiliate", brave_ads::mojom::NewTabPageAdCampaignType::kAffiliate},
+         {"survey", brave_ads::mojom::NewTabPageAdCampaignType::kSurvey},
+         {"product", brave_ads::mojom::NewTabPageAdCampaignType::kProduct}});
+
+brave_ads::mojom::NewTabPageAdCampaignType ParseCampaignType(
+    const std::string& campaign_type) {
+  // Campaigns predating this field, or carrying a type this browser version
+  // does not yet recognize, are treated as paid.
+  return base::OptionalFromPtr(
+             base::FindOrNull(kStringToCampaignTypeMap, campaign_type))
+      .value_or(brave_ads::mojom::NewTabPageAdCampaignType::kPaid);
+}
+
 std::optional<Campaign> MaybeParseCampaign(
     const base::DictValue& dict,
     const base::FilePath& installed_dir) {
@@ -95,7 +124,13 @@ std::optional<Campaign> MaybeParseCampaign(
     // Campaign ID is required.
     return std::nullopt;
   }
-  campaign.campaign_id = *campaign_id;
+  campaign.id = *campaign_id;
+
+  campaign.type = brave_ads::mojom::NewTabPageAdCampaignType::kPaid;
+  if (const std::string* const campaign_type =
+          dict.FindString(kCampaignTypeKey)) {
+    campaign.type = ParseCampaignType(*campaign_type);
+  }
 
   brave_ads::mojom::NewTabPageAdMetricType metric_type =
       brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
@@ -577,7 +612,7 @@ std::optional<base::DictValue> NTPSponsoredContentData::MaybeGetBackgroundAt(
   }
 
   return base::DictValue()
-      .Set(kCampaignIdKey, campaign.campaign_id)
+      .Set(kCampaignIdKey, campaign.id)
       .Set(kCreativeInstanceIDKey, creative.creative_instance_id)
       .Set(kIsSponsoredKey, true)
       .Set(kIsBackgroundKey, false)
@@ -594,7 +629,10 @@ std::optional<base::DictValue> NTPSponsoredContentData::MaybeGetBackgroundAt(
                .Set(kCompanyNameKey, creative.logo.company_name)
                .Set(kAltKey, creative.logo.alt_text)
                .Set(kDestinationURLKey, creative.logo.destination_url))
-      .Set(kWallpaperTypeKey, *wallpaper_type);
+      .Set(kWallpaperTypeKey, *wallpaper_type)
+      .Set(kShouldDisplayNewTabTakeoverDisclosureKey,
+           campaign.type !=
+               brave_ads::mojom::NewTabPageAdCampaignType::kProduct);
 }
 
 std::optional<base::DictValue> NTPSponsoredContentData::MaybeGetBackground(
@@ -602,7 +640,7 @@ std::optional<base::DictValue> NTPSponsoredContentData::MaybeGetBackground(
   // Find campaign
   size_t campaign_index = 0;
   for (; campaign_index != campaigns.size(); ++campaign_index) {
-    if (campaigns[campaign_index].campaign_id == ad.campaign_id) {
+    if (campaigns[campaign_index].id == ad.campaign_id) {
       break;
     }
   }

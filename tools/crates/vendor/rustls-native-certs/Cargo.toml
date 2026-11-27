@@ -13,8 +13,17 @@
 edition = "2021"
 rust-version = "1.71"
 name = "rustls-native-certs"
-version = "0.8.2"
+version = "0.8.5"
 build = false
+include = [
+    "Cargo.toml",
+    "LICENSE",
+    "LICENSE-APACHE",
+    "LICENSE-MIT",
+    "LICENSE-ISC",
+    "README.md",
+    "src/**/*.rs",
+]
 autolib = false
 autobins = false
 autoexamples = false
@@ -30,25 +39,15 @@ categories = [
 license = "Apache-2.0 OR ISC OR MIT"
 repository = "https://github.com/rustls/rustls-native-certs"
 
+[package.metadata.docs.rs]
+rustdoc-args = [
+    "--cfg",
+    "rustls_native_certs_docsrs",
+]
+
 [lib]
 name = "rustls_native_certs"
 path = "src/lib.rs"
-
-[[example]]
-name = "google"
-path = "examples/google.rs"
-
-[[example]]
-name = "print-trust-anchors"
-path = "examples/print-trust-anchors.rs"
-
-[[test]]
-name = "compare_mozilla"
-path = "tests/compare_mozilla.rs"
-
-[[test]]
-name = "smoketests"
-path = "tests/smoketests.rs"
 
 [dependencies.pki-types]
 version = "1.10"
@@ -65,7 +64,7 @@ version = "0.23"
 version = "0.103"
 
 [dev-dependencies.serial_test]
-version = "3"
+version = "4"
 
 [dev-dependencies.tempfile]
 version = "3.5"
@@ -77,13 +76,18 @@ version = "0.9"
 version = "1"
 
 [dev-dependencies.x509-parser]
-version = "0.17"
+version = "0.18"
 
 [target.'cfg(all(unix, not(target_os = "macos")))'.dependencies.openssl-probe]
-version = "0.1.6"
+version = "0.2"
 
 [target.'cfg(target_os = "macos")'.dependencies.security-framework]
 version = "3"
 
 [target."cfg(windows)".dependencies.schannel]
 version = "0.1"
+
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = ["cfg(rustls_native_certs_docsrs)"]

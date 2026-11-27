@@ -16,23 +16,30 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.lifecycle.Stage;
 import androidx.test.uiautomator.UiDevice;
 
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.test.util.ApplicationTestUtils;
 import org.chromium.base.test.util.CommandLineFlags;
+import org.chromium.base.test.util.Criteria;
 import org.chromium.base.test.util.CriteriaHelper;
 import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Features.DisableFeatures;
+import org.chromium.chrome.browser.app.tabmodel.AsyncTabParamsManagerSingleton;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.chrome.test.ChromeTabbedActivityTestRule;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Regression tests for private-tab crashes during system UI mode changes. */
 @RunWith(ChromeJUnit4ClassRunner.class)
@@ -43,6 +50,7 @@ import java.io.IOException;
                 "Changes device-wide night mode and battery saver state, and recreates"
                         + " ChromeTabbedActivity.")
 public class PrivateTabSystemUiModeChangeTest {
+    private static final String ABOUT_BLANK_URL = "about:blank";
     private static final String NIGHT_MODE_COMMAND = "cmd uimode night";
     private static final String NIGHT_MODE_PREFIX = "Night mode: ";
     private static final String NIGHT_MODE_ENABLED = "yes";
@@ -73,6 +81,12 @@ public class PrivateTabSystemUiModeChangeTest {
         prepareSystemUiModeBaseline();
 
         mActivityTestRule.startMainActivityOnBlankPage();
+        // Saving this tab creates the private cipher key. A private NTP alone never does, so the
+        // recreated activity would skip private tabs and leak the stashed one (known issue).
+        assertTrue(
+                mActivityTestRule
+                        .loadUrlInNewTab(ABOUT_BLANK_URL, /* incognito= */ true)
+                        .isIncognito());
         assertTrue(mActivityTestRule.newIncognitoTabFromMenu().isIncognito());
     }
 
@@ -102,13 +116,30 @@ public class PrivateTabSystemUiModeChangeTest {
     @Test
     @MediumTest
     public void testPrivateTabDoesNotCrashAfterSystemNightModeChange() throws IOException {
-        recreateActivityForNightMode(NIGHT_MODE_ENABLED);
-        waitForActivityTab();
+        List<Integer> privateTabIds = getPrivateTabIds();
 
-        assertTrue(mActivityTestRule.newIncognitoTabFromMenu().isIncognito());
+        recreateActivityForNightMode(NIGHT_MODE_ENABLED);
+        waitForPrivateTabsReparented(privateTabIds);
+
+        privateTabIds.add(mActivityTestRule.newIncognitoTabFromMenu().getId());
 
         recreateActivityForNightMode(NIGHT_MODE_DISABLED);
-        waitForActivityTab();
+        waitForPrivateTabsReparented(privateTabIds);
+    }
+
+    @Test
+    @MediumTest
+    public void testBackgroundPrivateTabsSurviveSystemNightModeChange() throws IOException {
+        List<Integer> privateTabIds = getPrivateTabIds();
+        privateTabIds.add(mActivityTestRule.newIncognitoTabFromMenu().getId());
+        ThreadUtils.runOnUiThreadBlocking(
+                () -> mActivityTestRule.getActivity().getTabModelSelector().selectModel(false));
+
+        recreateActivityForNightMode(NIGHT_MODE_ENABLED);
+        waitForPrivateTabsReparented(privateTabIds);
+
+        recreateActivityForNightMode(NIGHT_MODE_DISABLED);
+        waitForPrivateTabsReparented(privateTabIds);
     }
 
     @Test
@@ -117,21 +148,22 @@ public class PrivateTabSystemUiModeChangeTest {
         // Battery Saver cannot be enabled while the device reports external power.
         mDevice.executeShellCommand(BATTERY_UNPLUG_COMMAND);
         mBatteryUnpluggedForTest = true;
+        List<Integer> privateTabIds = getPrivateTabIds();
 
         recreateActivityForBatterySaverMode(BATTERY_SAVER_MODE_ENABLED);
         // The real system configuration change triggers the activity recreation under test.
         assertTrue(
                 "Battery saver did not switch the system UI mode to night",
                 isSystemNightModeEnabled());
-        waitForActivityTab();
+        waitForPrivateTabsReparented(privateTabIds);
 
-        assertTrue(mActivityTestRule.newIncognitoTabFromMenu().isIncognito());
+        privateTabIds.add(mActivityTestRule.newIncognitoTabFromMenu().getId());
 
         recreateActivityForBatterySaverMode(BATTERY_SAVER_MODE_DISABLED);
         assertFalse(
                 "Battery saver did not restore the system UI mode to light",
                 isSystemNightModeEnabled());
-        waitForActivityTab();
+        waitForPrivateTabsReparented(privateTabIds);
     }
 
     private void recreateActivityForNightMode(String nightMode) {
@@ -168,8 +200,32 @@ public class PrivateTabSystemUiModeChangeTest {
         mActivityTestRule.setActivity(recreatedActivity);
     }
 
-    private void waitForActivityTab() {
-        CriteriaHelper.pollUiThread(() -> mActivityTestRule.getActivityTab() != null);
+    private List<Integer> getPrivateTabIds() {
+        return ThreadUtils.runOnUiThreadBlocking(
+                () -> {
+                    List<Integer> ids = new ArrayList<>();
+                    for (Tab tab :
+                            mActivityTestRule
+                                    .getActivity()
+                                    .getTabModelSelector()
+                                    .getModel(/* incognito= */ true)) {
+                        ids.add(tab.getId());
+                    }
+                    return ids;
+                });
+    }
+
+    // A private tab left out of the restore stays stashed for reparenting, keeping its WebContents.
+    private void waitForPrivateTabsReparented(List<Integer> expectedIds) {
+        CriteriaHelper.pollUiThread(
+                () -> {
+                    Criteria.checkThat(mActivityTestRule.getActivityTab(), Matchers.notNullValue());
+                    Criteria.checkThat(
+                            getPrivateTabIds(), Matchers.containsInAnyOrder(expectedIds.toArray()));
+                    Criteria.checkThat(
+                            AsyncTabParamsManagerSingleton.getInstance().getAsyncTabParams().size(),
+                            Matchers.is(0));
+                });
     }
 
     private String getNightMode() throws IOException {

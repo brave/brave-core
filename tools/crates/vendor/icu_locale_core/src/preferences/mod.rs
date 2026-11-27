@@ -91,8 +91,8 @@
 //! };
 //! use icu::locale::locale;
 //!
-//! # fn get_data_locale_from_prefs(input: ExampleComponentPreferences) -> () { () }
-//! # fn load_data(locale: ()) -> MyData { MyData {} }
+//! # fn get_data_locale_from_prefs(input: ExampleComponentPreferences) -> icu::locale::DataLocale { icu::locale::DataLocale::default() }
+//! # fn load_data(locale: icu::locale::DataLocale) -> MyData { MyData {} }
 //! # struct MyData {}
 //! define_preferences!(
 //!     /// Name of the preferences struct
@@ -127,8 +127,9 @@
 //! #   extensions::unicode::keywords::HourCycle,
 //! # };
 //! # use icu::locale::locale;
-//! # fn get_data_locale_from_prefs(input: ExampleComponentPreferences) -> () { () }
-//! # fn load_data(locale: ()) -> MyData { MyData {} }
+//! # struct DataLocale;
+//! # fn get_data_locale_from_prefs(input: ExampleComponentPreferences) -> DataLocale { DataLocale }
+//! # fn load_data(locale: DataLocale) -> MyData { MyData {} }
 //! # struct MyData {}
 //! # define_preferences!(
 //! #     /// Name of the preferences struct
@@ -162,8 +163,9 @@
 //! #   extensions::unicode::keywords::HourCycle,
 //! # };
 //! # use icu::locale::locale;
-//! # fn get_data_locale_from_prefs(input: ExampleComponentPreferences) -> () { () }
-//! # fn load_data(locale: ()) -> MyData { MyData {} }
+//! # struct DataLocale;
+//! # fn get_data_locale_from_prefs(input: ExampleComponentPreferences) -> DataLocale { DataLocale }
+//! # fn load_data(locale: DataLocale) -> MyData { MyData {} }
 //! # struct MyData {}
 //! # define_preferences!(
 //! #     /// Name of the preferences struct
@@ -208,8 +210,9 @@
 //! #   extensions::unicode::keywords::HourCycle,
 //! # };
 //! # use icu::locale::locale;
-//! # fn get_data_locale_from_prefs(input: ExampleComponentPreferences) -> () { () }
-//! # fn load_data(locale: ()) -> MyData { MyData {} }
+//! # struct DataLocale;
+//! # fn get_data_locale_from_prefs(input: ExampleComponentPreferences) -> DataLocale { DataLocale }
+//! # fn load_data(locale: DataLocale) -> MyData { MyData {} }
 //! # struct MyData {}
 //! # define_preferences!(
 //! #     /// Name of the preferences struct
@@ -263,8 +266,9 @@
 //! #   extensions::unicode::keywords::HourCycle,
 //! # };
 //! # use icu::locale::locale;
-//! # fn get_data_locale_from_prefs(input: ExampleComponentPreferences) -> () { () }
-//! # fn load_data(locale: ()) -> MyData { MyData {} }
+//! # struct DataLocale;
+//! # fn get_data_locale_from_prefs(input: ExampleComponentPreferences) -> DataLocale { DataLocale }
+//! # fn load_data(locale: DataLocale) -> MyData { MyData {} }
 //! # struct MyData {}
 //! # define_preferences!(
 //! #     /// Name of the preferences struct
@@ -401,8 +405,7 @@ pub trait PreferenceKey: Sized {
     fn try_from_key_value(
         _key: &crate::extensions::unicode::Key,
         _value: &crate::extensions::unicode::Value,
-    ) -> Result<Option<Self>, crate::preferences::extensions::unicode::errors::PreferencesParseError>
-    {
+    ) -> Result<Option<Self>, extensions::unicode::errors::PreferencesParseError> {
         Ok(None)
     }
 
@@ -573,7 +576,7 @@ macro_rules! __define_preferences {
                 }
 
                 let r = Self {
-                    locale_preferences: loc.into(),
+                    locale_preferences: $crate::preferences::LocalePreferences::from_locale_strict(loc).unwrap_or_else(|e| { is_err = true; e }),
 
                     $(
                         $key,
@@ -594,8 +597,8 @@ macro_rules! __define_preferences {
 #[doc(hidden)]
 macro_rules! __prefs_convert {
     (
-        $name1:ident,
-        $name2:ident
+        $name1:ty,
+        $name2:ty
     ) => {
         impl From<&$name1> for $name2 {
             fn from(other: &$name1) -> Self {
@@ -606,8 +609,8 @@ macro_rules! __prefs_convert {
         }
     };
     (
-        $name1:ident,
-        $name2:ident,
+        $name1:ty,
+        $name2:ty,
         {
             $(
                 $key:ident

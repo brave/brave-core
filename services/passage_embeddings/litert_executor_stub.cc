@@ -8,7 +8,7 @@
 #include "base/files/file.h"
 #include "services/passage_embeddings/passage_embedder_executor.h"
 
-namespace brave_history_embeddings {
+namespace passage_embeddings {
 
 // Null implementation for builds without local AI (Android, Brave Origin). The
 // override calls the hook unconditionally, so a definition must always link.
@@ -17,4 +17,4 @@ MaybeCreateLitertExecutor(base::File&, int, int, int, int) {
   return nullptr;
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace passage_embeddings

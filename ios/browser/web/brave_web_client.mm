@@ -204,7 +204,8 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     features.push_back(CosmeticFilteringJavaScriptFeature::GetInstance());
     features.push_back(ScriptletsJavaScriptFeature::GetInstance());
     if (base::FeatureList::IsEnabled(
-            brave_shields::features::kBraveShieldsElementPicker)) {
+            brave_shields::features::kBraveShieldsElementPicker) &&
+        !browser_state->IsOffTheRecord()) {
       features.push_back(ElementPickerJavaScriptFeature::GetInstance());
     }
     if (!base::FeatureList::IsEnabled(
@@ -372,6 +373,11 @@ void BraveWebClient::DidResetConfiguration(web::BrowserState* browser_state,
         [[ProfileBridgeImpl alloc] initWithProfile:profile];
     BraveWebView.didResetConfiguration(profile_bridge, config);
   }
+}
+
+bool BraveWebClient::UseProfileWebViewConfigurationEnabled() {
+  return base::FeatureList::IsEnabled(
+      brave::features::kUseProfileWebViewConfiguration);
 }
 
 bool BraveWebClient::IsSmoothScrollingSupported() const {

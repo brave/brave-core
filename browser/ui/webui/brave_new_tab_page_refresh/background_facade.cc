@@ -34,6 +34,7 @@ mojom::NewTabTakeoverBackgroundPtr ReadNewTabTakeoverData(
   using ntp_background_images::kImageKey;
   using ntp_background_images::kIsBackgroundKey;
   using ntp_background_images::kLogoKey;
+  using ntp_background_images::kShouldDisplayNewTabTakeoverDisclosureKey;
   using ntp_background_images::kWallpaperIDKey;
   using ntp_background_images::kWallpaperMetricTypeKey;
   using ntp_background_images::kWallpaperTypeKey;
@@ -85,6 +86,10 @@ mojom::NewTabTakeoverBackgroundPtr ReadNewTabTakeoverData(
     background->metric_type =
         static_cast<brave_ads::mojom::NewTabPageAdMetricType>(*value);
   }
+
+  background->should_display_new_tab_takeover_disclosure =
+      data.FindBool(kShouldDisplayNewTabTakeoverDisclosureKey).value_or(true);
+
   return background;
 }
 

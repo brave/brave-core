@@ -26,10 +26,10 @@ impl FlateDecoder {
         let prior_in = self.decompress.total_in();
         let prior_out = self.decompress.total_out();
 
-        let result = self
+        let status = self
             .decompress
             // Safety: We **trust** flate2 to not write uninitialized bytes into buffer
-            .decompress_uninit(input.unwritten(), unsafe { output.unwritten_mut() }, flush);
+            .decompress_uninit(input.unwritten(), unsafe { output.unwritten_mut() }, flush)?;
 
         input.advance((self.decompress.total_in() - prior_in) as usize);
         // Safety: We **trust** flate2 to write bytes into buffer properly
@@ -37,7 +37,7 @@ impl FlateDecoder {
             output.assume_init_and_advance((self.decompress.total_out() - prior_out) as usize)
         };
 
-        Ok(result?)
+        Ok(status)
     }
 }
 

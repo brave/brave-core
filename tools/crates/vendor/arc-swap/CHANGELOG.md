@@ -1,3 +1,43 @@
+# 1.9.5
+
+* Fix `load` returning a value stored into a different instance (type confusion)
+  after the address of a freed value is reused by another instance (#210). This
+  is the bug the `rwlock-strategy` feature of 1.9.3 worked around.
+
+# 1.9.4
+
+* Fix use-after-free when strong and weak pointers to the same allocation are
+  stored in different instances (#214). Adds `RefCnt::TAG` (defaults to 0, so
+  existing implementations still compile); storing a pointer with the tag bits
+  set panics (#214).
+
+# 1.9.3
+
+* `rwlock-strategy` feature: `RwLock<()>` as an explicit, opt-in strategy
+  (`ArcSwapAny<Arc<T>, RwLock<()>>`). `DefaultStrategy` is unchanged (#210, #211).
+
+# 1.9.2
+
+* Document RefCnt must not panic (#208).
+
+# 1.9.1
+
+* One more SeqCst :-| (#204).
+
+# 1.9.0
+
+* Promote certain orderings to SeqCst. Original proofs based on wrong reading of
+  standard :-(. Expect some performance degradation (#198, #200).
+
+# 1.8.2
+
+* Proper gate of `Pin` (since 1.39 - we are not using only `Pin`, but also
+  `Pin::into_inner`, #197).
+
+# 1.8.1
+
+* Some more careful orderings (#195).
+
 # 1.8.0
 
 * Support for Pin (#185, #183).

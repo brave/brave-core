@@ -1,5 +1,5 @@
 diff --git a/ios/web/public/js_messaging/origin_filter.h b/ios/web/public/js_messaging/origin_filter.h
-index 0e5a088140cbf94801aaf4fcd0156e42189d64e5..12d44212b5b8b575e332c0b9ac58800949471d01 100644
+index 9374c2cfc15edcf31ee35848b36d289160a5007e..d99915ad254c9a5aa20c95694e1580f9257e1a94 100644
 --- a/ios/web/public/js_messaging/origin_filter.h
 +++ b/ios/web/public/js_messaging/origin_filter.h
 @@ -12,6 +12,10 @@ namespace web {

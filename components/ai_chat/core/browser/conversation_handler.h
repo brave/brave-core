@@ -186,6 +186,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   bool IsRequestInProgress();
   // Whether a tool use loop is running, between generation requests.
   bool IsToolUseInProgress() const;
+  // Whether the last response has an unanswered permission challenge.
+  bool IsAwaitingUserInput() const;
 
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
@@ -208,11 +210,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetContentTools(const std::string& content_uuid,
                        GetContentToolsCallback callback) override;
   void SetContentToolPermission(const std::string& content_uuid,
-                                const std::string& tool_name,
-                                mojom::ToolPermission permission) override;
+                                mojom::ToolInfoPtr tool) override;
   void SetContentAgentChosen(bool chosen) override;
   void RateMessage(bool is_liked,
                    const std::string& turn_uuid,
+                   const std::optional<std::string>& thread_uuid,
                    RateMessageCallback callback) override;
   void SendFeedback(const std::string& category,
                     const std::string& feedback,
@@ -282,7 +284,8 @@ class ConversationHandler : public mojom::ConversationHandler,
           callback) override;
   void SwitchToNonPremiumModel() override;
   void RegenerateAnswer(const std::string& turn_uuid,
-                        const std::string& model_key) override;
+                        const std::string& model_key,
+                        const std::optional<std::string>& thread_uuid) override;
   void GenerateQuestions() override;
   void RetryAPIRequest(const std::optional<std::string>& thread_uuid) override;
   void CreateConversationThread(
@@ -293,7 +296,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void ModifyConversation(
       const std::string& entry_uuid,
       const std::string& new_text,
-      const std::optional<std::string>& skill_shortcut) override;
+      const std::optional<std::string>& skill_shortcut,
+      const std::optional<std::string>& thread_uuid) override;
   void RespondToToolUseRequest(
       const std::string& entry_uuid,
       const std::string& tool_id,
@@ -404,7 +408,6 @@ class ConversationHandler : public mojom::ConversationHandler,
 
  private:
   friend class ::AIChatUIBrowserTest;
-  FRIEND_TEST_ALL_PREFIXES(AIChatServiceUnitTest, DeleteAssociatedWebContent);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            UpdateOrCreateLastAssistantEntry_Delta);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
@@ -448,11 +451,12 @@ class ConversationHandler : public mojom::ConversationHandler,
       GetTools_MemoryToolFilteredForTemporaryConversations);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, ThreadHistory);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
-                           CreateConversationThread_SubmitEntry);
+                           ModifyConversation_Thread);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
-                           CreateConversationThread_EmptyExistingThread);
+                           ModifyConversation_ThreadAssistantEdit);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
-                           CreateConversationThread_MaxThreads);
+                           RegenerateAnswer_Thread);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, RateMessage_Thread);
 
   struct ThreadContainer {
     explicit ThreadContainer(mojom::ThreadPtr thread);
@@ -486,6 +490,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   // thread's first entry, observers also learn the thread now exists before its
   // first entry is reported. A no-op otherwise.
   void MaybeHandleNewThreadEntry(const std::optional<std::string>& thread_uuid);
+  void MaybeHandleRemovedThreadEntries(
+      const std::optional<std::string>& thread_uuid,
+      size_t removed_entry_count);
   // Builds the conversation history to send to the engine for a generation in
   // the given thread (or the root conversation). For a thread, this prepends
   // the root conversation entries up to and including the thread's origin
@@ -503,6 +510,12 @@ class ConversationHandler : public mojom::ConversationHandler,
   // to.
   std::vector<mojom::ConversationTurnPtr>& GetMutableConversationHistory(
       std::optional<std::string_view> thread_uuid);
+
+  // If |thread_uuid| is provided, checks that the thread is valid and that the
+  // threads feature is enabled. Returns true if no thread (i.e. the root
+  // conversation) is provided.
+  bool MaybeCheckValidThread(
+      const std::optional<std::string>& thread_uuid) const;
 
   // When the current batch of tool use requests has been completed, we can
   // send the results to the engine and wait for the next response for the loop.
@@ -605,8 +618,7 @@ class ConversationHandler : public mojom::ConversationHandler,
       std::pair<raw_ptr<mojom::ToolUseEvent>, std::optional<std::string>>;
 
   // If |tool_id| is provided, finds the matching tool use event. Otherwise,
-  // finds the latest tool use event (pending or completed) across all
-  // histories.
+  // finds the latest pending tool use event across all histories.
   ToolUseEventAndThreadUUID FindLatestToolUseEvent(
       std::optional<std::string_view> tool_id = std::nullopt);
 

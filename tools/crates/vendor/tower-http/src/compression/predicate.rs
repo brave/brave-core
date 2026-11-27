@@ -196,7 +196,10 @@ pub struct NotForContentType {
 
 impl NotForContentType {
     /// Predicate that wont compress gRPC responses.
-    pub const GRPC: Self = Self::const_new("application/grpc");
+    pub const GRPC: Self = Self {
+        content_type: Str::Static("application/grpc"),
+        exception: Some(Str::Static("application/grpc-web")),
+    };
 
     /// Predicate that wont compress images.
     pub const IMAGES: Self = Self {
@@ -229,13 +232,14 @@ impl Predicate for NotForContentType {
     where
         B: Body,
     {
+        let cty = content_type(response);
         if let Some(except) = &self.exception {
-            if content_type(response) == except.as_str() {
+            if cty.starts_with(except.as_str()) {
                 return true;
             }
         }
 
-        !content_type(response).starts_with(self.content_type.as_str())
+        !cty.starts_with(self.content_type.as_str())
     }
 }
 

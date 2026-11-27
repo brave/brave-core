@@ -5,32 +5,53 @@ on:
   push:
 
 jobs:
-  check:
-    name: Check
+  stable:
+    name: Test + Clippy (stable)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ATiltedTree/setup-rust@v1
-        with:
-          rust-version: stable
-      - run: cargo check
+      - run: rustup toolchain install stable --no-self-update
+      - run: rustup default stable
+      - run: rustup component add clippy
+      - run: RUSTFLAGS=-Dwarnings cargo test
+      - run: cargo clippy -- -Dwarnings
+      - run: cargo doc
+      - run: RUSTFLAGS=-Dwarnings cargo build --manifest-path fuzz/Cargo.toml --all
 
-  test:
-    name: Test
+  beta:
+    name: Test + Clippy (beta)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ATiltedTree/setup-rust@v1
-        with:
-          rust-version: stable
-      - run: cargo test
-  
-  test_no_default_features:
-    name: Test (no default features)
+      - run: rustup toolchain install beta --no-self-update
+      - run: rustup default beta
+      - run: rustup component add clippy
+      - run: RUSTFLAGS=-Dwarnings cargo test
+      - run: cargo clippy -- -Dwarnings
+      - run: RUSTFLAGS=-Dwarnings cargo build --manifest-path fuzz/Cargo.toml --all
+
+  stable-no-default-features:
+    name: Test + Clippy (stable, no default features)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ATiltedTree/setup-rust@v1
-        with:
-          rust-version: stable
-      - run: cargo test --no-default-features
+      - run: rustup toolchain install stable --no-self-update
+      - run: rustup default stable
+      - run: rustup component add clippy
+      - run: RUSTFLAGS=-Dwarnings cargo test --no-default-features && cargo clippy --no-default-features -- -Dwarnings
+
+  msrv:
+    name: Test (MSRV)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: rustup toolchain install 1.46 --no-self-update
+      - run: rustup default 1.46
+      # We expect an unknown_lints warning on 1.46.
+      # Any new warnings added should be flagged because they might indicate
+      # a bug, but feel free to add them to -A below if they are harmless and
+      # don't happen on newer Rust versions.
+      # Also, no Clippy because we probably don't care what old Clippy
+      # thinks.
+      - run: RUSTFLAGS='-Dwarnings -Aunknown_lints' cargo test
+

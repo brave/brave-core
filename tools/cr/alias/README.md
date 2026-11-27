@@ -48,6 +48,30 @@ git cr commit --culprit abc123,def456 -m "Adjust to upstream API change"
 [commit-msg hook behaviour](#commit-msg-hook-behaviour) section below for more
 details.
 
+#### `--culprit-in-range`
+
+On a `cr<N>` branch, refuses a Chromium culprit outside the branch's range:
+after the Chromium tag its upstream pins, up to the one HEAD pins. Without it,
+any commit is accepted as a culprit, such as one from before the range for a
+latent issue that only now shows up.
+
+```sh
+git cr commit --culprit-in-range --culprit abc123 -m "Adjust to the new API"
+```
+
+#### `--format`
+
+Wraps the body at 72 columns with Chromium's CL description wrapper, as Gerrit's
+"Format" button does, and refuses a subject over 72 columns once the tags are
+added. The subject, indented paragraphs and the "Chromium changes:" block are
+left as they are. It applies to `fixup!` and `amend!` messages too, from an
+`amend!`'s new subject on. See [`../commit_messages.md`](../commit_messages.md).
+
+```sh
+git cr commit --format --culprit abc123 -m "Adjust to the new API" \
+    -m "One line per paragraph, however long: the hook wraps it."
+```
+
 #### `--fixup=reassign:<ref>`
 
 Git understands `--fixup=<ref>`, `--fixup=amend:<ref>`, and
@@ -132,6 +156,29 @@ extra things:
    `--- a/old`, `+++ b/new`, and `diff --git` lines, rename the file, and try
    `git apply --3way` against the Chromium tree so conflicts surface
    immediately.
+
+### `git cr rebase-feature-branch`
+
+Rebases a feature branch onto its upstream (or `--to-ref`) after that branch
+takes a Chromium update. It rebases from the merge-base, as `git rebase` does,
+with `brockit rebase`'s conflict handling:
+
+- Conflicts brockit has a fixed answer for are resolved as the rebase goes. Any
+  other conflict stops the rebase.
+- After each commit is applied, `plaster apply --rev HEAD --amend` refreshes its
+  plaster patches against the Chromium checkout.
+
+```sh
+git cr rebase-feature-branch             # onto the current branch's upstream
+git cr rebase-feature-branch --to-ref origin/master
+git cr rebase-feature-branch --continue  # once the conflicts are resolved and staged
+git cr rebase-feature-branch --skip      # drop the commit the rebase stopped on
+git cr rebase-feature-branch --dry-run   # exit with an error if a rebase is needed
+```
+
+Chromium must be synced to the version the target branch pins, and the feature
+branch must not change that version itself. Both are checked before the rebase
+starts, and the version again on `--continue` and `--skip`.
 
 ## Why the use of a git commit message hook
 

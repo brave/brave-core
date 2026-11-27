@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Đăng nhập để dễ dàng tiếp tục trên tất cả thiết bị của bạn</translation>
 <translation id="2713106313042589954">Tắt máy ảnh</translation>
 <translation id="2717722538473713889">Địa chỉ email</translation>
-<translation id="8181634240306014548">Mở Brave với chế độ tập trung vào Thanh địa chỉ, giúp giảm thời gian khởi động trên thiết bị cấp thấp.</translation>
 <translation id="2750481671343847896">Các trang web có thể đưa ra lời nhắc đăng nhập qua các dịch vụ định danh.</translation>
-<translation id="2787357173144933081">Khởi động nhanh Thanh địa chỉ</translation>
 <translation id="2789132527330338807">Các trang web có thể yêu cầu tạo bản đồ 3D khu vực xung quanh bạn hoặc theo dõi thông tin vị trí của camera</translation>
 <translation id="2790501146643349491">Khi bạn bật tuỳ chọn này, các trang web đã đóng gần đây có thể hoàn tất quá trình gửi và nhận dữ liệu. Khi bạn tắt tuỳ chọn này, các trang web đã đóng gần đây không thể hoàn tất quá trình gửi hoặc nhận dữ liệu.</translation>
 <translation id="2795716239552913152">Các trang web thường sử dụng thông tin vị trí của bạn cho các tính năng hoặc thông tin liên quan, như tin tức địa phương hoặc cửa hàng lân cận</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Cá nhân hoá Brave bằng màu sắc và hình ảnh tuỳ chỉnh cho trang chủ của bạn</translation>
 <translation id="389521680295183045">Các trang web có thể yêu cầu được phát hiện khi bạn đang dùng thiết bị</translation>
 <translation id="3895926599014793903">Buộc bật thu phóng</translation>
-<translation id="3905475044299942653">Ngừng nhận nhiều thông báo</translation>
 <translation id="3922092564198021702">Trên điện thoại, hãy mở phần Cài đặt</translation>
 <translation id="3924858949939391676">Hiển thị các đường liên kết khi Chế độ đọc đang bật</translation>
 <translation id="3933121352599513978">Thu gọn các yêu cầu không mong muốn (nên dùng)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Bạn sẽ thấy các nhóm trong mục nhóm thẻ trên tất cả các thiết bị của bạn</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> không được sử dụng thông tin của bạn</translation>
 <translation id="4953688446973710931">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu tự động tải nhiều tệp xuống. Khi bạn tắt tuỳ chọn này, các trang web không thể tự động tải nhiều tệp xuống.</translation>
-<translation id="4962975101802056554">Thu hồi tất cả các quyền đối với thiết bị</translation>
 <translation id="4972737347717125191">Các trang web có thể yêu cầu sử dụng dữ liệu và thiết bị thực tế ảo</translation>
 <translation id="1275242979020712923">Bảng màu Brave ở dưới cùng</translation>
 <translation id="497421865427891073">Đi về phía trước</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Không cho các trang web sử dụng dữ liệu và thiết bị thực tế ảo của bạn</translation>
 <translation id="6447842834002726250">Cookie</translation>
 <translation id="6452138246455930388">Có ưu đãi giảm giá trên một thẻ đang mở, từ <ph name="OLD_PRICE"/> xuống còn <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Thu hồi quyền truy cập vào thiết bị của <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Khi cửa sổ bị thu hẹp, hãy yêu cầu chế độ xem trên thiết bị di động</translation>
 <translation id="6527303717912515753">Chia sẻ</translation>
 <translation id="6530703012083415527">Khi bạn bật tuỳ chọn này, các trang web có thể sử dụng cửa sổ bật lên và đường liên kết chuyển hướng. Khi bạn tắt tuỳ chọn này, các trang web không thể sử dụng cửa sổ bật lên và đường liên kết chuyển hướng.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Dữ liệu trang web trên máy</translation>
 <translation id="7201549776650881587">Thao tác này sẽ xoá toàn bộ dữ liệu và cookie do tất cả trang web thuộc miền <ph name="ORIGIN"/> hoặc ứng dụng liên quan trên Màn hình chính lưu trữ</translation>
 <translation id="7219254577985949841">Xoá dữ liệu trang web?</translation>
+<translation id="7225256190577194089">Thu hồi mọi quyền đối với thiết bị <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Chọn hình ảnh</translation>
 <translation id="7243246278722455312">Bảng tuỳ chỉnh trang thẻ mới của bạn ở dưới cùng</translation>
 <translation id="7243308994586599757">Có các tùy chọn ở gần cuối màn hình</translation>
@@ -702,7 +700,6 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="8428213095426709021">Cài đặt</translation>
 <translation id="8441146129660941386">Tìm kiếm lùi</translation>
 <translation id="8444433999583714703">Để cho phép <ph name="APP_NAME"/> truy cập vào thông tin vị trí của bạn, hãy bật cả dịch vụ vị trí trong phần <ph name="BEGIN_LINK"/>Cài đặt Android<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Thu hồi quyền truy cập thiết bị</translation>
 <translation id="8463843545738141778">Chế độ cài đặt này bị tắt vì bạn đã bật tính năng Bảo vệ nâng cao trong phần Cài đặt Android.</translation>
 <translation id="8467359479529706065">Bảng giao diện trang thẻ mới ở dưới cùng đã mở trên một nửa màn hình</translation>
 <translation id="8471525937465764768">Các trang web thường kết nối với thiết bị USB để áp dụng những tính năng như in tài liệu hoặc lưu vào thiết bị lưu trữ</translation>

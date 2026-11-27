@@ -112,32 +112,23 @@ fn test_signal() {
 
     unsafe { signal(Signal::SIGINT, SigHandler::SigIgn) }.unwrap();
     raise(Signal::SIGINT).unwrap();
-    assert_eq!(
-        unsafe { signal(Signal::SIGINT, SigHandler::SigDfl) }.unwrap(),
-        SigHandler::SigIgn
-    );
+    let h = unsafe { signal(Signal::SIGINT, SigHandler::SigDfl) }.unwrap();
+    assert!(matches!(h, SigHandler::SigIgn));
 
     let handler = SigHandler::Handler(test_sigaction_handler);
-    assert_eq!(
-        unsafe { signal(Signal::SIGINT, handler) }.unwrap(),
-        SigHandler::SigDfl
-    );
+    let h = unsafe { signal(Signal::SIGINT, handler) }.unwrap();
+    assert!(matches!(h, SigHandler::SigDfl));
     raise(Signal::SIGINT).unwrap();
     assert!(SIGNALED.load(Ordering::Relaxed));
 
+    let h = unsafe { signal(Signal::SIGINT, SigHandler::SigDfl) }.unwrap();
     #[cfg(not(solarish))]
-    assert_eq!(
-        unsafe { signal(Signal::SIGINT, SigHandler::SigDfl) }.unwrap(),
-        handler
-    );
+    assert!(matches!(h, SigHandler::Handler(_)));
 
     // System V based OSes (e.g. illumos and Solaris) always resets the
     // disposition to SIG_DFL prior to calling the signal handler
     #[cfg(solarish)]
-    assert_eq!(
-        unsafe { signal(Signal::SIGINT, SigHandler::SigDfl) }.unwrap(),
-        SigHandler::SigDfl
-    );
+    assert!(matches!(h, SigHandler::SigDfl));
 
     // Restore default signal handler
     unsafe { signal(Signal::SIGINT, SigHandler::SigDfl) }.unwrap();
@@ -307,7 +298,7 @@ fn test_sigaction() {
             action_sig.flags(),
             SaFlags::SA_ONSTACK | SaFlags::SA_RESTART
         );
-        assert_eq!(action_sig.handler(), handler_sig);
+        assert!(matches!(action_sig.handler(), SigHandler::Handler(_)));
 
         mask = action_sig.mask();
         assert!(mask.contains(SIGUSR1));
@@ -315,13 +306,13 @@ fn test_sigaction() {
 
         let handler_act = SigHandler::SigAction(test_sigaction_action);
         let action_act = SigAction::new(handler_act, flags, mask);
-        assert_eq!(action_act.handler(), handler_act);
+        assert!(matches!(action_act.handler(), SigHandler::SigAction(_)));
 
         let action_dfl = SigAction::new(SigHandler::SigDfl, flags, mask);
-        assert_eq!(action_dfl.handler(), SigHandler::SigDfl);
+        assert!(matches!(action_dfl.handler(), SigHandler::SigDfl));
 
         let action_ign = SigAction::new(SigHandler::SigIgn, flags, mask);
-        assert_eq!(action_ign.handler(), SigHandler::SigIgn);
+        assert!(matches!(action_ign.handler(), SigHandler::SigIgn));
     })
     .join()
     .unwrap();

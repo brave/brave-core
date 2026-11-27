@@ -69,13 +69,13 @@ where
     let mut output = Buffer::new();
     let serializer = Serializer::new(&mut output);
     value.serialize(serializer)?;
-    Ok(output.to_string())
+    Ok(output.into_string())
 }
 
 /// Serialize the given data structure as a "pretty" String of TOML.
 ///
-/// This is identical to `to_string` except the output string has a more
-/// "pretty" output. See `Serializer::pretty` for more details.
+/// This is identical to [`to_string`] except the output string has a more
+/// "pretty" output. See [`Serializer::pretty`] for more details.
 ///
 /// To serialize TOML values, instead of documents, see [`ValueSerializer`].
 ///
@@ -89,5 +89,5 @@ where
     let mut output = Buffer::new();
     let serializer = Serializer::pretty(&mut output);
     value.serialize(serializer)?;
-    Ok(output.to_string())
+    Ok(output.into_string())
 }

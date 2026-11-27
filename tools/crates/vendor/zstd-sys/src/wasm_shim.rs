@@ -5,7 +5,7 @@ const USIZE_ALIGN: usize = core::mem::align_of::<usize>();
 const USIZE_SIZE: usize = core::mem::size_of::<usize>();
 
 #[no_mangle]
-pub extern "C" fn rust_zstd_wasm_shim_qsort(
+pub unsafe extern "C" fn rust_zstd_wasm_shim_qsort(
     base: *mut c_void,
     n_items: usize,
     size: usize,
@@ -46,7 +46,7 @@ pub extern "C" fn rust_zstd_wasm_shim_malloc(size: usize) -> *mut c_void {
 }
 
 #[no_mangle]
-pub extern "C" fn rust_zstd_wasm_shim_memcmp(
+pub unsafe extern "C" fn rust_zstd_wasm_shim_memcmp(
     str1: *const c_void,
     str2: *const c_void,
     n: usize,
@@ -69,7 +69,10 @@ pub extern "C" fn rust_zstd_wasm_shim_calloc(
     size: usize,
 ) -> *mut c_void {
     // note: calloc expects the allocation to be zeroed
-    wasm_shim_alloc::<true>(nmemb * size)
+    match nmemb.checked_mul(size) {
+        Some(size) => wasm_shim_alloc::<true>(size),
+        None => core::ptr::null_mut(),
+    }
 }
 
 #[inline]
@@ -79,17 +82,27 @@ fn wasm_shim_alloc<const ZEROED: bool>(size: usize) -> *mut c_void {
     // so it's not stored, and usize-alignment is used
     // memory layout: [size] [allocation]
 
-    let full_alloc_size = size + USIZE_SIZE;
+    let full_alloc_size = match size.checked_add(USIZE_SIZE) {
+        Some(full_alloc_size) => full_alloc_size,
+        None => return core::ptr::null_mut(),
+    };
+    // Layout also checks that the aligned size fits in isize::MAX.
+    let layout = match Layout::from_size_align(full_alloc_size, USIZE_ALIGN) {
+        Ok(layout) => layout,
+        Err(_) => return core::ptr::null_mut(),
+    };
 
     unsafe {
-        let layout =
-            Layout::from_size_align_unchecked(full_alloc_size, USIZE_ALIGN);
-
         let ptr = if ZEROED {
             alloc_zeroed(layout)
         } else {
             alloc(layout)
         };
+
+        if ptr.is_null() {
+            // zstd surfaces NULL as a memory_allocation error
+            return core::ptr::null_mut();
+        }
 
         // SAFETY: ptr is usize-aligned and we've allocated sufficient memory
         ptr.cast::<usize>().write(full_alloc_size);
@@ -103,6 +116,11 @@ pub unsafe extern "C" fn rust_zstd_wasm_shim_free(ptr: *mut c_void) {
     // the layout for the allocation needs to be recovered for dealloc
     // - the size must be recovered from directly below the allocation
     // - the alignment will always by USIZE_ALIGN
+
+    // free(NULL) is a no-op, and zstd relies on it
+    if ptr.is_null() {
+        return;
+    }
 
     let alloc_ptr = ptr.sub(USIZE_SIZE);
     // SAFETY: the allocation routines must uphold having a valid usize below the provided pointer

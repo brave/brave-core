@@ -3,6 +3,8 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use gix_error::{Result, bail, corruption, validation};
+
 use crate::{
     data,
     index::PrefixLookupResult,
@@ -23,7 +25,10 @@ pub struct Entry {
 }
 
 /// Access methods
-impl File {
+impl<T> File<T>
+where
+    T: crate::FileData,
+{
     /// Returns the version of the multi-index file.
     pub fn version(&self) -> Version {
         self.version
@@ -61,7 +66,10 @@ impl File {
     }
 }
 
-impl File {
+impl<T> File<T>
+where
+    T: crate::FileData,
+{
     /// Return the object id at the given `index`, which ranges from 0 to [File::num_objects()].
     pub fn oid_at_index(&self, index: EntryIndex) -> &gix_hash::oid {
         debug_assert!(index < self.num_objects, "index out of bounds");
@@ -104,7 +112,12 @@ impl File {
     /// Given the `index` ranging from 0 to [File::num_objects()], return the pack index and its absolute offset into the pack.
     ///
     /// The pack-index refers to an entry in the [`index_names`][File::index_names()] list, from which the pack can be derived.
-    pub fn pack_id_and_pack_offset_at_index(&self, index: EntryIndex) -> (PackIndex, data::Offset) {
+    ///
+    /// Returns an error if `index` is out of bounds or its pack or large-offset reference is corrupt.
+    pub fn pack_id_and_pack_offset_at_index(&self, index: EntryIndex) -> Result<(PackIndex, data::Offset)> {
+        if index >= self.num_objects {
+            bail!(validation("Multi-index entry index is out of bounds"));
+        }
         const OFFSET_ENTRY_SIZE: usize = 4 + 4;
         let index = index as usize;
         let start = self.offsets_ofs + index * OFFSET_ENTRY_SIZE;
@@ -112,13 +125,20 @@ impl File {
         const HIGH_BIT: u32 = 1 << 31;
 
         let pack_index = crate::read_u32(&self.data[start..][..4]);
+        if pack_index >= self.num_indices {
+            bail!(corruption("Multi-index pack index is out of bounds"));
+        }
         let offset = &self.data[start + 4..][..4];
         let ofs32 = crate::read_u32(offset);
         let pack_offset = if (ofs32 & HIGH_BIT) == HIGH_BIT {
             // We determine if large offsets are actually larger than 4GB and if not, we don't use the high-bit to signal anything
             // but allow the presence of the large-offset chunk to signal what's happening.
-            if let Some(offsets_64) = self.large_offsets_ofs {
-                let from = offsets_64 + (ofs32 ^ HIGH_BIT) as usize * 8;
+            if let Some(offsets_64) = &self.large_offsets {
+                let ordinal = (ofs32 ^ HIGH_BIT) as usize;
+                if ordinal >= offsets_64.len() / 8 {
+                    bail!(corruption("Multi-index large-offset index is out of bounds"));
+                }
+                let from = offsets_64.start + ordinal * 8;
                 crate::read_u64(&self.data[from..][..8])
             } else {
                 u64::from(ofs32)
@@ -126,18 +146,18 @@ impl File {
         } else {
             u64::from(ofs32)
         };
-        (pack_index, pack_offset)
+        Ok((pack_index, pack_offset))
     }
 
-    /// Return an iterator over all entries within this file.
-    pub fn iter(&self) -> impl Iterator<Item = Entry> + '_ {
+    /// Return an iterator over all entries within this file, reporting corrupt references as errors.
+    pub fn iter(&self) -> impl Iterator<Item = Result<Entry>> + '_ {
         (0..self.num_objects).map(move |idx| {
-            let (pack_index, pack_offset) = self.pack_id_and_pack_offset_at_index(idx);
-            Entry {
+            let (pack_index, pack_offset) = self.pack_id_and_pack_offset_at_index(idx)?;
+            Ok(Entry {
                 oid: self.oid_at_index(idx).to_owned(),
                 pack_offset,
                 pack_index,
-            }
+            })
         })
     }
 }

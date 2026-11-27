@@ -33,10 +33,7 @@ impl core::fmt::Display for SerializerError {
     }
 }
 
-#[cfg(feature = "std")]
-impl std::error::Error for SerializerError {}
-#[cfg(all(not(feature = "std"), feature = "serde"))]
-impl serde_core::de::StdError for SerializerError {}
+impl core::error::Error for SerializerError {}
 
 /// Serializer / format support for emitting [`Datetime`][crate::Datetime]
 #[derive(Default)]

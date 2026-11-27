@@ -50,7 +50,7 @@ pub enum VsInstances {
 impl IntoIterator for VsInstances {
     type Item = VsInstance;
     #[allow(bare_trait_objects)]
-    type IntoIter = Box<Iterator<Item = Self::Item>>;
+    type IntoIter = Box<dyn Iterator<Item = Self::Item>>;
 
     fn into_iter(self) -> Self::IntoIter {
         match self {

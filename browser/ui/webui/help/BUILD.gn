@@ -13,7 +13,10 @@ group("help") {
 
   if (is_mac) {
     # Deps for the includes in the version_updater_mac.mm override.
-    public_deps += [ "//brave/browser/updater:buildflags" ]
+    public_deps += [
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/updater:buildflags",
+    ]
     if (enable_omaha4) {
       public_deps += [ "//brave/browser/updater:features" ]
     }

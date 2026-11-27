@@ -98,7 +98,9 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
 
 bool SidebarItemUpdate::operator==(const SidebarItemUpdate& update) const {
   return index == update.index && title_updated == update.title_updated &&
-         url_updated == update.url_updated;
+         url_updated == update.url_updated &&
+         panel_type_updated == update.panel_type_updated &&
+         use_mobile_user_agent_updated == update.use_mobile_user_agent_updated;
 }
 
 // static
@@ -394,37 +396,45 @@ void SidebarService::MoveItem(size_t from, size_t to) {
   UpdateSidebarItemsToPrefStore();
 }
 
-void SidebarService::UpdateItem(const GURL& old_url,
-                                const GURL& new_url,
-                                std::u16string_view old_title,
-                                std::u16string_view new_title) {
-  DCHECK(old_url.is_valid() && new_url.is_valid());
-  DCHECK(!old_title.empty() && !new_title.empty());
+void SidebarService::UpdateItem(const SidebarItem& old_item,
+                                const SidebarItem& new_item) {
+  DCHECK(old_item.url.is_valid() && new_item.url.is_valid());
+  DCHECK(!old_item.title.empty() && !new_item.title.empty());
 
-  if (old_url == new_url && old_title == new_title) {
+  if (old_item == new_item) {
     return;
   }
 
-  // Check any existing items doen't use |new_url| if |old_url| and |new_url|
-  // is different. If both are same, only title will be updated.
-  // Sidebar can't have two items with same url.
-  if (old_url != new_url &&
-      std::ranges::contains(items_, new_url, &SidebarItem::url)) {
+  const bool url_updated = old_item.url != new_item.url;
+  const bool title_updated = old_item.title != new_item.title;
+  const bool panel_type_updated = old_item.panel_type != new_item.panel_type;
+  const bool use_mobile_user_agent_updated =
+      old_item.use_mobile_user_agent != new_item.use_mobile_user_agent;
+
+  // Sidebar can't have two items with the same url, so reject the update if
+  // the new url collides with a different, existing item.
+  if (url_updated &&
+      std::ranges::contains(items_, new_item.url, &SidebarItem::url)) {
     return;
   }
 
-  auto item_iter = std::ranges::find(items_, old_url, &SidebarItem::url);
-  if (item_iter != items_.end()) {
-    const size_t index = std::distance(items_.begin(), item_iter);
-    DCHECK(IsEditableItemAt(index));
-    item_iter->url = new_url;
-    item_iter->title = new_title;
-    for (Observer& obs : observers_) {
-      obs.OnItemUpdated(*item_iter,
-                        {index, old_title != new_title, old_url != new_url});
-    }
-    UpdateSidebarItemsToPrefStore();
+  auto item_iter = std::ranges::find(items_, old_item.url, &SidebarItem::url);
+  if (item_iter == items_.end()) {
+    return;
   }
+
+  const size_t index = std::distance(items_.begin(), item_iter);
+  DCHECK(IsEditableItemAt(index));
+  item_iter->url = new_item.url;
+  item_iter->title = new_item.title;
+  item_iter->panel_type = new_item.panel_type;
+  item_iter->use_mobile_user_agent = new_item.use_mobile_user_agent;
+
+  observers_.Notify(
+      &Observer::OnItemUpdated, *item_iter,
+      SidebarItemUpdate(index, title_updated, url_updated, panel_type_updated,
+                        use_mobile_user_agent_updated));
+  UpdateSidebarItemsToPrefStore();
 }
 
 void SidebarService::UpdateSidebarItemsToPrefStore() {
@@ -453,6 +463,7 @@ void SidebarService::UpdateSidebarItemsToPrefStore() {
       // a kSidebarWebPanel toggle.
       dict.Set(kSidebarItemWebPanelKey,
                item.panel_type == SidebarItem::PanelType::kWebPanel);
+      dict.Set(kSidebarItemUseMobileUserAgentKey, item.use_mobile_user_agent);
     }
     items.Append(std::move(dict));
   }
@@ -605,10 +616,13 @@ void SidebarService::LoadSidebarItems() {
       if (const auto* value = item.FindString(kSidebarItemTitleKey)) {
         title = *value;
       }
-      items_.push_back(is_web_panel ? SidebarItem::CreateWebPanelItem(
-                                          GURL(url), base::UTF8ToUTF16(title))
-                                    : SidebarItem::CreateWebTabItem(
-                                          GURL(url), base::UTF8ToUTF16(title)));
+      auto new_item = is_web_panel ? SidebarItem::CreateWebPanelItem(
+                                         GURL(url), base::UTF8ToUTF16(title))
+                                   : SidebarItem::CreateWebTabItem(
+                                         GURL(url), base::UTF8ToUTF16(title));
+      new_item.use_mobile_user_agent =
+          item.FindBool(kSidebarItemUseMobileUserAgentKey).value_or(false);
+      items_.push_back(std::move(new_item));
     }
   }
 

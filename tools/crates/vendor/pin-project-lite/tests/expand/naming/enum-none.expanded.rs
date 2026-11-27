@@ -27,7 +27,9 @@ const _: () = {
     {}
     trait MustNotImplDrop {}
     #[allow(clippy::drop_bounds, drop_bounds)]
-    impl<T: ::pin_project_lite::__private::Drop> MustNotImplDrop for T {}
+    impl<
+        T: ?::pin_project_lite::__private::Sized + ::pin_project_lite::__private::Drop,
+    > MustNotImplDrop for T {}
     impl<T, U> MustNotImplDrop for Enum<T, U> {}
 };
 fn main() {}

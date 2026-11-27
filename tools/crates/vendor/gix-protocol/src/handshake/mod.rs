@@ -50,58 +50,118 @@ pub enum Ref {
     },
 }
 
-/// The result of the [`handshake()`][super::handshake()] function.
-#[derive(Default, Debug, Clone)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg(feature = "handshake")]
-pub struct Outcome {
-    /// The protocol version the server responded with. It might have downgraded the desired version.
-    pub server_protocol_version: gix_transport::Protocol,
-    /// The references reported as part of the `Protocol::V1` handshake, or `None` otherwise as V2 requires a separate request.
-    pub refs: Option<Vec<Ref>>,
-    /// Shallow updates as part of the `Protocol::V1`, to shallow a particular object.
-    /// Note that unshallowing isn't supported here.
-    pub v1_shallow_updates: Option<Vec<crate::fetch::response::ShallowUpdate>>,
-    /// The server capabilities.
-    pub capabilities: gix_transport::client::Capabilities,
-}
+pub(crate) mod hero {
+    use crate::handshake::Ref;
 
-#[cfg(feature = "handshake")]
-mod error {
-    use bstr::BString;
-    use gix_transport::client;
-
-    use crate::{credentials, handshake::refs};
-
-    /// The error returned by [`handshake()`][crate::fetch::handshake()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("Failed to obtain credentials")]
-        Credentials(#[from] credentials::protocol::Error),
-        #[error("No credentials were returned at all as if the credential helper isn't functioning unknowingly")]
-        EmptyCredentials,
-        #[error("Credentials provided for \"{url}\" were not accepted by the remote")]
-        InvalidCredentials { url: BString, source: std::io::Error },
-        #[error(transparent)]
-        Transport(#[from] client::Error),
-        #[error("The transport didn't accept the advertised server version {actual_version:?} and closed the connection client side")]
-        TransportProtocolPolicyViolation { actual_version: gix_transport::Protocol },
-        #[error(transparent)]
-        ParseRefs(#[from] refs::parse::Error),
+    /// The result of the [`handshake()`](crate::handshake()) function.
+    #[derive(Default, Debug, Clone)]
+    #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+    pub struct Handshake {
+        /// The protocol version the server responded with. It might have downgraded the desired version.
+        pub server_protocol_version: gix_transport::Protocol,
+        /// The references reported as part of the `Protocol::V1` handshake, or `None` otherwise as V2 requires a separate request.
+        pub refs: Option<Vec<Ref>>,
+        /// Shallow updates as part of the `Protocol::V1`, to shallow a particular object.
+        /// Note that unshallowing isn't supported here.
+        pub v1_shallow_updates: Option<Vec<crate::fetch::response::ShallowUpdate>>,
+        /// The server capabilities.
+        pub capabilities: gix_transport::client::Capabilities,
     }
 
-    impl gix_transport::IsSpuriousError for Error {
-        fn is_spurious(&self) -> bool {
-            match self {
-                Error::Transport(err) => err.is_spurious(),
-                _ => false,
+    #[cfg(feature = "fetch")]
+    mod fetch {
+        use crate::{Handshake, command::Feature, fetch::RefMap, ls_refs::RefPrefixes};
+
+        use gix_error::Result;
+        use gix_error::{ResultExt, message};
+        use gix_utils::progress::Progress;
+
+        /// Intermediate state while potentially fetching a refmap after the handshake.
+        pub enum ObtainRefMap<'a> {
+            /// We already got a refmap to use from the V1 handshake, which always sends them.
+            Existing(RefMap),
+            /// We need to invoke another `ls-refs` command to retrieve the refmap as part of the V2 protocol.
+            LsRefsCommand(crate::LsRefsCommand<'a>, crate::fetch::refmap::init::Context),
+        }
+
+        macro_rules! fetch {
+            ($name:ident, $bisync:path, $transport:path, $invoke:ident, $mode:literal) => {
+                /// Fetch the refmap, either by returning the existing one or invoking the `ls-refs` command.
+                #[$bisync]
+                pub async fn $name(
+                    self,
+                    mut progress: impl Progress,
+                    transport: &mut impl $transport,
+                    trace_packetlines: bool,
+                ) -> gix_error::Result<RefMap> {
+                    let (cmd, cx) = match self {
+                        ObtainRefMap::Existing(map) => return Ok(map),
+                        ObtainRefMap::LsRefsCommand(cmd, cx) => (cmd, cx),
+                    };
+
+                    let _span = gix_trace::coarse!(
+                        "gix_protocol::handshake::ObtainRefMap::fetch()",
+                        mode = $mode
+                    );
+                    let capabilities = cmd.capabilities;
+                    let remote_refs = cmd
+                        .$invoke(transport, &mut progress, trace_packetlines)
+                        .await
+                        .or_raise(|| message("Failed to list references on the remote"))?;
+                    RefMap::from_refs(remote_refs, capabilities, cx)
+                }
+            };
+        }
+
+        impl ObtainRefMap<'_> {
+            #[cfg(feature = "async-client")]
+            fetch!(
+                fetch_async,
+                ::gix_macros::keep,
+                crate::transport::client::async_io::Transport,
+                invoke_async,
+                "async"
+            );
+
+            #[cfg(feature = "blocking-client")]
+            fetch!(
+                fetch_blocking,
+                ::gix_macros::sync,
+                crate::transport::client::blocking_io::Transport,
+                invoke_blocking,
+                "blocking"
+            );
+        }
+
+        impl Handshake {
+            /// Prepare fetching a [refmap](RefMap) if not present in the handshake.
+            pub fn prepare_lsrefs_or_extract_refmap(
+                &mut self,
+                user_agent: Feature,
+                prefix_from_spec_as_filter_on_remote: bool,
+                refmap_context: crate::fetch::refmap::init::Context,
+            ) -> Result<ObtainRefMap<'_>> {
+                if let Some(refs) = self.refs.take() {
+                    return Ok(ObtainRefMap::Existing(RefMap::from_refs(
+                        refs,
+                        &self.capabilities,
+                        refmap_context,
+                    )?));
+                }
+
+                let prefix_refs = prefix_from_spec_as_filter_on_remote.then(|| {
+                    let all_refspecs = refmap_context.aggregate_refspecs();
+                    RefPrefixes::from_refspecs(&all_refspecs)
+                });
+                Ok(ObtainRefMap::LsRefsCommand(
+                    crate::LsRefsCommand::new(prefix_refs, &self.capabilities, user_agent),
+                    refmap_context,
+                ))
             }
         }
     }
 }
-#[cfg(feature = "handshake")]
-pub use error::Error;
 
 #[cfg(any(feature = "blocking-client", feature = "async-client"))]
 #[cfg(feature = "handshake")]

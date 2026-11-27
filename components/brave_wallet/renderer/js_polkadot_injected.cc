@@ -132,6 +132,8 @@ v8::Local<v8::Value> JSPolkadotInjected::BuildApiObject(
     if (CreateDataProperty(context, api, method.name, function).IsNothing()) {
       return v8::Local<v8::Value>();
     }
+
+    SealOwnProperty(context, api, gin::StringToV8(isolate, method.name));
   }
 
   return api;

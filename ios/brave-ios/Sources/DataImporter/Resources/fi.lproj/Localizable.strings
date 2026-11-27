@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "Kirjanmerkkien tuonnissa tapahtui virhe.";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "Historian tuonnissa tapahtui virhe.";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "Salasanojen tuonnissa tapahtui virhe.\nJoitakin salasanoja ei voitu tuoda päällekkäisyyksien vuoksi.";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "Salasanojen tuonnissa tapahtui virhe.";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "Tiedoston purussa tapahtui virhe.";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "Valitse tiedosto...";
 
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "Etsi sovellusluettelosta (aakkosjärjestyksessä) ja napauta kohtaa **Safari**.";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "Zip-tiedosto ei sisällä tuontitietoja.";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "Odota, kun siirrämme tietojasi turvallisesti.\nSiinä voi mennä hetki.";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "Useita profiileja on havaittu";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "Henkilökohtainen";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Tuodut kirjanmerkit";

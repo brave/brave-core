@@ -426,7 +426,7 @@ mod test {
 
         enum OpaqueTaskName {}
 
-        extern "C" {
+        unsafe extern "C" {
             fn mach_task_self() -> *const OpaqueTaskName;
             fn task_info(
                 task_name: *const OpaqueTaskName,

@@ -51,7 +51,7 @@ BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
     show_title_bar_on_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
         base::BindRepeating(
-            &BraveBrowserFrameViewMac::UpdateWindowTitleVisibility,
+            &BraveBrowserFrameViewMac::UpdateWindowTitleAndControls,
             base::Unretained(this)));
   }
 
@@ -190,9 +190,21 @@ void BraveBrowserFrameViewMac::UpdateWindowControlsOpacity() {
   const double alpha =
       std::clamp((reveal_fraction - kFadeStart) / (1.0 - kFadeStart), 0.0, 1.0);
 
+  // Hide the buttons via `setHidden:` instead of `alphaValue == 0.0` when fully
+  // invisible; AppKit reports zero-alpha standard window buttons as disabled,
+  // which breaks menu validation and keyboard shortcuts such as Cmd+M and
+  // Cmd+Shift+W.
+  const bool hidden = (alpha == 0.0);
   for (NSWindowButton kind :
        {NSWindowCloseButton, NSWindowMiniaturizeButton, NSWindowZoomButton}) {
-    [[window standardWindowButton:kind] setAlphaValue:alpha];
+    NSButton* button = [window standardWindowButton:kind];
+    if (hidden) {
+      [button setHidden:YES];
+      [button setAlphaValue:1.0];
+    } else {
+      [button setAlphaValue:alpha];
+      [button setHidden:NO];
+    }
   }
 }
 
@@ -202,6 +214,27 @@ void BraveBrowserFrameViewMac::OnTopOverlayRevealFractionChanged(
 }
 
 void BraveBrowserFrameViewMac::ResetWindowControlsPosition() {
+  auto* widget = GetWidget();
+  if (!widget || widget->IsClosed()) {
+    return;
+  }
+
+  // Call upstream's OnTabStripStateChanged() to force AppKit to refresh the
+  // titlebar height and traffic light layout after Brave's tab strip or
+  // titlebar prefs change. This runs asynchronously via
+  // UpdateWindowTitleAndControls() so tab strip reparenting completes before
+  // OnTabStripStateChanged() triggers a synchronous layout. Skip while in
+  // fullscreen so we don't fight AppKit or ImmersiveModeControllerCocoa's
+  // state, and only call if NSWindowStyleMaskFullSizeContentView is currently
+  // set.
+  if (!GetBrowserView()->IsFullscreen()) {
+    if (NSWindow* window = widget->GetNativeWindow().GetNativeNSWindow();
+        window && !(window.styleMask & NSWindowStyleMaskFullScreen) &&
+        (window.styleMask & NSWindowStyleMaskFullSizeContentView)) {
+      OnTabStripStateChanged();
+    }
+  }
+
   browser_widget()->ResetWindowControlsPosition();
   UpdateWindowControlsOpacity();
 }

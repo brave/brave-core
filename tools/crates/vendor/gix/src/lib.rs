@@ -4,6 +4,22 @@
 //! individually. Sometimes it may hide complexity under the assumption that the performance difference doesn't matter
 //! for all but the fewest tools out there, which would be using the underlying crates directly or file an issue.
 //!
+//! ## Example
+//!
+//! This is merely an introduction, for more see the respective [`Repository`] methods.
+//! ```
+//! # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+//! # mod doctest { include!(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/doctest.rs")); }
+//! # let repo_dir = doctest::basic_repo_dir()?;
+//! # let repo = doctest::open_repo(repo_dir)?;
+//! let head = repo.head_commit()?;
+//!
+//! assert_eq!(repo.head_name()?.expect("born").shorten(), "main");
+//! assert_eq!(head.decode()?.message, "c2\n");
+//! assert_eq!(repo.head_tree_id()?, head.tree_id()?);
+//! # Ok(()) }
+//! ```
+//!
 //! ### The Trust Model
 //!
 //! It is very simple - based on the ownership of the repository compared to the user of the current process [Trust](sec::Trust)
@@ -24,6 +40,24 @@
 //!
 //! Most extensions to existing objects provide an `obj_with_extension.attach(&repo).an_easier_version_of_a_method()` for simpler
 //! call signatures.
+//!
+//! ### Errors
+//!
+//! Fallible APIs defined by this crate use [`Result<T>`], including iterator items and callbacks.
+//! [`Error`] implements [`std::error::Error`] and preserves underlying causes, classifications, and diagnostic metadata.
+//! Use [`Error::downcast_any_ref()`] to inspect concrete causes. Re-exported plumbing APIs and implementations of
+//! external traits retain the error types required by those APIs.
+//!
+//! Applications can use `gix::Result` and `gix::Error` for their own errors as well. The [`error`] module re-exports
+//! error helpers, extension traits, and macros, so no separate `gix-error` dependency is needed:
+//!
+//! ```
+//! use gix::{Result, error::{ResultExt, message}};
+//!
+//! fn open_repository(path: impl Into<std::path::PathBuf>) -> Result<gix::Repository> {
+//!     gix::open(path).or_raise(|| message("Could not open repository"))
+//! }
+//! ```
 //!
 //! ### `ThreadSafe` Mode
 //!
@@ -87,7 +121,6 @@
 )]
 #![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
 #![deny(missing_docs, unsafe_code)]
-#![allow(clippy::result_large_err)]
 
 // Re-exports to make this a potential one-stop shop crate avoiding people from having to reference various crates themselves.
 // This also means that their major version changes affect our major version, but that's alright as we directly expose their
@@ -105,13 +138,7 @@ pub use gix_credentials as credentials;
 pub use gix_date as date;
 #[cfg(feature = "dirwalk")]
 pub use gix_dir as dir;
-pub use gix_features as features;
-use gix_features::threading::OwnShared;
-pub use gix_features::{
-    parallel,
-    progress::{Count, DynNestedProgress, NestedProgress, Progress},
-    threading,
-};
+pub use gix_error as error;
 pub use gix_fs as fs;
 pub use gix_glob as glob;
 pub use gix_hash as hash;
@@ -127,9 +154,12 @@ pub use gix_negotiate as negotiate;
 pub use gix_object as objs;
 pub use gix_object::bstr;
 pub use gix_odb as odb;
+pub use gix_parallel as parallel;
+use gix_parallel::OwnShared;
 #[cfg(feature = "credentials")]
 pub use gix_prompt as prompt;
 pub use gix_protocol as protocol;
+pub use gix_quote as quote;
 pub use gix_ref as refs;
 pub use gix_refspec as refspec;
 pub use gix_revwalk as revwalk;
@@ -141,8 +171,12 @@ pub use gix_url as url;
 #[doc(inline)]
 pub use gix_url::Url;
 pub use gix_utils as utils;
+pub use gix_utils::progress::{Count, DynNestedProgress, NestedProgress, Progress};
 pub use gix_validate as validate;
-pub use hash::{oid, ObjectId};
+pub use gix_zlib as zlib;
+pub use hash::{ObjectId, oid};
+
+pub use gix_error::{Error, Exn, ExnMessageResult, ExnResult, Result};
 
 pub mod interrupt;
 
@@ -164,7 +198,7 @@ pub type OdbHandle = gix_odb::memory::Proxy<gix_odb::Handle>;
 pub type OdbHandleArc = gix_odb::memory::Proxy<gix_odb::HandleArc>;
 
 /// A way to access git configuration
-pub(crate) type Config = OwnShared<gix_config::File<'static>>;
+pub(crate) type Config = OwnShared<gix_config::File>;
 
 mod types;
 #[cfg(any(feature = "excludes", feature = "attributes"))]
@@ -220,53 +254,96 @@ pub mod merge;
 /// To achieve that, one has to [enable `git_binary` configuration](https://github.com/GitoxideLabs/gitoxide/blob/9723e1addf52cc336d59322de039ea0537cdca36/src/plumbing/main.rs#L86)
 /// in the open-options and use [`ThreadSafeRepository::discover_opts()`] instead. Alternatively, it might be well-known
 /// that the tool is going to run in a neatly configured environment without relying on bundled configuration.
-#[allow(clippy::result_large_err)]
-pub fn discover(directory: impl AsRef<std::path::Path>) -> Result<Repository, discover::Error> {
+///
+/// # Examples
+///
+/// ```
+/// # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+/// # mod doctest { include!(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/doctest.rs")); }
+/// # let repo_dir = doctest::basic_repo_dir()?;
+/// let repo = doctest::discover_repo(repo_dir.join("some/very/deeply/nested/subdir"))?;
+///
+/// assert_eq!(repo.kind(), gix::repository::Kind::Common);
+/// assert_eq!(repo.head_name()?.expect("born").shorten(), "main");
+/// assert!(repo.workdir_path("this").expect("non-bare").is_file());
+/// # Ok(()) }
+/// ```
+pub fn discover(directory: impl AsRef<std::path::Path>) -> Result<Repository> {
     ThreadSafeRepository::discover(directory).map(Into::into)
+}
+
+/// Try to open a git repository in `directory` and search upwards through its parents until one is found,
+/// using `open_options` regardless of the trust level of the discovered repository.
+/// The detected trust level is retained, so repositories with reduced trust still restrict their behavior accordingly.
+pub fn discover_opts(
+    directory: impl AsRef<std::path::Path>,
+    options: discover::upwards::Options<'_>,
+    open_options: open::Options,
+) -> Result<Repository> {
+    ThreadSafeRepository::discover_opts(
+        directory,
+        options,
+        sec::trust::Mapping {
+            full: open_options.clone(),
+            reduced: open_options,
+        },
+    )
+    .map(Into::into)
 }
 
 /// Try to discover a git repository directly from the environment.
 ///
 /// For details, see [`ThreadSafeRepository::discover_with_environment_overrides_opts()`].
-#[allow(clippy::result_large_err)]
-pub fn discover_with_environment_overrides(
-    directory: impl AsRef<std::path::Path>,
-) -> Result<Repository, discover::Error> {
+pub fn discover_with_environment_overrides(directory: impl AsRef<std::path::Path>) -> Result<Repository> {
     ThreadSafeRepository::discover_with_environment_overrides(directory).map(Into::into)
 }
 
 /// Try to open a git repository directly from the environment.
 ///
 /// See [`ThreadSafeRepository::open_with_environment_overrides()`].
-#[allow(clippy::result_large_err)]
-pub fn open_with_environment_overrides(directory: impl Into<std::path::PathBuf>) -> Result<Repository, open::Error> {
+pub fn open_with_environment_overrides(directory: impl Into<std::path::PathBuf>) -> Result<Repository> {
     ThreadSafeRepository::open_with_environment_overrides(directory, Default::default()).map(Into::into)
 }
 
 /// See [`ThreadSafeRepository::init()`], but returns a [`Repository`] instead.
-#[allow(clippy::result_large_err)]
-pub fn init(directory: impl AsRef<std::path::Path>) -> Result<Repository, init::Error> {
+///
+/// # Examples
+///
+/// ```
+/// # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+/// # mod doctest { include!(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/doctest.rs")); }
+/// # let dir = doctest::tempdir()?;
+/// let repo = gix::init(dir.path())?;
+///
+/// assert!(repo.git_dir().is_dir());
+/// assert!(repo.head_name()?.is_some());
+/// assert!(repo.head()?.is_unborn());
+/// # Ok(()) }
+/// ```
+pub fn init(directory: impl AsRef<std::path::Path>) -> Result<Repository> {
     ThreadSafeRepository::init(directory, create::Kind::WithWorktree, create::Options::default()).map(Into::into)
 }
 
 /// See [`ThreadSafeRepository::init()`], but returns a [`Repository`] instead.
-#[allow(clippy::result_large_err)]
-pub fn init_bare(directory: impl AsRef<std::path::Path>) -> Result<Repository, init::Error> {
+pub fn init_bare(directory: impl AsRef<std::path::Path>) -> Result<Repository> {
     ThreadSafeRepository::init(directory, create::Kind::Bare, create::Options::default()).map(Into::into)
 }
 
 /// Create a platform for configuring a bare clone from `url` to the local `path`, using default options for opening it (but
 /// amended with using configuration from the git installation to ensure all authentication options are honored).
 ///
+/// Like `git clone --bare`, branches are stored in `refs/heads/`, with no default fetch refspec,
+/// remote-tracking `HEAD`, or branch upstream configuration. For a non-bare clone without checkout
+/// (like `git clone --no-checkout`), use [`prepare_clone()`] followed by
+/// [`fetch_only()`][clone::PrepareFetch::fetch_only()]
+/// with the `blocking-network-client` or `async-network-client-async-std` feature enabled.
+/// This creates `path/.git` and fetches the repository without populating the working tree.
+///
 /// See [`clone::PrepareFetch::new()`] for a function to take full control over all options.
-#[allow(clippy::result_large_err)]
-pub fn prepare_clone_bare<Url, E>(
-    url: Url,
-    path: impl AsRef<std::path::Path>,
-) -> Result<clone::PrepareFetch, clone::Error>
+pub fn prepare_clone_bare<Url, E>(url: Url, path: impl AsRef<std::path::Path>) -> Result<clone::PrepareFetch>
 where
     Url: std::convert::TryInto<gix_url::Url, Error = E>,
-    gix_url::parse::Error: From<E>,
+    E: std::error::Error + Send + Sync + 'static,
 {
     clone::PrepareFetch::new(
         url,
@@ -281,11 +358,10 @@ where
 /// (but amended with using configuration from the git installation to ensure all authentication options are honored).
 ///
 /// See [`clone::PrepareFetch::new()`] for a function to take full control over all options.
-#[allow(clippy::result_large_err)]
-pub fn prepare_clone<Url, E>(url: Url, path: impl AsRef<std::path::Path>) -> Result<clone::PrepareFetch, clone::Error>
+pub fn prepare_clone<Url, E>(url: Url, path: impl AsRef<std::path::Path>) -> Result<clone::PrepareFetch>
 where
     Url: std::convert::TryInto<gix_url::Url, Error = E>,
-    gix_url::parse::Error: From<E>,
+    E: std::error::Error + Send + Sync + 'static,
 {
     clone::PrepareFetch::new(
         url,
@@ -304,17 +380,132 @@ fn open_opts_with_git_binary_config() -> open::Options {
 }
 
 /// See [`ThreadSafeRepository::open()`], but returns a [`Repository`] instead.
-#[allow(clippy::result_large_err)]
+///
+/// # Examples
+///
+/// ```
+/// # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+/// # mod doctest { include!(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/doctest.rs")); }
+/// # let repo_dir = doctest::basic_repo_dir()?;
+/// let repo = doctest::open_repo(repo_dir)?;
+///
+/// assert_eq!(repo.head_name()?.expect("born").shorten(), "main");
+/// assert_eq!(repo.head_commit()?.decode()?.message, "c2\n");
+/// # Ok(()) }
+/// ```
 #[doc(alias = "git2")]
-pub fn open(directory: impl Into<std::path::PathBuf>) -> Result<Repository, open::Error> {
+pub fn open(directory: impl Into<std::path::PathBuf>) -> Result<Repository> {
     ThreadSafeRepository::open(directory).map(Into::into)
 }
 
 /// See [`ThreadSafeRepository::open_opts()`], but returns a [`Repository`] instead.
-#[allow(clippy::result_large_err)]
 #[doc(alias = "open_ext", alias = "git2")]
-pub fn open_opts(directory: impl Into<std::path::PathBuf>, options: open::Options) -> Result<Repository, open::Error> {
+pub fn open_opts(directory: impl Into<std::path::PathBuf>, options: open::Options) -> Result<Repository> {
     ThreadSafeRepository::open_opts(directory, options).map(Into::into)
+}
+
+/// Load configuration available without an existing repository, using the configuration-related portions of `options`.
+///
+/// `git_dir` supplies context for `includeIf.gitdir` conditions and does not have to exist. Without it, these
+/// conditions aren't matched. Repository-local and branch-dependent configuration isn't available at this stage.
+pub fn config(git_dir: Option<&std::path::Path>, options: &open::Options) -> Result<config::File> {
+    let environment = options.permissions.env;
+    let git_install_dir = path::install_dir().ok();
+    let home = gix_path::env::home_dir().and_then(|home| environment.home.check_opt(home));
+    config::cache::load(
+        None,
+        &mut Vec::new(),
+        git_dir,
+        None,
+        git_install_dir.as_deref(),
+        home.as_deref(),
+        options.git_installation_config_path.as_deref(),
+        options.system_config_path.as_deref(),
+        environment,
+        options.permissions.config,
+        options.lossy_config,
+        options.lenient_config,
+        &options.api_config_overrides,
+        &options.cli_config_overrides,
+        options.use_repository_local_environment,
+    )
+}
+
+/// Return the path at which a configuration file is expected without a repository, selected by its source.
+///
+/// Supported sources are [`GitInstallation`](config::Source::GitInstallation), [`System`](config::Source::System),
+/// [`Git`](config::Source::Git) (the XDG Git configuration), and [`User`](config::Source::User).
+/// Path selection honors the configuration permissions, environment permissions and explicit paths in `options`,
+/// just like [`config()`]. Disabled sources and sources without an available path return an error.
+/// Relative paths are joined to the current directory when called.
+///
+/// With a repository, use [`Repository::config_path()`] to also resolve local and worktree configuration paths.
+///
+/// Use this to inspect, prepare or load the file before calling [`config_mut()`]. The file and its parent directories
+/// do not have to exist. No configuration transaction is opened, no lock is acquired, and no directories are created.
+/// Discovering the Git installation path, or the system path on Windows, may invoke Git.
+pub fn config_path(source: config::Source, options: &open::Options) -> Result<std::path::PathBuf> {
+    use gix_error::{OptionExt, ResultExt, bail, message};
+
+    if !matches!(
+        source,
+        config::Source::GitInstallation | config::Source::System | config::Source::Git | config::Source::User
+    ) {
+        bail!("Configuration source {source:?} requires a repository or has no physical file");
+    }
+    let path = config::cache::source_path(
+        source,
+        options.git_installation_config_path.as_deref(),
+        options.system_config_path.as_deref(),
+        options.permissions.config,
+        &mut config::Cache::make_source_env(options.permissions.env),
+    )
+    .ok_or_raise(|| message!("Configuration source {source:?} has no available path with these options"))?;
+    Ok(if path.is_absolute() {
+        path
+    } else {
+        std::env::current_dir()
+            .or_raise(|| message("Could not obtain the current directory for a relative configuration path"))?
+            .join(path)
+    })
+}
+
+/// Lock and open one configuration file available without a repository, selected by its source.
+///
+/// The path is selected by [`config_path()`], which can be used to inspect or prepare the file before opening it.
+///
+/// The lock timeout comes from `core.configLockTimeout` in [`config(None, options)`](config()), honoring section filtering
+/// and leniency, and defaults to one second. Includes and runtime overrides can affect the timeout, but the returned file
+/// contains only the selected physical file, parsed strictly and losslessly even with `lossy_config` enabled.
+///
+/// Missing files start empty; their parent directories must already exist. Existing file permissions are preserved, and
+/// new files apply `core.sharedRepository` from the same resolved configuration, honoring section filtering.
+/// Invalid sharing policies return an error.
+/// Dropping the transaction discards edits and releases its lock; [`commit()`](config::FileTransaction::commit()) writes
+/// the file atomically without updating existing repository instances.
+///
+/// ```no_run
+/// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+/// let mut file = gix::config_mut(gix::config::Source::User, &gix::open::Options::default())?;
+/// file.set_raw_value("user.name", "Ada Lovelace")?;
+/// file.commit()?;
+/// # Ok(()) }
+/// ```
+pub fn config_mut(source: config::Source, options: &open::Options) -> Result<config::FileTransaction> {
+    use gix_error::{ResultExt, message};
+
+    let path = config_path(source, options)?;
+    let resolved = config(None, options).or_raise(|| message("Could not load global configuration"))?;
+    let filter = options.filter_config_section.unwrap_or(config::section::is_trusted);
+    let lock_mode = config::cache::access::config_lock_timeout(&resolved, options.lenient_config, filter)?;
+    let shared_repository_permissions = config::file_mut::shared_repository_permissions(&resolved, filter)?;
+    config::FileTransaction::open(
+        path,
+        source,
+        gix_sec::Trust::Full,
+        lock_mode,
+        shared_repository_permissions,
+    )
 }
 
 ///
@@ -329,6 +520,10 @@ pub mod config;
 ///
 #[cfg(feature = "mailmap")]
 pub mod mailmap;
+
+///
+#[cfg(feature = "notes")]
+pub mod note;
 
 ///
 pub mod worktree;

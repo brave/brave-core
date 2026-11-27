@@ -11,13 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.68"
+rust-version = "1.71"
 name = "serde_json"
-version = "1.0.147"
-authors = [
-    "Erick Tryzelaar <erick.tryzelaar@gmail.com>",
-    "David Tolnay <dtolnay@gmail.com>",
-]
+version = "1.0.154"
 build = "build.rs"
 autolib = false
 autobins = false
@@ -69,7 +65,8 @@ default = ["std"]
 float_roundtrip = []
 preserve_order = [
     "indexmap",
-    "std",
+    "alloc",
+    "dep:foldhash",
 ]
 raw_value = []
 std = [
@@ -110,9 +107,15 @@ path = "tests/stream.rs"
 name = "test"
 path = "tests/test.rs"
 
+[dependencies.foldhash]
+version = "0.2"
+optional = true
+default-features = false
+
 [dependencies.indexmap]
 version = "2.2.3"
 optional = true
+default-features = false
 
 [dependencies.itoa]
 version = "1.0"
@@ -126,7 +129,7 @@ version = "1.0.220"
 default-features = false
 
 [dependencies.zmij]
-version = "0.1.7"
+version = "1.0"
 
 [dev-dependencies.automod]
 version = "1.0.11"

@@ -1,51 +1,37 @@
+use gix_error::Result;
 use std::collections::BTreeSet;
 
 use crate::{
-    file::{init, init::Options, Metadata},
     File,
+    file::{Metadata, init::Options},
 };
 
-/// The error returned by [`File::from_paths_metadata()`] and [`File::from_path_no_includes()`].
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("The configuration file at \"{}\" could not be read", path.display())]
-    Io {
-        source: std::io::Error,
-        path: std::path::PathBuf,
-    },
-    #[error(transparent)]
-    Init(#[from] init::Error),
-}
-
 /// Instantiation from one or more paths
-impl File<'static> {
+impl File {
     /// Load the single file at `path` with `source` without following include directives.
     ///
     /// Note that the path will be checked for ownership to derive trust.
-    pub fn from_path_no_includes(path: std::path::PathBuf, source: crate::Source) -> Result<Self, Error> {
-        let trust = match gix_sec::Trust::from_path_ownership(&path) {
-            Ok(t) => t,
-            Err(err) => return Err(Error::Io { source: err, path }),
-        };
+    pub fn from_path_no_includes(path: std::path::PathBuf, source: crate::Source) -> Result<Self> {
+        use gix_error::{ResultExt, message};
+        let trust = gix_sec::Trust::from_path_ownership(&path).or_raise(|| {
+            message!(
+                "The configuration file at \"{}\" could not be inspected",
+                path.display()
+            )
+        })?;
 
         let mut buf = Vec::new();
-        match std::io::copy(
-            &mut match std::fs::File::open(&path) {
-                Ok(f) => f,
-                Err(err) => return Err(Error::Io { source: err, path }),
-            },
-            &mut buf,
-        ) {
-            Ok(_) => {}
-            Err(err) => return Err(Error::Io { source: err, path }),
-        }
+        let mut file = std::fs::File::open(&path)
+            .or_raise(|| message!("The configuration file at \"{}\" could not be read", path.display()))?;
+        std::io::copy(&mut file, &mut buf)
+            .or_raise(|| message!("The configuration file at \"{}\" could not be read", path.display()))?;
 
-        Ok(File::from_bytes_owned(
+        File::from_bytes_owned(
             &mut buf,
             Metadata::from(source).at(path).with(trust),
             Default::default(),
-        )?)
+        )
+        .or_raise(|| message("Could not initialize configuration from a path"))
     }
 
     /// Constructs a `git-config` file from the provided metadata, which must include a path to read from or be ignored.
@@ -56,7 +42,7 @@ impl File<'static> {
     pub fn from_paths_metadata(
         path_meta: impl IntoIterator<Item = impl Into<Metadata>>,
         options: Options<'_>,
-    ) -> Result<Option<Self>, Error> {
+    ) -> Result<Option<Self>> {
         let mut buf = Vec::with_capacity(512);
         let err_on_nonexisting_paths = true;
         Self::from_paths_metadata_buf(
@@ -76,7 +62,8 @@ impl File<'static> {
         buf: &mut Vec<u8>,
         err_on_non_existing_paths: bool,
         options: Options<'_>,
-    ) -> Result<Option<Self>, Error> {
+    ) -> Result<Option<Self>> {
+        use gix_error::{ErrorExt, ResultExt, message};
         let mut target = None;
         let mut seen = BTreeSet::default();
         for (path, mut meta) in path_meta.filter_map(|mut meta| meta.path.take().map(|p| (p, meta))) {
@@ -90,9 +77,12 @@ impl File<'static> {
                     Ok(f) => f,
                     Err(err) if !err_on_non_existing_paths && err.kind() == std::io::ErrorKind::NotFound => continue,
                     Err(err) => {
-                        let err = Error::Io { source: err, path };
+                        let err = err.and_raise(message!(
+                            "The configuration file at \"{}\" could not be read",
+                            path.display()
+                        ));
                         if options.ignore_io_errors {
-                            gix_features::trace::warn!("ignoring: {err:#?}");
+                            gix_trace::warn!("ignoring: {err:#?}");
                             continue;
                         } else {
                             return Err(err);
@@ -103,29 +93,28 @@ impl File<'static> {
             ) {
                 Ok(_) => {}
                 Err(err) => {
+                    let err = err.and_raise(message!(
+                        "The configuration file at \"{}\" could not be read",
+                        path.display()
+                    ));
                     if options.ignore_io_errors {
-                        gix_features::trace::warn!(
-                            "ignoring: {:#?}",
-                            Error::Io {
-                                source: err,
-                                path: path.clone()
-                            }
-                        );
+                        gix_trace::warn!("ignoring: {err:#?}");
                         buf.clear();
                     } else {
-                        return Err(Error::Io { source: err, path });
+                        return Err(err);
                     }
                 }
             }
             meta.path = Some(path);
 
-            let config = Self::from_bytes_owned(buf, meta, options)?;
+            let config = Self::from_bytes_owned(buf, meta, options)
+                .or_raise(|| message("Could not initialize configuration from a path"))?;
             match &mut target {
                 None => {
                     target = Some(config);
                 }
                 Some(target) => {
-                    target.append(config);
+                    target.append(config)?;
                 }
             }
         }

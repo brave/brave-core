@@ -133,6 +133,15 @@ bool BraveTabStripModel::IsOnlyActiveTabAndTreeDescendantsSelected() {
   return selected_indices == expected_indices;
 }
 
+void BraveTabStripModel::SetTreeTabSubtreeSelectedOnPress(
+    tabs::TabHandle handle) {
+  tree_tab_subtree_selected_on_press_ = handle;
+}
+
+std::optional<tabs::TabHandle>
+BraveTabStripModel::TakeTreeTabSubtreeSelectedOnPress() {
+  return std::exchange(tree_tab_subtree_selected_on_press_, std::nullopt);
+}
 void BraveTabStripModel::CycleToNextMRUTab(TabStripUserGestureDetails detail) {
   SelectMRUTab(TabRelativeDirection::kNext, detail);
 }
@@ -253,6 +262,10 @@ void BraveTabStripModel::BuildTreeTabs() {
   contents_data()->SetDelegate(
       std::make_unique<BraveTreeTabStripCollectionDelegate>(
           *contents_data(), tree_tab_model_->GetWeakPtr()));
+
+  auto change = TreeTabChange(TreeTabChange::kTreeInitialized,
+                              tree_tab::TreeTabNodeId::CreateEmpty(), nullptr);
+  observers_.Notify(&TabStripModelObserver::OnTreeTabChanged, change);
 }
 
 void BraveTabStripModel::FlattenTreeTabs() {
@@ -268,6 +281,10 @@ void BraveTabStripModel::FlattenTreeTabs() {
   tree_tab_node_moved_subscription_.reset();
   tree_tab_node_children_changed_subscription_.reset();
   tree_tab_model_.reset();
+
+  auto change = TreeTabChange(TreeTabChange::kTreeDestroyed,
+                              tree_tab::TreeTabNodeId::CreateEmpty(), nullptr);
+  observers_.Notify(&TabStripModelObserver::OnTreeTabChanged, change);
 }
 
 void BraveTabStripModel::NotifyTreeTabNodeCreated(

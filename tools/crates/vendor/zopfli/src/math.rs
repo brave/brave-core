@@ -3,22 +3,12 @@
 
 /// Provides math operations for doubles on `no_std` targets that are not available on `core`.
 pub trait F64MathExt {
-    /// Computes the absolute value of `self`.
-    // TODO this can be removed when the MSRV is equal or greater than 1.84: https://github.com/rust-lang/rust/issues/139066
-    #[must_use = "method returns a new number and does not mutate the original value"]
-    fn abs(self) -> Self;
-
     /// Returns the base 2 logarithm of the number.
     #[must_use = "method returns a new number and does not mutate the original value"]
     fn log2(self) -> Self;
 }
 
 impl F64MathExt for f64 {
-    #[inline(always)]
-    fn abs(self) -> Self {
-        f64::from_bits(self.to_bits() & ((1u64 << 63) - 1))
-    }
-
     // Function taken from:
     // https://github.com/rust-lang/libm/blob/ef3cc6be6a10ec24af9dba26a76a7831c1d11c70/src/math/log2.rs
     // See the link above for author and licensing information of this code snippet

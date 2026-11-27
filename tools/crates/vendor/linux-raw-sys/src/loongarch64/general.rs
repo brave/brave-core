@@ -324,6 +324,22 @@ pub name: [__u8; 128usize],
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
+pub struct logical_block_metadata_cap {
+pub lbmd_flags: __u32,
+pub lbmd_interval: __u16,
+pub lbmd_size: __u8,
+pub lbmd_opaque_size: __u8,
+pub lbmd_opaque_offset: __u8,
+pub lbmd_pi_size: __u8,
+pub lbmd_pi_offset: __u8,
+pub lbmd_guard_tag_type: __u8,
+pub lbmd_app_tag_size: __u8,
+pub lbmd_ref_tag_size: __u8,
+pub lbmd_storage_tag_size: __u8,
+pub pad: __u8,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
 pub struct file_dedupe_range_info {
 pub dest_fd: __s64,
 pub dest_offset: __u64,
@@ -364,6 +380,15 @@ pub fsx_nextents: __u32,
 pub fsx_projid: __u32,
 pub fsx_cowextsize: __u32,
 pub fsx_pad: [crate::ctypes::c_uchar; 8usize],
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct file_attr {
+pub fa_xflags: __u64,
+pub fa_extsize: __u32,
+pub fa_nextents: __u32,
+pub fa_projid: __u32,
+pub fa_cowextsize: __u32,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -1032,9 +1057,9 @@ pub sa_handler_kernel: __kernel_sighandler_t,
 pub sa_flags: crate::ctypes::c_ulong,
 pub sa_mask: kernel_sigset_t,
 }
-pub const LINUX_VERSION_CODE: u32 = 397312;
+pub const LINUX_VERSION_CODE: u32 = 397568;
 pub const LINUX_VERSION_MAJOR: u32 = 6;
-pub const LINUX_VERSION_PATCHLEVEL: u32 = 16;
+pub const LINUX_VERSION_PATCHLEVEL: u32 = 17;
 pub const LINUX_VERSION_SUBLEVEL: u32 = 0;
 pub const __BITS_PER_LONG_LONG: u32 = 64;
 pub const __FD_SETSIZE: u32 = 1024;
@@ -1202,6 +1227,10 @@ pub const DN_RENAME: u32 = 16;
 pub const DN_ATTRIB: u32 = 32;
 pub const DN_MULTISHOT: u32 = 2147483648;
 pub const AT_FDCWD: i32 = -100;
+pub const PIDFD_SELF_THREAD: i32 = -10000;
+pub const PIDFD_SELF_THREAD_GROUP: i32 = -10001;
+pub const FD_PIDFS_ROOT: i32 = -10002;
+pub const FD_INVALID: i32 = -10009;
 pub const AT_SYMLINK_NOFOLLOW: u32 = 256;
 pub const AT_SYMLINK_FOLLOW: u32 = 1024;
 pub const AT_NO_AUTOMOUNT: u32 = 2048;
@@ -1239,6 +1268,7 @@ pub const FALLOC_FL_COLLAPSE_RANGE: u32 = 8;
 pub const FALLOC_FL_ZERO_RANGE: u32 = 16;
 pub const FALLOC_FL_INSERT_RANGE: u32 = 32;
 pub const FALLOC_FL_UNSHARE_RANGE: u32 = 64;
+pub const FALLOC_FL_WRITE_ZEROES: u32 = 128;
 pub const NR_OPEN: u32 = 1024;
 pub const NGROUPS_MAX: u32 = 65536;
 pub const ARG_MAX: u32 = 131072;
@@ -1423,9 +1453,18 @@ pub const SEEK_MAX: u32 = 4;
 pub const RENAME_NOREPLACE: u32 = 1;
 pub const RENAME_EXCHANGE: u32 = 2;
 pub const RENAME_WHITEOUT: u32 = 4;
+pub const LBMD_PI_CAP_INTEGRITY: u32 = 1;
+pub const LBMD_PI_CAP_REFTAG: u32 = 2;
+pub const LBMD_PI_CSUM_NONE: u32 = 0;
+pub const LBMD_PI_CSUM_IP: u32 = 1;
+pub const LBMD_PI_CSUM_CRC16_T10DIF: u32 = 2;
+pub const LBMD_PI_CSUM_CRC64_NVME: u32 = 4;
+pub const LBMD_SIZE_VER0: u32 = 16;
 pub const FILE_DEDUPE_RANGE_SAME: u32 = 0;
 pub const FILE_DEDUPE_RANGE_DIFFERS: u32 = 1;
 pub const NR_FILE: u32 = 8192;
+pub const FILE_ATTR_SIZE_VER0: u32 = 24;
+pub const FILE_ATTR_SIZE_LATEST: u32 = 24;
 pub const FS_XFLAG_REALTIME: u32 = 1;
 pub const FS_XFLAG_PREALLOC: u32 = 2;
 pub const FS_XFLAG_IMMUTABLE: u32 = 8;
@@ -2256,6 +2295,9 @@ pub const CLOCK_BOOTTIME_ALARM: u32 = 9;
 pub const CLOCK_SGI_CYCLE: u32 = 10;
 pub const CLOCK_TAI: u32 = 11;
 pub const MAX_CLOCKS: u32 = 16;
+pub const CLOCK_AUX: u32 = 16;
+pub const MAX_AUX_CLOCKS: u32 = 8;
+pub const CLOCK_AUX_LAST: u32 = 23;
 pub const CLOCKS_MASK: u32 = 1;
 pub const CLOCKS_MONO: u32 = 1;
 pub const TIMER_ABSTIME: u32 = 1;
@@ -2580,6 +2622,8 @@ pub const __NR_getxattrat: u32 = 464;
 pub const __NR_listxattrat: u32 = 465;
 pub const __NR_removexattrat: u32 = 466;
 pub const __NR_open_tree_attr: u32 = 467;
+pub const __NR_file_getattr: u32 = 468;
+pub const __NR_file_setattr: u32 = 469;
 pub const WNOHANG: u32 = 1;
 pub const WUNTRACED: u32 = 2;
 pub const WSTOPPED: u32 = 2;
@@ -2766,6 +2810,12 @@ FSCONFIG_SET_FD = 5,
 FSCONFIG_CMD_CREATE = 6,
 FSCONFIG_CMD_RECONFIGURE = 7,
 FSCONFIG_CMD_CREATE_EXCL = 8,
+}
+#[repr(u32)]
+#[non_exhaustive]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum procfs_ino {
+PROCFS_ROOT_INO = 1,
 }
 #[repr(u32)]
 #[non_exhaustive]

@@ -50,10 +50,17 @@ impl<'a> SymBuf<'a> {
     #[inline(always)]
     pub fn push_dist(&mut self, dist: u16, len: u8) {
         let buf = &mut self.buf.as_mut_slice()[self.filled..][..3];
-        let [dist1, dist2] = dist.to_le_bytes();
 
-        buf[0] = dist1;
-        buf[1] = dist2;
+        // Write both dist bytes as a single 2-byte store. This avoids the
+        // `movb %ch, [mem]` instruction pattern (store from high-byte register
+        // alias) that LLVM otherwise emits when dist arrives as a wide register.
+        // That pattern triggers the Intel Raptor Lake CPU errata, causing silent
+        // 2-byte stores that corrupt the adjacent `len` byte.
+        // SAFETY: buf has at least 3 bytes (guaranteed above), so the unaligned
+        // 2-byte write at offset 0 stays within bounds.
+        unsafe {
+            core::ptr::write_unaligned(buf.as_mut_ptr().cast::<[u8; 2]>(), dist.to_le_bytes())
+        };
         buf[2] = len;
 
         self.filled += 3;

@@ -1,0 +1,49 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_strip_control_button.h b/chrome/browser/ui/views/tabs/tab_strip_control_button.h
+index 61c8e47355be0d8f4bdd67510089e56e97c88410..3a8890753cca5b72307fd8e602b46004202b507c 100644
+--- a/chrome/browser/ui/views/tabs/tab_strip_control_button.h
++++ b/chrome/browser/ui/views/tabs/tab_strip_control_button.h
+@@ -27,36 +27,36 @@ enum class Edge {
+   kRight,
+ };
+ 
+-class TabStripControlButton : public views::LabelButton,
++class TabStripControlButton_ChromiumImpl : public views::LabelButton,
+                               public views::MaskedTargeterDelegate {
+-  METADATA_HEADER(TabStripControlButton, views::LabelButton)
++  METADATA_HEADER(TabStripControlButton_ChromiumImpl, views::LabelButton)
+ 
+  public:
+   static const int kIconSize;
+   static const gfx::Size kButtonSize;
+ 
+-  TabStripControlButton(BrowserWindowInterface* browser_window_interface,
++  TabStripControlButton_ChromiumImpl(BrowserWindowInterface* browser_window_interface,
+                         PressedCallback callback,
+                         const gfx::VectorIcon& icon,
+                         Edge fixed_flat_edge = Edge::kNone,
+                         Edge animated_flat_edge = Edge::kNone);
+ 
+-  TabStripControlButton(BrowserWindowInterface* browser_window_interface,
++  TabStripControlButton_ChromiumImpl(BrowserWindowInterface* browser_window_interface,
+                         PressedCallback callback,
+                         const std::u16string& text,
+                         Edge fixed_flat_edge = Edge::kNone,
+                         Edge animated_flat_edge = Edge::kNone);
+ 
+-  TabStripControlButton(BrowserWindowInterface* browser_window_interface,
++  TabStripControlButton_ChromiumImpl(BrowserWindowInterface* browser_window_interface,
+                         PressedCallback callback,
+                         const gfx::VectorIcon& icon,
+                         const std::u16string& text,
+                         Edge fixed_flat_edge = Edge::kNone,
+                         Edge animated_flat_edge = Edge::kNone);
+ 
+-  TabStripControlButton(const TabStripControlButton&) = delete;
+-  TabStripControlButton& operator=(const TabStripControlButton&) = delete;
+-  ~TabStripControlButton() override = default;
++  TabStripControlButton_ChromiumImpl(const TabStripControlButton_ChromiumImpl&) = delete;
++  TabStripControlButton_ChromiumImpl& operator=(const TabStripControlButton_ChromiumImpl&) = delete;
++  ~TabStripControlButton_ChromiumImpl() override = default;
+ 
+   // Update the Colors of the button.
+   void SetForegroundFrameActiveColorId(ui::ColorId new_color_id);

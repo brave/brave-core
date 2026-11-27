@@ -1,8 +1,8 @@
 use crate::{
     config,
     config::{
-        tree::{keys, Key, Merge, Section, SubSectionRequirement},
         Tree,
+        tree::{Key, Merge, Section, SubSectionRequirement, keys},
     },
 };
 
@@ -64,26 +64,23 @@ pub type ConflictStyle = keys::Any<validate::ConflictStyle>;
 
 #[cfg(feature = "merge")]
 mod conflict_style {
-    use std::borrow::Cow;
-
+    use gix_error::bail;
     use gix_merge::blob::builtin_driver::text;
 
-    use crate::{bstr::BStr, config, config::tree::sections::merge::ConflictStyle};
+    use crate::{Result, bstr::ByteSlice, config, config::tree::sections::merge::ConflictStyle};
 
     impl ConflictStyle {
         /// Derive the diff algorithm identified by `name`, case-insensitively.
-        pub fn try_into_conflict_style(
-            &'static self,
-            name: Cow<'_, BStr>,
-        ) -> Result<text::ConflictStyle, config::key::GenericErrorWithValue> {
-            let style = if name.as_ref() == "merge" {
+        pub fn try_into_conflict_style(&'static self, name: impl gix_utils::AsBStr) -> Result<text::ConflictStyle> {
+            let name = name.as_bstr();
+            let style = if name.as_bstr() == "merge" {
                 text::ConflictStyle::Merge
-            } else if name.as_ref() == "diff3" {
+            } else if name.as_bstr() == "diff3" {
                 text::ConflictStyle::Diff3
-            } else if name.as_ref() == "zdiff3" {
+            } else if name.as_bstr() == "zdiff3" {
                 text::ConflictStyle::ZealousDiff3
             } else {
-                return Err(config::key::GenericErrorWithValue::from_value(self, name.into_owned()));
+                bail!(config::key::error_with_value(self, "Invalid configuration value", name));
             };
             Ok(style)
         }
@@ -92,15 +89,18 @@ mod conflict_style {
 
 #[cfg(feature = "merge")]
 mod validate {
+
     use crate::{
+        Result,
         bstr::BStr,
-        config::tree::{keys, Merge},
+        config::tree::{Merge, keys},
     };
 
+    #[derive(Clone, Copy)]
     pub struct ConflictStyle;
     impl keys::Validate for ConflictStyle {
-        fn validate(&self, value: &BStr) -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-            Merge::CONFLICT_STYLE.try_into_conflict_style(value.into())?;
+        fn validate(&self, value: &BStr) -> Result {
+            Merge::CONFLICT_STYLE.try_into_conflict_style(value)?;
             Ok(())
         }
     }

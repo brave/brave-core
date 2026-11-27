@@ -1,5 +1,8 @@
 #![allow(missing_docs)]
-use std::path::{Path, PathBuf};
+use std::{
+    borrow::Cow,
+    path::{Path, PathBuf},
+};
 
 use bstr::{BStr, ByteSlice};
 
@@ -51,6 +54,7 @@ pub enum State {
 #[must_use]
 pub struct Platform<'a> {
     parent: &'a Stack,
+    relative_path: Cow<'a, BStr>,
     is_dir: Option<bool>,
 }
 
@@ -72,11 +76,19 @@ impl Stack {
         Stack {
             stack: gix_fs::Stack::new(root),
             state,
+            reject_terminal_symlinks: false,
             case,
             buf,
             id_mappings,
             statistics: Statistics::default(),
         }
+    }
+
+    /// Enable Windows-only no-follow validation of terminal non-directory entries for checkout stacks.
+    ///
+    /// Call this before the first [`at_path()`](Self::at_path()) or [`at_entry()`](Self::at_entry()) invocation.
+    pub fn enable_terminal_symlink_check(&mut self) {
+        self.reject_terminal_symlinks = true;
     }
 
     /// Create a new stack that takes into consideration the `ignore_case` result of a filesystem probe in `root`. It takes a configured
@@ -125,11 +137,16 @@ impl Stack {
             id_mappings: &self.id_mappings,
             objects,
             case: self.case,
+            reject_temrinal_symlinks: self.reject_terminal_symlinks,
             statistics: &mut self.statistics,
         };
         self.stack.make_relative_path_current(relative, &mut delegate)?;
+        let relative_path = gix_path::to_unix_separators_on_windows(
+            gix_path::into_bstr(self.stack.current_relative()).map_err(std::io::Error::other)?,
+        );
         Ok(Platform {
             parent: self,
+            relative_path,
             is_dir: mode_is_dir(mode),
         })
     }

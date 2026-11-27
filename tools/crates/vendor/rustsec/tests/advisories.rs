@@ -2,9 +2,10 @@
 
 #![warn(rust_2018_idioms, unused_qualifications)]
 
+use std::path::Path;
+
 use cvss::Cvss;
 use rustsec::advisory::{Category, License};
-use std::path::Path;
 
 /// Load example advisory from the filesystem
 fn load_advisory(case: &str) -> rustsec::Advisory {
@@ -58,8 +59,8 @@ fn parse_metadata() {
 #[test]
 fn parse_affected() {
     let affected = load_advisory("v3").affected.unwrap();
-    assert_eq!(affected.arch[0], platforms::target::Arch::X86);
-    assert_eq!(affected.os[0], platforms::target::OS::Windows);
+    assert_eq!(affected.arch[0], "x86");
+    assert_eq!(affected.os[0], "windows");
 
     let example_function = "base::belongs::All".parse().unwrap();
     let req = &affected.functions.get(&example_function).unwrap()[0];
@@ -88,14 +89,29 @@ fn parse_cvss_vector_string() {
         panic!("expected CVSS v3.1");
     };
 
-    assert_eq!(cvss.av.unwrap(), cvss::v3::base::AttackVector::Network);
-    assert_eq!(cvss.ac.unwrap(), cvss::v3::base::AttackComplexity::Low);
-    assert_eq!(cvss.pr.unwrap(), cvss::v3::base::PrivilegesRequired::None);
-    assert_eq!(cvss.ui.unwrap(), cvss::v3::base::UserInteraction::None);
-    assert_eq!(cvss.s.unwrap(), cvss::v3::base::Scope::Changed);
-    assert_eq!(cvss.c.unwrap(), cvss::v3::base::Confidentiality::High);
-    assert_eq!(cvss.i.unwrap(), cvss::v3::base::Integrity::High);
-    assert_eq!(cvss.a.unwrap(), cvss::v3::base::Availability::High);
+    assert_eq!(
+        cvss.av.unwrap(),
+        cvss::v3::metric::base::AttackVector::Network
+    );
+    assert_eq!(
+        cvss.ac.unwrap(),
+        cvss::v3::metric::base::AttackComplexity::Low
+    );
+    assert_eq!(
+        cvss.pr.unwrap(),
+        cvss::v3::metric::base::PrivilegesRequired::None
+    );
+    assert_eq!(
+        cvss.ui.unwrap(),
+        cvss::v3::metric::base::UserInteraction::None
+    );
+    assert_eq!(cvss.s.unwrap(), cvss::v3::metric::base::Scope::Changed);
+    assert_eq!(
+        cvss.c.unwrap(),
+        cvss::v3::metric::base::Confidentiality::High
+    );
+    assert_eq!(cvss.i.unwrap(), cvss::v3::metric::base::Integrity::High);
+    assert_eq!(cvss.a.unwrap(), cvss::v3::metric::base::Availability::High);
     assert_eq!(cvss.score().value(), 10.0);
 }
 

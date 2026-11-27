@@ -1,8 +1,8 @@
 diff --git a/components/affiliations/core/browser/affiliation_service_impl.cc b/components/affiliations/core/browser/affiliation_service_impl.cc
-index 30c8cbe5ea13cd4f5f09b39c50de96c19a0b340d..641cdb49fb7db6778452caaa602052a55f0efc9d 100644
+index abc727da289dd40d999abb792eef3cbda1ec694c..1a00bc76e7ee121c2e5252ee64db0c0fef37b1bc 100644
 --- a/components/affiliations/core/browser/affiliation_service_impl.cc
 +++ b/components/affiliations/core/browser/affiliation_service_impl.cc
-@@ -247,6 +247,9 @@ void AffiliationServiceImpl::Shutdown() {
+@@ -198,6 +198,9 @@ void AffiliationServiceImpl::Shutdown() {
  void AffiliationServiceImpl::FetchChangePasswordURL(
      const GURL& url,
      base::OnceCallback<void(GURL)> callback) {
@@ -12,7 +12,7 @@ index 30c8cbe5ea13cd4f5f09b39c50de96c19a0b340d..641cdb49fb7db6778452caaa602052a5
    FacetURI facet_uri = ConvertGURLToFacet(url);
    if (!facet_uri.is_valid()) {
      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-@@ -318,6 +321,7 @@ void AffiliationServiceImpl::GetAffiliationsAndBranding(
+@@ -243,6 +246,7 @@ void AffiliationServiceImpl::GetAffiliationsAndBranding(
  
  void AffiliationServiceImpl::Prefetch(const FacetURI& facet_uri,
                                        const base::Time& keep_fresh_until) {
@@ -20,7 +20,7 @@ index 30c8cbe5ea13cd4f5f09b39c50de96c19a0b340d..641cdb49fb7db6778452caaa602052a5
    PostToBackend(&AffiliationBackend::Prefetch, facet_uri, keep_fresh_until);
  }
  
-@@ -394,6 +398,7 @@ void AffiliationServiceImpl::UpdateAffiliationsAndBranding(
+@@ -319,6 +323,7 @@ void AffiliationServiceImpl::UpdateAffiliationsAndBranding(
  
  void AffiliationServiceImpl::RegisterSource(
      std::unique_ptr<AffiliationSource> source) {

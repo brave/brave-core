@@ -456,6 +456,7 @@ class GTestJSONParser:
     _failed_tests: set[str] = field(default_factory=set)
     _flaky_tests: set[str] = field(default_factory=set)
     _parsing_errors: list[str] = field(default_factory=list)
+    _summary: dict | None = None
 
     # -- GTestParser protocol ------------------------------------------------
 
@@ -485,6 +486,10 @@ class GTestJSONParser:
 
     def passed_tests(self) -> list[str]:
         return sorted(self._passed_tests)
+
+    def summary(self) -> dict | None:
+        """The parsed JSON summary; None if the run wrote none."""
+        return self._summary
 
     # -- JSON file lifecycle -------------------------------------------------
 
@@ -526,6 +531,7 @@ class GTestJSONParser:
 
     def process_json_data(self, json_data: dict) -> None:
         """Populates the pass/fail/disabled/flaky sets from parsed JSON."""
+        self._summary = json_data
         self._disabled_tests.update(json_data.get('disabled_tests', []))
 
         for iteration_data in json_data.get('per_iteration_data', []):

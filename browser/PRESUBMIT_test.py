@@ -17,10 +17,10 @@ sys.path.append(str(BRAVE_PATH / 'script'))
 sys.path.append(str(CHROMIUM_SRC_PATH))
 sys.path.insert(0, str(BROWSER_PATH))
 
-import PRESUBMIT
+import PRESUBMIT  # noqa: E402
 
-from PRESUBMIT_test_mocks import MockAffectedFile
-from PRESUBMIT_test_mocks import MockInputApi, MockOutputApi
+from PRESUBMIT_test_mocks import MockAffectedFile  # noqa: E402
+from PRESUBMIT_test_mocks import MockInputApi, MockOutputApi  # noqa: E402
 
 _DESKTOP_TAB_FEATURES = 'browser/ui/tabs/brave_tab_features.cc'
 _ANDROID_TAB_FEATURES = 'browser/android/brave_tab_features.cc'

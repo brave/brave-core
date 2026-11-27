@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
 
+#include <string_view>
+
 #include "base/command_line.h"
 #include "base/logging.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
@@ -56,7 +58,7 @@ class BraveStartupBrowserCreatorImpl final : public StartupBrowserCreatorImpl {
 
   void MaybeShowNonMilestoneUpdateToast(
       BrowserWindowInterface* browser,
-      const std::string& current_version_string) override {}
+      std::string_view current_version_string) override {}
 };
 
 BraveStartupBrowserCreatorImpl::BraveStartupBrowserCreatorImpl(

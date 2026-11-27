@@ -47,8 +47,6 @@ class BraveSearchManager: NSObject {
 
   private var cancellables: Set<AnyCancellable> = []
 
-  private let authManager = BasicAuthCredentialsManager()
-
   static let validDomains = [
     "search.brave.com", "search.brave.software",
     "search.bravesoftware.com", "safesearch.brave.com",
@@ -121,7 +119,7 @@ class BraveSearchManager: NSObject {
 
     request.setValue(UserAgent.mobile, forHTTPHeaderField: "User-Agent")
 
-    let session = URLSession(configuration: .ephemeral, delegate: authManager, delegateQueue: .main)
+    let session = URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: .main)
 
     var timer: PerformanceTimer?
     if callbackLog != nil {

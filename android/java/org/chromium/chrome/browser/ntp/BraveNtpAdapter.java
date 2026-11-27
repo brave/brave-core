@@ -11,10 +11,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.style.UnderlineSpan;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -25,10 +28,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 
+import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -39,6 +45,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_news.CardBuilderFeedCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
@@ -51,8 +58,18 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.components.browser_ui.widget.BrowserUiListMenuUtils;
+import org.chromium.components.browser_ui.widget.ListItemBuilder;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.ui.listmenu.ListMenu;
+import org.chromium.ui.listmenu.ListMenuDelegate;
+import org.chromium.ui.listmenu.ListMenuHost;
+import org.chromium.ui.listmenu.ListMenuItemProperties;
+import org.chromium.ui.modelutil.MVCListAdapter;
+import org.chromium.ui.text.SpanApplier;
+import org.chromium.ui.text.SpanApplier.SpanInfo;
+import org.chromium.ui.widget.RectProvider;
 import org.chromium.url.Origin;
 
 import java.util.List;
@@ -77,7 +94,22 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean mIsNewContentLoading;
     private boolean mIsTopSitesEnabled;
     private boolean mIsBraveStatsEnabled;
+    private boolean mIsRecapBannerVisible;
     private int mRecyclerViewHeight;
+    // Screen coordinates of the last touch down, used to place the long-press menu.
+    private int mLastTouchX;
+    private int mLastTouchY;
+    private final RecyclerView.OnItemTouchListener mTouchPointRecorder =
+            new RecyclerView.SimpleOnItemTouchListener() {
+                @Override
+                public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                    if (e.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                        mLastTouchX = (int) e.getRawX();
+                        mLastTouchY = (int) e.getRawY();
+                    }
+                    return false;
+                }
+            };
     private int mStatsHeight;
     private int mTopSitesHeight;
     private int mNewContentHeight;
@@ -93,10 +125,12 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TYPE_NEWS_LOADING = 6;
     private static final int TYPE_NEWS = 7;
     private static final int TYPE_NEWS_NO_CONTENT_SOURCES = 8;
+    private static final int TYPE_RECAP_BANNER = 9;
 
     private static final int ONE_ITEM_SPACE = 1;
     private static final int TWO_ITEMS_SPACE = 2;
     private static final String TAG = "BraveNtpAdapter";
+    private static final String BRAVE_RECAP_URL = "brave://recap";
 
     // Matches @dimen/mvt_container_lateral_margin used on the New Tab Page layout.
     static final int CARD_MARGIN_DP = 16;
@@ -139,16 +173,22 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        recyclerView.addOnItemTouchListener(mTouchPointRecorder);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        recyclerView.removeOnItemTouchListener(mTouchPointRecorder);
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof StatsViewHolder) {
             StatsViewHolder statsViewHolder = (StatsViewHolder) holder;
 
-            statsViewHolder.mHideStatsImg.setOnClickListener(
-                    view -> {
-                        ChromeSharedPreferences.getInstance()
-                                .writeBoolean(
-                                        BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, false);
-                    });
+            statsViewHolder.mMoreOptionsImg.setOnClickListener(
+                    view -> showStatsMenu(statsViewHolder.mMoreOptionsImg, null));
             List<Pair<String, String>> statsPairs = BraveStatsUtil.getStatsPairs();
 
             statsViewHolder.mAdsBlockedCountTv.setText(statsPairs.get(0).first);
@@ -165,12 +205,43 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             int margin = dpToPx(mActivity, CARD_MARGIN_DP);
             layoutParams.setMargins(margin, margin, margin, 0);
             statsViewHolder.mNtpStatsLayout.setLayoutParams(layoutParams);
-            statsViewHolder.mNtpStatsLayout.setOnClickListener(
+            statsViewHolder.mNtpStatsLayout.setOnLongClickListener(
                     view -> {
-                        mOnBraveNtpListener.checkForBraveStats();
+                        showStatsMenu(
+                                statsViewHolder.mMoreOptionsImg,
+                                new Rect(mLastTouchX, mLastTouchY, mLastTouchX, mLastTouchY));
+                        return true;
                     });
 
             mStatsHeight = NTPImageUtil.getViewHeight(statsViewHolder.itemView) + margin;
+
+        } else if (holder instanceof RecapBannerViewHolder) {
+            RecapBannerViewHolder recapBannerViewHolder = (RecapBannerViewHolder) holder;
+
+            recapBannerViewHolder.mText.setText(
+                    SpanApplier.applySpans(
+                            mActivity.getString(R.string.ntp_recap_banner_text),
+                            new SpanInfo("<link>", "</link>", new UnderlineSpan())));
+            recapBannerViewHolder.mCloseImg.setOnClickListener(
+                    view -> {
+                        ChromeSharedPreferences.getInstance()
+                                .writeBoolean(
+                                        BravePreferenceKeys.BRAVE_NTP_RECAP_BANNER_DISMISSED, true);
+                    });
+
+            LinearLayout.LayoutParams layoutParams =
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
+            int margin = dpToPx(mActivity, CARD_MARGIN_DP);
+            layoutParams.setMargins(margin, margin, margin, 0);
+            recapBannerViewHolder.mBannerLayout.setLayoutParams(layoutParams);
+            recapBannerViewHolder.mBannerLayout.setOnClickListener(
+                    view -> {
+                        TabUtils.openUrlInSameTab(BRAVE_RECAP_URL);
+                    });
+
+            mStatsHeight = NTPImageUtil.getViewHeight(recapBannerViewHolder.itemView) + margin;
 
         } else if (holder instanceof TopSitesViewHolder) {
             if (!mIsTopSitesEnabled) {
@@ -279,6 +350,8 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                 mNTPBackgroundImagesBridge.wallpaperLogoClicked(mWallpaper);
                             }
                         });
+                imageCreditViewHolder.mSponsoredLogoBottomSpace.setVisibility(
+                        mIsNewTabTakeoverDisclosureVisible ? View.GONE : View.VISIBLE);
             }
 
             boolean isImageCreditPositioned = mRecyclerViewHeight > 0;
@@ -316,7 +389,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                 - NTPImageUtil.getViewHeight(imageCreditViewHolder.itemView)
                                 - extraMarginForNews;
 
-                if (isStatsEnabled()) {
+                if (getStatsCount() == 1) {
                     mTopMarginImageCredit -= mStatsHeight;
                 } else {
                     mTopMarginImageCredit -= dpToPx(mActivity, CARD_MARGIN_DP);
@@ -442,6 +515,11 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         LayoutInflater.from(parent.getContext())
                                 .inflate(R.layout.brave_stats_layout, parent, false);
                 return new StatsViewHolder(view);
+            case TYPE_RECAP_BANNER:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.brave_recap_banner_layout, parent, false);
+                return new RecapBannerViewHolder(view);
             case TYPE_TOP_SITES:
                 {
                     // mMvTilesContainerLayout may have been placed in the NTP layout tree by
@@ -491,7 +569,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int topSitesCount = getTopSitesCount();
 
         if (position == 0 && statsCount == 1) {
-            return TYPE_STATS;
+            return mIsRecapBannerVisible ? TYPE_RECAP_BANNER : TYPE_STATS;
         } else if (topSitesCount == 1 && position == statsCount) {
             return TYPE_TOP_SITES;
         } else if (position == statsCount + topSitesCount && mIsNewContent) {
@@ -514,13 +592,9 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    // The recap banner temporarily takes the stats widget's slot, even if stats are hidden.
     public int getStatsCount() {
-        return isStatsEnabled() ? 1 : 0;
-    }
-
-    // Will be used in privacy hub feature
-    private boolean isStatsEnabled() {
-        return mIsBraveStatsEnabled;
+        return mIsBraveStatsEnabled || mIsRecapBannerVisible ? 1 : 0;
     }
 
     public int getTopSitesCount() {
@@ -547,17 +621,36 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setBraveStatsEnabled(boolean isBraveStatsEnabled) {
         if (mIsBraveStatsEnabled != isBraveStatsEnabled) {
+            int oldStatsCount = getStatsCount();
             mIsBraveStatsEnabled = isBraveStatsEnabled;
-            if (mIsBraveStatsEnabled) {
-                notifyItemInserted(getStatsCount());
-            } else {
-                notifyItemRemoved(getStatsCount());
-            }
-            // Rebind items shifted by the insert/remove above so they're positioned correctly.
-            notifyItemRangeChanged(
-                    getStatsCount(),
-                    getStatsCount() + getTopSitesCount() + getNewContentCount() + ONE_ITEM_SPACE);
+            onStatsSlotChanged(oldStatsCount);
         }
+    }
+
+    public void setRecapBannerVisible(boolean isRecapBannerVisible) {
+        if (mIsRecapBannerVisible != isRecapBannerVisible) {
+            int oldStatsCount = getStatsCount();
+            mIsRecapBannerVisible = isRecapBannerVisible;
+            onStatsSlotChanged(oldStatsCount);
+        }
+    }
+
+    private void onStatsSlotChanged(int oldStatsCount) {
+        int statsCount = getStatsCount();
+        if (statsCount == oldStatsCount) {
+            // The slot stays, but may swap between the recap banner and the stats widget.
+            if (statsCount == 1) notifyItemChanged(0);
+            return;
+        }
+        if (statsCount == 1) {
+            notifyItemInserted(0);
+        } else {
+            notifyItemRemoved(0);
+        }
+        // Rebind items shifted by the insert/remove above so they're positioned correctly.
+        notifyItemRangeChanged(
+                statsCount,
+                statsCount + getTopSitesCount() + getNewContentCount() + ONE_ITEM_SPACE);
     }
 
     public void setDisplayNewsFeed(boolean isDisplayNewsFeed) {
@@ -675,10 +768,75 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyItemRangeChanged(0, count);
     }
 
+    /**
+     * @param anchorRect Where to show the menu, in screen coordinates, or null to anchor it to
+     *     {@code anchor}.
+     */
+    private void showStatsMenu(View anchor, @Nullable Rect anchorRect) {
+        MVCListAdapter.ModelList menuModel = new MVCListAdapter.ModelList();
+        menuModel.add(
+                new ListItemBuilder()
+                        .withTitleRes(R.string.ntp_stats_menu_privacy_report)
+                        .withMenuId(R.id.ntp_stats_menu_privacy_report)
+                        .withStartIconRes(R.drawable.ic_shield_done)
+                        .build());
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_RECAP)) {
+            menuModel.add(
+                    new ListItemBuilder()
+                            .withTitleRes(R.string.ntp_stats_menu_launch_recap)
+                            .withMenuId(R.id.ntp_stats_menu_launch_recap)
+                            .withStartIconRes(R.drawable.ic_history)
+                            .build());
+        }
+        menuModel.add(
+                new ListItemBuilder()
+                        .withTitleRes(R.string.ntp_stats_menu_hide)
+                        .withMenuId(R.id.ntp_stats_menu_hide)
+                        .withStartIconRes(R.drawable.ic_eye_off)
+                        .build());
+
+        ListMenu menu =
+                BrowserUiListMenuUtils.getBasicListMenu(
+                        anchor.getContext(),
+                        menuModel,
+                        (model, view) -> {
+                            int id = model.get(ListMenuItemProperties.MENU_ITEM_ID);
+                            if (id == R.id.ntp_stats_menu_privacy_report) {
+                                mOnBraveNtpListener.checkForBraveStats();
+                            } else if (id == R.id.ntp_stats_menu_launch_recap) {
+                                TabUtils.openUrlInSameTab(BRAVE_RECAP_URL);
+                            } else if (id == R.id.ntp_stats_menu_hide) {
+                                ChromeSharedPreferences.getInstance()
+                                        .writeBoolean(
+                                                BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS,
+                                                false);
+                            }
+                        });
+        ListMenuHost menuHost = new ListMenuHost(anchor, null);
+        menuHost.setMenuMaxWidth(anchor.getResources().getDimensionPixelSize(R.dimen.menu_width));
+        menuHost.tryToFitLargestItem(true);
+        menuHost.setDelegate(
+                new ListMenuDelegate() {
+                    @Override
+                    public ListMenu getListMenu() {
+                        return menu;
+                    }
+
+                    @Override
+                    public RectProvider getRectProvider(View view) {
+                        return anchorRect != null
+                                ? new RectProvider(anchorRect)
+                                : ListMenuDelegate.super.getRectProvider(view);
+                    }
+                },
+                /* overrideOnClickListener= */ false);
+        menuHost.showMenu();
+    }
+
     public static class StatsViewHolder extends RecyclerView.ViewHolder {
         LinearLayout mNtpStatsLayout;
         LinearLayout mTitleLayout;
-        ImageView mHideStatsImg;
+        ImageView mMoreOptionsImg;
         TextView mAdsBlockedCountTv;
         TextView mAdsBlockedCountTextTv;
         TextView mDataSavedValueTv;
@@ -690,7 +848,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
             this.mNtpStatsLayout = (LinearLayout) itemView.findViewById(R.id.ntp_stats_layout);
             this.mTitleLayout = (LinearLayout) itemView.findViewById(R.id.brave_stats_title_layout);
-            this.mHideStatsImg = (ImageView) itemView.findViewById(R.id.widget_more_option);
+            this.mMoreOptionsImg = (ImageView) itemView.findViewById(R.id.widget_more_option);
             this.mAdsBlockedCountTv =
                     (TextView) itemView.findViewById(R.id.brave_stats_text_ads_count);
             this.mAdsBlockedCountTextTv =
@@ -703,7 +861,20 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     (TextView) itemView.findViewById(R.id.brave_stats_text_time_count);
             this.mEstTimeSavedCountTextTv =
                     (TextView) itemView.findViewById(R.id.brave_stats_text_time_count_text);
-            BraveTouchUtils.ensureMinTouchTarget(this.mHideStatsImg);
+            BraveTouchUtils.ensureMinTouchTarget(this.mMoreOptionsImg);
+        }
+    }
+
+    public static class RecapBannerViewHolder extends RecyclerView.ViewHolder {
+        LinearLayout mBannerLayout;
+        TextView mText;
+        ImageView mCloseImg;
+
+        RecapBannerViewHolder(View itemView) {
+            super(itemView);
+            this.mBannerLayout = itemView.findViewById(R.id.ntp_recap_banner_layout);
+            this.mText = itemView.findViewById(R.id.recap_banner_text);
+            this.mCloseImg = itemView.findViewById(R.id.recap_banner_close);
         }
     }
 
@@ -732,6 +903,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         FrameLayout mImageCreditLayout;
         TextView mCreditTv;
         ImageView mSponsoredLogo;
+        View mSponsoredLogoBottomSpace;
         TextView mDisclosureLabel;
 
         ImageCreditViewHolder(View itemView) {
@@ -741,6 +913,8 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             this.mImageCreditLayout = (FrameLayout) itemView.findViewById(R.id.image_credit_layout);
             this.mCreditTv = (TextView) itemView.findViewById(R.id.credit_text);
             this.mSponsoredLogo = (ImageView) itemView.findViewById(R.id.sponsored_logo);
+            this.mSponsoredLogoBottomSpace =
+                    itemView.findViewById(R.id.sponsored_logo_bottom_space);
             this.mDisclosureLabel = (TextView) itemView.findViewById(R.id.sponsored_label);
             BraveTouchUtils.ensureMinTouchTarget(this.mCreditTv);
             BraveTouchUtils.ensureMinTouchTarget(this.mDisclosureLabel);
@@ -750,7 +924,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     resources.getDimension(R.dimen.new_tab_takeover_disclosure_label_shadow_radius),
                     /* dx= */ 0,
                     resources.getDimension(R.dimen.new_tab_takeover_disclosure_label_shadow_dy),
-                    context.getColor(R.color.elevation_secondary));
+                    context.getColor(R.color.black_alpha_30));
         }
     }
 

@@ -29,8 +29,8 @@ impl Id {
     }
 }
 
-impl From<&'_ Id> for Id {
-    fn from(id: &'_ Id) -> Self {
+impl From<&'_ Self> for Id {
+    fn from(id: &'_ Self) -> Self {
         id.clone()
     }
 }
@@ -188,7 +188,7 @@ mod tests {
     #[test]
     #[cfg(feature = "string")]
     fn from_cow_owned() {
-        let cow = Cow::Owned("world".to_string());
+        let cow = Cow::Owned("world".to_owned());
         let id = Id::from(cow);
         assert_eq!(id, Id::from("world"));
     }

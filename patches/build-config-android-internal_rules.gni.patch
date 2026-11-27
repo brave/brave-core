@@ -1,8 +1,8 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index 3220f78bad56a61ec65c1becf48fd4dc67a202c4..5b73cce0116f4cd5b635cf037e1e02d64a71b6c3 100644
+index 15b770db3b446cfb609c010c5b1dbbb5eb5a05cf..49e2a3a530473b06f82e7ea304ce3c61093ad691 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
-@@ -3679,6 +3679,12 @@ if (enable_java_templates) {
+@@ -3761,6 +3761,12 @@ if (enable_java_templates) {
            # required.
            _processed_jar_path = _javac_jar_path
          }
@@ -15,7 +15,7 @@ index 3220f78bad56a61ec65c1becf48fd4dc67a202c4..5b73cce0116f4cd5b635cf037e1e02d6
        }
  
        if (_build_device_jar) {
-@@ -3950,6 +3956,9 @@ if (enable_java_templates) {
+@@ -4042,6 +4048,9 @@ if (enable_java_templates) {
            java_resources_jar = _processed_jar_path
          }
        }
@@ -25,7 +25,7 @@ index 3220f78bad56a61ec65c1becf48fd4dc67a202c4..5b73cce0116f4cd5b635cf037e1e02d6
      }
  
      if (_is_prebuilt || _has_sources) {
-@@ -4367,6 +4376,23 @@ if (enable_java_templates) {
+@@ -4432,6 +4441,23 @@ if (enable_java_templates) {
          not_needed(invoker, [ "missing_classes_allowlist" ])
        }
  

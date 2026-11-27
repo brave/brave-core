@@ -39,7 +39,7 @@ pub fn override_temp_dir(path: &Path) -> Result<(), PathBuf> {
 /// directory is explicitly specified.
 ///
 /// This function simply delegates to [`std::env::temp_dir`] unless the default temporary directory
-/// has been override by a call to [`override_temp_dir`].
+/// has been overridden by a call to [`override_temp_dir`].
 ///
 /// **NOTE:** This function does not check if the returned directory exists and/or is writable.
 pub fn temp_dir() -> PathBuf {

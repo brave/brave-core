@@ -29,6 +29,9 @@ test("ios_brave_unit_tests") {
     # Unit tests
     ":legacy_unit_tests",
     ":mojom_objc_generator_unit_tests",
+
+    # This unit test cant be moved to components due to Android Java inclusions
+    "//brave/components/brave_referrals/browser:unit_tests",
     "//brave/ios/browser/api/ads:unit_tests",
     "//brave/ios/browser/brave_ads:unit_tests",
     "//brave/ios/browser/brave_shields:unit_tests",
@@ -49,7 +52,6 @@ source_set("legacy_unit_tests") {
   testonly = true
 
   sources = [
-    "certificate_unittest.mm",
     "dictionary_transform_unittest.mm",
     "test_foo.h",
     "test_foo.mm",
@@ -58,10 +60,6 @@ source_set("legacy_unit_tests") {
 
   deps = [
     "//base",
-    "//brave/ios/browser/api/net",
-    "//net",
-    "//net/http:generate_transport_security_state",
-    "//net/http:generate_transport_security_state_pins",
     "//testing/gtest",
   ]
 

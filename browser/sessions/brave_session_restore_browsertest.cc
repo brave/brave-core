@@ -12,6 +12,7 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/sessions/brave_session_keys.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -52,6 +53,16 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
+namespace {
+
+using GetLastSessionFuture = base::test::TestFuture<
+    std::vector<std::unique_ptr<sessions::SessionWindow>>,
+    SessionID,
+    sessions::CommandStorageReadStatus,
+    sessions::SessionReplayResult>;
+
+}  // namespace
+
 using BraveSessionRestoreBrowserTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
@@ -76,26 +87,19 @@ IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
         controls_ready;
       )"));
   session_service->MoveCurrentSessionToLastSession();
-  base::RunLoop loop;
-  session_service->GetLastSession(base::BindLambdaForTesting(
-      [&](std::vector<std::unique_ptr<sessions::SessionWindow>> windows,
-          SessionID ignored_active_window,
-          sessions::CommandStorageReadStatus status,
-          sessions::SessionReplayResult replay_result) {
-        EXPECT_EQ(windows.size(), 1u);
-        EXPECT_EQ(windows[0]->tabs.size(), 1u);
-        EXPECT_EQ(windows[0]->tabs[0]->navigations.size(), 2u);
-        const auto& serialized_navigation = windows[0]->tabs[0]->navigations[1];
-        EXPECT_EQ(serialized_navigation.virtual_url(),
-                  GURL("chrome://newtab/"));
+  GetLastSessionFuture future;
+  session_service->GetLastSession(future.GetCallback());
+  auto [windows, ignored_active_window, status, replay_result] = future.Take();
+  EXPECT_EQ(windows.size(), 1u);
+  EXPECT_EQ(windows[0]->tabs.size(), 1u);
+  EXPECT_EQ(windows[0]->tabs[0]->navigations.size(), 2u);
+  const auto& serialized_navigation = windows[0]->tabs[0]->navigations[1];
+  EXPECT_EQ(serialized_navigation.virtual_url(), GURL("chrome://newtab/"));
 
-        // Check encoded data is empty. On restore, the virtual_url is
-        // re-resolved (e.g. to any current extension NTP override), so no
-        // page state should be persisted here.
-        EXPECT_TRUE(serialized_navigation.encoded_page_state().empty());
-        loop.Quit();
-      }));
-  loop.Run();
+  // Check encoded data is empty. On restore, the virtual_url is
+  // re-resolved (e.g. to any current extension NTP override), so no
+  // page state should be persisted here.
+  EXPECT_TRUE(serialized_navigation.encoded_page_state().empty());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
@@ -120,24 +124,17 @@ IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
         controls_ready;
       )"));
   session_service->MoveCurrentSessionToLastSession();
-  base::RunLoop loop;
-  session_service->GetLastSession(base::BindLambdaForTesting(
-      [&](std::vector<std::unique_ptr<sessions::SessionWindow>> windows,
-          SessionID ignored_active_window,
-          sessions::CommandStorageReadStatus status,
-          sessions::SessionReplayResult replay_result) {
-        EXPECT_EQ(windows.size(), 1u);
-        EXPECT_EQ(windows[0]->tabs.size(), 1u);
-        EXPECT_EQ(windows[0]->tabs[0]->navigations.size(), 2u);
-        const auto& serialized_navigation = windows[0]->tabs[0]->navigations[1];
-        EXPECT_EQ(serialized_navigation.virtual_url(),
-                  GURL("chrome://rewards/"));
+  GetLastSessionFuture future;
+  session_service->GetLastSession(future.GetCallback());
+  auto [windows, ignored_active_window, status, replay_result] = future.Take();
+  EXPECT_EQ(windows.size(), 1u);
+  EXPECT_EQ(windows[0]->tabs.size(), 1u);
+  EXPECT_EQ(windows[0]->tabs[0]->navigations.size(), 2u);
+  const auto& serialized_navigation = windows[0]->tabs[0]->navigations[1];
+  EXPECT_EQ(serialized_navigation.virtual_url(), GURL("chrome://rewards/"));
 
-        // Check encoded data is empty.
-        EXPECT_TRUE(serialized_navigation.encoded_page_state().empty());
-        loop.Quit();
-      }));
-  loop.Run();
+  // Check encoded data is empty.
+  EXPECT_TRUE(serialized_navigation.encoded_page_state().empty());
 }
 
 class SessionCookiesCleanupOnSessionRestoreBrowserTest
@@ -308,17 +305,11 @@ class BraveTreeTabSessionRestoreBrowserTest : public InProcessBrowserTest {
       base::Location location = base::Location::Current()) {
     SCOPED_TRACE(location.ToString());
     session_service()->MoveCurrentSessionToLastSession();
-    base::RunLoop loop;
-    session_service()->GetLastSession(base::BindLambdaForTesting(
-        [&](std::vector<std::unique_ptr<sessions::SessionWindow>> windows,
-            SessionID /*active_window*/,
-            sessions::CommandStorageReadStatus status,
-            sessions::SessionReplayResult /*replay_result*/) {
-          ASSERT_FALSE(sessions::IsCommandStorageReadError(status));
-          std::move(predicate).Run(std::move(windows));
-          loop.Quit();
-        }));
-    loop.Run();
+    GetLastSessionFuture future;
+    session_service()->GetLastSession(future.GetCallback());
+    auto [windows, active_window, status, replay_result] = future.Take();
+    ASSERT_FALSE(sessions::IsCommandStorageReadError(status));
+    std::move(predicate).Run(std::move(windows));
   }
 
   // Forces a full session rebuild (mirroring what happens on browser restart)

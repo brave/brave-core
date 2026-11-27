@@ -45,6 +45,9 @@ where
     /// Pending GOAWAY frames to write.
     go_away: GoAway,
 
+    /// A refused stream to reset before receiving another frame.
+    pending_refusal: Option<StreamId>,
+
     /// Ping/pong handler
     ping_pong: PingPong,
 
@@ -83,6 +86,31 @@ pub(crate) struct Config {
     pub remote_reset_stream_max: usize,
     pub local_error_reset_streams_max: Option<usize>,
     pub settings: frame::Settings,
+    pub data_frame_budget: DataFrameBudget,
+}
+
+#[derive(Clone, Copy, Debug)]
+pub(crate) enum DataFrameBudget {
+    Auto,
+    Configured(usize),
+}
+
+impl DataFrameBudget {
+    pub(crate) fn resolve(self, connection_window: Option<WindowSize>) -> usize {
+        match self {
+            Self::Configured(budget) => budget,
+            Self::Auto => {
+                let window = connection_window.unwrap_or(DEFAULT_INITIAL_WINDOW_SIZE);
+                let budget = window as usize / 2;
+
+                budget.max(DEFAULT_DATA_FRAME_BUDGET)
+            }
+        }
+    }
+
+    pub(crate) fn is_auto(self) -> bool {
+        matches!(self, Self::Auto)
+    }
 }
 
 #[derive(Debug)]
@@ -123,19 +151,23 @@ where
                     .max_concurrent_streams()
                     .map(|max| max as usize),
                 local_max_error_reset_streams: config.local_error_reset_streams_max,
+                data_frame_budget: config.data_frame_budget,
             }
         }
         let streams = Streams::new(streams_config(&config));
+        let span = tracing::debug_span!(parent: None, "Connection", peer = %P::NAME);
+        span.follows_from(tracing::Span::current());
         Connection {
             codec,
             inner: ConnectionInner {
                 state: State::Open,
                 error: None,
                 go_away: GoAway::new(),
+                pending_refusal: None,
                 ping_pong: PingPong::new(),
                 settings: Settings::new(config.settings),
                 streams,
-                span: tracing::debug_span!("Connection", peer = %P::NAME),
+                span,
                 _phantom: PhantomData,
             },
         }
@@ -194,7 +226,15 @@ where
             .inner
             .settings
             .poll_send(cx, &mut self.codec, &mut self.inner.streams))?;
-        ready!(self.inner.streams.send_pending_refusal(cx, &mut self.codec))?;
+        if let Some(id) = self.inner.pending_refusal {
+            // Keep the refusal pending if making room requires socket progress.
+            ready!(self.codec.poll_ready(cx))?;
+            self.inner.streams.count_pending_refusal()?;
+            self.codec
+                .buffer(frame::Reset::new(id, Reason::REFUSED_STREAM).into())
+                .expect("invalid RST_STREAM frame");
+            self.inner.pending_refusal = None;
+        }
 
         Poll::Ready(Ok(()))
     }
@@ -356,6 +396,10 @@ where
                         &mut self.inner.streams,
                     )?;
                 }
+                ReceivedFrame::Refused(id) => {
+                    debug_assert!(self.inner.pending_refusal.is_none());
+                    self.inner.pending_refusal = Some(id);
+                }
                 ReceivedFrame::Continue => (),
                 ReceivedFrame::Done => {
                     return Poll::Ready(Ok(()));
@@ -440,11 +484,17 @@ where
                 Ok(())
             }
             // Attempting to read a frame resulted in a stream level error.
-            // This is handled by resetting the frame then trying to read
-            // another frame.
+            // Locally detected stream errors are reported to the peer with
+            // RST_STREAM. Remotely initiated resets have already been applied
+            // by the streams state machine and must not be echoed back.
             Err(Error::Reset(id, reason, initiator)) => {
+                if initiator == Initiator::Remote {
+                    tracing::trace!(?id, ?reason, ?initiator, "stream reset");
+                    return Ok(());
+                }
+
                 debug_assert_eq!(initiator, Initiator::Library);
-                tracing::trace!(?id, ?reason, "stream error");
+                tracing::trace!(?id, ?reason, ?initiator, "stream error");
                 match self.streams.send_reset(id, reason) {
                     Ok(()) => (),
                     Err(crate::proto::error::GoAway { debug_data, reason }) => {
@@ -512,7 +562,10 @@ where
         match frame {
             Some(Headers(frame)) => {
                 tracing::trace!(?frame, "recv HEADERS");
-                self.streams.recv_headers(frame)?;
+                match self.streams.recv_headers(frame)? {
+                    streams::RecvOutcome::Processed => (),
+                    streams::RecvOutcome::Refused(id) => return Ok(ReceivedFrame::Refused(id)),
+                }
             }
             Some(Data(frame)) => {
                 tracing::trace!(?frame, "recv DATA");
@@ -524,7 +577,10 @@ where
             }
             Some(PushPromise(frame)) => {
                 tracing::trace!(?frame, "recv PUSH_PROMISE");
-                self.streams.recv_push_promise(frame)?;
+                match self.streams.recv_push_promise(frame)? {
+                    streams::RecvOutcome::Processed => (),
+                    streams::RecvOutcome::Refused(id) => return Ok(ReceivedFrame::Refused(id)),
+                }
             }
             Some(Settings(frame)) => {
                 tracing::trace!(?frame, "recv SETTINGS");
@@ -571,6 +627,7 @@ where
 }
 
 enum ReceivedFrame {
+    Refused(StreamId),
     Settings(frame::Settings),
     Continue,
     Done,
@@ -629,5 +686,43 @@ where
     fn drop(&mut self) {
         // Ignore errors as this indicates that the mutex is poisoned.
         let _ = self.inner.streams.recv_eof(true);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn auto_data_frame_budget_scales_with_connection_window() {
+        assert_eq!(
+            DataFrameBudget::Auto.resolve(None),
+            DEFAULT_INITIAL_WINDOW_SIZE as usize / 2
+        );
+        assert_eq!(
+            DataFrameBudget::Auto.resolve(Some(DEFAULT_INITIAL_WINDOW_SIZE)),
+            DEFAULT_INITIAL_WINDOW_SIZE as usize / 2
+        );
+        assert_eq!(DataFrameBudget::Auto.resolve(Some(1024 * 1024)), 512 * 1024);
+    }
+
+    #[test]
+    fn auto_data_frame_budget_has_minimum() {
+        assert_eq!(
+            DataFrameBudget::Auto.resolve(Some(1)),
+            DEFAULT_DATA_FRAME_BUDGET
+        );
+        assert_eq!(
+            DataFrameBudget::Auto.resolve(Some(MAX_WINDOW_SIZE)),
+            MAX_WINDOW_SIZE as usize / 2
+        );
+    }
+
+    #[test]
+    fn configured_data_frame_budget_is_unchanged() {
+        assert_eq!(
+            DataFrameBudget::Configured(123).resolve(Some(MAX_WINDOW_SIZE)),
+            123
+        );
     }
 }

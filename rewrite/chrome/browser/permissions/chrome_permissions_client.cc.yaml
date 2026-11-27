@@ -1,0 +1,88 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |
+      Include what the substitutions below use
+    add_include:
+      header:
+        - brave/components/brave_wallet/common/buildflags/buildflags.h
+
+  - description: |
+      Include what the substitutions below use in `ENABLE_BRAVE_WALLET` builds
+    add_after_includes:
+      code: |-
+        #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+        #include "brave/browser/permissions/brave_wallet_account_permission_context_factory.h"
+        #include "brave/components/brave_wallet/common/features.h"
+        #include "brave/components/permissions/contexts/brave_wallet_account_permission_context.h"
+        #if BUILDFLAG(IS_ANDROID)
+        #include "brave/browser/permissions/brave_wallet_permission_prompt_android.h"
+        #endif  // BUILDFLAG(IS_ANDROID)
+        #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+  - description: |
+      Return Brave Wallet's account permission context from `GetChooserContext`
+    preempt_function_impl:
+      function_name: ChromePermissionsClient::GetChooserContext
+      code: |-
+        #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+        if (type == ContentSettingsType::BRAVE_WALLET_ACCOUNTS) {
+          return BraveWalletAccountPermissionContextFactory::GetForProfile(
+              browser_context);
+        }
+        #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+  - description: |
+      Show Brave Wallet's own prompt UI on Android
+    preempt_function_impl:
+      function_name: ChromePermissionsClient::MaybeCreateMessageUI
+      code: |-
+        #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+        if (auto delegate =
+                BraveWalletPermissionPrompt::MaybeCreate(web_contents, prompt)) {
+          return delegate;
+        }
+        #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+  - description: |
+      Pass the content settings type to `CanBypassEmbeddingOriginCheck`
+
+      Brave Wallet permissions bypass the embedding origin check, and the
+      origins alone do not tell which permission is being checked.
+    regex:
+      pattern: 'CanBypassEmbeddingOriginCheck('
+      replace: 'CanBypassEmbeddingOriginCheck(ContentSettingsType type,'
+
+  - description: |
+      Bypass the embedding origin check for Brave Wallet permissions
+
+      Note that requesting_origin has an address in it at this point. But even
+      if we get the original origin without the address, we can't check it
+      against the embedding origin for BRAVE_ETHEREUM and BRAVE_SOLANA here
+      because it can be allowed across origins via the iframe `allow` attribute
+      with the `ethereum` and `solana` feature policy. Without this check we'd
+      fail Chromium's origin check. We instead handle this in
+      brave_wallet_render_frame_observer.cc by not exposing the API which can
+      request permission when the origin is 3p and the feature policy is not
+      allowed explicitly. We ensure that the correct handling is covered via the
+      browser tests: SolanaProviderRendererTest.Iframe3P and
+      JSEthereumProviderBrowserTest.Iframe3P
+    preempt_function_impl:
+      function_name: ChromePermissionsClient::CanBypassEmbeddingOriginCheck
+      code: |-
+        #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+        if (!base::FeatureList::IsEnabled(
+                brave_wallet::features::kBraveWalletAccountObjectPermissions)) {
+          if (type == ContentSettingsType::BRAVE_ETHEREUM ||
+              type == ContentSettingsType::BRAVE_SOLANA ||
+              type == ContentSettingsType::BRAVE_CARDANO ||
+              type == ContentSettingsType::BRAVE_POLKADOT) {
+            return true;
+          }
+        }
+        #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)

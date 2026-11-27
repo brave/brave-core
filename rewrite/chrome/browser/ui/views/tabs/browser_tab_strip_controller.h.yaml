@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let the BraveBrowserTabStripController and tests reach private members.
+    add_friend:
+      class_name: BrowserTabStripController
+      friend_type:
+        - class BraveBrowserTabStripController
+        - class BraveTabMenuBrowserTest
+        - class VerticalTabStripStringBrowserTest
+
+  - description: |
+      Add a hook so BraveBrowserTabStripController can create BraveTabMenuModel
+      without chrome depending on brave targets. It takes the same parameters
+      as the TabMenuModel constructor.
+    add_to_protected:
+      class_name: BrowserTabStripController
+      code: |-
+        virtual std::unique_ptr<TabMenuModel> CreateTabMenuModel(
+            ui::SimpleMenuModel::Delegate* delegate,
+            TabMenuModelDelegate* tab_menu_model_delegate,
+            TabStripModel* tab_strip_model,
+            int index);

@@ -77,7 +77,7 @@ impl Lz77Store {
         let llstart = ZOPFLI_NUM_LL * (origsize / ZOPFLI_NUM_LL);
         let dstart = ZOPFLI_NUM_D * (origsize / ZOPFLI_NUM_D);
 
-        if origsize % ZOPFLI_NUM_LL == 0 {
+        if origsize.is_multiple_of(ZOPFLI_NUM_LL) {
             if origsize == 0 {
                 self.ll_counts.resize(origsize + ZOPFLI_NUM_LL, 0);
             } else {
@@ -87,7 +87,7 @@ impl Lz77Store {
             }
         }
 
-        if origsize % ZOPFLI_NUM_D == 0 {
+        if origsize.is_multiple_of(ZOPFLI_NUM_D) {
             if origsize == 0 {
                 self.d_counts.resize(ZOPFLI_NUM_D, 0);
             } else {

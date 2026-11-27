@@ -193,6 +193,11 @@ NTPBackgroundImagesBridge::CreateNewTabTakeoverWallpaper(
     metric_type = static_cast<brave_ads::mojom::NewTabPageAdMetricType>(*value);
   }
 
+  const bool should_display_new_tab_takeover_disclosure =
+      data.FindBool(
+              ntp_background_images::kShouldDisplayNewTabTakeoverDisclosureKey)
+          .value_or(true);
+
   view_counter_service_->RecordViewedAdEvent(
       *wallpaper_id, *creative_instance_id, metric_type);
 
@@ -202,7 +207,8 @@ NTPBackgroundImagesBridge::CreateNewTabTakeoverWallpaper(
       ConvertUTF8ToJavaString(env, *logo_destination_url), is_sponsored,
       ConvertUTF8ToJavaString(env, *creative_instance_id),
       ConvertUTF8ToJavaString(env, *wallpaper_id), is_dynamic_new_tab_takeover,
-      static_cast<int>(metric_type));
+      static_cast<int>(metric_type),
+      should_display_new_tab_takeover_disclosure);
 }
 
 void NTPBackgroundImagesBridge::GetCurrentWallpaper(

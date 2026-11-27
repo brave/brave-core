@@ -20,7 +20,7 @@
 #include "brave/components/history_embeddings/core/vector_database.h"
 #include "components/history/core/browser/url_row.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 // Counts the # of ' ' vanilla-space characters in `s`.
 size_t CountWords(const std::string& s);
@@ -115,6 +115,6 @@ class HistoryEmbeddingsSearch {
                               SearchResultCallback callback) = 0;
 };
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings
 
 #endif  // BRAVE_COMPONENTS_HISTORY_EMBEDDINGS_CORE_HISTORY_EMBEDDINGS_SEARCH_H_

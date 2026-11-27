@@ -3,8 +3,6 @@ use crate::prelude::*;
 
 pub type wchar_t = u32;
 pub type greg_t = i64;
-pub type __u64 = c_ulonglong;
-pub type __s64 = c_longlong;
 
 s! {
     pub struct stat {
@@ -30,6 +28,7 @@ s! {
         __unused5: Padding<c_uint>,
     }
 
+    // FIXME(1.0,deprecate): lfs binding to be removed
     pub struct stat64 {
         pub st_dev: crate::dev_t,
         pub st_ino: crate::ino_t,
@@ -61,10 +60,10 @@ s_no_extra_traits! {
     }
 }
 
-pub const O_DIRECT: c_int = 0x40000;
-pub const O_DIRECTORY: c_int = 0x200000;
-pub const O_NOFOLLOW: c_int = 0x400000;
-pub const O_LARGEFILE: c_int = 0x100000;
+pub const O_DIRECT: c_int = 0o40000;
+pub const O_DIRECTORY: c_int = 0o200000;
+pub const O_NOFOLLOW: c_int = 0o400000;
+pub const O_LARGEFILE: c_int = 0o100000;
 
 pub const SIGSTKSZ: size_t = 8192;
 pub const MINSIGSTKSZ: size_t = 2048;

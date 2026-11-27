@@ -36,205 +36,205 @@ pub struct FileInfo {
     pub info: *mut crate::protocols::file::Info,
 }
 
-pub type Execute = eficall! {fn(
+pub type Execute = unsafe extern "efiapi" fn(
     *mut crate::base::Handle,
     *mut crate::base::Char16,
     *mut *mut crate::base::Char16,
     *mut crate::base::Status,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type GetEnv = eficall! {fn(
+pub type GetEnv = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
-) -> *mut crate::base::Char16};
+) -> *mut crate::base::Char16;
 
-pub type SetEnv = eficall! {fn(
+pub type SetEnv = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
     *mut crate::base::Char16,
     crate::base::Boolean,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type GetAlias = eficall! {fn(
+pub type GetAlias = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
     *mut crate::base::Boolean,
-) -> *mut crate::base::Char16};
+) -> *mut crate::base::Char16;
 
-pub type SetAlias = eficall! {fn(
+pub type SetAlias = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
     *mut crate::base::Char16,
     crate::base::Boolean,
     crate::base::Boolean,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type GetHelpText = eficall! {fn(
+pub type GetHelpText = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
     *mut crate::base::Char16,
     *mut *mut crate::base::Char16,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type GetDevicePathFromMap = eficall! {fn(
+pub type GetDevicePathFromMap = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
-) -> *mut crate::protocols::device_path::Protocol};
+) -> *mut crate::protocols::device_path::Protocol;
 
-pub type GetMapFromDevicePath = eficall! {fn(
+pub type GetMapFromDevicePath = unsafe extern "efiapi" fn(
     *mut *mut crate::protocols::device_path::Protocol,
-) -> *mut crate::base::Char16};
+) -> *mut crate::base::Char16;
 
-pub type GetDevicePathFromFilePath = eficall! {fn(
+pub type GetDevicePathFromFilePath = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
-) -> *mut crate::protocols::device_path::Protocol};
+) -> *mut crate::protocols::device_path::Protocol;
 
-pub type GetFilePathFromDevicePath = eficall! {fn(
+pub type GetFilePathFromDevicePath = unsafe extern "efiapi" fn(
     *mut crate::protocols::device_path::Protocol,
-) -> *mut crate::base::Char16};
+) -> *mut crate::base::Char16;
 
-pub type SetMap = eficall! {fn(
+pub type SetMap = unsafe extern "efiapi" fn(
     *mut crate::protocols::device_path::Protocol,
     *mut crate::base::Char16,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type GetCurDir = eficall! {fn(
+pub type GetCurDir = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
-) -> *mut crate::base::Char16};
+) -> *mut crate::base::Char16;
 
-pub type SetCurDir = eficall! {fn(
+pub type SetCurDir = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
     *mut crate::base::Char16,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type OpenFileList = eficall! {fn(
+pub type OpenFileList = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
     u64,
     *mut *mut FileInfo,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type FreeFileList = eficall! {fn(
+pub type FreeFileList = unsafe extern "efiapi" fn(
     *mut *mut FileInfo,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type RemoveDupInFileList = eficall! {fn(
+pub type RemoveDupInFileList = unsafe extern "efiapi" fn(
     *mut *mut FileInfo,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BatchIsActive = eficall! {fn() -> crate::base::Boolean};
+pub type BatchIsActive = unsafe extern "efiapi" fn() -> crate::base::Boolean;
 
-pub type IsRootShell = eficall! {fn() -> crate::base::Boolean};
+pub type IsRootShell = unsafe extern "efiapi" fn() -> crate::base::Boolean;
 
-pub type EnablePageBreak = eficall! {fn()};
+pub type EnablePageBreak = unsafe extern "efiapi" fn();
 
-pub type DisablePageBreak = eficall! {fn()};
+pub type DisablePageBreak = unsafe extern "efiapi" fn();
 
-pub type GetPageBreak = eficall! {fn() -> crate::base::Boolean};
+pub type GetPageBreak = unsafe extern "efiapi" fn() -> crate::base::Boolean;
 
-pub type GetDeviceName = eficall! {fn(
+pub type GetDeviceName = unsafe extern "efiapi" fn(
     crate::base::Handle,
     DeviceNameFlags,
     *mut crate::base::Char8,
     *mut *mut crate::base::Char16,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type GetFileInfo = eficall! {fn(
+pub type GetFileInfo = unsafe extern "efiapi" fn(
     FileHandle,
-) -> *mut crate::protocols::file::Info};
+) -> *mut crate::protocols::file::Info;
 
-pub type SetFileInfo = eficall! {fn(
+pub type SetFileInfo = unsafe extern "efiapi" fn(
     FileHandle,
     *mut crate::protocols::file::Info
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type OpenFileByName = eficall! {fn(
+pub type OpenFileByName = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
     *mut FileHandle,
     u64,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type CloseFile = eficall! {fn(
+pub type CloseFile = unsafe extern "efiapi" fn(
     FileHandle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type CreateFile = eficall! {fn(
+pub type CreateFile = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
     u64,
     *mut FileHandle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ReadFile = eficall! {fn(
+pub type ReadFile = unsafe extern "efiapi" fn(
     FileHandle,
     *mut usize,
     *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type WriteFile = eficall! {fn(
+pub type WriteFile = unsafe extern "efiapi" fn(
     FileHandle,
     *mut usize,
     *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type DeleteFile = eficall! {fn(
+pub type DeleteFile = unsafe extern "efiapi" fn(
     FileHandle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type DeleteFileByName = eficall! {fn(
+pub type DeleteFileByName = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type GetFilePosition = eficall! {fn(
+pub type GetFilePosition = unsafe extern "efiapi" fn(
     FileHandle,
     *mut u64,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type SetFilePosition = eficall! {fn(
+pub type SetFilePosition = unsafe extern "efiapi" fn(
     FileHandle,
     u64,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type FlushFile = eficall! {fn(
+pub type FlushFile = unsafe extern "efiapi" fn(
     FileHandle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type FindFiles = eficall! {fn(
+pub type FindFiles = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
     *mut *mut FileInfo,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type FindFilesInDir = eficall! {fn(
+pub type FindFilesInDir = unsafe extern "efiapi" fn(
     FileHandle,
     *mut *mut FileInfo,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type GetFileSize = eficall! {fn(
+pub type GetFileSize = unsafe extern "efiapi" fn(
     FileHandle,
     *mut u64,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type OpenRoot = eficall! {fn(
+pub type OpenRoot = unsafe extern "efiapi" fn(
     *mut crate::protocols::device_path::Protocol,
     *mut FileHandle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type OpenRootByHandle = eficall! {fn(
+pub type OpenRootByHandle = unsafe extern "efiapi" fn(
     crate::base::Handle,
     *mut FileHandle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type RegisterGuidName = eficall! {fn(
+pub type RegisterGuidName = unsafe extern "efiapi" fn(
     *mut crate::base::Guid,
     *mut crate::base::Char16,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type GetGuidName = eficall! {fn(
+pub type GetGuidName = unsafe extern "efiapi" fn(
     *mut crate::base::Guid,
     *mut *mut crate::base::Char16,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type GetGuidFromName = eficall! {fn(
+pub type GetGuidFromName = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
     *mut crate::base::Guid,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type GetEnvEx = eficall! {fn(
+pub type GetEnvEx = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
     *mut u32,
-) -> *mut crate::base::Char16};
+) -> *mut crate::base::Char16;
 
 #[repr(C)]
 pub struct Protocol {

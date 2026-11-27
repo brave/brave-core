@@ -74,6 +74,7 @@ describe('registerTools', () => {
       'grep',
       'glob',
       'append_file',
+      'delete_file',
     ])
   })
 
@@ -124,6 +125,9 @@ describe('registerTools', () => {
       'path',
       'content',
     ])
+    expect(registered.get('delete_file')!.inputSchema!.required).toEqual([
+      'path',
+    ])
   })
 
   it('registers every tool without waiting for earlier registrations', () => {
@@ -140,6 +144,7 @@ describe('registerTools', () => {
       'grep',
       'glob',
       'append_file',
+      'delete_file',
     ])
   })
 
@@ -355,6 +360,22 @@ describe('append_file tool', () => {
       'Appended 4 bytes to a.txt',
     )
     expect(snapshotFakeWorkspace(root)).toEqual({ 'a.txt': 'one\ntwo\n' })
+  })
+})
+
+describe('delete_file tool', () => {
+  it('deletes a file and leaves its siblings alone', async () => {
+    const root = await setUpWorkspace({ 'a.txt': 'one', 'sub/b.txt': 'two' })
+    expect(await run('delete_file', { path: 'sub/b.txt' })).toBe(
+      'Deleted sub/b.txt',
+    )
+    expect(snapshotFakeWorkspace(root)).toEqual({ 'a.txt': 'one' })
+  })
+
+  it('refuses to delete a directory', async () => {
+    const root = await setUpWorkspace({ 'sub/b.txt': 'two' })
+    expect(await run('delete_file', { path: 'sub' })).toMatch(/^Error: /)
+    expect(snapshotFakeWorkspace(root)).toEqual({ 'sub/b.txt': 'two' })
   })
 })
 

@@ -7,13 +7,13 @@
 
 #include <memory>
 #include <optional>
-#include <set>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/containers/flat_set.h"
 #include "base/containers/span.h"
 #include "base/files/file_util.h"
 #include "base/functional/callback_helpers.h"
@@ -33,21 +33,21 @@
 #include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/content/browser/ad_block_engine.h"
-#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
-#include "brave/components/brave_shields/content/test/ad_block_service_test_observer.h"
-#include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_default_resource_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_engine.h"
+#include "brave/components/brave_shields/core/browser/ad_block_engine_wrapper.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/brave_shields/core/test/ad_block_service_test_observer.h"
+#include "brave/components/brave_shields/core/test/test_filters_provider.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -61,6 +61,7 @@
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "content/common/features.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "crypto/sha2.h"
@@ -449,6 +450,35 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 1, 0, 0);"
                          "addImage('ad_banner.png')"));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+// Under content's `kSubresourceLoaderProxyTaskQueue`, Brave's proxy handles a
+// main frame's subresource requests on a high-priority queue, which a
+// committing document's factory only starts once its navigation finishes.
+class AdBlockServiceSubresourceTaskQueueTest : public AdBlockServiceTest {
+ public:
+  AdBlockServiceSubresourceTaskQueueTest() {
+    feature_list_.InitAndEnableFeature(
+        features::kSubresourceLoaderProxyTaskQueue);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// The ad in the page's markup is requested as the document commits, so it is
+// among the first requests the deferred queue runs.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSubresourceTaskQueueTest,
+                       AdInMarkupGetsBlocked) {
+  UpdateAdBlockInstanceWithRules("*ad_banner.png");
+
+  NavigateToURL(embedded_test_server()->GetURL("/ad_banner_in_markup.html"));
+  content::WebContents* contents = web_contents();
+
+  EXPECT_EQ(0, EvalJs(contents, "document.getElementById('ad').naturalWidth"));
+  EXPECT_NE(0,
+            EvalJs(contents, "document.getElementById('logo').naturalWidth"));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
@@ -1195,12 +1225,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsGetBlocked) {
 
   auto inner_resolver = std::make_unique<net::MockHostResolver>();
 
-  const std::set<std::string> kDnsAliasesDirect(
+  const base::flat_set<std::string> kDnsAliasesDirect(
       {"cname-cloak-endpoint.tracking.com"});
-  const std::set<std::string> kDnsAliasesChain(
+  const base::flat_set<std::string> kDnsAliasesChain(
       {"cname-cloak-endpoint.tracking.com",
        "cname-cloak-endpoint.tracking.com.redirectservice.net", "cname.a.com"});
-  const std::set<std::string> kDnsAliasesSafe({"assets.cdn.net"});
+  const base::flat_set<std::string> kDnsAliasesSafe({"assets.cdn.net"});
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
       "a83idbka2e.a.com", "127.0.0.1", kDnsAliasesDirect);
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
@@ -1209,7 +1239,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsGetBlocked) {
                                                           kDnsAliasesSafe);
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
       "cname-cloak-endpoint.tracking.com", "127.0.0.1",
-      /*dns_aliases=*/std::set<std::string>());
+      /*dns_aliases=*/base::flat_set<std::string>());
 
   network::HostResolver resolver(inner_resolver.get(), net::NetLog::Get());
 
@@ -1290,12 +1320,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsCanBeExcepted) {
 
   auto inner_resolver = std::make_unique<net::MockHostResolver>();
 
-  const std::set<std::string> kDnsAliasesDirect(
+  const base::flat_set<std::string> kDnsAliasesDirect(
       {"cname-cloak-endpoint.tracking.com"});
-  const std::set<std::string> kDnsAliasesChain(
+  const base::flat_set<std::string> kDnsAliasesChain(
       {"cname-cloak-endpoint.tracking.com",
        "cname-cloak-endpoint.tracking.com.redirectservice.net", "cname.a.com"});
-  const std::set<std::string> kDnsAliasesSafe({"assets.cdn.net"});
+  const base::flat_set<std::string> kDnsAliasesSafe({"assets.cdn.net"});
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
       "a83idbka2e.a.com", "127.0.0.1", kDnsAliasesDirect);
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
@@ -1304,7 +1334,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsCanBeExcepted) {
                                                           kDnsAliasesSafe);
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
       "cname-cloak-endpoint.tracking.com", "127.0.0.1",
-      /*dns_aliases=*/std::set<std::string>());
+      /*dns_aliases=*/base::flat_set<std::string>());
 
   network::HostResolver resolver(inner_resolver.get(), net::NetLog::Get());
 
@@ -1444,12 +1474,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NoRemoveparamOnCnameUncloakedUrl) {
 
   auto inner_resolver = std::make_unique<net::MockHostResolver>();
 
-  const std::set<std::string> kDnsAliases({"assets.cdn.net"});
+  const base::flat_set<std::string> kDnsAliases({"assets.cdn.net"});
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
       "frame.com", "127.0.0.1", kDnsAliases);
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
       "b.com", "127.0.0.1",
-      /*dns_aliases=*/std::set<std::string>());
+      /*dns_aliases=*/base::flat_set<std::string>());
 
   network::HostResolver resolver(inner_resolver.get(), net::NetLog::Get());
 
@@ -1496,12 +1526,12 @@ IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagDisabledTest, NoDnsQueriesIssued) {
 
   auto inner_resolver = std::make_unique<net::MockHostResolver>();
 
-  const std::set<std::string> kDnsAliasesDirect(
+  const base::flat_set<std::string> kDnsAliasesDirect(
       {"cname-cloak-endpoint.tracking.com"});
-  const std::set<std::string> kDnsAliasesChain(
+  const base::flat_set<std::string> kDnsAliasesChain(
       {"cname-cloak-endpoint.tracking.com",
        "cname-cloak-endpoint.tracking.com.redirectservice.net", "cname.a.com"});
-  const std::set<std::string> kDnsAliasesSafe({"assets.cdn.net"});
+  const base::flat_set<std::string> kDnsAliasesSafe({"assets.cdn.net"});
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
       "a83idbka2e.a.com", "127.0.0.1", kDnsAliasesDirect);
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
@@ -1510,7 +1540,7 @@ IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagDisabledTest, NoDnsQueriesIssued) {
                                                           kDnsAliasesSafe);
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
       "cname-cloak-endpoint.tracking.com", "127.0.0.1",
-      /*dns_aliases=*/std::set<std::string>());
+      /*dns_aliases=*/base::flat_set<std::string>());
 
   network::HostResolver resolver(inner_resolver.get(), net::NetLog::Get());
 
@@ -3341,7 +3371,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
   NavigateToURL(tab_url);
   static constexpr char kPickerIsInjected[] =
-      "document.getElementById('brave-element-picker') != null";
+      "[...document.querySelectorAll('div[style*=\"z-index: "
+      "2147483647\"]')].filter(div => div.childNodes.length === 0 && "
+      "div.attributes.length === 1)[0] !== undefined";
   ASSERT_FALSE(
       content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
 

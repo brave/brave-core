@@ -10,9 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
+edition = "2021"
 rust-version = "1.63.0"
 name = "glob"
-version = "0.3.3"
+version = "0.3.4"
 authors = ["The Rust Project Developers"]
 build = false
 autolib = false
@@ -41,5 +42,5 @@ path = "tests/glob-std.rs"
 [dev-dependencies.doc-comment]
 version = "0.3"
 
-[dev-dependencies.tempdir]
-version = "0.3"
+[dev-dependencies.tempfile]
+version = "3"

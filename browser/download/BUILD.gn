@@ -27,7 +27,7 @@ source_set("chromium_impl") {
   deps = [
     "//base",
     "//brave/browser:browser_process",
-    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/browser",
   ]
 }
 

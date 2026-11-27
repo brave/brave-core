@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.65"
 name = "regex"
-version = "1.12.3"
+version = "1.13.1"
 authors = [
     "The Rust Project Developers",
     "Andrew Gallant <jamslam@gmail.com>",
@@ -31,6 +31,7 @@ include = [
     "testdata/**.toml",
     "tests/**/*.rs",
     "bench/**/*.rs",
+    "benches/**/*.rs",
     "LICENSE-UNICODE",
     "!/tests/fuzz/mod.rs",
 ]
@@ -160,7 +161,7 @@ optional = true
 default-features = false
 
 [dependencies.regex-automata]
-version = "0.4.12"
+version = "0.4.16"
 features = [
     "alloc",
     "syntax",
@@ -170,7 +171,7 @@ features = [
 default-features = false
 
 [dependencies.regex-syntax]
-version = "0.8.5"
+version = "0.8.11"
 default-features = false
 
 [dev-dependencies.anyhow]

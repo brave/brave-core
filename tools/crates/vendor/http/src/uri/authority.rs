@@ -244,14 +244,14 @@ impl PartialEq<Authority> for str {
     }
 }
 
-impl<'a> PartialEq<Authority> for &'a str {
+impl PartialEq<Authority> for &str {
     fn eq(&self, other: &Authority) -> bool {
         self.eq_ignore_ascii_case(other.as_str())
     }
 }
 
-impl<'a> PartialEq<&'a str> for Authority {
-    fn eq(&self, other: &&'a str) -> bool {
+impl PartialEq<&str> for Authority {
+    fn eq(&self, other: &&str) -> bool {
         self.data.eq_ignore_ascii_case(other)
     }
 }
@@ -302,7 +302,7 @@ impl PartialOrd<Authority> for str {
     }
 }
 
-impl<'a> PartialOrd<Authority> for &'a str {
+impl PartialOrd<Authority> for &str {
     fn partial_cmp(&self, other: &Authority) -> Option<cmp::Ordering> {
         let left = self.as_bytes().iter().map(|b| b.to_ascii_lowercase());
         let right = other.data.as_bytes().iter().map(|b| b.to_ascii_lowercase());
@@ -310,8 +310,8 @@ impl<'a> PartialOrd<Authority> for &'a str {
     }
 }
 
-impl<'a> PartialOrd<&'a str> for Authority {
-    fn partial_cmp(&self, other: &&'a str) -> Option<cmp::Ordering> {
+impl PartialOrd<&str> for Authority {
+    fn partial_cmp(&self, other: &&str) -> Option<cmp::Ordering> {
         let left = self.data.as_bytes().iter().map(|b| b.to_ascii_lowercase());
         let right = other.as_bytes().iter().map(|b| b.to_ascii_lowercase());
         left.partial_cmp(right)
@@ -368,10 +368,10 @@ impl Hash for Authority {
     }
 }
 
-impl<'a> TryFrom<&'a [u8]> for Authority {
+impl TryFrom<&[u8]> for Authority {
     type Error = InvalidUri;
     #[inline]
-    fn try_from(s: &'a [u8]) -> Result<Self, Self::Error> {
+    fn try_from(s: &[u8]) -> Result<Self, Self::Error> {
         // parse first, and only turn into Bytes if valid
 
         // Preconditon on create_authority: copy_from_slice() copies all of
@@ -380,10 +380,10 @@ impl<'a> TryFrom<&'a [u8]> for Authority {
     }
 }
 
-impl<'a> TryFrom<&'a str> for Authority {
+impl TryFrom<&str> for Authority {
     type Error = InvalidUri;
     #[inline]
-    fn try_from(s: &'a str) -> Result<Self, Self::Error> {
+    fn try_from(s: &str) -> Result<Self, Self::Error> {
         TryFrom::try_from(s.as_bytes())
     }
 }

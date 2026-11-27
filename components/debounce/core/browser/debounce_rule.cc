@@ -50,15 +50,6 @@ const int64_t kMaxMemoryPerRegexPattern = 2 << 11;
 // Also cap the length of regex pattern to be extra safe
 const int64_t kMaxLengthRegexPattern = 200;
 
-// Removes trailing dot from |host_piece| if any.
-// Copied from extensions/common/url_pattern.cc
-std::string_view CanonicalizeHostForMatching(std::string_view host_piece) {
-  if (host_piece.ends_with('.')) {
-    host_piece.remove_suffix(1);
-  }
-  return host_piece;
-}
-
 // Extract the host from |url| using a simple parsing algorithm
 // WARNING: this is a special-purpose function whose output should not be used.
 std::string NaivelyExtractHostnameFromUrl(std::string_view url) {
@@ -170,7 +161,7 @@ void DebounceRule::RegisterJSONConverter(
 // All eTLD+1 calculations for debouncing should flow through here so they
 // are consistent in their private registries configuration.
 const std::string DebounceRule::GetETLDForDebounce(std::string_view host) {
-  std::string_view host_piece = CanonicalizeHostForMatching(host);
+  std::string_view host_piece = URLPattern::CanonicalizeHostForMatching(host);
   return net::registry_controlled_domains::GetDomainAndRegistry(
       host_piece, net::registry_controlled_domains::PrivateRegistryFilter::
                       EXCLUDE_PRIVATE_REGISTRIES);

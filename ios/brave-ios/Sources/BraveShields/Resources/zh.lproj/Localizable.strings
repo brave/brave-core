@@ -16,27 +16,6 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "拦截的跟踪器和广告";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "已封鎖\n廣告";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** 是您获得无广告、不间断视频体验的入场券。";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "为我调整 Shields";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "该网站已开始阻止某些广告拦截器，这意味着其网站可能无法正常运行。";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "为了解决这个问题，Brave 可以为你调整 shields 设置。调整后，你可以尝试在 Brave Player 中观看这些内容。";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "保持当前设置";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "调整本网站的广告屏蔽设置";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "自動重新導向 AMP 頁面";
 
@@ -79,32 +58,11 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "封鎖 JavaScript (可能會影響網站運作)。";
 
-/* Title for the brave player feature */
-"BravePlayer" = "Brave Player";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "始终使用 Brave Player 打开本网站的视频";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "了解详情";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "现在不";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Brave Player 可让你不受干扰地观看视频。";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "改为在 Brave Player 中观看";
-
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "高级控制项";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "封鎖廣告和其他討人厭的追蹤程式";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "了解更多";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "变更 Shields 全域默认值";
@@ -113,7 +71,7 @@
 "BraveShieldsGlobalControls" = "全域控制項";
 
 /* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "存储联系信息，用于日后报告站点故障";
+"BraveShieldsSaveContactInfo" = "存储联系信息，用于日后的站点故障报告";
 
 /* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
 "BraveShieldsSaveContactInfoDescription" = "如果您提供联系信息，这些信息将会被储存起来，在日后的报告中使用";
@@ -217,17 +175,11 @@
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "等待下載";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "编辑";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "輸入过滤器清单 URL";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "最後一次更新在 %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "在此處輸入篩選清單網址";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "封鎖指紋識別";
@@ -412,9 +364,6 @@
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "跟踪器 & 广告拦截";
 
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "已封鎖\n追蹤器";
-
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "更新列表";
 
@@ -422,7 +371,7 @@
 "UpdatingLists" = "正在更新列表";
 
 /* The option the user can select for the type of https upgrading */
-"UpgradeConnectionsToHTTPS" = "將連線升級為 HTTPS";
+"UpgradeConnectionsToHTTPS" = "将连接升级为 HTTPS";
 
 /* A description shown an a page where the http page was blocked */
 "YourConnectionIsNotPrivate" = "您当前看到警告提示，是由于该网站不支持 HTTPS。";

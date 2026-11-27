@@ -1,6 +1,3 @@
-/* Toast displayed to user after copy url pressed. */
-"AppMenuCopyURLConfirmMessage" = "URL kopierad till urklipp";
-
 /* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
 "AppMenuViewDesktopSiteTitleString" = "Begär datorversion av webbplats";
 
@@ -49,9 +46,6 @@
 /* The button to open a new tab with the Downloads home panel */
 "DownloadsButtonTitle" = "Hämtade";
 
-/* Question shown to user when tapping a link that opens the App Store app */
-"ExternalLinkAppStoreConfirmationTitle" = "Öppna den här länken i App Store-appen?";
-
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "Öppna";
 
@@ -76,17 +70,11 @@
 /* Accessibility label for button resetting font size in display settings of reader mode */
 "ReaderModeResetFontSizeAccessibilityLabel" = "Återställ textstorlek";
 
-/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
-"SaveLoginPrompt" = "Spara lösenord för %@?";
-
 /* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
 "SaveLoginUsernamePrompt" = "Vill du spara inloggningen för %1$@ på %2$@?";
 
 /* OK button to dismiss the error prompt. */
 "ScanQRCodeErrorOKButton" = "OK";
-
-/* Text for the instructions label, displayed in the QR scanner view */
-"ScanQRCodeInstructionsLabel" = "Skanna QR-koden genom att sätta den inom ramen";
 
 /* Text of the prompt that is shown to the user when the data is invalid */
 "ScanQRCodeInvalidDataErrorMessage" = "Ogiltiga data";
@@ -123,9 +111,6 @@
 
 /* Title of the message shown when the user attempts to navigate to an invalid link. */
 "UnableToOpenURLErrorTitle" = "Kan ej öppna sidan";
-
-/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginPrompt" = "Uppdatera inloggning %1$@ för %2$@?";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
 "UpdateLoginUsernamePrompt" = "Uppdatera inloggning %1$@ för %2$@?";

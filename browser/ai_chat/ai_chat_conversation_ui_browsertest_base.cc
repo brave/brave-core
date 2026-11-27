@@ -25,7 +25,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 using ::testing::_;
 using ::testing::NiceMock;
@@ -71,7 +71,7 @@ void AIChatConversationUIBrowserTestBase::NavigateToConversationUI(
   conversation_rfh_ = nullptr;
   GURL url(base::StrCat({"chrome://leo-ai/", conversation_uuid}));
   conversation_rfh_ = ui_test_utils::NavigateToURLWithDisposition(
-      target_browser, url, WindowOpenDisposition::kNewForegroundTab,
+      target_browser, url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   // Wait for child frame to exist
   VerifyElementState("conversation-entries-iframe");

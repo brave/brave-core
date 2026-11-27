@@ -1,96 +1,73 @@
+use gix_error::Result;
 use std::{
     ffi::OsStr,
     path::{Component, Path, PathBuf},
 };
 
 use bstr::{BStr, BString, ByteSlice};
+use gix_error::message;
 
 use crate::Stack;
-
-///
-pub mod to_normal_path_components {
-    use std::path::PathBuf;
-
-    /// The error used in [`ToNormalPathComponents::to_normal_path_components()`](super::ToNormalPathComponents::to_normal_path_components()).
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("Input path \"{path}\" contains relative or absolute components", path = .0.display())]
-        NotANormalComponent(PathBuf),
-        #[error("Could not convert to UTF8 or from UTF8 due to ill-formed input")]
-        IllegalUtf8,
-    }
-}
 
 /// Obtain an iterator over `OsStr`-components which are normal, none-relative and not absolute.
 pub trait ToNormalPathComponents {
     /// Return an iterator over the normal components of a path, without the separator.
-    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr, to_normal_path_components::Error>>;
+    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr>>;
 }
 
 impl ToNormalPathComponents for &Path {
-    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr, to_normal_path_components::Error>> {
-        self.components().map(|c| component_to_os_str(c, self))
+    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr>> {
+        self.components().map(|c| component_to_os_str(c, self.display()))
     }
 }
 
 impl ToNormalPathComponents for PathBuf {
-    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr, to_normal_path_components::Error>> {
-        self.components().map(|c| component_to_os_str(c, self))
+    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr>> {
+        self.components().map(|c| component_to_os_str(c, self.display()))
     }
 }
 
-fn component_to_os_str<'a>(
-    component: Component<'a>,
-    path_with_component: &Path,
-) -> Result<&'a OsStr, to_normal_path_components::Error> {
+fn component_to_os_str(component: Component<'_>, path_with_component: impl std::fmt::Display) -> Result<&OsStr> {
     match component {
         Component::Normal(os_str) => Ok(os_str),
-        _ => Err(to_normal_path_components::Error::NotANormalComponent(
-            path_with_component.to_owned(),
-        )),
+        _ => Err(
+            message!("Input path \"{path_with_component}\" contains relative or absolute components")
+                .validation_error(),
+        ),
     }
 }
 
 impl ToNormalPathComponents for &BStr {
-    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr, to_normal_path_components::Error>> {
+    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr>> {
         self.split(|b| *b == b'/')
             .filter_map(|c| bytes_component_to_os_str(c, self))
     }
 }
 
 impl ToNormalPathComponents for &str {
-    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr, to_normal_path_components::Error>> {
+    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr>> {
         self.split('/')
             .filter_map(|c| bytes_component_to_os_str(c.as_bytes(), (*self).into()))
     }
 }
 
 impl ToNormalPathComponents for &BString {
-    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr, to_normal_path_components::Error>> {
+    fn to_normal_path_components(&self) -> impl Iterator<Item = Result<&OsStr>> {
         self.split(|b| *b == b'/')
             .filter_map(|c| bytes_component_to_os_str(c, self.as_bstr()))
     }
 }
 
-fn bytes_component_to_os_str<'a>(
-    component: &'a [u8],
-    path: &BStr,
-) -> Option<Result<&'a OsStr, to_normal_path_components::Error>> {
+fn bytes_component_to_os_str<'a>(component: &'a [u8], path: &BStr) -> Option<Result<&'a OsStr>> {
     if component.is_empty() {
         return None;
     }
-    let component = match gix_path::try_from_byte_slice(component.as_bstr())
-        .map_err(|_| to_normal_path_components::Error::IllegalUtf8)
-    {
+    let component = match gix_path::from_byte_slice(component.as_bstr()) {
         Ok(c) => c,
         Err(err) => return Some(Err(err)),
     };
     let component = component.components().next()?;
-    Some(component_to_os_str(
-        component,
-        gix_path::try_from_byte_slice(path.as_ref()).ok()?,
-    ))
+    Some(component_to_os_str(component, path))
 }
 
 /// Access
@@ -120,7 +97,8 @@ pub trait Delegate {
     /// Use [`Stack::current()`] to see the directory.
     fn push_directory(&mut self, stack: &Stack) -> std::io::Result<()>;
 
-    /// Called after any component was pushed, with the path available at [`Stack::current()`].
+    /// Called after any component was pushed, and for every requested terminal component even if it was cached,
+    /// with the path available at [`Stack::current()`].
     ///
     /// `is_last_component` is `true` if the path is completely built, which typically means it's not a directory.
     fn push(&mut self, is_last_component: bool, stack: &Stack) -> std::io::Result<()>;
@@ -145,12 +123,14 @@ impl Stack {
         }
     }
 
-    /// Set the current stack to point to the `relative` path and call `push_comp()` each time a new path component is popped
-    /// along with the stacks state for inspection to perform an operation that produces some data.
+    /// Set the current stack to point to the `relative` path, calling [`Delegate::push()`] for new components
+    /// and for the terminal component, even when the latter was cached.
     ///
-    /// The full path to `relative` will be returned along with the data returned by `push_comp`.
-    /// Note that this only works correctly for the delegate's `push_directory()` and `pop_directory()` methods if
-    /// `relative` paths are terminal, so point to their designated file or directory.
+    /// Only leading directories remain cached. The caller may replace the terminal entry without invalidating the
+    /// stack: using it as a leading directory later will validate it again. Shared leading directories are reused
+    /// without additional delegate calls and must not be changed by the caller or other actors.
+    /// Directory push/pop calls remain balanced even when a previously leading directory becomes a terminal entry.
+    ///
     /// The path is also expected to be normalized, and should not contain extra separators, and must not contain `..`
     /// or have leading or trailing slashes (or additionally backslashes on Windows).
     pub fn make_relative_path_current(
@@ -178,7 +158,10 @@ impl Stack {
                         break;
                     }
                 }
-                Err(err) => return Err(std::io::Error::other(format!("{err}"))),
+                Err(_) => {
+                    let err = components.next().expect("just peeked").expect_err("peeked an error");
+                    return Err(std::io::Error::other(err));
+                }
             }
         }
 
@@ -192,26 +175,48 @@ impl Stack {
         }
         self.valid_components = matching_components;
 
+        if matching_components != 0 && components.peek().is_none() {
+            // The caller may replace this entry, so it must no longer be cached as a leading directory.
+            if self.current_is_directory {
+                delegate.pop_directory();
+                self.current_is_directory = false;
+            }
+            return delegate.push(true, self);
+        }
+
         if !self.current_is_directory && components.peek().is_some() {
-            delegate.push_directory(self)?;
+            delegate.push(false, self)?;
+            // Make sure we don't consider this a directory if the `push` above fails.
+            self.current_is_directory = true;
+            if let Err(err) = delegate.push_directory(self) {
+                self.current_is_directory = false;
+                return Err(err);
+            }
         }
 
         while let Some(comp) = components.next() {
             let comp = comp.map_err(std::io::Error::other)?;
             let is_last_component = components.peek().is_none();
+            let parent_is_directory = self.current_is_directory;
             self.current_is_directory = !is_last_component;
             self.current.push(comp);
             self.current_relative.push(comp);
             self.valid_components += 1;
             let res = delegate.push(is_last_component, self);
-            if self.current_is_directory {
-                delegate.push_directory(self)?;
-            }
-
             if let Err(err) = res {
                 self.current.pop();
                 self.current_relative.pop();
                 self.valid_components -= 1;
+                self.current_is_directory = parent_is_directory;
+                return Err(err);
+            }
+            if self.current_is_directory
+                && let Err(err) = delegate.push_directory(self)
+            {
+                self.current.pop();
+                self.current_relative.pop();
+                self.valid_components -= 1;
+                self.current_is_directory = parent_is_directory;
                 return Err(err);
             }
         }

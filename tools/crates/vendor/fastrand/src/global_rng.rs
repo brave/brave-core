@@ -6,7 +6,7 @@ use std::cell::Cell;
 use std::ops::RangeBounds;
 use std::vec::Vec;
 
-// Chosen by fair roll of the dice.
+// Chosen by a fair roll of the dice.
 const DEFAULT_RNG_SEED: u64 = 0xef6f79ed30ba75a;
 
 impl Default for Rng {
@@ -85,13 +85,13 @@ pub fn bool() -> bool {
     with_rng(|r| r.bool())
 }
 
-/// Generates a random `char` in ranges a-z and A-Z.
+/// Generates a random `char` in range a-z and A-Z.
 #[inline]
 pub fn alphabetic() -> char {
     with_rng(|r| r.alphabetic())
 }
 
-/// Generates a random `char` in ranges a-z, A-Z and 0-9.
+/// Generates a random `char` in range a-z, A-Z and 0-9.
 #[inline]
 pub fn alphanumeric() -> char {
     with_rng(|r| r.alphanumeric())
@@ -125,7 +125,7 @@ where
 
 /// Generates a random digit in the given `base`.
 ///
-/// Digits are represented by `char`s in ranges 0-9 and a-z.
+/// Digits are represented by `char`s in range 0-9 and a-z.
 ///
 /// Panics if the base is zero or greater than 36.
 #[inline]
@@ -176,9 +176,19 @@ pub fn f32() -> f32 {
     with_rng(|r| r.f32())
 }
 
+/// Generates a random `f32` in range `0..=1`.
+pub fn f32_inclusive() -> f32 {
+    with_rng(|r| r.f32_inclusive())
+}
+
 /// Generates a random `f64` in range `0..1`.
 pub fn f64() -> f64 {
     with_rng(|r| r.f64())
+}
+
+/// Generates a random `f64` in range `0..=1`.
+pub fn f64_inclusive() -> f64 {
+    with_rng(|r| r.f64_inclusive())
 }
 
 /// Collects `amount` values at random from the iterable into a vector.
@@ -210,7 +220,7 @@ fn random_seed() -> Option<u64> {
 fn random_seed() -> Option<u64> {
     // TODO(notgull): Failures should be logged somewhere.
     let mut seed = [0u8; 8];
-    getrandom::getrandom(&mut seed).ok()?;
+    getrandom::fill(&mut seed).ok()?;
     Some(u64::from_ne_bytes(seed))
 }
 

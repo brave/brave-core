@@ -11,6 +11,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/web/js_messaging/prompt_facade.h"
 #include "ios/web/common/url_scheme_util.h"
+#include "ios/web/public/web_client.h"
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
@@ -65,6 +66,24 @@
                            initiatedByFrame:frame
                           completionHandler:completionHandler];
 }
+
+- (WKWebView*)webView:(WKWebView*)webView
+    createWebViewWithConfiguration:(WKWebViewConfiguration*)configuration
+               forNavigationAction:(WKNavigationAction*)action
+                    windowFeatures:(WKWindowFeatures*)windowFeatures {
+  if (!web::GetWebClient()->UseProfileWebViewConfigurationEnabled()) {
+    // When we're not using the shared profile configuration, assign a new
+    // content controller here so the new tab's JavaScript & content blockers
+    // are not shared with the opener
+    configuration.userContentController =
+        [[WKUserContentController alloc] init];
+  }
+  return [super webView:webView
+      createWebViewWithConfiguration:configuration
+                 forNavigationAction:action
+                      windowFeatures:windowFeatures];
+}
+
 @end
 
 #pragma clang diagnostic pop

@@ -51,6 +51,7 @@
 
 या बाद में <ph name="SETTINGS_EXTENIONS_LINK"/>पर बदलें.</translation>
 <translation id="6229752134959014186">Widevine के बारे में अधिक जानें</translation>
+<translation id="3318169548229684688">इस डिवाइस पर स्पीच प्रोसेस करने के लिए स्पीच रिकग्निशन मॉडल (<ph name="DOWNLOAD_SIZE"/>) डाउनलोड करना</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/>आपसे अनुरोध करता है</translation>
 <translation id="3218385319396786393">इस पेज पर स्वतः प्ले बाधित था</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> पर हमेश स्वतः चालू का अनुमति दें</translation>
@@ -645,6 +646,8 @@ Binance
 <translation id="3540231253392253941">पुश मैसेजिंग के लिए Google सेवाओं का इस्तेमाल करें</translation>
 <translation id="2224032129673914306">सिमेंटिक इतिहास सर्च</translation>
 <translation id="6045998903985162478">आप जिन पेजों पर जाते हैं उन्हें इंडेक्स करें ताकि आप उन्हें इतिहास, खुले टैब और Leo में आसानी से ढूंढ सकें।</translation>
+<translation id="3962946446120925966">डिवाइस पर स्पीच रिकग्निशन</translation>
+<translation id="6408242130028978631">स्पीच रिकग्निशन मॉडल (<ph name="DOWNLOAD_SIZE"/>) डाउनलोड करें, ताकि साइटें इस डिवाइस पर बोली गई आवाज़ को प्रोसेस कर सकें। मॉडल हटाने के लिए इसे बंद करें।</translation>
 <translation id="5813105074916486721">स्थानीय इतिहास प्रतिधारण</translation>
 <translation id="5671611745062206644">Brave आपके ब्राउज़िंग इतिहास को स्थानीय रूप से कितने समय तक संग्रहीत करता है</translation>
 <translation id="7184510058087008090">1 दिन</translation>

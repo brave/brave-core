@@ -44,6 +44,16 @@ impl ResolvesDomain for DefaultResolver {
             }
         }
     }
+
+    fn is_public_suffix(&self, domain: &str) -> bool {
+        use addr::parser::DomainName;
+        use addr::psl::List;
+
+        match List.parse_domain_name(domain) {
+            Ok(parsed) => parsed.root().is_none(),
+            Err(_) => !domain.contains('.'),
+        }
+    }
 }
 
 /// Required trait for any domain resolution implementation used with this
@@ -77,6 +87,17 @@ pub trait ResolvesDomain: Send + Sync {
     /// assert_eq!(&host[start..end], "b.co.uk");
     /// ```
     fn get_host_domain(&self, host: &str) -> (usize, usize);
+
+    /// Return whether `domain` is itself only a public suffix (e.g. `co.uk`
+    /// or `com`), rather than a specific registrable domain. Such domains
+    /// are too broad to be useful for domain-specific filtering.
+    ///
+    /// The default implementation only treats domains without a `.` as
+    /// broad; implementations with access to a full public suffix list
+    /// should override this for more accurate results.
+    fn is_public_suffix(&self, domain: &str) -> bool {
+        !domain.contains('.')
+    }
 }
 
 /// Parsed URL representation.
@@ -107,6 +128,17 @@ pub(crate) fn get_host_domain(host: &str) -> (usize, usize) {
     let domain_resolver = DefaultResolver;
 
     domain_resolver.get_host_domain(host)
+}
+
+/// Return whether `domain` is itself only a public suffix (e.g. `co.uk` or
+/// `com`), rather than a specific registrable domain.
+pub(crate) fn is_public_suffix(domain: &str) -> bool {
+    #[cfg(not(feature = "embedded-domain-resolver"))]
+    let domain_resolver = DOMAIN_RESOLVER.get().expect("An external domain resolver must be set when the `embedded-domain-resolver` feature is disabled.");
+    #[cfg(feature = "embedded-domain-resolver")]
+    let domain_resolver = DefaultResolver;
+
+    domain_resolver.is_public_suffix(domain)
 }
 
 /// Return the string representation of the host (domain or IP address) for

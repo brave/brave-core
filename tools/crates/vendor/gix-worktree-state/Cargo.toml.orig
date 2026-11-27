@@ -2,30 +2,50 @@ lints.workspace = true
 
 [package]
 name = "gix-worktree-state"
-version = "0.21.0"
+version = "0.37.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate of the gitoxide project implementing setting the worktree to a particular state"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-include = ["src/**/*", "LICENSE-*"]
-rust-version = "1.82"
-autotests = false
+edition = "2024"
+include = ["/src/**/*", "/LICENSE-*"]
+rust-version = "1.88"
 
 [lib]
 doctest = false
 
+[features]
+## Enable support for the SHA-1 hash by forwarding the feature to dependencies.
+sha1 = ["gix-index/sha1"]
+## Enable support for the SHA-256 hash by forwarding the feature to dependencies.
+sha256 = ["gix-index/sha256"]
+
 [dependencies]
-gix-worktree = { version = "^0.43.0", path = "../gix-worktree", default-features = false, features = ["attributes"] }
-gix-index = { version = "^0.42.0", path = "../gix-index" }
-gix-fs = { version = "^0.17.0", path = "../gix-fs" }
-gix-hash = { version = "^0.20.0", path = "../gix-hash" }
-gix-object = { version = "^0.51.0", path = "../gix-object" }
-gix-glob = { version = "^0.22.0", path = "../gix-glob" }
-gix-path = { version = "^0.10.21", path = "../gix-path" }
-gix-features = { version = "^0.44.0", path = "../gix-features" }
-gix-filter = { version = "^0.21.0", path = "../gix-filter" }
+gix-trace = { version = "^0.3.1", path = "../gix-trace" }
+gix-utils = { version = "^0.5.1", path = "../gix-utils", features = ["interrupt", "progress"] }
+gix-parallel = { version = "^0.50.0", path = "../gix-parallel" }
+gix-worktree = { version = "^0.59.0", path = "../gix-worktree", default-features = false, features = ["attributes"] }
+gix-index = { version = "^0.58.0", path = "../gix-index" }
+gix-fs = { version = "^0.24.1", path = "../gix-fs" }
+gix-object = { version = "^0.66.1", path = "../gix-object" }
+gix-error = { version = "^0.5.2", path = "../gix-error", features = ["bstr"] }
+gix-path = { version = "^0.14.1", path = "../gix-path" }
+gix-filter = { version = "^0.36.1", path = "../gix-filter" }
 
 io-close = "0.3.7"
-thiserror = "2.0.17"
 bstr = { version = "1.12.0", default-features = false }
+
+[dev-dependencies]
+insta = "1.46.3"
+gix-worktree-state = { path = ".", features = ["sha1", "sha256"] }
+gix-object = { path = "../gix-object" }
+gix-filter = { path = "../gix-filter" }
+gix-index = { path = "../gix-index", features = ["sha1", "sha256"] }
+gix-hash = { path = "../gix-hash", features = ["sha1", "sha256"] }
+gix-fs = { path = "../gix-fs" }
+gix-testtools = { path = "../tests/tools", default-features = false, features = ["sha1", "sha256"] }
+gix-odb = { path = "../gix-odb", features = ["sha1", "sha256"] }
+walkdir = "2.3.2"
+
+[package.metadata.docs.rs]
+features = ["sha1"]

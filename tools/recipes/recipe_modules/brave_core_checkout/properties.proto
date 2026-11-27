@@ -21,4 +21,9 @@ message InputProperties {
   // Fail a build without a builder, rather than composing its whole `.env`,
   // to try builds without the deprecated mode before it is removed.
   bool disable_deprecated_dotenv = 4;
+
+  // A file with the values of the builder's secrets, in `.env` form, which
+  // the checkout gets as `.internal/.env` for `bots gen`. It is only copied,
+  // never read, so that no value reaches the build's logs.
+  string secrets_dotenv = 5;
 }

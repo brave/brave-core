@@ -1,0 +1,37 @@
+[workspace]
+members = ["bench", "codegen"]
+
+[package]
+name = "sha1dc"
+version = "0.1.5"
+edition = "2024"
+rust-version = "1.87"
+description = "Hardware-accelerated SHA-1 with collision detection"
+documentation = "https://docs.rs/sha1dc"
+repository = "https://github.com/srijs/sha1dc"
+license = "MIT OR Apache-2.0"
+keywords = ["sha1", "hash", "collision", "shattered"]
+categories = ["cryptography", "no-std"]
+exclude = [
+    ".github",
+    ".gitmodules",
+    "tests/data/shattered-1.pdf",
+    "tests/data/shattered-2.pdf",
+]
+
+[dependencies]
+
+[dev-dependencies]
+hex-literal = "1"
+quickcheck = { version = "1", default-features = false }
+sha1 = "0.11"
+
+[features]
+default = ["std"]
+std = []
+
+# The generator runs upstream's check a few million times to read its rules
+# off, and solves every form on each run, in its tests and in `--check` too:
+# unoptimised, that takes minutes rather than seconds.
+[profile.dev.package.sha1dc-codegen]
+opt-level = 3

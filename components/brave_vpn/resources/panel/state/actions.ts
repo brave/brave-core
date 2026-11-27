@@ -69,4 +69,5 @@ export const toggleRegionSelector = createAction<ToggleRegionSelectorPayload>('t
 export const connectionStateChanged = createAction<ConnectionStatePayload>('connectionStateChanged')
 export const connectToNewRegion = createAction<ConnectToNewRegionPayload>('connectToNewRegion', (region) => ({ region }))
 export const selectedRegionChanged = createAction<selectedRegionPayload>('selectedRegionChanged')
+export const autoReconnectStateChanged = createAction<boolean>('autoReconnectStateChanged')
 export const smartProxyRoutingStateChanged = createAction<boolean>('smartProxyRoutingStateChanged')

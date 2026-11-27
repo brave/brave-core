@@ -188,15 +188,15 @@ fn tubitak_name_constraint_works() {
 }
 
 static ALL_ALGORITHMS: &[&dyn SignatureVerificationAlgorithm] = &[
-    webpki::ring::ECDSA_P256_SHA256,
-    webpki::ring::ECDSA_P256_SHA384,
-    webpki::ring::ECDSA_P384_SHA256,
-    webpki::ring::ECDSA_P384_SHA384,
-    webpki::ring::RSA_PKCS1_2048_8192_SHA256,
-    webpki::ring::RSA_PKCS1_2048_8192_SHA384,
-    webpki::ring::RSA_PKCS1_2048_8192_SHA512,
-    webpki::ring::RSA_PKCS1_3072_8192_SHA384,
-    webpki::ring::RSA_PSS_2048_8192_SHA256_LEGACY_KEY,
-    webpki::ring::RSA_PSS_2048_8192_SHA384_LEGACY_KEY,
-    webpki::ring::RSA_PSS_2048_8192_SHA512_LEGACY_KEY,
+    webpki::aws_lc_rs::ECDSA_P256_SHA256,
+    webpki::aws_lc_rs::ECDSA_P256_SHA384,
+    webpki::aws_lc_rs::ECDSA_P384_SHA256,
+    webpki::aws_lc_rs::ECDSA_P384_SHA384,
+    webpki::aws_lc_rs::RSA_PKCS1_2048_8192_SHA256,
+    webpki::aws_lc_rs::RSA_PKCS1_2048_8192_SHA384,
+    webpki::aws_lc_rs::RSA_PKCS1_2048_8192_SHA512,
+    webpki::aws_lc_rs::RSA_PKCS1_3072_8192_SHA384,
+    webpki::aws_lc_rs::RSA_PSS_2048_8192_SHA256_LEGACY_KEY,
+    webpki::aws_lc_rs::RSA_PSS_2048_8192_SHA384_LEGACY_KEY,
+    webpki::aws_lc_rs::RSA_PSS_2048_8192_SHA512_LEGACY_KEY,
 ];

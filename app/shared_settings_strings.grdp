@@ -343,9 +343,6 @@
   <message name="IDS_SETTINGS_APPS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing apps between multiple browser instances.">
     Apps
   </message>
-  <message name="IDS_SETTINGS_APPS_CHECKBOX_SUBLABEL" desc="Sublabel for the checkbox which enables or disables syncing apps between multiple browser instances.">
-    Apps sync is set in device Settings
-  </message>
   <message name="IDS_SETTINGS_NON_PERSONALIZED_SERVICES_SECTION_LABEL" desc="Title for a section that shows options for various Brave services">
     Other Brave services
   </message>
@@ -408,9 +405,6 @@
   <message name="IDS_SETTINGS_SYNC_LOADING" desc="The message shown when waiting for the sync backend to start up.">
     Please wait...
   </message>
-  <message name="IDS_SETTINGS_SYNC_TIMEOUT" desc="Text explaining what to do if sync times out.">
-    Check your internet connection. If the problem continues, try signing out and signing in again.
-  </message>
   <message name="IDS_SETTINGS_SYNC" desc="Name of the sync service.">
     Sync
   </message>
@@ -444,11 +438,6 @@
     You reverted to a previous version of ChromeOS. To get updates, wait until the next version is available.
   </message>
 
-  <if expr="is_chromeos">
-    <message name="IDS_SETTINGS_THEMES_AND_WALLPAPERS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing themes and wallpapers between multiple browser instances.">
-      Theme &amp; Wallpaper
-    </message>
-  </if>
   <message name="IDS_SETTINGS_THEME_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing themes between multiple browser instances.">
     Themes
   </message>

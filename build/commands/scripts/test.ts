@@ -6,7 +6,7 @@
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
 
-import { program } from 'commander'
+import { program } from '../lib/program.ts'
 import * as buildOptions from '../lib/buildOptions.ts'
 import fs from 'fs-extra'
 import path from 'node:path'
@@ -18,10 +18,13 @@ import { getAffectedTests } from '../lib/affectedTests.js'
 import {
   getTestBinary,
   getTestsToRun,
-  getApplicableFilters,
-  getChromiumTestsSuites,
-  getDefaultTestSuiteArgs,
+  parseTestSuites,
 } from '../lib/testUtils.ts'
+import {
+  applyEnvDefaults,
+  getTestRunArgs,
+  getTestRunEnvDefaults,
+} from '../lib/testRunSpec.ts'
 import { isCI, isTeamcity } from '../lib/ciDetect.ts'
 import { getPassthroughArgs } from '../lib/commandsUtils.ts'
 
@@ -32,125 +35,35 @@ async function buildTests(testsToRun: string[]) {
   await util.buildTargets(config.buildTargets, config.defaultOptions)
 }
 
+// Runs the tests of `mainTestSuite`. Returns whether to keep running tests:
+// false if a test failed and results aren't saved to files.
 async function runTests(
   mainTestSuite: string,
   testSuitesToRun: string[],
   options: buildOptions.TestOptions,
   passthroughArgs: string[],
-) {
+): Promise<boolean> {
   const allResultsFilePath = path.join(config.srcDir, `${mainTestSuite}.txt`)
   // Clear previous results file
   if (fs.existsSync(allResultsFilePath)) {
     fs.unlinkSync(allResultsFilePath)
   }
 
-  const upstreamTestSuites = getChromiumTestsSuites(config)
-
   // Run the tests
-  testSuitesToRun.every((testSuite) => {
+  return testSuitesToRun.every((testSuite) => {
     if (testSuite === 'brave_unit_tests' && isTeamcity && !config.isMobile()) {
       runChromiumTestLauncherTeamcityReporterIntegrationTests()
     }
 
     const isJunitTestSuite = testSuite.endsWith('_junit_tests')
 
-    let braveArgs: string[] = []
-
-    if (!isJunitTestSuite) {
-      braveArgs.push('--enable-logging=stderr')
-    }
-
-    // Android and ios don't support --v
-    if (!config.isMobile()) {
-      braveArgs.push('--v=' + options.v)
-
-      if (options.vmodule) {
-        braveArgs.push('--vmodule=' + options.vmodule)
-      }
-    }
-
-    if (options.filter) {
-      braveArgs.push('--gtest_filter=' + options.filter)
-    }
-
-    if (options.run_disabled_tests) {
-      if (config.isIOS()) {
-        braveArgs.push('--gtest_also_run_disabled_tests')
-      } else {
-        braveArgs.push('--output-disabled-tests')
-      }
-    }
-
-    if (options.disable_brave_extension && !config.isIOS()) {
-      braveArgs.push('--disable-brave-extension')
-    }
-
-    if (options.single_process && !config.isIOS()) {
-      braveArgs.push('--single_process')
-    }
-
-    if (!isJunitTestSuite) {
-      if (
-        options.test_launcher_jobs != null
-        // --clones doesn't produce any test results and fails with AppLaunchError
-        && !config.isIOS()
-      ) {
-        braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
-      }
-      braveArgs = braveArgs.concat(passthroughArgs)
-    } else {
-      // Retain --json-results-file for junit tests.
-      const jsonResultsArg = passthroughArgs.find((arg) =>
-        arg.startsWith('--json-results-file='),
-      )
-      if (jsonResultsArg) {
-        braveArgs.push(jsonResultsArg)
-      }
-    }
-
-    let runArgs = braveArgs.slice()
-    let runOptions = config.defaultOptions
+    const runArgs = getTestRunArgs(config, testSuite, options, passthroughArgs)
+    const runOptions = config.defaultOptions
 
     // Upstream tests expect to be run from the output directory
     runOptions.cwd = config.outputDir
 
-    // Prepend default test suite args
-    runArgs = getDefaultTestSuiteArgs(testSuite).concat(runArgs)
-
-    // Set ASAN_OPTIONS (if not already set) only for test launching.
-    // Note: other stages (like build) shouldn't set ASAN_OPTIONS to avoid
-    // LSAN failures. Chromium uses the same approach.
-    if (config.isAsan() && !runOptions.env.ASAN_OPTIONS) {
-      let asanOptions = ['detect_odr_violation=0']
-      if (config.isLsan()) {
-        asanOptions.push('detect_leaks=1')
-      }
-      runOptions.env.ASAN_OPTIONS = asanOptions.join(' ')
-    }
-    if (config.isLsan() && !runOptions.env.LSAN_OPTIONS) {
-      const suppressionsFilePath = path.join(
-        config.braveCoreDir,
-        'test',
-        'sanitizers',
-        'lsan_suppressions.cfg',
-      )
-      runOptions.env.LSAN_OPTIONS = `suppressions=${suppressionsFilePath}`
-    }
-
-    // Filter out upstream tests that are known to fail for Brave
-    const filterFilePaths = getApplicableFilters(config, testSuite)
-    if (filterFilePaths.length > 0) {
-      runArgs.push(`--test-launcher-filter-file=${filterFilePaths.join(';')}`)
-    }
-    if (isTeamcity && !config.isIOS()) {
-      if (upstreamTestSuites.includes(testSuite)) {
-        const ignorePreliminaryFailures =
-          '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
-        if (!runArgs.includes(ignorePreliminaryFailures)) {
-          runArgs.push(ignorePreliminaryFailures)
-        }
-      }
-    }
+    applyEnvDefaults(runOptions.env, getTestRunEnvDefaults(config, testSuite))
 
     let convertJSONToXML = false
     let outputFilename = path.join(config.srcDir, testSuite)
@@ -269,14 +182,6 @@ async function runTests(
         console.error(`Missing test runner executable ${testRunner}`)
         progStatus = 1
       } else {
-        // this defines where coverage raw data is stored.
-        // %4m uses a pool of 4 files to write into and is used by chromium.
-        // note: that more files will take up more space but might be slightly faster
-        // https://clang.llvm.org/docs/SourceBasedCodeCoverage.html#running-the-instrumented-program
-        // this has no effect if project is built without coverage.
-        runOptions.env.LLVM_PROFILE_FILE =
-          runOptions.env.LLVM_PROFILE_FILE
-          || `${config.outputDir}/coverage/${testSuite}/%4m.profraw`
         progStatus = util.run(testRunner, runArgs, runOptions).status
       }
     }
@@ -324,7 +229,11 @@ function runChromiumTestLauncherTeamcityReporterIntegrationTests() {
 }
 
 program
-  .argument('<suite>', 'test suite to run')
+  .argument(
+    '<suites>',
+    'comma-separated test suites, test groups or gn labels to run',
+    parseTestSuites,
+  )
   .apply(buildOptions.supportBuildConfigArg)
   .apply(buildOptions.supportBuildDir)
   .apply(buildOptions.supportTargetConfig)
@@ -332,7 +241,7 @@ program
   .apply(buildOptions.supportTestOptions)
   .allowUnknownOption(true)
   .allowExcessArguments(true)
-  .action(async (mainTestSuite, buildConfig, options, command) => {
+  .action(async (suites, buildConfig, options, command) => {
     if (buildConfig) {
       config.buildConfig = buildConfig
     }
@@ -343,17 +252,43 @@ program
       process.exit(1)
     }
 
-    const testsSuitesToRun = options.base
-      ? await getAffectedTests({ ...options, suite: mainTestSuite })
-      : getTestsToRun(config, mainTestSuite)
+    // Each given suite runs like `test <suite>` would, with its own results
+    // file, but all tests are built at once.
+    const getSuiteRuns = async () => {
+      const suiteRuns: { suite: string; tests: string[] }[] = []
+      for (const suite of suites) {
+        const tests = options.base
+          ? await getAffectedTests({ ...options, suite })
+          : getTestsToRun(config, suite)
+        suiteRuns.push({ suite, tests })
+      }
+      return suiteRuns
+    }
 
-    if (testsSuitesToRun.length === 0 && !options.quiet) {
+    // With --base, only the affected tests are built. Otherwise the given
+    // suites are built as is and test groups are expanded after the build,
+    // which regenerates their <out_dir>/<group>.json if BUILD.gn files changed.
+    let suiteRuns = options.base ? await getSuiteRuns() : undefined
+    const affectedTests = [...new Set(suiteRuns?.flatMap((r) => r.tests))]
+    if (suiteRuns && affectedTests.length === 0 && !options.quiet) {
       console.warn('SKIP: No tests need to run')
       return
     }
 
     const passthroughArgs = getPassthroughArgs(command)
-    await buildTests(testsSuitesToRun)
-    await runTests(mainTestSuite, testsSuitesToRun, options, passthroughArgs)
+    // CI can --skip_run to build, then re-sign, then --skip_build to run
+    // the signed binary. Used on macOS so Removable Volumes Allow sticks
+    // across rebuilds.
+    if (!options.skip_build) {
+      await buildTests(suiteRuns ? affectedTests : suites)
+    }
+    suiteRuns ??= await getSuiteRuns()
+    if (!options.skip_run) {
+      for (const { suite, tests } of suiteRuns) {
+        if (!(await runTests(suite, tests, options, passthroughArgs))) {
+          break
+        }
+      }
+    }
   })
   .parseAsync()

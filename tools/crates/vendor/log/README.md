@@ -3,7 +3,7 @@ log
 
 A Rust library providing a lightweight logging *facade*.
 
-[![Build status](https://img.shields.io/github/actions/workflow/status/rust-lang/log/main.yml?branch=master)](https://github.com/rust-lang/log/actions)
+[![Build status](https://img.shields.io/github/actions/workflow/status/rust-lang/log/main.yml?branch=main)](https://github.com/rust-lang/log/actions)
 [![Latest version](https://img.shields.io/crates/v/log.svg)](https://crates.io/crates/log)
 [![Documentation](https://docs.rs/log/badge.svg)](https://docs.rs/log)
 ![License](https://img.shields.io/crates/l/log.svg)
@@ -18,7 +18,7 @@ implementation that is most suitable for its use case.
 
 ## Minimum supported `rustc`
 
-`1.61.0+`
+See the `rust-version` field in `Cargo.toml` for the current minimum Rust toolchain version.
 
 This version is explicitly tested in CI and may be bumped in any release as needed. Maintaining compatibility with older compilers is a priority though, so the bar for bumping the minimum supported version is set very high. Any changes to the supported minimum version will be called out in the release notes.
 
@@ -95,6 +95,7 @@ There are many available implementations to choose from, here are some options:
     * [`log_err`](https://docs.rs/log_err/*/log_err/)
     * [`log-reload`](https://docs.rs/log-reload/*/log_reload/)
     * [`alterable_logger`](https://docs.rs/alterable_logger/*/alterable_logger)
+    * [`context-logger`](https://docs.rs/context-logger/*/context_logger)
 
 Executables should choose a logger implementation and initialize it early in the
 runtime of the program. Logger implementations will typically include a

@@ -72,6 +72,16 @@ public class BraveAutofillViewStructureParser {
     private static final String HTML_ATTR_NAME = "name";
     private static final String HTML_ATTR_LABEL = "label";
 
+    // Chromium's own visibility signal (kAndroidAutofillImprovedVisibilityDetection, enabled by
+    // default), computed natively from focusability + a minimum size. See isMarkedInvisibleByHtml.
+    private static final String HTML_ATTR_VISIBILITY = "visibility";
+    private static final String HTML_VALUE_INVISIBLE = "invisible";
+
+    // Fields smaller than this in either dimension are presumed to be a hidden-field trick rather
+    // than a real input. Matches the threshold Chromium's own IsWebElementVisible() uses, so this
+    // stays consistent with the HTML_ATTR_VISIBILITY signal above.
+    private static final int MIN_VISIBLE_SIZE_PX = 10;
+
     // Android class name used to identify EditText nodes for Layer 2 text content matching.
     private static final String EDIT_TEXT_CLASS = "EditText";
 
@@ -173,8 +183,14 @@ public class BraveAutofillViewStructureParser {
         Map<String, AutofillId> fields = new ArrayMap<>();
         int nodes = structure.getWindowNodeCount();
         for (int i = 0; i < nodes; i++) {
-            ViewNode node = structure.getWindowNodeAt(i).getRootViewNode();
-            addAutofillableFields(fields, node);
+            AssistStructure.WindowNode windowNode = structure.getWindowNodeAt(i);
+            addAutofillableFields(
+                    fields,
+                    windowNode.getRootViewNode(),
+                    0,
+                    0,
+                    windowNode.getWidth(),
+                    windowNode.getHeight());
         }
         return fields;
     }
@@ -194,10 +210,61 @@ public class BraveAutofillViewStructureParser {
         Map<String, AutofillId> fields = new ArrayMap<>();
         int nodes = structure.getWindowNodeCount();
         for (int i = 0; i < nodes; i++) {
-            ViewNode node = structure.getWindowNodeAt(i).getRootViewNode();
-            addAutofillableFieldsWithNodes(fields, node, nodesMap);
+            AssistStructure.WindowNode windowNode = structure.getWindowNodeAt(i);
+            addAutofillableFieldsWithNodes(
+                    fields,
+                    windowNode.getRootViewNode(),
+                    nodesMap,
+                    0,
+                    0,
+                    windowNode.getWidth(),
+                    windowNode.getHeight());
         }
         return fields;
+    }
+
+    /**
+     * Finds the currently focused node anywhere in the structure, independent of whether it was
+     * classified as an autofillable field.
+     *
+     * <p>A node can fail classification in {@link #getHint} even though it's real and currently
+     * focused — e.g. a same-origin confirmation field, or a cross-origin field, that happens to
+     * share a hint with an earlier-seen node loses that hint (see the {@code existingFields} checks
+     * throughout {@link #getHint}) and is never recorded by {@link
+     * #addAutofillableFieldsWithNodes}. Looking up focus through the classified-fields map instead
+     * of the raw structure would silently miss those nodes. See {@link
+     * BraveAutofillServiceImpl#restrictToFocusedOrigin}.
+     *
+     * <p>Checks descendants before the node itself: a WebView's outer container {@code View} can
+     * report {@code isFocused() == true} simply because it holds real Android input focus, while
+     * the specific virtual child node representing the actually-focused HTML field — the one whose
+     * {@link AutofillId} matches a classified field — is a descendant of it. Returning on the first
+     * match in a parent-first walk would stop at that outer container and never reach the real
+     * field.
+     *
+     * @param structure The assist structure to search.
+     * @return The most specific focused node, or null if no node in the structure is focused.
+     */
+    public static @Nullable ViewNode findFocusedNode(AssistStructure structure) {
+        int nodes = structure.getWindowNodeCount();
+        for (int i = 0; i < nodes; i++) {
+            ViewNode focused = findFocusedNode(structure.getWindowNodeAt(i).getRootViewNode());
+            if (focused != null) {
+                return focused;
+            }
+        }
+        return null;
+    }
+
+    private static @Nullable ViewNode findFocusedNode(ViewNode node) {
+        int childrenSize = node.getChildCount();
+        for (int i = 0; i < childrenSize; i++) {
+            ViewNode focused = findFocusedNode(node.getChildAt(i));
+            if (focused != null) {
+                return focused;
+            }
+        }
+        return node.isFocused() ? node : null;
     }
 
     /**
@@ -262,35 +329,115 @@ public class BraveAutofillViewStructureParser {
     }
 
     /** Recursively walks the view tree, classifying each node and collecting autofillable ones. */
-    private static void addAutofillableFields(Map<String, AutofillId> fields, ViewNode node) {
-        String hint = getHint(node, fields);
-        if (hint != null) {
-            AutofillId id = node.getAutofillId();
-            if (!fields.containsKey(hint)) {
-                fields.put(hint, id);
+    private static void addAutofillableFields(
+            Map<String, AutofillId> fields,
+            ViewNode node,
+            int left,
+            int top,
+            int windowWidth,
+            int windowHeight) {
+        int nodeLeft = left + node.getLeft();
+        int nodeTop = top + node.getTop();
+        if (isNodeVisible(node, nodeLeft, nodeTop, windowWidth, windowHeight)) {
+            String hint = getHint(node, fields);
+            if (hint != null) {
+                AutofillId id = node.getAutofillId();
+                if (!fields.containsKey(hint)) {
+                    fields.put(hint, id);
+                }
             }
         }
         int childrenSize = node.getChildCount();
         for (int i = 0; i < childrenSize; i++) {
-            addAutofillableFields(fields, node.getChildAt(i));
+            addAutofillableFields(
+                    fields, node.getChildAt(i), nodeLeft, nodeTop, windowWidth, windowHeight);
         }
     }
 
     /** Same as {@link #addAutofillableFields} but also records ViewNode references. */
     private static void addAutofillableFieldsWithNodes(
-            Map<String, AutofillId> fields, ViewNode node, Map<AutofillId, ViewNode> nodesMap) {
-        String hint = getHint(node, fields);
-        if (hint != null) {
-            AutofillId id = node.getAutofillId();
-            if (!fields.containsKey(hint)) {
-                fields.put(hint, id);
-                nodesMap.put(id, node);
+            Map<String, AutofillId> fields,
+            ViewNode node,
+            Map<AutofillId, ViewNode> nodesMap,
+            int left,
+            int top,
+            int windowWidth,
+            int windowHeight) {
+        int nodeLeft = left + node.getLeft();
+        int nodeTop = top + node.getTop();
+        if (isNodeVisible(node, nodeLeft, nodeTop, windowWidth, windowHeight)) {
+            String hint = getHint(node, fields);
+            if (hint != null) {
+                AutofillId id = node.getAutofillId();
+                if (!fields.containsKey(hint)) {
+                    fields.put(hint, id);
+                    nodesMap.put(id, node);
+                }
             }
         }
         int childrenSize = node.getChildCount();
         for (int i = 0; i < childrenSize; i++) {
-            addAutofillableFieldsWithNodes(fields, node.getChildAt(i), nodesMap);
+            addAutofillableFieldsWithNodes(
+                    fields,
+                    node.getChildAt(i),
+                    nodesMap,
+                    nodeLeft,
+                    nodeTop,
+                    windowWidth,
+                    windowHeight);
         }
+    }
+
+    /**
+     * Returns false if {@code node} looks like a hidden-field trick rather than a real input the
+     * user can see and tap: not {@link View#VISIBLE}, smaller than {@link #MIN_VISIBLE_SIZE_PX} in
+     * either dimension, entirely outside the window's bounds, or marked invisible by Chromium's own
+     * {@code visibility} HtmlInfo attribute (see {@link #isMarkedInvisibleByHtml}).
+     *
+     * <p>{@code left}/{@code top} are this node's bounds in window coordinates — {@link
+     * ViewNode#getLeft}/{@link ViewNode#getTop} are parent-relative, so callers accumulate them
+     * while recursing. {@code windowWidth}/{@code windowHeight} of 0 (unknown) skips the off-window
+     * check, since a 0x0 window bounds every node out.
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static boolean isNodeVisible(
+            ViewNode node, int left, int top, int windowWidth, int windowHeight) {
+        if (node.getVisibility() != View.VISIBLE) {
+            return false;
+        }
+        int width = node.getWidth();
+        int height = node.getHeight();
+        if (width < MIN_VISIBLE_SIZE_PX || height < MIN_VISIBLE_SIZE_PX) {
+            return false;
+        }
+        if (windowWidth > 0 && windowHeight > 0) {
+            if (left + width <= 0 || top + height <= 0) {
+                return false;
+            }
+            if (left >= windowWidth || top >= windowHeight) {
+                return false;
+            }
+        }
+        return !isMarkedInvisibleByHtml(node);
+    }
+
+    /**
+     * Reads Chromium's own {@code visibility} HtmlInfo attribute, set by {@code
+     * kAndroidAutofillImprovedVisibilityDetection} (enabled by default) from the renderer's {@code
+     * IsWebElementVisible()}. This catches cases {@link #isNodeVisible}'s own bounds check can't,
+     * e.g. elements Chromium already determined are too small, without duplicating that heuristic.
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static boolean isMarkedInvisibleByHtml(ViewNode node) {
+        if (node.getHtmlInfo() == null || node.getHtmlInfo().getAttributes() == null) {
+            return false;
+        }
+        for (android.util.Pair<String, String> attr : node.getHtmlInfo().getAttributes()) {
+            if (HTML_ATTR_VISIBILITY.equals(attr.first)) {
+                return HTML_VALUE_INVISIBLE.equals(attr.second);
+            }
+        }
+        return false;
     }
 
     /**

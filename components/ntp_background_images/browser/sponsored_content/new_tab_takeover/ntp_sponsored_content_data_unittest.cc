@@ -14,6 +14,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/gfx/geometry/point.h"
@@ -42,6 +43,7 @@ constexpr char kTestSponsoredImagesCampaign[] = R"(
         {
           "version": 1,
           "campaignId": "65933e82-6b21-440b-9956-c0f675ca7435",
+          "type": "paid",
           "creativeSets": [
             {
               "creativeSetId": "6690ad47-d0af-4dbb-a2dd-c7a678b2b83b",
@@ -194,7 +196,8 @@ TEST(NTPSponsoredContentDataTest, ParseSponsoredImageCampaign) {
   EXPECT_THAT(
       sponsored_content_data.campaigns,
       testing::ElementsAre(testing::FieldsAre(
-          /*campaign_id=*/"65933e82-6b21-440b-9956-c0f675ca7435",
+          /*id=*/"65933e82-6b21-440b-9956-c0f675ca7435",
+          /*type=*/brave_ads::mojom::NewTabPageAdCampaignType::kPaid,
           /*creatives=*/
           testing::ElementsAre(testing::FieldsAre(
               WallpaperType::kStaticNewTabTakeover,
@@ -216,6 +219,68 @@ TEST(NTPSponsoredContentDataTest, ParseSponsoredImageCampaign) {
                   /*alt_text=*/"Some content",
                   /*destination_url=*/"https://basicattentiontoken.org",
                   /*company_name=*/"Image NTT Creative"))))));
+}
+
+TEST(NTPSponsoredContentDataTest,
+     ParseSponsoredImageCampaignWithoutTypeFieldDefaultsToPaid) {
+  base::DictValue dict =
+      base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
+  CHECK_DEREF(dict.FindList("campaigns"))[0].GetDict().Remove("type");
+
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_content_data"));
+  NTPSponsoredContentData sponsored_content_data(dict, installed_dir);
+  EXPECT_TRUE(sponsored_content_data.IsValid());
+
+  ASSERT_THAT(sponsored_content_data.campaigns, testing::SizeIs(1));
+  EXPECT_EQ(sponsored_content_data.campaigns[0].type,
+            brave_ads::mojom::NewTabPageAdCampaignType::kPaid);
+}
+
+TEST(NTPSponsoredContentDataTest,
+     ParseSponsoredImageCampaignWithUnknownTypeFieldDefaultsToPaid) {
+  base::DictValue dict =
+      base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
+  CHECK_DEREF(dict.FindList("campaigns"))
+  [0].GetDict().Set("type", "unknown_type");
+
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_content_data"));
+  NTPSponsoredContentData sponsored_content_data(dict, installed_dir);
+  EXPECT_TRUE(sponsored_content_data.IsValid());
+
+  ASSERT_THAT(sponsored_content_data.campaigns, testing::SizeIs(1));
+  EXPECT_EQ(sponsored_content_data.campaigns[0].type,
+            brave_ads::mojom::NewTabPageAdCampaignType::kPaid);
+}
+
+TEST(NTPSponsoredContentDataTest,
+     DisplaysNewTabTakeoverDisclosureForPaidCampaign) {
+  base::DictValue dict =
+      base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_content_data"));
+  NTPSponsoredContentData sponsored_content_data(dict, installed_dir);
+  ASSERT_TRUE(sponsored_content_data.IsValid());
+
+  EXPECT_THAT(
+      sponsored_content_data.MaybeGetBackgroundAt(
+          /*campaign_index=*/0, /*creative_index=*/0),
+      testing::Optional(base::test::IsSupersetOfValue(base::DictValue().Set(
+          kShouldDisplayNewTabTakeoverDisclosureKey, true))));
+}
+
+TEST(NTPSponsoredContentDataTest,
+     DoesNotDisplayNewTabTakeoverDisclosureForProductCampaign) {
+  base::DictValue dict =
+      base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
+  CHECK_DEREF(dict.FindList("campaigns"))[0].GetDict().Set("type", "product");
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_content_data"));
+  NTPSponsoredContentData sponsored_content_data(dict, installed_dir);
+  ASSERT_TRUE(sponsored_content_data.IsValid());
+
+  EXPECT_THAT(
+      sponsored_content_data.MaybeGetBackgroundAt(
+          /*campaign_index=*/0, /*creative_index=*/0),
+      testing::Optional(base::test::IsSupersetOfValue(base::DictValue().Set(
+          kShouldDisplayNewTabTakeoverDisclosureKey, false))));
 }
 
 TEST(NTPSponsoredContentDataTest,

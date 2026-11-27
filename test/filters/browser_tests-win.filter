@@ -94,6 +94,13 @@
 # screen dimension values returned to web content.
 -ScreenDetailsTest.FullscreenSize
 
+# This test fails because Brave's horizontal tab overlap and widths differ from
+# upstream's (see browser_tests.filter): at the test's window width on Windows,
+# the partly hidden tab fits beside the active one after a 2px scroll, which the
+# test expects not to happen. It is stable upstream. On Linux it passes only
+# with the sidebar shown and no window manager (see browser_tests-linux.filter).
+-HorizontalTabStripViewLayoutBrowserTest.ScrollToFitViewsAccountsForPostScrollOverflowIndicator
+
 # Flaky upstream test. ManifestSilentUpdateCommand queues a background
 # InstallableManager::GetData() task whose FinishAndStartNextTask cleanup may
 # still be pending when the test asserts !task_queue_.HasCurrent(). No Brave

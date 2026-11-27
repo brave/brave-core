@@ -57,4 +57,22 @@ TEST(BraveAdsSegmentValueUtilTest, NoSegmentsFromEmptyList) {
   EXPECT_THAT(SegmentsFromList({}), ::testing::IsEmpty());
 }
 
+TEST(BraveAdsSegmentValueUtilTest, NoSegmentsFromListWithNonStringElement) {
+  // Arrange
+  const base::ListValue list =
+      base::test::ParseJsonList(R"JSON(["technology & computing", 1])JSON");
+
+  // Act & Assert
+  EXPECT_THAT(SegmentsFromList(list), ::testing::IsEmpty());
+}
+
+TEST(BraveAdsSegmentValueUtilTest, NoSegmentsFromListWithEmptyStringElement) {
+  // Arrange
+  const base::ListValue list =
+      base::test::ParseJsonList(R"JSON(["technology & computing", ""])JSON");
+
+  // Act & Assert
+  EXPECT_THAT(SegmentsFromList(list), ::testing::IsEmpty());
+}
+
 }  // namespace brave_ads

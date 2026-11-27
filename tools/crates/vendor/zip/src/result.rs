@@ -2,11 +2,9 @@
 #![allow(non_local_definitions)]
 //! Error types that can be emitted from this library
 
-use displaydoc::Display;
-use thiserror::Error;
-
+use std::borrow::Cow;
 use std::error::Error;
-use std::fmt;
+use std::fmt::{self, Display, Formatter};
 use std::io;
 use std::num::TryFromIntError;
 use std::string::FromUtf8Error;
@@ -15,22 +13,22 @@ use std::string::FromUtf8Error;
 pub type ZipResult<T> = Result<T, ZipError>;
 
 /// Error type for Zip
-#[derive(Debug, Display, Error)]
+#[derive(Debug)]
 #[non_exhaustive]
 pub enum ZipError {
-    /// i/o error: {0}
-    Io(#[from] io::Error),
+    /// i/o error
+    Io(io::Error),
 
-    /// invalid Zip archive: {0}
-    InvalidArchive(&'static str),
+    /// invalid Zip archive
+    InvalidArchive(Cow<'static, str>),
 
-    /// unsupported Zip archive: {0}
+    /// unsupported Zip archive
     UnsupportedArchive(&'static str),
 
     /// specified file not found in archive
     FileNotFound,
 
-    /// The password provided is incorrect
+    /// provided password is incorrect
     InvalidPassword,
 }
 
@@ -49,6 +47,30 @@ impl ZipError {
     pub const PASSWORD_REQUIRED: &'static str = "Password required to decrypt file";
 }
 
+impl Display for ZipError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Io(_) => f.write_str("i/o error"),
+            Self::InvalidArchive(e) => write!(f, "invalid Zip archive: {}", e),
+            Self::UnsupportedArchive(e) => write!(f, "unsupported Zip archive: {}", e),
+            Self::FileNotFound => f.write_str("specified file not found in archive"),
+            Self::InvalidPassword => f.write_str("provided password is incorrect"),
+        }
+    }
+}
+
+impl Error for ZipError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match self {
+            Self::Io(e) => Some(e),
+            Self::InvalidArchive(_)
+            | Self::UnsupportedArchive(_)
+            | Self::FileNotFound
+            | Self::InvalidPassword => None,
+        }
+    }
+}
+
 impl From<ZipError> for io::Error {
     fn from(err: ZipError) -> io::Error {
         let kind = match &err {
@@ -63,15 +85,21 @@ impl From<ZipError> for io::Error {
     }
 }
 
+impl From<io::Error> for ZipError {
+    fn from(value: io::Error) -> Self {
+        Self::Io(value)
+    }
+}
+
 impl From<DateTimeRangeError> for ZipError {
     fn from(_: DateTimeRangeError) -> Self {
-        ZipError::InvalidArchive("Invalid date or time")
+        invalid!("Invalid date or time")
     }
 }
 
 impl From<FromUtf8Error> for ZipError {
     fn from(_: FromUtf8Error) -> Self {
-        ZipError::InvalidArchive("Invalid UTF-8")
+        invalid!("Invalid UTF-8")
     }
 }
 
@@ -96,3 +124,21 @@ impl fmt::Display for DateTimeRangeError {
 }
 
 impl Error for DateTimeRangeError {}
+
+pub(crate) fn invalid_archive<M: Into<Cow<'static, str>>>(message: M) -> ZipError {
+    ZipError::InvalidArchive(message.into())
+}
+
+pub(crate) const fn invalid_archive_const(message: &'static str) -> ZipError {
+    ZipError::InvalidArchive(Cow::Borrowed(message))
+}
+
+macro_rules! invalid {
+    ($message:literal) => {
+        crate::result::invalid_archive_const($message)
+    };
+    ($($arg:tt)*) => {
+        crate::result::invalid_archive(format!($($arg)*))
+    };
+}
+pub(crate) use invalid;

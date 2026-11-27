@@ -16,27 +16,6 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "Трекеры и блокировка рекламы";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "Заблоки-\nрованная\nреклама";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "Смотрите видео без рекламы и помех с **Brave Проигрывателем**.";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "Изменить настройки щитов";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "Этот сайт начал запрещать некоторые блокировщики рекламы. Часть его функций могут не работать.";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Чтобы решить проблему, Brave может изменить настройки щитов. После этого попробуйте воспользоваться Brave Проигрывателем.";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "Оставить без изменений";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "Измените настройки блокировщика рекламы для этого сайта";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Автоматически обходить AMP-страницы";
 
@@ -79,32 +58,11 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "Блокирует JavaScript (это может нарушать работу сайтов).";
 
-/* Title for the brave player feature */
-"BravePlayer" = "Brave Проигрыватель";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Всегда открывать видео с этого сайта в Brave Проигрывателе";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "Попробовать";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "Не сейчас";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Смотрите видео без помех с Brave Проигрывателем.";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Перейдите в Brave Проигрыватель";
-
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "Дополнительные настройки";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Заблокированные рекламные объявления и вредоносные элементы";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Подробнее…";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "Изменить общие настройки Shields по умолчанию";
@@ -122,13 +80,13 @@
 "BraveShieldsSiteBroken" = "Проблемы с сайтом? Попробуйте выключить щиты.";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Щиты Brave";
+"BraveShieldsStatusTitle" = "Защита Brave";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "выключены";
+"BraveShieldsStatusValueDown" = "выкл";
 
 /* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "включены";
+"BraveShieldsStatusValueUp" = "вкл";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Brave Shields: чтобы переключить, нажмите дважды";
@@ -217,17 +175,11 @@
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "Ожидание загрузки";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Редактировать";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "Введите URL списка фильтров";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "Последнее обновление: %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Введите URL-адрес списка фильтров";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Блокировать идентификацию";
@@ -411,9 +363,6 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Трекеры и блокировка рекламы";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Заблоки-\nрованные\nтрекеры";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Обновить списки";

@@ -3,6 +3,7 @@ pub(super) static VERSION: &str = r"2021a";
 pub(super) static WINDOWS_TO_IANA: &[(&str, &str)] = &[
     (r"Afghanistan Standard Time", r"Asia/Kabul"),
     (r"Alaskan Standard Time", r"America/Anchorage"),
+    (r"Alberta Standard Time", r"America/Edmonton"),
     (r"Aleutian Standard Time", r"America/Adak"),
     (r"Altai Standard Time", r"Asia/Barnaul"),
     (r"Arab Standard Time", r"Asia/Riyadh"),
@@ -20,6 +21,7 @@ pub(super) static WINDOWS_TO_IANA: &[(&str, &str)] = &[
     (r"Bangladesh Standard Time", r"Asia/Dhaka"),
     (r"Belarus Standard Time", r"Europe/Minsk"),
     (r"Bougainville Standard Time", r"Pacific/Bougainville"),
+    (r"British Columbia Standard Time", r"America/Vancouver"),
     (r"Canada Central Standard Time", r"America/Regina"),
     (r"Cape Verde Standard Time", r"Atlantic/Cape_Verde"),
     (r"Caucasus Standard Time", r"Asia/Yerevan"),
@@ -65,6 +67,7 @@ pub(super) static WINDOWS_TO_IANA: &[(&str, &str)] = &[
     (r"Lord Howe Standard Time", r"Australia/Lord_Howe"),
     (r"Magadan Standard Time", r"Asia/Magadan"),
     (r"Magallanes Standard Time", r"America/Punta_Arenas"),
+    (r"Manitoba Standard Time", r"America/Winnipeg"),
     (r"Marquesas Standard Time", r"Pacific/Marquesas"),
     (r"Mauritius Standard Time", r"Indian/Mauritius"),
     (r"Middle East Standard Time", r"Asia/Beirut"),

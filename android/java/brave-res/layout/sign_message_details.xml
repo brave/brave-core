@@ -55,7 +55,7 @@
             android:textColor="@color/wallet_error_text_color"
             android:drawablePadding="2dp"
             app:drawableStartCompat="@drawable/ic_warning"
-            android:text="@string/wallet_non_ascii_characters"/>
+            android:text="@string/wallet_sign_message_unexpected_characters"/>
 
         <TextView
             android:id="@+id/non_ascii_warning_text_link"

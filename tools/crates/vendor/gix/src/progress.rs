@@ -1,3 +1,3 @@
 #[cfg(feature = "progress-tree")]
-pub use gix_features::progress::prodash::tree;
-pub use gix_features::progress::*;
+pub use gix_utils::progress::prodash::tree;
+pub use gix_utils::progress::*;

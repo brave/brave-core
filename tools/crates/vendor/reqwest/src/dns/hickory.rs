@@ -1,12 +1,13 @@
 //! DNS resolution via the [hickory-resolver](https://github.com/hickory-dns/hickory-dns) crate
 
 use hickory_resolver::{
-    config::LookupIpStrategy, lookup_ip::LookupIpIntoIter, ResolveError, TokioResolver,
+    config::{LookupIpStrategy, ResolverConfig, GOOGLE},
+    net::{runtime::TokioRuntimeProvider, NetError},
+    TokioResolver,
 };
 use once_cell::sync::OnceCell;
 
-use std::fmt;
-use std::net::SocketAddr;
+use std::net::{IpAddr, SocketAddr};
 use std::sync::Arc;
 
 use super::{Addrs, Name, Resolve, Resolving};
@@ -21,11 +22,8 @@ pub(crate) struct HickoryDnsResolver {
 }
 
 struct SocketAddrs {
-    iter: LookupIpIntoIter,
+    iter: std::vec::IntoIter<IpAddr>,
 }
-
-#[derive(Debug)]
-struct HickoryDnsSystemConfError(ResolveError);
 
 impl Resolve for HickoryDnsResolver {
     fn resolve(&self, name: Name) -> Resolving {
@@ -35,7 +33,7 @@ impl Resolve for HickoryDnsResolver {
 
             let lookup = resolver.lookup_ip(name.as_str()).await?;
             let addrs: Addrs = Box::new(SocketAddrs {
-                iter: lookup.into_iter(),
+                iter: lookup.iter().collect::<Vec<_>>().into_iter(),
             });
             Ok(addrs)
         })
@@ -51,23 +49,21 @@ impl Iterator for SocketAddrs {
 }
 
 /// Create a new resolver with the default configuration,
-/// which reads from `/etc/resolve.conf`. The options are
-/// overridden to look up for both IPv4 and IPv6 addresses
+/// which reads from `/etc/resolve.conf`. If reading `/etc/resolv.conf` fails,
+/// it fallbacks to hickory_resolver's default config.
+/// The options are overridden to look up for both IPv4 and IPv6 addresses
 /// to work with "happy eyeballs" algorithm.
-fn new_resolver() -> Result<TokioResolver, HickoryDnsSystemConfError> {
-    let mut builder = TokioResolver::builder_tokio().map_err(HickoryDnsSystemConfError)?;
-    builder.options_mut().ip_strategy = LookupIpStrategy::Ipv4AndIpv6;
-    Ok(builder.build())
-}
-
-impl fmt::Display for HickoryDnsSystemConfError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str("error reading DNS system conf for hickory-dns")
-    }
-}
-
-impl std::error::Error for HickoryDnsSystemConfError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        Some(&self.0)
-    }
+fn new_resolver() -> Result<TokioResolver, NetError> {
+    let mut builder = TokioResolver::builder_tokio().unwrap_or_else(|err| {
+        log::debug!(
+            "hickory-dns: failed to load system DNS configuration; falling back to Google DNS: {:?}",
+            err
+        );
+        TokioResolver::builder_with_config(
+            ResolverConfig::udp_and_tcp(&GOOGLE),
+            TokioRuntimeProvider::default(),
+        )
+    });
+    builder.options_mut().ip_strategy = LookupIpStrategy::Ipv6AndIpv4;
+    builder.build()
 }

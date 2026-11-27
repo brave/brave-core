@@ -32,15 +32,26 @@
 //! This broadcast channel implementation handles this case by setting a hard
 //! upper bound on the number of values the channel may retain at any given
 //! time. This upper bound is passed to the [`channel`] function as an argument.
+//! The provided capacity is rounded **up** to the next power of two; that
+//! rounded size is the number of messages the ring buffer can hold, and is what
+//! lag detection is based on. For example, `channel(3)` allocates a buffer of
+//! length 4, so a receiver only lags once it falls more than 4 messages behind
+//! the sender.
 //!
 //! If a value is sent when the channel is at capacity, the oldest value
-//! currently held by the channel is released. This frees up space for the new
-//! value. Any receiver that has not yet seen the released value will return
-//! [`RecvError::Lagged`] the next time [`recv`] is called.
+//! currently held by the channel is overwritten. This frees up space for the
+//! new value. Any receiver that has not yet seen the overwritten value will
+//! return [`RecvError::Lagged`] the next time [`recv`] (or
+//! [`try_recv`](Receiver::try_recv)) is called. The error carries the number of
+//! messages that were dropped before the receiver's cursor and are therefore
+//! no longer available.
 //!
-//! Once [`RecvError::Lagged`] is returned, the lagging receiver's position is
-//! updated to the oldest value contained by the channel. The next call to
-//! [`recv`] will return this value.
+//! Returning [`RecvError::Lagged`] does **not** close or disconnect the
+//! receiver. The lagging receiver's internal cursor is advanced to the oldest
+//! value still retained by the channel. The **next** successful call to
+//! [`recv`] / [`try_recv`](Receiver::try_recv) returns that oldest retained
+//! value (unless further sends overwrite it again before the receiver reads
+//! it). Subsequent receives then continue in send order from there.
 //!
 //! This behavior enables a receiver to detect when it has lagged so far behind
 //! that data has been dropped. The caller may decide how to respond to this:
@@ -97,20 +108,23 @@
 //!
 //! ```
 //! use tokio::sync::broadcast;
+//! use tokio::sync::broadcast::error::RecvError;
 //!
 //! # #[tokio::main(flavor = "current_thread")]
 //! # async fn main() {
+//! // Capacity 2 → ring buffer of length 2.
 //! let (tx, mut rx) = broadcast::channel(2);
 //!
 //! tx.send(10).unwrap();
 //! tx.send(20).unwrap();
+//! // Overwrites 10; receiver has not read it yet.
 //! tx.send(30).unwrap();
 //!
-//! // The receiver lagged behind
-//! assert!(rx.recv().await.is_err());
+//! // One message (10) was dropped; cursor moves to the oldest retained value (20).
+//! assert!(matches!(rx.recv().await, Err(RecvError::Lagged(1))));
 //!
-//! // At this point, we can abort or continue with lost messages
-//!
+//! // At this point, we can abort or continue with lost messages.
+//! // Continuing resumes from the oldest retained message.
 //! assert_eq!(20, rx.recv().await.unwrap());
 //! assert_eq!(30, rx.recv().await.unwrap());
 //! # }
@@ -128,7 +142,7 @@ use std::future::Future;
 use std::marker::PhantomPinned;
 use std::pin::Pin;
 use std::ptr::NonNull;
-use std::sync::atomic::Ordering::{AcqRel, Acquire, Relaxed, Release, SeqCst};
+use std::sync::atomic::Ordering::{AcqRel, Acquire, Relaxed, Release};
 use std::task::{ready, Context, Poll, Waker};
 
 /// Sending-half of the [`broadcast`] channel.
@@ -278,10 +292,18 @@ pub mod error {
         /// be sent.
         Closed,
 
-        /// The receiver lagged too far behind. Attempting to receive again will
-        /// return the oldest message still retained by the channel.
+        /// The receiver lagged too far behind: one or more messages were
+        /// overwritten in the ring buffer before this receiver could read them.
         ///
-        /// Includes the number of skipped messages.
+        /// The receiver remains subscribed. Its internal cursor has been advanced
+        /// to the oldest message still retained by the channel; the next
+        /// successful [`recv`] call returns that message (unless further sends
+        /// overwrite it first).
+        ///
+        /// The `u64` is the number of messages that were skipped (dropped before
+        /// the receiver's previous cursor position).
+        ///
+        /// [`recv`]: crate::sync::broadcast::Receiver::recv
         Lagged(u64),
     }
 
@@ -312,11 +334,18 @@ pub mod error {
         /// be sent.
         Closed,
 
-        /// The receiver lagged too far behind and has been forcibly disconnected.
-        /// Attempting to receive again will return the oldest message still
-        /// retained by the channel.
+        /// The receiver lagged too far behind: one or more messages were
+        /// overwritten in the ring buffer before this receiver could read them.
         ///
-        /// Includes the number of skipped messages.
+        /// The receiver remains subscribed. Its internal cursor has been advanced
+        /// to the oldest message still retained by the channel; the next
+        /// successful [`try_recv`] call returns that message (unless further sends
+        /// overwrite it first).
+        ///
+        /// The `u64` is the number of messages that were skipped (dropped before
+        /// the receiver's previous cursor position).
+        ///
+        /// [`try_recv`]: crate::sync::broadcast::Receiver::try_recv
         Lagged(u64),
     }
 
@@ -370,7 +399,7 @@ struct Tail {
     closed: bool,
 
     /// Receivers waiting for a value.
-    waiters: LinkedList<Waiter, <Waiter as linked_list::Link>::Target>,
+    waiters: LinkedList<Waiter>,
 }
 
 /// Slot in the buffer.
@@ -379,16 +408,15 @@ struct Slot<T> {
     ///
     /// When this goes to zero, the value is released.
     ///
-    /// An atomic is used as it is mutated concurrently with the slot read lock
-    /// acquired.
-    rem: AtomicUsize,
+    /// Access is protected by the slot mutex.
+    rem: usize,
 
     /// Uniquely identifies the `send` stored in the slot.
     pos: u64,
 
     /// The value being broadcast.
     ///
-    /// The value is set by `send` when the write lock is held. When a reader
+    /// The value is set by `send` while the slot mutex is held. When a reader
     /// drops, `rem` is decremented. When it hits zero, the value is dropped.
     val: Option<T>,
 }
@@ -453,7 +481,10 @@ const MAX_RECEIVERS: usize = usize::MAX >> 2;
 /// Create a bounded, multi-producer, multi-consumer channel where each sent
 /// value is broadcasted to all active receivers.
 ///
-/// **Note:** The actual capacity may be greater than the provided `capacity`.
+/// **Note:** The provided `capacity` is rounded **up** to the next power of
+/// two. That rounded size is the number of messages the internal ring buffer
+/// can retain, and is what [lag detection](self#lagging) uses. For example,
+/// `channel(3)` behaves as if the capacity were 4.
 ///
 /// All data sent on [`Sender`] will become available on every active
 /// [`Receiver`] in the same order as it was sent.
@@ -500,7 +531,7 @@ const MAX_RECEIVERS: usize = usize::MAX >> 2;
 ///
 /// # Panics
 ///
-/// This will panic if `capacity` is equal to `0`.
+/// This will panic if `capacity` is equal to `0` or exceeds `usize::MAX / 2`.
 ///
 /// This pre-allocates space for `capacity` messages. Allocation failure may result in a panic or
 /// [an allocation error](std::alloc::handle_alloc_error).
@@ -550,18 +581,16 @@ impl<T> Sender<T> {
         // Round to a power of two
         capacity = capacity.next_power_of_two();
 
-        let mut buffer = Vec::with_capacity(capacity);
-
-        for i in 0..capacity {
-            buffer.push(Mutex::new(Slot {
-                rem: AtomicUsize::new(0),
+        let buffer = (0..capacity).map(|i| {
+            Mutex::new(Slot {
+                rem: 0,
                 pos: (i as u64).wrapping_sub(capacity as u64),
                 val: None,
-            }));
-        }
+            })
+        });
 
         let shared = Arc::new(Shared {
-            buffer: buffer.into_boxed_slice(),
+            buffer: buffer.collect(),
             mask: capacity - 1,
             tail: Mutex::new(Tail {
                 pos: 0,
@@ -650,7 +679,7 @@ impl<T> Sender<T> {
         slot.pos = pos;
 
         // Set remaining receivers
-        slot.rem.with_mut(|v| *v = rem);
+        slot.rem = rem;
 
         // Write the value
         slot.val = Some(value);
@@ -752,7 +781,7 @@ impl<T> Sender<T> {
         while low < high {
             let mid = low + (high - low) / 2;
             let idx = base_idx.wrapping_add(mid) & self.shared.mask;
-            if self.shared.buffer[idx].lock().rem.load(SeqCst) == 0 {
+            if self.shared.buffer[idx].lock().rem == 0 {
                 low = mid + 1;
             } else {
                 high = mid;
@@ -794,7 +823,7 @@ impl<T> Sender<T> {
         let tail = self.shared.tail.lock();
 
         let idx = (tail.pos.wrapping_sub(1) & self.shared.mask as u64) as usize;
-        self.shared.buffer[idx].lock().rem.load(SeqCst) == 0
+        self.shared.buffer[idx].lock().rem == 0
     }
 
     /// Returns the number of active receivers.
@@ -945,7 +974,7 @@ fn new_receiver<T>(shared: Arc<Shared<T>>) -> Receiver<T> {
 /// and gates the access to it on the `Shared.tail` mutex. It also empties
 /// the list on drop.
 struct WaitersList<'a, T> {
-    list: GuardedLinkedList<Waiter, <Waiter as linked_list::Link>::Target>,
+    list: GuardedLinkedList<Waiter>,
     is_empty: bool,
     shared: &'a Shared<T>,
 }
@@ -963,7 +992,7 @@ impl<'a, T> Drop for WaitersList<'a, T> {
 
 impl<'a, T> WaitersList<'a, T> {
     fn new(
-        unguarded_list: LinkedList<Waiter, <Waiter as linked_list::Link>::Target>,
+        unguarded_list: LinkedList<Waiter>,
         guard: Pin<&'a Waiter>,
         shared: &'a Shared<T>,
     ) -> Self {
@@ -1132,12 +1161,16 @@ impl<T> Receiver<T> {
     /// Returns the number of messages that were sent into the channel and that
     /// this [`Receiver`] has yet to receive.
     ///
-    /// If the returned value from `len` is larger than the next largest power of 2
-    /// of the capacity of the channel any call to [`recv`] will return an
-    /// `Err(RecvError::Lagged)` and any call to [`try_recv`] will return an
-    /// `Err(TryRecvError::Lagged)`, e.g. if the capacity of the channel is 10,
-    /// [`recv`] will start to return `Err(RecvError::Lagged)` once `len` returns
-    /// values larger than 16.
+    /// This count includes messages that have already been overwritten in the
+    /// ring buffer and are no longer readable. If `len` is **greater than** the
+    /// channel's effective capacity (the provided capacity rounded up to the
+    /// next power of two), the next call to [`recv`] returns
+    /// `Err(RecvError::Lagged)` and the next call to [`try_recv`] returns
+    /// `Err(TryRecvError::Lagged)`. For example, with `channel(10)` the buffer
+    /// length is 16, so lagging begins once `len` is larger than 16.
+    ///
+    /// After a successful receive (including after handling `Lagged` and then
+    /// reading retained messages), `len` decreases accordingly.
     ///
     /// [`Receiver`]: crate::sync::broadcast::Receiver
     /// [`recv`]: crate::sync::broadcast::Receiver::recv
@@ -1401,16 +1434,18 @@ impl<T: Clone> Receiver<T> {
     /// dropped, indicating that no further values can be sent on the channel.
     ///
     /// If the [`Receiver`] handle falls behind, once the channel is full, newly
-    /// sent values will overwrite old values. At this point, a call to [`recv`]
-    /// will return with `Err(RecvError::Lagged)` and the [`Receiver`]'s
-    /// internal cursor is updated to point to the oldest value still held by
-    /// the channel. A subsequent call to [`recv`] will return this value
-    /// **unless** it has been since overwritten.
+    /// sent values overwrite old values in the ring buffer. The next call to
+    /// [`recv`] then returns `Err(RecvError::Lagged(n))`, where `n` is the
+    /// number of overwritten messages the receiver missed. The receiver stays
+    /// subscribed; its internal cursor is advanced to the oldest value still
+    /// held by the channel. A subsequent call to [`recv`] returns that value,
+    /// unless further sends overwrite it before the receiver reads it. See
+    /// [lagging](self#lagging) for details.
     ///
     /// # Cancel safety
     ///
-    /// This method is cancel safe. If `recv` is used as the event in a
-    /// [`tokio::select!`](crate::select) statement and some other branch
+    /// This method is cancel safe. If `recv` is used as a branch in
+    /// [`tokio::select!`](crate::select) and another branch
     /// completes first, it is guaranteed that no messages were received on this
     /// channel.
     ///
@@ -1446,6 +1481,7 @@ impl<T: Clone> Receiver<T> {
     ///
     /// ```
     /// use tokio::sync::broadcast;
+    /// use tokio::sync::broadcast::error::RecvError;
     ///
     /// # #[tokio::main(flavor = "current_thread")]
     /// # async fn main() {
@@ -1455,11 +1491,10 @@ impl<T: Clone> Receiver<T> {
     /// tx.send(20).unwrap();
     /// tx.send(30).unwrap();
     ///
-    /// // The receiver lagged behind
-    /// assert!(rx.recv().await.is_err());
+    /// // One message was overwritten before this receiver could read it.
+    /// assert!(matches!(rx.recv().await, Err(RecvError::Lagged(1))));
     ///
-    /// // At this point, we can abort or continue with lost messages
-    ///
+    /// // Resume from the oldest retained message, or abort the task instead.
     /// assert_eq!(20, rx.recv().await.unwrap());
     /// assert_eq!(30, rx.recv().await.unwrap());
     /// # }
@@ -1480,12 +1515,14 @@ impl<T: Clone> Receiver<T> {
     /// dropped, indicating that no further values can be sent on the channel.
     ///
     /// If the [`Receiver`] handle falls behind, once the channel is full, newly
-    /// sent values will overwrite old values. At this point, a call to [`recv`]
-    /// will return with `Err(TryRecvError::Lagged)` and the [`Receiver`]'s
-    /// internal cursor is updated to point to the oldest value still held by
-    /// the channel. A subsequent call to [`try_recv`] will return this value
-    /// **unless** it has been since overwritten. If there are no values to
-    /// receive, `Err(TryRecvError::Empty)` is returned.
+    /// sent values overwrite old values in the ring buffer. The next call to
+    /// [`try_recv`] then returns `Err(TryRecvError::Lagged(n))`, where `n` is
+    /// the number of overwritten messages the receiver missed. The receiver
+    /// stays subscribed; its internal cursor is advanced to the oldest value
+    /// still held by the channel. A subsequent call to [`try_recv`] returns
+    /// that value, unless further sends overwrite it before the receiver reads
+    /// it. If there are no values to receive, `Err(TryRecvError::Empty)` is
+    /// returned. See [lagging](self#lagging) for details.
     ///
     /// [`recv`]: crate::sync::broadcast::Receiver::recv
     /// [`try_recv`]: crate::sync::broadcast::Receiver::try_recv
@@ -1547,6 +1584,19 @@ impl<T: Clone> Receiver<T> {
 
 impl<T> Drop for Receiver<T> {
     fn drop(&mut self) {
+        struct NotifyGuard<'a, T> {
+            rx: &'a mut Receiver<T>,
+            notify: bool,
+        }
+
+        impl<T> Drop for NotifyGuard<'_, T> {
+            fn drop(&mut self) {
+                if self.notify {
+                    self.rx.shared.notify_last_rx_drop.notify_waiters();
+                }
+            }
+        }
+
         let mut tail = self.shared.tail.lock();
 
         tail.rx_cnt -= 1;
@@ -1554,14 +1604,18 @@ impl<T> Drop for Receiver<T> {
         let remaining_rx = tail.rx_cnt;
 
         if remaining_rx == 0 {
-            self.shared.notify_last_rx_drop.notify_waiters();
             tail.closed = true;
         }
 
         drop(tail);
 
-        while self.next < until {
-            match self.recv_ref(None) {
+        let guard = NotifyGuard {
+            rx: self,
+            notify: remaining_rx == 0,
+        };
+
+        while guard.rx.next < until {
+            match guard.rx.recv_ref(None) {
                 Ok(_) => {}
                 // The channel is closed
                 Err(TryRecvError::Closed) => break,
@@ -1678,7 +1732,7 @@ unsafe impl linked_list::Link for Waiter {
     }
 
     unsafe fn pointers(target: NonNull<Waiter>) -> NonNull<linked_list::Pointers<Waiter>> {
-        Waiter::addr_of_pointers(target)
+        unsafe { Waiter::addr_of_pointers(target) }
     }
 }
 
@@ -1712,7 +1766,8 @@ impl<'a, T> RecvGuard<'a, T> {
 impl<'a, T> Drop for RecvGuard<'a, T> {
     fn drop(&mut self) {
         // Decrement the remaining counter
-        if 1 == self.slot.rem.fetch_sub(1, SeqCst) {
+        self.slot.rem -= 1;
+        if self.slot.rem == 0 {
             self.slot.val = None;
         }
     }

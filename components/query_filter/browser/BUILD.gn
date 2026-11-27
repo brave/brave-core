@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//build/config/features.gni")
+
 static_library("browser") {
   sources = [
     "query_filter_component_installer.cc",
@@ -31,6 +33,27 @@ static_library("browser") {
   ]
 }
 
+if (use_blink) {
+  static_library("throttle") {
+    sources = [
+      "query_filter_throttle.cc",
+      "query_filter_throttle.h",
+    ]
+
+    public_deps = [ "//third_party/blink/public/common" ]
+
+    deps = [
+      ":browser",
+      "//base",
+      "//brave/components/brave_shields/core/browser",
+      "//brave/components/query_filter/common",
+      "//net",
+      "//services/network/public/cpp",
+      "//url",
+    ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
 
@@ -54,4 +77,18 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//url",
   ]
+
+  if (use_blink) {
+    sources += [ "query_filter_throttle_unittest.cc" ]
+    deps += [
+      ":throttle",
+      "//brave/components/brave_shields/core/browser",
+      "//components/content_settings/core/browser",
+      "//components/prefs:test_support",
+      "//components/sync_preferences:test_support",
+      "//net",
+      "//services/network/public/cpp",
+      "//third_party/blink/public/common",
+    ]
+  }
 }

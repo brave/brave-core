@@ -6,12 +6,10 @@
 #include "brave/components/brave_wallet/browser/tx_storage.h"
 
 #include <optional>
-#include <utility>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/run_loop.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -36,16 +34,9 @@ class TxStorageUnitTest : public testing::Test {
   }
 
   std::optional<base::Value> GetTxsFromDB(TxStorage* tx_storage) {
-    base::RunLoop run_loop;
-    std::optional<base::Value> value_out;
-    tx_storage->store_->Get(
-        "transactions",
-        base::BindLambdaForTesting([&](std::optional<base::Value> value) {
-          value_out = std::move(value);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return value_out;
+    base::test::TestFuture<std::optional<base::Value>> future;
+    tx_storage->store_->Get("transactions", future.GetCallback());
+    return future.Take();
   }
 
   base::test::TaskEnvironment task_environment_;

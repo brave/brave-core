@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/webui/history/history_ui_platform_handlers_desktop.cc b/chrome/browser/ui/webui/history/history_ui_platform_handlers_desktop.cc
+index 76dbe222ab33fd35e5398248f47fb7bc112c314c..3d8272f2d70c829a96d8ac792d6dafd94ff4d407 100644
+--- a/chrome/browser/ui/webui/history/history_ui_platform_handlers_desktop.cc
++++ b/chrome/browser/ui/webui/history/history_ui_platform_handlers_desktop.cc
+@@ -155,7 +155,7 @@ void PopulatePlatformDataSource(content::WebUIDataSource* source,
+ void InitializePlatformHandlers(content::WebUI* web_ui,
+                                 content::WebUIDataSource* source) {
+   Profile* profile = Profile::FromWebUI(web_ui);
+-  ManagedUIHandler::Initialize(web_ui, source);
++  BraveHistoryUIInitializer::Initialize(web_ui, source);
+   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
+ }
+ 

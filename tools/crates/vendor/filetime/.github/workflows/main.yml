@@ -7,7 +7,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        build: [stable, beta, nightly, macos, win32, win64, mingw]
         include:
           - build: stable
             os: ubuntu-latest
@@ -21,12 +20,9 @@ jobs:
           - build: macos
             os: macos-latest
             rust: stable
-          - build: win32
-            os: windows-latest
-            rust: stable-i686
           - build: win64
             os: windows-latest
-            rust: stable-x86_64
+            rust: stable
           - build: mingw
             os: windows-latest
             rust: stable-x86_64-gnu
@@ -36,6 +32,15 @@ jobs:
       run: rustup update ${{ matrix.rust }} --no-self-update && rustup default ${{ matrix.rust }}
       shell: bash
     - run: cargo test
+
+  msrv:
+    name: MSRV
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Install Rust
+      run: rustup update 1.75.0 && rustup default 1.75.0
+    - run: cargo build
 
   rustfmt:
     name: Rustfmt

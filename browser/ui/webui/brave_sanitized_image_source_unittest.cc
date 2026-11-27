@@ -14,6 +14,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
@@ -94,17 +95,10 @@ class BraveSanitizedImageSourceTest : public testing::Test {
     test_url_loader_factory_.SetInterceptor(std::move(interceptor));
     test_url_loader_factory_.AddResponse(url.spec(), std::move(data));
 
-    base::RunLoop run_loop;
-    scoped_refptr<base::RefCountedMemory> result;
-    source_.StartDataRequest(
-        image_url, content::WebContents::Getter(),
-        base::BindLambdaForTesting(
-            [&](scoped_refptr<base::RefCountedMemory> data) {
-              result = std::move(data);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-    return result;
+    base::test::TestFuture<scoped_refptr<base::RefCountedMemory>> future;
+    source_.StartDataRequest(image_url, content::WebContents::Getter(),
+                             future.GetCallback());
+    return future.Take();
   }
 
  private:

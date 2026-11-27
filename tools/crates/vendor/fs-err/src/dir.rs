@@ -5,9 +5,12 @@ use std::path::PathBuf;
 
 use crate::errors::{Error, ErrorKind};
 
+#[allow(unused_imports)]
+use crate as fs_err; // for docs
+
 /// Returns an iterator over the entries within a directory.
 ///
-/// Wrapper for [`fs::read_dir`](https://doc.rust-lang.org/stable/std/fs/fn.read_dir.html).
+/// Wrapper for [`std::fs::read_dir`].
 pub fn read_dir<P: Into<PathBuf>>(path: P) -> io::Result<ReadDir> {
     let path = path.into();
 
@@ -17,13 +20,10 @@ pub fn read_dir<P: Into<PathBuf>>(path: P) -> io::Result<ReadDir> {
     }
 }
 
-/// Wrapper around [`std::fs::ReadDir`][std::fs::ReadDir] which adds more
-/// helpful information to all errors.
+/// Wrapper around [`std::fs::ReadDir`] which adds more helpful information to
+/// all errors.
 ///
-/// This struct is created via [`fs_err::read_dir`][fs_err::read_dir].
-///
-/// [std::fs::ReadDir]: https://doc.rust-lang.org/stable/std/fs/struct.ReadDir.html
-/// [fs_err::read_dir]: fn.read_dir.html
+/// This struct is created via [`fs_err::read_dir`].
 #[derive(Debug)]
 pub struct ReadDir {
     inner: fs::ReadDir,
@@ -43,10 +43,8 @@ impl Iterator for ReadDir {
     }
 }
 
-/// Wrapper around [`std::fs::DirEntry`][std::fs::DirEntry] which adds more
+/// Wrapper around [`std::fs::DirEntry`] which adds more
 /// helpful information to all errors.
-///
-/// [std::fs::DirEntry]: https://doc.rust-lang.org/stable/std/fs/struct.DirEntry.html
 #[derive(Debug)]
 pub struct DirEntry {
     inner: fs::DirEntry,
@@ -55,14 +53,14 @@ pub struct DirEntry {
 impl DirEntry {
     /// Returns the full path to the file that this entry represents.
     ///
-    /// Wrapper for [`DirEntry::path`](https://doc.rust-lang.org/stable/std/fs/struct.DirEntry.html#method.path).
+    /// Wrapper for [`std::fs::DirEntry::path`].
     pub fn path(&self) -> PathBuf {
         self.inner.path()
     }
 
     /// Returns the metadata for the file that this entry points at.
     ///
-    /// Wrapper for [`DirEntry::metadata`](https://doc.rust-lang.org/stable/std/fs/struct.DirEntry.html#method.metadata).
+    /// Wrapper for [`std::fs::DirEntry::metadata`].
     pub fn metadata(&self) -> io::Result<fs::Metadata> {
         self.inner
             .metadata()
@@ -71,7 +69,7 @@ impl DirEntry {
 
     /// Returns the file type for the file that this entry points at.
     ///
-    /// Wrapper for [`DirEntry::file_type`](https://doc.rust-lang.org/stable/std/fs/struct.DirEntry.html#method.file_type).
+    /// Wrapper for [`std::fs::DirEntry::file_type`].
     pub fn file_type(&self) -> io::Result<fs::FileType> {
         self.inner
             .file_type()
@@ -80,7 +78,7 @@ impl DirEntry {
 
     /// Returns the file name of this directory entry without any leading path component(s).
     ///
-    /// Wrapper for [`DirEntry::file_name`](https://doc.rust-lang.org/stable/std/fs/struct.DirEntry.html#method.file_name).
+    /// Wrapper for [`std::fs::DirEntry::file_name`].
     pub fn file_name(&self) -> OsString {
         self.inner.file_name()
     }

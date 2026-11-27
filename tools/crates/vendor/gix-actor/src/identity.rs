@@ -1,15 +1,22 @@
 use bstr::ByteSlice;
-use winnow::{error::StrContext, prelude::*};
+use gix_error::Result;
 
-use crate::{signature::decode, Identity, IdentityRef};
+use crate::{Identity, IdentityRef, signature::decode};
 
 impl<'a> IdentityRef<'a> {
     /// Deserialize an identity from the given `data`.
-    pub fn from_bytes<E>(mut data: &'a [u8]) -> Result<Self, winnow::error::ErrMode<E>>
-    where
-        E: winnow::error::ParserError<&'a [u8]> + winnow::error::AddContext<&'a [u8], StrContext>,
-    {
-        decode::identity.parse_next(&mut data)
+    ///
+    /// Typical input is `Name <name@example.com> 1700000000 +0000`.
+    pub fn from_bytes(mut data: &'a [u8]) -> Result<Self> {
+        Self::from_bytes_consuming(&mut data)
+    }
+
+    /// Deserialize an identity from the given `data` and advance it past the identity.
+    ///
+    /// Typical input is `Name <name@example.com> 1700000000 +0000`; on success,
+    /// `data` points to the bytes immediately after the closing `>`.
+    pub fn from_bytes_consuming(data: &mut &'a [u8]) -> Result<Self> {
+        decode::identity(data)
     }
 
     /// Create an owned instance from this shared one.
@@ -30,11 +37,14 @@ impl<'a> IdentityRef<'a> {
 }
 
 mod write {
-    use crate::{signature::write::validated_token, Identity, IdentityRef};
+    use crate::{Identity, IdentityRef, signature::write::validated_token};
 
     /// Output
     impl Identity {
         /// Serialize this instance to `out` in the git serialization format for signatures (but without timestamp).
+        /// Invalid name or email bytes are retained as `input` in the I/O error.
+        /// After [wrapping](gix_error::Error::from_error()), inspect them with
+        /// [metadata](gix_error::Error::metadata()).
         pub fn write_to(&self, out: &mut dyn std::io::Write) -> std::io::Result<()> {
             self.to_ref().write_to(out)
         }
@@ -42,11 +52,14 @@ mod write {
 
     impl IdentityRef<'_> {
         /// Serialize this instance to `out` in the git serialization format for signatures (but without timestamp).
+        /// Invalid name or email bytes are retained as `input` in the I/O error.
+        /// After [wrapping](gix_error::Error::from_error()), inspect them with
+        /// [metadata](gix_error::Error::metadata()).
         pub fn write_to(&self, out: &mut dyn std::io::Write) -> std::io::Result<()> {
-            out.write_all(validated_token(self.name)?)?;
+            out.write_all(validated_token(self.name).map_err(std::io::Error::other)?)?;
             out.write_all(b" ")?;
             out.write_all(b"<")?;
-            out.write_all(validated_token(self.email)?)?;
+            out.write_all(validated_token(self.email).map_err(std::io::Error::other)?)?;
             out.write_all(b">")
         }
     }

@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/sharing_hub/sharing_hub_bubble_controller_desktop_impl.cc b/chrome/browser/ui/sharing_hub/sharing_hub_bubble_controller_desktop_impl.cc
+index 168fa3aed79c042e21d3f3ad0cc5b6f9265b24ae..bfefb8ed5c9feaab92db093f74dc947ccef07cab 100644
+--- a/chrome/browser/ui/sharing_hub/sharing_hub_bubble_controller_desktop_impl.cc
++++ b/chrome/browser/ui/sharing_hub/sharing_hub_bubble_controller_desktop_impl.cc
+@@ -82,6 +82,9 @@ SharingHubBubbleControllerDesktopImpl::sharing_hub_bubble_view() const {
+ }
+ 
+ bool SharingHubBubbleControllerDesktopImpl::ShouldOfferOmniboxIcon() {
++  if (!ShouldOfferBraveShareIcon(GetWebContents())) {
++    return false;
++  }
+   return SharingHubOmniboxEnabled(GetWebContents().GetBrowserContext());
+ }
+ 

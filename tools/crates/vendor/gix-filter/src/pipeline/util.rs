@@ -1,3 +1,4 @@
+use gix_error::{ErrorExt, Result, message};
 use std::path::Path;
 
 use bstr::BStr;
@@ -5,10 +6,9 @@ use gix_attributes::StateRef;
 use smallvec::SmallVec;
 
 use crate::{
-    driver, eol,
+    Driver, driver, eol,
     eol::AttributesDigest,
-    pipeline::{convert::configuration, Context, CrlfRoundTripCheck},
-    Driver,
+    pipeline::{Context, CrlfRoundTripCheck},
 };
 
 pub(crate) struct Configuration<'a> {
@@ -29,7 +29,8 @@ impl<'driver> Configuration<'driver> {
         attrs: &mut gix_attributes::search::Outcome,
         attributes: &mut dyn FnMut(&BStr, &mut gix_attributes::search::Outcome),
         config: eol::Configuration,
-    ) -> Result<Configuration<'driver>, configuration::Error> {
+        ignore_unknown_encoding: bool,
+    ) -> Result<Configuration<'driver>> {
         fn extract_driver<'a>(drivers: &'a [Driver], attr: &gix_attributes::search::Match<'_>) -> Option<&'a Driver> {
             if let StateRef::Value(name) = attr.assignment.state {
                 drivers.iter().find(|d| d.name == name.as_bstr())
@@ -40,14 +41,14 @@ impl<'driver> Configuration<'driver> {
 
         fn extract_encoding(
             attr: &gix_attributes::search::Match<'_>,
-        ) -> Result<Option<&'static encoding_rs::Encoding>, configuration::Error> {
+            ignore_unknown: bool,
+        ) -> Result<Option<&'static encoding_rs::Encoding>> {
             match attr.assignment.state {
-                StateRef::Set | StateRef::Unset => Err(configuration::Error::InvalidEncoding),
-                StateRef::Value(name) => encoding_rs::Encoding::for_label(name.as_bstr())
-                    .ok_or(configuration::Error::UnknownEncoding {
-                        name: name.as_bstr().to_owned(),
-                    })
-                    .map(|encoding| {
+                StateRef::Set | StateRef::Unset => {
+                    Err(gix_error::validation("Encodings must be names, like UTF-16, and cannot be booleans.").raise())
+                }
+                StateRef::Value(name) => match encoding_rs::Encoding::for_label(name.as_bstr()) {
+                    Some(encoding) => Ok({
                         // The working-tree-encoding is the encoding we have to expect in the working tree.
                         // If the specified one is the default encoding, there is nothing to do.
                         if encoding == encoding_rs::UTF_8 {
@@ -56,6 +57,12 @@ impl<'driver> Configuration<'driver> {
                             Some(encoding)
                         }
                     }),
+                    None if ignore_unknown => {
+                        gix_trace::warn!(encoding = %name.as_bstr(), "Ignoring unavailable worktree encoding");
+                        Ok(None)
+                    }
+                    None => Err(message!("The encoding named '{}' isn't available", name.as_bstr()).validation_error()),
+                },
                 StateRef::Unspecified => Ok(None),
             }
         }
@@ -97,7 +104,7 @@ impl<'driver> Configuration<'driver> {
         let attrs: SmallVec<[_; crate::pipeline::ATTRS.len()]> = attrs.iter_selected().collect();
         let apply_ident_filter = attrs[1].assignment.state.is_set();
         let driver = extract_driver(drivers, &attrs[2]);
-        let encoding = extract_encoding(&attrs[5])?;
+        let encoding = extract_encoding(&attrs[5], ignore_unknown_encoding)?;
 
         let mut digest = extract_crlf(&attrs[4]);
         if digest.is_none() {

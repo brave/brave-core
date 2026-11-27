@@ -17,7 +17,7 @@ import { disposeOrt, ensureOrt } from './ort_env'
 import type { Ort, OrtSession, OrtSessionOptions, OrtTensor } from './ort_env'
 import * as config from './configs'
 import type { FftSize } from './configs'
-import { releaseBytes, argmax } from './utils'
+import { releaseBytes, argmax, findLanguageTagTokenIds } from './utils'
 
 // Encoder outputs we consume. `encoded_lengths` is the count of valid encoder
 // frames; the input length is fixed every call so it normally equals the
@@ -139,35 +139,35 @@ export class NemotronStreamSession {
   private readonly onResult: (text: string, isFinal: boolean) => void
   private readonly onError: () => void
   private readonly model: OrtNemotronModel
+  private readonly locale: config.NemotronLocale
+  private readonly modelConfig: config.NemotronModelConfig
+
   private readonly frontend: StreamingMelFrontend
 
+  private readonly cacheLeadDims: [number, number]
+
   // Attention cache.
-  private cacheCh = new Float32Array(
-    config.NEMO_NUM_ENCODER_LAYERS
-      * config.NEMO_LEFT_CONTEXT
-      * config.NEMO_HIDDEN_DIM,
-  )
+  private cacheCh: Float32Array
 
   // Convolution cache.
-  private cacheTime = new Float32Array(
-    config.NEMO_NUM_ENCODER_LAYERS
-      * config.NEMO_HIDDEN_DIM
-      * config.NEMO_CONV_CONTEXT,
-  )
+  private cacheTime: Float32Array
 
   // Indicates how much of left context at encoder-output level is valid.
   // This is different from left context at mel-frame level.
   private cacheLen = BigInt64Array.from([BigInt(0)])
 
   // Decoder LSTM state cache; 2 LSTM layers.
-  private st1 = new Float32Array(2 * config.NEMO_DECODER_LSTM_DIM)
-  private st2 = new Float32Array(2 * config.NEMO_DECODER_LSTM_DIM)
+  private st1: Float32Array
+  private st2: Float32Array
 
   // RNN-T predictor seed. NeMo uses BLANK as the initial previous token.
-  private prevToken = config.NEMO_BLANK
+  private prevToken: number
 
   // Hypothesis token IDs.
   private readonly hyp: number[] = []
+
+  // Token IDs belonging to lang tags for multi-lingual model, empty for english-only model
+  private readonly langTagTokenIds: Set<number>
 
   // Audio is accepted only while streaming. The final flush runs in finishing
   // and can still fail. ended is terminal and fires onResult or onError once.
@@ -183,11 +183,35 @@ export class NemotronStreamSession {
 
   constructor(
     model: OrtNemotronModel,
+    locale: config.NemotronLocale,
     sampleRateHz: number,
     onResult: (text: string, isFinal: boolean) => void,
     onError: () => void,
   ) {
     this.model = model
+    this.locale = locale
+    this.modelConfig = config.MODEL_CONFIGS[locale.model]
+
+    this.langTagTokenIds = findLanguageTagTokenIds(this.model.tokens)
+
+    this.cacheCh = new Float32Array(
+      config.NEMO_NUM_ENCODER_LAYERS
+        * this.modelConfig.NEMO_LEFT_CONTEXT
+        * config.NEMO_HIDDEN_DIM,
+    )
+
+    this.cacheTime = new Float32Array(
+      config.NEMO_NUM_ENCODER_LAYERS
+        * config.NEMO_HIDDEN_DIM
+        * config.NEMO_CONV_CONTEXT,
+    )
+
+    this.st1 = new Float32Array(2 * config.NEMO_DECODER_LSTM_DIM)
+
+    this.st2 = new Float32Array(2 * config.NEMO_DECODER_LSTM_DIM)
+
+    this.prevToken = this.modelConfig.NEMO_BLANK
+
     if (sampleRateHz !== config.TARGET_SAMPLE_RATE) {
       throw new Error(
         `Unsupported sample rate for Nemotron: ${sampleRateHz} Hz`,
@@ -205,6 +229,9 @@ export class NemotronStreamSession {
         (config.TARGET_SAMPLE_RATE * config.LEADING_SILENCE_MS) / 1000,
       ),
     )
+    const layers = config.NEMO_NUM_ENCODER_LAYERS
+    this.cacheLeadDims =
+      this.locale.model === 'multilingual' ? [layers, 1] : [1, layers]
   }
 
   addAudio(samples: Float32Array): void {
@@ -296,11 +323,12 @@ export class NemotronStreamSession {
     this.cacheLen.fill(BigInt(0))
     this.st1.fill(0)
     this.st2.fill(0)
-    this.prevToken = config.NEMO_BLANK
+    this.prevToken = this.modelConfig.NEMO_BLANK
   }
 
   private async processAvailable(final: boolean): Promise<void> {
     const { ort, tokens } = this.model
+
     let atLeastOneChunkProcessed = false
 
     while (this.frontend.hasFullChunk()) {
@@ -319,38 +347,46 @@ export class NemotronStreamSession {
       // </if>
 
       // Fresh input tensors every step. Do not reuse/carry ORT tensors.
-      const eo = await this.model.runEncoder(
-        {
-          audio_signal: new ort.Tensor('float32', sig, [
-            1,
-            config.N_MELS,
-            config.NEMO_FRAMES,
-          ]),
+      const encoderFeeds: Record<string, OrtTensor> = {
+        audio_signal: new ort.Tensor('float32', sig, [
+          1,
+          config.N_MELS,
+          config.NEMO_FRAMES,
+        ]),
 
-          length: new ort.Tensor(
-            'int64',
-            BigInt64Array.from([BigInt(config.NEMO_FRAMES)]),
-            [1],
-          ),
+        length: new ort.Tensor(
+          'int64',
+          BigInt64Array.from([BigInt(config.NEMO_FRAMES)]),
+          [1],
+        ),
 
-          cache_last_channel: new ort.Tensor('float32', this.cacheCh, [
-            1,
-            config.NEMO_NUM_ENCODER_LAYERS,
-            config.NEMO_LEFT_CONTEXT,
-            config.NEMO_HIDDEN_DIM,
-          ]),
+        // tensor layout expected by en and multilingual models are different
+        // this difference is inherited from original nemo models from which
+        // onnx models are derived
+        cache_last_channel: new ort.Tensor('float32', this.cacheCh, [
+          ...this.cacheLeadDims,
+          this.modelConfig.NEMO_LEFT_CONTEXT,
+          config.NEMO_HIDDEN_DIM,
+        ]),
 
-          cache_last_time: new ort.Tensor('float32', this.cacheTime, [
-            1,
-            config.NEMO_NUM_ENCODER_LAYERS,
-            config.NEMO_HIDDEN_DIM,
-            config.NEMO_CONV_CONTEXT,
-          ]),
+        cache_last_time: new ort.Tensor('float32', this.cacheTime, [
+          ...this.cacheLeadDims,
+          config.NEMO_HIDDEN_DIM,
+          config.NEMO_CONV_CONTEXT,
+        ]),
 
-          cache_last_channel_len: new ort.Tensor('int64', this.cacheLen, [1]),
-        },
-        ENC_FETCHES,
-      )
+        cache_last_channel_len: new ort.Tensor('int64', this.cacheLen, [1]),
+      }
+
+      if (this.locale.model === 'multilingual') {
+        encoderFeeds.prompt_index = new ort.Tensor(
+          'int64',
+          BigInt64Array.from([BigInt(this.locale.promptId)]),
+          [1],
+        )
+      }
+
+      const eo = await this.model.runEncoder(encoderFeeds, ENC_FETCHES)
 
       // <if expr="!is_official_build">
       const encoderMs = performance.now() - encoderStarted
@@ -436,19 +472,23 @@ export class NemotronStreamSession {
 
           const tok = argmax(dout.outputs.data as Float32Array)
 
-          if (tok !== config.NEMO_BLANK) {
-            this.hyp.push(tok)
+          if (tok !== this.modelConfig.NEMO_BLANK) {
+            // Multilingual Nemotron can emit language-control tokens such as <es-ES>.
+            // strip these tags out
+            if (!this.langTagTokenIds.has(tok)) {
+              this.hyp.push(tok)
+              // <if expr="!is_official_build">
+              emittedTokensThisChunk++
+              // </if>
+            }
             this.prevToken = tok
             this.st1 = (dout.output_states_1.data as Float32Array).slice()
             this.st2 = (dout.output_states_2.data as Float32Array).slice()
-            // <if expr="!is_official_build">
-            emittedTokensThisChunk++
-            // </if>
           }
 
           disposeOrt([], dout as unknown as Record<string, OrtTensor>)
 
-          if (tok === config.NEMO_BLANK) {
+          if (tok === this.modelConfig.NEMO_BLANK) {
             break
           }
 

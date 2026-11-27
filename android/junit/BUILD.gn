@@ -93,8 +93,8 @@ if (is_android) {
   }
 
   robolectric_library(
-      "brave_junit_tests_org.chromium.chrome.browser.undo_tab_close_snackbar") {
-    sources = [ "src/org/chromium/chrome/browser/undo_tab_close_snackbar/BraveUndoBarControllerTest.java" ]
+      "brave_junit_tests_org.chromium.chrome.browser.tab_ui.undo_tab_close_snackbar") {
+    sources = [ "src/org/chromium/chrome/browser/tab_ui/undo_tab_close_snackbar/BraveUndoBarControllerTest.java" ]
 
     deps = [
       "//base:base_java",
@@ -103,6 +103,8 @@ if (is_android) {
       "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/preferences:java",
+      "//chrome/browser/tab:java",
+      "//chrome/browser/tab_ui/android:java",
       "//chrome/browser/tabmodel:java",
       "//chrome/browser/ui/messages/android:java",
     ]
@@ -123,6 +125,7 @@ if (is_android) {
         "src/org/chromium/chrome/browser/crypto_wallet/ApproveTxBottomSheetDialogFragmentTest.java",
         "src/org/chromium/chrome/browser/crypto_wallet/TwoLineItemBottomSheetFragmentTest.java",
         "src/org/chromium/chrome/browser/crypto_wallet/WalletBottomSheetDialogFragmentTest.java",
+        "src/org/chromium/chrome/browser/crypto_wallet/permission/BravePermissionAccountsListAdapterTest.java",
         "src/org/chromium/chrome/browser/crypto_wallet/util/TransactionUtilsTest.java",
       ]
 
@@ -219,6 +222,7 @@ if (is_android) {
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.app") {
     sources = [
       "src/org/chromium/chrome/browser/app/BraveActivityInAppUpdateTest.java",
+      "src/org/chromium/chrome/browser/app/appmenu/BraveExtensionsMenuItemViewBinderUnitTest.java",
     ]
 
     deps = [
@@ -341,8 +345,11 @@ if (is_android) {
     sources = [ "src/org/chromium/chrome/browser/omnibox/BraveLocationBarFocusScrimHandlerUnitTest.java" ]
 
     deps = [
+      "//base:base_java_test_support",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/flags:java",
       "//chrome/browser/ui/android/omnibox:java",
+      "//chrome/browser/ui/android/theme:java",
     ]
   }
 
@@ -463,8 +470,10 @@ if (is_android) {
     sources = [ "src/org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerBaseTest.java" ]
 
     deps = [
+      "//brave/browser/media/android:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/fullscreen/android:java",
+      "//content/public/android:content_java",
     ]
   }
 
@@ -496,6 +505,7 @@ if (is_android) {
     ]
 
     deps = [
+      "//brave/browser/media/android:java",
       "//brave/components/browser_ui/media/android:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/fullscreen/android:java",

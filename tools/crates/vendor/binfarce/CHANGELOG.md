@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-09-17
+### Fixed
+- Fixed parsing on big-endian hosts.
+
 ## [0.2.1] - 2021-07-03
 ### Fixed
 - Make `UnexpectedEof` type public.

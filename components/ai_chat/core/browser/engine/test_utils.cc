@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/functional/bind.h"
 #include "base/json/string_escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -18,6 +19,17 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
+
+base::ScopedClosureRunner CompleteRequestOnExit(
+    EngineConsumer::GenerationCompletedCallback callback,
+    std::string completion) {
+  auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New(std::move(completion)));
+  return base::ScopedClosureRunner(base::BindOnce(
+      std::move(callback),
+      EngineConsumer::GenerationResult(EngineConsumer::GenerationResultData(
+          std::move(event), std::nullopt))));
+}
 
 std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
   std::vector<mojom::ConversationTurnPtr> history;

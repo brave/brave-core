@@ -11,8 +11,8 @@ impl Impl {
     /// You must ensure that the CPU has the AVX2 feature
     #[inline]
     #[cfg(feature = "std")]
-    pub unsafe fn new_unchecked() -> Impl {
-        Impl(())
+    pub unsafe fn new_unchecked() -> Self {
+        Self(())
     }
 }
 
@@ -37,7 +37,7 @@ impl Vector for Impl {
 #[target_feature(enable = "avx2")]
 unsafe fn round_scramble_avx2(acc: &mut [u64; 8], secret_end: &[u8; 64]) {
     // The scalar implementation is autovectorized nicely enough
-    scalar::Impl.round_scramble(acc, secret_end)
+    scalar::Impl.round_scramble(acc, secret_end);
 }
 
 /// # Safety

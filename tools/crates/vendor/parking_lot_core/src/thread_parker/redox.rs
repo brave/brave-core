@@ -1,10 +1,3 @@
-// Copyright 2016 Amanieu d'Antras
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 use core::{
     ptr,
     sync::atomic::{AtomicI32, Ordering},
@@ -14,7 +7,7 @@ use std::time::Instant;
 use syscall::{
     call::futex,
     data::TimeSpec,
-    error::{Error, EAGAIN, EFAULT, EINTR, ETIMEDOUT},
+    error::{EAGAIN, EFAULT, EINTR, ETIMEDOUT, Error},
     flag::{FUTEX_WAIT, FUTEX_WAKE},
 };
 
@@ -63,9 +56,9 @@ impl super::ThreadParkerT for ThreadParker {
                 return false;
             }
             let diff = timeout - now;
-            if diff.as_secs() > i64::max_value() as u64 {
+            if diff.as_secs() > i64::MAX as u64 {
                 // Timeout overflowed, just sleep indefinitely
-                self.park();
+                unsafe { self.park() };
                 return true;
             }
             let ts = TimeSpec {
@@ -79,17 +72,20 @@ impl super::ThreadParkerT for ThreadParker {
 
     #[inline]
     unsafe fn unpark_lock(&self) -> UnparkHandle {
+        // The target may destroy the parker as soon as the store below is
+        // observed, so construct the handle first.
+        let handle = UnparkHandle { futex: self.ptr() };
+
         // We don't need to lock anything, just clear the state
         self.futex.store(UNPARKED, Ordering::Release);
-
-        UnparkHandle { futex: self.ptr() }
+        handle
     }
 }
 
 impl ThreadParker {
     #[inline]
     fn futex_wait(&self, ts: Option<TimeSpec>) {
-        let ts_ptr = ts
+        let ts_ptr: *const TimeSpec = ts
             .as_ref()
             .map(|ts_ref| ts_ref as *const _)
             .unwrap_or(ptr::null());
@@ -98,14 +94,15 @@ impl ThreadParker {
                 self.ptr(),
                 FUTEX_WAIT,
                 PARKED,
-                ts_ptr as usize,
+                // The syscall ABI carries this pointer as an integer.
+                ts_ptr.expose_provenance(),
                 ptr::null_mut(),
             )
         };
         match r {
-            Ok(r) => debug_assert_eq!(r, 0),
+            Ok(r) => assert_eq!(r, 0),
             Err(Error { errno }) => {
-                debug_assert!(errno == EINTR || errno == EAGAIN || errno == ETIMEDOUT);
+                assert!(errno == EINTR || errno == EAGAIN || errno == ETIMEDOUT);
             }
         }
     }
@@ -125,10 +122,10 @@ impl super::UnparkHandleT for UnparkHandle {
     unsafe fn unpark(self) {
         // The thread data may have been freed at this point, but it doesn't
         // matter since the syscall will just return EFAULT in that case.
-        let r = futex(self.futex, FUTEX_WAKE, PARKED, 0, ptr::null_mut());
+        let r = unsafe { futex(self.futex, FUTEX_WAKE, PARKED, 0, ptr::null_mut()) };
         match r {
-            Ok(num_woken) => debug_assert!(num_woken == 0 || num_woken == 1),
-            Err(Error { errno }) => debug_assert_eq!(errno, EFAULT),
+            Ok(num_woken) => assert!(num_woken == 0 || num_woken == 1),
+            Err(Error { errno }) => assert_eq!(errno, EFAULT),
         }
     }
 }

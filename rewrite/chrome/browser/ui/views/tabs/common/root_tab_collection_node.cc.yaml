@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Expand the collapsed tree tab ancestors of the newly active tab.
+
+      The root node is already the TabStripModelObserver driving the tab views,
+      so it's where the tab strip finds out that a tab hidden in a collapsed
+      tree tab node was activated, e.g. with a keyboard shortcut. The expansion
+      is posted since the model is still notifying its observers.
+    add_after_line:
+      line: 'on_active_tab_changed_callback_list_.Notify(selection.new_tab);'
+      code: |2-
+            tree_tab_view_utils::ExpandCollapsedTreeTabAncestorsAsync(
+                selection.new_tab);

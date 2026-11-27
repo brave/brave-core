@@ -65,8 +65,6 @@ class BitcoinTxManagerUnitTest : public testing::Test {
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, "brave");
 
-    task_environment_.RunUntilIdle();
-
     bitcoin_test_rpc_server_->SetUpBitcoinRpc(kMnemonicDivideCruise, 0);
   }
 
@@ -186,6 +184,46 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransactionError) {
   EXPECT_TRUE(tx_meta1->tx_hash().empty());
   EXPECT_EQ(tx_meta1->from(), from_account);
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Error);
+}
+
+// Regression test: a hardware signature that arrives after the user has
+// already rejected the transaction must not resurrect and broadcast it.
+TEST_F(BitcoinTxManagerUnitTest, ProcessBtcHardwareSignatureAfterRejected) {
+  const auto from_account = BtcAcc(0);
+  auto params = mojom::NewBitcoinTransactionParams::New(
+      mojom::kBitcoinMainnet, from_account.Clone(), kMockBtcAddress, 5000,
+      false, nullptr);
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_future;
+  btc_tx_manager()->AddUnapprovedBitcoinTransaction(params.Clone(),
+                                                    add_future.GetCallback());
+  const std::string meta_id = add_future.Get<1>();
+  ASSERT_FALSE(meta_id.empty());
+  auto tx_meta1 = btc_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(tx_meta1);
+  EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Unapproved);
+
+  // User rejects the transaction while the hardware device is still
+  // producing a signature for it.
+  base::test::TestFuture<bool> reject_future;
+  btc_tx_manager()->RejectTransaction(meta_id, reject_future.GetCallback());
+  EXPECT_TRUE(reject_future.Get());
+  auto rejected_meta = btc_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(rejected_meta);
+  EXPECT_EQ(rejected_meta->status(), mojom::TransactionStatus::Rejected);
+
+  // The late-arriving hardware signature must be rejected and must not
+  // publish/broadcast the transaction or move it off Rejected.
+  base::test::TestFuture<bool> sign_future;
+  btc_tx_manager()->ProcessBtcHardwareSignature(
+      meta_id,
+      mojom::BitcoinSignature::New(std::vector<std::vector<uint8_t>>()),
+      sign_future.GetCallback());
+  EXPECT_FALSE(sign_future.Get());
+  auto final_meta = btc_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(final_meta);
+  EXPECT_EQ(final_meta->status(), mojom::TransactionStatus::Rejected);
 }
 
 TEST_F(BitcoinTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {

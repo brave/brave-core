@@ -1,5 +1,5 @@
 use alloc::vec::Vec;
-use core::cmp;
+use core::{cmp, fmt};
 
 use pki_types::{DnsName, UnixTime};
 use zeroize::Zeroizing;
@@ -45,7 +45,10 @@ impl Retrieved<&Tls13ClientSessionValue> {
             .retrieved_at
             .as_secs()
             .saturating_sub(self.value.common.epoch);
-        let age_millis = age_secs as u32 * 1000;
+        // nb. tickets have an upper age limit of ~7 days, well short of the 49 days here
+        let age_millis = u32::try_from(age_secs)
+            .unwrap_or(u32::MAX)
+            .saturating_mul(1000);
         age_millis.wrapping_add(self.value.age_add)
     }
 }
@@ -69,7 +72,6 @@ impl<T> core::ops::Deref for Retrieved<T> {
     }
 }
 
-#[derive(Debug)]
 pub struct Tls13ClientSessionValue {
     suite: &'static Tls13CipherSuite,
     age_add: u32,
@@ -145,6 +147,26 @@ impl core::ops::Deref for Tls13ClientSessionValue {
     }
 }
 
+impl fmt::Debug for Tls13ClientSessionValue {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let Self {
+            suite,
+            age_add,
+            max_early_data_size,
+            common,
+            quic_params,
+        } = self;
+
+        f.debug_struct("Tls13ClientSessionValue")
+            .field("suite", suite)
+            .field("age_add", age_add)
+            .field("max_early_data_size", max_early_data_size)
+            .field("common", common)
+            .field("quic_params", quic_params)
+            .finish()
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct Tls12ClientSessionValue {
     #[cfg(feature = "tls12")]
@@ -216,7 +238,7 @@ impl core::ops::Deref for Tls12ClientSessionValue {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct ClientSessionCommon {
     ticket: Arc<PayloadU16>,
     secret: Zeroizing<PayloadU8>,
@@ -287,6 +309,28 @@ impl ClientSessionCommon {
     }
 }
 
+impl fmt::Debug for ClientSessionCommon {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let Self {
+            ticket,
+            secret: _,
+            epoch,
+            lifetime_secs,
+            server_cert_chain,
+            server_cert_verifier,
+            client_creds,
+        } = self;
+        f.debug_struct("ClientSessionCommon")
+            .field("ticket", ticket)
+            .field("epoch", epoch)
+            .field("lifetime_secs", lifetime_secs)
+            .field("server_cert_chain", server_cert_chain)
+            .field("server_cert_verifier", server_cert_verifier)
+            .field("client_creds", client_creds)
+            .finish_non_exhaustive()
+    }
+}
+
 static MAX_TICKET_LIFETIME: u32 = 7 * 24 * 60 * 60;
 
 /// This is the maximum allowed skew between server and client clocks, over
@@ -296,7 +340,6 @@ static MAX_TICKET_LIFETIME: u32 = 7 * 24 * 60 * 60;
 static MAX_FRESHNESS_SKEW_MS: u32 = 60 * 1000;
 
 // --- Server types ---
-#[derive(Debug)]
 pub struct ServerSessionValue {
     pub(crate) sni: Option<DnsName<'static>>,
     pub(crate) version: ProtocolVersion,
@@ -309,6 +352,36 @@ pub struct ServerSessionValue {
     pub creation_time_sec: u64,
     pub(crate) age_obfuscation_offset: u32,
     freshness: Option<bool>,
+}
+
+impl fmt::Debug for ServerSessionValue {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let Self {
+            sni,
+            version,
+            cipher_suite,
+            master_secret: _,
+            extended_ms,
+            client_cert_chain,
+            alpn,
+            application_data,
+            creation_time_sec,
+            age_obfuscation_offset,
+            freshness,
+        } = self;
+        f.debug_struct("ServerSessionValue")
+            .field("sni", sni)
+            .field("version", version)
+            .field("cipher_suite", cipher_suite)
+            .field("extended_ms", extended_ms)
+            .field("client_cert_chain", client_cert_chain)
+            .field("alpn", alpn)
+            .field("application_data", application_data)
+            .field("creation_time_sec", creation_time_sec)
+            .field("age_obfuscation_offset", age_obfuscation_offset)
+            .field("freshness", freshness)
+            .finish_non_exhaustive()
+    }
 }
 
 impl Codec<'_> for ServerSessionValue {
@@ -453,19 +526,22 @@ mod tests {
     #[cfg(feature = "std")] // for UnixTime::now
     #[test]
     fn serversessionvalue_is_debug() {
-        use std::{println, vec};
+        use std::{format, println, vec};
         let ssv = ServerSessionValue::new(
             None,
             ProtocolVersion::TLSv1_3,
             CipherSuite::TLS13_AES_128_GCM_SHA256,
-            &[1, 2, 3],
+            &[0xa5; 48],
             None,
             None,
             vec![4, 5, 6],
             UnixTime::now(),
             0x12345678,
         );
-        println!("{ssv:?}");
+        let debug = format!("{ssv:?}");
+        println!("{debug}");
+        assert!(debug.contains("application_data: 040506"));
+        assert!(!debug.contains("a5a5"), "{debug}");
     }
 
     #[test]

@@ -1,0 +1,21 @@
+[package]
+name = "core_detect"
+version = "1.0.0"
+authors = ["Thom Chiovoloni <chiovolonit@gmail.com>"]
+edition = "2018"
+description = "A `no_std` version of the `std::is_x86_feature_detected!` macro."
+documentation = "https://docs.rs/core_detect"
+homepage = "https://github.com/thomcc/core_detect"
+repository = "https://github.com/thomcc/core_detect"
+readme = "README.md"
+keywords = ["feature", "detection", "x86", "arch", "cpuid"]
+categories = ["hardware-support", "no-std"]
+license = "MIT/Apache-2.0"
+
+[features]
+unstable_has_cpuid = []
+assume_has_cpuid = []
+default = []
+
+[dev-dependencies]
+cupid = "0.6"

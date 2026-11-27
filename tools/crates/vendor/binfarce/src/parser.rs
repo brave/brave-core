@@ -42,10 +42,10 @@ impl RawNumber for u16 {
     fn parse(s: &mut Stream) -> Option<Self> {
         let start = s.offset;
         let end = s.offset.checked_add(mem::size_of::<Self>())?;
-        let num = u16::from_ne_bytes(s.data.get(start..end)?.try_into().unwrap());
+        let bytes: [u8; 2] = s.data.get(start..end)?.try_into().unwrap();
         match s.byte_order {
-            ByteOrder::LittleEndian => Some(num),
-            ByteOrder::BigEndian => Some(num.to_be()),
+            ByteOrder::LittleEndian => Some(u16::from_le_bytes(bytes)),
+            ByteOrder::BigEndian => Some(u16::from_be_bytes(bytes)),
         }
     }
 }
@@ -62,10 +62,10 @@ impl RawNumber for u32 {
     fn parse(s: &mut Stream) -> Option<Self> {
         let start = s.offset;
         let end = s.offset.checked_add(mem::size_of::<Self>())?;
-        let num = u32::from_ne_bytes(s.data.get(start..end)?.try_into().unwrap());
+        let bytes: [u8; 4] = s.data.get(start..end)?.try_into().unwrap();
         match s.byte_order {
-            ByteOrder::LittleEndian => Some(num),
-            ByteOrder::BigEndian => Some(num.to_be()),
+            ByteOrder::LittleEndian => Some(u32::from_le_bytes(bytes)),
+            ByteOrder::BigEndian => Some(u32::from_be_bytes(bytes)),
         }
     }
 }
@@ -75,10 +75,10 @@ impl RawNumber for u64 {
     fn parse(s: &mut Stream) -> Option<Self> {
         let start = s.offset;
         let end = s.offset.checked_add(mem::size_of::<Self>())?;
-        let num = u64::from_ne_bytes(s.data.get(start..end)?.try_into().unwrap());
+        let bytes: [u8; 8] = s.data.get(start..end)?.try_into().unwrap();
         match s.byte_order {
-            ByteOrder::LittleEndian => Some(num),
-            ByteOrder::BigEndian => Some(num.to_be()),
+            ByteOrder::LittleEndian => Some(u64::from_le_bytes(bytes)),
+            ByteOrder::BigEndian => Some(u64::from_be_bytes(bytes)),
         }
     }
 }

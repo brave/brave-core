@@ -1,12 +1,14 @@
 //! Interface to VxWorks C library
 
-use core::ptr::null_mut;
-
 use crate::prelude::*;
 
 extern_ty! {
-    pub enum DIR {}
+    pub type DIR;
 }
+
+// Deprecated impls: see #5296
+unsafe impl Send for DIR {}
+unsafe impl Sync for DIR {}
 
 pub type intmax_t = i64;
 pub type uintmax_t = u64;
@@ -60,7 +62,12 @@ pub type pthread_key_t = c_ulong;
 
 // From b_off_t.h
 pub type off_t = c_longlong;
-pub type off64_t = off_t;
+
+#[deprecated(
+    since = "0.2.187",
+    note = "Kernel mode definitions are unsupported. Use `off_t` instead."
+)]
+pub type off64_t = c_longlong;
 
 // From b_BOOL.h
 pub type BOOL = c_int;
@@ -95,7 +102,7 @@ pub type sa_family_t = c_uchar;
 pub type mqd_t = c_int;
 
 extern_ty! {
-    pub enum _Vx_semaphore {}
+    pub type _Vx_semaphore;
 }
 
 impl siginfo_t {
@@ -158,6 +165,7 @@ s! {
     }
 
     // b_struct_timeval.h
+    #[derive(Default)]
     pub struct timeval {
         pub tv_sec: crate::time_t,
         pub tv_usec: crate::suseconds_t,
@@ -234,10 +242,26 @@ s! {
         pub st_blksize: crate::blksize_t,
         pub st_blocks: crate::blkcnt_t,
         pub st_attrib: c_uchar,
-        pub st_reserved1: c_int,
-        pub st_reserved2: c_int,
-        pub st_reserved3: c_int,
-        pub st_reserved4: c_int,
+        st_reserved1: Padding<c_int>,
+        st_reserved2: Padding<c_int>,
+        st_reserved3: Padding<c_int>,
+        st_reserved4: Padding<c_int>,
+    }
+
+    pub struct fsid_t {
+        val: [c_long; 2],
+    }
+
+    pub struct statfs {
+        pub f_type: c_long,
+        pub f_bsize: c_long,
+        pub f_blocks: c_long,
+        pub f_bfree: c_long,
+        pub f_bavail: c_long,
+        pub f_files: c_long,
+        pub f_ffree: c_long,
+        pub f_fsid: crate::fsid_t,
+        f_spare: Padding<[c_long; 7]>,
     }
 
     //b_struct__Timespec.h
@@ -332,6 +356,7 @@ s! {
     }
 
     // b_struct_timespec.h
+    #[derive(Default)]
     pub struct timespec {
         pub tv_sec: crate::time_t,
         pub tv_nsec: c_long,
@@ -454,6 +479,14 @@ s! {
         pub mq_msgsize: c_long,
         pub mq_flags: c_long,
         pub mq_curmsgs: c_long,
+    }
+
+    pub struct flock {
+        pub l_type: c_short,
+        pub l_whence: c_short,
+        pub l_start: c_longlong,
+        pub l_len: c_longlong,
+        pub l_pid: c_long,
     }
 
     pub struct winsize {
@@ -579,9 +612,9 @@ s_no_extra_traits! {
     pub struct sockaddr_storage {
         pub ss_len: c_uchar,
         pub ss_family: crate::sa_family_t,
-        pub __ss_pad1: [c_char; _SS_PAD1SIZE],
-        pub __ss_align: i32,
-        pub __ss_pad2: [c_char; _SS_PAD2SIZE],
+        __ss_pad1: Padding<[c_char; _SS_PAD1SIZE]>,
+        __ss_align: i32,
+        __ss_pad2: Padding<[c_char; _SS_PAD2SIZE]>,
     }
 
     pub union sa_u_t {
@@ -647,8 +680,10 @@ pub const EAI_SERVICE: c_int = 9;
 pub const EAI_SOCKTYPE: c_int = 10;
 pub const EAI_SYSTEM: c_int = 11;
 
-pub const INT_MAX: c_int = 0x7fffffff;
-pub const INT_MIN: c_int = -INT_MAX - 1;
+#[deprecated(since = "0.2.190", note = "Use `c_int::MAX` instead.")]
+pub const INT_MAX: c_int = c_int::MAX;
+#[deprecated(since = "0.2.190", note = "Use `c_int::MIN` instead.")]
+pub const INT_MIN: c_int = c_int::MIN;
 
 // FIXME(vxworks): This is not defined in vxWorks, but we have to define it here
 // to make the building pass for getrandom and std
@@ -663,9 +698,9 @@ pub const TIMER_ABSTIME: c_int = 0x1;
 pub const TIMER_RELTIME: c_int = 0x0;
 
 // PTHREAD STUFF
-pub const PTHREAD_INITIALIZED_OBJ: c_int = 0xF70990EF;
+pub const PTHREAD_INITIALIZED_OBJ: c_int = u32_cast_int(0xF70990EF);
 pub const PTHREAD_DESTROYED_OBJ: c_int = -1;
-pub const PTHREAD_VALID_OBJ: c_int = 0xEC542A37;
+pub const PTHREAD_VALID_OBJ: c_int = u32_cast_int(0xEC542A37);
 pub const PTHREAD_INVALID_OBJ: c_int = -1;
 pub const PTHREAD_UNUSED_YET_OBJ: c_int = -1;
 
@@ -678,6 +713,9 @@ pub const PTHREAD_MUTEX_ERRORCHECK: c_int = 1;
 pub const PTHREAD_MUTEX_RECURSIVE: c_int = 2;
 pub const PTHREAD_MUTEX_DEFAULT: c_int = PTHREAD_MUTEX_NORMAL;
 pub const PTHREAD_STACK_MIN: usize = 4096;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const _PTHREAD_SHARED_SEM_NAME_MAX: usize = 30;
 
 //sched.h
@@ -1017,6 +1055,9 @@ pub const AF_SOCKDEV: c_int = 31;
 pub const AF_TIPC: c_int = 33;
 pub const AF_MIPC: c_int = 34;
 pub const AF_MIPC_SAFE: c_int = 35;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const AF_MAX: c_int = 39;
 
 // termios.h
@@ -1144,10 +1185,13 @@ pub const FIODISKCHANGE: c_int = 13;
 pub const FIOCANCEL: c_int = 14;
 pub const FIOSQUEEZE: c_int = 15;
 pub const FIOGETNAME: c_int = 18;
-pub const FIONBIO: c_int = 0x90040010;
+pub const FIONBIO: c_int = u32_cast_int(0x90040010);
 
 // limits.h
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PATH_MAX: c_int = _PARM_PATH_MAX;
+
 pub const _POSIX_PATH_MAX: c_int = 256;
 
 // Some poll stuff
@@ -1175,6 +1219,9 @@ pub const F_GETLK: c_int = 7;
 pub const F_SETLK: c_int = 8;
 pub const F_SETLKW: c_int = 9;
 pub const F_DUPFD_CLOEXEC: c_int = 14;
+pub const F_RDLCK: c_int = 1;
+pub const F_WRLCK: c_int = 2;
+pub const F_UNLCK: c_int = 3;
 
 pub const LOG_EMERG: c_int = 0;
 pub const LOG_ALERT: c_int = 1;
@@ -1288,7 +1335,12 @@ pub const AT_REMOVEDIR: c_int = 0x200;
 pub const AT_SYMLINK_FOLLOW: c_int = 0x400;
 
 // vxParams.h definitions
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const _PARM_NAME_MAX: c_int = 255;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const _PARM_PATH_MAX: c_int = 1024;
 
 // WAIT STUFF
@@ -1304,7 +1356,7 @@ const PTHREAD_MUTEXATTR_INITIALIZER: pthread_mutexattr_t = pthread_mutexattr_t {
     mutexAttrPshared: 1,
 };
 pub const PTHREAD_MUTEX_INITIALIZER: pthread_mutex_t = pthread_mutex_t {
-    mutexSemId: null_mut(),
+    mutexSemId: ptr::null_mut(),
     mutexValid: PTHREAD_VALID_OBJ,
     mutexInitted: PTHREAD_UNUSED_YET_OBJ,
     mutexCondRefCount: 0,
@@ -1314,16 +1366,16 @@ pub const PTHREAD_MUTEX_INITIALIZER: pthread_mutex_t = pthread_mutex_t {
 };
 
 const PTHREAD_CONDATTR_INITIALIZER: pthread_condattr_t = pthread_condattr_t {
-    condAttrStatus: 0xf70990ef,
+    condAttrStatus: u32_cast_int(0xf70990ef),
     condAttrPshared: 1,
     condAttrClockId: CLOCK_REALTIME,
 };
 pub const PTHREAD_COND_INITIALIZER: pthread_cond_t = pthread_cond_t {
-    condSemId: null_mut(),
+    condSemId: ptr::null_mut(),
     condValid: PTHREAD_VALID_OBJ,
     condInitted: PTHREAD_UNUSED_YET_OBJ,
     condRefCount: 0,
-    condMutex: null_mut(),
+    condMutex: ptr::null_mut(),
     condAttr: PTHREAD_CONDATTR_INITIALIZER,
     condSemName: [0; _PTHREAD_SHARED_SEM_NAME_MAX],
 };
@@ -1335,7 +1387,7 @@ const PTHREAD_RWLOCKATTR_INITIALIZER: pthread_rwlockattr_t = pthread_rwlockattr_
     rwlockAttrConformOpt: 1,
 };
 pub const PTHREAD_RWLOCK_INITIALIZER: pthread_rwlock_t = pthread_rwlock_t {
-    rwlockSemId: null_mut(),
+    rwlockSemId: ptr::null_mut(),
     rwlockReadersRefCount: 0,
     rwlockValid: PTHREAD_VALID_OBJ,
     rwlockInitted: PTHREAD_UNUSED_YET_OBJ,
@@ -1372,6 +1424,9 @@ pub const O_ACCMODE: c_int = 3;
 pub const O_CLOEXEC: c_int = 0x100000; // fcntlcom
 pub const O_EXCL: c_int = 0x0800;
 pub const O_CREAT: c_int = 0x0200;
+pub const O_SYNC: c_int = 0x2000;
+pub const O_ASYNC: c_int = 0x0040;
+pub const O_DSYNC: c_int = 0x10000;
 pub const O_TRUNC: c_int = 0x0400;
 pub const O_APPEND: c_int = 0x0008;
 pub const O_RDWR: c_int = 0x0002;
@@ -1399,20 +1454,20 @@ pub const MS_INVALIDATE: c_int = 0x0004;
 pub const MAP_FAILED: *mut c_void = !0 as *mut c_void;
 
 // sys/ttycom.h
-pub const TIOCGWINSZ: c_int = 0x1740087468;
+pub const TIOCGWINSZ: i64 = 0x1740087468;
 pub const TIOCSWINSZ: c_int = -0x7ff78b99;
 
 extern_ty! {
-    pub enum FILE {}
-    pub enum fpos_t {} // FIXME(vxworks): fill this out with a struct
+    pub type FILE;
+    pub type fpos_t; // FIXME(vxworks): fill this out with a struct
 }
 
 f! {
-    pub const fn CMSG_ALIGN(len: usize) -> usize {
+    pub const unsafe fn CMSG_ALIGN(len: usize) -> usize {
         len + size_of::<usize>() - 1 & !(size_of::<usize>() - 1)
     }
 
-    pub fn CMSG_NXTHDR(mhdr: *const msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
+    pub unsafe fn CMSG_NXTHDR(mhdr: *const msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
         let next = cmsg as usize
             + CMSG_ALIGN((*cmsg).cmsg_len as usize)
             + CMSG_ALIGN(size_of::<cmsghdr>());
@@ -1420,28 +1475,52 @@ f! {
         if next <= max {
             (cmsg as usize + CMSG_ALIGN((*cmsg).cmsg_len as usize)) as *mut cmsghdr
         } else {
-            core::ptr::null_mut::<cmsghdr>()
+            ptr::null_mut()
         }
     }
 
-    pub fn CMSG_FIRSTHDR(mhdr: *const msghdr) -> *mut cmsghdr {
+    pub unsafe fn CMSG_FIRSTHDR(mhdr: *const msghdr) -> *mut cmsghdr {
         if (*mhdr).msg_controllen as usize > 0 {
-            (*mhdr).msg_control as *mut cmsghdr
+            (*mhdr).msg_control.cast()
         } else {
-            core::ptr::null_mut::<cmsghdr>()
+            ptr::null_mut()
         }
     }
 
-    pub fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
+    pub unsafe fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
         (cmsg as *mut c_uchar).offset(CMSG_ALIGN(size_of::<cmsghdr>()) as isize)
     }
 
-    pub const fn CMSG_SPACE(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_SPACE(length: c_uint) -> c_uint {
         (CMSG_ALIGN(length as usize) + CMSG_ALIGN(size_of::<cmsghdr>())) as c_uint
     }
 
-    pub const fn CMSG_LEN(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_LEN(length: c_uint) -> c_uint {
         CMSG_ALIGN(size_of::<cmsghdr>()) as c_uint + length
+    }
+
+    // Dummy functions, these don't really exist in VxWorks.
+    // wait.h macros
+    pub const safe fn WIFEXITED(status: c_int) -> bool {
+        (status & 0xFF00) == 0
+    }
+    pub const safe fn WIFSIGNALED(status: c_int) -> bool {
+        (status & 0xFF00) != 0
+    }
+    pub const safe fn WIFSTOPPED(status: c_int) -> bool {
+        (status & 0xFF0000) != 0
+    }
+    pub const safe fn WEXITSTATUS(status: c_int) -> c_int {
+        status & 0xFF
+    }
+    pub const safe fn WIFCONTINUED(status: c_int) -> c_int {
+        (status >> 24) & 0xFF
+    }
+    pub const safe fn WTERMSIG(status: c_int) -> c_int {
+        (status >> 8) & 0xFF
+    }
+    pub const safe fn WSTOPSIG(status: c_int) -> c_int {
+        (status >> 16) & 0xFF
     }
 }
 
@@ -1558,6 +1637,15 @@ extern "C" {
         flags: c_int,
     ) -> c_int;
 
+    pub fn mkdirat(dirfd: c_int, pathname: *const c_char, mode: mode_t) -> c_int;
+
+    pub fn readlinkat(
+        dirfd: c_int,
+        pathname: *const c_char,
+        buf: *mut c_char,
+        bufsiz: size_t,
+    ) -> ssize_t;
+
     pub fn unlinkat(dirfd: c_int, pathname: *const c_char, flags: c_int) -> c_int;
 
     // netdb.h
@@ -1604,6 +1692,7 @@ extern "C" {
     pub fn pause() -> c_int;
     pub fn seteuid(uid: uid_t) -> c_int;
     pub fn setegid(gid: gid_t) -> c_int;
+    pub fn statfs(path: *const c_char, buf: *mut statfs) -> c_int;
     pub fn sleep(secs: c_uint) -> c_uint;
     pub fn ttyname(fd: c_int) -> *mut c_char;
     pub fn wait(status: *mut c_int) -> pid_t;
@@ -1691,6 +1780,10 @@ extern "C" {
     pub fn ftello(stream: *mut crate::FILE) -> off_t;
     pub fn mkstemp(template: *mut c_char) -> c_int;
 
+    #[deprecated(
+        since = "0.2.190",
+        note = "function is obsolete; prefer tmpfile, mkstemp, or similar"
+    )]
     pub fn tmpnam(ptr: *mut c_char) -> *mut c_char;
 
     pub fn openlog(ident: *const c_char, logopt: c_int, facility: c_int);
@@ -1816,6 +1909,9 @@ extern "C" {
     // stat.h
     pub fn fstat(fildes: c_int, buf: *mut stat) -> c_int;
 
+    // sys/statfs.h
+    pub fn fstatfs(fd: c_int, buf: *mut statfs) -> c_int;
+
     // stat.h
     pub fn lstat(path: *const c_char, buf: *mut stat) -> c_int;
 
@@ -1832,9 +1928,18 @@ extern "C" {
     // dirent.h
     pub fn readdir(pDir: *mut crate::DIR) -> *mut crate::dirent;
 
+    // dirent.h
+    pub fn fdopendir(fd: c_int) -> *mut crate::DIR;
+
+    // dirent.h
+    pub fn dirfd(dirp: *mut crate::DIR) -> c_int;
+
     // fcntl.h or
     // ioLib.h
     pub fn open(path: *const c_char, oflag: c_int, ...) -> c_int;
+
+    // fcntl.h
+    pub fn openat(dirfd: c_int, pathname: *const c_char, flags: c_int, ...) -> c_int;
 
     // poll.h
     pub fn poll(fds: *mut pollfd, nfds: nfds_t, timeout: c_int) -> c_int;
@@ -2173,6 +2278,9 @@ extern "C" {
     // unistd.h
     pub fn fsync(fd: c_int) -> c_int;
 
+    // unistd.h
+    pub fn fdatasync(fd: c_int) -> c_int;
+
     // dirent.h
     pub fn closedir(ptr: *mut crate::DIR) -> c_int;
 
@@ -2332,41 +2440,7 @@ extern "C" {
     pub fn vxCpuConfiguredGet() -> crate::cpuset_t; // Get set of Configured CPU's in the system
 }
 
-//Dummy functions, these don't really exist in VxWorks.
-
-// wait.h macros
-safe_f! {
-    pub const fn WIFEXITED(status: c_int) -> bool {
-        (status & 0xFF00) == 0
-    }
-    pub const fn WIFSIGNALED(status: c_int) -> bool {
-        (status & 0xFF00) != 0
-    }
-    pub const fn WIFSTOPPED(status: c_int) -> bool {
-        (status & 0xFF0000) != 0
-    }
-    pub const fn WEXITSTATUS(status: c_int) -> c_int {
-        status & 0xFF
-    }
-    pub const fn WIFCONTINUED(status: c_int) -> c_int {
-        (status >> 24) & 0xFF
-    }
-    pub const fn WTERMSIG(status: c_int) -> c_int {
-        (status >> 8) & 0xFF
-    }
-    pub const fn WSTOPSIG(status: c_int) -> c_int {
-        (status >> 16) & 0xFF
-    }
-}
-
-pub fn pread(_fd: c_int, _buf: *mut c_void, _count: size_t, _offset: off64_t) -> ssize_t {
-    -1
-}
-
-pub fn pwrite(_fd: c_int, _buf: *const c_void, _count: size_t, _offset: off64_t) -> ssize_t {
-    -1
-}
-pub fn posix_memalign(memptr: *mut *mut c_void, align: size_t, size: size_t) -> c_int {
+pub unsafe fn posix_memalign(memptr: *mut *mut c_void, align: size_t, size: size_t) -> c_int {
     // check to see if align is a power of 2 and if align is a multiple
     //  of sizeof(void *)
     if (align & align - 1 != 0) || (align as usize % size_of::<size_t>() != 0) {

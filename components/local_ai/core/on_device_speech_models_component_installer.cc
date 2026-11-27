@@ -80,7 +80,7 @@ const ComponentConfig& GetComponentConfig(OnDeviceSpeechModel model) {
 }
 
 // Owns one model's component registration for the whole session and follows
-// the master switch and the model's own enabled pref, so the model is on disk
+// the master switch and `prefs::kOnDeviceSpeechModel`, so the model is on disk
 // only while `ShouldInstallOnDeviceSpeechModel` is true for it. It is also the
 // one place that decides when an install request for the model is over, and
 // answers it with whether the model is installed.
@@ -108,7 +108,7 @@ class ModelComponentRegistrar : public component_updater::ServiceObserver {
         base::BindRepeating(&ModelComponentRegistrar::Sync,
                             base::Unretained(this)));
     pref_change_registrar_.Add(
-        GetOnDeviceSpeechModelEnabledPref(model_),
+        prefs::kOnDeviceSpeechModel,
         base::BindRepeating(&ModelComponentRegistrar::Sync,
                             base::Unretained(this)));
     Sync();
@@ -154,14 +154,12 @@ class ModelComponentRegistrar : public component_updater::ServiceObserver {
   void Sync() {
     PrefService* local_state = pref_change_registrar_.prefs();
     if (!ShouldInstallOnDeviceSpeechModel(local_state, model_)) {
-      const std::string_view enabled_pref =
-          GetOnDeviceSpeechModelEnabledPref(model_);
       // The switch or a feature took the model away. Enabling the model does
       // not outlive them, so turning them back on asks again rather than
       // downloading. Clearing it runs `Sync` again, and that run removes the
       // model.
-      if (local_state->GetBoolean(enabled_pref)) {
-        local_state->ClearPref(enabled_pref);
+      if (GetEnabledOnDeviceSpeechModel(local_state) == model_) {
+        local_state->ClearPref(prefs::kOnDeviceSpeechModel);
         return;
       }
       Unregister();

@@ -2,7 +2,7 @@
 
 [![](https://img.shields.io/crates/v/addr2line.svg)](https://crates.io/crates/addr2line)
 [![](https://img.shields.io/docsrs/addr2line.svg)](https://docs.rs/addr2line)
-[![Coverage Status](https://coveralls.io/repos/github/gimli-rs/addr2line/badge.svg?branch=master)](https://coveralls.io/github/gimli-rs/addr2line?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/gimli-rs/addr2line/badge.svg?branch=main)](https://coveralls.io/github/gimli-rs/addr2line?branch=main)
 
 `addr2line` provides a cross-platform library for retrieving per-address debug information
 from files with DWARF debug information. Given an address, it can return the file name,

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 
+#include <cmath>
 #include <memory>
 #include <optional>
 #include <tuple>
@@ -25,6 +26,7 @@
 #include "brave/components/brave_wallet/common/eth_requests.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/json_rpc_requests.h"
+#include "brave/components/brave_wallet/common/string_utils.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
@@ -81,15 +83,32 @@ namespace {
 //                  string buyTokenBalance)")
 constexpr char kCowSwapTypeHash[] =
     "D5A25BA2E97094AD7D83DC28A6572DA797D6B3E7FC6663BD93EFB789FC17E489";
+// keccak256("EIP712Domain(string name,string version,uint256 chainId,
+//                         address verifyingContract)")
+constexpr char kCowSwapDomainTypeHash[] =
+    "8B73C3C69BB8FE3D512ECC4CF759CC79239F7B179B0FFACAA9A75D522B39400F";
 constexpr char kCowSwapDomainName[] = "Gnosis Protocol";
 constexpr char kCowSwapDomainVersion[] = "v2";
-// GPv2Settlement. Deployed at this address on every supported chain.
+// GPv2Settlement. Same address on every chain CoW Protocol supports.
+// Ref:
+// https://github.com/cowprotocol/contracts/blob/main/networks.json
+// https://docs.cow.fi/cow-protocol/reference/contracts/core
 constexpr char kCowSwapVerifyingContract[] =
     "0x9008D19f58AAbD9eD0D60971565AA8510560ab41";
 
 // The Order type hash is not unique to CoW. Only the settlement domain should
-// get the swap preview, which hides the raw typed data.
-bool IsCowSwapDomain(const base::DictValue& domain) {
+// get the swap preview, which hides the raw typed data. |domain| must be the
+// sanitized domain, holding only fields covered by the domain hash, and the
+// EIP712Domain type must be the canonical one, so the fields checked here are
+// exactly what gets signed.
+bool IsCowSwapDomain(const EthSignTypedDataHelper& helper,
+                     const base::DictValue& domain) {
+  auto domain_type_hash = helper.GetTypeHash("EIP712Domain");
+  if (!domain_type_hash ||
+      base::HexEncode(*domain_type_hash) != kCowSwapDomainTypeHash) {
+    return false;
+  }
+
   const std::string* name = domain.FindString("name");
   const std::string* version = domain.FindString("version");
   const std::string* verifying_contract =
@@ -119,6 +138,34 @@ mojom::EthSignTypedDataMetaPtr ParseCowSwapOrder(const base::DictValue& value) {
 
   return mojom::EthSignTypedDataMeta::NewCowSwapOrder(
       std::move(cow_swap_order));
+}
+
+std::optional<uint256_t> ParseChainId(const base::DictValue& domain) {
+  const base::Value* chain_id_value = domain.Find("chainId");
+  if (!chain_id_value) {
+    return std::nullopt;
+  }
+
+  if (auto chain_id = chain_id_value->GetIfDouble()) {
+    if (std::trunc(*chain_id) != *chain_id || *chain_id < 0 ||
+        *chain_id > static_cast<double>(kMaxSafeIntegerUint64)) {
+      return std::nullopt;
+    }
+    return uint256_t(static_cast<uint64_t>(*chain_id));
+  }
+
+  if (auto* chain_id_str = chain_id_value->GetIfString()) {
+    if (chain_id_str->empty()) {
+      return 0;
+    }
+
+    if (auto chain_id = HexValueToUint256(*chain_id_str)) {
+      return chain_id;
+    }
+    return Base10ValueToUint256(*chain_id_str);
+  }
+
+  return std::nullopt;
 }
 
 }  // namespace
@@ -446,8 +493,9 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
     return nullptr;
   }
   auto type_hash_hex = base::HexEncode(*type_hash);
-  if (type_hash_hex == kCowSwapTypeHash && IsCowSwapDomain(*domain)) {
-    result->meta = ParseCowSwapOrder(*message);
+  if (type_hash_hex == kCowSwapTypeHash &&
+      IsCowSwapDomain(*helper, domain_hash->second)) {
+    result->meta = ParseCowSwapOrder(primary_hash->second);
   } else {
     result->meta = nullptr;
   }
@@ -468,9 +516,8 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
 
   result->primary_type = *primary_type;
 
-  auto chain_id = domain->FindDouble("chainId");
-  if (chain_id) {
-    result->chain_id = Uint256ValueToHex(uint256_t(uint64_t(*chain_id)));
+  if (auto chain_id = ParseChainId(*domain)) {
+    result->chain_id = Uint256ValueToHex(*chain_id);
   }
 
   DCHECK(!result->domain_hash.empty());

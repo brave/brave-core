@@ -462,7 +462,7 @@ mod recvfrom {
         assert_eq!(AddressFamily::Inet, from.unwrap().family().unwrap());
     }
 
-    #[cfg(target_os = "linux")]
+    #[cfg(linux_android)]
     mod udp_offload {
         use super::*;
         use nix::sys::socket::sockopt::{UdpGroSegment, UdpGsoSegment};
@@ -919,15 +919,7 @@ pub fn test_scm_rights() {
     close(received_r).unwrap();
 }
 
-// 1. Disable the test on emulated platforms due to not enabled support of
-//    AF_ALG in QEMU from rust cross
-// 2. Disable the test on aarch64/Linux CI because bind() fails with ENOENT
-//    https://github.com/nix-rust/nix/issues/1352
 #[cfg(linux_android)]
-#[cfg_attr(
-    any(qemu, all(target_os = "linux", target_arch = "aarch64")),
-    ignore
-)]
 #[test]
 pub fn test_af_alg_cipher() {
     use nix::sys::socket::sockopt::AlgSetKey;
@@ -936,10 +928,35 @@ pub fn test_af_alg_cipher() {
         ControlMessage, MsgFlags, SockFlag, SockType,
     };
     use nix::unistd::read;
+    use std::fs;
     use std::io::IoSlice;
 
     let alg_type = "skcipher";
     let alg_name = "ctr-aes-aesni";
+
+    /*
+     * Skip the test if requirements are not satisfied.
+     */
+    require_kernel_module!(test_af_alg_cipher, "af_alg");
+
+    let has_algorithm = fs::read_to_string("/proc/crypto")
+        .map(|crypto| {
+            crypto.lines().any(|line| {
+                if let Some((key, value)) = line.split_once(':') {
+                    key.trim() == "name" && value.trim() == alg_name
+                } else {
+                    false
+                }
+            })
+        })
+        .unwrap_or(false);
+    if !has_algorithm {
+        println!("AF_ALG algorithm {alg_name:?} unavailable, skipping test.");
+        return;
+    }
+
+    require_kernel_module!(test_af_alg_cipher, "algif_skcipher");
+
     // 256-bits secret key
     let key = vec![0u8; 32];
     // 16-bytes IV
@@ -1020,10 +1037,7 @@ pub fn test_af_alg_cipher() {
     assert_eq!(decrypted, payload);
 }
 
-// Disable the test on emulated platforms due to not enabled support of AF_ALG
-// in QEMU from rust cross
 #[cfg(linux_android)]
-#[cfg_attr(qemu, ignore)]
 #[test]
 pub fn test_af_alg_aead() {
     use libc::{ALG_OP_DECRYPT, ALG_OP_ENCRYPT};
@@ -1034,18 +1048,37 @@ pub fn test_af_alg_aead() {
         ControlMessage, MsgFlags, SockFlag, SockType,
     };
     use nix::unistd::read;
+    use std::fs;
     use std::io::IoSlice;
 
-    skip_if_cirrus!("Fails for an unknown reason Cirrus CI.  Bug #1352");
-    // Travis's seccomp profile blocks AF_ALG
-    // https://docs.docker.com/engine/security/seccomp/
-    skip_if_seccomp!(test_af_alg_aead);
+    let alg_name = "gcm(aes)";
+
+    /*
+     * Skip the test if requirements are not satisfied.
+     */
+    require_kernel_module!(test_af_alg_aead, "af_alg");
+
+    let has_algorithm = fs::read_to_string("/proc/crypto")
+        .map(|crypto| {
+            crypto.lines().any(|line| {
+                if let Some((key, value)) = line.split_once(':') {
+                    key.trim() == "name" && value.trim() == alg_name
+                } else {
+                    false
+                }
+            })
+        })
+        .unwrap_or(false);
+    if !has_algorithm {
+        println!("AF_ALG algorithm {alg_name:?} unavailable, skipping test.");
+        return;
+    }
+    require_kernel_module!(test_af_alg_aead, "algif_aead");
 
     let auth_size = 4usize;
     let assoc_size = 16u32;
 
     let alg_type = "aead";
-    let alg_name = "gcm(aes)";
     // 256-bits secret key
     let key = vec![0u8; 32];
     // 12-bytes IV
@@ -1764,7 +1797,7 @@ pub fn test_unnamed_unixdomain_autobind() {
 }
 
 // Test creating and using named system control sockets
-#[cfg(apple_targets)]
+#[cfg(target_os = "macos")]
 #[test]
 pub fn test_syscontrol() {
     use nix::errno::Errno;
@@ -2108,7 +2141,10 @@ pub fn test_recvif_ipv4() {
     }
 }
 
-#[cfg(any(linux_android, target_os = "freebsd"))]
+#[cfg(any(
+    all(linux_android, not(target_env = "uclibc")),
+    target_os = "freebsd"
+))]
 #[cfg_attr(qemu, ignore)]
 #[test]
 pub fn test_recvif_ipv6() {
@@ -2526,17 +2562,17 @@ fn test_recvmsg_rxq_ovfl() {
     // Set SO_RXQ_OVFL flag.
     setsockopt(&in_socket, RxqOvfl, &1).unwrap();
 
-    // Set the receiver buffer size to hold only 2 messages.
+    // Set a receiver buffer size too small for 3 messages.
     setsockopt(&in_socket, RcvBuf, &bufsize).unwrap();
 
     let mut drop_counter = 0;
+    let mut first_round_drops = 0;
 
-    for _ in 0..2 {
+    for round in 0..2 {
         let iov = [IoSlice::new(&message)];
         let flags = MsgFlags::empty();
 
-        // Send the 3 messages (the receiver buffer can only hold 2 messages)
-        // to create an overflow.
+        // Send 3 messages to create an overflow.
         for _ in 0..3 {
             let l = sendmsg(
                 out_socket.as_raw_fd(),
@@ -2550,6 +2586,7 @@ fn test_recvmsg_rxq_ovfl() {
         }
 
         // Receive the message and check the drop counter if any.
+        let mut received = 0;
         loop {
             let mut buffer = vec![0u8; message.len()];
             let mut cmsgspace = nix::cmsg_space!(u32);
@@ -2563,6 +2600,7 @@ fn test_recvmsg_rxq_ovfl() {
                 MsgFlags::MSG_DONTWAIT,
             ) {
                 Ok(r) => {
+                    received += 1;
                     drop_counter = match r.cmsgs().unwrap().next() {
                         Some(ControlMessageOwned::RxqOvfl(drop_counter)) => {
                             drop_counter
@@ -2579,10 +2617,16 @@ fn test_recvmsg_rxq_ovfl() {
                 }
             }
         }
+        if round == 0 {
+            first_round_drops = 3 - received;
+        }
     }
 
-    // One packet lost.
-    assert_eq!(drop_counter, 1);
+    // How many messages fit depends on the kernel: since Linux 6.18 a message
+    // is queued only if it fits entirely. The second round's messages were
+    // queued after the first round's drops and before their own.
+    assert!(first_round_drops > 0);
+    assert_eq!(drop_counter, first_round_drops);
 }
 
 #[cfg(any(linux_android, target_os = "freebsd"))]
@@ -3090,8 +3134,7 @@ fn test_recvmm2() -> nix::Result<()> {
     for (ix, chunk) in recv_buf.chunks_mut(256).enumerate() {
         pkt_iovs.push(IoSliceMut::new(chunk));
         if ix % 2 == 1 {
-            recv_iovs.push(pkt_iovs);
-            pkt_iovs = Vec::new();
+            recv_iovs.push(std::mem::take(&mut pkt_iovs));
         }
     }
     drop(pkt_iovs);

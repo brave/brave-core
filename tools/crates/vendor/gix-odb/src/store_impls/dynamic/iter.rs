@@ -1,3 +1,4 @@
+use gix_error::Result;
 use std::{ops::Deref, option::Option::None, sync::Arc, vec::IntoIter};
 
 use gix_hash::ObjectId;
@@ -45,7 +46,8 @@ pub enum Ordering {
     ///
     /// This mode allocates and as to pre-sort objects by their offsets, delaying the start of the iteration once per pack while keeping
     /// memory allocated once per pack. This price is usually worth paying once querying object information is planned as pack caches
-    /// are more efficiently used that way.
+    /// are more efficiently used that way. If a multi-pack index contains corrupt pack references, its objects
+    /// fall back to lexicographical ordering, which does not require valid offsets.
     PackAscendingOffsetThenLooseLexicographical,
 }
 
@@ -54,9 +56,13 @@ pub enum Ordering {
 ///
 /// Use [`with_ordering()`][AllObjects::with_ordering()] to choose a performance trade-off.
 pub struct AllObjects {
+    /// The current iteration state (pack, loose, or depleted)
     state: State,
+    /// The total number of packed objects (used for size hint)
     num_objects: usize,
+    /// Non-empty collection of loose object databases to iterate through
     loose_dbs: Arc<Vec<loose::Store>>,
+    /// The ordering strategy for returning objects
     order: Ordering,
 }
 
@@ -71,7 +77,7 @@ impl AllObjects {
 
 impl AllObjects {
     /// Create a new iterator from a dynamic store, which will be forced to load all indices eagerly and in the current thread.
-    pub fn new(db: &dynamic::Store) -> Result<Self, crate::store::load_index::Error> {
+    pub fn new(db: &dynamic::Store) -> Result<Self> {
         let snapshot = db.load_all_indices()?;
 
         let packed_objects = snapshot
@@ -126,18 +132,24 @@ fn maybe_sort_entries(index: &handle::IndexLookup, order: Ordering) -> Option<Ve
             SingleOrMultiIndex::Multi { index, .. } => index
                 .iter()
                 .enumerate()
-                .map(|(idx, e)| EntryForOrdering {
-                    pack_offset: e.pack_offset,
-                    entry_index: idx as u32,
-                    pack_index: {
-                        debug_assert!(
-                            e.pack_index < PackId::max_packs_in_multi_index(),
-                            "this shows the relation between u16 and pack_index (u32) and why this is OK"
-                        );
-                        e.pack_index as u16
-                    },
+                .map(|(idx, e)| {
+                    let e = e?;
+                    Ok(EntryForOrdering {
+                        pack_offset: e.pack_offset,
+                        entry_index: idx as u32,
+                        pack_index: {
+                            debug_assert!(
+                                e.pack_index < PackId::max_packs_in_multi_index(),
+                                "this shows the relation between u16 and pack_index (u32) and why this is OK"
+                            );
+                            e.pack_index as u16
+                        },
+                    })
                 })
-                .collect(),
+                // Object IDs remain iterable even if their pack references are corrupt. Keep the
+                // public iterator's filesystem-only error type and fall back to lexical ordering.
+                .collect::<Result<Vec<_>>>()
+                .ok()?,
         },
     };
     order.sort_by(|a, b| {
@@ -149,7 +161,7 @@ fn maybe_sort_entries(index: &handle::IndexLookup, order: Ordering) -> Option<Ve
 }
 
 impl Iterator for AllObjects {
-    type Item = Result<ObjectId, loose::iter::Error>;
+    type Item = std::result::Result<ObjectId, loose::iter::Error>;
 
     fn next(&mut self) -> Option<Self::Item> {
         match &mut self.state {
@@ -218,14 +230,14 @@ where
 {
     /// Return an iterator over all, _possibly duplicate_, objects, first the ones in all packs of all linked databases (via alternates),
     /// followed by all loose objects.
-    pub fn iter(&self) -> Result<AllObjects, dynamic::load_index::Error> {
+    pub fn iter(&self) -> Result<AllObjects> {
         AllObjects::new(self.store_ref())
     }
 }
 
 impl dynamic::Store {
     /// Like [`Handle::iter()`][super::Handle::iter()], but accessible directly on the store.
-    pub fn iter(&self) -> Result<AllObjects, dynamic::load_index::Error> {
+    pub fn iter(&self) -> Result<AllObjects> {
         AllObjects::new(self)
     }
 }

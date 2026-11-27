@@ -41,7 +41,7 @@ pub type pthread_spinlock_t = c_int;
 
 pub type off_t = i64;
 
-pub type time_t = c_long;
+pub type time_t = i64;
 
 pub type clock_t = c_long;
 
@@ -49,7 +49,7 @@ pub type clockid_t = c_int;
 
 pub type suseconds_t = c_long;
 
-pub type once_fn = extern "C" fn() -> c_void;
+pub type once_fn = extern "C" fn();
 
 pub type pthread_once_t = c_int;
 
@@ -99,11 +99,13 @@ s! {
         bits: [c_ulong; 128 / size_of::<c_ulong>()],
     }
 
+    #[derive(Default)]
     pub struct timespec {
         pub tv_sec: time_t,
         pub tv_nsec: c_long,
     }
 
+    #[derive(Default)]
     pub struct timeval {
         pub tv_sec: time_t,
         pub tv_usec: suseconds_t,
@@ -1335,8 +1337,7 @@ pub fn errno() -> c_int {
 pub fn CPU_COUNT_S(size: usize, cpuset: &cpu_set_t) -> c_int {
     let mut s: u32 = 0;
     let size_of_mask = size_of_val(&cpuset.bits[0]);
-
-    for i in cpuset.bits[..(size / size_of_mask)].iter() {
+    for i in &cpuset.bits[..(size / size_of_mask)] {
         s += i.count_ones();
     }
     s as c_int

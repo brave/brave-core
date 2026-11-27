@@ -2,31 +2,12 @@ use std::borrow::Cow;
 
 use bstr::BStr;
 
-/// The error returned by [`index()`](crate::index()).
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("Cannot diff indices that contain sparse entries")]
-    IsSparse,
-    #[error("Unmerged entries aren't allowed in the left-hand index, only in the right-hand index")]
-    LhsHasUnmerged,
-    #[error("The callback indicated failure")]
-    Callback(#[source] Box<dyn std::error::Error + Send + Sync>),
-    #[error("Failure during rename tracking")]
-    RenameTracking(#[from] crate::rewrites::tracker::emit::Error),
-}
-
 /// What to do after a [ChangeRef] was passed ot the callback of [`index()`](crate::index()).
-#[derive(Default, Clone, Copy, PartialOrd, PartialEq, Ord, Eq, Hash)]
-pub enum Action {
-    /// Continue the operation.
-    #[default]
-    Continue,
-    /// Stop the operation immediately.
-    ///
-    /// This is useful if one just wants to determine if something changed or not.
-    Cancel,
-}
+///
+/// Use [`std::ops::ControlFlow::Continue`] to continue the operation.
+/// Use [`std::ops::ControlFlow::Break`] to stop the operation immediately.
+/// This is useful if one just wants to determine if something changed or not.
+pub type Action = std::ops::ControlFlow<()>;
 
 /// Options to configure how rewrites are tracked as part of the [`index()`](crate::index()) call.
 pub struct RewriteOptions<'a, Find>

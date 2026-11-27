@@ -61,7 +61,7 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> Deref for VarZeroVecOwned<T, F> {
 }
 
 impl<T: VarULE + ?Sized, F> VarZeroVecOwned<T, F> {
-    /// Construct an empty VarZeroVecOwned
+    /// Construct an empty [`VarZeroVecOwned`]
     pub fn new() -> Self {
         Self {
             marker1: PhantomData,
@@ -72,7 +72,7 @@ impl<T: VarULE + ?Sized, F> VarZeroVecOwned<T, F> {
 }
 
 impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
-    /// Construct a VarZeroVecOwned from a [`VarZeroSlice`] by cloning the internal data
+    /// Construct a [`VarZeroVecOwned`] from a [`VarZeroSlice`] by cloning the internal data
     pub fn from_slice(slice: &VarZeroSlice<T, F>) -> Self {
         Self {
             marker1: PhantomData,
@@ -81,7 +81,7 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
         }
     }
 
-    /// Construct a VarZeroVecOwned from a list of elements
+    /// Construct a [`VarZeroVecOwned`] from a list of elements
     pub fn try_from_elements<A>(elements: &[A]) -> Result<Self, &'static str>
     where
         A: EncodeAsVarULE<T>,
@@ -134,14 +134,23 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
     /// `idx <= self.len()` and `self.as_encoded_bytes()` is well-formed.
     unsafe fn element_position_unchecked(&self, idx: usize) -> usize {
         let len = self.len();
+        if len == 0 {
+            return 0;
+        }
         let out = if idx == len {
-            self.entire_slice.len() - F::Len::SIZE - (F::Index::SIZE * (len - 1))
+            let indices_size = F::Index::SIZE
+                .checked_mul(len - 1)
+                .expect(F::Index::TOO_LARGE_ERROR);
+            self.entire_slice.len() - F::Len::SIZE - indices_size
         } else if let Some(idx) = self.index_data(idx) {
             idx.iule_to_usize()
         } else {
             0
         };
-        debug_assert!(out + F::Len::SIZE + (len - 1) * F::Index::SIZE <= self.entire_slice.len());
+        let indices_size = F::Index::SIZE
+            .checked_mul(len - 1)
+            .expect(F::Index::TOO_LARGE_ERROR);
+        debug_assert!(out + F::Len::SIZE + indices_size <= self.entire_slice.len());
         out
     }
 
@@ -149,7 +158,7 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
     ///
     /// ## Safety
     /// `idx < self.len()` and `self.as_encoded_bytes()` is well-formed.
-    unsafe fn element_range_unchecked(&self, idx: usize) -> core::ops::Range<usize> {
+    unsafe fn element_range_unchecked(&self, idx: usize) -> Range<usize> {
         let start = self.element_position_unchecked(idx);
         let end = self.element_position_unchecked(idx + 1);
         debug_assert!(start <= end, "{start} > {end}");
@@ -173,14 +182,17 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
     /// since there is no stored index for it.
     fn index_range(index: usize) -> Option<Range<usize>> {
         let index_minus_one = index.checked_sub(1)?;
-        let pos = F::Len::SIZE + F::Index::SIZE * index_minus_one;
+        let pos = F::Len::SIZE
+            + F::Index::SIZE
+                .checked_mul(index_minus_one)
+                .expect(F::Index::TOO_LARGE_ERROR);
         Some(pos..pos + F::Index::SIZE)
     }
 
     /// Return the raw bytes representing the given `index`. Returns None when given index 0
     ///
     /// ## Safety
-    /// The index must be valid, and self.as_encoded_bytes() must be well-formed
+    /// The index must be valid, and `self.as_encoded_bytes()` must be well-formed
     unsafe fn index_data(&self, index: usize) -> Option<&F::Index> {
         let index_range = Self::index_range(index)?;
         Some(&F::Index::slice_from_bytes_unchecked(&self.entire_slice[index_range])[0])
@@ -189,7 +201,7 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
     /// Return the mutable slice representing the given `index`. Returns None when given index 0
     ///
     /// ## Safety
-    /// The index must be valid. self.as_encoded_bytes() must have allocated space
+    /// The index must be valid. `self.as_encoded_bytes()` must have allocated space
     /// for this index, but need not have its length appropriately set.
     unsafe fn index_data_mut(&mut self, index: usize) -> Option<&mut F::Index> {
         let ptr = self.entire_slice.as_mut_ptr();
@@ -215,8 +227,11 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
             .checked_sub(1)
             .expect("shift_indices called with a 0 starting index");
         let len = self.len();
+        let indices_size = F::Index::SIZE
+            .checked_mul(len - 1)
+            .expect(F::Index::TOO_LARGE_ERROR);
         let indices = F::Index::iule_from_bytes_unchecked_mut(
-            &mut self.entire_slice[F::Len::SIZE..F::Len::SIZE + F::Index::SIZE * (len - 1)],
+            &mut self.entire_slice[F::Len::SIZE..F::Len::SIZE + indices_size],
         );
         for idx in &mut indices[normalized_idx..] {
             let mut new_idx = idx.iule_to_usize();
@@ -308,7 +323,10 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
             // The start of the indices buffer
             let indices_start = slice_range.start.add(F::Len::SIZE);
             let old_slice_end = slice_range.start.add(slice_len);
-            let data_start = indices_start.add((len - 1) * F::Index::SIZE);
+            let indices_size = F::Index::SIZE
+                .checked_mul(len - 1)
+                .expect(F::Index::TOO_LARGE_ERROR);
+            let data_start = indices_start.add(indices_size);
             let prev_element_p =
                 data_start.add(prev_element.start)..data_start.add(prev_element.end);
 
@@ -318,7 +336,10 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
             // When replacing: unused.
             // Will be None when the affected index is index 0, which is special
             let index_range = if let Some(index_minus_one) = index.checked_sub(1) {
-                let index_start = indices_start.add(F::Index::SIZE * index_minus_one);
+                let index_offset = F::Index::SIZE
+                    .checked_mul(index_minus_one)
+                    .expect(F::Index::TOO_LARGE_ERROR);
+                let index_start = indices_start.add(index_offset);
                 Some(index_start..index_start.add(F::Index::SIZE))
             } else {
                 None
@@ -400,9 +421,10 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
         debug_assert!(self.verify_integrity());
 
         // Return a mut slice to the new element data.
-        let element_pos = F::Len::SIZE
-            + (self.len() - 1) * F::Index::SIZE
-            + self.element_position_unchecked(index);
+        let indices_size = F::Index::SIZE
+            .checked_mul(self.len() - 1)
+            .expect(F::Index::TOO_LARGE_ERROR);
+        let element_pos = F::Len::SIZE + indices_size + self.element_position_unchecked(index);
         &mut self.entire_slice[element_pos..element_pos + new_size]
     }
 
@@ -429,10 +451,13 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
             // An empty vec must have an empty slice: there is only a single valid byte representation.
             panic!("VarZeroVecOwned integrity: Found empty VarZeroVecOwned with a nonempty slice");
         }
-        if self.entire_slice.len() < F::Len::SIZE + (len - 1) * F::Index::SIZE {
+        let indices_size = F::Index::SIZE
+            .checked_mul(len - 1)
+            .expect(F::Index::TOO_LARGE_ERROR);
+        if self.entire_slice.len() < F::Len::SIZE + indices_size {
             panic!("VarZeroVecOwned integrity: Not enough room for the indices");
         }
-        let data_len = self.entire_slice.len() - F::Len::SIZE - (len - 1) * F::Index::SIZE;
+        let data_len = self.entire_slice.len() - F::Len::SIZE - indices_size;
         if data_len > F::Index::MAX_VALUE as usize {
             panic!("VarZeroVecOwned integrity: Data segment is too long");
         }
@@ -440,7 +465,7 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
         // Test index validity.
         let indices = unsafe {
             F::Index::slice_from_bytes_unchecked(
-                &self.entire_slice[F::Len::SIZE..F::Len::SIZE + (len - 1) * F::Index::SIZE],
+                &self.entire_slice[F::Len::SIZE..F::Len::SIZE + indices_size],
             )
         };
         for idx in indices {
@@ -469,21 +494,36 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
         }
 
         let value_len = element.encode_var_ule_len();
+        assert!(value_len < F::Index::MAX_VALUE as usize);
 
         if len == 0 {
             let header_len = F::Len::SIZE; // Index array is size 0 for len = 1
             let cap = header_len + value_len;
-            self.entire_slice.resize(cap, 0);
-            self.entire_slice[0] = 1; // set length
-            element.encode_var_ule_write(&mut self.entire_slice[header_len..]);
+            let guard = ClearOnPanic(self);
+            guard.0.entire_slice.resize(cap, 0);
+            guard.0.entire_slice[0] = 1; // set length
+            element.encode_var_ule_write(&mut guard.0.entire_slice[header_len..]);
+            debug_assert_eq!(
+                T::validate_bytes(&guard.0.entire_slice[header_len..]),
+                Ok(())
+            );
+            core::mem::forget(guard);
             return;
         }
 
-        assert!(value_len < F::Index::MAX_VALUE as usize);
+        let guard = ClearOnPanic(self);
+        // SAFETY:
+        // - `index <= self.len()` is checked above (`ShiftType::Insert` allows `index == self.len()`).
+        // - `value_len < F::Index::MAX_VALUE` is asserted above, and `shift` checks that the
+        //   total grown slice length fits within `F::Index::MAX_VALUE`.
+        // - `guard` clears `entire_slice` if `shift` or `encode_var_ule_write` panics,
+        //   preventing partially-mutated state from being observed after unwinding.
         unsafe {
-            let place = self.shift(index, value_len, ShiftType::Insert);
+            let place = guard.0.shift(index, value_len, ShiftType::Insert);
             element.encode_var_ule_write(place);
+            debug_assert_eq!(T::validate_bytes(place), Ok(()));
         }
+        core::mem::forget(guard);
     }
 
     /// Remove the element at index `idx`
@@ -497,9 +537,15 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
             self.entire_slice.clear();
             return;
         }
+        let guard = ClearOnPanic(self);
+        // SAFETY:
+        // - `index < self.len()` is checked above.
+        // - `new_size` is 0, so the data segment does not grow.
+        // - `guard` clears `entire_slice` if `shift` panics.
         unsafe {
-            self.shift(index, 0, ShiftType::Remove);
+            guard.0.shift(index, 0, ShiftType::Remove);
         }
+        core::mem::forget(guard);
     }
 
     /// Replace the element at index `idx` with another
@@ -512,10 +558,30 @@ impl<T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecOwned<T, F> {
         let value_len = element.encode_var_ule_len();
 
         assert!(value_len < F::Index::MAX_VALUE as usize);
+        let guard = ClearOnPanic(self);
+        // SAFETY:
+        // - `index < self.len()` is checked above.
+        // - `value_len < F::Index::MAX_VALUE` is asserted above, and `shift` checks that the
+        //   total grown slice length fits within `F::Index::MAX_VALUE`.
+        // - `guard` clears `entire_slice` if `shift` or `encode_var_ule_write` panics,
+        //   preventing partially-mutated state from being observed after unwinding.
         unsafe {
-            let place = self.shift(index, value_len, ShiftType::Replace);
+            let place = guard.0.shift(index, value_len, ShiftType::Replace);
             element.encode_var_ule_write(place);
+            debug_assert_eq!(T::validate_bytes(place), Ok(()));
         }
+        core::mem::forget(guard);
+    }
+}
+
+/// Drop guard that clears `entire_slice` if a panic occurs during an in-place
+/// mutation (e.g. inside `shift` or a user-provided `EncodeAsVarULE::encode_var_ule_write`),
+/// restoring the safety invariant that `entire_slice` is a valid (empty) `VarZeroVecComponents`.
+struct ClearOnPanic<'a, T: ?Sized, F>(&'a mut VarZeroVecOwned<T, F>);
+
+impl<T: ?Sized, F> Drop for ClearOnPanic<'_, T, F> {
+    fn drop(&mut self) {
+        self.0.entire_slice.clear();
     }
 }
 
@@ -694,5 +760,67 @@ mod test {
     #[should_panic]
     fn test_replace_past_end() {
         VarZeroVecOwned::<str>::new().replace(0, "");
+    }
+
+    #[test]
+    #[cfg(feature = "std")]
+    fn test_panic_safety() {
+        use crate::ule::EncodeAsVarULE;
+        use std::panic::{catch_unwind, AssertUnwindSafe};
+
+        struct PanicAfterWrite {
+            invalid: &'static [u8],
+        }
+
+        // SAFETY: `encode_var_ule_write` always panics and never returns normally,
+        // so callers must not observe the invalid bytes written before unwinding.
+        unsafe impl EncodeAsVarULE<str> for PanicAfterWrite {
+            fn encode_var_ule_as_slices<R>(&self, cb: impl FnOnce(&[&[u8]]) -> R) -> R {
+                cb(&[self.invalid])
+            }
+
+            fn encode_var_ule_len(&self) -> usize {
+                self.invalid.len()
+            }
+
+            fn encode_var_ule_write(&self, dst: &mut [u8]) {
+                dst.copy_from_slice(self.invalid);
+                panic!("encode_var_ule_write panicked after writing invalid bytes");
+            }
+        }
+
+        let panicker = PanicAfterWrite {
+            invalid: &[0x80, 0xC0, 0xFF],
+        };
+
+        // 1. `replace` on non-empty vector
+        let mut v = VarZeroVecOwned::<str>::try_from_elements(&["hello"]).unwrap();
+        let res = catch_unwind(AssertUnwindSafe(|| {
+            v.replace(0, &panicker);
+        }));
+        assert!(res.is_err());
+        assert!(v.is_empty());
+        assert_eq!(v.get(0), None);
+        assert!(v.verify_integrity());
+
+        // 2. `insert` into empty vector (`len == 0` fast-path)
+        let mut v = VarZeroVecOwned::<str>::new();
+        let res = catch_unwind(AssertUnwindSafe(|| {
+            v.insert(0, &panicker);
+        }));
+        assert!(res.is_err());
+        assert!(v.is_empty());
+        assert_eq!(v.get(0), None);
+        assert!(v.verify_integrity());
+
+        // 3. `insert` into non-empty vector (`len > 0` shift path)
+        let mut v = VarZeroVecOwned::<str>::try_from_elements(&["hello", "world"]).unwrap();
+        let res = catch_unwind(AssertUnwindSafe(|| {
+            v.insert(1, &panicker);
+        }));
+        assert!(res.is_err());
+        assert!(v.is_empty());
+        assert_eq!(v.get(0), None);
+        assert!(v.verify_integrity());
     }
 }

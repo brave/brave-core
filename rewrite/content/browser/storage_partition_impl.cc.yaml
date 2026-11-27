@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Allow Reporting API uploads based on kBraveReportingAPI, rather than the
+      Background Sync permission, as part of disabling the Reporting API.
+
+      kBraveReportingAPI is a flag available to re-enable the Chromium Reporting
+      API. It is here for web developers who do not want to be forced to use
+      Google Chrome for this use case. We have no intentions of enabling the
+      Reporting API by default or via Griffin, and it would be inappropriate to
+      do so via this flag for the reasons below.
+
+      We skip the Background Sync permission check because the user's intention
+      when enabling the Reporting API is for the Reporting API to work. Brave
+      deviates from Chrome's default of Background Sync permitted-by-default,
+      which results in the Reporting API not working as the user intends. This
+      is essentially a UX tripping hazard, so we skip that check. This is only
+      an appropriate decision if enabling the Reporting API is based on a user
+      decision; it would not be the right call if this was enabled by us (e.g.
+      by default or via Griffin).
+    regex:
+      re_pattern: '(StoragePartitionImpl::OnCanSendReportingReports\([^)]*\)\s*\{\s*CHECK\(initialized_[^;]*;\n).*?(?=\n\}\n)'
+      replace: |-
+        \1  std::move(callback).Run(
+              base::FeatureList::IsEnabled(blink::features::kBraveReportingAPI)
+                  ? origins
+                  : std::vector<url::Origin>());
+      re_flags: [DOTALL]

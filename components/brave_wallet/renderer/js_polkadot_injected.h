@@ -19,6 +19,7 @@
 #include "gin/public/wrappable_pointer_tags.h"
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "v8/include/cppgc/prefinalizer.h"
 #include "v8/include/v8-function-callback.h"
 
 namespace brave_wallet {
@@ -28,6 +29,9 @@ namespace brave_wallet {
 // https://github.com/polkadot-js/extension/blob/master/packages/extension-inject/src/types.ts
 class JSPolkadotInjected final : public gin::Wrappable<JSPolkadotInjected>,
                                  public content::RenderFrameObserver {
+  // Stops observing the frame before the GC frees this object.
+  CPPGC_USING_PRE_FINALIZER(JSPolkadotInjected, Cleanup);
+
  public:
   JSPolkadotInjected(base::PassKey<class JSPolkadotProvider> pass_key,
                      mojo::Remote<mojom::PolkadotApi> remote,

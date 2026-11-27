@@ -12,15 +12,21 @@ use crate::buffer::Buffer;
 use crate::fd::OwnedFd;
 #[cfg(not(any(target_os = "espidf", target_os = "horizon", target_os = "vita")))]
 use crate::fs::Access;
-#[cfg(not(target_os = "espidf"))]
+#[cfg(not(any(target_os = "espidf", target_os = "redox")))]
 use crate::fs::AtFlags;
 #[cfg(apple)]
 use crate::fs::CloneFlags;
-#[cfg(any(linux_kernel, apple))]
+#[cfg(any(linux_kernel, apple, target_os = "redox"))]
 use crate::fs::RenameFlags;
 #[cfg(not(target_os = "espidf"))]
 use crate::fs::Stat;
-#[cfg(not(any(apple, target_os = "espidf", target_os = "vita", target_os = "wasi")))]
+#[cfg(not(any(
+    apple,
+    target_os = "espidf",
+    target_os = "horizon",
+    target_os = "vita",
+    target_os = "wasi"
+)))]
 use crate::fs::{Dev, FileType};
 #[cfg(not(any(target_os = "espidf", target_os = "wasi")))]
 use crate::fs::{Gid, Uid};
@@ -34,7 +40,7 @@ use {
     alloc::vec::Vec,
     backend::fd::BorrowedFd,
 };
-#[cfg(not(any(target_os = "espidf", target_os = "vita")))]
+#[cfg(not(any(target_os = "espidf", target_os = "horizon", target_os = "vita")))]
 use {crate::fs::Timestamps, crate::timespec::Nsecs};
 
 /// `UTIME_NOW` for use with [`utimensat`].
@@ -73,6 +79,7 @@ pub const UTIME_OMIT: Nsecs = backend::c::UTIME_OMIT as Nsecs;
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/openat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/openat.2.html
+#[cfg(not(target_os = "redox"))]
 #[inline]
 pub fn openat<P: path::Arg, Fd: AsFd>(
     dirfd: Fd,
@@ -95,7 +102,7 @@ pub fn openat<P: path::Arg, Fd: AsFd>(
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/readlinkat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/readlinkat.2.html
-#[cfg(feature = "alloc")]
+#[cfg(all(feature = "alloc", not(target_os = "redox")))]
 #[cfg_attr(docsrs, doc(cfg(feature = "alloc")))]
 #[inline]
 pub fn readlinkat<P: path::Arg, Fd: AsFd, B: Into<Vec<u8>>>(
@@ -106,7 +113,7 @@ pub fn readlinkat<P: path::Arg, Fd: AsFd, B: Into<Vec<u8>>>(
     path.into_with_c_str(|path| _readlinkat(dirfd.as_fd(), path, reuse.into()))
 }
 
-#[cfg(feature = "alloc")]
+#[cfg(all(feature = "alloc", not(target_os = "redox")))]
 #[allow(unsafe_code)]
 fn _readlinkat(dirfd: BorrowedFd<'_>, path: &CStr, mut buffer: Vec<u8>) -> io::Result<CString> {
     buffer.clear();
@@ -170,6 +177,7 @@ fn _readlinkat(dirfd: BorrowedFd<'_>, path: &CStr, mut buffer: Vec<u8>) -> io::R
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/readlinkat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/readlinkat.2.html
+#[cfg(not(target_os = "redox"))]
 #[inline]
 pub fn readlinkat_raw<P: path::Arg, Fd: AsFd, Buf: Buffer<u8>>(
     dirfd: Fd,
@@ -192,6 +200,7 @@ pub fn readlinkat_raw<P: path::Arg, Fd: AsFd, Buf: Buffer<u8>>(
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/mkdirat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/mkdirat.2.html
+#[cfg(not(target_os = "redox"))]
 #[inline]
 pub fn mkdirat<P: path::Arg, Fd: AsFd>(dirfd: Fd, path: P, mode: Mode) -> io::Result<()> {
     path.into_with_c_str(|path| backend::fs::syscalls::mkdirat(dirfd.as_fd(), path, mode))
@@ -206,7 +215,7 @@ pub fn mkdirat<P: path::Arg, Fd: AsFd>(dirfd: Fd, path: P, mode: Mode) -> io::Re
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/linkat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/linkat.2.html
-#[cfg(not(target_os = "espidf"))]
+#[cfg(not(any(target_os = "espidf", target_os = "redox")))]
 #[inline]
 pub fn linkat<P: path::Arg, Q: path::Arg, PFd: AsFd, QFd: AsFd>(
     old_dirfd: PFd,
@@ -240,7 +249,7 @@ pub fn linkat<P: path::Arg, Q: path::Arg, PFd: AsFd, QFd: AsFd>(
 /// [`REMOVEDIR`]: AtFlags::REMOVEDIR
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/unlinkat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/unlinkat.2.html
-#[cfg(not(target_os = "espidf"))]
+#[cfg(not(any(target_os = "espidf", target_os = "redox")))]
 #[inline]
 pub fn unlinkat<P: path::Arg, Fd: AsFd>(dirfd: Fd, path: P, flags: AtFlags) -> io::Result<()> {
     path.into_with_c_str(|path| backend::fs::syscalls::unlinkat(dirfd.as_fd(), path, flags))
@@ -286,7 +295,7 @@ pub fn renameat<P: path::Arg, Q: path::Arg, PFd: AsFd, QFd: AsFd>(
 ///  - [Linux]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/renameat2.2.html
-#[cfg(any(apple, linux_kernel))]
+#[cfg(any(apple, linux_kernel, target_os = "redox"))]
 #[inline]
 #[doc(alias = "renameat2")]
 #[doc(alias = "renameatx_np")]
@@ -318,6 +327,7 @@ pub fn renameat_with<P: path::Arg, Q: path::Arg, PFd: AsFd, QFd: AsFd>(
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/symlinkat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/symlinkat.2.html
+#[cfg(not(target_os = "redox"))]
 #[inline]
 pub fn symlinkat<P: path::Arg, Q: path::Arg, Fd: AsFd>(
     old_path: P,
@@ -344,7 +354,7 @@ pub fn symlinkat<P: path::Arg, Q: path::Arg, Fd: AsFd>(
 /// [Linux]: https://man7.org/linux/man-pages/man2/fstatat.2.html
 /// [`Mode::from_raw_mode`]: crate::fs::Mode::from_raw_mode
 /// [`FileType::from_raw_mode`]: crate::fs::FileType::from_raw_mode
-#[cfg(not(target_os = "espidf"))]
+#[cfg(not(any(target_os = "espidf", target_os = "redox")))]
 #[inline]
 #[doc(alias = "fstatat")]
 pub fn statat<P: path::Arg, Fd: AsFd>(dirfd: Fd, path: P, flags: AtFlags) -> io::Result<Stat> {
@@ -367,7 +377,12 @@ pub fn statat<P: path::Arg, Fd: AsFd>(dirfd: Fd, path: P, flags: AtFlags) -> io:
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/faccessat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/faccessat.2.html
-#[cfg(not(any(target_os = "espidf", target_os = "horizon", target_os = "vita")))]
+#[cfg(not(any(
+    target_os = "espidf",
+    target_os = "horizon",
+    target_os = "vita",
+    target_os = "redox"
+)))]
 #[inline]
 #[doc(alias = "faccessat")]
 pub fn accessat<P: path::Arg, Fd: AsFd>(
@@ -387,7 +402,12 @@ pub fn accessat<P: path::Arg, Fd: AsFd>(
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/utimensat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/utimensat.2.html
-#[cfg(not(any(target_os = "espidf", target_os = "horizon", target_os = "vita")))]
+#[cfg(not(any(
+    target_os = "espidf",
+    target_os = "horizon",
+    target_os = "vita",
+    target_os = "redox"
+)))]
 #[inline]
 pub fn utimensat<P: path::Arg, Fd: AsFd>(
     dirfd: Fd,
@@ -410,7 +430,7 @@ pub fn utimensat<P: path::Arg, Fd: AsFd>(
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/fchmodat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/fchmodat.2.html
-#[cfg(not(any(target_os = "espidf", target_os = "wasi")))]
+#[cfg(not(any(target_os = "espidf", target_os = "wasi", target_os = "redox")))]
 #[inline]
 #[doc(alias = "fchmodat")]
 pub fn chmodat<P: path::Arg, Fd: AsFd>(
@@ -446,15 +466,18 @@ pub fn fclonefileat<Fd: AsFd, DstFd: AsFd, P: path::Arg>(
 /// # References
 ///  - [POSIX]
 ///  - [Linux]
+///  - [FreeBSD]
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/mknodat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/mknodat.2.html
+/// [FreeBSD]: https://man.freebsd.org/cgi/man.cgi?query=mknodat&sektion=2
 #[cfg(not(any(
     apple,
     target_os = "espidf",
     target_os = "horizon",
     target_os = "vita",
-    target_os = "wasi"
+    target_os = "wasi",
+    target_os = "redox",
 )))]
 #[inline]
 pub fn mknodat<P: path::Arg, Fd: AsFd>(
@@ -473,14 +496,19 @@ pub fn mknodat<P: path::Arg, Fd: AsFd>(
 ///
 /// # References
 ///  - [POSIX]
+///  - [Linux]
+///  - [FreeBSD]
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/mkfifoat.html
+/// [Linux]: https://www.man7.org/linux/man-pages/man3/mkfifo.3.html
+/// [FreeBSD]: https://man.freebsd.org/cgi/man.cgi?query=mkfifoat&sektion=2
 #[cfg(not(any(
     apple,
     target_os = "espidf",
     target_os = "horizon",
     target_os = "vita",
-    target_os = "wasi"
+    target_os = "wasi",
+    target_os = "redox",
 )))]
 #[inline]
 pub fn mkfifoat<P: path::Arg, Fd: AsFd>(dirfd: Fd, path: P, mode: Mode) -> io::Result<()> {
@@ -496,7 +524,7 @@ pub fn mkfifoat<P: path::Arg, Fd: AsFd>(dirfd: Fd, path: P, mode: Mode) -> io::R
 ///
 /// [POSIX]: https://pubs.opengroup.org/onlinepubs/9799919799/functions/fchownat.html
 /// [Linux]: https://man7.org/linux/man-pages/man2/fchownat.2.html
-#[cfg(not(any(target_os = "espidf", target_os = "wasi")))]
+#[cfg(not(any(target_os = "espidf", target_os = "wasi", target_os = "redox")))]
 #[inline]
 #[doc(alias = "fchownat")]
 pub fn chownat<P: path::Arg, Fd: AsFd>(

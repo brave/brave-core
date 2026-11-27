@@ -6,10 +6,9 @@ This crate intents to be a performant Rust implementation for reading and
 writing `git-config` files. It exposes tiers of abstractions, from simple
 config value wrappers to a high level reader and writer.
 
-The highlight of this crate is the zero-copy parser. We employ techniques to
-avoid copying where necessary, and reads that do not need normalization are
-guaranteed to be zero-copy. Higher level abstractions maintain this guarantee,
-and utilizes acceleration structures for increased performance.
+The parser retains the syntactic structure of the input in a self-contained
+representation, allowing configuration files to be reproduced after parsing.
+Higher-level abstractions use acceleration structures for efficient lookup.
 
 Currently, this is _not_ a binary. While we do intent to have a drop-in
 replacement for the `git config` sub-command, we're currently missing

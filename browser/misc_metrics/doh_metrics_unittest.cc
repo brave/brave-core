@@ -8,17 +8,22 @@
 #include <memory>
 
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
+#include "net/base/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace misc_metrics {
 
 class DohMetricsTest : public testing::Test {
  public:
-  DohMetricsTest() = default;
+  DohMetricsTest() {
+    feature_list_.InitAndDisableFeature(
+        net::features::kBraveFallbackDoHProvider);
+  }
 
  protected:
   void SetUp() override {
@@ -30,6 +35,7 @@ class DohMetricsTest : public testing::Test {
 
   void TearDown() override { doh_metrics_.reset(); }
 
+  base::test::ScopedFeatureList feature_list_;
   std::unique_ptr<DohMetrics> doh_metrics_;
   base::HistogramTester histogram_tester_;
   TestingPrefServiceSimple local_state_;

@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -232,12 +233,12 @@ TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsLiFi) {
   auto encoded_params = gate3::EncodeQuoteParams(std::move(params));
   ASSERT_TRUE(encoded_params);
 
-  auto parsed = ParseJson(*encoded_params);
-  ASSERT_TRUE(parsed.is_dict());
-  EXPECT_EQ(*parsed.GetDict().FindString("provider"), "LIFI");
-  EXPECT_EQ(*parsed.GetDict().FindString("sourceTokenAddress"),
-            "0xdac17f958d2ee523a2206206994597c13d831ec7");
-  EXPECT_EQ(*parsed.GetDict().FindString("amount"), "1000000");
+  EXPECT_THAT(base::test::ParseJsonDict(*encoded_params),
+              base::test::IsSupersetOfValue(R"({
+    "provider": "LIFI",
+    "sourceTokenAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+    "amount": "1000000"
+  })"));
 }
 
 namespace {
@@ -269,9 +270,9 @@ TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsZeroEx) {
       MakeEvmSameChainQuoteParams(mojom::SwapProvider::kZeroEx));
   ASSERT_TRUE(encoded_params);
 
-  auto parsed = ParseJson(*encoded_params);
-  ASSERT_TRUE(parsed.is_dict());
-  EXPECT_EQ(*parsed.GetDict().FindString("provider"), "ZERO_EX");
+  EXPECT_THAT(
+      base::test::ParseJsonDict(*encoded_params),
+      base::test::DictionaryHasValue("provider", base::Value("ZERO_EX")));
 }
 
 TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsAuto) {
@@ -280,9 +281,8 @@ TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsAuto) {
       MakeEvmSameChainQuoteParams(mojom::SwapProvider::kAuto));
   ASSERT_TRUE(encoded_params);
 
-  auto parsed = ParseJson(*encoded_params);
-  ASSERT_TRUE(parsed.is_dict());
-  EXPECT_EQ(*parsed.GetDict().FindString("provider"), "AUTO");
+  EXPECT_THAT(base::test::ParseJsonDict(*encoded_params),
+              base::test::DictionaryHasValue("provider", base::Value("AUTO")));
 }
 
 TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsLegacyProvidersRejected) {
@@ -552,16 +552,14 @@ TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsAllCoinTypes) {
     ASSERT_NE(encoded_params, std::nullopt)
         << "Failed for coin type: " << test_case.expected_coin_string;
 
-    auto parsed = ParseJson(*encoded_params);
-    ASSERT_TRUE(parsed.is_dict());
-
-    auto* source_coin = parsed.GetDict().FindString("sourceCoin");
-    ASSERT_NE(source_coin, nullptr);
-    EXPECT_EQ(*source_coin, test_case.expected_coin_string);
-
-    auto* dest_coin = parsed.GetDict().FindString("destinationCoin");
-    ASSERT_NE(dest_coin, nullptr);
-    EXPECT_EQ(*dest_coin, test_case.expected_coin_string);
+    SCOPED_TRACE(test_case.expected_coin_string);
+    auto parsed = base::test::ParseJsonDict(*encoded_params);
+    EXPECT_THAT(parsed,
+                base::test::DictionaryHasValue(
+                    "sourceCoin", base::Value(test_case.expected_coin_string)));
+    EXPECT_THAT(parsed, base::test::DictionaryHasValue(
+                            "destinationCoin",
+                            base::Value(test_case.expected_coin_string)));
   }
 }
 
@@ -610,11 +608,12 @@ TEST(SwapRequestHelperUnitTest, EncodeGate3StatusParamsCrossChainZecToEth) {
   auto encoded = gate3::EncodeStatusParams(std::move(params));
   ASSERT_TRUE(encoded.has_value());
 
-  auto parsed = ParseJson(*encoded);
-  ASSERT_TRUE(parsed.is_dict());
-  EXPECT_EQ(*parsed.GetDict().FindString("sourceCoin"), "ZEC");
-  EXPECT_EQ(*parsed.GetDict().FindString("destinationCoin"), "ETH");
-  EXPECT_EQ(*parsed.GetDict().FindString("depositMemo"), "memo123");
+  EXPECT_THAT(base::test::ParseJsonDict(*encoded),
+              base::test::IsSupersetOfValue(R"({
+    "sourceCoin": "ZEC",
+    "destinationCoin": "ETH",
+    "depositMemo": "memo123"
+  })"));
 }
 
 }  // namespace brave_wallet

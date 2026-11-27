@@ -276,7 +276,10 @@
     Use scrollable tab strip
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SHARED_PINNED_TAB" desc="The label name of a toggle button for Shared Pinned Tab feature">
-    Show pinned tabs in all windows
+    Shared pinned tabs
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SHARED_PINNED_TAB_SUBLABEL" desc="The sub-label of a toggle button for Shared Pinned Tab feature">
+    Pinned tabs will be shared across all windows in the same profile
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_BOOKMARKS_BUTTON" desc="The label for whether the bookmarks button should be shown or not">
     Show bookmarks button
@@ -846,11 +849,17 @@
     Index pages you visit so you can find them easily in history, open tabs and Leo.
   </message>
   <!-- On-device speech recognition -->
-  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_LABEL" desc="Label for the setting that downloads Brave's on-device speech recognition model, so that sites can process speech on this device">
+  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_LABEL" desc="Label for the setting that selects Brave's on-device speech recognition model, so that sites can process speech on this device">
     On-device speech recognition
   </message>
-  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_SUB_LABEL" desc="Description for the setting that downloads Brave's on-device speech recognition model. Turning the setting off removes the model.">
-    Download a speech recognition model (<ph name="DOWNLOAD_SIZE">$1<ex>636 MB</ex></ph>) so sites can process speech on this device. Turn this off to remove the model.
+  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_SUB_LABEL" desc="Description for the setting that selects Brave's on-device speech recognition model. The size is the approximate download size of the model. Choosing Off removes the model.">
+    Download a speech recognition model (about 700 MB) so sites can process speech on this device. Choose "Off" to remove the model.
+  </message>
+  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_OFF" desc="Option of the on-device speech recognition setting that removes the speech recognition model">
+    Off
+  </message>
+  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_ENGLISH" desc="Option of the on-device speech recognition setting that downloads the model that recognizes only English speech">
+    English
   </message>
   <!-- History retention -->
   <message name="IDS_SETTINGS_HISTORY_RETENTION_LABEL" desc="Label for the setting that controls how long browsing history is retained">
@@ -1042,6 +1051,9 @@
   </message>
   <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_DESC" desc="Description for safe browsing standard protection mode">
     Protects against sites, downloads, and extensions that are known to be dangerous.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_EXTENSION_MALWARE_BLOCKLIST_DESC" desc="Shown below the safe browsing standard protection mode description when Brave also blocks extensions on its malicious-extension list, which is sourced from Socket. Followed by a 'Learn more' link.">
+    Also blocks extensions flagged as malware by Socket.
   </message>
 
   <!-- Settings / Privacy and security / Site and Shields Settings -->

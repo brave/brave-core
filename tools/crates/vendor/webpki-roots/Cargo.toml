@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.64"
+rust-version = "1.71"
 name = "webpki-roots"
-version = "1.0.4"
+version = "1.0.12"
 build = false
 autolib = false
 autobins = false
@@ -43,6 +43,9 @@ version = "1.8"
 default-features = false
 package = "rustls-pki-types"
 
+[dev-dependencies.aws-lc-rs]
+version = "1.15.2"
+
 [dev-dependencies.hex]
 version = "0.4.3"
 
@@ -51,9 +54,6 @@ version = "2.3"
 
 [dev-dependencies.rcgen]
 version = "0.14.3"
-
-[dev-dependencies.ring]
-version = "0.17.0"
 
 [dev-dependencies.rustls]
 version = "0.23"
@@ -71,7 +71,7 @@ features = ["alloc"]
 package = "rustls-webpki"
 
 [dev-dependencies.x509-parser]
-version = "0.17.0"
+version = "0.18"
 
 [dev-dependencies.yasna]
-version = "0.5.2"
+version = "0.6"

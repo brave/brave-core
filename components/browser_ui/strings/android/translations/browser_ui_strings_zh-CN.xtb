@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">登录后，即可在所有设备上无缝衔接，轻松继续</translation>
 <translation id="2713106313042589954">关闭摄像头</translation>
 <translation id="2717722538473713889">电子邮件地址</translation>
-<translation id="8181634240306014548">启动 Brave 时将焦点放在多功能框上，从而缩短低端设备的启动时间。</translation>
 <translation id="2750481671343847896">网站可以显示来自身份服务的登录提示。</translation>
-<translation id="2787357173144933081">快速启动多功能框</translation>
 <translation id="2789132527330338807">网站可以请求为您的周边环境创建 3D 地图或跟踪摄像头位置</translation>
 <translation id="2790501146643349491">开启此设置后，最近关闭的网站可以完成数据收发操作。关闭此设置后，最近关闭的网站无法完成数据收发操作。</translation>
 <translation id="2795716239552913152">网站通常会使用您的位置信息以实现相关功能或提供相关信息（例如本地新闻或附近的商店）</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">自定义主页颜色和图片，打造专属 Brave 体验</translation>
 <translation id="389521680295183045">网站可以询问能否了解您何时在主动使用自己的设备</translation>
 <translation id="3895926599014793903">强制启用缩放功能</translation>
-<translation id="3905475044299942653">停止发送大量通知</translation>
 <translation id="3922092564198021702">打开手机上的“设置”</translation>
 <translation id="3924858949939391676">在阅读模式开启后显示链接</translation>
 <translation id="3933121352599513978">收起不需要的请求（推荐）</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">您可以在所有设备的“标签页分组”部分找到您的分组</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> 已被禁止使用您在以下网站上的信息</translation>
 <translation id="4953688446973710931">开启此设置后，网站可以请求自动下载多个文件。关闭此设置后，网站无法自动下载多个文件。</translation>
-<translation id="4962975101802056554">撤消设备的所有权限</translation>
 <translation id="4972737347717125191">网站可以请求使用虚拟现实设备和数据</translation>
 <translation id="1275242979020712923">Brave 颜色底部动作条</translation>
 <translation id="497421865427891073">前进</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">禁止网站使用您的虚拟现实设备和数据</translation>
 <translation id="6447842834002726250">Cookie</translation>
 <translation id="6452138246455930388">您打开的标签页中有降价，原价为 <ph name="OLD_PRICE"/>，现价为 <ph name="NEW_PRICE"/>”，<ph name="PRODUCT_NAME"/>，<ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">撤销“<ph name="NAME"/>”的设备权限</translation>
 <translation id="6500423977866688905">当窗口狭窄时，请求使用移动版视图</translation>
 <translation id="6527303717912515753">分享</translation>
 <translation id="6530703012083415527">开启此设置后，网站可以使用弹出式窗口和重定向。关闭此设置后，网站无法使用弹出式窗口和重定向。</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">设备端网站数据</translation>
 <translation id="7201549776650881587">此操作会删除 <ph name="ORIGIN"/> 下属所有网站或其在主屏幕中安装的应用存储的全部数据和 Cookie</translation>
 <translation id="7219254577985949841">删除网站数据？</translation>
+<translation id="7225256190577194089">撤销设备“<ph name="DEVICE_NAME"/>”的所有权限</translation>
 <translation id="723171743924126238">选择图片</translation>
 <translation id="7243246278722455312">自定义新标签页页面底部动作条</translation>
 <translation id="7243308994586599757">选项在靠近屏幕底部的位置</translation>
@@ -702,7 +700,6 @@
 <translation id="8428213095426709021">设置</translation>
 <translation id="8441146129660941386">后退</translation>
 <translation id="8444433999583714703">若要允许 <ph name="APP_NAME"/> 获取您的位置信息，您还需在 <ph name="BEGIN_LINK"/>Android 设置<ph name="END_LINK"/>中开启位置信息服务。</translation>
-<translation id="8447861592752582886">撤消设备权限</translation>
 <translation id="8463843545738141778">此设置已停用，因为您已在 Android 设置中开启高级保护功能。</translation>
 <translation id="8467359479529706065">“新标签页”页面外观底部动作条已按一半高度显示</translation>
 <translation id="8471525937465764768">网站通常会连接到 USB 设备以实现某些功能（例如打印文档或保存到存储设备）</translation>

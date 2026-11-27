@@ -12,6 +12,11 @@ inline constexpr char kBravePsst[] = "bravePsst";
 
 inline constexpr char kBravePsstHost[] = "psst";
 inline constexpr char kBraveUIPsstURL[] = "chrome://psst/";
+inline constexpr char kPsstInternalsHost[] = "psst-internals";
+
+// Only reachable from the PSST isolated world native object, used for
+// collecting PSST scripts logs
+inline constexpr char kPsstNativeObjectName[] = "__bravePsstNative";
 
 inline constexpr char16_t kPsstReportDialogLearnMoreUrl[] =
     u"https://support.brave.app/hc/en-us/articles/47405731650957";

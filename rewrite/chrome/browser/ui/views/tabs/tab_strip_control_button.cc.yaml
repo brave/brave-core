@@ -1,0 +1,44 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Rename the class so the Brave subclass can reuse the name.
+
+      The Brave TabStripControlButton subclass is defined in the chromium_src
+      override of this file.
+    rename_class:
+      class_name: TabStripControlButton
+      rename: TabStripControlButton_ChromiumImpl
+
+  - description: |
+      Use the CR foreground token for the default active icon color.
+
+      This lets ultra-dark postprocessing of
+      kColorNewTabButtonCRForegroundFrameActive apply to the horizontal new-tab,
+      workspaces, and scroll buttons. Outside darker theme this CR id still
+      aliases to kColorTabForegroundInactiveFrameActive.
+    regex:
+      re_pattern: '\bkColorTabForegroundInactiveFrameActive\b'
+      replace: kColorNewTabButtonCRForegroundFrameActive
+
+  - description: |
+      Use the CR active background token.
+
+      The CR background tokens are transparent in Brave (via
+      AddBravifiedTabStripColorMixer), so idle tab-strip control buttons -
+      workspaces and scroll chevrons - do not paint a solid frame-colored chip.
+      Matches TabStripComboButton / TabStripFlatEdgeButton.
+    regex:
+      re_pattern: '\bkColorNewTabButtonBackgroundFrameActive\b'
+      replace: kColorNewTabButtonCRBackgroundFrameActive
+
+  - description: |
+      Use the CR inactive background token.
+
+      See the active background token substitution above.
+    regex:
+      re_pattern: '\bkColorNewTabButtonBackgroundFrameInactive\b'
+      replace: kColorNewTabButtonCRBackgroundFrameInactive

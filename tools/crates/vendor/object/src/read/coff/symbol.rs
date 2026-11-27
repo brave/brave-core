@@ -5,9 +5,9 @@ use core::fmt::Debug;
 use core::str;
 
 use super::{CoffCommon, CoffHeader, SectionTable};
-use crate::endian::{LittleEndian as LE, U32Bytes};
+use crate::endian::{LittleEndian as LE, U32};
 use crate::pe;
-use crate::pod::{bytes_of, bytes_of_slice, Pod};
+use crate::pod::{Pod, bytes_of, bytes_of_slice};
 use crate::read::util::StringTable;
 use crate::read::{
     self, Bytes, ObjectSymbol, ObjectSymbolTable, ReadError, ReadRef, Result, SectionIndex,
@@ -26,7 +26,7 @@ where
     R: ReadRef<'data>,
     Coff: CoffHeader,
 {
-    symbols: &'data [Coff::ImageSymbolBytes],
+    symbols: &'data [Coff::SymbolBytes],
     strings: StringTable<'data, R>,
 }
 
@@ -51,7 +51,7 @@ impl<'data, R: ReadRef<'data>, Coff: CoffHeader> SymbolTable<'data, R, Coff> {
 
             // Note: don't update data when reading length; the length includes itself.
             let length = data
-                .read_at::<U32Bytes<_>>(offset)
+                .read_at::<U32<_>>(offset)
                 .read_error("Missing COFF string table")?
                 .get(LE);
             let str_end = offset
@@ -98,8 +98,8 @@ impl<'data, R: ReadRef<'data>, Coff: CoffHeader> SymbolTable<'data, R, Coff> {
 
     /// Return the symbol table entry at the given index.
     #[inline]
-    pub fn symbol(&self, index: SymbolIndex) -> Result<&'data Coff::ImageSymbol> {
-        self.get::<Coff::ImageSymbol>(index, 0)
+    pub fn symbol(&self, index: SymbolIndex) -> Result<&'data Coff::Symbol> {
+        self.get::<Coff::Symbol>(index, 0)
     }
 
     /// Return the auxiliary function symbol for the symbol table entry at the given index.
@@ -157,7 +157,7 @@ impl<'data, R: ReadRef<'data>, Coff: CoffHeader> SymbolTable<'data, R, Coff> {
     }
 
     /// Construct a map from addresses to a user-defined map entry.
-    pub fn map<Entry: SymbolMapEntry, F: Fn(&'data Coff::ImageSymbol) -> Option<Entry>>(
+    pub fn map<Entry: SymbolMapEntry, F: Fn(&'data Coff::Symbol) -> Option<Entry>>(
         &self,
         f: F,
     ) -> SymbolMap<Entry> {
@@ -190,7 +190,7 @@ where
 impl<'data, 'table, R: ReadRef<'data>, Coff: CoffHeader> Iterator
     for SymbolIterator<'data, 'table, R, Coff>
 {
-    type Item = (SymbolIndex, &'data Coff::ImageSymbol);
+    type Item = (SymbolIndex, &'data Coff::Symbol);
 
     fn next(&mut self) -> Option<Self::Item> {
         let index = self.index;
@@ -317,19 +317,19 @@ where
 {
     pub(crate) file: &'file CoffCommon<'data, R, Coff>,
     pub(crate) index: SymbolIndex,
-    pub(crate) symbol: &'data Coff::ImageSymbol,
+    pub(crate) symbol: &'data Coff::Symbol,
 }
 
 impl<'data, 'file, R: ReadRef<'data>, Coff: CoffHeader> CoffSymbol<'data, 'file, R, Coff> {
     #[inline]
-    /// Get the raw `ImageSymbol` struct.
+    /// Get the raw symbol struct.
     #[deprecated(note = "Use `coff_symbol` instead")]
-    pub fn raw_symbol(&self) -> &'data Coff::ImageSymbol {
+    pub fn raw_symbol(&self) -> &'data Coff::Symbol {
         self.symbol
     }
 
-    /// Get the raw `ImageSymbol` struct.
-    pub fn coff_symbol(&self) -> &'data Coff::ImageSymbol {
+    /// Get the raw symbol struct.
+    pub fn coff_symbol(&self) -> &'data Coff::Symbol {
         self.symbol
     }
 }
@@ -451,8 +451,10 @@ impl<'data, 'file, R: ReadRef<'data>, Coff: CoffHeader> ObjectSymbol<'data>
                     SymbolSection::Unknown
                 }
             }
-            index if index > 0 => SymbolSection::Section(SectionIndex(index as usize)),
-            _ => SymbolSection::Unknown,
+            n => match n.index() {
+                Some(i) => SymbolSection::Section(SectionIndex(i as usize)),
+                None => SymbolSection::Unknown,
+            },
         }
     }
 
@@ -513,6 +515,8 @@ impl<'data, 'file, R: ReadRef<'data>, Coff: CoffHeader> ObjectSymbol<'data>
                     u32::from(aux.number.get(LE))
                 };
                 return SymbolFlags::CoffSection {
+                    typ: self.symbol.typ(),
+                    storage_class: self.symbol.storage_class(),
                     selection: aux.selection,
                     associative_section: if number == 0 {
                         None
@@ -522,18 +526,21 @@ impl<'data, 'file, R: ReadRef<'data>, Coff: CoffHeader> ObjectSymbol<'data>
                 };
             }
         }
-        SymbolFlags::None
+        SymbolFlags::Coff {
+            typ: self.symbol.typ(),
+            storage_class: self.symbol.storage_class(),
+        }
     }
 }
 
 /// A trait for generic access to [`pe::ImageSymbol`] and [`pe::ImageSymbolEx`].
 #[allow(missing_docs)]
-pub trait ImageSymbol: Debug + Pod {
+pub trait Symbol: Debug + Pod + read::private::Sealed {
     fn raw_name(&self) -> &[u8; 8];
     fn value(&self) -> u32;
-    fn section_number(&self) -> i32;
-    fn typ(&self) -> u16;
-    fn storage_class(&self) -> u8;
+    fn section_number(&self) -> pe::SymbolSection;
+    fn typ(&self) -> pe::SymbolType;
+    fn storage_class(&self) -> pe::SymbolClass;
     fn number_of_aux_symbols(&self) -> u8;
 
     /// Parse a COFF symbol name.
@@ -578,22 +585,20 @@ pub trait ImageSymbol: Debug + Pod {
         let section = sections.section(section_index)?;
         let virtual_address = u64::from(section.virtual_address.get(LE));
         let value = u64::from(self.value());
-        Ok(Some(image_base + virtual_address + value))
+        let address = image_base.wrapping_add(virtual_address).wrapping_add(value);
+        Ok(Some(address))
     }
 
     /// Return the section index for the symbol.
     fn section(&self) -> Option<SectionIndex> {
-        let section_number = self.section_number();
-        if section_number > 0 {
-            Some(SectionIndex(section_number as usize))
-        } else {
-            None
-        }
+        self.section_number()
+            .index()
+            .map(|i| SectionIndex(i as usize))
     }
 
     /// Return true if the symbol is a definition of a function or data object.
     fn is_definition(&self) -> bool {
-        if self.section_number() <= 0 {
+        if self.section_number().is_reserved() {
             return false;
         }
         match self.storage_class() {
@@ -620,7 +625,7 @@ pub trait ImageSymbol: Debug + Pod {
     fn has_aux_section(&self) -> bool {
         self.number_of_aux_symbols() > 0
             && self.storage_class() == pe::IMAGE_SYM_CLASS_STATIC
-            && self.typ() == 0
+            && self.typ().0 == 0
     }
 
     /// Return true if the symbol has an auxiliary weak external symbol.
@@ -631,34 +636,36 @@ pub trait ImageSymbol: Debug + Pod {
             && self.value() == 0
     }
 
-    fn base_type(&self) -> u16 {
-        self.typ() & pe::N_BTMASK
+    fn base_type(&self) -> pe::SymbolBaseType {
+        self.typ().base_type()
     }
 
-    fn derived_type(&self) -> u16 {
-        (self.typ() & pe::N_TMASK) >> pe::N_BTSHFT
+    fn derived_type(&self) -> pe::SymbolDerivedType {
+        self.typ().derived_type()
     }
 }
 
-impl ImageSymbol for pe::ImageSymbol {
+impl read::private::Sealed for pe::ImageSymbol {}
+
+impl Symbol for pe::ImageSymbol {
     fn raw_name(&self) -> &[u8; 8] {
         &self.name
     }
     fn value(&self) -> u32 {
         self.value.get(LE)
     }
-    fn section_number(&self) -> i32 {
+    fn section_number(&self) -> pe::SymbolSection {
         let section_number = self.section_number.get(LE);
-        if section_number >= pe::IMAGE_SYM_SECTION_MAX {
-            (section_number as i16) as i32
+        if section_number > pe::IMAGE_SYM_SECTION_MAX {
+            pe::SymbolSection((section_number as i16) as i32)
         } else {
-            section_number as i32
+            pe::SymbolSection(section_number as i32)
         }
     }
-    fn typ(&self) -> u16 {
+    fn typ(&self) -> pe::SymbolType {
         self.typ.get(LE)
     }
-    fn storage_class(&self) -> u8 {
+    fn storage_class(&self) -> pe::SymbolClass {
         self.storage_class
     }
     fn number_of_aux_symbols(&self) -> u8 {
@@ -666,20 +673,22 @@ impl ImageSymbol for pe::ImageSymbol {
     }
 }
 
-impl ImageSymbol for pe::ImageSymbolEx {
+impl read::private::Sealed for pe::ImageSymbolEx {}
+
+impl Symbol for pe::ImageSymbolEx {
     fn raw_name(&self) -> &[u8; 8] {
         &self.name
     }
     fn value(&self) -> u32 {
         self.value.get(LE)
     }
-    fn section_number(&self) -> i32 {
+    fn section_number(&self) -> pe::SymbolSection {
         self.section_number.get(LE)
     }
-    fn typ(&self) -> u16 {
+    fn typ(&self) -> pe::SymbolType {
         self.typ.get(LE)
     }
-    fn storage_class(&self) -> u8 {
+    fn storage_class(&self) -> pe::SymbolClass {
         self.storage_class
     }
     fn number_of_aux_symbols(&self) -> u8 {

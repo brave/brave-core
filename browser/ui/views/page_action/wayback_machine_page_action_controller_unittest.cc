@@ -39,7 +39,7 @@ class WaybackMachinePageActionControllerTest : public testing::Test {
             kActionShowWaybackMachine,
             PageActionProperties{
                 .histogram_name = "WaybackMachine",
-                .type = brave::kWaybackMachineActionIconType,
+                .type = PageActionIconType::kBraveWaybackMachine,
             },
         }}) {}
 

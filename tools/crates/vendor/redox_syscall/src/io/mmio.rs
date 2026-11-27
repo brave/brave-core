@@ -2,7 +2,7 @@
 use core::ops::{BitAnd, BitOr, Not};
 use core::{mem::MaybeUninit, ptr};
 
-use super::io::Io;
+use super::Io;
 
 #[repr(transparent)]
 pub struct Mmio<T> {

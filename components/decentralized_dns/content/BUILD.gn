@@ -37,3 +37,21 @@ static_library("content") {
     "//url",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "decentralized_dns_navigation_throttle_unittest.cc" ]
+
+  deps = [
+    ":content",
+    "//base",
+    "//brave/components/brave_wallet/browser:pref_names",
+    "//brave/components/decentralized_dns/core",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
+}

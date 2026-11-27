@@ -1,6 +1,6 @@
 [package]
 name = "rustls-native-certs"
-version = "0.8.2"
+version = "0.8.5"
 edition = "2021"
 rust-version = "1.71"
 license = "Apache-2.0 OR ISC OR MIT"
@@ -9,6 +9,7 @@ description = "rustls-native-certs allows rustls to use the platform native cert
 homepage = "https://github.com/rustls/rustls-native-certs"
 repository = "https://github.com/rustls/rustls-native-certs"
 categories = ["network-programming", "cryptography"]
+include = ["Cargo.toml", "LICENSE", "LICENSE-APACHE", "LICENSE-MIT", "LICENSE-ISC", "README.md", "src/**/*.rs"]
 
 [dependencies]
 pki-types = { package = "rustls-pki-types", version = "1.10", features = ["std"] }
@@ -17,17 +18,23 @@ pki-types = { package = "rustls-pki-types", version = "1.10", features = ["std"]
 ring = "0.17"
 rustls = "0.23"
 rustls-webpki = "0.103"
-serial_test = "3"
+serial_test = "4"
 tempfile = "3.5"
 untrusted = "0.9"
 webpki-roots = "1"
-x509-parser = "0.17"
+x509-parser = "0.18"
 
 [target.'cfg(windows)'.dependencies]
 schannel = "0.1"
 
 [target.'cfg(all(unix, not(target_os = "macos")))'.dependencies]
-openssl-probe = "0.1.6"
+openssl-probe = "0.2"
 
 [target.'cfg(target_os = "macos")'.dependencies]
 security-framework = "3"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = [ 'cfg(rustls_native_certs_docsrs)' ] }
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--cfg", "rustls_native_certs_docsrs"]

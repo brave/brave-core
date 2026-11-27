@@ -1,8 +1,9 @@
+use crate::Result;
 impl crate::Repository {
     /// Create a graph data-structure capable of accelerating graph traversals and storing state of type `T` with each commit
     /// it encountered.
     ///
-    /// Note that the `cache` will be used if present, and it's best obtained with
+    /// Note that the `cache` will be used if present and no object replacements are active, and it's best obtained with
     /// [`commit_graph_if_enabled()`](crate::Repository::commit_graph_if_enabled()).
     ///
     /// Note that a commitgraph is only allowed to be used if `core.commitGraph` is true (the default), and that configuration errors are
@@ -16,7 +17,7 @@ impl crate::Repository {
         &self,
         cache: Option<&'cache gix_commitgraph::Graph>,
     ) -> gix_revwalk::Graph<'_, 'cache, T> {
-        gix_revwalk::Graph::new(&self.objects, cache)
+        gix_revwalk::Graph::new(&self.objects, cache.filter(|_| !self.has_object_replacements()))
     }
 
     /// Return a cache for commits and their graph structure, as managed by `git commit-graph`, for accelerating commit walks on
@@ -24,22 +25,24 @@ impl crate::Repository {
     ///
     /// Note that [`revision_graph()`][crate::Repository::revision_graph()] should be preferred for general purpose walks that don't
     /// rely on the actual commit cache to be present, while leveraging the commit-graph if possible.
-    pub fn commit_graph(&self) -> Result<gix_commitgraph::Graph, gix_commitgraph::init::Error> {
-        gix_commitgraph::at(self.objects.store_ref().path().join("info"))
+    /// Parent-buffer allocations respect `gitoxide.objects.allocLimit`.
+    pub fn commit_graph(&self) -> Result<gix_commitgraph::Graph> {
+        gix_commitgraph::Graph::at(
+            &self.objects.store_ref().path().join("info"),
+            self.object_hash(),
+            self.config.alloc_limit_bytes,
+        )
     }
 
-    /// Return a newly opened commit-graph if it is available *and* enabled in the Git configuration.
-    pub fn commit_graph_if_enabled(
-        &self,
-    ) -> Result<Option<gix_commitgraph::Graph>, super::commit_graph_if_enabled::Error> {
-        Ok(self
-            .config
-            .may_use_commit_graph()?
-            .then(|| gix_commitgraph::at(self.objects.store_ref().path().join("info")))
+    /// Return a newly opened commit-graph if it is available, enabled in Git configuration, and no object replacements are active.
+    pub fn commit_graph_if_enabled(&self) -> Result<Option<gix_commitgraph::Graph>> {
+        (!self.has_object_replacements() && self.config.may_use_commit_graph()?)
+            .then(|| self.commit_graph())
             .transpose()
-            .or_else(|err| match err {
-                gix_commitgraph::init::Error::Io { err, .. } if err.kind() == std::io::ErrorKind::NotFound => Ok(None),
-                _ => Err(err),
-            })?)
+            .or_else(|err| if err.is_not_found() { Ok(None) } else { Err(err) })
+    }
+
+    pub(crate) fn has_object_replacements(&self) -> bool {
+        !self.objects.ignore_replacements && self.objects.store_ref().replacements().next().is_some()
     }
 }

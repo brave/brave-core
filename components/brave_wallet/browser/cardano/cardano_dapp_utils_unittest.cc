@@ -5,13 +5,18 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_dapp_utils.h"
 
+#include <string>
+
 #include "base/strings/string_number_conversions.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_tx_decoder.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_wallet {
 
@@ -75,73 +80,44 @@ TEST(CardanoDappUtilsTest, FormatCardanoTxDetails) {
 
   base::DictValue details = FormatCardanoTxDetails(tx_body, utxos);
 
-  // Inputs.
-  auto* inputs = details.FindList("inputs");
-  ASSERT_TRUE(inputs);
-  ASSERT_EQ(inputs->size(), 1u);
-  auto& input_value = (*inputs)[0].GetDict();
-  EXPECT_EQ(*input_value.FindString("txHash"),
-            base::HexEncodeLower(matched_tx_hash));
-  EXPECT_EQ(*input_value.FindString("index"), "0");
-  EXPECT_EQ(*input_value.FindString("value"), "5000000");
-  EXPECT_EQ(*input_value.FindString("address"), address1->ToString());
-  auto* input_tokens = input_value.FindList("tokens");
-  ASSERT_TRUE(input_tokens);
-  ASSERT_EQ(input_tokens->size(), 1u);
-  EXPECT_EQ(*(*input_tokens)[0].GetDict().FindString("tokenId"),
-            base::HexEncodeLower(token_id));
-  EXPECT_EQ(*(*input_tokens)[0].GetDict().FindString("value"), "10");
+  const std::string expected = absl::StrFormat(
+      R"({
+        "inputs": [{
+          "txHash": "%s",
+          "index": "0",
+          "value": "5000000",
+          "address": "%s",
+          "tokens": [{"tokenId": "%s", "value": "10"}]
+        }],
+        "outputs": [{
+          "address": "%s",
+          "value": "3000000",
+          "tokens": []
+        }],
+        "mint": [{"tokenId": "%s", "value": "7"}],
+        "withdrawals": [{"address": "%s", "value": "1000000"}],
+        "scriptDataHash": "%s",
+        "collateral": [{
+          "txHash": "%s",
+          "index": "1",
+          "value": null,
+          "tokens": null,
+          "address": null
+        }],
+        "collateralReturn": {
+          "address": "%s",
+          "value": "2000000",
+          "tokens": []
+        },
+        "totalCollateral": "2500000"
+      })",
+      base::HexEncodeLower(matched_tx_hash), address1->ToString(),
+      base::HexEncodeLower(token_id), address2->ToString(),
+      base::HexEncodeLower(token_id), address1->ToString(),
+      base::HexEncodeLower(script_data_hash),
+      base::HexEncodeLower(unmatched_tx_hash), address2->ToString());
 
-  // Outputs.
-  auto* outputs = details.FindList("outputs");
-  ASSERT_TRUE(outputs);
-  ASSERT_EQ(outputs->size(), 1u);
-  auto& output_value = (*outputs)[0].GetDict();
-  EXPECT_EQ(*output_value.FindString("address"), address2->ToString());
-  EXPECT_EQ(*output_value.FindString("value"), "3000000");
-  ASSERT_TRUE(output_value.FindList("tokens"));
-  EXPECT_TRUE(output_value.FindList("tokens")->empty());
-
-  // Mint.
-  auto* mint = details.FindList("mint");
-  ASSERT_TRUE(mint);
-  ASSERT_EQ(mint->size(), 1u);
-  EXPECT_EQ(*(*mint)[0].GetDict().FindString("tokenId"),
-            base::HexEncodeLower(token_id));
-  EXPECT_EQ(*(*mint)[0].GetDict().FindString("value"), "7");
-
-  // Withdrawals.
-  auto* withdrawals = details.FindList("withdrawals");
-  ASSERT_TRUE(withdrawals);
-  ASSERT_EQ(withdrawals->size(), 1u);
-  EXPECT_EQ(*(*withdrawals)[0].GetDict().FindString("address"),
-            address1->ToString());
-  EXPECT_EQ(*(*withdrawals)[0].GetDict().FindString("value"), "1000000");
-
-  // Script data hash.
-  EXPECT_EQ(*details.FindString("scriptDataHash"),
-            base::HexEncodeLower(script_data_hash));
-
-  // Collateral (unmatched utxo -> null value/tokens/address).
-  auto* collateral = details.FindList("collateral");
-  ASSERT_TRUE(collateral);
-  ASSERT_EQ(collateral->size(), 1u);
-  auto& collateral_value = (*collateral)[0].GetDict();
-  EXPECT_EQ(*collateral_value.FindString("txHash"),
-            base::HexEncodeLower(unmatched_tx_hash));
-  EXPECT_EQ(*collateral_value.FindString("index"), "1");
-  EXPECT_FALSE(collateral_value.FindString("value"));
-  EXPECT_FALSE(collateral_value.FindList("tokens"));
-  EXPECT_FALSE(collateral_value.FindString("address"));
-
-  // Collateral return.
-  auto* collateral_return = details.FindDict("collateralReturn");
-  ASSERT_TRUE(collateral_return);
-  EXPECT_EQ(*collateral_return->FindString("address"), address2->ToString());
-  EXPECT_EQ(*collateral_return->FindString("value"), "2000000");
-
-  // Total collateral.
-  EXPECT_EQ(*details.FindString("totalCollateral"), "2500000");
+  EXPECT_THAT(details, base::test::IsJson(expected));
 }
 
 TEST(CardanoDappUtilsTest, FormatCardanoTxDetailsEmptyBody) {
@@ -150,14 +126,7 @@ TEST(CardanoDappUtilsTest, FormatCardanoTxDetailsEmptyBody) {
 
   base::DictValue details = FormatCardanoTxDetails(tx_body, utxos);
 
-  EXPECT_FALSE(details.FindList("inputs"));
-  EXPECT_FALSE(details.FindList("outputs"));
-  EXPECT_FALSE(details.FindList("mint"));
-  EXPECT_FALSE(details.FindList("withdrawals"));
-  EXPECT_FALSE(details.FindString("scriptDataHash"));
-  EXPECT_FALSE(details.FindList("collateral"));
-  EXPECT_FALSE(details.FindDict("collateralReturn"));
-  EXPECT_FALSE(details.FindString("totalCollateral"));
+  EXPECT_THAT(details, base::test::IsJson("{}"));
 }
 
 }  // namespace brave_wallet

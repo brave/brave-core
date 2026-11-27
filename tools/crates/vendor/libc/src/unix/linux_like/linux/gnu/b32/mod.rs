@@ -1,7 +1,6 @@
 //! 32-bit specific definitions for linux-like values
 
 use crate::prelude::*;
-use crate::pthread_mutex_t;
 
 pub type clock_t = i32;
 
@@ -9,8 +8,6 @@ pub type shmatt_t = c_ulong;
 pub type msgqnum_t = c_ulong;
 pub type msglen_t = c_ulong;
 pub type nlink_t = u32;
-pub type __u64 = c_ulonglong;
-pub type __s64 = c_longlong;
 pub type __fsword_t = i32;
 pub type fsblkcnt64_t = u64;
 pub type fsfilcnt64_t = u64;
@@ -106,20 +103,20 @@ cfg_if! {
                 pub st_atime: crate::time_t,
                 pub st_atime_nsec: c_long,
                 #[cfg(gnu_time_bits64)]
-                _atime_pad: c_int,
+                _atime_pad: Padding<c_int>,
                 pub st_mtime: crate::time_t,
                 pub st_mtime_nsec: c_long,
                 #[cfg(gnu_time_bits64)]
-                _mtime_pad: c_int,
+                _mtime_pad: Padding<c_int>,
                 pub st_ctime: crate::time_t,
                 pub st_ctime_nsec: c_long,
                 #[cfg(gnu_time_bits64)]
-                _ctime_pad: c_int,
+                _ctime_pad: Padding<c_int>,
 
                 #[cfg(not(gnu_file_offset_bits64))]
-                __glibc_reserved4: c_long,
+                __glibc_reserved4: Padding<c_long>,
                 #[cfg(not(gnu_file_offset_bits64))]
-                __glibc_reserved5: c_long,
+                __glibc_reserved5: Padding<c_long>,
                 #[cfg(all(not(gnu_time_bits64), gnu_file_offset_bits64))]
                 pub st_ino: crate::ino_t,
             }
@@ -128,22 +125,6 @@ cfg_if! {
 }
 
 s! {
-    pub struct statvfs {
-        pub f_bsize: c_ulong,
-        pub f_frsize: c_ulong,
-        pub f_blocks: crate::fsblkcnt_t,
-        pub f_bfree: crate::fsblkcnt_t,
-        pub f_bavail: crate::fsblkcnt_t,
-        pub f_files: crate::fsfilcnt_t,
-        pub f_ffree: crate::fsfilcnt_t,
-        pub f_favail: crate::fsfilcnt_t,
-        pub f_fsid: c_ulong,
-        __f_unused: c_int,
-        pub f_flag: c_ulong,
-        pub f_namemax: c_ulong,
-        __f_spare: [c_int; 6],
-    }
-
     pub struct pthread_attr_t {
         __size: [u32; 9],
     }
@@ -162,11 +143,7 @@ s! {
         pub totalswap: c_ulong,
         pub freeswap: c_ulong,
         pub procs: c_ushort,
-        #[deprecated(
-            since = "0.2.58",
-            note = "This padding field might become private in the future"
-        )]
-        pub pad: c_ushort,
+        pad: Padding<c_ushort>,
         pub totalhigh: c_ulong,
         pub freehigh: c_ulong,
         pub mem_unit: c_uint,
@@ -207,8 +184,8 @@ s! {
             ))
         ))]
         __reserved2: Padding<crate::__syscall_ulong_t>,
-        __glibc_reserved3: crate::__syscall_ulong_t,
-        __glibc_reserved4: crate::__syscall_ulong_t,
+        __glibc_reserved3: Padding<crate::__syscall_ulong_t>,
+        __glibc_reserved4: Padding<crate::__syscall_ulong_t>,
     }
 
     #[cfg(gnu_time_bits64)]
@@ -306,8 +283,6 @@ cfg_if! {
         pub const O_PATH: c_int = 0x1000000;
         pub const O_TMPFILE: c_int = 0x2000000 | O_DIRECTORY;
 
-        pub const SA_ONSTACK: c_int = 1;
-
         pub const PTRACE_DETACH: c_uint = 11;
 
         pub const F_RDLCK: c_int = 1;
@@ -336,11 +311,6 @@ cfg_if! {
         pub const EPROTO: c_int = 86;
         pub const EDOTDOT: c_int = 88;
 
-        pub const SA_NODEFER: c_int = 0x20;
-        pub const SA_RESETHAND: c_int = 0x4;
-        pub const SA_RESTART: c_int = 0x2;
-        pub const SA_NOCLDSTOP: c_int = 0x00000008;
-
         pub const EPOLL_CLOEXEC: c_int = 0x400000;
 
         pub const EFD_CLOEXEC: c_int = 0x400000;
@@ -348,8 +318,6 @@ cfg_if! {
         pub const O_NOATIME: c_int = 0o1000000;
         pub const O_PATH: c_int = 0o10000000;
         pub const O_TMPFILE: c_int = 0o20000000 | O_DIRECTORY;
-
-        pub const SA_ONSTACK: c_int = 0x08000000;
 
         pub const PTRACE_DETACH: c_uint = 17;
 
@@ -378,11 +346,6 @@ cfg_if! {
         pub const EPROTO: c_int = 71;
         pub const EDOTDOT: c_int = 73;
 
-        pub const SA_NODEFER: c_int = 0x40000000;
-        pub const SA_RESETHAND: c_int = 0x80000000;
-        pub const SA_RESTART: c_int = 0x10000000;
-        pub const SA_NOCLDSTOP: c_int = 0x00000001;
-
         pub const EPOLL_CLOEXEC: c_int = 0x80000;
 
         pub const EFD_CLOEXEC: c_int = 0x80000;
@@ -406,43 +369,6 @@ cfg_if! {
         pub const F_SETLKW: c_int = 7;
     }
 }
-
-#[cfg(target_endian = "little")]
-pub const PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t = pthread_mutex_t {
-    size: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    ],
-};
-#[cfg(target_endian = "little")]
-pub const PTHREAD_ERRORCHECK_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t = pthread_mutex_t {
-    size: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    ],
-};
-#[cfg(target_endian = "little")]
-pub const PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t = pthread_mutex_t {
-    size: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    ],
-};
-#[cfg(target_endian = "big")]
-pub const PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t = pthread_mutex_t {
-    size: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-    ],
-};
-#[cfg(target_endian = "big")]
-pub const PTHREAD_ERRORCHECK_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t = pthread_mutex_t {
-    size: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,
-    ],
-};
-#[cfg(target_endian = "big")]
-pub const PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t = pthread_mutex_t {
-    size: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0,
-    ],
-};
 
 pub const PTRACE_GETFPREGS: c_uint = 14;
 pub const PTRACE_SETFPREGS: c_uint = 15;

@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/ui/webui/app_settings/web_app_settings_ui.cc b/chrome/browser/ui/webui/app_settings/web_app_settings_ui.cc
+index c2b36a25a803d82a35ab8a0aba4b359121a71f0a..4e4b048f6853ed63bf02fee59d6f7f07f3bec15a 100644
+--- a/chrome/browser/ui/webui/app_settings/web_app_settings_ui.cc
++++ b/chrome/browser/ui/webui/app_settings/web_app_settings_ui.cc
+@@ -29,6 +29,7 @@
+ namespace {
+ 
+ void AddAppManagementStrings(content::WebUIDataSource* html_source) {
++  [&]() -> void {
+   static constexpr webui::LocalizedString kLocalizedStrings[] = {
+       {"cancel", IDS_CANCEL},
+       {"close", IDS_CLOSE},
+@@ -106,6 +107,16 @@ void AddAppManagementStrings(content::WebUIDataSource* html_source) {
+        IDS_APP_MANAGEMENT_PERMISSIONS_WITH_ORIGIN},
+   };
+   html_source->AddLocalizedStrings(kLocalizedStrings);
++  }();
++  html_source->AddLocalizedString("appManagementTabbedWindowModeLabel",
++                                  IDS_APP_MANAGEMENT_TABBED_WINDOW);
++  html_source->AddLocalizedString("appManagementBrowserModeLabel",
++                                  IDS_APP_MANAGEMENT_BROWSER);
++  html_source->AddLocalizedString("appManagementOpenModeLabel",
++                                  IDS_APP_MANAGEMENT_OPEN_MODE);
++  html_source->AddBoolean(
++      "isPWAsTabStripSettingsEnabled",
++      base::FeatureList::IsEnabled(features::kDesktopPWAsTabStripSettings));
+ }
+ 
+ class WebAppSettingsWindowDelegate

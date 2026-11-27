@@ -1,10 +1,10 @@
-use std::collections::{HashMap, VecDeque};
+use std::collections::HashMap;
 
-use gix_features::threading::OwnShared;
+use gix_parallel::OwnShared;
 
 use crate::{
     file,
-    file::{Metadata, SectionBodyIdsLut, SectionId},
+    file::{Metadata, SectionId, SectionLookup},
     parse::section,
 };
 
@@ -86,10 +86,9 @@ pub enum Source {
 /// even though the section will have matched the `name` and `subsection_name` respectively.
 ///
 /// ```
-/// # use std::borrow::Cow;
 /// # use std::convert::TryFrom;
 /// # let git_config = gix_config::File::try_from("[core]a=b\n[core]\na=c\na=d").unwrap();
-/// assert_eq!(git_config.raw_value("core.a").unwrap().as_ref(), "d");
+/// assert_eq!(git_config.raw_value("core.a").unwrap(), "d");
 /// ```
 ///
 /// Consider the `multi` variants of the methods instead, if you want to work
@@ -101,24 +100,26 @@ pub enum Source {
 /// only sections and their names, as well as all of their values. The ordering matters, of course.
 ///
 /// [`raw_value()`]: Self::raw_value
-#[derive(Eq, Clone, Debug, Default)]
-pub struct File<'event> {
-    /// The list of events that occur before any section. Since a
-    /// `git-config` file prohibits global values, this vec is limited to only
-    /// comment, newline, and whitespace events.
-    pub(crate) frontmatter_events: crate::parse::FrontMatterEvents<'event>,
+#[derive(Clone, Debug, Default)]
+pub struct File {
+    /// Append-only storage for parsed and generated event payload bytes.
+    pub(crate) backing: Vec<u8>,
+    /// The list of events that occur before any section.
+    ///
+    /// Git accepts global properties before the first section, so this may also
+    /// contain key/value events.
+    pub(crate) frontmatter_events: crate::parse::FrontMatterEvents,
     /// Frontmatter events to be placed after the given section.
-    pub(crate) frontmatter_post_section: HashMap<SectionId, crate::parse::FrontMatterEvents<'event>>,
-    /// Section name to section id lookup tree, with section bodies for subsections being in a non-terminal
-    /// variant of `SectionBodyIds`.
-    pub(crate) section_lookup_tree: HashMap<section::Name<'event>, Vec<SectionBodyIdsLut<'event>>>,
+    pub(crate) frontmatter_post_section: HashMap<SectionId, crate::parse::FrontMatterEvents>,
+    /// Section name to section ids, separated by the presence of a subsection.
+    pub(crate) section_lookup_tree: HashMap<section::Name, SectionLookup>,
     /// This indirection with the SectionId as the key is critical to flexibly
     /// supporting `git-config` sections, as duplicated keys are permitted.
-    pub(crate) sections: HashMap<SectionId, file::Section<'event>>,
+    pub(crate) sections: HashMap<SectionId, file::SectionData>,
     /// Internal monotonically increasing counter for section ids.
-    pub(crate) section_id_counter: usize,
+    pub(crate) next_section_id: usize,
     /// Section order for output ordering.
-    pub(crate) section_order: VecDeque<SectionId>,
+    pub(crate) section_order: Vec<SectionId>,
     /// The source of the File itself, which is attached to new sections automatically.
     pub(crate) meta: OwnShared<Metadata>,
 }

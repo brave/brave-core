@@ -83,6 +83,9 @@ class BraveDataTypeWorkerTest : public ::testing::Test {
   }
 
  private:
+  // Pin the feature on so reset tests don't depend on its compiled default.
+  base::test::ScopedFeatureList feature_list_{
+      features::kBraveSyncResetProgressMarker};
   base::test::SingleThreadTaskEnvironment task_environment;
   const DataType data_type_;
   FakeCryptographer cryptographer_;

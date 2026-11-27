@@ -11,8 +11,9 @@
 
 [package]
 edition = "2018"
+rust-version = "1.83"
 name = "async-compression"
-version = "0.4.36"
+version = "0.4.52"
 authors = [
     "Wim Looman <wim@nemo157.com>",
     "Allen Bui <fairingrey@gmail.com>",
@@ -27,6 +28,13 @@ description = """
 Adaptors between compression crates and Rust's modern asynchronous IO types.
 """
 readme = "README.md"
+keywords = [
+    "compression",
+    "decompression",
+    "async-io",
+    "tokio",
+    "futures-io",
+]
 categories = [
     "compression",
     "asynchronous",
@@ -37,6 +45,14 @@ resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
+rustc-args = [
+    "--cfg",
+    "async_compression_unstable",
+]
+rustdoc-args = [
+    "--cfg",
+    "async_compression_unstable",
+]
 
 [features]
 all = [
@@ -61,6 +77,7 @@ all-implementations = [
     "tokio",
 ]
 brotli = ["compression-codecs/brotli"]
+brotli-mbrotli = ["compression-codecs/brotli-mbrotli"]
 bzip2 = ["compression-codecs/bzip2"]
 deflate = ["compression-codecs/deflate"]
 deflate64 = ["compression-codecs/deflate64"]
@@ -81,6 +98,7 @@ xz2 = [
 ]
 zlib = ["compression-codecs/zlib"]
 zstd = ["compression-codecs/zstd"]
+zstd-mzstd = ["compression-codecs/zstd-mzstd"]
 zstdmt = [
     "compression-codecs/zstdmt",
     "zstd",
@@ -121,6 +139,11 @@ path = "tests/brotli.rs"
 required-features = ["brotli"]
 
 [[test]]
+name = "brotli-mbrotli"
+path = "tests/brotli-mbrotli.rs"
+required-features = ["brotli-mbrotli"]
+
+[[test]]
 name = "bzip2"
 path = "tests/bzip2.rs"
 required-features = ["bzip2"]
@@ -129,6 +152,14 @@ required-features = ["bzip2"]
 name = "deflate"
 path = "tests/deflate.rs"
 required-features = ["deflate"]
+
+[[test]]
+name = "deflate64"
+path = "tests/deflate64.rs"
+required-features = [
+    "deflate64",
+    "tokio",
+]
 
 [[test]]
 name = "gzip"
@@ -173,6 +204,11 @@ required-features = [
 ]
 
 [[test]]
+name = "zstd-mzstd"
+path = "tests/zstd-mzstd.rs"
+required-features = ["zstd-mzstd"]
+
+[[test]]
 name = "zstd-window-size"
 path = "tests/zstd-window-size.rs"
 required-features = [
@@ -181,14 +217,10 @@ required-features = [
 ]
 
 [dependencies.compression-codecs]
-version = "0.4.35"
+version = "0.4.47"
 
 [dependencies.compression-core]
-version = "0.4.31"
-
-[dependencies.futures-core]
-version = "0.3"
-default-features = false
+version = "0.4.34"
 
 [dependencies.futures-io]
 version = "0.3"
@@ -205,7 +237,7 @@ optional = true
 default-features = false
 
 [dev-dependencies.brotli]
-version = "8"
+version = "9"
 
 [dev-dependencies.bytes]
 version = "1"
@@ -229,7 +261,7 @@ version = "0.3.5"
 version = "0.4.2"
 
 [dev-dependencies.libzstd]
-version = "0.13.1"
+version = "0.14.0"
 default-features = false
 package = "zstd"
 
@@ -243,10 +275,10 @@ version = "0.9"
 version = "1"
 
 [dev-dependencies.proptest-derive]
-version = "0.7"
+version = "0.8"
 
 [dev-dependencies.rand]
-version = "0.9"
+version = "0.10"
 
 [dev-dependencies.tokio]
 version = "1.38.2"
@@ -264,12 +296,18 @@ features = ["io"]
 default-features = false
 
 [dev-dependencies.zstd-safe]
-version = "7"
+version = "8"
 default-features = false
-
-[lints.rust]
-rust_2018_idioms = "deny"
 
 [lints.rust.missing_debug_implementations]
 level = "deny"
 priority = -1
+
+[lints.rust.rust_2018_idioms]
+level = "deny"
+priority = -1
+
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = ["cfg(async_compression_unstable)"]

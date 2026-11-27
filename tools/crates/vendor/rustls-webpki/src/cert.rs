@@ -22,7 +22,7 @@ use crate::public_values_eq;
 use crate::signed_data::SignedData;
 use crate::subject_name::{GeneralName, NameIterator, WildcardDnsNameRef};
 use crate::x509::{
-    DistributionPointName, Extension, UnknownExtensionPolicy, remember_extension,
+    DistributionPointName, Extension, SCT_LIST_OID, UnknownExtensionPolicy, remember_extension,
     set_extension_once,
 };
 
@@ -45,6 +45,7 @@ pub struct Cert<'a> {
     pub(crate) name_constraints: Option<untrusted::Input<'a>>,
     pub(crate) subject_alt_name: Option<untrusted::Input<'a>>,
     pub(crate) crl_distribution_points: Option<untrusted::Input<'a>>,
+    pub(crate) scts: Option<untrusted::Input<'a>>,
 
     der: CertificateDer<'a>,
 }
@@ -114,6 +115,7 @@ impl<'a> Cert<'a> {
                     name_constraints: None,
                     subject_alt_name: None,
                     crl_distribution_points: None,
+                    scts: None,
 
                     der: CertificateDer::from(cert_der.as_slice_less_safe()),
                 };
@@ -295,6 +297,14 @@ fn remember_cert_extension<'a>(
     // We don't do anything with certificate policies so we can safely ignore
     // all policy-related stuff. We assume that the policy-related extensions
     // are not marked critical.
+
+    if extension.id.as_slice_less_safe() == SCT_LIST_OID {
+        return set_extension_once(&mut cert.scts, || {
+            extension.value.read_all(Error::BadDer, |value| {
+                der::expect_tag(value, Tag::OctetString)
+            })
+        });
+    }
 
     remember_extension(extension, ext_policy, |id| {
         let out = match id {

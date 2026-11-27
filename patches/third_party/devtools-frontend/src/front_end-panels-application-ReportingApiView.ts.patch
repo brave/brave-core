@@ -1,0 +1,9 @@
+diff --git a/front_end/panels/application/ReportingApiView.ts b/front_end/panels/application/ReportingApiView.ts
+index 21bf7420180fcf9ab3462bff43e7dfe9b79a0e01..66a3fea1cdc8df3847b4705d9c3c0671ad712099 100644
+--- a/front_end/panels/application/ReportingApiView.ts
++++ b/front_end/panels/application/ReportingApiView.ts
+@@ -180,3 +180,4 @@ export class ReportingApiView extends UI.Widget.VBox implements
+     }
+   }
+ }
++import { PatchReportingApiView } from './ReportingApiView.patch.js'; (ReportingApiView as any) = PatchReportingApiView(ReportingApiView);

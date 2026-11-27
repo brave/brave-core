@@ -89,11 +89,12 @@ where
         cx: &mut Context<'_>,
         buf: &mut ReadBuf<'_>,
     ) -> Poll<io::Result<()>> {
-        crate::util::pin_as_deref_mut(self).poll_read(cx, buf)
+        self.as_deref_mut().poll_read(cx, buf)
     }
 }
 
 impl AsyncRead for &[u8] {
+    #[inline]
     fn poll_read(
         mut self: Pin<&mut Self>,
         _cx: &mut Context<'_>,
@@ -108,6 +109,7 @@ impl AsyncRead for &[u8] {
 }
 
 impl<T: AsRef<[u8]> + Unpin> AsyncRead for io::Cursor<T> {
+    #[inline]
     fn poll_read(
         mut self: Pin<&mut Self>,
         _cx: &mut Context<'_>,

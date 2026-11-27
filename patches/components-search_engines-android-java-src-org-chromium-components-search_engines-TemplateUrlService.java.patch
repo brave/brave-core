@@ -1,8 +1,8 @@
 diff --git a/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java b/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
-index a36e41a02437a6d67323ed4a88a778218cbd4fa9..5d3f6b2e76e60b747db66834ad424b9f6dbfb06d 100644
+index d39cfae08a741f0b8fdacb678a8d4ec0d91b4fcd..4f204a7178feda8cddb5c93377ebd92285a4cae1 100644
 --- a/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
 +++ b/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
-@@ -34,6 +34,15 @@ import java.util.List;
+@@ -35,6 +35,15 @@ import java.util.List;
   */
  @NullMarked
  public class TemplateUrlService {

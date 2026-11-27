@@ -28,9 +28,11 @@
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/most_visited_sites/features.h"
 #include "brave/ios/browser/playlist/features.h"
+#include "brave/ios/browser/saved_tab_groups/features.h"
 #include "brave/ios/browser/search_engines/features.h"
 #include "brave/ios/browser/toolbar/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
+#include "brave/ios/browser/ui/quick_search/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #import "build/blink_buildflags.h"
@@ -312,6 +314,11 @@
       initWithFeature:&brave_shields::features::kBlockAllCookiesToggle];
 }
 
++ (Feature*)kBraveShieldsElementPicker {
+  return [[Feature alloc]
+      initWithFeature:&brave_shields::features::kBraveShieldsElementPicker];
+}
+
 + (Feature*)kBraveTranslateEnabled {
   return [[Feature alloc]
       initWithFeature:&brave::features::kBraveTranslateEnabled];
@@ -416,6 +423,15 @@
 + (Feature*)kUseChromiumSearchEngines {
   return [[Feature alloc]
       initWithFeature:&brave::features::kUseChromiumSearchEngines];
+}
+
++ (Feature*)kTabGroupsEnabled {
+  return [[Feature alloc] initWithFeature:&brave::features::kTabGroupsEnabled];
+}
+
++ (Feature*)kBraveSearchVerticalsEnabled {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kBraveSearchVerticalsEnabled];
 }
 
 @end

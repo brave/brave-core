@@ -9,10 +9,8 @@ import '//resources/cr_elements/cr_input/cr_input.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
-import {
-  BraveTabSearchApiProxy,
-  TabSearchApiProxyImpl,
-} from '../tab_search_api_proxy.js'
+import type { BrowserProxy } from '../tab_search.mojom-webui.js'
+import { browserProxyFactory } from '../tab_search.mojom-webui.js'
 
 import { getHtml } from './tab_focus_page.html.js'
 import { getCss } from './tab_focus_page.css.js'
@@ -30,8 +28,7 @@ export class TabFocusPageElement extends CrLitElement {
     return getHtml.bind(this)()
   }
 
-  private apiProxy_: BraveTabSearchApiProxy =
-    TabSearchApiProxyImpl.getInstance() as BraveTabSearchApiProxy
+  private apiProxy_: BrowserProxy = browserProxyFactory.getInstance()
   private listenerIds_: number[] = []
 
   private visibilityChangedListener_: () => void
@@ -89,7 +86,7 @@ export class TabFocusPageElement extends CrLitElement {
   }
 
   protected onUndoClick_() {
-    this.apiProxy_.undoFocusTabs().then(() => {
+    this.apiProxy_.handler.undoFocusTabs().then(() => {
       this.undoTopic_ = ''
     })
   }
@@ -101,22 +98,24 @@ export class TabFocusPageElement extends CrLitElement {
   private getFocusTabs_(topic: string) {
     this.undoTopic_ = ''
     this.noMatchingTabs_ = false
-    this.apiProxy_.getFocusTabs(topic).then(({ windowCreated, error }) => {
-      if (error) {
-        this.errorMessage = error.message
-        if (error.rateLimitedInfo) {
-          this.needsPremium = !error.rateLimitedInfo.isPremium
+    this.apiProxy_.handler
+      .getFocusTabs(topic)
+      .then(({ windowCreated, error }) => {
+        if (error) {
+          this.errorMessage = error.message
+          if (error.rateLimitedInfo) {
+            this.needsPremium = !error.rateLimitedInfo.isPremium
+          }
+          return
         }
-        return
-      }
-      this.errorMessage = ''
-      if (windowCreated) {
-        this.undoTopic_ = topic
-      } else {
-        // The request succeeded, no open tab was a close enough match.
-        this.noMatchingTabs_ = true
-      }
-    })
+        this.errorMessage = ''
+        if (windowCreated) {
+          this.undoTopic_ = topic
+        } else {
+          // The request succeeded, no open tab was a close enough match.
+          this.noMatchingTabs_ = true
+        }
+      })
   }
 
   protected getNoMatchingTabsMessage_() {
@@ -134,7 +133,7 @@ export class TabFocusPageElement extends CrLitElement {
     }
 
     this.isLoadingTopics = true
-    this.apiProxy_.getSuggestedTopics().then(({ topics, error }) => {
+    this.apiProxy_.handler.getSuggestedTopics().then(({ topics, error }) => {
       this.isLoadingTopics = false
       if (error) {
         this.errorMessage = error.message
@@ -173,11 +172,11 @@ export class TabFocusPageElement extends CrLitElement {
   override connectedCallback() {
     super.connectedCallback()
 
-    this.apiProxy_
+    this.apiProxy_.handler
       .getTabFocusShowFRE()
       .then(({ showFRE }) => this.setShowFRE_(showFRE))
 
-    const callbackRouter = this.apiProxy_.getCallbackRouter()
+    const callbackRouter = this.apiProxy_.callbackRouter
     this.listenerIds_.push(
       callbackRouter.tabFocusShowFREChanged.addListener(
         this.setShowFRE_.bind(this),
@@ -196,7 +195,7 @@ export class TabFocusPageElement extends CrLitElement {
   override disconnectedCallback() {
     super.disconnectedCallback()
     this.listenerIds_.forEach((id) =>
-      this.apiProxy_.getCallbackRouter().removeListener(id),
+      this.apiProxy_.callbackRouter.removeListener(id),
     )
 
     document.removeEventListener(
@@ -262,15 +261,15 @@ export class TabFocusPageElement extends CrLitElement {
   }
 
   protected onLearnMoreClick_() {
-    this.apiProxy_.openLearnMorePage()
+    this.apiProxy_.handler.openLearnMorePage()
   }
 
   protected onGoPremiumClick_() {
-    this.apiProxy_.openLeoGoPremiumPage()
+    this.apiProxy_.handler.openLeoGoPremiumPage()
   }
 
   protected onEnableTabFocusClick_() {
-    this.apiProxy_.setTabFocusEnabled()
+    this.apiProxy_.handler.setTabFocusEnabled()
   }
 
   protected onDismissErrorClick_() {

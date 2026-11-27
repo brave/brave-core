@@ -1,3 +1,5 @@
+//! APIs that are specific to QNX Neutrino and not found in other operating systems
+
 use crate::prelude::*;
 
 pub type nto_job_t = crate::sync_t;
@@ -41,7 +43,7 @@ s! {
         pub srcmsglen: isize,
         pub dstmsglen: isize,
         pub type_id: u32,
-        reserved: u32,
+        reserved: Padding<u32>,
     }
 
     pub struct _cred_info {
@@ -75,7 +77,7 @@ s! {
         pub num_pulses: c_uint,
         pub rearm_threshold: c_uint,
         pub options: c_uint,
-        reserved: [c_uint; 3],
+        reserved: Padding<[c_uint; 3]>,
     }
 
     // TODO: The following structures are defined in a header file which doesn't
@@ -106,7 +108,7 @@ s! {
     //    pub max_num_buffer: c_uint,
     //    pub trigger_num_msg: c_uint,
     //    pub trigger_time: crate::_itimer,
-    //    reserve: c_uint,
+    //    reserve: Padding<c_uint>,
     //}
 
     //pub struct _asyncmsg_connection_descriptor {
@@ -121,9 +123,9 @@ s! {
     //    pub ttimer: crate::timer_t,
     //    pub block_con: crate::pthread_cond_t,
     //    pub mu: crate::pthread_mutex_t,
-    //    reserved: c_uint,
+    //    reserved: Padding<c_uint>,
     //    pub attr: crate::_asyncmsg_connection_attr,
-    //    pub reserves: [c_uint; 3],
+    //    reserves: Padding<[c_uint; 3]>,
     //    pub sendq: [crate::_asyncmsg_put_header; 1], // flexarray
     //}
 
@@ -170,6 +172,7 @@ s! {
         pub tick_nsec_inc: i32,
     }
 
+    #[cfg(target_os = "nto")]
     pub struct qtime_entry {
         pub cycles_per_sec: u64,
         pub nsec_tod_adjust: u64, // volatile
@@ -188,7 +191,26 @@ s! {
         pub nsec_stable: u64, // volatile
         pub timer_load_max: u64,
         pub timer_prog_time: u32,
-        spare: [u32; 7],
+        spare: Padding<[u32; 7]>,
+    }
+
+    #[cfg(target_os = "qnx")]
+    pub struct qtime_entry {
+        pub cycles_per_sec: u64,
+        pub nsec_tod_adjust: u64, // volatile
+        pub nsec_inc: u32,
+        pub boot_time: u32,
+        pub adjust: _clockadjust,
+        pub timer_period: u32,
+        pub timer_scale: i32,
+        pub intr: i32,
+        pub epoch: u32,
+        pub flags: u32,
+        pub rr_interval_mul: u32,
+        pub timer_load_max: u64,
+        pub boot_cc: u64,
+        pub tick_period_cc: u64,
+        spare: Padding<[u64; 3]>,
     }
 
     pub struct _sched_info {
@@ -196,7 +218,7 @@ s! {
         pub priority_max: c_int,
         pub interval: u64,
         pub priority_priv: c_int,
-        reserved: [c_int; 11],
+        reserved: Padding<[c_int; 11]>,
     }
 
     pub struct _timer_info {
@@ -217,6 +239,7 @@ s! {
 }
 
 s_no_extra_traits! {
+    #[cfg(target_os = "nto")]
     #[repr(align(8))]
     pub struct syspage_entry {
         pub size: u16,
@@ -238,13 +261,37 @@ s_no_extra_traits! {
         pub smp: syspage_entry_info,
         pub pminfo: syspage_entry_info,
         pub old_mdriver: syspage_entry_info,
-        spare0: [u32; 1],
-        __reserved: Padding<[u8; 160]>, // anonymous union with architecture dependent structs
+        spare0: Padding<[u32; 1]>,
+        __reserved: Padding<[u64; 20]>, // anonymous union with architecture dependent structs
         pub new_asinfo: syspage_array_info,
         pub new_cpuinfo: syspage_array_info,
         pub new_cacheattr: syspage_array_info,
         pub new_intrinfo: syspage_array_info,
         pub new_mdriver: syspage_array_info,
+    }
+
+    #[cfg(target_os = "qnx")]
+    #[repr(align(8))]
+    pub struct syspage_entry {
+        pub size: u16,
+        pub total_size: u16,
+        pub type_: u16,
+        pub num_cpu: u16,
+        pub system_private: syspage_entry_info,
+        version: [u16; 2], // inline struct
+        pub hwinfo: syspage_entry_info,
+        pub qtime: syspage_entry_info,
+        pub callout: syspage_entry_info,
+        pub typed_strings: syspage_entry_info,
+        pub strings: syspage_entry_info,
+        pub smp: syspage_entry_info,
+        __reserved: Padding<[u64; 20]>, // anonymous union with architecture dependent structs
+        pub asinfo: syspage_array_info,
+        pub cpuinfo: syspage_array_info,
+        pub cacheattr: syspage_array_info,
+        pub intrinfo: syspage_array_info,
+        pub hypinfo: syspage_entry_info,
+        pub cluster: syspage_array_info,
     }
 }
 
@@ -260,7 +307,9 @@ pub const STATE_STOPPED: c_int = 0x03;
 pub const STATE_SEND: c_int = 0x04;
 pub const STATE_RECEIVE: c_int = 0x05;
 pub const STATE_REPLY: c_int = 0x06;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const STATE_STACK: c_int = 0x07;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const STATE_WAITTHREAD: c_int = 0x08;
 pub const STATE_WAITPAGE: c_int = 0x09;
 pub const STATE_SIGSUSPEND: c_int = 0x0a;
@@ -272,9 +321,14 @@ pub const STATE_JOIN: c_int = 0x0f;
 pub const STATE_INTR: c_int = 0x10;
 pub const STATE_SEM: c_int = 0x11;
 pub const STATE_WAITCTX: c_int = 0x12;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const STATE_NET_SEND: c_int = 0x13;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const STATE_NET_REPLY: c_int = 0x14;
+#[cfg(target_os = "nto")]
 pub const STATE_MAX: c_int = 0x18;
+#[cfg(target_os = "qnx")]
+pub const STATE_MAX: c_int = 63;
 
 pub const _NTO_TIMEOUT_RECEIVE: i32 = 1 << STATE_RECEIVE;
 pub const _NTO_TIMEOUT_SEND: i32 = 1 << STATE_SEND;
@@ -292,10 +346,12 @@ pub const _NTO_MI_ENDIAN_BIG: u32 = 1;
 pub const _NTO_MI_ENDIAN_DIFF: u32 = 2;
 pub const _NTO_MI_UNBLOCK_REQ: u32 = 256;
 pub const _NTO_MI_NET_CRED_DIRTY: u32 = 512;
+#[cfg(target_os = "nto")] // private (`/devs/sys/*.h`) in QNX8
 pub const _NTO_MI_CONSTRAINED: u32 = 1024;
 pub const _NTO_MI_CHROOT: u32 = 2048;
 pub const _NTO_MI_BITS_64: u32 = 4096;
 pub const _NTO_MI_BITS_DIFF: u32 = 8192;
+#[cfg(target_os = "nto")] // private (`/devs/sys/*.h`) in QNX8
 pub const _NTO_MI_SANDBOX: u32 = 16384;
 
 pub const _NTO_CI_ENDIAN_BIG: u32 = 1;
@@ -305,7 +361,9 @@ pub const _NTO_CI_STOPPED: u32 = 128;
 pub const _NTO_CI_UNABLE: u32 = 256;
 pub const _NTO_CI_TYPE_ID: u32 = 512;
 pub const _NTO_CI_CHROOT: u32 = 2048;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_CI_BITS_64: u32 = 4096;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_CI_SANDBOX: u32 = 16384;
 pub const _NTO_CI_LOADER: u32 = 32768;
 pub const _NTO_CI_FULL_GROUPS: u32 = 2147483648;
@@ -349,6 +407,7 @@ pub const _NTO_PF_TERMING: u32 = 4;
 pub const _NTO_PF_ZOMBIE: u32 = 8;
 pub const _NTO_PF_NOZOMBIE: u32 = 16;
 pub const _NTO_PF_FORKED: u32 = 32;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_PF_ORPHAN_PGRP: u32 = 64;
 pub const _NTO_PF_STOPPED: u32 = 128;
 pub const _NTO_PF_DEBUG_STOPPED: u32 = 256;
@@ -357,33 +416,50 @@ pub const _NTO_PF_NOISYNC: u32 = 1024;
 pub const _NTO_PF_CONTINUED: u32 = 2048;
 pub const _NTO_PF_CHECK_INTR: u32 = 4096;
 pub const _NTO_PF_COREDUMP: u32 = 8192;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_PF_RING0: u32 = 32768;
 pub const _NTO_PF_SLEADER: u32 = 65536;
 pub const _NTO_PF_WAITINFO: u32 = 131072;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_PF_DESTROYALL: u32 = 524288;
 pub const _NTO_PF_NOCOREDUMP: u32 = 1048576;
 pub const _NTO_PF_WAITDONE: u32 = 4194304;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_PF_TERM_WAITING: u32 = 8388608;
 pub const _NTO_PF_ASLR: u32 = 16777216;
 pub const _NTO_PF_EXECED: u32 = 33554432;
 pub const _NTO_PF_APP_STOPPED: u32 = 67108864;
 pub const _NTO_PF_64BIT: u32 = 134217728;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_PF_NET: u32 = 268435456;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_PF_NOLAZYSTACK: u32 = 536870912;
 pub const _NTO_PF_NOEXEC_STACK: u32 = 1073741824;
 pub const _NTO_PF_LOADER_PERMS: u32 = 2147483648;
 
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TF_INTR_PENDING: u32 = 65536;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TF_DETACHED: u32 = 131072;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TF_SHR_MUTEX: u32 = 262144;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TF_SHR_MUTEX_EUID: u32 = 524288;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TF_THREADS_HOLD: u32 = 1048576;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TF_UNBLOCK_REQ: u32 = 4194304;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TF_ALIGN_FAULT: u32 = 16777216;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TF_SSTEP: u32 = 33554432;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TF_ALLOCED_STACK: u32 = 67108864;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TF_NOMULTISIG: u32 = 134217728;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TF_LOW_LATENCY: u32 = 268435456;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TF_IOPRIV: u32 = 2147483648;
 
 pub const _NTO_TCTL_IO_PRIV: u32 = 1;
@@ -392,15 +468,20 @@ pub const _NTO_TCTL_THREADS_CONT: u32 = 3;
 pub const _NTO_TCTL_RUNMASK: u32 = 4;
 pub const _NTO_TCTL_ALIGN_FAULT: u32 = 5;
 pub const _NTO_TCTL_RUNMASK_GET_AND_SET: u32 = 6;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TCTL_PERFCOUNT: u32 = 7;
 pub const _NTO_TCTL_ONE_THREAD_HOLD: u32 = 8;
 pub const _NTO_TCTL_ONE_THREAD_CONT: u32 = 9;
 pub const _NTO_TCTL_RUNMASK_GET_AND_SET_INHERIT: u32 = 10;
 pub const _NTO_TCTL_NAME: u32 = 11;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TCTL_RCM_GET_AND_SET: u32 = 12;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TCTL_SHR_MUTEX: u32 = 13;
 pub const _NTO_TCTL_IO: u32 = 14;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TCTL_NET_KIF_GET_AND_SET: u32 = 15;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TCTL_LOW_LATENCY: u32 = 16;
 pub const _NTO_TCTL_ADD_EXIT_EVENT: u32 = 17;
 pub const _NTO_TCTL_DEL_EXIT_EVENT: u32 = 18;
@@ -422,7 +503,9 @@ pub const _NTO_CHF_SENDER_LEN: u32 = 32;
 pub const _NTO_CHF_COID_DISCONNECT: u32 = 64;
 pub const _NTO_CHF_REPLY_LEN: u32 = 128;
 pub const _NTO_CHF_PULSE_POOL: u32 = 256;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_CHF_ASYNC_NONBLOCK: u32 = 512;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_CHF_ASYNC: u32 = 1024;
 pub const _NTO_CHF_GLOBAL: u32 = 2048;
 pub const _NTO_CHF_PRIVATE: u32 = 4096;
@@ -435,13 +518,19 @@ pub const _NTO_CHO_CUSTOM_EVENT: u32 = 1;
 pub const _NTO_COF_CLOEXEC: u32 = 1;
 pub const _NTO_COF_DEAD: u32 = 2;
 pub const _NTO_COF_NOSHARE: u32 = 64;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_COF_NETCON: u32 = 128;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_COF_NONBLOCK: u32 = 256;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_COF_ASYNC: u32 = 512;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_COF_GLOBAL: u32 = 1024;
 pub const _NTO_COF_NOEVENT: u32 = 2048;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_COF_INSECURE: u32 = 4096;
 pub const _NTO_COF_REG_EVENTS: u32 = 8192;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_COF_UNREG_EVENTS: u32 = 16384;
 pub const _NTO_COF_MASK: u32 = 65535;
 
@@ -450,8 +539,18 @@ pub const _NTO_SIDE_CHANNEL: u32 = 1073741824;
 pub const _NTO_CONNECTION_SCOID: u32 = 65536;
 pub const _NTO_GLOBAL_CHANNEL: u32 = 1073741824;
 
-pub const _NTO_TIMEOUT_MASK: u32 = (1 << STATE_MAX) - 1;
-pub const _NTO_TIMEOUT_ACTIVE: u32 = 1 << STATE_MAX;
+const STATE_TIMEOUT_MAX: u8 = 24;
+pub const _NTO_TIMEOUT_MASK: u32 = if cfg!(target_os = "nto") {
+    (1 << STATE_MAX) - 1
+} else {
+    (1 << STATE_TIMEOUT_MAX) - 1
+};
+pub const _NTO_TIMEOUT_ACTIVE: u32 = if cfg!(target_os = "nto") {
+    1 << STATE_MAX
+} else {
+    1 << STATE_TIMEOUT_MAX
+};
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_TIMEOUT_IMMEDIATE: u32 = 1 << (STATE_MAX + 1);
 
 pub const _NTO_IC_LATENCY: u32 = 0;
@@ -474,31 +573,54 @@ pub const _NTO_HOOK_OVERDRIVE: u32 = 2147418114;
 pub const _NTO_HOOK_LAST: u32 = 2147418114;
 pub const _NTO_HOOK_IDLE2_FLAG: u32 = 32768;
 
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_IH_CMD_SLEEP_SETUP: u32 = 1;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_IH_CMD_SLEEP_BLOCK: u32 = 2;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_IH_CMD_SLEEP_WAKEUP: u32 = 4;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_IH_CMD_SLEEP_ONLINE: u32 = 8;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_IH_RESP_NEEDS_BLOCK: u32 = 1;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_IH_RESP_NEEDS_WAKEUP: u32 = 2;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_IH_RESP_NEEDS_ONLINE: u32 = 4;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_IH_RESP_SYNC_TIME: u32 = 16;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_IH_RESP_SYNC_TLB: u32 = 32;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_IH_RESP_SUGGEST_OFFLINE: u32 = 256;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_IH_RESP_SLEEP_MODE_REACHED: u32 = 512;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_IH_RESP_DELIVER_INTRS: u32 = 1024;
 
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_READIOV_SEND: u32 = 0;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_READIOV_REPLY: u32 = 1;
 
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_KEYDATA_VTID: u32 = 2147483648;
 
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_KEYDATA_PATHSIGN: u32 = 32768;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_KEYDATA_OP_MASK: u32 = 255;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_KEYDATA_VERIFY: u32 = 0;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_KEYDATA_CALCULATE: u32 = 1;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_KEYDATA_CALCULATE_REUSE: u32 = 2;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_KEYDATA_PATHSIGN_VERIFY: u32 = 32768;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_KEYDATA_PATHSIGN_CALCULATE: u32 = 32769;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const _NTO_KEYDATA_PATHSIGN_CALCULATE_REUSE: u32 = 32770;
 
 pub const _NTO_SCTL_SETPRIOCEILING: u32 = 1;
@@ -515,6 +637,7 @@ extern "C" {
     pub fn ChannelCreate(__flags: c_uint) -> c_int;
     pub fn ChannelCreate_r(__flags: c_uint) -> c_int;
     pub fn ChannelCreatePulsePool(__flags: c_uint, __config: *const nto_channel_config) -> c_int;
+    #[cfg(target_os = "nto")]
     pub fn ChannelCreateExt(
         __flags: c_uint,
         __mode: crate::mode_t,
@@ -761,12 +884,14 @@ extern "C" {
         __bytes: usize,
         __info: *mut _msg_info64,
     ) -> c_int;
+    #[cfg(target_os = "nto")] // removed in QNX8
     pub fn MsgReceivePulsev(
         __chid: c_int,
         __iov: *const crate::iovec,
         __parts: usize,
         __info: *mut _msg_info64,
     ) -> c_int;
+    #[cfg(target_os = "nto")] // removed in QNX8
     pub fn MsgReceivePulsev_r(
         __chid: c_int,
         __iov: *const crate::iovec,
@@ -797,6 +922,7 @@ extern "C" {
         __iov: *const crate::iovec,
         __parts: usize,
     ) -> c_int;
+    #[cfg(target_os = "nto")] // removed in QNX8
     pub fn MsgReadiov(
         __rcvid: c_int,
         __iov: *const crate::iovec,
@@ -804,6 +930,7 @@ extern "C" {
         __offset: usize,
         __flags: c_int,
     ) -> isize;
+    #[cfg(target_os = "nto")] // removed in QNX8
     pub fn MsgReadiov_r(
         __rcvid: c_int,
         __iov: *const crate::iovec,
@@ -870,6 +997,7 @@ extern "C" {
     pub fn MsgUnregisterEvent_r(__event: *const crate::sigevent) -> c_int;
     pub fn MsgInfo(__rcvid: c_int, __info: *mut _msg_info64) -> c_int;
     pub fn MsgInfo_r(__rcvid: c_int, __info: *mut _msg_info64) -> c_int;
+    #[cfg(target_os = "nto")] // removed in QNX8
     pub fn MsgKeyData(
         __rcvid: c_int,
         __oper: c_int,
@@ -878,6 +1006,7 @@ extern "C" {
         __iov: *const crate::iovec,
         __parts: c_int,
     ) -> c_int;
+    #[cfg(target_os = "nto")] // removed in QNX8
     pub fn MsgKeyData_r(
         __rcvid: c_int,
         __oper: c_int,
@@ -890,13 +1019,16 @@ extern "C" {
     pub fn MsgError_r(__rcvid: c_int, __err: c_int) -> c_int;
     pub fn MsgCurrent(__rcvid: c_int) -> c_int;
     pub fn MsgCurrent_r(__rcvid: c_int) -> c_int;
+    #[cfg(target_os = "nto")] // removed in QNX8
     pub fn MsgSendAsyncGbl(
         __coid: c_int,
         __smsg: *const c_void,
         __sbytes: usize,
         __msg_prio: c_uint,
     ) -> c_int;
+    #[cfg(target_os = "nto")] // removed in QNX8
     pub fn MsgSendAsync(__coid: c_int) -> c_int;
+    #[cfg(target_os = "nto")] // removed in QNX8
     pub fn MsgReceiveAsyncGbl(
         __chid: c_int,
         __rmsg: *mut c_void,
@@ -904,6 +1036,7 @@ extern "C" {
         __info: *mut _msg_info64,
         __coid: c_int,
     ) -> c_int;
+    #[cfg(target_os = "nto")] // removed in QNX8
     pub fn MsgReceiveAsync(__chid: c_int, __iov: *const crate::iovec, __parts: c_uint) -> c_int;
     pub fn MsgPause(__rcvid: c_int, __cookie: c_uint) -> c_int;
     pub fn MsgPause_r(__rcvid: c_int, __cookie: c_uint) -> c_int;
@@ -941,6 +1074,7 @@ extern "C" {
         __value: *const crate::sigval,
     ) -> c_int;
     pub fn SignalReturn(__info: *mut _sighandler_info) -> c_int;
+    #[cfg(target_os = "nto")] // removed in QNX8
     pub fn SignalFault(__sigcode: c_uint, __regs: *mut c_void, __refaddr: usize) -> c_int;
     pub fn SignalAction(
         __pid: crate::pid_t,
@@ -1085,12 +1219,14 @@ extern "C" {
     pub fn InterruptDetach_r(__id: c_int) -> c_int;
     pub fn InterruptWait(__flags: c_int, __timeout: *const u64) -> c_int;
     pub fn InterruptWait_r(__flags: c_int, __timeout: *const u64) -> c_int;
+    #[cfg(target_os = "nto")] // declaration exists but symbol was removed in QNX8
     pub fn InterruptCharacteristic(
         __type: c_int,
         __id: c_int,
         __new: *mut c_uint,
         __old: *mut c_uint,
     ) -> c_int;
+    #[cfg(target_os = "nto")] // declaration exists but symbol was removed in QNX8
     pub fn InterruptCharacteristic_r(
         __type: c_int,
         __id: c_int,
@@ -1132,12 +1268,14 @@ extern "C" {
     pub fn SchedJobCreate_r(__job: *mut nto_job_t) -> c_int;
     pub fn SchedJobDestroy(__job: *mut nto_job_t) -> c_int;
     pub fn SchedJobDestroy_r(__job: *mut nto_job_t) -> c_int;
+    #[cfg(target_os = "nto")] // declaration exists but symbol was removed in QNX8
     pub fn SchedWaypoint(
         __job: *mut nto_job_t,
         __new: *const i64,
         __max: *const i64,
         __old: *mut i64,
     ) -> c_int;
+    #[cfg(target_os = "nto")] // declaration exists but symbol was removed in QNX8
     pub fn SchedWaypoint_r(
         __job: *mut nto_job_t,
         __new: *const i64,
@@ -1218,7 +1356,9 @@ extern "C" {
     pub fn SyncMutexLock_r(__sync: *mut crate::sync_t) -> c_int;
     pub fn SyncMutexUnlock(__sync: *mut crate::sync_t) -> c_int;
     pub fn SyncMutexUnlock_r(__sync: *mut crate::sync_t) -> c_int;
+    #[cfg(target_os = "nto")] // removed in QNX8
     pub fn SyncMutexRevive(__sync: *mut crate::sync_t) -> c_int;
+    #[cfg(target_os = "nto")] // removed in QNX8
     pub fn SyncMutexRevive_r(__sync: *mut crate::sync_t) -> c_int;
     pub fn SyncCondvarWait(__sync: *mut crate::sync_t, __mutex: *mut crate::sync_t) -> c_int;
     pub fn SyncCondvarWait_r(__sync: *mut crate::sync_t, __mutex: *mut crate::sync_t) -> c_int;
@@ -1245,13 +1385,13 @@ extern "C" {
         __id: crate::clockid_t,
         _new: *const crate::_clockperiod,
         __old: *mut crate::_clockperiod,
-        __reserved: Padding<c_int>,
+        __reserved: c_int,
     ) -> c_int;
     pub fn ClockPeriod_r(
         __id: crate::clockid_t,
         _new: *const crate::_clockperiod,
         __old: *mut crate::_clockperiod,
-        __reserved: Padding<c_int>,
+        __reserved: c_int,
     ) -> c_int;
     pub fn ClockId(__pid: crate::pid_t, __tid: c_int) -> c_int;
     pub fn ClockId_r(__pid: crate::pid_t, __tid: c_int) -> c_int;

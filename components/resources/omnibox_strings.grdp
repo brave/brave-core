@@ -26,4 +26,7 @@
   <message name="IDS_OMNIBOX_ASK_BRAVE_SEARCH_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user input is empty and the user is in the @ask scope.">
     Ask anything
   </message>
+  <message name="IDS_OMNIBOX_SEMANTIC_HISTORY_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user input is empty and the user is in the @history scope with semantic history search on, which matches pages by meaning rather than by exact words.">
+    In a few words, describe what you're searching for
+  </message>
 </grit-part>

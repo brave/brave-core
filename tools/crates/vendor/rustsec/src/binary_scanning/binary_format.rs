@@ -22,11 +22,11 @@ pub enum BinaryFormat {
 impl From<binfarce::Format> for BinaryFormat {
     fn from(value: binfarce::Format) -> Self {
         match value {
-            binfarce::Format::Elf32 { byte_order: _ } => BinaryFormat::Elf32,
-            binfarce::Format::Elf64 { byte_order: _ } => BinaryFormat::Elf64,
-            binfarce::Format::Macho => BinaryFormat::Macho,
-            binfarce::Format::PE => BinaryFormat::PE,
-            binfarce::Format::Unknown => BinaryFormat::Unknown,
+            binfarce::Format::Elf32 { byte_order: _ } => Self::Elf32,
+            binfarce::Format::Elf64 { byte_order: _ } => Self::Elf64,
+            binfarce::Format::Macho => Self::Macho,
+            binfarce::Format::PE => Self::PE,
+            binfarce::Format::Unknown => Self::Unknown,
         }
     }
 }

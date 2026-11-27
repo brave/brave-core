@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -38,6 +39,7 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
 import org.chromium.chrome.browser.app.appmenu.AppMenuItemUtils;
+import org.chromium.chrome.browser.app.appmenu.BraveExtensionsMenuItemViewBinder;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_news.BraveNewsPolicy;
@@ -78,8 +80,11 @@ import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.webapps.WebappsUtils;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.modaldialog.ModalDialogManager;
+import org.chromium.ui.modelutil.LayoutViewBuilder;
 import org.chromium.ui.modelutil.MVCListAdapter;
+import org.chromium.ui.modelutil.ModelListAdapter;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.url.GURL;
 
@@ -87,12 +92,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 /** Brave's extension for TabbedAppMenuPropertiesDelegate */
 @NullMarked
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
+    // The menu's ListView needs contiguous view types, so this follows upstream's last one.
+    private static final int BRAVE_EXTENSIONS_ITEM = TabbedAppMenuItemType.NEW_INCOGNITO + 1;
+    private static final String BRAVE_SCHEME = "brave";
+
     private final AppMenuDelegate mBraveAppMenuDelegate;
     private final Context mBraveContext;
     private boolean mJunitIsTesting;
@@ -741,6 +751,20 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 0,
                                 isMenuIconAtStart())));
 
+        // Extensions
+        if (shouldShowBraveExtensionsItem()) {
+            modelList.add(
+                    new MVCListAdapter.ListItem(
+                            AppMenuHandler.AppMenuItemType.STANDARD,
+                            AppMenuItemUtils.buildModelForStandardMenuItem(
+                                    mContext,
+                                    mAppMenuItemTheme,
+                                    R.id.brave_extensions_menu_id,
+                                    R.string.menu_extensions,
+                                    0,
+                                    isMenuIconAtStart())));
+        }
+
         // Add Brave specific items (Wallet is handled by policy-controlled mechanism).
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
             modelList.add(buildBravePlaylistItem());
@@ -1064,6 +1088,20 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             }
         }
 
+        if (shouldShowBraveExtensionsItem()) {
+            // Recent tabs is followed by a divider, so adding another one before the item wraps it
+            // into its own section.
+            List<Integer> previousItemIds =
+                    Arrays.asList(R.id.recent_tabs_menu_id, R.id.all_bookmarks_menu_id);
+            addMenuItemAfter(modelList, buildBraveExtensionsItem(), previousItemIds);
+            addMenuItemAfter(
+                    modelList,
+                    new MVCListAdapter.ListItem(
+                            AppMenuItemType.DIVIDER,
+                            AppMenuItemUtils.buildModelForDivider(R.id.divider_line_id)),
+                    previousItemIds);
+        }
+
         // Add Brave specific items (Wallet is handled by policy-controlled mechanism).
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
                 && ChromeSharedPreferences.getInstance()
@@ -1301,6 +1339,59 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         R.string.brave_menu_shred_text,
                         shouldShowIconBeforeItem() ? R.drawable.ic_shred_data : 0,
                         isMenuIconAtStart()));
+    }
+
+    /**
+     * Phones get their own Extensions item, as upstream's extensions menu entry points need the
+     * tablet toolbar.
+     */
+    private boolean shouldShowBraveExtensionsItem() {
+        return !mIsTablet && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_EXTENSIONS);
+    }
+
+    private MVCListAdapter.ListItem buildBraveExtensionsItem() {
+        PropertyModel model =
+                AppMenuItemUtils.populateBaseModelForTextItem(
+                                new PropertyModel.Builder(
+                                        BraveExtensionsMenuItemViewBinder.ALL_KEYS),
+                                mAppMenuItemTheme,
+                                R.id.brave_extensions_menu_id,
+                                isMenuIconAtStart())
+                        .with(
+                                AppMenuItemProperties.TITLE,
+                                mContext.getString(R.string.menu_extensions))
+                        .with(
+                                AppMenuItemProperties.ICON,
+                                AppCompatResources.getDrawable(
+                                        mContext, R.drawable.ic_browser_extensions))
+                        .build();
+        Tab tab = mActivityTabProvider.get();
+        WebContents webContents = tab != null ? tab.getWebContents() : null;
+        if (webContents == null || isInternalPage(webContents.getLastCommittedUrl())) {
+            model.set(
+                    BraveExtensionsMenuItemViewBinder.SUBTITLE,
+                    mContext.getString(
+                            R.string.brave_menu_extensions_unavailable_on_internal_pages));
+            model.set(AppMenuItemProperties.ENABLED, false);
+        }
+        return new MVCListAdapter.ListItem(BRAVE_EXTENSIONS_ITEM, model);
+    }
+
+    private static boolean isInternalPage(GURL url) {
+        return UrlUtilities.isInternalScheme(url) || BRAVE_SCHEME.equals(url.getScheme());
+    }
+
+    @Override
+    public void registerCustomViewBinders(
+            ModelListAdapter modelListAdapter,
+            SparseArray<BiFunction<Context, PropertyModel, Integer>> customSizingSuppliers) {
+        super.registerCustomViewBinders(modelListAdapter, customSizingSuppliers);
+        modelListAdapter.registerType(
+                BRAVE_EXTENSIONS_ITEM,
+                new LayoutViewBuilder<>(R.layout.brave_extensions_menu_item),
+                BraveExtensionsMenuItemViewBinder::bind);
+        customSizingSuppliers.append(
+                BRAVE_EXTENSIONS_ITEM, BraveExtensionsMenuItemViewBinder::getPixelHeight);
     }
 
     private MVCListAdapter.ListItem buildBraveVpnItem() {

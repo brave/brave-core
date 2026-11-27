@@ -10,16 +10,16 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-protocol"
-version = "0.52.1"
+version = "0.68.0"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
-    "!**/tests/**/*",
+    "/src/**/*",
+    "/LICENSE-*",
+    "!/tests/**/*",
 ]
 autolib = false
 autobins = false
@@ -30,9 +30,11 @@ description = "A crate of the gitoxide project for implementing git protocols"
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [package.metadata.docs.rs]
 features = [
+    "sha1",
     "blocking-client",
     "document-features",
     "serde",
@@ -49,7 +51,6 @@ async-client = [
 ]
 blocking-client = [
     "gix-transport/blocking-client",
-    "maybe-async/is_sync",
     "handshake",
     "fetch",
 ]
@@ -69,6 +70,8 @@ serde = [
     "gix-hash/serde",
     "gix-shallow/serde",
 ]
+sha1 = ["gix-hash/sha1"]
+sha256 = ["gix-hash/sha256"]
 
 [lib]
 name = "gix_protocol"
@@ -92,7 +95,7 @@ version = "0.2.0"
 optional = true
 
 [dependencies.futures-io]
-version = "0.3.16"
+version = "0.3.32"
 optional = true
 
 [dependencies.futures-lite]
@@ -100,57 +103,60 @@ version = "2.1.0"
 optional = true
 
 [dependencies.gix-credentials]
-version = "^0.31.1"
+version = "^0.42.1"
 optional = true
 
 [dependencies.gix-date]
-version = "^0.10.7"
+version = "^0.18.1"
 
-[dependencies.gix-features]
-version = "^0.44.1"
-features = ["progress"]
+[dependencies.gix-error]
+version = "^0.5.2"
 
 [dependencies.gix-hash]
-version = "^0.20.1"
+version = "^0.28.1"
 
 [dependencies.gix-lock]
-version = "^19.0.0"
+version = "^26.0.0"
 optional = true
 
+[dependencies.gix-macros]
+version = "^0.2.0"
+
 [dependencies.gix-negotiate]
-version = "^0.22.0"
+version = "^0.38.0"
 optional = true
 
 [dependencies.gix-object]
-version = "^0.51.1"
+version = "^0.66.1"
 optional = true
 
 [dependencies.gix-ref]
-version = "^0.54.1"
+version = "^0.69.1"
 
 [dependencies.gix-refspec]
-version = "^0.32.0"
+version = "^0.47.1"
 optional = true
 
 [dependencies.gix-revwalk]
-version = "^0.22.0"
+version = "^0.38.0"
 optional = true
 
 [dependencies.gix-shallow]
-version = "^0.6.0"
+version = "^0.15.1"
 
 [dependencies.gix-trace]
-version = "^0.1.15"
+version = "^0.3.1"
 optional = true
 
 [dependencies.gix-transport]
-version = "^0.49.1"
+version = "^0.62.0"
 
 [dependencies.gix-utils]
-version = "^0.3.1"
+version = "^0.5.1"
+features = ["progress"]
 
-[dependencies.maybe-async]
-version = "0.2.6"
+[dependencies.nonempty]
+version = "0.12.0"
 
 [dependencies.serde]
 version = "1.0.114"
@@ -158,21 +164,18 @@ features = ["derive"]
 optional = true
 default-features = false
 
-[dependencies.thiserror]
-version = "2.0.17"
-
-[dependencies.winnow]
-version = "0.7.12"
-features = ["simd"]
-
 [dev-dependencies.async-std]
 version = "1.9.0"
 features = ["attributes"]
 
 [dev-dependencies.gix-packetline]
-version = "^0.19.3"
+version = "^0.24.1"
+
+[dev-dependencies.insta]
+version = "1.46.3"
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -191,7 +194,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

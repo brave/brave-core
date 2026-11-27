@@ -1,6 +1,6 @@
 [package]
 name = "want"
-version = "0.3.1" # remember to update html_root_url
+version = "0.3.2" # remember to update html_root_url
 description = "Detect when another Future wants a result."
 keywords = ["futures", "channel", "async"]
 authors = ["Sean McArthur <sean@seanmonstar.com>"]

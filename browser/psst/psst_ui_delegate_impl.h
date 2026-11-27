@@ -19,7 +19,9 @@
 #include "brave/components/psst/core/common/psst_ui_common.mojom.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
-class PrefService;
+namespace brave_origin {
+class BraveOriginService;
+}  // namespace brave_origin
 
 namespace psst {
 
@@ -33,10 +35,11 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
     virtual void OnPsstErrorsReportSent() {}
   };
 
-  explicit PsstUiDelegateImpl(PsstSettingsService* psst_settings_service,
-                              PsstReporterService* psst_reporter_service,
-                              PrefService* prefs,
-                              std::unique_ptr<PsstUiPresenter> ui_presenter);
+  explicit PsstUiDelegateImpl(
+      PsstSettingsService* psst_settings_service,
+      PsstReporterService* psst_reporter_service,
+      std::unique_ptr<PsstUiPresenter> ui_presenter,
+      brave_origin::BraveOriginService* brave_origin_service);
   ~PsstUiDelegateImpl() override;
 
   PsstUiDelegateImpl(const PsstUiDelegateImpl&) = delete;
@@ -58,6 +61,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
       const std::string& user_id) override;
   void SetLogicalFlowCancelCallback(
       base::RepeatingClosure cancel_callback) override;
+  bool IsPsstEnabled() override;
 
   void AddObserver(Observer* obs);
   void RemoveObserver(Observer* obs);
@@ -72,6 +76,8 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
   void OnDialogClose();
 
  private:
+  friend class PsstUiDelegateImplUnitTest;
+
   void OnUserAcceptedInfobar(const bool is_accepted);
   void OnDontShowForThisSite();
   void OnDisablePrivacySettingsTuning();
@@ -92,8 +98,8 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
   base::RepeatingClosure cancel_callback_;
   raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
   raw_ptr<PsstReporterService> psst_reporter_service_ = nullptr;
+  raw_ptr<brave_origin::BraveOriginService> brave_origin_service_ = nullptr;
   base::ObserverList<Observer> observer_list_;
-  raw_ptr<PrefService> prefs_ = nullptr;  // not owned
   base::WeakPtrFactory<PsstUiDelegateImpl> weak_ptr_factory_{this};
 };
 

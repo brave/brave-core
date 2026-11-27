@@ -56,14 +56,52 @@
   {
     "cmd": [
       "git",
-      "cache",
-      "exists",
-      "--quiet",
-      "--cache-dir",
-      "/b/cache",
-      "https://github.com/brave/brave-core.git"
+      "config",
+      "gc.auto",
+      "0"
     ],
-    "name": "git cache exists"
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "git cache populate disable (after): gc.auto=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autodetach",
+      "0"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "git cache populate disable (after): gc.autodetach=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autopacklimit",
+      "0"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "git cache populate disable (after): gc.autopacklimit=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "git cache populate disable (after): maintenance.gc.enabled=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "git cache populate disable (after): maintenance.auto=false"
   },
   {
     "cmd": [
@@ -211,6 +249,69 @@
       ]
     },
     "name": "build"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "-u",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "[WORKSPACE]/b/src/brave/infra/config/generated/builders/linux-x64-asan-brave/targets/brave.sanitisers.json",
+      "/path/to/tmp/"
+    ],
+    "name": "read test spec (brave.sanitisers.json)"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/brave/tools/recipes/runtest.py",
+      "--build-dir",
+      "[WORKSPACE]/b/src/out/linux-x64-asan-brave",
+      "--builder",
+      "linux-x64-asan-brave",
+      "--builder-name=linux-x64-asan-brave",
+      "--builder-group=brave.sanitisers",
+      "--test-type=brave_unit_tests",
+      "--parse-gtest-output",
+      "brave_unit_tests"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "brave_unit_tests"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/brave/tools/recipes/runtest.py",
+      "--build-dir",
+      "[WORKSPACE]/b/src/out/linux-x64-asan-brave",
+      "--builder",
+      "linux-x64-asan-brave",
+      "--builder-name=linux-x64-asan-brave",
+      "--builder-group=brave.sanitisers",
+      "--test-type=brave_browser_tests",
+      "--parse-gtest-output",
+      "brave_browser_tests"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "brave_browser_tests"
   },
   {
     "name": "$result"

@@ -7,11 +7,13 @@
 
 use crate::ext::TokenStreamExt as _;
 use crate::Lifetime;
+use alloc::boxed::Box;
+use alloc::vec::Vec;
+use core::cmp::Ordering;
+use core::marker::PhantomData;
+use core::ptr;
 use proc_macro2::extra::DelimSpan;
 use proc_macro2::{Delimiter, Group, Ident, Literal, Punct, Spacing, Span, TokenStream, TokenTree};
-use std::cmp::Ordering;
-use std::marker::PhantomData;
-use std::ptr;
 
 /// Internal type which is used instead of `TokenTree` to represent a token tree
 /// within a `TokenBuffer`.
@@ -160,7 +162,7 @@ impl<'a> Cursor<'a> {
     /// If the cursor is looking at an `Entry::Group`, the bumped cursor will
     /// point at the first token in the group (with the same scope end).
     unsafe fn bump_ignore_group(self) -> Cursor<'a> {
-        unsafe { Cursor::create(self.ptr.offset(1), self.scope) }
+        unsafe { Cursor::create(self.ptr.add(1), self.scope) }
     }
 
     /// While the cursor is looking at a `None`-delimited group, move it to look
@@ -195,6 +197,14 @@ impl<'a> Cursor<'a> {
         }
     }
 
+    pub(crate) fn peek_keyword(mut self, token: &str) -> bool {
+        self.ignore_none();
+        match self.entry() {
+            Entry::Ident(ident) => ident == token,
+            _ => false,
+        }
+    }
+
     /// If the cursor is pointing at a `Punct`, returns it along with a cursor
     /// pointing at the next `TokenTree`.
     pub fn punct(mut self) -> Option<(Punct, Cursor<'a>)> {
@@ -205,6 +215,24 @@ impl<'a> Cursor<'a> {
             }
             _ => None,
         }
+    }
+
+    pub(crate) fn peek_punct(mut self, token: &str) -> bool {
+        for (i, ch) in token.chars().enumerate() {
+            self.ignore_none();
+            match self.entry() {
+                Entry::Punct(punct) if punct.as_char() == ch => {
+                    if i == token.len() - 1 {
+                        return true;
+                    } else if punct.spacing() != Spacing::Joint {
+                        break;
+                    }
+                    self = unsafe { self.bump_ignore_group() };
+                }
+                _ => break,
+            }
+        }
+        false
     }
 
     /// If the cursor is pointing at a `Literal`, return it along with a cursor
@@ -336,10 +364,9 @@ impl<'a> Cursor<'a> {
 
     /// Returns the `Span` of the token immediately prior to the position of
     /// this cursor, or of the current token if there is no previous one.
-    #[cfg(any(feature = "full", feature = "derive"))]
-    pub(crate) fn prev_span(mut self) -> Span {
+    pub fn prev_span(mut self) -> Span {
         if start_of_buffer(self) < self.ptr {
-            self.ptr = unsafe { self.ptr.offset(-1) };
+            self.ptr = unsafe { self.ptr.sub(1) };
         }
         self.span()
     }

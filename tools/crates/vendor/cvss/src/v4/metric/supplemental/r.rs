@@ -1,7 +1,7 @@
 //! Recovery (R)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -10,11 +10,12 @@ use core::{fmt, str::FromStr};
 /// Recovery (R) - CVSS v4.0 Supplemental Metric Group
 ///
 /// Described in CVSS v4.0 Specification: Section 5.4
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum Recovery {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
 
     /// Automatic (A)
@@ -36,21 +37,15 @@ pub enum Recovery {
     Irrecoverable,
 }
 
-impl Default for Recovery {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for Recovery {
     const TYPE: MetricType = MetricType::R;
 
     fn as_str(self) -> &'static str {
         match self {
-            Recovery::NotDefined => "X",
-            Recovery::Automatic => "A",
-            Recovery::User => "U",
-            Recovery::Irrecoverable => "I",
+            Self::NotDefined => "X",
+            Self::Automatic => "A",
+            Self::User => "U",
+            Self::Irrecoverable => "I",
         }
     }
 }
@@ -64,12 +59,12 @@ impl fmt::Display for Recovery {
 impl FromStr for Recovery {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(Recovery::NotDefined),
-            "A" => Ok(Recovery::Automatic),
-            "U" => Ok(Recovery::User),
-            "I" => Ok(Recovery::Irrecoverable),
+            "X" => Ok(Self::NotDefined),
+            "A" => Ok(Self::Automatic),
+            "U" => Ok(Self::User),
+            "I" => Ok(Self::Irrecoverable),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

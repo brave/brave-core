@@ -1,5 +1,5 @@
 /* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Tentang Perisai Brave";
+"AboutBraveShields" = "Seputar Brave Shields";
 
 /* The body of the screen explaining Brave Shields */
 "AboutBraveShieldsBody" = "Sering kali saat membuka situs terdapat cookies dan skrip yang berusaha mengidentifikasi pengguna dan perangkatnya.  Mereka ingin mengetahui siapa Anda dan mengikuti Anda di seluruh situs - melacak apa yang Anda lakukan di setiap situs.\n\nBrave memblokir hal-hal tersebut sehingga Anda dapat menjelajah tanpa merasa diikuti.";
@@ -16,38 +16,17 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "Pelacak & iklan diblokir";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "Iklan\nDiblokir";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "**Pemutar Brave** adalah tiket Anda ke pengalaman menonton video yang bebas iklan dan tanpa interupsi.";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "Sesuaikan Perisai Untuk Saya";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "Situs ini telah mulai memblokir sejumlah pemblokir iklan, yang artinya situs mereka mungkin tidak berfungsi sebagaimana diharapkan.";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Guna mengatasi masalah ini, Brave dapat menyesuaikan pengaturan perisai bagi Anda. Setelah disesuaikan, Anda dapat mencoba menonton konten ini di Pemutar Brave sebagai gantinya.";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "Tetap Gunakan Pengaturan Saat Ini";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "Sesuaikan Pengaturan Pemblokiran Iklan Untuk Situs Ini";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Halaman AMP yang Diarahkan Ulang Otomatis";
 
 /* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "Selalu kunjungi URL halaman aslinya (non-AMP), dan bukan versi Halaman Seluler Terakselerasi Google";
+"AutoRedirectAMPPagesDescription" = "Selalu kunjungi hanya URL laman orisinal (non-AMP), dan bukan versi Laman Seluler Terakselerasi Google";
 
 /* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
 "AutoRedirectTrackingURLs" = "URL Pelacakan Alih Otomatis";
 
 /* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Aktifkan dukungan karena melintasi pengalih ulang URL pelacakan utama";
+"AutoRedirectTrackingURLsDescription" = "Mengaktifkan dukungan untuk melewati pengarahan ulang tingkat atas URL pelacakan";
 
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Musnahkan Otomatis";
@@ -77,34 +56,13 @@
 "BlockScripts" = "Blokir Skrip";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Memblokir Javascript (mungkin merusak situs).";
-
-/* Title for the brave player feature */
-"BravePlayer" = "Pemutar Brave";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Selalu buka video dari situs ini dengan Pemutar Brave";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "Coba Pemutar";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "Jangan Sekarang";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Pemutar Brave memungkinkan Anda untuk menonton video tanpa interupsi.";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Tonton Di Pemutar Brave Sebagai Gantinya";
+"BlockScriptsDescription" = "Memblokir JavaScript (dapat merusak situs).";
 
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "Kontrol Tingkat Lanjut";
 
 /* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "Iklan dan hal mengerikan lainnya diblokir";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Ketahui selengkapnya";
+"BraveShieldsBlockedCountLabel" = "Iklan dan hal mencurigakan lainnya diblokir";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "Ubah Bawaan Global Perisai Brave";
@@ -119,10 +77,10 @@
 "BraveShieldsSaveContactInfoDescription" = "Jika Anda memberikan info kontak, maka info akan disimpan untuk laporan di masa mendatang";
 
 /* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Jika situs ini tampak rusak, coba turunkan Perisai";
+"BraveShieldsSiteBroken" = "Jika situs ini tampak rusak, coba turunkan Shield";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Perisai Brave";
+"BraveShieldsStatusTitle" = "Brave Shields";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
 "BraveShieldsStatusValueDown" = "Turun";
@@ -217,17 +175,11 @@
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "Pengunduhan tertunda";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Edit";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "Masukkan URL daftar filter";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "Terakhir diperbarui %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Masukkan URL daftar filter di sini ";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Blokir Penyidikjarian";
@@ -411,9 +363,6 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Pelacak & Pemblokiran Iklan";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Pelacak \nDiblokir";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Perbarui Daftar";

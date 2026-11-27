@@ -14,8 +14,8 @@
  */
 
 use crate::{
-    BinaryReader, BinaryReaderError, ConstExpr, ExternalKind, FromReader, RefType, Result,
-    SectionLimited,
+    BinaryReader, ConstExpr, Error, ExternalKind, FromReader, OperatorsReader,
+    OperatorsReaderAllocations, RefType, Result, SectionLimited,
 };
 use core::ops::Range;
 
@@ -76,7 +76,7 @@ impl<'a> FromReader<'a> for Element<'a> {
         // See also https://github.com/WebAssembly/spec/issues/1439
         let flags = reader.read_var_u32()?;
         if (flags & !0b111) != 0 {
-            return Err(BinaryReaderError::new(
+            return Err(Error::new(
                 "invalid flags byte in element segment",
                 reader.original_position() - 1,
             ));
@@ -107,7 +107,7 @@ impl<'a> FromReader<'a> for Element<'a> {
                 match reader.read()? {
                     ExternalKind::Func => None,
                     _ => {
-                        return Err(BinaryReaderError::new(
+                        return Err(Error::new(
                             "only the function external type is supported in elem segment",
                             reader.original_position() - 1,
                         ));
@@ -120,9 +120,16 @@ impl<'a> FromReader<'a> for Element<'a> {
         // FIXME(#188) ideally wouldn't have to do skips here
         let data = reader.skip(|reader| {
             let items_count = reader.read_var_u32()?;
+            let mut allocs = OperatorsReaderAllocations::default();
             if exprs {
                 for _ in 0..items_count {
-                    reader.skip_const_expr()?;
+                    let mut ops = OperatorsReader::new_with_allocs(
+                        reader.clone(),
+                        core::mem::take(&mut allocs),
+                    );
+                    ops.skip_const_expr()?;
+                    *reader = ops.get_binary_reader();
+                    allocs = ops.into_allocations();
                 }
             } else {
                 for _ in 0..items_count {

@@ -46,6 +46,7 @@ class WebContents;
 
 class CosmeticFilteringPlaylistFlagEnabledTest;
 class PlaylistMediaDiscoveryBrowserTest;
+class PrefRegistrySimple;
 class PrefService;
 
 namespace gfx {
@@ -117,6 +118,8 @@ class PlaylistService : public KeyedService,
   ~PlaylistService() override;
   PlaylistService(const PlaylistService&) = delete;
   PlaylistService& operator=(const PlaylistService&) = delete;
+
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 #if BUILDFLAG(IS_ANDROID)
   mojo::PendingRemote<mojom::PlaylistService> MakeRemote();
@@ -221,6 +224,11 @@ class PlaylistService : public KeyedService,
   const std::string& GetMediaSourceAPISuppressorScript() const;
   std::string GetMediaDetectorScript(const GURL& url) const;
 
+  // Keeps thumbnail and media file downloads queued without starting them.
+  void SetDownloadsPausedForTesting(bool paused);
+  bool HasPendingThumbnailDownloadsForTesting() const;
+  bool HasPendingMediaFileDownloadsForTesting() const;
+
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class PlaylistBrowserTest;
@@ -242,7 +250,6 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreateAndRemovePlaylist);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ReorderItemFromPlaylist);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, RemoveItemFromPlaylist);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ResetAll);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest,
                            CleanUpOrphanedPlaylistItemDirs);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, MediaFileExtension);

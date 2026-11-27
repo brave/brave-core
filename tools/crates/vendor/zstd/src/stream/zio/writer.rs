@@ -36,6 +36,12 @@ pub struct Writer<W, D> {
     /// Only happens when decompressing.
     /// The context needs to be re-initialized to process the next frame.
     finished_frame: bool,
+
+    /// When `true`, a call into `writer` is in progress.
+    ///
+    /// Stays `true` if that call panicked: the pending data must not be
+    /// handed to the writer again, in particular not from a destructor.
+    panicked: bool,
 }
 
 impl<W, D> Writer<W, D>
@@ -86,6 +92,7 @@ where
 
             finished: false,
             finished_frame: false,
+            panicked: false,
         }
     }
 
@@ -155,7 +162,10 @@ where
         // The code looks a lot like `write_all`, but keeps track of what has
         // been written in case we're interrupted.
         while self.offset < self.buffer.len() {
-            match self.writer.write(&self.buffer[self.offset..]) {
+            self.panicked = true;
+            let result = self.writer.write(&self.buffer[self.offset..]);
+            self.panicked = false;
+            match result {
                 Ok(0) => {
                     return Err(io::Error::new(
                         io::ErrorKind::WriteZero,
@@ -198,6 +208,14 @@ where
         &mut self.operation
     }
 
+    /// Returns `true` if the last call into the wrapped writer panicked.
+    ///
+    /// Calling the writer again would likely panic again, which aborts the
+    /// process if it happens during unwinding.
+    pub(crate) fn panicked(&self) -> bool {
+        self.panicked
+    }
+
     /// Returns the offset in the current buffer. Only useful for debugging.
     #[cfg(test)]
     pub fn offset(&self) -> usize {
@@ -234,7 +252,9 @@ where
 
             // Support writing concatenated frames by re-initializing the
             // context.
-            if self.finished_frame {
+            // We don't want empty input to cause a frame re-initialization:
+            // it would forget that the stream ended on a complete frame.
+            if self.finished_frame && !buf.is_empty() {
                 self.operation.reinit()?;
                 self.finished_frame = false;
             }
@@ -281,7 +301,10 @@ where
             finished = hint == 0;
         }
 
-        self.writer.flush()
+        self.panicked = true;
+        let result = self.writer.flush();
+        self.panicked = false;
+        result
     }
 }
 

@@ -2,7 +2,6 @@
 
 #![warn(rust_2018_idioms, unused_qualifications)]
 
-use platforms::target::{Arch, OS};
 use rustsec::{advisory::Severity, database::Query, package};
 
 /// Load example advisory from the filesystem
@@ -46,10 +45,10 @@ fn matches_severity() {
 fn matches_target_os() {
     let advisory = load_advisory();
 
-    let query_matches = Query::new().target_os(vec![OS::Windows, OS::Linux]);
+    let query_matches = Query::new().target_os(vec!["windows".to_owned(), "linux".to_owned()]);
     assert!(query_matches.matches(&advisory));
 
-    let query_normal = Query::new().target_os(vec![OS::MacOS, OS::FreeBSD]);
+    let query_normal = Query::new().target_os(vec!["macos".to_owned(), "freebsd".to_owned()]);
     assert!(!query_normal.matches(&advisory));
 }
 
@@ -57,9 +56,9 @@ fn matches_target_os() {
 fn matches_target_arch() {
     let advisory = load_advisory();
 
-    let query_matches = Query::new().target_arch(vec![Arch::X86, Arch::Arm]);
+    let query_matches = Query::new().target_arch(vec!["x86".to_owned(), "arm".to_owned()]);
     assert!(query_matches.matches(&advisory));
 
-    let query_normal = Query::new().target_arch(vec![Arch::Mips, Arch::Mips64]);
+    let query_normal = Query::new().target_arch(vec!["mips".to_owned(), "mips64".to_owned()]);
     assert!(!query_normal.matches(&advisory));
 }

@@ -1,0 +1,15 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipe_modules.brave.cipd;
+
+message EnvProperties {
+  // The machine's CIPD cache, which `cipd` reads itself: the packages it has
+  // downloaded and the versions it has resolved, kept between runs. Without
+  // it, every run downloads its tools again.
+  string CIPD_CACHE_DIR = 1;
+}

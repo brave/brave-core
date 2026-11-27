@@ -17,8 +17,8 @@ pub type sem_t = *mut sem;
 pub type key_t = c_long;
 
 extern_ty! {
-    pub enum timezone {}
-    pub enum sem {}
+    pub type timezone;
+    pub type sem;
 }
 
 s! {
@@ -132,6 +132,41 @@ pub const NOEXPR: crate::nl_item = 49;
 pub const CRNCYSTR: crate::nl_item = 50;
 
 pub const CODESET: crate::nl_item = 51;
+
+pub const REG_BASIC: c_int = 0o0000;
+pub const REG_EXTENDED: c_int = 0o0001;
+pub const REG_ICASE: c_int = 0o0002;
+pub const REG_NOSUB: c_int = 0o0004;
+pub const REG_NEWLINE: c_int = 0o0010;
+pub const REG_NOSPEC: c_int = 0o0020;
+pub const REG_PEND: c_int = 0o0040;
+pub const REG_DUMP: c_int = 0o0200;
+
+pub const REG_NOMATCH: c_int = 1;
+pub const REG_BADPAT: c_int = 2;
+pub const REG_ECOLLATE: c_int = 3;
+pub const REG_ECTYPE: c_int = 4;
+pub const REG_EESCAPE: c_int = 5;
+pub const REG_ESUBREG: c_int = 6;
+pub const REG_EBRACK: c_int = 7;
+pub const REG_EPAREN: c_int = 8;
+pub const REG_EBRACE: c_int = 9;
+pub const REG_BADBR: c_int = 10;
+pub const REG_ERANGE: c_int = 11;
+pub const REG_ESPACE: c_int = 12;
+pub const REG_BADRPT: c_int = 13;
+pub const REG_EMPTY: c_int = 14;
+pub const REG_ASSERT: c_int = 15;
+pub const REG_INVARG: c_int = 16;
+pub const REG_ATOI: c_int = 255;
+pub const REG_ITOA: c_int = 0o0400;
+
+pub const REG_NOTBOL: c_int = 0o00001;
+pub const REG_NOTEOL: c_int = 0o00002;
+pub const REG_STARTEND: c_int = 0o00004;
+pub const REG_TRACE: c_int = 0o00400;
+pub const REG_LARGE: c_int = 0o01000;
+pub const REG_BACKR: c_int = 0o02000;
 
 pub const EXIT_FAILURE: c_int = 1;
 pub const EXIT_SUCCESS: c_int = 0;
@@ -678,6 +713,10 @@ extern "C" {
         addrlen: *mut crate::socklen_t,
         flags: c_int,
     ) -> c_int;
+    #[cfg_attr(
+        target_os = "openbsd",
+        deprecated(since = "0.2.190", note = "Removed in OpenBSD 6.5")
+    )]
     pub fn mincore(addr: *mut c_void, len: size_t, vec: *mut c_char) -> c_int;
     #[cfg_attr(target_os = "netbsd", link_name = "__clock_getres50")]
     pub fn clock_getres(clk_id: crate::clockid_t, tp: *mut crate::timespec) -> c_int;
@@ -734,6 +773,12 @@ extern "C" {
         param: *mut sched_param,
     ) -> c_int;
     pub fn pipe2(fds: *mut c_int, flags: c_int) -> c_int;
+    pub fn ppoll(
+        fds: *mut crate::pollfd,
+        nfds: crate::nfds_t,
+        ts: *const crate::timespec,
+        sigmask: *const crate::sigset_t,
+    ) -> c_int;
 
     pub fn getgrouplist(
         name: *const c_char,

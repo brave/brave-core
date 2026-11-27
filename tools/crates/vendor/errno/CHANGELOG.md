@@ -1,5 +1,19 @@
 # [Unreleased]
 
+# [0.3.15] - 2026-11-12
+
+- Support QNX 8 (target_os = "qnx")
+  [#134](https://github.com/lambda-fairy/rust-errno/pull/134)
+
+- Add mlibc support
+  [#132](https://github.com/lambda-fairy/rust-errno/pull/132)
+
+- Add NuttX support
+  [#129](https://github.com/lambda-fairy/rust-errno/pull/129)
+
+- Fix link on Fuchsia
+  [#126](https://github.com/lambda-fairy/rust-errno/pull/126)
+
 # [0.3.14] - 2025-09-08
 
 - Update windows-sys requirement from >=0.52, <=0.59 to >=0.52, <0.62
@@ -122,7 +136,12 @@
 - Optionally support no_std
   [#31](https://github.com/lambda-fairy/rust-errno/pull/31)
 
-[Unreleased]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.10...HEAD
+[Unreleased]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.15...HEAD
+[0.3.15]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.14...v0.3.15
+[0.3.14]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.13...v0.3.14
+[0.3.13]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.12...v0.3.13
+[0.3.12]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.11...v0.3.12
+[0.3.11]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.10...v0.3.11
 [0.3.10]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.9...v0.3.10
 [0.3.9]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.8...v0.3.9
 [0.3.8]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.7...v0.3.8

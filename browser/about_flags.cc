@@ -48,7 +48,6 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/history/core/browser/features.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
@@ -73,6 +72,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/local_ai/core/features.h"
 #endif
 
@@ -101,6 +101,7 @@
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
+#include "brave/browser/ui/peek/peek_features.h"
 #include "brave/browser/ui/split_view/split_view_features.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "brave/browser/workspaces/features.h"
@@ -554,6 +555,17 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       FEATURE_VALUE_TYPE(                                                    \
           preferences::features::kBraveYoutubeFullscreenVideoFitWorkaround), \
   })
+#define BRAVE_YOUTUBE_PLAYLIST_MEDIA_CONTROLS_WORKAROUND_ANDROID            \
+  EXPAND_FEATURE_ENTRIES({                                                  \
+      "brave-youtube-playlist-media-controls-workaround",                   \
+      "YouTube playlist media controls workaround",                         \
+      "Make the media notification and lock screen Next and Previous "      \
+      "controls follow the m.youtube.com playlist instead of playing a "    \
+      "recommendation or going back in history.",                           \
+      kOsAndroid,                                                           \
+      FEATURE_VALUE_TYPE(preferences::features::                            \
+                             kBraveYoutubePlaylistMediaControlsWorkaround), \
+  })
 #define BRAVE_SAFE_BROWSING_ANDROID                                           \
   EXPAND_FEATURE_ENTRIES({                                                    \
       "brave-safe-browsing",                                                  \
@@ -590,14 +602,24 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       FEATURE_VALUE_TYPE(                                                     \
           features::kBraveAndroidMergeInstallPwaAndCreateShortcut),           \
   })
+#define BRAVE_ANDROID_EXTENSIONS                               \
+  EXPAND_FEATURE_ENTRIES({                                     \
+      "brave-android-extensions",                              \
+      "Brave extension support",                               \
+      "Enable browser extension support. Requires a restart.", \
+      kOsAndroid,                                              \
+      FEATURE_VALUE_TYPE(features::kBraveAndroidExtensions),   \
+  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_YOUTUBE_FULLSCREEN_SETTINGS_WORKAROUND_ANDROID
 #define BRAVE_YOUTUBE_FULLSCREEN_VIDEO_FIT_WORKAROUND_ANDROID
+#define BRAVE_YOUTUBE_PLAYLIST_MEDIA_CONTROLS_WORKAROUND_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
 #define BRAVE_CUSTOM_SEARCH_ENGINES
 #define BRAVE_ANDROID_TAB_GROUPS_SETTINGS
 #define BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT
+#define BRAVE_ANDROID_EXTENSIONS
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -769,14 +791,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
 #define BRAVE_PAGE_INFO_FEATURE_ENTRIES
 #endif  // defined(TOOLKIT_VIEWS)
 
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-#define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                      \
-  EXPAND_FEATURE_ENTRIES({                                               \
-      "middle-button-autoscroll",                                        \
-      "Middle button autoscroll",                                        \
-      "Enables autoscrolling when the middle mouse button is clicked",   \
-      kOsMac | kOsLinux,                                                 \
-      FEATURE_VALUE_TYPE(blink::features::kMiddleButtonClickAutoscroll), \
+// Exposes upstream's Linux-only #middle-click-autoscroll feature on Mac.
+#if BUILDFLAG(IS_MAC)
+#define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                    \
+  EXPAND_FEATURE_ENTRIES({                                             \
+      "middle-button-autoscroll",                                      \
+      "Middle button autoscroll",                                      \
+      "Enables autoscrolling when the middle mouse button is clicked", \
+      kOsMac,                                                          \
+      FEATURE_VALUE_TYPE(blink::features::kMiddleClickAutoscroll),     \
   })
 #else
 #define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY
@@ -945,6 +968,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           "Renders LaTeX expressions in assistant responses as typeset math.", \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatMathRendering),         \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-completion-notifications",                            \
+          "Brave AI Chat Completion Notifications",                            \
+          "Shows a notification when a response finishes in a conversation "   \
+          "that isn't open.",                                                  \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              ai_chat::features::kAIChatCompletionNotifications),              \
       })
 #else
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES
@@ -1164,6 +1196,20 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
 #define BRAVE_SPLIT_VIEW_LINK_FEATURE_ENTRY
 #endif
 
+#if defined(TOOLKIT_VIEWS)
+#define BRAVE_PEEK_FEATURE_ENTRY                                              \
+  EXPAND_FEATURE_ENTRIES({                                                    \
+      "brave-peek",                                                           \
+      "Brave Peek",                                                           \
+      "Opens links in a floating preview over the current tab. Triggered by " \
+      "Shift+click and the link context menu.",                               \
+      kOsDesktop,                                                             \
+      FEATURE_VALUE_TYPE(peek::features::kBravePeek),                         \
+  })
+#else
+#define BRAVE_PEEK_FEATURE_ENTRY
+#endif
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -1222,7 +1268,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           "Brave Recap",                                                       \
           "Enables brave://recap, a shareable summary of what Shields has "    \
           "blocked over the lifetime of the profile",                          \
-          kOsDesktop,                                                          \
+          kOsAll,                                                              \
           FEATURE_VALUE_TYPE(features::kBraveRecap),                           \
       },                                                                       \
       {                                                                        \
@@ -1605,6 +1651,16 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           FEATURE_VALUE_TYPE(blink::features::kBraveRoundTimeStamps),          \
       },                                                                       \
       {                                                                        \
+          "brave-reporting-api",                                               \
+          "Enable Reporting API",                                              \
+          "Controls whether the Chromium Reporting API is enabled. When "      \
+          "enabled, the Reporting API ignores Background Sync site "           \
+          "permission "                                                        \
+          "checks.",                                                           \
+          kOsDesktop | kOsAndroid,                                             \
+          FEATURE_VALUE_TYPE(blink::features::kBraveReportingAPI),             \
+      },                                                                       \
+      {                                                                        \
           "restrict-event-source-pool",                                        \
           "Restrict Event Source Pool",                                        \
           "Limits simultaneous active WebSockets connections per eTLD+1",      \
@@ -1765,9 +1821,11 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_YOUTUBE_FULLSCREEN_SETTINGS_WORKAROUND_ANDROID                         \
   BRAVE_YOUTUBE_FULLSCREEN_VIDEO_FIT_WORKAROUND_ANDROID                        \
+  BRAVE_YOUTUBE_PLAYLIST_MEDIA_CONTROLS_WORKAROUND_ANDROID                     \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_ANDROID_TAB_GROUPS_SETTINGS                                            \
   BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT                          \
+  BRAVE_ANDROID_EXTENSIONS                                                     \
   BRAVE_CUSTOM_PROFILE_IMAGE_FEATURE_ENTRY                                     \
   BRAVE_CUSTOM_SEARCH_ENGINES                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
@@ -1805,6 +1863,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
   BRAVE_SCREENSHOT_FEATURE_ENTRY                                               \
   BRAVE_SIDEBAR_WEB_PANEL_FEATURE_ENTRY                                        \
   BRAVE_SPLIT_VIEW_LINK_FEATURE_ENTRY                                          \
+  BRAVE_PEEK_FEATURE_ENTRY                                                     \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

@@ -14,7 +14,7 @@
 #include "brave/services/passage_embeddings/litert_model_runner.h"
 #include "services/passage_embeddings/passage_embedder_executor.h"
 
-namespace brave_history_embeddings {
+namespace passage_embeddings {
 
 namespace {
 
@@ -86,4 +86,4 @@ MaybeCreateLitertExecutor(base::File& embeddings_model_file,
                                           pad_id);
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace passage_embeddings

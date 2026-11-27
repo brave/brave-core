@@ -21,7 +21,7 @@ const CHUNKED_EXTENSIONS_LIMIT: u64 = 1024 * 16;
 
 /// Maximum number of bytes allowed for all trailer fields.
 ///
-/// TODO: remove this when we land h1_max_header_size support
+/// TODO: remove this when we land `h1_max_header_size` support.
 const TRAILER_LIMIT: usize = 1024 * 16;
 
 /// Decoders to handle different Transfer-Encodings.
@@ -147,12 +147,12 @@ impl Decoder {
         body: &mut R,
     ) -> Poll<Result<Frame<Bytes>, io::Error>> {
         trace!("decode; state={:?}", self.kind);
-        match self.kind {
-            Length(ref mut remaining) => {
+        match &mut self.kind {
+            Length(remaining) => {
                 if *remaining == 0 {
                     Poll::Ready(Ok(Frame::data(Bytes::new())))
                 } else {
-                    let to_read = *remaining as usize;
+                    let to_read = usize::try_from(*remaining).unwrap_or(usize::MAX);
                     let buf = ready!(body.read_mem(cx, to_read))?;
                     let num = buf.as_ref().len() as u64;
                     if num > *remaining {
@@ -169,13 +169,13 @@ impl Decoder {
                 }
             }
             Chunked {
-                ref mut state,
-                ref mut chunk_len,
-                ref mut extensions_cnt,
-                ref mut trailers_buf,
-                ref mut trailers_cnt,
-                ref h1_max_headers,
-                ref h1_max_header_size,
+                state,
+                chunk_len,
+                extensions_cnt,
+                trailers_buf,
+                trailers_cnt,
+                h1_max_headers,
+                h1_max_header_size,
             } => {
                 let h1_max_headers = h1_max_headers.unwrap_or(DEFAULT_MAX_HEADERS);
                 let h1_max_header_size = h1_max_header_size.unwrap_or(TRAILER_LIMIT);
@@ -185,13 +185,15 @@ impl Decoder {
                     *state = ready!(state.step(
                         cx,
                         body,
-                        chunk_len,
-                        extensions_cnt,
-                        &mut buf,
-                        trailers_buf,
-                        trailers_cnt,
-                        h1_max_headers,
-                        h1_max_header_size
+                        StepArgs {
+                            chunk_size: chunk_len,
+                            extensions_cnt,
+                            chunk_buf: &mut buf,
+                            trailers_buf,
+                            trailers_cnt,
+                            max_headers_cnt: h1_max_headers,
+                            max_headers_bytes: h1_max_header_size,
+                        }
                     ))?;
                     if *state == ChunkedState::End {
                         trace!("end of chunked");
@@ -199,13 +201,6 @@ impl Decoder {
                         if trailers_buf.is_some() {
                             trace!("found possible trailers");
 
-                            // decoder enforces that trailers count will not exceed h1_max_headers
-                            if *trailers_cnt >= h1_max_headers {
-                                return Poll::Ready(Err(io::Error::new(
-                                    io::ErrorKind::InvalidData,
-                                    "chunk trailers count overflow",
-                                )));
-                            }
                             match decode_trailers(
                                 &mut trailers_buf.take().expect("Trailer is None"),
                                 *trailers_cnt,
@@ -226,7 +221,7 @@ impl Decoder {
                     }
                 }
             }
-            Eof(ref mut is_eof) => {
+            Eof(is_eof) => {
                 if *is_eof {
                     Poll::Ready(Ok(Frame::data(Bytes::new())))
                 } else {
@@ -291,6 +286,16 @@ macro_rules! put_u8 {
     };
 }
 
+struct StepArgs<'args> {
+    chunk_size: &'args mut u64,
+    chunk_buf: &'args mut Option<Bytes>,
+    extensions_cnt: &'args mut u64,
+    trailers_buf: &'args mut Option<BytesMut>,
+    trailers_cnt: &'args mut usize,
+    max_headers_cnt: usize,
+    max_headers_bytes: usize,
+}
+
 impl ChunkedState {
     fn new() -> ChunkedState {
         ChunkedState::Start
@@ -299,35 +304,40 @@ impl ChunkedState {
         &self,
         cx: &mut Context<'_>,
         body: &mut R,
-        size: &mut u64,
-        extensions_cnt: &mut u64,
-        buf: &mut Option<Bytes>,
-        trailers_buf: &mut Option<BytesMut>,
-        trailers_cnt: &mut usize,
-        h1_max_headers: usize,
-        h1_max_header_size: usize,
+        StepArgs {
+            chunk_size,
+            chunk_buf,
+            extensions_cnt,
+            trailers_buf,
+            trailers_cnt,
+            max_headers_cnt,
+            max_headers_bytes,
+        }: StepArgs<'_>,
     ) -> Poll<Result<ChunkedState, io::Error>> {
-        use self::ChunkedState::*;
+        use self::ChunkedState::{
+            Body, BodyCr, BodyLf, End, EndCr, EndLf, Extension, Size, SizeLf, SizeLws, Start,
+            Trailer, TrailerLf,
+        };
         match *self {
-            Start => ChunkedState::read_start(cx, body, size),
-            Size => ChunkedState::read_size(cx, body, size),
+            Start => ChunkedState::read_start(cx, body, chunk_size),
+            Size => ChunkedState::read_size(cx, body, chunk_size),
             SizeLws => ChunkedState::read_size_lws(cx, body),
             Extension => ChunkedState::read_extension(cx, body, extensions_cnt),
-            SizeLf => ChunkedState::read_size_lf(cx, body, *size),
-            Body => ChunkedState::read_body(cx, body, size, buf),
+            SizeLf => ChunkedState::read_size_lf(cx, body, *chunk_size),
+            Body => ChunkedState::read_body(cx, body, chunk_size, chunk_buf),
             BodyCr => ChunkedState::read_body_cr(cx, body),
             BodyLf => ChunkedState::read_body_lf(cx, body),
-            Trailer => ChunkedState::read_trailer(cx, body, trailers_buf, h1_max_header_size),
+            Trailer => ChunkedState::read_trailer(cx, body, trailers_buf, max_headers_bytes),
             TrailerLf => ChunkedState::read_trailer_lf(
                 cx,
                 body,
                 trailers_buf,
                 trailers_cnt,
-                h1_max_headers,
-                h1_max_header_size,
+                max_headers_cnt,
+                max_headers_bytes,
             ),
-            EndCr => ChunkedState::read_end_cr(cx, body, trailers_buf, h1_max_header_size),
-            EndLf => ChunkedState::read_end_lf(cx, body, trailers_buf, h1_max_header_size),
+            EndCr => ChunkedState::read_end_cr(cx, body, trailers_buf, max_headers_bytes),
+            EndLf => ChunkedState::read_end_lf(cx, body, trailers_buf, max_headers_bytes),
             End => Poll::Ready(Ok(ChunkedState::End)),
         }
     }
@@ -343,15 +353,15 @@ impl ChunkedState {
         match byte!(rdr, cx) {
             b @ b'0'..=b'9' => {
                 *size = or_overflow!(size.checked_mul(radix));
-                *size = or_overflow!(size.checked_add((b - b'0') as u64));
+                *size = or_overflow!(size.checked_add(u64::from(b - b'0')));
             }
             b @ b'a'..=b'f' => {
                 *size = or_overflow!(size.checked_mul(radix));
-                *size = or_overflow!(size.checked_add((b + 10 - b'a') as u64));
+                *size = or_overflow!(size.checked_add(u64::from(b + 10 - b'a')));
             }
             b @ b'A'..=b'F' => {
                 *size = or_overflow!(size.checked_mul(radix));
-                *size = or_overflow!(size.checked_add((b + 10 - b'A') as u64));
+                *size = or_overflow!(size.checked_add(u64::from(b + 10 - b'A')));
             }
             _ => {
                 return Poll::Ready(Err(io::Error::new(
@@ -375,15 +385,15 @@ impl ChunkedState {
         match byte!(rdr, cx) {
             b @ b'0'..=b'9' => {
                 *size = or_overflow!(size.checked_mul(radix));
-                *size = or_overflow!(size.checked_add((b - b'0') as u64));
+                *size = or_overflow!(size.checked_add(u64::from(b - b'0')));
             }
             b @ b'a'..=b'f' => {
                 *size = or_overflow!(size.checked_mul(radix));
-                *size = or_overflow!(size.checked_add((b + 10 - b'a') as u64));
+                *size = or_overflow!(size.checked_add(u64::from(b + 10 - b'a')));
             }
             b @ b'A'..=b'F' => {
                 *size = or_overflow!(size.checked_mul(radix));
-                *size = or_overflow!(size.checked_add((b + 10 - b'A') as u64));
+                *size = or_overflow!(size.checked_add(u64::from(b + 10 - b'A')));
             }
             b'\t' | b' ' => return Poll::Ready(Ok(ChunkedState::SizeLws)),
             b';' => return Poll::Ready(Ok(ChunkedState::Extension)),
@@ -475,12 +485,7 @@ impl ChunkedState {
         trace!("Chunked read, remaining={:?}", rem);
 
         // cap remaining bytes at the max capacity of usize
-        let rem_cap = match *rem {
-            r if r > usize::MAX as u64 => usize::MAX,
-            r => r as usize,
-        };
-
-        let to_read = rem_cap;
+        let to_read = usize::try_from(*rem).unwrap_or(usize::MAX);
         let slice = ready!(rdr.read_mem(cx, to_read))?;
         let count = slice.len();
 
@@ -602,7 +607,7 @@ impl ChunkedState {
                         buf.put_u8(byte);
                         *trailers_buf = Some(buf);
                     }
-                    Some(ref mut trailers_buf) => {
+                    Some(trailers_buf) => {
                         put_u8!(trailers_buf, byte, h1_max_header_size);
                     }
                 }
@@ -640,14 +645,14 @@ fn decode_trailers(buf: &mut BytesMut, count: usize) -> Result<HeaderMap, io::Er
     let res = httparse::parse_headers(buf, &mut headers);
     match res {
         Ok(httparse::Status::Complete((_, headers))) => {
-            for header in headers.iter() {
+            for header in headers {
                 use std::convert::TryFrom;
                 let name = match HeaderName::try_from(header.name) {
                     Ok(name) => name,
                     Err(_) => {
                         return Err(io::Error::new(
                             io::ErrorKind::InvalidInput,
-                            format!("Invalid header name: {:?}", &header),
+                            format!("Invalid header name: {header:?}"),
                         ));
                     }
                 };
@@ -657,12 +662,12 @@ fn decode_trailers(buf: &mut BytesMut, count: usize) -> Result<HeaderMap, io::Er
                     Err(_) => {
                         return Err(io::Error::new(
                             io::ErrorKind::InvalidInput,
-                            format!("Invalid header value: {:?}", &header),
+                            format!("Invalid header value: {header:?}"),
                         ));
                     }
                 };
 
-                trailers.insert(name, value);
+                trailers.append(name, value);
             }
 
             Ok(trailers)
@@ -750,13 +755,15 @@ mod tests {
                     state.step(
                         cx,
                         rdr,
-                        &mut size,
-                        &mut ext_cnt,
-                        &mut None,
-                        &mut None,
-                        &mut trailers_cnt,
-                        DEFAULT_MAX_HEADERS,
-                        TRAILER_LIMIT,
+                        StepArgs {
+                            chunk_size: &mut size,
+                            extensions_cnt: &mut ext_cnt,
+                            chunk_buf: &mut None,
+                            trailers_buf: &mut None,
+                            trailers_cnt: &mut trailers_cnt,
+                            max_headers_cnt: DEFAULT_MAX_HEADERS,
+                            max_headers_bytes: TRAILER_LIMIT,
+                        },
                     )
                 })
                 .await;
@@ -780,13 +787,15 @@ mod tests {
                     state.step(
                         cx,
                         rdr,
-                        &mut size,
-                        &mut ext_cnt,
-                        &mut None,
-                        &mut None,
-                        &mut trailers_cnt,
-                        DEFAULT_MAX_HEADERS,
-                        TRAILER_LIMIT,
+                        StepArgs {
+                            chunk_size: &mut size,
+                            extensions_cnt: &mut ext_cnt,
+                            chunk_buf: &mut None,
+                            trailers_buf: &mut None,
+                            trailers_cnt: &mut trailers_cnt,
+                            max_headers_cnt: DEFAULT_MAX_HEADERS,
+                            max_headers_bytes: TRAILER_LIMIT,
+                        },
                     )
                 })
                 .await;
@@ -1143,12 +1152,27 @@ mod tests {
         assert_eq!(headers.get("X-Stream-Error").unwrap(), "failed to decode");
     }
 
+    #[test]
+    fn test_decode_trailers_preserves_duplicate_values() {
+        let mut buf = BytesMut::new();
+        buf.extend_from_slice(b"X-Trace: first\r\nX-Trace: second\r\n\r\n");
+
+        let headers = decode_trailers(&mut buf, 2).expect("decode_trailers");
+        let values = headers
+            .get_all("X-Trace")
+            .iter()
+            .map(|value| value.to_str().unwrap())
+            .collect::<Vec<_>>();
+
+        assert_eq!(values, ["first", "second"]);
+    }
+
     #[tokio::test]
     async fn test_trailer_max_headers_enforced() {
         let h1_max_headers = 10;
         let mut scratch = vec![];
         scratch.extend(b"10\r\n1234567890abcdef\r\n0\r\n");
-        for i in 0..h1_max_headers {
+        for i in 0..=h1_max_headers {
             scratch.extend(format!("trailer{}: {}\r\n", i, i).as_bytes());
         }
         scratch.extend(b"\r\n");
@@ -1171,6 +1195,36 @@ mod tests {
             .await
             .expect_err("trailer fields over limit");
         assert_eq!(err.kind(), io::ErrorKind::InvalidData);
+    }
+
+    #[tokio::test]
+    async fn test_trailer_max_headers_allows_exact_limit() {
+        let h1_max_headers = 10;
+        let mut scratch = vec![];
+        scratch.extend(b"10\r\n1234567890abcdef\r\n0\r\n");
+        for i in 0..h1_max_headers {
+            scratch.extend(format!("trailer{}: {}\r\n", i, i).as_bytes());
+        }
+        scratch.extend(b"\r\n");
+        let mut mock_buf = Bytes::from(scratch);
+
+        let mut decoder = Decoder::chunked(Some(h1_max_headers), None);
+
+        let buf = decoder
+            .decode_fut(&mut mock_buf)
+            .await
+            .unwrap()
+            .into_data()
+            .expect("unknown frame type");
+        assert_eq!(16, buf.len());
+
+        let trailers = decoder
+            .decode_fut(&mut mock_buf)
+            .await
+            .expect("trailers at limit")
+            .into_trailers()
+            .expect("unknown frame type");
+        assert_eq!(trailers.len(), h1_max_headers);
     }
 
     #[tokio::test]

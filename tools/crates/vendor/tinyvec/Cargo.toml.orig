@@ -1,7 +1,7 @@
 [package]
 name = "tinyvec"
 description = "`tinyvec` provides 100% safe vec-like data structures."
-version = "1.10.0"
+version = "1.13.3"
 authors = ["Lokathor <zefria@gmail.com>"]
 edition = "2018"
 license = "Zlib OR Apache-2.0 OR MIT"
@@ -11,25 +11,32 @@ repository = "https://github.com/Lokathor/tinyvec"
 exclude = ["/.github", "/*.py", "/*.sh", "/src-backup"]
 
 [dependencies]
-tinyvec_macros = { version = "0.1", optional = true }
 # Provides `Serialize` and `Deserialize` implementations
-serde = { version = "1.0", optional = true, default-features = false }
+serde_core = { version = "1.0", optional = true, default-features = false }
 # Provides derived `Arbitrary` implementations
 arbitrary = { version = "1", optional = true }
 # Provides `BorshSerialize` and `BorshDeserialize implementations
 borsh = { version = "1.2.0", optional = true, default-features = false }
 # Implements the trait `Array` for `GenericArray` struct.
 generic-array = { version = "1.1.1", optional = true, default-features = false }
-
+# Provides derived `BitEncode` and `BitDecode` implementations
+bin-proto = { version = "0.12.5", optional = true, default-features = false }
+# Provides `Format` implementations
+defmt = { version = "1.0", optional = true }
+# Provides `JsonSchema` implementations
+schemars = { version = "1.0", optional = true, default-features = false }
 
 [features]
 default = []
 
 # Provide things that utilize the `alloc` crate, namely `TinyVec`.
-alloc = ["tinyvec_macros"]
+alloc = []
 
 # Provide things that require Rust's `std` module
 std = ["alloc"]
+
+# Provides `Serialize` and `Deserialize` implementations
+serde = ["dep:serde_core"]
 
 # (not part of Vec!) Extra methods to let you grab the slice of memory after the
 # "active" portion of an `ArrayVec` or `SliceVec`.
@@ -54,6 +61,9 @@ rustc_1_61 = ["rustc_1_57"]
 # features forever now.
 latest_stable_rust = ["rustc_1_61"]
 
+# this was an optional dependency once, and is now a do-nothing feature to avoid breakage.
+tinyvec_macros = []
+
 # allow use of nightly feature `slice_partition_dedup`,
 # will become useless once that is stabilized:
 # https://github.com/rust-lang/rust/issues/54279
@@ -75,21 +85,26 @@ experimental_write_impl = []
 # and thus a nightly compiler, but is only used in benchmarks.
 real_blackbox = ["criterion/real_blackbox"]
 
+schemars = ["dep:schemars", "alloc"]
+
 [package.metadata.docs.rs]
-features = ["alloc", "std", "grab_spare_slice", "latest_stable_rust", "serde", "borsh"]
+features = ["alloc", "std", "grab_spare_slice", "latest_stable_rust", "serde", "borsh", "defmt", "bin-proto", "schemars"]
 rustdoc-args = ["--cfg","docs_rs"]
 
 [package.metadata.playground]
-features = ["alloc", "std", "grab_spare_slice", "latest_stable_rust", "serde", "borsh"]
+features = ["alloc", "std", "grab_spare_slice", "latest_stable_rust", "serde", "borsh", "schemars"]
+
+[profile.dev]
+lto = "thin"
 
 [profile.bench]
 debug = 2
 
 [workspace]
-members = ["fuzz"]
+#members = ["fuzz"]
 
 [dev-dependencies]
-criterion = "0.3.0"
+criterion = "0.8.0"
 serde_test = "1.0"
 smallvec = "1"
 debugger_test = "0.1"
@@ -98,6 +113,10 @@ debugger_test_parser = "0.1"
 [[test]]
 name = "tinyvec"
 required-features = ["alloc", "std"]
+
+[[test]]
+name = "no_std_macro"
+required-features = ["alloc"]
 
 [[bench]]
 name = "macros"

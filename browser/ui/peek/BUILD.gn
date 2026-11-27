@@ -1,0 +1,61 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+assert(!is_android)
+
+# The interfaces other targets use to talk to Peek.
+source_set("public") {
+  sources = [
+    "public/peek_controller.cc",
+    "public/peek_controller.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//ui/base/unowned_user_data",
+  ]
+
+  deps = [
+    "//chrome/browser/ui/browser_window",
+    "//content/public/browser",
+  ]
+}
+
+source_set("peek") {
+  sources = [
+    "peek_features.cc",
+    "peek_features.h",
+    "peek_utils.cc",
+    "peek_utils.h",
+  ]
+
+  public_deps = [
+    ":public",
+    "//base",
+    "//content/public/browser",
+    "//url",
+  ]
+
+  deps = [
+    "//components/prefs",
+    "//content/public/common",
+    "//ui/base",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "peek_utils_unittest.cc" ]
+
+  deps = [
+    ":peek",
+    "//content/public/browser",
+    "//content/public/common",
+    "//testing/gtest",
+    "//ui/base",
+    "//url",
+  ]
+}

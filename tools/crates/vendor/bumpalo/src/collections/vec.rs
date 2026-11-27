@@ -1361,7 +1361,7 @@ impl<'bump, T: 'bump> Vec<'bump, T> {
         DrainFilter {
             vec: self,
             idx: 0,
-            del: 0,
+            write: 0,
             old_len,
             pred: filter,
         }
@@ -1508,6 +1508,33 @@ impl<'bump, T: 'bump> Vec<'bump, T> {
                 self.len -= 1;
                 Some(ptr::read(self.as_ptr().add(self.len())))
             }
+        }
+    }
+
+    /// Removes and returns the last element from a vector if the predicate
+    /// returns `true`, or [`None`] if the predicate returns false or the vector
+    /// is empty (the predicate will not be called in that case).
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use bumpalo::{Bump, collections::Vec};
+    ///
+    /// let b = Bump::new();
+    /// let mut vec = bumpalo::vec![in &b; 1, 2, 3, 4];
+    /// let pred = |x: &mut i32| *x % 2 == 0;
+    ///
+    /// assert_eq!(vec.pop_if(pred), Some(4));
+    /// assert_eq!(vec, [1, 2, 3]);
+    /// assert_eq!(vec.pop_if(pred), None);
+    /// ```
+    #[inline]
+    pub fn pop_if(&mut self, predicate: impl FnOnce(&mut T) -> bool) -> Option<T> {
+        let last = self.last_mut()?;
+        if predicate(last) {
+            self.pop()
+        } else {
+            None
         }
     }
 
@@ -2881,10 +2908,14 @@ where
     F: FnMut(&mut T) -> bool,
 {
     vec: &'a mut Vec<'bump, T>,
-    idx: usize,
-    del: usize,
-    old_len: usize,
     pred: F,
+
+    // Iteration index.
+    idx: usize,
+    // Index to write kept items into.
+    write: usize,
+    // The original length.
+    old_len: usize,
 }
 
 impl<'a, 'bump, T, F> Iterator for DrainFilter<'a, 'bump, T, F>
@@ -2894,22 +2925,22 @@ where
     type Item = T;
 
     fn next(&mut self) -> Option<T> {
+        debug_assert_eq!(self.vec.len(), 0);
+        debug_assert!(self.write <= self.idx);
         unsafe {
             while self.idx != self.old_len {
                 let i = self.idx;
                 self.idx += 1;
                 let v = slice::from_raw_parts_mut(self.vec.as_mut_ptr(), self.old_len);
                 if (self.pred)(&mut v[i]) {
-                    self.del += 1;
                     return Some(ptr::read(&v[i]));
-                } else if self.del > 0 {
-                    let del = self.del;
-                    let src: *const T = &v[i];
-                    let dst: *mut T = &mut v[i - del];
-                    // This is safe because self.vec has length 0
-                    // thus its elements will not have Drop::drop
-                    // called on them in the event of a panic.
-                    ptr::copy_nonoverlapping(src, dst, 1);
+                } else {
+                    if i != self.write {
+                        let src: *const T = &v[i];
+                        let dst: *mut T = &mut v[self.write];
+                        ptr::copy_nonoverlapping(src, dst, 1);
+                    }
+                    self.write += 1;
                 }
             }
             None
@@ -2926,9 +2957,52 @@ where
     F: FnMut(&mut T) -> bool,
 {
     fn drop(&mut self) {
-        self.for_each(drop);
+        /// Guard to shift the trailing items into place if the `DrainFilter`'s
+        /// predicate panics, leaving it in a valid state.
+        struct BackshiftOnDrop<'a, 'bump, T> {
+            vec: &'a mut Vec<'bump, T>,
+            idx: usize,
+            write: usize,
+            old_len: usize,
+        }
+
+        impl<T> Drop for BackshiftOnDrop<'_, '_, T> {
+            fn drop(&mut self) {
+                unsafe {
+                    let tail_len = self.old_len - self.idx;
+                    if tail_len > 0 && self.write < self.idx {
+                        let ptr = self.vec.as_mut_ptr();
+                        ptr::copy(ptr.add(self.idx), ptr.add(self.write), tail_len);
+                    }
+                    self.vec.set_len(self.write + tail_len);
+                }
+            }
+        }
+
+        let mut guard = BackshiftOnDrop {
+            vec: self.vec,
+            idx: self.idx,
+            write: self.write,
+            old_len: self.old_len,
+        };
+
         unsafe {
-            self.vec.set_len(self.old_len - self.del);
+            while guard.idx < guard.old_len {
+                let i = guard.idx;
+                let v = slice::from_raw_parts_mut(guard.vec.as_mut_ptr(), guard.old_len);
+                let drained = (self.pred)(&mut v[i]);
+                guard.idx += 1;
+                if drained {
+                    ptr::drop_in_place(&mut v[i]);
+                } else {
+                    if i != guard.write {
+                        let src: *const T = &v[i];
+                        let dst: *mut T = &mut v[guard.write];
+                        ptr::copy_nonoverlapping(src, dst, 1);
+                    }
+                    guard.write += 1;
+                }
+            }
         }
     }
 }

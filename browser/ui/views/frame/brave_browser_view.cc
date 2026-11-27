@@ -63,7 +63,6 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_element_identifiers.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
-#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
@@ -88,6 +87,7 @@
 #include "components/permissions/permission_request_manager.h"
 #include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
@@ -434,7 +434,8 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
 }
 
 void BraveBrowserView::URLStarredChanged(content::WebContents* web_contents,
-                                         bool starred) {
+                                         bool starred,
+                                         bool is_bookmark_added_or_removed) {
   if (web_contents == GetActiveWebContents()) {
     SetStarredState(starred);
   }
@@ -819,6 +820,12 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
   return false;
 }
 
+gfx::Size BraveBrowserView::GetContentsSize() const {
+  // Brave's contents container insets the web view (its rounded corners border
+  // and the reader mode toolbar), so report the size WebContents gets.
+  return multi_contents_view_->GetActiveContentsView()->size();
+}
+
 void BraveBrowserView::UpdateRoundedCornersUI() {
   // Update various UI that can be affected by rounded corners. The contents
   // corner radii themselves are applied by the layout.
@@ -958,12 +965,14 @@ void BraveBrowserView::UpdateToolbar(content::WebContents* contents) {
   // navigations that only change the security level between non-secure states
   // (e.g. an https page to a file:// page) do not produce a security-state
   // change, so `UpdateToolbarSecurityState` alone is not sufficient.
-  UpdateFocusModeState();
+  if (!HasVisiblePendingNavigation()) {
+    UpdateFocusModeState();
+  }
 }
 
 bool BraveBrowserView::UpdateToolbarSecurityState() {
   bool state_changed = BrowserView::UpdateToolbarSecurityState();
-  if (state_changed) {
+  if (state_changed && !HasVisiblePendingNavigation()) {
     UpdateFocusModeState();
   }
   return state_changed;
@@ -984,24 +993,6 @@ bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
     }
   }
   return BrowserView::AcceleratorPressed(accelerator);
-}
-
-void BraveBrowserView::ReadyToListenFullscreenChanges() {
-  CHECK(ExclusiveAccessManager::From(browser_));
-
-  if (vertical_tab_strip_container_view_) {
-    vertical_tab_strip_container_view_->vertical_tab_strip_region_view()
-        ->ListenFullscreenChanges();
-  }
-}
-
-void BraveBrowserView::StopListeningFullscreenChanges() {
-  CHECK(ExclusiveAccessManager::From(browser_));
-
-  if (vertical_tab_strip_container_view_) {
-    vertical_tab_strip_container_view_->vertical_tab_strip_region_view()
-        ->StopListeningFullscreenChanges();
-  }
 }
 
 void BraveBrowserView::HandleBrowserWindowMouseEvent(
@@ -1079,6 +1070,16 @@ bool BraveBrowserView::IsWebPanelOnLeft() const {
   return GetBraveMultiContentsView()->web_panel_on_left();
 }
 
+bool BraveBrowserView::IsSidePanelVisible() const {
+  return side_panel_ && side_panel_->GetVisible();
+}
+
+bool BraveBrowserView::IsSidebarOnLeft() const {
+  return sidebar_container_view_
+             ? sidebar_container_view_->sidebar_on_left()
+             : (side_panel_ && !side_panel_->IsRightAligned());
+}
+
 void BraveBrowserView::UpdateContentsCornerRadii(
     const gfx::RoundedCornersF& corner_radii,
     const gfx::RoundedCornersF& web_panel_corner_radii) {
@@ -1141,6 +1142,16 @@ bool BraveBrowserView::ShouldDisableFocusModeForActiveTab() const {
   }
   auto level = model->GetSecurityLevel();
   return level != security_state::SecurityLevel::SECURE;
+}
+
+bool BraveBrowserView::HasVisiblePendingNavigation() {
+  auto* web_contents = GetActiveWebContents();
+  if (!web_contents) {
+    return false;
+  }
+  auto& controller = web_contents->GetController();
+  auto* pending_entry = controller.GetPendingEntry();
+  return pending_entry && controller.GetVisibleEntry() == pending_entry;
 }
 
 BEGIN_METADATA(BraveBrowserView)

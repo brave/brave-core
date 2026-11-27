@@ -1,8 +1,8 @@
 diff --git a/components/external_intents/android/BUILD.gn b/components/external_intents/android/BUILD.gn
-index 4f5c4e092b570c884e07d96ab83940ebb153ea8b..de2e124232fd672fde1ca598219578ebe06f4676 100644
+index 95f3f52242051f8f16922bd3a2dce9cfdd1dde77..ca90fd5da9fb764a47edbf42112d7504c5d87320 100644
 --- a/components/external_intents/android/BUILD.gn
 +++ b/components/external_intents/android/BUILD.gn
-@@ -65,6 +65,7 @@ static_library("android") {
+@@ -66,6 +66,7 @@ static_library("android") {
    deps = [
      ":jni_headers",
      "//base",

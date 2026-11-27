@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_BROWSER_TAB_STRIP_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_BROWSER_TAB_STRIP_CONTROLLER_H_
 
+#include <memory>
 #include <optional>
 
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
@@ -68,6 +69,17 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
+
+ protected:
+  // BrowserTabStripController overrides:
+  // Instantiate BraveTabMenuModel while base class instantiate
+  // TabMenuModel. This let upstream build target avoid dependency
+  // to brave target.
+  std::unique_ptr<TabMenuModel> CreateTabMenuModel(
+      ui::SimpleMenuModel::Delegate* delegate,
+      TabMenuModelDelegate* tab_menu_model_delegate,
+      TabStripModel* tab_strip_model,
+      int index) override;
 
  private:
   bool ShouldShowTreeTabs();

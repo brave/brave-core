@@ -2,22 +2,27 @@ lints.workspace = true
 
 [package]
 name = "gix-validate"
-version = "0.10.1"
+version = "0.13.2"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "Validation functions for various kinds of names in git"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-include = ["src/**/*", "LICENSE-*"]
-rust-version = "1.82"
+edition = "2024"
+include = ["/src/**/*", "/LICENSE-*"]
+rust-version = "1.88"
 
 [lib]
-doctest = false
+doctest = true
 test = true
 
 [dependencies]
-thiserror = "2.0.17"
+gix-error = { version = "^0.5.3", path = "../gix-error" }
+
 bstr = { version = "1.12.0", default-features = false, features = ["std"] }
 
 [dev-dependencies]
-gix-testtools = { path = "../tests/tools" }
+insta = "1.46.3"
+gix-testtools = { path = "../tests/tools", default-features = false, features = ["sha1"] }
+
+[package.metadata.qa.wasm]
+targets = ["wasm32-unknown-unknown", "wasm32-wasip1", "wasm32-wasip2"]

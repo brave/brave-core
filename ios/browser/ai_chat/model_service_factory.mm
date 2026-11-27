@@ -24,13 +24,13 @@ ModelServiceFactory::ModelServiceFactory(PassKey key)
           TestingCreation::kCreateService) {}
 
 std::unique_ptr<KeyedService> ModelServiceFactory::BuildServiceInstanceFor(
-    ProfileIOS* profile) const {
+    ProfileIOS& profile) const {
   return std::make_unique<ModelService>(
-      user_prefs::UserPrefs::Get(profile),
+      user_prefs::UserPrefs::Get(&profile),
       GetApplicationContext()->GetOSCryptAsync(),
       base::BindRepeating(
           [](ProfileIOS* profile) { return profile->GetNetworkContext(); },
-          base::Unretained(profile)),
-      profile->GetSharedURLLoaderFactory(), profile->GetStatePath());
+          base::Unretained(&profile)),
+      profile.GetSharedURLLoaderFactory(), profile.GetStatePath());
 }
 }  // namespace ai_chat

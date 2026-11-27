@@ -50,7 +50,7 @@ impl EucKrDecoder {
     }
 
     ascii_compatible_two_byte_decoder_functions!(
-        {
+        lead = {
             // If lead is between 0x81 and 0xFE, inclusive,
             // subtract offset 0x81.
             let non_ascii_minus_offset =
@@ -62,7 +62,7 @@ impl EucKrDecoder {
             }
             non_ascii_minus_offset
         },
-        {
+        trail = {
             if lead_minus_offset >= 0x20 {
                 // Not the extension range above KS X 1001
                 let trail_minus_offset =
@@ -172,24 +172,24 @@ impl EucKrDecoder {
                 handle.write_upper_bmp(upper_bmp)
             }
         },
-        self,
-        non_ascii,
-        byte,
-        lead_minus_offset,
-        unread_handle_trail,
-        source,
-        handle,
-        'outermost,
-        copy_ascii_from_check_space_bmp,
-        check_space_bmp,
-        true);
+        self = self,
+        non_ascii = non_ascii,
+        byte = byte,
+        lead_minus_offset = lead_minus_offset,
+        unread_handle_trail = unread_handle_trail,
+        source = source,
+        handle = handle,
+        outermost = 'outermost,
+        copy_ascii = copy_ascii_from_check_space_bmp,
+        destination_check = check_space_bmp,
+        ascii_punctuation = true);
 }
 
 fn ksx1001_encode_misc(bmp: u16) -> Option<(usize, usize)> {
-    if in_inclusive_range16(bmp, 0x3000, 0x3015) {
-        if let Some(pos) = position(&KSX1001_SYMBOLS[..(0xAB - 0x60)], bmp) {
-            return Some((0xA1, pos + 0xA1));
-        }
+    if in_inclusive_range16(bmp, 0x3000, 0x3015)
+        && let Some(pos) = position(&KSX1001_SYMBOLS[..(0xAB - 0x60)], bmp)
+    {
+        return Some((0xA1, pos + 0xA1));
     }
     if let Some(other_pointer) = ksx1001_other_encode(bmp) {
         let other_lead = ((other_pointer as usize) / 94) + (0x81 + 0x22);
@@ -204,23 +204,22 @@ fn ksx1001_encode_misc(bmp: u16) -> Option<(usize, usize)> {
         if let Some(pos) = position(&KSX1001_UPPERCASE[..], bmp) {
             return Some((0x81 + 0x27, 0xA1 + pos));
         }
-    } else if in_range16(bmp, 0x2500, 0x254C) {
-        if let Some(pos) = position(&KSX1001_BOX[..], bmp) {
-            return Some((0x81 + 0x25, 0xA1 + pos));
-        }
+    } else if in_range16(bmp, 0x2500, 0x254C)
+        && let Some(pos) = position(&KSX1001_BOX[..], bmp)
+    {
+        return Some((0x81 + 0x25, 0xA1 + pos));
     }
-    if in_inclusive_range16(bmp, 0x2015, 0x266D)
+    if (in_inclusive_range16(bmp, 0x2015, 0x266D)
         || in_inclusive_range16(bmp, 0x321C, 0x33D8)
         || in_inclusive_range16(bmp, 0xFF3C, 0xFFE5)
         || in_inclusive_range16(bmp, 0x00A1, 0x00F7)
-        || in_inclusive_range16(bmp, 0x02C7, 0x02DD)
+        || in_inclusive_range16(bmp, 0x02C7, 0x02DD))
+        && let Some(pos) = position(&KSX1001_SYMBOLS[3..], bmp)
     {
-        if let Some(pos) = position(&KSX1001_SYMBOLS[3..], bmp) {
-            if pos < (94 - 3) {
-                return Some((0xA1, pos + 0xA1 + 3));
-            }
-            return Some((0xA2, pos - (94 - 3) + 0xA1));
+        if pos < (94 - 3) {
+            return Some((0xA1, pos + 0xA1 + 3));
         }
+        return Some((0xA2, pos - (94 - 3) + 0xA1));
     }
     None
 }
@@ -255,7 +254,7 @@ fn ksx1001_encode_hangul(bmp: u16, _: u16) -> (u8, u8) {
             } else {
                 0x41
             };
-            (lead as u8, (cp949_trail + offset) as u8)
+            (lead, (cp949_trail + offset))
         }
     }
 }
@@ -403,27 +402,6 @@ mod tests {
 
         encode_euc_kr("\u{AC02}", b"\x81\x41");
         encode_euc_kr("\u{8A70}", b"\xFD\xFE");
-    }
-
-    #[test]
-    #[cfg_attr(miri, ignore)] // Miri is too slow
-    fn test_euc_kr_decode_all() {
-        let input = include_bytes!("test_data/euc_kr_in.txt");
-        let expectation = include_str!("test_data/euc_kr_in_ref.txt");
-        let (cow, had_errors) = EUC_KR.decode_without_bom_handling(input);
-        assert!(had_errors, "Should have had errors.");
-        assert_eq!(&cow[..], expectation);
-    }
-
-    #[test]
-    #[cfg_attr(miri, ignore)] // Miri is too slow
-    fn test_euc_kr_encode_all() {
-        let input = include_str!("test_data/euc_kr_out.txt");
-        let expectation = include_bytes!("test_data/euc_kr_out_ref.txt");
-        let (cow, encoding, had_errors) = EUC_KR.encode(input);
-        assert!(!had_errors, "Should not have had errors.");
-        assert_eq!(encoding, EUC_KR);
-        assert_eq!(&cow[..], &expectation[..]);
     }
 
     #[test]

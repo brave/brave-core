@@ -52,6 +52,13 @@
 //! * `borsh` provides a `BorshSerialize` and `BorshDeserialize` implementation
 //!   for [`TinyVec`] and [`ArrayVec`] types, provided the inner item also has
 //!   an implementation.
+//! * `bin-proto` provides a `BitEncode` and `BitDecode` implementation for
+//!   [`TinyVec`] and [`ArrayVec`] types, provided the inner item also has an
+//!   implementation.
+//! * `defmt` provides a `Format` implementation for all types, provided the
+//!   inner item also has an implementation.
+//! * `schemars` provides a `JsonSchema` implementation for [`TinyVec`] and
+//!   [`ArrayVec`] types, provided the inner item also has an implementation.
 //!
 //! ## API
 //! The general goal of the crate is that, as much as possible, the vecs here

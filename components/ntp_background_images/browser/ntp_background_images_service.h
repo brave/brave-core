@@ -112,20 +112,6 @@ class NTPBackgroundImagesService {
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, InternalDataTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            MultipleCampaignsTest);
-  FRIEND_TEST_ALL_PREFIXES(
-      NTPBackgroundImagesServiceTest,
-      DoNotGetSponsoredImageContentForNonHttpsSchemeTargetUrl);
-  FRIEND_TEST_ALL_PREFIXES(
-      NTPBackgroundImagesServiceTest,
-      DoNotGetSponsoredImageContentIfWallpaperUrlReferencesParent);
-  FRIEND_TEST_ALL_PREFIXES(
-      NTPBackgroundImagesServiceTest,
-      DoNotGetSponsoredImageContentIfWallpaperButtonImageRelativeUrlReferencesParent);
-  FRIEND_TEST_ALL_PREFIXES(
-      NTPBackgroundImagesServiceTest,
-      DoNotGetSponsoredRichMediaContentIfWallpaperRelativeUrlReferencesParent);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
-                           SponsoredImageWithMissingImageUrlTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            WithDefaultReferralCodeTest1);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,

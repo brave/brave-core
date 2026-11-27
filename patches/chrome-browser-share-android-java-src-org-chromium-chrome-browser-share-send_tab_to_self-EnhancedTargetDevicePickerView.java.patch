@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/send_tab_to_self/EnhancedTargetDevicePickerView.java b/chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/send_tab_to_self/EnhancedTargetDevicePickerView.java
-index f720c1577f54f8fae7930e3bd6168c1875d441cc..bd68619414bb030f02160b487b84fe159b474f12 100644
+index 2ba4108df606962a6aa08e77a4fa1a2391ef04fc..4a1fc63f8fc3656d34235d956b72de1ddbd587e5 100644
 --- a/chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/send_tab_to_self/EnhancedTargetDevicePickerView.java
 +++ b/chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/send_tab_to_self/EnhancedTargetDevicePickerView.java
-@@ -148,7 +148,7 @@ class EnhancedTargetDevicePickerView extends BottomSheetListViewBase {
+@@ -157,7 +157,7 @@ class EnhancedTargetDevicePickerView extends BottomSheetListViewBase {
          int sendButtonHeight = getElementHeightWithMarginsPx(mSendButton);
          height += paddingTop + sendButtonHeight + paddingBottom;
          if (showManageDevices) {
@@ -11,7 +11,7 @@ index f720c1577f54f8fae7930e3bd6168c1875d441cc..bd68619414bb030f02160b487b84fe15
          }
          return height;
      }
-@@ -363,6 +363,7 @@ class EnhancedTargetDevicePickerView extends BottomSheetListViewBase {
+@@ -372,6 +372,7 @@ class EnhancedTargetDevicePickerView extends BottomSheetListViewBase {
       * Updates the visibility of the manage devices footer block if it differs from current state.
       */
      private void updateManageDevicesVisibility(boolean visible) {

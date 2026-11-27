@@ -58,6 +58,27 @@ TEST(BraveTabPrefsTest, AlwaysUseMiniAccentIconDefaultsToFalse) {
   EXPECT_FALSE(prefs.GetBoolean(brave_tabs::kAlwaysUseMiniAccentIcon));
 }
 
+TEST(BraveTabPrefsTest, MigrateBraveProfilePrefs_ForceUpstream_MovesVTabPref) {
+  TestingPrefServiceSimple prefs;
+  brave_tabs::RegisterBraveProfilePrefs(prefs.registry());
+  prefs.registry()->RegisterBooleanPref(brave_tabs::kVerticalTabsEnabled,
+                                        false);
+  prefs.registry()->RegisterBooleanPref(prefs::kVerticalTabsEnabled, false);
+  prefs.SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+
+  base::test::ScopedCommandLine cmd_line;
+  cmd_line.GetProcessCommandLine()->AppendSwitchASCII(
+      tabs::switches::kVerticalTabMigrationSwitch,
+      tabs::switches::kVerticalTabMigrationForceUpstreamValue);
+
+  brave_tabs::MigrateBraveProfilePrefs(&prefs);
+
+  EXPECT_TRUE(prefs.GetBoolean(prefs::kVerticalTabsEnabled));
+  EXPECT_FALSE(prefs.GetBoolean(brave_tabs::kVerticalTabsEnabled));
+  EXPECT_TRUE(
+      prefs.FindPreference(brave_tabs::kVerticalTabsEnabled)->IsDefaultValue());
+}
+
 TEST(BraveTabPrefsTest,
      MaybeApplyVerticalTabMigrationTestingOverride_NoSwitch_UsesDefault) {
   TestingPrefServiceSimple prefs;

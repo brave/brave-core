@@ -27,5 +27,9 @@ public class BraveMostVisitedTilesLayoutBaseClassAdapter extends BraveClassVisit
         deleteMethod(sBraveMostVisitedTilesLayoutBaseClassName, "setColumnCount");
         deleteMethod(sBraveMostVisitedTilesLayoutBaseClassName, "getRowCount");
         deleteMethod(sBraveMostVisitedTilesLayoutBaseClassName, "setRowCount");
+
+        // Deletes the upstream "pin shortcuts" IPH trigger so it falls through to the no-op
+        // override in BraveMostVisitedTilesLayoutBase.
+        deleteMethod(sMostVisitedTilesLayoutClassName, "triggerCustomizationIph");
     }
 }

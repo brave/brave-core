@@ -82,7 +82,7 @@ class TrackedRequest {
   mutable bool is_complete_ = false;
 
   int64_t size_ = -1;
-  blink::Digestor body_digestor_{blink::kHashAlgorithmSha256};
+  blink::Digestor body_digestor_{blink::HashAlgorithm::kSha256};
   blink::String hash_;
 };
 

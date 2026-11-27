@@ -2,7 +2,7 @@
 //
 //     regex-cli generate serialize dense dfa --minimize --start-kind anchored --shrink --rustfmt --safe WHITESPACE_ANCHORED_FWD src/unicode/fsm/ \s+
 //
-// regex-cli 0.0.1 is available on crates.io.
+// regex-cli 0.2.3 is available on crates.io.
 
 use regex_automata::{
     dfa::dense::DFA,

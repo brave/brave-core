@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.View.MeasureSpec;
 import android.widget.GridLayout;
 
+import org.chromium.chrome.browser.user_education.UserEducationHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,11 @@ public class BraveMostVisitedTilesLayoutBase extends TilesLinearLayout {
     public void setUseFixedLayout(boolean useFixedLayout) {
         mUseFixedLayout = useFixedLayout;
     }
+
+    // Deleted from MostVisitedTilesLayout via bytecode so this no-op takes over, suppressing the
+    // upstream "pin shortcuts" IPH (https://github.com/brave/brave-browser/issues/61925); Brave
+    // has its own NTP top-sites tooltip.
+    public void triggerCustomizationIph(UserEducationHelper userEducationHelper) {}
 
     @SuppressLint("DrawAllocation")
     @Override

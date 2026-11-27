@@ -14,7 +14,6 @@
 #include <vector>
 
 #include "base/barrier_callback.h"
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -51,12 +50,6 @@ class AssetDiscoveryTask {
                     base::OnceClosure callback);
 
  private:
-  friend class AssetDiscoveryTaskUnitTest;
-  FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryTaskUnitTest, DecodeMintAddress);
-  FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryTaskUnitTest,
-                           GetSimpleHashNftsByWalletUrl);
-  FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryTaskUnitTest, ParseNFTsFromSimpleHash);
-
   void DiscoverAssets(std::vector<mojom::AccountIdPtr> accounts,
                       std::vector<mojom::ChainIdPtr> fungible_chain_ids,
                       std::vector<mojom::ChainIdPtr> non_fungible_chain_ids,
@@ -150,9 +143,6 @@ class AssetDiscoveryTask {
   void MergeDiscoveredNFTs(
       DiscoverAssetsCompletedCallback callback,
       const std::vector<std::vector<mojom::BlockchainTokenPtr>>& nfts);
-
-  std::optional<std::pair<GURL, std::vector<mojom::BlockchainTokenPtr>>>
-  ParseNFTsFromSimpleHash(const base::Value& json_value);
 
   static std::optional<SolanaAddress> DecodeMintAddress(
       base::span<const uint8_t> data);

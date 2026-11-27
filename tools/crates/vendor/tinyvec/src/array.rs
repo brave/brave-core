@@ -9,8 +9,6 @@
 /// You are generally **not** expected to need to implement this yourself. It is
 /// already implemented for all array lengths.
 ///
-/// **Additional lengths can easily be added upon request.**
-///
 /// ## Safety Reminder
 ///
 /// Just a reminder: this trait is 100% safe, which means that `unsafe` code

@@ -1,6 +1,8 @@
 #![allow(bad_style)]
 #![allow(clippy::clone_on_copy)]
 
+#[cfg(feature = "bin-proto")]
+use bin_proto::{BigEndian, BitDecodeExt, BitEncodeExt, Tag, Untagged};
 #[cfg(feature = "serde")]
 use serde_test::{assert_tokens, Token};
 use std::iter::FromIterator;
@@ -130,7 +132,7 @@ fn ArrayVec_append() {
   //
   av.append(&mut av2);
   assert_eq!(av.as_slice(), &[1_i32, 2, 3, 4, 5, 6]);
-  assert_eq!(av2.as_slice(), &[]);
+  assert_eq!(av2.as_slice(), &[] as &[i32]);
 }
 
 #[test]
@@ -165,7 +167,7 @@ fn ArrayVec_swap_remove() {
   assert_eq!(av.swap_remove(0), 3);
   assert_eq!(&av[..], &[2][..]);
   assert_eq!(av.swap_remove(0), 2);
-  assert_eq!(&av[..], &[][..]);
+  assert_eq!(&av[..], &[][..] as &[i32]);
 }
 
 #[test]
@@ -469,6 +471,79 @@ fn ArrayVec_borsh_de() {
   assert_eq!(tv, des);
 }
 
+#[cfg(feature = "bin-proto")]
+#[test]
+fn ArrayVec_bin_proto_encode_untagged() {
+  let mut values = ArrayVec::<[u8; 4]>::new();
+  values.push(0x12);
+  values.push(0x34);
+  values.push(0x56);
+  let mut data = [0u8; 16];
+  let n_bytes = values
+    .encode_bytes_ctx_buf(BigEndian, &mut (), Untagged, &mut data)
+    .unwrap() as usize;
+  assert_eq!(&[0x12, 0x34, 0x56], &data[0..n_bytes]);
+}
+
+#[cfg(feature = "bin-proto")]
+#[test]
+fn ArrayVec_bin_proto_decode_tagged_too_long() {
+  assert!(ArrayVec::<[u8; 4]>::decode_bytes_ctx(
+    &[0x12, 0x34, 0x56, 0x78, 0x9A],
+    BigEndian,
+    &mut (),
+    Tag(5usize),
+  )
+  .is_err());
+}
+
+#[cfg(feature = "bin-proto")]
+#[test]
+fn ArrayVec_bin_proto_decode_tagged() {
+  let (decoded, read_bits) = ArrayVec::<[u8; 4]>::decode_bytes_ctx(
+    &[0x12, 0x34, 0x56, 0x78],
+    BigEndian,
+    &mut (),
+    Tag(3usize),
+  )
+  .unwrap();
+  let mut expected = ArrayVec::<[u8; 4]>::new();
+  expected.push(0x12);
+  expected.push(0x34);
+  expected.push(0x56);
+  assert_eq!(24, read_bits);
+  assert_eq!(expected, decoded);
+}
+
+#[cfg(feature = "bin-proto")]
+#[test]
+fn ArrayVec_bin_proto_decode_untagged_too_long() {
+  let result = ArrayVec::<[u8; 4]>::decode_all_bytes_ctx(
+    &[0x12, 0x34, 0x56, 0x78, 0x9A],
+    BigEndian,
+    &mut (),
+    Untagged,
+  );
+  assert!(result.is_err());
+}
+
+#[cfg(feature = "bin-proto")]
+#[test]
+fn ArrayVec_bin_proto_decode_untagged() {
+  let decoded = ArrayVec::<[u8; 4]>::decode_all_bytes_ctx(
+    &[0x12, 0x34, 0x56],
+    BigEndian,
+    &mut (),
+    Untagged,
+  )
+  .unwrap();
+  let mut expected = ArrayVec::<[u8; 4]>::new();
+  expected.push(0x12);
+  expected.push(0x34);
+  expected.push(0x56);
+  assert_eq!(expected, decoded);
+}
+
 #[test]
 fn ArrayVec_try_from_slice() {
   use std::convert::TryFrom;
@@ -477,7 +552,7 @@ fn ArrayVec_try_from_slice() {
 
   let empty: Result<ArrayVec<[i32; 2]>, _> = ArrayVec::try_from(&nums[..0]);
   assert!(empty.is_ok());
-  assert_eq!(empty.unwrap().as_slice(), &[]);
+  assert_eq!(empty.unwrap().as_slice(), &[] as &[i32]);
 
   let fits: Result<ArrayVec<[i32; 2]>, _> = ArrayVec::try_from(&nums[..2]);
   assert!(fits.is_ok());

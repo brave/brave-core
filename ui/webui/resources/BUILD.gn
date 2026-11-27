@@ -60,8 +60,6 @@ if (include_lit) {
 
       # The browser_commands mojom and settings-specific css below are for
       # settings, which runs as a WebUI wherever polymer does.
-      ts_files += [ "js/brave_browser_command/brave_browser_command_proxy.ts" ]
-
       mojo_files = [ "$root_gen_dir/brave/ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom-webui.ts" ]
       mojo_files_deps =
           [ "js/brave_browser_command:mojo_bindings_ts__generator" ]
@@ -236,6 +234,7 @@ leo_icons_sources = [
   "carat-up.svg",
   "cardano-off.svg",
   "cardano-on.svg",
+  "characters.svg",
   "check-circle-filled.svg",
   "check-circle-outline.svg",
   "check-normal.svg",
@@ -341,6 +340,8 @@ leo_icons_sources = [
   "hand-raised.svg",
   "hearts.svg",
   "help-outline.svg",
+  "hierarchy-structure.svg",
+  "highlight.svg",
   "history.svg",
   "idea.svg",
   "image-off.svg",
@@ -359,6 +360,14 @@ leo_icons_sources = [
   "leo-cursor-filled.svg",
   "leo-cursor.svg",
   "leo-local.svg",
+  "letter-spacing-standard.svg",
+  "letter-spacing-very-wide.svg",
+  "letter-spacing-wide.svg",
+  "letter-spacing.svg",
+  "line-height-loose.svg",
+  "line-height-standard.svg",
+  "line-height-very-loose.svg",
+  "line-height.svg",
   "link-broken.svg",
   "link-normal.svg",
   "list-bullet-default.svg",
@@ -432,6 +441,7 @@ leo_icons_sources = [
   "phantom-color.svg",
   "picture-in-picture.svg",
   "pie-chart-2.svg",
+  "pin.svg",
   "play-circle.svg",
   "play-filled.svg",
   "plus-add-circle.svg",
@@ -550,9 +560,11 @@ leo_icons_sources = [
   "virtual-reality-off.svg",
   "virtual-reality.svg",
   "vivaldi-color.svg",
+  "voice-mode.svg",
   "volume-off.svg",
   "volume-on.svg",
   "wallet-ledger.svg",
+  "wallet-trezor.svg",
   "warning-circle-filled.svg",
   "warning-circle-outline.svg",
   "warning-triangle-filled.svg",
@@ -643,7 +655,6 @@ if (enable_brave_vpn_panel) {
 
 if (enable_speedreader) {
   leo_icons_sources += [
-    "characters.svg",
     "forward-outline.svg",
     "headphones.svg",
     "pause-outline.svg",

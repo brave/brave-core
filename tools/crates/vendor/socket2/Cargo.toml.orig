@@ -1,6 +1,6 @@
 [package]
 name          = "socket2"
-version       = "0.6.1"
+version       = "0.6.5"
 authors       = [
   "Alex Crichton <alex@alexcrichton.com>",
   "Thomas de Zeeuw <thomasdezeeuw@gmail.com>"
@@ -49,11 +49,11 @@ targets = [
 [package.metadata.playground]
 features = ["all"]
 
-[target."cfg(unix)".dependencies]
+[target.'cfg(any(unix, target_os = "wasi"))'.dependencies]
 libc = "0.2.172"
 
 [target.'cfg(windows)'.dependencies.windows-sys]
-version = "0.60"
+version = ">=0.60, <0.62"
 features = [
   "Win32_Foundation",
   "Win32_Networking_WinSock",

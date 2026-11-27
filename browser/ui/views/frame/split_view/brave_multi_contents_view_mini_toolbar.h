@@ -46,6 +46,8 @@ class BraveMultiContentsViewMiniToolbar : public MultiContentsViewMiniToolbar {
  private:
   bool UsesSplitBorder() const;
 
+  void CloseWebPanel();
+
   bool is_active_ = false;
   bool always_show_domain_ = false;
   Style style_ = Style::kSplit;

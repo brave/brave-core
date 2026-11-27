@@ -14,6 +14,19 @@ export function gnTargetToExecutableName(str: string): string {
   return str.split(':').at(-1)!.split('(')[0]!
 }
 
+// Splits a comma-separated list of test suites, which may also be given as gn
+// labels (e.g. //brave/test:brave_browser_tests).
+export function parseTestSuites(value: string): string[] {
+  const suites = value
+    .split(',')
+    .map((suite) => suite.trim())
+    .filter((suite) => suite !== '')
+    .map((suite) =>
+      suite.startsWith('//') ? gnTargetToExecutableName(suite) : suite,
+    )
+  return [...new Set(suites)]
+}
+
 export function getTestBinary(config: Config, suite: string) {
   let testBinary = suite
   if (testBinary === 'brave_java_unit_tests') {
@@ -26,7 +39,7 @@ export function getTestBinary(config: Config, suite: string) {
     testBinary = path.join(`${testBinary}.app`)
   }
 
-  if (process.platform === 'win32') {
+  if (config.targetOS === 'win') {
     testBinary = path.join(`${testBinary}.exe`)
   }
   return path.join(config.outputDir, testBinary)

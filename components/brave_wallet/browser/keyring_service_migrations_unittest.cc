@@ -423,7 +423,11 @@ base::RepeatingCallback<std::array<uint8_t, Size>()> CreateFilledArrayCallback(
 
 class KeyringServiceMigrationsUnitTest : public testing::Test {
  public:
-  KeyringServiceMigrationsUnitTest() {}
+  KeyringServiceMigrationsUnitTest() {
+    feature_list_.InitWithFeatures({features::kBraveWalletBitcoinFeature,
+                                    features::kBraveWalletZCashFeature},
+                                   {});
+  }
   PrefService* GetPrefs() { return &profile_prefs_; }
   PrefService* GetLocalState() { return &local_state_; }
 
@@ -511,8 +515,7 @@ class KeyringServiceMigrationsUnitTest : public testing::Test {
       custom_salt_callback_{
           CreateFilledArrayCallback<kEncryptorSaltSize>(next_salt_)};
 
-  base::test::ScopedFeatureList feature_list_{
-      features::kBraveWalletZCashFeature};
+  base::test::ScopedFeatureList feature_list_;
 
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable profile_prefs_;
@@ -548,7 +551,7 @@ class KeyringServiceMigrationsLegacyIterationsUnitTest
   void ValidateAccounts(KeyringService& service) {
     EXPECT_EQ(GetWalletMnemonic(kPassword, &service), kMnemonicDivideCruise);
     const auto& all_accounts = service.GetAllAccountInfos();
-    EXPECT_EQ(all_accounts.size(), 7u);
+    ASSERT_EQ(all_accounts.size(), 7u);
     EXPECT_EQ(all_accounts[0]->address,
               "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
     EXPECT_EQ(all_accounts[1]->address,
@@ -693,7 +696,7 @@ TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest,
   EXPECT_EQ(GetWalletMnemonic(new_password, &service), kMnemonicDivideCruise);
   // Just two default accounts.
   const auto& all_accounts = service.GetAllAccountInfos();
-  EXPECT_EQ(all_accounts.size(), 2u);
+  ASSERT_EQ(all_accounts.size(), 2u);
   EXPECT_EQ(all_accounts[0]->address,
             "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
   EXPECT_EQ(all_accounts[1]->address,
@@ -760,7 +763,7 @@ class KeyringServiceMigrationsLegacyMnemonicFormatUnitTest
   void ValidateAccounts(KeyringService& service) {
     EXPECT_EQ(GetWalletMnemonic(kPassword, &service), kMnemonicDivideCruise);
     const auto& all_accounts = service.GetAllAccountInfos();
-    EXPECT_EQ(all_accounts.size(), 12u);
+    ASSERT_EQ(all_accounts.size(), 12u);
     EXPECT_EQ(all_accounts[0]->address,
               "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
     EXPECT_EQ(all_accounts[1]->address,
@@ -912,7 +915,7 @@ TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest,
   EXPECT_EQ(GetWalletMnemonic(new_password, &service), kMnemonicDivideCruise);
   // Just two default accounts.
   const auto& all_accounts = service.GetAllAccountInfos();
-  EXPECT_EQ(all_accounts.size(), 2u);
+  ASSERT_EQ(all_accounts.size(), 2u);
   EXPECT_EQ(all_accounts[0]->address,
             "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
   EXPECT_EQ(all_accounts[1]->address,

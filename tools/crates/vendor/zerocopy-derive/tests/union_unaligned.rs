@@ -19,6 +19,7 @@ include!("include.rs");
 //   - `repr(packed)`
 
 #[derive(imp::Unaligned)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(C)]
 union Foo {
     a: imp::u8,
@@ -36,8 +37,8 @@ util_assert_impl_all!(Foo: imp::Unaligned);
 // }
 
 // is_unaligned!(Bar);
-
 #[derive(imp::Unaligned)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(packed)]
 union Baz {
     // NOTE: The `u16` type is not guaranteed to have alignment 2, although it
@@ -53,6 +54,7 @@ union Baz {
 util_assert_impl_all!(Baz: imp::Unaligned);
 
 #[derive(imp::Unaligned)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(C, align(1))]
 union FooAlign {
     a: imp::u8,
@@ -61,6 +63,7 @@ union FooAlign {
 util_assert_impl_all!(FooAlign: imp::Unaligned);
 
 #[derive(imp::Unaligned)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(C)]
 union TypeParams<'a, T: imp::Copy, I: imp::Iterator>
 where

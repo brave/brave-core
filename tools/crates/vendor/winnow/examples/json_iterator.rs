@@ -20,11 +20,11 @@ use std::str;
 #[derive(Clone, Debug)]
 pub struct JsonValue<'a, 'b> {
     input: &'a str,
-    pub offset: &'b Cell<usize>,
+    offset: &'b Cell<usize>,
 }
 
 impl<'a, 'b: 'a> JsonValue<'a, 'b> {
-    pub fn new(input: &'a str, offset: &'b Cell<usize>) -> JsonValue<'a, 'b> {
+    pub fn new(input: &'a str, offset: &'b Cell<usize>) -> Self {
         JsonValue { input, offset }
     }
 

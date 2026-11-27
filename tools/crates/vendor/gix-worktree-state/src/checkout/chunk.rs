@@ -4,24 +4,25 @@ use std::{
 };
 
 use bstr::{BStr, BString};
+use gix_error::{ErrorExt, Result, ResultExt, bail};
 use gix_worktree::Stack;
 
 use crate::{checkout, checkout::entry};
 
 mod reduce {
-    use crate::checkout;
 
+    use gix_error::Result;
     pub struct Reduce<'entry> {
         pub aggregate: super::Outcome<'entry>,
     }
 
-    impl<'entry> gix_features::parallel::Reduce for Reduce<'entry> {
-        type Input = Result<super::Outcome<'entry>, checkout::Error>;
+    impl<'entry> gix_parallel::Reduce for Reduce<'entry> {
+        type Input = Result<super::Outcome<'entry>>;
         type FeedProduce = ();
         type Output = super::Outcome<'entry>;
-        type Error = checkout::Error;
+        type Error = gix_error::Error;
 
-        fn feed(&mut self, item: Self::Input) -> Result<Self::FeedProduce, Self::Error> {
+        fn feed(&mut self, item: Self::Input) -> Result<Self::FeedProduce> {
             let item = item?;
             let super::Outcome {
                 bytes_written,
@@ -45,7 +46,7 @@ mod reduce {
             Ok(())
         }
 
-        fn finalize(self) -> Result<Self::Output, Self::Error> {
+        fn finalize(self) -> Result<Self::Output> {
             Ok(self.aggregate)
         }
     }
@@ -85,6 +86,8 @@ pub struct Options {
     pub overwrite_existing: bool,
     pub keep_going: bool,
     pub filter_process_delay: gix_filter::driver::apply::Delay,
+    /// Retry symlinks whose target type cannot yet be determined on Windows.
+    pub delay_symlinks: bool,
 }
 
 impl From<&checkout::Options> for Options {
@@ -95,6 +98,7 @@ impl From<&checkout::Options> for Options {
             overwrite_existing: opts.overwrite_existing,
             keep_going: opts.keep_going,
             filter_process_delay: opts.filter_process_delay,
+            delay_symlinks: true,
         }
     }
 }
@@ -105,7 +109,7 @@ pub fn process<'entry, Find>(
     bytes: &AtomicUsize,
     delayed_filter_results: &mut Vec<DelayedFilteredStream<'entry>>,
     ctx: &mut Context<Find>,
-) -> Result<Outcome<'entry>, checkout::Error>
+) -> Result<Outcome<'entry>>
 where
     Find: gix_object::Find + Clone,
 {
@@ -123,9 +127,8 @@ where
             continue;
         }
 
-        // Symlinks always have to be delayed on windows as they have to point to something that exists on creation.
-        // And even if not, there is a distinction between file and directory symlinks, hence we have to check what the target is
-        // before creating it.
+        // Windows distinguishes file and directory symlinks. Delay them until regular files are
+        // present, then retry unresolved targets as other symlinks are created.
         // And to keep things sane, we just do the same on non-windows as well which is similar to what git does and adds some safety
         // around writing through symlinks (even though we handle this).
         // This also means that we prefer content in files over symlinks in case of collisions, which probably is for the better, too.
@@ -140,6 +143,7 @@ where
                 files_in_chunk += 1;
             }
             entry::Outcome::Delayed(delayed) => delayed_filter_results.push(delayed),
+            entry::Outcome::DelayedSymlink { .. } => unreachable!("symlinks are collected before checkout"),
         }
     }
 
@@ -160,7 +164,7 @@ pub fn process_delayed_filter_results<Find>(
     bytes: &AtomicUsize,
     out: &mut Outcome<'_>,
     ctx: &mut Context<Find>,
-) -> Result<(), checkout::Error>
+) -> Result
 where
     Find: gix_object::Find + Clone,
 {
@@ -192,7 +196,10 @@ where
                             unknown_paths.push(rela_path);
                             continue;
                         } else {
-                            return Err(checkout::Error::FilterPathUnknown { rela_path });
+                            bail!(
+                                "The entry at path \"{rela_path}\" was listed as delayed by the filter process, but we never passed it"
+                                    .corrupted()
+                            );
                         }
                     }
                 };
@@ -204,19 +211,25 @@ where
                         gix_filter::driver::Operation::Smudge,
                     )?,
                 );
-                let (file, set_executable_after_creation) = match entry::open_file(
+                let (file, executable_bit_change) = match entry::open_file(
                     &std::mem::take(&mut delayed.validated_file_path), // mark it as seen, relevant for `unprocessed_paths`
                     destination_is_initially_empty,
                     overwrite_existing,
-                    delayed.needs_executable_bit,
+                    delayed.fs_supports_executable_bit,
                     delayed.entry.mode,
                 ) {
                     Ok(res) => res,
                     Err(err) => {
                         if !is_collision(&err, delayed.entry_path, &mut out.collisions, files) {
-                            handle_error(err, delayed.entry_path, files, &mut out.errors, ctx.options.keep_going)?;
+                            handle_error(
+                                err.raise(),
+                                delayed.entry_path,
+                                files,
+                                &mut out.errors,
+                                ctx.options.keep_going,
+                            )?;
                         }
-                        std::io::copy(&mut read, &mut std::io::sink())?;
+                        std::io::copy(&mut read, &mut std::io::sink()).or_error()?;
                         continue;
                     }
                 };
@@ -224,11 +237,17 @@ where
                     inner: std::io::BufWriter::with_capacity(512 * 1024, file),
                     progress: bytes,
                 };
-                bytes_written += std::io::copy(&mut read, &mut write)?;
+                let actual_bytes = std::io::copy(&mut read, &mut write).or_error()?;
+                bytes_written += actual_bytes;
                 entry::finalize_entry(
                     delayed.entry,
-                    write.inner.into_inner().map_err(std::io::IntoInnerError::into_error)?,
-                    set_executable_after_creation,
+                    write
+                        .inner
+                        .into_inner()
+                        .map_err(std::io::IntoInnerError::into_error)
+                        .or_error()?,
+                    actual_bytes,
+                    executable_bit_change,
                 )?;
                 delayed_files += 1;
                 files.fetch_add(1, Ordering::Relaxed);
@@ -236,15 +255,16 @@ where
         }
     }
 
-    let unprocessed_paths = delayed_filter_results
+    let unprocessed_paths: Vec<BString> = delayed_filter_results
         .into_iter()
         .filter_map(|d| (!d.validated_file_path.as_os_str().is_empty()).then(|| d.entry_path.to_owned()))
         .collect();
 
-    if !keep_going && !unknown_paths.is_empty() {
-        return Err(checkout::Error::FilterPathsUnprocessed {
-            rela_paths: unprocessed_paths,
-        });
+    if !keep_going && !unprocessed_paths.is_empty() {
+        bail!(
+            "The following paths were delayed and apparently forgotten to be processed by the filter driver: {unprocessed_paths:?}"
+                .corrupted()
+        );
     }
 
     out.delayed_paths_unknown = unknown_paths;
@@ -266,7 +286,7 @@ where
     fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
         let written = self.inner.write(buf)?;
         self.progress
-            .fetch_add(written as gix_features::progress::Step, Ordering::SeqCst);
+            .fetch_add(written as gix_utils::progress::Step, Ordering::SeqCst);
         Ok(written)
     }
 
@@ -289,7 +309,7 @@ pub fn checkout_entry_handle_result<'entry, Find>(
         buf,
         options,
     }: &mut Context<Find>,
-) -> Result<entry::Outcome<'entry>, checkout::Error>
+) -> Result<entry::Outcome<'entry>>
 where
     Find: gix_object::Find + Clone,
 {
@@ -312,7 +332,12 @@ where
             }
             Ok(out)
         }
-        Err(checkout::Error::Io(err)) if is_collision(&err, entry_path, collisions, files) => {
+        Err(err)
+            if err
+                .error()
+                .downcast_ref::<std::io::Error>()
+                .is_some_and(|err| is_collision(err, entry_path, collisions, files)) =>
+        {
             Ok(entry::Outcome::Written { bytes: 0 })
         }
         Err(err) => handle_error(err, entry_path, files, errors, options.keep_going)
@@ -320,20 +345,17 @@ where
     }
 }
 
-fn handle_error<E>(
-    err: E,
+fn handle_error(
+    err: gix_error::Error,
     entry_path: &BStr,
     files: &AtomicUsize,
     errors: &mut Vec<checkout::ErrorRecord>,
     keep_going: bool,
-) -> Result<(), E>
-where
-    E: std::error::Error + Send + Sync + 'static,
-{
+) -> Result {
     if keep_going {
         errors.push(checkout::ErrorRecord {
             path: entry_path.into(),
-            error: Box::new(err),
+            error: err,
         });
         files.fetch_add(1, Ordering::Relaxed);
         Ok(())
@@ -353,7 +375,7 @@ fn is_collision(
     }
     // We are here because a file existed or was blocked by a directory which shouldn't be possible unless
     // we are on a file insensitive file system.
-    gix_features::trace::error!("{entry_path}: collided ({:?})", err.kind());
+    gix_trace::error!("{entry_path}: collided ({:?})", err.kind());
     collisions.push(checkout::Collision {
         path: entry_path.into(),
         error_kind: err.kind(),

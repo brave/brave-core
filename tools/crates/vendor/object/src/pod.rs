@@ -14,6 +14,9 @@ type Result<T> = result::Result<T, ()>;
 
 /// A trait for types that can safely be converted from and to byte slices.
 ///
+/// Note: `Pod` is implemented for `[T; 0]`, but this isn't useful in practice
+/// and may be removed or become a compile-time error in future.
+///
 /// # Safety
 /// A type that is `Pod` must:
 /// - be `#[repr(C)]` or `#[repr(transparent)]`
@@ -116,9 +119,14 @@ pub fn slice_from_bytes_mut<T: Pod>(
 ///
 /// Returns an error if the size of the byte slice is not an exact multiple
 /// of the type size, or the alignment is invalid.
+///
+/// `T` must not be a zero-sized type; calling with a ZST is a compile error:
+/// ```compile_fail
+/// object::pod::slice_from_all_bytes::<[u8; 0]>(&[]).ok();
+/// ```
 #[inline]
 pub fn slice_from_all_bytes<T: Pod>(data: &[u8]) -> Result<&[T]> {
-    let count = data.len() / mem::size_of::<T>();
+    let count = data.len() / const { size_of_nonzero::<T>() };
     let (slice, tail) = slice_from_bytes(data, count)?;
     if !tail.is_empty() {
         return Err(());
@@ -132,14 +140,25 @@ pub fn slice_from_all_bytes<T: Pod>(data: &[u8]) -> Result<&[T]> {
 ///
 /// Returns an error if the size of the byte slice is not an exact multiple
 /// of the type size, or the alignment is invalid.
+///
+/// `T` must not be a zero-sized type; calling with a ZST is a compile error:
+/// ```compile_fail
+/// object::pod::slice_from_all_bytes_mut::<[u8; 0]>(&mut []).ok();
+/// ```
 #[inline]
 pub fn slice_from_all_bytes_mut<T: Pod>(data: &mut [u8]) -> Result<&mut [T]> {
-    let count = data.len() / mem::size_of::<T>();
+    let count = data.len() / const { size_of_nonzero::<T>() };
     let (slice, tail) = slice_from_bytes_mut(data, count)?;
     if !tail.is_empty() {
         return Err(());
     }
     Ok(slice)
+}
+
+const fn size_of_nonzero<T>() -> usize {
+    let size = mem::size_of::<T>();
+    assert!(size != 0, "T must not be a zero-sized type");
+    size
 }
 
 /// Cast a `Pod` type to a byte slice.

@@ -1,0 +1,22 @@
+bench_ref_from_prefix_dynamic_padding:
+	test dil, 3
+	sete al
+	cmp rsi, 12
+	setae cl
+	test al, cl
+	jne .LBB5_2
+	xor edx, edx
+	test dil, 3
+	sete dl
+	xor edi, edi
+	mov rax, rdi
+	ret
+.LBB5_2:
+	or rsi, 3
+	add rsi, -12
+	movabs rcx, -6148914691236517205
+	mov rax, rsi
+	mul rcx
+	shr rdx
+	mov rax, rdi
+	ret

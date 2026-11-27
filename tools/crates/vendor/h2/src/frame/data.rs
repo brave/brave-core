@@ -139,6 +139,57 @@ impl Data<Bytes> {
             pad_len,
         })
     }
+
+    pub(crate) fn flow_controlled_len(&self) -> usize {
+        if let Some(pad_len) = self.pad_len {
+            // if PADDED, pad length field counts too (the + 1)
+            self.data.len() + usize::from(pad_len) + 1
+        } else {
+            self.data.len()
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use bytes::Bytes;
+
+    fn data_frame(data: &[u8], pad_len: Option<u8>) -> Data<Bytes> {
+        Data {
+            stream_id: StreamId::from(1),
+            data: Bytes::copy_from_slice(data),
+            flags: DataFlags::default(),
+            pad_len,
+        }
+    }
+
+    #[test]
+    fn padding_overhead_no_padding() {
+        let frame = data_frame(b"hello", None);
+        assert_eq!(frame.flow_controlled_len() - frame.payload().len(), 0);
+    }
+
+    #[test]
+    fn padding_overhead_small() {
+        let frame = data_frame(b"hello", Some(10));
+        assert_eq!(frame.flow_controlled_len() - frame.payload().len(), 11);
+    }
+
+    #[test]
+    fn padding_overhead_max_does_not_overflow() {
+        // Regression: the old padded_len() returned u8, so pad_len=255
+        // caused 255u8 + 1 = 0. The correct overhead is 256.
+        let frame = data_frame(b"", Some(255));
+        assert_eq!(frame.flow_controlled_len() - frame.payload().len(), 256);
+    }
+
+    #[test]
+    fn padding_overhead_max_with_data() {
+        let frame = data_frame(b"hello", Some(255));
+        assert_eq!(frame.flow_controlled_len() - frame.payload().len(), 256);
+        assert_eq!(frame.flow_controlled_len(), 261);
+    }
 }
 
 impl<T: Buf> Data<T> {

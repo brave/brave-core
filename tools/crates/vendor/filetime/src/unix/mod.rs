@@ -1,7 +1,8 @@
 use crate::FileTime;
-use libc::{time_t, timespec};
+use libc::{time_t, timespec, UTIME_OMIT};
 use std::fs;
-use std::os::unix::prelude::*;
+use std::io;
+use std::path::Path;
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "linux")] {
@@ -16,6 +17,7 @@ cfg_if::cfg_if! {
         mod macos;
         pub use self::macos::*;
     } else if #[cfg(any(target_os = "aix",
+                        target_os = "nto",
                         target_os = "solaris",
                         target_os = "illumos",
                         target_os = "emscripten",
@@ -33,31 +35,6 @@ cfg_if::cfg_if! {
 
 #[allow(dead_code)]
 fn to_timespec(ft: &Option<FileTime>) -> timespec {
-    cfg_if::cfg_if! {
-        if #[cfg(any(target_os = "macos",
-                     target_os = "illumos",
-                     target_os = "freebsd"))] {
-            // https://github.com/apple/darwin-xnu/blob/a449c6a3b8014d9406c2ddbdc81795da24aa7443/bsd/sys/stat.h#L541
-            // https://github.com/illumos/illumos-gate/blob/master/usr/src/boot/sys/sys/stat.h#L312
-            // https://svnweb.freebsd.org/base/head/sys/sys/stat.h?view=markup#l359
-            const UTIME_OMIT: i64 = -2;
-        } else if #[cfg(target_os = "openbsd")] {
-            // https://github.com/openbsd/src/blob/master/sys/sys/stat.h#L189
-            const UTIME_OMIT: i64 = -1;
-        } else if #[cfg(target_os = "haiku")] {
-            // https://git.haiku-os.org/haiku/tree/headers/posix/sys/stat.h?#n106
-            const UTIME_OMIT: i64 = 1000000001;
-        } else if #[cfg(target_os = "aix")] {
-            // AIX hasn't disclosed system header files yet.
-            // https://github.com/golang/go/blob/master/src/cmd/vendor/golang.org/x/sys/unix/zerrors_aix_ppc64.go#L1007
-            const UTIME_OMIT: i64 = -3;
-        } else {
-            // http://cvsweb.netbsd.org/bsdweb.cgi/src/sys/sys/stat.h?annotate=1.68.30.1
-            // https://github.com/emscripten-core/emscripten/blob/master/system/include/libc/sys/stat.h#L71
-            const UTIME_OMIT: i64 = 1_073_741_822;
-        }
-    }
-
     let mut ts: timespec = unsafe { std::mem::zeroed() };
     if let &Some(ft) = ft {
         ts.tv_sec = ft.seconds() as time_t;
@@ -70,32 +47,8 @@ fn to_timespec(ft: &Option<FileTime>) -> timespec {
     ts
 }
 
-pub fn from_last_modification_time(meta: &fs::Metadata) -> FileTime {
-    FileTime {
-        seconds: meta.mtime(),
-        nanos: meta.mtime_nsec() as u32,
-    }
-}
-
-pub fn from_last_access_time(meta: &fs::Metadata) -> FileTime {
-    FileTime {
-        seconds: meta.atime(),
-        nanos: meta.atime_nsec() as u32,
-    }
-}
-
-pub fn from_creation_time(meta: &fs::Metadata) -> Option<FileTime> {
-    #[cfg(target_os = "bitrig")]
-    {
-        use std::os::bitrig::fs::MetadataExt;
-        Some(FileTime {
-            seconds: meta.st_birthtime(),
-            nanos: meta.st_birthtime_nsec() as u32,
-        })
-    }
-
-    #[cfg(not(target_os = "bitrig"))]
-    {
-        meta.created().map(|i| i.into()).ok()
-    }
+pub fn open(path: &Path) -> io::Result<fs::File> {
+    // Try a read-only open, but if that fails try a write-only open, and if
+    // that fails then give up.
+    fs::File::open(path).or_else(|_| fs::OpenOptions::new().write(true).open(path))
 }

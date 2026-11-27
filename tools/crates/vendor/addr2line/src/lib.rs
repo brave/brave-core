@@ -45,6 +45,8 @@ use alloc::sync::Arc;
 use core::cell::OnceCell;
 use core::ops::ControlFlow;
 
+use gimli::ReaderOffset;
+
 use crate::function::{Function, Functions, InlinedFunction, LazyFunctions};
 use crate::line::{LazyLines, LineLocationRangeIter, Lines};
 use crate::lookup::{LoopingLookup, SimpleLookup};
@@ -70,7 +72,7 @@ mod line;
 #[cfg(feature = "loader")]
 mod loader;
 #[cfg(feature = "loader")]
-pub use loader::{Loader, LoaderReader, Symbol};
+pub use loader::{Loader, Symbol};
 
 mod lookup;
 pub use lookup::{LookupContinuation, LookupResult, SplitDwarfLoad};
@@ -125,6 +127,7 @@ impl<R: gimli::Reader> Context<R> {
             debug_line_str,
             debug_macinfo: default_section.clone().into(),
             debug_macro: default_section.clone().into(),
+            debug_names: default_section.clone().into(),
             debug_str,
             debug_str_offsets,
             debug_types: default_section.clone().into(),
@@ -293,6 +296,7 @@ impl<R: gimli::Reader> Context<R> {
     ///
     ///   // ...
     /// ```
+    #[allow(clippy::type_complexity)]
     pub fn preload_units(
         &'_ self,
         probe: u64,
@@ -350,12 +354,12 @@ impl<R: gimli::Reader> Context<R> {
         let unit = match file {
             DebugFile::Primary => self.units.find_offset(offset)?,
             DebugFile::Supplementary => self.sup_units.find_offset(offset)?,
-            DebugFile::Dwo => return Err(gimli::Error::NoEntryAtGivenOffset),
+            DebugFile::Dwo => return Err(gimli::Error::NoEntryAtGivenOffset(offset.0.into_u64())),
         };
 
         let unit_offset = offset
             .to_unit_offset(&unit.header)
-            .ok_or(gimli::Error::NoEntryAtGivenOffset)?;
+            .ok_or(gimli::Error::NoEntryAtGivenOffset(offset.0.into_u64()))?;
         Ok((unit, unit_offset))
     }
 }

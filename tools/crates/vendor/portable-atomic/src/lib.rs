@@ -13,16 +13,15 @@ Portable atomic types including support for 128-bit atomics, atomic float, etc.
 - Provide `AtomicF16` and `AtomicF128` for [unstable `f16` and `f128`](https://github.com/rust-lang/rust/issues/116909). ([optional, requires the `float` feature and unstable cfgs](#optional-features-float))
 - Provide atomic load/store for targets where atomic is not available at all in the standard library. (RISC-V without A-extension, MSP430, AVR)
 - Provide atomic CAS for targets where atomic CAS is not available in the standard library. (thumbv6m, pre-v6 Arm, RISC-V without A-extension, MSP430, AVR, Xtensa, etc.) (always enabled for MSP430 and AVR, [optional](#optional-features-critical-section) otherwise)
-- Provide stable equivalents of the standard library's atomic types' unstable APIs, such as [`AtomicPtr::fetch_*`](https://github.com/rust-lang/rust/issues/99108).
-- Make features that require newer compilers, such as [`fetch_{max,min}`](https://doc.rust-lang.org/std/sync/atomic/struct.AtomicUsize.html#method.fetch_max), [`fetch_update`](https://doc.rust-lang.org/std/sync/atomic/struct.AtomicUsize.html#method.fetch_update), [`as_ptr`](https://doc.rust-lang.org/std/sync/atomic/struct.AtomicUsize.html#method.as_ptr), [`from_ptr`](https://doc.rust-lang.org/std/sync/atomic/struct.AtomicUsize.html#method.from_ptr), [`AtomicBool::fetch_not`](https://doc.rust-lang.org/std/sync/atomic/struct.AtomicBool.html#method.fetch_not) and [stronger CAS failure ordering](https://github.com/rust-lang/rust/pull/98383) available on Rust 1.34+.
-- Provide workaround for bugs in the standard library's atomic-related APIs, such as [rust-lang/rust#100650], `fence`/`compiler_fence` on MSP430 that cause LLVM error, etc.
+- Make features that require newer compilers, such as [`fetch_{max,min}`](https://doc.rust-lang.org/std/sync/atomic/struct.AtomicUsize.html#method.fetch_max), [`fetch_update`](https://doc.rust-lang.org/std/sync/atomic/struct.AtomicUsize.html#method.fetch_update), [`as_ptr`](https://doc.rust-lang.org/std/sync/atomic/struct.AtomicUsize.html#method.as_ptr), [`from_ptr`](https://doc.rust-lang.org/std/sync/atomic/struct.AtomicUsize.html#method.from_ptr), [`AtomicBool::fetch_not`](https://doc.rust-lang.org/std/sync/atomic/struct.AtomicBool.html#method.fetch_not), [`AtomicPtr::fetch_*`](https://doc.rust-lang.org/std/sync/atomic/struct.AtomicPtr.html#method.fetch_and), and [stronger CAS failure ordering](https://github.com/rust-lang/rust/pull/98383) available on Rust 1.34+.
+- Provide workaround for bugs in the standard library's atomic-related APIs, such as [rust-lang/compiler-builtins#1234], [rust-lang/rust#100650], `fence`/`compiler_fence` on MSP430 that cause LLVM error, etc.
 
 <!-- TODO:
 - mention Atomic{I,U}*::fetch_neg, Atomic{I*,U*,Ptr}::bit_*, etc.
 - mention optimizations not available in the standard library's equivalents
 -->
 
-portable-atomic version of `std::sync::Arc` is provided by the [portable-atomic-util](https://github.com/taiki-e/portable-atomic/tree/HEAD/portable-atomic-util) crate.
+portable-atomic version of `std::sync::Arc` and `std::task::Wake` is provided by the [portable-atomic-util] crate.
 
 ## Usage
 
@@ -52,7 +51,7 @@ portable-atomic = { version = "1.3", default-features = false, features = ["requ
 
 ## 128-bit atomics support
 
-Native 128-bit atomic operations are available on x86_64 (Rust 1.59+), AArch64 (Rust 1.59+), riscv64 (Rust 1.59+), Arm64EC (Rust 1.84+), s390x (Rust 1.84+), and powerpc64 (nightly only), otherwise the fallback implementation is used.
+Native 128-bit atomic operations are available on x86_64 (Rust 1.59+), AArch64 (Rust 1.59+), riscv64 (Rust 1.59+), Arm64EC (Rust 1.84+), s390x (Rust 1.84+), and powerpc64 (Rust 1.95+), otherwise the fallback implementation is used.
 
 On x86_64, even if `cmpxchg16b` is not available at compile-time (Note: `cmpxchg16b` target feature is enabled by default only on Apple, Windows (except Windows 7), and Fuchsia targets), run-time detection checks whether `cmpxchg16b` is available. If `cmpxchg16b` is not available at either compile-time or run-time detection, the fallback implementation is used. See also [`portable_atomic_no_outline_atomics`](#optional-cfg-no-outline-atomics) cfg.
 
@@ -88,10 +87,13 @@ RUSTFLAGS="--cfg portable_atomic_unsafe_assume_single_core" cargo ...
 - <a name="optional-features-fallback"></a>**`fallback` feature** *(enabled by default)*<br>
   Enable fallback implementations.
 
-  This enables atomic types with larger than the width supported by atomic instructions available on the current target. If the current target supports 128-bit atomics, this is no-op.
+  This enables atomic types with larger than the width supported by atomic instructions available on the current target. If the current target [supports 128-bit atomics](#128-bit-atomics-support), this is no-op.
 
-  This uses lock-based fallback implementations by default. The following features/cfgs change this behavior:
-  - `unsafe-assume-single-core` feature / `portable_atomic_unsafe_assume_single_core` cfg: Use fallback implementations that disabling interrupts instead of using locks.
+  This uses fallback implementation that using global locks by default. The following features/cfgs change this behavior:
+  - [`unsafe-assume-single-core` feature / `portable_atomic_unsafe_assume_single_core` cfg](#optional-features-unsafe-assume-single-core): Use fallback implementations that disabling interrupts instead of using global locks.
+    - If your target is single-core and calling interrupt disable instructions is safe, this is a safer and more efficient option.
+  - [`unsafe-assume-privileged` feature / `portable_atomic_unsafe_assume_privileged` cfg](#optional-features-unsafe-assume-privileged): Use fallback implementations that using global locks with disabling interrupts.
+    - If your target is multi-core and calling interrupt disable instructions is safe, this is a safer option.
 
 - <a name="optional-features-float"></a>**`float` feature**<br>
   Provide `AtomicF{32,64}`.
@@ -138,7 +140,7 @@ RUSTFLAGS="--cfg portable_atomic_unsafe_assume_single_core" cargo ...
 >
 >   The recommended approach for libraries is to leave it up to the end user whether or not to enable this feature. (However, it may make sense to enable this feature by default for libraries specific to a platform where other implementations are known not to work.)
 >
->   See also [](https://github.com/matklad/once_cell/issues/264#issuecomment-2352654806).
+>   See also [this comment](https://github.com/matklad/once_cell/issues/264#issuecomment-2352654806).
 >
 >   As an example, the end-user's `Cargo.toml` that uses a crate that provides a critical-section implementation and a crate that depends on portable-atomic as an option would be expected to look like this:
 >
@@ -150,6 +152,7 @@ RUSTFLAGS="--cfg portable_atomic_unsafe_assume_single_core" cargo ...
 >   ```
 >
 > - Enabling both this feature and `unsafe-assume-single-core` feature (or `portable_atomic_unsafe_assume_single_core` cfg) will result in a compile error.
+> - Enabling both this feature and `unsafe-assume-privileged` feature (or `portable_atomic_unsafe_assume_privileged` cfg) will result in a compile error.
 > - The MSRV when this feature is enabled depends on the MSRV of [critical-section].
 
 </div>
@@ -166,19 +169,22 @@ RUSTFLAGS="--cfg portable_atomic_unsafe_assume_single_core" cargo ...
 >
 > This feature/cfg is `unsafe`, and note the following safety requirements:
 > - Enabling this feature/cfg for multi-core systems is always **unsound**.
+>
 > - This uses privileged instructions to disable interrupts, so it usually doesn't work on unprivileged mode.
 >
 >   Enabling this feature/cfg in an environment where privileged instructions are not available, or if the instructions used are not sufficient to disable interrupts in the system, it is also usually considered **unsound**, although the details are system-dependent.
 >
 >   The following are known cases:
->   - On pre-v6 Arm, this disables only IRQs by default. For many systems (e.g., GBA) this is enough. If the system need to disable both IRQs and FIQs, you need to enable the `disable-fiq` feature (or `portable_atomic_disable_fiq` cfg) together.
->   - On RISC-V without A-extension, this generates code for machine-mode (M-mode) by default. If you enable the `s-mode` feature (or `portable_atomic_s_mode` cfg) together, this generates code for supervisor-mode (S-mode). In particular, `qemu-system-riscv*` uses [OpenSBI](https://github.com/riscv-software-src/opensbi) as the default firmware.
->
->   Consider using the [`critical-section` feature](#optional-features-critical-section) for systems that cannot use this feature/cfg.
->
->   See also the [`interrupt` module's readme](https://github.com/taiki-e/portable-atomic/blob/HEAD/src/imp/interrupt/README.md).
+>   - On Arm (except for M-Profile architectures), this disables only IRQs by default. For many systems (e.g., GBA) this is enough. If the system need to disable both IRQs and FIQs, you need to enable the `disable-fiq` feature (or `portable_atomic_disable_fiq` cfg) together.
+>   - On RISC-V, this generates code for machine-mode (M-mode) by default. If you enable the `s-mode` feature (or `portable_atomic_s_mode` cfg) together, this generates code for supervisor-mode (S-mode). In particular, `qemu-system-riscv*` uses [OpenSBI](https://github.com/riscv-software-src/opensbi) as the default firmware.
 
 </div>
+
+Consider using the [`unsafe-assume-privileged` feature (or `portable_atomic_unsafe_assume_privileged` cfg)](#optional-features-unsafe-assume-privileged) for multi-core systems with atomic CAS.
+
+Consider using the [`critical-section` feature](#optional-features-critical-section) for systems that cannot use this feature/cfg.
+
+See also the [`interrupt` module's readme](https://github.com/taiki-e/portable-atomic/blob/HEAD/src/imp/interrupt/README.md).
 
 <div class="rustdoc-alert rustdoc-alert-note">
 
@@ -188,11 +194,43 @@ RUSTFLAGS="--cfg portable_atomic_unsafe_assume_single_core" cargo ...
 >
 >   The recommended approach for libraries is to leave it up to the end user whether or not to enable this feature/cfg. (However, it may make sense to enable this feature/cfg by default for libraries specific to a platform where it is guaranteed to always be sound, for example in a hardware abstraction layer targeting a single-core chip.)
 > - Enabling this feature/cfg for unsupported architectures will result in a compile error.
->   - Armv6-M (thumbv6m), pre-v6 Arm (e.g., thumbv4t, thumbv5te), RISC-V without A-extension, and Xtensa are currently supported. (Since all MSP430 and AVR are single-core, we always provide atomic CAS for them without this feature/cfg.)
+>   - Arm, RISC-V, and Xtensa are currently supported. (Since all MSP430 and AVR are single-core, we always provide atomic CAS for them without this feature/cfg.)
 >   - Feel free to [submit an issue](https://github.com/taiki-e/portable-atomic/issues/new) if your target is not supported yet.
 > - Enabling this feature/cfg for targets where privileged instructions are obviously unavailable (e.g., Linux) will result in a compile error.
 >   - Feel free to [submit an issue](https://github.com/taiki-e/portable-atomic/issues/new) if your target supports privileged instructions but the build rejected.
 > - Enabling both this feature/cfg and `critical-section` feature will result in a compile error.
+> - When both this feature/cfg and `unsafe-assume-privileged` feature (or `portable_atomic_unsafe_assume_privileged` cfg) are enabled, this feature/cfg is preferred.
+
+</div>
+
+- <a name="optional-features-unsafe-assume-privileged"></a><a name="optional-cfg-unsafe-assume-privileged"></a>**`unsafe-assume-privileged` feature / `portable_atomic_unsafe_assume_privileged` cfg**<br>
+  Similar to `unsafe-assume-single-core` feature / `portable_atomic_unsafe_assume_single_core` cfg, but only assumes about availability of privileged instructions required to disable interrupts.
+
+  - When both this feature/cfg and enabled-by-default `fallback` feature is enabled, this crate provides atomic types with larger than the width supported by native instructions by using global locks with disabling interrupts.
+
+<div class="rustdoc-alert rustdoc-alert-warning">
+
+> **⚠ Warning**
+>
+> This feature/cfg is `unsafe`, and except for being sound in multi-core systems, this has the same safety requirements as [`unsafe-assume-single-core` feature / `portable_atomic_unsafe_assume_single_core` cfg](#optional-features-unsafe-assume-single-core).
+
+</div>
+
+<div class="rustdoc-alert rustdoc-alert-note">
+
+> **ⓘ Note**
+>
+> - It is **very strongly discouraged** to enable this feature/cfg in libraries that depend on `portable-atomic`.
+>
+>   The recommended approach for libraries is to leave it up to the end user whether or not to enable this feature/cfg. (However, it may make sense to enable this feature/cfg by default for libraries specific to a platform where it is guaranteed to always be sound, for example in a hardware abstraction layer.)
+> - Enabling this feature/cfg for unsupported targets will result in a compile error.
+>   - This requires atomic CAS (`cfg(target_has_atomic = "ptr")` or `cfg_no_atomic_cas!`).
+>   - Arm, RISC-V, and Xtensa are currently supported.
+>   - Feel free to [submit an issue](https://github.com/taiki-e/portable-atomic/issues/new) if your target is not supported yet.
+> - Enabling this feature/cfg for targets where privileged instructions are obviously unavailable (e.g., Linux) will result in a compile error.
+>   - Feel free to [submit an issue](https://github.com/taiki-e/portable-atomic/issues/new) if your target supports privileged instructions but the build rejected.
+> - Enabling both this feature/cfg and `critical-section` feature will result in a compile error.
+> - When both this feature/cfg and `unsafe-assume-single-core` feature (or `portable_atomic_unsafe_assume_single_core` cfg) are enabled, `unsafe-assume-single-core` is preferred.
 
 </div>
 
@@ -211,19 +249,24 @@ RUSTFLAGS="--cfg portable_atomic_unsafe_assume_single_core" cargo ...
 > - This is compatible with no-std (as with all features except `std`).
 > - On some targets, run-time detection is disabled by default mainly for compatibility with incomplete build environments or support for it is experimental, and can be enabled by `portable_atomic_outline_atomics` cfg. (When both cfg are enabled, `*_no_*` cfg is preferred.)
 > - Some AArch64 targets enable LLVM's `outline-atomics` target feature by default, so if you set this cfg, you may want to disable that as well. (However, portable-atomic's outline-atomics does not depend on the compiler-rt symbols, so even if you need to disable LLVM's outline-atomics, you may not need to disable portable-atomic's outline-atomics.)
-> - Dynamic detection is currently only supported in x86_64, AArch64, Arm, RISC-V, Arm64EC, and powerpc64. Enabling this cfg for unsupported architectures will result in a compile error.
+> - Dynamic detection is currently only supported in x86_64, AArch64, Arm, RISC-V, Arm64EC, and powerpc64. Enabling this cfg for unsupported architectures will be ignored.
 
 </div>
 
 ## Related Projects
 
+- [portable-atomic-util]: Synchronization primitives built with portable-atomic. This provides portable-atomic version of `std::sync::Arc` and `std::task::Wake`.
 - [atomic-maybe-uninit]: Atomic operations on potentially uninitialized integers.
 - [atomic-memcpy]: Byte-wise atomic memcpy.
+- [asmtest]: A library for tracking generated assemblies.
 
 [#60]: https://github.com/taiki-e/portable-atomic/issues/60
+[asmtest]: https://github.com/taiki-e/asmtest
 [atomic-maybe-uninit]: https://github.com/taiki-e/atomic-maybe-uninit
 [atomic-memcpy]: https://github.com/taiki-e/atomic-memcpy
 [critical-section]: https://github.com/rust-embedded/critical-section
+[portable-atomic-util]: https://github.com/taiki-e/portable-atomic-util
+[rust-lang/compiler-builtins#1234]: https://github.com/rust-lang/compiler-builtins/pull/1234
 [rust-lang/rust#100650]: https://github.com/rust-lang/rust/issues/100650
 [serde]: https://github.com/serde-rs/serde
 
@@ -248,40 +291,54 @@ RUSTFLAGS="--cfg portable_atomic_unsafe_assume_single_core" cargo ...
     clippy::exhaustive_enums,
     clippy::exhaustive_structs,
     clippy::impl_trait_in_params,
-    clippy::missing_inline_in_public_items,
     clippy::std_instead_of_alloc,
     clippy::std_instead_of_core,
+    clippy::missing_inline_in_public_items,
     // Code outside of cfg(feature = "float") shouldn't use float.
     clippy::float_arithmetic,
 )]
 #![cfg_attr(not(portable_atomic_no_asm), warn(missing_docs))] // module-level #![allow(missing_docs)] doesn't work for macros on old rustc
 #![cfg_attr(portable_atomic_no_strict_provenance, allow(unstable_name_collisions))]
-#![allow(clippy::inline_always, clippy::used_underscore_items)]
+#![allow(
+    clippy::inline_always,
+    clippy::manual_assert_eq,
+    clippy::unreadable_literal,
+    clippy::used_underscore_items
+)]
 // asm_experimental_arch
 // AVR, MSP430, and Xtensa are tier 3 platforms and require nightly anyway.
-// On tier 2 platforms (powerpc64), we use cfg set by build script to
+// On tier 2 platforms (currently N/A), we use cfg set by build script to
 // determine whether this feature is available or not.
 #![cfg_attr(
     all(
         not(portable_atomic_no_asm),
         any(
-            target_arch = "avr",
+            all(target_arch = "avr", not(feature = "critical-section")),
             target_arch = "msp430",
-            all(target_arch = "xtensa", portable_atomic_unsafe_assume_single_core),
-            all(target_arch = "powerpc64", portable_atomic_unstable_asm_experimental_arch),
+            all(
+                target_arch = "xtensa",
+                any(
+                    portable_atomic_unsafe_assume_single_core,
+                    portable_atomic_unsafe_assume_privileged,
+                ),
+            ),
         ),
     ),
     feature(asm_experimental_arch)
 )]
 // f16/f128
 // cfg is unstable and explicitly enabled by the user
-#![cfg_attr(portable_atomic_unstable_f16, feature(f16))]
-#![cfg_attr(portable_atomic_unstable_f128, feature(f128))]
+#![cfg_attr(
+    any(portable_atomic_unstable_f16, portable_atomic_unstable_f128),
+    allow(unused_features)
+)]
+#![cfg_attr(all(portable_atomic_unstable_f16, feature = "float"), feature(f16))]
+#![cfg_attr(all(portable_atomic_unstable_f128, feature = "float"), feature(f128))]
 // Old nightly only
 // These features are already stabilized or have already been removed from compilers,
 // and can safely be enabled for old nightly as long as version detection works.
 // - cfg(target_has_atomic)
-// - asm! on AArch64, Arm, RISC-V, x86, x86_64, Arm64EC, s390x
+// - asm! on AArch64, Arm, RISC-V, x86, x86_64, Arm64EC, s390x, PowerPC64
 // - llvm_asm! on AVR (tier 3) and MSP430 (tier 3)
 // - #[instruction_set] on non-Linux/Android pre-v6 Arm (tier 3)
 // This also helps us test that our assembly code works with the minimum external
@@ -304,7 +361,7 @@ RUSTFLAGS="--cfg portable_atomic_unsafe_assume_single_core" cargo ...
 #![cfg_attr(
     all(
         portable_atomic_unstable_asm_experimental_arch,
-        any(target_arch = "arm64ec", target_arch = "s390x"),
+        any(target_arch = "arm64ec", target_arch = "s390x", target_arch = "powerpc64"),
     ),
     feature(asm_experimental_arch)
 )]
@@ -316,9 +373,9 @@ RUSTFLAGS="--cfg portable_atomic_unsafe_assume_single_core" cargo ...
     all(
         target_arch = "arm",
         portable_atomic_unstable_isa_attribute,
-        any(test, portable_atomic_unsafe_assume_single_core),
-        not(any(target_feature = "v6", portable_atomic_target_feature = "v6")),
-        not(target_has_atomic = "ptr"),
+        any(portable_atomic_unsafe_assume_single_core, portable_atomic_unsafe_assume_privileged),
+        not(any(target_feature = "v7", portable_atomic_target_feature = "v7")),
+        not(any(target_feature = "mclass", portable_atomic_target_feature = "mclass")),
     ),
     feature(isa_attribute)
 )]
@@ -347,6 +404,7 @@ RUSTFLAGS="--cfg portable_atomic_unsafe_assume_single_core" cargo ...
             target_arch = "powerpc64",
             target_arch = "s390x",
         ),
+        portable_atomic_atomic_intrinsics,
         any(miri, portable_atomic_sanitize_thread),
     ),
     feature(core_intrinsics)
@@ -369,6 +427,20 @@ RUSTFLAGS="--cfg portable_atomic_unsafe_assume_single_core" cargo ...
     ),
     allow(unused_imports, unused_macros, clippy::unused_trait_names)
 )]
+
+#[cfg(any(test, feature = "std"))]
+extern crate std;
+
+#[macro_use]
+mod cfgs;
+#[cfg(target_pointer_width = "16")]
+pub use self::{cfg_has_atomic_16 as cfg_has_atomic_ptr, cfg_no_atomic_16 as cfg_no_atomic_ptr};
+#[cfg(target_pointer_width = "32")]
+pub use self::{cfg_has_atomic_32 as cfg_has_atomic_ptr, cfg_no_atomic_32 as cfg_no_atomic_ptr};
+#[cfg(target_pointer_width = "64")]
+pub use self::{cfg_has_atomic_64 as cfg_has_atomic_ptr, cfg_no_atomic_64 as cfg_no_atomic_ptr};
+#[cfg(target_pointer_width = "128")]
+pub use self::{cfg_has_atomic_128 as cfg_has_atomic_ptr, cfg_no_atomic_128 as cfg_no_atomic_ptr};
 
 // There are currently no 128-bit or higher builtin targets.
 // (Although some of our generic code is written with the future
@@ -398,12 +470,36 @@ compile_error!(
 compile_error!(
     "`portable_atomic_unsafe_assume_single_core` cfg (`unsafe-assume-single-core` feature) \
      is not supported yet on this architecture;\n\
-     if you need unsafe-assume-single-core support for this target,\n\
+     if you need unsafe-assume-{single-core,privileged} support for this target,\n\
      please submit an issue at <https://github.com/taiki-e/portable-atomic/issues/new>"
 );
+// unsafe-assume-single-core is accepted on AVR/MSP430, but
+// unsafe-assume-privileged on them is really useless on them since they are
+// always single-core, so rejected here.
+#[cfg(portable_atomic_unsafe_assume_privileged)]
+#[cfg(not(any(
+    target_arch = "arm",
+    target_arch = "riscv32",
+    target_arch = "riscv64",
+    target_arch = "xtensa",
+)))]
+compile_error!(
+    "`portable_atomic_unsafe_assume_privileged` cfg (`unsafe-assume-privileged` feature) \
+     is not supported yet on this architecture;\n\
+     if you need unsafe-assume-{single-core,privileged} support for this target,\n\
+     please submit an issue at <https://github.com/taiki-e/portable-atomic/issues/new>"
+);
+// unsafe-assume-privileged requires CAS.
+#[cfg(portable_atomic_unsafe_assume_privileged)]
+cfg_no_atomic_cas! {
+    compile_error!(
+        "`portable_atomic_unsafe_assume_privileged` cfg (`unsafe-assume-privileged` feature) \
+        requires atomic CAS"
+    );
+}
 // Reject targets where privileged instructions are obviously unavailable.
 // TODO: Some embedded OSes should probably be accepted here.
-#[cfg(portable_atomic_unsafe_assume_single_core)]
+#[cfg(any(portable_atomic_unsafe_assume_single_core, portable_atomic_unsafe_assume_privileged))]
 #[cfg(any(
     target_arch = "arm",
     target_arch = "avr",
@@ -421,24 +517,13 @@ compile_error!(
     cfg(all(target_has_atomic = "ptr", not(target_os = "none")))
 )]
 compile_error!(
-    "`portable_atomic_unsafe_assume_single_core` cfg (`unsafe-assume-single-core` feature) \
-     is not compatible targets where privileged instructions are obviously unavailable;\n\
-     if you need unsafe-assume-single-core support for this target,\n\
+    "`portable_atomic_unsafe_assume_{single_core,privileged}` cfg (`unsafe-assume-{single-core,privileged}` feature) \
+     is not compatible with target where privileged instructions are obviously unavailable;\n\
+     if you need unsafe-assume-{single-core,privileged} support for this target,\n\
      please submit an issue at <https://github.com/taiki-e/portable-atomic/issues/new>\n\
      see also <https://github.com/taiki-e/portable-atomic/issues/148> for troubleshooting"
 );
 
-#[cfg(portable_atomic_no_outline_atomics)]
-#[cfg(not(any(
-    target_arch = "aarch64",
-    target_arch = "arm",
-    target_arch = "arm64ec",
-    target_arch = "powerpc64",
-    target_arch = "riscv32",
-    target_arch = "riscv64",
-    target_arch = "x86_64",
-)))]
-compile_error!("`portable_atomic_no_outline_atomics` cfg does not compatible with this target");
 #[cfg(portable_atomic_outline_atomics)]
 #[cfg(not(any(
     target_arch = "aarch64",
@@ -454,7 +539,7 @@ compile_error!("`portable_atomic_outline_atomics` cfg does not compatible with t
     not(any(target_feature = "mclass", portable_atomic_target_feature = "mclass")),
 )))]
 compile_error!(
-    "`portable_atomic_disable_fiq` cfg (`disable-fiq` feature) is only available on pre-v6 Arm"
+    "`portable_atomic_disable_fiq` cfg (`disable-fiq` feature) is only available on Arm (except for M-Profile architectures)"
 );
 #[cfg(portable_atomic_s_mode)]
 #[cfg(not(any(target_arch = "riscv32", target_arch = "riscv64")))]
@@ -464,24 +549,38 @@ compile_error!("`portable_atomic_s_mode` cfg (`s-mode` feature) is only availabl
 compile_error!("`portable_atomic_force_amo` cfg (`force-amo` feature) is only available on RISC-V");
 
 #[cfg(portable_atomic_disable_fiq)]
-#[cfg(not(portable_atomic_unsafe_assume_single_core))]
+#[cfg(not(any(
+    portable_atomic_unsafe_assume_single_core,
+    portable_atomic_unsafe_assume_privileged,
+)))]
 compile_error!(
-    "`portable_atomic_disable_fiq` cfg (`disable-fiq` feature) may only be used together with `portable_atomic_unsafe_assume_single_core` cfg (`unsafe-assume-single-core` feature)"
+    "`portable_atomic_disable_fiq` cfg (`disable-fiq` feature) may only be used together with `portable_atomic_unsafe_assume_{single_core,privileged}` cfg (`unsafe-assume-{single-core,privileged}` feature)"
 );
 #[cfg(portable_atomic_s_mode)]
-#[cfg(not(portable_atomic_unsafe_assume_single_core))]
+#[cfg(not(any(
+    portable_atomic_unsafe_assume_single_core,
+    portable_atomic_unsafe_assume_privileged,
+)))]
 compile_error!(
-    "`portable_atomic_s_mode` cfg (`s-mode` feature) may only be used together with `portable_atomic_unsafe_assume_single_core` cfg (`unsafe-assume-single-core` feature)"
+    "`portable_atomic_s_mode` cfg (`s-mode` feature) may only be used together with `portable_atomic_unsafe_assume_{single_core,privileged}` cfg (`unsafe-assume-{single-core,privileged}` feature)"
 );
 #[cfg(portable_atomic_force_amo)]
 #[cfg(not(portable_atomic_unsafe_assume_single_core))]
 compile_error!(
     "`portable_atomic_force_amo` cfg (`force-amo` feature) may only be used together with `portable_atomic_unsafe_assume_single_core` cfg (`unsafe-assume-single-core` feature)"
 );
-
-#[cfg(all(portable_atomic_unsafe_assume_single_core, feature = "critical-section"))]
+#[cfg(portable_atomic_unsafe_assume_privileged)]
+#[cfg(not(feature = "fallback"))]
 compile_error!(
-    "you may not enable `critical-section` feature and `portable_atomic_unsafe_assume_single_core` cfg (`unsafe-assume-single-core` feature) at the same time"
+    "`portable_atomic_unsafe_assume_privileged` cfg (`unsafe-assume-privileged` feature) may only be used together with `fallback` feature"
+);
+
+#[cfg(all(
+    any(portable_atomic_unsafe_assume_single_core, portable_atomic_unsafe_assume_privileged),
+    feature = "critical-section"
+))]
+compile_error!(
+    "you may not enable `critical-section` feature and `portable_atomic_unsafe_assume_{single_core,privileged}` cfg (`unsafe-assume-{single-core,privileged}` feature) at the same time"
 );
 
 #[cfg(feature = "require-cas")]
@@ -489,20 +588,20 @@ compile_error!(
     portable_atomic_no_cfg_target_has_atomic,
     cfg(not(any(
         not(portable_atomic_no_atomic_cas),
-        portable_atomic_unsafe_assume_single_core,
-        feature = "critical-section",
         target_arch = "avr",
         target_arch = "msp430",
+        feature = "critical-section",
+        portable_atomic_unsafe_assume_single_core,
     )))
 )]
 #[cfg_attr(
     not(portable_atomic_no_cfg_target_has_atomic),
     cfg(not(any(
         target_has_atomic = "ptr",
-        portable_atomic_unsafe_assume_single_core,
-        feature = "critical-section",
         target_arch = "avr",
         target_arch = "msp430",
+        feature = "critical-section",
+        portable_atomic_unsafe_assume_single_core,
     )))
 )]
 compile_error!(
@@ -510,20 +609,6 @@ compile_error!(
     consider enabling one of the `critical-section` feature or `unsafe-assume-single-core` feature (or `portable_atomic_unsafe_assume_single_core` cfg).\n\
     see <https://docs.rs/portable-atomic/latest/portable_atomic/#optional-features> for more."
 );
-
-#[cfg(any(test, feature = "std"))]
-extern crate std;
-
-#[macro_use]
-mod cfgs;
-#[cfg(target_pointer_width = "16")]
-pub use self::{cfg_has_atomic_16 as cfg_has_atomic_ptr, cfg_no_atomic_16 as cfg_no_atomic_ptr};
-#[cfg(target_pointer_width = "32")]
-pub use self::{cfg_has_atomic_32 as cfg_has_atomic_ptr, cfg_no_atomic_32 as cfg_no_atomic_ptr};
-#[cfg(target_pointer_width = "64")]
-pub use self::{cfg_has_atomic_64 as cfg_has_atomic_ptr, cfg_no_atomic_64 as cfg_no_atomic_ptr};
-#[cfg(target_pointer_width = "128")]
-pub use self::{cfg_has_atomic_128 as cfg_has_atomic_ptr, cfg_no_atomic_128 as cfg_no_atomic_ptr};
 
 #[macro_use]
 mod utils;
@@ -535,12 +620,51 @@ mod tests;
 #[doc(no_inline)]
 pub use core::sync::atomic::Ordering;
 
-// LLVM doesn't support fence/compiler_fence for MSP430.
-#[cfg(target_arch = "msp430")]
-pub use self::imp::msp430::{compiler_fence, fence};
-#[doc(no_inline)]
-#[cfg(not(target_arch = "msp430"))]
-pub use core::sync::atomic::{compiler_fence, fence};
+cfg_sel!({
+    // LLVM doesn't support fence/compiler_fence for MSP430.
+    #[cfg(target_arch = "msp430")]
+    {
+        pub use self::imp::msp430::compiler_fence;
+    }
+    #[cfg(else)]
+    {
+        pub use core::sync::atomic::compiler_fence;
+    }
+});
+cfg_sel!({
+    // LLVM doesn't support fence/compiler_fence for MSP430.
+    #[cfg(target_arch = "msp430")]
+    {
+        pub use self::imp::msp430::fence;
+    }
+    // We have optimized fence for x86.
+    // Miri and Sanitizer do not support inline assembly.
+    #[cfg(all(
+        not(doc),
+        any(target_arch = "x86", target_arch = "x86_64"),
+        not(any(miri, portable_atomic_sanitize_thread)),
+        any(not(portable_atomic_no_asm), portable_atomic_unstable_asm),
+    ))]
+    {
+        pub use self::imp::x86::fence;
+    }
+    // We have optimized fence for pre-v6 ARM Linux/Android.
+    // Miri and Sanitizer do not go through __sync_synchronize.
+    #[cfg(all(
+        not(doc),
+        target_arch = "arm",
+        not(any(miri, portable_atomic_sanitize_thread)),
+        any(target_os = "linux", target_os = "android"),
+        not(any(target_feature = "v6", portable_atomic_target_feature = "v6")),
+    ))]
+    {
+        pub use self::imp::arm_linux::fence;
+    }
+    #[cfg(else)]
+    {
+        pub use core::sync::atomic::fence;
+    }
+});
 
 mod imp;
 
@@ -589,10 +713,6 @@ pub mod hint {
 #[cfg(doc)]
 use core::sync::atomic::Ordering::{AcqRel, Acquire, Relaxed, Release, SeqCst};
 use core::{fmt, ptr};
-
-#[cfg(portable_atomic_no_strict_provenance)]
-#[cfg(miri)]
-use self::utils::ptr::PtrExt as _;
 
 cfg_has_atomic_8! {
 /// A boolean type which can be safely shared between threads.
@@ -658,10 +778,10 @@ impl AtomicBool {
 
     // TODO: update docs based on https://github.com/rust-lang/rust/pull/116762
     const_fn! {
-        const_if: #[cfg(not(portable_atomic_no_const_mut_refs))];
+        const_if: #[cfg(not(portable_atomic_no_const_raw_ptr_deref))];
         /// Creates a new `AtomicBool` from a pointer.
         ///
-        /// This is `const fn` on Rust 1.83+.
+        /// This is `const fn` on Rust 1.58+.
         ///
         /// # Safety
         ///
@@ -691,7 +811,7 @@ impl AtomicBool {
         pub const unsafe fn from_ptr<'a>(ptr: *mut bool) -> &'a Self {
             #[allow(clippy::cast_ptr_alignment)]
             // SAFETY: guaranteed by the caller
-            unsafe { &*(ptr as *mut Self) }
+            unsafe { &*(ptr as *mut Self as *const Self) }
         }
     }
 
@@ -700,6 +820,8 @@ impl AtomicBool {
     /// If the compiler or the platform doesn't support the necessary
     /// atomic instructions, global locks for every potentially
     /// concurrent atomic operation will be used.
+    ///
+    /// This function is guaranteed to always return the same result.
     ///
     /// # Examples
     ///
@@ -1705,10 +1827,10 @@ impl<T> AtomicPtr<T> {
 
     // TODO: update docs based on https://github.com/rust-lang/rust/pull/116762
     const_fn! {
-        const_if: #[cfg(not(portable_atomic_no_const_mut_refs))];
+        const_if: #[cfg(not(portable_atomic_no_const_raw_ptr_deref))];
         /// Creates a new `AtomicPtr` from a pointer.
         ///
-        /// This is `const fn` on Rust 1.83+.
+        /// This is `const fn` on Rust 1.58+.
         ///
         /// # Safety
         ///
@@ -1738,7 +1860,7 @@ impl<T> AtomicPtr<T> {
         pub const unsafe fn from_ptr<'a>(ptr: *mut *mut T) -> &'a Self {
             #[allow(clippy::cast_ptr_alignment)]
             // SAFETY: guaranteed by the caller
-            unsafe { &*(ptr as *mut Self) }
+            unsafe { &*(ptr as *mut Self as *const Self) }
         }
     }
 
@@ -1747,6 +1869,8 @@ impl<T> AtomicPtr<T> {
     /// If the compiler or the platform doesn't support the necessary
     /// atomic instructions, global locks for every potentially
     /// concurrent atomic operation will be used.
+    ///
+    /// This function is guaranteed to always return the same result.
     ///
     /// # Examples
     ///
@@ -2100,25 +2224,6 @@ impl<T> AtomicPtr<T> {
         }
         Err(prev)
     }
-
-    #[cfg(miri)]
-    #[inline]
-    #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
-    fn fetch_update_<F>(&self, order: Ordering, mut f: F) -> *mut T
-    where
-        F: FnMut(*mut T) -> *mut T,
-    {
-        // This is a private function and all instances of `f` only operate on the value
-        // loaded, so there is no need to synchronize the first load/failed CAS.
-        let mut prev = self.load(Ordering::Relaxed);
-        loop {
-            let next = f(prev);
-            match self.compare_exchange_weak(prev, next, order, Ordering::Relaxed) {
-                Ok(x) => return x,
-                Err(next_prev) => prev = next_prev,
-            }
-        }
-    }
     } // cfg_has_atomic_cas!
 
     /// Offsets the pointer's address by adding `val` (in units of `T`),
@@ -2223,22 +2328,7 @@ impl<T> AtomicPtr<T> {
     #[inline]
     #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
     pub fn fetch_byte_add(&self, val: usize, order: Ordering) -> *mut T {
-        // Ideally, we would always use AtomicPtr::fetch_* since it is strict-provenance
-        // compatible, but it is unstable. So, for now emulate it only on cfg(miri).
-        // Code using AtomicUsize::fetch_* via casts is still permissive-provenance
-        // compatible and is sound.
-        // TODO: Once `#![feature(strict_provenance_atomic_ptr)]` is stabilized,
-        // use AtomicPtr::fetch_* in all cases from the version in which it is stabilized.
-        #[cfg(miri)]
-        {
-            self.fetch_update_(order, |x| x.with_addr(x.addr().wrapping_add(val)))
-        }
-        #[cfg(not(miri))]
-        {
-            crate::utils::ptr::with_exposed_provenance_mut(
-                self.as_atomic_usize().fetch_add(val, order)
-            )
-        }
+        self.inner.fetch_byte_add(val, order)
     }
 
     /// Offsets the pointer's address by subtracting `val` *bytes*, returning the
@@ -2269,22 +2359,7 @@ impl<T> AtomicPtr<T> {
     #[inline]
     #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
     pub fn fetch_byte_sub(&self, val: usize, order: Ordering) -> *mut T {
-        // Ideally, we would always use AtomicPtr::fetch_* since it is strict-provenance
-        // compatible, but it is unstable. So, for now emulate it only on cfg(miri).
-        // Code using AtomicUsize::fetch_* via casts is still permissive-provenance
-        // compatible and is sound.
-        // TODO: Once `#![feature(strict_provenance_atomic_ptr)]` is stabilized,
-        // use AtomicPtr::fetch_* in all cases from the version in which it is stabilized.
-        #[cfg(miri)]
-        {
-            self.fetch_update_(order, |x| x.with_addr(x.addr().wrapping_sub(val)))
-        }
-        #[cfg(not(miri))]
-        {
-            crate::utils::ptr::with_exposed_provenance_mut(
-                self.as_atomic_usize().fetch_sub(val, order)
-            )
-        }
+        self.inner.fetch_byte_sub(val, order)
     }
 
     /// Performs a bitwise "or" operation on the address of the current pointer,
@@ -2330,22 +2405,7 @@ impl<T> AtomicPtr<T> {
     #[inline]
     #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
     pub fn fetch_or(&self, val: usize, order: Ordering) -> *mut T {
-        // Ideally, we would always use AtomicPtr::fetch_* since it is strict-provenance
-        // compatible, but it is unstable. So, for now emulate it only on cfg(miri).
-        // Code using AtomicUsize::fetch_* via casts is still permissive-provenance
-        // compatible and is sound.
-        // TODO: Once `#![feature(strict_provenance_atomic_ptr)]` is stabilized,
-        // use AtomicPtr::fetch_* in all cases from the version in which it is stabilized.
-        #[cfg(miri)]
-        {
-            self.fetch_update_(order, |x| x.with_addr(x.addr() | val))
-        }
-        #[cfg(not(miri))]
-        {
-            crate::utils::ptr::with_exposed_provenance_mut(
-                self.as_atomic_usize().fetch_or(val, order)
-            )
-        }
+        self.inner.fetch_or(val, order)
     }
 
     /// Performs a bitwise "and" operation on the address of the current
@@ -2389,22 +2449,7 @@ impl<T> AtomicPtr<T> {
     #[inline]
     #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
     pub fn fetch_and(&self, val: usize, order: Ordering) -> *mut T {
-        // Ideally, we would always use AtomicPtr::fetch_* since it is strict-provenance
-        // compatible, but it is unstable. So, for now emulate it only on cfg(miri).
-        // Code using AtomicUsize::fetch_* via casts is still permissive-provenance
-        // compatible and is sound.
-        // TODO: Once `#![feature(strict_provenance_atomic_ptr)]` is stabilized,
-        // use AtomicPtr::fetch_* in all cases from the version in which it is stabilized.
-        #[cfg(miri)]
-        {
-            self.fetch_update_(order, |x| x.with_addr(x.addr() & val))
-        }
-        #[cfg(not(miri))]
-        {
-            crate::utils::ptr::with_exposed_provenance_mut(
-                self.as_atomic_usize().fetch_and(val, order)
-            )
-        }
+        self.inner.fetch_and(val, order)
     }
 
     /// Performs a bitwise "xor" operation on the address of the current
@@ -2447,22 +2492,7 @@ impl<T> AtomicPtr<T> {
     #[inline]
     #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
     pub fn fetch_xor(&self, val: usize, order: Ordering) -> *mut T {
-        // Ideally, we would always use AtomicPtr::fetch_* since it is strict-provenance
-        // compatible, but it is unstable. So, for now emulate it only on cfg(miri).
-        // Code using AtomicUsize::fetch_* via casts is still permissive-provenance
-        // compatible and is sound.
-        // TODO: Once `#![feature(strict_provenance_atomic_ptr)]` is stabilized,
-        // use AtomicPtr::fetch_* in all cases from the version in which it is stabilized.
-        #[cfg(miri)]
-        {
-            self.fetch_update_(order, |x| x.with_addr(x.addr() ^ val))
-        }
-        #[cfg(not(miri))]
-        {
-            crate::utils::ptr::with_exposed_provenance_mut(
-                self.as_atomic_usize().fetch_xor(val, order)
-            )
-        }
+        self.inner.fetch_xor(val, order)
     }
 
     /// Sets the bit at the specified bit-position to 1.
@@ -2496,24 +2526,10 @@ impl<T> AtomicPtr<T> {
     #[inline]
     #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
     pub fn bit_set(&self, bit: u32, order: Ordering) -> bool {
-        // Ideally, we would always use AtomicPtr::fetch_* since it is strict-provenance
-        // compatible, but it is unstable. So, for now emulate it only on cfg(miri).
-        // Code using AtomicUsize::fetch_* via casts is still permissive-provenance
-        // compatible and is sound.
-        // TODO: Once `#![feature(strict_provenance_atomic_ptr)]` is stabilized,
-        // use AtomicPtr::fetch_* in all cases from the version in which it is stabilized.
-        #[cfg(miri)]
-        {
-            let mask = 1_usize.wrapping_shl(bit);
-            self.fetch_or(mask, order).addr() & mask != 0
-        }
-        #[cfg(not(miri))]
-        {
-            self.as_atomic_usize().bit_set(bit, order)
-        }
+        self.inner.bit_set(bit, order)
     }
 
-    /// Clears the bit at the specified bit-position to 1.
+    /// Clears the bit at the specified bit-position to 0.
     ///
     /// Returns `true` if the specified bit was previously set to 1.
     ///
@@ -2541,21 +2557,7 @@ impl<T> AtomicPtr<T> {
     #[inline]
     #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
     pub fn bit_clear(&self, bit: u32, order: Ordering) -> bool {
-        // Ideally, we would always use AtomicPtr::fetch_* since it is strict-provenance
-        // compatible, but it is unstable. So, for now emulate it only on cfg(miri).
-        // Code using AtomicUsize::fetch_* via casts is still permissive-provenance
-        // compatible and is sound.
-        // TODO: Once `#![feature(strict_provenance_atomic_ptr)]` is stabilized,
-        // use AtomicPtr::fetch_* in all cases from the version in which it is stabilized.
-        #[cfg(miri)]
-        {
-            let mask = 1_usize.wrapping_shl(bit);
-            self.fetch_and(!mask, order).addr() & mask != 0
-        }
-        #[cfg(not(miri))]
-        {
-            self.as_atomic_usize().bit_clear(bit, order)
-        }
+        self.inner.bit_clear(bit, order)
     }
 
     /// Toggles the bit at the specified bit-position.
@@ -2586,35 +2588,7 @@ impl<T> AtomicPtr<T> {
     #[inline]
     #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
     pub fn bit_toggle(&self, bit: u32, order: Ordering) -> bool {
-        // Ideally, we would always use AtomicPtr::fetch_* since it is strict-provenance
-        // compatible, but it is unstable. So, for now emulate it only on cfg(miri).
-        // Code using AtomicUsize::fetch_* via casts is still permissive-provenance
-        // compatible and is sound.
-        // TODO: Once `#![feature(strict_provenance_atomic_ptr)]` is stabilized,
-        // use AtomicPtr::fetch_* in all cases from the version in which it is stabilized.
-        #[cfg(miri)]
-        {
-            let mask = 1_usize.wrapping_shl(bit);
-            self.fetch_xor(mask, order).addr() & mask != 0
-        }
-        #[cfg(not(miri))]
-        {
-            self.as_atomic_usize().bit_toggle(bit, order)
-        }
-    }
-
-    #[cfg(not(miri))]
-    #[inline(always)]
-    fn as_atomic_usize(&self) -> &AtomicUsize {
-        static_assert!(
-            core::mem::size_of::<AtomicPtr<()>>() == core::mem::size_of::<AtomicUsize>()
-        );
-        static_assert!(
-            core::mem::align_of::<AtomicPtr<()>>() == core::mem::align_of::<AtomicUsize>()
-        );
-        // SAFETY: AtomicPtr and AtomicUsize have the same layout,
-        // and both access data in the same way.
-        unsafe { &*(self as *const Self as *const AtomicUsize) }
+        self.inner.bit_toggle(bit, order)
     }
     } // cfg_has_atomic_cas_or_amo32!
 
@@ -2842,11 +2816,11 @@ let atomic_forty_two = ", stringify!($atomic_type), "::new(42);
             }
 
             // TODO: update docs based on https://github.com/rust-lang/rust/pull/116762
-            #[cfg(not(portable_atomic_no_const_mut_refs))]
+            #[cfg(not(portable_atomic_no_const_raw_ptr_deref))]
             doc_comment! {
                 concat!("Creates a new reference to an atomic integer from a pointer.
 
-This is `const fn` on Rust 1.83+.
+This is `const fn` on Rust 1.58+.
 
 # Safety
 
@@ -2877,14 +2851,14 @@ This is `const fn` on Rust 1.83+.
                 pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a Self {
                     #[allow(clippy::cast_ptr_alignment)]
                     // SAFETY: guaranteed by the caller
-                    unsafe { &*(ptr as *mut Self) }
+                    unsafe { &*(ptr as *mut Self as *const Self) }
                 }
             }
-            #[cfg(portable_atomic_no_const_mut_refs)]
+            #[cfg(portable_atomic_no_const_raw_ptr_deref)]
             doc_comment! {
                 concat!("Creates a new reference to an atomic integer from a pointer.
 
-This is `const fn` on Rust 1.83+.
+This is `const fn` on Rust 1.58+.
 
 # Safety
 
@@ -2915,7 +2889,7 @@ This is `const fn` on Rust 1.83+.
                 pub unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a Self {
                     #[allow(clippy::cast_ptr_alignment)]
                     // SAFETY: guaranteed by the caller
-                    unsafe { &*(ptr as *mut Self) }
+                    unsafe { &*(ptr as *mut Self as *const Self) }
                 }
             }
 
@@ -2925,6 +2899,8 @@ This is `const fn` on Rust 1.83+.
 If the compiler or the platform doesn't support the necessary
 atomic instructions, global locks for every potentially
 concurrent atomic operation will be used.
+
+This function is guaranteed to always return the same result.
 
 # Examples
 
@@ -2964,7 +2940,7 @@ const IS_ALWAYS_LOCK_FREE: bool = ", stringify!($atomic_type), "::is_always_lock
                 }
             }
             #[cfg(test)]
-            #[cfg_attr(all(valgrind, target_arch = "powerpc64"), allow(dead_code))] // TODO: Hang (as of Valgrind 3.25)
+            #[cfg_attr(all(valgrind, target_arch = "powerpc64"), allow(dead_code))] // TODO(powerpc64): Hang (as of Valgrind 3.26)
             const IS_ALWAYS_LOCK_FREE: bool = Self::is_always_lock_free();
 
             #[cfg(not(portable_atomic_no_const_mut_refs))]
@@ -3803,7 +3779,7 @@ assert_eq!(foo.load(Ordering::Relaxed), 0b0001);
             }
 
             doc_comment! {
-                concat!("Clears the bit at the specified bit-position to 1.
+                concat!("Clears the bit at the specified bit-position to 0.
 
 Returns `true` if the specified bit was previously set to 1.
 
@@ -4273,11 +4249,11 @@ This type has the same in-memory representation as the underlying floating point
             }
 
             // TODO: update docs based on https://github.com/rust-lang/rust/pull/116762
-            #[cfg(not(portable_atomic_no_const_mut_refs))]
+            #[cfg(not(portable_atomic_no_const_raw_ptr_deref))]
             doc_comment! {
                 concat!("Creates a new reference to an atomic float from a pointer.
 
-This is `const fn` on Rust 1.83+.
+This is `const fn` on Rust 1.58+.
 
 # Safety
 
@@ -4308,14 +4284,14 @@ This is `const fn` on Rust 1.83+.
                 pub const unsafe fn from_ptr<'a>(ptr: *mut $float_type) -> &'a Self {
                     #[allow(clippy::cast_ptr_alignment)]
                     // SAFETY: guaranteed by the caller
-                    unsafe { &*(ptr as *mut Self) }
+                    unsafe { &*(ptr as *mut Self as *const Self) }
                 }
             }
-            #[cfg(portable_atomic_no_const_mut_refs)]
+            #[cfg(portable_atomic_no_const_raw_ptr_deref)]
             doc_comment! {
                 concat!("Creates a new reference to an atomic float from a pointer.
 
-This is `const fn` on Rust 1.83+.
+This is `const fn` on Rust 1.58+.
 
 # Safety
 
@@ -4346,7 +4322,7 @@ This is `const fn` on Rust 1.83+.
                 pub unsafe fn from_ptr<'a>(ptr: *mut $float_type) -> &'a Self {
                     #[allow(clippy::cast_ptr_alignment)]
                     // SAFETY: guaranteed by the caller
-                    unsafe { &*(ptr as *mut Self) }
+                    unsafe { &*(ptr as *mut Self as *const Self) }
                 }
             }
 
@@ -4355,6 +4331,8 @@ This is `const fn` on Rust 1.83+.
             /// If the compiler or the platform doesn't support the necessary
             /// atomic instructions, global locks for every potentially
             /// concurrent atomic operation will be used.
+            ///
+            /// This function is guaranteed to always return the same result.
             #[inline]
             #[must_use]
             pub fn is_lock_free() -> bool {
@@ -4375,6 +4353,7 @@ This is `const fn` on Rust 1.83+.
                 <imp::float::$atomic_type>::IS_ALWAYS_LOCK_FREE
             }
             #[cfg(test)]
+            #[cfg_attr(all(not(debug_assertions), target_arch = "x86", not(target_feature = "sse2")), allow(dead_code))]
             const IS_ALWAYS_LOCK_FREE: bool = Self::is_always_lock_free();
 
             const_fn! {
@@ -4531,8 +4510,6 @@ This is `const fn` on Rust 1.83+.
 
             /// Adds to the current value, returning the previous value.
             ///
-            /// This operation wraps around on overflow.
-            ///
             /// `fetch_add` takes an [`Ordering`] argument which describes the memory ordering
             /// of this operation. All ordering modes are possible. Note that using
             /// [`Acquire`] makes the store part of this operation [`Relaxed`], and
@@ -4544,8 +4521,6 @@ This is `const fn` on Rust 1.83+.
             }
 
             /// Subtracts from the current value, returning the previous value.
-            ///
-            /// This operation wraps around on overflow.
             ///
             /// `fetch_sub` takes an [`Ordering`] argument which describes the memory ordering
             /// of this operation. All ordering modes are possible. Note that using

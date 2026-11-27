@@ -13,6 +13,7 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/test_future.h"
 #include "brave/browser/tor/tor_profile_manager.h"
+#include "chrome/browser/favicon/large_icon_service_factory.h"
 #include "chrome/browser/image_fetcher/image_fetcher_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_key.h"
@@ -25,6 +26,7 @@
 #include "components/autofill/core/browser/suggestions/suggestion.h"
 #include "components/autofill/core/browser/suggestions/suggestion_type.h"
 #include "components/autofill/core/common/aliases.h"
+#include "components/favicon/core/test/mock_large_icon_service.h"
 #include "components/image_fetcher/core/image_fetcher_service.h"
 #include "components/image_fetcher/core/mock_image_fetcher.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -73,15 +75,34 @@ class RecordingImageFetcherService : public image_fetcher::ImageFetcherService {
   testing::NiceMock<image_fetcher::MockImageFetcher> image_fetcher_;
 };
 
+// Records every page whose favicon a profile's `LargeIconService` is asked to
+// get from the Google favicon server, without touching the network.
+class RecordingLargeIconService : public favicon::MockLargeIconService {
+ public:
+  RecordingLargeIconService() {
+    ON_CALL(*this, GetLargeIconFromCacheFallbackToGoogleServer)
+        .WillByDefault([this](const GURL& page_url, auto&&...) {
+          requested_urls_.push_back(page_url);
+        });
+  }
+  ~RecordingLargeIconService() override = default;
+
+  const std::vector<GURL>& requested_urls() const { return requested_urls_; }
+
+ private:
+  std::vector<GURL> requested_urls_;
+};
+
 }  // namespace
 
-// Password rows load their favicon through `PasswordFaviconLoaderImpl`, which
-// fetches it with the browser-wide system network context or the original
-// profile. In an off-the-record profile such a request would leave the
+// A password row whose favicon may be requested from Google loads it through
+// `LargeIconService`. Off-the-record profiles share that service with the
+// original profile, so in a Private or Tor window the request would leave the
 // profile's network partition, and in a Tor window it would bypass the Tor
-// proxy. Every profile here gets an `ImageFetcherService` that records fetches,
-// and a row asks it for its favicon while the row paints, so the fetches are
-// known as soon as the popup has painted.
+// proxy. Rows there fetch the site's own favicon through the profile's
+// `ImageFetcherService` instead. Every profile here gets services that record
+// requests, and a row asks for its favicon while the row paints, so the
+// requests are known as soon as the popup has painted.
 class PasswordFaviconOffTheRecordBrowserTest : public InProcessBrowserTest {
  public:
   PasswordFaviconOffTheRecordBrowserTest() {
@@ -129,7 +150,8 @@ class PasswordFaviconOffTheRecordBrowserTest : public InProcessBrowserTest {
     Suggestion suggestion(u"username", SuggestionType::kPasswordEntry);
     suggestion.icon = Suggestion::Icon::kGlobe;
     suggestion.custom_icon =
-        Suggestion::FaviconDetails(/*domain_url=*/GURL(kPasswordSiteUrl));
+        Suggestion::FaviconDetails{.domain_url = GURL(kPasswordSiteUrl),
+                                   .can_be_requested_from_google = true};
     controller.set_suggestions({std::move(suggestion)});
 
     base::test::TestFuture<void> painted;
@@ -151,14 +173,33 @@ class PasswordFaviconOffTheRecordBrowserTest : public InProcessBrowserTest {
         ->requested_urls();
   }
 
+  // Returns the pages whose favicons password rows in any window asked the
+  // Google favicon server for. Every window shares the original profile's
+  // `LargeIconService`.
+  std::vector<GURL> GoogleServerRequests() {
+    return static_cast<RecordingLargeIconService*>(
+               LargeIconServiceFactory::GetForBrowserContext(
+                   browser()->GetProfile()))
+        ->requested_urls();
+  }
+
  private:
   void OnWillCreateBrowserContextServices(content::BrowserContext* context) {
+    Profile* profile = Profile::FromBrowserContext(context);
     ImageFetcherServiceFactory::GetInstance()->SetTestingFactory(
-        Profile::FromBrowserContext(context)->GetProfileKey(),
+        profile->GetProfileKey(),
         base::BindRepeating(
             [](SimpleFactoryKey* key) -> std::unique_ptr<KeyedService> {
               return std::make_unique<RecordingImageFetcherService>();
             }));
+    if (!profile->IsOffTheRecord()) {
+      LargeIconServiceFactory::GetInstance()->SetTestingFactory(
+          context, base::BindRepeating([](content::BrowserContext* context)
+                                           -> std::unique_ptr<KeyedService> {
+            return std::make_unique<
+                testing::NiceMock<RecordingLargeIconService>>();
+          }));
+    }
   }
 
   base::CallbackListSubscription create_services_subscription_;
@@ -167,37 +208,47 @@ class PasswordFaviconOffTheRecordBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(PasswordFaviconOffTheRecordBrowserTest,
-                       TorWindowDoesNotFetchFavicon) {
+                       TorWindowFetchesSiteFavicon) {
   BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
   ASSERT_TRUE(tor_browser);
   ASSERT_TRUE(tor_browser->GetProfile()->IsTor());
   ASSERT_NO_FATAL_FAILURE(ShowPasswordPopupAndWaitForPaint(tor_browser));
-  EXPECT_THAT(FetchedFavicons(tor_browser), testing::IsEmpty())
-      << "A password row in the Tor window fetched its favicon outside Tor.";
-
-  // Control: the same row in a regular window fetches its favicon, so the
-  // popup above painted the row and loaded its icon.
-  ASSERT_NO_FATAL_FAILURE(ShowPasswordPopupAndWaitForPaint(browser()));
-  EXPECT_THAT(FetchedFavicons(browser()),
+  EXPECT_THAT(GoogleServerRequests(), testing::IsEmpty())
+      << "A password row in the Tor window asked the Google favicon server "
+         "through the original profile.";
+  EXPECT_THAT(FetchedFavicons(tor_browser),
               testing::ElementsAre(GURL(kFaviconUrl)))
-      << "A password row in the regular window did not fetch its favicon.";
+      << "A password row in the Tor window did not fetch the site's favicon.";
+
+  // Control: the same row in a regular window asks the Google favicon server,
+  // so the Tor window's row could have taken that path too.
+  ASSERT_NO_FATAL_FAILURE(ShowPasswordPopupAndWaitForPaint(browser()));
+  EXPECT_THAT(GoogleServerRequests(),
+              testing::ElementsAre(GURL(kPasswordSiteUrl)))
+      << "A password row in the regular window did not ask the Google "
+         "favicon server.";
 }
 
 IN_PROC_BROWSER_TEST_F(PasswordFaviconOffTheRecordBrowserTest,
-                       PrivateWindowDoesNotFetchFavicon) {
+                       PrivateWindowFetchesSiteFavicon) {
   BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
   ASSERT_TRUE(private_browser);
   ASSERT_TRUE(private_browser->GetProfile()->IsOffTheRecord());
   ASSERT_NO_FATAL_FAILURE(ShowPasswordPopupAndWaitForPaint(private_browser));
-  EXPECT_THAT(FetchedFavicons(private_browser), testing::IsEmpty())
-      << "A password row in the private window fetched its favicon outside "
-         "the private profile's network context.";
+  EXPECT_THAT(GoogleServerRequests(), testing::IsEmpty())
+      << "A password row in the private window asked the Google favicon "
+         "server through the original profile.";
+  EXPECT_THAT(FetchedFavicons(private_browser),
+              testing::ElementsAre(GURL(kFaviconUrl)))
+      << "A password row in the private window did not fetch the site's "
+         "favicon.";
 
   ASSERT_NO_FATAL_FAILURE(ShowPasswordPopupAndWaitForPaint(browser()));
-  EXPECT_THAT(FetchedFavicons(browser()),
-              testing::ElementsAre(GURL(kFaviconUrl)))
-      << "A password row in the regular window did not fetch its favicon.";
+  EXPECT_THAT(GoogleServerRequests(),
+              testing::ElementsAre(GURL(kPasswordSiteUrl)))
+      << "A password row in the regular window did not ask the Google "
+         "favicon server.";
 }
 
 }  // namespace autofill

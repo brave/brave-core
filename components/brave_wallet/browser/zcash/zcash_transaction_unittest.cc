@@ -780,6 +780,7 @@ TEST(ZCashTransaction, FromValue_OldFormatOrchardOnlyParsesAsV5) {
   EXPECT_EQ(parsed->v5_part().orchard.inputs[0].note.amount, 30000u);
   ASSERT_EQ(parsed->v5_part().orchard.outputs.size(), 1u);
   EXPECT_EQ(parsed->v5_part().orchard.outputs[0].value, 25000u);
+  ASSERT_TRUE(parsed->v5_part().orchard.anchor_block_height);
   EXPECT_EQ(*parsed->v5_part().orchard.anchor_block_height, 10u);
 }
 

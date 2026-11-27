@@ -1,0 +1,202 @@
+diff --git a/chrome/browser/ui/views/tabs/tab/alert_indicator_button.cc b/chrome/browser/ui/views/tabs/tab/alert_indicator_button.cc
+index 58ea7649ef69b67a7fff7dc79bd7ca9e878ff059..a21dab4c60a8c3c4ca116db23222586d790fa0d5 100644
+--- a/chrome/browser/ui/views/tabs/tab/alert_indicator_button.cc
++++ b/chrome/browser/ui/views/tabs/tab/alert_indicator_button.cc
+@@ -108,10 +108,10 @@ ui::ImageModel GetTabAlertIndicatorImageForPressedState(
+ 
+ }  // namespace
+ 
+-class AlertIndicatorButton::FadeAnimationDelegate
++class AlertIndicatorButtonBase::FadeAnimationDelegate
+     : public views::AnimationDelegateViews {
+  public:
+-  explicit FadeAnimationDelegate(AlertIndicatorButton* button)
++  explicit FadeAnimationDelegate(AlertIndicatorButtonBase* button)
+       : AnimationDelegateViews(button), button_(button) {}
+   FadeAnimationDelegate(const FadeAnimationDelegate&) = delete;
+   FadeAnimationDelegate& operator=(const FadeAnimationDelegate&) = delete;
+@@ -133,10 +133,10 @@ class AlertIndicatorButton::FadeAnimationDelegate
+     button_->delegate_->AlertStateChanged();
+   }
+ 
+-  const raw_ptr<AlertIndicatorButton> button_;
++  const raw_ptr<AlertIndicatorButtonBase> button_;
+ };
+ 
+-AlertIndicatorButton::AlertIndicatorButton(Delegate* delegate)
++AlertIndicatorButtonBase::AlertIndicatorButtonBase(Delegate* delegate)
+     : delegate_(delegate) {
+   CHECK(delegate_, base::NotFatalUntil::M162);
+   SetEventTargeter(std::make_unique<views::ViewTargeter>(this));
+@@ -147,9 +147,9 @@ AlertIndicatorButton::AlertIndicatorButton(Delegate* delegate)
+   SetProperty(views::kElementIdentifierKey, kTabAlertIndicatorButtonElementId);
+ }
+ 
+-AlertIndicatorButton::~AlertIndicatorButton() = default;
++AlertIndicatorButtonBase::~AlertIndicatorButtonBase() = default;
+ 
+-void AlertIndicatorButton::MaybeLoadActorAccessingSpinner() {
++void AlertIndicatorButtonBase::MaybeLoadActorAccessingSpinner() {
+   if (actor_indicator_spinner_) {
+     return;
+   }
+@@ -210,7 +210,7 @@ void AlertIndicatorButton::MaybeLoadActorAccessingSpinner() {
+   }
+ }
+ 
+-void AlertIndicatorButton::SetActorAccessingSpinnerBounds() {
++void AlertIndicatorButtonBase::SetActorAccessingSpinnerBounds() {
+   if (!actor_indicator_spinner_ || !actor_spinner_scaled_size_.has_value()) {
+     return;
+   }
+@@ -223,7 +223,7 @@ void AlertIndicatorButton::SetActorAccessingSpinnerBounds() {
+                                       spinner_scaled_size.height());
+ }
+ 
+-void AlertIndicatorButton::TransitionToAlertState(
++void AlertIndicatorButtonBase::TransitionToAlertState(
+     std::optional<tabs::TabAlert> next_state) {
+   if (next_state == alert_state_) {
+     return;
+@@ -267,7 +267,7 @@ void AlertIndicatorButton::TransitionToAlertState(
+   UpdateEnabledForMuteToggle();
+ }
+ 
+-void AlertIndicatorButton::UpdateEnabledForMuteToggle() {
++void AlertIndicatorButtonBase::UpdateEnabledForMuteToggle() {
+   const bool was_enabled = GetEnabled();
+ 
+   bool enable = base::FeatureList::IsEnabled(media::kEnableTabMuting) &&
+@@ -289,19 +289,19 @@ void AlertIndicatorButton::UpdateEnabledForMuteToggle() {
+   SetEnabled(enable);
+ }
+ 
+-void AlertIndicatorButton::OnParentTabButtonColorChanged() {
++void AlertIndicatorButtonBase::OnParentTabButtonColorChanged() {
+   if (alert_state_ == tabs::TabAlert::kAudioPlaying ||
+       alert_state_ == tabs::TabAlert::kAudioMuting) {
+     UpdateIconForAlertState(alert_state_.value());
+   }
+ }
+ 
+-views::View* AlertIndicatorButton::GetTooltipHandlerForPoint(
++views::View* AlertIndicatorButtonBase::GetTooltipHandlerForPoint(
+     const gfx::Point& point) {
+   return nullptr;  // Tab (the parent View) provides the tooltip.
+ }
+ 
+-bool AlertIndicatorButton::OnMousePressed(const ui::MouseEvent& event) {
++bool AlertIndicatorButtonBase::OnMousePressed(const ui::MouseEvent& event) {
+   // Do not handle this mouse event when anything but the left mouse button is
+   // pressed or when any modifier keys are being held down.  Instead, the Tab
+   // should react (e.g., middle-click for close, right-click for context menu).
+@@ -312,16 +312,16 @@ bool AlertIndicatorButton::OnMousePressed(const ui::MouseEvent& event) {
+   return ImageButton::OnMousePressed(event);
+ }
+ 
+-void AlertIndicatorButton::OnBoundsChanged(const gfx::Rect& previous_bounds) {
++void AlertIndicatorButtonBase::OnBoundsChanged(const gfx::Rect& previous_bounds) {
+   UpdateEnabledForMuteToggle();
+ }
+ 
+-void AlertIndicatorButton::VisibilityChanged(View* starting_from,
++void AlertIndicatorButtonBase::VisibilityChanged(View* starting_from,
+                                              bool is_visible) {
+   UpdateEnabledForMuteToggle();
+ }
+ 
+-void AlertIndicatorButton::UpdateSpinnerTheme() {
++void AlertIndicatorButtonBase::UpdateSpinnerTheme() {
+   CHECK(actor_indicator_spinner_);
+   const ui::ColorProvider* color_provider = GetColorProvider();
+   if (!color_provider) {
+@@ -359,7 +359,7 @@ void AlertIndicatorButton::UpdateSpinnerTheme() {
+   SetActorAccessingSpinnerBounds();
+ }
+ 
+-void AlertIndicatorButton::OnThemeChanged() {
++void AlertIndicatorButtonBase::OnThemeChanged() {
+   ImageButton::OnThemeChanged();
+ 
+   if (!actor_indicator_spinner_ ||
+@@ -374,12 +374,12 @@ void AlertIndicatorButton::OnThemeChanged() {
+   }
+ }
+ 
+-void AlertIndicatorButton::Layout(PassKey) {
++void AlertIndicatorButtonBase::Layout(PassKey) {
+   LayoutSuperclass<ImageButton>(this);
+   SetActorAccessingSpinnerBounds();
+ }
+ 
+-bool AlertIndicatorButton::DoesIntersectRect(const views::View* target,
++bool AlertIndicatorButtonBase::DoesIntersectRect(const views::View* target,
+                                              const gfx::Rect& rect) const {
+   // If this button is not enabled, Tab (the parent View) handles all mouse
+   // events.
+@@ -387,7 +387,7 @@ bool AlertIndicatorButton::DoesIntersectRect(const views::View* target,
+          views::ViewTargeterDelegate::DoesIntersectRect(target, rect);
+ }
+ 
+-void AlertIndicatorButton::NotifyClick(const ui::Event& event) {
++void AlertIndicatorButtonBase::NotifyClick(const ui::Event& event) {
+   // Call TransitionToAlertState() to change the image, providing the user with
+   // instant feedback.  In the very unlikely event that the mute toggle fails,
+   // TransitionToAlertState() will be called again, via another code path, to
+@@ -405,7 +405,7 @@ void AlertIndicatorButton::NotifyClick(const ui::Event& event) {
+   delegate_->ToggleTabAudioMute();
+ }
+ 
+-bool AlertIndicatorButton::IsTriggerableEvent(const ui::Event& event) {
++bool AlertIndicatorButtonBase::IsTriggerableEvent(const ui::Event& event) {
+   // For mouse events, only trigger on the left mouse button and when no
+   // modifier keys are being held down.
+   if (event.IsMouseEvent() &&
+@@ -426,7 +426,7 @@ bool AlertIndicatorButton::IsTriggerableEvent(const ui::Event& event) {
+   return views::ImageButton::IsTriggerableEvent(event);
+ }
+ 
+-void AlertIndicatorButton::PaintButtonContents(gfx::Canvas* canvas) {
++void AlertIndicatorButtonBase::PaintButtonContents(gfx::Canvas* canvas) {
+   double opaqueness = 1.0;
+   if (fade_animation_) {
+     opaqueness = fade_animation_->GetCurrentValue();
+@@ -443,11 +443,11 @@ void AlertIndicatorButton::PaintButtonContents(gfx::Canvas* canvas) {
+   }
+ }
+ 
+-gfx::ImageSkia AlertIndicatorButton::GetImageToPaint() {
++gfx::ImageSkia AlertIndicatorButtonBase::GetImageToPaint() {
+   return views::ImageButton::GetImageToPaint();
+ }
+ 
+-void AlertIndicatorButton::UpdateAlertIndicatorAnimation() {
++void AlertIndicatorButtonBase::UpdateAlertIndicatorAnimation() {
+   // Can add different cases for other alert states that require an animation.
+   if (alert_state_.has_value() &&
+       alert_state_.value() == tabs::TabAlert::kActorAccessing) {
+@@ -467,7 +467,7 @@ void AlertIndicatorButton::UpdateAlertIndicatorAnimation() {
+ }
+ 
+ std::unique_ptr<gfx::Animation>
+-AlertIndicatorButton::CreateTabAlertIndicatorFadeAnimation(
++AlertIndicatorButtonBase::CreateTabAlertIndicatorFadeAnimation(
+     std::optional<tabs::TabAlert> alert_state) {
+   if (alert_state == tabs::TabAlert::kMediaRecording ||
+       alert_state == tabs::TabAlert::kAudioRecording ||
+@@ -515,7 +515,7 @@ AlertIndicatorButton::CreateTabAlertIndicatorFadeAnimation(
+   return std::move(animation);
+ }
+ 
+-void AlertIndicatorButton::UpdateIconForAlertState(tabs::TabAlert state) {
++void AlertIndicatorButtonBase::UpdateIconForAlertState(tabs::TabAlert state) {
+   const ui::ColorId color =
+       GetColorProvider()
+           ? tabs::GetAlertIndicatorColor(state, delegate_->IsApparentlyActive(),
+@@ -529,5 +529,5 @@ void AlertIndicatorButton::UpdateIconForAlertState(tabs::TabAlert state) {
+                 GetTabAlertIndicatorImageForPressedState(state, color));
+ }
+ 
+-BEGIN_METADATA(AlertIndicatorButton)
++BEGIN_METADATA(AlertIndicatorButtonBase)
+ END_METADATA

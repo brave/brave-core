@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/containers/span.h"
-#include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/secp256k1_hd_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
@@ -51,8 +50,6 @@ class EthereumKeyring : public Secp256k1HDKeyring {
   std::vector<std::string> GetImportedAccountsForTesting() const;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(EthereumKeyringUnitTest, ConstructRootHDKey);
-
   std::string GetAddressInternal(const HDKey& hd_key) const override;
   std::unique_ptr<HDKey> DeriveAccount(uint32_t index) const override;
 };

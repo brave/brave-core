@@ -14,6 +14,8 @@ trait Optimization {
 pub fn is_filter_optimizable_by_patterns(filter: &NetworkFilter<'_>) -> bool {
     filter.opt_domains.is_none()
         && filter.opt_not_domains.is_none()
+        && filter.opt_to_domains.is_none()
+        && filter.opt_not_to_domains.is_none()
         && !filter.is_hostname_anchor()
         && !filter.is_redirect()
         && !filter.is_csp()

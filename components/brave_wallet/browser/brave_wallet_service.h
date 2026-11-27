@@ -15,7 +15,6 @@
 #include "base/callback_list.h"
 #include "base/containers/circular_deque.h"
 #include "base/functional/callback_forward.h"
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
@@ -393,9 +392,6 @@ class BraveWalletService : public KeyedService,
   friend class EthereumProviderImplUnitTest;
   friend class SolanaProviderImplUnitTest;
   friend class BraveWalletServiceUnitTest;
-
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, AddSuggestToken);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, ImportFromMetaMask);
 
   bool HasPermissionForPendingRequest(const url::Origin& origin,
                                       const mojom::AccountIdPtr& account_id);

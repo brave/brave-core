@@ -16,27 +16,6 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "أدوات التتبع والإعلانات المحظورة";
 
-/* Shields Ads Stat */
-"AdsrBlocked" = "تم حظر \nالإعلانات";
-
-/* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "**مشغّل Brave** هي تذكرتك إلى تجربة فيديو خالية من الإعلانات ودون انقطاع.";
-
-/* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "ضبط الدروع Shields من أجلي";
-
-/* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "بدأ هذا الموقع في حظر بعض أدوات حظر الإعلانات ، مما يعني أن موقعهم قد لا يعمل كما هو متوقع.";
-
-/* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "لمعالجة هذه المشكلة، يمكن لـ Brave ضبط إعدادات الدروع Shields نيابة عنك. بمجرد التعديل، يمكنك محاولة مشاهدة هذا المحتوى في مشغّل Brave بدلًا من ذلك.";
-
-/* A button that dismisses the warning and does nothing. */
-"AntiAdBlockWarningDismissButton" = "احتفاظ بالإعدادات الحالية";
-
-/* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "ضبط إعدادات حظر الإعلانات لهذا الموقع";
-
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "إعادة التوجيه التلقائي لصفحات AMP";
 
@@ -79,32 +58,11 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "يحظر JavaScript (قد يعطل المواقع).";
 
-/* Title for the brave player feature */
-"BravePlayer" = "مشغّل Brave";
-
-/* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "افتح دائمًا مقاطع الفيديو من هذا الموقع باستخدام مشغّل Brave";
-
-/* A button that confirms to use the brave player. */
-"BravePlayerConfirmButton" = "جربه";
-
-/* A button that ignores the brave player */
-"BravePlayerDismissButton" = "ليس الآن";
-
-/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "يتيح لك مشغّل Brave مشاهدة مقاطع الفيديو دون انقطاع.";
-
-/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "شاهد في مشغّل Brave بدلًا من ذلك";
-
 /* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "الضوابط المتقدمة";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "الإعلانات والأشياء المريبة الأخرى التي تم حظرها";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "اعرف المزيد";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "تغيير إعدادات Shields الافتراضية العالمية";
@@ -217,17 +175,11 @@
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "في انتظار التنزيل";
 
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "تعديل";
-
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "أدخل عنوان URL لقائمة عامل التصفية";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "آخر تحديث %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "أدخل عنوان URL لقائمة الفلتر هنا ";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "حجب مسح البصمة";
@@ -411,9 +363,6 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "حظر برامج التتبع & الإعلانات";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "تم حظر \nأدوات التتبع";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "تحديث القوائم";

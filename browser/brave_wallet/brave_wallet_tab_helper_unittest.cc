@@ -5,47 +5,38 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 
-#include "chrome/test/base/browser_with_test_window_test.h"
+#include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "components/tabs/public/mock_tab_interface.h"
 #include "components/tabs/public/tab_interface.h"
-#include "content/public/browser/global_routing_id.h"
-#include "content/public/test/web_contents_tester.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
-class BraveWalletTabHelperUnitTest : public BrowserWithTestWindowTest {
+class BraveWalletTabHelperUnitTest : public ChromeRenderViewHostTestHarness {
  public:
   BraveWalletTabHelperUnitTest() = default;
   ~BraveWalletTabHelperUnitTest() override = default;
 
   void SetUp() override {
-    BrowserWithTestWindowTest::SetUp();
-    web_contents_ =
-        content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
-    ASSERT_TRUE(web_contents_.get());
-    ON_CALL(tab_, GetContents())
-        .WillByDefault(testing::Return(web_contents_.get()));
-    tabs::TabLookupFromWebContents::CreateForWebContents(web_contents_.get(),
-                                                         &tab_);
+    ChromeRenderViewHostTestHarness::SetUp();
+    ASSERT_TRUE(web_contents());
+    ON_CALL(tab_, GetContents()).WillByDefault(testing::Return(web_contents()));
+    tabs::TabLookupFromWebContents::CreateForWebContents(web_contents(), &tab_);
     brave_wallet_tab_helper_ =
         std::make_unique<brave_wallet::BraveWalletTabHelper>(tab_);
   }
 
   void TearDown() override {
     brave_wallet_tab_helper_.reset();
-    web_contents_.reset();
-    BrowserWithTestWindowTest::TearDown();
+    ChromeRenderViewHostTestHarness::TearDown();
   }
 
   brave_wallet::BraveWalletTabHelper* brave_wallet_tab_helper() {
     return brave_wallet_tab_helper_.get();
   }
 
-  content::WebContents* web_contents() { return web_contents_.get(); }
-
  private:
-  std::unique_ptr<content::WebContents> web_contents_;
   tabs::MockTabInterface tab_;
   std::unique_ptr<brave_wallet::BraveWalletTabHelper> brave_wallet_tab_helper_;
 };
@@ -55,54 +46,6 @@ TEST_F(BraveWalletTabHelperUnitTest, GetApproveBubbleURL) {
   ASSERT_TRUE(helper);
   ASSERT_EQ(helper->GetApproveBubbleURL(),
             GURL("chrome://wallet-panel.top-chrome/#approveTransaction"));
-}
-
-TEST_F(BraveWalletTabHelperUnitTest, SolanaConnectedAccount) {
-  auto* helper = brave_wallet_tab_helper();
-  ASSERT_TRUE(helper);
-  ASSERT_TRUE(helper->solana_connected_accounts_.empty());
-
-  content::GlobalRenderFrameHostId rfh_id1(1, 1);
-  content::GlobalRenderFrameHostId rfh_id2(1, 2);
-  const char account1[] = "account1";
-  const char account2[] = "account2";
-  const char account3[] = "account3";
-
-  for (const auto& id : {rfh_id1, rfh_id2}) {
-    SCOPED_TRACE(id);
-    ASSERT_FALSE(helper->IsSolanaAccountConnected(id, account1));
-    ASSERT_FALSE(helper->IsSolanaAccountConnected(id, account2));
-    ASSERT_FALSE(helper->IsSolanaAccountConnected(id, account3));
-  }
-
-  helper->AddSolanaConnectedAccount(rfh_id1, account1);
-  helper->AddSolanaConnectedAccount(rfh_id2, account2);
-  EXPECT_TRUE(helper->IsSolanaAccountConnected(rfh_id1, account1));
-  EXPECT_FALSE(helper->IsSolanaAccountConnected(rfh_id2, account1));
-  EXPECT_FALSE(helper->IsSolanaAccountConnected(rfh_id1, account2));
-  EXPECT_TRUE(helper->IsSolanaAccountConnected(rfh_id2, account2));
-  ASSERT_EQ(helper->solana_connected_accounts_[rfh_id1].size(), 1u);
-  ASSERT_EQ(helper->solana_connected_accounts_[rfh_id2].size(), 1u);
-  ASSERT_EQ(helper->solana_connected_accounts_.size(), 2u);
-
-  // remove non-existing account3
-  helper->RemoveSolanaConnectedAccount(rfh_id1, account3);
-  ASSERT_EQ(helper->solana_connected_accounts_[rfh_id1].size(), 1u);
-  EXPECT_TRUE(helper->IsSolanaAccountConnected(rfh_id1, account1));
-  EXPECT_FALSE(helper->IsSolanaAccountConnected(rfh_id1, account2));
-
-  // add account2 and remove account2 for rfh_id1
-  helper->AddSolanaConnectedAccount(rfh_id1, account2);
-  EXPECT_TRUE(helper->IsSolanaAccountConnected(rfh_id1, account2));
-  helper->RemoveSolanaConnectedAccount(rfh_id1, account2);
-  EXPECT_FALSE(helper->IsSolanaAccountConnected(rfh_id1, account2));
-
-  // clear set from rfh_id1
-  helper->ClearSolanaConnectedAccounts(rfh_id1);
-  EXPECT_FALSE(helper->IsSolanaAccountConnected(rfh_id1, account1));
-  EXPECT_FALSE(helper->IsSolanaAccountConnected(rfh_id1, account2));
-  EXPECT_FALSE(helper->IsSolanaAccountConnected(rfh_id1, account3));
-  ASSERT_EQ(helper->solana_connected_accounts_.size(), 1u);
 }
 
 }  // namespace brave_wallet

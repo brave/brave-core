@@ -21,6 +21,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/brave_domains/service_domains.h"
@@ -29,10 +30,10 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/vendor/brave_base/random.h"
+#include "build/blink_buildflags.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_thread.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_response_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -44,6 +45,14 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "base/android/android_info.h"
 #endif  // BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(USE_BLINK)
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
+#else
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
+#endif  // BUILDFLAG(USE_BLINK)
 
 #if BUILDFLAG(IS_MAC)
 #include "base/apple/bundle_locations.h"
@@ -85,6 +94,22 @@ BraveReferralsService::ReferralInitializedCallback*
 // added in the meantime to fix the build error. Remove this attribute and
 // provide a proper fix.
 [[clang::no_destroy]] base::FilePath g_promo_file_path;
+
+scoped_refptr<base::SingleThreadTaskRunner> GetUIThreadTaskRunner() {
+#if BUILDFLAG(USE_BLINK)
+  return content::GetUIThreadTaskRunner({});
+#else
+  return web::GetUIThreadTaskRunner({});
+#endif  // BUILDFLAG(USE_BLINK)
+}
+
+void DCheckCurrentlyOnUIThread() {
+#if BUILDFLAG(USE_BLINK)
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+#else
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+#endif  // BUILDFLAG(USE_BLINK)
+}
 
 void DeletePromoCodeFile(const base::FilePath& promo_code_file) {
   if (!base::DeleteFile(promo_code_file)) {
@@ -418,13 +443,13 @@ void BraveReferralsService::SetFirstRunTime(
 
 void BraveReferralsService::PerformFinalizationChecks() {
   // Delete the promo code preference, if appropriate.
-  content::GetUIThreadTaskRunner({})->PostTask(
+  GetUIThreadTaskRunner()->PostTask(
       FROM_HERE,
       base::BindOnce(&BraveReferralsService::MaybeDeletePromoCodePref,
                      weak_factory_.GetWeakPtr()));
 
   // Check for referral finalization, if appropriate.
-  content::GetUIThreadTaskRunner({})->PostTask(
+  GetUIThreadTaskRunner()->PostTask(
       FROM_HERE,
       base::BindOnce(&BraveReferralsService::MaybeCheckForReferralFinalization,
                      weak_factory_.GetWeakPtr()));
@@ -446,7 +471,7 @@ base::FilePath BraveReferralsService::GetPromoCodeFileName() const {
 }
 
 void BraveReferralsService::MaybeCheckForReferralFinalization() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCheckCurrentlyOnUIThread();
 
   const auto& download_id = pref_service_->GetString(kReferralDownloadID);
   if (download_id.empty()) {
@@ -492,7 +517,7 @@ void BraveReferralsService::MaybeCheckForReferralFinalization() {
 }
 
 void BraveReferralsService::MaybeDeletePromoCodePref() const {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCheckCurrentlyOnUIThread();
 
   uint64_t delete_time = 90 * 24 * 60 * 60;
   auto env = base::Environment::Create();
@@ -643,12 +668,21 @@ void BraveReferralsService::InitAndroidReferrer() {
 
 void BraveReferralsService::OnAndroidBraveReferrerReady(
     const std::string& gbraid) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCheckCurrentlyOnUIThread();
   if (!gbraid.empty()) {
+    const base::Time first_open_timestamp = base::Time::Now();
     pref_service_->SetString(kReferralAndroidGbraid, gbraid);
+    // Every subsequent conversion event must echo back this exact value.
+    pref_service_->SetTime(kReferralAndroidFirstOpenTimestamp,
+                           first_open_timestamp);
     // The referrer is fetched once per install and can't be re-fetched, so
     // don't let a kill before the next scheduled flush lose it.
     pref_service_->CommitPendingWrite();
+    // Google Ads can only optimize towards second_open (or later events) if
+    // it has already seen a first_open, so report it immediately instead of
+    // waiting for the second_open call on the next run.
+    ReportAndroidConversion(gbraid, AndroidConversionEvent::kFirstOpen,
+                            first_open_timestamp);
   }
   task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&ReadPromoCode, GetPromoCodeFileName()),
@@ -657,16 +691,31 @@ void BraveReferralsService::OnAndroidBraveReferrerReady(
 }
 
 void BraveReferralsService::MaybeReportAndroidConversion() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCheckCurrentlyOnUIThread();
 
   const std::string gbraid = pref_service_->GetString(kReferralAndroidGbraid);
   if (gbraid.empty()) {
     return;
   }
 
-  // Drop the value before sending, so a crash mid-request can't report twice.
+  const base::Time first_open_timestamp =
+      pref_service_->GetTime(kReferralAndroidFirstOpenTimestamp);
+
+  // Drop the values before sending, so a crash mid-request can't report
+  // twice.
   pref_service_->ClearPref(kReferralAndroidGbraid);
+  pref_service_->ClearPref(kReferralAndroidFirstOpenTimestamp);
   pref_service_->CommitPendingWrite();
+
+  ReportAndroidConversion(gbraid, AndroidConversionEvent::kSecondOpen,
+                          first_open_timestamp);
+}
+
+void BraveReferralsService::ReportAndroidConversion(
+    const std::string& gbraid,
+    AndroidConversionEvent event,
+    base::Time first_open_timestamp) {
+  DCheckCurrentlyOnUIThread();
 
   if (!pref_service_->GetBoolean(kStatsReportingEnabled)) {
     return;
@@ -681,14 +730,15 @@ void BraveReferralsService::MaybeReportAndroidConversion() {
             "Attributes an Android install to the Play Store campaign that "
             "led to it."
           trigger:
-            "On the first Android startup following the one that received a "
-            "gbraid parameter from the Play Install Referrer."
+            "When the client detects a gbraid parameter from the Play "
+            "Install Referrer, and again on the following Android startup."
           data:
             "The gbraid parameter supplied by the Play Install Referrer, the "
-            "Brave version, the Android version and the Android SDK level."
+            "open event name, the Brave version, the Android version and the "
+            "Android SDK level."
           destination: OTHER
           destination_other: "Brave developers"
-          last_reviewed: "2026-08-27"
+          last_reviewed: "2026-11-20"
           user_data {
             type: HW_OS_INFO
             type: OTHER
@@ -704,7 +754,8 @@ void BraveReferralsService::MaybeReportAndroidConversion() {
         })");
 
   const GURL conversion_url(BuildConversionEndpoint(kBraveConversionPath));
-  const std::string payload = BuildConversionPayload(gbraid);
+  const std::string payload =
+      BuildConversionPayload(gbraid, event, first_open_timestamp);
 
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->method = "POST";
@@ -733,16 +784,31 @@ void BraveReferralsService::OnConversionLoadComplete(
 }
 
 std::string BraveReferralsService::BuildConversionPayload(
-    const std::string& gbraid) const {
+    const std::string& gbraid,
+    AndroidConversionEvent event,
+    base::Time first_open_timestamp) const {
   int32_t os_major = 0;
   int32_t os_minor = 0;
   int32_t os_bugfix = 0;
   base::SysInfo::OperatingSystemVersionNumbers(&os_major, &os_minor,
                                                &os_bugfix);
 
+  std::string app_event_name;
+  switch (event) {
+    case AndroidConversionEvent::kFirstOpen:
+      app_event_name = "brave_first_open";
+      break;
+    case AndroidConversionEvent::kSecondOpen:
+      app_event_name = "brave_second_open";
+      break;
+  }
+
   base::DictValue root;
-  root.Set("app_event_name", "brave_second_open");
+  root.Set("app_event_name", app_event_name);
   root.Set("gbraid", gbraid);
+  root.Set("timestamp",
+           base::NumberToString(
+               first_open_timestamp.InMillisecondsSinceUnixEpoch()));
   root.Set("app_version",
            version_info::GetBraveVersionWithoutChromiumMajorVersion());
   root.Set("os_version", base::StrCat({base::NumberToString(os_major), ".",
@@ -755,7 +821,7 @@ std::string BraveReferralsService::BuildConversionPayload(
 
   return result;
 }
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -770,6 +836,7 @@ void RegisterPrefsForBraveReferralsService(PrefRegistrySimple* registry) {
 #if BUILDFLAG(IS_ANDROID)
   registry->RegisterTimePref(kReferralAndroidFirstRunTimestamp, base::Time());
   registry->RegisterStringPref(kReferralAndroidGbraid, std::string());
+  registry->RegisterTimePref(kReferralAndroidFirstOpenTimestamp, base::Time());
 #endif
 }
 

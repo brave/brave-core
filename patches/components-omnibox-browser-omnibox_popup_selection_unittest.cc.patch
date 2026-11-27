@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/omnibox_popup_selection_unittest.cc b/components/omnibox/browser/omnibox_popup_selection_unittest.cc
-index 38ee5c02199498d9a7e02a16f350604daaf0b09f..079952aac8d4e2969592072b1bc8ce8200c83906 100644
+index 6bf5cff81e4c2376f53c3461afa2f473f7062de3..9b750211294fb220b792f6965f29799afab51ca0 100644
 --- a/components/omnibox/browser/omnibox_popup_selection_unittest.cc
 +++ b/components/omnibox/browser/omnibox_popup_selection_unittest.cc
 @@ -85,15 +85,15 @@ TEST_F(OmniboxPopupSelectionTest, SelectionWithKeywordMode) {

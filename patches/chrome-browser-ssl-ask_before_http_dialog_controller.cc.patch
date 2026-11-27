@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ssl/ask_before_http_dialog_controller.cc b/chrome/browser/ssl/ask_before_http_dialog_controller.cc
-index f2ada16a3cb0c3dc0bb72891cbea9ba0fdd182ab..aa7a34c9c2dd2a57fd010e6269ecfc9a12003549 100644
+index a1a657222ae6058b83302926a6ec934029280fe7..542ddfbcea81d80a698a848203d1fbd51490eb25 100644
 --- a/chrome/browser/ssl/ask_before_http_dialog_controller.cc
 +++ b/chrome/browser/ssl/ask_before_http_dialog_controller.cc
-@@ -54,7 +54,7 @@ using HttpWarningReason =
+@@ -53,7 +53,7 @@ using HttpWarningReason =
  namespace {
  
  inline constexpr char kLearnMoreLink[] =

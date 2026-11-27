@@ -1,6 +1,6 @@
-use crate::BorshSerialize;
 use crate::__private::maybestd::vec::Vec;
 use crate::io::{ErrorKind, Result, Write};
+use crate::BorshSerialize;
 
 pub(super) const DEFAULT_SERIALIZER_CAPACITY: usize = 1024;
 

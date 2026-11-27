@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/inline/InAppUpdatePolicy.java b/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/inline/InAppUpdatePolicy.java
-index ab091d604e887bc5fdd70bc0abcedd90431eede6..393afbd92b56bfea37655755726384ecc61c45ee 100644
+index d796b4eb82f32610f8b7562f317b66acda8d4250..f78c6f0159d9f6cae5fc0cb06fed2edf29917782 100644
 --- a/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/inline/InAppUpdatePolicy.java
 +++ b/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/inline/InAppUpdatePolicy.java
-@@ -207,7 +207,7 @@ public final class InAppUpdatePolicy {
+@@ -258,7 +258,7 @@ public final class InAppUpdatePolicy {
          if (sIsOfficialBuildForTesting != null) {
              return sIsOfficialBuildForTesting;
          }

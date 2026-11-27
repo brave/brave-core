@@ -1,0 +1,5 @@
+error: unknown display hint: "dunno"
+ --> $DIR/log-invalid-hint.rs:2:18
+  |
+2 |     defmt::info!("{=u8:dunno}", 42)
+  |                  ^^^^^^^^^^^^^

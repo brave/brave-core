@@ -17,8 +17,10 @@ from recipe_api import (
     OutputPlaceholder,
     Placeholder,
     RecipeApi,
+    StepFailure,
     returns_placeholder,
 )
+from step_data import StepData
 
 
 class FakeApi(RecipeApi):
@@ -104,6 +106,22 @@ class ModuleInjectionTest(unittest.TestCase):
 
     def test_test_api_is_unset_until_the_engine_seeds_it(self):
         self.assertIsNone(RecipeApi().test_api)
+
+
+class StepFailureTest(unittest.TestCase):
+    def test_step_failure_names_the_step_and_retcode(self):
+        failure = StepFailure('compile', StepData('compile', 2))
+        self.assertEqual(failure.name, 'compile')
+        self.assertEqual(failure.retcode, 2)
+        self.assertEqual(failure.reason, "Step('compile') (retcode: 2)")
+        self.assertEqual(str(failure), failure.reason)
+
+    def test_manual_failure_carries_only_a_reason(self):
+        failure = StepFailure('no artefacts')
+        self.assertIsNone(failure.name)
+        self.assertIsNone(failure.result)
+        self.assertIsNone(failure.retcode)
+        self.assertEqual(str(failure), 'no artefacts')
 
 
 if __name__ == '__main__':

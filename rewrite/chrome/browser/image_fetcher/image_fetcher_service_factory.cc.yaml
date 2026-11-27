@@ -1,0 +1,40 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Fetch an off-the-record profile's images through its own network context.
+
+      Upstream builds every key's ImageFetcherService on the system network
+      context, so fetches for a Private or Tor window would leave that profile's
+      network partition, and in a Tor window bypass Tor.
+      MaybeGetOffTheRecordFactory, defined in the chromium_src override, returns
+      a factory backed by the off-the-record profile, and null for regular
+      profiles, which keep upstream's factory.
+    regex:
+      re_pattern:
+        '(scoped_refptr<network::SharedURLLoaderFactory>
+        url_loader_factory)(;\s*// Network is null for some tests)'
+      replace: '\1 =\n      MaybeGetOffTheRecordFactory(key)\2'
+
+  - description: |-
+      Keep the off-the-record factory from being replaced with the system one.
+    regex:
+      re_pattern: '(if\s*\()(SystemNetworkContextManager::GetInstance\(\))'
+      replace: '\1!url_loader_factory && \2'
+
+  - description: |-
+      Give an off-the-record key's image cache no data on disk.
+
+      An off-the-record key keeps the regular profile's path, so its disk store
+      would read the regular profile's cached images. MaybeReplaceDataStore,
+      defined in the chromium_src override, returns a store that holds nothing
+      for off-the-record keys.
+    regex:
+      re_pattern:
+        '(auto data_store =
+        )(std::make_unique<image_fetcher::ImageDataStoreDisk>\(\s*cache_path,
+        task_runner\));'
+      replace: '\1MaybeReplaceDataStore(\n      key, \2);'

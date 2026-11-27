@@ -1,20 +1,11 @@
 use gix_diff::tree::recorder::Location;
 pub use gix_diff::*;
 
-///
-pub mod options {
-    ///
-    pub mod init {
-        /// The error returned when instantiating [diff options](crate::diff::Options).
-        #[derive(Debug, thiserror::Error)]
-        #[allow(missing_docs)]
-        pub enum Error {
-            #[cfg(feature = "blob-diff")]
-            #[error(transparent)]
-            RewritesConfiguration(#[from] crate::diff::new_rewrites::Error),
-        }
-    }
-}
+#[cfg(feature = "blob-diff")]
+use crate::Result;
+
+#[cfg(feature = "blob-diff")]
+pub use utils::{new_rewrites, resource_cache};
 
 /// General diff-related options for configuring rename-tracking and blob diffs.
 #[derive(Debug, Copy, Clone)]
@@ -48,7 +39,7 @@ impl From<Options> for gix_diff::tree_with_rewrites::Options {
 /// Lifecycle
 impl Options {
     #[cfg(feature = "blob-diff")]
-    pub(crate) fn from_configuration(config: &crate::config::Cache) -> Result<Self, options::init::Error> {
+    pub(crate) fn from_configuration(config: &crate::config::Cache) -> Result<Self> {
         Ok(Options {
             location: Some(Location::Path),
             rewrites: {
@@ -130,68 +121,30 @@ pub mod rename {
 ///
 #[cfg(feature = "blob-diff")]
 pub(crate) mod utils {
-    use gix_diff::{rewrites::Copies, Rewrites};
+    use gix_diff::{Rewrites, rewrites::Copies};
 
     use crate::{
+        Repository, Result,
         config::{cache::util::ApplyLeniency, tree::Diff},
         diff::rename::Tracking,
-        Repository,
     };
-
-    ///
-    pub mod new_rewrites {
-        /// The error returned by [`new_rewrites()`](super::new_rewrites()).
-        #[derive(Debug, thiserror::Error)]
-        #[allow(missing_docs)]
-        pub enum Error {
-            #[error(transparent)]
-            ConfigDiffRenames(#[from] crate::config::key::GenericError),
-            #[error(transparent)]
-            ConfigDiffRenameLimit(#[from] crate::config::unsigned_integer::Error),
-        }
-    }
-
-    ///
-    pub mod resource_cache {
-        /// The error returned by [`resource_cache()`](super::resource_cache()).
-        #[derive(Debug, thiserror::Error)]
-        #[allow(missing_docs)]
-        pub enum Error {
-            #[error(transparent)]
-            DiffAlgorithm(#[from] crate::config::diff::algorithm::Error),
-            #[error(transparent)]
-            WorktreeFilterOptions(#[from] crate::filter::pipeline::options::Error),
-            #[error(transparent)]
-            DiffDrivers(#[from] crate::config::diff::drivers::Error),
-            #[error(transparent)]
-            DiffPipelineOptions(#[from] crate::config::diff::pipeline_options::Error),
-            #[error(transparent)]
-            CommandContext(#[from] crate::config::command_context::Error),
-        }
-    }
 
     /// Create an instance by reading all relevant information from the `config`uration, while being `lenient` or not.
     /// Returns `Ok((None, false))` if nothing is configured, or `Ok((None, true))` if it's configured and disabled.
     ///
     /// Note that missing values will be defaulted similar to what git does.
-    #[allow(clippy::result_large_err)]
-    pub fn new_rewrites(
-        config: &gix_config::File<'static>,
-        lenient: bool,
-    ) -> Result<(Option<Rewrites>, bool), new_rewrites::Error> {
+    pub fn new_rewrites(config: &gix_config::File, lenient: bool) -> Result<(Option<Rewrites>, bool)> {
         new_rewrites_inner(config, lenient, &Diff::RENAMES, &Diff::RENAME_LIMIT)
     }
 
     pub(crate) fn new_rewrites_inner(
-        config: &gix_config::File<'static>,
+        config: &gix_config::File,
         lenient: bool,
         renames: &'static crate::config::tree::diff::Renames,
         rename_limit: &'static crate::config::tree::keys::UnsignedInteger,
-    ) -> Result<(Option<Rewrites>, bool), new_rewrites::Error> {
-        let copies = match config
-            .boolean(renames)
-            .map(|value| renames.try_into_renames(value))
-            .transpose()
+    ) -> Result<(Option<Rewrites>, bool)> {
+        let copies = match renames
+            .try_into_renames(config.boolean(renames))
             .with_leniency(lenient)?
         {
             Some(renames) => match renames {
@@ -206,10 +159,8 @@ pub(crate) mod utils {
         Ok((
             Rewrites {
                 copies,
-                limit: config
-                    .integer(rename_limit)
-                    .map(|value| rename_limit.try_into_usize(value))
-                    .transpose()
+                limit: rename_limit
+                    .try_into_usize(config.integer(rename_limit))
                     .with_leniency(lenient)?
                     .unwrap_or(default.limit),
                 ..default
@@ -233,7 +184,7 @@ pub(crate) mod utils {
         mode: gix_diff::blob::pipeline::Mode,
         attr_stack: gix_worktree::Stack,
         roots: gix_diff::blob::pipeline::WorktreeRoots,
-    ) -> Result<gix_diff::blob::Platform, resource_cache::Error> {
+    ) -> Result<gix_diff::blob::Platform> {
         let diff_algo = repo.config.diff_algorithm()?;
         let diff_cache = gix_diff::blob::Platform::new(
             gix_diff::blob::platform::Options {
@@ -242,7 +193,11 @@ pub(crate) mod utils {
             },
             gix_diff::blob::Pipeline::new(
                 roots,
-                gix_filter::Pipeline::new(repo.command_context()?, crate::filter::Pipeline::options(repo)?),
+                gix_filter::Pipeline::new(
+                    repo.command_context()?,
+                    repo.object_hash(),
+                    crate::filter::Pipeline::options(repo)?,
+                ),
                 repo.config.diff_drivers()?,
                 repo.config.diff_pipeline_options()?,
             ),
@@ -252,5 +207,3 @@ pub(crate) mod utils {
         Ok(diff_cache)
     }
 }
-#[cfg(feature = "blob-diff")]
-pub use utils::{new_rewrites, resource_cache};

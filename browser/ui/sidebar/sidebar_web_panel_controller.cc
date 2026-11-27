@@ -5,14 +5,57 @@
 
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 
+#include <memory>
+#include <string>
+#include <utility>
+
 #include "base/check_op.h"
+#include "base/functional/bind.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/public/shared_pinned_tab_exclusion_marker.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/navigator/browser_navigator.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/embedder_support/user_agent_utils.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents.h"
+#include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 
 namespace sidebar {
+
+namespace {
+
+// Mirrors Chromium's own desktop "request mobile/tablet site" user-agent
+// construction (chrome/browser/ui/browser_commands.cc,
+// SetAndroidOsForTabletSite()) as OpenWebPanel() sets the UA override on a
+// new WebContents before its first navigation. If we use
+// SetAndroidOsForTabletSite(), we add extra cost - navigation first and then
+// reapply.
+constexpr char kOsOverrideForMobileSite[] = "Linux; Android 9; Chrome tablet";
+constexpr char kChPlatformOverrideForTabletSite[] = "Android";
+
+blink::UserAgentOverride BuildMobileUserAgentOverride() {
+  blink::UserAgentOverride ua_override;
+  const std::string product =
+      embedder_support::GetProductAndVersion() + " Mobile";
+  ua_override.ua_string_override =
+      embedder_support::BuildUserAgentFromOSAndProduct(kOsOverrideForMobileSite,
+                                                       product);
+  ua_override.ua_metadata_override = embedder_support::GetUserAgentMetadata();
+  ua_override.ua_metadata_override->mobile = true;
+  ua_override.ua_metadata_override->form_factors = {blink::kTabletFormFactor};
+  ua_override.ua_metadata_override->platform = kChPlatformOverrideForTabletSite;
+  ua_override.ua_metadata_override->platform_version = std::string();
+  return ua_override;
+}
+
+}  // namespace
 
 SidebarWebPanelController::SidebarWebPanelController(
     BrowserView& browser_view,
@@ -30,35 +73,150 @@ SidebarWebPanelController::~SidebarWebPanelController() {
   CHECK(!panel_contents_);
 }
 
-void SidebarWebPanelController::ToggleWebPanel(const SidebarItem& item) {
-  // If panel is for |item|, close and return.
-  // Otherwise, open new panel after closing.
-  // When item is same but url has been changed, closes the current panel and
-  // reopens the panel with the new url.
-  const bool close_and_return = HasOpenPanel() && panel_item_.url == item.url;
-  CloseWebPanel();
+void SidebarWebPanelController::ToggleWebPanel(const SidebarItem& item,
+                                               bool suppress_animations) {
+  const bool same_url = panel_contents_ && panel_item_.url == item.url;
 
-  if (close_and_return) {
+  // Pressing the item again mid-close reverses the animation in place: the tab
+  // is still there, so there is nothing to recreate.
+  if (state_ == State::kClosing && same_url) {
+    state_ = State::kOpen;
+    GetMultiContentsView()->CancelWebPanelCloseAnimation();
+    web_panel_state_changed_.Run();
     return;
   }
 
-  OpenWebPanel(item);
+  if (state_ == State::kOpen && same_url) {
+    CloseWebPanel(suppress_animations);
+    return;
+  }
+
+  // Either a cold open, or one panel replacing another - including when the
+  // item is the same but its url changed. Only a cold open that isn't taking
+  // over the side panel's space animates; in every other case the strip is
+  // already the width it will end up at.
+  const bool had_panel = HasPanelTab();
+  CloseWebPanelImmediately();
+  OpenWebPanel(item, /*animate=*/!had_panel && !suppress_animations);
 }
 
 bool SidebarWebPanelController::HasOpenPanel() const {
-  return panel_contents_ && panel_item_.IsValidItem();
+  return HasPanelTab() && panel_item_.IsValidItem() && state_ == State::kOpen;
 }
 
-void SidebarWebPanelController::OpenWebPanel(const SidebarItem& item) {
-  panel_contents_ = chrome::AddAndReturnTabAt(
-      browser_view_->browser(), item.url, 0, false, std::nullopt, true);
+bool SidebarWebPanelController::HasPanelTab() const {
+  return !!panel_contents_;
+}
+
+void SidebarWebPanelController::OpenWebPanel(const SidebarItem& item,
+                                             bool animate) {
+  NavigateParams nav_params(browser_view_->browser(), item.url,
+                            ui::PAGE_TRANSITION_TYPED);
+  nav_params.disposition = ui::mojom::WindowOpenDisposition::kNewBackgroundTab;
+  nav_params.tabstrip_index = 0;
+  nav_params.tabstrip_add_types = AddTabTypes::ADD_PINNED;
+
+  // Always pre-create the WebContents, so the exclusion marker is attached
+  // before Navigate() inserts it into the tab strip. That insertion notifies
+  // TabStripModelObservers (e.g. SharedPinnedTabService) synchronously, so
+  // attaching the marker only afterwards would already be too late.
+  content::WebContents::CreateParams create_params(
+      browser_view_->browser()->GetProfile());
+  std::unique_ptr<content::WebContents> web_contents =
+      content::WebContents::Create(create_params);
+  SharedPinnedTabExclusionMarker::CreateForWebContents(web_contents.get());
+
+  content::NavigationController::LoadURLParams load_url_params(item.url);
+  load_url_params.transition_type = ui::PAGE_TRANSITION_TYPED;
+  if (item.use_mobile_user_agent) {
+    web_contents->SetUserAgentOverride(BuildMobileUserAgentOverride(),
+                                       /*override_in_new_tabs=*/false);
+    load_url_params.override_user_agent =
+        content::NavigationController::UA_OVERRIDE_TRUE;
+  }
+
+  // Navigate() skips loading `url` when `contents_to_insert` is set, so start
+  // the load here.
+  web_contents->GetController().LoadURLWithParams(load_url_params);
+  nav_params.contents_to_insert = std::move(web_contents);
+
+  Navigate(&nav_params);
+  panel_contents_ = nav_params.navigated_or_inserted_contents.get();
   panel_item_ = item;
-  GetMultiContentsView()->SetWebPanelContents(panel_contents_);
+  state_ = State::kOpen;
+  GetMultiContentsView()->SetWebPanelContents(panel_contents_, animate);
   web_panel_state_changed_.Run();
 }
 
-void SidebarWebPanelController::CloseWebPanel() {
+void SidebarWebPanelController::ReapplyUserAgent(const SidebarItem& item) {
+  CHECK(panel_contents_);
+  panel_item_ = item;
+
+  content::NavigationController& controller = panel_contents_->GetController();
+  content::NavigationEntry* entry = controller.GetLastCommittedEntry();
+  if (!entry) {
+    return;
+  }
+
+  entry->SetIsOverridingUserAgent(item.use_mobile_user_agent);
+  panel_contents_->SetUserAgentOverride(item.use_mobile_user_agent
+                                            ? BuildMobileUserAgentOverride()
+                                            : blink::UserAgentOverride(),
+                                        /*override_in_new_tabs=*/false);
+  controller.LoadOriginalRequestURL();
+}
+
+void SidebarWebPanelController::CloseWebPanel(bool suppress_animations) {
+  if (suppress_animations) {
+    state_ = State::kClosing;
+
+    // The side panel takes this space in the same frame, so the panel has to be
+    // off screen before this returns. Only the tab close can wait.
+    GetMultiContentsView()->SetWebPanelContents(nullptr);
+
+    // When CloseWebPanel() is invoked in a TabStripModel's notification,
+    // Calling FinishClose() would re-enter the TabStripModel's mutation API -
+    // which is forbidden by re-entrance guard. This typically happens when a
+    // contextual side panel shows up due to tab activation and closes web
+    // panel. So we should not call FinishClose() in this callstack and post
+    // task.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&SidebarWebPanelController::FinishClose,
+                                  weak_factory_.GetWeakPtr()));
+    return;
+  }
+
   if (!HasOpenPanel()) {
+    return;
+  }
+
+  state_ = State::kClosing;
+  if (GetMultiContentsView()->StartWebPanelCloseAnimation(
+          base::BindOnce(&SidebarWebPanelController::FinishClose,
+                         weak_factory_.GetWeakPtr()))) {
+    // The panel is on its way out, so stop presenting it as active while it
+    // animates.
+    web_panel_state_changed_.Run();
+    return;
+  }
+
+  FinishClose();
+}
+
+void SidebarWebPanelController::CloseWebPanelImmediately() {
+  if (!HasPanelTab()) {
+    return;
+  }
+
+  state_ = State::kClosing;
+  GetMultiContentsView()->ResetWebPanelAnimation();
+  FinishClose();
+}
+
+void SidebarWebPanelController::FinishClose() {
+  // The tab may already be gone - closed from the tab strip, or taken by
+  // shutdown, while the animation was still running.
+  if (state_ != State::kClosing || !panel_contents_) {
     return;
   }
 
@@ -66,7 +224,10 @@ void SidebarWebPanelController::CloseWebPanel() {
 }
 
 void SidebarWebPanelController::CloseWebPanelForShutdown() {
-  if (!HasOpenPanel()) {
+  // Deliberately HasPanelTab(), not HasOpenPanel(): a panel animating closed
+  // still has its tab in the strip, and leaving it there would both restore it
+  // next launch and trip the destructor's CHECK.
+  if (!HasPanelTab()) {
     return;
   }
 
@@ -85,6 +246,7 @@ void SidebarWebPanelController::CloseWebPanelForShutdown() {
 }
 
 void SidebarWebPanelController::ClearPanelState() {
+  state_ = State::kClosed;
   GetMultiContentsView()->SetWebPanelContents(nullptr);
   panel_contents_ = nullptr;
   panel_item_ = sidebar::SidebarItem();

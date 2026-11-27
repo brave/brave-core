@@ -20,7 +20,7 @@ parse into. Here are some examples to give a general idea:
 * `2020-08-21T02:21:58` and `2020-08-21 02:21:58` both parse into a
   [`civil::DateTime`].
 * `2020-08-21T02:21:58-04` parses into an [`Timestamp`].
-* `2020-08-21T02:21:58-04[America/New_York]` parses into a [`Zoned`].
+* `2020-08-21T02:21:58-04[America/New_York]` parses into a [`ZonedDateTime`].
 
 Smaller types can generally be parsed from strings representing a bigger type.
 For example, a `civil::Date` can be parsed from `2020-08-21T02:21:58`.
@@ -33,19 +33,19 @@ supported by Jiff. (Only fractional seconds are supported.)
 
 Some additional details worth noting:
 
-* Parsing `Zoned` values requires a datetime string with a time zone
+* Parsing `ZonedDateTime` values requires a datetime string with a time zone
 annotation like `[America/New_York]` or `[-07:00]`. If you need to parse a
 datetime without a time zone annotation (but with an offset), then you should
-parse it as an [`Timestamp`]. From there, it can be converted to a `Zoned` via
-[`Timestamp::to_zoned`].
-* When parsing `Zoned` values, ambiguous datetimes are handled via the
+parse it as an [`Timestamp`]. From there, it can be converted to a
+`ZonedDateTime` via [`Timestamp::to_zoned_datetime`].
+* When parsing `ZonedDateTime` values, ambiguous datetimes are handled via the
 [`DateTimeParser::disambiguation`] configuration. By default, a "compatible"
 mode is used where the earlier time is selected in a backward transition, while
 the later time is selected in a forward transition.
-* When parsing `Zoned` values, conflicts between the offset and the time zone
-in the datetime string are handled via the [`DateTimeParser::offset_conflict`]
-configuration. By default, any inconsistency between the offset and the time
-zone results in a parse error.
+* When parsing `ZonedDateTime` values, conflicts between the offset and the
+time zone in the datetime string are handled via the
+[`DateTimeParser::offset_conflict`] configuration. By default, any
+inconsistency between the offset and the time zone results in a parse error.
 * When parsing civil types like `civil::DateTime`, it's always an error if the
 datetime string has a `Z` (Zulu) offset. It's an error since interpreting such
 strings as civil time is usually a bug.
@@ -171,12 +171,12 @@ There is some more [background on Temporal's format] available.
 */
 
 use crate::{
-    civil,
+    SignedDuration, Timestamp, ZonedDateTime,
+    civil::{self, ISOWeekDate},
     error::Error,
     fmt::Write,
     span::Span,
     tz::{Disambiguation, Offset, OffsetConflict, TimeZone, TimeZoneDatabase},
-    SignedDuration, Timestamp, Zoned,
 };
 
 pub use self::pieces::{
@@ -205,20 +205,20 @@ pub(crate) static DEFAULT_SPAN_PRINTER: SpanPrinter = SpanPrinter::new();
 /// A parser for Temporal datetimes.
 ///
 /// This parser converts a machine (but also human) readable format of a
-/// datetime to the various types found in Jiff: [`Zoned`], [`Timestamp`],
-/// [`civil::DateTime`], [`civil::Date`] or [`civil::Time`]. Note that all
-/// of those types provide [`FromStr`](core::str::FromStr) implementations
-/// that utilize the default configuration of this parser. However, this parser
-/// can be configured to behave differently and can also parse directly from
-/// a `&[u8]`.
+/// datetime to the various types found in Jiff: [`ZonedDateTime`],
+/// [`Timestamp`], [`civil::DateTime`], [`civil::Date`] or [`civil::Time`].
+/// Note that all of those types provide [`FromStr`](core::str::FromStr)
+/// implementations that utilize the default configuration of this parser.
+/// However, this parser can be configured to behave differently and can also
+/// parse directly from a `&[u8]`.
 ///
 /// See the [`fmt::temporal`](crate::fmt::temporal) module documentation for
 /// more information on the specific format used.
 ///
 /// # Example
 ///
-/// This example shows how to parse a `Zoned` datetime from a byte string.
-/// (That is, `&[u8]` and not a `&str`.)
+/// This example shows how to parse a `ZonedDateTime` datetime from a byte
+/// string. (That is, `&[u8]` and not a `&str`.)
 ///
 /// ```
 /// use jiff::{civil::date, fmt::temporal::DateTimeParser, tz};
@@ -226,7 +226,8 @@ pub(crate) static DEFAULT_SPAN_PRINTER: SpanPrinter = SpanPrinter::new();
 /// // A parser can be created in a const context.
 /// static PARSER: DateTimeParser = DateTimeParser::new();
 ///
-/// let zdt = PARSER.parse_zoned(b"2024-06-15T07-04[America/New_York]")?;
+/// let zdt =
+///     PARSER.parse_zoned_datetime(b"2024-06-15T07-04[America/New_York]")?;
 /// assert_eq!(zdt.datetime(), date(2024, 6, 15).at(7, 0, 0, 0));
 /// assert_eq!(zdt.time_zone(), &tz::db().get("America/New_York")?);
 ///
@@ -242,7 +243,8 @@ pub(crate) static DEFAULT_SPAN_PRINTER: SpanPrinter = SpanPrinter::new();
 /// // A parser can be created in a const context.
 /// static PARSER: DateTimeParser = DateTimeParser::new();
 ///
-/// let zdt = PARSER.parse_zoned(b"2024-06-15 07-04[America/New_York]")?;
+/// let zdt =
+///     PARSER.parse_zoned_datetime(b"2024-06-15 07-04[America/New_York]")?;
 /// assert_eq!(zdt.datetime(), date(2024, 6, 15).at(7, 0, 0, 0));
 /// assert_eq!(zdt.time_zone(), &tz::db().get("America/New_York")?);
 ///
@@ -272,7 +274,7 @@ impl DateTimeParser {
     /// See the documentation on [`OffsetConflict`] for more details about the
     /// different strategies one can choose.
     ///
-    /// This only applies when parsing [`Zoned`] values.
+    /// This only applies when parsing [`ZonedDateTime`] values.
     ///
     /// The default is [`OffsetConflict::Reject`], which results in an error
     /// whenever parsing a datetime with an offset that is inconsistent with
@@ -286,7 +288,8 @@ impl DateTimeParser {
     /// static PARSER: DateTimeParser = DateTimeParser::new()
     ///     .offset_conflict(tz::OffsetConflict::AlwaysOffset);
     ///
-    /// let zdt = PARSER.parse_zoned("2024-06-09T07:00-05[America/New_York]")?;
+    /// let zdt = PARSER
+    ///     .parse_zoned_datetime("2024-06-09T07:00-05[America/New_York]")?;
     /// // Notice that the time *and* offset have been corrected. The offset
     /// // given was invalid for `America/New_York` at the given time, so
     /// // it cannot be kept, but the instant returned is equivalent to
@@ -315,18 +318,17 @@ impl DateTimeParser {
     ///
     /// // DST in Indiana/Vevay began at 2006-04-02T02:00 local time.
     /// // The last time Indiana/Vevay observed DST was in 1972.
-    /// let result = PARSER.parse_zoned(
+    /// let result = PARSER.parse_zoned_datetime(
     ///     "2006-04-02T02:30-05[America/Indiana/Vevay]",
     /// );
     /// assert_eq!(
     ///     result.unwrap_err().to_string(),
-    ///     "parsing \"2006-04-02T02:30-05[America/Indiana/Vevay]\" failed: \
-    ///      datetime 2006-04-02T02:30:00 could not resolve to timestamp \
-    ///      since 'reject' conflict resolution was chosen, and because \
-    ///      datetime has offset -05, but the time zone America/Indiana/Vevay \
-    ///      for the given datetime falls in a gap \
-    ///      (between offsets -05 and -04), \
-    ///      and all offsets for a gap are regarded as invalid",
+    ///     "datetime could not resolve to timestamp since `reject` \
+    ///      conflict resolution was chosen, and because datetime \
+    ///      has offset `-05`, but the time zone `America/Indiana/Vevay` \
+    ///      for the given datetime falls in a gap (between offsets \
+    ///      `-05` and `-04`), and all offsets for a gap are \
+    ///      regarded as invalid",
     /// );
     /// ```
     ///
@@ -339,7 +341,7 @@ impl DateTimeParser {
     /// static PARSER: DateTimeParser = DateTimeParser::new()
     ///     .offset_conflict(tz::OffsetConflict::AlwaysOffset);
     ///
-    /// let zdt = PARSER.parse_zoned(
+    /// let zdt = PARSER.parse_zoned_datetime(
     ///     "2006-04-02T02:30-05[America/Indiana/Vevay]",
     /// )?;
     /// assert_eq!(
@@ -360,7 +362,7 @@ impl DateTimeParser {
     ///     .disambiguation(tz::Disambiguation::Earlier)
     ///     .offset_conflict(tz::OffsetConflict::AlwaysTimeZone);
     ///
-    /// let zdt = PARSER.parse_zoned(
+    /// let zdt = PARSER.parse_zoned_datetime(
     ///     "2006-04-02T02:30-05[America/Indiana/Vevay]",
     /// )?;
     /// assert_eq!(
@@ -385,7 +387,7 @@ impl DateTimeParser {
     /// // NOTE: The default is reject.
     /// static PARSER: DateTimeParser = DateTimeParser::new();
     ///
-    /// let zdt = PARSER.parse_zoned(
+    /// let zdt = PARSER.parse_zoned_datetime(
     ///     "2025-06-20T17:30Z[America/New_York]",
     /// )?;
     /// assert_eq!(
@@ -405,16 +407,15 @@ impl DateTimeParser {
     /// // NOTE: The default is reject.
     /// static PARSER: DateTimeParser = DateTimeParser::new();
     ///
-    /// let result = PARSER.parse_zoned(
+    /// let result = PARSER.parse_zoned_datetime(
     ///     "2025-06-20T17:30+00[America/New_York]",
     /// );
     /// assert_eq!(
     ///     result.unwrap_err().to_string(),
-    ///     "parsing \"2025-06-20T17:30+00[America/New_York]\" failed: \
-    ///      datetime 2025-06-20T17:30:00 could not resolve to a timestamp \
-    ///      since 'reject' conflict resolution was chosen, and because \
-    ///      datetime has offset +00, but the time zone America/New_York \
-    ///      for the given datetime unambiguously has offset -04",
+    ///     "datetime could not resolve to a timestamp since `reject` \
+    ///      conflict resolution was chosen, and because datetime has \
+    ///      offset `+00`, but the time zone `America/New_York` \
+    ///      for the given datetime unambiguously has offset `-04`",
     /// );
     /// ```
     ///
@@ -453,8 +454,8 @@ impl DateTimeParser {
     /// # Example
     ///
     /// This example shows how to set the disambiguation configuration while
-    /// parsing a [`Zoned`] datetime. In this example, we always prefer the
-    /// earlier time.
+    /// parsing a [`ZonedDateTime`] datetime. In this example, we always prefer
+    /// the earlier time.
     ///
     /// ```
     /// use jiff::{civil::date, fmt::temporal::DateTimeParser, tz};
@@ -462,7 +463,8 @@ impl DateTimeParser {
     /// static PARSER: DateTimeParser = DateTimeParser::new()
     ///     .disambiguation(tz::Disambiguation::Earlier);
     ///
-    /// let zdt = PARSER.parse_zoned("2024-03-10T02:05[America/New_York]")?;
+    /// let zdt = PARSER
+    ///     .parse_zoned_datetime("2024-03-10T02:05[America/New_York]")?;
     /// assert_eq!(zdt.datetime(), date(2024, 3, 10).at(1, 5, 0, 0));
     /// assert_eq!(zdt.offset(), tz::offset(-5));
     ///
@@ -483,9 +485,8 @@ impl DateTimeParser {
     ///     .disambiguation(tz::Disambiguation::Later);
     ///
     /// // 02:05 didn't exist on clocks on 1947-06-08.
-    /// let zdt = PARSER.parse_zoned(
-    ///     "1947-06-08T02:05[Pacific/Honolulu]",
-    /// )?;
+    /// let zdt = PARSER
+    ///     .parse_zoned_datetime("1947-06-08T02:05[Pacific/Honolulu]")?;
     /// // Our parser is configured to select the later time, so we jump to
     /// // 02:35. But if we used `Disambiguation::Earlier`, then we'd get
     /// // 01:35.
@@ -496,7 +497,7 @@ impl DateTimeParser {
     /// // jump to 01:55 *and* our offset is corrected to -10:30.
     /// let zdt = zdt.checked_sub(10.minutes())?;
     /// assert_eq!(zdt.datetime(), date(1947, 6, 8).at(1, 55, 0, 0));
-    /// assert_eq!(zdt.offset(), tz::offset(-10).saturating_sub(30.minutes()));
+    /// assert_eq!(zdt.offset(), tz::offset(-10).saturating_sub(30.minutes())?);
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
@@ -508,8 +509,8 @@ impl DateTimeParser {
         DateTimeParser { disambiguation: strategy, ..self }
     }
 
-    /// Parse a datetime string with a time zone annotation into a [`Zoned`]
-    /// value using the system time zone database.
+    /// Parse a datetime string with a time zone annotation into a
+    /// [`ZonedDateTime`] value using the system time zone database.
     ///
     /// # Errors
     ///
@@ -526,16 +527,17 @@ impl DateTimeParser {
     ///
     /// # Example: parsing without an IANA time zone
     ///
-    /// Note that when parsing a `Zoned` value, it is required for the datetime
-    /// string to contain a time zone annotation in brackets. For example,
-    /// this fails to parse even though it refers to a precise instant in time:
+    /// Note that when parsing a `ZonedDateTime` value, it is required for the
+    /// datetime string to contain a time zone annotation in brackets. For
+    /// example, this fails to parse even though it refers to a precise instant
+    /// in time:
     ///
     /// ```
     /// use jiff::fmt::temporal::DateTimeParser;
     ///
     /// static PARSER: DateTimeParser = DateTimeParser::new();
     ///
-    /// assert!(PARSER.parse_zoned("2024-06-08T07:00-04").is_err());
+    /// assert!(PARSER.parse_zoned_datetime("2024-06-08T07:00-04").is_err());
     /// ```
     ///
     /// While it is better to include a time zone name, if the only thing
@@ -547,7 +549,7 @@ impl DateTimeParser {
     ///
     /// static PARSER: DateTimeParser = DateTimeParser::new();
     ///
-    /// let zdt = PARSER.parse_zoned("2024-06-08T07:00-04[-04]")?;
+    /// let zdt = PARSER.parse_zoned_datetime("2024-06-08T07:00-04[-04]")?;
     /// assert_eq!(zdt.datetime(), date(2024, 6, 8).at(7, 0, 0, 0));
     /// assert_eq!(zdt.offset(), tz::offset(-4));
     ///
@@ -563,26 +565,26 @@ impl DateTimeParser {
     /// static PARSER: DateTimeParser = DateTimeParser::new();
     ///
     /// let timestamp = PARSER.parse_timestamp("2024-06-08T07:00-04")?;
-    /// let zdt = timestamp.to_zoned(tz::TimeZone::UTC);
+    /// let zdt = timestamp.to_zoned_datetime(tz::TimeZone::UTC);
     /// assert_eq!(zdt.datetime(), date(2024, 6, 8).at(11, 0, 0, 0));
     /// assert_eq!(zdt.offset(), tz::offset(0));
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     ///
-    /// If you _really_ need to parse something like `2024-06-08T07:00-04`
-    /// into a `Zoned` with a fixed offset of `-04:00` as its `TimeZone`,
+    /// If you _really_ need to parse something like `2024-06-08T07:00-04` into
+    /// a `ZonedDateTime` with a fixed offset of `-04:00` as its `TimeZone`,
     /// then you'll need to use lower level parsing routines. See the
     /// documentation on [`Pieces`] for a case study of how to achieve this.
-    pub fn parse_zoned<I: AsRef<[u8]>>(
+    pub fn parse_zoned_datetime<I: AsRef<[u8]>>(
         &self,
         input: I,
-    ) -> Result<Zoned, Error> {
-        self.parse_zoned_with(crate::tz::db(), input)
+    ) -> Result<ZonedDateTime, Error> {
+        self.parse_zoned_datetime_with(crate::tz::db(), input)
     }
 
-    /// Parse a datetime string with a time zone annotation into a [`Zoned`]
-    /// value using the time zone database given.
+    /// Parse a datetime string with a time zone annotation into a
+    /// [`ZonedDateTime`] value using the time zone database given.
     ///
     /// # Errors
     ///
@@ -627,8 +629,8 @@ impl DateTimeParser {
     /// // Parse the same datetime string with the same parser, but using two
     /// // different versions of tzdb.
     /// let dt = "2020-01-15T12:00[America/Sao_Paulo]";
-    /// let zdt2018 = PARSER.parse_zoned_with(&tzdb2018, dt)?;
-    /// let zdt = PARSER.parse_zoned_with(tzdb, dt)?;
+    /// let zdt2018 = PARSER.parse_zoned_datetime_with(&tzdb2018, dt)?;
+    /// let zdt = PARSER.parse_zoned_datetime_with(tzdb, dt)?;
     ///
     /// // Before DST was abolished, 2020-01-15 was in DST, which corresponded
     /// // to UTC offset -02. Since DST rules applied to datetimes in the
@@ -644,20 +646,27 @@ impl DateTimeParser {
     /// // tzdb, you'll get an error under the default configuration because
     /// // of `OffsetConflict::Reject`. This would succeed if you parsed it
     /// // using tzdb2018!
-    /// assert!(PARSER.parse_zoned_with(tzdb, zdt2018.to_string()).is_err());
+    /// assert!(
+    ///     PARSER
+    ///         .parse_zoned_datetime_with(tzdb, zdt2018.to_string())
+    ///         .is_err()
+    /// );
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
-    pub fn parse_zoned_with<I: AsRef<[u8]>>(
+    pub fn parse_zoned_datetime_with<I: AsRef<[u8]>>(
         &self,
         db: &TimeZoneDatabase,
         input: I,
-    ) -> Result<Zoned, Error> {
+    ) -> Result<ZonedDateTime, Error> {
         let input = input.as_ref();
         let parsed = self.p.parse_temporal_datetime(input)?;
         let dt = parsed.into_full()?;
-        let zoned =
-            dt.to_zoned(db, self.offset_conflict, self.disambiguation)?;
+        let zoned = dt.to_zoned_datetime(
+            db,
+            self.offset_conflict,
+            self.disambiguation,
+        )?;
         Ok(zoned)
     }
 
@@ -922,8 +931,8 @@ impl DateTimeParser {
     ///     TimeZone::get("America/New_York")?,
     /// );
     /// assert_eq!(
-    ///     PARSER.parse_time_zone("Israel")?,
-    ///     TimeZone::get("Israel")?,
+    ///     PARSER.parse_time_zone("Asia/Jerusalem")?,
+    ///     TimeZone::get("Asia/Jerusalem")?,
     /// );
     /// assert_eq!(
     ///     PARSER.parse_time_zone("EST5EDT,M3.2.0,M11.1.0")?,
@@ -975,9 +984,9 @@ impl DateTimeParser {
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     ///
-    /// See also the example for [`DateTimeParser::parse_zoned_with`] for a
-    /// more interesting example using a time zone database other than the
-    /// default.
+    /// See also the example for [`DateTimeParser::parse_zoned_datetime_with`]
+    /// for a more interesting example using a time zone database other than
+    /// the default.
     pub fn parse_time_zone_with<'i, I: AsRef<[u8]>>(
         &self,
         db: &TimeZoneDatabase,
@@ -994,11 +1003,11 @@ impl DateTimeParser {
     /// individual "pieces" of a parsed Temporal ISO 8601 datetime string.
     /// Note that this only includes strings that have a date component.
     ///
-    /// The benefit of this routine is that it only checks that the datetime
-    /// is itself valid. It doesn't do any automatic diambiguation, offset
-    /// conflict resolution or attempt to prevent you from shooting yourself
-    /// in the foot. For example, this routine will let you parse a fixed
-    /// offset datetime into a `Zoned` without a time zone abbreviation.
+    /// The benefit of this routine is that it only checks that the datetime is
+    /// itself valid. It doesn't do any automatic diambiguation, offset
+    /// conflict resolution or attempt to prevent you from shooting yourself in
+    /// the foot. For example, this routine will let you parse a fixed offset
+    /// datetime into a `ZonedDateTime` without a time zone abbreviation.
     ///
     /// Note that when using this routine, the
     /// [`DateTimeParser::offset_conflict`] and
@@ -1015,7 +1024,8 @@ impl DateTimeParser {
     ///
     /// # Example
     ///
-    /// This shows how to parse a fixed offset timestamp into a `Zoned`.
+    /// This shows how to parse a fixed offset timestamp into a
+    /// `ZonedDateTime`.
     ///
     /// ```
     /// use jiff::{fmt::temporal::DateTimeParser, tz::TimeZone};
@@ -1026,10 +1036,9 @@ impl DateTimeParser {
     ///
     /// // Normally this operation will fail.
     /// assert_eq!(
-    ///     PARSER.parse_zoned(timestamp).unwrap_err().to_string(),
-    ///     "failed to find time zone in square brackets in \
-    ///      \"2025-01-02T15:13-05\", which is required for \
-    ///      parsing a zoned instant",
+    ///     PARSER.parse_zoned_datetime(timestamp).unwrap_err().to_string(),
+    ///     "failed to find time zone annotation in square brackets, \
+    ///      which is required for parsing a zoned datetime",
     /// );
     ///
     /// // But you can work-around this with `Pieces`, which gives you direct
@@ -1055,7 +1064,7 @@ impl DateTimeParser {
     /// // this uses automatic "compatible" disambiguation in the case of
     /// // discontinuities. Of course, this is all moot if `TimeZone` is
     /// // fixed. The above code handles the case where it isn't!
-    /// let zdt = tz.to_zoned(dt)?;
+    /// let zdt = tz.to_zoned_datetime(dt)?;
     /// assert_eq!(zdt.to_string(), "2025-01-02T15:13:00-05:00[-05:00]");
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -1073,8 +1082,8 @@ impl DateTimeParser {
     ///
     /// assert_eq!(
     ///     PARSER.parse_date("2024-03-10T00:00:00Z").unwrap_err().to_string(),
-    ///     "cannot parse civil date from string with a Zulu offset, \
-    ///      parse as a `Timestamp` and convert to a civil date instead",
+    ///     "cannot parse civil date/time from string with a Zulu offset, \
+    ///      parse as a `jiff::Timestamp` first and convert to a civil date/time instead",
     /// );
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -1110,18 +1119,34 @@ impl DateTimeParser {
         let pieces = parsed.to_pieces()?;
         Ok(pieces)
     }
+
+    /// Parses an ISO 8601 week date.
+    ///
+    /// This isn't exported because it's not clear that it's worth it.
+    /// Moreover, this isn't part of the Temporal spec, so it's a little odd
+    /// to have it here. If this really needs to be exported, we probably need
+    /// a new module that wraps and re-uses this module's internal parser to
+    /// avoid too much code duplication.
+    pub(crate) fn parse_iso_week_date<I: AsRef<[u8]>>(
+        &self,
+        input: I,
+    ) -> Result<ISOWeekDate, Error> {
+        let input = input.as_ref();
+        let wd = self.p.parse_iso_week_date(input)?.into_full()?;
+        Ok(wd)
+    }
 }
 
 /// A printer for Temporal datetimes.
 ///
 /// This printer converts an in memory representation of a datetime related
 /// type to a machine (but also human) readable format. Using this printer, one
-/// can convert [`Zoned`], [`Timestamp`], [`civil::DateTime`], [`civil::Date`]
-/// or [`civil::Time`] values to a string. Note that all of those types provide
-/// [`Display`](core::fmt::Display) implementations that utilize the default
-/// configuration of this printer. However, this printer can be configured to
-/// behave differently and can also print directly to anything that implements
-/// the [`fmt::Write`](Write) trait.
+/// can convert [`ZonedDateTime`], [`Timestamp`], [`civil::DateTime`],
+/// [`civil::Date`] or [`civil::Time`] values to a string. Note that all of
+/// those types provide [`Display`](core::fmt::Display) implementations that
+/// utilize the default configuration of this printer. However, this printer
+/// can be configured to behave differently and can also print directly to
+/// anything that implements the [`fmt::Write`](Write) trait.
 ///
 /// See the [`fmt::temporal`](crate::fmt::temporal) module documentation for
 /// more information on the specific format used. Note that the Temporal
@@ -1132,8 +1157,8 @@ impl DateTimeParser {
 ///
 /// # Example
 ///
-/// This example shows how to print a `Zoned` value with a space separating
-/// the date and time instead of the more standard `T` separator.
+/// This example shows how to print a `ZonedDateTime` value with a space
+/// separating the date and time instead of the more standard `T` separator.
 ///
 /// ```
 /// use jiff::{civil::date, fmt::temporal::DateTimePrinter};
@@ -1145,7 +1170,7 @@ impl DateTimeParser {
 ///
 /// let mut buf = String::new();
 /// // Printing to a `String` can never fail.
-/// PRINTER.print_zoned(&zdt, &mut buf).unwrap();
+/// PRINTER.print_zoned_datetime(&zdt, &mut buf).unwrap();
 /// assert_eq!(buf, "2024-06-15 07:00:00.123456789-04:00[America/New_York]");
 ///
 /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -1169,7 +1194,9 @@ impl DateTimeParser {
 ///
 /// let path = Path::new("/tmp/output");
 /// let mut file = BufWriter::new(File::create(path)?);
-/// DateTimePrinter::new().print_zoned(&zdt, StdIoWrite(&mut file)).unwrap();
+/// DateTimePrinter::new()
+///     .print_zoned_datetime(&zdt, StdIoWrite(&mut file))
+///     .unwrap();
 /// file.flush()?;
 /// assert_eq!(
 ///     std::fs::read_to_string(path)?,
@@ -1195,8 +1222,8 @@ impl DateTimePrinter {
     ///
     /// # Example
     ///
-    /// This example shows how to print a `Zoned` value with a lowercase
-    /// datetime separator.
+    /// This example shows how to print a `ZonedDateTime` value with a
+    /// lowercase datetime separator.
     ///
     /// ```
     /// use jiff::{civil::date, fmt::temporal::DateTimePrinter};
@@ -1207,7 +1234,7 @@ impl DateTimePrinter {
     ///
     /// let mut buf = String::new();
     /// // Printing to a `String` can never fail.
-    /// PRINTER.print_zoned(&zdt, &mut buf).unwrap();
+    /// PRINTER.print_zoned_datetime(&zdt, &mut buf).unwrap();
     /// assert_eq!(buf, "2024-06-15t07:00:00-04:00[America/New_York]");
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -1219,14 +1246,15 @@ impl DateTimePrinter {
     }
 
     /// Use the given ASCII character to separate the date and time when
-    /// printing [`Zoned`], [`Timestamp`] or [`civil::DateTime`] values.
+    /// printing [`ZonedDateTime`], [`Timestamp`] or [`civil::DateTime`]
+    /// values.
     ///
     /// This is set to `T` by default.
     ///
     /// # Example
     ///
-    /// This example shows how to print a `Zoned` value with a different
-    /// datetime separator.
+    /// This example shows how to print a `ZonedDateTime` value with a
+    /// different datetime separator.
     ///
     /// ```
     /// use jiff::{civil::date, fmt::temporal::DateTimePrinter};
@@ -1239,7 +1267,7 @@ impl DateTimePrinter {
     ///
     /// let mut buf = String::new();
     /// // Printing to a `String` can never fail.
-    /// PRINTER.print_zoned(&zdt, &mut buf).unwrap();
+    /// PRINTER.print_zoned_datetime(&zdt, &mut buf).unwrap();
     /// assert_eq!(buf, "2024-06-15~07:00:00-04:00[America/New_York]");
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -1268,12 +1296,14 @@ impl DateTimePrinter {
     /// const PRINTER: DateTimePrinter =
     ///     DateTimePrinter::new().precision(Some(3));
     ///
-    /// let zdt = date(2024, 6, 15).at(7, 0, 0, 123_456_789).in_tz("US/Eastern")?;
+    /// let zdt = date(2024, 6, 15)
+    ///     .at(7, 0, 0, 123_456_789)
+    ///     .in_tz("America/New_York")?;
     ///
     /// let mut buf = String::new();
     /// // Printing to a `String` can never fail.
-    /// PRINTER.print_zoned(&zdt, &mut buf).unwrap();
-    /// assert_eq!(buf, "2024-06-15T07:00:00.123-04:00[US/Eastern]");
+    /// PRINTER.print_zoned_datetime(&zdt, &mut buf).unwrap();
+    /// assert_eq!(buf, "2024-06-15T07:00:00.123-04:00[America/New_York]");
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
@@ -1287,21 +1317,23 @@ impl DateTimePrinter {
     /// ```
     /// use jiff::civil::date;
     ///
-    /// let zdt = date(2024, 6, 15).at(7, 0, 0, 123_000_000).in_tz("US/Eastern")?;
+    /// let zdt = date(2024, 6, 15)
+    ///     .at(7, 0, 0, 123_000_000)
+    ///     .in_tz("America/New_York")?;
     /// assert_eq!(
     ///     format!("{zdt:.6}"),
-    ///     "2024-06-15T07:00:00.123000-04:00[US/Eastern]",
+    ///     "2024-06-15T07:00:00.123000-04:00[America/New_York]",
     /// );
     /// // Precision values greater than 9 are clamped to 9.
     /// assert_eq!(
     ///     format!("{zdt:.300}"),
-    ///     "2024-06-15T07:00:00.123000000-04:00[US/Eastern]",
+    ///     "2024-06-15T07:00:00.123000000-04:00[America/New_York]",
     /// );
     /// // A precision of 0 implies the entire fractional
     /// // component is always truncated.
     /// assert_eq!(
     ///     format!("{zdt:.0}"),
-    ///     "2024-06-15T07:00:00-04:00[US/Eastern]",
+    ///     "2024-06-15T07:00:00-04:00[America/New_York]",
     /// );
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -1315,10 +1347,10 @@ impl DateTimePrinter {
         self
     }
 
-    /// Format a `Zoned` datetime into a string.
+    /// Format a `ZonedDateTime` datetime into a string.
     ///
-    /// This is a convenience routine for [`DateTimePrinter::print_zoned`] with
-    /// a `String`.
+    /// This is a convenience routine for
+    /// [`DateTimePrinter::print_zoned_datetime`] with a `String`.
     ///
     /// # Example
     ///
@@ -1329,17 +1361,20 @@ impl DateTimePrinter {
     ///
     /// let zdt = date(2024, 6, 15).at(7, 0, 0, 0).in_tz("America/New_York")?;
     /// assert_eq!(
-    ///     PRINTER.zoned_to_string(&zdt),
+    ///     PRINTER.zoned_datetime_to_string(&zdt),
     ///     "2024-06-15T07:00:00-04:00[America/New_York]",
     /// );
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     #[cfg(feature = "alloc")]
-    pub fn zoned_to_string(&self, zdt: &Zoned) -> alloc::string::String {
-        let mut buf = alloc::string::String::with_capacity(4);
+    pub fn zoned_datetime_to_string(
+        &self,
+        zdt: &ZonedDateTime,
+    ) -> alloc::string::String {
+        let mut buf = alloc::string::String::new();
         // OK because writing to `String` never fails.
-        self.print_zoned(zdt, &mut buf).unwrap();
+        self.print_zoned_datetime(zdt, &mut buf).unwrap();
         buf
     }
 
@@ -1384,7 +1419,7 @@ impl DateTimePrinter {
         &self,
         timestamp: &Timestamp,
     ) -> alloc::string::String {
-        let mut buf = alloc::string::String::with_capacity(4);
+        let mut buf = alloc::string::String::new();
         // OK because writing to `String` never fails.
         self.print_timestamp(timestamp, &mut buf).unwrap();
         buf
@@ -1441,7 +1476,7 @@ impl DateTimePrinter {
         timestamp: &Timestamp,
         offset: Offset,
     ) -> alloc::string::String {
-        let mut buf = alloc::string::String::with_capacity(4);
+        let mut buf = alloc::string::String::new();
         // OK because writing to `String` never fails.
         self.print_timestamp_with_offset(timestamp, offset, &mut buf).unwrap();
         buf
@@ -1467,7 +1502,7 @@ impl DateTimePrinter {
         &self,
         dt: &civil::DateTime,
     ) -> alloc::string::String {
-        let mut buf = alloc::string::String::with_capacity(4);
+        let mut buf = alloc::string::String::new();
         // OK because writing to `String` never fails.
         self.print_datetime(dt, &mut buf).unwrap();
         buf
@@ -1490,7 +1525,7 @@ impl DateTimePrinter {
     /// ```
     #[cfg(feature = "alloc")]
     pub fn date_to_string(&self, date: &civil::Date) -> alloc::string::String {
-        let mut buf = alloc::string::String::with_capacity(4);
+        let mut buf = alloc::string::String::new();
         // OK because writing to `String` never fails.
         self.print_date(date, &mut buf).unwrap();
         buf
@@ -1513,7 +1548,7 @@ impl DateTimePrinter {
     /// ```
     #[cfg(feature = "alloc")]
     pub fn time_to_string(&self, time: &civil::Time) -> alloc::string::String {
-        let mut buf = alloc::string::String::with_capacity(4);
+        let mut buf = alloc::string::String::new();
         // OK because writing to `String` never fails.
         self.print_time(time, &mut buf).unwrap();
         buf
@@ -1540,8 +1575,8 @@ impl DateTimePrinter {
     /// const PRINTER: DateTimePrinter = DateTimePrinter::new();
     ///
     /// // IANA time zone
-    /// let tz = TimeZone::get("US/Eastern")?;
-    /// assert_eq!(PRINTER.time_zone_to_string(&tz)?, "US/Eastern");
+    /// let tz = TimeZone::get("America/New_York")?;
+    /// assert_eq!(PRINTER.time_zone_to_string(&tz)?, "America/New_York");
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
@@ -1550,7 +1585,7 @@ impl DateTimePrinter {
         &self,
         tz: &TimeZone,
     ) -> Result<alloc::string::String, Error> {
-        let mut buf = alloc::string::String::with_capacity(4);
+        let mut buf = alloc::string::String::new();
         // Writing to a `String` itself will never fail, but this could fail
         // as described above in the docs.
         self.print_time_zone(tz, &mut buf)?;
@@ -1595,13 +1630,13 @@ impl DateTimePrinter {
     /// ```
     #[cfg(feature = "alloc")]
     pub fn pieces_to_string(&self, pieces: &Pieces) -> alloc::string::String {
-        let mut buf = alloc::string::String::with_capacity(4);
+        let mut buf = alloc::string::String::new();
         // OK because writing to `String` never fails.
         self.print_pieces(pieces, &mut buf).unwrap();
         buf
     }
 
-    /// Print a `Zoned` datetime to the given writer.
+    /// Print a `ZonedDateTime` datetime to the given writer.
     ///
     /// # Errors
     ///
@@ -1621,17 +1656,17 @@ impl DateTimePrinter {
     ///
     /// let mut buf = String::new();
     /// // Printing to a `String` can never fail.
-    /// PRINTER.print_zoned(&zdt, &mut buf).unwrap();
+    /// PRINTER.print_zoned_datetime(&zdt, &mut buf).unwrap();
     /// assert_eq!(buf, "2024-06-15T07:00:00-04:00[America/New_York]");
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
-    pub fn print_zoned<W: Write>(
+    pub fn print_zoned_datetime<W: Write>(
         &self,
-        zdt: &Zoned,
-        wtr: W,
+        zdt: &ZonedDateTime,
+        mut wtr: W,
     ) -> Result<(), Error> {
-        self.p.print_zoned(zdt, wtr)
+        self.p.print_zoned_datetime(zdt, &mut wtr)
     }
 
     /// Print a `Timestamp` datetime to the given writer.
@@ -1680,9 +1715,9 @@ impl DateTimePrinter {
     pub fn print_timestamp<W: Write>(
         &self,
         timestamp: &Timestamp,
-        wtr: W,
+        mut wtr: W,
     ) -> Result<(), Error> {
-        self.p.print_timestamp(timestamp, None, wtr)
+        self.p.print_timestamp(timestamp, &mut wtr)
     }
 
     /// Print a `Timestamp` datetime to the given writer with the given offset.
@@ -1748,9 +1783,9 @@ impl DateTimePrinter {
         &self,
         timestamp: &Timestamp,
         offset: Offset,
-        wtr: W,
+        mut wtr: W,
     ) -> Result<(), Error> {
-        self.p.print_timestamp(timestamp, Some(offset), wtr)
+        self.p.print_timestamp_with_offset(timestamp, offset, &mut wtr)
     }
 
     /// Print a `civil::DateTime` to the given writer.
@@ -1781,9 +1816,9 @@ impl DateTimePrinter {
     pub fn print_datetime<W: Write>(
         &self,
         dt: &civil::DateTime,
-        wtr: W,
+        mut wtr: W,
     ) -> Result<(), Error> {
-        self.p.print_datetime(dt, wtr)
+        self.p.print_datetime(dt, &mut wtr)
     }
 
     /// Print a `civil::Date` to the given writer.
@@ -1814,9 +1849,9 @@ impl DateTimePrinter {
     pub fn print_date<W: Write>(
         &self,
         date: &civil::Date,
-        wtr: W,
+        mut wtr: W,
     ) -> Result<(), Error> {
-        self.p.print_date(date, wtr)
+        self.p.print_date(date, &mut wtr)
     }
 
     /// Print a `civil::Time` to the given writer.
@@ -1847,9 +1882,9 @@ impl DateTimePrinter {
     pub fn print_time<W: Write>(
         &self,
         time: &civil::Time,
-        wtr: W,
+        mut wtr: W,
     ) -> Result<(), Error> {
-        self.p.print_time(time, wtr)
+        self.p.print_time(time, &mut wtr)
     }
 
     /// Print a `TimeZone`.
@@ -1868,13 +1903,13 @@ impl DateTimePrinter {
     /// `[+-]HH:MM:SS` format. Otherwise, the `:SS` will be omitted.
     ///
     /// This differs from RFC 3339 and RFC 9557 because neither support
-    /// sub-minute resolution in UTC offsets. Indeed, if one were to format
-    /// a `Zoned` with an offset that contains fractional minutes, the offset
-    /// would be rounded to the nearest minute to preserve compatibility with
-    /// RFC 3339 and RFC 9557. However, this routine does no such rounding.
-    /// This is because there is no RFC standardizing the serialization of
-    /// a lone time zone, and there is otherwise no need to reduce an offset's
-    /// precision.
+    /// sub-minute resolution in UTC offsets. Indeed, if one were to format a
+    /// `ZonedDateTime` with an offset that contains fractional minutes, the
+    /// offset would be rounded to the nearest minute to preserve compatibility
+    /// with RFC 3339 and RFC 9557. However, this routine does no such
+    /// rounding. This is because there is no RFC standardizing the
+    /// serialization of a lone time zone, and there is otherwise no need to
+    /// reduce an offset's precision.
     ///
     /// # Errors
     ///
@@ -1897,10 +1932,10 @@ impl DateTimePrinter {
     /// const PRINTER: DateTimePrinter = DateTimePrinter::new();
     ///
     /// // IANA time zone
-    /// let tz = TimeZone::get("US/Eastern")?;
+    /// let tz = TimeZone::get("America/New_York")?;
     /// let mut buf = String::new();
     /// PRINTER.print_time_zone(&tz, &mut buf)?;
-    /// assert_eq!(buf, "US/Eastern");
+    /// assert_eq!(buf, "America/New_York");
     ///
     /// // Fixed offset
     /// let tz = TimeZone::fixed(tz::offset(-5));
@@ -1926,9 +1961,23 @@ impl DateTimePrinter {
     pub fn print_time_zone<W: Write>(
         &self,
         tz: &TimeZone,
-        wtr: W,
+        mut wtr: W,
     ) -> Result<(), Error> {
-        self.p.print_time_zone(tz, wtr)
+        self.p.print_time_zone(tz, &mut wtr)
+    }
+
+    /// Prints a POSIX time zone string.
+    ///
+    /// This isn't exported because `PosixTimeZone` isn't exported. It
+    /// probably never will be, but this is used by tests in the POSIX time
+    /// zone parser to ensure our printing round-trips correctly. It is also
+    /// used by way of the internal `Display` impl for `PosixTimeZone`.
+    pub(crate) fn print_posix_time_zone<W: Write>(
+        &self,
+        tz: &jcore::tz::posix::TimeZone,
+        mut wtr: W,
+    ) -> Result<(), Error> {
+        self.p.print_posix_time_zone(tz, &mut wtr)
     }
 
     /// Print the `Pieces` of a Temporal datetime.
@@ -1948,21 +1997,40 @@ impl DateTimePrinter {
     /// const PRINTER: DateTimePrinter = DateTimePrinter::new();
     ///
     /// let pieces = Pieces::from(date(2024, 6, 15))
-    ///     .with_time_zone_name("US/Eastern");
+    ///     .with_time_zone_name("America/New_York");
     ///
     /// let mut buf = String::new();
     /// // Printing to a `String` can never fail.
     /// PRINTER.print_pieces(&pieces, &mut buf).unwrap();
-    /// assert_eq!(buf, "2024-06-15[US/Eastern]");
+    /// assert_eq!(buf, "2024-06-15[America/New_York]");
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn print_pieces<W: Write>(
         &self,
         pieces: &Pieces,
-        wtr: W,
+        mut wtr: W,
     ) -> Result<(), Error> {
-        self.p.print_pieces(pieces, wtr)
+        self.p.print_pieces(pieces, &mut wtr)
+    }
+
+    /// Prints an ISO 8601 week date.
+    ///
+    /// This isn't exported because it's not clear that it's worth it.
+    /// Moreover, this isn't part of the Temporal spec, so it's a little odd
+    /// to have it here. But it's very convenient to have the ISO 8601 week
+    /// date parser in this module, and so we stick the printer here along
+    /// with it.
+    ///
+    /// Note that this printer will use `w` when `lowercase` is enabled. (It
+    /// isn't possible to enable this using the current Jiff public API. But
+    /// it's probably fine.)
+    pub(crate) fn print_iso_week_date<W: Write>(
+        &self,
+        iso_week_date: &ISOWeekDate,
+        mut wtr: W,
+    ) -> Result<(), Error> {
+        self.p.print_iso_week_date(iso_week_date, &mut wtr)
     }
 }
 
@@ -2235,7 +2303,7 @@ impl SpanPrinter {
     /// ```
     #[cfg(feature = "alloc")]
     pub fn span_to_string(&self, span: &Span) -> alloc::string::String {
-        let mut buf = alloc::string::String::with_capacity(4);
+        let mut buf = alloc::string::String::new();
         // OK because writing to `String` never fails.
         self.print_span(span, &mut buf).unwrap();
         buf
@@ -2267,7 +2335,7 @@ impl SpanPrinter {
         &self,
         duration: &SignedDuration,
     ) -> alloc::string::String {
-        let mut buf = alloc::string::String::with_capacity(4);
+        let mut buf = alloc::string::String::new();
         // OK because writing to `String` never fails.
         self.print_duration(duration, &mut buf).unwrap();
         buf
@@ -2303,7 +2371,7 @@ impl SpanPrinter {
         &self,
         duration: &core::time::Duration,
     ) -> alloc::string::String {
-        let mut buf = alloc::string::String::with_capacity(4);
+        let mut buf = alloc::string::String::new();
         // OK because writing to `String` never fails.
         self.print_unsigned_duration(duration, &mut buf).unwrap();
         buf
@@ -2337,9 +2405,9 @@ impl SpanPrinter {
     pub fn print_span<W: Write>(
         &self,
         span: &Span,
-        wtr: W,
+        mut wtr: W,
     ) -> Result<(), Error> {
-        self.p.print_span(span, wtr)
+        self.p.print_span(span, &mut wtr)
     }
 
     /// Print a `SignedDuration` to the given writer.
@@ -2378,9 +2446,9 @@ impl SpanPrinter {
     pub fn print_duration<W: Write>(
         &self,
         duration: &SignedDuration,
-        wtr: W,
+        mut wtr: W,
     ) -> Result<(), Error> {
-        self.p.print_signed_duration(duration, wtr)
+        self.p.print_signed_duration(duration, &mut wtr)
     }
 
     /// Print a `std::time::Duration` to the given writer.
@@ -2415,9 +2483,9 @@ impl SpanPrinter {
     pub fn print_unsigned_duration<W: Write>(
         &self,
         duration: &core::time::Duration,
-        wtr: W,
+        mut wtr: W,
     ) -> Result<(), Error> {
-        self.p.print_unsigned_duration(duration, wtr)
+        self.p.print_unsigned_duration(duration, &mut wtr)
     }
 }
 
@@ -2443,6 +2511,17 @@ mod tests {
         );
     }
 
+    // Regression test for: https://github.com/BurntSushi/jiff/issues/539
+    #[test]
+    fn err_temporal_datetime_unparsed_input() {
+        insta::assert_snapshot!(
+            DateTimeParser::new()
+                .parse_datetime(b"2026-04-17 19:43 AM")
+                .unwrap_err(),
+            @r###"parsed value '2026-04-17T19:43:00', but unparsed input " AM" remains (expected no unparsed input)"###,
+        );
+    }
+
     #[test]
     fn year_zero() {
         insta::assert_snapshot!(
@@ -2455,7 +2534,7 @@ mod tests {
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date("-000000-01-01").unwrap_err(),
-            @r###"failed to parse year in date "-000000-01-01": year zero must be written without a sign or a positive sign, but not a negative sign"###,
+            @"year zero must be written without a sign or a positive sign, but not a negative sign",
         );
     }
 
@@ -2468,5 +2547,51 @@ mod tests {
             span1.total(Unit::Hour).unwrap(),
             span2.total(Unit::Hour).unwrap()
         );
+    }
+
+    #[test]
+    fn minimum_offset_roundtrip() {
+        let zdt = civil::date(2025, 12, 25)
+            .at(17, 0, 0, 0)
+            .to_zoned_datetime(TimeZone::fixed(Offset::MIN))
+            .unwrap();
+        let string = zdt.to_string();
+        assert_eq!(string, "2025-12-25T17:00:00-25:59[-25:59]");
+
+        let got: ZonedDateTime = string.parse().unwrap();
+        // Since we started with a zoned datetime with a minimal offset
+        // (to second precision) and RFC 9557 only supports minute precision
+        // in time zone offsets, printing the zoned datetime rounds the offset.
+        // But this would normally result in an offset beyond Jiff's limits,
+        // so in this case, the offset truncates to the minimum supported
+        // value by both Jiff and RFC 9557. That's what we test for here.
+        let expected = civil::date(2025, 12, 25)
+            .at(17, 0, 0, 0)
+            .to_zoned_datetime(TimeZone::fixed(-Offset::hms(25, 59, 0)))
+            .unwrap();
+        assert_eq!(expected, got);
+    }
+
+    #[test]
+    fn maximum_offset_roundtrip() {
+        let zdt = civil::date(2025, 12, 25)
+            .at(17, 0, 0, 0)
+            .to_zoned_datetime(TimeZone::fixed(Offset::MAX))
+            .unwrap();
+        let string = zdt.to_string();
+        assert_eq!(string, "2025-12-25T17:00:00+25:59[+25:59]");
+
+        let got: ZonedDateTime = string.parse().unwrap();
+        // Since we started with a zoned datetime with a maximal offset
+        // (to second precision) and RFC 9557 only supports minute precision
+        // in time zone offsets, printing the zoned datetime rounds the offset.
+        // But this would normally result in an offset beyond Jiff's limits,
+        // so in this case, the offset truncates to the maximum supported
+        // value by both Jiff and RFC 9557. That's what we test for here.
+        let expected = civil::date(2025, 12, 25)
+            .at(17, 0, 0, 0)
+            .to_zoned_datetime(TimeZone::fixed(Offset::hms(25, 59, 0)))
+            .unwrap();
+        assert_eq!(expected, got);
     }
 }

@@ -1,3 +1,4 @@
+use gix_error::Result;
 use std::{
     cell::RefCell,
     ops::{Deref, DerefMut},
@@ -5,9 +6,10 @@ use std::{
     sync::Arc,
 };
 
+use gix_error::ResultExt;
 use gix_object::Data;
 
-use crate::{find::Header, Cache};
+use crate::{Cache, find::Header};
 
 /// An object database to read from any implementation but write to memory.
 /// Previously written objects can be returned from memory upon query, which makes the view of objects consistent.
@@ -140,11 +142,7 @@ impl<T> gix_object::Find for Proxy<T>
 where
     T: gix_object::Find,
 {
-    fn try_find<'a>(
-        &self,
-        id: &gix_hash::oid,
-        buffer: &'a mut Vec<u8>,
-    ) -> Result<Option<Data<'a>>, gix_object::find::Error> {
+    fn try_find<'a>(&self, id: &gix_hash::oid, buffer: &'a mut Vec<u8>) -> Result<Option<Data<'a>>> {
         if let Some(map) = self.memory.as_ref() {
             let map = map.borrow();
             if let Some((kind, data)) = map.get(id) {
@@ -152,6 +150,7 @@ where
                 buffer.extend_from_slice(data);
                 return Ok(Some(Data {
                     kind: *kind,
+                    object_hash: id.kind(),
                     data: &*buffer,
                 }));
             }
@@ -169,11 +168,22 @@ where
     }
 }
 
+impl<S> Proxy<Cache<crate::store::Handle<S>>>
+where
+    S: Deref<Target = crate::Store> + Clone,
+{
+    /// Like [`exists()`](gix_object::Exists::exists), but never look for packs that were added since the last refresh.
+    /// See [`Handle::exists_without_refresh()`](crate::store::Handle::exists_without_refresh()).
+    pub fn exists_without_refresh(&self, id: &gix_hash::oid) -> bool {
+        self.memory.as_ref().is_some_and(|map| map.borrow().contains_key(id)) || self.inner.exists_without_refresh(id)
+    }
+}
+
 impl<T> crate::Header for Proxy<T>
 where
     T: crate::Header,
 {
-    fn try_header(&self, id: &gix_hash::oid) -> Result<Option<Header>, gix_object::find::Error> {
+    fn try_header(&self, id: &gix_hash::oid) -> Result<Option<Header>> {
         if let Some(map) = self.memory.as_ref() {
             let map = map.borrow();
             if let Some((kind, data)) = map.get(id) {
@@ -191,7 +201,7 @@ impl<T> gix_object::FindHeader for Proxy<T>
 where
     T: gix_object::FindHeader,
 {
-    fn try_header(&self, id: &gix_hash::oid) -> Result<Option<gix_object::Header>, gix_object::find::Error> {
+    fn try_header(&self, id: &gix_hash::oid) -> Result<Option<gix_object::Header>> {
         if let Some(map) = self.memory.as_ref() {
             let map = map.borrow();
             if let Some((kind, data)) = map.get(id) {
@@ -209,21 +219,66 @@ impl<T> gix_object::Write for Proxy<T>
 where
     T: gix_object::Write,
 {
+    fn write(&self, object: &dyn gix_object::WriteTo) -> Result<gix_hash::ObjectId> {
+        let Some(map) = self.memory.as_ref() else {
+            return self.inner.write(object);
+        };
+
+        let mut buf = Vec::with_capacity(2048);
+        object.write_to(&mut buf).or_error()?;
+        let kind = object.kind();
+        let id = gix_object::compute_hash(self.object_hash, kind, &buf)?;
+        map.borrow_mut().entry(id).or_insert((kind, buf));
+        Ok(id)
+    }
+
     fn write_stream(
         &self,
         kind: gix_object::Kind,
         size: u64,
         from: &mut dyn std::io::Read,
-    ) -> Result<gix_hash::ObjectId, gix_object::write::Error> {
+    ) -> Result<gix_hash::ObjectId> {
         let Some(map) = self.memory.as_ref() else {
             return self.inner.write_stream(kind, size, from);
         };
 
         let mut buf = Vec::new();
-        from.read_to_end(&mut buf)?;
+        from.read_to_end(&mut buf).or_error()?;
 
         let id = gix_object::compute_hash(self.object_hash, kind, &buf)?;
-        map.borrow_mut().insert(id, (kind, buf));
+        map.borrow_mut().entry(id).or_insert((kind, buf));
+        Ok(id)
+    }
+
+    fn write_buf_with_known_id(
+        &self,
+        kind: gix_object::Kind,
+        from: &[u8],
+        id: gix_hash::ObjectId,
+    ) -> Result<gix_hash::ObjectId> {
+        let Some(map) = self.memory.as_ref() else {
+            return self.inner.write_buf_with_known_id(kind, from, id);
+        };
+
+        map.borrow_mut().entry(id).or_insert_with(|| (kind, from.to_owned()));
+        Ok(id)
+    }
+
+    fn write_stream_with_known_id(
+        &self,
+        kind: gix_object::Kind,
+        size: u64,
+        from: &mut dyn std::io::Read,
+        id: gix_hash::ObjectId,
+    ) -> Result<gix_hash::ObjectId> {
+        let Some(map) = self.memory.as_ref() else {
+            return self.inner.write_stream_with_known_id(kind, size, from, id);
+        };
+
+        let mut buf = Vec::new();
+        from.read_to_end(&mut buf).or_error()?;
+
+        map.borrow_mut().entry(id).or_insert((kind, buf));
         Ok(id)
     }
 }

@@ -1,0 +1,13 @@
+diff --git a/components/permissions/permissions_client.h b/components/permissions/permissions_client.h
+index 1ae4030847746d5fa0e5393af48d08190d096217..194f37ec3950cd8ca1db68549e398d2694ba196b 100644
+--- a/components/permissions/permissions_client.h
++++ b/components/permissions/permissions_client.h
+@@ -224,7 +224,7 @@ class PermissionsClient {
+   // should only be available on secure origins. Return true to bypass embedding
+   // origin checks for the passed in origins. Less strict ID checks than
+   // `GetCanonicalOriginOverride`.
+-  virtual bool CanBypassEmbeddingOriginCheck(const GURL& requesting_origin,
++  virtual bool CanBypassEmbeddingOriginCheck(ContentSettingsType type, const GURL& requesting_origin,
+                                              const GURL& embedding_origin);
+ 
+   // Allows embedder to override the canonical origin for a permission request.

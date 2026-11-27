@@ -1,0 +1,54 @@
+[package]
+name = "faster-hex"
+version = "0.10.1"
+authors = ["zhangsoledad <787953403@qq.com>"]
+edition = "2018"
+rust-version = "1.61.0"
+keywords = ["simd", "hex", "no-std"]
+license = "MIT"
+description = "Fast hex encoding."
+repository = "https://github.com/NervosFoundation/faster-hex"
+homepage = "https://github.com/NervosFoundation/faster-hex"
+readme = "README.md"
+exclude = ["afl/*", "benches/*", "fuzz/*", "CHANGELOG.md"]
+
+[dependencies]
+defmt = { version = "0.3", optional = true }
+serde = { version = "1.0", default-features = false, optional = true }
+
+[build-dependencies]
+autocfg = "1.5.1"
+
+[features]
+default = ["std", "serde"]
+std = ["alloc", "serde?/std"]
+alloc = ["defmt?/alloc"]
+serde = ["dep:serde", "alloc"]
+defmt-03 = ["dep:defmt"]
+
+[target.'cfg(not(feature = "alloc"))'.dependencies]
+heapless = { version = "0.8" }
+
+[target.'cfg(not(feature = "alloc"))'.features]
+defmt-03 = ["dep:defmt", "heapless/defmt-03"]
+
+[dev-dependencies]
+criterion = "0.5"
+rustc-hex = "1.0"
+hex = "0.3.2"
+proptest = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+bytes = { version = "1.4.0" }
+serde_json = { version = "1.0" }
+
+[[bench]]
+name = "hex"
+harness = false
+
+
+[[bench]]
+name = "check"
+harness = false
+
+[lints.clippy]
+undocumented_unsafe_blocks = "warn"

@@ -1,0 +1,2 @@
+[alias]
+fmt-unstable = ["fmt", "--all", "--", "--config-path", ".rustfmt.unstable.toml"]

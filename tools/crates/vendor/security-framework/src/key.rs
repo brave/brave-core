@@ -7,22 +7,16 @@ use core_foundation::{
     dictionary::CFMutableDictionary,
 };
 use core_foundation::base::ToVoid;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use core_foundation::boolean::CFBoolean;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use core_foundation::data::CFData;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use core_foundation::dictionary::CFDictionary;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use core_foundation::number::CFNumber;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use core_foundation::error::{CFError, CFErrorRef};
 
 use security_framework_sys::{
     item::{kSecAttrKeyTypeRSA, kSecValueRef},
     keychain_item::SecItemDelete,
 };
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use security_framework_sys::{item::{
     kSecAttrIsPermanent, kSecAttrLabel, kSecAttrKeyType,
     kSecAttrKeySizeInBits, kSecAttrAccessControl
@@ -36,25 +30,20 @@ use security_framework_sys::item::{
 use security_framework_sys::base::SecKeyRef;
 use security_framework_sys::key::SecKeyGetTypeID;
 
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 pub use security_framework_sys::key::Algorithm;
 
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use security_framework_sys::key::{
     SecKeyCopyAttributes, SecKeyCopyExternalRepresentation,
     SecKeyCreateSignature, SecKeyCreateRandomKey,
     SecKeyCopyPublicKey,
     SecKeyCreateDecryptedData, SecKeyCreateEncryptedData,
 };
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use security_framework_sys::item::kSecAttrApplicationLabel;
 use std::fmt;
 
 
 use crate::base::Error;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use crate::item::Location;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use crate::access_control::SecAccessControl;
 /// Types of `SecKey`s.
 #[derive(Debug, Copy, Clone)]
@@ -142,14 +131,12 @@ unsafe impl Send for SecKey {}
 
 impl SecKey {
     /// Translates to `SecKeyCreateRandomKey`
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     #[allow(deprecated)]
     #[doc(alias = "SecKeyCreateRandomKey")]
     pub fn new(options: &GenerateKeyOptions) -> Result<Self, CFError> {
         Self::generate(options.to_dictionary())
     }
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     /// Translates to `SecKeyCreateRandomKey`
     /// `GenerateKeyOptions` provides a helper to create an attribute `CFDictionary`.
     #[deprecated(note = "Use SecKey::new")]
@@ -166,7 +153,6 @@ impl SecKey {
     /// Returns the programmatic identifier for the key. For keys of class
     /// kSecAttrKeyClassPublic and kSecAttrKeyClassPrivate, the value is the
     /// hash of the public key.
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     #[must_use]
     pub fn application_label(&self) -> Option<Vec<u8>> {
         self.attributes()
@@ -174,7 +160,6 @@ impl SecKey {
             .map(|v| unsafe { CFData::wrap_under_get_rule(v.cast()) }.to_vec())
     }
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     /// Translates to `SecKeyCopyAttributes`
     // TODO: deprecate and remove. CFDictionary should not be exposed in public Rust APIs.
     #[must_use]
@@ -183,7 +168,6 @@ impl SecKey {
         unsafe { CFDictionary::wrap_under_create_rule(pka) }
     }
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     /// Translates to `SecKeyCopyExternalRepresentation`
     // TODO: deprecate and remove. CFData should not be exposed in public Rust APIs.
     #[must_use]
@@ -196,7 +180,6 @@ impl SecKey {
         Some(unsafe { CFData::wrap_under_create_rule(data) })
     }
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     /// Translates to `SecKeyCopyPublicKey`
     #[must_use]
     pub fn public_key(&self) -> Option<Self> {
@@ -208,7 +191,6 @@ impl SecKey {
         Some(unsafe { Self::wrap_under_create_rule(pub_seckey) })
     }
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     /// Encrypts a block of data using a public key and specified algorithm
     pub fn encrypt_data(&self, algorithm: Algorithm, input: &[u8]) -> Result<Vec<u8>, CFError> {
         let mut error: CFErrorRef = std::ptr::null_mut();
@@ -225,7 +207,6 @@ impl SecKey {
         }
     }
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     /// Decrypts a block of data using a private key and specified algorithm
     pub fn decrypt_data(&self, algorithm: Algorithm, input: &[u8]) -> Result<Vec<u8>, CFError> {
         let mut error: CFErrorRef = std::ptr::null_mut();
@@ -242,7 +223,6 @@ impl SecKey {
         }
     }
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     /// Creates the cryptographic signature for a block of data using a private
     /// key and specified algorithm.
     pub fn create_signature(&self, algorithm: Algorithm, input: &[u8]) -> Result<Vec<u8>, CFError> {
@@ -267,7 +247,6 @@ impl SecKey {
 
     /// Verifies the cryptographic signature for a block of data using a public
     /// key and specified algorithm.
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub fn verify_signature(&self, algorithm: Algorithm, signed_data: &[u8], signature: &[u8]) -> Result<bool, CFError> {
         use security_framework_sys::key::SecKeyVerifySignature;
         let mut error: CFErrorRef = std::ptr::null_mut();
@@ -289,7 +268,6 @@ impl SecKey {
     }
 
     /// Performs the Diffie-Hellman style of key exchange.
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub fn key_exchange(
         &self,
         algorithm: Algorithm,
@@ -361,7 +339,6 @@ pub enum Token {
 /// Recommended reading:
 /// <https://developer.apple.com/documentation/technotes/tn3137-on-mac-keychains>
 #[derive(Debug, Default)]
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 pub struct GenerateKeyOptions {
     /// kSecAttrKeyType
     #[deprecated(note = "use set_key_type()")]
@@ -386,7 +363,6 @@ pub struct GenerateKeyOptions {
     synchronizable: Option<bool>,
 }
 
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 #[allow(deprecated)]
 impl GenerateKeyOptions {
     /// Set `key_type`
@@ -510,7 +486,7 @@ impl GenerateKeyOptions {
         }
 
         #[cfg(feature = "sync-keychain")]
-        if let Some(ref synchronizable) = self.synchronizable {
+        if let Some(synchronizable) = &self.synchronizable {
             attribute_key_values.push((
                 unsafe { security_framework_sys::item::kSecAttrSynchronizable }.to_void(),
                 CFBoolean::from(*synchronizable).to_void(),

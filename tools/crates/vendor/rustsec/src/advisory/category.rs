@@ -37,6 +37,10 @@ pub enum Category {
     /// otherwise unexpected operations, e.g. shell escaping, SQL injection, XSS.
     FormatInjection,
 
+    /// Malicious code or other malware (e.g. credential exfiltration,
+    /// cryptocurrency miners, et al).
+    Malicious,
+
     /// Memory unsafety vulnerabilities allowing an attacker to write to
     /// unintended locations in memory.
     MemoryCorruption,
@@ -60,16 +64,17 @@ impl Category {
     /// Get the short "kebab case" identifier for a category
     pub fn name(&self) -> &str {
         match self {
-            Category::CodeExecution => "code-execution",
-            Category::CryptoFailure => "crypto-failure",
-            Category::DenialOfService => "denial-of-service",
-            Category::FileDisclosure => "file-disclosure",
-            Category::FormatInjection => "format-injection",
-            Category::MemoryCorruption => "memory-corruption",
-            Category::MemoryExposure => "memory-exposure",
-            Category::PrivilegeEscalation => "privilege-escalation",
-            Category::ThreadSafety => "thread-safety",
-            Category::Other(other) => other,
+            Self::CodeExecution => "code-execution",
+            Self::CryptoFailure => "crypto-failure",
+            Self::DenialOfService => "denial-of-service",
+            Self::FileDisclosure => "file-disclosure",
+            Self::FormatInjection => "format-injection",
+            Self::Malicious => "malicious",
+            Self::MemoryCorruption => "memory-corruption",
+            Self::MemoryExposure => "memory-exposure",
+            Self::PrivilegeEscalation => "privilege-escalation",
+            Self::ThreadSafety => "thread-safety",
+            Self::Other(other) => other,
         }
     }
 }
@@ -85,16 +90,17 @@ impl FromStr for Category {
 
     fn from_str(s: &str) -> Result<Self, Error> {
         Ok(match s {
-            "code-execution" => Category::CodeExecution,
-            "crypto-failure" => Category::CryptoFailure,
-            "denial-of-service" => Category::DenialOfService,
-            "file-disclosure" => Category::FileDisclosure,
-            "format-injection" => Category::FormatInjection,
-            "memory-corruption" => Category::MemoryCorruption,
-            "memory-exposure" => Category::MemoryExposure,
-            "privilege-escalation" => Category::PrivilegeEscalation,
-            "thread-safety" => Category::ThreadSafety,
-            other => Category::Other(other.to_owned()),
+            "code-execution" => Self::CodeExecution,
+            "crypto-failure" => Self::CryptoFailure,
+            "denial-of-service" => Self::DenialOfService,
+            "file-disclosure" => Self::FileDisclosure,
+            "format-injection" => Self::FormatInjection,
+            "malicious" => Self::Malicious,
+            "memory-corruption" => Self::MemoryCorruption,
+            "memory-exposure" => Self::MemoryExposure,
+            "privilege-escalation" => Self::PrivilegeEscalation,
+            "thread-safety" => Self::ThreadSafety,
+            other => Self::Other(other.to_owned()),
         })
     }
 }

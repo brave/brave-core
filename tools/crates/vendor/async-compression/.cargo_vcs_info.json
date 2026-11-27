@@ -1,6 +1,6 @@
 {
   "git": {
-    "sha1": "81084f5f46ff9b67386db35a0578d01a121fa8b5"
+    "sha1": "e6376649679145e3ed26af0a7678cc885b3038f8"
   },
   "path_in_vcs": "crates/async-compression"
 }

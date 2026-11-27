@@ -17,6 +17,7 @@
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "v8/include/cppgc/prefinalizer.h"
 
 namespace brave_wallet {
 
@@ -24,6 +25,9 @@ namespace brave_wallet {
 // This class implements cardano.brave object.
 class JSCardanoProvider final : public gin::Wrappable<JSCardanoProvider>,
                                 public content::RenderFrameObserver {
+  // Stops observing the frame before the GC frees this object.
+  CPPGC_USING_PRE_FINALIZER(JSCardanoProvider, Cleanup);
+
  public:
   explicit JSCardanoProvider(content::RenderFrame* render_frame);
   ~JSCardanoProvider() override;

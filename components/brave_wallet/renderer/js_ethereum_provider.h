@@ -20,6 +20,7 @@
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "v8/include/cppgc/prefinalizer.h"
 #include "v8/include/v8-forward.h"
 
 namespace brave_wallet {
@@ -27,6 +28,9 @@ namespace brave_wallet {
 class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
                                  public content::RenderFrameObserver,
                                  public mojom::EventsListener {
+  // Stops observing the frame before the GC frees this object.
+  CPPGC_USING_PRE_FINALIZER(JSEthereumProvider, Cleanup);
+
  public:
   static constexpr gin::WrapperInfo kWrapperInfo = {{gin::kEmbedderNativeGin},
                                                     gin::kEthereumProvider};
@@ -54,6 +58,8 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
  private:
   class MetaMask final : public gin::Wrappable<MetaMask>,
                          public content::RenderFrameObserver {
+    CPPGC_USING_PRE_FINALIZER(MetaMask, Cleanup);
+
    public:
     static constexpr gin::WrapperInfo kWrapperInfo = {{gin::kEmbedderNativeGin},
                                                       gin::kMetaMask};

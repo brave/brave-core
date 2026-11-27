@@ -7,6 +7,8 @@
 #define BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_
 
 #include <cstdint>
+#include <optional>
+#include <utility>
 #include <vector>
 
 #include "base/callback_list.h"
@@ -88,6 +90,13 @@ class BraveTabStripModel : public TabStripModel {
   // split tabs.
   bool IsOnlyActiveTabAndTreeDescendantsSelected();
 
+  // The tab whose subtree was selected by the mouse press that is being
+  // handled, so that the paired mouse release doesn't treat it as a second
+  // click. See tree_tab_view_utils::ActivateTabAndSelectTreeTabSubtree().
+  // TakeTreeTabSubtreeSelectedOnPress() returns the value and clears it.
+  void SetTreeTabSubtreeSelectedOnPress(tabs::TabHandle handle);
+  std::optional<tabs::TabHandle> TakeTreeTabSubtreeSelectedOnPress();
+
   // TabStripModel:
   std::vector<std::variant<std::unique_ptr<DetachedTab>,
                            std::unique_ptr<DetachedTabCollection>>>
@@ -120,6 +129,8 @@ class BraveTabStripModel : public TabStripModel {
 
   // List of tab indexes sorted by most recently used
   std::vector<int> mru_cycle_list_;
+
+  std::optional<tabs::TabHandle> tree_tab_subtree_selected_on_press_;
 
   BooleanPrefMember tree_tabs_enabled_;
 

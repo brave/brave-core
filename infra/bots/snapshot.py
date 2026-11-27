@@ -9,119 +9,45 @@ from __future__ import annotations
 import argparse
 import dataclasses
 import importlib
-import json
 from pathlib import Path
 import pkgutil
 import sys
 
 import gen_paths
+import generated_output
 
 
 def _load_config() -> None:
-    """Imports gn_args.py and all builders/*.py."""
+    """Imports gn_args.py, all targets/*.py and all builders/*.py."""
     config_dir = str(gen_paths.CONFIG_DIR)
     if config_dir not in sys.path:
         sys.path.insert(0, config_dir)
     importlib.import_module('gn_args')
+    import targets as targets_package
+
+    # Before the builders, which name the bundles these declare.
+    for module_info in pkgutil.iter_modules(targets_package.__path__):
+        importlib.import_module('targets.' + module_info.name)
     import builders as builders_package
 
     for module_info in pkgutil.iter_modules(builders_package.__path__):
         importlib.import_module('builders.' + module_info.name)
 
 
-def _dump(data) -> str:
-    return json.dumps(data, indent=2, sort_keys=True) + '\n'
-
-
-def _builder_id(builder) -> dict:
-    """A builder's ID, as upstream's `builder_config.star` writes one, less
-    the buildbucket project and bucket we have no equivalent of."""
-    return {'builder': builder.name}
-
-
-def _entry(builder) -> dict:
-    """A builder's entry in the builder database."""
-    chromium_config = builder.builder_spec.chromium_config
-    gclient_config = builder.builder_spec.gclient_config
-    fields = (
-        ('build_config', chromium_config.build_config),
-        ('host_platform', chromium_config.host_platform),
-        ('target_arch', chromium_config.target_arch),
-        ('target_bits', chromium_config.target_bits),
-        ('target_platform', chromium_config.target_platform),
-    )
-    return {
-        'builder_id': _builder_id(builder),
-        'builder_spec': {
-            'builder_group': builder.builder_group,
-            'chromium_config': {k: v for k, v in fields if v is not None},
-            'gclient_config': {
-                'target_os': list(gclient_config.target_os),
-                'target_cpu': list(gclient_config.target_cpu),
-            },
-        },
-    }
-
-
-def _properties(builder) -> dict:
-    """A builder's `properties.json`: the input properties of its builds.
-
-    With builder's config under the `$brave_tests_builder_config` recipe
-    module's properties, so that consumers learn what it builds and syncs for
-    from here, never from its GN args.
-
-    Raises:
-        ConfigError: the builder has no group.
-    """
-    from lib.config import ConfigError
-
-    if not builder.builder_group:
-        raise ConfigError(
-            'builder %r: builder_group must be set to use '
-            'brave_tests_builder_config' % builder.name
-        )
-    properties = {
-        '$brave_tests_builder_config': {
-            'builder_config': {
-                'builder_db': {'entries': [_entry(builder)]},
-                'builder_ids': [_builder_id(builder)],
-            },
-        },
-        'builder_group': builder.builder_group,
-    }
-    if builder.recipe:
-        properties['recipe'] = builder.recipe
-    return properties
-
-
 def compute_fresh_output(builders_registry, gn_args_registry) -> dict[str, str]:
     """Returns `{relative_path: content}` for every registered builder.
 
     Raises:
-        ConfigError: a builder's spec disagrees with its GN args.
+        ConfigError: a builder cannot be rendered (see
+            `generated_output.render()`).
     """
-    from lib.config import check_builder_spec
-
-    output = {}
-    for builder in builders_registry.all():
-        resolved = gn_args_registry.resolve(builder.name)
-        check_builder_spec(builder, resolved['gn_args'])
-        output[f'{builder.name}/gn-args.json'] = _dump(resolved)
-        output[f'{builder.name}/properties.json'] = _dump(_properties(builder))
-        gclient_config = builder.builder_spec.gclient_config
-        output[f'{builder.name}/sync.json'] = _dump(
-            {
-                'target_os': list(gclient_config.target_os),
-                'target_cpu': list(gclient_config.target_cpu),
-            }
-        )
-        output[f'{builder.name}/targets.json'] = _dump(
-            {
-                'compile': list(builder.targets.compile),
-                'tests': list(builder.targets.tests),
-            }
-        )
-    return output
+    return {
+        f'{builder.name}/{filename}': content
+        for builder in builders_registry.all()
+        for filename, content in generated_output.render(
+            builder, gn_args_registry
+        ).items()
+    }
 
 
 @dataclasses.dataclass(frozen=True)
@@ -199,28 +125,48 @@ def write_snapshot(
 
 def cmd_snapshot(args: argparse.Namespace) -> int:
     _load_config()
-    from lib.config import builders, gn_args
+    from lib.config import builders, gn_args, targets
 
-    result = write_snapshot(
-        builders, gn_args, gen_paths.BUILDERS_OUTPUT_DIR, dry_run=args.check
-    )
-
-    for path in result.deleted:
-        print(f'deleted:   {path}')
-    for path in result.changed:
-        print(f'changed:   {path}')
-    if args.verbose:
-        for path in result.unchanged:
-            print(f'unchanged: {path}')
-
-    if args.check and (result.changed or result.deleted):
-        print(
-            'infra/config/generated/builders/ is stale; run '
-            '`bots.py snapshot` to update it.',
-            file=sys.stderr,
-        )
-        return 1
-    return 0
+    stale = False
+    for name, result in (
+        (
+            'builders',
+            write_snapshot(
+                builders,
+                gn_args,
+                gen_paths.BUILDERS_OUTPUT_DIR,
+                dry_run=args.check,
+            ),
+        ),
+        (
+            'testing',
+            write_output(
+                gen_paths.TESTING_OUTPUT_DIR,
+                {
+                    'gn_isolate_map.pyl': generated_output.render_isolate_map(
+                        targets
+                    )
+                },
+                dry_run=args.check,
+            ),
+        ),
+    ):
+        prefix = '' if name == 'builders' else name + '/'
+        for path in result.deleted:
+            print(f'deleted:   {prefix}{path}')
+        for path in result.changed:
+            print(f'changed:   {prefix}{path}')
+        if args.verbose:
+            for path in result.unchanged:
+                print(f'unchanged: {prefix}{path}')
+        if args.check and (result.changed or result.deleted):
+            print(
+                f'infra/config/generated/{name}/ is stale; run '
+                '`bots.py snapshot` to update it.',
+                file=sys.stderr,
+            )
+            stale = True
+    return 1 if stale else 0
 
 
 def add_subparser(subparsers) -> argparse.ArgumentParser:

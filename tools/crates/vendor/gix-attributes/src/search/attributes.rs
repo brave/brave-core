@@ -1,12 +1,13 @@
+use gix_error::Result;
 use std::path::{Path, PathBuf};
 
 use bstr::{BStr, ByteSlice};
-use gix_glob::search::{pattern, Pattern};
+use gix_glob::search::{Pattern, pattern};
 
 use super::Attributes;
 use crate::{
-    search::{Assignments, MetadataCollection, Outcome, TrackedAssignment, Value},
     Search,
+    search::{Assignments, MetadataCollection, Outcome, TrackedAssignment, Value},
 };
 
 /// Instantiation and initialization.
@@ -31,7 +32,7 @@ impl Search {
             None,
             collection,
             true, /* allow macros */
-        );
+        )?;
 
         for path in files.into_iter() {
             group.add_patterns_file(path.into(), true, None, buf, collection, true /* allow macros */)?;
@@ -80,15 +81,16 @@ impl Search {
         root: Option<&Path>,
         collection: &mut MetadataCollection,
         allow_macros: bool,
-    ) {
+    ) -> std::io::Result<()> {
         self.patterns
-            .push(pattern::List::from_bytes(bytes, source, root, Attributes));
+            .push(pattern::List::from_bytes(bytes, source, root, Attributes)?);
         let last = self.patterns.last_mut().expect("just added");
         if !allow_macros {
             last.patterns
                 .retain(|p| !matches!(p.value, Value::MacroAssignments { .. }));
         }
         collection.update_from_list(last);
+        Ok(())
     }
 
     /// Pop the last attribute patterns list from our queue.
@@ -128,7 +130,7 @@ impl Pattern for Attributes {
 
     fn bytes_to_patterns(&self, bytes: &[u8], _source: &std::path::Path) -> Vec<pattern::Mapping<Self::Value>> {
         fn into_owned_assignments<'a>(
-            attrs: impl Iterator<Item = Result<crate::AssignmentRef<'a>, crate::name::Error>>,
+            attrs: impl Iterator<Item = Result<crate::AssignmentRef<'a>>>,
         ) -> Option<Assignments> {
             let res = attrs
                 .map(|res| {
@@ -137,7 +139,7 @@ impl Pattern for Attributes {
                         inner: a.to_owned(),
                     })
                 })
-                .collect::<Result<Assignments, _>>();
+                .collect::<std::result::Result<Assignments, _>>();
             match res {
                 Ok(res) => Some(res),
                 Err(_err) => {
@@ -199,7 +201,6 @@ fn macro_mode() -> gix_glob::pattern::Mode {
 /// `case` specifies whether cases should be folded during matching or not.
 /// `is_dir` is true if `relative_path` is a directory.
 /// Return `true` if at least one pattern matched.
-#[allow(unused_variables)]
 fn pattern_matching_relative_path(
     list: &gix_glob::search::pattern::List<Attributes>,
     relative_path: &BStr,

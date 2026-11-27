@@ -5,9 +5,9 @@
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/path_service.h"
-#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
@@ -87,16 +87,10 @@ class AIChatAgentProfileBrowserTest : public InProcessBrowserTest {
 
   BrowserWindowInterface* CallOpenBrowserWindowForAiChatAgentProfile(
       Profile* from_profile) {
-    base::RunLoop run_loop;
-    BrowserWindowInterface* browser = nullptr;
-    OpenBrowserWindowForAIChatAgentProfileForTesting(
-        *from_profile, base::BindLambdaForTesting(
-                           [&](BrowserWindowInterface* ai_profile_browser) {
-                             browser = ai_profile_browser;
-                             run_loop.Quit();
-                           }));
-    run_loop.Run();
-    return browser;
+    base::test::TestFuture<BrowserWindowInterface*> future;
+    OpenBrowserWindowForAIChatAgentProfileForTesting(*from_profile,
+                                                     future.GetCallback());
+    return future.Get();
   }
 
   BrowserWindowInterface* FindAIChatBrowser() {

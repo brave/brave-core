@@ -1,5 +1,5 @@
 diff --git a/ios/web/public/test/BUILD.gn b/ios/web/public/test/BUILD.gn
-index 9a8d2c60a9ae1eacfd0217d37eebf6ea778a42af..a497d6a266f3f4bd1b99fe30fc0db6dd59fa34e5 100644
+index 91560a2df4ecee7bc5a5f8eb87633e11f42159d7..4552a1d9325013424d375b6df1e89a8ec3c9325f 100644
 --- a/ios/web/public/test/BUILD.gn
 +++ b/ios/web/public/test/BUILD.gn
 @@ -2,6 +2,8 @@

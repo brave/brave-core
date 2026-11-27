@@ -1,6 +1,6 @@
 [package]
 name = "toml_parser"
-version = "1.0.6+spec-1.1.0"
+version = "1.1.6+spec-1.1.0"
 description = "Yet another format-preserving TOML parser."
 categories = ["encoding", "parser-implementations", "parsing", "config"]
 keywords = ["encoding", "toml", "no_std"]
@@ -20,7 +20,7 @@ pre-release-replacements = [
   {file="CHANGELOG.md", search="\\.\\.\\.HEAD", replace="...{{tag_name}}", exactly=1},
   {file="CHANGELOG.md", search="ReleaseDate", replace="{{date}}", min=1},
   {file="CHANGELOG.md", search="<!-- next-header -->", replace="<!-- next-header -->\n## [Unreleased] - ReleaseDate\n", exactly=1},
-  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: https://github.com/toml-rs/toml/compare/{{tag_name}}...HEAD", exactly=1},
+  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: {{repository}}/compare/{{tag_name}}...HEAD", exactly=1},
 ]
 
 [features]
@@ -33,13 +33,13 @@ unsafe = []
 debug = ["std", "dep:anstream", "dep:anstyle"]
 
 [dependencies]
-anstream = { version = "0.6.20", optional = true }
-anstyle = { version = "1.0.11", optional = true }
-winnow = { version = "0.7.13", default-features = false }
+anstream = { version = "1.0.0", optional = true }
+anstyle = { version = "1.0.14", optional = true }
+winnow = { version = "1.0.0", default-features = false }
 
 [dev-dependencies]
-anstream = { version = "0.6.20", features = ["test"] }
-snapbox = "0.6.21"
+anstream = { version = "1.0.0", features = ["test"] }
+snapbox = "1.1.0"
 toml_datetime = { path = "../toml_datetime" }
 
 [lints]

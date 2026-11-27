@@ -20,6 +20,7 @@
 #include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/updater/buildflags.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
@@ -209,18 +210,7 @@ void SparkleVersionUpdater::UpdateShowPromoteButton() {
   NOTIMPLEMENTED();
 }
 
-#if BUILDFLAG(ENABLE_OMAHA4)
-#define WrapUnique(X)                         \
-  WrapUnique(brave_updater::ShouldUseOmaha4() \
-                 ? X                          \
-                 : static_cast<VersionUpdater*>(new SparkleVersionUpdater()))
-#endif  // BUILDFLAG(ENABLE_OMAHA4)
-
 #include <chrome/browser/ui/webui/help/version_updater_mac.mm>
-
-#if BUILDFLAG(ENABLE_OMAHA4)
-#undef WrapUnique
-#endif
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 void SparkleVersionUpdater::GetIsSparkleForTesting(bool& result) const {

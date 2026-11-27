@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/webui/settings/browser_lifetime_handler.cc b/chrome/browser/ui/webui/settings/browser_lifetime_handler.cc
+index d7a133cff0cfa0baadb372f410470a968d527f4e..21711125b37774d9bcad9c35e8d635af974dbe5e 100644
+--- a/chrome/browser/ui/webui/settings/browser_lifetime_handler.cc
++++ b/chrome/browser/ui/webui/settings/browser_lifetime_handler.cc
+@@ -102,6 +102,11 @@ void BrowserLifetimeHandler::HandleRestart(const base::ListValue& args) {
+ }
+ 
+ void BrowserLifetimeHandler::HandleRelaunch(const base::ListValue& args) {
++  #if BUILDFLAG(ENABLE_SPARKLE)
++  if (brave_relaunch_handler::RelaunchOnMac()) {
++    return;
++  }
++  #endif
+   chrome::AttemptRelaunch();
+ }
+ 

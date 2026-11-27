@@ -29,7 +29,7 @@ mod memory {
     pub struct MemoryCappedHashmap {
         inner: clru::CLruCache<Key, Entry, gix_hashtable::hash::Builder, CustomScale>,
         free_list: Vec<Vec<u8>>,
-        debug: gix_features::cache::Debug,
+        debug: gix_utils::cache::Debug,
     }
 
     impl MemoryCappedHashmap {
@@ -47,7 +47,7 @@ mod memory {
                         .with_scale(CustomScale),
                 ),
                 free_list: Vec::new(),
-                debug: gix_features::cache::Debug::new(format!("MemoryCappedObjectHashmap({memory_cap_in_bytes}B)")),
+                debug: gix_utils::cache::Debug::new(format!("MemoryCappedObjectHashmap({memory_cap_in_bytes}B)")),
             }
         }
     }

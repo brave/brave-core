@@ -11,21 +11,17 @@
 
 [package]
 edition = "2018"
-rust-version = "1.37.0"
+rust-version = "1.41.0"
 name = "typenum"
-version = "1.19.0"
-authors = [
-    "Paho Lurie-Gregg <paho@paholg.com>",
-    "Andre Bogus <bogusandre@gmail.com>",
-]
-build = "build.rs"
+version = "1.20.1"
+build = false
 exclude = [
+    "/.envrc",
     "/.github/",
     "/clippy.toml",
     "/flake.lock",
     "/flake.nix",
     "/justfile",
-    "/.envrc",
 ]
 autolib = false
 autobins = false
@@ -61,9 +57,7 @@ features = [
 
 [features]
 const-generics = []
-force_unix_path_separator = []
 i128 = []
-no_std = []
 scale_info = ["scale-info/derive"]
 strict = []
 
@@ -72,8 +66,8 @@ name = "typenum"
 path = "src/lib.rs"
 
 [[test]]
-name = "test"
-path = "tests/test.rs"
+name = "generated"
+path = "tests/generated.rs"
 
 [dependencies.scale-info]
 version = "1.0"

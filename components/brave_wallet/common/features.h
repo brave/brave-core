@@ -55,6 +55,8 @@ BASE_DECLARE_FEATURE(kBraveWalletFilecoinLedger);
 
 BASE_DECLARE_FEATURE(kBraveWalletCardStackUiFeature);
 
+BASE_DECLARE_FEATURE(kBraveWalletAccountObjectPermissions);
+
 }  // namespace brave_wallet::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_FEATURES_H_

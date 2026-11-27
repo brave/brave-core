@@ -23,7 +23,7 @@ SRC_SOURCE_ROOT = os.path.dirname(BRAVE_SOURCE_ROOT)
 
 sys.path.insert(0, os.path.join(BRAVE_SOURCE_ROOT, 'script'))
 
-from lib.l10n.grd_coverage import find_unmapped  # pylint: disable=wrong-import-position
+from lib.l10n.grd_coverage import find_unmapped  # pylint: disable=wrong-import-position  # noqa: E402
 
 
 def git(*args):
@@ -55,7 +55,7 @@ def main():
 
     print(
         'These upstream files have strings that Brave rebrands but are not in '
-        'the localization mapping (build/commands/lib/l10nUtil.js). Add them '
+        'the localization mapping (build/commands/lib/l10nUtil.ts). Add them '
         'there and in build/commands/lib/branding.js, or allowlist them with '
         'a reason in script/lib/l10n/grd_coverage.py:'
     )

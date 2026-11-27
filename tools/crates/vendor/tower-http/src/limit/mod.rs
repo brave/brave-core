@@ -64,7 +64,7 @@
 //! and return an appropriate response in such case.
 //!
 //! Note that no error will be generated if the body is never read. Similarly,
-//! if the body _would be_ to large, but is never consumed beyond the length
+//! if the body _would be_ too large, but is never consumed beyond the length
 //! limit, then no error is generated, and handling of the remaining incoming
 //! data stream is left to the server implementation as described above.
 //!

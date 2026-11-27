@@ -1,6 +1,6 @@
 # fastrand
 
-[![Build](https://github.com/smol-rs/fastrand/workflows/CI/badge.svg)](
+[![Build](https://github.com/smol-rs/fastrand/actions/workflows/ci.yml/badge.svg)](
 https://github.com/smol-rs/fastrand/actions)
 [![License](https://img.shields.io/badge/license-Apache--2.0_OR_MIT-blue.svg)](
 https://github.com/smol-rs/fastrand)
@@ -40,7 +40,7 @@ let i = fastrand::usize(..v.len());
 let elem = v[i];
 ```
 
-Sample values from an array with `O(n)` complexity (`n` is the length of array):
+Sample values from an array with `O(n)` complexity (`n` is the length of the array):
 
 ```rust
 fastrand::choose_multiple([1, 4, 5], 2);
@@ -79,7 +79,7 @@ generator:
 ```rust
 use std::iter::repeat_with;
 
-let rng = fastrand::Rng::new();
+let mut rng = fastrand::Rng::new();
 let mut bytes: Vec<u8> = repeat_with(|| rng.u8(..)).take(10_000).collect();
 ```
 
@@ -98,8 +98,8 @@ This crate aims to expose a core set of useful randomness primitives. For more n
 
 Licensed under either of
 
- * Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
- * MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+ * Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
+ * MIT license ([LICENSE-MIT](LICENSE-MIT) or https://opensource.org/license/mit)
 
 at your option.
 

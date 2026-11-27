@@ -9,6 +9,7 @@ use futures_core::{future::Future as Future03, stream::Stream as Stream03, task 
 #[cfg(feature = "sink")]
 use futures_sink::Sink as Sink03;
 use std::boxed::Box;
+use std::cell::UnsafeCell;
 use std::pin::Pin;
 use std::task::Context;
 
@@ -65,7 +66,7 @@ pub trait Future01CompatExt: Future01 {
     /// [`Future<Output = Result<T, E>>`](futures_core::future::Future).
     ///
     /// ```
-    /// # if cfg!(miri) { return; } // https://github.com/rust-lang/futures-rs/issues/2514
+    /// # if cfg!(miri) { return; } // 0.1 task_impl uses ptr2int
     /// # futures::executor::block_on(async {
     /// # // TODO: These should be all using `futures::compat`, but that runs up against Cargo
     /// # // feature issues
@@ -92,7 +93,7 @@ pub trait Stream01CompatExt: Stream01 {
     /// [`Stream<Item = Result<T, E>>`](futures_core::stream::Stream).
     ///
     /// ```
-    /// # if cfg!(miri) { return; } // https://github.com/rust-lang/futures-rs/issues/2514
+    /// # if cfg!(miri) { return; } // 0.1 task_impl uses ptr2int
     /// # futures::executor::block_on(async {
     /// use futures::stream::StreamExt;
     /// use futures_util::compat::Stream01CompatExt;
@@ -122,7 +123,7 @@ pub trait Sink01CompatExt: Sink01 {
     /// [`Sink<T, Error = E>`](futures_sink::Sink).
     ///
     /// ```
-    /// # if cfg!(miri) { return; } // https://github.com/rust-lang/futures-rs/issues/2514
+    /// # if cfg!(miri) { return; } // 0.1 task_impl uses ptr2int
     /// # futures::executor::block_on(async {
     /// use futures::{sink::SinkExt, stream::StreamExt};
     /// use futures_util::compat::{Stream01CompatExt, Sink01CompatExt};
@@ -320,7 +321,8 @@ where
     }
 }
 
-struct NotifyWaker(task03::Waker);
+#[repr(transparent)]
+struct NotifyWaker(UnsafeCell<task03::Waker>);
 
 #[allow(missing_debug_implementations)] // false positive: this is private type
 #[derive(Clone)]
@@ -328,26 +330,37 @@ struct WakerToHandle<'a>(&'a task03::Waker);
 
 impl From<WakerToHandle<'_>> for NotifyHandle01 {
     fn from(handle: WakerToHandle<'_>) -> Self {
-        let ptr = Box::new(NotifyWaker(handle.0.clone()));
+        let waker_ptr: Box<task03::Waker> = Box::new(handle.0.clone());
+        // NotifyWaker is a transparent (pointer compatible) wrapper for
+        // task03::Waker (and wrapping in UnsafeCell is fine).
+        let ptr: *mut NotifyWaker = Box::into_raw(waker_ptr) as *mut NotifyWaker;
 
-        unsafe { Self::new(Box::into_raw(ptr)) }
+        unsafe { Self::new(ptr) }
     }
 }
 
 impl Notify01 for NotifyWaker {
     fn notify(&self, _: usize) {
-        self.0.wake_by_ref();
+        unsafe { &*self.0.get() }.wake_by_ref();
     }
 }
 
+unsafe impl Send for NotifyWaker {}
+unsafe impl Sync for NotifyWaker {}
+
 unsafe impl UnsafeNotify01 for NotifyWaker {
     unsafe fn clone_raw(&self) -> NotifyHandle01 {
-        WakerToHandle(&self.0).into()
+        WakerToHandle(unsafe { &*self.0.get() }).into()
     }
 
     unsafe fn drop_raw(&self) {
-        let ptr: *const dyn UnsafeNotify01 = self;
-        drop(unsafe { Box::from_raw(ptr as *mut dyn UnsafeNotify01) });
+        /* UnsafeNotify01::drop_raw says this should receive `*mut Self`,
+         * but that isn't dyn compatible.
+         * miri is unhappy when a `*mut` is created from a `&` reference,
+         * so need to go through `UnsafeCell`.
+         */
+        let waker: *mut task03::Waker = self.0.get();
+        drop(unsafe { Box::from_raw(waker) });
     }
 }
 
@@ -366,7 +379,7 @@ mod io {
         /// [`AsyncRead`](futures_io::AsyncRead).
         ///
         /// ```
-        /// # if cfg!(miri) { return; } // https://github.com/rust-lang/futures-rs/issues/2514
+        /// # if cfg!(miri) { return; } // Miri does not support epoll_create
         /// # futures::executor::block_on(async {
         /// use futures::io::AsyncReadExt;
         /// use futures_util::compat::AsyncRead01CompatExt;
@@ -396,7 +409,7 @@ mod io {
         /// [`AsyncWrite`](futures_io::AsyncWrite).
         ///
         /// ```
-        /// # if cfg!(miri) { return; } // https://github.com/rust-lang/futures-rs/issues/2514
+        /// # if cfg!(miri) { return; } // Miri does not support epoll_create
         /// # futures::executor::block_on(async {
         /// use futures::io::AsyncWriteExt;
         /// use futures_util::compat::AsyncWrite01CompatExt;

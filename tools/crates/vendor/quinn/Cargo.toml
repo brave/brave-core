@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.74.1"
+rust-version = "1.85"
 name = "quinn"
-version = "0.11.9"
+version = "0.11.12"
 build = "build.rs"
 autolib = false
 autobins = false
@@ -43,6 +43,11 @@ features = [
 ]
 
 [features]
+__rustls-post-quantum-test = [
+    "rustls/prefer-post-quantum",
+    "rustls-aws-lc-rs",
+    "proto/__rustls-post-quantum-test",
+]
 aws-lc-rs = ["proto/aws-lc-rs"]
 aws-lc-rs-fips = ["proto/aws-lc-rs-fips"]
 bloom = ["proto/bloom"]
@@ -129,6 +134,11 @@ required-features = ["rustls-ring"]
 name = "many_connections"
 path = "tests/many_connections.rs"
 
+[[test]]
+name = "post_quantum"
+path = "tests/post_quantum.rs"
+required-features = ["__rustls-post-quantum-test"]
+
 [[bench]]
 name = "bench"
 path = "benches/bench.rs"
@@ -154,7 +164,7 @@ optional = true
 version = "0.2"
 
 [dependencies.proto]
-version = "0.11.12"
+version = "0.11.18"
 default-features = false
 package = "quinn-proto"
 
@@ -206,13 +216,10 @@ version = "3"
 version = "2"
 
 [dev-dependencies.rand]
-version = "0.9"
+version = "0.10.1"
 
 [dev-dependencies.rcgen]
 version = "0.14"
-
-[dev-dependencies.rustls-pemfile]
-version = "2"
 
 [dev-dependencies.tokio]
 version = "1.28.1"

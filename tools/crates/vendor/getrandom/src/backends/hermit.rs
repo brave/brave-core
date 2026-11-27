@@ -2,7 +2,7 @@
 use crate::Error;
 use core::mem::MaybeUninit;
 
-extern "C" {
+unsafe extern "C" {
     fn sys_read_entropy(buffer: *mut u8, length: usize, flags: u32) -> isize;
     // Note that `sys_secure_rand32/64` are implemented using `sys_read_entropy`:
     // https://github.com/hermit-os/kernel/blob/430da84/src/syscalls/entropy.rs#L62-L104

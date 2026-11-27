@@ -1,23 +1,21 @@
-use core::fmt::Write as _;
-
 use toml_writer::TomlWrite as _;
 
-use super::array_of_tables::ArrayOfTablesSerializer;
-use super::style::Style;
-use super::value::KeySerializer;
-use super::value::ValueSerializer;
 use super::Buffer;
 use super::Error;
 use super::SerializationStrategy;
 use super::Serializer;
 use super::Table;
+use super::array_of_tables::ArrayOfTablesSerializer;
+use super::style::Style;
+use super::value::KeySerializer;
+use super::value::ValueSerializer;
 use crate::alloc_prelude::*;
 
 #[doc(hidden)]
 pub struct SerializeDocumentTable<'d> {
     buf: &'d mut Buffer,
     table: Table,
-    key: Option<String>,
+    encoded_key: Option<String>,
     style: Style,
 }
 
@@ -26,7 +24,7 @@ impl<'d> SerializeDocumentTable<'d> {
         Ok(Self {
             buf,
             table,
-            key: None,
+            encoded_key: None,
             style,
         })
     }
@@ -34,6 +32,45 @@ impl<'d> SerializeDocumentTable<'d> {
     fn end(self) -> Result<&'d mut Buffer, Error> {
         self.buf.push(self.table);
         Ok(self.buf)
+    }
+
+    fn write_entry<T>(
+        &mut self,
+        write_key: impl FnOnce(&mut String) -> Result<(), Error>,
+        value: &T,
+    ) -> Result<(), Error>
+    where
+        T: serde_core::ser::Serialize + ?Sized,
+    {
+        match SerializationStrategy::from(value) {
+            SerializationStrategy::Value => {
+                let dst = self.buf.ensure_body(&mut self.table);
+
+                write_key(dst)?;
+                dst.space()?;
+                dst.keyval_sep()?;
+                dst.space()?;
+                let value_serializer = ValueSerializer::with_style(dst, self.style);
+                let dst = value.serialize(value_serializer)?;
+                dst.newline()?;
+            }
+            SerializationStrategy::ArrayOfTables => {
+                let encoded_key = self.buf.child_encoded_key(&mut self.table, write_key)?;
+                let value_serializer =
+                    ArrayOfTablesSerializer::new(self.buf, encoded_key, self.style);
+                value.serialize(value_serializer)?;
+            }
+            SerializationStrategy::Table | SerializationStrategy::Unknown => {
+                let child = self.buf.child_table(&mut self.table, write_key)?;
+                let value_serializer = Serializer::with_table(self.buf, child, self.style);
+                value.serialize(value_serializer)?;
+            }
+            SerializationStrategy::Skip => {
+                // Validate the key, then silently drop the key-value pair.
+                write_key(&mut String::new())?;
+            }
+        }
+        Ok(())
     }
 }
 
@@ -49,7 +86,7 @@ impl<'d> serde_core::ser::SerializeMap for SerializeDocumentTable<'d> {
         input.serialize(KeySerializer {
             dst: &mut encoded_key,
         })?;
-        self.key = Some(encoded_key);
+        self.encoded_key = Some(encoded_key);
         Ok(())
     }
 
@@ -58,41 +95,28 @@ impl<'d> serde_core::ser::SerializeMap for SerializeDocumentTable<'d> {
         T: serde_core::ser::Serialize + ?Sized,
     {
         let encoded_key = self
-            .key
+            .encoded_key
             .take()
             .expect("always called after `serialize_key`");
-        match SerializationStrategy::from(value) {
-            SerializationStrategy::Value => {
-                let dst = self.table.body_mut();
+        self.write_entry(
+            |dst| {
+                if dst.is_empty() {
+                    *dst = encoded_key;
+                } else {
+                    dst.push_str(&encoded_key);
+                }
+                Ok(())
+            },
+            value,
+        )
+    }
 
-                write!(dst, "{encoded_key}")?;
-                dst.space()?;
-                dst.keyval_sep()?;
-                dst.space()?;
-                let value_serializer = ValueSerializer::with_style(dst, self.style);
-                let dst = value.serialize(value_serializer)?;
-                dst.newline()?;
-            }
-            SerializationStrategy::ArrayOfTables => {
-                self.table.has_children(true);
-                let value_serializer = ArrayOfTablesSerializer::new(
-                    self.buf,
-                    self.table.clone(),
-                    encoded_key,
-                    self.style,
-                );
-                value.serialize(value_serializer)?;
-            }
-            SerializationStrategy::Table | SerializationStrategy::Unknown => {
-                let child = self.buf.child_table(&mut self.table, encoded_key);
-                let value_serializer = Serializer::with_table(self.buf, child, self.style);
-                value.serialize(value_serializer)?;
-            }
-            SerializationStrategy::Skip => {
-                // silently drop these key-value pairs
-            }
-        }
-        Ok(())
+    fn serialize_entry<K, V>(&mut self, key: &K, value: &V) -> Result<(), Self::Error>
+    where
+        K: serde_core::ser::Serialize + ?Sized,
+        V: serde_core::ser::Serialize + ?Sized,
+    {
+        self.write_entry(|dst| key.serialize(KeySerializer { dst }), value)
     }
 
     fn end(self) -> Result<Self::Ok, Self::Error> {
@@ -110,7 +134,7 @@ impl<'d> serde_core::ser::SerializeStruct for SerializeDocumentTable<'d> {
     {
         match SerializationStrategy::from(value) {
             SerializationStrategy::Value => {
-                let dst = self.table.body_mut();
+                let dst = self.buf.ensure_body(&mut self.table);
 
                 dst.key(key)?;
                 dst.space()?;
@@ -121,17 +145,17 @@ impl<'d> serde_core::ser::SerializeStruct for SerializeDocumentTable<'d> {
                 dst.newline()?;
             }
             SerializationStrategy::ArrayOfTables => {
-                self.table.has_children(true);
-                let value_serializer = ArrayOfTablesSerializer::new(
-                    self.buf,
-                    self.table.clone(),
-                    key.to_owned(),
-                    self.style,
-                );
+                let encoded_key = self
+                    .buf
+                    .child_encoded_key(&mut self.table, |dst| dst.key(key).map_err(Error::from))?;
+                let value_serializer =
+                    ArrayOfTablesSerializer::new(self.buf, encoded_key, self.style);
                 value.serialize(value_serializer)?;
             }
             SerializationStrategy::Table | SerializationStrategy::Unknown => {
-                let child = self.buf.child_table(&mut self.table, key.to_owned());
+                let child = self
+                    .buf
+                    .child_table(&mut self.table, |dst| dst.key(key).map_err(Error::from))?;
                 let value_serializer = Serializer::with_table(self.buf, child, self.style);
                 value.serialize(value_serializer)?;
             }

@@ -10,7 +10,7 @@
 //! };
 //! use http_body_util::Full;
 //! use bytes::Bytes;
-//! use std::sync::{Arc, atomic::{AtomicU64, Ordering}};
+//! use std::sync::{Arc, atomic::{AtomicUsize, Ordering}};
 //!
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -21,7 +21,7 @@
 //! // A `MakeRequestId` that increments an atomic counter
 //! #[derive(Clone, Default)]
 //! struct MyMakeRequestId {
-//!     counter: Arc<AtomicU64>,
+//!     counter: Arc<AtomicUsize>,
 //! }
 //!
 //! impl MakeRequestId for MyMakeRequestId {
@@ -68,7 +68,7 @@
 //! # };
 //! # use bytes::Bytes;
 //! # use http_body_util::Full;
-//! # use std::sync::{Arc, atomic::{AtomicU64, Ordering}};
+//! # use std::sync::{Arc, atomic::{AtomicUsize, Ordering}};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! # let handler = tower::service_fn(|request: Request<Full<Bytes>>| async move {
@@ -76,7 +76,7 @@
 //! # });
 //! # #[derive(Clone, Default)]
 //! # struct MyMakeRequestId {
-//! #     counter: Arc<AtomicU64>,
+//! #     counter: Arc<AtomicUsize>,
 //! # }
 //! # impl MakeRequestId for MyMakeRequestId {
 //! #     fn make_request_id<B>(&mut self, request: &Request<B>) -> Option<RequestId> {
@@ -122,7 +122,7 @@
 //! # };
 //! # use http_body_util::Full;
 //! # use bytes::Bytes;
-//! # use std::sync::{Arc, atomic::{AtomicU64, Ordering}};
+//! # use std::sync::{Arc, atomic::{AtomicUsize, Ordering}};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! # let handler = tower::service_fn(|request: Request<Full<Bytes>>| async move {
@@ -130,7 +130,7 @@
 //! # });
 //! # #[derive(Clone, Default)]
 //! # struct MyMakeRequestId {
-//! #     counter: Arc<AtomicU64>,
+//! #     counter: Arc<AtomicUsize>,
 //! # }
 //! # impl MakeRequestId for MyMakeRequestId {
 //! #     fn make_request_id<B>(&mut self, request: &Request<B>) -> Option<RequestId> {
@@ -483,12 +483,10 @@ mod tests {
     use crate::test_helpers::Body;
     use crate::ServiceBuilderExt as _;
     use http::Response;
+    use std::sync::atomic::AtomicUsize;
     use std::{
         convert::Infallible,
-        sync::{
-            atomic::{AtomicU64, Ordering},
-            Arc,
-        },
+        sync::{atomic::Ordering, Arc},
     };
     use tower::{ServiceBuilder, ServiceExt};
 
@@ -574,7 +572,7 @@ mod tests {
     }
 
     #[derive(Clone, Default)]
-    struct Counter(Arc<AtomicU64>);
+    struct Counter(Arc<AtomicUsize>);
 
     impl MakeRequestId for Counter {
         fn make_request_id<B>(&mut self, _request: &Request<B>) -> Option<RequestId> {

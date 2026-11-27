@@ -2,13 +2,8 @@ use core::mem::MaybeUninit;
 
 use alloc::string::String;
 
-use windows_sys::Win32::System::Time::{
-    GetDynamicTimeZoneInformation, DYNAMIC_TIME_ZONE_INFORMATION,
-    TIME_ZONE_ID_INVALID,
-};
-
 use crate::{
-    error::{err, Error, ErrorContext},
+    error::{Error, ErrorContext, tz::system::Error as E},
     tz::{TimeZone, TimeZoneDatabase},
     util::utf8,
 };
@@ -17,6 +12,13 @@ use self::windows_zones::WINDOWS_TO_IANA;
 
 #[allow(dead_code)] // we don't currently read the version
 mod windows_zones;
+
+mod ffi;
+
+use ffi::{
+    DYNAMIC_TIME_ZONE_INFORMATION, GetDynamicTimeZoneInformation,
+    TIME_ZONE_ID_INVALID,
+};
 
 /// Attempts to find the default "system" time zone.
 ///
@@ -79,16 +81,12 @@ fn windows_to_iana(tz_key_name: &str) -> Result<&'static str, Error> {
         utf8::cmp_ignore_ascii_case(win_name, &tz_key_name)
     });
     let Ok(index) = result else {
-        return Err(err!(
-            "found Windows time zone name {tz_key_name}, \
-             but could not find a mapping for it to an \
-             IANA time zone name",
-        ));
+        return Err(Error::from(E::WindowsMissingIanaMapping));
     };
     let iana_name = WINDOWS_TO_IANA[index].1;
     trace!(
-        "found Windows time zone name {tz_key_name}, and \
-         successfully mapped it to IANA time zone {iana_name}",
+        "found Windows time zone name `{tz_key_name}`, and \
+         successfully mapped it to IANA time zone `{iana_name}`",
     );
     Ok(iana_name)
 }
@@ -106,25 +104,20 @@ fn get_tz_key_name() -> Result<String, Error> {
     // to unless it fails, and we check for failure above. So we're only here
     // when `info` is properly initialized.
     let info = unsafe { info.assume_init() };
-    let tz_key_name = nul_terminated_utf16_to_string(&info.TimeZoneKeyName)
-        .context(
-            "could not get TimeZoneKeyName from \
-             winapi DYNAMIC_TIME_ZONE_INFORMATION",
-        )?;
+    let tz_key_name = nul_terminated_utf16_to_string(&info.timezone_key_name)
+        .context(E::WindowsTimeZoneKeyName)?;
     Ok(tz_key_name)
 }
 
 fn nul_terminated_utf16_to_string(
     code_units: &[u16],
 ) -> Result<String, Error> {
-    let nul = code_units.iter().position(|&cu| cu == 0).ok_or_else(|| {
-        err!("failed to convert u16 slice to UTF-8 (no NUL terminator found)")
-    })?;
+    let nul = code_units
+        .iter()
+        .position(|&cu| cu == 0)
+        .ok_or(E::WindowsUtf16DecodeNul)?;
     let string = String::from_utf16(&code_units[..nul])
-        .map_err(Error::adhoc)
-        .with_context(|| {
-            err!("failed to convert u16 slice to UTF-8 (invalid UTF-16)")
-        })?;
+        .map_err(|_| E::WindowsUtf16DecodeInvalid)?;
     Ok(string)
 }
 

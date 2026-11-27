@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Prijavite se, če želite preprosto nadaljevati v vseh napravah</translation>
 <translation id="2713106313042589954">Izklopi kamero</translation>
 <translation id="2717722538473713889">E-poštni naslovi</translation>
-<translation id="8181634240306014548">Zaženite Brave z aktivno naslovno vrstico, da skrajšate čas zagona v napravah nižjega cenovnega razreda.</translation>
 <translation id="2750481671343847896">Spletna mesta lahko prikazujejo pozive za prijavo zunanjih ponudnikov.</translation>
-<translation id="2787357173144933081">Hiter začetek z naslovno vrstico</translation>
 <translation id="2789132527330338807">Spletna mesta lahko zahtevajo ustvarjanje 3D-zemljevida vaše okolice ali spremljanje položaja fotoaparata</translation>
 <translation id="2790501146643349491">Če je ta možnost vklopljena, nedavno zaprta spletna mesta lahko dokončajo pošiljanje in prejemanje podatkov. Če je ta možnost izklopljena, nedavno zaprta spletna mesta ne smejo dokončati pošiljanja ali prejemanja podatkov.</translation>
 <translation id="2795716239552913152">Spletna mesta običajno uporabljajo vašo lokacijo zaradi ustreznih funkcij ali informacij, kot so lokalne novice ali trgovine v bližini.</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Prilagodite si Brave z barvami in slikami po meri za domačo stran</translation>
 <translation id="389521680295183045">Spletna mesta lahko zahtevajo, da izvejo, kdaj aktivno uporabljate napravo</translation>
 <translation id="3895926599014793903">Vsili povečavo</translation>
-<translation id="3905475044299942653">Ustavitev veliko obvestil</translation>
 <translation id="3922092564198021702">V telefonu odprite nastavitve</translation>
 <translation id="3924858949939391676">Prikaz povezav, ko je način za branje vklopljen</translation>
 <translation id="3933121352599513978">Strni neželene zahteve (priporočeno)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Skupine najdete v razdelku skupine zavihkov v vseh napravah</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> ne sme uporabljati vaših podatkov na</translation>
 <translation id="4953688446973710931">Če je ta možnost vklopljena, spletna mesta lahko zahtevajo samodejni prenos več datotek. Če je ta možnost izklopljena, spletna mesta ne smejo samodejno prenesti več datotek.</translation>
-<translation id="4962975101802056554">Umik vseh dovoljenj za napravo</translation>
 <translation id="4972737347717125191">Spletna mesta lahko zahtevajo uporabo naprav in podatkov za navidezno resničnost</translation>
 <translation id="1275242979020712923">Razdelek na dnu zaslona z barvami Chroma</translation>
 <translation id="497421865427891073">Pojdi naprej</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Spletnim mestom prepreči spremljanje naprave in podatkov za navidezno resničnost</translation>
 <translation id="6447842834002726250">Piškotki</translation>
 <translation id="6452138246455930388">Znižanje cene na odprtem zavihku s cene <ph name="OLD_PRICE"/> na <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Umik dovoljenj za napravo za <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Če je okno omejeno, zahtevajte pogled za mobilno napravo</translation>
 <translation id="6527303717912515753">Skupna raba</translation>
 <translation id="6530703012083415527">Če je ta možnost vklopljena, spletna mesta lahko uporabljajo pojavna okna in preusmeritve. Če je ta možnost izklopljena, spletna mesta ne smejo uporabljati pojavnih oken in preusmeritev.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Podatki spletnih mest v napravi</translation>
 <translation id="7201549776650881587">To dejanje bo izbrisalo vse podatke in piškotke, ki so jih shranila vsa spletna mesta v skupini <ph name="ORIGIN"/> ali z njo povezana aplikacija na začetnem zaslonu.</translation>
 <translation id="7219254577985949841">Želite izbrisati podatke spletnega mesta?</translation>
+<translation id="7225256190577194089">Umik vseh dovoljenj za napravo <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Izberite slike</translation>
 <translation id="7243246278722455312">Prilagajanje razdelka na dnu zaslona strani »Nov zavihek«</translation>
 <translation id="7243308994586599757">Možnosti so na voljo pri dnu zaslona</translation>
@@ -702,7 +700,6 @@ Dodatna zaščita upravlja te nastavitve za Brave:</translation>
 <translation id="8428213095426709021">Nastavitve</translation>
 <translation id="8441146129660941386">Išči nazaj</translation>
 <translation id="8444433999583714703">Če želite aplikaciji <ph name="APP_NAME"/> omogočiti dostop do lokacije, lokacijo vklopite tudi v <ph name="BEGIN_LINK"/>nastavitvah za Android<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Umik dovoljenja za dostop do naprave</translation>
 <translation id="8463843545738141778">Ta nastavitev je onemogočena, ker ste v nastavitvah za Android vklopili dodatno zaščito.</translation>
 <translation id="8467359479529706065">Razdelek na dnu zaslona za videz strani »Nov zavihek« je odprt pri polovični višini</translation>
 <translation id="8471525937465764768">Spletna mesta običajno vzpostavijo povezavo z napravami USB zaradi funkcij, kot sta tiskanje dokumenta ali shranjevanje podatkov v napravo za shranjevanje.</translation>

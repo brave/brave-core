@@ -33,6 +33,7 @@
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_service.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -202,7 +203,7 @@ void PromotionButtonController::SetDefaultAndLoadBraveSearchWithCurrentInput() {
           omnibox_view_->GetText());
 
   NavigateParams params(&*browser_, url, ui::PAGE_TRANSITION_TYPED);
-  params.disposition = WindowOpenDisposition::kCurrentTab;
+  params.disposition = ui::mojom::WindowOpenDisposition::kCurrentTab;
   Navigate(&params);
 
   // Once user set brave as a default, we'll not show this button again.

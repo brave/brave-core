@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Widevine haqida batafsil</translation>
+<translation id="3318169548229684688">Ushbu qurilmada nutqni qayta ishlash uchun nutqni aniqlash modelini (<ph name="DOWNLOAD_SIZE"/>) yuklab olish</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> sizdan so'rayapti</translation>
 <translation id="3218385319396786393">Bu sahifada avtomatik o'ynatish bloklandi</translation>
 <translation id="4988333904713528597">Autoplay imkonini doimo <ph name="HOST"/> da berish</translation>
@@ -610,6 +611,8 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="3540231253392253941">Push xabarnomalari uchun Google xizmatlaridan foydalanish</translation>
 <translation id="2224032129673914306">Semantik tarix qidiruvi</translation>
 <translation id="6045998903985162478">Siz tashrif buyurgan sahifalarni indekslang, shunda ularni tarix, ochiq varaqlar va Leoda osongina topishingiz mumkin.</translation>
+<translation id="3962946446120925966">Qurilmadagi nutqni aniqlash</translation>
+<translation id="6408242130028978631">Saytlar nutqni shu qurilmada qayta ishlashi uchun nutqni aniqlash modelini (<ph name="DOWNLOAD_SIZE"/>) yuklab oling. Modelni olib tashlash uchun bu sozlamani o‘chiring.</translation>
 <translation id="5813105074916486721">Lokal tarixni saqlash</translation>
 <translation id="5671611745062206644">Brave koʻrish tarixingizni lokal ravishda qancha muddat saqlaydi</translation>
 <translation id="7184510058087008090">1 kun</translation>

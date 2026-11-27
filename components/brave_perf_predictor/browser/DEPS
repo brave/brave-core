@@ -13,11 +13,11 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "bandwidth_savings_predictor_unittest\.cc": [
+  "bandwidth_savings_predictor_unittest\\.cc": [
     # chrome deps are not allowed in components
     "!chrome/browser/predictors/loading_test_util.h",
   ],
-  "perf_predictor_tab_helper\.cc": [
+  "perf_predictor_tab_helper\\.cc": [
     # brave/browser deps are not allowed in components
     "!brave/browser/android/brave_shields_content_settings.h",
   ],

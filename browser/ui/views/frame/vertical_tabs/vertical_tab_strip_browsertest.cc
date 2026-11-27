@@ -15,6 +15,7 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
@@ -65,17 +66,21 @@
 #include "chrome/browser/ui/views/tabs/tab/tab_context_menu_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_group_header.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_scroll_bar.h"
 #include "chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_top_container.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/interactive_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
+#include "components/tab_groups/tab_group_color.h"
 #include "components/tab_groups/tab_group_id.h"
+#include "components/tab_groups/tab_group_visual_data.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/base/hit_test.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/test/ui_controls.h"
 #include "ui/compositor/layer.h"
 #include "ui/compositor/paint_context.h"
@@ -84,10 +89,12 @@
 #include "ui/events/event.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/views/controls/scroll_view.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_manager.h"
 #include "ui/views/paint_info.h"
 #include "ui/views/test/views_test_utils.h"
+#include "ui/views/view_utils.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/browser/ui/view_ids.h"
@@ -1099,7 +1106,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
   // Check expanded state is toggled via command.
   auto* command_controller = chrome::BrowserCommandController::From(browser());
   command_controller->ExecuteCommandWithDisposition(
-      IDC_TOGGLE_VERTICAL_TABS_EXPANDED, WindowOpenDisposition::kCurrentTab);
+      IDC_TOGGLE_VERTICAL_TABS_EXPANDED,
+      ui::mojom::WindowOpenDisposition::kCurrentTab);
   EXPECT_EQ(State::kCollapsed, region_view_1->state());
 
   // And new browser should follow the preference.
@@ -1301,16 +1309,16 @@ class VerticalTabStripDragAndDropBrowserTest
   void MoveMouseTo(
       const gfx::Point& point_in_screen,
       base::OnceClosure task_on_mouse_moved = base::NullCallback()) {
-    bool moved = false;
+    base::test::TestFuture<void> moved;
     ui_controls::SendMouseMoveNotifyWhenDone(
         point_in_screen.x(), point_in_screen.y(),
         base::BindLambdaForTesting([&]() {
-          moved = true;
           if (task_on_mouse_moved) {
             std::move(task_on_mouse_moved).Run();
           }
+          moved.SetValue();
         }));
-    WaitUntil(base::BindLambdaForTesting([&]() { return moved; }));
+    ASSERT_TRUE(moved.Wait());
   }
 
   bool IsDraggingTabStrip(BrowserWindowInterface* b) {
@@ -1473,15 +1481,15 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest, MAYBE_DragURL) {
   };
 
   auto drag_mouse_to_point_and_drop = [&](const gfx::Point& point_in_screen) {
-    bool moved = false;
+    base::test::TestFuture<void> moved;
     ui_controls::SendMouseMoveNotifyWhenDone(
         point_in_screen.x(), point_in_screen.y(),
         base::BindLambdaForTesting([&]() {
-          moved = true;
           ui_controls::SendMouseEvents(ui_controls::LEFT, ui_controls::UP);
+          moved.SetValue();
         }));
 
-    WaitUntil(base::BindLambdaForTesting([&]() { return moved; }));
+    ASSERT_TRUE(moved.Wait());
   };
 
   ASSERT_TRUE(
@@ -1521,6 +1529,52 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleWithGroups) {
   AddTabToNewGroup(browser(), 0);
   ToggleVerticalTabStrip();  // To vertical tab strip
   ToggleVerticalTabStrip();  // To horizontal tab strip
+}
+
+// Group header chips are sized and styled per orientation, so switching
+// orientation must rebuild them as a change to the group's visuals would.
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       GroupHeaderChipUpdatesOnToggle) {
+  tab_groups::TabGroupSyncServiceFactory::GetForProfile(browser()->GetProfile())
+      ->SetIsInitializedForTesting(true);
+
+  const tab_groups::TabGroupId group = AddTabToNewGroup(browser(), 0);
+  browser()->tab_strip_model()->ChangeTabGroupVisuals(
+      group, tab_groups::TabGroupVisualData(
+                 u"Hola", tab_groups::TabGroupColorId::kGreen));
+
+  struct ChipState {
+    gfx::Rect bounds;
+    SkPath clip_path;
+  };
+  auto capture = [&]() {
+    GetTabStrip(browser())->StopAnimating();
+    views::test::RunScheduledLayout(browser_view());
+    const views::View* chip =
+        GetTabStrip(browser())->group_header(group)->title_chip_for_testing();
+    return ChipState{chip->bounds(), chip->clip_path()};
+  };
+  auto capture_rebuilt = [&]() {
+    GetTabStrip(browser())->group_header(group)->VisualsChanged();
+    return capture();
+  };
+  auto expect_rebuilt = [&](const char* orientation) {
+    SCOPED_TRACE(orientation);
+    const ChipState toggled = capture();
+    const ChipState rebuilt = capture_rebuilt();
+    EXPECT_EQ(rebuilt.bounds, toggled.bounds);
+    EXPECT_EQ(rebuilt.clip_path, toggled.clip_path);
+  };
+
+  const ChipState horizontal = capture_rebuilt();
+
+  ToggleVerticalTabStrip();
+  expect_rebuilt("vertical");
+  EXPECT_NE(horizontal.bounds, capture().bounds);
+
+  ToggleVerticalTabStrip();
+  expect_rebuilt("horizontal");
+  EXPECT_EQ(horizontal.bounds, capture().bounds);
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
@@ -2501,6 +2555,51 @@ IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsTest, HideCompletelyWhenCollapsed) {
       BrowserView::GetBrowserViewForBrowser(browser()));
   EXPECT_TRUE(region->GetVisible());
   EXPECT_FALSE(region->layer()->GetMasksToBounds());
+}
+
+// The "show scroll bar" pref must be honored by upstream vertical tabs, and
+// changes must apply immediately.
+IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsTest, ShowScrollBarPref) {
+  state_controller()->SetVerticalTabsEnabled(true);
+  ASSERT_TRUE(state_controller()->ShouldDisplayVerticalTabs());
+  auto* region = region_view();
+  ASSERT_TRUE(region);
+
+  // Finds the scroll views which use VerticalTabStripScrollBar.
+  std::vector<views::ScrollView*> scroll_views;
+  std::vector<views::View*> pending = {region};
+  while (!pending.empty()) {
+    views::View* view = pending.back();
+    pending.pop_back();
+    if (auto* scroll_view = views::AsViewClass<views::ScrollView>(view);
+        scroll_view && views::IsViewClass<VerticalTabStripScrollBar>(
+                           scroll_view->vertical_scroll_bar())) {
+      scroll_views.push_back(scroll_view);
+    }
+    for (views::View* child : view->children()) {
+      pending.push_back(child);
+    }
+  }
+  ASSERT_FALSE(scroll_views.empty());
+
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  using Mode = views::ScrollView::ScrollBarMode;
+
+  // Hidden by default.
+  ASSERT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsShowScrollbar));
+  for (auto* scroll_view : scroll_views) {
+    EXPECT_EQ(Mode::kHiddenButEnabled, scroll_view->GetVerticalScrollBarMode());
+  }
+
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, true);
+  for (auto* scroll_view : scroll_views) {
+    EXPECT_EQ(Mode::kEnabled, scroll_view->GetVerticalScrollBarMode());
+  }
+
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, false);
+  for (auto* scroll_view : scroll_views) {
+    EXPECT_EQ(Mode::kHiddenButEnabled, scroll_view->GetVerticalScrollBarMode());
+  }
 }
 
 // Tests for the "Left/Right" position setting of upstream vertical tabs.

@@ -438,6 +438,9 @@ class GclientConfig:
     the one the builder builds for (its `chromium_config`). As in gclient
     itself, the host's are always synced, so a builder that only builds for
     its host can leave both lists empty.
+
+    And what the builder adds to the chromium solution's `custom_deps` and
+    `custom_vars`, on top of `package.json`'s, which every checkout has.
     """
 
     def __init__(
@@ -445,6 +448,8 @@ class GclientConfig:
         *,
         target_os: Sequence[str],
         target_cpu: Sequence[str],
+        custom_deps: Mapping[str, str | None],
+        custom_vars: Mapping[str, bool | str],
     ) -> None:
         # gclient's `target_os`: `target_platform` values.
         self.target_os = _sorted_values(
@@ -455,6 +460,29 @@ class GclientConfig:
         self.target_cpu = _sorted_values(
             'target_cpu', target_cpu, _GCLIENT_CPUS
         )
+
+        # The DEPS entries to override, by path, e.g.
+        # {"src/third_party/chromium-variations": None} to skip one.
+        self.custom_deps = _sorted_mapping(
+            'custom_deps', custom_deps, (str, type(None))
+        )
+
+        # The DEPS vars to override, e.g.
+        # {"checkout_instrumented_libraries": True}.
+        self.custom_vars = _sorted_mapping(
+            'custom_vars', custom_vars, (bool, str)
+        )
+
+
+def _sorted_mapping(
+    field: str, mapping: Mapping[str, Any], value_types: tuple[type, ...]
+) -> FrozenDict[str, Any]:
+    if not isinstance(mapping, Mapping):
+        raise ConfigError('%s must be a mapping, got %r' % (field, mapping))
+    for key, value in mapping.items():
+        if not isinstance(key, str) or not isinstance(value, value_types):
+            raise ConfigError('invalid %s entry: %r: %r' % (field, key, value))
+    return FrozenDict(sorted(mapping.items()))
 
 
 def _sorted_values(
@@ -562,14 +590,23 @@ class _BuilderConfig:
         *,
         target_os: Sequence[str] = (),
         target_cpu: Sequence[str] = (),
+        custom_deps: Mapping[str, str | None] | None = None,
+        custom_vars: Mapping[str, bool | str] | None = None,
     ) -> GclientConfig:
-        """The platforms `init`/`sync` sync for, besides the host's.
+        """The platforms `init`/`sync` sync for, besides the host's, and what
+        the builder adds to the chromium solution's `custom_deps` and
+        `custom_vars`.
 
         Unlike upstream's, which names gclient recipe config items, this
-        takes the `.gclient` lists directly: `target_os` takes
-        `target_platform` values.
+        takes what they set directly: `target_os` takes `target_platform`
+        values.
         """
-        return GclientConfig(target_os=target_os, target_cpu=target_cpu)
+        return GclientConfig(
+            target_os=target_os,
+            target_cpu=target_cpu,
+            custom_deps=custom_deps or {},
+            custom_vars=custom_vars or {},
+        )
 
     @staticmethod
     def chromium_config(
@@ -608,7 +645,8 @@ def check_builder_spec(
 
     The build target is stated by both `chromium_config` and the GN args, so
     they must agree. A builder declaring its `host_platform` must also sync
-    the platform it builds for.
+    the platform it builds for, and one built with `is_msan` must check out
+    the instrumented libraries.
 
     Raises:
         ConfigError: they disagree.
@@ -641,6 +679,13 @@ def check_builder_spec(
             )
         )
     gclient_config = builder.builder_spec.gclient_config
+    if resolved_gn_args.get('is_msan') and not gclient_config.custom_vars.get(
+        'checkout_instrumented_libraries'
+    ):
+        raise ConfigError(
+            'builder %r: builds with is_msan, but gclient_config custom_vars '
+            'does not set checkout_instrumented_libraries' % builder.name
+        )
     if (
         chromium_config.host_platform is not None
         and chromium_config.target_platform != chromium_config.host_platform
@@ -657,20 +702,324 @@ def check_builder_spec(
         )
 
 
-class Targets:
-    """What a builder compiles and runs."""
+class Binary:
+    """A test binary: a GN target that runs tests (see `targets.binaries`)."""
+
+    def __init__(self, *, name: str, label: str, binary_type: str) -> None:
+        # The ninja target name, which tests refer to the binary by.
+        self.name = name
+
+        # The GN label of the target, e.g. "//brave/test:brave_unit_tests".
+        self.label = label
+
+        # "console_test_launcher", or "windowed_test_launcher" for a binary
+        # that needs a display (Xvfb on Linux).
+        self.type = binary_type
+
+
+class GTestTest:
+    """A gtest-based test, as `targets.tests.gtest_test()` declares one."""
 
     def __init__(
         self,
         *,
-        compile: Sequence[str],  # pylint: disable=redefined-builtin
-        tests: Sequence[str],
+        name: str,
+        binary: str,
+        args: Sequence[str],
+        mixins: Sequence[Any],
     ) -> None:
-        # GN target labels to compile, e.g. "brave:all".
-        self.compile = tuple(compile)
+        # The name that refers to the test, and its step name.
+        self.name = name
 
-        # Test target names to run.
-        self.tests = tuple(tests)
+        # The name of the binary the test runs.
+        self.binary = binary
+
+        # The arguments passed to the binary.
+        self.args = tuple(args)
+
+        # The mixins applied to the test, before any of its bundles'.
+        self.mixins = tuple(mixins)
+
+
+class Mixin:
+    """Values added to every test a bundle or test applies it to."""
+
+    def __init__(self, *, args: Sequence[str]) -> None:
+        # Arguments appended to the test's.
+        self.args = tuple(args)
+
+
+class Bundle:
+    """A grouping of targets to build and test (see `targets.bundle()`)."""
+
+    def __init__(
+        self,
+        *,
+        targets: Sequence[Any],  # pylint: disable=redefined-outer-name
+        additional_compile_targets: Sequence[str],
+        mixins: Sequence[Any],
+    ) -> None:
+        # The tests and bundles it includes, by name or inline.
+        self.targets = tuple(targets)
+
+        # The compile targets it builds but does not run, by name.
+        self.additional_compile_targets = tuple(additional_compile_targets)
+
+        # The mixins applied to every test it includes.
+        self.mixins = tuple(mixins)
+
+
+class Targets:
+    """What a builder compiles and tests: its bundle, expanded."""
+
+    def __init__(
+        self,
+        *,
+        additional_compile_targets: Sequence[str],
+        gtest_tests: Sequence[Mapping[str, Any]],
+    ) -> None:
+        # The ninja targets to build but not run.
+        self.additional_compile_targets = tuple(additional_compile_targets)
+
+        # The gtest tests to run: each with its `name`, its `test` (the
+        # binary) and, when there are any, its `args`.
+        self.gtest_tests = tuple(dict(test) for test in gtest_tests)
+
+    @property
+    def compile(self) -> tuple[str, ...]:
+        """The ninja targets to build: the additional compile targets, then
+        the binaries the tests run."""
+        return tuple(
+            dict.fromkeys(
+                [
+                    *self.additional_compile_targets,
+                    *(test['test'] for test in self.gtest_tests),
+                ]
+            )
+        )
+
+    @property
+    def tests(self) -> tuple[str, ...]:
+        """The names of the tests to run."""
+        return tuple(test['name'] for test in self.gtest_tests)
+
+
+class _Binaries:
+    def __init__(self, registry: TargetsRegistry) -> None:
+        self._registry = registry
+
+    def console_test_launcher(self, *, name: str, label: str) -> None:
+        """Defines a gtest binary that runs without a display."""
+        self._registry._add_binary(name, label, 'console_test_launcher')
+
+    def windowed_test_launcher(self, *, name: str, label: str) -> None:
+        """Defines a gtest binary that needs a display (Xvfb on Linux)."""
+        self._registry._add_binary(name, label, 'windowed_test_launcher')
+
+
+class _Tests:
+    def __init__(self, registry: TargetsRegistry) -> None:
+        self._registry = registry
+
+    def gtest_test(
+        self,
+        *,
+        name: str,
+        binary: str | None = None,
+        args: Sequence[str] | None = None,
+        mixins: Sequence[Any] | None = None,
+    ) -> None:
+        """Defines a gtest-based test.
+
+        Args:
+            name: The name that refers to the test in bundles, and its step
+                name.
+            binary: The binary the test runs, the one named `name` without it.
+            args: The arguments passed to the binary.
+            mixins: Mixins to apply to the test, by name or inline.
+        """
+        self._registry._add_test(
+            GTestTest(
+                name=name,
+                binary=binary or name,
+                args=args or (),
+                mixins=mixins or (),
+            )
+        )
+
+
+class TargetsRegistry:
+    """A registry of test binaries, tests, compile targets, mixins and
+    bundles, and their expansion into a builder's `Targets`."""
+
+    def __init__(self) -> None:
+        # Functions declaring binaries, which tests run.
+        self.binaries = _Binaries(self)
+
+        # Functions declaring tests.
+        self.tests = _Tests(self)
+
+        # Name -> declared binary, test, compile target, mixin and bundle.
+        self._binaries: dict[str, Binary] = {}
+        self._tests: dict[str, GTestTest] = {}
+        self._compile_targets: dict[str, str] = {}
+        self._mixins: dict[str, Mixin] = {}
+        self._bundles: dict[str, Bundle] = {}
+
+    def _add_binary(self, name: str, label: str, binary_type: str) -> None:
+        if name in self._binaries:
+            raise ConfigError('binary %r is already defined' % name)
+        self._binaries[name] = Binary(
+            name=name, label=label, binary_type=binary_type
+        )
+
+    def _add_test(self, test: GTestTest) -> None:
+        if test.name in self._tests:
+            raise ConfigError('test %r is already defined' % test.name)
+        self._tests[test.name] = test
+
+    def compile_target(self, *, name: str, label: str) -> None:
+        """Defines a target that bundles can build without running it.
+
+        Args:
+            name: The ninja target name, which bundles refer to it by.
+            label: The target's GN label.
+        """
+        if name in self._compile_targets:
+            raise ConfigError('compile target %r is already defined' % name)
+        self._compile_targets[name] = label
+
+    def mixin(
+        self, *, name: str | None = None, args: Sequence[str] | None = None
+    ) -> None | Mixin:
+        """Defines a mixin, or returns one inline without `name`.
+
+        Args:
+            name: The name tests and bundles refer to it by.
+            args: Arguments appended to those of every test it applies to.
+        """
+        mixin = Mixin(args=args or ())
+        if name is None:
+            return mixin
+        if name in self._mixins:
+            raise ConfigError('mixin %r is already defined' % name)
+        self._mixins[name] = mixin
+        return None
+
+    def bundle(
+        self,
+        *,
+        name: str | None = None,
+        # pylint: disable-next=redefined-outer-name
+        targets: Sequence[Any] | None = None,
+        additional_compile_targets: Sequence[str] | None = None,
+        mixins: Sequence[Any] | None = None,
+    ) -> None | Bundle:
+        """Defines a bundle, or returns one inline without `name`.
+
+        Args:
+            name: The name bundles and builders refer to it by.
+            targets: The tests and bundles it includes, by name or inline.
+            additional_compile_targets: Compile targets it builds but does
+                not run, by name.
+            mixins: Mixins applied to every test it includes, after the
+                tests' own, by name or inline.
+        """
+        bundle = Bundle(
+            targets=targets or (),
+            additional_compile_targets=additional_compile_targets or (),
+            mixins=mixins or (),
+        )
+        if name is None:
+            return bundle
+        if name in self._bundles:
+            raise ConfigError('bundle %r is already defined' % name)
+        self._bundles[name] = bundle
+        return None
+
+    def all_binaries(self) -> tuple[Binary, ...]:
+        """Every declared binary, by name."""
+        return tuple(self._binaries[name] for name in sorted(self._binaries))
+
+    def expand(self, bundle: str | Bundle) -> Targets:
+        """A bundle's tests and compile targets, every bundle it includes
+        expanded and every mixin applied.
+
+        Raises:
+            ConfigError: something it refers to is undefined, it includes a
+                bundle cycle, or it includes a test twice.
+        """
+        compile_targets: dict[str, None] = {}
+        tests: dict[str, dict] = {}
+        self._expand(bundle, (), (), compile_targets, tests)
+        return Targets(
+            additional_compile_targets=list(compile_targets),
+            gtest_tests=list(tests.values()),
+        )
+
+    def _expand(
+        self,
+        target: str | Bundle,
+        outer_mixins: tuple[Mixin, ...],
+        stack: tuple[str, ...],
+        compile_targets: dict[str, None],
+        tests: dict[str, dict],
+    ) -> None:
+        if isinstance(target, str) and target in self._tests:
+            self._add_expanded_test(self._tests[target], outer_mixins, tests)
+            return
+        bundle = self._bundle(target)
+        if isinstance(target, str):
+            if target in stack:
+                raise ConfigError(
+                    'bundle cycle: %s -> %s' % (' -> '.join(stack), target)
+                )
+            stack += (target,)
+        for name in bundle.additional_compile_targets:
+            if name not in self._compile_targets:
+                raise ConfigError('compile target %r is not defined' % name)
+            compile_targets[name] = None
+        mixins = tuple(self._mixin(m) for m in bundle.mixins) + outer_mixins
+        for child in bundle.targets:
+            self._expand(child, mixins, stack, compile_targets, tests)
+
+    def _add_expanded_test(
+        self,
+        test: GTestTest,
+        outer_mixins: tuple[Mixin, ...],
+        tests: dict[str, dict],
+    ) -> None:
+        if test.name in tests:
+            raise ConfigError('test %r is included twice' % test.name)
+        if test.binary not in self._binaries:
+            raise ConfigError(
+                'test %r: binary %r is not defined' % (test.name, test.binary)
+            )
+        args = list(test.args)
+        for mixin in tuple(self._mixin(m) for m in test.mixins) + outer_mixins:
+            args.extend(mixin.args)
+        spec: dict[str, Any] = {'name': test.name, 'test': test.binary}
+        if args:
+            spec['args'] = args
+        tests[test.name] = spec
+
+    def _bundle(self, target: str | Bundle) -> Bundle:
+        if isinstance(target, Bundle):
+            return target
+        try:
+            return self._bundles[target]
+        except KeyError as e:
+            raise ConfigError(
+                '%r is neither a defined test nor a defined bundle' % target
+            ) from e
+
+    def _mixin(self, mixin: str | Mixin) -> Mixin:
+        if isinstance(mixin, Mixin):
+            return mixin
+        try:
+            return self._mixins[mixin]
+        except KeyError as e:
+            raise ConfigError('mixin %r is not defined' % mixin) from e
 
 
 class Builder:
@@ -690,8 +1039,10 @@ class Builder:
         execution_timeout_mins: int | None,
         channel: str | None,
         notifies: Sequence[str],
+        siso_remote_jobs: int | None,
+        siso_reapi_priority: int | None,
         builder_spec: BuilderSpec,
-        targets: Targets,
+        targets: Targets,  # pylint: disable=redefined-outer-name
     ) -> None:
         # The name it was registered under; also its `gn_args` node name.
         self.name = name
@@ -711,11 +1062,34 @@ class Builder:
         # Who to notify on a build result worth telling someone about.
         self.notifies = tuple(notifies)
 
+        # How many jobs siso runs remotely at once, as upstream's
+        # `siso_remote_jobs`; siso's own limit when None.
+        self.siso_remote_jobs = _positive_int(
+            name, 'siso_remote_jobs', siso_remote_jobs
+        )
+
+        # The remote execution priority of the builder's actions; the
+        # service's default when None.
+        self.siso_reapi_priority = _positive_int(
+            name, 'siso_reapi_priority', siso_reapi_priority
+        )
+
         # This builder's `builder_config.builder_spec()`.
         self.builder_spec = builder_spec
 
-        # This builder's `targets()`.
+        # What this builder compiles and tests: its bundle, expanded.
         self.targets = targets
+
+
+def _positive_int(builder_name: str, field: str, value: Any) -> int | None:
+    if value is not None and (
+        not isinstance(value, int) or isinstance(value, bool) or value < 1
+    ):
+        raise ConfigError(
+            'builder %r: %s must be a positive integer, got %r'
+            % (builder_name, field, value)
+        )
+    return value
 
 
 class BuildersRegistry:
@@ -727,11 +1101,18 @@ class BuildersRegistry:
     a `chromium.<group>.star` file's `ci.defaults.set(...)` does upstream.
     """
 
-    def __init__(self, gn_args_registry: GnArgsRegistry) -> None:
+    def __init__(
+        self,
+        gn_args_registry: GnArgsRegistry,
+        targets_registry: TargetsRegistry,
+    ) -> None:
         # Where a builder's GN args get registered (see `_register_gn_args`).
         # Explicit rather than reaching for the module-level `gn_args` below,
         # so a registry under test isn't wired to shared global state.
         self._gn_args = gn_args_registry
+
+        # Where the bundle a builder names is expanded from.
+        self._targets = targets_registry
 
         # Module-level fallbacks for builder(), settable via `defaults.set()`.
         self.defaults = Defaults(
@@ -740,6 +1121,8 @@ class BuildersRegistry:
             execution_timeout_mins=None,
             channel=None,
             notifies=(),
+            siso_remote_jobs=None,
+            siso_reapi_priority=None,
         )
 
         # Name -> registered builder.
@@ -769,26 +1152,20 @@ class BuildersRegistry:
                 'gn_args.config(), got %r' % (builder_name, value)
             )
 
-    def targets(
-        self,
-        *,
-        compile: Sequence[str],  # pylint: disable=redefined-builtin
-        tests: Sequence[str],
-    ) -> Targets:
-        return Targets(compile=compile, tests=tests)
-
     def builder(
         self,
         *,
         name: str,
         builder_spec: BuilderSpec,
         gn_args: Any,  # pylint: disable=redefined-outer-name
-        targets: Targets,
+        targets: str | Bundle,  # pylint: disable=redefined-outer-name
         builder_group: str | None = _UNSET,
         recipe: str | None = _UNSET,
         execution_timeout_mins: int | None = _UNSET,
         channel: str | None = _UNSET,
         notifies: Sequence[str] = _UNSET,
+        siso_remote_jobs: int | None = _UNSET,
+        siso_reapi_priority: int | None = _UNSET,
     ) -> Builder:
         """Defines a builder.
 
@@ -798,9 +1175,11 @@ class BuildersRegistry:
             builder_spec: This builder's `builder_config.builder_spec()`.
             gn_args: The config name, or `gn_args.config()` called without
                 `name`, describing this builder's GN args.
-            targets: This builder's `targets()`.
-            builder_group, recipe, execution_timeout_mins, channel, notifies:
-                Fall back to `defaults` when omitted.
+            targets: The bundle saying what this builder compiles and tests,
+                by name or as `targets.bundle()` returns it without `name`.
+            builder_group, recipe, execution_timeout_mins, channel, notifies,
+            siso_remote_jobs, siso_reapi_priority: Fall back to `defaults`
+                when omitted.
 
         Returns:
             The registered `Builder`.
@@ -814,6 +1193,10 @@ class BuildersRegistry:
             )
 
         self._register_gn_args(name, gn_args)
+        try:
+            expanded_targets = self._targets.expand(targets)
+        except ConfigError as e:
+            raise ConfigError('builder %r: %s' % (name, e)) from e
 
         builder = Builder(
             name=name,
@@ -824,8 +1207,14 @@ class BuildersRegistry:
             ),
             channel=self.defaults.get('channel', channel),
             notifies=self.defaults.get('notifies', notifies),
+            siso_remote_jobs=self.defaults.get(
+                'siso_remote_jobs', siso_remote_jobs
+            ),
+            siso_reapi_priority=self.defaults.get(
+                'siso_reapi_priority', siso_reapi_priority
+            ),
             builder_spec=builder_spec,
-            targets=targets,
+            targets=expanded_targets,
         )
         self._builders[name] = builder
         return builder
@@ -842,4 +1231,5 @@ class BuildersRegistry:
 
 
 # What spec files import: `from lib.config import builders`.
-builders = BuildersRegistry(gn_args)
+targets = TargetsRegistry()
+builders = BuildersRegistry(gn_args, targets)

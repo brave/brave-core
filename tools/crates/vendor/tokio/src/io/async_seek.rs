@@ -78,18 +78,20 @@ where
     P::Target: AsyncSeek,
 {
     fn start_seek(self: Pin<&mut Self>, pos: SeekFrom) -> io::Result<()> {
-        crate::util::pin_as_deref_mut(self).start_seek(pos)
+        self.as_deref_mut().start_seek(pos)
     }
 
     fn poll_complete(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<u64>> {
-        crate::util::pin_as_deref_mut(self).poll_complete(cx)
+        self.as_deref_mut().poll_complete(cx)
     }
 }
 
 impl<T: AsRef<[u8]> + Unpin> AsyncSeek for io::Cursor<T> {
+    #[inline]
     fn start_seek(mut self: Pin<&mut Self>, pos: SeekFrom) -> io::Result<()> {
         io::Seek::seek(&mut *self, pos).map(drop)
     }
+    #[inline]
     fn poll_complete(self: Pin<&mut Self>, _: &mut Context<'_>) -> Poll<io::Result<u64>> {
         Poll::Ready(Ok(self.get_mut().position()))
     }

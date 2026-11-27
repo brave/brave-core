@@ -945,7 +945,7 @@ impl<'de, R: Read<'de>> Deserializer<R> {
             if let Ok(unsigned) = buf.parse() {
                 return Ok(ParserNumber::U64(unsigned));
             }
-        } else {
+        } else if buf != "-0" {
             if let Ok(signed) = buf.parse() {
                 return Ok(ParserNumber::I64(signed));
             }
@@ -993,7 +993,7 @@ impl<'de, R: Read<'de>> Deserializer<R> {
     fn scan_number(&mut self, buf: &mut String) -> Result<()> {
         match tri!(self.peek_or_null()) {
             b'.' => self.scan_decimal(buf),
-            e @ (b'e' | b'E') => self.scan_exponent(e as char, buf),
+            b'e' | b'E' => self.scan_exponent(buf),
             _ => Ok(()),
         }
     }
@@ -1018,15 +1018,15 @@ impl<'de, R: Read<'de>> Deserializer<R> {
         }
 
         match tri!(self.peek_or_null()) {
-            e @ (b'e' | b'E') => self.scan_exponent(e as char, buf),
+            b'e' | b'E' => self.scan_exponent(buf),
             _ => Ok(()),
         }
     }
 
     #[cfg(feature = "arbitrary_precision")]
-    fn scan_exponent(&mut self, e: char, buf: &mut String) -> Result<()> {
+    fn scan_exponent(&mut self, buf: &mut String) -> Result<()> {
         self.eat_char();
-        buf.push(e);
+        buf.push('e');
 
         match tri!(self.peek_or_null()) {
             b'+' => {
@@ -1037,7 +1037,9 @@ impl<'de, R: Read<'de>> Deserializer<R> {
                 self.eat_char();
                 buf.push('-');
             }
-            _ => {}
+            _ => {
+                buf.push('+');
+            }
         }
 
         // Make sure a digit follows the exponent place.
@@ -2050,7 +2052,17 @@ impl<'de, 'a, R: Read<'de> + 'a> de::EnumAccess<'de> for VariantAccess<'a, R> {
     where
         V: de::DeserializeSeed<'de>,
     {
-        let val = tri!(seed.deserialize(&mut *self.de));
+        match tri!(self.de.parse_whitespace()) {
+            Some(b'"') => {}
+            Some(b'}') => return Err(self.de.peek_error(ErrorCode::ExpectedSomeValue)),
+            Some(_) => return Err(self.de.peek_error(ErrorCode::KeyMustBeAString)),
+            None => return Err(self.de.peek_error(ErrorCode::EofWhileParsingObject)),
+        }
+
+        let val = match seed.deserialize(MapKey { de: &mut *self.de }) {
+            Ok(value) => value,
+            Err(err) => return Err(self.de.fix_position(err)),
+        };
         tri!(self.de.parse_object_colon());
         Ok((val, self))
     }

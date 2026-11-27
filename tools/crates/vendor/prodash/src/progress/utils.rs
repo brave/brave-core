@@ -1,6 +1,6 @@
-use crate::{messages::MessageLevel, progress::Id, Count, NestedProgress, Progress, Unit};
-use std::sync::atomic::AtomicUsize;
+use crate::{Count, NestedProgress, Progress, Unit, messages::MessageLevel, progress::Id};
 use std::sync::Arc;
+use std::sync::atomic::AtomicUsize;
 
 /// An implementation of [`NestedProgress`] which discards all calls.
 pub struct Discard;

@@ -4,10 +4,10 @@ use core::mem::MaybeUninit;
 
 pub use crate::util::{inner_u32, inner_u64};
 
-#[cfg(not(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none"))))]
+#[cfg(not(all(target_family = "wasm", any(target_os = "unknown", target_os = "none"),)))]
 compile_error!("`wasm_js` backend can be enabled only for OS-less WASM targets!");
 
-use wasm_bindgen::{prelude::wasm_bindgen, JsValue};
+use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
 
 // Maximum buffer size allowed in `Crypto.getRandomValuesSize` is 65536 bytes.
 // See https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues
@@ -56,7 +56,7 @@ pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
 }
 
 #[wasm_bindgen]
-extern "C" {
+unsafe extern "C" {
     // Crypto.getRandomValues()
     #[cfg(not(target_feature = "atomics"))]
     #[wasm_bindgen(js_namespace = ["globalThis", "crypto"], js_name = getRandomValues, catch)]

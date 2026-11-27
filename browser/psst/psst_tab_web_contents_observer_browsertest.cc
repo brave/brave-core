@@ -16,11 +16,12 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
-#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/psst/core/browser/pref_names.h"
@@ -39,8 +40,6 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "chrome/browser/ui/views/infobars/confirm_infobar.h"
-#include "chrome/browser/ui/views/infobars/infobar_view.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "chrome/browser/ui/views/page_action/page_action_view.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -596,14 +595,12 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     ASSERT_NO_FATAL_FAILURE(
         WritePsstSiteScripts(crx_path, "b", "b.test", "b_test"));
 
-    base::RunLoop run_loop;
+    base::test::TestFuture<std::string, std::vector<PsstRule>> rules_loaded;
     PsstRuleRegistry::GetInstance()->LoadRules(
-        crx_path, base::BindLambdaForTesting(
-                      [&run_loop](const std::string& contents,
-                                  const std::vector<PsstRule>& rules) {
-                        run_loop.Quit();
-                      }));
-    run_loop.Run();
+        crx_path,
+        rules_loaded
+            .GetCallback<const std::string&, const std::vector<PsstRule>&>());
+    ASSERT_TRUE(rules_loaded.Wait());
   }
 
   // Writes the user/policy scripts for a PSST rule named `site_name` (e.g.
@@ -912,11 +909,12 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   }
 
   // Clicks the OK button to accept `infobar` and continue the flow, so that
-  // ConfirmInfoBar::OkButtonPressed() closes the infobar as it would in
-  // production.
+  // BraveConfirmInfoBar::OkButtonPressed() closes the infobar as it would in
+  // production. The PSST infobar is a BraveConfirmInfoBar (PsstInfoBar), not
+  // upstream's ConfirmInfoBar.
   void ClickInfobarOkButton(infobars::InfoBar* infobar) {
     views::test::ButtonTestApi(
-        static_cast<ConfirmInfoBar*>(infobar)->ok_button_for_testing())
+        static_cast<BraveConfirmInfoBar*>(infobar)->ok_button_for_testing())
         .NotifyClick(ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(),
                                     gfx::Point(), base::TimeTicks(),
                                     ui::EF_LEFT_MOUSE_BUTTON,
@@ -924,12 +922,14 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   }
 
   // Clicks the close ("x") button on `infobar`, so that
-  // InfoBarView::CloseButtonPressed() calls delegate()->InfoBarDismissed() and
-  // removes the infobar as it would in production.
+  // BraveConfirmInfoBar::CloseButtonPressed() calls
+  // delegate()->InfoBarDismissed() and removes the infobar as it would in
+  // production. The PSST infobar is a BraveConfirmInfoBar (PsstInfoBar), not
+  // upstream's InfoBarView.
   void ClickInfobarCloseButton(infobars::InfoBar* infobar) {
     views::test::ButtonTestApi(
-        views::Button::AsButton(
-            static_cast<InfoBarView*>(infobar)->close_button()))
+        views::Button::AsButton(static_cast<BraveConfirmInfoBar*>(infobar)
+                                    ->close_button_for_testing()))
         .NotifyClick(ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(),
                                     gfx::Point(), base::TimeTicks(),
                                     ui::EF_LEFT_MOUSE_BUTTON,
@@ -1049,6 +1049,65 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   ASSERT_TRUE(console_observer.Wait());
   EXPECT_TRUE(console_observer.CheckMessages());
   EXPECT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/62143:
+// accepting the PSST infobar on one site disables it globally, so it must not
+// show again on a different PSST-supported site even though that site's own
+// per-origin shown count hasn't reached the max.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       AcceptingInfobarDisablesItGlobally) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstInfobarEnabled));
+
+  const GURL url_a = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+  const GURL url_b = GetEmbeddedTestServer().GetURL("b.test", "/b_test_0.html");
+
+  infobars::ContentInfoBarManager* manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents());
+  InfobarObserver infobar_observer(
+      manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
+  content::CreateAndLoadWebContentsObserver new_web_contents_observer;
+
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url_a));
+  ASSERT_TRUE(infobar_observer.WaitForInfobarAdded());
+
+  auto* psst_infobar = GetPsstInfobar(manager);
+  ASSERT_TRUE(psst_infobar);
+  ClickInfobarOkButton(psst_infobar);
+  ASSERT_TRUE(infobar_observer.WaitForInfobarRemoved());
+
+  // Accepting the infobar disables it globally and records the review
+  // suggestion for the accepted site.
+  EXPECT_FALSE(GetPrefs()->GetBoolean(prefs::kPsstInfobarEnabled));
+  const auto all_settings =
+      GetPsstSettingsService()->GetAllPsstWebsitesSettings();
+  const auto it_a = all_settings.find("a.test");
+  ASSERT_NE(it_a, all_settings.end());
+  EXPECT_EQ(it_a->second.infobar_review_sugg_counter, 1);
+
+  auto* dialog_wc = WaitForAndGetDialogWebContents(new_web_contents_observer);
+  ASSERT_TRUE(dialog_wc);
+  WaitForPsstDialogUIReady(dialog_wc);
+  DialogCloseObserver dialog_close_observer(dialog_wc);
+  ASSERT_TRUE(CloseModalDialog(dialog_wc));
+  dialog_close_observer.Wait();
+
+  // Site b's infobar has never been shown, so its own per-origin count alone
+  // would allow it, but the global pref must still suppress it.
+  EXPECT_EQ(GetPsstSettingsService()->GetInfobarShownCount(
+                url::Origin::Create(url_b)),
+            0);
+
+  IconLabelBubbleView* const psst_view = GetPsstPageActionView();
+  ASSERT_TRUE(psst_view);
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url_b));
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    views::test::RunScheduledLayout(psst_view);
+    return psst_view->GetVisible();
+  }));
+
+  EXPECT_FALSE(GetPsstInfobar(manager));
 }
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,

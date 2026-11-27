@@ -223,6 +223,7 @@ function ConversationEntries(props: {
       entryUuid,
       text,
       skillNode?.id ?? null,
+      null,
     )
     setEditInputId(undefined)
   }

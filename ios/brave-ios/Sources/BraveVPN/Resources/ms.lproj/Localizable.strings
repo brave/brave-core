@@ -7,27 +7,6 @@
 /* Title on top the list of available servers */
 "vpn.availableServerTitle" = "PELAYAN TERSEDIA";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "Beli";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "Lindungi 5 peranti pada 1 langganan";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "Pilih lokasi geo/negara anda";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave tidak pernah mengelogkan aktiviti anda";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Lindungi setiap apl & seluruh peranti anda";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "Lebih selamat untuk WI-Fi rumah atau awam";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "Sepantas kilat, sehingga 100 Mbps";
-
 /* Text indicating how many cities is used for that country used as Ex: '1 City' */
 "vpn.cityCountTitle" = "%ld Bandar";
 
@@ -57,9 +36,6 @@
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "Isu";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Masalah keutuhan sambungan";
 
 /* Description used for specific issue field for customer support contact form. */
 "vpn.contactFormIssueDescription" = "Sila pilih kategori yang menerangkan isu itu.";
@@ -111,9 +87,6 @@
 
 /* The button text that starts the trial action */
 "vpn.freeTrialPeriodAction" = "cuba 7 hari secara percuma";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Semua langganan diperbaharui secara automatik tetapi boleh dibatalkan sebelum pembaharuan.";
 
 /* Text explaining how the VPN works. */
 "vpn.installProfileBody" = "Profil ini membolehkan VPN menyambung secara automatik dan memastikan rafik selamat merentas peranti anda sepanjang masa. Sambungan VPN ini akan disulitkan dan dihalakan melalui dinding api pintar Brave untuk menyekat sambungan yang berpotensi berbahaya dan invasif.";
@@ -172,20 +145,11 @@
 /* Message that we show after successfully changing tunnel protocol. */
 "vpn.protocolSwitchSuccessPopupText" = "Protokol Terowong VPN berubah.";
 
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Wilayah pelayan yang paling dekat dengan anda akan dipilih secara automatik, berdasarkan zon waktu sistem anda. Ini disyorkan untuk memastikan kelajuan internet yang pantas.";
-
 /* Message for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorMessage" = "Gagal menukar pelayan, sila cuba lagi kemudian.";
 
 /* Title for error when we fail to switch vpn server for the user */
 "vpn.regionPickerErrorTitle" = "Ralat Pelayan";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Wilayah Pelayan";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "Wilayah VPN berubah.";
 
 /* Yearly tier explaination. Subscription will be renewed annually. */
 "vpn.renewAnnually" = "Diperbaharui setiap tahun";
@@ -229,9 +193,6 @@
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Hubungi Sokongan Teknikal";
 
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Gagal mendapatkan semula senarai pelayan, sila cuba lagi kemudian.";
-
 /* Button for FAQ */
 "vpn.settingsFAQ" = "Sokongan VPN";
 
@@ -249,12 +210,6 @@
 
 /* Button to reset VPN configuration */
 "vpn.settingsResetConfiguration" = "Set semula Konfigurasi";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Hos";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Lokasi";
 
 /* Header title for vpn settings server section. */
 "vpn.settingsServerSection" = "Pelayan";
@@ -307,32 +262,17 @@
 /* Title for an alert when the VPN can't be configured */
 "vpn.vpnConfigGenericErrorTitle" = "Ralat";
 
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN memerlukan profil VPN untuk dipasang pada peranti anda untuk berfungsi.";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Kebenaran ditolak";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Tidak dapat menebus kod tawaran. Sila cuba lagi atau semak butiran kod tawaran anda dan cuba lagi.";
-
 /* Message for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedBody" = "Tidak dapat menghabiskan pembelian. Sila cuba lagi, atau periksa maklumat pembayaran anda di Apple dan cuba lagi.";
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "Ralat";
 
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Langganan akan dikenakan bayaran melalui akaun iTunes anda.\n\nSebarang bahagian percubaan percuma yang tidak digunakan, jika ditawarkan, akan dibatalkan semasa anda membeli langganan.\n\nLangganan anda akan diperbaharui secara automatik melainkan dibatalkan sekurang-kurangnya 24 jam sebelum akhir tempoh semasa.\n\nAnda boleh menguruskan langganan anda dalam Tetapan.\n\nDengan menggunakan Brave, anda bersetuju dengan Terma Penggunaan dan Dasar Privasi.";
-
 /* The title shown on the menu when the VPN connection is disconnected */
 "vpn.vpnOffMenuButtonTitle" = "VPN Dimatikan";
 
 /* The title shown on the menu when the VPN connection is connected */
 "vpn.vpnOnMenuButtonTitle" = "VPN Dihidupkan";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Tebus Kod";
 
 /* The alert title showing vpn region is changed */
 "vpn.vpnRegionChangedTitle" = "Wilayah VPN Berubah";
@@ -351,9 +291,6 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "Langganan setiap tahun";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Memperbaharui setiap tahun jimat %@";
 
 /* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
 "vpn.yearlySubDisclaimer" = "NILAI TERBAIK";

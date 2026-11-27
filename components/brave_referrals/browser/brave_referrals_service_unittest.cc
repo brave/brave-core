@@ -12,21 +12,29 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/notreached.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/pref_names.h"
+#include "build/blink_buildflags.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
-#include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/data_element.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(USE_BLINK)
+#include "content/public/test/browser_task_environment.h"
+#else
+#include "ios/web/public/test/web_task_environment.h"
+#endif  // BUILDFLAG(USE_BLINK)
 
 namespace brave {
 
@@ -68,15 +76,16 @@ class BraveReferralsServiceTest : public testing::Test {
           } else if (request.url.path() == "/promo/activity") {
             // Respond with a successful finalization check response
             response_body = "{\"finalized\":true}";
-          }
-
-          if (request.url.path() == kBraveConversionPath) {
+          } else if (request.url.path() == kBraveConversionPath) {
+            // Respond with an empty body.
             conversion_request_count_++;
             conversion_request_body_ =
                 std::string(request.request_body->elements()
                                 ->at(0)
                                 .As<network::DataElementBytes>()
                                 .AsStringPiece());
+          } else {
+            ADD_FAILURE() << "Unhandled request: " << request.url.spec();
           }
 
           url_loader_factory_.AddResponse(request.url.spec(), response_body);
@@ -136,7 +145,11 @@ class BraveReferralsServiceTest : public testing::Test {
   }
 
  protected:
+#if BUILDFLAG(USE_BLINK)
   content::BrowserTaskEnvironment task_environment_;
+#else
+  web::WebTaskEnvironment task_environment_;
+#endif  // BUILDFLAG(USE_BLINK)
   base::Time first_run_time_ = base::Time::Now();
   network::TestURLLoaderFactory url_loader_factory_;
   TestingPrefServiceSimple pref_service_;
@@ -238,8 +251,86 @@ TEST_F(BraveReferralsServiceTest, AndroidConversionNotSentOnCaptureRun) {
   EXPECT_EQ(pref_service_.GetString(kReferralAndroidGbraid), kTestGbraid);
 }
 
+TEST_F(BraveReferralsServiceTest, AndroidFirstOpenSentImmediately) {
+  CreateReferralsService();
+  referrals_service_->Start();
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_EQ(conversion_request_count_, 0u);
+
+  referrals_service_->OnAndroidBraveReferrerReadyForTesting(kTestGbraid);
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  EXPECT_EQ(conversion_request_count_, 1u);
+  // Stashed for MaybeReportAndroidConversion() to report second_open later.
+  EXPECT_EQ(pref_service_.GetString(kReferralAndroidGbraid), kTestGbraid);
+
+  base::DictValue body = base::test::ParseJsonDict(conversion_request_body_);
+  ASSERT_TRUE(body.FindString("app_event_name"));
+  EXPECT_EQ(*body.FindString("app_event_name"), "brave_first_open");
+  ASSERT_TRUE(body.FindString("gbraid"));
+  EXPECT_EQ(*body.FindString("gbraid"), kTestGbraid);
+  ASSERT_TRUE(body.FindString("timestamp"));
+  EXPECT_FALSE(body.FindString("timestamp")->empty());
+  ASSERT_TRUE(body.FindString("app_version"));
+  EXPECT_FALSE(body.FindString("app_version")->empty());
+  ASSERT_TRUE(body.FindString("os_version"));
+  EXPECT_FALSE(body.FindString("os_version")->empty());
+  ASSERT_TRUE(body.FindString("sdk_version"));
+  EXPECT_FALSE(body.FindString("sdk_version")->empty());
+}
+
+TEST_F(BraveReferralsServiceTest, AndroidFirstOpenThenSecondOpenOnNextRun) {
+  CreateReferralsService();
+  referrals_service_->Start();
+  referrals_service_->OnAndroidBraveReferrerReadyForTesting(kTestGbraid);
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_EQ(conversion_request_count_, 1u);
+
+  base::DictValue first_open_body =
+      base::test::ParseJsonDict(conversion_request_body_);
+  ASSERT_TRUE(first_open_body.FindString("timestamp"));
+  const std::string first_open_timestamp =
+      *first_open_body.FindString("timestamp");
+
+  // Advance time so a bug that recomputes the timestamp for second_open
+  // (instead of echoing the stashed value) would be caught.
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  referrals_service_.reset();
+  CreateReferralsService();
+  referrals_service_->Start();
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  EXPECT_EQ(conversion_request_count_, 2u);
+  EXPECT_TRUE(pref_service_.GetString(kReferralAndroidGbraid).empty());
+
+  base::DictValue body = base::test::ParseJsonDict(conversion_request_body_);
+  ASSERT_TRUE(body.FindString("app_event_name"));
+  EXPECT_EQ(*body.FindString("app_event_name"), "brave_second_open");
+  ASSERT_TRUE(body.FindString("gbraid"));
+  EXPECT_EQ(*body.FindString("gbraid"), kTestGbraid);
+  ASSERT_TRUE(body.FindString("timestamp"));
+  EXPECT_EQ(*body.FindString("timestamp"), first_open_timestamp);
+}
+
+TEST_F(BraveReferralsServiceTest, AndroidFirstOpenDroppedWhenStatsDisabled) {
+  pref_service_.SetBoolean(kStatsReportingEnabled, false);
+
+  CreateReferralsService();
+  referrals_service_->Start();
+  referrals_service_->OnAndroidBraveReferrerReadyForTesting(kTestGbraid);
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  EXPECT_EQ(conversion_request_count_, 0u);
+  // Still stashed in case stats reporting is re-enabled before the next run.
+  EXPECT_EQ(pref_service_.GetString(kReferralAndroidGbraid), kTestGbraid);
+}
+
 TEST_F(BraveReferralsServiceTest, AndroidConversionSentOnFollowingRun) {
+  const base::Time first_open_timestamp = base::Time::Now();
   pref_service_.SetString(kReferralAndroidGbraid, kTestGbraid);
+  pref_service_.SetTime(kReferralAndroidFirstOpenTimestamp,
+                        first_open_timestamp);
 
   CreateReferralsService();
   referrals_service_->Start();
@@ -250,15 +341,25 @@ TEST_F(BraveReferralsServiceTest, AndroidConversionSentOnFollowingRun) {
   EXPECT_TRUE(pref_service_.GetString(kReferralAndroidGbraid).empty());
 
   base::DictValue body = base::test::ParseJsonDict(conversion_request_body_);
+  ASSERT_TRUE(body.FindString("app_event_name"));
   EXPECT_EQ(*body.FindString("app_event_name"), "brave_second_open");
+  ASSERT_TRUE(body.FindString("gbraid"));
   EXPECT_EQ(*body.FindString("gbraid"), kTestGbraid);
+  ASSERT_TRUE(body.FindString("timestamp"));
+  EXPECT_EQ(*body.FindString("timestamp"),
+            base::NumberToString(
+                first_open_timestamp.InMillisecondsSinceUnixEpoch()));
+  ASSERT_TRUE(body.FindString("app_version"));
   EXPECT_FALSE(body.FindString("app_version")->empty());
+  ASSERT_TRUE(body.FindString("os_version"));
   EXPECT_FALSE(body.FindString("os_version")->empty());
+  ASSERT_TRUE(body.FindString("sdk_version"));
   EXPECT_FALSE(body.FindString("sdk_version")->empty());
 }
 
 TEST_F(BraveReferralsServiceTest, AndroidConversionSentOnlyOnce) {
   pref_service_.SetString(kReferralAndroidGbraid, kTestGbraid);
+  pref_service_.SetTime(kReferralAndroidFirstOpenTimestamp, base::Time::Now());
 
   CreateReferralsService();
   referrals_service_->Start();
@@ -276,6 +377,7 @@ TEST_F(BraveReferralsServiceTest, AndroidConversionSentOnlyOnce) {
 
 TEST_F(BraveReferralsServiceTest, AndroidConversionDroppedWhenStatsDisabled) {
   pref_service_.SetString(kReferralAndroidGbraid, kTestGbraid);
+  pref_service_.SetTime(kReferralAndroidFirstOpenTimestamp, base::Time::Now());
   pref_service_.SetBoolean(kStatsReportingEnabled, false);
 
   CreateReferralsService();
@@ -289,6 +391,7 @@ TEST_F(BraveReferralsServiceTest, AndroidConversionDroppedWhenStatsDisabled) {
 
 TEST_F(BraveReferralsServiceTest, AndroidConversionDroppedOnRequestFailure) {
   pref_service_.SetString(kReferralAndroidGbraid, kTestGbraid);
+  pref_service_.SetTime(kReferralAndroidFirstOpenTimestamp, base::Time::Now());
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         if (request.url.path() == kBraveConversionPath) {

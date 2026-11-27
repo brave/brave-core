@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">Rejesha akaunti za crypto za msingi</translation>
 <translation id="3038077262567136741">Weka kauli yako ya urejeshaji ili urejeshe akaunti yako ya Brave wallet crypto.</translation>
 <translation id="955918646509748368">Kauli ya urejeshaji iliyowekwa si sahihi.</translation>
+<translation id="7496330898672236908">Kifungu hiki cha kurejesha hakilingani na pochi yako. Kagua kifungu na ujaribu tena.</translation>
+<translation id="3798792138617904098">Ondoa akaunti zilizohamishwa?</translation>
+<translation id="2960631345291747230">Akaunti zilizohamishwa hazijahifadhiwa nakala na kifungu chako cha kurejesha. Zitaondolewa kutoka Brave Wallet, na huenda ukapoteza ufikiaji wa fedha zake kabisa isipokuwa umehifadhi nakala ya funguo zake za faragha.</translation>
+<translation id="8898583604592472741">Ondoa akaunti</translation>
+<translation id="1577629163207045190">Andika "<ph name="CONFIRMATION_PHRASE"/>" ili kuthibitisha.</translation>
 <translation id="8107437138787377150">Bandika kauli ya urejeshaji kutoka kwenye ubao nakili</translation>
 <translation id="4811736040444856406">Onyesha kaulisiri ya urejeshaji</translation>
 <translation id="4359319875297001084">Leta kutoka kwenye pochi za jadi za crypto ya Brave?</translation>
@@ -2235,13 +2240,12 @@
 <translation id="3934503473603661122">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Grok 4.7, muundo bora wa kutafakari wa xAI kwenye Amazon Bedrock. Grok 4.7 inahudumiwa kupitia miundombinu salama ya AWS ya Brave.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na GPT Luna, muundo wa haraka na wenye ucheleweshaji mdogo wa OpenAI kwenye Amazon Bedrock. GPT Luna inahudumiwa kupitia miundombinu salama ya AWS ya Brave.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na GPT 5.6 Terra, muundo wa uzalishaji uliosawazishwa wa OpenAI kwenye Amazon Bedrock Mantle. GPT 5.6 Terra inahudumiwa kupitia miundombinu salama ya AWS ya Brave.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Mistral Large, muundo ulioundwa na Mistral kufanya kazi na kutumika katika hali nyingi za matumizi. Mistral Large inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Claude Haiku, muundo ulioundwa na Anthropic kuwezesha mazungumzo na kazi za kuchakata maandishi. Claude Haiku inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Qwen 3.8 Flash Next, muundo ulioundwa na Alibaba Cloud kufanya kazi na kutumika katika hali nyingi za matumizi. Qwen 3.8 Flash Next inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Deepseek V3.2, muundo ulioundwa na Deepseek kufanya kazi na kutumika katika hali nyingi za matumizi. Deepseek V3.2 inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na GLM 5.3, muundo ulioundwa na Z.ai kufanya kazi na kutumika katika hali nyingi za matumizi. GLM 5.3 inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Claude Opus, muundo ulioundwa na Anthropic kuwezesha mazungumzo na kazi za kuchakata maandishi. Claude Opus inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na GLM-4-7-Flash, muundo ulioundwa na Zhipu AI kufanya kazi na kutumika katika hali nyingi za matumizi. GLM-4-7-Flash inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Kimi K2.5, muundo ulioundwa na Moonshot AI kufanya kazi na kutumika katika hali nyingi za matumizi. Kimi K2.5 inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Nemotron Nano 3 30B, muundo ulioundwa na NVIDIA kufanya kazi na kutumika katika hali nyingi za matumizi. Nemotron Nano 3 30B inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Brave Ocelot, muundo ulioundwa na Brave kupunguza muhtasari wa kurasa za wavuti. Brave Ocelot inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Toleo la Kulipia</translation>
 <translation id="5807427080183870259">Ndani</translation>
@@ -2381,8 +2385,8 @@
 <translation id="7465032796278724624">Faragha Iliyothibitishwa kwa NEAR AI TEE</translation>
 <translation id="8782867266498869301">Mfano hubadilika kwa nguvu ili kutumia bora zaidi kwa kazi</translation>
 <translation id="7348809809749151120">Haraka • Tafuta</translation>
+<translation id="7711013627639951065">Haraka • Tafuta • Maono • Zana</translation>
 <translation id="3213834013136637671">Tafuta • Maono</translation>
-<translation id="2793458212460902934">Haraka • Tafuta • Zana</translation>
 <translation id="5276681919620506371">Tafuta • Zana</translation>
 <translation id="7434375176361995333">Muhtasari • Haraka</translation>
 <translation id="3965507912994218570">Mipangilio ya Leo</translation>
@@ -2455,6 +2459,8 @@
 <translation id="6287023598025162715">Mazungumzo mapya</translation>
 <translation id="7230502562132448519">Chuja mazungumzo</translation>
 <translation id="821070843380699990">Tafadhali jaribu hoja tofauti</translation>
+<translation id="241415280196701326">Maeneo ya kazi ya hivi karibuni</translation>
+<translation id="5388053981690151266">Mazungumzo mapya katika eneo hili la kazi</translation>
 <translation id="7097822247923237815">Gumzo la muda</translation>
 <translation id="7481750859362986254">Gumzo hili halitawekwa kwenye historia yako wala kutumia marekebisho yoyote ya Leo.</translation>
 <translation id="4238305333951712482">Kumbukumbu imesasishwa: <ph name="MEMORY_CONTENT"/></translation>
@@ -2480,6 +2486,7 @@
 <translation id="5103625298494362646">Njia ya wakala inafanya kazi na miundo yenye msaada wa zana. Miundo isiyooana haionyeshwi katika orodha hii.</translation>
 <translation id="3397808797783614750">Kuwezesha AI kufuatilia moja kwa moja kwa niaba yako kunaweza kusababisha madhara, matokeo yasiyotarajiwa kwa faragha yako, fedha zako, na mawasiliano ya mtandaoni. <ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Tahadhari ya usalama</translation>
+<translation id="717245811623757038">Ombi la ruhusa ya zana</translation>
 <translation id="6077070599873946984">Brave AI inahitaji ruhusa yako kwa: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI ingependa kutekeleza **<ph name="TOOL_NAME"/>** kwenye **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Hatua hii imegunduliwa ikiwa inaweza kuwa si sawa na ombi lako:</translation>

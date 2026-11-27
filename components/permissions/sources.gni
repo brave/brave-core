@@ -37,6 +37,8 @@ if (enable_widevine) {
 
 if (enable_brave_wallet) {
   brave_components_permissions_sources += [
+    "//brave/components/permissions/contexts/brave_wallet_account_permission_context.cc",
+    "//brave/components/permissions/contexts/brave_wallet_account_permission_context.h",
     "//brave/components/permissions/contexts/brave_wallet_permission_context.cc",
     "//brave/components/permissions/contexts/brave_wallet_permission_context.h",
   ]
@@ -62,6 +64,7 @@ brave_components_permissions_deps = [
 
 if (enable_brave_wallet) {
   brave_components_permissions_deps += [
+    "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:permission_utils",
     "//brave/components/brave_wallet/common:mojom",
   ]

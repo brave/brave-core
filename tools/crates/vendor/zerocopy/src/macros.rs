@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-2-Clause OR Apache-2.0 OR MIT
+//
 // Copyright 2024 The Fuchsia Authors
 //
 // Licensed under the 2-Clause BSD License <LICENSE-BSD or
@@ -60,6 +62,12 @@
 /// # Use in `const` contexts
 ///
 /// This macro can be invoked in `const` contexts.
+///
+#[doc = codegen_section!(
+    header = "h2",
+    bench = "transmute",
+    format = "coco_static_size",
+)]
 #[macro_export]
 macro_rules! transmute {
     // NOTE: This must be a macro (rather than a function with trait bounds)
@@ -210,10 +218,11 @@ macro_rules! transmute {
 ///
 /// # Size compatibility
 ///
-/// `transmute_ref!` supports transmuting between `Sized` types or between
-/// unsized (i.e., `?Sized`) types. It supports any transmutation that preserves
-/// the number of bytes of the referent, even if doing so requires updating the
-/// metadata stored in an unsized "fat" reference:
+/// `transmute_ref!` supports transmuting between `Sized` types, between unsized
+/// (i.e., `?Sized`) types, and from a `Sized` type to an unsized type. It
+/// supports any transmutation that preserves the number of bytes of the
+/// referent, even if doing so requires updating the metadata stored in an
+/// unsized "fat" reference:
 ///
 /// ```
 /// # use zerocopy::transmute_ref;
@@ -284,8 +293,6 @@ macro_rules! transmute {
 ///
 /// ```
 /// # use {zerocopy::*, zerocopy_derive::*};
-/// # type u16 = zerocopy::byteorder::native_endian::U16;
-/// # type u32 = zerocopy::byteorder::native_endian::U32;
 /// #[derive(KnownLayout, FromBytes, IntoBytes, Immutable)]
 /// #[repr(C)]
 /// struct SliceDst<T, U> {
@@ -293,8 +300,9 @@ macro_rules! transmute {
 ///     u: [U],
 /// }
 ///
-/// type Src = SliceDst<u32, u16>;
-/// type Dst = SliceDst<u16, u8>;
+/// // Unalign gives all fields alignment 1, so neither `Src` nor `Dst` contain padding.
+/// type Src = SliceDst<Unalign<u32>, Unalign<u16>>;
+/// type Dst = SliceDst<Unalign<u16>, u8>;
 ///
 /// let src = Src::ref_from_bytes(&[0, 1, 2, 3, 4, 5, 6, 7]).unwrap();
 /// let dst: &Dst = transmute_ref!(src);
@@ -311,6 +319,24 @@ macro_rules! transmute {
 ///
 /// This macro can be invoked in `const` contexts only when `Src: Sized` and
 /// `Dst: Sized`.
+///
+#[doc = codegen_section!(
+    header = "h2",
+    bench = "transmute_ref",
+    format = "coco",
+    arity = 2,
+    [
+        open
+        @index 1
+        @title "Sized"
+        @variant "static_size"
+    ],
+    [
+        @index 2
+        @title "Unsized"
+        @variant "dynamic_size"
+    ]
+)]
 #[macro_export]
 macro_rules! transmute_ref {
     ($e:expr) => {{
@@ -348,11 +374,32 @@ macro_rules! transmute_ref {
         } else {
             use $crate::util::macro_util::TransmuteRefDst;
             let t = $crate::util::macro_util::Wrap::new(e);
-            // SAFETY: The `if false` branch ensures that:
-            // - `Src: IntoBytes + Immutable`
-            // - `Dst: FromBytes + Immutable`
-            unsafe {
-                t.transmute_ref()
+
+            if false {
+                // This branch exists solely to force the compiler to infer the
+                // type of `Dst` *before* it attempts to resolve the method call
+                // to `transmute_ref` in the `else` branch.
+                //
+                // Without this, if `Src` is `Sized` but `Dst` is `!Sized`, the
+                // compiler will eagerly select the inherent impl of
+                // `transmute_ref` (which requires `Dst: Sized`) because inherent
+                // methods take priority over trait methods. It does this before
+                // it realizes `Dst` is `!Sized`, leading to a compile error when
+                // it checks the bounds later.
+                //
+                // By calling this helper (which returns `&Dst`), we force `Dst`
+                // to be fully resolved. By the time it gets to the `else`
+                // branch, the compiler knows `Dst` is `!Sized`, properly
+                // disqualifies the inherent method, and falls back to the trait
+                // implementation.
+                t.transmute_ref_inference_helper()
+            } else {
+                // SAFETY: The outer `if false` branch ensures that:
+                // - `Src: IntoBytes + Immutable`
+                // - `Dst: FromBytes + Immutable`
+                unsafe {
+                    t.transmute_ref()
+                }
             }
         }
     }}
@@ -367,8 +414,8 @@ macro_rules! transmute_ref {
 /// const fn transmute_mut<'src, 'dst, Src, Dst>(src: &'src mut Src) -> &'dst mut Dst
 /// where
 ///     'src: 'dst,
-///     Src: FromBytes + IntoBytes,
-///     Dst: FromBytes + IntoBytes,
+///     Src: FromBytes + IntoBytes + ?Sized,
+///     Dst: FromBytes + IntoBytes + ?Sized,
 ///     align_of::<Src>() >= align_of::<Dst>(),
 ///     size_compatible::<Src, Dst>(),
 /// {
@@ -383,10 +430,11 @@ macro_rules! transmute_ref {
 ///
 /// # Size compatibility
 ///
-/// `transmute_mut!` supports transmuting between `Sized` types or between
-/// unsized (i.e., `?Sized`) types. It supports any transmutation that preserves
-/// the number of bytes of the referent, even if doing so requires updating the
-/// metadata stored in an unsized "fat" reference:
+/// `transmute_mut!` supports transmuting between `Sized` types, between unsized
+/// (i.e., `?Sized`) types, and from a `Sized` type to an unsized type. It
+/// supports any transmutation that preserves the number of bytes of the
+/// referent, even if doing so requires updating the metadata stored in an
+/// unsized "fat" reference:
 ///
 /// ```
 /// # use zerocopy::transmute_mut;
@@ -485,7 +533,6 @@ macro_rules! transmute_ref {
 /// assert_eq!(src.t.as_bytes(), [0, 1, 2, 3]);
 /// assert_eq!(src.u.len(), 2);
 /// assert_eq!(src.u.as_bytes(), [4, 5, 6, 7]);
-///
 /// ```
 #[macro_export]
 macro_rules! transmute_mut {
@@ -503,7 +550,26 @@ macro_rules! transmute_mut {
         #[allow(unused)]
         use $crate::util::macro_util::TransmuteMutDst as _;
         let t = $crate::util::macro_util::Wrap::new(e);
-        t.transmute_mut()
+        if false {
+            // This branch exists solely to force the compiler to infer the type
+            // of `Dst` *before* it attempts to resolve the method call to
+            // `transmute_mut` in the `else` branch.
+            //
+            // Without this, if `Src` is `Sized` but `Dst` is `!Sized`, the
+            // compiler will eagerly select the inherent impl of `transmute_mut`
+            // (which requires `Dst: Sized`) because inherent methods take
+            // priority over trait methods. It does this before it realizes
+            // `Dst` is `!Sized`, leading to a compile error when it checks the
+            // bounds later.
+            //
+            // By calling this helper (which returns `&mut Dst`), we force `Dst`
+            // to be fully resolved. By the time it gets to the `else` branch,
+            // the compiler knows `Dst` is `!Sized`, properly disqualifies the
+            // inherent method, and falls back to the trait implementation.
+            t.transmute_mut_inference_helper()
+        } else {
+            t.transmute_mut()
+        }
     }}
 }
 
@@ -551,6 +617,12 @@ macro_rules! transmute_mut {
 ///     Result::<bool, _>::Err(ValidityError { .. })
 /// ));
 /// ```
+///
+#[doc = codegen_section!(
+    header = "h2",
+    bench = "try_transmute",
+    format = "coco_static_size",
+)]
 #[macro_export]
 macro_rules! try_transmute {
     ($e:expr) => {{
@@ -581,15 +653,20 @@ macro_rules! try_transmute {
 /// immutable reference of another type of the same size and compatible
 /// alignment.
 ///
+/// *Note that while the **value** of the referent is checked for validity at
+/// runtime, the **size** and **alignment** are checked at compile time. For
+/// conversions which are fallible with respect to size and alignment, see the
+/// methods on [`TryFromBytes`].*
+///
 /// This macro behaves like an invocation of this function:
 ///
 /// ```ignore
 /// fn try_transmute_ref<Src, Dst>(src: &Src) -> Result<&Dst, ValidityError<&Src, Dst>>
 /// where
-///     Src: IntoBytes + Immutable,
-///     Dst: TryFromBytes + Immutable,
-///     size_of::<Src>() == size_of::<Dst>(),
+///     Src: IntoBytes + Immutable + ?Sized,
+///     Dst: TryFromBytes + Immutable + ?Sized,
 ///     align_of::<Src>() >= align_of::<Dst>(),
+///     size_compatible::<Src, Dst>(),
 /// {
 /// # /*
 ///     ...
@@ -597,12 +674,34 @@ macro_rules! try_transmute {
 /// }
 /// ```
 ///
-/// However, unlike a function, this macro can only be invoked when the types of
-/// `Src` and `Dst` are completely concrete. The types `Src` and `Dst` are
-/// inferred from the calling context; they cannot be explicitly specified in
-/// the macro invocation.
+/// The types `Src` and `Dst` are inferred from the calling context; they cannot
+/// be explicitly specified in the macro invocation.
+///
+/// [`TryFromBytes`]: crate::TryFromBytes
+///
+/// # Size compatibility
+///
+/// `try_transmute_ref!` supports transmuting between `Sized` types, between
+/// unsized (i.e., `?Sized`) types, and from a `Sized` type to an unsized type.
+/// It supports any transmutation that preserves the number of bytes of the
+/// referent, even if doing so requires updating the metadata stored in an
+/// unsized "fat" reference:
+///
+/// ```
+/// # use zerocopy::try_transmute_ref;
+/// # use core::mem::size_of_val; // Not in the prelude on our MSRV
+/// let src: &[[u8; 2]] = &[[0, 1], [2, 3]][..];
+/// let dst: &[u8] = try_transmute_ref!(src).unwrap();
+///
+/// assert_eq!(src.len(), 2);
+/// assert_eq!(dst.len(), 4);
+/// assert_eq!(dst, [0, 1, 2, 3]);
+/// assert_eq!(size_of_val(src), size_of_val(dst));
+/// ```
 ///
 /// # Examples
+///
+/// Transmuting between `Sized` types:
 ///
 /// ```
 /// # use zerocopy::*;
@@ -619,67 +718,80 @@ macro_rules! try_transmute {
 /// ));
 /// ```
 ///
-/// # Alignment increase error message
+/// Transmuting between unsized types:
 ///
-/// Because of limitations on macros, the error message generated when
-/// `try_transmute_ref!` is used to transmute from a type of lower alignment to
-/// a type of higher alignment is somewhat confusing. For example, the following
-/// code:
+/// ```
+/// # use {zerocopy::*, zerocopy_derive::*};
+/// # type u16 = zerocopy::byteorder::native_endian::U16;
+/// # type u32 = zerocopy::byteorder::native_endian::U32;
+/// #[derive(KnownLayout, FromBytes, IntoBytes, Immutable)]
+/// #[repr(C)]
+/// struct SliceDst<T, U> {
+///     t: T,
+///     u: [U],
+/// }
 ///
-/// ```compile_fail
-/// let increase_alignment: Result<&u16, _> = zerocopy::try_transmute_ref!(&[0u8; 2]);
+/// type Src = SliceDst<u32, u16>;
+/// type Dst = SliceDst<u16, bool>;
+///
+/// let src = Src::ref_from_bytes(&[0, 1, 0, 1, 0, 1, 0, 1]).unwrap();
+/// let dst: &Dst = try_transmute_ref!(src).unwrap();
+///
+/// assert_eq!(src.t.as_bytes(), [0, 1, 0, 1]);
+/// assert_eq!(src.u.len(), 2);
+/// assert_eq!(src.u.as_bytes(), [0, 1, 0, 1]);
+///
+/// assert_eq!(dst.t.as_bytes(), [0, 1]);
+/// assert_eq!(dst.u, [false, true, false, true, false, true]);
 /// ```
 ///
-/// ...generates the following error:
-///
-/// ```text
-/// error[E0512]: cannot transmute between types of different sizes, or dependently-sized types
-///  --> example.rs:1:47
-///   |
-/// 1 |     let increase_alignment: Result<&u16, _> = zerocopy::try_transmute_ref!(&[0u8; 2]);
-///   |                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-///   |
-///   = note: source type: `AlignOf<[u8; 2]>` (8 bits)
-///   = note: target type: `MaxAlignsOf<[u8; 2], u16>` (16 bits)
-///   = note: this error originates in the macro `$crate::assert_align_gt_eq` which comes from the expansion of the macro `zerocopy::try_transmute_ref` (in Nightly builds, run with -Z macro-backtrace for more info)/// ```
-/// ```
-///
-/// This is saying that `max(align_of::<T>(), align_of::<U>()) !=
-/// align_of::<T>()`, which is equivalent to `align_of::<T>() <
-/// align_of::<U>()`.
+#[doc = codegen_section!(
+    header = "h2",
+    bench = "try_transmute_ref",
+    format = "coco",
+    arity = 2,
+    [
+        open
+        @index 1
+        @title "Sized"
+        @variant "static_size"
+    ],
+    [
+        @index 2
+        @title "Unsized"
+        @variant "dynamic_size"
+    ]
+)]
 #[macro_export]
 macro_rules! try_transmute_ref {
     ($e:expr) => {{
-        // NOTE: This must be a macro (rather than a function with trait bounds)
-        // because there's no way, in a generic context, to enforce that two
-        // types have the same size. `core::mem::transmute` uses compiler magic
-        // to enforce this so long as the types are concrete.
-
         // Ensure that the source type is a reference or a mutable reference
         // (note that mutable references are implicitly reborrowed here).
         let e: &_ = $e;
 
-        #[allow(unreachable_code, unused, clippy::diverging_sub_expression)]
+        #[allow(unused_imports)]
+        use $crate::util::macro_util::TryTransmuteRefDst as _;
+        let t = $crate::util::macro_util::Wrap::new(e);
         if false {
-            // This branch, though never taken, ensures that `size_of::<T>() ==
-            // size_of::<U>()` and that that `align_of::<T>() >=
-            // align_of::<U>()`.
-
-            // `t` is inferred to have type `T` because it's assigned to `e` (of
-            // type `&T`) as `&t`.
-            let mut t = loop {};
-            e = &t;
-
-            // `u` is inferred to have type `U` because it's used as `Ok(&u)` as
-            // the value returned from this branch.
-            let u;
-
-            $crate::assert_size_eq!(t, u);
-            $crate::assert_align_gt_eq!(t, u);
-
-            Ok(&u)
+            // This branch exists solely to force the compiler to infer the type
+            // of `Dst` *before* it attempts to resolve the method call to
+            // `try_transmute_ref` in the `else` branch.
+            //
+            // Without this, if `Src` is `Sized` but `Dst` is `!Sized`, the
+            // compiler will eagerly select the inherent impl of
+            // `try_transmute_ref` (which requires `Dst: Sized`) because
+            // inherent methods take priority over trait methods. It does this
+            // before it realizes `Dst` is `!Sized`, leading to a compile error
+            // when it checks the bounds later.
+            //
+            // By calling this helper (which returns `&Dst`), we force `Dst`
+            // to be fully resolved. By the time it gets to the `else`
+            // branch, the compiler knows `Dst` is `!Sized`, properly
+            // disqualifies the inherent method, and falls back to the trait
+            // implementation.
+            Ok(t.transmute_ref_inference_helper())
         } else {
-            $crate::util::macro_util::try_transmute_ref::<_, _>(e)
+            t.try_transmute_ref()
         }
     }}
 }
@@ -687,15 +799,20 @@ macro_rules! try_transmute_ref {
 /// Conditionally transmutes a mutable reference of one type to a mutable
 /// reference of another type of the same size and compatible alignment.
 ///
+/// *Note that while the **value** of the referent is checked for validity at
+/// runtime, the **size** and **alignment** are checked at compile time. For
+/// conversions which are fallible with respect to size and alignment, see the
+/// methods on [`TryFromBytes`].*
+///
 /// This macro behaves like an invocation of this function:
 ///
 /// ```ignore
 /// fn try_transmute_mut<Src, Dst>(src: &mut Src) -> Result<&mut Dst, ValidityError<&mut Src, Dst>>
 /// where
-///     Src: FromBytes + IntoBytes,
-///     Dst: TryFromBytes + IntoBytes,
-///     size_of::<Src>() == size_of::<Dst>(),
+///     Src: FromBytes + IntoBytes + ?Sized,
+///     Dst: TryFromBytes + IntoBytes + ?Sized,
 ///     align_of::<Src>() >= align_of::<Dst>(),
+///     size_compatible::<Src, Dst>(),
 /// {
 /// # /*
 ///     ...
@@ -703,12 +820,35 @@ macro_rules! try_transmute_ref {
 /// }
 /// ```
 ///
-/// However, unlike a function, this macro can only be invoked when the types of
-/// `Src` and `Dst` are completely concrete. The types `Src` and `Dst` are
-/// inferred from the calling context; they cannot be explicitly specified in
-/// the macro invocation.
+/// The types `Src` and `Dst` are inferred from the calling context; they cannot
+/// be explicitly specified in the macro invocation.
+///
+/// [`TryFromBytes`]: crate::TryFromBytes
+///
+/// # Size compatibility
+///
+/// `try_transmute_mut!` supports transmuting between `Sized` types, between
+/// unsized (i.e., `?Sized`) types, and from a `Sized` type to an unsized type.
+/// It supports any transmutation that preserves the number of bytes of the
+/// referent, even if doing so requires updating the metadata stored in an
+/// unsized "fat" reference:
+///
+/// ```
+/// # use zerocopy::try_transmute_mut;
+/// # use core::mem::size_of_val; // Not in the prelude on our MSRV
+/// let src: &mut [[u8; 2]] = &mut [[0, 1], [2, 3]][..];
+/// let dst: &mut [u8] = try_transmute_mut!(src).unwrap();
+///
+/// assert_eq!(dst.len(), 4);
+/// assert_eq!(dst, [0, 1, 2, 3]);
+/// let dst_size = size_of_val(dst);
+/// assert_eq!(src.len(), 2);
+/// assert_eq!(size_of_val(src), dst_size);
+/// ```
 ///
 /// # Examples
+///
+/// Transmuting between `Sized` types:
 ///
 /// ```
 /// # use zerocopy::*;
@@ -728,67 +868,63 @@ macro_rules! try_transmute_ref {
 /// ));
 /// ```
 ///
-/// # Alignment increase error message
+/// Transmuting between unsized types:
 ///
-/// Because of limitations on macros, the error message generated when
-/// `try_transmute_ref!` is used to transmute from a type of lower alignment to
-/// a type of higher alignment is somewhat confusing. For example, the following
-/// code:
-///
-/// ```compile_fail
-/// let src = &mut [0u8; 2];
-/// let increase_alignment: Result<&mut u16, _> = zerocopy::try_transmute_mut!(src);
 /// ```
+/// # use {zerocopy::*, zerocopy_derive::*};
+/// # type u16 = zerocopy::byteorder::native_endian::U16;
+/// # type u32 = zerocopy::byteorder::native_endian::U32;
+/// #[derive(KnownLayout, FromBytes, IntoBytes, Immutable)]
+/// #[repr(C)]
+/// struct SliceDst<T, U> {
+///     t: T,
+///     u: [U],
+/// }
 ///
-/// ...generates the following error:
+/// type Src = SliceDst<u32, u16>;
+/// type Dst = SliceDst<u16, bool>;
 ///
-/// ```text
-/// error[E0512]: cannot transmute between types of different sizes, or dependently-sized types
-///  --> example.rs:2:51
-///   |
-/// 2 |     let increase_alignment: Result<&mut u16, _> = zerocopy::try_transmute_mut!(src);
-///   |                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-///   |
-///   = note: source type: `AlignOf<[u8; 2]>` (8 bits)
-///   = note: target type: `MaxAlignsOf<[u8; 2], u16>` (16 bits)
-///   = note: this error originates in the macro `$crate::assert_align_gt_eq` which comes from the expansion of the macro `zerocopy::try_transmute_mut` (in Nightly builds, run with -Z macro-backtrace for more info)
+/// let mut bytes = [0, 1, 0, 1, 0, 1, 0, 1];
+/// let src = Src::mut_from_bytes(&mut bytes).unwrap();
+///
+/// assert_eq!(src.t.as_bytes(), [0, 1, 0, 1]);
+/// assert_eq!(src.u.len(), 2);
+/// assert_eq!(src.u.as_bytes(), [0, 1, 0, 1]);
+///
+/// let dst: &Dst = try_transmute_mut!(src).unwrap();
+///
+/// assert_eq!(dst.t.as_bytes(), [0, 1]);
+/// assert_eq!(dst.u, [false, true, false, true, false, true]);
 /// ```
-///
-/// This is saying that `max(align_of::<T>(), align_of::<U>()) !=
-/// align_of::<T>()`, which is equivalent to `align_of::<T>() <
-/// align_of::<U>()`.
 #[macro_export]
 macro_rules! try_transmute_mut {
     ($e:expr) => {{
-        // NOTE: This must be a macro (rather than a function with trait bounds)
-        // because there's no way, in a generic context, to enforce that two
-        // types have the same size. `core::mem::transmute` uses compiler magic
-        // to enforce this so long as the types are concrete.
-
         // Ensure that the source type is a mutable reference.
         let e: &mut _ = $e;
 
-        #[allow(unreachable_code, unused, clippy::diverging_sub_expression)]
+        #[allow(unused_imports)]
+        use $crate::util::macro_util::TryTransmuteMutDst as _;
+        let t = $crate::util::macro_util::Wrap::new(e);
         if false {
-            // This branch, though never taken, ensures that `size_of::<T>() ==
-            // size_of::<U>()` and that that `align_of::<T>() >=
-            // align_of::<U>()`.
-
-            // `t` is inferred to have type `T` because it's assigned to `e` (of
-            // type `&mut T`) as `&mut t`.
-            let mut t = loop {};
-            e = &mut t;
-
-            // `u` is inferred to have type `U` because it's used as `Ok(&mut
-            // u)` as the value returned from this branch.
-            let u;
-
-            $crate::assert_size_eq!(t, u);
-            $crate::assert_align_gt_eq!(t, u);
-
-            Ok(&mut u)
+            // This branch exists solely to force the compiler to infer the type
+            // of `Dst` *before* it attempts to resolve the method call to
+            // `try_transmute_mut` in the `else` branch.
+            //
+            // Without this, if `Src` is `Sized` but `Dst` is `!Sized`, the
+            // compiler will eagerly select the inherent impl of
+            // `try_transmute_mut` (which requires `Dst: Sized`) because
+            // inherent methods take priority over trait methods. It does this
+            // before it realizes `Dst` is `!Sized`, leading to a compile error
+            // when it checks the bounds later.
+            //
+            // By calling this helper (which returns `&Dst`), we force `Dst`
+            // to be fully resolved. By the time it gets to the `else`
+            // branch, the compiler knows `Dst` is `!Sized`, properly
+            // disqualifies the inherent method, and falls back to the trait
+            // implementation.
+            Ok(t.transmute_mut_inference_helper())
         } else {
-            $crate::util::macro_util::try_transmute_mut::<_, _>(e)
+            t.try_transmute_mut()
         }
     }}
 }
@@ -895,9 +1031,10 @@ macro_rules! cryptocorrosion_derive_traits {
                 $($field_ty: $crate::FromBytes,)*
             )?
         {
-            fn is_bit_valid<A>(_c: $crate::Maybe<'_, Self, A>) -> bool
+            #[inline(always)]
+            fn is_safe<A>(_: $crate::Maybe<'_, Self, A>) -> bool
             where
-                A: $crate::pointer::invariant::Reference
+                A: $crate::invariant::Alignment,
             {
                 // SAFETY: This macro only accepts `#[repr(C)]` and
                 // `#[repr(transparent)]` structs, and this `impl` block
@@ -1008,6 +1145,8 @@ macro_rules! cryptocorrosion_derive_traits {
     ) => {
         $crate::struct_padding!(
             Self,
+            None,
+            None,
             [
                 $($($tuple_field_ty),*)?
                 $($($field_ty),*)?
@@ -1038,9 +1177,10 @@ macro_rules! cryptocorrosion_derive_traits {
                 $field_ty: $crate::FromBytes,
             )*
         {
-            fn is_bit_valid<A>(_c: $crate::Maybe<'_, Self, A>) -> bool
+            #[inline(always)]
+            fn is_safe<A>(_: $crate::Maybe<'_, Self, A>) -> bool
             where
-                A: $crate::pointer::invariant::Reference
+                A: $crate::invariant::Alignment,
             {
                 // SAFETY: This macro only accepts `#[repr(C)]` unions, and this
                 // `impl` block requires all field types to be `FromBytes`.
@@ -1089,6 +1229,8 @@ macro_rules! cryptocorrosion_derive_traits {
                 {
                     $crate::union_padding!(
                         Self,
+                        None::<usize>,
+                        None::<usize>,
                         [$($field_ty),*]
                     )
                 },
@@ -1200,6 +1342,13 @@ mod tests {
         const X: &'static [[u8; 2]; 4] = transmute_ref!(&ARRAY_OF_U8S);
         assert_eq!(*X, ARRAY_OF_ARRAYS);
 
+        // Test sized -> unsized transmutation.
+        let array_of_u8s = [0u8, 1, 2, 3, 4, 5, 6, 7];
+        let array_of_arrays = [[0, 1], [2, 3], [4, 5], [6, 7]];
+        let slice_of_arrays = &array_of_arrays[..];
+        let x: &[[u8; 2]] = transmute_ref!(&array_of_u8s);
+        assert_eq!(x, slice_of_arrays);
+
         // Before 1.61.0, we can't define the `const fn transmute_ref` function
         // that we do on and after 1.61.0.
         #[cfg(no_zerocopy_generic_bounds_in_const_fn_1_61_0)]
@@ -1261,6 +1410,38 @@ mod tests {
         let x: &SliceDst<U16, u8> = transmute_ref!(slice_dst_big);
         assert_eq!(x, slice_dst_small);
 
+        // A packed outer DST can preserve the trailing field's stronger
+        // rounding alignment. These two types consequently have different
+        // normalized layout formulas even though both have size `2 + 4 * n`
+        // for every trailing slice length. Ensure the semantic size-sequence
+        // comparison accepts this representation-preserving transmutation.
+        #[derive(FromBytes, Immutable, IntoBytes, KnownLayout)]
+        #[repr(C, align(2))]
+        struct TransmuteAlign2([u8; 4]);
+
+        #[derive(FromBytes, Immutable, IntoBytes, KnownLayout)]
+        #[repr(C, packed(2))]
+        struct TransmutePacked4 {
+            head: u16,
+            tail: [u32],
+        }
+
+        #[derive(FromBytes, Immutable, IntoBytes, KnownLayout)]
+        #[repr(C, packed(2))]
+        struct TransmutePacked2 {
+            head: u16,
+            tail: [TransmuteAlign2],
+        }
+
+        #[repr(C, align(2))]
+        struct TransmuteBytes([u8; 10]);
+
+        let bytes = TransmuteBytes([0; 10]);
+        let src = TransmutePacked4::ref_from_bytes(&bytes.0).unwrap();
+        let dst: &TransmutePacked2 = transmute_ref!(src);
+        assert_eq!(mem::size_of_val(src), 10);
+        assert_eq!(mem::size_of_val(dst), 10);
+
         // Test that it's legal to transmute a reference while shrinking the
         // lifetime (note that `X` has the lifetime `'static`).
         let x: &[u8; 8] = transmute_ref!(X);
@@ -1321,6 +1502,19 @@ mod tests {
         // its `PanicOnDrop` temporary, which would cause a panic.
         assert_eq!(y.as_ref().map_err(|p| &p.src.0), Err::<&bool, _>(&2u8));
         mem::forget(y);
+
+        #[derive(Debug, TryFromBytes)]
+        #[repr(C, align(8))]
+        struct PaddedBool(bool);
+
+        // A failed transmutation must return every source byte, including
+        // bytes which would be padding in the destination type.
+        let src = [2u8, 1, 2, 3, 4, 5, 6, 7];
+        let x: Result<PaddedBool, _> = try_transmute!(src);
+        assert_eq!(x.unwrap_err().into_src(), src);
+
+        let x: Result<PaddedBool, _> = try_transmute!([0u8; 8]);
+        assert!(!x.unwrap().0);
     }
 
     #[test]
@@ -1351,6 +1545,27 @@ mod tests {
         #[allow(clippy::useless_transmute)]
         let y: Result<&u8, _> = try_transmute_ref!(&mut x);
         assert_eq!(y, Ok(&0));
+
+        // Test that sized types work which don't implement `KnownLayout`.
+        let array_of_nkl_u8s = Nkl([0u8, 1, 2, 3, 4, 5, 6, 7]);
+        let array_of_nkl_arrays = Nkl([[0, 1], [2, 3], [4, 5], [6, 7]]);
+        let x: Result<&Nkl<[[u8; 2]; 4]>, _> = try_transmute_ref!(&array_of_nkl_u8s);
+        assert_eq!(x, Ok(&array_of_nkl_arrays));
+
+        // Test sized -> unsized transmutation.
+        let array_of_u8s = [0u8, 1, 2, 3, 4, 5, 6, 7];
+        let array_of_arrays = [[0, 1], [2, 3], [4, 5], [6, 7]];
+        let slice_of_arrays = &array_of_arrays[..];
+        let x: Result<&[[u8; 2]], _> = try_transmute_ref!(&array_of_u8s);
+        assert_eq!(x, Ok(slice_of_arrays));
+
+        // Test unsized -> unsized transmutation.
+        let slice_dst_of_u8s =
+            SliceDst::<U16, [u8; 2]>::ref_from_bytes(&[0, 1, 2, 3, 4, 5][..]).unwrap();
+        let slice_dst_of_u16s =
+            SliceDst::<U16, U16>::ref_from_bytes(&[0, 1, 2, 3, 4, 5][..]).unwrap();
+        let x: Result<&SliceDst<U16, U16>, _> = try_transmute_ref!(slice_dst_of_u8s);
+        assert_eq!(x, Ok(slice_dst_of_u16s));
     }
 
     #[test]
@@ -1386,6 +1601,27 @@ mod tests {
         #[allow(clippy::useless_transmute)]
         let y: Result<&mut u8, _> = try_transmute_mut!(&mut x);
         assert_eq!(y, Ok(&mut 0));
+
+        // Test that sized types work which don't implement `KnownLayout`.
+        let mut array_of_nkl_u8s = Nkl([0u8, 1, 2, 3, 4, 5, 6, 7]);
+        let mut array_of_nkl_arrays = Nkl([[0, 1], [2, 3], [4, 5], [6, 7]]);
+        let x: Result<&mut Nkl<[[u8; 2]; 4]>, _> = try_transmute_mut!(&mut array_of_nkl_u8s);
+        assert_eq!(x, Ok(&mut array_of_nkl_arrays));
+
+        // Test sized -> unsized transmutation.
+        let mut array_of_u8s = [0u8, 1, 2, 3, 4, 5, 6, 7];
+        let mut array_of_arrays = [[0, 1], [2, 3], [4, 5], [6, 7]];
+        let slice_of_arrays = &mut array_of_arrays[..];
+        let x: Result<&mut [[u8; 2]], _> = try_transmute_mut!(&mut array_of_u8s);
+        assert_eq!(x, Ok(slice_of_arrays));
+
+        // Test unsized -> unsized transmutation.
+        let mut bytes = [0, 1, 2, 3, 4, 5, 6];
+        let slice_dst_of_u8s = SliceDst::<u8, [u8; 2]>::mut_from_bytes(&mut bytes[..]).unwrap();
+        let mut bytes = [0, 1, 2, 3, 4, 5, 6];
+        let slice_dst_of_u16s = SliceDst::<u8, U16>::mut_from_bytes(&mut bytes[..]).unwrap();
+        let x: Result<&mut SliceDst<u8, U16>, _> = try_transmute_mut!(slice_dst_of_u8s);
+        assert_eq!(x, Ok(slice_dst_of_u16s));
     }
 
     #[test]
@@ -1449,6 +1685,13 @@ mod tests {
         let slice_dst_small = SliceDst::<U16, u8>::mut_from_bytes(&mut bytes[..]).unwrap();
         let x: &mut SliceDst<U16, u8> = transmute_mut!(slice_dst_big);
         assert_eq!(x, slice_dst_small);
+
+        // Test sized -> unsized transmutation.
+        let mut array_of_u8s = [0u8, 1, 2, 3, 4, 5, 6, 7];
+        let mut array_of_arrays = [[0, 1], [2, 3], [4, 5], [6, 7]];
+        let slice_of_arrays = &mut array_of_arrays[..];
+        let x: &mut [[u8; 2]] = transmute_mut!(&mut array_of_u8s);
+        assert_eq!(x, slice_of_arrays);
     }
 
     #[test]
@@ -1488,9 +1731,9 @@ mod tests {
     #[test]
     fn test_include_value() {
         const AS_U32: u32 = include_value!("../testdata/include_value/data");
-        assert_eq!(AS_U32, u32::from_ne_bytes([b'a', b'b', b'c', b'd']));
+        assert_eq!(AS_U32, u32::from_ne_bytes(*b"abcd"));
         const AS_I32: i32 = include_value!("../testdata/include_value/data");
-        assert_eq!(AS_I32, i32::from_ne_bytes([b'a', b'b', b'c', b'd']));
+        assert_eq!(AS_I32, i32::from_ne_bytes(*b"abcd"));
     }
 
     #[test]

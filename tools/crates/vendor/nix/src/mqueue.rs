@@ -315,7 +315,7 @@ pub fn mq_remove_nonblock(mqd: &MqdT) -> Result<MqAttr> {
 #[cfg(any(target_os = "linux", target_os = "netbsd", target_os = "dragonfly"))]
 impl AsFd for MqdT {
     /// Borrow the underlying message queue descriptor.
-    fn as_fd(&self) -> BorrowedFd {
+    fn as_fd(&self) -> BorrowedFd<'_> {
         // SAFETY: [MqdT] will only contain a valid fd by construction.
         unsafe { BorrowedFd::borrow_raw(self.0) }
     }

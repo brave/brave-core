@@ -11,9 +11,9 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import org.chromium.base.ThreadUtils;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.feedback.ScreenshotTask;
 
 import java.io.ByteArrayOutputStream;
@@ -116,7 +116,7 @@ public class BraveShieldsScreenshotUtil {
     }
 
     public interface BraveShieldsScreenshotUtilCallback {
-        void onScreenshotReady(@Nullable byte[] pngBytes);
+        void onScreenshotReady(byte @Nullable [] pngBytes);
     }
 
     public BraveShieldsScreenshotUtil(

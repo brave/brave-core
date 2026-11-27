@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Aflați mai multe despre Widevine</translation>
+<translation id="3318169548229684688">să descarce un model de recunoaștere vocală (<ph name="DOWNLOAD_SIZE"/>) pentru a procesa vocea pe acest dispozitiv</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> vă solicită să</translation>
 <translation id="3218385319396786393">Redarea automată a fost blocată pe această pagină</translation>
 <translation id="4988333904713528597">Redare automată întotdeauna pe <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3540231253392253941">Utilizați serviciile Google pentru mesageria push</translation>
 <translation id="2224032129673914306">Căutare semantică în istoric</translation>
 <translation id="6045998903985162478">Indexează paginile pe care le vizitezi, astfel încât să le poți găsi cu ușurință în istoric, în filele deschise și în Leo.</translation>
+<translation id="3962946446120925966">Recunoaștere vocală pe dispozitiv</translation>
+<translation id="6408242130028978631">Descarcă un model de recunoaștere vocală (<ph name="DOWNLOAD_SIZE"/>) pentru ca site-urile să poată procesa vocea pe acest dispozitiv. Dezactivează această opțiune pentru a elimina modelul.</translation>
 <translation id="5813105074916486721">Reținerea istoricului local</translation>
 <translation id="5671611745062206644">Cât timp stochează Brave istoria de navigare local</translation>
 <translation id="7184510058087008090">1 zi</translation>

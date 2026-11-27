@@ -1,6 +1,6 @@
 use std::time::Instant;
 
-use crate::{messages::MessageLevel, progress, progress::Id, Unit};
+use crate::{Unit, messages::MessageLevel, progress, progress::Id};
 
 /// A trait for describing hierarchical progress.
 pub trait NestedProgress: Progress {
@@ -236,9 +236,9 @@ mod impls {
 
     use crate::traits::{BoxedProgress, Progress};
     use crate::{
+        BoxedDynNestedProgress, Count, DynNestedProgress, DynNestedProgressToNestedProgress, NestedProgress, Unit,
         messages::MessageLevel,
         progress::{Id, Step, StepShared},
-        BoxedDynNestedProgress, Count, DynNestedProgress, DynNestedProgressToNestedProgress, NestedProgress, Unit,
     };
 
     pub trait Sealed {}

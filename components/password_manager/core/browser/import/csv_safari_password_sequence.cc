@@ -5,6 +5,7 @@
 
 #include "brave/components/password_manager/core/browser/import/csv_safari_password_sequence.h"
 
+#include <optional>
 #include <set>
 #include <string>
 #include <string_view>
@@ -16,10 +17,9 @@
 #include "base/containers/flat_set.h"
 #include "base/not_fatal_until.h"
 #include "base/strings/string_util.h"
+#include "base/types/expected.h"
 #include "brave/components/password_manager/core/browser/import/csv_safari_password.h"
-#include "brave/components/password_manager/core/browser/import/csv_safari_password_iterator.h"
 #include "components/password_manager/core/browser/import/csv_field_parser.h"
-#include "components/password_manager/core/browser/import/csv_password_iterator.h"
 
 namespace password_manager {
 
@@ -86,30 +86,57 @@ size_t GetNoteHeaderPriority(std::string_view name) {
   return it->second;
 }
 
+// Returns all the characters from the start of |input| until the first '\n',
+// "\r\n" (exclusive) or the end of |input|. Cuts the returned part (inclusive
+// of the line breaks) from |input|. Skips blocks of matching quotes.
+std::string_view ConsumeCSVLine(std::string_view& input) {
+  bool inside_quotes = false;
+  bool last_char_was_cr = false;
+  for (size_t current = 0; current < input.size(); ++current) {
+    char c = input[current];
+    switch (c) {
+      case '\n':
+        if (!inside_quotes) {
+          const size_t eol_start = last_char_was_cr ? current - 1 : current;
+          std::string_view ret = input.substr(0, eol_start);
+          input.remove_prefix(current + 1);
+          return ret;
+        }
+        break;
+      case '"':
+        inside_quotes = !inside_quotes;
+        break;
+      default:
+        break;
+    }
+    last_char_was_cr = (c == '\r');
+  }
+
+  // The whole |input| is one line.
+  return std::exchange(input, std::string_view());
+}
+
 }  // namespace
 
-CSVSafariPasswordSequence::CSVSafariPasswordSequence(std::string csv)
-    : csv_(std::move(csv)) {
-  // Sanity check.
-  if (csv_.empty()) {
-    result_ = CSVSafariPassword::Status::kSyntaxError;
-    return;
+// static
+base::expected<CSVSafariPasswordSequence, CSVSafariPassword::Status>
+CSVSafariPasswordSequence::Create(std::string_view csv) {
+  if (csv.empty()) {
+    return base::unexpected(CSVSafariPassword::Status::kSyntaxError);
   }
-  data_rows_ = csv_;
 
-  // Construct ColumnMap.
-  std::string_view first = ConsumeCSVLine(&data_rows_);
+  std::string_view first = ConsumeCSVLine(csv);
   size_t col_index = 0;
 
   constexpr size_t kMaxPriority = 101;
   // Mapping "note column index" -> "header name priority".
   size_t note_column_index, note_column_priority = kMaxPriority;
+  CSVSafariPassword::ColumnMap map;
 
   for (CSVFieldParser parser(first); auto next = parser.NextField();
        ++col_index) {
     if (!next->has_value()) {
-      result_ = CSVSafariPassword::Status::kSyntaxError;
-      return;
+      return base::unexpected(CSVSafariPassword::Status::kSyntaxError);
     }
     std::string_view name = next->value();
 
@@ -124,20 +151,19 @@ CSVSafariPasswordSequence::CSVSafariPasswordSequence(std::string csv)
         }
         continue;
       }
-      map_[col_index] = *label;
+      map[col_index] = *label;
     }
   }
 
   if (note_column_priority != kMaxPriority) {
-    map_[note_column_index] = CSVSafariPassword::Label::kNotes;
+    map[note_column_index] = CSVSafariPassword::Label::kNotes;
   }
 
   base::flat_set<CSVSafariPassword::Label> all_labels;
-  for (const auto& kv : map_) {
+  for (const auto& kv : map) {
     if (!all_labels.insert(kv.second).second) {
       // Multiple columns share the same label.
-      result_ = CSVSafariPassword::Status::kSemanticError;
-      return;
+      return base::unexpected(CSVSafariPassword::Status::kSemanticError);
     }
   }
 
@@ -145,10 +171,16 @@ CSVSafariPasswordSequence::CSVSafariPasswordSequence(std::string csv)
   if (!all_labels.contains(CSVSafariPassword::Label::kURL) ||
       !all_labels.contains(CSVSafariPassword::Label::kUsername) ||
       !all_labels.contains(CSVSafariPassword::Label::kPassword)) {
-    result_ = CSVSafariPassword::Status::kSemanticError;
-    return;
+    return base::unexpected(CSVSafariPassword::Status::kSemanticError);
   }
+
+  return CSVSafariPasswordSequence(std::move(map), csv);
 }
+
+CSVSafariPasswordSequence::CSVSafariPasswordSequence(
+    CSVSafariPassword::ColumnMap column_map,
+    std::string_view remaining_rows)
+    : column_map_(std::move(column_map)), remaining_rows_(remaining_rows) {}
 
 CSVSafariPasswordSequence::CSVSafariPasswordSequence(
     CSVSafariPasswordSequence&&) = default;
@@ -157,15 +189,15 @@ CSVSafariPasswordSequence& CSVSafariPasswordSequence::operator=(
 
 CSVSafariPasswordSequence::~CSVSafariPasswordSequence() = default;
 
-CSVSafariPasswordIterator CSVSafariPasswordSequence::begin() const {
-  if (result_ != CSVSafariPassword::Status::kOK) {
-    return end();
+std::optional<CSVSafariPassword> CSVSafariPasswordSequence::NextPassword() {
+  while (!remaining_rows_.empty()) {
+    std::string_view row = base::TrimString(ConsumeCSVLine(remaining_rows_),
+                                            "\r \t", base::TRIM_LEADING);
+    if (!row.empty()) {
+      return CSVSafariPassword(column_map_, row);
+    }
   }
-  return CSVSafariPasswordIterator(map_, data_rows_);
-}
-
-CSVSafariPasswordIterator CSVSafariPasswordSequence::end() const {
-  return CSVSafariPasswordIterator(map_, std::string_view());
+  return std::nullopt;
 }
 
 }  // namespace password_manager

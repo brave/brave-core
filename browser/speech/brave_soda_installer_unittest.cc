@@ -19,6 +19,7 @@
 #include "brave/components/local_ai/core/on_device_speech_models_component_installer.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/component_updater_service.h"
@@ -71,8 +72,8 @@ class BraveSodaInstallerUnitTest : public testing::Test {
     ON_CALL(cus_, RegisterComponent).WillByDefault(testing::Return(true));
     // An enabled model, so the registrar registers it and the installer's
     // requests reach the download.
-    local_state()->SetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled, true);
+    local_ai::EnableOnDeviceSpeechModel(
+        *local_state(), local_ai::OnDeviceSpeechModel::kEnglish);
 
     // Starting the registrar asks for a download of its own. Waiting for it
     // means a test's own request starts a registration rather than joining

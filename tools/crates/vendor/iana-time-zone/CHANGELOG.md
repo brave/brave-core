@@ -4,9 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.65] - 2026-01-28
+### Changed
+- Add wasi support ([#190](https://github.com/strawlab/iana-time-zone/pull/190))
+- Add support for emscripten ([#189](https://github.com/strawlab/iana-time-zone/pull/189))
+- Add s390x target to Rust CI workflow ([#182](https://github.com/strawlab/iana-time-zone/pull/182))
+
 ## [0.1.64] - 2025-09-12
 ### Changed
-- Bump maximum allowed windows-core version to 0.62 (from 0.61).
+- Bump `windows-core` to `0.56-0.62` range ([#177](https://github.com/strawlab/iana-time-zone/pull/177)
 
 ## [0.1.63] - 2025-03-31
 ### Changes
@@ -291,6 +297,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Implement for Linux, Windows, MacOS
 
+[0.1.65]: https://github.com/strawlab/iana-time-zone/releases/tag/v0.1.65
+[0.1.64]: https://github.com/strawlab/iana-time-zone/releases/tag/v0.1.64
 [0.1.63]: https://github.com/strawlab/iana-time-zone/releases/tag/v0.1.63
 [0.1.62]: https://github.com/strawlab/iana-time-zone/releases/tag/v0.1.62
 [0.1.61]: https://github.com/strawlab/iana-time-zone/releases/tag/v0.1.61

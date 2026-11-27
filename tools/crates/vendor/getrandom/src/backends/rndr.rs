@@ -3,11 +3,11 @@
 //! Arm Architecture Reference Manual for A-profile architecture:
 //! ARM DDI 0487K.a, ID032224, D23.2.147 RNDR, Random Number
 use crate::{
-    util::{slice_as_uninit, truncate},
     Error,
+    util::{slice_as_uninit, truncate},
 };
 use core::arch::asm;
-use core::mem::{size_of, MaybeUninit};
+use core::mem::{MaybeUninit, size_of};
 
 #[cfg(not(target_arch = "aarch64"))]
 compile_error!("the `rndr` backend can be enabled only for AArch64 targets!");
@@ -27,12 +27,14 @@ unsafe fn rndr() -> Option<u64> {
         let mut nzcv: u64;
 
         // AArch64 RNDR register is accessible by s3_3_c2_c4_0
-        asm!(
-            "mrs {x}, RNDR",
-            "mrs {nzcv}, NZCV",
-            x = out(reg) x,
-            nzcv = out(reg) nzcv,
-        );
+        unsafe {
+            asm!(
+                "mrs {x}, RNDR",
+                "mrs {nzcv}, NZCV",
+                x = out(reg) x,
+                nzcv = out(reg) nzcv,
+            );
+        }
 
         // If the hardware returns a genuine random number, PSTATE.NZCV is set to 0b0000
         if nzcv == 0 {
@@ -47,14 +49,14 @@ unsafe fn rndr() -> Option<u64> {
 unsafe fn rndr_fill(dest: &mut [MaybeUninit<u8>]) -> Option<()> {
     let mut chunks = dest.chunks_exact_mut(size_of::<u64>());
     for chunk in chunks.by_ref() {
-        let src = rndr()?.to_ne_bytes();
+        let src = unsafe { rndr() }?.to_ne_bytes();
         chunk.copy_from_slice(slice_as_uninit(&src));
     }
 
     let tail = chunks.into_remainder();
     let n = tail.len();
     if n > 0 {
-        let src = rndr()?.to_ne_bytes();
+        let src = unsafe { rndr() }?.to_ne_bytes();
         tail.copy_from_slice(slice_as_uninit(&src[..n]));
     }
     Some(())
@@ -67,8 +69,9 @@ fn is_rndr_available() -> bool {
 
 #[cfg(not(target_feature = "rand"))]
 fn is_rndr_available() -> bool {
-    #[path = "../lazy.rs"]
+    #[path = "../utils/lazy_bool.rs"]
     mod lazy;
+
     static RNDR_GOOD: lazy::LazyBool = lazy::LazyBool::new();
 
     cfg_if::cfg_if! {

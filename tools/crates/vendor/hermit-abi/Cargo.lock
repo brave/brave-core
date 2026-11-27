@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "hermit-abi"
-version = "0.5.2"
+version = "0.5.3"
 dependencies = [
  "rustc-std-workspace-alloc",
  "rustc-std-workspace-core",

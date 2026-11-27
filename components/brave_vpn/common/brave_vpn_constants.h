@@ -25,19 +25,6 @@ inline constexpr char kAboutUrl[] = "https://brave.com/firewall-vpn/";
 // Remove everything under v1::endpoints namespace, as this is now deprecated
 // and only used in BraveVPN V1 code.
 namespace v1::endpoints {
-inline constexpr char kRegionNameKey[] = "name";
-inline constexpr char kRegionNamePrettyKey[] = "name-pretty";
-inline constexpr char kRegionCountryKey[] = "country";
-inline constexpr char kRegionContinentKey[] = "continent";
-inline constexpr char kRegionCountryIsoCodeKey[] = "country-iso-code";
-inline constexpr char kRegionPrecisionKey[] = "region-precision";
-inline constexpr char kRegionCitiesKey[] = "cities";
-inline constexpr char kRegionLatitudeKey[] = "latitude";
-inline constexpr char kRegionLongitudeKey[] = "longitude";
-inline constexpr char kRegionServerCountKey[] = "server-count";
-inline constexpr char kRegionSmartRoutingProxyStateKey[] =
-    "smart-routing-proxy-state";
-
 inline constexpr char kCreateSupportTicket[] =
     "api/v1.2/partners/support-ticket";
 inline constexpr char kSupportTicketEmailKey[] = "email";

@@ -1,4 +1,4 @@
-//! HTTP/2 client connections
+//! HTTP/2 client connections.
 
 use std::error::Error;
 use std::fmt;
@@ -38,7 +38,14 @@ impl<B> Clone for SendRequest<B> {
 /// In most cases, this should just be spawned into an executor, so that it
 /// can process incoming and outgoing messages, notice hangups, and the like.
 ///
-/// Instances of this type are typically created via the [`handshake`] function
+/// Instances of this type are typically created via the [`handshake`] function.
+///
+/// # Drop behavior
+///
+/// Dropping the `Connection` will close the underlying IO resource.
+/// Any in-flight requests that have not received a response will be
+/// interrupted. If graceful shutdown is desired, poll the connection
+/// until it completes instead of dropping.
 #[must_use = "futures do nothing unless polled"]
 pub struct Connection<T, B, E>
 where
@@ -67,6 +74,10 @@ pub struct Builder<Ex> {
 ///
 /// This is a shortcut for `Builder::new(exec).handshake(io)`.
 /// See [`client::conn`](crate::client::conn) for more.
+///
+/// # Errors
+///
+/// Returns an error if the HTTP/2 connection handshake fails.
 pub async fn handshake<E, T, B>(
     exec: E,
     io: T,
@@ -95,7 +106,9 @@ impl<B> SendRequest<B> {
         }
     }
 
-    /// Waits until the dispatcher is ready
+    /// Waits until the dispatcher is ready.
+    ///
+    /// # Errors
     ///
     /// If the associated connection is closed, this returns an Error.
     pub async fn ready(&mut self) -> crate::Result<()> {
@@ -131,6 +144,20 @@ where
     ///
     /// Absolute-form `Uri`s are not required. If received, they will be serialized
     /// as-is.
+    ///
+    /// # Cancel safety
+    ///
+    /// Dropping the returned future is the supported way to cancel an
+    /// in-flight HTTP/2 request. The stream is reset with `RST_STREAM`
+    /// (`CANCEL` error code); the shared connection remains usable for
+    /// other in-flight and future requests. The peer is notified
+    /// immediately rather than continuing to send a response body that
+    /// would be discarded.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the connection is not ready or if an error occurs while
+    /// processing the request.
     pub fn send_request(
         &mut self,
         req: Request<B>,
@@ -143,7 +170,7 @@ where
                     Ok(Ok(resp)) => Ok(resp),
                     Ok(Err(err)) => Err(err),
                     // this is definite bug if it happens, but it shouldn't happen!
-                    Err(_canceled) => panic!("dispatch dropped without returning error"),
+                    Err(_canceled) => unreachable!("dispatch dropped without returning error"),
                 },
                 Err(_req) => {
                     debug!("connection was not ready");
@@ -158,10 +185,11 @@ where
     ///
     /// Returns a future that if successful, yields the `Response`.
     ///
-    /// # Error
+    /// # Errors
     ///
     /// If there was an error before trying to serialize the request to the
     /// connection, the message will be returned as part of this error.
+    #[allow(clippy::result_large_err)]
     pub fn try_send_request(
         &mut self,
         req: Request<B>,
@@ -173,7 +201,7 @@ where
                     Ok(Ok(res)) => Ok(res),
                     Ok(Err(err)) => Err(err),
                     // this is definite bug if it happens, but it shouldn't happen!
-                    Err(_) => panic!("dispatch dropped without returning error"),
+                    Err(_) => unreachable!("dispatch dropped without returning error"),
                 },
                 Err(req) => {
                     debug!("connection was not ready");
@@ -215,6 +243,26 @@ where
     /// [2]: https://datatracker.ietf.org/doc/html/rfc8441#section-3
     pub fn is_extended_connect_protocol_enabled(&self) -> bool {
         self.inner.1.is_extended_connect_protocol_enabled()
+    }
+
+    /// Returns the current maximum send stream count.
+    ///
+    /// This setting is configured in a [`SETTINGS_MAX_CONCURRENT_STREAMS` parameter][1] in a `SETTINGS` frame,
+    /// and may change throughout the connection lifetime.
+    ///
+    /// [1]: https://datatracker.ietf.org/doc/html/rfc7540#section-5.1.2
+    pub fn current_max_send_streams(&self) -> usize {
+        self.inner.1.current_max_send_streams()
+    }
+
+    /// Returns the current maximum receive stream count.
+    ///
+    /// This setting is configured in a [`SETTINGS_MAX_CONCURRENT_STREAMS` parameter][1] in a `SETTINGS` frame,
+    /// and may change throughout the connection lifetime.
+    ///
+    /// [1]: https://datatracker.ietf.org/doc/html/rfc7540#section-5.1.2
+    pub fn current_max_recv_streams(&self) -> usize {
+        self.inner.1.current_max_recv_streams()
     }
 }
 
@@ -262,7 +310,7 @@ where
         Builder {
             exec,
             timer: Time::Empty,
-            h2_builder: Default::default(),
+            h2_builder: proto::h2::client::Config::default(),
         }
     }
 
@@ -291,7 +339,7 @@ where
         self
     }
 
-    /// Sets the max connection-level flow control for HTTP2
+    /// Sets the max connection-level flow control for HTTP2.
     ///
     /// Passing `None` will do nothing.
     ///
@@ -387,7 +435,7 @@ where
     ///
     /// See [Section 5.1.2] in the HTTP/2 spec for more details.
     ///
-    /// [Section 5.1.2]: https://http2.github.io/http2-spec/#rfc.section.5.1.2
+    /// [Section 5.1.2]: https://httpwg.org/specs/rfc7540.html#rfc.section.5.1.2
     pub fn max_concurrent_streams(&mut self, max: impl Into<Option<u32>>) -> &mut Self {
         self.h2_builder.max_concurrent_streams = max.into();
         self
@@ -465,11 +513,56 @@ where
         self
     }
 
+    /// Configures the maximum number of local resets due to protocol errors made by the remote end.
+    ///
+    /// See the documentation of [`h2::client::Builder::max_local_error_reset_streams`] for more
+    /// details.
+    ///
+    /// The default value is 1024.
+    pub fn max_local_error_reset_streams(&mut self, max: impl Into<Option<usize>>) -> &mut Self {
+        self.h2_builder.max_local_error_reset_streams = max.into();
+        self
+    }
+
+    /// Sets the duration to remember locally reset streams.
+    ///
+    /// When a stream is explicitly reset by either the client or the server,
+    /// the HTTP/2 specification requires that any further frames received for
+    /// that stream must be ignored for "some time".
+    ///
+    /// In order to satisfy the specification, internal state must be maintained
+    /// to implement the behavior. This state grows linearly with the number of
+    /// streams that are locally reset.
+    ///
+    /// The `reset_stream_duration` setting configures the max amount of time
+    /// this state will be maintained in memory. Once the duration elapses, the
+    /// stream state is purged from memory.
+    ///
+    /// Once the stream has been fully purged from memory, any additional frames
+    /// received for that stream will result in a connection level protocol
+    /// error, forcing the connection to terminate.
+    ///
+    /// The default value is determined by the `h2` crate, and is currently
+    /// 1 second.
+    ///
+    /// See the documentation of [`h2::client::Builder::reset_stream_duration`] for more
+    /// details.
+    ///
+    /// [`h2::client::Builder::reset_stream_duration`]: https://docs.rs/h2/client/struct.Builder.html#method.reset_stream_duration
+    pub fn reset_stream_duration(&mut self, dur: Duration) -> &mut Self {
+        self.h2_builder.reset_stream_duration = Some(dur);
+        self
+    }
+
     /// Constructs a connection with the configured options and IO.
     /// See [`client::conn`](crate::client::conn) for more.
     ///
     /// Note, if [`Connection`] is not `await`-ed, [`SendRequest`] will
     /// do nothing.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the HTTP/2 connection handshake fails.
     pub fn handshake<T, B>(
         &self,
         io: T,

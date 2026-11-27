@@ -1,11 +1,12 @@
 [package]
 name = "toml-span"
-version = "0.6.0"
+version = "0.7.2"
 description = "Toml parser and deserializer that preserves span information"
 license.workspace = true
 edition.workspace = true
 homepage.workspace = true
 repository.workspace = true
+rust-version = "1.70"
 documentation = "https://docs.rs/toml-span"
 readme = "README.md"
 categories = ["parser-implementations", "config"]

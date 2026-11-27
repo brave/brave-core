@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Σχετικά με";
 
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertMessage" = "Αυτό σας επιτρέπει να αποθηκεύσετε την εικόνα στο Άλμπουμ κάμερας.";
-
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Το Brave θα ήθελε να έχει πρόσβαση στις Φωτογραφίες σας";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Προσθήκη σελιδοδείκτη";
 
@@ -63,9 +57,6 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Όνομα χρήστη";
-
-/* Settings autofill section title */
-"Autofill" = "Αυτόματη συμπλήρωση";
 
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Λογαριασμοί";
@@ -133,9 +124,6 @@
 /* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
 "backgroundDownloadingTitleSingleDownload" = "Λήψη του \"%@\"";
 
-/* cookie settings option */
-"Block3rdPartyCookies" = "Αποκλεισμός cookies τρίτων";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Αποκλεισμός όλων των cookie";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Ο ορισμός της προτίμησης απέτυχε. Δοκιμάστε ξανά.";
 
-/* title for section showing page blocking statistics */
-"BlockingMonitor" = "Αποκλεισμός της οθόνης";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Αποκλεισμός αναδυόμενων παραθύρων";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Προσθήκη σελιδοδείκτη για %lld καρτέλες";
-
-/* Bookmark Folder Section Title */
-"BookmarkFolder" = "Φάκελος σελιδοδεικτών";
-
-/* Bookmark Info Section Title */
-"BookmarkInfo" = "Πληροφορίες σελιδοδείκτη";
 
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Γραμμή σελιδοδεικτών";
@@ -225,9 +204,6 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Ασπίδες & απόρρητο";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "Συνομιλία Brave";
 
 /* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
 "BraveTranslate.languageSelectionButtonTitle" = "Επιλέξτε γλώσσα";
@@ -415,14 +391,8 @@
 /* Section title in settings panel */
 "ClearPrivateData" = "Εκκαθάριση ιδιωτικών δεδομένων";
 
-/* The cancel button when confirming clear private data. */
-"ClearPrivateDataAlertCancelButtonTitle" = "Ακύρωση";
-
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertMessage" = "Είσαι σίγουρος/η;";
-
-/* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "OK";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "Καθαρισμός Δεδομένων";
@@ -441,9 +411,6 @@
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "OK";
-
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "Σφάλμα πελάτη";
 
 /* Button title to close a menu. */
 "Close" = "Κλείσιμο";
@@ -481,17 +448,11 @@
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
 "CopyCleanLink" = "Αντιγραφή καθαρού συνδέσμου";
 
-/* Context menu item for copying an image to the clipboard */
-"CopyImageActionTitle" = "Αντιγραφή εικόνας";
-
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Αντιγραφή συνδέσμου";
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Αντιγράψτε τις καρτέλες στο πρόχειρο.";
-
-/* Copy rewards internals info for support */
-"CopyWalletSupportInfo" = "Αντιγραφή πληροφοριών υποστήριξης";
 
 /* Create PDF share action. */
 "CreatePDF" = "Δημιουργία PDF";
@@ -504,9 +465,6 @@
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Γράψτε τη διεύθυνση URL αναζήτησης και αντικαταστήστε το ερώτημα με το %1$s.\nΓια παράδειγμα: https://youtube.com/search?q=%2$s \n(Εάν ο ιστότοπος υποστηρίζει το OpenSearch, θα παρέχεται μια επιλογή αυτόματης προσθήκης κατά την επεξεργασία αυτού του πεδίου.)";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "Αυτόματη προσθήκη";
 
 /* A title explaining that an error shown while adding custom search engine */
 "customSearchEngine.customSearchEngineAddErrorTitle" = "Σφάλμα κατά την προσθήκη μηχανής προσαρμοσμένης αναζήτησης";
@@ -590,12 +548,6 @@
 "defaultBrowserCallout.notificationTitle" = "Εξασφαλίστε την προστασία Brave, σε κάθε σύνδεσμο";
 
 /* No comment provided by engineer. */
-"defaultBrowserCalloutCloseAccesabilityLabel" = "Κλείσιμο επεξήγησης προεπιλεγμένου προγράμματος περιήγησης";
-
-/* Name for default Brave theme. */
-"defaultThemeName" = "Προεπιλογή Brave";
-
-/* No comment provided by engineer. */
 "Delete" = "Διαγραφή";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
@@ -649,9 +601,6 @@
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Λήψεις";
 
-/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
-"DownloadsPanelEmptyStateTitle" = "Τα ληφθέντα αρχεία θα εμφανίζονται εδώ.";
-
 /* Action item title of long press for Opening the existing - active Tab url in a new Tab */
 "DuplicateActiveTab" = "Αντιγραφή ενεργής καρτέλας";
 
@@ -700,47 +649,14 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Εισαγάγετε όνομα φακέλου";
 
-/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "Το %1$@ συνήθως χρησιμοποιεί κρυπτογράφηση για την προστασία των πληροφοριών σας. Όταν το Brave προσπάθησε να συνδεθεί με το %2$@ αυτήν τη φορά, ο ιστότοπος επέστρεψε ασυνήθιστα και εσφαλμένα διαπιστευτήρια. Αυτό μπορεί να συμβεί όταν ένας εισβολέας προσπαθεί να προσποιηθεί ότι είναι το %3$@ ή μια οθόνη σύνδεσης Wi-Fi διέκοψε τη σύνδεση. Οι πληροφορίες σας εξακολουθούν να είναι ασφαλείς, επειδή το Brave διέκοψε τη σύνδεση πριν από την ανταλλαγή δεδομένων.<br />Δεν μπορείτε να επισκεφθείτε το %4$@ αυτήν τη στιγμή, επειδή ο ιστότοπος χρησιμοποιεί καρφίτσωμα πιστοποιητικού. Τα σφάλματα και οι επιθέσεις δικτύου είναι συνήθως προσωρινά, επομένως, αυτή η σελίδα πιθανότατα θα λειτουργεί αργότερα.";
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Κατάργηση";
 
-/* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningDetails" = "Αυτός ο διακομιστής δεν μπόρεσε να αποδείξει ότι είναι %@. Το πιστοποιητικό ασφαλείας του δεν θεωρείται αξιόπιστο από το λειτουργικό σύστημα της συσκευής σας. Αυτό μπορεί να οφείλεται σε εσφαλμένη διαμόρφωση ή σε απόπειρα κάποιου εισβολέα να παραβιάσει τη σύνδεσή σας.";
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Αυτός ο ιστότοπος δεν θα εμφανίζεται στη λίστα με τους ιστότοπους που επισκέπτεστε συχνότερα, αλλά δεν θα καταργηθεί από το ιστορικό σας.";
 
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningTitle" = "Εισβολείς μπορεί να προσπαθούν να κλέψουν τις πληροφορίες σας από το %@ (για παράδειγμα, κωδικούς πρόσβασης, μηνύματα ή πιστωτικές κάρτες).";
-
-/* Label for button to go back from the error page */
-"ErrorPagesBackToSafetyButton" = "Επιστροφή στην ασφάλεια";
-
-/* Title on the certificate error page */
-"ErrorPagesCertErrorTitle" = "Αυτός ο ιστότοπος δεν μπορεί να παράσχει ασφαλή σύνδεση";
-
-/* Title on the certificate error page */
-"ErrorPagesCertWarningTitle" = "Η σύνδεσή σας δεν είναι ιδιωτική";
-
-/* Label for button to hide advanced actions on the error page */
-"ErrorPagesHideDetailsButton" = "Απόκρυψη λεπτομερειών";
-
-/* Label for learn more link on error page */
-"ErrorPagesLearnMoreButton" = "Μάθετε περισσότερα";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesMoreDetailsButton" = "Περισσότερες λεπτομέρειες";
-
-/* Title of the No Internet error page */
-"ErrorPagesNoInternetTitle" = "Δεν υπάρχει πρόσβαση στο Internet";
-
-/* Text telling the user to Try: The following list of things */
-"ErrorPagesNoInternetTry" = "Φαίνεται ότι δεν είστε συνδεδεμένοι. Για να διορθώσετε αυτό το πρόβλημα, δοκιμάστε τα εξής";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem1" = "Έλεγχος των καλωδίων δικτύου, του μόντεμ και του δρομολογητή";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem2" = "Επανασύνδεση σε Wi-Fi";
-
-/* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesProceedAnywayButton" = "Συνέχεια στο %@ (μη ασφαλές)";
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Κατάργηση από τους ιστότοπους που επισκέπτεστε συχνότερα;";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "Το %@ θα εκκινήσει μια εξωτερική εφαρμογή";
@@ -766,29 +682,14 @@
 /* Share action title */
 "FindInPage" = "Εύρεση στη σελίδα";
 
-/* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "Τέλος";
-
 /* Find `search query` */
 "FindInPageFormat" = "Εύρεση";
-
-/* Accessibility label for next result button in Find in Page Toolbar. */
-"FindInPageNextResultButtonAccessibilityLabel" = "Επόμενο αποτέλεσμα στη σελίδα";
-
-/* Accessibility label for previous result button in Find in Page Toolbar. */
-"FindInPagePreviousResultButtonAccessibilityLabel" = "Προηγούμενο αποτέλεσμα στη σελίδα";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findInPageTitle" = "Εύρεση στη σελίδα";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findNextTitle" = "Εύρεση επόμενου";
-
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "Σε αυτήν τη σελίδα";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findPreviousTitle" = "Εύρεση προηγούμενου";
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Να επιτρέπεται το άνοιγμα καθολικών συνδέσμων σε εξωτερικές εφαρμογές";
@@ -813,9 +714,6 @@
 
 /* Hides the rewards icon */
 "HideRewardsIcon" = "Απόκρυψη εικονιδίου Ανταμοιβών του Brave";
-
-/* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Αποκρύπτει το εικονίδιο Ανταμοιβών Brave όταν δεν είναι ενεργοποιημένες οι Ανταμοιβές Brave";
 
 /* Title for history menu item */
 "HistortMenuItem" = "Ιστορικό";
@@ -859,11 +757,8 @@
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Εισαγωγή δεδομένων περιήγησης";
 
-/* title for per-site shield toggles */
-"IndividualControls" = "Μεμονωμένοι Έλεγχοι";
-
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "Μη έγκυρα στοιχεία στο αίτημα πληρωμής";
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Μια ενσωματωμένη σελίδα σε αυτήν τη σελίδα";
 
 /* History tableview section header */
 "LastMonth" = "Προηγούμενος μήνας";
@@ -919,30 +814,6 @@
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Φίλτρο";
 
-/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
-"LoginDetailLastModifiedCellFormatTitle" = "Τελευταία τροποποίηση %@";
-
-/* Label displayed above the password row in Login Detail View. */
-"LoginDetailPasswordCellTitle" = "κωδικός πρόσβασης";
-
-/* Label displayed above the username row in Login Detail View. */
-"LoginDetailUsernameCellTitle" = "όνομα χρήστη";
-
-/* Label displayed above the website row in Login Detail View. */
-"LoginDetailWebsiteCellTitle" = "ιστότοπος";
-
-/* Label for the button used to deselect all logins. */
-"LoginListDeselectAllButtonTitle" = "Αποεπιλογή όλων";
-
-/* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "Δεν βρέθηκαν συνδέσεις";
-
-/* Title for Logins List View screen. */
-"LoginListScreenTitle" = "Συνδέσεις";
-
-/* Label for the button used to select all logins. */
-"LoginListSelectAllButtonTitle" = "Επιλογή όλων";
-
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "Ενεργοποίηση ήχου παρασκηνίου";
 
@@ -957,9 +828,6 @@
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Αποκάλυψη";
-
-/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
-"monthAbbreviation" = "μήνα";
 
 /* Bookmark title / Device name */
 "Name" = "Όνομα";
@@ -1036,9 +904,6 @@
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Μάθετε περισσότερα για τις χορηγούμενες εικόνες";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"ntp.settingsAutoOpenKeyboard" = "Αυτόματο άνοιγμα πληκτρολογίου";
-
 /* A setting to enable or disable background on the NTP screen. */
 "ntp.settingsBackgroundImages" = "Παρασκήνιο";
 
@@ -1075,53 +940,8 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Με την ενεργοποίηση των Ανταμοιβών, συμφωνείτε με τους %@.";
 
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "Κερδίστε διακριτικά και επιβραβεύστε τους δημιουργούς για το εξαιρετικό περιεχόμενό τους κατά την περιήγησή σας.";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "Κερδίστε πόντους και επιβραβεύστε τους δημιουργούς για το εξαιρετικό περιεχόμενό τους κατά την περιήγησή σας.";
-
-/* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Οι Διαφημίσεις Brave είναι εδώ!";
-
-/* Title for ads onboarding screen */
-"OBAdsTitle" = "Το Brave θα εμφανίσει την πρώτη σας διαφήμιση σε";
-
-/* Title for when the user completes onboarding */
-"OBCompleteTitle" = "Τώρα είστε έτοιμοι να ξεκινήσετε.";
-
-/* Button to show information on how to enable ads */
-"OBDidntSeeAdButton" = "Δεν είδα μια διαφήμιση";
-
-/* A generic error body for onboarding */
-"OBErrorDetails" = "Παρουσιάστηκε κάποιο πρόβλημα κατά τη δημιουργία του πορτοφολιού σας. Δοκιμάστε ξανά";
-
 /* No comment provided by engineer. */
 "OBErrorOkay" = "Εντάξει";
-
-/* A generic error title for onboarding */
-"OBErrorTitle" = "Λυπούμαστε";
-
-/* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "Έναρξη περιήγησης";
-
-/* Button to join Brave Rewards. */
-"OBJoinButton" = "Συμμετοχή";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Να επιτρέπεται στο Brave να ελέγχει το πρόχειρό μου για αντίστοιχο κωδικό παραπομπής";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Μπορεί να έχετε κατεβάσει το Brave για να υποστηρίξετε ένα άτομο που σας παρέπεμψε σε αυτό. Για να εντοπίσει αυτό το άτομο, το Brave πραγματοποιεί έναν εφάπαξ έλεγχο στο πρόχειρό σας για τον αντίστοιχο κωδικό παραπομπής. Αυτός ο έλεγχος περιορίζεται μόνο στον κωδικό και δεν θα μεταδοθούν άλλα προσωπικά δεδομένα. Εάν επιλέξετε να εξαιρεθείτε, το άτομο που σας παρέπεμψε δεν θα λάβει ανταμοιβές από το Brave.";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentNoButton" = "Να μην επιτραπεί αυτός ο έλεγχος";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentTitle" = "Ανώνυμος έλεγχος κωδικού παραπομπής";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentYesButton" = "Να επιτραπεί ο εφάπαξ έλεγχος προχείρου";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "Πατώντας «Ναι», συμφωνείτε με";
@@ -1138,32 +958,8 @@
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Η συμμετοχή στις Ιδιωτικές διαφημίσεις Brave υποστηρίζει τους εκδότες και τους δημιουργούς περιεχομένου με κάθε διαφήμιση που προβάλλεται.";
 
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Κερδίστε διακριτικά και επιβραβεύστε τους δημιουργούς για το εξαιρετικό περιεχόμενό τους κατά την περιήγησή σας.";
-
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Πολιτική απορρήτου";
-
-/* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Ανταμοιβές Brave";
-
-/* Save button to save current selection */
-"OBSaveButton" = "Αποθήκευση";
-
-/* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "Επιλέξτε την προεπιλεγμένη μηχανή αναζήτησης";
-
-/* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Καλώς ήρθατε στο πρόγραμμα περιήγησης Brave ";
-
-/* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "Αποκλεισμός προγραμμάτων παρακολούθησης που δεν σέβονται το απόρρητο, ώστε να μπορείτε να περιηγείστε στο διαδίκτυο, χωρίς να σας ακολουθούν";
-
-/* Title for shields onboarding screen */
-"OBShieldsTitle" = "Ασπίδες Brave ";
-
-/* Button to show the Brave Rewards Ads. */
-"OBShowMeButton" = "Εμφάνιση";
 
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Έναρξη";
@@ -1198,20 +994,11 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Άνοιγμα όλων (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Άνοιγμα ρυθμίσεων Ανταμοιβών Brave";
-
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Παρουσιάστηκε άγνωστο σφάλμα κατά το άνοιγμα του φακέλου «Λήψεις» στην εφαρμογή Αρχεία.";
 
-/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
-"openExternalAppURLHost" = "Το %@ λέει:";
-
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "Να επιτραπεί στο %@ η εναλλαγή εφαρμογών;";
-
-/* Context menu for opening image in new tab */
-"OpenImageInNewTab" = "Άνοιγμα εικόνας σε νέα καρτέλα";
 
 /* Context menu item for opening a link in a new private browsing window */
 "OpenInNewPrivateWindowTitle" = "Άνοιγμα σε νέο ιδιωτικό παράθυρο";
@@ -1348,12 +1135,6 @@
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Άλλες ρυθμίσεις απορρήτου";
 
-/* Section name for other settings. */
-"OtherSettingsSection" = "Άλλες ρυθμίσεις";
-
-/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
-"p3a.continue" = "Συνέχεια";
-
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "Αυτές οι ιδιωτικές απαντήσεις βοηθούν το Brave να εκτιμήσει τη συνολική χρήση ορισμένων χαρακτηριστικών και να τα βελτιώσει.";
 
@@ -1384,12 +1165,6 @@
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Προεπιλεγμένο επίπεδο εστίασης ιστοσελίδας";
 
-/* Description for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesDescription" = "Όταν το επίπεδο εστίασης ενός ιστότοπου αλλάξει, ο ιστότοπος θα εμφανιστεί στη λίστα εδώ. Προς το παρόν, δεν υπάρχουν ιστότοποι σε μεγέθυνση ή σμίκρυνση.";
-
-/* Title for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesTitle" = "Δεν προστέθηκαν ιστότοποι";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Όλοι οι άλλοι ιστότοποι";
 
@@ -1414,12 +1189,6 @@
 /* Setting to allow the app to restore private browsing tabs */
 "PersistentPrivateBrowsing" = "Μόνιμη ιδιωτική περιήγηση";
 
-/* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Επιτρέπει στο Brave να επαναφέρει τις καρτέλες ιδιωτικής περιήγησης, ακόμα κι αν κλείσετε/ανοίξετε ξανά την εφαρμογή";
-
-/* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "Επαναφορά ιδιωτικών καρτελών";
-
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Φωτογραφία από %@";
 
@@ -1434,12 +1203,6 @@
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Επιλογές αναπαραγωγής";
-
-/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
-"playlist.carplayRestartPlaybackButtonStateDisabled" = "Απενεργοποιήθηκε. Πατήστε για να ενεργοποιήσετε την επανεκκίνηση της αναπαραγωγής.";
-
-/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
-"playlist.carplayRestartPlaybackButtonStateEnabled" = "Ενεργοποιήθηκε. Πατήστε για να απενεργοποιήσετε την επανεκκίνηση της αναπαραγωγής.";
 
 /* The description of the checkbox that allows the user to restart audio/video playback */
 "playlist.carplayRestartPlaybackOptionDetailsTitle" = "Αποφασίστε εάν η επιλογή ενός στοιχείου που ήδη αναπαράγεται θα επανεκκινεί την αναπαραγωγή ή θα τη συνεχίζει από εκεί όπου είχε σταματήσει την τελευταία φορά";
@@ -1687,9 +1450,6 @@
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "Άνοιγμα Κέντρου απορρήτου";
 
-/* The title of the button action which open the privacy hub */
-"privacyHub.openPrivacyHubWidgetActionTitle" = "Άνοιγμα Κέντρου απορρήτου";
-
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Τα δεδομένα του Κέντρου απορρήτου αποθηκεύονται τοπικά και δεν αποστέλλονται ποτέ πουθενά.";
 
@@ -1759,23 +1519,11 @@
 /* Private button title */
 "Private" = "Ιδιωτική λειτουργία";
 
-/* No comment provided by engineer. */
-"PrivateBrowsing" = "Ιδιωτική περιήγηση";
-
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Μόνο ιδιωτική περιήγηση";
 
 /* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
 "PrivateBrowsingOnlyWarning" = "Η λειτουργία «Μόνο ιδιωτική περιήγηση» θα κλείσει όλες τις τρέχουσες καρτέλες σας και θα σας αποσυνδέσει από όλους τους ιστότοπους.";
-
-/* Private tab details */
-"PrivateTabBody" = "Οι ιδιωτικές καρτέλες δεν αποθηκεύονται στο Brave, αλλά δεν σας καθιστούν ανώνυμο online. Οι ιστότοποι που επισκέπτεστε σε μια ιδιωτική καρτέλα δεν θα εμφανίζονται στο ιστορικό σας και τα cookie τους εξαφανίζονται πάντα όταν τους κλείνετε. Δεν θα μένει κανένα ίχνος τους στο Brave. Ωστόσο, οι λήψεις θα αποθηκεύονται.\nΗ εταιρεία κινητής τηλεφωνίας σας (ή ο κάτοχος του δικτύου Wi-Fi ή του VPN στο οποίο έχετε συνδεθεί) μπορεί να δει ποιους ιστότοπους επισκέπτεστε και αυτοί οι ιστότοποι θα μαθαίνουν τη δημόσια διεύθυνση IP σας, ακόμη και σε ιδιωτικές καρτέλες.";
-
-/* Private tab detail text */
-"PrivateTabDetails" = "Η χρήση ιδιωτικών καρτελών αλλάζει μόνο ό,τι κάνει το Brave στη συσκευή σας και δεν αλλάζει τη συμπεριφορά κανενός άλλου.\n\nΟι ιστότοποι μαθαίνουν πάντα τη διεύθυνση IP σας όταν τους επισκέπτεστε. Από αυτό, συχνά μπορούν να μαντέψουν περίπου πού βρίσκεστε, συνήθως την πόλη σας. Μερικές φορές αυτή η εικασία τοποθεσίας μπορεί να είναι πολύ πιο συγκεκριμένη. Οι ιστότοποι γνωρίζουν επίσης όλα όσα τους λέτε συγκεκριμένα, όπως τους όρους αναζήτησης. Εάν συνδεθείτε σε έναν ιστότοπο, θα γνωρίζει ότι είστε ο κάτοχος αυτού του λογαριασμού. Θα αποσυνδεθείτε και πάλι, όταν κλείσετε τις ιδιωτικές καρτέλες, επειδή το Brave θα απορρίψει το cookie που σας διατηρεί συνδεδεμένους.\n\nΌποιος σας συνδέει στο Internet (ο ISP που χρησιμοποιείτε) μπορεί να δει όλη τη δραστηριότητα δικτύου σας. Συχνά, πρόκειται για την εταιρεία κινητής τηλεφωνίας σας. Εάν είστε συνδεδεμένοι σε ένα δίκτυο Wi-Fi, πρόκειται για τον κάτοχο αυτού του δικτύου και, εάν χρησιμοποιείτε VPN, τότε πρόκειται για όποιον διαχειρίζεται αυτό το VPN. Ο ISP σας μπορεί να δει ποιους ιστότοπους επισκέπτεστε καθώς τους επισκέπτεστε. Εάν αυτοί οι ιστότοποι χρησιμοποιούν HTTPS, δεν μπορεί παρά να υποθέσει τι κάνετε σε αυτούς τους ιστότοπους βάσει ορισμένων στοιχείων. Ωστόσο, εάν ένας ιστότοπος χρησιμοποιεί μόνο HTTP, τότε ο ISP σας μπορεί να δει τα πάντα: τους όρους αναζήτησής σας, ποιες σελίδες διαβάζετε και ποιους συνδέσμους ακολουθείτε.\n\nΕάν ένας εργοδότης διαχειρίζεται τη συσκευή σας, μπορεί επίσης να παρακολουθεί τι κάνετε με αυτήν. Η χρήση ιδιωτικών καρτελών πιθανότατα δεν θα τον εμποδίσει να γνωρίζει ποιους ιστότοπους έχετε επισκεφτεί. Κάποιος άλλος με πρόσβαση στη συσκευή σας θα μπορούσε επίσης να έχει εγκαταστήσει λογισμικό που παρακολουθεί τη δραστηριότητά σας και οι ιδιωτικές καρτέλες δεν θα σας προστατεύσουν ούτε από αυτό.";
-
-/* Private tab information link */
-"PrivateTabLink" = "Μάθετε για τις ιδιωτικές καρτέλες.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Ιδιωτική καρτέλα";
@@ -1834,12 +1582,6 @@
 /* Accessibility label for brightness adjustment slider in Reader Mode display settings */
 "ReaderModeBrightSliderAccessibilityLabel" = "Φωτεινότητα";
 
-/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
-"ReaderModeDisplaySettingsButtonTitle" = "Ρυθμίσεις εμφάνισης";
-
-/* Error displayed when reader mode cannot be enabled */
-"ReaderModeErrorConvertDisplayText" = "Παρουσιάστηκε σφάλμα κατά τη μετατροπή της σελίδας";
-
 /* Font type setting in the reading view settings */
 "ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
 
@@ -1851,15 +1593,6 @@
 
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Αλλάζει τον τύπο γραμματοσειράς.";
-
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "Φόρτωση περιεχομένου…";
-
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadOriginalLinkText" = "Φόρτωση αρχικής σελίδας";
-
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "Δεν ήταν δυνατή η εμφάνιση της σελίδας στην Προβολή αναγνώστη.";
 
 /* Title of a bar that show up when you enter reader mode. */
 "readerModeSettingsButton" = "Λειτουργία αναγνώστη";
@@ -1882,14 +1615,8 @@
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "Δεν υπάρχουν καρτέλες που έκλεισαν πρόσφατα.";
 
-/* Open Tab action title */
-"recently.closed.open" = "Άνοιγμα";
-
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "Εκ νέου άνοιγμα της καρτέλας που έκλεισε τελευταία";
-
-/* Description for alert to ask user for opening last closed tab in list */
-"recently.closed.shake.description" = "Θέλετε να ανοίξετε την καρτέλα που έκλεισε τελευταία;";
 
 /* Action item title of long press for Opening recently closed tab view */
 "recently.closed.title" = "Καρτέλες που έκλεισαν πρόσφατα";
@@ -1975,12 +1702,6 @@
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "Το %@ ζητά πρόσβαση στο μικρόφωνο";
 
-/* Name of folder where restored bookmarks are retrieved */
-"RestoredBookmarksFolderName" = "Σελιδοδείκτες από επαναφορά";
-
-/* Name of folder where restored favorites are retrieved */
-"RestoredFavoritesFolderName" = "Αγαπημένα από επαναφορά";
-
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "Ναι";
 
@@ -2023,80 +1744,11 @@
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Αυτός ο δημιουργός περιεχομένου έχει επαληθευτεί με τους Δημιουργούς Brave";
 
-/* Displayed next to a number representing the total number of publishers supported */
-"rewards.totalSupportedCount" = "Αριθμός δημιουργών περιεχομένου στην υποστήριξη των οποίων συμβάλλετε αυτόν τον μήνα.";
-
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Αυτός ο δημιουργός δεν έχει επαληθευτεί και δεν θα συμπεριληφθεί στην υποστήριξη δημιουργών";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Ποσό";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAnonymous" = "Ανώνυμος";
-
-/* No comment provided by engineer. */
-"RewardsInternalsBalanceInfoHeader" = "Πληροφορίες υπολοίπου";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "Είστε βέβαιοι ότι θέλετε να εκκαθαρίσετε όλα τα αρχεία καταγραφής Ανταμοιβών;";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsTitle" = "Εκκαθάριση αρχείων καταγραφής";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionAmount" = "Ποσό Συνεισφοράς";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Διακριτικά Brave";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorNone" = "Καμία";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "Uphold";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUserFunds" = "Κεφάλαια χρήστη";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepACOff" = "Απενεργοποίηση αυτόματης συνεισφοράς";
-
-/* 'AC' refers to Auto-Contribute */
-"RewardsInternalsContributionsStepACTableEmpty" = "Ο πίνακας αυτόματης συνεισφοράς είναι κενός";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCompleted" = "Ολοκληρώθηκε";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCreds" = "Διαπιστευτήρια";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepExternalTransaction" = "Εξωτερική συναλλαγή";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "Απέτυχε";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepNotEnoughFunds" = "Δεν υπάρχουν αρκετά κεφάλαια";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepPrepare" = "Προετοιμασία";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepReserve" = "Κράτηση";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "Απενεργοποίηση Ανταμοιβών";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "Έναρξη";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsTitle" = "Συνεισφορές";
-
-/* No comment provided by engineer. */
-"RewardsInternalsCreatedAt" = "Δημιουργήθηκε στις";
 
 /* No comment provided by engineer. */
 "RewardsInternalsDeviceInfoHeader" = "Πληροφορίες συσκευής";
@@ -2116,9 +1768,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Seed βασικών πληροφοριών";
 
-/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
-"RewardsInternalsLogsCount" = "Εμφανίζονται %d αρχεία καταγραφής";
-
 /* No comment provided by engineer. */
 "RewardsInternalsLogsTitle" = "Αρχεία καταγραφής";
 
@@ -2129,34 +1778,13 @@
 "RewardsInternalsNotSupported" = "Δεν υποστηρίζεται";
 
 /* No comment provided by engineer. */
-"RewardsInternalsProcessor" = "Επεξεργαστής";
-
-/* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Εκδότης";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublishers" = "Εκδότες";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRetryCount" = "Πλήθος νέων προσπαθειών";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeAutoContribute" = "Αυτόματη συνεισφορά";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeOneTimeTip" = "Εφάπαξ φιλοδώρημα";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "Επαναλαμβανόμενο φιλοδώρημα";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "Πληροφορίες προφίλ Ανταμοιβών, συσκευής & υπολοίπου (κοινοποιούνται πάντα)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Βασικές πληροφορίες";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableContributionsDescription" = "Τυχόν συνεισφορές προς εκδότες μέσω φιλοδωρήματος ή αυτόματης συνεισφοράς";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableDatabaseDescription" = "Ο εσωτερικός χώρος αποθήκευσης δεδομένων";
@@ -2192,9 +1820,6 @@
 "RewardsInternalsTitle" = "Εσωτερικά στοιχεία Ανταμοιβών";
 
 /* No comment provided by engineer. */
-"RewardsInternalsTotalAmount" = "Συνολικό ποσό";
-
-/* No comment provided by engineer. */
 "RewardsInternalsTotalBalance" = "Συνολικό υπόλοιπο";
 
 /* No comment provided by engineer. */
@@ -2221,17 +1846,11 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Αποθήκευση";
 
-/* Label for the button used to save changes in some text input. */
-"SaveChangesButtonTitle" = "Αποθήκευση αλλαγών";
-
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Αποθηκευμένες συνδέσεις";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "Αποθηκευμένες καρτέλες";
-
-/* Context menu item for saving an image */
-"SaveImageActionTitle" = "Αποθήκευση εικόνας";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Αποθήκευση συνδέσεων";
@@ -2245,23 +1864,8 @@
 /* Search engines section of settings */
 "SearchEngines" = "Μηχανές αναζήτησης";
 
-/* Accessibility hint describing the action performed when a search suggestion is clicked */
-"SearchesForSuggestionButtonAccessibilityText" = "Πραγματοποιεί αναζήτηση για την πρόταση";
-
 /* Section header for history and bookmarks and open tabs option */
 "SearchHistorySectionHeader" = "Στη συσκευή σας";
-
-/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
-"SearchInputViewClearButtonTitle" = "Εκκαθάριση αναζήτησης";
-
-/* Accessibility label for entering search mode for logins */
-"SearchInputViewOverlayAccessibilityLabel" = "Μετάβαση σε λειτουργία αναζήτησης";
-
-/* Accessibility label for the search input field in the Logins list */
-"SearchInputViewTextFieldAccessibilityLabel" = "Πεδίο εισαγωγής αναζήτησης";
-
-/* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "Αναζήτηση";
 
 /* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
 "searchQuickBarPrefix" = "Αναζήτηση \"%@\"";
@@ -2275,9 +1879,6 @@
 /* Label for showing browser suggestion setting */
 "SearchSettingBrowserSuggestionCellTitle" = "Εμφάνιση προτάσεων προγράμματος περιήγησης";
 
-/* Navigation title for search settings. */
-"SearchSettingNavTitle" = "Αναζήτηση";
-
 /* Label for showing recent search setting. */
 "SearchSettingRecentSearchesCellTitle" = "Εμφάνιση πρόσφατων αναζητήσεων";
 
@@ -2287,23 +1888,11 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "Εμφάνιση προτάσεων αναζήτησης";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
-"SearchSuggestionFromFormatText" = "Προτάσεις αναζήτησης από το %@";
-
 /* Action title for open a playlist item in Playlist. */
 "searchSuggestionOpenPlaylistActionTitle" = "Άνοιγμα στη λίστα αναπαραγωγής";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Μετάβαση σε αυτή την καρτέλα";
-
-/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
-"SearchSuggestionSectionTitleFormat" = "Αναζήτηση με %@";
-
-/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "Αναζήτηση";
-
-/* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "Προτάσεις αναζήτησης";
 
 /* Search suggestions optin subtitle when prompting to turn on suggestions */
 "searchSuggestionsSubtitle" = "Θα θέλατε να ενεργοποιήσετε την Προτάσεις αναζήτησης;";
@@ -2416,9 +2005,6 @@
 /* Row name for licenses. */
 "SettingsLicenses" = "Άδειες";
 
-/* Title for settings menu item */
-"SettingsMenuItem" = "Ρυθμίσεις";
-
 /* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
 "SettingsTabsOptionBottomBar" = "Κάτω γραμμή";
 
@@ -2430,9 +2016,6 @@
 
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Κοινοποίηση συνδέσμου";
-
-/* Title for sharing url menu item */
-"ShareWithMenuItem" = "Κοινοποίηση σε...";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "shareWithTitle" = "Κοινοποίηση σε...";
@@ -2467,9 +2050,6 @@
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Μοιραστείτε τα νέα";
 
-/* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Οι Ασπίδες Brave μόλις προστάτευσαν το online απόρρητό σας.";
-
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Συγχαρητήρια. Ξεχωρίζετε.";
 
@@ -2481,6 +2061,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Οι διαφημίσεις αποκλείονται κατά την παρακολούθηση βίντεο σ' αυτόν τον ιστότοπο.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Πορτοφόλι Brave";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Ιδιωτική καρτέλα";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "Κωδικός QR";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Αναζήτηση";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Νέα Ιδιωτική καρτέλα";
@@ -2641,14 +2233,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Συντομεύσεις Siri";
 
-/* Button to show the bookmarks list */
-"ShowBookmarks" = "Εμφάνιση σελιδοδεικτών";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Εμφάνιση λήψεων";
-
-/* Button to show the history list */
-"ShowHistory" = "Εμφάνιση ιστορικού";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showHistoryTitle" = "Εμφάνιση ιστορικού";
@@ -2776,9 +2362,6 @@
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.configurationInformationText" = "Διαχειριστείτε τι πληροφορίες θέλετε να συγχρονίζονται ανάμεσα στις συσκευές. Αυτές οι ρυθμίσεις επηρεάζουν μόνο την παρούσα συσκευή.";
 
-/* Copied action complete title */
-"sync.copied" = "Έγινε αντιγραφή!";
-
 /* Copied codewords title */
 "sync.copiedToClipboard" = "Αντιγράφηκε στο πρόχειρο!";
 
@@ -2821,14 +2404,8 @@
 /* Sync enter code words */
 "sync.enterCodeWords" = "Εισαγωγή κωδικών λέξεων";
 
-/* Enter sync code words below */
-"sync.enterCodeWordsBelow" = "Εισαγάγετε τις συνθηματικές λέξεις παρακάτω";
-
 /* Sync Error message for when the sync code is expired */
 "sync.expiredError" = "Αυτός ο κωδικός συγχρονισμού έχει λήξει. Δημιουργήστε έναν νέο κωδικό συγχρονισμού και δοκιμάστε ξανά.";
-
-/* Generic Sync Error Description */
-"sync.genericError" = "Δυστυχώς, παρουσιάστηκε πρόβλημα";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "Ενεργοποίηση κάμερας";
@@ -2872,9 +2449,6 @@
 /* Error title for when the sync code does not have the correct amount of words */
 "sync.notEnoughWordsTitle" = "Δεν υπάρχουν αρκετές λέξεις";
 
-/* Sync pair device settings section title */
-"sync.pair" = "Σύζευξη";
-
 /* QR Code section title */
 "sync.qrCode" = "Κωδικός QR";
 
@@ -2908,12 +2482,6 @@
 /* Title for removing other device from Sync */
 "sync.removeOtherDeviceTitle" = "Κατάργηση συσκευής %@ από την αλυσίδα συγχρονισμού;";
 
-/* Sync remove device. */
-"sync.removeThisDevice" = "Καταργήστε αυτήν τη συσκευή";
-
-/* Sync remove device? */
-"sync.removeThisDeviceQuestionDesc" = "Αυτή η συσκευή θα αποσυνδεθεί από την ομάδα συγχρονισμού και δεν θα λαμβάνει ή στέλνει πλέον δεδομένα συγχρονισμού. Όλα τα υπάρχοντα δεδομένα θα παραμείνουν στη συσκευή.";
-
 /* Scan sync code title */
 "sync.scan" = "Σάρωση";
 
@@ -2932,20 +2500,11 @@
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "Ρυθμίσεις Συγχρονισμού ";
 
-/* Show code words instead */
-"sync.showCodeWords" = "Εμφάνιση συνθηματικών λέξεων";
-
 /* Switch back to camera button */
 "sync.switchBackToCameraButton" = "Θα χρησιμοποιήσω την κάμερά μου ...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Αυτή η διαγραφή είναι οριστική και δεν υπάρχει τρόπος ανάκτησης των δεδομένων. Εάν αποφασίσετε να αρχίσετε να χρησιμοποιείτε ξανά τον Συγχρονισμό, θα πρέπει να δημιουργήσετε έναν νέο λογαριασμό και να προσθέσετε ξανά κάθε συσκευή μία-μία.";
-
-/* Sync you browser settings across devices. */
-"sync.Syncdevices" = "Συσκευές & ρυθμίσεις";
-
-/* Sync remove device? */
-"sync.syncRemoveThisDeviceQuestion" = "Κατάργηση αυτής της συσκευής;";
 
 /* Sync settings section title */
 "sync.syncTitle" = "Συγχρονισμός";
@@ -2982,9 +2541,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Καταμέτρηση λέξεων: %i";
-
-/* Accessibility label for action denoting closing a tab in tab list (tray) */
-"TabAccessibilityCloseActionLabel" = "Κλείσιμο";
 
 /* Accessibility label for a close button that when tapped opens a new tab */
 "tabGrid.addTabAccessibilityLabel" = "Νέα καρτέλα";
@@ -3025,17 +2581,11 @@
 /* A title shown when in private browsing mode with no tabs open */
 "tabGrid.privateBrowsingInfoTitle" = "Ιδιωτική καρτέλα";
 
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.privateBrowsingModeAccessibilityLabel" = "Ιδιωτική περιήγηση";
-
 /* A label in the tab tray mode switcher for private browsing mode */
 "tabGrid.privateBrowsingModeTitle" = "Ιδιωτική λειτουργία";
 
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Ρυθμίσεις ιδιωτικών καρτελών";
-
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.regularBrowsingModeAccessibilityLabel" = "Κανονική περιήγηση";
 
 /* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
 "tabGrid.selectedTabs" = "Επιλεγμένες καρτέλες";
@@ -3066,18 +2616,6 @@
 
 /* Label for synced tabs menu item that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsMenuItemLabel" = "Συγχρονισμός";
-
-/* Accessiblity hint for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityHint" = "Ενεργοποιεί ή απενεργοποιεί την ιδιωτική λειτουργία";
-
-/* Accessibility label for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityLabel" = "Ιδιωτική λειτουργία";
-
-/* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "Απενεργοποιημένο";
-
-/* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "Ενεργό";
 
 /* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardDescription" = "Αυτόματη εστίαση της γραμμής διευθύνσεων κατά τη δημιουργία νέας καρτέλας";
@@ -3139,9 +2677,6 @@
 /* Accessibility Label for the tab toolbar Forward button */
 "TabToolbarForwardButtonAccessibilityLabel" = "Προώθηση";
 
-/* Accessibility label for the lock icon, which is only present if the connection is secure */
-"TabToolbarLockImageAccessibilityLabel" = "Ασφαλής σύνδεση";
-
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Μενού";
 
@@ -3156,9 +2691,6 @@
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Προβολή αναγνώστη";
-
-/* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "Προσθήκη στη Λίστα ανάγνωσης";
 
 /* Accessibility Label for the tab toolbar Reload button */
 "TabToolbarReloadButtonAccessibilityLabel" = "Επαναφόρτωση";
@@ -3175,47 +2707,14 @@
 /* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Φωνητική αναζήτηση";
 
-/* Accessibility label for the lock icon, which is only present if the connection is insecure */
-"TabToolbarWarningImageAccessibilityLabel" = "Μη ασφαλής σύνδεση";
-
-/* Accessibility label for the Tabs Tray view. */
-"TabTrayAccessibilityLabel" = "Περιοχή καρτελών";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabTrayAddTabAccessibilityLabel" = "Προσθήκη καρτέλας";
-
-/* Accessibility hint for tab tray's displayed tab. */
-"TabTrayCellCloseAccessibilityHint" = "Σύρετε δεξιά ή αριστερά με τρία δάχτυλα για να κλείσετε την καρτέλα.";
-
-/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
-"TabTrayClosingTabAccessibilityNotificationText" = "Κλείσιμο καρτέλας";
-
-/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
-"TabTrayEmptyVoiceOverText" = "Δεν υπάρχουν καρτέλες";
-
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
-"TabTrayMultiTabPositionFormatVoiceOverText" = "Καρτέλες %1$@ έως %2$@ από %3$@";
-
-/* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "Νέα καρτέλα";
-
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "Αναζήτηση καρτελών";
-
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
-"TabTraySingleTabPositionFormatVoiceOverText" = "Καρτέλα %1$@ από %2$@";
 
 /* No comment provided by engineer. */
 "TermsOfService" = "Όρους υπηρεσίας";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Όροι Χρήσης";
-
-/* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "Κοινοποίηση...";
-
-/* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Μοιραστείτε το Brave με τους φίλους σας!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Αυτόματη";
@@ -3228,9 +2727,6 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Ανοιχτό";
-
-/* Name for app theme settings */
-"themesSettings" = "Θέματα";
 
 /* No comment provided by engineer. */
 "Title" = "Τίτλος";
@@ -3361,9 +2857,6 @@
 /* A title at the top of the screen that shows a list of sources that are ranked the highest */
 "today.popularSourcesTitle" = "Δημοφιλείς πηγές";
 
-/* A button title that is placed on promoted cards */
-"today.promoted" = "Προωθήθηκε";
-
 /* Title for long press action sheet list which has item for rate / hide */
 "today.rateBraveCardActionSheetTitle" = "Αξιολόγηση του Brave στο App Store";
 
@@ -3418,14 +2911,8 @@
 /* Title of an action that allows the user to translate the current web-page to another language */
 "TranslatePage" = "Μετάφραση σελίδας";
 
-/* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "Ενεργοποίηση προτάσεων αναζήτησης;";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Ξεκλείδωμα";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "Μη υποστηριζόμενα μέσα πληρωμής";
 
 /* Bookmark URL */
 "URL" = "URL";
@@ -3435,18 +2922,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "urlRedirectsSettings" = "Ανακατευθύνσεις ιστότοπου";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "Ακυρώθηκε από τον χρήστη";
-
-/* No comment provided by engineer. */
-"UserWalletCloseButtonTitle" = "Κλείσιμο";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorMessage" = "Παρουσιάστηκε πρόβλημα κατά τη σύνδεσή στον λογαριασμό σας Uphold. Δοκιμάστε ξανά";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "Δυστυχώς, παρουσιάστηκε πρόβλημα";
 
 /* Message for error alert when a VCard contact file cannot be parsed or opened */
 "VCard.unableToOpenContactErrorMessage" = "Δεν ήταν δυνατή η ανάγνωση του αρχείου επαφής. Ενδέχεται να είναι κατεστραμμένο ή σε μη υποστηριζόμενη μορφή.";
@@ -3511,9 +2986,6 @@
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Widget";
 
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "έτ.";
-
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ναι";
 
@@ -3523,20 +2995,11 @@
 /* History tableview section header */
 "Yesterday" = "Χθες";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Ενεργοποίηση υψηλής ποιότητας βίντεο του YouTube";
-
-/* Description of setting to enable high quality youtube videos */
-"YoutubeMediaQualityDetails" = "Η ενεργοποίηση αυτής της πειραματικής λειτουργίας θα αναπαράγει βίντεο στη μέγιστη διαθέσιμη ποιότητα και θα χρησιμοποιεί πρόσθετα δεδομένα.";
-
 /* Setting that disables highest quality video playback */
 "YoutubeMediaQualityOff" = "Απενεργοποιημένο";
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Ενεργό";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "Ποιότητα αναπαραγωγής YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Να επιτρέπεται μέσω Wi-Fi";

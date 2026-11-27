@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.63.0"
+rust-version = "1.71.0"
 name = "derive_arbitrary"
-version = "1.4.2"
+version = "1.5.0"
 authors = [
     "The Rust-Fuzz Project Developers",
     "Nick Fitzgerald <fitzgen@gmail.com>",
@@ -52,7 +52,7 @@ version = "1.0"
 version = "1.0"
 
 [dependencies.syn]
-version = "2"
+version = "3"
 features = [
     "derive",
     "parsing",

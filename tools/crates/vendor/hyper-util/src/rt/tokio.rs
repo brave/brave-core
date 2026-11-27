@@ -52,7 +52,6 @@
 //! [tokio-async-docs]: https://docs.rs/tokio/latest/tokio/#asynchronous-io
 
 use std::{
-    future::Future,
     pin::Pin,
     task::{Context, Poll},
     time::{Duration, Instant},
@@ -61,7 +60,7 @@ use std::{
 use hyper::rt::{Executor, Sleep, Timer};
 use pin_project_lite::pin_project;
 
-#[cfg(feature = "tracing")]
+#[cfg(feature = "rt-tracing-exec-force")]
 use tracing::instrument::Instrument;
 
 pub use self::{with_hyper_io::WithHyperIo, with_tokio_io::WithTokioIo};
@@ -70,6 +69,19 @@ mod with_hyper_io;
 mod with_tokio_io;
 
 /// Future executor that utilises `tokio` threads.
+///
+/// Spawned futures do not inherit the current tracing span, even when the
+/// `tracing` feature is enabled. To propagate spans, wrap this executor in
+/// one of the components from [`rt::tracing`](crate::rt::tracing), such as
+/// [`CurrentSpanExecutor`](crate::rt::CurrentSpanExecutor) (available with
+/// the `tracing` feature).
+///
+/// See the module-level documentation of [`rt::tracing`](crate::rt::tracing)
+/// for more information about propagating [`tracing`] spans to spawned tasks.
+///
+/// The temporary `rt-tracing-exec-force` feature restores propagation of the
+/// current span for libraries that do not allow customizing their executor.
+/// It is excluded from `full` and may be removed in a future breaking release.
 #[non_exhaustive]
 #[derive(Default, Debug, Clone)]
 pub struct TokioExecutor {}
@@ -108,10 +120,10 @@ where
     Fut::Output: Send + 'static,
 {
     fn execute(&self, fut: Fut) {
-        #[cfg(feature = "tracing")]
+        #[cfg(feature = "rt-tracing-exec-force")]
         tokio::spawn(fut.in_current_span());
 
-        #[cfg(not(feature = "tracing"))]
+        #[cfg(not(feature = "rt-tracing-exec-force"))]
         tokio::spawn(fut);
     }
 }
@@ -338,5 +350,30 @@ mod tests {
             tx.send(()).unwrap();
         });
         rx.await.map_err(Into::into)
+    }
+
+    #[cfg(feature = "tracing")]
+    #[tokio::test]
+    async fn execute_tracing_span() {
+        // The current-thread runtime keeps the subscriber active while the
+        // spawned future is polled, after the caller has exited its span.
+        let _subscriber = tracing::subscriber::set_default(tracing_subscriber::registry());
+        let span = tracing::info_span!("caller");
+        assert!(span.id().is_some());
+        let (tx, rx) = oneshot::channel();
+
+        {
+            let _entered = span.enter();
+            TokioExecutor::new().execute(async move {
+                tx.send(tracing::Span::current().id()).unwrap();
+            });
+        }
+
+        let spawned_span = rx.await.unwrap();
+        if cfg!(feature = "rt-tracing-exec-force") {
+            assert_eq!(spawned_span, span.id());
+        } else {
+            assert_eq!(spawned_span, None);
+        }
     }
 }

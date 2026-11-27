@@ -3,6 +3,9 @@ use crate::prelude::*;
 
 pub type pthread_t = *mut c_void;
 pub type clock_t = c_long;
+#[cfg(musl32_time64)]
+pub type time_t = i64;
+#[cfg(not(musl32_time64))]
 #[cfg_attr(
     not(feature = "rustc-dep-of-std"),
     deprecated(
@@ -13,6 +16,18 @@ pub type clock_t = c_long;
     )
 )]
 pub type time_t = c_long;
+#[cfg(musl32_time64)]
+pub type suseconds_t = i64;
+#[cfg(not(musl32_time64))]
+#[cfg_attr(
+    not(feature = "rustc-dep-of-std"),
+    deprecated(
+        since = "0.2.80",
+        note = "This type is changed to 64-bit in musl 1.2.0, \
+                we'll follow that change in the future release. \
+                See #1848 for more info."
+    )
+)]
 pub type suseconds_t = c_long;
 pub type ino_t = u64;
 pub type off_t = i64;
@@ -22,10 +37,15 @@ pub type shmatt_t = c_ulong;
 pub type msgqnum_t = c_ulong;
 pub type msglen_t = c_ulong;
 pub type fsblkcnt_t = c_ulonglong;
-pub type fsblkcnt64_t = c_ulonglong;
 pub type fsfilcnt_t = c_ulonglong;
-pub type fsfilcnt64_t = c_ulonglong;
 pub type rlim_t = c_ulonglong;
+
+// FIXME(1.0,deprecate): lfs binding to be removed
+pub type fsblkcnt64_t = c_ulonglong;
+// FIXME(1.0,deprecate): lfs binding to be removed
+pub type fsfilcnt64_t = c_ulonglong;
+// FIXME(1.0,deprecate): lfs binding to be removed
+pub type stat64 = stat;
 
 cfg_if! {
     if #[cfg(doc)] {
@@ -34,83 +54,6 @@ cfg_if! {
     } else {
         #[doc(hidden)]
         pub type Ioctl = c_int;
-    }
-}
-
-impl siginfo_t {
-    pub unsafe fn si_addr(&self) -> *mut c_void {
-        #[repr(C)]
-        struct siginfo_sigfault {
-            _si_signo: c_int,
-            _si_errno: c_int,
-            _si_code: c_int,
-            si_addr: *mut c_void,
-        }
-        (*(self as *const siginfo_t as *const siginfo_sigfault)).si_addr
-    }
-
-    pub unsafe fn si_value(&self) -> crate::sigval {
-        #[repr(C)]
-        struct siginfo_si_value {
-            _si_signo: c_int,
-            _si_errno: c_int,
-            _si_code: c_int,
-            _si_timerid: c_int,
-            _si_overrun: c_int,
-            si_value: crate::sigval,
-        }
-        (*(self as *const siginfo_t as *const siginfo_si_value)).si_value
-    }
-}
-
-s_no_extra_traits! {
-    // Internal, for casts to access union fields
-    struct sifields_sigchld {
-        si_pid: crate::pid_t,
-        si_uid: crate::uid_t,
-        si_status: c_int,
-        si_utime: c_long,
-        si_stime: c_long,
-    }
-
-    // Internal, for casts to access union fields
-    union sifields {
-        _align_pointer: *mut c_void,
-        sigchld: sifields_sigchld,
-    }
-
-    // Internal, for casts to access union fields. Note that some variants
-    // of sifields start with a pointer, which makes the alignment of
-    // sifields vary on 32-bit and 64-bit architectures.
-    struct siginfo_f {
-        _siginfo_base: [c_int; 3],
-        sifields: sifields,
-    }
-}
-
-impl siginfo_t {
-    unsafe fn sifields(&self) -> &sifields {
-        &(*(self as *const siginfo_t as *const siginfo_f)).sifields
-    }
-
-    pub unsafe fn si_pid(&self) -> crate::pid_t {
-        self.sifields().sigchld.si_pid
-    }
-
-    pub unsafe fn si_uid(&self) -> crate::uid_t {
-        self.sifields().sigchld.si_uid
-    }
-
-    pub unsafe fn si_status(&self) -> c_int {
-        self.sifields().sigchld.si_status
-    }
-
-    pub unsafe fn si_utime(&self) -> c_long {
-        self.sifields().sigchld.si_utime
-    }
-
-    pub unsafe fn si_stime(&self) -> c_long {
-        self.sifields().sigchld.si_stime
     }
 }
 
@@ -129,7 +72,7 @@ s! {
         pub aio_offset: off_t,
         __next: *mut c_void,
         __prev: *mut c_void,
-        __dummy4: [c_char; 32 - 2 * size_of::<*const ()>()],
+        __dummy4: Padding<[c_char; 32 - 2 * size_of::<*const ()>()]>,
     }
 
     #[repr(align(8))]
@@ -152,25 +95,45 @@ s! {
         pub sa_restorer: Option<extern "C" fn()>,
     }
 
-    // `mips*` targets swap the `s_errno` and `s_code` fields otherwise this struct is
-    // target-agnostic (see https://www.openwall.com/lists/musl/2016/01/27/1/2)
-    //
-    // FIXME(union): C implementation uses unions
-    pub struct siginfo_t {
-        pub si_signo: c_int,
-        #[cfg(not(any(target_arch = "mips", target_arch = "mips64")))]
-        pub si_errno: c_int,
-        pub si_code: c_int,
-        #[cfg(any(target_arch = "mips", target_arch = "mips64"))]
-        pub si_errno: c_int,
-        #[doc(hidden)]
-        #[deprecated(
-            since = "0.2.54",
-            note = "Please leave a comment on https://github.com/rust-lang/libc/pull/1316 \
-                  if you're using this field"
-        )]
-        pub _pad: [c_int; 29],
-        _align: [usize; 0],
+    // musl's uint64_t is an unsigned long instead of an unsigned long long on
+    // 64-bit targets, so it's not a __u64 (which is c_ulonglong), but rather a
+    // real u64. This is also how we handle musl's uint64_t elsewhere.
+    pub struct statx {
+        pub stx_mask: u32,
+        pub stx_blksize: u32,
+        pub stx_attributes: u64,
+        pub stx_nlink: u32,
+        pub stx_uid: u32,
+        pub stx_gid: u32,
+        pub stx_mode: u16,
+        __statx_pad1: Padding<[u16; 1]>,
+        pub stx_ino: u64,
+        pub stx_size: u64,
+        pub stx_blocks: u64,
+        pub stx_attributes_mask: u64,
+        pub stx_atime: statx_timestamp,
+        pub stx_btime: statx_timestamp,
+        pub stx_ctime: statx_timestamp,
+        pub stx_mtime: statx_timestamp,
+        pub stx_rdev_major: u32,
+        pub stx_rdev_minor: u32,
+        pub stx_dev_major: u32,
+        pub stx_dev_minor: u32,
+        pub stx_mnt_id: u64,
+        pub stx_dio_mem_align: u32,
+        pub stx_dio_offset_align: u32,
+        pub stx_subvol: u64,
+        pub stx_atomic_write_unit_min: u32,
+        pub stx_atomic_write_unit_max: u32,
+        pub stx_atomic_write_segments_max: u32,
+        __statx_pad2: Padding<[u32; 1]>,
+        __statx_pad3: Padding<[u64; 9]>,
+    }
+
+    pub struct statx_timestamp {
+        pub tv_sec: i64,
+        pub tv_nsec: u32,
+        __statx_timestamp_pad1: Padding<[i32; 1]>,
     }
 
     pub struct statvfs {
@@ -190,9 +153,10 @@ s! {
         pub f_fsid: c_ulong,
         pub f_flag: c_ulong,
         pub f_namemax: c_ulong,
-        __f_reserved: [c_int; 6],
+        __f_reserved: Padding<[c_int; 6]>,
     }
 
+    // FIXME(1.0,deprecate): lfs binding to be removed
     pub struct statvfs64 {
         pub f_bsize: c_ulong,
         pub f_frsize: c_ulong,
@@ -210,7 +174,7 @@ s! {
         pub f_fsid: c_ulong,
         pub f_flag: c_ulong,
         pub f_namemax: c_ulong,
-        __f_reserved: [c_int; 6],
+        __f_reserved: Padding<[c_int; 6]>,
     }
 
     // PowerPC implementations are special, see the subfolders
@@ -234,6 +198,7 @@ s! {
         pub l_pid: crate::pid_t,
     }
 
+    // FIXME(1.0,deprecate): lfs binding to be removed
     pub struct flock64 {
         pub l_type: c_short,
         pub l_whence: c_short,
@@ -247,7 +212,7 @@ s! {
         __opaque: *mut c_void,
         __padding: Padding<[*mut c_void; 4usize]>,
         __nsub2: size_t,
-        __padding2: c_char,
+        __padding2: Padding<c_char>,
     }
 
     pub struct rtentry {
@@ -400,6 +365,7 @@ s! {
     }
 
     // MIPS/s390x implementation is special (see arch folders)
+    // FIXME(1.0,deprecate): lfs binding to be removed
     #[cfg(not(any(target_arch = "mips", target_arch = "mips64", target_arch = "s390x")))]
     pub struct statfs64 {
         pub f_type: c_ulong,
@@ -443,7 +409,7 @@ s! {
         pub ut_host: [c_char; 256],
         pub ut_exit: __exit_status,
 
-        #[cfg(not(musl_v1_2_3))]
+        #[cfg(not(musl_v1_2))]
         #[deprecated(
             since = "0.2.173",
             note = "The ABI of this field has changed from c_long to c_int with padding, \
@@ -451,14 +417,14 @@ s! {
         )]
         pub ut_session: c_long,
 
-        #[cfg(musl_v1_2_3)]
+        #[cfg(musl_v1_2)]
         #[cfg(not(target_endian = "little"))]
         __ut_pad2: Padding<c_int>,
 
-        #[cfg(musl_v1_2_3)]
+        #[cfg(musl_v1_2)]
         pub ut_session: c_int,
 
-        #[cfg(musl_v1_2_3)]
+        #[cfg(musl_v1_2)]
         #[cfg(target_endian = "little")]
         __ut_pad2: Padding<c_int>,
 
@@ -491,8 +457,6 @@ pub const MAP_HUGE_512MB: c_int = 29 << MAP_HUGE_SHIFT;
 pub const MAP_HUGE_1GB: c_int = 30 << MAP_HUGE_SHIFT;
 pub const MAP_HUGE_2GB: c_int = 31 << MAP_HUGE_SHIFT;
 pub const MAP_HUGE_16GB: c_int = 34 << MAP_HUGE_SHIFT;
-
-pub const MS_RMT_MASK: c_ulong = 0x02800051;
 
 // include/utmpx.h
 pub const EMPTY: c_short = 0;
@@ -542,7 +506,7 @@ pub const F_WRLCK: c_int = 1;
 pub const F_UNLCK: c_int = 2;
 
 pub const SA_NODEFER: c_int = 0x40000000;
-pub const SA_RESETHAND: c_int = 0x80000000;
+pub const SA_RESETHAND: c_int = u32_cast_int(0x80000000);
 pub const SA_RESTART: c_int = 0x10000000;
 pub const SA_NOCLDSTOP: c_int = 0x00000001;
 
@@ -554,6 +518,7 @@ pub const BUFSIZ: c_uint = 1024;
 pub const TMP_MAX: c_uint = 10000;
 pub const FOPEN_MAX: c_uint = 1000;
 pub const FILENAME_MAX: c_uint = 4096;
+pub const HOST_NAME_MAX: c_int = 255;
 pub const O_PATH: c_int = 0o10000000;
 pub const O_EXEC: c_int = 0o10000000;
 pub const O_SEARCH: c_int = 0o10000000;
@@ -562,31 +527,17 @@ pub const O_NDELAY: c_int = O_NONBLOCK;
 pub const NI_MAXHOST: crate::socklen_t = 255;
 pub const PTHREAD_STACK_MIN: size_t = 2048;
 
-pub const POSIX_MADV_DONTNEED: c_int = 4;
-
 pub const MAP_ANONYMOUS: c_int = MAP_ANON;
 
-pub const SOCK_SEQPACKET: c_int = 5;
-pub const SOCK_DCCP: c_int = 6;
-pub const SOCK_NONBLOCK: c_int = O_NONBLOCK;
-#[deprecated(since = "0.2.70", note = "AF_PACKET must be used instead")]
-pub const SOCK_PACKET: c_int = 10;
-
 pub const SOMAXCONN: c_int = 128;
-
-#[deprecated(since = "0.2.55", note = "Use SIGSYS instead")]
-pub const SIGUNUSED: c_int = crate::SIGSYS;
 
 pub const __SIZEOF_PTHREAD_CONDATTR_T: usize = 4;
 pub const __SIZEOF_PTHREAD_MUTEXATTR_T: usize = 4;
 pub const __SIZEOF_PTHREAD_RWLOCKATTR_T: usize = 8;
 pub const __SIZEOF_PTHREAD_BARRIERATTR_T: usize = 4;
 
-// FIXME(musl): Value is 1024 for all architectures since 1.2.4
-#[cfg(not(target_arch = "loongarch64"))]
-pub const CPU_SETSIZE: c_int = 128;
-#[cfg(target_arch = "loongarch64")]
-pub const CPU_SETSIZE: c_int = 1024;
+// Value was changed in 1.2.4
+pub const CPU_SETSIZE: c_int = if cfg!(musl_v1_2) { 1024 } else { 128 };
 
 pub const PTRACE_TRACEME: c_int = 0;
 pub const PTRACE_PEEKTEXT: c_int = 1;
@@ -619,17 +570,6 @@ pub const PTRACE_LISTEN: c_int = 0x4208;
 pub const PTRACE_PEEKSIGINFO: c_int = 0x4209;
 pub const PTRACE_GETSIGMASK: c_uint = 0x420a;
 pub const PTRACE_SETSIGMASK: c_uint = 0x420b;
-
-pub const AF_IB: c_int = 27;
-pub const AF_MPLS: c_int = 28;
-pub const AF_NFC: c_int = 39;
-pub const AF_VSOCK: c_int = 40;
-pub const AF_XDP: c_int = 44;
-pub const PF_IB: c_int = AF_IB;
-pub const PF_MPLS: c_int = AF_MPLS;
-pub const PF_NFC: c_int = AF_NFC;
-pub const PF_VSOCK: c_int = AF_VSOCK;
-pub const PF_XDP: c_int = AF_XDP;
 
 pub const EFD_NONBLOCK: c_int = crate::O_NONBLOCK;
 
@@ -736,6 +676,10 @@ pub const UT_HOSTSIZE: usize = 256;
 pub const UT_LINESIZE: usize = 32;
 pub const UT_NAMESIZE: usize = 32;
 
+// include/paths.h
+pub const _PATH_DEFPATH: *const c_char = cstr(b"/usr/local/bin:/bin:/usr/bin\0");
+pub const _PATH_BSHELL: *const c_char = cstr(b"/bin/sh\0");
+
 cfg_if! {
     if #[cfg(target_arch = "s390x")] {
         pub const POSIX_FADV_DONTNEED: c_int = 6;
@@ -755,6 +699,7 @@ extern "C" {
         new_limit: *const crate::rlimit,
         old_limit: *mut crate::rlimit,
     ) -> c_int;
+    #[cfg_attr(musl_redir_time64, link_name = "__gettimeofday_time64")]
     pub fn gettimeofday(tp: *mut crate::timeval, tz: *mut c_void) -> c_int;
     pub fn ptrace(request: c_int, ...) -> c_long;
     pub fn getpriority(which: c_int, who: crate::id_t) -> c_int;
@@ -784,13 +729,22 @@ extern "C" {
         flags: c_int,
     ) -> ssize_t;
     pub fn getauxval(type_: c_ulong) -> c_ulong;
+    pub fn renameat2(
+        olddirfd: c_int,
+        oldpath: *const c_char,
+        newdirfd: c_int,
+        newpath: *const c_char,
+        flags: c_uint,
+    ) -> c_int;
 
     // Added in `musl` 1.1.20
     pub fn explicit_bzero(s: *mut c_void, len: size_t);
     // Added in `musl` 1.2.2
     pub fn reallocarray(ptr: *mut c_void, nmemb: size_t, size: size_t) -> *mut c_void;
 
+    #[cfg_attr(musl_redir_time64, link_name = "__adjtimex_time64")]
     pub fn adjtimex(buf: *mut crate::timex) -> c_int;
+    #[cfg_attr(musl_redir_time64, link_name = "__clock_adjtime64")]
     pub fn clock_adjtime(clk_id: crate::clockid_t, buf: *mut crate::timex) -> c_int;
 
     pub fn ctermid(s: *mut c_char) -> *mut c_char;
@@ -856,9 +810,20 @@ extern "C" {
         note = "musl provides `utmp` as stubs and an alternative should be preferred; see https://wiki.musl-libc.org/faq.html"
     )]
     pub fn utmpxname(file: *const c_char) -> c_int;
+    pub fn pthread_tryjoin_np(thread: crate::pthread_t, retval: *mut *mut c_void) -> c_int;
+    #[cfg_attr(
+        all(musl_redir_time64, target_pointer_width = "32"),
+        link_name = "__pthread_timedjoin_np_time64"
+    )]
+    pub fn pthread_timedjoin_np(
+        thread: crate::pthread_t,
+        retval: *mut *mut c_void,
+        abstime: *const crate::timespec,
+    ) -> c_int;
 }
 
 // Alias <foo> to <foo>64 to mimic glibc's LFS64 support
+// FIXME(1.0,deprecate): lfs binding to be removed
 mod lfs64;
 pub use self::lfs64::*;
 

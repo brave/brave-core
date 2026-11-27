@@ -159,6 +159,22 @@ enum NewTabPageAdMetricType {
   kConfirmation,
 };
 
+enum NewTabPageAdCampaignType {
+  kUndefined = 0,
+  kFree,
+  kPaid,
+  kBarter,
+  kMakeGood,
+  kHouse,
+  kCause,
+  kFixed,
+  kTrial,
+  kPreemptive,
+  kAffiliate,
+  kSurvey,
+  kProduct,
+};
+
 struct NewTabPageAdInfo {
   string placement_id;
   string creative_instance_id;

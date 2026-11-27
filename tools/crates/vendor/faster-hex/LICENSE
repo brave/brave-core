@@ -19,3 +19,25 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+Third-party notices
+-------------------
+
+This distribution includes code derived from the following MIT-licensed projects.
+Their copyright and permission notices are included with this distribution:
+
+* stdsimd (SIMD encoding), The Rust Project Developers:
+  https://github.com/rust-lang/stdsimd
+  See LICENSE-THIRD-PARTY/Rust Project Developers.
+  stdsimd offers MIT or Apache-2.0; the included work is used under MIT.
+* fast-hex (SIMD decoding), Zach Bjornson:
+  https://github.com/zbjornson/fast-hex
+  See LICENSE-THIRD-PARTY/fast-hex.
+
+* const-hex (saturating nibble mapping):
+  https://github.com/DaniPopes/const-hex
+  See LICENSE-THIRD-PARTY/const-hex.
+
+* vsimd (ALSW hex decoding), Nugine:
+  https://github.com/Nugine/simd
+  See LICENSE-THIRD-PARTY/vsimd.

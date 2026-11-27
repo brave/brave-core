@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Informácie";
 
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertMessage" = "To vám umožní uložiť obrázok do galérie.";
-
-/* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave chce získať prístup k vašim fotografiám";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Pridať záložku";
 
@@ -63,9 +57,6 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Meno používateľa";
-
-/* Settings autofill section title */
-"Autofill" = "Automatické dopĺňanie";
 
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Účty";
@@ -133,9 +124,6 @@
 /* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
 "backgroundDownloadingTitleSingleDownload" = "Preberá sa „%@“";
 
-/* cookie settings option */
-"Block3rdPartyCookies" = "Zakázať cookies tretích strán";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blokovať všetky súbory cookie";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Predvoľbu sa nepodarilo nastaviť. Skúste to znova.";
 
-/* title for section showing page blocking statistics */
-"BlockingMonitor" = "Monitor blokovania";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokovať kontextové okná";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Pridať záložku pre karty %lld";
-
-/* Bookmark Folder Section Title */
-"BookmarkFolder" = "Priečinok so záložkami";
-
-/* Bookmark Info Section Title */
-"BookmarkInfo" = "Informácie o záložke";
 
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Panel so záložkami";
@@ -225,9 +204,6 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Štíty a súkromie";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
 
 /* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
 "BraveTranslate.languageSelectionButtonTitle" = "Vyberte jazyk";
@@ -415,14 +391,8 @@
 /* Section title in settings panel */
 "ClearPrivateData" = "Vymazať súkromné ​​údaje";
 
-/* The cancel button when confirming clear private data. */
-"ClearPrivateDataAlertCancelButtonTitle" = "Zrušit";
-
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertMessage" = "Ste si istý?";
-
-/* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "OK";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "Vymazať dáta";
@@ -441,9 +411,6 @@
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "OK";
-
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "Chyba klienta";
 
 /* Button title to close a menu. */
 "Close" = "Zavrieť";
@@ -481,17 +448,11 @@
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
 "CopyCleanLink" = "Kopírovať čisté prepojenie";
 
-/* Context menu item for copying an image to the clipboard */
-"CopyImageActionTitle" = "Kopírovať obrázok";
-
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Kopírovať odkaz";
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Kopírovať informácie o kartách do schránky.";
-
-/* Copy rewards internals info for support */
-"CopyWalletSupportInfo" = "Kopírovať informácie pre podporu";
 
 /* Create PDF share action. */
 "CreatePDF" = "Vytvoriť PDF";
@@ -504,9 +465,6 @@
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Napíšte vyhľadávaciu adresu URL a nahraďte dopyt s %1$s.\nNapríklad: https://youtube.com/search?q=%2$s \n(Ak stránka podporuje OpenSearch, pri úprave tohto poľa bude poskytnutá možnosť automatického pridania.)";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "Automatické pridávanie";
 
 /* A title explaining that an error shown while adding custom search engine */
 "customSearchEngine.customSearchEngineAddErrorTitle" = "Chyba pri pridávaní vlastného vyhľadávača";
@@ -590,12 +548,6 @@
 "defaultBrowserCallout.notificationTitle" = "Získajte ochranu Brave na každom odkaze";
 
 /* No comment provided by engineer. */
-"defaultBrowserCalloutCloseAccesabilityLabel" = "Zavrieť callout predvoleného prehliadača";
-
-/* Name for default Brave theme. */
-"defaultThemeName" = "Predvolené nastavenia Brave";
-
-/* No comment provided by engineer. */
 "Delete" = "Odstrániť";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
@@ -649,9 +601,6 @@
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Stiahnuté";
 
-/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
-"DownloadsPanelEmptyStateTitle" = "Tu sa zobrazia stiahnuté súbory.";
-
 /* Action item title of long press for Opening the existing - active Tab url in a new Tab */
 "DuplicateActiveTab" = "Duplikovať aktívnu kartu";
 
@@ -700,47 +649,14 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Zadajte názov priečinka";
 
-/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ bežne používa na ochranu vašich informácií šifrovanie. Keď sa Brave tentokrát pokúsil pripojiť k %2$@, webová lokalita poslala späť nezvyčajné a nesprávne poverenia. Môže sa to stať, keď sa útočník snaží predstierať, že je %3$@, alebo keď pripojenie prerušila prihlasovacia obrazovka siete Wi-Fi. Vaše informácie sú stále v bezpečí, pretože Brave zastavil pripojenie skôr, ako došlo k výmene akýchkoľvek údajov.<br />Momentálne nemôžete navštíviť %4$@, pretože web používa autentifikáciu certifikátov. Sieťové chyby a útoky sú zvyčajne dočasné, takže táto stránka bude pravdepodobne neskôr fungovať.";
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Odstrániť";
 
-/* Additional warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningDetails" = "Tento server nedokázal dokázať, že ide o %@; jeho bezpečnostný certifikát nie je dôveryhodný pre operačný systém vášho zariadenia. Môže to byť spôsobené nesprávnou konfiguráciou alebo pokusom útočníka zachytiť vaše pripojenie.";
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Táto stránka sa nezobrazí vo vašom zozname najnavštevovanejších, ale nebude odstránená z vašej histórie.";
 
-/* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarningTitle" = "Útočníci sa môžu pokúšať ukradnúť vaše informácie z %@ (napríklad heslá, správy alebo kreditné karty).";
-
-/* Label for button to go back from the error page */
-"ErrorPagesBackToSafetyButton" = "Späť do bezpečia";
-
-/* Title on the certificate error page */
-"ErrorPagesCertErrorTitle" = "Táto stránka nemôže poskytnúť zabezpečené pripojenie";
-
-/* Title on the certificate error page */
-"ErrorPagesCertWarningTitle" = "Vaše pripojenie nie je súkromné";
-
-/* Label for button to hide advanced actions on the error page */
-"ErrorPagesHideDetailsButton" = "Skryť podrobnosti";
-
-/* Label for learn more link on error page */
-"ErrorPagesLearnMoreButton" = "Zjistěte více.";
-
-/* Label for button to perform advanced actions on the error page */
-"ErrorPagesMoreDetailsButton" = "Viac informácií";
-
-/* Title of the No Internet error page */
-"ErrorPagesNoInternetTitle" = "Žiadny prístup na internet";
-
-/* Text telling the user to Try: The following list of things */
-"ErrorPagesNoInternetTry" = "Zdá sa, že nie ste online. Ak to chcete opraviť, skúste";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem1" = "Kontrola sieťových káblov, modemu a smerovača";
-
-/* List of things to try when internet is not working */
-"ErrorPagesNoInternetTryItem2" = "Opätovné pripojenie k sieti Wi-Fi";
-
-/* Button label to temporarily continue to the site from the certificate error page */
-"ErrorPagesProceedAnywayButton" = "Pokračujte na %@ (nebezpečné)";
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Odstrániť z najnavštevovanejších?";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ spustí externú aplikáciu";
@@ -766,29 +682,14 @@
 /* Share action title */
 "FindInPage" = "Nájsť na stránke";
 
-/* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "Hotovo";
-
 /* Find `search query` */
 "FindInPageFormat" = "Nájsť ";
-
-/* Accessibility label for next result button in Find in Page Toolbar. */
-"FindInPageNextResultButtonAccessibilityLabel" = "Ďalší výsledok na stránke";
-
-/* Accessibility label for previous result button in Find in Page Toolbar. */
-"FindInPagePreviousResultButtonAccessibilityLabel" = "Predchádzajúci výsledok na stránke";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findInPageTitle" = "Nájsť na stránke";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findNextTitle" = "Nájsť ďalšie";
-
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "Na tejto stránke";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findPreviousTitle" = "Nájsť predchádzajúce";
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Povoliť otváranie univerzálnych odkazov v externých aplikáciách";
@@ -813,9 +714,6 @@
 
 /* Hides the rewards icon */
 "HideRewardsIcon" = "Skryť ikonu Brave odmeny";
-
-/* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Skryje ikonu Odmeny Brave, keď nie je aplikácia Odmeny Brave povolená";
 
 /* Title for history menu item */
 "HistortMenuItem" = "História";
@@ -859,11 +757,8 @@
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Import údajov prehliadača";
 
-/* title for per-site shield toggles */
-"IndividualControls" = "Individuálne kontroly";
-
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "Neplatné údaje v žiadosti o platbu";
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Vložená stránka na tejto stránke";
 
 /* History tableview section header */
 "LastMonth" = "Minulý mesiac";
@@ -919,30 +814,6 @@
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Filter";
 
-/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
-"LoginDetailLastModifiedCellFormatTitle" = "Naposledy zmenené %@";
-
-/* Label displayed above the password row in Login Detail View. */
-"LoginDetailPasswordCellTitle" = "heslo";
-
-/* Label displayed above the username row in Login Detail View. */
-"LoginDetailUsernameCellTitle" = "používateľské meno";
-
-/* Label displayed above the website row in Login Detail View. */
-"LoginDetailWebsiteCellTitle" = "webová stránka";
-
-/* Label for the button used to deselect all logins. */
-"LoginListDeselectAllButtonTitle" = "Zrušiť výber";
-
-/* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "Nenašli sa žiadne prihlasovacie údaje";
-
-/* Title for Logins List View screen. */
-"LoginListScreenTitle" = "Prihlasovacie údaje";
-
-/* Label for the button used to select all logins. */
-"LoginListSelectAllButtonTitle" = "Vybrať všetko";
-
 /* Setting to allow media to play in the background */
 "MediaAutoBackgrounding" = "Povoliť zvuk na pozadí";
 
@@ -957,9 +828,6 @@
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Odkryť";
-
-/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
-"monthAbbreviation" = "Mesiac";
 
 /* Bookmark title / Device name */
 "Name" = "Názov";
@@ -1036,9 +904,6 @@
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Viac informácií o sponzorovaných obrázkoch";
 
-/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
-"ntp.settingsAutoOpenKeyboard" = "Automatické otváranie klávesnice";
-
 /* A setting to enable or disable background on the NTP screen. */
 "ntp.settingsBackgroundImages" = "Pozadie";
 
@@ -1075,53 +940,8 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Zapnutím odmien vyjadrujete súhlas s %@.";
 
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "Zarábajte tokeny a odmeňujte tvorcov za skvelý obsah počas prehliadania.";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "Počas prehliadania získavajte body a odmeňujte tvorcov za skvelý obsah.";
-
-/* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Reklamy Brave sú tu!";
-
-/* Title for ads onboarding screen */
-"OBAdsTitle" = "Prehliadač Brave zobrazí vašu prvú reklamu za";
-
-/* Title for when the user completes onboarding */
-"OBCompleteTitle" = "Teraz máte všetko, čo potrebujete.";
-
-/* Button to show information on how to enable ads */
-"OBDidntSeeAdButton" = "Nevidel/a som reklamu";
-
-/* A generic error body for onboarding */
-"OBErrorDetails" = "Pri vytváraní vašej peňaženky sa vyskytla chyba. Prosím, skúste to znova";
-
 /* No comment provided by engineer. */
 "OBErrorOkay" = "Dobre";
-
-/* A generic error title for onboarding */
-"OBErrorTitle" = "Prepáčte";
-
-/* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "Spustiť prehliadač";
-
-/* Button to join Brave Rewards. */
-"OBJoinButton" = "Pripojiť sa";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Dovoliť, aby Brave skontroloval moju schránku, či neobsahuje správny referenčný kód";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Možno ste si stiahli Brave na podporu svojho sprostredkovateľa. Aby Brave zistil vášho sprostredkovateľa, vykoná jednorazovú kontrolu vašej schránky, či neobsahuje zodpovedajúci referenčný kód. Táto kontrola je obmedzená len na kód a nebudú sa prenášať žiadne ďalšie osobné údaje. Ak sa odhlásite, váš sprostredkovateľ nedostane Odmeny Brave.";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentNoButton" = "Nepovoliť túto kontrolu";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentTitle" = "Anonymná kontrola referenčného kódu";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentYesButton" = "Povoliť jednorazovú kontrolu schránky";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "Klepnutím na Áno vyjadrujete súhlas s";
@@ -1138,32 +958,8 @@
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Prihlásením sa do Súkromných reklám Brave podporíte vydavateľov a tvorcov obsahu pri každej zobrazenej reklame.";
 
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Zarábajte tokeny a odmeňujte tvorcov za skvelý obsah počas prehliadania.";
-
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Zásady ochrany osobných údajov";
-
-/* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Odmeny Brave";
-
-/* Save button to save current selection */
-"OBSaveButton" = "Uložiť";
-
-/* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "Vyberte si váš predvolený vyhľadávací nástroj";
-
-/* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Vitajte v prehliadači Brave";
-
-/* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "Blokujte sledovače narúšajúce súkromie, aby ste mohli prehliadať web bez toho, aby vás niekto sledoval";
-
-/* Title for shields onboarding screen */
-"OBShieldsTitle" = "Brave štíty";
-
-/* Button to show the Brave Rewards Ads. */
-"OBShowMeButton" = "Zobraziť";
 
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Štart";
@@ -1198,20 +994,11 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Otvoriť všetko (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Otvorte nastavenia Odmeny Brave";
-
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Pri otváraní priečinka Stiahnuté súbory v aplikácii Súbory sa vyskytla neznáma chyba.";
 
-/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
-"openExternalAppURLHost" = "%@ hovorí:";
-
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "Povoliť %@ prepínať aplikácie?";
-
-/* Context menu for opening image in new tab */
-"OpenImageInNewTab" = "Otvoriť obrázok na novej karte";
 
 /* Context menu item for opening a link in a new private browsing window */
 "OpenInNewPrivateWindowTitle" = "Otvoriť v novom súkromnom okne";
@@ -1348,12 +1135,6 @@
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Ďalšie nastavenia ochrany osobných údajov";
 
-/* Section name for other settings. */
-"OtherSettingsSection" = "Iné nastavenia";
-
-/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
-"p3a.continue" = "Pokračovať";
-
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "Tieto súkromné odpovede pomáhajú spoločnosti Brave odhadnúť celkové používanie určitých funkcií a vylepšiť ich.";
 
@@ -1384,12 +1165,6 @@
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Predvolená úroveň priblíženia webovej stránky";
 
-/* Description for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesDescription" = "Keď sa zmení úroveň priblíženia webovej stránky, webová stránka sa zobrazí v zozname tu. V súčasnosti nie sú k dispozícii žiadne webové stránky s priblížením alebo oddialením.";
-
-/* Title for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesTitle" = "Neboli pridané žiadne webové stránky";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Všetky ostatné webové stránky";
 
@@ -1414,12 +1189,6 @@
 /* Setting to allow the app to restore private browsing tabs */
 "PersistentPrivateBrowsing" = "Trvalé súkromné ​​prehliadanie";
 
-/* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Umožňuje Brave obnoviť súkromné ​​karty prehliadania, aj keď zatvoríte alebo znova otvoríte aplikáciu";
-
-/* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "Obnoviť súkromné ​​karty";
-
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Fotografia od %@";
 
@@ -1434,12 +1203,6 @@
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Možnosti prehrávania";
-
-/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
-"playlist.carplayRestartPlaybackButtonStateDisabled" = "Zakázané. Ťuknutím povolíte reštartovanie prehrávania.";
-
-/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
-"playlist.carplayRestartPlaybackButtonStateEnabled" = "Povolené. Ťuknutím zakážete reštartovanie prehrávania.";
 
 /* The description of the checkbox that allows the user to restart audio/video playback */
 "playlist.carplayRestartPlaybackOptionDetailsTitle" = "Rozhodnite sa, či výber už prehrávanej položky obnoví prehrávanie alebo či bude pokračovať v prehrávaní tam, kde naposledy skončilo";
@@ -1687,9 +1450,6 @@
 /* Text of a button that opens up a Privacy Reports screen. */
 "privacyHub.onboardingButtonTitle" = "Otvoriť Centrum ochrany osobných údajov";
 
-/* The title of the button action which open the privacy hub */
-"privacyHub.openPrivacyHubWidgetActionTitle" = "Otvoriť Centrum ochrany osobných údajov";
-
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
 "privacyHub.privacyReportsDisclaimer" = "Údaje Centra osobných údajov sa ukladajú lokálne a nikdy sa nikam neodosielajú.";
 
@@ -1759,23 +1519,11 @@
 /* Private button title */
 "Private" = "Inkognito";
 
-/* No comment provided by engineer. */
-"PrivateBrowsing" = "Súkromné ​​prehliadanie";
-
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Iba súkromné ​​prehliadanie";
 
 /* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
 "PrivateBrowsingOnlyWarning" = "Režim Iba súkromné ​​prehliadanie zatvorí všetky vaše aktuálne karty a odhlási vás zo všetkých stránok.";
-
-/* Private tab details */
-"PrivateTabBody" = "Súkromné ​​karty sa v Brave neukladajú, ale nezaručujú vám online anonymitu. Stránky, ktoré navštívite na súkromnej karte, sa nezobrazia vo vašej histórii a ich súbory cookie vždy zmiznú, keď ich zatvoríte – v Brave po nich nezostane žiadna stopa. Stiahnuté súbory sa však uložia.\nVáš mobilný operátor (alebo vlastník siete Wi-Fi alebo VPN, ku ktorej ste pripojení), môže vidieť, ktoré stránky navštevujete, a tieto stránky zistia vašu verejnú IP adresu, a to aj na súkromných kartách.";
-
-/* Private tab detail text */
-"PrivateTabDetails" = "Používanie súkromných kariet mení iba to, čo Brave robí na vašom zariadení, nemení správanie nikoho iného.\n\nWebové stránky vždy zistia vašu IP adresu, keď ich navštívite. Z toho môžu často odhadnúť, kde sa nachádzate – zvyčajne vaše mesto. Niekedy môže byť tento odhad polohy oveľa konkrétnejší. Stránky tiež vedia všetko, čo im konkrétne poviete, napríklad hľadané výrazy. Ak sa prihlásite na stránku, budú vedieť, že ste vlastníkom daného účtu. Po zatvorení súkromných kariet budete stále odhlásení, pretože Brave odstráni súbor cookie, vďaka ktorému ste boli prihlásení.\n\nAkýkoľvek poskytovateľ internetu (váš ISP) môže vidieť všetku vašu aktivitu na sieti. Často je to váš mobilný operátor. Ak ste pripojení k sieti Wi-Fi, je to vlastník tejto siete a ak používate sieť VPN, je to ten, kto túto sieť VPN prevádzkuje. Váš ISP môže vidieť, ktoré stránky navštevujete, keď ich navštívite. Ak tieto stránky používajú protokol HTTPS, poskytovateľ internetu nemôže vedieť, čo na týchto stránkach robíte. Ak však stránka používa iba HTTP, váš poskytovateľ internetových služieb môže vidieť všetko: vaše hľadané výrazy, ktoré stránky čítate a ktoré odkazy sledujete.\n\nAk vaše zariadenie spravuje zamestnávateľ, môže tiež sledovať, čo s ním robíte. Používanie súkromných kariet pravdepodobne nezabráni v tom, aby vedel, ktoré stránky ste navštívili. Niekto iný s prístupom k vášmu zariadeniu by tiež mohol mať nainštalovaný softvér, ktorý monitoruje vašu aktivitu, a pred tým vás nechránia ani súkromné ​​karty.";
-
-/* Private tab information link */
-"PrivateTabLink" = "Prečítajte si o súkromných kartách.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Súkromná karta";
@@ -1834,12 +1582,6 @@
 /* Accessibility label for brightness adjustment slider in Reader Mode display settings */
 "ReaderModeBrightSliderAccessibilityLabel" = "Jas";
 
-/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
-"ReaderModeDisplaySettingsButtonTitle" = "Nastavenia displeja";
-
-/* Error displayed when reader mode cannot be enabled */
-"ReaderModeErrorConvertDisplayText" = "Pri konverzii stránky sa vyskytla chyba";
-
 /* Font type setting in the reading view settings */
 "ReaderModeFontButtonSansSerifTitle" = "Bezpätkové písmo";
 
@@ -1851,15 +1593,6 @@
 
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Zmení typ písma.";
-
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "Načítava sa obsah…";
-
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadOriginalLinkText" = "Načítať pôvodnú stránku";
-
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "Stránku nebolo možné zobraziť v zobrazení Čitateľ.";
 
 /* Title of a bar that show up when you enter reader mode. */
 "readerModeSettingsButton" = "Režim čítačky";
@@ -1882,14 +1615,8 @@
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "Žiadne nedávno zatvorené karty.";
 
-/* Open Tab action title */
-"recently.closed.open" = "Otvoriť";
-
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "Znovu otvoriť poslednú zatvorenú kartu";
-
-/* Description for alert to ask user for opening last closed tab in list */
-"recently.closed.shake.description" = "Chcete otvoriť poslednú zatvorenú kartu?";
 
 /* Action item title of long press for Opening recently closed tab view */
 "recently.closed.title" = "Nedávno zatvorené karty";
@@ -1975,12 +1702,6 @@
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "„%@“ chce získať prístup k mikrofónu";
 
-/* Name of folder where restored bookmarks are retrieved */
-"RestoredBookmarksFolderName" = "Obnovené záložky";
-
-/* Name of folder where restored favorites are retrieved */
-"RestoredFavoritesFolderName" = "Obnovené obľúbené položky";
-
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "Áno";
 
@@ -2023,80 +1744,11 @@
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Tohto tvorcu obsahu overili tvorcovia Brave";
 
-/* Displayed next to a number representing the total number of publishers supported */
-"rewards.totalSupportedCount" = "Počet tvorcov obsahu, ktorých tento mesiac pomáhate podporovať.";
-
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Tento tvorca nebol overený a nebude zahrnutý do podpory pre autorov";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Částka";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAnonymous" = "Anonymný";
-
-/* No comment provided by engineer. */
-"RewardsInternalsBalanceInfoHeader" = "Informácie o zostatku";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "Naozaj chcete vymazať všetky denníky odmien?";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsTitle" = "Vymazať denníky";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionAmount" = "Výška daru";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Tokeny Brave";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorNone" = "Žiadne";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "Podporovať";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUserFunds" = "Užívateľské prostriedky";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepACOff" = "Automatické prispievanie je vypnuté";
-
-/* 'AC' refers to Auto-Contribute */
-"RewardsInternalsContributionsStepACTableEmpty" = "AC tabuľka je prázdna";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCompleted" = "Dokončené";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCreds" = "Poverenia";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepExternalTransaction" = "Externá transakcia";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "Neúspěšné";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepNotEnoughFunds" = "Nedostatok prostriedkov";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepPrepare" = "Pripraviť";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepReserve" = "Rezerva";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "Odmeny vypnuté";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "Štart";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsTitle" = "Príspevky";
-
-/* No comment provided by engineer. */
-"RewardsInternalsCreatedAt" = "Vytvorené o";
 
 /* No comment provided by engineer. */
 "RewardsInternalsDeviceInfoHeader" = "Informácie o zariadení";
@@ -2116,9 +1768,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Informácie o Key Seed";
 
-/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
-"RewardsInternalsLogsCount" = "Počet zobrazených záznamov %d";
-
 /* No comment provided by engineer. */
 "RewardsInternalsLogsTitle" = "Denníky";
 
@@ -2129,34 +1778,13 @@
 "RewardsInternalsNotSupported" = "Nie je podporované";
 
 /* No comment provided by engineer. */
-"RewardsInternalsProcessor" = "Procesor";
-
-/* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Vydavateľ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublishers" = "Vydavatelia";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRetryCount" = "Opakovať počítanie";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeAutoContribute" = "Automaticky prispieť";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeOneTimeTip" = "Jednorazový tip";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "Opakujúci sa príspevok";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "Informácie o profile odmien, zariadení a zostatku (vždy zdieľané)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Základné informácie";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableContributionsDescription" = "Akékoľvek príspevky pre vydavateľov prostredníctvom tipovania alebo automatického prispievania";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableDatabaseDescription" = "Interné úložisko údajov";
@@ -2192,9 +1820,6 @@
 "RewardsInternalsTitle" = "Interné odmeny";
 
 /* No comment provided by engineer. */
-"RewardsInternalsTotalAmount" = "Celková suma";
-
-/* No comment provided by engineer. */
 "RewardsInternalsTotalBalance" = "Celkový zostatok";
 
 /* No comment provided by engineer. */
@@ -2221,17 +1846,11 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Uložiť";
 
-/* Label for the button used to save changes in some text input. */
-"SaveChangesButtonTitle" = "Uložiť zmeny";
-
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Uložené prihlasovacie údaje";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "Uložené karty";
-
-/* Context menu item for saving an image */
-"SaveImageActionTitle" = "Uložiť obrázok";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Uložiť prihlasovacie údaje";
@@ -2245,23 +1864,8 @@
 /* Search engines section of settings */
 "SearchEngines" = "Vyhľadávače";
 
-/* Accessibility hint describing the action performed when a search suggestion is clicked */
-"SearchesForSuggestionButtonAccessibilityText" = "Vyhľadáva sa návrh";
-
 /* Section header for history and bookmarks and open tabs option */
 "SearchHistorySectionHeader" = "Na vašom zariadení";
-
-/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
-"SearchInputViewClearButtonTitle" = "Vymazať vyhľadávanie";
-
-/* Accessibility label for entering search mode for logins */
-"SearchInputViewOverlayAccessibilityLabel" = "Zadať režim vyhľadávania";
-
-/* Accessibility label for the search input field in the Logins list */
-"SearchInputViewTextFieldAccessibilityLabel" = "Hľadať vstupné pole";
-
-/* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "Vyhľadávanie";
 
 /* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
 "searchQuickBarPrefix" = "Vyhľadať „%@“";
@@ -2275,9 +1879,6 @@
 /* Label for showing browser suggestion setting */
 "SearchSettingBrowserSuggestionCellTitle" = "Zobraziť návrhy prehliadača";
 
-/* Navigation title for search settings. */
-"SearchSettingNavTitle" = "Vyhľadávanie";
-
 /* Label for showing recent search setting. */
 "SearchSettingRecentSearchesCellTitle" = "Zobraziť posledné vyhľadávania";
 
@@ -2287,23 +1888,11 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "Zobraziť návrhy vyhľadávania";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
-"SearchSuggestionFromFormatText" = "Návrhy vyhľadávania od %@";
-
 /* Action title for open a playlist item in Playlist. */
 "searchSuggestionOpenPlaylistActionTitle" = "Otvoriť v Playliste";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Prepnúť na túto kartu";
-
-/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
-"SearchSuggestionSectionTitleFormat" = "%@ vyhľadávanie";
-
-/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "Vyhľadávanie";
-
-/* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "Návrhy vyhľadávania";
 
 /* Search suggestions optin subtitle when prompting to turn on suggestions */
 "searchSuggestionsSubtitle" = "Chcete povoliť Návrhy vyhľadávania?";
@@ -2416,9 +2005,6 @@
 /* Row name for licenses. */
 "SettingsLicenses" = "Licencie";
 
-/* Title for settings menu item */
-"SettingsMenuItem" = "Nastavenia";
-
 /* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
 "SettingsTabsOptionBottomBar" = "Spodná lišta";
 
@@ -2430,9 +2016,6 @@
 
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Zdieľať odkaz";
-
-/* Title for sharing url menu item */
-"ShareWithMenuItem" = "Zdieľať s...";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "shareWithTitle" = "Zdieľať s...";
@@ -2467,9 +2050,6 @@
 /* Action title for actionable Share warnings */
 "shieldEducation.shareTheNewsTitle" = "Zdieľať novinky";
 
-/* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Štíty Brave práve ochránili vaše súkromie online.";
-
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Gratulujeme. Ste výnimoční.";
 
@@ -2481,6 +2061,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Počas sledovania videí na tomto webe sú blokované reklamy.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Peňaženka Brave";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Súkromná karta";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR kód";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Vyhľadávanie";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Nová karta režimu Inkognito";
@@ -2641,14 +2233,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Skratky Siri";
 
-/* Button to show the bookmarks list */
-"ShowBookmarks" = "Zobraziť záložky";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Zobraziť stiahnuté súbory";
-
-/* Button to show the history list */
-"ShowHistory" = "Zobraziť históriu";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showHistoryTitle" = "Zobraziť históriu";
@@ -2776,9 +2362,6 @@
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.configurationInformationText" = "Spravujte informácie, ktoré chcete synchronizovať medzi zariadeniami. Tieto nastavenia platia iba na tomto zariadení.";
 
-/* Copied action complete title */
-"sync.copied" = "Skopírované!";
-
 /* Copied codewords title */
 "sync.copiedToClipboard" = "Skopírované do schránky!";
 
@@ -2821,14 +2404,8 @@
 /* Sync enter code words */
 "sync.enterCodeWords" = "Zadajte kódy";
 
-/* Enter sync code words below */
-"sync.enterCodeWordsBelow" = "Nižšie zadajte slová kódu";
-
 /* Sync Error message for when the sync code is expired */
 "sync.expiredError" = "Platnosť tohto synchronizačného kódu vypršala, vygenerujte nový synchronizačný kód a skúste to znova.";
-
-/* Generic Sync Error Description */
-"sync.genericError" = "Prepáčte, niečo sa pokazilo";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "Povoliť fotoaparát";
@@ -2872,9 +2449,6 @@
 /* Error title for when the sync code does not have the correct amount of words */
 "sync.notEnoughWordsTitle" = "Malý počet slov";
 
-/* Sync pair device settings section title */
-"sync.pair" = "Párovať";
-
 /* QR Code section title */
 "sync.qrCode" = "QR kód";
 
@@ -2908,12 +2482,6 @@
 /* Title for removing other device from Sync */
 "sync.removeOtherDeviceTitle" = "Odstrániť %@ zo synchronizačného reťazca?";
 
-/* Sync remove device. */
-"sync.removeThisDevice" = "Chcete toto zariadenie odstrániť";
-
-/* Sync remove device? */
-"sync.removeThisDeviceQuestionDesc" = "Toto zariadenie bude odpojené od synchronizačnej skupiny a už nebude prijímať ani odosielať synchronizačné údaje. Všetky existujúce údaje zostanú v zariadení.";
-
 /* Scan sync code title */
 "sync.scan" = "Vyhľadať";
 
@@ -2932,20 +2500,11 @@
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "Synchronizovať nastavenia";
 
-/* Show code words instead */
-"sync.showCodeWords" = "Zobraziť namiesto toho slová kódu";
-
 /* Switch back to camera button */
 "sync.switchBackToCameraButton" = "Použijem svoj fotoaparát ...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Toto vymazanie je trvalé a neexistuje spôsob, ako obnoviť údaje. Ak sa rozhodnete znova začať používať Synchronizáciu, budete si musieť vytvoriť nový účet a znova pridať každé zariadenie jedno po druhom.";
-
-/* Sync you browser settings across devices. */
-"sync.Syncdevices" = "Zariadenia a nastavenia";
-
-/* Sync remove device? */
-"sync.syncRemoveThisDeviceQuestion" = "Chcete toto zariadenie odstrániť?";
 
 /* Sync settings section title */
 "sync.syncTitle" = "Synchronizácia";
@@ -2982,9 +2541,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Počet slov: %i";
-
-/* Accessibility label for action denoting closing a tab in tab list (tray) */
-"TabAccessibilityCloseActionLabel" = "Zavrieť";
 
 /* Accessibility label for a close button that when tapped opens a new tab */
 "tabGrid.addTabAccessibilityLabel" = "Nová karta";
@@ -3025,17 +2581,11 @@
 /* A title shown when in private browsing mode with no tabs open */
 "tabGrid.privateBrowsingInfoTitle" = "Súkromná karta";
 
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.privateBrowsingModeAccessibilityLabel" = "Súkromné ​​prehliadanie";
-
 /* A label in the tab tray mode switcher for private browsing mode */
 "tabGrid.privateBrowsingModeTitle" = "Inkognito";
 
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Nastavenia súkromných kariet";
-
-/* Accessibility label for the regular browsing option in the browsing mode picker */
-"tabGrid.regularBrowsingModeAccessibilityLabel" = "Bežné prehliadanie";
 
 /* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
 "tabGrid.selectedTabs" = "Vybrané karty";
@@ -3066,18 +2616,6 @@
 
 /* Label for synced tabs menu item that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsMenuItemLabel" = "Synchronizácia";
-
-/* Accessiblity hint for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityHint" = "Zapne alebo vypne súkromný režim";
-
-/* Accessibility label for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityLabel" = "Súkromný režim";
-
-/* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "Vypnutý";
-
-/* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "Zapnuté";
 
 /* The description of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardDescription" = "Automaticky zamerajte adresný riadok pri vytváraní novej karty";
@@ -3139,9 +2677,6 @@
 /* Accessibility Label for the tab toolbar Forward button */
 "TabToolbarForwardButtonAccessibilityLabel" = "Dopredu";
 
-/* Accessibility label for the lock icon, which is only present if the connection is secure */
-"TabToolbarLockImageAccessibilityLabel" = "Bezpečné pripojenie";
-
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menu";
 
@@ -3156,9 +2691,6 @@
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Zobrazenie čitateľa";
-
-/* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "Pridať do zoznamu na čítanie";
 
 /* Accessibility Label for the tab toolbar Reload button */
 "TabToolbarReloadButtonAccessibilityLabel" = "Obnoviť";
@@ -3175,47 +2707,14 @@
 /* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Hlasové vyhľadávanie";
 
-/* Accessibility label for the lock icon, which is only present if the connection is insecure */
-"TabToolbarWarningImageAccessibilityLabel" = "Nezabezpečené pripojenie";
-
-/* Accessibility label for the Tabs Tray view. */
-"TabTrayAccessibilityLabel" = "Zoznam kariet";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabTrayAddTabAccessibilityLabel" = "Pridať kartu";
-
-/* Accessibility hint for tab tray's displayed tab. */
-"TabTrayCellCloseAccessibilityHint" = "Kartu zatvoríte potiahnutím tromi prstami doprava alebo doľava.";
-
-/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
-"TabTrayClosingTabAccessibilityNotificationText" = "Zatváracia karta";
-
-/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
-"TabTrayEmptyVoiceOverText" = "Žiadne karty";
-
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
-"TabTrayMultiTabPositionFormatVoiceOverText" = "Karty %1$@ až %2$@ z %3$@";
-
-/* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "Nová karta";
-
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "Karty vyhľadávania";
-
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
-"TabTraySingleTabPositionFormatVoiceOverText" = "Karta %1$ @ z %2$ @";
 
 /* No comment provided by engineer. */
 "TermsOfService" = "Podmienky služby";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Podmínky použití";
-
-/* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "Zdieľať...";
-
-/* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Zdieľajte Brave so svojimi priateľmi!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Automatické";
@@ -3228,9 +2727,6 @@
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Svetlý";
-
-/* Name for app theme settings */
-"themesSettings" = "Motívy";
 
 /* No comment provided by engineer. */
 "Title" = "Názov";
@@ -3361,9 +2857,6 @@
 /* A title at the top of the screen that shows a list of sources that are ranked the highest */
 "today.popularSourcesTitle" = "Populárne zdroje";
 
-/* A button title that is placed on promoted cards */
-"today.promoted" = "Propagovaný";
-
 /* Title for long press action sheet list which has item for rate / hide */
 "today.rateBraveCardActionSheetTitle" = "Ohodnotiť Brave v obchode App Store";
 
@@ -3418,14 +2911,8 @@
 /* Title of an action that allows the user to translate the current web-page to another language */
 "TranslatePage" = "Preložiť stránku";
 
-/* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "Chcete zapnúť návrhy vyhľadávania?";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Odomknúť";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "Nepodporované platobné nástroje";
 
 /* Bookmark URL */
 "URL" = "Webová adresa";
@@ -3435,18 +2922,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "urlRedirectsSettings" = "Presmerovania webových stránok";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "Používateľ bol zrušený";
-
-/* No comment provided by engineer. */
-"UserWalletCloseButtonTitle" = "Zavrieť";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorMessage" = "Vyskytol sa problém s prihlásením do vášho účtu Uphold. Skúste to znova";
-
-/* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "Prepáčte, niečo sa pokazilo";
 
 /* Message for error alert when a VCard contact file cannot be parsed or opened */
 "VCard.unableToOpenContactErrorMessage" = "Súbor s kontaktom sa nepodarilo prečítať. Môže byť poškodený alebo v nepodporovanom formáte.";
@@ -3511,9 +2986,6 @@
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Miniaplikácie";
 
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "r.";
-
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Áno";
 
@@ -3523,20 +2995,11 @@
 /* History tableview section header */
 "Yesterday" = "Včera";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Povoliť videá YouTube vo vysokej kvalite";
-
-/* Description of setting to enable high quality youtube videos */
-"YoutubeMediaQualityDetails" = "Povolenie tejto experimentálnej funkcie prehrá video v maximálnej dostupnej kvalite a použije ďalšie údaje.";
-
 /* Setting that disables highest quality video playback */
 "YoutubeMediaQualityOff" = "Vypnutý";
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Zapnuté";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "Kvalita prehrávania na YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Povoliť cez Wi-Fi";

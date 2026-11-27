@@ -10,8 +10,10 @@
 // distribution. Its `view` command is split out into a separate read-only
 // `view` tool because the user grants permission per tool: if view and edit
 // shared a tool, allowing the model to read files would also allow it to
-// modify them. Search and repo-structure helpers with no text-editor analog
-// are registered as separate auxiliary tools. All ops run against the
+// modify them. Deletion is likewise its own `delete_file` tool, so permission
+// to edit doesn't imply permission to delete. Search and repo-structure
+// helpers with no text-editor analog are registered as separate auxiliary
+// tools. All ops run against the
 // FileSystemDirectoryHandle in file_ops, which is resolved lazily on each call
 // (see registerTools).
 
@@ -259,6 +261,21 @@ export async function registerTools(
       ['path', 'content'],
     ),
     (root, i) => ops.appendFile(root, asString(i.path), asString(i.content)),
+  )
+
+  // Deliberately a separate tool from the editor, as with `view`, so that
+  // permission to edit files doesn't also grant permission to delete them.
+  reg(
+    'delete_file',
+    'Delete a single file from the workspace. This cannot be undone. '
+      + 'Directories cannot be deleted.',
+    schema(
+      {
+        path: str('File path relative to the workspace root.'),
+      },
+      ['path'],
+    ),
+    (root, i) => ops.deleteFile(root, asString(i.path)),
   )
 
   await Promise.all(registrations)

@@ -2,6 +2,19 @@
 // called LICENSE at the top level of the ICU4X source tree
 // (online at: https://github.com/unicode-org/icu4x/blob/main/LICENSE ).
 
+// https://github.com/unicode-org/icu4x/blob/main/documents/process/boilerplate.md#library-annotations
+#![cfg_attr(not(any(test, doc, feature = "std")), no_std)]
+#![cfg_attr(
+    not(test),
+    deny(
+        clippy::indexing_slicing,
+        clippy::unwrap_used,
+        clippy::expect_used,
+        clippy::panic,
+    )
+)]
+#![warn(missing_docs)]
+
 //! `icu_provider` is one of the `ICU4X` components.
 //!
 //! Unicode's experience with ICU4X's parent projects, ICU4C and ICU4J, led the team to realize
@@ -37,13 +50,13 @@
 //!
 //! - [`DynamicDataProvider<BufferMarker>`], a.k.a. [`BufferProvider`](buf::BufferProvider) returns data as `[u8]` buffers.
 //!
-//! ### BufferProvider
+//! ### [`BufferProvider`](prelude::BufferProvider)
 //!
 //! These providers are able to return unstructured data typically represented as
 //! [`serde`]-serialized buffers. Users can call [`as_deserializing()`] to get an object
 //! implementing [`DataProvider`] by invoking Serde Deserialize.
 //!
-//! Examples of BufferProviders:
+//! Examples of [`BufferProvider`](prelude::BufferProvider)s:
 //!
 //! - [`FsDataProvider`] reads individual buffers from the filesystem.
 //! - [`BlobDataProvider`] reads buffers from a large in-memory blob.
@@ -76,23 +89,6 @@
 //! [`as_deserializing()`]: buf::AsDeserializingBufferProvider::as_deserializing
 //! [`FsDataProvider`]: https://docs.rs/icu_provider_fs/latest/icu_provider_fs/struct.FsDataProvider.html
 //! [`BlobDataProvider`]: https://docs.rs/icu_provider_blob/latest/icu_provider_blob/struct.BlobDataProvider.html
-
-// https://github.com/unicode-org/icu4x/blob/main/documents/process/boilerplate.md#library-annotations
-#![cfg_attr(not(any(test, feature = "std")), no_std)]
-#![cfg_attr(
-    not(test),
-    deny(
-        clippy::indexing_slicing,
-        clippy::unwrap_used,
-        clippy::expect_used,
-        clippy::panic,
-        clippy::exhaustive_structs,
-        clippy::exhaustive_enums,
-        clippy::trivially_copy_pass_by_ref,
-        missing_debug_implementations,
-    )
-)]
-#![warn(missing_docs)]
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
@@ -127,7 +123,6 @@ mod request;
 pub use request::{DataLocale, DataMarkerAttributes, DataRequest, DataRequestMetadata, *};
 
 mod response;
-#[doc(hidden)] // TODO(#4467): establish this as an internal API
 pub use response::DataPayloadOr;
 pub use response::{Cart, DataPayload, DataResponse, DataResponseMetadata};
 
@@ -166,16 +161,16 @@ pub mod prelude {
     pub use crate::buf::{BufferMarker, BufferProvider};
     #[doc(no_inline)]
     pub use crate::{
-        data_marker, data_struct, marker::DataMarkerExt, request::AttributeParseError,
-        request::DataIdentifierBorrowed, BoundDataProvider, DataError, DataErrorKind, DataLocale,
-        DataMarker, DataMarkerAttributes, DataMarkerInfo, DataPayload, DataProvider, DataRequest,
-        DataRequestMetadata, DataResponse, DataResponseMetadata, DryDataProvider,
-        DynamicDataMarker, DynamicDataProvider, DynamicDryDataProvider, ResultDataError,
+        BoundDataProvider, DataError, DataErrorKind, DataLocale, DataMarker, DataMarkerAttributes,
+        DataMarkerInfo, DataPayload, DataProvider, DataRequest, DataRequestMetadata, DataResponse,
+        DataResponseMetadata, DryDataProvider, DynamicDataMarker, DynamicDataProvider,
+        DynamicDryDataProvider, ResultDataError, data_marker, data_struct, marker::DataMarkerExt,
+        request::AttributeParseError, request::DataIdentifierBorrowed,
     };
     #[cfg(feature = "alloc")]
     #[doc(no_inline)]
     pub use crate::{
-        request::DataIdentifierCow, IterableDataProvider, IterableDynamicDataProvider,
+        IterableDataProvider, IterableDynamicDataProvider, request::DataIdentifierCow,
     };
 
     #[doc(no_inline)]

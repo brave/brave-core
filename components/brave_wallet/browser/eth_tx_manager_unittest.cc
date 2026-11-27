@@ -33,6 +33,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -189,13 +190,13 @@ class EthTxManagerUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-          std::string_view request_string(request.request_body->elements()
-                                              ->at(0)
-                                              .As<network::DataElementBytes>()
-                                              .AsStringPiece());
+          std::string_view request_string = GetRpcRequestBody(request);
           base::DictValue request_value = ParseJsonDict(request_string);
           std::string* method = request_value.FindString("method");
-          ASSERT_TRUE(method);
+          if (!method) {
+            RejectUnexpectedRpcRequest(url_loader_factory_, request);
+            return;
+          }
 
           if (*method == "eth_estimateGas") {
             url_loader_factory_.AddResponse(
@@ -243,6 +244,8 @@ class EthTxManagerUnitTest : public testing::Test {
                     ]
                   }
                 })");
+          } else {
+            RejectUnexpectedRpcRequest(url_loader_factory_, request);
           }
         }));
 
@@ -1280,6 +1283,55 @@ TEST_F(EthTxManagerUnitTest, ProcessEthHardwareSignature) {
                                      mojom::TransactionStatus::Submitted}));
 }
 
+// Regression test: a hardware signature that arrives after the user has
+// already rejected the transaction must not resurrect and broadcast it.
+TEST_F(EthTxManagerUnitTest, ProcessEthHardwareSignatureAfterRejected) {
+  auto tx_data =
+      mojom::TxData::New("0x1", "0x06", "" /* gas_price */, "" /* gas_limit */,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  AddUnapprovedEvmDappTransaction(
+      tx_data.Clone(), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+  ASSERT_TRUE(base::test::RunUntil([&] { return callback_called; }));
+
+  // User rejects the transaction while the hardware device is still
+  // producing a signature for it (e.g. "Cancel" was clicked, but the device
+  // itself later approves the stale request).
+  base::test::TestFuture<bool> reject_future;
+  eth_tx_manager()->RejectTransaction(tx_meta_id, reject_future.GetCallback());
+  EXPECT_TRUE(reject_future.Get());
+  auto rejected_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(rejected_meta);
+  EXPECT_EQ(rejected_meta->status(), mojom::TransactionStatus::Rejected);
+
+  SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
+
+  // The late-arriving hardware signature must be rejected and must not
+  // publish/broadcast the transaction or move it off Rejected.
+  base::test::TestFuture<bool, mojom::ProviderError, const std::string&>
+      sign_future;
+  eth_tx_manager()->ProcessEthHardwareSignature(
+      tx_meta_id,
+      mojom::EthereumSignatureVRS::New(
+          *PrefixedHexStringToBytes("0x00"),
+          *PrefixedHexStringToBytes("0x93b9121e82df014428924df439ff044f89c205dd"
+                                    "76a194f8b11f50d2eade744e"),
+          *PrefixedHexStringToBytes("0x7aa705c9144742836b7fbbd0745c57f67b60df7b"
+                                    "8d1790fe59f91ed8d2bfc11d")),
+      sign_future.GetCallback());
+  const auto& [success, error_out, error_message_out] = sign_future.Get();
+  EXPECT_FALSE(success);
+  EXPECT_EQ(error_out, mojom::ProviderError::kResourceNotFound);
+  auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Rejected);
+}
+
 TEST_F(EthTxManagerUnitTest, ProcessEthHardwareSignatureFail) {
   auto tx_data = mojom::TxData::New(
       mojom::kMainnetChainId, "0x06", "" /* gas_price */, "" /* gas_limit */,
@@ -1582,8 +1634,7 @@ TEST_F(EthTxManagerUnitTest,
       [this](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
         auto header_value = request.headers.GetHeader("X-Eth-Method");
-        ASSERT_TRUE(header_value);
-        if (*header_value == "eth_getBlockByNumber") {
+        if (header_value == "eth_getBlockByNumber") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1592,7 +1643,7 @@ TEST_F(EthTxManagerUnitTest,
               },
               "id": 1
             })");
-        } else if (*header_value == "eth_feeHistory") {
+        } else if (header_value == "eth_feeHistory") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1604,7 +1655,7 @@ TEST_F(EthTxManagerUnitTest,
             }
           )");
         } else {
-          ADD_FAILURE() << "Unhandled request: " << *header_value;
+          RejectUnexpectedRpcRequest(url_loader_factory_, request);
         }
       }));
 
@@ -1639,8 +1690,7 @@ TEST_F(EthTxManagerUnitTest,
       [this](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
         auto header_value = request.headers.GetHeader("X-Eth-Method");
-        ASSERT_TRUE(header_value);
-        if (*header_value == "eth_getBlockByNumber") {
+        if (header_value == "eth_getBlockByNumber") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1649,7 +1699,7 @@ TEST_F(EthTxManagerUnitTest,
               },
               "id": 1
             })");
-        } else if (*header_value == "eth_feeHistory") {
+        } else if (header_value == "eth_feeHistory") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1660,7 +1710,7 @@ TEST_F(EthTxManagerUnitTest,
               "id": 1
             }
           )");
-        } else if (*header_value == "eth_estimateGas") {
+        } else if (header_value == "eth_estimateGas") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1668,7 +1718,7 @@ TEST_F(EthTxManagerUnitTest,
               "id": 1
             })");
         } else {
-          ADD_FAILURE() << "Unhandled request: " << *header_value;
+          RejectUnexpectedRpcRequest(url_loader_factory_, request);
         }
       }));
 
@@ -1701,8 +1751,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionFeeHistoryFailed) {
       [this](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
         auto header_value = request.headers.GetHeader("X-Eth-Method");
-        ASSERT_TRUE(header_value);
-        if (*header_value == "eth_feeHistory") {
+        if (header_value == "eth_feeHistory") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1714,7 +1763,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionFeeHistoryFailed) {
             }
           )");
         } else {
-          ADD_FAILURE() << "Unhandled request: " << *header_value;
+          RejectUnexpectedRpcRequest(url_loader_factory_, request);
         }
       }));
 
@@ -1999,21 +2048,30 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
   meta.set_status(mojom::TransactionStatus::Submitted);
   ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
 
+  // Receipt requests sent by UpdatePendingTransactions() are intentionally left
+  // unanswered so nothing is confirmed before the block tracker fires.
+  url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+      [this](const network::ResourceRequest& request) {
+        auto header_value = request.headers.GetHeader("X-Eth-Method");
+        if (header_value != "eth_getTransactionReceipt") {
+          RejectUnexpectedRpcRequest(url_loader_factory_, request);
+        }
+      }));
+
   eth_tx_manager()->UpdatePendingTransactions(std::nullopt);
 
   url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
       [this](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
         auto header_value = request.headers.GetHeader("X-Eth-Method");
-        ASSERT_TRUE(header_value);
-        if (*header_value == "eth_blockNumber") {
+        if (header_value == "eth_blockNumber") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc":"2.0",
               "result":"0x65a8db",
               "id":1
             })");
-        } else if (*header_value == "eth_getTransactionReceipt") {
+        } else if (header_value == "eth_getTransactionReceipt") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -2032,7 +2090,7 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
               }
             })");
         } else {
-          ADD_FAILURE() << "Unhandled request: " << *header_value;
+          RejectUnexpectedRpcRequest(url_loader_factory_, request);
         }
       }));
 
@@ -2361,10 +2419,7 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
 
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-        std::string_view request_string(request.request_body->elements()
-                                            ->at(0)
-                                            .As<network::DataElementBytes>()
-                                            .AsStringPiece());
+        std::string_view request_string = GetRpcRequestBody(request);
         if (request_string.find(contract_safe_transfer_from) !=
             std::string::npos) {
           url_loader_factory_.AddResponse(
@@ -2380,7 +2435,7 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
               "\"0x0000000000000000000000000000000000000000000000000000000000"
               "000000\"}");
         } else {
-          ADD_FAILURE() << "Unhandled request: " << request_string;
+          RejectUnexpectedRpcRequest(url_loader_factory_, request);
         }
       }));
 

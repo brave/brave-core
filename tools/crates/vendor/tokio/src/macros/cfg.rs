@@ -58,6 +58,18 @@ macro_rules! cfg_unix {
     }
 }
 
+/// Enables Unix-specific code, including WASI.
+/// Use this macro instead of `cfg(any(unix, target_os = "wasi"))` to generate docs properly.
+macro_rules! cfg_unix_or_wasi {
+    ($($item:item)*) => {
+        $(
+            #[cfg(any(all(doc, docsrs), unix, target_os = "wasi"))]
+            #[cfg_attr(docsrs, doc(cfg(any(unix, target_os = "wasi"))))]
+            $item
+        )*
+    }
+}
+
 /// Enables unstable Windows-specific code.
 /// Use this macro instead of `cfg(windows)` to generate docs properly.
 macro_rules! cfg_unstable_windows {
@@ -386,6 +398,7 @@ macro_rules! cfg_process {
             #[cfg_attr(docsrs, doc(cfg(feature = "process")))]
             #[cfg(not(loom))]
             #[cfg(not(target_os = "wasi"))]
+            #[cfg(not(target_os = "emscripten"))]
             $item
         )*
     }
@@ -393,16 +406,29 @@ macro_rules! cfg_process {
 
 macro_rules! cfg_process_driver {
     ($($item:item)*) => {
-        #[cfg(unix)]
-        #[cfg(not(loom))]
-        cfg_process! { $($item)* }
+        $(
+            #[cfg(all(
+                unix,
+                not(loom),
+                feature = "process",
+                not(target_os = "wasi"),
+                not(target_os = "emscripten"),
+            ))]
+            $item
+        )*
     }
 }
 
 macro_rules! cfg_not_process_driver {
     ($($item:item)*) => {
         $(
-            #[cfg(not(all(unix, not(loom), feature = "process")))]
+            #[cfg(not(all(
+                unix,
+                not(loom),
+                feature = "process",
+                not(target_os = "wasi"),
+                not(target_os = "emscripten"),
+            )))]
             $item
         )*
     }
@@ -415,6 +441,7 @@ macro_rules! cfg_signal {
             #[cfg_attr(docsrs, doc(cfg(feature = "signal")))]
             #[cfg(not(loom))]
             #[cfg(not(target_os = "wasi"))]
+            #[cfg(not(target_os = "emscripten"))]
             $item
         )*
     }
@@ -425,6 +452,7 @@ macro_rules! cfg_signal_internal {
         $(
             #[cfg(any(feature = "signal", all(unix, feature = "process")))]
             #[cfg(not(loom))]
+            #[cfg(not(target_os = "emscripten"))]
             $item
         )*
     }
@@ -437,10 +465,15 @@ macro_rules! cfg_signal_internal_and_unix {
     }
 }
 
-macro_rules! cfg_not_signal_internal {
+macro_rules! cfg_not_signal_internal_and_unix {
     ($($item:item)*) => {
         $(
-            #[cfg(any(loom, not(unix), not(any(feature = "signal", all(unix, feature = "process")))))]
+            #[cfg(not(all(
+                unix,
+                any(feature = "signal", all(unix, feature = "process")),
+                not(loom),
+                not(target_os = "emscripten"),
+            )))]
             $item
         )*
     }
@@ -505,9 +538,25 @@ macro_rules! cfg_taskdump {
                 any(
                     target_arch = "aarch64",
                     target_arch = "x86",
-                    target_arch = "x86_64"
+                    target_arch = "x86_64",
+                    target_arch = "s390x"
                 )
             ))]
+            #[cfg_attr(
+                docsrs,
+                doc(cfg(all(
+                    tokio_unstable,
+                    feature = "taskdump",
+                    feature = "rt",
+                    target_os = "linux",
+                    any(
+                        target_arch = "aarch64",
+                        target_arch = "x86",
+                        target_arch = "x86_64",
+                        target_arch = "s390x"
+                    )
+                )))
+            )]
             $item
         )*
     };
@@ -524,7 +573,8 @@ macro_rules! cfg_not_taskdump {
                 any(
                     target_arch = "aarch64",
                     target_arch = "x86",
-                    target_arch = "x86_64"
+                    target_arch = "x86_64",
+                    target_arch = "s390x"
                 )
             )))]
             $item
@@ -674,10 +724,10 @@ macro_rules! cfg_not_wasi {
     }
 }
 
-macro_rules! cfg_is_wasm_not_wasi {
+macro_rules! cfg_not_wasip1 {
     ($($item:item)*) => {
         $(
-            #[cfg(all(target_family = "wasm", not(target_os = "wasi")))]
+            #[cfg(not(all(target_os = "wasi", target_env = "p1")))]
             $item
         )*
     }
@@ -710,4 +760,23 @@ macro_rules! cfg_io_uring {
             $item
         )*
     };
+}
+
+macro_rules! cfg_schedule_latency {
+    ($($item:item)*) => {
+        $(
+            #[cfg(all(tokio_unstable, feature = "schedule-latency"))]
+            #[cfg_attr(docsrs, doc(cfg(all(tokio_unstable, feature = "schedule-latency"))))]
+            $item
+        )*
+    };
+}
+
+macro_rules! cfg_not_schedule_latency {
+    ($($item:item)*) => {
+        $(
+            #[cfg(not(all(tokio_unstable, feature = "schedule-latency")))]
+            $item
+        )*
+    }
 }

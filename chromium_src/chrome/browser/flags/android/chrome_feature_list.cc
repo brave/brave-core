@@ -6,6 +6,7 @@
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/browser/brave_browser_features.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/features.h"
@@ -110,7 +111,9 @@
     &brave_origin::features::kBraveOrigin,                                     \
     &features::kBraveCustomSearchEngines,                                      \
     &features::kBraveAndroidTabGroupsSettings,                                 \
-    &features::kBraveAndroidMergeInstallPwaAndCreateShortcut
+    &features::kBraveAndroidMergeInstallPwaAndCreateShortcut,                  \
+    &features::kBraveAndroidExtensions,                                        \
+    &features::kBraveRecap
 
 // clang-format on
 

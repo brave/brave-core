@@ -1,7 +1,8 @@
 [package]
 name = "portable-atomic"
-version = "1.12.0" #publish:version
+version = "1.15.0" #publish:version
 edition = "2018"
+# NB: Sync with rust-version field in other Cargo.toml files and msrv badge in README.md
 rust-version = "1.34" # For Atomic{I,U}{8,16,32,64}
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/taiki-e/portable-atomic"
@@ -38,6 +39,7 @@ float = []
 std = []
 require-cas = []
 unsafe-assume-single-core = []
+unsafe-assume-privileged = []
 s-mode = []
 force-amo = []
 disable-fiq = []
@@ -50,21 +52,21 @@ serde = { version = "1.0.60", optional = true, default-features = false }
 critical-section = { version = "1", optional = true }
 
 # [target.'cfg(portable_atomic_test_no_std_static_assert_ffi)'.dependencies] #build:static_assert_ffi
-# test-helper = { features = ["sys"], git = "https://github.com/taiki-e/test-helper.git", rev = "cc3f06f" } #build:static_assert_ffi
+# test-helper = { features = ["sys"], git = "https://github.com/taiki-e/test-helper.git", rev = "24b3ad70c19ea8de9cd4c87f2e549b930f1e3305" } #build:static_assert_ffi
 # [target.'cfg(all(portable_atomic_test_no_std_static_assert_ffi, target_os = "aix"))'.dependencies] #build:static_assert_ffi
 # libc = "=0.2.163" #build:static_assert_ffi
 
 [dev-dependencies]
 build-context = "0.1"
-crossbeam-utils = "=0.8.16" # The latest crossbeam-utils requires Rust 1.60
+crossbeam-utils = "0.8"
 fastrand = "2"
 paste = "1"
-quickcheck = { version = "1", default-features = false, git = "https://github.com/taiki-e/quickcheck.git", rev = "83b1d59" } # https://github.com/BurntSushi/quickcheck/pull/304 + https://github.com/BurntSushi/quickcheck/pull/282 + https://github.com/BurntSushi/quickcheck/pull/296 + f16/f128 support + lower MSRV
+quickcheck = { version = "1", default-features = false, git = "https://github.com/taiki-e/quickcheck.git", rev = "83b1d5955557fc9dacc52d4a78098d8e6d7eda3b" } # https://github.com/BurntSushi/quickcheck/pull/304 + https://github.com/BurntSushi/quickcheck/pull/282 + https://github.com/BurntSushi/quickcheck/pull/296 + f16/f128 support + lower MSRV
 rustversion = "1"
-serde_test = { git = "https://github.com/taiki-e/serde_test.git", rev = "df513c5" } # support {i,u}128
+serde_test = { git = "https://github.com/taiki-e/serde_test.git", rev = "df513c55a97f0a72fa67bad5396ed09123e5676c" } # support {i,u}128
 sptr = "0.3"
 static_assertions = "1"
-test-helper = { features = ["sys", "critical-section-std"], git = "https://github.com/taiki-e/test-helper.git", rev = "cc3f06f" }
+test-helper = { features = ["sys", "critical-section-std", "valgrind"], git = "https://github.com/taiki-e/test-helper.git", rev = "24b3ad70c19ea8de9cd4c87f2e549b930f1e3305" }
 
 [target.'cfg(unix)'.dev-dependencies]
 libc = "=0.2.163" # newer libc requires Rust 1.63
@@ -75,16 +77,12 @@ windows-sys = { version = "0.61", features = [
     "Win32_System_Threading", # IsProcessorFeaturePresent
 ] }
 
-[target.'cfg(valgrind)'.dev-dependencies]
-crabgrind = "0.1"
-
 [lints]
 workspace = true
 
 [workspace]
 members = [
     "bench",
-    "portable-atomic-util",
     "tests/api-test",
 ]
 
@@ -103,20 +101,20 @@ unexpected_cfgs = { level = "warn", check-cfg = [
     'cfg(target_arch,values("loongarch32"))', # 1.89+ https://github.com/rust-lang/rust/pull/142053
     'cfg(target_os,values("trusty"))', # 1.82+ https://github.com/rust-lang/rust/pull/129490
     'cfg(target_os,values("psx"))', # 1.84+ https://github.com/rust-lang/rust/pull/131168
+    'cfg(target_os,values("zos"))', # https://github.com/rust-lang/compiler-team/issues/992
     'cfg(target_env,values("psx"))', # pre-1.84 https://github.com/rust-lang/rust/pull/131168
     'cfg(target_feature,values("lse2","lse128","rcpc3"))', # 1.82+ https://github.com/rust-lang/rust/pull/128192
     'cfg(target_feature,values("quadword-atomics"))', # 1.83+ https://github.com/rust-lang/rust/pull/130873
     'cfg(target_feature,values("zaamo","zabha"))', # 1.83+ https://github.com/rust-lang/rust/pull/130877
     'cfg(target_feature,values("zacas"))', # 1.87+ https://github.com/rust-lang/rust/pull/137417
+    'cfg(target_feature,values("ztso"))', # 1.88+ https://github.com/rust-lang/rust/pull/139440
     'cfg(target_feature,values("miscellaneous-extensions-3"))', # 1.89+ https://github.com/rust-lang/rust/pull/141250
     'cfg(target_pointer_width,values("128"))',
     # Known custom cfgs, excluding those that may be set by build script.
     # Public APIs, considered unstable unless documented as stable in readme.
     'cfg(portable_atomic_no_outline_atomics,portable_atomic_outline_atomics,portable_atomic_unstable_f16,portable_atomic_unstable_f128)',
-    # Public unstable API(s) - portable-atomic-util
-    'cfg(portable_atomic_unstable_coerce_unsized)',
     # Not public API.
-    'cfg(portable_atomic_test_detect_false,portable_atomic_test_no_std_static_assert_ffi,qemu,valgrind)',
+    'cfg(portable_atomic_test_detect_false,portable_atomic_test_no_std_static_assert_ffi,qemu,valgrind,valgrind_cross)',
 ] }
 unnameable_types = "warn"
 unreachable_pub = "warn"
@@ -133,14 +131,15 @@ transmute_undefined_repr = "warn"
 undocumented_unsafe_blocks = "warn"
 unused_trait_names = "warn"
 # Suppress buggy or noisy clippy lints
+assert_is_empty = { level = "allow", priority = 1 } # completely useless in assert_ne case
 bool_assert_comparison = { level = "allow", priority = 1 }
 borrow_as_ptr = { level = "allow", priority = 1 } # https://github.com/rust-lang/rust-clippy/issues/8286
-cast_lossless = { level = "allow", priority = 1 } # https://godbolt.org/z/Pv6vbGG6E
+cast_lossless = { level = "allow", priority = 1 } # suggested code has poor codegen with -C opt-level=0 https://godbolt.org/z/GzTxzbd9q
+collapsible_match = { level = "allow", priority = 1 }
 declare_interior_mutable_const = { level = "allow", priority = 1 } # https://github.com/rust-lang/rust-clippy/issues/7665
 doc_markdown = { level = "allow", priority = 1 }
 float_cmp = { level = "allow", priority = 1 } # https://github.com/rust-lang/rust-clippy/issues/7725
 incompatible_msrv = { level = "allow", priority = 1 } # buggy: doesn't consider cfg, https://github.com/rust-lang/rust-clippy/issues/12280, https://github.com/rust-lang/rust-clippy/issues/12257#issuecomment-2093667187
-lint_groups_priority = { level = "allow", priority = 1 } # https://github.com/rust-lang/rust-clippy/issues/12920
 manual_assert = { level = "allow", priority = 1 }
 manual_range_contains = { level = "allow", priority = 1 } # https://github.com/rust-lang/rust-clippy/issues/6455#issuecomment-1225966395
 missing_errors_doc = { level = "allow", priority = 1 }
@@ -156,7 +155,6 @@ struct_field_names = { level = "allow", priority = 1 }
 too_many_arguments = { level = "allow", priority = 1 }
 too_many_lines = { level = "allow", priority = 1 }
 type_complexity = { level = "allow", priority = 1 }
-unreadable_literal = { level = "allow", priority = 1 }
 
 [profile.release]
 debug = true

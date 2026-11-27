@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+assert(!is_android)
+
+source_set("p3a") {
+  sources = [
+    "p3a_core_metrics.cc",
+    "p3a_core_metrics.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//chrome/browser/ui/browser_window",
+  ]
+
+  deps = [
+    "//chrome/browser/profiles:profile",
+    "//components/prefs",
+  ]
+}

@@ -31,6 +31,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/extension_malware_blocklist/common/features.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -44,10 +45,10 @@
 #include "brave/ui/webui/custom_profile_image/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
+#include "chrome/common/url_constants.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
@@ -73,10 +74,8 @@
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
-#include "brave/components/local_ai/core/on_device_speech_models_state.h"
+#include "brave/browser/history_embeddings/history_embeddings_utils.h"
 #include "brave/components/local_ai/core/utils.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
-#include "ui/base/text/bytes_formatting.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -373,6 +372,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SCROLLABLE_HORIZONTAL_TAB_STRIP},
       {"appearanceSettingsSharedPinnedTab",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SHARED_PINNED_TAB},
+      {"appearanceSettingsSharedPinnedTabSubLabel",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SHARED_PINNED_TAB_SUBLABEL},
       {"sideBar", IDS_SETTINGS_APPEARNCE_SETTINGS_SIDEBAR_PART_TITLE},
       {"appearanceSettingsShowOptionTitle",
        IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE},
@@ -504,6 +505,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"standardHttpsUpgrade", IDS_SETTINGS_STANDARD_HTTPS_UPGRADE},
       {"disabledHttpsUpgrade", IDS_SETTINGS_DISABLED_HTTPS_UPGRADE},
       {"strictHttpsUpgrade", IDS_SETTINGS_STRICT_HTTPS_UPGRADE},
+      {"braveSafeBrowsingExtensionMalwareBlocklistDesc",
+       IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_EXTENSION_MALWARE_BLOCKLIST_DESC},
       {"webRTCPolicyLabel", IDS_SETTINGS_WEBRTC_POLICY_LABEL},
       {"webRTCPolicySubLabel", IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL},
       {"webRTCDefault", IDS_SETTINGS_WEBRTC_POLICY_DEFAULT},
@@ -514,6 +517,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"semanticHistorySearchSubLabel",
        IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_SUB_LABEL},
       {"onDeviceSpeechModelLabel", IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_LABEL},
+      {"onDeviceSpeechModelSubLabel",
+       IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_SUB_LABEL},
+      {"onDeviceSpeechModelOff", IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_OFF},
+      {"onDeviceSpeechModelEnglish",
+       IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_ENGLISH},
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
       {"historyRetentionLabel", IDS_SETTINGS_HISTORY_RETENTION_LABEL},
       {"historyRetentionSubLabel", IDS_SETTINGS_HISTORY_RETENTION_SUB_LABEL},
@@ -1157,6 +1165,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
   html_source->AddString("deAmpLearnMoreURL", kDeAmpLearnMoreUrl);
   html_source->AddString("debounceLearnMoreURL", kDebounceLearnMoreUrl);
+  html_source->AddString("braveSafeBrowsingLearnMoreURL",
+                         chrome::kSafeBrowsingHelpCenterURL);
   html_source->AddString("enableNftDiscoveryLearnMoreURL",
                          kEnableNftDiscoveryLearnMoreUrl);
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -1198,9 +1208,13 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
   // The Local AI master switch lives in local state and only takes effect on
   // relaunch, so the page reads it once here rather than binding a pref.
+#if BUILDFLAG(ENABLE_LOCAL_AI)
   html_source->AddBoolean(
       "isHistoryEmbeddingsFeatureEnabled",
       history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
+#else
+  html_source->AddBoolean("isHistoryEmbeddingsFeatureEnabled", false);
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
   html_source->AddString("braveLeoAssistantTabOrganizationDesc",
                          l10n_util::GetStringFUTF16(
@@ -1237,10 +1251,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(profile)
           ->IsEnabled());
 
-  html_source->AddString(
-      "onDeviceSpeechModelSubLabel",
-      l10n_util::GetStringFUTF16(IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_SUB_LABEL,
-                                 ui::FormatBytes(local_ai::kApproxModelSize)));
   html_source->AddBoolean(
       "isOnDeviceSpeechModelAvailable",
       local_ai::CanOfferOnDeviceSpeech(g_browser_process->local_state()));
@@ -1399,6 +1409,11 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isHttpsByDefaultEnabled",
       base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault));
+
+  html_source->AddBoolean(
+      "isExtensionMalwareBlocklistEnabled",
+      base::FeatureList::IsEnabled(
+          extension_malware_blocklist::features::kExtensionMalwareBlocklist));
 
   html_source->AddBoolean(
       "showStrictFingerprintingMode",

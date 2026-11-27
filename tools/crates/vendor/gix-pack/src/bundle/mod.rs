@@ -8,9 +8,10 @@ pub mod write;
 
 ///
 pub mod verify {
+    use gix_error::Result;
     use std::sync::atomic::AtomicBool;
 
-    use gix_features::progress::DynNestedProgress;
+    use gix_utils::progress::DynNestedProgress;
 
     ///
     pub mod integrity {
@@ -33,7 +34,7 @@ pub mod verify {
             progress: &mut dyn DynNestedProgress,
             should_interrupt: &AtomicBool,
             options: crate::index::verify::integrity::Options<F>,
-        ) -> Result<integrity::Outcome, crate::index::traverse::Error<crate::index::verify::integrity::Error>>
+        ) -> Result<integrity::Outcome>
         where
             C: crate::cache::DecodeEntry,
             F: Fn() -> C + Send + Clone,

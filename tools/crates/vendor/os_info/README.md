@@ -88,6 +88,7 @@ Right now, the following operating system types can be returned:
 - AOSC OS
 - Arch Linux
 - Artix Linux
+- Bazzite
 - CachyOS
 - CentOS
 - Debian
@@ -100,9 +101,11 @@ Right now, the following operating system types can be returned:
 - Garuda Linux
 - Gentoo Linux
 - HardenedBSD
+- Hurd
 - illumos
 - iOS
 - Kali Linux
+- KDE neon
 - Linux
 - Mabox
 - macOS (Mac OS X or OS X)

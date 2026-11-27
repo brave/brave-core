@@ -28,7 +28,8 @@ import {
 import { installTrustedTypesPolicy } from './ort_env'
 import { NemotronStreamSession, OrtNemotronModel } from './nemotron_recognizer'
 
-import { parseTokens, readBigBuffer } from './utils'
+import { parseTokens, readBigBuffer, getNemotronLocale } from './utils'
+import type { NemotronLocale } from './configs'
 
 // Thin mojo endpoint for one ASR stream: owns the receiver and responder
 // and bridges AsrStreamInput calls to a mojo-free NemotronStreamSession.
@@ -39,6 +40,7 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
 
   constructor(
     model: OrtNemotronModel,
+    locale: NemotronLocale,
     sampleRateHz: number,
     pending: AsrStreamInputPendingReceiver,
     responder: AsrStreamResponderRemote,
@@ -53,6 +55,7 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
               {
                 transcript: text,
                 isFinal,
+                // TODO(@vandana-rajan https://github.com/brave/brave-browser/issues/58975): Populate real audio timestamps.
                 audioStartTime: undefined,
                 audioEndTime: undefined,
               },
@@ -67,6 +70,7 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
 
     this.session = new NemotronStreamSession(
       model,
+      locale,
       sampleRateHz,
       onResult,
       onError,
@@ -131,8 +135,14 @@ class SpeechRecognitionFactoryImpl
 
     let adapter: AsrStreamInputAdapter
     try {
+      // The browser falls back to en-US when a page sets no language, so a
+      // missing one only comes from a caller that skips that.
+      const language = options.language ?? 'en-US'
+      const locale = getNemotronLocale(language)
+
       adapter = new AsrStreamInputAdapter(
         this.model,
+        locale,
         options.sampleRateHz,
         stream,
         responder,

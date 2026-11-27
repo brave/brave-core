@@ -5,14 +5,20 @@ use crate::lookahead;
 #[cfg(feature = "parsing")]
 use crate::parse::{Parse, Parser};
 use crate::{Error, Result};
+use alloc::boxed::Box;
+use alloc::ffi::CString;
+#[cfg(feature = "parsing")]
+use alloc::format;
+use alloc::string::{String, ToString};
+use alloc::vec::Vec;
+use core::ffi::CStr;
+use core::fmt::{self, Display};
+#[cfg(feature = "extra-traits")]
+use core::hash::{Hash, Hasher};
+use core::str::{self, FromStr};
 use proc_macro2::{Ident, Literal, Span};
 #[cfg(feature = "parsing")]
 use proc_macro2::{TokenStream, TokenTree};
-use std::ffi::{CStr, CString};
-use std::fmt::{self, Display};
-#[cfg(feature = "extra-traits")]
-use std::hash::{Hash, Hasher};
-use std::str::{self, FromStr};
 
 ast_enum_of_structs! {
     /// A Rust literal such as a string or integer or boolean.
@@ -240,7 +246,8 @@ impl LitStr {
         // Parse string literal into a token stream with every span equal to the
         // original literal's span.
         let span = self.span();
-        let mut tokens = TokenStream::from_str(&self.value())?;
+        let mut tokens =
+            TokenStream::from_str(&self.value()).map_err(|err| Error::new(span, err))?;
         tokens = respan_token_stream(tokens, span);
 
         let result = crate::parse::parse_scoped(parser, span, tokens)?;
@@ -345,7 +352,7 @@ impl LitCStr {
 
 impl LitByte {
     pub fn new(value: u8, span: Span) -> Self {
-        let mut token = Literal::u8_suffixed(value);
+        let mut token = Literal::byte_character(value);
         token.set_span(span);
         LitByte {
             repr: Box::new(LitRepr {
@@ -485,24 +492,6 @@ impl LitInt {
     }
 }
 
-impl From<Literal> for LitInt {
-    #[track_caller]
-    fn from(token: Literal) -> Self {
-        let repr = token.to_string();
-        if let Some((digits, suffix)) = value::parse_lit_int(&repr) {
-            LitInt {
-                repr: Box::new(LitIntRepr {
-                    token,
-                    digits,
-                    suffix,
-                }),
-            }
-        } else {
-            panic!("not an integer literal: `{}`", repr);
-        }
-    }
-}
-
 impl Display for LitInt {
     fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         self.repr.token.fmt(formatter)
@@ -559,24 +548,6 @@ impl LitFloat {
     }
 }
 
-impl From<Literal> for LitFloat {
-    #[track_caller]
-    fn from(token: Literal) -> Self {
-        let repr = token.to_string();
-        if let Some((digits, suffix)) = value::parse_lit_float(&repr) {
-            LitFloat {
-                repr: Box::new(LitFloatRepr {
-                    token,
-                    digits,
-                    suffix,
-                }),
-            }
-        } else {
-            panic!("not a float literal: `{}`", repr);
-        }
-    }
-}
-
 impl Display for LitFloat {
     fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         self.repr.token.fmt(formatter)
@@ -609,7 +580,7 @@ impl LitBool {
 #[cfg(feature = "extra-traits")]
 mod debug_impls {
     use crate::lit::{LitBool, LitByte, LitByteStr, LitCStr, LitChar, LitFloat, LitInt, LitStr};
-    use std::fmt::{self, Debug};
+    use core::fmt::{self, Debug};
 
     #[cfg_attr(docsrs, doc(cfg(feature = "extra-traits")))]
     impl Debug for LitStr {
@@ -834,18 +805,6 @@ pub_if_not_doc! {
     }
 }
 
-/// The style of a string literal, either plain quoted or a raw string like
-/// `r##"data"##`.
-#[doc(hidden)] // https://github.com/dtolnay/syn/issues/1566
-pub enum StrStyle {
-    /// An ordinary string like `"data"`.
-    Cooked,
-    /// A raw string like `r##"data"##`.
-    ///
-    /// The unsigned integer is the number of `#` symbols used.
-    Raw(usize),
-}
-
 #[cfg(feature = "parsing")]
 pub_if_not_doc! {
     #[doc(hidden)]
@@ -865,9 +824,11 @@ pub(crate) mod parsing {
     };
     use crate::parse::{Parse, ParseStream, Unexpected};
     use crate::token::{self, Token};
+    use alloc::boxed::Box;
+    use alloc::rc::Rc;
+    use alloc::string::ToString;
+    use core::cell::Cell;
     use proc_macro2::{Literal, Punct, Span};
-    use std::cell::Cell;
-    use std::rc::Rc;
 
     #[cfg_attr(docsrs, doc(cfg(feature = "parsing")))]
     impl Parse for Lit {
@@ -1134,10 +1095,14 @@ mod value {
         Lit, LitBool, LitByte, LitByteStr, LitCStr, LitChar, LitFloat, LitFloatRepr, LitInt,
         LitIntRepr, LitRepr, LitStr,
     };
+    use alloc::borrow::ToOwned;
+    use alloc::boxed::Box;
+    use alloc::ffi::CString;
+    use alloc::string::{String, ToString};
+    use alloc::vec::Vec;
+    use core::char;
+    use core::ops::{Index, RangeFrom};
     use proc_macro2::{Literal, Span};
-    use std::char;
-    use std::ffi::CString;
-    use std::ops::{Index, RangeFrom};
 
     impl Lit {
         /// Interpret a Syn literal from a proc-macro2 literal.
@@ -1224,13 +1189,11 @@ mod value {
                     }
                 }
                 // true, false
-                b't' | b'f' => {
-                    if repr == "true" || repr == "false" {
-                        return Lit::Bool(LitBool {
-                            value: repr == "true",
-                            span: token.span(),
-                        });
-                    }
+                b't' | b'f' if repr == "true" || repr == "false" => {
+                    return Lit::Bool(LitBool {
+                        value: repr == "true",
+                        span: token.span(),
+                    });
                 }
                 b'(' if repr == "(/*ERROR*/)" => return Lit::Verbatim(token),
                 _ => {}

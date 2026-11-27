@@ -10,12 +10,15 @@
 
 #include "base/check.h"
 #include "base/functional/callback_helpers.h"
+#include "base/run_loop.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -37,9 +40,14 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/create_browser_window.h"
+#include "chrome/browser/ui/immersive/immersive_mode_controller.h"
+#include "chrome/browser/ui/toasts/api/toast_id.h"
+#include "chrome/browser/ui/toasts/toast_controller.h"
 #include "chrome/browser/ui/ui_features.h"
+#include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "chrome/test/base/web_ui_mocha_browser_test.h"
 #include "components/policy/core/browser/browser_policy_connector.h"
 #include "components/policy/core/common/mock_configuration_policy_provider.h"
 #include "components/policy/core/common/policy_map.h"
@@ -47,9 +55,16 @@
 #include "components/prefs/pref_service.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
 #include "components/sync/base/command_line_switches.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_controller.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+
+#if BUILDFLAG(IS_MAC)
+#include "ui/base/test/scoped_fake_nswindow_fullscreen.h"
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -77,9 +92,10 @@
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
+#include "brave/browser/ui/webui/email_aliases/email_aliases_promo_ui.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/pref_names.h"
-#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -828,25 +844,128 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 }
 
 #if BUILDFLAG(IS_MAC)
-// On macOS, we block vertical tab mode toggling in fullscreen.
-// Immersive fullscreen feeature is enabled by default but
-// it's not compatible with vertical tab now.
+// On macOS, vertical tabs can't be switched in place while the window is
+// fullscreen. IDC_TOGGLE_VERTICAL_TABS stays enabled there and is deferred
+// until the window leaves fullscreen (see VerticalTabToggleInFullscreen).
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        VerticalTabToggleEnabledState) {
+  // Real macOS fullscreen transitions are unreliable on bots.
+  ui::test::ScopedFakeNSWindowFullscreen fake_fullscreen;
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
   EXPECT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_VERTICAL_TABS));
   EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
 
   // Enter browser fullscreen.
-  chrome::ToggleFullscreenMode(browser());
-  EXPECT_TRUE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
-  chrome::BrowserCommandController::From(browser())->FullscreenStateChanged();
+  ui_test_utils::ToggleFullscreenModeAndWait(browser());
+  ASSERT_TRUE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_VERTICAL_TABS));
   EXPECT_FALSE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
 
   // Exit fullscreen.
-  chrome::ToggleFullscreenMode(browser());
-  EXPECT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
-  chrome::BrowserCommandController::From(browser())->FullscreenStateChanged();
+  ui_test_utils::ToggleFullscreenModeAndWait(browser());
+  ASSERT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_VERTICAL_TABS));
   EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
+}
+
+// Like upstream Chrome does for its own vertical tabs, toggling vertical tabs
+// in fullscreen shows a toast and switches the tab strip once the window
+// leaves fullscreen.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       VerticalTabToggleInFullscreen) {
+  // Real macOS fullscreen transitions are unreliable on bots.
+  ui::test::ScopedFakeNSWindowFullscreen fake_fullscreen;
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
+  auto* vtc = VerticalTabController::From(browser());
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  auto* toast_controller = ToastController::From(browser());
+  ASSERT_TRUE(toast_controller);
+  ASSERT_FALSE(vtc->ShouldShowBraveVerticalTabs());
+
+  auto set_fullscreen = [&](bool fullscreen) {
+    ui_test_utils::ToggleFullscreenModeAndWait(browser());
+    ASSERT_EQ(fullscreen,
+              BrowserWindow::FromBrowser(browser())->IsFullscreen());
+    // Run the task posted to apply a pending toggle, if any.
+    base::RunLoop run_loop;
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, run_loop.QuitClosure());
+    run_loop.Run();
+  };
+  auto wait_for_toast = [&](ToastId id) {
+    return base::test::RunUntil(
+        [&] { return toast_controller->GetCurrentToastId() == id; });
+  };
+
+  // Toggling in fullscreen doesn't switch the tab strip yet, but shows a toast.
+  set_fullscreen(true);
+  EXPECT_TRUE(ImmersiveModeController::From(browser())->IsEnabled());
+  command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
+  EXPECT_TRUE(wait_for_toast(ToastId::kTabStripSwitchDelayedVertical));
+  EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+  EXPECT_FALSE(vtc->ShouldShowBraveVerticalTabs());
+
+  // Toggling again repeats the same request rather than cancelling it, as
+  // nothing shows the pending switch.
+  command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
+  EXPECT_EQ(ToastId::kTabStripSwitchDelayedVertical,
+            toast_controller->GetCurrentToastId());
+  EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+
+  // The pending switch is applied when the window leaves fullscreen.
+  set_fullscreen(false);
+  EXPECT_TRUE(prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+  EXPECT_TRUE(vtc->ShouldShowBraveVerticalTabs());
+
+  // Same the other way around. Immersive fullscreen isn't used with vertical
+  // tabs.
+  set_fullscreen(true);
+  EXPECT_FALSE(ImmersiveModeController::From(browser())->IsEnabled());
+  command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
+  EXPECT_TRUE(wait_for_toast(ToastId::kTabStripSwitchDelayedHorizontal));
+  EXPECT_TRUE(prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+  EXPECT_TRUE(vtc->ShouldShowBraveVerticalTabs());
+  set_fullscreen(false);
+  EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+  EXPECT_FALSE(vtc->ShouldShowBraveVerticalTabs());
+}
+
+// The vertical tabs toggle on the settings page does the same in fullscreen.
+// The page part is the BraveAppearanceTabsFullscreen suite in
+// chromium_src/chrome/test/data/webui/settings/appearance_page_test.ts.
+class BraveAppearanceTabsFullscreenWebUITest : public WebUIMochaBrowserTest {
+ protected:
+  BraveAppearanceTabsFullscreenWebUITest() {
+    set_test_loader_host(chrome::kChromeUISettingsHost);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(BraveAppearanceTabsFullscreenWebUITest,
+                       VerticalTabToggleFromSettings) {
+  // Real macOS fullscreen transitions are unreliable on bots.
+  ui::test::ScopedFakeNSWindowFullscreen fake_fullscreen;
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  auto* toast_controller = ToastController::From(browser());
+  ASSERT_TRUE(toast_controller);
+
+  ui_test_utils::ToggleFullscreenModeAndWait(browser());
+  ASSERT_TRUE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
+
+  // Clicks the toggle, which shows a toast instead of switching.
+  RunTest("settings/appearance_page_test.js",
+          "runMochaSuite('BraveAppearanceTabsFullscreen')");
+  EXPECT_TRUE(base::test::RunUntil([&] {
+    return toast_controller->GetCurrentToastId() ==
+           ToastId::kTabStripSwitchDelayedVertical;
+  }));
+  EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+
+  // The switch is applied once the window leaves fullscreen.
+  ui_test_utils::ToggleFullscreenModeAndWait(browser());
+  ASSERT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
+  EXPECT_TRUE(base::test::RunUntil(
+      [&] { return prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled); }));
 }
 #endif
 
@@ -1005,37 +1124,86 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
   }));
 }
 
-// Check that closing the promo dialog navigates to the email aliases settings
-// page.
-IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
-                       EmailAliasesPromoClosedOpensSettings) {
-  // kPromoShown defaults to false, so the command shows the promo dialog first.
-  // Prevent it from auto-closing on focus loss during the test.
-  email_aliases::EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
-  absl::Cleanup restore_auto_close = [] {
-    email_aliases::EmailAliasesController::DisableAutoCloseBubbleForTesting(
-        false);
-  };
+class BraveBrowserCommandControllerEmailAliasesPromoTest
+    : public BraveBrowserCommandControllerWithEmailAliasesTest {
+ public:
+  void SetUpOnMainThread() override {
+    BraveBrowserCommandControllerWithEmailAliasesTest::SetUpOnMainThread();
+    embedded_test_server()->ServeFilesFromSourceDirectory("chrome/test/data");
+    ASSERT_TRUE(embedded_test_server()->Start());
+    // The active tab must not be an NTP/about:blank, otherwise opening the
+    // settings page reuses the current tab instead of adding a new one.
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(
+        browser(), embedded_test_server()->GetURL("/simple.html")));
+  }
 
-  auto* command_controller = chrome::BrowserCommandController::From(browser());
-  ASSERT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_EMAIL_ALIASES));
-  command_controller->ExecuteCommand(IDC_SHOW_EMAIL_ALIASES);
+  // Shows the promo (kPromoShown defaults to false).
+  void ShowPromo(email_aliases::EmailAliasesController** out_controller) {
+    auto* controller = email_aliases::EmailAliasesController::From(browser());
+    ASSERT_TRUE(controller);
+    chrome::BrowserCommandController::From(browser())->ExecuteCommand(
+        IDC_SHOW_EMAIL_ALIASES);
+    ASSERT_TRUE(controller->GetBubbleForTesting());
+    *out_controller = controller;
+  }
 
-  auto* controller = email_aliases::EmailAliasesController::From(browser());
-  ASSERT_NE(nullptr, controller->GetBubbleForTesting());
+  // Gets the browser-side promo handler, i.e. what the WebUI talks to when a
+  // button is clicked in the promo.
+  void GetPromoHandler(
+      email_aliases::EmailAliasesController* controller,
+      email_aliases::mojom::EmailAliasesPromoHandler** out_handler) {
+    auto* bubble = controller->GetBubbleForTesting();
+    ASSERT_TRUE(bubble);
+    auto* promo_ui =
+        bubble->GetWebUI()->GetController()->GetAs<EmailAliasesPromoUI>();
+    ASSERT_TRUE(promo_ui);
+    *out_handler = promo_ui;
+  }
 
-  // Closing navigates to settings.
-  controller->CloseBubble();
+  int GetTabCount() const { return browser()->tab_strip_model()->count(); }
 
-  ASSERT_TRUE(base::test::RunUntil([&]() {
+  bool IsSettingsActive() const {
     return browser()
                ->tab_strip_model()
                ->GetActiveWebContents()
                ->GetVisibleURL() == chrome::GetSettingsUrl("email-aliases");
-  }));
+  }
+};
+
+// Clicking "Get started" closes the promo and opens the email aliases
+// settings page.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerEmailAliasesPromoTest,
+                       GetStartedOpensSettings) {
+  email_aliases::EmailAliasesController* controller = nullptr;
+  ASSERT_NO_FATAL_FAILURE(ShowPromo(&controller));
+  const int initial_tab_count = GetTabCount();
+
+  email_aliases::mojom::EmailAliasesPromoHandler* handler = nullptr;
+  ASSERT_NO_FATAL_FAILURE(GetPromoHandler(controller, &handler));
+  handler->OnGetStarted();
+
+  EXPECT_EQ(nullptr, controller->GetBubbleForTesting());
+  ASSERT_TRUE(base::test::RunUntil([&]() { return IsSettingsActive(); }));
+  EXPECT_EQ(initial_tab_count + 1, GetTabCount());
 
   // Continue to show the promo until the first login
   EXPECT_FALSE(browser()->GetProfile()->GetPrefs()->GetBoolean(
       email_aliases::prefs::kPromoShown));
+}
+
+// Dismissing the promo with the close button must not open the settings page.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerEmailAliasesPromoTest,
+                       CloseButtonDoesNotOpenSettings) {
+  email_aliases::EmailAliasesController* controller = nullptr;
+  ASSERT_NO_FATAL_FAILURE(ShowPromo(&controller));
+  const int initial_tab_count = GetTabCount();
+
+  email_aliases::mojom::EmailAliasesPromoHandler* handler = nullptr;
+  ASSERT_NO_FATAL_FAILURE(GetPromoHandler(controller, &handler));
+  handler->OnPromoClosed();
+
+  EXPECT_EQ(nullptr, controller->GetBubbleForTesting());
+  EXPECT_EQ(initial_tab_count, GetTabCount());
+  EXPECT_FALSE(IsSettingsActive());
 }
 #endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)

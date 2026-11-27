@@ -46,6 +46,7 @@ void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
       mojom::DBBindColumnType::kString,  // creative_instance_id
       mojom::DBBindColumnType::kString,  // creative_set_id
       mojom::DBBindColumnType::kString,  // campaign_id
+      mojom::DBBindColumnType::kString,  // campaign_type
       mojom::DBBindColumnType::kString,  // metric_type
       mojom::DBBindColumnType::kTime,    // start_at
       mojom::DBBindColumnType::kTime,    // end_at
@@ -61,7 +62,7 @@ void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
       mojom::DBBindColumnType::kString,  // segment
       mojom::DBBindColumnType::kString,  // geo_target
       mojom::DBBindColumnType::kString,  // target_url
-      mojom::DBBindColumnType::kString,  // type
+      mojom::DBBindColumnType::kString,  // wallpaper_type
       mojom::DBBindColumnType::kString,  // company_name
       mojom::DBBindColumnType::kString,  // alt
       mojom::DBBindColumnType::kDouble,  // ptr
@@ -335,6 +336,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
             creative_new_tab_page_ad.creative_instance_id,
             creative_new_tab_page_ad.creative_set_id,
             creative_new_tab_page_ad.campaign_id,
+            campaigns.type,
             campaigns.metric_type,
             campaigns.start_at,
             campaigns.end_at,
@@ -394,6 +396,7 @@ void CreativeNewTabPageAds::GetForSegments(
             creative_new_tab_page_ad.creative_instance_id,
             creative_new_tab_page_ad.creative_set_id,
             creative_new_tab_page_ad.campaign_id,
+            campaigns.type,
             campaigns.metric_type,
             campaigns.start_at,
             campaigns.end_at,
@@ -456,6 +459,7 @@ void CreativeNewTabPageAds::GetForActiveCampaigns(
             creative_new_tab_page_ad.creative_instance_id,
             creative_new_tab_page_ad.creative_set_id,
             creative_new_tab_page_ad.campaign_id,
+            campaigns.type,
             campaigns.metric_type,
             campaigns.start_at,
             campaigns.end_at,
@@ -511,6 +515,7 @@ void CreativeNewTabPageAds::GetAll(
             creative_new_tab_page_ad.creative_instance_id,
             creative_new_tab_page_ad.creative_set_id,
             creative_new_tab_page_ad.campaign_id,
+            campaigns.type,
             campaigns.metric_type,
             campaigns.start_at,
             campaigns.end_at,

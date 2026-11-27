@@ -11,6 +11,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
@@ -89,6 +90,17 @@ class NewTabTakeoverDisclosureTooltip {
         PopupWindowTooltipUtils.setWidth(textView, width);
         textView.setText(buildText(context, () -> delegate.onLearnMoreClicked(this)));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        ViewGroup tooltipLayout = (ViewGroup) textView.getParent();
+        int shadowPadding = (int) textView.getElevation();
+        // The arrow already leaves room for the shadow below the bubble so no bottom padding is
+        // needed.
+        tooltipLayout.setPadding(
+                /* left= */ shadowPadding,
+                /* top= */ shadowPadding,
+                /* right= */ shadowPadding,
+                /* bottom= */ 0);
+        tooltipLayout.setClipToPadding(false);
     }
 
     void show() {

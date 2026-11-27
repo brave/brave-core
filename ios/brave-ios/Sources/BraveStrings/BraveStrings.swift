@@ -359,6 +359,41 @@ extension Strings {
     value: "Search Bookmarks",
     comment: "The placeholder text for bookmark search"
   )
+  public static let braveImagesSearchTitle = NSLocalizedString(
+    "braveImagesSearchTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Brave Images Search",
+    comment: "The title and the accessibility text for Brave Images Search Quick Search option."
+  )
+  public static let braveVideosSearchTitle = NSLocalizedString(
+    "braveVideosSearchTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Brave Videos Search",
+    comment: "The title and the accessibility text for Brave Videos Search Quick Search option."
+  )
+  public static let braveNewsSearchTitle = NSLocalizedString(
+    "braveNewsSearchTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Brave News Search",
+    comment: "The title and the accessibility text for Brave News Search Quick Search option."
+  )
+  public static let braveMapsSearchTitle = NSLocalizedString(
+    "braveMapsSearchTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Brave Maps Search",
+    comment: "The title and the accessibility text for Brave Maps Search Quick Search option."
+  )
+  public static let braveGogglesSearchTitle = NSLocalizedString(
+    "braveGogglesSearchTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Brave Goggles Search",
+    comment: "The title and the accessibility text for Brave Goggles Search Quick Search option."
+  )
 }
 
 // MARK:-  Authenticator.swift

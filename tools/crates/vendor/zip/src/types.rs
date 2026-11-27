@@ -12,8 +12,10 @@ use std::sync::{Arc, OnceLock};
 
 #[cfg(feature = "chrono")]
 use chrono::{Datelike, NaiveDate, NaiveDateTime, NaiveTime, Timelike};
+#[cfg(feature = "jiff-02")]
+use jiff::civil;
 
-use crate::result::{ZipError, ZipResult};
+use crate::result::{invalid, ZipError, ZipResult};
 use crate::spec::{self, FixedSizeBlock, Pod};
 
 pub(crate) mod ffi {
@@ -23,10 +25,12 @@ pub(crate) mod ffi {
 }
 
 use crate::extra_fields::ExtraField;
+use crate::read::find_data_start;
 use crate::result::DateTimeRangeError;
 use crate::spec::is_dir;
 use crate::types::ffi::S_IFDIR;
 use crate::{CompressionMethod, ZIP64_BYTES_THR};
+use std::io::{Read, Seek};
 #[cfg(feature = "time")]
 use time::{error::ComponentRange, Date, Month, OffsetDateTime, PrimitiveDateTime, Time};
 
@@ -135,7 +139,8 @@ impl DateTime {
     /// Returns the current time if possible, otherwise the default of 1980-01-01.
     #[cfg(feature = "time")]
     pub fn default_for_write() -> Self {
-        OffsetDateTime::now_utc()
+        let now = OffsetDateTime::now_utc();
+        PrimitiveDateTime::new(now.date(), now.time())
             .try_into()
             .unwrap_or_else(|_| DateTime::default())
     }
@@ -196,6 +201,39 @@ impl TryFrom<DateTime> for NaiveDateTime {
         )
         .ok_or(DateTimeRangeError)?;
         Ok(NaiveDateTime::new(date, time))
+    }
+}
+
+#[cfg(feature = "jiff-02")]
+impl TryFrom<civil::DateTime> for DateTime {
+    type Error = DateTimeRangeError;
+
+    fn try_from(value: civil::DateTime) -> Result<Self, Self::Error> {
+        Self::from_date_and_time(
+            value.year().try_into()?,
+            value.month() as u8,
+            value.day() as u8,
+            value.hour() as u8,
+            value.minute() as u8,
+            value.second() as u8,
+        )
+    }
+}
+
+#[cfg(feature = "jiff-02")]
+impl TryFrom<DateTime> for civil::DateTime {
+    type Error = jiff::Error;
+
+    fn try_from(value: DateTime) -> Result<Self, Self::Error> {
+        Self::new(
+            value.year() as i16,
+            value.month() as i8,
+            value.day() as i8,
+            value.hour() as i8,
+            value.minute() as i8,
+            value.second() as i8,
+            0,
+        )
     }
 }
 
@@ -402,7 +440,21 @@ impl DateTime {
 impl TryFrom<OffsetDateTime> for DateTime {
     type Error = DateTimeRangeError;
 
+    #[allow(useless_deprecated)]
+    #[deprecated(
+        since = "2.5.0",
+        note = "use `TryFrom<PrimitiveDateTime> for DateTime` instead"
+    )]
     fn try_from(dt: OffsetDateTime) -> Result<Self, Self::Error> {
+        Self::try_from(PrimitiveDateTime::new(dt.date(), dt.time()))
+    }
+}
+
+#[cfg(feature = "time")]
+impl TryFrom<PrimitiveDateTime> for DateTime {
+    type Error = DateTimeRangeError;
+
+    fn try_from(dt: PrimitiveDateTime) -> Result<Self, Self::Error> {
         Self::from_date_and_time(
             dt.year().try_into()?,
             dt.month().into(),
@@ -418,11 +470,25 @@ impl TryFrom<OffsetDateTime> for DateTime {
 impl TryFrom<DateTime> for OffsetDateTime {
     type Error = ComponentRange;
 
+    #[allow(useless_deprecated)]
+    #[deprecated(
+        since = "2.5.0",
+        note = "use `TryFrom<DateTime> for PrimitiveDateTime` instead"
+    )]
+    fn try_from(dt: DateTime) -> Result<Self, Self::Error> {
+        PrimitiveDateTime::try_from(dt).map(PrimitiveDateTime::assume_utc)
+    }
+}
+
+#[cfg(feature = "time")]
+impl TryFrom<DateTime> for PrimitiveDateTime {
+    type Error = ComponentRange;
+
     fn try_from(dt: DateTime) -> Result<Self, Self::Error> {
         let date =
             Date::from_calendar_date(dt.year() as i32, Month::try_from(dt.month())?, dt.day())?;
         let time = Time::from_hms(dt.hour(), dt.minute(), dt.second())?;
-        Ok(PrimitiveDateTime::new(date, time).assume_utc())
+        Ok(PrimitiveDateTime::new(date, time))
     }
 }
 
@@ -489,8 +555,11 @@ pub struct ZipFileData {
 
 impl ZipFileData {
     /// Get the starting offset of the data of the compressed file
-    pub fn data_start(&self) -> u64 {
-        *self.data_start.get().unwrap()
+    pub fn data_start(&self, reader: &mut (impl Read + Seek + Sized)) -> ZipResult<u64> {
+        match self.data_start.get() {
+            Some(data_start) => Ok(*data_start),
+            None => Ok(find_data_start(self, reader)?),
+        }
     }
 
     #[allow(dead_code)]
@@ -799,7 +868,7 @@ impl ZipFileData {
         let extra_field_length: u16 = self
             .extra_field_len()
             .try_into()
-            .map_err(|_| ZipError::InvalidArchive("Extra data field is too large"))?;
+            .map_err(|_| invalid!("Extra data field is too large"))?;
 
         let last_modified_time = self
             .last_modified_time
@@ -848,7 +917,7 @@ impl ZipFileData {
                 .unwrap(),
             file_name_length: self.file_name_raw.len().try_into().unwrap(),
             extra_field_length: extra_field_len.checked_add(central_extra_field_len).ok_or(
-                ZipError::InvalidArchive("Extra field length in central directory exceeds 64KiB"),
+                invalid!("Extra field length in central directory exceeds 64KiB"),
             )?,
             file_comment_length: self.file_comment.len().try_into().unwrap(),
             disk_number: 0,
@@ -904,8 +973,7 @@ impl FixedSizeBlock for ZipCentralEntryBlock {
         self.magic
     }
 
-    const WRONG_MAGIC_ERROR: ZipError =
-        ZipError::InvalidArchive("Invalid Central Directory header");
+    const WRONG_MAGIC_ERROR: ZipError = invalid!("Invalid Central Directory header");
 
     to_and_from_le![
         (magic, spec::Magic),
@@ -954,7 +1022,7 @@ impl FixedSizeBlock for ZipLocalEntryBlock {
         self.magic
     }
 
-    const WRONG_MAGIC_ERROR: ZipError = ZipError::InvalidArchive("Invalid local file header");
+    const WRONG_MAGIC_ERROR: ZipError = invalid!("Invalid local file header");
 
     to_and_from_le![
         (magic, spec::Magic),
@@ -1280,7 +1348,7 @@ mod test {
     }
 
     #[cfg(feature = "time")]
-    use time::{format_description::well_known::Rfc3339, OffsetDateTime};
+    use time::{format_description::well_known::Rfc3339, OffsetDateTime, PrimitiveDateTime};
 
     #[cfg(feature = "time")]
     #[test]
@@ -1301,21 +1369,38 @@ mod test {
 
     #[cfg(feature = "time")]
     #[test]
+    fn datetime_try_from_primitive_datetime() {
+        use time::macros::datetime;
+
+        use super::DateTime;
+
+        // 2018-11-17 10:38:30
+        let dt = DateTime::try_from(datetime!(2018-11-17 10:38:30)).unwrap();
+        assert_eq!(dt.year(), 2018);
+        assert_eq!(dt.month(), 11);
+        assert_eq!(dt.day(), 17);
+        assert_eq!(dt.hour(), 10);
+        assert_eq!(dt.minute(), 38);
+        assert_eq!(dt.second(), 30);
+    }
+
+    #[cfg(feature = "time")]
+    #[test]
     fn datetime_try_from_bounds() {
         use super::DateTime;
         use time::macros::datetime;
 
         // 1979-12-31 23:59:59
-        assert!(DateTime::try_from(datetime!(1979-12-31 23:59:59 UTC)).is_err());
+        assert!(DateTime::try_from(datetime!(1979-12-31 23:59:59)).is_err());
 
         // 1980-01-01 00:00:00
-        assert!(DateTime::try_from(datetime!(1980-01-01 00:00:00 UTC)).is_ok());
+        assert!(DateTime::try_from(datetime!(1980-01-01 00:00:00)).is_ok());
 
         // 2107-12-31 23:59:59
-        assert!(DateTime::try_from(datetime!(2107-12-31 23:59:59 UTC)).is_ok());
+        assert!(DateTime::try_from(datetime!(2107-12-31 23:59:59)).is_ok());
 
         // 2108-01-01 00:00:00
-        assert!(DateTime::try_from(datetime!(2108-01-01 00:00:00 UTC)).is_err());
+        assert!(DateTime::try_from(datetime!(2108-01-01 00:00:00)).is_err());
     }
 
     #[cfg(feature = "time")]
@@ -1333,6 +1418,19 @@ mod test {
 
     #[cfg(feature = "time")]
     #[test]
+    fn primitive_datetime_try_from_datetime() {
+        use time::macros::datetime;
+
+        use super::DateTime;
+
+        // 2018-11-17 10:38:30
+        let dt =
+            PrimitiveDateTime::try_from(DateTime::try_from_msdos(0x4D71, 0x54CF).unwrap()).unwrap();
+        assert_eq!(dt, datetime!(2018-11-17 10:38:30));
+    }
+
+    #[cfg(feature = "time")]
+    #[test]
     fn offset_datetime_try_from_bounds() {
         use super::DateTime;
 
@@ -1344,6 +1442,94 @@ mod test {
 
         // 2107-15-31 31:63:62
         assert!(OffsetDateTime::try_from(unsafe {
+            DateTime::from_msdos_unchecked(0xFFFF, 0xFFFF)
+        })
+        .is_err());
+    }
+
+    #[cfg(feature = "time")]
+    #[test]
+    fn primitive_datetime_try_from_bounds() {
+        use super::DateTime;
+
+        // 1980-00-00 00:00:00
+        assert!(PrimitiveDateTime::try_from(unsafe {
+            DateTime::from_msdos_unchecked(0x0000, 0x0000)
+        })
+        .is_err());
+
+        // 2107-15-31 31:63:62
+        assert!(PrimitiveDateTime::try_from(unsafe {
+            DateTime::from_msdos_unchecked(0xFFFF, 0xFFFF)
+        })
+        .is_err());
+    }
+
+    #[cfg(feature = "jiff-02")]
+    #[test]
+    fn datetime_try_from_civil_datetime() {
+        use jiff::civil;
+
+        use super::DateTime;
+
+        // 2018-11-17 10:38:30
+        let dt = DateTime::try_from(civil::datetime(2018, 11, 17, 10, 38, 30, 0)).unwrap();
+        assert_eq!(dt.year(), 2018);
+        assert_eq!(dt.month(), 11);
+        assert_eq!(dt.day(), 17);
+        assert_eq!(dt.hour(), 10);
+        assert_eq!(dt.minute(), 38);
+        assert_eq!(dt.second(), 30);
+    }
+
+    #[cfg(feature = "jiff-02")]
+    #[test]
+    fn datetime_try_from_civil_datetime_bounds() {
+        use jiff::civil;
+
+        use super::DateTime;
+
+        // 1979-12-31 23:59:59
+        assert!(DateTime::try_from(civil::datetime(1979, 12, 31, 23, 59, 59, 0)).is_err());
+
+        // 1980-01-01 00:00:00
+        assert!(DateTime::try_from(civil::datetime(1980, 1, 1, 0, 0, 0, 0)).is_ok());
+
+        // 2107-12-31 23:59:59
+        assert!(DateTime::try_from(civil::datetime(2107, 12, 31, 23, 59, 59, 0)).is_ok());
+
+        // 2108-01-01 00:00:00
+        assert!(DateTime::try_from(civil::datetime(2108, 1, 1, 0, 0, 0, 0)).is_err());
+    }
+
+    #[cfg(feature = "jiff-02")]
+    #[test]
+    fn civil_datetime_try_from_datetime() {
+        use jiff::civil;
+
+        use super::DateTime;
+
+        // 2018-11-17 10:38:30 UTC
+        let dt =
+            civil::DateTime::try_from(DateTime::try_from_msdos(0x4D71, 0x54CF).unwrap()).unwrap();
+        assert_eq!(dt, civil::datetime(2018, 11, 17, 10, 38, 30, 0));
+    }
+
+    #[cfg(feature = "jiff-02")]
+    #[test]
+    fn civil_datetime_try_from_datetime_bounds() {
+        use jiff::civil;
+
+        use super::DateTime;
+
+        // 1980-00-00 00:00:00
+        assert!(civil::DateTime::try_from(unsafe {
+            DateTime::from_msdos_unchecked(0x0000, 0x0000)
+        })
+        .is_err());
+
+        // 2107-15-31 31:63:62
+        assert!(civil::DateTime::try_from(unsafe {
             DateTime::from_msdos_unchecked(0xFFFF, 0xFFFF)
         })
         .is_err());
@@ -1413,6 +1599,6 @@ mod test {
         // 2020-01-01 00:00:00
         let clock = OffsetDateTime::from_unix_timestamp(1_577_836_800).unwrap();
 
-        assert!(DateTime::try_from(clock).is_ok());
+        assert!(DateTime::try_from(PrimitiveDateTime::new(clock.date(), clock.time())).is_ok());
     }
 }

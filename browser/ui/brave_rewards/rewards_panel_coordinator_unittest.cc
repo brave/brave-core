@@ -5,78 +5,65 @@
 
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 
-#include <memory>
-#include <string>
-#include <utility>
-
-#include "base/check.h"
-#include "brave/components/l10n/common/test/scoped_default_locale.h"
-#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
-#include "chrome/test/base/browser_with_test_window_test.h"
-#include "chrome/test/base/test_browser_window.h"
+#include "chrome/browser/ui/browser_window/test/mock_browser_window_interface.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/test/mock_base_window.h"
 
 namespace brave_rewards {
 
 namespace {
 
-template <typename F>
-class PanelObserver : public RewardsPanelCoordinator::Observer {
+class CountingPanelObserver : public RewardsPanelCoordinator::Observer {
  public:
-  explicit PanelObserver(F f) : f_(std::move(f)) {}
-  ~PanelObserver() override = default;
+  void OnRewardsPanelRequested() override { ++request_count_; }
 
-  void OnRewardsPanelRequested() override { f_(); }
+  int request_count() const { return request_count_; }
 
  private:
-  F f_;
+  int request_count_ = 0;
 };
-
-template <typename F>
-auto MakePanelObserver(F&& f) {
-  return std::make_unique<PanelObserver<F>>(std::forward<F>(f));
-}
 
 }  // namespace
 
-class RewardsPanelCoordinatorTest : public BrowserWithTestWindowTest {
+class RewardsPanelCoordinatorTest : public testing::Test {
  public:
-  void SetUp() override {
-    BrowserWithTestWindowTest::SetUp();
-
-    BrowserWindowCreateParams params(profile(), true);
-    browser_ = CreateBrowserWithTestWindowForParams(std::move(params));
-    coordinator_ = RewardsPanelCoordinator::From(browser_.get());
-    DCHECK(coordinator_);
-
-    observer_ = MakePanelObserver([this]() { called_ = true; });
-    coordinator_->AddObserver(observer_.get());
-  }
-
-  void TearDown() override {
-    // Clean up coordinator pointer, so it doesn't dangle during the browsers
-    // destruction.
-    coordinator_ = nullptr;
-    browser_.reset();
-
-    BrowserWithTestWindowTest::TearDown();
+  RewardsPanelCoordinatorTest() {
+    ON_CALL(browser_window_, GetWindow())
+        .WillByDefault(testing::Return(&window_));
+    coordinator_.AddObserver(&observer_);
   }
 
  protected:
-  bool called() const { return called_; }
-
-  RewardsPanelCoordinator& coordinator() { return *coordinator_; }
-
- private:
-  brave_l10n::test::ScopedDefaultLocale scoped_locale_{"en_US"};
-  bool called_ = false;
-  std::unique_ptr<BrowserWindowInterface> browser_;
-  std::unique_ptr<RewardsPanelCoordinator::Observer> observer_;
-  raw_ptr<RewardsPanelCoordinator> coordinator_ = nullptr;
+  // Declaration order matters: `coordinator_` must be destroyed before
+  // `browser_window_`, which hosts its user data.
+  testing::NiceMock<MockBrowserWindowInterface> browser_window_;
+  testing::NiceMock<ui::MockBaseWindow> window_;
+  CountingPanelObserver observer_;
+  RewardsPanelCoordinator coordinator_{&browser_window_};
 };
 
 TEST_F(RewardsPanelCoordinatorTest, OpenRewardsPanel) {
-  EXPECT_TRUE(coordinator().OpenRewardsPanel());
-  EXPECT_TRUE(called());
+  EXPECT_CALL(window_, IsMinimized()).WillOnce(testing::Return(false));
+  EXPECT_CALL(window_, Activate()).Times(0);
+
+  EXPECT_TRUE(coordinator_.OpenRewardsPanel());
+  EXPECT_EQ(1, observer_.request_count());
+}
+
+TEST_F(RewardsPanelCoordinatorTest, OpenRewardsPanelActivatesMinimizedWindow) {
+  EXPECT_CALL(window_, IsMinimized()).WillOnce(testing::Return(true));
+  EXPECT_CALL(window_, Activate()).Times(1);
+
+  EXPECT_TRUE(coordinator_.OpenRewardsPanel());
+  EXPECT_EQ(1, observer_.request_count());
+}
+
+TEST_F(RewardsPanelCoordinatorTest, OpenRewardsPanelWithoutObserversFails) {
+  coordinator_.RemoveObserver(&observer_);
+
+  EXPECT_FALSE(coordinator_.OpenRewardsPanel());
+  EXPECT_EQ(0, observer_.request_count());
 }
 
 }  // namespace brave_rewards

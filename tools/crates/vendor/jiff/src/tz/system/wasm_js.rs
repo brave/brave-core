@@ -38,7 +38,7 @@ pub(super) fn get(db: &TimeZoneDatabase) -> Option<TimeZone> {
             trace!(
                 "got {name:?} as time zone name, \
                  but failed to find time zone with that name in \
-                 zoneinfo database {db:?}",
+                 zoneinfo database {db:?}: {_err}",
             );
             return None;
         }

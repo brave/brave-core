@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
@@ -139,7 +140,12 @@ std::string AsString(StorageType t) {
 class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
  public:
   EphemeralStorageQaBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    scoped_feature_list_.InitWithFeatures(
+        {net::features::kBraveFirstPartyEphemeralStorage,
+         net::features::kBraveForgetFirstPartyStorage},
+        {});
+  }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -405,9 +411,11 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
                               TabCloseTypes::CLOSE_NONE);
     ASSERT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
 
-    EphemeralStorageServiceFactory::GetInstance()
-        ->GetForContext(browser()->GetProfile())
-        ->FireCleanupTimersForTesting();
+    auto* service =
+        EphemeralStorageServiceFactory::GetInstance()->GetForContext(
+            browser()->GetProfile());
+    ASSERT_TRUE(service);
+    service->FireCleanupTimersForTesting();
 
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
 
@@ -434,6 +442,7 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
   net::test_server::EmbeddedTestServer https_server_;
 
  private:
+  base::test::ScopedFeatureList scoped_feature_list_;
   raw_ptr<TabStripModel> tabs_ = nullptr;
 };
 

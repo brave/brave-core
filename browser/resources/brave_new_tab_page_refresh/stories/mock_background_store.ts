@@ -33,6 +33,7 @@ const newTabTakeoverBackgrounds = {
       imageUrl: sampleBackground,
     },
     metricType: NewTabPageAdMetricType.kConfirmation,
+    shouldDisplayNewTabTakeoverDisclosure: true,
     shouldAutoDisplayNewTabTakeoverDisclosure: true,
   },
 
@@ -48,6 +49,7 @@ const newTabTakeoverBackgrounds = {
       imageUrl: '',
     },
     metricType: NewTabPageAdMetricType.kConfirmation,
+    shouldDisplayNewTabTakeoverDisclosure: true,
     shouldAutoDisplayNewTabTakeoverDisclosure: true,
   },
 
@@ -122,8 +124,8 @@ export function createBackgroundStore() {
       console.log('richMediaEvent', type)
     },
 
-    notifyNewTabTakeoverDisclosureLearnMoreClicked() {
-      console.log('newTabTakeoverDisclosureLearnMoreClicked')
+    suppressNewTabTakeoverDisclosureAutoDisplay() {
+      console.log('newTabTakeoverDisclosureAutoDisplaySuppressed')
     },
 
     notifyNewTabTakeoverDisclosureAutoDisplayed() {

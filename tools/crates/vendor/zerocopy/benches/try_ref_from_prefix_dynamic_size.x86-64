@@ -1,0 +1,22 @@
+bench_try_ref_from_prefix_dynamic_size:
+	cmp rsi, 4
+	setb al
+	or al, dil
+	test al, 1
+	je .LBB5_2
+	not edi
+	and edi, 1
+	xor eax, eax
+	mov rdx, rdi
+	ret
+.LBB5_2:
+	add rsi, -4
+	shr rsi
+	movzx ecx, word ptr [rdi]
+	cmp ecx, 49344
+	mov edx, 2
+	cmove rdx, rsi
+	xor eax, eax
+	cmp cx, -16192
+	cmove rax, rdi
+	ret

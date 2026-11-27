@@ -1,23 +1,23 @@
 use core::time::Duration as UnsignedDuration;
 
+use jcore::{
+    civil::{
+        Time as JTime, TimeNanosecond as JTimeNanosecond,
+        TimeSecond as JTimeSecond,
+    },
+    constants as c,
+};
+
 use crate::{
+    RoundMode, SignedDuration, Span, SpanRound, Unit, ZonedDateTime,
     civil::{Date, DateTime},
     duration::{Duration, SDuration},
-    error::{err, Error, ErrorContext},
+    error::{Error, civil::Error as E, unit::UnitConfigError},
     fmt::{
         self,
         temporal::{self, DEFAULT_DATETIME_PARSER},
     },
-    shared::util::itime::{ITime, ITimeNanosecond, ITimeSecond},
-    util::{
-        rangeint::{self, Composite, RFrom, RInto, TryRFrom},
-        round::increment,
-        t::{
-            self, CivilDayNanosecond, CivilDaySecond, Hour, Microsecond,
-            Millisecond, Minute, Nanosecond, Second, SubsecNanosecond, C,
-        },
-    },
-    RoundMode, SignedDuration, Span, SpanRound, Unit, Zoned,
+    util::{b, constant, round::Increment},
 };
 
 /// A representation of civil "wall clock" time.
@@ -219,11 +219,9 @@ use crate::{
 ///
 /// See [`Time::round`] for more details.
 #[derive(Clone, Copy, Eq, Hash, PartialEq, PartialOrd, Ord)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 pub struct Time {
-    hour: Hour,
-    minute: Minute,
-    second: Second,
-    subsec_nanosecond: SubsecNanosecond,
+    inner: JTime,
 }
 
 impl Time {
@@ -284,12 +282,9 @@ impl Time {
         second: i8,
         subsec_nanosecond: i32,
     ) -> Result<Time, Error> {
-        let hour = Hour::try_new("hour", hour)?;
-        let minute = Minute::try_new("minute", minute)?;
-        let second = Second::try_new("second", second)?;
-        let subsec_nanosecond =
-            SubsecNanosecond::try_new("subsec_nanosecond", subsec_nanosecond)?;
-        Ok(Time::new_ranged(hour, minute, second, subsec_nanosecond))
+        JTime::new(hour, minute, second, subsec_nanosecond)
+            .map(Time::from_jcore)
+            .map_err(Error::jcore_range)
     }
 
     /// Creates a new `Time` value in a `const` context.
@@ -330,24 +325,10 @@ impl Time {
         second: i8,
         subsec_nanosecond: i32,
     ) -> Time {
-        if !Hour::contains(hour) {
-            panic!("invalid hour");
-        }
-        if !Minute::contains(minute) {
-            panic!("invalid minute");
-        }
-        if !Second::contains(second) {
-            panic!("invalid second");
-        }
-        if !SubsecNanosecond::contains(subsec_nanosecond) {
-            panic!("invalid nanosecond");
-        }
-        let hour = Hour::new_unchecked(hour);
-        let minute = Minute::new_unchecked(minute);
-        let second = Second::new_unchecked(second);
-        let subsec_nanosecond =
-            SubsecNanosecond::new_unchecked(subsec_nanosecond);
-        Time { hour, minute, second, subsec_nanosecond }
+        Time::from_jcore(constant::unwrapr!(
+            JTime::new(hour, minute, second, subsec_nanosecond),
+            "invalid time"
+        ))
     }
 
     /// Returns the first moment of time in a day.
@@ -418,7 +399,7 @@ impl Time {
     /// ```
     #[inline]
     pub fn hour(self) -> i8 {
-        self.hour_ranged().get()
+        self.inner.hour()
     }
 
     /// Returns the "minute" component of this time.
@@ -435,7 +416,7 @@ impl Time {
     /// ```
     #[inline]
     pub fn minute(self) -> i8 {
-        self.minute_ranged().get()
+        self.inner.minute()
     }
 
     /// Returns the "second" component of this time.
@@ -452,7 +433,7 @@ impl Time {
     /// ```
     #[inline]
     pub fn second(self) -> i8 {
-        self.second_ranged().get()
+        self.inner.second()
     }
 
     /// Returns the "millisecond" component of this time.
@@ -469,7 +450,7 @@ impl Time {
     /// ```
     #[inline]
     pub fn millisecond(self) -> i16 {
-        self.millisecond_ranged().get()
+        self.inner.millisecond()
     }
 
     /// Returns the "microsecond" component of this time.
@@ -486,7 +467,7 @@ impl Time {
     /// ```
     #[inline]
     pub fn microsecond(self) -> i16 {
-        self.microsecond_ranged().get()
+        self.inner.microsecond()
     }
 
     /// Returns the "nanosecond" component of this time.
@@ -503,7 +484,7 @@ impl Time {
     /// ```
     #[inline]
     pub fn nanosecond(self) -> i16 {
-        self.nanosecond_ranged().get()
+        self.inner.nanosecond()
     }
 
     /// Returns the fractional nanosecond for this `Time` value.
@@ -555,7 +536,7 @@ impl Time {
     /// ```
     #[inline]
     pub fn subsec_nanosecond(self) -> i32 {
-        self.subsec_nanosecond_ranged().get()
+        self.inner.subsec_nanosecond()
     }
 
     /// Given a [`Date`], this constructs a [`DateTime`] value with its time
@@ -579,6 +560,21 @@ impl Time {
 
     /// A convenience function for constructing a [`DateTime`] from this time
     /// on the date given by its components.
+    ///
+    /// # Panics
+    ///
+    /// This routine panics when [`Date::new`] with the given inputs would
+    /// return an error. That is, when the given year-month-day does not
+    /// correspond to a valid date. Namely, all of the following must be true:
+    ///
+    /// * The year must be in the range `-9999..=9999`.
+    /// * The month must be in the range `1..=12`.
+    /// * The day must be at least `1` and must be at most the number of days
+    /// in the corresponding month. So for example, `2024-02-29` is valid but
+    /// `2023-02-29` is not.
+    ///
+    /// Similarly, when used in a const context, invalid parameters will
+    /// prevent your Rust program from compiling.
     ///
     /// # Example
     ///
@@ -707,43 +703,35 @@ impl Time {
 
     #[inline]
     fn wrapping_add_span(self, span: Span) -> Time {
-        let mut sum = self.to_nanosecond().without_bounds();
-        sum = sum.wrapping_add(
-            span.get_hours_ranged()
-                .without_bounds()
-                .wrapping_mul(t::NANOS_PER_HOUR),
-        );
-        sum = sum.wrapping_add(
-            span.get_minutes_ranged()
-                .without_bounds()
-                .wrapping_mul(t::NANOS_PER_MINUTE),
-        );
-        sum = sum.wrapping_add(
-            span.get_seconds_ranged()
-                .without_bounds()
-                .wrapping_mul(t::NANOS_PER_SECOND),
-        );
-        sum = sum.wrapping_add(
-            span.get_milliseconds_ranged()
-                .without_bounds()
-                .wrapping_mul(t::NANOS_PER_MILLI),
-        );
-        sum = sum.wrapping_add(
-            span.get_microseconds_ranged()
-                .without_bounds()
-                .wrapping_mul(t::NANOS_PER_MICRO),
-        );
-        sum = sum.wrapping_add(span.get_nanoseconds_ranged().without_bounds());
-        let civil_day_nanosecond = sum % t::NANOS_PER_CIVIL_DAY;
-        Time::from_nanosecond(civil_day_nanosecond.rinto())
+        let sum = self
+            .to_nanosecond()
+            .wrapping_add(
+                i64::from(span.get_hours()).wrapping_mul(c::NANOS_PER_HOUR),
+            )
+            .wrapping_add(span.get_minutes().wrapping_mul(c::NANOS_PER_MIN))
+            .wrapping_add(span.get_seconds().wrapping_mul(c::NANOS_PER_SEC))
+            .wrapping_add(
+                span.get_milliseconds().wrapping_mul(c::NANOS_PER_MILLI),
+            )
+            .wrapping_add(
+                span.get_microseconds().wrapping_mul(c::NANOS_PER_MICRO),
+            )
+            .wrapping_add(span.get_nanoseconds());
+        let civil_day_nanosecond = sum.rem_euclid(c::NANOS_PER_CIVIL_DAY);
+        // OK because of the modulus by `NANOS_PER_CIVIL_DAY`.
+        Time::from_nanosecond(civil_day_nanosecond).unwrap()
     }
 
     #[inline]
     fn wrapping_add_signed_duration(self, duration: SignedDuration) -> Time {
-        let start = t::NoUnits128::rfrom(self.to_nanosecond());
-        let duration = t::NoUnits128::new_unchecked(duration.as_nanos());
-        let end = start.wrapping_add(duration) % t::NANOS_PER_CIVIL_DAY;
-        Time::from_nanosecond(end.rinto())
+        let start = i128::from(self.to_nanosecond());
+        let duration = duration.as_nanos();
+        let end = start
+            .wrapping_add(duration)
+            .rem_euclid(c::NANOS_PER_CIVIL_DAY as i128)
+            as i64;
+        // OK because of the modulus by `NANOS_PER_CIVIL_DAY`.
+        Time::from_nanosecond(end).unwrap()
     }
 
     #[inline]
@@ -751,13 +739,12 @@ impl Time {
         self,
         duration: UnsignedDuration,
     ) -> Time {
-        let start = t::NoUnits128::rfrom(self.to_nanosecond());
-        // OK because 96-bit unsigned integer can't overflow i128.
-        let duration = i128::try_from(duration.as_nanos()).unwrap();
-        let duration = t::NoUnits128::new_unchecked(duration);
-        let duration = duration % t::NANOS_PER_CIVIL_DAY;
-        let end = start.wrapping_add(duration) % t::NANOS_PER_CIVIL_DAY;
-        Time::from_nanosecond(end.rinto())
+        let start = self.to_nanosecond() as u128;
+        let duration = duration.as_nanos();
+        let end = (start.wrapping_add(duration)
+            % (c::NANOS_PER_CIVIL_DAY as u128)) as i64;
+        // OK because of the modulus by `NANOS_PER_CIVIL_DAY`.
+        Time::from_nanosecond(end).unwrap()
     }
 
     /// This routine is identical to [`Time::wrapping_add`] with the duration
@@ -806,12 +793,13 @@ impl Time {
         self,
         duration: UnsignedDuration,
     ) -> Time {
-        let start = t::NoUnits128::rfrom(self.to_nanosecond());
-        // OK because 96-bit unsigned integer can't overflow i128.
-        let duration = i128::try_from(duration.as_nanos()).unwrap();
-        let duration = t::NoUnits128::new_unchecked(duration);
-        let end = start.wrapping_sub(duration) % t::NANOS_PER_CIVIL_DAY;
-        Time::from_nanosecond(end.rinto())
+        let start = self.to_nanosecond();
+        let duration = duration.as_nanos();
+        let duration = (duration % c::NANOS_PER_CIVIL_DAY as u128) as i64;
+        let end =
+            start.wrapping_sub(duration).rem_euclid(c::NANOS_PER_CIVIL_DAY);
+        // OK because of the modulus by `NANOS_PER_CIVIL_DAY`.
+        Time::from_nanosecond(end).unwrap()
     }
 
     /// Add the given span to this time and return an error if the result would
@@ -937,10 +925,10 @@ impl Time {
     }
 
     #[inline]
-    fn checked_add_span(self, span: Span) -> Result<Time, Error> {
+    fn checked_add_span(self, span: &Span) -> Result<Time, Error> {
         let (time, span) = self.overflowing_add(span)?;
-        if let Some(err) = span.smallest_non_time_non_zero_unit_error() {
-            return Err(err);
+        if span.smallest_non_time_non_zero_unit_error().is_some() {
+            return Err(Error::from(E::OverflowTimeNanoseconds));
         }
         Ok(time)
     }
@@ -950,24 +938,17 @@ impl Time {
         self,
         duration: SignedDuration,
     ) -> Result<Time, Error> {
-        let original = duration;
-        let start = t::NoUnits128::rfrom(self.to_nanosecond());
-        let duration = t::NoUnits128::new_unchecked(duration.as_nanos());
-        // This can never fail because the maximum duration fits into a
-        // 96-bit integer, and adding any 96-bit integer to any 64-bit
-        // integer can never overflow a 128-bit integer.
-        let end = start.try_checked_add("nanoseconds", duration).unwrap();
-        let end = CivilDayNanosecond::try_rfrom("nanoseconds", end)
-            .with_context(|| {
-                err!(
-                    "adding signed duration {duration:?}, equal to
-                     {nanos} nanoseconds, to {time} overflowed",
-                    duration = original,
-                    nanos = original.as_nanos(),
-                    time = self,
-                )
-            })?;
-        Ok(Time::from_nanosecond(end))
+        // NOTE: Every approach here just seems so circuitous...
+        // Checking when we convert to the same primitive representation.
+        // Checking when we add.
+        // Checking that the result is in bounds.
+        // Just seems very wateful and annoying.
+        let start = self.to_nanosecond();
+        let duration =
+            duration.as_nanos64().ok_or(E::OverflowTimeNanoseconds)?;
+        let end =
+            start.checked_add(duration).ok_or(E::OverflowTimeNanoseconds)?;
+        Time::from_nanosecond(end)
     }
 
     /// This routine is identical to [`Time::checked_add`] with the duration
@@ -1048,11 +1029,7 @@ impl Time {
     pub fn saturating_add<A: Into<TimeArithmetic>>(self, duration: A) -> Time {
         let duration: TimeArithmetic = duration.into();
         self.checked_add(duration).unwrap_or_else(|_| {
-            if duration.is_negative() {
-                Time::MIN
-            } else {
-                Time::MAX
-            }
+            if duration.is_negative() { Time::MIN } else { Time::MAX }
         })
     }
 
@@ -1100,21 +1077,20 @@ impl Time {
     #[inline]
     pub(crate) fn overflowing_add(
         self,
-        span: Span,
+        span: &Span,
     ) -> Result<(Time, Span), Error> {
         if let Some(err) = span.smallest_non_time_non_zero_unit_error() {
             return Err(err);
         }
-        let span_nanos = span.to_invariant_nanoseconds();
-        let time_nanos = self.to_nanosecond();
-        let sum = span_nanos + time_nanos;
-        let days = t::SpanDays::try_new(
-            "overflowing-days",
-            sum.div_floor(t::NANOS_PER_CIVIL_DAY),
-        )?;
-        let time_nanos = sum.rem_floor(t::NANOS_PER_CIVIL_DAY);
-        let time = Time::from_nanosecond(time_nanos.rinto());
-        Ok((time, Span::new().days_ranged(days)))
+
+        let span = span.to_invariant_duration().as_nanos();
+        let time = i128::from(self.to_nanosecond());
+        let sum = span + time;
+        let days = sum.div_euclid(i128::from(c::NANOS_PER_CIVIL_DAY)) as i64;
+        let rem = sum.rem_euclid(i128::from(c::NANOS_PER_CIVIL_DAY)) as i64;
+        let span = Span::new().try_days(days)?;
+        // OK because of the modulus by `NANOS_PER_CIVIL_DAY`.
+        Ok((Time::from_nanosecond(rem).unwrap(), span))
     }
 
     /// Like `overflowing_add`, but with `SignedDuration`.
@@ -1129,23 +1105,20 @@ impl Time {
         if self.subsec_nanosecond() != 0 || duration.subsec_nanos() != 0 {
             return self.overflowing_add_duration_general(duration);
         }
-        let start = t::NoUnits::rfrom(self.to_second());
-        let duration_secs = t::NoUnits::new_unchecked(duration.as_secs());
+        let start = i64::from(self.to_second());
+        let duration_secs = duration.as_secs();
         // This can fail if the duration is near its min or max values, and
         // thus we fall back to the more general (but slower) implementation
         // that uses 128-bit integers.
         let Some(sum) = start.checked_add(duration_secs) else {
             return self.overflowing_add_duration_general(duration);
         };
-        let days = t::SpanDays::try_new(
-            "overflowing-days",
-            sum.div_floor(t::SECONDS_PER_CIVIL_DAY),
-        )?;
-        let time_secs = sum.rem_floor(t::SECONDS_PER_CIVIL_DAY);
-        let time = Time::from_second(time_secs.rinto());
-        // OK because of the constraint imposed by t::SpanDays.
-        let hours = i64::from(days).checked_mul(24).unwrap();
-        Ok((time, SignedDuration::from_hours(hours)))
+
+        let days = b::SpanDays::check(sum.div_euclid(c::SECS_PER_CIVIL_DAY))?;
+        let rem = sum.rem_euclid(c::SECS_PER_CIVIL_DAY) as i32;
+        // OK because of the modulus by `SECS_PER_CIVIL_DAY`.
+        let time = Time::from_second(rem).unwrap();
+        Ok((time, SignedDuration::from_civil_days32(days)))
     }
 
     /// Like `overflowing_add`, but with `SignedDuration`.
@@ -1158,21 +1131,20 @@ impl Time {
         self,
         duration: SignedDuration,
     ) -> Result<(Time, SignedDuration), Error> {
-        let start = t::NoUnits128::rfrom(self.to_nanosecond());
-        let duration = t::NoUnits96::new_unchecked(duration.as_nanos());
+        let start = i128::from(self.to_nanosecond());
+        let duration = duration.as_nanos();
         // This can never fail because the maximum duration fits into a
         // 96-bit integer, and adding any 96-bit integer to any 64-bit
         // integer can never overflow a 128-bit integer.
-        let sum = start.try_checked_add("nanoseconds", duration).unwrap();
-        let days = t::SpanDays::try_new(
-            "overflowing-days",
-            sum.div_floor(t::NANOS_PER_CIVIL_DAY),
-        )?;
-        let time_nanos = sum.rem_floor(t::NANOS_PER_CIVIL_DAY);
-        let time = Time::from_nanosecond(time_nanos.rinto());
-        // OK because of the constraint imposed by t::SpanDays.
-        let hours = i64::from(days).checked_mul(24).unwrap();
-        Ok((time, SignedDuration::from_hours(hours)))
+        let sum = start + duration;
+        let days =
+            i64::try_from(sum.div_euclid(i128::from(c::NANOS_PER_CIVIL_DAY)))
+                .map_err(|_| b::SpanDays::error())?;
+        let days = b::SpanDays::check(days)?;
+        let rem = sum.rem_euclid(i128::from(c::NANOS_PER_CIVIL_DAY)) as i64;
+        // OK because of the modulus by `NANOS_PER_CIVIL_DAY`.
+        let time = Time::from_nanosecond(rem).unwrap();
+        Ok((time, SignedDuration::from_civil_days32(days)))
     }
 
     /// Returns a span representing the elapsed time from this time until
@@ -1195,7 +1167,7 @@ impl Time {
     /// # Properties
     ///
     /// As long as no rounding is requested, it is guaranteed that adding the
-    /// span returned to the `other` time will always equal this time.
+    /// span returned to this time will always equal the `other` time.
     ///
     /// # Errors
     ///
@@ -1632,11 +1604,14 @@ impl Time {
     ///
     /// # Errors and panics
     ///
-    /// While this routine itself does not error or panic, using the value
-    /// returned may result in a panic if formatting fails. See the
-    /// documentation on [`fmt::strtime::Display`] for more information.
+    /// This will never error or panic. In particular,
+    /// [lenient mode](crate::fmt::strtime::Config::lenient) is enabled, which
+    /// means that all possible strings have some non-error interpretation.
+    /// Note that because of this, and since Jiff may add new conversion
+    /// specifiers in the future, the behavior of a format string may change
+    /// when it would otherwise be invalid.
     ///
-    /// To format in a way that surfaces errors without panicking, use either
+    /// To format in a way that surfaces errors, use either
     /// [`fmt::strtime::format`] or [`fmt::strtime::BrokenDownTime::format`].
     ///
     /// # Example
@@ -1664,6 +1639,33 @@ impl Time {
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
+    ///
+    /// # Example: errors are silently ignored
+    ///
+    /// If the formatting string is malformed in some way, then it is silently
+    /// ignored. For example, when using an invalid formatting directive:
+    ///
+    /// ```
+    /// use jiff::civil::time;
+    ///
+    /// let t = time(16, 30, 59, 0);
+    /// let string = t.strftime("%H %").to_string();
+    /// assert_eq!(string, "16 %");
+    /// ```
+    ///
+    /// If one wants to surface errors from a formatting string, use a lower
+    /// level API:
+    ///
+    /// ```
+    /// use jiff::civil::time;
+    ///
+    /// let t = time(16, 30, 59, 0);
+    /// assert_eq!(
+    ///     jiff::fmt::strtime::format("%H %", t).unwrap_err().to_string(),
+    ///     "strftime formatting failed: invalid format string, \
+    ///      expected byte after `%`, but found end of format string",
+    /// );
+    /// ```
     #[inline]
     pub fn strftime<'f, F: 'f + ?Sized + AsRef<[u8]>>(
         &self,
@@ -1681,84 +1683,29 @@ impl Time {
 /// routines to be infallible and (possibly) zero-cost.
 impl Time {
     #[inline]
-    pub(crate) fn new_ranged(
-        hour: impl RInto<Hour>,
-        minute: impl RInto<Minute>,
-        second: impl RInto<Second>,
-        subsec_nanosecond: impl RInto<SubsecNanosecond>,
-    ) -> Time {
-        Time {
-            hour: hour.rinto(),
-            minute: minute.rinto(),
-            second: second.rinto(),
-            subsec_nanosecond: subsec_nanosecond.rinto(),
-        }
-    }
-
-    /// Set the fractional parts of this time to the given units via ranged
-    /// types.
-    #[inline]
-    fn with_subsec_parts_ranged(
-        self,
-        millisecond: impl RInto<Millisecond>,
-        microsecond: impl RInto<Microsecond>,
-        nanosecond: impl RInto<Nanosecond>,
-    ) -> Time {
-        let millisecond = SubsecNanosecond::rfrom(millisecond.rinto());
-        let microsecond = SubsecNanosecond::rfrom(microsecond.rinto());
-        let nanosecond = SubsecNanosecond::rfrom(nanosecond.rinto());
-        let mut subsec_nanosecond =
-            millisecond * t::MICROS_PER_MILLI * t::NANOS_PER_MICRO;
-        subsec_nanosecond += microsecond * t::NANOS_PER_MICRO;
-        subsec_nanosecond += nanosecond;
-        Time { subsec_nanosecond: subsec_nanosecond.rinto(), ..self }
+    pub(crate) fn until_nanoseconds(self, other: Time) -> i64 {
+        other.to_nanosecond() - self.to_nanosecond()
     }
 
     #[inline]
-    pub(crate) fn hour_ranged(self) -> Hour {
-        self.hour
+    pub(crate) fn to_duration(&self) -> SignedDuration {
+        SignedDuration::from_nanos(self.to_nanosecond())
     }
 
-    #[inline]
-    pub(crate) fn minute_ranged(self) -> Minute {
-        self.minute
-    }
-
-    #[inline]
-    pub(crate) fn second_ranged(self) -> Second {
-        self.second
-    }
-
-    #[inline]
-    pub(crate) fn millisecond_ranged(self) -> Millisecond {
-        let micros = self.subsec_nanosecond_ranged() / t::NANOS_PER_MICRO;
-        let millis = micros / t::MICROS_PER_MILLI;
-        millis.rinto()
-    }
-
-    #[inline]
-    pub(crate) fn microsecond_ranged(self) -> Microsecond {
-        let micros = self.subsec_nanosecond_ranged() / t::NANOS_PER_MICRO;
-        let only_micros = micros % t::MICROS_PER_MILLI;
-        only_micros.rinto()
-    }
-
-    #[inline]
-    pub(crate) fn nanosecond_ranged(self) -> Nanosecond {
-        let only_nanos = self.subsec_nanosecond_ranged() % t::NANOS_PER_MICRO;
-        only_nanos.rinto()
-    }
-
-    #[inline]
-    pub(crate) fn subsec_nanosecond_ranged(self) -> SubsecNanosecond {
-        self.subsec_nanosecond
-    }
-
-    #[inline]
-    pub(crate) fn until_nanoseconds(self, other: Time) -> t::SpanNanoseconds {
-        let t1 = t::SpanNanoseconds::rfrom(self.to_nanosecond());
-        let t2 = t::SpanNanoseconds::rfrom(other.to_nanosecond());
-        t2 - t1
+    /// Converts the given duration to a time value. The duration should
+    /// correspond to the number of nanoseconds that have elapsed since
+    /// `00:00:00.000000000`.
+    ///
+    /// This returns an error when the given duration exceeds the range
+    /// specified by `b::CivilDayNanosecond`.
+    #[cfg_attr(feature = "perf-inline", inline(always))]
+    pub(crate) fn from_duration(dur: SignedDuration) -> Result<Time, Error> {
+        let secs = b::CivilDaySecond::check(dur.as_secs())?;
+        JTimeSecond::new(secs)
+            .map(|second| second.to_time())
+            .and_then(|time| time.with_subsec_nanosecond(dur.subsec_nanos()))
+            .map(Time::from_jcore)
+            .map_err(Error::jcore_range)
     }
 
     /// Converts this time value to the number of seconds that has elapsed
@@ -1768,19 +1715,21 @@ impl Time {
     /// The maximum possible value that can be returned represents the time
     /// `23:59:59`.
     #[inline]
-    pub(crate) fn to_second(&self) -> CivilDaySecond {
-        self.to_itime().map(|x| x.to_second().second).to_rint()
+    fn to_second(&self) -> i32 {
+        self.inner.to_second().second()
     }
 
     /// Converts the given second to a time value. The second should correspond
     /// to the number of seconds that have elapsed since `00:00:00`. The
     /// fractional second component of the `Time` returned is always `0`.
+    ///
+    /// This returns an error when the given `second` is invalid.
     #[cfg_attr(feature = "perf-inline", inline(always))]
-    pub(crate) fn from_second(second: CivilDaySecond) -> Time {
-        let second = rangeint::composite!((second) => {
-            ITimeSecond { second }
-        });
-        Time::from_itime(second.map(|x| x.to_time()))
+    fn from_second(second: i32) -> Result<Time, Error> {
+        JTimeSecond::new(second)
+            .map(|second| second.to_time())
+            .map(Time::from_jcore)
+            .map_err(Error::jcore_range)
     }
 
     /// Converts this time value to the number of nanoseconds that has elapsed
@@ -1789,57 +1738,31 @@ impl Time {
     /// The maximum possible value that can be returned represents the time
     /// `23:59:59.999999999`.
     #[inline]
-    pub(crate) fn to_nanosecond(&self) -> CivilDayNanosecond {
-        self.to_itime().map(|x| x.to_nanosecond().nanosecond).to_rint()
+    fn to_nanosecond(&self) -> i64 {
+        self.inner.to_nanosecond().nanosecond()
     }
 
     /// Converts the given nanosecond to a time value. The nanosecond should
     /// correspond to the number of nanoseconds that have elapsed since
     /// `00:00:00.000000000`.
+    ///
+    /// This returns an error when the given `nanosecond` is invalid.
     #[cfg_attr(feature = "perf-inline", inline(always))]
-    pub(crate) fn from_nanosecond(nanosecond: CivilDayNanosecond) -> Time {
-        let nano = rangeint::composite!((nanosecond) => {
-            ITimeNanosecond { nanosecond }
-        });
-        Time::from_itime(nano.map(|x| x.to_time()))
+    fn from_nanosecond(nanosecond: i64) -> Result<Time, Error> {
+        JTimeNanosecond::new(nanosecond)
+            .map(|nano| nano.to_time())
+            .map(Time::from_jcore)
+            .map_err(Error::jcore_range)
     }
 
     #[inline]
-    pub(crate) fn to_itime(&self) -> Composite<ITime> {
-        rangeint::composite! {
-            (
-                hour = self.hour,
-                minute = self.minute,
-                second = self.second,
-                subsec_nanosecond = self.subsec_nanosecond,
-            ) => {
-                ITime { hour, minute, second, subsec_nanosecond }
-            }
-        }
+    pub(crate) const fn to_jcore(self) -> JTime {
+        self.inner
     }
 
     #[inline]
-    pub(crate) fn from_itime(itime: Composite<ITime>) -> Time {
-        let (hour, minute, second, subsec_nanosecond) = rangeint::uncomposite!(
-            itime,
-            c => (c.hour, c.minute, c.second, c.subsec_nanosecond),
-        );
-        Time {
-            hour: hour.to_rint(),
-            minute: minute.to_rint(),
-            second: second.to_rint(),
-            subsec_nanosecond: subsec_nanosecond.to_rint(),
-        }
-    }
-
-    #[inline]
-    pub(crate) const fn to_itime_const(&self) -> ITime {
-        ITime {
-            hour: self.hour.get_unchecked(),
-            minute: self.minute.get_unchecked(),
-            second: self.second.get_unchecked(),
-            subsec_nanosecond: self.subsec_nanosecond.get_unchecked(),
-        }
+    pub(crate) const fn from_jcore(time: JTime) -> Time {
+        Time { inner: time }
     }
 }
 
@@ -2102,17 +2025,28 @@ impl From<DateTime> for Time {
     }
 }
 
-impl From<Zoned> for Time {
+impl From<ZonedDateTime> for Time {
     #[inline]
-    fn from(zdt: Zoned) -> Time {
+    fn from(zdt: ZonedDateTime) -> Time {
         zdt.datetime().time()
     }
 }
 
-impl<'a> From<&'a Zoned> for Time {
+impl<'a> From<&'a ZonedDateTime> for Time {
     #[inline]
-    fn from(zdt: &'a Zoned) -> Time {
+    fn from(zdt: &'a ZonedDateTime) -> Time {
         zdt.datetime().time()
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for Time {
+    fn format(&self, f: defmt::Formatter) {
+        use crate::fmt::{DefmtWrite, temporal::DEFAULT_DATETIME_PRINTER};
+
+        defmt::unwrap!(
+            DEFAULT_DATETIME_PRINTER.print_time(self, DefmtWrite(f))
+        );
     }
 }
 
@@ -2170,30 +2104,25 @@ impl<'de> serde_core::Deserialize<'de> for Time {
 #[cfg(test)]
 impl quickcheck::Arbitrary for Time {
     fn arbitrary(g: &mut quickcheck::Gen) -> Time {
-        let hour = Hour::arbitrary(g);
-        let minute = Minute::arbitrary(g);
-        let second = Second::arbitrary(g);
-        let subsec_nanosecond = SubsecNanosecond::arbitrary(g);
-        Time::new_ranged(hour, minute, second, subsec_nanosecond)
+        let hour = b::Hour::arbitrary(g);
+        let minute = b::Minute::arbitrary(g);
+        let second = b::Second::arbitrary(g);
+        let subsec_nanosecond = b::SubsecNanosecond::arbitrary(g);
+        Time::new(hour, minute, second, subsec_nanosecond).unwrap()
     }
 
     fn shrink(&self) -> alloc::boxed::Box<dyn Iterator<Item = Time>> {
         alloc::boxed::Box::new(
             (
-                self.hour_ranged(),
-                self.minute_ranged(),
-                self.second_ranged(),
-                self.subsec_nanosecond_ranged(),
+                self.hour(),
+                self.minute(),
+                self.second(),
+                self.subsec_nanosecond(),
             )
                 .shrink()
-                .map(
+                .filter_map(
                     |(hour, minute, second, subsec_nanosecond)| {
-                        Time::new_ranged(
-                            hour,
-                            minute,
-                            second,
-                            subsec_nanosecond,
-                        )
+                        Time::new(hour, minute, second, subsec_nanosecond).ok()
                     },
                 ),
         )
@@ -2443,6 +2372,8 @@ impl TimeDifference {
     /// is violated, then computing a span with this configuration will result
     /// in an error.
     ///
+    /// The smallest unit must be no bigger than `Unit::Hour`.
+    ///
     /// # Example
     ///
     /// This shows how to round a span between two times to units no less than
@@ -2477,6 +2408,8 @@ impl TimeDifference {
     /// The largest units, when set, must be at least as big as the smallest
     /// units (which defaults to [`Unit::Nanosecond`]). If this is violated,
     /// then computing a span with this configuration will result in an error.
+    ///
+    /// The largest unit must be no bigger than `Unit::Hour`.
     ///
     /// # Example
     ///
@@ -2557,6 +2490,9 @@ impl TimeDifference {
     /// nanoseconds since there are `1,000` nanoseconds in the next highest
     /// unit (microseconds).
     ///
+    /// In all cases, the increment must be greater than zero and less than
+    /// or equal to `1_000_000_000`.
+    ///
     /// The error will occur when computing the span, and not when setting
     /// the increment here.
     ///
@@ -2589,7 +2525,7 @@ impl TimeDifference {
     /// via rounding.
     #[inline]
     fn rounding_may_change_span(&self) -> bool {
-        self.round.rounding_may_change_span_ignore_largest()
+        self.round.rounding_may_change_span()
     }
 
     /// Returns the span of time from `t1` to the time in this configuration.
@@ -2597,23 +2533,27 @@ impl TimeDifference {
     /// `largest` settings, but defaults to `Unit::Hour`.
     #[inline]
     fn until_with_largest_unit(&self, t1: Time) -> Result<Span, Error> {
+        if self.round.get_smallest() >= Unit::Day {
+            return Err(Error::from(UnitConfigError::CivilTime {
+                given: self.round.get_smallest(),
+            }));
+        }
+
+        let largest = self.round.get_largest().unwrap_or(Unit::Hour);
+        if largest >= Unit::Day {
+            return Err(Error::from(UnitConfigError::CivilTime {
+                given: largest,
+            }));
+        }
+
         let t2 = self.time;
         if t1 == t2 {
             return Ok(Span::new());
         }
-        let largest = self.round.get_largest().unwrap_or(Unit::Hour);
-        if largest > Unit::Hour {
-            return Err(err!(
-                "rounding the span between two times must use hours \
-                 or smaller for its units, but found {units}",
-                units = largest.plural(),
-            ));
-        }
-        let start = t1.to_nanosecond();
-        let end = t2.to_nanosecond();
-        let span =
-            Span::from_invariant_nanoseconds(largest, (end - start).rinto())
-                .expect("difference in civil times is always in bounds");
+        let start = t1.to_duration();
+        let end = t2.to_duration();
+        let span = Span::from_invariant_duration(largest, end - start)
+            .expect("difference in civil times is always in bounds");
         Ok(span)
     }
 }
@@ -2632,16 +2572,16 @@ impl From<DateTime> for TimeDifference {
     }
 }
 
-impl From<Zoned> for TimeDifference {
+impl From<ZonedDateTime> for TimeDifference {
     #[inline]
-    fn from(zdt: Zoned) -> TimeDifference {
+    fn from(zdt: ZonedDateTime) -> TimeDifference {
         TimeDifference::from(Time::from(zdt))
     }
 }
 
-impl<'a> From<&'a Zoned> for TimeDifference {
+impl<'a> From<&'a ZonedDateTime> for TimeDifference {
     #[inline]
-    fn from(zdt: &'a Zoned) -> TimeDifference {
+    fn from(zdt: &'a ZonedDateTime) -> TimeDifference {
         TimeDifference::from(zdt.datetime())
     }
 }
@@ -2660,16 +2600,16 @@ impl From<(Unit, DateTime)> for TimeDifference {
     }
 }
 
-impl From<(Unit, Zoned)> for TimeDifference {
+impl From<(Unit, ZonedDateTime)> for TimeDifference {
     #[inline]
-    fn from((largest, zdt): (Unit, Zoned)) -> TimeDifference {
+    fn from((largest, zdt): (Unit, ZonedDateTime)) -> TimeDifference {
         TimeDifference::from((largest, Time::from(zdt)))
     }
 }
 
-impl<'a> From<(Unit, &'a Zoned)> for TimeDifference {
+impl<'a> From<(Unit, &'a ZonedDateTime)> for TimeDifference {
     #[inline]
-    fn from((largest, zdt): (Unit, &'a Zoned)) -> TimeDifference {
+    fn from((largest, zdt): (Unit, &'a ZonedDateTime)) -> TimeDifference {
         TimeDifference::from((largest, zdt.datetime()))
     }
 }
@@ -2825,6 +2765,9 @@ impl TimeRound {
     /// Namely, any integer that divides evenly into `1,000` nanoseconds since
     /// there are `1,000` nanoseconds in the next highest unit (microseconds).
     ///
+    /// In all cases, the increment must be greater than zero and less than or
+    /// equal to `1_000_000_000`.
+    ///
     /// # Example
     ///
     /// This example shows how to round a time to the nearest 10 minute
@@ -2844,17 +2787,19 @@ impl TimeRound {
     }
 
     /// Does the actual rounding.
-    pub(crate) fn round(&self, t: Time) -> Result<Time, Error> {
-        let increment = increment::for_time(self.smallest, self.increment)?;
-        let nanos = t.to_nanosecond();
-        let rounded = self.mode.round_by_unit_in_nanoseconds(
-            nanos,
-            self.smallest,
-            increment,
-        );
-        let limit =
-            t::NoUnits128::rfrom(t::CivilDayNanosecond::MAX_SELF) + C(1);
-        Ok(Time::from_nanosecond((rounded % limit).rinto()))
+    fn round(&self, t: Time) -> Result<Time, Error> {
+        let increment = Increment::for_time(self.smallest, self.increment)?;
+        let rounded = increment.round(self.mode, t.to_duration())?;
+        if rounded.as_secs() == i64::from(b::CivilDaySecond::MAX + 1) {
+            return Ok(Time::MIN);
+        }
+        // OK because the maximum value for `rounded` is the number of
+        // nanoseconds in a civil day. In which case, that wraps around to
+        // `Time::MIN` and we handle that case above. `rounded` can't be any
+        // bigger because of the requirement that the rounding increment divide
+        // evenly into the next biggest unit (and thus all such increments must
+        // divide evenly into a single civil day).
+        Ok(Time::from_duration(rounded).unwrap())
     }
 }
 
@@ -2980,71 +2925,38 @@ impl TimeWith {
     /// ```
     #[inline]
     pub fn build(self) -> Result<Time, Error> {
-        let hour = match self.hour {
-            None => self.original.hour_ranged(),
-            Some(hour) => Hour::try_new("hour", hour)?,
-        };
-        let minute = match self.minute {
-            None => self.original.minute_ranged(),
-            Some(minute) => Minute::try_new("minute", minute)?,
-        };
-        let second = match self.second {
-            None => self.original.second_ranged(),
-            Some(second) => Second::try_new("second", second)?,
-        };
-        let millisecond = match self.millisecond {
-            None => self.original.millisecond_ranged(),
-            Some(millisecond) => {
-                Millisecond::try_new("millisecond", millisecond)?
-            }
-        };
-        let microsecond = match self.microsecond {
-            None => self.original.microsecond_ranged(),
-            Some(microsecond) => {
-                Microsecond::try_new("microsecond", microsecond)?
-            }
-        };
-        let nanosecond = match self.nanosecond {
-            None => self.original.nanosecond_ranged(),
-            Some(nanosecond) => Nanosecond::try_new("nanosecond", nanosecond)?,
-        };
+        let hour = self.hour.unwrap_or_else(|| self.original.hour());
+        let minute = self.minute.unwrap_or_else(|| self.original.minute());
+        let second = self.second.unwrap_or_else(|| self.original.second());
+        let millisecond =
+            self.millisecond.unwrap_or_else(|| self.original.millisecond());
+        let microsecond =
+            self.microsecond.unwrap_or_else(|| self.original.microsecond());
+        let nanosecond =
+            self.nanosecond.unwrap_or_else(|| self.original.nanosecond());
         let subsec_nanosecond = match self.subsec_nanosecond {
-            None => self.original.subsec_nanosecond_ranged(),
+            None => self.original.subsec_nanosecond(),
             Some(subsec_nanosecond) => {
                 if self.millisecond.is_some() {
-                    return Err(err!(
-                        "cannot set both TimeWith::millisecond \
-                         and TimeWith::subsec_nanosecond",
-                    ));
+                    return Err(Error::from(E::IllegalTimeWithMillisecond));
                 }
                 if self.microsecond.is_some() {
-                    return Err(err!(
-                        "cannot set both TimeWith::microsecond \
-                         and TimeWith::subsec_nanosecond",
-                    ));
+                    return Err(Error::from(E::IllegalTimeWithMicrosecond));
                 }
                 if self.nanosecond.is_some() {
-                    return Err(err!(
-                        "cannot set both TimeWith::nanosecond \
-                         and TimeWith::subsec_nanosecond",
-                    ));
+                    return Err(Error::from(E::IllegalTimeWithNanosecond));
                 }
-                SubsecNanosecond::try_new(
-                    "subsec_nanosecond",
-                    subsec_nanosecond,
-                )?
+                subsec_nanosecond
             }
         };
-        if self.subsec_nanosecond.is_some() {
-            Ok(Time::new_ranged(hour, minute, second, subsec_nanosecond))
+        let jtime = if self.subsec_nanosecond.is_some() {
+            JTime::new(hour, minute, second, subsec_nanosecond)
         } else {
-            Ok(Time::new_ranged(hour, minute, second, C(0))
-                .with_subsec_parts_ranged(
-                    millisecond,
-                    microsecond,
-                    nanosecond,
-                ))
-        }
+            JTime::new(hour, minute, second, 0).and_then(|time: JTime| {
+                time.with_subsec_parts(millisecond, microsecond, nanosecond)
+            })
+        };
+        jtime.map(Time::from_jcore).map_err(Error::jcore_range)
     }
 
     /// Set the hour field on a [`Time`].
@@ -3282,7 +3194,7 @@ impl TimeWith {
 mod tests {
     use std::io::Cursor;
 
-    use crate::{civil::time, span::span_eq, ToSpan};
+    use crate::{ToSpan, civil::time, span::span_eq};
 
     use super::*;
 
@@ -3356,19 +3268,28 @@ mod tests {
     #[cfg(not(miri))]
     quickcheck::quickcheck! {
         fn prop_ordering_same_as_civil_nanosecond(
-            civil_nanosecond1: CivilDayNanosecond,
-            civil_nanosecond2: CivilDayNanosecond
-        ) -> bool {
-            let t1 = Time::from_nanosecond(civil_nanosecond1);
-            let t2 = Time::from_nanosecond(civil_nanosecond2);
-            t1.cmp(&t2) == civil_nanosecond1.cmp(&civil_nanosecond2)
+            ns1: i64,
+            ns2: i64
+        ) -> quickcheck::TestResult {
+            let Ok(ns1) = b::CivilDayNanosecond::check(ns1) else {
+                return quickcheck::TestResult::discard();
+            };
+            let Ok(ns2) = b::CivilDayNanosecond::check(ns2) else {
+                return quickcheck::TestResult::discard();
+            };
+            let t1 = Time::from_nanosecond(ns1).unwrap();
+            let t2 = Time::from_nanosecond(ns2).unwrap();
+            quickcheck::TestResult::from_bool(t1.cmp(&t2) == ns1.cmp(&ns2))
         }
 
         fn prop_checked_add_then_sub(
             time: Time,
-            nano_span: CivilDayNanosecond
+            nano_span: i64
         ) -> quickcheck::TestResult {
-            let span = Span::new().nanoseconds(nano_span.get());
+            let Ok(nano_span) = b::CivilDayNanosecond::check(nano_span) else {
+                return quickcheck::TestResult::discard();
+            };
+            let span = Span::new().nanoseconds(nano_span);
             let Ok(sum) = time.checked_add(span) else {
                 return quickcheck::TestResult::discard()
             };
@@ -3378,19 +3299,25 @@ mod tests {
 
         fn prop_wrapping_add_then_sub(
             time: Time,
-            nano_span: CivilDayNanosecond
-        ) -> bool {
-            let span = Span::new().nanoseconds(nano_span.get());
+            nano_span: i64
+        ) -> quickcheck::TestResult {
+            let Ok(nano_span) = b::CivilDayNanosecond::check(nano_span) else {
+                return quickcheck::TestResult::discard();
+            };
+            let span = Span::new().nanoseconds(nano_span);
             let sum = time.wrapping_add(span);
             let diff = sum.wrapping_sub(span);
-            time == diff
+            quickcheck::TestResult::from_bool(time == diff)
         }
 
         fn prop_checked_add_equals_wrapping_add(
             time: Time,
-            nano_span: CivilDayNanosecond
+            nano_span: i64
         ) -> quickcheck::TestResult {
-            let span = Span::new().nanoseconds(nano_span.get());
+            let Ok(nano_span) = b::CivilDayNanosecond::check(nano_span) else {
+                return quickcheck::TestResult::discard();
+            };
+            let span = Span::new().nanoseconds(nano_span);
             let Ok(sum_checked) = time.checked_add(span) else {
                 return quickcheck::TestResult::discard()
             };
@@ -3400,9 +3327,12 @@ mod tests {
 
         fn prop_checked_sub_equals_wrapping_sub(
             time: Time,
-            nano_span: CivilDayNanosecond
+            nano_span: i64
         ) -> quickcheck::TestResult {
-            let span = Span::new().nanoseconds(nano_span.get());
+            let Ok(nano_span) = b::CivilDayNanosecond::check(nano_span) else {
+                return quickcheck::TestResult::discard();
+            };
+            let span = Span::new().nanoseconds(nano_span);
             let Ok(diff_checked) = time.checked_sub(span) else {
                 return quickcheck::TestResult::discard()
             };
@@ -3439,7 +3369,7 @@ mod tests {
     #[test]
     fn overflowing_add() {
         let t1 = time(23, 30, 0, 0);
-        let (t2, span) = t1.overflowing_add(5.hours()).unwrap();
+        let (t2, span) = t1.overflowing_add(&5.hours()).unwrap();
         assert_eq!(t2, time(4, 30, 0, 0));
         span_eq!(span, 1.days());
     }
@@ -3448,20 +3378,89 @@ mod tests {
     fn overflowing_add_overflows() {
         let t1 = time(23, 30, 0, 0);
         let span = Span::new()
-            .hours(t::SpanHours::MAX_REPR)
-            .minutes(t::SpanMinutes::MAX_REPR)
-            .seconds(t::SpanSeconds::MAX_REPR)
-            .milliseconds(t::SpanMilliseconds::MAX_REPR)
-            .microseconds(t::SpanMicroseconds::MAX_REPR)
-            .nanoseconds(t::SpanNanoseconds::MAX_REPR);
-        assert!(t1.overflowing_add(span).is_err());
+            .hours(b::SpanHours::MAX)
+            .minutes(b::SpanMinutes::MAX)
+            .seconds(b::SpanSeconds::MAX)
+            .milliseconds(b::SpanMilliseconds::MAX)
+            .microseconds(b::SpanMicroseconds::MAX)
+            .nanoseconds(b::SpanNanoseconds::MAX);
+        assert!(t1.overflowing_add(&span).is_err());
+    }
+
+    #[test]
+    fn overflowing_add_span_negative() {
+        let t1 = time(0, 0, 0, 0);
+
+        let (t2, span) = t1.overflowing_add(&1.second()).unwrap();
+        assert_eq!(t2, time(0, 0, 1, 0));
+        span_eq!(span, 0.days());
+
+        let (t2, span) = t1.overflowing_add(&-1.second()).unwrap();
+        assert_eq!(t2, time(23, 59, 59, 0));
+        span_eq!(span, -1.days());
+
+        let (t2, span) = t1.overflowing_add(&1.nanosecond()).unwrap();
+        assert_eq!(t2, time(0, 0, 0, 1));
+        span_eq!(span, 0.days());
+
+        let (t2, span) = t1.overflowing_add(&-1.nanosecond()).unwrap();
+        assert_eq!(t2, time(23, 59, 59, 999_999_999));
+        span_eq!(span, -1.days());
+
+        let (t2, span) =
+            t1.overflowing_add(&1.second().nanoseconds(2)).unwrap();
+        assert_eq!(t2, time(0, 0, 1, 2));
+        span_eq!(span, 0.days());
+
+        let (t2, span) =
+            t1.overflowing_add(&-1.second().nanoseconds(2)).unwrap();
+        assert_eq!(t2, time(23, 59, 58, 999_999_998));
+        span_eq!(span, -1.days());
+    }
+
+    #[test]
+    fn overflowing_add_duration_negative() {
+        let t1 = time(0, 0, 0, 0);
+
+        let (t2, dur) =
+            t1.overflowing_add_duration(SignedDuration::from_secs(1)).unwrap();
+        assert_eq!(t2, time(0, 0, 1, 0));
+        assert_eq!(dur, SignedDuration::ZERO);
+
+        let (t2, dur) = t1
+            .overflowing_add_duration(SignedDuration::from_secs(-1))
+            .unwrap();
+        assert_eq!(t2, time(23, 59, 59, 0));
+        assert_eq!(dur, SignedDuration::from_hours(-24));
+
+        let (t2, dur) = t1
+            .overflowing_add_duration(SignedDuration::from_nanos(1))
+            .unwrap();
+        assert_eq!(t2, time(0, 0, 0, 1));
+        assert_eq!(dur, SignedDuration::ZERO);
+
+        let (t2, dur) = t1
+            .overflowing_add_duration(SignedDuration::from_nanos(-1))
+            .unwrap();
+        assert_eq!(t2, time(23, 59, 59, 999_999_999));
+        assert_eq!(dur, SignedDuration::from_hours(-24));
+
+        let (t2, dur) =
+            t1.overflowing_add_duration(SignedDuration::new(1, 2)).unwrap();
+        assert_eq!(t2, time(0, 0, 1, 2));
+        assert_eq!(dur, SignedDuration::ZERO);
+
+        let (t2, dur) =
+            t1.overflowing_add_duration(SignedDuration::new(-1, -2)).unwrap();
+        assert_eq!(t2, time(23, 59, 58, 999_999_998));
+        assert_eq!(dur, SignedDuration::from_hours(-24));
     }
 
     #[test]
     fn time_size() {
         #[cfg(debug_assertions)]
         {
-            assert_eq!(24, core::mem::size_of::<Time>());
+            assert_eq!(8, core::mem::size_of::<Time>());
         }
         #[cfg(not(debug_assertions))]
         {
@@ -3474,9 +3473,9 @@ mod tests {
     #[test]
     fn wrapping_sub_signed_duration_min() {
         let max = -SignedDuration::MIN.as_nanos();
-        let got = time(15, 30, 8, 999_999_999).to_nanosecond();
-        let expected = max.rem_euclid(t::NANOS_PER_CIVIL_DAY.bound());
-        assert_eq!(i128::from(got.get()), expected);
+        let got = i128::from(time(15, 30, 8, 999_999_999).to_nanosecond());
+        let expected = max.rem_euclid(i128::from(c::NANOS_PER_CIVIL_DAY));
+        assert_eq!(got, expected);
     }
 
     // This test checks that a wrapping subtraction with the maximum signed
@@ -3484,9 +3483,9 @@ mod tests {
     #[test]
     fn wrapping_sub_signed_duration_max() {
         let max = -SignedDuration::MAX.as_nanos();
-        let got = time(8, 29, 52, 1).to_nanosecond();
-        let expected = max.rem_euclid(t::NANOS_PER_CIVIL_DAY.bound());
-        assert_eq!(i128::from(got.get()), expected);
+        let got = i128::from(time(8, 29, 52, 1).to_nanosecond());
+        let expected = max.rem_euclid(i128::from(c::NANOS_PER_CIVIL_DAY));
+        assert_eq!(got, expected);
     }
 
     // This test checks that a wrapping subtraction with the maximum unsigned
@@ -3495,9 +3494,60 @@ mod tests {
     fn wrapping_sub_unsigned_duration_max() {
         let max =
             -i128::try_from(std::time::Duration::MAX.as_nanos()).unwrap();
-        let got = time(16, 59, 44, 1).to_nanosecond();
-        let expected = max.rem_euclid(t::NANOS_PER_CIVIL_DAY.bound());
-        assert_eq!(i128::from(got.get()), expected);
+        let got = i128::from(time(16, 59, 44, 1).to_nanosecond());
+        let expected = max.rem_euclid(i128::from(c::NANOS_PER_CIVIL_DAY));
+        assert_eq!(got, expected);
+
+        let dur = UnsignedDuration::MAX;
+        let t = Time::midnight().wrapping_sub(dur);
+        assert_eq!(t, Time::new(16, 59, 44, 1).unwrap());
+    }
+
+    #[test]
+    fn wrapping_add_span_max() {
+        let span = Span::new()
+            .hours(b::SpanHours::MAX)
+            .minutes(b::SpanMinutes::MAX)
+            .seconds(b::SpanSeconds::MAX)
+            .milliseconds(b::SpanMilliseconds::MAX)
+            .microseconds(b::SpanMicroseconds::MAX)
+            .nanoseconds(b::SpanNanoseconds::MAX);
+        let t = Time::midnight().wrapping_add(span);
+        assert_eq!(t, Time::new(0, 42, 38, 811_897_855).unwrap());
+    }
+
+    #[test]
+    fn wrapping_add_span_min() {
+        let span = Span::new()
+            .hours(b::SpanHours::MIN)
+            .minutes(b::SpanMinutes::MIN)
+            .seconds(b::SpanSeconds::MIN)
+            .milliseconds(b::SpanMilliseconds::MIN)
+            .microseconds(b::SpanMicroseconds::MIN)
+            .nanoseconds(b::SpanNanoseconds::MIN);
+        let t = Time::midnight().wrapping_add(span);
+        assert_eq!(t, Time::new(23, 17, 21, 188_102_145).unwrap());
+    }
+
+    #[test]
+    fn wrapping_add_signed_duration_max() {
+        let dur = SignedDuration::MAX;
+        let t = Time::midnight().wrapping_add(dur);
+        assert_eq!(t, Time::new(15, 30, 7, 999_999_999).unwrap());
+    }
+
+    #[test]
+    fn wrapping_add_signed_duration_min() {
+        let dur = SignedDuration::MIN;
+        let t = Time::midnight().wrapping_add(dur);
+        assert_eq!(t, Time::new(8, 29, 51, 1).unwrap());
+    }
+
+    #[test]
+    fn wrapping_add_unsigned_duration_max() {
+        let dur = UnsignedDuration::MAX;
+        let t = Time::midnight().wrapping_add(dur);
+        assert_eq!(t, Time::new(7, 0, 15, 999_999_999).unwrap());
     }
 
     /// # `serde` deserializer compatibility test

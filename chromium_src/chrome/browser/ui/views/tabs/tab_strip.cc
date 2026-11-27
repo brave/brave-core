@@ -6,12 +6,15 @@
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 
 #include <cmath>
+#include <optional>
+#include <vector>
 
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
@@ -23,46 +26,55 @@
 #include "ui/gfx/win/hwnd_util.h"
 #endif
 
-// Overrides TabContainer::TabInsertionParams construction in
-// TabStrip::AddTabsAt
-#define param(TAB, MODEL_INDEX, PINNED) \
-  param(std::make_unique<BraveTab>(tab_data.handle, this), MODEL_INDEX, PINNED)
+namespace tabs {
+namespace {
 
-#define TabHoverCardController BraveTabHoverCardController
+// Returns bounds only when vertical tabs are shown. Otherwise returns
+// std::nullopt and the caller should proceed with the upstream logic.
+std::optional<std::vector<gfx::Rect>>
+MaybeCalculateBoundsForVerticalDraggedViews(
+    const std::vector<views::View*>& views,
+    TabStrip* tab_strip) {
+  auto* vertical_tab_controller =
+      VerticalTabController::From(tab_strip->GetBrowserWindowInterface());
+  if (!vertical_tab_controller ||
+      !vertical_tab_controller->ShouldShowBraveVerticalTabs()) {
+    return std::nullopt;
+  }
+  return CalculateBoundsForVerticalDraggedViews(views, tab_strip);
+}
 
-// Macros for TabDragContextImpl. TabDragContextImpl is in anonymous namespace
-// and it's used in the tab_strip.cc file at the same time. Because of this,
-// the class is really hard to be extended with inheritance, so using patch file
-// seems to be the most efficient way for now. If we could split this into
-// another file or child class, that'd be great.
-#define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX               \
-  if (auto* vertical_tab_controller = VerticalTabController::From(          \
-          tab_strip_->GetBrowserWindowInterface());                         \
-      vertical_tab_controller &&                                            \
-      vertical_tab_controller->ShouldShowBraveVerticalTabs()) {             \
-    tabs::UpdateInsertionIndexForVerticalTabs(                              \
-        dragged_bounds, first_dragged_tab_index, num_dragged_tabs,          \
-        GetTabAt(first_dragged_tab_index)->group().has_value(),             \
-        candidate_index, tab_strip_->controller_.get(),                     \
-        tab_strip_->tab_container_.get(), min_distance, min_distance_index, \
-        tab_strip_);                                                        \
-    continue;                                                               \
+// Returns true if vertical tabs are shown and the candidate was handled, in
+// which case the caller should skip the upstream logic for this candidate.
+bool MaybeUpdateInsertionIndexForVerticalTabs(
+    const gfx::Rect& dragged_bounds,
+    int first_dragged_tab_index,
+    int num_dragged_tabs,
+    bool dragged_group,
+    int candidate_index,
+    TabStripController* tab_strip_controller,
+    TabContainer* tab_container,
+    int& min_distance,
+    int& min_distance_index,
+    TabStrip* tab_strip) {
+  auto* vertical_tab_controller =
+      VerticalTabController::From(tab_strip->GetBrowserWindowInterface());
+  if (!vertical_tab_controller ||
+      !vertical_tab_controller->ShouldShowBraveVerticalTabs()) {
+    return false;
   }
 
-#define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS      \
-  if (auto* vertical_tab_controller = VerticalTabController::From(          \
-          tab_strip_->GetBrowserWindowInterface());                         \
-      vertical_tab_controller &&                                            \
-      vertical_tab_controller->ShouldShowBraveVerticalTabs()) {             \
-    return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_); \
-  }
+  UpdateInsertionIndexForVerticalTabs(
+      dragged_bounds, first_dragged_tab_index, num_dragged_tabs, dragged_group,
+      candidate_index, tab_strip_controller, tab_container, min_distance,
+      min_distance_index, tab_strip);
+  return true;
+}
+
+}  // namespace
+}  // namespace tabs
 
 #include <chrome/browser/ui/views/tabs/tab_strip.cc>
-
-#undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
-#undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX
-#undef TabHoverCardController
-#undef param
 
 bool TabStrip::ShouldAlwaysHideCloseButton() const {
   return false;

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/startup/startup_tab.h b/chrome/browser/ui/startup/startup_tab.h
-index 494d35877bec129310bef73cec9aebc722d135aa..1f9e285c37e25e880d72e6e30a59b9e7807da6d3 100644
+index 78978614b142f42f01f5c7e421ca5f73f31fe31c..4495cecf0e7f2cd0bf1a4a575d7f966b4d14cd71 100644
 --- a/chrome/browser/ui/startup/startup_tab.h
 +++ b/chrome/browser/ui/startup/startup_tab.h
 @@ -7,8 +7,13 @@

@@ -196,59 +196,59 @@ pub struct OverrideData {
     pub flow_label: u32,
 }
 
-pub type ProtocolGetModeData = eficall! {fn(
+pub type ProtocolGetModeData = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut ModeData,
     *mut crate::protocols::managed_network::ConfigData,
     *mut crate::protocols::simple_network::Mode,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolConfigure = eficall! {fn(
+pub type ProtocolConfigure = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut ConfigData,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolGroups = eficall! {fn(
+pub type ProtocolGroups = unsafe extern "efiapi" fn(
     *mut Protocol,
     crate::base::Boolean,
     *mut crate::base::Ipv6Address,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolRoutes = eficall! {fn(
+pub type ProtocolRoutes = unsafe extern "efiapi" fn(
     *mut Protocol,
     crate::base::Boolean,
     *mut crate::base::Ipv6Address,
     u8,
     *mut crate::base::Ipv6Address,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolNeighbors = eficall! {fn(
+pub type ProtocolNeighbors = unsafe extern "efiapi" fn(
     *mut Protocol,
     crate::base::Boolean,
     *mut crate::base::Ipv6Address,
     *mut crate::base::MacAddress,
     u32,
     crate::base::Boolean,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolTransmit = eficall! {fn(
+pub type ProtocolTransmit = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut CompletionToken,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolReceive = eficall! {fn(
+pub type ProtocolReceive = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut CompletionToken,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolCancel = eficall! {fn(
+pub type ProtocolCancel = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut CompletionToken,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolPoll = eficall! {fn(
+pub type ProtocolPoll = unsafe extern "efiapi" fn(
     *mut Protocol,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
 #[repr(C)]
 pub struct Protocol {

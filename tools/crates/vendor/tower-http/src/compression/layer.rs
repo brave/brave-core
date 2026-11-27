@@ -144,17 +144,28 @@ mod tests {
 
     #[tokio::test]
     async fn accept_encoding_configuration_works() -> Result<(), crate::BoxError> {
+        use std::io::Read;
+
+        fn decode<R: Read>(mut r: R) -> std::io::Result<Vec<u8>> {
+            let mut buf = Vec::new();
+            r.read_to_end(&mut buf)?;
+            Ok(buf)
+        }
+
+        // Read the source file once so we can verify each response round-trips to the same bytes.
+        let expected = tokio::fs::read("Cargo.toml").await?;
+
+        // Configure a layer that only offers deflate, then confirm the response is actually
+        // deflate-encoded by decoding it and comparing to the original content.
         let deflate_only_layer = CompressionLayer::new()
             .quality(CompressionLevel::Best)
             .no_br()
             .no_gzip();
 
         let mut service = ServiceBuilder::new()
-            // Compress responses based on the `Accept-Encoding` header.
             .layer(deflate_only_layer)
             .service_fn(handle);
 
-        // Call the service with the deflate only layer
         let request = Request::builder()
             .header(ACCEPT_ENCODING, "gzip, deflate, br")
             .body(Body::empty())?;
@@ -163,23 +174,23 @@ mod tests {
 
         assert_eq!(response.headers()["content-encoding"], "deflate");
 
-        // Read the body
-        let body = response.into_body();
-        let bytes = body.collect().await.unwrap().to_bytes();
+        let deflate_body = response.into_body().collect().await?.to_bytes();
 
-        let deflate_bytes_len = bytes.len();
+        // The "deflate" Content-Encoding is RFC 1950 zlib framing (2-byte header + Adler-32),
+        // not raw RFC 1951 deflate, so use ZlibDecoder rather than DeflateDecoder.
+        let decoded = decode(flate2::bufread::ZlibDecoder::new(&deflate_body[..]))?;
+        assert_eq!(decoded, expected);
 
+        // Same check for brotli.
         let br_only_layer = CompressionLayer::new()
             .quality(CompressionLevel::Best)
             .no_gzip()
             .no_deflate();
 
         let mut service = ServiceBuilder::new()
-            // Compress responses based on the `Accept-Encoding` header.
             .layer(br_only_layer)
             .service_fn(handle);
 
-        // Call the service with the br only layer
         let request = Request::builder()
             .header(ACCEPT_ENCODING, "gzip, deflate, br")
             .body(Body::empty())?;
@@ -188,15 +199,11 @@ mod tests {
 
         assert_eq!(response.headers()["content-encoding"], "br");
 
-        // Read the body
-        let body = response.into_body();
-        let bytes = body.collect().await.unwrap().to_bytes();
+        let br_body = response.into_body().collect().await?.to_bytes();
 
-        let br_byte_length = bytes.len();
-
-        // check the corresponding algorithms are actually used
-        // br should compresses better than deflate
-        assert!(br_byte_length < deflate_bytes_len * 9 / 10);
+        // 4096 is the decoder's internal read-buffer size, not a content-length bound.
+        let decoded = decode(brotli::Decompressor::new(&br_body[..], 4096))?;
+        assert_eq!(decoded, expected);
 
         Ok(())
     }

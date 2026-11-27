@@ -107,7 +107,7 @@ impl<'fd> FdSet<'fd> {
     /// assert_eq!(fds, vec![4, 9]);
     /// ```
     #[inline]
-    pub fn fds(&self, highest: Option<RawFd>) -> Fds {
+    pub fn fds(&self, highest: Option<RawFd>) -> Fds<'_, '_> {
         Fds {
             set: self,
             range: 0..highest.map(|h| h as usize + 1).unwrap_or(FD_SETSIZE),

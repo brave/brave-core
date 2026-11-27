@@ -40,12 +40,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "नया टैब";
 
-/* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "नया टैब खोलें";
-
-/* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenSelectedTabFromTabTrayKeyCodeTitle" = "चुना हुआ टैब खोलें";
-
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Brave.com पर पहले ही खरीद चुके हैं?";
 
@@ -101,7 +95,7 @@
 "shortcutsButton.shortcutButtonTitle" = "शॉर्टकट बटन";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"showBookmarksTitle" = "बुकमार्क दिखाएँ";
+"showBookmarksTitle" = "बुकमार्क्स दिखाएँ";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowNextTabTitle" = "नया टैब दिखाएँ";

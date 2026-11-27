@@ -4,7 +4,7 @@ name = "http"
 # - Update html_root_url in lib.rs.
 # - Update CHANGELOG.md.
 # - Create git tag
-version = "1.4.0"
+version = "1.5.0"
 readme = "README.md"
 documentation = "https://docs.rs/http"
 repository = "https://github.com/hyperium/http"
@@ -41,7 +41,7 @@ itoa = "1"
 
 [dev-dependencies]
 quickcheck = "1"
-rand = "0.8.0"
+rand = "0.10"
 serde = "1.0"
 serde_json = "1.0"
 doc-comment = "0.3"

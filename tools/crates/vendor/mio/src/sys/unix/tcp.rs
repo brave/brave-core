@@ -74,6 +74,7 @@ pub(crate) fn accept(listener: &net::TcpListener) -> io::Result<(net::TcpStream,
         target_os = "openbsd",
         target_os = "solaris",
         target_os = "cygwin",
+        target_os = "nuttx",
     ))]
     let stream = {
         syscall!(accept4(
@@ -88,8 +89,10 @@ pub(crate) fn accept(listener: &net::TcpListener) -> io::Result<(net::TcpStream,
     // But not all platforms have the `accept4(2)` call. Luckily BSD (derived)
     // OSs inherit the non-blocking flag from the listener, so we just have to
     // set `CLOEXEC`.
+    // Emscripten's `accept4(2)` ignores its flags argument.
     #[cfg(any(
         target_os = "aix",
+        target_os = "emscripten",
         target_os = "haiku",
         target_os = "ios",
         target_os = "macos",
@@ -101,6 +104,8 @@ pub(crate) fn accept(listener: &net::TcpListener) -> io::Result<(net::TcpStream,
         target_os = "vita",
         target_os = "hermit",
         target_os = "nto",
+        target_os = "wasi",
+        target_os = "horizon",
         all(target_arch = "x86", target_os = "android"),
     ))]
     let stream = {
@@ -111,17 +116,24 @@ pub(crate) fn accept(listener: &net::TcpListener) -> io::Result<(net::TcpStream,
         ))
         .map(|socket| unsafe { net::TcpStream::from_raw_fd(socket) })
         .and_then(|s| {
-            #[cfg(not(any(target_os = "espidf", target_os = "vita")))]
+            #[cfg(not(any(
+                target_os = "emscripten",
+                target_os = "espidf",
+                target_os = "vita",
+                target_os = "wasi"
+            )))]
             syscall!(fcntl(s.as_raw_fd(), libc::F_SETFD, libc::FD_CLOEXEC))?;
 
             // See https://github.com/tokio-rs/mio/issues/1450
             #[cfg(any(
                 all(target_arch = "x86", target_os = "android"),
                 target_os = "aix",
+                target_os = "emscripten",
                 target_os = "espidf",
                 target_os = "vita",
                 target_os = "hermit",
                 target_os = "nto",
+                target_os = "wasi",
             ))]
             syscall!(fcntl(s.as_raw_fd(), libc::F_SETFL, libc::O_NONBLOCK))?;
 

@@ -27,6 +27,7 @@ function createNewTabTakeoverBackground(
     imageUrl: '',
     logo: undefined,
     metricType: NewTabPageAdMetricType.kConfirmation,
+    shouldDisplayNewTabTakeoverDisclosure: true,
     shouldAutoDisplayNewTabTakeoverDisclosure: false,
     ...overrides,
   }
@@ -59,7 +60,7 @@ function renderCaption(overrides: Partial<BackgroundState> = {}) {
       notifyNewTabTakeoverLoadError() {},
       notifyNewTabTakeoverLogoClicked() {},
       notifyNewTabTakeoverRichMediaEvent() {},
-      notifyNewTabTakeoverDisclosureLearnMoreClicked() {},
+      suppressNewTabTakeoverDisclosureAutoDisplay() {},
       notifyNewTabTakeoverDisclosureAutoDisplayed() {},
     },
     ...overrides,

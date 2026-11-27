@@ -3,11 +3,10 @@ use crate::{
     core::util::{PartialBuffer, WriteBuffer},
     generic::write::AsyncBufWrite,
 };
-use futures_core::ready;
 use std::{
     io,
     pin::Pin,
-    task::{Context, Poll},
+    task::{ready, Context, Poll},
 };
 
 #[derive(Debug)]
@@ -49,7 +48,7 @@ impl Encoder {
                 }
 
                 State::Finishing | State::Done => {
-                    break Poll::Ready(Err(io::Error::other("Write after close")))
+                    break Poll::Ready(Err(io::Error::other("Write after close")));
                 }
             };
 
@@ -92,7 +91,7 @@ impl Encoder {
                 State::Encoding => encoder.flush(output)?,
 
                 State::Finishing | State::Done => {
-                    break Poll::Ready(Err(io::Error::other("Flush after close")))
+                    break Poll::Ready(Err(io::Error::other("Flush after close")));
                 }
             };
 
@@ -134,8 +133,8 @@ impl Encoder {
 macro_rules! impl_encoder {
     ($poll_close: tt) => {
         use crate::{codecs::EncodeV2, generic::write::Encoder as GenericEncoder};
-        use futures_core::ready;
         use pin_project_lite::pin_project;
+        use std::task::ready;
 
         pin_project! {
             #[derive(Debug)]

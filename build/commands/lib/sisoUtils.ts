@@ -5,7 +5,6 @@
 
 import * as Log from './log.ts'
 import config from './config.ts'
-import { isCI } from './ciDetect.ts'
 import fs from 'node:fs'
 import path from 'node:path'
 import util from './util.ts'
@@ -67,11 +66,8 @@ export function writeSisoRc() {
       fs.mkdirSync(sisoCacheDir, { recursive: true })
     }
 
-    if (!isCI) {
-      // Set reapi_priority to 4 for interactive builds according to EngFlow's
-      // recommended priority system:
-      // https://blog.engflow.com/2025/04/07/not-all-builds-are-made-equal-using-priorities-to-expedite-remote-execution-of-the-builds-and-tests-that-matter-most/#from-workflow-to-priorities
-      ninjaFlags.push(`-reapi_priority 4`)
+    if (config.reapiPriority !== undefined) {
+      ninjaFlags.push(`-reapi_priority ${config.reapiPriority}`)
     }
   }
 

@@ -98,6 +98,7 @@ source_set("unit_tests") {
   testonly = true
   sources = [
     "ai_chat_tab_helper_unittest.cc",
+    "ai_chat_throttle_unittest.cc",
     "ai_page_content_fetcher_unittest.cc",
     "associated_url_content_unittest.cc",
     "associated_web_contents_content_unittest.cc",
@@ -116,6 +117,7 @@ source_set("unit_tests") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/api_request_helper",
+    "//brave/components/constants",
     "//brave/components/screenshot/content",
     "//components/favicon/content",
     "//components/favicon/core/test:test_support",
@@ -126,9 +128,11 @@ source_set("unit_tests") {
     "//components/paint_preview/common/mojom",
     "//components/paint_preview/public",
     "//components/pdf/common:constants",
+    "//components/prefs:test_support",
     "//components/services/paint_preview_compositor/public/mojom",
     "//components/tabs:public",
     "//components/tabs:test_support",
+    "//components/user_prefs",
     "//content/public/browser",
     "//content/test:test_support",
     "//net:test_support",
@@ -142,6 +146,7 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",
     "//third_party/blink/public/common",
+    "//ui/base",
     "//ui/gfx:test_support",
     "//url",
   ]

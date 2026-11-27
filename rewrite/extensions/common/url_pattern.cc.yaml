@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Move `CanonicalizeHostForMatching()` out of the anonymous namespace.
+
+      It is the namespace's last helper, so the namespace closes before it
+      instead, and the helper becomes the `URLPattern` static member Brave's
+      Debounce and Request-OTR rules call. The body ends at the helper's own
+      closing brace, which the namespace's must follow: a helper added after
+      it fails the match rather than leaving the namespace too.
+    regex:
+      re_pattern:
+        '(\n// Removes trailing dot\(s\) from \|host_piece\| if
+        any\.\n)std::string_view CanonicalizeHostForMatching\(std::string_view
+        host_piece\) \{(\n(?:(?!\n\}\n).)*\n\}\n)\n\}  // namespace\n'
+      re_flags: [DOTALL]
+      replace: |-
+        \n}  // namespace
+        \1// static
+        std::string_view URLPattern::CanonicalizeHostForMatching(
+            std::string_view host_piece) {\2

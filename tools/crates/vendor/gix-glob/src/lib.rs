@@ -1,11 +1,33 @@
 //! Provide glob [`Patterns`][Pattern] for matching against paths or anything else.
+//!
+//! ## Examples
+//!
+//! ```
+//! use bstr::ByteSlice;
+//! use gix_glob::{pattern::Case, wildmatch, Pattern};
+//!
+//! let pattern = Pattern::from_bytes(b"src/**/*.rs").unwrap();
+//! assert!(pattern.matches_repo_relative_path(
+//!     b"src/lib.rs".as_bstr(),
+//!     Some(4),
+//!     Some(false),
+//!     Case::Sensitive,
+//!     wildmatch::Mode::NO_MATCH_SLASH_LITERAL,
+//! ));
+//!
+//! assert!(gix_glob::wildmatch(
+//!     b"*.rs".as_bstr(),
+//!     b"lib.rs".as_bstr(),
+//!     wildmatch::Mode::empty(),
+//! ));
+//! ```
 //! ## Feature Flags
 #![cfg_attr(
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
 #![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
-#![deny(missing_docs, rust_2018_idioms)]
+#![deny(missing_docs)]
 #![forbid(unsafe_code)]
 
 use bstr::BString;
@@ -20,7 +42,9 @@ pub struct Pattern {
     pub text: BString,
     /// Additional information to help accelerate pattern matching.
     pub mode: pattern::Mode,
-    /// The position in `text` with the first wildcard character, or `None` if there is no wildcard at all.
+    /// The byte position in `text` where raw literal-prefix matching must stop: the first
+    /// `*`, `?`, `[`, or `\`, or `None`.
+    /// `\` introduces an escape during wildcard matching; a final unmatched `\` makes matching fail.
     pub first_wildcard_pos: Option<usize>,
 }
 

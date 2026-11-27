@@ -114,9 +114,8 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
     hw_btc_account_ =
         GetAccountUtils().EnsureAccount(mojom::KeyringId::kBitcoinHardware, 0);
     ASSERT_TRUE(hw_btc_account_);
-    // Discovery of this account finds nothing, so it emits no observable
-    // signal to wait for.
-    task_environment_.RunUntilIdle();
+    // Wait for discovery of the new account to update its address indexes.
+    AccountsChangedWaiter(*keyring_service_).Wait();
     keyring_service_->UpdateNextUnusedAddressForBitcoinAccount(
         hw_btc_account_->account_id, next_receive_index, next_change_index);
   }

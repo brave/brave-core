@@ -11,13 +11,13 @@
 //!
 //! ```rust
 //! #[cfg(unix)] {
-//!     use shlex::bytes::quote;
+//!     use shlex::bytes::try_quote;
 //!     use std::ffi::OsStr;
 //!     use std::os::unix::ffi::OsStrExt;
 //!
 //!     // `\x80` is invalid in UTF-8.
 //!     let os_str = OsStr::from_bytes(b"a\x80b c");
-//!     assert_eq!(quote(os_str.as_bytes()), &b"'a\x80b c'"[..]);
+//!     assert_eq!(try_quote(os_str.as_bytes()).unwrap(), &b"'a\x80b c'"[..]);
 //! }
 //! ```
 //!
@@ -26,8 +26,6 @@
 extern crate alloc;
 use alloc::vec::Vec;
 use alloc::borrow::Cow;
-#[cfg(test)]
-use alloc::vec;
 #[cfg(test)]
 use alloc::borrow::ToOwned;
 #[cfg(all(doc, not(doctest)))]
@@ -70,13 +68,13 @@ impl<'a> Shlex<'a> {
                     return None;
                 },
                 '\\' => if let Some(ch2) = self.next_char() {
-                    if ch2 != '\n' as u8 { result.push(ch2); }
+                    if ch2 != b'\n' { result.push(ch2); }
                 } else {
                     self.had_error = true;
                     return None;
                 },
                 ' ' | '\t' | '\n' => { break; },
-                _ => { result.push(ch as u8); },
+                _ => { result.push(ch); },
             }
             if let Some(ch2) = self.next_char() { ch = ch2; } else { break; }
         }
@@ -95,7 +93,7 @@ impl<'a> Shlex<'a> {
                                 // \<newline> => nothing
                                 '\n' => {},
                                 // \x => =x
-                                _ => { result.push('\\' as u8); result.push(ch3); }
+                                _ => { result.push(b'\\'); result.push(ch3); }
                             }
                         } else {
                             return Err(());
@@ -130,7 +128,7 @@ impl<'a> Shlex<'a> {
     }
 }
 
-impl<'a> Iterator for Shlex<'a> {
+impl Iterator for Shlex<'_> {
     type Item = Vec<u8>;
     fn next(&mut self) -> Option<Self::Item> {
         if let Some(mut ch) = self.next_char() {
@@ -208,7 +206,7 @@ impl Quoter {
             // Empty string.  Special case that isn't meaningful as only part of a word.
             return Ok(b"''"[..].into());
         }
-        if !self.allow_nul && in_bytes.iter().any(|&b| b == b'\0') {
+        if !self.allow_nul && in_bytes.contains(&b'\0') {
             return Err(QuoteError::Nul);
         }
         let mut out: Vec<u8> = Vec::new();
@@ -427,7 +425,7 @@ fn append_quoted_chunk(out: &mut Vec<u8>, cur_chunk: &[u8], strategy: QuotingStr
         QuotingStrategy::DoubleQuoted => {
             out.reserve(cur_chunk.len() + 2);
             out.push(b'"');
-            for &c in cur_chunk.into_iter() {
+            for &c in cur_chunk.iter() {
                 if let b'$' | b'`' | b'"' | b'\\' = c {
                     // Add a preceding backslash.
                     // Note: We shouldn't actually get here for $ and ` because they don't pass
@@ -445,23 +443,7 @@ fn append_quoted_chunk(out: &mut Vec<u8>, cur_chunk: &[u8], strategy: QuotingStr
 /// Convenience function that consumes an iterable of words and turns it into a single byte string,
 /// quoting words when necessary. Consecutive words will be separated by a single space.
 ///
-/// Uses default settings except that nul bytes are passed through, which [may be
-/// dangerous](quoting_warning#nul-bytes), leading to this function being deprecated.
-///
-/// Equivalent to [`Quoter::new().allow_nul(true).join(words).unwrap()`](Quoter).
-///
-/// (That configuration never returns `Err`, so this function does not panic.)
-///
-/// The string equivalent is [shlex::join].
-#[deprecated(since = "1.3.0", note = "replace with `try_join(words)?` to avoid nul byte danger")]
-pub fn join<'a, I: IntoIterator<Item = &'a [u8]>>(words: I) -> Vec<u8> {
-    Quoter::new().allow_nul(true).join(words).unwrap()
-}
-
-/// Convenience function that consumes an iterable of words and turns it into a single byte string,
-/// quoting words when necessary. Consecutive words will be separated by a single space.
-///
-/// Uses default settings.  The only error that can be returned is [`QuoteError::Nul`].
+/// Uses default settings. The only error that can be returned is [`QuoteError::Nul`].
 ///
 /// Equivalent to [`Quoter::new().join(words)`](Quoter).
 ///
@@ -472,36 +454,17 @@ pub fn try_join<'a, I: IntoIterator<Item = &'a [u8]>>(words: I) -> Result<Vec<u8
 
 /// Given a single word, return a string suitable to encode it as a shell argument.
 ///
-/// Uses default settings except that nul bytes are passed through, which [may be
-/// dangerous](quoting_warning#nul-bytes), leading to this function being deprecated.
-///
-/// Equivalent to [`Quoter::new().allow_nul(true).quote(in_bytes).unwrap()`](Quoter).
-///
-/// (That configuration never returns `Err`, so this function does not panic.)
-///
-/// The string equivalent is [shlex::quote].
-#[deprecated(since = "1.3.0", note = "replace with `try_quote(str)?` to avoid nul byte danger")]
-pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {
-    Quoter::new().allow_nul(true).quote(in_bytes).unwrap()
-}
-
-/// Given a single word, return a string suitable to encode it as a shell argument.
-///
-/// Uses default settings.  The only error that can be returned is [`QuoteError::Nul`].
+/// Uses default settings. The only error that can be returned is [`QuoteError::Nul`].
 ///
 /// Equivalent to [`Quoter::new().quote(in_bytes)`](Quoter).
 ///
-/// (That configuration never returns `Err`, so this function does not panic.)
-///
 /// The string equivalent is [shlex::try_quote].
-pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {
+pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<'_, [u8]>, QuoteError> {
     Quoter::new().quote(in_bytes)
 }
 
 #[cfg(test)]
 const INVALID_UTF8: &[u8] = b"\xa1";
-#[cfg(test)]
-const INVALID_UTF8_SINGLEQUOTED: &[u8] = b"'\xa1'";
 
 #[test]
 #[allow(invalid_from_utf8)]
@@ -511,7 +474,7 @@ fn test_invalid_utf8() {
 }
 
 #[cfg(test)]
-static SPLIT_TEST_ITEMS: &'static [(&'static [u8], Option<&'static [&'static [u8]]>)] = &[
+static SPLIT_TEST_ITEMS: &[(&[u8], Option<&[&[u8]]>)] = &[
     (b"foo$baz", Some(&[b"foo$baz"])),
     (b"foo baz", Some(&[b"foo", b"baz"])),
     (b"foo\"bar\"baz", Some(&[b"foobarbaz"])),
@@ -550,27 +513,4 @@ fn test_lineno() {
             assert_eq!(sh.line_no, 3);
         }
     }
-}
-
-#[test]
-#[allow(deprecated)]
-fn test_quote() {
-    // Validate behavior with invalid UTF-8:
-    assert_eq!(quote(INVALID_UTF8), INVALID_UTF8_SINGLEQUOTED);
-    // Replicate a few tests from lib.rs.  No need to replicate all of them.
-    assert_eq!(quote(b""), &b"''"[..]);
-    assert_eq!(quote(b"foobar"), &b"foobar"[..]);
-    assert_eq!(quote(b"foo bar"), &b"'foo bar'"[..]);
-    assert_eq!(quote(b"'\""), &b"\"'\\\"\""[..]);
-    assert_eq!(quote(b""), &b"''"[..]);
-}
-
-#[test]
-#[allow(deprecated)]
-fn test_join() {
-    // Validate behavior with invalid UTF-8:
-    assert_eq!(join(vec![INVALID_UTF8]), INVALID_UTF8_SINGLEQUOTED);
-    // Replicate a few tests from lib.rs.  No need to replicate all of them.
-    assert_eq!(join(vec![]), &b""[..]);
-    assert_eq!(join(vec![&b""[..]]), b"''");
 }

@@ -10,8 +10,8 @@
 //! `UniformChar`, `UniformDuration` implementations
 
 use super::{Error, SampleBorrow, SampleUniform, Uniform, UniformInt, UniformSampler};
-use crate::distr::Distribution;
 use crate::Rng;
+use crate::distr::Distribution;
 use core::time::Duration;
 
 #[cfg(feature = "serde")]
@@ -33,7 +33,22 @@ impl SampleUniform for char {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct UniformChar {
+    #[cfg_attr(feature = "serde", serde(deserialize_with = "deser_sampler"))]
     sampler: UniformInt<u32>,
+}
+
+#[cfg(feature = "serde")]
+fn deser_sampler<'de, D>(d: D) -> Result<UniformInt<u32>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let sampler = <UniformInt<u32> as serde::Deserialize>::deserialize(d)?;
+    if sampler.max() > char::MAX as u32 - CHAR_SURROGATE_LEN {
+        return Err(serde::de::Error::custom(
+            "bad sampler range for UniformChar",
+        ));
+    }
+    Ok(sampler)
 }
 
 /// UTF-16 surrogate range start
@@ -53,7 +68,7 @@ impl UniformSampler for UniformChar {
     type X = char;
 
     #[inline] // if the range is constant, this helps LLVM to do the
-              // calculations at compile-time.
+    // calculations at compile-time.
     fn new<B1, B2>(low_b: B1, high_b: B2) -> Result<Self, Error>
     where
         B1: SampleBorrow<Self::X> + Sized,
@@ -66,7 +81,7 @@ impl UniformSampler for UniformChar {
     }
 
     #[inline] // if the range is constant, this helps LLVM to do the
-              // calculations at compile-time.
+    // calculations at compile-time.
     fn new_inclusive<B1, B2>(low_b: B1, high_b: B2) -> Result<Self, Error>
     where
         B1: SampleBorrow<Self::X> + Sized,
@@ -83,10 +98,9 @@ impl UniformSampler for UniformChar {
         if x >= CHAR_SURROGATE_START {
             x += CHAR_SURROGATE_LEN;
         }
-        // SAFETY: x must not be in surrogate range or greater than char::MAX.
-        // This relies on range constructors which accept char arguments.
-        // Validity of input char values is assumed.
-        unsafe { core::char::from_u32_unchecked(x) }
+
+        char::from_u32(x)
+            .expect("rand::distr::uniform::UniformChar: invalid Unicode scalar value (likely memory corruption)")
     }
 }
 
@@ -115,10 +129,64 @@ impl crate::distr::SampleString for Uniform<char> {
 /// Unless you are implementing [`UniformSampler`] for your own types, this type
 /// should not be used directly, use [`Uniform`] instead.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(Serialize))]
 pub struct UniformDuration {
     mode: UniformDurationMode,
     offset: u32,
+}
+
+/// `sample` feeds the sampler state straight to `Duration::new`, which panics
+/// on overflow, so reject any state which cannot have come from `new_inclusive`
+/// in the same way `UniformChar` rejects a bad `UniformInt<u32>`.
+#[cfg(feature = "serde")]
+impl<'de> Deserialize<'de> for UniformDuration {
+    fn deserialize<D>(d: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        /// Nanoseconds in one second
+        const NANOS_PER_SEC: u64 = 1_000_000_000;
+
+        #[derive(Deserialize)]
+        #[serde(rename = "UniformDuration")]
+        struct Fields {
+            mode: UniformDurationMode,
+            offset: u32,
+        }
+
+        let Fields { mode, offset } = Fields::deserialize(d)?;
+
+        let valid = offset < NANOS_PER_SEC as u32
+            && match mode {
+                UniformDurationMode::Small { secs, nanos } => {
+                    let carry = u64::from(nanos.0.max()) / NANOS_PER_SEC;
+                    secs.checked_add(carry).is_some()
+                }
+                UniformDurationMode::Medium { .. } => true,
+                UniformDurationMode::Large {
+                    max_secs,
+                    max_nanos,
+                    secs,
+                } => {
+                    let carry = (u64::from(max_nanos) + u64::from(offset)) / NANOS_PER_SEC;
+                    // `new_inclusive` samples `secs` over at least two values
+                    // (`low_s < high_s`), so `sample` rejects at most about
+                    // half of its draws. A single-value range with a small
+                    // `max_nanos` would make it loop for ~`NANOS_PER_SEC` iterations.
+                    secs.max() == max_secs
+                        && secs.range != 1
+                        && max_secs.checked_add(carry).is_some()
+                }
+            };
+
+        if !valid {
+            return Err(serde::de::Error::custom(
+                "bad sampler state for UniformDuration",
+            ));
+        }
+
+        Ok(UniformDuration { mode, offset })
+    }
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
@@ -134,7 +202,7 @@ enum UniformDurationMode {
     Large {
         max_secs: u64,
         max_nanos: u32,
-        secs: Uniform<u64>,
+        secs: UniformInt<u64>,
     },
 }
 
@@ -202,7 +270,7 @@ impl UniformSampler for UniformDuration {
                 UniformDurationMode::Large {
                     max_secs: high_s,
                     max_nanos,
-                    secs: Uniform::new_inclusive(low_s, high_s)?,
+                    secs: UniformInt::new_inclusive(low_s, high_s)?,
                 }
             }
         };
@@ -246,13 +314,14 @@ impl UniformSampler for UniformDuration {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::RngExt;
 
     #[test]
     #[cfg(feature = "serde")]
     fn test_serialization_uniform_duration() {
         let distr = UniformDuration::new(Duration::from_secs(10), Duration::from_secs(60)).unwrap();
         let de_distr: UniformDuration =
-            bincode::deserialize(&bincode::serialize(&distr).unwrap()).unwrap();
+            postcard::from_bytes(&postcard::to_allocvec(&distr).unwrap()).unwrap();
         assert_eq!(distr, de_distr);
     }
 
@@ -296,6 +365,87 @@ mod tests {
             .sample_string(&mut rng, 100);
             assert_eq!(string3.capacity(), 200);
         }
+    }
+
+    #[test]
+    #[cfg(feature = "serde")]
+    fn test_char_bad_deser() {
+        fn do_test(json: &str, col: usize) {
+            let result = serde_json::from_str::<Uniform<char>>(json);
+            assert!(result.is_err());
+            let err = result.unwrap_err();
+            assert_eq!(err.classify(), serde_json::error::Category::Data);
+
+            #[cfg(feature = "alloc")]
+            {
+                let msg =
+                    alloc::format!("bad sampler range for UniformChar at line 1 column {col}");
+                assert_eq!(alloc::string::ToString::to_string(&err), msg);
+            }
+        }
+
+        do_test(r#"{"sampler":{"low":5,"range":0,"thresh":0}}"#, 42);
+        do_test(r#"{"sampler":{"low":4294967200,"range":0,"thresh":0}}"#, 51);
+        do_test(
+            r#"{"sampler":{"low":4294967280,"range":32,"thresh":0}}"#,
+            52,
+        );
+    }
+
+    #[test]
+    #[cfg(feature = "serde")]
+    fn test_duration_bad_deser() {
+        fn do_test(json: &str) {
+            let result = serde_json::from_str::<UniformDuration>(json);
+            assert!(result.is_err());
+            let err = result.unwrap_err();
+            assert_eq!(err.classify(), serde_json::error::Category::Data);
+
+            #[cfg(feature = "alloc")]
+            {
+                let msg = "bad sampler state for UniformDuration";
+                assert!(alloc::string::ToString::to_string(&err).starts_with(msg));
+            }
+        }
+
+        // Small: sampled nanos carry a second into `secs`, overflowing it
+        do_test(
+            r#"{"mode":{"Small":{"secs":18446744073709551615,"nanos":{"low":1000000000,"range":1,"thresh":0}}},"offset":0}"#,
+        );
+        // Large: the seconds sampler can exceed `max_secs`, so the rejection
+        // test in `sample` never fires and `secs + 1` overflows
+        do_test(
+            r#"{"mode":{"Large":{"max_secs":0,"max_nanos":999999999,"secs":{"low":18446744073709551615,"range":0,"thresh":0}}},"offset":999999999}"#,
+        );
+        // Large: `offset` is not a valid subsecond nanosecond count
+        do_test(
+            r#"{"mode":{"Large":{"max_secs":10,"max_nanos":999999999,"secs":{"low":0,"range":11,"thresh":0}}},"offset":4294967295}"#,
+        );
+        // Large: the seconds sampler covers all of `u64`, not `..=max_secs`
+        do_test(
+            r#"{"mode":{"Large":{"max_secs":0,"max_nanos":0,"secs":{"low":0,"range":0,"thresh":0}}},"offset":0}"#,
+        );
+        // Large: the seconds sampler's maximum is not `max_secs`
+        do_test(
+            r#"{"mode":{"Large":{"max_secs":20,"max_nanos":0,"secs":{"low":0,"range":11,"thresh":0}}},"offset":0}"#,
+        );
+        // Large: a single-value seconds sampler would reject ~every sample
+        do_test(
+            r#"{"mode":{"Large":{"max_secs":10,"max_nanos":0,"secs":{"low":10,"range":1,"thresh":0}}},"offset":0}"#,
+        );
+    }
+
+    #[test]
+    #[cfg(feature = "serde")]
+    fn test_duration_large_narrow_range_roundtrip() {
+        // Valid `Large` sampler whose seconds range holds only two values
+        let low = Duration::new(u64::MAX - 1, 0);
+        let high = Duration::new(u64::MAX, 0);
+        let distr = UniformDuration::new_inclusive(low, high).unwrap();
+        assert!(matches!(distr.mode, UniformDurationMode::Large { .. }));
+        let json = serde_json::to_string(&distr).unwrap();
+        let de_distr: UniformDuration = serde_json::from_str(&json).unwrap();
+        assert_eq!(distr, de_distr);
     }
 
     #[test]

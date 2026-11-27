@@ -127,6 +127,21 @@ COLUMN_VALID_VALUES = {
     ],
     # campaigns.metric_type: only 'confirmation' is a valid value.
     ('campaigns', 'metric_type'): ['confirmation'],
+    # campaigns.type: parsed via ToMojomNewTabPageAdCampaignType.
+    ('campaigns', 'type'): [
+        'free',
+        'paid',
+        'barter',
+        'make_good',
+        'house',
+        'cause',
+        'fixed',
+        'trial',
+        'preemptive',
+        'affiliate',
+        'survey',
+        'product',
+    ],
 }
 
 # Column names that store UUIDs (parsed via base::Uuid::ParseLowercase in

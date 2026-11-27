@@ -35,34 +35,16 @@ namespace brave_wallet {
 
 using bip39::MnemonicToSeed;
 
-TEST(EthereumKeyringUnitTest, ConstructRootHDKey) {
-  std::vector<uint8_t> seed;
-  EXPECT_TRUE(base::HexStringToBytes(
-      "13ca6c28d26812f82db27908de0b0b7b18940cc4e9d96ebd7de190f706741489907ef65b"
-      "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
-      &seed));
-  EthereumKeyring keyring(seed, base::BindRepeating(IsAddressAllowed));
-  EXPECT_EQ(
-      keyring.accounts_root_.get()->GetPrivateExtendedKey(
-          ExtendedKeyVersion::kXprv),
-      "xprvA1YGbmYkUq9KMyPwADQehauc1vG7TSbNLc1dwYbvU7VzyAr7TPhj9VoJJoP2CV5kDmXX"
-      "SZvbJ79ieLnD7Pt4rhbuaQjVr2JE3vcDBAvDoUg");
-  EXPECT_EQ(
-      keyring.accounts_root_.get()->GetPublicExtendedKey(
-          ExtendedKeyVersion::kXpub),
-      "xpub6EXd1H5eKChcaTUQGEwf4irLZx6bruKDhpwEjw1Y2T2yqyBFzw1yhJ7nA5EeBKozqYKB"
-      "8jHxmhe7bEqyBEdPNWyPgCm2aZfs9tbLVYujvL3");
-}
-
 TEST(EthereumKeyringUnitTest, EncodePrivateKeyForExport) {
   std::vector<uint8_t> seed;
-  EXPECT_TRUE(base::HexStringToBytes(
+  ASSERT_TRUE(base::HexStringToBytes(
       "13ca6c28d26812f82db27908de0b0b7b18940cc4e9d96ebd7de190f706741489907ef65b"
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
   EthereumKeyring keyring(seed, base::BindRepeating(IsAddressAllowed));
   auto address = keyring.AddNewHDAccount(0);
   ASSERT_TRUE(address);
+  EXPECT_EQ(*address, "0x2166fB4e11D44100112B1124ac593081519cA1ec");
   EXPECT_EQ(keyring.EncodePrivateKeyForExport(*address),
             "8140cea58e3bebd6174dbc589a7f70e049556233d32e44969d62e51dd0d1189a");
 }
@@ -106,10 +88,12 @@ TEST(EthereumKeyringUnitTest, Accounts) {
 TEST(EthereumKeyringUnitTest, SignTransaction) {
   // Specific signature check is in eth_transaction_unittest.cc
   EthereumKeyring keyring({}, base::BindRepeating(IsAddressAllowed));
-  EthTransaction tx = *EthTransaction::FromTxData(
+  auto maybe_tx = EthTransaction::FromTxData(
       mojom::TxData::New("0x1", "0x09", "0x4a817c800", "0x5208",
                          "0x3535353535353535353535353535353535353535",
                          "0x0de0b6b3a7640000", std::vector<uint8_t>()));
+  ASSERT_TRUE(maybe_tx);
+  EthTransaction tx = *maybe_tx;
   keyring.SignTransaction("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF", &tx);
   EXPECT_FALSE(tx.IsSigned());
 
@@ -139,8 +123,9 @@ TEST(EthereumKeyringUnitTest, SignMessage) {
       "6969696969696969696969696969696969696969696969696969696969696969",
       private_key));
 
-  EthereumKeyring keyring(*MnemonicToSeed(kMnemonic),
-                          base::BindRepeating(IsAddressAllowed));
+  auto seed = MnemonicToSeed(kMnemonic);
+  ASSERT_TRUE(seed);
+  EthereumKeyring keyring(*seed, base::BindRepeating(IsAddressAllowed));
   auto imported_address = keyring.ImportAccount(private_key);
   ASSERT_TRUE(imported_address);
   const std::string address = *imported_address;
@@ -242,10 +227,12 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
                                    message, 0, false));
 
   // Sign Transaction
-  EthTransaction tx = *EthTransaction::FromTxData(
+  auto maybe_tx = EthTransaction::FromTxData(
       mojom::TxData::New("0x1", "0x09", "0x4a817c800", "0x5208",
                          "0x3535353535353535353535353535353535353535",
                          "0x0de0b6b3a7640000", std::vector<uint8_t>()));
+  ASSERT_TRUE(maybe_tx);
+  EthTransaction tx = *maybe_tx;
   keyring.SignTransaction("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", &tx);
   EXPECT_FALSE(tx.IsSigned());
 
@@ -306,9 +293,10 @@ TEST(EthereumKeyringUnitTest, ImportAccount_RestrictedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);
 
+  auto seed = MnemonicToSeed(kMnemonic);
+  ASSERT_TRUE(seed);
   EthereumKeyring keyring(
-      *MnemonicToSeed(kMnemonic),
-      base::BindLambdaForTesting([=](const std::string& address) {
+      *seed, base::BindLambdaForTesting([=](const std::string& address) {
         return !registry->IsRestrictedAddress(address);
       }));
 

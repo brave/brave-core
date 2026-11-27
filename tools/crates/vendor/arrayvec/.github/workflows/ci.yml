@@ -20,6 +20,8 @@ jobs:
           - rust: 1.51.0 # MSRV
             features: serde
             experimental: false
+            # doctest of `ArrayVec::spare_capacity_mut` has MSRV 1.55
+            test-args: --skip spare_capacity_mut
           - rust: 1.70.0
             features: serde
             experimental: false
@@ -51,8 +53,8 @@ jobs:
       - name: Tests
         run: |
           cargo doc --verbose --features "${{ matrix.features }}" --no-deps
-          cargo test --verbose --features "${{ matrix.features }}"
-          cargo test --release --verbose --features "${{ matrix.features }}"
+          cargo test --verbose --features "${{ matrix.features }}" -- ${{ matrix.test-args }}
+          cargo test --release --verbose --features "${{ matrix.features }}" -- ${{ matrix.test-args }}
       - name: Test run benchmarks
         if: matrix.bench != ''
         run: cargo test -v --benches

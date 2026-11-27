@@ -1,534 +1,308 @@
-// Copyright 2018 Developers of the Rand project.
-//
-// Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
-// https://www.apache.org/licenses/LICENSE-2.0> or the MIT license
-// <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your
-// option. This file may not be copied, modified, or distributed
-// except according to those terms.
-
-//! The `BlockRngCore` trait and implementation helpers
+//! The [`Generator`] trait and [`BlockRng`]
 //!
-//! The [`BlockRngCore`] trait exists to assist in the implementation of RNGs
-//! which generate a block of data in a cache instead of returning generated
-//! values directly.
+//! Trait [`Generator`] may be implemented by block-generators; that is PRNGs
+//! whose output is a *block* of words, such as `[u32; 16]`.
 //!
-//! Usage of this trait is optional, but provides two advantages:
-//! implementations only need to concern themselves with generation of the
-//! block, not the various [`RngCore`] methods (especially [`fill_bytes`], where
-//! the optimal implementations are not trivial), and this allows
-//! `ReseedingRng` (see [`rand`](https://docs.rs/rand) crate) perform periodic
-//! reseeding with very low overhead.
+//! The struct [`BlockRng`] wraps such a [`Generator`] together with an output
+//! buffer and implements several methods (e.g. [`BlockRng::next_word`]) to
+//! assist in the implementation of [`TryRng`]. Note that (unlike in earlier
+//! versions of `rand_core`) [`BlockRng`] itself does not implement [`TryRng`]
+//! since in practice we found it was always beneficial to use a wrapper type
+//! over [`BlockRng`].
 //!
 //! # Example
 //!
-//! ```no_run
-//! use rand_core::{RngCore, SeedableRng};
-//! use rand_core::block::{BlockRngCore, BlockRng};
+//! ```
+//! use core::convert::Infallible;
+//! use rand_core::{Rng, SeedableRng, TryRng};
+//! use rand_core::block::{Generator, BlockRng};
 //!
-//! struct MyRngCore;
+//! struct MyRngCore {
+//!     // Generator state ...
+//! #    state: [u32; 8],
+//! }
 //!
-//! impl BlockRngCore for MyRngCore {
-//!     type Item = u32;
-//!     type Results = [u32; 16];
+//! impl Generator for MyRngCore {
+//!     type Output = [u32; 8];
 //!
-//!     fn generate(&mut self, results: &mut Self::Results) {
-//!         unimplemented!()
+//!     fn generate(&mut self, output: &mut Self::Output) {
+//!         // Write a new block to output...
+//! #        *output = self.state;
 //!     }
 //! }
 //!
-//! impl SeedableRng for MyRngCore {
+//! // Our RNG is a wrapper over BlockRng
+//! pub struct MyRng(BlockRng<MyRngCore>);
+//!
+//! impl SeedableRng for MyRng {
 //!     type Seed = [u8; 32];
 //!     fn from_seed(seed: Self::Seed) -> Self {
-//!         unimplemented!()
+//!         let core = MyRngCore {
+//!             // ...
+//! #            state: rand_core::utils::read_words(&seed),
+//!         };
+//!         MyRng(BlockRng::new(core))
 //!     }
 //! }
 //!
-//! // optionally, also implement CryptoBlockRng for MyRngCore
+//! impl TryRng for MyRng {
+//!     type Error = Infallible;
 //!
-//! // Final RNG.
-//! let mut rng = BlockRng::<MyRngCore>::seed_from_u64(0);
+//!     #[inline]
+//!     fn try_next_u32(&mut self) -> Result<u32, Infallible> {
+//!         Ok(self.0.next_word())
+//!     }
+//!
+//!     #[inline]
+//!     fn try_next_u64(&mut self) -> Result<u64, Infallible> {
+//!         Ok(self.0.next_u64_from_u32())
+//!     }
+//!
+//!     #[inline]
+//!     fn try_fill_bytes(&mut self, bytes: &mut [u8]) -> Result<(), Infallible> {
+//!         Ok(self.0.fill_bytes(bytes))
+//!     }
+//! }
+//!
+//! // And if applicable: impl TryCryptoRng for MyRng {}
+//!
+//! let mut rng = MyRng::seed_from_u64(0);
 //! println!("First value: {}", rng.next_u32());
+//! # assert_eq!(rng.next_u32(), 1171109249);
 //! ```
 //!
-//! [`BlockRngCore`]: crate::block::BlockRngCore
-//! [`fill_bytes`]: RngCore::fill_bytes
+//! [`TryRng`]: crate::TryRng
+//! [`SeedableRng`]: crate::SeedableRng
 
-use crate::impls::fill_via_chunks;
-use crate::{CryptoRng, RngCore, SeedableRng, TryRngCore};
+use crate::utils::Word;
 use core::fmt;
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
 
-/// A trait for RNGs which do not generate random numbers individually, but in
-/// blocks (typically `[u32; N]`). This technique is commonly used by
-/// cryptographic RNGs to improve performance.
-///
-/// See the [module][crate::block] documentation for details.
-pub trait BlockRngCore {
-    /// Results element type, e.g. `u32`.
-    type Item;
+/// A random (block) generator
+pub trait Generator {
+    /// The output type.
+    ///
+    /// For use with [`rand_core::block`](crate::block) code this must be `[u32; _]` or `[u64; _]`.
+    type Output;
 
-    /// Results type. This is the 'block' an RNG implementing `BlockRngCore`
-    /// generates, which will usually be an array like `[u32; 16]`.
-    type Results: AsRef<[Self::Item]> + AsMut<[Self::Item]> + Default;
+    /// Generate a new block of `output`.
+    ///
+    /// This must fill `output` with random data.
+    fn generate(&mut self, output: &mut Self::Output);
 
-    /// Generate a new block of results.
-    fn generate(&mut self, results: &mut Self::Results);
+    /// Destruct the output buffer
+    ///
+    /// This method is called on [`Drop`] of the [`Self::Output`] buffer.
+    /// The default implementation does nothing.
+    #[inline]
+    fn drop(&mut self, output: &mut Self::Output) {
+        let _ = output;
+    }
 }
 
-/// A marker trait used to indicate that an [`RngCore`] implementation is
-/// supposed to be cryptographically secure.
+/// RNG functionality for a block [`Generator`]
 ///
-/// See [`CryptoRng`] docs for more information.
-pub trait CryptoBlockRng: BlockRngCore {}
-
-/// A wrapper type implementing [`RngCore`] for some type implementing
-/// [`BlockRngCore`] with `u32` array buffer; i.e. this can be used to implement
-/// a full RNG from just a `generate` function.
+/// This type encompasses a [`Generator`] [`core`](Self::core) and a buffer.
+/// It provides optimized implementations of methods required by an [`Rng`].
 ///
-/// The `core` field may be accessed directly but the results buffer may not.
-/// PRNG implementations can simply use a type alias
-/// (`pub type MyRng = BlockRng<MyRngCore>;`) but might prefer to use a
-/// wrapper type (`pub struct MyRng(BlockRng<MyRngCore>);`); the latter must
-/// re-implement `RngCore` but hides the implementation details and allows
-/// extra functionality to be defined on the RNG
-/// (e.g. `impl MyRng { fn set_stream(...){...} }`).
+/// All values are consumed in-order of generation. No whole words (e.g. `u32`
+/// or `u64`) are discarded, though where a word is partially used (e.g. for a
+/// byte-fill whose length is not a multiple of the word size) the rest of the
+/// word is discarded.
 ///
-/// `BlockRng` has heavily optimized implementations of the [`RngCore`] methods
-/// reading values from the results buffer, as well as
-/// calling [`BlockRngCore::generate`] directly on the output array when
-/// [`fill_bytes`] is called on a large array. These methods also handle
-/// the bookkeeping of when to generate a new batch of values.
-///
-/// No whole generated `u32` values are thrown away and all values are consumed
-/// in-order. [`next_u32`] simply takes the next available `u32` value.
-/// [`next_u64`] is implemented by combining two `u32` values, least
-/// significant first. [`fill_bytes`] consume a whole number of `u32` values,
-/// converting each `u32` to a byte slice in little-endian order. If the requested byte
-/// length is not a multiple of 4, some bytes will be discarded.
-///
-/// See also [`BlockRng64`] which uses `u64` array buffers. Currently there is
-/// no direct support for other buffer types.
-///
-/// For easy initialization `BlockRng` also implements [`SeedableRng`].
-///
-/// [`next_u32`]: RngCore::next_u32
-/// [`next_u64`]: RngCore::next_u64
-/// [`fill_bytes`]: RngCore::fill_bytes
+/// [`Rng`]: crate::Rng
 #[derive(Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[cfg_attr(
-    feature = "serde",
-    serde(
-        bound = "for<'x> R: Serialize + Deserialize<'x>, for<'x> R::Results: Serialize + Deserialize<'x>"
-    )
-)]
-pub struct BlockRng<R: BlockRngCore> {
-    results: R::Results,
-    index: usize,
+pub struct BlockRng<G: Generator> {
+    results: G::Output,
     /// The *core* part of the RNG, implementing the `generate` function.
-    pub core: R,
+    pub core: G,
 }
 
 // Custom Debug implementation that does not expose the contents of `results`.
-impl<R: BlockRngCore + fmt::Debug> fmt::Debug for BlockRng<R> {
+impl<G> fmt::Debug for BlockRng<G>
+where
+    G: Generator + fmt::Debug,
+{
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         fmt.debug_struct("BlockRng")
             .field("core", &self.core)
-            .field("result_len", &self.results.as_ref().len())
-            .field("index", &self.index)
-            .finish()
+            .finish_non_exhaustive()
     }
 }
 
-impl<R: BlockRngCore> BlockRng<R> {
+impl<G: Generator> Drop for BlockRng<G> {
+    fn drop(&mut self) {
+        self.core.drop(&mut self.results);
+    }
+}
+
+impl<W: Word + Default, const N: usize, G: Generator<Output = [W; N]>> BlockRng<G> {
     /// Create a new `BlockRng` from an existing RNG implementing
-    /// `BlockRngCore`. Results will be generated on first use.
+    /// `Generator`. Results will be generated on first use.
     #[inline]
-    pub fn new(core: R) -> BlockRng<R> {
-        let results_empty = R::Results::default();
-        BlockRng {
-            core,
-            index: results_empty.as_ref().len(),
-            results: results_empty,
-        }
+    pub fn new(core: G) -> BlockRng<G> {
+        let mut results = [W::default(); N];
+        results[0] = W::from_usize(N);
+        BlockRng { core, results }
     }
 
-    /// Get the index into the result buffer.
+    /// Reconstruct from a core and a remaining-results buffer.
     ///
-    /// If this is equal to or larger than the size of the result buffer then
-    /// the buffer is "empty" and `generate()` must be called to produce new
-    /// results.
-    #[inline(always)]
-    pub fn index(&self) -> usize {
-        self.index
-    }
-
-    /// Reset the number of available results.
-    /// This will force a new set of results to be generated on next use.
-    #[inline]
-    pub fn reset(&mut self) {
-        self.index = self.results.as_ref().len();
-    }
-
-    /// Generate a new set of results immediately, setting the index to the
-    /// given value.
-    #[inline]
-    pub fn generate_and_set(&mut self, index: usize) {
-        assert!(index < self.results.as_ref().len());
-        self.core.generate(&mut self.results);
-        self.index = index;
-    }
-}
-
-impl<R: BlockRngCore<Item = u32>> RngCore for BlockRng<R> {
-    #[inline]
-    fn next_u32(&mut self) -> u32 {
-        if self.index >= self.results.as_ref().len() {
-            self.generate_and_set(0);
-        }
-
-        let value = self.results.as_ref()[self.index];
-        self.index += 1;
-        value
-    }
-
-    #[inline]
-    fn next_u64(&mut self) -> u64 {
-        let read_u64 = |results: &[u32], index| {
-            let data = &results[index..=index + 1];
-            (u64::from(data[1]) << 32) | u64::from(data[0])
-        };
-
-        let len = self.results.as_ref().len();
-
-        let index = self.index;
-        if index < len - 1 {
-            self.index += 2;
-            // Read an u64 from the current index
-            read_u64(self.results.as_ref(), index)
-        } else if index >= len {
-            self.generate_and_set(2);
-            read_u64(self.results.as_ref(), 0)
+    /// This may be used to deserialize using a `core` and the output of
+    /// [`Self::remaining_results`].
+    ///
+    /// Returns `None` if `remaining_results` is too long.
+    pub fn reconstruct(core: G, remaining_results: &[W]) -> Option<Self> {
+        let mut results = [W::default(); N];
+        if remaining_results.len() < N {
+            let index = N - remaining_results.len();
+            results[index..].copy_from_slice(remaining_results);
+            results[0] = W::from_usize(index);
+            Some(BlockRng { results, core })
         } else {
-            let x = u64::from(self.results.as_ref()[len - 1]);
-            self.generate_and_set(1);
-            let y = u64::from(self.results.as_ref()[0]);
-            (y << 32) | x
-        }
-    }
-
-    #[inline]
-    fn fill_bytes(&mut self, dest: &mut [u8]) {
-        let mut read_len = 0;
-        while read_len < dest.len() {
-            if self.index >= self.results.as_ref().len() {
-                self.generate_and_set(0);
-            }
-            let (consumed_u32, filled_u8) =
-                fill_via_chunks(&self.results.as_mut()[self.index..], &mut dest[read_len..]);
-
-            self.index += consumed_u32;
-            read_len += filled_u8;
+            None
         }
     }
 }
 
-impl<R: BlockRngCore + SeedableRng> SeedableRng for BlockRng<R> {
-    type Seed = R::Seed;
-
-    #[inline(always)]
-    fn from_seed(seed: Self::Seed) -> Self {
-        Self::new(R::from_seed(seed))
-    }
-
-    #[inline(always)]
-    fn seed_from_u64(seed: u64) -> Self {
-        Self::new(R::seed_from_u64(seed))
-    }
-
-    #[inline(always)]
-    fn from_rng(rng: &mut impl RngCore) -> Self {
-        Self::new(R::from_rng(rng))
-    }
-
-    #[inline(always)]
-    fn try_from_rng<S: TryRngCore>(rng: &mut S) -> Result<Self, S::Error> {
-        R::try_from_rng(rng).map(Self::new)
-    }
-}
-
-impl<R: CryptoBlockRng + BlockRngCore<Item = u32>> CryptoRng for BlockRng<R> {}
-
-/// A wrapper type implementing [`RngCore`] for some type implementing
-/// [`BlockRngCore`] with `u64` array buffer; i.e. this can be used to implement
-/// a full RNG from just a `generate` function.
-///
-/// This is similar to [`BlockRng`], but specialized for algorithms that operate
-/// on `u64` values.
-///
-/// No whole generated `u64` values are thrown away and all values are consumed
-/// in-order. [`next_u64`] simply takes the next available `u64` value.
-/// [`next_u32`] is however a bit special: half of a `u64` is consumed, leaving
-/// the other half in the buffer. If the next function called is [`next_u32`]
-/// then the other half is then consumed, however both [`next_u64`] and
-/// [`fill_bytes`] discard the rest of any half-consumed `u64`s when called.
-///
-/// [`fill_bytes`] consumes a whole number of `u64` values. If the requested length
-/// is not a multiple of 8, some bytes will be discarded.
-///
-/// [`next_u32`]: RngCore::next_u32
-/// [`next_u64`]: RngCore::next_u64
-/// [`fill_bytes`]: RngCore::fill_bytes
-#[derive(Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-pub struct BlockRng64<R: BlockRngCore + ?Sized> {
-    results: R::Results,
-    index: usize,
-    half_used: bool, // true if only half of the previous result is used
-    /// The *core* part of the RNG, implementing the `generate` function.
-    pub core: R,
-}
-
-// Custom Debug implementation that does not expose the contents of `results`.
-impl<R: BlockRngCore + fmt::Debug> fmt::Debug for BlockRng64<R> {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        fmt.debug_struct("BlockRng64")
-            .field("core", &self.core)
-            .field("result_len", &self.results.as_ref().len())
-            .field("index", &self.index)
-            .field("half_used", &self.half_used)
-            .finish()
-    }
-}
-
-impl<R: BlockRngCore> BlockRng64<R> {
-    /// Create a new `BlockRng` from an existing RNG implementing
-    /// `BlockRngCore`. Results will be generated on first use.
-    #[inline]
-    pub fn new(core: R) -> BlockRng64<R> {
-        let results_empty = R::Results::default();
-        BlockRng64 {
-            core,
-            index: results_empty.as_ref().len(),
-            half_used: false,
-            results: results_empty,
-        }
-    }
-
+impl<W: Word, const N: usize, G: Generator<Output = [W; N]>> BlockRng<G> {
     /// Get the index into the result buffer.
     ///
     /// If this is equal to or larger than the size of the result buffer then
     /// the buffer is "empty" and `generate()` must be called to produce new
     /// results.
     #[inline(always)]
-    pub fn index(&self) -> usize {
-        self.index
+    fn index(&self) -> usize {
+        self.results[0].into_usize()
     }
 
-    /// Reset the number of available results.
-    /// This will force a new set of results to be generated on next use.
-    #[inline]
-    pub fn reset(&mut self) {
-        self.index = self.results.as_ref().len();
-        self.half_used = false;
+    #[inline(always)]
+    fn set_index(&mut self, index: usize) {
+        debug_assert!(0 < index && index <= N);
+        self.results[0] = W::from_usize(index);
     }
 
-    /// Generate a new set of results immediately, setting the index to the
-    /// given value.
+    /// Re-generate buffer contents, skipping the first `n` words
+    ///
+    /// Existing buffer contents are discarded. A new set of results is
+    /// generated (either immediately or when next required). The first `n`
+    /// words are skipped (this may be used to set a specific word position).
+    ///
+    /// # Panics
+    ///
+    /// This method will panic if `n >= N` where `N` is the buffer size (in
+    /// words).
     #[inline]
-    pub fn generate_and_set(&mut self, index: usize) {
-        assert!(index < self.results.as_ref().len());
+    pub fn reset_and_skip(&mut self, n: usize) {
+        if n == 0 {
+            self.set_index(N);
+            return;
+        }
+
+        assert!(n < N);
         self.core.generate(&mut self.results);
-        self.index = index;
-        self.half_used = false;
+        self.set_index(n);
     }
-}
 
-impl<R: BlockRngCore<Item = u64>> RngCore for BlockRng64<R> {
+    /// Get the number of words consumed since the start of the block
+    ///
+    /// The result is in the range `0..N` where `N` is the buffer size (in
+    /// words).
     #[inline]
-    fn next_u32(&mut self) -> u32 {
-        let mut index = self.index - self.half_used as usize;
-        if index >= self.results.as_ref().len() {
+    pub fn word_offset(&self) -> usize {
+        let index = self.index();
+        if index >= N { 0 } else { index }
+    }
+
+    /// Access the unused part of the results buffer
+    ///
+    /// The length of the returned slice is guaranteed to be less than the
+    /// length of `<Self as Generator>::Output` (i.e. less than `N` where
+    /// `Output = [W; N]`).
+    ///
+    /// This is a low-level interface intended for serialization.
+    /// Results are not marked as consumed.
+    #[inline]
+    pub fn remaining_results(&self) -> &[W] {
+        let index = self.index();
+        &self.results[index..]
+    }
+
+    /// Generate the next word (e.g. `u32`)
+    #[inline]
+    pub fn next_word(&mut self) -> W {
+        let mut index = self.index();
+        if index >= N {
             self.core.generate(&mut self.results);
-            self.index = 0;
             index = 0;
-            // `self.half_used` is by definition `false`
-            self.half_used = false;
         }
 
-        let shift = 32 * (self.half_used as usize);
-
-        self.half_used = !self.half_used;
-        self.index += self.half_used as usize;
-
-        (self.results.as_ref()[index] >> shift) as u32
-    }
-
-    #[inline]
-    fn next_u64(&mut self) -> u64 {
-        if self.index >= self.results.as_ref().len() {
-            self.core.generate(&mut self.results);
-            self.index = 0;
-        }
-
-        let value = self.results.as_ref()[self.index];
-        self.index += 1;
-        self.half_used = false;
+        let value = self.results[index];
+        self.set_index(index + 1);
         value
     }
+}
 
+impl<const N: usize, G: Generator<Output = [u32; N]>> BlockRng<G> {
+    /// Generate a `u64` from two `u32` words
     #[inline]
-    fn fill_bytes(&mut self, dest: &mut [u8]) {
+    pub fn next_u64_from_u32(&mut self) -> u64 {
+        let index = self.index();
+        let mut new_index;
+        let (mut lo, mut hi);
+        if index < N - 1 {
+            lo = self.results[index];
+            hi = self.results[index + 1];
+            new_index = index + 2;
+        } else {
+            lo = self.results[N - 1];
+            self.core.generate(&mut self.results);
+            hi = self.results[0];
+            new_index = 1;
+            if index >= N {
+                lo = hi;
+                hi = self.results[1];
+                new_index = 2;
+            }
+        }
+        self.set_index(new_index);
+        (u64::from(hi) << 32) | u64::from(lo)
+    }
+}
+
+impl<W: Word, const N: usize, G: Generator<Output = [W; N]>> BlockRng<G> {
+    /// Fill `dest`
+    #[inline]
+    pub fn fill_bytes(&mut self, dest: &mut [u8]) {
         let mut read_len = 0;
-        self.half_used = false;
+        let mut index = self.index();
         while read_len < dest.len() {
-            if self.index >= self.results.as_ref().len() {
+            if index >= N {
                 self.core.generate(&mut self.results);
-                self.index = 0;
+                index = 0;
             }
 
-            let (consumed_u64, filled_u8) =
-                fill_via_chunks(&self.results.as_mut()[self.index..], &mut dest[read_len..]);
+            let size = core::mem::size_of::<W>();
+            let mut chunks = dest[read_len..].chunks_exact_mut(size);
+            let mut src = self.results[index..].iter();
 
-            self.index += consumed_u64;
-            read_len += filled_u8;
-        }
-    }
-}
+            let zipped = chunks.by_ref().zip(src.by_ref());
+            let num_chunks = zipped.len();
+            zipped.for_each(|(chunk, src)| chunk.copy_from_slice(src.to_le_bytes().as_ref()));
+            index += num_chunks;
+            read_len += num_chunks * size;
 
-impl<R: BlockRngCore + SeedableRng> SeedableRng for BlockRng64<R> {
-    type Seed = R::Seed;
-
-    #[inline(always)]
-    fn from_seed(seed: Self::Seed) -> Self {
-        Self::new(R::from_seed(seed))
-    }
-
-    #[inline(always)]
-    fn seed_from_u64(seed: u64) -> Self {
-        Self::new(R::seed_from_u64(seed))
-    }
-
-    #[inline(always)]
-    fn from_rng(rng: &mut impl RngCore) -> Self {
-        Self::new(R::from_rng(rng))
-    }
-
-    #[inline(always)]
-    fn try_from_rng<S: TryRngCore>(rng: &mut S) -> Result<Self, S::Error> {
-        R::try_from_rng(rng).map(Self::new)
-    }
-}
-
-impl<R: CryptoBlockRng + BlockRngCore<Item = u64>> CryptoRng for BlockRng64<R> {}
-
-#[cfg(test)]
-mod test {
-    use crate::block::{BlockRng, BlockRng64, BlockRngCore};
-    use crate::{RngCore, SeedableRng};
-
-    #[derive(Debug, Clone)]
-    struct DummyRng {
-        counter: u32,
-    }
-
-    impl BlockRngCore for DummyRng {
-        type Item = u32;
-        type Results = [u32; 16];
-
-        fn generate(&mut self, results: &mut Self::Results) {
-            for r in results {
-                *r = self.counter;
-                self.counter = self.counter.wrapping_add(3511615421);
+            if let Some(src) = src.next() {
+                // We have consumed all full chunks of dest, but not src.
+                let dest_rem = chunks.into_remainder();
+                let n = dest_rem.len();
+                if n > 0 {
+                    dest_rem.copy_from_slice(&src.to_le_bytes().as_ref()[..n]);
+                    index += 1;
+                    debug_assert_eq!(read_len + n, dest.len());
+                }
+                break;
             }
         }
-    }
-
-    impl SeedableRng for DummyRng {
-        type Seed = [u8; 4];
-
-        fn from_seed(seed: Self::Seed) -> Self {
-            DummyRng {
-                counter: u32::from_le_bytes(seed),
-            }
-        }
-    }
-
-    #[test]
-    fn blockrng_next_u32_vs_next_u64() {
-        let mut rng1 = BlockRng::<DummyRng>::from_seed([1, 2, 3, 4]);
-        let mut rng2 = rng1.clone();
-        let mut rng3 = rng1.clone();
-
-        let mut a = [0; 16];
-        a[..4].copy_from_slice(&rng1.next_u32().to_le_bytes());
-        a[4..12].copy_from_slice(&rng1.next_u64().to_le_bytes());
-        a[12..].copy_from_slice(&rng1.next_u32().to_le_bytes());
-
-        let mut b = [0; 16];
-        b[..4].copy_from_slice(&rng2.next_u32().to_le_bytes());
-        b[4..8].copy_from_slice(&rng2.next_u32().to_le_bytes());
-        b[8..].copy_from_slice(&rng2.next_u64().to_le_bytes());
-        assert_eq!(a, b);
-
-        let mut c = [0; 16];
-        c[..8].copy_from_slice(&rng3.next_u64().to_le_bytes());
-        c[8..12].copy_from_slice(&rng3.next_u32().to_le_bytes());
-        c[12..].copy_from_slice(&rng3.next_u32().to_le_bytes());
-        assert_eq!(a, c);
-    }
-
-    #[derive(Debug, Clone)]
-    struct DummyRng64 {
-        counter: u64,
-    }
-
-    impl BlockRngCore for DummyRng64 {
-        type Item = u64;
-        type Results = [u64; 8];
-
-        fn generate(&mut self, results: &mut Self::Results) {
-            for r in results {
-                *r = self.counter;
-                self.counter = self.counter.wrapping_add(2781463553396133981);
-            }
-        }
-    }
-
-    impl SeedableRng for DummyRng64 {
-        type Seed = [u8; 8];
-
-        fn from_seed(seed: Self::Seed) -> Self {
-            DummyRng64 {
-                counter: u64::from_le_bytes(seed),
-            }
-        }
-    }
-
-    #[test]
-    fn blockrng64_next_u32_vs_next_u64() {
-        let mut rng1 = BlockRng64::<DummyRng64>::from_seed([1, 2, 3, 4, 5, 6, 7, 8]);
-        let mut rng2 = rng1.clone();
-        let mut rng3 = rng1.clone();
-
-        let mut a = [0; 16];
-        a[..4].copy_from_slice(&rng1.next_u32().to_le_bytes());
-        a[4..12].copy_from_slice(&rng1.next_u64().to_le_bytes());
-        a[12..].copy_from_slice(&rng1.next_u32().to_le_bytes());
-
-        let mut b = [0; 16];
-        b[..4].copy_from_slice(&rng2.next_u32().to_le_bytes());
-        b[4..8].copy_from_slice(&rng2.next_u32().to_le_bytes());
-        b[8..].copy_from_slice(&rng2.next_u64().to_le_bytes());
-        assert_ne!(a, b);
-        assert_eq!(&a[..4], &b[..4]);
-        assert_eq!(&a[4..12], &b[8..]);
-
-        let mut c = [0; 16];
-        c[..8].copy_from_slice(&rng3.next_u64().to_le_bytes());
-        c[8..12].copy_from_slice(&rng3.next_u32().to_le_bytes());
-        c[12..].copy_from_slice(&rng3.next_u32().to_le_bytes());
-        assert_eq!(b, c);
+        self.set_index(index);
     }
 }

@@ -1,18 +1,3 @@
-/* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "เกิดข้อผิดพลาดในการนำเข้าบุ๊กมาร์ค";
-
-/* Error message shown when importing history failed */
-"failedToImportHistory" = "เกิดข้อผิดพลาดในการนำเข้าประวัติการเข้าชม";
-
-/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "เกิดข้อผิดพลาดในการนำเข้ารหัสผ่าน\nรหัสผ่านบางรายการไม่สามารถนำเข้าได้เนื่องจากมีความขัดแย้ง";
-
-/* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "เกิดข้อผิดพลาดในการนำเข้ารหัสผ่าน";
-
-/* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "เกิดข้อผิดพลาดขณะแตกไฟล์";
-
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "เลือกไฟล์...";
 
@@ -20,7 +5,7 @@
 "importDataFileSelectorMessage" = "นำบุ๊กมาร์ค ประวัติการเข้าชม และข้อมูลเบราว์เซอร์อื่นๆ ของคุณเข้าสู่ Brave";
 
 /* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
-"importDataFileSelectorNavigationTitle" = "นำเข้าข้อมูลการเรียกดู";
+"importDataFileSelectorNavigationTitle" = "นำเข้าข้อมูลการท่องเว็บ";
 
 /* The title of a Text on screen that explains to the user what type of data can be imported. */
 "importDataFileSelectorTitle" = "นำเข้าบุ๊กมาร์คและอื่น ๆ";
@@ -65,7 +50,7 @@
 "importTutorialDetailedProcessTitle" = "ต้องการขั้นตอนการส่งออกแบบละเอียดไหม";
 
 /* The title of the tutorial page that shows in the Navigation Bar. */
-"importTutorialScreenTitle" = "วิธีส่งออกจาก Safari";
+"importTutorialScreenTitle" = "วิธีการส่งออก Safari";
 
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepFiveTitle" = "บันทึกไฟล์ไว้ใน **Files** โดยเลือกตำแหน่งที่คุณสามารถหาเจอได้ง่ายในภายหลัง";
@@ -85,9 +70,6 @@
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepTwoTitle" = "จากรายการแอป (เรียงตามลำดับตัวอักษร) ให้หาและแตะที่ **Safari**";
 
-/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "ไฟล์ zip นี้ไม่มีข้อมูลสำหรับนำเข้า";
-
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "โปรดรอสักครู่ในขณะที่เรากำลังถ่ายโอนข้อมูลของคุณอย่างปลอดภัย กระบวนการนี้อาจใช้เวลาสักเล็กน้อย";
 
@@ -99,9 +81,6 @@
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "พบโปรไฟล์หลายรายการ";
-
-/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
-"personalImportTitle" = "ส่วนตัว";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "บุ๊กมาร์กที่นำเข้า";

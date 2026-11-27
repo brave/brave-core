@@ -76,11 +76,12 @@ TEST(BraveWalletTypesTest, SolanaSignatureStatusToValue) {
   status.confirmation_status = "confirmed";
 
   base::DictValue value = status.ToValue();
-  EXPECT_EQ(*value.FindString("slot"), "18446744073709551615");
-  EXPECT_EQ(*value.FindString("confirmations"), "10");
-  EXPECT_EQ(*value.FindString("err"), status.err);
-  EXPECT_EQ(*value.FindString("confirmation_status"),
-            status.confirmation_status);
+  EXPECT_EQ(value, base::test::ParseJsonDict(R"({
+    "slot": "18446744073709551615",
+    "confirmations": "10",
+    "err": "",
+    "confirmation_status": "confirmed"
+  })"));
 
   auto status_from_value = SolanaSignatureStatus::FromValue(value);
   ASSERT_TRUE(status_from_value);

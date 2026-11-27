@@ -37,6 +37,11 @@ struct A<U, V> {
 
 ## Attributes
 
+Multiple `#[borsh(...)]` attributes on the same item or field are merged: the
+top-level keys of every attribute are combined into a single set. This makes it
+possible to split disjoint keys across separate (e.g. `#[cfg_attr(...)]`-gated)
+attributes. Supplying the same top-level key more than once is an error.
+
 ### 1. `#[borsh(crate = "path::to::borsh")]` (item level attribute)
 
 ###### syntax

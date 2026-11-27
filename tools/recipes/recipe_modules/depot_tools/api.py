@@ -83,6 +83,14 @@ class DepotToolsApi(RecipeApi):
         self.m.step('verify gclient', ['gclient'])
         self._depot_tools_path = depot_tools_path
 
+    @property
+    def root(self) -> Path:
+        """The deployed depot_tools checkout, deployed and put on PATH first if
+        that hasn't already been done."""
+        self.ensure_on_path()
+        assert self._depot_tools_path is not None
+        return self._depot_tools_path
+
     def vpython3(self) -> Path:
         """Return depot_tools' `vpython3`.
 
@@ -92,6 +100,4 @@ class DepotToolsApi(RecipeApi):
         Returns:
             The absolute `Path` to depot_tools' `vpython3` entry point.
         """
-        self.ensure_on_path()
-        assert self._depot_tools_path is not None
-        return self._depot_tools_path / self._vpython3
+        return self.root / self._vpython3

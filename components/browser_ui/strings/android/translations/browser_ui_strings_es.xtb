@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Inicia sesión para continuar fácilmente en todos tus dispositivos</translation>
 <translation id="2713106313042589954">Desactivar cámara</translation>
 <translation id="2717722538473713889">Direcciones de correo electrónico</translation>
-<translation id="8181634240306014548">Inicia Brave con omnibox activado, lo que reduce el tiempo de arranque en dispositivos de gama baja.</translation>
 <translation id="2750481671343847896">Los sitios pueden mostrar solicitudes de inicio de sesión de servicios de identidad.</translation>
-<translation id="2787357173144933081">Arrancar con omnibox</translation>
 <translation id="2789132527330338807">Los sitios pueden solicitar permiso para crear un mapa 3D de tu entorno o hacer un seguimiento de la posición de la cámara</translation>
 <translation id="2790501146643349491">Cuando esta opción está activada, los sitios cerrados recientemente pueden terminar de enviar y recibir datos. Si está desactivada, los sitios cerrados recientemente no pueden terminar de enviar ni de recibir datos.</translation>
 <translation id="2795716239552913152">Los sitios suelen acceder a tu ubicación para mostrar información o usar funciones relevantes, como noticias locales o tiendas cercanas.</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Personaliza Brave con colores e imágenes personalizados para tu página principal</translation>
 <translation id="389521680295183045">Los sitios pueden preguntarte cuándo usas activamente tu dispositivo</translation>
 <translation id="3895926599014793903">Forzar zoom</translation>
-<translation id="3905475044299942653">Dejar de recibir muchas notificaciones</translation>
 <translation id="3922092564198021702">En tu teléfono, abre Configuración</translation>
 <translation id="3924858949939391676">Mostrar enlaces cuando el modo Lectura esté activado</translation>
 <translation id="3933121352599513978">Ocultar solicitudes no deseadas (recomendado)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Encontrarás tus grupos en la sección de grupos de pestañas de todos tus dispositivos</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> no puede usar tu información en</translation>
 <translation id="4953688446973710931">Cuando esta opción está activada, los sitios pueden solicitar permiso para descargar varios archivos automáticamente. Si está desactivada, los sitios no pueden descargar varios archivos automáticamente.</translation>
-<translation id="4962975101802056554">Revocar todos los permisos de este dispositivo</translation>
 <translation id="4972737347717125191">Los sitios pueden solicitar permiso para utilizar datos y dispositivos de realidad virtual</translation>
 <translation id="1275242979020712923">Hoja inferior de colores de Brave</translation>
 <translation id="497421865427891073">Avanzar</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">No permitir que los sitios usen tu dispositivo y tus datos de realidad virtual</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Bajada de precio en tu pestaña abierta de <ph name="OLD_PRICE"/> a <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Revocar a <ph name="NAME"/> el permiso de dispositivo.</translation>
 <translation id="6500423977866688905">Cuando la ventana es estrecha, solicitar vista para móvil</translation>
 <translation id="6527303717912515753">Compartir</translation>
 <translation id="6530703012083415527">Cuando esta opción está activada, los sitios pueden usar ventanas emergentes y redirecciones. Si está desactivada, los sitios no pueden usar ventanas emergentes ni redirecciones.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Datos de sitios en el dispositivo</translation>
 <translation id="7201549776650881587">Esta acción eliminará todos los datos y las cookies almacenados por todos los sitios que <ph name="ORIGIN"/> incluya o por su aplicación en tu pantalla de inicio.</translation>
 <translation id="7219254577985949841">¿Eliminar datos del sitio?</translation>
+<translation id="7225256190577194089">Revocar todos los permisos del dispositivo <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Seleccionar imágenes</translation>
 <translation id="7243246278722455312">Hoja inferior de Personalizar la página Nueva pestaña</translation>
 <translation id="7243308994586599757">Opciones disponibles cerca de la parte inferior de la pantalla</translation>
@@ -702,7 +700,6 @@ Protección Avanzada controla estos ajustes de Brave:</translation>
 <translation id="8428213095426709021">Configuración</translation>
 <translation id="8441146129660941386">Buscar hacia atrás</translation>
 <translation id="8444433999583714703">Para que <ph name="APP_NAME"/> tenga acceso a tu ubicación, actívala también en los <ph name="BEGIN_LINK"/>ajustes de Android<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Revocar permiso de dispositivo</translation>
 <translation id="8463843545738141778">Este ajuste está inhabilitado porque has activado Protección Avanzada en los ajustes de Android.</translation>
 <translation id="8467359479529706065">Hoja inferior de apariencia de la página Nueva pestaña abierta a media altura</translation>
 <translation id="8471525937465764768">Los sitios se suelen conectar a dispositivos USB para usarlos en funciones como la impresión de documentos o el guardado de contenido en dispositivos de almacenamiento.</translation>

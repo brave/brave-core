@@ -29,7 +29,7 @@ BraveHistoryDeleteDirectivesDataTypeController::
 syncer::DataTypeController::PreconditionState
 BraveHistoryDeleteDirectivesDataTypeController::GetPreconditionState(
     const PreconditionContext& context) const {
-  DCHECK(CalledOnValidThread());
+  DCHECK(CalledOnValidSequence());
   return PreconditionState::kPreconditionsMet;
 }
 

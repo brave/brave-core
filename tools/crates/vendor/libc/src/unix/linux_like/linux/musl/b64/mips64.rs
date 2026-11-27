@@ -2,37 +2,11 @@ use crate::off_t;
 use crate::prelude::*;
 
 pub type wchar_t = i32;
-pub type __u64 = c_ulong;
-pub type __s64 = c_long;
 pub type nlink_t = c_uint;
 pub type blksize_t = i64;
 
 s! {
     pub struct stat {
-        pub st_dev: crate::dev_t,
-        __pad1: Padding<[c_int; 3]>,
-        pub st_ino: crate::ino_t,
-        pub st_mode: crate::mode_t,
-        pub st_nlink: crate::nlink_t,
-        pub st_uid: crate::uid_t,
-        pub st_gid: crate::gid_t,
-        pub st_rdev: crate::dev_t,
-        __pad2: Padding<[c_uint; 2]>,
-        pub st_size: off_t,
-        __pad3: Padding<c_int>,
-        pub st_atime: crate::time_t,
-        pub st_atime_nsec: c_long,
-        pub st_mtime: crate::time_t,
-        pub st_mtime_nsec: c_long,
-        pub st_ctime: crate::time_t,
-        pub st_ctime_nsec: c_long,
-        pub st_blksize: crate::blksize_t,
-        __pad4: Padding<c_uint>,
-        pub st_blocks: crate::blkcnt_t,
-        __pad5: Padding<[c_int; 14]>,
-    }
-
-    pub struct stat64 {
         pub st_dev: crate::dev_t,
         __pad1: Padding<[c_int; 3]>,
         pub st_ino: crate::ino_t,
@@ -63,9 +37,9 @@ s! {
     }
 
     pub struct ipc_perm {
-        #[cfg(musl_v1_2_3)]
+        #[cfg(musl_v1_2)]
         pub __key: crate::key_t,
-        #[cfg(not(musl_v1_2_3))]
+        #[cfg(not(musl_v1_2))]
         #[deprecated(
             since = "0.2.173",
             note = "This field is incorrectly named and will be changed
@@ -98,6 +72,7 @@ s! {
         pub f_spare: [c_ulong; 5],
     }
 
+    // FIXME(1.0,deprecate): lfs binding to be removed
     pub struct statfs64 {
         pub f_type: c_ulong,
         pub f_bsize: c_ulong,
@@ -284,14 +259,11 @@ pub const SYS_swapoff: c_long = 5000 + 163;
 pub const SYS_reboot: c_long = 5000 + 164;
 pub const SYS_sethostname: c_long = 5000 + 165;
 pub const SYS_setdomainname: c_long = 5000 + 166;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_create_module: c_long = 5000 + 167;
+// 167 was SYS_create_module
 pub const SYS_init_module: c_long = 5000 + 168;
 pub const SYS_delete_module: c_long = 5000 + 169;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_get_kernel_syms: c_long = 5000 + 170;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_query_module: c_long = 5000 + 171;
+// 170 was SYS_get_kernel_syms
+// 171 was SYS_query_module
 pub const SYS_quotactl: c_long = 5000 + 172;
 pub const SYS_nfsservctl: c_long = 5000 + 173;
 pub const SYS_getpmsg: c_long = 5000 + 174;

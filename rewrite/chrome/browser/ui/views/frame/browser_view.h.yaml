@@ -4,15 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |-
-      Derive BrowserView from BraveBrowserWindow.
-
-      BraveBrowserWindow extends the BrowserWindow interface with the methods
-      Brave features call on the browser window.
-    rename_class:
-      class_name: BrowserWindow
-      rename: BraveBrowserWindow
-
   - description: 'Let BraveBrowserView reach private members.'
     add_friend:
       class_name: BrowserView

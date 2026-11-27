@@ -1,16 +1,4 @@
-use crate::{file::init, parse, parse::Event, path::interpolate};
-
-/// The error returned by [`File::from_bytes_no_includes()`][crate::File::from_bytes_no_includes()].
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error(transparent)]
-    Parse(#[from] parse::Error),
-    #[error(transparent)]
-    Interpolate(#[from] interpolate::Error),
-    #[error(transparent)]
-    Includes(#[from] init::includes::Error),
-}
+use crate::{file::init, parse::EventRef};
 
 /// Options when loading git config using [`File::from_paths_metadata()`][crate::File::from_paths_metadata()].
 #[derive(Clone, Copy, Default)]
@@ -29,7 +17,7 @@ pub struct Options<'a> {
 }
 
 impl Options<'_> {
-    pub(crate) fn to_event_filter(self) -> Option<fn(&Event<'_>) -> bool> {
+    pub(crate) fn to_event_filter(self) -> Option<fn(EventRef<'_>) -> bool> {
         if self.lossy {
             Some(discard_nonessential_events)
         } else {
@@ -38,14 +26,14 @@ impl Options<'_> {
     }
 }
 
-fn discard_nonessential_events(e: &Event<'_>) -> bool {
+fn discard_nonessential_events(e: EventRef<'_>) -> bool {
     match e {
-        Event::Whitespace(_) | Event::Comment(_) | Event::Newline(_) => false,
-        Event::SectionHeader(_)
-        | Event::SectionValueName(_)
-        | Event::KeyValueSeparator
-        | Event::Value(_)
-        | Event::ValueNotDone(_)
-        | Event::ValueDone(_) => true,
+        EventRef::Whitespace(_) | EventRef::Comment { .. } | EventRef::Newline(_) => false,
+        EventRef::SectionHeader { .. }
+        | EventRef::SectionValueName(_)
+        | EventRef::KeyValueSeparator
+        | EventRef::Value(_)
+        | EventRef::ValueNotDone(_)
+        | EventRef::ValueDone(_) => true,
     }
 }

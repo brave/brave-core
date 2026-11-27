@@ -2,7 +2,7 @@
 //!
 //! Currently, the error handling in RustyHermit isn't clearly
 //! defined. At the current stage of RustyHermit, only a placeholder
-//! is provided to be compatible to the classical errno interface.
+//! is provided to be compatible with the classical errno interface.
 
 // Copyright 2015 The Rust Project Developers. See the COPYRIGHT
 // file at the top-level directory of this distribution and at

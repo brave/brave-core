@@ -339,9 +339,38 @@
 # https://github.com/brave/brave-browser/issues/58147
 -PaymentHandlerWebFlowViewMandatoryUiEnabledTest.DialogClosedOnErrorAfterUserInteraction
 
-# Fails under Xvfb without a window manager: hiding the browser deactivates
-# the inactive bubble, which closes with kLostFocus and launches the survey.
+# These tests fail under Xvfb without a window manager. In
+# HatsSurveyNotTriggeredOnBrowserClose, hiding the browser deactivates the
+# inactive bubble, which closes with kLostFocus and launches the survey. In
+# CaptionButtonsFitTopAreaAndUpdateOnThemeChange, GetCustomFramePrefDefault()
+# turns custom frames off with no known WM, so there are no caption buttons
+# whose exclusion the test measures; it passes with openbox running.
+-LinuxNativeBrowserFrameViewTest.CaptionButtonsFitTopAreaAndUpdateOnThemeChange
 -ScheduledRestartHatsBrowserTest.HatsSurveyNotTriggeredOnBrowserClose
+
+# This test fails when the Brave sidebar is hidden, which is the default in
+# Brave Origin builds (GetDefaultShowSidebarOption() returns kShowNever, while
+# other non-stable builds show it). CI's brave-origin-build-linux-x64-nightly
+# failed it on the first run and the retry, the only failure of 18333 tests:
+# scroll-to-fit scrolls the strip by the 6px overflow shadow
+# (GetVisibleRect().x() == 6, left indicator visible) where the test expects no
+# scroll, i.e. the tab geometry it assumes does not hold. Reproduced through
+# testing/xvfb.py with --dont-show-on-sidebar-non-stable (8/8 fail); without it
+# the test passes (15/15, and 24/24 under parallel load). How sidebar visibility
+# changes the tab strip width is unconfirmed.
+#
+# It also fails whenever a window manager enforces Brave's 1136px minimum window
+# width (Xvfb + openbox 10/10, desktop session 15/15): the test asks for 500px,
+# and BraveLocationBarView::GetMinimumSize() plus the sidebar's minimum width
+# make Brave's minimum wider than upstream's, whose bots run openbox. CI runs no
+# WM today (patches/testing-xvfb.py.patch) but will once openbox is installed
+# on the agents (brave/devops#17353).
+#
+# Stable upstream (is_upstream_flake.py, refs/branch-heads/8154@{#871}: not
+# confirmed on any variant), and the layout is intentional, so this is filtered
+# rather than fixed. Filters cannot target Origin builds, so it applies to all
+# Linux builds. Windows has its own entry in browser_tests-win.filter.
+-HorizontalTabStripViewLayoutBrowserTest.ScrollToFitViewsAccountsForPostScrollOverflowIndicator
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*

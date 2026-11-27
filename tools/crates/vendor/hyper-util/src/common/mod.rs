@@ -14,8 +14,6 @@ pub(crate) mod timer;
 pub(crate) use exec::Exec;
 
 #[cfg(feature = "client-legacy")]
-pub(crate) use lazy::{lazy, Started as Lazy};
+pub(crate) use lazy::{Started as Lazy, lazy};
 #[cfg(feature = "client-legacy")]
 pub(crate) use sync::SyncWrapper;
-
-pub(crate) mod future;

@@ -160,13 +160,13 @@ impl Default for &'_ StyledStr {
 
 impl From<String> for StyledStr {
     fn from(name: String) -> Self {
-        StyledStr(name)
+        Self(name)
     }
 }
 
 impl From<&'_ String> for StyledStr {
     fn from(name: &'_ String) -> Self {
-        let mut styled = StyledStr::new();
+        let mut styled = Self::new();
         styled.push_str(name);
         styled
     }
@@ -174,7 +174,7 @@ impl From<&'_ String> for StyledStr {
 
 impl From<&'static str> for StyledStr {
     fn from(name: &'static str) -> Self {
-        let mut styled = StyledStr::new();
+        let mut styled = Self::new();
         styled.push_str(name);
         styled
     }
@@ -182,15 +182,15 @@ impl From<&'static str> for StyledStr {
 
 impl From<&'_ &'static str> for StyledStr {
     fn from(name: &'_ &'static str) -> Self {
-        StyledStr::from(*name)
+        Self::from(*name)
     }
 }
 
 impl From<Cow<'static, str>> for StyledStr {
     fn from(cow: Cow<'static, str>) -> Self {
         match cow {
-            Cow::Borrowed(s) => StyledStr::from(s),
-            Cow::Owned(s) => StyledStr::from(s),
+            Cow::Borrowed(s) => Self::from(s),
+            Cow::Owned(s) => Self::from(s),
         }
     }
 }
@@ -232,7 +232,9 @@ mod wrap_tests {
     #[cfg(feature = "wrap_help")]
     fn wrap_unstyled() {
         let style = anstyle::Style::new();
-        let input = format!("{style}12345{style:#} {style}12345{style:#} {style}12345{style:#} {style}12345{style:#}");
+        let input = format!(
+            "{style}12345{style:#} {style}12345{style:#} {style}12345{style:#} {style}12345{style:#}"
+        );
         let mut actual = StyledStr::new();
         actual.push_string(input);
         actual.wrap(20);
@@ -249,7 +251,9 @@ mod wrap_tests {
     #[cfg(feature = "wrap_help")]
     fn wrap_styled() {
         let style = anstyle::Style::new().bold();
-        let input = format!("{style}12345{style:#} {style}12345{style:#} {style}12345{style:#} {style}12345{style:#}");
+        let input = format!(
+            "{style}12345{style:#} {style}12345{style:#} {style}12345{style:#} {style}12345{style:#}"
+        );
         let mut actual = StyledStr::new();
         actual.push_string(input);
         actual.wrap(20);
@@ -276,7 +280,7 @@ mod tests {
 
     #[test]
     fn from_cow_owned() {
-        let cow = Cow::Owned("world".to_string());
+        let cow = Cow::Owned("world".to_owned());
         let styled = StyledStr::from(cow);
         assert_eq!(styled, StyledStr::from("world"));
     }

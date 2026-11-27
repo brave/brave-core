@@ -1,11 +1,12 @@
 #![forbid(unsafe_code)]
 
+use super::flush_block;
 use crate::{
     deflate::{
         compare256::compare256_rle_slice, fill_window, BlockState, DeflateStream, MIN_LOOKAHEAD,
         STD_MAX_MATCH, STD_MIN_MATCH,
     },
-    flush_block, DeflateFlush,
+    DeflateFlush,
 };
 
 pub fn deflate_rle(stream: &mut DeflateStream, flush: DeflateFlush) -> BlockState {
@@ -41,7 +42,7 @@ pub fn deflate_rle(stream: &mut DeflateStream, flush: DeflateFlush) -> BlockStat
             }
 
             assert!(
-                state.strstart - 1 + match_len <= state.window_size - 1,
+                state.strstart - 1 + match_len < state.window_size,
                 "wild scan"
             );
         }

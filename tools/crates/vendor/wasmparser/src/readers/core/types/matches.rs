@@ -13,9 +13,9 @@
 //! don't need to match again; we just look at the declarations from now on.
 
 use crate::{
+    ArrayType, CompositeInnerType, CompositeType, ContType, FieldType, FuncType, RefType,
+    StorageType, StructType, SubType, ValType,
     types::{CoreTypeId, RecGroupId, TypeList},
-    ArrayType, CompositeInnerType, CompositeType, FieldType, FuncType, RefType, StorageType,
-    StructType, SubType, ValType,
 };
 
 /// Wasm type matching.
@@ -128,6 +128,13 @@ impl<'a> Matches for WithRecGroup<&'a CompositeType> {
                 WithRecGroup::map(b, |_| sb),
             ),
             (Struct(_), _) => false,
+
+            (Cont(ca), Cont(cb)) => Matches::matches(
+                types,
+                WithRecGroup::map(a, |_| ca),
+                WithRecGroup::map(b, |_| cb),
+            ),
+            (Cont(_), _) => false,
         }
     }
 }
@@ -226,11 +233,28 @@ impl<'a> Matches for WithRecGroup<&'a StructType> {
 
 impl Matches for WithRecGroup<FieldType> {
     fn matches(types: &TypeList, a: Self, b: Self) -> bool {
-        (b.mutable || !a.mutable)
+        // `a`'s storage type must match `b`'s storage type.
+        if !Matches::matches(
+            types,
+            WithRecGroup::map(a, |a| a.element_type),
+            WithRecGroup::map(b, |b| b.element_type),
+        ) {
+            return false;
+        }
+
+        // And either both fields are immutable...
+        if !a.mutable && !b.mutable {
+            return true;
+        }
+
+        // Or both fields are mutable and `b`'s storage type must match `a`'s
+        // storage type, a.k.a. they must be the exact same storage type.
+        a.mutable
+            && b.mutable
             && Matches::matches(
                 types,
-                WithRecGroup::map(a, |a| a.element_type),
                 WithRecGroup::map(b, |b| b.element_type),
+                WithRecGroup::map(a, |a| a.element_type),
             )
     }
 }
@@ -248,6 +272,22 @@ impl Matches for WithRecGroup<StorageType> {
                 WithRecGroup::map(b, |_| vb),
             ),
             (ST::Val(_), _) => false,
+        }
+    }
+}
+
+impl<'a> Matches for WithRecGroup<&'a ContType> {
+    fn matches(types: &TypeList, a: Self, b: Self) -> bool {
+        match (*a, *b) {
+            (ContType(ca), ContType(cb)) => {
+                ca == cb
+                    || types.reftype_is_subtype_impl(
+                        RefType::concrete(false, *ca),
+                        Some(WithRecGroup::rec_group(a)),
+                        RefType::concrete(false, *cb),
+                        Some(WithRecGroup::rec_group(b)),
+                    )
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 //! User Interaction (UI)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -17,7 +17,7 @@ use core::{fmt, str::FromStr};
 /// > solely at the will of the attacker, or whether a separate user (or
 /// > user-initiated process) must participate in some manner. The resulting
 /// > score is greatest when no user interaction is required.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum UserInteraction {
     /// Active (A)
     ///
@@ -53,13 +53,8 @@ pub enum UserInteraction {
     /// > human user, other than the attacker. Examples include: a remote
     /// > attacker is able to send packets to a target system a locally
     /// > authenticated attacker executes code to elevate privileges
+    #[default]
     None,
-}
-
-impl Default for UserInteraction {
-    fn default() -> Self {
-        Self::None
-    }
 }
 
 impl Metric for UserInteraction {
@@ -67,9 +62,9 @@ impl Metric for UserInteraction {
 
     fn as_str(self) -> &'static str {
         match self {
-            UserInteraction::None => "N",
-            UserInteraction::Passive => "P",
-            UserInteraction::Active => "A",
+            Self::None => "N",
+            Self::Passive => "P",
+            Self::Active => "A",
         }
     }
 }
@@ -83,11 +78,11 @@ impl fmt::Display for UserInteraction {
 impl FromStr for UserInteraction {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "N" => Ok(UserInteraction::None),
-            "P" => Ok(UserInteraction::Passive),
-            "A" => Ok(UserInteraction::Active),
+            "N" => Ok(Self::None),
+            "P" => Ok(Self::Passive),
+            "A" => Ok(Self::Active),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),
@@ -112,27 +107,22 @@ pub(crate) mod merge {
     /// Result of the merging of the base and modified metrics.
     ///
     /// Used in scoring.
-    #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+    #[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
     pub(crate) enum MergedUserInteraction {
         Active,
         Passive,
+        #[default]
         None,
-    }
-
-    impl Default for MergedUserInteraction {
-        fn default() -> Self {
-            Self::None
-        }
     }
 
     impl FromStr for MergedUserInteraction {
         type Err = Error;
 
-        fn from_str(s: &str) -> Result<Self> {
+        fn from_str(s: &str) -> Result<Self, Error> {
             match s {
-                "A" => Ok(MergedUserInteraction::Active),
-                "P" => Ok(MergedUserInteraction::Passive),
-                "N" => Ok(MergedUserInteraction::None),
+                "A" => Ok(Self::Active),
+                "P" => Ok(Self::Passive),
+                "N" => Ok(Self::None),
                 _ => Err(Error::InvalidMetricV4 {
                     metric_type: MetricType::UI,
                     value: s.to_owned(),

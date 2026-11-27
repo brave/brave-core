@@ -318,7 +318,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPISuccess) {
   EXPECT_FALSE(invalidation_token.empty());
 
   // Verify that the correct requests were made
-  EXPECT_EQ(requests_made.size(), 2u);
+  ASSERT_EQ(requests_made.size(), 2u);
 
   // Check InnerTube API request
   EXPECT_EQ(requests_made[0].url, inner_tube_url);
@@ -328,7 +328,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPISuccess) {
 
   // Verify the request body
   ASSERT_EQ(request_bodies.size(), 1u);
-  base::Value expected_body = base::test::ParseJson(absl::StrFormat(R"({
+  EXPECT_THAT(request_bodies[0], base::test::IsJson(absl::StrFormat(R"({
     "videoId": "%s",
     "context": {
       "client": {
@@ -337,11 +337,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPISuccess) {
       }
     }
   })",
-                                                                    video_id));
-
-  std::string expected_body_str;
-  base::JSONWriter::Write(expected_body, &expected_body_str);
-  EXPECT_EQ(request_bodies[0], expected_body_str);
+                                                                    video_id)));
 
   // Check transcript request
   EXPECT_EQ(requests_made[1].url, transcript_url);
@@ -389,7 +385,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPINetworkError) {
   EXPECT_FALSE(invalidation_token.empty());
 
   // Verify that the InnerTube API request was made
-  EXPECT_EQ(requests_made.size(), 1u);
+  ASSERT_EQ(requests_made.size(), 1u);
   EXPECT_EQ(requests_made[0].url, inner_tube_url);
   EXPECT_EQ(requests_made[0].method, "POST");
 }
@@ -435,7 +431,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPIInvalidJsonResponse) {
   EXPECT_FALSE(invalidation_token.empty());
 
   // Verify that the InnerTube API request was made
-  EXPECT_EQ(requests_made.size(), 1u);
+  ASSERT_EQ(requests_made.size(), 1u);
   EXPECT_EQ(requests_made[0].url, inner_tube_url);
   EXPECT_EQ(requests_made[0].method, "POST");
 }
@@ -481,7 +477,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPINoCaptionTracks) {
   EXPECT_FALSE(invalidation_token.empty());
 
   // Verify that the InnerTube API request was made
-  EXPECT_EQ(requests_made.size(), 1u);
+  ASSERT_EQ(requests_made.size(), 1u);
   EXPECT_EQ(requests_made[0].url, inner_tube_url);
   EXPECT_EQ(requests_made[0].method, "POST");
 }
@@ -595,7 +591,7 @@ TEST_F(PageContentFetcherTest, ContentUrlExtraction) {
   EXPECT_EQ(content, transcript_text);
   EXPECT_TRUE(is_video);
   EXPECT_FALSE(invalidation_token.empty());
-  EXPECT_EQ(requests_made.size(), 1u);
+  ASSERT_EQ(requests_made.size(), 1u);
 
   // Verify the request was made to the correct URL
   EXPECT_EQ(requests_made[0].url, content_url);
@@ -718,7 +714,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPIKeyUrlEncoding) {
   EXPECT_FALSE(invalidation_token.empty());
 
   // Verify that the correct requests were made
-  EXPECT_EQ(requests_made.size(), 2u);
+  ASSERT_EQ(requests_made.size(), 2u);
 
   // Check that the InnerTube API request URL has the properly encoded API key
   EXPECT_EQ(requests_made[0].url, expected_inner_tube_url);

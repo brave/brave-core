@@ -17,7 +17,8 @@ before the step runs, and (for outputs) reads the data back afterwards. See the
 "Getting data back from a step" section of README.md.
 
 `RecipeScriptApi`, the `api` passed to a recipe's `RunSteps`, lives here too;
-a recipe subclasses it to declare its `DEPS` as a dataclass.
+a recipe subclasses it to declare its `DEPS` as a dataclass. So does
+`StepFailure`, the exception a failing step raises.
 """
 
 from __future__ import annotations
@@ -26,10 +27,53 @@ from collections.abc import Callable
 from dataclasses import dataclass
 import functools
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import config_types
 from step_stack import StepStack
+
+if TYPE_CHECKING:
+    from step_data import StepData
+
+
+class StepFailure(Exception):
+    """The base exception for all step failures.
+
+    `api.step` raises one, carrying the step's `name` and `result`, when a
+    checked step exits non-zero. Recipe code may also raise one with just a
+    reason, to fail the recipe on its own terms:
+
+        raise api.step.StepFailure('no artefacts were produced')
+
+    A `StepFailure` that escapes `RunSteps` ends the recipe with status
+    `FAILURE` and its `reason` as the summary; any other exception ends it
+    with `INFRA_FAILURE`.
+    """
+
+    def __init__(
+        self, name_or_reason: str, result: StepData | None = None
+    ) -> None:
+        if result is not None:
+            self.name: str | None = name_or_reason
+            self.result: StepData | None = result
+            self.reason: str = self.reason_message()
+            self.reason += ' (retcode: {!r})'.format(result.retcode)
+        else:
+            self.name = None
+            self.result = None
+            self.reason = name_or_reason
+
+        super().__init__(self.reason)
+
+    def reason_message(self) -> str:
+        return 'Step({!r})'.format(self.name)
+
+    @property
+    def retcode(self) -> int | None:
+        """The failing step's exit code, or None for a manual failure."""
+        if self.result is None:
+            return None
+        return self.result.retcode
 
 
 class ModuleInjectionSite:

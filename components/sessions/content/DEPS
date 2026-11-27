@@ -1,4 +1,9 @@
 include_rules = [
+  "+brave/components/containers/buildflags",
+  "+brave/components/containers/content/browser",
+  "+brave/components/containers/core/common",
   "+components/sessions",
+  "+content/public/browser",
+  "+content/public/common",
   "+third_party/blink/public/common",
 ]

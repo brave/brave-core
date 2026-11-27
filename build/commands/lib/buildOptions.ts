@@ -111,10 +111,6 @@ export function supportGnArgs<
         '--android_aab_to_apk',
         'applies an aab to apk conversion to the output aab',
       )
-      .option(
-        '--android_override_version_name <android_override_version_name>',
-        'Android version number',
-      )
       .option('--build_omaha', 'build omaha stub/standalone installer')
       .option(
         '--build_sparkle',
@@ -260,6 +256,11 @@ export function supportTestOptions<
       4,
     )
     .option('--run_disabled_tests', 'run disabled tests')
+    .option(
+      '--skip_build',
+      'do not build the test target; run the existing binary',
+    )
+    .option('--skip_run', 'build the test target but do not run it')
     .option(
       '--manual_android_test_device',
       'indicates that Android test device is run manually',

@@ -1,4 +1,5 @@
 #![allow(
+    clippy::assert_is_empty,
     clippy::cast_sign_loss,
     clippy::doc_markdown,
     clippy::elidable_lifetime_names,
@@ -9,6 +10,7 @@
     clippy::match_bool,
     clippy::match_like_matches_macro,
     clippy::match_same_arms,
+    clippy::needless_late_init,
     clippy::needless_lifetimes,
     clippy::needless_pass_by_value,
     clippy::nonminimal_bool,

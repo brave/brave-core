@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: Install toolchain
       uses: dtolnay/rust-toolchain@stable
@@ -37,7 +37,7 @@ jobs:
           - x86_64-pc-windows-msvc
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: Install toolchain
       uses: dtolnay/rust-toolchain@master
@@ -51,7 +51,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: Install toolchain
       uses: dtolnay/rust-toolchain@stable
@@ -71,7 +71,7 @@ jobs:
           - x86_64-linux-android
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     # We need nightly for -Zminimal-versions
     - name: Install nightly toolchain
@@ -101,11 +101,43 @@ jobs:
       if: ${{ contains(matrix.target, 'android') }}
       run: cargo build --locked --all-features --target ${{ matrix.target }}
 
+  test-freebsd:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Start VM
+        uses: vmactions/freebsd-vm@v1
+        with:
+          release: "15.1"
+          usesh: true
+      - name: Install dependencies
+        shell: freebsd {0}
+        run: |
+          pkg install -y curl
+          fetch https://sh.rustup.rs -o rustup.sh
+          sh rustup.sh -y --profile=minimal
+      # Make sure we're testing against the minimal libc version.
+      - name: Generate Cargo.lock
+        shell: freebsd {0}
+        run: |
+          . $HOME/.cargo/env
+          cargo +nightly update -Zminimal-versions
+      - name: Build
+        shell: freebsd {0}
+        run: |
+          . $HOME/.cargo/env
+          cargo build --locked --all-features
+      - name: Test
+        shell: freebsd {0}
+        run: |
+          . $HOME/.cargo/env
+          cargo test --locked --all-features
+
   check-stub:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: Install toolchain
       uses: dtolnay/rust-toolchain@stable
@@ -119,7 +151,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: Install toolchain
       uses: dtolnay/rust-toolchain@nightly
@@ -133,10 +165,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: Install toolchain
-      uses: dtolnay/rust-toolchain@1.63.0
+      uses: dtolnay/rust-toolchain@1.65.0
 
     # do not test, because dev-dependencies do not follow MSRV
     - name: Build

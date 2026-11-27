@@ -1,8 +1,8 @@
 [package]
 name = "clru"
-version = "0.6.2"
+version = "0.6.3"
 authors = ["marmeladema <xademax@gmail.com>"]
-edition = "2021"
+edition = "2024"
 description = "An LRU cache implementation with constant time operations and weighted semantic"
 readme = "README.md"
 repository = "https://github.com/marmeladema/clru-rs"
@@ -10,3 +10,4 @@ license = "MIT"
 keywords = ["lru", "cache", "hashmap"]
 
 [dependencies]
+hashbrown = "0.16"

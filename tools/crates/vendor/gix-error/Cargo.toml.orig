@@ -1,0 +1,64 @@
+lints.workspace = true
+
+[package]
+name = "gix-error"
+version = "0.5.3"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+license = "MIT OR Apache-2.0"
+description = "A crate of the gitoxide project to provide common errors and error-handling utilities"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+edition = "2024"
+include = ["/src/**/*", "/LICENSE-*"]
+rust-version = "1.88"
+
+[features]
+## Print captured caller locations in diagnostics. Alternate formatting continues to omit locations.
+## Locations are always captured and available for inspection, even without this feature.
+error-print-location = []
+## Accept [`bstr::BString`] and [`bstr::BStr`] as byte metadata.
+## Byte metadata always uses `Vec<u8>` with the same diagnostic formatting.
+bstr = ["dep:bstr"]
+## The [`Exn`] type converts to [`anyhow::Error`] natively so `?` can be used directly.
+## This conversion automatically flattens the exception tree into a breadth-first chain,
+## preserving concrete error types and caller locations, regardless of `auto-chain-error` or `tree-error`.
+## It does not change the representation of [`Error`].
+##
+## Without this feature, convert through [`into_error()`](crate::Exn::into_error()) first.
+## Wrapping that [`Error`] in `anyhow` follows its standard [`source()`](std::error::Error::source) chain:
+## one path in tree mode, or all branches with `auto-chain-error` unless `tree-error` overrides it.
+anyhow = ["dep:anyhow"]
+## Automatically flatten [`Exn`] trees when converting to [`Error`],
+## preserving concrete error types and caller locations. `Exn` itself remains tree-based.
+## Standard [`source()`](std::error::Error::source) traversal then exposes all branches to chain consumers, including `anyhow`.
+## This is independent of the `anyhow` feature, which only enables direct `Exn` conversion.
+## The `tree-error` feature overrides this representation.
+auto-chain-error = []
+## The opposite of `auto-chain-error` and implicitly enabled by default. Use it to override `auto-chain-error`.
+tree-error = []
+
+[[test]]
+name = "auto-chain-error"
+path = "tests/auto_chain_error.rs"
+required-features = ["auto-chain-error"]
+
+[dependencies]
+bstr = { version = "1.12.0", optional = true, default-features = false, features = ["std"] }
+
+anyhow = { version = "1.0.102", optional = true }
+document-features = { version = "0.2.0", optional = true }
+
+[dev-dependencies]
+gix-testtools = { path = "../tests/tools", default-features = false, features = ["sha1"] }
+gix-error = { path = ".", features = ["anyhow", "error-print-location"] }
+insta = "1.46.3"
+
+[package.metadata.docs.rs]
+all-features = true
+features = ["document-features"]
+
+[package.metadata.qa]
+isolated = true
+tests = [
+    { args = ["--features", "auto-chain-error"] },
+    { args = [] },
+]

@@ -38,8 +38,8 @@ of the Time Zone Database. (Jiff will instead embed it into your program by
 default on these platforms.)
 * [IANA time zone identifier]: A short ASCII human readable string identifying
 a time zone in the IANA Time Zone Database. The time zone for where I live,
-`America/New_York`, has an entry at `/usr/share/zoneinfo/America/New_York`
-on my system. IANA time zone identifiers are used by Jiff's `Zoned` type
+`America/New_York`, has an entry at `/usr/share/zoneinfo/America/New_York` on
+my system. IANA time zone identifiers are used by Jiff's `ZonedDateTime` type
 to losslessly roundtrip datetimes via an interchange format specified by
 [Temporal] that draws inspiration from [RFC 3339], [RFC 9557] and [ISO 8601].
 
@@ -89,9 +89,9 @@ Summarizing POSIX (and common extensions supported by GNU libc and musl), the
 * `/usr/share/zoneinfo/America/New_York` sets the time zone by providing a path
 to a TZif formatted file.
 * `EST5EDT,M3.2.0,M11.1.0` sets the time zone using a POSIX daylight saving
-time rule. The rule shown here is for `US/Eastern` at time of writing (2024).
-This is useful for specifying a custom time zone without generating TZif data,
-but is rarely used in practice.
+time rule. The rule shown here is for `America/New_York` at time of writing
+(2024). This is useful for specifying a custom time zone without generating
+TZif data, but is rarely used in practice.
 
 When `TZ` isn't set, then Jiff uses heuristics to detect the system's
 configured time zone. If this automatic detection fails, please first check
@@ -190,11 +190,11 @@ copy of the IANA Time Zone Database.
 
 If `/etc/localtime` is not a symbolic link, then Jiff reads it directly as a
 TZif file. When this happens, Jiff cannot feasibly know the IANA time zone
-identifier. While arithmetic on the resulting `Zoned` value will still be DST
-safe, one cannot losslessly serialize and deserialize it since Jiff won't be
-able to include the IANA time zone identifier in the serialized format. When
-such a `Zoned` value is serialized, the offset of the datetime will be used
-in lieu of the IANA time zone identifier.
+identifier. While arithmetic on the resulting `ZonedDateTime` value will still
+be DST safe, one cannot losslessly serialize and deserialize it since Jiff
+won't be able to include the IANA time zone identifier in the serialized
+format. When such a `ZonedDateTime` value is serialized, the offset of the
+datetime will be used in lieu of the IANA time zone identifier.
 
 (NOTE: Not all Unix systems follow this pattern. If your system uses a
 different way to configure the system time zone, please check [available
@@ -247,7 +247,7 @@ done. Jiff will automatically use the bundled copy.
 * Manually create `TimeZone` values via `TimeZone::tzif` from TZif formatted
 data. With this approach, you may need to change how you use Jiff in some
 cases. For example, any `in_tz` method will need to be changed to use the
-`to_zoned` equivalent.
+`to_zoned_datetime` equivalent.
 * Embed specific time zones into your binary with `jiff::tz::get` or
 `jiff::tz::include`. This requires enabling Jiff's `static` feature.
 
@@ -277,9 +277,9 @@ system-wide IANA time zone identifier. Why Android is incapable of following
 the existing conventions for Unix systems is unclear.
 
 If users of Jiff are uncomfortable relying on Android's `persist.sys.timezone`
-property, then they should avoid APIs like `Zoned::now` and `TimeZone::system`.
-Instead, they can use `TimeZone::unknown()`, which is what the fallback time
-zone would be when the system time zone cannot be discovered.
+property, then they should avoid APIs like `ZonedDateTime::now` and
+`TimeZone::system`. Instead, they can use `TimeZone::unknown()`, which is what
+the fallback time zone would be when the system time zone cannot be discovered.
 
 ### Windows
 
@@ -356,8 +356,8 @@ enable the feature.
 * `wasm32-unknown-emscripten`: Supported via Rust's standard library.
 * `wasm32-wasi*`: Supported via Rust's standard library.
 * `wasm{32,64}-unknown-unknown`: `std::time::SystemTime::now()`, and thus
-`Zoned::now()`, panics in Jiff's default configuration. Enabling Jiff's `js`
-feature will cause Jiff to assume a web context and use JavaScript's
+`ZonedDateTime::now()`, panics in Jiff's default configuration. Enabling Jiff's
+`js` feature will cause Jiff to assume a web context and use JavaScript's
 [`Date.now`] API to determine the current time.
 
 #### IANA Time Zone Database

@@ -14,7 +14,6 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "base/notimplemented.h"
 #include "base/sequence_checker.h"
 #include "base/types/to_address.h"
 #include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
@@ -25,6 +24,10 @@
 #include "build/build_config.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+#include "brave/components/brave_vpn/browser/v2/region_conversions.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+
 // The agent apps build only on desktop, so the related code assumes desktop
 // only APIs are available; asserted once rather than guarded at call sites.
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
@@ -32,6 +35,36 @@ static_assert(!BUILDFLAG(IS_ANDROID));
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
 namespace brave_vpn::v2 {
+namespace {
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+// Maps the agent's view of the tunnel onto the states the UI knows. No default
+// and nothing after the switch: Mojo rejects a value outside the enum before it
+// gets here.
+mojom::ConnectionState ToConnectionState(mojom::VpnConnectionState state) {
+  switch (state) {
+    case mojom::VpnConnectionState::kDisconnected:
+      return mojom::ConnectionState::DISCONNECTED;
+    case mojom::VpnConnectionState::kConnected:
+      return mojom::ConnectionState::CONNECTED;
+    case mojom::VpnConnectionState::kDisconnecting:
+      return mojom::ConnectionState::DISCONNECTING;
+    case mojom::VpnConnectionState::kConnecting:
+    case mojom::VpnConnectionState::kWaitingRetry:
+      return mojom::ConnectionState::CONNECTING;
+    case mojom::VpnConnectionState::kConnectFailed:
+      return mojom::ConnectionState::CONNECT_FAILED;
+    case mojom::VpnConnectionState::kInternalError:
+      // TODO(https://github.com/brave/brave-browser/issues/54641)
+      // Agent's internal error might have broader meaning than just a
+      // permission issue; revisit this mapping once the exact semantics are
+      // clarified.
+      return mojom::ConnectionState::CONNECT_NOT_ALLOWED;
+  }
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+
+}  // namespace
 
 BraveVpnServiceImpl::BraveVpnServiceImpl(
     PrefService* local_prefs,
@@ -45,7 +78,7 @@ BraveVpnServiceImpl::BraveVpnServiceImpl(
           std::make_unique<SkusServiceClient>(std::move(skus_service_getter))) {
   DCHECK(IsBraveVPNFeatureEnabled());
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
-  agent_client_ = std::make_unique<AgentClient>();
+  agent_client_ = std::make_unique<AgentClient>(this);
   agent_client_->AddObserver(this);
   agent_launcher_ = std::make_unique<AgentLauncher>();
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
@@ -97,16 +130,12 @@ void BraveVpnServiceImpl::LoadPurchasedState(const std::string& domain) {
   }
 }
 
-void BraveVpnServiceImpl::GetAllRegions(GetAllRegionsCallback callback) {
-  NOTIMPLEMENTED();
-  std::move(callback).Run({});
-}
-
 void BraveVpnServiceImpl::Shutdown() {
   weak_factory_.InvalidateWeakPtrs();
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   agent_launcher_.reset();
   agent_client_.reset();
+  agent_state_.reset();
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   purchased_state_manager_.reset();
   api_client_.reset();
@@ -132,6 +161,9 @@ void BraveVpnServiceImpl::OnPurchasedStateChanged(
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+
+BraveVpnServiceImpl::AgentState::AgentState() = default;
+BraveVpnServiceImpl::AgentState::~AgentState() = default;
 
 void BraveVpnServiceImpl::UpdateAgentConnection(mojom::PurchasedState state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -171,6 +203,10 @@ void BraveVpnServiceImpl::UpdateAgentConnection(mojom::PurchasedState state) {
 void BraveVpnServiceImpl::OnAgentConnected() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(1) << "Agent session established";
+
+  // A blank record for the agent to fill in, which it does straight away. The
+  // agent client holds the agent's calls back until this has run.
+  agent_state_.emplace();
 }
 
 void BraveVpnServiceImpl::OnAgentSessionStable() {
@@ -179,7 +215,9 @@ void BraveVpnServiceImpl::OnAgentSessionStable() {
 
   // Clears any leftover connection error.
   if (connection_state_ == mojom::ConnectionState::CONNECT_NO_AGENT) {
-    UpdateConnectionState(mojom::ConnectionState::DISCONNECTED, std::string());
+    // The session has held, so the failure no longer describes anything;
+    // whatever the agent reported while it was showing, takes its place.
+    UpdateConnectionStateFromAgent();
   }
 }
 
@@ -191,8 +229,13 @@ void BraveVpnServiceImpl::OnAgentDisconnected() {
   // an unrecoverable run of failures arrives in another ("connection failed")
   // notification. But make sure the "connected" VPN state is not reported to
   // the user if there's no connection to the agent, and hence there is no
-  // explicit knowledge that the VPN tunnel is up.
-  if (connection_state_ == mojom::ConnectionState::CONNECTED) {
+  // explicit knowledge that the VPN tunnel is up. The same goes for everything
+  // else the agent reported, such as a "connecting" that nobody is left to
+  // finish: it all belonged to the session that is gone. A reported agent
+  // failure is not the agent's to clear, and stays.
+  agent_state_.reset();
+
+  if (connection_state_ != mojom::ConnectionState::CONNECT_NO_AGENT) {
     UpdateConnectionState(mojom::ConnectionState::DISCONNECTED, std::string());
   }
 }
@@ -253,6 +296,77 @@ void BraveVpnServiceImpl::OnAgentLaunchFailed(
   // Sent after the state so observers see it first. A failure may leave the
   // state unchanged, and the UI still needs it to finish a pending retry.
   NotifyAgentFailure();
+}
+
+void BraveVpnServiceImpl::OnConnectionStateChanged(
+    mojom::VpnConnectionState state,
+    const std::optional<std::string>& error_message) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // The agent client delivers the agent's calls only while a session is up.
+  CHECK(agent_state_);
+  agent_state_->connection_state = state;
+  agent_state_->connection_error = error_message.value_or(std::string());
+
+  // A reported agent failure outranks what a new session says until that
+  // session has proved stable: an agent that crashes on startup gets this far
+  // on every cycle, and its failure is reported only once. The value is kept,
+  // and OnAgentSessionStable() publishes it.
+  if (connection_state_ != mojom::ConnectionState::CONNECT_NO_AGENT) {
+    UpdateConnectionStateFromAgent();
+  }
+}
+
+void BraveVpnServiceImpl::OnRegionSelectionChanged(
+    mojom::VpnRegionSelectionPtr selection) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(agent_state_);
+  mojom::RegionPtr region =
+      selection->region ? BrowserRegionFromAgent(std::move(selection->region))
+                        : mojom::Region::New();
+  region->is_automatic = selection->is_automatic;
+  if (!agent_state_->selected_region.Equals(region)) {
+    agent_state_->selected_region = std::move(region);
+    NotifySelectedRegionChanged(agent_state_->selected_region.Clone());
+  }
+}
+
+void BraveVpnServiceImpl::OnAutoReconnectStateChanged(bool enabled) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(agent_state_);
+  if (agent_state_->auto_reconnect_enabled != enabled) {
+    agent_state_->auto_reconnect_enabled = enabled;
+    NotifyAutoReconnectStateChanged(enabled);
+  }
+}
+
+void BraveVpnServiceImpl::OnSmartProxyRoutingStateChanged(bool enabled) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(agent_state_);
+  if (agent_state_->smart_proxy_routing_enabled != enabled) {
+    agent_state_->smart_proxy_routing_enabled = enabled;
+    NotifySmartProxyRoutingStateChanged(enabled);
+  }
+}
+
+void BraveVpnServiceImpl::OnAllowLanTrafficStateChanged(bool available,
+                                                        bool enabled) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(agent_state_);
+  agent_state_->allow_lan_traffic_available = available;
+  agent_state_->allow_lan_traffic_enabled = enabled;
+}
+
+void BraveVpnServiceImpl::OnLastHostnameChanged(const std::string& hostname) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(agent_state_);
+  agent_state_->last_hostname = hostname;
+}
+
+void BraveVpnServiceImpl::UpdateConnectionStateFromAgent() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(agent_state_);
+  UpdateConnectionState(ToConnectionState(agent_state_->connection_state),
+                        agent_state_->connection_error);
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)

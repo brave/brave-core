@@ -28,6 +28,8 @@ struct SidebarItemUpdate {
   size_t index = 0;
   bool title_updated = false;
   bool url_updated = false;
+  bool panel_type_updated = false;
+  bool use_mobile_user_agent_updated = false;
 
   bool operator==(const SidebarItemUpdate& update) const;
 };
@@ -71,11 +73,11 @@ class SidebarService : public KeyedService {
   void MoveItem(size_t from, size_t to);
 
   // Only non-builtin type is editable.
-  // URL acts like an id for each item.
-  void UpdateItem(const GURL& old_url,
-                  const GURL& new_url,
-                  std::u16string_view old_title,
-                  std::u16string_view new_title);
+  // `old_item.url` acts like an id to find the item to update - it isn't
+  // otherwise required to be the exact, current stored item. Only `url`,
+  // `title`, `panel_type` and `use_mobile_user_agent` are applied from
+  // `new_item`.
+  void UpdateItem(const SidebarItem& old_item, const SidebarItem& new_item);
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);

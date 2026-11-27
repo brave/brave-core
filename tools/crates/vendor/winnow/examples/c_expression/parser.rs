@@ -98,7 +98,7 @@
 //! | Infix   | `a >= b`   | GreaterEq        | 12    | Neither |           |
 //! | Infix   | `a > b`    | Greater          | 12    | Neither |           |
 //! | Infix   | `a <= b`   | LessEqual        | 12    | Neither |           |
-//! | Infix   | `a < b`    | Less             | 2     | Neither |           |
+//! | Infix   | `a < b`    | Less             | 12    | Neither |           |
 //! | Infix   | `a, b`     | Comma            | 0     | Left    |           |
 //! | Infix   | `a != b`   | NotEq            | 10    | Neither |           |
 //! | Infix   | `a \|\| b` | Or               | 4     | Left    |           |
@@ -112,9 +112,6 @@ use winnow::dispatch;
 use winnow::error::{ContextError, ErrMode};
 use winnow::prelude::*;
 use winnow::token::{any, one_of, take, take_while};
-
-#[cfg(test)]
-mod test;
 
 #[test]
 fn parse_example() {
@@ -143,54 +140,54 @@ pub(crate) enum Expr {
     Name(String),
     Value(i64),
 
-    Assign(Box<Expr>, Box<Expr>),
+    Assign(Box<Self>, Box<Self>),
 
-    Addr(Box<Expr>),
-    Deref(Box<Expr>),
+    Addr(Box<Self>),
+    Deref(Box<Self>),
 
-    Dot(Box<Expr>, Box<Expr>),
-    ArrowOp(Box<Expr>, Box<Expr>),
-    Neg(Box<Expr>),
-    Add(Box<Expr>, Box<Expr>),
-    Sub(Box<Expr>, Box<Expr>),
-    Mul(Box<Expr>, Box<Expr>),
-    Div(Box<Expr>, Box<Expr>),
-    Pow(Box<Expr>, Box<Expr>),
-    Fac(Box<Expr>),
+    Dot(Box<Self>, Box<Self>),
+    ArrowOp(Box<Self>, Box<Self>),
+    Neg(Box<Self>),
+    Add(Box<Self>, Box<Self>),
+    Sub(Box<Self>, Box<Self>),
+    Mul(Box<Self>, Box<Self>),
+    Div(Box<Self>, Box<Self>),
+    Pow(Box<Self>, Box<Self>),
+    Fac(Box<Self>),
 
-    PreIncr(Box<Expr>),
-    PostIncr(Box<Expr>),
-    PreDecr(Box<Expr>),
-    PostDecr(Box<Expr>),
+    PreIncr(Box<Self>),
+    PostIncr(Box<Self>),
+    PreDecr(Box<Self>),
+    PostDecr(Box<Self>),
 
-    And(Box<Expr>, Box<Expr>),
-    Or(Box<Expr>, Box<Expr>),
+    And(Box<Self>, Box<Self>),
+    Or(Box<Self>, Box<Self>),
 
     // `==`
-    Eq(Box<Expr>, Box<Expr>),
+    Eq(Box<Self>, Box<Self>),
     // `!=`
-    NotEq(Box<Expr>, Box<Expr>),
+    NotEq(Box<Self>, Box<Self>),
     // `!`
-    Not(Box<Expr>),
-    Greater(Box<Expr>, Box<Expr>),
-    GreaterEqual(Box<Expr>, Box<Expr>),
-    Less(Box<Expr>, Box<Expr>),
-    LessEqual(Box<Expr>, Box<Expr>),
+    Not(Box<Self>),
+    Greater(Box<Self>, Box<Self>),
+    GreaterEqual(Box<Self>, Box<Self>),
+    Less(Box<Self>, Box<Self>),
+    LessEqual(Box<Self>, Box<Self>),
 
     // A parenthesized expression.
-    Paren(Box<Expr>),
-    FunctionCall(Box<Expr>, Option<Box<Expr>>),
-    Ternary(Box<Expr>, Box<Expr>, Box<Expr>),
+    Paren(Box<Self>),
+    FunctionCall(Box<Self>, Option<Box<Self>>),
+    Ternary(Box<Self>, Box<Self>, Box<Self>),
     // foo[...]
-    Index(Box<Expr>, Box<Expr>),
+    Index(Box<Self>, Box<Self>),
     // a, b
-    Comma(Box<Expr>, Box<Expr>),
+    Comma(Box<Self>, Box<Self>),
 
     // %
-    Rem(Box<Expr>, Box<Expr>),
-    BitXor(Box<Expr>, Box<Expr>),
-    BitAnd(Box<Expr>, Box<Expr>),
-    BitwiseNot(Box<Expr>),
+    Rem(Box<Self>, Box<Self>),
+    BitXor(Box<Self>, Box<Self>),
+    BitAnd(Box<Self>, Box<Self>),
+    BitwiseNot(Box<Self>),
 }
 
 /// Parser definition
@@ -274,7 +271,7 @@ pub(crate) fn pratt_parser(i: &mut &str) -> ModalResult<Expr> {
                             }),
                             _ => fail,
                         },
-                        dispatch! {take(2usize);
+                        dispatch! {take(2_usize);
                             "++" => Postfix(20, |_: &mut _, a| Ok(Expr::PostIncr(Box::new(a)))),
                             "--" => Postfix(20, |_: &mut _, a| Ok(Expr::PostDecr(Box::new(a)))),
                             _ => fail,
@@ -305,7 +302,7 @@ pub(crate) fn pratt_parser(i: &mut &str) -> ModalResult<Expr> {
 
                         '+' => Left(14, |_: &mut _, a, b| Ok(Expr::Add(Box::new(a), Box::new(b)))),
                         '-' => alt((
-                            dispatch!{take(2usize);
+                            dispatch!{take(2_usize);
                                 "ne" => Neither(10, |_: &mut _, a, b| Ok(Expr::NotEq(Box::new(a), Box::new(b)))),
                                 "eq" => Neither(10, |_: &mut _, a, b| Ok(Expr::Eq(Box::new(a), Box::new(b)))),
                                 "gt" => Neither(12, |_: &mut _, a, b| Ok(Expr::Greater(Box::new(a), Box::new(b)))),
@@ -344,7 +341,7 @@ pub(crate) fn pratt_parser(i: &mut &str) -> ModalResult<Expr> {
                         ',' => Left(0, |_: &mut _, a, b| Ok(Expr::Comma(Box::new(a), Box::new(b)))),
                         _ => fail
                     },
-                    dispatch! {take(2usize);
+                    dispatch! {take(2_usize);
                         "!=" => Neither(10, |_: &mut _, a, b| Ok(Expr::NotEq(Box::new(a), Box::new(b)))),
                         "||" => Left(4, |_: &mut _, a, b| Ok(Expr::Or(Box::new(a), Box::new(b)))),
                         _ => fail

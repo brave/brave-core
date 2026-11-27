@@ -1,16 +1,15 @@
+use gix_error::{ErrorExt, Message, Result, ResultExt, message};
+
 use std::{
     borrow::Cow,
     io::{self, Read},
     path::{Path, PathBuf},
 };
 
-pub use error::Error;
-
 use crate::{
-    file,
+    BStr, BString, FullNameRef, PartialName, PartialNameRef, Reference, file,
     name::is_pseudo_ref,
     store_impl::{file::loose, packed},
-    BStr, BString, FullNameRef, PartialName, PartialNameRef, Reference,
 };
 
 /// ### Finding References - notes about precomposed unicode.
@@ -35,27 +34,37 @@ impl file::Store {
     ///   for a version with more control.
     ///
     /// [git-lookup-docs]: https://github.com/git/git/blob/5d5b1473453400224ebb126bf3947e0a3276bdf5/Documentation/revisions.txt#L34-L46
-    pub fn try_find<'a, Name, E>(&self, partial: Name) -> Result<Option<Reference>, Error>
+    pub fn try_find<'a, Name, E>(&self, partial: Name) -> Result<Option<Reference>>
     where
         Name: TryInto<&'a PartialNameRef, Error = E>,
-        Error: From<E>,
+        std::result::Result<&'a PartialNameRef, E>: ResultExt<Success = &'a PartialNameRef>,
     {
         let packed = self.assure_packed_refs_uptodate()?;
-        self.find_one_with_verified_input(partial.try_into()?, packed.as_ref().map(|b| &***b))
+        self.find_one_with_verified_input(
+            partial
+                .try_into()
+                .or_raise(|| message("The ref name or path is not a valid ref name"))?,
+            packed.as_ref().map(|b| &***b),
+        )
     }
 
-    /// Similar to [`file::Store::find()`] but a non-existing ref is treated as error.
+    /// Like [`file::Store::try_find()`], returning `None` for a non-existing reference.
     ///
     /// Find only loose references, that is references that aren't in the packed-refs buffer.
     /// All symbolic references are loose references.
     /// `HEAD` is always a loose reference.
-    pub fn try_find_loose<'a, Name, E>(&self, partial: Name) -> Result<Option<loose::Reference>, Error>
+    pub fn try_find_loose<'a, Name, E>(&self, partial: Name) -> Result<Option<loose::Reference>>
     where
         Name: TryInto<&'a PartialNameRef, Error = E>,
-        Error: From<E>,
+        std::result::Result<&'a PartialNameRef, E>: ResultExt<Success = &'a PartialNameRef>,
     {
-        self.find_one_with_verified_input(partial.try_into()?, None)
-            .map(|r| r.map(Into::into))
+        self.find_one_with_verified_input(
+            partial
+                .try_into()
+                .or_raise(|| message("The ref name or path is not a valid ref name"))?,
+            None,
+        )
+        .map(|r| r.map(Into::into))
     }
 
     /// Similar to [`file::Store::find()`], but allows to pass a snapshotted packed buffer instead.
@@ -63,44 +72,39 @@ impl file::Store {
         &self,
         partial: Name,
         packed: Option<&packed::Buffer>,
-    ) -> Result<Option<Reference>, Error>
+    ) -> Result<Option<Reference>>
     where
         Name: TryInto<&'a PartialNameRef, Error = E>,
-        Error: From<E>,
+        std::result::Result<&'a PartialNameRef, E>: ResultExt<Success = &'a PartialNameRef>,
     {
-        self.find_one_with_verified_input(partial.try_into()?, packed)
+        self.find_one_with_verified_input(
+            partial
+                .try_into()
+                .or_raise(|| message("The ref name or path is not a valid ref name"))?,
+            packed,
+        )
     }
 
     pub(crate) fn find_one_with_verified_input(
         &self,
         partial_name: &PartialNameRef,
         packed: Option<&packed::Buffer>,
-    ) -> Result<Option<Reference>, Error> {
-        fn decompose_if(mut r: Reference, input_changed_to_precomposed: bool) -> Reference {
-            if input_changed_to_precomposed {
-                use gix_object::bstr::ByteSlice;
-                let decomposed = r
-                    .name
-                    .0
-                    .to_str()
-                    .ok()
-                    .map(|name| gix_utils::str::decompose(name.into()));
-                if let Some(Cow::Owned(decomposed)) = decomposed {
-                    r.name.0 = decomposed.into();
-                }
-            }
-            r
-        }
+    ) -> Result<Option<Reference>> {
         let mut buf = BString::default();
-        let mut precomposed_partial_name_storage = packed.filter(|_| self.precompose_unicode).and_then(|_| {
-            use gix_object::bstr::ByteSlice;
-            let precomposed = partial_name.0.to_str().ok()?;
-            let precomposed = gix_utils::str::precompose(precomposed.into());
-            match precomposed {
-                Cow::Owned(precomposed) => Some(PartialName(precomposed.into())),
-                Cow::Borrowed(_) => None,
-            }
-        });
+        let mut precomposed_partial_name_storage = packed
+            .filter(|_| self.precompose_unicode)
+            .and_then(|_| {
+                use gix_object::bstr::ByteSlice;
+                let precomposed = partial_name.0.to_str().ok()?;
+                let precomposed = gix_utils::str::precompose_path(Path::new(precomposed).into());
+                match precomposed {
+                    Cow::Owned(precomposed) => {
+                        Some(gix_path::into_bstr(precomposed).map(|name| PartialName(name.into_owned())))
+                    }
+                    Cow::Borrowed(_) => None,
+                }
+            })
+            .transpose()?;
         let precomposed_partial_name = precomposed_partial_name_storage
             .as_ref()
             .map(std::convert::AsRef::as_ref);
@@ -117,7 +121,7 @@ impl file::Store {
                     &mut buf,
                     consider_pseudo_ref,
                 ) {
-                    Ok(Some(r)) => return Ok(Some(decompose_if(r, precomposed_partial_name.is_some()))),
+                    Ok(Some(r)) => return Ok(Some(r)),
                     Ok(None) => {
                         if consider_pseudo_ref && is_pseudo_ref(partial_name.as_bstr()) {
                             break 'try_directories;
@@ -147,12 +151,13 @@ impl file::Store {
                 &mut buf,
                 true, /* consider-pseudo-ref */
             )
-            .map(|res| res.map(|r| decompose_if(r, precomposed_partial_name_storage.is_some())))
         } else {
             Ok(None)
         }
     }
 
+    /// Resolve and read a candidate. Read failures include [metadata](gix_error::Error::metadata()) `path` (native path),
+    /// the file that failed.
     fn find_inner(
         &self,
         inbetween: &str,
@@ -161,52 +166,79 @@ impl file::Store {
         packed: Option<&packed::Buffer>,
         path_buf: &mut BString,
         consider_pseudo_ref: bool,
-    ) -> Result<Option<Reference>, Error> {
+    ) -> Result<Option<Reference>> {
         let full_name = precomposed_partial_name
             .unwrap_or(partial_name)
             .construct_full_name_ref(inbetween, path_buf, consider_pseudo_ref);
-        let content_buf = self.ref_contents(full_name).map_err(|err| Error::ReadFileContents {
-            source: err,
-            path: self.reference_path(full_name),
-        })?;
+        // Canonicalization can turn a Kelvin sign into the ASCII name of a pseudo-ref.
+        let restore_spelling = precomposed_partial_name.is_some()
+            && !matches!(
+                full_name.category(),
+                Some(
+                    crate::Category::PseudoRef
+                        | crate::Category::MainPseudoRef
+                        | crate::Category::LinkedPseudoRef { .. }
+                )
+            );
+        let content_buf = match self.ref_contents(full_name) {
+            Ok(content_buf) => content_buf,
+            Err(err) if err.kind() == io::ErrorKind::NotADirectory => return Ok(None),
+            Err(err) => {
+                return Err(err.and_raise(read_reference_error(self.reference_path(full_name)?)));
+            }
+        };
 
         match content_buf {
             None => {
-                if let Some(packed) = packed {
-                    if let Some(full_name) = packed::find::transform_full_name_for_lookup(full_name) {
-                        let full_name_backing;
-                        let full_name = match &self.namespace {
-                            Some(namespace) => {
-                                full_name_backing = namespace.to_owned().into_namespaced_name(full_name);
-                                full_name_backing.as_ref()
-                            }
-                            None => full_name,
-                        };
-                        if let Some(packed_ref) = packed.try_find_full_name(full_name)? {
-                            let mut res: Reference = packed_ref.into();
-                            if let Some(namespace) = &self.namespace {
-                                res.strip_namespace(namespace);
-                            }
-                            return Ok(Some(res));
+                if let Some(packed) = packed
+                    && let Some(full_name) = packed::find::transform_full_name_for_lookup(full_name)
+                {
+                    let full_name_backing;
+                    let full_name = match &self.namespace {
+                        Some(namespace) => {
+                            full_name_backing = namespace.to_owned().into_namespaced_name(full_name);
+                            full_name_backing.as_ref()
                         }
+                        None => full_name,
+                    };
+                    if let Some(packed_ref) = packed.try_find_full_name(full_name)? {
+                        let mut res: Reference = packed_ref.into();
+                        if let Some(namespace) = &self.namespace {
+                            res.strip_namespace(namespace);
+                        }
+                        if restore_spelling {
+                            let original =
+                                partial_name.construct_full_name_ref(inbetween, path_buf, consider_pseudo_ref);
+                            res.name = packed::find::transform_full_name_for_lookup(original)
+                                .expect("precomposition does not change the reference category")
+                                .to_owned();
+                        }
+                        return Ok(Some(res));
                     }
                 }
                 Ok(None)
             }
-            Some(content) => Ok(Some(
-                loose::Reference::try_from_path(full_name.to_owned(), &content)
-                    .map(Into::into)
-                    .map(|mut r: Reference| {
-                        if let Some(namespace) = &self.namespace {
-                            r.strip_namespace(namespace);
-                        }
-                        r
-                    })
-                    .map_err(|err| Error::ReferenceCreation {
-                        source: err,
-                        relative_path: full_name.to_path().to_owned(),
-                    })?,
-            )),
+            Some(content) => {
+                let full_name = if restore_spelling {
+                    partial_name.construct_full_name_ref(inbetween, path_buf, consider_pseudo_ref)
+                } else {
+                    full_name
+                };
+                let relative_path = full_name.to_path()?;
+                Ok(Some(
+                    loose::Reference::try_from_path(full_name.to_owned(), &content, self.object_hash)
+                        .map(Into::into)
+                        .map(|mut r: Reference| {
+                            if let Some(namespace) = &self.namespace {
+                                r.strip_namespace(namespace);
+                            }
+                            r
+                        })
+                        .or_raise(|| ReferenceDecode {
+                            relative_path: relative_path.to_owned(),
+                        })?,
+                ))
+            }
         }
     }
 }
@@ -216,18 +248,20 @@ impl file::Store {
         &self,
         name: &'a FullNameRef,
         is_reflog: bool,
-    ) -> (Cow<'_, Path>, &'a FullNameRef) {
+    ) -> Result<(Cow<'_, Path>, &'a FullNameRef)> {
         let commondir = self.common_dir_resolved();
-        let linked_git_dir =
-            |worktree_name: &BStr| commondir.join("worktrees").join(gix_path::from_bstr(worktree_name));
-        name.category_and_short_name()
-            .map(|(c, sn)| {
+        let linked_git_dir = |worktree_name: &BStr| -> Result<PathBuf> {
+            Ok(commondir.join("worktrees").join(gix_path::from_bstr(worktree_name)?))
+        };
+        name.category_and_short_name().map_or_else(
+            || Ok((commondir.into(), name)),
+            |(c, sn)| {
                 use crate::Category::*;
                 let sn = FullNameRef::new_unchecked(sn);
-                match c {
+                Ok(match c {
                     LinkedPseudoRef { name: worktree_name } => {
                         if is_reflog {
-                            (linked_git_dir(worktree_name).into(), sn)
+                            (linked_git_dir(worktree_name)?.into(), sn)
                         } else {
                             (commondir.into(), name)
                         }
@@ -237,7 +271,7 @@ impl file::Store {
                     LinkedRef { name: worktree_name } => {
                         if sn.category().is_some_and(|cat| cat.is_worktree_private()) {
                             if is_reflog {
-                                (linked_git_dir(worktree_name).into(), sn)
+                                (linked_git_dir(worktree_name)?.into(), sn)
                             } else {
                                 (commondir.into(), name)
                             }
@@ -246,47 +280,61 @@ impl file::Store {
                         }
                     }
                     PseudoRef | Bisect | Rewritten | WorktreePrivate => (self.git_dir.as_path().into(), name),
-                }
-            })
-            .unwrap_or((commondir.into(), name))
+                })
+            },
+        )
     }
 
     /// Implements the logic required to transform a fully qualified refname into a filesystem path
-    pub(crate) fn reference_path_with_base<'b>(&self, name: &'b FullNameRef) -> (Cow<'_, Path>, Cow<'b, Path>) {
-        let (base, name) = self.to_base_dir_and_relative_name(name, false);
-        (
+    pub(crate) fn reference_path_with_base<'b>(&self, name: &'b FullNameRef) -> Result<(Cow<'_, Path>, Cow<'b, Path>)> {
+        let (base, name) = self.to_base_dir_and_relative_name(name, false)?;
+        Ok((
             base,
             match &self.namespace {
                 None => gix_path::to_native_path_on_windows(name.as_bstr()),
                 Some(namespace) => {
                     gix_path::to_native_path_on_windows(namespace.to_owned().into_namespaced_name(name).into_inner())
                 }
-            },
-        )
+            }?,
+        ))
     }
 
     /// Implements the logic required to transform a fully qualified refname into a filesystem path
-    pub(crate) fn reference_path(&self, name: &FullNameRef) -> PathBuf {
-        let (base, relative_path) = self.reference_path_with_base(name);
-        base.join(relative_path)
+    pub(crate) fn reference_path(&self, name: &FullNameRef) -> Result<PathBuf> {
+        let (base, relative_path) = self.reference_path_with_base(name)?;
+        Ok(base.join(relative_path))
+    }
+
+    /// If `prohibit_windows_device_names` is set, check that `name` does not
+    /// contain a path component that matches a reserved Windows device name.
+    pub(crate) fn check_windows_device_name(&self, name: &FullNameRef) -> io::Result<()> {
+        if !self.prohibit_windows_device_names {
+            return Ok(());
+        }
+        let (_, relative_path) = self
+            .reference_path_with_base(name)
+            .map_err(|err| io::Error::new(io::ErrorKind::InvalidInput, err))?;
+        if relative_path
+            .components()
+            .filter_map(|c| gix_path::try_os_str_into_bstr(c.as_os_str().into()).ok())
+            .any(|c| gix_validate::path::component_is_windows_device(c.as_ref()))
+        {
+            Err(std::io::Error::other(format!(
+                "Illegal use of reserved Windows device name in \"{}\"",
+                name.as_bstr()
+            )))
+        } else {
+            Ok(())
+        }
     }
 
     /// Read the file contents with a verified full reference path and return it in the given vector if possible.
     pub(crate) fn ref_contents(&self, name: &FullNameRef) -> io::Result<Option<Vec<u8>>> {
-        let (base, relative_path) = self.reference_path_with_base(name);
-        if self.prohibit_windows_device_names
-            && relative_path
-                .components()
-                .filter_map(|c| gix_path::try_os_str_into_bstr(c.as_os_str().into()).ok())
-                .any(|c| gix_validate::path::component_is_windows_device(c.as_ref()))
-        {
-            return Err(std::io::Error::other(format!(
-                "Illegal use of reserved Windows device name in \"{}\"",
-                name.as_bstr()
-            )));
-        }
-
-        let ref_path = base.join(relative_path);
+        self.check_windows_device_name(name)?;
+        let (base, relative_path) = self
+            .reference_path_with_base(name)
+            .map_err(|err| io::Error::new(io::ErrorKind::InvalidInput, err))?;
+        let ref_path = base.join(&relative_path);
         match std::fs::File::open(&ref_path) {
             Ok(mut file) => {
                 let mut buf = Vec::with_capacity(128);
@@ -295,127 +343,137 @@ impl file::Store {
                 }
                 Ok(buf.into())
             }
-            Err(err) if err.kind() == io::ErrorKind::NotFound => Ok(None),
+            Err(err) if err.kind() == io::ErrorKind::NotFound => {
+                #[cfg(windows)]
+                if path_has_file_prefix(base.as_ref(), relative_path.as_ref()) {
+                    return Err(io::Error::new(io::ErrorKind::NotADirectory, err));
+                }
+                Ok(None)
+            }
             #[cfg(windows)]
-            Err(err) if err.kind() == std::io::ErrorKind::PermissionDenied => Ok(None),
+            Err(err) if err.kind() == std::io::ErrorKind::PermissionDenied => {
+                if path_has_file_prefix(base.as_ref(), relative_path.as_ref()) {
+                    Err(io::Error::new(io::ErrorKind::NotADirectory, err))
+                } else {
+                    Ok(None)
+                }
+            }
             Err(err) => Err(err),
         }
     }
 }
 
-///
-pub mod existing {
-    pub use error::Error;
-
-    use crate::{
-        file::{self},
-        store_impl::{
-            file::{find, loose},
-            packed,
-        },
-        PartialNameRef, Reference,
-    };
-
-    impl file::Store {
-        /// Similar to [`file::Store::try_find()`] but a non-existing ref is treated as error.
-        pub fn find<'a, Name, E>(&self, partial: Name) -> Result<Reference, Error>
-        where
-            Name: TryInto<&'a PartialNameRef, Error = E>,
-            crate::name::Error: From<E>,
-        {
-            let packed = self.assure_packed_refs_uptodate().map_err(find::Error::PackedOpen)?;
-            self.find_existing_inner(partial, packed.as_ref().map(|b| &***b))
+#[cfg(windows)]
+fn path_has_file_prefix(base: &Path, relative_path: &Path) -> bool {
+    let mut path = base.to_owned();
+    let mut components = relative_path.components().peekable();
+    while let Some(component) = components.next() {
+        if components.peek().is_none() {
+            break;
         }
-
-        /// Similar to [`file::Store::find()`], but supports a stable packed buffer.
-        pub fn find_packed<'a, Name, E>(
-            &self,
-            partial: Name,
-            packed: Option<&packed::Buffer>,
-        ) -> Result<Reference, Error>
-        where
-            Name: TryInto<&'a PartialNameRef, Error = E>,
-            crate::name::Error: From<E>,
-        {
-            self.find_existing_inner(partial, packed)
+        path.push(component.as_os_str());
+        match std::fs::metadata(&path) {
+            Ok(metadata) if metadata.is_file() => return true,
+            Ok(_) => {}
+            Err(err) if err.kind() == io::ErrorKind::NotFound => return false,
+            Err(_) => {}
         }
+    }
+    false
+}
 
-        /// Similar to [`file::Store::find()`] won't handle packed-refs.
-        pub fn find_loose<'a, Name, E>(&self, partial: Name) -> Result<loose::Reference, Error>
-        where
-            Name: TryInto<&'a PartialNameRef, Error = E>,
-            crate::name::Error: From<E>,
-        {
-            self.find_existing_inner(partial, None).map(Into::into)
-        }
+impl file::Store {
+    /// Similar to [`file::Store::try_find()`] but a non-existing ref is treated as error.
+    pub fn find<'a, Name, E>(&self, partial: Name) -> Result<Reference>
+    where
+        Name: TryInto<&'a PartialNameRef, Error = E>,
+        std::result::Result<&'a PartialNameRef, E>: ResultExt<Success = &'a PartialNameRef>,
+    {
+        let packed = self.assure_packed_refs_uptodate()?;
+        self.find_existing_inner(partial, packed.as_ref().map(|b| &***b))
+    }
 
-        /// Similar to [`file::Store::find()`] but a non-existing ref is treated as error.
-        pub(crate) fn find_existing_inner<'a, Name, E>(
-            &self,
-            partial: Name,
-            packed: Option<&packed::Buffer>,
-        ) -> Result<Reference, Error>
-        where
-            Name: TryInto<&'a PartialNameRef, Error = E>,
-            crate::name::Error: From<E>,
-        {
-            let path = partial
-                .try_into()
-                .map_err(|err| Error::Find(find::Error::RefnameValidation(err.into())))?;
-            match self.find_one_with_verified_input(path, packed) {
-                Ok(Some(r)) => Ok(r),
-                Ok(None) => Err(Error::NotFound {
-                    name: path.to_partial_path().to_owned(),
-                }),
-                Err(err) => Err(err.into()),
+    /// Similar to [`file::Store::find()`], but supports a stable packed buffer.
+    pub fn find_packed<'a, Name, E>(&self, partial: Name, packed: Option<&packed::Buffer>) -> Result<Reference>
+    where
+        Name: TryInto<&'a PartialNameRef, Error = E>,
+        std::result::Result<&'a PartialNameRef, E>: ResultExt<Success = &'a PartialNameRef>,
+    {
+        self.find_existing_inner(partial, packed)
+    }
+
+    /// Similar to [`file::Store::find()`] won't handle packed-refs.
+    pub fn find_loose<'a, Name, E>(&self, partial: Name) -> Result<loose::Reference>
+    where
+        Name: TryInto<&'a PartialNameRef, Error = E>,
+        std::result::Result<&'a PartialNameRef, E>: ResultExt<Success = &'a PartialNameRef>,
+    {
+        self.find_existing_inner(partial, None).map(Into::into)
+    }
+
+    /// Similar to [`file::Store::find()`] but a non-existing ref is treated as error.
+    pub(crate) fn find_existing_inner<'a, Name, E>(
+        &self,
+        partial: Name,
+        packed: Option<&packed::Buffer>,
+    ) -> Result<Reference>
+    where
+        Name: TryInto<&'a PartialNameRef, Error = E>,
+        std::result::Result<&'a PartialNameRef, E>: ResultExt<Success = &'a PartialNameRef>,
+    {
+        let path = partial
+            .try_into()
+            .or_raise(|| message("The ref name or path is not a valid ref name"))?;
+        match self.find_one_with_verified_input(path, packed) {
+            Ok(Some(r)) => Ok(r),
+            Ok(None) => Err(NotFound {
+                name: path.as_bstr().to_owned(),
             }
-        }
-    }
-
-    mod error {
-        use std::path::PathBuf;
-
-        use crate::store_impl::file::find;
-
-        /// The error returned by [file::Store::find_existing()][crate::file::Store::find()].
-        #[derive(Debug, thiserror::Error)]
-        #[allow(missing_docs)]
-        pub enum Error {
-            #[error("An error occurred while trying to find a reference")]
-            Find(#[from] find::Error),
-            #[error("The ref partially named {name:?} could not be found")]
-            NotFound { name: PathBuf },
+            .raise()),
+            Err(err) => Err(err),
         }
     }
 }
 
-mod error {
-    use std::{convert::Infallible, io, path::PathBuf};
+/// The raised error's [metadata](gix_error::Error::metadata()) `path` (native path) identifies the reference file that
+/// could not be read.
+pub(super) fn read_reference_error(path: impl Into<PathBuf>) -> Message {
+    Message::new("Could not read reference").with("path", path.into())
+}
 
-    use crate::{file, store_impl::packed};
+/// A reference lookup found no matching name, including a missing symbolic referent.
+#[derive(Debug)]
+pub struct NotFound {
+    /// The name whose lookup failed. It may have been discovered while following symbolic references.
+    pub name: BString,
+}
 
-    /// The error returned by [file::Store::find()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("The ref name or path is not a valid ref name")]
-        RefnameValidation(#[from] crate::name::Error),
-        #[error("The ref file {path:?} could not be read in full")]
-        ReadFileContents { source: io::Error, path: PathBuf },
-        #[error("The reference at \"{relative_path}\" could not be instantiated")]
-        ReferenceCreation {
-            source: file::loose::reference::decode::Error,
-            relative_path: PathBuf,
-        },
-        #[error("A packed ref lookup failed")]
-        PackedRef(#[from] packed::find::Error),
-        #[error("Could not open the packed refs buffer when trying to find references.")]
-        PackedOpen(#[from] packed::buffer::open::Error),
-    }
-
-    impl From<Infallible> for Error {
-        fn from(_: Infallible) -> Self {
-            unreachable!("this impl is needed to allow passing a known valid partial path as parameter")
-        }
+impl std::fmt::Display for NotFound {
+    #[allow(clippy::unnecessary_debug_formatting)]
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "The ref partially named {:?} could not be found", self.name)
     }
 }
+
+impl std::error::Error for NotFound {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        Some(const { &gix_error::ClassificationMarker::NOT_FOUND })
+    }
+}
+
+/// A loose reference was found at this path, but its contents could not be decoded.
+/// The decoding error is retained as a cause in the exception.
+#[derive(Debug)]
+pub struct ReferenceDecode {
+    /// The resolved reference path, relative to the Git directory.
+    pub relative_path: PathBuf,
+}
+
+impl std::fmt::Display for ReferenceDecode {
+    #[allow(clippy::unnecessary_debug_formatting)]
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "The reference at {:?} could not be decoded", self.relative_path)
+    }
+}
+
+impl std::error::Error for ReferenceDecode {}

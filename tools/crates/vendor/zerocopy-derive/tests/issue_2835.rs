@@ -6,10 +6,11 @@
 // This file may not be copied, modified, or distributed except according to
 // those terms.
 
-use zerocopy::{IntoBytes, Unalign};
+use zerocopy_renamed::{IntoBytes, Unalign};
 
 #[allow(unused)]
 #[derive(IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(C)]
 struct Struct {
     leading: Unalign<u32>,

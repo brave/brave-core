@@ -7,11 +7,13 @@ use powerfmt::smart_display::{FormatterOptions, Metadata, SmartDisplay};
 
 use self::Weekday::*;
 use crate::error;
+use crate::iter::WeekdayIter;
 
 /// Days of the week.
 ///
 /// As order is dependent on context (Sunday could be either two days after or five days before
 /// Friday), this type does not implement `PartialOrd` or `Ord`.
+#[repr(u8)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Weekday {
     #[expect(missing_docs)]
@@ -101,7 +103,7 @@ impl Weekday {
     /// ```
     #[inline]
     pub const fn nth_prev(self, n: u8) -> Self {
-        match self.number_days_from_monday() as i8 - (n % 7) as i8 {
+        match self.number_days_from_monday().cast_signed() - (n % 7).cast_signed() {
             1 | -6 => Tuesday,
             2 | -5 => Wednesday,
             3 | -4 => Thursday,
@@ -167,28 +169,41 @@ impl Weekday {
             Sunday => 0,
         }
     }
-}
 
-mod private {
-    #[non_exhaustive]
-    #[derive(Debug, Clone, Copy)]
-    pub struct WeekdayMetadata;
+    /// Create an infinite iterator starting at this weekday.
+    ///
+    /// ```rust
+    /// # use time::Weekday;
+    /// let mut iter = Weekday::iter_from(Weekday::Monday);
+    /// assert_eq!(iter.next(), Some(Weekday::Monday));
+    /// assert_eq!(iter.next(), Some(Weekday::Tuesday));
+    /// assert_eq!(iter.next(), Some(Weekday::Wednesday));
+    /// assert_eq!(iter.next(), Some(Weekday::Thursday));
+    /// assert_eq!(iter.next(), Some(Weekday::Friday));
+    /// assert_eq!(iter.next(), Some(Weekday::Saturday));
+    /// assert_eq!(iter.next(), Some(Weekday::Sunday));
+    /// assert_eq!(iter.next(), Some(Weekday::Monday));
+    /// // … continuing forever
+    /// ```
+    #[inline]
+    pub const fn iter_from(start: Self) -> WeekdayIter {
+        WeekdayIter::new(start)
+    }
 }
-use private::WeekdayMetadata;
 
 impl SmartDisplay for Weekday {
-    type Metadata = WeekdayMetadata;
+    type Metadata = ();
 
     #[inline]
     fn metadata(&self, _: FormatterOptions) -> Metadata<'_, Self> {
         match self {
-            Monday => Metadata::new(6, self, WeekdayMetadata),
-            Tuesday => Metadata::new(7, self, WeekdayMetadata),
-            Wednesday => Metadata::new(9, self, WeekdayMetadata),
-            Thursday => Metadata::new(8, self, WeekdayMetadata),
-            Friday => Metadata::new(6, self, WeekdayMetadata),
-            Saturday => Metadata::new(8, self, WeekdayMetadata),
-            Sunday => Metadata::new(6, self, WeekdayMetadata),
+            Monday => Metadata::new(6, self, ()),
+            Tuesday => Metadata::new(7, self, ()),
+            Wednesday => Metadata::new(9, self, ()),
+            Thursday => Metadata::new(8, self, ()),
+            Friday => Metadata::new(6, self, ()),
+            Saturday => Metadata::new(8, self, ()),
+            Sunday => Metadata::new(6, self, ()),
         }
     }
 

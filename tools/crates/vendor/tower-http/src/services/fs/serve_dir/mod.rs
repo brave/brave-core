@@ -255,7 +255,8 @@ impl<F> ServeDir<F> {
     /// By default `<ServeDir as Service<_>>::call` will handle IO errors and convert them into
     /// responses. It does that by converting [`std::io::ErrorKind::NotFound`] and
     /// [`std::io::ErrorKind::PermissionDenied`] to `404 Not Found` and any other error to `500
-    /// Internal Server Error`. The error will also be logged with `tracing`.
+    /// Internal Server Error`. The error will also be logged with `tracing` in case the `tracing`
+    /// crate feature is enabled.
     ///
     /// If you want to manually control how the error response is generated you can make a new
     /// service that wraps a `ServeDir` and calls `try_call` instead of `call`.
@@ -320,9 +321,9 @@ impl<F> ServeDir<F> {
                         inner: future::call_fallback(fallback, req),
                     };
                 }
-            } else {
-                return ResponseFuture::method_not_allowed();
             }
+
+            return ResponseFuture::method_not_allowed();
         }
 
         // `ServeDir` doesn't care about the request body but the fallback might. So move out the
@@ -410,8 +411,9 @@ where
         let future = self
             .try_call(req)
             .map(|result: Result<_, _>| -> Result<_, Infallible> {
-                let response = result.unwrap_or_else(|err| {
-                    tracing::error!(error = %err, "Failed to read file");
+                let response = result.unwrap_or_else(|_err| {
+                    #[cfg(feature = "tracing")]
+                    tracing::error!(error = %_err, "Failed to read file");
 
                     let body = ResponseBody::new(UnsyncBoxBody::new(
                         Empty::new().map_err(|err| match err {}).boxed_unsync(),
@@ -469,6 +471,14 @@ impl ServeVariant {
                                 .components()
                                 .all(|c| matches!(c, Component::Normal(_)))
                             {
+                                #[cfg(windows)]
+                                {
+                                    use std::os::windows::ffi::OsStrExt;
+                                    if is_reserved_dos_name(|| comp.encode_wide()) {
+                                        return None;
+                                    }
+                                }
+
                                 path_to_file.push(comp)
                             } else {
                                 return None;
@@ -485,6 +495,116 @@ impl ServeVariant {
             ServeVariant::SingleFile { mime: _ } => Some(base_path.to_path_buf()),
         }
     }
+}
+
+/// Check whether a component name matches a reserved Windows DOS device name.
+/// See: https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file#naming-conventions
+///
+/// We explicitly check for Unicode superscript characters `¹` (0x00B9), `²` (0x00B2),
+/// and `³` (0x00B3) because older character tables (ISO/IEC 8859-1) define these values,
+/// which legacy Win32 file parsing resolves natively as valid port numbers (0..9).
+///
+/// This uses an iterator and stack array to avoid allocating. A closure is used because it
+/// iterates the characters twice. The closure must return the same iterator each time it is
+/// called.
+#[cfg(any(windows, test))]
+fn is_reserved_dos_name<F, I>(mut get_iter: F) -> bool
+where
+    F: FnMut() -> I,
+    I: Iterator<Item = u16>,
+{
+    const CON: [u16; 3] = [b'C' as u16, b'O' as u16, b'N' as u16];
+    const PRN: [u16; 3] = [b'P' as u16, b'R' as u16, b'N' as u16];
+    const AUX: [u16; 3] = [b'A' as u16, b'U' as u16, b'X' as u16];
+    const NUL: [u16; 3] = [b'N' as u16, b'U' as u16, b'L' as u16];
+    const CONIN: [u16; 6] = [
+        b'C' as u16,
+        b'O' as u16,
+        b'N' as u16,
+        b'I' as u16,
+        b'N' as u16,
+        b'$' as u16,
+    ];
+    const CONOUT: [u16; 7] = [
+        b'C' as u16,
+        b'O' as u16,
+        b'N' as u16,
+        b'O' as u16,
+        b'U' as u16,
+        b'T' as u16,
+        b'$' as u16,
+    ];
+
+    const COM: [u16; 3] = [b'C' as u16, b'O' as u16, b'M' as u16];
+    const LPT: [u16; 3] = [b'L' as u16, b'P' as u16, b'T' as u16];
+
+    const ZERO: u16 = b'0' as u16;
+    const NINE: u16 = b'9' as u16;
+    const SUPERSCRIPT_ONE: u16 = 0x00B9;
+    const SUPERSCRIPT_TWO: u16 = 0x00B2;
+    const SUPERSCRIPT_THREE: u16 = 0x00B3;
+
+    fn is_whitespace(c: u16) -> bool {
+        c <= 0x7F && ((c as u8).is_ascii_whitespace() || c == 0x000B)
+    }
+
+    // In a first pass over the string, obtain the length of the basename.
+    let trimmed_len = get_iter()
+        .enumerate()
+        // We want the base name, so stop at '.' or ':' characters.
+        .take_while(|&(_idx, c)| c != b'.' as u16 && c != b':' as u16)
+        // We want to trim whitespace from the end, so ignore whitespace chars.
+        .filter(|&(_idx, c)| !is_whitespace(c))
+        // Get the last non-whitespace char before the first '.'/':' character.
+        .last()
+        // Convert index of that char into length of string.
+        .map(|(idx, _)| idx + 1)
+        .unwrap_or(0);
+
+    // If the trimmed base name is longer than 7, it cannot be a reserved name.
+    if trimmed_len > 7 {
+        return false;
+    }
+
+    // At this point, we can store the string in an array, which is more convenient to work with.
+    let mut buf = [0u16; 7];
+    get_iter()
+        .take(trimmed_len)
+        .enumerate()
+        .for_each(|(i, c)| buf[i] = c);
+
+    for b in &mut buf {
+        if *b <= 0x7F {
+            *b = (*b as u8).to_ascii_uppercase() as u16;
+        }
+        if *b == SUPERSCRIPT_ONE {
+            *b = b'1' as u16;
+        }
+        if *b == SUPERSCRIPT_TWO {
+            *b = b'2' as u16;
+        }
+        if *b == SUPERSCRIPT_THREE {
+            *b = b'3' as u16;
+        }
+    }
+    let name = &buf[..trimmed_len];
+
+    // Check basic fixed-length strings
+    if name == CON || name == PRN || name == AUX || name == NUL || name == CONIN || name == CONOUT {
+        return true;
+    }
+
+    // COMx / LPTx
+    if name.len() == 4 {
+        let prefix = &name[..3];
+        let suffix = name[3];
+
+        if (prefix == COM || prefix == LPT) && matches!(suffix, ZERO..=NINE) {
+            return true;
+        }
+    }
+
+    false
 }
 
 opaque_body! {

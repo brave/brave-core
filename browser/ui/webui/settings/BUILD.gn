@@ -36,6 +36,7 @@ source_set("unit_tests") {
       "//components/search_engines",
       "//components/sync_preferences:test_support",
       "//content/test:test_support",
+      "//testing/gmock",
       "//testing/gtest",
       "//ui/base/clipboard",
       "//ui/base/clipboard:clipboard_test_support",
@@ -47,7 +48,6 @@ source_set("unit_tests") {
       deps += [
         "//brave/browser/brave_ads",
         "//brave/components/brave_ads/core/browser/service:test_support",
-        "//testing/gmock",
       ]
     }
 
