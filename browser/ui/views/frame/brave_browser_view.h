@@ -271,6 +271,7 @@ class BraveBrowserView : public BrowserView,
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
+  void OnSplitTabChanged(const SplitTabChange& change) override;
   views::CloseRequestResult OnWindowCloseRequested() override;
   void ConfirmBrowserCloseWithPendingDownloads(
       int download_count,

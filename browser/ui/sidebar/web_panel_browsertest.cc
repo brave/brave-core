@@ -1244,6 +1244,39 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
   EXPECT_TRUE(web_panel_controller()->HasOpenPanel());
 }
 
+// Closing the tab behind an active panel doesn't change the active tab, so
+// nothing else would refill the main pane.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
+                       ClosingTabBehindActivePanelRefillsMainPane) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kRegularTabURL)));
+  auto* tab_to_close = tab_model()->GetActiveWebContents();
+  chrome::AddTabAt(browser(), GURL(kUserPinnedTabURL), -1,
+                   /*foreground=*/false);
+  auto* other_contents = tab_model()->GetWebContentsAt(1);
+  ASSERT_NE(tab_to_close, other_contents);
+
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  ASSERT_EQ(3, tab_model()->count());
+  auto* main_view = GetBraveMultiContentsView()->GetMainContentsView();
+  ASSERT_EQ(tab_to_close, main_view->web_contents());
+
+  // Simulates focusing the panel: its tab becomes active, but the main
+  // pane keeps showing |tab_to_close|.
+  tab_model()->ActivateTabAt(0);
+  ASSERT_EQ(web_panel_controller()->panel_contents(),
+            tab_model()->GetActiveWebContents());
+
+  content::WebContentsDestroyedWatcher destroyed_watcher(tab_to_close);
+  tab_to_close->Close();
+  destroyed_watcher.Wait();
+
+  // Must show the remaining tab, not go blank, with the panel still active.
+  EXPECT_EQ(other_contents, main_view->web_contents());
+  EXPECT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
+  EXPECT_EQ(web_panel_controller()->panel_contents(),
+            tab_model()->GetActiveWebContents());
+}
+
 // Moving the last ordinary tab to another window has to close this one rather
 // than leave it holding just the panel, even with the pref off - there is no
 // tab left here to replace.
@@ -1984,6 +2017,37 @@ class WebPanelSplitViewBrowserTest : public WebPanelBrowserTest {
         web_panel_controller()->panel_contents());
   }
 
+  // Creates a split, then opens and activates the panel beside it. Shared
+  // setup for ClosingEitherSplitTabBehindActivePanelKeepsSurvivor.
+  void CreateSplitAndActivatePanel(content::WebContents** main_contents,
+                                   content::WebContents** other_contents,
+                                   const base::Location& location = FROM_HERE) {
+    SCOPED_TRACE(location.ToString());
+    chrome::AddTabAt(browser(), GURL(kRegularTabURL), -1, /*foreground=*/true);
+    chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
+                        split_tabs::SplitTabCreatedSource::kTabContextMenu);
+    *main_contents = tab_model()->GetActiveWebContents();
+    ASSERT_TRUE(tab_model()->GetActiveTab()->IsSplit());
+
+    std::vector<tabs::TabInterface*> split_tabs =
+        tab_model()
+            ->GetSplitData(tab_model()->GetActiveTab()->GetSplit().value())
+            ->ListTabs();
+    ASSERT_EQ(2u, split_tabs.size());
+    *other_contents = split_tabs[0]->GetContents() == *main_contents
+                          ? split_tabs[1]->GetContents()
+                          : split_tabs[0]->GetContents();
+    ASSERT_NE(*main_contents, *other_contents);
+
+    OpenWebPanel(GURL(kTestWebPanelURL));
+    tab_model()->ActivateTabAt(PanelIndex());
+    ASSERT_TRUE(IsWebPanelTabActive(browser()));
+    ASSERT_TRUE(GetBraveMultiContentsView()->IsInSplitView());
+    ASSERT_EQ(
+        *main_contents,
+        GetBraveMultiContentsView()->GetMainContentsView()->web_contents());
+  }
+
  private:
   std::unique_ptr<TabContextMenuController> menu_controller_;
 };
@@ -2106,6 +2170,45 @@ IN_PROC_BROWSER_TEST_F(WebPanelSplitViewBrowserTest,
   ASSERT_NE(TabStripModel::kNoTab, split_index);
   EXPECT_TRUE(CreateTabMenuModelAt(split_index)
                   ->GetIndexOfCommandId(TabStripModel::CommandArrangeSplit));
+}
+
+// Closing either half of the split while the panel is active must still
+// collapse the split onto the survivor. Upstream's OnSplitTabChanged() can't
+// tell on its own, since GetActiveContentsView() is redirected to the panel;
+// closing the main half additionally requires OnTabWillBeRemoved() to swap
+// which half is main first, or the split would collapse onto the half being
+// destroyed instead.
+IN_PROC_BROWSER_TEST_F(WebPanelSplitViewBrowserTest,
+                       ClosingEitherSplitTabBehindActivePanelKeepsSurvivor) {
+  // Avoid the "item added" feedback bubble interfering with the test.
+  browser()->GetProfile()->GetPrefs()->SetInteger(
+      kSidebarItemAddedFeedbackBubbleShowCount, 3);
+
+  for (const bool close_main : {false, true}) {
+    SCOPED_TRACE(close_main ? "closing main half" : "closing inactive half");
+
+    content::WebContents* main_contents = nullptr;
+    content::WebContents* other_contents = nullptr;
+    ASSERT_NO_FATAL_FAILURE(
+        CreateSplitAndActivatePanel(&main_contents, &other_contents));
+
+    content::WebContents* closing_contents =
+        close_main ? main_contents : other_contents;
+    content::WebContents* surviving_contents =
+        close_main ? other_contents : main_contents;
+
+    content::WebContentsDestroyedWatcher destroyed_watcher(closing_contents);
+    closing_contents->Close();
+    destroyed_watcher.Wait();
+
+    EXPECT_FALSE(GetBraveMultiContentsView()->IsInSplitView());
+    EXPECT_EQ(
+        surviving_contents,
+        GetBraveMultiContentsView()->GetMainContentsView()->web_contents());
+    EXPECT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
+    EXPECT_TRUE(IsWebPanelTabActive(browser()));
+    web_panel_controller()->CloseWebPanel();
+  }
 }
 
 // The third command upstream can offer on the panel's tab. With a split

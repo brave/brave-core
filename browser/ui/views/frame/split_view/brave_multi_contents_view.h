@@ -9,6 +9,7 @@
 #include <optional>
 #include <vector>
 
+#include "base/auto_reset.h"
 #include "base/callback_list.h"
 #include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
@@ -100,6 +101,21 @@ class BraveMultiContentsView : public MultiContentsView {
   ContentsContainerView* GetContentsContainerViewFor(
       content::WebContents* web_contents) const override;
 
+  // While the returned guard is alive, GetActiveContentsContainerView(),
+  // GetActiveContentsView() and GetContentsContainerViewFor() behave as if
+  // the web panel weren't active, i.e. they resolve to the real split/single
+  // pane instead of the panel. Lets callers that need the non-panel pane
+  // reuse the normal accessors.
+  base::AutoReset<bool> IgnoreWebPanelActiveForScope();
+
+  // The non-panel pane.
+  ContentsWebView* GetMainContentsView();
+
+  // Makes the split's other pane the main one. SidebarWebPanelController
+  // calls this when the main slot's tab is closing while the panel's tab
+  // is active, so nothing else reassigns the surviving half first.
+  void SwapMainContentsSlot();
+
  private:
   friend class BraveMultiContentsViewTest;
   friend class SplitViewBrowserTest;
@@ -171,6 +187,10 @@ class BraveMultiContentsView : public MultiContentsView {
 
   // true when web panel is activated.
   bool is_web_panel_active_ = false;
+
+  // Set by IgnoreWebPanelActiveForScope() to make the active-view accessors
+  // ignore |is_web_panel_active_| for the duration of the scope.
+  bool ignore_web_panel_active_ = false;
   raw_ptr<BraveContentsContainerView> contents_container_view_for_web_panel_ =
       nullptr;
   raw_ptr<views::ResizeArea> web_panel_resize_area_ = nullptr;

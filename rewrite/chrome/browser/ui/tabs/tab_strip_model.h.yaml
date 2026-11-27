@@ -55,3 +55,19 @@ substitutions:
       class_name: TabStripModel
       code: |
         gfx::Range InsertDetachedTreeTabNodeAt(std::unique_ptr<DetachedTabCollection> tree_node, int index);
+
+  - description: |
+      Add an optional extra eligibility check to DetermineNewSelectedIndex().
+
+      Lets BraveTabStripModel ask for a replacement selection that rejects
+      candidates of its own choosing, the same way the existing is_eligible
+      callbacks already work in this file. Needed by the web panel feature,
+      which keeps its own tab active in the model, so it must exclude that
+      tab from being picked as the replacement when an unrelated tab closes.
+    regex:
+      re_pattern: '(DetermineNewSelectedIndex\(.*?)(\)\s*const;)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1,
+              base::FunctionRef<bool(int)> extra_is_eligible =
+                  [](int) { return true; }\2
