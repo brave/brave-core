@@ -264,7 +264,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   }
 
   const submitInputTextToAPI = () => {
-    if (!inputText) return
+    if (stringifyContent(inputText) === '') return
     if (shouldDisableUserInput) return
 
     if (!aiChat.isStorageNoticeDismissed && aiChat.hasAcceptedAgreement) {

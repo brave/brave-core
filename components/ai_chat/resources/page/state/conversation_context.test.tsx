@@ -43,6 +43,7 @@ const committedContent = (
 interface RenderOverrides {
   associateTab?: jest.Mock
   disassociateContent?: jest.Mock
+  submitHumanConversationEntry?: jest.Mock
 }
 
 const renderConversation = (overrides: RenderOverrides = {}) =>
@@ -57,6 +58,10 @@ const renderConversation = (overrides: RenderOverrides = {}) =>
           uiHandler={{
             associateTab: overrides.associateTab ?? jest.fn(),
             disassociateContent: overrides.disassociateContent ?? jest.fn(),
+          }}
+          conversationHandler={{
+            submitHumanConversationEntry:
+              overrides.submitHumanConversationEntry ?? jest.fn(),
           }}
           initialState={{ isStandalone: false }}
           conversationProps={{ isMainConversation: true }}
@@ -406,6 +411,58 @@ describe('useProvideConversationContext default tab attachment', () => {
     )
     expect(associateTab).toHaveBeenCalledTimes(1)
     expect(associateTab).toHaveBeenCalledWith(tab(20), CONVERSATION_UUID)
+  })
+})
+
+describe('useProvideConversationContext submitInputTextToAPI', () => {
+  beforeEach(() => {
+    clearAllDataForTesting()
+  })
+
+  const setUp = async () => {
+    const submitHumanConversationEntry = jest.fn()
+    const rendered = renderConversation({ submitHumanConversationEntry })
+    await act(async () => {
+      await rendered.result.current.conversation.api.getState.fetch()
+    })
+    return { rendered, submitHumanConversationEntry }
+  }
+
+  it('submits multi-line text', async () => {
+    const { rendered, submitHumanConversationEntry } = await setUp()
+    act(() => {
+      rendered.result.current.conversation.setInputText(['a', '\n', 'b'])
+    })
+    act(() => {
+      rendered.result.current.conversation.submitInputTextToAPI()
+    })
+    expect(submitHumanConversationEntry).toHaveBeenCalledWith(
+      'a\nb',
+      expect.anything(),
+      null,
+    )
+  })
+
+  it('does not submit empty content', async () => {
+    const { rendered, submitHumanConversationEntry } = await setUp()
+    act(() => {
+      rendered.result.current.conversation.setInputText([])
+    })
+    act(() => {
+      rendered.result.current.conversation.submitInputTextToAPI()
+    })
+    expect(submitHumanConversationEntry).not.toHaveBeenCalled()
+  })
+
+  it('does not submit whitespace only content', async () => {
+    const { rendered, submitHumanConversationEntry } = await setUp()
+    act(() => {
+      rendered.result.current.conversation.setInputText([' ', '\n', ''])
+    })
+    act(() => {
+      rendered.result.current.conversation.submitInputTextToAPI()
+    })
+    expect(submitHumanConversationEntry).not.toHaveBeenCalled()
   })
 })
 

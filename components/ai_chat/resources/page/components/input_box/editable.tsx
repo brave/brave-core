@@ -50,9 +50,13 @@ export default React.forwardRef<HTMLDivElement, EditableProps>(
         // Note: We need to use `display: block` on the editable element to fix
         // some cursor positioning issues. However, this means the browser will
         // helpfully insert a <br> node at the end of the content, so we need to
-        // trim it again.
-        const lastNode = el.childNodes[el.childNodes.length - 1]
-        if (lastNode && 'tagName' in lastNode && lastNode.tagName === 'BR') {
+        // trim it again. A trailing <br> following another <br> is what keeps
+        // an empty last line (e.g. after Shift+Enter) visible, so keep it.
+        const lastNode = el.lastChild
+        if (
+          lastNode?.nodeName === 'BR'
+          && lastNode.previousSibling?.nodeName !== 'BR'
+        ) {
           el.removeChild(lastNode)
           return
         }
