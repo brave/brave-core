@@ -1,0 +1,23 @@
+diff --git a/ios/chrome/browser/webui/ui_bundled/flags_ui.mm b/ios/chrome/browser/webui/ui_bundled/flags_ui.mm
+index f547d52627d1cbc1af98f06951c1111cd94fecad..d817b73b7833e3a1753c6aec17cef9da798ea10c 100644
+--- a/ios/chrome/browser/webui/ui_bundled/flags_ui.mm
++++ b/ios/chrome/browser/webui/ui_bundled/flags_ui.mm
+@@ -14,6 +14,7 @@
+ #import "base/notreached.h"
+ #import "base/strings/utf_string_conversions.h"
+ #import "base/values.h"
++#import "brave/ios/browser/flags/sync_server_url.h"
+ #import "build/branding_buildflags.h"
+ #import "components/grit/flags_ui_resources.h"
+ #import "components/grit/flags_ui_resources_map.h"
+@@ -136,6 +137,10 @@ void FlagsDOMHandler::Init(
+     flags_ui::FlagAccess access) {
+   flags_storage_ = std::move(flags_storage);
+   access_ = access;
++  web_ui()->RegisterMessageCallback(
++      "setStringFlag",
++      base::BindRepeating(&brave_sync::SetSyncServerUrlFlag,
++                          base::Unretained(flags_storage_.get())));
+ }
+ 
+ void FlagsDOMHandler::HandleRequestExperimentalFeatures(

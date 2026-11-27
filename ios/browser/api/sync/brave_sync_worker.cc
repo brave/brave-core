@@ -230,7 +230,6 @@ BraveSyncWorker::GetQrCodeValidationResult(const std::string& json) {
 brave_sync::TimeLimitedWords::ValidationStatus
 BraveSyncWorker::GetWordsValidationResult(
     const std::string& time_limited_words) {
-  DCHECK(!time_limited_words.empty());
   auto words_with_status =
       brave_sync::TimeLimitedWords::Parse(time_limited_words);
   if (words_with_status.has_value()) {
