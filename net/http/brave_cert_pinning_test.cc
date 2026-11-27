@@ -28,6 +28,7 @@
 #include "net/cert/caching_cert_verifier.h"
 #include "net/cert/cert_verifier.h"
 #include "net/cert/coalescing_cert_verifier.h"
+#include "net/cert/key_pinning_state_chrome_test_util.h"
 #include "net/cert_net/cert_net_fetcher_url_request.h"
 #include "net/http/transport_security_state.h"
 #include "net/net_buildflags.h"
@@ -255,6 +256,8 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
   static inline int inconclusive_limit_ = 0;
 
   base::test::TaskEnvironment task_environment_;
+  net::ScopedKeyPinningStateChromeDefaults scoped_key_pinning_{
+      net::ScopedKeyPinningStateChromeDefaults::kForceEnableProduction};
   scoped_refptr<net::CertNetFetcherURLRequest> cert_net_fetcher_;
   std::unique_ptr<net::URLRequestContext> fetcher_context_;
   std::unique_ptr<net::URLRequestContext> context_;
