@@ -164,6 +164,7 @@ export function createMockParentUIFrame(
     showPremiumSuggestionForRegenerate: () => {},
     requestNewConversation: () => {},
     handleResetError: () => {},
+    openThread: () => {},
 
     // Apply overrides
     ...overrides,
