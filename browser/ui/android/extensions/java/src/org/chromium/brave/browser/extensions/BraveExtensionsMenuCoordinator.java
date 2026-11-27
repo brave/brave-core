@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -24,7 +23,6 @@ import com.google.android.material.color.MaterialColors;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.theme.BraveDynamicColors;
@@ -37,27 +35,22 @@ import org.chromium.chrome.browser.ui.extensions.ExtensionsToolbarBridge;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetContent;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetType;
-import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
-import org.chromium.components.browser_ui.widget.scrim.ScrimProperties;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.display.DisplayAndroid;
 import org.chromium.ui.display.DisplayUtil;
-import org.chromium.ui.modelutil.PropertyModel;
 
 import java.util.function.Supplier;
 
 /** Phone bottom sheet listing the installed extensions, opened from the app menu. */
 @NullMarked
 public class BraveExtensionsMenuCoordinator implements ChromeAndroidTaskFeature {
-    // Non-modal, so the sheet sits above the bottom toolbar and keeps the URL visible.
     private static final BottomSheetType SHEET_TYPE =
-            new BottomSheetType.Builder().setUserInitiated(true).setModal(false).build();
+            new BottomSheetType.Builder().setUserInitiated(true).build();
 
     private final Activity mActivity;
     private final ActivityWindowAndroid mWindowAndroid;
     private final BottomSheetController mBottomSheetController;
-    private final BrowserControlsStateProvider mBrowserControls;
     private final Supplier<@Nullable Tab> mTabSupplier;
     private final ExtensionsToolbarBridge mBridge;
     private final ExtensionsToolbarBridge.Observer mBridgeObserver =
@@ -84,8 +77,6 @@ public class BraveExtensionsMenuCoordinator implements ChromeAndroidTaskFeature 
             };
 
     private @Nullable SheetContent mSheetContent;
-    private @Nullable PropertyModel mScrimModel;
-    private @Nullable PropertyModel mTouchBlockerModel;
 
     /** Shows the sheet, creating the coordinator as a feature of {@code task} if needed. */
     public static void show(
@@ -94,7 +85,6 @@ public class BraveExtensionsMenuCoordinator implements ChromeAndroidTaskFeature 
             Profile profile,
             ActivityWindowAndroid windowAndroid,
             BottomSheetController bottomSheetController,
-            BrowserControlsStateProvider browserControls,
             Supplier<@Nullable Tab> tabSupplier) {
         // Registered as a task feature so it's destroyed before the profile and the native
         // browser window it depends on.
@@ -112,7 +102,6 @@ public class BraveExtensionsMenuCoordinator implements ChromeAndroidTaskFeature 
                                                 profile,
                                                 windowAndroid,
                                                 bottomSheetController,
-                                                browserControls,
                                                 tabSupplier));
         if (coordinator != null) {
             coordinator.showSheet();
@@ -125,12 +114,10 @@ public class BraveExtensionsMenuCoordinator implements ChromeAndroidTaskFeature 
             Profile profile,
             ActivityWindowAndroid windowAndroid,
             BottomSheetController bottomSheetController,
-            BrowserControlsStateProvider browserControls,
             Supplier<@Nullable Tab> tabSupplier) {
         mActivity = activity;
         mWindowAndroid = windowAndroid;
         mBottomSheetController = bottomSheetController;
-        mBrowserControls = browserControls;
         mTabSupplier = tabSupplier;
         mBridge = new ExtensionsToolbarBridge(task, profile);
         mBridge.addObserver(mBridgeObserver);
@@ -172,7 +159,6 @@ public class BraveExtensionsMenuCoordinator implements ChromeAndroidTaskFeature 
         if (mSheetContent != null) {
             mBottomSheetController.hideContent(mSheetContent, /* animate= */ false);
         }
-        hideScrim(/* animate= */ false);
         mBridge.setActionListDelegate(null);
         mBridge.setMenuDelegate(null);
         mBridge.removeObserver(mBridgeObserver);
@@ -194,48 +180,6 @@ public class BraveExtensionsMenuCoordinator implements ChromeAndroidTaskFeature 
         mSheetContent = content;
         updateList();
         mBottomSheetController.requestShowContent(content, /* animate= */ true);
-        showScrim();
-    }
-
-    // The controller's own scrim would move the sheet over the bottom toolbar, so this one is
-    // placed behind the sheet and stops above the bottom controls.
-    private void showScrim() {
-        ScrimManager scrimManager = mBottomSheetController.getScrimManager();
-        View anchor = mActivity.findViewById(R.id.sheet_container);
-        if (scrimManager == null || anchor == null) return;
-
-        mScrimModel =
-                new PropertyModel.Builder(ScrimProperties.ALL_KEYS)
-                        .with(ScrimProperties.ANCHOR_VIEW, anchor)
-                        .with(ScrimProperties.AFFECTS_STATUS_BAR, true)
-                        .with(ScrimProperties.CLICK_DELEGATE, this::dismissSheet)
-                        .with(
-                                ScrimProperties.BOTTOM_MARGIN,
-                                mBrowserControls.getBottomControlsHeight()
-                                        - mBrowserControls.getBottomControlOffset())
-                        .build();
-        scrimManager.showScrim(mScrimModel);
-
-        // Transparent and full height, so the bottom toolbar stays undimmed but a tap on it
-        // dismisses the sheet instead of opening other UI over it.
-        mTouchBlockerModel =
-                new PropertyModel.Builder(ScrimProperties.ALL_KEYS)
-                        .with(ScrimProperties.ANCHOR_VIEW, anchor)
-                        .with(ScrimProperties.AFFECTS_STATUS_BAR, false)
-                        .with(ScrimProperties.CLICK_DELEGATE, this::dismissSheet)
-                        .with(ScrimProperties.BACKGROUND_COLOR, Color.TRANSPARENT)
-                        .build();
-        scrimManager.showScrim(mTouchBlockerModel);
-    }
-
-    private void hideScrim(boolean animate) {
-        ScrimManager scrimManager = mBottomSheetController.getScrimManager();
-        if (scrimManager != null) {
-            if (mScrimModel != null) scrimManager.hideScrim(mScrimModel, animate);
-            if (mTouchBlockerModel != null) scrimManager.hideScrim(mTouchBlockerModel, animate);
-        }
-        mScrimModel = null;
-        mTouchBlockerModel = null;
     }
 
     private void dismissSheet() {
@@ -282,23 +226,20 @@ public class BraveExtensionsMenuCoordinator implements ChromeAndroidTaskFeature 
     }
 
     /**
-     * Keeps the sheet below the top toolbar so the URL stays visible. The sheet also measures its
-     * content with an exact height when laid out, and this turns it into an at-most height so the
-     * list only shrinks to fit.
+     * The sheet measures its content with an exact height when laid out. This turns it into an
+     * at-most height so the list only shrinks to fit.
      */
-    private class SheetContainerView extends FrameLayout {
+    private static class SheetContainerView extends FrameLayout {
         SheetContainerView(Context context) {
             super(context);
         }
 
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            int topControlsHeight =
-                    mBrowserControls.getTopControlsHeight()
-                            + mBrowserControls.getTopControlOffset();
-            int maxHeight = Math.max(0, MeasureSpec.getSize(heightMeasureSpec) - topControlsHeight);
-            if (MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.UNSPECIFIED) {
-                heightMeasureSpec = MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.AT_MOST);
+            if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.EXACTLY) {
+                heightMeasureSpec =
+                        MeasureSpec.makeMeasureSpec(
+                                MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.AT_MOST);
             }
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
@@ -336,7 +277,6 @@ public class BraveExtensionsMenuCoordinator implements ChromeAndroidTaskFeature 
             // Called once the sheet is dismissed.
             if (mSheetContent != this) return;
             mSheetContent = null;
-            hideScrim(/* animate= */ true);
         }
 
         @Override
