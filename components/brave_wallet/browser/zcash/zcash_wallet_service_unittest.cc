@@ -169,23 +169,15 @@ class MockOrchardSyncState : public OrchardSyncState {
 
 class ZCashWalletServiceUnitTest : public testing::Test {
  public:
-  ZCashWalletServiceUnitTest() = default;
+  ZCashWalletServiceUnitTest() {
+    // Pin the param rather than rely on its default.
+    feature_list_.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}});
+  }
   ~ZCashWalletServiceUnitTest() override = default;
 
   void SetUp() override {
-#if BUILDFLAG(IS_IOS)
-    feature_list_.InitWithFeaturesAndParameters(
-        {
-            {features::kBraveWalletZCashFeature,
-             { {"zcash_shielded_transactions_enabled", "true"} }},
-        },
-        {}  // disabled features
-    );
-#else
-    feature_list_.InitAndEnableFeature(
-        brave_wallet::features::kBraveWalletZCashFeature);
-#endif
-
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
