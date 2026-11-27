@@ -2035,7 +2035,6 @@ TEST_F(EthTxManagerUnitTest,
 }
 
 TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
-  task_environment_.RunUntilIdle();
   EthTxMeta meta(EthAccount(0), std::make_unique<EthTransaction>());
   meta.set_id("001");
   meta.set_chain_id(mojom::kPolygonMainnetChainId);
