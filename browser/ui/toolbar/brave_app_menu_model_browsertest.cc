@@ -500,17 +500,22 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest,
 }
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+struct EmailAliasesMenuTestCase {
+  bool email_aliases_enabled;
+  bool brave_account_enabled;
+};
+
 class BraveAppMenuModelBrowserTestForEmailAliases
     : public InProcessBrowserTest,
-      public testing::WithParamInterface<bool> {
+      public testing::WithParamInterface<EmailAliasesMenuTestCase> {
  public:
   BraveAppMenuModelBrowserTestForEmailAliases() {
     scoped_feature_list_.InitWithFeatureStates(
-        {{email_aliases::features::kEmailAliases, IsEmailAliasesEnabled()},
-         {brave_account::features::BraveAccountFeatureForTesting(), true}});
+        {{email_aliases::features::kEmailAliases,
+          GetParam().email_aliases_enabled},
+         {brave_account::features::BraveAccountFeatureForTesting(),
+          GetParam().brave_account_enabled}});
   }
-
-  bool IsEmailAliasesEnabled() const { return GetParam(); }
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -532,10 +537,16 @@ IN_PROC_BROWSER_TEST_P(BraveAppMenuModelBrowserTestForEmailAliases,
   bool present =
       autofill_menu_model->GetIndexOfCommandId(IDC_SHOW_EMAIL_ALIASES)
           .has_value();
-  EXPECT_EQ(IsEmailAliasesEnabled(), present);
+  EXPECT_EQ(GetParam().email_aliases_enabled, present);
 }
 
-INSTANTIATE_TEST_SUITE_P(All,
-                         BraveAppMenuModelBrowserTestForEmailAliases,
-                         testing::Bool());
+INSTANTIATE_TEST_SUITE_P(
+    All,
+    BraveAppMenuModelBrowserTestForEmailAliases,
+    testing::Values(EmailAliasesMenuTestCase{.email_aliases_enabled = false,
+                                             .brave_account_enabled = true},
+                    EmailAliasesMenuTestCase{.email_aliases_enabled = true,
+                                             .brave_account_enabled = true},
+                    EmailAliasesMenuTestCase{.email_aliases_enabled = false,
+                                             .brave_account_enabled = false}));
 #endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
