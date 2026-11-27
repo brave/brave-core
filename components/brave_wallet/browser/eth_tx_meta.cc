@@ -82,10 +82,10 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
     data = tx_->data();
   }
 
+  const std::string to = tx_->GetToChecksumAddress();
   std::optional<std::string> final_recipient;
-  auto tx_info = GetTransactionInfoFromData(data);
-  if (!tx_info) {
-  } else {
+  auto tx_info = GetTransactionInfoFromData(chain_id_, to, data);
+  if (tx_info) {
     mojom::SwapInfoPtr swap_info_from_data;
     std::tie(tx_type, tx_params, tx_args, swap_info_from_data) =
         std::move(*tx_info);
@@ -99,8 +99,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
       tx_args.clear();
     }
 
-    final_recipient = GetFinalRecipient(chain_id_, tx_->GetToChecksumAddress(),
-                                        tx_type, tx_args);
+    final_recipient = GetFinalRecipient(chain_id_, to, tx_type, tx_args);
 
     if (!swap_info && swap_info_from_data) {
       swap_info = std::move(swap_info_from_data);
@@ -138,7 +137,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
               chain_id_,
               tx_->nonce() ? Uint256ValueToHex(tx_->nonce().value()) : "",
               Uint256ValueToHex(tx_->gas_price()),
-              Uint256ValueToHex(tx_->gas_limit()), tx_->GetToChecksumAddress(),
+              Uint256ValueToHex(tx_->gas_limit()), to,
               Uint256ValueToHex(tx_->value()), tx_->data()),
           max_priority_fee_per_gas, max_fee_per_gas)),
       status_, tx_type, tx_params, tx_args, created_time_, submitted_time_,

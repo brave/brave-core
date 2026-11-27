@@ -91,7 +91,7 @@ void VerifyERC721TransferFromData(bool expected_success,
 
   // Verify tx type.
   if (success) {
-    auto tx_info = GetTransactionInfoFromData(data);
+    auto tx_info = GetTransactionInfoFromData(mojom::kMainnetChainId, "", data);
     ASSERT_NE(tx_info, std::nullopt);
     EXPECT_EQ(expected_type, std::get<0>(*tx_info));
   }
@@ -432,7 +432,8 @@ class EthTxManagerUnitTest : public testing::Test {
       std::vector<std::string> tx_args;
       mojom::SwapInfoPtr swap_info;
 
-      auto tx_info = GetTransactionInfoFromData(data);
+      auto tx_info =
+          GetTransactionInfoFromData(mojom::kMainnetChainId, "", data);
       ASSERT_NE(tx_info, std::nullopt);
       std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
