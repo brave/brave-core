@@ -8,6 +8,7 @@
 #include "base/values.h"
 #include "brave/browser/brave_shields/ad_block_service_browsertest.h"
 #include "brave/components/constants/brave_switches.h"
+#include "build/build_config.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -18,6 +19,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
+#include "chrome/browser/devtools/devtools_window_testing.h"  // nogncheck
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
 
@@ -193,3 +195,45 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsDebugModeTest, TwoClientsNoCrash) {
 
   second_devtools_client_.DetachProtocolClient();
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTest, AdblockTabRendersInfo) {
+  DevToolsWindow* devtools_window =
+      DevToolsWindowTesting::OpenDevToolsWindowSync(web_contents(), false);
+  content::WebContents* devtools_contents =
+      DevToolsWindowTesting::Get(devtools_window)->main_web_contents();
+
+  UpdateAdBlockInstanceWithRules("*resource.png");
+  NavigateToURL(embedded_test_server()->GetURL("/blocking.html"));
+  ASSERT_EQ(true, EvalJs(web_contents(),
+                         "setExpectations(0, 1, 0, 0);"
+                         "addImage('resource.png')"));
+
+  const std::string text = content::EvalJs(devtools_contents, R"(
+    (async () => {
+      const SDK = await self.runtime.loadLegacyModule('core/sdk/sdk.js');
+      const Logs = await self.runtime.loadLegacyModule('models/logs/logs.js');
+      const Network =
+          await self.runtime.loadLegacyModule('panels/network/network.js');
+      const adblockInfo = (r) => SDK.NetworkManager.NetworkManager
+          .forRequest(r).dispatcher.adblockInfoForId(r.requestId());
+      let request;
+      while (!request) {
+        request = Logs.NetworkLog.NetworkLog.instance().requests().find(
+            r => r.url().endsWith('/resource.png') && adblockInfo(r));
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
+      const itemView = await Network.NetworkPanel.NetworkPanel.instance()
+          .selectAndActivateRequest(request, 'blocking');
+      const adblockView = itemView.tabView('blocking');
+      await adblockView.updateComplete;
+      return adblockView.contentElement.textContent;
+    })()
+  )")
+                               .ExtractString();
+
+  EXPECT_THAT(text,
+              testing::HasSubstr(
+                  embedded_test_server()->GetURL("/resource.png").spec()));
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
