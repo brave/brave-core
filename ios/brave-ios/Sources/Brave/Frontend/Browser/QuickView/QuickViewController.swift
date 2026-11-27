@@ -341,7 +341,7 @@ class QuickViewController: UIViewController {
   }
 
   private func presentBraveShieldsView() {
-    guard let tab = currentTab, var url = tab.visibleURL else { return }
+    guard let tab = currentTab, var url = tab.lastCommittedURL else { return }
     if let internalURL = InternalURL(url) {
       guard let originalURL = internalURL.url.strippedInternalURL else { return }
       url = originalURL

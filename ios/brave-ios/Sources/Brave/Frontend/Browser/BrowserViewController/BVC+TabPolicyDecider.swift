@@ -188,7 +188,7 @@ extension BrowserViewController: TabPolicyDecider {
 
         // Forget any websites that have Auto Shred set to Site Tabs Closed
         // if we navigated away from the previous domain
-        if let currentURL = tab.visibleURL,
+        if let currentURL = tab.lastCommittedURL,
           !InternalURL.isValid(url: currentURL),
           let currentETLDP1 = currentURL.baseDomain,
           mainDocumentURL.baseDomain != currentETLDP1

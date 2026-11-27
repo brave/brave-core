@@ -49,7 +49,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
-    guard let currentTabURL = tab.visibleURL else {
+    guard let currentTabURL = tab.lastCommittedURL else {
       assertionFailure("Should have a tab set")
       return
     }
@@ -91,7 +91,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
         let subframeBaseDomains = (tab.currentPageData?.allSubframeURLs ?? [])
           .compactMap(\.baseDomain)
         guard let windowOriginURLBaseDomain = windowOriginURL.baseDomain,
-          tab.visibleURL?.baseDomain == windowOriginURLBaseDomain
+          tab.lastCommittedURL?.baseDomain == windowOriginURLBaseDomain
             || subframeBaseDomains.contains(windowOriginURLBaseDomain) == true
         else {
           replyHandler(shouldBlock, nil)

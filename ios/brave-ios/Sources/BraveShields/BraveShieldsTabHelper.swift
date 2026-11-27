@@ -36,12 +36,12 @@ public class BraveShieldsTabHelper {
   }
 
   public func isBraveShieldsEnabled(for url: URL?) -> Bool {
-    guard let url = url ?? tab?.visibleURL else { return false }
+    guard let url = url ?? tab?.lastCommittedURL else { return false }
     return braveShieldsSettings?.isBraveShieldsEnabled(for: url) ?? true
   }
 
   public func setBraveShieldsEnabled(_ isEnabled: Bool, for url: URL?) {
-    guard let url = url ?? tab?.visibleURL else { return }
+    guard let url = url ?? tab?.lastCommittedURL else { return }
     braveShieldsSettings?.setBraveShieldsEnabled(isEnabled, for: url)
   }
 
@@ -50,7 +50,7 @@ public class BraveShieldsTabHelper {
     considerAllShieldsOption: Bool,
     considerAlwaysAggressiveETLDs: Bool = true
   ) -> ShieldLevel {
-    guard let url = url ?? tab?.visibleURL else { return .disabled }
+    guard let url = url ?? tab?.lastCommittedURL else { return .disabled }
     if considerAllShieldsOption && !isBraveShieldsEnabled(for: url) {
       return .disabled
     }
@@ -66,17 +66,17 @@ public class BraveShieldsTabHelper {
   }
 
   public func setShieldLevel(_ shieldLevel: ShieldLevel, for url: URL?) {
-    guard let url = url ?? tab?.visibleURL else { return }
+    guard let url = url ?? tab?.lastCommittedURL else { return }
     braveShieldsSettings?.setAdBlockMode(shieldLevel.adBlockMode, for: url)
   }
 
   public func setBlockScriptsEnabled(_ isEnabled: Bool, for url: URL?) {
-    guard let url = url ?? tab?.visibleURL else { return }
+    guard let url = url ?? tab?.lastCommittedURL else { return }
     braveShieldsSettings?.setBlockScriptsEnabled(isEnabled, for: url)
   }
 
   public func setBlockFingerprintingEnabled(_ isEnabled: Bool, for url: URL?) {
-    guard let url = url ?? tab?.visibleURL else { return }
+    guard let url = url ?? tab?.lastCommittedURL else { return }
     braveShieldsSettings?.setFingerprintMode(isEnabled ? .standardMode : .allowMode, for: url)
   }
 
@@ -86,7 +86,7 @@ public class BraveShieldsTabHelper {
     shield: BraveShield,
     considerAllShieldsOption: Bool
   ) -> Bool {
-    guard let url = url ?? tab?.visibleURL else { return false }
+    guard let url = url ?? tab?.lastCommittedURL else { return false }
     if considerAllShieldsOption && !isBraveShieldsEnabled(for: url) {
       // Shields is disabled for this url
       return false
@@ -113,7 +113,7 @@ public class BraveShieldsTabHelper {
     for url: URL?,
     considerAllShieldsOption: Bool
   ) -> SiteShredLevel {
-    guard let url = url ?? tab?.visibleURL else { return .never }
+    guard let url = url ?? tab?.lastCommittedURL else { return .never }
     return braveShieldsSettings?.autoShredMode(
       for: url,
       considerAllShieldsOption: considerAllShieldsOption
@@ -124,7 +124,7 @@ public class BraveShieldsTabHelper {
     _ shredLevel: SiteShredLevel,
     for url: URL?
   ) {
-    guard let url = url ?? tab?.visibleURL else { return }
+    guard let url = url ?? tab?.lastCommittedURL else { return }
     braveShieldsSettings?.setAutoShredMode(shredLevel.autoShredMode, for: url)
   }
 }

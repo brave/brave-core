@@ -21,20 +21,20 @@ public class ShieldsPanelViewModel: ObservableObject {
   @Published public var shieldsEnabled: Bool {
     didSet {
       guard !isUpdatingState else { return }
-      tab.braveShieldsHelper?.setBraveShieldsEnabled(shieldsEnabled, for: tab.visibleURL)
+      tab.braveShieldsHelper?.setBraveShieldsEnabled(shieldsEnabled, for: tabURL)
       updateState()
     }
   }
   @Published public var blockAdsAndTrackingLevel: ShieldLevel {
     didSet {
       guard !isUpdatingState else { return }
-      tab.braveShieldsHelper?.setShieldLevel(blockAdsAndTrackingLevel, for: tab.visibleURL)
+      tab.braveShieldsHelper?.setShieldLevel(blockAdsAndTrackingLevel, for: tabURL)
     }
   }
   @Published public var blockScripts: Bool {
     didSet {
       guard !isUpdatingState else { return }
-      tab.braveShieldsHelper?.setBlockScriptsEnabled(blockScripts, for: tab.visibleURL)
+      tab.braveShieldsHelper?.setBlockScriptsEnabled(blockScripts, for: tabURL)
     }
   }
   @Published public var fingerprintProtection: Bool {
@@ -42,14 +42,14 @@ public class ShieldsPanelViewModel: ObservableObject {
       guard !isUpdatingState else { return }
       tab.braveShieldsHelper?.setBlockFingerprintingEnabled(
         fingerprintProtection,
-        for: tab.visibleURL
+        for: tabURL
       )
     }
   }
   @Published public var autoShredLevel: SiteShredLevel {
     didSet {
       guard !isUpdatingState else { return }
-      tab.braveShieldsHelper?.setShredLevel(autoShredLevel, for: tab.visibleURL)
+      tab.braveShieldsHelper?.setShredLevel(autoShredLevel, for: tabURL)
     }
   }
   /// Whether the element picker has blocked any elements on the current site
@@ -65,8 +65,8 @@ public class ShieldsPanelViewModel: ObservableObject {
     tab.isPrivate
   }
 
-  public var visibleURL: URL? {
-    tab.visibleURL
+  public var tabURL: URL? {
+    tab.lastCommittedURL
   }
 
   /// If we are updating our state values, we don't want to assign to the domain preference.
@@ -82,31 +82,31 @@ public class ShieldsPanelViewModel: ObservableObject {
     self.tab = tab
     self.blockedRequests = blockedRequests
     self.shieldsEnabled =
-      tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.visibleURL)
+      tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.lastCommittedURL)
       ?? true
     // `considerAlwaysAggressiveETLDs` is `false` to mask that we may force
     // aggressive mode on some domains.
     self.blockAdsAndTrackingLevel =
       tab.braveShieldsHelper?.shieldLevel(
-        for: tab.visibleURL,
+        for: tab.lastCommittedURL,
         considerAllShieldsOption: true,
         considerAlwaysAggressiveETLDs: false
       ) ?? .standard
     self.blockScripts =
       tab.braveShieldsHelper?.isShieldExpected(
-        for: tab.visibleURL,
+        for: tab.lastCommittedURL,
         shield: .noScript,
         considerAllShieldsOption: true
       ) ?? false
     self.fingerprintProtection =
       tab.braveShieldsHelper?.isShieldExpected(
-        for: tab.visibleURL,
+        for: tab.lastCommittedURL,
         shield: .fpProtection,
         considerAllShieldsOption: true
       ) ?? true
     self.autoShredLevel =
       tab.braveShieldsHelper?.shredLevel(
-        for: tab.visibleURL,
+        for: tab.lastCommittedURL,
         considerAllShieldsOption: true
       ) ?? .never
     self.stats = .init()
@@ -120,30 +120,30 @@ public class ShieldsPanelViewModel: ObservableObject {
   private func updateState() {
     isUpdatingState = true
     defer { isUpdatingState = false }
-    shieldsEnabled = tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.visibleURL) ?? true
+    shieldsEnabled = tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tabURL) ?? true
     // `considerAlwaysAggressiveETLDs` is `false` to mask that we may force
     // aggressive mode on some domains.
     blockAdsAndTrackingLevel =
       tab.braveShieldsHelper?.shieldLevel(
-        for: tab.visibleURL,
+        for: tabURL,
         considerAllShieldsOption: true,
         considerAlwaysAggressiveETLDs: false
       ) ?? .standard
     self.blockScripts =
       tab.braveShieldsHelper?.isShieldExpected(
-        for: tab.visibleURL,
+        for: tabURL,
         shield: .noScript,
         considerAllShieldsOption: true
       ) ?? false
     self.fingerprintProtection =
       tab.braveShieldsHelper?.isShieldExpected(
-        for: tab.visibleURL,
+        for: tabURL,
         shield: .fpProtection,
         considerAllShieldsOption: true
       ) ?? true
     self.autoShredLevel =
       tab.braveShieldsHelper?.shredLevel(
-        for: tab.visibleURL,
+        for: tabURL,
         considerAllShieldsOption: true
       ) ?? .never
   }
