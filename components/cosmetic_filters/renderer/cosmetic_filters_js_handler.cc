@@ -701,11 +701,20 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
     scriptlet_script = absl::StrFormat(kScriptletInitScript, scriptlet_globals,
                                        scriptlet_script);
   }
+
+  // Ensure |this| hasn't been deleted after every script execution, since they
+  // could synchronously detach the frame.
+  base::WeakPtr<CosmeticFiltersJSHandler> guard =
+      weak_ptr_factory_.GetWeakPtr();
+
   if (!scriptlet_script.empty()) {
     web_frame->ExecuteScriptInIsolatedWorld(
         isolated_world_id_,
         blink::WebScriptSource(blink::WebString::FromUtf8(scriptlet_script)),
         blink::BackForwardCacheAware::kAllow);
+    if (!guard) {
+      return;
+    }
   }
 
   // Working on css rules
@@ -726,6 +735,9 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
       isolated_world_id_,
       blink::WebScriptSource(blink::WebString::FromUtf8(pre_init_script)),
       blink::BackForwardCacheAware::kAllow);
+  if (!guard) {
+    return;
+  }
 
   const std::string* procedural_actions_script =
       resources_dict_->FindString("procedural_actions_script");
@@ -739,6 +751,9 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
             blink::WebScriptSource(
                 blink::WebString::FromUtf8(*procedural_actions_script)),
             blink::BackForwardCacheAware::kAllow);
+    if (!guard) {
+      return;
+    }
     if (!v8_stylesheet.IsEmpty() && v8_stylesheet->IsString()) {
       v8::Local<v8::String> v8_str = v8_stylesheet.As<v8::String>();
       int length = v8_str->Utf8LengthV2(isolate);
@@ -753,6 +768,10 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
 
   ExecuteObservingBundleEntryPoint();
 
+  if (!guard) {
+    return;
+  }
+
   CSSRulesRoutine(*resources_dict_);
 }
 
@@ -762,6 +781,10 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
   TRACE_EVENT1("brave.adblock", "CSSRulesRoutine", "url", url_.spec());
 
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
+
+  base::WeakPtr<CosmeticFiltersJSHandler> guard =
+      weak_ptr_factory_.GetWeakPtr();
+
   const auto* cf_exceptions_list = resources_dict.FindList("exceptions");
   if (cf_exceptions_list) {
     for (const auto& item : *cf_exceptions_list) {
@@ -802,6 +825,9 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
           blink::WebScriptSource(
               blink::WebString::FromUtf8(new_selectors_script)),
           blink::BackForwardCacheAware::kAllow);
+      if (!guard) {
+        return;
+      }
     }
   }
 
@@ -828,6 +854,9 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
   if (generichide_) {
     return;
   }
+
+  base::WeakPtr<CosmeticFiltersJSHandler> guard =
+      weak_ptr_factory_.GetWeakPtr();
 
   SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
       "Brave.CosmeticFilters.OnHiddenClassIdSelectors");
@@ -880,6 +909,9 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
           blink::WebScriptSource(
               blink::WebString::FromUtf8(new_selectors_script)),
           blink::BackForwardCacheAware::kAllow);
+      if (!guard) {
+        return;
+      }
     }
 
     if (!enabled_1st_party_cf_)
