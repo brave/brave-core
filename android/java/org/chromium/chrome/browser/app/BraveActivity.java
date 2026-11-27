@@ -607,13 +607,7 @@ public abstract class BraveActivity extends ChromeActivity
         if (bottomSheetController == null) return;
 
         BraveExtensionsMenuCoordinator.show(
-                this,
-                task,
-                profile,
-                windowAndroid,
-                bottomSheetController,
-                getBrowserControlsManager(),
-                this::getActivityTab);
+                this, task, profile, windowAndroid, bottomSheetController, this::getActivityTab);
     }
 
     // Handles only wallet related mojo failures. Don't add handlers for mojo connections that
