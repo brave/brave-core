@@ -1,0 +1,40 @@
+diff --git a/services/network/restricted_cookie_manager.cc b/services/network/restricted_cookie_manager.cc
+index 071489be837c510331b3910e3cd47e9f48fb4f53..57dc0751698abb47a18fe16c30d0672d48e8ac88 100644
+--- a/services/network/restricted_cookie_manager.cc
++++ b/services/network/restricted_cookie_manager.cc
+@@ -322,7 +322,7 @@ class RestrictedCookieManager::Listener
+     // site from observing their cookies being deleted at a later time, which
+     // can happen due to eviction or due to the user explicitly deleting all
+     // cookies.
+-    if (!restricted_cookie_manager_->cookie_settings().IsCookieAccessible(
++    if (!restricted_cookie_manager_->cookie_settings().IsEphemeralCookieAccessible(
+             change.cookie, url_, site_for_cookies_, top_frame_origin_,
+             restricted_cookie_manager_->GetCookieSettingOverrides(
+                 storage_access_api_status_, /*is_ad_tagged=*/false,
+@@ -546,7 +546,7 @@ void RestrictedCookieManager::CookieListToGetAllForUrlCallback(
+ 
+   net::CookieAccessResultList maybe_included_cookies = cookie_list;
+   net::CookieAccessResultList excluded_cookies = excluded_list;
+-  cookie_settings().AnnotateAndMoveUserBlockedCookies(
++  cookie_settings().AnnotateAndMoveUserBlockedEphemeralCookies(
+       url, site_for_cookies, &top_frame_origin, cookie_setting_overrides,
+       maybe_included_cookies, excluded_cookies);
+ 
+@@ -759,7 +759,7 @@ void RestrictedCookieManager::SetCanonicalCookie(
+                                 /*force_disable_third_party_cookies=*/false);
+   // Check cookie accessibility with cookie_settings.
+   // TODO(morlovich): Try to validate site_for_cookies as well.
+-  bool blocked = !cookie_settings_->IsCookieAccessible(
++  bool blocked = !cookie_settings_->IsEphemeralCookieAccessible(
+       cookie, url, site_for_cookies, top_frame_origin, cookie_setting_overrides,
+       &status);
+ 
+@@ -1098,7 +1098,7 @@ void RestrictedCookieManager::CookiesEnabledFor(
+     return;
+   }
+ 
+-  std::move(callback).Run(cookie_settings_->IsFullCookieAccessAllowed(
++  std::move(callback).Run(cookie_settings_->IsEphemeralCookieAccessAllowed(
+       url, EffectiveSiteForCookies(renderer_site_for_cookies),
+       EffectiveTopFrameOrigin(renderer_top_frame_origin),
+       GetCookieSettingOverrides(
