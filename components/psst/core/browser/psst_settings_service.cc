@@ -228,6 +228,11 @@ int PsstSettingsService::GetInfobarDeclinedCount(const url::Origin& origin) {
                                 *host_content_settings_map_);
 }
 
+int PsstSettingsService::GetInfobarReviewSuggestionsCount(const url::Origin& origin) {
+  return GetInfobarCounterValue(origin, kInfobarReviewSuggCounterSettingsKey,
+                                *host_content_settings_map_);
+}
+
 void PsstSettingsService::IncrementInfobarShownCount(
     const url::Origin& origin) {
   IncrementInfobarCounter(origin, kInfobarShownCounterSettingsKey,

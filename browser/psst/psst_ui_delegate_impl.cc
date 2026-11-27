@@ -69,10 +69,12 @@ void PsstUiDelegateImpl::Show(
 
   const int infobar_shown_count =
       psst_settings_service_->GetInfobarShownCount(origin_.value());
+  const bool is_infobar_reviwed =
+      psst_settings_service_->GetInfobarReviewSuggestionsCount(origin_.value());
   // Show the infobar only if it is enabled globally and has been shown less
   // than the max allowed times for this site.
-  if (psst_settings_service_->IsPsstInfobarEnabled() &&
-      infobar_shown_count < kMaxPsstInfobarShownCounter) {
+  if (IsPsstEnabled() && infobar_shown_count < kMaxPsstInfobarShownCounter &&
+      !is_infobar_reviwed) {
     psst_settings_service_->IncrementInfobarShownCount(origin_.value());
     ui_presenter_->ShowInfoBar(
         base::BindOnce(&PsstUiDelegateImpl::OnUserAcceptedInfobar,
