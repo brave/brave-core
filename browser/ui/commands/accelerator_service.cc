@@ -147,6 +147,22 @@ AcceleratorService::AcceleratorService(PrefService* pref_service,
       menu_dispatched_(std::move(default_accelerators.menu_dispatched))
 #endif  // BUILDFLAG(IS_MAC)
 {
+  // Deduplicate and normalize default accelerators by code string. Multiple
+  // mappings for the same key combination (such as VKEY_LMENU and VKEY_MENU
+  // on Windows) must not produce duplicate entries or entries that fail to
+  // round-trip.
+  for (auto& [command_id, accelerators] : default_accelerators_) {
+    base::flat_set<std::string> seen_codes;
+    std::vector<ui::Accelerator> deduplicated;
+    for (auto& accelerator : accelerators) {
+      auto normalized = FromCodesString(ToCodesString(accelerator));
+      if (seen_codes.insert(ToCodesString(normalized)).second) {
+        deduplicated.push_back(normalized);
+      }
+    }
+    accelerators = std::move(deduplicated);
+  }
+
   Initialize();
 }
 
@@ -174,22 +190,26 @@ void AcceleratorService::UpdateDefaultAccelerators() {
   // Handle new accelerators, and removed accelerators.
   for (const auto& [command_id, new_accelerators] : default_accelerators_) {
     const auto& old_accelerators = old_defaults[command_id];
+    auto old_accelerator_codes = base::MakeFlatSet<std::string>(
+        old_accelerators, {}, &ToCodesString);
 
     // Note all the added accelerators.
     std::ranges::copy_if(
         new_accelerators, std::back_inserter(added[command_id]),
-        [&old_accelerators, &system_managed](const auto& accelerator) {
-          return !std::ranges::contains(old_accelerators, accelerator) ||
+        [&old_accelerator_codes, &system_managed](const auto& accelerator) {
+          return !old_accelerator_codes.contains(ToCodesString(accelerator)) ||
                  // If the accelerator is marked as a system command, be sure to
                  // reset it.
                  system_managed.contains(accelerator);
         });
 
     // Note all the removed accelerators.
+    auto new_accelerator_codes = base::MakeFlatSet<std::string>(
+        new_accelerators, {}, &ToCodesString);
     std::ranges::copy_if(
         old_accelerators, std::back_inserter(removed[command_id]),
-        [&new_accelerators](const auto& accelerator) {
-          return !std::ranges::contains(new_accelerators, accelerator);
+        [&new_accelerator_codes](const auto& accelerator) {
+          return !new_accelerator_codes.contains(ToCodesString(accelerator));
         });
   }
 
@@ -395,7 +415,9 @@ std::vector<int> AcceleratorService::AssignAccelerator(
 void AcceleratorService::UnassignAccelerator(
     int command_id,
     const ui::Accelerator& accelerator) {
-  std::erase(accelerators_[command_id], accelerator);
+  std::erase_if(accelerators_[command_id], [&accelerator](const auto& other) {
+    return ToCodesString(other) == ToCodesString(accelerator);
+  });
   pref_manager_.RemoveAccelerator(command_id, accelerator);
 }
 
