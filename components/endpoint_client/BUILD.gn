@@ -55,7 +55,6 @@ static_library("brave_endpoint") {
   ]
 
   deps = [
-    "//base",
     "//brave/brave_domains",
   ]
 }
