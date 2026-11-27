@@ -22,6 +22,7 @@ source_set("prefs") {
     "//brave/components/brave_ads/core",
     "//brave/components/brave_news/common",
     "//brave/components/brave_origin",
+    "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common",

@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_origin/brave_origin_prefs.h"
+#include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -119,6 +120,12 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
       global_privacy_control::kGlobalPrivacyControlEnabled, true);
   registry->RegisterBooleanPref(prefs::kMediaBackgroundingEnabled, false);
   registry->RegisterBooleanPref(prefs::kBlockAllCookiesEnabled, false);
+
+  registry->RegisterUint64Pref(brave_shields::prefs::kAdsBlocked, 0);
+  registry->RegisterUint64Pref(brave_shields::prefs::kTrackersBlocked, 0);
+  registry->RegisterUint64Pref(brave_shields::prefs::kFingerprintingBlocked, 0);
+  registry->RegisterUint64Pref(
+      brave_perf_predictor::prefs::kBandwidthSavedBytes, 0);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {

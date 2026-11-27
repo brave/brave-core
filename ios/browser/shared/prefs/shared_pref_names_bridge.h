@@ -14,6 +14,10 @@ OBJC_EXPORT NSString* const kMediaBackgroundingEnabled;
 OBJC_EXPORT NSString* const kBlockAllCookiesEnabled;
 OBJC_EXPORT NSString* const kMetricsReportingEnabled;
 OBJC_EXPORT NSString* const kHttpsOnlyModeEnabled;
+OBJC_EXPORT NSString* const kAdsBlockedPrefName;
+OBJC_EXPORT NSString* const kTrackersBlockedPrefName;
+OBJC_EXPORT NSString* const kFingerprintingBlockedPrefName;
+OBJC_EXPORT NSString* const kBandwidthSavedBytesPrefName;
 
 NS_ASSUME_NONNULL_END
 

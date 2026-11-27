@@ -6,6 +6,8 @@
 #include "brave/ios/browser/shared/prefs/shared_pref_names_bridge.h"
 
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/brave_perf_predictor/common/pref_names.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/ios/browser/shared/prefs/pref_names.h"
 #include "components/metrics/metrics_pref_names.h"
 #include "ios/chrome/browser/shared/model/prefs/pref_names.h"
@@ -26,3 +28,15 @@ NSString* const kMetricsReportingEnabled =
 // `HttpsOnlyModeUpgradeTabHelper`.
 NSString* const kHttpsOnlyModeEnabled =
     base::SysUTF8ToNSString(prefs::kHttpsOnlyModeEnabled);
+
+NSString* const kAdsBlockedPrefName =
+    base::SysUTF8ToNSString(brave_shields::prefs::kAdsBlocked);
+
+NSString* const kTrackersBlockedPrefName =
+    base::SysUTF8ToNSString(brave_shields::prefs::kTrackersBlocked);
+
+NSString* const kFingerprintingBlockedPrefName =
+    base::SysUTF8ToNSString(brave_shields::prefs::kFingerprintingBlocked);
+
+NSString* const kBandwidthSavedBytesPrefName =
+    base::SysUTF8ToNSString(brave_perf_predictor::prefs::kBandwidthSavedBytes);

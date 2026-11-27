@@ -40,7 +40,7 @@ struct ProfileState {
   var migrations: BraveProfileMigrations
   var dau: DAU
   var attributionManager: AttributionManager
-  let shieldStats = BraveGlobalShieldStats()
+  let shieldStats: BraveGlobalShieldStats
   let profile: any Profile
 
   init(profileController: BraveProfileController) {
@@ -69,6 +69,9 @@ struct ProfileState {
     // Setup BraveCore profile migrations
     migrations = BraveProfileMigrations(profileController: profileController)
     migrations.launchMigrations()
+
+    // Must be after migration so we read stats from prefs
+    shieldStats = BraveGlobalShieldStats(prefs: profileController.profile.prefs)
   }
 }
 
