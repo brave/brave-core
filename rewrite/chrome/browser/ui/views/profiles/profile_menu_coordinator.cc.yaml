@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Create Brave's incognito profile menu view.
+
+      BraveIncognitoMenuView is declared in
+      brave/browser/ui/views/profiles/brave_incognito_menu_view.h, which the
+      chromium_src override includes.
+    rename_class:
+      class_name: IncognitoMenuView
+      rename: BraveIncognitoMenuView
+
+  - description: |
+      Create Brave's profile menu view.
+
+      BraveProfileMenuView is declared in
+      brave/browser/ui/views/profiles/brave_profile_menu_view.h, which the
+      chromium_src override includes.
+    rename_class:
+      class_name: ProfileMenuView
+      rename: BraveProfileMenuView

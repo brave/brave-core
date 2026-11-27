@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Adjust identity section params before setting the profile identity.
+
+      Brave never shows the header, subtitle or action button. Both call sites
+      are wrapped. BraveAdjustIdentitySectionParams() is defined in the
+      chromium_src override. A regex is used because no dedicated rewriter
+      covers wrapping a call argument, and rename_class does not apply to a
+      method.
+    regex:
+      re_pattern: '(\bSetProfileIdentityWithCallToAction\()(.+)(\);)'
+      replace: '\1BraveAdjustIdentitySectionParams(\2)\3'
+    count: 2

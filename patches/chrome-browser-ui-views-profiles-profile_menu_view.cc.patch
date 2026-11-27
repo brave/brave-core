@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/views/profiles/profile_menu_view.cc b/chrome/browser/ui/views/profiles/profile_menu_view.cc
+index cea9a0572a71e3fa6fe5627113d08d4f61ac574a..78656447e4d54893367185de9f6daf0d6c2d8d91 100644
+--- a/chrome/browser/ui/views/profiles/profile_menu_view.cc
++++ b/chrome/browser/ui/views/profiles/profile_menu_view.cc
+@@ -620,7 +620,7 @@ void ProfileMenuView::BuildGuestIdentity() {
+   params.title = menu_title_;
+   params.profile_image_padding = std::nearbyint(kIdentityInfoImageSize * 0.25f);
+   params.profile_image = profiles::GetGuestAvatar();
+-  SetProfileIdentityWithCallToAction(std::move(params));
++  SetProfileIdentityWithCallToAction(BraveAdjustIdentitySectionParams(std::move(params)));
+ 
+   if (GetWidget()) {
+     GetWidget()->UpdateAccessibleNameForRootView();
+@@ -926,7 +926,7 @@ void ProfileMenuView::BuildIdentityWithCallToAction() {
+     return;
+   }
+ 
+-  SetProfileIdentityWithCallToAction(GetIdentitySectionParams(*entry));
++  SetProfileIdentityWithCallToAction(BraveAdjustIdentitySectionParams(GetIdentitySectionParams(*entry)));
+ }
+ 
+ void ProfileMenuView::MaybeBuildBatchUploadButton() {
