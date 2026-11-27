@@ -39,9 +39,11 @@ class ProtectionStatsTabHelper: TabObserver, @preconcurrency ProtectionStatsTabH
   }
 
   private weak var tab: (any TabState)?
+  private let shieldStats: BraveGlobalShieldStats
 
-  init(tab: some TabState) {
+  init(tab: some TabState, shieldStats: BraveGlobalShieldStats) {
     self.tab = tab
+    self.shieldStats = shieldStats
 
     tab.addObserver(self)
   }
@@ -107,7 +109,7 @@ class ProtectionStatsTabHelper: TabObserver, @preconcurrency ProtectionStatsTabH
           if let contentBlocker = tab.contentBlocker {
             contentBlocker.stats = contentBlocker.stats.adding(scriptCount: 1)
           }
-          BraveGlobalShieldStats.shared.scripts += 1
+          shieldStats.scripts += 1
           return
         }
 
@@ -178,15 +180,12 @@ class ProtectionStatsTabHelper: TabObserver, @preconcurrency ProtectionStatsTabH
           )
         )
 
-        // Increase global stats (here due to BlocklistName being in Client and
-        // BraveGlobalShieldStats being in BraveShared)
-        let stats = BraveGlobalShieldStats.shared
         switch blockedType {
         case .ad:
-          stats.adblock += 1
+          shieldStats.adblock += 1
           contentBlocker.stats = contentBlocker.stats.adding(adCount: 1)
         case .image:
-          stats.images += 1
+          shieldStats.images += 1
         }
       }
     }

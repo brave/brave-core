@@ -141,7 +141,7 @@ extension BrowserViewController {
   func recordDataSavedP3A(change: Int) {
     var dataSavedStorage = P3ATimedStorage<Int>.dataSavedStorage
     dataSavedStorage.add(
-      value: change * BraveGlobalShieldStats.shared.averageBytesSavedPerItem,
+      value: change * BraveGlobalShieldStats.averageBytesSavedPerItem,
       to: Date()
     )
 

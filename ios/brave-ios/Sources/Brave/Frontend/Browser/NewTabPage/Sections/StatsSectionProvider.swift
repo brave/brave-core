@@ -14,15 +14,18 @@ import UIKit
 
 class StatsSectionProvider: NSObject, NTPSectionProvider {
   private let isPrivateBrowsing: Bool
+  private let shieldStats: BraveGlobalShieldStats
   var openPrivacyHubPressed: () -> Void
   var hidePrivacyHubPressed: () -> Void
 
   init(
     isPrivateBrowsing: Bool,
+    shieldStats: BraveGlobalShieldStats,
     openPrivacyHubPressed: @escaping () -> Void,
     hidePrivacyHubPressed: @escaping () -> Void
   ) {
     self.isPrivateBrowsing = isPrivateBrowsing
+    self.shieldStats = shieldStats
     self.openPrivacyHubPressed = openPrivacyHubPressed
     self.hidePrivacyHubPressed = hidePrivacyHubPressed
   }
@@ -45,7 +48,8 @@ class StatsSectionProvider: NSObject, NTPSectionProvider {
     let cell = collectionView.dequeueReusableCell(for: indexPath) as StatsNTPWidgetCell
     cell.contentConfiguration = UIHostingConfiguration {
       StatsNTPWidget(
-        isPrivateBrowsing: isPrivateBrowsing
+        isPrivateBrowsing: isPrivateBrowsing,
+        stats: shieldStats
       ) { [weak self] in
         self?.openPrivacyHubPressed()
       } hidePrivacyHubPressed: { [weak self] in
@@ -95,11 +99,10 @@ class StatsNTPWidgetCell: UICollectionViewCell, CollectionViewReusable {
 
 struct StatsNTPWidget: View {
   var isPrivateBrowsing: Bool
+  var stats: BraveGlobalShieldStats
 
   var openPrivacyHubPressed: () -> Void
   var hidePrivacyHubPressed: () -> Void
-
-  private let stats = BraveGlobalShieldStats.shared
 
   private struct StatLabeledContentStyle: LabeledContentStyle {
     func makeBody(configuration: Configuration) -> some View {
@@ -135,10 +138,6 @@ struct StatsNTPWidget: View {
     }
   }
 
-  private var adblockCount: Int {
-    stats.adblock + stats.trackingProtection
-  }
-
   var body: some View {
     Button {
       openPrivacyHubPressed()
@@ -150,7 +149,7 @@ struct StatsNTPWidget: View {
           .frame(maxWidth: .infinity, alignment: .leading)
         HStack {
           LabeledContent {
-            Text(adblockCount.kFormattedNumber)
+            Text(stats.adsAndTrackersBlocked.kFormattedNumber)
               .foregroundStyle(Color(braveSystemName: .primitiveOrange70))
           } label: {
             Text(Strings.Shields.shieldsAdAndTrackerStats.capitalized)

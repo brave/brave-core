@@ -8,6 +8,7 @@ import Brave
 import BraveCore
 import BraveNews
 import BraveShared
+import BraveShields
 import BraveVPN
 import BraveWidgetsModels
 import BrowserIntentsModels
@@ -39,6 +40,7 @@ struct ProfileState {
   var migrations: BraveProfileMigrations
   var dau: DAU
   var attributionManager: AttributionManager
+  let shieldStats = BraveGlobalShieldStats()
   let profile: any Profile
 
   init(profileController: BraveProfileController) {
@@ -364,6 +366,7 @@ extension SceneDelegate {
       profile: AppState.shared.profile,
       attributionManager: profileState.attributionManager,
       rewards: profileState.rewards,
+      shieldStats: profileState.shieldStats,
       newsFeedDataSource: AppState.shared.newsFeedDataSource,
       userActivity: sceneState.connectionOptions.userActivities.first,
       downloadBackgroundTaskModel: AppState.shared.downloadBackgroundTaskModel
@@ -743,6 +746,7 @@ extension SceneDelegate {
     profile: LegacyBrowserProfile,
     attributionManager: AttributionManager,
     rewards: Brave.BraveRewards,
+    shieldStats: BraveGlobalShieldStats,
     newsFeedDataSource: BraveNews.FeedDataSource,
     userActivity: NSUserActivity?,
     downloadBackgroundTaskModel: DownloadBackgroundTaskScheduler?
@@ -813,6 +817,7 @@ extension SceneDelegate {
       braveCore: braveCore,
       profileController: profileController,
       rewards: rewards,
+      shieldStats: shieldStats,
       crashedLastSession: crashedLastSession,
       newsFeedDataSource: newsFeedDataSource,
       privateBrowsingManager: privateBrowsingManager,

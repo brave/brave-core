@@ -13,6 +13,12 @@ import Web
 import WebKit
 
 class RequestBlockingContentScriptHandler: TabContentScript {
+  private let shieldStats: BraveGlobalShieldStats
+
+  init(shieldStats: BraveGlobalShieldStats) {
+    self.shieldStats = shieldStats
+  }
+
   struct RequestBlockingDTO: Decodable {
     struct RequestBlockingDTOData: Decodable, Hashable {
       let resourceType: AdblockResourceType
@@ -113,7 +119,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
               $0.requestURL == requestURL
             })
         {
-          BraveGlobalShieldStats.shared.adblock += 1
+          shieldStats.adblock += 1
           let stats = tabData.contentBlocker.stats
           tab.contentBlocker?.stats = stats.adding(adCount: 1)
           tab.contentBlocker?.blockedRequests.append(

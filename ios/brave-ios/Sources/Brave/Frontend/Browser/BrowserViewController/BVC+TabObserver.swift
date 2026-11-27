@@ -267,7 +267,7 @@ extension BrowserViewController {
       FaviconScriptHandler(),
       YoutubeQualityScriptHandler(),
       BraveLeoScriptHandler(),
-      RequestBlockingContentScriptHandler(),
+      RequestBlockingContentScriptHandler(shieldStats: shieldStats),
     ]
 
     if let contentBlocker = tab.contentBlocker {

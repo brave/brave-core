@@ -6,6 +6,7 @@
 import BraveShields
 import BraveWidgetsModels
 import Foundation
+import Preferences
 import Strings
 import UIKit
 
@@ -48,14 +49,18 @@ extension StatKind {
     }
   }
 
+  private var blockedCount: Int {
+    Preferences.BlockStats.adsCount.value + Preferences.BlockStats.trackersCount.value
+  }
+
   var displayString: String {
     switch self {
     case .adsBlocked:
-      return BraveGlobalShieldStats.shared.adblock.kFormattedNumber
+      return Preferences.BlockStats.adsCount.value.kFormattedNumber
     case .dataSaved:
-      return BraveGlobalShieldStats.shared.dataSaved
+      return BraveGlobalShieldStats.dataSaved(blockedCount: blockedCount)
     case .timeSaved:
-      return BraveGlobalShieldStats.shared.timeSaved
+      return BraveGlobalShieldStats.timeSaved(blockedCount: blockedCount)
     case .unknown:
       return ""
     @unknown default:

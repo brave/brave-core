@@ -21,11 +21,14 @@ extension TabDataValues {
 public class RequestBlockingTabHelper: TabObserver {
 
   private weak var tab: (any TabState)?
+  private let shieldStats: BraveGlobalShieldStats
 
   public init(
-    tab: some TabState
+    tab: some TabState,
+    shieldStats: BraveGlobalShieldStats
   ) {
     self.tab = tab
+    self.shieldStats = shieldStats
     tab.addObserver(self)
   }
 
@@ -88,7 +91,7 @@ extension RequestBlockingTabHelper: RequestBlockingTabHelperBridge {
           $0.requestURL == requestURL
         })
     {
-      BraveGlobalShieldStats.shared.adblock += 1
+      shieldStats.adblock += 1
       let stats = tabData.contentBlocker.stats
       tab.contentBlocker?.stats = stats.adding(adCount: 1)
       tab.contentBlocker?.blockedRequests.append(

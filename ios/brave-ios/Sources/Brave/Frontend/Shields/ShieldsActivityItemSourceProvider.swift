@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import BraveShields
 import BraveUI
 import LinkPresentation
 import Shared
@@ -24,7 +25,10 @@ final class ShieldsActivityItemSourceProvider {
 
   static let shared = ShieldsActivityItemSourceProvider()
 
-  func setupGlobalShieldsActivityController(isPrivateBrowsing: Bool) -> UIActivityViewController {
+  func setupGlobalShieldsActivityController(
+    isPrivateBrowsing: Bool,
+    shieldStats: BraveGlobalShieldStats
+  ) -> UIActivityViewController {
     let backgroundImage = UIImage(
       named: "share-activity-background",
       in: .module,
@@ -36,6 +40,7 @@ final class ShieldsActivityItemSourceProvider {
       let statsInfoView = UIHostingController(
         rootView: StatsNTPWidget(
           isPrivateBrowsing: isPrivateBrowsing,
+          stats: shieldStats,
           openPrivacyHubPressed: {},
           hidePrivacyHubPressed: {}
         )
