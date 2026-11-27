@@ -3,6 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import Foundation
 import Preferences
 import Shared
@@ -55,6 +56,14 @@ class LoginsScriptHandler: TabContentScript {
     // We don't use the WKWebView's URL since the page can spoof the URL by using document.location
     // right before requesting login data. See bug 1194567 for more context.
     if let url = message.frameInfo.request.url {
+      // The frame's document URL does not reflect its actual security origin. Documents served
+      // with `Content-Security-Policy: sandbox` (or loaded in sandboxed iframes) run in an opaque
+      // origin and must not be treated as the site that served them, so only handle messages from
+      // frames whose security origin matches the document URL's origin.
+      let frameOrigin = URLOrigin(wkSecurityOrigin: message.frameInfo.securityOrigin)
+      guard !frameOrigin.isOpaque, frameOrigin == url.origin else {
+        return
+      }
       // Since responses go to the main frame, make sure we only listen for main frame requests
       // to avoid XSS attacks.
       if type == "request" {
