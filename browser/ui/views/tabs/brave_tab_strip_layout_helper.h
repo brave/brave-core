@@ -44,7 +44,25 @@ inline constexpr int kBaseOffsetPerLevel = 20;
 // as a visible stack rather than nearly-flush tabs.
 inline constexpr int kNestedTabStackedOffset = 12;
 
+// The vertical margin between the horizontal tab strip's bounds and the split
+// view tile's bounding box.
+inline constexpr int kHorizontalSplitViewTileVerticalMargin = 2;
+
+// The padding between a split view tile and the tabs in it. It's also the gap
+// between the tabs.
+inline constexpr int kSplitViewTilePadding = 2;
+
 int GetTabCornerRadius(const Tab& tab);
+
+// Returns the corner radius of the tabs' shapes inside a split view tile. It's
+// the same as the radius of non-split tabs.
+int GetSplitViewTabCornerRadius(const Tab& tab);
+
+// Returns the corner radius of the split view tile's bounding box. It's
+// concentric with the corners of the tabs in the tile, so it's the tabs' radius
+// plus the tile's padding, except for horizontal tabs without the updated
+// style.
+int GetSplitViewTileCornerRadius(const Tab& tab, bool is_vertical_tab);
 
 void CalculatePinnedTabsBoundsInGrid(
     const std::vector<TabWidthConstraints>& tabs,

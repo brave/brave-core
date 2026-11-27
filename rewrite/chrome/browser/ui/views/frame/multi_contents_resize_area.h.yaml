@@ -7,7 +7,7 @@ substitutions:
   - description: |
       Zero out `kHandleResizeAxisPadding`.
 
-      Brave sizes the split divider to match `kRoundedCornersContentsViewMargin`.
+      Brave removes the padding around the split divider.
       `OnLayoutUpdated()` recomputes the resize area's preferred size from this
       constant on every layout change, so setting the preferred size from the
       Brave subclass is lost when a split flips between stacked and
@@ -15,3 +15,11 @@ substitutions:
     regex:
       pattern: 'kHandleResizeAxisPadding = 6;'
       replace: 'kHandleResizeAxisPadding = 0;'
+
+  - description: |
+      Shrink `kHandleResizeAxisSize` to 2.
+
+      Brave draws a thinner divider between the panes of a split view.
+    regex:
+      pattern: 'kHandleResizeAxisSize = 4;'
+      replace: 'kHandleResizeAxisSize = 2;'

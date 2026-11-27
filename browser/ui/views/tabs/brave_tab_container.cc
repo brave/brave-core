@@ -538,13 +538,18 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
 
   if (!is_vertical_tab) {
     // In order to make margin between the bounding box and tab strip.
-    int vertical_margin = tab1->data().pinned ? 4 : 2;
+    // Pinned tabs are inset within the bounding box only with the updated
+    // horizontal tab style.
+    const int vertical_margin =
+        tab1->data().pinned && !tabs::HorizontalTabsUpdateEnabled()
+            ? 4
+            : tabs::kHorizontalSplitViewTileVerticalMargin;
     bounding_rects.Inset(
         gfx::Insets::VH(vertical_margin, tabs::kHorizontalTabInset));
   }
 
   const float corner_radius =
-      !is_vertical_tab && tabs::UseCompactHorizontalTabs() ? 9.0f : 12.f;
+      tabs::GetSplitViewTileCornerRadius(*tab1, is_vertical_tab);
 
   auto* cp = GetColorProvider();
   DCHECK(cp);
@@ -555,27 +560,6 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
                       : kColorBraveSplitViewTileBackgroundHorizontal));
 
   canvas.DrawRoundRect(bounding_rects, corner_radius, flags);
-
-  auto* tab_strip_model =
-      tab_slot_controller_->GetBrowserWindowInterface()->GetTabStripModel();
-  const auto active_tab_index = tab_strip_model->active_index();
-  if (!is_vertical_tab && active_tab_index != indices[0] &&
-      active_tab_index != indices[1] && !tab1->IsMouseHovered() &&
-      !tab2->IsMouseHovered()) {
-    constexpr int kSplitViewSeparatorHeight = 24;
-    auto separator_top = bounding_rects.top_center();
-    if (bounding_rects.height() <= kSplitViewSeparatorHeight) {
-      // Bounding rect can be too small during shutdown.
-      return;
-    }
-    // Calculate gap between tab bounds top and separator top.
-    const int gap = (bounding_rects.height() - kSplitViewSeparatorHeight) / 2;
-    separator_top.Offset(0, gap);
-    auto separator_bottom = separator_top;
-    separator_bottom.Offset(0, kSplitViewSeparatorHeight);
-    canvas.DrawLine(separator_top, separator_bottom,
-                    cp->GetColor(kColorBraveSplitViewTileDivider));
-  }
 
   bounding_rects.Outset(1);
   flags.setStyle(cc::PaintFlags::kStroke_Style);

@@ -204,6 +204,10 @@ class BraveTab : public Tab
   // Lays out the small tab accent icon view (visibility and bounds).
   void LayoutSmallTabAccentIcon();
 
+  // Centers the favicon and alert indicator within the painted shape of a
+  // pinned tab in a split view tile.
+  void CenterIconsInPinnedSplitTab();
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // Starts observing container list changes if not already observing.
   void MaybeObserveContainerChanges();

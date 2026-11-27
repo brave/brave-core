@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.h"
 
+#include <algorithm>
+
 #include "base/check.h"
 #include "base/dcheck_is_on.h"
 #include "base/logging.h"
@@ -12,6 +14,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
@@ -24,9 +27,6 @@
 namespace {
 
 using tabs::HorizontalTabsUpdateEnabled;
-
-constexpr auto kPaddingForVerticalTabInTile = 4;
-constexpr int kPaddingForHorizontalTabInTile = 4;
 
 // Returns a value indicating if the browser frame view is "condensed", i.e.
 // that its frame border is somehow collapsed, as in fullscreen or when
@@ -111,6 +111,23 @@ class BraveVerticalTabStyle : public HorizontalTabStyleViews {
 
   // true when |tab| is shown at the beginning of split view.
   bool IsStartSplitTab(const Tab* tab) const;
+
+  // true when the other tab in the same split is laid out in the same row,
+  // e.g. pinned tabs in the vertical tab strip's grid.
+  bool IsSplitTabPartnerInSameRow() const;
+
+  // Returns the padding between the split view tile's bounding box and the
+  // tab's shape. It's also used as the gap between the tabs in the tile.
+  int GetPaddingInSplitTile() const;
+
+  // Returns the insets between the tab's bounds and its visible shape so that
+  // the tab is GetPaddingInSplitTile() away from the split view tile's edges
+  // and from the other tab in the tile.
+  gfx::Insets GetInsetsInSplitTile() const;
+
+  // Returns the corner radius that makes the tab's shape concentric with the
+  // split view tile's bounding box.
+  int GetCornerRadiusInSplitTile() const;
 
   // Return tab background color for certain tab states.
   std::optional<SkColor> GetTargetTabBackgroundColor(
@@ -251,25 +268,13 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
     }
   }
 
-  if (!is_pinned && IsSplitTab(tab()) &&
-      path_type != TabStyle::PathType::kHitTest) {
-    if (ShouldShowVerticalTabs()) {
-      IsStartSplitTab(tab())
-          ? tab_top += scale* kPaddingForVerticalTabInTile
-          : tab_bottom -= scale * kPaddingForVerticalTabInTile;
-      tab_left += scale * kPaddingForVerticalTabInTile;
-      tab_right -= scale * kPaddingForVerticalTabInTile;
-    } else {
-      constexpr int kAdditionalVerticalPadding =
-          tabs::kHorizontalSplitViewTabVerticalSpacing -
-          tabs::kHorizontalTabGap;
-      tab_top += scale * kAdditionalVerticalPadding;
-      tab_bottom -= scale * kAdditionalVerticalPadding;
-
-      IsStartSplitTab(tab())
-          ? tab_left += scale* kPaddingForHorizontalTabInTile
-          : tab_right -= scale * kPaddingForHorizontalTabInTile;
-    }
+  if (IsSplitTab(tab()) && path_type != TabStyle::PathType::kHitTest) {
+    const gfx::Insets insets = GetInsetsInSplitTile();
+    tab_top += scale * insets.top();
+    tab_left += scale * insets.left();
+    tab_right -= scale * insets.right();
+    tab_bottom -= scale * insets.bottom();
+    radius = GetCornerRadiusInSplitTile();
   }
 
   SkPathBuilder builder(
@@ -321,10 +326,9 @@ gfx::Insets BraveVerticalTabStyle::GetContentsInsets() const {
   add_extra_left_padding(insets);
 
   if (!is_pinned && is_vertical_tabs && IsSplitTab(tab())) {
-    const bool is_first_tab = IsStartSplitTab(tab());
-    return insets + gfx::Insets::TLBR(
-                        is_first_tab ? kPaddingForVerticalTabInTile : 0, 0,
-                        is_first_tab ? 0 : kPaddingForVerticalTabInTile, 0);
+    const gfx::Insets split_insets = GetInsetsInSplitTile();
+    return insets +
+           gfx::Insets::TLBR(split_insets.top(), 0, split_insets.bottom(), 0);
   }
 
   if (HorizontalTabsUpdateEnabled()) {
@@ -608,6 +612,56 @@ bool BraveVerticalTabStyle::IsStartSplitTab(const Tab* tab) const {
                               [&tab_to_left](const Tab* split_tab) {
                                 return split_tab == tab_to_left;
                               });
+}
+
+bool BraveVerticalTabStyle::IsSplitTabPartnerInSameRow() const {
+  return std::ranges::any_of(
+      tab()->controller()->GetTabsInSplit(tab()), [this](const Tab* split_tab) {
+        return split_tab != tab() && split_tab->y() == tab()->y();
+      });
+}
+
+int BraveVerticalTabStyle::GetPaddingInSplitTile() const {
+  return tabs::kSplitViewTilePadding;
+}
+
+gfx::Insets BraveVerticalTabStyle::GetInsetsInSplitTile() const {
+  const bool is_start = IsStartSplitTab(tab());
+  const int padding = GetPaddingInSplitTile();
+
+  if (!ShouldShowVerticalTabs()) {
+    // The tab's shape is already inset by kHorizontalTabInset horizontally, the
+    // same as the tile's bounding box, which leaves kHorizontalTabGap between
+    // adjacent tabs. Adjust the inner edge so that the gap between split tabs
+    // matches the padding.
+    const int inner = (padding - tabs::kHorizontalTabGap) / 2;
+    // The tab's shape is already inset vertically by
+    // GetHorizontalTabVerticalSpacing() while the tile's bounding box is inset
+    // by kHorizontalSplitViewTileVerticalMargin.
+    const int vertical = tabs::kHorizontalSplitViewTileVerticalMargin +
+                         padding - tabs::GetHorizontalTabVerticalSpacing();
+    return gfx::Insets::TLBR(vertical, is_start ? padding : inner, vertical,
+                             is_start ? inner : padding);
+  }
+
+  // In vertical tabs, the tile's bounding box is the union of the tabs' bounds.
+  // Inset the inner edge so that the gap between split tabs matches the
+  // padding.
+  const bool is_pinned = tab()->data().pinned;
+  const int inner = padding / 2;
+
+  // Pinned tabs are laid out in a grid, so split tabs can be placed side by
+  // side or stacked when the grid has a single column.
+  if (is_pinned && IsSplitTabPartnerInSameRow()) {
+    return gfx::Insets::TLBR(padding, is_start ? padding : inner, padding,
+                             is_start ? inner : padding);
+  }
+  return gfx::Insets::TLBR(is_start ? padding : inner, padding,
+                           is_start ? inner : padding, padding);
+}
+
+int BraveVerticalTabStyle::GetCornerRadiusInSplitTile() const {
+  return tabs::GetSplitViewTabCornerRadius(*tab());
 }
 
 TabStyle::TabColors BraveVerticalTabStyle::CalculateTargetColors() const {
