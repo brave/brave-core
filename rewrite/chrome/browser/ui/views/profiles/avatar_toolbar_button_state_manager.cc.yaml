@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Use Brave state provider for Tor, Incognito and Guest profiles.
+
+      StateProvider provides data to visualize the avatar toolbar button.
+      Brave shows different icons for Tor, Incognito and Guest profiles, so
+      in these cases only the Brave-specific state provider is added and no
+      other state providers are created.
+      CreateBraveStateProvider() is declared and defined in the chromium_src
+      override.
+    add_before_line:
+      line: 'if (profile->IsRegularProfile()) {'
+      code: |2-
+          if (profile->IsTor() || profile->IsIncognitoProfile() ||
+              profile->IsGuestSession()) {
+            states_[ButtonState::kNormal] =
+                CreateBraveStateProvider(profile, /*state_observer=*/this);
+            return;
+          }

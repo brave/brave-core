@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/views/profiles/profile_menu_coordinator.cc b/chrome/browser/ui/views/profiles/profile_menu_coordinator.cc
+index 8f3d9b2cb76366808ee64587aaa943af00e323f0..df9f21aad96af970b2b798cbb9f78496db4c6eb2 100644
+--- a/chrome/browser/ui/views/profiles/profile_menu_coordinator.cc
++++ b/chrome/browser/ui/views/profiles/profile_menu_coordinator.cc
+@@ -106,7 +106,7 @@ void ProfileMenuCoordinator::ShowWithPromoResults(
+   std::unique_ptr<ProfileMenuViewBase> bubble;
+   const bool is_incognito = GetProfile()->IsIncognitoProfile();
+   if (is_incognito) {
+-    bubble = std::make_unique<IncognitoMenuView>(avatar_toolbar_button,
++    bubble = std::make_unique<BraveIncognitoMenuView>(avatar_toolbar_button,
+                                                  &browser_.get());
+   } else if (GetProfile()->IsEnterpriseIsolatedModeProfile()) {
+     bubble = std::make_unique<IsolatedModeMenuView>(avatar_toolbar_button,
+@@ -116,7 +116,7 @@ void ProfileMenuCoordinator::ShowWithPromoResults(
+     // Note: on Ash, only incognito windows have a profile menu.
+     NOTREACHED() << "The profile menu is not implemented on Ash.";
+ #else
+-    bubble = std::make_unique<ProfileMenuView>(
++    bubble = std::make_unique<BraveProfileMenuView>(
+         avatar_toolbar_button, &browser_.get(), promo_info, from_avatar_promo);
+ #endif  // BUILDFLAG(IS_CHROMEOS)
+   }

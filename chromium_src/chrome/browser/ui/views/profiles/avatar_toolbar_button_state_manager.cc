@@ -23,8 +23,8 @@ std::unique_ptr<StateProvider> CreateBraveStateProvider(
 
 }  // namespace
 
-// Overrides profile->IsRegularProfile() in CreateStatesAndListeners() to
-// customize state provider for Tor, Incognito, and Guest profiles.
+// CreateStatesAndListeners() calls CreateBraveStateProvider() for Tor,
+// Incognito, and Guest profiles (see the plaster rewrite for this file).
 // StateProvider provides data to visualize the avatar toolbar button's state
 // according to various situations. But Brave has specific requirements for
 // Tor, Incognito, and Guest profiles to show different icons for these. So
@@ -34,17 +34,7 @@ std::unique_ptr<StateProvider> CreateBraveStateProvider(
 // Brave-specific ones. This is because we don't show any other state in those
 // profiles. i.e., we don't have special avatar button for "signed-in", "sync
 // error", and etc for these profiles.
-#define IsRegularProfile()                                                 \
-  IsTor() || profile->IsIncognitoProfile() || profile->IsGuestSession()) { \
-    states_[ButtonState::kNormal] =                                        \
-        CreateBraveStateProvider(profile, /*state_observer=*/this);        \
-    return;                                                                \
-  }                                                                        \
-  if (profile->IsRegularProfile()
-
 #include <chrome/browser/ui/views/profiles/avatar_toolbar_button_state_manager.cc>
-
-#undef IsRegularProfile
 
 namespace {
 

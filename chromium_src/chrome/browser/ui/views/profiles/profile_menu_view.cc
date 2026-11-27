@@ -23,8 +23,4 @@ ProfileMenuViewBase::IdentitySectionParams BraveAdjustIdentitySectionParams(
 
 }  // namespace
 
-#define SetProfileIdentityWithCallToAction(PARAMS) \
-  SetProfileIdentityWithCallToAction(BraveAdjustIdentitySectionParams(PARAMS))
-
 #include <chrome/browser/ui/views/profiles/profile_menu_view.cc>
-#undef SetProfileIdentityWithCallToAction

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/profiles/profile_menu_coordinator.h b/chrome/browser/ui/views/profiles/profile_menu_coordinator.h
+index 5fa9a016a463ac78e6615c8e5401055a9f0bb42a..46d4d2ad3a251c2903a5f9fac7ac555c03e2e088 100644
+--- a/chrome/browser/ui/views/profiles/profile_menu_coordinator.h
++++ b/chrome/browser/ui/views/profiles/profile_menu_coordinator.h
+@@ -55,6 +55,7 @@ class ProfileMenuCoordinator {
+   ProfileMenuViewBase* GetProfileMenuViewBaseForTesting();
+ 
+  private:
++  friend class BraveProfileMenuViewTest;
+   ui::ScopedUnownedUserData<ProfileMenuCoordinator> scoped_unowned_user_data_;
+ 
+   BrowserWindowInterface* GetBrowser();

@@ -9,8 +9,4 @@
 #include "chrome/browser/ui/views/profiles/incognito_menu_view.h"
 #include "chrome/browser/ui/views/profiles/profile_menu_view.h"
 
-#define IncognitoMenuView BraveIncognitoMenuView
-#define ProfileMenuView BraveProfileMenuView
 #include <chrome/browser/ui/views/profiles/profile_menu_coordinator.cc>
-#undef IncognitoMenuView
-#undef ProfileMenuView

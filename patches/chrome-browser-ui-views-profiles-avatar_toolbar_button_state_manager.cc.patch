@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button_state_manager.cc b/chrome/browser/ui/views/profiles/avatar_toolbar_button_state_manager.cc
+index eb7aad3954cae02558f05083266b44109fbfbed1..ddbbb90932c6436602b82ebf3fccdb04600ef4e2 100644
+--- a/chrome/browser/ui/views/profiles/avatar_toolbar_button_state_manager.cc
++++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button_state_manager.cc
+@@ -2412,6 +2412,12 @@ void AvatarToolbarButtonStateManager::CreateStatesAndListeners(
+     return;
+   }
+ 
++  if (profile->IsTor() || profile->IsIncognitoProfile() ||
++      profile->IsGuestSession()) {
++    states_[ButtonState::kNormal] =
++        CreateBraveStateProvider(profile, /*state_observer=*/this);
++    return;
++  }
+   if (profile->IsRegularProfile()) {
+     RegisterObserver(
+         static_cast<Observer*>(&OnSigninCoordinator::GetForProfile(*profile)));
