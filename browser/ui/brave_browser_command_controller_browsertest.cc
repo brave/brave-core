@@ -27,6 +27,7 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -68,6 +69,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_COMMANDER)
+#include "brave/components/commander/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -521,7 +526,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_EQ(3, browser()->tab_strip_model()->count());
 
   command_controller->ExecuteCommand(IDC_WINDOW_CLOSE_TABS_TO_LEFT);
-  EXPECT_EQ(2, browser()->tab_strip_model()->count());
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
 
   EXPECT_EQ(t1,
             browser()->tab_strip_model()->GetWebContentsAt(0)->GetVisibleURL());
@@ -558,7 +563,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_EQ(3, tsm->count());
 
   command_controller->ExecuteCommand(IDC_WINDOW_CLOSE_UNPINNED_TABS);
-  EXPECT_EQ(2, tsm->count());
+  ASSERT_EQ(2, tsm->count());
 
   for (int i = 0; i < tsm->count(); ++i) {
     EXPECT_TRUE(tsm->IsTabPinned(i));
@@ -637,8 +642,21 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerElementPickerDisabledTest,
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+class BraveBrowserCommandControllerCommanderTest
+    : public BraveBrowserCommandControllerTest {
+#if BUILDFLAG(ENABLE_COMMANDER)
+ private:
+  base::test::ScopedFeatureList commander_feature_list_{
+      features::kBraveCommander};
+#endif
+};
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerCommanderTest,
                        QuickCommandsDisabledForPopupWindow) {
+  EXPECT_EQ(BUILDFLAG(ENABLE_COMMANDER),
+            chrome::BrowserCommandController::From(browser())->IsCommandEnabled(
+                IDC_COMMANDER));
+
   auto* popup = CreateBrowserWindow(BrowserWindowCreateParams(
       BrowserWindowInterface::TYPE_POPUP, browser()->GetProfile(), true));
   chrome::AddTabAt(popup, GURL("about:blank"), -1, true);

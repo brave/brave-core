@@ -145,8 +145,13 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet5_http) {
   EXPECT_EQ(rc, net::OK);
 }
 
-TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV4) {
-  brave::SetSafeBrowsingEndpointForTesting(true);
+class BraveStaticRedirectSafeBrowsingTest : public testing::Test {
+ public:
+  void SetUp() override { brave::SetSafeBrowsingEndpointForTesting(true); }
+  void TearDown() override { brave::SetSafeBrowsingEndpointForTesting(false); }
+};
+
+TEST_F(BraveStaticRedirectSafeBrowsingTest, ModifySafeBrowsingURLV4) {
   const GURL url(
       "https://safebrowsing.googleapis.com/v4/"
       "threatListUpdates:fetch?$req=ChkKCGNocm9taXVtEg02Ni");
@@ -160,8 +165,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV4) {
   EXPECT_EQ(rc, net::OK);
 }
 
-TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV5) {
-  brave::SetSafeBrowsingEndpointForTesting(true);
+TEST_F(BraveStaticRedirectSafeBrowsingTest, ModifySafeBrowsingURLV5) {
   const GURL url(
       "https://safebrowsing.googleapis.com/v5/"
       "threatListUpdates:fetch?$req=ChkKCGNocm9taXVtEg02Ni");
@@ -253,9 +257,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(rc, net::OK);
 }
 
-TEST(BraveStaticRedirectNetworkDelegateHelperTest,
-     ModifySafeBrowsingFileCheckURL) {
-  brave::SetSafeBrowsingEndpointForTesting(true);
+TEST_F(BraveStaticRedirectSafeBrowsingTest, ModifySafeBrowsingFileCheckURL) {
   const GURL url(
       "https://sb-ssl.google.com/safebrowsing/clientreport/download?"
       "key=DUMMY_KEY");

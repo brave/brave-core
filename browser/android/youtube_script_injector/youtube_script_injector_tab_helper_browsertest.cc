@@ -9,7 +9,9 @@
 
 #include "base/files/file_util.h"
 #include "base/path_service.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
+#include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/android/android_browser_test.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -36,7 +38,12 @@ constexpr char kReplaceCallCount[] = "window.getReplaceCallCount()";
 class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
  public:
   AndroidYouTubeScriptInjectorBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    // The injected flag-rewriting script is gated on this feature, so pin it
+    // instead of relying on its compiled-in default.
+    scoped_feature_list_.InitAndEnableFeature(
+        preferences::features::kBravePictureInPictureForYouTubeVideos);
+  }
 
   ~AndroidYouTubeScriptInjectorBrowserTest() override = default;
 
@@ -138,6 +145,7 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
   net::EmbeddedTestServer https_server_;
 
  private:
+  base::test::ScopedFeatureList scoped_feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
 

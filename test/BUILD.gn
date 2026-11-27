@@ -1136,6 +1136,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/core",
+    "//brave/components/commander/common/buildflags",
     "//brave/components/email_aliases/buildflags",
     "//brave/components/extension_malware_blocklist/browser",
     "//brave/components/extension_malware_blocklist/common",
@@ -1681,7 +1682,10 @@ test("brave_browser_tests") {
   }
 
   if (enable_commander) {
-    deps += [ "//brave/browser/ui/commander:browser_tests" ]
+    deps += [
+      "//brave/browser/ui/commander:browser_tests",
+      "//brave/components/commander/common",
+    ]
   }
 
   if (enable_request_otr) {

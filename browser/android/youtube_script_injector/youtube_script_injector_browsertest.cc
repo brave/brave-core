@@ -7,9 +7,6 @@
 
 #include "base/functional/callback.h"
 #include "base/path_service.h"
-#include "base/run_loop.h"
-#include "base/task/single_thread_task_runner.h"
-#include "base/time/time.h"
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/android/android_browser_test.h"
@@ -23,8 +20,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
-const base::TimeDelta kCheckFrequency = base::Milliseconds(200);
-const base::TimeDelta kTaskTimeout = base::Seconds(10);
 
 constexpr std::u16string_view kSimulateDelayedScriptLoad =
     uR"(
@@ -92,44 +87,31 @@ class YouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
                                      content::ISOLATED_WORLD_ID_GLOBAL);
   }
 
-  bool WaitForJsResult(content::WebContents* web_contents,
-                       const std::string& script) {
-    base::RunLoop run_loop;
-    bool fulfilled = false;
-    bool timed_out = false;
+  content::EvalJsResult WaitForFullscreenState(bool expected) {
+    constexpr char kWaitForFullscreenState[] = R"(
+      new Promise(resolve => {
+        const matches = () => (document.fullscreenElement !== null) === $1;
+        if (matches()) {
+          resolve(true);
+          return;
+        }
 
-    auto check = std::make_unique<base::RepeatingClosure>();
-    *check = base::BindRepeating(
-        [](base::RepeatingClosure* check, base::RunLoop* run_loop,
-           content::WebContents* web_contents, const std::string& script,
-           bool* fulfilled) {
-          if (content::EvalJs(web_contents, script).ExtractBool()) {
-            *fulfilled = true;
-            run_loop->Quit();
-          } else {
-            base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
-                FROM_HERE, base::BindOnce((*check)), kCheckFrequency);
+        function finish(matched) {
+          document.removeEventListener('fullscreenchange', onChange);
+          clearTimeout(timeout);
+          resolve(matched);
+        }
+        function onChange() {
+          if (matches()) {
+            finish(true);
           }
-        },
-        check.get(), &run_loop, web_contents, script, &fulfilled);
-
-    // Start the first check.
-    (*check).Run();
-
-    // Set up timeout.
-    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
-        FROM_HERE,
-        base::BindOnce(
-            [](base::RunLoop* run_loop, bool* timed_out) {
-              *timed_out = true;
-              run_loop->Quit();
-            },
-            &run_loop, &timed_out),
-        kTaskTimeout);
-
-    run_loop.Run();
-
-    return fulfilled && !timed_out;
+        }
+        const timeout = setTimeout(() => finish(false), 10000);
+        document.addEventListener('fullscreenchange', onChange);
+      })
+    )";
+    return content::EvalJs(
+        web_contents(), content::JsReplace(kWaitForFullscreenState, expected));
   }
 
   bool IsVideoPlaying() {
@@ -170,8 +152,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   content::WaitForResizeComplete(web_contents());
 
   // Check the video is in fullscreen mode.
-  EXPECT_TRUE(
-      WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 }
 
 IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
@@ -205,8 +186,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   EXPECT_TRUE(IsVideoPlaying());
 
   // Check the video is in fullscreen mode.
-  EXPECT_TRUE(
-      WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 
   // Check again the video is still playing.
   EXPECT_TRUE(IsVideoPlaying());
@@ -227,8 +207,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   // Wait for the resize to complete triggered by fullscreen change.
   content::WaitForResizeComplete(web_contents());
   // Assert the video is in fullscreen mode.
-  ASSERT_TRUE(
-      WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
+  ASSERT_EQ(true, WaitForFullscreenState(true));
 
   YouTubeScriptInjectorTabHelper* helper = YouTubeScriptInjectorTabHelper::From(
       tabs::TabInterface::MaybeGetFromContents(web_contents()));
@@ -237,8 +216,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   helper->MaybeSetFullScreenAndPictureInPictureMode();
 
   // Verify that the video is still in fullscreen mode.
-  EXPECT_TRUE(
-      WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 }
 
 IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
@@ -325,8 +303,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
                   .ExtractBool());
 
   // Wait for the mutation observer to complete and trigger fullscreen mode.
-  EXPECT_TRUE(
-      WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 }
 
 // The test is flaky on CI, but succeed on local environment including physical
@@ -349,20 +326,17 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   helper->MaybeSetFullScreenAndPictureInPictureMode();
 
   // Wait for fullscreen to be triggered.
-  EXPECT_TRUE(
-      WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 
   // Exit fullscreen to prepare for second test.
   ASSERT_TRUE(content::ExecJs(web_contents(), "document.exitFullscreen()"));
-  EXPECT_TRUE(
-      WaitForJsResult(web_contents(), "document.fullscreenElement === null"));
+  EXPECT_EQ(true, WaitForFullscreenState(false));
 
   // Second call should work the same as first call.
   helper->MaybeSetFullScreenAndPictureInPictureMode();
 
   // Wait again for fullscreen to be triggered.
-  EXPECT_TRUE(
-      WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 }
 
 // Watching one YouTube video and then opening another is an ordinary flow, not
@@ -386,14 +360,12 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
 
   // The user triggers fullscreen and PiP on the first video.
   helper->MaybeSetFullScreenAndPictureInPictureMode();
-  EXPECT_TRUE(
-      WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 
   // Exit fullscreen explicitly so this test does not assert browser fullscreen
   // behavior across navigations.
   ASSERT_TRUE(content::ExecJs(web_contents(), "document.exitFullscreen()"));
-  EXPECT_TRUE(
-      WaitForJsResult(web_contents(), "document.fullscreenElement === null"));
+  EXPECT_EQ(true, WaitForFullscreenState(false));
 
   // The user moves on to a second, different video.
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url2, 1,
@@ -401,6 +373,5 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
 
   // The entry point must work on the second video just as it did on the first.
   helper->MaybeSetFullScreenAndPictureInPictureMode();
-  EXPECT_TRUE(
-      WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
+  EXPECT_EQ(true, WaitForFullscreenState(true));
 }

@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
@@ -27,6 +28,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/permissions/permission_request.h"
+#include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/usb_chooser.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
@@ -172,7 +174,8 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
 
     browser_content_client_ = std::make_unique<TestContentBrowserClient>();
-    content::SetBrowserClientForTesting(browser_content_client_.get());
+    original_browser_client_ =
+        content::SetBrowserClientForTesting(browser_content_client_.get());
 
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -195,9 +198,14 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
 
   void TearDownOnMainThread() override {
     browser_content_client_->ResetUsbDelegate();
+    content::SetBrowserClientForTesting(original_browser_client_);
+    InProcessBrowserTest::TearDownOnMainThread();
   }
 
-  void TearDown() override { browser_content_client_.reset(); }
+  void TearDown() override {
+    browser_content_client_.reset();
+    InProcessBrowserTest::TearDown();
+  }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
@@ -264,6 +272,7 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
   device::FakeUsbDeviceManager device_manager_;
   device::mojom::UsbDeviceInfoPtr fake_device_info_;
   base::test::ScopedFeatureList scoped_feature_list_;
+  raw_ptr<content::ContentBrowserClient> original_browser_client_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveNavigatorUsbFarblingBrowserTest,

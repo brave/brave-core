@@ -90,9 +90,9 @@ IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
   GetLastSessionFuture future;
   session_service->GetLastSession(future.GetCallback());
   auto [windows, ignored_active_window, status, replay_result] = future.Take();
-  EXPECT_EQ(windows.size(), 1u);
-  EXPECT_EQ(windows[0]->tabs.size(), 1u);
-  EXPECT_EQ(windows[0]->tabs[0]->navigations.size(), 2u);
+  ASSERT_EQ(windows.size(), 1u);
+  ASSERT_EQ(windows[0]->tabs.size(), 1u);
+  ASSERT_EQ(windows[0]->tabs[0]->navigations.size(), 2u);
   const auto& serialized_navigation = windows[0]->tabs[0]->navigations[1];
   EXPECT_EQ(serialized_navigation.virtual_url(), GURL("chrome://newtab/"));
 
@@ -127,9 +127,9 @@ IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
   GetLastSessionFuture future;
   session_service->GetLastSession(future.GetCallback());
   auto [windows, ignored_active_window, status, replay_result] = future.Take();
-  EXPECT_EQ(windows.size(), 1u);
-  EXPECT_EQ(windows[0]->tabs.size(), 1u);
-  EXPECT_EQ(windows[0]->tabs[0]->navigations.size(), 2u);
+  ASSERT_EQ(windows.size(), 1u);
+  ASSERT_EQ(windows[0]->tabs.size(), 1u);
+  ASSERT_EQ(windows[0]->tabs[0]->navigations.size(), 2u);
   const auto& serialized_navigation = windows[0]->tabs[0]->navigations[1];
   EXPECT_EQ(serialized_navigation.virtual_url(), GURL("chrome://rewards/"));
 

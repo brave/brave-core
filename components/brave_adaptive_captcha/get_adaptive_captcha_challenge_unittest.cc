@@ -33,6 +33,11 @@ class GetAdaptiveCaptchaChallengeTest : public testing::Test {
         "https://grants.rewards.brave.com");
   }
 
+  ~GetAdaptiveCaptchaChallengeTest() override {
+    brave_adaptive_captcha::ServerUtil::GetInstance()->SetServerHostForTesting(
+        "");
+  }
+
  protected:
   network::TestURLLoaderFactory test_url_loader_factory_;
   base::test::TaskEnvironment scoped_task_environment_;
