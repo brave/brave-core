@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -20,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/order/resource/order_extraction_patterns_resource.h"
+#include "brave/components/brave_ads/core/internal/tabs/extracted_order_field_type.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
@@ -110,6 +112,28 @@ class Conversions final : public TabManagerObserver {
       bool success,
       const AdEventList& ad_events);
 
+  // Remembers that this instance requested order id/value extraction for
+  // `tab_id`, so a conversion for that tab can wait for it to resolve.
+  void MarkOrderExtractionPending(int32_t tab_id,
+                                  bool should_extract_id,
+                                  bool should_extract_value);
+
+  // Whether `tab_id` has an order id or value extraction still in flight.
+  bool IsOrderExtractionPendingForTab(int32_t tab_id) const;
+
+  // Whether a newly-qualifying ad event for `tab_id` must wait rather than
+  // convert now, because `campaign_conversion_bucket` requests an order id
+  // or value that hasn't resolved yet. Marks `tab_id` as awaiting it, so a
+  // conversion can never race ahead of that request becoming known.
+  bool ShouldDeferConversionForOrderExtraction(
+      int32_t tab_id,
+      const std::vector<GURL>& redirect_chain,
+      const CampaignConversionList& campaign_conversion_bucket);
+
+  // Notifies any conversion deferred for `tab_id`, whether its order
+  // extraction fully resolved or the tab navigated away without resolving.
+  void FlushDeferredConversionsForTab(int32_t tab_id);
+
   // Prunes attempted ad events for campaigns the tab no longer matches, so
   // a later, distinct purchase under the same ad event can convert again.
   void PruneAttemptedAdEventKeysForTab(
@@ -132,7 +156,11 @@ class Conversions final : public TabManagerObserver {
   void NotifyFailedToConvertAd(const std::string& creative_instance_id);
 
   // TabManagerObserver:
+  void OnDidOpenNewTab(const TabInfo& tab) override;
   void OnTabDidChange(const TabInfo& tab) override;
+  void OnTabExtractedOrder(
+      const TabInfo& tab,
+      ExtractedOrderFieldType extracted_order_field_type) override;
   void OnDidCloseTab(int32_t tab_id) override;
 
   base::ObserverList<ConversionsObserver> observers_;
@@ -144,6 +172,17 @@ class Conversions final : public TabManagerObserver {
       base::flat_map</*campaign_id*/ std::string,
                      base::flat_set<AttemptedAdEventKey>>>
       attempted_ad_event_keys_by_tab_id_;
+
+  // Tabs with an order id/value extraction request that has not yet resolved
+  // or timed out.
+  base::flat_set<int32_t> tab_ids_awaiting_extracted_order_id_;
+  base::flat_set<int32_t> tab_ids_awaiting_extracted_order_value_;
+
+  // An ad event eligible to convert, held back only because its tab's order
+  // extraction was still pending when it was matched.
+  base::flat_map</*tab_id*/ int32_t,
+                 std::vector<std::pair<AdEventInfo, AttemptedAdEventKey>>>
+      deferred_ad_events_by_tab_id_;
 
   const database::table::CampaignConversions
       campaign_conversions_database_table_;

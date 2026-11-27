@@ -8,6 +8,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/internal/tabs/extracted_order_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types.h"
@@ -37,7 +38,8 @@ TEST(BraveAdsConversionBuilderTest, BuildConversion) {
               ::testing::FieldsAre(
                   mojom::AdType::kNotificationAd, test::kCreativeInstanceId,
                   test::kCreativeSetId, test::kCampaignId, test::kAdvertiserId,
-                  test::kSegment, ConversionActionType::kViewThrough));
+                  test::kSegment, ConversionActionType::kViewThrough,
+                  ExtractedOrderInfo()));
 }
 
 }  // namespace brave_ads
