@@ -50,6 +50,12 @@ public class DarkReaderScriptHandler: TabContentScript {
 
   /// Enables DarkReader
   static func enable(for tab: some TabState) {
+    if tab.isTor {
+      Task { @MainActor [weak tab] in
+        tab?.torPageTools?.setNightMode(true)
+      }
+      return
+    }
     // This is needed to ensure that CORS fetches work correctly, otherwise you get this error:
     // "Embedded Dark Reader cannot access a cross-origin resource"
     tab.evaluateJavaScript(
@@ -66,6 +72,12 @@ public class DarkReaderScriptHandler: TabContentScript {
 
   /// Disables DarkReader
   static func disable(for tab: some TabState) {
+    if tab.isTor {
+      Task { @MainActor [weak tab] in
+        tab?.torPageTools?.setNightMode(false)
+      }
+      return
+    }
     tab.evaluateJavaScript(
       functionName: "DarkReader.disable",
       args: [],

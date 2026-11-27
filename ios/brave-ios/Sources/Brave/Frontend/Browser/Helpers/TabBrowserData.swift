@@ -306,7 +306,7 @@ class TabBrowserData: NSObject, TabObserver {
   }
 }
 
-private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply {
+class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply {
   fileprivate var helpers = [String: TabContentScript]()
   weak var tab: (any TabState)?
 

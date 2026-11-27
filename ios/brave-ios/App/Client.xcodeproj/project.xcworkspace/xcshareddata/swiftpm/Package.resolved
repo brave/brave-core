@@ -2,6 +2,15 @@
   "originHash" : "3ac6ae5b2791508ce8cdb0dd37e5a0aacf7f637ccf2bf649ddccc11ea94fffe9",
   "pins" : [
     {
+      "identity" : "iptproxy",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tladesignz/IPtProxy.git",
+      "state" : {
+        "revision" : "46552b8422a200e3e69aa3686b6278be945138a5",
+        "version" : "5.7.0"
+      }
+    },
+    {
       "identity" : "feedkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nmdias/FeedKit",

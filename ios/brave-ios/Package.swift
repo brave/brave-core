@@ -67,6 +67,7 @@ var package = Package(
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     .package(url: "https://github.com/devxoul/Then", from: "2.7.0"),
     .package(name: "Swift-BigInt", path: "../third_party/swift-bigint"),
+    .package(name: "BraveTor", path: "../tor"),
     .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "2.1.1"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.6.0"),
     .package(
@@ -116,6 +117,7 @@ var package = Package(
         "BraveShields",
         "BraveTalk",
         "Origin",
+        .product(name: "BraveTorUI", package: "BraveTor"),
       ],
       exclude: [
         "Frontend/UserContent/UserScripts/AllFrames",
@@ -133,6 +135,7 @@ var package = Package(
         .copy("Assets/MainFrameAtDocumentEndSandboxed.js"),
         .copy("Assets/MainFrameAtDocumentStart.js"),
         .copy("Assets/MainFrameAtDocumentStartSandboxed.js"),
+        .copy("Assets/TorPageTools.js"),
         .copy("Assets/Fonts/FiraSans-Bold.ttf"),
         .copy("Assets/Fonts/FiraSans-BoldItalic.ttf"),
         .copy("Assets/Fonts/FiraSans-Book.ttf"),
@@ -530,7 +533,7 @@ var package = Package(
     .testTarget(name: "DataTests", dependencies: ["Data", "TestHelpers", "BraveShields"]),
     .testTarget(
       name: "ClientTests",
-      dependencies: ["Brave", "BraveStrings", "TestHelpers", "Web"],
+      dependencies: ["Brave", "BraveStrings", "DesignSystem", "TestHelpers", "Web"],
       resources: [
         .copy("Resources/debouncing.json"),
         .copy("Resources/content-blocking.json"),
@@ -585,6 +588,8 @@ var package = Package(
     .target(
       name: "Web",
       dependencies: [
+        .product(name: "BraveTor", package: "BraveTor"),
+        .product(name: "BraveTorUI", package: "BraveTor"),
         "BraveCore", "FaviconModels", "BraveShared", "Shared", "CertificateUtilities",
         "BraveStrings", "Strings",
         .product(name: "OrderedCollections", package: "swift-collections"),

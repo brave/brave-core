@@ -19,7 +19,7 @@ class TabPrintPageRenderer: UIPrintPageRenderer {
   let textAttributes = [NSAttributedString.Key.font: PrintedPageUX.pageTextFont]
   let dateString: String
 
-  required init(tab: some TabState) {
+  @MainActor required init(tab: some TabState) {
     self.tab = tab
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = .short
@@ -33,7 +33,7 @@ class TabPrintPageRenderer: UIPrintPageRenderer {
     self.footerHeight = PrintedPageUX.pageMarginScale * PrintedPageUX.pageInsets
     self.headerHeight = PrintedPageUX.pageMarginScale * PrintedPageUX.pageInsets
 
-    let formatter = tab.view.viewPrintFormatter()
+    let formatter = (tab as? TorTabState)?.pagePrintFormatter ?? tab.view.viewPrintFormatter()
     formatter.perPageContentInsets = UIEdgeInsets(
       top: PrintedPageUX.pageInsets,
       left: PrintedPageUX.pageInsets,

@@ -20,6 +20,17 @@ class ScreenshotHelper {
   }
 
   func takeScreenshot(_ tab: some TabState) {
+    if let tor = tab as? TorTabState {
+      MainActor.assumeIsolated {
+        if tor.visibleURL?.isNewTabURL == true {
+          tor.nativeNewTabPageViewController?.captureTorTabGridPreview()
+          tor.onVisualsUpdated?()
+        } else {
+          tor.refreshPreview()
+        }
+      }
+      return
+    }
     guard let url = tab.visibleURL else {
       Logger.module.error("Tab webView or url is nil")
       tab.browserData?.setScreenshot(nil)

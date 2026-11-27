@@ -187,10 +187,11 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     }
   }
 
-  func setSite(_ site: Site) {
+  func setSite(_ site: Site, cachedIconsOnly: Bool = false) {
     siteImageView.loadFavicon(
       for: site.tileURL,
-      isPrivateBrowsing: isPrivateBrowsing
+      isPrivateBrowsing: isPrivateBrowsing,
+      cachedOnly: cachedIconsOnly
     )
     siteImageContainerView.isHidden = false
     thumbnailImageView.isHidden = true

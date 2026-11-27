@@ -33,7 +33,7 @@ class PageZoomHandler: ObservableObject {
 
     // Private Browsing on Safari iOS always defaults to 100%, and isn't persistently saved.
     if isPrivateBrowsing {
-      currentValue = 1.0
+      currentValue = tab is TorTabState ? (tab?.viewScale ?? 1.0) : 1.0
       return
     }
 

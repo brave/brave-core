@@ -27,10 +27,20 @@ extension BraveShieldsTabHelper: TabPolicyDecider {
     // Rather than using `sourceFrame.isMainFrame` or even comparing `sourceFrame == targetFrame`, a simple URL check is used.
     // No adblocking logic is be used on session restore urls. It uses javascript to retrieve the
     // request then the page is reloaded with a proper url and adblocking rules are applied.
-    guard let mainDocumentURL = request.mainDocumentURL,
-      mainDocumentURL.schemelessAbsoluteString == requestURL.schemelessAbsoluteString,
-      requestInfo.isMainFrame
-    else { return .allow }
+    guard requestInfo.isMainFrame else { return .allow }
+    let mainDocumentURL: URL
+    if tab.isTor {
+      mainDocumentURL = requestURL
+    } else {
+      guard let documentURL = request.mainDocumentURL,
+        documentURL.schemelessAbsoluteString == requestURL.schemelessAbsoluteString
+      else { return .allow }
+      mainDocumentURL = documentURL
+    }
+
+    if let service = tab.contentBlocker?.adBlockService {
+      await LaunchHelper.shared.prepareAdBlockServices(adBlockService: service)
+    }
     // Identify specific block lists that need to be applied to the requesting domain
     let isBraveShieldsEnabled =
       tab.braveShieldsHelper?.isBraveShieldsEnabled(for: mainDocumentURL) ?? true

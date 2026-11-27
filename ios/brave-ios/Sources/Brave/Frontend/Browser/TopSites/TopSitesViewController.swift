@@ -149,6 +149,7 @@ class TopSitesViewController: UIViewController {
 
   // Tiles Source
   let tileSource: TopSitesTileSource
+  private let allowsIconNetworkRequests: Bool
   /// The tiles the collection view is currently showing. Kept separate from the source so that the
   /// snapshot and the items it describes can't disagree while a reload is pending.
   private(set) var tiles: [TopSiteTile] = []
@@ -165,6 +166,7 @@ class TopSitesViewController: UIViewController {
     self.privateBrowsingManager = privateBrowsingManager
     self.defaultSearchEngine = defaultSearchEngine
     self.tileSource = tileSource
+    self.allowsIconNetworkRequests = !privateBrowsingManager.isTorBrowsing
 
     super.init(nibName: nil, bundle: nil)
 
@@ -640,7 +642,8 @@ extension TopSitesViewController: NSFetchedResultsControllerDelegate {
       cell.textLabel.text = tile.title ?? tile.url.absoluteString
       cell.imageView.loadFavicon(
         siteURL: tile.url,
-        isPrivateBrowsing: self.privateBrowsingManager.isPrivateBrowsing
+        isPrivateBrowsing: self.privateBrowsingManager.isPrivateBrowsing,
+        allowsNetworkRequests: allowsIconNetworkRequests
       )
       cell.accessibilityLabel = cell.textLabel.text
 

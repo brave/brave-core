@@ -1,0 +1,787 @@
+Name: IPtProxy
+URL: https://github.com/tladesignz/IPtProxy
+Version: 5.7.0
+License: MIT
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/iptproxy.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: Go runtime
+URL: https://go.dev/
+Version: go1.27.1
+License: BSD-3-Clause
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/go-runtime.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: filippo.io/edwards25519
+URL: https://pkg.go.dev/filippo.io/edwards25519@v1.2.0
+Version: v1.2.0
+License: LicenseRef-filippo-io-edwards25519
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/filippo-io-edwards25519.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/andybalholm/brotli
+URL: https://pkg.go.dev/github.com/andybalholm/brotli@v1.2.2
+Version: v1.2.2
+License: LicenseRef-github-com-andybalholm-brotli
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-andybalholm-brotli.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/aws-sdk-go-v2
+URL: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2@v1.43.4
+Version: v1.43.4
+License: LicenseRef-github-com-aws-aws-sdk-go-v2
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-aws-sdk-go-v2.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/aws-sdk-go-v2/config
+URL: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/config@v1.32.35
+Version: v1.32.35
+License: LicenseRef-github-com-aws-aws-sdk-go-v2-config
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-aws-sdk-go-v2-config.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/aws-sdk-go-v2/credentials
+URL: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/credentials@v1.19.34
+Version: v1.19.34
+License: LicenseRef-github-com-aws-aws-sdk-go-v2-credentials
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-aws-sdk-go-v2-credentials.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/aws-sdk-go-v2/feature/ec2/imds
+URL: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/feature/ec2/imds@v1.18.35
+Version: v1.18.35
+License: LicenseRef-github-com-aws-aws-sdk-go-v2-feature-ec2-imds
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-aws-sdk-go-v2-feature-ec2-imds.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/aws-sdk-go-v2/internal/configsources
+URL: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/internal/configsources@v1.4.35
+Version: v1.4.35
+License: LicenseRef-github-com-aws-aws-sdk-go-v2-internal-configsources
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-aws-sdk-go-v2-internal-configsources.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/aws-sdk-go-v2/internal/endpoints/v2
+URL: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/internal/endpoints/v2@v2.7.35
+Version: v2.7.35
+License: LicenseRef-github-com-aws-aws-sdk-go-v2-internal-endpoints-v2
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-aws-sdk-go-v2-internal-endpoints-v2.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/aws-sdk-go-v2/internal/v4a
+URL: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/internal/v4a@v1.4.36
+Version: v1.4.36
+License: LicenseRef-github-com-aws-aws-sdk-go-v2-internal-v4a
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-aws-sdk-go-v2-internal-v4a.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding
+URL: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding@v1.13.15
+Version: v1.13.15
+License: LicenseRef-github-com-aws-aws-sdk-go-v2-service-internal-accept-encoding
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-aws-sdk-go-v2-service-internal-accept-encoding.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/aws-sdk-go-v2/service/internal/presigned-url
+URL: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/internal/presigned-url@v1.13.35
+Version: v1.13.35
+License: LicenseRef-github-com-aws-aws-sdk-go-v2-service-internal-presigned-url
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-aws-sdk-go-v2-service-internal-presigned-url.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/aws-sdk-go-v2/service/signin
+URL: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/signin@v1.5.4
+Version: v1.5.4
+License: LicenseRef-github-com-aws-aws-sdk-go-v2-service-signin
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-aws-sdk-go-v2-service-signin.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/aws-sdk-go-v2/service/sqs
+URL: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/sqs@v1.46.4
+Version: v1.46.4
+License: LicenseRef-github-com-aws-aws-sdk-go-v2-service-sqs
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-aws-sdk-go-v2-service-sqs.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/aws-sdk-go-v2/service/sso
+URL: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/sso@v1.33.4
+Version: v1.33.4
+License: LicenseRef-github-com-aws-aws-sdk-go-v2-service-sso
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-aws-sdk-go-v2-service-sso.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/aws-sdk-go-v2/service/ssooidc
+URL: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/ssooidc@v1.38.4
+Version: v1.38.4
+License: LicenseRef-github-com-aws-aws-sdk-go-v2-service-ssooidc
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-aws-sdk-go-v2-service-ssooidc.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/aws-sdk-go-v2/service/sts
+URL: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/sts@v1.45.4
+Version: v1.45.4
+License: LicenseRef-github-com-aws-aws-sdk-go-v2-service-sts
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-aws-sdk-go-v2-service-sts.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/aws/smithy-go
+URL: https://pkg.go.dev/github.com/aws/smithy-go@v1.27.6
+Version: v1.27.6
+License: LicenseRef-github-com-aws-smithy-go
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-aws-smithy-go.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/beorn7/perks
+URL: https://pkg.go.dev/github.com/beorn7/perks@v1.0.1
+Version: v1.0.1
+License: LicenseRef-github-com-beorn7-perks
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-beorn7-perks.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/cespare/xxhash/v2
+URL: https://pkg.go.dev/github.com/cespare/xxhash/v2@v2.3.0
+Version: v2.3.0
+License: LicenseRef-github-com-cespare-xxhash-v2
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-cespare-xxhash-v2.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/dchest/siphash
+URL: https://pkg.go.dev/github.com/dchest/siphash@v1.2.3
+Version: v1.2.3
+License: LicenseRef-github-com-dchest-siphash
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-dchest-siphash.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/flynn/noise
+URL: https://pkg.go.dev/github.com/flynn/noise@v1.1.0
+Version: v1.1.0
+License: LicenseRef-github-com-flynn-noise
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-flynn-noise.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/golang/mock
+URL: https://pkg.go.dev/github.com/golang/mock@v1.6.0
+Version: v1.6.0
+License: LicenseRef-github-com-golang-mock
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-golang-mock.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/google/uuid
+URL: https://pkg.go.dev/github.com/google/uuid@v1.6.0
+Version: v1.6.0
+License: LicenseRef-github-com-google-uuid
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-google-uuid.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/gorilla/websocket
+URL: https://pkg.go.dev/github.com/gorilla/websocket@v1.5.3
+Version: v1.5.3
+License: LicenseRef-github-com-gorilla-websocket
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-gorilla-websocket.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/klauspost/compress
+URL: https://pkg.go.dev/github.com/klauspost/compress@v1.19.2
+Version: v1.19.2
+License: LicenseRef-github-com-klauspost-compress
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-klauspost-compress.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/klauspost/cpuid/v2
+URL: https://pkg.go.dev/github.com/klauspost/cpuid/v2@v2.4.0
+Version: v2.4.0
+License: LicenseRef-github-com-klauspost-cpuid-v2
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-klauspost-cpuid-v2.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/klauspost/reedsolomon
+URL: https://pkg.go.dev/github.com/klauspost/reedsolomon@v1.14.1
+Version: v1.14.1
+License: LicenseRef-github-com-klauspost-reedsolomon
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-klauspost-reedsolomon.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/miekg/dns
+URL: https://pkg.go.dev/github.com/miekg/dns@v1.1.72
+Version: v1.1.72
+License: LicenseRef-github-com-miekg-dns
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-miekg-dns.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/munnerz/goautoneg
+URL: https://pkg.go.dev/github.com/munnerz/goautoneg@v0.0.0-20191010083416-a7dc8b61c822
+Version: v0.0.0-20191010083416-a7dc8b61c822
+License: LicenseRef-github-com-munnerz-goautoneg
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-munnerz-goautoneg.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/patrickmn/go-cache
+URL: https://pkg.go.dev/github.com/patrickmn/go-cache@v2.1.0+incompatible
+Version: v2.1.0+incompatible
+License: LicenseRef-github-com-patrickmn-go-cache
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-patrickmn-go-cache.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/datachannel
+URL: https://pkg.go.dev/github.com/pion/datachannel@v1.6.2
+Version: v1.6.2
+License: LicenseRef-github-com-pion-datachannel
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-datachannel.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/dtls/v3
+URL: https://pkg.go.dev/github.com/pion/dtls/v3@v3.1.5
+Version: v3.1.5
+License: LicenseRef-github-com-pion-dtls-v3
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-dtls-v3.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/ice/v4
+URL: https://pkg.go.dev/github.com/pion/ice/v4@v4.4.1
+Version: v4.4.1
+License: LicenseRef-github-com-pion-ice-v4
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-ice-v4.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/interceptor
+URL: https://pkg.go.dev/github.com/pion/interceptor@v0.1.47
+Version: v0.1.47
+License: LicenseRef-github-com-pion-interceptor
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-interceptor.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/logging
+URL: https://pkg.go.dev/github.com/pion/logging@v0.2.4
+Version: v0.2.4
+License: LicenseRef-github-com-pion-logging
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-logging.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/mdns/v2
+URL: https://pkg.go.dev/github.com/pion/mdns/v2@v2.1.0
+Version: v2.1.0
+License: LicenseRef-github-com-pion-mdns-v2
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-mdns-v2.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/randutil
+URL: https://pkg.go.dev/github.com/pion/randutil@v0.1.0
+Version: v0.1.0
+License: LicenseRef-github-com-pion-randutil
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-randutil.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/rtcp
+URL: https://pkg.go.dev/github.com/pion/rtcp@v1.2.17
+Version: v1.2.17
+License: LicenseRef-github-com-pion-rtcp
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-rtcp.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/rtp
+URL: https://pkg.go.dev/github.com/pion/rtp@v1.10.5
+Version: v1.10.5
+License: LicenseRef-github-com-pion-rtp
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-rtp.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/sctp
+URL: https://pkg.go.dev/github.com/pion/sctp@v1.11.1
+Version: v1.11.1
+License: LicenseRef-github-com-pion-sctp
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-sctp.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/sdp/v3
+URL: https://pkg.go.dev/github.com/pion/sdp/v3@v3.0.19
+Version: v3.0.19
+License: LicenseRef-github-com-pion-sdp-v3
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-sdp-v3.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/srtp/v3
+URL: https://pkg.go.dev/github.com/pion/srtp/v3@v3.0.13
+Version: v3.0.13
+License: LicenseRef-github-com-pion-srtp-v3
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-srtp-v3.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/stun/v3
+URL: https://pkg.go.dev/github.com/pion/stun/v3@v3.1.6
+Version: v3.1.6
+License: LicenseRef-github-com-pion-stun-v3
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-stun-v3.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/transport/v4
+URL: https://pkg.go.dev/github.com/pion/transport/v4@v4.1.0
+Version: v4.1.0
+License: LicenseRef-github-com-pion-transport-v4
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-transport-v4.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/turn/v5
+URL: https://pkg.go.dev/github.com/pion/turn/v5@v5.0.12
+Version: v5.0.12
+License: LicenseRef-github-com-pion-turn-v5
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-turn-v5.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pion/webrtc/v4
+URL: https://pkg.go.dev/github.com/pion/webrtc/v4@v4.2.18
+Version: v4.2.18
+License: LicenseRef-github-com-pion-webrtc-v4
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pion-webrtc-v4.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/pkg/errors
+URL: https://pkg.go.dev/github.com/pkg/errors@v0.9.1
+Version: v0.9.1
+License: LicenseRef-github-com-pkg-errors
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-pkg-errors.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/prometheus/client_golang
+URL: https://pkg.go.dev/github.com/prometheus/client_golang@v1.24.1
+Version: v1.24.1
+License: LicenseRef-github-com-prometheus-client-golang
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-prometheus-client-golang.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/prometheus/client_model
+URL: https://pkg.go.dev/github.com/prometheus/client_model@v0.6.2
+Version: v0.6.2
+License: LicenseRef-github-com-prometheus-client-model
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-prometheus-client-model.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/prometheus/common
+URL: https://pkg.go.dev/github.com/prometheus/common@v0.70.1
+Version: v0.70.1
+License: LicenseRef-github-com-prometheus-common
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-prometheus-common.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/prometheus/procfs
+URL: https://pkg.go.dev/github.com/prometheus/procfs@v0.21.1
+Version: v0.21.1
+License: LicenseRef-github-com-prometheus-procfs
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-prometheus-procfs.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/realclientip/realclientip-go
+URL: https://pkg.go.dev/github.com/realclientip/realclientip-go@v1.0.0
+Version: v1.0.0
+License: LicenseRef-github-com-realclientip-realclientip-go
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-realclientip-realclientip-go.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/refraction-networking/utls
+URL: https://pkg.go.dev/github.com/refraction-networking/utls@v1.8.2
+Version: v1.8.2
+License: LicenseRef-github-com-refraction-networking-utls
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-refraction-networking-utls.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/theodorsm/covert-dtls
+URL: https://pkg.go.dev/github.com/theodorsm/covert-dtls@v1.5.1
+Version: v1.5.1
+License: LicenseRef-github-com-theodorsm-covert-dtls
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-theodorsm-covert-dtls.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/tjfoc/gmsm
+URL: https://pkg.go.dev/github.com/tjfoc/gmsm@v1.4.1
+Version: v1.4.1
+License: LicenseRef-github-com-tjfoc-gmsm
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-tjfoc-gmsm.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/txthinking/runnergroup
+URL: https://pkg.go.dev/github.com/txthinking/runnergroup@v0.0.0-20250224021307-5864ffeb65ae
+Version: v0.0.0-20250224021307-5864ffeb65ae
+License: LicenseRef-github-com-txthinking-runnergroup
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-txthinking-runnergroup.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/txthinking/socks5
+URL: https://pkg.go.dev/github.com/txthinking/socks5@v0.0.0-20260601051520-339b044ab0eb
+Version: v0.0.0-20260601051520-339b044ab0eb
+License: LicenseRef-github-com-txthinking-socks5
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-txthinking-socks5.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/wlynxg/anet
+URL: https://pkg.go.dev/github.com/wlynxg/anet@v0.0.5
+Version: v0.0.5
+License: LicenseRef-github-com-wlynxg-anet
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-wlynxg-anet.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/xtaci/kcp-go/v5
+URL: https://pkg.go.dev/github.com/xtaci/kcp-go/v5@v5.6.72
+Version: v5.6.72
+License: LicenseRef-github-com-xtaci-kcp-go-v5
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-xtaci-kcp-go-v5.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: github.com/xtaci/smux
+URL: https://pkg.go.dev/github.com/xtaci/smux@v1.5.57
+Version: v1.5.57
+License: LicenseRef-github-com-xtaci-smux
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/github-com-xtaci-smux.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: gitlab.com/yawning/edwards25519-extra
+URL: https://pkg.go.dev/gitlab.com/yawning/edwards25519-extra@v0.0.0-20231005122941-2149dcafc266
+Version: v0.0.0-20231005122941-2149dcafc266
+License: LicenseRef-gitlab-com-yawning-edwards25519-extra
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/gitlab-com-yawning-edwards25519-extra.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: goptlib
+URL: https://pkg.go.dev/gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/goptlib@v1.6.0
+Version: v1.6.0
+License: LicenseRef-goptlib
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/goptlib.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: Lyrebird
+URL: https://pkg.go.dev/gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/lyrebird@v0.0.0-20261008205628-362a60bb4e3f
+Version: v0.0.0-20261008205628-362a60bb4e3f
+License: LicenseRef-lyrebird
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/lyrebird.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: ptutil
+URL: https://pkg.go.dev/gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/ptutil@v0.0.0-20250815012447-418f76dcf315
+Version: v0.0.0-20250815012447-418f76dcf315
+License: LicenseRef-ptutil
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/ptutil.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: Snowflake
+URL: https://pkg.go.dev/gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake/v2@v2.15.1
+Version: v2.15.1
+License: LicenseRef-snowflake
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/snowflake.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: WebTunnel
+URL: https://pkg.go.dev/gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/webtunnel@v0.0.7
+Version: v0.0.7
+License: LicenseRef-webtunnel
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/webtunnel.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: golang.org/x/crypto
+URL: https://pkg.go.dev/golang.org/x/crypto@v0.57.0
+Version: v0.57.0
+License: LicenseRef-golang-org-x-crypto
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/golang-org-x-crypto.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: golang.org/x/mobile
+URL: https://pkg.go.dev/golang.org/x/mobile@v0.0.0-20260908204917-8b95e45f8d3e
+Version: v0.0.0-20260908204917-8b95e45f8d3e
+License: LicenseRef-golang-org-x-mobile
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/golang-org-x-mobile.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: golang.org/x/mod
+URL: https://pkg.go.dev/golang.org/x/mod@v0.41.0
+Version: v0.41.0
+License: LicenseRef-golang-org-x-mod
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/golang-org-x-mod.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: golang.org/x/net
+URL: https://pkg.go.dev/golang.org/x/net@v0.60.0
+Version: v0.60.0
+License: LicenseRef-golang-org-x-net
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/golang-org-x-net.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: golang.org/x/sync
+URL: https://pkg.go.dev/golang.org/x/sync@v0.23.0
+Version: v0.23.0
+License: LicenseRef-golang-org-x-sync
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/golang-org-x-sync.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: golang.org/x/sys
+URL: https://pkg.go.dev/golang.org/x/sys@v0.48.0
+Version: v0.48.0
+License: LicenseRef-golang-org-x-sys
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/golang-org-x-sys.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: golang.org/x/text
+URL: https://pkg.go.dev/golang.org/x/text@v0.42.0
+Version: v0.42.0
+License: LicenseRef-golang-org-x-text
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/golang-org-x-text.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: golang.org/x/time
+URL: https://pkg.go.dev/golang.org/x/time@v0.15.0
+Version: v0.15.0
+License: LicenseRef-golang-org-x-time
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/golang-org-x-time.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: golang.org/x/tools
+URL: https://pkg.go.dev/golang.org/x/tools@v0.50.0
+Version: v0.50.0
+License: LicenseRef-golang-org-x-tools
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/golang-org-x-tools.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: google.golang.org/protobuf
+URL: https://pkg.go.dev/google.golang.org/protobuf@v1.36.11
+Version: v1.36.11
+License: LicenseRef-google-golang-org-protobuf
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/google-golang-org-protobuf.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: www.bamsoftware.com/git/dnstt.git
+URL: https://pkg.go.dev/www.bamsoftware.com/git/dnstt.git@v1.20260501.0
+Version: v1.20260501.0
+License: LicenseRef-www-bamsoftware-com-git-dnstt-git
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/www-bamsoftware-com-git-dnstt-git.txt
+Shipped: yes
+Security Critical: yes

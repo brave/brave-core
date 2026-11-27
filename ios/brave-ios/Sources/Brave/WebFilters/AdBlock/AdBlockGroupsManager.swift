@@ -449,10 +449,11 @@ import os
     ).filter { type in
       switch type {
       case .blockAds:
-        // We only use this list during first install if the standard manager is not ready
+        // Keep the bundled list until the replacement for this blocking mode is ready.
+        let type = standardManager.blocklistType
         return !contentBlockerManager.isReady(
-          for: standardManager.blocklistType,
-          mode: .standard
+          for: type,
+          mode: type.mode(isAggressiveMode: shieldLevel.isAggressive)
         )
       default:
         return true
