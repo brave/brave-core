@@ -103,6 +103,7 @@ TEST_F(BraveOriginStartupHandlerTest,
   handler->CheckPurchaseState(future.GetCallback());
 
   EXPECT_FALSE(future.Get());
+  EXPECT_FALSE(local_state_.GetBoolean(brave_origin::kOriginPurchaseValidated));
 }
 
 TEST_F(BraveOriginStartupHandlerTest,
@@ -116,6 +117,7 @@ TEST_F(BraveOriginStartupHandlerTest,
   EXPECT_FALSE(success);
   EXPECT_EQ(error, l10n_util::GetStringUTF8(
                        IDS_BRAVE_ORIGIN_STARTUP_ERROR_SKUS_CONNECTION));
+  EXPECT_FALSE(local_state_.GetBoolean(brave_origin::kOriginPurchaseValidated));
 }
 
 TEST_F(BraveOriginStartupHandlerTest, PrefDefaultIsFalse) {
@@ -174,6 +176,7 @@ TEST_F(BraveOriginStartupHandlerTest,
   handler->CheckPurchaseState(future.GetCallback());
 
   EXPECT_FALSE(future.Get());
+  EXPECT_FALSE(local_state_.GetBoolean(brave_origin::kOriginPurchaseValidated));
 }
 
 TEST_F(BraveOriginStartupHandlerTest,
@@ -210,6 +213,10 @@ TEST_F(BraveOriginStartupHandlerTest, VerifyPurchaseIdFailsWithNoCredentials) {
 
 TEST_F(BraveOriginStartupHandlerTest,
        VerifyPurchaseIdFailsWithEmptyPurchaseId) {
+  // Valid credentials, so only the empty-ID check keeps the pref unset.
+  fake_skus_service_.SetCredentialSummaryResponse(
+      R"({"remaining_credential_count": 1})");
+
   auto handler = CreateHandlerWithSkus();
 
   base::test::TestFuture<bool, const std::string&> future;
@@ -219,10 +226,15 @@ TEST_F(BraveOriginStartupHandlerTest,
   EXPECT_FALSE(success);
   EXPECT_EQ(error, l10n_util::GetStringUTF8(
                        IDS_BRAVE_ORIGIN_STARTUP_ERROR_EMPTY_PURCHASE_ID));
+  EXPECT_FALSE(local_state_.GetBoolean(brave_origin::kOriginPurchaseValidated));
 }
 
 TEST_F(BraveOriginStartupHandlerTest,
        VerifyPurchaseIdFailsWithWhitespaceOnlyPurchaseId) {
+  // Valid credentials, so only the empty-ID check keeps the pref unset.
+  fake_skus_service_.SetCredentialSummaryResponse(
+      R"({"remaining_credential_count": 1})");
+
   auto handler = CreateHandlerWithSkus();
 
   base::test::TestFuture<bool, const std::string&> future;
@@ -232,6 +244,7 @@ TEST_F(BraveOriginStartupHandlerTest,
   EXPECT_FALSE(success);
   EXPECT_EQ(error, l10n_util::GetStringUTF8(
                        IDS_BRAVE_ORIGIN_STARTUP_ERROR_EMPTY_PURCHASE_ID));
+  EXPECT_FALSE(local_state_.GetBoolean(brave_origin::kOriginPurchaseValidated));
 }
 
 #if BUILDFLAG(IS_LINUX)
