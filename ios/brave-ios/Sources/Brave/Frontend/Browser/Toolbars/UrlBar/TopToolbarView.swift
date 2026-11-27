@@ -409,17 +409,12 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
   private func setupConstraints() {
     locationContainer.snp.remakeConstraints {
-      $0.top.bottom.equalToSuperview().inset(UX.locationPadding)
+      $0.top.bottom.equalToSuperview()
       $0.height.greaterThanOrEqualTo(UX.locationHeight)
     }
 
     mainStackView.snp.remakeConstraints { make in
-      make.top.bottom.equalTo(self)
-      if #available(iOS 26.0, *) {
-        make.leading.trailing.equalTo(layoutGuide(for: .safeArea(cornerAdaptation: .horizontal)))
-      } else {
-        make.leading.trailing.equalTo(safeAreaLayoutGuide)
-      }
+      make.edges.equalToSuperview()
     }
 
     scrollToTopButton.snp.makeConstraints { make in
