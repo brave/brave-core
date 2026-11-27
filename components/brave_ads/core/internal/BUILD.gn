@@ -1002,6 +1002,8 @@ static_library("internal") {
     "studies/studies.h",
     "studies/studies_util.cc",
     "studies/studies_util.h",
+    "tabs/extracted_order_field_type.h",
+    "tabs/extracted_order_info.h",
     "tabs/tab_info.cc",
     "tabs/tab_info.h",
     "tabs/tab_manager.cc",
