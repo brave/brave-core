@@ -10,7 +10,7 @@
 
 namespace email_aliases::features {
 
-BASE_FEATURE(kEmailAliases, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kEmailAliases, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsEmailAliasesEnabled() {
   return base::FeatureList::IsEnabled(kEmailAliases);
