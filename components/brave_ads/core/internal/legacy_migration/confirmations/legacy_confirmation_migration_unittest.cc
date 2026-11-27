@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
+#include "testing/gmock/include/gmock/gmock.h"
 
 // pnpm test brave_unit_tests --filter=BraveAds*
 
@@ -143,10 +144,17 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest,
   ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
       test::kMalformedJsonFilename, kConfirmationsJsonFilename));
 
-  // Act & Assert
+  EXPECT_CALL(ads_client_mock_,
+              Remove(kConfirmationsJsonFilename, ::testing::_));
+
+  // Act
   base::test::TestFuture<bool> test_future;
   MigrateConfirmationState(test::Wallet(), test_future.GetCallback());
-  EXPECT_TRUE(test_future.Get());
+  ASSERT_TRUE(test_future.Get());
+
+  // Assert
+  EXPECT_EQ(0U, GetConfirmationTokenCount());
+  EXPECT_EQ(0U, GetPaymentTokenCount());
 }
 
 TEST_F(BraveAdsLegacyConfirmationMigrationTest,
