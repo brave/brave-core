@@ -917,22 +917,7 @@ source_set("ui") {
   }
 
   if (is_win || is_mac || is_linux) {
-    sources += [
-      "views/profiles/brave_incognito_menu_view.cc",
-      "views/profiles/brave_incognito_menu_view.h",
-      "views/profiles/brave_profile_menu_view.cc",
-      "views/profiles/brave_profile_menu_view.h",
-    ]
-
-    deps += [
-      "//brave/components/tor/buildflags",
-      "//chrome/browser/ui/views/profiles:incognito_menu_view",
-      "//chrome/browser/ui/views/profiles:profile_menu_view",
-    ]
-
-    if (enable_tor) {
-      deps += [ "//brave/browser/tor" ]
-    }
+    deps += [ "//brave/browser/ui/views/profiles" ]
 
     if (enable_ai_chat) {
       sources += [
@@ -1349,8 +1334,6 @@ source_set("ui") {
     sources += [
       "views/brave_actions/brave_actions_container.cc",
       "views/brave_actions/brave_actions_container.h",
-      "views/profiles/brave_avatar_toolbar_button.cc",
-      "views/profiles/brave_avatar_toolbar_button.h",
       "views/tabs/brave_new_tab_button.cc",
       "views/tabs/brave_new_tab_button.h",
       "views/toolbar/brave_toolbar_view.cc",
