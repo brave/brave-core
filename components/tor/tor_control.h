@@ -108,7 +108,6 @@ class TorControl {
   friend class TorControlTest;
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, ParseQuoted);
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, ParseKV);
-  FRIEND_TEST_ALL_PREFIXES(TorControlTest, ReadLine);
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, GetCircuitEstablishedDone);
 
   static bool ParseKV(const std::string& string,
