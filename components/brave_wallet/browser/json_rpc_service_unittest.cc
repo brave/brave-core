@@ -1665,6 +1665,13 @@ TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeatures(
+      {features::kBraveWalletBitcoinFeature, features::kBraveWalletZCashFeature,
+       features::kBraveWalletCardanoFeature,
+       features::kBraveWalletPolkadotFeature},
+      {});
+
   std::vector<base::DictValue> values;
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
   values.push_back(NetworkInfoToValue(chain1));
@@ -1707,17 +1714,14 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
       mojom::kBitcoinTestnet,
       mojom::kZCashMainnet,
       mojom::kZCashTestnet,
+      mojom::kCardanoMainnet,
+      mojom::kCardanoTestnet,
+      mojom::kPolkadotMainnet,
+      mojom::kPolkadotMainnetAssetHub,
+      mojom::kPolkadotTestnet,
+      mojom::kPolkadotTestnetAssetHub,
+      mojom::kPolkadotPaseoAssetHub,
   };
-  if (IsCardanoEnabled()) {
-    expected_chain_ids.push_back(mojom::kCardanoMainnet);
-    expected_chain_ids.push_back(mojom::kCardanoTestnet);
-  }
-  if (IsPolkadotEnabled()) {
-    base::Extend(expected_chain_ids,
-                 {mojom::kPolkadotMainnet, mojom::kPolkadotMainnetAssetHub,
-                  mojom::kPolkadotTestnet, mojom::kPolkadotTestnetAssetHub,
-                  mojom::kPolkadotPaseoAssetHub});
-  }
   EXPECT_THAT(all_chain_ids, ElementsAreArray(expected_chain_ids));
 
   EXPECT_THAT(all_networks->custom_chain_ids,
@@ -1732,15 +1736,11 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
       mojom::kFilecoinTestnet,
       mojom::kBitcoinTestnet,
       mojom::kZCashTestnet,
+      mojom::kCardanoTestnet,
+      mojom::kPolkadotTestnet,
+      mojom::kPolkadotTestnetAssetHub,
+      mojom::kPolkadotPaseoAssetHub,
   };
-  if (IsCardanoEnabled()) {
-    expected_hidden_chain_ids.push_back(mojom::kCardanoTestnet);
-  }
-  if (IsPolkadotEnabled()) {
-    base::Extend(expected_hidden_chain_ids,
-                 {mojom::kPolkadotTestnet, mojom::kPolkadotTestnetAssetHub,
-                  mojom::kPolkadotPaseoAssetHub});
-  }
   EXPECT_THAT(all_networks->hidden_chain_ids,
               ElementsAreArray(expected_hidden_chain_ids));
 
@@ -1765,19 +1765,19 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
       mojom::kSolanaMainnet,
       mojom::kBitcoinMainnet,
       mojom::kZCashMainnet,
+      mojom::kCardanoMainnet,
   };
-  if (IsCardanoEnabled()) {
-    expected_swap_chain_ids.push_back(mojom::kCardanoMainnet);
-  }
   EXPECT_THAT(all_networks->swap_chain_ids,
               ElementsAreArray(expected_swap_chain_ids));
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeatures({features::kBraveWalletCardanoFeature,
-                                        features::kBraveWalletPolkadotFeature},
-                                       {});
+  scoped_feature_list.InitWithFeatures(
+      {features::kBraveWalletBitcoinFeature, features::kBraveWalletZCashFeature,
+       features::kBraveWalletCardanoFeature,
+       features::kBraveWalletPolkadotFeature},
+      {});
 
   TestFuture<mojom::AllNetworksPtr> all_networks_future;
   TestFuture<bool> bool_future;
@@ -6767,6 +6767,9 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
              const std::string&>
       future;
   // Ensure MethodNotFound error is returned if feature is disabled
+  base::test::ScopedFeatureList disabled_feature_list;
+  disabled_feature_list.InitAndDisableFeature(
+      features::kBraveWalletAnkrBalancesFeature);
   json_rpc_service_->AnkrGetAccountBalances(
       "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
       test::MakeVectorFromArgs(mojom::ChainId::New(
