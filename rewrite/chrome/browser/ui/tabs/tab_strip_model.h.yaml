@@ -65,7 +65,7 @@ substitutions:
       which keeps its own tab active in the model, so it must exclude that
       tab from being picked as the replacement when an unrelated tab closes.
     regex:
-      re_pattern: '(DetermineNewSelectedIndex\(.*?tab_or_collection)(\)\s*const;)'
+      re_pattern: '(DetermineNewSelectedIndex\(.*?)(\)\s*const;)'
       re_flags: [DOTALL]
       replace: |-
         \1,

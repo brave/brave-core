@@ -133,7 +133,7 @@ substitutions:
   - description: |
       Matching signature change for DetermineNewSelectedIndex().
     regex:
-      re_pattern: '(TabStripModel::DetermineNewSelectedIndex\(.*?tab_or_collection)(\)\s*const\s*\{)'
+      re_pattern: '(TabStripModel::DetermineNewSelectedIndex\(.*?)(\)\s*const\s*\{)'
       re_flags: [DOTALL]
       replace: |-
         \1,
@@ -142,24 +142,21 @@ substitutions:
   - description: |
       Fold extra_is_eligible into the candidate check when picking a
       replacement selection.
+
+      Inserts extra_is_eligible(index) as the first condition after `return`,
+      rather than matching the exact existing conditions, so this stays
+      correct if the body changes upstream.
     regex:
       re_pattern:
-        '(auto is_eligible = \[this, &is_valid_for_focus)(\]\(int
-        index\)\s*\{\s*return [^;]*?is_valid_for_focus\(index\))(;)'
-      replace: |-
-        \1,
-                                &extra_is_eligible\2 &&
-                     extra_is_eligible(index)\3
+        '(auto\ is_eligible\ =\s*\[.*?)(\]\(int\ index\)\s*\{\s*return\s*)'
+      re_flags: [DOTALL]
+      replace: '\1, &extra_is_eligible\2extra_is_eligible(index) && '
 
   - description: |
       Capture extra_is_eligible in the enclosing find_candidate lambda too, so
       the nested is_eligible lambda (rewritten by the 'Fold extra_is_eligible
       into the candidate check' substitution) is actually allowed to capture it.
     regex:
-      re_pattern:
-        '(\[this, &block_tabs, start_index,
-        block_size,)\s*&tab_or_collection(\]\(std::optional<tab_groups::TabGroupId>
-        focused_group\))'
-      replace: |-
-        \1 &tab_or_collection,
-               &extra_is_eligible\2
+      re_pattern: '(auto\ find_candidate\ =\s*\[.*?)(\])'
+      re_flags: [DOTALL]
+      replace: '\1, &extra_is_eligible\2'

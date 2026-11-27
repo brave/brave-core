@@ -268,14 +268,10 @@ const BraveMultiContentsView* SidebarWebPanelController::GetMultiContentsView()
 
 void SidebarWebPanelController::OnTabWillBeRemoved(tabs::TabInterface* tab,
                                                    int index) {
-  if (HasPanelTab()) {
-    HandleTabWillBeRemovedForWebPanel(tab, index);
+  if (!HasPanelTab()) {
+    return;
   }
-}
 
-void SidebarWebPanelController::HandleTabWillBeRemovedForWebPanel(
-    tabs::TabInterface* tab,
-    int index) {
   if (panel_contents_ == tab->GetContents()) {
     ClearPanelState();
     return;
@@ -283,6 +279,9 @@ void SidebarWebPanelController::HandleTabWillBeRemovedForWebPanel(
 
   // If the panel's tab isn't active, OnActiveTabChanged() already refreshes
   // the main pane when needed.
+  // OnActveTabChanged() won't be called while the panel tab is active.
+  // And it results in main pane blank so we need to set web contents
+  // in OnTabRemoved() manually.
   auto* tab_strip_model = browser_view_->browser()->GetTabStripModel();
   if (tab_strip_model->GetActiveWebContents() != panel_contents_) {
     return;

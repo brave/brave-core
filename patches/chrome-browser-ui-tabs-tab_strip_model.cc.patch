@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.cc b/chrome/browser/ui/tabs/tab_strip_model.cc
-index 071f2205482f268cff433e7ba4174c140cdecaa4..dd4464c2734593e890a3f56cb54ae32430bf5b5c 100644
+index 071f2205482f268cff433e7ba4174c140cdecaa4..ad48455ea103b2fef59bc19e74c027b2188b407f 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_model.cc
 @@ -197,6 +197,15 @@ void RecordToggleFocusGroupMetrics(bool is_unfocus,
@@ -113,27 +113,23 @@ index 071f2205482f268cff433e7ba4174c140cdecaa4..dd4464c2734593e890a3f56cb54ae324
      const {
    int start_index;
    int block_size;
-@@ -6243,8 +6282,8 @@ std::optional<int> TabStripModel::DetermineNewSelectedIndex(
-   // tabs the user is allowed to activate while that group is focused; when it
+@@ -6244,7 +6283,7 @@ std::optional<int> TabStripModel::DetermineNewSelectedIndex(
    // is nullopt every tab outside the block is a candidate.
    auto find_candidate =
--      [this, &block_tabs, start_index, block_size,
+       [this, &block_tabs, start_index, block_size,
 -       &tab_or_collection](std::optional<tab_groups::TabGroupId> focused_group)
-+      [this, &block_tabs, start_index, block_size, &tab_or_collection,
-+       &extra_is_eligible](std::optional<tab_groups::TabGroupId> focused_group)
++       &tab_or_collection, &extra_is_eligible](std::optional<tab_groups::TabGroupId> focused_group)
        -> std::optional<int> {
      // Focus mode is the only restriction that applies to a tab which is
      // otherwise a legitimate selection, so it is kept separate from the
-@@ -6258,8 +6297,10 @@ std::optional<int> TabStripModel::DetermineNewSelectedIndex(
+@@ -6258,8 +6297,8 @@ std::optional<int> TabStripModel::DetermineNewSelectedIndex(
                   GetTabAtIndex(index), focused_group);
      };
  
 -    auto is_eligible = [this, &is_valid_for_focus](int index) {
 -      return !IsTabCollapsed(index) && is_valid_for_focus(index);
-+    auto is_eligible = [this, &is_valid_for_focus,
-+                        &extra_is_eligible](int index) {
-+      return !IsTabCollapsed(index) && is_valid_for_focus(index) &&
-+             extra_is_eligible(index);
++    auto is_eligible = [this, &is_valid_for_focus, &extra_is_eligible](int index) {
++      return extra_is_eligible(index) && !IsTabCollapsed(index) && is_valid_for_focus(index);
      };
  
      // First preference is a tab the block opened.
