@@ -75,7 +75,6 @@ class PsstSettingsService : public KeyedService {
   // for `origin`.
   int GetInfobarReviewSuggestionsCount(const url::Origin& origin);
 
-
   // Records that the PSST infobar was shown for `origin`. No-op unless `origin`
   // is https. The count is persisted in the origin's BRAVE_PSST website
   // setting.
