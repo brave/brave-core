@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 
 #include <optional>
+#include <vector>
 
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
@@ -73,6 +74,9 @@ GURL GetLinkWithStrictCleaning(Profile* profile, const GURL& url);
 // Copies an url cleared through GetLinkWithStrictCleaning().
 void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
                                 const GURL& url);
+// Copies the URLs of the tabs at |indices|, one per line.
+void CopyLinksOfTabs(BrowserWindowInterface* browser,
+                     const std::vector<int>& indices);
 
 void ToggleWindowTitleVisibilityForVerticalTabs(
     BrowserWindowInterface* browser);

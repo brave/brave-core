@@ -180,6 +180,14 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
     return;
   }
 
+  if (command_id == TabStripModel::CommandCopyURL &&
+      !model_->delegate()->IsForWebApp()) {
+    auto* model = static_cast<BraveTabStripModel*>(model_.get());
+    brave::CopyLinksOfTabs(GetBrowserWindowInterface(),
+                           model->GetTabIndicesForCommandAt(index));
+    return;
+  }
+
   BrowserTabStripController::ExecuteContextMenuCommand(tab, command_id,
                                                        event_flags);
 }
@@ -235,7 +243,8 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
   }
 
   if (command_id == TabStripModel::CommandBringAllTabsToThisWindow ||
-      command_id == TabStripModel::CommandOpenInContainer) {
+      command_id == TabStripModel::CommandOpenInContainer ||
+      command_id == TabStripModel::CommandCopyURL) {
     return true;
   }
 
