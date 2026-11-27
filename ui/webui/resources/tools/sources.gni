@@ -4,6 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_resource_tools_extra_excludes = [
+  "chrome://resources/brave/codemirror.bundle.js",
+  "//resources/brave/codemirror.bundle.js",
   "chrome://resources/brave/leo.bundle.js",
   "//resources/brave/leo.bundle.js",
   "chrome://resources/brave/opaque_ke.bundle.js",

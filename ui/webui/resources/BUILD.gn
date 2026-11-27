@@ -126,11 +126,16 @@ transpile_web_ui("external_js_bundles") {
   no_externals = true
 
   imports_from = [
+    "//brave/ui/webui/resources/codemirror/",
     "//brave/ui/webui/resources/leo/",
     "//brave/ui/webui/resources/react/",
   ]
 
   entry_points = [
+    [
+      "codemirror",
+      rebase_path("codemirror/initialize_bundle.ts"),
+    ],
     [
       "leo",
       rebase_path("leo/initialize_bundle.ts"),
