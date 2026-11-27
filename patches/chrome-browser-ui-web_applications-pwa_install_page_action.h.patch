@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/ui/web_applications/pwa_install_page_action.h b/chrome/browser/ui/web_applications/pwa_install_page_action.h
+index 3192886566b6d8cc2147df394438ce07f2d73316..d5536cd546048313a9fc67b428ee9024b8ef0963 100644
+--- a/chrome/browser/ui/web_applications/pwa_install_page_action.h
++++ b/chrome/browser/ui/web_applications/pwa_install_page_action.h
+@@ -11,6 +11,7 @@
+ #include "base/types/optional_ref.h"
+ #include "chrome/browser/ui/page_action/page_action_controller.h"
+ #include "chrome/browser/ui/page_action/page_action_observer.h"
++#include "components/prefs/pref_member.h"
+ #include "components/user_education/common/feature_promo/feature_promo_result.h"
+ #include "components/webapps/browser/banners/app_banner_manager.h"
+ #include "content/public/browser/web_contents_observer.h"
+@@ -84,6 +85,10 @@ class PwaInstallPageActionController
+   //  page_actions::RecordIgnoreDelegate
+   void RecordIgnore(const webapps::AppId& app_id, base::Time time) override;
+ 
++ protected:
++  bool CheckPinPwaInstallButtonPref(content::WebContents* web_contents);
++  std::unique_ptr<BooleanPrefMember> pin_pwa_install_button_pref_member_;
++
+  private:
+   // Handles all the logic related to showing and hiding the page action.
+   void UpdateVisibility();

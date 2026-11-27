@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/web_apps/web_app_simple_install_dialog.cc b/chrome/browser/ui/views/web_apps/web_app_simple_install_dialog.cc
+index 682d2fc8c6677a445671229fc956f76531e7b6d6..67ed2bf580d792cb9d92b3609645673fd635bc4c 100644
+--- a/chrome/browser/ui/views/web_apps/web_app_simple_install_dialog.cc
++++ b/chrome/browser/ui/views/web_apps/web_app_simple_install_dialog.cc
+@@ -134,7 +134,7 @@ void ShowSimpleInstallDialogForWebApps(
+           &WebAppInstallDialogDelegate::OnClose, delegate_weak_ptr))
+       .SetDialogDestroyingCallback(base::BindOnce(
+           &WebAppInstallDialogDelegate::OnDestroyed, delegate_weak_ptr))
+-      .OverrideDefaultButton(ui::mojom::DialogButton::kCancel)
++      .OverrideDefaultButton(ui::mojom::DialogButton::kNone)
+       .AddCustomField(
+           std::make_unique<views::BubbleDialogModelHost::CustomView>(
+               WebAppIconNameAndOriginView::Create(

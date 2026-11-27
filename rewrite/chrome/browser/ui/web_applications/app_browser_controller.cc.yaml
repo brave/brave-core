@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Show the brave:// scheme instead of chrome:// in formatted origins.
+
+      After upstream formats the origin, rewrite a chrome:// scheme to brave://.
+      brave_utils::ReplaceChromeToBraveScheme() is declared in
+      brave/browser/ui/brave_scheme_utils.h, which the chromium_src shadow
+      includes before the upstream file.
+    after_function_impl:
+      function_name: AppBrowserController::FormatUrlOrigin
+      result_var: url_string
+      code: |-
+        brave_utils::ReplaceChromeToBraveScheme(url_string);
+        return url_string;

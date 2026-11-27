@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Consider the pin PWA install button pref in UpdateVisibility().
+
+      Only show the page action when the pref allows it with
+      CheckPinPwaInstallButtonPref()
+    regex:
+      pattern: manager_->IsProbablyPromotableWebApp()
+      replace: >-
+        manager_->IsProbablyPromotableWebApp() &&
+        CheckPinPwaInstallButtonPref(web_contents)

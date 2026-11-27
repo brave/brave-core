@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Include the pref member header used by the Brave pin-install-button pref.
+    add_include:
+      header:
+        - components/prefs/pref_member.h
+
+  - description: |-
+      Add a pref member and a method to check the pin PWA install button pref.
+
+      The BooleanPrefMember is wrapped with a unique_ptr because a WebContents
+      is needed to init it. It is initialized on the first call of
+      CheckPinPwaInstallButtonPref(), which is defined in the chromium_src
+      pwa_install_page_action.cc shadow and is used by UpdateVisibility().
+    add_to_protected:
+      class_name: PwaInstallPageActionController
+      code: |-
+        bool CheckPinPwaInstallButtonPref(content::WebContents* web_contents);
+        std::unique_ptr<BooleanPrefMember> pin_pwa_install_button_pref_member_;

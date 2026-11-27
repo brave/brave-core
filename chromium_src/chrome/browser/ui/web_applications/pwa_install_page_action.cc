@@ -10,11 +10,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 
-// Consider pref in UpdateVisibility() before calling Show().
-#define IsProbablyPromotableWebApp() \
-  IsProbablyPromotableWebApp() && CheckPinPwaInstallButtonPref(web_contents)
 #include <chrome/browser/ui/web_applications/pwa_install_page_action.cc>
-#undef IsProbablyPromotableWebApp
 
 bool PwaInstallPageActionController::CheckPinPwaInstallButtonPref(
     content::WebContents* web_contents) {

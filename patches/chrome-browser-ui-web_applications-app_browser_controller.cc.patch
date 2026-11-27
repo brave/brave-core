@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/web_applications/app_browser_controller.cc b/chrome/browser/ui/web_applications/app_browser_controller.cc
+index e833eb99478b9a99c8626f694f99346337f7b2b4..dc2c1a652b6b137e5f849a216ada9d18297dcb8e 100644
+--- a/chrome/browser/ui/web_applications/app_browser_controller.cc
++++ b/chrome/browser/ui/web_applications/app_browser_controller.cc
+@@ -267,6 +267,7 @@ AppBrowserController::FindTopLevelBrowsingContextForWebApp(
+ std::u16string AppBrowserController::FormatUrlOrigin(
+     const GURL& url,
+     url_formatter::FormatUrlTypes format_types) {
++  std::u16string url_string = [&]() -> std::u16string {
+   if (url.IsAboutBlank()) {
+     return url::kAboutBlankURL16;
+   }
+@@ -284,6 +285,9 @@ std::u16string AppBrowserController::FormatUrlOrigin(
+   return url_formatter::FormatUrl(url_to_format, format_types,
+                                   base::UnescapeRule::SPACES, nullptr, nullptr,
+                                   nullptr);
++  }();
++  brave_utils::ReplaceChromeToBraveScheme(url_string);
++  return url_string;
+ }
+ 
+ const ui::ThemeProvider* AppBrowserController::GetThemeProvider() const {
