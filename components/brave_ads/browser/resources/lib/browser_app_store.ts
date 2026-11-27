@@ -71,6 +71,7 @@ export function createAppStore(): AppStore {
       const {
         campaignConversions = [],
         adEvents = [],
+        orderExtractions = [],
         confirmationQueue = [],
         paymentTokens = [],
         nextPaymentTokenRedemptionAt = null,
@@ -92,6 +93,7 @@ export function createAppStore(): AppStore {
       store.update({
         conversionUrlPatterns: campaignConversions,
         adEvents,
+        orderExtractions,
         confirmationQueue,
         paymentTokens,
         nextPaymentTokenRedemptionAt,

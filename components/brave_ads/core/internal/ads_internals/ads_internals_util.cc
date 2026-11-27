@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads_internals/ads_internals_util.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <memory>
 #include <optional>
@@ -16,6 +17,7 @@
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
+#include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
@@ -23,11 +25,14 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
@@ -82,6 +87,57 @@ base::ListValue BuildCampaignConversions(
             .Set("Observation Window",
                  static_cast<int>(
                      campaign_conversion.observation_window.InDays())));
+  }
+
+  return list;
+}
+
+// Omits the key when `campaign_conversions` never asked this tab to extract
+// the field (so the WebUI can show "not applicable" rather than "not
+// found"), sets it to an empty string when asked but nothing was found yet,
+// and otherwise sets the extracted value itself.
+void SetExtractedOrderField(
+    base::DictValue& dict,
+    std::string_view key,
+    base::optional_ref<const std::string> extracted_value,
+    bool should_extract) {
+  if (extracted_value) {
+    dict.Set(key, *extracted_value);
+  } else if (should_extract) {
+    dict.Set(key, "");
+  }
+}
+
+base::ListValue BuildOrderExtractions(
+    const std::vector<TabInfo>& order_extractions,
+    const CampaignConversionList& campaign_conversions) {
+  base::ListValue list;
+  list.reserve(order_extractions.size());
+
+  for (const auto& tab : order_extractions) {
+    const CampaignConversionList matching_campaign_conversions =
+        GetMatchingCampaignConversions(campaign_conversions,
+                                       tab.redirect_chain);
+    const bool should_extract_id =
+        std::ranges::any_of(matching_campaign_conversions,
+                            &CampaignConversionInfo::should_extract_id);
+    const bool should_extract_value =
+        std::ranges::any_of(matching_campaign_conversions,
+                            &CampaignConversionInfo::should_extract_value);
+
+    base::DictValue dict =
+        base::DictValue()
+            .Set("Tab ID", tab.id)
+            .Set("URL", tab.redirect_chain.empty()
+                            ? ""
+                            : tab.redirect_chain.back().spec());
+    SetExtractedOrderField(dict, "Order ID", tab.extracted_order.id,
+                           should_extract_id);
+    SetExtractedOrderField(dict, "Order Value", tab.extracted_order.value,
+                           should_extract_value);
+    SetExtractedOrderField(dict, "Order Currency", tab.extracted_order.currency,
+                           should_extract_value);
+    list.Append(std::move(dict));
   }
 
   return list;
@@ -171,6 +227,9 @@ void Successful(GetInternalsCallback callback, AdsInternalsInfo ads_internals) {
                    ads_internals.notification_ad_campaign_ids,
                    ads_internals.new_tab_page_ad_campaign_ids))
           .Set("adEvents", BuildAdEvents(ads_internals.ad_events))
+          .Set("orderExtractions",
+               BuildOrderExtractions(ads_internals.order_extractions,
+                                     ads_internals.campaign_conversions))
           .Set("confirmationQueue", std::move(ads_internals.confirmation_queue))
           .Set("paymentTokens", std::move(ads_internals.payment_tokens))
           .Set("activeNotificationAdCount",
@@ -405,6 +464,8 @@ void GetCampaignConversionsCallback(
 
   AdsInternalsInfo ads_internals;
   ads_internals.campaign_conversions = campaign_conversions;
+  ads_internals.order_extractions =
+      TabManager::GetInstance().GetOrderExtractions();
 
   database::table::CreativeNotificationAds database_table;
   database_table.GetAll(base::BindOnce(&GetNotificationAdCreativeSetIdsCallback,

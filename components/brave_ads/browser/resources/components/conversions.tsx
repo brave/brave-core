@@ -4,10 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Icon from '@brave/nala/react/icon'
 
 import { useAppState, useAppActions } from '../lib/app_context'
-import { ConversionUrlPattern } from '../lib/app_store'
-import { renderCopyableText } from '../lib/copyable_text'
+import { ConversionUrlPattern, OrderExtraction } from '../lib/app_store'
+import { CopyableSpan, renderCopyableText } from '../lib/copyable_text'
 import {
   formatRelativeDuration,
   formatUnixEpochToLocalTime,
@@ -131,6 +132,113 @@ function ConversionUrlPatternTable({ data }: { data: ConversionUrlPattern[] }) {
   )
 }
 
+const ORDER_EXTRACTION_COLUMNS: Array<keyof OrderExtraction> = [
+  'Tab ID',
+  'URL',
+  'Order ID',
+  'Order Value',
+  'Order Currency',
+]
+
+// "URL" is a navigable link rather than click-to-copy, so it is truncated
+// but excluded from `ORDER_EXTRACTION_COPYABLE_COLUMNS` below.
+const ORDER_EXTRACTION_TRUNCATED_COLUMNS =
+  new Set<keyof OrderExtraction>(['URL', 'Order ID'])
+
+const ORDER_EXTRACTION_COPYABLE_COLUMNS =
+  new Set<keyof OrderExtraction>(
+    ['Tab ID', 'Order ID', 'Order Value', 'Order Currency'],
+  )
+
+// Tab ID/Order ID/Order Value/Order Currency are all short and fixed-width,
+// so URL (truncated with an ellipsis regardless) gets the freed-up room.
+const ORDER_EXTRACTION_WIDTH_CLASSES:
+  Partial<Record<keyof OrderExtraction, string>> = {
+    'Tab ID': 'narrow-value-column',
+    'URL': 'extra-wide-column',
+    'Order ID': 'narrow-value-column',
+    'Order Value': 'narrow-value-column',
+    'Order Currency': 'narrow-value-column',
+  }
+
+function orderExtractionClassName(header: keyof OrderExtraction) {
+  return [
+    ORDER_EXTRACTION_TRUNCATED_COLUMNS.has(header) ? 'truncate-cell' : '',
+    ORDER_EXTRACTION_WIDTH_CLASSES[header] ?? '',
+  ].join(' ').trim()
+}
+
+// `undefined` means the matching campaign never asked to extract this
+// field; an empty string means it asked but nothing was found yet.
+function renderOrderExtractionValue(
+  header: keyof OrderExtraction,
+  row: OrderExtraction,
+  copy: (text: string) => void,
+) {
+  if (!ORDER_EXTRACTION_COPYABLE_COLUMNS.has(header)) {
+    return row[header]
+  }
+  if (row[header] === undefined) {
+    return <span className='diagnostic-muted'>&mdash;</span>
+  }
+  if (row[header] === '') {
+    return <Icon className='icon-error' name='close-circle-filled' />
+  }
+  return (
+    <CopyableSpan
+      value={String(row[header])}
+      className='copyable-text'
+      onCopy={copy}
+    />
+  )
+}
+
+function OrderExtractionTable({ data }: { data: OrderExtraction[] }) {
+  const copy = useCopyToClipboard()
+
+  return (
+    <>
+      <table>
+        <thead>
+          <tr>
+            {ORDER_EXTRACTION_COLUMNS.map((header) => (
+              <th key={header} className={orderExtractionClassName(header)}>
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {uniqueTableRows(data).map((row, index) => (
+            <tr key={index}>
+              {ORDER_EXTRACTION_COLUMNS.map((header) => (
+                <td key={header} className={orderExtractionClassName(header)}>
+                  {header === 'URL'
+                    ? (
+                      <a
+                        href={row[header]}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='text-link'
+                        title={row[header]}
+                      >
+                        {row[header]}
+                      </a>
+                    )
+                    : renderOrderExtractionValue(header, row, copy)}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {data.length === 0 && (
+        <p>No orders have been extracted for any open tab.</p>
+      )}
+    </>
+  )
+}
+
 // Plain sub-heading, not a second `TabHeader`, since the page-level
 // `TabHeader` in `Conversions` below already owns the refresh action.
 function ConversionEvents() {
@@ -194,6 +302,7 @@ export function Conversions() {
   const conversionUrlPatterns = useAppState(
     (state) => state.conversionUrlPatterns,
   )
+  const orderExtractions = useAppState((state) => state.orderExtractions)
   const adsInternalsVerboseModeEnabled = useAppState(
     (state) => state.adsInternalsVerboseModeEnabled,
   )
@@ -206,7 +315,8 @@ export function Conversions() {
     <>
       <TabHeader
         title='Conversions'
-        description='Overview of active conversion URL patterns.'
+        description='Overview of active conversion URL patterns, extracted
+          order data, and conversion events.'
         onRefresh={actions.loadAdsInternals}
       />
 
@@ -229,7 +339,37 @@ export function Conversions() {
           </section>
         </div>
 
-        {adsInternalsVerboseModeEnabled && <ConversionEvents />}
+        {adsInternalsVerboseModeEnabled && (
+          <>
+            <div className='content-card'>
+              <section>
+                <h4>
+                  <span className='title'>
+                    Extracted orders{' '}
+                    <span className='diagnostic-muted'>
+                      ({orderExtractions.length})
+                    </span>
+                  </span>
+                </h4>
+                <p>
+                  Order IDs, values, and currencies extracted from the current
+                  page of each tab with a pending conversion.{' '}
+                  <span className='inline-icon-value'>
+                    <span className='diagnostic-muted'>&mdash;</span>
+                  </span>{' '}
+                  indicates a field not requested by the campaign, while{' '}
+                  <span className='inline-icon-value'>
+                    <Icon className='icon-error' name='close-circle-filled' />
+                  </span>{' '}
+                  indicates a requested field that has not been found.
+                </p>
+                <OrderExtractionTable data={orderExtractions} />
+              </section>
+            </div>
+
+            <ConversionEvents />
+          </>
+        )}
       </div>
     </>
   )

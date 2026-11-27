@@ -48,6 +48,16 @@ export interface AdEvent {
   'Created At': number
 }
 
+// Live per-tab order extraction state, cleared on tab close/navigation. A
+// field is omitted if never requested, an empty string if not yet found.
+export interface OrderExtraction {
+  'Tab ID': number
+  'URL': string
+  'Order ID'?: string
+  'Order Value'?: string
+  'Order Currency'?: string
+}
+
 export interface ConfirmationQueueItem {
   'Transaction ID': string
   'Ad Type': string
@@ -151,6 +161,7 @@ export interface AppState {
   rewardsEnabled: boolean
   conversionUrlPatterns: ConversionUrlPattern[]
   adEvents: AdEvent[]
+  orderExtractions: OrderExtraction[]
   confirmationQueue: ConfirmationQueueItem[]
   paymentTokens: PaymentToken[]
   nextPaymentTokenRedemptionAt: number | null
@@ -228,6 +239,7 @@ export function defaultAppStore() {
     rewardsEnabled: false,
     conversionUrlPatterns: [],
     adEvents: [],
+    orderExtractions: [],
     confirmationQueue: [],
     paymentTokens: [],
     nextPaymentTokenRedemptionAt: null,
