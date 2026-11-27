@@ -50,8 +50,8 @@ GURL EmbeddedInternalURL(const GURL& url) {
   while (start <= query.size()) {
     const size_t end = query.find('&', start);
     const std::string_view part = query.substr(
-        start, end == std::string_view::npos ? std::string_view::npos
-                                             : end - start);
+        start,
+        end == std::string_view::npos ? std::string_view::npos : end - start);
     if (part.starts_with(kKey)) {
       // The embedded page is percent-encoded, including ':' and '/'.
       constexpr base::UnescapeRule::Type kRules =

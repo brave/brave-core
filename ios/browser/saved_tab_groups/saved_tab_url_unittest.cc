@@ -16,8 +16,8 @@ namespace {
 using SavedTabURLTest = PlatformTest;
 
 TEST_F(SavedTabURLTest, KeepsAnHttpURLAndItsTitle) {
-  const auto [url, title] = NormalizeURLForSavedTabGroup(
-      GURL("https://example.com/a"), u"Example");
+  const auto [url, title] =
+      NormalizeURLForSavedTabGroup(GURL("https://example.com/a"), u"Example");
   EXPECT_EQ(url, GURL("https://example.com/a"));
   EXPECT_EQ(title, u"Example");
 }
@@ -53,8 +53,7 @@ TEST_F(SavedTabURLTest, MapsTheLegacyNewTabPage) {
 }
 
 TEST_F(SavedTabURLTest, ReplacesAnUnsaveableURL) {
-  const auto [default_url, default_title] =
-      tab_groups::GetDefaultUrlAndTitle();
+  const auto [default_url, default_title] = tab_groups::GetDefaultUrlAndTitle();
   const auto [url, title] =
       NormalizeURLForSavedTabGroup(GURL("brave://settings"), u"Settings");
   EXPECT_EQ(url, default_url);
@@ -62,10 +61,8 @@ TEST_F(SavedTabURLTest, ReplacesAnUnsaveableURL) {
 }
 
 TEST_F(SavedTabURLTest, ReplacesAMissingURL) {
-  const auto [default_url, default_title] =
-      tab_groups::GetDefaultUrlAndTitle();
-  const auto [url, title] =
-      NormalizeURLForSavedTabGroup(GURL(), u"Missing");
+  const auto [default_url, default_title] = tab_groups::GetDefaultUrlAndTitle();
+  const auto [url, title] = NormalizeURLForSavedTabGroup(GURL(), u"Missing");
   EXPECT_EQ(url, default_url);
   EXPECT_EQ(title, default_title);
 }

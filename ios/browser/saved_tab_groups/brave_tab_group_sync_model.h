@@ -10,7 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-// Local tab groups the sync delegate reads. Swift installs one before the profile is created.
+// Local tab groups the sync delegate reads. Swift installs one before the
+// profile is created.
 NS_SWIFT_NAME(TabGroupSyncLocalModel)
 OBJC_EXPORT
 @protocol BraveTabGroupSyncLocalModel <NSObject>
