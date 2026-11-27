@@ -1080,8 +1080,9 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   {
     PsstWebContentsConsoleObserver b_console_observer(
         web_contents(),
-        {base::StrCat({kUserScriptLogPrefix,
-                       CreateTestUtf16URL(https_server_, "/b_test_0.html")})},
+        {base::StrCat(
+            {kUserScriptLogPrefix,
+             CreateTestUtf16URL(https_server_, "b.test", "/b_test_0.html")})},
         {});
     ASSERT_TRUE(content::NavigateToURL(web_contents(), url_b));
     ASSERT_TRUE(b_console_observer.Wait());
@@ -1097,8 +1098,9 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   {
     PsstWebContentsConsoleObserver b_console_observer(
         web_contents(),
-        {base::StrCat({kUserScriptLogPrefix,
-                       CreateTestUtf16URL(https_server_, "/b_test_0.html")})},
+        {base::StrCat(
+            {kUserScriptLogPrefix,
+             CreateTestUtf16URL(https_server_, "b.test", "/b_test_0.html")})},
         {});
     ASSERT_TRUE(content::NavigateToURL(web_contents(), url_b));
     ASSERT_TRUE(b_console_observer.Wait());
