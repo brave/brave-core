@@ -266,8 +266,11 @@ class AdblockDevtoolsTabTest : public AdblockDevtoolsTest {
             .selectAndActivateRequest(request, 'blocking');
         const adblockView = itemView.tabView('blocking');
         await adblockView.updateComplete;
-        return adblockView.contentElement.innerText.replace(/\s+/g, ' ')
-            .trim();
+        // The empty state renders in a shadow root, which innerText skips.
+        const empty = adblockView.contentElement.querySelector(
+            'devtools-widget')?.shadowRoot?.querySelector('.empty-state');
+        return (empty ?? adblockView.contentElement).innerText
+            .replace(/\s+/g, ' ').trim();
       })()
     )";
     return content::EvalJs(
@@ -360,7 +363,8 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTabTest, NoAdblockInfo) {
                          "setExpectations(1, 0, 0, 0);"
                          "addImage('logo.png')"));
   EXPECT_EQ(GetAdblockTabText(window, "/logo.png", false),
-            "No adblock rule blocked or allowed this request.");
+            "No adblock info No adblock rule blocked or allowed this "
+            "request.");
 
   DevToolsWindowTesting::CloseDevToolsWindowSync(window);
 }

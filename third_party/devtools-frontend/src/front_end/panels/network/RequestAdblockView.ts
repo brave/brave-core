@@ -11,6 +11,7 @@ import * as Lit from '../../ui/lit/lit.js'
 import * as UI from '../../ui/legacy/legacy.js'
 
 const { render, html } = Lit
+const { widget } = UI.Widget
 
 interface AdblockFilterRuleInfo {
   rawLine: string
@@ -39,7 +40,6 @@ const styles = `
   .code {
     font-family: var(--monospace-font-family);
     font-size: var(--monospace-font-size);
-    user-select: text;
   }
   .verdict-icon {
     margin: 0 0.3em var(--sys-size-2) 0;
@@ -51,16 +51,7 @@ const styles = `
       color: var(--icon-checkmark-green);
     }
   }
-  .empty {
-    padding: var(--sys-size-6) var(--sys-size-9);
-    color: var(--sys-color-on-surface-subtle);
-  }
 `
-
-function hasLocation(n: number): boolean {
-  // Unknown locations arrive as -1, or 2^32-1 after the uint32 hop.
-  return Number.isInteger(n) && n >= 0 && n !== 0xffffffff
-}
 
 function renderRow(
   key: string,
@@ -111,7 +102,7 @@ function renderRuleSection(
     return Lit.nothing
   }
   let list: string | undefined
-  if (hasLocation(rule.sourceIndex)) {
+  if (rule.sourceIndex >= 0) {
     list = rule.sourceTitle
       ? `${rule.sourceTitle} (source ID ${rule.sourceIndex})`
       : `Source ID ${rule.sourceIndex}`
@@ -122,7 +113,7 @@ function renderRuleSection(
     ${renderRow('Filter list', list)}
     ${renderRow(
       'Line',
-      hasLocation(rule.lineNumber) ? `${rule.lineNumber}` : undefined
+      rule.lineNumber >= 0 ? `${rule.lineNumber}` : undefined
     )}
     <devtools-report-divider></devtools-report-divider>
   `
@@ -184,9 +175,10 @@ export class RequestAdblockView extends UI.Widget.VBox {
         </style>
         ${info
           ? renderReport(info)
-          : html`<div class="empty">
-              No adblock rule blocked or allowed this request.
-            </div>`}
+          : widget(UI.EmptyWidget.EmptyWidget, {
+              header: 'No adblock info',
+              text: 'No adblock rule blocked or allowed this request.'
+            })}
       `,
       this.contentElement,
       { host: this }
