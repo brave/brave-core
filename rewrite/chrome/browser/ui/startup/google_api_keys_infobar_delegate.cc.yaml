@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Point the API keys help link to the Brave community site
+
+      Upstream links to the Google API keys developer documentation. Brave
+      has no Google API keys, so link to https://community.brave.app instead.
+      A literal symbol swap: rename_class is not applicable because
+      kAPIKeysDevelopersHowToURL is a constant, not a class.'
+    regex:
+      pattern: 'google_apis::kAPIKeysDevelopersHowToURL'
+      replace: '"https://community.brave.app"'

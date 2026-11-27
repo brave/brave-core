@@ -43,8 +43,4 @@ void BraveNavigateStartupTab(const StartupTab& tab,
 
 }  // namespace
 
-#define StartupTabProviderImpl BraveStartupTabProviderImpl
-
 #include <chrome/browser/ui/startup/startup_browser_creator_impl.cc>
-
-#undef StartupTabProviderImpl

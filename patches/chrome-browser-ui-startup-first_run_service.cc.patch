@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/startup/first_run_service.cc b/chrome/browser/ui/startup/first_run_service.cc
+index 0ab672afcd6f86bb7e778a7d97176a575e86fcd0..558e1131c2d58f84e0317e6e7a4f83ebb89a02f8 100644
+--- a/chrome/browser/ui/startup/first_run_service.cc
++++ b/chrome/browser/ui/startup/first_run_service.cc
+@@ -203,8 +203,7 @@ void FirstRunService::FinishProfileSetUp(std::u16string profile_name) {
+ 
+   profile_name_resolver_.reset();
+   CHECK(!profile_name.empty(), base::NotFatalUntil::M162);
+-  FinalizeNewProfileSetup(&profile_.get(), profile_name,
+-                          /*is_default_name=*/false);
++  BraveFinalizeNewProfileSetup(&profile_.get());
+ }
+ 
+ void FirstRunService::OpenFirstRunIfNeeded(ResumeTaskCallback callback) {

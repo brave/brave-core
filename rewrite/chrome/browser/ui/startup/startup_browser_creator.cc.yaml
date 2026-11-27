@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Launch with BraveStartupBrowserCreatorImpl
+
+      BraveStartupBrowserCreatorImpl subclasses StartupBrowserCreatorImpl to
+      switch to the Tor profile on --tor and to never show the non-milestone
+      update toast. It is defined in the chromium_src shadow above the
+      upstream include.'
+    rename_class:
+      class_name: StartupBrowserCreatorImpl
+      rename: BraveStartupBrowserCreatorImpl
+
+  - description:
+      'Show the Brave Origin startup dialog before starting
+
+      BraveMaybeShowOriginStartupDialog() is defined in the chromium_src
+      shadow above the upstream include. It shows the dialog and returns true
+      when the startup has to be deferred until the dialog is dismissed, in
+      which case Start() is called again from the dialog callback.'
+    preempt_function_impl:
+      function_name: StartupBrowserCreator::Start
+      return_if:
+        'BraveMaybeShowOriginStartupDialog(cmd_line, cur_dir, profile_info,
+        last_opened_profiles, first_run_tabs_)'
+      return_value: 'true'
+
+  - description:
+      'Ignore a second launch while the Brave Origin startup dialog is shown
+
+      BraveIsOriginStartupDialogShowing() is defined in the chromium_src
+      shadow above the upstream include.'
+    preempt_function_impl:
+      function_name: StartupBrowserCreator::ProcessCommandLineAlreadyRunning
+      return_if: 'BraveIsOriginStartupDialogShowing()'

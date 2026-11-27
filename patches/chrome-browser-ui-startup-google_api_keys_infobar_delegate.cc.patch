@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/startup/google_api_keys_infobar_delegate.cc b/chrome/browser/ui/startup/google_api_keys_infobar_delegate.cc
+index d8145525f2c92b899a858fd98871667fd05959c1..b884cee4e2ee6c87f57180786982c7730f7a4516 100644
+--- a/chrome/browser/ui/startup/google_api_keys_infobar_delegate.cc
++++ b/chrome/browser/ui/startup/google_api_keys_infobar_delegate.cc
+@@ -36,7 +36,7 @@ std::u16string GoogleApiKeysInfoBarDelegate::GetLinkText() const {
+ }
+ 
+ GURL GoogleApiKeysInfoBarDelegate::GetLinkURL() const {
+-  return GURL(google_apis::kAPIKeysDevelopersHowToURL);
++  return GURL("https://community.brave.app");
+ }
+ 
+ std::u16string GoogleApiKeysInfoBarDelegate::GetMessageText() const {

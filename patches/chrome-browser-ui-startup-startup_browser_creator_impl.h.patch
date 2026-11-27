@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/startup/startup_browser_creator_impl.h b/chrome/browser/ui/startup/startup_browser_creator_impl.h
+index b7e85dab47c643fcd33b9a8acd8eca4684af0494..5b6d54305a268a0b222b5144c0d3e4bb80f9f6c0 100644
+--- a/chrome/browser/ui/startup/startup_browser_creator_impl.h
++++ b/chrome/browser/ui/startup/startup_browser_creator_impl.h
+@@ -99,6 +99,7 @@ class StartupBrowserCreatorImpl {
+   }
+ 
+  private:
++  friend class BraveStartupBrowserCreatorImpl;
+   FRIEND_TEST_ALL_PREFIXES(BrowserTest, RestorePinnedTabs);
+   FRIEND_TEST_ALL_PREFIXES(BrowserTest, AppIdSwitch);
+   FRIEND_TEST_ALL_PREFIXES(StartupBrowserCreatorImplTest, DetermineStartupTabs);
+@@ -221,7 +222,7 @@ class StartupBrowserCreatorImpl {
+       bool restore_tabbed_browser);
+ 
+   // Show a toast if a non milestone update is detected.
+-  static void MaybeShowNonMilestoneUpdateToast(
++  virtual void MaybeShowNonMilestoneUpdateToast(
+       BrowserWindowInterface* browser,
+       std::string_view current_version_string);
+ 

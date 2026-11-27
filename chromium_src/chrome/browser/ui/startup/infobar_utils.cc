@@ -20,16 +20,4 @@ class BraveGoogleKeysInfoBarDelegate {
   }
 };
 
-#define GoogleApiKeysInfoBarDelegate BraveGoogleKeysInfoBarDelegate
-
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-#define ObsoleteSystemInfoBarDelegate BraveObsoleteSystemInfoBarDelegate
-#endif
-
 #include <chrome/browser/ui/startup/infobar_utils.cc>
-
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-#undef ObsoleteSystemInfoBarDelegate
-#endif
-
-#undef GoogleApiKeysInfoBarDelegate

@@ -5,15 +5,22 @@
 
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
 
+#include <memory>
 #include <string_view>
+#include <utility>
+#include <vector>
 
+#include "base/auto_reset.h"
 #include "base/command_line.h"
+#include "base/files/file_path.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
@@ -104,15 +111,6 @@ void BraveStartupBrowserCreatorImpl::Launch(
                                     restore_tabbed_browser);
 }
 
-#define StartupBrowserCreatorImpl BraveStartupBrowserCreatorImpl
-#define Start(...) Start_ChromiumImpl(__VA_ARGS__)
-#define ProcessCommandLineAlreadyRunning(...) \
-  ProcessCommandLineAlreadyRunning_ChromiumImpl(__VA_ARGS__)
-#include <chrome/browser/ui/startup/startup_browser_creator.cc>
-#undef ProcessCommandLineAlreadyRunning
-#undef Start
-#undef StartupBrowserCreatorImpl
-
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 namespace {
 
@@ -152,31 +150,39 @@ class StartupDialogDelegate : public BraveOriginStartupView::Delegate {
 #endif
 };
 
+// True while StartupBrowserCreator::Start() is being re-entered from the
+// startup dialog callback, so that the dialog is not handled a second time.
+bool g_resuming_start_after_dialog = false;
+
 }  // namespace
 #endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 
-// For Brave Origin branded builds, intercept Start() to show a purchase
-// validation dialog before any browser window or profile picker opens. Start()
-// is only called externally from chrome_browser_main.cc, so the #define above
-// only renames the definition (not external callers). When the dialog closes
-// with a successful validation, the callback invokes Start_ChromiumImpl() to
-// continue the normal startup flow.
-bool StartupBrowserCreator::Start(const base::CommandLine& cmd_line,
-                                  const base::FilePath& cur_dir,
-                                  StartupProfileInfo profile_info,
-                                  const Profiles& last_opened_profiles) {
+namespace {
+
+// Returns true if the startup has been deferred until the Brave Origin startup
+// dialog is dismissed. The dialog callback calls
+// StartupBrowserCreator::Start() again.
+bool BraveMaybeShowOriginStartupDialog(
+    const base::CommandLine& cmd_line,
+    const base::FilePath& cur_dir,
+    StartupProfileInfo profile_info,
+    const StartupBrowserCreator::Profiles& last_opened_profiles,
+    const std::vector<GURL>& first_run_tabs) {
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  if (g_resuming_start_after_dialog) {
+    return false;
+  }
   if (BraveOriginStartupView::ShouldShowDialog(
           g_browser_process->local_state())) {
-    // Capture first_run_tabs_ by value because `this` (the
-    // StartupBrowserCreator) is destroyed by chrome_browser_main.cc
-    // (browser_creator_.reset()) right after Start() returns.
+    // Capture first_run_tabs by value because the StartupBrowserCreator is
+    // destroyed by chrome_browser_main.cc (browser_creator_.reset()) right
+    // after Start() returns.
     BraveOriginStartupView::Show(
         base::BindOnce(
             [](std::vector<GURL> first_run_tabs,
                const base::CommandLine& cmd_line, const base::FilePath& cur_dir,
                StartupProfileInfo profile_info,
-               const Profiles& last_opened_profiles) {
+               const StartupBrowserCreator::Profiles& last_opened_profiles) {
 #if BUILDFLAG(IS_MAC)
               // Re-insert the Profiles menu that was stashed while the
               // startup dialog was showing.
@@ -184,12 +190,13 @@ bool StartupBrowserCreator::Start(const base::CommandLine& cmd_line,
 #endif
               StartupBrowserCreator browser_creator;
               browser_creator.AddFirstRunTabs(first_run_tabs);
-              browser_creator.Start_ChromiumImpl(cmd_line, cur_dir,
-                                                 std::move(profile_info),
-                                                 last_opened_profiles);
+              base::AutoReset<bool> resuming(&g_resuming_start_after_dialog,
+                                             true);
+              browser_creator.Start(cmd_line, cur_dir, std::move(profile_info),
+                                    last_opened_profiles);
             },
-            std::move(first_run_tabs_), cmd_line, cur_dir,
-            std::move(profile_info), last_opened_profiles),
+            first_run_tabs, cmd_line, cur_dir, std::move(profile_info),
+            last_opened_profiles),
         std::make_unique<StartupDialogDelegate>());
     return true;
   }
@@ -198,24 +205,18 @@ bool StartupBrowserCreator::Start(const base::CommandLine& cmd_line,
   BraveRestoreProfileMenu();
 #endif
 #endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-  return Start_ChromiumImpl(cmd_line, cur_dir, std::move(profile_info),
-                            last_opened_profiles);
+  return false;
 }
 
-// For Brave Origin branded builds, block second-launch attempts while the
-// startup dialog is showing. Without this, a second launch goes through
-// ProcessCommandLineAlreadyRunning (not Start), bypassing the dialog guard
-// and opening a browser window directly.
-// static
-void StartupBrowserCreator::ProcessCommandLineAlreadyRunning(
-    const base::CommandLine& command_line,
-    const base::FilePath& cur_dir,
-    const StartupProfilePathInfo& profile_path_info) {
+bool BraveIsOriginStartupDialogShowing() {
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-  if (BraveOriginStartupView::IsShowing()) {
-    return;
-  }
+  return BraveOriginStartupView::IsShowing();
+#else
+  return false;
 #endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-  ProcessCommandLineAlreadyRunning_ChromiumImpl(command_line, cur_dir,
-                                                profile_path_info);
 }
+
+}  // namespace
+
+#include <chrome/browser/ui/startup/startup_browser_creator.cc>
+

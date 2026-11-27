@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/startup/first_run_service_browsertest.cc b/chrome/browser/ui/startup/first_run_service_browsertest.cc
+index 6d038b4eefa9a2bc4bc4eb6f0194136ea38569dd..d5ff1a08b2ee581a4a3a2e111b5852369f8afa73 100644
+--- a/chrome/browser/ui/startup/first_run_service_browsertest.cc
++++ b/chrome/browser/ui/startup/first_run_service_browsertest.cc
+@@ -347,7 +347,7 @@ IN_PROC_BROWSER_TEST_P(FirstRunServicePolicyBrowserTest, OpenFirstRunIfNeeded) {
+   // finalisation is not expected to happen, so the default name should remain.
+   if (!GetParam().should_open_fre && !signin_util::IsForceSigninEnabled()) {
+     expected_profile_name = l10n_util::GetStringUTF16(
+-        IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME);
++        IDS_PROFILE_MENU_BRAVE_PLACEHOLDER_PROFILE_NAME);
+   }
+ 
+   if (expected_profile_name.has_value()) {

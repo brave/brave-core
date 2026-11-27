@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Keep the original profile name when finishing the profile setup
+
+      Because kSigninAllowed is false, ComputeDevicePolicyEffect returns
+      PolicyEffect::kDisabled and TryMarkFirstRunAlreadyFinished finishes the
+      first run with FinishedReason::kSkippedByPolicies. Without a primary
+      account FinishProfileSetUp would then pick the enterprise profile name
+      ("Work"). Brave wants to keep the original profile name instead, so the
+      call is redirected to BraveFinalizeNewProfileSetup(), defined in the
+      chromium_src shadow above the upstream include.
+      This is a regex because the call is a single site that must be replaced
+      as a whole; rename_class is not applicable (function call, not a class).'
+    regex:
+      re_pattern:
+        'FinalizeNewProfileSetup\(&profile_\.get\(\),\s*profile_name,\s*/\*is_default_name=\*/false\);'
+      replace: 'BraveFinalizeNewProfileSetup(&profile_.get());'

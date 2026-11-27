@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Let BraveStartupBrowserCreatorImpl access private members
+
+      BraveStartupBrowserCreatorImpl (defined in the
+      startup_browser_creator.cc override) subclasses
+      StartupBrowserCreatorImpl and needs its private attributes, e.g.
+      browser_creator_ and command_line_.'
+    add_friend:
+      class_name: StartupBrowserCreatorImpl
+      friend_type: class BraveStartupBrowserCreatorImpl
+
+  - description:
+      'Make MaybeShowNonMilestoneUpdateToast a virtual member
+
+      It is static upstream. BraveStartupBrowserCreatorImpl overrides it to
+      never show the toast. make_virtual is not applicable because it would
+      produce `virtual static`, so the static specifier is dropped as well.'
+    regex:
+      pattern: 'static void MaybeShowNonMilestoneUpdateToast('
+      replace: 'virtual void MaybeShowNonMilestoneUpdateToast('

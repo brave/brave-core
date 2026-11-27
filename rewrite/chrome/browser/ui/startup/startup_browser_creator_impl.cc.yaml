@@ -18,3 +18,14 @@ substitutions:
             if (BraveIsScheduledForCleanup(tab.url, profile_)) {
               continue;
             }
+
+  - description:
+      'Use BraveStartupTabProviderImpl for startup tab determination
+
+      Brave customizes the startup tabs (e.g. welcome/onboarding) through
+      BraveStartupTabProviderImpl, declared in
+      brave/browser/ui/startup/brave_startup_tab_provider_impl.h, which the
+      chromium_src shadow includes.'
+    rename_class:
+      class_name: StartupTabProviderImpl
+      rename: BraveStartupTabProviderImpl

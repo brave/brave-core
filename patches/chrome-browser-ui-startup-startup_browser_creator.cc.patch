@@ -1,0 +1,38 @@
+diff --git a/chrome/browser/ui/startup/startup_browser_creator.cc b/chrome/browser/ui/startup/startup_browser_creator.cc
+index fa99573022c1f6cf3965c7b4072f8dd3044e488c..7201a746bb28486b0de4ea1adff6194a0fa2e5c7 100644
+--- a/chrome/browser/ui/startup/startup_browser_creator.cc
++++ b/chrome/browser/ui/startup/startup_browser_creator.cc
+@@ -729,6 +729,7 @@ bool StartupBrowserCreator::Start(const base::CommandLine& cmd_line,
+                                   const base::FilePath& cur_dir,
+                                   StartupProfileInfo profile_info,
+                                   const Profiles& last_opened_profiles) {
++  if (BraveMaybeShowOriginStartupDialog(cmd_line, cur_dir, profile_info, last_opened_profiles, first_run_tabs_)) return true;
+   TRACE_EVENT0("startup", "StartupBrowserCreator::Start");
+   return ProcessCmdLineImpl(cmd_line, cur_dir,
+                             chrome::startup::IsProcessStartup::kYes,
+@@ -777,7 +778,7 @@ void StartupBrowserCreator::LaunchBrowser(
+     }
+ #endif
+ 
+-    StartupBrowserCreatorImpl lwp(cur_dir, command_line, this, is_first_run);
++    BraveStartupBrowserCreatorImpl lwp(cur_dir, command_line, this, is_first_run);
+     lwp.Launch(profile,
+                in_synchronous_profile_launch_
+                    ? chrome::startup::IsProcessStartup::kYes
+@@ -1610,6 +1611,7 @@ void StartupBrowserCreator::ProcessCommandLineAlreadyRunning(
+     const base::CommandLine& command_line,
+     const base::FilePath& cur_dir,
+     const StartupProfilePathInfo& profile_path_info) {
++  if (BraveIsOriginStartupDialogShowing()) return;
+   if (profile_path_info.mode == StartupProfileMode::kError) {
+     return;
+   }
+@@ -1640,7 +1642,7 @@ void StartupBrowserCreator::OpenStartupPages(
+   chrome::startup::IsFirstRun is_first_run =
+       first_run::IsChromeFirstRun() ? chrome::startup::IsFirstRun::kYes
+                                     : chrome::startup::IsFirstRun::kNo;
+-  StartupBrowserCreatorImpl startup_browser_creator_impl(
++  BraveStartupBrowserCreatorImpl startup_browser_creator_impl(
+       base::FilePath(), command_line, is_first_run);
+   SessionStartupPref session_startup_pref =
+       StartupBrowserCreator::GetSessionStartupPref(command_line,

@@ -12,3 +12,22 @@ substitutions:
     regex:
       pattern: 'ShowSessionCrashedBubbleIfNotOffTheRecordProfile('
       replace: 'ShowSessionCrashedBubbleIfNotOffTheRecordProfileBrave('
+
+  - description: |-
+      Use Brave's no-op Google API keys infobar delegate.
+
+      Brave has no Google API keys, so the infobar is never shown.
+      BraveGoogleKeysInfoBarDelegate is a no-op stub defined in the
+      chromium_src shadow above the upstream include.
+    rename_class:
+      class_name: GoogleApiKeysInfoBarDelegate
+      rename: BraveGoogleKeysInfoBarDelegate
+
+  - description: |-
+      Use Brave's obsolete system infobar delegate.
+
+      Declared in brave/browser/ui/startup/brave_obsolete_system_infobar_delegate.h,
+      included by the chromium_src shadow. Only used on Windows and macOS.
+    rename_class:
+      class_name: ObsoleteSystemInfoBarDelegate
+      rename: BraveObsoleteSystemInfoBarDelegate

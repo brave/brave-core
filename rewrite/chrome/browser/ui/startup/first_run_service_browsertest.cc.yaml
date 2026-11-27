@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Expect Brave placeholder profile name after a skipped first run
+
+      Brave keeps the original profile name instead of the enterprise one
+      (see first_run_service.cc.yaml). The placeholder name string is declared
+      in brave/grit/brave_generated_resources.h, which the chromium_src shadow
+      includes. A literal symbol swap: rename_class is not applicable because
+      this is a resource id, not a class.'
+    regex:
+      pattern: 'IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME'
+      replace: 'IDS_PROFILE_MENU_BRAVE_PLACEHOLDER_PROFILE_NAME'

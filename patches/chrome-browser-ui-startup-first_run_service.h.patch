@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/startup/first_run_service.h b/chrome/browser/ui/startup/first_run_service.h
+index 0a4cedf321b0c5f57081b58772c07dcb3f33ae4d..5156f8ba3a30d766a803512010f2a4f43ee35553 100644
+--- a/chrome/browser/ui/startup/first_run_service.h
++++ b/chrome/browser/ui/startup/first_run_service.h
+@@ -70,6 +70,7 @@ class FirstRunService : public KeyedService {
+ #endif
+ 
+  private:
++  friend class FirstRunServiceTest_FinishProfileSetUpShouldNotChangeName_Test;
+   friend class FirstRunServiceFactory;
+   FRIEND_TEST_ALL_PREFIXES(FirstRunServiceTest,
+                            ShouldPopulateProfileNameFromPrimaryAccount);
