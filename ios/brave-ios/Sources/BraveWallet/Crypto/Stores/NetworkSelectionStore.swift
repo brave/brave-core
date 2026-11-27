@@ -7,7 +7,7 @@ import BraveCore
 import BraveShared
 import SwiftUI
 
-class NetworkSelectionStore: ObservableObject, WalletObserverStore {
+class NetworkSelectionStore: ObservableObject, WalletObserverStore, Identifiable {
 
   enum Mode: Equatable {
     case select(isForOrigin: Bool)
