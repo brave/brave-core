@@ -36,14 +36,4 @@ bool IsSemanticHistoryKeyword(const std::u16string& keyword,
 
 }  // namespace
 
-// Sets the icon that is displayed when a Brave-defined starter pack engine is
-// active.
-#define kAiMode kAskBraveSearch) {                              \
-    vector_icon = &GetAskBraveSearchStarterPackIcon();          \
-    /* NOLINTNEXTLINE */                                        \
-  } else if (template_url && template_url->starter_pack_id() == \
-                                 template_url_starter_pack_data::StarterPackId::kAiMode
-
 #include <chrome/browser/ui/views/location_bar/selected_keyword_view.cc>
-
-#undef kAiMode

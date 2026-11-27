@@ -1,0 +1,61 @@
+diff --git a/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.cc b/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.cc
+index 7093f53ee902d0afeaf9f534e3436c74e65d6202..574edf7cb7a1f9632575c98793dcca529fca6fe8 100644
+--- a/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.cc
++++ b/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.cc
+@@ -79,14 +79,14 @@ std::optional<gfx::Rect> GetDebugWidgetBounds(
+   // Calculate the frame's X position so the widget's right edge aligns with the
+   // content area's right edge.
+   const gfx::Insets shadow_insets =
+-      RoundedOmniboxResultsFrame::GetShadowInsets();
++      BraveRoundedOmniboxResultsFrame::GetShadowInsets();
+   frame_bounds.set_x(contents_bounds.right() - shadow_insets.right() -
+                      frame_width);
+ 
+   // Calculate the frame's Y position so the top of the results area
+   // (frame_y + non_result_height) aligns with the content area's top.
+   frame_bounds.set_y(contents_bounds.y() -
+-                     RoundedOmniboxResultsFrame::GetNonResultSectionHeight());
++                     BraveRoundedOmniboxResultsFrame::GetNonResultSectionHeight());
+ 
+   return frame_bounds;
+ }
+@@ -113,13 +113,13 @@ class OmniboxPopupViewViews::PopupWidget final : public ThemeCopyingWidget {
+     params.parent = parent_widget->GetNativeView();
+     params.context = parent_widget->GetNativeWindow();
+ 
+-    RoundedOmniboxResultsFrame::OnBeforeWidgetInit(&params, this);
++    BraveRoundedOmniboxResultsFrame::OnBeforeWidgetInit(&params, this);
+ 
+     Init(std::move(params));
+   }
+ 
+   void SetPopupContentsView(OmniboxPopupViewViews* contents) {
+-    SetContentsView(std::make_unique<RoundedOmniboxResultsFrame>(
++    SetContentsView(std::make_unique<BraveRoundedOmniboxResultsFrame>(
+         contents, contents->location_bar_view_, /*forward_mouse_events=*/true));
+   }
+ 
+@@ -737,12 +737,12 @@ gfx::Rect OmniboxPopupViewViews::GetTargetBounds() const {
+   // Add enough space on the top and bottom so it looks like there is the same
+   // amount of space between the text and the popup border as there is in the
+   // interior between each row of text.
+-  popup_height += RoundedOmniboxResultsFrame::GetNonResultSectionHeight();
++  popup_height += BraveRoundedOmniboxResultsFrame::GetNonResultSectionHeight();
+ 
+   // The rounded popup is always offset the same amount from the omnibox.
+   gfx::Rect content_rect = location_bar_view_->GetBoundsInScreen();
+   content_rect.Inset(
+-      -RoundedOmniboxResultsFrame::GetLocationBarAlignmentInsets());
++      -BraveRoundedOmniboxResultsFrame::GetLocationBarAlignmentInsets());
+   content_rect.set_height(popup_height);
+ 
+   if (omnibox::IsWebUIOmniboxPopupEnabled() &&
+@@ -756,7 +756,7 @@ gfx::Rect OmniboxPopupViewViews::GetTargetBounds() const {
+   }
+ 
+   // Finally, expand the widget to accommodate the custom-drawn shadows.
+-  content_rect.Inset(-RoundedOmniboxResultsFrame::GetShadowInsets());
++  content_rect.Inset(-BraveRoundedOmniboxResultsFrame::GetShadowInsets());
+   return content_rect;
+ }
+ 

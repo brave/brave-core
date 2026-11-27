@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/omnibox/omnibox_view_views.h b/chrome/browser/ui/views/omnibox/omnibox_view_views.h
+index 7274eb611568925ffd079eb624ee8f2d516c7fa4..37c0fff46957ef5a2ec745d569e4974cda453263 100644
+--- a/chrome/browser/ui/views/omnibox/omnibox_view_views.h
++++ b/chrome/browser/ui/views/omnibox/omnibox_view_views.h
+@@ -563,6 +563,7 @@ class OmniboxViewViews
+   PrefChangeRegistrar pref_change_registrar_;
+ 
+   base::WeakPtrFactory<OmniboxViewViews> weak_factory_{this};
++  friend class BraveOmniboxViewViews;
+ };
+ 
+ #endif  // CHROME_BROWSER_UI_VIEWS_OMNIBOX_OMNIBOX_VIEW_VIEWS_H_

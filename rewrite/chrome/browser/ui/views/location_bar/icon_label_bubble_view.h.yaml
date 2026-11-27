@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let BraveLocationBarView call protected members of the icons.
+
+      `GetMinimumSize` is overridden in `IconLabelBubbleView` and made
+      protected, so `BraveLocationBarView` needs to be a friend to call it on
+      its icons.
+    add_friend:
+      class_name: IconLabelBubbleView
+      friend_type: class BraveLocationBarView
+
+  - description: 'Add a method to always show the label.'
+    add_to_public:
+      class_name: IconLabelBubbleView
+      code: |-
+        virtual bool ShouldAlwaysShowLabel() const;
+
+  - description: 'Make GetSizeForLabelWidth virtual.'
+    make_virtual:
+      class_name: IconLabelBubbleView
+      method_name: GetSizeForLabelWidth

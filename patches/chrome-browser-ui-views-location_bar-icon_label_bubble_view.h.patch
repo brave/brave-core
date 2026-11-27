@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.h b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.h
+index 050c4018fac29badea1f0701a622dfb46181db12..7fe61956cd6b67ecbb5639cb2a5fccf12d3e7f31 100644
+--- a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.h
++++ b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.h
+@@ -209,6 +209,8 @@ class IconLabelBubbleView : public views::InkDropObserver,
+     return open_state_fraction_;
+   }
+ 
++  virtual bool ShouldAlwaysShowLabel() const;
++
+  protected:
+   static constexpr int kOpenTimeMS = 150;
+ 
+@@ -280,7 +282,7 @@ class IconLabelBubbleView : public views::InkDropObserver,
+   using LabelButton::SetImageModel;
+   void SetImageModel(const ui::ImageModel& image);
+ 
+-  gfx::Size GetSizeForLabelWidth(int label_width) const;
++  virtual gfx::Size GetSizeForLabelWidth(int label_width) const;
+ 
+   views::ImageView* GetCrossfadeImageView();
+   bool IsAnimationShowing() const;
+@@ -345,6 +347,7 @@ class IconLabelBubbleView : public views::InkDropObserver,
+   gfx::SlideAnimation slide_animation_{this};
+ 
+  private:
++  friend class BraveLocationBarView;
+   class HighlightPathGenerator;
+ 
+   // Returns the width after the icon and before the separator. If the

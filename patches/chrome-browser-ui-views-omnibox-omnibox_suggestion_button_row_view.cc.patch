@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/omnibox/omnibox_suggestion_button_row_view.cc b/chrome/browser/ui/views/omnibox/omnibox_suggestion_button_row_view.cc
+index 6d00e9634bec9ffe86f543055979b1cd83715ded..efad012e8f5171ae07ac47397d681e12f429d80a 100644
+--- a/chrome/browser/ui/views/omnibox/omnibox_suggestion_button_row_view.cc
++++ b/chrome/browser/ui/views/omnibox/omnibox_suggestion_button_row_view.cc
+@@ -299,7 +299,7 @@ class OmniboxSuggestionRowButton : public views::MdTextButton {
+     SetImageLabelSpacing(8);
+     SetCustomPadding(ChromeLayoutProvider::Get()->GetInsetsMetric(
+         INSETS_OMNIBOX_PILL_BUTTON));
+-    SetCornerRadius(GetLayoutConstant(LayoutConstant::kToolbarCornerRadius));
++    SetCornerRadius(8);
+ 
+     auto* const ink_drop = views::InkDrop::Get(this);
+     SetAnimationDuration(base::TimeDelta());

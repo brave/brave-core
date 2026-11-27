@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/omnibox/omnibox_result_view.cc b/chrome/browser/ui/views/omnibox/omnibox_result_view.cc
+index d44ea9e4117d8426353ec83b220c0524cd362238..f9650d77b6f2aaebbcb85c64ef4e26bb7d9f5b01 100644
+--- a/chrome/browser/ui/views/omnibox/omnibox_result_view.cc
++++ b/chrome/browser/ui/views/omnibox/omnibox_result_view.cc
+@@ -343,7 +343,7 @@ std::unique_ptr<views::Background> OmniboxResultView::GetPopupCellBackground(
+         /*for_border_thickness=*/0);
+   }
+ 
+-  const float half_row_height = OmniboxMatchCellView::kRowHeight / 2;
++  const float half_row_height = 0;
+   gfx::RoundedCornersF radii = {0, half_row_height, half_row_height, 0};
+   return views::CreateRoundedRectBackground(
+       GetOmniboxBackgroundColorId(part_state), radii);
