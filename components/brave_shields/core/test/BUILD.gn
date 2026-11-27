@@ -61,6 +61,10 @@ source_set("unit_tests") {
 
   if (!is_android) {
     sources += [ "brave_shields_utils_unittest.cc" ]
-    deps += [ "//brave/browser/profiles" ]
+    deps += [
+      "//base/test:test_support",
+      "//brave/browser/profiles",
+      "//net",
+    ]
   }
 }

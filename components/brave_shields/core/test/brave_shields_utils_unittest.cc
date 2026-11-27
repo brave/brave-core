@@ -33,6 +33,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_utils.h"
+#include "net/base/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using brave_shields::ControlType;
@@ -104,6 +105,19 @@ class BraveShieldsUtilDomainBlockFeatureTest : public BraveShieldsUtilTest {
  public:
   BraveShieldsUtilDomainBlockFeatureTest() {
     feature_list_.InitAndDisableFeature(kBraveDomainBlock);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+class BraveShieldsUtilDomainBlockEnabledTest : public BraveShieldsUtilTest {
+ public:
+  BraveShieldsUtilDomainBlockEnabledTest() {
+    feature_list_.InitWithFeatures(
+        {kBraveDomainBlock, brave_shields::features::kBraveDomainBlock1PES,
+         net::features::kBraveFirstPartyEphemeralStorage},
+        {});
   }
 
  private:
@@ -997,7 +1011,8 @@ TEST_F(BraveShieldsUtilDomainBlockFeatureTest, GetDomainBlockingType) {
 }
 
 // Should not do domain blocking if Brave Shields is down
-TEST_F(BraveShieldsUtilTest, GetDomainBlockingType_ShieldsDown) {
+TEST_F(BraveShieldsUtilDomainBlockEnabledTest,
+       GetDomainBlockingType_ShieldsDown) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   GURL url = GURL("https://brave.com");
   brave_shields::SetBraveShieldsEnabled(map, false, url);
@@ -1005,14 +1020,16 @@ TEST_F(BraveShieldsUtilTest, GetDomainBlockingType_ShieldsDown) {
 }
 
 // Should not do domain blocking on non-HTTP(S) URLs
-TEST_F(BraveShieldsUtilTest, GetDomainBlockingType_IsNotHttpHttps) {
+TEST_F(BraveShieldsUtilDomainBlockEnabledTest,
+       GetDomainBlockingType_IsNotHttpHttps) {
   ExpectDomainBlockingType(GURL("chrome://preferences"),
                            DomainBlockingType::kNone);
   ExpectDomainBlockingType(GURL("about:blank"), DomainBlockingType::kNone);
 }
 
 // Should not do domain blocking unless ad blocking is "aggressive"
-TEST_F(BraveShieldsUtilTest, GetDomainBlockingType_ControlTypes) {
+TEST_F(BraveShieldsUtilDomainBlockEnabledTest,
+       GetDomainBlockingType_ControlTypes) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   const GURL url = GURL("https://brave.com");
 
@@ -1044,7 +1061,7 @@ TEST_F(BraveShieldsUtilTest, GetDomainBlockingType_ControlTypes) {
 }
 
 // Should do 1PES domain blocking if domain blocking feature is enabled.
-TEST_F(BraveShieldsUtilTest, GetDomainBlockingType) {
+TEST_F(BraveShieldsUtilDomainBlockEnabledTest, GetDomainBlockingType) {
   ExpectDomainBlockingType(GURL("https://brave.com"),
                            DomainBlockingType::k1PES);
 }
