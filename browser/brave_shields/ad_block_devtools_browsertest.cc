@@ -211,9 +211,10 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTest, AdblockTabRendersInfo) {
 
   const std::string text = content::EvalJs(devtools_contents, R"(
     (async () => {
-      const SDK = await import('./core/sdk/sdk.js');
-      const Logs = await import('./models/logs/logs.js');
-      const Network = await import('./panels/network/network.js');
+      const SDK = await self.runtime.loadLegacyModule('core/sdk/sdk.js');
+      const Logs = await self.runtime.loadLegacyModule('models/logs/logs.js');
+      const Network =
+          await self.runtime.loadLegacyModule('panels/network/network.js');
       const adblockInfo = (r) => SDK.NetworkManager.NetworkManager
           .forRequest(r).dispatcher.adblockInfoForId(r.requestId());
       let request;
