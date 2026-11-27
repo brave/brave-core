@@ -1,0 +1,275 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.toolbar.bottom;
+
+import android.graphics.Color;
+import android.util.DisplayMetrics;
+import android.view.View;
+
+import org.chromium.base.supplier.NullableObservableSupplier;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.components.security_state.ConnectionSecurityLevel;
+import org.chromium.ui.base.ViewUtils;
+import org.chromium.ui.util.ColorUtils;
+import org.chromium.url.GURL;
+
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+/**
+ * Drives the collapsed URL chip shown while the browser controls are scrolled away.
+ *
+ * <p>Chromium's browser controls hide the toolbar (and with it the URL) completely while the user
+ * scrolls down, on phones and tablets alike. This mediator shows a small "collapsed chip" whenever
+ * the controls are not on screen, so that the page's host (minus trivial subdomains, e.g.
+ * "search.brave.com") remains visible at all times, matching Safari / Brave iOS behavior. The chip
+ * is display-only: tapping it re-shows the browser controls, so the chip never becomes a navigation
+ * or spoofing surface.
+ *
+ * <p>Non-secure web pages never get a chip: the browser controls are pinned visible instead ({@link
+ * Delegate#setPinnedControlsVisible}), so the omnibox — with its own security indicator — remains
+ * the identity surface. An http/https page counts as non-secure when it is plaintext HTTP or when
+ * its connection security level is anything other than SECURE, which covers mixed content (active
+ * and passive), mixed forms and certificate errors. Internal pages (chrome://, about:blank,
+ * file://, data:) are unaffected: neither chip nor pinning applies there.
+ */
+@NullMarked
+class BraveCollapsedUrlChipMediator implements BrowserControlsStateProvider.Observer {
+
+    /** Interface through which the mediator updates the chip UI. Implemented by the view host. */
+    interface Delegate {
+        void setChipText(@Nullable String text);
+
+        void setChipVisible(boolean visible);
+
+        void setChipAlpha(float alpha);
+
+        /**
+         * Pins the browser controls visible while true. On non-secure or mixed-content pages the
+         * chip must never replace the omnibox as the page's identity surface: instead of showing
+         * the chip, the browser controls stay on screen, keeping the omnibox's own security
+         * indicator visible.
+         */
+        void setPinnedControlsVisible(boolean pinned);
+    }
+
+    private final BrowserControlsSizer mSizer;
+    private final Supplier<@Nullable String> mUrlSpecSupplier;
+    private final Supplier<@Nullable Integer> mSecurityLevelSupplier;
+    private final Supplier<Boolean> mEnabledSupplier;
+    private final NullableObservableSupplier<Boolean> mFullscreenSupplier;
+    private final Supplier<Boolean> mCanShowControlsSupplier;
+    private final Function<String, @Nullable String> mTextFormatter;
+    private final Delegate mDelegate;
+
+    private @Nullable String mLastUrlSpec;
+    private @Nullable Integer mLastSecurityLevel;
+    private @Nullable Boolean mLastInsecureContent;
+    private @Nullable String mLastChipText;
+    private boolean mAndroidControlsVisible = true;
+    private boolean mLastPinned;
+    private boolean mDestroyed;
+
+    BraveCollapsedUrlChipMediator(
+            BrowserControlsSizer sizer,
+            Supplier<@Nullable String> urlSpecSupplier,
+            Supplier<@Nullable Integer> securityLevelSupplier,
+            Supplier<Boolean> enabledSupplier,
+            NullableObservableSupplier<Boolean> fullscreenSupplier,
+            Supplier<Boolean> canShowControlsSupplier,
+            Function<String, @Nullable String> textFormatter,
+            Delegate delegate) {
+        mSizer = sizer;
+        mUrlSpecSupplier = urlSpecSupplier;
+        mSecurityLevelSupplier = securityLevelSupplier;
+        mEnabledSupplier = enabledSupplier;
+        mFullscreenSupplier = fullscreenSupplier;
+        mCanShowControlsSupplier = canShowControlsSupplier;
+        mTextFormatter = textFormatter;
+        mDelegate = delegate;
+        mSizer.addObserver(this);
+        updateChip();
+    }
+
+    void destroy() {
+        mDestroyed = true;
+        mSizer.removeObserver(this);
+        mDelegate.setChipVisible(false);
+        mDelegate.setChipAlpha(0f);
+        mDelegate.setChipText(null);
+        mDelegate.setPinnedControlsVisible(false);
+    }
+
+    void onUrlSpecChanged() {
+        updateChip();
+    }
+
+    /** Re-evaluates chip visibility when the page enters or exits fullscreen. */
+    void onFullscreenChanged() {
+        updateChip();
+    }
+
+    /** Re-evaluates chip visibility when the page's security state changes (e.g. mixed content). */
+    void onSecurityLevelChanged() {
+        updateChip();
+    }
+
+    @Override
+    public void onControlsOffsetChanged(
+            int topOffset,
+            int topControlsMinHeightOffset,
+            boolean topControlsMinHeightChanged,
+            int bottomOffset,
+            int bottomControlsMinHeightOffset,
+            boolean bottomControlsMinHeightChanged,
+            boolean requestNewFrame,
+            boolean isVisibilityForced) {
+        updateChip();
+    }
+
+    @Override
+    public void onAndroidControlsVisibilityChanged(int visibility) {
+        // Authoritative "toolbar collapsed" signal: with Browser Controls In View the
+        // per-frame scroll offsets stay in the compositor and onControlsOffsetChanged does
+        // not fire for renderer-driven scrolls (docs/ui/android/browser_controls.md).
+        boolean visible = visibility == View.VISIBLE;
+        if (visible != mAndroidControlsVisible) {
+            mAndroidControlsVisible = visible;
+            updateChip();
+        }
+    }
+
+    private void updateChip() {
+        if (mDestroyed) return;
+
+        @Nullable String spec = mUrlSpecSupplier.get();
+        @Nullable Integer level = mSecurityLevelSupplier.get();
+        // Cheap path: nothing the chip state depends on changed. GURL parsing is a JNI
+        // round-trip, so it must not run on every scroll-offset callback.
+        if (mLastInsecureContent != null
+                && Objects.equals(spec, mLastUrlSpec)
+                && Objects.equals(level, mLastSecurityLevel)) {
+            updateChipDisplay();
+            return;
+        }
+        // Only web pages (http/https) are pinned: a non-SECURE level on internal pages
+        // (chrome://, about:blank, file://, data:) carries no spoofable identity and must
+        // not disable the normal scroll-hiding UX there.
+        boolean insecureContent =
+                spec != null
+                        && (isNonSecureUrlSpec(spec)
+                                || (isEligibleUrlSpec(spec) && isInsecureSecurityLevel(level)));
+        // Recompute text when the spec or the page's security state changed; also force the first
+        // update so the delegate never inherits stale text from a previous mediator instance.
+        if (!Objects.equals(spec, mLastUrlSpec)
+                || mLastInsecureContent == null
+                || insecureContent != mLastInsecureContent) {
+            mLastUrlSpec = spec;
+            mLastInsecureContent = insecureContent;
+            mLastChipText = null;
+            if (spec != null && isEligibleUrlSpec(spec) && !insecureContent) {
+                mLastChipText = mTextFormatter.apply(spec);
+            }
+            mDelegate.setChipText(mLastChipText);
+        }
+        updatePinnedControls(
+                spec != null && insecureContent && Boolean.TRUE.equals(mEnabledSupplier.get()));
+        updateChipDisplay();
+    }
+
+    /**
+     * True when the page is non-secure enough that the omnibox must stay on screen: any connection
+     * security level other than {@link ConnectionSecurityLevel#SECURE} (active or passive mixed
+     * content, mixed forms, certificate errors and other non-secure states). Null (no tab or
+     * security state not yet known) never counts as insecure.
+     */
+    private boolean isInsecureSecurityLevel(@Nullable Integer level) {
+        return level != null && level != ConnectionSecurityLevel.SECURE;
+    }
+
+    /**
+     * Pins the browser controls visible for the lifetime of a non-secure page, so the omnibox (with
+     * its own security indicator) stays on screen instead of the chip replacing it. Token churn is
+     * avoided by only propagating state changes.
+     */
+    private void updatePinnedControls(boolean pinned) {
+        if (pinned == mLastPinned) return;
+        mLastPinned = pinned;
+        mDelegate.setPinnedControlsVisible(pinned);
+    }
+
+    private void updateChipDisplay() {
+        boolean featureEnabled = Boolean.TRUE.equals(mEnabledSupplier.get());
+        boolean fullscreen = Boolean.TRUE.equals(mFullscreenSupplier.get());
+        boolean canShowControls = Boolean.TRUE.equals(mCanShowControlsSupplier.get());
+        // The android controls swap to a composited texture as soon as scrolling starts (hidden
+        // ratio > 0), so the visibility callback alone fires mid-scroll. Require the controls to
+        // be fully off screen before showing the chip.
+        boolean controlsFullyHidden = mSizer.getBrowserControlHiddenRatio() == 1f;
+        boolean visible =
+                featureEnabled
+                        && !fullscreen
+                        && canShowControls
+                        && !mAndroidControlsVisible
+                        && controlsFullyHidden
+                        && mLastChipText != null;
+        mDelegate.setChipVisible(visible);
+    }
+
+    /**
+     * Chip-eligible = http/https with a non-empty host; everything else carries no spoofable web
+     * identity. Parses the canonical GURL spec with GURL, whose getHost() is the real host
+     * (userinfo stripped), so "http://example.com@evil.com/" resolves to evil.com.
+     */
+    static boolean isEligibleUrlSpec(@Nullable String spec) {
+        if (spec == null || spec.isEmpty()) return false;
+        GURL url = new GURL(spec);
+        if (GURL.isEmptyOrInvalid(url)) return false;
+        String scheme = url.getScheme();
+        if (!"http".equals(scheme) && !"https".equals(scheme)) return false;
+        String host = url.getHost();
+        return host != null && !host.isEmpty();
+    }
+
+    /**
+     * True for plaintext HTTP pages: non-secure content whose identity the omnibox indicates with
+     * its own "Not secure" state. Chip text is withheld and the browser controls are pinned so the
+     * omnibox stays as the identity surface.
+     */
+    static boolean isNonSecureUrlSpec(@Nullable String spec) {
+        if (spec == null || spec.isEmpty()) return false;
+        GURL url = new GURL(spec);
+        if (GURL.isEmptyOrInvalid(url)) return false;
+        return "http".equals(url.getScheme());
+    }
+
+    /**
+     * True when the background behind the chip is light: dark pill on light content, light pill on
+     * dark content, like the system gesture bar. Translucent colors compose over white, so fully
+     * transparent reads as light. Uses the upstream luminance threshold the system navigation bar
+     * itself follows ({@link ColorUtils#isHighLuminance}).
+     */
+    static boolean isLightContentBackground(int color) {
+        float alpha = Color.alpha(color) / 255f;
+        float r = Color.red(color) * alpha + 255f * (1f - alpha);
+        float g = Color.green(color) * alpha + 255f * (1f - alpha);
+        float b = Color.blue(color) * alpha + 255f * (1f - alpha);
+        int blended = Color.rgb((int) r, (int) g, (int) b);
+        return ColorUtils.isHighLuminance(ColorUtils.calculateLuminance(blended));
+    }
+
+    /** Minimum vertical gap, in dp, kept between the chip and an opaque 3-button navigation bar. */
+    public static final int MIN_NAV_BAR_GAP_DP = 8;
+
+    /** Nav bar inset plus the minimum gap, in px, to lift the chip off the 3-button bar. */
+    public static int navBarBottomMarginPx(int bottomInsetPx, DisplayMetrics metrics) {
+        return bottomInsetPx + ViewUtils.dpToPx(metrics, MIN_NAV_BAR_GAP_DP);
+    }
+}
