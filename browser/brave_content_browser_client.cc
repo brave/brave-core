@@ -27,6 +27,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_search/backup_results_navigation_throttle.h"
 #include "brave/browser/brave_search/backup_results_service_factory.h"
+#include "brave/browser/brave_shields/ad_block_popup_throttle_delegate.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/brave_stats/first_run_util.h"
@@ -63,6 +64,7 @@
 #include "brave/components/brave_search/common/brave_search_default.mojom.h"
 #include "brave/components/brave_search/common/brave_search_fallback.mojom.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
+#include "brave/components/brave_shields/content/browser/ad_block_popup_navigation_throttle.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/content/browser/domain_block_navigation_throttle.h"
 #include "brave/components/brave_shields/core/browser/ad_block_engine_wrapper.h"
@@ -1734,6 +1736,15 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
         g_brave_browser_process->ad_block_service()->custom_filters_provider(),
         EphemeralStorageServiceFactory::GetForContext(context),
         host_content_settings_map, g_browser_process->GetApplicationLocale());
+  }
+
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveAdblockPopupBlocking)) {
+    brave_shields::AdBlockPopupNavigationThrottle::MaybeCreateAndAdd(
+        registry, g_brave_browser_process->ad_block_service(),
+        BraveShieldsSettingsServiceFactory::GetForProfile(
+            Profile::FromBrowserContext(context)),
+        std::make_unique<brave_shields::AdBlockPopupThrottleDelegate>());
   }
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
