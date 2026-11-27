@@ -7,12 +7,11 @@ substitutions:
   - description: |-
       Import Brave's settings search coordinator next to upstream's, which is
       still referenced as the field type.
-    regex:
-      pattern: |-
+    add_before_line:
+      line: |-
         import org.chromium.chrome.browser.settings.search.SettingsSearchCoordinator;
-      replace: |-
+      code: |-
         import org.chromium.chrome.browser.settings.search.BraveSettingsSearchCoordinator;
-        import org.chromium.chrome.browser.settings.search.SettingsSearchCoordinator;
   - description: |-
       Instantiate Brave's settings search coordinator for Settings in a tab,
       matching SettingsActivity.
