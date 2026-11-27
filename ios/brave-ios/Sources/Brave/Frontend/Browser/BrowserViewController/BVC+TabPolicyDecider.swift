@@ -458,18 +458,4 @@ extension URLRequest {
     modifiedRequest.url = strippedURL
     return modifiedRequest
   }
-
-  /// Allow local requests only if the request is privileged.
-  /// If the request is internal or unprivileged, we should deny it.
-  var isInternalUnprivileged: Bool {
-    guard let url = url else {
-      return true
-    }
-
-    if let url = InternalURL(url) {
-      return !url.isAuthorized
-    } else {
-      return false
-    }
-  }
 }
