@@ -6,34 +6,24 @@
 #include "brave/browser/brave_tab_helpers.h"
 
 #include <memory>
-#include <utility>
 
-#include "base/command_line.h"
-#include "base/feature_list.h"
-#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
-#include "brave/components/brave_ads/buildflags/buildflags.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
-#include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
-#include "extensions/buildflags/buildflags.h"
-#include "net/base/features.h"
 
 namespace brave {
 
-void AttachTabHelpers(content::WebContents* web_contents) {
-  // If your TabHelper is related to privacy consider whether it belongs in this
-  // method, so it can also be attached to background WebContents.
-  AttachPrivacySensitiveTabHelpers(web_contents);
-}
-
 void AttachPrivacySensitiveTabHelpers(content::WebContents* web_contents) {
+  // Profiles without content settings, such as the shared Top Chrome WebUI
+  // profile, host no web pages for these helpers to protect.
+  if (!HostContentSettingsMapFactory::GetForProfile(
+          web_contents->GetBrowserContext())) {
+    return;
+  }
   if (!content_settings::PageSpecificContentSettings::GetDelegateForWebContents(
           web_contents)) {
     content_settings::PageSpecificContentSettings::CreateForWebContents(
