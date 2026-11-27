@@ -148,10 +148,9 @@ interface NewTabPageHandler {
                                   string destination_url,
                                   brave_ads.mojom.NewTabPageAdMetricType metric_type) => ();
 
-  // Notifies the browser that the user has clicked the New Tab Takeover
-  // disclosure tooltip's learn more link, permanently suppressing further
-  // auto-displays.
-  NotifyNewTabTakeoverDisclosureLearnMoreClicked() => ();
+  // Permanently suppresses further auto-displays of the New Tab Takeover
+  // disclosure tooltip.
+  SuppressNewTabTakeoverDisclosureTooltipAutoDisplay() => ();
 
   // Notifies the browser that the disclosure tooltip's auto-display timer
   // completed and the tooltip actually became visible to the user.

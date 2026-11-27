@@ -119,7 +119,7 @@ export function defaultBackgroundStore(): BackgroundStore {
       notifyNewTabTakeoverLoadError() {},
       notifyNewTabTakeoverLogoClicked() {},
       notifyNewTabTakeoverRichMediaEvent(type) {},
-      notifyNewTabTakeoverDisclosureLearnMoreClicked() {},
+      suppressNewTabTakeoverDisclosureAutoDisplay() {},
       notifyNewTabTakeoverDisclosureAutoDisplayed() {},
     },
   })
@@ -134,7 +134,7 @@ export interface BackgroundActions {
   notifyNewTabTakeoverLoadError: () => void
   notifyNewTabTakeoverLogoClicked: () => void
   notifyNewTabTakeoverRichMediaEvent: (type: NewTabPageAdEventType) => void
-  notifyNewTabTakeoverDisclosureLearnMoreClicked: () => void
+  suppressNewTabTakeoverDisclosureAutoDisplay: () => void
   notifyNewTabTakeoverDisclosureAutoDisplayed: () => void
 }
 

@@ -122,8 +122,8 @@ export function createBackgroundStore() {
       console.log('richMediaEvent', type)
     },
 
-    notifyNewTabTakeoverDisclosureLearnMoreClicked() {
-      console.log('newTabTakeoverDisclosureLearnMoreClicked')
+    suppressNewTabTakeoverDisclosureAutoDisplay() {
+      console.log('newTabTakeoverDisclosureAutoDisplaySuppressed')
     },
 
     notifyNewTabTakeoverDisclosureAutoDisplayed() {

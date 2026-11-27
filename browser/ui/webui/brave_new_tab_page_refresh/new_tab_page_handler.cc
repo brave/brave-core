@@ -236,8 +236,8 @@ void NewTabPageHandler::NotifyNewTabTakeoverLogoClicked(
   std::move(callback).Run();
 }
 
-void NewTabPageHandler::NotifyNewTabTakeoverDisclosureLearnMoreClicked(
-    NotifyNewTabTakeoverDisclosureLearnMoreClickedCallback callback) {
+void NewTabPageHandler::SuppressNewTabTakeoverDisclosureTooltipAutoDisplay(
+    SuppressNewTabTakeoverDisclosureTooltipAutoDisplayCallback callback) {
   ntp_background_images::SuppressNewTabTakeoverDisclosureTooltip(
       *pref_service_);
   std::move(callback).Run();
