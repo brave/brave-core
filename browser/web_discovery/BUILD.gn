@@ -122,6 +122,7 @@ source_set("browser_tests") {
     deps += [
       ":web_discovery",
       "//brave/browser/ui",
+      "//brave/browser/ui/views/infobars",
       "//extensions:test_support",
       "//extensions/browser",
       "//extensions/common:common_constants",

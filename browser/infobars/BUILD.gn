@@ -35,7 +35,8 @@ if (!is_android) {
     }
   }
 
-  # CreateBraveConfirmInfoBar() is implemented in //brave/browser/ui, not here.
+  # CreateBraveConfirmInfoBar() is implemented in
+  # //brave/browser/ui/views/infobars, not here.
   source_set("impl") {
     visibility = [ "//brave/browser:core" ]
 
@@ -51,6 +52,7 @@ if (!is_android) {
       "//base",
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/ui",
+      "//brave/browser/ui/views/infobars",
       "//brave/common",
       "//brave/components/brave_sync:features",
       "//brave/components/brave_sync:prefs",
