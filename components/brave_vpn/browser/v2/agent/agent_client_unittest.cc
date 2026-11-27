@@ -149,9 +149,7 @@ class TestBrowserEndpoint : public mojom::BrowserEndpoint {
   }
   void OnAutoReconnectStateChanged(bool enabled) override { RecordCall(); }
   void OnSmartProxyRoutingStateChanged(bool enabled) override { RecordCall(); }
-  void OnAllowLanTrafficStateChanged(bool available, bool enabled) override {
-    RecordCall();
-  }
+  void OnAllowLanTrafficStateChanged(bool enabled) override { RecordCall(); }
   void OnLastHostnameChanged(const std::string& hostname) override {
     RecordCall();
   }

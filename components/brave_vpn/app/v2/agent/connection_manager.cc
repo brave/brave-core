@@ -99,11 +99,6 @@ bool ConnectionManager::smart_proxy_routing_enabled() const {
   return smart_proxy_routing_enabled_;
 }
 
-bool ConnectionManager::allow_lan_traffic_available() const {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return allow_lan_traffic_available_;
-}
-
 bool ConnectionManager::allow_lan_traffic_enabled() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return allow_lan_traffic_enabled_;
@@ -238,14 +233,11 @@ void ConnectionManager::SetSmartProxyRoutingState(bool enable) {
 
 void ConnectionManager::SetAllowLanTrafficState(bool enable) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!allow_lan_traffic_available_) {
-    return;
-  }
   // TODO(https://github.com/brave/brave-browser/issues/59939)
   // Persist the setting once agent-side storage exists.
   // TODO(https://github.com/brave/brave-browser/issues/54641)
   // Implement once there are concrete connection API stubs.
-  UpdateAllowLanTrafficState(allow_lan_traffic_available_, enable);
+  UpdateAllowLanTrafficState(enable);
   NOTIMPLEMENTED_LOG_ONCE();
 }
 
@@ -291,17 +283,13 @@ void ConnectionManager::UpdateSmartProxyRoutingState(bool enabled) {
   observers_.Notify(&Observer::OnSmartProxyRoutingStateChanged, enabled);
 }
 
-void ConnectionManager::UpdateAllowLanTrafficState(bool available,
-                                                   bool enabled) {
+void ConnectionManager::UpdateAllowLanTrafficState(bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (allow_lan_traffic_available_ == available &&
-      allow_lan_traffic_enabled_ == enabled) {
+  if (allow_lan_traffic_enabled_ == enabled) {
     return;
   }
-  allow_lan_traffic_available_ = available;
   allow_lan_traffic_enabled_ = enabled;
-  observers_.Notify(&Observer::OnAllowLanTrafficStateChanged, available,
-                    enabled);
+  observers_.Notify(&Observer::OnAllowLanTrafficStateChanged, enabled);
 }
 
 void ConnectionManager::UpdateLastHostname(std::string hostname) {

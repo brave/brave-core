@@ -143,7 +143,7 @@ TEST_F(BrowserHostImplTest, SendsCurrentStateOnCreation) {
   connection_manager_.UpdateRegionSelection(MakeTestPickedSelection("Europe"));
   connection_manager_.UpdateAutoReconnectState(true);
   connection_manager_.UpdateSmartProxyRoutingState(true);
-  connection_manager_.UpdateAllowLanTrafficState(true, true);
+  connection_manager_.UpdateAllowLanTrafficState(true);
   connection_manager_.UpdateLastHostname("eu-1.example.com");
 
   CreateHost();
@@ -166,11 +166,8 @@ TEST_F(BrowserHostImplTest, SendsCurrentStateOnCreation) {
   EXPECT_EQ(std::vector<bool>{true}, endpoint.auto_reconnect_state_updates());
   EXPECT_EQ(std::vector<bool>{true},
             endpoint.smart_proxy_routing_state_updates());
-
-  const auto& lan = endpoint.allow_lan_traffic_state_updates();
-  ASSERT_EQ(1u, lan.size());
-  EXPECT_TRUE(lan[0].available);
-  EXPECT_TRUE(lan[0].enabled);
+  EXPECT_EQ(std::vector<bool>{true},
+            endpoint.allow_lan_traffic_state_updates());
 
   EXPECT_EQ(std::vector<std::string>{"eu-1.example.com"},
             endpoint.last_hostname_updates());
@@ -189,7 +186,7 @@ TEST_F(BrowserHostImplTest, RelaysStateChangesToEndpoint) {
   connection_manager_.UpdateRegionSelection(MakeTestPickedSelection("Asia"));
   connection_manager_.UpdateAutoReconnectState(true);
   connection_manager_.UpdateSmartProxyRoutingState(true);
-  connection_manager_.UpdateAllowLanTrafficState(true, false);
+  connection_manager_.UpdateAllowLanTrafficState(true);
   connection_manager_.UpdateLastHostname("as-1.example.com");
   ASSERT_TRUE(WaitForHostnameUpdates(2));
 
@@ -212,11 +209,8 @@ TEST_F(BrowserHostImplTest, RelaysStateChangesToEndpoint) {
             endpoint.auto_reconnect_state_updates());
   EXPECT_EQ((std::vector<bool>{false, true}),
             endpoint.smart_proxy_routing_state_updates());
-
-  const auto& lan = endpoint.allow_lan_traffic_state_updates();
-  ASSERT_EQ(2u, lan.size());
-  EXPECT_TRUE(lan[1].available);
-  EXPECT_FALSE(lan[1].enabled);
+  EXPECT_EQ((std::vector<bool>{false, true}),
+            endpoint.allow_lan_traffic_state_updates());
 
   ASSERT_EQ(2u, endpoint.last_hostname_updates().size());
   EXPECT_EQ("as-1.example.com", endpoint.last_hostname_updates()[1]);

@@ -87,9 +87,8 @@ interface BrowserEndpoint {
   // Updates the current Smart Proxy routing state.
   OnSmartProxyRoutingStateChanged(bool enabled);
 
-  // Updates the current Allow Lan Traffic state. |available| means that the
-  // feature is available for the current platform and version.
-  OnAllowLanTrafficStateChanged(bool available, bool enabled);
+  // Updates the current Allow Lan Traffic state.
+  OnAllowLanTrafficStateChanged(bool enabled);
 
   // Updates the last hostname the VPN was connected to, or was trying to
   // connect to; can be used for submitting technical support tickets and for

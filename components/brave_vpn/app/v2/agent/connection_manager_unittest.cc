@@ -44,11 +44,6 @@ class TestObserver : public ConnectionManager::Observer {
     std::optional<std::string> error_message;
   };
 
-  struct AllowLanTrafficStateUpdate {
-    bool available = false;
-    bool enabled = false;
-  };
-
   explicit TestObserver(ConnectionManager& manager) {
     observation_.Observe(&manager);
   }
@@ -82,9 +77,8 @@ class TestObserver : public ConnectionManager::Observer {
   void OnSmartProxyRoutingStateChanged(bool enabled) override {
     smart_proxy_routing_state_updates_.push_back(enabled);
   }
-  void OnAllowLanTrafficStateChanged(bool available, bool enabled) override {
-    allow_lan_traffic_state_updates_.push_back(
-        AllowLanTrafficStateUpdate{.available = available, .enabled = enabled});
+  void OnAllowLanTrafficStateChanged(bool enabled) override {
+    allow_lan_traffic_state_updates_.push_back(enabled);
   }
   void OnLastHostnameChanged(const std::string& hostname) override {
     last_hostname_updates_.push_back(hostname);
@@ -102,8 +96,7 @@ class TestObserver : public ConnectionManager::Observer {
   const std::vector<bool>& smart_proxy_routing_state_updates() const {
     return smart_proxy_routing_state_updates_;
   }
-  const std::vector<AllowLanTrafficStateUpdate>&
-  allow_lan_traffic_state_updates() const {
+  const std::vector<bool>& allow_lan_traffic_state_updates() const {
     return allow_lan_traffic_state_updates_;
   }
   const std::vector<std::string>& last_hostname_updates() const {
@@ -127,7 +120,7 @@ class TestObserver : public ConnectionManager::Observer {
   std::vector<std::string> region_selection_updates_;
   std::vector<bool> auto_reconnect_state_updates_;
   std::vector<bool> smart_proxy_routing_state_updates_;
-  std::vector<AllowLanTrafficStateUpdate> allow_lan_traffic_state_updates_;
+  std::vector<bool> allow_lan_traffic_state_updates_;
   std::vector<std::string> last_hostname_updates_;
   base::ScopedObservation<ConnectionManager, ConnectionManager::Observer>
       observation_{this};
@@ -219,26 +212,16 @@ TEST_F(ConnectionManagerTest, UpdatesRegionSelection) {
             observer_.region_selection_updates());
 }
 
-// Both fields count: a change to either one alone must notify.
 TEST_F(ConnectionManagerTest, UpdatesAllowLanTrafficState) {
-  EXPECT_FALSE(manager_.allow_lan_traffic_available());
   EXPECT_FALSE(manager_.allow_lan_traffic_enabled());
 
-  // Only |available| changes from the initial {false, false}.
-  manager_.UpdateAllowLanTrafficState(true, false);
-  // Only |enabled| changes.
-  manager_.UpdateAllowLanTrafficState(true, true);
-  manager_.UpdateAllowLanTrafficState(true, true);
+  manager_.UpdateAllowLanTrafficState(true);
+  manager_.UpdateAllowLanTrafficState(true);
+  manager_.UpdateAllowLanTrafficState(false);
 
-  EXPECT_TRUE(manager_.allow_lan_traffic_available());
-  EXPECT_TRUE(manager_.allow_lan_traffic_enabled());
-
-  const auto& updates = observer_.allow_lan_traffic_state_updates();
-  ASSERT_EQ(2u, updates.size());
-  EXPECT_TRUE(updates[0].available);
-  EXPECT_FALSE(updates[0].enabled);
-  EXPECT_TRUE(updates[1].available);
-  EXPECT_TRUE(updates[1].enabled);
+  EXPECT_FALSE(manager_.allow_lan_traffic_enabled());
+  EXPECT_EQ((std::vector<bool>{true, false}),
+            observer_.allow_lan_traffic_state_updates());
 }
 
 TEST_F(ConnectionManagerTest, UpdatesAutoReconnectState) {
@@ -745,6 +728,22 @@ TEST_F(ConnectionManagerSessionTest, SetAutoReconnectStateNotifies) {
   EXPECT_TRUE(manager_.auto_reconnect_enabled());
   EXPECT_EQ((std::vector<bool>{true}),
             observer_.auto_reconnect_state_updates());
+}
+
+TEST_F(ConnectionManagerSessionTest, SetSmartProxyRoutingStateNotifies) {
+  manager_.SetSmartProxyRoutingState(true);
+
+  EXPECT_TRUE(manager_.smart_proxy_routing_enabled());
+  EXPECT_EQ((std::vector<bool>{true}),
+            observer_.smart_proxy_routing_state_updates());
+}
+
+TEST_F(ConnectionManagerSessionTest, SetAllowLanTrafficStateNotifies) {
+  manager_.SetAllowLanTrafficState(true);
+
+  EXPECT_TRUE(manager_.allow_lan_traffic_enabled());
+  EXPECT_EQ((std::vector<bool>{true}),
+            observer_.allow_lan_traffic_state_updates());
 }
 
 TEST_F(ConnectionManagerSessionTest, DroppedTunnelIsRestored) {

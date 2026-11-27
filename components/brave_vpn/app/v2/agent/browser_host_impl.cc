@@ -35,7 +35,6 @@ BrowserHostImpl::BrowserHostImpl(
   OnSmartProxyRoutingStateChanged(
       connection_manager_->smart_proxy_routing_enabled());
   OnAllowLanTrafficStateChanged(
-      connection_manager_->allow_lan_traffic_available(),
       connection_manager_->allow_lan_traffic_enabled());
   OnLastHostnameChanged(connection_manager_->last_hostname());
 }
@@ -109,9 +108,8 @@ void BrowserHostImpl::OnSmartProxyRoutingStateChanged(bool enabled) {
   browser_endpoint_->OnSmartProxyRoutingStateChanged(enabled);
 }
 
-void BrowserHostImpl::OnAllowLanTrafficStateChanged(bool available,
-                                                    bool enabled) {
-  browser_endpoint_->OnAllowLanTrafficStateChanged(available, enabled);
+void BrowserHostImpl::OnAllowLanTrafficStateChanged(bool enabled) {
+  browser_endpoint_->OnAllowLanTrafficStateChanged(enabled);
 }
 
 void BrowserHostImpl::OnLastHostnameChanged(const std::string& hostname) {
