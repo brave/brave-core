@@ -104,6 +104,8 @@ const jestConfig: Config = {
   ],
   testPathIgnorePatterns: [
     '<rootDir>/build/commands/lib/test.js',
+    // Uses the Node.js test runner, see build/commands/scripts/testScripts.ts.
+    '<rootDir>/build/isolate/runner',
     '<rootDir>/build/rustup',
     '<rootDir>/third_party',
     '<rootDir>/tools/crates/vendor',

@@ -262,6 +262,16 @@ export function supportTestOptions<
     )
     .option('--skip_run', 'build the test target but do not run it')
     .option(
+      '--isolate <file>',
+      'instead of running the tests, create an archive (.tar.xz) to run them '
+        + 'on another host (linux only)',
+    )
+    .option(
+      '--isolate_data_dir <name>',
+      'name of the isolate directory with test binaries and their runtime deps',
+      'data',
+    )
+    .option(
       '--manual_android_test_device',
       'indicates that Android test device is run manually',
     )

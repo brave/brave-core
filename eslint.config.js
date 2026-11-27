@@ -310,6 +310,27 @@ export default defineConfig([
     },
   },
   {
+    // The isolate runner is copied out of the checkout and run on test hosts
+    // without node_modules, so it may only import Node.js built-ins and files
+    // of its own directory.
+    files: ['build/isolate/runner/**/*.{js,cjs,mjs,ts,cts,mts}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '^(?!node:|\\./[^/]+$)',
+              message:
+                'The isolate runner may only import node: built-ins and '
+                + 'files of its own directory.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     // Test data files; skips some non-important rules.
     files: ['test/data/**/*.js'],
     rules: {

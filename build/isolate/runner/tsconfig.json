@@ -1,0 +1,11 @@
+{
+  // The isolate runner is copied out of the checkout and run on test hosts,
+  // so it may only use Node.js built-ins. ESLint additionally restricts its
+  // imports (see eslint.config.js).
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    // Don't pick up ambient types of other packages from node_modules.
+    "types": ["node"],
+  },
+  "include": ["*.ts", "*.cjs"],
+}
