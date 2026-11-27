@@ -267,7 +267,7 @@ void BraveVpnServiceImpl::GetAllowLanTraffic(
   bool allow_lan_traffic_enabled = false;
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   if (agent_state_) {
-    allow_lan_traffic_available = agent_state_->allow_lan_traffic_available;
+    allow_lan_traffic_available = true;
     allow_lan_traffic_enabled = agent_state_->allow_lan_traffic_enabled;
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)

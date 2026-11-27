@@ -70,7 +70,7 @@ class BrowserHostImpl final : public brave_vpn::mojom::BrowserHost,
       const mojom::VpnRegionSelection& selection) override;
   void OnAutoReconnectStateChanged(bool enabled) override;
   void OnSmartProxyRoutingStateChanged(bool enabled) override;
-  void OnAllowLanTrafficStateChanged(bool available, bool enabled) override;
+  void OnAllowLanTrafficStateChanged(bool enabled) override;
   void OnLastHostnameChanged(const std::string& hostname) override;
 
   const raw_ref<ConnectionManager> connection_manager_;

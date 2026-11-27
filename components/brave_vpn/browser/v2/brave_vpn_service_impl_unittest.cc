@@ -365,8 +365,8 @@ class BraveVpnServiceImplTest : public testing::Test {
   void ReportAgentSmartProxyRoutingState(bool enabled) {
     service_->OnSmartProxyRoutingStateChanged(enabled);
   }
-  void ReportAgentAllowLanTrafficState(bool available, bool enabled) {
-    service_->OnAllowLanTrafficStateChanged(available, enabled);
+  void ReportAgentAllowLanTrafficState(bool enabled) {
+    service_->OnAllowLanTrafficStateChanged(enabled);
   }
   void ReportAgentLastHostname(const std::string& hostname) {
     service_->OnLastHostnameChanged(hostname);
@@ -1037,17 +1037,18 @@ TEST_F(BraveVpnServiceImplTest, ReconnectToAgentRecoversAfterStableSession) {
 TEST_F(BraveVpnServiceImplTest, AgentReportedSettingsLiveWithSession) {
   CreateService();
   NotifyAgentConnected();
-  // A live session alone makes auto-reconnect available.
+  // A live session alone makes auto-reconnect and LAN traffic available.
   EXPECT_EQ(GetAutoReconnectState(), std::make_tuple(true, false));
+  EXPECT_EQ(GetAllowLanTraffic(), std::make_tuple(true, false));
 
   ReportAgentRegionSelection(MakePickedSelection("de"));
   ReportAgentAutoReconnectState(true);
   ReportAgentSmartProxyRoutingState(true);
-  ReportAgentAllowLanTrafficState(/*available=*/true, /*enabled=*/false);
+  ReportAgentAllowLanTrafficState(true);
   ReportAgentLastHostname(kTestHostname);
   EXPECT_EQ(GetAutoReconnectState(), std::make_tuple(true, true));
   EXPECT_TRUE(GetSmartProxyRoutingState());
-  EXPECT_EQ(GetAllowLanTraffic(), std::make_tuple(true, false));
+  EXPECT_EQ(GetAllowLanTraffic(), std::make_tuple(true, true));
   EXPECT_EQ(std::get<2>(GetSupportData()), kTestHostname);
   {
     const mojom::RegionPtr region = GetSelectedRegion();

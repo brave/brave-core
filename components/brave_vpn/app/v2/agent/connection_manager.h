@@ -81,8 +81,7 @@ class ConnectionManager
         const mojom::VpnRegionSelection& selection) = 0;
     virtual void OnAutoReconnectStateChanged(bool enabled) = 0;
     virtual void OnSmartProxyRoutingStateChanged(bool enabled) = 0;
-    virtual void OnAllowLanTrafficStateChanged(bool available,
-                                               bool enabled) = 0;
+    virtual void OnAllowLanTrafficStateChanged(bool enabled) = 0;
     virtual void OnLastHostnameChanged(const std::string& hostname) = 0;
 
    protected:
@@ -111,7 +110,6 @@ class ConnectionManager
   const mojom::VpnRegionSelection& region_selection() const;
   bool auto_reconnect_enabled() const;
   bool smart_proxy_routing_enabled() const;
-  bool allow_lan_traffic_available() const;
   bool allow_lan_traffic_enabled() const;
   const std::string& last_hostname() const;
 
@@ -160,7 +158,7 @@ class ConnectionManager
   void UpdateRegionSelection(mojom::VpnRegionSelectionPtr selection);
   void UpdateAutoReconnectState(bool enabled);
   void UpdateSmartProxyRoutingState(bool enabled);
-  void UpdateAllowLanTrafficState(bool available, bool enabled);
+  void UpdateAllowLanTrafficState(bool enabled);
   void UpdateLastHostname(std::string hostname);
 
  private:
@@ -252,7 +250,6 @@ class ConnectionManager
       mojom::VpnRegionSelection::New(/*is_automatic=*/true, /*region=*/nullptr);
   bool auto_reconnect_enabled_ = false;
   bool smart_proxy_routing_enabled_ = false;
-  bool allow_lan_traffic_available_ = false;
   bool allow_lan_traffic_enabled_ = false;
   std::string last_hostname_;
   bool network_available_;

@@ -161,7 +161,6 @@ class BraveVpnServiceImpl : public BraveVpnService
     mojom::RegionPtr selected_region = mojom::Region::New();
     bool auto_reconnect_enabled = false;
     bool smart_proxy_routing_enabled = false;
-    bool allow_lan_traffic_available = false;
     bool allow_lan_traffic_enabled = false;
     std::string last_hostname;
   };
@@ -189,7 +188,7 @@ class BraveVpnServiceImpl : public BraveVpnService
       mojom::VpnRegionSelectionPtr selection) override;
   void OnAutoReconnectStateChanged(bool enabled) override;
   void OnSmartProxyRoutingStateChanged(bool enabled) override;
-  void OnAllowLanTrafficStateChanged(bool available, bool enabled) override;
+  void OnAllowLanTrafficStateChanged(bool enabled) override;
   void OnLastHostnameChanged(const std::string& hostname) override;
 
   // Makes the connection state the agent last reported this service's own.

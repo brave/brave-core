@@ -35,10 +35,8 @@ void FakeBrowserEndpoint::OnSmartProxyRoutingStateChanged(bool enabled) {
   smart_proxy_routing_state_updates_.push_back(enabled);
 }
 
-void FakeBrowserEndpoint::OnAllowLanTrafficStateChanged(bool available,
-                                                        bool enabled) {
-  allow_lan_traffic_state_updates_.push_back(
-      AllowLanTrafficStateUpdate{.available = available, .enabled = enabled});
+void FakeBrowserEndpoint::OnAllowLanTrafficStateChanged(bool enabled) {
+  allow_lan_traffic_state_updates_.push_back(enabled);
 }
 
 void FakeBrowserEndpoint::OnLastHostnameChanged(const std::string& hostname) {
