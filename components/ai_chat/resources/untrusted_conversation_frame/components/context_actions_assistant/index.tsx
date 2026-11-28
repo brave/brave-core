@@ -55,7 +55,7 @@ export default function ContextActionsAssistant(
     conversationContext.parentUiFrame?.rateMessage(
       props.firstTurnUuid,
       status === 'liked',
-      null,
+      conversationContext.threadUuid,
     )
   }
 
@@ -84,7 +84,7 @@ export default function ContextActionsAssistant(
       conversationContext.conversationHandler?.regenerateAnswer(
         props.firstTurnUuid,
         selectedModelKey,
-        null,
+        conversationContext.threadUuid,
       )
     },
     [conversationContext, props.firstTurnUuid],
@@ -168,6 +168,7 @@ export default function ContextActionsAssistant(
       )}
       {!conversationContext.isReadOnly
         && conversationContext.isThreadsFeatureEnabled
+        && !conversationContext.threadUuid
         && props.lastTurnUuid && (
           <Button
             onClick={handleCreateThread}

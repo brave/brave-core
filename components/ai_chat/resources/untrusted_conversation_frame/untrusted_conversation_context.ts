@@ -12,6 +12,9 @@ import { loadTimeData } from '$web-common/loadTimeData'
 export interface UntrustedConversationContextProps {
   api: UntrustedConversationAPI
   isReadOnly?: boolean
+  // When set, this frame renders a single thread rather than the root
+  // conversation. Null for the root conversation.
+  threadUuid: string | null
 }
 
 const IS_MOBILE = loadTimeData.getBoolean('isMobile')
@@ -27,7 +30,7 @@ const MAX_THREADS_PER_ORIGIN_ENTRY = Number(
 export function useProvideUntrustedConversationContext(
   props: UntrustedConversationContextProps,
 ) {
-  const { api } = props
+  const { api, threadUuid } = props
 
   const [
     showPremiumSuggestionForRegenerate,
@@ -37,7 +40,13 @@ export function useProvideUntrustedConversationContext(
   // Use API hooks for state
   const state = api.useState().data
   const serviceState = api.useServiceState().data
-  const conversationHistory = api.useGetConversationHistoryData(null)
+  // In thread mode, the visible history is the thread's history. Otherwise
+  // it's the root conversation.
+  const conversationHistory = api.useGetConversationHistoryData(threadUuid)
+
+  // The root conversation is only needed in thread mode, to render the
+  // thread's origin entry.
+  const rootConversationHistory = api.useGetConversationHistoryData(null)
 
   const threads = api.useGetConversationThreadsData()
 
@@ -49,7 +58,9 @@ export function useProvideUntrustedConversationContext(
 
     isReadOnly: props.isReadOnly ?? false,
 
+    threadUuid,
     threads,
+    rootConversationHistory: threadUuid ? rootConversationHistory : null,
 
     showPremiumSuggestionForRegenerate,
     setShowPremiumSuggestionForRegenerate,

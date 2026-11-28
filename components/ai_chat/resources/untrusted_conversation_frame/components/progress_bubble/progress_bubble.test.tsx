@@ -214,6 +214,49 @@ describe('ProgressBubble in-progress display', () => {
     expect(getBubble()?.className).toContain('isActive')
     expect(getBubble()?.className).not.toContain('isInterrupted')
   })
+
+  test('shows in-progress state when generating on the matching (root) thread', () => {
+    render(
+      <MockContext
+        initialState={{
+          conversationEntriesState: {
+            isGenerating: true,
+            threadUuidInProgress: undefined,
+          },
+        }}
+      >
+        <ProgressBubble
+          responseGroup={undefined}
+          isLastGroup={true}
+        />
+      </MockContext>,
+    )
+
+    expect(screen.getByText(S.CHAT_UI_TOOL_LABEL_THINKING)).toBeInTheDocument()
+    expect(getBubble()?.className).toContain('isActive')
+  })
+
+  test('shows in-progress state when the in-progress thread matches this frame', () => {
+    render(
+      <MockContext
+        initialState={{
+          conversationEntriesState: {
+            isGenerating: true,
+            threadUuidInProgress: 'thread-1',
+          },
+        }}
+        overrides={{ threadUuid: 'thread-1' }}
+      >
+        <ProgressBubble
+          responseGroup={undefined}
+          isLastGroup={true}
+        />
+      </MockContext>,
+    )
+
+    expect(screen.getByText(S.CHAT_UI_TOOL_LABEL_THINKING)).toBeInTheDocument()
+    expect(getBubble()?.className).toContain('isActive')
+  })
 })
 
 // -----------------------------------------------------------------------------
@@ -271,6 +314,49 @@ describe('ProgressBubble hidden states', () => {
   test('renders nothing when there is no responseGroup and not generating', () => {
     render(
       <MockContext>
+        <ProgressBubble
+          responseGroup={undefined}
+          isLastGroup={true}
+        />
+      </MockContext>,
+    )
+
+    expect(getBubble()).toBeNull()
+  })
+
+  test('renders nothing when generation is in progress on a different thread', () => {
+    render(
+      <MockContext
+        initialState={{
+          conversationEntriesState: {
+            isGenerating: true,
+            threadUuidInProgress: 'other-thread',
+          },
+        }}
+        overrides={{ threadUuid: null }}
+      >
+        <ProgressBubble
+          responseGroup={undefined}
+          isLastGroup={true}
+        />
+      </MockContext>,
+    )
+
+    expect(getBubble()).toBeNull()
+  })
+
+  test('renders nothing when a child thread is generating but this frame is the child', () => {
+    // Root conversation is in progress, but this frame renders a child thread.
+    render(
+      <MockContext
+        initialState={{
+          conversationEntriesState: {
+            isGenerating: true,
+            threadUuidInProgress: undefined,
+          },
+        }}
+        overrides={{ threadUuid: 'child-thread' }}
+      >
         <ProgressBubble
           responseGroup={undefined}
           isLastGroup={true}

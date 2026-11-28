@@ -35,6 +35,7 @@ import {
   getReasoningText,
   getToolArtifacts,
   getPairedConversationGroups,
+  getThreadOriginConversationGroup,
   isAssistantGroupTask,
 } from './conversation_entries_utils'
 import useConversationEventClipboardCopyHandler from './use_conversation_event_clipboard_copy_handler'
@@ -184,6 +185,21 @@ function usePairedConversationGroups() {
   )
 }
 
+/**
+ * In a thread frame, returns the assistant group from the root conversation
+ * which the thread originates from, so it can be shown above the thread's own
+ * entries. Null when not viewing a thread, or when it can't be found.
+ */
+function useThreadOriginConversationGroup() {
+  const { threads, threadUuid, rootConversationHistory } =
+    useUntrustedConversationContext()
+  const thread = threads.find((t) => t.uuid === threadUuid)
+  return React.useMemo(
+    () => getThreadOriginConversationGroup(rootConversationHistory, thread),
+    [rootConversationHistory, thread],
+  )
+}
+
 function ConversationEntries(props: {
   modelIntroMarkers?: ModelIntroMarker[]
   scrollToBottom?: () => void
@@ -195,9 +211,20 @@ function ConversationEntries(props: {
   const [activeMenuId, setActiveMenuId] = React.useState<number>()
   const [editInputId, setEditInputId] = React.useState<number>()
   const entryPairs = usePairedConversationGroups()
+  const threadOriginGroup = useThreadOriginConversationGroup()
+
+  // We are only generating for this frame if the in-progress thread matches
+  // the thread this frame is rendering. Both the frame's threadUuid and the
+  // state's threadUuidInProgress use a nullish value to refer to the root
+  // conversation.
+  const conversationState = conversationContext.api.useStateData()
+  const isGenerating =
+    conversationContext.isGenerating
+    && (conversationState.threadUuidInProgress ?? null)
+      === (conversationContext.threadUuid ?? null)
+
   const hasGenerated = React.useRef(false)
-  hasGenerated.current =
-    hasGenerated.current || conversationContext.isGenerating
+  hasGenerated.current = hasGenerated.current || isGenerating
 
   const showHumanMenu = (id: number) => {
     setActiveMenuId(id)
@@ -213,18 +240,18 @@ function ConversationEntries(props: {
   }
 
   const handleEditSubmit = (index: number, content: Content) => {
-    const entryUuid = conversationContext.conversationHistory[index]?.uuid
-    if (!entryUuid) return
+    const entry = conversationContext.conversationHistory[index]
+    if (!entry?.uuid) return
     const text = stringifyContent(content)
     const skillNode = content.find(
       (c): c is Extract<Content[number], { type: string }> =>
         typeof c !== 'string' && c.type === 'skill',
     )
     conversationContext.userActions?.modifyConversation(
-      entryUuid,
+      entry.uuid,
       text,
       skillNode?.id ?? null,
-      null,
+      entry.threadUuid ?? null,
     )
     setEditInputId(undefined)
   }
@@ -243,7 +270,7 @@ function ConversationEntries(props: {
     const isAIAssistant =
       firstEntryEdit.characterType === Mojom.CharacterType.ASSISTANT
     const isEntryInProgressButGroup =
-      isActiveGroup && isAIAssistant && conversationContext.isGenerating
+      isActiveGroup && isAIAssistant && isGenerating
     const isHuman = firstEntryEdit.characterType === Mojom.CharacterType.HUMAN
 
     const showLongPageContentInfo =
@@ -261,21 +288,27 @@ function ConversationEntries(props: {
       ...(firstEntry.edits?.map((edit) => edit.uuid) ?? []),
     ])
 
+    // The thread origin (negative entryNumber) belongs to the root conversation,
+    // so it can't be edited or regenerated from here.
+    const isThreadOrigin = entryNumber < 0
+
     // Can't edit complicated structured content (for now)
     // Not allowed to edit agent conversations until the edit submission
     // happens on a different frame.
     const canEditEntry =
-      !conversationContext.conversationCapabilities.includes(
+      !isThreadOrigin
+      && !conversationContext.conversationCapabilities.includes(
         Mojom.ConversationCapability.CONTENT_AGENT,
       )
       && group.length === 1
       && !firstEntryEdit.events?.some((event) => !!event.toolUseEvent)
 
-    const turnModelKey = firstEntryEdit.modelKey
-      ? (conversationContext.allModels.find(
-          (m) => m.key === firstEntryEdit.modelKey,
-        )?.key ?? undefined)
-      : undefined
+    const turnModelKey =
+      firstEntryEdit.modelKey && !isThreadOrigin
+        ? (conversationContext.allModels.find(
+            (m) => m.key === firstEntryEdit.modelKey,
+          )?.key ?? undefined)
+        : undefined
 
     // A thread branches from a specific assistant entry. Show an indicator for
     // each child thread on the group's last assistant entry.
@@ -299,8 +332,7 @@ function ConversationEntries(props: {
 
     // Omit artifacts until generation is complete so we show
     // the artifacts and the final response text at the same time.
-    const shouldOmitToolArtifacts =
-      isActiveGroup && conversationContext.isGenerating
+    const shouldOmitToolArtifacts = isActiveGroup && isGenerating
     const toolArtifacts = !shouldOmitToolArtifacts
       ? getToolArtifacts(group)
       : null
@@ -511,7 +543,7 @@ function ConversationEntries(props: {
             <EditIndicator time={lastEditedTime} />
           )}
           {isAIAssistant
-            && (!conversationContext.isGenerating || !isActiveGroup)
+            && (!isGenerating || !isActiveGroup)
             && conversationContext.isLeoModel
             && !firstEntryEdit.selectedText
             && !showEditInput && (
@@ -535,6 +567,7 @@ function ConversationEntries(props: {
               />
             )}
           {isAIAssistant
+            && !conversationContext.threadUuid
             && childThreadUuids.map((threadUuid) => (
               <ThreadIndicator
                 key={threadUuid}
@@ -548,8 +581,35 @@ function ConversationEntries(props: {
 
   let entryNumber = 0
 
+  // In a thread, wait until both the origin entry and the thread's own entries
+  // are available so they render together.
+  if (
+    conversationContext.threadUuid
+    && (!threadOriginGroup || !entryPairs.length)
+  ) {
+    return null
+  }
+
+  const renderModelIntroMarkers = (afterPairIndex: number | null) =>
+    modelIntroMarkers
+      .filter((marker) => marker.afterPairIndex === afterPairIndex)
+      .map((marker) => (
+        <ModelIntro
+          key={marker.id}
+          modelKey={marker.modelKey}
+        />
+      ))
+
   return (
     <div className={hasGenerated.current ? styles.hasGenerated : ''}>
+      {threadOriginGroup && (
+        <div data-testid='thread-origin'>
+          {renderEntryGroup(false, threadOriginGroup, -1)}
+        </div>
+      )}
+      {/* In threads, top markers go below the origin entry. Conversation
+          renders them for the root conversation. */}
+      {conversationContext.threadUuid && renderModelIntroMarkers(null)}
       {entryPairs.map((pair, pairIndex) => (
         <div
           key={pairIndex}
@@ -578,14 +638,7 @@ function ConversationEntries(props: {
               </React.Fragment>
             ))}
           </ProgressBubbleContextProvider>
-          {modelIntroMarkers
-            .filter((marker) => marker.afterPairIndex === pairIndex)
-            .map((marker) => (
-              <ModelIntro
-                key={marker.id}
-                modelKey={marker.modelKey}
-              />
-            ))}
+          {renderModelIntroMarkers(pairIndex)}
         </div>
       ))}
     </div>

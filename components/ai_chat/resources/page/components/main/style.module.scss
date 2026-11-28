@@ -25,6 +25,71 @@
   --conversation-content-margin: var(--leo-spacing-xl);
 }
 
+.split {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.left {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.threadPanel {
+  display: flex;
+  flex-shrink: 0;
+  width: 40%;
+  min-width: 360px;
+  max-width: 560px;
+  height: 100%;
+  padding: var(--leo-spacing-xl);
+  padding-left: 0;
+  margin-left: var(--leo-spacing-m);
+
+  @media (max-width: 800px) {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 6;
+    width: 100%;
+    min-width: 0;
+    max-width: 480px;
+    margin-left: 0;
+    padding: 0;
+
+    &::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: var(--leo-color-dialogs-scrim-background);
+      animation: thread-scrim-in 200ms ease-out;
+    }
+  }
+}
+
+@keyframes thread-scrim-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .threadPanel::before {
+    animation: none;
+  }
+}
+
 .attachmentsDialog {
   --leo-dialog-padding: 0;
   --leo-dialog-width: 500px;
@@ -55,7 +120,8 @@
 }
 
 .conversationContainer {
-  height: 100%;
+  flex: 1 1 0;
+  min-height: 0;
   width: 100%;
 }
 
