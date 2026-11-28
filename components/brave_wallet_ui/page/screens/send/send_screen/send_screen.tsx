@@ -206,7 +206,9 @@ export const SendScreen = React.memo(() => {
       ? {
           accountId: accountFromParams.accountId,
           fromTokenType: zcashTokenTypeFromParams,
-          address: toAddressOrUrl,
+          // A name service recipient (e.g. alice.eth) is typed by its
+          // resolved address.
+          address: resolvedDomainAddress || toAddressOrUrl,
         }
       : skipToken,
   )

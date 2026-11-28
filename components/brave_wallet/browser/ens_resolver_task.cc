@@ -110,6 +110,14 @@ std::vector<uint8_t> MakeAddrCall(const std::string& domain) {
       .EncodeWithSelector(kAddrBytes32Selector);
 }
 
+std::vector<uint8_t> MakeAddrCall(const std::string& domain,
+                                  uint32_t coin_type) {
+  return eth_abi::TupleEncoder()
+      .AddFixedBytes(Namehash(domain))
+      .AddUint256(coin_type)
+      .EncodeWithSelector(kAddrBytes32Uint256Selector);
+}
+
 std::vector<uint8_t> MakeContentHashCall(const std::string& domain) {
   return eth_abi::TupleEncoder()
       .AddFixedBytes(Namehash(domain))
