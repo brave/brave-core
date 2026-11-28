@@ -743,6 +743,9 @@ struct CustomModelOptions {
   // the endpoint could be a local network address or a remote server
   url.mojom.Url endpoint;
   string api_key;
+  // Runtime-only state for a stored key that could not be read, including
+  // while OSCrypt is initializing. An intentionally empty key is available.
+  bool api_key_unavailable = false;
 };
 
 union ModelOptions {

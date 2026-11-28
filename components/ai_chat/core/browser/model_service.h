@@ -13,6 +13,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -25,6 +26,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom-forward.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -51,12 +53,9 @@ class RemoteModelsProvider;
 // `GetModels()` / `GetModel()` / `GetCustomModels()` are usable immediately.
 // However, the `Encryptor` for custom-model API keys arrives asynchronously
 // via `OSCryptAsync::GetInstance()`. Until `OnEncryptorReady()` fires,
-// custom-model API keys decrypt to empty strings; `OnModelListUpdated()` is
-// then dispatched so observers (e.g. `ConversationHandler`) can refresh
-// engines via `engine_->UpdateModelOptions()`. Requests issued against a
-// custom model in this pre-encryptor window goes out with an empty API key and
-// the server will reject it (typically HTTP 401 / 403). Once engine refreshes,
-// subsequent requests would have valid API keys.
+// stored custom-model API keys are marked unavailable. `OnModelListUpdated()`
+// is dispatched when the encryptor arrives so observers can refresh engines.
+// Unavailable keys cannot be used for requests or silently overwritten.
 class ModelService : public KeyedService {
  public:
   class Observer : public base::CheckedObserver {
@@ -101,8 +100,8 @@ class ModelService : public KeyedService {
   std::optional<std::string> GetLeoModelKeyByName(std::string_view name);
   std::optional<std::string> GetLeoModelNameByKey(std::string_view key);
 
-  void AddCustomModel(mojom::ModelPtr model);
-  void SaveCustomModel(uint32_t index, mojom::ModelPtr model);
+  mojom::OperationResult AddCustomModel(mojom::ModelPtr model);
+  mojom::OperationResult SaveCustomModel(uint32_t index, mojom::ModelPtr model);
   void DeleteCustomModel(uint32_t index);
 
   // Delete custom models matching a predicate
@@ -130,6 +129,10 @@ class ModelService : public KeyedService {
   static const mojom::Model* GetModelForTesting(std::string_view key);
   void SetDefaultModelKeyWithoutValidationForTesting(
       const std::string& model_key);
+  void SetEncryptorForTesting(
+      scoped_refptr<os_crypt_async::Encryptor> encryptor) {
+    OnEncryptorReady(std::move(encryptor));
+  }
   RemoteModelsProvider* GetRemoteModelsProviderForTesting() {
     return remote_models_provider_.get();
   }
@@ -148,14 +151,16 @@ class ModelService : public KeyedService {
   void OnRemoteModelsReady(std::vector<mojom::ModelPtr> fetched_models);
   // Walks the custom-model prefs and updates the `api_key` on each
   // already-loaded entry in `all_models_`. Called from `OnEncryptorReady()` to
-  // populate keys that decrypted to empty strings during initial sync load.
+  // populate keys that were unavailable during the initial synchronous load.
   void RefreshCustomModelApiKeys();
 
-  std::string EncryptAPIKey(const std::string& api_key) const;
-  std::string DecryptAPIKey(const std::string& encoded_api_key) const;
+  std::optional<std::string> EncryptAPIKey(const std::string& api_key) const;
+  std::optional<std::string> DecryptAPIKey(
+      const std::string& encoded_api_key) const;
   // Returns the dict-shaped representation of `model` used to persist a
   // custom model in the `kCustomModelsList` pref.
-  base::DictValue CustomModelToPrefDict(mojom::ModelPtr model) const;
+  std::optional<base::DictValue> CustomModelToPrefDict(
+      mojom::ModelPtr model) const;
 
   base::ObserverList<Observer> observers_;
   // The full catalog returned by `GetModels()`: `leo_models_` plus custom

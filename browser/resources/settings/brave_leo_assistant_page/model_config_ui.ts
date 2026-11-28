@@ -59,6 +59,18 @@ export class ModelConfigUI extends ModelConfigUIBase {
         type: String,
         value: ''
       },
+      isApiKeyInvalid: {
+        type: Boolean,
+        value: false,
+      },
+      apiKeyErrorMessage: {
+        type: String,
+        value: '',
+      },
+      saveErrorMessage: {
+        type: String,
+        value: '',
+      },
       isUrlInvalid: {
         type: Boolean,
         value: false,
@@ -112,6 +124,9 @@ export class ModelConfigUI extends ModelConfigUIBase {
   declare isEditing_: boolean
   declare buttonLabel_: string
   declare isUrlInvalid: boolean
+  declare isApiKeyInvalid: boolean
+  declare apiKeyErrorMessage: string
+  declare saveErrorMessage: string
   declare shouldShowUnsafeEndpointLabel: boolean
   isValidAsPrivateEndpoint: boolean
   declare shouldShowUnsafeEndpointModal: boolean
@@ -159,7 +174,9 @@ export class ModelConfigUI extends ModelConfigUIBase {
           longConversationWarningCharacterLimit: -1,
           modelSystemPrompt: this.modelSystemPrompt,
           endpoint: this.endpointUrl,
-          apiKey: this.apiKey
+          apiKey: this.apiKey,
+          apiKeyUnavailable:
+            this.modelItem?.options.customModelOptions?.apiKeyUnavailable ?? false
         }
       },
       key: modelKey,
@@ -204,6 +221,16 @@ export class ModelConfigUI extends ModelConfigUIBase {
 
   onModelApiKeyChange_(e: LeoInputEvent) {
     this.apiKey = e.value
+    this.isApiKeyInvalid = false
+    this.apiKeyErrorMessage = ''
+    this.saveErrorMessage = ''
+  }
+
+  showApiKeyError(message: string) {
+    this.isApiKeyInvalid = true
+    this.apiKeyErrorMessage = message
+    const input = this.shadowRoot!.querySelector('#apiKeyInput')
+    input?.shadowRoot?.querySelector('input')?.focus()
   }
 
   constructTokenEstimateString_(e?: LeoInputEvent) {
@@ -269,6 +296,11 @@ export class ModelConfigUI extends ModelConfigUIBase {
         newValue.options.customModelOptions.contextSize;
       this.endpointUrl = newValue.options.customModelOptions.endpoint;
       this.apiKey = newValue.options.customModelOptions.apiKey;
+      this.isApiKeyInvalid =
+        newValue.options.customModelOptions.apiKeyUnavailable;
+      this.apiKeyErrorMessage = this.isApiKeyInvalid
+        ? this.i18n('braveLeoAssistantApiKeyDecryptionError')
+        : '';
       this.modelSystemPrompt =
         newValue.options.customModelOptions.modelSystemPrompt;
       this.hasVisionSupport = newValue.visionSupport;

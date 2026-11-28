@@ -172,7 +172,9 @@ AiChatOperationResult OperationalResultFromValidationResult(
   }
 
   if (result == ai_chat::ModelValidationResult::kSuccess) {
-    _modelService->AddCustomModel(std::move(model));
+    handler(static_cast<AiChatOperationResult>(
+        _modelService->AddCustomModel(std::move(model))));
+    return;
   }
   handler(OperationalResultFromValidationResult(result));
 }
@@ -199,7 +201,9 @@ AiChatOperationResult OperationalResultFromValidationResult(
   }
 
   if (result == ai_chat::ModelValidationResult::kSuccess) {
-    _modelService->SaveCustomModel(index, std::move(model));
+    handler(static_cast<AiChatOperationResult>(
+        _modelService->SaveCustomModel(index, std::move(model))));
+    return;
   }
   handler(OperationalResultFromValidationResult(result));
 }
