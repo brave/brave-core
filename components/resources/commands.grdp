@@ -433,6 +433,15 @@
   <message name="IDS_IDC_BLOCK_ELEMENTS" desc="Name of the command/shortcut that launches the element picker to block page elements">
     Block elements
   </message>
+  <message name="IDS_IDC_SCREENSHOT_SELECTED_AREA" desc="Name of the command shown in the shortcuts page and command palette that captures an area of the page selected by the user">
+    Screenshot selected area
+  </message>
+  <message name="IDS_IDC_SCREENSHOT_VISIBLE_AREA" desc="Name of the command shown in the shortcuts page and command palette that captures the visible area of the page">
+    Screenshot visible area
+  </message>
+  <message name="IDS_IDC_SCREENSHOT_FULL_PAGE" desc="Name of the command shown in the shortcuts page and command palette that captures the full page">
+    Screenshot full page
+  </message>
   <message name="IDS_IDC_SHOW_PLAYLIST_BUBBLE">
     Show playlist bubble
   </message>
