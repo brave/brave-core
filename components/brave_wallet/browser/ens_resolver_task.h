@@ -39,11 +39,18 @@ inline constexpr uint8_t kResolveBytesBytesSelector[] = {0x90, 0x61, 0xb9,
 // Selector for `addr(bytes32)`
 inline constexpr uint8_t kAddrBytes32Selector[] = {0x3b, 0x3b, 0x57, 0xde};
 
+// Selector for `addr(bytes32,uint256)`
+inline constexpr uint8_t kAddrBytes32Uint256Selector[] = {0xf1, 0xcb, 0x7e,
+                                                          0x06};
+
 // Selector for `contenthash(bytes32)`
 inline constexpr uint8_t kContentHashBytes32Selector[] = {0xbc, 0x1c, 0x58,
                                                           0xd1};
 
 std::vector<uint8_t> MakeAddrCall(const std::string& domain);
+// ENSIP-9 multichain record for `coin_type` (see GetEnsCoinType).
+std::vector<uint8_t> MakeAddrCall(const std::string& domain,
+                                  uint32_t coin_type);
 std::vector<uint8_t> MakeContentHashCall(const std::string& domain);
 
 struct OffchainLookupData {
