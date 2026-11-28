@@ -14,6 +14,7 @@
 #include "base/feature_list.h"
 #include "base/strings/strcat.h"
 #include "brave/brave_domains/service_domains.h"
+#include "brave/browser/brave_account/brave_account_dependent_services_factory.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
@@ -29,6 +30,7 @@
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_account/brave_account_dependent_services.h"
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_origin/brave_origin_service.h"
@@ -420,10 +422,17 @@ void BraveSettingsUI::BindInterface(
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<brave_account::mojom::Authentication>
         pending_receiver) {
-  auto* profile = Profile::FromWebUI(web_ui());
-  auto* brave_account_service =
-      brave_account::BraveAccountServiceFactory::GetFor(profile);
-  CHECK_DEREF(brave_account_service).BindInterface(std::move(pending_receiver));
+  CHECK_DEREF(brave_account::BraveAccountServiceFactory::GetFor(
+                  Profile::FromWebUI(web_ui())))
+      .BindInterface(std::move(pending_receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<brave_account::mojom::DependentServices>
+        pending_receiver) {
+  CHECK_DEREF(brave_account::BraveAccountDependentServicesFactory::GetFor(
+                  Profile::FromWebUI(web_ui())))
+      .BindInterface(std::move(pending_receiver));
 }
 
 void BraveSettingsUI::BindInterface(

@@ -1,0 +1,32 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_account.mojom;
+
+import "brave/components/brave_account/mojom/brave_account.mojom";
+
+// Implemented by the Account UI to keep its list of services up to date.
+interface DependentServicesObserver {
+  // Notified immediately when added with the services currently using Brave
+  // Account, and whenever that set changes thereafter.
+  OnDependentServicesChanged(array<Service> services);
+};
+
+// For the Account UI to read the list. Bound by WebUI, so registering goes
+// through `DependentServiceRegistrar` instead, which only browser code binds.
+interface DependentServices {
+  AddObserver(pending_remote<DependentServicesObserver> observer);
+};
+
+// Held by a service for as long as it uses Brave Account. Closing it
+// unregisters the service.
+interface DependentServiceRegistration {};
+
+// For services in the browser that depend on Brave Account. Not exposed to
+// WebUI.
+interface DependentServiceRegistrar {
+  Register(Service service,
+           pending_receiver<DependentServiceRegistration> registration);
+};

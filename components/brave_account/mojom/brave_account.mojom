@@ -253,6 +253,7 @@ interface DialogOpener {
 // A settings page a link row can point to.
 enum SettingsPage {
   kBraveAccount,
+  kEmailAliases,
   [EnableIf=is_desktop]
   kGetStarted,
 };

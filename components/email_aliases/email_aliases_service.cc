@@ -112,6 +112,8 @@ void NotifyObserversAliasesAccountUpdated(
 EmailAliasesService::EmailAliasesService(
     mojo::PendingRemote<brave_account::mojom::Authentication>
         brave_account_auth,
+    mojo::PendingRemote<brave_account::mojom::DependentServiceRegistrar>
+        dependent_service_registrar,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService& pref_service)
     : url_loader_factory_(url_loader_factory),
@@ -119,11 +121,16 @@ EmailAliasesService::EmailAliasesService(
       metrics_(pref_service) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
   CHECK(brave_account_auth);
+  CHECK(dependent_service_registrar);
   CHECK(url_loader_factory_);
 
   auth_.emplace(std::move(brave_account_auth),
                 base::BindRepeating(&EmailAliasesService::OnAuthChanged,
                                     weak_factory_.GetWeakPtr()));
+
+  mojo::Remote(std::move(dependent_service_registrar))
+      ->Register(brave_account::mojom::Service::kEmailAliases,
+                 dependent_service_registration_.BindNewPipeAndPassReceiver());
 }
 
 EmailAliasesService::~EmailAliasesService() = default;
@@ -141,6 +148,7 @@ void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 }
 
 void EmailAliasesService::Shutdown() {
+  dependent_service_registration_.reset();
   receivers_.Clear();
   observers_.Clear();
 }

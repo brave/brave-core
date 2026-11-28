@@ -1,0 +1,37 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #css_wrapper_metadata_end */
+
+:host {
+  display: block;
+
+  /* <if expr="not is_android and not is_ios"> */
+  --cr-section-padding: var(--leo-spacing-2xl);
+
+  grid-column: 1 / -1;
+  /* </if> */
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+.title {
+  color: var(--leo-color-text-primary);
+  font: var(--leo-font-heading-h4);
+
+  /* <if expr="not is_android and not is_ios"> */
+  padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) var(--leo-spacing-m);
+  /* </if> */
+}
+
+/* <if expr="not is_android and not is_ios"> */
+brave-account-link-row {
+  border-bottom: 1px solid var(--leo-color-divider-subtle);
+}
+/* </if> */

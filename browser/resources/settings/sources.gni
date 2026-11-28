@@ -133,6 +133,8 @@ brave_account_settings_ts_files = [
   "brave_account_compact_row_browser_proxy.ts",
   "brave_account_details.html.ts",
   "brave_account_details.ts",
+  "brave_account_features.html.ts",
+  "brave_account_features.ts",
   "brave_account_link_row.html.ts",
   "brave_account_link_row.ts",
   "brave_account_logged_out_row.html.ts",
@@ -148,6 +150,7 @@ brave_account_settings_ts_files = [
 brave_account_settings_css_files = [
   "brave_account_compact_row.css",
   "brave_account_details.css",
+  "brave_account_features.css",
   "brave_account_link_row.css",
   "brave_account_row_common.css",
 ]
@@ -230,6 +233,7 @@ brave_settings_mojo_files = [
   "$root_gen_dir/brave/components/brave_account/mojom/brave_account.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/change_password.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/delete_account.mojom-webui.ts",
+  "$root_gen_dir/brave/components/brave_account/mojom/dependent_services.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/get_service_token.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/login.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/register.mojom-webui.ts",

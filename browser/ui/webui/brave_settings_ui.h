@@ -13,6 +13,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/mojom/dependent_services.mojom.h"
 #include "brave/components/brave_origin/mojom/brave_origin_settings.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -81,6 +82,9 @@ class BraveSettingsUI : public settings::SettingsUI {
 #endif
   void BindInterface(mojo::PendingReceiver<brave_account::mojom::Authentication>
                          pending_receiver);
+  void BindInterface(
+      mojo::PendingReceiver<brave_account::mojom::DependentServices>
+          pending_receiver);
   void BindInterface(mojo::PendingReceiver<brave_account::mojom::DialogOpener>
                          pending_receiver);
 

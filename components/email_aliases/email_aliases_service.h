@@ -13,6 +13,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/mojom/dependent_services.mojom.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_auth.h"
 #include "brave/components/email_aliases/email_aliases_endpoints.h"
@@ -21,6 +22,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
 class PrefRegistrySimple;
@@ -46,6 +48,8 @@ class EmailAliasesService : public KeyedService,
   EmailAliasesService(
       mojo::PendingRemote<brave_account::mojom::Authentication>
           brave_account_auth,
+      mojo::PendingRemote<brave_account::mojom::DependentServiceRegistrar>
+          dependent_service_registrar,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService& pref_service);
   ~EmailAliasesService() override;
@@ -145,6 +149,9 @@ class EmailAliasesService : public KeyedService,
   const raw_ref<PrefService> pref_service_;
 
   EmailAliasesMetrics metrics_;
+
+  mojo::Remote<brave_account::mojom::DependentServiceRegistration>
+      dependent_service_registration_;
 
   // WeakPtrFactory to safely bind callbacks across async network operations.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
