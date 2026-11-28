@@ -74,6 +74,28 @@ describe('Attachments Component', () => {
     jest.clearAllMocks()
   })
 
+  it.each(['Enter', ' '])(
+    'selects a tab with %p without a click',
+    async (key) => {
+      await renderAttachments(
+        <MockContext
+          initialState={{ tabs: mockTabs }}
+          uiHandler={{ associateTab: mockAssociateTab }}
+          conversationOverrides={{ attachmentsDialog: 'tabs' }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      const checkbox = screen.getByTestId('open-tab-0')
+      expect(fireEvent.keyDown(checkbox, { key })).toBe(false)
+      expect(mockAssociateTab).toHaveBeenCalledTimes(1)
+
+      fireEvent.keyDown(checkbox, { key, repeat: true })
+      expect(mockAssociateTab).toHaveBeenCalledTimes(1)
+    },
+  )
+
   it('renders the attachments dialog with correct title', async () => {
     await renderAttachments(
       <MockContext
