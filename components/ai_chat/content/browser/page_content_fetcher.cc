@@ -36,6 +36,7 @@
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "net/base/load_flags.h"
 #include "net/base/net_errors.h"
+#include "net/base/url_util.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -76,6 +77,30 @@ constexpr auto kVideoPageContentTypes =
     base::MakeFixedFlatSet<ai_chat::mojom::PageContentType>(
         {ai_chat::mojom::PageContentType::VideoTranscriptYouTube,
          ai_chat::mojom::PageContentType::VideoTranscriptVTT});
+
+bool IsValidInnerTubeCaptionUrl(const GURL& caption_url,
+                                std::string_view video_id) {
+  if (!caption_url.is_valid() || !caption_url.SchemeIs(url::kHttpsScheme) ||
+      caption_url.host() != "www.youtube.com" || caption_url.has_port() ||
+      caption_url.has_username() || caption_url.has_password() ||
+      caption_url.path() != "/api/timedtext" || video_id.empty()) {
+    return false;
+  }
+
+  // Require a single video ID, including percent-encoded spellings of the key.
+  bool has_video_id = false;
+  for (net::QueryIterator query(caption_url); !query.IsAtEnd();
+       query.Advance()) {
+    if (base::UnescapeBinaryURLComponent(query.GetKey()) != "v") {
+      continue;
+    }
+    if (has_video_id || query.GetUnescapedValue() != video_id) {
+      return false;
+    }
+    has_video_id = true;
+  }
+  return has_video_id;
+}
 
 net::NetworkTrafficAnnotationTag GetVideoNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat_video", R"(
@@ -252,7 +277,7 @@ class PageContentFetcherInternal {
       auto on_response = base::BindOnce(
           &PageContentFetcherInternal::OnInnerTubePlayerJsonResponse,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-          std::move(loader), new_invalidation_token);
+          std::move(loader), new_invalidation_token, config->video_id);
 
       loader_ptr->DownloadToString(url_loader_factory_.get(),
                                    std::move(on_response), 2 * 1024 * 1024);
@@ -303,6 +328,7 @@ class PageContentFetcherInternal {
       FetchPageContentCallback callback,
       std::unique_ptr<network::SimpleURLLoader> loader,
       std::string invalidation_token,
+      std::string video_id,
       std::optional<std::string> response_body) {
     if (!response_body || loader->NetError() != net::OK) {
       SendResultAndDeleteSelf(std::move(callback), "", invalidation_token,
@@ -314,12 +340,13 @@ class PageContentFetcherInternal {
         *response_body,
         base::BindOnce(&PageContentFetcherInternal::OnInnerTubePlayerJsonParsed,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                       invalidation_token));
+                       std::move(invalidation_token), std::move(video_id)));
   }
 
   void OnInnerTubePlayerJsonParsed(
       FetchPageContentCallback callback,
       std::string invalidation_token,
+      std::string video_id,
       base::expected<base::Value, std::string> result) {
     if (!result.has_value() || !result->is_dict()) {
       SendResultAndDeleteSelf(std::move(callback), "", invalidation_token,
@@ -333,18 +360,19 @@ class PageContentFetcherInternal {
                               true);
       return;
     }
-    auto base_url = ai_chat::ChooseCaptionTrackUrl(*caption_tracks);
-    if (!base_url) {
+    const GURL caption_url(
+        ai_chat::ChooseCaptionTrackUrl(*caption_tracks).value_or(""));
+    if (!IsValidInnerTubeCaptionUrl(caption_url, video_id)) {
       SendResultAndDeleteSelf(std::move(callback), "", invalidation_token,
                               true);
       return;
     }
-    DVLOG(1) << "Fetching transcript from baseUrl: " << *base_url;
-    // Now fetch the transcript from baseUrl
+    DVLOG(1) << "Fetching transcript from baseUrl: " << caption_url;
     auto request = std::make_unique<network::ResourceRequest>();
-    request->url = GURL(*base_url);
+    request->url = caption_url;
     request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
     request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+    request->redirect_mode = network::mojom::RedirectMode::kError;
     request->method = net::HttpRequestHeaders::kGetMethod;
     auto transcript_loader = network::SimpleURLLoader::Create(
         std::move(request), GetVideoNetworkTrafficAnnotationTag());
