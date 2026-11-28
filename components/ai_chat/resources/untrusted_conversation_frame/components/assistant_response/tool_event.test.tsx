@@ -253,7 +253,7 @@ describe('ToolEvent', () => {
     ).not.toBeInTheDocument()
   })
 
-  it("should show the challenge's implications instead of the tool's", () => {
+  it('should render only the implications supplied by the challenge', () => {
     render(
       <MockContext>
         <ToolEvent
@@ -281,13 +281,10 @@ describe('ToolEvent', () => {
         exact: false,
       }),
     ).toBeInTheDocument()
-    // The challenge's implications are rendered as markdown, replacing the
-    // tool's own.
+    // The challenge's implications are rendered as markdown.
     expect(screen.getByText('page text').tagName).toBe('STRONG')
     expect(
-      screen.queryByText(
-        S.CHAT_UI_TOOL_SEMANTIC_HISTORY_SEARCH_PERMISSION_IMPLICATIONS,
-      ),
+      screen.queryByText(/CHAT_UI_TOOL_.*_PERMISSION_IMPLICATIONS/),
     ).not.toBeInTheDocument()
   })
 

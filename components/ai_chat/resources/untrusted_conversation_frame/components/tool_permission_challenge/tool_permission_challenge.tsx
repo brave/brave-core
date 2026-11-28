@@ -9,7 +9,6 @@ import { formatLocale, getLocale } from '$web-common/locale'
 import ConversationAreaButton from '../../../common/components/conversation_area_button'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
-import { getToolPermissionImplications } from '../assistant_response/get_tool_permission_implications'
 import CodeBlock from '../code_block'
 import MarkdownRenderer from '../markdown_renderer'
 import styles from './tool_permission_challenge.module.scss'
@@ -103,10 +102,6 @@ function ToolArguments({
 
 export default function ToolPermissionChallenge(props: Props) {
   const conversationContext = useUntrustedConversationContext()
-  const toolPermissionImplications = getToolPermissionImplications(
-    props.toolUseEvent.toolName,
-  )
-
   const permissionChallenge = props.toolUseEvent.permissionChallenge
   if (!permissionChallenge) {
     return null
@@ -164,13 +159,11 @@ export default function ToolPermissionChallenge(props: Props) {
           </>
         )}
 
-        {permissionChallenge.implications ? (
+        {permissionChallenge.implications && (
           <MarkdownRenderer
             text={permissionChallenge.implications}
             shouldShowTextCursor={false}
           />
-        ) : (
-          toolPermissionImplications && <p>{toolPermissionImplications}</p>
         )}
         {permissionChallenge.plan && (
           <p className={styles.assessment}>{permissionChallenge.plan}</p>
