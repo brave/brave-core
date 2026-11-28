@@ -61,23 +61,33 @@ const _asHTMLElement = (node: Node): HTMLElement | null => {
   return node instanceof HTMLElement ? node : null
 }
 
-const _compileRegEx = (regexText: string): RegExp => {
-  const regexParts = regexText.split('/')
-  const regexPattern = regexParts[1]!
-  const regexArgs = regexParts[2]
-  const regex = new W.RegExp(regexPattern, regexArgs)
-  return regex
+// Compiles a `/pattern/flags` regex literal. The pattern runs to the last `/`,
+// so it may contain `/` itself (e.g. `/^\/home/`). Returns null for anything
+// else that starts with `/`, such as the plain path in
+// `:matches-path(/marketplace/item)`.
+const _compileRegEx = (regexText: string): RegExp | null => {
+  const lastSlash = regexText.lastIndexOf('/')
+  if (regexText[0] !== '/' || lastSlash < 2) {
+    return null
+  }
+  const flags = regexText.slice(lastSlash + 1)
+  for (const flag of flags) {
+    if (!'dgimsuvy'.includes(flag)) {
+      return null
+    }
+  }
+  return new W.RegExp(regexText.slice(1, lastSlash), flags)
 }
 
 // Check to see if the string `value` either
-// contains the the string `test` (if `test` does
-// not start with `/`) or if the string
-// value matches the regex `test`.
+// contains the the string `test` (if `test` is not
+// a regex literal) or if the string value matches
+// the regex `test`.
 // We assume if test isn't a string, its a regex object.
 //
 // Rules:
-//   - if `test` starts with `/` we treat it as a regex
-//     literal
+//   - if `test` is a `/pattern/flags` regex literal, we
+//     treat it as a regex
 //   - if `text` is an empty string, we treat it as
 //     matching any case where value is only whitespace
 //   - otherwise, check to see if value contains the
@@ -91,7 +101,10 @@ const _testMatches = (
   exact: boolean = false,
 ): boolean => {
   if (test[0] === '/') {
-    return value.match(_compileRegEx(test)) !== null
+    const regex = _compileRegEx(test)
+    if (regex !== null) {
+      return value.match(regex) !== null
+    }
   }
   if (test === '') {
     return value.trim() === ''
@@ -433,8 +446,9 @@ const operatorMatchesCSS = (
     return []
   }
   let matched
-  if (expectedVal.startsWith('/') && expectedVal.endsWith('/')) {
-    matched = styleValue.match(_compileRegEx(expectedVal)) !== null
+  const regex = expectedVal.endsWith('/') ? _compileRegEx(expectedVal) : null
+  if (regex !== null) {
+    matched = styleValue.match(regex) !== null
   } else {
     matched = expectedVal === styleValue
   }
