@@ -14,6 +14,7 @@ import org.chromium.brave_account.mojom.SettingsPage;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.customtabs.BraveAccountCustomTabActivity;
+import org.chromium.chrome.browser.customtabs.BraveEmailAliasesCustomTabActivity;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.base.WindowAndroid;
 
@@ -43,6 +44,9 @@ public class BraveAccountScreenOpener {
         switch (page) {
             case SettingsPage.BRAVE_ACCOUNT:
                 BraveAccountCustomTabActivity.openBraveAccountSettings(activity);
+                return true;
+            case SettingsPage.EMAIL_ALIASES:
+                BraveEmailAliasesCustomTabActivity.openEmailAliasesSettings(activity);
                 return true;
             default:
                 return false;

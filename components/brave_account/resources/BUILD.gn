@@ -73,6 +73,13 @@ build_webui("build") {
     ]
   }
 
+  if (is_android) {
+    ts_files += [
+      "brave_account_features.html.ts",
+      "brave_account_features.ts",
+    ]
+  }
+
   css_files = [
     "brave_account_common.css",
     "brave_account_deletion_dialog.css",
@@ -94,6 +101,10 @@ build_webui("build") {
     ]
   }
 
+  if (is_android) {
+    css_files += [ "brave_account_features.css" ]
+  }
+
   webui_context_type = "trusted"
 
   use_brave_grit = true
@@ -111,6 +122,7 @@ build_webui("build") {
     "$root_gen_dir/brave/components/brave_account/mojom/brave_account.mojom-webui.ts",
     "$root_gen_dir/brave/components/brave_account/mojom/change_password.mojom-webui.ts",
     "$root_gen_dir/brave/components/brave_account/mojom/delete_account.mojom-webui.ts",
+    "$root_gen_dir/brave/components/brave_account/mojom/dependent_services.mojom-webui.ts",
     "$root_gen_dir/brave/components/brave_account/mojom/get_service_token.mojom-webui.ts",
     "$root_gen_dir/brave/components/brave_account/mojom/login.mojom-webui.ts",
     "$root_gen_dir/brave/components/brave_account/mojom/register.mojom-webui.ts",
