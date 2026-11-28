@@ -666,18 +666,10 @@ void SharedPinnedTabService::OnActiveTabChanged(
     return;
   }
 
+  auto* contents = tab_strip_model->GetWebContentsAt(active_index);
   if (!tab_strip_model->IsTabPinned(active_index) ||
-      SharedPinnedTabExclusionMarker::FromWebContents(
-          tab_strip_model->GetWebContentsAt(active_index))) {
-    return;
-  }
-
-  const int canonical_index = ToCanonicalIndex(tab_strip_model, active_index);
-  if (pinned_tab_data_.at(canonical_index).contents_owner_model ==
-      tab_strip_model) {
-    // this pinned tab already has the shared contents.
-    DCHECK_EQ(pinned_tab_data_.at(canonical_index).shared_contents,
-              tab_strip_model->GetWebContentsAt(active_index));
+      SharedPinnedTabExclusionMarker::FromWebContents(contents) ||
+      !IsDummyContents(contents)) {
     return;
   }
 
@@ -685,7 +677,7 @@ void SharedPinnedTabService::OnActiveTabChanged(
       FROM_HERE,
       base::BindOnce(
           &SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser,
-          weak_ptr_factory_.GetWeakPtr(), canonical_index));
+          weak_ptr_factory_.GetWeakPtr(), contents->GetWeakPtr()));
 }
 
 void SharedPinnedTabService::OnTabUnpinned(
@@ -962,10 +954,34 @@ void SharedPinnedTabService::SynchronizeDeferredBrowser(
 }
 
 void SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser(
-    int canonical_index) {
-  if (!last_active_browser_) {
-    DVLOG(2)
-        << "Failed to attach contents to active browser: No active browser";
+    base::WeakPtr<content::WebContents> contents) {
+  if (!last_active_browser_ || !contents) {
+    return;
+  }
+
+  auto* model = last_active_browser_->GetTabStripModel();
+  const int raw_index = model->active_index();
+  if (raw_index == TabStripModel::kNoTab || !model->IsTabPinned(raw_index) ||
+      model->GetWebContentsAt(raw_index) != contents.get() ||
+      SharedPinnedTabExclusionMarker::FromWebContents(contents.get())) {
+    return;
+  }
+
+  if (std::ranges::contains(pending_unpin_models_, model)) {
+    // The shared list will catch up when the posted unpins run.
+    OnActiveTabChanged(model);
+    return;
+  }
+
+  auto* dummy = DummyContentsData::FromWebContents(contents.get());
+  const int canonical_index = ToCanonicalIndex(model, raw_index);
+  if (!dummy || canonical_index >= static_cast<int>(pinned_tab_data_.size())) {
+    return;
+  }
+
+  const auto& tab_data = pinned_tab_data_[canonical_index];
+  if (tab_data.contents_owner_model == model ||
+      tab_data.shared_contents != dummy->shared_contents()) {
     return;
   }
 

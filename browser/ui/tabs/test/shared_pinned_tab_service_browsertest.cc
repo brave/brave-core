@@ -9,7 +9,9 @@
 #include <memory>
 
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/run_loop.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -278,6 +280,68 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_FALSE(model->IsTabPinned(0));
   EXPECT_FALSE(service->IsSharedContents(contents));
   EXPECT_FALSE(service->IsDummyContents(contents));
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
+                       ActivatePendingUnpinDummyInOtherWindow) {
+  auto* model = browser()->tab_strip_model();
+  auto* other_browser = CreateNewBrowser();
+  auto* other_model = other_browser->GetTabStripModel();
+  auto* service = GetForBrowser(browser());
+  auto* contents = model->GetWebContentsAt(0);
+  service->OnBrowserActivated(browser());
+
+  model->SetTabPinned(0, /*pinned=*/true);
+  ASSERT_EQ(2, other_model->count());
+  ASSERT_TRUE(service->IsDummyContents(other_model->GetWebContentsAt(0)));
+
+  model->SetTabPinned(0, /*pinned=*/false);
+  other_model->ActivateTabAt(0);
+  service->OnBrowserActivated(other_browser);
+  base::RunLoop run_loop;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, run_loop.QuitClosure());
+  run_loop.Run();
+
+  ASSERT_EQ(1, model->count());
+  EXPECT_EQ(contents, model->GetWebContentsAt(0));
+  EXPECT_FALSE(model->IsTabPinned(0));
+  ASSERT_EQ(1, other_model->count());
+  EXPECT_FALSE(other_model->IsTabPinned(0));
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
+                       MoveSelectedPinnedTabAfterEarlierUnpin) {
+  auto* model = browser()->tab_strip_model();
+  auto* other_browser = CreateNewBrowser();
+  auto* other_model = other_browser->GetTabStripModel();
+  auto* service = GetForBrowser(browser());
+
+  chrome::AddTabAt(browser(), GURL(), /*index=*/-1, /*foreground=*/true);
+  ASSERT_EQ(2, model->count());
+  auto* first_contents = model->GetWebContentsAt(0);
+  auto* selected_contents = model->GetWebContentsAt(1);
+  model->SetTabPinned(0, /*pinned=*/true);
+  model->SetTabPinned(1, /*pinned=*/true);
+  ASSERT_EQ(3, other_model->count());
+  auto* selected_dummy = other_model->GetWebContentsAt(1);
+  ASSERT_TRUE(service->IsDummyContents(selected_dummy));
+  service->OnBrowserActivated(other_browser);
+
+  // Queue the transfer at index 1, then move the selected dummy to index 0
+  // by unpinning the preceding tab before the transfer runs.
+  other_model->ActivateTabAt(1);
+  other_model->SetTabPinned(0, /*pinned=*/false);
+  ASSERT_EQ(0, other_model->active_index());
+  ASSERT_EQ(selected_dummy, other_model->GetActiveWebContents());
+
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return other_model->GetActiveWebContents() == selected_contents;
+  }));
+  EXPECT_TRUE(other_model->IsTabPinned(other_model->active_index()));
+  const int first_index = other_model->GetIndexOfWebContents(first_contents);
+  ASSERT_NE(TabStripModel::kNoTab, first_index);
+  EXPECT_FALSE(other_model->IsTabPinned(first_index));
 }
 
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, ActivatePinnedTab) {
@@ -637,6 +701,42 @@ class SharedPinnedTabServiceWithWebPanelBrowserTest
  private:
   base::test::ScopedFeatureList web_panel_feature_list_;
 };
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceWithWebPanelBrowserTest,
+                       MoveSelectedPinnedTabAfterEarlierUnpinWithWebPanel) {
+  auto* model = browser()->tab_strip_model();
+  auto* other_browser = CreateNewBrowser();
+  auto* other_model = other_browser->GetTabStripModel();
+  auto* service = GetForBrowser(browser());
+
+  chrome::AddTabAt(browser(), GURL(), /*index=*/-1, /*foreground=*/true);
+  ASSERT_EQ(2, model->count());
+  auto* selected_contents = model->GetWebContentsAt(1);
+  model->SetTabPinned(0, /*pinned=*/true);
+  model->SetTabPinned(1, /*pinned=*/true);
+  ASSERT_EQ(2, other_model->IndexOfFirstNonPinnedTab());
+
+  auto* panel_contents = OpenWebPanel(
+      other_browser, https_server()->GetURL("a.com", "/index.html"));
+  ASSERT_TRUE(panel_contents);
+  ASSERT_EQ(0, other_model->GetIndexOfWebContents(panel_contents));
+  ASSERT_EQ(3, other_model->IndexOfFirstNonPinnedTab());
+  auto* selected_dummy = other_model->GetWebContentsAt(2);
+  ASSERT_TRUE(service->IsDummyContents(selected_dummy));
+
+  service->OnBrowserActivated(other_browser);
+  other_model->ActivateTabAt(2);
+  other_model->SetTabPinned(1, /*pinned=*/false);
+  ASSERT_EQ(selected_dummy, other_model->GetActiveWebContents());
+  ASSERT_EQ(1, other_model->active_index());
+
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return other_model->GetActiveWebContents() == selected_contents;
+  }));
+  EXPECT_TRUE(other_model->IsTabPinned(other_model->active_index()));
+  EXPECT_EQ(0, other_model->GetIndexOfWebContents(panel_contents));
+  EXPECT_FALSE(service->IsSharedContents(panel_contents));
+}
 
 IN_PROC_BROWSER_TEST_F(
     SharedPinnedTabServiceWithWebPanelBrowserTest,

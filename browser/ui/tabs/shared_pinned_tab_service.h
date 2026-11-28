@@ -120,7 +120,8 @@ class SharedPinnedTabService : public KeyedService,
   void SynchronizeDeferredBrowser(
       base::WeakPtr<BrowserWindowInterface> browser);
 
-  void MoveSharedWebContentsToActiveBrowser(int canonical_index);
+  void MoveSharedWebContentsToActiveBrowser(
+      base::WeakPtr<content::WebContents> contents);
   void MoveSharedWebContentsToBrowser(BrowserWindowInterface* browser,
                                       int canonical_index,
                                       bool is_last_closing_browser = false);
