@@ -20,13 +20,13 @@ class BraveAccountServiceFactoryIOS
     : public TypedProfileKeyedServiceFactoryIOS<BraveAccountServiceFactoryIOS,
                                                 BraveAccountService> {
  public:
+  static BraveAccountService* GetFor(ProfileIOS* profile);
+
   explicit BraveAccountServiceFactoryIOS(PassKey key);
 
   BraveAccountServiceFactoryIOS(const BraveAccountServiceFactoryIOS&) = delete;
   BraveAccountServiceFactoryIOS& operator=(
       const BraveAccountServiceFactoryIOS&) = delete;
-
-  static BraveAccountService* GetFor(ProfileIOS* profile);
 
  private:
   // TypedProfileKeyedServiceFactoryIOS:
