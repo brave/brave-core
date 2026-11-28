@@ -61,6 +61,8 @@ build_webui("build") {
       "brave_account_compact_row_browser_proxy.ts",
       "brave_account_details.html.ts",
       "brave_account_details.ts",
+      "brave_account_features.html.ts",
+      "brave_account_features.ts",
       "brave_account_link_row.html.ts",
       "brave_account_link_row.ts",
       "brave_account_logged_out_row.html.ts",
@@ -70,13 +72,6 @@ build_webui("build") {
       "brave_account_row_base.ts",
       "brave_account_row_browser_proxy.ts",
       "brave_account_text_truncator.ts",
-    ]
-  }
-
-  if (is_android) {
-    ts_files += [
-      "brave_account_features.html.ts",
-      "brave_account_features.ts",
     ]
   }
 
@@ -96,13 +91,10 @@ build_webui("build") {
     css_files += [
       "brave_account_compact_row.css",
       "brave_account_details.css",
+      "brave_account_features.css",
       "brave_account_link_row.css",
       "brave_account_row_common.css",
     ]
-  }
-
-  if (is_android) {
-    css_files += [ "brave_account_features.css" ]
   }
 
   webui_context_type = "trusted"

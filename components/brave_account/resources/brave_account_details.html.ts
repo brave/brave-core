@@ -7,9 +7,7 @@ import { assert } from '//resources/js/assert.js'
 import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 
-// <if expr="not is_ios">
 import './brave_account_features.js'
-// </if>
 import { BraveAccountDetailsElement } from './brave_account_details.js'
 import { ROW_BUTTON_SIZE } from './brave_account_row_base.js'
 import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js'
@@ -149,9 +147,7 @@ export function getHtml(this: BraveAccountDetailsElement) {
               )}
             </leo-button>
           </div>
-          <if expr="not is_ios">
-            <brave-account-features></brave-account-features>
-          </if>
+          <brave-account-features></brave-account-features>
           <div class="account-actions">
             <leo-button
               kind="plain"

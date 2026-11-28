@@ -7,6 +7,8 @@ source_set("brave_account") {
   sources = [
     "brave_account_constants_bridge.h",
     "brave_account_constants_bridge.mm",
+    "brave_account_dependent_services_factory_ios.h",
+    "brave_account_dependent_services_factory_ios.mm",
     "brave_account_dialog_mode_holder.h",
     "brave_account_dialog_mode_holder.mm",
     "brave_account_feature_bridge.h",

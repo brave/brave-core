@@ -8,6 +8,7 @@
 
 #include "brave/components/brave_account/brave_account_ui_base.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/mojom/dependent_services.mojom.h"
 #include "brave/ios/browser/brave_account/brave_account_service_factory_ios.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "ios/web/public/webui/web_ui_ios_controller.h"
@@ -25,7 +26,8 @@ class BraveAccountUIIOS
                                 brave_account::BraveAccountServiceFactoryIOS>,
       public web::WebUIIOSController,
       public brave_account::mojom::DialogController,
-      public brave_account::mojom::DialogOpener {
+      public brave_account::mojom::DialogOpener,
+      public brave_account::mojom::SettingsOpener {
  public:
   BraveAccountUIIOS(web::WebUIIOS* web_ui, const GURL& url);
 
@@ -41,11 +43,21 @@ class BraveAccountUIIOS
   // brave_account::mojom::DialogOpener:
   void OpenDialog(brave_account::mojom::DialogMode dialog_mode) override;
 
+  // brave_account::mojom::SettingsOpener:
+  void OpenSettings(brave_account::mojom::SettingsPage page) override;
+
+  void BindInterface(
+      mojo::PendingReceiver<brave_account::mojom::DependentServices>
+          pending_receiver);
+
   void BindInterface(
       mojo::PendingReceiver<brave_account::mojom::DialogController>
           pending_receiver);
 
   void BindInterface(mojo::PendingReceiver<brave_account::mojom::DialogOpener>
+                         pending_receiver);
+
+  void BindInterface(mojo::PendingReceiver<brave_account::mojom::SettingsOpener>
                          pending_receiver);
 
   template <typename Interface>
@@ -58,6 +70,8 @@ class BraveAccountUIIOS
       dialog_controller_receiver_{this};
   mojo::Receiver<brave_account::mojom::DialogOpener> dialog_opener_receiver_{
       this};
+  mojo::Receiver<brave_account::mojom::SettingsOpener>
+      settings_opener_receiver_{this};
 };
 
 #endif  // BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_IOS_H_
