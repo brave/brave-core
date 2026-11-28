@@ -449,8 +449,8 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
     return {};
   }
 
-  // All conversation metadata, associated content and most
-  // and most recent entry date. 1 row for each associated content.
+  // All conversation metadata, associated content and latest entry date.
+  // One row for each associated content.
   static constexpr char kQuery[] =
       "SELECT conversation.uuid, conversation.title, conversation.model_key,"
       "  conversation.total_tokens, conversation.trimmed_tokens,"
@@ -463,11 +463,10 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
       " LEFT JOIN associated_content"
       " ON conversation.uuid = associated_content.conversation_uuid"
       " LEFT JOIN ("
-      "  SELECT conversation_entry.date AS date, "
+      "  SELECT MAX(conversation_entry.date) AS date, "
       "  conversation_entry.conversation_uuid AS conversation_uuid "
       "  FROM conversation_entry"
-      "  GROUP BY conversation_entry.conversation_uuid"
-      "  ORDER BY conversation_entry.date desc) "
+      "  GROUP BY conversation_entry.conversation_uuid) "
       " AS last_activity_date"
       " ON last_activity_date.conversation_uuid = conversation.uuid"
       " WHERE NOT conversation.is_sync_stub"
