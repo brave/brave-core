@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import type { BraveNewsControllerRemote } from '../shared/api'
+
 import {
   Channel,
   Publisher,
@@ -43,7 +45,7 @@ export interface ImportResult {
   subscribedPublishers: number
   addedDirectFeeds: number
   subscribedChannels: number
-  // Items that were already subscribed, duplicates, or couldn't be resolved.
+  // Items already subscribed, duplicated, rejected, or unresolved.
   skipped: number
 }
 
@@ -56,7 +58,9 @@ export interface ImportActions {
   channels: Channel[]
   locale: string
   followPublisher: (publisherId: string) => void
-  addDirectFeed: (url: string) => Promise<unknown>
+  addDirectFeed: (url: string) => ReturnType<
+    BraveNewsControllerRemote['subscribeToNewDirectFeed']
+  >
   subscribeChannel: (locale: string, channelName: string) => void
 }
 
@@ -332,8 +336,15 @@ export async function importOpml(
       continue
     }
     directFeedUrls.add(url)
-    pending.push(Promise.resolve(actions.addDirectFeed(url)))
-    result.addedDirectFeeds++
+    pending.push(
+      actions.addDirectFeed(url).then(({ isValidFeed, isDuplicate }) => {
+        if (isValidFeed && !isDuplicate) {
+          result.addedDirectFeeds++
+        } else {
+          result.skipped++
+        }
+      })
+    )
   }
 
   const channelByName = new Map(actions.channels.map((c) => [c.channelName, c]))
